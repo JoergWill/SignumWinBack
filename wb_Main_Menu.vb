@@ -29,7 +29,7 @@ Public Class wb_Main_Menu
         Dim oGrpArtikel = oNewTab.AddGroup("WinBack", "Artikel")
         Dim oGrpRezepte = oNewTab.AddGroup("WinBack", "Rezepte")
         ' ... und dieser Gruppe wird ein Button hinzugefügt
-        oGrpChargen.AddButton("CustomFormButton1", "Chargen", "WinBack Auswertung Produktions-Chargen", My.Resources.Icon_Chargen, My.Resources.Icon_Chargen, AddressOf ShowChargenForm)
+        oGrpChargen.AddButton("BtnChargenMain", "Chargen", "WinBack Auswertung Produktions-Chargen", My.Resources.Icon_Chargen, My.Resources.Icon_Chargen, AddressOf ShowChargenForm)
         oGrpArtikel.AddButton("CustomFormButton2", "Artikel", "WinBack Artikelverwaltung", My.Resources.Icon_Artikel, My.Resources.Icon_Artikel, AddressOf ShowArtikelForm)
         oGrpRezepte.AddButton("CustomFormButton3", "Rezepte", "WinBack Rezeptverwaltung", My.Resources.Icon_Material, My.Resources.Icon_Material, AddressOf ShowChargenForm)
 
