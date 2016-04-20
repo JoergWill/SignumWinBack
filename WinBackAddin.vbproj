@@ -112,19 +112,14 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="wb_MainArtikel.Designer.vb">
-      <DependentUpon>wb_MainArtikel.vb</DependentUpon>
+    <Compile Include="Settings.vb" />
+    <Compile Include="wb_Forms\wb_MainTemplate.Designer.vb">
+      <DependentUpon>wb_MainTemplate.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_MainArtikel.vb">
+    <Compile Include="wb_Forms\wb_MainTemplate.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_MainUser.Designer.vb">
-      <DependentUpon>wb_MainUser.vb</DependentUpon>
-    </Compile>
-    <Compile Include="wb_MainUser.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="wb_Main_Menu.vb" />
+    <Compile Include="wb_Main\wb_Main_Menu.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -140,28 +135,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="wb_MainChargen.Designer.vb">
-      <DependentUpon>wb_MainChargen.vb</DependentUpon>
-    </Compile>
-    <Compile Include="wb_MainChargen.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_MainArtikel.resx">
-      <DependentUpon>wb_MainArtikel.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_MainChargen.resx">
-      <DependentUpon>wb_MainChargen.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_MainUser.resx">
-      <DependentUpon>wb_MainUser.vb</DependentUpon>
+    <EmbeddedResource Include="wb_Forms\wb_MainTemplate.resx">
+      <DependentUpon>wb_MainTemplate.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -177,40 +160,62 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\VStatus_16.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EditTask.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EditTask_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\base_charts.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\base_key_32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Zoom_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ZoomHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ProofingTools_32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Icon_Chargen.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Icon_Artikel.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Icon_Material.bmp" />
+    <None Include="Resources\MainRezept_32x32.png" />
+    <None Include="Resources\MainStatistikRezepte_32x32.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainChargen_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainChargen_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainUser_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainRezept_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainRohstoffe_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainRohstoffe_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainArtikel_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainArtikel_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainStammdaten_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainStammdaten_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainStatistikRezepte_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainStatistikChargen_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainStatistikChargen_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainStatistikRohstoffe_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainStatistikRohstoffe_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainLinien_45x34.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainProduktionsPlanung_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
