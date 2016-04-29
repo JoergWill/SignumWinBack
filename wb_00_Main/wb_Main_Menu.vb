@@ -127,7 +127,7 @@ Public Class wb_Main_Menu
     'Artikel
     Private Sub ShowArtikelForm(sender As Object, e As EventArgs)
         CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainArtikel_16x16)
+        xForm = oViewProvider.OpenForm(New wb_Artikel_Main(ServiceProvider), My.Resources.MainArtikel_16x16)
     End Sub
     'Rohstoff
     Private Sub ShowRohstoffForm(sender As Object, e As EventArgs)
@@ -169,7 +169,7 @@ Public Class wb_Main_Menu
     'Produktion - Linien
     Private Sub ShowLinienForm(sender As Object, e As EventArgs)
         ' CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_MainLinien(ServiceProvider), My.Resources.MainLinien_45x34)
+        xForm = oViewProvider.OpenForm(New wb_Linien_Main(ServiceProvider), My.Resources.MainLinien_45x34)
     End Sub
 
     'Produktion - Planung

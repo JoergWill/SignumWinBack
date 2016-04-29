@@ -16,8 +16,11 @@ Imports Signum.OrgaSoft.AddIn.WinBack.wb_Konfig
 Imports WeifenLuo.WinFormsUI.Docking
 
 
-Public Class wb_MainLinien
+Public Class wb_Linien_Main
     Implements IExternalFormUserControl
+
+    Private WithEvents LinienListe As New wb_Linien_Liste
+    Private WithEvents LinenDetails As New wb_Linien_Details
 
     Private _ServiceProvider As Common.IOrgasoftServiceProvider
     Private _MenuService As Common.IMenuService
@@ -66,13 +69,17 @@ Public Class wb_MainLinien
     ''' </returns>
     ''' <remarks></remarks>
     Public Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        SaveInKonfig()
+        SaveDockBarConfig()
+        LinienDetailInfoHasChanged()
+        LinienListe.SaveItems()
         Return False
     End Function
-    Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
 
+    Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
     Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
-        SaveInKonfig()
+        SaveDockBarConfig()
+        LinienDetailInfoHasChanged()
+        LinienListe.SaveItems()
     End Sub
 
     ''' <summary>
@@ -142,75 +149,48 @@ Public Class wb_MainLinien
     End Property
 
     Private Sub wb_MainLinien_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' Anzeige alle konfigurierten VNC-Linien
-        ' Auslesen aus .ini-Datei
-
-        Dim IniFile As New Signum.OrgaSoft.AddIn.WinBack.wb_Konfig
-        Dim i As Integer = 0
-        Dim IPAdresse, IPComment As String
-        Dim ListItem As ListViewItem
-
-        Do
-            i += 1
-            IPAdresse = IniFile.ReadString("VNC", "IP" & i.ToString)
-            IPComment = IniFile.ReadString("VNC", "Comment" & i.ToString)
-            If IPAdresse IsNot "" Then
-                ListItem = VNCview.Items.Add(IPAdresse, IPComment, 0)
-            Else
-                Exit Do
-            End If
-        Loop
-
+        ' DockBar Konfiguration aus XML-Datei lesen
+        LoadDockBarConfig()
     End Sub
+
     Private Sub BtnLinien()
 
     End Sub
 
-    Private Sub VNCview_Click(sender As Object, e As EventArgs) Handles VNCview.Click
-        If (VNCview.SelectedItems(0).Index <VNCview.Items.Count) And (VNCview.SelectedItems(0).Index >= 0) Then
-            tBezeichnung.Text = VNCview.SelectedItems.Item(0).Text
-            tAdresse.Text = VNCview.SelectedItems.Item(0).Name
-        End If
+    Private Sub DetailInfo() Handles LinienListe.ItemSelected
+        LinenDetails.aktBezeichnung = LinienListe.aktBezeichnung
+        LinenDetails.aktAdresse = LinienListe.aktAdresse
     End Sub
 
-    Private Sub VNCview_DoubleClick(sender As Object, e As EventArgs) Handles VNCview.DoubleClick
-        Dim cmdLinie, cmdParam As String
-        Dim p As New Process
-
-        'VNC-Viewer starten
-        cmdLinie = "c:\Programme\Winback\vncviewer.exe"
-        If (VNCview.SelectedItems(0).Index <VNCview.Items.Count) And (VNCview.SelectedItems(0).Index >= 0) Then
-            cmdParam = VNCview.SelectedItems.Item(0).Name() & " /password herbst"
-
-            p.StartInfo.FileName = cmdLinie
-            p.StartInfo.Arguments = cmdParam
-            p.StartInfo.UseShellExecute = False
-            p.StartInfo.RedirectStandardOutput = False
-            p.StartInfo.CreateNoWindow = False
-            p.Start()
-
-        End If
+    Private Sub LinienDetailInfoHasChanged() Handles LinenDetails.DetailInfoHasChanged
+        LinienListe.aktBezeichnung = LinenDetails.aktBezeichnung
+        LinienListe.aktAdresse = LinenDetails.aktAdresse
     End Sub
 
-    Private Sub Panel1_Leave(sender As Object, e As EventArgs) Handles Panel1.Leave
-        Dim i As Integer
-        If (VNCview.SelectedItems(0).Index < VNCview.Items.Count) And (VNCview.SelectedItems(0).Index >= 0) Then
-            i = VNCview.SelectedItems(0).Index
-            VNCview.Items(i).Text = tBezeichnung.Text
-            VNCview.Items(i).Name = tAdresse.Text
-        End If
+    Private Sub SaveDockBarConfig()
+        DockPanel.SaveAsXml("C:\Users\will.WINBACK\AppData\Roaming\WinBack\test.xml")
     End Sub
 
-    Private Sub SaveInKonfig()
-        Dim IniFile As New Signum.OrgaSoft.AddIn.WinBack.wb_Konfig
-        Dim i As Integer
-        For i = 1 To VNCview.Items.Count
-            IniFile.WriteString("VNC", "IP" & i.ToString, VNCview.Items(i - 1).Name)
-            If IniFile.WriteResult = False Then
-                Exit For
-            End If
-            IniFile.WriteString("VNC", "Comment" & i.ToString, VNCview.Items(i - 1).Text)
-        Next
+    Private Sub LoadDockBarConfig()
+        Try
+            DockPanel.LoadFromXml("C:\Users\will.WINBACK\AppData\Roaming\WinBack\test.xml", AddressOf wbBuildDocContent)
+        Catch ex As Exception
+        End Try
+
+        LinenDetails.Show(DockPanel, DockState.DockTop)
+        LinienListe.Show(DockPanel, DockState.DockLeft)
     End Sub
+
+    Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
+        Select Case persistString
+            Case "LinienListe"
+                Return LinienListe
+            Case "LinenDetails"
+                Return LinenDetails
+            Case Else
+                Return Nothing
+        End Select
+    End Function
+
 End Class
 
