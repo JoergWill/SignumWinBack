@@ -72,7 +72,9 @@ Public Class wb_Main_Menu
         End If
 
         ' Beim Laden des AddIns ist schon ein Mitarbeiter angemeldet
-        ' UserLogin(Me, EventArgs.Empty)
+        UserLogin(Me, EventArgs.Empty)
+        'globale System-Einstellungen lesen
+        ReadSystemKonfig()
     End Sub
 
     '---------------------------------------------------------
@@ -208,13 +210,35 @@ Public Class wb_Main_Menu
                 sName = CType(oTable.Rows(0)(0), String) & " " & CType(oTable.Rows(0)(1), String)
             End Using
 
-            MessageBox.Show("Herzlich willkommen " & sName & "!", "Welcome-AddIn", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            My.Settings.AktUser = sName
         End If
     End Sub
 
     'Event Änderung der Sprache in OrgaSoft
     Private Sub LanguageChange(sender As Object, e As EventArgs)
 
+    End Sub
+
+    'globale System-Konfiguration aus winback.ini einlesen und verfügbar machen
+    Private Sub ReadSystemKonfig()
+        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
+
+        My.Settings.MySQLServerIP = IniFile.ReadString("winback", "eMySQLServerIP", "172.16.17.5")
+        My.Settings.MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
+        My.Settings.MySQLWbDaten = IniFile.ReadString("winback", "eMySQLDatabaseDaten", "wbdaten")
+        My.Settings.MySQLUser = IniFile.ReadString("winback", "eMySQLUser", "wbdaten")
+        My.Settings.MySQLPass = IniFile.ReadString("winback", "eMySQLPasswordDatabase", "wbdaten")
+
+        ' Connection-String für WinBack-MySQL-Datenbank
+        My.Settings.MySQLConWinBack = "server=" & My.Settings.MySQLServerIP & ";" _
+                                    & "user id=" & My.Settings.MySQLUser & ";" _
+                                    & "password=" & My.Settings.MySQLPass & ";" _
+                                    & "database=" & My.Settings.MySQLWinBack & ";"
+        ' Connection-String für WbDaten-MySQL-Datenbank
+        My.Settings.MySQLConWbDaten = "server=" & My.Settings.MySQLServerIP & ";" _
+                                    & "user id=" & My.Settings.MySQLUser & ";" _
+                                    & "password=" & My.Settings.MySQLPass & ";" _
+                                    & "database=" & My.Settings.MySQLWbDaten & ";"
     End Sub
 
 End Class

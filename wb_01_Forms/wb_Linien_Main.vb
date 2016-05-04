@@ -12,15 +12,16 @@
 Imports System.Windows.Forms
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
-Imports Signum.OrgaSoft.AddIn.WinBack.wb_Konfig
+Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
 Imports WeifenLuo.WinFormsUI.Docking
+Imports MySql
 
 
 Public Class wb_Linien_Main
     Implements IExternalFormUserControl
 
     Private WithEvents LinienListe As New wb_Linien_Liste
-    Private WithEvents LinenDetails As New wb_Linien_Details
+    Private WithEvents LinienDetails As New wb_Linien_Details
 
     Private _ServiceProvider As Common.IOrgasoftServiceProvider
     Private _MenuService As Common.IMenuService
@@ -138,10 +139,10 @@ Public Class wb_Linien_Main
                 ' Das neue RibbonTab erhält eine Gruppe
                 Dim oGrp = oNewTab.AddGroup("GrpLinien", "WinBack Linien")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("BtnLinienNew", "Linie Neu", "Neue Linie anlegen", My.Resources.LinienNeu_32x32, My.Resources.LinienNeu_32x32, AddressOf BtnLinien)
-                oGrp.AddButton("BtnLinienRename", "Umbenennen", "Linie umbenennen", My.Resources.LinienBearbeiten_32x32, My.Resources.LinienBearbeiten_32x32, AddressOf BtnLinien)
-                oGrp.AddButton("BtnLinienRemove", "Löschen", "Linie löschen", My.Resources.LinienLoeschen_32x32, My.Resources.LinienLoeschen_32x32, AddressOf BtnLinien)
-                oGrp.AddButton("BtnLinienAutoInstall", "AutoInstall", "Alle Linien automatisch installieren", My.Resources.LinienAutoInstall_32x32, My.Resources.LinienAutoInstall_32x32, AddressOf BtnLinien)
+                oGrp.AddButton("BtnLinienNew", "Linie Neu", "Neue Linie anlegen", My.Resources.LinienNeu_32x32, My.Resources.LinienNeu_32x32, AddressOf BtnLinienNew)
+                oGrp.AddButton("BtnLinienRename", "Bearbeiten", "Linie umbenennen/IP-Adresse einstellen", My.Resources.LinienBearbeiten_32x32, My.Resources.LinienBearbeiten_32x32, AddressOf BtnLinien)
+                oGrp.AddButton("BtnLinienRemove", "Löschen", "Linie löschen", My.Resources.LinienLoeschen_32x32, My.Resources.LinienLoeschen_32x32, AddressOf BtnLinienRemove)
+                oGrp.AddButton("BtnLinienAutoInstall", "AutoInstall", "Alle Linien automatisch installieren", My.Resources.LinienAutoInstall_32x32, My.Resources.LinienAutoInstall_32x32, AddressOf btnLinienAutoInstall)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -153,32 +154,49 @@ Public Class wb_Linien_Main
         LoadDockBarConfig()
     End Sub
 
-    Private Sub BtnLinien()
+    Private Sub BtnLinienNew()
+        LinienListe.AddItems("", "Neuer Eintrag")
+        LinienListe.SelectLastItem()
+        DetailInfo()
+        BtnLinien()
+    End Sub
 
+    Private Sub BtnLinien()
+        LinienDetails.tBezeichnung.Focus()
+    End Sub
+
+    Private Sub BtnLinienRemove()
+        LinienListe.RemoveItem()
+    End Sub
+
+    Private Sub btnLinienAutoInstall()
+        LinienListe.AddFromDataBase()
     End Sub
 
     Private Sub DetailInfo() Handles LinienListe.ItemSelected
-        LinenDetails.aktBezeichnung = LinienListe.aktBezeichnung
-        LinenDetails.aktAdresse = LinienListe.aktAdresse
+        LinienDetails.aktBezeichnung = LinienListe.aktBezeichnung
+        LinienDetails.aktAdresse = LinienListe.aktAdresse
     End Sub
 
-    Private Sub LinienDetailInfoHasChanged() Handles LinenDetails.DetailInfoHasChanged
-        LinienListe.aktBezeichnung = LinenDetails.aktBezeichnung
-        LinienListe.aktAdresse = LinenDetails.aktAdresse
+    Private Sub LinienDetailInfoHasChanged() Handles LinienDetails.DetailInfoHasChanged
+        LinienListe.aktBezeichnung = LinienDetails.aktBezeichnung
+        LinienListe.aktAdresse = LinienDetails.aktAdresse
     End Sub
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("C:\Users\will.WINBACK\AppData\Roaming\WinBack\test.xml")
+        DockPanel.SaveAsXml(My.Settings.OrgaSoftDockPanelPath & "wbLinien.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("C:\Users\will.WINBACK\AppData\Roaming\WinBack\test.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(My.Settings.OrgaSoftDockPanelPath & "wbLinien.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 
-        LinenDetails.Show(DockPanel, DockState.DockTop)
+        LinienDetails.Show(DockPanel, DockState.DockTop)
+        LinienDetails.CloseButtonVisible = False
         LinienListe.Show(DockPanel, DockState.DockLeft)
+        LinienListe.CloseButtonVisible = False
     End Sub
 
     Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
@@ -186,7 +204,7 @@ Public Class wb_Linien_Main
             Case "LinienListe"
                 Return LinienListe
             Case "LinenDetails"
-                Return LinenDetails
+                Return LinienDetails
             Case Else
                 Return Nothing
         End Select

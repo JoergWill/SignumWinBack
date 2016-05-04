@@ -11,7 +11,7 @@
 'Default: Pfad/ProgrammName.ini
 '---------------------------------------------------------
 
-Namespace WinBack
+Namespace OrgasoftMain
     Public Class wb_Konfig
         ' Private Variablen
         Private Pfad As String

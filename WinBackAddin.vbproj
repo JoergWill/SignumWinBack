@@ -28,6 +28,7 @@
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -82,7 +83,8 @@
     <CodeAnalysisRuleSet>..\..\..\..\SharedBinaries\Basic Correctness and Design Guideline.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data">
+    <Reference Include="MySql.Data, Version=5.2.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts, Version=2.0.5651.19541, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
@@ -109,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
+    <Import Include="MySql.Data.MySqlClient" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
@@ -150,6 +153,7 @@
     <Compile Include="wb_01_Forms\wb_Linien_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_Klassen\wb_Sql.vb" />
     <Compile Include="wb_Klassen\wb_Konfig.vb" />
     <Compile Include="wb_MySqlConnect.vb" />
     <Compile Include="Settings.vb" />
@@ -300,7 +304,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).*" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).*" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
+xcopy "$(TargetDir)*.dll" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

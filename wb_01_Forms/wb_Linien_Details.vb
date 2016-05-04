@@ -25,4 +25,5 @@ Public Class wb_Linien_Details
     Private Sub Panel_Leave(sender As Object, e As EventArgs) Handles Panel.Leave
         RaiseEvent DetailInfoHasChanged()
     End Sub
+
 End Class

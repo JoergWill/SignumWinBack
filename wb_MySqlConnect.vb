@@ -2,7 +2,7 @@
 Imports MySql.Data
 Imports MySql.Data.MySqlClient
 '...
-Namespace WinBack
+Namespace OrgasoftMain
     Public Class MySqlConnect
 
         Private Connected As Boolean

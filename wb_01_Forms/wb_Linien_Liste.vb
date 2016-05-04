@@ -1,5 +1,6 @@
 ﻿Imports System.Windows.Forms
-Imports Signum.OrgaSoft.AddIn.WinBack.wb_Konfig
+Imports MySql.Data.MySqlClient
+Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Linien_Liste
@@ -35,9 +36,19 @@ Public Class wb_Linien_Liste
         End Get
     End Property
 
+    Public ReadOnly Property countItems As Integer
+        Get
+            Return VNCview.Items.Count
+        End Get
+    End Property
+
     Private Sub wb_Linien_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        LoadItems()
+    End Sub
+
+    Public Sub LoadItems()
         ' Auslesen aus .ini-Datei
-        Dim IniFile As New Signum.OrgaSoft.AddIn.WinBack.wb_Konfig
+        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
         Dim i As Integer = 0
         Dim IPAdresse, IPComment As String
         Dim ListItem As ListViewItem
@@ -55,7 +66,7 @@ Public Class wb_Linien_Liste
     End Sub
 
     Public Sub SaveItems()
-        Dim IniFile As New Signum.OrgaSoft.AddIn.WinBack.wb_Konfig
+        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
         Dim i As Integer
         For i = 1 To VNCview.Items.Count
             IniFile.WriteString("VNC", "IP" & i.ToString, VNCview.Items(i - 1).Name)
@@ -64,6 +75,53 @@ Public Class wb_Linien_Liste
             End If
             IniFile.WriteString("VNC", "Comment" & i.ToString, VNCview.Items(i - 1).Text)
         Next
+        ' Letzter Eintrag ist leer
+        IniFile.WriteString("VNC", "IP" & i.ToString, "")
+        IniFile.WriteString("VNC", "Comment" & i.ToString, "")
+    End Sub
+
+    Public Sub AddItems(key As String, Text As String)
+        Dim ListItem As ListViewItem
+
+        With VNCview
+            ListItem = .Items.Add(key, Text, 0)
+            .SelectedItems.Clear()
+            '.Select()
+            '.Items(.Items.Count - 1).Selected = True
+        End With
+    End Sub
+    Public Sub SelectLastItem()
+        VNCview.Items(VNCview.Items.Count - 1).Selected = True
+    End Sub
+    Public Sub AddFromDataBase()
+        Dim IPLinie, IPAdresse, IPComment As String
+
+        'alle Einträge löschen
+        VNCview.Clear()
+
+        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        If winback.sqlSelect("SELECT * FROM Linien") Then
+            While winback.Read
+                IPLinie = (winback.iField("L_Nr") + 10).ToString
+                IPAdresse = My.Settings.MySQLServerIP & ":" & IPLinie
+                IPComment = winback.sField("L_Bezeichnung")
+                AddItems(IPAdresse, IPComment)
+            End While
+        End If
+        winback.Close()
+
+    End Sub
+
+    Public Sub RemoveItem()
+        Dim i As Integer = 0
+        With VNCview
+            While i < .Items.Count
+                If .Items(i).Selected Then
+                    .Items(i).Remove()
+                End If
+                i += 1
+            End While
+        End With
     End Sub
 
     Public Event ItemSelected()
