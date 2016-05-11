@@ -114,6 +114,10 @@ Public Class wb_Main_Menu
         'Gruppe Produktions-Planung
         oGrpPlanung.AddButton("btnProdPlan", "WinBack Produktions-Planung", "", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf ShowProduktionsPlanungForm)
 
+        ' Erweitert ein bestehendes RibbonTab um einen Button (Administration/Mitarbeiter)
+        Dim oTabs = oMenuService.GetTabs
+        Dim oGrps = oTabs(0).GetGroups
+        oGrps(3).AddButton("MenuExtensionBtnUser", "WinBack-Mitarbeiter", "Verwaltung der Mitarbeiter-Rechte in WinBack", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
     End Sub
 
     '---------------------------------------------------------
@@ -136,15 +140,15 @@ Public Class wb_Main_Menu
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainRohstoffe_16x16)
     End Sub
-    'Rohstoff
+    'Rezepte
     Private Sub ShowRezeptForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainRezept_16x16)
     End Sub
-    'User
+    'Mitarbeiter
     Private Sub ShowUserForm(sender As Object, e As EventArgs)
         CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainUser_16x16)
+        xForm = oViewProvider.OpenForm(New wb_User_Main(ServiceProvider), My.Resources.MainUser_16x16)
     End Sub
     'Stammdaten
     Private Sub ShowStammDatenForm(sender As Object, e As EventArgs)

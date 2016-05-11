@@ -12,9 +12,7 @@
 Imports System.Windows.Forms
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
-Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
 Imports WeifenLuo.WinFormsUI.Docking
-Imports MySql
 
 
 Public Class wb_Linien_Main
