@@ -90,6 +90,9 @@ Public Class wb_User_Main
 
     Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
     Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
+        'alle erzeugten Fenster wieder schliessen !!!
+        UserListe.Close()
+        'Anzeige sichern
         SaveDockBarConfig()
     End Sub
 

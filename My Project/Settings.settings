@@ -32,5 +32,8 @@
     <Setting Name="OrgaSoftDockPanelPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\ProgramData\OrgaSoft\Temp\01\</Value>
     </Setting>
+    <Setting Name="DataGridAlternateRowColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">LightGray</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

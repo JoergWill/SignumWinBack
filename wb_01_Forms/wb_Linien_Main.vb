@@ -76,9 +76,14 @@ Public Class wb_Linien_Main
 
     Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
     Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
+        'Anzeige sichern
         SaveDockBarConfig()
+        'letzte Änderungen sichern
         LinienDetailInfoHasChanged()
         LinienListe.SaveItems()
+        'alle erzeugten Fenster wieder schliessen
+        LinienDetails.Close()
+        LinienListe.Close()
     End Sub
 
     ''' <summary>

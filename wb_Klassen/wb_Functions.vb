@@ -22,9 +22,10 @@ Public Class wb_Functions
     'gegeben (KeyDown-Handler = False)
     '---------------------------------------------------------
     Public Shared Function KeyToString(KeyCode As Char, ByRef s As String) As Boolean
+        Debug.Print("ASCII-Code " & Convert.ToUInt16(KeyCode).ToString)
         Select Case Convert.ToUInt16(KeyCode)
                 'normale Buchstaben
-            Case 32, 33, 35 To 43, 45, 47, 64 To 93, 97 To 122, 192 To 223
+            Case 32, 33, 35 To 43, 45, 47, 64 To 93, 97 To 122, 129 To 154, 192 To 223, 228, 246, 252
                 s = s + KeyCode.ToString
                 Return True
                 'Ziffern 0 bis 9

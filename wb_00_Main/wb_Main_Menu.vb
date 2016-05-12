@@ -243,6 +243,9 @@ Public Class wb_Main_Menu
                                     & "user id=" & My.Settings.MySQLUser & ";" _
                                     & "password=" & My.Settings.MySQLPass & ";" _
                                     & "database=" & My.Settings.MySQLWbDaten & ";"
+
+        'Hintergrund-Farbe jeder zweiten Zeile des DataViewGrid (alternative RowSetting)
+        My.Settings.DataGridAlternateRowColor = System.Drawing.Color.LightGray
     End Sub
 
 End Class

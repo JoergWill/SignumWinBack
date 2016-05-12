@@ -127,6 +127,7 @@ Namespace OrgasoftMain
         End Function
 
         Public Function ReadInt(ByVal Sektion As String, ByVal Schlüssel As String, Optional ByVal Standardwert As Integer = 0) As Integer
+            Debug.Print("wb_Konfig.ReadInt" & Sektion & "," & Schlüssel)
             Return CInt(Val(ReadString(Sektion, Schlüssel, Standardwert.ToString)))
         End Function
 
@@ -166,6 +167,7 @@ Namespace OrgasoftMain
         End Sub
 
         Public Sub WriteInt(ByVal Sektion As String, ByVal Schlüssel As String, ByVal Wert As Integer)
+            Debug.Print("wb_Konfig.WriteInt" & Sektion & "," & Schlüssel & "," & Wert.ToString)
             WriteString(Sektion, Schlüssel, Wert.ToString)
         End Sub
 

@@ -173,6 +173,18 @@ Namespace My
                 Me("OrgaSoftDockPanelPath") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("LightGray")>  _
+        Public Property DataGridAlternateRowColor() As Global.System.Drawing.Color
+            Get
+                Return CType(Me("DataGridAlternateRowColor"),Global.System.Drawing.Color)
+            End Get
+            Set
+                Me("DataGridAlternateRowColor") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
