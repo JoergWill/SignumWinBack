@@ -4,6 +4,31 @@ Imports Signum.OrgaSoft.AddIn.wb_Sql
 Imports System.Data.SqlClient
 Imports MySql.Data.MySqlClient
 
+'---------------------------------------------------------
+'19.05.2016/ V0.9/JW            :Neuanlage
+'Bearbeitet von                 :Will
+'
+'Änderungen:
+'---------------------------------------------------------
+'Beschreibung:
+'Ableitung der Klasse DataGridView.
+'Enthält die Verbindung von DataGridView zu
+'wahlweise MySQl(winback) oder MSSQL(OrgasoftMain)
+'
+'LoadData(sql) lädt die entsprechenden Daten ins Grid
+'Über Filter kann eine zusätzliche Filter-Eigenschaft
+'angeben werden.
+'Nach tDataChangedTime wird der Event HasChanged ausgelöst,
+'damit kann das aufrufende Programm die entsprechenden
+'Felder abrufen und anzeigen. (Funktion Field)
+'
+'Änderungen über Field werden nach Aufruf der Update-Funtkion
+'in die Datenbank geschrieben.
+'Dazu muss der MySQL-Data-Client der MySQL-Version angepasst
+'sein, sonst funktioniert die Update-Anweisung (automatisch
+'generiert) nicht.
+'---------------------------------------------------------
+
 Public Class wb_DataGridView
     Inherits Windows.Forms.DataGridView
 
@@ -30,6 +55,17 @@ Public Class wb_DataGridView
     Dim mContextMenu As New ContextMenuStrip
     Dim mMenuItem As ToolStripMenuItem
     Dim WithEvents tDataHasChanged As New Timer
+
+    '---------------------------------------------------------
+    '19.05.2016/ V0.9/JW            :Neuanlage
+    'Bearbeitet von                 :Will
+    '
+    'Änderungen:
+    '---------------------------------------------------------
+    'Beschreibung:
+    'Läd die Daten aus der Datenbank in das DataGridView.
+    'Die Spaltenüberschriften werden aus ColNames (Public)
+    'in das DataView und in das Pop-Up-Menu eingetragen
 
     Sub LoadData(sSql As String, sGridName As String, db As dbType)
         mContextMenu.SuspendLayout()
@@ -124,12 +160,15 @@ Public Class wb_DataGridView
         mContextMenu.ResumeLayout(False)
     End Sub
 
+    'x Sekunden nach Änderung des Datensatz-Zeigers wird der
+    'Event HasChanged ausgelöst
     WriteOnly Property tDataChangedTime As Integer
         Set(value As Integer)
             _tDataChangedTime = value
         End Set
     End Property
 
+    'zusätzliche Filter-Bedingung (SQL)
     WriteOnly Property Filter As String
         Set(value As String)
             _Filter = value
@@ -138,6 +177,7 @@ Public Class wb_DataGridView
         End Set
     End Property
 
+    'Update Datenbank nach Änderung Field
     Public Sub updateDataBase(db As dbType)
         'damit die Update-Routine richtig funktioniert 
         'muss vorher die Zeile im DataGrid gewechselt worden sein !!
@@ -152,6 +192,7 @@ Public Class wb_DataGridView
         End Select
     End Sub
 
+    'Datenbank-Feld lesen/ändern
     Property Field(FieldName As String) As String
         Set(value As String)
             Me.CurrentRow.Cells(FieldName).Value = value
@@ -165,6 +206,7 @@ Public Class wb_DataGridView
         End Get
     End Property
 
+    'Popup-Menu Spalten ein/ausblenden
     Private Sub mContextMenu_Click(ByVal sender As Object, ByVal e As EventArgs)
         'ausgewählte Spalte steht in MenuItem.Tag
         Dim iColumn As Integer
@@ -175,6 +217,7 @@ Public Class wb_DataGridView
         End If
     End Sub
 
+    'Spaltenbreiten in winback.ini schreiben
     Public Sub SaveToDisk(sGridName As String)
         Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
         Dim sColumn As String
@@ -189,6 +232,7 @@ Public Class wb_DataGridView
         Next
     End Sub
 
+    'Spaltenbreiten aus winback.ini lesen
     Private Sub LoadFromDisk(sGridName As String)
         Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
         Dim w, i As Integer
@@ -207,27 +251,24 @@ Public Class wb_DataGridView
         Next
     End Sub
 
+    'Datensatz-Zeiger wurde geändert. Verbundene Text-Felder auslesen
+    'und anzeigen
     Public Event HasChanged As EventHandler
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tDataHasChanged.Tick
         tDataHasChanged.Enabled = False
         RaiseEvent HasChanged(Me, EventArgs.Empty)
     End Sub
 
+    'Start Timer nach Änderung Datensatz-Zeiger
     Private Overloads Sub DataGridView_CurrentCellChanged(sender As Object, e As EventArgs) Handles MyBase.CurrentCellChanged
         'Reset Timer
         tDataHasChanged.Enabled = False
-        'Try
-        '    If DtaTable.DataSet.HasChanges Then
-        '        Debug.Print("GotChanges")
-        '    End If
-        'Catch ex As Exception
-        '    MsgBox(ex.ToString)
-        'End Try
-
         'Start Timer
         tDataHasChanged.Enabled = True
     End Sub
 
+    'Key-Press im Grid - Filter-Kriterium in Header anzeigen
+    'Filter-String bilden und anwenden
     Public Overloads Sub DataGridView_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MyBase.KeyPress
         Dim sRowFilter As String
         'Wenn das eingegebene Zeichen einem Suchstring zugeordnet werden kann, wird der Tastendruck nicht mehr weitergegeben
@@ -252,6 +293,8 @@ Public Class wb_DataGridView
         End If
     End Sub
 
+    'Maus-Klick auf Header-Zeile 
+    'Sortierkriterium umschalten
     Private Overloads Sub DataGridView_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MyBase.ColumnHeaderMouseClick
         If e.ColumnIndex <> iSort Then
             'alten Header wieder restaurieren
