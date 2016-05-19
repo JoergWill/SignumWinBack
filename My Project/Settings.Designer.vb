@@ -185,6 +185,18 @@ Namespace My
                 Me("DataGridAlternateRowColor") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=OrgasoftMain; Integrated Security=True")>  _
+        Public Property MsSQLConWinBack() As String
+            Get
+                Return CType(Me("MsSQLConWinBack"),String)
+            End Get
+            Set
+                Me("MsSQLConWinBack") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

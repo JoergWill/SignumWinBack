@@ -83,9 +83,9 @@
     <CodeAnalysisRuleSet>..\..\..\..\SharedBinaries\Basic Correctness and Design Guideline.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data, Version=5.2.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySql.Data, Version=5.0.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\MySql.Data.dll</HintPath>
+      <HintPath>dll\MySql V1.0.10.1\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts, Version=2.0.5651.19541, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -111,7 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
-    <Import Include="MySql.Data.MySqlClient" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
@@ -123,6 +122,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
     <Compile Include="wb_01_Forms\wb_User_Liste.Designer.vb">
       <DependentUpon>wb_User_Liste.vb</DependentUpon>
     </Compile>
@@ -165,12 +165,12 @@
     <Compile Include="wb_01_Forms\wb_User_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_Klassen\wb_DataGridView.vb">
+    <Compile Include="wb_00_Klassen\wb_DataGridView.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_Klassen\wb_Functions.vb" />
-    <Compile Include="wb_Klassen\wb_Sql.vb" />
-    <Compile Include="wb_Klassen\wb_Konfig.vb" />
+    <Compile Include="wb_00_Klassen\wb_Functions.vb" />
+    <Compile Include="wb_00_Klassen\wb_Sql.vb" />
+    <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
     <Compile Include="Settings.vb" />
     <Compile Include="wb_01_Forms\wb_Linien_Main.Designer.vb">
       <DependentUpon>wb_Linien_Main.vb</DependentUpon>

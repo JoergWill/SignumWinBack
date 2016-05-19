@@ -1,4 +1,5 @@
 ﻿Imports System.Data.SqlClient
+Imports MySql.Data.MySqlClient
 '---------------------------------------------------------
 '04.05.2016/ V0.9/JW            :Neuanlage
 'Bearbeitet von                 :Will
@@ -153,6 +154,8 @@ Public Class wb_Sql
                     msCommand = New SqlCommand(sql, msCon)
                     msCommand.CommandText = sql
                     Return msCommand.ExecuteNonQuery()
+                Case Else
+                    Return -1
             End Select
         Catch ex As Exception
             MsgBox("Fehler bei SQL-Kommando: " & ex.Message.ToString)
