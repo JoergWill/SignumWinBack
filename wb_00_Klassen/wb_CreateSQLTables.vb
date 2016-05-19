@@ -10,14 +10,37 @@
 
 Public Class wb_CreateSQLTables
 
+    Public Shared Function DataBaseWinBack(ConString As String) As Boolean
+        'Datenbank-Verbindung öffnen - SQL
+        Dim OrgasoftMain As New wb_Sql(ConString, wb_Sql.dbType.msSql)
+
+        'Datenbank WinBack erstellen
+        OrgasoftMain.sqlCommand("IF EXISTS(SELECT * FROM sys.databases WHERE name='WinBack') " &
+                                "DROP DATABASE WinBack")
+        OrgasoftMain.sqlCommand("CREATE DATABASE WinBack ON PRIMARY " &
+                                "(NAME = WinBack, " &
+                                "FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL12.SIGNUM\MSSQL\DATA\WinBack.mdf', " &
+                                "SIZE = 5MB, MAXSIZE = 100MB, FILEGROWTH = 10%) " &
+                                "LOG ON (NAME = WinBack_Log, " &
+                                "FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL12.SIGNUM\MSSQL\DATA\WinBackLog.ldf', " &
+                                "SIZE = 1MB, MAXSIZE = 5MB, FILEGROWTH = 10%)")
+        Return True
+        OrgasoftMain.Close()
+        OrgasoftMain = Nothing
+        'Catch
+        'Return False
+        'End Try
+
+    End Function
+
     Public Shared Function Komponenten(ConString As String) As Boolean
         Try
             'Datenbank-Verbindung öffnen - SQL
             Dim OrgasoftMain As New wb_Sql(ConString, wb_Sql.dbType.msSql)
 
             'Tabelle Komponenten erstellen
-            OrgasoftMain.sqlCommand("IF OBJECT_ID('wb_Komponenten', 'U') IS NOT NULL DROP TABLE wb_Komponenten;")
-            OrgasoftMain.sqlCommand("CREATE TABLE wb_Komponenten (" &
+            OrgasoftMain.sqlCommand("IF OBJECT_ID('Komponenten', 'U') IS NOT NULL DROP TABLE Komponenten;")
+            OrgasoftMain.sqlCommand("CREATE TABLE Komponenten (" &
                                 "KO_Nr INT NOT NULL DEFAULT 0," &
                                 "KO_Type TINYINT Not NULL DEFAULT 0," &
                                 "KO_Bezeichnung VARCHAR(60) NULL Default NULL," &
@@ -51,7 +74,7 @@ Public Class wb_CreateSQLTables
                                 "KA_PreisEinheit SMALLINT NULL DEFAULT 0," &
                                 "KA_Grp1 INT NULL DEFAULT 0," &
                                 "KA_Grp2 INT NULL DEFAULT 0," &
-                                "KA_Timestammp TIMESTAMP Not NULL," &
+                                "KA_Timestamp TIMESTAMP Not NULL," &
                                 "PRIMARY KEY (KO_Nr));")
 
             Return True

@@ -1,5 +1,6 @@
 ﻿Imports Signum.OrgaSoft.AddIn
 Imports MySql.Data.MySqlClient
+Imports Signum.OrgaSoft.AddIn.wb_CreateSQLTables
 
 <TestClass()>
 Public Class UnitTest_wb_Sql
@@ -44,7 +45,6 @@ Public Class UnitTest_wb_Sql
     <TestMethod()>
     Public Sub TestMySQL()
         Dim iInt, sString As String
-
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback As New wb_Sql("server=172.16.17.231;user id=herbst;password=herbst;database=winback;", wb_Sql.dbType.mySql)
 
@@ -85,6 +85,11 @@ Public Class UnitTest_wb_Sql
     <TestMethod()>
     Public Sub TestmsSQL()
         Dim iInt, sString As String
+
+        'Datenbank WinBack erstellen - MS-SQL
+        DataBaseWinBack("Data Source=127.0.0.1\SIGNUM; Database=OrgaSoftMain; Integrated Security=True")
+        'Tabelle Komponenten erstellen
+        Komponenten("Data Source=127.0.0.1\SIGNUM; Database=WinBack; Integrated Security=True")
 
         'Datenbank-Verbindung öffnen - MySQL
         Dim OrgasoftMain As New wb_Sql("Data Source=127.0.0.1\SIGNUM; Database=WinBack; Integrated Security=True", wb_Sql.dbType.msSql)
