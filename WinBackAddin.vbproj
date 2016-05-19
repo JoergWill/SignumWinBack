@@ -332,7 +332,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).*" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
+    <PostBuildEvent>mkdir "C:\ProgramData\OrgaSoft\AddIn"
+xcopy "$(TargetDir)$(TargetName).*" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
 xcopy "$(TargetDir)*.dll" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

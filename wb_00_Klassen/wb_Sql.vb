@@ -134,6 +134,8 @@ Public Class wb_Sql
                     msCommand = New SqlCommand(sql, msCon)
                     msRead = msCommand.ExecuteReader()
                     Return True
+                Case Else
+                    Return False
             End Select
         Catch ex As Exception
             MsgBox("Problem loading data: " & ex.Message.ToString)
