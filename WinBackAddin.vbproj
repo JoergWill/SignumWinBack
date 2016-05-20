@@ -246,6 +246,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Dokumentation\Projektplan.docx" />
     <None Include="Resources\MainRezept_32x32.png" />
     <None Include="Resources\MainStatistikRezepte_32x32.png" />
   </ItemGroup>
