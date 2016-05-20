@@ -1,10 +1,10 @@
 ﻿Imports System.Windows.Forms
-Imports MySql.Data.MySqlClient
-Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Linien_Liste
     Inherits DockContent
+
+    Private WithEvents LinienDetails As wb_Linien_Details
 
     Public Property aktBezeichnung As String
         Set(value As String)
@@ -63,6 +63,7 @@ Public Class wb_Linien_Liste
                 Exit Do
             End If
         Loop
+        IniFile = Nothing
     End Sub
 
     Public Sub SaveItems()
@@ -78,6 +79,7 @@ Public Class wb_Linien_Liste
         ' Letzter Eintrag ist leer
         IniFile.WriteString("VNC", "IP" & i.ToString, "")
         IniFile.WriteString("VNC", "Comment" & i.ToString, "")
+        IniFile = Nothing
     End Sub
 
     Public Sub AddItems(key As String, Text As String)
@@ -124,11 +126,16 @@ Public Class wb_Linien_Liste
         End With
     End Sub
 
-    Public Event ItemSelected()
+    Public Shared Event ItemSelected()
     Private Sub VNCview_Click(sender As Object, e As EventArgs) Handles VNCview.Click
         If VNCviewIsSelected() Then
             RaiseEvent ItemSelected()
         End If
+    End Sub
+
+    Public Sub LinienDetailInfoHasChanged() Handles LinienDetails.DetailInfoHasChanged
+        aktBezeichnung = LinienDetails.aktBezeichnung
+        aktAdresse = LinienDetails.aktAdresse
     End Sub
 
     Private Sub VNCview_DoubleClick(sender As Object, e As EventArgs) Handles VNCview.DoubleClick

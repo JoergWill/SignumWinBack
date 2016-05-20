@@ -3,6 +3,8 @@
 Public Class wb_Linien_Details
     Inherits DockContent
 
+    Private WithEvents LinienListe As wb_Linien_Liste
+
     Public Property aktBezeichnung As String
         Set(value As String)
             tBezeichnung.Text = value
@@ -21,9 +23,14 @@ Public Class wb_Linien_Details
         End Get
     End Property
 
-    Public Event DetailInfoHasChanged()
+    Public Shared Event DetailInfoHasChanged()
     Private Sub Panel_Leave(sender As Object, e As EventArgs) Handles Panel.Leave
         RaiseEvent DetailInfoHasChanged()
+    End Sub
+
+    Public Sub DetailInfo() Handles LinienListe.ItemSelected
+        aktBezeichnung = LinienListe.aktBezeichnung
+        aktAdresse = LinienListe.aktAdresse
     End Sub
 
 End Class

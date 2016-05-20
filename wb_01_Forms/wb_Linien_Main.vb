@@ -18,8 +18,8 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class wb_Linien_Main
     Implements IExternalFormUserControl
 
-    Private WithEvents LinienListe As New wb_Linien_Liste
-    Private WithEvents LinienDetails As New wb_Linien_Details
+    Private LinienListe As New wb_Linien_Liste
+    Private LinienDetails As New wb_Linien_Details
 
     Private _ServiceProvider As Common.IOrgasoftServiceProvider
     Private _MenuService As Common.IMenuService
@@ -69,7 +69,7 @@ Public Class wb_Linien_Main
     ''' <remarks></remarks>
     Public Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
         SaveDockBarConfig()
-        LinienDetailInfoHasChanged()
+        LinienListe.LinienDetailInfoHasChanged()
         LinienListe.SaveItems()
         Return False
     End Function
@@ -79,7 +79,7 @@ Public Class wb_Linien_Main
         'Anzeige sichern
         SaveDockBarConfig()
         'letzte Änderungen sichern
-        LinienDetailInfoHasChanged()
+        LinienListe.LinienDetailInfoHasChanged()
         LinienListe.SaveItems()
         'alle erzeugten Fenster wieder schliessen
         LinienDetails.Close()
@@ -160,7 +160,7 @@ Public Class wb_Linien_Main
     Private Sub BtnLinienNew()
         LinienListe.AddItems("", "Neuer Eintrag")
         LinienListe.SelectLastItem()
-        DetailInfo()
+        LinienDetails.DetailInfo()
         BtnLinien()
     End Sub
 
@@ -176,15 +176,15 @@ Public Class wb_Linien_Main
         LinienListe.AddFromDataBase()
     End Sub
 
-    Private Sub DetailInfo() Handles LinienListe.ItemSelected
-        LinienDetails.aktBezeichnung = LinienListe.aktBezeichnung
-        LinienDetails.aktAdresse = LinienListe.aktAdresse
-    End Sub
+    'Private Sub DetailInfo() Handles LinienListe.ItemSelected
+    '    LinienDetails.aktBezeichnung = LinienListe.aktBezeichnung
+    '    LinienDetails.aktAdresse = LinienListe.aktAdresse
+    'End Sub
 
-    Private Sub LinienDetailInfoHasChanged() Handles LinienDetails.DetailInfoHasChanged
-        LinienListe.aktBezeichnung = LinienDetails.aktBezeichnung
-        LinienListe.aktAdresse = LinienDetails.aktAdresse
-    End Sub
+    'Private Sub LinienDetailInfoHasChanged() Handles LinienDetails.DetailInfoHasChanged
+    '    LinienListe.aktBezeichnung = LinienDetails.aktBezeichnung
+    '    LinienListe.aktAdresse = LinienDetails.aktAdresse
+    'End Sub
 
     Private Sub SaveDockBarConfig()
         DockPanel.SaveAsXml(My.Settings.OrgaSoftDockPanelPath & "wbLinien.xml")
