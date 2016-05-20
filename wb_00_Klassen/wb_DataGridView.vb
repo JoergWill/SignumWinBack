@@ -67,6 +67,7 @@ Public Class wb_DataGridView
     'Die Spaltenüberschriften werden aus ColNames (Public)
     'in das DataView und in das Pop-Up-Menu eingetragen
 
+    <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:SQL-Abfragen auf Sicherheitsrisiken überprüfen")>
     Sub LoadData(sSql As String, sGridName As String, db As dbType)
         mContextMenu.SuspendLayout()
         'x mSek nachdem sich der Datensatz geändert hat, wird der aktuelle Datensatz im 
