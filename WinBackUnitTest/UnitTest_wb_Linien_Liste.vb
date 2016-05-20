@@ -44,7 +44,7 @@ Public Class UnitTest_wb_Linien_Liste
 #End Region
 
     <TestMethod()>
-    Public Sub Test()
+    Public Sub Test_wb_Linien_Liste()
         Dim LinienListe As New wb_Linien_Liste
 
         'Die neu erstellte Liste sollte leer sein

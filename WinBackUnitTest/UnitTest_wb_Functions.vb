@@ -5,8 +5,7 @@ Imports Signum.OrgaSoft.AddIn.wb_Functions
 
 <TestClass()> Public Class UnitTest_wb_Functions
 
-    <TestMethod()> Public Sub TestMethod1()
-        Dim e As KeyEventArgs
+    <TestMethod()> Public Sub Test_wb_Functions()
         Dim s As String = ""
 
         Assert.IsTrue(KeyToString("A", s))

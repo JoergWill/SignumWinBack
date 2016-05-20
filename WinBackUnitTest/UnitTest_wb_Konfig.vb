@@ -6,7 +6,7 @@ Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
 <TestClass()> Public Class UnitTest_wb_Konfig
 
     <TestMethod()>
-    Public Sub Test()
+    Public Sub Test_wb_Konfig()
         ' Test Ini-File lesen/schreiben
         Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
 
