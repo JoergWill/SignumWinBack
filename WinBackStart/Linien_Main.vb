@@ -42,6 +42,7 @@ Public Class Linien_Main
     End Sub
 
     Private Sub Linien_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        WindowState = FormWindowState.Maximized
         LoadDockBarConfig()
     End Sub
 End Class

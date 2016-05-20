@@ -22,8 +22,6 @@ Partial Class WinBack
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
         Me.Ribbon1 = New System.Windows.Forms.Ribbon()
         Me.rbChargen = New System.Windows.Forms.RibbonTab()
         Me.RibbonPanel1 = New System.Windows.Forms.RibbonPanel()
@@ -33,24 +31,6 @@ Partial Class WinBack
         Me.rbUser = New System.Windows.Forms.RibbonTab()
         Me.rbLinien = New System.Windows.Forms.RibbonTab()
         Me.SuspendLayout()
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(12, 159)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(98, 37)
-        Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Artikel"
-        Me.Button1.UseVisualStyleBackColor = True
-        '
-        'Button2
-        '
-        Me.Button2.Location = New System.Drawing.Point(136, 159)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(98, 37)
-        Me.Button2.TabIndex = 1
-        Me.Button2.Text = "Linien"
-        Me.Button2.UseVisualStyleBackColor = True
         '
         'Ribbon1
         '
@@ -116,16 +96,12 @@ Partial Class WinBack
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(781, 496)
         Me.Controls.Add(Me.Ribbon1)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
+        Me.IsMdiContainer = True
         Me.Name = "WinBack"
         Me.Text = "WinBack - UI-Test"
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents Button1 As Button
-    Friend WithEvents Button2 As Button
     Friend WithEvents Ribbon1 As Ribbon
     Friend WithEvents rbChargen As RibbonTab
     Friend WithEvents RibbonPanel1 As RibbonPanel

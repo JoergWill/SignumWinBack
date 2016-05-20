@@ -105,7 +105,9 @@ Partial Class Artikel_Main
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(745, 601)
         Me.Controls.Add(Me.DockPanel)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "Artikel_Main"
+        Me.ShowInTaskbar = False
         Me.Text = "Artikel Main - WinBack UI-Test"
         Me.ResumeLayout(False)
 
