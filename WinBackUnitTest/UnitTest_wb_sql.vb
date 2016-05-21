@@ -46,7 +46,7 @@ Public Class UnitTest_wb_Sql
     Public Sub TestMySQL()
         Dim iInt, sString As String
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback As New wb_Sql("server=172.16.17.231;user id=herbst;password=herbst;database=winback;", wb_Sql.dbType.mySql)
+        Dim winback As New wb_Sql("server=172.16.17.208;user id=herbst;password=herbst;database=winback;", wb_Sql.dbType.mySql)
 
         'Tabelle Test erstellen
         winback.sqlCommand("DROP TABLE IF EXISTS Test;")

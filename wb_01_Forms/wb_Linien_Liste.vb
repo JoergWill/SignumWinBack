@@ -129,7 +129,8 @@ Public Class wb_Linien_Liste
     Public Shared Event ItemSelected()
     Private Sub VNCview_Click(sender As Object, e As EventArgs) Handles VNCview.Click
         If VNCviewIsSelected() Then
-            RaiseEvent ItemSelected()
+            'RaiseEvent ItemSelected()
+            wb_Linien.SpecialEvent(Me, "my typ", "my message")
         End If
     End Sub
 

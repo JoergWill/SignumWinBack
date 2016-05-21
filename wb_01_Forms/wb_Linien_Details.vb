@@ -5,6 +5,15 @@ Public Class wb_Linien_Details
 
     Private WithEvents LinienListe As wb_Linien_Liste
 
+    Dim gEvent As wb_Linien
+
+    Private Sub ChildForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        AddHandler gEvent.SpecialEventRaised, AddressOf SpecialEventFired
+    End Sub
+
+    Private Sub SpecialEventFired(ByVal sender As Object, ByVal typ As String, ByVal msg As String)
+        aktAdresse = (Now().ToLocalTime.ToString & " received " & typ & " / " & msg & vbCrLf)
+    End Sub
     Public Property aktBezeichnung As String
         Set(value As String)
             tBezeichnung.Text = value
