@@ -42,15 +42,14 @@ Partial Class Artikel_Main
         '
         'DockPanel
         '
-        Me.DockPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DockPanel.AutoSize = True
         Me.DockPanel.BackColor = System.Drawing.Color.Gainsboro
+        Me.DockPanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.DockPanel.DockBackColor = System.Drawing.Color.Gainsboro
         Me.DockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow
-        Me.DockPanel.Location = New System.Drawing.Point(12, 12)
+        Me.DockPanel.Location = New System.Drawing.Point(0, 0)
         Me.DockPanel.Name = "DockPanel"
-        Me.DockPanel.Size = New System.Drawing.Size(721, 577)
+        Me.DockPanel.Size = New System.Drawing.Size(745, 601)
         DockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight
         DockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight
         AutoHideStripSkin1.DockStripGradient = DockPanelGradient1
@@ -104,12 +103,18 @@ Partial Class Artikel_Main
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(745, 601)
+        Me.ControlBox = False
         Me.Controls.Add(Me.DockPanel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "Artikel_Main"
+        Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.Text = "Artikel Main - WinBack UI-Test"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 

@@ -1,4 +1,6 @@
 ﻿Public Class WinBack
+    Dim MdiArtikel As New Artikel_Main
+    Dim MdiLinien As New Linien_Main
 
     Private Sub rbActiveRibbonChanged(sender As Object, e As EventArgs) Handles rbArtikel.ActiveChanged, rbLinien.ActiveChanged
         If rbArtikel.Active Then
@@ -10,25 +12,31 @@
     End Sub
 
     Private Sub ArtikelMainShow()
-        Dim MdiArtikel As New Artikel_Main
+        If MdiArtikel Is Nothing Then
+            MdiArtikel = New Artikel_Main
+        End If
         If MdiArtikel.Visible Then
             MdiArtikel.BringToFront()
         Else
-            CloseAllForms()
-            MdiArtikel.MdiParent = Me
+            '           CloseAllForms()
             MdiArtikel.Show()
         End If
+        MdiArtikel.MdiParent = Me
+        MdiArtikel.Dock = DockStyle.Fill
     End Sub
 
     Private Sub LinienMainShow()
-        Dim MdiLinien As New Linien_Main
+        If MdiLinien Is Nothing Then
+            MdiLinien = New Linien_Main
+        End If
         If MdiLinien.Visible Then
             MdiLinien.BringToFront()
         Else
-            CloseAllForms()
-            MdiLinien.MdiParent = Me
+            '            CloseAllForms()
             MdiLinien.Show()
         End If
+        MdiLinien.MdiParent = Me
+        MdiLinien.Dock = DockStyle.Fill
     End Sub
 
     Private Sub CloseAllForms()
