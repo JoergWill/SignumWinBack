@@ -2,8 +2,8 @@
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class Linien_Main
-    Private WithEvents LinienListe As New wb_Linien_Liste
-    Private WithEvents LinienDetails As New wb_Linien_Details
+    Private LinienListe As New wb_Linien_Liste
+    Private LinienDetails As New wb_Linien_Details
 
     Private Sub SaveDockBarConfig()
         DockPanel.SaveAsXml("wbLinien.xml")

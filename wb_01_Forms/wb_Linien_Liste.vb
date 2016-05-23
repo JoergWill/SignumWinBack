@@ -4,8 +4,6 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class wb_Linien_Liste
     Inherits DockContent
 
-    Private WithEvents LinienDetails As wb_Linien_Details
-
     Public Property aktBezeichnung As String
         Set(value As String)
             If VNCviewIsSelected() Then
@@ -43,6 +41,7 @@ Public Class wb_Linien_Liste
     End Property
 
     Private Sub wb_Linien_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        AddHandler wb_Linien.eEdit_Leave, AddressOf LinienInfo
         LoadItems()
     End Sub
 
@@ -129,14 +128,17 @@ Public Class wb_Linien_Liste
     Public Shared Event ItemSelected()
     Private Sub VNCview_Click(sender As Object, e As EventArgs) Handles VNCview.Click
         If VNCviewIsSelected() Then
-            'RaiseEvent ItemSelected()
-            wb_Linien.SpecialEvent(Me, "my typ", "my message")
+            wb_Linien.aktAdresse = VNCview.SelectedItems.Item(0).Name
+            wb_Linien.aktBezeichnung = VNCview.SelectedItems.Item(0).Text
+            wb_Linien.Liste_Click(sender)
         End If
     End Sub
 
-    Public Sub LinienDetailInfoHasChanged() Handles LinienDetails.DetailInfoHasChanged
-        aktBezeichnung = LinienDetails.aktBezeichnung
-        aktAdresse = LinienDetails.aktAdresse
+    Public Sub LinienInfo()
+        If VNCviewIsSelected() Then
+            VNCview.SelectedItems.Item(0).Text = wb_Linien.aktBezeichnung
+            VNCview.SelectedItems.Item(0).Name = wb_Linien.aktAdresse
+        End If
     End Sub
 
     Private Sub VNCview_DoubleClick(sender As Object, e As EventArgs) Handles VNCview.DoubleClick

@@ -9,7 +9,6 @@
 'VNC-Viewer
 '---------------------------------------------------------
 
-Imports System.Windows.Forms
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
@@ -69,7 +68,7 @@ Public Class wb_Linien_Main
     ''' <remarks></remarks>
     Public Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
         SaveDockBarConfig()
-        LinienListe.LinienDetailInfoHasChanged()
+        LinienListe.LinienInfo()
         LinienListe.SaveItems()
         Return False
     End Function
@@ -79,7 +78,7 @@ Public Class wb_Linien_Main
         'Anzeige sichern
         SaveDockBarConfig()
         'letzte Änderungen sichern
-        LinienListe.LinienDetailInfoHasChanged()
+        LinienListe.LinienInfo()
         LinienListe.SaveItems()
         'alle erzeugten Fenster wieder schliessen
         LinienDetails.Close()
@@ -160,7 +159,7 @@ Public Class wb_Linien_Main
     Private Sub BtnLinienNew()
         LinienListe.AddItems("", "Neuer Eintrag")
         LinienListe.SelectLastItem()
-        LinienDetails.DetailInfo()
+        LinienDetails.DetailInfo(sender:=Nothing)
         BtnLinien()
     End Sub
 
