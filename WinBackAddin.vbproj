@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
+    <Compile Include="wb_00_Klassen\wb_GetKonfig.vb" />
     <Compile Include="wb_01_Forms\wb_Linien.vb" />
     <Compile Include="wb_01_Forms\wb_User_Liste.Designer.vb">
       <DependentUpon>wb_User_Liste.vb</DependentUpon>

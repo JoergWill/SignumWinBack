@@ -2,7 +2,7 @@
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class Linien_Main
-    Private LinienListe As New wb_Linien_Liste
+    Public LinienListe As New wb_Linien_Liste
     Private LinienDetails As New wb_Linien_Details
 
     Private Sub SaveDockBarConfig()
@@ -44,4 +44,23 @@ Public Class Linien_Main
     Private Sub Linien_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadDockBarConfig()
     End Sub
+
+    Public Sub BtnLinienNew()
+        LinienListe.AddItems("", "Neuer Eintrag")
+        LinienListe.SelectLastItem()
+        LinienDetails.DetailInfo()
+        'BtnLinien()
+    End Sub
+    Public Sub BtnLinien()
+        LinienDetails.DetailEdit()
+    End Sub
+
+    Public Sub BtnLinienRemove()
+        LinienListe.RemoveItem()
+    End Sub
+
+    Public Sub btnLinienAutoInstall()
+        LinienListe.AddFromDataBase()
+    End Sub
+
 End Class

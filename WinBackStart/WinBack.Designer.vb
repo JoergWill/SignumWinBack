@@ -24,6 +24,9 @@ Partial Class WinBack
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(WinBack))
         Me.Ribbon1 = New System.Windows.Forms.Ribbon()
+        Me.RibbonOrbMenuItem1 = New System.Windows.Forms.RibbonOrbMenuItem()
+        Me.RibbonOrbOptionButton1 = New System.Windows.Forms.RibbonOrbOptionButton()
+        Me.RibbonButton1 = New System.Windows.Forms.RibbonButton()
         Me.rbChargen = New System.Windows.Forms.RibbonTab()
         Me.RibbonPanel1 = New System.Windows.Forms.RibbonPanel()
         Me.rbArtikel = New System.Windows.Forms.RibbonTab()
@@ -31,9 +34,11 @@ Partial Class WinBack
         Me.rbRohstoffe = New System.Windows.Forms.RibbonTab()
         Me.rbUser = New System.Windows.Forms.RibbonTab()
         Me.rbLinien = New System.Windows.Forms.RibbonTab()
-        Me.RibbonButton1 = New System.Windows.Forms.RibbonButton()
-        Me.RibbonOrbOptionButton1 = New System.Windows.Forms.RibbonOrbOptionButton()
-        Me.RibbonOrbMenuItem1 = New System.Windows.Forms.RibbonOrbMenuItem()
+        Me.RibbonPanel2 = New System.Windows.Forms.RibbonPanel()
+        Me.rbLinienAdd = New System.Windows.Forms.RibbonButton()
+        Me.rbLinienEdit = New System.Windows.Forms.RibbonButton()
+        Me.rbLinienDel = New System.Windows.Forms.RibbonButton()
+        Me.rbLinienAuto = New System.Windows.Forms.RibbonButton()
         Me.SuspendLayout()
         '
         'Ribbon1
@@ -71,6 +76,26 @@ Partial Class WinBack
         Me.Ribbon1.Text = "Ribbon1"
         Me.Ribbon1.ThemeColor = System.Windows.Forms.RibbonTheme.Blue
         '
+        'RibbonOrbMenuItem1
+        '
+        Me.RibbonOrbMenuItem1.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
+        Me.RibbonOrbMenuItem1.Image = CType(resources.GetObject("RibbonOrbMenuItem1.Image"), System.Drawing.Image)
+        Me.RibbonOrbMenuItem1.SmallImage = CType(resources.GetObject("RibbonOrbMenuItem1.SmallImage"), System.Drawing.Image)
+        Me.RibbonOrbMenuItem1.Text = "Datei"
+        '
+        'RibbonOrbOptionButton1
+        '
+        Me.RibbonOrbOptionButton1.Image = CType(resources.GetObject("RibbonOrbOptionButton1.Image"), System.Drawing.Image)
+        Me.RibbonOrbOptionButton1.SmallImage = CType(resources.GetObject("RibbonOrbOptionButton1.SmallImage"), System.Drawing.Image)
+        Me.RibbonOrbOptionButton1.Text = "RibbonOrbOptionButton1"
+        '
+        'RibbonButton1
+        '
+        Me.RibbonButton1.Image = CType(resources.GetObject("RibbonButton1.Image"), System.Drawing.Image)
+        Me.RibbonButton1.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact
+        Me.RibbonButton1.SmallImage = CType(resources.GetObject("RibbonButton1.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton1.Text = "RibbonButton1"
+        '
         'rbChargen
         '
         Me.rbChargen.Panels.Add(Me.RibbonPanel1)
@@ -98,27 +123,41 @@ Partial Class WinBack
         '
         'rbLinien
         '
+        Me.rbLinien.Panels.Add(Me.RibbonPanel2)
         Me.rbLinien.Text = "Linien"
         '
-        'RibbonButton1
+        'RibbonPanel2
         '
-        Me.RibbonButton1.Image = CType(resources.GetObject("RibbonButton1.Image"), System.Drawing.Image)
-        Me.RibbonButton1.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact
-        Me.RibbonButton1.SmallImage = CType(resources.GetObject("RibbonButton1.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton1.Text = "RibbonButton1"
+        Me.RibbonPanel2.Items.Add(Me.rbLinienAdd)
+        Me.RibbonPanel2.Items.Add(Me.rbLinienEdit)
+        Me.RibbonPanel2.Items.Add(Me.rbLinienDel)
+        Me.RibbonPanel2.Items.Add(Me.rbLinienAuto)
+        Me.RibbonPanel2.Text = "Linien"
         '
-        'RibbonOrbOptionButton1
+        'rbLinienAdd
         '
-        Me.RibbonOrbOptionButton1.Image = CType(resources.GetObject("RibbonOrbOptionButton1.Image"), System.Drawing.Image)
-        Me.RibbonOrbOptionButton1.SmallImage = CType(resources.GetObject("RibbonOrbOptionButton1.SmallImage"), System.Drawing.Image)
-        Me.RibbonOrbOptionButton1.Text = "RibbonOrbOptionButton1"
+        Me.rbLinienAdd.Image = CType(resources.GetObject("rbLinienAdd.Image"), System.Drawing.Image)
+        Me.rbLinienAdd.SmallImage = CType(resources.GetObject("rbLinienAdd.SmallImage"), System.Drawing.Image)
+        Me.rbLinienAdd.Text = "Linie neu"
+        Me.rbLinienAdd.ToolTip = "Vnc-Viewer für eine neue Linie anlegen"
         '
-        'RibbonOrbMenuItem1
+        'rbLinienEdit
         '
-        Me.RibbonOrbMenuItem1.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
-        Me.RibbonOrbMenuItem1.Image = CType(resources.GetObject("RibbonOrbMenuItem1.Image"), System.Drawing.Image)
-        Me.RibbonOrbMenuItem1.SmallImage = CType(resources.GetObject("RibbonOrbMenuItem1.SmallImage"), System.Drawing.Image)
-        Me.RibbonOrbMenuItem1.Text = "Datei"
+        Me.rbLinienEdit.Image = CType(resources.GetObject("rbLinienEdit.Image"), System.Drawing.Image)
+        Me.rbLinienEdit.SmallImage = CType(resources.GetObject("rbLinienEdit.SmallImage"), System.Drawing.Image)
+        Me.rbLinienEdit.Text = "Linie bearbeiten"
+        '
+        'rbLinienDel
+        '
+        Me.rbLinienDel.Image = CType(resources.GetObject("rbLinienDel.Image"), System.Drawing.Image)
+        Me.rbLinienDel.SmallImage = CType(resources.GetObject("rbLinienDel.SmallImage"), System.Drawing.Image)
+        Me.rbLinienDel.Text = "Linie löschen"
+        '
+        'rbLinienAuto
+        '
+        Me.rbLinienAuto.Image = CType(resources.GetObject("rbLinienAuto.Image"), System.Drawing.Image)
+        Me.rbLinienAuto.SmallImage = CType(resources.GetObject("rbLinienAuto.SmallImage"), System.Drawing.Image)
+        Me.rbLinienAuto.Text = "Auto Install"
         '
         'WinBack
         '
@@ -143,4 +182,9 @@ Partial Class WinBack
     Friend WithEvents RibbonButton1 As RibbonButton
     Friend WithEvents RibbonOrbOptionButton1 As RibbonOrbOptionButton
     Friend WithEvents RibbonOrbMenuItem1 As RibbonOrbMenuItem
+    Friend WithEvents RibbonPanel2 As RibbonPanel
+    Friend WithEvents rbLinienAdd As RibbonButton
+    Friend WithEvents rbLinienEdit As RibbonButton
+    Friend WithEvents rbLinienDel As RibbonButton
+    Friend WithEvents rbLinienAuto As RibbonButton
 End Class

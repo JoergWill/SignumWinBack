@@ -61,9 +61,7 @@ Public Class UnitTest_wb_Linien_Liste
 
         'zwei neue Einträge einfügen
         LinienListe.AddItems("1", "Test")
-        LinienListe.aktBezeichnung = "Test1"
         LinienListe.AddItems("1", "Test")
-        LinienListe.aktBezeichnung = "Test2"
         Assert.AreEqual(2, LinienListe.countItems)
         LinienListe.SelectLastItem()
         LinienListe.RemoveItem()
@@ -74,7 +72,6 @@ Public Class UnitTest_wb_Linien_Liste
         Dim i As Integer
         For i = 1 To 7
             LinienListe.AddItems("1", "Test")
-            LinienListe.aktBezeichnung = "Test" & i.ToString
         Next
         Assert.AreEqual(8, LinienListe.countItems)
         For i = 1 To 8

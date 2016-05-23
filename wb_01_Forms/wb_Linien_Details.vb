@@ -14,9 +14,13 @@ Public Class wb_Linien_Details
         wb_Linien.Edit_Leave(sender)
     End Sub
 
-    Public Sub DetailInfo(sender)
+    Public Sub DetailInfo()
         tBezeichnung.Text = wb_Linien.aktBezeichnung
         tAdresse.Text = wb_Linien.aktAdresse
+    End Sub
+
+    Public Sub DetailEdit()
+        tBezeichnung.Focus()
     End Sub
 
 End Class

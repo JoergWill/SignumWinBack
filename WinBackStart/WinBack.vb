@@ -1,4 +1,6 @@
-﻿Public Class WinBack
+﻿Imports Signum.OrgaSoft.AddIn
+
+Public Class WinBack
     Dim MdiArtikel As New Artikel_Main
     Dim MdiLinien As New Linien_Main
 
@@ -10,6 +12,12 @@
             LinienMainShow()
         End If
     End Sub
+    Private Sub CloseAllForms()
+        For i = System.Windows.Forms.Application.OpenForms.Count - 1 To 1 Step -1
+            Dim form As Form = System.Windows.Forms.Application.OpenForms(i)
+            form.Close()
+        Next i
+    End Sub
 
     Private Sub ArtikelMainShow()
         If MdiArtikel Is Nothing Then
@@ -18,7 +26,6 @@
         If MdiArtikel.Visible Then
             MdiArtikel.BringToFront()
         Else
-            '           CloseAllForms()
             MdiArtikel.Show()
         End If
         MdiArtikel.MdiParent = Me
@@ -32,17 +39,31 @@
         If MdiLinien.Visible Then
             MdiLinien.BringToFront()
         Else
-            '            CloseAllForms()
             MdiLinien.Show()
         End If
         MdiLinien.MdiParent = Me
         MdiLinien.Dock = DockStyle.Fill
     End Sub
 
-    Private Sub CloseAllForms()
-        For i = System.Windows.Forms.Application.OpenForms.Count - 1 To 1 Step -1
-            Dim form As Form = System.Windows.Forms.Application.OpenForms(i)
-            form.Close()
-        Next i
+
+    Private Sub rbLinienAdd_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click
+        MdiLinien.BtnLinienNew()
+    End Sub
+
+    Private Sub rbLinienEdit_Click(sender As Object, e As EventArgs) Handles rbLinienEdit.Click
+        MdiLinien.BtnLinien()
+    End Sub
+
+    Private Sub rbLinienDel_Click(sender As Object, e As EventArgs) Handles rbLinienDel.Click
+        MdiLinien.BtnLinienRemove()
+    End Sub
+
+    Private Sub rbLinienAuto_Click(sender As Object, e As EventArgs) Handles rbLinienAuto.Click
+        MdiLinien.btnLinienAutoInstall()
+    End Sub
+
+    Private Sub WinBack_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Mysql-Einstellungen (IP-Adresse, User, Passwort)
+        wb_GetKonfig.MySqlSetting()
     End Sub
 End Class

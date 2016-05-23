@@ -4,36 +4,6 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class wb_Linien_Liste
     Inherits DockContent
 
-    Public Property aktBezeichnung As String
-        Set(value As String)
-            If VNCviewIsSelected() Then
-                VNCview.SelectedItems.Item(0).Text = value
-            End If
-        End Set
-        Get
-            If VNCviewIsSelected() Then
-                Return VNCview.SelectedItems.Item(0).Text
-            Else
-                Return vbNull
-            End If
-        End Get
-    End Property
-
-    Public Property aktAdresse As String
-        Set(value As String)
-            If VNCviewIsSelected() Then
-                VNCview.SelectedItems.Item(0).Name = value
-            End If
-        End Set
-        Get
-            If VNCviewIsSelected() Then
-                Return VNCview.SelectedItems.Item(0).Name
-            Else
-                Return vbNull
-            End If
-        End Get
-    End Property
-
     Public ReadOnly Property countItems As Integer
         Get
             Return VNCview.Items.Count
@@ -125,7 +95,7 @@ Public Class wb_Linien_Liste
         End With
     End Sub
 
-    Public Shared Event ItemSelected()
+    '    Public Shared Event ItemSelected()
     Private Sub VNCview_Click(sender As Object, e As EventArgs) Handles VNCview.Click
         If VNCviewIsSelected() Then
             wb_Linien.aktAdresse = VNCview.SelectedItems.Item(0).Name

@@ -159,12 +159,12 @@ Public Class wb_Linien_Main
     Private Sub BtnLinienNew()
         LinienListe.AddItems("", "Neuer Eintrag")
         LinienListe.SelectLastItem()
-        LinienDetails.DetailInfo(sender:=Nothing)
+        LinienDetails.DetailInfo()
         BtnLinien()
     End Sub
 
     Private Sub BtnLinien()
-        LinienDetails.tBezeichnung.Focus()
+        LinienDetails.DetailEdit()
     End Sub
 
     Private Sub BtnLinienRemove()
@@ -174,16 +174,6 @@ Public Class wb_Linien_Main
     Private Sub btnLinienAutoInstall()
         LinienListe.AddFromDataBase()
     End Sub
-
-    'Private Sub DetailInfo() Handles LinienListe.ItemSelected
-    '    LinienDetails.aktBezeichnung = LinienListe.aktBezeichnung
-    '    LinienDetails.aktAdresse = LinienListe.aktAdresse
-    'End Sub
-
-    'Private Sub LinienDetailInfoHasChanged() Handles LinienDetails.DetailInfoHasChanged
-    '    LinienListe.aktBezeichnung = LinienDetails.aktBezeichnung
-    '    LinienListe.aktAdresse = LinienDetails.aktAdresse
-    'End Sub
 
     Private Sub SaveDockBarConfig()
         DockPanel.SaveAsXml(My.Settings.OrgaSoftDockPanelPath & "wbLinien.xml")
