@@ -2,19 +2,23 @@
 
 Public Class WinBack
     Dim MdiArtikel As New Artikel_Main
+    Dim MdiUser As New User_Main
     Dim MdiLinien As New Linien_Main
 
-    Private Sub rbActiveRibbonChanged(sender As Object, e As EventArgs) Handles rbArtikel.ActiveChanged, rbLinien.ActiveChanged
+    Private Sub rbActiveRibbonChanged(sender As Object, e As EventArgs) Handles rbArtikel.ActiveChanged, rbLinien.ActiveChanged, rbUser.ActiveChanged
         If rbArtikel.Active Then
             ArtikelMainShow()
         End If
         If rbLinien.Active Then
             LinienMainShow()
         End If
+        If rbUser.Active Then
+            UserMainShow()
+        End If
     End Sub
     Private Sub CloseAllForms()
         For i = System.Windows.Forms.Application.OpenForms.Count - 1 To 1 Step -1
-            Dim form As Form = System.Windows.Forms.Application.OpenForms(i)
+            Dim form As Form = Application.OpenForms(i)
             form.Close()
         Next i
     End Sub
@@ -31,7 +35,18 @@ Public Class WinBack
         MdiArtikel.MdiParent = Me
         MdiArtikel.Dock = DockStyle.Fill
     End Sub
-
+    Private Sub UserMainShow()
+        If MdiUser Is Nothing Then
+            MdiUser = New User_Main
+        End If
+        If MdiUser.Visible Then
+            MdiUser.BringToFront()
+        Else
+            MdiUser.Show()
+        End If
+        MdiUser.MdiParent = Me
+        MdiUser.Dock = DockStyle.Fill
+    End Sub
     Private Sub LinienMainShow()
         If MdiLinien Is Nothing Then
             MdiLinien = New Linien_Main
@@ -44,7 +59,6 @@ Public Class WinBack
         MdiLinien.MdiParent = Me
         MdiLinien.Dock = DockStyle.Fill
     End Sub
-
 
     Private Sub rbLinienAdd_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click
         MdiLinien.BtnLinienNew()
@@ -65,5 +79,13 @@ Public Class WinBack
     Private Sub WinBack_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
         wb_GetKonfig.MySqlSetting()
+        'Version in Status-Bar anzeigen
+        lblVersion.Text = "WinBack V" & My.Application.Info.Version.ToString
+        'IP-Adresse in Status-Bar anzeigen
+        lblNetworkIP.Text = wb_GetKonfig.DbType & " " & wb_GetKonfig.SqlIP
+        'Farbschema einstellen
+        wb_GetKonfig.SetColors()
     End Sub
+
+
 End Class

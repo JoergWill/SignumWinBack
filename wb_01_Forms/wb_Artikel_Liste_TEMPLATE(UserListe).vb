@@ -1,28 +1,20 @@
 ﻿Public Class wb_User_Liste
-    Dim GrpTexte As New Hashtable
 
     Private Sub wb_User_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Data_Load()
     End Sub
 
     Private Sub Data_Load()
-        'HashTable mit der Übersetzung der Gruppen-Nummer in die Gruppen-Bezeichnung laden
-        'wenn die Gruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
-        'entsprechende Übersetzung aus winback.Texte geladen
-        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
-        winback.sqlSelect("SELECT * FROM ItemIDs WHERE II_ItemTyp = 500")
-        While winback.Read
-            GrpTexte.Add(winback.iField("II_ItemId"), winback.sField("II_Kommentar"))
-        End While
-        winback.Close()
-
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
+        'Dim sColNames As New List(Of String) From {"", "Type", "Nummer", "Bezeichnung", "&Kommentar"}
         Dim sColNames As New List(Of String) From {"", "", "&Name", "Gruppe", ""}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
+
+        'DataGridView.LoadData("SELECT KO_Nr, KO_Type, KO_Nr_AlNum, KO_Bezeichnung, KO_Kommentar FROM Komponenten;", "UserListe", wb_Sql.dbType.mySql)
         DataGridView.LoadData("SELECT IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int <> 709760", "UserListe", wb_Sql.dbType.mySql)
     End Sub
 
@@ -34,6 +26,27 @@
         TextBox1.Text = DataGridView.Field("IP_Wert4Str")
     End Sub
 
+    Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton1.CheckedChanged
+        Debug.Print("CheckChanged RB1")
+        If RadioButton1.Checked Then
+            DataGridView.Filter = ""
+        End If
+    End Sub
+
+    Private Sub RadioButton2_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton2.CheckedChanged
+        Debug.Print("CheckChanged RB2")
+        If RadioButton2.Checked Then
+            DataGridView.Filter = "KO_Type = 101"
+        End If
+    End Sub
+
+    Private Sub RadioButton3_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton3.CheckedChanged
+        Debug.Print("CheckChanged RB3")
+        If RadioButton3.Checked Then
+            DataGridView.Filter = "KO_Type = 102"
+        End If
+    End Sub
+
     Private Sub TextBox1_Leave(sender As Object, e As EventArgs) Handles TextBox1.Leave
         DataGridView.Field("IP_Wert4Str") = TextBox1.Text
     End Sub
@@ -43,8 +56,6 @@
     End Sub
 
     Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
-        If e.ColumnIndex = 3 Then
-            e.Value = GrpTexte(CInt(e.Value)).ToString
-        End If
+
     End Sub
 End Class

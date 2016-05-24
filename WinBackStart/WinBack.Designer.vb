@@ -24,6 +24,7 @@ Partial Class WinBack
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(WinBack))
         Me.Ribbon1 = New System.Windows.Forms.Ribbon()
+        Me.RibbonSeparator1 = New System.Windows.Forms.RibbonSeparator()
         Me.rbChargen = New System.Windows.Forms.RibbonTab()
         Me.RibbonPanel1 = New System.Windows.Forms.RibbonPanel()
         Me.rbArtikel = New System.Windows.Forms.RibbonTab()
@@ -31,16 +32,24 @@ Partial Class WinBack
         Me.rbRohstoffe = New System.Windows.Forms.RibbonTab()
         Me.rbUser = New System.Windows.Forms.RibbonTab()
         Me.rbLinien = New System.Windows.Forms.RibbonTab()
-        Me.RibbonPanel2 = New System.Windows.Forms.RibbonPanel()
+        Me.rPLinien = New System.Windows.Forms.RibbonPanel()
         Me.RibbonTab1 = New System.Windows.Forms.RibbonTab()
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.lblVersion = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblNetworkIP = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.rpUser = New System.Windows.Forms.RibbonPanel()
         Me.RibbonOrbMenuItem1 = New System.Windows.Forms.RibbonOrbMenuItem()
         Me.RibbonOrbOptionButton1 = New System.Windows.Forms.RibbonOrbOptionButton()
         Me.RibbonButton1 = New System.Windows.Forms.RibbonButton()
+        Me.rbUserNeu = New System.Windows.Forms.RibbonButton()
+        Me.rbPasswort = New System.Windows.Forms.RibbonButton()
+        Me.rbListeDrucken = New System.Windows.Forms.RibbonButton()
+        Me.rbUserGruppen = New System.Windows.Forms.RibbonButton()
         Me.rbLinienAdd = New System.Windows.Forms.RibbonButton()
         Me.rbLinienEdit = New System.Windows.Forms.RibbonButton()
         Me.rbLinienDel = New System.Windows.Forms.RibbonButton()
         Me.rbLinienAuto = New System.Windows.Forms.RibbonButton()
-        Me.RibbonSeparator1 = New System.Windows.Forms.RibbonSeparator()
+        Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Ribbon1
@@ -103,24 +112,54 @@ Partial Class WinBack
         '
         'rbUser
         '
+        Me.rbUser.Panels.Add(Me.rpUser)
         Me.rbUser.Text = "Benutzer"
         '
         'rbLinien
         '
-        Me.rbLinien.Panels.Add(Me.RibbonPanel2)
+        Me.rbLinien.Panels.Add(Me.rPLinien)
         Me.rbLinien.Text = "Linien"
         '
-        'RibbonPanel2
+        'rPLinien
         '
-        Me.RibbonPanel2.Items.Add(Me.rbLinienAdd)
-        Me.RibbonPanel2.Items.Add(Me.rbLinienEdit)
-        Me.RibbonPanel2.Items.Add(Me.rbLinienDel)
-        Me.RibbonPanel2.Items.Add(Me.rbLinienAuto)
-        Me.RibbonPanel2.Text = "Linien"
+        Me.rPLinien.Items.Add(Me.rbLinienAdd)
+        Me.rPLinien.Items.Add(Me.rbLinienEdit)
+        Me.rPLinien.Items.Add(Me.rbLinienDel)
+        Me.rPLinien.Items.Add(Me.rbLinienAuto)
+        Me.rPLinien.Text = "Linien"
         '
         'RibbonTab1
         '
         Me.RibbonTab1.Text = "RibbonTab1"
+        '
+        'StatusStrip1
+        '
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblVersion, Me.lblNetworkIP})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 624)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(1059, 22)
+        Me.StatusStrip1.TabIndex = 4
+        Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'lblVersion
+        '
+        Me.lblVersion.Name = "lblVersion"
+        Me.lblVersion.Size = New System.Drawing.Size(121, 17)
+        Me.lblVersion.Text = "ToolStripStatusLabel1"
+        '
+        'lblNetworkIP
+        '
+        Me.lblNetworkIP.Name = "lblNetworkIP"
+        Me.lblNetworkIP.Size = New System.Drawing.Size(121, 17)
+        Me.lblNetworkIP.Text = "ToolStripStatusLabel2"
+        '
+        'rpUser
+        '
+        Me.rpUser.Items.Add(Me.rbUserNeu)
+        Me.rpUser.Items.Add(Me.rbPasswort)
+        Me.rpUser.Items.Add(Me.rbListeDrucken)
+        Me.rpUser.Items.Add(Me.rbUserGruppen)
+        Me.rpUser.Text = "Benutzer-Verwaltung"
         '
         'RibbonOrbMenuItem1
         '
@@ -141,6 +180,34 @@ Partial Class WinBack
         Me.RibbonButton1.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact
         Me.RibbonButton1.SmallImage = CType(resources.GetObject("RibbonButton1.SmallImage"), System.Drawing.Image)
         Me.RibbonButton1.Text = "RibbonButton1"
+        '
+        'rbUserNeu
+        '
+        Me.rbUserNeu.Image = Global.WinBack.My.Resources.Resources.UserNeu_32x32
+        Me.rbUserNeu.SmallImage = CType(resources.GetObject("rbUserNeu.SmallImage"), System.Drawing.Image)
+        Me.rbUserNeu.Text = "Neu"
+        Me.rbUserNeu.ToolTip = "Benutzer neu anlegen"
+        '
+        'rbPasswort
+        '
+        Me.rbPasswort.Image = Global.WinBack.My.Resources.Resources.UserPasswd_32x32
+        Me.rbPasswort.SmallImage = CType(resources.GetObject("rbPasswort.SmallImage"), System.Drawing.Image)
+        Me.rbPasswort.Text = "Passwort ändern"
+        Me.rbPasswort.ToolTip = "Benutzer - Anmeldecode ändern"
+        '
+        'rbListeDrucken
+        '
+        Me.rbListeDrucken.Image = Global.WinBack.My.Resources.Resources.UserListe_32x32
+        Me.rbListeDrucken.SmallImage = CType(resources.GetObject("rbListeDrucken.SmallImage"), System.Drawing.Image)
+        Me.rbListeDrucken.Text = "Liste drucken"
+        Me.rbListeDrucken.ToolTip = "Liste aller WinBack-Benutzer ausdrucken"
+        '
+        'rbUserGruppen
+        '
+        Me.rbUserGruppen.Image = Global.WinBack.My.Resources.Resources.UserGruppen_32x32
+        Me.rbUserGruppen.SmallImage = CType(resources.GetObject("rbUserGruppen.SmallImage"), System.Drawing.Image)
+        Me.rbUserGruppen.Text = "Gruppen"
+        Me.rbUserGruppen.ToolTip = "Verwalten der Benutzer-Gruppen und Rechte"
         '
         'rbLinienAdd
         '
@@ -172,11 +239,15 @@ Partial Class WinBack
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1059, 646)
+        Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.Ribbon1)
         Me.IsMdiContainer = True
         Me.Name = "WinBack"
         Me.Text = "WinBack - UI-Test"
+        Me.StatusStrip1.ResumeLayout(False)
+        Me.StatusStrip1.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents Ribbon1 As Ribbon
@@ -190,11 +261,19 @@ Partial Class WinBack
     Friend WithEvents RibbonButton1 As RibbonButton
     Friend WithEvents RibbonOrbOptionButton1 As RibbonOrbOptionButton
     Friend WithEvents RibbonOrbMenuItem1 As RibbonOrbMenuItem
-    Friend WithEvents RibbonPanel2 As RibbonPanel
+    Friend WithEvents rPLinien As RibbonPanel
     Friend WithEvents rbLinienAdd As RibbonButton
     Friend WithEvents rbLinienEdit As RibbonButton
     Friend WithEvents rbLinienDel As RibbonButton
     Friend WithEvents rbLinienAuto As RibbonButton
     Friend WithEvents RibbonTab1 As RibbonTab
     Friend WithEvents RibbonSeparator1 As RibbonSeparator
+    Friend WithEvents StatusStrip1 As StatusStrip
+    Friend WithEvents lblVersion As ToolStripStatusLabel
+    Friend WithEvents lblNetworkIP As ToolStripStatusLabel
+    Friend WithEvents rpUser As RibbonPanel
+    Friend WithEvents rbUserNeu As RibbonButton
+    Friend WithEvents rbPasswort As RibbonButton
+    Friend WithEvents rbListeDrucken As RibbonButton
+    Friend WithEvents rbUserGruppen As RibbonButton
 End Class

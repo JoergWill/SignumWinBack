@@ -150,6 +150,7 @@ Public Class wb_Main_Menu
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_User_Main(ServiceProvider), My.Resources.MainUser_16x16)
     End Sub
+
     'Stammdaten
     Private Sub ShowStammDatenForm(sender As Object, e As EventArgs)
         CloseAllForms()
@@ -227,9 +228,7 @@ Public Class wb_Main_Menu
     Private Sub ReadSystemKonfig()
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
         wb_GetKonfig.MySqlSetting()
-
-        'Hintergrund-Farbe jeder zweiten Zeile des DataViewGrid (alternative RowSetting)
-        My.Settings.DataGridAlternateRowColor = System.Drawing.Color.LightGray
+        wb_GetKonfig.SetColors()
     End Sub
 
 End Class

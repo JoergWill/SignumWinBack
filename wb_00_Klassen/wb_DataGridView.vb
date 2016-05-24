@@ -74,6 +74,7 @@ Public Class wb_DataGridView
         'Detail-Fenster angezeigt
         tDataHasChanged.Interval = _tDataChangedTime
         tDataHasChanged.Enabled = False
+        DtaTable.Clear()
 
         Select Case db
 

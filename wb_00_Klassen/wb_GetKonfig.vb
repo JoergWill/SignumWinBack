@@ -18,7 +18,15 @@
                                     & "user id=" & My.Settings.MySQLUser & ";" _
                                     & "password=" & My.Settings.MySQLPass & ";" _
                                     & "database=" & My.Settings.MySQLWbDaten & ";"
-
-
+    End Sub
+    Public Shared Function SqlIP() As String
+        Return My.Settings.MySQLServerIP
+    End Function
+    Public Shared Function DbType() As String
+        Return "MySQL"
+    End Function
+    Public Shared Sub SetColors()
+        'Hintergrund-Farbe jeder zweiten Zeile des DataViewGrid (alternative RowSetting)
+        My.Settings.DataGridAlternateRowColor = System.Drawing.Color.LightGray
     End Sub
 End Class
