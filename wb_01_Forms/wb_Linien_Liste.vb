@@ -95,7 +95,6 @@ Public Class wb_Linien_Liste
         End With
     End Sub
 
-    '    Public Shared Event ItemSelected()
     Private Sub VNCview_Click(sender As Object, e As EventArgs) Handles VNCview.Click
         If VNCviewIsSelected() Then
             wb_Linien.aktAdresse = VNCview.SelectedItems.Item(0).Name

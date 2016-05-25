@@ -1,21 +1,11 @@
 ﻿Public Class wb_User_Liste
-    Dim GrpTexte As New Hashtable
+    Const GrpIdxColumn As Integer = 3
 
     Private Sub wb_User_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Data_Load()
     End Sub
 
     Private Sub Data_Load()
-        'HashTable mit der Übersetzung der Gruppen-Nummer in die Gruppen-Bezeichnung laden
-        'wenn die Gruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
-        'entsprechende Übersetzung aus winback.Texte geladen
-        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
-        winback.sqlSelect("SELECT * FROM ItemIDs WHERE II_ItemTyp = 500")
-        While winback.Read
-            GrpTexte.Add(winback.iField("II_ItemId"), winback.sField("II_Kommentar"))
-        End While
-        winback.Close()
-
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
@@ -23,28 +13,35 @@
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
-        DataGridView.LoadData("SELECT IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int <> 709760", "UserListe", wb_Sql.dbType.mySql)
+        'DataGrid füllen
+        Dim sql As String = "SELECT IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int <> 709760"
+        DataGridView.LoadData(sql, "UserListe", wb_Sql.dbType.mySql)
+        'Event Daten wurden geändert
+        AddHandler wb_User.eEdit_Leave, AddressOf UserInfo
+
     End Sub
 
     Private Sub wb_User_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        DataGridView.updateDataBase(wb_Sql.dbType.mySql)
         DataGridView.SaveToDisk("UserListe")
     End Sub
 
     Private Sub DataGridView_HasChanged() Handles DataGridView.HasChanged
-        TextBox1.Text = DataGridView.Field("IP_Wert4Str")
+        wb_User.aktUserName = DataGridView.Field("IP_Wert4Str")
+        wb_User.aktUserGroup = CInt(DataGridView.Field("IP_ItemID"))
+        wb_User.aktUserPass = DataGridView.Field("IP_Wert1int")
+        wb_User.Liste_Click(Nothing)
     End Sub
 
-    Private Sub TextBox1_Leave(sender As Object, e As EventArgs) Handles TextBox1.Leave
-        DataGridView.Field("IP_Wert4Str") = TextBox1.Text
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        DataGridView.updateDataBase(wb_Sql.dbType.mySql)
+    Private Sub UserInfo()
+        DataGridView.Field("IP_Wert4Str") = wb_User.aktUserName
+        DataGridView.Field("IP_ItemID") = wb_User.aktUserGroup
+        DataGridView.Field("IP_Wert1int") = wb_User.aktUserPass
     End Sub
 
     Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
-        If e.ColumnIndex = 3 Then
-            e.Value = GrpTexte(CInt(e.Value)).ToString
+        If e.ColumnIndex = GrpIdxColumn Then
+            e.Value = wb_User.GrpTexte(CInt(e.Value)).ToString
         End If
     End Sub
 End Class

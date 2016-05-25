@@ -5,7 +5,8 @@ Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_User_Main
     Implements IExternalFormUserControl
-    Private WithEvents UserListe As New wb_User_Liste
+    Private UserListe As New wb_User_Liste
+    Private UserDetails As New wb_User_Liste
 
 
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
@@ -91,6 +92,7 @@ Public Class wb_User_Main
     Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
     Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
         'alle erzeugten Fenster wieder schliessen !!!
+        UserDetails.Close()
         UserListe.Close()
         'Anzeige sichern
         SaveDockBarConfig()
@@ -162,8 +164,8 @@ Public Class wb_User_Main
         Catch ex As Exception
         End Try
 
-        'LinienDetails.Show(DockPanel, DockState.DockTop)
-        'LinienDetails.CloseButtonVisible = False
+        UserDetails.Show(DockPanel, DockState.DockTop)
+        UserDetails.CloseButtonVisible = False
         UserListe.Show(DockPanel, DockState.DockLeft)
         UserListe.CloseButtonVisible = False
     End Sub
@@ -172,8 +174,8 @@ Public Class wb_User_Main
         Select Case persistString
             Case "UserListe"
                 Return UserListe
-                'Case "LinenDetails"
-                '    Return LinienDetails
+            Case "UserDetails"
+                Return UserDetails
             Case Else
                 Return Nothing
         End Select

@@ -121,8 +121,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
+    <Compile Include="wb_00_Klassen\wb_ComboBox.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\wb_GetKonfig.vb" />
+    <Compile Include="wb_01_Forms\wb_User.vb" />
     <Compile Include="wb_01_Forms\wb_Linien.vb" />
+    <Compile Include="wb_01_Forms\wb_User_Details.Designer.vb">
+      <DependentUpon>wb_User_Details.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms\wb_User_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_01_Forms\wb_User_Liste.Designer.vb">
       <DependentUpon>wb_User_Liste.vb</DependentUpon>
     </Compile>
@@ -226,6 +236,9 @@
     <EmbeddedResource Include="wb_01_Forms\wb_MainTemplate.resx">
       <DependentUpon>wb_MainTemplate.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms\wb_User_Details.resx">
+      <DependentUpon>wb_User_Details.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms\wb_User_Liste.resx">
       <DependentUpon>wb_User_Liste.vb</DependentUpon>
     </EmbeddedResource>
@@ -236,6 +249,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

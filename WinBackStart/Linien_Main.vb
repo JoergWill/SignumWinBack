@@ -49,7 +49,7 @@ Public Class Linien_Main
         LinienListe.AddItems("", "Neuer Eintrag")
         LinienListe.SelectLastItem()
         LinienDetails.DetailInfo()
-        'BtnLinien()
+        LinienDetails.DetailEdit()
     End Sub
     Public Sub BtnLinien()
         LinienDetails.DetailEdit()

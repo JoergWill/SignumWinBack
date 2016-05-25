@@ -197,11 +197,15 @@ Public Class wb_DataGridView
     'Datenbank-Feld lesen/ändern
     Property Field(FieldName As String) As String
         Set(value As String)
-            Me.CurrentRow.Cells(FieldName).Value = value
+            If value IsNot Nothing Then
+                Debug.Print(FieldName)
+                CurrentRow.Cells(FieldName).Value = value
+                Debug.Print(value)
+            End If
         End Set
         Get
             Try
-                Return Me.CurrentRow.Cells(FieldName).Value.ToString
+                Return CurrentRow.Cells(FieldName).Value.ToString
             Catch
                 Return Nothing
             End Try
@@ -316,4 +320,9 @@ Public Class wb_DataGridView
         End If
     End Sub
 
+    'Abfangen den Data-Error-Meldungen
+    Private Overloads Sub DataGridView_DataError(sender As Object, e As Windows.Forms.DataGridViewDataErrorEventArgs) Handles MyBase.DataError
+        'Exception-Text ausgeben
+        Debug.Print(e.Exception.ToString)
+    End Sub
 End Class

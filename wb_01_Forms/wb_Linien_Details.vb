@@ -7,7 +7,6 @@ Public Class wb_Linien_Details
         AddHandler wb_Linien.eListe_Click, AddressOf DetailInfo
     End Sub
 
-    '    Public Shared Event DetailInfoHasChanged()
     Private Sub Panel_Leave(sender As Object, e As EventArgs) Handles Panel.Leave
         wb_Linien.aktBezeichnung = tBezeichnung.Text
         wb_Linien.aktAdresse = tAdresse.Text
