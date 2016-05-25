@@ -27,9 +27,10 @@ Partial Class wb_User_Details
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel = New System.Windows.Forms.Panel()
+        'Me.cbUserGrp = New System.Windows.Forms.ComboBox()
+        Me.cbUserGrp = New wb_ComboBox()
         Me.tUserPass = New System.Windows.Forms.TextBox()
         Me.tUserName = New System.Windows.Forms.TextBox()
-        Me.cbUserGrp = New System.Windows.Forms.ComboBox()
         Me.Panel.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -70,6 +71,14 @@ Partial Class wb_User_Details
         Me.Panel.Size = New System.Drawing.Size(535, 134)
         Me.Panel.TabIndex = 4
         '
+        'cbUserGrp
+        '
+        Me.cbUserGrp.FormattingEnabled = True
+        Me.cbUserGrp.Location = New System.Drawing.Point(105, 45)
+        Me.cbUserGrp.Name = "cbUserGrp"
+        Me.cbUserGrp.Size = New System.Drawing.Size(209, 21)
+        Me.cbUserGrp.TabIndex = 4
+        '
         'tUserPass
         '
         Me.tUserPass.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -87,14 +96,6 @@ Partial Class wb_User_Details
         Me.tUserName.Name = "tUserName"
         Me.tUserName.Size = New System.Drawing.Size(269, 20)
         Me.tUserName.TabIndex = 2
-        '
-        'cbUserGrp
-        '
-        Me.cbUserGrp.FormattingEnabled = True
-        Me.cbUserGrp.Location = New System.Drawing.Point(105, 45)
-        Me.cbUserGrp.Name = "cbUserGrp"
-        Me.cbUserGrp.Size = New System.Drawing.Size(209, 21)
-        Me.cbUserGrp.TabIndex = 4
         '
         'wb_User_Details
         '
@@ -116,5 +117,5 @@ Partial Class wb_User_Details
     Friend WithEvents Panel As Windows.Forms.Panel
     Friend WithEvents tUserName As Windows.Forms.TextBox
     Friend WithEvents tUserPass As Windows.Forms.TextBox
-    Friend WithEvents cbUserGrp As Windows.Forms.ComboBox
+    Friend WithEvents cbUserGrp As wb_ComboBox
 End Class

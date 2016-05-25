@@ -120,10 +120,13 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
+    <Compile Include="wb_00_Klassen\wb_ComboBox.Designer.vb">
+      <DependentUpon>wb_ComboBox.vb</DependentUpon>
+    </Compile>
     <Compile Include="wb_00_Klassen\wb_ComboBox.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
     <Compile Include="wb_00_Klassen\wb_GetKonfig.vb" />
     <Compile Include="wb_01_Forms\wb_User.vb" />
     <Compile Include="wb_01_Forms\wb_Linien.vb" />

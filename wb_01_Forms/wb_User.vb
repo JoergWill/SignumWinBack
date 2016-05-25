@@ -19,24 +19,6 @@
         End While
         winback.Close()
     End Sub
-    Public Shared Function GrpTexte_GetKeyFromText(sText As String) As Integer
-        Dim i As Integer = 0
-        For Each item As DictionaryEntry In wb_User.GrpTexte
-            If item.Value = sText Then
-                i = item.Key
-                Exit For
-            End If
-        Next
-        Return i
-    End Function
-    Public Shared Sub GrpTexte_SelectComboBox(ByRef cb As Windows.Forms.ComboBox, sText As String)
-        Dim i As Integer
-        For i = 0 To cb.Items.Count - 1
-            If sText = cb.Items(i).ToString Then
-                cb.SelectedIndex = i
-            End If
-        Next
-    End Sub
 
     Public Shared Sub Liste_Click(sender As Object)
         RaiseEvent eListe_Click(sender)
