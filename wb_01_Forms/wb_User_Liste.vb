@@ -4,6 +4,8 @@
 
     Private Sub wb_User_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Data_Load()
+        'Event Daten wurden geändert
+        AddHandler wb_User.eEdit_Leave, AddressOf UserInfo
     End Sub
 
     Private Sub Data_Load()
@@ -18,8 +20,6 @@
         Dim sql As String = "SELECT IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int <> 709760"
         DataGridView.LoadData(sql, "UserListe", wb_Sql.dbType.mySql)
 
-        'Event Daten wurden geändert
-        AddHandler wb_User.eEdit_Leave, AddressOf UserInfo
     End Sub
 
     Private Sub wb_User_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing

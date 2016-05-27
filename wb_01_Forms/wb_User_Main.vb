@@ -7,6 +7,7 @@ Public Class wb_User_Main
     Implements IExternalFormUserControl
     Private UserListe As New wb_User_Liste
     Private UserDetails As New wb_User_Liste
+    Private UserRechte As New wb_User_Rechte
 
 
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
@@ -168,6 +169,8 @@ Public Class wb_User_Main
         UserDetails.CloseButtonVisible = False
         UserListe.Show(DockPanel, DockState.DockLeft)
         UserListe.CloseButtonVisible = False
+        UserRechte.Show(DockPanel, DockState.DockBottom)
+        UserRechte.CloseButtonVisible = False
     End Sub
 
     Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
@@ -176,6 +179,8 @@ Public Class wb_User_Main
                 Return UserListe
             Case "UserDetails"
                 Return UserDetails
+            Case "UserRechte"
+                Return UserRechte
             Case Else
                 Return Nothing
         End Select

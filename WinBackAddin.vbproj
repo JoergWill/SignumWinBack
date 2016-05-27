@@ -213,6 +213,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="wb_01_Forms\wb_User_Rechte.Designer.vb">
+      <DependentUpon>wb_User_Rechte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms\wb_User_Rechte.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -247,6 +253,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms\wb_User_Main.resx">
       <DependentUpon>wb_User_Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms\wb_User_Rechte.resx">
+      <DependentUpon>wb_User_Rechte.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -340,10 +349,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt" />
+    <None Include="Resources\Leer_16x16.png" />
+    <None Include="Resources\KreuzRot.png" />
+    <None Include="Resources\HakenRot_16x16.png" />
+    <None Include="Resources\HakenGlb_16x16.png" />
+    <None Include="Resources\HakenGrn_16x16.png" />
+    <None Include="Resources\MainUser_16x161.png" />
     <None Include="Resources\UserGruppen_32x32.png" />
     <None Include="Resources\UserPasswd_32x32.png" />
     <None Include="Resources\UserListe_32x32.png" />
-    <None Include="Resources\UserGrp_32x32.png" />
     <None Include="Resources\MainUser_32x32.png" />
     <None Include="Resources\UserNeu_32x32.png" />
   </ItemGroup>

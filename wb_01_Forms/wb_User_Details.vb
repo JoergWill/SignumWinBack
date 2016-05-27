@@ -3,9 +3,10 @@
 Public Class wb_User_Details
     Inherits DockContent
     Private Sub wb_User_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        AddHandler wb_User.eListe_Click, AddressOf DetailInfo
         'Combo-Box mit Werten füllen
         cbUserGrp.Fill(wb_User.GrpTexte)
+
+        AddHandler wb_User.eListe_Click, AddressOf DetailInfo
     End Sub
 
     Private Sub Panel_Leave(sender As Object, e As EventArgs) Handles Panel.Leave
