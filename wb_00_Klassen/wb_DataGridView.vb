@@ -197,11 +197,12 @@ Public Class wb_DataGridView
     'Datenbank-Feld lesen/ändern
     Property Field(FieldName As String) As String
         Set(value As String)
-            If value IsNot Nothing Then
-                Debug.Print(FieldName)
-                CurrentRow.Cells(FieldName).Value = value
-                Debug.Print(value)
-            End If
+            Try
+                If value IsNot Nothing Then
+                    CurrentRow.Cells(FieldName).Value = value
+                End If
+            Catch
+            End Try
         End Set
         Get
             Try

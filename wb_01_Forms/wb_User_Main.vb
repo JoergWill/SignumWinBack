@@ -6,7 +6,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class wb_User_Main
     Implements IExternalFormUserControl
     Private UserListe As New wb_User_Liste
-    Private UserDetails As New wb_User_Liste
+    Private UserDetails As New wb_User_Details
     Private UserRechte As New wb_User_Rechte
 
 
