@@ -9,7 +9,6 @@ Public Class wb_User_Main
     Private UserDetails As New wb_User_Details
     Private UserRechte As New wb_User_Rechte
 
-
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
         'MessageBox.Show("ExecuteCommand!" & vbCrLf & CommandId, "AddIn", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Return Nothing
@@ -92,11 +91,12 @@ Public Class wb_User_Main
 
     Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
     Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
+        'Anzeige sichern
+        SaveDockBarConfig()
         'alle erzeugten Fenster wieder schliessen !!!
         UserDetails.Close()
         UserListe.Close()
-        'Anzeige sichern
-        SaveDockBarConfig()
+        UserRechte.Close()
     End Sub
 
     ''' <summary>
@@ -113,6 +113,8 @@ Public Class wb_User_Main
     End Function
 
     Private Sub wb_User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
+        wb_User.LoadGrpTexte()
         ' DockBar Konfiguration aus XML-Datei lesen
         LoadDockBarConfig()
     End Sub

@@ -28,9 +28,9 @@ Partial Class wb_User_Details
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel = New System.Windows.Forms.Panel()
+        Me.cbUserGrp = New Signum.OrgaSoft.AddIn.wb_ComboBox()
         Me.tUserPass = New System.Windows.Forms.TextBox()
         Me.tUserName = New System.Windows.Forms.TextBox()
-        Me.cbUserGrp = New Signum.OrgaSoft.AddIn.wb_ComboBox()
         Me.Panel.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -57,6 +57,12 @@ Partial Class wb_User_Details
         Me.Panel.ForeColor = System.Drawing.Color.Black
         Me.Panel.Name = "Panel"
         '
+        'cbUserGrp
+        '
+        resources.ApplyResources(Me.cbUserGrp, "cbUserGrp")
+        Me.cbUserGrp.FormattingEnabled = True
+        Me.cbUserGrp.Name = "cbUserGrp"
+        '
         'tUserPass
         '
         resources.ApplyResources(Me.tUserPass, "tUserPass")
@@ -66,12 +72,6 @@ Partial Class wb_User_Details
         '
         resources.ApplyResources(Me.tUserName, "tUserName")
         Me.tUserName.Name = "tUserName"
-        '
-        'cbUserGrp
-        '
-        resources.ApplyResources(Me.cbUserGrp, "cbUserGrp")
-        Me.cbUserGrp.FormattingEnabled = True
-        Me.cbUserGrp.Name = "cbUserGrp"
         '
         'wb_User_Details
         '
