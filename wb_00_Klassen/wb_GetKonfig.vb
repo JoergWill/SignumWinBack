@@ -1,4 +1,7 @@
-﻿Public Class wb_GetKonfig
+﻿Imports System.Globalization
+Imports System.Threading
+
+Public Class wb_GetKonfig
     Public Shared Sub MySqlSetting()
         Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
 
@@ -28,5 +31,10 @@
     Public Shared Sub SetColors()
         'Hintergrund-Farbe jeder zweiten Zeile des DataViewGrid (alternative RowSetting)
         My.Settings.DataGridAlternateRowColor = System.Drawing.Color.LightGray
+    End Sub
+
+    Public Shared Sub SetLanguage()
+        Thread.CurrentThread.CurrentCulture = New CultureInfo("en")
+        Thread.CurrentThread.CurrentUICulture = New CultureInfo("en")
     End Sub
 End Class

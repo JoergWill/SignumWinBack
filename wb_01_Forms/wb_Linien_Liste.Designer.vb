@@ -32,17 +32,11 @@ Partial Class wb_Linien_Liste
         '
         'VNCview
         '
-        Me.VNCview.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.VNCview, "VNCview")
         Me.VNCview.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
         Me.VNCview.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.VNCview.LargeImageList = Me.ImageList
-        Me.VNCview.Location = New System.Drawing.Point(0, 10)
-        Me.VNCview.Margin = New System.Windows.Forms.Padding(6, 20, 6, 6)
         Me.VNCview.Name = "VNCview"
-        Me.VNCview.Size = New System.Drawing.Size(691, 591)
-        Me.VNCview.TabIndex = 2
         Me.VNCview.UseCompatibleStateImageBehavior = False
         '
         'ImageList
@@ -53,14 +47,11 @@ Partial Class wb_Linien_Liste
         '
         'wb_Linien_Liste
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(691, 601)
         Me.Controls.Add(Me.VNCview)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "wb_Linien_Liste"
-        Me.Text = "WinBack Linien"
         Me.ResumeLayout(False)
 
     End Sub

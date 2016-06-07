@@ -24,6 +24,7 @@ Partial Class wb_Linien_Details
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Linien_Details))
         Me.Panel = New System.Windows.Forms.Panel()
         Me.tAdresse = New System.Windows.Forms.TextBox()
         Me.tBezeichnung = New System.Windows.Forms.TextBox()
@@ -34,70 +35,45 @@ Partial Class wb_Linien_Details
         '
         'Panel
         '
-        Me.Panel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.Panel, "Panel")
         Me.Panel.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
         Me.Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel.Controls.Add(Me.tAdresse)
         Me.Panel.Controls.Add(Me.tBezeichnung)
         Me.Panel.Controls.Add(Me.Label2)
         Me.Panel.Controls.Add(Me.Label1)
-        Me.Panel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Panel.ForeColor = System.Drawing.Color.Black
-        Me.Panel.Location = New System.Drawing.Point(12, 12)
         Me.Panel.Name = "Panel"
-        Me.Panel.Size = New System.Drawing.Size(479, 85)
-        Me.Panel.TabIndex = 3
         '
         'tAdresse
         '
-        Me.tAdresse.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tAdresse.Location = New System.Drawing.Point(105, 39)
+        resources.ApplyResources(Me.tAdresse, "tAdresse")
         Me.tAdresse.Name = "tAdresse"
-        Me.tAdresse.Size = New System.Drawing.Size(291, 20)
-        Me.tAdresse.TabIndex = 3
         '
         'tBezeichnung
         '
-        Me.tBezeichnung.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tBezeichnung.Location = New System.Drawing.Point(105, 16)
+        resources.ApplyResources(Me.tBezeichnung, "tBezeichnung")
         Me.tBezeichnung.Name = "tBezeichnung"
-        Me.tBezeichnung.Size = New System.Drawing.Size(291, 20)
-        Me.tBezeichnung.TabIndex = 2
         '
         'Label2
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(16, 42)
+        resources.ApplyResources(Me.Label2, "Label2")
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(61, 13)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "IP-Adresse:"
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(16, 19)
+        resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(72, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Bezeichnung:"
         '
         'wb_Linien_Details
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(503, 109)
         Me.Controls.Add(Me.Panel)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ForeColor = System.Drawing.Color.Black
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "wb_Linien_Details"
-        Me.Text = "WinBack-Linien Info"
         Me.Panel.ResumeLayout(False)
         Me.Panel.PerformLayout()
         Me.ResumeLayout(False)

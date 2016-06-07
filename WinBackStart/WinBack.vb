@@ -1,4 +1,6 @@
 ﻿Imports Signum.OrgaSoft.AddIn
+Imports System.Globalization
+Imports System.Threading
 
 Public Class WinBack
     Dim MdiArtikel As New Artikel_Main
@@ -16,6 +18,7 @@ Public Class WinBack
             UserMainShow()
         End If
     End Sub
+
     Private Sub CloseAllForms()
         For i = System.Windows.Forms.Application.OpenForms.Count - 1 To 1 Step -1
             Dim form As Form = Application.OpenForms(i)
@@ -35,6 +38,7 @@ Public Class WinBack
         MdiArtikel.MdiParent = Me
         MdiArtikel.Dock = DockStyle.Fill
     End Sub
+
     Private Sub UserMainShow()
         If MdiUser Is Nothing Then
             MdiUser = New User_Main
@@ -47,6 +51,7 @@ Public Class WinBack
         MdiUser.MdiParent = Me
         MdiUser.Dock = DockStyle.Fill
     End Sub
+
     Private Sub LinienMainShow()
         If MdiLinien Is Nothing Then
             MdiLinien = New Linien_Main
@@ -85,7 +90,10 @@ Public Class WinBack
         lblNetworkIP.Text = wb_GetKonfig.DbType & " " & wb_GetKonfig.SqlIP
         'Farbschema einstellen
         wb_GetKonfig.SetColors()
+        'Sprache einstellen
+        Debug.Print("Language/Localisation " & Thread.CurrentThread.CurrentCulture.ToString & "/" & Thread.CurrentThread.CurrentUICulture.ToString)
+        wb_GetKonfig.SetLanguage()
+        Debug.Print("Language/Localisation " & Thread.CurrentThread.CurrentCulture.ToString & "/" & Thread.CurrentThread.CurrentUICulture.ToString)
     End Sub
-
 
 End Class

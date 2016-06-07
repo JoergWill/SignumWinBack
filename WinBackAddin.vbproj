@@ -233,8 +233,14 @@
     <EmbeddedResource Include="wb_01_Forms\wb_Artikel_Main.resx">
       <DependentUpon>wb_Artikel_Main.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms\wb_Linien_Details.en.resx">
+      <DependentUpon>wb_Linien_Details.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms\wb_Linien_Details.resx">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms\wb_Linien_Liste.en.resx">
+      <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms\wb_Linien_Liste.resx">
       <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
@@ -244,6 +250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms\wb_MainTemplate.resx">
       <DependentUpon>wb_MainTemplate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms\wb_User_Details.en.resx">
+      <DependentUpon>wb_User_Details.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms\wb_User_Details.resx">
       <DependentUpon>wb_User_Details.vb</DependentUpon>

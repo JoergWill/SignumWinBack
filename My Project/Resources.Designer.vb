@@ -101,6 +101,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Label2 ähnelt.
+        '''</summary>
+        Public ReadOnly Property Label2() As String
+            Get
+                Return ResourceManager.GetString("Label2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
         Public ReadOnly Property Leer_16x16() As System.Drawing.Bitmap
@@ -367,6 +376,15 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("MainUser_32x32", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die $this ähnelt.
+        '''</summary>
+        Public ReadOnly Property This() As String
+            Get
+                Return ResourceManager.GetString("This", resourceCulture)
             End Get
         End Property
         

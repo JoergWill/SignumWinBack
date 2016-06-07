@@ -1,5 +1,7 @@
 ﻿Imports Signum.OrgaSoft.AddIn
 Imports WeifenLuo.WinFormsUI.Docking
+Imports System.Globalization
+Imports System.Threading
 
 Public Class Linien_Main
     Public LinienListe As New wb_Linien_Liste
@@ -43,6 +45,7 @@ Public Class Linien_Main
 
     Private Sub Linien_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadDockBarConfig()
+        Debug.Print("Language/Localisation Linien " & Thread.CurrentThread.CurrentCulture.ToString & "/" & Thread.CurrentThread.CurrentUICulture.ToString)
     End Sub
 
     Public Sub BtnLinienNew()

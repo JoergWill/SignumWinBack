@@ -24,60 +24,70 @@ Partial Class WinBack
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(WinBack))
         Me.Ribbon1 = New System.Windows.Forms.Ribbon()
+        Me.RibbonOrbMenuItem1 = New System.Windows.Forms.RibbonOrbMenuItem()
         Me.RibbonSeparator1 = New System.Windows.Forms.RibbonSeparator()
+        Me.RibbonOrbOptionButton1 = New System.Windows.Forms.RibbonOrbOptionButton()
+        Me.RibbonButton1 = New System.Windows.Forms.RibbonButton()
         Me.rbChargen = New System.Windows.Forms.RibbonTab()
         Me.RibbonPanel1 = New System.Windows.Forms.RibbonPanel()
         Me.rbArtikel = New System.Windows.Forms.RibbonTab()
         Me.rbRezepte = New System.Windows.Forms.RibbonTab()
         Me.rbRohstoffe = New System.Windows.Forms.RibbonTab()
         Me.rbUser = New System.Windows.Forms.RibbonTab()
-        Me.rbLinien = New System.Windows.Forms.RibbonTab()
-        Me.rPLinien = New System.Windows.Forms.RibbonPanel()
-        Me.RibbonTab1 = New System.Windows.Forms.RibbonTab()
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
-        Me.lblVersion = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.lblNetworkIP = New System.Windows.Forms.ToolStripStatusLabel()
         Me.rpUser = New System.Windows.Forms.RibbonPanel()
-        Me.RibbonOrbMenuItem1 = New System.Windows.Forms.RibbonOrbMenuItem()
-        Me.RibbonOrbOptionButton1 = New System.Windows.Forms.RibbonOrbOptionButton()
-        Me.RibbonButton1 = New System.Windows.Forms.RibbonButton()
         Me.rbUserNeu = New System.Windows.Forms.RibbonButton()
         Me.rbPasswort = New System.Windows.Forms.RibbonButton()
         Me.rbListeDrucken = New System.Windows.Forms.RibbonButton()
         Me.rbUserGruppen = New System.Windows.Forms.RibbonButton()
+        Me.rbLinien = New System.Windows.Forms.RibbonTab()
+        Me.rPLinien = New System.Windows.Forms.RibbonPanel()
         Me.rbLinienAdd = New System.Windows.Forms.RibbonButton()
         Me.rbLinienEdit = New System.Windows.Forms.RibbonButton()
         Me.rbLinienDel = New System.Windows.Forms.RibbonButton()
         Me.rbLinienAuto = New System.Windows.Forms.RibbonButton()
+        Me.RibbonTab1 = New System.Windows.Forms.RibbonTab()
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.lblVersion = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblNetworkIP = New System.Windows.Forms.ToolStripStatusLabel()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Ribbon1
         '
-        Me.Ribbon1.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.Ribbon1.Location = New System.Drawing.Point(0, 0)
+        resources.ApplyResources(Me.Ribbon1, "Ribbon1")
         Me.Ribbon1.Minimized = False
         Me.Ribbon1.Name = "Ribbon1"
         '
         '
         '
+        Me.Ribbon1.OrbDropDown.AccessibleDescription = resources.GetString("Ribbon1.OrbDropDown.AccessibleDescription")
+        Me.Ribbon1.OrbDropDown.AccessibleName = resources.GetString("Ribbon1.OrbDropDown.AccessibleName")
+        Me.Ribbon1.OrbDropDown.Anchor = CType(resources.GetObject("Ribbon1.OrbDropDown.Anchor"), System.Windows.Forms.AnchorStyles)
+        Me.Ribbon1.OrbDropDown.BackgroundImage = CType(resources.GetObject("Ribbon1.OrbDropDown.BackgroundImage"), System.Drawing.Image)
+        Me.Ribbon1.OrbDropDown.BackgroundImageLayout = CType(resources.GetObject("Ribbon1.OrbDropDown.BackgroundImageLayout"), System.Windows.Forms.ImageLayout)
         Me.Ribbon1.OrbDropDown.BorderRoundness = 8
-        Me.Ribbon1.OrbDropDown.Location = New System.Drawing.Point(0, 0)
+        Me.Ribbon1.OrbDropDown.Dock = CType(resources.GetObject("Ribbon1.OrbDropDown.Dock"), System.Windows.Forms.DockStyle)
+        Me.Ribbon1.OrbDropDown.Font = CType(resources.GetObject("Ribbon1.OrbDropDown.Font"), System.Drawing.Font)
+        Me.Ribbon1.OrbDropDown.ImeMode = CType(resources.GetObject("Ribbon1.OrbDropDown.ImeMode"), System.Windows.Forms.ImeMode)
+        Me.Ribbon1.OrbDropDown.Location = CType(resources.GetObject("Ribbon1.OrbDropDown.Location"), System.Drawing.Point)
+        Me.Ribbon1.OrbDropDown.MaximumSize = CType(resources.GetObject("Ribbon1.OrbDropDown.MaximumSize"), System.Drawing.Size)
         Me.Ribbon1.OrbDropDown.MenuItems.Add(Me.RibbonOrbMenuItem1)
         Me.Ribbon1.OrbDropDown.MenuItems.Add(Me.RibbonSeparator1)
         Me.Ribbon1.OrbDropDown.Name = ""
         Me.Ribbon1.OrbDropDown.OptionItems.Add(Me.RibbonOrbOptionButton1)
-        Me.Ribbon1.OrbDropDown.Size = New System.Drawing.Size(527, 119)
-        Me.Ribbon1.OrbDropDown.TabIndex = 0
+        Me.Ribbon1.OrbDropDown.RightToLeft = CType(resources.GetObject("Ribbon1.OrbDropDown.RightToLeft"), System.Windows.Forms.RightToLeft)
+        Me.Ribbon1.OrbDropDown.Size = CType(resources.GetObject("Ribbon1.OrbDropDown.Size"), System.Drawing.Size)
+        Me.Ribbon1.OrbDropDown.TabIndex = CType(resources.GetObject("Ribbon1.OrbDropDown.TabIndex"), Integer)
         Me.Ribbon1.OrbImage = Nothing
         Me.Ribbon1.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2010
         '
         '
         '
         Me.Ribbon1.QuickAcessToolbar.Items.Add(Me.RibbonButton1)
+        Me.Ribbon1.QuickAcessToolbar.Text = resources.GetString("Ribbon1.QuickAcessToolbar.Text")
+        Me.Ribbon1.QuickAcessToolbar.ToolTip = resources.GetString("Ribbon1.QuickAcessToolbar.ToolTip")
+        Me.Ribbon1.QuickAcessToolbar.ToolTipImage = CType(resources.GetObject("Ribbon1.QuickAcessToolbar.ToolTipImage"), System.Drawing.Image)
         Me.Ribbon1.RibbonTabFont = New System.Drawing.Font("Trebuchet MS", 9.0!)
-        Me.Ribbon1.Size = New System.Drawing.Size(1059, 145)
-        Me.Ribbon1.TabIndex = 2
         Me.Ribbon1.Tabs.Add(Me.rbChargen)
         Me.Ribbon1.Tabs.Add(Me.rbArtikel)
         Me.Ribbon1.Tabs.Add(Me.rbRezepte)
@@ -86,72 +96,57 @@ Partial Class WinBack
         Me.Ribbon1.Tabs.Add(Me.rbLinien)
         Me.Ribbon1.Tabs.Add(Me.RibbonTab1)
         Me.Ribbon1.TabsMargin = New System.Windows.Forms.Padding(12, 26, 20, 0)
-        Me.Ribbon1.Text = "Ribbon1"
         Me.Ribbon1.ThemeColor = System.Windows.Forms.RibbonTheme.Blue
+        '
+        'RibbonOrbMenuItem1
+        '
+        Me.RibbonOrbMenuItem1.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
+        Me.RibbonOrbMenuItem1.Image = CType(resources.GetObject("RibbonOrbMenuItem1.Image"), System.Drawing.Image)
+        Me.RibbonOrbMenuItem1.SmallImage = CType(resources.GetObject("RibbonOrbMenuItem1.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbMenuItem1, "RibbonOrbMenuItem1")
+        '
+        'RibbonSeparator1
+        '
+        resources.ApplyResources(Me.RibbonSeparator1, "RibbonSeparator1")
+        '
+        'RibbonOrbOptionButton1
+        '
+        Me.RibbonOrbOptionButton1.Image = CType(resources.GetObject("RibbonOrbOptionButton1.Image"), System.Drawing.Image)
+        Me.RibbonOrbOptionButton1.SmallImage = CType(resources.GetObject("RibbonOrbOptionButton1.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbOptionButton1, "RibbonOrbOptionButton1")
+        '
+        'RibbonButton1
+        '
+        Me.RibbonButton1.Image = CType(resources.GetObject("RibbonButton1.Image"), System.Drawing.Image)
+        Me.RibbonButton1.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact
+        Me.RibbonButton1.SmallImage = CType(resources.GetObject("RibbonButton1.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonButton1, "RibbonButton1")
         '
         'rbChargen
         '
         Me.rbChargen.Panels.Add(Me.RibbonPanel1)
-        Me.rbChargen.Text = "Chargen"
+        resources.ApplyResources(Me.rbChargen, "rbChargen")
         '
         'RibbonPanel1
         '
-        Me.RibbonPanel1.Text = "RibbonPanel1"
+        resources.ApplyResources(Me.RibbonPanel1, "RibbonPanel1")
         '
         'rbArtikel
         '
-        Me.rbArtikel.Text = "Artikel"
+        resources.ApplyResources(Me.rbArtikel, "rbArtikel")
         '
         'rbRezepte
         '
-        Me.rbRezepte.Text = "Rezepte"
+        resources.ApplyResources(Me.rbRezepte, "rbRezepte")
         '
         'rbRohstoffe
         '
-        Me.rbRohstoffe.Text = "Rohstoffe"
+        resources.ApplyResources(Me.rbRohstoffe, "rbRohstoffe")
         '
         'rbUser
         '
         Me.rbUser.Panels.Add(Me.rpUser)
-        Me.rbUser.Text = "Benutzer"
-        '
-        'rbLinien
-        '
-        Me.rbLinien.Panels.Add(Me.rPLinien)
-        Me.rbLinien.Text = "Linien"
-        '
-        'rPLinien
-        '
-        Me.rPLinien.Items.Add(Me.rbLinienAdd)
-        Me.rPLinien.Items.Add(Me.rbLinienEdit)
-        Me.rPLinien.Items.Add(Me.rbLinienDel)
-        Me.rPLinien.Items.Add(Me.rbLinienAuto)
-        Me.rPLinien.Text = "Linien"
-        '
-        'RibbonTab1
-        '
-        Me.RibbonTab1.Text = "RibbonTab1"
-        '
-        'StatusStrip1
-        '
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblVersion, Me.lblNetworkIP})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 624)
-        Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1059, 22)
-        Me.StatusStrip1.TabIndex = 4
-        Me.StatusStrip1.Text = "StatusStrip1"
-        '
-        'lblVersion
-        '
-        Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(121, 17)
-        Me.lblVersion.Text = "ToolStripStatusLabel1"
-        '
-        'lblNetworkIP
-        '
-        Me.lblNetworkIP.Name = "lblNetworkIP"
-        Me.lblNetworkIP.Size = New System.Drawing.Size(121, 17)
-        Me.lblNetworkIP.Text = "ToolStripStatusLabel2"
+        resources.ApplyResources(Me.rbUser, "rbUser")
         '
         'rpUser
         '
@@ -159,91 +154,97 @@ Partial Class WinBack
         Me.rpUser.Items.Add(Me.rbPasswort)
         Me.rpUser.Items.Add(Me.rbListeDrucken)
         Me.rpUser.Items.Add(Me.rbUserGruppen)
-        Me.rpUser.Text = "Benutzer-Verwaltung"
-        '
-        'RibbonOrbMenuItem1
-        '
-        Me.RibbonOrbMenuItem1.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
-        Me.RibbonOrbMenuItem1.Image = CType(resources.GetObject("RibbonOrbMenuItem1.Image"), System.Drawing.Image)
-        Me.RibbonOrbMenuItem1.SmallImage = CType(resources.GetObject("RibbonOrbMenuItem1.SmallImage"), System.Drawing.Image)
-        Me.RibbonOrbMenuItem1.Text = "Datei"
-        '
-        'RibbonOrbOptionButton1
-        '
-        Me.RibbonOrbOptionButton1.Image = CType(resources.GetObject("RibbonOrbOptionButton1.Image"), System.Drawing.Image)
-        Me.RibbonOrbOptionButton1.SmallImage = CType(resources.GetObject("RibbonOrbOptionButton1.SmallImage"), System.Drawing.Image)
-        Me.RibbonOrbOptionButton1.Text = "RibbonOrbOptionButton1"
-        '
-        'RibbonButton1
-        '
-        Me.RibbonButton1.Image = CType(resources.GetObject("RibbonButton1.Image"), System.Drawing.Image)
-        Me.RibbonButton1.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact
-        Me.RibbonButton1.SmallImage = CType(resources.GetObject("RibbonButton1.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton1.Text = "RibbonButton1"
+        resources.ApplyResources(Me.rpUser, "rpUser")
         '
         'rbUserNeu
         '
         Me.rbUserNeu.Image = Global.WinBack.My.Resources.Resources.UserNeu_32x32
         Me.rbUserNeu.SmallImage = CType(resources.GetObject("rbUserNeu.SmallImage"), System.Drawing.Image)
-        Me.rbUserNeu.Text = "Neu"
-        Me.rbUserNeu.ToolTip = "Benutzer neu anlegen"
+        resources.ApplyResources(Me.rbUserNeu, "rbUserNeu")
         '
         'rbPasswort
         '
         Me.rbPasswort.Image = Global.WinBack.My.Resources.Resources.UserPasswd_32x32
         Me.rbPasswort.SmallImage = CType(resources.GetObject("rbPasswort.SmallImage"), System.Drawing.Image)
-        Me.rbPasswort.Text = "Passwort ändern"
-        Me.rbPasswort.ToolTip = "Benutzer - Anmeldecode ändern"
+        resources.ApplyResources(Me.rbPasswort, "rbPasswort")
         '
         'rbListeDrucken
         '
         Me.rbListeDrucken.Image = Global.WinBack.My.Resources.Resources.UserListe_32x32
         Me.rbListeDrucken.SmallImage = CType(resources.GetObject("rbListeDrucken.SmallImage"), System.Drawing.Image)
-        Me.rbListeDrucken.Text = "Liste drucken"
-        Me.rbListeDrucken.ToolTip = "Liste aller WinBack-Benutzer ausdrucken"
+        resources.ApplyResources(Me.rbListeDrucken, "rbListeDrucken")
         '
         'rbUserGruppen
         '
         Me.rbUserGruppen.Image = Global.WinBack.My.Resources.Resources.UserGruppen_32x32
         Me.rbUserGruppen.SmallImage = CType(resources.GetObject("rbUserGruppen.SmallImage"), System.Drawing.Image)
-        Me.rbUserGruppen.Text = "Gruppen"
-        Me.rbUserGruppen.ToolTip = "Verwalten der Benutzer-Gruppen und Rechte"
+        resources.ApplyResources(Me.rbUserGruppen, "rbUserGruppen")
+        '
+        'rbLinien
+        '
+        Me.rbLinien.Panels.Add(Me.rPLinien)
+        resources.ApplyResources(Me.rbLinien, "rbLinien")
+        '
+        'rPLinien
+        '
+        Me.rPLinien.Items.Add(Me.rbLinienAdd)
+        Me.rPLinien.Items.Add(Me.rbLinienEdit)
+        Me.rPLinien.Items.Add(Me.rbLinienDel)
+        Me.rPLinien.Items.Add(Me.rbLinienAuto)
+        resources.ApplyResources(Me.rPLinien, "rPLinien")
         '
         'rbLinienAdd
         '
         Me.rbLinienAdd.Image = Global.WinBack.My.Resources.Resources.LinienNeu_32x32
         Me.rbLinienAdd.SmallImage = CType(resources.GetObject("rbLinienAdd.SmallImage"), System.Drawing.Image)
-        Me.rbLinienAdd.Text = "Linie neu"
-        Me.rbLinienAdd.ToolTip = "Vnc-Viewer für eine neue Linie anlegen"
+        resources.ApplyResources(Me.rbLinienAdd, "rbLinienAdd")
         '
         'rbLinienEdit
         '
         Me.rbLinienEdit.Image = Global.WinBack.My.Resources.Resources.LinienBearbeiten_32x32
         Me.rbLinienEdit.SmallImage = CType(resources.GetObject("rbLinienEdit.SmallImage"), System.Drawing.Image)
-        Me.rbLinienEdit.Text = "Linie bearbeiten"
+        resources.ApplyResources(Me.rbLinienEdit, "rbLinienEdit")
         '
         'rbLinienDel
         '
         Me.rbLinienDel.Image = Global.WinBack.My.Resources.Resources.LinienLoeschen_32x32
         Me.rbLinienDel.SmallImage = CType(resources.GetObject("rbLinienDel.SmallImage"), System.Drawing.Image)
-        Me.rbLinienDel.Text = "Linie löschen"
+        resources.ApplyResources(Me.rbLinienDel, "rbLinienDel")
         '
         'rbLinienAuto
         '
         Me.rbLinienAuto.Image = Global.WinBack.My.Resources.Resources.LinienAutoInstall_32x32
         Me.rbLinienAuto.SmallImage = CType(resources.GetObject("rbLinienAuto.SmallImage"), System.Drawing.Image)
-        Me.rbLinienAuto.Text = "Auto Install"
+        resources.ApplyResources(Me.rbLinienAuto, "rbLinienAuto")
+        '
+        'RibbonTab1
+        '
+        resources.ApplyResources(Me.RibbonTab1, "RibbonTab1")
+        '
+        'StatusStrip1
+        '
+        resources.ApplyResources(Me.StatusStrip1, "StatusStrip1")
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblVersion, Me.lblNetworkIP})
+        Me.StatusStrip1.Name = "StatusStrip1"
+        '
+        'lblVersion
+        '
+        resources.ApplyResources(Me.lblVersion, "lblVersion")
+        Me.lblVersion.Name = "lblVersion"
+        '
+        'lblNetworkIP
+        '
+        resources.ApplyResources(Me.lblNetworkIP, "lblNetworkIP")
+        Me.lblNetworkIP.Name = "lblNetworkIP"
         '
         'WinBack
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1059, 646)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.Ribbon1)
         Me.IsMdiContainer = True
         Me.Name = "WinBack"
-        Me.Text = "WinBack - UI-Test"
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
         Me.ResumeLayout(False)

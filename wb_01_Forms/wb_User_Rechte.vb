@@ -42,8 +42,6 @@ Public Class wb_User_Rechte
                 sText = winback.sField("T_Text")
                 iAttr = winback.iField("AT_Wert2int")
 
-                Debug.Print("UserRechte " & winback.sField("IT_Bezeichnung") & " " & winback.sField("II_Kommentar") & " " & winback.sField("T_Text"))
-
                 If (TreeView.Nodes.Count = 0) Or oldBezeichnung <> sBezeichnung Then
                     newNode = New TreeNode(sBezeichnung)
                     newNode.ImageIndex = 0

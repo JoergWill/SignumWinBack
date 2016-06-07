@@ -22,6 +22,7 @@ Partial Class wb_Linien_Main
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Linien_Main))
         Dim DockPanelSkin1 As WeifenLuo.WinFormsUI.Docking.DockPanelSkin = New WeifenLuo.WinFormsUI.Docking.DockPanelSkin()
         Dim AutoHideStripSkin1 As WeifenLuo.WinFormsUI.Docking.AutoHideStripSkin = New WeifenLuo.WinFormsUI.Docking.AutoHideStripSkin()
         Dim DockPanelGradient1 As WeifenLuo.WinFormsUI.Docking.DockPanelGradient = New WeifenLuo.WinFormsUI.Docking.DockPanelGradient()
@@ -42,15 +43,11 @@ Partial Class wb_Linien_Main
         '
         'DockPanel
         '
-        Me.DockPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.DockPanel, "DockPanel")
         Me.DockPanel.BackColor = System.Drawing.Color.Gainsboro
         Me.DockPanel.DockBackColor = System.Drawing.Color.Gainsboro
         Me.DockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow
-        Me.DockPanel.Location = New System.Drawing.Point(0, 0)
         Me.DockPanel.Name = "DockPanel"
-        Me.DockPanel.Size = New System.Drawing.Size(877, 487)
         DockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight
         DockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight
         AutoHideStripSkin1.DockStripGradient = DockPanelGradient1
@@ -97,16 +94,14 @@ Partial Class wb_Linien_Main
         DockPaneStripSkin1.ToolWindowGradient = DockPaneStripToolWindowGradient1
         DockPanelSkin1.DockPaneStripSkin = DockPaneStripSkin1
         Me.DockPanel.Skin = DockPanelSkin1
-        Me.DockPanel.TabIndex = 3
         '
         'wb_Linien_Main
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.GradientInactiveCaption
         Me.Controls.Add(Me.DockPanel)
         Me.Name = "wb_Linien_Main"
-        Me.Size = New System.Drawing.Size(880, 490)
         Me.ResumeLayout(False)
 
     End Sub
