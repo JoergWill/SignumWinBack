@@ -227,8 +227,8 @@ Public Class wb_Main_Menu
     'globale System-Konfiguration aus winback.ini einlesen und verfügbar machen
     Private Sub ReadSystemKonfig()
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
-        wb_GetKonfig.MySqlSetting()
-        wb_GetKonfig.SetColors()
+        wb_Konfig.MySqlSetting()
+        wb_Konfig.SetColors()
     End Sub
 
 End Class

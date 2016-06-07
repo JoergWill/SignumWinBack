@@ -22,6 +22,9 @@ Partial Class WinBack
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        'Sprachumschaltung (07.06.2016/JW)
+        My.Application.ChangeUICulture(Signum.OrgaSoft.AddIn.wb_Konfig.GetLanguage)
+
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(WinBack))
         Me.Ribbon1 = New System.Windows.Forms.Ribbon()
         Me.RibbonOrbMenuItem1 = New System.Windows.Forms.RibbonOrbMenuItem()
@@ -49,6 +52,8 @@ Partial Class WinBack
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.lblVersion = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblNetworkIP = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.RibbonPanel2 = New System.Windows.Forms.RibbonPanel()
+        Me.rbText = New System.Windows.Forms.RibbonButton()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -60,22 +65,12 @@ Partial Class WinBack
         '
         '
         '
-        Me.Ribbon1.OrbDropDown.AccessibleDescription = resources.GetString("Ribbon1.OrbDropDown.AccessibleDescription")
-        Me.Ribbon1.OrbDropDown.AccessibleName = resources.GetString("Ribbon1.OrbDropDown.AccessibleName")
-        Me.Ribbon1.OrbDropDown.Anchor = CType(resources.GetObject("Ribbon1.OrbDropDown.Anchor"), System.Windows.Forms.AnchorStyles)
-        Me.Ribbon1.OrbDropDown.BackgroundImage = CType(resources.GetObject("Ribbon1.OrbDropDown.BackgroundImage"), System.Drawing.Image)
-        Me.Ribbon1.OrbDropDown.BackgroundImageLayout = CType(resources.GetObject("Ribbon1.OrbDropDown.BackgroundImageLayout"), System.Windows.Forms.ImageLayout)
         Me.Ribbon1.OrbDropDown.BorderRoundness = 8
-        Me.Ribbon1.OrbDropDown.Dock = CType(resources.GetObject("Ribbon1.OrbDropDown.Dock"), System.Windows.Forms.DockStyle)
-        Me.Ribbon1.OrbDropDown.Font = CType(resources.GetObject("Ribbon1.OrbDropDown.Font"), System.Drawing.Font)
-        Me.Ribbon1.OrbDropDown.ImeMode = CType(resources.GetObject("Ribbon1.OrbDropDown.ImeMode"), System.Windows.Forms.ImeMode)
         Me.Ribbon1.OrbDropDown.Location = CType(resources.GetObject("Ribbon1.OrbDropDown.Location"), System.Drawing.Point)
-        Me.Ribbon1.OrbDropDown.MaximumSize = CType(resources.GetObject("Ribbon1.OrbDropDown.MaximumSize"), System.Drawing.Size)
         Me.Ribbon1.OrbDropDown.MenuItems.Add(Me.RibbonOrbMenuItem1)
         Me.Ribbon1.OrbDropDown.MenuItems.Add(Me.RibbonSeparator1)
         Me.Ribbon1.OrbDropDown.Name = ""
         Me.Ribbon1.OrbDropDown.OptionItems.Add(Me.RibbonOrbOptionButton1)
-        Me.Ribbon1.OrbDropDown.RightToLeft = CType(resources.GetObject("Ribbon1.OrbDropDown.RightToLeft"), System.Windows.Forms.RightToLeft)
         Me.Ribbon1.OrbDropDown.Size = CType(resources.GetObject("Ribbon1.OrbDropDown.Size"), System.Drawing.Size)
         Me.Ribbon1.OrbDropDown.TabIndex = CType(resources.GetObject("Ribbon1.OrbDropDown.TabIndex"), Integer)
         Me.Ribbon1.OrbImage = Nothing
@@ -84,9 +79,6 @@ Partial Class WinBack
         '
         '
         Me.Ribbon1.QuickAcessToolbar.Items.Add(Me.RibbonButton1)
-        Me.Ribbon1.QuickAcessToolbar.Text = resources.GetString("Ribbon1.QuickAcessToolbar.Text")
-        Me.Ribbon1.QuickAcessToolbar.ToolTip = resources.GetString("Ribbon1.QuickAcessToolbar.ToolTip")
-        Me.Ribbon1.QuickAcessToolbar.ToolTipImage = CType(resources.GetObject("Ribbon1.QuickAcessToolbar.ToolTipImage"), System.Drawing.Image)
         Me.Ribbon1.RibbonTabFont = New System.Drawing.Font("Trebuchet MS", 9.0!)
         Me.Ribbon1.Tabs.Add(Me.rbChargen)
         Me.Ribbon1.Tabs.Add(Me.rbArtikel)
@@ -104,10 +96,6 @@ Partial Class WinBack
         Me.RibbonOrbMenuItem1.Image = CType(resources.GetObject("RibbonOrbMenuItem1.Image"), System.Drawing.Image)
         Me.RibbonOrbMenuItem1.SmallImage = CType(resources.GetObject("RibbonOrbMenuItem1.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.RibbonOrbMenuItem1, "RibbonOrbMenuItem1")
-        '
-        'RibbonSeparator1
-        '
-        resources.ApplyResources(Me.RibbonSeparator1, "RibbonSeparator1")
         '
         'RibbonOrbOptionButton1
         '
@@ -219,23 +207,35 @@ Partial Class WinBack
         '
         'RibbonTab1
         '
+        Me.RibbonTab1.Panels.Add(Me.RibbonPanel2)
         resources.ApplyResources(Me.RibbonTab1, "RibbonTab1")
         '
         'StatusStrip1
         '
-        resources.ApplyResources(Me.StatusStrip1, "StatusStrip1")
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblVersion, Me.lblNetworkIP})
+        resources.ApplyResources(Me.StatusStrip1, "StatusStrip1")
         Me.StatusStrip1.Name = "StatusStrip1"
         '
         'lblVersion
         '
-        resources.ApplyResources(Me.lblVersion, "lblVersion")
         Me.lblVersion.Name = "lblVersion"
+        resources.ApplyResources(Me.lblVersion, "lblVersion")
         '
         'lblNetworkIP
         '
-        resources.ApplyResources(Me.lblNetworkIP, "lblNetworkIP")
         Me.lblNetworkIP.Name = "lblNetworkIP"
+        resources.ApplyResources(Me.lblNetworkIP, "lblNetworkIP")
+        '
+        'RibbonPanel2
+        '
+        Me.RibbonPanel2.Items.Add(Me.rbText)
+        resources.ApplyResources(Me.RibbonPanel2, "RibbonPanel2")
+        '
+        'rbText
+        '
+        Me.rbText.Image = CType(resources.GetObject("rbText.Image"), System.Drawing.Image)
+        Me.rbText.SmallImage = CType(resources.GetObject("rbText.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbText, "rbText")
         '
         'WinBack
         '
@@ -277,4 +277,6 @@ Partial Class WinBack
     Friend WithEvents rbPasswort As RibbonButton
     Friend WithEvents rbListeDrucken As RibbonButton
     Friend WithEvents rbUserGruppen As RibbonButton
+    Friend WithEvents RibbonPanel2 As RibbonPanel
+    Friend WithEvents rbText As RibbonButton
 End Class

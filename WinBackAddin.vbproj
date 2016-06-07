@@ -127,7 +127,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
-    <Compile Include="wb_00_Klassen\wb_GetKonfig.vb" />
+    <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
     <Compile Include="wb_01_Forms\wb_User.vb" />
     <Compile Include="wb_01_Forms\wb_Linien.vb" />
     <Compile Include="wb_01_Forms\wb_User_Details.Designer.vb">
@@ -183,7 +183,7 @@
     </Compile>
     <Compile Include="wb_00_Klassen\wb_Functions.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql.vb" />
-    <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
+    <Compile Include="wb_00_Klassen\wb_IniFile.vb" />
     <Compile Include="Settings.vb" />
     <Compile Include="wb_01_Forms\wb_Linien_Main.Designer.vb">
       <DependentUpon>wb_Linien_Main.vb</DependentUpon>

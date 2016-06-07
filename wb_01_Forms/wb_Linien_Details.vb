@@ -7,7 +7,6 @@ Public Class wb_Linien_Details
 
     Private Sub LinienDetails_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         AddHandler wb_Linien.eListe_Click, AddressOf DetailInfo
-        Debug.Print("Language/Localisation wb_Linien_Details " & Thread.CurrentThread.CurrentCulture.ToString & "/" & Thread.CurrentThread.CurrentUICulture.ToString)
     End Sub
 
     Private Sub Panel_Leave(sender As Object, e As EventArgs) Handles Panel.Leave

@@ -226,7 +226,7 @@ Public Class wb_DataGridView
 
     'Spaltenbreiten in winback.ini schreiben
     Public Sub SaveToDisk(sGridName As String)
-        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
+        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
         Dim sColumn As String
 
         For i = 0 To ColumnCount - 1
@@ -241,7 +241,7 @@ Public Class wb_DataGridView
 
     'Spaltenbreiten aus winback.ini lesen
     Private Sub LoadFromDisk(sGridName As String)
-        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
+        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
         Dim w, i As Integer
 
         For i = 0 To ColumnCount - 1

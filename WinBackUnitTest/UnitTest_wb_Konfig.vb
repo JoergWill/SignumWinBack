@@ -1,6 +1,6 @@
 ﻿Imports System.Text
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
+Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
 
 
 <TestClass()> Public Class UnitTest_wb_Konfig
@@ -8,7 +8,7 @@ Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
     <TestMethod()>
     Public Sub Test_wb_Konfig()
         ' Test Ini-File lesen/schreiben
-        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
+        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
 
         Dim bTest As Boolean
         Dim iTest As Integer

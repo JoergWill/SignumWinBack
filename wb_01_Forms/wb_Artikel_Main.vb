@@ -11,7 +11,7 @@
 Imports System.Windows.Forms
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
-Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
+Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Artikel_Main

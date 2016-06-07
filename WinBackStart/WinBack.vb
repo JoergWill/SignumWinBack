@@ -83,17 +83,16 @@ Public Class WinBack
 
     Private Sub WinBack_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
-        wb_GetKonfig.MySqlSetting()
+        wb_Konfig.MySqlSetting()
         'Version in Status-Bar anzeigen
         lblVersion.Text = "WinBack V" & My.Application.Info.Version.ToString
         'IP-Adresse in Status-Bar anzeigen
-        lblNetworkIP.Text = wb_GetKonfig.DbType & " " & wb_GetKonfig.SqlIP
+        lblNetworkIP.Text = wb_Konfig.DbType & " " & wb_Konfig.SqlIP
         'Farbschema einstellen
-        wb_GetKonfig.SetColors()
-        'Sprache einstellen
-        Debug.Print("Language/Localisation " & Thread.CurrentThread.CurrentCulture.ToString & "/" & Thread.CurrentThread.CurrentUICulture.ToString)
-        wb_GetKonfig.SetLanguage()
-        Debug.Print("Language/Localisation " & Thread.CurrentThread.CurrentCulture.ToString & "/" & Thread.CurrentThread.CurrentUICulture.ToString)
+        wb_Konfig.SetColors()
     End Sub
 
+    Private Sub rbText_Click(sender As Object, e As EventArgs) Handles rbText.Click
+        wb_Konfig.SetLanguage("de")
+    End Sub
 End Class

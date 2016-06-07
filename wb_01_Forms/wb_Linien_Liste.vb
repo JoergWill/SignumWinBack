@@ -17,7 +17,7 @@ Public Class wb_Linien_Liste
 
     Public Sub LoadItems()
         ' Auslesen aus .ini-Datei
-        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
+        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
         Dim i As Integer = 0
         Dim IPAdresse, IPComment As String
         Dim ListItem As ListViewItem
@@ -36,7 +36,7 @@ Public Class wb_Linien_Liste
     End Sub
 
     Public Sub SaveItems()
-        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_Konfig
+        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
         Dim i As Integer
         For i = 1 To VNCview.Items.Count
             IniFile.WriteString("VNC", "IP" & i.ToString, VNCview.Items(i - 1).Name)

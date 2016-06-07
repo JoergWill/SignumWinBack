@@ -6,7 +6,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="AktLanguage" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">en</Value>
     </Setting>
     <Setting Name="MySQLServerIP" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
