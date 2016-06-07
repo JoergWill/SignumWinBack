@@ -47,8 +47,11 @@
     'Anstelle der Gruppen-Nummer wird die Gruppen-Bezeichnung ausgegeben
     'die Texte kommen aus eine HashTable
     Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
-        If e.ColumnIndex = GrpIdxColumn Then
-            e.Value = wb_User.GrpTexte(CInt(e.Value)).ToString
-        End If
+        Try
+            If e.ColumnIndex = GrpIdxColumn Then
+                e.Value = wb_User.GrpTexte(CInt(e.Value)).ToString
+            End If
+        Catch
+        End Try
     End Sub
 End Class
