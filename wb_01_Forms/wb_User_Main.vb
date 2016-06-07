@@ -112,7 +112,6 @@ Public Class wb_User_Main
         Return False
     End Function
 
-
     Private Sub wb_User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' DockBar Konfiguration aus XML-Datei lesen
         LoadDockBarConfig()
