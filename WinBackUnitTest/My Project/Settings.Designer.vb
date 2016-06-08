@@ -53,6 +53,51 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=OrgasoftMain; Integrated Security=True")>  _
+        Public ReadOnly Property MsSQLConWinBack() As String
+            Get
+                Return CType(Me("MsSQLConWinBack"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public ReadOnly Property MySQLConWinBack() As String
+            Get
+                Return CType(Me("MySQLConWinBack"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("172.16.17.231")>  _
+        Public ReadOnly Property MySQLServerIP() As String
+            Get
+                Return CType(Me("MySQLServerIP"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public ReadOnly Property TestMsSQL() As Boolean
+            Get
+                Return CType(Me("TestMsSQL"),Boolean)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public ReadOnly Property TestMySQL() As Boolean
+            Get
+                Return CType(Me("TestMySQL"),Boolean)
+            End Get
+        End Property
     End Class
 End Namespace
 
