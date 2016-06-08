@@ -16,7 +16,9 @@ Public Class UITest_WinBack
         ' To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
         '
         Me.UIMap.Check_WinBack_Started()
-        Me.UIMap.CheckStatusLine()
+        'Me.UIMap.CheckStatusLine()
+        Me.UIMap.TestLinien()
+
     End Sub
 
 #Region "Additional test attributes"
@@ -24,11 +26,17 @@ Public Class UITest_WinBack
     ' You can use the following additional attributes as you write your tests:
     '
     '' Use TestInitialize to run code before running each test
-    '<TestInitialize()> Public Sub MyTestInitialize()
-    '    '
-    '    ' To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
-    '    '
-    'End Sub
+    <TestInitialize()>
+    Public Sub MyTestInitialize()
+        '    '
+        '    ' To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
+        '    '
+        'Get Application Path
+        Dim AppPath As String = Me.TestContext.DeploymentDirectory
+        AppPath = Left(AppPath, InStr(AppPath, "TestResults") - 1) & "WinBackStart\bin\Debug\" & "WinBackStart.exe"
+        'Start program under test (WinBackStart)
+        Process.Start(AppPath)
+    End Sub
 
     '' Use TestCleanup to run code after each test has run
     '<TestCleanup()> Public Sub MyTestCleanup()

@@ -47,6 +47,20 @@ Namespace WinBackUITest
             Assert.AreEqual(Me.CheckStatusLineExpectedValues.UIWinBackV1000TextDisplayText, uIWinBackV1000Text.DisplayText, "Statuszeile WinBack fehlt")
         End Sub
         
+        '''<summary>
+        '''TestLinien - Use 'TestLinienParams' to pass parameters into this method.
+        '''</summary>
+        Public Sub TestLinien()
+            Dim uIRibbon1Client As WinClient = Me.UIWinBackUITestWindow.UIRibbon1Window.UIRibbon1Client
+            Dim uIVNCviewList As WinList = Me.UIWinBackUITestWindow.UILinien_MainWindow.UIVNCviewWindow.UIVNCviewList
+
+            'Click 'Ribbon1' client
+            Mouse.Click(uIRibbon1Client, New Point(436, 43))
+
+            'Select 'L1: Teig' in 'VNCview' list box
+            uIVNCviewList.SelectedItemsAsString = Me.TestLinienParams.UIVNCviewListSelectedItemsAsString
+        End Sub
+        
         #Region "Properties"
         Public Overridable ReadOnly Property CheckStatusLineExpectedValues() As CheckStatusLineExpectedValues
             Get
@@ -54,6 +68,15 @@ Namespace WinBackUITest
                     Me.mCheckStatusLineExpectedValues = New CheckStatusLineExpectedValues()
                 End If
                 Return Me.mCheckStatusLineExpectedValues
+            End Get
+        End Property
+        
+        Public Overridable ReadOnly Property TestLinienParams() As TestLinienParams
+            Get
+                If (Me.mTestLinienParams Is Nothing) Then
+                    Me.mTestLinienParams = New TestLinienParams()
+                End If
+                Return Me.mTestLinienParams
             End Get
         End Property
         
@@ -70,6 +93,8 @@ Namespace WinBackUITest
         #Region "Fields"
         Private mCheckStatusLineExpectedValues As CheckStatusLineExpectedValues
         
+        Private mTestLinienParams As TestLinienParams
+        
         Private mUIWinBackUITestWindow As UIWinBackUITestWindow
         #End Region
     End Class
@@ -85,6 +110,20 @@ Namespace WinBackUITest
         '''Verify that the 'DisplayText' property of 'WinBack V1.0.0.0' label equals 'WinBack'
         '''</summary>
         Public UIWinBackV1000TextDisplayText As String = "WinBack"
+        #End Region
+    End Class
+    
+    '''<summary>
+    '''Parameters to be passed into 'TestLinien'
+    '''</summary>
+    <GeneratedCode("Coded UITest Builder", "14.0.23107.0")>  _
+    Public Class TestLinienParams
+        
+        #Region "Fields"
+        '''<summary>
+        '''Select 'L1: Teig' in 'VNCview' list box
+        '''</summary>
+        Public UIVNCviewListSelectedItemsAsString As String = "L1: Teig"
         #End Region
     End Class
     
@@ -117,12 +156,23 @@ Namespace WinBackUITest
                 Return Me.mUIStatusStrip1StatusBar
             End Get
         End Property
+        
+        Public ReadOnly Property UILinien_MainWindow() As UILinien_MainWindow
+            Get
+                If (Me.mUILinien_MainWindow Is Nothing) Then
+                    Me.mUILinien_MainWindow = New UILinien_MainWindow(Me)
+                End If
+                Return Me.mUILinien_MainWindow
+            End Get
+        End Property
         #End Region
         
         #Region "Fields"
         Private mUIRibbon1Window As UIRibbon1Window
         
         Private mUIStatusStrip1StatusBar As UIStatusStrip1StatusBar
+        
+        Private mUILinien_MainWindow As UILinien_MainWindow
         #End Region
     End Class
     
@@ -179,6 +229,98 @@ Namespace WinBackUITest
         
         #Region "Fields"
         Private mUIWinBackV1000Text As WinText
+        #End Region
+    End Class
+    
+    <GeneratedCode("Coded UITest Builder", "14.0.23107.0")>  _
+    Public Class UILinien_MainWindow
+        Inherits WinWindow
+        
+        Public Sub New(ByVal searchLimitContainer As UITestControl)
+            MyBase.New(searchLimitContainer)
+            Me.SearchProperties(WinWindow.PropertyNames.ControlName) = "Linien_Main"
+            Me.WindowTitles.Add("WinBack - UI-Test")
+        End Sub
+        
+        #Region "Properties"
+        Public ReadOnly Property UIVNCviewWindow() As UIVNCviewWindow
+            Get
+                If (Me.mUIVNCviewWindow Is Nothing) Then
+                    Me.mUIVNCviewWindow = New UIVNCviewWindow(Me)
+                End If
+                Return Me.mUIVNCviewWindow
+            End Get
+        End Property
+        
+        Public ReadOnly Property UITBezeichnungWindow() As UITBezeichnungWindow
+            Get
+                If (Me.mUITBezeichnungWindow Is Nothing) Then
+                    Me.mUITBezeichnungWindow = New UITBezeichnungWindow(Me)
+                End If
+                Return Me.mUITBezeichnungWindow
+            End Get
+        End Property
+        #End Region
+        
+        #Region "Fields"
+        Private mUIVNCviewWindow As UIVNCviewWindow
+        
+        Private mUITBezeichnungWindow As UITBezeichnungWindow
+        #End Region
+    End Class
+    
+    <GeneratedCode("Coded UITest Builder", "14.0.23107.0")>  _
+    Public Class UIVNCviewWindow
+        Inherits WinWindow
+        
+        Public Sub New(ByVal searchLimitContainer As UITestControl)
+            MyBase.New(searchLimitContainer)
+            Me.SearchProperties(WinWindow.PropertyNames.ControlName) = "VNCview"
+            Me.WindowTitles.Add("WinBack - UI-Test")
+        End Sub
+        
+        #Region "Properties"
+        Public ReadOnly Property UIVNCviewList() As WinList
+            Get
+                If (Me.mUIVNCviewList Is Nothing) Then
+                    Me.mUIVNCviewList = New WinList(Me)
+                    Me.mUIVNCviewList.WindowTitles.Add("WinBack - UI-Test")
+                End If
+                Return Me.mUIVNCviewList
+            End Get
+        End Property
+        #End Region
+        
+        #Region "Fields"
+        Private mUIVNCviewList As WinList
+        #End Region
+    End Class
+    
+    <GeneratedCode("Coded UITest Builder", "14.0.23107.0")>  _
+    Public Class UITBezeichnungWindow
+        Inherits WinWindow
+        
+        Public Sub New(ByVal searchLimitContainer As UITestControl)
+            MyBase.New(searchLimitContainer)
+            Me.SearchProperties(WinWindow.PropertyNames.ControlName) = "tBezeichnung"
+            Me.WindowTitles.Add("WinBack - UI-Test")
+        End Sub
+        
+        #Region "Properties"
+        Public ReadOnly Property UITBezeichnungEdit() As WinEdit
+            Get
+                If (Me.mUITBezeichnungEdit Is Nothing) Then
+                    Me.mUITBezeichnungEdit = New WinEdit(Me)
+                    Me.mUITBezeichnungEdit.SearchProperties(WinEdit.PropertyNames.Name) = "IP-Adresse:"
+                    Me.mUITBezeichnungEdit.WindowTitles.Add("WinBack - UI-Test")
+                End If
+                Return Me.mUITBezeichnungEdit
+            End Get
+        End Property
+        #End Region
+        
+        #Region "Fields"
+        Private mUITBezeichnungEdit As WinEdit
         #End Region
     End Class
 End Namespace
