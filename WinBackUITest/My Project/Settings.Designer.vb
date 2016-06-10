@@ -53,18 +53,6 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("""C:\Users\will\Source\Repos\Signum_WinBack\WinBackStart\bin\Debug""")>  _
-        Public Property WinBackPath() As String
-            Get
-                Return CType(Me("WinBackPath"),String)
-            End Get
-            Set
-                Me("WinBackPath") = value
-            End Set
-        End Property
     End Class
 End Namespace
 

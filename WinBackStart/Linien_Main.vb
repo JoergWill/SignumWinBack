@@ -54,9 +54,6 @@ Public Class Linien_Main
         LinienDetails.DetailInfo()
         LinienDetails.DetailEdit()
     End Sub
-    Public Sub BtnLinien()
-        LinienDetails.DetailEdit()
-    End Sub
 
     Public Sub BtnLinienRemove()
         LinienListe.RemoveItem()

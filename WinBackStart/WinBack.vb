@@ -7,7 +7,7 @@ Public Class WinBack
     Dim MdiUser As New User_Main
     Dim MdiLinien As New Linien_Main
 
-    Private Sub rbActiveRibbonChanged(sender As Object, e As EventArgs) Handles rbArtikel.ActiveChanged, rbLinien.ActiveChanged, rbUser.ActiveChanged
+    Private Sub Ribbon_ActiveTabChanged(sender As Object, e As EventArgs) Handles Ribbon.ActiveTabChanged
         If rbArtikel.Active Then
             ArtikelMainShow()
         End If
@@ -69,9 +69,9 @@ Public Class WinBack
         MdiLinien.BtnLinienNew()
     End Sub
 
-    Private Sub rbLinienEdit_Click(sender As Object, e As EventArgs) Handles rbLinienEdit.Click
-        MdiLinien.BtnLinien()
-    End Sub
+    'Private Sub rbLinienEdit_Click(sender As Object, e As EventArgs) Handles rbLinienEdit.Click
+    '    MdiLinien.BtnLinien()
+    'End Sub
 
     Private Sub rbLinienDel_Click(sender As Object, e As EventArgs) Handles rbLinienDel.Click
         MdiLinien.BtnLinienRemove()
@@ -92,7 +92,11 @@ Public Class WinBack
         wb_Konfig.SetColors()
     End Sub
 
-    Private Sub rbText_Click(sender As Object, e As EventArgs) Handles rbText.Click
-        wb_Konfig.SetLanguage("de")
+    Private Sub RibbonOrbMenuItem1_Click(sender As Object, e As EventArgs) Handles RibbonOrbMenuItem1.Click
+        Debug.Print("TEST")
     End Sub
+
+    'Private Sub rbText_Click(sender As Object, e As EventArgs) Handles rbText.Click
+    '    wb_Konfig.SetLanguage("de")
+    'End Sub
 End Class
