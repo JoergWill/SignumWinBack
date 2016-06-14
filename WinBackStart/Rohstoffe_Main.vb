@@ -1,31 +1,31 @@
 ﻿Imports Signum.OrgaSoft.AddIn
 Imports WeifenLuo.WinFormsUI.Docking
-Public Class Artikel_Main
-    Public ArtikelListe As New wb_Artikel_Liste
-    Public ArtikelDetails As New wb_Artikel_Details
+Public Class Rohstoffe_Main
+    Public RohstoffListe As New wb_Rohstoffe_Liste
+    Public RohstoffDetails As New wb_Rohstoffe_Details
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("wbArtikel.xml")
+        DockPanel.SaveAsXml("wbRohstoff.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("wbArtikel.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml("wbRohstoff.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 
-        ArtikelDetails.Show(DockPanel, DockState.DockTop)
-        ArtikelDetails.CloseButtonVisible = False
-        ArtikelListe.Show(DockPanel, DockState.DockLeft)
-        ArtikelListe.CloseButtonVisible = False
+        RohstoffDetails.Show(DockPanel, DockState.DockTop)
+        RohstoffDetails.CloseButtonVisible = False
+        RohstoffListe.Show(DockPanel, DockState.DockLeft)
+        RohstoffListe.CloseButtonVisible = False
     End Sub
 
     Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "ArtikelListe"
-                Return ArtikelListe
-            Case "ArtikelDetails"
-                Return ArtikelDetails
+            Case "RohstoffListe"
+                Return RohstoffListe
+            Case "RohstoffDetails"
+                Return RohstoffDetails
             Case Else
                 Return Nothing
         End Select
@@ -35,8 +35,8 @@ Public Class Artikel_Main
         'Anzeige sichern
         SaveDockBarConfig()
         'alle erzeugten Fenster wieder schliessen
-        ArtikelDetails.Close()
-        ArtikelListe.Close()
+        RohstoffDetails.Close()
+        RohstoffListe.Close()
     End Sub
 
     Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load

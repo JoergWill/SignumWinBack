@@ -79,6 +79,30 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Service_Main.Designer.vb">
+      <DependentUpon>Service_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Service_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Produktion_Main.Designer.vb">
+      <DependentUpon>Produktion_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Produktion_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rohstoffe_Main.Designer.vb">
+      <DependentUpon>Rohstoffe_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Rohstoffe_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rezepte_Main.Designer.vb">
+      <DependentUpon>Rezepte_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Rezepte_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Artikel_Main.Designer.vb">
       <DependentUpon>Artikel_Main.vb</DependentUpon>
     </Compile>
@@ -89,6 +113,12 @@
       <DependentUpon>Linien_Main.vb</DependentUpon>
     </Compile>
     <Compile Include="Linien_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Chargen_Main.Designer.vb">
+      <DependentUpon>Chargen_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Chargen_Main.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="User_Main.Designer.vb">
@@ -120,6 +150,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Service_Main.resx">
+      <DependentUpon>Service_Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Produktion_Main.resx">
+      <DependentUpon>Produktion_Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rohstoffe_Main.resx">
+      <DependentUpon>Rohstoffe_Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rezepte_Main.resx">
+      <DependentUpon>Rezepte_Main.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Artikel_Main.resx">
       <DependentUpon>Artikel_Main.vb</DependentUpon>
     </EmbeddedResource>
@@ -131,6 +173,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Chargen_Main.resx">
+      <DependentUpon>Chargen_Main.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User_Main.resx">
       <DependentUpon>User_Main.vb</DependentUpon>

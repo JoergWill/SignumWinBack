@@ -128,54 +128,78 @@
     </Compile>
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
     <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
-    <Compile Include="wb_01_Forms\wb_User.vb" />
-    <Compile Include="wb_01_Forms\wb_Linien.vb" />
-    <Compile Include="wb_01_Forms\wb_User_Details.Designer.vb">
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Details.Designer.vb">
+      <DependentUpon>wb_Rezept_Details.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.Designer.vb">
+      <DependentUpon>wb_Rezept_Liste.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_05_Forms_User\wb_User.vb" />
+    <Compile Include="wb_06_Forms_Linien\wb_Linien.vb" />
+    <Compile Include="wb_05_Forms_User\wb_User_Details.Designer.vb">
       <DependentUpon>wb_User_Details.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_User_Details.vb">
+    <Compile Include="wb_05_Forms_User\wb_User_Details.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_User_Liste.Designer.vb">
+    <Compile Include="wb_05_Forms_User\wb_User_Liste.Designer.vb">
       <DependentUpon>wb_User_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_User_Liste.vb">
+    <Compile Include="wb_05_Forms_User\wb_User_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Artikel_Details.Designer.vb">
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Details.Designer.vb">
       <DependentUpon>wb_Artikel_Details.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Artikel_Details.vb">
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Details.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Artikel_Liste.Designer.vb">
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Liste.Designer.vb">
       <DependentUpon>wb_Artikel_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Artikel_Liste.vb">
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Artikel_Main.Designer.vb">
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Main.Designer.vb">
       <DependentUpon>wb_Artikel_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Artikel_Main.vb">
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Linien_Details.Designer.vb">
+    <Compile Include="wb_06_Forms_Linien\wb_Linien_Details.Designer.vb">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Linien_Details.vb">
+    <Compile Include="wb_06_Forms_Linien\wb_Linien_Details.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Linien_Liste.Designer.vb">
+    <Compile Include="wb_06_Forms_Linien\wb_Linien_Liste.Designer.vb">
       <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Linien_Liste.vb">
+    <Compile Include="wb_06_Forms_Linien\wb_Linien_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_User_Main.Designer.vb">
+    <Compile Include="wb_05_Forms_User\wb_User_Main.Designer.vb">
       <DependentUpon>wb_User_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_User_Main.vb">
+    <Compile Include="wb_05_Forms_User\wb_User_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_DataGridView.vb">
@@ -185,16 +209,16 @@
     <Compile Include="wb_00_Klassen\wb_Sql.vb" />
     <Compile Include="wb_00_Klassen\wb_IniFile.vb" />
     <Compile Include="Settings.vb" />
-    <Compile Include="wb_01_Forms\wb_Linien_Main.Designer.vb">
+    <Compile Include="wb_06_Forms_Linien\wb_Linien_Main.Designer.vb">
       <DependentUpon>wb_Linien_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_Linien_Main.vb">
+    <Compile Include="wb_06_Forms_Linien\wb_Linien_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_MainTemplate.Designer.vb">
+    <Compile Include="wb_01_Forms_Chargen\wb_MainTemplate.Designer.vb">
       <DependentUpon>wb_MainTemplate.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_MainTemplate.vb">
+    <Compile Include="wb_01_Forms_Chargen\wb_MainTemplate.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="wb_00_Main\wb_Main_Menu.vb" />
@@ -213,10 +237,28 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_User_Rechte.Designer.vb">
+    <Compile Include="wb_05_Forms_User\wb_User_Rechte.Designer.vb">
       <DependentUpon>wb_User_Rechte.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms\wb_User_Rechte.vb">
+    <Compile Include="wb_05_Forms_User\wb_User_Rechte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Liste.Designer.vb">
+      <DependentUpon>wb_Chargen_Liste.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.Designer.vb">
+      <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_08_Forms_Service\wb_Service_Liste.Designer.vb">
+      <DependentUpon>wb_Service_Liste.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Service\wb_Service_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -227,44 +269,65 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_Artikel_Liste.resx">
+    <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Liste.resx">
       <DependentUpon>wb_Artikel_Liste.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_Artikel_Main.resx">
+    <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Main.resx">
       <DependentUpon>wb_Artikel_Main.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_Linien_Details.en.resx">
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.resx">
+      <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.resx">
+      <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.en.resx">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_Linien_Details.resx">
+    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.resx">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_Linien_Liste.en.resx">
+    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Liste.en.resx">
       <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_Linien_Liste.resx">
+    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Liste.resx">
       <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_Linien_Main.resx">
+    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Main.resx">
       <DependentUpon>wb_Linien_Main.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_MainTemplate.resx">
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_MainTemplate.resx">
       <DependentUpon>wb_MainTemplate.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_User_Details.en.resx">
+    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Details.resx">
+      <DependentUpon>wb_Rezept_Details.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.resx">
+      <DependentUpon>wb_Rezept_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Details.en.resx">
       <DependentUpon>wb_User_Details.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_User_Details.resx">
+    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Details.resx">
       <DependentUpon>wb_User_Details.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_User_Liste.resx">
+    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Liste.resx">
       <DependentUpon>wb_User_Liste.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_User_Main.resx">
+    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Main.resx">
       <DependentUpon>wb_User_Main.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms\wb_User_Rechte.resx">
+    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Rechte.resx">
       <DependentUpon>wb_User_Rechte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Liste.resx">
+      <DependentUpon>wb_Chargen_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
+      <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Service\wb_Service_Liste.resx">
+      <DependentUpon>wb_Service_Liste.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -373,6 +436,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "C:\ProgramData\OrgaSoft\AddIn"

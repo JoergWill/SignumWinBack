@@ -27,7 +27,9 @@ Partial Class WinBack
         Me.lblVersion = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblNetworkIP = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Ribbon = New System.Windows.Forms.Ribbon()
+        Me.RibbonButton22 = New System.Windows.Forms.RibbonButton()
         Me.RibbonButton1 = New System.Windows.Forms.RibbonButton()
+        Me.RibbonButton21 = New System.Windows.Forms.RibbonButton()
         Me.rbChargen = New System.Windows.Forms.RibbonTab()
         Me.RibbonPanel1 = New System.Windows.Forms.RibbonPanel()
         Me.RibbonButton2 = New System.Windows.Forms.RibbonButton()
@@ -37,12 +39,10 @@ Partial Class WinBack
         Me.RibbonButton5 = New System.Windows.Forms.RibbonButton()
         Me.RibbonButton6 = New System.Windows.Forms.RibbonButton()
         Me.RibbonPanel3 = New System.Windows.Forms.RibbonPanel()
-        Me.RibbonCheckBox1 = New System.Windows.Forms.RibbonCheckBox()
-        Me.RibbonCheckBox2 = New System.Windows.Forms.RibbonCheckBox()
-        Me.RibbonSeparator5 = New System.Windows.Forms.RibbonSeparator()
-        Me.RibbonCheckBox3 = New System.Windows.Forms.RibbonCheckBox()
-        Me.RibbonComboBox1 = New System.Windows.Forms.RibbonComboBox()
-        Me.RibbonComboBox2 = New System.Windows.Forms.RibbonComboBox()
+        Me.RibbonButton17 = New System.Windows.Forms.RibbonButton()
+        Me.RibbonButton18 = New System.Windows.Forms.RibbonButton()
+        Me.RibbonPanel8 = New System.Windows.Forms.RibbonPanel()
+        Me.RibbonButton19 = New System.Windows.Forms.RibbonButton()
         Me.rbArtikel = New System.Windows.Forms.RibbonTab()
         Me.RibbonPanel4 = New System.Windows.Forms.RibbonPanel()
         Me.RibbonButton7 = New System.Windows.Forms.RibbonButton()
@@ -63,7 +63,6 @@ Partial Class WinBack
         Me.RibbonPanel9 = New System.Windows.Forms.RibbonPanel()
         Me.RibbonButton29 = New System.Windows.Forms.RibbonButton()
         Me.RibbonButton30 = New System.Windows.Forms.RibbonButton()
-        Me.RibbonCheckBox4 = New System.Windows.Forms.RibbonCheckBox()
         Me.RibbonSeparator10 = New System.Windows.Forms.RibbonSeparator()
         Me.RibbonButton31 = New System.Windows.Forms.RibbonButton()
         Me.RibbonPanel10 = New System.Windows.Forms.RibbonPanel()
@@ -128,7 +127,9 @@ Partial Class WinBack
         '
         '
         '
+        Me.Ribbon.QuickAcessToolbar.DropDownButtonItems.Add(Me.RibbonButton22)
         Me.Ribbon.QuickAcessToolbar.Items.Add(Me.RibbonButton1)
+        Me.Ribbon.QuickAcessToolbar.Items.Add(Me.RibbonButton21)
         Me.Ribbon.RibbonTabFont = New System.Drawing.Font("Trebuchet MS", 9.0!)
         Me.Ribbon.Tabs.Add(Me.rbChargen)
         Me.Ribbon.Tabs.Add(Me.rbArtikel)
@@ -141,6 +142,13 @@ Partial Class WinBack
         Me.Ribbon.TabsMargin = New System.Windows.Forms.Padding(12, 26, 20, 0)
         Me.Ribbon.ThemeColor = System.Windows.Forms.RibbonTheme.Blue
         '
+        'RibbonButton22
+        '
+        Me.RibbonButton22.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
+        Me.RibbonButton22.Image = CType(resources.GetObject("RibbonButton22.Image"), System.Drawing.Image)
+        Me.RibbonButton22.SmallImage = CType(resources.GetObject("RibbonButton22.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonButton22, "RibbonButton22")
+        '
         'RibbonButton1
         '
         Me.RibbonButton1.Image = CType(resources.GetObject("RibbonButton1.Image"), System.Drawing.Image)
@@ -148,11 +156,19 @@ Partial Class WinBack
         Me.RibbonButton1.SmallImage = CType(resources.GetObject("RibbonButton1.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.RibbonButton1, "RibbonButton1")
         '
+        'RibbonButton21
+        '
+        Me.RibbonButton21.Image = CType(resources.GetObject("RibbonButton21.Image"), System.Drawing.Image)
+        Me.RibbonButton21.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact
+        Me.RibbonButton21.SmallImage = CType(resources.GetObject("RibbonButton21.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonButton21, "RibbonButton21")
+        '
         'rbChargen
         '
         Me.rbChargen.Panels.Add(Me.RibbonPanel1)
         Me.rbChargen.Panels.Add(Me.RibbonPanel2)
         Me.rbChargen.Panels.Add(Me.RibbonPanel3)
+        Me.rbChargen.Panels.Add(Me.RibbonPanel8)
         resources.ApplyResources(Me.rbChargen, "rbChargen")
         '
         'RibbonPanel1
@@ -200,35 +216,32 @@ Partial Class WinBack
         '
         'RibbonPanel3
         '
-        Me.RibbonPanel3.Items.Add(Me.RibbonCheckBox1)
-        Me.RibbonPanel3.Items.Add(Me.RibbonCheckBox2)
-        Me.RibbonPanel3.Items.Add(Me.RibbonSeparator5)
-        Me.RibbonPanel3.Items.Add(Me.RibbonCheckBox3)
-        Me.RibbonPanel3.Items.Add(Me.RibbonComboBox1)
-        Me.RibbonPanel3.Items.Add(Me.RibbonComboBox2)
+        Me.RibbonPanel3.Items.Add(Me.RibbonButton17)
+        Me.RibbonPanel3.Items.Add(Me.RibbonButton18)
         resources.ApplyResources(Me.RibbonPanel3, "RibbonPanel3")
         '
-        'RibbonCheckBox1
+        'RibbonButton17
         '
-        resources.ApplyResources(Me.RibbonCheckBox1, "RibbonCheckBox1")
+        Me.RibbonButton17.Image = CType(resources.GetObject("RibbonButton17.Image"), System.Drawing.Image)
+        Me.RibbonButton17.SmallImage = CType(resources.GetObject("RibbonButton17.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonButton17, "RibbonButton17")
         '
-        'RibbonCheckBox2
+        'RibbonButton18
         '
-        resources.ApplyResources(Me.RibbonCheckBox2, "RibbonCheckBox2")
+        Me.RibbonButton18.Image = CType(resources.GetObject("RibbonButton18.Image"), System.Drawing.Image)
+        Me.RibbonButton18.SmallImage = CType(resources.GetObject("RibbonButton18.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonButton18, "RibbonButton18")
         '
-        'RibbonCheckBox3
+        'RibbonPanel8
         '
-        resources.ApplyResources(Me.RibbonCheckBox3, "RibbonCheckBox3")
+        Me.RibbonPanel8.Items.Add(Me.RibbonButton19)
+        resources.ApplyResources(Me.RibbonPanel8, "RibbonPanel8")
         '
-        'RibbonComboBox1
+        'RibbonButton19
         '
-        resources.ApplyResources(Me.RibbonComboBox1, "RibbonComboBox1")
-        Me.RibbonComboBox1.TextBoxText = ""
-        '
-        'RibbonComboBox2
-        '
-        resources.ApplyResources(Me.RibbonComboBox2, "RibbonComboBox2")
-        Me.RibbonComboBox2.TextBoxText = ""
+        Me.RibbonButton19.Image = CType(resources.GetObject("RibbonButton19.Image"), System.Drawing.Image)
+        Me.RibbonButton19.SmallImage = CType(resources.GetObject("RibbonButton19.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonButton19, "RibbonButton19")
         '
         'rbArtikel
         '
@@ -337,7 +350,6 @@ Partial Class WinBack
         '
         Me.RibbonPanel9.Items.Add(Me.RibbonButton29)
         Me.RibbonPanel9.Items.Add(Me.RibbonButton30)
-        Me.RibbonPanel9.Items.Add(Me.RibbonCheckBox4)
         Me.RibbonPanel9.Items.Add(Me.RibbonSeparator10)
         Me.RibbonPanel9.Items.Add(Me.RibbonButton31)
         resources.ApplyResources(Me.RibbonPanel9, "RibbonPanel9")
@@ -353,10 +365,6 @@ Partial Class WinBack
         Me.RibbonButton30.Image = CType(resources.GetObject("RibbonButton30.Image"), System.Drawing.Image)
         Me.RibbonButton30.SmallImage = CType(resources.GetObject("RibbonButton30.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.RibbonButton30, "RibbonButton30")
-        '
-        'RibbonCheckBox4
-        '
-        resources.ApplyResources(Me.RibbonCheckBox4, "RibbonCheckBox4")
         '
         'RibbonButton31
         '
@@ -502,7 +510,6 @@ Partial Class WinBack
     Friend WithEvents rbChargen As RibbonTab
     Friend WithEvents RibbonPanel1 As RibbonPanel
     Friend WithEvents RibbonPanel2 As RibbonPanel
-    Friend WithEvents RibbonPanel3 As RibbonPanel
     Friend WithEvents rbArtikel As RibbonTab
     Friend WithEvents rbRezepte As RibbonTab
     Friend WithEvents rbRohstoffe As RibbonTab
@@ -524,12 +531,6 @@ Partial Class WinBack
     Friend WithEvents RibbonButton4 As RibbonButton
     Friend WithEvents RibbonButton5 As RibbonButton
     Friend WithEvents RibbonButton6 As RibbonButton
-    Friend WithEvents RibbonCheckBox1 As RibbonCheckBox
-    Friend WithEvents RibbonCheckBox2 As RibbonCheckBox
-    Friend WithEvents RibbonSeparator5 As RibbonSeparator
-    Friend WithEvents RibbonCheckBox3 As RibbonCheckBox
-    Friend WithEvents RibbonComboBox1 As RibbonComboBox
-    Friend WithEvents RibbonComboBox2 As RibbonComboBox
     Friend WithEvents RibbonPanel4 As RibbonPanel
     Friend WithEvents RibbonButton7 As RibbonButton
     Friend WithEvents RibbonButton8 As RibbonButton
@@ -547,7 +548,6 @@ Partial Class WinBack
     Friend WithEvents RibbonPanel9 As RibbonPanel
     Friend WithEvents RibbonButton29 As RibbonButton
     Friend WithEvents RibbonButton30 As RibbonButton
-    Friend WithEvents RibbonCheckBox4 As RibbonCheckBox
     Friend WithEvents RibbonSeparator10 As RibbonSeparator
     Friend WithEvents RibbonButton31 As RibbonButton
     Friend WithEvents RibbonPanel10 As RibbonPanel
@@ -562,4 +562,11 @@ Partial Class WinBack
     Friend WithEvents rbPlanung As RibbonTab
     Friend WithEvents RibbonSeparator4 As RibbonSeparator
     Friend WithEvents rbExtra As RibbonTab
+    Friend WithEvents RibbonButton22 As RibbonButton
+    Friend WithEvents RibbonButton21 As RibbonButton
+    Friend WithEvents RibbonPanel3 As RibbonPanel
+    Friend WithEvents RibbonButton17 As RibbonButton
+    Friend WithEvents RibbonButton18 As RibbonButton
+    Friend WithEvents RibbonPanel8 As RibbonPanel
+    Friend WithEvents RibbonButton19 As RibbonButton
 End Class

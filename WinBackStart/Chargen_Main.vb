@@ -1,31 +1,26 @@
 ﻿Imports Signum.OrgaSoft.AddIn
 Imports WeifenLuo.WinFormsUI.Docking
-Public Class Artikel_Main
-    Public ArtikelListe As New wb_Artikel_Liste
-    Public ArtikelDetails As New wb_Artikel_Details
+Public Class Chargen_Main
+    Public ChargenListe As New wb_Chargen_Liste
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("wbArtikel.xml")
+        DockPanel.SaveAsXml("wbChargen.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("wbArtikel.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml("wbChargen.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 
-        ArtikelDetails.Show(DockPanel, DockState.DockTop)
-        ArtikelDetails.CloseButtonVisible = False
-        ArtikelListe.Show(DockPanel, DockState.DockLeft)
-        ArtikelListe.CloseButtonVisible = False
+        ChargenListe.Show(DockPanel, DockState.DockLeft)
+        ChargenListe.CloseButtonVisible = False
     End Sub
 
     Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "ArtikelListe"
-                Return ArtikelListe
-            Case "ArtikelDetails"
-                Return ArtikelDetails
+            Case "ChargenListe"
+                Return ChargenListe
             Case Else
                 Return Nothing
         End Select
@@ -35,8 +30,7 @@ Public Class Artikel_Main
         'Anzeige sichern
         SaveDockBarConfig()
         'alle erzeugten Fenster wieder schliessen
-        ArtikelDetails.Close()
-        ArtikelListe.Close()
+        ChargenListe.Close()
     End Sub
 
     Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load

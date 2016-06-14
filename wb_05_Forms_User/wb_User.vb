@@ -14,6 +14,7 @@
         'entsprechende Übersetzung aus winback.Texte geladen
         Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
         winback.sqlSelect("SELECT * FROM ItemIDs WHERE II_ItemTyp = 500 ORDER BY II_ItemID")
+        GrpTexte.Clear()
         While winback.Read
             GrpTexte.Add(winback.iField("II_ItemId"), winback.sField("II_Kommentar"))
         End While
