@@ -41,7 +41,7 @@ Public Class Artikel_Main
 
     Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_User.LoadGrpTexte()
+        'wb_User.LoadGrpTexte()
         'Fenster laden
         LoadDockBarConfig()
     End Sub

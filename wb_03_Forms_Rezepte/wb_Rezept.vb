@@ -5,23 +5,47 @@
     Public Shared RzVariante As New Hashtable
     Public Shared LinienGruppe As New Hashtable
 
+    Public Shared aktRzNr As Integer
     Public Shared aktRzNummer As String
     Public Shared aktRzName As String
     Public Shared aktRzKommentar As String
-    Public Shared aktRzGewicht As String
+    Public Shared aktRzGewicht As Double
+    Public Shared aktRzLinienGrp As Integer
+    Public Shared aktRzVariante As Integer
 
-    'Public Shared Sub LoadGrpTexte()
-    '    'HashTable mit der Übersetzung der Gruppen-Nummer in die Gruppen-Bezeichnung laden
-    '    'wenn die Gruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
-    '    'entsprechende Übersetzung aus winback.Texte geladen
-    '    Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
-    '    winback.sqlSelect("SELECT * FROM ItemIDs WHERE II_ItemTyp = 500 ORDER BY II_ItemID")
-    '    GrpTexte.Clear()
-    '    While winback.Read
-    '        GrpTexte.Add(winback.iField("II_ItemId"), winback.sField("II_Kommentar"))
-    '    End While
-    '    winback.Close()
-    'End Sub
+    Public Shared aktChangeNr As Integer
+    Public Shared aktChangeDatum As String
+    Public Shared aktChangeName As String
+
+    Public Shared aktChargeMin As Double
+    Public Shared aktChargeMax As Double
+    Public Shared aktChargeOpt As Double
+
+    Public Shared Sub LoadVariantenTexte()
+        'HashTable mit der Übersetzung der Variante-Nummer in die Varianten-Bezeichnung laden
+        'wenn die Varianten-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
+        'entsprechende Übersetzung aus winback.Texte geladen
+        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        winback.sqlSelect("SELECT RV_Nr, RV_Bezeichnung FROM RezeptVarianten")
+        RzVariante.Clear()
+        While winback.Read
+            RzVariante.Add(winback.iField("RV_Nr"), winback.sField("RV_Bezeichnung"))
+        End While
+        winback.Close()
+    End Sub
+
+    Public Shared Sub LoadLinienGruppenTexte()
+        'HashTable mit der Übersetzung der Liniengruppen-Nummer in die Liniengruppen-Bezeichnung laden
+        'wenn die Liniengruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
+        'entsprechende Übersetzung aus winback.Texte geladen
+        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        winback.sqlSelect("SELECT LG_Nr, LG_Bezeichnung FROM LinienGruppen")
+        LinienGruppe.Clear()
+        While winback.Read
+            LinienGruppe.Add(winback.iField("LG_Nr"), winback.sField("LG_Bezeichnung"))
+        End While
+        winback.Close()
+    End Sub
 
     Public Shared Sub Liste_Click(sender As Object)
         RaiseEvent eListe_Click(sender)

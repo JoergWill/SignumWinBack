@@ -33,10 +33,18 @@ Public Class wb_Rezept_Liste
     End Sub
 
     Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
-        wb_Rezept.aktRzNummer = DataGridView.Field("RZ_Nr")
+        wb_Rezept.aktRzNr = CInt(DataGridView.Field("RZ_Nr"))
+        wb_Rezept.aktRzNummer = DataGridView.Field("RZ_Nr_AlNum")
         wb_Rezept.aktRzName = DataGridView.Field("RZ_Bezeichnung")
         wb_Rezept.aktRzKommentar = DataGridView.Field("RZ_Kommentar")
         wb_Rezept.aktRzGewicht = DataGridView.Field("RZ_Gewicht")
+        wb_Rezept.aktRzVariante = CInt(DataGridView.Field("RZ_Variante_Nr"))
+        wb_Rezept.aktRzLinienGrp = CInt(DataGridView.Field("RZ_Liniengruppe"))
+
+        wb_Rezept.aktChangeNr = CInt(DataGridView.Field("RZ_Aenderung_Nr"))
+        wb_Rezept.aktChangeDatum = DataGridView.Field("RZ_Aenderung_Datum")
+        wb_Rezept.aktChangeName = DataGridView.Field("RZ_Aenderung_Name")
+
         wb_Rezept.Liste_Click(Nothing)
     End Sub
 End Class
