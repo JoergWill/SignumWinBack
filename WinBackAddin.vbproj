@@ -140,6 +140,7 @@
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept.vb" />
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
     </Compile>
