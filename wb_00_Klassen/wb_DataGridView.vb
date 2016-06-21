@@ -68,7 +68,7 @@ Public Class wb_DataGridView
     'in das DataView und in das Pop-Up-Menu eingetragen
 
     <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:SQL-Abfragen auf Sicherheitsrisiken überprüfen")>
-    Sub LoadData(sSql As String, sGridName As String, db As dbType)
+    Sub LoadData(sSql As String, sGridName As String, db As dbType, Optional table As dbTable = wb_Sql.dbTable.winback)
         mContextMenu.SuspendLayout()
         'x mSek nachdem sich der Datensatz geändert hat, wird der aktuelle Datensatz im 
         'Detail-Fenster angezeigt
@@ -81,7 +81,11 @@ Public Class wb_DataGridView
             'Verbindung über mySql
             Case dbType.mySql
                 'Verbindung zur MySQL-Datenbank
-                MySqlCon = New MySqlConnection(My.Settings.MySQLConWinBack)
+                If table = wb_Sql.dbTable.winback Then
+                    MySqlCon = New MySqlConnection(My.Settings.MySQLConWinBack)
+                Else
+                    MySqlCon = New MySqlConnection(My.Settings.MySQLConWbDaten)
+                End If
                 MySqlCmd = New MySqlCommand(sSql, MySqlCon)
                 MySqlDta = New MySqlDataAdapter(MySqlCmd)
                 MySqlDta.MissingSchemaAction = MissingSchemaAction.AddWithKey
@@ -91,7 +95,11 @@ Public Class wb_DataGridView
             ' Verbindung über msSQL
             Case dbType.msSql
                 'Verbindung zur SQL-Datenbank
-                msCon = New SqlConnection(My.Settings.MsSQLConWinBack)
+                If table = wb_Sql.dbTable.winback Then
+                    msCon = New SqlConnection(My.Settings.MsSQLConWinBack)
+                Else
+                    msCon = New SqlConnection(My.Settings.MsSQLConWbDaten)
+                End If
                 msCmd = New SqlCommand(sSql, msCon)
                 msDta = New SqlDataAdapter(msCmd)
                 msCbd = New SqlCommandBuilder(msDta)
@@ -175,7 +183,10 @@ Public Class wb_DataGridView
         Set(value As String)
             _Filter = value
             sFilter = ""
-            DtaView.RowFilter = _Filter
+            Try
+                DtaView.RowFilter = _Filter
+            Catch
+            End Try
         End Set
     End Property
 

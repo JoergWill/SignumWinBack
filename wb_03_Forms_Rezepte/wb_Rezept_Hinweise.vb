@@ -1,4 +1,5 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
+Imports Signum.OrgaSoft.AddIn.wb_sql_Functions
 
 Public Class wb_Rezept_Hinweise
     Inherits DockContent
@@ -10,7 +11,7 @@ Public Class wb_Rezept_Hinweise
     End Sub
 
     Public Sub DetailInfo()
-        tHinweise.Text = wb_sql_Functions.ReadHinweise(wb_sql_Functions.Hinweise.RezeptHinweise, wb_Rezept.aktRzNr)
+        tHinweise.Text = ReadHinweise(Hinweise.RezeptHinweise, wb_Rezept.aktRzNr)
     End Sub
 
 End Class

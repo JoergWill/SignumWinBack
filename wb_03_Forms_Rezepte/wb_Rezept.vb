@@ -5,9 +5,9 @@
     Public Shared RzVariante As New Hashtable
     Public Shared LinienGruppe As New Hashtable
 
-    Public Shared aktRzNr As Integer
-    Public Shared aktRzNummer As String
-    Public Shared aktRzName As String
+    Public Shared aktRzNr As Integer            'Rezept-Index
+    Public Shared aktRzNummer As String         'Rezept-Nummer  (alpha)
+    Public Shared aktRzName As String           'Rezept-Name    (alpha)
     Public Shared aktRzKommentar As String
     Public Shared aktRzGewicht As Double
     Public Shared aktRzLinienGrp As Integer

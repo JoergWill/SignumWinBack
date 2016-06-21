@@ -95,9 +95,17 @@ Public Class UnitTest_wb_Sql
         If My.Settings.TestMsSQL Then
 
             'Datenbank WinBack erstellen - MS-SQL
-            DataBaseWinBack("Data Source=127.0.0.1\SIGNUM; Database=OrgaSoftMain; Integrated Security=True")
-            'Tabelle Komponenten erstellen
+            DataBaseWinBack("Data Source=127.0.0.1\SIGNUM; Database=WinBack; Integrated Security=True")
+            'Datenbank WbDaten erstellen - MS-SQL
+            DataBaseWinBack("Data Source=127.0.0.1\SIGNUM; Database=WbDaten; Integrated Security=True")
+
+            'Tabelle WinBack.Komponenten erstellen
             Komponenten("Data Source=127.0.0.1\SIGNUM; Database=WinBack; Integrated Security=True")
+            'Tabelle WinBack.Rezepte erstellen
+            Rezepte("Data Source=127.0.0.1\SIGNUM; Database=WinBack; Integrated Security=True")
+
+            'Tabelle WbDaten.His_Rezepte erstellen
+            His_Rezepte("Data Source=127.0.0.1\SIGNUM; Database=WbDaten; Integrated Security=True")
 
             'Datenbank-Verbindung öffnen - MySQL
             Dim OrgasoftMain As New wb_Sql("Data Source=127.0.0.1\SIGNUM; Database=WinBack; Integrated Security=True", wb_Sql.dbType.msSql)

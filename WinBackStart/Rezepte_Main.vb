@@ -4,6 +4,7 @@ Public Class Rezepte_Main
     Public RezeptListe As New wb_Rezept_Liste
     Public RezeptDetails As New wb_Rezept_Details
     Public RezeptHinweise As New wb_Rezept_Hinweise
+    Public RezeptHistorie As New wb_Rezept_Historie
 
     Private Sub SaveDockBarConfig()
         DockPanel.SaveAsXml("wbRezepte.xml")
@@ -17,6 +18,8 @@ Public Class Rezepte_Main
 
         RezeptHinweise.Show(DockPanel, DockState.Document)
         RezeptHinweise.CloseButtonVisible = False
+        RezeptHistorie.Show(DockPanel, DockState.Document)
+        RezeptHistorie.CloseButtonVisible = False
         RezeptDetails.Show(DockPanel, DockState.DockTop)
         RezeptDetails.CloseButtonVisible = False
         RezeptListe.Show(DockPanel, DockState.DockLeft)
@@ -31,6 +34,8 @@ Public Class Rezepte_Main
                 Return RezeptDetails
             Case "RezeptHinweise"
                 Return RezeptHinweise
+            Case "RezeptHistorie"
+                Return RezeptHistorie
             Case Else
                 Return Nothing
         End Select
@@ -43,6 +48,7 @@ Public Class Rezepte_Main
         RezeptDetails.Close()
         RezeptListe.Close()
         RezeptHinweise.Close()
+        RezeptHistorie.Close()
     End Sub
 
     Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load

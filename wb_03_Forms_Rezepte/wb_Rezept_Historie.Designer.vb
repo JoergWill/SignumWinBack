@@ -1,7 +1,7 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class wb_Rohstoffe_Liste
+Partial Class wb_Rezept_Historie
     Inherits DockContent
     'Inherits System.Windows.Forms.Form
 
@@ -25,33 +25,34 @@ Partial Class wb_Rohstoffe_Liste
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.DataGridView = New Signum.OrgaSoft.AddIn.wb_DataGridView()
-        CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.HisDataGridView = New Signum.OrgaSoft.AddIn.wb_DataGridView()
+        CType(Me.HisDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'DataGridView
+        'HisDataGridView
         '
-        Me.DataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DataGridView.Location = New System.Drawing.Point(0, 0)
-        Me.DataGridView.Name = "DataGridView"
-        Me.DataGridView.Size = New System.Drawing.Size(701, 504)
-        Me.DataGridView.TabIndex = 2
+        Me.HisDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.HisDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.HisDataGridView.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.HisDataGridView.Location = New System.Drawing.Point(0, 0)
+        Me.HisDataGridView.Name = "HisDataGridView"
+        Me.HisDataGridView.Size = New System.Drawing.Size(573, 376)
+        Me.HisDataGridView.TabIndex = 2
         '
-        'wb_Rohstoffe_Liste
+        'wb_Rezept_Historie
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(701, 504)
-        Me.Controls.Add(Me.DataGridView)
+        Me.BackColor = System.Drawing.Color.LightGray
+        Me.ClientSize = New System.Drawing.Size(573, 376)
+        Me.Controls.Add(Me.HisDataGridView)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Name = "wb_Rohstoffe_Liste"
-        Me.Text = "Rohstoff Liste"
-        CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Name = "wb_Rezept_Historie"
+        Me.Text = "Rezept Historie"
+        CType(Me.HisDataGridView, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
 
-    Friend WithEvents DataGridView As wb_DataGridView
+    Friend WithEvents HisDataGridView As wb_DataGridView
 End Class

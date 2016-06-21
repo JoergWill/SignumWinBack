@@ -197,6 +197,18 @@ Namespace My
                 Me("MsSQLConWinBack") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True")>  _
+        Public Property MsSQLConWbDaten() As String
+            Get
+                Return CType(Me("MsSQLConWbDaten"),String)
+            End Get
+            Set
+                Me("MsSQLConWbDaten") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

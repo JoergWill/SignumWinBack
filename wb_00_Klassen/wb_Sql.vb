@@ -17,6 +17,12 @@ Public Class wb_Sql
         mySql
         msSql
     End Enum
+
+    Enum dbTable
+        winback
+        wbdaten
+    End Enum
+
     Dim _conType As dbType = dbType.undef
 
     Dim MySqlCon As New MySqlConnection
