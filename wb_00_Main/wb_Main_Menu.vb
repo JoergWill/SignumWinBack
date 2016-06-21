@@ -138,12 +138,12 @@ Public Class wb_Main_Menu
     'Rohstoff
     Private Sub ShowRohstoffForm(sender As Object, e As EventArgs)
         CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainRohstoffe_16x16)
+        xForm = oViewProvider.OpenForm(New wb_Rohstoffe_Main(ServiceProvider), My.Resources.MainRohstoffe_16x16)
     End Sub
     'Rezepte
     Private Sub ShowRezeptForm(sender As Object, e As EventArgs)
         CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainRezept_16x16)
+        xForm = oViewProvider.OpenForm(New wb_Rezept_Main(ServiceProvider), My.Resources.MainRezept_16x16)
     End Sub
     'Mitarbeiter
     Private Sub ShowUserForm(sender As Object, e As EventArgs)

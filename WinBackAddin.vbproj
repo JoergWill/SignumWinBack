@@ -154,6 +154,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept.vb" />
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Main.Designer.vb">
+      <DependentUpon>wb_Rezept_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Main.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
     </Compile>
@@ -165,6 +171,12 @@
     </Compile>
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.vb">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
     <Compile Include="wb_06_Forms_Linien\wb_Linien.vb" />
@@ -295,11 +307,17 @@
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Hinweise.resx">
       <DependentUpon>wb_Rezept_Hinweise.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Main.resx">
+      <DependentUpon>wb_Rezept_Main.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.resx">
       <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.resx">
       <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.resx">
+      <DependentUpon>wb_Rohstoffe_Main.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.en.resx">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>
