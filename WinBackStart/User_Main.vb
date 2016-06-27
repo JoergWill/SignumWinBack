@@ -6,24 +6,24 @@ Public Class User_Main
     Private UserRechte As New wb_User_Rechte
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("wbUser.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "User.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("wbUser.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "User.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 
-        UserDetails.Show(DockPanel, DockState.DockTop)
-        UserDetails.CloseButtonVisible = False
         UserListe.Show(DockPanel, DockState.DockLeft)
         UserListe.CloseButtonVisible = False
+        UserDetails.Show(DockPanel, DockState.DockTop)
+        UserDetails.CloseButtonVisible = False
         UserRechte.Show(DockPanel, DockState.Document)
         UserRechte.CloseButtonVisible = False
     End Sub
 
-    Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
+    Private Function wbBuildDocContent(ByVal persistString As String) As DockContent
         Select Case persistString
             Case "UserListe"
                 Return UserListe
@@ -46,8 +46,6 @@ Public Class User_Main
     End Sub
 
     Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_User.LoadGrpTexte()
         'Fenster laden
         LoadDockBarConfig()
     End Sub

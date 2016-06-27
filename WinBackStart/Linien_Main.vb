@@ -8,12 +8,12 @@ Public Class Linien_Main
     Private LinienDetails As New wb_Linien_Details
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("wbLinien.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Linien.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("wbLinien.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Linien.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 
@@ -45,7 +45,6 @@ Public Class Linien_Main
 
     Private Sub Linien_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadDockBarConfig()
-        Debug.Print("Language/Localisation Linien " & Thread.CurrentThread.CurrentCulture.ToString & "/" & Thread.CurrentThread.CurrentUICulture.ToString)
     End Sub
 
     Public Sub BtnLinienNew()

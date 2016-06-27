@@ -7,12 +7,12 @@ Public Class Rezepte_Main
     Public RezeptHistorie As New wb_Rezept_Historie
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("wbRezepte.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Rezepte.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("wbRezepte.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Rezepte.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

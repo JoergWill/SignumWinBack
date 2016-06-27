@@ -4,12 +4,12 @@ Public Class Chargen_Main
     Public ChargenListe As New wb_Chargen_Liste
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("wbChargen.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Chargen.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("wbChargen.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Chargen.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

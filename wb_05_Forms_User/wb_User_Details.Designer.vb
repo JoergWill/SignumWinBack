@@ -1,4 +1,5 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class wb_User_Details
     Inherits DockContent

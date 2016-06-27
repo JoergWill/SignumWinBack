@@ -152,12 +152,12 @@ Public Class wb_Rohstoffe_Main
     End Sub
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(My.Settings.OrgaSoftDockPanelPath & "wbRohstoff.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbRohstoff.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(My.Settings.OrgaSoftDockPanelPath & "wbRohstoff.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbRohstoff.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

@@ -5,12 +5,12 @@ Public Class Rohstoffe_Main
     Public RohstoffDetails As New wb_Rohstoffe_Details
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("wbRohstoff.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Rohstoff.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("wbRohstoff.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Rohstoff.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

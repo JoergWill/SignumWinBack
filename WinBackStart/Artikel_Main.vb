@@ -5,12 +5,12 @@ Public Class Artikel_Main
     Public ArtikelDetails As New wb_Artikel_Details
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("wbArtikel.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Artikel.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("wbArtikel.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Artikel.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

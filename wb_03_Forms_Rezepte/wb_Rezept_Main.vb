@@ -156,12 +156,12 @@ Public Class wb_Rezept_Main
     End Sub
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(My.Settings.OrgaSoftDockPanelPath & "wbUser.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbUser.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(My.Settings.OrgaSoftDockPanelPath & "wbUser.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbUser.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

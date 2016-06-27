@@ -48,7 +48,7 @@ Public Class wb_Artikel_Main
     ''' <returns></returns>
     ''' <remarks>Die Caption des Fensters muss mit MyBase.Text gesetzt werde</remarks>
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
-        MyBase.Text = "WinBack"
+        MyBase.Text = "WinBack - Artikelverwaltung"
         Return True
     End Function
 
@@ -146,23 +146,19 @@ Public Class wb_Artikel_Main
         End Select
     End Function
     Private Sub wbArtikel_Close()
-        DockPanel.SaveAsXml("C:\Users\will.WINBACK\AppData\Roaming\WinBack\test.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Artikel.xml")
     End Sub
     Private Sub wbArtikelLoad()
         Try
-            DockPanel.LoadFromXml("C:\Users\will.WINBACK\AppData\Roaming\WinBack\test.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Artikel.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
 
         End Try
 
         ArtikelListe.Show(DockPanel, DockState.Document)
+        ArtikelListe.CloseButtonVisible = False
         ArtikelDetails.Show(DockPanel, DockState.DockRight)
-
-        'ArtikelListe.ShowHint = DockState.DockLeft
-        'ArtikelDetails.ShowHint = DockState.DockTop
-
-        'ArtikelListe.Show(DockPanel)
-        'ArtikelDetails.Show(DockPanel)
+        ArtikelDetails.CloseButtonVisible = False
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

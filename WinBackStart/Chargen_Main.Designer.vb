@@ -95,13 +95,13 @@ Partial Class Chargen_Main
         DockPanelSkin1.DockPaneStripSkin = DockPaneStripSkin1
         Me.DockPanel.Skin = DockPanelSkin1
         '
-        'User_Main
+        'Chargen_Main
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.DockPanel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "User_Main"
+        Me.Name = "Chargen_Main"
         Me.ResumeLayout(False)
 
     End Sub

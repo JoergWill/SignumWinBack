@@ -113,8 +113,6 @@ Public Class wb_User_Main
     End Function
 
     Private Sub wb_User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_User.LoadGrpTexte()
         ' DockBar Konfiguration aus XML-Datei lesen
         LoadDockBarConfig()
     End Sub
@@ -157,12 +155,12 @@ Public Class wb_User_Main
     End Sub
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(My.Settings.OrgaSoftDockPanelPath & "wbUser.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbUser.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(My.Settings.OrgaSoftDockPanelPath & "wbUser.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbUser.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

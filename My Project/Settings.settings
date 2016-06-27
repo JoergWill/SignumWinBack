@@ -41,5 +41,8 @@
     <Setting Name="MsSQLConWbDaten" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True</Value>
     </Setting>
+    <Setting Name="WinBackDockPanelPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Temp\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

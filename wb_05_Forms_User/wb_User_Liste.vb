@@ -10,6 +10,8 @@
             DataGridView.ColNames.Add(sName)
         Next
 
+        'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
+        wb_User.LoadGrpTexte()
         'DataGrid füllen
         Dim sql As String = "SELECT IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int <> 709760"
         DataGridView.LoadData(sql, "UserListe", wb_Sql.dbType.mySql)
@@ -34,7 +36,7 @@
         DataGridView.Field("IP_Wert1int") = wb_User.aktUserPass
     End Sub
 
-    'Datensatz-Zeiger wurde geändert
+    'Dat2ensatz-Zeiger wurde geändert
     Private Sub DataGridView_HasChanged() Handles DataGridView.HasChanged
         wb_User.aktUserName = DataGridView.Field("IP_Wert4Str")
         wb_User.aktUserGroup = CInt(DataGridView.Field("IP_ItemID"))
@@ -48,7 +50,11 @@
     Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
         Try
             If e.ColumnIndex = GrpIdxColumn Then
-                e.Value = wb_User.GrpTexte(CInt(e.Value)).ToString
+                If (CInt(e.Value) > 0) Then
+                    e.Value = wb_User.GrpTexte(CInt(e.Value)).ToString
+                Else
+                    e.Value = ""
+                End If
             End If
         Catch
         End Try

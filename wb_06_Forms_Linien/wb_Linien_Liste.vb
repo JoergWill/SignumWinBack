@@ -80,7 +80,6 @@ Public Class wb_Linien_Liste
             End While
         End If
         winback.Close()
-
     End Sub
 
     Public Sub RemoveItem()

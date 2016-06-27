@@ -90,7 +90,10 @@ Public Class wb_DataGridView
                 MySqlDta = New MySqlDataAdapter(MySqlCmd)
                 MySqlDta.MissingSchemaAction = MissingSchemaAction.AddWithKey
                 MySqlCbd = New MySqlCommandBuilder(MySqlDta)
-                MySqlDta.Fill(DtaTable)
+                Try
+                    MySqlDta.Fill(DtaTable)
+                Catch
+                End Try
 
             ' Verbindung über msSQL
             Case dbType.msSql

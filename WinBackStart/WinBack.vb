@@ -4,17 +4,24 @@ Imports System.Threading
 
 Public Class WinBack
     Dim isInitialised As Boolean = False
-    Dim MdiChargen As New Chargen_Main
-    Dim MdiArtikel As New Artikel_Main
-    Dim MdiRezepte As New Rezepte_Main
-    Dim MdiRohstoffe As New Rohstoffe_Main
-    Dim MdiUser As New User_Main
-    Dim MdiLinien As New Linien_Main
-    Dim MdiProduktion As New Produktion_Main
-    Dim MdiService As New Service_Main
+    Dim MdiChargen As Chargen_Main
+    Dim MdiArtikel As Artikel_Main
+    Dim MdiRezepte As Rezepte_Main
+    Dim MdiRohstoffe As Rohstoffe_Main
+    Dim MdiUser As User_Main
+    Dim MdiLinien As Linien_Main
+    Dim MdiProduktion As Produktion_Main
+    Dim MdiService As Service_Main
 
     Private Sub Ribbon_ActiveTabChanged(sender As Object, e As EventArgs) Handles Ribbon.ActiveTabChanged
         If isInitialised Then
+
+            CloseAllForms()
+
+            'Umschaltung aktive Sprache
+            Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Konfig.GetLanguage)
+            Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Konfig.GetLanguage)
+
             If rbChargen.Active Then
                 ChargenMainShow()
             End If
@@ -45,11 +52,15 @@ Public Class WinBack
     Private Sub CloseAllForms()
         For i = System.Windows.Forms.Application.OpenForms.Count - 1 To 1 Step -1
             Dim form As Form = Application.OpenForms(i)
-            form.Close()
+            If form.Name <> "WinBack" Then
+                form.Close()
+                form.Dispose()
+                form = Nothing
+            End If
         Next i
     End Sub
     Private Sub ChargenMainShow()
-        If MdiChargen Is Nothing Then
+        If MdiChargen Is Nothing OrElse MdiChargen.IsDisposed Then
             MdiChargen = New Chargen_Main
         End If
         If MdiChargen.Visible Then
@@ -62,7 +73,7 @@ Public Class WinBack
     End Sub
 
     Private Sub ArtikelMainShow()
-        If MdiArtikel Is Nothing Then
+        If MdiArtikel Is Nothing OrElse MdiArtikel.IsDisposed Then
             MdiArtikel = New Artikel_Main
         End If
         If MdiArtikel.Visible Then
@@ -75,7 +86,7 @@ Public Class WinBack
     End Sub
 
     Private Sub RezepteMainShow()
-        If MdiRezepte Is Nothing Then
+        If MdiRezepte Is Nothing OrElse MdiRezepte.IsDisposed Then
             MdiRezepte = New Rezepte_Main
         End If
         If MdiRezepte.Visible Then
@@ -88,7 +99,7 @@ Public Class WinBack
     End Sub
 
     Private Sub RohstoffeMainShow()
-        If MdiRohstoffe Is Nothing Then
+        If MdiRohstoffe Is Nothing OrElse MdiRohstoffe.IsDisposed Then
             MdiRohstoffe = New Rohstoffe_Main
         End If
         If MdiRohstoffe.Visible Then
@@ -101,7 +112,7 @@ Public Class WinBack
     End Sub
 
     Private Sub UserMainShow()
-        If MdiUser Is Nothing Then
+        If MdiUser Is Nothing OrElse MdiUser.IsDisposed Then
             MdiUser = New User_Main
         End If
         If MdiUser.Visible Then
@@ -114,7 +125,7 @@ Public Class WinBack
     End Sub
 
     Private Sub LinienMainShow()
-        If MdiLinien Is Nothing Then
+        If MdiLinien Is Nothing OrElse MdiLinien.IsDisposed Then
             MdiLinien = New Linien_Main
         End If
         If MdiLinien.Visible Then
@@ -127,7 +138,7 @@ Public Class WinBack
     End Sub
 
     Private Sub ProduktionMainShow()
-        If MdiProduktion Is Nothing Then
+        If MdiProduktion Is Nothing OrElse MdiProduktion.IsDisposed Then
             MdiProduktion = New Produktion_Main
         End If
         If MdiProduktion.Visible Then
@@ -139,7 +150,7 @@ Public Class WinBack
         MdiProduktion.Dock = DockStyle.Fill
     End Sub
     Private Sub ServiceMainShow()
-        If MdiService Is Nothing Then
+        If MdiService Is Nothing OrElse MdiService.IsDisposed Then
             MdiService = New Service_Main
         End If
         If MdiService.Visible Then
@@ -174,17 +185,31 @@ Public Class WinBack
         lblVersion.Text = "WinBack V" & My.Application.Info.Version.ToString
         'IP-Adresse in Status-Bar anzeigen
         lblNetworkIP.Text = wb_Konfig.DbType & " " & wb_Konfig.SqlIP
+        'Programm und Datei-Pfade einstellen
+        wb_Konfig.SetPath(wb_Konfig.ProgVariante.WinBack)
         'Farbschema einstellen
         wb_Konfig.SetColors()
+        'aktuelle(letzte) Sprache einstellen
+        wb_Konfig.SetLanguage("")
+
         'Initialisierung beendet
         isInitialised = True
     End Sub
 
-    Private Sub RibbonOrbMenuItem1_Click(sender As Object, e As EventArgs) Handles RibbonOrbMenuItem1.Click
-        Debug.Print("TEST")
+    'Umschaltung aktive Sprache
+    Private Sub rbSprache_DE_Click(sender As Object, e As EventArgs) Handles rbSprache_DE.Click
+        wb_Konfig.SetLanguage("de-DE")
+        changeLanguage()
     End Sub
-
-    'Private Sub rbText_Click(sender As Object, e As EventArgs) Handles rbText.Click
-    '    wb_Konfig.SetLanguage("de")
-    'End Sub
+    Private Sub rbSprache_EN_Click(sender As Object, e As EventArgs) Handles rbSprache_EN.Click
+        wb_Konfig.SetLanguage("en-US")
+        changeLanguage()
+    End Sub
+    Private Sub changeLanguage()
+        'For Each frm As Form In Application.OpenForms   ' Schleife über alle Forms
+        '    If frm.Name <> "WinBack" Then
+        '        frm.Dispose()
+        '    End If
+        'Next
+    End Sub
 End Class

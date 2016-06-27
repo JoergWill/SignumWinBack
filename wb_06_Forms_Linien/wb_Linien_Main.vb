@@ -176,12 +176,12 @@ Public Class wb_Linien_Main
     End Sub
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(My.Settings.OrgaSoftDockPanelPath & "wbLinien.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbLinien.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(My.Settings.OrgaSoftDockPanelPath & "wbLinien.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbLinien.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

@@ -4,12 +4,12 @@ Public Class Service_Main
     Public ServiceListe As New wb_Service_Liste
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("wbService.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Service.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("wbService.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Service.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

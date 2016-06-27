@@ -129,6 +129,7 @@
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
     <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_Functions.vb" />
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel.vb" />
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Historie.Designer.vb">
       <DependentUpon>wb_Rezept_Historie.vb</DependentUpon>
     </Compile>
@@ -319,11 +320,15 @@
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.resx">
       <DependentUpon>wb_Rohstoffe_Main.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Liste.en.resx">
+      <DependentUpon>wb_User_Liste.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.en.resx">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.resx">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Liste.en.resx">
       <DependentUpon>wb_Linien_Liste.vb</DependentUpon>

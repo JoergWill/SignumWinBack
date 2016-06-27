@@ -2,7 +2,14 @@
 Imports System.Windows.Forms
 
 Public Class wb_Konfig
+
+    Enum ProgVariante
+        OrgaBack
+        WinBack
+    End Enum
+
     Shared Language As String
+    Public Shared DockPanelPath As String
 
     Public Shared Sub MySqlSetting()
         Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
@@ -34,9 +41,27 @@ Public Class wb_Konfig
         'Hintergrund-Farbe jeder zweiten Zeile des DataViewGrid (alternative RowSetting)
         My.Settings.DataGridAlternateRowColor = System.Drawing.Color.LightGray
     End Sub
+    Public Shared Sub SetPath(pVariante As ProgVariante)
+        'Default
+        DockPanelPath = ""
+        Select Case pVariante
+            Case ProgVariante.OrgaBack
+                DockPanelPath = My.Settings.OrgaSoftDockPanelPath
+            Case ProgVariante.WinBack
+                DockPanelPath = My.Settings.WinBackDockPanelPath
+            Case Else
+                Throw New NotImplementedException
+        End Select
+    End Sub
     Public Shared Sub SetLanguage(Lang As String)
-        Language = Lang
-        My.Settings.AktLanguage = Lang
+        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
+        If Lang = "" Then
+            Language = IniFile.ReadString("winback", "Language", "de")
+        Else
+            Language = Lang
+            IniFile.WriteString("winback", "Language", Language)
+        End If
+        My.Settings.AktLanguage = Language
     End Sub
     Public Shared Function GetLanguage() As String
         Try
@@ -46,4 +71,5 @@ Public Class wb_Konfig
         End Try
         Return Language
     End Function
+
 End Class

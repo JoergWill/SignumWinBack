@@ -4,12 +4,12 @@ Public Class Produktion_Main
     Public ProduktionListe As New wb_Planung_Liste
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml("wbProduktion.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Produktion.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml("wbProduktion.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Produktion.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 
