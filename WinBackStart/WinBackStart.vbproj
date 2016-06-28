@@ -180,6 +180,9 @@
     <EmbeddedResource Include="User_Main.resx">
       <DependentUpon>User_Main.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WinBack.en-US.resx">
+      <DependentUpon>WinBack.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinBack.en.resx">
       <DependentUpon>WinBack.vb</DependentUpon>
     </EmbeddedResource>

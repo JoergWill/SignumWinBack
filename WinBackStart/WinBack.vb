@@ -1,6 +1,7 @@
 ﻿Imports Signum.OrgaSoft.AddIn
 Imports System.Globalization
 Imports System.Threading
+Imports System.Resources
 
 Public Class WinBack
     Dim isInitialised As Boolean = False
@@ -13,7 +14,7 @@ Public Class WinBack
     Dim MdiProduktion As Produktion_Main
     Dim MdiService As Service_Main
 
-    Private Sub Ribbon_ActiveTabChanged(sender As Object, e As EventArgs) Handles Ribbon.ActiveTabChanged
+    Private Sub Ribbon_ActiveTabChanged(sender As Object, e As EventArgs) Handles rTab.ActiveTabChanged
         If isInitialised Then
 
             CloseAllForms()
@@ -53,6 +54,7 @@ Public Class WinBack
         For i = System.Windows.Forms.Application.OpenForms.Count - 1 To 1 Step -1
             Dim form As Form = Application.OpenForms(i)
             If form.Name <> "WinBack" Then
+                form.Parent = Nothing
                 form.Close()
                 form.Dispose()
                 form = Nothing
@@ -206,10 +208,57 @@ Public Class WinBack
         changeLanguage()
     End Sub
     Private Sub changeLanguage()
-        'For Each frm As Form In Application.OpenForms   ' Schleife über alle Forms
-        '    If frm.Name <> "WinBack" Then
-        '        frm.Dispose()
-        '    End If
-        'Next
+        'alle offenen Fenster schliessen
+        CloseAllForms()
+        'Umschaltung aktive Sprache
+        Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Konfig.GetLanguage)
+        Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Konfig.GetLanguage)
+        'alle Texte in WinBack neu aufbauen
+        ChangeAllControls(Me)
     End Sub
+
+    Sub ChangeAllControls(ByVal m_Control As Control)
+        ' Neues Objekt, dass die sprachlich passenden Strings für das Form 
+        ' bereit stellt
+        Dim Resource As ResourceManager = New ResourceManager(Me.GetType())
+
+        For Each ctrl As Control In m_Control.Controls
+            'If ctrl.Controls.Count > 0 Then
+            '    ChangeAllControls(ctrl)
+            'End If
+
+            If ctrl.GetType().Equals(GetType(StatusStrip)) Then
+                For Each item As ToolStripItem In DirectCast(ctrl, ToolStrip).Items
+                    Debug.Print("ToolStrip " & item.Text)
+                    Debug.Print("ToolStrip " & item.Name)
+                Next
+            End If
+
+            If ctrl.GetType().Equals(GetType(ToolStrip)) Then
+                For Each item As ToolStripItem In DirectCast(ctrl, ToolStrip).Items
+                    Debug.Print("ToolStrip " & item.Text)
+                Next
+            End If
+
+            If ctrl.GetType().Equals(GetType(Ribbon)) Then
+                For Each rTab As RibbonTab In DirectCast(ctrl, Ribbon).Tabs
+                    Debug.Print("RibbonTab " & rTab.Text)
+
+                    For Each rPnl As RibbonPanel In rTab.Panels
+                        Debug.Print("      RibbonPanel " & rPnl.Text)
+
+                        'For Each rBtn As RibbonItem In rPnl.Items
+                        '    If rBtn.GetType().Equals(GetType(RibbonItem)) Then
+                        '        Debug.Print("          RibbonButton " & rBtn.Text)
+                        '        If rBtn.Tag Then
+                        '        End If
+                        'Next
+                    Next
+                Next
+            End If
+
+            Debug.Print("Control " & ctrl.Text)
+        Next
+    End Sub
+
 End Class
