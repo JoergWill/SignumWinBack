@@ -2,7 +2,7 @@
 
 Public Class wb_User_Rechte
     Private Sub wb_User_Rechte_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        AddHandler wb_User.eListe_Click, AddressOf ShowGroupInfo
+        AddHandler wb_User_Shared.eListe_Click, AddressOf ShowGroupInfo
     End Sub
 
     'TreeView - Anzeige der aktiven Benutzer-Rechte(Gruppe)
@@ -11,7 +11,7 @@ Public Class wb_User_Rechte
         Dim iAttr As Integer
 
         'aktive Gruppe
-        Dim aktUserGroup As Integer = wb_User.aktUserGroup
+        Dim aktUserGroup As Integer = wb_User_Shared.aktUserGroup
         'Abfrage der aktuellen Rechte aus der Datenbank
         Dim sql As String = "Select ItemTypen.IT_Bezeichnung, ItemIDs.II_Kommentar, AT_Wert2int, Texte.T_Text FROM ItemIDs " &
               "INNER JOIN " &

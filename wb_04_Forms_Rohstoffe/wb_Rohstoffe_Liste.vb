@@ -7,18 +7,34 @@ Public Class wb_Rohstoffe_Liste
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"", "Nummer", "&Name", "Aktiv", "Kommentar", "", "", "", "", ""}
+        Dim sColNames As New List(Of String) From {"", "Nummer", "&Name", "Aktiv", "Kommentar"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
 
         'DataGrid füllen
-        Dim sql As String = "SELECT KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_aktiv, KO_Kommentar, KO_Type, " &
-                            "KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type <> 0"
-        DataGridView.LoadData(sql, "RezeptListe", wb_Sql.dbType.mySql)
+        DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffListe, "RohstoffListe", wb_Sql.dbType.mySql)
         'DataGrid Initialisierung Anzeige ohne Sauerteig
         DataGridView.Filter = "KO_Type > 100"
 
+    End Sub
+
+    Public Sub RefreshData()
+        'Daten neu einlesen
+        DataGridView.RefreshData(wb_Sql.dbType.mySql)
+    End Sub
+
+    Private Sub wb_Rohstoffe_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        'Daten in Datenbank sichern
+        DataGridView.updateDataBase(wb_Sql.dbType.mySql)
+        'Layout sichern
+        DataGridView.SaveToDisk("RohstoffListe")
+    End Sub
+
+    Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
+        wb_Rohstoffe_Shared.RohStoff.LoadData(DataGridView)
+        'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
+        wb_Rohstoffe_Shared.Liste_Click(Nothing)
     End Sub
 End Class
 

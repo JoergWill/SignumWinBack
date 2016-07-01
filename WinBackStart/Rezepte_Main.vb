@@ -7,12 +7,12 @@ Public Class Rezepte_Main
     Public RezeptHistorie As New wb_Rezept_Historie
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Rezepte.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbRezepte.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Rezepte.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbRezepte.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 
@@ -41,7 +41,17 @@ Public Class Rezepte_Main
         End Select
     End Function
 
-    Private Sub User_Main_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+    Private Sub Rezepte_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'HashTable mit der Übersetzung der Varianten-Nummer zu Rezept-Varianten-Bezeichnung
+        wb_Rezept_Shared.LoadVariantenTexte()
+        'HashTable mit der Übersetzung der Liniengruppen-Nummer zu Liniengruppen-Bezeichnung
+        wb_Rezept_Shared.LoadLinienGruppenTexte()
+
+        'Fenster laden
+        LoadDockBarConfig()
+    End Sub
+
+    Private Sub Rezepte_Main_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
         'Anzeige sichern
         SaveDockBarConfig()
         'alle erzeugten Fenster wieder schliessen
@@ -50,15 +60,4 @@ Public Class Rezepte_Main
         RezeptHinweise.Close()
         RezeptHistorie.Close()
     End Sub
-
-    Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'HashTable mit der Übersetzung der Varianten-Nummer zu Rezept-Varianten-Bezeichnung
-        wb_Rezept.LoadVariantenTexte()
-        'HashTable mit der Übersetzung der Liniengruppen-Nummer zu Liniengruppen-Bezeichnung
-        wb_Rezept.LoadLinienGruppenTexte()
-
-        'Fenster laden
-        LoadDockBarConfig()
-    End Sub
-
 End Class

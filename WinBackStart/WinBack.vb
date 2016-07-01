@@ -17,7 +17,7 @@ Public Class WinBack
     Private Sub Ribbon_ActiveTabChanged(sender As Object, e As EventArgs) Handles rTab.ActiveTabChanged
         If isInitialised Then
 
-            CloseAllForms()
+            ' CloseAllForms()
 
             'Umschaltung aktive Sprache
             Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Konfig.GetLanguage)
@@ -80,6 +80,7 @@ Public Class WinBack
         End If
         If MdiArtikel.Visible Then
             MdiArtikel.BringToFront()
+            MdiArtikel.ArtikelListe.RefreshData()
         Else
             MdiArtikel.Show()
         End If
@@ -93,6 +94,7 @@ Public Class WinBack
         End If
         If MdiRezepte.Visible Then
             MdiRezepte.BringToFront()
+            MdiRezepte.RezeptListe.RefreshData()
         Else
             MdiRezepte.Show()
         End If
@@ -106,6 +108,7 @@ Public Class WinBack
         End If
         If MdiRohstoffe.Visible Then
             MdiRohstoffe.BringToFront()
+            MdiRohstoffe.RohstoffListe.RefreshData()
         Else
             MdiRohstoffe.Show()
         End If
@@ -119,6 +122,7 @@ Public Class WinBack
         End If
         If MdiUser.Visible Then
             MdiUser.BringToFront()
+            MdiUser.UserListe.RefreshData()
         Else
             MdiUser.Show()
         End If
@@ -193,6 +197,8 @@ Public Class WinBack
         wb_Konfig.SetColors()
         'aktuelle(letzte) Sprache einstellen
         wb_Konfig.SetLanguage("")
+        'Has-Table Texte laden
+        wb_Konfig.LoadTexteTabelle(0)
 
         'Initialisierung beendet
         isInitialised = True

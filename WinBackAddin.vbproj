@@ -128,8 +128,11 @@
     </Compile>
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
     <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
+    <Compile Include="wb_00_Klassen\wb_Rohstoff.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_Functions.vb" />
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel.vb" />
+    <Compile Include="wb_00_Konstanten\wb_Global.vb" />
+    <Compile Include="wb_00_Konstanten\wb_Sql_Selects.vb" />
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Shared.vb" />
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Historie.Designer.vb">
       <DependentUpon>wb_Rezept_Historie.vb</DependentUpon>
     </Compile>
@@ -154,13 +157,14 @@
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept.vb" />
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Shared.vb" />
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Main.Designer.vb">
       <DependentUpon>wb_Rezept_Main.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Shared.vb" />
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
     </Compile>
@@ -179,7 +183,7 @@
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User.vb" />
+    <Compile Include="wb_05_Forms_User\wb_User_Shared.vb" />
     <Compile Include="wb_06_Forms_Linien\wb_Linien.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_Details.Designer.vb">
       <DependentUpon>wb_User_Details.vb</DependentUpon>
@@ -375,13 +379,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
     <None Include="Dokumentation\OrgaBack.docx" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
+    <None Include="My Project\DataSources\wb_Rohstoff.datasource" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>

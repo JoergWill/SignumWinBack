@@ -1,4 +1,4 @@
-﻿Public Class wb_Artikel
+﻿Public Class wb_Artikel_Shared
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
 

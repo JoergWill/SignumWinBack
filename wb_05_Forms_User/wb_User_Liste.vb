@@ -5,19 +5,24 @@
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"", "", "&Name", "Gruppe", ""}
+        Dim sColNames As New List(Of String) From {"", "", "&Name", "Gruppe"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
 
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_User.LoadGrpTexte()
+        wb_User_Shared.LoadGrpTexte()
         'DataGrid füllen
         Dim sql As String = "SELECT IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int <> 709760"
         DataGridView.LoadData(sql, "UserListe", wb_Sql.dbType.mySql)
 
         'Event Daten wurden geändert
-        AddHandler wb_User.eEdit_Leave, AddressOf UserInfo
+        AddHandler wb_User_Shared.eEdit_Leave, AddressOf UserInfo
+    End Sub
+
+    Public Sub RefreshData()
+        'Daten neu einlesen
+        DataGridView.RefreshData(wb_Sql.dbType.mySql)
     End Sub
 
     'Event Form wird geschlossen
@@ -31,17 +36,17 @@
     'Event-Handler aus wb_User(Detail)
     'Daten im Detail-Fenster sind geändert worden - in DataViewGrid zurückschreiben
     Private Sub UserInfo()
-        DataGridView.Field("IP_Wert4Str") = wb_User.aktUserName
-        DataGridView.Field("IP_ItemID") = wb_User.aktUserGroup
-        DataGridView.Field("IP_Wert1int") = wb_User.aktUserPass
+        DataGridView.Field("IP_Wert4Str") = wb_User_Shared.aktUserName
+        DataGridView.Field("IP_ItemID") = wb_User_Shared.aktUserGroup
+        DataGridView.Field("IP_Wert1int") = wb_User_Shared.aktUserPass
     End Sub
 
     'Dat2ensatz-Zeiger wurde geändert
     Private Sub DataGridView_HasChanged() Handles DataGridView.HasChanged
-        wb_User.aktUserName = DataGridView.Field("IP_Wert4Str")
-        wb_User.aktUserGroup = CInt(DataGridView.Field("IP_ItemID"))
-        wb_User.aktUserPass = DataGridView.Field("IP_Wert1int")
-        wb_User.Liste_Click(Nothing)
+        wb_User_Shared.aktUserName = DataGridView.Field("IP_Wert4Str")
+        wb_User_Shared.aktUserGroup = CInt(DataGridView.Field("IP_ItemID"))
+        wb_User_Shared.aktUserPass = DataGridView.Field("IP_Wert1int")
+        wb_User_Shared.Liste_Click(Nothing)
     End Sub
 
     'Anstelle der Gruppen-Nummer wird die Gruppen-Bezeichnung ausgegeben
@@ -51,7 +56,7 @@
         Try
             If e.ColumnIndex = GrpIdxColumn Then
                 If (CInt(e.Value) > 0) Then
-                    e.Value = wb_User.GrpTexte(CInt(e.Value)).ToString
+                    e.Value = wb_User_Shared.GrpTexte(CInt(e.Value)).ToString
                 Else
                     e.Value = ""
                 End If

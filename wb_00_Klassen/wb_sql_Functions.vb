@@ -5,21 +5,10 @@
 '---------------------------------------------------------
 'Beschreibung:
 'Sammlung von Statischen SQL-Funktionen
+Imports Signum.OrgaSoft.AddIn.wb_Global
+
 Public Class wb_sql_Functions
 
-    Enum Hinweise
-        RezeptHinweise         '2/0/RzNr
-        ArtikelHinweise        '3/0/ArtNr
-        UserInfo               '4/0/UsrNr
-        ZutatenListe           '9/1/ArtNr
-        MehlZusammensetzung    '9/2/ArtNr
-        GebCharakteristik     '10/1/ArtNr
-        Verzehrtipps          '10/2/ArtNr
-        Wissenswertes         '10/3/ArtNr
-        DeklBezRohstoff       '11/0/RohNr  
-        MessageTextLinie      '20/0/LNr
-        MessageTextUser       '20/1/UsrNr
-    End Enum
     Public Shared Function ReadHinweise(Typ As Hinweise, idx As Integer) As String
         Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
         Dim Typ1, Typ2 As Integer

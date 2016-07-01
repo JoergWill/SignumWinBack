@@ -106,15 +106,18 @@ Public Class wb_DataGridView
                 msCmd = New SqlCommand(sSql, msCon)
                 msDta = New SqlDataAdapter(msCmd)
                 msCbd = New SqlCommandBuilder(msDta)
-                msDta.Fill(DtaTable)
+                Try
+                    msDta.Fill(DtaTable)
+                Catch
+                End Try
         End Select
 
         DtaView = DtaTable.DefaultView
         DataSource = DtaView
 
         'Spalten-Überschriften eintragen
-        For i = 0 To ColNames.Count - 1
-            If i < ColumnCount Then
+        For i = 0 To ColumnCount - 1
+            If i < ColNames.Count Then
                 'Spalten-Namen, die mit & beginnen werden als Auto-Size Spalten behandelt
                 If Microsoft.VisualBasic.Left(ColNames(i), 1) = "&" Then
                     Columns(i).HeaderText = ColNames(i).Remove(0, 1) + Chr(10)
@@ -126,6 +129,9 @@ Public Class wb_DataGridView
                 Else
                     Columns(i).HeaderText = ColNames(i) + Chr(10)
                 End If
+            Else
+                Columns(i).HeaderText = ""
+                Columns(i).Visible = False
             End If
         Next
 
@@ -171,6 +177,20 @@ Public Class wb_DataGridView
         SelectionMode = DataGridViewSelectionMode.FullRowSelect
         ContextMenuStrip = mContextMenu
         mContextMenu.ResumeLayout(False)
+    End Sub
+    Sub RefreshData(db As dbType)
+        Select Case db
+            ' Verbindung über mySql
+            Case dbType.mySql
+                Try
+                    DtaTable.Clear()
+                    MySqlDta.Fill(DtaTable)
+                Catch
+                End Try
+            ' Verbindung über msSQL
+            Case dbType.msSql
+                Throw New NotImplementedException
+        End Select
     End Sub
 
     'x Sekunden nach Änderung des Datensatz-Zeigers wird der

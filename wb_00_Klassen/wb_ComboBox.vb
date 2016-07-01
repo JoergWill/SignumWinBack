@@ -14,7 +14,7 @@
 
 Partial Class wb_ComboBox
     Inherits Windows.Forms.ComboBox
-    Dim ht As Hashtable
+    Dim ht As SortedList
 
     'Gibt den Key aus HashTable zurück, der dem selektierten Text entspricht
     Function GetKeyFromSelection() As Integer
@@ -34,12 +34,14 @@ Partial Class wb_ComboBox
         For i = 0 To Items.Count - 1
             If ht(Key) = Items(i).ToString Then
                 SelectedIndex = i
+                Exit Sub
             End If
         Next
+        SelectedIndex = -1
     End Sub
 
     'ComboBox mit Texten aus HashTable füllen.
-    Public Sub Fill(HashTable As Hashtable)
+    Public Sub Fill(HashTable As SortedList)
         ht = HashTable
         'Combo-Box mit Werten füllen
         For Each item As DictionaryEntry In ht

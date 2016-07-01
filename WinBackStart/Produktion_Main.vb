@@ -4,12 +4,12 @@ Public Class Produktion_Main
     Public ProduktionListe As New wb_Planung_Liste
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Produktion.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbProduktion.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Produktion.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbProduktion.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 
@@ -35,7 +35,7 @@ Public Class Produktion_Main
 
     Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_User.LoadGrpTexte()
+        wb_User_Shared.LoadGrpTexte()
         'Fenster laden
         LoadDockBarConfig()
     End Sub

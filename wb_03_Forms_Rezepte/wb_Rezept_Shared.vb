@@ -1,9 +1,9 @@
-﻿Public Class wb_Rezept
+﻿Public Class wb_Rezept_Shared
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
 
-    Public Shared RzVariante As New Hashtable
-    Public Shared LinienGruppe As New Hashtable
+    Public Shared RzVariante As New SortedList
+    Public Shared LinienGruppe As New SortedList
 
     Public Shared aktRzNr As Integer            'Rezept-Index
     Public Shared aktRzNummer As String         'Rezept-Nummer  (alpha)

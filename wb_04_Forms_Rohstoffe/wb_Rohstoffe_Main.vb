@@ -109,7 +109,7 @@ Public Class wb_Rohstoffe_Main
 
     Private Sub wb_User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_User.LoadGrpTexte()
+        wb_User_Shared.LoadGrpTexte()
         ' DockBar Konfiguration aus XML-Datei lesen
         LoadDockBarConfig()
     End Sub

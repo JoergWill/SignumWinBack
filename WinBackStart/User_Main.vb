@@ -6,12 +6,12 @@ Public Class User_Main
     Private UserRechte As New wb_User_Rechte
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "User.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbUser.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "User.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbUser.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

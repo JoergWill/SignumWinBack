@@ -10,6 +10,7 @@ Public Class wb_Konfig
 
     Shared Language As String
     Public Shared DockPanelPath As String
+    Public Shared TexteTabelle As New Hashtable
 
     Public Shared Sub MySqlSetting()
         Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
@@ -72,4 +73,14 @@ Public Class wb_Konfig
         Return Language
     End Function
 
+    Public Shared Sub LoadTexteTabelle(Sprache As Integer)
+        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTexte, Sprache.ToString))
+        TexteTabelle.Clear()
+        While winback.Read
+            TexteTabelle.Add("@[" & winback.sField("T_TextIndex") & "," & winback.sField("T_Typ") & "]", winback.sField("T_Text"))
+        End While
+        winback.Close()
+
+    End Sub
 End Class

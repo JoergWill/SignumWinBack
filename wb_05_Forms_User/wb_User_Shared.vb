@@ -1,8 +1,8 @@
-﻿Public Class wb_User
+﻿Public Class wb_User_Shared
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
 
-    Public Shared GrpTexte As New Hashtable
+    Public Shared GrpTexte As New SortedList
 
     Public Shared aktUserName As String
     Public Shared aktUserPass As String

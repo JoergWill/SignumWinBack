@@ -5,12 +5,12 @@ Public Class Rohstoffe_Main
     Public RohstoffDetails As New wb_Rohstoffe_Details
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Rohstoff.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbRohstoff.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Rohstoff.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbRohstoff.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 
@@ -31,7 +31,7 @@ Public Class Rohstoffe_Main
         End Select
     End Function
 
-    Private Sub User_Main_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+    Private Sub Rohstoffe_Main_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
         'Anzeige sichern
         SaveDockBarConfig()
         'alle erzeugten Fenster wieder schliessen
@@ -39,9 +39,9 @@ Public Class Rohstoffe_Main
         RohstoffListe.Close()
     End Sub
 
-    Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub Rohstoffe_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_User.LoadGrpTexte()
+        wb_Rohstoffe_Shared.Load_RohGruppenTexte()
         'Fenster laden
         LoadDockBarConfig()
     End Sub

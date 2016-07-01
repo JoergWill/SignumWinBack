@@ -4,7 +4,7 @@ Public Class wb_Rezept_Historie
     Inherits DockContent
     Private Sub wb_Rezept_Historie_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Event-Handler (Klick auf Rezept-Liste -> Anzeige der Detail-Info)
-        AddHandler wb_Rezept.eListe_Click, AddressOf DetailInfo
+        AddHandler wb_Rezept_Shared.eListe_Click, AddressOf DetailInfo
     End Sub
 
     Public Sub DetailInfo()
@@ -18,7 +18,7 @@ Public Class wb_Rezept_Historie
 
         'DataGrid füllen
         Dim sql As String = "SELECT H_RZ_Aenderung_Nr, H_RZ_Aenderung_Datum, H_RZ_Aenderung_Name FROM His_Rezepte " &
-                            "WHERE H_RZ_Nr=" & wb_Rezept.aktRzNr.ToString & " AND H_RZ_Variante_Nr=" & wb_Rezept.aktRzVariante.ToString
+                            "WHERE H_RZ_Nr=" & wb_Rezept_Shared.aktRzNr.ToString & " AND H_RZ_Variante_Nr=" & wb_Rezept_Shared.aktRzVariante.ToString
         HisDataGridView.LoadData(sql, "RezeptHistorie", wb_Sql.dbType.mySql, wb_Sql.dbTable.wbdaten)
     End Sub
 

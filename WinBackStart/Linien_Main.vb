@@ -8,12 +8,12 @@ Public Class Linien_Main
     Private LinienDetails As New wb_Linien_Details
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "Linien.xml")
+        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbLinien.xml")
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "Linien.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbLinien.xml", AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

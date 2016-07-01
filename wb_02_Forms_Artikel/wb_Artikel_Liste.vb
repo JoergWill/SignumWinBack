@@ -7,19 +7,22 @@ Public Class wb_Artikel_Liste
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"", "Nummer", "Name", "&Rezept", "Kommentar", "", "", "", "", ""}
+        Dim sColNames As New List(Of String) From {"", "Nummer", "Name", "&Rezept", "Kommentar"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
 
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_Artikel.LoadRzptNamen()
+        wb_Artikel_Shared.LoadRzptNamen()
 
         'DataGrid füllen
-        Dim sql As String = "SELECT KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, " &
-                            "KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type = 0"
-        DataGridView.LoadData(sql, "ArtikelListe", wb_Sql.dbType.mySql)
+        DataGridView.LoadData(wb_Sql_Selects.sqlArtikelListe, "ArtikelListe", wb_Sql.dbType.mySql)
 
+    End Sub
+
+    Public Sub RefreshData()
+        'Daten neu einlesen
+        DataGridView.RefreshData(wb_Sql.dbType.mySql)
     End Sub
 
     'Anstelle der Rezept-Nummer (Idx) wird die Rezept-Bezeichnung ausgegeben
@@ -29,7 +32,7 @@ Public Class wb_Artikel_Liste
         Try
             If e.ColumnIndex = RzpIdxColumn Then
                 If CInt(e.Value) > 0 Then
-                    e.Value = wb_Artikel.Rzpt(CInt(e.Value)).ToString
+                    e.Value = wb_Artikel_Shared.Rzpt(CInt(e.Value)).ToString
                 Else
                     e.Value = ""
                 End If
