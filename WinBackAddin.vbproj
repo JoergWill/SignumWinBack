@@ -183,6 +183,12 @@
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Verwendung.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_05_Forms_User\wb_User_Shared.vb" />
     <Compile Include="wb_06_Forms_Linien\wb_Linien.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_Details.Designer.vb">
@@ -323,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.resx">
       <DependentUpon>wb_Rohstoffe_Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.resx">
+      <DependentUpon>wb_Rohstoffe_Verwendung.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_05_Forms_User\wb_User_Liste.en.resx">
       <DependentUpon>wb_User_Liste.vb</DependentUpon>

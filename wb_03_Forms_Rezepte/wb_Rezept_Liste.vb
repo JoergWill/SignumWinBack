@@ -14,7 +14,7 @@ Public Class wb_Rezept_Liste
         Next
 
         'DataGrid füllen
-        DataGridView.LoadData(wb_Sql_Selects.sqlRezeptListe, "RezeptListe", wb_Sql.dbType.mySql)
+        DataGridView.LoadData(wb_Sql_Selects.sqlRezeptListe, "RezeptListe")
 
         'Event Daten wurden geändert
         '        AddHandler wb_User.eEdit_Leave, AddressOf UserInfo
@@ -23,13 +23,13 @@ Public Class wb_Rezept_Liste
 
     Public Sub RefreshData()
         'Daten neu einlesen
-        DataGridView.RefreshData(wb_Sql.dbType.mySql)
+        DataGridView.RefreshData()
     End Sub
 
     'Event Form wird geschlossen
     Private Sub wb_Rezept_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern
-        DataGridView.updateDataBase(wb_Sql.dbType.mySql)
+        DataGridView.updateDataBase()
         'Layout sichern
         DataGridView.SaveToDisk("RezeptListe")
     End Sub

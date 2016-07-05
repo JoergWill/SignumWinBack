@@ -4,14 +4,22 @@
     Public Const sqlRezeptListe = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
                                   "RZ_Aenderung_Nr, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Liniengruppe, " &
                                   "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt FROM Rezepte"
+    'Sql-Statement Rezept-Historie aus winback.HisRezepte
+    Public Const sqlRezeptHistorie = "SELECT H_RZ_Aenderung_Nr, H_RZ_Aenderung_Datum, H_RZ_Aenderung_Name FROM His_Rezepte " &
+                                     "WHERE H_RZ_Nr=[0] AND H_RZ_Variante_Nr=[1]"
 
     'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
     Public Const sqlRohstoffListe = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KO_Type, KA_aktiv, " &
                                     "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type <> 0"
-    'Sql-Statement RohstoffGruppen aus winback
+    'Sql-Statement RohstoffGruppen aus winback.ItemParameter
     Public Const sqlRohstoffGruppen = "SELECT IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
                                       "IP_ItemTyp = 600 AND IP_Wert3int = 0 ORDER BY IP_Lfd_Nr DESC"
-    'Sql-Statement Automatik-Rohstoffe aus winback
+    'Sql-Statement Rohstoff-Verwendung aus winback.Rezepte
+    Public Const sqlRohstoffVerwendung = "SELECT RZ_Nr_AlNum, RZ_Variante_Nr, RZ_Bezeichnung FROM RezeptSchritte " &
+                                         "INNER JOIN Rezepte ON (RezeptSchritte.RS_RZ_Variante_Nr = Rezepte.RZ_Variante_Nr) AND " &
+                                         "(RezeptSchritte.RS_RZ_Nr = Rezepte.RZ_Nr) WHERE RezeptSchritte.RS_Ko_Nr=[0]"
+
+    'Sql-Statement Automatik-Rohstoffe aus winback.Lagerorte
     Public Const sqlRohstoffAktiv = "SELECT Komponenten.KO_Nr, Lagerorte.LG_aktiv FROM Komponenten " &
                                     "INNER JOIN Lagerorte ON Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
                                     "WHERE KO_TYPE = 101 OR KO_TYPE = 103 OR KO_TYPE = 104"

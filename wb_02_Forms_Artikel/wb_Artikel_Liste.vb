@@ -16,13 +16,13 @@ Public Class wb_Artikel_Liste
         wb_Artikel_Shared.LoadRzptNamen()
 
         'DataGrid füllen
-        DataGridView.LoadData(wb_Sql_Selects.sqlArtikelListe, "ArtikelListe", wb_Sql.dbType.mySql)
+        DataGridView.LoadData(wb_Sql_Selects.sqlArtikelListe, "ArtikelListe")
 
     End Sub
 
     Public Sub RefreshData()
         'Daten neu einlesen
-        DataGridView.RefreshData(wb_Sql.dbType.mySql)
+        DataGridView.RefreshData()
     End Sub
 
     'Anstelle der Rezept-Nummer (Idx) wird die Rezept-Bezeichnung ausgegeben

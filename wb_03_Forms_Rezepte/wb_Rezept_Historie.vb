@@ -1,4 +1,5 @@
-﻿Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports Signum.OrgaSoft.AddIn.wb_Sql_Selects
+Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Rezept_Historie
     Inherits DockContent
@@ -17,9 +18,8 @@ Public Class wb_Rezept_Historie
         Next
 
         'DataGrid füllen
-        Dim sql As String = "SELECT H_RZ_Aenderung_Nr, H_RZ_Aenderung_Datum, H_RZ_Aenderung_Name FROM His_Rezepte " &
-                            "WHERE H_RZ_Nr=" & wb_Rezept_Shared.aktRzNr.ToString & " AND H_RZ_Variante_Nr=" & wb_Rezept_Shared.aktRzVariante.ToString
-        HisDataGridView.LoadData(sql, "RezeptHistorie", wb_Sql.dbType.mySql, wb_Sql.dbTable.wbdaten)
+        HisDataGridView.LoadData(setParams(sqlRezeptHistorie, wb_Rezept_Shared.aktRzNr.ToString, wb_Rezept_Shared.aktRzVariante.ToString),
+                                 "RezeptHistorie", wb_Sql.dbTable.wbdaten)
     End Sub
 
 End Class

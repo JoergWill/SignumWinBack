@@ -14,7 +14,7 @@
         wb_User_Shared.LoadGrpTexte()
         'DataGrid füllen
         Dim sql As String = "SELECT IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int <> 709760"
-        DataGridView.LoadData(sql, "UserListe", wb_Sql.dbType.mySql)
+        DataGridView.LoadData(sql, "UserListe")
 
         'Event Daten wurden geändert
         AddHandler wb_User_Shared.eEdit_Leave, AddressOf UserInfo
@@ -22,13 +22,13 @@
 
     Public Sub RefreshData()
         'Daten neu einlesen
-        DataGridView.RefreshData(wb_Sql.dbType.mySql)
+        DataGridView.RefreshData()
     End Sub
 
     'Event Form wird geschlossen
     Private Sub wb_User_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern
-        DataGridView.updateDataBase(wb_Sql.dbType.mySql)
+        DataGridView.updateDataBase()
         'Layout sichern
         DataGridView.SaveToDisk("UserListe")
     End Sub

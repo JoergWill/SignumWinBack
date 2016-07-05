@@ -3,6 +3,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class Rohstoffe_Main
     Public RohstoffListe As New wb_Rohstoffe_Liste
     Public RohstoffDetails As New wb_Rohstoffe_Details
+    Public RohstoffVerwendung As New wb_Rohstoffe_Verwendung
 
     Private Sub SaveDockBarConfig()
         DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbRohstoff.xml")
@@ -16,6 +17,8 @@ Public Class Rohstoffe_Main
 
         RohstoffDetails.Show(DockPanel, DockState.DockTop)
         RohstoffDetails.CloseButtonVisible = False
+        RohstoffVerwendung.Show(DockPanel, DockState.Document)
+        RohstoffVerwendung.CloseButtonVisible = False
         RohstoffListe.Show(DockPanel, DockState.DockLeft)
         RohstoffListe.CloseButtonVisible = False
     End Sub
@@ -26,6 +29,8 @@ Public Class Rohstoffe_Main
                 Return RohstoffListe
             Case "RohstoffDetails"
                 Return RohstoffDetails
+            Case "RohstoffVerwendung"
+                Return RohstoffVerwendung
             Case Else
                 Return Nothing
         End Select
@@ -36,6 +41,7 @@ Public Class Rohstoffe_Main
         SaveDockBarConfig()
         'alle erzeugten Fenster wieder schliessen
         RohstoffDetails.Close()
+        RohstoffVerwendung.Close()
         RohstoffListe.Close()
     End Sub
 

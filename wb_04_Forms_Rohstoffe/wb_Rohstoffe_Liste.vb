@@ -35,19 +35,19 @@ Public Class wb_Rohstoffe_Liste
         Next
 
         'DataGrid füllen
-        DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffListe, "RohstoffListe", wb_Sql.dbType.mySql)
+        DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffListe, "RohstoffListe")
         'DataGrid Initialisierung Anzeige ohne Sauerteig, nur aktive Rohstoffe
         Me.Anzeige = AnzeigeFilter.Alle
     End Sub
 
     Public Sub RefreshData()
         'Daten neu einlesen
-        DataGridView.RefreshData(wb_Sql.dbType.mySql)
+        DataGridView.RefreshData()
     End Sub
 
     Private Sub wb_Rohstoffe_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern
-        DataGridView.updateDataBase(wb_Sql.dbType.mySql)
+        DataGridView.updateDataBase()
         'Layout sichern
         DataGridView.SaveToDisk("RohstoffListe")
     End Sub

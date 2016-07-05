@@ -68,7 +68,7 @@ Public Class wb_DataGridView
     'in das DataView und in das Pop-Up-Menu eingetragen
 
     <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:SQL-Abfragen auf Sicherheitsrisiken überprüfen")>
-    Sub LoadData(sSql As String, sGridName As String, db As dbType, Optional table As dbTable = wb_Sql.dbTable.winback)
+    Sub LoadData(sSql As String, sGridName As String, Optional table As dbTable = wb_Sql.dbTable.winback)
         mContextMenu.SuspendLayout()
         'x mSek nachdem sich der Datensatz geändert hat, wird der aktuelle Datensatz im 
         'Detail-Fenster angezeigt
@@ -76,7 +76,7 @@ Public Class wb_DataGridView
         tDataHasChanged.Enabled = False
         DtaTable.Clear()
 
-        Select Case db
+        Select Case My.Settings.WinBackDBType
 
             'Verbindung über mySql
             Case dbType.mySql
@@ -92,7 +92,8 @@ Public Class wb_DataGridView
                 MySqlCbd = New MySqlCommandBuilder(MySqlDta)
                 Try
                     MySqlDta.Fill(DtaTable)
-                Catch
+                Catch e As Exception
+                    Debug.Print(e.ToString)
                 End Try
 
             ' Verbindung über msSQL
@@ -178,8 +179,8 @@ Public Class wb_DataGridView
         ContextMenuStrip = mContextMenu
         mContextMenu.ResumeLayout(False)
     End Sub
-    Sub RefreshData(db As dbType)
-        Select Case db
+    Sub RefreshData()
+        Select Case My.Settings.WinBackDBType
             ' Verbindung über mySql
             Case dbType.mySql
                 Try
@@ -211,11 +212,11 @@ Public Class wb_DataGridView
     End Property
 
     'Update Datenbank nach Änderung Field
-    Public Sub updateDataBase(db As dbType)
+    Public Sub updateDataBase()
         'damit die Update-Routine richtig funktioniert 
         'muss vorher die Zeile im DataGrid gewechselt worden sein !!
         Me.CurrentCell = Nothing
-        Select Case db
+        Select Case My.Settings.WinBackDBType
             ' Verbindung über mySql
             Case dbType.mySql
                 MySqlDta.Update(DtaTable)
@@ -315,6 +316,9 @@ Public Class wb_DataGridView
         If iSort > 0 And (e.Handled Or sFilter <> "") Then
             Dim sHeaderName As String
             Try : sHeaderName = ColNames(iSort) : Catch : sHeaderName = "" : End Try
+            If Microsoft.VisualBasic.Left(sHeaderName, 1) = "&" Then
+                sHeaderName = sHeaderName.Remove(0, 1)
+            End If
             If Len(sFilter) > 1 Then
                 sRowFilter = Columns(iSort).Name & " LIKE '%" & sFilter & "%'"
                 Columns(iSort).HeaderText = sHeaderName & Chr(10) & "~ " & sFilter.ToUpper
