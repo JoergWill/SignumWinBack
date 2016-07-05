@@ -1,22 +1,43 @@
-﻿Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports Signum.OrgaSoft.AddIn.wb_Rohstoffe_Shared
+Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Rohstoffe_Liste
     Inherits DockContent
+
+    Public WriteOnly Property Anzeige As AnzeigeFilter
+        Set(value As AnzeigeFilter)
+            Select Case value
+                Case AnzeigeFilter.Alle        ' alle aktiven Rohstoffe Typ > 100
+                    DataGridView.Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+                Case AnzeigeFilter.Hand        ' alle aktiven Rohstoffe Typ 102
+                    DataGridView.Filter = "(KO_Type = 102) AND KA_aktiv = 1"
+                Case AnzeigeFilter.Auto        ' alle aktiven Rohstoffe Typ 101,103,104
+                    DataGridView.Filter = "(KO_Type = 101) OR KO_Type = 103 or KO_Type = 104) AND KA_aktiv = 1"
+                Case AnzeigeFilter.Sauerteig   ' alle aktiven Rohstoffe Sauerteig
+                    DataGridView.Filter = "(KO_Type < 100) AND KA_aktiv = 1"
+                Case AnzeigeFilter.Install     ' alle inaktiven Rohstoffe
+                    DataGridView.Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+                Case AnzeigeFilter.Sonstige    ' alle Rohstoffe Typ 105,106
+                    DataGridView.Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+                Case Else
+                    DataGridView.Filter = ""
+            End Select
+        End Set
+    End Property
 
     Private Sub wb_Rohstoffe_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"", "Nummer", "&Name", "Aktiv", "Kommentar"}
+        Dim sColNames As New List(Of String) From {"Nummer", "Name", "A", "&Kommentar"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
 
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffListe, "RohstoffListe", wb_Sql.dbType.mySql)
-        'DataGrid Initialisierung Anzeige ohne Sauerteig
-        DataGridView.Filter = "KO_Type > 100"
-
+        'DataGrid Initialisierung Anzeige ohne Sauerteig, nur aktive Rohstoffe
+        Me.Anzeige = AnzeigeFilter.Alle
     End Sub
 
     Public Sub RefreshData()
@@ -32,9 +53,21 @@ Public Class wb_Rohstoffe_Liste
     End Sub
 
     Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
-        wb_Rohstoffe_Shared.RohStoff.LoadData(DataGridView)
+        RohStoff.LoadData(DataGridView)
         'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
-        wb_Rohstoffe_Shared.Liste_Click(Nothing)
+        Liste_Click(Nothing)
+    End Sub
+
+    'Anstelle des Feldes KO_Nr wird das Feld LG_aktiv ausgegeben
+    'die Daten kommen aus einer HashTable (KO_Nr - LG_aktiv)
+    Const ActivIdxColumn As Integer = 2
+    Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
+        Try
+            If e.ColumnIndex = ActivIdxColumn Then
+                e.Value = RohAktiv(CInt(e.Value.ToString))
+            End If
+        Catch
+        End Try
     End Sub
 End Class
 

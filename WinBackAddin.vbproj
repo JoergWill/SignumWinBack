@@ -128,7 +128,7 @@
     </Compile>
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
     <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
-    <Compile Include="wb_00_Klassen\wb_Rohstoff.vb" />
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_Functions.vb" />
     <Compile Include="wb_00_Konstanten\wb_Global.vb" />
     <Compile Include="wb_00_Konstanten\wb_Sql_Selects.vb" />

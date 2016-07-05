@@ -52,7 +52,8 @@ Public Class wb_Rohstoff
             KA_Preis = value
         End Set
         Get
-            Return FormatStr(KA_Preis, 3, 3)
+            'Zahlenwerte aus der Datenbank immer inm Format de-DE
+            Return FormatStr(KA_Preis, 4, 3, "de-DE")
         End Get
     End Property
 

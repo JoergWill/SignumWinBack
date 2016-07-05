@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms
+﻿Imports Signum.OrgaSoft.AddIn.wb_Functions
+Imports System.Windows.Forms
 
 Public Class wb_User_Rechte
     Private Sub wb_User_Rechte_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -38,7 +39,7 @@ Public Class wb_User_Rechte
         If winback.sqlSelect(sql) Then
             While winback.Read
                 sBezeichnung = winback.sField("IT_Bezeichnung")
-                sKommentar = winback.sField("II_Kommentar")
+                sKommentar = TextFilter(winback.sField("II_Kommentar"))
                 sText = winback.sField("T_Text")
                 iAttr = winback.iField("AT_Wert2int")
 

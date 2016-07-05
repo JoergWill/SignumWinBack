@@ -90,7 +90,10 @@ Imports Signum.OrgaSoft.AddIn.wb_Global
         Assert.AreEqual("1234.5678", FormatStr("1234.5678", 4, 4))
         Assert.AreEqual("12345678.0", FormatStr("1234,5678", 8, 1))
         Assert.AreEqual("1234.5678", FormatStr("1234,5678", 4, 4, "de-DE"))
-        Assert.AreEqual("12345678", FormatStr("1234,5678", 8, 0, ))
+        Assert.AreEqual("12345678", FormatStr("1234,5678", 8, 0))
         Assert.AreEqual("1235", FormatStr("1234,5678", 4, 0, "de-DE"))
+
+        Assert.AreEqual("-", FormatStr("", 4, 0))
+        Assert.AreEqual("-", FormatStr("", 4, 0, "de-DE"))
     End Sub
 End Class

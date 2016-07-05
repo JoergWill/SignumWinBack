@@ -130,11 +130,7 @@ Public Class wb_Linien_Liste
 
     Private Function VNCviewIsSelected() As Boolean
         Try
-            If (VNCview.SelectedItems(0).Index < VNCview.Items.Count) And (VNCview.SelectedItems(0).Index >= 0) Then
-                Return True
-            Else
-                Return False
-            End If
+            Return (VNCview.SelectedItems.Count > 0)
         Catch
             Return False
         End Try

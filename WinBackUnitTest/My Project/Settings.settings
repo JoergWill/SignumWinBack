@@ -3,19 +3,19 @@
   <Profiles />
   <Settings>
     <Setting Name="MsSQLConWinBack" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=OrgasoftMain; Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=172.16.17.237\SIGNUM; Database=OrgasoftMain; Integrated Security=True</Value>
     </Setting>
     <Setting Name="MySQLConWinBack" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">server=172.16.17.5;user id=herbst;password=herbst;database=winback</Value>
     </Setting>
     <Setting Name="MySQLServerIP" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">172.16.17.231</Value>
+      <Value Profile="(Default)">172.16.17.5</Value>
     </Setting>
     <Setting Name="TestMsSQL" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="TestMySQL" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

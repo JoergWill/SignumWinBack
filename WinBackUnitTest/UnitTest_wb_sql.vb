@@ -47,10 +47,15 @@ Public Class UnitTest_wb_Sql
         Dim iInt, sString As String
 
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
-        If My.Settings.TestMsSQL Then
+        If My.Settings.TestMySQL Then
+
+            'Datenbank Verbindung Einstellungen setzen
+            '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
+            wb_Konfig.MySqlSetting()
+            Debug.Print("Test MySQL aktiv" & wb_Konfig.SqlConWinBack)
 
             'Datenbank-Verbindung öffnen - MySQL
-            Dim winback As New wb_Sql("server=172.16.17.208;user id=herbst;password=herbst;database=winback;", wb_Sql.dbType.mySql)
+            Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
 
             'Tabelle Test erstellen
             winback.sqlCommand("DROP TABLE IF EXISTS Test;")
@@ -149,7 +154,11 @@ Public Class UnitTest_wb_Sql
     <TestMethod()>
     Public Sub TestCommandBuilder()
         Dim mySelectQuery As String = "SELECT KO_Nr, KO_Type, KO_Bezeichnung, KO_Kommentar FROM Komponenten;"
-        Dim myConn As New MySqlConnection("server=172.16.17.231;user id=herbst;password=herbst;database=winback;")
+        'Datenbank Verbindung Einstellungen setzen
+        '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
+        wb_Konfig.MySqlSetting()
+
+        Dim myConn As New MySqlConnection(wb_Konfig.SqlConWinBack)
         Dim myDataAdapter As New MySqlDataAdapter()
         myDataAdapter.SelectCommand = New MySqlCommand(mySelectQuery, myConn)
         ' Test-Routine prüft ob die DLL-Version zur Datenbank-Version passt
@@ -163,9 +172,7 @@ Public Class UnitTest_wb_Sql
         myDataAdapter.Fill(myDataSet, "Komponenten")
 
         ' Code to modify data in DataSet here
-        Debug.Print("DataSet-Data " & myDataSet.Tables(0).Rows(0).Item("KO_Bezeichnung"))
         myDataSet.Tables(0).Rows(0).Item("KO_Bezeichnung") = "TEST" & Now.ToLongTimeString
-        Debug.Print("DataSet-Data " & myDataSet.Tables(0).Rows(0).Item("KO_Bezeichnung"))
 
         ' Without the MySqlCommandBuilder this line would fail.
         Try

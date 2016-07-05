@@ -18,8 +18,8 @@ Public Class wb_Konfig
         My.Settings.MySQLServerIP = IniFile.ReadString("winback", "eMySQLServerIP", "172.16.17.5")
         My.Settings.MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
         My.Settings.MySQLWbDaten = IniFile.ReadString("winback", "eMySQLDatabaseDaten", "wbdaten")
-        My.Settings.MySQLUser = IniFile.ReadString("winback", "eMySQLUser", "wbdaten")
-        My.Settings.MySQLPass = IniFile.ReadString("winback", "eMySQLPasswordDatabase", "wbdaten")
+        My.Settings.MySQLUser = IniFile.ReadString("winback", "eMySQLUser", "herbst")
+        My.Settings.MySQLPass = IniFile.ReadString("winback", "eMySQLPasswordDatabase", "herbst")
 
         ' Connection-String für WinBack-MySQL-Datenbank
         My.Settings.MySQLConWinBack = "server=" & My.Settings.MySQLServerIP & ";" _
@@ -32,6 +32,9 @@ Public Class wb_Konfig
                                     & "password=" & My.Settings.MySQLPass & ";" _
                                     & "database=" & My.Settings.MySQLWbDaten & ";"
     End Sub
+    Public Shared Function SqlConWinBack() As String
+        Return My.Settings.MySQLConWinBack
+    End Function
     Public Shared Function SqlIP() As String
         Return My.Settings.MySQLServerIP
     End Function
@@ -57,7 +60,7 @@ Public Class wb_Konfig
     Public Shared Sub SetLanguage(Lang As String)
         Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
         If Lang = "" Then
-            Language = IniFile.ReadString("winback", "Language", "de")
+            Language = IniFile.ReadString("winback", "Language", "de-DE")
         Else
             Language = Lang
             IniFile.WriteString("winback", "Language", Language)
@@ -68,9 +71,35 @@ Public Class wb_Konfig
         Try
             Language = My.Settings.AktLanguage
         Catch
-            Language = "de"
+            Language = "de-DE"
         End Try
         Return Language
+    End Function
+
+    Public Shared Function GetLanguageNr() As Integer
+        Select Case Left(Language, 2)
+            Case "de"
+                Return 0
+            Case "hu"
+                Return 1
+            Case "nl"
+                Return 2
+            Case "en"
+                Return 3
+            Case "pt"
+                Return 4
+            Case "sl"
+                Return 5
+            Case "ru"
+                Return 6
+            Case "fr"
+                Return 7
+            Case "es"
+                Return 8
+            Case Else
+                Return 0
+        End Select
+
     End Function
 
     Public Shared Sub LoadTexteTabelle(Sprache As Integer)
@@ -78,7 +107,7 @@ Public Class wb_Konfig
         winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTexte, Sprache.ToString))
         TexteTabelle.Clear()
         While winback.Read
-            TexteTabelle.Add("@[" & winback.sField("T_TextIndex") & "," & winback.sField("T_Typ") & "]", winback.sField("T_Text"))
+            TexteTabelle.Add("@[" & winback.sField("T_Typ") & "," & winback.sField("T_TextIndex") & "]", winback.sField("T_Text"))
         End While
         winback.Close()
 

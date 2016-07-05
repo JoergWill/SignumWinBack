@@ -41,7 +41,7 @@ Public Class Rohstoffe_Main
 
     Private Sub Rohstoffe_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_Rohstoffe_Shared.Load_RohGruppenTexte()
+        wb_Rohstoffe_Shared.Load_RohstoffTables()
         'Fenster laden
         LoadDockBarConfig()
     End Sub

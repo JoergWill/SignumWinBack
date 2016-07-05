@@ -18,7 +18,7 @@ Public Class wb_Rohstoffe_Details
         tRohstoffNummer.Text = RohStoff.Nummer
         tRohstoffName.Text = RohStoff.Bezeichung
         tRohstoffKommentar.Text = RohStoff.Kommentar
-        tRohstoffPreis.Text = FormatStr(RohStoff.Preis, 4, 3, "de-DE")
+        tRohstoffPreis.Text = RohStoff.Preis
 
         cbRohstoffGrp1.SetTextFromKey(RohStoff.Gruppe1)
         cbRohstoffGrp2.SetTextFromKey(RohStoff.Gruppe2)

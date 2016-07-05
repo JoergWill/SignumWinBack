@@ -120,13 +120,19 @@ Public Class wb_Functions
     Public Shared Function FormatStr(value As String, VorKomma As Integer, NachKomma As Integer, Optional ByVal Culture As String = Nothing) As String
         Dim wert As Double
         Try
-            ' Für Datenbank-Felder muss unabhängig von der Ländereinstellung die Umwandlung mit
-            ' der Einstellung de-DE erfolgen
-            If Culture IsNot Nothing Then
-                wert = Convert.ToDouble(value, New System.Globalization.CultureInfo(Culture))
+            If value IsNot "" Then
+                ' Für Datenbank-Felder muss unabhängig von der Ländereinstellung die Umwandlung mit
+                ' der Einstellung de-DE erfolgen
+                If Culture IsNot Nothing Then
+                    wert = Convert.ToDouble(value, New System.Globalization.CultureInfo(Culture))
+                Else
+                    wert = Convert.ToDouble(value)
+                End If
             Else
-                wert = Convert.ToDouble(value)
+                Return "-"
+                Exit Function
             End If
+
             If NachKomma <> 0 Then
                 Return Right(Space(VorKomma) & CDbl(wert).ToString("F" & NachKomma.ToString), VorKomma + NachKomma + 1)
             Else
@@ -140,11 +146,12 @@ Public Class wb_Functions
     '-----------------------------------------------------------------------------
     ' Text aus Datenbank lesen - Übersetzung
     ' von Herbert Bsteh aus winback (Kylix)
-    '
-    ' (@V3.4.5) Gibt den Text ohne Klammer zurück wenn
-    '           Kein Text in der Datenbak gefunden wurde
+    ' Erste Zahl (Texttyp), zweite Zahl (Textindex)
+
+    ' Gibt den Text ohne Klammer zurück wenn
+    ' kein Text in der Datenbak gefunden wurde
     '-----------------------------------------------------------------------------
-    Public Shared Function TextFilter(Text As String, Sprache As Integer) As String
+    Public Shared Function TextFilter(Text As String) As String
         Dim Hash As String
 
         If Len(Text) > 6 Then
@@ -153,11 +160,13 @@ Public Class wb_Functions
                 Try
                     Return wb_Konfig.TexteTabelle(Hash).ToString
                 Catch
-                    Return Mid(Text, Len(Hash))
+                    Return Mid(Text, Len(Hash) + 1)
                 End Try
+            Else
+                Return Text
             End If
+        Else
             Return Text
         End If
-        Return Text
     End Function
 End Class

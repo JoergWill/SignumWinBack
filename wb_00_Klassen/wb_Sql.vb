@@ -166,7 +166,7 @@ Public Class wb_Sql
                     Return -1
             End Select
         Catch ex As Exception
-            MsgBox("Fehler bei SQL-Kommando: " & ex.Message.ToString)
+            MsgBox("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
             Return -1
         End Try
     End Function

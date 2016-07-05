@@ -197,7 +197,7 @@ Public Class WinBack
         wb_Konfig.SetColors()
         'aktuelle(letzte) Sprache einstellen
         wb_Konfig.SetLanguage("")
-        'Has-Table Texte laden
+        'Hash-Table Texte laden
         wb_Konfig.LoadTexteTabelle(0)
 
         'Initialisierung beendet
