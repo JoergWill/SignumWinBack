@@ -9,7 +9,7 @@
       <Value Profile="(Default)">de</Value>
     </Setting>
     <Setting Name="MySQLServerIP" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">172.16.17.5</Value>
     </Setting>
     <Setting Name="MySQLWinBack" Type="System.String" Scope="User">
       <Value Profile="(Default)">winback</Value>
@@ -36,13 +36,25 @@
       <Value Profile="(Default)">LightGray</Value>
     </Setting>
     <Setting Name="MsSQLConWinBack" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=OrgasoftMain; Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=,winback; Integrated Security=True</Value>
     </Setting>
     <Setting Name="MsSQLConWbDaten" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True</Value>
     </Setting>
     <Setting Name="WinBackDockPanelPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Temp\</Value>
+    </Setting>
+    <Setting Name="MsSQLServerIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="WinBackDBType" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="WinBackConString" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WbDatenConString" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

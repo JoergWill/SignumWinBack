@@ -1,4 +1,10 @@
 ﻿Public Class wb_Global
+
+    Enum ProgVariante
+        OrgaBack                    'Programm läuft als Addin unter OrgaBack
+        WinBack                     'Programm läuft als Standalone
+    End Enum
+
     Enum KomponTypen
         KO_ZEILE_ARTIKEL             '-1
         KO_ZEILE_CHARGE              '-2

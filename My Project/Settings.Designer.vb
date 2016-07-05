@@ -13,15 +13,15 @@ Option Explicit On
 
 
 Namespace My
-
-    <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0"),
-     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>
+    
+    <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0"),  _
+     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
     Partial Friend NotInheritable Class MySettings
         Inherits Global.System.Configuration.ApplicationSettingsBase
-
-        Private Shared defaultInstance As MySettings = CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New MySettings()), MySettings)
-
+        
+        Private Shared defaultInstance As MySettings = CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New MySettings()),MySettings)
+        
 #Region "Funktion zum automatischen Speichern von My.Settings"
 #If _MyType = "WindowsForms" Then
     Private Shared addedHandler As Boolean
@@ -36,10 +36,10 @@ Namespace My
     End Sub
 #End If
 #End Region
-
+        
         Public Shared ReadOnly Property [Default]() As MySettings
             Get
-
+                
 #If _MyType = "WindowsForms" Then
                If Not addedHandler Then
                     SyncLock addedHandlerLockObject
@@ -53,172 +53,220 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property AktUser() As String
             Get
-                Return CType(Me("AktUser"), String)
+                Return CType(Me("AktUser"),String)
             End Get
             Set
                 Me("AktUser") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("de")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("de")>  _
         Public Property AktLanguage() As String
             Get
-                Return CType(Me("AktLanguage"), String)
+                Return CType(Me("AktLanguage"),String)
             End Get
             Set
                 Me("AktLanguage") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("172.16.17.5")>  _
         Public Property MySQLServerIP() As String
             Get
-                Return CType(Me("MySQLServerIP"), String)
+                Return CType(Me("MySQLServerIP"),String)
             End Get
             Set
                 Me("MySQLServerIP") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("winback")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("winback")>  _
         Public Property MySQLWinBack() As String
             Get
-                Return CType(Me("MySQLWinBack"), String)
+                Return CType(Me("MySQLWinBack"),String)
             End Get
             Set
                 Me("MySQLWinBack") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("wbdaten")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("wbdaten")>  _
         Public Property MySQLWbDaten() As String
             Get
-                Return CType(Me("MySQLWbDaten"), String)
+                Return CType(Me("MySQLWbDaten"),String)
             End Get
             Set
                 Me("MySQLWbDaten") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("herbst")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("herbst")>  _
         Public Property MySQLUser() As String
             Get
-                Return CType(Me("MySQLUser"), String)
+                Return CType(Me("MySQLUser"),String)
             End Get
             Set
                 Me("MySQLUser") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("herbst")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("herbst")>  _
         Public Property MySQLPass() As String
             Get
-                Return CType(Me("MySQLPass"), String)
+                Return CType(Me("MySQLPass"),String)
             End Get
             Set
                 Me("MySQLPass") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property MySQLConWinBack() As String
             Get
-                Return CType(Me("MySQLConWinBack"), String)
+                Return CType(Me("MySQLConWinBack"),String)
             End Get
             Set
                 Me("MySQLConWinBack") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property MySQLConWbDaten() As String
             Get
-                Return CType(Me("MySQLConWbDaten"), String)
+                Return CType(Me("MySQLConWbDaten"),String)
             End Get
             Set
                 Me("MySQLConWbDaten") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("C:\ProgramData\OrgaSoft\Temp\01\")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\ProgramData\OrgaSoft\Temp\01\")>  _
         Public Property OrgaSoftDockPanelPath() As String
             Get
-                Return CType(Me("OrgaSoftDockPanelPath"), String)
+                Return CType(Me("OrgaSoftDockPanelPath"),String)
             End Get
             Set
                 Me("OrgaSoftDockPanelPath") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("C:\Temp\")>
-        Public Property WinBackDockPanelPath() As String
-            Get
-                Return CType(Me("WinBackDockPanelPath"), String)
-            End Get
-            Set
-                Me("WinBackDockPanelPath") = Value
-            End Set
-        End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("LightGray")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("LightGray")>  _
         Public Property DataGridAlternateRowColor() As Global.System.Drawing.Color
             Get
-                Return CType(Me("DataGridAlternateRowColor"), Global.System.Drawing.Color)
+                Return CType(Me("DataGridAlternateRowColor"),Global.System.Drawing.Color)
             End Get
             Set
                 Me("DataGridAlternateRowColor") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=OrgasoftMain; Integrated Security=True")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=,winback; Integrated Security=True")>  _
         Public Property MsSQLConWinBack() As String
             Get
-                Return CType(Me("MsSQLConWinBack"), String)
+                Return CType(Me("MsSQLConWinBack"),String)
             End Get
             Set
                 Me("MsSQLConWinBack") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True")>  _
         Public Property MsSQLConWbDaten() As String
             Get
-                Return CType(Me("MsSQLConWbDaten"), String)
+                Return CType(Me("MsSQLConWbDaten"),String)
             End Get
             Set
                 Me("MsSQLConWbDaten") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\Temp\")>  _
+        Public Property WinBackDockPanelPath() As String
+            Get
+                Return CType(Me("WinBackDockPanelPath"),String)
+            End Get
+            Set
+                Me("WinBackDockPanelPath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("127.0.0.1")>  _
+        Public Property MsSQLServerIP() As String
+            Get
+                Return CType(Me("MsSQLServerIP"),String)
+            End Get
+            Set
+                Me("MsSQLServerIP") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property WinBackDBType() As Integer
+            Get
+                Return CType(Me("WinBackDBType"),Integer)
+            End Get
+            Set
+                Me("WinBackDBType") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property WinBackConString() As String
+            Get
+                Return CType(Me("WinBackConString"),String)
+            End Get
+            Set
+                Me("WinBackConString") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property WbDatenConString() As String
+            Get
+                Return CType(Me("WbDatenConString"),String)
+            End Get
+            Set
+                Me("WbDatenConString") = value
             End Set
         End Property
     End Class

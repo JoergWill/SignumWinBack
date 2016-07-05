@@ -60,10 +60,10 @@ Public Class wb_Rohstoffe_Liste
 
     'Anstelle des Feldes KO_Nr wird das Feld LG_aktiv ausgegeben
     'die Daten kommen aus einer HashTable (KO_Nr - LG_aktiv)
-    Const ActivIdxColumn As Integer = 2
+    Const AktivIdxColumn As Integer = 2
     Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
         Try
-            If e.ColumnIndex = ActivIdxColumn Then
+            If e.ColumnIndex = AktivIdxColumn Then
                 e.Value = RohAktiv(CInt(e.Value.ToString))
             End If
         Catch

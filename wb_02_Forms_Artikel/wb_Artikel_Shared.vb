@@ -8,7 +8,7 @@
 
     Public Shared Sub LoadRzptNamen()
         'HashTable mit der Übersetzung der Rezept-Nummer(Idx) in die Rezept-Bezeichnung laden
-        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
         winback.sqlSelect("SELECT * FROM Rezepte")
         Rzpt.Clear()
         While winback.Read

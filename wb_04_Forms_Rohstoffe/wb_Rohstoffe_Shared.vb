@@ -20,7 +20,7 @@ Public Class wb_Rohstoffe_Shared
         'HashTable mit der Übersetzung der Rohstoffgruppen-Nummer in die Rohstoffgruppen-Bezeichnung laden
         'wenn die Rohstoffgruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen
-        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
 
         'SortedList Rohstoff-Gruppen
         winback.sqlSelect(wb_Sql_Selects.sqlRohstoffGruppen)

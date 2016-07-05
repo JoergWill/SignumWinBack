@@ -134,7 +134,7 @@ Imports Signum.OrgaSoft.AddIn.wb_Konfig
     Sub TestInitialize()
         'Datenbank Verbindung Einstellungen setzen
         '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-        wb_Konfig.MySqlSetting()
+        wb_Konfig.SqlSetting("MySQL")
         winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
 
         'Test-Einträge in Tabelle Texte schreiben (TextIndex, TextTyp,Sprache,Text,Timestamp)

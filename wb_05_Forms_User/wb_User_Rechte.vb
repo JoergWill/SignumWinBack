@@ -35,7 +35,7 @@ Public Class wb_User_Rechte
         Dim subNode As TreeNode = Nothing
         TreeView.Nodes.Clear()
 
-        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
         If winback.sqlSelect(sql) Then
             While winback.Read
                 sBezeichnung = winback.sField("IT_Bezeichnung")

@@ -25,7 +25,7 @@
         'HashTable mit der Übersetzung der Variante-Nummer in die Varianten-Bezeichnung laden
         'wenn die Varianten-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen
-        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
         winback.sqlSelect("SELECT RV_Nr, RV_Bezeichnung FROM RezeptVarianten")
         RzVariante.Clear()
         While winback.Read
@@ -38,7 +38,7 @@
         'HashTable mit der Übersetzung der Liniengruppen-Nummer in die Liniengruppen-Bezeichnung laden
         'wenn die Liniengruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen
-        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
         winback.sqlSelect("SELECT LG_Nr, LG_Bezeichnung FROM LinienGruppen")
         LinienGruppe.Clear()
         While winback.Read

@@ -51,7 +51,7 @@ Public Class UnitTest_wb_Sql
 
             'Datenbank Verbindung Einstellungen setzen
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_Konfig.MySqlSetting()
+            wb_Konfig.SqlSetting("MySQL")
             Debug.Print("Test MySQL aktiv" & wb_Konfig.SqlConWinBack)
 
             'Datenbank-Verbindung öffnen - MySQL
@@ -100,20 +100,20 @@ Public Class UnitTest_wb_Sql
         If My.Settings.TestMsSQL Then
 
             'Datenbank WinBack erstellen - MS-SQL
-            DataBaseWinBack("Data Source=127.0.0.1\SIGNUM; Database=WinBack; Integrated Security=True")
+            DataBaseWinBack(My.Settings.MsSQLConWinBack)
             'Datenbank WbDaten erstellen - MS-SQL
-            DataBaseWinBack("Data Source=127.0.0.1\SIGNUM; Database=WbDaten; Integrated Security=True")
+            DataBaseWinBack(My.Settings.MsSQLConWbDaten)
 
             'Tabelle WinBack.Komponenten erstellen
-            Komponenten("Data Source=127.0.0.1\SIGNUM; Database=WinBack; Integrated Security=True")
+            Komponenten(My.Settings.MsSQLConWinBack)
             'Tabelle WinBack.Rezepte erstellen
-            Rezepte("Data Source=127.0.0.1\SIGNUM; Database=WinBack; Integrated Security=True")
+            Rezepte(My.Settings.MsSQLConWinBack)
 
             'Tabelle WbDaten.His_Rezepte erstellen
-            His_Rezepte("Data Source=127.0.0.1\SIGNUM; Database=WbDaten; Integrated Security=True")
+            His_Rezepte(My.Settings.MsSQLConWbDaten)
 
             'Datenbank-Verbindung öffnen - MySQL
-            Dim OrgasoftMain As New wb_Sql("Data Source=127.0.0.1\SIGNUM; Database=WinBack; Integrated Security=True", wb_Sql.dbType.msSql)
+            Dim OrgasoftMain As New wb_Sql(My.Settings.MsSQLConWinBack, wb_Sql.dbType.msSql)
 
             'Tabelle Test erstellen
             OrgasoftMain.sqlCommand("IF OBJECT_ID('Test', 'U') IS NOT NULL DROP TABLE Test;")
@@ -156,7 +156,7 @@ Public Class UnitTest_wb_Sql
         Dim mySelectQuery As String = "SELECT KO_Nr, KO_Type, KO_Bezeichnung, KO_Kommentar FROM Komponenten;"
         'Datenbank Verbindung Einstellungen setzen
         '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-        wb_Konfig.MySqlSetting()
+        wb_Konfig.SqlSetting()
 
         Dim myConn As New MySqlConnection(wb_Konfig.SqlConWinBack)
         Dim myDataAdapter As New MySqlDataAdapter()

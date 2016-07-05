@@ -12,7 +12,7 @@
         'HashTable mit der Übersetzung der Gruppen-Nummer in die Gruppen-Bezeichnung laden
         'wenn die Gruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen
-        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
         winback.sqlSelect("SELECT * FROM ItemIDs WHERE II_ItemTyp = 500 ORDER BY II_ItemID")
         GrpTexte.Clear()
         While winback.Read

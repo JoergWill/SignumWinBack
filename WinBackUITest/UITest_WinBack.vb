@@ -15,9 +15,9 @@ Public Class UITest_WinBack
         '            
         ' To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
         '
-        Me.UIMap.Check_WinBack_Started()
+        'Me.UIMap.Check_WinBack_Started()
         'Me.UIMap.CheckStatusLine()
-        Me.UIMap.TestLinien()
+        'Me.UIMap.TestLinien()
 
     End Sub
 

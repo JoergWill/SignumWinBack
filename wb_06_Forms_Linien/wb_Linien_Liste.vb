@@ -70,7 +70,7 @@ Public Class wb_Linien_Liste
         'alle Einträge löschen
         VNCview.Clear()
 
-        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
         If winback.sqlSelect("SELECT * FROM Linien") Then
             While winback.Read
                 IPLinie = (winback.iField("L_Nr") + 10).ToString

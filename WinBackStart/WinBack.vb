@@ -61,6 +61,7 @@ Public Class WinBack
             End If
         Next i
     End Sub
+
     Private Sub ChargenMainShow()
         If MdiChargen Is Nothing OrElse MdiChargen.IsDisposed Then
             MdiChargen = New Chargen_Main
@@ -155,6 +156,7 @@ Public Class WinBack
         MdiProduktion.MdiParent = Me
         MdiProduktion.Dock = DockStyle.Fill
     End Sub
+
     Private Sub ServiceMainShow()
         If MdiService Is Nothing OrElse MdiService.IsDisposed Then
             MdiService = New Service_Main
@@ -186,13 +188,13 @@ Public Class WinBack
 
     Private Sub WinBack_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
-        wb_Konfig.MySqlSetting()
+        wb_Konfig.SqlSetting()
         'Version in Status-Bar anzeigen
         lblVersion.Text = "WinBack V" & My.Application.Info.Version.ToString
         'IP-Adresse in Status-Bar anzeigen
         lblNetworkIP.Text = wb_Konfig.DbType & " " & wb_Konfig.SqlIP
         'Programm und Datei-Pfade einstellen
-        wb_Konfig.SetPath(wb_Konfig.ProgVariante.WinBack)
+        wb_Konfig.SetPath(wb_Global.ProgVariante.WinBack)
         'Farbschema einstellen
         wb_Konfig.SetColors()
         'aktuelle(letzte) Sprache einstellen

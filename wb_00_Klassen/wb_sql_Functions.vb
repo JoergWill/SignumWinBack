@@ -10,7 +10,7 @@ Imports Signum.OrgaSoft.AddIn.wb_Global
 Public Class wb_sql_Functions
 
     Public Shared Function ReadHinweise(Typ As Hinweise, idx As Integer) As String
-        Dim winback As New wb_Sql(My.Settings.MySQLConWinBack, wb_Sql.dbType.mySql)
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
         Dim Typ1, Typ2 As Integer
 
         Select Case Typ
