@@ -107,26 +107,14 @@ Public Class wb_Rohstoffe_Main
         Return False
     End Function
 
-    Private Sub wb_User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub wb_Rohstoffe_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_User_Shared.LoadGrpTexte()
+        wb_Rohstoffe_Shared.Load_RohstoffTables()
         ' DockBar Konfiguration aus XML-Datei lesen
         LoadDockBarConfig()
     End Sub
 
     Private Sub BtnUserNew()
-        Throw New NotImplementedException
-    End Sub
-
-    Private Sub BtnUserPasswd()
-        Throw New NotImplementedException
-    End Sub
-
-    Private Sub btnUserPrint()
-        Throw New NotImplementedException
-    End Sub
-
-    Private Sub BtnUserGroup()
         Throw New NotImplementedException
     End Sub
 
