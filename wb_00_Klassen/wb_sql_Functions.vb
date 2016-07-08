@@ -5,7 +5,7 @@
 '---------------------------------------------------------
 'Beschreibung:
 'Sammlung von Statischen SQL-Funktionen
-Imports Signum.OrgaSoft.AddIn.wb_Global
+Imports WinBack.wb_Global
 
 Public Class wb_sql_Functions
 

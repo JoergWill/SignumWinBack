@@ -1,5 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn
-Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Artikel_Main
     Public ArtikelListe As New wb_Artikel_Liste
     Public ArtikelDetails As New wb_Artikel_Details

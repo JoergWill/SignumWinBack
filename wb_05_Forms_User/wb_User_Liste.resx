@@ -151,7 +151,7 @@
     <value>wb_User_Liste</value>
   </data>
   <data name="&gt;&gt;DataGridView.Type" xml:space="preserve">
-    <value>Signum.OrgaSoft.AddIn.wb_DataGridView, WinBackAddin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Mitarbeiter-Liste</value>

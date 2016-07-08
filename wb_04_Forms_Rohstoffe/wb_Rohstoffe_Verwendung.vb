@@ -1,5 +1,5 @@
-﻿Imports Signum.OrgaSoft.AddIn.wb_Sql_Selects
-Imports Signum.OrgaSoft.AddIn.wb_Rohstoffe_Shared
+﻿Imports WinBack.wb_Sql_Selects
+Imports WinBack.wb_Rohstoffe_Shared
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Rohstoffe_Verwendung

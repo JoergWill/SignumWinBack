@@ -1,5 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn
-Imports System.Globalization
+﻿Imports System.Globalization
 Imports System.Threading
 Imports System.Resources
 

@@ -1,5 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn
-Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Chargen_Main
     Public ChargenListe As New wb_Chargen_Liste
 

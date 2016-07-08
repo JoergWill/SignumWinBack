@@ -1,4 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn.wb_Global
+﻿Imports WinBack.wb_Global
 
 Public Class wb_Konfig
 
@@ -7,7 +7,7 @@ Public Class wb_Konfig
     Public Shared TexteTabelle As New Hashtable
 
     Public Shared Sub SqlSetting(Optional ByVal DBType As String = "")
-        Dim IniFile As New OrgasoftMain.wb_IniFile
+        Dim IniFile As New wb_IniFile
         'für UnitTest kann die Einstellung in winback.ini überschrieben werden
         If DBType Is "" Then
             DBType = IniFile.ReadString("winback", "DBType", "MySQL")
@@ -36,7 +36,7 @@ Public Class wb_Konfig
 
     End Sub
     Private Shared Sub MySqlSetting()
-        Dim IniFile As New OrgasoftMain.wb_IniFile
+        Dim IniFile As New wb_IniFile
 
         My.Settings.MySQLServerIP = IniFile.ReadString("winback", "eMySQLServerIP", "172.16.17.5")
         My.Settings.MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
@@ -57,7 +57,7 @@ Public Class wb_Konfig
     End Sub
 
     Private Shared Sub MsSqlSetting()
-        Dim IniFile As New OrgasoftMain.wb_IniFile
+        Dim IniFile As New wb_IniFile
 
         My.Settings.MsSQLServerIP = IniFile.ReadString("winback", "eMsSQLServerIP", "127.0.0.1")
         My.Settings.MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
@@ -125,7 +125,7 @@ Public Class wb_Konfig
     End Sub
 
     Public Shared Sub SetLanguage(Lang As String)
-        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
+        Dim IniFile As New wb_IniFile
         If Lang = "" Then
             Language = IniFile.ReadString("winback", "Language", "de-DE")
         Else

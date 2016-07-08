@@ -11,8 +11,8 @@
 'Default: Pfad/ProgrammName.ini
 '---------------------------------------------------------
 
-Namespace OrgasoftMain
-    Public Class wb_IniFile
+'Namespace OrgasoftMain
+Public Class wb_IniFile
         ' Private Variablen
         Private Pfad As String
         Private _SilentMode As Boolean = False
@@ -173,4 +173,4 @@ Namespace OrgasoftMain
             WriteString(Sektion, Schlüssel, If(Wert, "1", "0"))
         End Sub
     End Class
-End Namespace
+'End Namespace

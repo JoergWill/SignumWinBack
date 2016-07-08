@@ -25,7 +25,7 @@ Partial Class wb_Rohstoffe_Verwendung
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.HisDataGridView = New Signum.OrgaSoft.AddIn.wb_DataGridView()
+        Me.HisDataGridView = New WinBack.wb_DataGridView()
         CType(Me.HisDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '

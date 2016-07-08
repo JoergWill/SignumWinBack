@@ -1,6 +1,6 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
-Imports Signum.OrgaSoft.AddIn.wb_sql_Functions
-Imports Signum.OrgaSoft.AddIn.wb_Global
+Imports WinBack.wb_sql_Functions
+Imports WinBack.wb_Global
 
 Public Class wb_Rezept_Hinweise
     Inherits DockContent

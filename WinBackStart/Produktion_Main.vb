@@ -1,5 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn
-Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Produktion_Main
     Public ProduktionListe As New wb_Planung_Liste
 

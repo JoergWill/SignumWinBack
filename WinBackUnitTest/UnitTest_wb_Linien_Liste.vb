@@ -1,7 +1,4 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports Signum.OrgaSoft.AddIn
-Imports Signum.OrgaSoft.AddIn.wb_Linien_Liste
+﻿Imports WinBack
 
 
 <TestClass()>

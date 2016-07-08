@@ -1,5 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn
-Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Rohstoffe_Main
     Public RohstoffListe As New wb_Rohstoffe_Liste
     Public RohstoffDetails As New wb_Rohstoffe_Details

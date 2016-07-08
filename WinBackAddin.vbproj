@@ -9,7 +9,7 @@
     </SchemaVersion>
     <ProjectGuid>{AA45FD47-0A9E-40D7-A9A1-5EF03F1F3C67}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Signum.OrgaSoft.AddIn</RootNamespace>
+    <RootNamespace>WinBack</RootNamespace>
     <AssemblyName>WinBackAddin</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>

@@ -1,4 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn.wb_Functions
+﻿Imports WinBack.wb_Functions
 Imports System.Windows.Forms
 
 Public Class wb_User_Rechte

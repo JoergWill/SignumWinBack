@@ -25,7 +25,7 @@ Partial Class wb_Rezept_Liste
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.DataGridView = New Signum.OrgaSoft.AddIn.wb_DataGridView()
+        Me.DataGridView = New WinBack.wb_DataGridView()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '

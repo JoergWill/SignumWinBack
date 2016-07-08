@@ -1,5 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn
-Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class User_Main
     Public UserListe As New wb_User_Liste
     Public UserDetails As New wb_User_Details

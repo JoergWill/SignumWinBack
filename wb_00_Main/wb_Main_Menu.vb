@@ -1,5 +1,4 @@
-﻿
-'---------------------------------------------------------
+﻿'---------------------------------------------------------
 '15.04.2016/ V0.9/JW            :Neuanlage
 'Bearbeitet von                 :Will
 '
@@ -10,6 +9,7 @@
 '    Menu-Struktur auf.
 '---------------------------------------------------------
 
+Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.FrameWork
 Imports Signum.OrgaSoft.Common

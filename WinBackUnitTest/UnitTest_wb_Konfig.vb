@@ -1,18 +1,14 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports Signum.OrgaSoft.AddIn
-Imports Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
-Imports Signum.OrgaSoft.AddIn.wb_Konfig
-
+﻿Imports WinBack
+Imports WinBack.wb_Konfig
 
 <TestClass()> Public Class UnitTest_wb_Konfig
     Dim winback As wb_Sql
-    Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
+    Dim IniFile As New WinBack.wb_IniFile
 
     <TestMethod()>
     Public Sub Test_IniFile()
         ' Test Ini-File lesen/schreiben
-        Dim IniFile As New Signum.OrgaSoft.AddIn.OrgasoftMain.wb_IniFile
+        Dim IniFile As New WinBack.wb_IniFile
 
         Dim bTest As Boolean
         Dim iTest As Integer

@@ -1,7 +1,7 @@
 ﻿Imports System.Globalization
 Imports System.Threading
-Imports Signum.OrgaSoft.AddIn.wb_Functions
-Imports Signum.OrgaSoft.AddIn.wb_Global
+Imports WinBack.wb_Functions
+Imports WinBack.wb_Global
 
 <TestClass()> Public Class UnitTest_wb_Functions
 

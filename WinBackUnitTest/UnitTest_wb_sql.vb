@@ -1,6 +1,6 @@
-﻿Imports Signum.OrgaSoft.AddIn
-Imports MySql.Data.MySqlClient
-Imports Signum.OrgaSoft.AddIn.wb_CreateSQLTables
+﻿Imports MySql.Data.MySqlClient
+Imports WinBack.wb_CreateSQLTables
+Imports WinBack
 
 <TestClass()>
 Public Class UnitTest_wb_Sql

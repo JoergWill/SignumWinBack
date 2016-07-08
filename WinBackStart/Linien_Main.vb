@@ -1,7 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn
-Imports WeifenLuo.WinFormsUI.Docking
-Imports System.Globalization
-Imports System.Threading
+﻿Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class Linien_Main
     Public LinienListe As New wb_Linien_Liste

@@ -1,4 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn.wb_Functions
+﻿Imports WinBack.wb_Functions
 Public Class wb_Rohstoffe_Shared
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)

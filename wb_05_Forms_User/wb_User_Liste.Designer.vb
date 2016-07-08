@@ -1,7 +1,4 @@
-﻿Imports System.Globalization
-Imports System.Threading
-Imports Signum.OrgaSoft.AddIn
-Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports WeifenLuo.WinFormsUI.Docking
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class wb_User_Liste
     Inherits DockContent
@@ -29,7 +26,7 @@ Partial Class wb_User_Liste
     Private Sub InitializeComponent()
 
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_User_Liste))
-        Me.DataGridView = New Signum.OrgaSoft.AddIn.wb_DataGridView()
+        Me.DataGridView = New WinBack.wb_DataGridView()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '

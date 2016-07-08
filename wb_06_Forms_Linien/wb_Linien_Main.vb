@@ -12,6 +12,7 @@
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
+Imports Signum.OrgaSoft
 
 
 Public Class wb_Linien_Main

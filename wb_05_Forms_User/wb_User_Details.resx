@@ -199,7 +199,7 @@
     <value>cbUserGrp</value>
   </data>
   <data name="&gt;&gt;cbUserGrp.Type" xml:space="preserve">
-    <value>Signum.OrgaSoft.AddIn.wb_ComboBox, WinBackAddin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbUserGrp.Parent" xml:space="preserve">
     <value>Panel</value>

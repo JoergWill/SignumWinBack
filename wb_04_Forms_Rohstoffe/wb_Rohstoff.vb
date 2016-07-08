@@ -1,5 +1,5 @@
-﻿Imports Signum.OrgaSoft.AddIn.wb_Functions
-Imports Signum.OrgaSoft.AddIn.wb_Global
+﻿Imports WinBack.wb_Functions
+Imports WinBack.wb_Global
 
 Public Class wb_Rohstoff
     Private KO_Nr As Integer

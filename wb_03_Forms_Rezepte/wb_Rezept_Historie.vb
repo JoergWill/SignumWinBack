@@ -1,4 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn.wb_Sql_Selects
+﻿Imports WinBack.wb_Sql_Selects
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Rezept_Historie

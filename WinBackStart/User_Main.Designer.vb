@@ -1,6 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn
-
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class User_Main
     Inherits System.Windows.Forms.Form
 

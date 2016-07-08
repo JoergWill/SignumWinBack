@@ -1,5 +1,4 @@
-﻿Imports Signum.OrgaSoft.AddIn
-Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Rezepte_Main
     Public RezeptListe As New wb_Rezept_Liste
     Public RezeptDetails As New wb_Rezept_Details
