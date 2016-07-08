@@ -35,7 +35,7 @@ Public Class wb_Rohstoffe_Liste
         Next
 
         'DataGrid füllen
-        DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffListe, "RohstoffListe")
+        DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffLst, "RohstoffListe")
         'DataGrid Initialisierung Anzeige ohne Sauerteig, nur aktive Rohstoffe
         Me.Anzeige = AnzeigeFilter.Alle
     End Sub

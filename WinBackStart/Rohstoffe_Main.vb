@@ -4,6 +4,7 @@ Public Class Rohstoffe_Main
     Public RohstoffListe As New wb_Rohstoffe_Liste
     Public RohstoffDetails As New wb_Rohstoffe_Details
     Public RohstoffVerwendung As New wb_Rohstoffe_Verwendung
+    Public RohstoffParameter As New wb_Rohstoffe_Parameter
 
     Private Sub SaveDockBarConfig()
         DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbRohstoff.xml")
@@ -19,6 +20,8 @@ Public Class Rohstoffe_Main
         RohstoffDetails.CloseButtonVisible = False
         RohstoffVerwendung.Show(DockPanel, DockState.Document)
         RohstoffVerwendung.CloseButtonVisible = False
+        RohstoffParameter.Show(DockPanel, DockState.Document)
+        RohstoffParameter.CloseButtonVisible = False
         RohstoffListe.Show(DockPanel, DockState.DockLeft)
         RohstoffListe.CloseButtonVisible = False
     End Sub
@@ -31,6 +34,8 @@ Public Class Rohstoffe_Main
                 Return RohstoffDetails
             Case "RohstoffVerwendung"
                 Return RohstoffVerwendung
+            Case "RohstoffParameter"
+                Return RohstoffParameter
             Case Else
                 Return Nothing
         End Select
@@ -43,6 +48,7 @@ Public Class Rohstoffe_Main
         RohstoffDetails.Close()
         RohstoffVerwendung.Close()
         RohstoffListe.Close()
+        RohstoffParameter.Close()
     End Sub
 
     Private Sub Rohstoffe_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load

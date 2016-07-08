@@ -175,7 +175,7 @@ Public Class wb_Konfig
 
     Public Shared Sub LoadTexteTabelle(Sprache As Integer)
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
-        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTexte, Sprache.ToString))
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlWinBackTxte, Sprache.ToString))
         TexteTabelle.Clear()
         While winback.Read
             TexteTabelle.Add("@[" & winback.sField("T_Typ") & "," & winback.sField("T_TextIndex") & "]", winback.sField("T_Text"))

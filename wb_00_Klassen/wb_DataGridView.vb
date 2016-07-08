@@ -68,7 +68,7 @@ Public Class wb_DataGridView
     'in das DataView und in das Pop-Up-Menu eingetragen
 
     <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:SQL-Abfragen auf Sicherheitsrisiken überprüfen")>
-    Sub LoadData(sSql As String, sGridName As String, Optional table As dbTable = wb_Sql.dbTable.winback)
+    Sub LoadData(sSql As String, sGridName As String, Optional table As dbTable = dbTable.winback)
         mContextMenu.SuspendLayout()
         'x mSek nachdem sich der Datensatz geändert hat, wird der aktuelle Datensatz im 
         'Detail-Fenster angezeigt

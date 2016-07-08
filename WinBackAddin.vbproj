@@ -164,6 +164,12 @@
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Parameter.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Parameter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Parameter.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Shared.vb" />
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
@@ -329,6 +335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.resx">
       <DependentUpon>wb_Rohstoffe_Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Parameter.resx">
+      <DependentUpon>wb_Rohstoffe_Parameter.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.resx">
       <DependentUpon>wb_Rohstoffe_Verwendung.vb</DependentUpon>

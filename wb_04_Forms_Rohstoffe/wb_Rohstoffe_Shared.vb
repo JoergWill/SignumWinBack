@@ -23,7 +23,7 @@ Public Class wb_Rohstoffe_Shared
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
 
         'SortedList Rohstoff-Gruppen
-        winback.sqlSelect(wb_Sql_Selects.sqlRohstoffGruppen)
+        winback.sqlSelect(wb_Sql_Selects.sqlRohstoffGrp)
         RohGruppe.Clear()
         While winback.Read
             RohGruppe.Add(winback.iField("IP_Wert1int"), TextFilter(winback.sField("IP_Wert4str")))
@@ -31,7 +31,7 @@ Public Class wb_Rohstoffe_Shared
         winback.CloseRead()
 
         'HashTable aktive Rohstoffe (Silo-Umschaltung)
-        winback.sqlSelect(wb_Sql_Selects.sqlRohstoffAktiv)
+        winback.sqlSelect(wb_Sql_Selects.sqlRohstoffAct)
         RohAktiv.Clear()
         While winback.Read
             RohAktiv.Add(winback.iField("KO_Nr"), TextFilter(winback.sField("LG_aktiv")))

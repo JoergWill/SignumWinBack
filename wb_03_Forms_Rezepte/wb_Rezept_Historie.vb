@@ -18,7 +18,7 @@ Public Class wb_Rezept_Historie
         Next
 
         'DataGrid füllen
-        HisDataGridView.LoadData(setParams(sqlRezeptHistorie, wb_Rezept_Shared.aktRzNr.ToString, wb_Rezept_Shared.aktRzVariante.ToString),
+        HisDataGridView.LoadData(setParams(sqlRezeptHistr, wb_Rezept_Shared.aktRzNr.ToString, wb_Rezept_Shared.aktRzVariante.ToString),
                                  "RezeptHistorie", wb_Sql.dbTable.wbdaten)
     End Sub
 
