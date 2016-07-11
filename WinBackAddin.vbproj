@@ -87,7 +87,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\MySql V1.0.10.1\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.Contracts, Version=2.0.5651.19541, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
+    <Reference Include="Signum.OrgaSoft.Contracts, Version=2.1.6029.33503, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\Signum.OrgaSoft.Contracts.dll</HintPath>
     </Reference>
