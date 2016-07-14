@@ -56,17 +56,14 @@ Public Class wb_DataGridView
     Dim mMenuItem As ToolStripMenuItem
     Dim WithEvents tDataHasChanged As New Timer
 
-    '---------------------------------------------------------
-    '19.05.2016/ V0.9/JW            :Neuanlage
-    'Bearbeitet von                 :Will
-    '
-    'Änderungen:
-    '---------------------------------------------------------
-    'Beschreibung:
-    'Läd die Daten aus der Datenbank in das DataGridView.
-    'Die Spaltenüberschriften werden aus ColNames (Public)
-    'in das DataView und in das Pop-Up-Menu eingetragen
-
+    ''' <summary>
+    '''Läd die Daten aus der Datenbank in das DataGridView.
+    '''Die Spaltenüberschriften werden aus ColNames (Public)
+    '''in das DataView und in das Pop-Up-Menu eingetragen
+    ''' </summary>
+    ''' <param name="sSql">String SQL-Abfrage der Listen-Elemente</param>
+    ''' <param name="sGridName">String DataGrid-Name läd die Spalten-Einstellungen aus winback.ini</param>
+    ''' <param name="table">dbTable Datenbank Tabelle winback/wbdaten</param>
     <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:SQL-Abfragen auf Sicherheitsrisiken überprüfen")>
     Sub LoadData(sSql As String, sGridName As String, Optional table As dbTable = dbTable.winback)
         mContextMenu.SuspendLayout()
@@ -179,6 +176,10 @@ Public Class wb_DataGridView
         ContextMenuStrip = mContextMenu
         mContextMenu.ResumeLayout(False)
     End Sub
+
+    ''' <summary>
+    ''' Daten im Grid neu laden
+    ''' </summary>
     Sub RefreshData()
         Select Case My.Settings.WinBackDBType
             ' Verbindung über mySql
@@ -194,15 +195,19 @@ Public Class wb_DataGridView
         End Select
     End Sub
 
-    'x Sekunden nach Änderung des Datensatz-Zeigers wird der
-    'Event HasChanged ausgelöst
+    ''' <summary>
+    ''' x Sekunden nach Änderung des Datensatz-Zeigers wird der
+    ''' Event HasChanged() ausgelöst
+    ''' </summary>
     WriteOnly Property tDataChangedTime As Integer
         Set(value As Integer)
             _tDataChangedTime = value
         End Set
     End Property
 
-    'zusätzliche Filter-Bedingung (SQL)
+    ''' <summary>
+    ''' zusätzliche Filter-Bedingung (SQL)
+    ''' </summary>
     WriteOnly Property Filter As String
         Set(value As String)
             _Filter = value
@@ -211,8 +216,10 @@ Public Class wb_DataGridView
         End Set
     End Property
 
-    'Update Datenbank nach Änderung Field
-    Public Sub updateDataBase()
+    ''' <summary>
+    ''' Update Datenbank nach Änderung eines Datenfeldes
+    ''' </summary>
+    Public Sub UpdateDataBase()
         'damit die Update-Routine richtig funktioniert 
         'muss vorher die Zeile im DataGrid gewechselt worden sein !!
         Me.CurrentCell = Nothing
@@ -226,7 +233,11 @@ Public Class wb_DataGridView
         End Select
     End Sub
 
-    'Datenbank-Feld lesen/ändern
+    ''' <summary>
+    ''' Datenbank-Feld lesen/ändern
+    ''' </summary>
+    ''' <param name="FieldName">String Feldname in Datenbank</param>
+    ''' <returns></returns>
     Property Field(FieldName As String) As String
         Set(value As String)
             Try
@@ -245,7 +256,11 @@ Public Class wb_DataGridView
         End Get
     End Property
 
-    'Popup-Menu Spalten ein/ausblenden
+    ''' <summary>
+    ''' Popup-Menu Spalten ein/ausblenden
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub mContextMenu_Click(ByVal sender As Object, ByVal e As EventArgs)
         'ausgewählte Spalte steht in MenuItem.Tag
         Dim iColumn As Integer
@@ -256,7 +271,10 @@ Public Class wb_DataGridView
         End If
     End Sub
 
-    'Spaltenbreiten in winback.ini schreiben
+    ''' <summary>
+    ''' Spaltenbreiten in winback.ini schreiben
+    ''' </summary>
+    ''' <param name="sGridName">String - Name des Grid. Speichert die Spaltenbreiten in winback.ini in der Sektion [GridName]</param>
     Public Sub SaveToDisk(sGridName As String)
         Dim IniFile As New wb_IniFile
         Dim sColumn As String
@@ -271,7 +289,10 @@ Public Class wb_DataGridView
         Next
     End Sub
 
-    'Spaltenbreiten aus winback.ini lesen
+    ''' <summary>
+    ''' Spaltenbreiten aus winback.ini lesen
+    ''' </summary>
+    ''' <param name="sGridName">String - Name des Grid. Läd die Spaltenbreiten aus winback.ini in der Sektion [GridName]</param>
     Private Sub LoadFromDisk(sGridName As String)
         Dim IniFile As New wb_IniFile
         Dim w, i As Integer
@@ -290,15 +311,20 @@ Public Class wb_DataGridView
         Next
     End Sub
 
-    'Datensatz-Zeiger wurde geändert. Verbundene Text-Felder auslesen
-    'und anzeigen
+    ''' <summary>
+    ''' Datensatz-Zeiger wurde geändert. Verbundene Text-Felder auslesen und anzeigen
+    ''' </summary>
     Public Event HasChanged As EventHandler
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tDataHasChanged.Tick
         tDataHasChanged.Enabled = False
         RaiseEvent HasChanged(Me, EventArgs.Empty)
     End Sub
 
-    'Start Timer nach Änderung Datensatz-Zeiger
+    ''' <summary>
+    '''Start Timer nach Änderung Datensatz-Zeiger
+    ''' x Sekunden nach Änderung des Datensatz-Zeigers wird der
+    ''' Event HasChanged() ausgelöst
+    ''' </summary>
     Private Overloads Sub DataGridView_CurrentCellChanged(sender As Object, e As EventArgs) Handles MyBase.CurrentCellChanged
         'Reset Timer
         tDataHasChanged.Enabled = False
@@ -306,8 +332,12 @@ Public Class wb_DataGridView
         tDataHasChanged.Enabled = True
     End Sub
 
-    'Key-Press im Grid - Filter-Kriterium in Header anzeigen
-    'Filter-String bilden und anwenden
+    ''' <summary>
+    ''' Key-Press im Grid - Filter-Kriterium in Header anzeigen
+    ''' Filter-String bilden und anwenden
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Public Overloads Sub DataGridView_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MyBase.KeyPress
         Dim sRowFilter As String
         'Wenn das eingegebene Zeichen einem Suchstring zugeordnet werden kann, wird der Tastendruck nicht mehr weitergegeben
@@ -335,8 +365,12 @@ Public Class wb_DataGridView
         End If
     End Sub
 
-    'Maus-Klick auf Header-Zeile 
-    'Sortierkriterium umschalten
+    ''' <summary>
+    ''' Maus-Klick auf Header-Zeile 
+    ''' Sortierkriterium umschalten
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Overloads Sub DataGridView_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MyBase.ColumnHeaderMouseClick
         If e.ColumnIndex <> iSort Then
             'alten Header wieder restaurieren
@@ -356,7 +390,11 @@ Public Class wb_DataGridView
         End If
     End Sub
 
-    'Abfangen den Data-Error-Meldungen
+    ''' <summary>
+    ''' Abfangen den Data-Error-Meldungen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Overloads Sub DataGridView_DataError(sender As Object, e As Windows.Forms.DataGridViewDataErrorEventArgs) Handles MyBase.DataError
         'Exception-Text ausgeben
         Debug.Print(e.Exception.ToString)

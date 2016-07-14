@@ -1,27 +1,28 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
+Imports WinBack.wb_User_Shared
 
 Public Class wb_User_Details
     Inherits DockContent
     Private Sub wb_User_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Combo-Box mit Werten füllen
-        cbUserGrp.Fill(wb_User_Shared.GrpTexte)
+        cbUserGrp.Fill(GrpTexte)
 
-        AddHandler wb_User_Shared.eListe_Click, AddressOf DetailInfo
+        AddHandler eListe_Click, AddressOf DetailInfo
     End Sub
 
-    Private Sub Panel_Leave(sender As Object, e As EventArgs) Handles Panel.Leave
-        wb_User_Shared.aktUserName = tUserName.Text
-        wb_User_Shared.aktUserPass = tUserPass.Text
-        wb_User_Shared.aktUserGroup = cbUserGrp.GetKeyFromSelection()
-        wb_User_Shared.Edit_Leave(sender)
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tUserPass.Leave, tUserName.Leave, cbUserGrp.Leave
+        User.Name = tUserName.Text
+        User.Passwort = tUserPass.Text
+        User.iGruppe = cbUserGrp.GetKeyFromSelection()
+        Edit_Leave(sender)
     End Sub
 
     Public Sub DetailInfo()
         'User Name
-        tUserName.Text = wb_User_Shared.aktUserName
+        tUserName.Text = User.Name
         'User Passwort
-        tUserPass.Text = wb_User_Shared.aktUserPass
+        tUserPass.Text = User.Passwort
         'Eintrag in Combo-Box ausfüllen
-        cbUserGrp.SetTextFromKey(wb_User_Shared.aktUserGroup)
+        cbUserGrp.SetTextFromKey(User.iGruppe)
     End Sub
 End Class

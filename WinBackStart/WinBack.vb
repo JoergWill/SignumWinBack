@@ -130,6 +130,11 @@ Public Class WinBack
         MdiUser.Dock = DockStyle.Fill
     End Sub
 
+    Private Sub rbUserNeu_Click(sender As Object, e As EventArgs) Handles rbUserNeu.Click
+        wb_User_Shared.User.AddNew()
+        MdiUser.UserListe.RefreshData()
+    End Sub
+
     Private Sub LinienMainShow()
         If MdiLinien Is Nothing OrElse MdiLinien.IsDisposed Then
             MdiLinien = New Linien_Main
@@ -199,7 +204,7 @@ Public Class WinBack
         'aktuelle(letzte) Sprache einstellen
         wb_Konfig.SetLanguage("")
         'Hash-Table Texte laden
-        wb_Konfig.LoadTexteTabelle(0)
+        wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
 
         'Initialisierung beendet
         isInitialised = True

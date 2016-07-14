@@ -29,7 +29,7 @@ Public Class wb_Rezept_Liste
     'Event Form wird geschlossen
     Private Sub wb_Rezept_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern
-        DataGridView.updateDataBase()
+        DataGridView.UpdateDataBase()
         'Layout sichern
         DataGridView.SaveToDisk("RezeptListe")
     End Sub

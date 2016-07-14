@@ -3,20 +3,18 @@
     Public Shared Event eEdit_Leave(sender As Object)
 
     Public Shared GrpTexte As New SortedList
-
-    Public Shared aktUserName As String
-    Public Shared aktUserPass As String
-    Public Shared aktUserGroup As Integer
+    Public Shared User As New wb_User
+    Public Shared Gruppe As New wb_User_Gruppe
 
     Public Shared Sub LoadGrpTexte()
         'HashTable mit der Übersetzung der Gruppen-Nummer in die Gruppen-Bezeichnung laden
         'wenn die Gruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
-        winback.sqlSelect("SELECT * FROM ItemIDs WHERE II_ItemTyp = 500 ORDER BY II_ItemID")
+        winback.sqlSelect(wb_Sql_Selects.sqlUserGrpTxt)
         GrpTexte.Clear()
         While winback.Read
-            GrpTexte.Add(winback.iField("II_ItemId"), winback.sField("II_Kommentar"))
+            GrpTexte.Add(winback.iField("II_ItemId"), wb_Functions.TextFilter(winback.sField("II_Kommentar")))
         End While
         winback.Close()
     End Sub

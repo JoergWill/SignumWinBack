@@ -1,4 +1,6 @@
-﻿Public Class wb_User_Liste
+﻿Imports WinBack.wb_User_Shared
+
+Public Class wb_User_Liste
 
     'Event Form wird geladen
     Private Sub wb_User_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -11,13 +13,12 @@
         Next
 
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_User_Shared.LoadGrpTexte()
+        LoadGrpTexte()
         'DataGrid füllen
-        Dim sql As String = "SELECT IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int <> 709760"
-        DataGridView.LoadData(sql, "UserListe")
+        DataGridView.LoadData(wb_Sql_Selects.sqlUsersListe, "UserListe")
 
-        'Event Daten wurden geändert
-        AddHandler wb_User_Shared.eEdit_Leave, AddressOf UserInfo
+        'Detail-Daten sind geändert worden - in Datenbank speichern
+        AddHandler eEdit_Leave, AddressOf SaveData
     End Sub
 
     Public Sub RefreshData()
@@ -28,25 +29,25 @@
     'Event Form wird geschlossen
     Private Sub wb_User_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern
-        DataGridView.updateDataBase()
+        SaveData()
         'Layout sichern
         DataGridView.SaveToDisk("UserListe")
     End Sub
 
-    'Event-Handler aus wb_User(Detail)
-    'Daten im Detail-Fenster sind geändert worden - in DataViewGrid zurückschreiben
-    Private Sub UserInfo()
-        DataGridView.Field("IP_Wert4Str") = wb_User_Shared.aktUserName
-        DataGridView.Field("IP_ItemID") = wb_User_Shared.aktUserGroup
-        DataGridView.Field("IP_Wert1int") = wb_User_Shared.aktUserPass
+    'Datensatz in Datenbank sichern
+    Private Sub SaveData()
+        'Daten in Datenbank sichern
+        If User.SaveData(DataGridView) Then
+            DataGridView.UpdateDataBase()
+        End If
     End Sub
 
-    'Dat2ensatz-Zeiger wurde geändert
+    'Datensatz-Zeiger wurde geändert
     Private Sub DataGridView_HasChanged() Handles DataGridView.HasChanged
-        wb_User_Shared.aktUserName = DataGridView.Field("IP_Wert4Str")
-        wb_User_Shared.aktUserGroup = CInt(DataGridView.Field("IP_ItemID"))
-        wb_User_Shared.aktUserPass = DataGridView.Field("IP_Wert1int")
-        wb_User_Shared.Liste_Click(Nothing)
+        'Daten zum aktuell ausgewählten User laden
+        User.LoadData(DataGridView)
+        'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
+        Liste_Click(Nothing)
     End Sub
 
     'Anstelle der Gruppen-Nummer wird die Gruppen-Bezeichnung ausgegeben
@@ -56,7 +57,7 @@
         Try
             If e.ColumnIndex = GrpIdxColumn Then
                 If (CInt(e.Value) > 0) Then
-                    e.Value = wb_User_Shared.GrpTexte(CInt(e.Value)).ToString
+                    e.Value = GrpTexte(CInt(e.Value)).ToString
                 Else
                     e.Value = ""
                 End If
@@ -64,4 +65,5 @@
         Catch
         End Try
     End Sub
+
 End Class

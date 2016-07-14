@@ -47,7 +47,7 @@ Public Class wb_Rohstoffe_Liste
 
     Private Sub wb_Rohstoffe_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern
-        DataGridView.updateDataBase()
+        DataGridView.UpdateDataBase()
         'Layout sichern
         DataGridView.SaveToDisk("RohstoffListe")
     End Sub

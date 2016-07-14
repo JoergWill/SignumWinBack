@@ -133,6 +133,8 @@
     </Compile>
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
     <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
+    <Compile Include="wb_05_Forms_User\wb_User.vb" />
+    <Compile Include="wb_05_Forms_User\wb_User_Gruppe.vb" />
     <Compile Include="wb_99_Sample\AddressDockingExtension.vb" />
     <Compile Include="wb_99_Sample\AddressDockingUserControl.Designer.vb" />
     <Compile Include="wb_99_Sample\AddressDockingUserControl.vb">

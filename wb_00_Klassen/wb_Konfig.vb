@@ -144,38 +144,38 @@ Public Class wb_Konfig
     End Function
 
     'Zuordnung ISO-Sprache zu WinBack-Sprache-Nr
-    Public Shared Function GetLanguageNr() As Integer
+    Public Shared Function GetLanguageNr() As String
         Select Case Left(Language, 2)
             Case "de"       'Deutsch
-                Return 0
+                Return "0"
             Case "hu"       'Ungarisch
-                Return 1
+                Return "1"
             Case "nl"       'Niederländisch
-                Return 2
+                Return "2"
             Case "en"       'Englisch(US)
-                Return 3
+                Return "3"
             Case "pt"       'Portugisisch
-                Return 4
+                Return "4"
             Case "sl"       'Slovenisch
-                Return 5
+                Return "5"
             Case "ru"       'Russisch
-                Return 6
+                Return "6"
             Case "fr"       'Französisch
-                Return 7
+                Return "7"
             Case "es"       'Spanisch
-                Return 8
+                Return "8"
             Case "sk"       'Slovakisch
-                Return 8
+                Return "9"
             Case "ro"       'Rumänisch
-                Return 8
+                Return "10"
             Case Else
                 Return 0
         End Select
     End Function
 
-    Public Shared Sub LoadTexteTabelle(Sprache As Integer)
+    Public Shared Sub LoadTexteTabelle(Sprache As String)
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
-        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlWinBackTxte, Sprache.ToString))
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlWinBackTxte, Sprache))
         TexteTabelle.Clear()
         While winback.Read
             TexteTabelle.Add("@[" & winback.sField("T_Typ") & "," & winback.sField("T_TextIndex") & "]", winback.sField("T_Text"))

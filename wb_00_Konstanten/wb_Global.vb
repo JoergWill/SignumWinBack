@@ -56,4 +56,12 @@
         MessageTextLinie      '20/0/LNr
         MessageTextUser       '20/1/UsrNr
     End Enum
+
+    Public Structure wb_GruppenRechte
+        Public OberBegriff As String  'IT_Bezeichnung
+        Public Bezeichnung As String  'II_Kommentar
+        Public sAttribut As String   'T_Text
+        Public iAttribut As Integer   'AT_Wert2int
+    End Structure
+
 End Class
