@@ -26,6 +26,19 @@ Public Class wb_User_Liste
         DataGridView.RefreshData()
     End Sub
 
+    ''' <summary>
+    ''' Einen Datensatz in der Mitarbeiter-Liste suchen. Wenn der Datensatz gefunden wurde, wird True zurückgegeben.
+    ''' </summary>
+    ''' <param name="col"> (Integer) Spalte in der gesucht werden soll</param>
+    ''' <param name="s">   (String)  Suchbegriff</param>
+    ''' <returns>
+    ''' True - Wert gefunden
+    ''' False - Wert nicht gefunden</returns>
+    Public Function SelectData(col As Integer, s As String)
+        'Datensatz suchen
+        Return DataGridView.SelectData(col, s)
+    End Function
+
     'Event Form wird geschlossen
     Private Sub wb_User_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern

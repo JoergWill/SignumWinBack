@@ -116,9 +116,9 @@
     ''' False - Fehler beim Einfügen</returns>
     Public Function AddNew() As Boolean
         'Eventuell vorhandenen (Leer-)Datensatz löschen
-        Delete("-1")
-        'Dummy-Datensatz anlegen
-        Return AddNew("Neu", "-1", "1")
+        Delete(wb_Global.NewUserPass)
+        'Dummy-Datensatz anlegen (User:Neu Pass:_1 Gruppe:1)
+        Return AddNew(wb_Global.NewUserName, wb_Global.NewUserPass, wb_Global.NewUserGrpe)
     End Function
 
     ''' <summary>
@@ -148,10 +148,16 @@
         Return True
     End Function
 
+    ''' <summary>
+    ''' Eintrag Mitarbeiter löschen. Das Löschen der Mitarbeiter ist in WinBack unkritisch,
+    ''' da in allen Verweisen auch der Name im Klartext mitgespeichert wird.
+    ''' In Verbindung mit OrgaBack ist ein Löschen der Datensätze nicht vorgesehen.
+    ''' </summary>
+    ''' <param name="Passwort"> String Mitarbeiter-Passwort numerisch max. 10 Stellen</param>
     Sub Delete(Passwort As String)
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
         Try
-            'Neuen Benutzer in Datenbank einfügen
+            'Benutzer aus Datenbank löschen
             winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserDelete, Passwort))
         Catch
         Finally

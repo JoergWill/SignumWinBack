@@ -1,4 +1,6 @@
-﻿Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports WinBack.wb_User_Shared
+Imports WeifenLuo.WinFormsUI.Docking
+
 Public Class User_Main
     Public UserListe As New wb_User_Liste
     Public UserDetails As New wb_User_Details
@@ -47,6 +49,28 @@ Public Class User_Main
     Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Fenster laden
         LoadDockBarConfig()
+    End Sub
+
+    ''' <summary>
+    ''' Button "Neuen Benutzer anlegen" aus WinBack(Main)
+    ''' In der Datenbank wird ein neuer leerer Eintrag erzeugt. Danach wird die User-Liste aktualisiert.
+    ''' </summary>
+    Public Sub BtnUserNew()
+        'neuen (Dummy)Datensatz anlegen
+        User.AddNew()
+        'Mitarbeiter-Liste aktualisieren
+        UserListe.RefreshData()
+        'auf den neuen Datensatz positionieren (lfd.Nummer = -1)
+        UserListe.SelectData(1, wb_Global.NewUserPass)
+    End Sub
+
+    ''' <summary>
+    ''' Button "Benutzer löschen" aus WinBack(Main)
+    ''' Löscht den aktuellen Benutzer. Danach wird die User-Liste aktualisiert
+    ''' </summary>
+    Public Sub BtnUserDelete()
+        User.Delete(User.Passwort)
+        UserListe.RefreshData()
     End Sub
 
 End Class

@@ -130,9 +130,18 @@ Public Class WinBack
         MdiUser.Dock = DockStyle.Fill
     End Sub
 
+    ''' <summary>
+    ''' Neuen Benutzer anlegen.
+    ''' </summary>
     Private Sub rbUserNeu_Click(sender As Object, e As EventArgs) Handles rbUserNeu.Click
-        wb_User_Shared.User.AddNew()
-        MdiUser.UserListe.RefreshData()
+        MdiUser.BtnUserNew()
+    End Sub
+
+    ''' <summary>
+    ''' Löscht den aktuellen Benutzer
+    ''' </summary>
+    Private Sub RnUserRemove_Click(sender As Object, e As EventArgs) Handles RnUserRemove.Click
+        MdiUser.BtnUserDelete()
     End Sub
 
     Private Sub LinienMainShow()

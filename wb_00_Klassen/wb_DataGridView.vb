@@ -312,6 +312,39 @@ Public Class wb_DataGridView
     End Sub
 
     ''' <summary>
+    ''' Einen Datensatz im Grid suchen. Wenn der Datensatz gefunden wurde, wird die entsprechende Zeile markiert und
+    ''' nach der Zeit tDataChangedTime der Event HasChanged ausgelöst.
+    ''' </summary>
+    ''' <param name="col"> (Integer) Spalte in der gesucht werden soll</param>
+    ''' <param name="s">   (String)  Suchbegriff</param>
+    ''' <returns>
+    ''' True - Wert gefunden
+    ''' False - Wert nicht gefunden</returns>
+    Public Function SelectData(col As Integer, s As String) As Boolean
+        'ermittelt die erste sichtbare Spalte im Grid. Ist notwendig,
+        'weil Me.CurrentCell keine unsichtbaren Spalten selektieren kann
+        Dim xcol As Integer = Me.FirstDisplayedCell.ColumnIndex
+
+        'Keine Zeile selektiert
+        Me.Rows(0).Selected = False
+        'alle Zeilen durchsuchen
+        For i As Integer = 0 To Me.RowCount - 1
+            If Me.Rows(i).Cells(col).Value.ToString = s Then
+                'Zeile markieren
+                Me.Rows(i).Selected = True
+                Me.CurrentCell = Me.Item(xcol, i)
+                'Scollt zur markierten Zeile
+                Me.FirstDisplayedScrollingRowIndex = i
+                'Zeile gefunden
+                Return True
+                Exit For
+            End If
+        Next
+        'keine passende Zeile gefunden
+        Return False
+    End Function
+
+    ''' <summary>
     ''' Datensatz-Zeiger wurde geändert. Verbundene Text-Felder auslesen und anzeigen
     ''' </summary>
     Public Event HasChanged As EventHandler

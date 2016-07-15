@@ -64,4 +64,7 @@
         Public iAttribut As Integer   'AT_Wert2int
     End Structure
 
+    Public Const NewUserName = "Neu"
+    Public Const NewUserPass = "-1"
+    Public Const NewUserGrpe = "1"
 End Class
