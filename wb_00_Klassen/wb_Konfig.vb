@@ -5,6 +5,7 @@ Public Class wb_Konfig
     Shared Language As String
     Public Shared DockPanelPath As String
     Public Shared TexteTabelle As New Hashtable
+    Public Shared Filiale As New wb_Filiale
 
     Public Shared Sub SqlSetting(Optional ByVal DBType As String = "")
         Dim IniFile As New wb_IniFile

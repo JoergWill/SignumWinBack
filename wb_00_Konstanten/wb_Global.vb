@@ -64,7 +64,11 @@
         Public iAttribut As Integer   'AT_Wert2int
     End Structure
 
+    'Anlegen neuer Dummy-User (Felder vorbelegen)
     Public Const NewUserName = "Neu"
     Public Const NewUserPass = "-1"
     Public Const NewUserGrpe = "1"
+
+    'Filiale.Typ ist Produktions-Filiale
+    Public Const ProduktionsFiliale = 4
 End Class

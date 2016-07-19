@@ -93,6 +93,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTest_wb_Filiale.vb" />
     <Compile Include="UnitTest_wb_sql.vb" />
     <Compile Include="UnitTest_wb_Konfig.vb" />
     <Compile Include="UnitTest_wb_Functions.vb" />

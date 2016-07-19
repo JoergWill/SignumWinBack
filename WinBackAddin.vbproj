@@ -132,6 +132,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
+    <Compile Include="wb_00_Klassen\wb_Filiale.vb" />
     <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_Gruppe.vb" />
@@ -421,6 +422,7 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="ReStart.OrgaBack.bat" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -15,6 +15,7 @@
             Return DataHasChanged
         End Get
     End Property
+
     ''' <summary>
     ''' Mitarbeiter-Name. String max 250 Zeichen
     ''' Tabelle winback.ItemParameter.IP_Wert4Str
@@ -22,6 +23,7 @@
     ''' <returns></returns>
     Public Property Name As String
         Set(value As String)
+            'TODO max.Länge Name prüfen ggf. Fehlermeldung ausgeben
             If value <> IP_Wert4Str Then
                 DataHasChanged = True
             End If
@@ -38,6 +40,7 @@
     ''' <returns></returns>
     Public Property iGruppe As Integer
         Set(value As Integer)
+            'TODO max.Wert Gruppe prüfen ggf. Exception auslösen
             If value <> IP_ItemID Then
                 DataHasChanged = True
             End If
@@ -55,11 +58,13 @@
     ''' <returns></returns>
     Public Property Passwort As String
         Set(value As String)
+            'TODO max.Wert Passwort abfragen ggf. Fehlermeldung ausgeben
             If value <> IP_Wert1int Then
                 If Not Exist(value) Then
                     DataHasChanged = True
                     IP_Wert1int = value
                 Else
+                    'TODO Exception abfangen. Fehlermeldung ausgeben
                     Throw New Exception("Mitarbeiter-Kennwort ist schon vorhanden")
                 End If
             End If
