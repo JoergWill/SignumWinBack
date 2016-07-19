@@ -16,6 +16,7 @@ xcopy "%WORKSPACE%*.dll" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
 REM
 REM noch laufende Orgasoft-Instanzen beenden
 REM
+SCHTASKS /end /TN OrgaBack
 Taskkill /IM Signum.Orgasoft.Main.exe
 
 REM
