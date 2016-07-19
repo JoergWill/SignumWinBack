@@ -424,7 +424,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="OrgaBack.Copy.bat" />
     <None Include="OrgaBack.Start.bat" />
     <None Include="packages.config" />
     <None Include="Resources\MainRezept_32x32.png" />
