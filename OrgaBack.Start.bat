@@ -16,9 +16,9 @@ xcopy "%WORKSPACE%*.dll" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
 REM
 REM noch laufende Orgasoft-Instanzen beenden
 REM
-SCHTASKS /end /TN OrgaBack
-ping -n 10 localhost 2> NUL
-Taskkill /IM Signum.Orgasoft.Main.exe
+REM SCHTASKS /end /TN OrgaBack
+REM ping -n 10 localhost 2> NUL
+Taskkill /F /IM Signum.Orgasoft.Main.exe
 
 REM
 REM 10 Sekunden warten
