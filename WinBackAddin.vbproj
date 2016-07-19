@@ -422,9 +422,10 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="ReStart.OrgaBack.bat" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="OrgaBack.Copy.bat" />
+    <None Include="OrgaBack.Start.bat" />
     <None Include="packages.config" />
     <None Include="Resources\MainRezept_32x32.png" />
     <None Include="Resources\MainStatistikRezepte_32x32.png" />
