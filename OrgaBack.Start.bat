@@ -17,6 +17,7 @@ REM
 REM noch laufende Orgasoft-Instanzen beenden
 REM
 SCHTASKS /end /TN OrgaBack
+ping -n 10 localhost 2> NUL
 Taskkill /IM Signum.Orgasoft.Main.exe
 
 REM
