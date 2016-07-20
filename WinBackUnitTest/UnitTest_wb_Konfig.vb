@@ -81,47 +81,47 @@ Imports WinBack.wb_Konfig
         'Sprache Deutsch
         SetLanguage("de-DE")
         Assert.AreEqual("de-DE", GetLanguage)
-        Assert.AreEqual(0, GetLanguageNr)
+        Assert.AreEqual("0", GetLanguageNr)
 
         'Sprache Ungarisch
         SetLanguage("hu-HU")
         Assert.AreEqual("hu-HU", GetLanguage)
-        Assert.AreEqual(1, GetLanguageNr)
+        Assert.AreEqual("1", GetLanguageNr)
 
         'Sprache Niederländisch
         SetLanguage("nl-NL")
         Assert.AreEqual("nl-NL", GetLanguage)
-        Assert.AreEqual(2, GetLanguageNr)
+        Assert.AreEqual("2", GetLanguageNr)
 
         'Sprache Englisch
         SetLanguage("en-US")
         Assert.AreEqual("en-US", GetLanguage)
-        Assert.AreEqual(3, GetLanguageNr)
+        Assert.AreEqual("3", GetLanguageNr)
 
         'Sprache Portugisisch
         SetLanguage("pt-PT")
         Assert.AreEqual("pt-PT", GetLanguage)
-        Assert.AreEqual(4, GetLanguageNr)
+        Assert.AreEqual("4", GetLanguageNr)
 
         'Sprache Slovenisch
         SetLanguage("sl-SL")
         Assert.AreEqual("sl-SL", GetLanguage)
-        Assert.AreEqual(5, GetLanguageNr)
+        Assert.AreEqual("5", GetLanguageNr)
 
         'Sprache Russisch
         SetLanguage("ru-RU")
         Assert.AreEqual("ru-RU", GetLanguage)
-        Assert.AreEqual(6, GetLanguageNr)
+        Assert.AreEqual("6", GetLanguageNr)
 
         'Sprache Französisch
         SetLanguage("fr-FR")
         Assert.AreEqual("fr-FR", GetLanguage)
-        Assert.AreEqual(7, GetLanguageNr)
+        Assert.AreEqual("7", GetLanguageNr)
 
         'Sprache Spanisch
         SetLanguage("es-ES")
         Assert.AreEqual("es-ES", GetLanguage)
-        Assert.AreEqual(8, GetLanguageNr)
+        Assert.AreEqual("8", GetLanguageNr)
 
         'aktuelle Einstellung zurückschreiben
         IniFile.WriteString("winback", "Language", Xlangague)

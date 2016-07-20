@@ -9,7 +9,7 @@ Imports WinBack
         Dim Filiale As New wb_Filiale
 
         'Test mit leerem Array
-        Assert.IsFalse(Filiale.isProduction("9999"))
+        Assert.IsTrue(Filiale.isProduction("9999"))
         Assert.IsFalse(Filiale.isProduction(""))
 
         'Testdaten in Array-List laden
