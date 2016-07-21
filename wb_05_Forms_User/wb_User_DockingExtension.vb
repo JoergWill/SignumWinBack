@@ -6,8 +6,8 @@ Imports Signum.OrgaSoft.FrameWork
 Imports Signum.OrgaSoft.GUI
 
 <Export(GetType(IExtension))>
-<ExportMetadata("Description", "Erweiterung des Adress-Dockingfensters um ein Unterfenster mit Objekt-Informationen")>
-Public Class AddressDockingExtension
+<ExportMetadata("Description", "Erweiterung des Mitarbeiter-Dockingfensters um ein Unterfenster WinBack")>
+Public Class wb_User_DockingExtension
     Implements IDockingExtension
 
     Private _MenuService As Common.IMenuService
@@ -20,34 +20,17 @@ Public Class AddressDockingExtension
     ''' <returns></returns>
     Public ReadOnly Property ContextTabs As ITab() Implements IDockingExtension.ContextTabs
         Get
-            If _ContextTabs Is Nothing Then
-                _ContextTabs = New List(Of GUI.ITab)
-                ' Fügt dem Ribbon ein neues RibbonTab hinzu
-                Dim oNewTab = _MenuService.AddContextTab("AddressCustomContextTab", "My Address Tab", "Eigenes ContextTab für das Adressen-Docking-Fenster")
-                ' Das neue RibbonTab erhält eine Gruppe
-                Dim oGrp = oNewTab.AddGroup("AddressContextGroup", "ContextFormTest")
-                ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("AddressContextButton1", "WhatEver", "Do Something", My.Resources.MainChargen_16x16, My.Resources.MainChargen_32x32, AddressOf Search)
-                _ContextTabs.Add(oNewTab)
-            End If
-            Return _ContextTabs.ToArray
+            Return Nothing
         End Get
     End Property
 
-    Private Sub Search(sender As Object, e As EventArgs)
-        MessageBox.Show("Search!", "AddIn", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-    End Sub
-
     ''' <summary>
-    ''' Klasse, deren Docking-Layout erweitert werden soll
+    ''' Klasse, deren Docking-Layout erweitert werden soll (Mitarbeiter)
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property ExtendedType As ObjectEnum Implements IDockingExtension.ExtendedType
         Get
-            'Return ObjectEnum.Employees
-
-            Return ObjectEnum.Articles
-            '            Return ObjectEnum.Addresses
+            Return ObjectEnum.Employees
         End Get
     End Property
 
@@ -65,15 +48,28 @@ Public Class AddressDockingExtension
             ' Alle Objekte, die Suchen/Speichern/Löschen/Blättern unterstützen, implementieren das Interface INavigationClass
             ' Über dieses Interface werden Events bereitgestellt, die eine enge Interaktion mit dem Objekt zulassen.
             ' Die wichtigsten Events sind:
+
             ' Invalidated:  Das Objekt hat derzeit keinen gültigen Status (Eingabemaske befindet sich im Suchmodus)
             ' Found:        Es wurde ein Objekt gefunden und wird nun angezeigt
             ' AddingNew:    Es wird ein neues, leeres Objekt für die Neuanlage erzeugt und angezeigt (aber noch nicht gespeichert)
-            ' BeforeUpdate, BeforeDelete, BeforeCopy, Updated, Deleted, Committed
+            ' BeforeUpdate:
+            ' BeforeDelete:
+            ' BeforeCopy:
+            ' Updated:
+            ' Deleted:
+            ' Committed:
+
             If _Extendee IsNot Nothing AndAlso TypeOf _Extendee Is INavigationClass Then
                 With DirectCast(_Extendee, INavigationClass)
                     AddHandler .Invalidated, AddressOf Extendee_Invalid
                     AddHandler .AddingNew, AddressOf Extendee_Valid
                     AddHandler .Found, AddressOf Extendee_Valid
+                    AddHandler .BeforeUpdate, AddressOf Extendee_BeforeUpdate
+                    AddHandler .Updated, AddressOf Extendee_Updated
+                    AddHandler .BeforeDelete, AddressOf Extendee_BeforeDelete
+                    AddHandler .Deleted, AddressOf Extendee_Deleted
+                    AddHandler .BeforeCopy, AddressOf Extendee_BeforeCopy
+                    AddHandler .Committed, AddressOf Extendee_Committed
                 End With
             End If
         End Set
@@ -95,6 +91,37 @@ Public Class AddressDockingExtension
         Next
     End Sub
 
+    Private Sub Extendee_BeforeUpdate(sender As Object, e As EventArgs)
+        Debug.Print("User_DockingExtension BeforeUpdate")
+    End Sub
+    Private Sub Extendee_Updated(sender As Object, e As EventArgs)
+        Debug.Print("User_DockingExtension Updated")
+    End Sub
+    Private Sub Extendee_BeforeDelete(sender As Object, e As EventArgs)
+        Debug.Print("User_DockingExtension BeforeDelete")
+    End Sub
+    Private Sub Extendee_Deleted(sender As Object, e As EventArgs)
+        Debug.Print("User_DockingExtension Deleted")
+    End Sub
+    Private Sub Extendee_BeforeCopy(sender As Object, e As EventArgs)
+        Debug.Print("User_DockingExtension BeforeCopy")
+    End Sub
+    Private Sub Extendee_Committed(sender As Object, e As EventArgs)
+        Debug.Print("User_DockingExtension Committed")
+
+        Debug.Print("Vorname  " & _Extendee.GetPropertyValue("Vorname").ToString)
+        Debug.Print("Nachname " & _Extendee.GetPropertyValue("Nachname").ToString)
+        Debug.Print("Passwort " & _Extendee.GetPropertyValue("KassiererNummer").ToString)
+        Debug.Print("MFF      " & _Extendee.GetPropertyValue("MultiFunktionsFeld(1)").ToString)
+
+        'Dim i As Integer
+        'For i = 0 To _Extendee.PropertyValueCollection.Count - 1
+        '    Debug.Print("Property " & _Extendee.PropertyValueCollection(i).PropertyName)
+        '    Debug.Print("Value " & _Extendee.PropertyValueCollection(i).Value)
+        'Next
+
+    End Sub
+
     Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
     Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
 
@@ -108,7 +135,7 @@ Public Class AddressDockingExtension
     Public Sub Initialize() Implements IExtension.Initialize
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
-        _SubForms.Add("@AddressDockingUserControlObjectInfo", Nothing)
+        _SubForms.Add("@wb_User_DockingControlObjectInfo", Nothing)
     End Sub
 
     Private bContextTabInitialized As Boolean
@@ -126,9 +153,7 @@ Public Class AddressDockingExtension
                 Debug.Print("Tabs " & oTab.Name.ToString)
             Next
 
-            '            Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabAdressen" Select oTab
-            Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabArtikel" Select oTab
-            '           Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabMitarbeiter" Select oTab
+            Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabMitarbeiter" Select oTab
             If oSystemTab IsNot Nothing AndAlso oSystemTab.Count > 0 Then
                 oSystemTab(0).GetGroups(1).AddButton("AddressDockingExtensionDeveloperButton", "Developer-Info", "Per AddIn erweitertes Docking-Fenster zur Anzeige von Entwickler-Informationen zum angezeigten Objekt", My.Resources.MainChargen_16x16, My.Resources.MainChargen_32x32, AddressOf LoadDockingSubForm)
             End If
@@ -137,12 +162,12 @@ Public Class AddressDockingExtension
 
     Private Sub LoadDockingSubForm(sender As Object, e As EventArgs)
         If Me.FormController IsNot Nothing Then
-            Me.FormController.ExecuteCommand("AddressDockingUserControlObjectInfo", Nothing)
+            Me.FormController.ExecuteCommand("wb_User_DockingControlObjectInfo", Nothing)
         End If
     End Sub
 
     ''' <summary>
-    ''' Liefert zu einem FormKey eine Instanz des UserControls zurück
+    ''' Liefert zu einem FormKey eine Instanz des UserControls (Mitarbeiter) zurück
     ''' </summary>
     ''' <param name="FormKey"></param>
     ''' <returns></returns>
@@ -150,7 +175,8 @@ Public Class AddressDockingExtension
         If _SubForms.ContainsKey(FormKey) Then
             Dim oForm = _SubForms(FormKey)
             If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
-                oForm = New AddressDockingUserControl(Me)
+                ' Adresse der Klasse, die die Arbeit macht !!
+                oForm = New wb_User_DockingControl(Me)
                 _SubForms(FormKey) = oForm
             End If
             Return oForm

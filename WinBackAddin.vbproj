@@ -135,12 +135,14 @@
     <Compile Include="wb_00_Klassen\wb_Filiale.vb" />
     <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
-    <Compile Include="wb_05_Forms_User\wb_User_Gruppe.vb" />
-    <Compile Include="wb_99_Sample\AddressDockingExtension.vb" />
-    <Compile Include="wb_99_Sample\AddressDockingUserControl.Designer.vb" />
-    <Compile Include="wb_99_Sample\AddressDockingUserControl.vb">
+    <Compile Include="wb_05_Forms_User\wb_User_DockingControl.Designer.vb">
+      <DependentUpon>wb_User_DockingControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_05_Forms_User\wb_User_DockingControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_05_Forms_User\wb_User_DockingExtension.vb" />
+    <Compile Include="wb_05_Forms_User\wb_User_Gruppe.vb" />
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_Functions.vb" />
     <Compile Include="wb_00_Konstanten\wb_Global.vb" />
@@ -325,7 +327,6 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_99_Sample\AddressDockingUserControl.resx" />
     <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Liste.resx">
       <DependentUpon>wb_Artikel_Liste.vb</DependentUpon>
     </EmbeddedResource>

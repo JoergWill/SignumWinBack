@@ -2,7 +2,7 @@
 Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.GUI
 
-Public Class AddressDockingUserControl
+Public Class wb_User_DockingControl
     Implements IBasicFormUserControl
 
     ''' <summary>
@@ -10,7 +10,7 @@ Public Class AddressDockingUserControl
     ''' </summary>
     Public ReadOnly Property FormKey As String Implements IBasicFormUserControl.FormKey
         Get
-            Return "@AddressDockingUserControlObjectInfo"
+            Return "@wb_User_DockingControlObjectInfo"
         End Get
     End Property
 
@@ -58,11 +58,11 @@ Public Class AddressDockingUserControl
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
         Select Case CommandId
             Case "INVALID"
-                Me.PropertyGrid.Refresh()
-                Me.PropertyGrid.Enabled = False
+                'Me.PropertyGrid.Refresh()
+                'Me.PropertyGrid.Enabled = False
             Case "VALID"
-                Me.PropertyGrid.Refresh()
-                Me.PropertyGrid.Enabled = True
+                'Me.PropertyGrid.Refresh()
+                'Me.PropertyGrid.Enabled = True
         End Select
         Return Nothing
     End Function
@@ -83,12 +83,12 @@ Public Class AddressDockingUserControl
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
         MyBase.Text = "Objekt-Information"
         Me.Show()
-        Me.PropertyGrid.SelectedObject = _DockingExtension.Extendee
-        If _DockingExtension.Extendee IsNot Nothing AndAlso _DockingExtension.Extendee.Valid Then
-            Me.PropertyGrid.Enabled = True
-        Else
-            Me.PropertyGrid.Enabled = False
-        End If
+        'Me.PropertyGrid.SelectedObject = _DockingExtension.Extendee
+        'If _DockingExtension.Extendee IsNot Nothing AndAlso _DockingExtension.Extendee.Valid Then
+        '    Me.PropertyGrid.Enabled = True
+        'Else
+        '    Me.PropertyGrid.Enabled = False
+        'End If
         Return True
     End Function
 
