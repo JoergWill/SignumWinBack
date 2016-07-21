@@ -24,7 +24,7 @@
     Public Property Name As String
         Set(value As String)
             'TODO max.Länge Name prüfen ggf. Fehlermeldung ausgeben
-            If value <> IP_Wert4Str Then
+            If value <> IP_Wert4Str And value <> "" Then
                 DataHasChanged = True
             End If
             IP_Wert4Str = value
@@ -41,7 +41,7 @@
     Public Property iGruppe As Integer
         Set(value As Integer)
             'TODO max.Wert Gruppe prüfen ggf. Exception auslösen
-            If value <> IP_ItemID Then
+            If value <> IP_ItemID And value <> 0 Then
                 DataHasChanged = True
             End If
             IP_ItemID = value
@@ -59,8 +59,8 @@
     Public Property Passwort As String
         Set(value As String)
             'TODO max.Wert Passwort abfragen ggf. Fehlermeldung ausgeben
-            If value <> IP_Wert1int Then
-                If Not Exist(value) Then
+            If value <> IP_Wert1int And value <> "" Then
+                If Not Me.Exist(value) Then
                     DataHasChanged = True
                     IP_Wert1int = value
                 Else
@@ -154,6 +154,35 @@
     End Function
 
     ''' <summary>
+    ''' Mitarbeiterdaten ändern.
+    ''' Die Mitarbeiter-Nummer ist Unique-Key. Wenn die Mitarbeiter-Nummer nicht vorhanden ist, wird
+    ''' False zurückgeliefert.
+    ''' </summary>
+    ''' <param name="Name"> String Mitarbeiter-Name</param>
+    ''' <param name="OldPasswort"> String Mitarbeiter-Passwort (alt) numerisch max. 10 Stellen</param>
+    ''' <param name="NewPasswort"> String Mitarbeiter-Passwort (neu) numerisch max. 10 Stellen</param>
+    ''' <param name="Gruppe">String - User-Gruppe (1..9, 99)</param>
+    ''' <returns>
+    ''' True - Ändernn war erfolgreich
+    ''' False - Fehler beim Ändernn
+    ''' </returns>
+    Function Update(OldPasswort As String, Name As String, NewPasswort As String, Gruppe As String) As Boolean
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Try
+            'Update Benutzer in Datenbank
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserUpdate, Name, NewPasswort, Gruppe, OldPasswort))
+        Catch
+            'Verbindung wieder schliessen
+            winback.Close()
+            Return False
+        End Try
+        'Verbindung wieder schliessen
+        winback.Close()
+        Return True
+    End Function
+
+
+    ''' <summary>
     ''' Eintrag Mitarbeiter löschen. Das Löschen der Mitarbeiter ist in WinBack unkritisch,
     ''' da in allen Verweisen auch der Name im Klartext mitgespeichert wird.
     ''' In Verbindung mit OrgaBack ist ein Löschen der Datensätze nicht vorgesehen.
@@ -183,7 +212,7 @@
         Dim i As Integer = 0
 
         Try
-            'Neuen Benutzer in Datenbank einfügen
+            'Zählt alle Benutzer mit diesem Passwort
             winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserExists, Passwort))
             If winback.Read Then
                 i = winback.iField("IP_Cnt")

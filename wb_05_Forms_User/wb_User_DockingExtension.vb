@@ -14,6 +14,9 @@ Public Class wb_User_DockingExtension
     Private _ViewProvider As IViewProvider
     Private _ContextTabs As List(Of GUI.ITab)
 
+    Private OrgaSoftEditState As wb_Global.EditState
+    Private OldPasswort As String
+
     ''' <summary>
     ''' Falls die Extension ein eigenes Context-Ribbon zum bestehenden Ribbon hinzufügen möchte, kann sie dieses hier zurückliefern
     ''' </summary>
@@ -62,8 +65,8 @@ Public Class wb_User_DockingExtension
             If _Extendee IsNot Nothing AndAlso TypeOf _Extendee Is INavigationClass Then
                 With DirectCast(_Extendee, INavigationClass)
                     AddHandler .Invalidated, AddressOf Extendee_Invalid
-                    AddHandler .AddingNew, AddressOf Extendee_Valid
-                    AddHandler .Found, AddressOf Extendee_Valid
+                    AddHandler .AddingNew, AddressOf Extendee_AddNew
+                    AddHandler .Found, AddressOf Extendee_Found
                     AddHandler .BeforeUpdate, AddressOf Extendee_BeforeUpdate
                     AddHandler .Updated, AddressOf Extendee_Updated
                     AddHandler .BeforeDelete, AddressOf Extendee_BeforeDelete
@@ -76,19 +79,29 @@ Public Class wb_User_DockingExtension
     End Property
 
     Private Sub Extendee_Valid(sender As Object, e As EventArgs)
-        For Each oForm In _SubForms.Values
-            If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
-                oForm.ExecuteCommand("VALID", Nothing)
-            End If
-        Next
+        'For Each oForm In _SubForms.Values
+        '    If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
+        '        oForm.ExecuteCommand("VALID", Nothing)
+        '    End If
+        'Next
     End Sub
 
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
-        For Each oForm In _SubForms.Values
-            If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
-                oForm.ExecuteCommand("INVALID", Nothing)
-            End If
-        Next
+        OrgaSoftEditState = wb_Global.EditState.Invalid
+        OldPasswort = ""
+        Debug.Print("User_DockingExtension Invalid")
+    End Sub
+
+    Private Sub Extendee_AddNew(sender As Object, e As EventArgs)
+        OrgaSoftEditState = wb_Global.EditState.AddNew
+        OldPasswort = ""
+        Debug.Print("User_DockingExtension AddNew")
+    End Sub
+
+    Private Sub Extendee_Found(sender As Object, e As EventArgs)
+        OrgaSoftEditState = wb_Global.EditState.Edit
+        OldPasswort = _Extendee.GetPropertyValue("KassiererNummer").ToString
+        Debug.Print("User_DockingExtension Found")
     End Sub
 
     Private Sub Extendee_BeforeUpdate(sender As Object, e As EventArgs)
@@ -102,6 +115,9 @@ Public Class wb_User_DockingExtension
     End Sub
     Private Sub Extendee_Deleted(sender As Object, e As EventArgs)
         Debug.Print("User_DockingExtension Deleted")
+        'TODO Filale prüfen
+        Dim Passwort As String = _Extendee.GetPropertyValue("KassiererNummer").ToString
+        wb_User_Shared.User.Delete(Passwort)
     End Sub
     Private Sub Extendee_BeforeCopy(sender As Object, e As EventArgs)
         Debug.Print("User_DockingExtension BeforeCopy")
@@ -109,10 +125,25 @@ Public Class wb_User_DockingExtension
     Private Sub Extendee_Committed(sender As Object, e As EventArgs)
         Debug.Print("User_DockingExtension Committed")
 
+        Dim Vorname As String = _Extendee.GetPropertyValue("Vorname").ToString
+        Dim Nachname As String = _Extendee.GetPropertyValue("Nachname").ToString
+        Dim Name As String = Vorname & " " & Nachname
+        Dim Passwort As String = _Extendee.GetPropertyValue("KassiererNummer").ToString
+
+        'TODO WinBack-Gruppe aus MFF auslesen
+        Select Case OrgaSoftEditState
+            Case wb_Global.EditState.Edit
+                wb_User_Shared.User.Update(OldPasswort, Name, Passwort, 4)
+
+            Case wb_Global.EditState.AddNew
+                wb_User_Shared.User.AddNew(Name, Passwort, 4)
+
+        End Select
+
         Debug.Print("Vorname  " & _Extendee.GetPropertyValue("Vorname").ToString)
         Debug.Print("Nachname " & _Extendee.GetPropertyValue("Nachname").ToString)
         Debug.Print("Passwort " & _Extendee.GetPropertyValue("KassiererNummer").ToString)
-        Debug.Print("MFF      " & _Extendee.GetPropertyValue("MultiFunktionsFeld(1)").ToString)
+        '        Debug.Print("MFF      " & _Extendee.GetPropertyValue("MultiFunktionsFeld(1)").ToString)
 
         'Dim i As Integer
         'For i = 0 To _Extendee.PropertyValueCollection.Count - 1
@@ -155,15 +186,21 @@ Public Class wb_User_DockingExtension
 
             Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabMitarbeiter" Select oTab
             If oSystemTab IsNot Nothing AndAlso oSystemTab.Count > 0 Then
-                oSystemTab(0).GetGroups(1).AddButton("AddressDockingExtensionDeveloperButton", "Developer-Info", "Per AddIn erweitertes Docking-Fenster zur Anzeige von Entwickler-Informationen zum angezeigten Objekt", My.Resources.MainChargen_16x16, My.Resources.MainChargen_32x32, AddressOf LoadDockingSubForm)
+                oSystemTab(0).AddGroup("WinBack", "Produktion")
+                oSystemTab(0).GetGroups(2).AddButton("btnBenutzer", "WinBack-Mitarbeiter", "Mtarbeiter-Verwaltung in WinBack", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
+                oSystemTab(0).GetGroups(2).AddButton("BtnUserGroup", "Mitarbeiter-Gruppen", "Gruppen und Gruppen-Rechte verwalten", My.Resources.UserGruppen_32x32, My.Resources.UserGruppen_32x32, AddressOf ShowUserGroup)
             End If
         End If
     End Sub
 
-    Private Sub LoadDockingSubForm(sender As Object, e As EventArgs)
-        If Me.FormController IsNot Nothing Then
-            Me.FormController.ExecuteCommand("wb_User_DockingControlObjectInfo", Nothing)
-        End If
+    'Mitarbeiter
+    Private Sub ShowUserForm(sender As Object, e As EventArgs)
+        _ViewProvider.OpenForm(New wb_User_Main(ServiceProvider), My.Resources.MainUser_16x16)
+    End Sub
+
+    'Gruppen-Rechte
+    Private Sub ShowUserGroup(sender As Object, e As EventArgs)
+        Throw New NotImplementedException
     End Sub
 
     ''' <summary>
@@ -172,15 +209,15 @@ Public Class wb_User_DockingExtension
     ''' <param name="FormKey"></param>
     ''' <returns></returns>
     Public Function ProvideInstance(FormKey As String) As IBasicFormUserControl Implements IDockingExtension.ProvideInstance
-        If _SubForms.ContainsKey(FormKey) Then
-            Dim oForm = _SubForms(FormKey)
-            If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
-                ' Adresse der Klasse, die die Arbeit macht !!
-                oForm = New wb_User_DockingControl(Me)
-                _SubForms(FormKey) = oForm
-            End If
-            Return oForm
-        End If
+        'If _SubForms.ContainsKey(FormKey) Then
+        '    Dim oForm = _SubForms(FormKey)
+        '    If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
+        '        ' Adresse der Klasse, die die Arbeit macht !!
+        '        oForm = New wb_User_DockingControl(Me)
+        '        _SubForms(FormKey) = oForm
+        '    End If
+        '    Return oForm
+        'End If
         Return Nothing
     End Function
 

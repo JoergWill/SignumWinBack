@@ -144,7 +144,7 @@ Public Class wb_Sql
                     Return False
             End Select
         Catch ex As Exception
-            MsgBox("Problem loading data: " & ex.Message.ToString)
+            MsgBox("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
             Return False
         End Try
     End Function

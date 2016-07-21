@@ -1,5 +1,4 @@
 ﻿Imports Signum.OrgaSoft
-Imports System.Windows.Forms
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
@@ -11,7 +10,6 @@ Public Class wb_User_Main
     Private UserRechte As New wb_User_Rechte
 
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
-        'MessageBox.Show("ExecuteCommand!" & vbCrLf & CommandId, "AddIn", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Return Nothing
     End Function
 
@@ -80,7 +78,6 @@ Public Class wb_User_Main
                 ' Das neue RibbonTab erhält eine Gruppe
                 Dim oGrp = oNewTab.AddGroup("GrpUser", "WinBack Mitarbeiter")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("BtnUserNew", "Neuer Mitarbeiter", "Neuen Mitarbeiter anlegen", My.Resources.UserNeu_32x32, My.Resources.UserNeu_32x32, AddressOf BtnUserNew)
                 oGrp.AddButton("BtnUserPasswd", "Passwort ändern", "Neues Mitarbeiter-Passwort vergeben", My.Resources.UserPasswd_32x32, My.Resources.UserPasswd_32x32, AddressOf BtnUserPasswd)
                 oGrp.AddButton("BtnUserPrintList", "Mitarbeiter-Liste", "Liste aller Mitarbeiter drucken", My.Resources.UserListe_32x32, My.Resources.UserListe_32x32, AddressOf btnUserPrint)
                 oGrp.AddButton("BtnUserGroup", "Mitarbeiter-Gruppen", "Gruppen und Gruppen-Rechte verwalten", My.Resources.UserGruppen_32x32, My.Resources.UserGruppen_32x32, AddressOf BtnUserGroup)
@@ -116,10 +113,6 @@ Public Class wb_User_Main
     Private Sub wb_User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' DockBar Konfiguration aus XML-Datei lesen
         LoadDockBarConfig()
-    End Sub
-
-    Private Sub BtnUserNew()
-        Throw New NotImplementedException
     End Sub
 
     Private Sub BtnUserPasswd()
@@ -165,10 +158,10 @@ Public Class wb_User_Main
         Catch ex As Exception
         End Try
 
-        UserDetails.Show(DockPanel, DockState.DockTop)
-        UserDetails.CloseButtonVisible = False
         UserListe.Show(DockPanel, DockState.DockLeft)
         UserListe.CloseButtonVisible = False
+        UserDetails.Show(DockPanel, DockState.DockTop)
+        UserDetails.CloseButtonVisible = False
         UserRechte.Show(DockPanel, DockState.DockBottom)
         UserRechte.CloseButtonVisible = False
     End Sub

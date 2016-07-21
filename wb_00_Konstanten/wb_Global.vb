@@ -57,6 +57,12 @@
         MessageTextUser       '20/1/UsrNr
     End Enum
 
+    Enum EditState
+        Invalid
+        AddNew
+        Edit
+    End Enum
+
     Public Structure wb_GruppenRechte
         Public OberBegriff As String  'IT_Bezeichnung
         Public Bezeichnung As String  'II_Kommentar

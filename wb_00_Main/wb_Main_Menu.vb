@@ -115,9 +115,9 @@ Public Class wb_Main_Menu
         oGrpPlanung.AddButton("btnProdPlan", "WinBack Produktions-Planung", "", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf ShowProduktionsPlanungForm)
 
         ' Erweitert ein bestehendes RibbonTab um einen Button (Administration/Mitarbeiter)
-        Dim oTabs = oMenuService.GetTabs
-        Dim oGrps = oTabs(0).GetGroups
-        oGrps(3).AddButton("MenuExtensionBtnUser", "WinBack-Mitarbeiter", "Verwaltung der Mitarbeiter-Rechte in WinBack", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
+        'Dim oTabs = oMenuService.GetTabs
+        'Dim oGrps = oTabs(0).GetGroups
+        'oGrps(3).AddButton("MenuExtensionBtnUser", "WinBack-Mitarbeiter", "Verwaltung der Mitarbeiter-Rechte in WinBack", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
     End Sub
 
     '---------------------------------------------------------
