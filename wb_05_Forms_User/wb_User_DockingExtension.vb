@@ -145,6 +145,39 @@ Public Class wb_User_DockingExtension
         Debug.Print("Passwort " & _Extendee.GetPropertyValue("KassiererNummer").ToString)
         '        Debug.Print("MFF      " & _Extendee.GetPropertyValue("MultiFunktionsFeld(1)").ToString)
 
+
+
+        Dim i As Integer
+        For i = 0 To _Extendee.PropertyValueCollection.Count - 1
+            Debug.Print("Property " & _Extendee.PropertyValueCollection(i).PropertyName)
+            '            Debug.Print("Value " & _Extendee.PropertyValueCollection(i).Value)
+        Next
+
+        Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
+        Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
+
+        ' die Multifunktionsfelder sind über das Property "MultiFunktionsFeld" zugänglich, welches eine ICollectionClass ist
+        ' via FindInInnerlist kann man mit Kriterien suchen, die ein Element in der Collection erfüllen muss
+        ' FeldNr ist ein Property eines MFF, natürlich ist es auch möglich, erstmal durch die Collection zu iterieren um zu schauen, was an MFF überhaupt enthalten ist
+        iMFFIdx = DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("FeldNr=1")
+        For Each x In DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList
+            Debug.Print(x.ToString)
+        Next
+
+        If iMFFIdx >= 0 Then
+            ' sollte ein MFF mit FeldNr=1 gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
+            ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
+            oMFF = DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
+            If oMFF IsNot Nothing Then
+
+                For i = 0 To oMFF.PropertyValueCollection.Count - 1
+                    Debug.Print("Property " & oMFF.PropertyValueCollection(i).PropertyName)
+                    Debug.Print("Value " & oMFF.PropertyValueCollection(i).Value)
+                Next
+            End If
+            ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr 1
+        End If
+
         'Dim i As Integer
         'For i = 0 To _Extendee.PropertyValueCollection.Count - 1
         '    Debug.Print("Property " & _Extendee.PropertyValueCollection(i).PropertyName)
