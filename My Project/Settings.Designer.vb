@@ -80,7 +80,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("172.16.17.5")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("127.0.0.1")>  _
         Public Property MySQLServerIP() As String
             Get
                 Return CType(Me("MySQLServerIP"),String)

@@ -9,7 +9,7 @@
       <Value Profile="(Default)">de</Value>
     </Setting>
     <Setting Name="MySQLServerIP" Type="System.String" Scope="User">
-      <Value Profile="(Default)">172.16.17.5</Value>
+      <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
     <Setting Name="MySQLWinBack" Type="System.String" Scope="User">
       <Value Profile="(Default)">winback</Value>

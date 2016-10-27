@@ -34,7 +34,7 @@
     Public Const sqlUserInsert = "INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert4str) " &
                                  "VALUES (500, [2], 501, [1], [1], '[0]')"
     'Sql-Statement User Datensatz ändern        [0]-Name [1]-NewPassword [2]-Gruppe [3]-NewPassword
-    Public Const sqlUserUpdate = "UPDATE ItemParameter SET IP_ItemID = [2], IP_Lfd_Nr = [1], IP_Wert1int = [1], IP_Wert4str = '[0]' WHERE IP_Wert1Int = [3]"
+    Public Const sqlUserUpdate = "REPLACE INTO ItemParameter (IP_ItemID, IP_Lfd_Nr, IP_Wert1int, IP_Wert4str) VALUES([2],[1],[1],'[0]') WHERE IP_Wert1Int = [3]"
     'Sql-Statemant User Datensatz löschen
     Public Const sqlUserDelete = "DELETE FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int = [0]"
     'Sql-Statemant User mit diesem Passwort existiert
