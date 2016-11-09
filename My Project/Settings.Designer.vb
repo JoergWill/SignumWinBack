@@ -188,7 +188,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=,winback; Integrated Security=True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=winback; Integrated Security=True")>  _
         Public Property MsSQLConWinBack() As String
             Get
                 Return CType(Me("MsSQLConWinBack"),String)
@@ -267,6 +267,54 @@ Namespace My
             End Get
             Set
                 Me("WbDatenConString") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=OrgaBackMain; Integrated Security=True")>  _
+        Public Property OrgaBackMainConString() As String
+            Get
+                Return CType(Me("OrgaBackMainConString"),String)
+            End Get
+            Set
+                Me("OrgaBackMainConString") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("OrgaBackMain")>  _
+        Public Property MsSQLMain() As String
+            Get
+                Return CType(Me("MsSQLMain"),String)
+            End Get
+            Set
+                Me("MsSQLMain") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\Program Files\MySQL\MySQL Server 5.0")>  _
+        Public Property MySQLPath() As String
+            Get
+                Return CType(Me("MySQLPath"),String)
+            End Get
+            Set
+                Me("MySQLPath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\ProgramData\OrgaSoft\AddIn")>  _
+        Public Property MySQLBatch() As String
+            Get
+                Return CType(Me("MySQLBatch"),String)
+            End Get
+            Set
+                Me("MySQLBatch") = value
             End Set
         End Property
     End Class

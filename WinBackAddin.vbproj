@@ -83,6 +83,9 @@
     <CodeAnalysisRuleSet>..\..\..\..\SharedBinaries\Basic Correctness and Design Guideline.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>dll\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=5.0.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\MySql V1.0.10.1\MySql.Data.dll</HintPath>
@@ -125,6 +128,12 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\wb_Sync.vb" />
     <Compile Include="wb_00_Klassen\wb_ComboBox.Designer.vb">
       <DependentUpon>wb_ComboBox.vb</DependentUpon>
     </Compile>
@@ -285,11 +294,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -313,19 +317,37 @@
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_08_Forms_Service\wb_Service_Liste.Designer.vb">
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_Main.Designer.vb">
+      <DependentUpon>wb_Admin_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_Main.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.Designer.vb">
+      <DependentUpon>wb_Admin_Datensicherung.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Service_Liste.Designer.vb">
       <DependentUpon>wb_Service_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Service\wb_Service_Liste.vb">
+    <Compile Include="wb_08_Forms_Admin\wb_Service_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_Sync.Designer.vb">
+      <DependentUpon>wb_Admin_Sync.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_Sync.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Liste.resx">
       <DependentUpon>wb_Artikel_Liste.vb</DependentUpon>
@@ -406,8 +428,23 @@
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Service\wb_Service_Liste.resx">
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Main.resx">
+      <DependentUpon>wb_Admin_Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.en.resx">
+      <DependentUpon>wb_Admin_Datensicherung.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.resx">
+      <DependentUpon>wb_Admin_Datensicherung.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Service_Liste.resx">
       <DependentUpon>wb_Service_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Sync.en.resx">
+      <DependentUpon>wb_Admin_Sync.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Sync.resx">
+      <DependentUpon>wb_Admin_Sync.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -425,8 +462,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="MySql_Dump.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MySql_Restore.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="OrgaBack.Start.bat" />
     <None Include="packages.config" />
+    <None Include="Resources\DatenRuecksicherung_32x32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\DatenSicherung_32x32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\MainRezept_32x32.png" />
     <None Include="Resources\MainStatistikRezepte_32x32.png" />
   </ItemGroup>
@@ -501,12 +550,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt" />
+    <Content Include="Resources\DatenRueckSicherung_16x16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Leer_32x32.png" />
+    <Content Include="Resources\Zoom_32x32.png" />
+    <None Include="Resources\DatenSicherung_16x16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Admin_32x32.png" />
+    <None Include="Resources\Admin_16x16.png" />
+    <None Include="Resources\MainSync_16x16.png" />
+    <None Include="Resources\MainSync_32x32.png" />
+    <None Include="Resources\MainProduktionsPlanung_32x32.png" />
     <None Include="Resources\Leer_16x16.png" />
     <None Include="Resources\KreuzRot.png" />
     <None Include="Resources\HakenRot_16x16.png" />
     <None Include="Resources\HakenGlb_16x16.png" />
     <None Include="Resources\HakenGrn_16x16.png" />
-    <None Include="Resources\MainUser_16x161.png" />
     <None Include="Resources\UserGruppen_32x32.png" />
     <None Include="Resources\UserPasswd_32x32.png" />
     <None Include="Resources\UserListe_32x32.png" />
@@ -521,7 +582,8 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "C:\ProgramData\OrgaSoft\AddIn"
 xcopy "$(TargetDir)$(TargetName).*" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
-xcopy "$(TargetDir)*.dll" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y</PostBuildEvent>
+xcopy "$(TargetDir)*.dll" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
+xcopy "$(TargetDir)*.bat" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

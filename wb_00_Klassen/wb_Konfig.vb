@@ -68,9 +68,14 @@ Public Class wb_Konfig
         My.Settings.MySQLConWinBack = "Data Source=" & My.Settings.MsSQLServerIP & "SIGNUM;" _
                                     & "Database=" & My.Settings.MySQLWinBack & ";" _
                                     & "Integrated Security=True"
-        ' Connection-String für WbDaten-MySQL-Datenbank
+        ' Connection-String für WbDaten-MsSQL-Datenbank
         My.Settings.MySQLConWbDaten = "Data Source=" & My.Settings.MsSQLServerIP & "SIGNUM;" _
                                     & "Database=" & My.Settings.MySQLWbDaten & ";" _
+                                    & "Integrated Security=True"
+
+        ' Connection-String für OrgaBackMain-MsSQL-Datenbank
+        My.Settings.OrgaBackMainConString = "Data Source=" & My.Settings.MsSQLServerIP & "SIGNUM;" _
+                                    & "Database=" & My.Settings.MsSQLMain & ";" _
                                     & "Integrated Security=True"
     End Sub
 

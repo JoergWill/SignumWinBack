@@ -63,11 +63,28 @@
         Edit
     End Enum
 
+    Enum SyncState
+        NOK                     'Datensatz ist noch nicht geprüft
+        OK                      'Datensatz ist in  beiden Datenbanken vorhanden und identisch
+        OrgaBackWrite           'Datensatz ist nur in WinBack vorhanden und muss in OrgaBack geschrieben werden
+        OrgaBackUpdate          'Datensatz ist in beiden Datenbanken vorhanden und muss in OrgaBack aktualisiert werden
+        OrgaBackErr             'Datensatz ist nur in WinBack vorhanden - Fehlt in OrgaBack, KEIN Update
+        WinBackWrite            'Datensatz ist nur in OrgaBack vorhanden und muss in WinBack geschrieben werden
+        WinBackUpdate           'Datensatz ist in beiden Datenbanken vorhanden und muss in WinBack aktualisiert werden
+        WinBackErr              'Datensatz ist nur in OrgaBack vorhanden - Fehlt in WinBack, KEIN Update
+    End Enum
+
     Public Structure wb_GruppenRechte
         Public OberBegriff As String  'IT_Bezeichnung
         Public Bezeichnung As String  'II_Kommentar
-        Public sAttribut As String   'T_Text
+        Public sAttribut As String    'T_Text
         Public iAttribut As Integer   'AT_Wert2int
+    End Structure
+
+    Public Structure wb_Gruppe
+        Public Nummer As Integer      'II_ItemID    -   Hierarchie
+        Public Bezeichnung As String  'II_Kommentar -   Bezeichnung
+        Public SyncOK As SyncState    'Synchronisations-Status
     End Structure
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)

@@ -1,4 +1,5 @@
 ﻿Imports System.Globalization
+Imports System.IO
 Imports System.Threading
 Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
@@ -95,5 +96,46 @@ Imports WinBack.wb_Global
 
         Assert.AreEqual("-", FormatStr("", 4, 0))
         Assert.AreEqual("-", FormatStr("", 4, 0, "de-DE"))
+    End Sub
+
+    <TestMethod()> Public Sub Test_bz2CompressFile()
+        'TestFile erstellen
+        Dim OutputFileName As String = My.Application.Info.DirectoryPath & "\Test_bz2Compress.txt"
+        Dim bz2FileName As String = Path.GetDirectoryName(OutputFileName) & Path.GetFileNameWithoutExtension(OutputFileName)
+
+        Dim lines() As String = {"First line", "Second line", "Third line"}
+        Using outputFile As New StreamWriter(OutputFileName)
+            For Each line As String In lines
+                outputFile.WriteLine(line)
+            Next
+        End Using
+        'TestFile komprimieren
+        Assert.IsTrue(bz2CompressFile(OutputFileName, bz2FileName))
+
+        'TestFile vorhanden prüfen
+        Assert.IsTrue(My.Computer.FileSystem.FileExists(bz2FileName))
+
+        'Ergebnisfile löschen
+        My.Computer.FileSystem.DeleteFile(OutputFileName)
+        'Komprimieren einer nicht vorhandenen Datei -> Return False
+        Assert.IsFalse(bz2CompressFile(OutputFileName, bz2FileName))
+    End Sub
+    <TestMethod()> Public Sub Test_bz2DeompressFile()
+        ' Testfile aus Text_bz2CompressFile
+        Dim OutputFileName As String = My.Application.Info.DirectoryPath & "\Test_bz2Compress.txt"
+        Dim bz2FileName As String = Path.GetDirectoryName(OutputFileName) & Path.GetFileNameWithoutExtension(OutputFileName)
+
+        'TestFile dekomprimieren
+        Assert.IsTrue(bz2DecompressFile(bz2FileName, OutputFileName))
+        'TestFile vorhanden prüfen
+        Assert.IsTrue(My.Computer.FileSystem.FileExists(OutputFileName))
+
+        'Input-File löschen
+        My.Computer.FileSystem.DeleteFile(bz2FileName)
+        'DeKomprimieren einer nicht vorhandenen Datei -> Return False
+        Assert.IsFalse(bz2DecompressFile(bz2FileName, OutputFileName))
+
+        'Ergebnisfile löschen (Aufräumen)
+        My.Computer.FileSystem.DeleteFile(OutputFileName)
     End Sub
 End Class

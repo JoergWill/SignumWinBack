@@ -7,6 +7,9 @@
 'Beschreibung:
 'Sammlung von Statischen Funktionen
 
+Imports System.IO
+Imports ICSharpCode.SharpZipLib.BZip2
+
 Public Class wb_Functions
 
     '---------------------------------------------------------
@@ -168,5 +171,129 @@ Public Class wb_Functions
         Else
             Return Text
         End If
+    End Function
+
+    Public Shared Sub DoBatch(Directory As String, BatchFile As String, Argument As String, WaitUntilReady As Boolean)
+        Dim cmd As String = Chr(34) + My.Settings.MySQLBatch + "\" + BatchFile + Chr(34)
+        Dim arg As String = Chr(34) + Directory + Chr(34) + " " + Chr(34) + Argument + Chr(34)
+
+        Dim p As New Process()
+        p.StartInfo = New ProcessStartInfo(cmd, arg)
+        p.StartInfo.CreateNoWindow = True
+        p.StartInfo.UseShellExecute = False
+        p.StartInfo.RedirectStandardOutput = True
+        p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+        p.StartInfo.WorkingDirectory = Directory
+        p.Start()
+        p.WaitForExit()
+
+    End Sub
+
+    ''' <summary>
+    ''' Datei komprimieren in .bz2
+    ''' Der File-Typ ist beliebig. Das Zielverzeichniss muss Schreib-Rechte haben. Nach erfolgreicher Operation wird
+    ''' True zurückgeliefert.
+    ''' </summary>
+    ''' <remarks>
+    ''' SharpZipLibrary samples
+    '''  Copyright (c) 2007, AlphaSierraPapa
+    '''  All rights reserved.
+    ''' 
+    ''' ' Redistribution and use in source and binary forms, with or without modification, are
+    '''  permitted provided that the following conditions are met:
+    ''' 
+    '''  - Redistributions of source code must retain the above copyright notice, this list
+    '''    of conditions and the following disclaimer.
+    ''' 
+    '''  - Redistributions in binary form must reproduce the above copyright notice, this list
+    '''    of conditions and the following disclaimer in the documentation and/or other materials
+    '''    provided with the distribution.
+    ''' 
+    '''  - Neither the name of the SharpDevelop team nor the names of its contributors may be used to
+    '''    endorse or promote products derived from this software without specific prior written
+    '''    permission.
+    ''' 
+    '''  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &AS IS& AND ANY EXPRESS
+    ''' OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    ''' AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    ''' CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+    ''' DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+    ''' DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+    ''' IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+    ''' OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    ''' </remarks>
+    ''' <param name="InFileName"> String Dateiname und Pfad inlusive Extension</param>
+    ''' <param name="OutFileName"> String Dateiname und Pfad inlusive Extension (.bz2)</param>
+    ''' <returns>
+    ''' True - Komprimieren war erfolgreich
+    ''' False - Fehler beim Lesen/Schreiben
+    ''' </returns>
+
+    Public Shared Function bz2CompressFile(InFileName As String, OutFileName As String) As Boolean
+        'Compression of single-file archive
+        Dim fsInputFile As FileStream, fsBZ2Archive As FileStream
+        Try
+            fsInputFile = File.OpenRead(InFileName)
+            fsBZ2Archive = File.Create(OutFileName)
+            BZip2.Compress(fsInputFile, fsBZ2Archive, True, 4026)
+            fsInputFile.Close()
+        Catch
+            Return False
+        End Try
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Datei dekomprimieren aus .bz2
+    ''' Der File-Typ ist beliebig. Das Zielverzeichniss muss Schreib-Rechte haben. Nach erfolgreicher Operation wird
+    ''' True zurückgeliefert.
+    ''' </summary>
+    ''' <remarks>
+    ''' SharpZipLibrary samples
+    '''  Copyright (c) 2007, AlphaSierraPapa
+    '''  All rights reserved.
+    ''' 
+    ''' ' Redistribution and use in source and binary forms, with or without modification, are
+    '''  permitted provided that the following conditions are met:
+    ''' 
+    '''  - Redistributions of source code must retain the above copyright notice, this list
+    '''    of conditions and the following disclaimer.
+    ''' 
+    '''  - Redistributions in binary form must reproduce the above copyright notice, this list
+    '''    of conditions and the following disclaimer in the documentation and/or other materials
+    '''    provided with the distribution.
+    ''' 
+    '''  - Neither the name of the SharpDevelop team nor the names of its contributors may be used to
+    '''    endorse or promote products derived from this software without specific prior written
+    '''    permission.
+    ''' 
+    '''  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &AS IS& AND ANY EXPRESS
+    ''' OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    ''' AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    ''' CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+    ''' DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+    ''' DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+    ''' IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+    ''' OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    ''' </remarks>
+    ''' <param name="InFileName"> String Dateiname und Pfad inlusive Extension (.bz2)</param>
+    ''' <param name="OutFileName"> String Dateiname und Pfad inlusive Extension</param>
+    ''' <returns>
+    ''' True - Dekomprimieren war erfolgreich
+    ''' False - Fehler beim Lesen/Schreiben/Dekomprimieren
+    ''' </returns>
+
+    Public Shared Function bz2DecompressFile(InFileName As String, OutFileName As String) As Boolean
+        Dim fsBZ2Archive As FileStream, fsOutput As FileStream
+        Try
+            fsBZ2Archive = File.OpenRead(InFileName)
+            fsOutput = File.Create(OutFileName)
+            BZip2.Decompress(fsBZ2Archive, fsOutput, True)
+            fsBZ2Archive.Close()
+            fsOutput.Close()
+        Catch
+            Return False
+        End Try
+        Return True
     End Function
 End Class
