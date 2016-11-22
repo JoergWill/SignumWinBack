@@ -147,7 +147,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Btn_DatenSicherung.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>3</value>
   </data>
   <metadata name="SaveFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -163,7 +163,7 @@
     <value>181, 53</value>
   </data>
   <data name="SaveFileName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>460, 20</value>
+    <value>355, 20</value>
   </data>
   <data name="SaveFileName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -178,34 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;SaveFileName.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="Btn_SaveFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="Btn_SaveFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>647, 51</value>
-  </data>
-  <data name="Btn_SaveFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 23</value>
-  </data>
-  <data name="Btn_SaveFile.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="Btn_SaveFile.Text" xml:space="preserve">
-    <value>...</value>
-  </data>
-  <data name="&gt;&gt;Btn_SaveFile.Name" xml:space="preserve">
-    <value>Btn_SaveFile</value>
-  </data>
-  <data name="&gt;&gt;Btn_SaveFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Btn_SaveFile.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Btn_SaveFile.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="Btn_DatenRueckSicherung.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -238,7 +211,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Btn_DatenRueckSicherung.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="LoadFileName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -247,7 +220,7 @@
     <value>181, 120</value>
   </data>
   <data name="LoadFileName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>460, 20</value>
+    <value>355, 20</value>
   </data>
   <data name="LoadFileName.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -262,70 +235,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;LoadFileName.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="Btn_LoadFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="Btn_LoadFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="Btn_LoadFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>647, 117</value>
-  </data>
-  <data name="Btn_LoadFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 23</value>
-  </data>
-  <data name="Btn_LoadFile.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="Btn_LoadFile.Text" xml:space="preserve">
-    <value>...</value>
-  </data>
-  <data name="&gt;&gt;Btn_LoadFile.Name" xml:space="preserve">
-    <value>Btn_LoadFile</value>
-  </data>
-  <data name="&gt;&gt;Btn_LoadFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Btn_LoadFile.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Btn_LoadFile.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <metadata name="OpenFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>148, 17</value>
   </metadata>
   <data name="OpenFileDialog.Title" xml:space="preserve">
     <value>Datenrücksicherung WinBack</value>
-  </data>
-  <data name="TextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="TextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>181, 224</value>
-  </data>
-  <data name="TextBox.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="TextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>460, 339</value>
-  </data>
-  <data name="TextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;TextBox.Name" xml:space="preserve">
-    <value>TextBox</value>
-  </data>
-  <data name="&gt;&gt;TextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TextBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TextBox.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -334,7 +250,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>697, 575</value>
+    <value>697, 192</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>

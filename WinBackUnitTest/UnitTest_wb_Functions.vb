@@ -138,4 +138,11 @@ Imports WinBack.wb_Global
         'Ergebnisfile löschen (Aufräumen)
         My.Computer.FileSystem.DeleteFile(OutputFileName)
     End Sub
+
+    <TestMethod()> Public Sub Test_SshShell()
+        Dim Output As String
+        Output = DoShell("herbst", "herbst", "172.16.17.5", "pwd")
+        Assert.AreEqual("/home/herbst", Output)
+    End Sub
+
 End Class

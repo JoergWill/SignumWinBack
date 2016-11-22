@@ -50,6 +50,10 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DiffieHellman, Version=0.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\SharpSSH\DiffieHellman.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=1.0.10.1, Culture=neutral, PublicKeyToken=c5687fc88969c44d">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\MySql V1.0.10.1\MySql.Data.dll</HintPath>
@@ -61,6 +65,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Tamir.SharpSSH, Version=1.1.1.13, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\SharpSSH\Tamir.SharpSSH.dll</HintPath>
+    </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.8.0.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\WeifenLuo Docking V2.8.0\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
@@ -93,6 +101,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTest_wb_TraceListener.vb" />
     <Compile Include="UnitTest_wb_Filiale.vb" />
     <Compile Include="UnitTest_wb_sql.vb" />
     <Compile Include="UnitTest_wb_Konfig.vb" />

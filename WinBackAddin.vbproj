@@ -83,6 +83,9 @@
     <CodeAnalysisRuleSet>..\..\..\..\SharedBinaries\Basic Correctness and Design Guideline.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DiffieHellman">
+      <HintPath>dll\SharpSSH\DiffieHellman.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>dll\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -98,6 +101,7 @@
     <Reference Include="Signum.OrgaSoft.GUI.Controls, Version=2.1.6029.33511, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\Signum.OrgaSoft.GUI.Controls.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -110,6 +114,9 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Tamir.SharpSSH">
+      <HintPath>dll\SharpSSH\Tamir.SharpSSH.dll</HintPath>
+    </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.8.0.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\WeifenLuo Docking V2.8.0\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
@@ -143,6 +150,7 @@
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
     <Compile Include="wb_00_Klassen\wb_Filiale.vb" />
     <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
+    <Compile Include="wb_00_Klassen\wb_TraceListener.vb" />
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_DockingControl.Designer.vb">
       <DependentUpon>wb_User_DockingControl.vb</DependentUpon>
@@ -317,6 +325,12 @@
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_Log.Designer.vb">
+      <DependentUpon>wb_Admin_Log.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_Log.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_08_Forms_Admin\wb_Admin_Main.Designer.vb">
       <DependentUpon>wb_Admin_Main.vb</DependentUpon>
     </Compile>
@@ -427,6 +441,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Log.resx">
+      <DependentUpon>wb_Admin_Log.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Main.resx">
       <DependentUpon>wb_Admin_Main.vb</DependentUpon>

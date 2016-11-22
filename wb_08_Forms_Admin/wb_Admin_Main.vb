@@ -8,6 +8,7 @@ Public Class wb_Admin_Main
     Implements IExternalFormUserControl
     Public AdminSync As New wb_Admin_Sync
     Public AdminDatensicherung As New wb_Admin_Datensicherung
+    Public AdminLog As New wb_Admin_Log
 
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
         'MessageBox.Show("ExecuteCommand!" & vbCrLf & CommandId, "AddIn", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -153,18 +154,14 @@ Public Class wb_Admin_Main
         Catch ex As Exception
         End Try
 
-        '     RohstoffDetails.Show(DockPanel, DockState.DockTop)
-        '     RohstoffDetails.CloseButtonVisible = False
-        '     RohstoffListe.Show(DockPanel, DockState.DockLeft)
-        '     RohstoffListe.CloseButtonVisible = False
+        AdminLog.Show(DockPanel, DockState.DockBottom)
+        AdminLog.CloseButtonVisible = False
     End Sub
 
     Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            '         Case "RohstoffListe" 
-            '         Return RohstoffListe
-            '         Case "RohstoffDetails"
-            '         Return RohstoffDetails
+            Case "AdminLog"
+                Return AdminLog
             Case Else
                 Return Nothing
         End Select

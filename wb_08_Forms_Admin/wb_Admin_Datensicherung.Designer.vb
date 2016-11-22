@@ -29,12 +29,9 @@ Partial Class wb_Admin_Datensicherung
         Me.Btn_DatenSicherung = New System.Windows.Forms.Button()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.SaveFileName = New System.Windows.Forms.TextBox()
-        Me.Btn_SaveFile = New System.Windows.Forms.Button()
         Me.Btn_DatenRueckSicherung = New System.Windows.Forms.Button()
         Me.LoadFileName = New System.Windows.Forms.TextBox()
-        Me.Btn_LoadFile = New System.Windows.Forms.Button()
         Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
-        Me.TextBox = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'Btn_DatenSicherung
@@ -53,12 +50,6 @@ Partial Class wb_Admin_Datensicherung
         resources.ApplyResources(Me.SaveFileName, "SaveFileName")
         Me.SaveFileName.Name = "SaveFileName"
         '
-        'Btn_SaveFile
-        '
-        resources.ApplyResources(Me.Btn_SaveFile, "Btn_SaveFile")
-        Me.Btn_SaveFile.Name = "Btn_SaveFile"
-        Me.Btn_SaveFile.UseVisualStyleBackColor = True
-        '
         'Btn_DatenRueckSicherung
         '
         Me.Btn_DatenRueckSicherung.Image = Global.WinBack.My.Resources.Resources.DatenRueckSicherung_32x32
@@ -71,31 +62,17 @@ Partial Class wb_Admin_Datensicherung
         resources.ApplyResources(Me.LoadFileName, "LoadFileName")
         Me.LoadFileName.Name = "LoadFileName"
         '
-        'Btn_LoadFile
-        '
-        resources.ApplyResources(Me.Btn_LoadFile, "Btn_LoadFile")
-        Me.Btn_LoadFile.Name = "Btn_LoadFile"
-        Me.Btn_LoadFile.UseVisualStyleBackColor = True
-        '
         'OpenFileDialog
         '
         Me.OpenFileDialog.FileName = "*.sql"
         resources.ApplyResources(Me.OpenFileDialog, "OpenFileDialog")
         '
-        'TextBox
-        '
-        resources.ApplyResources(Me.TextBox, "TextBox")
-        Me.TextBox.Name = "TextBox"
-        '
         'wb_Admin_Datensicherung
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.TextBox)
-        Me.Controls.Add(Me.Btn_LoadFile)
         Me.Controls.Add(Me.LoadFileName)
         Me.Controls.Add(Me.Btn_DatenRueckSicherung)
-        Me.Controls.Add(Me.Btn_SaveFile)
         Me.Controls.Add(Me.SaveFileName)
         Me.Controls.Add(Me.Btn_DatenSicherung)
         Me.Name = "wb_Admin_Datensicherung"
@@ -107,10 +84,7 @@ Partial Class wb_Admin_Datensicherung
     Friend WithEvents Btn_DatenSicherung As Windows.Forms.Button
     Friend WithEvents SaveFileDialog As Windows.Forms.SaveFileDialog
     Friend WithEvents SaveFileName As Windows.Forms.TextBox
-    Friend WithEvents Btn_SaveFile As Windows.Forms.Button
     Friend WithEvents Btn_DatenRueckSicherung As Windows.Forms.Button
     Friend WithEvents LoadFileName As Windows.Forms.TextBox
-    Friend WithEvents Btn_LoadFile As Windows.Forms.Button
     Friend WithEvents OpenFileDialog As Windows.Forms.OpenFileDialog
-    Friend WithEvents TextBox As Windows.Forms.TextBox
 End Class

@@ -9,6 +9,7 @@
 
 Imports System.IO
 Imports ICSharpCode.SharpZipLib.BZip2
+Imports Tamir.SharpSsh
 
 Public Class wb_Functions
 
@@ -146,14 +147,16 @@ Public Class wb_Functions
         End Try
     End Function
 
-    '-----------------------------------------------------------------------------
-    ' Text aus Datenbank lesen - Übersetzung
-    ' von Herbert Bsteh aus winback (Kylix)
-    ' Erste Zahl (Texttyp), zweite Zahl (Textindex)
-
-    ' Gibt den Text ohne Klammer zurück wenn
-    ' kein Text in der Datenbak gefunden wurde
-    '-----------------------------------------------------------------------------
+    ''' <summary>
+    '''Text aus Datenbank lesen - Übersetzung
+    ''' von Herbert Bsteh aus winback (Kylix)
+    ''' Erste Zahl (Texttyp), zweite Zahl (Textindex)
+    '''
+    ''' Gibt den Text ohne Klammer zurück wenn
+    ''' kein Text in der Datenbank gefunden wurde
+    ''' </summary>
+    ''' <param name="Text">String im Format @[Typ,Index]</param>
+    ''' <returns>String - Übersetzung aus winback.Texte</returns>
     Public Shared Function TextFilter(Text As String) As String
         Dim Hash As String
 
@@ -189,6 +192,17 @@ Public Class wb_Functions
 
     End Sub
 
+    Public Shared Function DoShell(User As String, Pass As String, Host As String, Command As String) As String
+        Dim Output As String
+        Dim Exec As New SshExec(Host, User, Pass)
+
+        Exec.Connect()
+        Output = Exec.RunCommand(Command)
+        Exec.Close()
+
+        Return Output
+    End Function
+
     ''' <summary>
     ''' Datei komprimieren in .bz2
     ''' Der File-Typ ist beliebig. Das Zielverzeichniss muss Schreib-Rechte haben. Nach erfolgreicher Operation wird
@@ -213,7 +227,7 @@ Public Class wb_Functions
     '''    endorse or promote products derived from this software without specific prior written
     '''    permission.
     ''' 
-    '''  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &AS IS& AND ANY EXPRESS
+    '''  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS AS IS AND ANY EXPRESS
     ''' OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
     ''' AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
     ''' CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
@@ -228,7 +242,6 @@ Public Class wb_Functions
     ''' True - Komprimieren war erfolgreich
     ''' False - Fehler beim Lesen/Schreiben
     ''' </returns>
-
     Public Shared Function bz2CompressFile(InFileName As String, OutFileName As String) As Boolean
         'Compression of single-file archive
         Dim fsInputFile As FileStream, fsBZ2Archive As FileStream
@@ -267,7 +280,7 @@ Public Class wb_Functions
     '''    endorse or promote products derived from this software without specific prior written
     '''    permission.
     ''' 
-    '''  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &AS IS& AND ANY EXPRESS
+    '''  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS AS IS AND ANY EXPRESS
     ''' OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
     ''' AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
     ''' CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
@@ -282,7 +295,6 @@ Public Class wb_Functions
     ''' True - Dekomprimieren war erfolgreich
     ''' False - Fehler beim Lesen/Schreiben/Dekomprimieren
     ''' </returns>
-
     Public Shared Function bz2DecompressFile(InFileName As String, OutFileName As String) As Boolean
         Dim fsBZ2Archive As FileStream, fsOutput As FileStream
         Try

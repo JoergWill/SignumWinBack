@@ -17,8 +17,7 @@ Public Class wb_Sync
                     Gruppe.Nummer = winback.iField("II_ItemID")
                     Gruppe.Bezeichnung = wb_Functions.TextFilter(winback.sField("II_Kommentar"))
                     Gruppe.SyncOK = wb_Global.SyncState.NOK
-                    '   Debug.Print("User-Gruppe Nummer      " & Gruppe.Nummer.ToString)
-                    '   Debug.Print("User-Gruppe Bezeichnung " & Gruppe.Bezeichnung)
+                    Trace.WriteLine("Read WinBack User-Gruppe Nummer         " & Gruppe.Nummer.ToString + " User-Gruppe Bezeichnung        " & Gruppe.Bezeichnung)
                     WinBack_UserGruppe.Add(Gruppe)
                 End While
             End If
@@ -31,8 +30,7 @@ Public Class wb_Sync
                     Gruppe.Nummer = orgaback.iField("Hierarchie")
                     Gruppe.Bezeichnung = orgaback.sField("Bezeichnung")
                     Gruppe.SyncOK = wb_Global.SyncState.NOK
-                    '   Debug.Print("Mitarbeiter-Gruppe Nummer      " & Gruppe.Nummer.ToString)
-                    '   Debug.Print("Mitarbeiter-Gruppe Bezeichnung " & Gruppe.Bezeichnung)
+                    Trace.WriteLine("Read OrgaBack Mitarbeiter-Gruppe Nummer " & Gruppe.Nummer.ToString + " Mitarbeiter-Gruppe Bezeichnung " & Gruppe.Bezeichnung)
                     OrgaBack_UserGruppe.Add(Gruppe)
                 End While
             End If
