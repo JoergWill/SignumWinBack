@@ -31,6 +31,7 @@ Partial Class Main
         Me.BtnClients = New System.Windows.Forms.Button()
         Me.btnMessages = New System.Windows.Forms.Button()
         Me.BtnHide = New System.Windows.Forms.Button()
+        Me.BtnExit = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'NotifyIcon
@@ -73,6 +74,7 @@ Partial Class Main
         Me.BtnClients.FlatAppearance.BorderColor = System.Drawing.Color.Gray
         Me.BtnClients.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.BtnClients.ForeColor = System.Drawing.Color.White
+        Me.BtnClients.Image = Global.WinBackServerTask.My.Resources.Resources.Users
         Me.BtnClients.ImageAlign = System.Drawing.ContentAlignment.TopLeft
         Me.BtnClients.Location = New System.Drawing.Point(12, 611)
         Me.BtnClients.Name = "BtnClients"
@@ -89,6 +91,7 @@ Partial Class Main
         Me.btnMessages.FlatAppearance.BorderColor = System.Drawing.Color.Gray
         Me.btnMessages.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnMessages.ForeColor = System.Drawing.Color.White
+        Me.btnMessages.Image = Global.WinBackServerTask.My.Resources.Resources.SpeechBubble
         Me.btnMessages.ImageAlign = System.Drawing.ContentAlignment.TopLeft
         Me.btnMessages.Location = New System.Drawing.Point(128, 611)
         Me.btnMessages.Name = "btnMessages"
@@ -105,6 +108,7 @@ Partial Class Main
         Me.BtnHide.FlatAppearance.BorderColor = System.Drawing.Color.Gray
         Me.BtnHide.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.BtnHide.ForeColor = System.Drawing.Color.White
+        Me.BtnHide.Image = Global.WinBackServerTask.My.Resources.Resources.Cancel
         Me.BtnHide.ImageAlign = System.Drawing.ContentAlignment.TopLeft
         Me.BtnHide.Location = New System.Drawing.Point(244, 611)
         Me.BtnHide.Name = "BtnHide"
@@ -114,18 +118,36 @@ Partial Class Main
         Me.BtnHide.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         Me.BtnHide.UseVisualStyleBackColor = False
         '
+        'BtnExit
+        '
+        Me.BtnExit.BackColor = System.Drawing.Color.Gray
+        Me.BtnExit.FlatAppearance.BorderColor = System.Drawing.Color.Gray
+        Me.BtnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnExit.ForeColor = System.Drawing.Color.White
+        Me.BtnExit.Image = Global.WinBackServerTask.My.Resources.Resources.OnOff
+        Me.BtnExit.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.BtnExit.Location = New System.Drawing.Point(244, 10)
+        Me.BtnExit.Name = "BtnExit"
+        Me.BtnExit.Size = New System.Drawing.Size(110, 65)
+        Me.BtnExit.TabIndex = 5
+        Me.BtnExit.Text = "Beenden"
+        Me.BtnExit.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnExit.UseVisualStyleBackColor = False
+        '
         'Main
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(366, 688)
         Me.ControlBox = False
+        Me.Controls.Add(Me.BtnExit)
         Me.Controls.Add(Me.BtnHide)
         Me.Controls.Add(Me.btnMessages)
         Me.Controls.Add(Me.BtnClients)
         Me.Controls.Add(Me.lblCounter)
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "Main"
@@ -144,4 +166,5 @@ Partial Class Main
     Friend WithEvents BtnClients As Button
     Friend WithEvents btnMessages As Button
     Friend WithEvents BtnHide As Button
+    Friend WithEvents BtnExit As Button
 End Class

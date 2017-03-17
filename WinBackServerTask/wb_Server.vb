@@ -36,4 +36,10 @@
     Private Sub BtnHide_Click(sender As Object, e As EventArgs) Handles BtnHide.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
+
+    Private Sub BtnExit_Click(sender As Object, e As EventArgs) Handles BtnExit.Click
+        If MessageBox.Show("Danach werden keine Hintergrund-Dienste mehr ausgeführt", "Server-Task wirklich beenden ?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+            Close()
+        End If
+    End Sub
 End Class
