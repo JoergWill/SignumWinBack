@@ -1,5 +1,6 @@
 ﻿Public Class Main
     Private Counter As Integer
+    ' Create a black Panel to hide TabControls
 
     Private Sub NotifyIcon_DoubleClick(sender As Object, e As EventArgs) Handles NotifyIcon.DoubleClick
         Me.WindowState = FormWindowState.Normal
@@ -14,13 +15,16 @@
 
     Private Sub MainTimer_Tick(sender As Object, e As EventArgs) Handles MainTimer.Tick
         Counter = Counter + 1
-        lblCounter.Text = String.Format("Ticks {0:#}", Counter)
+        'lblCounter.Text = String.Format("Ticks {0:#}", Counter)
     End Sub
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     End Sub
 
     Private Sub Main_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        ' TabControl - HideTabs
+        Wb_TabControl.HideTabs = True
+        Wb_TabControl.Hide()
         ' Breite Fenster
         Const fBreite = 366
         ' Bildschirmmauflösung ermitteln
@@ -38,8 +42,19 @@
     End Sub
 
     Private Sub BtnExit_Click(sender As Object, e As EventArgs) Handles BtnExit.Click
-        If MessageBox.Show("Danach werden keine Hintergrund-Dienste mehr ausgeführt", "Server-Task wirklich beenden ?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+        If MessageBox.Show("Server-Task wirklich beenden ?" & vbNewLine & "Danach werden keine Hintergrund-Dienste mehr ausgeführt",
+                           "WinBack Server-Task", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Close()
         End If
+    End Sub
+
+    Private Sub BtnClients_Click(sender As Object, e As EventArgs) Handles BtnClients.Click
+        Wb_TabControl.SelectedTab = TabPageClients
+        Wb_TabControl.Show()
+    End Sub
+
+    Private Sub btnMessages_Click(sender As Object, e As EventArgs) Handles btnMessages.Click
+        Wb_TabControl.SelectedTab = TabPageMessages
+        Wb_TabControl.Show()
     End Sub
 End Class

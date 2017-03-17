@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Main
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,18 +20,25 @@ Partial Class Main
     'Hinweis: Die folgende Prozedur ist für den Windows Form-Designer erforderlich.
     'Das Bearbeiten ist mit dem Windows Form-Designer möglich.  
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.NotifyIcon = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.MainTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.lblCounter = New System.Windows.Forms.Label()
         Me.BtnClients = New System.Windows.Forms.Button()
         Me.btnMessages = New System.Windows.Forms.Button()
         Me.BtnHide = New System.Windows.Forms.Button()
         Me.BtnExit = New System.Windows.Forms.Button()
+        Me.Wb_TabControl = New WinBack.wb_TabControl()
+        Me.TabPageClients = New System.Windows.Forms.TabPage()
+        Me.TabPageMessages = New System.Windows.Forms.TabPage()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Wb_TabControl.SuspendLayout()
+        Me.TabPageClients.SuspendLayout()
+        Me.TabPageMessages.SuspendLayout()
         Me.SuspendLayout()
         '
         'NotifyIcon
@@ -56,16 +63,6 @@ Partial Class Main
         '
         Me.MainTimer.Enabled = True
         Me.MainTimer.Interval = 1000
-        '
-        'lblCounter
-        '
-        Me.lblCounter.AutoSize = True
-        Me.lblCounter.ForeColor = System.Drawing.Color.White
-        Me.lblCounter.Location = New System.Drawing.Point(172, 39)
-        Me.lblCounter.Name = "lblCounter"
-        Me.lblCounter.Size = New System.Drawing.Size(31, 13)
-        Me.lblCounter.TabIndex = 1
-        Me.lblCounter.Text = "0000"
         '
         'BtnClients
         '
@@ -134,17 +131,72 @@ Partial Class Main
         Me.BtnExit.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         Me.BtnExit.UseVisualStyleBackColor = False
         '
+        'Wb_TabControl
+        '
+        Me.Wb_TabControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Wb_TabControl.Controls.Add(Me.TabPageClients)
+        Me.Wb_TabControl.Controls.Add(Me.TabPageMessages)
+        Me.Wb_TabControl.Location = New System.Drawing.Point(12, 81)
+        Me.Wb_TabControl.Multiline = True
+        Me.Wb_TabControl.Name = "Wb_TabControl"
+        Me.Wb_TabControl.SelectedIndex = 0
+        Me.Wb_TabControl.Size = New System.Drawing.Size(342, 524)
+        Me.Wb_TabControl.TabIndex = 6
+        '
+        'TabPageClients
+        '
+        Me.TabPageClients.BackColor = System.Drawing.Color.Black
+        Me.TabPageClients.Controls.Add(Me.Label2)
+        Me.TabPageClients.ForeColor = System.Drawing.Color.White
+        Me.TabPageClients.Location = New System.Drawing.Point(4, 23)
+        Me.TabPageClients.Name = "TabPageClients"
+        Me.TabPageClients.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPageClients.Size = New System.Drawing.Size(334, 497)
+        Me.TabPageClients.TabIndex = 0
+        Me.TabPageClients.Text = "Clients"
+        '
+        'TabPageMessages
+        '
+        Me.TabPageMessages.Controls.Add(Me.Label3)
+        Me.TabPageMessages.Location = New System.Drawing.Point(4, 23)
+        Me.TabPageMessages.Name = "TabPageMessages"
+        Me.TabPageMessages.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPageMessages.Size = New System.Drawing.Size(334, 497)
+        Me.TabPageMessages.TabIndex = 1
+        Me.TabPageMessages.Text = "Messages"
+        Me.TabPageMessages.UseVisualStyleBackColor = True
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(148, 242)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(55, 13)
+        Me.Label3.TabIndex = 1
+        Me.Label3.Text = "Messages"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(175, 336)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(39, 13)
+        Me.Label2.TabIndex = 0
+        Me.Label2.Text = "Label2"
+        '
         'Main
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(366, 688)
         Me.ControlBox = False
+        Me.Controls.Add(Me.Wb_TabControl)
         Me.Controls.Add(Me.BtnExit)
         Me.Controls.Add(Me.BtnHide)
         Me.Controls.Add(Me.btnMessages)
         Me.Controls.Add(Me.BtnClients)
-        Me.Controls.Add(Me.lblCounter)
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -154,6 +206,11 @@ Partial Class Main
         Me.ShowInTaskbar = False
         Me.Text = "WinBack"
         Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
+        Me.Wb_TabControl.ResumeLayout(False)
+        Me.TabPageClients.ResumeLayout(False)
+        Me.TabPageClients.PerformLayout()
+        Me.TabPageMessages.ResumeLayout(False)
+        Me.TabPageMessages.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -162,9 +219,13 @@ Partial Class Main
     Friend WithEvents NotifyIcon As NotifyIcon
     Friend WithEvents Label1 As Label
     Friend WithEvents MainTimer As Timer
-    Friend WithEvents lblCounter As Label
     Friend WithEvents BtnClients As Button
     Friend WithEvents btnMessages As Button
     Friend WithEvents BtnHide As Button
     Friend WithEvents BtnExit As Button
+    Friend WithEvents Wb_TabControl As WinBack.wb_TabControl
+    Friend WithEvents TabPageClients As TabPage
+    Friend WithEvents TabPageMessages As TabPage
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Label2 As Label
 End Class
