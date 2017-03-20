@@ -145,6 +145,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_Naehrwerte.vb" />
     <Compile Include="wb_00_Klassen\wb_Sync.vb" />
     <Compile Include="wb_00_Klassen\wb_ComboBox.Designer.vb">
       <DependentUpon>wb_ComboBox.vb</DependentUpon>
@@ -159,6 +160,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_TraceListener.vb" />
+    <Compile Include="wb_00_Konstanten\wb_Credentials.vb" />
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_DockingControl.Designer.vb">
       <DependentUpon>wb_User_DockingControl.vb</DependentUpon>
