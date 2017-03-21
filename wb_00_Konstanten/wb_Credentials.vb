@@ -1,9 +1,8 @@
 ﻿Public Class wb_Credentials
     Public Const WinBackCloud_Url = "http://nwt.winback.de:8080/nwt"
-    Public Const WinBackCloud_User = "useR"
-    Public Const WinBackCloud_Pass = "secrEt"
+    Public Const WinBackCloud_Pass = "bnd0OldpTmJBY0s="
 
-    Public Const Datenlink_Url = "http://api.datenlink.info/basic/"
+    Public Const Datenlink_Url = "http://api.datenlink.info/basic/2.0/"
     Public Const Datenlink_User = "jw@winback.de"
     Public Const Datenlink_Pass = "de2!a6"
     Public Const Datenlink_CAT = "37FB090516F091A8236AD70D16543EF3BDF91B23"
