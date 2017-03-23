@@ -19,6 +19,10 @@
         Assert.AreEqual(nwt.GetProductData("1"), 1)
         nwt.DebugResultSet(0)
 
+        'Change Url
+        nwt.Url = "DieseUrlGibtEsNicht.de"
+        Assert.AreEqual(nwt.lookupProductName("XYZABCDEFG"), -9)
+        Assert.AreNotEqual(nwt.ErrorCode, "OK")
     End Sub
 
 End Class

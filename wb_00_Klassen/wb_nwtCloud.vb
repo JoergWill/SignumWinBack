@@ -73,41 +73,46 @@ Public Class wb_nwtCloud
     Private Function httpString(cmd As String, param As String) As Integer
         ' Internet-Connector
         Dim request As WebRequest
-        request = WebRequest.Create(_url & "/" & cmd & param)
-        request.Method = "GET"
-        request.Timeout = 10000
-        ' Authorisierung mit Passwort
-        request.Headers.Clear()
-        request.Headers.Add("Authorization: Basic " & _pass)
-        request.ContentType = "application/x-www-form-urlencoded"
+        Try
+            request = WebRequest.Create(_url & "/" & cmd & param)
+            request.Method = "GET"
+            request.Timeout = 10000
+            ' Authorisierung mit Passwort
+            request.Headers.Clear()
+            request.Headers.Add("Authorization: Basic " & _pass)
+            request.ContentType = "application/x-www-form-urlencoded"
 
-        ' Antwort (OK)
-        Dim response As WebResponse = request.GetResponse()
-        _errorCode = CType(response, HttpWebResponse).StatusDescription
-        Debug.Print("WebResponse " & _errorCode)
+            ' Antwort (OK)
+            Dim response As WebResponse = request.GetResponse()
+            _errorCode = CType(response, HttpWebResponse).StatusDescription
+            Debug.Print("WebResponse " & _errorCode)
 
-        ' Ergebnis-String
-        If _errorCode = "OK" Then
-            Dim dataStream As Stream = response.GetResponseStream()
-            Dim reader As New StreamReader(dataStream)
-            Dim responseFromServer As String = reader.ReadToEnd()
-            'Debug.Print("Response from Server :" & responseFromServer)
+            ' Ergebnis-String
+            If _errorCode = "OK" Then
+                Dim dataStream As Stream = response.GetResponseStream()
+                Dim reader As New StreamReader(dataStream)
+                Dim responseFromServer As String = reader.ReadToEnd()
+                'Debug.Print("Response from Server :" & responseFromServer)
 
-            'wenn das erste Zeichen ein "[" ist handelt es sich um eine JSON-Array
-            If Left(responseFromServer, 1) = "[" Then
-                'Get JSON-Data
-                Dim ser As JArray = JArray.Parse(responseFromServer)
-                data = ser.Children().ToList
-                Return data.Count
-                'wenn nicht, wird ein Array daraus gemacht...
+                'wenn das erste Zeichen ein "[" ist handelt es sich um eine JSON-Array
+                If Left(responseFromServer, 1) = "[" Then
+                    'Get JSON-Data
+                    Dim ser As JArray = JArray.Parse(responseFromServer)
+                    data = ser.Children().ToList
+                    Return data.Count
+                Else
+                    'wenn nicht, wird ein Array daraus gemacht...
+                    Dim ser As JArray = JArray.Parse("[" & responseFromServer & "]")
+                    data = ser.Children().ToList
+                    Return 1
+                End If
             Else
-                Dim ser As JArray = JArray.Parse("[" & responseFromServer & "]")
-                data = ser.Children().ToList
-                Return 1
-            End If
-        Else
                 Return -1
-        End If
+            End If
+        Catch e As Exception
+            _errorCode = e.ToString
+            Return -9
+        End Try
     End Function
 
     ''' <summary>

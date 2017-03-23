@@ -14,7 +14,9 @@ Public Class wb_nwtDatenLink
     Private _cat As String
     Private _url As String
     Private _errorCode As String
-    Private data As List(Of JToken)
+
+    Dim XMLdata As New List(Of String)
+    Dim JSONdata As New List(Of JToken)
 
     Sub New(PAT As String, CAT As String, Url As String)
         'PAT - Application Token
@@ -63,11 +65,22 @@ Public Class wb_nwtDatenLink
     ''' </remarks>
     ''' <param name="Index"> Integer Index des Result-JSON-Objekts</param>
     Public Function GetResult(Index As Integer) As String
-        If Index = data.Count - 1 Then
-            Return data(Index).ToString
+        If Index = JSONdata.Count - 1 Then
+            Return JSONdata(Index).ToString
         Else
             Return ""
         End If
+    End Function
+
+    ''' <summary>
+    ''' Datenlink-Connector::GetXMLResult(Array) 
+    ''' 
+    ''' Gibt das Ergebnis der Abfrage als XML-String zurück
+    ''' </summary>
+    ''' <remarks>
+    ''' </remarks>
+    Public Function GetXMLResult() As String
+        Return XMLdata(0).ToString
     End Function
 
 
@@ -84,56 +97,91 @@ Public Class wb_nwtDatenLink
         ' Internet-Connector
         Dim datastream As Stream
         Dim request As WebRequest
-        request = WebRequest.Create(_url & cmd & ".json?Lang=DEU")
-        request.Timeout = 10000
-        ' Post or Get
-        If cmd = "getComponentList" Then
-            request.Method = "GET"
-        Else
-            request.Method = "POST"
-        End If
-        ' Authorisierung mit Application-Token
-        request.Headers.Clear()
-        request.Headers.Add("X-DL-TOKEN-APPLICATION:" & _pat)
-        If service = "company" Then
-            request.Headers.Add("X-DL-TOKEN-COMPANY:" & _cat)
-        End If
-
-        'Post-Data
-        Dim byteArray As Byte() = Encoding.UTF8.GetBytes(param)
-        request.ContentLength = byteArray.Length
-        request.ContentType = "application/x-www-form-urlencoded"
-        datastream = request.GetRequestStream()
-        datastream.Write(byteArray, 0, byteArray.Length)
-        datastream.Close()
-
-        ' Antwort (OK)
-        Dim response As WebResponse = request.GetResponse()
-        _errorCode = CType(response, HttpWebResponse).StatusDescription
-        Debug.Print("WebResponse " & _errorCode)
-
-        ' Ergebnis-String
-        If _errorCode = "OK" Then
-            datastream = response.GetResponseStream()
-            Dim reader As New StreamReader(dataStream)
-            Dim responseFromServer As String = reader.ReadToEnd()
-            'Debug.Print("Response from Server :" & responseFromServer)
-
-            'wenn das erste Zeichen ein "[" ist handelt es sich um eine JSON-Array
-            If Left(responseFromServer, 1) = "[" Then
-                'Get JSON-Data
-                Dim ser As JArray = JArray.Parse(responseFromServer)
-                data = ser.Children().ToList
-                Return data.Count
-                'wenn nicht, wird ein Array daraus gemacht...
+        Try
+            request = WebRequest.Create(_url & cmd & ".json?Lang=DEU")
+            request.Timeout = 10000
+            ' Post or Get
+            If cmd = "getComponentList" Then
+                request.Method = "GET"
             Else
-                Dim ser As JArray = JArray.Parse("[" & responseFromServer & "]")
-                data = ser.Children().ToList
-                Return 1
+                request.Method = "POST"
             End If
-        Else
-            Return -1
-        End If
+            ' Authorisierung mit Application-Token
+            request.Headers.Clear()
+            request.Headers.Add("X-DL-TOKEN-APPLICATION:" & _pat)
+            If service = "company" Then
+                request.Headers.Add("X-DL-TOKEN-COMPANY:" & _cat)
+            End If
+
+            'Post-Data
+            Dim byteArray As Byte() = Encoding.UTF8.GetBytes(param)
+            request.ContentLength = byteArray.Length
+            request.ContentType = "application/x-www-form-urlencoded"
+            datastream = request.GetRequestStream()
+            datastream.Write(byteArray, 0, byteArray.Length)
+            datastream.Close()
+
+            ' Antwort (OK)
+            Dim response As WebResponse = request.GetResponse()
+            _errorCode = CType(response, HttpWebResponse).StatusDescription
+            Debug.Print("WebResponse " & _errorCode)
+
+            ' Ergebnis-String
+            If _errorCode = "OK" Then
+                datastream = response.GetResponseStream()
+                Dim reader As New StreamReader(datastream)
+                Dim responseFromServer As String = reader.ReadToEnd()
+                'Debug.Print("Response from Server :" & responseFromServer)
+                Dim ser As JObject = JObject.Parse(responseFromServer)
+
+                ' Status = ERROR
+                If ser.SelectToken("status") = "ERROR" Then
+                    'Abhängig vom Kommando auswerten
+                    Select Case cmd
+                        Case "lookupProduct"
+                            _errorCode = ser.SelectToken("data.error_code")
+                        Case "getProductVersionData"
+                            _errorCode = ser.SelectToken("data.error_code")
+                        Case "getDistributorData"
+                            _errorCode = ser.SelectToken("data")
+                    End Select
+                    Return -1
+                Else
+                    'Abhängig vom Kommando auswerten
+                    Select Case cmd
+                        'Validate erfolgreich
+                        Case "validateCompanyToken"
+                            Return -(ser.SelectToken("status") = "SUCCESS")
+                        'Anzahl der Datensätze in JSON data.meta_data.result_data.products_total_count 
+                        Case "lookupProduct"
+                            Return ser.SelectToken("data.meta_data.result_data.products_total_count")
+                        'Daten werden als Base64-kodiertes XML-Files zurückgegeben
+                        Case "getProductVersionData"
+                            'Daten dekodieren
+                            If ser.SelectToken("status") = "SUCCESS" Then
+                                Dim b64data As String = ser.SelectToken("data.base64_data")
+                                Dim b64byte As Byte() = Convert.FromBase64String(b64data)
+                                'Ergebnis-String (XML)
+                                XMLdata.Clear()
+                                XMLdata.Add(System.Text.Encoding.ASCII.GetString(b64byte))
+                                Return 1
+                            Else
+                                Return -1
+                            End If
+                        'Daten als JSON
+                        Case "getDistributorData"
+                            Return -(ser.SelectToken("status") = "SUCCESS")
+                        Case Else
+                            Return -1
+                    End Select
+                End If
+            Else
+                Return -1
+            End If
+        Catch e As Exception
+            _errorCode = e.ToString
+            Return -9
+        End Try
     End Function
 
     ''' <summary>
@@ -182,13 +230,12 @@ Public Class wb_nwtDatenLink
     ''' Datenlink-Connector::validateCompanyToken
     ''' 
     ''' </summary>
-    Public Sub validateCompanyToken()
+    Public Function validateCompanyToken()
         ' Kommando validateCompanyToken
         Dim nCmd = "validateCompanyToken"
         Dim nPrm = "token=" & _cat
-        httpString(nCmd, nPrm, "program")
-    End Sub
-
+        Return httpString(nCmd, nPrm, "program")
+    End Function
 
     ''' <summary>
     ''' Datenlink-Connector::DebugResultSet
@@ -197,8 +244,8 @@ Public Class wb_nwtDatenLink
     ''' </summary>
     ''' <param name="Index"> Integer Anzahl der Datensätze</param>
     Public Sub DebugResultSet(Index As Integer)
-        If Index < data.Count And Index >= 0 Then
-            Console.WriteLine(data(Index).ToString)
+        If Index < XMLdata.Count And Index >= 0 Then
+            Console.WriteLine(XMLdata(Index).ToString)
         Else
             Console.WriteLine("Fehler " & Me.ErrorCode)
         End If
