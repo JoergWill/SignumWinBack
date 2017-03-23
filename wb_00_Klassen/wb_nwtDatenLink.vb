@@ -80,7 +80,7 @@ Public Class wb_nwtDatenLink
     ''' <remarks>
     ''' </remarks>
     Public Function GetXMLResult() As String
-        Return XMLdata(0).ToString
+        Return XMLdata(0)
     End Function
 
 
