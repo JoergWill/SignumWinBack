@@ -1,4 +1,6 @@
-﻿Public Class Main
+﻿Imports WinBack.wb_Functions
+
+Public Class Main
     Private Counter As Integer
     ' Create a black Panel to hide TabControls
 
@@ -56,5 +58,26 @@
     Private Sub btnMessages_Click(sender As Object, e As EventArgs) Handles btnMessages.Click
         Wb_TabControl.SelectedTab = TabPageMessages
         Wb_TabControl.Show()
+    End Sub
+
+    Private Sub BtnAdmin_Click(sender As Object, e As EventArgs) Handles BtnAdmin.Click
+        Wb_TabControl.SelectedTab = TabPageAdmin
+        Wb_TabControl.Show()
+    End Sub
+
+    Private Sub BtnRestore_Click(sender As Object, e As EventArgs) Handles BtnRestore.Click
+        If OpenFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            Dim fileName As String = OpenFileDialog.FileName
+            'Datenrücksicherung starten
+            wb_sql_datenruecksicherung(fileName)
+        End If
+    End Sub
+
+    Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
+
+    End Sub
+
+    Private Sub BtnBackup_Click(sender As Object, e As EventArgs) Handles BtnBackup.Click
+
     End Sub
 End Class

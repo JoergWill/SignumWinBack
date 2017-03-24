@@ -272,7 +272,8 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=OrgaBackMain; Integrated Security=True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=DemoOrgaBack_Main3; Integrated Security=Tr"& _ 
+            "ue")>  _
         Public Property OrgaBackMainConString() As String
             Get
                 Return CType(Me("OrgaBackMainConString"),String)
@@ -284,7 +285,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("OrgaBackMain")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("DemoOrgaBack_Main3")>  _
         Public Property MsSQLMain() As String
             Get
                 Return CType(Me("MsSQLMain"),String)

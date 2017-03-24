@@ -8,6 +8,7 @@
 'Sammlung von Statischen Funktionen
 
 Imports System.IO
+Imports System.Text
 Imports ICSharpCode.SharpZipLib.BZip2
 Imports Tamir.SharpSsh
 
@@ -308,4 +309,124 @@ Public Class wb_Functions
         End Try
         Return True
     End Function
+
+    Public Shared Function wb_sql_datensicherung(Filename As String) As Boolean
+        Dim SaveFileExtension As String
+        Dim DumpFileName As String
+
+        'Cursor umschalten
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
+        SaveFileExtension = IO.Path.GetExtension(Filename)
+
+        'Datensicherung soll anschliessend komprimiert werden
+        If SaveFileExtension = ".bz2" Then
+            DumpFileName = IO.Path.GetDirectoryName(Filename) + "\" + IO.Path.GetFileNameWithoutExtension(Filename) + ".sql"
+            'Datensicherung starten
+            Trace.WriteLine("Start Datensicherung WinBack -> " + DumpFileName)
+            wb_Functions.DoBatch(My.Settings.MySQLPath, "MySQL_Dump.bat", DumpFileName, True)
+            Trace.WriteLine("Ende  Datensicherung WinBack -> " + DumpFileName)
+            'File komprimieren
+            Trace.WriteLine("Datei komprimieren   WinBack -> " + Filename)
+            wb_Functions.bz2CompressFile(DumpFileName, Filename)
+            'ursprüngliche Datensicherung löschen
+            My.Computer.FileSystem.DeleteFile(DumpFileName)
+        Else
+            'Datensicherung starten
+            Trace.WriteLine("Start Datensicherung WinBack -> " + Filename)
+            wb_Functions.DoBatch(My.Settings.MySQLPath, "MySQL_Dump.bat", Filename, True)
+            Trace.WriteLine("Ende  Datensicherung WinBack -> " + Filename)
+        End If
+
+        'Cursor wieder zurücksetzen
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
+
+        Return True
+    End Function
+
+    Public Shared Function wb_sql_datenruecksicherung(FileName As String) As Boolean
+        Dim OpenFileExtension As String
+        Dim DumpFileName As String
+
+        'Cursor umschalten
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
+        OpenFileExtension = IO.Path.GetExtension(FileName)
+
+        'Datenrücksicherung muss vorher dekomprimiert werden
+        If OpenFileExtension = ".bz2" Then
+            DumpFileName = IO.Path.GetDirectoryName(FileName) + "\" + IO.Path.GetFileNameWithoutExtension(FileName) + ".sql"
+
+            'File Dekomprimieren
+            Trace.WriteLine("Datei dekomprimieren WinBack -> " + FileName)
+            wb_Functions.bz2DecompressFile(FileName, DumpFileName)
+            'Kommentare aus .sql-File entfernen (Inkompatibilität MySql 3.xx nach 5.xx)
+            Trace.WriteLine("Datensicherung bearbeiten (MySql 3.x.xx) " + DumpFileName)
+            PrepareSQLFile(DumpFileName, "winback")
+            'Datenrücksicherung starten
+            Trace.WriteLine("Start Datenrücksicherung WinBack -> " + DumpFileName)
+            wb_Functions.DoBatch(My.Settings.MySQLPath, "MySQL_Restore.bat", DumpFileName, True)
+            Trace.WriteLine("Ende  Datenrücksicherung WinBack -> " + DumpFileName)
+            'dekomprimierte Datei löschen
+            My.Computer.FileSystem.DeleteFile(DumpFileName)
+        Else
+            'Kommentare aus .sql-File entfernen (Inkompatibilität MySql 3.xx nach 5.xx)
+            Trace.WriteLine("Datensicherung bearbeiten (MySql 3.x.xx) " + FileName)
+            PrepareSQLFile(FileName, "winback")
+            'Datenrücksicherung starten
+            Trace.WriteLine("Start Datenrücksicherung WinBack -> " + FileName)
+            wb_Functions.DoBatch(My.Settings.MySQLPath, "MySQL_Restore.bat", FileName, True)
+            Trace.WriteLine("Ende  Datenrücksicherung WinBack -> " + FileName)
+        End If
+
+        'Cursor wieder zurücksetzen
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
+        Return True
+
+    End Function
+
+    ''' <summary>
+    ''' Datensicherung xxx.sql für mySQL-Import vorbereiten. 
+    ''' Fügt 3 Zeilen am Anfang der Datei ein:
+    ''' - DROP DATABASE winback;
+    ''' - CREATE DATABASE winback;
+    ''' - USE winback;
+    ''' 
+    ''' Löscht alle SQL-Kommentare in der Import-Datei
+    ''' </summary>
+    ''' <remarks>
+    ''' Damit der Import in die mysql-Datenbank (V5.xxx) funktioniert muss in der my.ini
+    ''' der SQL-Mode STRICT abgeschaltet werden: (C:\Program Files\MySQL\MySQL Server 5.0)
+    ''' 
+    ''' # Set the SQL mode to NO strict (14.11.2016/JW)
+    ''' sql-mode="NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+    ''' </remarks>
+    ''' <param name="FileName"> String Dateiname und Pfad inlusive Extension</param>
+    ''' <param name="DataBase"> String Datenbank (winback/wbdaten)</param>
+    Private Shared Sub PrepareSQLFile(FileName As String, DataBase As String)
+        Dim xFileName As String
+        Dim Zeile As String
+
+        'Datensicherung zeilenweise kopieren nach x
+        xFileName = FileName + ".tmp"
+        'Datei zum Schreiben öffnen
+        Dim sw As New System.IO.StreamWriter(xFileName, False, Encoding.GetEncoding("iso-8859-1"), 255)
+
+        'SQL-Header in Datensicherungs-File eintragen
+        sw.WriteLine("DROP DATABASE " + DataBase + ";")
+        sw.WriteLine("CREATE DATABASE " + DataBase + ";")
+        sw.WriteLine("USE " + DataBase + ";")
+
+        'Source-File zum Lesen öffnen
+        For Each Zeile In System.IO.File.ReadAllLines(FileName, Encoding.GetEncoding("iso-8859-1"))
+            If Strings.Left(Zeile, 2) <> "--" Then
+                sw.WriteLine((Zeile))
+            End If
+        Next
+        sw.Close()
+        'Ursprungs-Datei löschen
+        My.Computer.FileSystem.DeleteFile(FileName)
+        'Erzeugte Datei umbenennen
+        My.Computer.FileSystem.RenameFile(xFileName, IO.Path.GetFileName(FileName))
+    End Sub
+
+
 End Class
