@@ -96,7 +96,7 @@ Partial Class wb_Admin_Main
         DockPaneStripToolWindowGradient2.InactiveTabGradient = TabGradient14
         DockPaneStripSkin2.ToolWindowGradient = DockPaneStripToolWindowGradient2
         DockPanelSkin2.DockPaneStripSkin = DockPaneStripSkin2
-        Me.DockPanel.Skin = DockPanelSkin2
+        'Me.DockPanel.Skin = DockPanelSkin2
         Me.DockPanel.TabIndex = 4
         '
         'wb_Admin_Main
