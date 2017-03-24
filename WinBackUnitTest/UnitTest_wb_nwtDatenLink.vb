@@ -20,31 +20,21 @@ Imports WinBack
         Assert.AreEqual(dl.GetProductData("DL-AC1-D10"), 1)
 
         Dim doc As XElement = XElement.Parse(dl.GetXMLResult)
-        Dim query = From d In doc.<Dispatch>
-                    Select New With {
-                        .AuthNo = d.<Identifier>.<AuthNo>.Value,
-                        .ClientID = d.<Client>.<Id>.Value,
-                        .ClientName = d.<Client>.<Name>.Value,
-                        .SupplierID = d.<Supplier>.<Id>.Value,
-                        .SupplierName = d.<Supplier>.<Name>.Value}
-
-        ' Get the needed information out of the query
-        For Each d In query
-            Console.WriteLine("AuthNo = {0} ClientID = {1} ClientName = {2} SupplierID = {3} SupplierName = {4}",
-  d.AuthNo, d.ClientID, d.ClientName, d.SupplierID, d.SupplierName)
-        Next
-
+        Dim x As String = doc.<Manufakturer>.<CompanyID>.Value
+        Debug.Print(x)
 
         'Auswertung XML-Info
         Dim objXML As New Xml.XmlDocument
         objXML.LoadXml(dl.GetXMLResult)
-        Dim nsmgr As New XmlNamespaceManager(objXML.NameTable)
-        nsmgr.AddNamespace("datenlink", "urn:datenlink")
+        'Dim nsmgr As New XmlNamespaceManager(objXML.NameTable)
+        'nsmgr.AddNamespace("datenlink", "urn:datenlink")
 
         Debug.Print(objXML.InnerXml)
         Debug.Print(objXML.ChildNodes(1).Name)
+        Debug.Print(objXML.ChildNodes(1).NamespaceURI)
         Debug.Print(objXML.ChildNodes(1).ChildNodes(1).Name)
         Debug.Print(objXML.ChildNodes(1).ChildNodes(1).ChildNodes(0).Name)
+        Debug.Print(objXML.ChildNodes(1).ChildNodes(1).ChildNodes(0).Item("CompanyID").Value)
         Debug.Print(objXML.ChildNodes(1).ChildNodes(1).ChildNodes(0).InnerText)
         Dim xs As String
         xs = objXML.SelectSingleNode("Manufacturer:CompanyID").InnerText
