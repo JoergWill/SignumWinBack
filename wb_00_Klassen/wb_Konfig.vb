@@ -60,22 +60,24 @@ Public Class wb_Konfig
     Private Shared Sub MsSqlSetting()
         Dim IniFile As New wb_IniFile
 
-        My.Settings.MsSQLServerIP = IniFile.ReadString("winback", "eMsSQLServerIP", "127.0.0.1")
+        'Default-Wert für die IP-Adresse is der Rechner-Name !! 
+        'sonst funktioniert der Zugriff auf die MS-SQL2014-Datenbank
+        My.Settings.MsSQLServerIP = IniFile.ReadString("winback", "eMsSQLServerIP", Environment.MachineName)
         My.Settings.MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
         My.Settings.MySQLWbDaten = IniFile.ReadString("winback", "eMySQLDatabaseDaten", "wbdaten")
 
         ' Connection-String für WinBack-MsSQL-Datenbank
-        My.Settings.MySQLConWinBack = "Data Source=" & My.Settings.MsSQLServerIP & "SIGNUM;" _
-                                    & "Database=" & My.Settings.MySQLWinBack & ";" _
+        My.Settings.MsSQLConWinBack = "Data Source=" & My.Settings.MsSQLServerIP & "\SIGNUM; " _
+                                    & "Database=" & My.Settings.MySQLWinBack & "; " _
                                     & "Integrated Security=True"
         ' Connection-String für WbDaten-MsSQL-Datenbank
-        My.Settings.MySQLConWbDaten = "Data Source=" & My.Settings.MsSQLServerIP & "SIGNUM;" _
-                                    & "Database=" & My.Settings.MySQLWbDaten & ";" _
+        My.Settings.MsSQLConWbDaten = "Data Source=" & My.Settings.MsSQLServerIP & "\SIGNUM; " _
+                                    & "Database=" & My.Settings.MySQLWbDaten & "; " _
                                     & "Integrated Security=True"
 
         ' Connection-String für OrgaBackMain-MsSQL-Datenbank
-        My.Settings.OrgaBackMainConString = "Data Source=" & My.Settings.MsSQLServerIP & "SIGNUM;" _
-                                    & "Database=" & My.Settings.MsSQLMain & ";" _
+        My.Settings.OrgaBackMainConString = "Data Source=" & My.Settings.MsSQLServerIP & "\SIGNUM; " _
+                                    & "Database=" & My.Settings.MsSQLMain & "; " _
                                     & "Integrated Security=True"
     End Sub
 
@@ -85,6 +87,28 @@ Public Class wb_Konfig
                 Return My.Settings.MySQLConWinBack
             Case wb_Sql.dbType.msSql
                 Return My.Settings.MsSQLConWinBack
+            Case Else
+                Throw New NotImplementedException
+        End Select
+    End Function
+
+    Public Shared Function SqlConWbDaten() As String
+        Select Case My.Settings.WinBackDBType
+            Case wb_Sql.dbType.mySql
+                Return My.Settings.MySQLConWbDaten
+            Case wb_Sql.dbType.msSql
+                Return My.Settings.MsSQLConWbDaten
+            Case Else
+                Throw New NotImplementedException
+        End Select
+    End Function
+
+    Public Shared Function SqlConOrgaBack() As String
+        Select Case My.Settings.WinBackDBType
+            Case wb_Sql.dbType.mySql
+                Throw New NotImplementedException
+            Case wb_Sql.dbType.msSql
+                Return My.Settings.OrgaBackMainConString
             Case Else
                 Throw New NotImplementedException
         End Select
@@ -106,7 +130,7 @@ Public Class wb_Konfig
             Case wb_Sql.dbType.mySql
                 Return "MySQL"
             Case wb_Sql.dbType.msSql
-                Return "MysQL"
+                Return "MSsql"
             Case Else
                 Throw New NotImplementedException
         End Select

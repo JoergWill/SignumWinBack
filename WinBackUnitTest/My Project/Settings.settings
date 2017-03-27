@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="MsSQLConWinBack" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=172.16.17.154\SIGNUM; Database=WinBack; Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=WILL-WIN10\SIGNUM; Database=WinBack; Integrated Security=True</Value>
     </Setting>
     <Setting Name="MySQLConWinBack" Type="System.String" Scope="Application">
       <Value Profile="(Default)">server=127.0.0.1;user id=herbst;password=herbst;database=winback</Value>
@@ -17,7 +17,7 @@
     <Setting Name="TestMySQL" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="MsSQLConWbDaten" Type="System.String" Scope="User">
+    <Setting Name="MsSQLConWbDaten" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True</Value>
     </Setting>
   </Settings>
