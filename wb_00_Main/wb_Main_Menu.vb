@@ -95,6 +95,7 @@ Public Class wb_Main_Menu
         Dim oGrpChargen = oNewTab.AddGroup("WinBack", "Auswertung (Produktion)")
         Dim oGrpLinien = oNewTab.AddGroup("WinBack", "Linien")
         Dim oGrpPlanung = oNewTab.AddGroup("WinBack", "Produktions-Planung")
+        Dim oGrpAdmin = oNewTab.AddGroup("WinBack", "Administration")
 
         'Gruppe Stammdaten
         oGrpStammdaten.AddButton("btnArtikelStamm", "Artikel", "WinBack Artikelstammdaten", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf ShowArtikelForm)
@@ -113,6 +114,9 @@ Public Class wb_Main_Menu
 
         'Gruppe Produktions-Planung
         oGrpPlanung.AddButton("btnProdPlan", "WinBack Produktions-Planung", "", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf ShowProduktionsPlanungForm)
+
+        'Gruppe Administration
+        oGrpAdmin.AddButton("btnAdmin", "WinBack Administration", "", My.Resources.Admin_16x16, My.Resources.Admin_32x32, AddressOf ShowAdminAdministrationForm)
 
         ' Erweitert ein bestehendes RibbonTab um einen Button (Administration/Mitarbeiter)
         'Dim oTabs = oMenuService.GetTabs
@@ -178,11 +182,16 @@ Public Class wb_Main_Menu
         ' CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Linien_Main(ServiceProvider), My.Resources.MainLinien_45x34)
     End Sub
-
     'Produktion - Planung
     Private Sub ShowProduktionsPlanungForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainProduktionsPlanung_16x16)
+    End Sub
+
+    'Admin - Administration
+    Private Sub ShowAdminAdministrationForm(sender As Object, e As EventArgs)
+        CloseAllForms()
+        xForm = oViewProvider.OpenForm(New wb_Admin_Main(ServiceProvider), My.Resources.Admin_16x16)
     End Sub
 
     'alle noch offenen Fenster schliessen

@@ -56,7 +56,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=172.16.17.237\SIGNUM; Database=winback; Integrated Security=True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=WILL-WIN10\SIGNUM; Database=WinBack; Integrated Security=True")>  _
         Public ReadOnly Property MsSQLConWinBack() As String
             Get
                 Return CType(Me("MsSQLConWinBack"),String)
@@ -65,7 +65,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("server=172.16.17.5;user id=herbst;password=herbst;database=winback")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("server=127.0.0.1;user id=herbst;password=herbst;database=winback")>  _
         Public ReadOnly Property MySQLConWinBack() As String
             Get
                 Return CType(Me("MySQLConWinBack"),String)
@@ -74,7 +74,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("172.16.17.5")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("127.0.0.1")>  _
         Public ReadOnly Property MySQLServerIP() As String
             Get
                 Return CType(Me("MySQLServerIP"),String)
@@ -83,7 +83,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
         Public ReadOnly Property TestMsSQL() As Boolean
             Get
                 Return CType(Me("TestMsSQL"),Boolean)
@@ -99,16 +99,13 @@ Namespace My
             End Get
         End Property
         
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=172.16.17.237\SIGNUM; Database=wbdaten; Integrated Security=True")>  _
-        Public Property MsSQLConWbDaten() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True")>  _
+        Public ReadOnly Property MsSQLConWbDaten() As String
             Get
                 Return CType(Me("MsSQLConWbDaten"),String)
             End Get
-            Set
-                Me("MsSQLConWbDaten") = value
-            End Set
         End Property
     End Class
 End Namespace

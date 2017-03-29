@@ -96,7 +96,7 @@ Partial Class wb_Artikel_Main
         DockPaneStripToolWindowGradient1.InactiveTabGradient = TabGradient7
         DockPaneStripSkin1.ToolWindowGradient = DockPaneStripToolWindowGradient1
         DockPanelSkin1.DockPaneStripSkin = DockPaneStripSkin1
-        Me.DockPanel.Skin = DockPanelSkin1
+        'Me.DockPanel.Skin = DockPanelSkin1
         Me.DockPanel.TabIndex = 0
         '
         'Button1

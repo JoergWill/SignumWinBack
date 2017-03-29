@@ -63,6 +63,66 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Public ReadOnly Property Admin_16x16() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Admin_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property Admin_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Admin_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property DatenRueckSicherung_16x16() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("DatenRueckSicherung_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property DatenRueckSicherung_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("DatenRueckSicherung_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property DatenSicherung_16x16() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("DatenSicherung_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property DatenSicherung_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("DatenSicherung_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Public ReadOnly Property HakenGlb_16x16() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("HakenGlb_16x16", resourceCulture)
@@ -106,16 +166,6 @@ Namespace My.Resources
         Public ReadOnly Property Label2() As String
             Get
                 Return ResourceManager.GetString("Label2", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property Leer_16x16() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Leer_16x16", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -355,6 +405,26 @@ Namespace My.Resources
         Public ReadOnly Property MainStatistikRohstoffe_32x32() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("MainStatistikRohstoffe_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property MainSync_16x16() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("MainSync_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property MainSync_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("MainSync_32x32", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

@@ -19,14 +19,15 @@ Public Class wb_IniFile
         Private _ReadResult As Boolean = True
         Private _WriteResult As Boolean = True
 
-        ' Instantiierung ohne Pfad 
-        Sub New() 'kein Pfad notwendig...
-            Pfad = My.Application.Info.DirectoryPath & "\" & My.Application.Info.Title & ".ini"
-        End Sub
+    ' Instantiierung ohne Pfad 
+    Sub New() 'kein Pfad notwendig...
+        'C:\ProgramData\OrgaSoft\AddIn
+        Pfad = My.Application.Info.DirectoryPath & "\" & My.Application.Info.Title & ".ini"
+    End Sub
 
-        ' Konstruktor für setzen des Pfades
-        ' Instanziieren mit z.B.: 
-        Sub New(ByVal Pfad_der_ini As String)
+    ' Konstruktor für setzen des Pfades
+    ' Instanziieren mit z.B.: 
+    Sub New(ByVal Pfad_der_ini As String)
             Pfad = Pfad_der_ini
         End Sub
 

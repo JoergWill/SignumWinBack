@@ -9,7 +9,7 @@
       <Value Profile="(Default)">de</Value>
     </Setting>
     <Setting Name="MySQLServerIP" Type="System.String" Scope="User">
-      <Value Profile="(Default)">172.16.17.5</Value>
+      <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
     <Setting Name="MySQLWinBack" Type="System.String" Scope="User">
       <Value Profile="(Default)">winback</Value>
@@ -36,7 +36,7 @@
       <Value Profile="(Default)">LightGray</Value>
     </Setting>
     <Setting Name="MsSQLConWinBack" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=,winback; Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=winback; Integrated Security=True</Value>
     </Setting>
     <Setting Name="MsSQLConWbDaten" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True</Value>
@@ -55,6 +55,18 @@
     </Setting>
     <Setting Name="WbDatenConString" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="OrgaBackMainConString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=DemoOrgaBack_Main3; Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="MsSQLMain" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DemoOrgaBack_Main3</Value>
+    </Setting>
+    <Setting Name="MySQLPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files\MySQL\MySQL Server 5.0</Value>
+    </Setting>
+    <Setting Name="MySQLBatch" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\ProgramData\OrgaSoft\AddIn</Value>
     </Setting>
   </Settings>
 </SettingsFile>

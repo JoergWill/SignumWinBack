@@ -93,7 +93,7 @@ Partial Class Linien_Main
         DockPaneStripToolWindowGradient1.InactiveTabGradient = TabGradient7
         DockPaneStripSkin1.ToolWindowGradient = DockPaneStripToolWindowGradient1
         DockPanelSkin1.DockPaneStripSkin = DockPaneStripSkin1
-        Me.DockPanel.Skin = DockPanelSkin1
+        'Me.DockPanel.Skin = DockPanelSkin1
         '
         'Linien_Main
         '
