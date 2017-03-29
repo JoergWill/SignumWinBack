@@ -56,7 +56,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=172.16.17.154\SIGNUM; Database=WinBack; Integrated Security=True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=172.16.17.54\SIGNUM; Database=WinBack; Integrated Security=True")>  _
         Public ReadOnly Property MsSQLConWinBack() As String
             Get
                 Return CType(Me("MsSQLConWinBack"),String)
@@ -101,7 +101,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=172.16.17.54\SIGNUM; Database=wbdaten; Integrated Security=True")>  _
         Public Property MsSQLConWbDaten() As String
             Get
                 Return CType(Me("MsSQLConWbDaten"),String)
