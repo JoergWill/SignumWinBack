@@ -99,20 +99,25 @@ Public Class UnitTest_wb_Sql
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
         If My.Settings.TestMsSQL Then
 
-            'Datenbank WinBack erstellen - MS-SQL
-            DataBaseWinBack(My.Settings.MsSQLConWinBack)
+            'Datenbank Verbindung Einstellungen setzen
+            '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
+            wb_Konfig.SqlSetting("MSsql")
+            Debug.Print("Test MSsql aktiv" & wb_Konfig.SqlConWinBack)
+
+            'Datenbank WinBack erstellen - MS-SQL (WinBack darf nicht geöffnet sein)
+            DataBaseWinBack(wb_Konfig.SqlConOrgaBack)
             'Datenbank WbDaten erstellen - MS-SQL
-            DataBaseWinBack(My.Settings.MsSQLConWbDaten)
+            DataBaseWinBack(wb_Konfig.SqlConOrgaBack)
 
             'Tabelle WinBack.Komponenten erstellen
-            Komponenten(My.Settings.MsSQLConWinBack)
+            Komponenten(wb_Konfig.SqlConWinBack)
             'Tabelle WinBack.Rezepte erstellen
-            Rezepte(My.Settings.MsSQLConWinBack)
+            Rezepte(wb_Konfig.SqlConWinBack)
 
             'Tabelle WbDaten.His_Rezepte erstellen
-            His_Rezepte(My.Settings.MsSQLConWbDaten)
+            His_Rezepte(wb_Konfig.SqlConWinBack)
 
-            'Datenbank-Verbindung öffnen - MySQL
+            'Datenbank-Verbindung öffnen - MsSQL
             Dim OrgasoftMain As New wb_Sql(My.Settings.MsSQLConWinBack, wb_Sql.dbType.msSql)
 
             'Tabelle Test erstellen
