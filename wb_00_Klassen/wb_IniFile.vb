@@ -21,8 +21,10 @@ Public Class wb_IniFile
 
     ' Instantiierung ohne Pfad 
     Sub New() 'kein Pfad notwendig...
+
+        'Pfad = My.Application.Info.DirectoryPath & "\" & My.Application.Info.Title & ".ini"
         'C:\ProgramData\OrgaSoft\AddIn
-        Pfad = My.Application.Info.DirectoryPath & "\" & My.Application.Info.Title & ".ini"
+        Pfad = "C:\ProgramData\OrgaSoft\WinBack.ini"
     End Sub
 
     ' Konstruktor für setzen des Pfades

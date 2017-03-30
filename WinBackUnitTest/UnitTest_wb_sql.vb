@@ -52,7 +52,7 @@ Public Class UnitTest_wb_Sql
             'Datenbank Verbindung Einstellungen setzen
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
             wb_Konfig.SqlSetting("MySQL")
-            Debug.Print("Test MySQL aktiv" & wb_Konfig.SqlConWinBack)
+            Debug.Print("Test MySQL aktiv " & wb_Konfig.SqlConWinBack)
 
             'Datenbank-Verbindung öffnen - MySQL
             Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
@@ -107,7 +107,7 @@ Public Class UnitTest_wb_Sql
             'Datenbank WinBack erstellen - MS-SQL (WinBack darf nicht geöffnet sein)
             DataBaseWinBack(wb_Konfig.SqlConOrgaBack)
             'Datenbank WbDaten erstellen - MS-SQL
-            DataBaseWinBack(wb_Konfig.SqlConOrgaBack)
+            DataBaseWbDaten(wb_Konfig.SqlConOrgaBack)
 
             'Tabelle WinBack.Komponenten erstellen
             Komponenten(wb_Konfig.SqlConWinBack)

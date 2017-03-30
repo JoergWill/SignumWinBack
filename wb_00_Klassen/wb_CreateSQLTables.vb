@@ -120,7 +120,7 @@ Public Class wb_CreateSQLTables
             'Tabelle Komponenten erstellen
             WinBack.sqlCommand("IF OBJECT_ID('Rezepe', 'U') IS NOT NULL DROP TABLE Rezepte;")
             WinBack.sqlCommand("CREATE TABLE Rezepte (" &
-                               "RZ_Nr INT UNSIGNED Not NULL Default 0," &
+                               "RZ_Nr INT Not NULL Default 0," &
                                "RZ_Variante_Nr SMALLINT Not NULL Default 0," &
                                "RZ_Nr_AlNum VARCHAR(8) Default NULL," &
                                "RZ_Bezeichnung VARCHAR(60) Default NULL," &
@@ -143,7 +143,7 @@ Public Class wb_CreateSQLTables
                                "RZ_Gruppe INT Default 0," &
                                "KA_Gruppe INT Default 0," &
                                "RZ_Timestamp TIMESTAMP," &
-                               "PRIMARY KEY (RZ_Nr, RZ_Variante_Nr)")
+                               "PRIMARY KEY (RZ_Nr, RZ_Variante_Nr))")
 
             Return True
             WinBack.Close()
@@ -182,7 +182,7 @@ Public Class wb_CreateSQLTables
                                "H_RZ_Gruppe INT Default NULL," &
                                "H_KA_Gruppe INT Default NULL," &
                                "H_RZ_Timestamp TIMESTAMP," &
-                               "PRIMARY KEY (H_RZ_Nr, H_RZ_Variante_Nr, H_RZ_Aenderung_Nr)")
+                               "PRIMARY KEY (H_RZ_Nr, H_RZ_Variante_Nr, H_RZ_Aenderung_Nr))")
 
             Return True
             WbDaten.Close()
