@@ -102,7 +102,7 @@ Public Class UnitTest_wb_Sql
             'Datenbank Verbindung Einstellungen setzen
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
             wb_Konfig.SqlSetting("MSsql")
-            Debug.Print("Test MSsql aktiv" & wb_Konfig.SqlConWinBack)
+            Debug.Print("Test MSsql aktiv " & wb_Konfig.SqlConWinBack)
 
             'Datenbank WinBack erstellen - MS-SQL (WinBack darf nicht geöffnet sein)
             DataBaseWinBack(wb_Konfig.SqlConOrgaBack)

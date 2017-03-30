@@ -40,9 +40,10 @@ Partial Class Main
         Me.TabPageMessages = New System.Windows.Forms.TabPage()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.TabPageAdmin = New System.Windows.Forms.TabPage()
+        Me.lblBackupRestoreStatus = New System.Windows.Forms.Label()
+        Me.lblBackupRestore = New System.Windows.Forms.Label()
         Me.BtnRestore = New System.Windows.Forms.Button()
         Me.BtnBackup = New System.Windows.Forms.Button()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.Wb_TabControl.SuspendLayout()
         Me.TabPageClients.SuspendLayout()
         Me.TabPageMessages.SuspendLayout()
@@ -70,7 +71,7 @@ Partial Class Main
         'MainTimer
         '
         Me.MainTimer.Enabled = True
-        Me.MainTimer.Interval = 1000
+        Me.MainTimer.Interval = 10000
         '
         'BtnClients
         '
@@ -163,6 +164,7 @@ Partial Class Main
         '
         'SaveFileDialog
         '
+        Me.SaveFileDialog.FileName = "*.sql;*.bz2"
         Me.SaveFileDialog.Title = "Datensicherung WinBack"
         '
         'Wb_TabControl
@@ -225,7 +227,8 @@ Partial Class Main
         'TabPageAdmin
         '
         Me.TabPageAdmin.BackColor = System.Drawing.Color.Black
-        Me.TabPageAdmin.Controls.Add(Me.Label4)
+        Me.TabPageAdmin.Controls.Add(Me.lblBackupRestoreStatus)
+        Me.TabPageAdmin.Controls.Add(Me.lblBackupRestore)
         Me.TabPageAdmin.Controls.Add(Me.BtnRestore)
         Me.TabPageAdmin.Controls.Add(Me.BtnBackup)
         Me.TabPageAdmin.ForeColor = System.Drawing.Color.White
@@ -235,6 +238,28 @@ Partial Class Main
         Me.TabPageAdmin.Size = New System.Drawing.Size(334, 426)
         Me.TabPageAdmin.TabIndex = 2
         Me.TabPageAdmin.Text = "Admin"
+        '
+        'lblBackupRestoreStatus
+        '
+        Me.lblBackupRestoreStatus.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblBackupRestoreStatus.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblBackupRestoreStatus.ForeColor = System.Drawing.Color.Chartreuse
+        Me.lblBackupRestoreStatus.Location = New System.Drawing.Point(-4, 91)
+        Me.lblBackupRestoreStatus.Name = "lblBackupRestoreStatus"
+        Me.lblBackupRestoreStatus.Size = New System.Drawing.Size(342, 18)
+        Me.lblBackupRestoreStatus.TabIndex = 11
+        Me.lblBackupRestoreStatus.Text = "Daten Backup/Restore"
+        '
+        'lblBackupRestore
+        '
+        Me.lblBackupRestore.AutoSize = True
+        Me.lblBackupRestore.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblBackupRestore.Location = New System.Drawing.Point(-4, -2)
+        Me.lblBackupRestore.Name = "lblBackupRestore"
+        Me.lblBackupRestore.Size = New System.Drawing.Size(201, 22)
+        Me.lblBackupRestore.TabIndex = 10
+        Me.lblBackupRestore.Text = "Daten Backup/Restore"
         '
         'BtnRestore
         '
@@ -267,16 +292,6 @@ Partial Class Main
         Me.BtnBackup.Text = "Daten sichern"
         Me.BtnBackup.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         Me.BtnBackup.UseVisualStyleBackColor = False
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(-4, -2)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(201, 22)
-        Me.Label4.TabIndex = 10
-        Me.Label4.Text = "Daten Backup/Restore"
         '
         'Main
         '
@@ -329,5 +344,6 @@ Partial Class Main
     Friend WithEvents BtnBackup As Button
     Friend WithEvents OpenFileDialog As OpenFileDialog
     Friend WithEvents SaveFileDialog As SaveFileDialog
-    Friend WithEvents Label4 As Label
+    Friend WithEvents lblBackupRestore As Label
+    Friend WithEvents lblBackupRestoreStatus As Label
 End Class

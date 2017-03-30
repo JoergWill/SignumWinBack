@@ -13,10 +13,11 @@ Public Class wb_Admin_Datensicherung
 
         If SaveFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Dim FileName As String = SaveFileName.Text
+            Dim mysql As New WinBack.wb_sql_BackupRestore
             FileName = SaveFileDialog.FileName
             SaveFileName.Focus()
             'Datensicherung starten
-            wb_sql_datensicherung(FileName)
+            mysql.datensicherung(FileName)
         End If
     End Sub
 
@@ -27,10 +28,11 @@ Public Class wb_Admin_Datensicherung
 
         If OpenFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Dim fileName As String = OpenFileDialog.FileName
+            Dim mysql As New WinBack.wb_sql_BackupRestore
             LoadFileName.Text = fileName
             LoadFileName.Focus()
             'Datenrücksicherung starten
-            wb_sql_datenruecksicherung(fileName)
+            mysql.datenruecksicherung(fileName)
         End If
     End Sub
 

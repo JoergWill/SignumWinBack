@@ -1,8 +1,9 @@
 ﻿Imports WinBack.wb_Functions
+Imports WinBack.wb_sql_BackupRestore
 
 Public Class Main
-    Private Counter As Integer
-    ' Create a black Panel to hide TabControls
+    Private cntCounter As Integer
+    Private cntClearlblBackupRestoreStatus As Integer = 0
 
     Private Sub NotifyIcon_DoubleClick(sender As Object, e As EventArgs) Handles NotifyIcon.DoubleClick
         Me.WindowState = FormWindowState.Normal
@@ -16,11 +17,24 @@ Public Class Main
     End Sub
 
     Private Sub MainTimer_Tick(sender As Object, e As EventArgs) Handles MainTimer.Tick
-        Counter = Counter + 1
-        'lblCounter.Text = String.Format("Ticks {0:#}", Counter)
+        'Counter zählt jede Sekunde um Eins hoch
+        'Maximale Laufzeit = 2147483647/(60*60*24*364) = 68,23 Jahre
+        'Bis dahin bin ich in Rente !!
+        cntCounter = cntCounter + 1
+
+        'Lösche Status-Anzeige Backup/Restore
+        If (cntCounter >= cntClearlblBackupRestoreStatus) And (cntClearlblBackupRestoreStatus > 0) Then
+            cntClearlblBackupRestoreStatus = 0
+            lblBackupRestoreStatus.Text = ""
+        End If
+
     End Sub
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Status-Anzeige Backup/Restore
+        lblBackupRestoreStatus.Text = ""
+        'Timer löst jede Sekunde aus
+        MainTimer.Interval = 1000
     End Sub
 
     Private Sub Main_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
@@ -68,16 +82,32 @@ Public Class Main
     Private Sub BtnRestore_Click(sender As Object, e As EventArgs) Handles BtnRestore.Click
         If OpenFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Dim fileName As String = OpenFileDialog.FileName
+            Dim mysql As New WinBack.wb_sql_BackupRestore
+            AddHandler mysql.statusChanged, AddressOf Backup_Restore_Status
             'Datenrücksicherung starten
-            wb_sql_datenruecksicherung(fileName)
+            mysql.datenruecksicherung(fileName)
+            'Status-Text nach 10 Sekunden wieder löschen
+            RemoveHandler mysql.statusChanged, AddressOf Backup_Restore_Status
+            cntClearlblBackupRestoreStatus = cntCounter + 10
         End If
     End Sub
 
-    Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
-
+    Private Sub BtnBackup_Click(sender As Object, e As EventArgs) Handles BtnBackup.Click
+        If SaveFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            Dim FileName As String = SaveFileDialog.FileName
+            Dim mysql As New WinBack.wb_sql_BackupRestore
+            AddHandler mysql.statusChanged, AddressOf Backup_Restore_Status
+            'Datensicherung starten
+            mysql.datensicherung(FileName)
+            'Status-Text nach 10 Sekunden wieder löschen
+            RemoveHandler mysql.statusChanged, AddressOf Backup_Restore_Status
+            cntClearlblBackupRestoreStatus = cntCounter + 10
+        End If
     End Sub
 
-    Private Sub BtnBackup_Click(sender As Object, e As EventArgs) Handles BtnBackup.Click
-
+    Private Sub Backup_Restore_Status(txt As String)
+        lblBackupRestoreStatus.Text = txt
+        'Text anzeigen
+        Application.DoEvents()
     End Sub
 End Class

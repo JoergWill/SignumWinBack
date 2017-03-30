@@ -109,10 +109,12 @@
     </Reference>
     <Reference Include="Signum.OrgaSoft.GUI">
       <HintPath>dll\OrgaSoft V3.0\Signum.OrgaSoft.GUI.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Signum.OrgaSoft.GUI.Controls, Version=2.2.6159.33849, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\OrgaSoft V3.0\Signum.OrgaSoft.GUI.Controls.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -155,6 +157,7 @@
     <Compile Include="wb_00_Klassen\wb_Naehrwerte.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtCloud.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtDatenLink.vb" />
+    <Compile Include="wb_00_Klassen\wb_sql_BackupRestore.vb" />
     <Compile Include="wb_00_Klassen\wb_Sync.vb" />
     <Compile Include="wb_00_Klassen\wb_ComboBox.Designer.vb">
       <DependentUpon>wb_ComboBox.vb</DependentUpon>

@@ -170,7 +170,7 @@ Public Class wb_CreateSQLTables
                                "H_RZ_Aenderung_Name VARCHAR(24) Default NULL," &
                                "H_RZ_Nr_AlNum VARCHAR(8) Default NULL," &
                                "H_RZ_Bezeichnung VARCHAR(30) Default NULL," &
-                               "H_RZ_Gewicht VARCHAR(30) Default 0,0," &
+                               "H_RZ_Gewicht VARCHAR(30) Default 0," &
                                "H_RZ_Kommentar VARCHAR(30) Default NULL," &
                                "H_RZ_Kurzname VARCHAR(16) Default NULL," &
                                "H_RZ_Matchcode VARCHAR(10) Default NULL," &
