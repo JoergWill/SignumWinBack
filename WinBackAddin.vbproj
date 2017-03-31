@@ -107,15 +107,6 @@
       <HintPath>dll\OrgaSoft V3.0\Signum.OrgaSoft.Contracts.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.GUI">
-      <HintPath>dll\OrgaSoft V3.0\Signum.OrgaSoft.GUI.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Signum.OrgaSoft.GUI.Controls, Version=2.2.6159.33849, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\OrgaSoft V3.0\Signum.OrgaSoft.GUI.Controls.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -171,6 +162,7 @@
     <Compile Include="wb_00_Klassen\wb_TabControl.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_TcpIPConnection.vb" />
     <Compile Include="wb_00_Klassen\wb_TraceListener.vb" />
     <Compile Include="wb_00_Konstanten\wb_Credentials.vb" />
     <Compile Include="wb_05_Forms_User\wb_User.vb" />

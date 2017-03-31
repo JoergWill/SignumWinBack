@@ -36,9 +36,11 @@ Partial Class Main
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.TabPageClients = New System.Windows.Forms.TabPage()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblClients = New System.Windows.Forms.Label()
+        Me.lbClientList = New System.Windows.Forms.ListBox()
         Me.TabPageMessages = New System.Windows.Forms.TabPage()
-        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.tbMessages = New System.Windows.Forms.TextBox()
         Me.TabPageAdmin = New System.Windows.Forms.TabPage()
         Me.lblBackupRestoreStatus = New System.Windows.Forms.Label()
         Me.lblBackupRestore = New System.Windows.Forms.Label()
@@ -62,7 +64,7 @@ Partial Class Main
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Arial", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(8, 10)
+        Me.Label1.Location = New System.Drawing.Point(12, 10)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(214, 24)
         Me.Label1.TabIndex = 0
@@ -185,7 +187,8 @@ Partial Class Main
         'TabPageClients
         '
         Me.TabPageClients.BackColor = System.Drawing.Color.Black
-        Me.TabPageClients.Controls.Add(Me.Label2)
+        Me.TabPageClients.Controls.Add(Me.lblClients)
+        Me.TabPageClients.Controls.Add(Me.lbClientList)
         Me.TabPageClients.ForeColor = System.Drawing.Color.White
         Me.TabPageClients.Location = New System.Drawing.Point(4, 23)
         Me.TabPageClients.Name = "TabPageClients"
@@ -194,19 +197,35 @@ Partial Class Main
         Me.TabPageClients.TabIndex = 0
         Me.TabPageClients.Text = "Clients"
         '
-        'Label2
+        'lblClients
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(175, 336)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(39, 13)
-        Me.Label2.TabIndex = 0
-        Me.Label2.Text = "Label2"
+        Me.lblClients.AutoSize = True
+        Me.lblClients.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblClients.Location = New System.Drawing.Point(-4, 0)
+        Me.lblClients.Name = "lblClients"
+        Me.lblClients.Size = New System.Drawing.Size(127, 22)
+        Me.lblClients.TabIndex = 0
+        Me.lblClients.Text = "Verbindungen"
+        '
+        'lbClientList
+        '
+        Me.lbClientList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lbClientList.BackColor = System.Drawing.Color.Black
+        Me.lbClientList.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.lbClientList.ForeColor = System.Drawing.Color.White
+        Me.lbClientList.FormattingEnabled = True
+        Me.lbClientList.Location = New System.Drawing.Point(-4, 29)
+        Me.lbClientList.Name = "lbClientList"
+        Me.lbClientList.Size = New System.Drawing.Size(342, 390)
+        Me.lbClientList.TabIndex = 0
         '
         'TabPageMessages
         '
         Me.TabPageMessages.BackColor = System.Drawing.Color.Black
-        Me.TabPageMessages.Controls.Add(Me.Label3)
+        Me.TabPageMessages.Controls.Add(Me.Label2)
+        Me.TabPageMessages.Controls.Add(Me.tbMessages)
         Me.TabPageMessages.ForeColor = System.Drawing.Color.White
         Me.TabPageMessages.Location = New System.Drawing.Point(4, 23)
         Me.TabPageMessages.Name = "TabPageMessages"
@@ -215,14 +234,30 @@ Partial Class Main
         Me.TabPageMessages.TabIndex = 1
         Me.TabPageMessages.Text = "Messages"
         '
-        'Label3
+        'Label2
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(148, 242)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(55, 13)
-        Me.Label3.TabIndex = 1
-        Me.Label3.Text = "Messages"
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(-4, 0)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(103, 22)
+        Me.Label2.TabIndex = 0
+        Me.Label2.Text = "Meldungen"
+        '
+        'tbMessages
+        '
+        Me.tbMessages.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tbMessages.BackColor = System.Drawing.Color.Black
+        Me.tbMessages.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.tbMessages.ForeColor = System.Drawing.Color.White
+        Me.tbMessages.Location = New System.Drawing.Point(0, 25)
+        Me.tbMessages.Multiline = True
+        Me.tbMessages.Name = "tbMessages"
+        Me.tbMessages.Size = New System.Drawing.Size(334, 398)
+        Me.tbMessages.TabIndex = 0
+        Me.tbMessages.TabStop = False
         '
         'TabPageAdmin
         '
@@ -336,8 +371,6 @@ Partial Class Main
     Friend WithEvents Wb_TabControl As WinBack.wb_TabControl
     Friend WithEvents TabPageClients As TabPage
     Friend WithEvents TabPageMessages As TabPage
-    Friend WithEvents Label3 As Label
-    Friend WithEvents Label2 As Label
     Friend WithEvents TabPageAdmin As TabPage
     Friend WithEvents BtnAdmin As Button
     Friend WithEvents BtnRestore As Button
@@ -346,4 +379,8 @@ Partial Class Main
     Friend WithEvents SaveFileDialog As SaveFileDialog
     Friend WithEvents lblBackupRestore As Label
     Friend WithEvents lblBackupRestoreStatus As Label
+    Friend WithEvents lbClientList As ListBox
+    Friend WithEvents tbMessages As TextBox
+    Friend WithEvents lblClients As Label
+    Friend WithEvents Label2 As Label
 End Class
