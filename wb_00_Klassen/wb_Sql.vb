@@ -62,16 +62,20 @@ Public Class wb_Sql
     'Datenbankfeld als String auslesen
     ReadOnly Property sField(FieldName As String) As String
         Get
-            Select Case conType
+            Try
+                Select Case conType
             'Verbindung über mySql
-                Case dbType.mySql
-                    Return MySqlRead(FieldName).ToString
+                    Case dbType.mySql
+                        Return MySqlRead(FieldName).ToString
             'Verbindung über mysSql
-                Case dbType.msSql
-                    Return msRead(FieldName).ToString
-                Case Else
-                    Return ""
-            End Select
+                    Case dbType.msSql
+                        Return msRead(FieldName).ToString
+                    Case Else
+                        Return ""
+                End Select
+            Catch
+                Return "STRING-FIELD NOT FOUND " & FieldName
+            End Try
         End Get
     End Property
 

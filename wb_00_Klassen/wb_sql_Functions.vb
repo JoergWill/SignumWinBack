@@ -5,9 +5,40 @@
 '---------------------------------------------------------
 'Beschreibung:
 'Sammlung von Statischen SQL-Funktionen
+Imports MySql.Data.MySqlClient
+Imports System.Data.SqlClient
 Imports WinBack.wb_Global
 
 Public Class wb_sql_Functions
+    Public Shared Function ping() As Boolean
+
+        Select Case My.Settings.WinBackDBType
+            Case wb_Sql.dbType.mySql
+                Dim MySqlCon As New MySqlConnection(My.Settings.WinBackConString)
+                Try
+                    MySqlCon.Open()
+                    If MySqlCon.Ping Then
+                        MySqlCon.Close()
+                        MySqlCon.Dispose()
+                        Return True
+                    Else
+                        MySqlCon.Close()
+                        MySqlCon.Dispose()
+                        Return False
+                    End If
+                Catch ex As Exception
+                    MySqlCon.Close()
+                    MySqlCon.Dispose()
+                    Return False
+                End Try
+
+            Case wb_Sql.dbType.msSql
+                'Dim msCon As New SqlConnection(My.Settings.OrgaBackMainConString)
+                Return True
+            Case Else
+                Return False
+        End Select
+    End Function
 
     Public Shared Function ReadHinweise(Typ As Hinweise, idx As Integer) As String
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)

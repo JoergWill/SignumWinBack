@@ -3,9 +3,26 @@ Imports System.Net
 Imports WinBack
 
 Public Class Main
+    Const cntStartAfterOneSecond = 1
+    Const cntStartAfterTwoSeconds = 2
+
+    Const cntCheckMysql = 90
+    Const cntCheckCloud = 5
+    Const cntCheckAktionsTimer = 60
+
+    Enum ServerTaskErrors
+        OK
+        NO_PING_TO_MYSQL
+        NO_CONNECT_TO_NWT_CLOUD
+    End Enum
+
     Dim clients As New Hashtable 'new database (hashtable) to hold the clients
+    Dim nwtUpdate As New wb_nwtUpdate
+    Dim ServerTaskState As ServerTaskErrors = ServerTaskErrors.OK
+
     Private cntCounter As Integer
-    Private cntClearlblBackupRestoreStatus As Integer = 0
+    Private cntMySql As Integer = 0
+    Private cntCloudUpdate As Integer = 0
 
     Public Delegate Sub addListBoxDelegate(name As String)
     Public Delegate Sub remListBoxDelegate(name As String)
@@ -36,18 +53,62 @@ Public Class Main
 
     Private Sub MainTimer_Tick(sender As Object, e As EventArgs) Handles MainTimer.Tick
         'Counter zählt jede Sekunde um Eins hoch
-        'Maximale Laufzeit = 2147483647/(60*60*24*364) = 68,23 Jahre
-        'Bis dahin bin ich in Rente !!
+        'Maximale Laufzeit = 2147483647/(60*60*24*364) = 68,23 Jahre (Bis dahin bin ich in Rente)
         cntCounter = cntCounter + 1
+        'Timer abschalten 
+        MainTimer.Enabled = False
 
-        'Lösche Status-Anzeige Backup/Restore
-        If (cntCounter >= cntClearlblBackupRestoreStatus) And (cntClearlblBackupRestoreStatus > 0) Then
-            cntClearlblBackupRestoreStatus = 0
-            lblBackupRestoreStatus.Text = ""
+        'Check MySql(Ping)
+        If MainTimer_Check(cntMySql) Then
+            If Not wb_sql_Functions.ping Then
+                ServerTaskState = ServerTaskErrors.NO_PING_TO_MYSQL
+            Else
+                ServerTaskState = ServerTaskErrors.OK
+            End If
+            cntMySql = cntCounter + cntCheckMysql
         End If
+
+        'Abfrage Update Nährwert-Cloud
+        If MainTimer_Check(cntCloudUpdate) Then
+            If nwtUpdate.UpdateNext Then
+                tbCloud.Text &= nwtUpdate.InfoText & vbNewLine
+            End If
+            cntCloudUpdate = cntCounter + cntCheckCloud
+        End If
+
+        'Uhrzeit/Fehler anzeigen - Main-Timer OK
+        Select Case ServerTaskState
+            Case ServerTaskErrors.NO_PING_TO_MYSQL
+                lblServerStatus.Text = "Keine Verbindung zur WinBack-Datenbank"
+                lblServerStatus.ForeColor = Color.Red
+
+            Case Else
+                lblServerStatus.Text = DateTime.Now.ToLongTimeString
+                lblServerStatus.ForeColor = Color.LimeGreen
+        End Select
+
+        'Timer wieder einschalten
+        MainTimer.Enabled = True
+    End Sub
+
+    Private Function MainTimer_Check(ByRef x As Integer) As Boolean
+        If (cntCounter >= x) And (x > 0) Then
+            x = 0
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Private Sub RemoveTextTimer_Tick(sender As Object, e As EventArgs) Handles RemoveTextTimer.Tick
+        'Lösche Status-Anzeige Backup/Restore
+        lblBackupRestoreStatus.Text = ""
+        RemoveTextTimer.Enabled = False
     End Sub
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Mysql-Einstellungen (IP-Adresse, User, Passwort)
+        wb_Konfig.SqlSetting()
         'IP-Server starten
         Dim listener As New System.Threading.Thread(AddressOf listen) 'initialize a new thread for the listener so our GUI doesn't lag
         listener.IsBackground = True
@@ -57,6 +118,11 @@ Public Class Main
         lblBackupRestoreStatus.Text = ""
         'Timer löst jede Sekunde aus
         MainTimer.Interval = 1000
+        MainTimer.Enabled = True
+        'Starte zyklischen Mysql-Ping
+        cntMySql = cntCounter + cntCheckMysql + cntStartAfterOneSecond
+        'Starte Cloud-Abfrage
+        cntCloudUpdate = cntCounter + cntCheckCloud + cntStartAfterTwoSeconds
     End Sub
 
     Private Sub Main_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
@@ -101,6 +167,11 @@ Public Class Main
         Wb_TabControl.Show()
     End Sub
 
+    Private Sub btnCloud_Click(sender As Object, e As EventArgs) Handles btnCloud.Click
+        Wb_TabControl.SelectedTab = TabPageCloud
+        Wb_TabControl.Show()
+    End Sub
+
     Private Sub BtnRestore_Click(sender As Object, e As EventArgs) Handles BtnRestore.Click
         If OpenFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Dim fileName As String = OpenFileDialog.FileName
@@ -110,7 +181,7 @@ Public Class Main
             mysql.datenruecksicherung(fileName)
             'Status-Text nach 10 Sekunden wieder löschen
             RemoveHandler mysql.statusChanged, AddressOf Backup_Restore_Status
-            cntClearlblBackupRestoreStatus = cntCounter + 10
+            RemoveTextTimer.Enabled = True
         End If
     End Sub
 
@@ -123,7 +194,7 @@ Public Class Main
             mysql.datensicherung(FileName)
             'Status-Text nach 10 Sekunden wieder löschen
             RemoveHandler mysql.statusChanged, AddressOf Backup_Restore_Status
-            cntClearlblBackupRestoreStatus = cntCounter + 10
+            RemoveTextTimer.Enabled = False
         End If
     End Sub
 

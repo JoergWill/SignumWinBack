@@ -34,6 +34,7 @@ Partial Class Main
         Me.BtnAdmin = New System.Windows.Forms.Button()
         Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
+        Me.btnCloud = New System.Windows.Forms.Button()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.TabPageClients = New System.Windows.Forms.TabPage()
         Me.lblClients = New System.Windows.Forms.Label()
@@ -46,10 +47,17 @@ Partial Class Main
         Me.lblBackupRestore = New System.Windows.Forms.Label()
         Me.BtnRestore = New System.Windows.Forms.Button()
         Me.BtnBackup = New System.Windows.Forms.Button()
+        Me.TabPageCloud = New System.Windows.Forms.TabPage()
+        Me.tbCloud = New System.Windows.Forms.TextBox()
+        Me.lblCloud = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.RemoveTextTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.lblServerStatus = New System.Windows.Forms.Label()
         Me.Wb_TabControl.SuspendLayout()
         Me.TabPageClients.SuspendLayout()
         Me.TabPageMessages.SuspendLayout()
         Me.TabPageAdmin.SuspendLayout()
+        Me.TabPageCloud.SuspendLayout()
         Me.SuspendLayout()
         '
         'NotifyIcon
@@ -169,6 +177,23 @@ Partial Class Main
         Me.SaveFileDialog.FileName = "*.sql;*.bz2"
         Me.SaveFileDialog.Title = "Datensicherung WinBack"
         '
+        'btnCloud
+        '
+        Me.btnCloud.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnCloud.BackColor = System.Drawing.Color.Gray
+        Me.btnCloud.FlatAppearance.BorderColor = System.Drawing.Color.Gray
+        Me.btnCloud.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnCloud.ForeColor = System.Drawing.Color.White
+        Me.btnCloud.Image = Global.WinBackServerTask.My.Resources.Resources.Cloud
+        Me.btnCloud.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.btnCloud.Location = New System.Drawing.Point(12, 540)
+        Me.btnCloud.Name = "btnCloud"
+        Me.btnCloud.Size = New System.Drawing.Size(110, 65)
+        Me.btnCloud.TabIndex = 8
+        Me.btnCloud.Text = "Nährwerte-Cloud"
+        Me.btnCloud.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.btnCloud.UseVisualStyleBackColor = False
+        '
         'Wb_TabControl
         '
         Me.Wb_TabControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -177,6 +202,7 @@ Partial Class Main
         Me.Wb_TabControl.Controls.Add(Me.TabPageClients)
         Me.Wb_TabControl.Controls.Add(Me.TabPageMessages)
         Me.Wb_TabControl.Controls.Add(Me.TabPageAdmin)
+        Me.Wb_TabControl.Controls.Add(Me.TabPageCloud)
         Me.Wb_TabControl.Location = New System.Drawing.Point(12, 81)
         Me.Wb_TabControl.Multiline = True
         Me.Wb_TabControl.Name = "Wb_TabControl"
@@ -214,8 +240,10 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbClientList.BackColor = System.Drawing.Color.Black
         Me.lbClientList.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.lbClientList.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbClientList.ForeColor = System.Drawing.Color.White
         Me.lbClientList.FormattingEnabled = True
+        Me.lbClientList.ItemHeight = 15
         Me.lbClientList.Location = New System.Drawing.Point(-4, 29)
         Me.lbClientList.Name = "lbClientList"
         Me.lbClientList.Size = New System.Drawing.Size(342, 390)
@@ -251,6 +279,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbMessages.BackColor = System.Drawing.Color.Black
         Me.tbMessages.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.tbMessages.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbMessages.ForeColor = System.Drawing.Color.White
         Me.tbMessages.Location = New System.Drawing.Point(0, 25)
         Me.tbMessages.Multiline = True
@@ -280,7 +309,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblBackupRestoreStatus.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblBackupRestoreStatus.ForeColor = System.Drawing.Color.Chartreuse
-        Me.lblBackupRestoreStatus.Location = New System.Drawing.Point(-4, 91)
+        Me.lblBackupRestoreStatus.Location = New System.Drawing.Point(-4, 93)
         Me.lblBackupRestoreStatus.Name = "lblBackupRestoreStatus"
         Me.lblBackupRestoreStatus.Size = New System.Drawing.Size(342, 18)
         Me.lblBackupRestoreStatus.TabIndex = 11
@@ -290,7 +319,7 @@ Partial Class Main
         '
         Me.lblBackupRestore.AutoSize = True
         Me.lblBackupRestore.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblBackupRestore.Location = New System.Drawing.Point(-4, -2)
+        Me.lblBackupRestore.Location = New System.Drawing.Point(-4, 0)
         Me.lblBackupRestore.Name = "lblBackupRestore"
         Me.lblBackupRestore.Size = New System.Drawing.Size(201, 22)
         Me.lblBackupRestore.TabIndex = 10
@@ -304,7 +333,7 @@ Partial Class Main
         Me.BtnRestore.ForeColor = System.Drawing.Color.White
         Me.BtnRestore.Image = Global.WinBackServerTask.My.Resources.Resources.Restore
         Me.BtnRestore.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.BtnRestore.Location = New System.Drawing.Point(112, 23)
+        Me.BtnRestore.Location = New System.Drawing.Point(112, 25)
         Me.BtnRestore.Name = "BtnRestore"
         Me.BtnRestore.Size = New System.Drawing.Size(110, 65)
         Me.BtnRestore.TabIndex = 9
@@ -320,7 +349,7 @@ Partial Class Main
         Me.BtnBackup.ForeColor = System.Drawing.Color.White
         Me.BtnBackup.Image = Global.WinBackServerTask.My.Resources.Resources.Backup
         Me.BtnBackup.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.BtnBackup.Location = New System.Drawing.Point(-4, 23)
+        Me.BtnBackup.Location = New System.Drawing.Point(-4, 25)
         Me.BtnBackup.Name = "BtnBackup"
         Me.BtnBackup.Size = New System.Drawing.Size(110, 65)
         Me.BtnBackup.TabIndex = 8
@@ -328,12 +357,84 @@ Partial Class Main
         Me.BtnBackup.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         Me.BtnBackup.UseVisualStyleBackColor = False
         '
+        'TabPageCloud
+        '
+        Me.TabPageCloud.BackColor = System.Drawing.Color.Black
+        Me.TabPageCloud.Controls.Add(Me.tbCloud)
+        Me.TabPageCloud.Controls.Add(Me.lblCloud)
+        Me.TabPageCloud.ForeColor = System.Drawing.Color.White
+        Me.TabPageCloud.Location = New System.Drawing.Point(4, 23)
+        Me.TabPageCloud.Name = "TabPageCloud"
+        Me.TabPageCloud.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPageCloud.Size = New System.Drawing.Size(334, 426)
+        Me.TabPageCloud.TabIndex = 3
+        Me.TabPageCloud.Text = "Cloud"
+        '
+        'tbCloud
+        '
+        Me.tbCloud.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tbCloud.BackColor = System.Drawing.Color.Black
+        Me.tbCloud.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.tbCloud.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbCloud.ForeColor = System.Drawing.Color.White
+        Me.tbCloud.Location = New System.Drawing.Point(0, 25)
+        Me.tbCloud.Multiline = True
+        Me.tbCloud.Name = "tbCloud"
+        Me.tbCloud.Size = New System.Drawing.Size(334, 398)
+        Me.tbCloud.TabIndex = 2
+        Me.tbCloud.TabStop = False
+        '
+        'lblCloud
+        '
+        Me.lblCloud.AutoSize = True
+        Me.lblCloud.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCloud.Location = New System.Drawing.Point(-4, 0)
+        Me.lblCloud.Name = "lblCloud"
+        Me.lblCloud.Size = New System.Drawing.Size(171, 22)
+        Me.lblCloud.TabIndex = 1
+        Me.lblCloud.Text = "Updates Nährwerte"
+        '
+        'Button1
+        '
+        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button1.BackColor = System.Drawing.Color.Gray
+        Me.Button1.FlatAppearance.BorderColor = System.Drawing.Color.Gray
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button1.ForeColor = System.Drawing.Color.White
+        Me.Button1.Image = Global.WinBackServerTask.My.Resources.Resources.Clock
+        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.Button1.Location = New System.Drawing.Point(128, 540)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(110, 65)
+        Me.Button1.TabIndex = 9
+        Me.Button1.Text = "Timer"
+        Me.Button1.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.Button1.UseVisualStyleBackColor = False
+        '
+        'RemoveTextTimer
+        '
+        Me.RemoveTextTimer.Interval = 30000
+        '
+        'lblError
+        '
+        Me.lblServerStatus.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblServerStatus.ForeColor = System.Drawing.Color.Red
+        Me.lblServerStatus.Location = New System.Drawing.Point(12, 34)
+        Me.lblServerStatus.Name = "lblError"
+        Me.lblServerStatus.Size = New System.Drawing.Size(214, 41)
+        Me.lblServerStatus.TabIndex = 10
+        '
         'Main
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(366, 688)
         Me.ControlBox = False
+        Me.Controls.Add(Me.lblServerStatus)
+        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.btnCloud)
         Me.Controls.Add(Me.BtnAdmin)
         Me.Controls.Add(Me.Wb_TabControl)
         Me.Controls.Add(Me.BtnExit)
@@ -356,6 +457,8 @@ Partial Class Main
         Me.TabPageMessages.PerformLayout()
         Me.TabPageAdmin.ResumeLayout(False)
         Me.TabPageAdmin.PerformLayout()
+        Me.TabPageCloud.ResumeLayout(False)
+        Me.TabPageCloud.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -383,4 +486,11 @@ Partial Class Main
     Friend WithEvents tbMessages As TextBox
     Friend WithEvents lblClients As Label
     Friend WithEvents Label2 As Label
+    Friend WithEvents btnCloud As Button
+    Friend WithEvents TabPageCloud As TabPage
+    Friend WithEvents tbCloud As TextBox
+    Friend WithEvents lblCloud As Label
+    Friend WithEvents Button1 As Button
+    Friend WithEvents RemoveTextTimer As Timer
+    Friend WithEvents lblServerStatus As Label
 End Class

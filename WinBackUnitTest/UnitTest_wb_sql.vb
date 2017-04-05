@@ -41,6 +41,24 @@ Public Class UnitTest_wb_Sql
     ' End Sub
     '
 #End Region
+    <TestMethod()>
+    Public Sub TestMySQLPing()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
+
+            'Datenbank Verbindung Einstellungen setzen
+            '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
+            wb_Konfig.SqlSetting("MySQL")
+
+            Debug.Print("Test Ping MySQL aktiv " & wb_Konfig.SqlConWinBack & " dauert ca.200 Sekunden !!")
+            'Text anzeigen
+            Windows.Forms.Application.DoEvents()
+
+            For i = 1 To 100000
+                wb_sql_Functions.ping()
+            Next
+        End If
+    End Sub
 
     <TestMethod()>
     Public Sub TestMySQL()

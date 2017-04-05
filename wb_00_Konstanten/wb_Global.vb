@@ -43,6 +43,18 @@
         KO_TYPE_UNDEFINED
     End Enum
 
+    Enum AllergenInfo
+        C   'Contains
+        T   'Trace
+        K   'keine
+        N   'Keine Angabe
+        ERR 'Fehler bei der Berechnung
+    End Enum
+
+    Public Const maxTyp301 = 211
+    Public Const minTyp301Allergen = 141
+    Public Const maxTyp301Allergen = 189
+
     Enum Hinweise
         RezeptHinweise         '2/0/RzNr
         ArtikelHinweise        '3/0/ArtNr

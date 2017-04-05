@@ -50,6 +50,16 @@ Public Class wb_Functions
         End Select
     End Function
 
+    Public Shared Function ConvertJSONTimeStringToDateTime(JSONTimeString As String) As DateTime
+        Try
+            Dim dt As String = JSONTimeString.Substring(0, 4) & JSONTimeString.Substring(6, 2) & JSONTimeString.Substring(4, 2)
+            dt = dt & JSONTimeString.Substring(8, 6)
+            Return DateTime.ParseExact(dt, "yyyyddMMHHmmss", Nothing)
+        Catch ex As Exception
+            Return #11/22/1964 00:00:00#
+        End Try
+    End Function
+
     Public Shared Function IntToKomponType(KO_Type As Integer) As wb_Global.KomponTypen
         Select Case KO_Type
             Case -1

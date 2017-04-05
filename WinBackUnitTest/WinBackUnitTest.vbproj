@@ -102,6 +102,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTest_wb_ktTyp301.vb" />
     <Compile Include="UnitTest_wb_nwtDatenLink.vb" />
     <Compile Include="UnitTest_wb_nwtCloud.vb" />
     <Compile Include="UnitTest_wb_TraceListener.vb" />

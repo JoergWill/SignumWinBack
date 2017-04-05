@@ -151,6 +151,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="orgaback-logo-header.jpg.ico" />
+    <None Include="Resources\Clock.png" />
+    <None Include="Resources\Cloud.png" />
     <None Include="Resources\Restore.png" />
     <None Include="Resources\Backup.png" />
     <None Include="Resources\Admin.png" />

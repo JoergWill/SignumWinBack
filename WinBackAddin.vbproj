@@ -145,9 +145,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_ktTyp301.vb" />
+    <Compile Include="wb_00_Klassen\wb_ktTypX.vb" />
     <Compile Include="wb_00_Klassen\wb_Naehrwerte.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtCloud.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtDatenLink.vb" />
+    <Compile Include="wb_00_Klassen\wb_nwtUpdate.vb" />
     <Compile Include="wb_00_Klassen\wb_sql_BackupRestore.vb" />
     <Compile Include="wb_00_Klassen\wb_Sync.vb" />
     <Compile Include="wb_00_Klassen\wb_ComboBox.Designer.vb">

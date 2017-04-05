@@ -61,7 +61,6 @@ Public Class wb_nwtCloud
         End If
     End Function
 
-
     ''' <summary>
     ''' WinBack-Cloud-Connector::http-Kommando zusammensetzen
     ''' 
