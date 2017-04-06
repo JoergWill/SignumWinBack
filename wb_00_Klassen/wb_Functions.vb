@@ -60,6 +60,21 @@ Public Class wb_Functions
         End Try
     End Function
 
+    Public Shared Function StringtoAllergen(s As String) As wb_Global.AllergenInfo
+        Select Case s.ToUpper
+            Case "C"
+                Return wb_Global.AllergenInfo.C
+            Case "K"
+                Return wb_Global.AllergenInfo.K
+            Case "N"
+                Return wb_Global.AllergenInfo.K
+            Case "T"
+                Return wb_Global.AllergenInfo.T
+            Case Else
+                Return wb_Global.AllergenInfo.ERR
+        End Select
+    End Function
+
     Public Shared Function IntToKomponType(KO_Type As Integer) As wb_Global.KomponTypen
         Select Case KO_Type
             Case -1

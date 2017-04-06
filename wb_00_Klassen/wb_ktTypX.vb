@@ -7,6 +7,7 @@ Public Class wb_ktTypX
     Private KO_Nr_AlNum As String
     Private KO_Bezeichnung As String
     Private KO_Kommentar As String
+    Private LF_Lieferant As String
 
     Public ktTyp301 As wb_ktTyp301
 
@@ -48,5 +49,25 @@ Public Class wb_ktTypX
             Return KO_Kommentar
         End Get
     End Property
+
+    Public Property Lieferant As String
+        Set(value As String)
+            LF_Lieferant = value
+        End Set
+        Get
+            Return LF_Lieferant
+        End Get
+    End Property
+
+    Public Property Deklaration As String
+    Public Property TimeStamp As Date
+
+    Public Sub print()
+        Debug.Print("Nummer      " & KO_Nr_AlNum)
+        Debug.Print("Bezeichung  " & KO_Bezeichnung)
+        Debug.Print("Lieferant   " & LF_Lieferant)
+        Debug.Print("Deklaration " & Deklaration)
+
+    End Sub
 
 End Class

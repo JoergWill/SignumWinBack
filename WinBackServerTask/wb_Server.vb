@@ -36,6 +36,14 @@ Public Class Main
         lbClientList.Items.Remove(name)
     End Sub
 
+    Public Sub ScrollTextBox(ByRef tbx As TextBox, s As String)
+        If tbx.Lines.Count > 20 Then
+            Dim str As String = tbx.Text
+            tbx.Text = str.Substring(str.IndexOf(vbCrLf) + 2)
+        End If
+        tbx.Text &= s
+    End Sub
+
     Public Sub TextBoxadd(text As String)
         tbMessages.Text &= text
     End Sub
@@ -71,7 +79,8 @@ Public Class Main
         'Abfrage Update Nährwert-Cloud
         If MainTimer_Check(cntCloudUpdate) Then
             If nwtUpdate.UpdateNext Then
-                tbCloud.Text &= nwtUpdate.InfoText & vbNewLine
+                ScrollTextBox(tbCloud, nwtUpdate.InfoText & vbNewLine)
+                'tbCloud.Text &= nwtUpdate.InfoText & vbNewLine
             End If
             cntCloudUpdate = cntCounter + cntCheckCloud
         End If

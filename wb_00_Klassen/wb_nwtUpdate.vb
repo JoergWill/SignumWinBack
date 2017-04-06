@@ -13,7 +13,7 @@ Public Class wb_nwtUpdate
 
     Private KO_Nr As Integer = 0
     Private _InfoText As String = ""
-    Private _nwtDaten As wb_ktTypX
+    Public nwtDaten As New wb_ktTypX
 
     Public ReadOnly Property InfoText As String
         Get
@@ -116,22 +116,23 @@ Public Class wb_nwtUpdate
         If nwt.GetProductData(iD) > 0 Then
 
             'Ergebnis ist ein verschachteltes JSON-Objekt
-            'Debug.Print(nwt.GetResult(0))
-
             Dim jsonData As JObject = JObject.Parse(nwt.GetResult(0))
-            Dim Name As String = GetJData(jsonData, "name")
-            Dim Lieferant As String = GetJData(jsonData, "lieferant")
-            Dim Deklaration As String = GetJData(jsonData, "deklarationsname")
-            Dim AenderungsIndex As String = jsonData.GetValue("aenderungsindex").ToString
+            'Rohstoff-Bezeichnung
+            nwtDaten.Bezeichung = GetJData(jsonData, "name")
+            'Rohstoff-Lieferant(Text)
+            nwtDaten.Lieferant = GetJData(jsonData, "lieferant")
+            'Rohstoff-Deklaration
+            nwtDaten.Deklaration = GetJData(jsonData, "deklarationsname")
 
-            Debug.Print(Name)
-            Debug.Print(Lieferant)
-            Debug.Print(Deklaration)
-            Debug.Print(AenderungsIndex)
+            'Array Nährwerte/Allergene
+            Dim nwtInhalt As JToken = jsonData.GetValue("inhalt")
+            For Each element As JProperty In nwtInhalt
+                nwtDaten.ktTyp301.Wert(CInt(element.Name)) = element.Value.ToString
+            Next
 
-            Dim dt As DateTime = wb_Functions.ConvertJSONTimeStringToDateTime(AenderungsIndex)
-            Debug.Print(dt.ToString)
-            Return dt
+            'Datum/Uhrzeit der letzten Änderung
+            nwtDaten.TimeStamp = wb_Functions.ConvertJSONTimeStringToDateTime(jsonData.GetValue("aenderungsindex").ToString)
+            Return nwtDaten.TimeStamp
         Else
             Return #11/22/1964 00:00:00#
         End If

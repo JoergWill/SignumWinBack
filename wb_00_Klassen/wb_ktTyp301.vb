@@ -1,4 +1,4 @@
-﻿Imports WinBack
+﻿Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
 Public Class wb_ktTyp301
@@ -56,10 +56,11 @@ Public Class wb_ktTyp301
         End Get
         Set(value As VariantType)
             If IsAllergen(index) Then
-                NaehrwertInfo(index)._Allergen = value
+                NaehrwertInfo(index)._Allergen = wb_Functions.StringtoAllergen(value)
             Else
                 NaehrwertInfo(index)._Naehrwert = value
             End If
         End Set
     End Property
+
 End Class

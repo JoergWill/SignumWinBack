@@ -44,10 +44,11 @@
     End Enum
 
     Enum AllergenInfo
-        C   'Contains
-        T   'Trace
+        X   'not used
+        C   'contains
+        T   'trace
         K   'keine
-        N   'Keine Angabe
+        N   'keine Angabe
         ERR 'Fehler bei der Berechnung
     End Enum
 
