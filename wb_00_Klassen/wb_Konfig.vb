@@ -61,7 +61,7 @@ Public Class wb_Konfig
         Dim IniFile As New wb_IniFile
 
         'Default-Wert für die IP-Adresse is der Rechner-Name !! 
-        'sonst funktioniert der Zugriff auf die MS-SQL2014-Datenbank
+        'sonst funktioniert der Zugriff auf die MS-SQL2014-Datenbank nicht
         My.Settings.MsSQLServerIP = IniFile.ReadString("winback", "eMsSQLServerIP", Environment.MachineName)
         My.Settings.MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
         My.Settings.MySQLWbDaten = IniFile.ReadString("winback", "eMySQLDatabaseDaten", "wbdaten")

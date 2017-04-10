@@ -17,30 +17,62 @@ Imports WinBack
         Assert.IsTrue(dl.lookupProductName("ABCDEFGHXYZ") = 0)
 
         'Lookup Product (OK)
-        Assert.AreEqual(dl.GetProductData("DL-AC1-D10"), 1)
-
-        Dim doc As XElement = XElement.Parse(dl.GetXMLResult)
-        Dim x As String = doc.<Manufakturer>.<CompanyID>.Value
+        Assert.AreEqual(dl.GetProductData("DL-CE3-C4D"), 1)
+        Dim x As String = dl.GetXMLResult
         Debug.Print(x)
+
+        'Dim doc As XElement = XElement.Parse(x)
+        'x = doc.<Manufakturer>.<CompanyID>.Value
 
         'Auswertung XML-Info
         Dim objXML As New Xml.XmlDocument
-        objXML.LoadXml(dl.GetXMLResult)
-        'Dim nsmgr As New XmlNamespaceManager(objXML.NameTable)
-        'nsmgr.AddNamespace("datenlink", "urn:datenlink")
 
+        objXML.LoadXml(dl.GetXMLResult)
         Debug.Print(objXML.InnerXml)
-        Debug.Print(objXML.ChildNodes(1).Name)
-        Debug.Print(objXML.ChildNodes(1).NamespaceURI)
-        Debug.Print(objXML.ChildNodes(1).ChildNodes(1).Name)
-        Debug.Print(objXML.ChildNodes(1).ChildNodes(1).ChildNodes(0).Name)
-        Debug.Print(objXML.ChildNodes(1).ChildNodes(1).ChildNodes(0).Item("CompanyID").Value)
-        Debug.Print(objXML.ChildNodes(1).ChildNodes(1).ChildNodes(0).InnerText)
-        Dim xs As String
-        xs = objXML.SelectSingleNode("Manufacturer:CompanyID").InnerText
-        If xs IsNot vbNullString Then
-            Debug.Print(xs)
-        End If
+
+        For Each oNode As Xml.XmlNode In objXML.ChildNodes(1).ChildNodes
+            Select Case oNode.Name
+                Case "Manufacturer"
+                    For Each oItem As Xml.XmlNode In oNode.ChildNodes
+                        Debug.Print(oItem.Name)
+                        Debug.Print(oItem.InnerText)
+                    Next
+                Case "Product"
+                    For Each oItem As Xml.XmlNode In oNode.ChildNodes
+                        For Each oTag As XmlNode In oItem.ChildNodes
+                            Debug.Print(oTag.Name)
+                            Debug.Print(oTag.InnerText)
+                        Next
+                    Next
+                Case "FoodFacts"
+                    For Each oItem As Xml.XmlNode In oNode.ChildNodes
+                        Select Case oItem.Name
+                            Case "NutritionFacts"
+                                For Each oTag As XmlNode In oItem.ChildNodes
+                                    If oTag.Attributes.Count > 0 Then
+                                        Debug.Print(oTag.Attributes(0).InnerText)
+                                    Else
+                                        Debug.Print(oTag.Name)
+                                    End If
+                                    Debug.Print(oTag.InnerText)
+                                Next
+                            Case "AllergenLabeling"
+                                For Each oTag As XmlNode In oItem.ChildNodes
+                                    Debug.Print(oTag.Name)
+                                    Debug.Print(oTag.InnerText)
+                                    Debug.Print(oTag.Attributes(1).Name)
+                                    Debug.Print(oTag.Attributes(1).InnerText)
+                                    For Each oDetail As XmlNode In oTag.ChildNodes
+                                        Debug.Print(oDetail.Name)
+                                        Debug.Print(oDetail.InnerText)
+                                    Next
+                                Next
+                            Case "IngredientLists"
+                        End Select
+                    Next
+            End Select
+        Next
+
 
         'Lookup Product (FAIL)
         Assert.AreEqual(dl.GetProductData("XYZ"), -1)
