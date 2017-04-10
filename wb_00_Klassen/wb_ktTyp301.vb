@@ -7,6 +7,16 @@ Public Class wb_ktTyp301
         Public _Naehrwert As Double
     End Structure
     Private NaehrwertInfo(maxTyp301) As Typ301
+    Private _TimeStamp
+
+    Public Property TimeStamp As DateTime
+        Get
+            Return _TimeStamp
+        End Get
+        Set(value As DateTime)
+            _TimeStamp = value
+        End Set
+    End Property
 
     Public Function IsAllergen(index As Integer) As Boolean
         If index >= minTyp301Allergen And index <= maxTyp301Allergen Then

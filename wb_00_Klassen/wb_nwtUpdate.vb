@@ -110,7 +110,7 @@ Public Class wb_nwtUpdate
     ''' 
     ''' </summary>
     ''' <param name="iD"></param>
-    ''' <returns></returns>
+    ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
     Private Function GetNaehrwerteHetzner(iD As String) As Date
         Dim nwt As New wb_nwtCloud(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
         If nwt.GetProductData(iD) > 0 Then
@@ -127,12 +127,19 @@ Public Class wb_nwtUpdate
             'Array Nährwerte/Allergene
             Dim nwtInhalt As JToken = jsonData.GetValue("inhalt")
             For Each element As JProperty In nwtInhalt
-                nwtDaten.ktTyp301.Wert(CInt(element.Name)) = element.Value.ToString
+                Try
+                    nwtDaten.ktTyp301.Wert(CInt(element.Name)) = element.Value.ToString
+                Catch
+                End Try
             Next
 
             'Datum/Uhrzeit der letzten Änderung
-            nwtDaten.TimeStamp = wb_Functions.ConvertJSONTimeStringToDateTime(jsonData.GetValue("aenderungsindex").ToString)
-            Return nwtDaten.TimeStamp
+            Try
+                nwtDaten.ktTyp301.TimeStamp = wb_Functions.ConvertJSONTimeStringToDateTime(jsonData.GetValue("aenderungsindex").ToString)
+                Return nwtDaten.ktTyp301.TimeStamp
+            Catch
+                Return #11/22/1964 00:00:00#
+            End Try
         Else
             Return #11/22/1964 00:00:00#
         End If
@@ -145,8 +152,8 @@ Public Class wb_nwtUpdate
         Catch
             Return ""
         End Try
-
     End Function
+
     Private Function GetNaehrwerteDatenlink(iD As String) As Date
         Return #11/22/1964 00:00:00#
     End Function
@@ -157,8 +164,6 @@ Public Class wb_nwtUpdate
         KO_Nr = IniFile.ReadInt("Cloud", "UpdateNaehrwerteKONr")
     End Sub
 
-
-    '---------------------------------------------------------------------------------------------------------------------
     Protected Overridable Overloads Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposed Then
             If disposing Then
