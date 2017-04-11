@@ -2,7 +2,7 @@
 
 <TestClass()> Public Class UnitTest_wb_nwtCloud
 
-    <TestMethod()> Public Sub Test_Create()
+    <TestMethod()> Public Sub Test_CloudLookup()
 
         'Create new instance of nwtCloud
         Dim nwt As New wb_nwtCloud(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)

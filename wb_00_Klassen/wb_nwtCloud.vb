@@ -87,7 +87,7 @@ Public Class wb_nwtCloud
             Debug.Print("WebResponse " & _errorCode)
 
             ' Ergebnis-String
-            If _errorCode = "OK" Then
+            If _errorCode = "OK" Or True Then
                 Dim dataStream As Stream = response.GetResponseStream()
                 Dim reader As New StreamReader(dataStream)
                 Dim responseFromServer As String = reader.ReadToEnd()

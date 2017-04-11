@@ -163,14 +163,20 @@ Public Class wb_nwtDatenLink
                                 Dim b64byte As Byte() = Convert.FromBase64String(b64data)
                                 'Ergebnis-String (XML)
                                 XMLdata.Clear()
-                                XMLdata.Add(System.Text.Encoding.ASCII.GetString(b64byte))
+                                XMLdata.Add(System.Text.Encoding.UTF8.GetString(b64byte))
                                 Return 1
                             Else
                                 Return -1
                             End If
                         'Daten als JSON
                         Case "getDistributorData"
-                            Return -(ser.SelectToken("status") = "SUCCESS")
+                            If (ser.SelectToken("status") = "SUCCESS") Then
+                                JSONdata.Clear()
+                                JSONdata.Add(responseFromServer)
+                                Return 1
+                            Else
+                                Return -1
+                            End If
                         Case Else
                             Return -1
                     End Select

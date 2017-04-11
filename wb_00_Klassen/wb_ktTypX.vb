@@ -9,7 +9,7 @@ Public Class wb_ktTypX
     Private KO_Kommentar As String
     Private LF_Lieferant As String
 
-    Public ktTyp301 As wb_ktTyp301
+    Public ktTyp301 As New wb_ktTyp301
 
     Public ReadOnly Property Nr As Integer
         Get
@@ -60,7 +60,9 @@ Public Class wb_ktTypX
     End Property
 
     Public Property Deklaration As String
+
     Public Property TimeStamp As Date
+    Public Property BestellNummer As String
 
     Public Sub print()
         Debug.Print("Nummer      " & KO_Nr_AlNum)

@@ -5,6 +5,7 @@
 ' install-package Newtonsoft.json
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
+Imports System.Xml
 Imports System.Globalization
 
 Public Class wb_nwtUpdate
@@ -154,8 +155,227 @@ Public Class wb_nwtUpdate
         End Try
     End Function
 
+    ''' <summary>
+    ''' Abfrage der Daten aus DatenLink
+    ''' Das Ergebnis ist ein verschachteltes XML-Objekt
+    ''' <!-- 
+    ''' <?xml version="1.0" encoding="UTF-8">
+    ''' <Datenlink defaultTextLang="DEU" version="1.00" xsischemaLocation="urn:datenlink:specification:1.0 http://entwickler.datenlink.info/schema/specification/1.0/datenlinkXML.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:datenlink:specification:1.0">
+    '''
+    '''     <Header>
+    '''         <Created>2013-09-03T08:14:03</Created>
+    '''         <Generator>
+    '''             <Software> datenlink</Software>
+    '''             <Url> http : //www.datenlink.info</Url>
+    '''             <Version>1.1</Version>
+    '''         </Generator>
+    '''         <DataSource>
+    '''             <Ressource> datenlink</Ressource>
+    '''             <Version>1</Version>
+    '''         </DataSource>
+    '''     </Header>
+    '''     <Manufacturer>
+    '''         <CompanyID type = "DATENLINK" > 613cb7a0-e47f-11E3-80E1-d43d7ed6cafe</CompanyID>
+    '''     </Manufacturer>
+    '''
+    '''     <Product>
+    '''         <ProductName>
+    '''             <TextValue> B??KO BiO Weizenschrot mittel</TextValue>
+    '''         </ProductName>
+    '''         <ProductNumbers>
+    '''             <ProductNumber type = "MANUFACTURER" > 102055</ProductNumber>
+    '''         </ProductNumbers>
+    '''         <ProductVersionIdentifier>
+    '''             <ValidFrom>2013-09-03</ValidFrom>
+    '''             <LabelingMethod>
+    '''                 <TextValue> Zur Zeit keine Differenzierung notwendig</TextValue>
+    '''             </LabelingMethod>
+    '''             <LabelingValue>
+    '''                 <TextValue>...</TextValue>
+    '''             </LabelingValue>
+    '''         </ProductVersionIdentifier>
+    '''     </Product>
+    '''
+    '''     <FoodFacts>
+    '''         <DeclarationName key = "0E66905" />
+    '''         <NutritionFacts>
+    '''             <NutritionFactsBasedOn>
+    '''                 <Value unit = "g" > 100</Value>
+    '''             </NutritionFactsBasedOn>
+    '''             <NutritionFactsItem key="GJ">
+    '''                 <Value unit = "kJ" > 1293</Value>
+    '''             </NutritionFactsItem>
+    '''             <NutritionFactsItem key="ZF">
+    '''                 <Value unit = "g" > 2.4</Value>
+    '''             </NutritionFactsItem>
+    '''             <NutritionFactsItem key="FS">
+    '''                 <Value unit = "g" > 0.34</Value>
+    '''             </NutritionFactsItem>
+    '''             <NutritionFactsItem key="ZK">
+    '''                 <Value unit = "g" > 59.5</Value>
+    '''             </NutritionFactsItem>
+    '''             <NutritionFactsItem key="KD">
+    '''                 <Value unit = "g" > 0.72</Value>
+    '''             </NutritionFactsItem>
+    '''             <NutritionFactsItem key="ZB">
+    '''                 <Value unit = "g" > 10</Value>
+    '''             </NutritionFactsItem>
+    '''             <NutritionFactsItem key="ZE">
+    '''                 <Value unit = "g" > 11.4</Value>
+    '''             </NutritionFactsItem>
+    '''             <NutritionFactsItem key="GMKO">
+    '''                 <Value unit = "g" smaller="true">0.01</Value>
+    '''             </NutritionFactsItem>
+    '''         </NutritionFacts>
+    '''
+    '''         <AllergenLabeling>
+    '''             <AllergenList type="EU" containmentType="CONTAINED">
+    '''                 <AllergenListItem key="GLUTEN">
+    '''                     <AllergenListItem key = "GLUTEN_WHEAT" />
+    '''                 </AllergenListItem>
+    '''             </AllergenList>
+    '''         </AllergenLabeling>
+    '''         <IngredientLists>
+    '''             <IngredientList>
+    '''                 <Ingredient key="1695B8D">
+    '''                     <SpecificationList type="FIX">
+    '''                         <Specification key = "BIO_PRODUCT" />
+    '''                     </SpecificationList>
+    '''                 </Ingredient>
+    '''             </IngredientList>
+    '''         </IngredientLists>
+    '''     </FoodFacts>
+    ''' </Datenlink> 
+    ''' --></summary>
+    ''' <param name="iD"></param>
+    ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
     Private Function GetNaehrwerteDatenlink(iD As String) As Date
-        Return #11/22/1964 00:00:00#
+        'Create new instance of nwtCloud
+        Dim dl As New wb_nwtDatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
+        If dl.GetProductData(iD) > 0 Then
+
+            'Auswertung XML-Info
+            Dim objXML As New Xml.XmlDocument
+            objXML.LoadXml(dl.GetXMLResult)
+            Debug.Print(objXML.InnerXml)
+
+            For Each oNode As XmlNode In objXML.ChildNodes(1).ChildNodes
+                Select Case oNode.Name
+                    Case "Header"
+                        For Each oItem As XmlNode In oNode.ChildNodes
+                            Select Case oItem.Name
+                                Case "Created"
+                                    nwtDaten.ktTyp301.TimeStamp = wb_Functions.ConvertDataLinkTimeStringToDateTime(oItem.InnerText)
+                            End Select
+                        Next
+                    Case "Manufacturer"
+                        For Each oItem As XmlNode In oNode.ChildNodes
+                            Select Case oItem.Name
+                                Case "CompanyID"
+                                    Dim CompanyID As String = oItem.InnerText
+                                    'wenn eine Hersteller-Kennung angegeben ist
+                                    If (dl.getDistributorData(CompanyID) > 0) Then
+                                        'Hersteller/Lieferant im Klartext ermitteln
+                                        nwtDaten.Lieferant = GetDatenLinkLieferant(dl.GetResult(0))
+                                    End If
+                            End Select
+                        Next
+                    Case "Product"
+                        For Each oItem As XmlNode In oNode.ChildNodes
+                            For Each oTag As XmlNode In oItem.ChildNodes
+                                Select Case oTag.Name
+                                    Case "TextValue"
+                                        'Komponenten-Bezeichnung
+                                        nwtDaten.Bezeichung = oTag.InnerText
+                                    Case "ProductNumber"
+                                        'Bestellnummer beim Hersteller/Lieferant
+                                        nwtDaten.BestellNummer = oTag.InnerText
+                                End Select
+                            Next
+                        Next
+                    Case "FoodFacts"
+                        For Each oItem As XmlNode In oNode.ChildNodes
+                            Select Case oItem.Name
+                                Case "NutritionFacts"
+                                    For Each oTag As XmlNode In oItem.ChildNodes
+                                        If oTag.Attributes.Count > 0 Then
+                                            'Nährwerte - GCAL/GJ/ZE/ZK/ZF/KD/FS/ZB/GMKO
+                                            nwtDaten.ktTyp301.dlNaehrWert(oTag.Attributes(0).InnerText) = oTag.InnerText
+                                        Else
+                                            'Nährwerte
+                                            nwtDaten.ktTyp301.dlNaehrWert(oTag.Name) = oTag.InnerText
+                                        End If
+                                    Next
+                                Case "AllergenLabeling"
+                                    'CONTAINED/MAY_CONTAINED                    
+                                    For Each oTag As XmlNode In oItem.ChildNodes
+                                        Debug.Print(oTag.Attributes(1).InnerText)
+
+                                        For Each oDetail As XmlNode In oTag.ChildNodes
+                                            'Allergene
+                                            For Each oAttribute As XmlAttribute In oDetail.Attributes
+                                                Debug.Print(oAttribute.InnerText)
+                                                nwtDaten.ktTyp301.dlAllergen(oAttribute.InnerText) = oTag.Attributes(1).InnerText
+                                            Next
+                                            'Allergene Details
+                                            If oDetail.HasChildNodes Then
+                                                For Each oDeailChild As XmlNode In oDetail.ChildNodes
+                                                    For Each oAttribute As XmlAttribute In oDeailChild.Attributes
+                                                        Debug.Print(oAttribute.InnerText)
+                                                        nwtDaten.ktTyp301.dlAllergen(oAttribute.InnerText) = oTag.Attributes(1).InnerText
+                                                    Next
+                                                Next
+                                            End If
+
+                                        Next
+                                    Next
+                                        Case "IngredientLists"
+                            End Select
+                        Next
+                End Select
+            Next
+            'Datum/Uhrzeit der letzten Änderung
+            Return nwtDaten.ktTyp301.TimeStamp
+        Else
+            Return #11/22/1964 00:00:00#
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Auswerten der Lieferanten-Daten (JSON)
+    ''' {
+    '''     "status":"SUCCESS"
+    '''     "data":
+    '''         {
+    '''             "name":     "BÄKO-Zentrale Süddeutschland eG"
+    '''             "id":       "613cb7a0-e47f-11e3-80e1-d43d7ed6cafe"
+    '''             "location":
+    '''                 {
+    '''                     "address":
+    '''                         {
+    '''                             "street":"Benzstr."
+    '''                             "number":"3"
+    '''                         }
+    '''                     "city":
+    '''                         {
+    '''                             "zipcode":"68526"
+    '''                             "name":"Ladenburg"
+    '''                         }
+    '''                     "country":
+    '''                         {   
+    '''                             "iso":"DE"
+    '''                             "name":"Deutschland"
+    '''                          }
+    '''                 }
+    '''         }
+    ''' }
+    ''' </summary>
+    ''' <param name="JString"></param>
+    ''' <returns></returns>
+    Private Function GetDatenLinkLieferant(JString As String) As String
+        Dim jsonData As JObject = JObject.Parse(JString)
+        Dim JData As JToken = jsonData.GetValue("data")
+        Return JData("name").ToString
     End Function
 
     Public Sub New()

@@ -73,4 +73,36 @@ Public Class wb_ktTyp301
         End Set
     End Property
 
+    Public WriteOnly Property dlNaehrWert(index As String) As String
+        Set(value As String)
+            Dim idx As Integer = DatenLinkToIndex(index)
+            If idx > 0 Then
+                Try
+                    Naehrwert(idx) = CDbl(value)
+                Catch ex As Exception
+                    Trace.WriteLine("Fehler bei DatenLink - Index = " & index & " Wert = " & value)
+                End Try
+            Else
+                Trace.WriteLine("Fehler bei DatenLink - Index " & index & " nicht definiert")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property dlAllergen(index As String) As String
+        Set(value As String)
+            Dim idx As Integer = DatenLinkToIndex(index)
+            If idx > 0 Then
+                Select Case value
+                    Case "CONTAINED"
+                        Allergen(idx) = wb_Global.AllergenInfo.C
+                    Case "MAY_CONTAINED"
+                        Allergen(idx) = wb_Global.AllergenInfo.T
+                    Case Else
+                        Allergen(idx) = wb_Global.AllergenInfo.ERR
+                End Select
+            Else
+                Trace.WriteLine("Fehler bei DatenLink - Index " & index & " nicht definiert")
+            End If
+        End Set
+    End Property
 End Class

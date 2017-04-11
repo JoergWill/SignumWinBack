@@ -60,6 +60,21 @@ Public Class wb_Functions
         End Try
     End Function
 
+    ''' <summary>
+    ''' Wandelt die Datum/Uhrzeit-Angabe aus DataLink (Created 2013-09-03T08:14:03)
+    ''' in DateTime um
+    ''' </summary>
+    ''' <param name="DataLinkTimeString"></param>
+    ''' <returns></returns>
+    Public Shared Function ConvertDataLinkTimeStringToDateTime(DataLinkTimeString As String) As DateTime
+        Try
+            Dim dt As String = DataLinkTimeString.Substring(0, 10) & DataLinkTimeString.Substring(11, 8)
+            Return DateTime.ParseExact(dt, "yyyy-dd-MMHH:mm:ss", Nothing)
+        Catch ex As Exception
+            Return #11/22/1964 00:00:00#
+        End Try
+    End Function
+
     Public Shared Function StringtoAllergen(s As String) As wb_Global.AllergenInfo
         Select Case s.ToUpper
             Case "C"
@@ -143,7 +158,98 @@ Public Class wb_Functions
             Case Else
                 Return wb_Global.KomponTypen.KO_TYPE_UNDEFINED
         End Select
+    End Function
 
+    ''' <summary>
+    ''' Wandelt die DatenLink-Nährwert und Allergen-Bezeichnungen in 
+    ''' WinBack-Index-Nummern um
+    ''' </summary>
+    ''' <param name="name"></param>
+    ''' <returns>index (Integer)</returns>
+    Public Shared Function DatenLinkToIndex(name As String) As Integer
+        Select Case name
+
+            'Nährwerte
+            Case "GCAL"
+                Return 1
+            Case "GJ"
+                Return 2
+            Case "ZE"
+                Return 3
+            Case "ZK"
+                Return 4
+            Case "ZF"
+                Return 5
+            Case "KD"
+                Return 11
+            Case "FS"
+                Return 12
+            Case "ZB"
+                Return 13
+            Case "GMKO"
+                Return 202
+
+            'Allergene
+            Case "GLUTEN"
+                Return 141
+            Case "GLUTEN_WHEAT"
+                Return 170
+            Case "GLUTEN_RYE"
+                Return 171
+            Case "GLUTEN_BARLEY"
+                Return 172
+            Case "GLUTEN_SPELT"
+                Return 173
+            Case "GLUTEN_KAMUT"
+                Return 174
+            Case "GLUTEN_OAT"
+                Return 175
+            Case "CRUSTACEANS"
+                Return 142
+            Case "EGGS"
+                Return 143
+            Case "SEAFOOD"
+                Return 144
+            Case "PEANUTS"
+                Return 145
+            Case "SOY"
+                Return 146
+            Case "MILK"
+                Return 147
+            Case "EDIBLE_NUTS"
+                Return 148
+            Case "EDIBLE_NUTS_ALMONDS"
+                Return 180
+            Case "EDIBLE_NUTS_HAZELNUTS"
+                Return 181
+            Case "EDIBLE_NUTS_WALNUTS"
+                Return 182
+            Case "EDIBLE_NUTS_CASHEW"
+                Return 183
+            Case "EDIBLE_NUTS_PECANNUTS"
+                Return 184
+            Case "EDIBLE_NUTS_BRASIL_NUTS"
+                Return 185
+            Case "EDIBLE_NUTS_PISTACIOS"
+                Return 186
+            Case "EDIBLE_NUTS_MACADAMIA_NUTS"
+                Return 187
+            Case "CELERY"
+                Return 149
+            Case "MUSTARD"
+                Return 150
+            Case "SESAME"
+                Return 151
+            Case "SULFOR_DIOXIDE_SULFITE"
+                Return 152
+            Case "LUPINES"
+                Return 153
+            Case "MOLLUSCS"
+                Return 154
+
+            Case Else
+                Return -1
+        End Select
     End Function
 
     Public Shared Function FormatStr(value As String, VorKomma As Integer, NachKomma As Integer, Optional ByVal Culture As String = Nothing) As String
