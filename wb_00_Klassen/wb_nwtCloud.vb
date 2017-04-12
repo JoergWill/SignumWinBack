@@ -12,7 +12,7 @@ Imports Newtonsoft.Json.Linq
 Public Class wb_nwtCloud
     Private _pass As String
     Private _url As String
-    Private _errorCode As String
+    Private _errorCode As HttpStatusCode
     Private data As List(Of JToken)
 
     Sub New(Pass As String, Url As String)
@@ -41,7 +41,11 @@ Public Class wb_nwtCloud
     ''' </summary>
     Public ReadOnly Property ErrorCode As String
         Get
-            Return _errorCode
+            If _errorCode = HttpStatusCode.OK Then
+                Return "OK"
+            Else
+                Return ""
+            End If
         End Get
     End Property
 
@@ -83,11 +87,12 @@ Public Class wb_nwtCloud
 
             ' Antwort (OK)
             Dim response As WebResponse = request.GetResponse()
-            _errorCode = CType(response, HttpWebResponse).StatusDescription
+            _errorCode = CType(response, HttpWebResponse).StatusCode
+            '_errorCode = CType(response, HttpWebResponse).StatusDescription
             Debug.Print("WebResponse " & _errorCode)
 
             ' Ergebnis-String
-            If _errorCode = "OK" Or True Then
+            If _errorCode = HttpStatusCode.OK Then
                 Dim dataStream As Stream = response.GetResponseStream()
                 Dim reader As New StreamReader(dataStream)
                 Dim responseFromServer As String = reader.ReadToEnd()
@@ -109,7 +114,7 @@ Public Class wb_nwtCloud
                 Return -1
             End If
         Catch e As Exception
-            _errorCode = e.ToString
+            _errorCode = HttpStatusCode.Unused
             Return -9
         End Try
     End Function
