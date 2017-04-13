@@ -56,7 +56,7 @@ Public Class wb_ktTyp301
         End Set
     End Property
 
-    Public Property Wert(index As Integer) As VariantType
+    Public Property Wert(index As Integer) As String
         Get
             If IsAllergen(index) Then
                 Return NaehrwertInfo(index)._Allergen
@@ -64,7 +64,7 @@ Public Class wb_ktTyp301
                 Return NaehrwertInfo(index)._Naehrwert
             End If
         End Get
-        Set(value As VariantType)
+        Set(value As String)
             If IsAllergen(index) Then
                 NaehrwertInfo(index)._Allergen = wb_Functions.StringtoAllergen(value)
             Else

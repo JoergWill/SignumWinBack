@@ -6,6 +6,8 @@
     End Enum
 
     Enum KomponTypen
+        KO_TYPE_UNDEFINED
+
         KO_ZEILE_ARTIKEL             '-1
         KO_ZEILE_CHARGE              '-2
 
@@ -39,8 +41,6 @@
         KO_TYPE_SAUER_AUTO_ZUGABE   '22
         KO_TYPE_SAUER_REZEPT_START  '30
         KO_TYPE_SAUER_REPEAT        '31
-
-        KO_TYPE_UNDEFINED
     End Enum
 
     Enum AllergenInfo
@@ -55,6 +55,57 @@
     Public Const maxTyp301 = 211
     Public Const minTyp301Allergen = 141
     Public Const maxTyp301Allergen = 189
+
+    Public Const T301_Kilokalorien = 1
+    Public Const T301_KiloJoule = 2
+    Public Const T301_Proteine = 3
+    Public Const T301_Kohlenhydrate = 4
+    Public Const T301_Fette = 5
+    Public Const T301_Wasser = 6
+    Public Const T301_Zucker = 11
+    Public Const T301_gesFettsaeuren = 12
+    Public Const T301_Ballaststoffe = 13
+    Public Const T301_Natrium = 14
+    Public Const T301_Alkohol = 15
+    Public Const T301_GesamtKochsalz = 202
+
+    Public Const T301_Gluten = 141
+    Public Const T301_Weizen =170
+    Public Const T301_Roggen = 171
+    Public Const T301_Gerste = 172
+    Public Const T301_Dinkel = 173
+    Public Const T301_Kamut = 174
+    Public Const T301_Hafer = 175
+    Public Const T301_Emmer = 176
+    Public Const T301_Einkorn = 177
+
+    Public Const T301_Krebstiere = 142
+    Public Const T301_Eier = 143
+    Public Const T301_Fische = 144
+    Public Const T301_Erdnusserzeugnisse = 145
+    Public Const T301_Sojaerzeugnisse = 146
+    Public Const T301_Milcherzeugnisse = 147
+
+    Public Const T301_Schalenfruechte = 148
+    Public Const T301_Mandeln = 180
+    Public Const T301_Haselnüsse = 181
+    Public Const T301_Walnüsse = 182
+    Public Const T301_Kaschunüsse = 183
+    Public Const T301_Pecannüsse = 184
+    Public Const T301_Paranüsse = 185
+    Public Const T301_Pistazien = 186
+    Public Const T301_Makadamianüsse = 187
+
+    Public Const T301_Sellerie = 149
+    Public Const T301_Senf = 150
+    Public Const T301_Sesamsamen = 151
+    Public Const T301_Sulfite = 152
+    Public Const T301_Lupinen = 153
+    Public Const T301_Weichtiere = 154
+
+    Public Const T301_Broteinheiten = 201
+    Public Const T301_Vegetarisch = 210
+    Public Const T301_Vegan = 211
 
     Enum Hinweise
         RezeptHinweise         '2/0/RzNr
@@ -107,4 +158,7 @@
 
     'Filiale.Typ ist Produktions-Filiale
     Public Const ProduktionsFiliale = 4
+
+    'WinBack-Server-Task Port
+    Public Const WinBackServerTaskPort = "22046"
 End Class

@@ -55,10 +55,14 @@
     'Sql-Statement alle Texte aus winback.Texte
     Public Const sqlWinBackTxte = "SELECT T_TextIndex, T_Typ, T_Text FROM Texte WHERE T_Sprache = [0]"
 
+    'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)
+    Public Const sqlTestktTypX = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "
+    Public Const sqlTestktTyp3 = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
+                                 "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"
+
     'Sql-Statement Suche nächsten Rohstoffdatensatz nach KO_Nr (Update Nährwerte)
     Public Const sqlUpdateNWT = "SELECT KO_Nr,KA_Matchcode, KO_Nr_AlNum, KO_Bezeichnung FROM Komponenten WHERE KA_Matchcode <> '' AND KO_Nr > [0] " &
                                  "ORDER BY Komponenten.KO_Nr LIMIT 1"
-
 
     'Sql-Statement Abfrage Gruppen-Nr(Hierarchie) und Gruppen-Bezeichnung aus [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"
     Public Const mssqlMitarbeiterGruppen = "SELECT * FROM [dbo].[MitarbeiterMultiFunktionsFeld] WHERE GruppenNr=1 ORDER BY Hierarchie"
@@ -68,7 +72,7 @@
     Public Const mssqlInsertMitarbeiterGruppen = "INSERT INTO [dbo].[MitarbeiterMultiFunktionsFeld] (GruppenNr, Hierarchie, Bezeichnung) VALUES ('[2]','[0]','[1]')"
 
 
-    Friend Shared Function setParams(sql As String, Param0 As String, Optional Param1 As String = "-", Optional Param2 As String = "-", Optional Param3 As String = "-") As String
+    Public Shared Function setParams(sql As String, Param0 As String, Optional Param1 As String = "-", Optional Param2 As String = "-", Optional Param3 As String = "-") As String
         sql = Replace(sql, "[0]", Param0)
         If Param1 <> "-" Then
             sql = Replace(sql, "[1]", Param1)

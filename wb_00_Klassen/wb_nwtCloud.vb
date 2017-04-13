@@ -88,8 +88,6 @@ Public Class wb_nwtCloud
             ' Antwort (OK)
             Dim response As WebResponse = request.GetResponse()
             _errorCode = CType(response, HttpWebResponse).StatusCode
-            '_errorCode = CType(response, HttpWebResponse).StatusDescription
-            Debug.Print("WebResponse " & _errorCode)
 
             ' Ergebnis-String
             If _errorCode = HttpStatusCode.OK Then
@@ -160,6 +158,90 @@ Public Class wb_nwtCloud
         Dim nCmd = "rohstoffe"
         Dim nPrm = "/" & id
         Return httpString(nCmd, nPrm)
+    End Function
+
+    ''' <summary>
+    ''' Abfrage der Daten aus der WinBack Cloud (Hetzner-Server)
+    ''' Das Ergebnis ist ein verschachteltes JSON-Objekt
+    '''     {
+    '''       "rid": 2502,
+    '''       "name":             {"0": "Gouda 48% Reibkäse"},
+    '''       "lieferant":        {"0": "Poppinga Käseservice"},
+    '''       "deklarationsname": {"0": "{Kuhmilch, Lab}, Salz, Beta Carotin (E 160a), Calciumchlorid (E 509), Kartoffelstärke"},
+    '''       "inhalt":           {"1": "358",
+    '''                            "2": "1491",
+    '''                            "3": "24",
+    '''                            "4": "1",
+    '''                            "5": "29",
+    '''                            "6": "0",
+    '''                            "201": "0",
+    '''                            "202": "1960",
+    '''                            "11": "1",
+    '''                            "12": "20",
+    '''                            "13": "1",
+    '''                            "141": "k",
+    '''                            "14": "760",
+    '''                            "142": "k",
+    '''                            "15": "0",
+    '''                            "143": "k",
+    '''                            "144": "k",
+    '''                            "145": "k",
+    '''                            "146": "k",
+    '''                            "147": "c",
+    '''                            "148": "k",
+    '''                            "149": "k",
+    '''                            "150": "k",
+    '''                            "151": "k",
+    '''                            "152": "k",
+    '''                            "153": "k",
+    '''                            "154": "k"},
+    '''       "stufe": 0,
+    '''       "aenderungsindex": "20170331094858"
+    '''     }
+    ''' 
+    ''' </summary>
+    ''' <param name="iD"></param>
+    ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
+    Public Function GetProductData(id As String, ByRef nwtDaten As wb_ktTypX) As Integer
+        'Produktdaten aus WinBack-Cloud lesen
+        If Me.GetProductData(id) > 0 Then
+            'Ergebnis ist ein verschachteltes JSON-Objekt
+            Dim jsonData As JObject = JObject.Parse(Me.GetResult(0))
+            'Rohstoff-Bezeichnung
+            nwtDaten.Bezeichung = GetJData(jsonData, "name")
+            'Rohstoff-Lieferant(Text)
+            nwtDaten.Lieferant = GetJData(jsonData, "lieferant")
+            'Rohstoff-Deklaration
+            nwtDaten.Deklaration = GetJData(jsonData, "deklarationsname")
+
+            'Array Nährwerte/Allergene
+            Dim nwtInhalt As JToken = jsonData.GetValue("inhalt")
+            For Each element As JProperty In nwtInhalt
+                Try
+                    nwtDaten.ktTyp301.Wert(CInt(element.Name)) = element.Value.ToString
+                Catch
+                End Try
+            Next
+
+            'Datum/Uhrzeit der letzten Änderung
+            Try
+                nwtDaten.ktTyp301.TimeStamp = wb_Functions.ConvertJSONTimeStringToDateTime(jsonData.GetValue("aenderungsindex").ToString)
+            Catch
+                nwtDaten.ktTyp301.TimeStamp = #11/22/1964 00:00:00#
+            End Try
+            Return 1
+        Else
+            Return 0
+        End If
+    End Function
+
+    Private Function GetJData(JData As JObject, JFieldName As String) As String
+        Try
+            Dim JName As JToken = JData.GetValue(JFieldName)
+            Return JName("0").ToString
+        Catch
+            Return ""
+        End Try
     End Function
 
     ''' <summary>

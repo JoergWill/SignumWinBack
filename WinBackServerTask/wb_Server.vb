@@ -121,7 +121,7 @@ Public Class Main
         'IP-Server starten
         Dim listener As New System.Threading.Thread(AddressOf listen) 'initialize a new thread for the listener so our GUI doesn't lag
         listener.IsBackground = True
-        listener.Start("22046") 'start the listener, with the port specified as 22046
+        listener.Start(wb_Global.WinBackServerTaskPort) 'start the listener, with the port specified as 22046
 
         'Status-Anzeige Backup/Restore
         lblBackupRestoreStatus.Text = ""

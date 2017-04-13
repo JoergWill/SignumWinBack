@@ -48,7 +48,8 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>orgaback-logo-header.jpg.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -150,7 +151,6 @@
     <None Include="Resources\orgaback-logo-header.jpg.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="orgaback-logo-header.jpg.ico" />
     <None Include="Resources\Clock.png" />
     <None Include="Resources\Cloud.png" />
     <None Include="Resources\Restore.png" />

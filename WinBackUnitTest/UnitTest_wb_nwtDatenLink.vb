@@ -27,10 +27,6 @@ Imports WinBack
         'Lookup Supplier (OK)
         Assert.IsTrue(dl.getDistributorData("613cd0c9-e47f-11e3-80e1-d43d7ed6cafe") > 0)
 
-
-
-
-
         'Lookup Supplier (FAIL)
         Assert.AreEqual(dl.getDistributorData("XYZ"), -1)
 
@@ -48,11 +44,11 @@ Imports WinBack
         Assert.AreEqual(nwtUpdate.nwtDaten.Bezeichung, "BÄKO BiO Weizenschrot mittel")
 
         'Nährwert-Info Kalorien(KJoule)
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Naehrwert(2), 1293.0)
+        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_KiloJoule), 1293.0)
 
         'Allergene
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Allergen(141), wb_Global.AllergenInfo.C)
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Allergen(170), wb_Global.AllergenInfo.C)
+        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten), wb_Global.AllergenInfo.C)
+        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Allergen(wb_Global.T301_Weizen), wb_Global.AllergenInfo.C)
 
     End Sub
 

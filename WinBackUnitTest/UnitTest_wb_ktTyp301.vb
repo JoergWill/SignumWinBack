@@ -30,7 +30,7 @@ Imports WinBack
         ktTyp301.Wert(140) = 100
         Assert.AreEqual(ktTyp301.Naehrwert(140), 100.0)
 
-        ktTyp301.Wert(141) = wb_Global.AllergenInfo.C
+        ktTyp301.Wert(141) = wb_Global.AllergenInfo.C.ToString
         Assert.AreEqual(ktTyp301.Allergen(141), wb_Global.AllergenInfo.C)
 
     End Sub

@@ -1,4 +1,5 @@
-﻿Imports WinBack.wb_Functions
+﻿Imports MySql.Data.MySqlClient
+Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
 Public Class wb_ktTypX
@@ -8,6 +9,10 @@ Public Class wb_ktTypX
     Private KO_Bezeichnung As String
     Private KO_Kommentar As String
     Private LF_Lieferant As String
+    Private KO_Backverlust As Double
+    Private KO_IdxCloud As String
+    Private KA_Rz_Nr As Integer
+    Private KA_Lagerort As Object
 
     Public ktTyp301 As New wb_ktTyp301
 
@@ -60,16 +65,108 @@ Public Class wb_ktTypX
     End Property
 
     Public Property Deklaration As String
-
     Public Property TimeStamp As Date
     Public Property BestellNummer As String
+
+    ''' <summary>
+    ''' Liest alle Datenfelder aus dem aktuellen Datensatz in das Komponenten-Objekt
+    ''' Die Daten werden anhand der Feldbezeichnung in die einzelnen Properties eingetragen
+    ''' </summary>
+    ''' <param name="sqlReader"></param>
+    ''' <returns>True wenn kein Fehler aufgetreten ist</returns>
+    Public Function MySQLdbRead(ByRef sqlReader As MySqlDataReader) As Boolean
+
+        'Stammdaten - Anzahl der Felder im DataSet
+        For i = 0 To sqlReader.FieldCount - 1
+            MySQLdbRead_StammDaten(sqlReader.GetName(i), sqlReader.GetValue(i))
+        Next
+
+        'Schleife über alle Parameter-Datensätze
+        'Bis alle Datensätze eingelesen sind
+        Do
+            'Parameter - Anzahl der Felder im DataSet
+            For i = 0 To sqlReader.FieldCount - 1
+                MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
+            Next
+        Loop While sqlReader.Read
+        Return True
+    End Function
+
+    Private Function MySQLdbRead_StammDaten(Name As String, Value As Object) As Boolean
+        'Feldname aus der Datenbank
+        Select Case Name
+
+                'Nummer(intern)
+            Case "KO_Nr"
+                KO_Nr = CInt(Value)
+               'Type
+            Case "KO_Type"
+                KO_Type = IntToKomponType(CInt(Value))
+                'Bezeichnung
+            Case "KO_Bezeichnung"
+                KO_Bezeichnung = Value
+                'Kommentar
+            Case "KO_Kommentar"
+                KO_Kommentar = Value
+                'Nummer(alphanumerisch)
+            Case "KO_Nr_AlNum"
+                KO_Nr_AlNum = Value
+                'Backverlust(Rezept im Rezept)
+            Case "KO_Temp_Korr"
+                KO_Backverlust = Value
+                'Index WinBack-Cloud
+            Case "KO_Matchcode"
+                KO_IdxCloud = Value
+                'Index Rezeptnummer(Rezept im Rezept)
+            Case "KA_RZ_Nr"
+                KA_Rz_Nr = CInt(Value)
+                'Lagerort
+            Case "KA_Lagerort"
+                KA_Lagerort = Value
+
+        End Select
+        Return True
+    End Function
+
+    Private Function MySQLdbRead_Parameter(Name As String, Value As Object) As Boolean
+        Static ParamNr, ParamTyp As Integer
+
+        'Feldname aus der Datenbank
+        Select Case Name
+
+            'Parameter-Nummer
+            Case "RP_ParamNr"
+                ParamNr = CInt(Value)
+
+            'Parameter-Typ
+            Case "RP_Typ_Nr"
+                ParamTyp = CInt(Value)
+
+            'Parameter-Wert
+            Case "RP_Wert"
+                Select Case ParamTyp
+                    Case 200
+                        'Produktinformationen
+                    Case 201
+                        'Verarbeitungs-Hinweise
+                    Case 202
+                        'Kalkulation/Preise
+                    Case 201
+                        'Froster
+                    Case 220
+                        'Teig-Gare
+                    Case 301
+                        'Nährwert-Informationen
+                        ktTyp301.Wert(ParamNr) = Value.ToString
+                End Select
+        End Select
+        Return True
+    End Function
 
     Public Sub print()
         Debug.Print("Nummer      " & KO_Nr_AlNum)
         Debug.Print("Bezeichung  " & KO_Bezeichnung)
         Debug.Print("Lieferant   " & LF_Lieferant)
         Debug.Print("Deklaration " & Deklaration)
-
     End Sub
-
 End Class

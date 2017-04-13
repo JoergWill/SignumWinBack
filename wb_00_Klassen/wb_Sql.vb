@@ -27,11 +27,11 @@ Public Class wb_Sql
 
     Dim MySqlCon As New MySqlConnection
     Dim MySqlCommand As New MySqlCommand
-    Dim MySqlRead As MySqlDataReader
+    Public MySqlRead As MySqlDataReader
 
     Dim msCon As New SqlConnection
     Dim msCommand As New SqlCommand
-    Dim msRead As SqlDataReader
+    Public msRead As SqlDataReader
 
     'Datenbank-Type zrückgeben MySql/MSSql
     ReadOnly Property conType As dbType
