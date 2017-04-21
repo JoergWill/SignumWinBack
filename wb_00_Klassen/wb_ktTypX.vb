@@ -3,6 +3,8 @@ Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
 Public Class wb_ktTypX
+    Inherits wb_ChangeLog
+
     Private KO_Nr As Integer
     Private KO_Type As KomponTypen
     Private KO_Nr_AlNum As String
@@ -16,7 +18,10 @@ Public Class wb_ktTypX
 
     Public ktTyp301 As New wb_ktTyp301
 
-    Public ReadOnly Property Nr As Integer
+    Public Property Nr As Integer
+        Set(value As Integer)
+            KO_Nr = value
+        End Set
         Get
             Return KO_Nr
         End Get
@@ -30,6 +35,8 @@ Public Class wb_ktTypX
 
     Public Property Nummer As String
         Set(value As String)
+            'Änderungen loggen
+            ChangeLogAdd(LogType.Prm, Parameter.Tx_AlNum, KO_Nr_AlNum, value)
             KO_Nr_AlNum = value
         End Set
         Get
@@ -39,6 +46,8 @@ Public Class wb_ktTypX
 
     Public Property Bezeichung As String
         Set(value As String)
+            'Änderungen loggen
+            ChangeLogAdd(LogType.Prm, Parameter.Tx_Bezeichnung, KO_Bezeichnung, value)
             KO_Bezeichnung = value
         End Set
         Get
@@ -48,6 +57,8 @@ Public Class wb_ktTypX
 
     Public Property Kommentar As String
         Set(value As String)
+            'Änderungen loggen
+            ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KO_Kommentar, value)
             KO_Kommentar = value
         End Set
         Get
@@ -57,6 +68,8 @@ Public Class wb_ktTypX
 
     Public Property Lieferant As String
         Set(value As String)
+            'Änderungen loggen
+            ChangeLogAdd(LogType.Prm, Parameter.Tx_Lieferant, LF_Lieferant, value)
             LF_Lieferant = value
         End Set
         Get
@@ -67,6 +80,26 @@ Public Class wb_ktTypX
     Public Property Deklaration As String
     Public Property TimeStamp As Date
     Public Property BestellNummer As String
+
+    Public Property MatchCode As String
+        Get
+            Return KO_IdxCloud
+        End Get
+        Set(value As String)
+            KO_IdxCloud = value
+        End Set
+    End Property
+
+    Public Sub ClearReport()
+        ChangeLogClear()
+        ktTyp301.ChangeLogClear()
+    End Sub
+
+    Public ReadOnly Property GetReport As String
+        Get
+            Return ChangeLogReport() & ktTyp301.ChangeLogReport
+        End Get
+    End Property
 
     ''' <summary>
     ''' Liest alle Datenfelder aus dem aktuellen Datensatz in das Komponenten-Objekt
@@ -92,42 +125,65 @@ Public Class wb_ktTypX
         Return True
     End Function
 
+    ''' <summary>
+    ''' Schreibt den Wert aus Value in die entprechende Property der Klasse. Der Feldname bestimmt das Ziel
+    ''' </summary>
+    ''' <param name="Name">String - Bezeichnung Datenbankfeld</param>
+    ''' <param name="Value">Object - Wert Datenbankfeld(Inhalt)</param>
+    ''' <returns></returns>
     Private Function MySQLdbRead_StammDaten(Name As String, Value As Object) As Boolean
+        'DB-Null aus der Datenbank
+        If IsDBNull(Value) Then
+            Value = ""
+        End If
+
         'Feldname aus der Datenbank
-        Select Case Name
+        Try
+                Select Case Name
 
                 'Nummer(intern)
-            Case "KO_Nr"
-                KO_Nr = CInt(Value)
+                    Case "KO_Nr"
+                        KO_Nr = CInt(Value)
                'Type
-            Case "KO_Type"
-                KO_Type = IntToKomponType(CInt(Value))
+                    Case "KO_Type"
+                        KO_Type = IntToKomponType(CInt(Value))
                 'Bezeichnung
-            Case "KO_Bezeichnung"
-                KO_Bezeichnung = Value
+                    Case "KO_Bezeichnung"
+                        KO_Bezeichnung = Value
                 'Kommentar
-            Case "KO_Kommentar"
-                KO_Kommentar = Value
+                    Case "KO_Kommentar"
+                        KO_Kommentar = Value
                 'Nummer(alphanumerisch)
-            Case "KO_Nr_AlNum"
-                KO_Nr_AlNum = Value
+                    Case "KO_Nr_AlNum"
+                        KO_Nr_AlNum = Value
                 'Backverlust(Rezept im Rezept)
-            Case "KO_Temp_Korr"
-                KO_Backverlust = Value
+                    Case "KO_Temp_Korr"
+                        KO_Backverlust = Value
                 'Index WinBack-Cloud
-            Case "KO_Matchcode"
-                KO_IdxCloud = Value
+                    Case "KA_Matchcode"
+                        KO_IdxCloud = Value
                 'Index Rezeptnummer(Rezept im Rezept)
-            Case "KA_RZ_Nr"
-                KA_Rz_Nr = CInt(Value)
+                    Case "KA_RZ_Nr"
+                        KA_Rz_Nr = CInt(Value)
                 'Lagerort
-            Case "KA_Lagerort"
-                KA_Lagerort = Value
+                    Case "KA_Lagerort"
+                        KA_Lagerort = Value
 
-        End Select
+                End Select
+            Catch ex As Exception
+            End Try
         Return True
     End Function
-
+    ''' <summary>
+    ''' Schreibt den Wert aus Value in die entprechende Property der Klasse. Anhand von 
+    ''' Parameter-Nummer und Parameter-Typ wird der Wert in das entsprechende Feld
+    ''' eingetragen.
+    ''' ParamNr und ParamWert müssen definiert sein, bevor der Wert geschrieben werden
+    ''' kann!
+    ''' </summary>
+    ''' <param name="Name">String - Bezeichnung Datenbankfeld</param>
+    ''' <param name="Value">Object - Wert Datenbankfeld(Inhalt)</param>
+    ''' <returns></returns>
     Private Function MySQLdbRead_Parameter(Name As String, Value As Object) As Boolean
         Static ParamNr, ParamTyp As Integer
 

@@ -15,6 +15,7 @@ Imports WinBack.wb_Sql_Selects
 
             'Rohstoff-Daten
             Dim nwtDaten As New wb_ktTypX
+
             Dim sql As String = setParams(sqlTestktTypX, "211")
             'Datenbank-Verbindung öffnen - MySQL
             Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
@@ -40,6 +41,7 @@ Imports WinBack.wb_Sql_Selects
 
             'Rohstoff-Daten
             Dim nwtDaten As New wb_ktTypX
+
             Dim sql As String = setParams(sqlTestktTyp3, "211")
             'Datenbank-Verbindung öffnen - MySQL
             Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
@@ -49,11 +51,38 @@ Imports WinBack.wb_Sql_Selects
                 If winback.Read Then
                     'den ersten und alle weiteren Daensätze aus der sql-Abfrage lesen
                     Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
+                    'Nährwert-Info - Wasser-Anteil
                     Assert.IsTrue(nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser) > 90.0)
+                    'Nährwert-Info - keine Allergene
                     Assert.AreEqual(wb_Global.AllergenInfo.K, nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten))
                 End If
             End If
         End If
+    End Sub
+
+    <TestMethod()> Public Sub Test_ChangeLog()
+
+        'Rohstoff-Daten
+        Dim nwtDaten As New wb_ktTypX
+
+        'Eintrag Lieferant ändern
+        nwtDaten.ClearReport()
+        nwtDaten.Lieferant = "Neuer Lieferant"
+        Debug.Print(nwtDaten.GetReport)
+        Assert.AreEqual("/Neuer Lieferant" + vbNewLine, nwtDaten.GetReport)
+
+        'Eintrag Nährwert-Info
+        nwtDaten.ClearReport()
+        nwtDaten.ktTyp301.Wert(wb_Global.T301_Fette) = 24.5F
+        Debug.Print(nwtDaten.GetReport)
+        Assert.AreEqual("   0,000/  24,500" + vbNewLine, nwtDaten.GetReport)
+
+        'Eintrag Nährwert-Info + Lieferanten-Bezeichnung
+        nwtDaten.ClearReport()
+        nwtDaten.ktTyp301.Wert(wb_Global.T301_Fette) = 24.6F
+        nwtDaten.Lieferant = "Anderer Lieferant"
+        Debug.Print(nwtDaten.GetReport)
+        Assert.AreEqual("Neuer Lieferant/Anderer Lieferant" + vbNewLine + "  24,500/  24,600" + vbNewLine, nwtDaten.GetReport)
     End Sub
 
 End Class

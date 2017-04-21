@@ -5,6 +5,7 @@ Imports WinBack
 <TestClass()> Public Class UnitTest_wb_ktTyp301
 
     <TestMethod()> Public Sub TestAllergene()
+        Dim ChangeLog As New wb_ChangeLog
         Dim ktTyp301 As New wb_ktTyp301
 
         Assert.IsTrue(ktTyp301.IsAllergen(141))

@@ -1,6 +1,7 @@
 ﻿Imports System.Globalization
 Imports System.IO
 Imports System.Threading
+Imports WinBack
 Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
@@ -80,6 +81,31 @@ Imports WinBack.wb_Global
         Assert.AreEqual(KomponTypen.KO_ZEILE_CHARGE, IntToKomponType(-2))
 
         Assert.AreEqual(KomponTypen.KO_TYPE_UNDEFINED, IntToKomponType(999))
+    End Sub
+
+    <TestMethod()> Public Sub Test_AllergenToString()
+        Assert.AreEqual("ERR", AllergenToString(wb_Global.AllergenInfo.ERR))
+        Assert.AreEqual("ERR", AllergenToString(wb_Global.AllergenInfo.X))
+        Assert.AreEqual("ERR", 10)
+
+        Assert.AreEqual("C", AllergenToString(wb_Global.AllergenInfo.C))
+        Assert.AreEqual("K", AllergenToString(wb_Global.AllergenInfo.K))
+        Assert.AreEqual("N", AllergenToString(wb_Global.AllergenInfo.N))
+        Assert.AreEqual("T", AllergenToString(wb_Global.AllergenInfo.T))
+    End Sub
+
+    <TestMethod()> Public Sub Test_StringToAllergen()
+        Assert.AreEqual(StringtoAllergen("ERR"), wb_Global.AllergenInfo.ERR)
+        Assert.AreEqual(StringtoAllergen("NotDefined"), wb_Global.AllergenInfo.ERR)
+        Assert.AreEqual(StringtoAllergen("AnyString"), wb_Global.AllergenInfo.ERR)
+
+        Assert.AreEqual(StringtoAllergen("X"), wb_Global.AllergenInfo.X)
+        Assert.AreEqual(StringtoAllergen(""), wb_Global.AllergenInfo.X)
+
+        Assert.AreEqual(StringtoAllergen("C"), wb_Global.AllergenInfo.C)
+        Assert.AreEqual(StringtoAllergen("K"), wb_Global.AllergenInfo.K)
+        Assert.AreEqual(StringtoAllergen("N"), wb_Global.AllergenInfo.N)
+        Assert.AreEqual(StringtoAllergen("T"), wb_Global.AllergenInfo.T)
     End Sub
 
     <TestMethod()> Public Sub Test_FormatStr()

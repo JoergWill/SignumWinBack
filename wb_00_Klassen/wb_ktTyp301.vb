@@ -2,6 +2,8 @@
 Imports WinBack.wb_Global
 
 Public Class wb_ktTyp301
+    Inherits wb_ChangeLog
+
     Private Structure Typ301
         Public _Allergen As AllergenInfo
         Public _Naehrwert As Double
@@ -66,9 +68,15 @@ Public Class wb_ktTyp301
         End Get
         Set(value As String)
             If IsAllergen(index) Then
+                'Änderungen loggen
+                ChangeLogAdd(LogType.Alg, index, NaehrwertInfo(index)._Allergen, wb_Functions.StringtoAllergen(value))
                 NaehrwertInfo(index)._Allergen = wb_Functions.StringtoAllergen(value)
             Else
-                NaehrwertInfo(index)._Naehrwert = value
+                'Änderungen loggen
+                Dim newvalue As Double
+                Double.TryParse(value, newvalue)
+                ChangeLogAdd(LogType.Nrw, index, NaehrwertInfo(index)._Naehrwert, newvalue)
+                NaehrwertInfo(index)._Naehrwert = newvalue
             End If
         End Set
     End Property

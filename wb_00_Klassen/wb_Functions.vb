@@ -82,11 +82,28 @@ Public Class wb_Functions
             Case "K"
                 Return wb_Global.AllergenInfo.K
             Case "N"
-                Return wb_Global.AllergenInfo.K
+                Return wb_Global.AllergenInfo.N
             Case "T"
                 Return wb_Global.AllergenInfo.T
+            Case "X", ""
+                Return wb_Global.AllergenInfo.X
             Case Else
                 Return wb_Global.AllergenInfo.ERR
+        End Select
+    End Function
+
+    Public Shared Function AllergenToString(a As wb_Global.AllergenInfo) As String
+        Select Case a
+            Case wb_Global.AllergenInfo.C
+                Return "C"
+            Case wb_Global.AllergenInfo.K
+                Return "K"
+            Case wb_Global.AllergenInfo.T
+                Return "T"
+            Case wb_Global.AllergenInfo.N
+                Return "N"
+            Case Else
+                Return "ERR"
         End Select
     End Function
 

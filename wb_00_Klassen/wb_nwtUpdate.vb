@@ -12,9 +12,9 @@ Public Class wb_nwtUpdate
     Implements IDisposable
     Protected disposed As Boolean = False
 
-    Private KO_Nr As Integer = 0
     Private _InfoText As String = ""
-    Public nwtDaten As New wb_ktTypX
+    Private AktKO_Nr As Integer = 0
+    Private ChangeLog As New wb_ChangeLog
 
     Public ReadOnly Property InfoText As String
         Get
@@ -25,30 +25,40 @@ Public Class wb_nwtUpdate
     Public Function UpdateNext() As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim nwtDaten As New wb_ktTypX
 
         'nächsten Datensatz aus Tabelle Komponenten lesen
-        If winback.sqlSelect(setParams(sqlUpdateNWT, KO_Nr.ToString)) Then
+        If winback.sqlSelect(setParams(sqlUpdateNWT, AktKO_Nr.ToString)) Then
+            'Lesen KO-Nr
             If winback.Read Then
-                'Index - KO_Nr
-                KO_Nr = winback.iField("KO_Nr")
-                'alphanumerische Komponenten-Nummer
-                Dim KO_Nr_AlNum As String = winback.sField("KO_Nr_AlNum")
-                'Komponenten-Bezeichnung
-                Dim KO_Bezeichnung As String = winback.sField("KO_Bezeichnung")
-                'Match-Code (DL-Datenlink oder ID-WinBack-Cloud)
-                Dim KA_Matchcode As String = winback.sField("KA_Matchcode")
+                'nächste KO_Nr aus DB in Object nwtDaten einlesen
+                nwtDaten.MySQLdbRead(winback.MySqlRead)
+                winback.CloseRead()
+                AktKO_Nr = nwtDaten.Nr
 
-                'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung). Die Daten werden in nwtDaten eingetragen
-                Dim LastChange As Date = GetNaehrwerte(KA_Matchcode)
+                'Stammdaten und Nährwerte aus DB in (Object)nwtDaten einlesen
+                If winback.sqlSelect(setParams(sqlgetNWT, AktKO_Nr.ToString)) Then
+                    'Lesen KO-Nr
+                    If winback.Read Then
+                        nwtDaten.MySQLdbRead(winback.MySqlRead)
 
-                'Ausgabe-Text
-                _InfoText = "KO-Nr " & KO_Nr.ToString("00000 ") & KO_Bezeichnung & " " & LastChange.ToString
+                        'Änderungs-Log löschen
+                        nwtDaten.ChangeLogClear()
+                        'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung). Die Daten werden in nwtDaten eingetragen
+                        Dim LastChange As Date = GetNaehrwerte(nwtDaten.MatchCode, nwtDaten)
+                        'Protokoll der Änderungen ausgeben
+                        Debug.Print(nwtDaten.ChangeLogReport)
 
+                        'Ausgabe-Text
+                        _InfoText = "KO-Nr " & nwtDaten.Nr.ToString("00000 ") & nwtDaten.Bezeichung & " " & LastChange.ToString
+
+                    End If
+                End If
                 winback.Close()
                 Return True
             Else
                 'EOF() - ReStart bei KO_Nr = 0
-                KO_Nr = 0
+                AktKO_Nr = 0
                 _InfoText = ""
                 winback.Close()
                 Return False
@@ -71,11 +81,11 @@ Public Class wb_nwtUpdate
     ''' </summary>
     ''' <param name="ID"></param>
     ''' <returns>Gibt das Datum der letzten Änderung in der Cloud zurück</returns>
-    Public Function GetNaehrwerte(ID As String) As Date
+    Public Function GetNaehrwerte(ID As String, nwtdaten As wb_ktTypX) As Date
         If Left(ID, 3) = "DL-" Then
-            Return GetNaehrwerteDatenlink(ID)
+            Return GetNaehrwerteDatenlink(ID, nwtdaten)
         Else
-            Return GetNaehrwerteHetzner(ID)
+            Return GetNaehrwerteHetzner(ID, nwtdaten)
         End If
     End Function
 
@@ -86,10 +96,10 @@ Public Class wb_nwtUpdate
     ''' </summary>
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
-    Private Function GetNaehrwerteHetzner(iD As String) As Date
+    Private Function GetNaehrwerteHetzner(iD As String, nwtdaten As wb_ktTypX) As Date
         Dim nwt As New wb_nwtCloud(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
-        If nwt.GetProductData(iD, nwtDaten) > 0 Then
-            Return nwtDaten.ktTyp301.TimeStamp
+        If nwt.GetProductData(iD, nwtdaten) > 0 Then
+            Return nwtdaten.ktTyp301.TimeStamp
         Else
             Return #11/22/1964 00:00:00#
         End If
@@ -102,12 +112,12 @@ Public Class wb_nwtUpdate
     ''' </summary>
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
-    Private Function GetNaehrwerteDatenlink(iD As String) As Date
+    Private Function GetNaehrwerteDatenlink(iD As String, nwtdaten As wb_ktTypX) As Date
         'Create new instance of nwtCloud
         Dim dl As New wb_nwtDatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
-        If dl.GetProductData(iD, nwtDaten) > 0 Then
+        If dl.GetProductData(iD, nwtdaten) > 0 Then
             'Datum/Uhrzeit der letzten Änderung
-            Return nwtDaten.ktTyp301.TimeStamp
+            Return nwtdaten.ktTyp301.TimeStamp
         Else
             Return #11/22/1964 00:00:00#
         End If
@@ -116,7 +126,7 @@ Public Class wb_nwtUpdate
     Public Sub New()
         'letzte aktualisierte Komponenten-ID aus der winback.ini lesen
         Dim IniFile As New wb_IniFile
-        KO_Nr = IniFile.ReadInt("Cloud", "UpdateNaehrwerteKONr")
+        AktKO_Nr = IniFile.ReadInt("Cloud", "UpdateNaehrwerteKONr")
     End Sub
 
     Protected Overridable Overloads Sub Dispose(ByVal disposing As Boolean)
@@ -126,7 +136,7 @@ Public Class wb_nwtUpdate
             End If
             'Beim Programm-Ende wird die aktuelle Komponenten-Nummer gesichert
             Dim IniFile As New wb_IniFile
-            IniFile.WriteInt("Cloud", "UpdateNaehrwerteKONr", KO_Nr)
+            IniFile.WriteInt("Cloud", "UpdateNaehrwerteKONr", AktKO_Nr)
         End If
         Me.disposed = True
     End Sub

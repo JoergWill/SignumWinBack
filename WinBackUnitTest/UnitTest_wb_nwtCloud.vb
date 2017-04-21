@@ -27,22 +27,25 @@
 
     <TestMethod()> Public Sub Test_CloudUpdate()
         Dim nwtUpdate As New wb_nwtUpdate
+        Dim nwtDaten As New wb_ktTypX
 
         'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung)
-        Dim LastChange As Date = nwtUpdate.GetNaehrwerte("1")
+        nwtDaten.ClearReport()
+        Dim LastChange As Date = nwtUpdate.GetNaehrwerte("1", nwtDaten)
 
         'Ergebnis aus Cloud(JSON) auswerten
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.TimeStamp, #12/16/2014 09:22:59#)
-        Assert.AreEqual(nwtUpdate.nwtDaten.Lieferant, "LINDEMANN")
-        Assert.AreEqual(nwtUpdate.nwtDaten.Bezeichung, "Westfalia Kornkruste Kornfit")
+        Assert.AreEqual(nwtDaten.ktTyp301.TimeStamp, #12/16/2014 09:22:59#)
+        Assert.AreEqual(nwtDaten.Lieferant, "LINDEMANN")
+        Assert.AreEqual(nwtDaten.Bezeichung, "Westfalia Kornkruste Kornfit")
+        Debug.Print(nwtDaten.GetReport)
 
         'Nährwert-Info Kalorien(KJoule)
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_KiloJoule), 1998.0)
+        Assert.AreEqual(nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_KiloJoule), 1998.0)
 
         'Allergene
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten), wb_Global.AllergenInfo.C)
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Allergen(wb_Global.T301_Sojaerzeugnisse), wb_Global.AllergenInfo.C)
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Allergen(wb_Global.T301_Eier), wb_Global.AllergenInfo.T)
+        Assert.AreEqual(nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten), wb_Global.AllergenInfo.C)
+        Assert.AreEqual(nwtDaten.ktTyp301.Allergen(wb_Global.T301_Sojaerzeugnisse), wb_Global.AllergenInfo.C)
+        Assert.AreEqual(nwtDaten.ktTyp301.Allergen(wb_Global.T301_Eier), wb_Global.AllergenInfo.T)
 
     End Sub
 End Class

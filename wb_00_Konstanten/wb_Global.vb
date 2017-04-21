@@ -107,6 +107,14 @@
     Public Const T301_Vegetarisch = 210
     Public Const T301_Vegan = 211
 
+    Enum Parameter
+        Tx_AlNum              'Rohstoff/Artikelnummer(alphanumerisch)
+        Tx_Bezeichnung         'Rohstoff/Artikelbezeichnung
+        Tx_Kommentar           'Kommentar-Feld
+        Tx_MatchCode           'Index WinBack-Cloud/Datenlink
+        Tx_Lieferant           'Lieferant
+    End Enum
+
     Enum Hinweise
         RezeptHinweise         '2/0/RzNr
         ArtikelHinweise        '3/0/ArtNr
@@ -137,6 +145,20 @@
         WinBackUpdate           'Datensatz ist in beiden Datenbanken vorhanden und muss in WinBack aktualisiert werden
         WinBackErr              'Datensatz ist nur in OrgaBack vorhanden - Fehlt in WinBack, KEIN Update
     End Enum
+
+    Enum LogType
+        X     'Unbestimmt
+        Stm   'Stammdaten
+        Prm   'Parameter
+        Alg   'Allergen
+        Nrw   'Nährwert
+    End Enum
+
+    Public Structure wb_ChangeLogEintrag
+        Public Type As LogType
+        Public OldValue As String
+        Public NewValue As String
+    End Structure
 
     Public Structure wb_GruppenRechte
         Public OberBegriff As String  'IT_Bezeichnung

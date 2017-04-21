@@ -34,21 +34,22 @@ Imports WinBack
 
     <TestMethod()> Public Sub Test_DatenLinkUpdate()
         Dim nwtUpdate As New wb_nwtUpdate
+        Dim nwtDaten As New wb_ktTypX
 
         'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung)
-        Dim LastChange As Date = nwtUpdate.GetNaehrwerte("DL-CE3-C4D")
+        Dim LastChange As Date = nwtUpdate.GetNaehrwerte("DL-CE3-C4D", nwtDaten)
 
         'Ergebnis aus DatenLink XML auswerten
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.TimeStamp, #03/09/2013 08:14:03#)
-        Assert.AreEqual(nwtUpdate.nwtDaten.Lieferant, "BÄKO-Zentrale Süddeutschland eG")
-        Assert.AreEqual(nwtUpdate.nwtDaten.Bezeichung, "BÄKO BiO Weizenschrot mittel")
+        Assert.AreEqual(nwtDaten.ktTyp301.TimeStamp, #03/09/2013 08:14:03#)
+        Assert.AreEqual(nwtDaten.Lieferant, "BÄKO-Zentrale Süddeutschland eG")
+        Assert.AreEqual(nwtDaten.Bezeichung, "BÄKO BiO Weizenschrot mittel")
 
         'Nährwert-Info Kalorien(KJoule)
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_KiloJoule), 1293.0)
+        Assert.AreEqual(nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_KiloJoule), 1293.0)
 
         'Allergene
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten), wb_Global.AllergenInfo.C)
-        Assert.AreEqual(nwtUpdate.nwtDaten.ktTyp301.Allergen(wb_Global.T301_Weizen), wb_Global.AllergenInfo.C)
+        Assert.AreEqual(nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten), wb_Global.AllergenInfo.C)
+        Assert.AreEqual(nwtDaten.ktTyp301.Allergen(wb_Global.T301_Weizen), wb_Global.AllergenInfo.C)
 
     End Sub
 
