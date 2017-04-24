@@ -1,5 +1,29 @@
 ﻿Public Class wb_Global
 
+    Public Enum ktTyp301Gruppen
+        xxx
+        Big4
+        Big8
+        Vitamine
+        Kohlenhydrate
+        Mineralstoffe
+        SpurenElemente
+        Allergene
+        Gluten
+        Schalenfrüchte
+        Gesamtkennzahlen
+    End Enum
+
+    Public Structure ktTyp301Param
+        Public ParamNr As Integer
+        Public Bezeichnung As String
+        Public KurzBezeichnung As String
+        Public Gruppe As ktTyp301Gruppen
+        Public Einheit As String
+        Public Feld As String
+        Public Used As Boolean
+    End Structure
+
     Enum ProgVariante
         OrgaBack                    'Programm läuft als Addin unter OrgaBack
         WinBack                     'Programm läuft als Standalone
@@ -70,7 +94,7 @@
     Public Const T301_GesamtKochsalz = 202
 
     Public Const T301_Gluten = 141
-    Public Const T301_Weizen =170
+    Public Const T301_Weizen = 170
     Public Const T301_Roggen = 171
     Public Const T301_Gerste = 172
     Public Const T301_Dinkel = 173
@@ -156,6 +180,7 @@
 
     Public Structure wb_ChangeLogEintrag
         Public Type As LogType
+        Public ParamNr As Integer
         Public OldValue As String
         Public NewValue As String
     End Structure

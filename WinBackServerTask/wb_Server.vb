@@ -118,6 +118,9 @@ Public Class Main
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
         wb_Konfig.SqlSetting()
+        'Initialisierung Komponenten-Parameter
+        wb_Konfig.LoadKompon301Tabelle()
+
         'IP-Server starten
         Dim listener As New System.Threading.Thread(AddressOf listen) 'initialize a new thread for the listener so our GUI doesn't lag
         listener.IsBackground = True

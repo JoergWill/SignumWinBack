@@ -171,4 +171,18 @@ Imports WinBack.wb_Global
         Assert.AreEqual("/home/herbst", Output)
     End Sub
 
+    <TestMethod()> Public Sub Test_StrToDouble()
+        Assert.AreEqual(0.1, StrToDouble("0.1"))
+        Assert.AreEqual(0.1, StrToDouble("0,1"))
+        Assert.AreEqual(1000.1, StrToDouble("1000,1"))
+        Assert.AreNotEqual(1000.1, StrToDouble("1.000,1"))
+        Assert.AreEqual(1000.1, StrToDouble("1000.1"))
+
+        Assert.AreEqual(-1000.1, StrToDouble("-1000,1"))
+        Assert.AreEqual(-1000.1, StrToDouble("-1000.1"))
+
+        Assert.AreEqual(0.0, StrToDouble(""))
+        Assert.AreEqual(0.0, StrToDouble("xxx"))
+
+    End Sub
 End Class

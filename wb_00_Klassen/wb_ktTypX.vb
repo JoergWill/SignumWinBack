@@ -36,8 +36,7 @@ Public Class wb_ktTypX
     Public Property Nummer As String
         Set(value As String)
             'Änderungen loggen
-            ChangeLogAdd(LogType.Prm, Parameter.Tx_AlNum, KO_Nr_AlNum, value)
-            KO_Nr_AlNum = value
+            KO_Nr_AlNum = ChangeLogAdd(LogType.Prm, Parameter.Tx_AlNum, KO_Nr_AlNum, value)
         End Set
         Get
             Return KO_Nr_AlNum
@@ -47,8 +46,7 @@ Public Class wb_ktTypX
     Public Property Bezeichung As String
         Set(value As String)
             'Änderungen loggen
-            ChangeLogAdd(LogType.Prm, Parameter.Tx_Bezeichnung, KO_Bezeichnung, value)
-            KO_Bezeichnung = value
+            KO_Bezeichnung = ChangeLogAdd(LogType.Prm, Parameter.Tx_Bezeichnung, KO_Bezeichnung, value)
         End Set
         Get
             Return KO_Bezeichnung
@@ -58,8 +56,7 @@ Public Class wb_ktTypX
     Public Property Kommentar As String
         Set(value As String)
             'Änderungen loggen
-            ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KO_Kommentar, value)
-            KO_Kommentar = value
+            KO_Kommentar = ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KO_Kommentar, value)
         End Set
         Get
             Return KO_Kommentar
@@ -69,8 +66,7 @@ Public Class wb_ktTypX
     Public Property Lieferant As String
         Set(value As String)
             'Änderungen loggen
-            ChangeLogAdd(LogType.Prm, Parameter.Tx_Lieferant, LF_Lieferant, value)
-            LF_Lieferant = value
+            LF_Lieferant = ChangeLogAdd(LogType.Prm, Parameter.Tx_Lieferant, LF_Lieferant, value)
         End Set
         Get
             Return LF_Lieferant
@@ -92,12 +88,12 @@ Public Class wb_ktTypX
 
     Public Sub ClearReport()
         ChangeLogClear()
-        ktTyp301.ChangeLogClear()
+        ktTyp301.ClearReport()
     End Sub
 
     Public ReadOnly Property GetReport As String
         Get
-            Return ChangeLogReport() & ktTyp301.ChangeLogReport
+            Return ChangeLogReport() & ktTyp301.GetReport
         End Get
     End Property
 

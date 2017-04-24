@@ -102,10 +102,9 @@
       <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.Contracts, Version=2.1.6029.33503, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
+    <Reference Include="Signum.OrgaSoft.Contracts, Version=3.0.6320.31371, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\OrgaSoft V3.0\Signum.OrgaSoft.Contracts.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

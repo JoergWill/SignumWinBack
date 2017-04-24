@@ -1,4 +1,5 @@
-﻿Imports WinBack.wb_Functions
+﻿Imports System.Globalization
+Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
 Public Class wb_ktTyp301
@@ -69,14 +70,10 @@ Public Class wb_ktTyp301
         Set(value As String)
             If IsAllergen(index) Then
                 'Änderungen loggen
-                ChangeLogAdd(LogType.Alg, index, NaehrwertInfo(index)._Allergen, wb_Functions.StringtoAllergen(value))
-                NaehrwertInfo(index)._Allergen = wb_Functions.StringtoAllergen(value)
+                NaehrwertInfo(index)._Allergen = ChangeLogAdd(LogType.Alg, index, NaehrwertInfo(index)._Allergen, StringtoAllergen(value))
             Else
                 'Änderungen loggen
-                Dim newvalue As Double
-                Double.TryParse(value, newvalue)
-                ChangeLogAdd(LogType.Nrw, index, NaehrwertInfo(index)._Naehrwert, newvalue)
-                NaehrwertInfo(index)._Naehrwert = newvalue
+                NaehrwertInfo(index)._Naehrwert = ChangeLogAdd(LogType.Nrw, index, NaehrwertInfo(index)._Naehrwert, StrToDouble(value))
             End If
         End Set
     End Property
@@ -102,15 +99,22 @@ Public Class wb_ktTyp301
             If idx > 0 Then
                 Select Case value
                     Case "CONTAINED"
-                        Allergen(idx) = wb_Global.AllergenInfo.C
+                        Allergen(idx) = AllergenInfo.C
                     Case "MAY_CONTAINED"
-                        Allergen(idx) = wb_Global.AllergenInfo.T
+                        Allergen(idx) = AllergenInfo.T
                     Case Else
-                        Allergen(idx) = wb_Global.AllergenInfo.ERR
+                        Allergen(idx) = AllergenInfo.ERR
                 End Select
             Else
                 Trace.WriteLine("Fehler bei DatenLink - Index " & index & " nicht definiert")
             End If
         End Set
     End Property
+
+    Public Sub ClearReport()
+        ChangeLogClear()
+    End Sub
+    Public Function GetReport() As String
+        Return ChangeLogReport()
+    End Function
 End Class

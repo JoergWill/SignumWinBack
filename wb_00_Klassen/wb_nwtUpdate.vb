@@ -26,6 +26,7 @@ Public Class wb_nwtUpdate
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim nwtDaten As New wb_ktTypX
+        UpdateNext = False
 
         'nächsten Datensatz aus Tabelle Komponenten lesen
         If winback.sqlSelect(setParams(sqlUpdateNWT, AktKO_Nr.ToString)) Then
@@ -41,33 +42,27 @@ Public Class wb_nwtUpdate
                     'Lesen KO-Nr
                     If winback.Read Then
                         nwtDaten.MySQLdbRead(winback.MySqlRead)
-
-                        'Änderungs-Log löschen
-                        nwtDaten.ChangeLogClear()
-                        'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung). Die Daten werden in nwtDaten eingetragen
-                        Dim LastChange As Date = GetNaehrwerte(nwtDaten.MatchCode, nwtDaten)
-                        'Protokoll der Änderungen ausgeben
-                        Debug.Print(nwtDaten.ChangeLogReport)
-
-                        'Ausgabe-Text
-                        _InfoText = "KO-Nr " & nwtDaten.Nr.ToString("00000 ") & nwtDaten.Bezeichung & " " & LastChange.ToString
-
                     End If
                 End If
-                winback.Close()
-                Return True
+
+                'Änderungs-Log löschen
+                nwtDaten.ClearReport()
+                'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung). Die Daten werden in nwtDaten eingetragen
+                Dim LastChange As Date = GetNaehrwerte(nwtDaten.MatchCode, nwtDaten)
+                'Protokoll der Änderungen ausgeben
+                Debug.Print(nwtDaten.GetReport)
+
+                'Ausgabe-Text
+                _InfoText = "(" & nwtDaten.Nr.ToString("00000 ") & ")" & nwtDaten.Bezeichung & " " & LastChange.ToString
+                UpdateNext = True
             Else
                 'EOF() - ReStart bei KO_Nr = 0
                 AktKO_Nr = 0
                 _InfoText = ""
-                winback.Close()
-                Return False
             End If
-            winback.Close()
-            Return False
         End If
         winback.Close()
-        Return False
+        Return UpdateNext
     End Function
 
     ''' <summary>

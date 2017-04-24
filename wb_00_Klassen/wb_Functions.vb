@@ -1,30 +1,23 @@
-﻿'---------------------------------------------------------
-'11.05.2016/ V0.9/JW            :Neuanlage
-'Bearbeitet von                 :Will
-'
-'Änderungen:
-'---------------------------------------------------------
-'Beschreibung:
-'Sammlung von Statischen Funktionen
-
+﻿Imports System.Globalization
 Imports System.IO
 Imports ICSharpCode.SharpZipLib.BZip2
 Imports Tamir.SharpSsh
 
-Public Class wb_Functions
+''' <summary>
+''' Beschreibung:
+''' Sammlung von Statischen Funktionen
+''' </summary>
 
-    '---------------------------------------------------------
-    '11.05.2016/ V0.9/JW            :Neuanlage
-    'Bearbeitet von                 :Will
-    '
-    'Änderungen:
-    '---------------------------------------------------------
-    'Beschreibung:
-    'Erzeugt einen String aus Key-Down-Ereignissen
-    'alle gültigen Zeichen werden an den String angehängt,
-    'ungültige und Steuerzeichen werden mit False zurück-
-    'gegeben (KeyDown-Handler = False)
-    '---------------------------------------------------------
+Public Class wb_Functions
+    ''' <summary>
+    ''' Erzeugt einen String aus Key-Down-Ereignissen
+    ''' alle gültigen Zeichen werden an den String angehängt,
+    ''' ungültige und Steuerzeichen werden mit False zurück-
+    ''' gegeben (KeyDown-Handler = False)
+    ''' </summary>
+    ''' <param name="KeyCode"> - Char KeyCode der gedrückten Taste</param>
+    ''' <param name="s">- String alle gültigen Zeichen aus KeyCode</param>
+    ''' <returns>False wenn Steuerzeichen erkannt werden</returns>
     Public Shared Function KeyToString(KeyCode As Char, ByRef s As String) As Boolean
         Select Case Convert.ToUInt16(KeyCode)
                 'normale Buchstaben
@@ -107,6 +100,23 @@ Public Class wb_Functions
         End Select
     End Function
 
+    Public Shared Function LogTypeToString(LogType As wb_Global.LogType) As String
+        Select Case LogType
+            Case wb_Global.LogType.X     'Unbestimmt
+                Return "XXX"
+            Case wb_Global.LogType.Stm   'Stammdaten
+                Return "Stm"
+            Case wb_Global.LogType.Prm   'Parameter
+                Return "Prm"
+            Case wb_Global.LogType.Alg   'Allergen
+                Return "Alg"
+            Case wb_Global.LogType.Nrw   'Nährwert
+                Return "Nrw"
+            Case Else
+                Return "xxx"
+        End Select
+    End Function
+
     Public Shared Function IntToKomponType(KO_Type As Integer) As wb_Global.KomponTypen
         Select Case KO_Type
             Case -1
@@ -174,6 +184,33 @@ Public Class wb_Functions
 
             Case Else
                 Return wb_Global.KomponTypen.KO_TYPE_UNDEFINED
+        End Select
+    End Function
+
+    Public Shared Function kt301GruppeToString(s As String) As wb_Global.ktTyp301Gruppen
+        Select Case s
+            Case "Big4"
+                Return wb_Global.ktTyp301Gruppen.Big4
+            Case "Big8"
+                Return wb_Global.ktTyp301Gruppen.Big8
+            Case "Vitamine"
+                Return wb_Global.ktTyp301Gruppen.Vitamine
+            Case "Kohlenhydratzusammen"
+                Return wb_Global.ktTyp301Gruppen.Kohlenhydrate
+            Case "Mineralstoffe"
+                Return wb_Global.ktTyp301Gruppen.Mineralstoffe
+            Case "Spurenelemente"
+                Return wb_Global.ktTyp301Gruppen.SpurenElemente
+            Case "Allergene"
+                Return wb_Global.ktTyp301Gruppen.Allergene
+            Case "Gluten"
+                Return wb_Global.ktTyp301Gruppen.Gluten
+            Case "Schalenfrüchte"
+                Return wb_Global.ktTyp301Gruppen.Schalenfrüchte
+            Case "Gesamtkennzahlen"
+                Return wb_Global.ktTyp301Gruppen.Gesamtkennzahlen
+            Case Else
+                Return wb_Global.ktTyp301Gruppen.xxx
         End Select
     End Function
 
@@ -296,6 +333,23 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt einen String sicher in Float um. Das Zahlenformat kann US/DE sein. Punkte werden vor der Konvertierung in Koma umgewandelt.
+    ''' 1000er - Trennzeichen sind nicht erlaubt
+    ''' </summary>
+    ''' <param name="value"></param>
+    ''' <returns>Kovertierten String im Format Double</returns>
+    Public Shared Function StrToDouble(value As String) As Double
+        Dim d As Double
+        Try
+            value = value.Replace(".", ",")
+            Double.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d)
+            Return d
+        Catch ex As Exception
+            Return 0.0F
+        End Try
+    End Function
+
+    ''' <summary>
     '''Text aus Datenbank lesen - Übersetzung
     ''' von Herbert Bsteh aus winback (Kylix)
     ''' Erste Zahl (Texttyp), zweite Zahl (Textindex)
@@ -322,6 +376,10 @@ Public Class wb_Functions
         Else
             Return Text
         End If
+    End Function
+
+    Public Shared Function kt301Param(p As Integer) As wb_Global.ktTyp301Param
+        Return wb_Konfig.ktTyp301Params(p)
     End Function
 
     Public Shared Sub DoBatch(Directory As String, BatchFile As String, Argument As String, WaitUntilReady As Boolean)

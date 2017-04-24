@@ -174,10 +174,17 @@ Imports WinBack.wb_Konfig
 
     End Sub
 
+    <TestMethod()>
+    Public Sub Test_LoadKompon301Tabelle()
+        LoadKompon301Tabelle()
+        Assert.AreEqual("Kilojoule", wb_Functions.kt301Param(wb_Global.T301_KiloJoule).Bezeichnung)
+        Assert.AreEqual("kJ", wb_Functions.kt301Param(wb_Global.T301_KiloJoule).Einheit)
+    End Sub
+
+
     <TestCleanup>
     Sub TestCleanup()
         'Datenbank wieder bereinigen
         winback.sqlCommand("DELETE FROM Texte WHERE T_Textindex='9998'")
     End Sub
-
 End Class
