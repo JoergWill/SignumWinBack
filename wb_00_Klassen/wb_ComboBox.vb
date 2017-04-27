@@ -1,22 +1,19 @@
-﻿'---------------------------------------------------------
-'19.05.2016/ V0.9/JW            :Neuanlage
-'Bearbeitet von                 :Will
-'
-'Änderungen:
-'---------------------------------------------------------
-'Beschreibung:
-'Ableitung der Klasse Windows.Forms.ComboBox
-'
-'wbComboBox.Fill füllt die ComboBox mit Texten
-'aus einer Hash-Table. Der entsprechende Keys
-'der HashTable setzt/liest den Selectierten Text.
-'
-
+﻿''' <summary>
+''' Ableitung der Klasse Windows.Forms.ComboBox
+'''
+''' wbComboBox.Fill füllt die ComboBox mit Texten
+''' aus einer Hash-Table. Der entsprechende Keys
+''' der HashTable setzt/liest den Selectierten Text.
+'''
+''' </summary>
 Partial Class wb_ComboBox
     Inherits Windows.Forms.ComboBox
     Dim ht As SortedList
 
-    'Gibt den Key aus HashTable zurück, der dem selektierten Text entspricht
+    ''' <summary>
+    '''´Gibt den Key aus HashTable zurück, der dem selektierten Text entspricht
+    ''' </summary>
+    ''' <returns>Integer Key</returns>
     Function GetKeyFromSelection() As Integer
         Dim i As Integer = 0
         For Each item As DictionaryEntry In ht
@@ -28,7 +25,10 @@ Partial Class wb_ComboBox
         Return i
     End Function
 
-    'Setzt den selektierten Text entsprechend dem Key aus HashTable
+    ''' <summary>
+    ''' Setzt den selektierten Text entsprechend dem Key aus HashTable
+    ''' </summary>
+    ''' <param name="Key">Schlüssel</param>
     Public Sub SetTextFromKey(Key As Integer)
         Dim i As Integer
         For i = 0 To Items.Count - 1
@@ -40,7 +40,10 @@ Partial Class wb_ComboBox
         SelectedIndex = -1
     End Sub
 
-    'ComboBox mit Texten aus HashTable füllen.
+    ''' <summary>
+    ''' ComboBox mit Texten aus HashTable füllen.
+    ''' </summary>
+    ''' <param name="HashTable"></param>
     Public Sub Fill(HashTable As SortedList)
         ht = HashTable
         'Combo-Box mit Werten füllen

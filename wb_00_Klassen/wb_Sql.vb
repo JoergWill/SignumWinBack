@@ -1,29 +1,11 @@
 ﻿Imports System.Data.SqlClient
 Imports MySql.Data.MySqlClient
-'---------------------------------------------------------
-'04.05.2016/ V0.9/JW            :Neuanlage
-'Bearbeitet von                 :Will
-'
-'Änderungen:
-'---------------------------------------------------------
-'Beschreibung:
-'Kapselt die Zugriffe auf die Datenbank
-'wahlweise MySQl(winback) oder MSSQL(OrgasoftMain)
-'---------------------------------------------------------
 
+''' <summary>
+''' Kapselt die Zugriffe auf die Datenbank
+''' wahlweise MySQl(winback) oder MSSQL(OrgasoftMain)
+''' </summary>
 Public Class wb_Sql
-    Enum dbType
-        undef
-        mySql
-        msSql
-    End Enum
-
-    Enum dbTable
-        winback
-        wbdaten
-    End Enum
-
-    Dim _conType As dbType = dbType.undef
 
     Dim MySqlCon As New MySqlConnection
     Dim MySqlCommand As New MySqlCommand
@@ -33,7 +15,28 @@ Public Class wb_Sql
     Dim msCommand As New SqlCommand
     Public msRead As SqlDataReader
 
-    'Datenbank-Type zrückgeben MySql/MSSql
+    ''' <summary>
+    ''' WinBack-Datenbank-Type (mysql/Microsoft-SQL)
+    ''' </summary>
+    Enum dbType
+        undef
+        mySql
+        msSql
+    End Enum
+    Dim _conType As dbType = dbType.undef
+
+    ''' <summary>
+    ''' WinBack-Datenbanken
+    ''' </summary>
+    Enum dbTable
+        winback
+        wbdaten
+    End Enum
+
+    ''' <summary>
+    ''' Datenbank-Type
+    ''' </summary>
+    ''' <returns>MySql/MSSql</returns>
     ReadOnly Property conType As dbType
         Get
             Return _conType
@@ -46,20 +49,28 @@ Public Class wb_Sql
     ''' <returns></returns>
     ReadOnly Property Read As Boolean
         Get
-            Select Case conType
+            Try
+                Select Case conType
             'Verbindung über mySql
-                Case dbType.mySql
-                    Return MySqlRead.Read
+                    Case dbType.mySql
+                        Return MySqlRead.Read
             'Verbindung über msSql
-                Case dbType.msSql
-                    Return msRead.Read
-                Case Else
-                    Return False
-            End Select
+                    Case dbType.msSql
+                        Return msRead.Read
+                    Case Else
+                        Return False
+                End Select
+            Catch ex As Exception
+                Return False
+            End Try
         End Get
     End Property
 
-    'Datenbankfeld als String auslesen
+    ''' <summary>
+    ''' Datenbankfeld als String auslesen
+    ''' </summary>
+    ''' <param name="FieldName">DB-Field-Name</param>
+    ''' <returns>String Datenfeld-Inhalt</returns>
     ReadOnly Property sField(FieldName As String) As String
         Get
             Try
@@ -79,7 +90,11 @@ Public Class wb_Sql
         End Get
     End Property
 
-    'Datenbankfeld als Integer auslesen
+    ''' <summary>
+    ''' Datenbankfeld als Integer auslesen
+    ''' </summary>
+    ''' <param name="FieldName">DB-Field-Name</param>
+    ''' <returns>Integer Datenfeld-Inhalt</returns>
     ReadOnly Property iField(FieldName As String) As Integer
         Get
             Try
@@ -99,6 +114,11 @@ Public Class wb_Sql
         End Get
     End Property
 
+    ''' <summary>
+    ''' Constructor
+    ''' </summary>
+    ''' <param name="ConString">Verbindungs-String</param>
+    ''' <param name="db">DB-Type (MySQL/MSsql)</param>
     Sub New(ConString As String, db As dbType)
         'Datenbank-Verbindung schliessen falls noch offen
         Close()
@@ -153,7 +173,12 @@ Public Class wb_Sql
         End Try
     End Function
 
-    'SQL-Kommando ausführen
+    ''' <summary>
+    ''' SQL-Kommando ausführen
+    ''' </summary>
+    ''' <param name="sql">SQL-Kommando</param>
+    ''' <returns>Anzahl der Datensätze
+    ''' -1 falls ein Fehler aufgetreten ist</returns>
     Function sqlCommand(sql As String) As Integer
         Try
             Select Case conType
@@ -175,7 +200,9 @@ Public Class wb_Sql
         End Try
     End Function
 
-    'SQL-Read beenden
+    ''' <summary>
+    ''' SQL-Read beenden
+    ''' </summary>
     Sub CloseRead()
         Select Case conType
             Case dbType.mySql
@@ -185,7 +212,9 @@ Public Class wb_Sql
         End Select
     End Sub
 
-    'Datenbank-Verbindung schliessen
+    ''' <summary>
+    '''Datenbank-Verbindung schliessen
+    ''' </summary>
     Sub Close()
         Try
             Select Case conType

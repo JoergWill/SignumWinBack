@@ -297,7 +297,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("C:\Program Files\MySQL\MySQL Server 5.0")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\Dokumente\Projekte\WinBackBüro\mysql")>  _
         Public Property MySQLPath() As String
             Get
                 Return CType(Me("MySQLPath"),String)

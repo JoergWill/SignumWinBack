@@ -2,6 +2,17 @@
 Imports System.Net
 Imports WinBack
 
+''' <summary>
+''' WinBack-Server Taks
+''' Startet die verschiedenen Hintergrund-Dienste auf dem Windows-OrgaBack-Server
+'''  - MySQL-Ping
+'''  - Update Nährwerte aus der Cloud
+'''  - Anzeige Uhrzeit (Server läuft Kontrolle)
+'''  Stellt die Dienste für IP-Server/Client bereit.
+'''  - Update der Rohstoffe
+'''  Backup/Restore der MySQL-Datenbank
+'''  Konfiguration
+''' </summary>
 Public Class Main
     Const cntStartAfterOneSecond = 1
     Const cntStartAfterTwoSeconds = 2
@@ -28,14 +39,28 @@ Public Class Main
     Public Delegate Sub remListBoxDelegate(name As String)
     Public Delegate Sub addText(text As String)
 
+    ''' <summary>
+    ''' Client in Anzeige anfügen(Connect)
+    ''' </summary>
+    ''' <param name="name">(String) CLient-Name</param>
     Public Sub ListBoxadd(name As String)
         lbClientList.Items.Add(name)
     End Sub
 
+    ''' <summary>
+    ''' Client aus Anzeige entfernen(Disconnect)
+    ''' </summary>
+    ''' <param name="name">(String) CLient-Name</param>
     Public Sub ListBoxRemove(name As String)
         lbClientList.Items.Remove(name)
     End Sub
 
+    ''' <summary>
+    ''' Anzeige der letzen 20 Nährwert-Updates. 
+    ''' Am Ende der Liste wird automatisch der älteste Eintrag gelöscht.
+    ''' </summary>
+    ''' <param name="tbx">Textbox</param>
+    ''' <param name="s">String</param>
     Public Sub ScrollTextBox(ByRef tbx As TextBox, s As String)
         If tbx.Lines.Count > 20 Then
             Dim str As String = tbx.Text
@@ -44,21 +69,49 @@ Public Class Main
         tbx.Text &= s
     End Sub
 
+    ''' <summary>
+    ''' Zeile in TextBox anfügen. Wird in eine separate
+    ''' Funktion ausgelagert, damit ein Invoke möglich wird.
+    ''' </summary>
+    ''' <param name="text">String</param>
     Public Sub TextBoxadd(text As String)
         tbMessages.Text &= text
     End Sub
 
+    ''' <summary>
+    ''' Doppelclick auf das Icon in der Taskleiste. Zeigt das Fenster
+    ''' maximiert an.
+    ''' </summary>
+    ''' <param name="sender">Sender</param>
+    ''' <param name="e">Event</param>
     Private Sub NotifyIcon_DoubleClick(sender As Object, e As EventArgs) Handles NotifyIcon.DoubleClick
         Me.WindowState = FormWindowState.Normal
         Me.ShowInTaskbar = True
     End Sub
 
+    ''' <summary>
+    ''' Fenster maximiert anzeigen. Icon wird aus der Taskbar entfernt.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub Main_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
         If Me.WindowState = FormWindowState.Minimized Then
             Me.ShowInTaskbar = False
         End If
     End Sub
 
+    ''' <summary>
+    ''' Main-Timer. Ruft alle zeitgesteuerten Funktionen auf.
+    '''  - Ping MySQL
+    '''  - Update Nährwerte
+    '''  - Anzeige Uhrzeit
+    ''' CntCounter wird mit jedem Aufruf um Eins erhöht. Die entsprechende Task stoppt
+    ''' den Timer und setzt seinen Aufruf nach Erledigung der Aufgabe wieder neu.
+    ''' Danach wird der Timer wieder gestartet.
+    ''' Bleibt der Timer-Aufruf aus, kann ein Restart ausgelöst werden.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub MainTimer_Tick(sender As Object, e As EventArgs) Handles MainTimer.Tick
         'Counter zählt jede Sekunde um Eins hoch
         'Maximale Laufzeit = 2147483647/(60*60*24*364) = 68,23 Jahre (Bis dahin bin ich in Rente)
@@ -98,8 +151,15 @@ Public Class Main
 
         'Timer wieder einschalten
         MainTimer.Enabled = True
+        'TODO Timer-Aufrufe überprüfen
     End Sub
 
+    ''' <summary>
+    ''' Prüft ob der Timer-Wert erreicht oder überschritten ist.
+    ''' Wenn der Timer-Sollwert auf Null steht wird False zurückgegeben
+    ''' </summary>
+    ''' <param name="x">True wenn der Timer-Wert erreicht ist</param>
+    ''' <returns></returns>
     Private Function MainTimer_Check(ByRef x As Integer) As Boolean
         If (cntCounter >= x) And (x > 0) Then
             x = 0
@@ -109,12 +169,27 @@ Public Class Main
         End If
     End Function
 
+    ''' <summary>
+    ''' Löscht die Status-Anzeige nach 10 Sekunden. Danach wird wieder die Uhrzeit 
+    ''' angezeigt.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub RemoveTextTimer_Tick(sender As Object, e As EventArgs) Handles RemoveTextTimer.Tick
         'Lösche Status-Anzeige Backup/Restore
         lblBackupRestoreStatus.Text = ""
         RemoveTextTimer.Enabled = False
     End Sub
 
+    ''' <summary>
+    ''' Initialisierung Server-Task.
+    ''' - MySQL-Einstellungen aus ini-Datei laden
+    ''' - Hash-Tables initialisieren
+    ''' - IP-Server starten
+    ''' - Main-Timer starten
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
         wb_Konfig.SqlSetting()
@@ -137,6 +212,12 @@ Public Class Main
         cntCloudUpdate = cntCounter + cntCheckCloud + cntStartAfterTwoSeconds
     End Sub
 
+    ''' <summary>
+    ''' Anzeige Fenster Server-Task
+    ''' Das Fenster wird auf maximale Bildschirm-Größe aufgezogen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub Main_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         ' TabControl - HideTabs
         Wb_TabControl.HideTabs = True
@@ -153,10 +234,22 @@ Public Class Main
         Me.Left = DesktopSize.Width - fBreite + 7
     End Sub
 
+    ''' <summary>
+    ''' Button Hide
+    ''' Server-Task Fenster minimieren. Symbol in Task-Bar anzeigen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnHide_Click(sender As Object, e As EventArgs) Handles BtnHide.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
 
+    ''' <summary>
+    ''' Botton Exit
+    ''' Programm-Ende nach Abfrage.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnExit_Click(sender As Object, e As EventArgs) Handles BtnExit.Click
         If MessageBox.Show("Server-Task wirklich beenden ?" & vbNewLine & "Danach werden keine Hintergrund-Dienste mehr ausgeführt",
                            "WinBack Server-Task", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
@@ -164,11 +257,23 @@ Public Class Main
         End If
     End Sub
 
+    ''' <summary>
+    ''' Button Clients
+    ''' Anzeige aller verbundenen Client-Connections 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnClients_Click(sender As Object, e As EventArgs) Handles BtnClients.Click
         Wb_TabControl.SelectedTab = TabPageClients
         Wb_TabControl.Show()
     End Sub
 
+    ''' <summary>
+    ''' Button Messages
+    ''' Anzeige der Meldungen von den Clients
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub btnMessages_Click(sender As Object, e As EventArgs) Handles btnMessages.Click
         Wb_TabControl.SelectedTab = TabPageMessages
         Wb_TabControl.Show()
@@ -179,11 +284,23 @@ Public Class Main
         Wb_TabControl.Show()
     End Sub
 
+    ''' <summary>
+    ''' Button Cloud
+    ''' Anzeige der Informationen aus der Nährwert-Aktualisierungs-Task
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub btnCloud_Click(sender As Object, e As EventArgs) Handles btnCloud.Click
         Wb_TabControl.SelectedTab = TabPageCloud
         Wb_TabControl.Show()
     End Sub
 
+    ''' <summary>
+    ''' Button Restore
+    ''' Datenrücksicherung von Datei in lokale WinBack-SQL
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnRestore_Click(sender As Object, e As EventArgs) Handles BtnRestore.Click
         If OpenFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Dim fileName As String = OpenFileDialog.FileName
@@ -197,6 +314,12 @@ Public Class Main
         End If
     End Sub
 
+    ''' <summary>
+    ''' Button Datensicherung
+    ''' Datensicherung der lokalen WinBack-SQL in Datei
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnBackup_Click(sender As Object, e As EventArgs) Handles BtnBackup.Click
         If SaveFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Dim FileName As String = SaveFileDialog.FileName
@@ -210,12 +333,21 @@ Public Class Main
         End If
     End Sub
 
+    ''' <summary>
+    ''' Anzeige Status-Fenster Backup/Restore MySQL
+    ''' </summary>
+    ''' <param name="txt"></param>
     Private Sub Backup_Restore_Status(txt As String)
         lblBackupRestoreStatus.Text = txt
         'Text anzeigen
         Application.DoEvents()
     End Sub
 
+    ''' <summary>
+    ''' IP-Listenener. Wartet auf eingehende Verbindungen von IP-CLients. Für jeden
+    ''' Client wird eine neue IP-Verbindung erzeugt.
+    ''' </summary>
+    ''' <param name="port"></param>
     Sub listen(ByVal port As Integer)
         Try
             Dim t As New TcpListener(IPAddress.Any, port) 'declare a new tcplistener
@@ -229,6 +361,11 @@ Public Class Main
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Client.GotMessage wird hier verarbeitet
+    ''' </summary>
+    ''' <param name="msg">String - Empfangene Nachricht vom CLient</param>
+    ''' <param name="client">TcpIPConnection - Client Instanz</param>
     Sub recieved(ByVal msg As String, ByVal client As wb_TcpIPConnection)
         Dim message() As String = msg.Split("|") 'make an array with elements of the message recieved
         Select Case message(0) 'process by the first element in the array
@@ -242,11 +379,20 @@ Public Class Main
         End Select
     End Sub
 
+    ''' <summary>
+    ''' Client hat die Verbindung geschlossen. Der entsprechende Client wird aus der Liste entfernt.
+    ''' Die ListBox wird aktualisiert.
+    ''' </summary>
+    ''' <param name="client"></param>
     Sub disconnected(ByVal client As wb_TcpIPConnection) 'if a client is disconnected, this is raised
         clients.Remove(client) 'remove the client from the hashtable
         lbClientList.Invoke(New remListBoxDelegate(AddressOf ListBoxRemove), New Object() {client.name}) 'remove it from our listbox
     End Sub
 
+    ''' <summary>
+    ''' Sende eine Message an alle verbundenen Clients
+    ''' </summary>
+    ''' <param name="message">String - Message</param>
     Sub senddata(ByVal message As String) 'this sends a message to all connected clients
         Dim entry As DictionaryEntry 'declare a variable of type dictionary entry
         Try
@@ -258,6 +404,11 @@ Public Class Main
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Sende eine empfangene Message an alle anderen Clients
+    ''' </summary>
+    ''' <param name="message"></param>
+    ''' <param name="exemptclientname"></param>
     Sub sendallbutone(ByVal message As String, ByVal exemptclientname As String) 'this sends to all clients except the one specified
         Dim entry As DictionaryEntry 'declare a variable of type dictionary entry
         Try

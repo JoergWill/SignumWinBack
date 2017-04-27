@@ -43,6 +43,12 @@ Public Class wb_Functions
         End Select
     End Function
 
+    ''' <summary>
+    ''' Wandelt einen String im WinBack-Cloud-Datumsformat (yyyymmddHHmmss) in DateTime um.
+    ''' Wenn die Konvertierung feherhaft ist, wird der 22.11.1964 00:00:00 zurückgegeben.
+    ''' </summary>
+    ''' <param name="JSONTimeString"></param>
+    ''' <returns></returns>
     Public Shared Function ConvertJSONTimeStringToDateTime(JSONTimeString As String) As DateTime
         Try
             Dim dt As String = JSONTimeString.Substring(0, 4) & JSONTimeString.Substring(6, 2) & JSONTimeString.Substring(4, 2)
@@ -68,6 +74,11 @@ Public Class wb_Functions
         End Try
     End Function
 
+    ''' <summary>
+    ''' Wandelt einen String in AllergenInfo um. Wenn der String umgültig ist wird ERR zurückgegeben
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
     Public Shared Function StringtoAllergen(s As String) As wb_Global.AllergenInfo
         Select Case s.ToUpper
             Case "C"
@@ -85,6 +96,11 @@ Public Class wb_Functions
         End Select
     End Function
 
+    ''' <summary>
+    ''' Wandelt die AllergenInfo in einen String um.
+    ''' </summary>
+    ''' <param name="a"></param>
+    ''' <returns></returns>
     Public Shared Function AllergenToString(a As wb_Global.AllergenInfo) As String
         Select Case a
             Case wb_Global.AllergenInfo.C
@@ -100,6 +116,11 @@ Public Class wb_Functions
         End Select
     End Function
 
+    ''' <summary>
+    ''' Wandelt LogType in String
+    ''' </summary>
+    ''' <param name="LogType"></param>
+    ''' <returns></returns>
     Public Shared Function LogTypeToString(LogType As wb_Global.LogType) As String
         Select Case LogType
             Case wb_Global.LogType.X     'Unbestimmt
@@ -117,6 +138,12 @@ Public Class wb_Functions
         End Select
     End Function
 
+    ''' <summary>
+    ''' Wandelt einen Integer-Wert in einen Komponenten-Typ um. Wenn der Integer-Wert ungültig ist,
+    ''' wird KO_TYPE_UNDEFINED zurückgegeben
+    ''' </summary>
+    ''' <param name="KO_Type"></param>
+    ''' <returns></returns>
     Public Shared Function IntToKomponType(KO_Type As Integer) As wb_Global.KomponTypen
         Select Case KO_Type
             Case -1
@@ -187,7 +214,12 @@ Public Class wb_Functions
         End Select
     End Function
 
-    Public Shared Function kt301GruppeToString(s As String) As wb_Global.ktTyp301Gruppen
+    ''' <summary>
+    ''' Wandelt einen String in kt301Gruppen um. Beim Einlesen der Hash-Table aus der Tabelle KomponTypen
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Public Shared Function StringTokt301Gruppe(s As String) As wb_Global.ktTyp301Gruppen
         Select Case s
             Case "Big4"
                 Return wb_Global.ktTyp301Gruppen.Big4
@@ -306,6 +338,14 @@ Public Class wb_Functions
         End Select
     End Function
 
+    ''' <summary>
+    ''' Formatiert einen String mit der angegebenen Vorkomma und Nachkomma-Stelle
+    ''' </summary>
+    ''' <param name="value">Zahlenwert als String</param>
+    ''' <param name="VorKomma">Anzahl der Vorkomma-Stellen</param>
+    ''' <param name="NachKomma">Anzahl der Nachkomma-Stellen</param>
+    ''' <param name="Culture">Ländereinstellung (Default de-DE)</param>
+    ''' <returns></returns>
     Public Shared Function FormatStr(value As String, VorKomma As Integer, NachKomma As Integer, Optional ByVal Culture As String = Nothing) As String
         Dim wert As Double
         Try
@@ -382,6 +422,13 @@ Public Class wb_Functions
         Return wb_Konfig.ktTyp301Params(p)
     End Function
 
+    ''' <summary>
+    ''' Für ein Batch-File im Verzeichnis MySQLBatch aus. Über Argument wird %2 an das Batch-File übergeben
+    ''' </summary>
+    ''' <param name="Directory"></param>
+    ''' <param name="BatchFile"></param>
+    ''' <param name="Argument"></param>
+    ''' <param name="WaitUntilReady"></param>
     Public Shared Sub DoBatch(Directory As String, BatchFile As String, Argument As String, WaitUntilReady As Boolean)
         Dim cmd As String = Chr(34) + My.Settings.MySQLBatch + "\" + BatchFile + Chr(34)
         Dim arg As String = Chr(34) + Directory + Chr(34) + " " + Chr(34) + Argument + Chr(34)
@@ -398,6 +445,14 @@ Public Class wb_Functions
 
     End Sub
 
+    ''' <summary>
+    ''' Startet eine ssh-Sitzung und führt ein Kommando auf dem Linux-Rechner mit der angegebenen IP-Adresse aus
+    ''' </summary>
+    ''' <param name="User">String - Username</param>
+    ''' <param name="Pass">String - Passwort</param>
+    ''' <param name="Host">String - IP-Adresse</param>
+    ''' <param name="Command">String - Shell-Kommando</param>
+    ''' <returns>Ausgabe der Command-Shell</returns>
     Public Shared Function DoShell(User As String, Pass As String, Host As String, Command As String) As String
         Dim Output As String
         Dim Exec As New SshExec(Host, User, Pass)

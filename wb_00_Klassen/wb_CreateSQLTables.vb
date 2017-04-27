@@ -1,13 +1,7 @@
-﻿'---------------------------------------------------------
-'19.05.2016/ V0.9/JW            :Neuanlage
-'Bearbeitet von                 :Will
-'
-'Änderungen:
-'---------------------------------------------------------
-'Beschreibung:
-'Routinen zum Erzeugen der WinBack-Tabellen in der
-'MSSQL-Datenbank
-
+﻿''' <summary>
+''' Routinen zum Erzeugen der WinBack-Tabellen in der
+''' MSSQL-Datenbank
+''' </summary>
 Public Class wb_CreateSQLTables
 
     Public Shared Function DataBaseWinBack(ConString As String) As Boolean

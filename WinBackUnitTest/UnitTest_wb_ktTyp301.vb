@@ -1,6 +1,4 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports WinBack
+﻿Imports WinBack
 
 <TestClass()> Public Class UnitTest_wb_ktTyp301
 

@@ -41,7 +41,7 @@ Public Class wb_Konfig
     Private Shared Sub MySqlSetting()
         Dim IniFile As New wb_IniFile
 
-        My.Settings.MySQLServerIP = IniFile.ReadString("winback", "eMySQLServerIP", "172.16.17.5")
+        My.Settings.MySQLServerIP = IniFile.ReadString("winback", "eMySQLServerIP", My.Settings.MySQLServerIP)
         My.Settings.MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
         My.Settings.MySQLWbDaten = IniFile.ReadString("winback", "eMySQLDatabaseDaten", "wbdaten")
         My.Settings.MySQLUser = IniFile.ReadString("winback", "eMySQLUser", "herbst")
@@ -225,12 +225,14 @@ Public Class wb_Konfig
             k.ParamNr = winback.iField("KT_ParamNr")
             k.Bezeichnung = winback.sField("KT_Bezeichnung")
             k.KurzBezeichnung = winback.sField("KT_KurzBez")
-            k.Gruppe = wb_Functions.kt301GruppeToString(winback.sField("KT_Wert"))
+            k.Gruppe = wb_Functions.StringTokt301Gruppe(winback.sField("KT_Wert"))
             k.Einheit = winback.sField("E_Einheit")
             k.Feld = winback.sField("KT_Kommentar")
             k.Used = (winback.sField("KT_Rezept") = "X")
-
-            ktTyp301Params.Add(k.ParamNr, k)
+            Try
+                ktTyp301Params.Add(k.ParamNr, k)
+            Catch
+            End Try
         End While
         winback.Close()
 

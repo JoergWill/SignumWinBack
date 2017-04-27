@@ -114,6 +114,7 @@ Public Class wb_ktTyp301
     Public Sub ClearReport()
         ChangeLogClear()
     End Sub
+
     Public Function GetReport() As String
         Return ChangeLogReport()
     End Function
