@@ -419,7 +419,7 @@ Public Class wb_Functions
     End Function
 
     Public Shared Function kt301Param(p As Integer) As wb_Global.ktTyp301Param
-        Return wb_Konfig.ktTyp301Params(p)
+        Return wb_ktTyp301.ktTyp301Params(p)
     End Function
 
     ''' <summary>

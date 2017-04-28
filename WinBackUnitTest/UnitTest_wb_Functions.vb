@@ -1,7 +1,6 @@
 ﻿Imports System.Globalization
 Imports System.IO
 Imports System.Threading
-Imports WinBack
 Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
@@ -84,28 +83,28 @@ Imports WinBack.wb_Global
     End Sub
 
     <TestMethod()> Public Sub Test_AllergenToString()
-        Assert.AreEqual("ERR", AllergenToString(wb_Global.AllergenInfo.ERR))
-        Assert.AreEqual("ERR", AllergenToString(wb_Global.AllergenInfo.X))
+        Assert.AreEqual("ERR", AllergenToString(AllergenInfo.ERR))
+        Assert.AreEqual("ERR", AllergenToString(AllergenInfo.X))
         Assert.AreEqual("ERR", 10)
 
-        Assert.AreEqual("C", AllergenToString(wb_Global.AllergenInfo.C))
-        Assert.AreEqual("K", AllergenToString(wb_Global.AllergenInfo.K))
-        Assert.AreEqual("N", AllergenToString(wb_Global.AllergenInfo.N))
-        Assert.AreEqual("T", AllergenToString(wb_Global.AllergenInfo.T))
+        Assert.AreEqual("C", AllergenToString(AllergenInfo.C))
+        Assert.AreEqual("K", AllergenToString(AllergenInfo.K))
+        Assert.AreEqual("N", AllergenToString(AllergenInfo.N))
+        Assert.AreEqual("T", AllergenToString(AllergenInfo.T))
     End Sub
 
     <TestMethod()> Public Sub Test_StringToAllergen()
-        Assert.AreEqual(StringtoAllergen("ERR"), wb_Global.AllergenInfo.ERR)
-        Assert.AreEqual(StringtoAllergen("NotDefined"), wb_Global.AllergenInfo.ERR)
-        Assert.AreEqual(StringtoAllergen("AnyString"), wb_Global.AllergenInfo.ERR)
+        Assert.AreEqual(StringtoAllergen("ERR"), AllergenInfo.ERR)
+        Assert.AreEqual(StringtoAllergen("NotDefined"), AllergenInfo.ERR)
+        Assert.AreEqual(StringtoAllergen("AnyString"), AllergenInfo.ERR)
 
-        Assert.AreEqual(StringtoAllergen("X"), wb_Global.AllergenInfo.X)
-        Assert.AreEqual(StringtoAllergen(""), wb_Global.AllergenInfo.X)
+        Assert.AreEqual(StringtoAllergen("X"), AllergenInfo.X)
+        Assert.AreEqual(StringtoAllergen(""), AllergenInfo.X)
 
-        Assert.AreEqual(StringtoAllergen("C"), wb_Global.AllergenInfo.C)
-        Assert.AreEqual(StringtoAllergen("K"), wb_Global.AllergenInfo.K)
-        Assert.AreEqual(StringtoAllergen("N"), wb_Global.AllergenInfo.N)
-        Assert.AreEqual(StringtoAllergen("T"), wb_Global.AllergenInfo.T)
+        Assert.AreEqual(StringtoAllergen("C"), AllergenInfo.C)
+        Assert.AreEqual(StringtoAllergen("K"), AllergenInfo.K)
+        Assert.AreEqual(StringtoAllergen("N"), AllergenInfo.N)
+        Assert.AreEqual(StringtoAllergen("T"), AllergenInfo.T)
     End Sub
 
     <TestMethod()> Public Sub Test_FormatStr()

@@ -81,10 +81,12 @@ Public Class wb_ChangeLog
 
     ''' <summary>
     ''' Gibt alle Änderungen seit dem letzten ChangeLogClear aus.
-    ''' Nach der Ausgabe wird das Logging deaktiviert
+    ''' Per Default werden nur die in der Datenbank aktivierten Parameter ausgegeben.
+    ''' Nach der Ausgabe wird das Logging deaktiviert.
     ''' </summary>
+    ''' <param name="ReportAll">Gibt alle Änderungen aus, auch die nicht aktiven Parameter</param>
     ''' <returns>(String) Änderungen</returns>
-    Protected Function ChangeLogReport() As String
+    Protected Function ChangeLogReport(Optional ReportAll As Boolean = vbFalse) As String
         Dim x As wb_Global.wb_ChangeLogEintrag
         Dim s As String = ""
         For Each x In Changes
@@ -92,13 +94,13 @@ Public Class wb_ChangeLog
 
                 'Allergene
                 Case wb_Global.LogType.Alg
-                    If wb_Functions.kt301Param(x.ParamNr).Used Then
+                    If wb_Functions.kt301Param(x.ParamNr).Used Or ReportAll Then
                         s += x.OldValue + "/" + x.NewValue + " " + wb_Functions.kt301Param(x.ParamNr).Bezeichnung + vbNewLine
                     End If
 
                 'Nährwerte
                 Case wb_Global.LogType.Nrw
-                    If wb_Functions.kt301Param(x.ParamNr).Used Then
+                    If wb_Functions.kt301Param(x.ParamNr).Used Or ReportAll Then
                         s += x.OldValue + " " + wb_Functions.kt301Param(x.ParamNr).Einheit + "/"
                         s += x.NewValue + " " + wb_Functions.kt301Param(x.ParamNr).Einheit + " "
                         s += wb_Functions.kt301Param(x.ParamNr).Bezeichnung + vbNewLine

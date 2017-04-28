@@ -33,5 +33,19 @@
         Assert.AreEqual(ktTyp301.Allergen(141), wb_Global.AllergenInfo.C)
 
     End Sub
+    <TestInitialize>
+    Sub TestInitialize()
+        'Datenbank Verbindung Einstellungen setzen
+        '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
+        wb_Konfig.SqlSetting("MySQL")
+        'Initialisierung Texte-Tabelle
+        wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
+    End Sub
 
+    <TestMethod()>
+    Public Sub Test_LoadKompon301Tabelle()
+        wb_ktTyp301.LoadKompon301Tabelle()
+        Assert.AreEqual("Kilojoule", wb_Functions.kt301Param(wb_Global.T301_KiloJoule).Bezeichnung)
+        Assert.AreEqual("kJ", wb_Functions.kt301Param(wb_Global.T301_KiloJoule).Einheit)
+    End Sub
 End Class

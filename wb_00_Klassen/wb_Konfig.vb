@@ -5,7 +5,6 @@ Public Class wb_Konfig
     Shared Language As String
     Public Shared DockPanelPath As String
     Public Shared TexteTabelle As New Hashtable
-    Public Shared ktTyp301Params As New Hashtable
 
     Public Shared Filiale As New wb_Filiale
 
@@ -213,28 +212,5 @@ Public Class wb_Konfig
             TexteTabelle.Add("@[" & winback.sField("T_Typ") & "," & winback.sField("T_TextIndex") & "]", winback.sField("T_Text"))
         End While
         winback.Close()
-    End Sub
-
-    Public Shared Sub LoadKompon301Tabelle()
-        Dim k As ktTyp301Param
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
-        winback.sqlSelect(wb_Sql_Selects.sqlKompTyp301)
-        ktTyp301Params.Clear()
-        While winback.Read
-
-            k.ParamNr = winback.iField("KT_ParamNr")
-            k.Bezeichnung = winback.sField("KT_Bezeichnung")
-            k.KurzBezeichnung = winback.sField("KT_KurzBez")
-            k.Gruppe = wb_Functions.StringTokt301Gruppe(winback.sField("KT_Wert"))
-            k.Einheit = winback.sField("E_Einheit")
-            k.Feld = winback.sField("KT_Kommentar")
-            k.Used = (winback.sField("KT_Rezept") = "X")
-            Try
-                ktTyp301Params.Add(k.ParamNr, k)
-            Catch
-            End Try
-        End While
-        winback.Close()
-
     End Sub
 End Class
