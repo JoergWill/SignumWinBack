@@ -116,8 +116,8 @@ Public Class wb_ktTyp301
         ChangeLogClear()
     End Sub
 
-    Public Function GetReport() As String
-        Return ChangeLogReport()
+    Public Function GetReport(Optional ReportAll As Boolean = vbFalse) As String
+        Return ChangeLogReport(ReportAll)
     End Function
 
     Public Shared Sub LoadKompon301Tabelle()

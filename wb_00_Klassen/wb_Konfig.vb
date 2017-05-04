@@ -165,6 +165,7 @@ Public Class wb_Konfig
         End If
         My.Settings.AktLanguage = Language
     End Sub
+
     Public Shared Function GetLanguage() As String
         Try
             Language = My.Settings.AktLanguage
@@ -174,7 +175,10 @@ Public Class wb_Konfig
         Return Language
     End Function
 
-    'Zuordnung ISO-Sprache zu WinBack-Sprache-Nr
+    ''' <summary>
+    ''' Zuordnung ISO-Sprache zu WinBack-Sprache-Nr
+    ''' </summary>
+    ''' <returns></returns>
     Public Shared Function GetLanguageNr() As String
         Select Case Left(Language, 2)
             Case "de"       'Deutsch

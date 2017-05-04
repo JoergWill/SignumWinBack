@@ -238,10 +238,12 @@ Public Class wb_nwtCloud
     Private Function GetJData(JData As JObject, JFieldName As String) As String
         Try
             Dim JName As JToken = JData.GetValue(JFieldName)
-            Return JName("0").ToString
+            If Not IsNothing(JName("0")) Then
+                Return JName("0").ToString
+            End If
         Catch
-            Return ""
         End Try
+        Return ""
     End Function
 
     ''' <summary>

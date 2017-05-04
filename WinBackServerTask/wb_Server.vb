@@ -133,7 +133,6 @@ Public Class Main
         If MainTimer_Check(cntCloudUpdate) Then
             If nwtUpdate.UpdateNext Then
                 ScrollTextBox(tbCloud, nwtUpdate.InfoText & vbNewLine)
-                'tbCloud.Text &= nwtUpdate.InfoText & vbNewLine
             End If
             cntCloudUpdate = cntCounter + cntCheckCloud
         End If

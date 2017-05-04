@@ -54,7 +54,7 @@ Public Class UnitTest_wb_Sql
             'Text anzeigen
             Windows.Forms.Application.DoEvents()
 
-            For i = 1 To 100000
+            For i = 1 To 1000
                 wb_sql_Functions.ping()
             Next
         End If

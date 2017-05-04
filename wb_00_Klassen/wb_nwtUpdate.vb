@@ -45,16 +45,23 @@ Public Class wb_nwtUpdate
                     End If
                 End If
 
+                'Datum der letzen Nährwert-Aktualisierung in der WinBack-Datenbank
+                Dim WinBackChangeDate As Date = nwtDaten.ktTyp301.TimeStamp
                 'Änderungs-Log löschen
                 nwtDaten.ClearReport()
                 'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung). Die Daten werden in nwtDaten eingetragen
-                Dim LastChange As Date = GetNaehrwerte(nwtDaten.MatchCode, nwtDaten)
-                'Protokoll der Änderungen ausgeben
-                Debug.Print(nwtDaten.GetReport)
+                Dim CloudChangeDate As Date = GetNaehrwerte(nwtDaten.MatchCode, nwtDaten)
 
-                'Ausgabe-Text
-                _InfoText = "(" & nwtDaten.Nr.ToString("00000 ") & ")" & nwtDaten.Bezeichung & " " & LastChange.ToString
-                UpdateNext = True
+                'wenn die Daten in der Cloud aktueller sind - Änderungen ausgeben
+                If CloudChangeDate > WinBackChangeDate Then
+                    'Protokoll der Änderungen speichern/ausgeben
+                    wb_sql_Functions.WriteHinweise(wb_Global.Hinweise.NaehrwertUpdate, nwtDaten.Nr, nwtDaten.GetReport)
+                    Debug.Print(nwtDaten.GetReport)
+
+                    'Ausgabe-Text
+                    _InfoText = "(" & nwtDaten.Nr.ToString("00000 ") & ")" & nwtDaten.Bezeichung & " " & CloudChangeDate.ToString
+                    UpdateNext = True
+                End If
             Else
                 'EOF() - ReStart bei KO_Nr = 0
                 AktKO_Nr = 0

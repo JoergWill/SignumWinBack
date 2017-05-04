@@ -151,6 +151,7 @@
     <Compile Include="wb_00_Klassen\wb_nwtDatenLink.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtUpdate.vb" />
     <Compile Include="wb_00_Klassen\wb_sql_BackupRestore.vb" />
+    <Compile Include="wb_00_Klassen\wb_sql_Hinweise.vb" />
     <Compile Include="wb_00_Klassen\wb_Sync.vb" />
     <Compile Include="wb_00_Klassen\wb_ComboBox.Designer.vb">
       <DependentUpon>wb_ComboBox.vb</DependentUpon>

@@ -102,6 +102,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTest_wb_sql_Functions.vb" />
     <Compile Include="UnitTest_wb_ChangeLog.vb" />
     <Compile Include="UnitTest_wb_ktTyp301.vb" />
     <Compile Include="UnitTest_wb_ktTypX.vb" />

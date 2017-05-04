@@ -406,16 +406,15 @@ Public Class wb_Functions
             If Left(Text, 2) = "@[" Then
                 Hash = Left(Text, InStr(Text, "]"))
                 Try
-                    Return wb_Konfig.TexteTabelle(Hash).ToString
+                    If wb_Konfig.TexteTabelle.ContainsKey(Hash) Then
+                        Return wb_Konfig.TexteTabelle(Hash).ToString
+                    End If
                 Catch
-                    Return Mid(Text, Len(Hash) + 1)
                 End Try
-            Else
-                Return Text
+                Return Mid(Text, Len(Hash) + 1)
             End If
-        Else
-            Return Text
         End If
+        Return Text
     End Function
 
     Public Shared Function kt301Param(p As Integer) As wb_Global.ktTyp301Param

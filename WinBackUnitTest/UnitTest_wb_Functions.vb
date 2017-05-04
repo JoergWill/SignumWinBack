@@ -85,7 +85,7 @@ Imports WinBack.wb_Global
     <TestMethod()> Public Sub Test_AllergenToString()
         Assert.AreEqual("ERR", AllergenToString(AllergenInfo.ERR))
         Assert.AreEqual("ERR", AllergenToString(AllergenInfo.X))
-        Assert.AreEqual("ERR", 10)
+        Assert.AreEqual("ERR", AllergenToString(10))
 
         Assert.AreEqual("C", AllergenToString(AllergenInfo.C))
         Assert.AreEqual("K", AllergenToString(AllergenInfo.K))

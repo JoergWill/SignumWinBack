@@ -151,6 +151,7 @@
         DeklBezRohstoff       '11/0/RohNr  
         MessageTextLinie      '20/0/LNr
         MessageTextUser       '20/1/UsrNr
+        NaehrwertUpdate       '21/0/RohNr
     End Enum
 
     Enum EditState

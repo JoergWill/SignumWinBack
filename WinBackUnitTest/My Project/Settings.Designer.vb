@@ -83,7 +83,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public ReadOnly Property TestMsSQL() As Boolean
             Get
                 Return CType(Me("TestMsSQL"),Boolean)

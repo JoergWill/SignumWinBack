@@ -5,13 +5,23 @@ Imports WinBack.wb_Sql_Selects
 
 
 <TestClass()> Public Class UnitTest_wb_ktTypX
-
-    <TestMethod()> Public Sub Test_LesenRohstoff_Stammdaten()
+    <TestInitialize>
+    Sub TestInitialize()
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
         If My.Settings.TestMySQL Then
             'Datenbank Verbindung Einstellungen setzen
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
             wb_Konfig.SqlSetting("MySQL")
+            'Initialisierung Texte-Tabelle
+            wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
+            'kt301 Initialisieren
+            wb_ktTyp301.LoadKompon301Tabelle()
+        End If
+    End Sub
+
+    <TestMethod()> Public Sub Test_LesenRohstoff_Stammdaten()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten
             Dim nwtDaten As New wb_ktTypX
@@ -35,9 +45,6 @@ Imports WinBack.wb_Sql_Selects
     <TestMethod()> Public Sub Test_LesenRohstoff_Parameter()
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
         If My.Settings.TestMySQL Then
-            'Datenbank Verbindung Einstellungen setzen
-            '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_Konfig.SqlSetting("MySQL")
 
             'Rohstoff-Daten
             Dim nwtDaten As New wb_ktTypX
@@ -54,35 +61,38 @@ Imports WinBack.wb_Sql_Selects
                     'Nährwert-Info - Wasser-Anteil
                     Assert.IsTrue(nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser) > 90.0)
                     'Nährwert-Info - keine Allergene
-                    Assert.AreEqual(wb_Global.AllergenInfo.K, nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten))
+                    Assert.AreEqual(wb_Global.AllergenInfo.N, nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten))
                 End If
             End If
         End If
     End Sub
 
     <TestMethod()> Public Sub Test_ChangeLog()
+        'Test kann nur ausgeführt werden, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
 
-        'Rohstoff-Daten
-        Dim nwtDaten As New wb_ktTypX
+            'Rohstoff-Daten
+            Dim nwtDaten As New wb_ktTypX
 
-        'Eintrag Lieferant ändern
-        nwtDaten.ClearReport()
-        nwtDaten.Lieferant = "Neuer Lieferant"
-        Debug.Print(nwtDaten.GetReport)
-        Assert.AreEqual("/Neuer Lieferant" + vbNewLine, nwtDaten.GetReport)
+            'Eintrag Lieferant ändern
+            nwtDaten.ClearReport()
+            nwtDaten.Lieferant = "Neuer Lieferant"
+            Debug.Print(nwtDaten.GetReport)
+            Assert.AreEqual("/Neuer Lieferant" + vbNewLine, nwtDaten.GetReport(True))
 
-        'Eintrag Nährwert-Info
-        nwtDaten.ClearReport()
-        nwtDaten.ktTyp301.Wert(wb_Global.T301_Fette) = 24.5F
-        Debug.Print(nwtDaten.GetReport)
-        Assert.AreEqual("   0,000/  24,500" + vbNewLine, nwtDaten.GetReport)
+            'Eintrag Nährwert-Info
+            nwtDaten.ClearReport()
+            nwtDaten.ktTyp301.Wert(wb_Global.T301_Fette) = 24.5F
+            Debug.Print(nwtDaten.GetReport)
+            Assert.AreEqual("   0,000 g/  24,500 g Fette" + vbNewLine, nwtDaten.GetReport(True))
 
-        'Eintrag Nährwert-Info + Lieferanten-Bezeichnung
-        nwtDaten.ClearReport()
-        nwtDaten.ktTyp301.Wert(wb_Global.T301_Fette) = 24.6F
-        nwtDaten.Lieferant = "Anderer Lieferant"
-        Debug.Print(nwtDaten.GetReport)
-        Assert.AreEqual("Neuer Lieferant/Anderer Lieferant" + vbNewLine + "  24,500/  24,600" + vbNewLine, nwtDaten.GetReport)
+            'Eintrag Nährwert-Info + Lieferanten-Bezeichnung
+            nwtDaten.ClearReport()
+            nwtDaten.ktTyp301.Wert(wb_Global.T301_Fette) = 24.6F
+            nwtDaten.Lieferant = "Anderer Lieferant"
+            Debug.Print(nwtDaten.GetReport)
+            Assert.AreEqual("Neuer Lieferant/Anderer Lieferant" + vbNewLine + "  24,500 g/  24,600 g Fette" + vbNewLine, nwtDaten.GetReport(True))
+        End If
     End Sub
 
 End Class

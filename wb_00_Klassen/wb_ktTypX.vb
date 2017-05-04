@@ -91,9 +91,9 @@ Public Class wb_ktTypX
         ktTyp301.ClearReport()
     End Sub
 
-    Public ReadOnly Property GetReport As String
+    Public ReadOnly Property GetReport(Optional ReportAll As Boolean = vbFalse) As String
         Get
-            Return ChangeLogReport() & ktTyp301.GetReport
+            Return ChangeLogReport(ReportAll) & ktTyp301.GetReport(ReportAll)
         End Get
     End Property
 
@@ -211,6 +211,11 @@ Public Class wb_ktTypX
                         'Nährwert-Informationen
                         ktTyp301.Wert(ParamNr) = Value.ToString
                 End Select
+
+            'TimeStamp
+            Case "RP_Timestamp"
+                ktTyp301.TimeStamp = CDate(Value.ToString)
+
         End Select
         Return True
     End Function

@@ -60,6 +60,11 @@
     Public Const sqlTestktTyp3 = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"
 
+    'Sql-Statement H2_Memo(Memo) aus Hinweise2
+    Public Const sqlSelectH2 = "SELECT * FROM Hinweise2 WHERE H2_Typ = [0] AND H2_Typ2 = [1] AND H2_Id1= [2]"
+    Public Const sqlUpdateH2 = "UPDATE Hinweise2 SET [3] WHERE H2_Typ = [0] AND H2_Typ2 = [1] AND H2_Id1= [2]"
+    Public Const sqlInsertH2 = "INSERT INTO Hinweise2 (H2_Typ, H2_Typ2, H2_Id1, [3]) VALUES ([0],[1],[2],[4])"
+    Public Const sqlDeleteH2 = "DELETE FROM Hinweise2 WHERE H2_Typ = [0] AND H2_Typ2 = [1] AND H2_Id1= [2]"
 
 
     'Sql-Statement Liste aller Komponenten-Parameter Typ301
@@ -82,7 +87,9 @@
     Public Const mssqlInsertMitarbeiterGruppen = "INSERT INTO [dbo].[MitarbeiterMultiFunktionsFeld] (GruppenNr, Hierarchie, Bezeichnung) VALUES ('[2]','[0]','[1]')"
 
 
-    Public Shared Function setParams(sql As String, Param0 As String, Optional Param1 As String = "-", Optional Param2 As String = "-", Optional Param3 As String = "-") As String
+    Public Shared Function setParams(sql As String, Param0 As String, Optional Param1 As String = "-",
+                                     Optional Param2 As String = "-", Optional Param3 As String = "-",
+                                     Optional Param4 As String = "-") As String
         sql = Replace(sql, "[0]", Param0)
         If Param1 <> "-" Then
             sql = Replace(sql, "[1]", Param1)
@@ -92,6 +99,9 @@
         End If
         If Param3 <> "-" Then
             sql = Replace(sql, "[3]", Param3)
+        End If
+        If Param4 <> "-" Then
+            sql = Replace(sql, "[4]", Param4)
         End If
         Return sql
     End Function
