@@ -173,6 +173,42 @@ Namespace My
                 Me("WbDatenConString") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("ServerTask")>  _
+        Public Property AktUser() As String
+            Get
+                Return CType(Me("AktUser"),String)
+            End Get
+            Set
+                Me("AktUser") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("9999")>  _
+        Public Property AktUserNr() As Integer
+            Get
+                Return CType(Me("AktUserNr"),Integer)
+            End Get
+            Set
+                Me("AktUserNr") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("de")>  _
+        Public Property AktLanguage() As String
+            Get
+                Return CType(Me("AktLanguage"),String)
+            End Get
+            Set
+                Me("AktLanguage") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

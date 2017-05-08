@@ -32,5 +32,14 @@
     <Setting Name="WbDatenConString" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="AktUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ServerTask</Value>
+    </Setting>
+    <Setting Name="AktUserNr" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9999</Value>
+    </Setting>
+    <Setting Name="AktLanguage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">de</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -5,7 +5,7 @@ Imports WinBack.wb_Sql_Selects
 ''' Eigene Klasse für winback.Hinweise2.
 ''' Aus wb_sql_Function herausfaktorieren!
 ''' </summary>
-Public Class wb_sql_Hinweise
+Public Class wb_Hinweise
 
     Private H2_Typ As Integer = 0
     Private H2_Typ2 As Integer = 0
@@ -56,71 +56,129 @@ Public Class wb_sql_Hinweise
             H2_Memo = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Objekt initialisieren. Die Daten werden nicht gelesen.
+    ''' </summary>
+    ''' <param name="DataTyp"></param>
     Public Sub New(DataTyp As Hinweise)
         'H2_Typ und H2_Typ2 ermitteln
         GetTyp(DataTyp, H2_Typ, H2_Typ2)
         'Daten sind noch nicht gelesen
         ReadOK = False
     End Sub
+
+    ''' <summary>
+    ''' Objekt initialiseren. Die entsprechenden Daten werden gelesen
+    ''' </summary>
+    ''' <param name="DataTyp">Datentyp</param>
+    ''' <param name="idx">Rohstoff/Artikel/Rezeptnummer</param>
     Public Sub New(DataTyp As Hinweise, idx As Integer)
         'H2_Typ und H2_Typ2 ermitteln
         If GetTyp(DataTyp, H2_Typ, H2_Typ2) Then
             ReadOK = Read(idx)
-
         End If
     End Sub
 
     ''' <summary>
     ''' Daten aus Datenbank winback.Hinweise2 einlesen.
     ''' </summary>
-    ''' <param name="DataTyp">Hinweise - Hinweis-Type </param>
     ''' <param name="idx">Integer - Komponenten/Artikelnummer</param>
     ''' <returns></returns>
     Public Function Read(idx As Integer) As Boolean
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
 
         'Daten aus MySQL-Memo in String einlesen
+        ReadOK = False
         winback.sqlSelect(setParams(sqlSelectH2, H2_Typ, H2_Typ2, idx))
         If winback.Read Then
             H2_Aenderung_Nr = winback.sField("H2_Aenderung_Nr")
             H2_Aenderung_Datum = winback.sField("H2_Aenderung_Datum")
-            H2_UserNr = winback.sField("H2_UserNr")
+            H2_UserNr = winback.iField("H2_UserNr")
             H2_UserName = winback.sField("H2_UserName")
             H2_Memo = winback.sField("H2_Memo")
-            winback.Close()
-            Return True
+            H2_Id2 = idx
+            ReadOK = True
         End If
         winback.Close()
-        Return False
+        Return ReadOK
     End Function
 
     ''' <summary>
     ''' Daten in Datenbank winback.Hinweise2 schreiben
     ''' Die Änderungs-Nummer wird automatisch hochgezählt.
     ''' Änderungsdatum ist das aktuelle Datum.
-    ''' Wenn 
     ''' </summary>
     ''' <returns>True - Wenn erfolgreich
     ''' False - bei Fehler</returns>
     Public Function Write() As Boolean
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        'Index muss gesetzt sein
+        If (H2_Id2 > 0) Then
 
-        'Vor Write/Update müssen die Daten gelesen werden
-        If Not ReadOK Then
-            ReadOK = Read(H2_Id2)
-        End If
-        If ReadOK Then
-            'TODO welche Daten müssen geschrieben werden (nur MEMO? oder alle)
+            Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+            Dim s1, s2 As String
+
+            'Vor Insert/Update müssen die Daten gelesen werden
+            If Not ReadOK Then
+                winback.sqlSelect(setParams(sqlSelectH2, H2_Typ, H2_Typ2, H2_Id2))
+                If winback.Read Then
+                    H2_Aenderung_Nr = winback.sField("H2_Aenderung_Nr")
+                    ReadOK = True
+                End If
+                winback.CloseRead()
+            End If
+
+            'Änderungsdatum ist das aktuelle Datum
+            H2_Aenderung_Datum = Date.Today.ToShortDateString
+            'aktuellen Benutzer NUmmer/Name eintragen
+            H2_UserNr = My.Settings.AktUserNr
+            H2_UserName = My.Settings.AktUser
+
+            'Daten sind gelesen/Datensatz vorhanden
+            If ReadOK Then
+                'Änderung-Nummer um Eins nach oben zählen
+                H2_Aenderung_Nr += 1
+                'Daten in Memo-Feld speichern (Update)
+                s1 = "H2_Aenderung_Nr = " & CStr(H2_Aenderung_Nr) & ", H2_Aenderung_Datum = '" & H2_Aenderung_Datum & "'," &
+                 "H2_Aenderung_User = " & CStr(H2_UserNr) & ",H2_Aenderung_Name = '" & H2_UserName & "'," &
+                 "H2_Memo = " & "'" & H2_Memo & "'"
+                winback.sqlCommand(setParams(sqlUpdateH2, H2_Typ, H2_Typ2, H2_Id2, s1))
+                winback.Close()
+            Else
+                'Änderung-Nummer Eins
+                H2_Aenderung_Nr = 1
+                'Daten in Memo-Feld speichern (Insert)
+                s1 = "H2_Aenderung_Nr, H2_Aenderung_Datum, H2_Aenderung_User, H2_Aenderung_Name, H2_Memo"
+                s2 = CStr(H2_Aenderung_Nr) & ",'" & H2_Aenderung_Datum & "'," & CStr(H2_UserNr) & ",'" & H2_UserName & "','" & H2_Memo & "'"
+                winback.sqlCommand(setParams(sqlInsertH2, H2_Typ, H2_Typ2, H2_Id2, s1, s2))
+                winback.Close()
+            End If
+            Return True
+        Else
+            Return False
         End If
     End Function
 
+    ''' <summary>
+    ''' Löscht den entsprechenden Eintrag in der Datenbank
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function Delete() As Boolean
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        'alle Datensätze löschen
+        Dim i As Integer = winback.sqlCommand(setParams(sqlDeleteH2, H2_Typ, H2_Typ2, H2_Id2))
+        winback.Close()
+        Return (i > 0)
+    End Function
+
+
     Private Shared Function GetTyp(DataTyp As Hinweise, ByRef Typ1 As Integer, ByRef Typ2 As Integer) As Boolean
         Select Case DataTyp
-            Case Hinweise.RezeptHinweise
+            Case Hinweise.RezeptHinweise        '2/0/RzNr
                 Typ1 = 2
                 Typ2 = 0
 
-            Case Hinweise.ArtikelHinweise
+            Case Hinweise.ArtikelHinweise       '3/0/ArtNr
                 Typ1 = 3
                 Typ2 = 0
 
@@ -152,6 +210,10 @@ Public Class wb_sql_Hinweise
                 Typ1 = 11
                 Typ2 = 0
 
+            Case Hinweise.DeklBezRohstoffIntern '11/1/RohNr  
+                Typ1 = 11
+                Typ2 = 1
+
             Case Hinweise.MessageTextLinie      '20/0/LNr
                 Typ1 = 20
                 Typ2 = 0
@@ -160,7 +222,7 @@ Public Class wb_sql_Hinweise
                 Typ1 = 20
                 Typ2 = 1
 
-            Case Hinweise.NaehrwertUpdate
+            Case Hinweise.NaehrwertUpdate       '21/0/RohNr
                 Typ1 = 21
                 Typ2 = 0
 

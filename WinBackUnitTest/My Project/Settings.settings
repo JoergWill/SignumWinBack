@@ -20,5 +20,14 @@
     <Setting Name="MsSQLConWbDaten" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True</Value>
     </Setting>
+    <Setting Name="AktUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">UnitTest</Value>
+    </Setting>
+    <Setting Name="AktUserNr" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9998</Value>
+    </Setting>
+    <Setting Name="AktLanguage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">de</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

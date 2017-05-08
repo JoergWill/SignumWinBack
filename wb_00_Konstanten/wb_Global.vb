@@ -149,6 +149,7 @@
         Verzehrtipps          '10/2/ArtNr
         Wissenswertes         '10/3/ArtNr
         DeklBezRohstoff       '11/0/RohNr  
+        DeklBezRohstoffIntern '11/1/RohNr  
         MessageTextLinie      '20/0/LNr
         MessageTextUser       '20/1/UsrNr
         NaehrwertUpdate       '21/0/RohNr
