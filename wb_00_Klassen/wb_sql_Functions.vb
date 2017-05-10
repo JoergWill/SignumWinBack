@@ -42,4 +42,24 @@ Public Class wb_sql_Functions
                 Return False
         End Select
     End Function
+
+    ''' <summary>
+    ''' Entfernt alle störenden Sonderzeichen aus einem (sql)String
+    ''' </summary>
+    ''' <param name="s">String mit Sonderzeichen</param>
+    ''' <returns>s - String mit umgewandelten Sonderzeichen</returns>
+    Public Shared Function removeSonderZeichen(s As String) As String
+        'wandelt ' in ''
+        s = s.Replace("'", "''")
+        Return s
+    End Function
+
+    ''' <summary>
+    ''' Wandelt date(time) in MySQL-DateTime im Format YYY-MM-DD HH:MM:SS um
+    ''' </summary>
+    ''' <param name="d">date</param>
+    ''' <returns>String - im MySQL-DateTime-Format</returns>
+    Public Shared Function MySQLdatetime(d As Date) As String
+        Return d.ToString("yyyy-MM-dd HH:mm:ss")
+    End Function
 End Class

@@ -53,8 +53,14 @@ Public Class wb_Hinweise
             Return H2_Memo
         End Get
         Set(value As String)
-            H2_Memo = value
+            H2_Memo = wb_sql_Functions.removeSonderZeichen(value)
         End Set
+    End Property
+
+    Public ReadOnly Property Aenderung_Datum As Date
+        Get
+            Return H2_Aenderung_Datum
+        End Get
     End Property
 
     ''' <summary>
@@ -129,7 +135,7 @@ Public Class wb_Hinweise
             End If
 
             'Änderungsdatum ist das aktuelle Datum
-            H2_Aenderung_Datum = Date.Today.ToShortDateString
+            H2_Aenderung_Datum = Date.Now
             'aktuellen Benutzer NUmmer/Name eintragen
             H2_UserNr = My.Settings.AktUserNr
             H2_UserName = My.Settings.AktUser
@@ -139,7 +145,7 @@ Public Class wb_Hinweise
                 'Änderung-Nummer um Eins nach oben zählen
                 H2_Aenderung_Nr += 1
                 'Daten in Memo-Feld speichern (Update)
-                s1 = "H2_Aenderung_Nr = " & CStr(H2_Aenderung_Nr) & ", H2_Aenderung_Datum = '" & H2_Aenderung_Datum & "'," &
+                s1 = "H2_Aenderung_Nr = " & CStr(H2_Aenderung_Nr) & ", H2_Aenderung_Datum = '" & wb_sql_Functions.MySQLdatetime(H2_Aenderung_Datum) & "'," &
                  "H2_Aenderung_User = " & CStr(H2_UserNr) & ",H2_Aenderung_Name = '" & H2_UserName & "'," &
                  "H2_Memo = " & "'" & H2_Memo & "'"
                 winback.sqlCommand(setParams(sqlUpdateH2, H2_Typ, H2_Typ2, H2_Id2, s1))
@@ -149,7 +155,7 @@ Public Class wb_Hinweise
                 H2_Aenderung_Nr = 1
                 'Daten in Memo-Feld speichern (Insert)
                 s1 = "H2_Aenderung_Nr, H2_Aenderung_Datum, H2_Aenderung_User, H2_Aenderung_Name, H2_Memo"
-                s2 = CStr(H2_Aenderung_Nr) & ",'" & H2_Aenderung_Datum & "'," & CStr(H2_UserNr) & ",'" & H2_UserName & "','" & H2_Memo & "'"
+                s2 = CStr(H2_Aenderung_Nr) & ",'" & wb_sql_Functions.MySQLdatetime(H2_Aenderung_Datum) & "'," & CStr(H2_UserNr) & ",'" & H2_UserName & "','" & H2_Memo & "'"
                 winback.sqlCommand(setParams(sqlInsertH2, H2_Typ, H2_Typ2, H2_Id2, s1, s2))
                 winback.Close()
             End If

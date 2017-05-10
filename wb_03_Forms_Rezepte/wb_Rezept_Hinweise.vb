@@ -12,7 +12,8 @@ Public Class wb_Rezept_Hinweise
     End Sub
 
     Public Sub DetailInfo()
-        tHinweise.Text = ReadHinweise(Hinweise.RezeptHinweise, wb_Rezept_Shared.aktRzNr)
+        Dim RezeptHinweise As New wb_Hinweise(Hinweise.RezeptHinweise, wb_Rezept_Shared.aktRzNr)
+        tHinweise.Text = RezeptHinweise.Memo
     End Sub
 
 End Class

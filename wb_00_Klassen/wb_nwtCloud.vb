@@ -202,7 +202,7 @@ Public Class wb_nwtCloud
     ''' </summary>
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
-    Public Function GetProductData(id As String, ByRef nwtDaten As wb_ktTypX) As Integer
+    Public Function GetProductData(id As String, ByRef nwtDaten As wb_Komponenten) As Integer
         'Produktdaten aus WinBack-Cloud lesen
         If Me.GetProductData(id) > 0 Then
             'Ergebnis ist ein verschachteltes JSON-Objekt

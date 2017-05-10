@@ -1,20 +1,11 @@
 ﻿Imports WinBack.wb_Sql_Selects
 
-'Paket muss installiert werden
-' can be installed from package manager console like this:
-' install-package Newtonsoft.json
-Imports Newtonsoft.Json
-Imports Newtonsoft.Json.Linq
-Imports System.Xml
-Imports System.Globalization
-
 Public Class wb_nwtUpdate
     Implements IDisposable
     Protected disposed As Boolean = False
 
     Private _InfoText As String = ""
     Private AktKO_Nr As Integer = 0
-    Private ChangeLog As New wb_ChangeLog
 
     Public ReadOnly Property InfoText As String
         Get
@@ -22,10 +13,19 @@ Public Class wb_nwtUpdate
         End Get
     End Property
 
+    ''' <summary>
+    ''' Sucht die nächst folgende Komponente sortiert nach KO_Nr aus der Datenbank
+    ''' Einlesen der Komponenten-Daten in ein Komponenten-Objekt
+    ''' Abfrage der Nährwert-Daten aus der Cloud (WinBack/Datenlink)
+    ''' wenn die Daten aus der Cloud aktueller sind als in der WinBack-Datenbank wird ein Report generiert und
+    ''' die Daten werden aktualisiert.
+    ''' </summary>
+    ''' <returns>True wenn der Datensatz aktualisiert wurde</returns>
     Public Function UpdateNext() As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
-        Dim nwtDaten As New wb_ktTypX
+        'Komponenten-Objekt nimmt die aktuellen Daten auf
+        Dim nwtDaten As New wb_Komponenten
         UpdateNext = False
 
         'nächsten Datensatz aus Tabelle Komponenten lesen
@@ -54,12 +54,13 @@ Public Class wb_nwtUpdate
 
                 'wenn die Daten in der Cloud aktueller sind - Änderungen ausgeben
                 If CloudChangeDate > WinBackChangeDate Then
-                    'Protokoll der Änderungen speichern/ausgeben
-                    wb_sql_Functions.WriteHinweise(wb_Global.Hinweise.NaehrwertUpdate, nwtDaten.Nr, nwtDaten.GetReport)
+                    'Protokoll der Änderungen speichern in Hinweise
+                    nwtDaten.SaveReport()
+                    'Protokoll der Änderungen ausgeben
                     Debug.Print(nwtDaten.GetReport)
 
                     'Ausgabe-Text
-                    _InfoText = "(" & nwtDaten.Nr.ToString("00000 ") & ")" & nwtDaten.Bezeichung & " " & CloudChangeDate.ToString
+                    _InfoText = "(" & nwtDaten.Nr.ToString("00000") & ") " & nwtDaten.Bezeichung
                     UpdateNext = True
                 End If
             Else
@@ -83,7 +84,7 @@ Public Class wb_nwtUpdate
     ''' </summary>
     ''' <param name="ID"></param>
     ''' <returns>Gibt das Datum der letzten Änderung in der Cloud zurück</returns>
-    Public Function GetNaehrwerte(ID As String, nwtdaten As wb_ktTypX) As Date
+    Public Function GetNaehrwerte(ID As String, nwtdaten As wb_Komponenten) As Date
         If Left(ID, 3) = "DL-" Then
             Return GetNaehrwerteDatenlink(ID, nwtdaten)
         Else
@@ -98,7 +99,7 @@ Public Class wb_nwtUpdate
     ''' </summary>
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
-    Private Function GetNaehrwerteHetzner(iD As String, nwtdaten As wb_ktTypX) As Date
+    Private Function GetNaehrwerteHetzner(iD As String, nwtdaten As wb_Komponenten) As Date
         Dim nwt As New wb_nwtCloud(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
         If nwt.GetProductData(iD, nwtdaten) > 0 Then
             Return nwtdaten.ktTyp301.TimeStamp
@@ -114,7 +115,7 @@ Public Class wb_nwtUpdate
     ''' </summary>
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
-    Private Function GetNaehrwerteDatenlink(iD As String, nwtdaten As wb_ktTypX) As Date
+    Private Function GetNaehrwerteDatenlink(iD As String, nwtdaten As wb_Komponenten) As Date
         'Create new instance of nwtCloud
         Dim dl As New wb_nwtDatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
         If dl.GetProductData(iD, nwtdaten) > 0 Then

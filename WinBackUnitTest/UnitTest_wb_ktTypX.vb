@@ -14,8 +14,6 @@ Imports WinBack.wb_Sql_Selects
             wb_Konfig.SqlSetting("MySQL")
             'Initialisierung Texte-Tabelle
             wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
-            'kt301 Initialisieren
-            wb_ktTyp301.LoadKompon301Tabelle()
         End If
     End Sub
 
@@ -24,7 +22,7 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten
-            Dim nwtDaten As New wb_ktTypX
+            Dim nwtDaten As New wb_Komponenten
 
             Dim sql As String = setParams(sqlTestktTypX, "211")
             'Datenbank-Verbindung öffnen - MySQL
@@ -47,7 +45,7 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten
-            Dim nwtDaten As New wb_ktTypX
+            Dim nwtDaten As New wb_Komponenten
 
             Dim sql As String = setParams(sqlTestktTyp3, "211")
             'Datenbank-Verbindung öffnen - MySQL
@@ -72,7 +70,7 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten
-            Dim nwtDaten As New wb_ktTypX
+            Dim nwtDaten As New wb_Komponenten
 
             'Eintrag Lieferant ändern
             nwtDaten.ClearReport()

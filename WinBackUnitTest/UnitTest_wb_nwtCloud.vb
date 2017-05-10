@@ -27,7 +27,7 @@
 
     <TestMethod()> Public Sub Test_CloudUpdate()
         Dim nwtUpdate As New wb_nwtUpdate
-        Dim nwtDaten As New wb_ktTypX
+        Dim nwtDaten As New wb_Komponenten
 
         'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung)
         nwtDaten.ClearReport()

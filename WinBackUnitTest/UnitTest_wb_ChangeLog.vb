@@ -15,8 +15,6 @@ Imports WinBack.wb_Global.LogType
         wb_Konfig.SqlSetting("MySQL")
         'Initialisierung Texte-Tabelle
         wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
-        'kt301 Initialisieren
-        wb_ktTyp301.LoadKompon301Tabelle()
     End Sub
 
     <TestMethod()> Public Sub Test_AddItem()

@@ -91,6 +91,30 @@ Public Class wb_Sql
     End Property
 
     ''' <summary>
+    ''' Datenbankfeld als Datum auslesen
+    ''' </summary>
+    ''' <param name="FieldName"></param>
+    ''' <returns></returns>
+    Public ReadOnly Property dField(FieldName As String) As Date
+        Get
+            Try
+                Select Case conType
+            'Verbindung über mySql
+                    Case dbType.mySql
+                        Return MySqlRead(FieldName)
+            'Verbindung über mysSql
+                    Case dbType.msSql
+                        Return Convert.ToDateTime(msRead(FieldName).ToString)
+                    Case Else
+                        Return ""
+                End Select
+            Catch
+                Return #1964/11/22 12:00:00#
+            End Try
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Datenbankfeld als Integer auslesen
     ''' </summary>
     ''' <param name="FieldName">DB-Field-Name</param>

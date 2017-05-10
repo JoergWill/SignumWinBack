@@ -115,4 +115,23 @@ Imports WinBack
         End If
     End Sub
 
+    <TestMethod()> Public Sub TestSonderzeichen()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
+
+            'Objekt initialisieren (ohne Rohstoff-Nummer)
+            Dim h As New wb_Hinweise(wb_Global.Hinweise.NaehrwertUpdate)
+
+            'Sonderzeichen im Text
+            h.ArtikelNr = 9999
+            h.Memo = "TES'T"
+            Assert.IsTrue(h.Write())
+
+            'Daten wieder lesen
+            Assert.IsTrue(h.Read(9999))
+            Assert.AreEqual("TES'T", h.Memo)
+
+
+        End If
+    End Sub
 End Class

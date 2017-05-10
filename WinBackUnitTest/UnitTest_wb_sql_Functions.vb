@@ -13,4 +13,10 @@ Imports WinBack
         End If
     End Sub
 
+    <TestMethod()>
+    Public Sub TestMySQLDateTime()
+        Dim x As String
+        x = wb_sql_Functions.MySQLdatetime(#1964/11/22 12:10:20#)
+        Assert.AreEqual("1964-11-22 12:10:20", x)
+    End Sub
 End Class

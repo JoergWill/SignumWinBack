@@ -87,23 +87,23 @@ Public Class wb_ChangeLog
     ''' <param name="ReportAll">Gibt alle Änderungen aus, auch die nicht aktiven Parameter</param>
     ''' <returns>(String) Änderungen</returns>
     Protected Function ChangeLogReport(Optional ReportAll As Boolean = vbFalse) As String
-        Dim x As wb_Global.wb_ChangeLogEintrag
+        Dim x As wb_ChangeLogEintrag
         Dim s As String = ""
         For Each x In Changes
             Select Case x.Type
 
                 'Allergene
-                Case wb_Global.LogType.Alg
-                    If wb_Functions.kt301Param(x.ParamNr).Used Or ReportAll Then
-                        s += x.OldValue + "/" + x.NewValue + " " + wb_Functions.kt301Param(x.ParamNr).Bezeichnung + vbNewLine
+                Case LogType.Alg
+                    If wb_KomponParam301_Global.kt301Param(x.ParamNr).Used Or ReportAll Then
+                        s += x.OldValue + "/" + x.NewValue + " " + wb_KomponParam301_Global.kt301Param(x.ParamNr).Bezeichnung + vbNewLine
                     End If
 
                 'Nährwerte
                 Case wb_Global.LogType.Nrw
-                    If wb_Functions.kt301Param(x.ParamNr).Used Or ReportAll Then
-                        s += x.OldValue + " " + wb_Functions.kt301Param(x.ParamNr).Einheit + "/"
-                        s += x.NewValue + " " + wb_Functions.kt301Param(x.ParamNr).Einheit + " "
-                        s += wb_Functions.kt301Param(x.ParamNr).Bezeichnung + vbNewLine
+                    If wb_KomponParam301_Global.kt301Param(x.ParamNr).Used Or ReportAll Then
+                        s += x.OldValue + " " + wb_KomponParam301_Global.kt301Param(x.ParamNr).Einheit + "/"
+                        s += x.NewValue + " " + wb_KomponParam301_Global.kt301Param(x.ParamNr).Einheit + " "
+                        s += wb_KomponParam301_Global.kt301Param(x.ParamNr).Bezeichnung + vbNewLine
                     End If
 
                 Case Else

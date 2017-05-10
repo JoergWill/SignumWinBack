@@ -417,10 +417,6 @@ Public Class wb_Functions
         Return Text
     End Function
 
-    Public Shared Function kt301Param(p As Integer) As wb_Global.ktTyp301Param
-        Return wb_ktTyp301.ktTyp301Params(p)
-    End Function
-
     ''' <summary>
     ''' Für ein Batch-File im Verzeichnis MySQLBatch aus. Über Argument wird %2 an das Batch-File übergeben
     ''' </summary>

@@ -2,7 +2,7 @@
 Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
-Public Class wb_ktTypX
+Public Class wb_Komponenten
     Inherits wb_ChangeLog
 
     Private KO_Nr As Integer
@@ -14,13 +14,18 @@ Public Class wb_ktTypX
     Private KO_Backverlust As Double
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
-    Private KA_Lagerort As Object
+    Private KA_Lagerort As String
 
-    Public ktTyp301 As New wb_ktTyp301
+    Public ktTyp301 As New wb_KomponParam301
+    Public NwtUpdate As New wb_Hinweise(Hinweise.NaehrwertUpdate)
+    Public DeklBezeichungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
+    Public DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
 
     Public Property Nr As Integer
         Set(value As Integer)
             KO_Nr = value
+            'Komponenten-Nummer an Hinweise.NaehrwertUpdate weitergeben
+            NwtUpdate.KompNr = value
         End Set
         Get
             Return KO_Nr
@@ -91,6 +96,11 @@ Public Class wb_ktTypX
         ktTyp301.ClearReport()
     End Sub
 
+    Public Sub SaveReport()
+        NwtUpdate.Memo = GetReport()
+        NwtUpdate.Write()
+    End Sub
+
     Public ReadOnly Property GetReport(Optional ReportAll As Boolean = vbFalse) As String
         Get
             Return ChangeLogReport(ReportAll) & ktTyp301.GetReport(ReportAll)
@@ -135,41 +145,42 @@ Public Class wb_ktTypX
 
         'Feldname aus der Datenbank
         Try
-                Select Case Name
+            Select Case Name
 
                 'Nummer(intern)
-                    Case "KO_Nr"
-                        KO_Nr = CInt(Value)
+                Case "KO_Nr"
+                    Nr = CInt(Value)
                'Type
-                    Case "KO_Type"
-                        KO_Type = IntToKomponType(CInt(Value))
+                Case "KO_Type"
+                    KO_Type = IntToKomponType(CInt(Value))
                 'Bezeichnung
-                    Case "KO_Bezeichnung"
-                        KO_Bezeichnung = Value
+                Case "KO_Bezeichnung"
+                    KO_Bezeichnung = Value
                 'Kommentar
-                    Case "KO_Kommentar"
-                        KO_Kommentar = Value
+                Case "KO_Kommentar"
+                    KO_Kommentar = Value
                 'Nummer(alphanumerisch)
-                    Case "KO_Nr_AlNum"
-                        KO_Nr_AlNum = Value
+                Case "KO_Nr_AlNum"
+                    KO_Nr_AlNum = Value
                 'Backverlust(Rezept im Rezept)
-                    Case "KO_Temp_Korr"
-                        KO_Backverlust = Value
+                Case "KO_Temp_Korr"
+                    KO_Backverlust = Value
                 'Index WinBack-Cloud
-                    Case "KA_Matchcode"
-                        KO_IdxCloud = Value
+                Case "KA_Matchcode"
+                    KO_IdxCloud = Value
                 'Index Rezeptnummer(Rezept im Rezept)
-                    Case "KA_RZ_Nr"
-                        KA_Rz_Nr = CInt(Value)
+                Case "KA_RZ_Nr"
+                    KA_Rz_Nr = CInt(Value)
                 'Lagerort
-                    Case "KA_Lagerort"
-                        KA_Lagerort = Value
+                Case "KA_Lagerort"
+                    KA_Lagerort = Value
 
-                End Select
-            Catch ex As Exception
-            End Try
+            End Select
+        Catch ex As Exception
+        End Try
         Return True
     End Function
+
     ''' <summary>
     ''' Schreibt den Wert aus Value in die entprechende Property der Klasse. Anhand von 
     ''' Parameter-Nummer und Parameter-Typ wird der Wert in das entsprechende Feld

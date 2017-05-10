@@ -34,7 +34,7 @@ Imports WinBack
 
     <TestMethod()> Public Sub Test_DatenLinkUpdate()
         Dim nwtUpdate As New wb_nwtUpdate
-        Dim nwtDaten As New wb_ktTypX
+        Dim nwtDaten As New wb_Komponenten
 
         'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung)
         Dim LastChange As Date = nwtUpdate.GetNaehrwerte("DL-CE3-C4D", nwtDaten)

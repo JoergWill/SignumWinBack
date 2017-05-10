@@ -63,6 +63,7 @@ Public Class UnitTest_wb_Sql
     <TestMethod()>
     Public Sub TestMySQL()
         Dim iInt, sString As String
+        Dim dDate As Date
 
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
         If My.Settings.TestMySQL Then
@@ -77,9 +78,11 @@ Public Class UnitTest_wb_Sql
 
             'Tabelle Test erstellen
             winback.sqlCommand("DROP TABLE IF EXISTS Test;")
-            winback.sqlCommand("CREATE TABLE Test(L_Nr int(5), L_Bezeichnung varchar(40)) TYPE=MYISAM;")
-            winback.sqlCommand("INSERT INTO Test VALUES (1,'T1');")
-            winback.sqlCommand("INSERT INTO Test VALUES (2,'T2');")
+            winback.sqlCommand("CREATE TABLE Test(L_Nr int(5), L_Bezeichnung varchar(40), LDate datetime) TYPE=MYISAM;")
+            winback.sqlCommand("INSERT INTO Test VALUES (1,'T1','2011-01-01 17:35:10');")
+            winback.sqlCommand("INSERT INTO Test VALUES (2,'T2','1964-11-22 12:10:00');")
+            'ungültiges Datum/Zeit-Format
+            winback.sqlCommand("INSERT INTO Test VALUES (3,'T3','1964-22-11 12:10:00');")
 
             'Daten aus Tabelle Test lesen
             If winback.sqlSelect("SELECT * FROM Test ORDER BY L_Nr") Then
@@ -88,6 +91,9 @@ Public Class UnitTest_wb_Sql
                     Assert.AreEqual("11", iInt)
                     sString = winback.sField("L_Bezeichnung")
                     Assert.AreEqual("T1", sString)
+                    dDate = winback.dField("LDate")
+                    Assert.AreEqual("01.01.2011 17:35:10", dDate.ToString)
+
                 Else
                     Assert.Fail()
                 End If
@@ -96,6 +102,20 @@ Public Class UnitTest_wb_Sql
                     Assert.AreEqual("12", iInt)
                     sString = winback.sField("L_Bezeichnung")
                     Assert.AreEqual("T2", sString)
+                    dDate = winback.dField("LDate")
+                    Dim xDate As Date = #1964/11/22 12:10:00#
+                    Assert.AreEqual(xDate, dDate)
+                Else
+                    Assert.Fail()
+                End If
+                If winback.Read Then
+                    iInt = (winback.iField("L_Nr") + 10).ToString
+                    Assert.AreEqual("13", iInt)
+                    sString = winback.sField("L_Bezeichnung")
+                    Assert.AreEqual("T3", sString)
+                    dDate = winback.dField("LDate")
+                    Dim xDate As Date = #1964/11/22 12:00:00#
+                    Assert.AreEqual(xDate, dDate)
                 Else
                     Assert.Fail()
                 End If

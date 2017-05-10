@@ -34,6 +34,7 @@ Public Class Main
     Private cntCounter As Integer
     Private cntMySql As Integer = 0
     Private cntCloudUpdate As Integer = 0
+    Private maxCloudTxtLines As Integer = 10
 
     Public Delegate Sub addListBoxDelegate(name As String)
     Public Delegate Sub remListBoxDelegate(name As String)
@@ -62,7 +63,7 @@ Public Class Main
     ''' <param name="tbx">Textbox</param>
     ''' <param name="s">String</param>
     Public Sub ScrollTextBox(ByRef tbx As TextBox, s As String)
-        If tbx.Lines.Count > 20 Then
+        If tbx.Lines.Count > maxCloudTxtLines Then
             Dim str As String = tbx.Text
             tbx.Text = str.Substring(str.IndexOf(vbCrLf) + 2)
         End If
@@ -76,6 +77,17 @@ Public Class Main
     ''' <param name="text">String</param>
     Public Sub TextBoxadd(text As String)
         tbMessages.Text &= text
+    End Sub
+
+    ''' <summary>
+    ''' Click auf das Icon in der Taskleiste. Zeigt das Fenster
+    ''' maximiert an.
+    ''' </summary>
+    ''' <param name="sender">Sender</param>
+    ''' <param name="e">Event</param>
+    Private Sub NotifyIcon_MouseClick(sender As Object, e As MouseEventArgs) Handles NotifyIcon.MouseClick
+        Me.WindowState = FormWindowState.Normal
+        Me.ShowInTaskbar = True
     End Sub
 
     ''' <summary>
@@ -131,7 +143,9 @@ Public Class Main
 
         'Abfrage Update Nährwert-Cloud
         If MainTimer_Check(cntCloudUpdate) Then
+            'Datensatz wurde aus der Cloud aktualisiert
             If nwtUpdate.UpdateNext Then
+                'Info-Text ausgeben
                 ScrollTextBox(tbCloud, nwtUpdate.InfoText & vbNewLine)
             End If
             cntCloudUpdate = cntCounter + cntCheckCloud
@@ -146,6 +160,7 @@ Public Class Main
             Case Else
                 lblServerStatus.Text = DateTime.Now.ToLongTimeString
                 lblServerStatus.ForeColor = Color.LimeGreen
+                ScrollTextBox(tbCloud, DateTime.Now.ToLongTimeString & " " & "TEST" & vbNewLine)
         End Select
 
         'Timer wieder einschalten
@@ -194,8 +209,6 @@ Public Class Main
         wb_Konfig.SqlSetting()
         'Initialisierung Texte-Tabelle
         wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
-        'Initialisierung Komponenten-Parameter
-        wb_ktTyp301.LoadKompon301Tabelle()
 
         'IP-Server starten
         Dim listener As New System.Threading.Thread(AddressOf listen) 'initialize a new thread for the listener so our GUI doesn't lag
@@ -205,7 +218,7 @@ Public Class Main
         'Status-Anzeige Backup/Restore
         lblBackupRestoreStatus.Text = ""
         'Timer löst jede Sekunde aus
-        MainTimer.Interval = 1000
+        MainTimer.Interval = 250 'TODO 1000
         MainTimer.Enabled = True
         'Starte zyklischen Mysql-Ping
         cntMySql = cntCounter + cntCheckMysql + cntStartAfterOneSecond
@@ -233,6 +246,11 @@ Public Class Main
         Me.Top = 0
         Me.Width = fBreite
         Me.Left = DesktopSize.Width - fBreite + 7
+        'Anzahl der Zeichen in der Textbox (Ausgabe Nährwert-Cloud)
+        maxCloudTxtLines = (DesktopSize.Height - 300) / tbCloud.Font.Height
+        If maxCloudTxtLines < 20 Then
+            maxCloudTxtLines = 20
+        End If
     End Sub
 
     ''' <summary>

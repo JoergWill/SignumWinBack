@@ -35,6 +35,9 @@ Partial Class Main
         Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.btnCloud = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.RemoveTextTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.lblServerStatus = New System.Windows.Forms.Label()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.TabPageClients = New System.Windows.Forms.TabPage()
         Me.lblClients = New System.Windows.Forms.Label()
@@ -50,9 +53,6 @@ Partial Class Main
         Me.TabPageCloud = New System.Windows.Forms.TabPage()
         Me.tbCloud = New System.Windows.Forms.TextBox()
         Me.lblCloud = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.RemoveTextTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.lblServerStatus = New System.Windows.Forms.Label()
         Me.Wb_TabControl.SuspendLayout()
         Me.TabPageClients.SuspendLayout()
         Me.TabPageMessages.SuspendLayout()
@@ -193,6 +193,36 @@ Partial Class Main
         Me.btnCloud.Text = "Nährwerte-Cloud"
         Me.btnCloud.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         Me.btnCloud.UseVisualStyleBackColor = False
+        '
+        'Button1
+        '
+        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button1.BackColor = System.Drawing.Color.Gray
+        Me.Button1.FlatAppearance.BorderColor = System.Drawing.Color.Gray
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button1.ForeColor = System.Drawing.Color.White
+        Me.Button1.Image = Global.WinBackServerTask.My.Resources.Resources.Clock
+        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.Button1.Location = New System.Drawing.Point(128, 540)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(110, 65)
+        Me.Button1.TabIndex = 9
+        Me.Button1.Text = "Timer"
+        Me.Button1.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.Button1.UseVisualStyleBackColor = False
+        '
+        'RemoveTextTimer
+        '
+        Me.RemoveTextTimer.Interval = 30000
+        '
+        'lblServerStatus
+        '
+        Me.lblServerStatus.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblServerStatus.ForeColor = System.Drawing.Color.Red
+        Me.lblServerStatus.Location = New System.Drawing.Point(12, 34)
+        Me.lblServerStatus.Name = "lblServerStatus"
+        Me.lblServerStatus.Size = New System.Drawing.Size(214, 41)
+        Me.lblServerStatus.TabIndex = 10
         '
         'Wb_TabControl
         '
@@ -377,14 +407,16 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbCloud.BackColor = System.Drawing.Color.Black
         Me.tbCloud.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.tbCloud.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbCloud.Font = New System.Drawing.Font("Courier New", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbCloud.ForeColor = System.Drawing.Color.White
         Me.tbCloud.Location = New System.Drawing.Point(0, 25)
         Me.tbCloud.Multiline = True
         Me.tbCloud.Name = "tbCloud"
+        Me.tbCloud.ReadOnly = True
         Me.tbCloud.Size = New System.Drawing.Size(334, 398)
         Me.tbCloud.TabIndex = 2
         Me.tbCloud.TabStop = False
+        Me.tbCloud.WordWrap = False
         '
         'lblCloud
         '
@@ -395,36 +427,6 @@ Partial Class Main
         Me.lblCloud.Size = New System.Drawing.Size(171, 22)
         Me.lblCloud.TabIndex = 1
         Me.lblCloud.Text = "Updates Nährwerte"
-        '
-        'Button1
-        '
-        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button1.BackColor = System.Drawing.Color.Gray
-        Me.Button1.FlatAppearance.BorderColor = System.Drawing.Color.Gray
-        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button1.ForeColor = System.Drawing.Color.White
-        Me.Button1.Image = Global.WinBackServerTask.My.Resources.Resources.Clock
-        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.Button1.Location = New System.Drawing.Point(128, 540)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(110, 65)
-        Me.Button1.TabIndex = 9
-        Me.Button1.Text = "Timer"
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.BottomLeft
-        Me.Button1.UseVisualStyleBackColor = False
-        '
-        'RemoveTextTimer
-        '
-        Me.RemoveTextTimer.Interval = 30000
-        '
-        'lblError
-        '
-        Me.lblServerStatus.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblServerStatus.ForeColor = System.Drawing.Color.Red
-        Me.lblServerStatus.Location = New System.Drawing.Point(12, 34)
-        Me.lblServerStatus.Name = "lblError"
-        Me.lblServerStatus.Size = New System.Drawing.Size(214, 41)
-        Me.lblServerStatus.TabIndex = 10
         '
         'Main
         '
@@ -488,9 +490,9 @@ Partial Class Main
     Friend WithEvents Label2 As Label
     Friend WithEvents btnCloud As Button
     Friend WithEvents TabPageCloud As TabPage
-    Friend WithEvents tbCloud As TextBox
     Friend WithEvents lblCloud As Label
     Friend WithEvents Button1 As Button
     Friend WithEvents RemoveTextTimer As Timer
     Friend WithEvents lblServerStatus As Label
+    Public WithEvents tbCloud As TextBox
 End Class
