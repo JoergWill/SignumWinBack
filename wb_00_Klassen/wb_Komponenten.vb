@@ -1,4 +1,5 @@
 ﻿Imports MySql.Data.MySqlClient
+Imports WinBack
 Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
@@ -16,10 +17,11 @@ Public Class wb_Komponenten
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
 
-    Public ktTyp301 As New wb_KomponParam301
+    Private KO_DeklBezeichungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
+    Private KO_DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
+
     Public NwtUpdate As New wb_Hinweise(Hinweise.NaehrwertUpdate)
-    Public DeklBezeichungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
-    Public DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
+    Public ktTyp301 As New wb_KomponParam301
 
     Public Property Nr As Integer
         Set(value As Integer)
@@ -78,7 +80,6 @@ Public Class wb_Komponenten
         End Get
     End Property
 
-    Public Property Deklaration As String
     Public Property TimeStamp As Date
     Public Property BestellNummer As String
 
@@ -97,7 +98,9 @@ Public Class wb_Komponenten
     End Sub
 
     Public Sub SaveReport()
-        NwtUpdate.Memo = GetReport()
+        Dim Ueberschrift As String = "Änderungen für Rohstoff " & Nummer & " " & Bezeichung & " " & vbNewLine
+        Dim Strich = New String("="c, Len(Ueberschrift)) & vbNewLine
+        NwtUpdate.Memo = Ueberschrift & Strich & GetReport()
         NwtUpdate.Write()
     End Sub
 
@@ -105,6 +108,30 @@ Public Class wb_Komponenten
         Get
             Return ChangeLogReport(ReportAll) & ktTyp301.GetReport(ReportAll)
         End Get
+    End Property
+
+    Public Property Deklaration As String
+        Get
+            'TODO Hier muss unterschieden werden, welche Deklaration benutzt werden soll (Intern/Extern) - kundenspezifisch
+            Deklaration = DeklBezeichungExtern
+        End Get
+        Set(value As String)
+            'TODO Hier muss unterschieden werden, welche Deklaration benutzt werden soll (Intern/Extern) - kundenspezifisch
+            DeklBezeichungExtern = value
+        End Set
+    End Property
+
+    Public Property DeklBezeichungExtern As String
+        Get
+            'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
+            If Not KO_DeklBezeichungExtern.ReadOK Then
+                KO_DeklBezeichungExtern.Read(KO_Nr)
+            End If
+            Return KO_DeklBezeichungExtern.Memo
+        End Get
+        Set(value As String)
+            KO_DeklBezeichungExtern.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_DeklarationExtern, DeklBezeichungExtern, value)
+        End Set
     End Property
 
     ''' <summary>

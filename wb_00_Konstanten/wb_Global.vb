@@ -132,11 +132,13 @@
     Public Const T301_Vegan = 211
 
     Enum Parameter
-        Tx_AlNum              'Rohstoff/Artikelnummer(alphanumerisch)
+        Tx_AlNum               'Rohstoff/Artikelnummer(alphanumerisch)
         Tx_Bezeichnung         'Rohstoff/Artikelbezeichnung
         Tx_Kommentar           'Kommentar-Feld
         Tx_MatchCode           'Index WinBack-Cloud/Datenlink
         Tx_Lieferant           'Lieferant
+        Tx_DeklarationIntern
+        Tx_DeklarationExtern
     End Enum
 
     Enum Hinweise
@@ -178,6 +180,7 @@
         Prm   'Parameter
         Alg   'Allergen
         Nrw   'Nährwert
+        Dkl   'Deklaration'
     End Enum
 
     Public Structure wb_ChangeLogEintrag

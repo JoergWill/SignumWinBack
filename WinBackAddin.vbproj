@@ -169,6 +169,7 @@
     <Compile Include="wb_00_Klassen\wb_TcpIPConnection.vb" />
     <Compile Include="wb_00_Klassen\wb_TraceListener.vb" />
     <Compile Include="wb_00_Konstanten\wb_Credentials.vb" />
+    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_DockingExtension.vb" />
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_DockingControl.Designer.vb">
       <DependentUpon>wb_User_DockingControl.vb</DependentUpon>
@@ -176,7 +177,7 @@
     <Compile Include="wb_05_Forms_User\wb_User_DockingControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_DockingExtension.vb" />
+    <Compile Include="wb_05_Forms_User\ob_User_DockingExtension.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_Gruppe.vb" />
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_Functions.vb" />

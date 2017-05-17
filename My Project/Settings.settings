@@ -45,7 +45,7 @@
       <Value Profile="(Default)">C:\Temp\</Value>
     </Setting>
     <Setting Name="MsSQLServerIP" Type="System.String" Scope="User">
-      <Value Profile="(Default)">127.0.0.1</Value>
+      <Value Profile="(Default)">WILL-WIN10</Value>
     </Setting>
     <Setting Name="WinBackDBType" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -57,7 +57,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="OrgaBackMainConString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=DemoOrgaBack_Main3; Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=WILL-WIN10\SIGNUM; Database=DemoOrgaBack_Main3; Integrated Security=True</Value>
     </Setting>
     <Setting Name="MsSQLMain" Type="System.String" Scope="User">
       <Value Profile="(Default)">DemoOrgaBack_Main3</Value>

@@ -12,7 +12,7 @@
       <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
     <Setting Name="TestMsSQL" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="TestMySQL" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
@@ -28,6 +28,15 @@
     </Setting>
     <Setting Name="AktLanguage" Type="System.String" Scope="User">
       <Value Profile="(Default)">de</Value>
+    </Setting>
+    <Setting Name="OrgaBackMainConString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=WILL-WIN10\SIGNUM; Database=DemoOrgaBack_Main3; Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="MsSQLServerIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">WILL-WIN10</Value>
+    </Setting>
+    <Setting Name="MsSQLMain" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DemoOrgaBack_Main3</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -16,7 +16,7 @@ Public Class wb_Hinweise
     Private H2_UserNr As Integer = 0
     Private H2_UserName As String
     Private H2_Memo As String
-    Private ReadOK As Boolean = False
+    Private H2_ReadOK As Boolean = False
 
     Public ReadOnly Property Typ As Integer
         Get
@@ -63,6 +63,12 @@ Public Class wb_Hinweise
         End Get
     End Property
 
+    Public ReadOnly Property ReadOK As Boolean
+        Get
+            Return H2_ReadOK
+        End Get
+    End Property
+
     ''' <summary>
     ''' Objekt initialisieren. Die Daten werden nicht gelesen.
     ''' </summary>
@@ -71,7 +77,7 @@ Public Class wb_Hinweise
         'H2_Typ und H2_Typ2 ermitteln
         GetTyp(DataTyp, H2_Typ, H2_Typ2)
         'Daten sind noch nicht gelesen
-        ReadOK = False
+        H2_ReadOK = False
     End Sub
 
     ''' <summary>
@@ -82,7 +88,7 @@ Public Class wb_Hinweise
     Public Sub New(DataTyp As Hinweise, idx As Integer)
         'H2_Typ und H2_Typ2 ermitteln
         If GetTyp(DataTyp, H2_Typ, H2_Typ2) Then
-            ReadOK = Read(idx)
+            H2_ReadOK = Read(idx)
         End If
     End Sub
 
@@ -95,19 +101,19 @@ Public Class wb_Hinweise
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
 
         'Daten aus MySQL-Memo in String einlesen
-        ReadOK = False
+        H2_ReadOK = False
         winback.sqlSelect(setParams(sqlSelectH2, H2_Typ, H2_Typ2, idx))
         If winback.Read Then
             H2_Aenderung_Nr = winback.sField("H2_Aenderung_Nr")
             H2_Aenderung_Datum = winback.sField("H2_Aenderung_Datum")
-            H2_UserNr = winback.iField("H2_UserNr")
-            H2_UserName = winback.sField("H2_UserName")
+            H2_UserNr = winback.iField("H2_Aenderung_User")
+            H2_UserName = winback.sField("H2_Aenderung_Name")
             H2_Memo = winback.sField("H2_Memo")
             H2_Id2 = idx
-            ReadOK = True
+            H2_ReadOK = True
         End If
         winback.Close()
-        Return ReadOK
+        Return H2_ReadOK
     End Function
 
     ''' <summary>
@@ -125,11 +131,11 @@ Public Class wb_Hinweise
             Dim s1, s2 As String
 
             'Vor Insert/Update müssen die Daten gelesen werden
-            If Not ReadOK Then
+            If Not H2_ReadOK Then
                 winback.sqlSelect(setParams(sqlSelectH2, H2_Typ, H2_Typ2, H2_Id2))
                 If winback.Read Then
                     H2_Aenderung_Nr = winback.sField("H2_Aenderung_Nr")
-                    ReadOK = True
+                    H2_ReadOK = True
                 End If
                 winback.CloseRead()
             End If
@@ -141,7 +147,7 @@ Public Class wb_Hinweise
             H2_UserName = My.Settings.AktUser
 
             'Daten sind gelesen/Datensatz vorhanden
-            If ReadOK Then
+            If H2_ReadOK Then
                 'Änderung-Nummer um Eins nach oben zählen
                 H2_Aenderung_Nr += 1
                 'Daten in Memo-Feld speichern (Update)
@@ -177,7 +183,30 @@ Public Class wb_Hinweise
         Return (i > 0)
     End Function
 
-
+    ''' <summary>
+    ''' Zuordnung von Hinweis.Datentyp zu H2_Typ,H2_Typ2 in der Datenbank winback.Hinweise2
+    ''' 
+    '''         Datentyp              H2_Typ  H2_Typ2   H2_Id2
+    '''         ===================================================
+    '''         RezeptHinweise          2       0       RezepNr
+    '''         ArtikelHinweise         3       0       ArtikelNr
+    '''         UserInfo                4       0       UserNr
+    '''         ZutatenListe            9       1       ArtikelNr
+    '''         MehlZusammensetzung     9       2       ArtikelNr
+    '''         GebCharakteristik      10       1       ArtikelNr
+    '''         Verzehrtipps           10       2       ArtikelNr
+    '''         Wissenswertes          10       3       ArtikelNr
+    '''         DeklBezRohstoff        11       0       RohstoffNr  
+    '''         DeklBezRohstoffIntern  11       1       RohstoffNr  
+    '''         MessageTextLinie       20       0       LinienNr
+    '''         MessageTextUser        20       1       UserNr
+    '''         NaehrwertUpdate        21       0       RohstoffNr
+    '''         
+    ''' </summary>
+    ''' <param name="DataTyp"></param>
+    ''' <param name="Typ1"></param>
+    ''' <param name="Typ2"></param>
+    ''' <returns></returns>
     Private Shared Function GetTyp(DataTyp As Hinweise, ByRef Typ1 As Integer, ByRef Typ2 As Integer) As Boolean
         Select Case DataTyp
             Case Hinweise.RezeptHinweise        '2/0/RzNr

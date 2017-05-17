@@ -224,7 +224,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("127.0.0.1")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("WILL-WIN10")>  _
         Public Property MsSQLServerIP() As String
             Get
                 Return CType(Me("MsSQLServerIP"),String)
@@ -272,8 +272,8 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=DemoOrgaBack_Main3; Integrated Security=Tr"& _ 
-            "ue")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=WILL-WIN10\SIGNUM; Database=DemoOrgaBack_Main3; Integrated Security=T"& _ 
+            "rue")>  _
         Public Property OrgaBackMainConString() As String
             Get
                 Return CType(Me("OrgaBackMainConString"),String)

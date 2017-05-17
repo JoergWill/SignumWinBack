@@ -89,25 +89,60 @@ Public Class wb_ChangeLog
     Protected Function ChangeLogReport(Optional ReportAll As Boolean = vbFalse) As String
         Dim x As wb_ChangeLogEintrag
         Dim s As String = ""
+        Dim UeberschriftAllergene As Boolean = False
+        Dim UeberschriftNaehrwert As Boolean = False
+
         For Each x In Changes
             Select Case x.Type
 
                 'Allergene
                 Case LogType.Alg
                     If wb_KomponParam301_Global.kt301Param(x.ParamNr).Used Or ReportAll Then
+                        'in der ersten Zeile eine Überschrift drucken
+                        If Not UeberschriftAllergene Then
+                            s += vbNewLine & "Allergene [alt/neu]" & vbNewLine
+                            UeberschriftAllergene = True
+                        End If
                         s += x.OldValue + "/" + x.NewValue + " " + wb_KomponParam301_Global.kt301Param(x.ParamNr).Bezeichnung + vbNewLine
                     End If
 
                 'Nährwerte
                 Case wb_Global.LogType.Nrw
                     If wb_KomponParam301_Global.kt301Param(x.ParamNr).Used Or ReportAll Then
+                        'in der ersten Zeile eine Überschrift drucken
+                        If Not UeberschriftNaehrwert Then
+                            s += vbNewLine & "Nährwerte [alt/neu]" & vbNewLine
+                            UeberschriftNaehrwert = True
+                        End If
                         s += x.OldValue + " " + wb_KomponParam301_Global.kt301Param(x.ParamNr).Einheit + "/"
                         s += x.NewValue + " " + wb_KomponParam301_Global.kt301Param(x.ParamNr).Einheit + " "
                         s += wb_KomponParam301_Global.kt301Param(x.ParamNr).Bezeichnung + vbNewLine
                     End If
 
+                'Deklarationsbezeichnung
+                Case wb_Global.LogType.Dkl
+                    s += vbNewLine & "Deklaration [alt]" & vbNewLine
+                    s += x.OldValue + vbNewLine
+                    s += vbNewLine & "Deklaration [neu]" & vbNewLine
+                    s += x.NewValue + vbNewLine
+
+                'Parameter
+                Case wb_Global.LogType.Prm
+                    Select Case x.ParamNr
+                        Case Parameter.Tx_Bezeichnung
+                            s += vbNewLine & "Bezeichnung [alt] " & x.OldValue
+                            s += vbNewLine & "Bezeichnung [neu] " & x.NewValue & vbNewLine
+
+                        Case Parameter.Tx_Lieferant
+                            s += vbNewLine & "Lieferant [alt] " & x.OldValue
+                            s += vbNewLine & "Lieferant [neu] " & x.NewValue & vbNewLine
+
+                    End Select
+
                 Case Else
-                    s += x.OldValue + "/" + x.NewValue + vbNewLine
+                    If ReportAll Then
+                        s += x.OldValue + "/" + x.NewValue + vbNewLine
+                    End If
             End Select
         Next
         _ChangeLogAktiv = False

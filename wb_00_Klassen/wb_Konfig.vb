@@ -36,6 +36,11 @@ Public Class wb_Konfig
                 Throw New NotImplementedException
         End Select
 
+        ' Connection-String für OrgaBackMain-MsSQL-Datenbank
+        My.Settings.OrgaBackMainConString = "Data Source=" & My.Settings.MsSQLServerIP & "\SIGNUM; " _
+                                    & "Database=" & My.Settings.MsSQLMain & "; " _
+                                    & "Integrated Security=True"
+
     End Sub
     Private Shared Sub MySqlSetting()
         Dim IniFile As New wb_IniFile
@@ -56,6 +61,7 @@ Public Class wb_Konfig
                                     & "user id=" & My.Settings.MySQLUser & ";" _
                                     & "password=" & My.Settings.MySQLPass & ";" _
                                     & "database=" & My.Settings.MySQLWbDaten & ";"
+
     End Sub
 
     Private Shared Sub MsSqlSetting()
@@ -76,10 +82,6 @@ Public Class wb_Konfig
                                     & "Database=" & My.Settings.MySQLWbDaten & "; " _
                                     & "Integrated Security=True"
 
-        ' Connection-String für OrgaBackMain-MsSQL-Datenbank
-        My.Settings.OrgaBackMainConString = "Data Source=" & My.Settings.MsSQLServerIP & "\SIGNUM; " _
-                                    & "Database=" & My.Settings.MsSQLMain & "; " _
-                                    & "Integrated Security=True"
     End Sub
 
     Public Shared Function SqlConWinBack() As String

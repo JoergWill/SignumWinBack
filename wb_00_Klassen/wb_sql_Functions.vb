@@ -50,7 +50,10 @@ Public Class wb_sql_Functions
     ''' <returns>s - String mit umgewandelten Sonderzeichen</returns>
     Public Shared Function removeSonderZeichen(s As String) As String
         'wandelt ' in ''
-        s = s.Replace("'", "''")
+        Try
+            s = s.Replace("'", "''")
+        Catch
+        End Try
         Return s
     End Function
 

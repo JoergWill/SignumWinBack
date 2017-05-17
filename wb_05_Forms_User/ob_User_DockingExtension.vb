@@ -1,5 +1,4 @@
-﻿Imports System.Windows.Forms
-Imports Signum.OrgaSoft
+﻿Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.FrameWork
@@ -7,7 +6,7 @@ Imports Signum.OrgaSoft.GUI
 
 <Export(GetType(IExtension))>
 <ExportMetadata("Description", "Erweiterung des Mitarbeiter-Dockingfensters um ein Unterfenster WinBack")>
-Public Class wb_User_DockingExtension
+Public Class ob_User_DockingExtension
     Implements IDockingExtension
 
     Private _MenuService As Common.IMenuService

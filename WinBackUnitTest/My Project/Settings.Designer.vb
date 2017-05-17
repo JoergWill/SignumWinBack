@@ -83,7 +83,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
         Public ReadOnly Property TestMsSQL() As Boolean
             Get
                 Return CType(Me("TestMsSQL"),Boolean)
@@ -141,6 +141,43 @@ Namespace My
             End Get
             Set
                 Me("AktLanguage") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=WILL-WIN10\SIGNUM; Database=DemoOrgaBack_Main3; Integrated Security=T"& _ 
+            "rue")>  _
+        Public Property OrgaBackMainConString() As String
+            Get
+                Return CType(Me("OrgaBackMainConString"),String)
+            End Get
+            Set
+                Me("OrgaBackMainConString") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("WILL-WIN10")>  _
+        Public Property MsSQLServerIP() As String
+            Get
+                Return CType(Me("MsSQLServerIP"),String)
+            End Get
+            Set
+                Me("MsSQLServerIP") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("DemoOrgaBack_Main3")>  _
+        Public Property MsSQLMain() As String
+            Get
+                Return CType(Me("MsSQLMain"),String)
+            End Get
+            Set
+                Me("MsSQLMain") = value
             End Set
         End Property
     End Class

@@ -61,6 +61,7 @@ Public Class wb_Sql
                         Return False
                 End Select
             Catch ex As Exception
+                Debug.Print("Problem beim Read der Daten Fehler-Meldung: " & ex.Message.ToString)
                 Return False
             End Try
         End Get

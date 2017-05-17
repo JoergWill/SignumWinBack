@@ -121,6 +121,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="wb_ServerDetails.Designer.vb">
+      <DependentUpon>wb_ServerDetails.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_ServerDetails.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="wb_Server.resx">
@@ -131,6 +137,9 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_ServerDetails.resx">
+      <DependentUpon>wb_ServerDetails.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

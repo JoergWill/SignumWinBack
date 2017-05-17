@@ -1,31 +1,68 @@
 ﻿Public Class wb_Filiale
-    Private pFiliale As ArrayList = Nothing
+    Private Shared pFiliale As ArrayList = Nothing
+    Private Shared pSortiment As ArrayList = Nothing
 
     ''' <summary>
     ''' Liest aus der Tabelle dbo.Filialen alle Einträge aus. Im Feld dbo.Filiale.Typ wird festgelegt welcher Filial-Typ
     ''' dieser Filiale zugeordnet ist. Ist diese Filiale eine Produktions-Filiale wird Typ=4 (wb_Konfig.ProduktionsFiliale) eigetragen.
     ''' Erzeugt ArrayList pFiliale
+    ''' 
+    ''' Liest aus der Tabelle dbo.FilialeHatSortiment die Sortiments-Kürzel, die mit einer Filiale vom Typ "Produktion" verknüpft sind.
+    ''' Erzeugt ArrayList pSortiment
+    ''' 
+    ''' 
     ''' </summary>
-    Public Sub New()
+    Shared Sub New()
         pFiliale = New ArrayList()
-        '' TODO Filial-Daten aus Orgasoft.DB lesen
-        pFiliale.Add("9999")
+        pSortiment = New ArrayList()
+
+        'Datenbank-Verbindung öffnen - MsSQL
+        Dim OrgasoftMain As New wb_Sql(My.Settings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim FNr As String
+        Dim Srt As String
+
+        'Daten aus Tabelle Filialen lesen
+        If OrgasoftMain.sqlSelect("SELECT Filialnummer, Name1 FROM Filialen WHERE [Typ] = " & wb_Global.ProduktionsFiliale) Then
+            While OrgasoftMain.Read
+                FNr = (OrgasoftMain.sField("Filialnummer"))
+                pFiliale.Add(FNr)
+            End While
+        End If
+
+        'Kanal wieder schliessen
+        OrgasoftMain.CloseRead()
+
+        'Daten aus Tabelle FilialeHatSortiment lesen
+        If OrgasoftMain.sqlSelect("SELECT * FROM FilialeHatSortiment INNER JOIN Filialen " &
+                                  "ON FilialeHatSortiment.Filialnr =  Filialen.Filialnummer " &
+                                  "WHERE [Typ] = " & wb_Global.ProduktionsFiliale & " ORDER BY SortimentsKürzel") Then
+            While OrgasoftMain.Read
+                Srt = (OrgasoftMain.sField("SortimentsKürzel"))
+                'Der erste Eintrag muss immer hinzugefügt werden
+                If (pSortiment.Count = 0) Then
+                    pSortiment.Add(Srt)
+                    'nur neue Einträge in Liste anfügen
+                ElseIf (Srt <> pSortiment.Item(pSortiment.Count - 1)) Then
+                    pSortiment.Add(Srt)
+                End If
+            End While
+        End If
+
     End Sub
 
     ''' <summary>
     ''' FÜr Unit-Test. ArrayList mit Filial-Nummern füllen
     ''' </summary>
-    Public WriteOnly Property AddFiliale As String
-        Set(ByVal value As String)
-            pFiliale.Add(value)
-        End Set
-    End Property
+    Public Shared Sub AddFiliale(Value As String)
+        pFiliale.Add(Value)
+    End Sub
 
     ''' <summary>
-    ''' Komma-separierter String enthält eine Filiale, die der Produktion zugeordnet ist
+    ''' Gibt True zurück, wenn eine der Filialen den Typ Produktion hat.
     ''' </summary>
-    ''' <returns></returns>
-    Public ReadOnly Property isProduction(ByVal FilialNr As String) As Boolean
+    ''' <param name="FilialNr">Komma-separierter String enthält eine Filiale, die der Produktion zugeordnet ist</param>
+    ''' <returns>True wenn eine der Filialen der Produktion zugeordnet</returns>
+    Public Shared ReadOnly Property FilialeIstProduktion(FilialNr As String) As Boolean
         Get
             'Filial-String aufteilene in die einzelnen Filialen
             Dim sFiliale() As String = FilialNr.Split(",")
@@ -43,4 +80,24 @@
             Return False
         End Get
     End Property
+
+    ''' <summary>
+    ''' Liefert True zurück, wenn die übergebene Sortiment-Nummer (Kürzel) einer Filiale zugeordnet ist, die den Typ Produktion hat.
+    ''' Der entsprechende Artikel wird in WinBack gelistet.
+    ''' </summary>
+    ''' <param name="SortimentNr"></param>
+    ''' <returns>True wenn die Sortiment-Nummer einer Produktions-Filiale zuegordnet ist.</returns>
+    Public Shared ReadOnly Property SortimentIstProduktion(SortimentNr As String) As Boolean
+        Get
+            'alle Sortiments-Kürzel aus dbo.FilialeHatSortiment
+            For Each sNr In pSortiment
+                If SortimentNr = sNr Then
+                    Return True
+                    Exit For
+                End If
+            Next
+            Return False
+        End Get
+    End Property
+
 End Class

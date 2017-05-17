@@ -57,8 +57,9 @@ Public Class Main
     End Sub
 
     ''' <summary>
-    ''' Anzeige der letzen 20 Nährwert-Updates. 
+    ''' Anzeige der letzen x Nährwert-Updates. 
     ''' Am Ende der Liste wird automatisch der älteste Eintrag gelöscht.
+    ''' Die Länge wird bei Programmstart ermittelt und in maxCloudTxtLines abgelegt.
     ''' </summary>
     ''' <param name="tbx">Textbox</param>
     ''' <param name="s">String</param>
@@ -160,11 +161,12 @@ Public Class Main
             Case Else
                 lblServerStatus.Text = DateTime.Now.ToLongTimeString
                 lblServerStatus.ForeColor = Color.LimeGreen
-                ScrollTextBox(tbCloud, DateTime.Now.ToLongTimeString & " " & "TEST" & vbNewLine)
         End Select
 
         'Timer wieder einschalten
         MainTimer.Enabled = True
+        'Beim Schliessen des Detail-Fensters bleiben markierte Textblöcke übrig. Markierung wieder löschen
+        tbCloud.Select(0, 0)
         'TODO Timer-Aufrufe überprüfen
     End Sub
 
@@ -218,7 +220,7 @@ Public Class Main
         'Status-Anzeige Backup/Restore
         lblBackupRestoreStatus.Text = ""
         'Timer löst jede Sekunde aus
-        MainTimer.Interval = 250 'TODO 1000
+        MainTimer.Interval = 1000
         MainTimer.Enabled = True
         'Starte zyklischen Mysql-Ping
         cntMySql = cntCounter + cntCheckMysql + cntStartAfterOneSecond
@@ -247,10 +249,7 @@ Public Class Main
         Me.Width = fBreite
         Me.Left = DesktopSize.Width - fBreite + 7
         'Anzahl der Zeichen in der Textbox (Ausgabe Nährwert-Cloud)
-        maxCloudTxtLines = (DesktopSize.Height - 300) / tbCloud.Font.Height
-        If maxCloudTxtLines < 20 Then
-            maxCloudTxtLines = 20
-        End If
+        maxCloudTxtLines = (DesktopSize.Height - 260) / tbCloud.Font.Height
     End Sub
 
     ''' <summary>
@@ -441,4 +440,38 @@ Public Class Main
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Doppelclick auf die Nährwerte-Cloud-Ausgabe öffnet ein Fenster mit detaillierten Angaben zum ausgewählten Rohstoff
+    ''' (Ausgabe der Daten aus Hinweise.NaehrwertUpdate)
+    ''' 
+    ''' Auswertung der aktuellen Zeile aus http://stackoverflow.com/questions/10746121/how-to-select-a-line-in-a-richtextbox-on-a-mouse-click
+    ''' First you need to map the mouse position to a character index
+    ''' Then you need to map the character index to a line
+    ''' Then you need to find out where the line starts
+    ''' Then you need to find out where it ends, which is the start of the next line minus one
+    ''' Then you need to make the selection
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub tbCloud_DoubleClick(sender As Object, e As EventArgs) Handles tbCloud.DoubleClick
+        Dim Box = DirectCast(sender, TextBox)
+        Dim idx = Box.GetCharIndexFromPosition(DirectCast(e, MouseEventArgs).Location)
+        Dim line = Box.GetLineFromCharIndex(idx)
+        Box.SelectionStart = Box.GetFirstCharIndexFromLine(line)
+        Box.SelectionLength = Box.GetFirstCharIndexFromLine(line + 1) - 1 - Box.SelectionStart
+        'Selektierter Text
+        Dim x() As String = Box.SelectedText.Split(" ")
+        'Die Rohstoff-Nummer steht an zweiter Stelle
+        'Nährwert-Updates zum Rohstoff im Detail aus DB lesen
+        Dim h As New wb_Hinweise(wb_Global.Hinweise.NaehrwertUpdate, CInt(Val(x(1).Substring(1))))
+        'Selektion wieder aufheben
+        Box.Select(0, 0)
+
+        'Fenster mit Detail-Informationen modal einblenden
+        Dim DetailAnsicht As New wb_ServerDetails
+        DetailAnsicht.Text = "Detail-Bericht Update Rohstoff-Nährwerte und Allergene"
+        DetailAnsicht.tbDetails.Text = h.Memo
+        DetailAnsicht.tbDetails.Select(0, 0)
+        DetailAnsicht.ShowDialog()
+    End Sub
 End Class
