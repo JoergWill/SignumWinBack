@@ -1,6 +1,12 @@
 ﻿Public Class wb_Filiale
+    Private Structure SortimentFiliale
+        Public SortimentsKürzel As String
+        Public FilialNr As String
+    End Structure
+
     Private Shared pFiliale As ArrayList = Nothing
     Private Shared pSortiment As ArrayList = Nothing
+
 
     ''' <summary>
     ''' Liest aus der Tabelle dbo.Filialen alle Einträge aus. Im Feld dbo.Filiale.Typ wird festgelegt welcher Filial-Typ
@@ -9,9 +15,9 @@
     ''' 
     ''' Liest aus der Tabelle dbo.FilialeHatSortiment die Sortiments-Kürzel, die mit einer Filiale vom Typ "Produktion" verknüpft sind.
     ''' Erzeugt ArrayList pSortiment
-    ''' 
-    ''' 
     ''' </summary>
+
+
     Shared Sub New()
         pFiliale = New ArrayList()
         pSortiment = New ArrayList()
@@ -22,7 +28,7 @@
         Dim Srt As String
 
         'Daten aus Tabelle Filialen lesen
-        If OrgasoftMain.sqlSelect("SELECT Filialnummer, Name1 FROM Filialen WHERE [Typ] = " & wb_Global.ProduktionsFiliale) Then
+        If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlFiliale, wb_Global.ProduktionsFiliale)) Then
             While OrgasoftMain.Read
                 FNr = (OrgasoftMain.sField("Filialnummer"))
                 pFiliale.Add(FNr)
@@ -33,18 +39,13 @@
         OrgasoftMain.CloseRead()
 
         'Daten aus Tabelle FilialeHatSortiment lesen
-        If OrgasoftMain.sqlSelect("SELECT * FROM FilialeHatSortiment INNER JOIN Filialen " &
-                                  "ON FilialeHatSortiment.Filialnr =  Filialen.Filialnummer " &
-                                  "WHERE [Typ] = " & wb_Global.ProduktionsFiliale & " ORDER BY SortimentsKürzel") Then
+        Dim sf As SortimentFiliale
+
+        If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSortiment, wb_Global.ProduktionsFiliale)) Then
             While OrgasoftMain.Read
-                Srt = (OrgasoftMain.sField("SortimentsKürzel"))
-                'Der erste Eintrag muss immer hinzugefügt werden
-                If (pSortiment.Count = 0) Then
-                    pSortiment.Add(Srt)
-                    'nur neue Einträge in Liste anfügen
-                ElseIf (Srt <> pSortiment.Item(pSortiment.Count - 1)) Then
-                    pSortiment.Add(Srt)
-                End If
+                sf.SortimentsKürzel = (OrgasoftMain.sField("SortimentsKürzel"))
+                sf.FilialNr = (OrgasoftMain.sField("FilialNr"))
+                pSortiment.Add(sf)
             End While
         End If
 
@@ -90,8 +91,9 @@
     Public Shared ReadOnly Property SortimentIstProduktion(SortimentNr As String) As Boolean
         Get
             'alle Sortiments-Kürzel aus dbo.FilialeHatSortiment
-            For Each sNr In pSortiment
-                If SortimentNr = sNr Then
+            Dim sf As SortimentFiliale
+            For Each sf In pSortiment
+                If SortimentNr = sf.SortimentsKürzel Then
                     Return True
                     Exit For
                 End If
@@ -100,4 +102,15 @@
         End Get
     End Property
 
+    Public Shared ReadOnly Property FilialeAusSortiment(SortimentNr As String) As String
+        Get
+            Dim sf As SortimentFiliale
+            For Each sf In pSortiment
+                If SortimentNr = sf.SortimentsKürzel Then
+                    Return sf.FilialNr
+                End If
+            Next
+            Return ""
+        End Get
+    End Property
 End Class

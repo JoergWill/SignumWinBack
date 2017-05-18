@@ -86,6 +86,12 @@
     'Sql-Statement Insert Mitarbeiter-Gruppe [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"
     Public Const mssqlInsertMitarbeiterGruppen = "INSERT INTO [dbo].[MitarbeiterMultiFunktionsFeld] (GruppenNr, Hierarchie, Bezeichnung) VALUES ('[2]','[0]','[1]')"
 
+    'Sql-Statement Filiale zugeordnet zu Produktion (Typ=4)
+    Public Const mssqlFiliale = "SELECT Filialnummer, Name1 FROM Filialen WHERE [Typ] = [0]"
+    'Sql-Statament Sortiment zugeordnet zu Filiale mit Typ Produktion
+    Public Const mssqlSortiment = "SELECT * FROM FilialeHatSortiment INNER JOIN Filialen ON FilialeHatSortiment.Filialnr =  Filialen.Filialnummer " &
+                                  "WHERE [Typ] = [0] ORDER BY SortimentsKürzel"
+
 
     Public Shared Function setParams(sql As String, Param0 As String, Optional Param1 As String = "-",
                                      Optional Param2 As String = "-", Optional Param3 As String = "-",

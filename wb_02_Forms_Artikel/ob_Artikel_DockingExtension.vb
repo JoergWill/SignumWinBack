@@ -137,9 +137,29 @@ Public Class ob_Artikel_DockingExtension
         Debug.Print("Article_DockingExtension Committed")
 
         Debug.Print("Artikelnummer(alpha)   " & _Extendee.GetPropertyValue("ArtikelNr").ToString)
-        Debug.Print("Artikel-Bezeichnung    " & _Extendee.GetPropertyValue("Kurztext").ToString)
+        Debug.Print("Artikel-Bezeichnung    " & _Extendee.GetPropertyValue("KurzText").ToString)
 
-        'Debug.Print("Artikel-Nummer(intern) " & _Extendee.fi)
+        Dim x As Object
+        Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
+        Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
+
+        x = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+        iMFFIdx = DirectCast(x.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("MFF=209")
+        If iMFFIdx >= 0 Then
+            ' sollte ein MFF mit FeldNr=1 gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
+            ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
+            oMFF = DirectCast(x.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
+            If oMFF IsNot Nothing Then
+
+                For i = 0 To oMFF.PropertyValueCollection.Count - 1
+                    Debug.Print("Property " & oMFF.PropertyValueCollection(i).PropertyName)
+                    Debug.Print("Value " & oMFF.PropertyValueCollection(i).Value)
+                Next
+            End If
+            ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr 1
+        End If
+
+        Debug.Print("Nach ForEach")
     End Sub
 
     ''' <summary>
