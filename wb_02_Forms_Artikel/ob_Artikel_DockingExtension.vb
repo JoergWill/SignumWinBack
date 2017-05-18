@@ -139,16 +139,16 @@ Public Class ob_Artikel_DockingExtension
         Debug.Print("Artikelnummer(alpha)   " & _Extendee.GetPropertyValue("ArtikelNr").ToString)
         Debug.Print("Artikel-Bezeichnung    " & _Extendee.GetPropertyValue("KurzText").ToString)
 
-        Dim x As Object
+        Dim oFil As ICollectionSubClass = Nothing     ' Artikel.FilialFeld mit Index 0 - Hauptfiliale
         Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
         Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
 
-        x = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
-        iMFFIdx = DirectCast(x.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("MFF=209")
+        oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+        iMFFIdx = DirectCast(oFil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("MFF=209")
         If iMFFIdx >= 0 Then
             ' sollte ein MFF mit FeldNr=1 gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
             ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
-            oMFF = DirectCast(x.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
+            oMFF = DirectCast(oFil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
             If oMFF IsNot Nothing Then
 
                 For i = 0 To oMFF.PropertyValueCollection.Count - 1

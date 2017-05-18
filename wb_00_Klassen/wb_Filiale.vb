@@ -1,23 +1,21 @@
-﻿Public Class wb_Filiale
-    Private Structure SortimentFiliale
-        Public SortimentsKürzel As String
-        Public FilialNr As String
-    End Structure
+﻿
+''' <summary>
+''' Liest aus der Tabelle dbo.Filialen alle Einträge aus. Im Feld dbo.Filiale.Typ wird festgelegt welcher Filial-Typ
+''' dieser Filiale zugeordnet ist. Ist diese Filiale eine Produktions-Filiale wird Typ=4 (wb_Konfig.ProduktionsFiliale) eigetragen.
+''' Erzeugt ArrayList pFiliale
+'''
+''' Liest aus der Tabelle dbo.FilialeHatSortiment die Sortiments-Kürzel, die mit einer Filiale vom Typ "Produktion" verknüpft sind.
+''' Erzeugt ArrayList pSortiment
+''' </summary>
+Public Class wb_Filiale
 
     Private Shared pFiliale As ArrayList = Nothing
     Private Shared pSortiment As ArrayList = Nothing
 
-
     ''' <summary>
-    ''' Liest aus der Tabelle dbo.Filialen alle Einträge aus. Im Feld dbo.Filiale.Typ wird festgelegt welcher Filial-Typ
-    ''' dieser Filiale zugeordnet ist. Ist diese Filiale eine Produktions-Filiale wird Typ=4 (wb_Konfig.ProduktionsFiliale) eigetragen.
-    ''' Erzeugt ArrayList pFiliale
-    ''' 
-    ''' Liest aus der Tabelle dbo.FilialeHatSortiment die Sortiments-Kürzel, die mit einer Filiale vom Typ "Produktion" verknüpft sind.
-    ''' Erzeugt ArrayList pSortiment
+    ''' Wird automatisch beim Aufruf einer der shared Functions aufgerufen (Shared Object)
+    ''' Initialisiert die Felder pFiliale und pSortiment
     ''' </summary>
-
-
     Shared Sub New()
         pFiliale = New ArrayList()
         pSortiment = New ArrayList()
@@ -39,13 +37,10 @@
         OrgasoftMain.CloseRead()
 
         'Daten aus Tabelle FilialeHatSortiment lesen
-        Dim sf As SortimentFiliale
-
         If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSortiment, wb_Global.ProduktionsFiliale)) Then
             While OrgasoftMain.Read
-                sf.SortimentsKürzel = (OrgasoftMain.sField("SortimentsKürzel"))
-                sf.FilialNr = (OrgasoftMain.sField("FilialNr"))
-                pSortiment.Add(sf)
+                Srt = (OrgasoftMain.sField("SortimentsKürzel"))
+                pSortiment.Add(Srt)
             End While
         End If
 
@@ -91,9 +86,8 @@
     Public Shared ReadOnly Property SortimentIstProduktion(SortimentNr As String) As Boolean
         Get
             'alle Sortiments-Kürzel aus dbo.FilialeHatSortiment
-            Dim sf As SortimentFiliale
             For Each sf In pSortiment
-                If SortimentNr = sf.SortimentsKürzel Then
+                If SortimentNr = sf Then
                     Return True
                     Exit For
                 End If
@@ -102,15 +96,4 @@
         End Get
     End Property
 
-    Public Shared ReadOnly Property FilialeAusSortiment(SortimentNr As String) As String
-        Get
-            Dim sf As SortimentFiliale
-            For Each sf In pSortiment
-                If SortimentNr = sf.SortimentsKürzel Then
-                    Return sf.FilialNr
-                End If
-            Next
-            Return ""
-        End Get
-    End Property
 End Class
