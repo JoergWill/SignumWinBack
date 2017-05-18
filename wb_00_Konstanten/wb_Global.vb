@@ -131,6 +131,23 @@
     Public Const T301_Vegetarisch = 210
     Public Const T301_Vegan = 211
 
+
+    ''' <summary>
+    ''' Konstanten für MultifunktionsFelder Artikel
+    ''' </summary>
+    Public Const MFF_Haltbarkeit = 102
+    Public Const MFF_Lagerung = 103
+    Public Const MFF_Verkaufstage = 104
+    Public Const MFF_Zutatenliste = 209
+    Public Const MFF_VerarbeitungsHinweisArtikel = 208
+    Public Const MFF_MatchCode = 281
+    Public Const MFF_KO_Nr = 280
+
+
+
+
+
+
     Enum Parameter
         Tx_AlNum               'Rohstoff/Artikelnummer(alphanumerisch)
         Tx_Bezeichnung         'Rohstoff/Artikelbezeichnung

@@ -12,7 +12,7 @@ Public Class ob_Artikel_DockingExtension
     Private _MenuService As Common.IMenuService
     Private _ViewProvider As IViewProvider
     Private _ContextTabs As List(Of GUI.ITab)
-    Private Komponente As wb_Komponenten
+    Private Komponente As New wb_Komponenten
 
     ''' <summary>
     ''' Falls die Extension ein eigenes Context-Ribbon zum bestehenden Ribbon hinzufügen möchte, kann sie dieses hier zurückliefern
@@ -272,17 +272,16 @@ Public Class ob_Artikel_DockingExtension
             'Filiale mit Index(0) ist die Hauptfiliale
             oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
 
-            'Zutatenliste MFF209
-            Dim s As String = GetMMFValue(oFil, "209")
-
-
+            Komponente.MatchCode = GetMMFValue(oFil, wb_Global.MFF_MatchCode)       'MatchCode MFF208
+            Komponente.ZutatenListe = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste) 'Zutatenliste MFF209
 
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString
             Komponente.Bezeichung = _Extendee.GetPropertyValue("KurzText").ToString
 
             Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
             Debug.Print("Artikel-Bezeichnung    " & Komponente.Bezeichung)
-            Debug.Print("ZutatenListe           " & s)
+            Debug.Print("ZutatenListe           " & Komponente.ZutatenListe)
+            Debug.Print("MatchCode              " & Komponente.MatchCode)
 
             Return True
         Else
@@ -292,26 +291,23 @@ Public Class ob_Artikel_DockingExtension
         End If
     End Function
 
-    Private Function GetMMFValue(ofil As ICollectionSubClass, MFF As String) As String
+    Private Function GetMMFValue(ofil As ICollectionSubClass, MFF As Integer) As String
         Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
         Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
 
-        iMFFIdx = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("MFF=" & MFF)
+        iMFFIdx = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("MFF=" & CStr(MFF))
         If iMFFIdx >= 0 Then
             ' sollte ein MFF mit FeldNr=X gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
             ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
             oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
             If oMFF IsNot Nothing Then
-                For i = 0 To oMFF.PropertyValueCollection.Count - 1
-                    Debug.Print("Property " & oMFF.PropertyValueCollection(i).PropertyName)
-                    Debug.Print("Value " & oMFF.PropertyValueCollection(i).Value)
-                Next
+                ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr 1
+                Return oMFF.PropertyValueCollection(3).Value
             End If
-            ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr 1
-            Return oMFF.PropertyValueCollection(3).Value
         Else
             Return ""
         End If
+        Return ""
     End Function
 
 End Class

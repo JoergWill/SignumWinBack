@@ -86,6 +86,7 @@ Public Class wb_Komponenten
 
     Public Property TimeStamp As Date
     Public Property BestellNummer As String
+    Public Property ZutatenListe As String
 
     Public Property MatchCode As String
         Get
