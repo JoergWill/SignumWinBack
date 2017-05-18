@@ -261,7 +261,7 @@ Public Class ob_Artikel_DockingExtension
     ''' </summary>
     Private Function GetKomponentenDaten() As Boolean
 
-        Debug.Print("Sortiment              " & _Extendee.GetPropertyValue("Sortiment").ToString))
+        Debug.Print("Sortiment              " & _Extendee.GetPropertyValue("Sortiment").ToString)
         Debug.Print("Artikelnummer(alpha)   " & _Extendee.GetPropertyValue("ArtikelNr").ToString)
         Debug.Print("Artikel-Bezeichnung    " & _Extendee.GetPropertyValue("KurzText").ToString)
 
