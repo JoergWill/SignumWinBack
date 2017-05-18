@@ -12,6 +12,7 @@ Public Class ob_Artikel_DockingExtension
     Private _MenuService As Common.IMenuService
     Private _ViewProvider As IViewProvider
     Private _ContextTabs As List(Of GUI.ITab)
+    Private Komponente As wb_Komponenten
 
     ''' <summary>
     ''' Falls die Extension ein eigenes Context-Ribbon zum bestehenden Ribbon hinzufügen möchte, kann sie dieses hier zurückliefern
@@ -261,32 +262,56 @@ Public Class ob_Artikel_DockingExtension
     ''' </summary>
     Private Function GetKomponentenDaten() As Boolean
 
-        Debug.Print("Sortiment              " & _Extendee.GetPropertyValue("Sortiment").ToString)
-        Debug.Print("Artikelnummer(alpha)   " & _Extendee.GetPropertyValue("ArtikelNr").ToString)
-        Debug.Print("Artikel-Bezeichnung    " & _Extendee.GetPropertyValue("KurzText").ToString)
+        'Sortiment
+        Dim sSortiment As String = _Extendee.GetPropertyValue("Sortiment").ToString
+        If wb_Filiale.SortimentIstProduktion(sSortiment) Then
 
-        Dim oFil As ICollectionSubClass = Nothing     ' Artikel.FilialFeld mit Index 0 - Hauptfiliale
+            'Artikel/Rohstoff-Daten in Komponente einlesen
+            Dim oFil As ICollectionSubClass = Nothing     ' Artikel.FilialFeld 
+
+            'Filiale mit Index(0) ist die Hauptfiliale
+            oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+
+            'Zutatenliste MFF209
+            Dim s As String = GetMMFValue(oFil, "209")
+
+
+
+            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString
+            Komponente.Bezeichung = _Extendee.GetPropertyValue("KurzText").ToString
+
+            Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
+            Debug.Print("Artikel-Bezeichnung    " & Komponente.Bezeichung)
+            Debug.Print("ZutatenListe           " & s)
+
+            Return True
+        Else
+            'Artikel/Rohstoff ist keiner Produktions-Filiale zugeordnet
+            Return False
+
+        End If
+    End Function
+
+    Private Function GetMMFValue(ofil As ICollectionSubClass, MFF As String) As String
         Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
         Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
 
-        oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
-        iMFFIdx = DirectCast(oFil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("MFF=209")
+        iMFFIdx = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("MFF=" & MFF)
         If iMFFIdx >= 0 Then
-            ' sollte ein MFF mit FeldNr=1 gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
+            ' sollte ein MFF mit FeldNr=X gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
             ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
-            oMFF = DirectCast(oFil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
+            oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
             If oMFF IsNot Nothing Then
-
                 For i = 0 To oMFF.PropertyValueCollection.Count - 1
                     Debug.Print("Property " & oMFF.PropertyValueCollection(i).PropertyName)
                     Debug.Print("Value " & oMFF.PropertyValueCollection(i).Value)
                 Next
             End If
             ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr 1
+            Return oMFF.PropertyValueCollection(3).Value
+        Else
+            Return ""
         End If
-
-        Debug.Print("Nach ForEach")
-
     End Function
 
 End Class

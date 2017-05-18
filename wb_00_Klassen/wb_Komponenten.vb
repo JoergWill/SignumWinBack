@@ -40,6 +40,10 @@ Public Class wb_Komponenten
         End Get
     End Property
 
+    ''' <summary>
+    ''' Rohstoff/Artikel-Nummer (alpha-numerisch)
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Nummer As String
         Set(value As String)
             'Änderungen loggen
