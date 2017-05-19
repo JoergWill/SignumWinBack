@@ -105,8 +105,8 @@
     <Compile Include="UnitTest_wb_Hinweise.vb" />
     <Compile Include="UnitTest_wb_sql_Functions.vb" />
     <Compile Include="UnitTest_wb_ChangeLog.vb" />
-    <Compile Include="UnitTest_wb_ktTyp301.vb" />
-    <Compile Include="UnitTest_wb_ktTypX.vb" />
+    <Compile Include="UnitTest_wb_KomponParam301.vb" />
+    <Compile Include="UnitTest_wb_Komponenten.vb" />
     <Compile Include="UnitTest_wb_nwtDatenLink.vb" />
     <Compile Include="UnitTest_wb_nwtCloud.vb" />
     <Compile Include="UnitTest_wb_TraceListener.vb" />

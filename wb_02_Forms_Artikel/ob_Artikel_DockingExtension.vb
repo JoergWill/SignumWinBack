@@ -139,6 +139,8 @@ Public Class ob_Artikel_DockingExtension
 
         If GetKomponentenDaten() Then
             Debug.Print("WinBack Artikel")
+            'geänderten Datensatz in WinBack-DB schreiben
+            Komponente.MySQLdbWrite(Komponente.Nr)
         End If
     End Sub
 
@@ -262,25 +264,28 @@ Public Class ob_Artikel_DockingExtension
     ''' </summary>
     Private Function GetKomponentenDaten() As Boolean
 
-        'Sortiment
+        'Sortiment-Kürzel aus Artikel.Sortiment
         Dim sSortiment As String = _Extendee.GetPropertyValue("Sortiment").ToString
         If wb_Filiale.SortimentIstProduktion(sSortiment) Then
 
-            'Artikel/Rohstoff-Daten in Komponente einlesen
-            Dim oFil As ICollectionSubClass = Nothing     ' Artikel.FilialFeld 
+            'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
+            Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+            'Komponenten-Nummer aus OrgaBack ermitteln
+            Komponente.Nr = CInt(GetMMFValue(oFil, wb_Global.MFF_KO_Nr))            'MFF280 - Index auf interne Komponenten-Nummer
+            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString    'Artikel/Komponenten-Nummer alphanumerisch
+            'Artikel/Komponente aus WinBack-Db einlesen
+            Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer)
 
-            'Filiale mit Index(0) ist die Hauptfiliale
-            oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+            'Update aller in OrgaBack geänderten Daten
+            Komponente.Bezeichung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
+            Komponente.MatchCode = GetMMFValue(oFil, wb_Global.MFF_MatchCode)       'MFF281 - MatchCode
+            Komponente.ZutatenListe = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste) 'MFF209 - Zutatenliste 
 
-            Komponente.MatchCode = GetMMFValue(oFil, wb_Global.MFF_MatchCode)       'MatchCode MFF208
-            Komponente.ZutatenListe = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste) 'Zutatenliste MFF209
-
-            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString
-            Komponente.Bezeichung = _Extendee.GetPropertyValue("KurzText").ToString
 
             Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
             Debug.Print("Artikel-Bezeichnung    " & Komponente.Bezeichung)
             Debug.Print("ZutatenListe           " & Komponente.ZutatenListe)
+            Debug.Print("Index                  " & Komponente.Nr)
             Debug.Print("MatchCode              " & Komponente.MatchCode)
 
             Return True
@@ -291,6 +296,20 @@ Public Class ob_Artikel_DockingExtension
         End If
     End Function
 
+    ''' <summary>
+    ''' Gibt den Wert des Multifunktions-Feldes mit der übergebenen Nummer zurück. Der Wert steht als Property-Array an der dritten Stellen
+    '''     PropertyValue(0) - ArtikelNummer
+    '''     PropertyValue(1) - FelddNr
+    '''     PropertyValue(2) - FilialNr
+    '''     PropertyValue(3) - Inhalt
+    '''     PropertyValue(4) - Bezeichnung
+    '''     PropertyValue(5) - Filialspezifisch (True/False)
+    '''
+    ''' ''' Die Multifunktions-Felder, die WinBack betreffend sind per Definition nicht filialspezisch    
+    ''' </summary>
+    ''' <param name="ofil">ICollectionSubClass - Daten aus der Filiale 0 (Hauptfiliale)</param>
+    ''' <param name="MFF">Short - Indes auf MFF-Feld</param>
+    ''' <returns></returns>
     Private Function GetMMFValue(ofil As ICollectionSubClass, MFF As Integer) As String
         Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
         Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
@@ -301,7 +320,7 @@ Public Class ob_Artikel_DockingExtension
             ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
             oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
             If oMFF IsNot Nothing Then
-                ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr 1
+                ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
                 Return oMFF.PropertyValueCollection(3).Value
             End If
         Else

@@ -4,7 +4,7 @@ Imports WinBack
 Imports WinBack.wb_Sql_Selects
 
 
-<TestClass()> Public Class UnitTest_wb_ktTypX
+<TestClass()> Public Class UnitTest_wb_Komponenten
     <TestInitialize>
     Sub TestInitialize()
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
@@ -14,6 +14,44 @@ Imports WinBack.wb_Sql_Selects
             wb_Konfig.SqlSetting("MySQL")
             'Initialisierung Texte-Tabelle
             wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
+        End If
+    End Sub
+
+    <TestMethod()> Public Sub Test_LesenRohstoff_MitNummer()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
+
+            'Rohstoff-Daten
+            Dim nwtDaten As New wb_Komponenten
+
+            'ersten Datensatz aus Tabelle Komponenten lesen
+            Assert.IsTrue(nwtDaten.MySQLdbRead(211))
+            Assert.AreEqual(211, nwtDaten.Nr)
+            Assert.AreEqual(wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE, nwtDaten.Type)
+            Assert.AreEqual("Schüttwasser", nwtDaten.Bezeichung)
+        End If
+    End Sub
+
+    <TestMethod()> Public Sub Test_SchreibenRohstoff_MitNummer()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
+
+            'Rohstoff-Daten
+            Dim nwtDaten As New wb_Komponenten
+            'ersten Datensatz aus Tabelle Komponenten lesen
+            Assert.IsTrue(nwtDaten.MySQLdbRead(211))
+            'Rohstoff-Bezeichnung ändern
+            nwtDaten.Bezeichung = "TEST"
+            'Datensatz in WinBack-DB schreiben
+            Assert.IsTrue(nwtDaten.MySQLdbWrite(211))
+            'ersten Datensatz aus Tabelle Komponenten lesen
+            Assert.IsTrue(nwtDaten.MySQLdbRead(211))
+            Assert.AreEqual("TEST", nwtDaten.Bezeichung)
+            'Daten wieder richtigstellen
+            nwtDaten.Bezeichung = "Schüttwasser"
+            'Datensatz in WinBack-DB schreiben
+            Assert.IsTrue(nwtDaten.MySQLdbWrite(211))
+
         End If
     End Sub
 
@@ -39,6 +77,7 @@ Imports WinBack.wb_Sql_Selects
             End If
         End If
     End Sub
+
 
     <TestMethod()> Public Sub Test_LesenRohstoff_Parameter()
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist

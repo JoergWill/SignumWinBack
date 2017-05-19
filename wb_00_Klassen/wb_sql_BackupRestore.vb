@@ -3,6 +3,7 @@
 Public Class wb_sql_BackupRestore
 
     Public Event statusChanged(StatusText As String) ' As EventHandler
+    'TODO Datensicherung Win10 funktioniert nicht
     Public Function datensicherung(Filename As String) As Boolean
         Dim SaveFileExtension As String
         Dim DumpFileName As String

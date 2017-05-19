@@ -55,6 +55,13 @@
     'Sql-Statement alle Texte aus winback.Texte
     Public Const sqlWinBackTxte = "SELECT T_TextIndex, T_Typ, T_Text FROM Texte WHERE T_Sprache = [0]"
 
+    'Sql-Statement Lesen Komponenten nach KO_Nr (Select KO_Nr=x)
+    Public Const sqlSelectKomp_KO_Nr = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "
+    Public Const sqlSelectKomp_AlNum = "SELECT * FROM Komponenten WHERE KO_Nr_AlNum = '[0]' "
+    'Sql-Statement Update Komponenten nach KO_Nr (Select KO_Nr=x)
+    Public Const sqlUpdateKomp_KO_Nr = "UPDATE Komponenten SET [1] WHERE KO_Nr = [0] "
+
+
     'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)
     Public Const sqlTestktTypX = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "
     Public Const sqlTestktTyp3 = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &

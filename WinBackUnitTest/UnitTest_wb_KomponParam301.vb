@@ -1,6 +1,6 @@
 ﻿Imports WinBack
 
-<TestClass()> Public Class UnitTest_wb_ktTyp301
+<TestClass()> Public Class UnitTest_wb_KomponParam301
     <TestInitialize>
     Sub TestInitialize()
         'Datenbank Verbindung Einstellungen setzen

@@ -140,6 +140,39 @@ Public Class wb_Komponenten
     End Property
 
     ''' <summary>
+    ''' Liest alle Datenfelder zu der angegebenen Komponenten-Nummer aus der WinBack-Datenbank. Wenn die interne Komponenten-Nummer nicht angegeben ist
+    ''' (Kleiner oder gleich Null) dann wird versucht, anhand der Artikel-Nummer den Datensatz zu finden.
+    ''' 
+    ''' Gibt True zurück, wenn der Datensatz gefunden wurde.
+    ''' TODO Was ist zu tun, wenn mehr als ein Datensatz gefunden wurde
+    ''' TODO Die interne Nummer an OrgaBack zurückschreiben
+    ''' </summary>
+    Public Function MySQLdbRead(InterneKomponentenNummer As Integer, Optional KomponentenNummer As String = "") As Boolean
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+
+        'Suche nach KO_Nr oder KO_AlNum
+        If InterneKomponentenNummer > 0 Then
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_KO_Nr, InterneKomponentenNummer)
+        Else
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_AlNum, KomponentenNummer)
+        End If
+
+        'ersten Datensatz aus Tabelle Komponenten lesen
+        If winback.sqlSelect(Sql) Then
+            If winback.Read Then
+                MySQLdbRead(winback.MySqlRead)
+                'TODO ... weiter Parameter lesen
+                winback.Close()
+                Return True
+            End If
+        End If
+        winback.Close()
+        Return False
+    End Function
+
+    ''' <summary>
     ''' Liest alle Datenfelder aus dem aktuellen Datensatz in das Komponenten-Objekt
     ''' Die Daten werden anhand der Feldbezeichnung in die einzelnen Properties eingetragen
     ''' </summary>
@@ -263,10 +296,34 @@ Public Class wb_Komponenten
         Return True
     End Function
 
+    ''' <summary>
+    ''' schreibt alle Datenfelder aus dem Komponenten-Objekt mir der angegebenen Komponenten-Nummer in die Datenbank.
+    ''' TODO wenn KO-Nummer nicht definiert
+    ''' TODO INSERT MYSQL
+    ''' </summary>
+    ''' <param name="InterneKomponentenNummer"></param>
+    ''' <returns></returns>
+    Public Function MySQLdbWrite(InterneKomponentenNummer As Integer) As Boolean
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+
+        'Update-Statement wird dynamisch erzeugt    
+        sql = "KO_Nr_AlNum = '" & Nummer & "'," &
+              "KO_Bezeichnung = '" & Bezeichung & "'"
+        'Update ausführen
+        If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
     Public Sub print()
         Debug.Print("Nummer      " & KO_Nr_AlNum)
         Debug.Print("Bezeichung  " & KO_Bezeichnung)
         Debug.Print("Lieferant   " & LF_Lieferant)
         Debug.Print("Deklaration " & Deklaration)
     End Sub
+
 End Class
