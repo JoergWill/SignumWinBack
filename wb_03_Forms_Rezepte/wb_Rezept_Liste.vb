@@ -1,4 +1,5 @@
-﻿Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports System.Windows.Forms
+Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Rezept_Liste
     Inherits DockContent
@@ -48,5 +49,15 @@ Public Class wb_Rezept_Liste
         wb_Rezept_Shared.aktChangeName = DataGridView.Field("RZ_Aenderung_Name")
 
         wb_Rezept_Shared.Liste_Click(Nothing)
+    End Sub
+
+    Private Sub DataGridView_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView.DoubleClick
+        Dim Rezeptur As New wb_Rezeptur
+        'Rezeptur.MdiParent = Me
+        Rezeptur.Text = DataGridView.Field("RZ_Bezeichnung")
+        Rezeptur.GetRezeptur()
+        Rezeptur.Show()
+        Rezeptur.TreeListView.Columns(0).TextAlign = HorizontalAlignment.Right
+
     End Sub
 End Class
