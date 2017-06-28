@@ -36,15 +36,15 @@ Public Class wb_Rezept_Liste
     End Sub
 
     Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
-        wb_Rezept_Shared.aktRzNr = CInt(DataGridView.Field("RZ_Nr"))
+        wb_Rezept_Shared.aktRzNr = DataGridView.iField("RZ_Nr")
         wb_Rezept_Shared.aktRzNummer = DataGridView.Field("RZ_Nr_AlNum")
         wb_Rezept_Shared.aktRzName = DataGridView.Field("RZ_Bezeichnung")
         wb_Rezept_Shared.aktRzKommentar = DataGridView.Field("RZ_Kommentar")
         wb_Rezept_Shared.aktRzGewicht = DataGridView.Field("RZ_Gewicht")
-        wb_Rezept_Shared.aktRzVariante = CInt(DataGridView.Field("RZ_Variante_Nr"))
-        wb_Rezept_Shared.aktRzLinienGrp = CInt(DataGridView.Field("RZ_Liniengruppe"))
+        wb_Rezept_Shared.aktRzVariante = DataGridView.iField("RZ_Variante_Nr")
+        wb_Rezept_Shared.aktRzLinienGrp = DataGridView.iField("RZ_Liniengruppe")
 
-        wb_Rezept_Shared.aktChangeNr = CInt(DataGridView.Field("RZ_Aenderung_Nr"))
+        wb_Rezept_Shared.aktChangeNr = DataGridView.iField("RZ_Aenderung_Nr")
         wb_Rezept_Shared.aktChangeDatum = DataGridView.Field("RZ_Aenderung_Datum")
         wb_Rezept_Shared.aktChangeName = DataGridView.Field("RZ_Aenderung_Name")
 
@@ -52,12 +52,16 @@ Public Class wb_Rezept_Liste
     End Sub
 
     Private Sub DataGridView_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView.DoubleClick
-        Dim Rezeptur As New wb_Rezeptur
-        'Rezeptur.MdiParent = Me
+        Dim Rezeptur As New wb_Rezept_Rezeptur
+
+        'Rezeptur.Text = DataGridView.Field("RZ_Bezeichnung")
+        'Rezeptur.GetRezeptur()
+        'Rezeptur.Show()
+        'Rezeptur.TreeListView.Columns(0).TextAlign = HorizontalAlignment.Right
+
         Rezeptur.Text = DataGridView.Field("RZ_Bezeichnung")
-        Rezeptur.GetRezeptur()
+        Rezeptur.FillVirtualTree()
         Rezeptur.Show()
-        Rezeptur.TreeListView.Columns(0).TextAlign = HorizontalAlignment.Right
 
     End Sub
 End Class

@@ -86,6 +86,26 @@
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"
 
 
+    'sql-Statement komplette Rezeptur nach RzNr und Variante
+    Public Const sqlRezeptur = "SELECT RezeptSchritte.RS_Schritt_Nr, RezeptSchritte.RS_ParamNr, " &
+                               "Komponenten.KO_Nr, Komponenten.KO_Type, Komponenten.KO_Nr_AlNum, Komponenten.KO_Kommentar, " &
+                               "Komponenten.KO_Bezeichnung, Komponenten.KO_Temp_Korr, KomponTypen.KT_KurzBez, KomponTypen.KT_Format, " &
+                               "KomponTypen.KT_Laenge, RezeptSchritte.RS_Wert, Komponenten.KA_RS_veraenderbar, Einheiten.E_Einheit, " &
+                               "RezeptSchritte.RS_Wert_Prod,RezeptSchritte.RS_Par1,RezeptSchritte.RS_Par2,RezeptSchritte.RS_Par3, " &
+                               "KomponTypen.KT_Bezeichnung, KomponTypen.KT_OberGW, KomponTypen.KT_UnterGW, KA_Charge_Opt, " &
+                               "Komponenten.KA_Preis, Komponenten.KA_zaehlt_zu_RZ_Gesamtmenge, Komponenten.KA_RZ_Nr, " &
+                               "Komponenten.KA_Verarbeitungshinweise, KA_Grp1, KA_Grp2, Komponenten.KA_Matchcode " & "FROM (((Rezepte INNER JOIN RezeptSchritte ON " &
+                               "(Rezepte.RZ_Variante_Nr = RezeptSchritte.RS_RZ_Variante_Nr) AND " &
+                               "(Rezepte.RZ_Nr = RezeptSchritte.RS_RZ_Nr)) INNER JOIN Komponenten " &
+                               "ON RezeptSchritte.RS_Ko_Nr = Komponenten.KO_Nr) INNER JOIN " &
+                               "KomponTypen ON (RezeptSchritte.RS_ParamNr = KomponTypen.KT_ParamNr) " &
+                               "AND (Komponenten.KO_Type = KomponTypen.KT_Typ_Nr)) INNER JOIN Einheiten ON (KomponTypen.KT_EinheitIndex = Einheiten.E_LfdNr) " &
+                               "WHERE (Rezepte.RZ_Nr = [0]) AND (Rezepte.RZ_Variante_Nr = [1]) " &
+                               "AND ((KomponTypen.KT_Rezept='R') OR (KomponTypen.KT_Rezept='X')) " &
+                               "ORDER BY RezeptSchritte.RS_Schritt_Nr, RezeptSchritte.RS_ParamNr"
+
+
+
     'Sql-Statement Abfrage Gruppen-Nr(Hierarchie) und Gruppen-Bezeichnung aus [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"
     Public Const mssqlMitarbeiterGruppen = "SELECT * FROM [dbo].[MitarbeiterMultiFunktionsFeld] WHERE GruppenNr=1 ORDER BY Hierarchie"
     'Sql-Statement Update Gruppen-Bezeichnung aus [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"

@@ -88,11 +88,27 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="combit.ListLabel22, Version=22.2.6290.25045, Culture=neutral, PublicKeyToken=a7a30592cb4a94be, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>dll\Combit List&amp;Label V22\combit.ListLabel22.dll</HintPath>
+    </Reference>
     <Reference Include="DiffieHellman">
       <HintPath>dll\SharpSSH\DiffieHellman.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>dll\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Infralution.Common, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>dll\Infralution VirtualTree V4.x\Infralution.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Infralution.Controls, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>dll\Infralution VirtualTree V4.x\Infralution.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>dll\Infralution VirtualTree V4.x\Infralution.Controls.VirtualTree.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=5.0.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -154,6 +170,8 @@
     <Compile Include="wb_00_Klassen\wb_nwtCloud.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtDatenLink.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtUpdate.vb" />
+    <Compile Include="wb_00_Klassen\wb_Rezept.vb" />
+    <Compile Include="wb_00_Klassen\wb_Rezeptschritt.vb" />
     <Compile Include="wb_00_Klassen\wb_sql_BackupRestore.vb" />
     <Compile Include="wb_00_Klassen\wb_Hinweise.vb" />
     <Compile Include="wb_00_Klassen\wb_Sync.vb" />
@@ -177,6 +195,12 @@
       <DependentUpon>wb_Rezeptur.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezeptur.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.Designer.vb">
+      <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
@@ -385,6 +409,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="My Project\licenses.licx" />
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
@@ -408,6 +433,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Main.resx">
       <DependentUpon>wb_Rezept_Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.resx">
+      <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.resx">
       <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>

@@ -6,7 +6,13 @@ Public Class Rezepte_Main
     Public RezeptHistorie As New wb_Rezept_Historie
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbRezepte.xml")
+        Try
+            DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbRezepte.xml")
+        Catch ex As Exception
+            MsgBox("Fehler beim Sichern der Konfiguration: " & ex.Message.ToString)
+            'TODO diese Konstruktion bei allen DockPanel.SaveAsXml einbauen
+            'Fehler bei Win64 - Ohne TryCatch wird das Programm nicht geschlossen !!
+        End Try
     End Sub
 
     Private Sub LoadDockBarConfig()

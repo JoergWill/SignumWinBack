@@ -110,17 +110,21 @@ Imports WinBack.wb_Global
     <TestMethod()> Public Sub Test_FormatStr()
         Assert.AreEqual(" 22,000", FormatStr("22", 3, 3))
         Assert.AreEqual("-22,000", FormatStr("-22", 3, 3))
-        Assert.AreEqual("1235", FormatStr("1234,5678", 4, 0))
+
+        Assert.AreEqual("22,000", FormatStr("22", 3))
+        Assert.AreEqual("-22,000", FormatStr("-22", 3))
+
+        Assert.AreEqual("1235", FormatStr("1234,5678", 0, 4))
 
         Thread.CurrentThread.CurrentCulture = New CultureInfo("en-US")
         Assert.AreEqual("1234.5678", FormatStr("1234.5678", 4, 4))
-        Assert.AreEqual("12345678.0", FormatStr("1234,5678", 8, 1))
+        Assert.AreEqual("12345678.0", FormatStr("1234,5678", 1, 8))
         Assert.AreEqual("1234.5678", FormatStr("1234,5678", 4, 4, "de-DE"))
-        Assert.AreEqual("12345678", FormatStr("1234,5678", 8, 0))
-        Assert.AreEqual("1235", FormatStr("1234,5678", 4, 0, "de-DE"))
+        Assert.AreEqual("12345678", FormatStr("1234,5678", 0, 8))
+        Assert.AreEqual("1235", FormatStr("1234,5678", 0, 4, "de-DE"))
 
-        Assert.AreEqual("-", FormatStr("", 4, 0))
-        Assert.AreEqual("-", FormatStr("", 4, 0, "de-DE"))
+        Assert.AreEqual("-", FormatStr("", 0, 4))
+        Assert.AreEqual("-", FormatStr("", 0, 4, "de-DE"))
     End Sub
 
     <TestMethod()> Public Sub Test_bz2CompressFile()

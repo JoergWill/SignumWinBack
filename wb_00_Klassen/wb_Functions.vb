@@ -346,7 +346,7 @@ Public Class wb_Functions
     ''' <param name="NachKomma">Anzahl der Nachkomma-Stellen</param>
     ''' <param name="Culture">Ländereinstellung (Default de-DE)</param>
     ''' <returns></returns>
-    Public Shared Function FormatStr(value As String, VorKomma As Integer, NachKomma As Integer, Optional ByVal Culture As String = Nothing) As String
+    Public Shared Function FormatStr(value As String, NachKomma As Integer, Optional VorKomma As Integer = -1, Optional ByVal Culture As String = Nothing) As String
         Dim wert As Double
         Try
             If value IsNot "" Then
@@ -363,9 +363,13 @@ Public Class wb_Functions
             End If
 
             If NachKomma <> 0 Then
-                Return Right(Space(VorKomma) & CDbl(wert).ToString("F" & NachKomma.ToString), VorKomma + NachKomma + 1)
+                If VorKomma < 0 Then
+                    Return wert.ToString("F" & NachKomma.ToString)
+                Else
+                    Return Right(Space(VorKomma) & wert.ToString("F" & NachKomma.ToString), VorKomma + NachKomma + 1)
+                End If
             Else
-                Return Right(Space(VorKomma) & CDbl(wert).ToString("F" & NachKomma.ToString), VorKomma)
+                Return Right(Space(VorKomma) & wert.ToString("F" & NachKomma.ToString), VorKomma)
             End If
         Catch
             Return "-"

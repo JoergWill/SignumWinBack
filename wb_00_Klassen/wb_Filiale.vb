@@ -17,32 +17,34 @@ Public Class wb_Filiale
     ''' Initialisiert die Felder pFiliale und pSortiment
     ''' </summary>
     Shared Sub New()
-        pFiliale = New ArrayList()
-        pSortiment = New ArrayList()
+        'TODO Hier muss die Routine übersprungen werden, wenn nur MYSQL im Einsatz ist !!
 
-        'Datenbank-Verbindung öffnen - MsSQL
-        Dim OrgasoftMain As New wb_Sql(My.Settings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-        Dim FNr As String
-        Dim Srt As String
+        'pFiliale = New ArrayList()
+        'pSortiment = New ArrayList()
 
-        'Daten aus Tabelle Filialen lesen
-        If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlFiliale, wb_Global.ProduktionsFiliale)) Then
-            While OrgasoftMain.Read
-                FNr = (OrgasoftMain.sField("Filialnummer"))
-                pFiliale.Add(FNr)
-            End While
-        End If
+        ''Datenbank-Verbindung öffnen - MsSQL
+        'Dim OrgasoftMain As New wb_Sql(My.Settings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Dim FNr As String
+        'Dim Srt As String
 
-        'Kanal wieder schliessen
-        OrgasoftMain.CloseRead()
+        ''Daten aus Tabelle Filialen lesen
+        'If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlFiliale, wb_Global.ProduktionsFiliale)) Then
+        '    While OrgasoftMain.Read
+        '        FNr = (OrgasoftMain.sField("Filialnummer"))
+        '        pFiliale.Add(FNr)
+        '    End While
+        'End If
 
-        'Daten aus Tabelle FilialeHatSortiment lesen
-        If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSortiment, wb_Global.ProduktionsFiliale)) Then
-            While OrgasoftMain.Read
-                Srt = (OrgasoftMain.sField("SortimentsKürzel"))
-                pSortiment.Add(Srt)
-            End While
-        End If
+        ''Kanal wieder schliessen
+        'OrgasoftMain.CloseRead()
+
+        ''Daten aus Tabelle FilialeHatSortiment lesen
+        'If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSortiment, wb_Global.ProduktionsFiliale)) Then
+        '    While OrgasoftMain.Read
+        '        Srt = (OrgasoftMain.sField("SortimentsKürzel"))
+        '        pSortiment.Add(Srt)
+        '    End While
+        'End If
 
     End Sub
 

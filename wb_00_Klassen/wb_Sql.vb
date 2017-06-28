@@ -166,7 +166,8 @@ Public Class wb_Sql
 
             End Select
         Catch ex As Exception
-            MsgBox("Connection Error: " & ex.Message.ToString)
+            MsgBox("Connection Error: " & ex.Message.ToString & vbNewLine & "ConnectionString: " & ConString)
+            'TODO bei Fehler sollte die Möglichkeit bestehen, die IP-Adresse oder die WinBack.ini auszuwählen
         End Try
     End Sub
 

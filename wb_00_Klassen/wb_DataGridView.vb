@@ -255,6 +255,26 @@ Public Class wb_DataGridView
             End Try
         End Get
     End Property
+    ''' <summary>
+    ''' Datenbank-Feld lesen/ändern
+    ''' </summary>
+    ''' <param name="FieldName">String Feldname in Datenbank</param>
+    ''' <returns>Integer</returns>
+    Property iField(FieldName As String) As Integer
+        Set(value As Integer)
+            Try
+                CurrentRow.Cells(FieldName).Value = CStr(value)
+            Catch
+            End Try
+        End Set
+        Get
+            Try
+                Return CInt(CurrentRow.Cells(FieldName).Value.ToString)
+            Catch
+                Return 0
+            End Try
+        End Get
+    End Property
 
     ''' <summary>
     ''' Popup-Menu Spalten ein/ausblenden

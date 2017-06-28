@@ -146,6 +146,7 @@ Public Class wb_Konfig
 
     Public Shared Sub SetPath(pVariante As ProgVariante)
         'Default
+        'TODO Prüfen, ob der Pfad existiert - sonst anlegen !!!
         DockPanelPath = ""
         Select Case pVariante
             Case ProgVariante.OrgaBack

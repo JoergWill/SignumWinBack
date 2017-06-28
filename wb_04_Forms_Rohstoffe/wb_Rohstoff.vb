@@ -53,7 +53,7 @@ Public Class wb_Rohstoff
         End Set
         Get
             'Zahlenwerte aus der Datenbank immer inm Format de-DE
-            Return FormatStr(KA_Preis, 4, 3, "de-DE")
+            Return FormatStr(KA_Preis, 3, 4, "de-DE")
         End Get
     End Property
 
