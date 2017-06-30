@@ -20,7 +20,7 @@ Public Class wb_IniFile
         'TODO Pfad automatisch festlegen 
         Pfad = "C:\ProgramData\OrgaSoft\WinBack.ini"
         Pfad = "C:\Users\Will\Source\Repos\Signum_WinBack\WinBack.ini"
-        Pfad = "C:\Users\Will.WinBack\Source\Repos\Signum_WinBack\WinBack.ini"
+        'Pfad = "C:\Users\Will.WinBack\Source\Repos\Signum_WinBack\WinBack.ini"
     End Sub
 
     ' Konstruktor für setzen des Pfades

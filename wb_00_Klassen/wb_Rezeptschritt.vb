@@ -11,11 +11,12 @@ Public Class wb_Rezeptschritt
     Private _Bezeichnung As String
     Private _Sollwert As String
     Private _Einheit As String
-    Private _Preis As Double
+    Private _PreisProKg As Double = 0
     Private _Prozent As Double
     Private _RezeptNr As Integer
     Private _TA As Integer
     Private _RezGewicht As Double
+    Private _RezPreis As Double
 
     Private _parentPart As wb_Rezeptschritt
     Private _childParts As New ArrayList()
@@ -180,7 +181,7 @@ Public Class wb_Rezeptschritt
     Public ReadOnly Property VirtTreeEinheit As String
         Get
             Select Case _Type
-                Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
+                Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE, KO_TYPE_TEMPERATURERFASSUNG, KO_TYPE_KNETER
                     Return _Einheit
                 Case Else
                     Return ""
@@ -202,15 +203,6 @@ Public Class wb_Rezeptschritt
                     Return ""
             End Select
         End Get
-    End Property
-
-    Public Property Preis As Double
-        Get
-            Return _Preis
-        End Get
-        Set(value As Double)
-            _Preis = value
-        End Set
     End Property
 
     Public Property Einheit As String
@@ -292,6 +284,37 @@ Public Class wb_Rezeptschritt
                 x.RezGewicht = value
             Next
             _RezGewicht = value
+        End Set
+    End Property
+
+    Private ReadOnly Property _Preis As Double
+        Get
+            Select Case _Type
+                Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE
+                    Return _PreisProKg * _Sollwert
+
+                Case Else
+                    Return 0
+            End Select
+        End Get
+    End Property
+
+    Public ReadOnly Property Preis As Double
+        Get
+            Dim ChildPreis As Double = 0
+            For Each x As wb_Rezeptschritt In ChildParts
+                ChildPreis = ChildPreis + x.Preis
+            Next
+            Return _Preis + ChildPreis
+        End Get
+    End Property
+
+    Public Property PreisProKg As Double
+        Get
+            Return _PreisProKg
+        End Get
+        Set(value As Double)
+            _PreisProKg = value
         End Set
     End Property
 End Class

@@ -32,6 +32,11 @@ Public Class wb_Rezept
         End Get
     End Property
 
+    ''' <summary>
+    ''' Das Rezept-Gesamtgewicht steht als Gewichtswert im Root-Node
+    ''' Die Berechnung erfolgt über RezeptSchritt.Gewicht(Get)
+    ''' </summary>
+    ''' <returns>Double - Rezept-Gesamtgewicht</returns>
     Public ReadOnly Property RezeptGewicht As Double
         Get
             Return _RootRezeptSchritt.Gewicht
@@ -41,6 +46,7 @@ Public Class wb_Rezept
     ''' <summary>
     ''' 
     ''' </summary>
+    ''' 'TODO Rezeptnummer und Variante beim Konstruktor übergeben
     Public Sub New()
         'alle Rezeptschritte aus der Datenbank einlesen
         MySQLdbRead(wb_Rezept_Shared.aktRzNr, 1)
@@ -224,6 +230,10 @@ Public Class wb_Rezept
                 'TA
                 Case "E_Einheit"
                     SQLRezeptSchritt.TA = Value
+
+                'Preis
+                Case "KA_Preis"
+                    SQLRezeptSchritt.PreisProKg = wb_Functions.StrToDouble(Value)
 
                 'RezeptNr (Rezept im Rezept)
                 Case "KA_RZ_Nr"

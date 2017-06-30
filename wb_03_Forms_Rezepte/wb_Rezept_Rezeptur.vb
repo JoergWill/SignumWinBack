@@ -34,4 +34,8 @@ Public Class wb_Rezept_Rezeptur
     Private Sub VirtualTree_Click(sender As Object, e As EventArgs) Handles VirtualTree.Click
 
     End Sub
+
+    Private Sub VirtualTree_DoubleClick(sender As Object, e As EventArgs) Handles VirtualTree.DoubleClick
+
+    End Sub
 End Class
