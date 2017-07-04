@@ -21,6 +21,7 @@ Public Class wb_Rezept
     Private RezeptSchritt As wb_Rezeptschritt
 
     Private _RezeptGewicht As Double
+    Private _RezeptPreis As Double
 
     ''' <summary>
     ''' Erster (unsichtbarer) Rezept-Schritt (Root-Node)
@@ -40,6 +41,12 @@ Public Class wb_Rezept
     Public ReadOnly Property RezeptGewicht As Double
         Get
             Return _RootRezeptSchritt.Gewicht
+        End Get
+    End Property
+
+    Public ReadOnly Property RezeptPreis As Double
+        Get
+            Return _RootRezeptSchritt.Preis
         End Get
     End Property
 

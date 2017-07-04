@@ -18,8 +18,8 @@ Public Class wb_Rezeptschritt
     Private _RezGewicht As Double
     Private _RezPreis As Double
 
-    Private _parentPart As wb_Rezeptschritt
-    Private _childParts As New ArrayList()
+    Private _parentStep As wb_Rezeptschritt
+    Private _childSteps As New ArrayList()
 
     ''' <summary>
     ''' Kopiert alle Properties dieser Klasse auf die Properties der übergebenen Klasse.
@@ -47,31 +47,31 @@ Public Class wb_Rezeptschritt
     '' <param name="parent">The parent part</param>
     '' <param name="name">The name of this part</param>
     Public Sub New(parent As wb_Rezeptschritt, Bezeichnung As String)
-        _parentPart = parent
+        _parentStep = parent
         _Bezeichnung = Bezeichnung
-        If Not (_parentPart Is Nothing) Then
-            parent._childParts.Add(Me)
+        If Not (_parentStep Is Nothing) Then
+            parent._childSteps.Add(Me)
         End If
     End Sub 'New
 
     '' <summary>
-    '' The parent of this part
+    '' Parent dieses Rezeptschrittes
     '' </summary>
-    Public Property ParentPart() As wb_Rezeptschritt
+    Public Property ParentStep() As wb_Rezeptschritt
         Get
-            Return _parentPart
+            Return _parentStep
         End Get
         Set(ByVal value As wb_Rezeptschritt)
-            _parentPart = value
+            _parentStep = value
         End Set
     End Property
 
     '' <summary>
-    '' A list of the child parts
+    '' Liste aller Child-Rezeptschritte
     '' </summary>
-    Public ReadOnly Property ChildParts() As IList
+    Public ReadOnly Property ChildSteps() As IList
         Get
-            Return _childParts
+            Return _childSteps
         End Get
     End Property
 
@@ -251,6 +251,13 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Gewichtswert des Rezeptschrittes. Gibt den Sollwert der Rezept-Zeile zurück, wenn diese eine Komponente enthält, die 
+    ''' zum Rezeptgewicht zählt und das Flag 'zählt zum Rezeptgewicht' gesetzt ist.
+    ''' </summary>
+    ''' <returns>Double - Sollwert</returns>
+    ''' 'TODO zählt zum Rezeptgewicht berücksichtigen !!!
+    ''' 'TODO ordentliche umwandlung in DOUBLE
     Private ReadOnly Property _Gewicht As Double
         Get
             Select Case _Type
@@ -271,7 +278,7 @@ Public Class wb_Rezeptschritt
     Public ReadOnly Property Gewicht As Double
         Get
             Dim Childgewicht As Double = 0
-            For Each x As wb_Rezeptschritt In ChildParts
+            For Each x As wb_Rezeptschritt In ChildSteps
                 Childgewicht = Childgewicht + x.Gewicht
             Next
             Return _Gewicht + Childgewicht
@@ -280,7 +287,7 @@ Public Class wb_Rezeptschritt
 
     Public WriteOnly Property RezGewicht As Double
         Set(value As Double)
-            For Each x As wb_Rezeptschritt In ChildParts
+            For Each x As wb_Rezeptschritt In ChildSteps
                 x.RezGewicht = value
             Next
             _RezGewicht = value
@@ -292,7 +299,12 @@ Public Class wb_Rezeptschritt
             Select Case _Type
                 Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE
                     Return _PreisProKg * _Sollwert
-
+                Case KO_TYPE_WASSERKOMPONENTE
+                    If _ParamNr = 1 Then
+                        Return _PreisProKg * _Sollwert
+                    Else
+                        Return 0
+                    End If
                 Case Else
                     Return 0
             End Select
@@ -302,7 +314,7 @@ Public Class wb_Rezeptschritt
     Public ReadOnly Property Preis As Double
         Get
             Dim ChildPreis As Double = 0
-            For Each x As wb_Rezeptschritt In ChildParts
+            For Each x As wb_Rezeptschritt In ChildSteps
                 ChildPreis = ChildPreis + x.Preis
             Next
             Return _Preis + ChildPreis

@@ -9,6 +9,9 @@ Public Class wb_Rezept_Rezeptur
 
     Friend Sub FillVirtualTree()
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
+        Label2.Text = Rezept.RezeptPreis
+        Label3.Text = Rezept.RezeptGewicht
+
     End Sub
 
     Public Sub New()
