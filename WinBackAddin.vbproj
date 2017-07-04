@@ -659,7 +659,8 @@
     <PostBuildEvent>mkdir "C:\ProgramData\OrgaSoft\AddIn"
 xcopy "$(TargetDir)$(TargetName).*" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
 xcopy "$(TargetDir)*.dll" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
-xcopy "$(TargetDir)*.bat" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y</PostBuildEvent>
+xcopy "$(TargetDir)*.bat" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
+xcopy "$(ProjectDir)winback.ini" "$(TargetDir)" /C /R /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

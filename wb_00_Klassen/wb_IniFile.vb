@@ -12,14 +12,19 @@ Public Class wb_IniFile
     Private _ReadResult As Boolean = True
     Private _WriteResult As Boolean = True
 
-    ' Instantiierung ohne Pfad 
+    ''' <summary>
+    ''' Instanziiert die WinBack.ini-Klasse.
+    ''' Der Pfad wird automatisch festgelegt und bezieht sich auf das Programm-Verzeichnis. 
+    ''' Im Debug-Mode wird die WinBack.ini nach dem Übersetzen automatisch von 
+    '''     ..repos\Signum_WinBack in das \bin\debug\-Verzeichnis kopiert (Build-Ereignisse)
+    ''' </summary>
     Sub New() 'kein Pfad notwendig...
 
-        'Pfad = My.Application.Info.DirectoryPath & "\" & My.Application.Info.Title & ".ini"
-        'C:\ProgramData\OrgaSoft\AddIn
-        'TODO Pfad automatisch festlegen 
-        Pfad = "C:\ProgramData\OrgaSoft\WinBack.ini"
-        Pfad = "C:\Users\Will\Source\Repos\Signum_WinBack\WinBack.ini"
+        Pfad = My.Application.Info.DirectoryPath & "\WinBack.ini"
+        'TODO WinBack.ini  in User-Verzeichnis kopieren
+        'Pfad = "C:\ProgramData\OrgaSoft\AddIn\WinBack.ini"
+        'Pfad = "C:\ProgramData\OrgaSoft\WinBack.ini"
+        'Pfad = "C:\Users\Will\Source\Repos\Signum_WinBack\WinBack.ini"
         'Pfad = "C:\Users\Will.WinBack\Source\Repos\Signum_WinBack\WinBack.ini"
     End Sub
 
