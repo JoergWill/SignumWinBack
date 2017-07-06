@@ -28,31 +28,56 @@ Public Class wb_IniFile
         'Pfad = "C:\Users\Will.WinBack\Source\Repos\Signum_WinBack\WinBack.ini"
     End Sub
 
-    ' Konstruktor für setzen des Pfades
-    ' Instanziieren mit z.B.: 
+    ''' <summary>
+    ''' Instanziiert die WinBack.ini-Klasse.
+    ''' Der Pfad wird als Argument mitgegeben 
+    ''' </summary>
+    ''' <param name="Pfad_der_ini">String - Pfad zur ini-Datei inklusive Datei-Name</param>
     Sub New(ByVal Pfad_der_ini As String)
         Pfad = Pfad_der_ini
     End Sub
 
-    ' wird von Unit-Test auf True gesetzt - verhindert die Ausgabe per MsgBox
+    ''' <summary>
+    ''' Wird von Unit-Test auf True gesetzt. Unterdückt die Ausgabe von Fehlermeldungen.
+    ''' </summary>
     WriteOnly Property SilentMode As Boolean
         Set(value As Boolean)
             _SilentMode = value
         End Set
     End Property
 
+    ''' <summary>
+    ''' Wird von Unit-Test verwendet. Gibt das Ergebnis der Read-Funktion zurück
+    ''' </summary>
+    ''' <returns>Boolean - ReadResult. True wenn das Lesen erfolgreich war</returns>
     ReadOnly Property ReadResult() As Boolean
         Get
             Return _ReadResult
         End Get
     End Property
+
+    ''' <summary>
+    ''' Gibt das Ergebnis der Write-Funktion zurück.
+    '''     True -  Wenn der Schlüssel gefunden wurde
+    '''     False - Wenn der Schlüssel nicht existiert.
+    ''' </summary>
+    ''' <returns>Boolean - Write-Result</returns>
     ReadOnly Property WriteResult() As Boolean
         Get
             Return _WriteResult
         End Get
     End Property
 
-    ' DLL-Funktionen zum LESEN der INI deklarieren
+    ''' <summary>
+    ''' Deklariert die dll-Funktion zum Lesen der ini-Datei
+    ''' </summary>
+    ''' <param name="lpApplicationName"></param>
+    ''' <param name="lpSchlüsselName"></param>
+    ''' <param name="lpDefault"></param>
+    ''' <param name="lpReturnedString"></param>
+    ''' <param name="nSize"></param>
+    ''' <param name="lpFileName"></param>
+    ''' <returns></returns>
     Private Declare Ansi Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (
             ByVal lpApplicationName As String, ByVal lpSchlüsselName As String, ByVal lpDefault As String,
             ByVal lpReturnedString As String, ByVal nSize As Integer, ByVal lpFileName As String) As Integer
@@ -62,6 +87,12 @@ Public Class wb_IniFile
             ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal lpString As String,
             ByVal lpFileName As String) As Integer
 
+    ''' <summary>
+    ''' Deklariert die dll-Funktion zum Schreiben der ini-Datei
+    ''' </summary>
+    ''' <param name="Sektion"></param>
+    ''' <param name="Schlüssel"></param>
+    ''' <returns></returns>
     Private Function TestIniPfadEmpty(Sektion As String, Schlüssel As String) As Boolean
         If Pfad = "" Then
             If Not _SilentMode Then MsgBox("Es ist kein Pfad zur INI angegeben. Deshalb ist das Auslesen des Wertes nicht möglich." _
@@ -73,6 +104,16 @@ Public Class wb_IniFile
         End If
     End Function
 
+    ''' <summary>
+    ''' Prüft ob der Pfad zur ini-Datei existiert und ob die Datei vorhanden ist.
+    '''     True -  Datei und Pfad sind vorhanden.
+    '''     False - Datei/Pfad fehlen.
+    '''     
+    ''' Wenn SilentMode auf True gesetzt ist, wird keine Fehlermeldung ausgegeben.
+    ''' </summary>
+    ''' <param name="Sektion"></param>
+    ''' <param name="Schlüssel"></param>
+    ''' <returns>Boolean - Pfad/Datei vorhanden</returns>
     Private Function TestIniPfadExists(Sektion As String, Schlüssel As String) As Boolean
         If IO.File.Exists(Pfad) = False Then
             If Not _SilentMode Then MsgBox("Die angegebene INI-Datei exstiert auf diesem Rechner nicht. Deshalb ist das " _
@@ -85,6 +126,16 @@ Public Class wb_IniFile
         End If
     End Function
 
+    ''' <summary>
+    ''' Prüft ob der Pfad zur ini-Datei existiert.
+    '''     True -  Pfad ist vorhanden.
+    '''     False - Pfad ist nicht vorhanden.
+    '''     
+    ''' Wenn SilentMode auf True gesetzt ist, wird keine Fehlermeldung ausgegeben.
+    ''' </summary>
+    ''' <param name="Sektion"></param>
+    ''' <param name="Schlüssel"></param>
+    ''' <returns></returns>
     Private Function TestIniOrdnerExists(Sektion As String, Schlüssel As String) As Boolean
         Dim Ordner As String
         Ordner = IO.Path.GetDirectoryName(Pfad)
@@ -99,6 +150,10 @@ Public Class wb_IniFile
         End If
     End Function
 
+    ''' <summary>
+    ''' Wird von Unit-Test verwendet.
+    ''' ini-File löschen
+    ''' </summary>
     Public Sub DeleteIniFile()
         Try
             IO.File.Delete(Pfad)
@@ -108,6 +163,14 @@ Public Class wb_IniFile
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Liest einen String-Wert aus der ini-Datei unter dem übergebenen Schlüssel
+    ''' </summary>
+    ''' <param name="Sektion">String - Abschnitt in der ini-Datei</param>
+    ''' <param name="Schlüssel">String - Schlüssel innerhalb des Abschnitts</param>
+    ''' <param name="Standardwert">String - Defaultwert, wenn der Schlüssel nicht existiert</param>
+    ''' <param name="BufferSize">Integer - maximale Länge des Strings</param>
+    ''' <returns>String - Eintrag aus ini-File</returns>
     Public Function ReadString(ByVal Sektion As String, ByVal Schlüssel As String, Optional ByVal Standardwert As String = "", Optional ByVal BufferSize As Integer = 1024) As String
         Try
             ' Testen, ob ein Pfad zur INI vorhanden ist und ob die Datei existiert
@@ -130,14 +193,38 @@ Public Class wb_IniFile
 
     End Function
 
+    ''' <summary>
+    ''' Liest einen Integer-Wert aus der ini-Datei unter dem übergebenen Schlüssel
+    ''' </summary>
+    ''' <param name="Sektion">String - Abschnitt in der ini-Datei</param>
+    ''' <param name="Schlüssel">String - Schlüssel innerhalb des Abschnitts</param>
+    ''' <param name="Standardwert">Integer - Defaultwert, wenn der Schlüssel nicht existiert</param>
+    ''' <returns></returns>
     Public Function ReadInt(ByVal Sektion As String, ByVal Schlüssel As String, Optional ByVal Standardwert As Integer = 0) As Integer
         Return CInt(Val(ReadString(Sektion, Schlüssel, Standardwert.ToString)))
     End Function
 
+    ''' <summary>
+    ''' Liest einen Boolean-Wert aus der ini-Datei unter dem übergebenen Schlüssel
+    ''' Der Wert wird als String in der ini-Datei abgelegt
+    '''     0 - False
+    '''     1 - True
+    ''' </summary>
+    ''' <param name="Sektion">String - Abschnitt in der ini-Datei</param>
+    ''' <param name="Schlüssel">String - Schlüssel innerhalb des Abschnitts</param>
+    ''' <param name="Standardwert">Boolean - Defaultwert, wenn der Schlüssel nicht existiert</param>
+    ''' <returns></returns>
     Public Function ReadBool(ByVal Sektion As String, ByVal Schlüssel As String, Optional ByVal Standardwert As Boolean = 0) As Boolean
         Return If(ReadString(Sektion, Schlüssel, Standardwert.ToString), "1", "0")
     End Function
 
+    ''' <summary>
+    ''' Schreibt einen String in die ini-Datei unter dem übergebenen Schlüssel.
+    ''' Wenn der Wert nicht geschrieben werden kann und SilentMode ist nicht gesetzt, wird eine Fehlermeldung ausgegeben.
+    ''' </summary>
+    ''' <param name="Sektion">String - Abschnitt in der ini-Datei</param>
+    ''' <param name="Schlüssel">String - Schlüssel innerhalb des Abschnitts</param>
+    ''' <param name="Wert">String - neuer Eintrag</param>
     Public Sub WriteString(ByVal Sektion As String, ByVal Schlüssel As String, ByVal Wert As String)
         Try
             ' Testen, ob ein Pfad zur INI vorhanden ist und ob das Verzeichnis existiert
@@ -169,12 +256,25 @@ Public Class wb_IniFile
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Schreibt einen Integer-Wert in die ini-Datei unter dem übergebenen Schlüssel.
+    ''' Wenn der Wert nicht geschrieben werden kann und SilentMode ist nicht gesetzt, wird eine Fehlermeldung ausgegeben.
+    ''' </summary>
+    ''' <param name="Sektion">String - Abschnitt in der ini-Datei</param>
+    ''' <param name="Schlüssel">String - Schlüssel innerhalb des Abschnitts</param>
+    ''' <param name="Wert">Integer - neuer Eintrag</param>
     Public Sub WriteInt(ByVal Sektion As String, ByVal Schlüssel As String, ByVal Wert As Integer)
         WriteString(Sektion, Schlüssel, Wert.ToString)
     End Sub
 
+    ''' <summary>
+    ''' Schreibt einen Boolschen Wert in die ini-Datei unter dem übergebenen Schlüssel.
+    ''' Wenn der Wert nicht geschrieben werden kann und SilentMode ist nicht gesetzt, wird eine Fehlermeldung ausgegeben.
+    ''' </summary>
+    ''' <param name="Sektion">String - Abschnitt in der ini-Datei</param>
+    ''' <param name="Schlüssel">String - Schlüssel innerhalb des Abschnitts</param>
+    ''' <param name="Wert">Bollean - neuer Eintrag</param>
     Public Sub WriteBool(ByVal Sektion As String, ByVal Schlüssel As String, ByVal Wert As Boolean)
         WriteString(Sektion, Schlüssel, If(Wert, "1", "0"))
     End Sub
 End Class
-'End Namespace

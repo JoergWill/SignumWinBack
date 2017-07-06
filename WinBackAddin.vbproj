@@ -119,7 +119,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>dll\OrgaSoft V3.01\Signum.OrgaSoft.Contracts.dll</HintPath>
+      <HintPath>dll\OrgaSoft V3.0.6393\Signum.OrgaSoft.Contracts.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -140,9 +140,12 @@
       <HintPath>dll\SharpSSH\Tamir.SharpSSH.dll</HintPath>
     </Reference>
     <Reference Include="UIAutomationClient" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.8.0.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.13.0.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\WeifenLuo Docking V2.13.0\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015">
+      <HintPath>dll\WeifenLuo Docking V2.13.0\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
