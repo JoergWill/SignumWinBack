@@ -14,7 +14,7 @@ Public Class wb_Rezeptschritt
     Private _PreisProKg As Double = 0
     Private _Prozent As Double
     Private _RezeptNr As Integer
-    Private _TA As Integer
+    Private _TA As Integer = wb_Global.TA_Undefined
     Private _RezGewicht As Double
     Private _RezPreis As Double
 
@@ -49,6 +49,7 @@ Public Class wb_Rezeptschritt
     Public Sub New(parent As wb_Rezeptschritt, Bezeichnung As String)
         _parentStep = parent
         _Bezeichnung = Bezeichnung
+        _TA = wb_Global.TA_Undefined
         If Not (_parentStep Is Nothing) Then
             parent._childSteps.Add(Me)
         End If
@@ -73,6 +74,18 @@ Public Class wb_Rezeptschritt
         Get
             Return _childSteps
         End Get
+    End Property
+
+    ''' <summary>
+    ''' (Interne) Komponenten-Nummer
+    ''' </summary>
+    Public Property RohNr As Integer
+        Get
+            Return _RohNr
+        End Get
+        Set(value As Integer)
+            _RohNr = value
+        End Set
     End Property
 
     ''' <summary>
@@ -170,6 +183,8 @@ Public Class wb_Rezeptschritt
 
     Public ReadOnly Property VirtTreePreis As String
         Get
+            'TESTTEST
+            Return TA.ToString
             If _Preis > 0 Then
                 Return wb_Functions.FormatStr(_Preis, 2) + "€"
             Else
@@ -241,14 +256,28 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
-    Public Property TA As Integer
+    Public ReadOnly Property TA As Integer
         Get
+            'wird nur beim ersten Aufruf und nur bei Bedarf aus der Datenbank gelesen
+            If _TA = wb_Global.TA_Undefined Then
+                Select Case _Type
+                    Case KO_TYPE_WASSERKOMPONENTE, wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER
+                        _TA = wb_Global.TA_Wasser
+                    Case wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE, wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+                        _TA = wb_Functions.StrToInt(wb_sql_Functions.getKomponParam(_RohNr, 7, wb_Global.TA_Null))
+                    Case wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL
+                        _TA = wb_Functions.StrToInt(wb_sql_Functions.getKomponParam(_RohNr, 22, wb_Global.TA_Null))
+                    Case wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE
+                        _TA = wb_Functions.StrToInt(wb_sql_Functions.getKomponParam(_RohNr, 3, wb_Global.TA_Null))
+                    Case wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE
+                        _TA = wb_Functions.StrToInt(wb_sql_Functions.getKomponParam(_RohNr, 4, wb_Global.TA_Null))
+
+                    Case Else
+                        _TA = wb_Global.TA_Null
+                End Select
+            End If
             Return _TA
         End Get
-        Set(value As Integer)
-            'TODO muss berechnet werden aus KomponParameter ParamNr=7 auslesen für jede einzelne Komponente
-            _TA = value
-        End Set
     End Property
 
     ''' <summary>
@@ -294,6 +323,65 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    Private ReadOnly Property _TA_Mehlmenge As Double
+        Get
+            'Mehlanteil der aktuellen Komponente berechnen
+            _TA_Mehlmenge = 0
+            'Mehl hat TA=100
+            If TA = wb_Global.TA_Mehl Then
+                _TA_Mehlmenge = Sollwert
+            End If
+            'Sauerteig-Komponente (hat eigene TA) - Mehlanteil herausrechnen
+            If TA > wb_Global.TA_Mehl Then
+                _TA_Mehlmenge = (100 / TA) * Sollwert
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property TA_Mehlmenge As Double
+        Get
+            Dim ChildTA_Mehlmenge As Double = 0
+            For Each x As wb_Rezeptschritt In ChildSteps
+                ChildTA_Mehlmenge = ChildTA_Mehlmenge + x.TA_Mehlmenge
+            Next
+            Return _TA_Mehlmenge + ChildTA_Mehlmenge
+        End Get
+    End Property
+
+    Private ReadOnly Property _TA_Wassermenge As Double
+        Get
+            'Wasseranteil der aktuellen Komponente berechnen
+            _TA_Wassermenge = 0
+            'Wasserkomponente oder Eis oder Sauerteig-Wasser oder Handwasser
+            If (ParamNr = 1) And ((TA = wb_Global.TA_Wasser) Or (_Type = KO_TYPE_WASSERKOMPONENTE) Or (_Type = KO_TYPE_EISKOMPONENTE) Or (_Type = KO_TYPE_SAUER_WASSER)) Then
+                _TA_Wassermenge = Sollwert
+            End If
+
+            'Sauerteig-Komponente (hat eigene TA) - Wasseranteil herausrechnen
+            If TA > 100 Then
+                _TA_Wassermenge = Sollwert * (1 - (100 / TA))
+            End If
+
+            'Komponente mit Flüssiganteil TA < 100 - Wasseranteil herausrechnen
+            'z.B. Flüssighefe
+            '
+            'Hier wird (fälschlicherweise) als TA der Wasseranteil eingetragen
+            'also bei Flüssighefe mit 50% Wasser - TA 50
+            If (TA < 100) And (TA <> 0) And (TA > 0) Then
+                _TA_Wassermenge = Sollwert * (TA / 100)
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property TA_Wassermenge As Double
+        Get
+            Dim ChildTA_Wassermenge As Double = 0
+            For Each x As wb_Rezeptschritt In ChildSteps
+                ChildTA_Wassermenge = ChildTA_Wassermenge + x.TA_Wassermenge
+            Next
+            Return _TA_Wassermenge + ChildTA_Wassermenge
+        End Get
+    End Property
     Private ReadOnly Property _Preis As Double
         Get
             Select Case _Type
@@ -329,4 +417,5 @@ Public Class wb_Rezeptschritt
             _PreisProKg = value
         End Set
     End Property
+
 End Class

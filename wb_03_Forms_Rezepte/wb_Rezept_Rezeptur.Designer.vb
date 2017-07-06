@@ -44,7 +44,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CellEditor3 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.UniversalEditBox1 = New Infralution.Controls.UniversalEditBox()
-        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.BtnDrucken = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -54,6 +53,9 @@ Partial Class wb_Rezept_Rezeptur
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
+        Me.Label5 = New System.Windows.Forms.Label()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -187,7 +189,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.Cell
         Me.VirtualTree.ShowRootRow = False
-        Me.VirtualTree.Size = New System.Drawing.Size(952, 250)
+        Me.VirtualTree.Size = New System.Drawing.Size(952, 397)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 1
         '
@@ -219,47 +221,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.UniversalEditBox1.Size = New System.Drawing.Size(195, 21)
         Me.UniversalEditBox1.TabIndex = 0
         Me.UniversalEditBox1.Visible = False
-        '
-        'ObjectRowBinding1
-        '
-        Me.ObjectRowBinding1.AllowDrag = True
-        Me.ObjectRowBinding1.AllowDropAboveRow = True
-        Me.ObjectRowBinding1.AllowDropBelowRow = True
-        ObjectCellBinding1.Column = Me.ColNr
-        ObjectCellBinding1.Field = "Nummer"
-        ObjectCellBinding1.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        ObjectCellBinding1.Style.HorzAlignment = System.Drawing.StringAlignment.Near
-        ObjectCellBinding2.Column = Me.ColBezeichung
-        ObjectCellBinding2.Field = "VirtTreeBezeichnung"
-        ObjectCellBinding2.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        ObjectCellBinding3.Column = Me.ColPreis
-        ObjectCellBinding3.Field = "VirtTreePreis"
-        ObjectCellBinding3.Format = "{0:C}"
-        ObjectCellBinding3.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        ObjectCellBinding3.Style.HorzAlignment = System.Drawing.StringAlignment.Far
-        ObjectCellBinding4.Column = Me.ColSollwert
-        ObjectCellBinding4.Field = "VirtTreeSollwert"
-        ObjectCellBinding4.Format = "{0:N3}"
-        ObjectCellBinding4.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        ObjectCellBinding4.Style.HorzAlignment = System.Drawing.StringAlignment.Far
-        ObjectCellBinding5.Column = Me.ColEinheit
-        ObjectCellBinding5.Field = "VirtTreeEinheit"
-        ObjectCellBinding5.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        ObjectCellBinding6.Column = Me.ColProzent
-        ObjectCellBinding6.Field = "VirtTreeProzent"
-        ObjectCellBinding6.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding4)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding5)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
-        Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
-        Me.ObjectRowBinding1.Height = 24
-        Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
-        Me.ObjectRowBinding1.ParentProperty = "ParentStep"
-        Me.ObjectRowBinding1.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ObjectRowBinding1.TypeName = "WinBack.wb_Rezeptschritt"
         '
         'BtnDrucken
         '
@@ -349,11 +310,72 @@ Partial Class wb_Rezept_Rezeptur
         Me.Label3.TabIndex = 10
         Me.Label3.Text = "Label3"
         '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(139, 80)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(39, 13)
+        Me.Label4.TabIndex = 11
+        Me.Label4.Text = "Label4"
+        '
+        'ObjectRowBinding1
+        '
+        Me.ObjectRowBinding1.AllowDrag = True
+        Me.ObjectRowBinding1.AllowDropAboveRow = True
+        Me.ObjectRowBinding1.AllowDropBelowRow = True
+        ObjectCellBinding1.Column = Me.ColNr
+        ObjectCellBinding1.Field = "Nummer"
+        ObjectCellBinding1.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        ObjectCellBinding1.Style.HorzAlignment = System.Drawing.StringAlignment.Near
+        ObjectCellBinding2.Column = Me.ColBezeichung
+        ObjectCellBinding2.Field = "VirtTreeBezeichnung"
+        ObjectCellBinding2.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        ObjectCellBinding3.Column = Me.ColPreis
+        ObjectCellBinding3.Field = "VirtTreePreis"
+        ObjectCellBinding3.Format = "{0:C}"
+        ObjectCellBinding3.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        ObjectCellBinding3.Style.HorzAlignment = System.Drawing.StringAlignment.Far
+        ObjectCellBinding4.Column = Me.ColSollwert
+        ObjectCellBinding4.Field = "VirtTreeSollwert"
+        ObjectCellBinding4.Format = "{0:N3}"
+        ObjectCellBinding4.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        ObjectCellBinding4.Style.HorzAlignment = System.Drawing.StringAlignment.Far
+        ObjectCellBinding5.Column = Me.ColEinheit
+        ObjectCellBinding5.Field = "VirtTreeEinheit"
+        ObjectCellBinding5.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        ObjectCellBinding6.Column = Me.ColProzent
+        ObjectCellBinding6.Field = "VirtTreeProzent"
+        ObjectCellBinding6.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding4)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding5)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
+        Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
+        Me.ObjectRowBinding1.Height = 24
+        Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
+        Me.ObjectRowBinding1.ParentProperty = "ParentStep"
+        Me.ObjectRowBinding1.Style.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ObjectRowBinding1.TypeName = "WinBack.wb_Rezeptschritt"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(139, 105)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(39, 13)
+        Me.Label5.TabIndex = 12
+        Me.Label5.Text = "Label5"
+        '
         'wb_Rezept_Rezeptur
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(976, 520)
+        Me.ClientSize = New System.Drawing.Size(976, 667)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Button6)
@@ -396,4 +418,6 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents Button6 As Windows.Forms.Button
     Friend WithEvents Label2 As Windows.Forms.Label
     Friend WithEvents Label3 As Windows.Forms.Label
+    Friend WithEvents Label4 As Windows.Forms.Label
+    Friend WithEvents Label5 As Windows.Forms.Label
 End Class

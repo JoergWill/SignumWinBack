@@ -144,6 +144,14 @@
     Public Const MFF_KO_Nr = 280
 
 
+    ''' <summary>
+    ''' Konstanten für die Berechnung der Teigausbeute
+    ''' Werte für die Komponenten-Parameter
+    ''' </summary>
+    Public Const TA_Undefined = -2
+    Public Const TA_Wasser = -1
+    Public Const TA_Null = 0
+    Public Const TA_Mehl = 100
 
 
 

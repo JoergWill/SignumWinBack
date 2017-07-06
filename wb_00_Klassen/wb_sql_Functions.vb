@@ -65,4 +65,25 @@ Public Class wb_sql_Functions
     Public Shared Function MySQLdatetime(d As Date) As String
         Return d.ToString("yyyy-MM-dd HH:mm:ss")
     End Function
+
+    ''' <summary>
+    ''' Liest der Parameter-Wert aus der Tabelle KomponParams aus.
+    ''' Wenn der Wert oder Datensatz nicht existiert, wird ein leeren String zurückgegeben.
+    ''' </summary>
+    ''' <param name="KomponentenNummer">Integer - Komponenten-Nummer(intern)</param>
+    ''' <param name="ParameterNummer">Integer - Parameter-Nummer</param>
+    ''' <returns></returns>
+    Public Shared Function getKomponParam(KomponentenNummer As Integer, ParameterNummer As Integer, Optional DefaultWert As String = "") As String
+        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+
+        'Daten aus winback.KomponParams in String einlesen
+        winback.sqlSelect(setParams(sqlKompParams, KomponentenNummer, ParameterNummer))
+        If winback.Read Then
+            getKomponParam = winback.sField("KP_Wert")
+            Debug.Print("TA " & getKomponParam.ToString)
+        Else
+            getKomponParam = DefaultWert
+        End If
+        winback.Close()
+    End Function
 End Class

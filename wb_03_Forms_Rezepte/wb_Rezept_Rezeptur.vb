@@ -3,27 +3,29 @@ Imports combit.ListLabel22.DataProviders
 
 Public Class wb_Rezept_Rezeptur
 
-    Dim Rezept As New wb_Rezept
+    Dim Rezept As wb_Rezept
     'Dim LL_Rezeptur As New combit.ListLabel22.ListLabel()
 
+    Public Sub New(RzNummer As Integer, RzVariante As Integer)
 
-    Friend Sub FillVirtualTree()
-        VirtualTree.DataSource = Rezept.RootRezeptSchritt
-        Label2.Text = Rezept.RezeptPreis
-        Label3.Text = Rezept.RezeptGewicht
-
-    End Sub
-
-    Public Sub New()
-
-        ' Dieser Aufruf ist für den Designer erforderlich.
+        'Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        'LL_Rezeptur.DataSource = New ObjectDataProvider(Rezept)
-        'LL_Rezeptur.AutoProjectType = combit.ListLabel22.LlProject.List
+        'Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        Rezept = New wb_Rezept(RzNummer, RzVariante)
+        'Virtual Tree anzeigen
+        VirtualTree.DataSource = Rezept.RootRezeptSchritt
+        'alle Zeilen aufklappen
+        VirtualTree.RootRow.ExpandChildren(True)
 
-        Debug.Print("Nach LL.DataSource")
+        'Gesamt-Rohstoffpreis der Rezeptur (aktuell berechnet)
+        Label2.Text = Rezept.RezeptPreis
+        'Rezeptgewicht (aktuell berechnet)
+        Label3.Text = Rezept.RezeptGewicht
+        'Mehlgesamt-Menge
+        Label4.Text = Rezept.RezeptGesamtMehlmenge
+        'Rezept TA
+        Label5.Text = Rezept.RezeptTA
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click

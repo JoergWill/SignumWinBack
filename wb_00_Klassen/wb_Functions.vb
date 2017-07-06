@@ -394,6 +394,22 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt einen String sicher in Integer um. Wenn die Umwandlung fehlschlägt wird 0 zurückgegeben.
+    ''' </summary>
+    ''' <param name="value"></param>
+    ''' <returns>Konvertierten String im Format Integer</returns>
+    Public Shared Function StrToInt(value As String) As Integer
+        Dim i As Integer
+        Try
+            value = value.Replace(".", ",")
+            Integer.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), i)
+            Return i
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
+
+    ''' <summary>
     '''Text aus Datenbank lesen - Übersetzung
     ''' von Herbert Bsteh aus winback (Kylix)
     ''' Erste Zahl (Texttyp), zweite Zahl (Textindex)

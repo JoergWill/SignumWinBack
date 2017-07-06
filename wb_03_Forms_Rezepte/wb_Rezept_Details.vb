@@ -15,7 +15,7 @@ Public Class wb_Rezept_Details
 
     Public Sub DetailInfo()
         'Rezept-Nummer
-        tRezeptNr.Text = wb_Rezept_Shared.aktRzNr
+        tRezeptNr.Text = wb_Rezept_Shared.aktRzNummer
         'Rezept-Bezeichnung
         tRezeptName.Text = wb_Rezept_Shared.aktRzName
         'Rezept-Kommentar

@@ -188,4 +188,12 @@ Imports WinBack.wb_Global
         Assert.AreEqual(0.0, StrToDouble("xxx"))
 
     End Sub
+
+    <TestMethod()> Public Sub Test_StrToInt()
+        Assert.AreEqual(0, StrToInt("x"))
+        Assert.AreEqual(0, StrToInt(""))
+        Assert.AreEqual(100, StrToInt("100"))
+        Assert.AreEqual(100, StrToInt("100,00"))
+    End Sub
+
 End Class

@@ -1,5 +1,4 @@
-﻿Imports MySql.Data.MySqlClient
-Imports WinBack.wb_Global
+﻿Imports WinBack.wb_Global
 Imports WinBack.wb_Sql_Selects
 ''' <summary>
 ''' Eigene Klasse für winback.Hinweise2.

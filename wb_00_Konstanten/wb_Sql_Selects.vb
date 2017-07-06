@@ -86,6 +86,11 @@
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"
 
 
+    'Sql-Statement Komponenten-Parameter zum Komponenten-Nummer und Parameter-Nummer 
+    Public Const sqlKompParams = "SELECT KP_Wert FROM KomponParams WHERE KP_KO_Nr = [0] AND KP_ParamNr = [1]"
+
+
+
     'sql-Statement komplette Rezeptur nach RzNr und Variante
     Public Const sqlRezeptur = "SELECT RezeptSchritte.RS_Schritt_Nr, RezeptSchritte.RS_ParamNr, " &
                                "Komponenten.KO_Nr, Komponenten.KO_Type, Komponenten.KO_Nr_AlNum, Komponenten.KO_Kommentar, " &

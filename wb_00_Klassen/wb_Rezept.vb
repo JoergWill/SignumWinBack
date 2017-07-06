@@ -56,12 +56,36 @@ Public Class wb_Rezept
     End Property
 
     ''' <summary>
+    ''' Die Rezept-Gesamt-Mehlmenge steht als TA_Mehlmenge im Root-Node
+    ''' Die Berechnung erfolgt über Rezeptschritt.TA_Mehlmenge(Get)
+    ''' </summary>
+    ''' <returns>Double - Rezept-Gesamtmehlmenge</returns>
+    Public ReadOnly Property RezeptGesamtMehlmenge
+        Get
+            Return _RootRezeptSchritt.TA_Mehlmenge
+        End Get
+    End Property
+
+    Public ReadOnly Property RezeptTA As Double
+        Get
+            'Gesamt-Mehlmenge berechnen
+            Dim TA_Mehlmenge As Double = RezeptGesamtMehlmenge
+            Dim TA_Wassermenge As Double = _RootRezeptSchritt.TA_Wassermenge
+            'Gesamt-TA der Rezeptur nur berechnen, wenn Mehlmenge ungleich Null
+            If TA_Mehlmenge > 0.1 Then
+                Return 100 + (TA_Wassermenge * 100) / TA_Mehlmenge
+            Else
+                Return 0
+            End If
+        End Get
+    End Property
+
+    ''' <summary>
     ''' 
     ''' </summary>
-    ''' 'TODO Rezeptnummer und Variante beim Konstruktor übergeben
-    Public Sub New()
+    Public Sub New(RzNr As Integer, RzVariante As Integer)
         'alle Rezeptschritte aus der Datenbank einlesen
-        MySQLdbRead(wb_Rezept_Shared.aktRzNr, 1)
+        MySQLdbRead(RzNr, RzVariante)
         'Rezeptgesamtgewicht berechnen und an alle Rezeptschritte propagieren
         'wird benötigt zur Berechnung des prozentualen Anteils der Komponenten(Rezeptschritte) am Rezeptgewicht
         _RootRezeptSchritt.RezGewicht = RezeptGewicht
@@ -72,13 +96,13 @@ Public Class wb_Rezept
     ''' 
     ''' Gibt True zurück, wenn der Datensatz gefunden wurde.
     ''' </summary>
-    Private Function MySQLdbRead(InterneKomponentenNummer As Integer, Variante As Integer) As Boolean
+    Private Function MySQLdbRead(RezeptNummer As Integer, Variante As Integer) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
 
         'Suche nach Rz_Nr
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptur, InterneKomponentenNummer, Variante)
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptur, RezeptNummer, Variante)
 
         'Datensätze aus Tabelle Rezeptschritte lesen
         If winback.sqlSelect(sql) Then
@@ -212,7 +236,11 @@ Public Class wb_Rezept
         Try
             Select Case Name
 
-                'Nummer(alpha)
+                'Nummer(intern)
+                Case "KO_Nr"
+                    SQLRezeptSchritt.RohNr = Value
+
+                    'Nummer(alpha)
                 Case "KO_Nr_AlNum"
                     SQLRezeptSchritt.Nummer = Value
 
@@ -239,10 +267,6 @@ Public Class wb_Rezept
                 'Einheit
                 Case "E_Einheit"
                     SQLRezeptSchritt.Einheit = Value
-
-                'TA
-                Case "E_Einheit"
-                    SQLRezeptSchritt.TA = Value
 
                 'Preis
                 Case "KA_Preis"
