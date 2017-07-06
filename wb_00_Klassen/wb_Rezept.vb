@@ -44,6 +44,11 @@ Public Class wb_Rezept
         End Get
     End Property
 
+    ''' <summary>
+    ''' Der Rezept-Gesamtpreis steht als Preis im Root-Node
+    ''' Die Berechnung erfolgt über RezeptSchritt.Preis(Get)
+    ''' </summary>
+    ''' <returns>Double - Rezept-Gesamtpreis</returns>
     Public ReadOnly Property RezeptPreis As Double
         Get
             Return _RootRezeptSchritt.Preis
@@ -57,7 +62,8 @@ Public Class wb_Rezept
     Public Sub New()
         'alle Rezeptschritte aus der Datenbank einlesen
         MySQLdbRead(wb_Rezept_Shared.aktRzNr, 1)
-        'Rezeptgesamtgewicht berechnen und an alle Rezeptschritte propagieren#
+        'Rezeptgesamtgewicht berechnen und an alle Rezeptschritte propagieren
+        'wird benötigt zur Berechnung des prozentualen Anteils der Komponenten(Rezeptschritte) am Rezeptgewicht
         _RootRezeptSchritt.RezGewicht = RezeptGewicht
     End Sub
 
