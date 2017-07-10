@@ -24,7 +24,14 @@ Public Class wb_Rezept
     Private _RezeptPreis As Double
     Private _RezeptGesamtMehlmenge As Double
     Private _RezeptGesamtWasserMenge As Double
+    Private _RezeptNummer As Integer
+    Public _Parent As Object
 
+    Public ReadOnly Property RezeptNummer As Integer
+        Get
+            Return _RezeptNummer
+        End Get
+    End Property
     ''' <summary>
     ''' Erster (unsichtbarer) Rezept-Schritt (Root-Node)
     ''' </summary>
@@ -135,9 +142,27 @@ Public Class wb_Rezept
     ''' <summary>
     ''' Erzeugt ein neues Rezeptur-Objekt.
     ''' Nach dem Einlesen der Rezeptschritte aus der Datenbank wird das Rezept-Gesamtgewicht berechnet.
-    ''' (Anzeige der Rezeptbestandteile bezogen auf die Rezept-Gesamtmenge
+    ''' (Anzeige der Rezeptbestandteile bezogen auf die Rezept-Gesamtmenge.
+    ''' 
+    ''' Optional können noch Rohstoff-Nummer und Rohstoff-Bezeichnung übergeben werden, diese werden bei
+    ''' Fehlermeldungen (Rekursiver Aufruf von Rezept-im-Rezept) zur Information mit als Fehlermeldung
+    ''' ausgegeben.
     ''' </summary>
-    Public Sub New(RzNr As Integer, RzVariante As Integer)
+    Public Sub New(RzNr As Integer, Parent As Object, Optional RzVariante As Integer = 1, Optional KNummer As String = "", Optional KBezeichnung As String = "")
+        'Zeiger auf die aufrufende Klasse
+        _Parent = Parent
+        _RezeptNummer = RzNr
+
+        'Rekursion begrenzen - Parent ermitteln
+        Dim x As wb_Rezept = Me._Parent
+        While x IsNot Nothing
+            If x.RezeptNummer = RzNr Then
+                Throw New Exception("Rezept verweist auf sich selbst bei Komponente " & KNummer & " " & KBezeichnung)
+                Exit Sub
+            End If
+            x = x._Parent
+        End While
+
         'alle Rezeptschritte aus der Datenbank einlesen
         MySQLdbRead(RzNr, RzVariante)
         'nach Einlesen aus der Datenbank müssen alle Werte neu berechnet werden
@@ -145,6 +170,7 @@ Public Class wb_Rezept
         'Rezeptgesamtgewicht berechnen und an alle Rezeptschritte propagieren
         'wird benötigt zur Berechnung des prozentualen Anteils der Komponenten(Rezeptschritte) am Rezeptgewicht
         _RootRezeptSchritt.RezGewicht = RezeptGewicht
+
     End Sub
 
     ''' <summary>
@@ -201,6 +227,17 @@ Public Class wb_Rezept
             'Daten aus MySQL in Rezeptschritt kopieren
             _RezeptSchritt.CopyFrom(_SQLRezeptSchritt)
 
+            'Rezept im Rezept
+            If _RezeptSchritt.RezeptNr > 0 Then
+                'TODO welche Variante soll hier gelesen werden? (Standart ist Variante Eins)
+                Try
+                    _RezeptSchritt.RezeptImRezept = New wb_Rezept(_RezeptSchritt.RezeptNr, Me,, _RezeptSchritt.Nummer, _RezeptSchritt.Bezeichnung)
+                Catch ex As Exception
+                    MsgBox(ex.Message)
+                    _RezeptSchritt.RezeptImRezept = Nothing
+                End Try
+            End If
+
         Loop While sqlReader.Read
         Return True
     End Function
@@ -213,7 +250,6 @@ Public Class wb_Rezept
     ''' Eine Kessel-Stufe hat als Parent-Node immer die Produktions-Stufe
     ''' Kneter-Komponenten haben immer einen Parent-Node Kneter-Kopfzeile
     ''' Wasser-Komponenten haben als Parent-Node immer die Wasser-Komponente mit Parameter-Nummer Eins
-    ''' 
     ''' 
     ''' </summary>
     ''' <param name="TypeNow">Kompoenten-Type des aktuellen Rezeptschrittes</param>
@@ -300,6 +336,7 @@ Public Class wb_Rezept
         End If
 
         'Feldname aus der Datenbank
+        Debug.Print("Feldname/Wert " & Name & "/" & Value.ToString)
         Try
             Select Case Name
 
@@ -335,9 +372,9 @@ Public Class wb_Rezept
                 Case "E_Einheit"
                     _SQLRezeptSchritt.Einheit = Value
 
-                'zählt zum Rezeptgesamtgewicht
-                Case "KA_RezMenge"
-                    _SQLRezeptSchritt.ZaehltZumRezeptGewicht = wb_sql_Functions.MySQLBoolean(Value)
+                'zählt NICHT zum Rezeptgesamtgewicht
+                Case "KA_zaehlt_zu_RZ_Gesamtmenge"
+                    _SQLRezeptSchritt.ZaehltNichtZumRezeptGewicht = wb_sql_Functions.MySQLBoolean(Value)
 
                     'Preis
                 Case "KA_Preis"

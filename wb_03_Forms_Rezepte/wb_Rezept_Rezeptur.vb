@@ -12,7 +12,7 @@ Public Class wb_Rezept_Rezeptur
         InitializeComponent()
 
         'Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        Rezept = New wb_Rezept(RzNummer, RzVariante)
+        Rezept = New wb_Rezept(RzNummer, Nothing, RzVariante)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
         'alle Zeilen aufklappen
