@@ -67,6 +67,21 @@ Public Class wb_sql_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt einen SQL-Datenfeld in Boolean um
+    '''     1   -   True
+    '''     0   -   False
+    ''' </summary>
+    ''' <param name="s">String - Wert</param>
+    ''' <returns>Boolean - Result</returns>
+    Public Shared Function MySQLBoolean(s As String) As Boolean
+        If s = "1" Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    ''' <summary>
     ''' Liest der Parameter-Wert aus der Tabelle KomponParams aus.
     ''' Wenn der Wert oder Datensatz nicht existiert, wird ein leeren String zurückgegeben.
     ''' </summary>

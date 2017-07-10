@@ -1,5 +1,10 @@
 ﻿Public Class wb_Global
 
+    ''' <summary>
+    ''' Wert ist undefiniert
+    ''' </summary>
+    Public Const UNDEFINED = -1
+
     Public Enum ktTyp301Gruppen
         xxx
         Big4

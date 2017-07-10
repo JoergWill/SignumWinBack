@@ -17,6 +17,7 @@ Public Class wb_Rezeptschritt
     Private _TA As Integer = wb_Global.TA_Undefined
     Private _RezGewicht As Double
     Private _RezPreis As Double
+    Private _ZaehltZumRezeptGewicht As Boolean
 
     Private _parentStep As wb_Rezeptschritt
     Private _childSteps As New ArrayList()
@@ -140,6 +141,10 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Sollwert
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Sollwert As String
         Get
             Return _Sollwert
@@ -149,6 +154,13 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Bezeichnung. Anzeige im VirtualTree (Rezeptur)
+    ''' Bei Produktions-Stufen, Kessel und Text-Komponenten wird der Sollwert als Text angezeigt
+    ''' bei allen anderen Komponenten-Typen die Komponenten-Bezeichnung.
+    ''' 'TODO Bei Sprachumschaltung wird wahlweise der Kommentar angezeigt
+    ''' </summary>
+    ''' <returns>String - Bezeichnung</returns>
     Public ReadOnly Property VirtTreeBezeichnung() As String
         Get
             Debug.Print("Get VirtTreeBezeichnung " & _Type.ToString & " " & _Sollwert)
@@ -165,6 +177,12 @@ Public Class wb_Rezeptschritt
         End Get
     End Property
 
+    ''' <summary>
+    ''' Sollwert. Anzeige im VitualTree (Rezeptur)
+    ''' Bei Produktions-Stufen, Kessel und Text-Komponenten wird ein leeres Feld angezeigt,
+    ''' bei Automatik, Hand, Eis und Wasser wird der Sollwert formatiert mit 3 Nachkomma-Stellen angezeigt.
+    ''' </summary>
+    ''' <returns>String - Sollwert</returns>
     Public Property VirtTreeSollwert As String
         Get
             Select Case _Type
@@ -181,10 +199,13 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Preis. Anzeige im Virtual-Tree (Rezeptur)
+    ''' Wenn ein Preis eingetragen ist, wird der Wert formatiert auf 2 Stellen ausgegeben
+    ''' </summary>
+    ''' <returns>String- Preis</returns>
     Public ReadOnly Property VirtTreePreis As String
         Get
-            'TESTTEST
-            Return TA.ToString
             If _Preis > 0 Then
                 Return wb_Functions.FormatStr(_Preis, 2) + "€"
             Else
@@ -193,6 +214,11 @@ Public Class wb_Rezeptschritt
         End Get
     End Property
 
+    ''' <summary>
+    ''' Einheit. Anzeige im Virtual-Tree (Rezeptur)
+    ''' Gibt für Automatik, Hand, Eis, Wasser, Kneter und Temperatur-Erfassungs-Komponenten die entsprechende Einheit aus der Datenbank zurück
+    ''' </summary>
+    ''' <returns>String- Einheit</returns>
     Public ReadOnly Property VirtTreeEinheit As String
         Get
             Select Case _Type
@@ -204,6 +230,11 @@ Public Class wb_Rezeptschritt
         End Get
     End Property
 
+    ''' <summary>
+    ''' Prozent-Spalte. Anzeige der Anteile im Virtual-Tree(Rezeptur)
+    ''' Gibt wahlweise den prozentualen Anteil an der Gesamt-Teigmenge, den Anteil bezogen auf die Mehlmenge oder die TA zurück.
+    ''' </summary>
+    ''' <returns>String - Anteil in Prozent/TA</returns>
     Public ReadOnly Property VirtTreeProzent As String
         Get
             Select Case _Type
@@ -220,6 +251,10 @@ Public Class wb_Rezeptschritt
         End Get
     End Property
 
+    ''' <summary>
+    ''' Eineheit
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Einheit As String
         Get
             Return _Einheit
@@ -261,15 +296,15 @@ Public Class wb_Rezeptschritt
             'wird nur beim ersten Aufruf und nur bei Bedarf aus der Datenbank gelesen
             If _TA = wb_Global.TA_Undefined Then
                 Select Case _Type
-                    Case KO_TYPE_WASSERKOMPONENTE, wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER
+                    Case KO_TYPE_WASSERKOMPONENTE, KO_TYPE_SAUER_WASSER
                         _TA = wb_Global.TA_Wasser
-                    Case wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE, wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+                    Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE
                         _TA = wb_Functions.StrToInt(wb_sql_Functions.getKomponParam(_RohNr, 7, wb_Global.TA_Null))
-                    Case wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL
+                    Case KO_TYPE_SAUER_MEHL
                         _TA = wb_Functions.StrToInt(wb_sql_Functions.getKomponParam(_RohNr, 22, wb_Global.TA_Null))
-                    Case wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE
+                    Case KO_TYPE_SAUER_ZUGABE
                         _TA = wb_Functions.StrToInt(wb_sql_Functions.getKomponParam(_RohNr, 3, wb_Global.TA_Null))
-                    Case wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE
+                    Case KO_TYPE_SAUER_AUTO_ZUGABE
                         _TA = wb_Functions.StrToInt(wb_sql_Functions.getKomponParam(_RohNr, 4, wb_Global.TA_Null))
 
                     Case Else
@@ -304,13 +339,22 @@ Public Class wb_Rezeptschritt
         End Get
     End Property
 
+    ''' <summary>
+    ''' Gibt das Gewicht der Rezeptzeile zurück. Wenn diese Zeile weitere (Child)Rezeptzeile enthält wird zuerst das Gewicht der 
+    ''' unterlagerten Zeilen berechnet und dann die Summe zurückgegeben.
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Gewicht As Double
         Get
-            Dim Childgewicht As Double = 0
-            For Each x As wb_Rezeptschritt In ChildSteps
-                Childgewicht = Childgewicht + x.Gewicht
-            Next
-            Return _Gewicht + Childgewicht
+            If ZaehltZumRezeptGewicht Then
+                Dim Childgewicht As Double = 0
+                For Each x As wb_Rezeptschritt In ChildSteps
+                    Childgewicht = Childgewicht + x.Gewicht
+                Next
+                Return _Gewicht + Childgewicht
+            Else
+                Return 0
+            End If
         End Get
     End Property
 
@@ -418,4 +462,16 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Rezeptzeile zählt zum Rezeptgesamtgewicht
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property ZaehltZumRezeptGewicht As Boolean
+        Get
+            Return _ZaehltZumRezeptGewicht
+        End Get
+        Set(value As Boolean)
+            _ZaehltZumRezeptGewicht = value
+        End Set
+    End Property
 End Class

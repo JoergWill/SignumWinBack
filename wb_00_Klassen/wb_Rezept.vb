@@ -17,11 +17,13 @@
 ''' </summary>
 Public Class wb_Rezept
     Private _RootRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
-    Private SQLRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
-    Private RezeptSchritt As wb_Rezeptschritt
+    Private _SQLRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
+    Private _RezeptSchritt As wb_Rezeptschritt
 
     Private _RezeptGewicht As Double
     Private _RezeptPreis As Double
+    Private _RezeptGesamtMehlmenge As Double
+    Private _RezeptGesamtWasserMenge As Double
 
     ''' <summary>
     ''' Erster (unsichtbarer) Rezept-Schritt (Root-Node)
@@ -40,7 +42,11 @@ Public Class wb_Rezept
     ''' <returns>Double - Rezept-Gesamtgewicht</returns>
     Public ReadOnly Property RezeptGewicht As Double
         Get
-            Return _RootRezeptSchritt.Gewicht
+            'wenn der Wert noch nicht berechnet wurde
+            If _RezeptGewicht = wb_Global.UNDEFINED Then
+                _RezeptGewicht = _RootRezeptSchritt.Gewicht
+            End If
+            Return _RezeptGewicht
         End Get
     End Property
 
@@ -51,7 +57,11 @@ Public Class wb_Rezept
     ''' <returns>Double - Rezept-Gesamtpreis</returns>
     Public ReadOnly Property RezeptPreis As Double
         Get
-            Return _RootRezeptSchritt.Preis
+            'wenn der Wert noch nicht berechnet wurde
+            If _RezeptPreis = wb_Global.UNDEFINED Then
+                _RezeptPreis = _RootRezeptSchritt.Preis
+            End If
+            Return _RezeptPreis
         End Get
     End Property
 
@@ -62,15 +72,42 @@ Public Class wb_Rezept
     ''' <returns>Double - Rezept-Gesamtmehlmenge</returns>
     Public ReadOnly Property RezeptGesamtMehlmenge
         Get
-            Return _RootRezeptSchritt.TA_Mehlmenge
+            'wenn der Wert noch nicht berechnet wurde
+            If _RezeptGesamtMehlmenge = wb_Global.UNDEFINED Then
+                _RezeptGesamtMehlmenge = _RootRezeptSchritt.TA_Mehlmenge
+            End If
+            Return _RezeptGesamtMehlmenge
         End Get
     End Property
 
+    ''' <summary>
+    ''' Die Rezept-Gesamt-Wassermenge steht als TA_Wassermenge im Root-Node
+    ''' Die Berechnung erfolgt über Rezeptschritt.TA_Wassermenge(Get)
+    ''' </summary>
+    ''' <returns>Double - Rezept-Gesamt-Wassermenge</returns>
+    Public ReadOnly Property RezeptGesamtWassermenge
+        Get
+            'wenn der Wert noch nicht berechnet wurde
+            If _RezeptGesamtWasserMenge = wb_Global.UNDEFINED Then
+                _RezeptGesamtWasserMenge = _RootRezeptSchritt.TA_Wassermenge
+            End If
+            Return _RezeptGesamtWasserMenge
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Die Rezept-TA wird berechnet aus Mehl-Gesamtmenge und Wasser-Gesamtmenge
+    ''' der Rezeptur.
+    '''                 (Wasser * 100)
+    '''     TA = 100 +  --------------
+    '''                     Mehl
+    ''' </summary>
+    ''' <returns>Double - Rezept-TA</returns>
     Public ReadOnly Property RezeptTA As Double
         Get
             'Gesamt-Mehlmenge berechnen
             Dim TA_Mehlmenge As Double = RezeptGesamtMehlmenge
-            Dim TA_Wassermenge As Double = _RootRezeptSchritt.TA_Wassermenge
+            Dim TA_Wassermenge As Double = RezeptGesamtWassermenge
             'Gesamt-TA der Rezeptur nur berechnen, wenn Mehlmenge ungleich Null
             If TA_Mehlmenge > 0.1 Then
                 Return 100 + (TA_Wassermenge * 100) / TA_Mehlmenge
@@ -81,11 +118,30 @@ Public Class wb_Rezept
     End Property
 
     ''' <summary>
+    ''' Neuberechnung aller Werte erzwingen. z.B. nach Rezeptänderung
     ''' 
+    ''' Die Berechnung der Rezeptur-Gesamt-Werte (Gewicht, TA, Mehlanteil...) erfolgt nur einmal, wenn der entsprechende Wert abgefragt wird.
+    ''' Um eine Berechnung zu erzwingen kann Recalculate gesetzt werden.
+    ''' </summary>
+    Public WriteOnly Property Recalculate As Boolean
+        Set(value As Boolean)
+            _RezeptGewicht = wb_Global.UNDEFINED
+            _RezeptPreis = wb_Global.UNDEFINED
+            _RezeptGesamtMehlmenge = wb_Global.UNDEFINED
+            _RezeptGesamtWasserMenge = wb_Global.UNDEFINED
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Erzeugt ein neues Rezeptur-Objekt.
+    ''' Nach dem Einlesen der Rezeptschritte aus der Datenbank wird das Rezept-Gesamtgewicht berechnet.
+    ''' (Anzeige der Rezeptbestandteile bezogen auf die Rezept-Gesamtmenge
     ''' </summary>
     Public Sub New(RzNr As Integer, RzVariante As Integer)
         'alle Rezeptschritte aus der Datenbank einlesen
         MySQLdbRead(RzNr, RzVariante)
+        'nach Einlesen aus der Datenbank müssen alle Werte neu berechnet werden
+        Recalculate = True
         'Rezeptgesamtgewicht berechnen und an alle Rezeptschritte propagieren
         'wird benötigt zur Berechnung des prozentualen Anteils der Komponenten(Rezeptschritte) am Rezeptgewicht
         _RootRezeptSchritt.RezGewicht = RezeptGewicht
@@ -116,6 +172,14 @@ Public Class wb_Rezept
         Return False
     End Function
 
+    ''' <summary>
+    ''' Einlesen aller Datenfelder aus der Datenbank in den Rezeptschritt (SQLRezeptschritt)
+    ''' Nach dem Einlesen wird das komplette Objekt SQLRezeptschritt in die iListe(Rezeptschritt kopiert)
+    ''' Über GetParentNode wird, abhängig von aktuellen und von vorhergehenden Rezeptschritt festgelegt,
+    ''' wie der nächste Schritt in die Kette eingehängt wird (Child/Parent-Node)
+    ''' </summary>
+    ''' <param name="sqlReader"></param>
+    ''' <returns></returns>
     Private Function MySQLdbRead(ByRef sqlReader As MySqlDataReader) As Boolean
         Dim Root As wb_Rezeptschritt = RootRezeptSchritt
 
@@ -128,14 +192,14 @@ Public Class wb_Rezept
             Next
 
             'Root-Knoten bestimmen abhängig vom aktuellen und vom vorhergehenden Typ
-            If RezeptSchritt IsNot Nothing And SQLRezeptSchritt IsNot Nothing Then
-                Root = GetParentNode(Root, SQLRezeptSchritt.Type, SQLRezeptSchritt.ParamNr, RezeptSchritt.Type, RezeptSchritt.ParamNr)
+            If _RezeptSchritt IsNot Nothing And _SQLRezeptSchritt IsNot Nothing Then
+                Root = GetParentNode(Root, _SQLRezeptSchritt.Type, _SQLRezeptSchritt.ParamNr, _RezeptSchritt.Type, _RezeptSchritt.ParamNr)
             End If
 
             'neuen Rezeptschritt anlegen
-            RezeptSchritt = New wb_Rezeptschritt(Root, SQLRezeptSchritt.Bezeichnung)
+            _RezeptSchritt = New wb_Rezeptschritt(Root, _SQLRezeptSchritt.Bezeichnung)
             'Daten aus MySQL in Rezeptschritt kopieren
-            RezeptSchritt.CopyFrom(SQLRezeptSchritt)
+            _RezeptSchritt.CopyFrom(_SQLRezeptSchritt)
 
         Loop While sqlReader.Read
         Return True
@@ -167,9 +231,9 @@ Public Class wb_Rezept
 
         'letzter Rezeptschritt war Produktions-Stufe - der neue Rezeptschritt ist Child der Produktions-Stufe
         If TypeLast = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Then
-            PST_Node = RezeptSchritt
-            AKT_Node = RezeptSchritt
-            Return RezeptSchritt
+            PST_Node = _RezeptSchritt
+            AKT_Node = _RezeptSchritt
+            Return _RezeptSchritt
         End If
 
         'aktueller Rezeptschritt ist Kessel-Stufe - der aktuelle Schritt ist Child vom letzten Produktions-Stufen-Node
@@ -184,8 +248,8 @@ Public Class wb_Rezept
 
         'letzter Rezeptschritt war Kessel - der aktuelle Schritt ist Child vom vorhergehenden Schritt
         If TypeLast = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
-            AKT_Node = RezeptSchritt
-            Return RezeptSchritt
+            AKT_Node = _RezeptSchritt
+            Return _RezeptSchritt
             Exit Function
         End If
 
@@ -196,7 +260,7 @@ Public Class wb_Rezept
                 Exit Function
             Else
                 If ParamNrLast = 1 Then
-                    Return RezeptSchritt
+                    Return _RezeptSchritt
                     Exit Function
                 End If
             End If
@@ -208,7 +272,7 @@ Public Class wb_Rezept
                 Return AKT_Node
                 Exit Function
             Else
-                Return RezeptSchritt
+                Return _RezeptSchritt
                 Exit Function
             End If
         End If
@@ -223,14 +287,17 @@ Public Class wb_Rezept
 
     End Function
 
+    ''' <summary>
+    ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Obejkt-Eigenschaften
+    ''' </summary>
+    ''' <param name="Name">String - Spalten-Name aus Datenbank</param>
+    ''' <param name="Value">Object - Wert aus Datenbank</param>
+    ''' <returns></returns>
     Private Function MySQLdbRead_RzSchritte(Name As String, Value As Object)
         'DB-Null aus der Datenbank
         If IsDBNull(Value) Then
             Value = ""
         End If
-
-        'Testausgabe
-        Debug.Print("Feld/Wert " & Name & " " & Value.ToString)
 
         'Feldname aus der Datenbank
         Try
@@ -238,43 +305,47 @@ Public Class wb_Rezept
 
                 'Nummer(intern)
                 Case "KO_Nr"
-                    SQLRezeptSchritt.RohNr = Value
+                    _SQLRezeptSchritt.RohNr = Value
 
                     'Nummer(alpha)
                 Case "KO_Nr_AlNum"
-                    SQLRezeptSchritt.Nummer = Value
+                    _SQLRezeptSchritt.Nummer = Value
 
                 'Schritt-Nummer
                 Case "RS_Schritt_Nr"
-                    SQLRezeptSchritt.SchrittNr = Value
+                    _SQLRezeptSchritt.SchrittNr = Value
 
                 'Parameter-Nummer
                 Case "RS_ParamNr"
-                    SQLRezeptSchritt.ParamNr = Value
+                    _SQLRezeptSchritt.ParamNr = Value
 
                 'Komponenten-Type
                 Case "KO_Type"
-                    SQLRezeptSchritt.Type = wb_Functions.IntToKomponType(Value)
+                    _SQLRezeptSchritt.Type = wb_Functions.IntToKomponType(Value)
 
                 'Bezeichnung
                 Case "KO_Bezeichnung"
-                    SQLRezeptSchritt.Bezeichnung = Value
+                    _SQLRezeptSchritt.Bezeichnung = Value
 
                 'Sollwert
                 Case "RS_Wert"
-                    SQLRezeptSchritt.Sollwert = Value
+                    _SQLRezeptSchritt.Sollwert = Value
 
                 'Einheit
                 Case "E_Einheit"
-                    SQLRezeptSchritt.Einheit = Value
+                    _SQLRezeptSchritt.Einheit = Value
 
-                'Preis
+                'zählt zum Rezeptgesamtgewicht
+                Case "KA_RezMenge"
+                    _SQLRezeptSchritt.ZaehltZumRezeptGewicht = wb_sql_Functions.MySQLBoolean(Value)
+
+                    'Preis
                 Case "KA_Preis"
-                    SQLRezeptSchritt.PreisProKg = wb_Functions.StrToDouble(Value)
+                    _SQLRezeptSchritt.PreisProKg = wb_Functions.StrToDouble(Value)
 
                 'RezeptNr (Rezept im Rezept)
                 Case "KA_RZ_Nr"
-                    SQLRezeptSchritt.RezeptNr = Value
+                    _SQLRezeptSchritt.RezeptNr = Value
 
             End Select
         Catch ex As Exception
