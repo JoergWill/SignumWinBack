@@ -74,9 +74,9 @@
 
     Enum AllergenInfo
         X   'not used
-        C   'contains
-        T   'trace
         K   'keine
+        T   'trace
+        C   'contains
         N   'keine Angabe
         ERR 'Fehler bei der Berechnung
     End Enum

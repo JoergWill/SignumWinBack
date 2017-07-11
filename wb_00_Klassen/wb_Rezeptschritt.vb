@@ -1,5 +1,6 @@
 ﻿Imports System.Reflection
 Imports WinBack.wb_Global.KomponTypen
+Imports WinBack.wb_Sql_Selects
 
 Public Class wb_Rezeptschritt
 
@@ -12,16 +13,15 @@ Public Class wb_Rezeptschritt
     Private _Sollwert As String
     Private _Einheit As String
     Private _PreisProKg As Double = 0
-    Private _Prozent As Double
     Private _RezeptNr As Integer
     Private _TA As Integer = wb_Global.TA_Undefined
     Private _RezGewicht As Double
     Private _RezPreis As Double
     Private _ZaehltNichtZumRezeptGewicht As Boolean
+    Private _ktTyp301 As New wb_KomponParam301
 
     Private _parentStep As wb_Rezeptschritt
     Private _childSteps As New ArrayList()
-
     Public RezeptImRezept As wb_Rezept
 
     ''' <summary>
@@ -270,15 +270,10 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
-    Public Property Prozent As Double
-        Get
-            Return 0
-        End Get
-        Set(value As Double)
-            _Prozent = value
-        End Set
-    End Property
-
+    ''' <summary>
+    ''' Komponenten-Type der Komponente in der Rezept-Zeile
+    ''' </summary>
+    ''' <returns>KompontTypen - KomponentenType</returns>
     Public Property Type As wb_Global.KomponTypen
         Get
             Return _Type
@@ -384,7 +379,7 @@ Public Class wb_Rezeptschritt
 
     ''' <summary>
     ''' Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung/Anzeige des Anteils der Komponente am 
-    ''' Rezeotgesamtgewicht auf der Rezeptzeile.
+    ''' Rezeptgesamtgewicht auf der Rezeptzeile.
     ''' </summary>
     Public WriteOnly Property RezGewicht As Double
         Set(value As Double)
@@ -500,6 +495,7 @@ Public Class wb_Rezeptschritt
             If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
                 'Preis aus Rezept-im-Rezept
                 _PreisProKg = (RezeptImRezept.RezeptPreis * Sollwert) / RezeptImRezept.RezeptGewicht
+                Return _PreisProKg * _Sollwert
             Else
                 Select Case _Type
                     Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE
@@ -547,7 +543,7 @@ Public Class wb_Rezeptschritt
     ''' <summary>
     ''' Rezeptzeile zählt nicht zum Rezeptgesamtgewicht
     ''' </summary>
-    ''' <returns></returns>
+    ''' <returns>Boolean - Zählt nicht zum Rezeptgewicht</returns>
     Public Property ZaehltNichtZumRezeptGewicht As Boolean
         Get
             Return _ZaehltNichtZumRezeptGewicht
@@ -556,4 +552,83 @@ Public Class wb_Rezeptschritt
             _ZaehltNichtZumRezeptGewicht = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Gibt die Komponentendaten(Nährwerte) des aktuellen Rezeptschrittes zurück. Wenn die Komponenten-Parameter noch nicht vorhanden sind,
+    ''' werden zuerst alle Daten zum Rezeptschritt anhand der Komponenten-Nummer aus der Datenbank gelesen.
+    ''' 
+    ''' Wenn die Komponente auf ein Rezept zeigt (Rezept-im_Rezept), wird zunächst das Unter-Rezept berechnet und dann alle Werte addiert.
+    ''' Alle untergeordneten Rezeptschritte im Baum werden berechnet und mit der aktuellen Zeile addiert.
+    ''' </summary>
+    ''' 
+    ''' 
+    ''' 'TODO Besser sollte hier eine Routine CALCNährwerte aufgerufen werden ???
+    '''       oder prüfen, ob schon berechnet wurde
+    '''       vor Neuberechnung Array löschen, sonst werden die Werte doppelt berechnet.
+    ''' <returns></returns>
+    Public ReadOnly Property ktTyp301 As wb_KomponParam301
+        Get
+            'Nährwert-Info aus Datenbank lesen
+            If (_Type = KO_TYPE_AUTOKOMPONENTE) Or (_Type = KO_TYPE_HANDKOMPONENTE) Or (_Type = KO_TYPE_EISKOMPONENTE) Or
+               (_Type = KO_TYPE_SAUER_MEHL) Or (_Type = KO_TYPE_SAUER_WASSER) Or (_Type = KO_TYPE_SAUER_ZUGABE) Or (_Type = KO_TYPE_SAUER_AUTO_ZUGABE) Then
+                ReadktTyp301()
+                Debug.Print("Komponente " & Bezeichnung)
+
+            End If
+
+            'alle Unter-Rezept-Schritte berechnen
+            For Each x As wb_Rezeptschritt In ChildSteps
+                x.ktTyp301.AddNwt(_ktTyp301)
+            Next
+            Return _ktTyp301
+        End Get
+    End Property
+
+    Private Function ReadktTyp301() As Boolean
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim Name As String
+        Dim Value As Object
+        Dim ParamNr, ParamTyp As Integer
+
+        'Komponenten-Parameter aus Datenbank lesen
+        If winback.sqlSelect(setParams(sqlgetNWT, _RohNr.ToString)) Then
+            'Lesen KO-Nr
+            If winback.Read Then
+                'Schleife über alle Parameter-Datensätze
+                'Bis alle Datensätze eingelesen sind
+                Do
+                    'Parameter - Anzahl der Felder im DataSet
+                    For i = 0 To winback.MySqlRead.FieldCount - 1
+                        Name = winback.MySqlRead.GetName(i)
+                        Value = winback.MySqlRead.GetValue(i)
+
+                        'Feldname aus der Datenbank
+                        Select Case Name
+
+                           'Parameter-Nummer
+                            Case "RP_ParamNr"
+                                ParamNr = CInt(Value)
+
+                           'Parameter-Typ
+                            Case "RP_Typ_Nr"
+                                ParamTyp = CInt(Value)
+
+                           'Parameter-Wert
+                            Case "RP_Wert"
+                                If ParamTyp = 301 Then
+                                    If _ktTyp301.IsAllergen(ParamNr) Then
+                                        _ktTyp301.Wert(ParamNr) = Value.ToString
+                                        Debug.Print("Allergen " & ParamNr & " " & Value.ToString)
+                                    Else
+                                        _ktTyp301.Naehrwert(ParamNr) = (wb_Functions.StrToDouble(Value) * Sollwert) / 100
+                                    End If
+                                End If
+                        End Select
+                    Next
+                Loop While winback.MySqlRead.Read
+            End If
+        End If
+        Return True
+    End Function
 End Class

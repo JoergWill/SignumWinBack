@@ -1,4 +1,4 @@
-﻿Imports System.Globalization
+﻿Imports WinBack
 Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
@@ -122,4 +122,33 @@ Public Class wb_KomponParam301
         Return ChangeLogReport(ReportAll)
     End Function
 
+    ''' <summary>
+    ''' Addiert alle Nährwerte und Allergene zum übergebenen KomponentenParameter-Array
+    ''' </summary>
+    ''' <param name="_ktTyp301"></param>
+    Public Sub AddNwt(ByRef _ktTyp301 As wb_KomponParam301)
+        For i = 0 To maxTyp301
+            If IsAllergen(i) Then
+                _ktTyp301.Allergen(i) = AddNwtAllergen(_ktTyp301.Allergen(i), Allergen(i))
+            Else
+                _ktTyp301.Naehrwert(i) += Naehrwert(i)
+            End If
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Addiert die Allergen-Info. Bei der Addition wird der jeweils größere Wert zurückgegeben.
+    ''' Die Reihenfolge der Kontanten in wb_global entspricht der Reihenfolge der Wertigkeit.
+    ''' </summary>
+    ''' <param name="Allergen1"></param>
+    ''' <param name="Allergen2"></param>
+    Private Function AddNwtAllergen(Allergen1 As AllergenInfo, Allergen2 As AllergenInfo) As AllergenInfo
+
+        'die Aufzählung der Konstanten entspricht der Reihenfolge der Wertigkeit.
+        If Allergen1 > Allergen2 Then
+            Return Allergen2
+        Else
+            Return Allergen1
+        End If
+    End Function
 End Class

@@ -1,4 +1,5 @@
 ﻿Imports MySql.Data.MySqlClient
+Imports WinBack
 
 ''' <summary>
 ''' Enthält die komplette Rezeptur als Liste von Rezeptschritten (wb_Rezeptschritt).
@@ -25,6 +26,7 @@ Public Class wb_Rezept
     Private _RezeptGesamtMehlmenge As Double
     Private _RezeptGesamtWasserMenge As Double
     Private _RezeptNummer As Integer
+    Private _ktTyp301 As New wb_KomponParam301
     Public _Parent As Object
 
     Public ReadOnly Property RezeptNummer As Integer
@@ -137,6 +139,17 @@ Public Class wb_Rezept
             _RezeptGesamtMehlmenge = wb_Global.UNDEFINED
             _RezeptGesamtWasserMenge = wb_Global.UNDEFINED
         End Set
+    End Property
+
+    ''' <summary>
+    ''' Nährwerte und Allergene. Die Rezeptwerte stehen als Array im Root-Node.
+    ''' Die Berechnung erfolgt über den Rezeptschritt.ktTyp301(Get)
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property KtTyp301 As wb_KomponParam301
+        Get
+            Return _RootRezeptSchritt.ktTyp301
+        End Get
     End Property
 
     ''' <summary>
