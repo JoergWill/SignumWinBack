@@ -16,6 +16,7 @@ Public Class wb_Rezeptschritt
     Private _RezeptNr As Integer
     Private _TA As Integer = wb_Global.TA_Undefined
     Private _RezGewicht As Double
+    Private _BruttoRezGewicht As Double
     Private _RezPreis As Double
     Private _ZaehltNichtZumRezeptGewicht As Boolean
     Private _ktTyp301 As New wb_KomponParam301
@@ -339,23 +340,25 @@ Public Class wb_Rezeptschritt
     ''' zum Rezeptgewicht zählt und das Flag 'zählt zum Rezeptgewicht' gesetzt ist.
     ''' </summary>
     ''' <returns>Double - Sollwert</returns>
-    ''' 'TODO zählt zum Rezeptgewicht berücksichtigen !!!
-    ''' 'TODO ordentliche umwandlung in DOUBLE
     Private ReadOnly Property _Gewicht As Double
         Get
             If Not ZaehltNichtZumRezeptGewicht Then
-                Select Case _Type
-                    Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE
-                        Return _Sollwert
-                    Case KO_TYPE_WASSERKOMPONENTE
-                        If _ParamNr = 1 Then
-                            Return _Sollwert
-                        Else
-                            Return 0
-                        End If
-                    Case Else
-                        Return 0
-                End Select
+                Return wb_Functions.StrToDouble(_BruttoGewicht)
+            Else
+                Return 0
+            End If
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Brutto-Gewichtswert des Rezeptschrittes. Gibt den Sollwert der Rezept-Zeile zurück, unabhängig vom Falg
+    ''' 'zählt zum Rezeptgewicht'
+    ''' </summary>
+    ''' <returns>Double - Sollwert</returns>
+    Private ReadOnly Property _BruttoGewicht As Double
+        Get
+            If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
+                Return wb_Functions.StrToDouble(_Sollwert)
             Else
                 Return 0
             End If
@@ -378,6 +381,21 @@ Public Class wb_Rezeptschritt
     End Property
 
     ''' <summary>
+    ''' Gibt das Brutto-Gewicht der Rezeptzeile zurück. Wenn diese Zeile weitere (Child)Rezeptzeile enthält wird zuerst das Gewicht der 
+    ''' unterlagerten Zeilen berechnet und dann die Summe zurückgegeben.
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property BruttoGewicht As Double
+        Get
+            Dim Childgewicht As Double = 0
+            For Each x As wb_Rezeptschritt In ChildSteps
+                Childgewicht = Childgewicht + x.BruttoGewicht
+            Next
+            Return _BruttoGewicht + Childgewicht
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung/Anzeige des Anteils der Komponente am 
     ''' Rezeptgesamtgewicht auf der Rezeptzeile.
     ''' </summary>
@@ -387,6 +405,18 @@ Public Class wb_Rezeptschritt
                 x.RezGewicht = value
             Next
             _RezGewicht = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Brutto-Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung der Nährwerte
+    ''' </summary>
+    Public WriteOnly Property BruttoRezGewicht As Double
+        Set(value As Double)
+            For Each x As wb_Rezeptschritt In ChildSteps
+                x.BruttoRezGewicht = value
+            Next
+            _BruttoRezGewicht = value
         End Set
     End Property
 
@@ -564,26 +594,25 @@ Public Class wb_Rezeptschritt
     Public ReadOnly Property ktTyp301 As wb_KomponParam301
         Get
             'wenn noch keine Allergen-Info berechnet wurde
-            If _ktTyp301.IsEmpty Then
+            If Not _ktTyp301.IsCalculated Then
 
                 'Rezept im Rezept
-                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
-                    RezeptImRezept.KtTyp301.AddNwt(_ktTyp301)
-                Else
+                'If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
+                '    RezeptImRezept.KtTyp301.AddNwt(_ktTyp301)
+                'Else
 
-                    'Nährwert-Info aus Datenbank lesen
-                    If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
+                'Nährwert-Info aus Datenbank lesen
+                If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
                         ReadktTyp301()
                         Debug.Print("Komponente " & Bezeichnung)
                     End If
 
-
-                    'alle Unter-Rezept-Schritte berechnen
-                    For Each x As wb_Rezeptschritt In ChildSteps
+                'alle Unter-Rezept-Schritte berechnen
+                For Each x As wb_Rezeptschritt In ChildSteps
                         x.ktTyp301.AddNwt(_ktTyp301)
                     Next
 
-                End If
+                'End If
             End If
             Return _ktTyp301
         End Get
@@ -626,7 +655,7 @@ Public Class wb_Rezeptschritt
                                         _ktTyp301.Wert(ParamNr) = Value.ToString
                                         Debug.Print("Allergen " & ParamNr & " " & Value.ToString)
                                     Else
-                                        _ktTyp301.Naehrwert(ParamNr) = (wb_Functions.StrToDouble(Value) * Sollwert) / 100
+                                        _ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value) * _Sollwert / _BruttoRezGewicht
                                     End If
                                 End If
                         End Select

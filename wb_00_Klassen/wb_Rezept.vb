@@ -22,6 +22,7 @@ Public Class wb_Rezept
     Private _RezeptSchritt As wb_Rezeptschritt
 
     Private _RezeptGewicht As Double
+    Private _BruttoRezeptGewicht As Double
     Private _RezeptPreis As Double
     Private _RezeptGesamtMehlmenge As Double
     Private _RezeptGesamtWasserMenge As Double
@@ -56,6 +57,21 @@ Public Class wb_Rezept
                 _RezeptGewicht = _RootRezeptSchritt.Gewicht
             End If
             Return _RezeptGewicht
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Das Brutto-Rezept-Gesamtgewicht steht als Gewichtswert im Root-Node
+    ''' Die Berechnung erfolgt über RezeptSchritt.BruttoGewicht(Get)
+    ''' </summary>
+    ''' <returns>Double - Rezept-Gesamtgewicht</returns>
+    Public ReadOnly Property BruttoRezeptGewicht As Double
+        Get
+            'wenn der Wert noch nicht berechnet wurde
+            If _BruttoRezeptGewicht = wb_Global.UNDEFINED Then
+                _BruttoRezeptGewicht = _RootRezeptSchritt.BruttoGewicht
+            End If
+            Return _BruttoRezeptGewicht
         End Get
     End Property
 
@@ -135,6 +151,7 @@ Public Class wb_Rezept
     Public WriteOnly Property Recalculate As Boolean
         Set(value As Boolean)
             _RezeptGewicht = wb_Global.UNDEFINED
+            _BruttoRezeptGewicht = wb_Global.UNDEFINED
             _RezeptPreis = wb_Global.UNDEFINED
             _RezeptGesamtMehlmenge = wb_Global.UNDEFINED
             _RezeptGesamtWasserMenge = wb_Global.UNDEFINED
@@ -184,6 +201,9 @@ Public Class wb_Rezept
         'Rezeptgesamtgewicht berechnen und an alle Rezeptschritte propagieren
         'wird benötigt zur Berechnung des prozentualen Anteils der Komponenten(Rezeptschritte) am Rezeptgewicht
         _RootRezeptSchritt.RezGewicht = RezeptGewicht
+        'Brutto-Rezeptgesamtgewicht berechnen und an alle Rezeptschritte propagieren
+        'wird benötigt zur Berechnung der Nährwerte
+        _RootRezeptSchritt.BruttoRezGewicht = BruttoRezeptGewicht
 
     End Sub
 

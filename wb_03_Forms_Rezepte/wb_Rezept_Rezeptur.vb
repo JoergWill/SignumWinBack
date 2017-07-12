@@ -1,7 +1,4 @@
-﻿Imports System.Windows.Forms
-Imports combit.ListLabel22.DataProviders
-
-Public Class wb_Rezept_Rezeptur
+﻿Public Class wb_Rezept_Rezeptur
 
     Dim Rezept As wb_Rezept
     'Dim LL_Rezeptur As New combit.ListLabel22.ListLabel()
@@ -27,6 +24,7 @@ Public Class wb_Rezept_Rezeptur
         'Rezept TA
         Label5.Text = CInt(Rezept.RezeptTA)
         'TEST
+        Dim x = Rezept.BruttoRezeptGewicht
         Label6.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Kilokalorien)
         Label7.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Zucker)
     End Sub

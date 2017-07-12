@@ -9,7 +9,8 @@
     Public Shared Sub LoadRzptNamen()
         'HashTable mit der Übersetzung der Rezept-Nummer(Idx) in die Rezept-Bezeichnung laden
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
-        winback.sqlSelect("SELECT * FROM Rezepte")
+        'TODO sql aus wb_global_sql holen
+        winback.sqlSelect("SELECT * FROM Rezepte WHERE RZ_Variante_Nr = 1")
         Rzpt.Clear()
         While winback.Read
             Rzpt.Add(winback.iField("RZ_Nr"), winback.sField("RZ_Bezeichnung"))

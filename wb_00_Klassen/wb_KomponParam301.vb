@@ -12,26 +12,26 @@ Public Class wb_KomponParam301
     'Array aller Nährwerte/Allergene
     Private NaehrwertInfo(maxTyp301) As Typ301
     Private _TimeStamp
-    Private _IsEmpty
+    Private _IsCalculated
 
     ''' <summary>
-    ''' Nach der Initialisierung ist das Array leer
+    ''' Nach der Initialisierung sind die Nährwerte nicht berechnet
     ''' </summary>
     Public Sub New()
-        IsEmpty = True
+        _IsCalculated = False
     End Sub
 
     ''' <summary>
-    ''' Gibt True zurück, wenn das Array leer ist (Lesen aus DB erforderlich)
-    ''' False, wenn Daten vorhanden sind.
+    ''' Gibt False zurück, wenn das Array leer bzw. noch nicht berechnet ist (Lesen aus DB erforderlich)
+    ''' True, wenn Daten vorhanden sind.
     ''' </summary>
-    ''' <returns>Boolean - True wenn Allergeninfo fehlt</returns>
-    Public Property IsEmpty As Object
+    ''' <returns>Boolean - Nährwerte sind ermittelt und berechnet</returns>
+    Public Property IsCalculated As Boolean
         Get
-            Return _IsEmpty
+            Return _IsCalculated
         End Get
-        Set(value As Object)
-            _IsEmpty = value
+        Set(value As Boolean)
+            _IsCalculated = value
         End Set
     End Property
 
@@ -63,7 +63,7 @@ Public Class wb_KomponParam301
         Set(value As AllergenInfo)
             If IsAllergen(index) Then
                 NaehrwertInfo(index)._Allergen = value
-                IsEmpty = False
+                _IsCalculated = True
             End If
         End Set
     End Property
@@ -79,7 +79,7 @@ Public Class wb_KomponParam301
         Set(value As Double)
             If Not IsAllergen(index) Then
                 NaehrwertInfo(index)._Naehrwert = value
-                IsEmpty = False
+                _IsCalculated = True
             End If
         End Set
     End Property
