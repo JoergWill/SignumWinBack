@@ -138,6 +138,7 @@ Public Class wb_Rezept
             _RezeptPreis = wb_Global.UNDEFINED
             _RezeptGesamtMehlmenge = wb_Global.UNDEFINED
             _RezeptGesamtWasserMenge = wb_Global.UNDEFINED
+            'TODO Recalculate an die Allergen/Nährwerte weitergeben
         End Set
     End Property
 

@@ -215,6 +215,32 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Ermittelt, ob Typ und Parameter-Nummer einen Gewichts-relevanten Sollwert enthalten.
+    '''     Automatike-Komponenten (Produktion und Sauerteig)
+    '''     Hand-Verwiegung 
+    '''     Wasser-Sollmenge (Produktion und Sauerteig)
+    '''     Anstellgut Sauerteig
+    ''' </summary>
+    ''' <param name="Type"></param>
+    ''' <param name="Param"></param>
+    ''' <returns>Boolean - True wenn der Typ einen Sollwert enthält, False wenn der Typ keinen Sollwert (Gewicht) enthält</returns>
+    Public Shared Function TypeIstSollwert(Type As wb_Global.KomponTypen, Param As Integer) As Boolean
+        If Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Or
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE And Param = 1 Or
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER And Param = 1 Then
+
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    ''' <summary>
     ''' Wandelt einen String in kt301Gruppen um. Beim Einlesen der Hash-Table aus der Tabelle KomponTypen
     ''' </summary>
     ''' <param name="s"></param>

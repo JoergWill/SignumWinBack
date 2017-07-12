@@ -1,6 +1,7 @@
 ﻿Imports System.Globalization
 Imports System.IO
 Imports System.Threading
+Imports WinBack
 Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
@@ -194,6 +195,41 @@ Imports WinBack.wb_Global
         Assert.AreEqual(0, StrToInt(""))
         Assert.AreEqual(100, StrToInt("100"))
         Assert.AreEqual(100, StrToInt("100,00"))
+    End Sub
+    <TestMethod()> Public Sub Test_TypeIstSollwert()
+        Assert.IsTrue(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE, 1))
+        Assert.IsTrue(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE, 1))
+        Assert.IsTrue(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE, 1))
+        Assert.IsTrue(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE, 1))
+
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE, 2))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE, 3))
+
+        Assert.IsTrue(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE, 1))
+        Assert.IsTrue(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL, 1))
+
+        Assert.IsTrue(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER, 2))
+
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_ARTIKEL, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_ARTIKEL, 2))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_KESSEL, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_KNETER, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_METER, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_STUECK, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE, 1))
+
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_ANALOG, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_DIGITAL, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_REPEAT, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_REZEPT_START, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_RUEHREN, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_STATUS, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_TEMP, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_TEXT, 1))
+        Assert.IsFalse(TypeIstSollwert(wb_Global.KomponTypen.KO_TYPE_SAUER_WARTEN, 1))
+
     End Sub
 
 End Class

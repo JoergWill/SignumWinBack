@@ -1,5 +1,4 @@
-﻿Imports WinBack
-Imports WinBack.wb_Functions
+﻿Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
 Public Class wb_KomponParam301
@@ -13,7 +12,28 @@ Public Class wb_KomponParam301
     'Array aller Nährwerte/Allergene
     Private NaehrwertInfo(maxTyp301) As Typ301
     Private _TimeStamp
+    Private _IsEmpty
 
+    ''' <summary>
+    ''' Nach der Initialisierung ist das Array leer
+    ''' </summary>
+    Public Sub New()
+        IsEmpty = True
+    End Sub
+
+    ''' <summary>
+    ''' Gibt True zurück, wenn das Array leer ist (Lesen aus DB erforderlich)
+    ''' False, wenn Daten vorhanden sind.
+    ''' </summary>
+    ''' <returns>Boolean - True wenn Allergeninfo fehlt</returns>
+    Public Property IsEmpty As Object
+        Get
+            Return _IsEmpty
+        End Get
+        Set(value As Object)
+            _IsEmpty = value
+        End Set
+    End Property
 
     Public Property TimeStamp As DateTime
         Get
@@ -43,6 +63,7 @@ Public Class wb_KomponParam301
         Set(value As AllergenInfo)
             If IsAllergen(index) Then
                 NaehrwertInfo(index)._Allergen = value
+                IsEmpty = False
             End If
         End Set
     End Property
@@ -58,6 +79,7 @@ Public Class wb_KomponParam301
         Set(value As Double)
             If Not IsAllergen(index) Then
                 NaehrwertInfo(index)._Naehrwert = value
+                IsEmpty = False
             End If
         End Set
     End Property

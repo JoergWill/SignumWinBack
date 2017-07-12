@@ -560,26 +560,31 @@ Public Class wb_Rezeptschritt
     ''' Wenn die Komponente auf ein Rezept zeigt (Rezept-im_Rezept), wird zunächst das Unter-Rezept berechnet und dann alle Werte addiert.
     ''' Alle untergeordneten Rezeptschritte im Baum werden berechnet und mit der aktuellen Zeile addiert.
     ''' </summary>
-    ''' 
-    ''' 
-    ''' 'TODO Besser sollte hier eine Routine CALCNährwerte aufgerufen werden ???
-    '''       oder prüfen, ob schon berechnet wurde
-    '''       vor Neuberechnung Array löschen, sonst werden die Werte doppelt berechnet.
     ''' <returns></returns>
     Public ReadOnly Property ktTyp301 As wb_KomponParam301
         Get
-            'Nährwert-Info aus Datenbank lesen
-            If (_Type = KO_TYPE_AUTOKOMPONENTE) Or (_Type = KO_TYPE_HANDKOMPONENTE) Or (_Type = KO_TYPE_EISKOMPONENTE) Or
-               (_Type = KO_TYPE_SAUER_MEHL) Or (_Type = KO_TYPE_SAUER_WASSER) Or (_Type = KO_TYPE_SAUER_ZUGABE) Or (_Type = KO_TYPE_SAUER_AUTO_ZUGABE) Then
-                ReadktTyp301()
-                Debug.Print("Komponente " & Bezeichnung)
+            'wenn noch keine Allergen-Info berechnet wurde
+            If _ktTyp301.IsEmpty Then
 
+                'Rezept im Rezept
+                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
+                    RezeptImRezept.KtTyp301.AddNwt(_ktTyp301)
+                Else
+
+                    'Nährwert-Info aus Datenbank lesen
+                    If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
+                        ReadktTyp301()
+                        Debug.Print("Komponente " & Bezeichnung)
+                    End If
+
+
+                    'alle Unter-Rezept-Schritte berechnen
+                    For Each x As wb_Rezeptschritt In ChildSteps
+                        x.ktTyp301.AddNwt(_ktTyp301)
+                    Next
+
+                End If
             End If
-
-            'alle Unter-Rezept-Schritte berechnen
-            For Each x As wb_Rezeptschritt In ChildSteps
-                x.ktTyp301.AddNwt(_ktTyp301)
-            Next
             Return _ktTyp301
         End Get
     End Property

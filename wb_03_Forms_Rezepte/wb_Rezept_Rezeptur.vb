@@ -26,13 +26,13 @@ Public Class wb_Rezept_Rezeptur
         Label4.Text = Rezept.RezeptGesamtMehlmenge
         'Rezept TA
         Label5.Text = CInt(Rezept.RezeptTA)
+        'TEST
+        Label6.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Kilokalorien)
+        Label7.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Zucker)
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
         Debug.Print("LL Drucken")
-        'TEST
-        Label6.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Kilokalorien)
-        Label7.Text = Rezept.KtTyp301.Wert(wb_Global.T301_KiloJoule)
         'LL_Rezeptur.AutoProjectFile = "Rezeptur.lst"
         'LL_Rezeptur.AutoShowSelectFile = False
         'LL_Rezeptur.Print()
