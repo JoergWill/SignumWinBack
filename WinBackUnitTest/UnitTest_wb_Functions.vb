@@ -108,6 +108,13 @@ Imports WinBack.wb_Global
         Assert.AreEqual(StringtoAllergen("T"), AllergenInfo.T)
     End Sub
 
+    <TestMethod()> Public Sub Test_StringTokt301Gruppe()
+        Assert.AreEqual(wb_Global.ktTyp301Gruppen.Big4, StringTokt301Gruppe("Big 4"))
+        Assert.AreEqual(wb_Global.ktTyp301Gruppen.Big4, StringTokt301Gruppe("BIG 4"))
+        Assert.AreEqual(wb_Global.ktTyp301Gruppen.Big4, StringTokt301Gruppe("big 4"))
+    End Sub
+
+
     <TestMethod()> Public Sub Test_FormatStr()
         Assert.AreEqual(" 22,000", FormatStr("22", 3, 3))
         Assert.AreEqual("-22,000", FormatStr("-22", 3, 3))

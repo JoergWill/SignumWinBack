@@ -29,6 +29,15 @@
         Public Used As Boolean
     End Structure
 
+    Public Structure Nwt
+        Public Visible As Boolean
+        Public Nr As Integer
+        Public Text As String
+        Public Wert As String
+        Public Einheit As String
+        Public Header As String
+    End Structure
+
     Enum ProgVariante
         OrgaBack                    'Programm läuft als Addin unter OrgaBack
         WinBack                     'Programm läuft als Standalone

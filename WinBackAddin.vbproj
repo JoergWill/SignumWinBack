@@ -173,6 +173,12 @@
     <Compile Include="wb_00_Klassen\wb_KomponParam301.vb" />
     <Compile Include="wb_00_Klassen\wb_Komponenten.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam301_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam301_GridView.Designer.vb">
+      <DependentUpon>wb_KomponParam301_GridView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\wb_KomponParam301_GridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\wb_nwtCloud.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtDatenLink.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtUpdate.vb" />

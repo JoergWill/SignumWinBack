@@ -43,7 +43,7 @@ Public Class wb_KomponParam301_Global
     ''' Aus der Datenbank KomponTypen (KT_Typ_Nr = 301, KT_ParamNr = p)
     '''  - Bezeichnung      Allergen/Nährwert-Bezeichnung
     '''  - KurzBezeichnung  Bei Nährwerten die Zweitbezeichnung, bei Allergenen der Genitiv
-    '''  - Gruppe           Allergen(Nährwert-Gruppe
+    '''  - Gruppe           Allergen(Nährwert-Gruppe)
     '''  - Einheit          Einheit
     '''  - Feld             Eintrag in Seriendruck-Dokument(Word)
     '''  - Used             Verwendet/Nicht verwendet (Kunden-Spezifisch)

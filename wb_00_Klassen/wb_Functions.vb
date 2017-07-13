@@ -246,32 +246,63 @@ Public Class wb_Functions
     ''' <param name="s"></param>
     ''' <returns></returns>
     Public Shared Function StringTokt301Gruppe(s As String) As wb_Global.ktTyp301Gruppen
-        Select Case s
-            Case "Big4"
+        Select Case s.ToLower
+            Case "big 4"
                 Return wb_Global.ktTyp301Gruppen.Big4
-            Case "Big8"
+            Case "big 8"
                 Return wb_Global.ktTyp301Gruppen.Big8
-            Case "Vitamine"
+            Case "vitamine"
                 Return wb_Global.ktTyp301Gruppen.Vitamine
-            Case "Kohlenhydratzusammen"
+            Case "kohlenhydratzusammen"
                 Return wb_Global.ktTyp301Gruppen.Kohlenhydrate
-            Case "Mineralstoffe"
+            Case "mineralstoffe"
                 Return wb_Global.ktTyp301Gruppen.Mineralstoffe
-            Case "Spurenelemente"
+            Case "spurenelemente"
                 Return wb_Global.ktTyp301Gruppen.SpurenElemente
-            Case "Allergene"
+            Case "allergene"
                 Return wb_Global.ktTyp301Gruppen.Allergene
-            Case "Gluten"
+            Case "gluten"
                 Return wb_Global.ktTyp301Gruppen.Gluten
-            Case "Schalenfrüchte"
+            Case "schalenfrüchte"
                 Return wb_Global.ktTyp301Gruppen.Schalenfrüchte
-            Case "Gesamtkennzahlen"
+            Case "gesamtkennzahlen"
                 Return wb_Global.ktTyp301Gruppen.Gesamtkennzahlen
             Case Else
                 Return wb_Global.ktTyp301Gruppen.xxx
         End Select
     End Function
 
+    ''' <summary>
+    ''' Wandelt eine kt301Gruppe in einen String um. (AnzeigeText)
+    ''' </summary>
+    ''' <param name="k"></param>
+    ''' <returns></returns>
+    Public Shared Function kt301GruppeToString(k As wb_Global.ktTyp301Gruppen) As String
+        Select Case k
+            Case wb_Global.ktTyp301Gruppen.Big4
+                Return "Big 4"
+            Case wb_Global.ktTyp301Gruppen.Big8
+                Return "Big 8"
+            Case wb_Global.ktTyp301Gruppen.Vitamine
+                Return "Vitamine"
+            Case wb_Global.ktTyp301Gruppen.Kohlenhydrate
+                Return "Kohlenhydrate"
+            Case wb_Global.ktTyp301Gruppen.Mineralstoffe
+                Return "Mineralstoffe"
+            Case wb_Global.ktTyp301Gruppen.SpurenElemente
+                Return "Spurenelemente"
+            Case wb_Global.ktTyp301Gruppen.Allergene
+                Return "Allergene"
+            Case wb_Global.ktTyp301Gruppen.Gluten
+                Return "Gluten"
+            Case wb_Global.ktTyp301Gruppen.Schalenfrüchte
+                Return "Schalenfrüchte"
+            Case wb_Global.ktTyp301Gruppen.Gesamtkennzahlen
+                Return "Gesamtkennzahlen"
+            Case Else
+                Return "Undefiniert"
+        End Select
+    End Function
     ''' <summary>
     ''' Wandelt die DatenLink-Nährwert und Allergen-Bezeichnungen in 
     ''' WinBack-Index-Nummern um

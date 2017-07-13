@@ -4,31 +4,24 @@ Imports WinBack.wb_Sql
 Imports System.Data.SqlClient
 Imports MySql.Data.MySqlClient
 
-'---------------------------------------------------------
-'19.05.2016/ V0.9/JW            :Neuanlage
-'Bearbeitet von                 :Will
-'
-'Änderungen:
-'---------------------------------------------------------
-'Beschreibung:
-'Ableitung der Klasse DataGridView.
-'Enthält die Verbindung von DataGridView zu
-'wahlweise MySQl(winback) oder MSSQL(OrgasoftMain)
-'
-'LoadData(sql) lädt die entsprechenden Daten ins Grid
-'Über Filter kann eine zusätzliche Filter-Eigenschaft
-'angeben werden.
-'Nach tDataChangedTime wird der Event HasChanged ausgelöst,
-'damit kann das aufrufende Programm die entsprechenden
-'Felder abrufen und anzeigen. (Funktion Field)
-'
-'Änderungen über Field werden nach Aufruf der Update-Funtkion
-'in die Datenbank geschrieben.
-'Dazu muss der MySQL-Data-Client der MySQL-Version angepasst
-'sein, sonst funktioniert die Update-Anweisung (automatisch
-'generiert) nicht.
-'---------------------------------------------------------
-
+''' <summary>
+'''Ableitung der Klasse DataGridView.
+'''Enthält die Verbindung von DataGridView zu
+'''wahlweise MySQl(winback) oder MSSQL(OrgasoftMain)
+'''
+'''LoadData(sql) lädt die entsprechenden Daten ins Grid
+'''Über Filter kann eine zusätzliche Filter-Eigenschaft
+'''angeben werden.
+'''Nach tDataChangedTime wird der Event HasChanged ausgelöst,
+'''damit kann das aufrufende Programm die entsprechenden
+'''Felder abrufen und anzeigen. (Funktion Field)
+'''
+'''Änderungen über Field werden nach Aufruf der Update-Funtkion
+'''in die Datenbank geschrieben.
+'''Dazu muss der MySQL-Data-Client der MySQL-Version angepasst
+'''sein, sonst funktioniert die Update-Anweisung (automatisch
+'''generiert) nicht. 
+''' </summary>
 Public Class wb_DataGridView
     Inherits Windows.Forms.DataGridView
 
