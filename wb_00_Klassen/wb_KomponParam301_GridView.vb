@@ -8,7 +8,7 @@ Public Class wb_KomponParam301_GridView
     Private _HeadersVisible As Boolean      ' Zeilen-/Spaltenköpfe sichtbar?
     Private _AllowResizing As Boolean       ' Zeilen-/Spaltenbreite variabel?
     Private _ShowTooltips As Boolean        ' Anzeige von Zell-Tooltips?
-    Private _Font As Drawing.Font = New Drawing.Font("Arial", 14, FontStyle.Regular, GraphicsUnit.Pixel)
+    Private _Font As Drawing.Font = New Drawing.Font("Arial", 12, FontStyle.Regular, GraphicsUnit.Pixel)
 
     Public Sub New(ByVal arr() As wb_Global.Nwt, Optional HeadersVisible As Boolean = True, Optional AllowResizing As Boolean = False, Optional ShowTooltips As Boolean = True)
 
@@ -41,13 +41,11 @@ Public Class wb_KomponParam301_GridView
         Dim c As Integer
         Dim col As DataGridViewColumn
 
-        ' Dim cw(Me.ColumnCount - 1) As Integer
-
         For c = 0 To MyBase.Columns.Count - 1
             col = MyBase.Columns(c)
             With col
-                ' Fetter Spalten-Trennstrich
-                .DividerWidth = 1
+                ' Spalten-Trennstrich
+                .DividerWidth = 0
                 ' Sortieren der Spalte abschalten
                 .SortMode = DataGridViewColumnSortMode.NotSortable
 
@@ -104,22 +102,27 @@ Public Class wb_KomponParam301_GridView
                     ColCount += 1
                     MaxRowCount = Math.Max(MaxRowCount, RowCount)
                     RowCount = 0
-                    Header = arr(i).Header
+
                     'Gruppen-Bezeichnung (Big4/Big8/Allergene...)
+                    Header = arr(i).Header
                     MyBase.Columns.Add(CStr(ColCount) & "_Text", Header)
-                    'Überschrift pro 100g nicht bei Allergenen
+
+                    'Nährwerte/Allergene
                     If wb_KomponParam301_Global.IsAllergen(i) Then
+                        'Allergene ohne Überschrift
                         MyBase.Columns.Add(CStr(ColCount) & "_Wert", "")
                     Else
+                        'Überschrift pro 100g
                         MyBase.Columns.Add(CStr(ColCount) & "_Wert", "pro 100g")
                     End If
+
                     'Spalte Einheiten
                     MyBase.Columns.Add(CStr(ColCount) & "_Einh", "")
                 End If
-                    RowCount += 1
 
                 'Index-Array für Daten erstellen
                 Grid(ColCount, RowCount) = i
+                RowCount += 1
             End If
         Next
 
@@ -132,15 +135,18 @@ Public Class wb_KomponParam301_GridView
                 ' Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
                 .MinimumHeight = 20
                 ' Strich zwischen den Zeilen  
-                .DividerHeight = 1
+                .DividerHeight = 0
 
                 ' Zeile r mit Werten füllen
                 For c = 1 To ColCount
 
                     i = Grid(c, r)
                     If i > 0 Then
+
                         'Bezeichnung
                         .Cells(c * 3 - 3).Value = arr(i).Text
+                        .Cells(c * 3 - 3).Style.Alignment = DataGridViewContentAlignment.MiddleLeft
+
                         'Allergene/Nährwerte
                         If wb_KomponParam301_Global.IsAllergen(i) Then
                             'Allergen-Kennzeichnung ohne Einheit
@@ -151,39 +157,13 @@ Public Class wb_KomponParam301_GridView
                             .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 3)
                             .Cells(c * 3 - 1).Value = arr(i).Einheit
                         End If
+
                         'Tooltip
                         .Cells(c * 3 - 2).ToolTipText = "Keine vollständige Berechnung möglich"
                     End If
                 Next c
             End With
         Next r
-
-
-        'wert = arr(r).Wert
-        '            tt = ""          ' Tooltip Initialisieren
-
-        '            With .Cells(c)
-        '                ' Array-Element: 
-        '                ' Inhalt der Zelle aufbereiten
-        '                .Value = wert
-
-        '                If _HeadersVisible = False Then
-        '                    If tt <> "" Then
-        '                        tt += vbCrLf
-        '                    End If
-        '                    ' Array-Indizierung in Tooltip eintragen
-        '                    tt = "Arr(" + CStr(r) + "," + CStr(c) + ")"
-        '                End If
-        '                If _ShowTooltips Then
-        '                    ' Zell-Tooltip erstellen
-        '                    .ToolTipText = tt
-        '                End If
-        '            End With
-        '        Next c
-        '        ' Array-Index in den Zeilenkopf eintragen
-        '        .HeaderCell.Value = "Row_" + CStr(r)
-        '    End With
-        'Next r
     End Sub
 
     ''' <summary>
@@ -197,12 +177,6 @@ Public Class wb_KomponParam301_GridView
         Dim gray230 As System.Drawing.Color = Color.FromArgb(255, 230, 230, 230)
 
         With Me
-            ' Grid-Einstellungen
-            If _HeadersVisible Then
-                .ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
-            Else
-                .ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText
-            End If
 
             ' Einfügen, Löschen, Umordnen verbieten
             .AllowDrop = False
@@ -216,10 +190,10 @@ Public Class wb_KomponParam301_GridView
             ' Keine Auswahl erlauben, weil Daten nur angezeigt werden
             .MultiSelect = False
 
-            .BorderStyle = Windows.Forms.BorderStyle.FixedSingle
+            .BorderStyle = Windows.Forms.BorderStyle.None
 
             ' Farbe des nicht mit Zellen belegten GridView-Hintergrundes
-            .BackgroundColor = Color.DarkGray
+            .BackgroundColor = Color.LightGray
 
             ' Es werden keine Scrollbars angezeigt
             .ScrollBars = Windows.Forms.ScrollBars.None
@@ -233,16 +207,11 @@ Public Class wb_KomponParam301_GridView
                 .Font = _Font
                 .ForeColor = Color.Black
                 .BackColor = gray230
-                .Alignment = DataGridViewContentAlignment.TopLeft
+                .Alignment = DataGridViewContentAlignment.MiddleCenter
             End With
 
             ' RowHeader-Einstellungen
             .RowHeadersVisible = False
-            '.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders
-            '.RowHeadersBorderStyle = .ColumnHeadersBorderStyle
-
-            ' von oben übernehmen
-            '.RowHeadersDefaultCellStyle = .ColumnHeadersDefaultCellStyle
 
             ' Row-Einstellungen
             With .RowsDefaultCellStyle
@@ -258,7 +227,8 @@ Public Class wb_KomponParam301_GridView
 
             With .AlternatingRowsDefaultCellStyle
                 ' für bessere Lesbarkeit der DatenZeilen
-                .BackColor = gray245
+                '.BackColor = gray245
+                .BackColor = Color.LightBlue
             End With
 
             ' Weitere allgemeine Eigenschaften
@@ -274,12 +244,13 @@ Public Class wb_KomponParam301_GridView
         End With
     End Sub
 
-    Public Shadows Sub Location(ByVal Parent As Windows.Forms.TabPage, ByVal Top As Integer, ByVal Left As Integer, ByVal Width As Integer, ByVal Height As Integer)
-
+    Public Shadows Sub Location(ByVal Parent As Windows.Forms.Panel, ByVal Top As Integer, ByVal Left As Integer, ByVal Width As Integer, ByVal Height As Integer)
         MyBase.Parent = Parent
         MyBase.Width = Width
         MyBase.Height = Height
         MyBase.Top = Top
         MyBase.Left = Left
+        MyBase.AutoSize = True
+        MyBase.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
     End Sub
 End Class

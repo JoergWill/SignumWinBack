@@ -597,24 +597,24 @@ Public Class wb_Rezeptschritt
             If Not _ktTyp301.IsCalculated Then
 
                 'Rezept im Rezept
-                'If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
-                '    RezeptImRezept.KtTyp301.AddNwt(_ktTyp301)
-                'Else
+                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
+                    RezeptImRezept.KtTyp301.AddNwt(_ktTyp301)
+                Else
 
-                'Nährwert-Info aus Datenbank lesen
-                If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
+                    'Nährwert-Info aus Datenbank lesen
+                    If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
                         ReadktTyp301()
                         Debug.Print("Komponente " & Bezeichnung)
                     End If
 
-                'alle Unter-Rezept-Schritte berechnen
-                For Each x As wb_Rezeptschritt In ChildSteps
+                    'alle Unter-Rezept-Schritte berechnen
+                    For Each x As wb_Rezeptschritt In ChildSteps
                         x.ktTyp301.AddNwt(_ktTyp301)
                     Next
 
-                'End If
+                End If
             End If
-            Return _ktTyp301
+                Return _ktTyp301
         End Get
     End Property
 
