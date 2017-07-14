@@ -29,6 +29,14 @@ Partial Class wb_Rezept_Rezeptur
         Dim ObjectCellBinding4 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding5 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding6 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Me.ColNr = New Infralution.Controls.VirtualTree.Column()
+        Me.ColBezeichung = New Infralution.Controls.VirtualTree.Column()
+        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
+        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
+        Me.CellEditor4 = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
+        Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.BtnDrucken = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -40,25 +48,13 @@ Partial Class wb_Rezept_Rezeptur
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.Label13 = New System.Windows.Forms.Label()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tb_Rezeptur = New System.Windows.Forms.TabPage()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
-        Me.ColNr = New Infralution.Controls.VirtualTree.Column()
-        Me.ColBezeichung = New Infralution.Controls.VirtualTree.Column()
-        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
-        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
-        Me.CellEditor4 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
-        Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
         Me.CellEditor1 = New Infralution.Controls.VirtualTree.CellEditor()
@@ -73,6 +69,85 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Rezeptur.SuspendLayout()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'ColNr
+        '
+        Me.ColNr.Caption = "Nummer"
+        Me.ColNr.MinWidth = 150
+        Me.ColNr.Movable = False
+        Me.ColNr.Name = "ColNr"
+        Me.ColNr.Sortable = False
+        Me.ColNr.Width = 150
+        '
+        'ColBezeichung
+        '
+        Me.ColBezeichung.AutoFitWeight = 200.0!
+        Me.ColBezeichung.Caption = "Bezeichnung"
+        Me.ColBezeichung.MinWidth = 300
+        Me.ColBezeichung.Movable = False
+        Me.ColBezeichung.Name = "ColBezeichung"
+        Me.ColBezeichung.Sortable = False
+        Me.ColBezeichung.Width = 483
+        '
+        'ColPreis
+        '
+        Me.ColPreis.Caption = "Preis"
+        Me.ColPreis.MinWidth = 100
+        Me.ColPreis.Name = "ColPreis"
+        Me.ColPreis.Resizable = False
+        Me.ColPreis.Sortable = False
+        '
+        'ColSollwert
+        '
+        Me.ColSollwert.Caption = Nothing
+        Me.ColSollwert.CellEditor = Me.CellEditor4
+        Me.ColSollwert.CellStyle.VertAlignment = System.Drawing.StringAlignment.Center
+        Me.ColSollwert.MinWidth = 100
+        Me.ColSollwert.Movable = False
+        Me.ColSollwert.Name = "ColSollwert"
+        Me.ColSollwert.Resizable = False
+        Me.ColSollwert.Sortable = False
+        Me.ColSollwert.Width = 126
+        '
+        'CellEditor4
+        '
+        Me.CellEditor4.Control = Me.TextBox1
+        Me.CellEditor4.UseCellPadding = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.AcceptsReturn = True
+        Me.TextBox1.AcceptsTab = True
+        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TextBox1.HideSelection = False
+        Me.TextBox1.Location = New System.Drawing.Point(-302, -253)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(100, 13)
+        Me.TextBox1.TabIndex = 5
+        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.TextBox1.Visible = False
+        Me.TextBox1.WordWrap = False
+        '
+        'ColEinheit
+        '
+        Me.ColEinheit.Caption = Nothing
+        Me.ColEinheit.MinWidth = 40
+        Me.ColEinheit.Name = "ColEinheit"
+        Me.ColEinheit.Resizable = False
+        Me.ColEinheit.Selectable = False
+        Me.ColEinheit.Sortable = False
+        Me.ColEinheit.Width = 40
+        '
+        'ColProzent
+        '
+        Me.ColProzent.Caption = Nothing
+        Me.ColProzent.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
+        Me.ColProzent.MinWidth = 50
+        Me.ColProzent.Name = "ColProzent"
+        Me.ColProzent.Resizable = False
+        Me.ColProzent.Sortable = False
+        Me.ColProzent.Width = 50
         '
         'BtnDrucken
         '
@@ -180,24 +255,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.Label5.TabIndex = 12
         Me.Label5.Text = "Label5"
         '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(172, 137)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(39, 13)
-        Me.Label6.TabIndex = 13
-        Me.Label6.Text = "Label6"
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(172, 150)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(39, 13)
-        Me.Label7.TabIndex = 14
-        Me.Label7.Text = "Label7"
-        '
         'Label8
         '
         Me.Label8.AutoSize = True
@@ -233,24 +290,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.Label11.Size = New System.Drawing.Size(21, 13)
         Me.Label11.TabIndex = 18
         Me.Label11.Text = "TA"
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(90, 137)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(27, 13)
-        Me.Label12.TabIndex = 19
-        Me.Label12.Text = "kcal"
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(90, 150)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(41, 13)
-        Me.Label13.TabIndex = 20
-        Me.Label13.Text = "Zucker"
         '
         'Wb_TabControl
         '
@@ -316,85 +355,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.Size = New System.Drawing.Size(952, 374)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 6
-        '
-        'ColNr
-        '
-        Me.ColNr.Caption = "Nummer"
-        Me.ColNr.MinWidth = 150
-        Me.ColNr.Movable = False
-        Me.ColNr.Name = "ColNr"
-        Me.ColNr.Sortable = False
-        Me.ColNr.Width = 150
-        '
-        'ColBezeichung
-        '
-        Me.ColBezeichung.AutoFitWeight = 200.0!
-        Me.ColBezeichung.Caption = "Bezeichnung"
-        Me.ColBezeichung.MinWidth = 300
-        Me.ColBezeichung.Movable = False
-        Me.ColBezeichung.Name = "ColBezeichung"
-        Me.ColBezeichung.Sortable = False
-        Me.ColBezeichung.Width = 483
-        '
-        'ColPreis
-        '
-        Me.ColPreis.Caption = "Preis"
-        Me.ColPreis.MinWidth = 100
-        Me.ColPreis.Name = "ColPreis"
-        Me.ColPreis.Resizable = False
-        Me.ColPreis.Sortable = False
-        '
-        'ColSollwert
-        '
-        Me.ColSollwert.Caption = Nothing
-        Me.ColSollwert.CellEditor = Me.CellEditor4
-        Me.ColSollwert.CellStyle.VertAlignment = System.Drawing.StringAlignment.Center
-        Me.ColSollwert.MinWidth = 100
-        Me.ColSollwert.Movable = False
-        Me.ColSollwert.Name = "ColSollwert"
-        Me.ColSollwert.Resizable = False
-        Me.ColSollwert.Sortable = False
-        Me.ColSollwert.Width = 126
-        '
-        'CellEditor4
-        '
-        Me.CellEditor4.Control = Me.TextBox1
-        Me.CellEditor4.UseCellPadding = True
-        '
-        'TextBox1
-        '
-        Me.TextBox1.AcceptsReturn = True
-        Me.TextBox1.AcceptsTab = True
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TextBox1.HideSelection = False
-        Me.TextBox1.Location = New System.Drawing.Point(-302, -253)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 13)
-        Me.TextBox1.TabIndex = 5
-        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.TextBox1.Visible = False
-        Me.TextBox1.WordWrap = False
-        '
-        'ColEinheit
-        '
-        Me.ColEinheit.Caption = Nothing
-        Me.ColEinheit.MinWidth = 40
-        Me.ColEinheit.Name = "ColEinheit"
-        Me.ColEinheit.Resizable = False
-        Me.ColEinheit.Selectable = False
-        Me.ColEinheit.Sortable = False
-        Me.ColEinheit.Width = 40
-        '
-        'ColProzent
-        '
-        Me.ColProzent.Caption = Nothing
-        Me.ColProzent.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
-        Me.ColProzent.MinWidth = 50
-        Me.ColProzent.Name = "ColProzent"
-        Me.ColProzent.Resizable = False
-        Me.ColProzent.Sortable = False
-        Me.ColProzent.Width = 50
         '
         'CellEditor2
         '
@@ -521,14 +481,10 @@ Partial Class wb_Rezept_Rezeptur
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(976, 667)
         Me.Controls.Add(Me.Wb_TabControl)
-        Me.Controls.Add(Me.Label13)
-        Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.Label8)
-        Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
@@ -561,14 +517,10 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents Label3 As Windows.Forms.Label
     Friend WithEvents Label4 As Windows.Forms.Label
     Friend WithEvents Label5 As Windows.Forms.Label
-    Friend WithEvents Label6 As Windows.Forms.Label
-    Friend WithEvents Label7 As Windows.Forms.Label
     Friend WithEvents Label8 As Windows.Forms.Label
     Friend WithEvents Label9 As Windows.Forms.Label
     Friend WithEvents Label10 As Windows.Forms.Label
     Friend WithEvents Label11 As Windows.Forms.Label
-    Friend WithEvents Label12 As Windows.Forms.Label
-    Friend WithEvents Label13 As Windows.Forms.Label
     Friend WithEvents Wb_TabControl As wb_TabControl
     Friend WithEvents tb_Rezeptur As Windows.Forms.TabPage
     Friend WithEvents tb_Naehrwerte As Windows.Forms.TabPage

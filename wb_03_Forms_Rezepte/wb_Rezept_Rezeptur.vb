@@ -29,10 +29,10 @@
         Label4.Text = Rezept.RezeptGesamtMehlmenge
         'Rezept TA
         Label5.Text = CInt(Rezept.RezeptTA)
-        'TEST
-        Dim x = Rezept.BruttoRezeptGewicht
-        Label6.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Kilokalorien)
-        Label7.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Zucker)
+        ''TEST
+        'Dim x = Rezept.BruttoRezeptGewicht
+        'Label6.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Kilokalorien)
+        'Label7.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Zucker)
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
@@ -64,28 +64,33 @@
     Private Sub BtnNwt_Click(sender As Object, e As EventArgs) Handles BtnNwt.Click
         If Wb_TabControl.SelectedIndex = 0 Then
             BtnNwt.Text = "Rezeptur"
-            'Array aufbauen über alle Nähwerte - Grid aus KomponParam301_global, Werte aus Rezept.ktTyp301.Wert(_RootRezeptschritt)
-            For i = 1 To wb_Global.maxTyp301
-                NwtTabelle(i).Visible = wb_KomponParam301_Global.kt301Param(i).Used
-                NwtTabelle(i).Nr = i
-                NwtTabelle(i).Text = wb_KomponParam301_Global.kt301Param(i).Bezeichnung
-                NwtTabelle(i).Wert = Rezept.KtTyp301.Wert(i)
-                NwtTabelle(i).Einheit = wb_KomponParam301_Global.kt301Param(i).Einheit
-                NwtTabelle(i).Header = wb_KomponParam301_Global.kt301Param(i).Gruppe
-
-                If NwtTabelle(i).Visible Then
-                    Debug.Print(wb_Functions.kt301GruppeToString(NwtTabelle(i).Header) & " " & NwtTabelle(i).Text & " " & NwtTabelle(i).Wert & " " & NwtTabelle(i).Einheit)
-                End If
-            Next
-
-            'Daten im Grid anzeigen
-            Dim nwtGrid As New wb_KomponParam301_GridView(NwtTabelle)
-            nwtGrid.Location(tb_Naehrwerte, 0, 0, tb_Naehrwerte.Width, tb_Naehrwerte.Height)
             Wb_TabControl.SelectedTab = tb_Naehrwerte
+            'Nährwerte-Grid aufbauen und anzeigen
+            NwtGrid()
         Else
-            Wb_TabControl.SelectedTab = tb_Rezeptur
             BtnNwt.Text = "Nährwerte"
+            Wb_TabControl.SelectedTab = tb_Rezeptur
         End If
 
+    End Sub
+
+    Private Sub NwtGrid()
+        'Array aufbauen über alle Nähwerte - Grid aus KomponParam301_global, Werte aus Rezept.ktTyp301.Wert(_RootRezeptschritt)
+        For i = 1 To wb_Global.maxTyp301
+            NwtTabelle(i).Visible = wb_KomponParam301_Global.kt301Param(i).Used
+            NwtTabelle(i).Nr = i
+            NwtTabelle(i).Text = wb_KomponParam301_Global.kt301Param(i).Bezeichnung
+            NwtTabelle(i).Wert = Rezept.KtTyp301.Wert(i)
+            NwtTabelle(i).Einheit = wb_KomponParam301_Global.kt301Param(i).Einheit
+            NwtTabelle(i).Header = wb_Functions.kt301GruppeToString(wb_KomponParam301_Global.kt301Param(i).Gruppe)
+
+            If NwtTabelle(i).Visible Then
+                Debug.Print(NwtTabelle(i).Header & " " & NwtTabelle(i).Text & " " & NwtTabelle(i).Wert & " " & NwtTabelle(i).Einheit)
+            End If
+        Next
+
+        'Daten im Grid anzeigen
+        Dim nwtGrid As New wb_KomponParam301_GridView(NwtTabelle)
+        nwtGrid.Location(tb_Naehrwerte, 0, 0, tb_Naehrwerte.Width, tb_Naehrwerte.Height)
     End Sub
 End Class

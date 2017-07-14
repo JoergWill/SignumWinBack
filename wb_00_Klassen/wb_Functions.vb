@@ -109,7 +109,7 @@ Public Class wb_Functions
                 Return "K"
             Case wb_Global.AllergenInfo.T
                 Return "T"
-            Case wb_Global.AllergenInfo.N
+            Case wb_Global.AllergenInfo.N, 0
                 Return "N"
             Case Else
                 Return "ERR"

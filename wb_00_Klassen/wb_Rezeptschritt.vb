@@ -651,9 +651,9 @@ Public Class wb_Rezeptschritt
                            'Parameter-Wert
                             Case "RP_Wert"
                                 If ParamTyp = 301 Then
-                                    If _ktTyp301.IsAllergen(ParamNr) Then
-                                        _ktTyp301.Wert(ParamNr) = Value.ToString
-                                        Debug.Print("Allergen " & ParamNr & " " & Value.ToString)
+                                    If wb_KomponParam301_Global.IsAllergen(ParamNr) Then
+                                        _ktTyp301.Allergen(ParamNr) = wb_Functions.StringtoAllergen(Value)
+                                        Debug.Print("Allergen " & ParamNr & " " & Value & "/" & _ktTyp301.Wert(ParamNr))
                                     Else
                                         _ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value) * _Sollwert / _BruttoRezGewicht
                                     End If

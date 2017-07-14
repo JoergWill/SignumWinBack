@@ -53,4 +53,14 @@ Public Class wb_KomponParam301_Global
     Public Shared Function kt301Param(p As Integer) As wb_Global.ktTyp301Param
         Return ktTyp301Params(p)
     End Function
+
+    Public Shared Function IsAllergen(index As Integer) As Boolean
+        If index >= minTyp301Allergen And index <= maxTyp301Allergen Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+
 End Class

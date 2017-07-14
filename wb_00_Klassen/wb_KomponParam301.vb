@@ -1,5 +1,6 @@
 ﻿Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
+Imports WinBack.wb_KomponParam301_Global
 
 Public Class wb_KomponParam301
     Inherits wb_ChangeLog
@@ -43,14 +44,6 @@ Public Class wb_KomponParam301
             _TimeStamp = value
         End Set
     End Property
-
-    Public Function IsAllergen(index As Integer) As Boolean
-        If index >= minTyp301Allergen And index <= maxTyp301Allergen Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
 
     Public Property Allergen(index As Integer) As AllergenInfo
         Get
@@ -168,9 +161,9 @@ Public Class wb_KomponParam301
 
         'die Aufzählung der Konstanten entspricht der Reihenfolge der Wertigkeit.
         If Allergen1 > Allergen2 Then
-            Return Allergen2
-        Else
             Return Allergen1
+        Else
+            Return Allergen2
         End If
     End Function
 End Class

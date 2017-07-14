@@ -14,13 +14,14 @@
         Dim ChangeLog As New wb_ChangeLog
         Dim ktTyp301 As New wb_KomponParam301
 
-        Assert.IsTrue(ktTyp301.IsAllergen(141))
-        Assert.IsTrue(ktTyp301.IsAllergen(189))
+        'TODO in anderen Test umlagern 
+        'Assert.IsTrue(ktTyp301.IsAllergen(141))
+        'Assert.IsTrue(ktTyp301.IsAllergen(189))
 
-        Assert.IsFalse(ktTyp301.IsAllergen(1))
-        Assert.IsFalse(ktTyp301.IsAllergen(140))
-        Assert.IsFalse(ktTyp301.IsAllergen(200))
-        Assert.IsFalse(ktTyp301.IsAllergen(-1))
+        'Assert.IsFalse(ktTyp301.IsAllergen(1))
+        'Assert.IsFalse(ktTyp301.IsAllergen(140))
+        'Assert.IsFalse(ktTyp301.IsAllergen(200))
+        'Assert.IsFalse(ktTyp301.IsAllergen(-1))
 
         ktTyp301.Allergen(1) = wb_Global.AllergenInfo.K
         Assert.AreEqual(ktTyp301.Allergen(1), wb_Global.AllergenInfo.ERR)
