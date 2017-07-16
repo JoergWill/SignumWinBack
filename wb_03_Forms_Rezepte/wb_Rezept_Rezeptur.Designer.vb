@@ -87,7 +87,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.ColBezeichung.Movable = False
         Me.ColBezeichung.Name = "ColBezeichung"
         Me.ColBezeichung.Sortable = False
-        Me.ColBezeichung.Width = 483
+        Me.ColBezeichung.Width = 479
         '
         'ColPreis
         '
@@ -300,11 +300,11 @@ Partial Class wb_Rezept_Rezeptur
         Me.Wb_TabControl.Controls.Add(Me.tb_Naehrwerte)
         Me.Wb_TabControl.Controls.Add(Me.tb_Hinweise)
         Me.Wb_TabControl.Controls.Add(Me.tb_Verwendung)
-        Me.Wb_TabControl.Location = New System.Drawing.Point(12, 258)
+        Me.Wb_TabControl.Location = New System.Drawing.Point(13, 258)
         Me.Wb_TabControl.Multiline = True
         Me.Wb_TabControl.Name = "Wb_TabControl"
         Me.Wb_TabControl.SelectedIndex = 0
-        Me.Wb_TabControl.Size = New System.Drawing.Size(953, 397)
+        Me.Wb_TabControl.Size = New System.Drawing.Size(951, 397)
         Me.Wb_TabControl.TabIndex = 23
         '
         'tb_Rezeptur
@@ -317,7 +317,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Rezeptur.Location = New System.Drawing.Point(4, 23)
         Me.tb_Rezeptur.Name = "tb_Rezeptur"
         Me.tb_Rezeptur.Padding = New System.Windows.Forms.Padding(3)
-        Me.tb_Rezeptur.Size = New System.Drawing.Size(945, 370)
+        Me.tb_Rezeptur.Size = New System.Drawing.Size(943, 370)
         Me.tb_Rezeptur.TabIndex = 0
         Me.tb_Rezeptur.Text = "Rezeptur"
         Me.tb_Rezeptur.UseVisualStyleBackColor = True
@@ -352,7 +352,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.Cell
         Me.VirtualTree.ShowRootRow = False
-        Me.VirtualTree.Size = New System.Drawing.Size(952, 374)
+        Me.VirtualTree.Size = New System.Drawing.Size(948, 374)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 6
         '

@@ -6,17 +6,17 @@ Public Class wb_KomponParam301_GridView
 
     ' Zum Speichern der Werte der Optionalen Konstruktor-Parameter
     Private _HeadersVisible As Boolean      ' Zeilen-/Spaltenköpfe sichtbar?
-    Private _AllowResizing As Boolean       ' Zeilen-/Spaltenbreite variabel?
     Private _ShowTooltips As Boolean        ' Anzeige von Zell-Tooltips?
+    Private _AdjustableColumns As Integer   ' Anzahl der Spalten mit variabler Breite
     Private _Font As Drawing.Font = New Drawing.Font("Arial", 12, FontStyle.Regular, GraphicsUnit.Pixel)
 
-    Public Sub New(ByVal arr() As wb_Global.Nwt, Optional HeadersVisible As Boolean = True, Optional AllowResizing As Boolean = False, Optional ShowTooltips As Boolean = True)
+    Public Sub New(ByVal arr() As wb_Global.Nwt, Optional HeadersVisible As Boolean = True, Optional ShowTooltips As Boolean = True)
 
         If IsNothing(arr) Then Exit Sub
 
         _HeadersVisible = HeadersVisible
-        _AllowResizing = AllowResizing
         _ShowTooltips = ShowTooltips
+        _AdjustableColumns = 0
 
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -49,23 +49,10 @@ Public Class wb_KomponParam301_GridView
                 ' Sortieren der Spalte abschalten
                 .SortMode = DataGridViewColumnSortMode.NotSortable
 
-                If _AllowResizing Then
-                    ' User kann die Spaltenbreite mit der Maus ändern
-                    .AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-                    .Resizable = DataGridViewTriState.True
-
-                    ' Einstellung der Spaltenbreite initialisieren
-                    ' (!! Diese Methode schluckt ggf. Rechenzeit !!) 
-                    .Width = .GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCellsExceptHeader, True)
-
-                    ' keine 'verschwindende' Spalte zulassen
-                    ' zu kleines Width wird ggf. automatisch angepasst
-                    .MinimumWidth = 60
-                Else
-                    ' Spaltenbreite wird anhand der Daten festgelegt 
-                    ' und ist fixiert 
-                    .AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-                End If
+                ' Spaltenbreite wird anhand der Daten festgelegt 
+                ' und ist fixiert 
+                .AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                .MinimumWidth = 20
 
                 .ValueType = GetType(String)
 
@@ -117,7 +104,16 @@ Public Class wb_KomponParam301_GridView
                     End If
 
                     'Spalte Einheiten
-                    MyBase.Columns.Add(CStr(ColCount) & "_Einh", "")
+                    If wb_KomponParam301_Global.IsAllergen(i) Then
+                        'Bei Allergenen wird keine Einheit eingetragen - variable Spaltenbreite
+                        MyBase.Columns.Add(CStr(ColCount) & "_X", "")
+                        MyBase.Columns(ColCount).Tag = 1
+                        _AdjustableColumns += 1
+                    Else
+                        'bei allen anderen Werten wird der Einheiten-Text einggetragen
+                        MyBase.Columns.Add(CStr(ColCount) & "_Einh", "")
+                        MyBase.Columns(ColCount).Tag = 0
+                    End If
                 End If
 
                 'Index-Array für Daten erstellen
@@ -154,7 +150,13 @@ Public Class wb_KomponParam301_GridView
                             .Cells(c * 3 - 1).Value = ""
                         Else
                             'Nährwert und Einheit
-                            .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 3)
+                            If wb_KomponParam301_Global.kt301Param(i).Gruppe = wb_Global.ktTyp301Gruppen.Gesamtkennzahlen Then
+                                'Gesamtkennzahlen werden mit nur einer Kommastelle ausgegeben
+                                .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 1)
+                            Else
+                                'alle anderen Werte auf 3 Nachkommastellen formatieren
+                                .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 3)
+                            End If
                             .Cells(c * 3 - 1).Value = arr(i).Einheit
                         End If
 
@@ -183,17 +185,13 @@ Public Class wb_KomponParam301_GridView
             .AllowUserToAddRows = False
             .AllowUserToDeleteRows = False
             .AllowUserToOrderColumns = False
-            .AllowUserToResizeRows = _AllowResizing
+            .AllowUserToResizeRows = False
 
             ' Maus-Click auf Column/Rowheader soll NICHT zur Markierung führen
             .SelectionMode = DataGridViewSelectionMode.CellSelect
             ' Keine Auswahl erlauben, weil Daten nur angezeigt werden
             .MultiSelect = False
-
             .BorderStyle = Windows.Forms.BorderStyle.None
-
-            ' Farbe des nicht mit Zellen belegten GridView-Hintergrundes
-            .BackgroundColor = Color.LightGray
 
             ' Es werden keine Scrollbars angezeigt
             .ScrollBars = Windows.Forms.ScrollBars.None
@@ -239,18 +237,35 @@ Public Class wb_KomponParam301_GridView
 
             .DoubleBuffered = True
             .ResizeRedraw = True
-            .GridColor = Color.Black
+            .GridColor = Color.LightGray
 
         End With
     End Sub
 
     Public Shadows Sub Location(ByVal Parent As Windows.Forms.Panel, ByVal Top As Integer, ByVal Left As Integer, ByVal Width As Integer, ByVal Height As Integer)
+        Dim c As Integer = 0
+
         MyBase.Parent = Parent
         MyBase.Width = Width
         MyBase.Height = Height
         MyBase.Top = Top
         MyBase.Left = Left
-        MyBase.AutoSize = True
         MyBase.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+
+        'Spaltenbreite optimieren, so dass das Grid die Fensterfläche optimal ausfüllt
+        For Each col As DataGridViewColumn In Me.Columns
+            If col.Tag < 1 Then
+                c += col.Width
+            End If
+        Next
+
+        If c < Width Then
+            For Each col As DataGridViewColumn In Me.Columns
+                If col.Tag = 1 Then
+                    col.MinimumWidth += (Width - c) / _AdjustableColumns
+                End If
+            Next
+        End If
+        MyBase.Refresh()
     End Sub
 End Class

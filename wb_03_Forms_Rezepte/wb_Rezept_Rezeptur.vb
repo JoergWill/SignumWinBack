@@ -91,6 +91,7 @@
 
         'Daten im Grid anzeigen
         Dim nwtGrid As New wb_KomponParam301_GridView(NwtTabelle)
+        nwtGrid.BackgroundColor = Me.BackColor
         nwtGrid.Location(tb_Naehrwerte, 0, 0, tb_Naehrwerte.Width, tb_Naehrwerte.Height)
     End Sub
 End Class

@@ -298,7 +298,7 @@ Public Class wb_Functions
             Case wb_Global.ktTyp301Gruppen.Schalenfrüchte
                 Return "Schalenfrüchte"
             Case wb_Global.ktTyp301Gruppen.Gesamtkennzahlen
-                Return "Gesamtkennzahlen"
+                Return "Gesamt"
             Case Else
                 Return "Undefiniert"
         End Select
