@@ -99,6 +99,9 @@ Public Class wb_Hinweise
     Public Function Read(idx As Integer) As Boolean
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
 
+        'Artikel/Komponenten/Rezeptnummer merken
+        H2_Id2 = idx
+
         'Daten aus MySQL-Memo in String einlesen
         H2_ReadOK = False
         winback.sqlSelect(setParams(sqlSelectH2, H2_Typ, H2_Typ2, idx))

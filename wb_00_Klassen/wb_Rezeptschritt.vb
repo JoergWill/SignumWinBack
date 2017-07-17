@@ -518,27 +518,20 @@ Public Class wb_Rezeptschritt
     ''' Gibt den EK-Preis der Komponente dieser Rezeptzeile zurück. 
     ''' Wenn die Komponente auf ein Rezept zeigt, wird der Preis dieses Rezeptes berechnet und mit der Sollmenge verrechnet.
     ''' </summary>
-    ''' <returns>Double - Wassermenge</returns>
+    ''' <returns>Double - Preis</returns>
     Private ReadOnly Property _Preis As Double
         Get
             'Rezept im Rezept
             If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
                 'Preis aus Rezept-im-Rezept
-                _PreisProKg = (RezeptImRezept.RezeptPreis * Sollwert) / RezeptImRezept.RezeptGewicht
+                _PreisProKg = (RezeptImRezept.RezeptPreis) / RezeptImRezept.RezeptGewicht
                 Return _PreisProKg * _Sollwert
             Else
-                Select Case _Type
-                    Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE
-                        Return _PreisProKg * _Sollwert
-                    Case KO_TYPE_WASSERKOMPONENTE
-                        If _ParamNr = 1 Then
-                            Return _PreisProKg * _Sollwert
-                        Else
-                            Return 0
-                        End If
-                    Case Else
-                        Return 0
-                End Select
+                If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
+                    Return _PreisProKg * _Sollwert
+                Else
+                    Return 0
+                End If
             End If
         End Get
     End Property
@@ -598,7 +591,7 @@ Public Class wb_Rezeptschritt
 
                 'Rezept im Rezept
                 If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
-                    RezeptImRezept.KtTyp301.AddNwt(_ktTyp301)
+                    RezeptImRezept.KtTyp301.AddNwt(_ktTyp301, _Sollwert / _BruttoRezGewicht)
                 Else
 
                     'Nährwert-Info aus Datenbank lesen
@@ -609,12 +602,12 @@ Public Class wb_Rezeptschritt
 
                     'alle Unter-Rezept-Schritte berechnen
                     For Each x As wb_Rezeptschritt In ChildSteps
-                        x.ktTyp301.AddNwt(_ktTyp301)
+                        x.ktTyp301.AddNwt(_ktTyp301, wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht)
                     Next
 
                 End If
             End If
-                Return _ktTyp301
+            Return _ktTyp301
         End Get
     End Property
 
@@ -652,10 +645,12 @@ Public Class wb_Rezeptschritt
                             Case "RP_Wert"
                                 If ParamTyp = 301 Then
                                     If wb_KomponParam301_Global.IsAllergen(ParamNr) Then
+                                        'TODO if undefined set merker
                                         _ktTyp301.Allergen(ParamNr) = wb_Functions.StringtoAllergen(Value)
-                                        Debug.Print("Allergen " & ParamNr & " " & Value & "/" & _ktTyp301.Wert(ParamNr))
                                     Else
                                         _ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value) * _Sollwert / _BruttoRezGewicht
+                                        'TODO if undefined set merker
+                                        '_ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value)
                                     End If
                                 End If
                         End Select

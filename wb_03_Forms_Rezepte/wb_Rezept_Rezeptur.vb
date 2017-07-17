@@ -1,16 +1,31 @@
-﻿Public Class wb_Rezept_Rezeptur
+﻿Imports Infralution.Controls.VirtualTree
+
+Public Class wb_Rezept_Rezeptur
 
     Dim Rezept As wb_Rezept
+    Dim RezeptHinweise As New wb_Hinweise(wb_Global.Hinweise.RezeptHinweise)
     Dim NwtTabelle(wb_Global.maxTyp301) As wb_Global.Nwt
 
-    'Dim LL_Rezeptur As New combit.ListLabel22.ListLabel()
+    Private _RzNummer As Integer
+    Private _RzVariante As Integer
+    Private _RzHinweiseChanged As Boolean
 
+    ''' <summary>
+    ''' Objekt Rezeptur instanzieren
+    ''' </summary>
+    ''' <param name="RzNummer"></param>
+    ''' <param name="RzVariante"></param>
     Public Sub New(RzNummer As Integer, RzVariante As Integer)
 
         'Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
         'Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        'Rezeptnummer und Rzept-Variante merken
+        _RzNummer = RzNummer
+        _RzVariante = RzVariante
+
+        'TODO Rezeptdaten aus DB lesen und anzeigen
 
         ' TabControl - HideTabs
         Wb_TabControl.HideTabs = True
@@ -34,14 +49,6 @@
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
     End Sub
 
-    Private Sub VirtualTree_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub VirtualTree_DoubleClick(sender As Object, e As EventArgs)
-
-    End Sub
-
     ''' <summary>
     ''' Anzeige der berechneten Nährwerte der Rezeptur.
     ''' Berechnung über ktTyp301(Get) im Root-Rezeptschritt. Aufbau und Anzeige des DatenGrid in Subroutine nwtGrid()
@@ -49,14 +56,16 @@
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtnNwt_Click(sender As Object, e As EventArgs) Handles BtnNwt.Click
-        If Wb_TabControl.SelectedIndex = 0 Then
+        If tb_Rezeptur.Visible Then
             BtnNwt.Text = "Rezeptur"
             Wb_TabControl.SelectedTab = tb_Naehrwerte
+            ToolStripAllergenLegende.Visible = True
             'Nährwerte-Grid aufbauen und anzeigen
             NwtGrid()
         Else
             BtnNwt.Text = "Nährwerte"
             Wb_TabControl.SelectedTab = tb_Rezeptur
+            ToolStripAllergenLegende.Visible = False
         End If
 
     End Sub
@@ -88,7 +97,7 @@
         'Daten im Grid anzeigen
         Dim nwtGrid As New wb_KomponParam301_GridView(NwtTabelle)
         nwtGrid.BackgroundColor = Me.BackColor
-        nwtGrid.MyLocation(tb_Naehrwerte, 0, 0, tb_Naehrwerte.Width, tb_Naehrwerte.Height)
+        nwtGrid.GridLocation(tb_Naehrwerte)
         nwtGrid.PerformLayout()
     End Sub
 
@@ -100,7 +109,20 @@
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtnHinweise_Click(sender As Object, e As EventArgs) Handles BtnHinweise.Click
-
+        If tb_Hinweise.Visible Then
+            'Rezeptur anzeigen
+            Wb_TabControl.SelectedTab = tb_Rezeptur
+        Else
+            'Rezept-Hinweise lesen
+            If Not RezeptHinweise.ReadOK Then
+                'TODO Rzeptvariante in Zukunft berücksichtigen
+                If RezeptHinweise.Read(_RzNummer) Then
+                    TextHinweise.Text = RezeptHinweise.Memo
+                    _RzHinweiseChanged = False
+                End If
+            End If
+            Wb_TabControl.SelectedTab = tb_Hinweise
+        End If
     End Sub
 
     ''' <summary>
@@ -111,5 +133,44 @@
     ''' <param name="e"></param>
     Private Sub BtnClose_Click(sender As Object, e As EventArgs) Handles BtnClose.Click
         Me.Close()
+    End Sub
+
+    ''' <summary>
+    ''' Fenster schliessen. Falls notwendig Daten sichern
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub wb_Rezept_Rezeptur_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        'Flag Rezept-Hinweise sind geändert worden
+        If _RzHinweiseChanged Then
+            'Rezept-Verarbeitungs-Hinweise speichern
+            RezeptHinweise.Memo = TextHinweise.Text
+            RezeptHinweise.Write()
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Anzeige der Rezept-Hinweise.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub TextHinweise_Click(sender As Object, e As EventArgs) Handles TextHinweise.Click
+        'Flag setzen - Rezepthinweise speichern
+        _RzHinweiseChanged = True
+        ToolStripRezeptChange.Visible = True
+    End Sub
+
+    Private Sub VirtualTree_CellDoubleClick(sender As Object, e As EventArgs) Handles VirtualTree.CellDoubleClick
+        Dim sCellWidget As CellWidget = sender
+        Dim RezeptNr As Integer = DirectCast(sCellWidget.Tree.SelectedItem, wb_Rezeptschritt).RezeptNr
+        If RezeptNr > 0 Then
+            'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen
+            Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
+            'Fenster-Text
+            'TODO Rezeptname und Alpha-Nummer im Fenster-Titel anzeigen
+            'Rezeptur.Text = wb_Rezept_Shared.aktRzNummer + " " + wb_Rezept_Shared.aktRzName
+            'MDI-Fenster anzeigen
+            Rezeptur.Show()
+        End If
     End Sub
 End Class

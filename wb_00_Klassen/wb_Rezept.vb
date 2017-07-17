@@ -204,6 +204,7 @@ Public Class wb_Rezept
         'Brutto-Rezeptgesamtgewicht berechnen und an alle Rezeptschritte propagieren
         'wird benötigt zur Berechnung der Nährwerte
         _RootRezeptSchritt.BruttoRezGewicht = BruttoRezeptGewicht
+        _RootRezeptSchritt.Sollwert = BruttoRezeptGewicht
 
     End Sub
 

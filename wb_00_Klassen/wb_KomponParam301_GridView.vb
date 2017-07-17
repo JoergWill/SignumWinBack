@@ -245,14 +245,14 @@ Public Class wb_KomponParam301_GridView
         End With
     End Sub
 
-    Public Shadows Sub MyLocation(ByVal Parent As Windows.Forms.TabPage, ByVal Top As Integer, ByVal Left As Integer, ByVal Width As Integer, ByVal Height As Integer)
+    Public Shadows Sub GridLocation(ByVal Parent As Windows.Forms.TabPage)
         Dim c As Integer = 0
 
         MyBase.Parent = Parent
         MyBase.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Location = New System.Drawing.Point(Top, Left)
-        Size = New System.Drawing.Size(Width, Height)
+        Location = New System.Drawing.Point(Parent.Top, Parent.Left)
+        Size = New System.Drawing.Size(Parent.Width, Parent.Height)
     End Sub
 End Class

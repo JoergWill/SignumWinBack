@@ -141,12 +141,12 @@ Public Class wb_KomponParam301
     ''' Addiert alle Nährwerte und Allergene zum übergebenen KomponentenParameter-Array
     ''' </summary>
     ''' <param name="_ktTyp301"></param>
-    Public Sub AddNwt(ByRef _ktTyp301 As wb_KomponParam301)
+    Public Sub AddNwt(ByRef _ktTyp301 As wb_KomponParam301, Faktor As Double)
         For i = 0 To maxTyp301
             If IsAllergen(i) Then
                 _ktTyp301.Allergen(i) = AddNwtAllergen(_ktTyp301.Allergen(i), Allergen(i))
             Else
-                _ktTyp301.Naehrwert(i) += Naehrwert(i)
+                _ktTyp301.Naehrwert(i) += Naehrwert(i) * Faktor
             End If
         Next
     End Sub
