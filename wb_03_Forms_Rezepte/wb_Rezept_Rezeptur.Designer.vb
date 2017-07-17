@@ -38,12 +38,12 @@ Partial Class wb_Rezept_Rezeptur
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.BtnDrucken = New System.Windows.Forms.Button()
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
-        Me.Button3 = New System.Windows.Forms.Button()
-        Me.Button4 = New System.Windows.Forms.Button()
+        Me.BtnKopieren = New System.Windows.Forms.Button()
+        Me.BtnLoeschen = New System.Windows.Forms.Button()
+        Me.BtnVerwendung = New System.Windows.Forms.Button()
+        Me.BtnHinweise = New System.Windows.Forms.Button()
         Me.BtnNwt = New System.Windows.Forms.Button()
-        Me.Button6 = New System.Windows.Forms.Button()
+        Me.BtnClose = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -159,45 +159,45 @@ Partial Class wb_Rezept_Rezeptur
         Me.BtnDrucken.Text = "Drucken"
         Me.BtnDrucken.UseVisualStyleBackColor = True
         '
-        'Button1
+        'BtnKopieren
         '
-        Me.Button1.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(12, 200)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(131, 52)
-        Me.Button1.TabIndex = 3
-        Me.Button1.Text = "Kopieren"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.BtnKopieren.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnKopieren.Location = New System.Drawing.Point(12, 200)
+        Me.BtnKopieren.Name = "BtnKopieren"
+        Me.BtnKopieren.Size = New System.Drawing.Size(131, 52)
+        Me.BtnKopieren.TabIndex = 3
+        Me.BtnKopieren.Text = "Kopieren"
+        Me.BtnKopieren.UseVisualStyleBackColor = True
         '
-        'Button2
+        'BtnLoeschen
         '
-        Me.Button2.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button2.Location = New System.Drawing.Point(279, 200)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(138, 52)
-        Me.Button2.TabIndex = 4
-        Me.Button2.Text = "Löschen"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.BtnLoeschen.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnLoeschen.Location = New System.Drawing.Point(279, 200)
+        Me.BtnLoeschen.Name = "BtnLoeschen"
+        Me.BtnLoeschen.Size = New System.Drawing.Size(138, 52)
+        Me.BtnLoeschen.TabIndex = 4
+        Me.BtnLoeschen.Text = "Löschen"
+        Me.BtnLoeschen.UseVisualStyleBackColor = True
         '
-        'Button3
+        'BtnVerwendung
         '
-        Me.Button3.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button3.Location = New System.Drawing.Point(416, 200)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(138, 52)
-        Me.Button3.TabIndex = 5
-        Me.Button3.Text = "Verwendung"
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.BtnVerwendung.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnVerwendung.Location = New System.Drawing.Point(416, 200)
+        Me.BtnVerwendung.Name = "BtnVerwendung"
+        Me.BtnVerwendung.Size = New System.Drawing.Size(138, 52)
+        Me.BtnVerwendung.TabIndex = 5
+        Me.BtnVerwendung.Text = "Verwendung"
+        Me.BtnVerwendung.UseVisualStyleBackColor = True
         '
-        'Button4
+        'BtnHinweise
         '
-        Me.Button4.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button4.Location = New System.Drawing.Point(553, 200)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(138, 52)
-        Me.Button4.TabIndex = 6
-        Me.Button4.Text = "Hinweise"
-        Me.Button4.UseVisualStyleBackColor = True
+        Me.BtnHinweise.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnHinweise.Location = New System.Drawing.Point(553, 200)
+        Me.BtnHinweise.Name = "BtnHinweise"
+        Me.BtnHinweise.Size = New System.Drawing.Size(138, 52)
+        Me.BtnHinweise.TabIndex = 6
+        Me.BtnHinweise.Text = "Hinweise"
+        Me.BtnHinweise.UseVisualStyleBackColor = True
         '
         'BtnNwt
         '
@@ -209,15 +209,15 @@ Partial Class wb_Rezept_Rezeptur
         Me.BtnNwt.Text = "Nährwerte"
         Me.BtnNwt.UseVisualStyleBackColor = True
         '
-        'Button6
+        'BtnClose
         '
-        Me.Button6.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button6.Location = New System.Drawing.Point(827, 200)
-        Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(138, 52)
-        Me.Button6.TabIndex = 8
-        Me.Button6.Text = "Schliessen"
-        Me.Button6.UseVisualStyleBackColor = True
+        Me.BtnClose.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnClose.Location = New System.Drawing.Point(827, 200)
+        Me.BtnClose.Name = "BtnClose"
+        Me.BtnClose.Size = New System.Drawing.Size(138, 52)
+        Me.BtnClose.TabIndex = 8
+        Me.BtnClose.Text = "Schliessen"
+        Me.BtnClose.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -452,25 +452,25 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Naehrwerte.Location = New System.Drawing.Point(4, 23)
         Me.tb_Naehrwerte.Name = "tb_Naehrwerte"
         Me.tb_Naehrwerte.Padding = New System.Windows.Forms.Padding(3)
-        Me.tb_Naehrwerte.Size = New System.Drawing.Size(945, 370)
+        Me.tb_Naehrwerte.Size = New System.Drawing.Size(943, 370)
         Me.tb_Naehrwerte.TabIndex = 1
         Me.tb_Naehrwerte.Text = "Nährwerte"
         Me.tb_Naehrwerte.UseVisualStyleBackColor = True
         '
         'tb_Hinweise
         '
+        Me.tb_Hinweise.BackColor = System.Drawing.Color.Transparent
         Me.tb_Hinweise.Location = New System.Drawing.Point(4, 23)
         Me.tb_Hinweise.Name = "tb_Hinweise"
-        Me.tb_Hinweise.Size = New System.Drawing.Size(945, 370)
+        Me.tb_Hinweise.Size = New System.Drawing.Size(943, 370)
         Me.tb_Hinweise.TabIndex = 2
         Me.tb_Hinweise.Text = "Hinweise"
-        Me.tb_Hinweise.UseVisualStyleBackColor = True
         '
         'tb_Verwendung
         '
         Me.tb_Verwendung.Location = New System.Drawing.Point(4, 23)
         Me.tb_Verwendung.Name = "tb_Verwendung"
-        Me.tb_Verwendung.Size = New System.Drawing.Size(945, 370)
+        Me.tb_Verwendung.Size = New System.Drawing.Size(943, 370)
         Me.tb_Verwendung.TabIndex = 3
         Me.tb_Verwendung.Text = "Verwendung"
         Me.tb_Verwendung.UseVisualStyleBackColor = True
@@ -489,12 +489,12 @@ Partial Class wb_Rezept_Rezeptur
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Button6)
+        Me.Controls.Add(Me.BtnClose)
         Me.Controls.Add(Me.BtnNwt)
-        Me.Controls.Add(Me.Button4)
-        Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.BtnHinweise)
+        Me.Controls.Add(Me.BtnVerwendung)
+        Me.Controls.Add(Me.BtnLoeschen)
+        Me.Controls.Add(Me.BtnKopieren)
         Me.Controls.Add(Me.BtnDrucken)
         Me.Name = "wb_Rezept_Rezeptur"
         Me.Text = "Rezeptur"
@@ -507,12 +507,12 @@ Partial Class wb_Rezept_Rezeptur
 
     End Sub
     Friend WithEvents BtnDrucken As Windows.Forms.Button
-    Friend WithEvents Button1 As Windows.Forms.Button
-    Friend WithEvents Button2 As Windows.Forms.Button
-    Friend WithEvents Button3 As Windows.Forms.Button
-    Friend WithEvents Button4 As Windows.Forms.Button
+    Friend WithEvents BtnKopieren As Windows.Forms.Button
+    Friend WithEvents BtnLoeschen As Windows.Forms.Button
+    Friend WithEvents BtnVerwendung As Windows.Forms.Button
+    Friend WithEvents BtnHinweise As Windows.Forms.Button
     Friend WithEvents BtnNwt As Windows.Forms.Button
-    Friend WithEvents Button6 As Windows.Forms.Button
+    Friend WithEvents BtnClose As Windows.Forms.Button
     Friend WithEvents Label2 As Windows.Forms.Label
     Friend WithEvents Label3 As Windows.Forms.Label
     Friend WithEvents Label4 As Windows.Forms.Label

@@ -5,23 +5,30 @@ Public Class wb_KomponParam301_GridView
     Inherits Windows.Forms.DataGridView
 
     ' Zum Speichern der Werte der Optionalen Konstruktor-Parameter
-    Private _HeadersVisible As Boolean      ' Zeilen-/Spaltenköpfe sichtbar?
     Private _ShowTooltips As Boolean        ' Anzeige von Zell-Tooltips?
-    Private _AdjustableColumns As Integer   ' Anzahl der Spalten mit variabler Breite
     Private _Font As Drawing.Font = New Drawing.Font("Arial", 12, FontStyle.Regular, GraphicsUnit.Pixel)
 
-    Public Sub New(ByVal arr() As wb_Global.Nwt, Optional HeadersVisible As Boolean = True, Optional ShowTooltips As Boolean = True)
+    Public Sub New()
+        'Grid Grundeistellungen
+        InitGrid()
+    End Sub
 
+    Public Sub New(ByVal arr() As wb_Global.Nwt, Optional ShowTooltips As Boolean = True)
+        'Initialisierung nur mit gültigem Daten-Array
         If IsNothing(arr) Then Exit Sub
+        'Grid Grundeistellungen
+        InitGrid()
+        'Daten anzeigen 
+        InitData(arr, ShowTooltips)
+    End Sub
 
-        _HeadersVisible = HeadersVisible
+    Public Sub InitData(ByVal arr() As wb_Global.Nwt, Optional ShowTooltips As Boolean = True)
         _ShowTooltips = ShowTooltips
-        _AdjustableColumns = 0
 
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
 
-        InitGrid()
+        'Initialisierung nur mit gültigem Daten-Array
         If Not IsNothing(arr) Then
             ' Daten ins Grid eintragen
             FillGrid(arr)
@@ -48,12 +55,7 @@ Public Class wb_KomponParam301_GridView
                 .DividerWidth = 0
                 ' Sortieren der Spalte abschalten
                 .SortMode = DataGridViewColumnSortMode.NotSortable
-
-                ' Spaltenbreite wird anhand der Daten festgelegt 
-                ' und ist fixiert 
-                .AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                 .MinimumWidth = 20
-
                 .ValueType = GetType(String)
 
                 ' nur Anzeige der Daten, kein Editieren zulassen
@@ -93,26 +95,28 @@ Public Class wb_KomponParam301_GridView
                     'Gruppen-Bezeichnung (Big4/Big8/Allergene...)
                     Header = arr(i).Header
                     MyBase.Columns.Add(CStr(ColCount) & "_Text", Header)
+                    MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
 
                     'Nährwerte/Allergene
                     If wb_KomponParam301_Global.IsAllergen(i) Then
                         'Allergene ohne Überschrift
                         MyBase.Columns.Add(CStr(ColCount) & "_Wert", "")
+                        MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                     Else
                         'Überschrift pro 100g
                         MyBase.Columns.Add(CStr(ColCount) & "_Wert", "pro 100g")
+                        MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                     End If
 
                     'Spalte Einheiten
                     If wb_KomponParam301_Global.IsAllergen(i) Then
                         'Bei Allergenen wird keine Einheit eingetragen - variable Spaltenbreite
                         MyBase.Columns.Add(CStr(ColCount) & "_X", "")
-                        MyBase.Columns(ColCount).Tag = 1
-                        _AdjustableColumns += 1
+                        MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Else
                         'bei allen anderen Werten wird der Einheiten-Text einggetragen
                         MyBase.Columns.Add(CStr(ColCount) & "_Einh", "")
-                        MyBase.Columns(ColCount).Tag = 0
+                        MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                     End If
                 End If
 
@@ -123,10 +127,10 @@ Public Class wb_KomponParam301_GridView
         Next
 
         ' Die erforderliche Anzahl Zeilen in einem Rutsch erstellen:
-        MyBase.Rows.Add(MaxRowCount + 1)
+        MyBase.Rows.Add(MaxRowCount)
 
         ' Daten ins DatagridView eintragen
-        For r = 0 To MaxRowCount
+        For r = 0 To MaxRowCount - 1
             With rows(r)
                 ' Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
                 .MinimumHeight = 20
@@ -197,7 +201,7 @@ Public Class wb_KomponParam301_GridView
             .ScrollBars = Windows.Forms.ScrollBars.None
 
             ' ColumnHeader-Einstellungen
-            .ColumnHeadersVisible = _HeadersVisible
+            .ColumnHeadersVisible = True
             .ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
             .ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Raised
 
@@ -225,7 +229,6 @@ Public Class wb_KomponParam301_GridView
 
             With .AlternatingRowsDefaultCellStyle
                 ' für bessere Lesbarkeit der DatenZeilen
-                '.BackColor = gray245
                 .BackColor = Color.LightBlue
             End With
 
@@ -242,30 +245,14 @@ Public Class wb_KomponParam301_GridView
         End With
     End Sub
 
-    Public Shadows Sub Location(ByVal Parent As Windows.Forms.Panel, ByVal Top As Integer, ByVal Left As Integer, ByVal Width As Integer, ByVal Height As Integer)
+    Public Shadows Sub MyLocation(ByVal Parent As Windows.Forms.TabPage, ByVal Top As Integer, ByVal Left As Integer, ByVal Width As Integer, ByVal Height As Integer)
         Dim c As Integer = 0
 
         MyBase.Parent = Parent
-        MyBase.Width = Width
-        MyBase.Height = Height
-        MyBase.Top = Top
-        MyBase.Left = Left
-        MyBase.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
-
-        'Spaltenbreite optimieren, so dass das Grid die Fensterfläche optimal ausfüllt
-        For Each col As DataGridViewColumn In Me.Columns
-            If col.Tag < 1 Then
-                c += col.Width
-            End If
-        Next
-
-        If c < Width Then
-            For Each col As DataGridViewColumn In Me.Columns
-                If col.Tag = 1 Then
-                    col.MinimumWidth += (Width - c) / _AdjustableColumns
-                End If
-            Next
-        End If
-        MyBase.Refresh()
+        MyBase.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Location = New System.Drawing.Point(Top, Left)
+        Size = New System.Drawing.Size(Width, Height)
     End Sub
 End Class

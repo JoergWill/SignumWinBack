@@ -29,18 +29,9 @@
         Label4.Text = Rezept.RezeptGesamtMehlmenge
         'Rezept TA
         Label5.Text = CInt(Rezept.RezeptTA)
-        ''TEST
-        'Dim x = Rezept.BruttoRezeptGewicht
-        'Label6.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Kilokalorien)
-        'Label7.Text = Rezept.KtTyp301.Wert(wb_Global.T301_Zucker)
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
-        Debug.Print("LL Drucken")
-        'LL_Rezeptur.AutoProjectFile = "Rezeptur.lst"
-        'LL_Rezeptur.AutoShowSelectFile = False
-        'LL_Rezeptur.Print()
-        'LL_Rezeptur.Design()
     End Sub
 
     Private Sub VirtualTree_Click(sender As Object, e As EventArgs)
@@ -53,11 +44,7 @@
 
     ''' <summary>
     ''' Anzeige der berechneten Nährwerte der Rezeptur.
-    ''' Die Daten werden im einem ein-dimensionalen Array vorbereitet und dann in einem eigenen Objekt (abgeleitet von DataGridView) angezeigt.
-    ''' 
-    ''' Das Array besteht aus dem Grundgerüst (Nummer, Bezeichnung, Einheit, Gruppe). Diese Daten kommen aus dem Hash-Table kt301Param(Nr)
-    ''' Die Nährwert-Info kommt aus dem Array ktTyp301.Wert von Rezept._RootRezeptSchritt. 
-    ''' Die Berechnung der Nährwerte startet über ktTyp301(Get) im RootRezeptschritt (Rekursiv) über alle unterlagerten Rezeptschritte.
+    ''' Berechnung über ktTyp301(Get) im Root-Rezeptschritt. Aufbau und Anzeige des DatenGrid in Subroutine nwtGrid()
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -74,6 +61,15 @@
 
     End Sub
 
+    ''' <summary>
+    ''' Anzeige der berechneten Nährwerte der Rezeptur im DatenGrid.
+    ''' 
+    ''' Die Daten werden im einem ein-dimensionalen Array vorbereitet und dann in einem eigenen Objekt (abgeleitet von DataGridView) angezeigt.
+    ''' 
+    ''' Das Array besteht aus dem Grundgerüst (Nummer, Bezeichnung, Einheit, Gruppe). Diese Daten kommen aus dem Hash-Table kt301Param(Nr)
+    ''' Die Nährwert-Info kommt aus dem Array ktTyp301.Wert von Rezept._RootRezeptSchritt. 
+    ''' Die Berechnung der Nährwerte startet über ktTyp301(Get) im RootRezeptschritt (Rekursiv) über alle unterlagerten Rezeptschritte.
+    ''' </summary>
     Private Sub NwtGrid()
         'Array aufbauen über alle Nähwerte - Grid aus KomponParam301_global, Werte aus Rezept.ktTyp301.Wert(_RootRezeptschritt)
         For i = 1 To wb_Global.maxTyp301
@@ -92,6 +88,28 @@
         'Daten im Grid anzeigen
         Dim nwtGrid As New wb_KomponParam301_GridView(NwtTabelle)
         nwtGrid.BackgroundColor = Me.BackColor
-        nwtGrid.Location(tb_Naehrwerte, 0, 0, tb_Naehrwerte.Width, tb_Naehrwerte.Height)
+        nwtGrid.MyLocation(tb_Naehrwerte, 0, 0, tb_Naehrwerte.Width, tb_Naehrwerte.Height)
+        nwtGrid.PerformLayout()
+    End Sub
+
+    ''' <summary>
+    ''' Anzeige/Eingabe/Änderung des Text-Verarbeitungs-Hinweises für die Rezeptur.
+    ''' Die Verarbeitungshinweise werden in der Tabelle winback.Hinweise2 abgelegt.
+    ''' 'TODO evtl. Unterscheidung in verschiedene Fremdsprachen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnHinweise_Click(sender As Object, e As EventArgs) Handles BtnHinweise.Click
+
+    End Sub
+
+    ''' <summary>
+    ''' Fenster schliessen
+    ''' Änderungen an der Rezeptur werden gespeichert
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnClose_Click(sender As Object, e As EventArgs) Handles BtnClose.Click
+        Me.Close()
     End Sub
 End Class
