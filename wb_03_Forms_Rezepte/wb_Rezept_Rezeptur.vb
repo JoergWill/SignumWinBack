@@ -21,16 +21,15 @@ Public Class wb_Rezept_Rezeptur
         InitializeComponent()
 
         'Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        'Rezeptnummer und Rzept-Variante merken
+        'Rezeptnummer und Rezept-Variante merken
         _RzNummer = RzNummer
         _RzVariante = RzVariante
-
-        'TODO Rezeptdaten aus DB lesen und anzeigen
 
         ' TabControl - HideTabs
         Wb_TabControl.HideTabs = True
 
-        Rezept = New wb_Rezept(RzNummer, Nothing, RzVariante)
+        Rezept = New wb_Rezept(_RzNummer, Nothing, _RzVariante)
+        Me.Text = Rezept.RezeptNummer & "(" & Rezept.Variante & ") " & Rezept.RezeptBezeichnung
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
         'alle Zeilen aufklappen

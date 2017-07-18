@@ -243,7 +243,7 @@ Public Class wb_Rezeptschritt
             Select Case _Type
                 Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
                     If _ParamNr <= 1 And (_RezGewicht > 0) And Not ZaehltNichtZumRezeptGewicht Then
-                        Dim Prozent As Double = (Sollwert / _RezGewicht) * 100
+                        Dim Prozent As Double = (wb_Functions.StrToDouble(_Sollwert) / _RezGewicht) * 100
                         Return wb_Functions.FormatStr(Prozent, 2)
                     Else
                         If ZaehltNichtZumRezeptGewicht Then
@@ -432,17 +432,21 @@ Public Class wb_Rezeptschritt
             'Rezept im Rezept
             If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
                 'TA aus Rezept-im-Rezept
-                _TA_Mehlmenge = (RezeptImRezept.RezeptGesamtMehlmenge * Sollwert) / RezeptImRezept.RezeptGewicht
+                If RezeptImRezept.RezeptGewicht > 0 Then
+                    _TA_Mehlmenge = (RezeptImRezept.RezeptGesamtMehlmenge * wb_Functions.StrToDouble(_Sollwert)) / RezeptImRezept.RezeptGewicht
+                Else
+                    _TA_Mehlmenge = 0
+                End If
             Else
                 'Mehlanteil der aktuellen Komponente berechnen
                 _TA_Mehlmenge = 0
                 'Mehl hat TA=100
                 If TA = wb_Global.TA_Mehl Then
-                    _TA_Mehlmenge = Sollwert
+                    _TA_Mehlmenge = wb_Functions.StrToDouble(_Sollwert)
                 End If
                 'Sauerteig-Komponente (hat eigene TA) - Mehlanteil herausrechnen
                 If TA > wb_Global.TA_Mehl Then
-                    _TA_Mehlmenge = (100 / TA) * Sollwert
+                    _TA_Mehlmenge = (100 / TA) * wb_Functions.StrToDouble(_Sollwert)
                 End If
             End If
         End Get
@@ -474,18 +478,22 @@ Public Class wb_Rezeptschritt
             'Rezept im Rezept
             If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
                 'TA aus Rezept-im-Rezept
-                _TA_Wassermenge = (RezeptImRezept.RezeptGesamtWassermenge * Sollwert) / RezeptImRezept.RezeptGewicht
+                If RezeptImRezept.RezeptGewicht > 0 Then
+                    _TA_Wassermenge = (RezeptImRezept.RezeptGesamtWassermenge * wb_Functions.StrToDouble(_Sollwert)) / RezeptImRezept.RezeptGewicht
+                Else
+                    _TA_Wassermenge = 0
+                End If
             Else
                 'Wasseranteil der aktuellen Komponente berechnen
                 _TA_Wassermenge = 0
                 'Wasserkomponente oder Eis oder Sauerteig-Wasser oder Handwasser
                 If (ParamNr = 1) And ((TA = wb_Global.TA_Wasser) Or (_Type = KO_TYPE_WASSERKOMPONENTE) Or (_Type = KO_TYPE_EISKOMPONENTE) Or (_Type = KO_TYPE_SAUER_WASSER)) Then
-                    _TA_Wassermenge = Sollwert
+                    _TA_Wassermenge = wb_Functions.StrToDouble(_Sollwert)
                 End If
 
                 'Sauerteig-Komponente (hat eigene TA) - Wasseranteil herausrechnen
                 If TA > 100 Then
-                    _TA_Wassermenge = Sollwert * (1 - (100 / TA))
+                    _TA_Wassermenge = wb_Functions.StrToDouble(_Sollwert) * (1 - (100 / TA))
                 End If
 
                 'Komponente mit Flüssiganteil TA < 100 - Wasseranteil herausrechnen
@@ -494,7 +502,7 @@ Public Class wb_Rezeptschritt
                 'Hier wird (fälschlicherweise) als TA der Wasseranteil eingetragen
                 'also bei Flüssighefe mit 50% Wasser - TA 50
                 If (TA < 100) And (TA <> 0) And (TA > 0) Then
-                    _TA_Wassermenge = Sollwert * (TA / 100)
+                    _TA_Wassermenge = wb_Functions.StrToDouble(_Sollwert) * (TA / 100)
                 End If
             End If
         End Get
@@ -523,12 +531,16 @@ Public Class wb_Rezeptschritt
         Get
             'Rezept im Rezept
             If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
-                'Preis aus Rezept-im-Rezept
-                _PreisProKg = (RezeptImRezept.RezeptPreis) / RezeptImRezept.RezeptGewicht
-                Return _PreisProKg * _Sollwert
+                If (RezeptImRezept.RezeptGewicht > 0) Then
+                    'Preis aus Rezept-im-Rezept
+                    _PreisProKg = (RezeptImRezept.RezeptPreis) / RezeptImRezept.RezeptGewicht
+                Else
+                    _PreisProKg = 0
+                End If
+                Return _PreisProKg * wb_Functions.StrToDouble(_Sollwert)
             Else
                 If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
-                    Return _PreisProKg * _Sollwert
+                    Return _PreisProKg * wb_Functions.StrToDouble(_Sollwert)
                 Else
                     Return 0
                 End If
@@ -590,7 +602,7 @@ Public Class wb_Rezeptschritt
             If Not _ktTyp301.IsCalculated Then
 
                 'Rezept im Rezept
-                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
+                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing And _BruttoRezGewicht > 0 Then
                     RezeptImRezept.KtTyp301.AddNwt(_ktTyp301, _Sollwert / _BruttoRezGewicht)
                 Else
 
@@ -602,7 +614,9 @@ Public Class wb_Rezeptschritt
 
                     'alle Unter-Rezept-Schritte berechnen
                     For Each x As wb_Rezeptschritt In ChildSteps
-                        x.ktTyp301.AddNwt(_ktTyp301, wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht)
+                        If _BruttoRezGewicht > 0 Then
+                            x.ktTyp301.AddNwt(_ktTyp301, wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht)
+                        End If
                     Next
 
                 End If
@@ -648,9 +662,13 @@ Public Class wb_Rezeptschritt
                                         'TODO if undefined set merker
                                         _ktTyp301.Allergen(ParamNr) = wb_Functions.StringtoAllergen(Value)
                                     Else
-                                        _ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value) * _Sollwert / _BruttoRezGewicht
+                                        If _BruttoRezGewicht > 0 Then
+                                            _ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value) * wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht
+                                        Else
+                                            _ktTyp301.Naehrwert(ParamNr) = 0
+                                        End If
+
                                         'TODO if undefined set merker
-                                        '_ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value)
                                     End If
                                 End If
                         End Select

@@ -17,6 +17,11 @@ Imports WinBack
 ''' Die Anzeige erfolgt im VirtualTree direkt mit der Angabe des Root-Nodes
 ''' </summary>
 Public Class wb_Rezept
+    Private _RezeptNummer As String
+    Private _RezeptBezeichnung As String
+
+
+
     Private _RootRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
     Private _SQLRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
     Private _RezeptSchritt As wb_Rezeptschritt
@@ -26,13 +31,14 @@ Public Class wb_Rezept
     Private _RezeptPreis As Double
     Private _RezeptGesamtMehlmenge As Double
     Private _RezeptGesamtWasserMenge As Double
-    Private _RezeptNummer As Integer
+    Private _RezeptNr As Integer
+    Private _RezeptVariante As Integer
     Private _ktTyp301 As New wb_KomponParam301
     Public _Parent As Object
 
-    Public ReadOnly Property RezeptNummer As Integer
+    Public ReadOnly Property RezeptNr As Integer
         Get
-            Return _RezeptNummer
+            Return _RezeptNr
         End Get
     End Property
     ''' <summary>
@@ -170,6 +176,30 @@ Public Class wb_Rezept
         End Get
     End Property
 
+    Public Property RezeptNummer As String
+        Get
+            Return _RezeptNummer
+        End Get
+        Set(value As String)
+            _RezeptNummer = value
+        End Set
+    End Property
+
+    Public Property RezeptBezeichnung As String
+        Get
+            Return _RezeptBezeichnung
+        End Get
+        Set(value As String)
+            _RezeptBezeichnung = value
+        End Set
+    End Property
+
+    Public ReadOnly Property Variante As String
+        Get
+            Return _RezeptVariante
+        End Get
+    End Property
+
     ''' <summary>
     ''' Erzeugt ein neues Rezeptur-Objekt.
     ''' Nach dem Einlesen der Rezeptschritte aus der Datenbank wird das Rezept-Gesamtgewicht berechnet.
@@ -179,23 +209,29 @@ Public Class wb_Rezept
     ''' Fehlermeldungen (Rekursiver Aufruf von Rezept-im-Rezept) zur Information mit als Fehlermeldung
     ''' ausgegeben.
     ''' </summary>
-    Public Sub New(RzNr As Integer, Parent As Object, Optional RzVariante As Integer = 1, Optional KNummer As String = "", Optional KBezeichnung As String = "")
+    Public Sub New(RzNr As Integer, Parent As Object, Optional ByRef RzVariante As Integer = 1, Optional KNummer As String = "", Optional KBezeichnung As String = "")
         'Zeiger auf die aufrufende Klasse
         _Parent = Parent
-        _RezeptNummer = RzNr
+        _RezeptNr = RzNr
+        _RezeptVariante = RzVariante
 
         'Rekursion begrenzen - Parent ermitteln
         Dim x As wb_Rezept = Me._Parent
         While x IsNot Nothing
-            If x.RezeptNummer = RzNr Then
+            If x.RezeptNr = RzNr Then
                 Throw New Exception("Rezept verweist auf sich selbst bei Komponente " & KNummer & " " & KBezeichnung)
                 Exit Sub
             End If
             x = x._Parent
         End While
 
+        'Rezeptkopf mit Variante x aus der Datenbank einlesen
+        MySQLdbReadRzKopf(_RezeptNr, _RezeptVariante)
+        'Rezept-Nummer/Name/Variante im Fenster-Titel 
+
+
         'alle Rezeptschritte aus der Datenbank einlesen
-        MySQLdbRead(RzNr, RzVariante)
+        MySQLdbReadRzSchritt(_RezeptNr, _RezeptVariante)
         'nach Einlesen aus der Datenbank müssen alle Werte neu berechnet werden
         Recalculate = True
         'Rezeptgesamtgewicht berechnen und an alle Rezeptschritte propagieren
@@ -209,11 +245,40 @@ Public Class wb_Rezept
     End Sub
 
     ''' <summary>
+    ''' Liest die Rezeptkopfdaten der RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht
+    ''' existiert, wird die Variante 1 gelesen (Standard-Variante). Wenn Variante 1 nicht exisitiert (Sauerteig-Rezept) wird Variante 0
+    ''' gelesen. Die entsprechende Variante wird (byRef) korrigiert.
+    ''' Wenn kein Rezeptkopf existiert, wird False zurückgegeben
+    ''' </summary>
+    ''' <param name="RezeptNummer"></param>
+    ''' <param name="Variante"></param>
+    ''' <returns></returns>
+    Private Function MySQLdbReadRzKopf(RezeptNummer As Integer, ByRef Variante As Integer) As Boolean
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+
+        'Suche nach Rz_Nr
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptKopf, RezeptNummer, Variante)
+
+        'Datensätze aus Tabelle Rezeptschritte lesen
+        If winback.sqlSelect(sql) Then
+            If winback.Read Then
+                MySQLdbRead(winback.MySqlRead)
+                winback.Close()
+                Return True
+            End If
+        End If
+        winback.Close()
+        Return False
+    End Function
+
+    ''' <summary>
     ''' Liest alle Datenfelder zu der angegebenen Rezept-Nummer aus der WinBack-Datenbank. 
     ''' 
     ''' Gibt True zurück, wenn der Datensatz gefunden wurde.
     ''' </summary>
-    Private Function MySQLdbRead(RezeptNummer As Integer, Variante As Integer) As Boolean
+    Private Function MySQLdbReadRzSchritt(RezeptNummer As Integer, Variante As Integer) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
@@ -418,6 +483,19 @@ Public Class wb_Rezept
                 'RezeptNr (Rezept im Rezept)
                 Case "KA_RZ_Nr"
                     _SQLRezeptSchritt.RezeptNr = Value
+
+
+                'Rezeptkopf - Rezeptnummer
+                Case "RZ_Variante_Nr"
+                    _RezeptVariante = Value
+
+                'Rezeptkopf - Rezept-Alphanummer
+                Case "RZ_Nr_AlNum"
+                    RezeptNummer = Value
+
+                'Rezeptkopf - Rezept-Bezeichnung
+                Case "RZ_Bezeichnung"
+                    RezeptBezeichnung = Value
 
             End Select
         Catch ex As Exception
