@@ -1,4 +1,9 @@
-﻿Public Class wb_Rezept_Shared
+﻿Imports combit.ListLabel22
+Imports combit.ListLabel22.DataProviders
+
+Public Class wb_Rezept_Shared
+    Public Shared LL As New ListLabel()
+
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
 
@@ -24,6 +29,7 @@
     Public Sub New()
         LoadVariantenTexte()
         LoadLinienGruppenTexte()
+
     End Sub
 
     Private Shared Sub LoadVariantenTexte()

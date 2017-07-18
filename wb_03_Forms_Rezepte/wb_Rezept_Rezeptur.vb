@@ -1,4 +1,5 @@
-﻿Imports Infralution.Controls.VirtualTree
+﻿Imports combit.ListLabel22.DataProviders
+Imports Infralution.Controls.VirtualTree
 
 Public Class wb_Rezept_Rezeptur
 
@@ -70,9 +71,13 @@ Public Class wb_Rezept_Rezeptur
         tbRzMehlmenge.Text = wb_Functions.FormatStr(Rezept.RezeptGesamtMehlmenge, 2)
         'Rezept TA
         tbRzTA.Text = CInt(Rezept.RezeptTA)
+
+
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
+        wb_Rezept_Shared.LL.DataSource = New ObjectDataProvider(Rezept)
+        wb_Rezept_Shared.LL.Design()
     End Sub
 
     ''' <summary>
