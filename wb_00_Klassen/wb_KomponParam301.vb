@@ -8,6 +8,7 @@ Public Class wb_KomponParam301
     Private Structure Typ301
         Public _Allergen As AllergenInfo
         Public _Naehrwert As Double
+        Public _FehlerKompName As String
     End Structure
 
     'Array aller Nährwerte/Allergene
@@ -96,6 +97,15 @@ Public Class wb_KomponParam301
         End Set
     End Property
 
+    Public Property FehlerKompName(index As Integer) As String
+        Get
+            Return NaehrwertInfo(index)._FehlerKompName
+        End Get
+        Set(value As String)
+            NaehrwertInfo(index)._FehlerKompName = value
+        End Set
+    End Property
+
     Public WriteOnly Property dlNaehrWert(index As String) As String
         Set(value As String)
             Dim idx As Integer = DatenLinkToIndex(index)
@@ -139,6 +149,7 @@ Public Class wb_KomponParam301
 
     ''' <summary>
     ''' Addiert alle Nährwerte und Allergene zum übergebenen KomponentenParameter-Array
+    ''' Die Bezeichnungen der fehlerhaften Komponenten werden aneinander gehängt
     ''' </summary>
     ''' <param name="_ktTyp301"></param>
     Public Sub AddNwt(ByRef _ktTyp301 As wb_KomponParam301, Faktor As Double)
@@ -147,6 +158,13 @@ Public Class wb_KomponParam301
                 _ktTyp301.Allergen(i) = AddNwtAllergen(_ktTyp301.Allergen(i), Allergen(i))
             Else
                 _ktTyp301.Naehrwert(i) += Naehrwert(i) * Faktor
+            End If
+            If FehlerKompName(i) <> "" Then
+                If _ktTyp301.FehlerKompName(i) = "" Then
+                    _ktTyp301.FehlerKompName(i) = FehlerKompName(i)
+                Else
+                    _ktTyp301.FehlerKompName(i) += "/" & FehlerKompName(i)
+                End If
             End If
         Next
     End Sub

@@ -21,7 +21,12 @@
     Public Shared aktChargeMax As Double
     Public Shared aktChargeOpt As Double
 
-    Public Shared Sub LoadVariantenTexte()
+    Public Sub New()
+        LoadVariantenTexte()
+        LoadLinienGruppenTexte()
+    End Sub
+
+    Private Shared Sub LoadVariantenTexte()
         'HashTable mit der Übersetzung der Variante-Nummer in die Varianten-Bezeichnung laden
         'wenn die Varianten-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen
@@ -34,7 +39,7 @@
         winback.Close()
     End Sub
 
-    Public Shared Sub LoadLinienGruppenTexte()
+    Private Shared Sub LoadLinienGruppenTexte()
         'HashTable mit der Übersetzung der Liniengruppen-Nummer in die Liniengruppen-Bezeichnung laden
         'wenn die Liniengruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen

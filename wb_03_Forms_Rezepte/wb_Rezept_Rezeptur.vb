@@ -29,20 +29,47 @@ Public Class wb_Rezept_Rezeptur
         Wb_TabControl.HideTabs = True
 
         Rezept = New wb_Rezept(_RzNummer, Nothing, _RzVariante)
-        Me.Text = Rezept.RezeptNummer & "(" & Rezept.Variante & ") " & Rezept.RezeptBezeichnung
+        Me.Text = Rezept.RezeptNummer & "/V" & Rezept.Variante & " " & Rezept.RezeptBezeichnung
+
+        'Rezeptnummer
+        tbRzNummer.Text = Rezept.RezeptNummer
+        'Rezept-Name
+        tbRezeptName.Text = Rezept.RezeptBezeichnung
+        'Kommentar-Feld
+        tbRzKommentar.Text = Rezept.RezeptKommentar
+        'Teigtemperatur (Rezept)
+        tbRzTeigTemp.Text = wb_Functions.FormatStr(Rezept.RezeptTeigTemperatur, 2)
+
+        'Änderung Nummer
+        tbRzAendNr.Text = Rezept.AenderungNummer
+        'Änderung Datum
+        tbRzAendDatum.Text = Rezept.AenderungDatum
+        'Änderung Name
+        tbRzAendName.Text = Rezept.AenderungName
+
+        'Combo-Box(Rezept-Varianten) mit Werten füllen
+        cbVariante.Fill(wb_Rezept_Shared.RzVariante)
+        'Combo-Box(Rezept-Varianten) mit Werten füllen
+        cbLiniengruppe.Fill(wb_Rezept_Shared.LinienGruppe)
+        'Eintrag in Combo-Box Liniengruppe ausfüllen
+        cbLiniengruppe.SetTextFromKey(Rezept.LinienGruppe)
+        'Eintrag in Combo-Box Rezeptvariante ausfüllen
+        cbVariante.SetTextFromKey(Rezept.Variante)
+        tbRzVariante.Text = Rezept.Variante
+
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
         'alle Zeilen aufklappen
         VirtualTree.RootRow.ExpandChildren(True)
 
         'Gesamt-Rohstoffpreis der Rezeptur (aktuell berechnet)
-        Label2.Text = Rezept.RezeptPreis
+        tbRzPreis.Text = wb_Functions.FormatStr(Rezept.RezeptPreis, 2)
         'Rezeptgewicht (aktuell berechnet)
-        Label3.Text = Rezept.RezeptGewicht
+        tbRzGewicht.Text = wb_Functions.FormatStr(Rezept.RezeptGewicht, 3)
         'Mehlgesamt-Menge
-        Label4.Text = Rezept.RezeptGesamtMehlmenge
+        tbRzMehlmenge.Text = wb_Functions.FormatStr(Rezept.RezeptGesamtMehlmenge, 2)
         'Rezept TA
-        Label5.Text = CInt(Rezept.RezeptTA)
+        tbRzTA.Text = CInt(Rezept.RezeptTA)
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
@@ -87,10 +114,14 @@ Public Class wb_Rezept_Rezeptur
             NwtTabelle(i).Wert = Rezept.KtTyp301.Wert(i)
             NwtTabelle(i).Einheit = wb_KomponParam301_Global.kt301Param(i).Einheit
             NwtTabelle(i).Header = wb_Functions.kt301GruppeToString(wb_KomponParam301_Global.kt301Param(i).Gruppe)
+            NwtTabelle(i).FehlerText = Rezept.KtTyp301.FehlerKompName(i)
+            Debug.Print("FEHLER :" & Rezept.KtTyp301.FehlerKompName(i))
 
             If NwtTabelle(i).Visible Then
                 Debug.Print(NwtTabelle(i).Header & " " & NwtTabelle(i).Text & " " & NwtTabelle(i).Wert & " " & NwtTabelle(i).Einheit)
             End If
+
+
         Next
 
         'Daten im Grid anzeigen
@@ -160,16 +191,39 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     Private Sub VirtualTree_CellDoubleClick(sender As Object, e As EventArgs) Handles VirtualTree.CellDoubleClick
+        'Doppel-Click auf VirtualTree-Cell
         Dim sCellWidget As CellWidget = sender
+        'interne Rezeptnummer zum Rezeptschritt ermitteln
         Dim RezeptNr As Integer = DirectCast(sCellWidget.Tree.SelectedItem, wb_Rezeptschritt).RezeptNr
+        'wenn es eine Rezept-Im-Rezept-Struktur gibt wird das Rezept in einem neuen Fenster geöffnet
         If RezeptNr > 0 Then
             'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen
-            Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
-            'Fenster-Text
-            'TODO Rezeptname und Alpha-Nummer im Fenster-Titel anzeigen
-            'Rezeptur.Text = wb_Rezept_Shared.aktRzNummer + " " + wb_Rezept_Shared.aktRzName
+            Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, _RzVariante)
             'MDI-Fenster anzeigen
             Rezeptur.Show()
         End If
+    End Sub
+
+    Private Sub BtnVerwendung_Click(sender As Object, e As EventArgs) Handles BtnVerwendung.Click
+        If tb_Verwendung.Visible Then
+            'Rezeptur anzeigen
+            Wb_TabControl.SelectedTab = tb_Rezeptur
+        Else
+            'Verwendung anzeigen
+            'Liste der Tabellen-Überschriften
+            'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
+            'Spalten ohne Bezeichnung werden ausgeblendet
+            Dim sColNames As New List(Of String) From {"Nummer", "&Name", "Kommentar"}
+            For Each sName In sColNames
+                GridView_RzVerwendung.ColNames.Add(sName)
+            Next
+
+            'DataGrid füllen
+            GridView_RzVerwendung.LoadData(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptVerwendung, _RzNummer), "Rezept-Verwendung")
+
+
+            Wb_TabControl.SelectedTab = tb_Verwendung
+        End If
+
     End Sub
 End Class

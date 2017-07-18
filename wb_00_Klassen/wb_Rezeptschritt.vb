@@ -658,15 +658,27 @@ Public Class wb_Rezeptschritt
                            'Parameter-Wert
                             Case "RP_Wert"
                                 If ParamTyp = 301 Then
+
+                                    Debug.Print("BEZEICHNUNG PARAM_NR RP_WERT " & _Bezeichnung & " " & ParamNr & " " & Value)
+
+
                                     If wb_KomponParam301_Global.IsAllergen(ParamNr) Then
                                         'TODO if undefined set merker
                                         _ktTyp301.Allergen(ParamNr) = wb_Functions.StringtoAllergen(Value)
-                                    Else
-                                        If _BruttoRezGewicht > 0 Then
-                                            _ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value) * wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht
-                                        Else
-                                            _ktTyp301.Naehrwert(ParamNr) = 0
+                                        If (_ktTyp301.Allergen(ParamNr) = wb_Global.AllergenInfo.N) Or (_ktTyp301.Allergen(ParamNr) = wb_Global.AllergenInfo.ERR) Then
+                                            _ktTyp301.FehlerKompName(ParamNr) = _Bezeichnung
                                         End If
+                                    Else
+                                        If (Value IsNot Nothing) And (Value <> "") Then
+                                            If _BruttoRezGewicht > 0 Then
+                                                _ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value) * wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht
+                                            Else
+                                                _ktTyp301.Naehrwert(ParamNr) = 0
+                                            End If
+                                        Else
+                                            _ktTyp301.FehlerKompName(ParamNr) = _Bezeichnung
+                                        End If
+
 
                                         'TODO if undefined set merker
                                     End If

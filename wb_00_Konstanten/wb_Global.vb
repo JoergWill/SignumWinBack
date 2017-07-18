@@ -36,6 +36,7 @@
         Public Wert As String
         Public Einheit As String
         Public Header As String
+        Public FehlerText As String
     End Structure
 
     Enum ProgVariante

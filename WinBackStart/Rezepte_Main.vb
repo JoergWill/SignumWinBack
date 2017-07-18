@@ -4,6 +4,8 @@ Public Class Rezepte_Main
     Public RezeptDetails As New wb_Rezept_Details
     Public RezeptHinweise As New wb_Rezept_Hinweise
     Public RezeptHistorie As New wb_Rezept_Historie
+    Public Rezept_Shared As New wb_Rezept_Shared
+
 
     Private Sub SaveDockBarConfig()
         Try
@@ -48,9 +50,8 @@ Public Class Rezepte_Main
 
     Private Sub Rezepte_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'HashTable mit der Übersetzung der Varianten-Nummer zu Rezept-Varianten-Bezeichnung
-        wb_Rezept_Shared.LoadVariantenTexte()
         'HashTable mit der Übersetzung der Liniengruppen-Nummer zu Liniengruppen-Bezeichnung
-        wb_Rezept_Shared.LoadLinienGruppenTexte()
+        'wb_Rezept_Shared.LoadLinienGruppenTexte()
 
         'Fenster laden
         LoadDockBarConfig()

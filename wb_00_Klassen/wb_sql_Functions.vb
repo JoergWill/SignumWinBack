@@ -1,5 +1,4 @@
 ﻿Imports MySql.Data.MySqlClient
-Imports WinBack.wb_Global
 Imports WinBack.wb_Sql_Selects
 
 ''' <summary>
@@ -78,6 +77,14 @@ Public Class wb_sql_Functions
             Return True
         Else
             Return False
+        End If
+    End Function
+
+    Public Shared Function ReaderItem(ByRef sqlReader As MySqlDataReader, FieldName As String) As String
+        If sqlReader.Item(FieldName) = "" Then
+            Return sqlReader.Item(FieldName)
+        Else
+            Return ""
         End If
     End Function
 

@@ -29,25 +29,54 @@ Partial Class wb_Rezept_Rezeptur
         Dim ObjectCellBinding4 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding5 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding6 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Me.BtnDrucken = New System.Windows.Forms.Button()
-        Me.BtnKopieren = New System.Windows.Forms.Button()
-        Me.BtnLoeschen = New System.Windows.Forms.Button()
-        Me.BtnVerwendung = New System.Windows.Forms.Button()
-        Me.BtnHinweise = New System.Windows.Forms.Button()
-        Me.BtnNwt = New System.Windows.Forms.Button()
-        Me.BtnClose = New System.Windows.Forms.Button()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.Label11 = New System.Windows.Forms.Label()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.ToolStripLeftMargin = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripRezeptChange = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripAllergenLegende = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.gbDetail = New System.Windows.Forms.GroupBox()
+        Me.tbRzVariante = New System.Windows.Forms.TextBox()
+        Me.TextBox9 = New System.Windows.Forms.TextBox()
+        Me.lblRzKnKennLinie = New System.Windows.Forms.Label()
+        Me.lblEinhPreis = New System.Windows.Forms.Label()
+        Me.lblEinhMehlmenge = New System.Windows.Forms.Label()
+        Me.tbRzTA = New System.Windows.Forms.TextBox()
+        Me.tbRzMehlmenge = New System.Windows.Forms.TextBox()
+        Me.tbRzPreis = New System.Windows.Forms.TextBox()
+        Me.tbRzAendName = New System.Windows.Forms.TextBox()
+        Me.tbRzGewicht = New System.Windows.Forms.TextBox()
+        Me.lblRzLinienGruppe = New System.Windows.Forms.Label()
+        Me.tbRzTeigTemp = New System.Windows.Forms.TextBox()
+        Me.lblRzTeigTemp = New System.Windows.Forms.Label()
+        Me.tbRzAendDatum = New System.Windows.Forms.TextBox()
+        Me.lblRzAendDatum = New System.Windows.Forms.Label()
+        Me.tbRzAendNr = New System.Windows.Forms.TextBox()
+        Me.lblRzAendNr = New System.Windows.Forms.Label()
+        Me.lblRzTA = New System.Windows.Forms.Label()
+        Me.lblRzAendName = New System.Windows.Forms.Label()
+        Me.lblRzGewicht = New System.Windows.Forms.Label()
+        Me.lblEinhTeigTemp = New System.Windows.Forms.Label()
+        Me.lblEinhRzGewicht = New System.Windows.Forms.Label()
+        Me.lblRzMehlMenge = New System.Windows.Forms.Label()
+        Me.lblRzVariante = New System.Windows.Forms.Label()
+        Me.lblRzKommentar = New System.Windows.Forms.Label()
+        Me.tbRzKommentar = New System.Windows.Forms.TextBox()
+        Me.tbRezeptName = New System.Windows.Forms.TextBox()
+        Me.lblRzName = New System.Windows.Forms.Label()
+        Me.tbRzNummer = New System.Windows.Forms.TextBox()
+        Me.lblRzNummer = New System.Windows.Forms.Label()
+        Me.lblRzPreis = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.BtnClose = New System.Windows.Forms.Button()
+        Me.BtnNwt = New System.Windows.Forms.Button()
+        Me.BtnHinweise = New System.Windows.Forms.Button()
+        Me.BtnVerwendung = New System.Windows.Forms.Button()
+        Me.BtnLoeschen = New System.Windows.Forms.Button()
+        Me.BtnKopieren = New System.Windows.Forms.Button()
+        Me.BtnDrucken = New System.Windows.Forms.Button()
+        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
+        Me.cbVariante = New WinBack.wb_ComboBox()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tb_Rezeptur = New System.Windows.Forms.TabPage()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
@@ -70,161 +99,17 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Hinweise = New System.Windows.Forms.TabPage()
         Me.TextHinweise = New System.Windows.Forms.TextBox()
         Me.tb_Verwendung = New System.Windows.Forms.TabPage()
+        Me.GridView_RzVerwendung = New WinBack.wb_DataGridView()
         Me.StatusStrip.SuspendLayout()
+        Me.gbDetail.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.Wb_TabControl.SuspendLayout()
         Me.tb_Rezeptur.SuspendLayout()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tb_Hinweise.SuspendLayout()
+        Me.tb_Verwendung.SuspendLayout()
+        CType(Me.GridView_RzVerwendung, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'BtnDrucken
-        '
-        Me.BtnDrucken.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnDrucken.Location = New System.Drawing.Point(142, 200)
-        Me.BtnDrucken.Name = "BtnDrucken"
-        Me.BtnDrucken.Size = New System.Drawing.Size(138, 52)
-        Me.BtnDrucken.TabIndex = 2
-        Me.BtnDrucken.TabStop = False
-        Me.BtnDrucken.Text = "Drucken"
-        Me.BtnDrucken.UseVisualStyleBackColor = True
-        '
-        'BtnKopieren
-        '
-        Me.BtnKopieren.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnKopieren.Location = New System.Drawing.Point(12, 200)
-        Me.BtnKopieren.Name = "BtnKopieren"
-        Me.BtnKopieren.Size = New System.Drawing.Size(131, 52)
-        Me.BtnKopieren.TabIndex = 3
-        Me.BtnKopieren.TabStop = False
-        Me.BtnKopieren.Text = "Kopieren"
-        Me.BtnKopieren.UseVisualStyleBackColor = True
-        '
-        'BtnLoeschen
-        '
-        Me.BtnLoeschen.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnLoeschen.Location = New System.Drawing.Point(279, 200)
-        Me.BtnLoeschen.Name = "BtnLoeschen"
-        Me.BtnLoeschen.Size = New System.Drawing.Size(138, 52)
-        Me.BtnLoeschen.TabIndex = 4
-        Me.BtnLoeschen.TabStop = False
-        Me.BtnLoeschen.Text = "Löschen"
-        Me.BtnLoeschen.UseVisualStyleBackColor = True
-        '
-        'BtnVerwendung
-        '
-        Me.BtnVerwendung.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnVerwendung.Location = New System.Drawing.Point(416, 200)
-        Me.BtnVerwendung.Name = "BtnVerwendung"
-        Me.BtnVerwendung.Size = New System.Drawing.Size(138, 52)
-        Me.BtnVerwendung.TabIndex = 5
-        Me.BtnVerwendung.TabStop = False
-        Me.BtnVerwendung.Text = "Verwendung"
-        Me.BtnVerwendung.UseVisualStyleBackColor = True
-        '
-        'BtnHinweise
-        '
-        Me.BtnHinweise.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnHinweise.Location = New System.Drawing.Point(553, 200)
-        Me.BtnHinweise.Name = "BtnHinweise"
-        Me.BtnHinweise.Size = New System.Drawing.Size(138, 52)
-        Me.BtnHinweise.TabIndex = 6
-        Me.BtnHinweise.TabStop = False
-        Me.BtnHinweise.Text = "Hinweise"
-        Me.BtnHinweise.UseVisualStyleBackColor = True
-        '
-        'BtnNwt
-        '
-        Me.BtnNwt.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnNwt.Location = New System.Drawing.Point(690, 200)
-        Me.BtnNwt.Name = "BtnNwt"
-        Me.BtnNwt.Size = New System.Drawing.Size(138, 52)
-        Me.BtnNwt.TabIndex = 7
-        Me.BtnNwt.TabStop = False
-        Me.BtnNwt.Text = "Nährwerte"
-        Me.BtnNwt.UseVisualStyleBackColor = True
-        '
-        'BtnClose
-        '
-        Me.BtnClose.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnClose.Location = New System.Drawing.Point(827, 200)
-        Me.BtnClose.Name = "BtnClose"
-        Me.BtnClose.Size = New System.Drawing.Size(138, 52)
-        Me.BtnClose.TabIndex = 8
-        Me.BtnClose.TabStop = False
-        Me.BtnClose.Text = "Schliessen"
-        Me.BtnClose.UseVisualStyleBackColor = True
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(172, 21)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(39, 13)
-        Me.Label2.TabIndex = 9
-        Me.Label2.Text = "Label2"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(172, 51)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(39, 13)
-        Me.Label3.TabIndex = 10
-        Me.Label3.Text = "Label3"
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(172, 80)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(39, 13)
-        Me.Label4.TabIndex = 11
-        Me.Label4.Text = "Label4"
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(172, 106)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(39, 13)
-        Me.Label5.TabIndex = 12
-        Me.Label5.Text = "Label5"
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(90, 21)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(30, 13)
-        Me.Label8.TabIndex = 15
-        Me.Label8.Text = "Preis"
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(90, 51)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(46, 13)
-        Me.Label9.TabIndex = 16
-        Me.Label9.Text = "Gewicht"
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(90, 80)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(69, 13)
-        Me.Label10.TabIndex = 17
-        Me.Label10.Text = "Gesamt Mehl"
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(90, 106)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(21, 13)
-        Me.Label11.TabIndex = 18
-        Me.Label11.Text = "TA"
         '
         'StatusStrip
         '
@@ -257,6 +142,433 @@ Partial Class wb_Rezept_Rezeptur
     "n / C -Contains"
         Me.ToolStripAllergenLegende.Visible = False
         '
+        'gbDetail
+        '
+        Me.gbDetail.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gbDetail.Controls.Add(Me.tbRzVariante)
+        Me.gbDetail.Controls.Add(Me.TextBox9)
+        Me.gbDetail.Controls.Add(Me.lblRzKnKennLinie)
+        Me.gbDetail.Controls.Add(Me.lblEinhPreis)
+        Me.gbDetail.Controls.Add(Me.lblEinhMehlmenge)
+        Me.gbDetail.Controls.Add(Me.tbRzTA)
+        Me.gbDetail.Controls.Add(Me.tbRzMehlmenge)
+        Me.gbDetail.Controls.Add(Me.tbRzPreis)
+        Me.gbDetail.Controls.Add(Me.tbRzAendName)
+        Me.gbDetail.Controls.Add(Me.tbRzGewicht)
+        Me.gbDetail.Controls.Add(Me.lblRzLinienGruppe)
+        Me.gbDetail.Controls.Add(Me.tbRzTeigTemp)
+        Me.gbDetail.Controls.Add(Me.lblRzTeigTemp)
+        Me.gbDetail.Controls.Add(Me.tbRzAendDatum)
+        Me.gbDetail.Controls.Add(Me.lblRzAendDatum)
+        Me.gbDetail.Controls.Add(Me.tbRzAendNr)
+        Me.gbDetail.Controls.Add(Me.lblRzAendNr)
+        Me.gbDetail.Controls.Add(Me.lblRzTA)
+        Me.gbDetail.Controls.Add(Me.lblRzAendName)
+        Me.gbDetail.Controls.Add(Me.lblRzGewicht)
+        Me.gbDetail.Controls.Add(Me.lblEinhTeigTemp)
+        Me.gbDetail.Controls.Add(Me.lblEinhRzGewicht)
+        Me.gbDetail.Controls.Add(Me.lblRzMehlMenge)
+        Me.gbDetail.Controls.Add(Me.lblRzVariante)
+        Me.gbDetail.Controls.Add(Me.cbLiniengruppe)
+        Me.gbDetail.Controls.Add(Me.cbVariante)
+        Me.gbDetail.Controls.Add(Me.lblRzKommentar)
+        Me.gbDetail.Controls.Add(Me.tbRzKommentar)
+        Me.gbDetail.Controls.Add(Me.tbRezeptName)
+        Me.gbDetail.Controls.Add(Me.lblRzName)
+        Me.gbDetail.Controls.Add(Me.tbRzNummer)
+        Me.gbDetail.Controls.Add(Me.lblRzNummer)
+        Me.gbDetail.Controls.Add(Me.lblRzPreis)
+        Me.gbDetail.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbDetail.Location = New System.Drawing.Point(12, 1)
+        Me.gbDetail.Name = "gbDetail"
+        Me.gbDetail.Size = New System.Drawing.Size(953, 145)
+        Me.gbDetail.TabIndex = 32
+        Me.gbDetail.TabStop = False
+        '
+        'tbRzVariante
+        '
+        Me.tbRzVariante.Location = New System.Drawing.Point(543, 49)
+        Me.tbRzVariante.Name = "tbRzVariante"
+        Me.tbRzVariante.Size = New System.Drawing.Size(39, 25)
+        Me.tbRzVariante.TabIndex = 69
+        Me.tbRzVariante.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'TextBox9
+        '
+        Me.TextBox9.Location = New System.Drawing.Point(870, 18)
+        Me.TextBox9.Name = "TextBox9"
+        Me.TextBox9.Size = New System.Drawing.Size(51, 25)
+        Me.TextBox9.TabIndex = 68
+        '
+        'lblRzKnKennLinie
+        '
+        Me.lblRzKnKennLinie.AutoSize = True
+        Me.lblRzKnKennLinie.Location = New System.Drawing.Point(801, 21)
+        Me.lblRzKnKennLinie.Name = "lblRzKnKennLinie"
+        Me.lblRzKnKennLinie.Size = New System.Drawing.Size(67, 17)
+        Me.lblRzKnKennLinie.TabIndex = 67
+        Me.lblRzKnKennLinie.Text = "KnKennl:"
+        '
+        'lblEinhPreis
+        '
+        Me.lblEinhPreis.AutoSize = True
+        Me.lblEinhPreis.Location = New System.Drawing.Point(922, 52)
+        Me.lblEinhPreis.Name = "lblEinhPreis"
+        Me.lblEinhPreis.Size = New System.Drawing.Size(16, 17)
+        Me.lblEinhPreis.TabIndex = 66
+        Me.lblEinhPreis.Text = "€"
+        '
+        'lblEinhMehlmenge
+        '
+        Me.lblEinhMehlmenge.AutoSize = True
+        Me.lblEinhMehlmenge.Location = New System.Drawing.Point(922, 83)
+        Me.lblEinhMehlmenge.Name = "lblEinhMehlmenge"
+        Me.lblEinhMehlmenge.Size = New System.Drawing.Size(23, 17)
+        Me.lblEinhMehlmenge.TabIndex = 65
+        Me.lblEinhMehlmenge.Text = "kg"
+        '
+        'tbRzTA
+        '
+        Me.tbRzTA.BackColor = System.Drawing.Color.Silver
+        Me.tbRzTA.Location = New System.Drawing.Point(870, 111)
+        Me.tbRzTA.Name = "tbRzTA"
+        Me.tbRzTA.ReadOnly = True
+        Me.tbRzTA.Size = New System.Drawing.Size(51, 25)
+        Me.tbRzTA.TabIndex = 64
+        Me.tbRzTA.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'tbRzMehlmenge
+        '
+        Me.tbRzMehlmenge.BackColor = System.Drawing.Color.Silver
+        Me.tbRzMehlmenge.Location = New System.Drawing.Point(870, 80)
+        Me.tbRzMehlmenge.Name = "tbRzMehlmenge"
+        Me.tbRzMehlmenge.ReadOnly = True
+        Me.tbRzMehlmenge.Size = New System.Drawing.Size(51, 25)
+        Me.tbRzMehlmenge.TabIndex = 63
+        Me.tbRzMehlmenge.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'tbRzPreis
+        '
+        Me.tbRzPreis.BackColor = System.Drawing.Color.Silver
+        Me.tbRzPreis.Location = New System.Drawing.Point(870, 49)
+        Me.tbRzPreis.Name = "tbRzPreis"
+        Me.tbRzPreis.ReadOnly = True
+        Me.tbRzPreis.Size = New System.Drawing.Size(51, 25)
+        Me.tbRzPreis.TabIndex = 62
+        Me.tbRzPreis.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'tbRzAendName
+        '
+        Me.tbRzAendName.BackColor = System.Drawing.Color.Silver
+        Me.tbRzAendName.Location = New System.Drawing.Point(588, 111)
+        Me.tbRzAendName.Name = "tbRzAendName"
+        Me.tbRzAendName.Size = New System.Drawing.Size(238, 25)
+        Me.tbRzAendName.TabIndex = 61
+        '
+        'tbRzGewicht
+        '
+        Me.tbRzGewicht.BackColor = System.Drawing.Color.Silver
+        Me.tbRzGewicht.Location = New System.Drawing.Point(588, 80)
+        Me.tbRzGewicht.Name = "tbRzGewicht"
+        Me.tbRzGewicht.Size = New System.Drawing.Size(91, 25)
+        Me.tbRzGewicht.TabIndex = 60
+        '
+        'lblRzLinienGruppe
+        '
+        Me.lblRzLinienGruppe.AutoSize = True
+        Me.lblRzLinienGruppe.Location = New System.Drawing.Point(473, 21)
+        Me.lblRzLinienGruppe.Name = "lblRzLinienGruppe"
+        Me.lblRzLinienGruppe.Size = New System.Drawing.Size(95, 17)
+        Me.lblRzLinienGruppe.TabIndex = 59
+        Me.lblRzLinienGruppe.Text = "Liniengruppe:"
+        '
+        'tbRzTeigTemp
+        '
+        Me.tbRzTeigTemp.Location = New System.Drawing.Point(348, 18)
+        Me.tbRzTeigTemp.Name = "tbRzTeigTemp"
+        Me.tbRzTeigTemp.Size = New System.Drawing.Size(86, 25)
+        Me.tbRzTeigTemp.TabIndex = 58
+        Me.tbRzTeigTemp.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblRzTeigTemp
+        '
+        Me.lblRzTeigTemp.AutoSize = True
+        Me.lblRzTeigTemp.Location = New System.Drawing.Point(271, 21)
+        Me.lblRzTeigTemp.Name = "lblRzTeigTemp"
+        Me.lblRzTeigTemp.Size = New System.Drawing.Size(71, 17)
+        Me.lblRzTeigTemp.TabIndex = 57
+        Me.lblRzTeigTemp.Text = "Teigtemp:"
+        '
+        'tbRzAendDatum
+        '
+        Me.tbRzAendDatum.BackColor = System.Drawing.Color.Silver
+        Me.tbRzAendDatum.Location = New System.Drawing.Point(274, 111)
+        Me.tbRzAendDatum.Name = "tbRzAendDatum"
+        Me.tbRzAendDatum.Size = New System.Drawing.Size(160, 25)
+        Me.tbRzAendDatum.TabIndex = 56
+        '
+        'lblRzAendDatum
+        '
+        Me.lblRzAendDatum.AutoSize = True
+        Me.lblRzAendDatum.Location = New System.Drawing.Point(228, 114)
+        Me.lblRzAendDatum.Name = "lblRzAendDatum"
+        Me.lblRzAendDatum.Size = New System.Drawing.Size(40, 17)
+        Me.lblRzAendDatum.TabIndex = 55
+        Me.lblRzAendDatum.Text = "vom:"
+        Me.lblRzAendDatum.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'tbRzAendNr
+        '
+        Me.tbRzAendNr.BackColor = System.Drawing.Color.Silver
+        Me.tbRzAendNr.Location = New System.Drawing.Point(115, 111)
+        Me.tbRzAendNr.Name = "tbRzAendNr"
+        Me.tbRzAendNr.ReadOnly = True
+        Me.tbRzAendNr.Size = New System.Drawing.Size(51, 25)
+        Me.tbRzAendNr.TabIndex = 54
+        Me.tbRzAendNr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'lblRzAendNr
+        '
+        Me.lblRzAendNr.AutoSize = True
+        Me.lblRzAendNr.Location = New System.Drawing.Point(11, 114)
+        Me.lblRzAendNr.Name = "lblRzAendNr"
+        Me.lblRzAendNr.Size = New System.Drawing.Size(74, 17)
+        Me.lblRzAendNr.TabIndex = 53
+        Me.lblRzAendNr.Text = "Änderung:"
+        '
+        'lblRzTA
+        '
+        Me.lblRzTA.AutoSize = True
+        Me.lblRzTA.Location = New System.Drawing.Point(835, 114)
+        Me.lblRzTA.Name = "lblRzTA"
+        Me.lblRzTA.Size = New System.Drawing.Size(29, 17)
+        Me.lblRzTA.TabIndex = 52
+        Me.lblRzTA.Text = "TA:"
+        '
+        'lblRzAendName
+        '
+        Me.lblRzAendName.AutoSize = True
+        Me.lblRzAendName.Location = New System.Drawing.Point(473, 114)
+        Me.lblRzAendName.Name = "lblRzAendName"
+        Me.lblRzAendName.Size = New System.Drawing.Size(115, 17)
+        Me.lblRzAendName.TabIndex = 51
+        Me.lblRzAendName.Text = "Änderung durch:"
+        '
+        'lblRzGewicht
+        '
+        Me.lblRzGewicht.AutoSize = True
+        Me.lblRzGewicht.Location = New System.Drawing.Point(473, 83)
+        Me.lblRzGewicht.Name = "lblRzGewicht"
+        Me.lblRzGewicht.Size = New System.Drawing.Size(109, 17)
+        Me.lblRzGewicht.TabIndex = 50
+        Me.lblRzGewicht.Text = "Rezeptgewicht:"
+        '
+        'lblEinhTeigTemp
+        '
+        Me.lblEinhTeigTemp.AutoSize = True
+        Me.lblEinhTeigTemp.Location = New System.Drawing.Point(436, 21)
+        Me.lblEinhTeigTemp.Name = "lblEinhTeigTemp"
+        Me.lblEinhTeigTemp.Size = New System.Drawing.Size(25, 17)
+        Me.lblEinhTeigTemp.TabIndex = 49
+        Me.lblEinhTeigTemp.Text = "°C"
+        '
+        'lblEinhRzGewicht
+        '
+        Me.lblEinhRzGewicht.AutoSize = True
+        Me.lblEinhRzGewicht.Location = New System.Drawing.Point(681, 83)
+        Me.lblEinhRzGewicht.Name = "lblEinhRzGewicht"
+        Me.lblEinhRzGewicht.Size = New System.Drawing.Size(23, 17)
+        Me.lblEinhRzGewicht.TabIndex = 48
+        Me.lblEinhRzGewicht.Text = "kg"
+        '
+        'lblRzMehlMenge
+        '
+        Me.lblRzMehlMenge.AutoSize = True
+        Me.lblRzMehlMenge.Location = New System.Drawing.Point(777, 83)
+        Me.lblRzMehlMenge.Name = "lblRzMehlMenge"
+        Me.lblRzMehlMenge.Size = New System.Drawing.Size(87, 17)
+        Me.lblRzMehlMenge.TabIndex = 47
+        Me.lblRzMehlMenge.Text = "Mehlmenge:"
+        '
+        'lblRzVariante
+        '
+        Me.lblRzVariante.AutoSize = True
+        Me.lblRzVariante.Location = New System.Drawing.Point(473, 52)
+        Me.lblRzVariante.Name = "lblRzVariante"
+        Me.lblRzVariante.Size = New System.Drawing.Size(64, 17)
+        Me.lblRzVariante.TabIndex = 46
+        Me.lblRzVariante.Text = "Variante:"
+        '
+        'lblRzKommentar
+        '
+        Me.lblRzKommentar.AutoSize = True
+        Me.lblRzKommentar.Location = New System.Drawing.Point(11, 83)
+        Me.lblRzKommentar.Name = "lblRzKommentar"
+        Me.lblRzKommentar.Size = New System.Drawing.Size(89, 17)
+        Me.lblRzKommentar.TabIndex = 43
+        Me.lblRzKommentar.Text = "Kommentar:"
+        '
+        'tbRzKommentar
+        '
+        Me.tbRzKommentar.Location = New System.Drawing.Point(115, 80)
+        Me.tbRzKommentar.Name = "tbRzKommentar"
+        Me.tbRzKommentar.Size = New System.Drawing.Size(319, 25)
+        Me.tbRzKommentar.TabIndex = 42
+        '
+        'tbRezeptName
+        '
+        Me.tbRezeptName.Location = New System.Drawing.Point(115, 49)
+        Me.tbRezeptName.Name = "tbRezeptName"
+        Me.tbRezeptName.Size = New System.Drawing.Size(319, 25)
+        Me.tbRezeptName.TabIndex = 41
+        '
+        'lblRzName
+        '
+        Me.lblRzName.AutoSize = True
+        Me.lblRzName.Location = New System.Drawing.Point(11, 52)
+        Me.lblRzName.Name = "lblRzName"
+        Me.lblRzName.Size = New System.Drawing.Size(102, 17)
+        Me.lblRzName.TabIndex = 40
+        Me.lblRzName.Text = "Rezept Name:"
+        '
+        'tbRzNummer
+        '
+        Me.tbRzNummer.Location = New System.Drawing.Point(115, 18)
+        Me.tbRzNummer.Name = "tbRzNummer"
+        Me.tbRzNummer.Size = New System.Drawing.Size(105, 25)
+        Me.tbRzNummer.TabIndex = 39
+        '
+        'lblRzNummer
+        '
+        Me.lblRzNummer.AutoSize = True
+        Me.lblRzNummer.Location = New System.Drawing.Point(11, 21)
+        Me.lblRzNummer.Name = "lblRzNummer"
+        Me.lblRzNummer.Size = New System.Drawing.Size(69, 17)
+        Me.lblRzNummer.TabIndex = 38
+        Me.lblRzNummer.Text = "Nummer:"
+        '
+        'lblRzPreis
+        '
+        Me.lblRzPreis.AutoSize = True
+        Me.lblRzPreis.Location = New System.Drawing.Point(818, 52)
+        Me.lblRzPreis.Name = "lblRzPreis"
+        Me.lblRzPreis.Size = New System.Drawing.Size(46, 17)
+        Me.lblRzPreis.TabIndex = 37
+        Me.lblRzPreis.Text = "Preis:"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.BtnClose)
+        Me.GroupBox1.Controls.Add(Me.BtnNwt)
+        Me.GroupBox1.Controls.Add(Me.BtnHinweise)
+        Me.GroupBox1.Controls.Add(Me.BtnVerwendung)
+        Me.GroupBox1.Controls.Add(Me.BtnLoeschen)
+        Me.GroupBox1.Controls.Add(Me.BtnKopieren)
+        Me.GroupBox1.Controls.Add(Me.BtnDrucken)
+        Me.GroupBox1.Location = New System.Drawing.Point(13, 138)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(953, 75)
+        Me.GroupBox1.TabIndex = 33
+        Me.GroupBox1.TabStop = False
+        '
+        'BtnClose
+        '
+        Me.BtnClose.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnClose.Location = New System.Drawing.Point(809, 15)
+        Me.BtnClose.Name = "BtnClose"
+        Me.BtnClose.Size = New System.Drawing.Size(135, 52)
+        Me.BtnClose.TabIndex = 15
+        Me.BtnClose.TabStop = False
+        Me.BtnClose.Text = "Schliessen"
+        Me.BtnClose.UseVisualStyleBackColor = True
+        '
+        'BtnNwt
+        '
+        Me.BtnNwt.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnNwt.Location = New System.Drawing.Point(675, 15)
+        Me.BtnNwt.Name = "BtnNwt"
+        Me.BtnNwt.Size = New System.Drawing.Size(135, 52)
+        Me.BtnNwt.TabIndex = 14
+        Me.BtnNwt.TabStop = False
+        Me.BtnNwt.Text = "Nährwerte"
+        Me.BtnNwt.UseVisualStyleBackColor = True
+        '
+        'BtnHinweise
+        '
+        Me.BtnHinweise.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnHinweise.Location = New System.Drawing.Point(541, 15)
+        Me.BtnHinweise.Name = "BtnHinweise"
+        Me.BtnHinweise.Size = New System.Drawing.Size(135, 52)
+        Me.BtnHinweise.TabIndex = 13
+        Me.BtnHinweise.TabStop = False
+        Me.BtnHinweise.Text = "Hinweise"
+        Me.BtnHinweise.UseVisualStyleBackColor = True
+        '
+        'BtnVerwendung
+        '
+        Me.BtnVerwendung.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnVerwendung.Location = New System.Drawing.Point(407, 15)
+        Me.BtnVerwendung.Name = "BtnVerwendung"
+        Me.BtnVerwendung.Size = New System.Drawing.Size(135, 52)
+        Me.BtnVerwendung.TabIndex = 12
+        Me.BtnVerwendung.TabStop = False
+        Me.BtnVerwendung.Text = "Verwendung"
+        Me.BtnVerwendung.UseVisualStyleBackColor = True
+        '
+        'BtnLoeschen
+        '
+        Me.BtnLoeschen.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnLoeschen.Location = New System.Drawing.Point(273, 15)
+        Me.BtnLoeschen.Name = "BtnLoeschen"
+        Me.BtnLoeschen.Size = New System.Drawing.Size(135, 52)
+        Me.BtnLoeschen.TabIndex = 11
+        Me.BtnLoeschen.TabStop = False
+        Me.BtnLoeschen.Text = "Löschen"
+        Me.BtnLoeschen.UseVisualStyleBackColor = True
+        '
+        'BtnKopieren
+        '
+        Me.BtnKopieren.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnKopieren.Location = New System.Drawing.Point(9, 15)
+        Me.BtnKopieren.Name = "BtnKopieren"
+        Me.BtnKopieren.Size = New System.Drawing.Size(131, 52)
+        Me.BtnKopieren.TabIndex = 10
+        Me.BtnKopieren.TabStop = False
+        Me.BtnKopieren.Text = "Kopieren"
+        Me.BtnKopieren.UseVisualStyleBackColor = True
+        '
+        'BtnDrucken
+        '
+        Me.BtnDrucken.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnDrucken.Location = New System.Drawing.Point(139, 15)
+        Me.BtnDrucken.Name = "BtnDrucken"
+        Me.BtnDrucken.Size = New System.Drawing.Size(135, 52)
+        Me.BtnDrucken.TabIndex = 9
+        Me.BtnDrucken.TabStop = False
+        Me.BtnDrucken.Text = "Drucken"
+        Me.BtnDrucken.UseVisualStyleBackColor = True
+        '
+        'cbLiniengruppe
+        '
+        Me.cbLiniengruppe.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cbLiniengruppe.FormattingEnabled = True
+        Me.cbLiniengruppe.Location = New System.Drawing.Point(588, 18)
+        Me.cbLiniengruppe.Name = "cbLiniengruppe"
+        Me.cbLiniengruppe.Size = New System.Drawing.Size(207, 25)
+        Me.cbLiniengruppe.TabIndex = 45
+        '
+        'cbVariante
+        '
+        Me.cbVariante.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cbVariante.FormattingEnabled = True
+        Me.cbVariante.Location = New System.Drawing.Point(588, 49)
+        Me.cbVariante.Name = "cbVariante"
+        Me.cbVariante.Size = New System.Drawing.Size(207, 25)
+        Me.cbVariante.TabIndex = 44
+        '
         'Wb_TabControl
         '
         Me.Wb_TabControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -266,11 +578,11 @@ Partial Class wb_Rezept_Rezeptur
         Me.Wb_TabControl.Controls.Add(Me.tb_Naehrwerte)
         Me.Wb_TabControl.Controls.Add(Me.tb_Hinweise)
         Me.Wb_TabControl.Controls.Add(Me.tb_Verwendung)
-        Me.Wb_TabControl.Location = New System.Drawing.Point(13, 258)
+        Me.Wb_TabControl.Location = New System.Drawing.Point(13, 212)
         Me.Wb_TabControl.Multiline = True
         Me.Wb_TabControl.Name = "Wb_TabControl"
         Me.Wb_TabControl.SelectedIndex = 0
-        Me.Wb_TabControl.Size = New System.Drawing.Size(951, 439)
+        Me.Wb_TabControl.Size = New System.Drawing.Size(951, 486)
         Me.Wb_TabControl.TabIndex = 23
         '
         'tb_Rezeptur
@@ -283,7 +595,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Rezeptur.Location = New System.Drawing.Point(4, 23)
         Me.tb_Rezeptur.Name = "tb_Rezeptur"
         Me.tb_Rezeptur.Padding = New System.Windows.Forms.Padding(3)
-        Me.tb_Rezeptur.Size = New System.Drawing.Size(943, 412)
+        Me.tb_Rezeptur.Size = New System.Drawing.Size(943, 459)
         Me.tb_Rezeptur.TabIndex = 0
         Me.tb_Rezeptur.Text = "Rezeptur"
         Me.tb_Rezeptur.UseVisualStyleBackColor = True
@@ -318,7 +630,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.Cell
         Me.VirtualTree.ShowRootRow = False
-        Me.VirtualTree.Size = New System.Drawing.Size(948, 416)
+        Me.VirtualTree.Size = New System.Drawing.Size(948, 463)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 6
         '
@@ -497,7 +809,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Naehrwerte.Location = New System.Drawing.Point(4, 23)
         Me.tb_Naehrwerte.Name = "tb_Naehrwerte"
         Me.tb_Naehrwerte.Padding = New System.Windows.Forms.Padding(3)
-        Me.tb_Naehrwerte.Size = New System.Drawing.Size(943, 412)
+        Me.tb_Naehrwerte.Size = New System.Drawing.Size(943, 459)
         Me.tb_Naehrwerte.TabIndex = 1
         Me.tb_Naehrwerte.Text = "Nährwerte"
         Me.tb_Naehrwerte.UseVisualStyleBackColor = True
@@ -508,7 +820,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Hinweise.Controls.Add(Me.TextHinweise)
         Me.tb_Hinweise.Location = New System.Drawing.Point(4, 23)
         Me.tb_Hinweise.Name = "tb_Hinweise"
-        Me.tb_Hinweise.Size = New System.Drawing.Size(943, 412)
+        Me.tb_Hinweise.Size = New System.Drawing.Size(943, 459)
         Me.tb_Hinweise.TabIndex = 2
         Me.tb_Hinweise.Text = "Hinweise"
         '
@@ -516,73 +828,79 @@ Partial Class wb_Rezept_Rezeptur
         '
         Me.TextHinweise.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TextHinweise.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TextHinweise.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextHinweise.Location = New System.Drawing.Point(0, 0)
         Me.TextHinweise.Multiline = True
         Me.TextHinweise.Name = "TextHinweise"
-        Me.TextHinweise.Size = New System.Drawing.Size(943, 412)
+        Me.TextHinweise.Size = New System.Drawing.Size(943, 459)
         Me.TextHinweise.TabIndex = 0
         Me.TextHinweise.TabStop = False
         '
         'tb_Verwendung
         '
+        Me.tb_Verwendung.Controls.Add(Me.GridView_RzVerwendung)
         Me.tb_Verwendung.Location = New System.Drawing.Point(4, 23)
         Me.tb_Verwendung.Name = "tb_Verwendung"
-        Me.tb_Verwendung.Size = New System.Drawing.Size(943, 412)
+        Me.tb_Verwendung.Size = New System.Drawing.Size(943, 459)
         Me.tb_Verwendung.TabIndex = 3
         Me.tb_Verwendung.Text = "Verwendung"
         Me.tb_Verwendung.UseVisualStyleBackColor = True
+        '
+        'GridView_RzVerwendung
+        '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.GridView_RzVerwendung.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.GridView_RzVerwendung.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.GridView_RzVerwendung.DefaultCellStyle = DataGridViewCellStyle2
+        Me.GridView_RzVerwendung.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GridView_RzVerwendung.Location = New System.Drawing.Point(0, 0)
+        Me.GridView_RzVerwendung.MultiSelect = False
+        Me.GridView_RzVerwendung.Name = "GridView_RzVerwendung"
+        Me.GridView_RzVerwendung.ReadOnly = True
+        Me.GridView_RzVerwendung.Size = New System.Drawing.Size(943, 459)
+        Me.GridView_RzVerwendung.TabIndex = 0
         '
         'wb_Rezept_Rezeptur
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(976, 731)
+        Me.Controls.Add(Me.gbDetail)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.Wb_TabControl)
-        Me.Controls.Add(Me.Label11)
-        Me.Controls.Add(Me.Label10)
-        Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.Label8)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.BtnClose)
-        Me.Controls.Add(Me.BtnNwt)
-        Me.Controls.Add(Me.BtnHinweise)
-        Me.Controls.Add(Me.BtnVerwendung)
-        Me.Controls.Add(Me.BtnLoeschen)
-        Me.Controls.Add(Me.BtnKopieren)
-        Me.Controls.Add(Me.BtnDrucken)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Name = "wb_Rezept_Rezeptur"
         Me.Text = "Rezeptur"
         Me.StatusStrip.ResumeLayout(False)
         Me.StatusStrip.PerformLayout()
+        Me.gbDetail.ResumeLayout(False)
+        Me.gbDetail.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
         Me.Wb_TabControl.ResumeLayout(False)
         Me.tb_Rezeptur.ResumeLayout(False)
         Me.tb_Rezeptur.PerformLayout()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tb_Hinweise.ResumeLayout(False)
         Me.tb_Hinweise.PerformLayout()
+        Me.tb_Verwendung.ResumeLayout(False)
+        CType(Me.GridView_RzVerwendung, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents BtnDrucken As Windows.Forms.Button
-    Friend WithEvents BtnKopieren As Windows.Forms.Button
-    Friend WithEvents BtnLoeschen As Windows.Forms.Button
-    Friend WithEvents BtnVerwendung As Windows.Forms.Button
-    Friend WithEvents BtnHinweise As Windows.Forms.Button
-    Friend WithEvents BtnNwt As Windows.Forms.Button
-    Friend WithEvents BtnClose As Windows.Forms.Button
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents Label3 As Windows.Forms.Label
-    Friend WithEvents Label4 As Windows.Forms.Label
-    Friend WithEvents Label5 As Windows.Forms.Label
-    Friend WithEvents Label8 As Windows.Forms.Label
-    Friend WithEvents Label9 As Windows.Forms.Label
-    Friend WithEvents Label10 As Windows.Forms.Label
-    Friend WithEvents Label11 As Windows.Forms.Label
     Friend WithEvents Wb_TabControl As wb_TabControl
     Friend WithEvents tb_Rezeptur As Windows.Forms.TabPage
     Friend WithEvents tb_Naehrwerte As Windows.Forms.TabPage
@@ -609,4 +927,47 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents ToolStripLeftMargin As Windows.Forms.ToolStripStatusLabel
     Friend WithEvents TextHinweise As Windows.Forms.TextBox
     Friend WithEvents ToolStripRezeptChange As Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents gbDetail As Windows.Forms.GroupBox
+    Friend WithEvents cbLiniengruppe As wb_ComboBox
+    Friend WithEvents cbVariante As wb_ComboBox
+    Friend WithEvents lblRzKommentar As Windows.Forms.Label
+    Friend WithEvents tbRzKommentar As Windows.Forms.TextBox
+    Friend WithEvents tbRezeptName As Windows.Forms.TextBox
+    Friend WithEvents lblRzName As Windows.Forms.Label
+    Friend WithEvents tbRzNummer As Windows.Forms.TextBox
+    Friend WithEvents lblRzNummer As Windows.Forms.Label
+    Friend WithEvents lblRzPreis As Windows.Forms.Label
+    Friend WithEvents lblRzTA As Windows.Forms.Label
+    Friend WithEvents lblRzAendName As Windows.Forms.Label
+    Friend WithEvents lblRzGewicht As Windows.Forms.Label
+    Friend WithEvents lblEinhTeigTemp As Windows.Forms.Label
+    Friend WithEvents lblEinhRzGewicht As Windows.Forms.Label
+    Friend WithEvents lblRzMehlMenge As Windows.Forms.Label
+    Friend WithEvents lblRzVariante As Windows.Forms.Label
+    Friend WithEvents GroupBox1 As Windows.Forms.GroupBox
+    Friend WithEvents BtnClose As Windows.Forms.Button
+    Friend WithEvents BtnNwt As Windows.Forms.Button
+    Friend WithEvents BtnHinweise As Windows.Forms.Button
+    Friend WithEvents BtnVerwendung As Windows.Forms.Button
+    Friend WithEvents BtnLoeschen As Windows.Forms.Button
+    Friend WithEvents BtnKopieren As Windows.Forms.Button
+    Friend WithEvents BtnDrucken As Windows.Forms.Button
+    Friend WithEvents TextBox9 As Windows.Forms.TextBox
+    Friend WithEvents lblRzKnKennLinie As Windows.Forms.Label
+    Friend WithEvents lblEinhPreis As Windows.Forms.Label
+    Friend WithEvents lblEinhMehlmenge As Windows.Forms.Label
+    Friend WithEvents tbRzTA As Windows.Forms.TextBox
+    Friend WithEvents tbRzMehlmenge As Windows.Forms.TextBox
+    Friend WithEvents tbRzPreis As Windows.Forms.TextBox
+    Friend WithEvents tbRzAendName As Windows.Forms.TextBox
+    Friend WithEvents tbRzGewicht As Windows.Forms.TextBox
+    Friend WithEvents lblRzLinienGruppe As Windows.Forms.Label
+    Friend WithEvents tbRzTeigTemp As Windows.Forms.TextBox
+    Friend WithEvents lblRzTeigTemp As Windows.Forms.Label
+    Friend WithEvents tbRzAendDatum As Windows.Forms.TextBox
+    Friend WithEvents lblRzAendDatum As Windows.Forms.Label
+    Friend WithEvents tbRzAendNr As Windows.Forms.TextBox
+    Friend WithEvents lblRzAendNr As Windows.Forms.Label
+    Friend WithEvents tbRzVariante As Windows.Forms.TextBox
+    Friend WithEvents GridView_RzVerwendung As wb_DataGridView
 End Class

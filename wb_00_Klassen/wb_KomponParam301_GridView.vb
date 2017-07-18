@@ -17,13 +17,13 @@ Public Class wb_KomponParam301_GridView
         'Initialisierung nur mit gültigem Daten-Array
         If IsNothing(arr) Then Exit Sub
         'Grid Grundeistellungen
+        _ShowTooltips = ShowTooltips
         InitGrid()
         'Daten anzeigen 
-        InitData(arr, ShowTooltips)
+        InitData(arr)
     End Sub
 
-    Public Sub InitData(ByVal arr() As wb_Global.Nwt, Optional ShowTooltips As Boolean = True)
-        _ShowTooltips = ShowTooltips
+    Public Sub InitData(ByVal arr() As wb_Global.Nwt)
 
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -165,7 +165,13 @@ Public Class wb_KomponParam301_GridView
                         End If
 
                         'Tooltip
-                        .Cells(c * 3 - 2).ToolTipText = "Keine vollständige Berechnung möglich"
+                        If arr(i).FehlerText <> "" Then
+                            .Cells(c * 3 - 1).Style.BackColor = Color.Red
+                            .Cells(c * 3 - 2).Style.BackColor = Color.Red
+                            .Cells(c * 3 - 3).Style.BackColor = Color.Red
+                            .Cells(c * 3 - 3).ToolTipText = "Angaben fehlen für: " & arr(i).FehlerText
+
+                        End If
                     End If
                 Next c
             End With
