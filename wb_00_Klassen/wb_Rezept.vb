@@ -26,8 +26,6 @@ Public Class wb_Rezept
     Private _RezeptTeigTemperatur As Double
     Private _LinienGruppe As Integer
 
-
-
     Private _RootRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
     Private _SQLRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
     Private _RezeptSchritt As wb_Rezeptschritt
@@ -40,6 +38,10 @@ Public Class wb_Rezept
     Private _RezeptNr As Integer
     Private _RezeptVariante As Integer
     Private _ktTyp301 As New wb_KomponParam301
+
+    Private _LLRezeptur As New ArrayList
+    Private _LLBig4 As New ArrayList
+
     Public _Parent As Object
 
     Public ReadOnly Property RezeptNr As Integer
@@ -151,6 +153,25 @@ Public Class wb_Rezept
             Else
                 Return 0
             End If
+        End Get
+    End Property
+
+    Public ReadOnly Property LLBig4() As IList
+        Get
+            Dim wert As String
+            _LLBig4.Clear()
+            For i = 1 To wb_Global.maxTyp301Allergen
+                wert = KtTyp301.Wert(i)
+                _LLBig4.Add(wert)
+
+            Next
+            Return _LLBig4
+        End Get
+    End Property
+
+    Public ReadOnly Property LLRezept As IList
+        Get
+            Return _RootRezeptSchritt.Steps
         End Get
     End Property
 

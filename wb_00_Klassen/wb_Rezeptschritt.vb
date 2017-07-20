@@ -80,6 +80,20 @@ Public Class wb_Rezeptschritt
         End Get
     End Property
 
+    Public ReadOnly Property Steps As IList
+        Get
+            Dim _Steps As New ArrayList
+            _Steps.Add(Me)
+
+            For Each c As wb_Rezeptschritt In ChildSteps
+                For Each x As wb_Rezeptschritt In c.Steps
+                    _Steps.Add(x)
+                Next
+            Next
+            Return _Steps
+        End Get
+    End Property
+
     ''' <summary>
     ''' (Interne) Komponenten-Nummer
     ''' </summary>
