@@ -20,6 +20,9 @@ Public Class wb_Rezeptschritt
     Private _RezPreis As Double
     Private _ZaehltNichtZumRezeptGewicht As Boolean
     Private _ktTyp301 As New wb_KomponParam301
+    Private _ZutatenListeExtern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoff)
+    Private _ZutatenListeIntern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoffIntern)
+    Private _Zutaten As New ArrayList
 
     Private _parentStep As wb_Rezeptschritt
     Private _childSteps As New ArrayList()
@@ -80,10 +83,19 @@ Public Class wb_Rezeptschritt
         End Get
     End Property
 
+    ''' <summary>
+    ''' Liste aller Rezeptschritte. Es werden alle Child-Rezeptschritte durchlaufen und als flache Liste nach oben
+    ''' weiter propagiert.
+    ''' Der Root-Rezeptschritt enthält eine Liste aller Rezeptschritte (Rezeptur)
+    ''' Wird zum Drucken der Rezeptur verwendet
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Steps As IList
         Get
             Dim _Steps As New ArrayList
-            _Steps.Add(Me)
+            If Me.SchrittNr > 0 Then
+                _Steps.Add(Me)
+            End If
 
             For Each c As wb_Rezeptschritt In ChildSteps
                 For Each x As wb_Rezeptschritt In c.Steps
@@ -530,7 +542,7 @@ Public Class wb_Rezeptschritt
         Get
             Dim ChildTA_Wassermenge As Double = 0
             For Each x As wb_Rezeptschritt In ChildSteps
-                ChildTA_Wassermenge = ChildTA_Wassermenge + x.TA_Wassermenge
+                ChildTA_Wassermenge += x.TA_Wassermenge
             Next
             Return _TA_Wassermenge + ChildTA_Wassermenge
         End Get
@@ -570,7 +582,7 @@ Public Class wb_Rezeptschritt
         Get
             Dim ChildPreis As Double = 0
             For Each x As wb_Rezeptschritt In ChildSteps
-                ChildPreis = ChildPreis + x.Preis
+                ChildPreis += x.Preis
             Next
             Return _Preis + ChildPreis
         End Get
@@ -636,6 +648,41 @@ Public Class wb_Rezeptschritt
                 End If
             End If
             Return _ktTyp301
+        End Get
+    End Property
+
+    Public ReadOnly Property _ZutatenListe As IList(Of wb_Global.ZutatenListe)
+        Get
+            Dim zl As New ArrayList
+            zl.Clear()
+            'TODO if Rezeptimrezept
+
+            'Deklarations-Bezeichung dieses Rezeptschrittes
+            Dim rs As wb_Global.ZutatenListe
+
+            'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
+            If Not _ZutatenListeExtern.ReadOK Then
+                _ZutatenListeExtern.Read(Me.RohNr)
+            End If
+
+            rs.Zutaten = _ZutatenListeExtern.Memo
+            rs.Menge = _Sollwert
+
+            zl.Add(rs)
+            Return zl
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Gibt die Zutatenliste mit Bezeichnung und Mengen-Angabe aller unterlagerten Rezeptschritte zurück
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property ZutatenListe As IList(Of wb_Global.ZutatenListe)
+        Get
+            For Each x As wb_Rezeptschritt In ChildSteps
+                ChildPreis += x.ZutatenListe
+            Next
+            Return _ZutatenListe
         End Get
     End Property
 

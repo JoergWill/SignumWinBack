@@ -197,6 +197,15 @@
         NaehrwertUpdate       '21/0/RohNr
     End Enum
 
+    Public Structure ZutatenListe
+        Public Zutaten As String
+        Public Menge As Double
+        Public Grp1 As Integer
+        Public Grp2 As Integer
+        Public Quid As Boolean
+        Public QuidProzent As Double
+    End Structure
+
     Enum EditState
         Invalid
         AddNew

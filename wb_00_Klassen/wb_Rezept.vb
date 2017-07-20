@@ -322,6 +322,8 @@ Public Class wb_Rezept
         'wird benötigt zur Berechnung der Nährwerte
         _RootRezeptSchritt.BruttoRezGewicht = BruttoRezeptGewicht
         _RootRezeptSchritt.Sollwert = BruttoRezeptGewicht
+        'Root-Rezeptschritt kennzeichnen
+        _RootRezeptSchritt.SchrittNr = -1
 
     End Sub
 
