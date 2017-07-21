@@ -130,6 +130,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="UnitTest_wb_Linien_Liste.vb" />
+    <Compile Include="UnitTest_wb_ZutatenListe.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

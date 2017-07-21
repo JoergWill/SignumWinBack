@@ -38,6 +38,7 @@ Public Class wb_Rezept
     Private _RezeptNr As Integer
     Private _RezeptVariante As Integer
     Private _ktTyp301 As New wb_KomponParam301
+    Private _Zutaten As New wb_ZutatenListe
 
     Private _LLRezeptur As New ArrayList
     Private _LLBig4 As New ArrayList
@@ -189,6 +190,7 @@ Public Class wb_Rezept
             _RezeptGesamtMehlmenge = wb_Global.UNDEFINED
             _RezeptGesamtWasserMenge = wb_Global.UNDEFINED
             'TODO Recalculate an die Allergen/Nährwerte weitergeben
+            _Zutaten.Clear()
         End Set
     End Property
 
@@ -279,6 +281,29 @@ Public Class wb_Rezept
         Set(value As Double)
             _RezeptTeigTemperatur = value
         End Set
+    End Property
+
+    Public ReadOnly Property ZutatenListe As ArrayList
+        Get
+            If _Zutaten.Liste.Count = 0 Then
+                'Zutatenliste aller Rezeptschritte berechnen
+                RootRezeptSchritt.CalcZutaten(_Zutaten.Liste)
+                Debug.Print("=============================")
+                Debug.Print("Zutatenliste nach CalcZutaten")
+                _Zutaten.DebugPrint()
+                'doppelte Einträge zusammenfassen
+                _Zutaten.Del_Doubletten()
+                Debug.Print("===============================")
+                Debug.Print("Zutatenliste nach DelDoubletten")
+                _Zutaten.DebugPrint()
+                'Zutatenliste nach Menge sortieren
+                _Zutaten.Sort()
+                Debug.Print("======================")
+                Debug.Print("Zutatenliste nach Sort")
+                _Zutaten.DebugPrint()
+            End If
+            Return _Zutaten.Liste
+        End Get
     End Property
 
     ''' <summary>

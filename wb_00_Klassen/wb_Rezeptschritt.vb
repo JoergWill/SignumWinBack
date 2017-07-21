@@ -20,9 +20,9 @@ Public Class wb_Rezeptschritt
     Private _RezPreis As Double
     Private _ZaehltNichtZumRezeptGewicht As Boolean
     Private _ktTyp301 As New wb_KomponParam301
+    Private _ZutatenListe As wb_Global.ZutatenListe
     Private _ZutatenListeExtern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoff)
     Private _ZutatenListeIntern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoffIntern)
-    Private _Zutaten As New ArrayList
 
     Private _parentStep As wb_Rezeptschritt
     Private _childSteps As New ArrayList()
@@ -651,40 +651,48 @@ Public Class wb_Rezeptschritt
         End Get
     End Property
 
-    Public ReadOnly Property _ZutatenListe As IList(Of wb_Global.ZutatenListe)
-        Get
-            Dim zl As New ArrayList
-            zl.Clear()
-            'TODO if Rezeptimrezept
-
-            'Deklarations-Bezeichung dieses Rezeptschrittes
-            Dim rs As wb_Global.ZutatenListe
-
-            'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
-            If Not _ZutatenListeExtern.ReadOK Then
-                _ZutatenListeExtern.Read(Me.RohNr)
-            End If
-
-            rs.Zutaten = _ZutatenListeExtern.Memo
-            rs.Menge = _Sollwert
-
-            zl.Add(rs)
-            Return zl
-        End Get
-    End Property
-
     ''' <summary>
     ''' Gibt die Zutatenliste mit Bezeichnung und Mengen-Angabe aller unterlagerten Rezeptschritte zurück
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property ZutatenListe As IList(Of wb_Global.ZutatenListe)
+    Public ReadOnly Property ZutatenListe(Optional Faktor As Double = 1) As wb_Global.ZutatenListe
         Get
-            For Each x As wb_Rezeptschritt In ChildSteps
-                ChildPreis += x.ZutatenListe
-            Next
+            'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
+            If Not _ZutatenListeExtern.ReadOK Then
+                _ZutatenListeExtern.Read(Me.RohNr)
+            End If
+            'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
+            _ZutatenListe.Zutaten = _ZutatenListeExtern.Memo
+            _ZutatenListe.SollMenge = wb_Functions.StrToDouble(_Sollwert) * Faktor
+            'TODO Rohstoff-Gruppen auslesen und als Property anlegen
+            _ZutatenListe.Grp1 = 0
+            _ZutatenListe.Grp2 = 0
+            'TODO Quid-Angaben aus Rezeptur auslesen und als Property anlegen
+            _ZutatenListe.Quid = False
+            _ZutatenListe.QuidProzent = 0
+
             Return _ZutatenListe
         End Get
     End Property
+
+    Public Sub CalcZutaten(ByRef zListe As ArrayList, Optional Faktor As Double = 1)
+        'Angaben zum Rezeptschritt in Liste anhängen
+        If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
+            zListe.Add(ZutatenListe(Faktor))
+        End If
+
+        'unterlagerte Rezeptschritte werden auch im Array angehängt
+        For Each x As wb_Rezeptschritt In ChildSteps
+            x.CalcZutaten(zListe, Faktor)
+        Next
+
+        'Rezept im Rezept
+        If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
+            Dim f As Double = Sollwert / RezeptImRezept.RezeptGewicht
+            RezeptImRezept.RootRezeptSchritt.CalcZutaten(zListe, f)
+        End If
+
+    End Sub
 
     Private Function ReadktTyp301() As Boolean
         'Datenbank-Verbindung öffnen - MySQL

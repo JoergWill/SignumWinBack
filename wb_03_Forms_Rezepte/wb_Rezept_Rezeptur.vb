@@ -72,7 +72,7 @@ Public Class wb_Rezept_Rezeptur
         'Rezept TA
         tbRzTA.Text = CInt(Rezept.RezeptTA)
 
-
+        Debug.Print("============== " & Rezept.ZutatenListe.Count)
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click

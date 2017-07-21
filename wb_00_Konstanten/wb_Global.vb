@@ -199,7 +199,8 @@
 
     Public Structure ZutatenListe
         Public Zutaten As String
-        Public Menge As Double
+        Public SollMenge As Double
+        Public SortMenge As Double
         Public Grp1 As Integer
         Public Grp2 As Integer
         Public Quid As Boolean
