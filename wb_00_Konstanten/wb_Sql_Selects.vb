@@ -31,12 +31,14 @@
                                   "INNER JOIN Lagerorte ON Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
                                   "WHERE KO_TYPE = 101 Or KO_TYPE = 103 Or KO_TYPE = 104"
 
+    Public Const sqlENummern = "SELECT * FROM enummern"
+
     'Sql-Statement Artikelliste aus winback.Komponenten
-    Public Const sqlArtikelLste = "SELECT KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, " &
+    Public Const sqlArtikelLste = "Select KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, " &
                                   "KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type = 0"
 
     'Sql-Statement Userliste aus winback.ItemParameter
-    Public Const sqlUsersListe = "SELECT IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter " &
+    Public Const sqlUsersListe = "Select IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter " &
                                   "WHERE IP_ItemTyp = 500 And IP_ItemAttr = 501 And IP_Wert1int <> 709760"
     'Sql-Statement User Datensatz neu anlegen   [0]-Name [1]-Password [2]-Gruppe
     Public Const sqlUserInsert = "INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert4str) " &

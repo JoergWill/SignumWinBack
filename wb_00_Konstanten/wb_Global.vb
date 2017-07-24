@@ -199,12 +199,23 @@
 
     Public Structure ZutatenListe
         Public Zutaten As String
+        Public FettDruck As Boolean
         Public SollMenge As Double
         Public SortMenge As Double
         Public Grp1 As Integer
         Public Grp2 As Integer
         Public Quid As Boolean
         Public QuidProzent As Double
+    End Structure
+
+    Public Structure ENummern
+        Public Nr As Integer            'E-Nummer als Integer
+        Public Bezeichnung As String    'Bezeichnungstext
+        Public Text As String           'E-Nummer als String
+        Public Beschreibung As String   'Wirkung/Herstellung
+        Public Bemerkung As String      'Hinweise/Gefahren
+        Public Key As Char              '
+        Public CleanLabel As Char       'Kann entfallen (J/N)
     End Structure
 
     Enum EditState

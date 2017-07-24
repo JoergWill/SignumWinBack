@@ -202,6 +202,7 @@
     <Compile Include="wb_00_Klassen\wb_TcpIPConnection.vb" />
     <Compile Include="wb_00_Klassen\wb_TraceListener.vb" />
     <Compile Include="wb_00_Klassen\wb_ZutatenListe.vb" />
+    <Compile Include="wb_00_Klassen\wb_ZutatenListe_Global.vb" />
     <Compile Include="wb_00_Konstanten\wb_Credentials.vb" />
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_DockingExtension.vb" />
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.Designer.vb">
