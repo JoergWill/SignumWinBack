@@ -72,7 +72,7 @@ Public Class wb_Rezept_Rezeptur
         'Rezept TA
         tbRzTA.Text = CInt(Rezept.RezeptTA)
 
-        Debug.Print("============== " & Rezept.ZutatenListe.Count)
+        'Debug.Print("============== " & Rezept.ZutatenListe.Count)
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
@@ -90,12 +90,14 @@ Public Class wb_Rezept_Rezeptur
     Private Sub BtnNwt_Click(sender As Object, e As EventArgs) Handles BtnNwt.Click
         If tb_Rezeptur.Visible Then
             BtnNwt.Text = "Rezeptur"
+            BtnHinweise.Text = "Zutatenliste"
             Wb_TabControl.SelectedTab = tb_Naehrwerte
             ToolStripAllergenLegende.Visible = True
             'Nährwerte-Grid aufbauen und anzeigen
             NwtGrid()
         Else
             BtnNwt.Text = "Nährwerte"
+            BtnHinweise.Text = "Hinweise"
             Wb_TabControl.SelectedTab = tb_Rezeptur
             ToolStripAllergenLegende.Visible = False
         End If
@@ -145,19 +147,26 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtnHinweise_Click(sender As Object, e As EventArgs) Handles BtnHinweise.Click
-        If tb_Hinweise.Visible Then
-            'Rezeptur anzeigen
-            Wb_TabControl.SelectedTab = tb_Rezeptur
+        If tb_Naehrwerte.Visible Then
+            'Anzeige Zutatenliste
+            Wb_TabControl.SelectedTab = tb_Zutaten
+            tb_ZutatenListe.BorderStyle = Windows.Forms.BorderStyle.None
+            Show_ZutatenListe()
         Else
-            'Rezept-Hinweise lesen
-            If Not RezeptHinweise.ReadOK Then
-                'TODO Rzeptvariante in Zukunft berücksichtigen
-                If RezeptHinweise.Read(_RzNummer) Then
-                    TextHinweise.Text = RezeptHinweise.Memo
-                    _RzHinweiseChanged = False
+            If tb_Hinweise.Visible Then
+                'Rezeptur anzeigen
+                Wb_TabControl.SelectedTab = tb_Rezeptur
+            Else
+                'Rezept-Hinweise lesen
+                If Not RezeptHinweise.ReadOK Then
+                    'TODO Rzeptvariante in Zukunft berücksichtigen
+                    If RezeptHinweise.Read(_RzNummer) Then
+                        TextHinweise.Text = RezeptHinweise.Memo
+                        _RzHinweiseChanged = False
+                    End If
                 End If
+                Wb_TabControl.SelectedTab = tb_Hinweise
             End If
-            Wb_TabControl.SelectedTab = tb_Hinweise
         End If
     End Sub
 
@@ -232,4 +241,18 @@ Public Class wb_Rezept_Rezeptur
         End If
 
     End Sub
+
+
+    Private Sub SwENummern_Click(sender As Object, e As EventArgs) Handles SwENummern.Click
+        Show_ZutatenListe()
+    End Sub
+
+    Private Sub Show_ZutatenListe()
+        If SwENummern.Checked Then
+            tb_ZutatenListe.Text = Rezept.ZutatenListe(wb_Global.ZutatenListeMode.Show_ENummer)
+        Else
+            tb_ZutatenListe.Text = Rezept.ZutatenListe(wb_Global.ZutatenListeMode.Hide_ENummer)
+        End If
+    End Sub
+
 End Class

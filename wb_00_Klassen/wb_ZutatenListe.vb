@@ -1,9 +1,44 @@
-﻿Public Class wb_ZutatenListe
+﻿Imports System.Text.RegularExpressions
+
+Public Class wb_ZutatenListe
     Public Liste As New ArrayList
 
     Public Sub Clear()
         Liste.Clear()
     End Sub
+
+    Public Sub Opt()
+        Del_Doubletten()
+        Split_Ingredients()
+        Convert_ToEnr()
+        Del_Doubletten()
+        Sort()
+    End Sub
+
+    Public Function Print(Mode As wb_Global.ZutatenListeMode) As String
+        Dim s As String = ""
+        Dim z As String
+
+        For Each x As wb_Global.ZutatenListe In Liste
+
+            If Mode = wb_Global.ZutatenListeMode.Hide_ENummer And x.eNr > 0 Then
+                z = wb_ZutatenListe_Global.Find_ENummer(x.Zutaten).Text
+            Else
+                z = x.Zutaten
+            End If
+
+            If x.FettDruck Then
+                z = z.ToUpper
+            End If
+
+            If s = "" Then
+                s = z
+            Else
+                s = s & ", " & z
+            End If
+        Next
+        Return s
+    End Function
 
     Public Sub Del_Doubletten()
         Dim lc As Integer = Liste.Count - 1
@@ -27,8 +62,8 @@
 
     Private Function RemoveIfIdentical(ByRef L1 As wb_Global.ZutatenListe, ByRef L2 As wb_Global.ZutatenListe) As Boolean
         'Markierung Fettdruck entfernen und merken
-        L1.FettDruck = RemoveFettDruck(L1.Zutaten)
-        L2.FettDruck = RemoveFettDruck(L2.Zutaten)
+        L1.FettDruck = RemoveFettDruck(L1.Zutaten) Or L1.FettDruck
+        L2.FettDruck = RemoveFettDruck(L2.Zutaten) Or L2.FettDruck
 
         'wenn beide Einträge identisch sind
         If (L1.Zutaten = L2.Zutaten) And (L1.Grp1 = L2.Grp1) And (L2.Grp2 = L2.Grp2) Then
@@ -36,6 +71,12 @@
             'TODO QUID-Mengen addieren
             L1.SollMenge += L2.SollMenge
             L1.SortMenge += L2.SortMenge
+            'Fettdruck-Bit übernehmen
+            L1.FettDruck = L1.FettDruck Or L2.FettDruck
+            'E-Nummer falls vorhanden
+            If L1.eNr = 0 Then
+                L1.eNr = L2.eNr
+            End If
             'den zweiten Eintrag löschen
             Return True
         Else
@@ -43,14 +84,33 @@
         End If
     End Function
 
-    Public Sub SplitIngredients()
+    Private Function RemoveFettDruck(ByRef s As String) As Boolean
+        If s = Nothing Or s = "" Then
+            Return False
+        End If
+        If Left(s, 1) = "*" Then
+            s = s.Trim("*")
+            s = s.Trim("{")
+            s = s.Trim("}")
+            Return True
+        End If
+        If s.Contains("{") Then
+            s = s.Trim("{")
+            s = s.Trim("}")
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Sub Split_Ingredients()
         Dim lc As Integer = Liste.Count
         Dim i As Integer = 0
         Dim s As Integer = 0
 
         'Schleife über alle Elemente
         While i < lc
-            s = Split(Liste(i), i)
+            s = _Split_ingredients(Liste(i), i)
             If s > 0 Then
                 Liste.RemoveAt(i)
                 i = i + (s - 1)
@@ -60,7 +120,7 @@
         End While
     End Sub
 
-    Private Function Split(L1 As wb_Global.ZutatenListe, i As Integer) As Integer
+    Private Function _Split_ingredients(L1 As wb_Global.ZutatenListe, i As Integer) As Integer
         If L1.Zutaten.Contains(",") Then
             Dim a() As String = L1.Zutaten.Split(",")
             Dim z As wb_Global.ZutatenListe
@@ -94,18 +154,44 @@
         End If
     End Function
 
-    Private Function RemoveFettDruck(ByRef s As String) As Boolean
-        If s.Contains("{") Then
-            s.Trim("{")
-            s.Trim("}")
-            Return True
+    Public Sub Convert_ToEnr()
+        For i = 0 To Liste.Count - 1
+            _Convert_ToENr(Liste(i))
+        Next
+    End Sub
+
+    Private Sub _Convert_ToENr(ByRef L As wb_Global.ZutatenListe)
+        Dim eNr As String
+        Dim e As wb_Global.ENummern = wb_ZutatenListe_Global.EmptyENumber
+
+        eNr = Get_ENummer(L.Zutaten)
+        If eNr <> "" Then
+            e = wb_ZutatenListe_Global.Find_ENummer(eNr)
         Else
-            Return False
+            e = wb_ZutatenListe_Global.Find_EBezeichnung(L.Zutaten)
         End If
+
+        If e.Nr > 0 Then
+            L.Zutaten = e.Text
+            L.eNr = e.Nr
+        End If
+    End Sub
+
+    Public Function Get_ENummer(s As String) As String
+        Dim rgx As New Regex("E\d{4}[a-z)]|E\d{4}|E \d{4}[a-z]|E \d{4}|E\d{3}[a-z)]|E\d{3}|E \d{3}[a-z]|E \d{3}")
+        Dim x As String = rgx.Match(s).Value
+        Return x.Replace(" ", "")
     End Function
 
     Public Sub Sort()
-
+        'leere Einträge entfernen
+        Dim lc As Integer = Liste.Count - 1
+        For i = 0 To lc
+            If DirectCast(Liste(i), wb_Global.ZutatenListe).Zutaten = "" Then
+                Liste.RemoveAt(i)
+                lc -= 1
+            End If
+        Next
     End Sub
 
     Public Sub DebugPrint()

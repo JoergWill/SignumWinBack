@@ -199,6 +199,7 @@
 
     Public Structure ZutatenListe
         Public Zutaten As String
+        Public eNr As Integer
         Public FettDruck As Boolean
         Public SollMenge As Double
         Public SortMenge As Double
@@ -208,6 +209,11 @@
         Public QuidProzent As Double
     End Structure
 
+    Enum ZutatenListeMode
+        Hide_ENummer
+        Show_ENummer
+        Optimize
+    End Enum
     Public Structure ENummern
         Public Nr As Integer            'E-Nummer als Integer
         Public Bezeichnung As String    'Bezeichnungstext

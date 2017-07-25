@@ -1,6 +1,6 @@
 ﻿Public Class wb_ZutatenListe_Global
-    Private Shared iEListe As New Dictionary(Of Integer, wb_Global.ENummern)
-    Private Shared sEListe As New Dictionary(Of String, Integer)
+    Private Shared eEListe As New Dictionary(Of String, wb_Global.ENummern)
+    Private Shared sEListe As New Dictionary(Of String, String)
 
     ''' <summary>
     ''' Vor dem ersten Aufruf der Funktionen in dieser Klasse wird der shared-Konstruktor aufgerufen
@@ -8,12 +8,11 @@
     ''' </summary>
     Shared Sub New()
         Dim E As wb_Global.ENummern
-        Dim eNr As Integer = 0
         Dim eName As String = ""
 
         Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlENummern)
-        iEListe.Clear()
+        eEListe.Clear()
         sEListe.Clear()
 
         While winback.Read
@@ -25,44 +24,44 @@
             E.Key = winback.sField("EN_Key")
             E.CleanLabel = winback.sField("EN_CleanLabel")
 
-            If eNr <> E.Nr Then
+            If eName <> E.Text Then
                 'Neuer Eintrag in sEListe (suche nach E-Nummer)
                 Debug.Print("E.Bezeichnung " & E.Bezeichnung)
-                If Not iEListe.ContainsKey(E.Nr) Then
-                    iEListe.Add(E.Nr, E)
+                If Not eEListe.ContainsKey(E.Text) Then
+                    eEListe.Add(E.Text, E)
                     If Not sEListe.ContainsKey(E.Bezeichnung.ToLower) Then
-                        sEListe.Add(E.Bezeichnung.ToLower, E.Nr)
+                        sEListe.Add(E.Bezeichnung.ToLower, E.Text)
                     End If
                 End If
-                eNr = E.Nr
+                eName = E.Text
             Else
                 'Neuer Eintrag in sEListe (suche nach String-Bezeichnung)
                 Debug.Print("E.Bezeichnung " & E.Bezeichnung)
                 If Not sEListe.ContainsKey(E.Bezeichnung.ToLower) Then
-                    sEListe.Add(E.Bezeichnung.ToLower, E.Nr)
+                    sEListe.Add(E.Bezeichnung.ToLower, E.Text)
                 End If
             End If
         End While
         winback.Close()
     End Sub
 
-    Public Shared Function Find_ENummer(Nummer As Integer) As wb_Global.ENummern
-        If iEListe.ContainsKey(Nummer) Then
-            Return iEListe(Nummer)
+    Public Shared Function Find_ENummer(ENr As String) As wb_Global.ENummern
+        If eEListe.ContainsKey(ENr) Then
+            Return eEListe(ENr)
         Else
             Return EmptyENumber()
         End If
     End Function
 
-    Public Shared Function Find_ENummer(Text As String) As wb_Global.ENummern
+    Public Shared Function Find_EBezeichnung(Text As String) As wb_Global.ENummern
         If sEListe.ContainsKey(Text.ToLower) Then
-            Return iEListe(sEListe(Text.ToLower))
+            Return eEListe(sEListe(Text.ToLower))
         Else
             Return EmptyENumber()
         End If
     End Function
 
-    Private Shared Function EmptyENumber() As wb_Global.ENummern
+    Public Shared Function EmptyENumber() As wb_Global.ENummern
         EmptyENumber.Nr = -1
         EmptyENumber.Bemerkung = ""
         EmptyENumber.Beschreibung = ""

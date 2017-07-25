@@ -283,26 +283,16 @@ Public Class wb_Rezept
         End Set
     End Property
 
-    Public ReadOnly Property ZutatenListe As ArrayList
+    Public ReadOnly Property ZutatenListe(Mode As wb_Global.ZutatenListeMode) As String
         Get
             If _Zutaten.Liste.Count = 0 Then
                 'Zutatenliste aller Rezeptschritte berechnen
                 RootRezeptSchritt.CalcZutaten(_Zutaten.Liste)
-                Debug.Print("=============================")
-                Debug.Print("Zutatenliste nach CalcZutaten")
-                _Zutaten.DebugPrint()
-                'doppelte Einträge zusammenfassen
-                _Zutaten.Del_Doubletten()
-                Debug.Print("===============================")
-                Debug.Print("Zutatenliste nach DelDoubletten")
-                _Zutaten.DebugPrint()
-                'Zutatenliste nach Menge sortieren
-                _Zutaten.Sort()
-                Debug.Print("======================")
-                Debug.Print("Zutatenliste nach Sort")
-                _Zutaten.DebugPrint()
+                'Zutatenliste optimieren
+                _Zutaten.Opt()
             End If
-            Return _Zutaten.Liste
+            'Druckfähige Zutatenliste 
+            Return _Zutaten.Print(Mode)
         End Get
     End Property
 
