@@ -15,6 +15,8 @@ Imports Signum.OrgaSoft.FrameWork
 Imports Signum.OrgaSoft.Common
 Imports System.Windows.Forms
 Imports System.IO
+Imports System.Reflection
+Imports System.Data
 
 <Export(GetType(IExtension))>
 <ExportMetadata("Description", "Erweitert das Ribbon um ein neues Tab(WinBack)")>
@@ -42,6 +44,10 @@ Public Class wb_Main_Menu
     'Initialisierung Klasse
     '---------------------------------------------------------
     Public Sub Initialize() Implements IExtension.Initialize
+        'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        '
+        'Dim currentDomain As AppDomain = AppDomain.CurrentDomain
+        'AddHandler currentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
         oViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
         oMenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
@@ -54,6 +60,11 @@ Public Class wb_Main_Menu
         AddMenu()
 
     End Sub
+
+    Private Shared Function MyResolveEventHandler(sender As Object, args As ResolveEventArgs) As Assembly
+        Console.WriteLine("Resolving...")
+        Return GetType(wb_Main_Menu).Assembly
+    End Function 'MyResolveEventHandler
 
     '---------------------------------------------------------
     '15.04.2016/ V0.9/JW            :Neuanlage

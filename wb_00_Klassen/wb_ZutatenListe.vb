@@ -121,34 +121,38 @@ Public Class wb_ZutatenListe
     End Sub
 
     Private Function _Split_ingredients(L1 As wb_Global.ZutatenListe, i As Integer) As Integer
-        If L1.Zutaten.Contains(",") Then
-            Dim a() As String = L1.Zutaten.Split(",")
-            Dim z As wb_Global.ZutatenListe
-            Dim FettDruckEin As Boolean = False
+        If L1.Zutaten IsNot Nothing And L1.Zutaten <> "" Then
+            If L1.Zutaten.Contains(",") Then
+                Dim a() As String = L1.Zutaten.Split(",")
+                Dim z As wb_Global.ZutatenListe
+                Dim FettDruckEin As Boolean = False
 
-            For j = 1 To a.Length
-                'Leerzeichnen vorne und hinten entfernen
-                z.Zutaten = Trim(a(j - 1))
-                z.SollMenge = L1.SollMenge
-                z.SortMenge = j
+                For j = 1 To a.Length
+                    'Leerzeichnen vorne und hinten entfernen
+                    z.Zutaten = Trim(a(j - 1))
+                    z.SollMenge = L1.SollMenge
+                    z.SortMenge = j
 
-                'Fettdruck
-                If z.Zutaten.Contains("{") Then
-                    FettDruckEin = True
-                End If
-                z.FettDruck = FettDruckEin
-                If z.Zutaten.Contains("}") Then
-                    FettDruckEin = False
-                End If
+                    'Fettdruck
+                    If z.Zutaten.Contains("{") Then
+                        FettDruckEin = True
+                    End If
+                    z.FettDruck = FettDruckEin
+                    If z.Zutaten.Contains("}") Then
+                        FettDruckEin = False
+                    End If
 
-                'Steuerzeichen vorne und hinten entfernen
-                z.Zutaten = z.Zutaten.Trim("{")
-                z.Zutaten = z.Zutaten.Trim("}")
-                'Teilstring in Lise einfügen
-                Liste.Insert(i + j, z)
+                    'Steuerzeichen vorne und hinten entfernen
+                    z.Zutaten = z.Zutaten.Trim("{")
+                    z.Zutaten = z.Zutaten.Trim("}")
+                    'Teilstring in Lise einfügen
+                    Liste.Insert(i + j, z)
 
-            Next j
-            Return a.Length
+                Next j
+                Return a.Length
+            Else
+                Return 0
+            End If
         Else
             Return 0
         End If
