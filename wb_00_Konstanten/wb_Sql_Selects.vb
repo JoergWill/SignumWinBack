@@ -70,6 +70,10 @@
     Public Const sqlSelectKomp_AlNum = "SELECT * FROM Komponenten WHERE KO_Nr_AlNum = '[0]' "
     'Sql-Statement Update Komponenten nach KO_Nr (Select KO_Nr=x)
     Public Const sqlUpdateKomp_KO_Nr = "UPDATE Komponenten SET [1] WHERE KO_Nr = [0] "
+    'Sql-Statement letzte interne Komponenten-Nummer (Max(KO-Nr))
+    Public Const sqlMaxKompNummer = "SELECT MAX(KO_Nr) FROM Komponenten"
+    'Sql-Statement neue Komponente/Artikel anlegen
+    Public Const sqlAddNewKompon = "INSERT INTO Komponenten(KO_Nr, KO_Nr_AlNum, KO_TYPE, KO_Bezeichnung) VALUES ([0],'[1]',[2],'[3]')"
 
 
     'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)

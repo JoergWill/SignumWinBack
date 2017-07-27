@@ -214,6 +214,78 @@ Public Class wb_Functions
         End Select
     End Function
 
+    Public Shared Function KomponTypeToInt(KO_Type As wb_Global.KomponTypen) As Integer
+        Select Case KO_Type
+            Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
+                Return -1
+            Case wb_Global.KomponTypen.KO_ZEILE_CHARGE
+                Return -2
+            Case wb_Global.KomponTypen.KO_TYPE_ARTIKEL
+                Return 0
+
+            Case wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE
+                Return 101
+            Case wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+                Return 102
+            Case wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE
+                Return 103
+            Case wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE
+                Return 104
+            Case wb_Global.KomponTypen.KO_TYPE_STUECK
+                Return 105
+            Case wb_Global.KomponTypen.KO_TYPE_METER
+                Return 106
+
+            Case wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG
+                Return 111
+            Case wb_Global.KomponTypen.KO_TYPE_KNETER
+                Return 119
+            Case wb_Global.KomponTypen.KO_TYPE_TEIGZETTEL
+                Return 119
+            Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
+                Return 128
+
+            Case wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
+                Return 121
+            Case wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
+                Return 122
+            Case wb_Global.KomponTypen.KO_TYPE_KESSEL
+                Return 123
+
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL
+                Return 1
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER
+                Return 3
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_TEMP
+                Return 4
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_DIGITAL
+                Return 10
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_ANALOG
+                Return 11
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_WARTEN
+                Return 16
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_RUEHREN
+                Return 17
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE
+                Return 19
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_STATUS
+                Return 20
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_TEXT
+                Return 21
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE
+                Return 22
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_REZEPT_START
+                Return 30
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_REPEAT
+                Return 31
+
+            Case wb_Global.KomponTypen.KO_TYPE_UNDEFINED
+                Return -99
+            Case Else
+                Return -99
+        End Select
+    End Function
+
     ''' <summary>
     ''' Ermittelt, ob Typ und Parameter-Nummer einen Gewichts-relevanten Sollwert enthalten.
     '''     Automatike-Komponenten (Produktion und Sauerteig)

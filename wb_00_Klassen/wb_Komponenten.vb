@@ -10,6 +10,7 @@ Public Class wb_Komponenten
     Private KO_Nr_AlNum As String
     Private KO_Bezeichnung As String
     Private KO_Kommentar As String
+    Private KA_Kurzname As String
     Private LF_Lieferant As String
     Private KO_Backverlust As Double
     Private KO_IdxCloud As String
@@ -70,6 +71,16 @@ Public Class wb_Komponenten
         End Set
         Get
             Return KO_Kommentar
+        End Get
+    End Property
+
+    Public Property Kurzname As String
+        Set(value As String)
+            'Änderungen loggen
+            KA_Kurzname = ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KA_Kurzname, value)
+        End Set
+        Get
+            Return KA_Kurzname
         End Get
     End Property
 
@@ -137,6 +148,20 @@ Public Class wb_Komponenten
             KO_DeklBezeichungExtern.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_DeklarationExtern, DeklBezeichungExtern, value)
         End Set
     End Property
+
+    Public Function MySQLdbNew(KType As wb_Global.KomponTypen) As Integer
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        'interne Komponenten-Nummer ermitteln aus max(KO_NR)
+        KO_Nr = wb_sql_Functions.getNewKomponNummer()
+        'Komponenten-Type (Artikel/Handkomponente)
+        KO_Type = KType
+        'Datensatz neu anlegen
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewKompon, KO_Nr, KO_Nr_AlNum, wb_Functions.KomponTypeToInt(KO_Type), "Neu angelegt " & Date.Now))
+        winback.Close()
+        'neuen KompNummer zurückgeben
+        Return KO_Nr
+    End Function
 
     ''' <summary>
     ''' Liest alle Datenfelder zu der angegebenen Komponenten-Nummer aus der WinBack-Datenbank. Wenn die interne Komponenten-Nummer nicht angegeben ist
@@ -302,7 +327,7 @@ Public Class wb_Komponenten
     ''' </summary>
     ''' <param name="InterneKomponentenNummer"></param>
     ''' <returns></returns>
-    Public Function MySQLdbWrite(InterneKomponentenNummer As Integer) As Boolean
+    Public Function MySQLdbUpdate(InterneKomponentenNummer As Integer) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String

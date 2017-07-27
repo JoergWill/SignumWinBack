@@ -1,4 +1,5 @@
-﻿Imports Signum.OrgaSoft
+﻿Imports System.ComponentModel
+Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.FrameWork
@@ -140,7 +141,7 @@ Public Class ob_Artikel_DockingExtension
         If GetKomponentenDaten() Then
             Debug.Print("WinBack Artikel")
             'geänderten Datensatz in WinBack-DB schreiben
-            Komponente.MySQLdbWrite(Komponente.Nr)
+            Komponente.MySQLdbUpdate(Komponente.Nr)
         End If
     End Sub
 
@@ -151,6 +152,11 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="e"></param>
     Private Sub Extendee_BeforeDelete(sender As Object, e As EventArgs)
         Debug.Print("Article_DockingExtension BeforeDelete")
+        'Hier kann das Löschen von Artikel/Komponenten-Daten verhindert werden  
+        'TODO prüfen ob Artikel/Rohstoff noch verwendet wird - dann Fehlermeldung. Sonst Löschen erlauben
+        '     .Cancel = True    Löschen nicht erlaubt
+        '     .Cancel = False   Löschen erlaubt
+        DirectCast(e, CancelEventArgs).Cancel = False
     End Sub
 
     ''' <summary>
@@ -246,20 +252,30 @@ Public Class ob_Artikel_DockingExtension
     '''     WinBack         Bezeichung                  OrgaBack
     '''     =======         ==========                  ========
     '''     KO_Nr           Index Rohstoff/Artikel      MFF280
-    '''     KO_Bezeichnung  Artikel-Bezeichnung         MFF224
+    '''     KO_Bezeichnung  Artikel-Bezeichnung         .KurzText
+    '''     KO_Type           0 - Artikel               .Artikelgruppe =  0 (Verkaufsartikel Backwaren)
+    '''                     102 - Rohstoff              .Artikelgruppe = 40 (Rohstoff)
+    '''     KA_Kurzname     Kurztext                    MFF224
     '''     KO_Kommentar    Artikel-Kommentar           MFF225
     '''     KO_Nr_AlNum     Artikel-Nummer              .ArtikelNr
-    '''     KA_Matchcode    ID für Nährwerte            MFF281(?)
+    '''     KA_Matchcode    ID für Nährwerte            MFF281
     '''     KA_Grp1         Artikelgruppe 1
     '''     KA_Grp2         Artikelgruppe 2
     ''' 
+    '''     200.2           Dateiname Bild              .ArtikelBildDateiname
+    '''     200.3           Kurztext                    .Kurztext
     '''     200.7           Haltbarkeit                 MFF102
     '''     200.8           Lagerung                    MFF103
     '''     200.9           Verkaufstage                MFF104
     '''     200.17          Warengruppe
     '''     200.20          Stk/Karton                  VPE
     '''     
-    '''     Hinweise2(3/0)  Hinweise Artikel            MFF208
+    '''     Hinweise2(03/0) Hinweise Artikel            MFF208
+    '''     Hinweise2(09/1) Zutatenliste Artikel        MFF209
+    '''     Hinweise2(09/2) Mehlzusammensetzung         MFF210
+    '''     Hinweise2(10/1) Gebäck-Charakteristik       MFF211
+    '''     Hinweise2(10/2) Verzehr-Tipps               MFF212
+    '''     Hinweise2(10/3) Wissenswertes               MFF213
     '''     
     ''' </summary>
     Private Function GetKomponentenDaten() As Boolean
@@ -274,18 +290,34 @@ Public Class ob_Artikel_DockingExtension
             Komponente.Nr = CInt(GetMMFValue(oFil, wb_Global.MFF_KO_Nr))            'MFF280 - Index auf interne Komponenten-Nummer
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString    'Artikel/Komponenten-Nummer alphanumerisch
             'Artikel/Komponente aus WinBack-Db einlesen
-            Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer)
+            If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer) Then
+                'Datensatz ist in Winback nicht vorhanden
+                Dim KType As wb_Global.KomponTypen = wb_Global.KomponTypen.KO_TYPE_UNDEFINED
+                Select Case _Extendee.GetPropertyValue("ArtikelGruppe").ToString
+                    Case "0"
+                        KType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL
+                    Case "40"
+                        KType = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+                    Case Else
+                        KType = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+                End Select
+                'Datensatz in WinBack neu anlegen
+                Komponente.MySQLdbNew(KType)
+            End If
 
             'Update aller in OrgaBack geänderten Daten
             Komponente.Bezeichung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
             Komponente.MatchCode = GetMMFValue(oFil, wb_Global.MFF_MatchCode)       'MFF281 - MatchCode
-            Komponente.ZutatenListe = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste) 'MFF209 - Zutatenliste 
-
+            Komponente.ZutatenListe = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste) 'MFF209 - Zutatenliste
+            Komponente.Kommentar = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste)    'MFF225 - Kommentar
+            Komponente.Kurzname = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste)     'MFF224 - Kurzname
 
             Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
             Debug.Print("Artikel-Bezeichnung    " & Komponente.Bezeichung)
-            Debug.Print("ZutatenListe           " & Komponente.ZutatenListe)
+            Debug.Print("Artikel-Kurzname       " & Komponente.Kurzname)
             Debug.Print("Index                  " & Komponente.Nr)
+            Debug.Print("Komponenten-Type       " & wb_Functions.KomponTypeToInt(Komponente.Type).ToString)
+            Debug.Print("ZutatenListe           " & Komponente.ZutatenListe)
             Debug.Print("MatchCode              " & Komponente.MatchCode)
 
             Return True

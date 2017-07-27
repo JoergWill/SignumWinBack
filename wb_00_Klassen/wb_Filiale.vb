@@ -19,32 +19,32 @@ Public Class wb_Filiale
     Shared Sub New()
         'TODO Hier muss die Routine übersprungen werden, wenn nur MYSQL im Einsatz ist !!
 
-        'pFiliale = New ArrayList()
-        'pSortiment = New ArrayList()
+        pFiliale = New ArrayList()
+        pSortiment = New ArrayList()
 
         ''Datenbank-Verbindung öffnen - MsSQL
-        'Dim OrgasoftMain As New wb_Sql(My.Settings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-        'Dim FNr As String
-        'Dim Srt As String
+        Dim OrgasoftMain As New wb_Sql(My.Settings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim FNr As String
+        Dim Srt As String
 
         ''Daten aus Tabelle Filialen lesen
-        'If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlFiliale, wb_Global.ProduktionsFiliale)) Then
-        '    While OrgasoftMain.Read
-        '        FNr = (OrgasoftMain.sField("Filialnummer"))
-        '        pFiliale.Add(FNr)
-        '    End While
-        'End If
+        If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlFiliale, wb_Global.ProduktionsFiliale)) Then
+            While OrgasoftMain.Read
+                FNr = (OrgasoftMain.sField("Filialnummer"))
+                pFiliale.Add(FNr)
+            End While
+        End If
 
         ''Kanal wieder schliessen
-        'OrgasoftMain.CloseRead()
+        OrgasoftMain.CloseRead()
 
         ''Daten aus Tabelle FilialeHatSortiment lesen
-        'If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSortiment, wb_Global.ProduktionsFiliale)) Then
-        '    While OrgasoftMain.Read
-        '        Srt = (OrgasoftMain.sField("SortimentsKürzel"))
-        '        pSortiment.Add(Srt)
-        '    End While
-        'End If
+        If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSortiment, wb_Global.ProduktionsFiliale)) Then
+            While OrgasoftMain.Read
+                Srt = (OrgasoftMain.sField("SortimentsKürzel"))
+                pSortiment.Add(Srt)
+            End While
+        End If
 
     End Sub
 

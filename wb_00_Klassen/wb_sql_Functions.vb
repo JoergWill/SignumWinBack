@@ -108,4 +108,23 @@ Public Class wb_sql_Functions
         End If
         winback.Close()
     End Function
+
+    ''' <summary>
+    ''' Ermittelt die nächste freie interne Komponenten-Nummer (KO_Nr) aus der Tabelle Komponenten
+    ''' </summary>
+    ''' <returns>Integer - nächste freie Komponenten-Nummer</returns>
+    Public Shared Function getNewKomponNummer() As Integer
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Max-Wert KO-Nr aus Tabelle Komponenten ermitteln
+        winback.sqlSelect(sqlMaxKompNummer)
+        If winback.Read Then
+            getNewKomponNummer = winback.iField("MAX(KO_Nr)") + 1
+        Else
+            getNewKomponNummer = 1
+        End If
+        winback.Close()
+    End Function
+
 End Class

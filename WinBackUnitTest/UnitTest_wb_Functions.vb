@@ -82,7 +82,11 @@ Imports WinBack.wb_Global
 
         Assert.AreEqual(KomponTypen.KO_TYPE_UNDEFINED, IntToKomponType(999))
     End Sub
+    <TestMethod()> Public Sub Test_KomponTypeToInt()
+        Assert.AreEqual(0, KomponTypeToInt(KomponTypen.KO_TYPE_ARTIKEL))
+        Assert.AreEqual(102, KomponTypeToInt(KomponTypen.KO_TYPE_HANDKOMPONENTE))
 
+    End Sub
     <TestMethod()> Public Sub Test_AllergenToString()
         Assert.AreEqual("ERR", AllergenToString(AllergenInfo.ERR))
         Assert.AreEqual("ERR", AllergenToString(AllergenInfo.X))

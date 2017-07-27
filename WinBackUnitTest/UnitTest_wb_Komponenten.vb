@@ -43,14 +43,14 @@ Imports WinBack.wb_Sql_Selects
             'Rohstoff-Bezeichnung ändern
             nwtDaten.Bezeichung = "TEST"
             'Datensatz in WinBack-DB schreiben
-            Assert.IsTrue(nwtDaten.MySQLdbWrite(211))
+            Assert.IsTrue(nwtDaten.MySQLdbUpdate(211))
             'ersten Datensatz aus Tabelle Komponenten lesen
             Assert.IsTrue(nwtDaten.MySQLdbRead(211))
             Assert.AreEqual("TEST", nwtDaten.Bezeichung)
             'Daten wieder richtigstellen
             nwtDaten.Bezeichung = "Schüttwasser"
             'Datensatz in WinBack-DB schreiben
-            Assert.IsTrue(nwtDaten.MySQLdbWrite(211))
+            Assert.IsTrue(nwtDaten.MySQLdbUpdate(211))
 
         End If
     End Sub
@@ -132,4 +132,37 @@ Imports WinBack.wb_Sql_Selects
         End If
     End Sub
 
+    <TestMethod()> Public Sub Test_NewKomp()
+        'Test kann nur ausgeführt werden, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
+
+            'Rohstoff-Daten
+            Dim nwtDaten As New wb_Komponenten
+            nwtDaten.Nummer = "1111TEST"
+            'Datenatz neu anlegen
+            Dim NewKoNr As Integer = nwtDaten.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_ARTIKEL)
+
+            'ersten Datensatz aus Tabelle Komponenten lesen
+            Assert.IsTrue(nwtDaten.MySQLdbRead(NewKoNr))
+            Assert.AreEqual(NewKoNr, nwtDaten.Nr)
+            Assert.AreEqual(wb_Global.KomponTypen.KO_TYPE_ARTIKEL, nwtDaten.Type)
+            Assert.AreEqual("Neu angelegt", Left(nwtDaten.Bezeichung, 12))
+
+            nwtDaten.Nummer = "1112TEST"
+            'Datenatz neu anlegen
+            NewKoNr = nwtDaten.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE)
+
+            'zweiten Datensatz aus Tabelle Komponenten lesen
+            Assert.IsTrue(nwtDaten.MySQLdbRead(NewKoNr))
+            Assert.AreEqual(NewKoNr, nwtDaten.Nr)
+            Assert.AreEqual(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE, nwtDaten.Type)
+            Assert.AreEqual("Neu angelegt", Left(nwtDaten.Bezeichung, 12))
+
+            'wieder aufräumen
+            Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+            winback.sqlCommand("DELETE FROM Komponenten WHERE KO_Nr_AlNum = '1111TEST'")
+            winback.sqlCommand("DELETE FROM Komponenten WHERE KO_Nr_AlNum = '1111TEST'")
+            WinBack.close
+        End If
+    End Sub
 End Class
