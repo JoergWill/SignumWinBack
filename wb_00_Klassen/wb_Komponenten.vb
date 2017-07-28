@@ -16,6 +16,7 @@ Public Class wb_Komponenten
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
+    Private _LastErrorText As String
 
     Private KO_DeklBezeichungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
@@ -149,6 +150,154 @@ Public Class wb_Komponenten
         End Set
     End Property
 
+    Public ReadOnly Property LastErrorText As String
+        Get
+            Return _LastErrorText
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Prüft ob der Rohstoff/Artikel noch verwendet wird. (Prüfung ob Löschen zulässig ist)
+    ''' 
+    ''' Abhängig von der Komponenten-Type wird geprüft ob:
+    '''     Artikel     -   Verwendung in Arbeits-Rezepte-Tabelle
+    '''     Rohstoff    -   Verwendung in Arbeits-Rezepte-Tabelle
+    '''                     Verwendung in Rezeptschritte-Tabelle
+    ''' </summary>
+    ''' <returns>False - Rohstoff/Artikel wird verwendet
+    ''' True - Rohstoff/Artikel wird nicht mehr verwendet (kann gelöscht werder)</returns>
+    Public Function MySQLdbCanBeDeleted(InterneKomponentenNummer As Integer, Optional KomponentenNummer As String = "") As Boolean
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+
+        'Suche nach KO_Nr oder KO_AlNum
+        If InterneKomponentenNummer > 0 Then
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_KO_Nr, InterneKomponentenNummer)
+        Else
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_AlNum, KomponentenNummer)
+        End If
+
+        'ersten Datensatz aus Tabelle Komponenten lesen
+        If Not winback.sqlSelect(sql) Then
+            winback.Close()
+            Return True
+        Else
+            If Not winback.Read Then
+                winback.Close()
+                Debug.Print("Datensatz nicht gefunden - Löschen freigegeben")
+                Return True
+            Else
+                'Stammdaten - Anzahl der Felder im DataSet
+                For i = 0 To winback.MySqlRead.FieldCount - 1
+                    MySQLdbRead_StammDaten(winback.MySqlRead.GetName(i), winback.MySqlRead.GetValue(i))
+                Next
+            End If
+        End If
+
+        'Datenbank-Verbindung wieder schliessen
+        winback.Close()
+
+        Debug.Print("Anfrage Löschen Komponente " & KO_Nr & "/" & KO_Nr_AlNum)
+
+        'Abhängig von der Komponenten-Type
+        Select Case Type
+
+            'Automatik-Rohstoffe dürfen nicht gelöscht werden
+            Case KomponTypen.KO_TYPE_AUTOKOMPONENTE, KomponTypen.KO_TYPE_WASSERKOMPONENTE, KomponTypen.KO_TYPE_EISKOMPONENTE
+                _LastErrorText = "Rohstoffe, die automatisch dosiert werden, können nicht gelöscht werden !"
+                Return False
+
+            'Sauerteig-Rohstoffe dürfen nicht gelöscht werden
+            Case KomponTypen.KO_TYPE_SAUER_MEHL, KomponTypen.KO_TYPE_SAUER_WASSER, KomponTypen.KO_TYPE_SAUER_ZUGABE, KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE
+                _LastErrorText = "Sauerteig-Rohstoffe, die automatisch dosiert werden, können nicht gelöscht werden !"
+                Return False
+
+            'Verkaufs-Artikel - Verwendung in der Produktion prüfen
+            Case KomponTypen.KO_TYPE_ARTIKEL
+                If MySQLIsUsedInProdcution(KO_Nr) Then
+                    _LastErrorText = "Dieser Artikel wird in der Produktion noch verwendet und kann nicht gelöscht werden"
+                    Return False
+                Else
+                    Return True
+                End If
+
+            'Rohstoff - Verwendung in der Produktion und in Rezepten prüfen
+            Case KomponTypen.KO_TYPE_HANDKOMPONENTE
+                If MySQLIsUsedInProdcution(KO_Nr) Then
+                    _LastErrorText = "Dieser Rohstoff wird in der Produktion noch verwendet und kann nicht gelöscht werden"
+                    Return False
+                ElseIf MySQLIsUsedInRecipe(KO_Nr) Then
+                    _LastErrorText = "Dieser Rohstoff wird noch in Rezepturen verwendet und kann nicht gelöscht werden"
+                    Return False
+                Else
+                    Return True
+                End If
+
+            Case Else
+                Return True
+        End Select
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt die Anzahl der Datensätze in der Tabelle wbdaten.ArbRzSchritte mit der übergebenen Komponenten-Nummer
+    ''' Ist die Anzahl der Datensätze gleich Null, wird True zurückgegeben sonst False.
+    ''' </summary>
+    ''' <param name="InterneKomponentenNummer">Integer - Interne Komponenten-Nummer</param>
+    ''' <returns>Boolean - Löschen ist erlaubt</returns>
+    Private Function MySQLIsUsedInProdcution(InterneKomponentenNummer As Integer) As Boolean
+        Dim winback = New wb_Sql(wb_Konfig.SqlConWbDaten, wb_Sql.dbType.mySql)
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompInArbRzp, InterneKomponentenNummer)
+        Dim Count As Integer = -1
+
+        'Suche nach KO_Nr
+        If winback.sqlSelect(sql) Then
+            If winback.Read Then
+                Count = winback.iField("Used")
+            End If
+        End If
+        'Datenbank wieder schliessen
+        winback.Close()
+        Debug.Print("MySQLIsUsedInProduction " & Count.ToString)
+
+        'Löschen erlaubt, wenn die Anzahl der Datensätze gleich Null ist
+        Return (Count <> 0)
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt die Anzahl der Datensätze in der Tabelle winback.RezeptSchritte mit der übergebenen Komponenten-Nummer
+    ''' Ist die Anzahl der Datensätze gleich Null, wird True zurückgegeben sonst False.
+    ''' </summary>
+    ''' <param name="InterneKomponentenNummer">Integer - Interne Komponenten-Nummer</param>
+    ''' <returns>Boolean - Löschen ist erlaubt</returns>
+    Private Function MySQLIsUsedInRecipe(InterneKomponentenNummer) As Boolean
+        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompInRezept, InterneKomponentenNummer)
+        Dim Count As Integer = -1
+
+        'Suche nach KO_Nr
+        If winback.sqlSelect(sql) Then
+            If winback.Read Then
+                Count = winback.iField("Used")
+            End If
+        End If
+        'Datenbank wieder schliessen
+        winback.Close()
+        Debug.Print("MySQLIsUsedInRecipe " & Count.ToString)
+
+        'Löschen erlaubt, wenn die Anzahl der Datensätze gleich Null ist
+        Return (Count <> 0)
+    End Function
+
+    ''' <summary>
+    ''' Kompoenten-Datensatz neu anlegen
+    ''' Es werden nur die Komponenten-Nummern (intern/extern) und die Komponenten-Type angelegt.
+    ''' Die Komponenten-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit
+    ''' 
+    ''' Alle weiteren Komponenten-Daten werden mit MySQLdbUpdate eingetragen.
+    ''' </summary>
+    ''' <param name="KType">KomponTypen - Komponenten-Type der anzulegenden Komponente</param>
+    ''' <returns>Integer - neu anglegte (interne) Komponenten-Nummer</returns>
     Public Function MySQLdbNew(KType As wb_Global.KomponTypen) As Integer
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
@@ -322,8 +471,6 @@ Public Class wb_Komponenten
 
     ''' <summary>
     ''' schreibt alle Datenfelder aus dem Komponenten-Objekt mir der angegebenen Komponenten-Nummer in die Datenbank.
-    ''' TODO wenn KO-Nummer nicht definiert
-    ''' TODO INSERT MYSQL
     ''' </summary>
     ''' <param name="InterneKomponentenNummer"></param>
     ''' <returns></returns>
@@ -335,6 +482,8 @@ Public Class wb_Komponenten
         'Update-Statement wird dynamisch erzeugt    
         sql = "KO_Nr_AlNum = '" & Nummer & "'," &
               "KO_Bezeichnung = '" & Bezeichung & "'"
+        'TODO weitere Felder
+
         'Update ausführen
         If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then
             Return True

@@ -74,7 +74,10 @@
     Public Const sqlMaxKompNummer = "SELECT MAX(KO_Nr) FROM Komponenten"
     'Sql-Statement neue Komponente/Artikel anlegen
     Public Const sqlAddNewKompon = "INSERT INTO Komponenten(KO_Nr, KO_Nr_AlNum, KO_TYPE, KO_Bezeichnung) VALUES ([0],'[1]',[2],'[3]')"
-
+    'Sql-Statement Verwendung Komponente in Rezeptschritten
+    Public Const sqlKompInRezept = "SELECT COUNT(*) AS Used FROM RezeptSchritte WHERE RS_Ko_nr = [0]"
+    'Sql-Statement Verwendung Komponente in Arbeits-Rezeptschritten
+    Public Const sqlKompInArbRzp = "SELECT COUNT(*) AS Used FROM BAK_ArbRZSchritte WHERE B_ARS_TW_Nr = 0 AND B_ARS_Ko_nr = [0]"
 
     'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)
     Public Const sqlTestktTypX = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "

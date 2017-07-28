@@ -162,7 +162,31 @@ Imports WinBack.wb_Sql_Selects
             Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
             winback.sqlCommand("DELETE FROM Komponenten WHERE KO_Nr_AlNum = '1111TEST'")
             winback.sqlCommand("DELETE FROM Komponenten WHERE KO_Nr_AlNum = '1111TEST'")
-            WinBack.close
+            winback.Close()
+        End If
+    End Sub
+
+
+    <TestMethod()> Public Sub Test_DelKomp()
+        'Test kann nur ausgeführt werden, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
+
+            'Rohstoff-Daten (Test Wasser)
+            Dim KompDaten As New wb_Komponenten
+
+            'Verwendung im Rezept
+            Assert.IsFalse(KompDaten.MySQLdbCanBeDeleted(211))
+
+            'neuen Artikel anlegen
+            Dim NewKoNr As Integer = KompDaten.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_ARTIKEL)
+            'Verwendung im Rezept
+            Assert.IsTrue(KompDaten.MySQLdbCanBeDeleted(NewKoNr))
+
+            'neuen Rohstoff anlegen
+            NewKoNr = KompDaten.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE)
+            'Verwendung im Rezept
+            Assert.IsTrue(KompDaten.MySQLdbCanBeDeleted(NewKoNr))
+
         End If
     End Sub
 End Class

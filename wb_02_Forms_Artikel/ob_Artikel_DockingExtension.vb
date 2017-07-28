@@ -151,12 +151,32 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_BeforeDelete(sender As Object, e As EventArgs)
-        Debug.Print("Article_DockingExtension BeforeDelete")
+        Dim CanBeDeleted As Boolean = True
+
         'Hier kann das Löschen von Artikel/Komponenten-Daten verhindert werden  
-        'TODO prüfen ob Artikel/Rohstoff noch verwendet wird - dann Fehlermeldung. Sonst Löschen erlauben
+        Debug.Print("Article_DockingExtension BeforeDelete")
+
+        'Sortiment-Kürzel aus Artikel.Sortiment
+        Dim sSortiment As String = _Extendee.GetPropertyValue("Sortiment").ToString
+        If wb_Filiale.SortimentIstProduktion(sSortiment) Then
+
+            'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
+            Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+            'Komponenten-Nummer aus OrgaBack ermitteln
+            Komponente.Nr = CInt(GetMMFValue(oFil, wb_Global.MFF_KO_Nr))            'MFF280 - Index auf interne Komponenten-Nummer
+            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString    'Artikel/Komponenten-Nummer alphanumerisch
+
+            'Prüfen ob der Artikel/Rohstoff noch verwendet wird
+            CanBeDeleted = Komponente.MySQLdbCanBeDeleted(Komponente.Nr, Komponente.Nummer)
+            'Falls notwendig wird ein Fehlertext ausgegeben
+            If Not CanBeDeleted Then
+                MsgBox(Komponente.LastErrorText)
+                Debug.Print("Article_DockingExtension " & Komponente.Nummer & " Can Not be deleted " & Komponente.LastErrorText)
+            End If
+        End If
         '     .Cancel = True    Löschen nicht erlaubt
         '     .Cancel = False   Löschen erlaubt
-        DirectCast(e, CancelEventArgs).Cancel = False
+        DirectCast(e, CancelEventArgs).Cancel = Not CanBeDeleted
     End Sub
 
     ''' <summary>
