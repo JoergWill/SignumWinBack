@@ -1,5 +1,4 @@
-﻿Imports WinBack.wb_Admin_Sync
-Public Class wb_Sync
+﻿Public Class wb_Sync
     Shared WinBack_UserGruppe As New ArrayList
     Shared OrgaBack_UserGruppe As New ArrayList
 

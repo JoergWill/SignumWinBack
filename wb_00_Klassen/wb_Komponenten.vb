@@ -290,6 +290,44 @@ Public Class wb_Komponenten
     End Function
 
     ''' <summary>
+    ''' Löscht alle Einträge zur aktuellen Komponenten-Nummer aus der WinBack-Datenbank
+    '''     - winback.Lagerorte     (LG_Ort)
+    '''     - winback.Lieferungen   (LF_LG_Ort)
+    '''     - winback.Komponenten   (KO_Nr)
+    '''     - winback.KomponParams  (KO_Nr)
+    '''     - winback.Hinweise2     (KO_Nr)
+    '''     - winback.RohParams     (KO_Nr)
+    '''     
+    ''' Die Datenfelder KO_Nr und KA_Lagerort müssen in MySQLdbRead_StammDaten vorab gelesen worden sein.
+    ''' (Routine MySQLdbCanBeDeleted) 
+    ''' </summary>
+    Public Sub MySQLdbDelete()
+        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Interne Komponenten-Nummer muss definiert sein
+        If KO_Nr > 0 Then
+            'Löschen Komponente in winback.Komponenten
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelKomponenten, KO_Nr))
+            'Löschen Komponente in winback.KomponParams
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelKomponParams, KO_Nr))
+            'Löschen Komponente in winback.Hinweise2
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelKompHinweise, KO_Nr))
+            'Löschen Komponente in winbackRohParams
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRohParams, KO_Nr))
+
+            'Der Lagerort muss definiert sein
+            If KA_Lagerort <> "" Then
+                'Löschen winback.LagerOrte
+                winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelLagerOrte, KA_Lagerort))
+                'Löschen winback.KLieferungen
+                winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelLieferungen, KA_Lagerort))
+            End If
+
+        End If
+        winback.Close()
+    End Sub
+
+    ''' <summary>
     ''' Kompoenten-Datensatz neu anlegen
     ''' Es werden nur die Komponenten-Nummern (intern/extern) und die Komponenten-Type angelegt.
     ''' Die Komponenten-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit

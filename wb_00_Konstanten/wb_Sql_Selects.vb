@@ -79,6 +79,20 @@
     'Sql-Statement Verwendung Komponente in Arbeits-Rezeptschritten
     Public Const sqlKompInArbRzp = "SELECT COUNT(*) AS Used FROM BAK_ArbRZSchritte WHERE B_ARS_TW_Nr = 0 AND B_ARS_Ko_nr = [0]"
 
+    'Löschen Rohstoff/Artikel in Komponenten
+    Public Const sqlDelKomponenten = "DELETE FROM Komponenten WHERE KO_NR = [0]"
+    'Löschen Rohstoff/Artikel in KomponParams
+    Public Const sqlDelKomponParams = "DELETE FROM KomponParams WHERE KP_Ko_NR = [0]"
+    'Löschen Rohstoff/Artikel in Hinweise2
+    Public Const sqlDelKompHinweise = "DELETE FROM Hinweise2 WHERE H2_Id1= [0]"
+    'Löschen Rohstoff/Artikel in RohParams
+    Public Const sqlDelRohParams = "DELETE FROM RohParams WHERE RP_Ko_NR = [0]"
+    'Löschen Rohstoff/Artikel in Lagerorte
+    Public Const sqlDelLagerOrte = "DELETE FROM Lagerorte WHERE LG_Ort = [0]"
+    'Löschen Rohstoff/Artikel in Lieferungen
+    Public Const sqlDelLieferungen = "DELETE FROM Lieferungen WHERE LF_LG_Ort = [0]"
+
+
     'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)
     Public Const sqlTestktTypX = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "
     Public Const sqlTestktTyp3 = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &

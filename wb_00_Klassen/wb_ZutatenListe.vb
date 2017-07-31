@@ -182,9 +182,13 @@ Public Class wb_ZutatenListe
     End Sub
 
     Public Function Get_ENummer(s As String) As String
-        Dim rgx As New Regex("E\d{4}[a-z)]|E\d{4}|E \d{4}[a-z]|E \d{4}|E\d{3}[a-z)]|E\d{3}|E \d{3}[a-z]|E \d{3}")
-        Dim x As String = rgx.Match(s).Value
-        Return x.Replace(" ", "")
+        If s IsNot Nothing And s <> "" Then
+            Dim rgx As New Regex("E\d{4}[a-z)]|E\d{4}|E \d{4}[a-z]|E \d{4}|E\d{3}[a-z)]|E\d{3}|E \d{3}[a-z]|E \d{3}")
+            Dim x As String = rgx.Match(s).Value
+            Return x.Replace(" ", "")
+        Else
+            Return ""
+        End If
     End Function
 
     Public Sub Sort()

@@ -186,6 +186,13 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="e"></param>
     Private Sub Extendee_Deleted(sender As Object, e As EventArgs)
         Debug.Print("Article_DockingExtension Deleted")
+
+        'Sortiment-Kürzel aus Artikel.Sortiment
+        Dim sSortiment As String = _Extendee.GetPropertyValue("Sortiment").ToString
+        If wb_Filiale.SortimentIstProduktion(sSortiment) Then
+            'Komponente endgültig löschen - Die Komponenten-Nummer ist vorab schon ermittelt worden (BeforeDelete)
+            Komponente.MySQLdbDelete()
+        End If
     End Sub
 
     ''' <summary>
