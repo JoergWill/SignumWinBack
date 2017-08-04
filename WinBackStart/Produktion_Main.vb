@@ -1,14 +1,15 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Produktion_Main
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbProduktion.xml"
     Public ProduktionListe As New wb_Planung_Liste
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbProduktion.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbProduktion.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

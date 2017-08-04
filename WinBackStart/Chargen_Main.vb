@@ -1,14 +1,15 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Chargen_Main
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbChargen.xml"
     Public ChargenListe As New wb_Chargen_Liste
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbChargen.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbChargen.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

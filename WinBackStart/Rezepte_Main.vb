@@ -1,5 +1,7 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Rezepte_Main
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbRezepte.xml"
+
     Public RezeptListe As New wb_Rezept_Liste
     Public RezeptDetails As New wb_Rezept_Details
     Public RezeptHinweise As New wb_Rezept_Hinweise
@@ -9,7 +11,7 @@ Public Class Rezepte_Main
 
     Private Sub SaveDockBarConfig()
         Try
-            DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbRezepte.xml")
+            DockPanel.SaveAsXml(DkPnlPath)
         Catch ex As Exception
             MsgBox("Fehler beim Sichern der Konfiguration: " & ex.Message.ToString)
             'TODO diese Konstruktion bei allen DockPanel.SaveAsXml einbauen
@@ -19,7 +21,7 @@ Public Class Rezepte_Main
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbRezepte.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

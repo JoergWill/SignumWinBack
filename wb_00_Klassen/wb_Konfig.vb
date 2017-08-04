@@ -3,7 +3,6 @@
 Public Class wb_Konfig
 
     Shared Language As String
-    Public Shared DockPanelPath As String
     Public Shared TexteTabelle As New Hashtable
 
     Public Shared Filiale As New wb_Filiale
@@ -35,11 +34,6 @@ Public Class wb_Konfig
                 My.Settings.WinBackDBType = wb_Sql.dbType.undef
                 Throw New NotImplementedException
         End Select
-
-        ' Connection-String für OrgaBackMain-MsSQL-Datenbank
-        My.Settings.OrgaBackMainConString = "Data Source=" & My.Settings.MsSQLServerIP & "\SIGNUM; " _
-                                    & "Database=" & My.Settings.MsSQLMain & "; " _
-                                    & "Integrated Security=True"
 
     End Sub
     Private Shared Sub MySqlSetting()
@@ -111,7 +105,7 @@ Public Class wb_Konfig
             Case wb_Sql.dbType.mySql
                 Throw New NotImplementedException
             Case wb_Sql.dbType.msSql
-                Return My.Settings.OrgaBackMainConString
+                Return wb_GlobalSettings.OrgaBackMainConString
             Case Else
                 Throw New NotImplementedException
         End Select
@@ -142,20 +136,6 @@ Public Class wb_Konfig
     Public Shared Sub SetColors()
         'Hintergrund-Farbe jeder zweiten Zeile des DataViewGrid (alternative RowSetting)
         My.Settings.DataGridAlternateRowColor = System.Drawing.Color.LightGray
-    End Sub
-
-    Public Shared Sub SetPath(pVariante As ProgVariante)
-        'Default
-        'TODO Prüfen, ob der Pfad existiert - sonst anlegen !!!
-        DockPanelPath = ""
-        Select Case pVariante
-            Case ProgVariante.OrgaBack
-                DockPanelPath = My.Settings.OrgaSoftDockPanelPath
-            Case ProgVariante.WinBack
-                DockPanelPath = My.Settings.WinBackDockPanelPath
-            Case Else
-                Throw New NotImplementedException
-        End Select
     End Sub
 
     Public Shared Sub SetLanguage(Lang As String)

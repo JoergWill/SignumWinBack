@@ -1,17 +1,19 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Rohstoffe_Main
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbRohstoff.xml"
+
     Public RohstoffListe As New wb_Rohstoffe_Liste
     Public RohstoffDetails As New wb_Rohstoffe_Details
     Public RohstoffVerwendung As New wb_Rohstoffe_Verwendung
     Public RohstoffParameter As New wb_Rohstoffe_Parameter
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbRohstoff.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbRohstoff.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

@@ -272,19 +272,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=WILL-WIN10\SIGNUM; Database=DemoOrgaBack_Main3; Integrated Security=T"& _ 
-            "rue")>  _
-        Public Property OrgaBackMainConString() As String
-            Get
-                Return CType(Me("OrgaBackMainConString"),String)
-            End Get
-            Set
-                Me("OrgaBackMainConString") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("DemoOrgaBack_Main3")>  _
         Public Property MsSQLMain() As String
             Get

@@ -154,6 +154,11 @@ Public Class wb_Main_Menu
     Private Sub ShowRohstoffForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Rohstoffe_Main(ServiceProvider), My.Resources.MainRohstoffe_16x16)
+        Dim IniFile As New WinBack.wb_IniFile
+        xForm.Top = IniFile.ReadInt("Rohstoffe", "Top")
+        xForm.Left = IniFile.ReadInt("Rohstoffe", "Left")
+        xForm.Width = IniFile.ReadInt("Rohstoffe", "Width")
+        xForm.Height = IniFile.ReadInt("Rohstoffe", "Height")
     End Sub
     'Rezepte
     Private Sub ShowRezeptForm(sender As Object, e As EventArgs)
@@ -235,6 +240,9 @@ Public Class wb_Main_Menu
                 sName = CType(oTable.Rows(0)(0), String) & " " & CType(oTable.Rows(0)(1), String)
             End Using
 
+            Debug.Print("Rechner-Name " & System.Environment.MachineName)
+            Debug.Print("Rechner-Name " & My.Computer.Name)
+            Debug.Print("Rechner-Name " & Environment.GetEnvironmentVariable("clientname"))
             My.Settings.AktUser = sName
         End If
     End Sub
@@ -249,7 +257,7 @@ Public Class wb_Main_Menu
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
         wb_Konfig.SqlSetting()
         wb_Konfig.SetColors()
-        wb_Konfig.SetPath(wb_Global.ProgVariante.OrgaBack)
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
     End Sub
 
 End Class

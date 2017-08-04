@@ -6,6 +6,8 @@ Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Admin_Main
     Implements IExternalFormUserControl
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbAdmin.xml"
+
     Public AdminSync As New wb_Admin_Sync
     Public AdminDatensicherung As New wb_Admin_Datensicherung
     Public AdminLog As New wb_Admin_Log
@@ -145,12 +147,12 @@ Public Class wb_Admin_Main
     End Sub
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbAdmin.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbAdmin.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

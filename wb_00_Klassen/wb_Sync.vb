@@ -23,7 +23,7 @@
             winback.Close()
 
             'Einlesen der WinBack-Gruppen aus OrgaBackMain.dbo.MitarbeiterMultiFunktionsFeld
-            Dim orgaback As New wb_Sql(My.Settings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+            Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
             If orgaback.sqlSelect(wb_Sql_Selects.mssqlMitarbeiterGruppen) Then
                 While orgaback.Read
                     Gruppe.Nummer = orgaback.iField("Hierarchie")
@@ -132,7 +132,7 @@
         sGrpNr = Strings.Right("0000" + GrpNr.ToString, 4)
 
         'Verbindung zu MsSQL-Datenbank
-        Dim orgaback As New wb_Sql(My.Settings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
         'Update OrgaBackMain.dbo.MitarbeiterMultiFunktionsFeld
         OrgaBackUpdate = orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlUpdateMitarbeiterGruppen, sGrpNr, GrpBezeichnung))
         'Datenbank-Verbindung wieder schliessen
@@ -145,7 +145,7 @@
         sGrpNr = Strings.Right("0000" + GrpNr.ToString, 4)
 
         'Verbindung zu MsSQL-Datenbank
-        Dim orgaback As New wb_Sql(My.Settings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
         'Update OrgaBackMain.dbo.MitarbeiterMultiFunktionsFeld
         OrgaBackInsert = orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertMitarbeiterGruppen, sGrpNr, GrpBezeichnung, 1))
         'Datenbank-Verbindung wieder schliessen

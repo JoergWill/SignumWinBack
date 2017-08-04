@@ -5,6 +5,8 @@ Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_User_Main
     Implements IExternalFormUserControl
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbUser.xml"
+
     Private UserListe As New wb_User_Liste
     Private UserDetails As New wb_User_Details
     Private UserRechte As New wb_User_Rechte
@@ -149,12 +151,12 @@ Public Class wb_User_Main
     End Sub
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbUser.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbUser.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

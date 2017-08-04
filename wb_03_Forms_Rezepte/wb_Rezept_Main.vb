@@ -6,6 +6,8 @@ Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Rezept_Main
     Implements IExternalFormUserControl
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbRezept.xml"
+
     Public RezeptListe As New wb_Rezept_Liste
     Public RezeptDetails As New wb_Rezept_Details
     Public RezeptHinweise As New wb_Rezept_Hinweise
@@ -157,12 +159,12 @@ Public Class wb_Rezept_Main
     End Sub
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbUser.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbUser.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

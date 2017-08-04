@@ -42,6 +42,7 @@
     Enum ProgVariante
         OrgaBack                    'Programm läuft als Addin unter OrgaBack
         WinBack                     'Programm läuft als Standalone
+        Undef                       'nicht definiert
     End Enum
 
     Enum KomponTypen

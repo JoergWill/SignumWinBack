@@ -23,7 +23,7 @@ Public Class wb_Filiale
         pSortiment = New ArrayList()
 
         ''Datenbank-Verbindung öffnen - MsSQL
-        Dim OrgasoftMain As New wb_Sql(My.Settings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
         Dim FNr As String
         Dim Srt As String
 

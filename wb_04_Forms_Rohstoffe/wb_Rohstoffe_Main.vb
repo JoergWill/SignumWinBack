@@ -6,6 +6,9 @@ Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Rohstoffe_Main
     Implements IExternalFormUserControl
+    Private DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbRohstoff.xml"
+    Private DockPanelList As New List(Of WeifenLuo.WinFormsUI.Docking.DockContent)
+
     Public RohstoffListe As New wb_Rohstoffe_Liste
     Public RohstoffDetails As New wb_Rohstoffe_Details
 
@@ -90,9 +93,6 @@ Public Class wb_Rohstoffe_Main
     Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
         'Anzeige sichern
         SaveDockBarConfig()
-        'alle erzeugten Fenster wieder schliessen
-        RohstoffDetails.Close()
-        RohstoffListe.Close()
     End Sub
 
     ''' <summary>
@@ -116,7 +116,7 @@ Public Class wb_Rohstoffe_Main
     End Sub
 
     Private Sub BtnUserNew()
-        Throw New NotImplementedException
+
     End Sub
 
     Private _ServiceProvider As Common.IOrgasoftServiceProvider
@@ -141,26 +141,44 @@ Public Class wb_Rohstoffe_Main
     End Sub
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbRohstoff.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
+
+        'Fenster-Einstellungen in winback.ini sichern
+        'wird in wb_Main_Menu gelesen und verarbeitet !
+        Dim IniFile As New WinBack.wb_IniFile
+        IniFile.WriteInt("Rohstoffe", "Top", Me.Top)
+        IniFile.WriteInt("Rohstoffe", "Left", Me.Left)
+        IniFile.WriteInt("Rohstoffe", "Width", Me.Width)
+        IniFile.WriteInt("Rohstoffe", "Height", Me.Height)
+
+        IniFile = Nothing
     End Sub
 
     Private Sub LoadDockBarConfig()
+        'Farb-Schema einstellen
+        DockPanel.Theme = wb_GlobalOrgaBack.Theme
+
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbRohstoff.xml", AddressOf wbBuildDocContent)
+            DockPanelList.Clear()
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
+            Debug.Print("Exception")
         End Try
 
-        RohstoffDetails.Show(DockPanel, DockState.DockTop)
-        RohstoffDetails.CloseButtonVisible = False
-        RohstoffListe.Show(DockPanel, DockState.DockLeft)
-        RohstoffListe.CloseButtonVisible = False
+        'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
+        For Each x In DockPanelList
+            x.Show(DockPanel, x.DockState)
+            x.CloseButtonVisible = False
+        Next
     End Sub
 
     Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "RohstoffListe"
+            Case "WinBack.wb_Rohstoffe_Liste"
+                DockPanelList.Add(RohstoffListe)
                 Return RohstoffListe
-            Case "RohstoffDetails"
+            Case "WinBack.wb_Rohstoffe_Details"
+                DockPanelList.Add(RohstoffDetails)
                 Return RohstoffDetails
             Case Else
                 Return Nothing

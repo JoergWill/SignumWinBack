@@ -17,6 +17,7 @@ Public Class wb_Artikel_Main
     Implements IExternalFormUserControl
     Dim ArtikelListe As New wb_Artikel_Liste
     Dim ArtikelDetails As New wb_Artikel_Details
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbArtikel.xml"
 
     Private _ServiceProvider As Common.IOrgasoftServiceProvider
     Private _MenuService As Common.IMenuService
@@ -145,11 +146,11 @@ Public Class wb_Artikel_Main
         End Select
     End Function
     Private Sub wbArtikel_Close()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbArtikel.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
     End Sub
     Private Sub wbArtikelLoad()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbArtikel.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
 
         End Try

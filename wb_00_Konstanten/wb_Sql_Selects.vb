@@ -155,6 +155,11 @@
     Public Const mssqlSortiment = "SELECT * FROM FilialeHatSortiment INNER JOIN Filialen ON FilialeHatSortiment.Filialnr =  Filialen.Filialnummer " &
                                   "WHERE [Typ] = [0] ORDER BY SortimentsKürzel"
 
+    'Sql-Statement Abfrage dbo.Settings.Category
+    Public Const mssqlSettings = "SELECT * FROM Settings WHERE [Category] = '[0]'"
+    'Sql-Statement Abfrage dbo.WorkStations.Computername
+    Public Const mssqlWrkStations = "SELECT * FROM WorkStations WHERE [ComputerName] = '[0]'"
+
 
     Public Shared Function setParams(sql As String, Param0 As String, Optional Param1 As String = "-",
                                      Optional Param2 As String = "-", Optional Param3 As String = "-",

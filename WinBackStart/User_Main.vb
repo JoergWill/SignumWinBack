@@ -2,17 +2,19 @@
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class User_Main
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbUser.xml"
+
     Public UserListe As New wb_User_Liste
     Public UserDetails As New wb_User_Details
     Private UserRechte As New wb_User_Rechte
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbUser.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbUser.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

@@ -216,6 +216,8 @@
     <Compile Include="wb_00_Klassen\wb_ZutatenListe.vb" />
     <Compile Include="wb_00_Klassen\wb_ZutatenListe_Global.vb" />
     <Compile Include="wb_00_Konstanten\wb_Credentials.vb" />
+    <Compile Include="wb_00_Konstanten\wb_GlobalOrgaBack.vb" />
+    <Compile Include="wb_00_Konstanten\wb_GlobalSettings.vb" />
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_DockingExtension.vb" />
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.Designer.vb">
       <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
@@ -647,6 +649,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Leer_32x32.png" />
+    <None Include="Resources\StatusStripBackground.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

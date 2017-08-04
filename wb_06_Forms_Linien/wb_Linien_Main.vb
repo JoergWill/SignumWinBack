@@ -17,6 +17,7 @@ Imports Signum.OrgaSoft
 
 Public Class wb_Linien_Main
     Implements IExternalFormUserControl
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbLinien.xml"
 
     Private LinienListe As New wb_Linien_Liste
     Private LinienDetails As New wb_Linien_Details
@@ -177,12 +178,12 @@ Public Class wb_Linien_Main
     End Sub
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbLinien.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbLinien.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 

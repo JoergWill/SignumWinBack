@@ -1,16 +1,18 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class Linien_Main
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbLinien.xml"
+
     Public LinienListe As New wb_Linien_Liste
     Private LinienDetails As New wb_Linien_Details
 
     Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(wb_Konfig.DockPanelPath & "wbLinien.xml")
+        DockPanel.SaveAsXml(DkPnlPath)
     End Sub
 
     Private Sub LoadDockBarConfig()
         Try
-            DockPanel.LoadFromXml(wb_Konfig.DockPanelPath & "wbLinien.xml", AddressOf wbBuildDocContent)
+            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
         Catch ex As Exception
         End Try
 
