@@ -45,6 +45,13 @@
         Undef                       'nicht definiert
     End Enum
 
+    Enum OrgaBackThemes
+        Standard
+        Blau
+        Grau
+        Anthrazit
+    End Enum
+
     Enum KomponTypen
         KO_TYPE_UNDEFINED
 

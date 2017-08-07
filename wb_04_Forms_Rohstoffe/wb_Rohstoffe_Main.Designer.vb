@@ -39,9 +39,7 @@ Partial Class wb_Rohstoffe_Main
         Me.DockPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DockPanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(43, Byte), Integer), CType(CType(57, Byte), Integer), CType(CType(86, Byte), Integer))
         Me.DockPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DockPanel.DockBackColor = System.Drawing.Color.FromArgb(CType(CType(43, Byte), Integer), CType(CType(57, Byte), Integer), CType(CType(86, Byte), Integer))
         Me.DockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow
         Me.DockPanel.ForeColor = System.Drawing.Color.Black
         Me.DockPanel.Location = New System.Drawing.Point(0, 0)

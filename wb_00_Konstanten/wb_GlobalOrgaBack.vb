@@ -8,15 +8,32 @@
 Public Class wb_GlobalOrgaBack
     Private Shared _OrgaBackDockPanelPath As String = Nothing
     Private Shared _OrgaBackWorkStationNumber As String = Nothing
+    Private Shared _OrgaBackTheme As Integer = -1
 
     ''' <summary>
     ''' Farbschema für Fenster-Docking
-    ''' 'TODO kann in OrgaBack einstellt werden. Einstellungen.Desktop.DockingTheme (1..4)
     ''' </summary>
     ''' <returns>Theme - ThemeBase</returns>
     Public Shared ReadOnly Property Theme As ThemeBase
         Get
-            Return New VS2015BlueTheme
+            'Einstellung aus Desktop.DockingTheme auslesen
+            If _OrgaBackTheme < 0 Then
+                DbReadSetting("Desktop")
+            End If
+
+            'Rückgabe-Wert abhängig von der Einstellung in OrgaBack
+            Select Case _OrgaBackTheme
+                Case wb_Global.OrgaBackThemes.Standard
+                    Return New VS2005Theme
+                Case wb_Global.OrgaBackThemes.Blau
+                    Return New VS2015BlueTheme
+                Case wb_Global.OrgaBackThemes.Grau
+                    Return New VS2015LightTheme
+                Case wb_Global.OrgaBackThemes.Anthrazit
+                    Return New VS2015DarkTheme
+                Case Else
+                    Return New VS2005Theme
+            End Select
         End Get
     End Property
 
@@ -62,9 +79,11 @@ Public Class wb_GlobalOrgaBack
                 Select Case OrgasoftMain.sField("Entry")
                     Case "TempPfad"
                         _OrgaBackDockPanelPath = OrgasoftMain.sField("Content")
+
+                    Case "DockingTheme"
+                        _OrgaBackTheme = OrgasoftMain.iField("Content")
+
                 End Select
-
-
             End While
         End If
     End Sub
