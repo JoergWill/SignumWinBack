@@ -648,8 +648,15 @@
     <Content Include="Resources\DatenRueckSicherung_16x16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\IconSave_24x24.png" />
+    <None Include="Resources\IconCancel_24x24.png" />
+    <None Include="Resources\IconDelete_24x24.png" />
+    <None Include="Resources\IconSave_16x16.png" />
+    <None Include="Resources\IconSaveAs_24x24.png" />
+    <None Include="Resources\IconReload_24x24.png" />
     <Content Include="Resources\Leer_32x32.png" />
     <None Include="Resources\StatusStripBackground.png" />
+    <None Include="Resources\SaveIcon_24x24.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

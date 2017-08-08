@@ -119,6 +119,22 @@ Public Class wb_Rohstoffe_Main
         End Get
     End Property
 
+    Private Function DkPnlConfigName(FileName As String) As String
+        'Extension entfernen
+        FileName = System.IO.Path.GetFileNameWithoutExtension(FileName)
+        'wb... entfernen
+        FileName = FileName.Replace("wb", "")
+
+        'Prüfen ob der Filename zu diesem Fenster gehört
+        If InStr(FileName, FormName) = 1 Then
+            'Form-Name entfernen
+            Return FileName.Replace(FormName, "")
+        Else
+            'File gehört nicht zur Form
+            Return ""
+        End If
+    End Function
+
     Public ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
         Get
             If _ContextTabs Is Nothing Then
@@ -159,6 +175,10 @@ Public Class wb_Rohstoffe_Main
     Private Sub wb_Rohstoffe_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
         wb_Rohstoffe_Shared.Load_RohstoffTables()
+
+        'Layout-Files in Status-Bar Listbox aktualisieren/einlesen
+        GetLayoutFileNames()
+
         ' DockBar Konfiguration aus XML-Datei lesen
         LoadDockBarConfig()
     End Sub
@@ -205,11 +225,17 @@ Public Class wb_Rohstoffe_Main
         'Farb-Schema einstellen
         DockPanel.Theme = wb_GlobalOrgaBack.Theme
 
-        'Liste aller Dock-Panels
-        _DockPanelList.Clear()
-
         'Prüfen ob ein Dock-Panel-Konfigurations-File vorhanden ist
         If My.Computer.FileSystem.FileExists(DkPnlConfigFileName) Then
+
+            'falls noch eine alte Konfiguration vorhanden ist
+            For i = DockPanel.Contents.Count - 1 To 0 Step -1
+                DockPanel.Contents(i).DockHandler.DockPanel = Nothing
+            Next i
+
+            'Liste aller Dock-Panels
+            _DockPanelList.Clear()
+
             'Laden der Konfiguration
             DockPanel.LoadFromXml(DkPnlConfigFileName, AddressOf wbBuildDocContent)
             'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
@@ -232,14 +258,17 @@ Public Class wb_Rohstoffe_Main
                 Return RohstoffListe
 
             Case "WinBack.wb_Rohstoffe_Details"
+                RohstoffDetails = New wb_Rohstoffe_Details
                 _DockPanelList.Add(RohstoffDetails)
                 Return RohstoffDetails
 
             Case "WinBack.wb_Rohstoffe_Verwendung"
+                RohstoffVerwendung = New wb_Rohstoffe_Verwendung
                 _DockPanelList.Add(RohstoffVerwendung)
                 Return RohstoffVerwendung
 
             Case "WinBack.wb_Rohstoffe_Parameter"
+                RohstoffParameter = New wb_Rohstoffe_Parameter
                 _DockPanelList.Add(RohstoffParameter)
                 Return RohstoffParameter
             Case Else
@@ -247,4 +276,31 @@ Public Class wb_Rohstoffe_Main
         End Select
     End Function
 
+    Private Sub GetLayoutFileNames()
+        ' Directory-Object erstellen
+        Dim s As String = wb_GlobalSettings.DockPanelPath(True)
+        Dim oDir As New IO.DirectoryInfo(s.TrimEnd("\"))
+        ' alle Dateien des Ordners
+        Dim oFiles As System.IO.FileInfo() = oDir.GetFiles("*.xml")
+        Dim oFile As System.IO.FileInfo
+        ' Layout-Name
+        Dim LayoutName As String = ""
+        cbLayouts.Items.Clear()
+
+        ' Datei-Array durchlaufen und in ListBox übertragen
+        For Each oFile In oFiles
+            LayoutName = DkPnlConfigName(oFile.Name)
+            If LayoutName <> "" Then
+                cbLayouts.Items.Add(LayoutName)
+                If LayoutName = LayoutFilename Then
+                    cbLayouts.Text = LayoutName
+                End If
+            End If
+        Next
+    End Sub
+
+    Private Sub BtnReload_Click(sender As Object, e As EventArgs) Handles BtnReload.Click
+        LayoutFilename = cbLayouts.Text
+        LoadDockBarConfig()
+    End Sub
 End Class
