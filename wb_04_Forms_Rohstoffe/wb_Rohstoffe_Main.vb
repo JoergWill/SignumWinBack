@@ -14,10 +14,13 @@ Public Class wb_Rohstoffe_Main
     Private _MenuService As Common.IMenuService
     Private _ViewProvider As IViewProvider
 
+    'Default-Fenster
     Public RohstoffListe As New wb_Rohstoffe_Liste
     Public RohstoffDetails As New wb_Rohstoffe_Details
-    Public RohstoffVerwendung As New wb_Rohstoffe_Verwendung
-    Public RohstoffParameter As New wb_Rohstoffe_Parameter
+
+    'alle anderen Fenster werden zur Laufzeit erzeugt
+    Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
+    Public RohstoffParameter As wb_Rohstoffe_Parameter
 
     Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
 
@@ -103,37 +106,20 @@ Public Class wb_Rohstoffe_Main
 
             Try
                 'Wenn dieses Layout im Arbeitsplatz-Ordner nicht vorhanden ist
-                Debug.Print("DockBarConfigFileName " & DkPnlConfigFileName & "Check Files exists")
                 If Not My.Computer.FileSystem.FileExists(DkPnlConfigFileName) Then
                     'vom Default-Ordner kopieren
-                    System.IO.File.Copy(DkPnlConfigFileName(True), DkPnlConfigFileName)
+                    System.IO.File.Copy(DkPnlConfigFileName(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), DkPnlConfigFileName)
                 End If
             Catch ex As Exception
             End Try
         End Set
     End Property
 
-    Private ReadOnly Property DkPnlConfigFileName(Optional DefaultPath As Boolean = False) As String
+    Private ReadOnly Property DkPnlConfigFileName(Optional DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath = wb_Global.OrgaBackDockPanelLayoutPath.UserLokal) As String
         Get
             Return wb_GlobalSettings.DockPanelPath(DefaultPath) & "wb" & FormName & LayoutFilename & ".xml"
         End Get
     End Property
-
-    Private Function DkPnlConfigName(FileName As String) As String
-        'Extension entfernen
-        FileName = System.IO.Path.GetFileNameWithoutExtension(FileName)
-        'wb... entfernen
-        FileName = FileName.Replace("wb", "")
-
-        'Prüfen ob der Filename zu diesem Fenster gehört
-        If InStr(FileName, FormName) = 1 Then
-            'Form-Name entfernen
-            Return FileName.Replace(FormName, "")
-        Else
-            'File gehört nicht zur Form
-            Return ""
-        End If
-    End Function
 
     Public ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
         Get
@@ -142,12 +128,11 @@ Public Class wb_Rohstoffe_Main
                 ' Fügt dem Ribbon ein neues RibbonTab hinzu
                 Dim oNewTab = _MenuService.AddContextTab("RohstoffVerwaltung", "WinBack-Rohstoffe", "Verwaltung der WinBack-Rohstoffe")
                 ' Das neue RibbonTab erhält eine Gruppe
-                '                Dim oGrp = oNewTab.AddGroup("GrpRohstoffe", "WinBack Rohstoffe")
                 Dim oGrp = oNewTab.AddGroup("GrpRohstoffe", "WinBack Rohstoffe")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("BtnRohstoffDetails", "Details", "weitere Rohstoff-Daten", My.Resources.UserNeu_32x32, My.Resources.UserNeu_32x32, AddressOf BtnRohstoffDetails)
-                oGrp.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter und Nährwert-Angaben", My.Resources.UserNeu_32x32, My.Resources.UserNeu_32x32, AddressOf BtnRohstoffParameter)
-                oGrp.AddButton("BtnRohstoffVerwendung", "Verwendung", "Verwendung des Rohstoffes in Rezepturen", My.Resources.UserNeu_32x32, My.Resources.UserNeu_32x32, AddressOf BtnRohstoffVerwendung)
+                oGrp.AddButton("BtnRohstoffDetails", "Details", "weitere Rohstoff-Daten", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnRohstoffDetails)
+                oGrp.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter und Nährwert-Angaben", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffParameter)
+                oGrp.AddButton("BtnRohstoffVerwendung", "Verwendung", "Verwendung des Rohstoffes in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf BtnRohstoffVerwendung)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -155,8 +140,10 @@ Public Class wb_Rohstoffe_Main
     End Property
 
     Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
-        'Anzeige sichern
-        SaveDockBarConfig()
+        'Fenster-Einstellungen in winback.ini sichern
+        wb_Konfig.SaveFormBoundaries(Me.Top, Me.Left, Me.Width, Me.Height, LayoutFilename, FormName)
+        'Anzeige wird in OrgaBack beim Schliessen nicht gesichert !
+        'SaveDockBarConfig()
     End Sub
 
     ''' <summary>
@@ -179,18 +166,22 @@ Public Class wb_Rohstoffe_Main
         'Layout-Files in Status-Bar Listbox aktualisieren/einlesen
         GetLayoutFileNames()
 
-        ' DockBar Konfiguration aus XML-Datei lesen
+        ' DockBar Konfiguration aus xml-Datei lesen
         LoadDockBarConfig()
     End Sub
 
     Private Sub BtnRohstoffDetails()
+        RohstoffDetails = New wb_Rohstoffe_Details
         RohstoffDetails.Show(DockPanel, DockState.DockTop)
     End Sub
 
     Private Sub BtnRohstoffParameter()
+        RohstoffParameter = New wb_Rohstoffe_Parameter
         RohstoffParameter.Show(DockPanel, DockState.Document)
     End Sub
+
     Private Sub BtnRohstoffVerwendung()
+        RohstoffVerwendung = New wb_Rohstoffe_Verwendung
         RohstoffVerwendung.Show(DockPanel, DockState.Document)
     End Sub
 
@@ -213,17 +204,17 @@ Public Class wb_Rohstoffe_Main
 
     ''' <summary>
     ''' DockBar-Konfiguration sichern
-    ''' Fenster-Einstellungen in winback.ini sichern
     '''     Diese Einstellungen werden in wb_Main_Menu gelesen und verarbeitet
     ''' </summary>
-    Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(DkPnlConfigFileName)
-        wb_Konfig.SaveFormBoundaries(Me.Top, Me.Left, Me.Width, Me.Height, Me.Tag, FormName)
+    Private Sub SaveDockBarConfig(Optional DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath = wb_Global.OrgaBackDockPanelLayoutPath.UserLokal)
+        DockPanel.SaveAsXml(DkPnlConfigFileName(DefaultPath))
     End Sub
 
     Private Sub LoadDockBarConfig()
         'Farb-Schema einstellen
         DockPanel.Theme = wb_GlobalOrgaBack.Theme
+        'Das Default-Layout kann nicht gelöscht werden
+        BtnDelete.Enabled = Not (_LayoutFilename = "Default")
 
         'Prüfen ob ein Dock-Panel-Konfigurations-File vorhanden ist
         If My.Computer.FileSystem.FileExists(DkPnlConfigFileName) Then
@@ -244,6 +235,8 @@ Public Class wb_Rohstoffe_Main
             Next
         Else
             'Default Fenster-Konfiguration (wenn alles schief geht)
+            RohstoffListe = New wb_Rohstoffe_Liste
+            RohstoffDetails = New wb_Rohstoffe_Details
             RohstoffListe.Show(DockPanel, DockState.DockLeft)
             RohstoffDetails.Show(DockPanel, DockState.DockTop)
         End If
@@ -277,30 +270,90 @@ Public Class wb_Rohstoffe_Main
     End Function
 
     Private Sub GetLayoutFileNames()
-        ' Directory-Object erstellen
-        Dim s As String = wb_GlobalSettings.DockPanelPath(True)
-        Dim oDir As New IO.DirectoryInfo(s.TrimEnd("\"))
-        ' alle Dateien des Ordners
-        Dim oFiles As System.IO.FileInfo() = oDir.GetFiles("*.xml")
-        Dim oFile As System.IO.FileInfo
-        ' Layout-Name
-        Dim LayoutName As String = ""
+        'Liste alle Konfigurations-Dateien im Verzeichnis
+        Dim ConfigFileNames As New List(Of String)
+        'Anzeige ausschalten, wegen Geschwindigkeit
+        cbLayouts.Visible = False
         cbLayouts.Items.Clear()
 
-        ' Datei-Array durchlaufen und in ListBox übertragen
-        For Each oFile In oFiles
-            LayoutName = DkPnlConfigName(oFile.Name)
-            If LayoutName <> "" Then
-                cbLayouts.Items.Add(LayoutName)
-                If LayoutName = LayoutFilename Then
-                    cbLayouts.Text = LayoutName
+        'Globales Verzeichnis ..\Temp\00
+        ConfigFileNames = wb_DockBarPanelGlobal.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), FormName)
+        For Each x In ConfigFileNames
+            'aktueller Layout-Filename
+            If LayoutFilename = x Then
+                cbLayouts.Text = x
+            End If
+            cbLayouts.Items.Add(x)
+        Next
+
+        'Arbeitsplatz Verzeichnis ..\Temp\xx
+        ConfigFileNames = wb_DockBarPanelGlobal.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal), FormName)
+        For Each x In ConfigFileNames
+            'nur noch neue Einträge hinzufügen
+            If cbLayouts.FindStringExact(x) = ListBox.NoMatches Then
+                'aktueller Layout-Filename
+                If LayoutFilename = x Then
+                    cbLayouts.Text = x
                 End If
+                cbLayouts.Items.Add(x)
             End If
         Next
+
+        'Sortieren
+        cbLayouts.Sorted = True
+        'und wieder anzeigen
+        cbLayouts.Visible = True
+    End Sub
+
+    Private Sub cbLayouts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLayouts.SelectedIndexChanged
+        If LayoutFilename <> cbLayouts.Text Then
+            LayoutFilename = cbLayouts.Text
+            LoadDockBarConfig()
+        End If
     End Sub
 
     Private Sub BtnReload_Click(sender As Object, e As EventArgs) Handles BtnReload.Click
         LayoutFilename = cbLayouts.Text
         LoadDockBarConfig()
     End Sub
+
+    Private Sub BtnSave_Click(sender As Object, e As EventArgs) Handles BtnSave.Click
+        'Layout wird lokal gespeichert
+        SaveDockBarConfig()
+    End Sub
+
+    Private Sub BtnSaveAs_Click(sender As Object, e As EventArgs) Handles BtnSaveAs.Click
+        Dim DkpPnlConfigSaveAs As New wb_DockBarPanelSaveAs(FormName)
+        AddHandler DkpPnlConfigSaveAs.eSaveAs_Click, AddressOf ESaveAs_Click
+        DkpPnlConfigSaveAs.ShowDialog(Me)
+    End Sub
+
+    Private Sub ESaveAs_Click(sender As Object, FileName As String, DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath)
+        'aktuelles Layout unter dem neuen Namen abspeichern
+        _LayoutFilename = FileName
+        cbLayouts.Text = _LayoutFilename
+        'Layout-Files in Status-Bar Listbox aktualisieren/einlesen
+        GetLayoutFileNames()
+        'Layout sichern
+        SaveDockBarConfig(DefaultPath)
+    End Sub
+
+    Private Sub BtnDelete_Click(sender As Object, e As EventArgs) Handles BtnDelete.Click
+        'Sicherheits-Abfrage
+        If MessageBox.Show("Soll das Layout " & LayoutFilename & " wirklich gelöscht werden ",
+                           "Layout löschen", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+            'aus der Auswahl-Liste entfernen
+            cbLayouts.Items.Remove(cbLayouts.SelectedItem)
+            'Layout-File wird lokal gelöscht
+            System.IO.File.Delete(DkPnlConfigFileName(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal))
+            'Layout-File wird global gelöscht
+            System.IO.File.Delete(DkPnlConfigFileName(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal))
+
+            'Default-Layout laden
+            _LayoutFilename = "Default"
+            cbLayouts.Text = _LayoutFilename
+            LoadDockBarConfig()
+        End If
+    End Sub
+
 End Class

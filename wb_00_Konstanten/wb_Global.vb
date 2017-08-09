@@ -52,6 +52,11 @@
         Anthrazit
     End Enum
 
+    Enum OrgaBackDockPanelLayoutPath
+        ProgrammGlobal              'Layout-File im Verzeichnis ..\Temp\00
+        UserLokal                   'Layout-File im Verzeichnis ..\Temp\xx (xx - Arbeitsplatz-Nummer)
+    End Enum
+
     Enum KomponTypen
         KO_TYPE_UNDEFINED
 

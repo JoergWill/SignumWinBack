@@ -74,17 +74,19 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
-    Public Shared ReadOnly Property DockPanelPath(Optional DefaultPath As Boolean = False)
+    Public Shared ReadOnly Property DockPanelPath(Optional DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath = wb_Global.OrgaBackDockPanelLayoutPath.UserLokal)
         Get
             Dim WindowsTempPfad As String = System.IO.Path.GetTempPath
             Dim OrgaBackTempPfad As String = wb_GlobalOrgaBack.OrgaBackDockPanelPath
             Select Case _pVariante
                 Case wb_Global.ProgVariante.OrgaBack
-                    If DefaultPath Then
-                        OrgaBackTempPfad &= "00\"
-                    Else
-                        OrgaBackTempPfad &= wb_GlobalOrgaBack.OrgaBackWorkStationNumber & "\"
-                    End If
+
+                    Select Case DefaultPath
+                        Case wb_Global.OrgaBackDockPanelLayoutPath.UserLokal
+                            OrgaBackTempPfad &= wb_GlobalOrgaBack.OrgaBackWorkStationNumber & "\"
+                        Case wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal
+                            OrgaBackTempPfad &= "00\"
+                    End Select
 
                     If System.IO.Directory.Exists(OrgaBackTempPfad) Then
                         Return OrgaBackTempPfad
