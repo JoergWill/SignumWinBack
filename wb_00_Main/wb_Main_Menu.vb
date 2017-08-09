@@ -198,7 +198,7 @@ Public Class wb_Main_Menu
     'Produktion - Planung
     Private Sub ShowProduktionsPlanungForm(sender As Object, e As EventArgs)
         CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainProduktionsPlanung_16x16)
+        xForm = oViewProvider.OpenForm(New wb_Planung_Main(ServiceProvider), My.Resources.MainProduktionsPlanung_16x16)
     End Sub
 
     'Admin - Administration

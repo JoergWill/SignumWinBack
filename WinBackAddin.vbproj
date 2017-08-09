@@ -406,6 +406,12 @@
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Main.Designer.vb">
+      <DependentUpon>wb_Planung_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Main.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_08_Forms_Admin\wb_Admin_Log.Designer.vb">
       <DependentUpon>wb_Admin_Log.vb</DependentUpon>
     </Compile>
