@@ -203,6 +203,12 @@
     <Compile Include="wb_00_Klassen\wb_nwtUpdate.vb" />
     <Compile Include="wb_00_Klassen\wb_Rezept.vb" />
     <Compile Include="wb_00_Klassen\wb_Rezeptschritt.vb" />
+    <Compile Include="wb_00_Klassen\wb_DockBarPanelMain.Designer.vb">
+      <DependentUpon>wb_DockBarPanelMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\wb_DockBarPanelMain.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\wb_sql_BackupRestore.vb" />
     <Compile Include="wb_00_Klassen\wb_Hinweise.vb" />
     <Compile Include="wb_00_Klassen\wb_Sync.vb" />
@@ -400,6 +406,12 @@
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_07_Forms_Planung\UserControl1.Designer.vb">
+      <DependentUpon>UserControl1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\UserControl1.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.Designer.vb">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
     </Compile>
@@ -453,6 +465,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\wb_DockBarPanelSaveAs.resx">
       <DependentUpon>wb_DockBarPanelSaveAs.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Klassen\wb_DockBarPanelMain.resx">
+      <DependentUpon>wb_DockBarPanelMain.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Liste.resx">
       <DependentUpon>wb_Artikel_Liste.vb</DependentUpon>
@@ -532,6 +547,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Liste.resx">
       <DependentUpon>wb_Chargen_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_07_Forms_Planung\UserControl1.resx">
+      <DependentUpon>UserControl1.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>

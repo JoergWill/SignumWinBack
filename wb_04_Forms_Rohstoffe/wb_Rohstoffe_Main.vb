@@ -15,14 +15,15 @@ Public Class wb_Rohstoffe_Main
     Private _ViewProvider As IViewProvider
 
     'Default-Fenster
-    Public RohstoffListe As New wb_Rohstoffe_Liste
-    Public RohstoffDetails As New wb_Rohstoffe_Details
+    Public RohstoffListe As wb_Rohstoffe_Liste
+    Public RohstoffDetails As wb_Rohstoffe_Details
 
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
     Public RohstoffParameter As wb_Rohstoffe_Parameter
 
     Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
+
 
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
         'MessageBox.Show("ExecuteCommand!" & vbCrLf & CommandId, "AddIn", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -184,7 +185,14 @@ Public Class wb_Rohstoffe_Main
         RohstoffVerwendung = New wb_Rohstoffe_Verwendung
         RohstoffVerwendung.Show(DockPanel, DockState.Document)
     End Sub
+    Public Sub New()
 
+        ' Dieser Aufruf ist für den Designer erforderlich.
+        'InitializeComponent()
+
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+
+    End Sub
     ''' <summary>
     ''' Konstruktor
     ''' </summary>
