@@ -141,7 +141,7 @@ Partial Class wb_DockBarPanelMain
         Me.ToolTip.SetToolTip(Me.BtnReload, "Layout laden")
         Me.BtnReload.UseVisualStyleBackColor = True
         '
-        'wb_Rohstoffe_Main
+        'wb_DockBarPanelMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -153,7 +153,7 @@ Partial Class wb_DockBarPanelMain
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.DockPanel)
         Me.MinimumSize = New System.Drawing.Size(532, 178)
-        Me.Name = "wb_Rohstoffe_Main"
+        Me.Name = "wb_DockBarPanelMain"
         Me.Size = New System.Drawing.Size(1059, 639)
         Me.ResumeLayout(False)
         Me.PerformLayout()

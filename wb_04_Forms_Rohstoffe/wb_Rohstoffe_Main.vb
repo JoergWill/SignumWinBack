@@ -15,8 +15,8 @@ Public Class wb_Rohstoffe_Main
     Private _ViewProvider As IViewProvider
 
     'Default-Fenster
-    Public RohstoffListe As wb_Rohstoffe_Liste
-    Public RohstoffDetails As wb_Rohstoffe_Details
+    Public RohstoffListe As New wb_Rohstoffe_Liste
+    Public RohstoffDetails As New wb_Rohstoffe_Details
 
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
@@ -185,14 +185,7 @@ Public Class wb_Rohstoffe_Main
         RohstoffVerwendung = New wb_Rohstoffe_Verwendung
         RohstoffVerwendung.Show(DockPanel, DockState.Document)
     End Sub
-    Public Sub New()
 
-        ' Dieser Aufruf ist für den Designer erforderlich.
-        'InitializeComponent()
-
-        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-
-    End Sub
     ''' <summary>
     ''' Konstruktor
     ''' </summary>
@@ -285,7 +278,7 @@ Public Class wb_Rohstoffe_Main
         cbLayouts.Items.Clear()
 
         'Globales Verzeichnis ..\Temp\00
-        ConfigFileNames = wb_DockBarPanelGlobal.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), FormName)
+        ConfigFileNames = wb_DockBarPanelMain.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), FormName)
         For Each x In ConfigFileNames
             'aktueller Layout-Filename
             If LayoutFilename = x Then
@@ -295,7 +288,7 @@ Public Class wb_Rohstoffe_Main
         Next
 
         'Arbeitsplatz Verzeichnis ..\Temp\xx
-        ConfigFileNames = wb_DockBarPanelGlobal.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal), FormName)
+        ConfigFileNames = wb_DockBarPanelMain.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), FormName)
         For Each x In ConfigFileNames
             'nur noch neue Einträge hinzufügen
             If cbLayouts.FindStringExact(x) = ListBox.NoMatches Then

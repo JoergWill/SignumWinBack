@@ -1,4 +1,5 @@
 ﻿Imports Signum.OrgaSoft
+Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
 
@@ -13,11 +14,15 @@ Public Class UserControl1
     Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
     Public RohstoffParameter As wb_Rohstoffe_Parameter
 
+    Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
+        MyBase.New(ServiceProvider)
+    End Sub
+
     ''' <summary>
     ''' Fenster-Name (Caption). Wird von Init() aufgerufen
     ''' </summary>
     ''' <returns></returns>
-    Public Shadows ReadOnly Property FormText As String
+    Public Overrides ReadOnly Property FormText As String
         Get
             Return "WinBack Rohstoff-Verwaltung"
         End Get
@@ -30,15 +35,18 @@ Public Class UserControl1
     ''' Die DockPanel-Konfiguration wird gespeichert unter wbXXXXYYYY.xml, dabei ist XXXX der FormName und YYYY der Layout-Name.
     ''' </summary>
     ''' <returns></returns>
-    Public Shadows ReadOnly Property FormName As String
+    Public Overrides ReadOnly Property FormName As String
         Get
+            Me.Tag = "Rohstoffe"
             Return "Rohstoffe"
         End Get
     End Property
-    Public Shadows Sub SetDefaultLayout()
+
+    Public Overrides Sub SetDefaultLayout()
         RohstoffListe.Show(DockPanel, DockState.DockLeft)
         RohstoffDetails.Show(DockPanel, DockState.DockTop)
     End Sub
+
     Public Shadows ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
         Get
             If _ContextTabs Is Nothing Then
@@ -72,7 +80,7 @@ Public Class UserControl1
         RohstoffVerwendung.Show(DockPanel, DockState.Document)
     End Sub
 
-    Private Shadows Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
+    Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
 
             Case "WinBack.wb_Rohstoffe_Liste"

@@ -1,6 +1,7 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class wb_Planung_Main
-    'Inherits System.Windows.Forms.UserControl
+    Inherits WinBack.wb_DockBarPanelMain
+
 
     'UserControl überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()> _

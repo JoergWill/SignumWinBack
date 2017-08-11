@@ -199,6 +199,8 @@ Public Class wb_Main_Menu
     Private Sub ShowProduktionsPlanungForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Planung_Main(ServiceProvider), My.Resources.MainProduktionsPlanung_16x16)
+        'Fensterposition aus winback.ini
+        wb_Konfig.SetFormBoundaries(xForm, "ProduktionsPlanung")
     End Sub
 
     'Admin - Administration
@@ -237,9 +239,6 @@ Public Class wb_Main_Menu
                 sName = CType(oTable.Rows(0)(0), String) & " " & CType(oTable.Rows(0)(1), String)
             End Using
 
-            Debug.Print("Rechner-Name " & System.Environment.MachineName)
-            Debug.Print("Rechner-Name " & My.Computer.Name)
-            Debug.Print("Rechner-Name " & Environment.GetEnvironmentVariable("clientname"))
             My.Settings.AktUser = sName
         End If
     End Sub

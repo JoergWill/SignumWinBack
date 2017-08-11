@@ -15,14 +15,14 @@
         Dim ConfigFileNames As New List(Of String)
 
         'Globales Verzeichnis ..\Temp\00
-        ConfigFileNames = wb_DockBarPanelGlobal.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), _FormName)
+        ConfigFileNames = wb_DockBarPanelMain.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), _FormName)
         For Each x In ConfigFileNames
             clLayouts.Items.Add(x)
             clLayouts.SetItemChecked(clLayouts.Items.Count - 1, True)
         Next
 
         'Arbeitsplatz Verzeichnis ..\Temp\xx
-        ConfigFileNames = wb_DockBarPanelGlobal.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal), _FormName)
+        ConfigFileNames = wb_DockBarPanelMain.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal), _FormName)
         For Each x In ConfigFileNames
             clLayouts.Items.Add(x)
         Next

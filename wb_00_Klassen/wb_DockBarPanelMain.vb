@@ -3,11 +3,9 @@ Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
-Imports WinBack
 
 Public Class wb_DockBarPanelMain
     Implements IExternalFormUserControl
-
     Private _LayoutFilename As String = Nothing
     Protected _DockPanelList As New List(Of DockContent)
     Protected _ContextTabs As List(Of GUI.ITab)
@@ -36,7 +34,12 @@ Public Class wb_DockBarPanelMain
     ''' Fenster-Name (Caption). Wird von Init() aufgerufen
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property FormText As String
+    Public Overridable ReadOnly Property FormText As String
+        Get
+            Throw New NotImplementedException
+            Return "FormText"
+        End Get
+    End Property
 
     ''' <summary>
     ''' Eindeutiger Name für die Basis-Form. 
@@ -45,10 +48,15 @@ Public Class wb_DockBarPanelMain
     ''' Die DockPanel-Konfiguration wird gespeichert unter wbXXXXYYYY.xml, dabei ist XXXX der FormName und YYYY der Layout-Name.
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property FormName As String
+    Public Overridable ReadOnly Property FormName As String
+        Get
+            Throw New NotImplementedException
+            Return "FormName"
+        End Get
+    End Property
 
-    Public Sub SetDefaultLayout()
-
+    Public Overridable Sub SetDefaultLayout()
+        Throw New NotImplementedException
     End Sub
     ''' <summary>
     ''' Routine wird aufgerufen, wenn das Fenster geladen wurde und angezeigt werden soll
@@ -58,6 +66,7 @@ Public Class wb_DockBarPanelMain
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
         'Fenster-Bezeichnung
         MyBase.Text = FormText
+
         'Layout-Files in Status-Bar Listbox aktualisieren/einlesen
         GetLayoutFileNames()
         'DockBar Konfiguration aus xml-Datei lesen
@@ -172,7 +181,7 @@ Public Class wb_DockBarPanelMain
     ''' </summary>
     ''' <param name="ServiceProvider">ServiceProvider von OrgaSoft.NET</param>
     ''' <remarks></remarks>
-    Public Sub New(ServiceProvider As Common.IOrgasoftServiceProvider)
+    Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -182,9 +191,9 @@ Public Class wb_DockBarPanelMain
         _MenuService = TryCast(ServiceProvider.GetService(GetType(Common.IMenuService)), Common.IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
     End Sub
-    Public Sub New()
-        ' Dieser Aufruf ist für den Designer erforderlich.
-    End Sub
+    'Public Sub New()
+    '    ' Dieser Aufruf ist für den Designer erforderlich.
+    'End Sub
 
     ''' <summary>
     ''' DockBar-Konfiguration sichern
@@ -223,11 +232,13 @@ Public Class wb_DockBarPanelMain
         End If
     End Sub
 
-    Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
-        Select Case persistString
-            Case Else
-                Return Nothing
-        End Select
+    Protected Overridable Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
+        Throw New NotImplementedException
+        'Select Case persistString
+        '    Case Else
+        '        Return Nothing
+        'End Select
+        Return Nothing
     End Function
 
     Private Sub GetLayoutFileNames()
@@ -238,7 +249,7 @@ Public Class wb_DockBarPanelMain
         cbLayouts.Items.Clear()
 
         'Globales Verzeichnis ..\Temp\00
-        ConfigFileNames = wb_DockBarPanelGlobal.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), FormName)
+        ConfigFileNames = GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), FormName)
         For Each x In ConfigFileNames
             'aktueller Layout-Filename
             If LayoutFilename = x Then
@@ -248,7 +259,7 @@ Public Class wb_DockBarPanelMain
         Next
 
         'Arbeitsplatz Verzeichnis ..\Temp\xx
-        ConfigFileNames = wb_DockBarPanelGlobal.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal), FormName)
+        ConfigFileNames = GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal), FormName)
         For Each x In ConfigFileNames
             'nur noch neue Einträge hinzufügen
             If cbLayouts.FindStringExact(x) = ListBox.NoMatches Then
@@ -317,4 +328,43 @@ Public Class wb_DockBarPanelMain
         End If
     End Sub
 
+    Public Shared Function DkPnlConfigName(FileName As String, FormName As String) As String
+        'Extension entfernen
+        FileName = System.IO.Path.GetFileNameWithoutExtension(FileName)
+        'wb... entfernen
+        FileName = FileName.Replace("wb", "")
+
+        'Prüfen ob der Filename zu diesem Fenster gehört
+        If InStr(FileName, FormName) = 1 Then
+            'Form-Name entfernen
+            Return FileName.Replace(FormName, "")
+        Else
+            'File gehört nicht zur Form
+            Return ""
+        End If
+    End Function
+
+    Public Shared Function GetDkPnlConfigNameList(DirName As String, FormName As String) As IList(Of String)
+        'Ordner-Name ohne Backslash am Ende
+        Dim oDir As New IO.DirectoryInfo(DirName.TrimEnd("\"))
+        'Ergebnis-Array
+        Dim FileNames As New List(Of String)
+        FileNames.Clear()
+
+        ' alle Dateien des Ordners
+        Dim oFiles As System.IO.FileInfo() = oDir.GetFiles("*.xml")
+        Dim oFile As System.IO.FileInfo
+        ' Layout-Name
+        Dim LayoutName As String = ""
+
+        ' Datei-Array durchlaufen und in ListBox übertragen
+        For Each oFile In oFiles
+            LayoutName = DkPnlConfigName(oFile.Name, FormName)
+            If LayoutName <> "" Then
+                FileNames.Add(LayoutName)
+            End If
+        Next
+
+        Return FileNames
+    End Function
 End Class
