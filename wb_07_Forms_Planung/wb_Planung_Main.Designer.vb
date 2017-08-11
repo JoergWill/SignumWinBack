@@ -2,7 +2,6 @@
 Partial Class wb_Planung_Main
     Inherits WinBack.wb_DockBarPanelMain
 
-
     'UserControl überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)

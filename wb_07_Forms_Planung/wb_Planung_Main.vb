@@ -75,20 +75,6 @@ Public Class wb_Planung_Main
                 _DockPanelList.Add(PlanungListe)
                 Return PlanungListe
 
-                'Case "WinBack.wb_Rohstoffe_Details"
-                '    RohstoffDetails = New wb_Rohstoffe_Details
-                '    _DockPanelList.Add(RohstoffDetails)
-                '    Return RohstoffDetails
-
-                'Case "WinBack.wb_Rohstoffe_Verwendung"
-                '    RohstoffVerwendung = New wb_Rohstoffe_Verwendung
-                '    _DockPanelList.Add(RohstoffVerwendung)
-                '    Return RohstoffVerwendung
-
-                'Case "WinBack.wb_Rohstoffe_Parameter"
-                '    RohstoffParameter = New wb_Rohstoffe_Parameter
-                '    _DockPanelList.Add(RohstoffParameter)
-                '    Return RohstoffParameter
             Case Else
                 Return Nothing
         End Select

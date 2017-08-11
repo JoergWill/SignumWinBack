@@ -161,6 +161,8 @@ Public Class wb_Main_Menu
     Private Sub ShowRezeptForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Rezept_Main(ServiceProvider), My.Resources.MainRezept_16x16)
+        'Fensterposition aus winback.ini
+        wb_Konfig.SetFormBoundaries(xForm, "Rezepte")
     End Sub
     'Mitarbeiter
     Private Sub ShowUserForm(sender As Object, e As EventArgs)
