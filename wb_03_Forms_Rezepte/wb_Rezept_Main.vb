@@ -69,13 +69,13 @@ Public Class wb_Rezept_Main
 
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "WinBack.wb_RezeptListe"
+            Case "WinBack.wb_Rezept_Liste"
                 Return RezeptListe
-            Case "WinBack.wb_RezeptDetails"
+            Case "WinBack.wb_Rezept_Details"
                 Return RezeptDetails
-            Case "WinBack.wb_RezeptHinweise"
+            Case "WinBack.wb_Rezept_Hinweise"
                 Return RezeptHinweise
-            Case "WinBack.wb_RezeptHistorie"
+            Case "WinBack.wb_Rezept_Historie"
                 Return RezeptHistorie
             Case Else
                 Return Nothing

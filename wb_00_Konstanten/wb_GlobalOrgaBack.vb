@@ -51,6 +51,12 @@ Public Class wb_GlobalOrgaBack
         End Get
     End Property
 
+    ''' <summary>
+    ''' Ermittelt die (OrgaBack)Arbeitsplatz-Nummer aus dem MicroSoft Workstation-Namen.
+    ''' Die Nummer wird aus der Tabelle dbo.Workstations gelesen
+    ''' 'TODO Abfrage nach ProgrammType (WinBack/OrgaBack)
+    ''' </summary>
+    ''' <returns></returns>
     Public Shared ReadOnly Property OrgaBackWorkStationNumber As String
         Get
             If _OrgaBackWorkStationNumber Is Nothing Then
@@ -88,6 +94,11 @@ Public Class wb_GlobalOrgaBack
         End If
     End Sub
 
+    ''' <summary>
+    ''' Gibt der MicroSoft Workstation-Namen zurück. Bei Zugriffen über Remote-Desktop wird
+    ''' der Workstation-Name des Desktop-Client zurückgegeben.
+    ''' </summary>
+    ''' <returns></returns>
     Public Shared ReadOnly Property WorkStationName As String
         Get
             WorkStationName = Environment.GetEnvironmentVariable("clientname")

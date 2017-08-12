@@ -4,9 +4,21 @@ Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
 
+''' <summary>
+''' Klasse (must Inherit) beeinhaltet alle notwendigen Routinen für die Anzeige der Unterfenster in
+''' OrgaBack als Docking-Window. Status-Bar mit Schaltflächen für das Layout-Management.
+''' 
+''' Die einzelnen Layouts werden entsprechen der OrgaBack-Installation im ..\Temp\-Verzeichnis gespeichert.
+''' Abgeleitete Klassen müssen folgende Prozeduren und Properties überschreiben
+''' 
+'''     -   FormText    (eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn)
+'''     -   FormName    (eindeutiger Name für das Fenster, dient zum Speichern der Einstellungen)
+'''     
+''' </summary>
 Public Class wb_DockBarPanelMain
     Implements IExternalFormUserControl
     Private _LayoutFilename As String = Nothing
+    Private _SaveAtClose As Boolean = False
     Protected _DockPanelList As New List(Of DockContent)
     Protected _ContextTabs As List(Of GUI.ITab)
     Protected _ServiceProvider As IOrgasoftServiceProvider
@@ -15,21 +27,7 @@ Public Class wb_DockBarPanelMain
 
     Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
 
-    Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
-        'MessageBox.Show("ExecuteCommand!" & vbCrLf & CommandId, "AddIn", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        Return Nothing
-    End Function
-
-    ''' <summary>
-    ''' Eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn
-    ''' z.B. Return "@WinBack DockPanelMain"
-    ''' </summary>
-    Public ReadOnly Property FormKey As String Implements IBasicFormUserControl.FormKey
-        Get
-            Return "@" & FormText
-        End Get
-    End Property
-
+#Region "MustOverride"
     ''' <summary>
     ''' Fenster-Name (Caption). Wird von Init() aufgerufen
     ''' </summary>
@@ -55,9 +53,42 @@ Public Class wb_DockBarPanelMain
         End Get
     End Property
 
+    ''' <summary>
+    ''' Stellt die Dock-Panel-Fensterkonfiguration wieder her. Wird von LoadDockBarConfig aufgerufen.
+    ''' 
+    ''' </summary>
+    ''' <param name="persistString"> String - Name Fenster-Objekt</param>
+    ''' <returns>Form - Fenster-Form-Objekt</returns>
+    Protected Overridable Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
+        Throw New NotImplementedException
+        Return Nothing
+    End Function
+
+    ''' <summary>
+    ''' Default Layout-Konfiguration (wenn alles schief geht). Wird von LoadDockBarConfig() aufgerufen
+    ''' wenn kein gültiges Layout gefunden wurde
+    ''' </summary>
     Public Overridable Sub SetDefaultLayout()
         Throw New NotImplementedException
     End Sub
+#End Region
+#Region "Signum"
+    ''' <summary>
+    ''' Konstruktor
+    ''' </summary>
+    ''' <param name="ServiceProvider">ServiceProvider von OrgaSoft.NET</param>
+    ''' <remarks></remarks>
+    Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        _ServiceProvider = ServiceProvider
+        _MenuService = TryCast(ServiceProvider.GetService(GetType(Common.IMenuService)), Common.IMenuService)
+        _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
+    End Sub
+
     ''' <summary>
     ''' Routine wird aufgerufen, wenn das Fenster geladen wurde und angezeigt werden soll
     ''' </summary>
@@ -66,7 +97,6 @@ Public Class wb_DockBarPanelMain
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
         'Fenster-Bezeichnung
         MyBase.Text = FormText
-
         'Layout-Files in Status-Bar Listbox aktualisieren/einlesen
         GetLayoutFileNames()
         'DockBar Konfiguration aus xml-Datei lesen
@@ -74,6 +104,33 @@ Public Class wb_DockBarPanelMain
         Return True
     End Function
 
+    ''' <summary>
+    ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+    ''' </summary>
+    ''' <param name="Reason"></param>
+    ''' <returns>
+    ''' False, wenn das Fenster geschlossen werden darf
+    ''' True, wenn das Fenster geöffnet bleiben muss
+    ''' </returns>
+    ''' <remarks></remarks>
+    Public Overridable Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
+        Return False
+    End Function
+
+    Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
+        'MessageBox.Show("ExecuteCommand!" & vbCrLf & CommandId, "AddIn", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        Return Nothing
+    End Function
+
+    ''' <summary>
+    ''' Eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn
+    ''' z.B. Return "@WinBack DockPanelMain"
+    ''' </summary>
+    Public ReadOnly Property FormKey As String Implements IBasicFormUserControl.FormKey
+        Get
+            Return "@" & FormText
+        End Get
+    End Property
     ''' <summary>
     ''' Minimale Höhe des UserControls
     ''' </summary>
@@ -110,11 +167,20 @@ Public Class wb_DockBarPanelMain
         End Get
     End Property
 
+    Public ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
+        Get
+            If _ContextTabs Is Nothing Then
+                _ContextTabs = New List(Of GUI.ITab)
+            End If
+            Return _ContextTabs.ToArray
+        End Get
+    End Property
+#End Region
+
     ''' <summary>
-    ''' Der Filename der aktuellen Dock-Bar-Konfiguration wird im Tag-Objekt gespeichert.
     ''' Die Information kommt aus der winback.ini und wird in der Routine wb_Konfig.SetFormBoundaries ausgelesen (in wb_Main_Menu)
     ''' </summary>
-    ''' <returns></returns>
+    ''' <returns>String - Layout-Filename</returns>
     Private Property LayoutFilename As String
         Get
             If _LayoutFilename Is Nothing Then
@@ -141,59 +207,14 @@ Public Class wb_DockBarPanelMain
         End Set
     End Property
 
-    Private ReadOnly Property DkPnlConfigFileName(Optional DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath = wb_Global.OrgaBackDockPanelLayoutPath.UserLokal) As String
-        Get
-            Return wb_GlobalSettings.DockPanelPath(DefaultPath) & "wb" & FormName & LayoutFilename & ".xml"
-        End Get
-    End Property
-
-    Public ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
-        Get
-            If _ContextTabs Is Nothing Then
-                _ContextTabs = New List(Of GUI.ITab)
-            End If
-            Return _ContextTabs.ToArray
-        End Get
-    End Property
-
     Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
         'Fenster-Einstellungen in winback.ini sichern
         wb_Konfig.SaveFormBoundaries(Me.Top, Me.Left, Me.Width, Me.Height, LayoutFilename, FormName)
         'Anzeige wird in OrgaBack beim Schliessen nicht gesichert !
-        'SaveDockBarConfig()
+        If _SaveAtClose Then
+            SaveDockBarConfig()
+        End If
     End Sub
-
-    ''' <summary>
-    ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
-    ''' </summary>
-    ''' <param name="Reason"></param>
-    ''' <returns>
-    ''' False, wenn das Fenster geschlossen werden darf
-    ''' True, wenn das Fenster geöffnet bleiben muss
-    ''' </returns>
-    ''' <remarks></remarks>
-    Public Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        Return False
-    End Function
-
-    ''' <summary>
-    ''' Konstruktor
-    ''' </summary>
-    ''' <param name="ServiceProvider">ServiceProvider von OrgaSoft.NET</param>
-    ''' <remarks></remarks>
-    Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
-
-        ' This call is required by the designer.
-        InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-        _ServiceProvider = ServiceProvider
-        _MenuService = TryCast(ServiceProvider.GetService(GetType(Common.IMenuService)), Common.IMenuService)
-        _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
-    End Sub
-    'Public Sub New()
-    '    ' Dieser Aufruf ist für den Designer erforderlich.
-    'End Sub
 
     ''' <summary>
     ''' DockBar-Konfiguration sichern
@@ -203,6 +224,10 @@ Public Class wb_DockBarPanelMain
         DockPanel.SaveAsXml(DkPnlConfigFileName(DefaultPath))
     End Sub
 
+    ''' <summary>
+    ''' Läd die Dock-Panel-Konfiguration aus der Konfiguration-Datei (*.xml). Die Konfiguration wird 
+    ''' über SaveToXml gesichert.
+    ''' </summary>
     Private Sub LoadDockBarConfig()
         'Farb-Schema einstellen
         DockPanel.Theme = wb_GlobalOrgaBack.Theme
@@ -229,18 +254,16 @@ Public Class wb_DockBarPanelMain
         Else
             'Default Fenster-Konfiguration (wenn alles schief geht)
             SetDefaultLayout()
+            _LayoutFilename = "Default"
+            cbLayouts.Text = _LayoutFilename
+            _SaveAtClose = True
         End If
     End Sub
 
-    Protected Overridable Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
-        Throw New NotImplementedException
-        'Select Case persistString
-        '    Case Else
-        '        Return Nothing
-        'End Select
-        Return Nothing
-    End Function
-
+    ''' <summary>
+    ''' Füllt die ListBox cbLayouts mit den Layout-Bezeichnungen. Die Bezeichnungen werden aus den FormNamen
+    ''' gebildet.
+    ''' </summary>
     Private Sub GetLayoutFileNames()
         'Liste alle Konfigurations-Dateien im Verzeichnis
         Dim ConfigFileNames As New List(Of String)
@@ -277,6 +300,11 @@ Public Class wb_DockBarPanelMain
         cbLayouts.Visible = True
     End Sub
 
+    ''' <summary>
+    ''' Die Auswahl in der Drop-Down-Liste hat sich geändert. Neues Layout laden.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub cbLayouts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLayouts.SelectedIndexChanged
         If LayoutFilename <> cbLayouts.Text Then
             LayoutFilename = cbLayouts.Text
@@ -284,22 +312,46 @@ Public Class wb_DockBarPanelMain
         End If
     End Sub
 
+    ''' <summary>
+    ''' Button "Reload". Layout neu aus Datei laden.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnReload_Click(sender As Object, e As EventArgs) Handles BtnReload.Click
         LayoutFilename = cbLayouts.Text
         LoadDockBarConfig()
     End Sub
 
+    ''' <summary>
+    ''' Button "Save". Das Layout wird unter dem aktuellen Namen lokal gespeichert.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnSave_Click(sender As Object, e As EventArgs) Handles BtnSave.Click
         'Layout wird lokal gespeichert
         SaveDockBarConfig()
+        'Meldung ausgeben
+        MessageBox.Show("Layout " & LayoutFilename & " gesichert",
+                           "Layout sichern", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
+    ''' <summary>
+    ''' Button "Save As". Öffnet das Fenster DockPanelConfigSaveAs. Auswahl des Layout-Namens
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnSaveAs_Click(sender As Object, e As EventArgs) Handles BtnSaveAs.Click
         Dim DkpPnlConfigSaveAs As New wb_DockBarPanelSaveAs(FormName)
         AddHandler DkpPnlConfigSaveAs.eSaveAs_Click, AddressOf ESaveAs_Click
         DkpPnlConfigSaveAs.ShowDialog(Me)
     End Sub
 
+    ''' <summary>
+    ''' Speichert das Layout unter dem angegebene  Namen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="FileName"></param>
+    ''' <param name="DefaultPath"></param>
     Private Sub ESaveAs_Click(sender As Object, FileName As String, DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath)
         'aktuelles Layout unter dem neuen Namen abspeichern
         _LayoutFilename = FileName
@@ -310,6 +362,11 @@ Public Class wb_DockBarPanelMain
         SaveDockBarConfig(DefaultPath)
     End Sub
 
+    ''' <summary>
+    '''  Button "Delete". Löscht das ausgewählte Layout Lokal und Global.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnDelete_Click(sender As Object, e As EventArgs) Handles BtnDelete.Click
         'Sicherheits-Abfrage
         If MessageBox.Show("Soll das Layout " & LayoutFilename & " wirklich gelöscht werden ",
@@ -328,6 +385,26 @@ Public Class wb_DockBarPanelMain
         End If
     End Sub
 
+    ''' <summary>
+    ''' Erzeugt den File-Namen für die Konfig-Datei aus Layout-File-Name und Fom-Name.
+    ''' Ohne Angaben wird der lokale Pfad zurückgegeben (..\Temp\xx, wobei xx die Arbeitsplatz-Nummer ist).
+    ''' Optional der Globale-Pfad (..\Temp\00)
+    ''' </summary>
+    ''' <param name="DefaultPath"></param>
+    ''' <returns></returns>
+    Private ReadOnly Property DkPnlConfigFileName(Optional DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath = wb_Global.OrgaBackDockPanelLayoutPath.UserLokal) As String
+        Get
+            Return wb_GlobalSettings.DockPanelPath(DefaultPath) & "wb" & FormName & LayoutFilename & ".xml"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Extrahiert den Layout-Namen aus dem File-Namen der Config-Datei.
+    ''' Wenn der Layout-Name nicht zum Form-Namen passt, wird ein Leerstring zurückgegeben.
+    ''' </summary>
+    ''' <param name="FileName"></param>
+    ''' <param name="FormName"></param>
+    ''' <returns></returns>
     Public Shared Function DkPnlConfigName(FileName As String, FormName As String) As String
         'Extension entfernen
         FileName = System.IO.Path.GetFileNameWithoutExtension(FileName)
@@ -344,6 +421,12 @@ Public Class wb_DockBarPanelMain
         End If
     End Function
 
+    ''' <summary>
+    ''' Erzeugt eine Liste aller zum Form-Namen passenden Konfigurations-Namen
+    ''' </summary>
+    ''' <param name="DirName"></param>
+    ''' <param name="FormName"></param>
+    ''' <returns></returns>
     Public Shared Function GetDkPnlConfigNameList(DirName As String, FormName As String) As IList(Of String)
         'Ordner-Name ohne Backslash am Ende
         Dim oDir As New IO.DirectoryInfo(DirName.TrimEnd("\"))

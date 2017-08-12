@@ -196,6 +196,8 @@ Public Class wb_Main_Menu
     Private Sub ShowLinienForm(sender As Object, e As EventArgs)
         ' CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Linien_Main(ServiceProvider), My.Resources.MainLinien_45x34)
+        'Fensterposition aus winback.ini
+        wb_Konfig.SetFormBoundaries(xForm, "Linien")
     End Sub
     'Produktion - Planung
     Private Sub ShowProduktionsPlanungForm(sender As Object, e As EventArgs)
