@@ -405,12 +405,6 @@
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_07_Forms_Planung\UserControl1.Designer.vb">
-      <DependentUpon>UserControl1.vb</DependentUpon>
-    </Compile>
-    <Compile Include="wb_07_Forms_Planung\UserControl1.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.Designer.vb">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
     </Compile>
@@ -546,9 +540,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Liste.resx">
       <DependentUpon>wb_Chargen_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_07_Forms_Planung\UserControl1.resx">
-      <DependentUpon>UserControl1.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
@@ -716,7 +707,9 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="wb_99_Sample\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "C:\ProgramData\OrgaSoft\AddIn"

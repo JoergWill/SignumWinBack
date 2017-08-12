@@ -1,23 +1,12 @@
-﻿'---------------------------------------------------------
-'15.04.2016/ V0.9/JW            :Neuanlage
-'Bearbeitet von                 :Will
-'
-'Änderungen:
-'---------------------------------------------------------
-'Beschreibung:
-'Erweitert das Ribon um ein neues Tab WinBack und baut die
-'    Menu-Struktur auf.
-'---------------------------------------------------------
-
-Imports Signum.OrgaSoft
+﻿Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Extensibility
-Imports Signum.OrgaSoft.FrameWork
 Imports Signum.OrgaSoft.Common
 Imports System.Windows.Forms
-Imports System.IO
 Imports System.Reflection
-Imports System.Data
 
+''' <summary>
+''' Erweitert das Ribon um ein neues Tab WinBack und baut die Menu-Struktur auf.
+''' </summary>
 <Export(GetType(IExtension))>
 <ExportMetadata("Description", "Erweitert das Ribbon um ein neues Tab(WinBack)")>
 Public Class wb_Main_Menu
@@ -33,16 +22,9 @@ Public Class wb_Main_Menu
 
     Private xForm As Form
 
-
-    '---------------------------------------------------------
-    '15.04.2016/ V0.9/JW            :Neuanlage
-    'Bearbeitet von                 :Will
-    '
-    'Änderungen:
-    '---------------------------------------------------------
-    'Beschreibung:
-    'Initialisierung Klasse
-    '---------------------------------------------------------
+    ''' <summary>
+    ''' Initialisierung Klasse
+    ''' </summary>
     Public Sub Initialize() Implements IExtension.Initialize
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
         '
@@ -61,20 +43,20 @@ Public Class wb_Main_Menu
 
     End Sub
 
+    ''' <summary>
+    ''' MyResolveEventHandler
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="args"></param>
+    ''' <returns></returns>
     Private Shared Function MyResolveEventHandler(sender As Object, args As ResolveEventArgs) As Assembly
         Console.WriteLine("Resolving...")
         Return GetType(wb_Main_Menu).Assembly
-    End Function 'MyResolveEventHandler
+    End Function
 
-    '---------------------------------------------------------
-    '15.04.2016/ V0.9/JW            :Neuanlage
-    'Bearbeitet von                 :Will
-    '
-    'Änderungen:
-    '---------------------------------------------------------
-    'Beschreibung:
-    'Event User-Login
-    '---------------------------------------------------------
+    ''' <summary>
+    ''' Event User-Login
+    ''' </summary>
     Private Sub AddLogIn()
         Dim IEB As IEventBroker = TryCast(ServiceProvider.GetService(GetType(IEventBroker)), IEventBroker)
         If IEB IsNot Nothing Then
@@ -88,15 +70,9 @@ Public Class wb_Main_Menu
         ReadSystemKonfig()
     End Sub
 
-    '---------------------------------------------------------
-    '15.04.2016/ V0.9/JW            :Neuanlage
-    'Bearbeitet von                 :Will
-    '
-    'Änderungen:
-    '---------------------------------------------------------
-    'Beschreibung:
-    'Erzeugen Hauptmenu im Ribbon Orgasoft
-    '---------------------------------------------------------
+    ''' <summary>
+    ''' Erzeugen Hauptmenu im Ribbon Orgasoft
+    ''' </summary>
     Private Sub AddMenu()
         ' Fügt dem Ribbon ein neues RibbonTab 'WinBack' hinzu
         Dim oNewTab = oMenuService.AddTab("wb_MainMenu", "WinBack", "WinBack in OrgaBack integriert")
@@ -135,71 +111,109 @@ Public Class wb_Main_Menu
         'oGrps(3).AddButton("MenuExtensionBtnUser", "WinBack-Mitarbeiter", "Verwaltung der Mitarbeiter-Rechte in WinBack", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
     End Sub
 
-    '---------------------------------------------------------
-    '15.04.2016/ V0.9/JW            :Neuanlage
-    'Bearbeitet von                 :Will
-    '
-    'Änderungen:
-    '---------------------------------------------------------
-    'Beschreibung:
-    'Aufruf WinBack-Fenster
-    '---------------------------------------------------------
-
-    'Artikel
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Artikel
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowArtikelForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Artikel_Main(ServiceProvider), My.Resources.MainArtikel_16x16)
     End Sub
-    'Rohstoff
+
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Rohstoffe
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowRohstoffForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Rohstoffe_Main(ServiceProvider), My.Resources.MainRohstoffe_16x16)
         'Fensterposition aus winback.ini
         wb_Konfig.SetFormBoundaries(xForm, "Rohstoffe")
     End Sub
-    'Rezepte
+
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Rezepte
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowRezeptForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Rezept_Main(ServiceProvider), My.Resources.MainRezept_16x16)
         'Fensterposition aus winback.ini
         wb_Konfig.SetFormBoundaries(xForm, "Rezepte")
     End Sub
-    'Mitarbeiter
+
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Mitarbeiter
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowUserForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_User_Main(ServiceProvider), My.Resources.MainUser_16x16)
+        'Fensterposition aus winback.ini
+        wb_Konfig.SetFormBoundaries(xForm, "User")
     End Sub
 
-    'Stammdaten
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Stammdaten
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowStammDatenForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainStammdaten_16x16)
     End Sub
 
-    'Statistik Chargen
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Statistik Chargen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowStatistikChargenForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainStatistikChargen_16x16)
     End Sub
-    'Statistik Rohstoffe
+
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Statistik Rohstoffe
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowStatistikRohstoffForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainStatistikRohstoffe_16x16)
     End Sub
-    'Statistik Rezepte
+
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Statistik Rezepte
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowStatistikRezeptForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainStatistikRezepte_16x16)
     End Sub
 
-    'Produktion - Linien
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Linien
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowLinienForm(sender As Object, e As EventArgs)
         ' CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Linien_Main(ServiceProvider), My.Resources.MainLinien_45x34)
         'Fensterposition aus winback.ini
         wb_Konfig.SetFormBoundaries(xForm, "Linien")
     End Sub
-    'Produktion - Planung
+
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Produktions-Planung
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowProduktionsPlanungForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Planung_Main(ServiceProvider), My.Resources.MainProduktionsPlanung_16x16)
@@ -207,30 +221,31 @@ Public Class wb_Main_Menu
         wb_Konfig.SetFormBoundaries(xForm, "ProduktionsPlanung")
     End Sub
 
-    'Admin - Administration
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Admin
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowAdminAdministrationForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Admin_Main(ServiceProvider), My.Resources.Admin_16x16)
+        wb_Konfig.SetFormBoundaries(xForm, "Admin")
     End Sub
 
-    'alle noch offenen Fenster schliessen
+    ''' <summary>
+    ''' alle noch offenen Fenster schliessen
+    ''' </summary>
     Private Sub CloseAllForms()
         If xForm IsNot Nothing Then
             xForm.Close()
         End If
     End Sub
 
-    '---------------------------------------------------------
-    '19.04.2016/ V0.9/JW            :Neuanlage
-    'Bearbeitet von                 :Will
-    '
-    'Änderungen:
-    '---------------------------------------------------------
-    'Beschreibung:
-    'Event Bearbeitung
-    '---------------------------------------------------------
-
-    'Event Login User in OrgaSoft
+    ''' <summary>
+    ''' Event Login User in OrgaSoft
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub UserLogin(sender As Object, e As EventArgs)
         Dim sName As String
 
@@ -247,7 +262,11 @@ Public Class wb_Main_Menu
         End If
     End Sub
 
-    'Event Änderung der Sprache in OrgaSoft
+    ''' <summary>
+    ''' Event Änderung der Sprache in OrgaSoft
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub LanguageChange(sender As Object, e As EventArgs)
 
     End Sub
