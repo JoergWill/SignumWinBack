@@ -19,6 +19,7 @@ Public Class wb_User_Liste
 
         'Detail-Daten sind geändert worden - in Datenbank speichern
         AddHandler eEdit_Leave, AddressOf SaveData
+        AddHandler eData_Reload, AddressOf RefreshData
     End Sub
 
     Public Sub RefreshData()

@@ -248,6 +248,7 @@ Public Class wb_DataGridView
             End Try
         End Get
     End Property
+
     ''' <summary>
     ''' Datenbank-Feld lesen/ändern
     ''' </summary>

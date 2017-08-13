@@ -1,6 +1,7 @@
 ﻿Public Class wb_User_Shared
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
+    Public Shared Event eData_Reload(sender As Object)
 
     Public Shared GrpTexte As New SortedList
     Public Shared User As New wb_User
@@ -25,5 +26,9 @@
 
     Public Shared Sub Edit_Leave(sender As Object)
         RaiseEvent eEdit_Leave(sender)
+    End Sub
+
+    Public Shared Sub Reload(Sender As Object)
+        RaiseEvent eData_Reload(Sender)
     End Sub
 End Class

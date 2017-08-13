@@ -5,73 +5,47 @@ Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_User_Main
     Implements IExternalFormUserControl
-    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbUser.xml"
 
+    'Default-Fenster
     Private UserListe As New wb_User_Liste
     Private UserDetails As New wb_User_Details
-    Private UserRechte As New wb_User_Rechte
 
-    Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
-        Return Nothing
-    End Function
+    'alle anderen Fenster werden zur Laufzeit erzeugt
+    Private UserRechte As wb_User_Rechte
 
-    ''' <summary>
-    ''' Eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn
-    ''' </summary>
-    Public ReadOnly Property FormKey As String Implements IBasicFormUserControl.FormKey
-        Get
-            Return "@WinBack Mitarbeiter-Verwaltung"
-        End Get
-    End Property
+    Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
+        MyBase.New(ServiceProvider)
+    End Sub
 
     ''' <summary>
-    ''' Routine wird aufgerufen, wenn das Fenster geladen wurde und angezeigt werden soll
+    ''' Fenster-Name (Caption). Wird von Init() aufgerufen
     ''' </summary>
     ''' <returns></returns>
-    ''' <remarks>Die Caption des Fensters muss mit MyBase.Text gesetzt werde</remarks>
-    Public Function Init() As Boolean Implements IBasicFormUserControl.Init
-        MyBase.Text = "WinBack Mitarbeiter-Verwaltung"
-        Return True
-    End Function
-
-    ''' <summary>
-    ''' Minimale Höhe des UserControls
-    ''' </summary>
-    Public ReadOnly Property MinHeight As Integer Implements IBasicFormUserControl.MinHeight
+    Public Overrides ReadOnly Property FormText As String
         Get
-            Return Me.MinimumSize.Height
+            Return "WinBack Mitarbeiter-Verwaltung"
         End Get
     End Property
 
     ''' <summary>
-    ''' Minimale Breite des UserControls
+    ''' Eindeutiger Name für die Basis-Form. 
+    ''' Unter diesem Namen werden die Einstellungen in der winback.ini gespeichert.
+    ''' 
+    ''' Die DockPanel-Konfiguration wird gespeichert unter wbXXXXYYYY.xml, dabei ist XXXX der FormName und YYYY der Layout-Name.
     ''' </summary>
-    Public ReadOnly Property MinWidth As Integer Implements IBasicFormUserControl.MinWidth
+    ''' <returns></returns>
+    Public Overrides ReadOnly Property FormName As String
         Get
-            Return Me.MinimumSize.Width
+            Return "User"
         End Get
     End Property
 
-    ''' <summary>
-    ''' Gibt an, ob man die Größe dieses UserControls ändern darf
-    ''' </summary>
-    Public ReadOnly Property Sizable As Boolean Implements IBasicFormUserControl.Sizable
-        Get
-            Return True
-        End Get
-    End Property
+    Public Overrides Sub SetDefaultLayout()
+        UserListe.Show(DockPanel, DockState.DockLeft)
+        UserDetails.Show(DockPanel, DockState.DockTop)
+    End Sub
 
-    ''' <summary>
-    ''' Bezeichnung und Caption des UserControls
-    ''' </summary>
-    Public Shadows ReadOnly Property Text() As String Implements IBasicFormUserControl.Text
-        Get
-            Return MyBase.Text
-        End Get
-    End Property
-
-    Private _ContextTabs As List(Of GUI.ITab)
-    Public ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
+    Public Shadows ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
         Get
             If _ContextTabs Is Nothing Then
                 _ContextTabs = New List(Of GUI.ITab)
@@ -89,33 +63,28 @@ Public Class wb_User_Main
         End Get
     End Property
 
-    Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
-    Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
-        'Anzeige sichern
-        SaveDockBarConfig()
-        'alle erzeugten Fenster wieder schliessen !!!
-        UserDetails.Close()
-        UserListe.Close()
-        UserRechte.Close()
-    End Sub
+    Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
+        Select Case persistString
 
-    ''' <summary>
-    ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
-    ''' </summary>
-    ''' <param name="Reason"></param>
-    ''' <returns>
-    ''' False, wenn das Fenster geschlossen werden darf
-    ''' True, wenn das Fenster geöffnet bleiben muss
-    ''' </returns>
-    ''' <remarks></remarks>
-    Public Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        Return False
+            Case "WinBack.wb_User_Liste"
+                UserListe.CloseButtonVisible = False
+                _DockPanelList.Add(UserListe)
+                Return UserListe
+
+            Case "WinBack.wb_User_Details"
+                UserDetails = New wb_User_Details
+                _DockPanelList.Add(UserDetails)
+                Return UserDetails
+
+            Case "WinBack.wb_User_Rechte"
+                UserRechte = New wb_User_Rechte
+                _DockPanelList.Add(UserRechte)
+                Return UserRechte
+
+            Case Else
+                Return Nothing
+        End Select
     End Function
-
-    Private Sub wb_User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' DockBar Konfiguration aus XML-Datei lesen
-        LoadDockBarConfig()
-    End Sub
 
     Private Sub BtnUserPasswd()
         Throw New NotImplementedException
@@ -128,57 +97,5 @@ Public Class wb_User_Main
     Private Sub BtnUserGroup()
         Throw New NotImplementedException
     End Sub
-
-    Private _ServiceProvider As Common.IOrgasoftServiceProvider
-    Private _MenuService As Common.IMenuService
-    Private _ViewProvider As IViewProvider
-
-    ''' <summary>
-    ''' Konstruktor
-    ''' </summary>
-    ''' <param name="ServiceProvider">ServiceProvider von OrgaSoft.NET</param>
-    ''' <remarks></remarks>
-    Public Sub New(ServiceProvider As Common.IOrgasoftServiceProvider)
-
-        ' This call is required by the designer.
-        InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-        _ServiceProvider = ServiceProvider
-        _MenuService = TryCast(ServiceProvider.GetService(GetType(Common.IMenuService)), Common.IMenuService)
-        _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
-
-    End Sub
-
-    Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(DkPnlPath)
-    End Sub
-
-    Private Sub LoadDockBarConfig()
-        Try
-            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
-        Catch ex As Exception
-        End Try
-
-        UserListe.Show(DockPanel, DockState.DockLeft)
-        UserListe.CloseButtonVisible = False
-        UserDetails.Show(DockPanel, DockState.DockTop)
-        UserDetails.CloseButtonVisible = False
-        UserRechte.Show(DockPanel, DockState.DockBottom)
-        UserRechte.CloseButtonVisible = False
-    End Sub
-
-    Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
-        Select Case persistString
-            Case "UserListe"
-                Return UserListe
-            Case "UserDetails"
-                Return UserDetails
-            Case "UserRechte"
-                Return UserRechte
-            Case Else
-                Return Nothing
-        End Select
-    End Function
 
 End Class

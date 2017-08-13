@@ -12,6 +12,7 @@ Public Class ob_User_DockingExtension
     Private _MenuService As Common.IMenuService
     Private _ViewProvider As IViewProvider
     Private _ContextTabs As List(Of GUI.ITab)
+    Private xForm As Windows.Forms.Form
 
     Private OrgaSoftEditState As wb_Global.EditState
     Private OldPasswort As String
@@ -133,9 +134,13 @@ Public Class ob_User_DockingExtension
         Select Case OrgaSoftEditState
             Case wb_Global.EditState.Edit
                 wb_User_Shared.User.Update(OldPasswort, Name, Passwort, 4)
+                'Anzeige im WinBack-Fenster "live" aktualisieren
+                wb_User_Shared.Reload(sender)
 
             Case wb_Global.EditState.AddNew
                 wb_User_Shared.User.AddNew(Name, Passwort, 4)
+                'Anzeige im WinBack-Fenster "live" aktualisieren
+                wb_User_Shared.Reload(sender)
 
         End Select
 
@@ -227,7 +232,10 @@ Public Class ob_User_DockingExtension
 
     'Mitarbeiter
     Private Sub ShowUserForm(sender As Object, e As EventArgs)
-        _ViewProvider.OpenForm(New wb_User_Main(ServiceProvider), My.Resources.MainUser_16x16)
+        xForm = _ViewProvider.OpenForm(New wb_User_Main(ServiceProvider), My.Resources.MainUser_16x16)
+        'Fensterposition aus winback.ini
+        wb_Konfig.SetFormBoundaries(xForm, "User")
+
     End Sub
 
     'Gruppen-Rechte
