@@ -14,6 +14,7 @@ Public Class wb_User_Details
         User.Name = tUserName.Text
         User.Passwort = tUserPass.Text
         User.iGruppe = cbUserGrp.GetKeyFromSelection()
+        Debug.Print("Changed")
         Edit_Leave(sender)
     End Sub
 
