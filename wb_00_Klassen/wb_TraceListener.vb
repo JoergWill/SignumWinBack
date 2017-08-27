@@ -1,6 +1,6 @@
 ﻿Public Class wb_TraceListener
     Inherits TraceListener
-    Dim bEchoStackTrace As Boolean = False
+    Dim bEchoStackTrace As Boolean = True
 
     ''' <param name="Txt"> String Debug/Trace-Text</param>
     Public Event WriteText(ByVal Txt As String)
