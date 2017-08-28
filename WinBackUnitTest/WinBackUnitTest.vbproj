@@ -122,7 +122,7 @@
     <Compile Include="UnitTest_wb_Komponenten.vb" />
     <Compile Include="UnitTest_wb_nwtDatenLink.vb" />
     <Compile Include="UnitTest_wb_nwtCloud.vb" />
-    <Compile Include="UnitTest_wb_TraceListener.vb" />
+    <Compile Include="UnitTest_wb_TraceLogger.vb" />
     <Compile Include="UnitTest_wb_Filiale.vb" />
     <Compile Include="UnitTest_wb_sql.vb" />
     <Compile Include="UnitTest_wb_Konfig.vb" />
