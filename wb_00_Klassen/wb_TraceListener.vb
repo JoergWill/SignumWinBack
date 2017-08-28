@@ -35,9 +35,9 @@ Public Class wb_TraceListener
     ''' <param name="message"> String Debug/Trace-Text</param>
     Public Overrides Sub WriteLine(message As String)
         If bEchoStackTrace Then
-            RaiseEvent WriteText(String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now) + " " + GetLocalStackTrace(Environment.StackTrace) + " " + message + vbCrLf)
+            RaiseEvent WriteText(String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now) & vbTab & message & vbTab & GetLocalStackTrace(Environment.StackTrace) & vbCrLf)
         Else
-            RaiseEvent WriteText(String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now) + " " + message + vbCrLf)
+            RaiseEvent WriteText(String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now) & vbTab & message & vbCrLf)
         End If
     End Sub
 
@@ -78,10 +78,28 @@ Public Class wb_TraceListener
             End If
             subStack = Stack.Substring(j, i - j)
             If subStack.Contains("WinBack") And Not subStack.Contains("TraceListener") Then
-                If localStack <> "" Then
-                    localStack &= vbCrLf
+
+                'beim ersten Auftreten des passenden Musters wird der String zerlegt und die Schleife verlassen
+                'TODO was passiert bei einem englischen VisualStudio?
+                Dim x1 As Integer = subStack.IndexOf(" bei ")
+                Dim x2 As Integer = subStack.IndexOf(" in ")
+                Dim x3 As Integer = subStack.IndexOf(":Zeile")
+
+                If (x1 > 0) And (x2 > 0) And (x3 > 0) Then
+
+                    Dim s1 As String = subStack.Substring(x1 + 5, x2 - x1 - 4)
+                    Dim s2 As String = subStack.Substring(x2 + 4, x3 - x2 - 4)
+                    Dim s3 As Integer = Val(subStack.Substring(x3 + 7))
+
+                    localStack = s1 & vbTab & s3.ToString
+                    Return localStack
+                    Exit Do
+                Else
+                    If localStack <> "" Then
+                        localStack &= vbCrLf
+                    End If
+                    localStack = localStack + subStack
                 End If
-                localStack = localStack + subStack
             End If
             j = i + 2
         Loop Until (i < 0) Or (i = Len(Stack))

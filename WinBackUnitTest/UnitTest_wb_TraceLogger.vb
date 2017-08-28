@@ -1,7 +1,7 @@
 ﻿Imports WinBack
 
 ''' <summary>
-''' Testet den TraceListener für WinBack. Die Test-Routine darf nicht den Text TraceListener enthalten, dieser wird in der 
+''' Testet den TraceListener für WinBack Die Test-Routine darf nicht den Text TraceListener enthalten, dieser wird in der 
 ''' Routine GetLocalStack-Trace ausgefiltert
 ''' </summary>
 <TestClass()> Public Class UnitTest_wb_TraceLogger
@@ -16,6 +16,7 @@
 
     <TestMethod()> Public Sub TestGetLocalStackTrace()
         Dim TestString As String
+        Dim ResultString As String
 
         TestString = "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "WinBack Test"
         Assert.AreEqual("WinBack Test", Logger.TestLocalStackTrace(TestString))
@@ -28,29 +29,50 @@
 
         TestString = vbCrLf & "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "WinBack TraceListener"
         Assert.AreEqual("", Logger.TestLocalStackTrace(TestString))
+
+
+
+
+        TestString = "   bei WinBack.wb_TraceListener.WriteLine(String message) In C:\Users\will.WINBACK\Source\Repos\Signum_WinBack\wb_00_Klassen\wb_TraceListener.vb:Zeile 36."
+        ResultString = "WinBack.wb_TraceListener.WriteLine(String message)" & vbTab & "36"
+        Assert.AreEqual("", Logger.TestLocalStackTrace(TestString))
+
     End Sub
 
     <TestMethod()> Public Sub TestTraceWrite()
         Assert.AreEqual("Empty", LogResult)
-        Trace.Write("WinBack Test")
+        Trace.Write("Test")
         Trace.Flush()
-        Assert.AreEqual("WinBack Test", LogResult)
+        Assert.AreEqual("Test", LogResult)
     End Sub
 
     <TestMethod()> Public Sub TestTraceWriteLn()
         Dim OK_Datum As String = String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now)
+        Dim OK_Message As String = "Test"
         Dim OK_Class As String = "WinBackUnitTest.UnitTest_wb_TraceLogger.TestTraceWriteLn()"
-        Dim OK_Zeile As String = "45"
+        Dim OK_Zeile As String = "68"
+        Dim OK_Result As String
 
-        Dim OK_Result As String = OK_Datum & vbTab & OK_Class & vbTab & OK_Zeile & vbTab & "WinBack Test"
+        'Test ohne Stack-Trace
+        Logger.EchoStackTrace = vbFalse
+        LogResult = ""
+        OK_Result = OK_Datum & vbTab & OK_Message & vbCrLf
+        Trace.WriteLine(OK_Message)
+        Trace.Flush()
+        Assert.AreEqual(OK_Result, LogResult)
+
+        'Test mit Stack-Trace
+        Logger.EchoStackTrace = vbTrue
+        LogResult = ""
+        OK_Result = OK_Datum & vbTab & OK_Message & vbTab & OK_Class & vbTab & OK_Zeile & vbCrLf
+        Trace.WriteLine(OK_Message)
+        Trace.Flush()
+        Assert.AreEqual(OK_Result, LogResult)
 
         'Dim OK_Result As String = String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now) &
         '                           "    bei WinBackUnitTest.UnitTest_wb_TraceLogger.TestTraceWriteLn() in " &
         '                           "C:\Users\will.WINBACK\Source\Repos\Signum_WinBack\WinBackUnitTest\UnitTest_wb_TraceLogger.vb:Zeile 45." &
         '                           " WinBack Test" + vbCrLf
-        Trace.WriteLine("WinBack Test")
-        Trace.Flush()
-        Assert.AreEqual(OK_Result, LogResult)
     End Sub
 
     Public Sub GetTrace(Txt As String)
