@@ -249,7 +249,11 @@ Public Class wb_DockBarPanelMain
             DockPanel.LoadFromXml(DkPnlConfigFileName, AddressOf wbBuildDocContent)
             'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
             For Each x In _DockPanelList
+                If x.DockState = DockState.Float Then
+                    x.DockState = DockState.Document
+                End If
                 x.Show(DockPanel, x.DockState)
+                Debug.Print("DockState " & x.DockState.ToString)
             Next
         Else
             'Default Fenster-Konfiguration (wenn alles schief geht)

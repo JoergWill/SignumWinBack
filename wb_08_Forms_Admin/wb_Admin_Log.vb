@@ -10,10 +10,16 @@ Public Class wb_Admin_Log
     End Sub
 
     Private Sub wb_Admin_Log_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Trace.Listeners.Add(Logger)
+        For Each x As String In wb_Admin_Shared.LogEvents
+            tbLogger.Text = tbLogger.Text + x
+        Next
+
+
+
+        'Trace.Listeners.Add(Logger)
     End Sub
 
     Private Sub wb_Admin_Log_FormClosed(sender As Object, e As Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        Trace.Listeners.Remove(Logger)
+        'Trace.Listeners.Remove(Logger)
     End Sub
 End Class

@@ -21,6 +21,7 @@ Public Class wb_Main_Menu
     Private oFactory As IFactoryService
 
     Private xForm As Form
+    Private xLogger As New wb_TraceListener
 
     ''' <summary>
     ''' Initialisierung Klasse
@@ -40,6 +41,8 @@ Public Class wb_Main_Menu
         AddLogIn()
         'Main-Menu erweitern
         AddMenu()
+        'Debug/Trace-Listener initialisieren
+        AddTraceListener()
 
     End Sub
 
@@ -109,6 +112,11 @@ Public Class wb_Main_Menu
         'Dim oTabs = oMenuService.GetTabs
         'Dim oGrps = oTabs(0).GetGroups
         'oGrps(3).AddButton("MenuExtensionBtnUser", "WinBack-Mitarbeiter", "Verwaltung der Mitarbeiter-Rechte in WinBack", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
+    End Sub
+
+    Sub AddTraceListener()
+        AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
+        Trace.Listeners.Add(xLogger)
     End Sub
 
     ''' <summary>

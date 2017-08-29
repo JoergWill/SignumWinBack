@@ -64,9 +64,6 @@ Public Class wb_Admin_Main
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
 
-                '        Case "AdminLog"
-    '            Return AdminLog
-
             Case "WinBack.wb_Admin_Log"
                 AdminLog.CloseButtonVisible = False
                 _DockPanelList.Add(AdminLog)
@@ -81,6 +78,7 @@ Public Class wb_Admin_Main
                 AdminDatensicherung = New wb_Admin_Datensicherung
                 _DockPanelList.Add(AdminDatensicherung)
                 Return AdminDatensicherung
+
             Case Else
                 Return Nothing
         End Select
@@ -89,7 +87,9 @@ Public Class wb_Admin_Main
     Private Sub BtnAdminSyncForm()
         AdminSync = New wb_Admin_Sync
         AdminSync.Show(DockPanel, DockState.DockTop)
+        Trace.WriteLine("AdminSyncForm aufgerufen")
     End Sub
+
     Private Sub BtnAdminDatensicherung()
         AdminDatensicherung = New wb_Admin_Datensicherung
         AdminDatensicherung.Show(DockPanel, DockState.DockTop)
