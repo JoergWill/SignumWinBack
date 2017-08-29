@@ -87,7 +87,7 @@ Public Class wb_TraceListener
 
                 If (x1 > 0) And (x2 > 0) And (x3 > 0) Then
 
-                    Dim s1 As String = subStack.Substring(x1 + 5, x2 - x1 - 4)
+                    Dim s1 As String = subStack.Substring(x1 + 5, x2 - x1 - 5)
                     Dim s2 As String = subStack.Substring(x2 + 4, x3 - x2 - 4)
                     Dim s3 As Integer = Val(subStack.Substring(x3 + 7))
 
