@@ -146,7 +146,7 @@ Public Class wb_Hinweise
             H2_Aenderung_Datum = Date.Now
             'aktuellen Benutzer NUmmer/Name eintragen
             H2_UserNr = My.Settings.AktUserNr
-            H2_UserName = My.Settings.AktUser
+            H2_UserName = wb_GlobalSettings.AktUser
 
             'Daten sind gelesen/Datensatz vorhanden
             If H2_ReadOK Then

@@ -17,6 +17,8 @@ Public Class wb_GlobalSettings
     Private Shared _MsSQLAdmnDB As String = Nothing
     Private Shared _MsSQLServer As String = Nothing
 
+    Private Shared _AktUser As String = ""
+
     Public Shared Property pVariante As wb_Global.ProgVariante
         Get
             Return _pVariante
@@ -100,6 +102,15 @@ Public Class wb_GlobalSettings
                     Throw New NotImplementedException
             End Select
         End Get
+    End Property
+
+    Public Shared Property AktUser As String
+        Get
+            Return _AktUser
+        End Get
+        Set(value As String)
+            _AktUser = value
+        End Set
     End Property
 
     Private Shared Sub getWinBackIni(Key As String)

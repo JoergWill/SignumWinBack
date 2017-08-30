@@ -35,9 +35,9 @@ Public Class wb_TraceListener
     ''' <param name="message"> String Debug/Trace-Text</param>
     Public Overrides Sub WriteLine(message As String)
         If bEchoStackTrace Then
-            RaiseEvent WriteText(String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now) & vbTab & message & vbTab & GetLocalStackTrace(Environment.StackTrace) & vbCrLf)
+            RaiseEvent WriteText(String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now) & vbTab & wb_GlobalSettings.AktUser & vbTab & message & vbTab & GetLocalStackTrace(Environment.StackTrace) & vbCrLf)
         Else
-            RaiseEvent WriteText(String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now) & vbTab & message & vbCrLf)
+            RaiseEvent WriteText(String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now) & vbTab & wb_GlobalSettings.AktUser & vbTab & message & vbCrLf)
         End If
     End Sub
 

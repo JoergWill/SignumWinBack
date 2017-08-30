@@ -249,6 +249,7 @@ Public Class wb_DockBarPanelMain
             DockPanel.LoadFromXml(DkPnlConfigFileName, AddressOf wbBuildDocContent)
             'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
             For Each x In _DockPanelList
+                'Wenn ein Fenster beim Speichern Im State Float war, wird es anschliessend nicht mehr angezeigt
                 If x.DockState = DockState.Float Then
                     x.DockState = DockState.Document
                 End If

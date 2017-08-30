@@ -50,13 +50,16 @@
         Dim OK_Datum As String = String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now)
         Dim OK_Message As String = "Test"
         Dim OK_Class As String = "WinBackUnitTest.UnitTest_wb_TraceLogger.TestTraceWriteLn()"
-        Dim OK_Zeile As String = "68"
+        Dim OK_Zeile As String = "71"
         Dim OK_Result As String
+
+        'Aktueller User
+        wb_GlobalSettings.AktUser = "TestUser"
 
         'Test ohne Stack-Trace
         Logger.EchoStackTrace = vbFalse
         LogResult = ""
-        OK_Result = OK_Datum & vbTab & OK_Message & vbCrLf
+        OK_Result = OK_Datum & vbTab & wb_GlobalSettings.AktUser & vbTab & OK_Message & vbCrLf
         Trace.WriteLine(OK_Message)
         Trace.Flush()
         Assert.AreEqual(OK_Result, LogResult)
@@ -64,7 +67,7 @@
         'Test mit Stack-Trace
         Logger.EchoStackTrace = vbTrue
         LogResult = ""
-        OK_Result = OK_Datum & vbTab & OK_Message & vbTab & OK_Class & vbTab & OK_Zeile & vbCrLf
+        OK_Result = OK_Datum & vbTab & wb_GlobalSettings.AktUser & vbTab & OK_Message & vbTab & OK_Class & vbTab & OK_Zeile & vbCrLf
         Trace.WriteLine(OK_Message)
         Trace.Flush()
         Assert.AreEqual(OK_Result, LogResult)

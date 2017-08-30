@@ -32,7 +32,7 @@ Public Class wb_GlobalOrgaBack
                 Case wb_Global.OrgaBackThemes.Anthrazit
                     Return New VS2015DarkTheme
                 Case Else
-                    Return New VS2005Theme
+                    Return New VS2015BlueTheme
             End Select
         End Get
     End Property
@@ -85,9 +85,11 @@ Public Class wb_GlobalOrgaBack
                 Select Case OrgasoftMain.sField("Entry")
                     Case "TempPfad"
                         _OrgaBackDockPanelPath = OrgasoftMain.sField("Content")
+                        Trace.WriteLine("OrgaBackDockPanelPath " & _OrgaBackDockPanelPath)
 
                     Case "DockingTheme"
                         _OrgaBackTheme = OrgasoftMain.iField("Content")
+                        Trace.WriteLine("_OrgaBackTheme " & _OrgaBackTheme)
 
                 End Select
             End While
