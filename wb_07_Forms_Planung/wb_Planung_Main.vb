@@ -1,14 +1,17 @@
 ﻿Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Common
+Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Planung_Main
     Implements IExternalFormUserControl
 
+
     'Default-Fenster
     Public PlanungListe As New wb_Planung_Liste
 
+#Region "Signum"
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
     End Sub
@@ -45,27 +48,17 @@ Public Class wb_Planung_Main
             If _ContextTabs Is Nothing Then
                 _ContextTabs = New List(Of GUI.ITab)
                 ' Fügt dem Ribbon ein neues RibbonTab hinzu
-                Dim oNewTab = _MenuService.AddContextTab("RohstoffVerwaltung", "WinBack-Rohstoffe", "Verwaltung der WinBack-Rohstoffe")
+                Dim oNewTab = _MenuService.AddContextTab("Planung", "Planung", "WinBack Produktionsplanung")
                 ' Das neue RibbonTab erhält eine Gruppe
-                Dim oGrp = oNewTab.AddGroup("GrpRohstoffe", "WinBack Rohstoffe")
+                Dim oGrp = oNewTab.AddGroup("GrpPlanung", "Produktions-Liste/Backzettel")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("BtnRohstoffDetails", "Details", "weitere Rohstoff-Daten", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnRohstoffDetails)
-                oGrp.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter und Nährwert-Angaben", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffParameter)
-                oGrp.AddButton("BtnRohstoffVerwendung", "Verwendung", "Verwendung des Rohstoffes in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf BtnRohstoffVerwendung)
+                oGrp.AddButton("BtnExportProdListe", "Export", "Produktionsplan an WinBack senden", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnProdListeExport)
+                oGrp.AddButton("BtnPrintProdListe", "Drucken", "Backzettel drucken", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnProdListePrint)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
         End Get
     End Property
-
-    Private Sub BtnRohstoffDetails()
-    End Sub
-
-    Private Sub BtnRohstoffParameter()
-    End Sub
-
-    Private Sub BtnRohstoffVerwendung()
-    End Sub
 
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
@@ -79,4 +72,47 @@ Public Class wb_Planung_Main
                 Return Nothing
         End Select
     End Function
+#End Region
+
+    Public Overrides Function Init() As Boolean Implements IBasicFormUserControl.Init
+        'Init aus der Basis-Klasse aufrufen (zuerst)
+        Init = MyBase.Init()
+        'Bestelldaten aus Stored-Procedure lsen
+        GetOrderData()
+
+    End Function
+
+    Private Sub BtnProdListeExport()
+    End Sub
+
+    Private Sub BtnProdListePrint()
+    End Sub
+
+
+    Private Sub GetOrderData()
+        Dim oFactory As IFactoryService = TryCast(_ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
+        Dim oSetting As ISettingService = TryCast(_ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
+        Dim oData As IData = oFactory.GetData
+        Dim sEmployee As String = TryCast(oSetting.GetSetting("Anmeldung.Mitarbeiter"), String)
+        'Dim sName As String
+
+        'Using oTable = oData.OpenDataTable(Database.Main, "SELECT Vorname, Nachname FROM Mitarbeiter WHERE MitarbeiterKürzel=@M", LockType.ReadOnly, sEmployee)
+        '    sName = CType(oTable.Rows(0)(0), String) & " " & CType(oTable.Rows(0)(1), String)
+        'End Using
+        'Debug.Print("sName " & sName)
+
+
+        Using oTable = oData.OpenQuery(Database.Main, "pq_Produktionsauftrag", LockType.ReadOnly, (1), (-1), ("FB"), ("KB"), ("20170830"))
+            Debug.Print("Anzahl der Spalten " & oTable.Columns.Count)
+            Debug.Print("Anzahl der Zeilen  " & oTable.Rows.Count)
+
+            For Each cRow As DataRow In oTable.Rows
+                For Each cCol As DataColumn In oTable.Columns
+                    Debug.Print("Produktions-Auftrag " & cCol.ColumnName & " = " & cRow(cCol.Ordinal))
+                Next
+            Next
+        End Using
+
+
+    End Sub
 End Class

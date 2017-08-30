@@ -94,7 +94,7 @@ Public Class wb_DockBarPanelMain
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks>Die Caption des Fensters muss mit MyBase.Text gesetzt werde</remarks>
-    Public Function Init() As Boolean Implements IBasicFormUserControl.Init
+    Public Overridable Function Init() As Boolean Implements IBasicFormUserControl.Init
         'Fenster-Bezeichnung
         MyBase.Text = FormText
         'Layout-Files in Status-Bar Listbox aktualisieren/einlesen

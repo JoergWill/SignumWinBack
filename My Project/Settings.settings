@@ -62,8 +62,5 @@
     <Setting Name="MySQLBatch" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\ProgramData\OrgaSoft\AddIn</Value>
     </Setting>
-    <Setting Name="AktUserNr" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

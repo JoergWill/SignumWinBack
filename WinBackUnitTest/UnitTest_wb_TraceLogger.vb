@@ -71,11 +71,6 @@
         Trace.WriteLine(OK_Message)
         Trace.Flush()
         Assert.AreEqual(OK_Result, LogResult)
-
-        'Dim OK_Result As String = String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now) &
-        '                           "    bei WinBackUnitTest.UnitTest_wb_TraceLogger.TestTraceWriteLn() in " &
-        '                           "C:\Users\will.WINBACK\Source\Repos\Signum_WinBack\WinBackUnitTest\UnitTest_wb_TraceLogger.vb:Zeile 45." &
-        '                           " WinBack Test" + vbCrLf
     End Sub
 
     Public Sub GetTrace(Txt As String)

@@ -293,18 +293,6 @@ Namespace My
                 Me("MySQLBatch") = value
             End Set
         End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property AktUserNr() As Integer
-            Get
-                Return CType(Me("AktUserNr"),Integer)
-            End Get
-            Set
-                Me("AktUserNr") = value
-            End Set
-        End Property
     End Class
 End Namespace
 

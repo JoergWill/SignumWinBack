@@ -18,6 +18,7 @@ Public Class wb_GlobalSettings
     Private Shared _MsSQLServer As String = Nothing
 
     Private Shared _AktUser As String = ""
+    Private Shared _AktUserNr As String = ""
 
     Public Shared Property pVariante As wb_Global.ProgVariante
         Get
@@ -110,6 +111,15 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _AktUser = value
+        End Set
+    End Property
+
+    Public Shared Property AktUserNr As String
+        Get
+            Return _AktUserNr
+        End Get
+        Set(value As String)
+            _AktUserNr = value
         End Set
     End Property
 
