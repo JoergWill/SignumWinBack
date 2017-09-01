@@ -58,11 +58,17 @@ Public Class ob_Artikel_ZuordnungRezept
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
         Select Case CommandId
             Case "INVALID"
+                MetroLabel1.Text = " INVALID "
                 'Me.PropertyGrid.Refresh()
                 'Me.PropertyGrid.Enabled = False
             Case "VALID"
+                MetroLabel1.Text = " VALID "
                 'Me.PropertyGrid.Refresh()
                 'Me.PropertyGrid.Enabled = True
+            Case "FOUND"
+                MetroLabel1.Text = CommandId & DirectCast(Parameter, wb_Komponenten).Bezeichung
+
+
         End Select
         Return Nothing
     End Function
@@ -81,7 +87,7 @@ Public Class ob_Artikel_ZuordnungRezept
     End Function
 
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
-        MyBase.Text = "Zurordnung WinBack-Rezept"
+        MyBase.Text = "Zuordnung WinBack-Rezept"
         Me.Show()
         'Me.PropertyGrid.SelectedObject = _DockingExtension.Extendee
         'If _DockingExtension.Extendee IsNot Nothing AndAlso _DockingExtension.Extendee.Valid Then

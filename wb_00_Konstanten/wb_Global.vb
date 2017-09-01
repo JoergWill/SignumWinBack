@@ -170,6 +170,8 @@
     Public Const MFF_VerarbeitungsHinweisArtikel = 208
     Public Const MFF_MatchCode = 281
     Public Const MFF_KO_Nr = 280
+    Public Const MFF_Kurzname = 224
+    Public Const MFF_Kommentar = 225
 
 
     ''' <summary>

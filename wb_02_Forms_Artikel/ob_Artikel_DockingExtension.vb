@@ -14,7 +14,14 @@ Public Class ob_Artikel_DockingExtension
     Private _MenuService As Common.IMenuService
     Private _ViewProvider As IViewProvider
     Private _ContextTabs As List(Of GUI.ITab)
+    Private _SubForms As New Dictionary(Of String, IBasicFormUserControl)
+    Private _Extendee As IFrameWorkClass
+
+    Private bContextTabInitialized As Boolean = False
+    Private bSortimentIstProduktion As Boolean = False
     Private Komponente As New wb_Komponenten
+    Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
+    Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
 
     ''' <summary>
     ''' Falls die Extension ein eigenes Context-Ribbon zum bestehenden Ribbon hinzufügen möchte, kann sie dieses hier zurückliefern
@@ -35,11 +42,6 @@ Public Class ob_Artikel_DockingExtension
             Return ObjectEnum.Articles
         End Get
     End Property
-
-    Private _Extendee As IFrameWorkClass
-    Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
-    Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
-
     ''' <summary>
     ''' Referenz auf die Framework-Klasse, die im Docking-Fenster derzeit angezeigt wird
     ''' </summary>
@@ -80,11 +82,12 @@ Public Class ob_Artikel_DockingExtension
     End Property
 
     Private Sub Extendee_Valid(sender As Object, e As EventArgs)
-        For Each oForm In _SubForms.Values
-            If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
-                oForm.ExecuteCommand("VALID", Nothing)
-            End If
-        Next
+        'For Each oForm In _SubForms.Values
+        '    If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
+        '        oForm.ExecuteCommand("VALID", Nothing)
+        '    End If
+        'Next
+        Extendee_ExecuteCommand("VALID", Nothing)
         Debug.Print("Article_DockingExtension Valid")
     End Sub
 
@@ -94,12 +97,21 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
+        'For Each oForm In _SubForms.Values
+        '    If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
+        '        oForm.ExecuteCommand("INVALID", Nothing)
+        '    End If
+        'Next
+        Extendee_ExecuteCommand("INVALID", Nothing)
+        Debug.Print("Article_DockingExtension Invalid")
+    End Sub
+
+    Private Sub Extendee_ExecuteCommand(Command As String, Parameter As Object)
         For Each oForm In _SubForms.Values
             If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
-                oForm.ExecuteCommand("INVALID", Nothing)
+                oForm.ExecuteCommand(Command, Parameter)
             End If
         Next
-        Debug.Print("Article_DockingExtension Invalid")
     End Sub
 
     ''' <summary>
@@ -112,12 +124,19 @@ Public Class ob_Artikel_DockingExtension
     End Sub
 
     ''' <summary>
-    ''' Es wurde ein Obejkt gefunden (F") und wird nun angezeigt
+    ''' Es wurde ein Objekt gefunden (F") und wird nun angezeigt
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_Found(sender As Object, e As EventArgs)
         Debug.Print("Article_DockingExtension Found")
+        'Artikel-Informationen in Klasse Komponenten einlesen
+        bSortimentIstProduktion = GetKomponentenDaten()
+        'Sub-Fenster WinBack aktualisieren
+        If bSortimentIstProduktion Then
+            Extendee_ExecuteCommand("FOUND", Komponente)
+        End If
+
     End Sub
 
     ''' <summary>
@@ -146,8 +165,9 @@ Public Class ob_Artikel_DockingExtension
     Private Sub Extendee_Committed(sender As Object, e As EventArgs)
         Debug.Print("Article_DockingExtension Committed")
 
-        If GetKomponentenDaten() Then
+        If bSortimentIstProduktion Then
             Debug.Print("WinBack Artikel")
+            UpdateKomponentenDaten()
             'geänderten Datensatz in WinBack-DB schreiben
             Komponente.MySQLdbUpdate(Komponente.Nr)
         End If
@@ -165,8 +185,7 @@ Public Class ob_Artikel_DockingExtension
         Debug.Print("Article_DockingExtension BeforeDelete")
 
         'Sortiment-Kürzel aus Artikel.Sortiment
-        Dim sSortiment As String = _Extendee.GetPropertyValue("Sortiment").ToString
-        If wb_Filiale.SortimentIstProduktion(sSortiment) Then
+        If bSortimentIstProduktion Then
 
             'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
             Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
@@ -196,8 +215,7 @@ Public Class ob_Artikel_DockingExtension
         Debug.Print("Article_DockingExtension Deleted")
 
         'Sortiment-Kürzel aus Artikel.Sortiment
-        Dim sSortiment As String = _Extendee.GetPropertyValue("Sortiment").ToString
-        If wb_Filiale.SortimentIstProduktion(sSortiment) Then
+        If bSortimentIstProduktion Then
             'Komponente endgültig löschen - Die Komponenten-Nummer ist vorab schon ermittelt worden (BeforeDelete)
             Komponente.MySQLdbDelete()
         End If
@@ -225,8 +243,6 @@ Public Class ob_Artikel_DockingExtension
         _SubForms.Add("@ob_ArtikelDocking_ZuordnungRezept", Nothing)
     End Sub
 
-    Private bContextTabInitialized As Boolean
-
     ''' <summary>
     ''' Diese Routine wird immer aufgerufen, wenn ein DockingController vom passenden Typ erzeugt wird. 
     ''' Hier können Einträge in die bestehenden Context-Tabs hinzugefügt werden. 
@@ -243,6 +259,7 @@ Public Class ob_Artikel_DockingExtension
             End If
         End If
     End Sub
+
     Private Sub LoadDockingSubForm(sender As Object, e As EventArgs)
         If Me.FormController IsNot Nothing Then
             Me.FormController.ExecuteCommand("ob_ArtikelDocking_ZuordnungRezept", Nothing)
@@ -266,8 +283,6 @@ Public Class ob_Artikel_DockingExtension
         End If
         Return Nothing
     End Function
-
-    Private _SubForms As New Dictionary(Of String, IBasicFormUserControl)
 
     ''' <summary>
     ''' Liste aller FormKeys, für die das AddIn Unterfenster definiert
@@ -347,27 +362,10 @@ Public Class ob_Artikel_DockingExtension
                 'Datensatz in WinBack neu anlegen
                 Komponente.MySQLdbNew(KType)
             End If
-
-            'Update aller in OrgaBack geänderten Daten
-            Komponente.Bezeichung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
-            Komponente.MatchCode = GetMMFValue(oFil, wb_Global.MFF_MatchCode)       'MFF281 - MatchCode
-            Komponente.ZutatenListe = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste) 'MFF209 - Zutatenliste
-            Komponente.Kommentar = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste)    'MFF225 - Kommentar
-            Komponente.Kurzname = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste)     'MFF224 - Kurzname
-
-            Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
-            Debug.Print("Artikel-Bezeichnung    " & Komponente.Bezeichung)
-            Debug.Print("Artikel-Kurzname       " & Komponente.Kurzname)
-            Debug.Print("Index                  " & Komponente.Nr)
-            Debug.Print("Komponenten-Type       " & wb_Functions.KomponTypeToInt(Komponente.Type).ToString)
-            Debug.Print("ZutatenListe           " & Komponente.ZutatenListe)
-            Debug.Print("MatchCode              " & Komponente.MatchCode)
-
             Return True
         Else
             'Artikel/Rohstoff ist keiner Produktions-Filiale zugeordnet
             Return False
-
         End If
     End Function
 
@@ -403,5 +401,26 @@ Public Class ob_Artikel_DockingExtension
         End If
         Return ""
     End Function
+
+    Private Sub UpdateKomponentenDaten()
+        'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
+        Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+
+        'Update aller in OrgaBack geänderten Daten
+        Komponente.Bezeichung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
+        Komponente.MatchCode = GetMMFValue(oFil, wb_Global.MFF_MatchCode)       'MFF281 - MatchCode
+        Komponente.ZutatenListe = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste) 'MFF209 - Zutatenliste
+        Komponente.Kommentar = GetMMFValue(oFil, wb_Global.MFF_Kommentar)       'MFF225 - Kommentar
+        Komponente.Kurzname = GetMMFValue(oFil, wb_Global.MFF_Kurzname)         'MFF224 - Kurzname
+
+        'Testausgabe
+        Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
+        Debug.Print("Artikel-Bezeichnung    " & Komponente.Bezeichung)
+        Debug.Print("Artikel-Kurzname       " & Komponente.Kurzname)
+        Debug.Print("Index                  " & Komponente.Nr)
+        Debug.Print("Komponenten-Type       " & wb_Functions.KomponTypeToInt(Komponente.Type).ToString)
+        Debug.Print("ZutatenListe           " & Komponente.ZutatenListe)
+        Debug.Print("MatchCode              " & Komponente.MatchCode)
+    End Sub
 
 End Class
