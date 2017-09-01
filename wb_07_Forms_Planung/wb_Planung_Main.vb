@@ -88,7 +88,9 @@ Public Class wb_Planung_Main
     Private Sub BtnProdListePrint()
     End Sub
 
-
+    ''' <summary>
+    ''' Ermittelt die Bestelldaten aus dem OrgaBack Backzettel
+    ''' </summary>
     Private Sub GetOrderData()
         Dim oFactory As IFactoryService = TryCast(_ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
         Dim oSetting As ISettingService = TryCast(_ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
@@ -101,7 +103,7 @@ Public Class wb_Planung_Main
         'End Using
         'Debug.Print("sName " & sName)
 
-
+        'TODO Query muss überarbeitet werden - Backzettel wird in OrgaBack erzeugt (31.08.2017)
         Using oTable = oData.OpenQuery(Database.Main, "pq_Produktionsauftrag", LockType.ReadOnly, (1), (-1), ("FB"), ("KB"), ("20170830"))
             Debug.Print("Anzahl der Spalten " & oTable.Columns.Count)
             Debug.Print("Anzahl der Zeilen  " & oTable.Rows.Count)

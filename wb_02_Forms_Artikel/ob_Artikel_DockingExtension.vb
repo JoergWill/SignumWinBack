@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.Windows.Forms
 Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.Extensibility
@@ -6,7 +7,7 @@ Imports Signum.OrgaSoft.FrameWork
 Imports Signum.OrgaSoft.GUI
 
 <Export(GetType(IExtension))>
-<ExportMetadata("Description", "Erweiterung des Artikel-Dockingfensters um ein Unterfenster WinBack")>
+<ExportMetadata("Description", "Erweiterung des Artikel-Dockingfensters um ein Unterfenster WinBack. Synchronisation Artikeldaten bei Änderung in OrgaBack")>
 Public Class ob_Artikel_DockingExtension
     Implements IDockingExtension
 
@@ -26,7 +27,7 @@ Public Class ob_Artikel_DockingExtension
     End Property
 
     ''' <summary>
-    ''' Klasse, deren Docking-Layout erweitert werden soll (Mitarbeiter)
+    ''' Klasse, deren Docking-Layout erweitert werden soll (Artikel)
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property ExtendedType As ObjectEnum Implements IDockingExtension.ExtendedType
@@ -36,6 +37,8 @@ Public Class ob_Artikel_DockingExtension
     End Property
 
     Private _Extendee As IFrameWorkClass
+    Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
+    Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
 
     ''' <summary>
     ''' Referenz auf die Framework-Klasse, die im Docking-Fenster derzeit angezeigt wird
@@ -77,11 +80,11 @@ Public Class ob_Artikel_DockingExtension
     End Property
 
     Private Sub Extendee_Valid(sender As Object, e As EventArgs)
-        'For Each oForm In _SubForms.Values
-        '    If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
-        '        oForm.ExecuteCommand("VALID", Nothing)
-        '    End If
-        'Next
+        For Each oForm In _SubForms.Values
+            If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
+                oForm.ExecuteCommand("VALID", Nothing)
+            End If
+        Next
         Debug.Print("Article_DockingExtension Valid")
     End Sub
 
@@ -91,6 +94,11 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
+        For Each oForm In _SubForms.Values
+            If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
+                oForm.ExecuteCommand("INVALID", Nothing)
+            End If
+        Next
         Debug.Print("Article_DockingExtension Invalid")
     End Sub
 
@@ -204,9 +212,6 @@ Public Class ob_Artikel_DockingExtension
         Debug.Print("Article_DockingExtension BeforeCopy")
     End Sub
 
-    Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
-    Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
-
     ''' <summary>
     ''' Initialisierung des AddIns beim Starten von Orgasoft.
     ''' </summary>
@@ -217,7 +222,7 @@ Public Class ob_Artikel_DockingExtension
     Public Sub Initialize() Implements IExtension.Initialize
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
-        _SubForms.Add("@wb_Article_DockingControlObjectInfo", Nothing)
+        _SubForms.Add("@ob_ArtikelDocking_ZuordnungRezept", Nothing)
     End Sub
 
     Private bContextTabInitialized As Boolean
@@ -228,8 +233,19 @@ Public Class ob_Artikel_DockingExtension
     ''' Achtung: Das Hinzufügen darf nur beim ersten Mal passieren, die Context-Tabs werden gecached!
     ''' </summary>
     Public Sub InitializeContextTabs() Implements IDockingExtension.InitializeContextTabs
-        If Not bContextTabInitialized Then                 ' einmalige Ausführung sicherstellen
+        If Not bContextTabInitialized Then
+            'einmalige Ausführung sicherstellen
             bContextTabInitialized = True
+            'fügt einen Tab im Artkel-Ribbon(rtabArtikel) hinzu
+            Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabArtikel" Select oTab
+            If oSystemTab IsNot Nothing AndAlso oSystemTab.Count > 0 Then
+                oSystemTab(0).GetGroups(0).AddButton("AddressDockingExtensionDeveloperButton", "Developer-Info", "Per AddIn erweitertes Docking-Fenster zur Anzeige von Entwickler-Informationen zum angezeigten Objekt", My.Resources.MainChargen_16x16, My.Resources.MainChargen_32x32, AddressOf LoadDockingSubForm)
+            End If
+        End If
+    End Sub
+    Private Sub LoadDockingSubForm(sender As Object, e As EventArgs)
+        If Me.FormController IsNot Nothing Then
+            Me.FormController.ExecuteCommand("ob_ArtikelDocking_ZuordnungRezept", Nothing)
         End If
     End Sub
 
@@ -239,15 +255,15 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="FormKey"></param>
     ''' <returns></returns>
     Public Function ProvideInstance(FormKey As String) As IBasicFormUserControl Implements IDockingExtension.ProvideInstance
-        'If _SubForms.ContainsKey(FormKey) Then
-        '    Dim oForm = _SubForms(FormKey)
-        '    If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
-        '        ' Adresse der Klasse, die die Arbeit macht !!
-        '        oForm = New wb_User_DockingControl(Me)
-        '        _SubForms(FormKey) = oForm
-        '    End If
-        '    Return oForm
-        'End If
+        If _SubForms.ContainsKey(FormKey) Then
+            Dim oForm = _SubForms(FormKey)
+            If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
+                ' Adresse der Klasse, die die Arbeit macht !!
+                oForm = New ob_Artikel_ZuordnungRezept(Me)
+                _SubForms(FormKey) = oForm
+            End If
+            Return oForm
+        End If
         Return Nothing
     End Function
 

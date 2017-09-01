@@ -230,6 +230,12 @@
     <Compile Include="wb_00_Konstanten\wb_Credentials.vb" />
     <Compile Include="wb_00_Konstanten\wb_GlobalOrgaBack.vb" />
     <Compile Include="wb_00_Konstanten\wb_GlobalSettings.vb" />
+    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.Designer.vb">
+      <DependentUpon>ob_Artikel_ZuordnungRezept.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_DockingExtension.vb" />
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.Designer.vb">
       <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
@@ -462,6 +468,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\wb_DockBarPanelMain.resx">
       <DependentUpon>wb_DockBarPanelMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.resx">
+      <DependentUpon>ob_Artikel_ZuordnungRezept.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Liste.resx">
       <DependentUpon>wb_Artikel_Liste.vb</DependentUpon>
