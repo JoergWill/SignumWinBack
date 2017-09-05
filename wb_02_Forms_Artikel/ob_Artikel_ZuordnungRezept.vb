@@ -4,6 +4,7 @@ Imports Signum.OrgaSoft.GUI
 
 Public Class ob_Artikel_ZuordnungRezept
     Implements IBasicFormUserControl
+    Private RzNr As Integer = 0
 
     ''' <summary>
     ''' Eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn
@@ -58,16 +59,16 @@ Public Class ob_Artikel_ZuordnungRezept
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
         Select Case CommandId
             Case "INVALID"
-                MetroLabel1.Text = " INVALID "
-                'Me.PropertyGrid.Refresh()
-                'Me.PropertyGrid.Enabled = False
-            Case "VALID"
-                MetroLabel1.Text = " VALID "
-                'Me.PropertyGrid.Refresh()
-                'Me.PropertyGrid.Enabled = True
-            Case "FOUND"
-                MetroLabel1.Text = CommandId & DirectCast(Parameter, wb_Komponenten).Bezeichung
+                BtnRzpShow.Enabled = False
+                BtnRzptChange.Enabled = False
 
+            Case "VALID"
+
+            Case "wbFOUND"
+                RzNr = DirectCast(Parameter, wb_Komponenten).RzNr
+                tRezeptNr.Text = DirectCast(Parameter, wb_Komponenten).RezeptNummer
+                tRezeptName.Text = DirectCast(Parameter, wb_Komponenten).RezeptName
+                BtnRzpShow.Enabled = True
 
         End Select
         Return Nothing
@@ -87,14 +88,8 @@ Public Class ob_Artikel_ZuordnungRezept
     End Function
 
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
-        MyBase.Text = "Zuordnung WinBack-Rezept"
+        MyBase.Text = "WinBack Produktion"
         Me.Show()
-        'Me.PropertyGrid.SelectedObject = _DockingExtension.Extendee
-        'If _DockingExtension.Extendee IsNot Nothing AndAlso _DockingExtension.Extendee.Valid Then
-        '    Me.PropertyGrid.Enabled = True
-        'Else
-        '    Me.PropertyGrid.Enabled = False
-        'End If
         Return True
     End Function
 
@@ -110,4 +105,9 @@ Public Class ob_Artikel_ZuordnungRezept
 
     End Sub
 
+    Private Sub BtnRzpShow_Click(sender As Object, e As EventArgs) Handles BtnRzpShow.Click
+        Dim Rezeptur As New wb_Rezept_Rezeptur(RzNr, 1)
+        'MDI-Fenster anzeigen
+        Rezeptur.Show()
+    End Sub
 End Class

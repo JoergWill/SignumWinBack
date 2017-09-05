@@ -134,7 +134,7 @@ Public Class ob_Artikel_DockingExtension
         bSortimentIstProduktion = GetKomponentenDaten()
         'Sub-Fenster WinBack aktualisieren
         If bSortimentIstProduktion Then
-            Extendee_ExecuteCommand("FOUND", Komponente)
+            Extendee_ExecuteCommand("wbFOUND", Komponente)
         End If
 
     End Sub
@@ -146,6 +146,10 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="e"></param>
     Private Sub Extendee_BeforeUpdate(sender As Object, e As EventArgs)
         Debug.Print("Article_DockingExtension BeforeUpdate")
+        If bSortimentIstProduktion Then
+            Debug.Print("WinBack Artikel")
+            SetKomponentenDaten()
+        End If
     End Sub
 
     ''' <summary>
@@ -190,8 +194,8 @@ Public Class ob_Artikel_DockingExtension
             'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
             Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
             'Komponenten-Nummer aus OrgaBack ermitteln
-            Komponente.Nr = CInt(GetMMFValue(oFil, wb_Global.MFF_KO_Nr))            'MFF280 - Index auf interne Komponenten-Nummer
-            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString    'Artikel/Komponenten-Nummer alphanumerisch
+            Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))  'MFF280 - Index auf interne Komponenten-Nummer
+            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString        'Artikel/Komponenten-Nummer alphanumerisch
 
             'Prüfen ob der Artikel/Rohstoff noch verwendet wird
             CanBeDeleted = Komponente.MySQLdbCanBeDeleted(Komponente.Nr, Komponente.Nummer)
@@ -255,7 +259,7 @@ Public Class ob_Artikel_DockingExtension
             'fügt einen Tab im Artkel-Ribbon(rtabArtikel) hinzu
             Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabArtikel" Select oTab
             If oSystemTab IsNot Nothing AndAlso oSystemTab.Count > 0 Then
-                oSystemTab(0).GetGroups(0).AddButton("AddressDockingExtensionDeveloperButton", "Developer-Info", "Per AddIn erweitertes Docking-Fenster zur Anzeige von Entwickler-Informationen zum angezeigten Objekt", My.Resources.MainChargen_16x16, My.Resources.MainChargen_32x32, AddressOf LoadDockingSubForm)
+                oSystemTab(0).GetGroups(0).AddButton("WinBackProduktion", "WinBack-Produktion", "Artikel-Stammdaten relevant für die Produktion in WinBack", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf LoadDockingSubForm)
             End If
         End If
     End Sub
@@ -309,14 +313,14 @@ Public Class ob_Artikel_DockingExtension
     ''' 
     '''     WinBack         Bezeichung                  OrgaBack
     '''     =======         ==========                  ========
-    '''     KO_Nr           Index Rohstoff/Artikel      MFF280
+    '''     KO_Nr           Index Rohstoff/Artikel      MFF226
     '''     KO_Bezeichnung  Artikel-Bezeichnung         .KurzText
     '''     KO_Type           0 - Artikel               .Artikelgruppe =  0 (Verkaufsartikel Backwaren)
     '''                     102 - Rohstoff              .Artikelgruppe = 40 (Rohstoff)
     '''     KA_Kurzname     Kurztext                    MFF224
     '''     KO_Kommentar    Artikel-Kommentar           MFF225
     '''     KO_Nr_AlNum     Artikel-Nummer              .ArtikelNr
-    '''     KA_Matchcode    ID für Nährwerte            MFF281
+    '''     KA_Matchcode    ID für Nährwerte            MFF227
     '''     KA_Grp1         Artikelgruppe 1
     '''     KA_Grp2         Artikelgruppe 2
     ''' 
@@ -334,6 +338,8 @@ Public Class ob_Artikel_DockingExtension
     '''     Hinweise2(10/1) Gebäck-Charakteristik       MFF211
     '''     Hinweise2(10/2) Verzehr-Tipps               MFF212
     '''     Hinweise2(10/3) Wissenswertes               MFF213
+    '''     Rezeptnummer zum Artikel (WinBack schreibt) MFF228
+    '''     Rezeptname zum Artikel (WinBack schreibt)   MFF229
     '''     
     ''' </summary>
     Private Function GetKomponentenDaten() As Boolean
@@ -345,8 +351,8 @@ Public Class ob_Artikel_DockingExtension
             'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
             Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
             'Komponenten-Nummer aus OrgaBack ermitteln
-            Komponente.Nr = CInt(GetMMFValue(oFil, wb_Global.MFF_KO_Nr))            'MFF280 - Index auf interne Komponenten-Nummer
-            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString    'Artikel/Komponenten-Nummer alphanumerisch
+            Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF226 - Index auf interne Komponenten-Nummer
+            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString            'Artikel/Komponenten-Nummer alphanumerisch
             'Artikel/Komponente aus WinBack-Db einlesen
             If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer) Then
                 'Datensatz ist in Winback nicht vorhanden
@@ -370,7 +376,7 @@ Public Class ob_Artikel_DockingExtension
     End Function
 
     ''' <summary>
-    ''' Gibt den Wert des Multifunktions-Feldes mit der übergebenen Nummer zurück. Der Wert steht als Property-Array an der dritten Stellen
+    ''' Setzt oder gibt den Wert des Multifunktions-Feldes mit der übergebenen Nummer zurück. Der Wert steht als Property-Array an der dritten Stellen
     '''     PropertyValue(0) - ArtikelNummer
     '''     PropertyValue(1) - FelddNr
     '''     PropertyValue(2) - FilialNr
@@ -383,24 +389,42 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="ofil">ICollectionSubClass - Daten aus der Filiale 0 (Hauptfiliale)</param>
     ''' <param name="MFF">Short - Indes auf MFF-Feld</param>
     ''' <returns></returns>
-    Private Function GetMMFValue(ofil As ICollectionSubClass, MFF As Integer) As String
-        Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
-        Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
+    Private Property MFFValue(ofil As ICollectionSubClass, MFF As Integer) As String
+        Get
+            Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
+            Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
 
-        iMFFIdx = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("MFF=" & CStr(MFF))
-        If iMFFIdx >= 0 Then
-            ' sollte ein MFF mit FeldNr=X gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
-            ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
-            oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
-            If oMFF IsNot Nothing Then
-                ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
-                Return oMFF.PropertyValueCollection(3).Value
+            iMFFIdx = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("FeldNr=" & CStr(MFF))
+            If iMFFIdx >= 0 Then
+                ' sollte ein MFF mit FeldNr=X gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
+                ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
+                oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
+                If oMFF IsNot Nothing Then
+                    ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
+                    Return oMFF.PropertyValueCollection(3).Value
+                End If
+            Else
+                Return ""
             End If
-        Else
             Return ""
-        End If
-        Return ""
-    End Function
+        End Get
+
+        Set(Value As String)
+            Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
+            Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
+            iMFFIdx = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("FeldNr=" & CStr(MFF))
+
+            If iMFFIdx >= 0 Then
+                ' sollte ein MFF mit FeldNr=X gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
+                ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
+                oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
+                If oMFF IsNot Nothing Then
+                    ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
+                    oMFF.SetPropertyValue("Inhalt", Value)
+                End If
+            End If
+        End Set
+    End Property
 
     Private Sub UpdateKomponentenDaten()
         'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
@@ -408,10 +432,10 @@ Public Class ob_Artikel_DockingExtension
 
         'Update aller in OrgaBack geänderten Daten
         Komponente.Bezeichung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
-        Komponente.MatchCode = GetMMFValue(oFil, wb_Global.MFF_MatchCode)       'MFF281 - MatchCode
-        Komponente.ZutatenListe = GetMMFValue(oFil, wb_Global.MFF_Zutatenliste) 'MFF209 - Zutatenliste
-        Komponente.Kommentar = GetMMFValue(oFil, wb_Global.MFF_Kommentar)       'MFF225 - Kommentar
-        Komponente.Kurzname = GetMMFValue(oFil, wb_Global.MFF_Kurzname)         'MFF224 - Kurzname
+        Komponente.MatchCode = MFFValue(oFil, wb_Global.MFF_MatchCode)       'MFF281 - MatchCode
+        Komponente.ZutatenListe = MFFValue(oFil, wb_Global.MFF_Zutatenliste) 'MFF209 - Zutatenliste
+        Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)       'MFF225 - Kommentar
+        Komponente.Kurzname = MFFValue(oFil, wb_Global.MFF_Kurzname)         'MFF224 - Kurzname
 
         'Testausgabe
         Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
@@ -421,6 +445,15 @@ Public Class ob_Artikel_DockingExtension
         Debug.Print("Komponenten-Type       " & wb_Functions.KomponTypeToInt(Komponente.Type).ToString)
         Debug.Print("ZutatenListe           " & Komponente.ZutatenListe)
         Debug.Print("MatchCode              " & Komponente.MatchCode)
+    End Sub
+
+    Private Sub SetKomponentenDaten()
+        'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
+        Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+
+        'Update aller in WinBack geänderten Daten
+        MFFValue(oFil, wb_Global.MFF_RezeptNummer) = Komponente.RezeptNummer
+        MFFValue(oFil, wb_Global.MFF_RezeptName) = Komponente.RezeptName
     End Sub
 
 End Class

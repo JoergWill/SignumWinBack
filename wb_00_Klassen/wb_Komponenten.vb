@@ -85,6 +85,34 @@ Public Class wb_Komponenten
         End Get
     End Property
 
+    Public Property RzNr As Integer
+        Get
+            Return KA_Rz_Nr
+        End Get
+        Set(value As Integer)
+            KA_Rz_Nr = value
+        End Set
+    End Property
+
+    'TODO Rzeptnummer und Name aus DB ermitteln
+    Public Property RezeptNummer As String
+        Get
+            Return "9999"
+        End Get
+        Set(value As String)
+
+        End Set
+    End Property
+
+    Public Property RezeptName As String
+        Get
+            Return "TESTREZEPT"
+        End Get
+        Set(value As String)
+
+        End Set
+    End Property
+
     Public Property Lieferant As String
         Set(value As String)
             'Änderungen loggen
@@ -371,7 +399,7 @@ Public Class wb_Komponenten
         End If
 
         'ersten Datensatz aus Tabelle Komponenten lesen
-        If winback.sqlSelect(Sql) Then
+        If winback.sqlSelect(sql) Then
             If winback.Read Then
                 MySQLdbRead(winback.MySqlRead)
                 'TODO ... weiter Parameter lesen
