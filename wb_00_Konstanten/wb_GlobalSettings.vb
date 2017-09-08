@@ -9,6 +9,10 @@
 '''     - der OrgaBack-Datenbank aus ADMIN.dbo.Settings (über wb_GlobalOrgaBack)
 '''     
 ''' Sind die Einstellungswerte schon gelesen worden, wird der Wert direkt zurückgegeben, ansonsten aus der Quelle gelesen (1x)
+''' 
+''' Die Datei winback.ini liegt im Programm-Wurzel-Verzeichnis von OrgaSoft(C:\Program Files (x86)\Signum\OrgaSoft)
+''' nicht im AddIn-Verzeichnis. Der Pfad des AddIn-Verzeichisses kann erst nach Initialisierung der Datenbank ausgelesen werden.
+''' 
 ''' </summary>
 Public Class wb_GlobalSettings
     Private Shared _pVariante As wb_Global.ProgVariante = wb_Global.ProgVariante.Undef
@@ -128,8 +132,8 @@ Public Class wb_GlobalSettings
 
         Select Case Key
             Case "SQL"
-                _MsSQLMainDB = IniFile.ReadString("winback", "MsSQLServer_MainDB", "DemoOrgaBack_Main3")
-                _MsSQLAdmnDB = IniFile.ReadString("winback", "MsSQLServer_AdmnDB", "DemoOrgaBack_Admin3")
+                _MsSQLMainDB = IniFile.ReadString("winback", "MsSQLServer_MainDB", "DemoOrgaxBack_Main3")
+                _MsSQLAdmnDB = IniFile.ReadString("winback", "MsSQLServer_AdmnDB", "DemoOrgaxBack_Admin3")
                 _MsSQLServer = IniFile.ReadString("winback", "MsSQLServer_Source", "WILL-WIN10\SIGNUM")
             Case Else
 

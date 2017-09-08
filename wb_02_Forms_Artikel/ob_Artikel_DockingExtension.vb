@@ -11,7 +11,7 @@ Imports Signum.OrgaSoft.GUI
 Public Class ob_Artikel_DockingExtension
     Implements IDockingExtension
 
-    Private _MenuService As Common.IMenuService
+    Private _MenuService As IMenuService
     Private _ViewProvider As IViewProvider
     Private _ContextTabs As List(Of GUI.ITab)
     Private _SubForms As New Dictionary(Of String, IBasicFormUserControl)
@@ -82,11 +82,6 @@ Public Class ob_Artikel_DockingExtension
     End Property
 
     Private Sub Extendee_Valid(sender As Object, e As EventArgs)
-        'For Each oForm In _SubForms.Values
-        '    If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
-        '        oForm.ExecuteCommand("VALID", Nothing)
-        '    End If
-        'Next
         Extendee_ExecuteCommand("VALID", Nothing)
         Debug.Print("Article_DockingExtension Valid")
     End Sub
@@ -97,11 +92,6 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
-        'For Each oForm In _SubForms.Values
-        '    If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
-        '        oForm.ExecuteCommand("INVALID", Nothing)
-        '    End If
-        'Next
         Extendee_ExecuteCommand("INVALID", Nothing)
         Debug.Print("Article_DockingExtension Invalid")
     End Sub
