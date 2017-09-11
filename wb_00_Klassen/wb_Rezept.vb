@@ -342,6 +342,11 @@ Public Class wb_Rezept
 
     End Sub
 
+    Public Sub New(RzNr As Integer)
+        'Rezeptkopf mit Variante x aus der Datenbank einlesen
+        MySQLdbSelect_RzKopf(RzNr, 1)
+    End Sub
+
     ''' <summary>
     ''' Liest die Rezeptkopfdaten der RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht
     ''' existiert, wird die Variante 1 gelesen (Standard-Variante). Wenn Variante 1 nicht exisitiert (Sauerteig-Rezept) wird Variante 0

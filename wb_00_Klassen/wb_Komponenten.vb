@@ -17,6 +17,8 @@ Public Class wb_Komponenten
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
     Private _LastErrorText As String
+    Private _RezeptNummer As String = Nothing
+    Private _RezeptName As String = Nothing
 
     Private KO_DeklBezeichungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
@@ -97,7 +99,17 @@ Public Class wb_Komponenten
     'TODO Rzeptnummer und Name aus DB ermitteln
     Public Property RezeptNummer As String
         Get
-            Return "9999"
+            If _RezeptNummer Is Nothing Then
+                If RzNr > 0 Then
+                    Dim Rezept As New wb_Rezept(RzNr)
+                    _RezeptNummer = Rezept.RezeptNummer
+                    _RezeptName = Rezept.RezeptBezeichnung
+                Else
+                    _RezeptName = ""
+                    _RezeptNummer = ""
+                End If
+            End If
+            Return _RezeptNummer
         End Get
         Set(value As String)
 
@@ -106,7 +118,17 @@ Public Class wb_Komponenten
 
     Public Property RezeptName As String
         Get
-            Return "TESTREZEPT"
+            If _RezeptName Is Nothing Then
+                If RzNr > 0 Then
+                    Dim Rezept As New wb_Rezept(RzNr)
+                    _RezeptNummer = Rezept.RezeptNummer
+                    _RezeptName = Rezept.RezeptBezeichnung
+                Else
+                    _RezeptName = ""
+                    _RezeptNummer = ""
+                End If
+            End If
+            Return _RezeptName
         End Get
         Set(value As String)
 
@@ -183,6 +205,14 @@ Public Class wb_Komponenten
             Return _LastErrorText
         End Get
     End Property
+
+    ''' <summary>
+    ''' Objekt ist ungültig. Vor der nächsten Verwendung muss wieder neu eingelesen werden.
+    ''' </summary>
+    Public Sub Invalidate()
+        _RezeptName = Nothing
+        _RezeptNummer = Nothing
+    End Sub
 
     ''' <summary>
     ''' Prüft ob der Rohstoff/Artikel noch verwendet wird. (Prüfung ob Löschen zulässig ist)

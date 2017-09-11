@@ -61,6 +61,9 @@ Public Class ob_Artikel_ZuordnungRezept
             Case "INVALID"
                 BtnRzpShow.Enabled = False
                 BtnRzptChange.Enabled = False
+                RzNr = 0
+                tRezeptNr.Text = ""
+                tRezeptName.Text = ""
 
             Case "VALID"
 

@@ -42,6 +42,7 @@ Public Class ob_Artikel_DockingExtension
             Return ObjectEnum.Articles
         End Get
     End Property
+
     ''' <summary>
     ''' Referenz auf die Framework-Klasse, die im Docking-Fenster derzeit angezeigt wird
     ''' </summary>
@@ -93,6 +94,7 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="e"></param>
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
         Extendee_ExecuteCommand("INVALID", Nothing)
+        Komponente.Invalidate()
         Debug.Print("Article_DockingExtension Invalid")
     End Sub
 
