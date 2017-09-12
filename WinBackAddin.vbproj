@@ -200,6 +200,8 @@
     <Compile Include="wb_00_Klassen\wb_nwtCloud.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtDatenLink.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtUpdate.vb" />
+    <Compile Include="wb_00_Klassen\wb_Produktion.vb" />
+    <Compile Include="wb_00_Klassen\wb_Produktionsschritt.vb" />
     <Compile Include="wb_00_Klassen\wb_Rezept.vb" />
     <Compile Include="wb_00_Klassen\wb_Rezeptschritt.vb" />
     <Compile Include="wb_00_Klassen\wb_DockBarPanelMain.Designer.vb">
