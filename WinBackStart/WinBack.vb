@@ -84,7 +84,7 @@ Public Class WinBack
         Else
             MdiArtikel.Show()
         End If
-        MdiArtikel.MdiParent = Me
+        'MdiArtikel.MdiParent = Me
         MdiArtikel.Dock = DockStyle.Fill
     End Sub
 

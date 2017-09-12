@@ -182,6 +182,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_ChangeLog.vb" />
+    <Compile Include="wb_00_Klassen\WinBack_DockMain.Designer.vb">
+      <DependentUpon>WinBack_DockMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\WinBack_DockMain.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\wb_DockBarPanelSaveAs.Designer.vb">
       <DependentUpon>wb_DockBarPanelSaveAs.vb</DependentUpon>
     </Compile>
@@ -462,6 +468,9 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Klassen\WinBack_DockMain.resx">
+      <DependentUpon>WinBack_DockMain.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\wb_DockBarPanelSaveAs.resx">
       <DependentUpon>wb_DockBarPanelSaveAs.vb</DependentUpon>
