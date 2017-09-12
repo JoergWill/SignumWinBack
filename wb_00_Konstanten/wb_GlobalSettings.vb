@@ -84,10 +84,10 @@ Public Class wb_GlobalSettings
     Public Shared ReadOnly Property DockPanelPath(Optional DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath = wb_Global.OrgaBackDockPanelLayoutPath.UserLokal)
         Get
             Dim WindowsTempPfad As String = System.IO.Path.GetTempPath
-            Dim OrgaBackTempPfad As String = wb_GlobalOrgaBack.OrgaBackDockPanelPath
             Select Case _pVariante
                 Case wb_Global.ProgVariante.OrgaBack
 
+                    Dim OrgaBackTempPfad As String = wb_GlobalOrgaBack.OrgaBackDockPanelPath
                     Select Case DefaultPath
                         Case wb_Global.OrgaBackDockPanelLayoutPath.UserLokal
                             OrgaBackTempPfad &= wb_GlobalOrgaBack.OrgaBackWorkStationNumber & "\"

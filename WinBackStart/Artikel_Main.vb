@@ -1,50 +1,35 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Artikel_Main
-    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbArtikel.xml"
 
+    'Default-Fenster
     Public ArtikelListe As New wb_Artikel_Liste
     Public ArtikelDetails As New wb_Artikel_Details
 
-    Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(DkPnlPath)
+    ''' <summary>
+    ''' Eindeutiger Name für die Basis-Form. 
+    ''' </summary>
+    ''' <returns></returns>
+    Public Overrides ReadOnly Property FormName As String
+        Get
+            Me.Tag = "Rohstoffe"
+            Return "Rohstoffe"
+        End Get
+    End Property
+
+    Public Overrides Sub SetDefaultLayout()
+        ArtikelListe.Show(DockState.DockTop)
+        ArtikelDetails.Show(wbDockPanel, DockState.DockLeft)
     End Sub
 
-    Private Sub LoadDockBarConfig()
-        Try
-            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
-        Catch ex As Exception
-        End Try
-
-        ArtikelDetails.Show(DockPanel, DockState.DockTop)
-        ArtikelDetails.CloseButtonVisible = False
-        ArtikelListe.Show(DockPanel, DockState.DockLeft)
-        ArtikelListe.CloseButtonVisible = False
-    End Sub
-
-    Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
+    Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "ArtikelListe"
+            Case "WinBack.wb_ArtikelListe"
                 Return ArtikelListe
-            Case "ArtikelDetails"
+            Case "WinBack.wb_ArtikelDetails"
                 Return ArtikelDetails
             Case Else
                 Return Nothing
         End Select
     End Function
-
-    Private Sub User_Main_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
-        'Anzeige sichern
-        SaveDockBarConfig()
-        'alle erzeugten Fenster wieder schliessen
-        ArtikelDetails.Close()
-        ArtikelListe.Close()
-    End Sub
-
-    Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        'wb_User.LoadGrpTexte()
-        'Fenster laden
-        LoadDockBarConfig()
-    End Sub
 
 End Class

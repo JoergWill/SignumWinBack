@@ -17,35 +17,35 @@ Public Class wb_Filiale
     ''' Initialisiert die Felder pFiliale und pSortiment
     ''' </summary>
     Shared Sub New()
-        'TODO Hier muss die Routine übersprungen werden, wenn nur MYSQL im Einsatz ist !!
+        'Wird nur verwendet in Programm-Variante OrgaBack
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            pFiliale = New ArrayList()
+            pSortiment = New ArrayList()
 
-        pFiliale = New ArrayList()
-        pSortiment = New ArrayList()
+            ''Datenbank-Verbindung öffnen - MsSQL
+            Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+            Dim FNr As String
+            Dim Srt As String
 
-        ''Datenbank-Verbindung öffnen - MsSQL
-        Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-        Dim FNr As String
-        Dim Srt As String
+            ''Daten aus Tabelle Filialen lesen
+            If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlFiliale, wb_Global.ProduktionsFiliale)) Then
+                While OrgasoftMain.Read
+                    FNr = (OrgasoftMain.sField("Filialnummer"))
+                    pFiliale.Add(FNr)
+                End While
+            End If
 
-        ''Daten aus Tabelle Filialen lesen
-        If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlFiliale, wb_Global.ProduktionsFiliale)) Then
-            While OrgasoftMain.Read
-                FNr = (OrgasoftMain.sField("Filialnummer"))
-                pFiliale.Add(FNr)
-            End While
+            ''Kanal wieder schliessen
+            OrgasoftMain.CloseRead()
+
+            ''Daten aus Tabelle FilialeHatSortiment lesen
+            If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSortiment, wb_Global.ProduktionsFiliale)) Then
+                While OrgasoftMain.Read
+                    Srt = (OrgasoftMain.sField("SortimentsKürzel"))
+                    pSortiment.Add(Srt)
+                End While
+            End If
         End If
-
-        ''Kanal wieder schliessen
-        OrgasoftMain.CloseRead()
-
-        ''Daten aus Tabelle FilialeHatSortiment lesen
-        If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSortiment, wb_Global.ProduktionsFiliale)) Then
-            While OrgasoftMain.Read
-                Srt = (OrgasoftMain.sField("SortimentsKürzel"))
-                pSortiment.Add(Srt)
-            End While
-        End If
-
     End Sub
 
     ''' <summary>
@@ -62,20 +62,24 @@ Public Class wb_Filiale
     ''' <returns>True wenn eine der Filialen der Produktion zugeordnet</returns>
     Public Shared ReadOnly Property FilialeIstProduktion(FilialNr As String) As Boolean
         Get
-            'Filial-String aufteilene in die einzelnen Filialen
-            Dim sFiliale() As String = FilialNr.Split(",")
+            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                'Filial-String aufteilene in die einzelnen Filialen
+                Dim sFiliale() As String = FilialNr.Split(",")
 
-            'alle Filialen aus FilialNr
-            For Each sf In sFiliale
-                'alle Filialen aus dbo.Filialen.Typ = wb_Konfig.ProduktionsFiliale
-                For Each pF In pFiliale
-                    If pF = sf Then
-                        Return True
-                        Exit For
-                    End If
+                'alle Filialen aus FilialNr
+                For Each sf In sFiliale
+                    'alle Filialen aus dbo.Filialen.Typ = wb_Konfig.ProduktionsFiliale
+                    For Each pF In pFiliale
+                        If pF = sf Then
+                            Return True
+                            Exit For
+                        End If
+                    Next
                 Next
-            Next
-            Return False
+                Return False
+            Else
+                Return True
+            End If
         End Get
     End Property
 
@@ -87,14 +91,18 @@ Public Class wb_Filiale
     ''' <returns>True wenn die Sortiment-Nummer einer Produktions-Filiale zuegordnet ist.</returns>
     Public Shared ReadOnly Property SortimentIstProduktion(SortimentNr As String) As Boolean
         Get
-            'alle Sortiments-Kürzel aus dbo.FilialeHatSortiment
-            For Each sf In pSortiment
-                If SortimentNr = sf Then
-                    Return True
-                    Exit For
-                End If
-            Next
-            Return False
+            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                'alle Sortiments-Kürzel aus dbo.FilialeHatSortiment
+                For Each sf In pSortiment
+                    If SortimentNr = sf Then
+                        Return True
+                        Exit For
+                    End If
+                Next
+                Return False
+            Else
+                Return True
+            End If
         End Get
     End Property
 
