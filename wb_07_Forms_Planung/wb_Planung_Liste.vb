@@ -8,16 +8,14 @@ Public Class wb_Planung_Liste
         'Fenster Auswahl Vorlage anzeigen
 
         'Daten aus wbDaten einlesen
-        If Not Produktion.MySQLdbSelect_ArbRzSchritte(201) Then
+        If Not Produktion.MySQLdbSelect_ArbRzSchritte(24) Then
             'keine Datensätze in der Vorlage
-            MsgBox("Keine Datensätze in der Vorlage")
+            MsgBox("Keine Datensätze in dieser Vorlage", MsgBoxStyle.Exclamation, "Laden Produktionsdaten aus Vorlage")
 
             VirtualTree.Invalidate()
         Else
             'Virtual Tree anzeigen
             VirtualTree.DataSource = Produktion.RootRezeptSchritt
-            'alle Zeilen aufklappen
-            VirtualTree.RootRow.ExpandChildren(True)
         End If
 
 

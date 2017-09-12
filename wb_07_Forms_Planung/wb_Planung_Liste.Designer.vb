@@ -42,6 +42,8 @@ Partial Class wb_Planung_Liste
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.ColKommentar = New Infralution.Controls.VirtualTree.Column()
         Me.ColLinie = New Infralution.Controls.VirtualTree.Column()
+        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
+        Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.BtnVorlage = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -54,8 +56,6 @@ Partial Class wb_Planung_Liste
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CellEditor3 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.UniversalEditBox1 = New Infralution.Controls.UniversalEditBox()
-        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
-        Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -63,21 +63,20 @@ Partial Class wb_Planung_Liste
         'ColStart
         '
         Me.ColStart.Caption = "Start"
-        Me.ColStart.MinWidth = 150
+        Me.ColStart.MinWidth = 50
         Me.ColStart.Movable = False
         Me.ColStart.Name = "ColStart"
         Me.ColStart.Sortable = False
-        Me.ColStart.Width = 150
+        Me.ColStart.Width = 73
         '
         'ColCharge
         '
-        Me.ColCharge.AutoFitWeight = 200.0!
         Me.ColCharge.Caption = "Charge"
         Me.ColCharge.MinWidth = 100
         Me.ColCharge.Movable = False
         Me.ColCharge.Name = "ColCharge"
         Me.ColCharge.Sortable = False
-        Me.ColCharge.Width = 167
+        Me.ColCharge.Width = 123
         '
         'CoNr
         '
@@ -92,12 +91,12 @@ Partial Class wb_Planung_Liste
         Me.ColBezeichnung.Caption = "Bezeichnung"
         Me.ColBezeichnung.CellEditor = Me.CellEditor4
         Me.ColBezeichnung.CellStyle.VertAlignment = System.Drawing.StringAlignment.Center
-        Me.ColBezeichnung.MinWidth = 100
+        Me.ColBezeichnung.MinWidth = 200
         Me.ColBezeichnung.Movable = False
         Me.ColBezeichnung.Name = "ColBezeichnung"
         Me.ColBezeichnung.Resizable = False
         Me.ColBezeichnung.Sortable = False
-        Me.ColBezeichnung.Width = 126
+        Me.ColBezeichnung.Width = 200
         '
         'CellEditor4
         '
@@ -121,8 +120,9 @@ Partial Class wb_Planung_Liste
         '
         'ColKommentar
         '
+        Me.ColKommentar.AutoFitWeight = 200.0!
         Me.ColKommentar.Caption = "Kommentar"
-        Me.ColKommentar.MinWidth = 200
+        Me.ColKommentar.MinWidth = 100
         Me.ColKommentar.Name = "ColKommentar"
         Me.ColKommentar.Resizable = False
         Me.ColKommentar.Selectable = False
@@ -132,12 +132,27 @@ Partial Class wb_Planung_Liste
         'ColLinie
         '
         Me.ColLinie.Caption = "Linie"
-        Me.ColLinie.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
+        Me.ColLinie.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Center
         Me.ColLinie.MinWidth = 50
         Me.ColLinie.Name = "ColLinie"
         Me.ColLinie.Resizable = False
         Me.ColLinie.Sortable = False
         Me.ColLinie.Width = 50
+        '
+        'ColSollwert
+        '
+        Me.ColSollwert.Caption = "Sollwert"
+        Me.ColSollwert.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
+        Me.ColSollwert.MinWidth = 100
+        Me.ColSollwert.Name = "ColSollwert"
+        Me.ColSollwert.Sortable = False
+        Me.ColSollwert.Width = 123
+        '
+        'ColEinheit
+        '
+        Me.ColEinheit.Caption = ""
+        Me.ColEinheit.Name = "ColEinheit"
+        Me.ColEinheit.Width = 53
         '
         'BtnVorlage
         '
@@ -272,30 +287,24 @@ Partial Class wb_Planung_Liste
         Me.UniversalEditBox1.TabIndex = 9
         Me.UniversalEditBox1.Visible = False
         '
-        'ColSollwert
-        '
-        Me.ColSollwert.Caption = "Sollwert"
-        Me.ColSollwert.MinWidth = 100
-        Me.ColSollwert.Name = "ColSollwert"
-        '
-        'ColEinheit
-        '
-        Me.ColEinheit.Caption = ""
-        Me.ColEinheit.Name = "ColEinheit"
-        Me.ColEinheit.Width = 30
-        '
         'ObjectRowBinding1
         '
         ObjectCellBinding1.Column = Me.ColStart
+        ObjectCellBinding1.Field = "VirtTreeStart"
         ObjectCellBinding2.Column = Me.ColCharge
+        ObjectCellBinding2.Field = "VirtTreeCharge"
         ObjectCellBinding3.Column = Me.CoNr
+        ObjectCellBinding3.Field = "VirtTreeNummer"
         ObjectCellBinding4.Column = Me.ColBezeichnung
         ObjectCellBinding4.Field = "VirtTreeBezeichnung"
         ObjectCellBinding5.Column = Me.ColKommentar
+        ObjectCellBinding5.Field = "VirtTreeKommentar"
         ObjectCellBinding6.Column = Me.ColLinie
+        ObjectCellBinding6.Field = "VirtTreeLinie"
         ObjectCellBinding7.Column = Me.ColSollwert
         ObjectCellBinding7.Field = "VirtTreeSollwert"
         ObjectCellBinding8.Column = Me.ColEinheit
+        ObjectCellBinding8.Field = "VirtTreeEinheit"
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)

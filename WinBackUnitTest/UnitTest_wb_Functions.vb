@@ -127,6 +127,7 @@ Imports WinBack.wb_Global
         Assert.AreEqual("-22,000", FormatStr("-22", 3))
 
         Assert.AreEqual("1235", FormatStr("1234,5678", 0, 4))
+        Assert.AreEqual("1235", FormatStr("1234,5678", 0))
 
         Thread.CurrentThread.CurrentCulture = New CultureInfo("en-US")
         Assert.AreEqual("1234.5678", FormatStr("1234.5678", 4, 4))

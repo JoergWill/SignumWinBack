@@ -1,10 +1,20 @@
 ﻿Imports System.Reflection
 
 Public Class wb_Produktionsschritt
-    Private _Bezeichnung As String
-
     Private _parentStep As wb_Produktionsschritt
     Private _childSteps As New ArrayList()
+
+    Private _ArtikelBezeichnung As String
+    Private _RezeptBezeichnung As String
+    Private _AuftragsNummer As String
+    Private _Typ As String
+    Private _ArtikelNummer As String
+    Private _RezeptNummer As String
+    Private _RezeptNr As Integer
+    Private _RezeptVar As Integer
+    Private _Linie As Integer
+    Private _Sollwert_kg As Double
+    Private _Sollwert_Stk As Double
 
     ''' <summary>
     ''' Kopiert alle Properties dieser Klasse auf die Properties der übergebenen Klasse.
@@ -33,7 +43,7 @@ Public Class wb_Produktionsschritt
     '' <param name="name">The name of this step</param>
     Public Sub New(parent As wb_Produktionsschritt, Bezeichnung As String)
         _parentStep = parent
-        _Bezeichnung = Bezeichnung
+        Me.ArtikelBezeichnung = Bezeichnung
         If Not (_parentStep Is Nothing) Then
             parent._childSteps.Add(Me)
         End If
@@ -60,33 +70,179 @@ Public Class wb_Produktionsschritt
         End Get
     End Property
 
-
-    ''' <summary>
-    ''' Bezeichnung. Anzeige im VirtualTree (Rezeptur)
-    ''' Bei Produktions-Stufen, Kessel und Text-Komponenten wird der Sollwert als Text angezeigt
-    ''' bei allen anderen Komponenten-Typen die Komponenten-Bezeichnung.
-    ''' 'TODO Bei Sprachumschaltung wird wahlweise der Kommentar angezeigt
-    ''' </summary>
-    ''' <returns>String - Bezeichnung</returns>
-    Public ReadOnly Property VirtTreeBezeichnung() As String
+    Public ReadOnly Property VirtTreeStart As String
         Get
-            Return "Test"
+            Return ""
+        End Get
+    End Property
+
+    Public ReadOnly Property VirtTreeCharge As String
+        Get
+            Return ""
+        End Get
+    End Property
+
+    Public ReadOnly Property VirtTreeNummer As String
+        Get
+            If Typ = wb_Global.wbDatenArtikel Then
+                Return ArtikelNummer
+            Else
+                Return RezeptNummer
+            End If
         End Get
     End Property
 
     ''' <summary>
-    ''' Sollwert. Anzeige im VitualTree (Rezeptur)
-    ''' Bei Produktions-Stufen, Kessel und Text-Komponenten wird ein leeres Feld angezeigt,
-    ''' bei Automatik, Hand, Eis und Wasser wird der Sollwert formatiert mit 3 Nachkomma-Stellen angezeigt.
+    ''' Bezeichnung. Anzeige im VirtualTree
+    ''' </summary>
+    ''' <returns>String - Bezeichnung</returns>
+    Public ReadOnly Property VirtTreeBezeichnung() As String
+        Get
+            If Typ = wb_Global.wbDatenArtikel Then
+                Return _ArtikelBezeichnung
+            Else
+                Return RezeptBezeichnung
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property VirtTreeKommentar As String
+        Get
+            Return ""
+        End Get
+    End Property
+
+    Public ReadOnly Property VirtTreeLinie As String
+        Get
+            Return _Linie
+        End Get
+    End Property
+
+
+    ''' <summary>
+    ''' Sollwert. Anzeige im VitualTree
     ''' </summary>
     ''' <returns>String - Sollwert</returns>
     Public Property VirtTreeSollwert As String
         Get
-            Return "10.05"
+            If Typ = wb_Global.wbDatenArtikel Then
+                Return wb_Functions.FormatStr(Sollwert_Stk, 0)
+            Else
+                Return wb_Functions.FormatStr(Sollwert_kg, 3)
+            End If
         End Get
         Set(value As String)
             '_Sollwert = value
         End Set
     End Property
+    Public ReadOnly Property VirtTreeEinheit As String
+        Get
+            If Typ = wb_Global.wbDatenArtikel Then
+                Return "Stk"
+            Else
+                Return "kg"
+            End If
+        End Get
+    End Property
 
+    Public Property AuftragsNummer As String
+        Get
+            Return _AuftragsNummer
+        End Get
+        Set(value As String)
+            _AuftragsNummer = value
+        End Set
+    End Property
+
+    Public Property Typ As String
+        Get
+            Return _Typ
+        End Get
+        Set(value As String)
+            _Typ = value
+        End Set
+    End Property
+
+    Public Property ArtikelNummer As String
+        Get
+            Return _ArtikelNummer
+        End Get
+        Set(value As String)
+            _ArtikelNummer = value
+        End Set
+    End Property
+
+    Public Property RezeptNummer As String
+        Get
+            Return _RezeptNummer
+        End Get
+        Set(value As String)
+            _RezeptNummer = value
+        End Set
+    End Property
+
+    Public Property RezeptNr As Integer
+        Get
+            Return _RezeptNr
+        End Get
+        Set(value As Integer)
+            _RezeptNr = value
+        End Set
+    End Property
+
+    Public Property RezeptVar As Integer
+        Get
+            Return _RezeptVar
+        End Get
+        Set(value As Integer)
+            'Variante 0 wird automatisch in 1 gewandelt
+            'TODO Achtung Sauerteig !!
+            _RezeptVar = Math.Max(value, 1)
+        End Set
+    End Property
+
+    Public Property ArtikelBezeichnung As String
+        Get
+            Return _ArtikelBezeichnung
+        End Get
+        Set(value As String)
+            _ArtikelBezeichnung = value
+        End Set
+    End Property
+
+    Public Property Sollwert_kg As Double
+        Get
+            Return _Sollwert_kg
+        End Get
+        Set(value As Double)
+            _Sollwert_kg = value
+        End Set
+    End Property
+
+    Public Property Sollwert_Stk As Double
+        Get
+            Return _Sollwert_Stk
+        End Get
+        Set(value As Double)
+            _Sollwert_Stk = value
+        End Set
+    End Property
+
+    Public Property Linie As Integer
+        Get
+            Return _Linie
+        End Get
+        Set(value As Integer)
+            _Linie = value
+        End Set
+    End Property
+
+    Public Property RezeptBezeichnung As String
+        Get
+            Return _RezeptBezeichnung
+        End Get
+        Set(value As String)
+            _RezeptBezeichnung = value
+        End Set
+    End Property
 End Class

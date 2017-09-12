@@ -498,7 +498,11 @@ Public Class wb_Functions
                     Return Right(Space(VorKomma) & wert.ToString("F" & NachKomma.ToString), VorKomma + NachKomma + 1)
                 End If
             Else
-                Return Right(Space(VorKomma) & wert.ToString("F" & NachKomma.ToString), VorKomma)
+                If VorKomma < 0 Then
+                    Return wert.ToString("F0")
+                Else
+                    Return Right(Space(VorKomma) & wert.ToString("F" & NachKomma.ToString), VorKomma)
+                End If
             End If
         Catch
             Return "-"

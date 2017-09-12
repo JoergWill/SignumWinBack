@@ -22,10 +22,15 @@ Partial Class Artikel_Main
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Artikel_Main))
+        Me.SuspendLayout()
+        '
+        'Artikel_Main
+        '
+        resources.ApplyResources(Me, "$this")
         Me.Name = "Artikel_Main"
-        Me.Size = New System.Drawing.Size(978, 583)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 

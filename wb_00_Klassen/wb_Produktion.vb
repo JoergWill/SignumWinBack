@@ -17,13 +17,8 @@
     ''' </summary>
 
     Private _RootProduktionsSchritt As New wb_Produktionsschritt(Nothing, "")
+    Private _SQLProduktionsSchritt As New wb_Produktionsschritt(Nothing, "")
     Private _ProduktionsSchritt As wb_Produktionsschritt
-    Private _AuftragsNummer As String
-    Private _Typ As String
-    Private _ArtikelNummer As String
-    Private _RezeptNummer As String
-    Private _RezeptNr As Integer
-    Private _RezeptVar As Integer
 
 
     ''' <summary>
@@ -42,12 +37,14 @@
     ''' </summary>
     ''' <param name="TwNr">Integer Tageswechsel-Nummer</param>
     Public Function MySQLdbSelect_ArbRzSchritte(TwNr As Integer)
+        Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
+        Dim ArtikelNummer As String = ""
+        Dim GesamtStueck As Integer = 0
+
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_Konfig.SqlConWbDaten, wb_Sql.dbType.mySql)
         Dim Value As Object
-        Dim Typ As Type
         Dim sql As String
-
 
         'Abfrage nach Tageswechsel-Nummer
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.bakArbRezepte, TwNr)
@@ -68,7 +65,28 @@
                         MySQLdbRead_Fields(winback.MySqlRead.GetName(i), Value)
                     Next
                     'Chargen mit gleicher Artikel/Rezeptnummer zusammenfassen
-                    PrintValues()
+                    If ArtikelNummer <> _SQLProduktionsSchritt.ArtikelNummer Then
+                        'Der Root-Knoten enthält die Summe aller Chargen in Stück
+                        Root.Sollwert_Stk = GesamtStueck
+                        GesamtStueck = 0
+
+                        'Artikelzeilen hängen immer am ersten (Dummy)Schritt
+                        Root = _RootProduktionsSchritt
+                        'Neue Zeile  einfügen (ArtikelZeile)
+                        Root = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
+                        'Daten aus MySQL in Produktionsschritt kopieren
+                        Root.CopyFrom(_SQLProduktionsSchritt)
+
+                        'Artikelnummer merken
+                        ArtikelNummer = _SQLProduktionsSchritt.ArtikelNummer
+                    End If
+                    'Rezeptzeile anfügen
+                    _SQLProduktionsSchritt.Typ = wb_Global.wbDatenRezept
+                    GesamtStueck += _SQLProduktionsSchritt.Sollwert_Stk
+                    _ProduktionsSchritt = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
+                    'Daten aus MySQL in Produktionsschritt kopieren
+                    _ProduktionsSchritt.CopyFrom(_SQLProduktionsSchritt)
+
                 Loop While winback.MySqlRead.Read
 
                 'alle Datensätze eingelesen
@@ -76,7 +94,7 @@
                 Return True
             End If
         End If
-            winback.Close()
+        winback.Close()
         Return False
     End Function
 
@@ -99,27 +117,35 @@
 
                 'Produktionsauftrags-Nummer
                 Case "B_ARZ_Best_Nr"
-                    _AuftragsNummer = Value
+                    _SQLProduktionsSchritt.AuftragsNummer = Value
                 'Typ (Artikel oder Rezept-Zeile)
                 Case "B_ARZ_Typ"
-                    _Typ = Value
+                    _SQLProduktionsSchritt.Typ = Value
                'Artikelnummer(alpha)
                 Case "B_ARZ_KA_NrAlNum"
-                    _ArtikelNummer = Value
+                    _SQLProduktionsSchritt.ArtikelNummer = Value
+               'Bezeichnung
+                Case "B_ARZ_Bezeichnung"
+                    _SQLProduktionsSchritt.ArtikelBezeichnung = Value
+                Case "B_RZ_Bezeichnung"
+                    _SQLProduktionsSchritt.RezeptBezeichnung = Value
                'Rezeptnummer(alpha)
                 Case "B_RZ_Nr_AlNum"
-                    _RezeptNummer = Value
+                    _SQLProduktionsSchritt.RezeptNummer = Value
                 'Rezeptnummer(intern)
                 Case "B_ARZ_Nr"
-                    _RezeptNr = Value
+                    _SQLProduktionsSchritt.RezeptNr = Value
                 'Rezeptvariante - wird auf 1 gesetzt falls keine Variante angeben ist
                 Case "B_ARZ_RZ_Variante_Nr"
-                    If Value = 0 Then
-                        _RezeptVar = 1
-                    Else
-                        _RezeptVar = Value
-                    End If
-
+                    _SQLProduktionsSchritt.RezeptVar = Value
+                'Linie
+                Case "B_ARZ_LiBeh_Nr"
+                    _SQLProduktionsSchritt.Linie = wb_Functions.StrToInt(Value) - 100
+                'Sollwert
+                Case "B_ARZ_Sollmenge_kg"
+                    _SQLProduktionsSchritt.Sollwert_kg = wb_Functions.StrToDouble(Value)
+                Case "B_ARZ_Sollmenge_stueck"
+                    _SQLProduktionsSchritt.Sollwert_Stk = wb_Functions.StrToDouble(Value)
 
 
             End Select
@@ -129,13 +155,7 @@
 
     End Function
 
-    Private Sub PrintValues()
-        Debug.Print("Read BAK_ArbRezepte - Auftragsnummer " & _AuftragsNummer)
-        Debug.Print("                    - _Artikelnummer " & _ArtikelNummer)
-        Debug.Print("                    - _Rezeptnummer  " & _RezeptNummer)
-        Debug.Print("                    - _RzNr          " & _RezeptNr)
-        Debug.Print("                    - _RzptVariante  " & _RezeptVar)
-    End Sub
+
 End Class
 
 '     // Flag Vorproduktion initialisieren

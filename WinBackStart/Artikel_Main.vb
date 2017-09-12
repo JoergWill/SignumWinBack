@@ -17,8 +17,8 @@ Public Class Artikel_Main
     End Property
 
     Public Overrides Sub SetDefaultLayout()
-        ArtikelListe.Show(DockState.DockTop)
-        ArtikelDetails.Show(wbDockPanel, DockState.DockLeft)
+        'ArtikelListe.Show(DockState.DockTop)
+        'ArtikelDetails.Show(wbDockPanel, DockState.DockLeft)
     End Sub
 
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent

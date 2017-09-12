@@ -217,6 +217,9 @@ Public Class WinBack
 
         'Initialisierung beendet
         isInitialised = True
+
+        'TEST PRODUKTION
+        ProduktionMainShow()
     End Sub
 
     'Umschaltung aktive Sprache
