@@ -91,18 +91,22 @@ Public Class wb_Filiale
     ''' <returns>True wenn die Sortiment-Nummer einer Produktions-Filiale zuegordnet ist.</returns>
     Public Shared ReadOnly Property SortimentIstProduktion(SortimentNr As String) As Boolean
         Get
-            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
-                'alle Sortiments-Kürzel aus dbo.FilialeHatSortiment
-                For Each sf In pSortiment
-                    If SortimentNr = sf Then
-                        Return True
-                        Exit For
-                    End If
-                Next
+            Try
+                If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                    'alle Sortiments-Kürzel aus dbo.FilialeHatSortiment
+                    For Each sf In pSortiment
+                        If SortimentNr = sf Then
+                            Return True
+                            Exit For
+                        End If
+                    Next
+                    Return False
+                Else
+                    Return True
+                End If
+            Catch
                 Return False
-            Else
-                Return True
-            End If
+            End Try
         End Get
     End Property
 

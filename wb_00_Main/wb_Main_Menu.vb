@@ -282,10 +282,12 @@ Public Class wb_Main_Menu
 
     'globale System-Konfiguration aus winback.ini einlesen und verfügbar machen
     Private Sub ReadSystemKonfig()
+        'Programm-Einstellung OrgaBack
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
+
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
         wb_Konfig.SqlSetting()
         wb_Konfig.SetColors()
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
     End Sub
 
 End Class

@@ -26,14 +26,14 @@ Partial Class wb_Planung_Liste
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ObjectCellBinding1 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding2 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding3 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding4 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding5 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding6 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding7 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding8 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding9 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding10 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding11 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding12 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding13 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding14 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding15 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding16 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Me.ColStart = New Infralution.Controls.VirtualTree.Column()
         Me.ColCharge = New Infralution.Controls.VirtualTree.Column()
         Me.CoNr = New Infralution.Controls.VirtualTree.Column()
@@ -45,10 +45,10 @@ Partial Class wb_Planung_Liste
         Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.BtnVorlage = New System.Windows.Forms.Button()
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
-        Me.Button3 = New System.Windows.Forms.Button()
-        Me.Button4 = New System.Windows.Forms.Button()
+        Me.BtnBestellungen = New System.Windows.Forms.Button()
+        Me.BtVorproduktion = New System.Windows.Forms.Button()
+        Me.BtnBackZettelDrucken = New System.Windows.Forms.Button()
+        Me.BtnTeigListeExport = New System.Windows.Forms.Button()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
         Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
@@ -63,38 +63,39 @@ Partial Class wb_Planung_Liste
         'ColStart
         '
         Me.ColStart.Caption = "Start"
+        Me.ColStart.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.ColStart.MinWidth = 50
         Me.ColStart.Movable = False
         Me.ColStart.Name = "ColStart"
         Me.ColStart.Sortable = False
-        Me.ColStart.Width = 73
+        Me.ColStart.Width = 50
         '
         'ColCharge
         '
         Me.ColCharge.Caption = "Charge"
+        Me.ColCharge.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.ColCharge.MinWidth = 100
         Me.ColCharge.Movable = False
         Me.ColCharge.Name = "ColCharge"
         Me.ColCharge.Sortable = False
-        Me.ColCharge.Width = 123
         '
         'CoNr
         '
         Me.CoNr.Caption = "Nr"
+        Me.CoNr.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.CoNr.MinWidth = 100
         Me.CoNr.Name = "CoNr"
-        Me.CoNr.Resizable = False
         Me.CoNr.Sortable = False
         '
         'ColBezeichnung
         '
         Me.ColBezeichnung.Caption = "Bezeichnung"
         Me.ColBezeichnung.CellEditor = Me.CellEditor4
+        Me.ColBezeichnung.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.ColBezeichnung.CellStyle.VertAlignment = System.Drawing.StringAlignment.Center
         Me.ColBezeichnung.MinWidth = 200
         Me.ColBezeichnung.Movable = False
         Me.ColBezeichnung.Name = "ColBezeichnung"
-        Me.ColBezeichnung.Resizable = False
         Me.ColBezeichnung.Sortable = False
         Me.ColBezeichnung.Width = 200
         '
@@ -122,16 +123,17 @@ Partial Class wb_Planung_Liste
         '
         Me.ColKommentar.AutoFitWeight = 200.0!
         Me.ColKommentar.Caption = "Kommentar"
+        Me.ColKommentar.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.ColKommentar.MinWidth = 100
         Me.ColKommentar.Name = "ColKommentar"
-        Me.ColKommentar.Resizable = False
         Me.ColKommentar.Selectable = False
         Me.ColKommentar.Sortable = False
-        Me.ColKommentar.Width = 200
+        Me.ColKommentar.Width = 291
         '
         'ColLinie
         '
         Me.ColLinie.Caption = "Linie"
+        Me.ColLinie.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.ColLinie.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Center
         Me.ColLinie.MinWidth = 50
         Me.ColLinie.Name = "ColLinie"
@@ -142,17 +144,20 @@ Partial Class wb_Planung_Liste
         'ColSollwert
         '
         Me.ColSollwert.Caption = "Sollwert"
+        Me.ColSollwert.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.ColSollwert.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
         Me.ColSollwert.MinWidth = 100
         Me.ColSollwert.Name = "ColSollwert"
+        Me.ColSollwert.Resizable = False
         Me.ColSollwert.Sortable = False
-        Me.ColSollwert.Width = 123
         '
         'ColEinheit
         '
         Me.ColEinheit.Caption = ""
+        Me.ColEinheit.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.ColEinheit.Name = "ColEinheit"
-        Me.ColEinheit.Width = 53
+        Me.ColEinheit.Resizable = False
+        Me.ColEinheit.Width = 30
         '
         'BtnVorlage
         '
@@ -163,43 +168,43 @@ Partial Class wb_Planung_Liste
         Me.BtnVorlage.Text = "Vorlage auswählen"
         Me.BtnVorlage.UseVisualStyleBackColor = True
         '
-        'Button1
+        'BtnBestellungen
         '
-        Me.Button1.Location = New System.Drawing.Point(141, 12)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(123, 53)
-        Me.Button1.TabIndex = 2
-        Me.Button1.Text = "Bestellungen einlesen"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.BtnBestellungen.Location = New System.Drawing.Point(141, 12)
+        Me.BtnBestellungen.Name = "BtnBestellungen"
+        Me.BtnBestellungen.Size = New System.Drawing.Size(123, 53)
+        Me.BtnBestellungen.TabIndex = 2
+        Me.BtnBestellungen.Text = "Bestellungen einlesen"
+        Me.BtnBestellungen.UseVisualStyleBackColor = True
         '
-        'Button2
+        'BtVorproduktion
         '
-        Me.Button2.Location = New System.Drawing.Point(270, 12)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(123, 53)
-        Me.Button2.TabIndex = 3
-        Me.Button2.Text = "Vorproduktion berechnen"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.BtVorproduktion.Location = New System.Drawing.Point(270, 12)
+        Me.BtVorproduktion.Name = "BtVorproduktion"
+        Me.BtVorproduktion.Size = New System.Drawing.Size(123, 53)
+        Me.BtVorproduktion.TabIndex = 3
+        Me.BtVorproduktion.Text = "Vorproduktion berechnen"
+        Me.BtVorproduktion.UseVisualStyleBackColor = True
         '
-        'Button3
+        'BtnBackZettelDrucken
         '
-        Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button3.Location = New System.Drawing.Point(687, 12)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(123, 53)
-        Me.Button3.TabIndex = 4
-        Me.Button3.Text = "Backzettel drucken"
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.BtnBackZettelDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnBackZettelDrucken.Location = New System.Drawing.Point(687, 12)
+        Me.BtnBackZettelDrucken.Name = "BtnBackZettelDrucken"
+        Me.BtnBackZettelDrucken.Size = New System.Drawing.Size(123, 53)
+        Me.BtnBackZettelDrucken.TabIndex = 4
+        Me.BtnBackZettelDrucken.Text = "Backzettel drucken"
+        Me.BtnBackZettelDrucken.UseVisualStyleBackColor = True
         '
-        'Button4
+        'BtnTeigListeExport
         '
-        Me.Button4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button4.Location = New System.Drawing.Point(816, 12)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(123, 53)
-        Me.Button4.TabIndex = 5
-        Me.Button4.Text = "Teigzettel exportieren"
-        Me.Button4.UseVisualStyleBackColor = True
+        Me.BtnTeigListeExport.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnTeigListeExport.Location = New System.Drawing.Point(816, 12)
+        Me.BtnTeigListeExport.Name = "BtnTeigListeExport"
+        Me.BtnTeigListeExport.Size = New System.Drawing.Size(123, 53)
+        Me.BtnTeigListeExport.TabIndex = 5
+        Me.BtnTeigListeExport.Text = "Teigzettel exportieren"
+        Me.BtnTeigListeExport.UseVisualStyleBackColor = True
         '
         'VirtualTree
         '
@@ -229,7 +234,7 @@ Partial Class wb_Planung_Liste
         Me.VirtualTree.MainColumn = Me.ColStart
         Me.VirtualTree.Name = "VirtualTree"
         Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
-        Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.PowderBlue
+        Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.White
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.Cell
         Me.VirtualTree.ShowRootRow = False
@@ -289,30 +294,30 @@ Partial Class wb_Planung_Liste
         '
         'ObjectRowBinding1
         '
-        ObjectCellBinding1.Column = Me.ColStart
-        ObjectCellBinding1.Field = "VirtTreeStart"
-        ObjectCellBinding2.Column = Me.ColCharge
-        ObjectCellBinding2.Field = "VirtTreeCharge"
-        ObjectCellBinding3.Column = Me.CoNr
-        ObjectCellBinding3.Field = "VirtTreeNummer"
-        ObjectCellBinding4.Column = Me.ColBezeichnung
-        ObjectCellBinding4.Field = "VirtTreeBezeichnung"
-        ObjectCellBinding5.Column = Me.ColKommentar
-        ObjectCellBinding5.Field = "VirtTreeKommentar"
-        ObjectCellBinding6.Column = Me.ColLinie
-        ObjectCellBinding6.Field = "VirtTreeLinie"
-        ObjectCellBinding7.Column = Me.ColSollwert
-        ObjectCellBinding7.Field = "VirtTreeSollwert"
-        ObjectCellBinding8.Column = Me.ColEinheit
-        ObjectCellBinding8.Field = "VirtTreeEinheit"
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding4)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding5)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding7)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding8)
+        ObjectCellBinding9.Column = Me.ColStart
+        ObjectCellBinding9.Field = "VirtTreeStart"
+        ObjectCellBinding10.Column = Me.ColCharge
+        ObjectCellBinding10.Field = "VirtTreeCharge"
+        ObjectCellBinding11.Column = Me.CoNr
+        ObjectCellBinding11.Field = "VirtTreeNummer"
+        ObjectCellBinding12.Column = Me.ColBezeichnung
+        ObjectCellBinding12.Field = "VirtTreeBezeichnung"
+        ObjectCellBinding13.Column = Me.ColKommentar
+        ObjectCellBinding13.Field = "VirtTreeKommentar"
+        ObjectCellBinding14.Column = Me.ColLinie
+        ObjectCellBinding14.Field = "VirtTreeLinie"
+        ObjectCellBinding15.Column = Me.ColSollwert
+        ObjectCellBinding15.Field = "VirtTreeSollwert"
+        ObjectCellBinding16.Column = Me.ColEinheit
+        ObjectCellBinding16.Field = "VirtTreeEinheit"
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding9)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding10)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding11)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding12)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding13)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding14)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding15)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding16)
         Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
         Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
         Me.ObjectRowBinding1.ParentProperty = "ParentStep"
@@ -328,10 +333,10 @@ Partial Class wb_Planung_Liste
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.UniversalEditBox1)
-        Me.Controls.Add(Me.Button4)
-        Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.BtnTeigListeExport)
+        Me.Controls.Add(Me.BtnBackZettelDrucken)
+        Me.Controls.Add(Me.BtVorproduktion)
+        Me.Controls.Add(Me.BtnBestellungen)
         Me.Controls.Add(Me.BtnVorlage)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.HideOnClose = True
@@ -344,10 +349,10 @@ Partial Class wb_Planung_Liste
     End Sub
 
     Friend WithEvents BtnVorlage As Windows.Forms.Button
-    Friend WithEvents Button1 As Windows.Forms.Button
-    Friend WithEvents Button2 As Windows.Forms.Button
-    Friend WithEvents Button3 As Windows.Forms.Button
-    Friend WithEvents Button4 As Windows.Forms.Button
+    Friend WithEvents BtnBestellungen As Windows.Forms.Button
+    Friend WithEvents BtVorproduktion As Windows.Forms.Button
+    Friend WithEvents BtnBackZettelDrucken As Windows.Forms.Button
+    Friend WithEvents BtnTeigListeExport As Windows.Forms.Button
     Friend WithEvents VirtualTree As Infralution.Controls.VirtualTree.VirtualTree
     Friend WithEvents ColStart As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColCharge As Infralution.Controls.VirtualTree.Column

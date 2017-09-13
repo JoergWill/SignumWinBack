@@ -1,4 +1,5 @@
-﻿Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports combit.ListLabel22.DataProviders
+Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Planung_Liste
     Inherits DockContent
@@ -19,5 +20,10 @@ Public Class wb_Planung_Liste
         End If
 
 
+    End Sub
+
+    Private Sub BtnBackZettelDrucken_Click(sender As Object, e As EventArgs) Handles BtnBackZettelDrucken.Click
+        wb_Rezept_Shared.LL.DataSource = New ObjectDataProvider(Produktion)
+        wb_Rezept_Shared.LL.Print()
     End Sub
 End Class
