@@ -52,11 +52,9 @@ Public Class wb_Rezept_Liste
     End Sub
 
     Private Sub DataGridView_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView.DoubleClick
+        Me.Cursor = Cursors.WaitCursor
         'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen
         Dim Rezeptur As New wb_Rezept_Rezeptur(wb_Rezept_Shared.aktRzNr, wb_Rezept_Shared.aktRzVariante)
-        'Fenster-Text
-        'Rezeptur.Text = wb_Rezept_Shared.aktRzNummer + " " + wb_Rezept_Shared.aktRzName
-        'MDI-Fenster anzeigen
         Rezeptur.Show()
     End Sub
 End Class

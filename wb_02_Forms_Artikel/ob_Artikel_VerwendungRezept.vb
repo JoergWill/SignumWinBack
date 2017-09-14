@@ -1,17 +1,17 @@
-﻿Imports System.Windows.Forms
-Imports Signum.OrgaSoft.Extensibility
+﻿Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.GUI
+Imports WinBack.wb_Sql_Selects
 
-Public Class ob_Artikel_ZuordnungRezept
+Public Class ob_Artikel_VerwendungRezept
     Implements IBasicFormUserControl
-    Private RzNr As Integer = 0
+    Private Nr As Integer = 0
 
     ''' <summary>
     ''' Eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn
     ''' </summary>
     Public ReadOnly Property FormKey As String Implements IBasicFormUserControl.FormKey
         Get
-            Return "@ob_ArtikelDocking_ZuordnungRezept"
+            Return "@ob_ArtikelDocking_VerwendungRezept"
         End Get
     End Property
 
@@ -59,19 +59,23 @@ Public Class ob_Artikel_ZuordnungRezept
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
         Select Case CommandId
             Case "INVALID"
-                BtnRzpShow.Enabled = False
-                BtnRzptChange.Enabled = False
-                RzNr = 0
-                tRezeptNr.Text = ""
-                tRezeptName.Text = ""
+                Nr = 0
 
             Case "VALID"
 
             Case "wbFOUND"
-                RzNr = DirectCast(Parameter, wb_Komponenten).RzNr
-                tRezeptNr.Text = DirectCast(Parameter, wb_Komponenten).RezeptNummer
-                tRezeptName.Text = DirectCast(Parameter, wb_Komponenten).RezeptName
-                BtnRzpShow.Enabled = True
+                Nr = DirectCast(Parameter, wb_Komponenten).Nr
+                'Liste der Tabellen-Überschriften
+                'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
+                'Spalten ohne Bezeichnung werden ausgeblendet.
+                'Die Rezept-Variante wird nicht mit ausgegeben, da sonst eine Exception auftritt
+                Dim sColNames As New List(Of String) From {"Nr", "&Bezeichnung"}
+                For Each sName In sColNames
+                    HisDataGridView.ColNames.Add(sName)
+                Next
+
+                'DataGrid füllen
+                HisDataGridView.LoadData(setParams(sqlRohstoffUse, Nr), "RohstoffVerwendung")
 
         End Select
         Return Nothing
@@ -91,7 +95,7 @@ Public Class ob_Artikel_ZuordnungRezept
     End Function
 
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
-        MyBase.Text = "WinBack Produktion"
+        MyBase.Text = "Rohstoff Verwendung im Rezept"
         Me.Show()
         Return True
     End Function
@@ -108,10 +112,4 @@ Public Class ob_Artikel_ZuordnungRezept
 
     End Sub
 
-    Private Sub BtnRzpShow_Click(sender As Object, e As EventArgs) Handles BtnRzpShow.Click
-        Me.Cursor = Cursors.WaitCursor
-        Dim Rezeptur As New wb_Rezept_Rezeptur(RzNr, 1)
-        'MDI-Fenster anzeigen
-        Rezeptur.Show()
-    End Sub
 End Class

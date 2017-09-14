@@ -133,11 +133,6 @@ Public Class wb_Konfig
         End Select
     End Function
 
-    Public Shared Sub SetColors()
-        'Hintergrund-Farbe jeder zweiten Zeile des DataViewGrid (alternative RowSetting)
-        My.Settings.DataGridAlternateRowColor = System.Drawing.Color.LightGray
-    End Sub
-
     Public Shared Sub SetLanguage(Lang As String)
         Dim IniFile As New wb_IniFile
         If Lang = "" Then

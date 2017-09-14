@@ -287,7 +287,6 @@ Public Class wb_Main_Menu
 
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
         wb_Konfig.SqlSetting()
-        wb_Konfig.SetColors()
     End Sub
 
 End Class

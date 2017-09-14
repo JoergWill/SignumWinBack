@@ -152,30 +152,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("C:\ProgramData\OrgaSoft\Temp\01\")>  _
-        Public Property OrgaSoftDockPanelPath() As String
-            Get
-                Return CType(Me("OrgaSoftDockPanelPath"),String)
-            End Get
-            Set
-                Me("OrgaSoftDockPanelPath") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("LightGray")>  _
-        Public Property DataGridAlternateRowColor() As Global.System.Drawing.Color
-            Get
-                Return CType(Me("DataGridAlternateRowColor"),Global.System.Drawing.Color)
-            End Get
-            Set
-                Me("DataGridAlternateRowColor") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("Data Source=127.0.0.1\SIGNUM; Database=winback; Integrated Security=True")>  _
         Public Property MsSQLConWinBack() As String
             Get
@@ -195,18 +171,6 @@ Namespace My
             End Get
             Set
                 Me("MsSQLConWbDaten") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("C:\Temp\")>  _
-        Public Property WinBackDockPanelPath() As String
-            Get
-                Return CType(Me("WinBackDockPanelPath"),String)
-            End Get
-            Set
-                Me("WinBackDockPanelPath") = value
             End Set
         End Property
         
@@ -255,18 +219,6 @@ Namespace My
             End Get
             Set
                 Me("WbDatenConString") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("DemoOrgaBack_Main3")>  _
-        Public Property MsSQLMain() As String
-            Get
-                Return CType(Me("MsSQLMain"),String)
-            End Get
-            Set
-                Me("MsSQLMain") = value
             End Set
         End Property
         

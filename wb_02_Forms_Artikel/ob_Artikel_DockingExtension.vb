@@ -237,6 +237,7 @@ Public Class ob_Artikel_DockingExtension
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
         _SubForms.Add("@ob_ArtikelDocking_ZuordnungRezept", Nothing)
+        _SubForms.Add("@ob_ArtikelDocking_VerwendungRezept", Nothing)
     End Sub
 
     ''' <summary>
@@ -251,14 +252,21 @@ Public Class ob_Artikel_DockingExtension
             'fügt einen Tab im Artkel-Ribbon(rtabArtikel) hinzu
             Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabArtikel" Select oTab
             If oSystemTab IsNot Nothing AndAlso oSystemTab.Count > 0 Then
-                oSystemTab(0).GetGroups(0).AddButton("WinBackProduktion", "WinBack-Produktion", "Artikel-Stammdaten relevant für die Produktion in WinBack", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf LoadDockingSubForm)
+                oSystemTab(0).GetGroups(0).AddButton("WinBackProduktion", "WinBack-Produktion", "Artikel-Stammdaten relevant für die Produktion in WinBack", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf LoadDockingSubFormRezept)
+                oSystemTab(0).GetGroups(0).AddButton("WinBackVerwendung", "Artikel Verwendung", "Verwendung des Artikels in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf LoadDockingSubFormVerwendung)
             End If
         End If
     End Sub
 
-    Private Sub LoadDockingSubForm(sender As Object, e As EventArgs)
+    Private Sub LoadDockingSubFormRezept(sender As Object, e As EventArgs)
         If Me.FormController IsNot Nothing Then
             Me.FormController.ExecuteCommand("ob_ArtikelDocking_ZuordnungRezept", Nothing)
+        End If
+    End Sub
+
+    Private Sub LoadDockingSubFormVerwendung(sender As Object, e As EventArgs)
+        If Me.FormController IsNot Nothing Then
+            Me.FormController.ExecuteCommand("ob_ArtikelDocking_VerwendungRezept", Nothing)
         End If
     End Sub
 
@@ -269,13 +277,26 @@ Public Class ob_Artikel_DockingExtension
     ''' <returns></returns>
     Public Function ProvideInstance(FormKey As String) As IBasicFormUserControl Implements IDockingExtension.ProvideInstance
         If _SubForms.ContainsKey(FormKey) Then
-            Dim oForm = _SubForms(FormKey)
-            If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
-                ' Adresse der Klasse, die die Arbeit macht !!
-                oForm = New ob_Artikel_ZuordnungRezept(Me)
-                _SubForms(FormKey) = oForm
-            End If
-            Return oForm
+            Select Case FormKey
+                Case "@ob_ArtikelDocking_ZuordnungRezept"
+                    Dim oForm = _SubForms(FormKey)
+                    If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
+                        ' Adresse der Klasse, die die Arbeit macht !!
+                        oForm = New ob_Artikel_ZuordnungRezept(Me)
+                        _SubForms(FormKey) = oForm
+                    End If
+                    Return oForm
+
+                Case "@ob_ArtikelDocking_VerwendungRezept"
+                    Dim oForm = _SubForms(FormKey)
+                    If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
+                        ' Adresse der Klasse, die die Arbeit macht !!
+                        oForm = New ob_Artikel_VerwendungRezept(Me)
+                        _SubForms(FormKey) = oForm
+                    End If
+                    Return oForm
+
+            End Select
         End If
         Return Nothing
     End Function

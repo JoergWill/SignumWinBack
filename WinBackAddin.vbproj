@@ -238,6 +238,12 @@
     <Compile Include="wb_00_Konstanten\wb_Credentials.vb" />
     <Compile Include="wb_00_Konstanten\wb_GlobalOrgaBack.vb" />
     <Compile Include="wb_00_Konstanten\wb_GlobalSettings.vb" />
+    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.Designer.vb">
+      <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.Designer.vb">
       <DependentUpon>ob_Artikel_ZuordnungRezept.vb</DependentUpon>
     </Compile>
@@ -431,6 +437,12 @@
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Vorlage.Designer.vb">
+      <DependentUpon>wb_Planung_Vorlage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Vorlage.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_08_Forms_Admin\wb_Admin_Log.Designer.vb">
       <DependentUpon>wb_Admin_Log.vb</DependentUpon>
     </Compile>
@@ -479,6 +491,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\wb_DockBarPanelMain.resx">
       <DependentUpon>wb_DockBarPanelMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.resx">
+      <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.resx">
       <DependentUpon>ob_Artikel_ZuordnungRezept.vb</DependentUpon>
@@ -564,6 +579,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Vorlage.resx">
+      <DependentUpon>wb_Planung_Vorlage.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Log.resx">
       <DependentUpon>wb_Admin_Log.vb</DependentUpon>

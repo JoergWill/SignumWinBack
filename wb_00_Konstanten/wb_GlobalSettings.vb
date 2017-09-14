@@ -1,4 +1,5 @@
-﻿Imports WinBack
+﻿Imports System.Drawing
+Imports WinBack
 ''' <summary>
 ''' Shared Objekt. Hält alle globalen Programm-Einstellungen zentral in einem Objekt.
 ''' Ersetzt die projektabhängigen Settings.
@@ -125,6 +126,12 @@ Public Class wb_GlobalSettings
         Set(value As String)
             _AktUserNr = value
         End Set
+    End Property
+
+    Public Shared ReadOnly Property DataGridAlternateRowColor As Color
+        Get
+            Return System.Drawing.Color.LightGray
+        End Get
     End Property
 
     Private Shared Sub getWinBackIni(Key As String)

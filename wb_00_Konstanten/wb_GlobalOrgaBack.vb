@@ -11,14 +11,16 @@ Public Class wb_GlobalOrgaBack
     Private Shared _OrgaBackTheme As Integer = -1
 
     ''' <summary>
-    ''' Farbschema für Fenster-Docking
+    ''' Farbschema für Fenster-Docking. In der Programm-Variante OrgaBack wird immer VS2015BlueTheme zurückgegeben
     ''' </summary>
     ''' <returns>Theme - ThemeBase</returns>
     Public Shared ReadOnly Property Theme As ThemeBase
         Get
             'Einstellung aus Desktop.DockingTheme auslesen
-            If _OrgaBackTheme < 0 Then
+            If _OrgaBackTheme < 0 And wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
                 DbReadSetting("Desktop")
+            Else
+                _OrgaBackTheme = wb_Global.OrgaBackThemes.Blau
             End If
 
             'Rückgabe-Wert abhängig von der Einstellung in OrgaBack

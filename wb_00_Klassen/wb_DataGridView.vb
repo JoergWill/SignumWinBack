@@ -157,7 +157,7 @@ Public Class wb_DataGridView
 
         'Design
         Dim DataGridViewCellStyle As DataGridViewCellStyle = New DataGridViewCellStyle()
-        DataGridViewCellStyle.BackColor = My.Settings.DataGridAlternateRowColor
+        DataGridViewCellStyle.BackColor = wb_GlobalSettings.DataGridAlternateRowColor
         AlternatingRowsDefaultCellStyle = DataGridViewCellStyle
         RowHeadersVisible = False
         [ReadOnly] = True

@@ -200,16 +200,14 @@ Public Class WinBack
     End Sub
 
     Private Sub WinBack_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Programm und Datei-Pfade einstellen
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack
         'Mysql-Einstellungen (IP-Adresse, User, Passwort)
         wb_Konfig.SqlSetting()
         'Version in Status-Bar anzeigen
         lblVersion.Text = "WinBack V" & My.Application.Info.Version.ToString
         'IP-Adresse in Status-Bar anzeigen
         lblNetworkIP.Text = wb_Konfig.DbType & " " & wb_Konfig.SqlIP
-        'Programm und Datei-Pfade einstellen
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack
-        'Farbschema einstellen
-        wb_Konfig.SetColors()
         'aktuelle(letzte) Sprache einstellen
         wb_Konfig.SetLanguage("")
         'Hash-Table Texte laden

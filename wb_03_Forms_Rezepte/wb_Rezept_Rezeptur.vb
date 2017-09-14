@@ -1,4 +1,5 @@
-﻿Imports combit.ListLabel22.DataProviders
+﻿Imports System.Windows.Forms
+Imports combit.ListLabel22.DataProviders
 Imports Infralution.Controls.VirtualTree
 
 Public Class wb_Rezept_Rezeptur
@@ -72,7 +73,8 @@ Public Class wb_Rezept_Rezeptur
         'Rezept TA
         tbRzTA.Text = CInt(Rezept.RezeptTA)
 
-        'Debug.Print("============== " & Rezept.ZutatenListe.Count)
+        'Cursor wieder zurücksetzen
+        Me.Cursor = Cursors.Default
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
@@ -213,6 +215,7 @@ Public Class wb_Rezept_Rezeptur
         'wenn es eine Rezept-Im-Rezept-Struktur gibt wird das Rezept in einem neuen Fenster geöffnet
         If RezeptNr > 0 Then
             'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen
+            Me.Cursor = Cursors.WaitCursor
             Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, _RzVariante)
             'MDI-Fenster anzeigen
             Rezeptur.Show()

@@ -26,20 +26,11 @@
     <Setting Name="MySQLConWbDaten" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="OrgaSoftDockPanelPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\ProgramData\OrgaSoft\Temp\01\</Value>
-    </Setting>
-    <Setting Name="DataGridAlternateRowColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">LightGray</Value>
-    </Setting>
     <Setting Name="MsSQLConWinBack" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=winback; Integrated Security=True</Value>
     </Setting>
     <Setting Name="MsSQLConWbDaten" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True</Value>
-    </Setting>
-    <Setting Name="WinBackDockPanelPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Temp\</Value>
     </Setting>
     <Setting Name="MsSQLServerIP" Type="System.String" Scope="User">
       <Value Profile="(Default)">WILL-WIN10</Value>
@@ -52,9 +43,6 @@
     </Setting>
     <Setting Name="WbDatenConString" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MsSQLMain" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DemoOrgaBack_Main3</Value>
     </Setting>
     <Setting Name="MySQLPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Program Files\MySQL\MySQL Server 5.0\bin</Value>
