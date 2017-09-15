@@ -58,7 +58,7 @@ Public Class wb_DataGridView
     ''' <param name="sGridName">String DataGrid-Name läd die Spalten-Einstellungen aus winback.ini</param>
     ''' <param name="table">dbTable Datenbank Tabelle winback/wbdaten</param>
     <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:SQL-Abfragen auf Sicherheitsrisiken überprüfen")>
-    Sub LoadData(sSql As String, sGridName As String, Optional table As dbTable = dbTable.winback)
+    Friend Sub LoadData(sSql As String, sGridName As String, Optional table As dbTable = dbTable.winback)
         mContextMenu.SuspendLayout()
         'x mSek nachdem sich der Datensatz geändert hat, wird der aktuelle Datensatz im 
         'Detail-Fenster angezeigt
@@ -168,6 +168,10 @@ Public Class wb_DataGridView
         SelectionMode = DataGridViewSelectionMode.FullRowSelect
         ContextMenuStrip = mContextMenu
         mContextMenu.ResumeLayout(False)
+    End Sub
+
+    Friend Sub ClearData()
+        DtaTable.Clear()
     End Sub
 
     ''' <summary>

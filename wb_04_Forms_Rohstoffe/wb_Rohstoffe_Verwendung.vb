@@ -12,16 +12,7 @@ Public Class wb_Rohstoffe_Verwendung
     End Sub
 
     Public Sub DetailInfo()
-        'Liste der Tabellen-Überschriften
-        'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
-        'Spalten ohne Bezeichnung werden ausgeblendet.
-        'Die Rezept-Variante wird nicht mit ausgegeben, da sonst eine Exception auftritt
-        Dim sColNames As New List(Of String) From {"Nr", "&Bezeichnung"}
-        For Each sName In sColNames
-            HisDataGridView.ColNames.Add(sName)
-        Next
-
         'DataGrid füllen
-        HisDataGridView.LoadData(setParams(sqlRohstoffUse, RohStoff.Nr), "RohstoffVerwendung")
+        HisDataGridView.LoadVerwendung(RohStoff.Nr)
     End Sub
 End Class

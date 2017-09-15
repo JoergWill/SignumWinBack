@@ -261,12 +261,22 @@ Public Class ob_Artikel_DockingExtension
     Private Sub LoadDockingSubFormRezept(sender As Object, e As EventArgs)
         If Me.FormController IsNot Nothing Then
             Me.FormController.ExecuteCommand("ob_ArtikelDocking_ZuordnungRezept", Nothing)
+
+            'Sub-Fenster WinBack aktualisieren, falls das Fenster geöffnet wird, nachdem der Artikel ausgewählt wurde
+            If bSortimentIstProduktion And Komponente IsNot Nothing Then
+                Extendee_ExecuteCommand("wbFOUND", Komponente)
+            End If
         End If
     End Sub
 
     Private Sub LoadDockingSubFormVerwendung(sender As Object, e As EventArgs)
         If Me.FormController IsNot Nothing Then
             Me.FormController.ExecuteCommand("ob_ArtikelDocking_VerwendungRezept", Nothing)
+
+            'Sub-Fenster WinBack aktualisieren, falls das Fenster geöffnet wird, nachdem der Rohstoff ausgewählt wurde
+            If bSortimentIstProduktion And Komponente IsNot Nothing Then
+                Extendee_ExecuteCommand("wbFOUND", Komponente)
+            End If
         End If
     End Sub
 

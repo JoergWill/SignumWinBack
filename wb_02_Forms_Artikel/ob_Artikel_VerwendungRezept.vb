@@ -5,7 +5,7 @@ Imports WinBack.wb_Sql_Selects
 Public Class ob_Artikel_VerwendungRezept
     Implements IBasicFormUserControl
     Private Nr As Integer = 0
-
+#Region "Signum"
     ''' <summary>
     ''' Eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn
     ''' </summary>
@@ -55,28 +55,20 @@ Public Class ob_Artikel_VerwendungRezept
 
     Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
     End Sub
+#End Region
 
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
         Select Case CommandId
             Case "INVALID"
                 Nr = 0
-
+                'Tabelle Verwendung leeren
+                HisDataGridView.ClearVerwendung()
             Case "VALID"
 
             Case "wbFOUND"
                 Nr = DirectCast(Parameter, wb_Komponenten).Nr
-                'Liste der Tabellen-Überschriften
-                'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
-                'Spalten ohne Bezeichnung werden ausgeblendet.
-                'Die Rezept-Variante wird nicht mit ausgegeben, da sonst eine Exception auftritt
-                Dim sColNames As New List(Of String) From {"Nr", "&Bezeichnung"}
-                For Each sName In sColNames
-                    HisDataGridView.ColNames.Add(sName)
-                Next
-
-                'DataGrid füllen
-                HisDataGridView.LoadData(setParams(sqlRohstoffUse, Nr), "RohstoffVerwendung")
-
+                'Tabelle Verwendung mit Daten füllen
+                HisDataGridView.LoadVerwendung(Nr)
         End Select
         Return Nothing
     End Function

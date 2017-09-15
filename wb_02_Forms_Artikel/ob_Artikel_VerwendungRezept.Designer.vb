@@ -22,12 +22,15 @@ Partial Class ob_Artikel_VerwendungRezept
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.HisDataGridView = New WinBack.wb_DataGridView()
+        Me.HisDataGridView = New WinBack.wb_DataGridViewVerwendung()
         CType(Me.HisDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'HisDataGridView
         '
+        Me.HisDataGridView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.HisDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.HisDataGridView.Location = New System.Drawing.Point(3, 3)
         Me.HisDataGridView.Name = "HisDataGridView"
@@ -46,5 +49,5 @@ Partial Class ob_Artikel_VerwendungRezept
 
     End Sub
 
-    Friend WithEvents HisDataGridView As wb_DataGridView
+    Friend WithEvents HisDataGridView As wb_DataGridViewVerwendung
 End Class

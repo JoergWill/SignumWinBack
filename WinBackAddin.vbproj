@@ -182,6 +182,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_ChangeLog.vb" />
+    <Compile Include="wb_00_Klassen\wb_DataGridViewVerwendung.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\WinBack_DockMain.Designer.vb">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
     </Compile>
