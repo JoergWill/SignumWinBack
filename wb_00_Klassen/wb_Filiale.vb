@@ -24,6 +24,7 @@ Public Class wb_Filiale
 
             ''Datenbank-Verbindung öffnen - MsSQL
             Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+            Trace.WriteLine("OrgaBackMainConString= " & wb_GlobalSettings.OrgaBackMainConString)
             Dim FNr As String
             Dim Srt As String
 

@@ -69,6 +69,8 @@ Public Class wb_GlobalOrgaBack
                         _OrgaBackWorkStationNumber = OrgasoftMain.sField("WorkStationNo")
                     End If
                 End If
+                Trace.WriteLine("OrgaBackAdminConString=    " & wb_GlobalSettings.OrgaBackAdminConString)
+                Trace.WriteLine("OrgaBackWorkStationNumber= " & _OrgaBackWorkStationNumber)
             End If
             Return _OrgaBackWorkStationNumber
         End Get
@@ -95,6 +97,9 @@ Public Class wb_GlobalOrgaBack
 
                 End Select
             End While
+            Trace.WriteLine("OrgaBackAdminConString=    " & wb_GlobalSettings.OrgaBackAdminConString)
+            Trace.WriteLine("OrgaBackDockPanelPath=     " & _OrgaBackDockPanelPath)
+            Trace.WriteLine("OrgaBackTheme=             " & _OrgaBackTheme)
         End If
     End Sub
 

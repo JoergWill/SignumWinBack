@@ -115,6 +115,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTest_wb_AdminShared.vb" />
     <Compile Include="UnitTest_wb_Hinweise.vb" />
     <Compile Include="UnitTest_wb_sql_Functions.vb" />
     <Compile Include="UnitTest_wb_ChangeLog.vb" />

@@ -37,12 +37,12 @@ Public Class wb_Main_Menu
         oSetting = TryCast(ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
         oFactory = TryCast(ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
 
+        'Debug/Trace-Listener initialisieren
+        AddTraceListener()
         'Event User-Login
         AddLogIn()
         'Main-Menu erweitern
         AddMenu()
-        'Debug/Trace-Listener initialisieren
-        AddTraceListener()
 
     End Sub
 
@@ -114,6 +114,11 @@ Public Class wb_Main_Menu
         'oGrps(3).AddButton("MenuExtensionBtnUser", "WinBack-Mitarbeiter", "Verwaltung der Mitarbeiter-Rechte in WinBack", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
     End Sub
 
+    ''' <summary>
+    ''' alle Trace/Debug-Ausgaben werden auch in der Klasse wb_Admin_Shared in einer Text-Liste gespeichert.
+    ''' Nach x Zeilen werden die Einträge in ein Text-File gespeichert.
+    ''' Die Klasse xLogger (wb_Trace_Listener) leitet die Meldungen weiter.
+    ''' </summary>
     Sub AddTraceListener()
         AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
         Trace.Listeners.Add(xLogger)

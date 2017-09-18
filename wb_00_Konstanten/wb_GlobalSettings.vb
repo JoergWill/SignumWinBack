@@ -1,5 +1,5 @@
 ﻿Imports System.Drawing
-Imports WinBack
+Imports WinBack.wb_Global
 ''' <summary>
 ''' Shared Objekt. Hält alle globalen Programm-Einstellungen zentral in einem Objekt.
 ''' Ersetzt die projektabhängigen Settings.
@@ -21,6 +21,9 @@ Public Class wb_GlobalSettings
     Private Shared _MsSQLMainDB As String = Nothing
     Private Shared _MsSQLAdmnDB As String = Nothing
     Private Shared _MsSQLServer As String = Nothing
+
+    Private Shared _LogToTextFile As Integer = wb_Global.UNDEFINED
+    Private Shared _LogToDataBase As Integer = wb_Global.UNDEFINED
 
     Private Shared _AktUser As String = ""
     Private Shared _AktUserNr As String = ""
@@ -134,6 +137,40 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    Public Shared Property LogToTextFile As Boolean
+        Get
+            If _LogToTextFile = wb_Global.UNDEFINED Then
+                getWinBackIni("Logger")
+            End If
+            Return (_LogToTextFile = wbTRUE)
+        End Get
+        Set(value As Boolean)
+            If Convert.ToInt16(value) <> _LogToTextFile Then
+                _LogToTextFile = Convert.ToInt16(value)
+
+                Dim IniFile As New wb_IniFile
+                IniFile.WriteInt("winback", "LogToTextFile", _LogToTextFile)
+            End If
+        End Set
+    End Property
+
+    Public Shared Property logToDataBase As Boolean
+        Get
+            If _LogToDataBase = wb_Global.UNDEFINED Then
+                getWinBackIni("Logger")
+            End If
+            Return (_LogToDataBase = wbTRUE)
+        End Get
+        Set(value As Boolean)
+            If Convert.ToInt16(value) <> _LogToDataBase Then
+                _LogToDataBase = Convert.ToInt16(value)
+
+                Dim IniFile As New wb_IniFile
+                IniFile.WriteInt("winback", "LogToDataBase", _LogToDataBase)
+            End If
+        End Set
+    End Property
+
     Private Shared Sub getWinBackIni(Key As String)
         Dim IniFile As New wb_IniFile
 
@@ -142,7 +179,9 @@ Public Class wb_GlobalSettings
                 _MsSQLMainDB = IniFile.ReadString("winback", "MsSQLServer_MainDB", "DemoOrgaBack_Main3")
                 _MsSQLAdmnDB = IniFile.ReadString("winback", "MsSQLServer_AdmnDB", "DemoOrgaBack_Admin3")
                 _MsSQLServer = IniFile.ReadString("winback", "MsSQLServer_Source", "WILL-WIN10\SIGNUM")
-            Case Else
+            Case "Logger"
+                _LogToTextFile = IniFile.ReadInt("winback", "LogToTextFile", wbFALSE)
+                _LogToDataBase = IniFile.ReadInt("winback", "LogToDataBase", wbFALSE)
 
         End Select
     End Sub

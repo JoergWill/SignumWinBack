@@ -56,5 +56,6 @@ Public Class wb_Rezept_Liste
         'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen
         Dim Rezeptur As New wb_Rezept_Rezeptur(wb_Rezept_Shared.aktRzNr, wb_Rezept_Shared.aktRzVariante)
         Rezeptur.Show()
+        Me.Cursor = Cursors.Default
     End Sub
 End Class

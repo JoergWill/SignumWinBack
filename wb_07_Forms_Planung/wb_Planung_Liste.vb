@@ -31,7 +31,7 @@ Public Class wb_Planung_Liste
     End Sub
 
     Private Sub BtnBackZettelDrucken_Click(sender As Object, e As EventArgs) Handles BtnBackZettelDrucken.Click
-        wb_Rezept_Shared.LL.DataSource = New ObjectDataProvider(Produktion)
-        wb_Rezept_Shared.LL.Print()
+        'wb_Rezept_Shared.LL.DataSource = New ObjectDataProvider(Produktion)
+        'wb_Rezept_Shared.LL.Print()
     End Sub
 End Class

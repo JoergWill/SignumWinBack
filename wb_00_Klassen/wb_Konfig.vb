@@ -99,7 +99,7 @@ Public Class wb_Konfig
                 Throw New NotImplementedException
         End Select
     End Function
-
+    'TODO WO WIRD HIER DIE FUNTION AUFGERUFEN FÜR DEN ZUGRIFF AUF DIOE DB  !!!
     Public Shared Function SqlConOrgaBack() As String
         Select Case My.Settings.WinBackDBType
             Case wb_Sql.dbType.mySql

@@ -2,7 +2,7 @@
 Imports combit.ListLabel22.DataProviders
 
 Public Class wb_Rezept_Shared
-    Public Shared LL As New ListLabel()
+    'Public Shared LL As New ListLabel()
 
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
