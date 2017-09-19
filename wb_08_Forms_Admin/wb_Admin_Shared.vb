@@ -4,7 +4,7 @@ Public Class wb_Admin_Shared
     'Puffer Log-Einträge
     Shared _LogEvents As New List(Of String)
     'wird vor dem Ende der Applikation aufgerufen
-    Private Shared Finalizer As New wb_SharedFinalizer()
+    Private Shared Finalizer As New wb_Finalizer_Shared()
     Public Shared Event NewLogText(txt As String)
 
     ''' <summary>

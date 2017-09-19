@@ -179,6 +179,8 @@ Public Class WinBack_DockMain
         cbLayouts.Sorted = True
         'und wieder anzeigen
         cbLayouts.Visible = True
+        'Speicher wieder freigeben
+        ConfigFileNames = Nothing
     End Sub
 
     ''' <summary>
@@ -225,6 +227,7 @@ Public Class WinBack_DockMain
         Dim DkpPnlConfigSaveAs As New wb_DockBarPanelSaveAs(FormName)
         AddHandler DkpPnlConfigSaveAs.eSaveAs_Click, AddressOf ESaveAs_Click
         DkpPnlConfigSaveAs.ShowDialog(Me)
+        DkpPnlConfigSaveAs = Nothing
     End Sub
 
     ''' <summary>

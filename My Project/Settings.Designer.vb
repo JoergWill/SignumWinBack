@@ -221,30 +221,6 @@ Namespace My
                 Me("WbDatenConString") = value
             End Set
         End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("C:\Program Files\MySQL\MySQL Server 5.0\bin")>  _
-        Public Property MySQLPath() As String
-            Get
-                Return CType(Me("MySQLPath"),String)
-            End Get
-            Set
-                Me("MySQLPath") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("C:\ProgramData\OrgaSoft\AddIn")>  _
-        Public Property MySQLBatch() As String
-            Get
-                Return CType(Me("MySQLBatch"),String)
-            End Get
-            Set
-                Me("MySQLBatch") = value
-            End Set
-        End Property
     End Class
 End Namespace
 

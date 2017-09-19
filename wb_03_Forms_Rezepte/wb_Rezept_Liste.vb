@@ -17,9 +17,6 @@ Public Class wb_Rezept_Liste
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlRezeptListe, "RezeptListe")
 
-        'Event Daten wurden geändert
-        '        AddHandler wb_User.eEdit_Leave, AddressOf UserInfo
-
     End Sub
 
     Public Sub RefreshData()

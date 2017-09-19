@@ -21,6 +21,10 @@ Public Class wb_GlobalSettings
     Private Shared _MsSQLMainDB As String = Nothing
     Private Shared _MsSQLAdmnDB As String = Nothing
     Private Shared _MsSQLServer As String = Nothing
+    Private Shared _MsSQLUserId As String = Nothing
+    Private Shared _MsSQLPasswd As String = Nothing
+
+    Private Shared _MySQLPath As String = Nothing
 
     Private Shared _LogToTextFile As Integer = wb_Global.UNDEFINED
     Private Shared _LogToDataBase As Integer = wb_Global.UNDEFINED
@@ -73,15 +77,47 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property MsSQLUserId As String
+        Get
+            If _MsSQLUserId Is Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MsSQLUserId
+        End Get
+        Set(value As String)
+            _MsSQLUserId = value
+        End Set
+    End Property
+
+    Public Shared Property MsSQLPasswd As String
+        Get
+            If _MsSQLPasswd Is Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MsSQLPasswd
+        End Get
+        Set(value As String)
+            _MsSQLPasswd = value
+        End Set
+    End Property
+
     Public Shared ReadOnly Property OrgaBackMainConString As String
         Get
-            Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLMain & "; Integrated Security=True"
+            If MsSQLUserId <> "xx" Then
+                Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLMain & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd
+            Else
+                Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLMain & "; Integrated Security=True"
+            End If
         End Get
     End Property
 
     Public Shared ReadOnly Property OrgaBackAdminConString As String
         Get
-            Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLAdmn & "; Integrated Security=True"
+            If MsSQLUserId <> "xx" Then
+                Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLAdmn & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd
+            Else
+                Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLAdmn & "; Integrated Security=True"
+            End If
         End Get
     End Property
 
@@ -171,6 +207,18 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property MySQLPath As String
+        Get
+            If _MySQLPath = Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MySQLPath
+        End Get
+        Set(value As String)
+            _MySQLPath = value
+        End Set
+    End Property
+
     Private Shared Sub getWinBackIni(Key As String)
         Dim IniFile As New wb_IniFile
 
@@ -179,6 +227,10 @@ Public Class wb_GlobalSettings
                 _MsSQLMainDB = IniFile.ReadString("winback", "MsSQLServer_MainDB", "DemoOrgaBack_Main3")
                 _MsSQLAdmnDB = IniFile.ReadString("winback", "MsSQLServer_AdmnDB", "DemoOrgaBack_Admin3")
                 _MsSQLServer = IniFile.ReadString("winback", "MsSQLServer_Source", "WILL-WIN10\SIGNUM")
+                _MsSQLUserId = IniFile.ReadString("winback", "MsSQLServer_UserId", "xx")
+                _MsSQLPasswd = IniFile.ReadString("winback", "MsSQLServer_Passwd", "xx")
+                _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
+
             Case "Logger"
                 _LogToTextFile = IniFile.ReadInt("winback", "LogToTextFile", wbFALSE)
                 _LogToDataBase = IniFile.ReadInt("winback", "LogToDataBase", wbFALSE)

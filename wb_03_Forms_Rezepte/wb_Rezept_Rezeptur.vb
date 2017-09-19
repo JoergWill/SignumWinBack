@@ -78,9 +78,8 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
-
-        'wb_Rezept_Shared.LL.DataSource = New ObjectDataProvider(Rezept)
-        'wb_Rezept_Shared.LL.Design()
+        wb_Printer_Shared.LL.DataSource = New ObjectDataProvider(Rezept)
+        wb_Printer_Shared.LL.Design()
     End Sub
 
     ''' <summary>

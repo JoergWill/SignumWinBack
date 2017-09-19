@@ -1,4 +1,5 @@
 ﻿Imports System.Text
+Imports WinBack
 
 Public Class wb_sql_BackupRestore
 
@@ -19,7 +20,7 @@ Public Class wb_sql_BackupRestore
 
             'Datensicherung starten
             RaiseEvent statusChanged("Start Datensicherung WinBack")
-            wb_Functions.DoBatch(My.Settings.MySQLPath, "MySQL_Dump.bat", DumpFileName, True)
+            wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Dump.bat", DumpFileName, True)
 
             'File komprimieren
             RaiseEvent statusChanged("Datei komprimieren WinBack")
@@ -31,7 +32,7 @@ Public Class wb_sql_BackupRestore
         Else
             'Datensicherung starten
             RaiseEvent statusChanged("Start Datensicherung WinBack")
-            wb_Functions.DoBatch(My.Settings.MySQLPath, "MySQL_Dump.bat", Filename, True)
+            wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Dump.bat", Filename, True)
             RaiseEvent statusChanged("Ende  Datensicherung WinBack")
         End If
 
@@ -63,7 +64,7 @@ Public Class wb_sql_BackupRestore
             PrepareSQLFile(DumpFileName, "winback")
             'Datenrücksicherung starten
             RaiseEvent statusChanged("Start Datenrücksicherung WinBack")
-            wb_Functions.DoBatch(My.Settings.MySQLPath, "MySQL_Restore.bat", DumpFileName, True)
+            wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Restore.bat", DumpFileName, True)
             RaiseEvent statusChanged("Ende  Datenrücksicherung WinBack")
             'dekomprimierte Datei löschen
             My.Computer.FileSystem.DeleteFile(DumpFileName)
@@ -73,7 +74,7 @@ Public Class wb_sql_BackupRestore
             PrepareSQLFile(FileName, "winback")
             'Datenrücksicherung starten
             RaiseEvent statusChanged("Start Datenrücksicherung WinBack")
-            wb_Functions.DoBatch(My.Settings.MySQLPath, "MySQL_Restore.bat", FileName, True)
+            wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Restore.bat", FileName, True)
             RaiseEvent statusChanged("Ende  Datenrücksicherung WinBack")
         End If
 

@@ -7,6 +7,7 @@
 ''' </summary>
 Public Class wb_GlobalOrgaBack
     Private Shared _OrgaBackDockPanelPath As String = Nothing
+    Private Shared _OrgaBackAddinPath As String = Nothing
     Private Shared _OrgaBackWorkStationNumber As String = Nothing
     Private Shared _OrgaBackTheme As Integer = -1
 
@@ -53,6 +54,18 @@ Public Class wb_GlobalOrgaBack
         End Get
     End Property
 
+    Public Shared Property OrgaBackAddinPath As String
+        Get
+            If _OrgaBackAddinPath Is Nothing Then
+                DbReadSetting("Verzeichnisse")
+            End If
+            Return _OrgaBackAddinPath
+        End Get
+        Set(value As String)
+            _OrgaBackAddinPath = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Ermittelt die (OrgaBack)Arbeitsplatz-Nummer aus dem MicroSoft Workstation-Namen.
     ''' Die Nummer wird aus der Tabelle dbo.Workstations gelesen
@@ -95,6 +108,10 @@ Public Class wb_GlobalOrgaBack
                         _OrgaBackTheme = OrgasoftMain.iField("Content")
                         Trace.WriteLine("_OrgaBackTheme " & _OrgaBackTheme)
 
+                    Case "AddInPfad"
+                        _OrgaBackAddinPath = OrgasoftMain.sField("Content")
+                        Trace.WriteLine("_OrgaBackAddinPath " & _OrgaBackTheme)
+
                 End Select
             End While
             Trace.WriteLine("OrgaBackAdminConString=    " & wb_GlobalSettings.OrgaBackAdminConString)
@@ -116,4 +133,5 @@ Public Class wb_GlobalOrgaBack
             End If
         End Get
     End Property
+
 End Class

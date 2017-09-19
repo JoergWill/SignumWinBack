@@ -20,7 +20,7 @@ Public Class wb_DockBarPanelMain
     Private _LayoutFilename As String = Nothing
     Private _SaveAtClose As Boolean = False
     Protected _DockPanelList As New List(Of DockContent)
-    Protected _ContextTabs As List(Of GUI.ITab)
+    Protected _ContextTabs As List(Of ITab)
     Protected _ServiceProvider As IOrgasoftServiceProvider
     Protected _MenuService As IMenuService
     Protected _ViewProvider As IViewProvider

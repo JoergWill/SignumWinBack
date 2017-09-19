@@ -578,7 +578,7 @@ Public Class wb_Functions
     ''' <param name="Argument"></param>
     ''' <param name="WaitUntilReady"></param>
     Public Shared Sub DoBatch(Directory As String, BatchFile As String, Argument As String, WaitUntilReady As Boolean)
-        Dim cmd As String = Chr(34) + My.Settings.MySQLBatch + "\" + BatchFile + Chr(34)
+        Dim cmd As String = Chr(34) + wb_GlobalOrgaBack.OrgaBackAddinPath + "\" + BatchFile + Chr(34)
         Dim arg As String = Chr(34) + Directory + Chr(34) + " " + Chr(34) + Argument + Chr(34)
 
         Dim p As New Process()
