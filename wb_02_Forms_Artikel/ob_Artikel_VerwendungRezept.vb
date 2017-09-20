@@ -1,6 +1,5 @@
 ﻿Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.GUI
-Imports WinBack.wb_Sql_Selects
 
 Public Class ob_Artikel_VerwendungRezept
     Implements IBasicFormUserControl
@@ -87,6 +86,7 @@ Public Class ob_Artikel_VerwendungRezept
     End Function
 
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
+        Trace.WriteLine("Init()")
         MyBase.Text = "Rohstoff Verwendung im Rezept"
         Me.Show()
         Return True
@@ -102,6 +102,7 @@ Public Class ob_Artikel_VerwendungRezept
         ' Add any initialization after the InitializeComponent() call.
         _DockingExtension = DockingExtension
 
+        Trace.WriteLine("Sub New(Docking Extension)")
     End Sub
 
 End Class

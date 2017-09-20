@@ -259,8 +259,10 @@ Public Class ob_Artikel_DockingExtension
     End Sub
 
     Private Sub LoadDockingSubFormRezept(sender As Object, e As EventArgs)
+        Trace.WriteLine("LoadDockingSubFormRezept")
         If Me.FormController IsNot Nothing Then
             Me.FormController.ExecuteCommand("ob_ArtikelDocking_ZuordnungRezept", Nothing)
+            Trace.WriteLine("Me.FormController.ExecuteCommand")
 
             'Sub-Fenster WinBack aktualisieren, falls das Fenster geöffnet wird, nachdem der Artikel ausgewählt wurde
             If bSortimentIstProduktion And Komponente IsNot Nothing Then
@@ -270,8 +272,10 @@ Public Class ob_Artikel_DockingExtension
     End Sub
 
     Private Sub LoadDockingSubFormVerwendung(sender As Object, e As EventArgs)
+        Trace.WriteLine("LoadDockingSubFormVerwendung")
         If Me.FormController IsNot Nothing Then
             Me.FormController.ExecuteCommand("ob_ArtikelDocking_VerwendungRezept", Nothing)
+            Trace.WriteLine("Me.FormController.ExecuteCommand")
 
             'Sub-Fenster WinBack aktualisieren, falls das Fenster geöffnet wird, nachdem der Rohstoff ausgewählt wurde
             If bSortimentIstProduktion And Komponente IsNot Nothing Then
@@ -286,7 +290,9 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="FormKey"></param>
     ''' <returns></returns>
     Public Function ProvideInstance(FormKey As String) As IBasicFormUserControl Implements IDockingExtension.ProvideInstance
+        Trace.WriteLine("ProvideInstance FormKey= " & FormKey)
         If _SubForms.ContainsKey(FormKey) Then
+            Trace.WriteLine("_SubForms.ContainsFormKey ")
             Select Case FormKey
                 Case "@ob_ArtikelDocking_ZuordnungRezept"
                     Dim oForm = _SubForms(FormKey)

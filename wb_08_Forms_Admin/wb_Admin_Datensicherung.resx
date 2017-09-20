@@ -147,38 +147,32 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Btn_DatenSicherung.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <metadata name="SaveFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="SaveFileDialog.Title" xml:space="preserve">
-    <value>Datensicherung WinBack</value>
+    <value>9</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SaveFileName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="BackupFileName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="SaveFileName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>181, 53</value>
+  <data name="BackupFileName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>305, 24</value>
   </data>
-  <data name="SaveFileName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 20</value>
+  <data name="BackupFileName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 20</value>
   </data>
-  <data name="SaveFileName.TabIndex" type="System.Int32, mscorlib">
+  <data name="BackupFileName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;SaveFileName.Name" xml:space="preserve">
-    <value>SaveFileName</value>
+  <data name="&gt;&gt;BackupFileName.Name" xml:space="preserve">
+    <value>BackupFileName</value>
   </data>
-  <data name="&gt;&gt;SaveFileName.Type" xml:space="preserve">
+  <data name="&gt;&gt;BackupFileName.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;SaveFileName.Parent" xml:space="preserve">
+  <data name="&gt;&gt;BackupFileName.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;SaveFileName.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;BackupFileName.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="Btn_DatenRueckSicherung.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -211,37 +205,196 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Btn_DatenRueckSicherung.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>7</value>
   </data>
-  <data name="LoadFileName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="lblBackupFileName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="LoadFileName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>181, 120</value>
+  <data name="lblBackupFileName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>182, 27</value>
   </data>
-  <data name="LoadFileName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 20</value>
+  <data name="lblBackupFileName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 13</value>
   </data>
-  <data name="LoadFileName.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="lblBackupFileName.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="&gt;&gt;LoadFileName.Name" xml:space="preserve">
-    <value>LoadFileName</value>
+  <data name="lblBackupFileName.Text" xml:space="preserve">
+    <value>Letzte Datensicherung:</value>
   </data>
-  <data name="&gt;&gt;LoadFileName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lblBackupFileName.Name" xml:space="preserve">
+    <value>lblBackupFileName</value>
   </data>
-  <data name="&gt;&gt;LoadFileName.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblBackupFileName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblBackupFileName.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;LoadFileName.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblBackupFileName.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="lblBackupTimeStamp.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblBackupTimeStamp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblBackupTimeStamp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>182, 45</value>
+  </data>
+  <data name="lblBackupTimeStamp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 13</value>
+  </data>
+  <data name="lblBackupTimeStamp.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="lblBackupTimeStamp.Text" xml:space="preserve">
+    <value>am:</value>
+  </data>
+  <data name="&gt;&gt;lblBackupTimeStamp.Name" xml:space="preserve">
+    <value>lblBackupTimeStamp</value>
+  </data>
+  <data name="&gt;&gt;lblBackupTimeStamp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblBackupTimeStamp.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblBackupTimeStamp.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="BackupTimeStamp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>216, 45</value>
+  </data>
+  <data name="BackupTimeStamp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 13</value>
+  </data>
+  <data name="BackupTimeStamp.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="BackupTimeStamp.Text" xml:space="preserve">
+    <value>dd.mm.yyyy</value>
+  </data>
+  <data name="&gt;&gt;BackupTimeStamp.Name" xml:space="preserve">
+    <value>BackupTimeStamp</value>
+  </data>
+  <data name="&gt;&gt;BackupTimeStamp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BackupTimeStamp.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;BackupTimeStamp.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="lblRestoreTimeStamp.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblRestoreTimeStamp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblRestoreTimeStamp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>182, 113</value>
+  </data>
+  <data name="lblRestoreTimeStamp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 13</value>
+  </data>
+  <data name="lblRestoreTimeStamp.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="lblRestoreTimeStamp.Text" xml:space="preserve">
+    <value>am:</value>
+  </data>
+  <data name="&gt;&gt;lblRestoreTimeStamp.Name" xml:space="preserve">
+    <value>lblRestoreTimeStamp</value>
+  </data>
+  <data name="&gt;&gt;lblRestoreTimeStamp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRestoreTimeStamp.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblRestoreTimeStamp.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="OpenFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>148, 17</value>
-  </metadata>
-  <data name="OpenFileDialog.Title" xml:space="preserve">
-    <value>Datenrücksicherung WinBack</value>
+  <data name="RestoreTimeStamp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>216, 113</value>
+  </data>
+  <data name="RestoreTimeStamp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 13</value>
+  </data>
+  <data name="RestoreTimeStamp.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="RestoreTimeStamp.Text" xml:space="preserve">
+    <value>dd.mm.yyyy</value>
+  </data>
+  <data name="&gt;&gt;RestoreTimeStamp.Name" xml:space="preserve">
+    <value>RestoreTimeStamp</value>
+  </data>
+  <data name="&gt;&gt;RestoreTimeStamp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RestoreTimeStamp.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;RestoreTimeStamp.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lblRestoreFileName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblRestoreFileName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblRestoreFileName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>182, 95</value>
+  </data>
+  <data name="lblRestoreFileName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 13</value>
+  </data>
+  <data name="lblRestoreFileName.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="lblRestoreFileName.Text" xml:space="preserve">
+    <value>Letzte Rücksicherung:</value>
+  </data>
+  <data name="&gt;&gt;lblRestoreFileName.Name" xml:space="preserve">
+    <value>lblRestoreFileName</value>
+  </data>
+  <data name="&gt;&gt;lblRestoreFileName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRestoreFileName.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblRestoreFileName.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="RestoreFileName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="RestoreFileName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>305, 92</value>
+  </data>
+  <data name="RestoreFileName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 20</value>
+  </data>
+  <data name="RestoreFileName.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;RestoreFileName.Name" xml:space="preserve">
+    <value>RestoreFileName</value>
+  </data>
+  <data name="&gt;&gt;RestoreFileName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RestoreFileName.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;RestoreFileName.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -258,22 +411,10 @@
   <data name="$this.Text" xml:space="preserve">
     <value>WinBack Daten sichern/rücksichern</value>
   </data>
-  <data name="&gt;&gt;SaveFileDialog.Name" xml:space="preserve">
-    <value>SaveFileDialog</value>
-  </data>
-  <data name="&gt;&gt;SaveFileDialog.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SaveFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OpenFileDialog.Name" xml:space="preserve">
-    <value>OpenFileDialog</value>
-  </data>
-  <data name="&gt;&gt;OpenFileDialog.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>wb_Admin_Datensicherung</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.8.0.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab</value>
+    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.13.0.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab</value>
   </data>
 </root>

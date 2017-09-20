@@ -41,6 +41,7 @@
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -617,6 +618,7 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="winback.ini" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MySql_Dump.bat">
@@ -752,8 +754,10 @@
     <PostBuildEvent>mkdir "C:\ProgramData\OrgaSoft\AddIn"
 xcopy "$(TargetDir)$(TargetName).*" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
 xcopy "$(TargetDir)*.dll" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
+xcopy "$(TargetDir)WinBackAddIn.dll" "K:\Projekte\_Signum\AddIn" /E /C /R /Y
 xcopy "$(TargetDir)*.bat" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
-xcopy "$(ProjectDir)winback.ini" "$(TargetDir)" /C /R /Y</PostBuildEvent>
+
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

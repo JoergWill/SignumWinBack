@@ -68,24 +68,30 @@ Public Class wb_GlobalOrgaBack
 
     ''' <summary>
     ''' Ermittelt die (OrgaBack)Arbeitsplatz-Nummer aus dem MicroSoft Workstation-Namen.
-    ''' Die Nummer wird aus der Tabelle dbo.Workstations gelesen
-    ''' 'TODO Abfrage nach ProgrammType (WinBack/OrgaBack)
+    ''' Die Nummer wird aus der Tabelle dbo.Workstations gelesen. 
+    ''' Wenn die Arbeitsplatz-Nummer nicht gefunden wird, wird "00" zurückgegeben.
     ''' </summary>
     ''' <returns></returns>
     Public Shared ReadOnly Property OrgaBackWorkStationNumber As String
         Get
-            If _OrgaBackWorkStationNumber Is Nothing Then
-                'Datenbank-Verbindung öffnen - MsSQL
-                Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackAdminConString, wb_Sql.dbType.msSql)
-                If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlWrkStations, WorkStationName)) Then
-                    If OrgasoftMain.Read Then
-                        _OrgaBackWorkStationNumber = OrgasoftMain.sField("WorkStationNo")
+            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                If _OrgaBackWorkStationNumber Is Nothing Then
+                    'Datenbank-Verbindung öffnen - MsSQL
+                    Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackAdminConString, wb_Sql.dbType.msSql)
+                    If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlWrkStations, WorkStationName)) Then
+                        If OrgasoftMain.Read Then
+                            _OrgaBackWorkStationNumber = OrgasoftMain.sField("WorkStationNo")
+                        Else
+                            _OrgaBackWorkStationNumber = "00"
+                        End If
                     End If
+                    Trace.WriteLine("OrgaBackAdminConString=    " & wb_GlobalSettings.OrgaBackAdminConString)
+                    Trace.WriteLine("OrgaBackWorkStationNumber= " & _OrgaBackWorkStationNumber)
                 End If
-                Trace.WriteLine("OrgaBackAdminConString=    " & wb_GlobalSettings.OrgaBackAdminConString)
-                Trace.WriteLine("OrgaBackWorkStationNumber= " & _OrgaBackWorkStationNumber)
+                Return _OrgaBackWorkStationNumber
+            Else
+                Return "00"
             End If
-            Return _OrgaBackWorkStationNumber
         End Get
     End Property
 

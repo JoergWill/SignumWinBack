@@ -113,5 +113,6 @@ Public Class ob_Artikel_ZuordnungRezept
         Dim Rezeptur As New wb_Rezept_Rezeptur(RzNr, 1)
         'MDI-Fenster anzeigen
         Rezeptur.Show()
+        Me.Cursor = Cursors.Default
     End Sub
 End Class

@@ -1,7 +1,8 @@
-﻿Imports System.Text
+﻿Imports System.IO
+Imports System.Text
+Imports System.Windows.Forms
 Imports WeifenLuo.WinFormsUI.Docking
 Imports WinBack.wb_Functions
-
 
 Public Class wb_Admin_Datensicherung
     Inherits DockContent
@@ -10,14 +11,33 @@ Public Class wb_Admin_Datensicherung
     ''' Datensicherung starten
     ''' </summary>
     Private Sub Btn_DatenSicherung_Click(sender As Object, e As EventArgs) Handles Btn_DatenSicherung.Click
+        ' Configure open file dialog box 
+        Dim dlg As New SaveFileDialog()
+        dlg.RestoreDirectory = False
+        If BackupFileName.Text <> "" Then
+            dlg.InitialDirectory = Path.GetDirectoryName(BackupFileName.Text)
+        End If
+        dlg.FileName = "*.bz2" ' Default file name
+        dlg.DefaultExt = ".bz2" ' Default file extension
+        dlg.Filter = "sql-Backup-Files (.sql)|*.bz2" ' Filter files by extension
 
-        If SaveFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-            Dim FileName As String = SaveFileName.Text
+        If dlg.ShowDialog = System.Windows.Forms.DialogResult.OK Then
+
             Dim mysql As New WinBack.wb_sql_BackupRestore
-            FileName = SaveFileDialog.FileName
-            SaveFileName.Focus()
+            BackupFileName.Text = dlg.FileName
+            BackupFileName.Focus()
+
+            'Konfiguration in winback.ini schreiben
+            Dim IniFile As New wb_IniFile
+            'Pfade und Einstellungen Datensicherung
+            Dim LocalDate = DateTime.Now
+            IniFile.WriteString("Backup", "BackupFileName", BackupFileName.Text)
+            IniFile.WriteString("Backup", "BackupTimeStamp", DateTime.Now.ToString)
+            'IniFile wieder freigeben
+            IniFile = Nothing
+
             'Datensicherung starten
-            mysql.datensicherung(FileName)
+            mysql.datensicherung(BackupFileName.Text)
         End If
     End Sub
 
@@ -25,14 +45,31 @@ Public Class wb_Admin_Datensicherung
     ''' Daten-Rücksicherung starten
     ''' </summary>
     Private Sub Btn_DatenRueckSicherung_Click(sender As Object, e As EventArgs) Handles Btn_DatenRueckSicherung.Click
+        ' Configure open file dialog box 
+        Dim dlg As New OpenFileDialog()
+        dlg.RestoreDirectory = False
+        If RestoreFileName.Text <> "" Then
+            dlg.InitialDirectory = Path.GetDirectoryName(RestoreFileName.Text)
+        End If
+        dlg.FileName = Path.GetFileName(RestoreFileName.Text) ' Default file name
+        dlg.DefaultExt = ".bz2" ' Default file extension
+        dlg.Filter = "sql-Backup-Files (.sql)|*.bz2" ' Filter files by extension
 
-        If OpenFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-            Dim fileName As String = OpenFileDialog.FileName
+        If dlg.ShowDialog = System.Windows.Forms.DialogResult.OK Then
+
+            RestoreFileName.Text = dlg.FileName
             Dim mysql As New WinBack.wb_sql_BackupRestore
-            LoadFileName.Text = fileName
-            LoadFileName.Focus()
+            RestoreFileName.Focus()
             'Datenrücksicherung starten
-            mysql.datenruecksicherung(fileName)
+            mysql.datenruecksicherung(RestoreFileName.Text)
+
+            'Konfiguration in winback.ini schreiben
+            Dim IniFile As New wb_IniFile
+            'Pfade und Einstellungen Datensicherung
+            IniFile.WriteString("Backup", "RestoreFileName", RestoreFileName.Text)
+            IniFile.WriteString("Backup", "RestoreTimeStamp", DateTime.Now.ToString)
+            'IniFile wieder freigeben
+            IniFile = Nothing
         End If
     End Sub
 
@@ -44,36 +81,13 @@ Public Class wb_Admin_Datensicherung
         'Konfiguration aus winback.ini
         Dim IniFile As New wb_IniFile
         'Pfade und Einstellungen Datensicherung
-        SaveFileName.Text = IniFile.ReadString("winback", "DatenSicherungSaveFileName", "C:\Temp")
-        SaveFileDialog.FileName = SaveFileName.Text
+        BackupFileName.Text = IniFile.ReadString("Backup", "BackupFileName", "")
+        BackupTimeStamp.Text = IniFile.ReadString("Backup", "BackupTimeStamp", "")
         'Pfade und Einstellungen Datenrücksicherung
-        LoadFileName.Text = IniFile.ReadString("winback", "DatenSicherungLoadFileName", "C:\Temp")
-        OpenFileDialog.FileName = LoadFileName.Text
+        RestoreFileName.Text = IniFile.ReadString("Backup", "RestoreFileName", "")
+        RestoreTimeStamp.Text = IniFile.ReadString("Backup", "RestoreTimeStamp", "")
         'IniFile wieder freigeben
         IniFile = Nothing
     End Sub
 
-    ''' <summary>
-    ''' Filename der Daten-Sicherung in winback.ini schreiben
-    ''' </summary>
-    Private Sub SaveFileName_Validated(sender As Object, e As EventArgs) Handles SaveFileName.Validated
-        'Konfiguration in winback.ini schreiben
-        Dim IniFile As New wb_IniFile
-        'Pfade und Einstellungen Datensicherung
-        IniFile.WriteString("winback", "DatenSicherungSaveFileName", SaveFileName.Text)
-        'IniFile wieder freigeben
-        IniFile = Nothing
-    End Sub
-
-    ''' <summary>
-    ''' Filename der Daten-Rücksicherung in winback.ini schreiben
-    ''' </summary>
-    Private Sub LoadFileName_Validated(sender As Object, e As EventArgs) Handles LoadFileName.Validated
-        'Konfiguration in winback.ini schreiben
-        Dim IniFile As New wb_IniFile
-        'Pfade und Einstellungen Datensicherung
-        IniFile.WriteString("winback", "DatenSicherungLoadFileName", LoadFileName.Text)
-        'IniFile wieder freigeben
-        IniFile = Nothing
-    End Sub
 End Class
