@@ -238,6 +238,12 @@ Public Class ob_Artikel_DockingExtension
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
         _SubForms.Add("@ob_ArtikelDocking_ZuordnungRezept", Nothing)
         _SubForms.Add("@ob_ArtikelDocking_VerwendungRezept", Nothing)
+
+        'Neuinitialisierung der AddIn-Buttons beim Benutzerwechsel
+        Dim IEB As IEventBroker = TryCast(ServiceProvider.GetService(GetType(IEventBroker)), IEventBroker)
+        If IEB IsNot Nothing Then
+            AddHandler IEB.LoginChanged, Sub() bContextTabInitialized = False
+        End If
     End Sub
 
     ''' <summary>
