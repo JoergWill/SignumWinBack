@@ -61,6 +61,8 @@ Public Class wb_Rohstoffe_Liste
     'Anstelle des Feldes KO_Nr wird das Feld LG_aktiv ausgegeben
     'die Daten kommen aus einer HashTable (KO_Nr - LG_aktiv)
     Const AktivIdxColumn As Integer = 2
+    Const RzpIdxColumn As Integer = 3
+
     Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
         Try
             If e.ColumnIndex = AktivIdxColumn Then
@@ -68,6 +70,22 @@ Public Class wb_Rohstoffe_Liste
             End If
         Catch
         End Try
+    End Sub
+
+    Private Sub DataGridView_CellDoubleClick(sender As Object, e As Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
+        'Zeile im Grid
+        Dim eRow As Integer = e.RowIndex
+        'Die RezeptNummer steht in Spalte 4
+        'TODO als Konstante definieren in wb_sql_Selects
+        Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(RzpIdxColumn, eRow).Value)
+        'Wenn die Rezeptnummer gültig ist
+        If RezeptNr > 0 Then
+            Me.Cursor = Windows.Forms.Cursors.WaitCursor
+            'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
+            Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
+            Rezeptur.Show()
+            Me.Cursor = Windows.Forms.Cursors.Default
+        End If
     End Sub
 End Class
 

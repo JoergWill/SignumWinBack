@@ -32,9 +32,11 @@
     End Sub
 
     Private Sub clLayouts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles clLayouts.SelectedIndexChanged
-        tbBezeichnung.Text = clLayouts.SelectedItem
-        cbGlobal.Checked = clLayouts.GetItemChecked(clLayouts.SelectedIndex)
-        cbGlobal.Enabled = False
+        If clLayouts.SelectedIndex > 0 Then
+            tbBezeichnung.Text = clLayouts.SelectedItem
+            cbGlobal.Checked = clLayouts.GetItemChecked(clLayouts.SelectedIndex)
+            cbGlobal.Enabled = False
+        End If
     End Sub
 
     Private Sub BtnSpeichern_Click(sender As Object, e As EventArgs) Handles BtnSpeichern.Click

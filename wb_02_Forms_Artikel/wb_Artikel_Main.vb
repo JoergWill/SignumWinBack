@@ -1,171 +1,83 @@
-﻿'---------------------------------------------------------
-'27.04.2016/ V0.9/JW            :Neuanlage
-'Bearbeitet von                 :Will
-'
-'Änderungen:
-'---------------------------------------------------------
-'Beschreibung:
-'Artikel Verwaltung
-'---------------------------------------------------------
-
-Imports Signum.OrgaSoft
+﻿Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Artikel_Main
     Implements IExternalFormUserControl
-    Dim ArtikelListe As New wb_Artikel_Liste
-    Dim ArtikelDetails As New wb_Artikel_Details
-    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbArtikel.xml"
 
-    Private _ServiceProvider As Common.IOrgasoftServiceProvider
-    Private _MenuService As Common.IMenuService
-    Private _ViewProvider As IViewProvider
+    'Default-Fenster
+    Public ArtikelListe As New wb_Artikel_Liste
+    Public ArtikelDetails As New wb_Artikel_Details
 
-    Private _ContextTabs As List(Of GUI.ITab)
-
-    ''' <summary>
-    ''' Konstruktor
-    ''' </summary>
-    ''' <param name="ServiceProvider">ServiceProvider von OrgaSoft.NET</param>
-    ''' <remarks></remarks>
-    Public Sub New(ServiceProvider As Common.IOrgasoftServiceProvider)
-
-        ' This call is required by the designer.
-        InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-        _ServiceProvider = ServiceProvider
-        _MenuService = TryCast(ServiceProvider.GetService(GetType(Common.IMenuService)), Common.IMenuService)
-        _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
-
+    'alle anderen Fenster werden zur Laufzeit erzeugt
+    'TODO Artikel-Fenster
+    Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
+        MyBase.New(ServiceProvider)
     End Sub
 
     ''' <summary>
-    ''' Routine wird aufgerufen, wenn das Fenster geladen wurde und angezeigt werden soll
+    ''' Fenster-Name (Caption). Wird von Init() aufgerufen
     ''' </summary>
     ''' <returns></returns>
-    ''' <remarks>Die Caption des Fensters muss mit MyBase.Text gesetzt werde</remarks>
-    Public Function Init() As Boolean Implements IBasicFormUserControl.Init
-        MyBase.Text = "WinBack - Artikelverwaltung"
-        Return True
-    End Function
-
-    Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
-        Return Nothing
-    End Function
+    Public Overrides ReadOnly Property FormText As String
+        Get
+            Return "WinBack Artikel-Verwaltung"
+        End Get
+    End Property
 
     ''' <summary>
-    ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+    ''' Eindeutiger Name für die Basis-Form. 
     ''' </summary>
-    ''' <param name="Reason"></param>
-    ''' <returns>
-    ''' False, wenn das Fenster geschlossen werden darf
-    ''' True, wenn das Fenster geöffnet bleiben muss
-    ''' </returns>
-    ''' <remarks></remarks>
-    Public Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        Return False
-    End Function
-    Public Event Close(sender As Object, e As EventArgs) Implements IBasicFormUserControl.Close
+    ''' <returns></returns>
+    Public Overrides ReadOnly Property FormName As String
+        Get
+            Me.Tag = "Artikel"
+            Return "Artikel"
+        End Get
+    End Property
 
-    Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
+    Public Overrides Sub SetDefaultLayout()
+        ArtikelListe.Show(DockPanel, DockState.DockLeft)
+        ArtikelDetails.Show(DockPanel, DockState.DockTop)
     End Sub
 
-    ''' <summary>
-    ''' Eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn
-    ''' </summary>
-    Public ReadOnly Property FormKey As String Implements IBasicFormUserControl.FormKey
+    Public Shadows ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
         Get
-            Return "@WinBack Artikel-Verwaltung"
-        End Get
-    End Property
-    ''' <summary>
-    ''' Minimale Höhe des UserControls
-    ''' </summary>
-    Public ReadOnly Property MinHeight As Integer Implements IBasicFormUserControl.MinHeight
-        Get
-            Return Me.MinimumSize.Height
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Minimale Breite des UserControls
-    ''' </summary>
-    Public ReadOnly Property MinWidth As Integer Implements IBasicFormUserControl.MinWidth
-        Get
-            Return Me.MinimumSize.Width
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Gibt an, ob man die Größe dieses UserControls ändern darf
-    ''' </summary>
-    Public ReadOnly Property Sizable As Boolean Implements IBasicFormUserControl.Sizable
-        Get
-            Return True
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Bezeichnung und Caption des UserControls
-    ''' </summary>
-    Public Shadows ReadOnly Property Text() As String Implements IBasicFormUserControl.Text
-        Get
-            Return MyBase.Text
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Erzeugt neue Tabs im Ribbon-Control
-    ''' </summary>
-    Public ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
-        Get
-            'If _ContextTabs Is Nothing Then
-            _ContextTabs = New List(Of GUI.ITab)
-            '    ' Fügt dem Ribbon ein neues RibbonTab hinzu
-            '    Dim oNewTab = _MenuService.AddContextTab("TestUserControlContextTab", "TestUserContext", "Eigenes ContextTab für TestUserControl")
-            '    ' Das neue RibbonTab erhält eine Gruppe
-            '    Dim oGrp = oNewTab.AddGroup("ContextFormTest", "ContextFormTest")
-            '    ' ... und dieser Gruppe wird ein Button hinzugefügt
-            '    ' oGrp.AddButton("TestUserControlButton1", "WhatEver", "Do Something", My.Resources.Search_16, My.Resources.Search_32, AddressOf Search)
-            '    _ContextTabs.Add(oNewTab)
-            'End If
+            If _ContextTabs Is Nothing Then
+                _ContextTabs = New List(Of GUI.ITab)
+                ' Fügt dem Ribbon ein neues RibbonTab hinzu
+                Dim oNewTab = _MenuService.AddContextTab("ArtikeLVerwaltung", "WinBack-Artikel", "Verwaltung der WinBack-Artikel")
+                ' Das neue RibbonTab erhält eine Gruppe
+                Dim oGrp = oNewTab.AddGroup("GrpArtikel", "WinBack Artikel")
+                ' ... und dieser Gruppe wird ein Button hinzugefügt
+                oGrp.AddButton("BtnArtikelDetails", "Details", "weitere Artikel-Daten", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf BtnArtikelDetails)
+                _ContextTabs.Add(oNewTab)
+            End If
             Return _ContextTabs.ToArray
         End Get
     End Property
-    Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
+
+    Private Sub BtnArtikelDetails()
+        ArtikelDetails = New wb_Artikel_Details
+        ArtikelDetails.Show(DockPanel, DockState.DockTop)
+    End Sub
+
+    Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "ArtikelListe"
+
+            Case "WinBack.wb_Artikel_Liste"
+                ArtikelListe.CloseButtonVisible = False
+                _DockPanelList.Add(ArtikelListe)
                 Return ArtikelListe
-            Case "ArtikelDetails"
+
+            Case "WinBack.wb_Artikel_Details"
+                ArtikelDetails = New wb_Artikel_Details
+                _DockPanelList.Add(ArtikelDetails)
                 Return ArtikelDetails
+
             Case Else
                 Return Nothing
         End Select
     End Function
-    Private Sub wbArtikel_Close()
-        DockPanel.SaveAsXml(DkPnlPath)
-    End Sub
-    Private Sub wbArtikelLoad()
-        Try
-            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
-        Catch ex As Exception
-
-        End Try
-
-        ArtikelListe.Show(DockPanel, DockState.Document)
-        ArtikelListe.CloseButtonVisible = False
-        ArtikelDetails.Show(DockPanel, DockState.DockRight)
-        ArtikelDetails.CloseButtonVisible = False
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        wbArtikelLoad()
-    End Sub
-
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        wbArtikel_Close()
-    End Sub
 End Class

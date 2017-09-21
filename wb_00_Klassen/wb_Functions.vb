@@ -543,6 +543,47 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt ein Objekt sicher in einen Integer-Wert um
+    ''' </summary>
+    ''' <param name="Value"></param>
+    ''' <returns></returns>
+    Public Shared Function ValueToInt(Value As Object) As Integer
+        'TODO Laufzeit testen/optimieren
+        Dim i As Integer
+        Try
+            If Value IsNot Nothing And Not IsDBNull(Value) Then
+                Integer.TryParse(Value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), i)
+                Return i
+            Else
+                Return 0
+            End If
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Wandelt ein Objekt sicher in einen Float-Wert um
+    ''' </summary>
+    ''' <param name="Value"></param>
+    ''' <returns></returns>
+    Public Shared Function ValueToDouble(Value As Object) As Double
+        'TODO Laufzeit testen/optimieren
+        Dim d As Double
+        Try
+            If Value IsNot Nothing And Not IsDBNull(Value) Then
+                Value = Value.Replace(".", ",")
+                Double.TryParse(Value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d)
+                Return d
+            Else
+                Return 0.0F
+            End If
+        Catch ex As Exception
+            Return 0.0F
+        End Try
+    End Function
+
+    ''' <summary>
     '''Text aus Datenbank lesen - Übersetzung
     ''' von Herbert Bsteh aus winback (Kylix)
     ''' Erste Zahl (Texttyp), zweite Zahl (Textindex)

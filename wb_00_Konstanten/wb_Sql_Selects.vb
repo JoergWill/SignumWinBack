@@ -17,7 +17,7 @@
                                   "FROM Komponenten WHERE KA_RZ_Nr = [0]"
 
     'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
-    Public Const sqlRohstoffLst = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KO_Type, KA_aktiv, " &
+    Public Const sqlRohstoffLst = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KO_Type, KA_aktiv, " &
                                   "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type <> 0"
     'Sql-Statement RohstoffGruppen aus winback.ItemParameter
     Public Const sqlRohstoffGrp = "SELECT IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &

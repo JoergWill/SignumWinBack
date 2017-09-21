@@ -591,7 +591,7 @@ Public Class wb_Rezept
                     RezeptBezeichnung = Value
                 'Rezeptkopf Teigtemperatur
                 Case "RZ_Teigtemperatur"
-                    _RezeptTeigTemperatur = Value
+                    _RezeptTeigTemperatur = wb_Functions.ValueToDouble(Value)
                 'Rezeptkopf - Änderung-Nummer
                 Case "RZ_Aenderung_Nr"
                     _AenderungNummer = Value

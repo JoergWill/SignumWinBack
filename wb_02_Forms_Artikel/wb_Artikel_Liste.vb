@@ -40,6 +40,22 @@ Public Class wb_Artikel_Liste
         Catch
         End Try
     End Sub
+
+    Private Sub DataGridView_CellDoubleClick(sender As Object, e As Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
+        'Zeile im Grid
+        Dim eRow As Integer = e.RowIndex
+        'Die RezeptNummer steht in Spalte 1
+        'TODO als Konstante definieren in wb_sql_Selects
+        Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(RzpIdxColumn, eRow).Value)
+        'Wenn die Rezeptnummer gültig ist
+        If RezeptNr > 0 Then
+            Me.Cursor = Windows.Forms.Cursors.WaitCursor
+            'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
+            Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
+            Rezeptur.Show()
+            Me.Cursor = Windows.Forms.Cursors.Default
+        End If
+    End Sub
 End Class
 
 'CREATE TABLE winback.Komponenten (
