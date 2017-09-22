@@ -40,7 +40,7 @@ Public Class wb_GlobalSettings
     Private Shared _LogToDataBase As Integer = wb_Global.UNDEFINED
 
     Private Shared _AktUser As String = ""
-    Private Shared _AktUserNr As String = ""
+    Private Shared _AktUserNr As Integer = wb_Global.UNDEFINED
 
     Public Shared Property pVariante As wb_Global.ProgVariante
         Get
@@ -168,11 +168,11 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Public Shared Property AktUserNr As String
+    Public Shared Property AktUserNr As Integer
         Get
             Return _AktUserNr
         End Get
-        Set(value As String)
+        Set(value As Integer)
             _AktUserNr = value
         End Set
     End Property

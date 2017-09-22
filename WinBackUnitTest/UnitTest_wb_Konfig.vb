@@ -1,5 +1,5 @@
 ﻿Imports WinBack
-Imports WinBack.wb_Konfig
+Imports WinBack.wb_Language
 
 <TestClass()> Public Class UnitTest_wb_Konfig
     Dim winback As wb_Sql
@@ -148,29 +148,29 @@ Imports WinBack.wb_Konfig
         'Tabelle Hash-Table aktualisieren
         LoadTexteTabelle(0)
         ' Erste Zahl (Texttyp), zweite Zahl (Textindex)
-        Assert.AreEqual("Test-0", wb_Functions.TextFilter("@[9999,9998]XXXX"))
+        Assert.AreEqual("Test-0", wb_Language.TextFilter("@[9999,9998]XXXX"))
 
         'Tabelle Hash-Table aktualisieren
         LoadTexteTabelle(1)
-        Assert.AreEqual("Test-1", wb_Functions.TextFilter("@[9999,9998]XXXX"))
+        Assert.AreEqual("Test-1", wb_Language.TextFilter("@[9999,9998]XXXX"))
 
         'Tabelle Hash-Table aktualisieren
         LoadTexteTabelle(2)
-        Assert.AreEqual("Test-2", wb_Functions.TextFilter("@[9999,9998]XXXX"))
+        Assert.AreEqual("Test-2", wb_Language.TextFilter("@[9999,9998]XXXX"))
 
         'Tabelle Hash-Table aktualisieren
         LoadTexteTabelle(3)
-        Assert.AreEqual("Test-3", wb_Functions.TextFilter("@[9999,9998]XXXX"))
+        Assert.AreEqual("Test-3", wb_Language.TextFilter("@[9999,9998]XXXX"))
 
         'Tabelle Hash-Table aktualisieren
         LoadTexteTabelle(4)
-        Assert.AreEqual("Test-4", wb_Functions.TextFilter("@[9999,9998]XXXX"))
+        Assert.AreEqual("Test-4", wb_Language.TextFilter("@[9999,9998]XXXX"))
 
         'Text wird nicht gefunden
-        Assert.AreEqual("Test-5", wb_Functions.TextFilter("@[9999,9995]Test-5"))
-        Assert.AreEqual("Test-6", wb_Functions.TextFilter("Test-6"))
+        Assert.AreEqual("Test-5", wb_Language.TextFilter("@[9999,9995]Test-5"))
+        Assert.AreEqual("Test-6", wb_Language.TextFilter("Test-6"))
         'Länge kleiner 6 Zeichen
-        Assert.AreEqual("@[T-7", wb_Functions.TextFilter("@[T-7"))
+        Assert.AreEqual("@[T-7", wb_Language.TextFilter("@[T-7"))
 
     End Sub
 

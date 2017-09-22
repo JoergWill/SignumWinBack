@@ -19,8 +19,8 @@ Public Class WinBack
             ' CloseAllForms()
 
             'Umschaltung aktive Sprache
-            Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Konfig.GetLanguage)
-            Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Konfig.GetLanguage)
+            Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Language.GetLanguage)
+            Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Language.GetLanguage)
 
             If rbChargen.Active Then
                 ChargenMainShow()
@@ -207,9 +207,9 @@ Public Class WinBack
         'IP-Adresse in Status-Bar anzeigen
         lblNetworkIP.Text = wb_GlobalSettings.WinBackDBType.ToString & " " & wb_GlobalSettings.MySQLServerIP
         'aktuelle(letzte) Sprache einstellen
-        wb_Konfig.SetLanguage("")
+        wb_Language.SetLanguage("")
         'Hash-Table Texte laden
-        wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
+        wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
 
         'Initialisierung beendet
         isInitialised = True
@@ -220,19 +220,19 @@ Public Class WinBack
 
     'Umschaltung aktive Sprache
     Private Sub rbSprache_DE_Click(sender As Object, e As EventArgs) Handles rbSprache_DE.Click
-        wb_Konfig.SetLanguage("de-DE")
+        wb_Language.SetLanguage("de-DE")
         changeLanguage()
     End Sub
     Private Sub rbSprache_EN_Click(sender As Object, e As EventArgs) Handles rbSprache_EN.Click
-        wb_Konfig.SetLanguage("en-US")
+        wb_Language.SetLanguage("en-US")
         changeLanguage()
     End Sub
     Private Sub changeLanguage()
         'alle offenen Fenster schliessen
         CloseAllForms()
         'Umschaltung aktive Sprache
-        Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Konfig.GetLanguage)
-        Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Konfig.GetLanguage)
+        Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Language.GetLanguage)
+        Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Language.GetLanguage)
         'alle Texte in WinBack neu aufbauen
         ChangeAllControls(Me)
     End Sub

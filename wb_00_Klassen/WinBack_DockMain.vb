@@ -85,7 +85,7 @@ Public Class WinBack_DockMain
 
     Public Sub FormClosed()
         'Fenster-Einstellungen in winback.ini sichern
-        wb_Konfig.SaveFormBoundaries(Me.Top, Me.Left, Me.Width, Me.Height, LayoutFilename, FormName)
+        wb_DockBarPanelShared.SaveFormBoundaries(Me.Top, Me.Left, Me.Width, Me.Height, LayoutFilename, FormName)
         'Anzeige wird in OrgaBack beim Schliessen nicht gesichert !
         If _SaveAtClose Then
             SaveDockBarConfig()

@@ -7,7 +7,7 @@
         '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
         wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
         'Initialisierung Texte-Tabelle
-        wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
+        wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
     End Sub
 
     <TestMethod()> Public Sub TestAllergene()

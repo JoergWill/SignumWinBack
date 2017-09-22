@@ -596,33 +596,6 @@ Public Class wb_Functions
         End Try
     End Function
 
-    ''' <summary>
-    '''Text aus Datenbank lesen - Übersetzung
-    ''' von Herbert Bsteh aus winback (Kylix)
-    ''' Erste Zahl (Texttyp), zweite Zahl (Textindex)
-    '''
-    ''' Gibt den Text ohne Klammer zurück wenn
-    ''' kein Text in der Datenbank gefunden wurde
-    ''' </summary>
-    ''' <param name="Text">String im Format @[Typ,Index]</param>
-    ''' <returns>String - Übersetzung aus winback.Texte</returns>
-    Public Shared Function TextFilter(Text As String) As String
-        Dim Hash As String
-
-        If Len(Text) > 6 Then
-            If Left(Text, 2) = "@[" Then
-                Hash = Left(Text, InStr(Text, "]"))
-                Try
-                    If wb_Konfig.TexteTabelle.ContainsKey(Hash) Then
-                        Return wb_Konfig.TexteTabelle(Hash).ToString
-                    End If
-                Catch
-                End Try
-                Return Mid(Text, Len(Hash) + 1)
-            End If
-        End If
-        Return Text
-    End Function
 
     ''' <summary>
     ''' Für ein Batch-File im Verzeichnis MySQLBatch aus. Über Argument wird %2 an das Batch-File übergeben

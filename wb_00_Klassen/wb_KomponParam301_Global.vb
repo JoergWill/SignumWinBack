@@ -24,7 +24,7 @@ Public Class wb_KomponParam301_Global
         While winback.Read
 
             k.ParamNr = winback.iField("KT_ParamNr")
-            k.Bezeichnung = wb_Functions.TextFilter(winback.sField("KT_Bezeichnung"))
+            k.Bezeichnung = wb_Language.TextFilter(winback.sField("KT_Bezeichnung"))
             k.KurzBezeichnung = winback.sField("KT_KurzBez")
             k.Gruppe = wb_Functions.StringTokt301Gruppe(winback.sField("KT_Wert"))
             k.Einheit = winback.sField("E_Einheit")

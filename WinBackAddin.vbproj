@@ -186,6 +186,7 @@
     <Compile Include="wb_00_Klassen\wb_DataGridViewVerwendung.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_DockBarPanelShared.vb" />
     <Compile Include="wb_00_Main\wb_Finalizer_Shared.vb" />
     <Compile Include="wb_00_Klassen\WinBack_DockMain.Designer.vb">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
@@ -232,7 +233,7 @@
     </Compile>
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
     <Compile Include="wb_00_Klassen\wb_Filiale.vb" />
-    <Compile Include="wb_00_Klassen\wb_Konfig.vb" />
+    <Compile Include="wb_00_Klassen\wb_Language.vb" />
     <Compile Include="wb_00_Klassen\wb_TabControl.vb">
       <SubType>Component</SubType>
     </Compile>

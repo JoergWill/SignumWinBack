@@ -1,11 +1,7 @@
-﻿Imports WinBack.wb_Global
-
-Public Class wb_Konfig
+﻿Public Class wb_Language
 
     Shared Language As String
     Public Shared TexteTabelle As New Hashtable
-
-    Public Shared Filiale As New wb_Filiale
 
     Public Shared Sub SetLanguage(Lang As String)
         Dim IniFile As New wb_IniFile
@@ -60,6 +56,11 @@ Public Class wb_Konfig
         End Select
     End Function
 
+    ''' <summary>
+    ''' Hash-Table mit den Übersetzungen für die jeweilige Sprache vorladen. Die HashTable übersetzt
+    ''' die Texte aus der WinBack-Datenbank die mit @[x,y] gekennzeichnet sind in die jeweilige Landes-Sprache
+    ''' </summary>
+    ''' <param name="Sprache"></param>
     Public Shared Sub LoadTexteTabelle(Sprache As String)
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlWinBackTxte, Sprache))
@@ -71,38 +72,30 @@ Public Class wb_Konfig
     End Sub
 
     ''' <summary>
-    ''' Liest die zuletzt gespeicherte Fenster-Position aus der winback.ini und setzt die entsprechenden 
-    ''' Parameter im übergebenen Fenster.
-    ''' Der File-Name der letzten aktuellen Dock-Bar-Konfiguration wird im Tag-Objekt gespeichert !!
+    '''Text aus Datenbank lesen - Übersetzung
+    ''' von Herbert Bsteh aus winback (Kylix)
+    ''' Erste Zahl (Texttyp), zweite Zahl (Textindex)
+    '''
+    ''' Gibt den Text ohne Klammer zurück wenn
+    ''' kein Text in der Datenbank gefunden wurde
     ''' </summary>
-    ''' <param name="xForm"></param>
-    ''' <param name="IniSektion"></param>
-    Public Shared Sub SetFormBoundaries(xForm As Windows.Forms.Form, IniSektion As String)
-        Dim IniFile As New WinBack.wb_IniFile
+    ''' <param name="Text">String im Format @[Typ,Index]</param>
+    ''' <returns>String - Übersetzung aus winback.Texte</returns>
+    Public Shared Function TextFilter(Text As String) As String
+        Dim Hash As String
 
-        'Fensterposition aus winback.ini
-        xForm.Top = IniFile.ReadInt(IniSektion, "Top")
-        xForm.Left = IniFile.ReadInt(IniSektion, "Left")
-        xForm.Width = IniFile.ReadInt(IniSektion, "Width")
-        xForm.Height = IniFile.ReadInt(IniSektion, "Height")
-
-        'Dispose
-        IniFile = Nothing
-    End Sub
-
-    Public Shared Sub SaveFormBoundaries(Top As Integer, Left As Integer, Width As Integer, Height As Integer, LayoutFile As String, IniSektion As String)
-        Dim IniFile As New WinBack.wb_IniFile
-
-        'Fensterposition in winback.ini sichern
-        IniFile.WriteInt(IniSektion, "Top", Top)
-        IniFile.WriteInt(IniSektion, "Left", Left)
-        IniFile.WriteInt(IniSektion, "Width", Width)
-        IniFile.WriteInt(IniSektion, "Height", Height)
-
-        'Layout-File
-        IniFile.WriteString(IniSektion, "LayoutFileName", LayoutFile)
-
-        'Dispose
-        IniFile = Nothing
-    End Sub
+        If Len(Text) > 6 Then
+            If Left(Text, 2) = "@[" Then
+                Hash = Left(Text, InStr(Text, "]"))
+                Try
+                    If wb_Language.TexteTabelle.ContainsKey(Hash) Then
+                        Return wb_Language.TexteTabelle(Hash).ToString
+                    End If
+                Catch
+                End Try
+                Return Mid(Text, Len(Hash) + 1)
+            End If
+        End If
+        Return Text
+    End Function
 End Class

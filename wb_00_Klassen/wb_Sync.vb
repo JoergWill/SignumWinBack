@@ -14,7 +14,7 @@
             If winback.sqlSelect(wb_Sql_Selects.sqlUserGrpTxt) Then
                 While winback.Read
                     Gruppe.Nummer = winback.iField("II_ItemID")
-                    Gruppe.Bezeichnung = wb_Functions.TextFilter(winback.sField("II_Kommentar"))
+                    Gruppe.Bezeichnung = wb_Language.TextFilter(winback.sField("II_Kommentar"))
                     Gruppe.SyncOK = wb_Global.SyncState.NOK
                     Trace.WriteLine("Read WinBack User-Gruppe Nummer         " & Gruppe.Nummer.ToString + " User-Gruppe Bezeichnung        " & Gruppe.Bezeichnung)
                     WinBack_UserGruppe.Add(Gruppe)

@@ -133,7 +133,7 @@ Public Class wb_Main_Menu
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Artikel_Main(ServiceProvider), My.Resources.MainArtikel_16x16)
         'Fensterposition aus winback.ini
-        wb_Konfig.SetFormBoundaries(xForm, "Artikel")
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "Artikel")
     End Sub
 
     ''' <summary>
@@ -145,7 +145,7 @@ Public Class wb_Main_Menu
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Rohstoffe_Main(ServiceProvider), My.Resources.MainRohstoffe_16x16)
         'Fensterposition aus winback.ini
-        wb_Konfig.SetFormBoundaries(xForm, "Rohstoffe")
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "Rohstoffe")
     End Sub
 
     ''' <summary>
@@ -157,7 +157,7 @@ Public Class wb_Main_Menu
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Rezept_Main(ServiceProvider), My.Resources.MainRezept_16x16)
         'Fensterposition aus winback.ini
-        wb_Konfig.SetFormBoundaries(xForm, "Rezepte")
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "Rezepte")
     End Sub
 
     ''' <summary>
@@ -169,7 +169,7 @@ Public Class wb_Main_Menu
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_User_Main(ServiceProvider), My.Resources.MainUser_16x16)
         'Fensterposition aus winback.ini
-        wb_Konfig.SetFormBoundaries(xForm, "User")
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "User")
     End Sub
 
     ''' <summary>
@@ -221,7 +221,7 @@ Public Class wb_Main_Menu
         ' CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Linien_Main(ServiceProvider), My.Resources.MainLinien_45x34)
         'Fensterposition aus winback.ini
-        wb_Konfig.SetFormBoundaries(xForm, "Linien")
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "Linien")
     End Sub
 
     ''' <summary>
@@ -233,7 +233,7 @@ Public Class wb_Main_Menu
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Planung_Main(ServiceProvider), My.Resources.MainProduktionsPlanung_16x16)
         'Fensterposition aus winback.ini
-        wb_Konfig.SetFormBoundaries(xForm, "ProduktionsPlanung")
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "ProduktionsPlanung")
     End Sub
 
     ''' <summary>
@@ -244,7 +244,7 @@ Public Class wb_Main_Menu
     Private Sub ShowAdminAdministrationForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Admin_Main(ServiceProvider), My.Resources.Admin_16x16)
-        wb_Konfig.SetFormBoundaries(xForm, "Admin")
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "Admin")
     End Sub
 
     ''' <summary>
@@ -291,7 +291,6 @@ Public Class wb_Main_Menu
     Private Sub ReadSystemKonfig()
         'Programm-Einstellung OrgaBack
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
-
     End Sub
 
 End Class

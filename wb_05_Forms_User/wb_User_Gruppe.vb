@@ -12,10 +12,10 @@
             iGruppe = Gruppe
 
             Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
-            If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserRechte, Gruppe, wb_Konfig.GetLanguageNr())) Then
+            If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserRechte, Gruppe, wb_Language.GetLanguageNr())) Then
                 While winback.Read
                     GruppenRechte.OberBegriff = winback.sField("IT_Bezeichnung")
-                    GruppenRechte.Bezeichnung = wb_Functions.TextFilter(winback.sField("II_Kommentar"))
+                    GruppenRechte.Bezeichnung = wb_Language.TextFilter(winback.sField("II_Kommentar"))
                     GruppenRechte.sAttribut = winback.sField("T_Text")
                     GruppenRechte.iAttribut = winback.iField("AT_Wert2int")
                     Rechte.Add(GruppenRechte)

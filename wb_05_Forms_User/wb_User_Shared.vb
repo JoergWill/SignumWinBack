@@ -15,7 +15,7 @@
         winback.sqlSelect(wb_Sql_Selects.sqlUserGrpTxt)
         GrpTexte.Clear()
         While winback.Read
-            GrpTexte.Add(winback.iField("II_ItemId"), wb_Functions.TextFilter(winback.sField("II_Kommentar")))
+            GrpTexte.Add(winback.iField("II_ItemId"), wb_Language.TextFilter(winback.sField("II_Kommentar")))
         End While
         winback.Close()
     End Sub

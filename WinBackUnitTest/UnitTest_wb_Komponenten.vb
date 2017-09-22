@@ -13,7 +13,7 @@ Imports WinBack.wb_Sql_Selects
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
             wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
             'Initialisierung Texte-Tabelle
-            wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
+            wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
         End If
     End Sub
 

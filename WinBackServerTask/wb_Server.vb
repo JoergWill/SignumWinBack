@@ -208,7 +208,7 @@ Public Class Main
     ''' <param name="e"></param>
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Initialisierung Texte-Tabelle
-        wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
+        wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
 
         'IP-Server starten
         Dim listener As New System.Threading.Thread(AddressOf listen) 'initialize a new thread for the listener so our GUI doesn't lag
