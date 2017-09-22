@@ -66,15 +66,15 @@ Public Class wb_DataGridView
         tDataHasChanged.Enabled = False
         DtaTable.Clear()
 
-        Select Case My.Settings.WinBackDBType
+        Select Case wb_GlobalSettings.WinBackDBType
 
             'Verbindung über mySql
             Case dbType.mySql
                 'Verbindung zur MySQL-Datenbank
                 If table = wb_Sql.dbTable.winback Then
-                    MySqlCon = New MySqlConnection(My.Settings.MySQLConWinBack)
+                    MySqlCon = New MySqlConnection(wb_GlobalSettings.SqlConWinBack)
                 Else
-                    MySqlCon = New MySqlConnection(My.Settings.MySQLConWbDaten)
+                    MySqlCon = New MySqlConnection(wb_GlobalSettings.SqlConWbDaten)
                 End If
                 MySqlCmd = New MySqlCommand(sSql, MySqlCon)
                 MySqlDta = New MySqlDataAdapter(MySqlCmd)
@@ -90,9 +90,9 @@ Public Class wb_DataGridView
             Case dbType.msSql
                 'Verbindung zur SQL-Datenbank
                 If table = wb_Sql.dbTable.winback Then
-                    msCon = New SqlConnection(My.Settings.MsSQLConWinBack)
+                    msCon = New SqlConnection(wb_GlobalSettings.SqlConWinBack)
                 Else
-                    msCon = New SqlConnection(My.Settings.MsSQLConWbDaten)
+                    msCon = New SqlConnection(wb_GlobalSettings.SqlConWbDaten)
                 End If
                 msCmd = New SqlCommand(sSql, msCon)
                 msDta = New SqlDataAdapter(msCmd)
@@ -178,7 +178,7 @@ Public Class wb_DataGridView
     ''' Daten im Grid neu laden
     ''' </summary>
     Sub RefreshData()
-        Select Case My.Settings.WinBackDBType
+        Select Case wb_GlobalSettings.WinBackDBType
             ' Verbindung über mySql
             Case dbType.mySql
                 Try
@@ -220,7 +220,7 @@ Public Class wb_DataGridView
         'damit die Update-Routine richtig funktioniert 
         'muss vorher die Zeile im DataGrid gewechselt worden sein !!
         Me.CurrentCell = Nothing
-        Select Case My.Settings.WinBackDBType
+        Select Case wb_GlobalSettings.WinBackDBType
             ' Verbindung über mySql
             Case dbType.mySql
                 MySqlDta.Update(DtaTable)

@@ -11,7 +11,7 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
             'Datenbank Verbindung Einstellungen setzen
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_Konfig.SqlSetting("MySQL")
+            wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
             'Initialisierung Texte-Tabelle
             wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
         End If
@@ -64,7 +64,7 @@ Imports WinBack.wb_Sql_Selects
 
             Dim sql As String = setParams(sqlTestktTypX, "211")
             'Datenbank-Verbindung öffnen - MySQL
-            Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
 
             'ersten Datensatz aus Tabelle Komponenten lesen
             If winback.sqlSelect(sql) Then
@@ -88,7 +88,7 @@ Imports WinBack.wb_Sql_Selects
 
             Dim sql As String = setParams(sqlTestktTyp3, "211")
             'Datenbank-Verbindung öffnen - MySQL
-            Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
 
             'ersten Datensatz aus Tabelle RohParams lesen
             If winback.sqlSelect(sql) Then
@@ -159,7 +159,7 @@ Imports WinBack.wb_Sql_Selects
             Assert.AreEqual("Neu angelegt", Left(nwtDaten.Bezeichung, 12))
 
             'wieder aufräumen
-            Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
             winback.sqlCommand("DELETE FROM Komponenten WHERE KO_Nr_AlNum = '1111TEST'")
             winback.sqlCommand("DELETE FROM Komponenten WHERE KO_Nr_AlNum = '1111TEST'")
             winback.Close()

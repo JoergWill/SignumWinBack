@@ -696,7 +696,7 @@ Public Class wb_Rezeptschritt
 
     Private Function ReadktTyp301() As Boolean
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim Name As String
         Dim Value As Object
         Dim ParamNr, ParamTyp As Integer

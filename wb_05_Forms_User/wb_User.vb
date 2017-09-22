@@ -139,7 +139,7 @@
     ''' False - Fehler beim Einfügen
     ''' </returns>
     Function AddNew(Name As String, Passwort As String, Gruppe As String) As Boolean
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
         Try
             'Neuen Benutzer in Datenbank einfügen
             winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserInsert, Name, Passwort, Gruppe))
@@ -167,7 +167,7 @@
     ''' False - Fehler beim Ändernn
     ''' </returns>
     Function Update(OldPasswort As String, Name As String, NewPasswort As String, Gruppe As String) As Boolean
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
         Try
             'Update Benutzer in Datenbank
             winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserUpdate, Name, NewPasswort, Gruppe, OldPasswort))
@@ -189,7 +189,7 @@
     ''' </summary>
     ''' <param name="Passwort"> String Mitarbeiter-Passwort numerisch max. 10 Stellen</param>
     Sub Delete(Passwort As String)
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
         Try
             'Benutzer aus Datenbank löschen
             winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserDelete, Passwort))
@@ -208,7 +208,7 @@
     ''' False - Passwort ist nicht verwendet
     ''' </returns>
     Function Exist(Passwort As String) As Boolean
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
         Dim i As Integer = 0
 
         Try

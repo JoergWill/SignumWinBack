@@ -12,7 +12,7 @@ Imports WinBack.wb_Global.LogType
     Sub TestInitialize()
         'Datenbank Verbindung Einstellungen setzen
         '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-        wb_Konfig.SqlSetting("MySQL")
+        wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
         'Initialisierung Texte-Tabelle
         wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
     End Sub

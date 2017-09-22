@@ -18,7 +18,7 @@ Public Class wb_KomponParam301_Global
     ''' </summary>
     Shared Sub New()
         Dim k As ktTyp301Param
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlKompTyp301)
         ktTyp301Params.Clear()
         While winback.Read

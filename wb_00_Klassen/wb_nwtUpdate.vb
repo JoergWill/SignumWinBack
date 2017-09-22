@@ -23,7 +23,7 @@ Public Class wb_nwtUpdate
     ''' <returns>True wenn der Datensatz aktualisiert wurde</returns>
     Public Function UpdateNext() As Boolean
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Komponenten-Objekt nimmt die aktuellen Daten auf
         Dim nwtDaten As New wb_Komponenten
         UpdateNext = False

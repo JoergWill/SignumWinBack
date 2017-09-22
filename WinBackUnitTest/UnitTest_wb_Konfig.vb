@@ -130,8 +130,8 @@ Imports WinBack.wb_Konfig
     Sub TestInitialize()
         'Datenbank Verbindung Einstellungen setzen
         '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-        wb_Konfig.SqlSetting("MySQL")
-        winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
+        winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
 
         'Test-Einträge in Tabelle Texte schreiben (TextIndex, TextTyp,Sprache,Text,Timestamp)
         winback.sqlCommand("INSERT INTO Texte VALUES(9998,9999,0,'Test-0',0,'20160704120000')")

@@ -10,7 +10,7 @@
             WinBack_UserGruppe.Clear()
             OrgaBack_UserGruppe.Clear()
 
-            Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+            Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
             If winback.sqlSelect(wb_Sql_Selects.sqlUserGrpTxt) Then
                 While winback.Read
                     Gruppe.Nummer = winback.iField("II_ItemID")

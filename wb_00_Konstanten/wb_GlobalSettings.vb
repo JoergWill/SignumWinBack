@@ -24,7 +24,17 @@ Public Class wb_GlobalSettings
     Private Shared _MsSQLUserId As String = Nothing
     Private Shared _MsSQLPasswd As String = Nothing
 
+    Private Shared _WinBackDBType As wb_Sql.dbType = wb_Sql.dbType.undef
+    Private Shared _MySQLServerIP As String = Nothing
+    Private Shared _MySQLWinBack As String = Nothing
+    Private Shared _MySQLWbDaten As String = Nothing
+    Private Shared _MySQLUser As String = Nothing
+    Private Shared _MySQLPass As String = Nothing
     Private Shared _MySQLPath As String = Nothing
+
+    Private Shared _MsSQLServerIP As String = Nothing
+    Private Shared _MsSQLWinBack As String = Nothing
+    Private Shared _MsSQLWbDaten As String = Nothing
 
     Private Shared _LogToTextFile As Integer = wb_Global.UNDEFINED
     Private Shared _LogToDataBase As Integer = wb_Global.UNDEFINED
@@ -207,6 +217,40 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared ReadOnly Property SqlConWinBack As String
+        Get
+            Select Case wb_GlobalSettings.WinBackDBType
+                Case wb_Sql.dbType.mySql
+                    Return "server=" & MySQLServerIP & ";" & "user id=" & MySQLUser & ";" & "password=" & MySQLPass & ";" & "database=" & MySQLWinBack & ";"
+                Case wb_Sql.dbType.msSql
+                    If MsSQLUserId <> "xx" Then
+                        Return "Data Source=" & MsSQLServer & "; Database=" & MySQLWinBack & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd
+                    Else
+                        Return "Data Source=" & MsSQLServer & "; Database=" & MySQLWinBack & "; Integrated Security=True"
+                    End If
+                Case Else
+                    Throw New NotImplementedException
+            End Select
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property SqlConWbDaten As String
+        Get
+            Select Case wb_GlobalSettings.WinBackDBType
+                Case wb_Sql.dbType.mySql
+                    Return "server=" & MySQLServerIP & ";" & "user id=" & MySQLUser & ";" & "password=" & MySQLPass & ";" & "database=" & MySQLWbDaten & ";"
+                Case wb_Sql.dbType.msSql
+                    If MsSQLUserId <> "xx" Then
+                        Return "Data Source=" & MsSQLServer & "; Database=" & MySQLWbDaten & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd
+                    Else
+                        Return "Data Source=" & MsSQLServer & "; Database=" & MySQLWbDaten & "; Integrated Security=True"
+                    End If
+                Case Else
+                    Throw New NotImplementedException
+            End Select
+        End Get
+    End Property
+
     Public Shared Property MySQLPath As String
         Get
             If _MySQLPath = Nothing Then
@@ -219,16 +263,137 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property WinBackDBType As wb_Sql.dbType
+        Get
+            If _WinBackDBType = wb_Sql.dbType.undef Then
+                getWinBackIni("SQL")
+            End If
+            Return _WinBackDBType
+        End Get
+        Set(value As wb_Sql.dbType)
+            _WinBackDBType = value
+        End Set
+    End Property
+
+    Public Shared Property MySQLServerIP As String
+        Get
+            If _MySQLServerIP = Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MySQLServerIP
+        End Get
+        Set(value As String)
+            _MySQLServerIP = value
+        End Set
+    End Property
+
+    Public Shared Property MySQLWinBack As String
+        Get
+            If _MySQLWinBack = Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MySQLWinBack
+        End Get
+        Set(value As String)
+            _MySQLWinBack = value
+        End Set
+    End Property
+
+    Public Shared Property MySQLWbDaten As String
+        Get
+            If _MySQLWbDaten = Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MySQLWbDaten
+        End Get
+        Set(value As String)
+            _MySQLWbDaten = value
+        End Set
+    End Property
+
+    Public Shared Property MySQLUser As String
+        Get
+            If _MySQLUser = Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MySQLUser
+        End Get
+        Set(value As String)
+            _MySQLUser = value
+        End Set
+    End Property
+
+    Public Shared Property MySQLPass As String
+        Get
+            If _MySQLPass = Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MySQLPass
+        End Get
+        Set(value As String)
+            _MySQLPass = value
+        End Set
+    End Property
+
+    Public Shared Property MsSQLServerIP As String
+        Get
+            If _MsSQLServerIP = Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MsSQLServerIP
+        End Get
+        Set(value As String)
+            _MsSQLServerIP = value
+        End Set
+    End Property
+
+    Public Shared Property MsSQLWinBack As String
+        Get
+            If _MsSQLWinBack = Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MsSQLWinBack
+        End Get
+        Set(value As String)
+            _MsSQLWinBack = value
+        End Set
+    End Property
+
+    Public Shared Property MsSQLWbDaten As String
+        Get
+            If _MsSQLWbDaten = Nothing Then
+                getWinBackIni("SQL")
+            End If
+            Return _MsSQLWbDaten
+        End Get
+        Set(value As String)
+            _MsSQLWbDaten = value
+        End Set
+    End Property
+
     Private Shared Sub getWinBackIni(Key As String)
         Dim IniFile As New wb_IniFile
 
         Select Case Key
             Case "SQL"
+                _WinBackDBType = wb_Functions.StringToDBType(IniFile.ReadString("winback", "DBType", "MySQL"))
+                _MySQLServerIP = IniFile.ReadString("winback", "eMySQLServerIP", Environment.MachineName)
+                _MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
+                _MySQLWbDaten = IniFile.ReadString("winback", "eMySQLDatabaseDaten", "wbdaten")
+                _MySQLUser = IniFile.ReadString("winback", "eMySQLUser", "herbst")
+                _MySQLPass = IniFile.ReadString("winback", "eMySQLPasswordDatabase", "herbst")
+
+                'Default-Wert für die IP-Adresse is der Rechner-Name sonst funktioniert der Zugriff auf die MS-SQL2014-Datenbank nicht
+                _MsSQLServerIP = IniFile.ReadString("winback", "eMsSQLServerIP", Environment.MachineName)
+                _MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
+                _MySQLWbDaten = IniFile.ReadString("winback", "eMySQLDatabaseDaten", "wbdaten")
+
                 _MsSQLMainDB = IniFile.ReadString("winback", "MsSQLServer_MainDB", "DemoOrgaBack_Main3")
                 _MsSQLAdmnDB = IniFile.ReadString("winback", "MsSQLServer_AdmnDB", "DemoOrgaBack_Admin3")
                 _MsSQLServer = IniFile.ReadString("winback", "MsSQLServer_Source", "WILL-WIN10\SIGNUM")
                 _MsSQLUserId = IniFile.ReadString("winback", "MsSQLServer_UserId", "xx")
                 _MsSQLPasswd = IniFile.ReadString("winback", "MsSQLServer_Passwd", "xx")
+
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
 
             Case "Logger"

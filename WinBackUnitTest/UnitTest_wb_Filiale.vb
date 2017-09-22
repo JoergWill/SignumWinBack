@@ -10,7 +10,7 @@ Imports WinBack
         If My.Settings.TestMsSQL Then
             'Datenbank Verbindung Einstellungen setzen
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_Konfig.SqlSetting("MySQL")
+            wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
         End If
     End Sub
 

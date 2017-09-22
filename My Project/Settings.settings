@@ -5,44 +5,5 @@
     <Setting Name="AktLanguage" Type="System.String" Scope="User">
       <Value Profile="(Default)">de</Value>
     </Setting>
-    <Setting Name="MySQLServerIP" Type="System.String" Scope="User">
-      <Value Profile="(Default)">127.0.0.1</Value>
-    </Setting>
-    <Setting Name="MySQLWinBack" Type="System.String" Scope="User">
-      <Value Profile="(Default)">winback</Value>
-    </Setting>
-    <Setting Name="MySQLWbDaten" Type="System.String" Scope="User">
-      <Value Profile="(Default)">wbdaten</Value>
-    </Setting>
-    <Setting Name="MySQLUser" Type="System.String" Scope="User">
-      <Value Profile="(Default)">herbst</Value>
-    </Setting>
-    <Setting Name="MySQLPass" Type="System.String" Scope="User">
-      <Value Profile="(Default)">herbst</Value>
-    </Setting>
-    <Setting Name="MySQLConWinBack" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MySQLConWbDaten" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MsSQLConWinBack" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=winback; Integrated Security=True</Value>
-    </Setting>
-    <Setting Name="MsSQLConWbDaten" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=127.0.0.1\SIGNUM; Database=wbdaten; Integrated Security=True</Value>
-    </Setting>
-    <Setting Name="MsSQLServerIP" Type="System.String" Scope="User">
-      <Value Profile="(Default)">WILL-WIN10</Value>
-    </Setting>
-    <Setting Name="WinBackDBType" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="WinBackConString" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="WbDatenConString" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
   </Settings>
 </SettingsFile>

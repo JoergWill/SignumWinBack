@@ -10,7 +10,7 @@
         Dim E As wb_Global.ENummern
         Dim eName As String = ""
 
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlENummern)
         eEListe.Clear()
         sEListe.Clear()

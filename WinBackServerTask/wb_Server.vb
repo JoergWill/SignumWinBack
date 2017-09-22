@@ -207,8 +207,6 @@ Public Class Main
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Mysql-Einstellungen (IP-Adresse, User, Passwort)
-        wb_Konfig.SqlSetting()
         'Initialisierung Texte-Tabelle
         wb_Konfig.LoadTexteTabelle(wb_Konfig.GetLanguageNr())
 

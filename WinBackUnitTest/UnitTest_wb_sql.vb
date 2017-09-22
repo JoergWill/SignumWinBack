@@ -48,9 +48,9 @@ Public Class UnitTest_wb_Sql
 
             'Datenbank Verbindung Einstellungen setzen
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_Konfig.SqlSetting("MySQL")
+            wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
 
-            Debug.Print("Test Ping MySQL aktiv " & wb_Konfig.SqlConWinBack & " dauert ca.200 Sekunden !!")
+            Debug.Print("Test Ping MySQL aktiv " & wb_GlobalSettings.SqlConWinBack & " dauert ca.200 Sekunden !!")
             'Text anzeigen
             Windows.Forms.Application.DoEvents()
 
@@ -70,11 +70,11 @@ Public Class UnitTest_wb_Sql
 
             'Datenbank Verbindung Einstellungen setzen
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_Konfig.SqlSetting("MySQL")
-            Debug.Print("Test MySQL aktiv " & wb_Konfig.SqlConWinBack)
+            wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
+            Debug.Print("Test MySQL aktiv " & wb_GlobalSettings.SqlConWinBack)
 
             'Datenbank-Verbindung öffnen - MySQL
-            Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
 
             'Tabelle Test erstellen
             winback.sqlCommand("DROP TABLE IF EXISTS Test;")
@@ -139,21 +139,21 @@ Public Class UnitTest_wb_Sql
 
             'Datenbank Verbindung Einstellungen setzen
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_Konfig.SqlSetting("MSsql")
-            Debug.Print("Test MSsql aktiv " & wb_Konfig.SqlConWinBack)
+            wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.msSql
+            Debug.Print("Test MSsql aktiv " & wb_GlobalSettings.SqlConWinBack)
 
             'Datenbank WinBack erstellen - MS-SQL (WinBack darf nicht geöffnet sein)
-            DataBaseWinBack(wb_Konfig.SqlConOrgaBack)
+            DataBaseWinBack(wb_GlobalSettings.OrgaBackMainConString)
             'Datenbank WbDaten erstellen - MS-SQL
-            DataBaseWbDaten(wb_Konfig.SqlConOrgaBack)
+            DataBaseWbDaten(wb_GlobalSettings.OrgaBackMainConString)
 
             'Tabelle WinBack.Komponenten erstellen
-            Komponenten(wb_Konfig.SqlConWinBack)
+            Komponenten(wb_GlobalSettings.SqlConWinBack)
             'Tabelle WinBack.Rezepte erstellen
-            Rezepte(wb_Konfig.SqlConWinBack)
+            Rezepte(wb_GlobalSettings.SqlConWinBack)
 
             'Tabelle WbDaten.His_Rezepte erstellen
-            His_Rezepte(wb_Konfig.SqlConWinBack)
+            His_Rezepte(wb_GlobalSettings.SqlConWinBack)
 
             'Datenbank-Verbindung öffnen - MsSQL
             Dim OrgasoftMain As New wb_Sql(My.Settings.MsSQLConWinBack, wb_Sql.dbType.msSql)
@@ -197,11 +197,8 @@ Public Class UnitTest_wb_Sql
     <TestMethod()>
     Public Sub TestCommandBuilder()
         Dim mySelectQuery As String = "SELECT KO_Nr, KO_Type, KO_Bezeichnung, KO_Kommentar FROM Komponenten;"
-        'Datenbank Verbindung Einstellungen setzen
-        '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-        wb_Konfig.SqlSetting()
 
-        Dim myConn As New MySqlConnection(wb_Konfig.SqlConWinBack)
+        Dim myConn As New MySqlConnection(wb_GlobalSettings.SqlConWinBack)
         Dim myDataAdapter As New MySqlDataAdapter()
         myDataAdapter.SelectCommand = New MySqlCommand(mySelectQuery, myConn)
         ' Test-Routine prüft ob die DLL-Version zur Datenbank-Version passt

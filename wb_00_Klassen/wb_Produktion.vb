@@ -42,7 +42,7 @@
         Dim GesamtStueck As Integer = 0
 
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWbDaten, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
         Dim Value As Object
         Dim sql As String
 

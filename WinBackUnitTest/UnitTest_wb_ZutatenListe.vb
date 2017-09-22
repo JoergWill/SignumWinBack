@@ -8,7 +8,7 @@ Imports WinBack
     Sub TestInitialize()
         'Datenbank Verbindung Einstellungen setzen
         '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-        wb_Konfig.SqlSetting("MySQL")
+        wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
     End Sub
 
     <TestMethod()> Public Sub Test_DelDoubletten()

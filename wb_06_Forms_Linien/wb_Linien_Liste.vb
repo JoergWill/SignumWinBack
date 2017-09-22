@@ -70,11 +70,11 @@ Public Class wb_Linien_Liste
         'alle Einträge löschen
         VNCview.Clear()
 
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
         If winback.sqlSelect("SELECT * FROM Linien") Then
             While winback.Read
                 IPLinie = (winback.iField("L_Nr") + 10).ToString
-                IPAdresse = My.Settings.MySQLServerIP & ":" & IPLinie
+                IPAdresse = wb_GlobalSettings.MySQLServerIP & ":" & IPLinie
                 IPComment = winback.sField("L_Bezeichnung")
                 AddItems(IPAdresse, IPComment)
             End While

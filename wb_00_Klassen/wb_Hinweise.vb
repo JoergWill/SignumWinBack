@@ -97,7 +97,7 @@ Public Class wb_Hinweise
     ''' <param name="idx">Integer - Komponenten/Artikelnummer</param>
     ''' <returns></returns>
     Public Function Read(idx As Integer) As Boolean
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
 
         'Artikel/Komponenten/Rezeptnummer merken
         H2_Id2 = idx
@@ -129,7 +129,7 @@ Public Class wb_Hinweise
         'Index muss gesetzt sein
         If (H2_Id2 > 0) Then
 
-            Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+            Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
             Dim s1, s2 As String
 
             'Vor Insert/Update müssen die Daten gelesen werden
@@ -178,7 +178,7 @@ Public Class wb_Hinweise
     ''' </summary>
     ''' <returns></returns>
     Public Function Delete() As Boolean
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         'alle Datensätze löschen
         Dim i As Integer = winback.sqlCommand(setParams(sqlDeleteH2, H2_Typ, H2_Typ2, H2_Id2))
         winback.Close()

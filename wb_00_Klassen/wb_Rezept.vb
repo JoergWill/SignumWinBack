@@ -358,7 +358,7 @@ Public Class wb_Rezept
     ''' <returns></returns>
     Private Function MySQLdbSelect_RzKopf(RezeptNummer As Integer, ByRef Variante As Integer) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
 
         'Suche nach Rz_Nr
@@ -385,7 +385,7 @@ Public Class wb_Rezept
     ''' </summary>
     Private Function MySQLdbSelect_RzSchritt(RezeptNummer As Integer, Variante As Integer) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
 
         'Suche nach Rz_Nr

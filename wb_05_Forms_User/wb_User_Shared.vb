@@ -11,7 +11,7 @@
         'HashTable mit der Übersetzung der Gruppen-Nummer in die Gruppen-Bezeichnung laden
         'wenn die Gruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlUserGrpTxt)
         GrpTexte.Clear()
         While winback.Read

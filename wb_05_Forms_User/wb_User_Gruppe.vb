@@ -11,7 +11,7 @@
             Rechte.Clear()
             iGruppe = Gruppe
 
-            Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+            Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
             If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserRechte, Gruppe, wb_Konfig.GetLanguageNr())) Then
                 While winback.Read
                     GruppenRechte.OberBegriff = winback.sField("IT_Bezeichnung")

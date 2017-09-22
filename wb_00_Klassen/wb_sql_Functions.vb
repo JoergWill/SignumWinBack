@@ -14,9 +14,9 @@ Public Class wb_sql_Functions
     ''' False - Wenn keine Verbindung zur Datenbank aufgebaut werden kann</returns>
     Public Shared Function ping() As Boolean
 
-        Select Case My.Settings.WinBackDBType
+        Select Case wb_GlobalSettings.WinBackDBType
             Case wb_Sql.dbType.mySql
-                Dim MySqlCon As New MySqlConnection(My.Settings.WinBackConString)
+                Dim MySqlCon As New MySqlConnection(wb_GlobalSettings.SqlConWinBack)
                 Try
                     MySqlCon.Open()
                     If MySqlCon.Ping Then
@@ -96,7 +96,7 @@ Public Class wb_sql_Functions
     ''' <param name="ParameterNummer">Integer - Parameter-Nummer</param>
     ''' <returns></returns>
     Public Shared Function getKomponParam(KomponentenNummer As Integer, ParameterNummer As Integer, Optional DefaultWert As String = "") As String
-        Dim winback As New wb_Sql(My.Settings.WinBackConString, My.Settings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
 
         'Daten aus winback.KomponParams in String einlesen
         winback.sqlSelect(setParams(sqlKompParams, KomponentenNummer, ParameterNummer))
@@ -115,7 +115,7 @@ Public Class wb_sql_Functions
     ''' <returns>Integer - nächste freie Komponenten-Nummer</returns>
     Public Shared Function getNewKomponNummer() As Integer
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
 
         'Max-Wert KO-Nr aus Tabelle Komponenten ermitteln
         winback.sqlSelect(sqlMaxKompNummer)

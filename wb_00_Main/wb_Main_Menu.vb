@@ -132,6 +132,8 @@ Public Class wb_Main_Menu
     Private Sub ShowArtikelForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Artikel_Main(ServiceProvider), My.Resources.MainArtikel_16x16)
+        'Fensterposition aus winback.ini
+        wb_Konfig.SetFormBoundaries(xForm, "Artikel")
     End Sub
 
     ''' <summary>
@@ -290,8 +292,6 @@ Public Class wb_Main_Menu
         'Programm-Einstellung OrgaBack
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
 
-        'Mysql-Einstellungen (IP-Adresse, User, Passwort)
-        wb_Konfig.SqlSetting()
     End Sub
 
 End Class

@@ -226,7 +226,7 @@ Public Class wb_Komponenten
     ''' True - Rohstoff/Artikel wird nicht mehr verwendet (kann gelöscht werder)</returns>
     Public Function MySQLdbCanBeDeleted(InterneKomponentenNummer As Integer, Optional KomponentenNummer As String = "") As Boolean
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
 
         'Suche nach KO_Nr oder KO_AlNum
@@ -304,7 +304,7 @@ Public Class wb_Komponenten
     ''' <param name="InterneKomponentenNummer">Integer - Interne Komponenten-Nummer</param>
     ''' <returns>Boolean - Löschen ist erlaubt</returns>
     Private Function MySQLIsUsedInProdcution(InterneKomponentenNummer As Integer) As Boolean
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWbDaten, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompInArbRzp, InterneKomponentenNummer)
         Dim Count As Integer = -1
 
@@ -329,7 +329,7 @@ Public Class wb_Komponenten
     ''' <param name="InterneKomponentenNummer">Integer - Interne Komponenten-Nummer</param>
     ''' <returns>Boolean - Löschen ist erlaubt</returns>
     Private Function MySQLIsUsedInRecipe(InterneKomponentenNummer) As Boolean
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompInRezept, InterneKomponentenNummer)
         Dim Count As Integer = -1
 
@@ -360,7 +360,7 @@ Public Class wb_Komponenten
     ''' (Routine MySQLdbCanBeDeleted) 
     ''' </summary>
     Public Sub MySQLdbDelete()
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
 
         'Interne Komponenten-Nummer muss definiert sein
         If KO_Nr > 0 Then
@@ -396,7 +396,7 @@ Public Class wb_Komponenten
     ''' <returns>Integer - neu anglegte (interne) Komponenten-Nummer</returns>
     Public Function MySQLdbNew(KType As wb_Global.KomponTypen) As Integer
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'interne Komponenten-Nummer ermitteln aus max(KO_NR)
         KO_Nr = wb_sql_Functions.getNewKomponNummer()
         'Komponenten-Type (Artikel/Handkomponente)
@@ -418,7 +418,7 @@ Public Class wb_Komponenten
     ''' </summary>
     Public Function MySQLdbRead(InterneKomponentenNummer As Integer, Optional KomponentenNummer As String = "") As Boolean
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
 
         'Suche nach KO_Nr oder KO_AlNum
@@ -572,7 +572,7 @@ Public Class wb_Komponenten
     ''' <returns></returns>
     Public Function MySQLdbUpdate(InterneKomponentenNummer As Integer) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_Konfig.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
 
         'Update-Statement wird dynamisch erzeugt    

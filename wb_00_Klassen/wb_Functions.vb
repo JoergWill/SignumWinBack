@@ -467,6 +467,19 @@ Public Class wb_Functions
         End Select
     End Function
 
+    Public Shared Function StringToDBType(Value As String) As wb_Sql.dbType
+        Select Case Value.ToLower
+            'winback läuft unter MySQL 
+            Case "mysql"
+                Return wb_Sql.dbType.mySql
+            'WinBack läuft unter MicroSoft SQL
+            Case "mssql"
+                Return wb_Sql.dbType.msSql
+            Case Else
+                Return wb_Sql.dbType.undef
+        End Select
+    End Function
+
     ''' <summary>
     ''' Formatiert einen String mit der angegebenen Vorkomma und Nachkomma-Stelle
     ''' </summary>
