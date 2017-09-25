@@ -203,7 +203,7 @@ Public Class WinBack
         'Programm und Datei-Pfade einstellen
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack
         'Version in Status-Bar anzeigen
-        lblVersion.Text = "WinBack V" & My.Application.Info.Version.ToString
+        lblVersion.Text = "WinBack V" & wb_GlobalSettings.WinBackVersion
         'IP-Adresse in Status-Bar anzeigen
         lblNetworkIP.Text = wb_GlobalSettings.WinBackDBType.ToString & " " & wb_GlobalSettings.MySQLServerIP
         'aktuelle(letzte) Sprache einstellen

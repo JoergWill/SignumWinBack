@@ -48,10 +48,10 @@ Partial Class wb_Rezept_Details
         Me.tChargeOpt = New System.Windows.Forms.TextBox()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
-        Me.cbVariante = New WinBack.wb_ComboBox()
+        Me.cbVariante = New Global.WinBack.wb_ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
-        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
+        Me.cbLiniengruppe = New Global.WinBack.wb_ComboBox()
         Me.SuspendLayout()
         '
         'tRezeptNr

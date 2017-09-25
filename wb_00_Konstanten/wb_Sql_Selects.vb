@@ -1,4 +1,6 @@
 ﻿Public Class wb_Sql_Selects
+    'Sql-Statement Konfiguration
+    Public Const sqlKonfiguration = "SELECT * FROM Konfiguration WHERE KF_Tag LIKE '[0]'"
 
     'Sql-Statement Rezeptliste aus winback.Rezepte
     Public Const sqlRezeptListe = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
@@ -161,6 +163,8 @@
     Public Const mssqlSettings = "SELECT * FROM Settings WHERE [Category] = '[0]'"
     'Sql-Statement Abfrage dbo.WorkStations.Computername
     Public Const mssqlWrkStations = "SELECT * FROM WorkStations WHERE [ComputerName] = '[0]'"
+    'Sql-Statement Abfrage dbo.SystemInfo
+    Public Const mssqlSystemInfo = "SELECT TOP(1) * FROM SystemInfo ORDER BY lfd DESC"
 
 
     Public Shared Function setParams(sql As String, Param0 As String, Optional Param1 As String = "-",

@@ -1,6 +1,6 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class wb_Rezept_Main
-    Inherits WinBack.wb_DockBarPanelMain
+    Inherits Global.WinBack.wb_DockBarPanelMain
 
     'UserControl überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()>

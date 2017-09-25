@@ -23,7 +23,7 @@ Public Class wb_Admin_Datensicherung
 
         If dlg.ShowDialog = System.Windows.Forms.DialogResult.OK Then
 
-            Dim mysql As New WinBack.wb_sql_BackupRestore
+            Dim mysql As New Global.WinBack.wb_sql_BackupRestore
             BackupFileName.Text = dlg.FileName
             BackupFileName.Focus()
 
@@ -58,7 +58,7 @@ Public Class wb_Admin_Datensicherung
         If dlg.ShowDialog = System.Windows.Forms.DialogResult.OK Then
 
             RestoreFileName.Text = dlg.FileName
-            Dim mysql As New WinBack.wb_sql_BackupRestore
+            Dim mysql As New Global.WinBack.wb_sql_BackupRestore
             RestoreFileName.Focus()
             'Datenrücksicherung starten
             mysql.datenruecksicherung(RestoreFileName.Text)

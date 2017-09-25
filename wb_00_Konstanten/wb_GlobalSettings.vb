@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Reflection
 Imports WinBack.wb_Global
 ''' <summary>
 ''' Shared Objekt. Hält alle globalen Programm-Einstellungen zentral in einem Objekt.
@@ -17,6 +18,9 @@ Imports WinBack.wb_Global
 ''' </summary>
 Public Class wb_GlobalSettings
     Private Shared _pVariante As wb_Global.ProgVariante = wb_Global.ProgVariante.Undef
+    Private Shared _pAddInPath As String = Nothing
+    Private Shared _OrgaBackDBVersion As String = Nothing
+    Private Shared _WinBackDBVersion As String = Nothing
 
     Private Shared _MsSQLMainDB As String = Nothing
     Private Shared _MsSQLAdmnDB As String = Nothing
@@ -371,6 +375,65 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared ReadOnly Property OrgaBackVersion As String
+        Get
+            If _pVariante = wb_Global.ProgVariante.OrgaBack Then
+                Return Assembly.GetEntryAssembly().GetName().Version.ToString
+            Else
+                Return ""
+            End If
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property OrgaBackDBVersion As String
+        Get
+            If _OrgaBackDBVersion Is Nothing Then
+                _OrgaBackDBVersion = ""
+                Dim Orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+                If Orgaback.sqlSelect(wb_Sql_Selects.mssqlSystemInfo) Then
+                    If Orgaback.Read Then
+                        _OrgaBackDBVersion = Orgaback.sField("DBVersion")
+                    End If
+                    Orgaback.Close()
+                End If
+            End If
+            Return _OrgaBackDBVersion
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property WinBackVersion As String
+        Get
+            If _pVariante = wb_Global.ProgVariante.OrgaBack Then
+                Return Assembly.GetExecutingAssembly().GetName().Version.ToString
+            Else
+                Return My.Application.Info.Version.ToString
+            End If
+        End Get
+    End Property
+
+    Public Shared Property WinBackDBVersion As String
+        Get
+            If _WinBackDBVersion Is Nothing Then
+                _WinBackDBVersion = ""
+                getWinBackKonfiguration()
+            End If
+            Return _WinBackDBVersion
+        End Get
+        Set(value As String)
+            _WinBackDBVersion = value
+        End Set
+    End Property
+
+    Public Shared Property pAddInPath As String
+        Get
+            Return _pAddInPath
+        End Get
+        'wird in wb_Main_Menu gesetzt
+        Set(value As String)
+            _pAddInPath = value
+        End Set
+    End Property
+
     Private Shared Sub getWinBackIni(Key As String)
         Dim IniFile As New wb_IniFile
 
@@ -401,5 +464,19 @@ Public Class wb_GlobalSettings
                 _LogToDataBase = IniFile.ReadInt("winback", "LogToDataBase", wbFALSE)
 
         End Select
+    End Sub
+
+    Private Shared Sub getWinBackKonfiguration(Optional Key As String = "%")
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'Daten aus Tabelle Konfiguration lesen
+        If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKonfiguration, Key)) Then
+            While winback.Read
+                Select Case winback.sField("KF_Tag")
+                    Case "DatenbankVersion"
+                        _WinBackDBVersion = winback.sField("KF_Wert")
+                End Select
+            End While
+        End If
     End Sub
 End Class

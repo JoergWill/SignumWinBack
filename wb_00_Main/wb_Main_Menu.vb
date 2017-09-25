@@ -291,6 +291,41 @@ Public Class wb_Main_Menu
     Private Sub ReadSystemKonfig()
         'Programm-Einstellung OrgaBack
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
+        'Signum.OrgaSoft.Common.Settings.Verzeichnisse.AddInPfad
+        wb_GlobalSettings.PAddInPath = TryCast(oSetting.GetSetting("Verzeichnisse.AddInPfad"), String)
+
+        'Programm-Version OrgaBack
+        Dim PVersion = Assembly.GetEntryAssembly().GetName().Version
+
+        Dim asm As Assembly = Assembly.GetExecutingAssembly()
+        Dim location As String = asm.Location
+        Dim version = asm.GetName.Version
+        Dim appName As String = System.IO.Path.GetDirectoryName(location)
+
+        Debug.Print("STOP")
+        'Dim  As String = Signum.OrgaSoft.Common.Settings.Verzeichnisse.AddInPfad
+
+        'Dim sAssemblyName As String = New AssemblyName(args.Name).Name
+        'Dim arrFields As String() = args.Name.Split(","c)
+        'Dim sAssemblyCulture As String = arrFields(2).Substring(arrFields(2).IndexOf("="c) + 1)
+
+        'Dim sAssemblyFileName As String = sAssemblyName + ".dll"
+        'Dim sAssemblyPath As String
+
+        'If sAssemblyName.EndsWith(".resources") Then
+        '    Dim sResourceDirectory As String = Path.Combine(sApplicationDirectory, sAssemblyCulture)
+        '    sAssemblyPath = Path.Combine(sResourceDirectory, sAssemblyFileName)
+        'Else
+        '    sAssemblyPath = Path.Combine(sApplicationDirectory, sAssemblyFileName)
+        'End If
+
+        'If File.Exists(sAssemblyPath) Then
+        '    Return If(Debugger.IsAttached, Reflection.Assembly.LoadFile(sAssemblyPath), Assembly.Load(File.ReadAllBytes(sAssemblyPath)))
+        'Else
+        '    Return Nothing
+        'End If
+
+
     End Sub
 
 End Class

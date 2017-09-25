@@ -7,16 +7,19 @@
     ''' <param name="xForm"></param>
     ''' <param name="IniSektion"></param>
     Public Shared Sub SetFormBoundaries(xForm As Windows.Forms.Form, IniSektion As String)
-        Dim IniFile As New wb_IniFile
+        If xForm IsNot Nothing Then
 
-        'Fensterposition aus winback.ini
-        xForm.Top = IniFile.ReadInt(IniSektion, "Top")
-        xForm.Left = IniFile.ReadInt(IniSektion, "Left")
-        xForm.Width = IniFile.ReadInt(IniSektion, "Width")
-        xForm.Height = IniFile.ReadInt(IniSektion, "Height")
+            Dim IniFile As New wb_IniFile
 
-        'Dispose
-        IniFile = Nothing
+            'Fensterposition aus winback.ini
+            xForm.Top = IniFile.ReadInt(IniSektion, "Top")
+            xForm.Left = IniFile.ReadInt(IniSektion, "Left")
+            xForm.Width = IniFile.ReadInt(IniSektion, "Width")
+            xForm.Height = IniFile.ReadInt(IniSektion, "Height")
+
+            'Dispose
+            IniFile = Nothing
+        End If
     End Sub
 
     Public Shared Sub SaveFormBoundaries(Top As Integer, Left As Integer, Width As Integer, Height As Integer, LayoutFile As String, IniSektion As String)

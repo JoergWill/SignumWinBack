@@ -1,6 +1,6 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class wb_Linien_Main
-    Inherits WinBack.wb_DockBarPanelMain
+    Inherits Global.WinBack.wb_DockBarPanelMain
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()>

@@ -61,7 +61,7 @@ Public Class WinBack_DockMain
         Get
             If _LayoutFilename Is Nothing Then
                 'Dock-Panel-Layout Filename aus winback.ini
-                Dim IniFile As New WinBack.wb_IniFile
+                Dim IniFile As New Global.WinBack.wb_IniFile
                 _LayoutFilename = IniFile.ReadString(FormName, "LayoutFileName", "Default")
                 'Dispose
                 IniFile = Nothing

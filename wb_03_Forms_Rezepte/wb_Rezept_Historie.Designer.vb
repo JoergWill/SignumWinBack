@@ -25,7 +25,7 @@ Partial Class wb_Rezept_Historie
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.HisDataGridView = New WinBack.wb_DataGridView()
+        Me.HisDataGridView = New Global.WinBack.wb_DataGridView()
         CType(Me.HisDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '

@@ -10,6 +10,7 @@ Public Class wb_Admin_Main
     Public AdminLog As New wb_Admin_Log
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public AdminSync As wb_Admin_Sync
+    Public AdminUpdate As wb_Admin_UpdateDatabase
     Public AdminDatensicherung As wb_Admin_Datensicherung
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -55,6 +56,7 @@ Public Class wb_Admin_Main
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrp.AddButton("btnSync", "Synchronisation Datenbanken WinBack-OrgaBack", "", My.Resources.MainSync_16x16, My.Resources.MainSync_32x32, AddressOf BtnAdminSyncForm)
                 oGrp.AddButton("btnDatensicherung", "Sicherung/Rücksicherung Datenbanken WinBack", "", My.Resources.DatenSicherung_16x16, My.Resources.DatenSicherung_32x32, AddressOf BtnAdminDatensicherung)
+                oGrp.AddButton("btnUpdate", "Update/Versionsinformation WinBack", "", My.Resources.UpdateDataBase_16x16, My.Resources.UpdateDataBase_32x32, AddressOf BtnAdminUpdate)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -73,6 +75,11 @@ Public Class wb_Admin_Main
                 AdminSync = New wb_Admin_Sync
                 _DockPanelList.Add(AdminSync)
                 Return AdminSync
+
+            Case "WinBack.wb_Admin_UpdateDatabase"
+                AdminUpdate = New wb_Admin_UpdateDatabase
+                _DockPanelList.Add(AdminUpdate)
+                Return AdminUpdate
 
             Case "WinBack.wb_Admin_Datensicherung"
                 AdminDatensicherung = New wb_Admin_Datensicherung
@@ -95,4 +102,8 @@ Public Class wb_Admin_Main
         AdminDatensicherung.Show(DockPanel, DockState.DockTop)
     End Sub
 
+    Private Sub btnAdminUpdate()
+        AdminUpdate = New wb_Admin_UpdateDatabase
+        AdminUpdate.Show(DockPanel, DockState.DockRight)
+    End Sub
 End Class

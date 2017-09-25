@@ -22,7 +22,7 @@ Partial Class ob_Artikel_VerwendungRezept
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.HisDataGridView = New WinBack.wb_DataGridViewVerwendung()
+        Me.HisDataGridView = New Global.WinBack.wb_DataGridViewVerwendung()
         CType(Me.HisDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '

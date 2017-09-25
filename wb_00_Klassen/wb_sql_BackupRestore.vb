@@ -3,12 +3,9 @@ Imports WinBack
 
 Public Class wb_sql_BackupRestore
 
-    Public Event statusChanged(StatusText As String) ' As EventHandler
-    'TODO Datensicherung Win10 funktioniert nicht
     Public Function datensicherung(Filename As String) As Boolean
         Dim SaveFileExtension As String
         Dim DumpFileName As String
-        AddHandler statusChanged, AddressOf writeToTrace
 
         'Cursor umschalten
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
@@ -19,26 +16,25 @@ Public Class wb_sql_BackupRestore
             DumpFileName = IO.Path.GetDirectoryName(Filename) + "\" + IO.Path.GetFileNameWithoutExtension(Filename) + ".sql"
 
             'Datensicherung starten
-            RaiseEvent statusChanged("Start Datensicherung WinBack")
+            Trace.WriteLine("Start Datensicherung WinBack")
             wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Dump.bat", DumpFileName, True)
 
             'File komprimieren
-            RaiseEvent statusChanged("Datei komprimieren WinBack")
+            Trace.WriteLine("Datei komprimieren WinBack")
             wb_Functions.bz2CompressFile(DumpFileName, Filename)
 
             'ursprüngliche Datensicherung löschen
             My.Computer.FileSystem.DeleteFile(DumpFileName)
-            RaiseEvent statusChanged("Ende  Datensicherung WinBack")
+            Trace.WriteLine("Ende  Datensicherung WinBack")
         Else
             'Datensicherung starten
-            RaiseEvent statusChanged("Start Datensicherung WinBack")
+            Trace.WriteLine("Start Datensicherung WinBack")
             wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Dump.bat", Filename, True)
-            RaiseEvent statusChanged("Ende  Datensicherung WinBack")
+            Trace.WriteLine("Ende  Datensicherung WinBack")
         End If
 
         'Cursor wieder zurücksetzen
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
-        RemoveHandler statusChanged, AddressOf writeToTrace
 
         Return True
     End Function
@@ -46,7 +42,6 @@ Public Class wb_sql_BackupRestore
     Public Function datenruecksicherung(FileName As String) As Boolean
         Dim OpenFileExtension As String
         Dim DumpFileName As String
-        AddHandler statusChanged, AddressOf writeToTrace
 
         'Cursor umschalten
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
@@ -57,30 +52,29 @@ Public Class wb_sql_BackupRestore
             DumpFileName = IO.Path.GetDirectoryName(FileName) + "\" + IO.Path.GetFileNameWithoutExtension(FileName) + ".sql"
 
             'File Dekomprimieren
-            RaiseEvent statusChanged("Datei dekomprimieren WinBack")
+            Trace.WriteLine("Datei dekomprimieren WinBack")
             wb_Functions.bz2DecompressFile(FileName, DumpFileName)
             'Kommentare aus .sql-File entfernen (Inkompatibilität MySql 3.xx nach 5.xx)
-            RaiseEvent statusChanged("Datensicherung bearbeiten (MySql 3.x.xx)")
+            Trace.WriteLine("Datensicherung bearbeiten (MySql 3.x.xx)")
             PrepareSQLFile(DumpFileName, "winback")
             'Datenrücksicherung starten
-            RaiseEvent statusChanged("Start Datenrücksicherung WinBack")
+            Trace.WriteLine("Start Datenrücksicherung WinBack")
             wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Restore.bat", DumpFileName, True)
-            RaiseEvent statusChanged("Ende  Datenrücksicherung WinBack")
+            Trace.WriteLine("Ende  Datenrücksicherung WinBack")
             'dekomprimierte Datei löschen
             My.Computer.FileSystem.DeleteFile(DumpFileName)
         Else
             'Kommentare aus .sql-File entfernen (Inkompatibilität MySql 3.xx nach 5.xx)
-            RaiseEvent statusChanged("Datensicherung bearbeiten (MySql 3.x.xx)")
+            Trace.WriteLine("Datensicherung bearbeiten (MySql 3.x.xx)")
             PrepareSQLFile(FileName, "winback")
             'Datenrücksicherung starten
-            RaiseEvent statusChanged("Start Datenrücksicherung WinBack")
+            Trace.WriteLine("Start Datenrücksicherung WinBack")
             wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Restore.bat", FileName, True)
-            RaiseEvent statusChanged("Ende  Datenrücksicherung WinBack")
+            Trace.WriteLine("Ende  Datenrücksicherung WinBack")
         End If
 
         'Cursor wieder zurücksetzen
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
-        RemoveHandler statusChanged, AddressOf writeToTrace
         Return True
 
     End Function
@@ -129,9 +123,4 @@ Public Class wb_sql_BackupRestore
         'Erzeugte Datei umbenennen
         My.Computer.FileSystem.RenameFile(xFileName, IO.Path.GetFileName(FileName))
     End Sub
-
-    Private Sub writeToTrace(txt As String)
-        Trace.WriteLine(txt)
-    End Sub
-
 End Class

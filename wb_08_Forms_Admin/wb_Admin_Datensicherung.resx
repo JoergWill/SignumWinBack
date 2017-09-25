@@ -122,20 +122,24 @@
     <value>MiddleLeft</value>
   </data>
   <data name="Btn_DatenSicherung.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
+    <value>12, 16</value>
   </data>
   <data name="Btn_DatenSicherung.Size" type="System.Drawing.Size, System.Drawing">
-    <value>163, 61</value>
+    <value>114, 47</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Btn_DatenSicherung.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="Btn_DatenSicherung.Text" xml:space="preserve">
-    <value>Daten sichern</value>
+    <value>Backup</value>
   </data>
   <data name="Btn_DatenSicherung.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Btn_DatenSicherung.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>TextBeforeImage</value>
   </data>
   <data name="&gt;&gt;Btn_DatenSicherung.Name" xml:space="preserve">
     <value>Btn_DatenSicherung</value>
@@ -149,15 +153,14 @@
   <data name="&gt;&gt;Btn_DatenSicherung.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="BackupFileName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="BackupFileName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 24</value>
+    <value>267, 21</value>
   </data>
   <data name="BackupFileName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>380, 20</value>
+    <value>329, 20</value>
   </data>
   <data name="BackupFileName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -181,19 +184,22 @@
     <value>NoControl</value>
   </data>
   <data name="Btn_DatenRueckSicherung.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 79</value>
+    <value>12, 83</value>
   </data>
   <data name="Btn_DatenRueckSicherung.Size" type="System.Drawing.Size, System.Drawing">
-    <value>163, 61</value>
+    <value>114, 47</value>
   </data>
   <data name="Btn_DatenRueckSicherung.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="Btn_DatenRueckSicherung.Text" xml:space="preserve">
-    <value>Daten rücksichern</value>
+    <value>Restore</value>
   </data>
   <data name="Btn_DatenRueckSicherung.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
+  </data>
+  <data name="Btn_DatenRueckSicherung.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>TextBeforeImage</value>
   </data>
   <data name="&gt;&gt;Btn_DatenRueckSicherung.Name" xml:space="preserve">
     <value>Btn_DatenRueckSicherung</value>
@@ -211,7 +217,7 @@
     <value>True</value>
   </data>
   <data name="lblBackupFileName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>182, 27</value>
+    <value>144, 24</value>
   </data>
   <data name="lblBackupFileName.Size" type="System.Drawing.Size, System.Drawing">
     <value>117, 13</value>
@@ -241,7 +247,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblBackupTimeStamp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>182, 45</value>
+    <value>144, 42</value>
   </data>
   <data name="lblBackupTimeStamp.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 13</value>
@@ -265,7 +271,7 @@
     <value>4</value>
   </data>
   <data name="BackupTimeStamp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>216, 45</value>
+    <value>178, 42</value>
   </data>
   <data name="BackupTimeStamp.Size" type="System.Drawing.Size, System.Drawing">
     <value>87, 13</value>
@@ -295,7 +301,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblRestoreTimeStamp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>182, 113</value>
+    <value>144, 110</value>
   </data>
   <data name="lblRestoreTimeStamp.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 13</value>
@@ -319,7 +325,7 @@
     <value>0</value>
   </data>
   <data name="RestoreTimeStamp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>216, 113</value>
+    <value>178, 110</value>
   </data>
   <data name="RestoreTimeStamp.Size" type="System.Drawing.Size, System.Drawing">
     <value>87, 13</value>
@@ -349,7 +355,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblRestoreFileName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>182, 95</value>
+    <value>144, 92</value>
   </data>
   <data name="lblRestoreFileName.Size" type="System.Drawing.Size, System.Drawing">
     <value>114, 13</value>
@@ -376,10 +382,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="RestoreFileName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 92</value>
+    <value>267, 89</value>
   </data>
   <data name="RestoreFileName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>380, 20</value>
+    <value>329, 20</value>
   </data>
   <data name="RestoreFileName.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -403,10 +409,13 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>697, 192</value>
+    <value>608, 149</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>624, 188</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>WinBack Daten sichern/rücksichern</value>

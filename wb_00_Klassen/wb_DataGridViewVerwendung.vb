@@ -3,7 +3,7 @@
 '''Anzeige der Rohstoff-Verwendung in Rezepturen
 ''' </summary>
 Public Class wb_DataGridViewVerwendung
-    Inherits WinBack.wb_DataGridView
+    Inherits Global.WinBack.wb_DataGridView
 
     Public Sub LoadVerwendung(Nr As Integer)
         'Liste der Tabellen-Überschriften

@@ -29,7 +29,7 @@ Partial Class wb_User_Details
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel = New System.Windows.Forms.Panel()
-        Me.cbUserGrp = New WinBack.wb_ComboBox()
+        Me.cbUserGrp = New Global.WinBack.wb_ComboBox()
         Me.tUserPass = New System.Windows.Forms.TextBox()
         Me.tUserName = New System.Windows.Forms.TextBox()
         Me.Panel.SuspendLayout()

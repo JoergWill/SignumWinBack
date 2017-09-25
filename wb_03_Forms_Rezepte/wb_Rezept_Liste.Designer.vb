@@ -27,7 +27,7 @@ Partial Class wb_Rezept_Liste
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.DataGridView = New WinBack.wb_DataGridView()
+        Me.DataGridView = New Global.WinBack.wb_DataGridView()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
