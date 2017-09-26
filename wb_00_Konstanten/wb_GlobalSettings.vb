@@ -434,6 +434,12 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared ReadOnly Property pDBUpdatePath
+        Get
+            Return _pAddInPath & "DBUpdate\"
+        End Get
+    End Property
+
     Private Shared Sub getWinBackIni(Key As String)
         Dim IniFile As New wb_IniFile
 

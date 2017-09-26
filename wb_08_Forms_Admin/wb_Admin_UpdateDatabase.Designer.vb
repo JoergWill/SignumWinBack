@@ -35,6 +35,8 @@ Partial Class wb_Admin_UpdateDatabase
         Me.tbOrgaBackDataBase = New System.Windows.Forms.TextBox()
         Me.BtnUpdateWinBackDataBase = New System.Windows.Forms.Button()
         Me.lblUpdateFilesCount = New System.Windows.Forms.Label()
+        Me.pbData = New MetroFramework.Controls.MetroProgressBar()
+        Me.pbFiles = New MetroFramework.Controls.MetroProgressBar()
         Me.SuspendLayout()
         '
         'lblWinBackOffice
@@ -137,11 +139,31 @@ Partial Class wb_Admin_UpdateDatabase
         Me.lblUpdateFilesCount.TabIndex = 10
         Me.lblUpdateFilesCount.Text = "xx Updates gefunden"
         '
+        'pbData
+        '
+        Me.pbData.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.pbData.Location = New System.Drawing.Point(166, 168)
+        Me.pbData.Name = "pbData"
+        Me.pbData.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Blocks
+        Me.pbData.Size = New System.Drawing.Size(122, 14)
+        Me.pbData.TabIndex = 11
+        '
+        'pbFiles
+        '
+        Me.pbFiles.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.pbFiles.Location = New System.Drawing.Point(166, 148)
+        Me.pbFiles.Name = "pbFiles"
+        Me.pbFiles.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Blocks
+        Me.pbFiles.Size = New System.Drawing.Size(122, 15)
+        Me.pbFiles.TabIndex = 12
+        '
         'wb_Admin_UpdateDatabase
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(312, 194)
+        Me.ClientSize = New System.Drawing.Size(471, 194)
+        Me.Controls.Add(Me.pbFiles)
+        Me.Controls.Add(Me.pbData)
         Me.Controls.Add(Me.lblUpdateFilesCount)
         Me.Controls.Add(Me.BtnUpdateWinBackDataBase)
         Me.Controls.Add(Me.tbOrgaBackDataBase)
@@ -169,4 +191,6 @@ Partial Class wb_Admin_UpdateDatabase
     Friend WithEvents tbOrgaBackDataBase As Windows.Forms.TextBox
     Friend WithEvents BtnUpdateWinBackDataBase As Windows.Forms.Button
     Friend WithEvents lblUpdateFilesCount As Windows.Forms.Label
+    Friend WithEvents pbData As MetroFramework.Controls.MetroProgressBar
+    Friend WithEvents pbFiles As MetroFramework.Controls.MetroProgressBar
 End Class

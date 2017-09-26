@@ -198,6 +198,7 @@ Public Class wb_ZutatenListe
             If DirectCast(Liste(i), wb_Global.ZutatenListe).Zutaten = "" Then
                 Liste.RemoveAt(i)
                 lc -= 1
+                If i < lc Then Exit For
             End If
         Next
     End Sub
