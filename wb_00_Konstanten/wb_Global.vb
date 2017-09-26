@@ -302,6 +302,7 @@
         Public SyncOK As SyncState    'Synchronisations-Status
     End Structure
 
+
     'Anlegen neuer Dummy-User (Felder vorbelegen)
     Public Const NewUserName = "Neu"
     Public Const NewUserPass = "-1"

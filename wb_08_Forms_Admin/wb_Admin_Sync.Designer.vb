@@ -25,43 +25,34 @@ Partial Class wb_Admin_Sync
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Admin_Sync))
-        Me.BtnSync_UserGrp_Start = New System.Windows.Forms.Button()
-        Me.SyncErgebnis = New System.Windows.Forms.ListBox()
-        Me.BtnSync_Start = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.WbSyncBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        CType(Me.WbSyncBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'BtnSync_UserGrp_Start
+        'Button1
         '
-        resources.ApplyResources(Me.BtnSync_UserGrp_Start, "BtnSync_UserGrp_Start")
-        Me.BtnSync_UserGrp_Start.Name = "BtnSync_UserGrp_Start"
-        Me.BtnSync_UserGrp_Start.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.Button1, "Button1")
+        Me.Button1.Name = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
         '
-        'SyncErgebnis
+        'WbSyncBindingSource
         '
-        resources.ApplyResources(Me.SyncErgebnis, "SyncErgebnis")
-        Me.SyncErgebnis.FormattingEnabled = True
-        Me.SyncErgebnis.Name = "SyncErgebnis"
-        '
-        'BtnSync_Start
-        '
-        resources.ApplyResources(Me.BtnSync_Start, "BtnSync_Start")
-        Me.BtnSync_Start.Name = "BtnSync_Start"
-        Me.BtnSync_Start.UseVisualStyleBackColor = True
+        Me.WbSyncBindingSource.DataSource = GetType(WinBack.wb_Sync)
         '
         'wb_Admin_Sync
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.BtnSync_Start)
-        Me.Controls.Add(Me.SyncErgebnis)
-        Me.Controls.Add(Me.BtnSync_UserGrp_Start)
+        Me.Controls.Add(Me.Button1)
         Me.Name = "wb_Admin_Sync"
+        CType(Me.WbSyncBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
 
-    Friend WithEvents BtnSync_UserGrp_Start As Windows.Forms.Button
-    Friend WithEvents SyncErgebnis As Windows.Forms.ListBox
-    Friend WithEvents BtnSync_Start As Windows.Forms.Button
+    Friend WithEvents Button1 As Windows.Forms.Button
+    Friend WithEvents WbSyncBindingSource As Windows.Forms.BindingSource
 End Class

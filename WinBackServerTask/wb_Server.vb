@@ -321,11 +321,11 @@ Public Class Main
         If OpenFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Dim fileName As String = OpenFileDialog.FileName
             Dim mysql As New WinBack.wb_sql_BackupRestore
-            AddHandler mysql.statusChanged, AddressOf Backup_Restore_Status
+            '            AddHandler mysql.statusChanged, AddressOf Backup_Restore_Status
             'Datenrücksicherung starten
             mysql.datenruecksicherung(fileName)
             'Status-Text nach 10 Sekunden wieder löschen
-            RemoveHandler mysql.statusChanged, AddressOf Backup_Restore_Status
+            '            RemoveHandler mysql.statusChanged, AddressOf Backup_Restore_Status
             RemoveTextTimer.Enabled = True
         End If
     End Sub
@@ -340,11 +340,12 @@ Public Class Main
         If SaveFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Dim FileName As String = SaveFileDialog.FileName
             Dim mysql As New WinBack.wb_sql_BackupRestore
-            AddHandler mysql.statusChanged, AddressOf Backup_Restore_Status
+            '            AddHandler mysql.statusChanged, AddressOf Backup_Restore_Status
             'Datensicherung starten
             mysql.datensicherung(FileName)
             'Status-Text nach 10 Sekunden wieder löschen
-            RemoveHandler mysql.statusChanged, AddressOf Backup_Restore_Status
+            '            RemoveHandler mysql.statusChanged, AddressOf Backup_Restore_Status
+            'TODO Handler wieder einbauen !!!
             RemoveTextTimer.Enabled = False
         End If
     End Sub

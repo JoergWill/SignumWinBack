@@ -182,11 +182,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_ArrayGridView.Designer.vb">
+      <DependentUpon>wb_ArrayGridView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\wb_ArrayGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="wb_00_Klassen\wb_SyncItem.vb" />
+    <Compile Include="wb_00_Klassen\wb_SyncUserGruppen_OrgaBack.vb" />
+    <Compile Include="wb_00_Klassen\wb_SyncUserGruppen_WinBack.vb" />
     <Compile Include="wb_00_Klassen\wb_ChangeLog.vb" />
     <Compile Include="wb_00_Klassen\wb_DataGridViewVerwendung.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_DockBarPanelShared.vb" />
+    <Compile Include="wb_00_Klassen\wb_Sync.vb" />
     <Compile Include="wb_00_Main\wb_Finalizer_Shared.vb" />
     <Compile Include="wb_00_Klassen\WinBack_DockMain.Designer.vb">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
@@ -224,7 +234,7 @@
     </Compile>
     <Compile Include="wb_00_Klassen\wb_sql_BackupRestore.vb" />
     <Compile Include="wb_00_Klassen\wb_Hinweise.vb" />
-    <Compile Include="wb_00_Klassen\wb_Sync.vb" />
+    <Compile Include="wb_00_Klassen\wb_SyncUser_X.vb" />
     <Compile Include="wb_00_Klassen\wb_ComboBox.Designer.vb">
       <DependentUpon>wb_ComboBox.vb</DependentUpon>
     </Compile>
@@ -623,6 +633,7 @@
     </None>
     <None Include="My Project\DataSources\wb_Rezept.datasource" />
     <None Include="My Project\DataSources\wb_Rohstoff.datasource" />
+    <None Include="My Project\DataSources\wb_Sync.datasource" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>
