@@ -188,6 +188,12 @@
     <Compile Include="wb_00_Klassen\wb_ArrayGridView.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_SyncGridView.Designer.vb">
+      <DependentUpon>wb_SyncGridView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\wb_SyncGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\wb_SyncItem.vb" />
     <Compile Include="wb_00_Klassen\wb_SyncUserGruppen_OrgaBack.vb" />
     <Compile Include="wb_00_Klassen\wb_SyncUserGruppen_WinBack.vb" />

@@ -54,6 +54,7 @@
     End Function
 
     Public Shared Function Find_EBezeichnung(Text As String) As wb_Global.ENummern
+        'TODO Hier tritt manchmal ein Fehler auf NullReferenc Exception!!
         If sEListe.ContainsKey(Text.ToLower) Then
             Return eEListe(sEListe(Text.ToLower))
         Else

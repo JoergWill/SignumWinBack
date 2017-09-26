@@ -1,29 +1,22 @@
 ﻿Imports System.Drawing
 Imports System.Windows.Forms
+Imports WinBack
 
 Public Class wb_KomponParam301_GridView
-    Inherits Windows.Forms.DataGridView
+    Inherits wb_ArrayGridView
 
-    ' Zum Speichern der Werte der Optionalen Konstruktor-Parameter
-    Private _ShowTooltips As Boolean        ' Anzeige von Zell-Tooltips?
-    Private _Font As Drawing.Font = New Drawing.Font("Arial", 12, FontStyle.Regular, GraphicsUnit.Pixel)
-
-    Public Sub New()
-        'Grid Grundeistellungen
-        InitGrid()
-    End Sub
 
     Public Sub New(ByVal arr() As wb_Global.Nwt, Optional ShowTooltips As Boolean = True)
         'Initialisierung nur mit gültigem Daten-Array
         If IsNothing(arr) Then Exit Sub
         'Grid Grundeistellungen
-        _ShowTooltips = ShowTooltips
+        MyBase._ShowTooltips = ShowTooltips
         InitGrid()
         'Daten anzeigen 
         InitData(arr)
     End Sub
-
-    Public Sub InitData(ByVal arr() As wb_Global.Nwt)
+    'TODO das geht noch schöner (ohne wb_Global.nwt)
+    Public Overloads Sub InitData(ByVal arr() As wb_Global.Nwt)
 
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -41,31 +34,11 @@ Public Class wb_KomponParam301_GridView
 
     End Sub
 
-    Private Sub InitColumns()
-        ' die meisten allgemeinen Einstellungen der Spalten
-        ' müssen in jeder einzelnen Spalte vorgenommen werden
+    'Public Overrides Sub FillGrid(arr As Object)
+    '    FillGrid(DirectCast(arr, wb_Global.Nwt))
+    'End Sub
 
-        Dim c As Integer
-        Dim col As DataGridViewColumn
-
-        For c = 0 To MyBase.Columns.Count - 1
-            col = MyBase.Columns(c)
-            With col
-                ' Spalten-Trennstrich
-                .DividerWidth = 0
-                ' Sortieren der Spalte abschalten
-                .SortMode = DataGridViewColumnSortMode.NotSortable
-                .MinimumWidth = 20
-                .ValueType = GetType(String)
-
-                ' nur Anzeige der Daten, kein Editieren zulassen
-                .ReadOnly = True
-                .Visible = True
-            End With
-        Next c
-    End Sub
-
-    Private Sub FillGrid(ByVal arr() As wb_Global.Nwt)
+    Private Overloads Sub FillGrid(ByVal arr() As wb_Global.Nwt)
         ' Die Arraydaten werden in das GridView eingetragen
 
         Dim r, c As Integer     ' Loops
@@ -178,87 +151,4 @@ Public Class wb_KomponParam301_GridView
         Next r
     End Sub
 
-    ''' <summary>
-    ''' Grundeinstellungen des DataGridView
-    ''' vor der Zuweisung von Array-Daten
-    ''' </summary>
-    Private Sub InitGrid()
-        ' AlternatingRow-Hintergrundfarbe
-        Dim gray245 As System.Drawing.Color = Color.FromArgb(255, 245, 245, 245)
-        ' Cursor-Hintergrundfarbe
-        Dim gray230 As System.Drawing.Color = Color.FromArgb(255, 230, 230, 230)
-
-        With Me
-
-            ' Einfügen, Löschen, Umordnen verbieten
-            .AllowDrop = False
-            .AllowUserToAddRows = False
-            .AllowUserToDeleteRows = False
-            .AllowUserToOrderColumns = False
-            .AllowUserToResizeRows = False
-
-            ' Maus-Click auf Column/Rowheader soll NICHT zur Markierung führen
-            .SelectionMode = DataGridViewSelectionMode.CellSelect
-            ' Keine Auswahl erlauben, weil Daten nur angezeigt werden
-            .MultiSelect = False
-            .BorderStyle = Windows.Forms.BorderStyle.None
-
-            ' Es werden keine Scrollbars angezeigt
-            .ScrollBars = Windows.Forms.ScrollBars.None
-
-            ' ColumnHeader-Einstellungen
-            .ColumnHeadersVisible = True
-            .ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            .ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Raised
-
-            With .ColumnHeadersDefaultCellStyle
-                .Font = _Font
-                .ForeColor = Color.Black
-                .BackColor = gray230
-                .Alignment = DataGridViewContentAlignment.MiddleCenter
-            End With
-
-            ' RowHeader-Einstellungen
-            .RowHeadersVisible = False
-
-            ' Row-Einstellungen
-            With .RowsDefaultCellStyle
-                ' Zahlen werden nach rechts ausgerichtet
-                .Alignment = DataGridViewContentAlignment.MiddleRight
-                .BackColor = Color.White
-                .ForeColor = Color.Black
-                ' 'Cursor'-Farbe
-                .SelectionBackColor = gray230
-                .SelectionForeColor = Color.Black
-                .Font = _Font
-            End With
-
-            With .AlternatingRowsDefaultCellStyle
-                ' für bessere Lesbarkeit der DatenZeilen
-                .BackColor = Color.LightBlue
-            End With
-
-            ' Weitere allgemeine Eigenschaften
-            .TopLeftHeaderCell.Value = ""
-            .TopLeftHeaderCell.ToolTipText = ""
-            .ShowCellToolTips = _ShowTooltips
-            .Cursor = Cursors.Arrow
-
-            .DoubleBuffered = True
-            .ResizeRedraw = True
-            .GridColor = Color.LightGray
-
-        End With
-    End Sub
-
-    Public Shadows Sub GridLocation(ByVal Parent As Windows.Forms.TabPage)
-        Dim c As Integer = 0
-
-        MyBase.Parent = Parent
-        MyBase.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Location = New System.Drawing.Point(Parent.Top, Parent.Left)
-        Size = New System.Drawing.Size(Parent.Width, Parent.Height)
-    End Sub
 End Class
