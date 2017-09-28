@@ -25,34 +25,61 @@ Partial Class wb_Admin_Sync
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Admin_Sync))
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.WbSyncBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        CType(Me.WbSyncBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.btnSyncUserGruppen = New System.Windows.Forms.Button()
+        Me.tbSyncResult = New System.Windows.Forms.Panel()
+        Me.btnSyncUser = New System.Windows.Forms.Button()
+        Me.btnSyncStart = New System.Windows.Forms.Button()
+        Me.btnExportExcel = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
-        'Button1
+        'btnSyncUserGruppen
         '
-        resources.ApplyResources(Me.Button1, "Button1")
-        Me.Button1.Name = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.btnSyncUserGruppen, "btnSyncUserGruppen")
+        Me.btnSyncUserGruppen.Name = "btnSyncUserGruppen"
+        Me.btnSyncUserGruppen.UseVisualStyleBackColor = True
         '
-        'WbSyncBindingSource
+        'tbSyncResult
         '
-        Me.WbSyncBindingSource.DataSource = GetType(WinBack.wb_Sync)
+        resources.ApplyResources(Me.tbSyncResult, "tbSyncResult")
+        Me.tbSyncResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.tbSyncResult.Name = "tbSyncResult"
+        '
+        'btnSyncUser
+        '
+        resources.ApplyResources(Me.btnSyncUser, "btnSyncUser")
+        Me.btnSyncUser.Name = "btnSyncUser"
+        Me.btnSyncUser.UseVisualStyleBackColor = True
+        '
+        'btnSyncStart
+        '
+        resources.ApplyResources(Me.btnSyncStart, "btnSyncStart")
+        Me.btnSyncStart.Name = "btnSyncStart"
+        Me.btnSyncStart.UseVisualStyleBackColor = True
+        '
+        'btnExportExcel
+        '
+        resources.ApplyResources(Me.btnExportExcel, "btnExportExcel")
+        Me.btnExportExcel.Name = "btnExportExcel"
+        Me.btnExportExcel.UseVisualStyleBackColor = True
         '
         'wb_Admin_Sync
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.btnExportExcel)
+        Me.Controls.Add(Me.btnSyncStart)
+        Me.Controls.Add(Me.btnSyncUser)
+        Me.Controls.Add(Me.tbSyncResult)
+        Me.Controls.Add(Me.btnSyncUserGruppen)
         Me.Name = "wb_Admin_Sync"
-        CType(Me.WbSyncBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
 
-    Friend WithEvents Button1 As Windows.Forms.Button
-    Friend WithEvents WbSyncBindingSource As Windows.Forms.BindingSource
+    Friend WithEvents btnSyncUserGruppen As Windows.Forms.Button
+    Friend WithEvents tbSyncResult As Windows.Forms.Panel
+    Friend WithEvents btnSyncUser As Windows.Forms.Button
+    Friend WithEvents btnSyncStart As Windows.Forms.Button
+    Friend WithEvents btnExportExcel As Windows.Forms.Button
 End Class

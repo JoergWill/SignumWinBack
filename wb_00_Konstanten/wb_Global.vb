@@ -267,10 +267,22 @@
         OK                      'Datensatz ist in  beiden Datenbanken vorhanden und identisch
         OrgaBackWrite           'Datensatz ist nur in WinBack vorhanden und muss in OrgaBack geschrieben werden
         OrgaBackUpdate          'Datensatz ist in beiden Datenbanken vorhanden und muss in OrgaBack aktualisiert werden
-        OrgaBackErr             'Datensatz ist nur in WinBack vorhanden - Fehlt in OrgaBack, KEIN Update
+        OrgaBackMiss            'Datensatz ist nur in WinBack vorhanden - Fehlt in OrgaBack, KEIN Update
+        OrgaBackErr             'Datenfehler in OrgaBack - Datenintegrität, doppelte Einträge o.ä.
         WinBackWrite            'Datensatz ist nur in OrgaBack vorhanden und muss in WinBack geschrieben werden
         WinBackUpdate           'Datensatz ist in beiden Datenbanken vorhanden und muss in WinBack aktualisiert werden
-        WinBackErr              'Datensatz ist nur in OrgaBack vorhanden - Fehlt in WinBack, KEIN Update
+        WinBackMiss             'Datensatz ist nur in OrgaBack vorhanden - Fehlt in WinBack, KEIN Update
+        WinBackErr              'Datenfehler in WinBack - Datenintegrität, doppelte Einträge o.ä.
+    End Enum
+
+    Enum SyncType
+        Undefined
+        Benutzer
+        BenutzerGruppen
+        Artikel
+        ArtikelGruppen
+        Rohstoffe
+        RohstoffGruppen
     End Enum
 
     Enum LogType

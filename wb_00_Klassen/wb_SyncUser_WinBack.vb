@@ -1,18 +1,18 @@
-﻿Public Class wb_SyncUserGruppen_WinBack
+﻿Public Class wb_SyncUser_WinBack
     Inherits wb_Sync
 
     Friend Overrides Function DBRead() As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         _Data.Clear()
 
-        If winback.sqlSelect(wb_Sql_Selects.sqlUserGrpTxt) Then
+        If winback.sqlSelect(wb_Sql_Selects.sqlUsersListe) Then
             While winback.Read
                 _Item = New wb_SyncItem
-                _Item.wb_Nummer = winback.iField("II_ItemID")
-                _Item.wb_Bezeichnung = wb_Language.TextFilter(winback.sField("II_Kommentar"))
+                _Item.wb_Nummer = winback.iField("IP_Wert1int")
+                _Item.wb_Bezeichnung = wb_Language.TextFilter(winback.sField("IP_Wert4str"))
                 _Item.SyncOK = wb_Global.SyncState.NOK
                 _Item.Sort = _Item.wb_Nummer
-                Trace.WriteLine("Read WinBack User-Gruppe Nummer         " & _Item.wb_Nummer.ToString + " User-Gruppe Bezeichnung        " & _Item.wb_Bezeichnung)
+                Trace.WriteLine("Read WinBack User Nummer         " & _Item.wb_Nummer.ToString + " User Bezeichnung        " & _Item.wb_Bezeichnung)
                 _Data.Add(_Item)
             End While
             winback.Close()
@@ -25,11 +25,13 @@
     End Function
 
     Friend Overrides Function DBUpdate(Nr As String, Text As String) As Boolean
-        Throw New NotImplementedException()
+        Dim User As New wb_User
+        'TODO Gruppe berücksichtigen !!
+        Return User.Update(Nr, Text, Nr, "0")
     End Function
 
     Friend Overrides Function DBInsert(Nr As String, Text As String) As Boolean
-        Throw New NotImplementedException()
+        Dim User As New wb_User
+        Return User.AddNew(Text, Nr, "0")
     End Function
-
 End Class

@@ -4,41 +4,18 @@ Imports WinBack
 
 Public Class wb_KomponParam301_GridView
     Inherits wb_ArrayGridView
+    Public arr() As wb_Global.Nwt
 
-
-    Public Sub New(ByVal arr() As wb_Global.Nwt, Optional ShowTooltips As Boolean = True)
-        'Initialisierung nur mit gültigem Daten-Array
-        If IsNothing(arr) Then Exit Sub
-        'Grid Grundeistellungen
+    Public Sub New(ByVal x() As wb_Global.Nwt, Optional ShowTooltips As Boolean = True)
+        'Grid Grundeinstellungen
+        arr = x
         MyBase._ShowTooltips = ShowTooltips
         InitGrid()
         'Daten anzeigen 
-        InitData(arr)
-    End Sub
-    'TODO das geht noch schöner (ohne wb_Global.nwt)
-    Public Overloads Sub InitData(ByVal arr() As wb_Global.Nwt)
-
-        CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
-
-        'Initialisierung nur mit gültigem Daten-Array
-        If Not IsNothing(arr) Then
-            ' Daten ins Grid eintragen
-            FillGrid(arr)
-            ' Spaltenansicht einrichten
-            InitColumns()
-        End If
-
-        CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(True)
-
+        InitData()
     End Sub
 
-    'Public Overrides Sub FillGrid(arr As Object)
-    '    FillGrid(DirectCast(arr, wb_Global.Nwt))
-    'End Sub
-
-    Private Overloads Sub FillGrid(ByVal arr() As wb_Global.Nwt)
+    Public Overrides Sub FillGrid()
         ' Die Arraydaten werden in das GridView eingetragen
 
         Dim r, c As Integer     ' Loops

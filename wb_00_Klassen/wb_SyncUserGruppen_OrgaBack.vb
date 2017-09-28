@@ -1,7 +1,7 @@
 ﻿Public Class wb_SyncUserGruppen_OrgaBack
     Inherits wb_Sync
 
-    Public Overrides Function DBRead() As Boolean
+    Friend Overrides Function DBRead() As Boolean
         Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
         _Data.Clear()
 
@@ -16,17 +16,19 @@
                 _Data.Add(_Item)
             End While
             orgaback.Close()
+
+            CheckData(wb_Global.SyncState.OrgaBackErr)
             Return True
         End If
         orgaback.Close()
         Return False
     End Function
 
-    Public Overrides Function DBInsert(Nr As String, Text As String) As Boolean
+    Friend Overrides Function DBInsert(Nr As String, Text As String) As Boolean
         Throw New NotImplementedException()
     End Function
 
-    Public Overrides Function DBUpdate(Nr As String, Text As String) As Boolean
+    Friend Overrides Function DBUpdate(Nr As String, Text As String) As Boolean
         Throw New NotImplementedException()
     End Function
 End Class

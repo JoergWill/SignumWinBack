@@ -107,7 +107,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.TextHinweise = New System.Windows.Forms.TextBox()
         Me.tb_Verwendung = New System.Windows.Forms.TabPage()
         Me.GridView_RzVerwendung = New WinBack.wb_DataGridView()
-        Me.Wb_DataGridView1 = New WinBack.wb_DataGridView()
         Me.StatusStrip.SuspendLayout()
         Me.gbDetail.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -118,7 +117,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Hinweise.SuspendLayout()
         Me.tb_Verwendung.SuspendLayout()
         CType(Me.GridView_RzVerwendung, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Wb_DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ColNr
@@ -673,7 +671,6 @@ Partial Class wb_Rezept_Rezeptur
         '
         'tb_Rezeptur
         '
-        Me.tb_Rezeptur.Controls.Add(Me.Wb_DataGridView1)
         Me.tb_Rezeptur.Controls.Add(Me.VirtualTree)
         Me.tb_Rezeptur.Controls.Add(Me.RichTextBox1)
         Me.tb_Rezeptur.Controls.Add(Me.TextBox1)
@@ -963,14 +960,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.GridView_RzVerwendung.Size = New System.Drawing.Size(943, 459)
         Me.GridView_RzVerwendung.TabIndex = 0
         '
-        'Wb_DataGridView1
-        '
-        Me.Wb_DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Wb_DataGridView1.Location = New System.Drawing.Point(21, 220)
-        Me.Wb_DataGridView1.Name = "Wb_DataGridView1"
-        Me.Wb_DataGridView1.Size = New System.Drawing.Size(240, 150)
-        Me.Wb_DataGridView1.TabIndex = 7
-        '
         'wb_Rezept_Rezeptur
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -998,7 +987,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Hinweise.PerformLayout()
         Me.tb_Verwendung.ResumeLayout(False)
         CType(Me.GridView_RzVerwendung, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Wb_DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1078,5 +1066,4 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents lblListeOptimieren As Windows.Forms.Label
     Friend WithEvents SwENummern As MetroFramework.Controls.MetroToggle
     Friend WithEvents lblENummern As Windows.Forms.Label
-    Friend WithEvents Wb_DataGridView1 As wb_DataGridView
 End Class

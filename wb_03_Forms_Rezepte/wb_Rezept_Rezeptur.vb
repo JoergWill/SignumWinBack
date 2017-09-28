@@ -129,8 +129,6 @@ Public Class wb_Rezept_Rezeptur
             If NwtTabelle(i).Visible Then
                 Debug.Print(NwtTabelle(i).Header & " " & NwtTabelle(i).Text & " " & NwtTabelle(i).Wert & " " & NwtTabelle(i).Einheit)
             End If
-
-
         Next
 
         'Daten im Grid anzeigen

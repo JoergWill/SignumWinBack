@@ -12,10 +12,17 @@
         Return String.Compare(Sort, DirectCast(obj, wb_SyncItem).Sort)
     End Function
 
-    Public Sub Merge(obj As wb_SyncItem)
-        os_Bezeichnung += obj.os_Bezeichnung
-        os_Nummer += obj.os_Nummer
-        wb_Bezeichnung += obj.wb_Bezeichnung
-        wb_Nummer += obj.wb_Nummer
-    End Sub
+    Public Function Merge(obj As wb_SyncItem) As Boolean
+        If os_Bezeichnung = "" And obj.os_Bezeichnung <> "" Then
+            os_Bezeichnung += obj.os_Bezeichnung
+            os_Nummer += obj.os_Nummer
+            Return True
+        End If
+        If wb_Bezeichnung = "" And obj.wb_Bezeichnung <> "" Then
+            wb_Bezeichnung += obj.wb_Bezeichnung
+            wb_Nummer += obj.wb_Nummer
+            Return True
+        End If
+        Return False
+    End Function
 End Class

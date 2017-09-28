@@ -1,36 +1,54 @@
-﻿Public Class wb_SyncGridView
-    Inherits wb_ArrayGridView
+﻿Imports System.Windows.Forms
 
-    Public Sub New(ByVal arr() As wb_Sync.Data, Optional ShowTooltips As Boolean = True)
-        'Initialisierung nur mit gültigem Daten-Array
-        If IsNothing(arr) Then Exit Sub
+Public Class wb_SyncGridView
+    Inherits wb_ArrayGridView
+    Public GridArray As Array
+
+    Public Sub New(ByVal xArray As ArrayList, ByVal sColNames As List(Of String), Optional ShowTooltips As Boolean = True)
+        'Spalten-Überschriften
+        ColNames = sColNames
+        'Daten in das lokale Array übertragen
+        GridArray = xArray.ToArray
         'Grid Grundeistellungen
-        MyBase._ShowTooltips = ShowTooltips
+        _ShowTooltips = ShowTooltips
+        'Grid initialisieren
         InitGrid()
         'Daten anzeigen 
-        InitData(arr)
-    End Sub
-    Public Overloads Sub InitData(ByVal arr() As wb_Global.Nwt)
-
-        CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
-
-        'Initialisierung nur mit gültigem Daten-Array
-        If Not IsNothing(arr) Then
-            ' Daten ins Grid eintragen
-            FillGrid(arr)
-            ' Spaltenansicht einrichten
-            InitColumns()
-        End If
-
-        CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(True)
-
+        InitData()
     End Sub
 
-    Private Overloads Sub FillGrid(ByVal arr() As wb_Global.Nwt)
+    Public Overrides Sub FillGrid()
+
+        'Spalten erstellen
+        MyBase.FillColumns()
+
         ' Die Arraydaten werden in das GridView eingetragen
+        Dim rows As DataGridViewRowCollection = MyBase.Rows
+        Dim MaxRowCount As Integer = UBound(GridArray)
 
+        ' Daten Löschen
+        MyBase.Rows.Clear()
+        MyBase.RowCount = 0
+
+        ' Die erforderliche Anzahl Zeilen in einem Rutsch erstellen:
+        MyBase.Rows.Add(MaxRowCount)
+
+        ' Daten ins DatagridView eintragen
+        For r = 0 To MaxRowCount - 1
+            With rows(r)
+                ' Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
+                .MinimumHeight = 20
+                ' Strich zwischen den Zeilen  
+                .DividerHeight = 0
+
+                .Cells(0).Value = GridArray(r).Sort
+                .Cells(1).Value = GridArray(r).wb_Nummer
+                .Cells(2).Value = GridArray(r).wb_Bezeichnung
+                .Cells(3).Value = GridArray(r).os_Nummer
+                .Cells(4).Value = GridArray(r).os_Bezeichnung
+                .Cells(5).Value = GridArray(r).SyncOK
+            End With
+        Next
     End Sub
 
 End Class

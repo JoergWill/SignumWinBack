@@ -195,7 +195,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_SyncItem.vb" />
+    <Compile Include="wb_00_Klassen\wb_SyncUser_OrgaBack.vb" />
     <Compile Include="wb_00_Klassen\wb_SyncUserGruppen_OrgaBack.vb" />
+    <Compile Include="wb_00_Klassen\wb_SyncUser_WinBack.vb" />
     <Compile Include="wb_00_Klassen\wb_SyncUserGruppen_WinBack.vb" />
     <Compile Include="wb_00_Klassen\wb_ChangeLog.vb" />
     <Compile Include="wb_00_Klassen\wb_DataGridViewVerwendung.vb">
