@@ -10,6 +10,7 @@
                 _Item = New wb_SyncItem
                 _Item.os_Nummer = orgaback.iField("KassiererNummer")
                 _Item.os_Bezeichnung = orgaback.sField("Vorname") & " " & orgaback.sField("Nachname")
+                _Item.os_Gruppe = FormatNumber(orgaback.sField("Inhalt"), 0, 0,, 0)
                 _Item.SyncOK = wb_Global.SyncState.NOK
                 _Item.Sort = _Item.os_Nummer
                 Trace.WriteLine("Read OrgaBack Mitarbeiter Nummer " & _Item.os_Nummer.ToString + " Mitarbeiter Name " & _Item.os_Bezeichnung)
@@ -47,11 +48,11 @@
         Return False
     End Function
 
-    Friend Overrides Function DBInsert(Nr As String, Text As String) As Boolean
+    Friend Overrides Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
         Throw New NotImplementedException()
     End Function
 
-    Friend Overrides Function DBUpdate(Nr As String, Text As String) As Boolean
+    Friend Overrides Function DBUpdate(Nr As String, Text As String, Gruppe As String) As Boolean
         Throw New NotImplementedException()
     End Function
 

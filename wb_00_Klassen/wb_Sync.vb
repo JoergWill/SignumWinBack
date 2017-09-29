@@ -9,9 +9,26 @@ Public MustInherit Class wb_Sync
     Private _Case_10 As wb_Global.SyncState = wb_Global.SyncState.OrgaBackWrite
     Private _Case_11 As wb_Global.SyncState = wb_Global.SyncState.WinBackUpdate
 
+    'Zähler für Statistik
+    Private _iSyncNOK As Integer
+    Private _iSyncOK As Integer
+    Private _iSync_Count As Integer
+
+    Private _iSync_osErr As Integer
+    Private _iSync_wbErr As Integer
+
+    Private _iSync_osWrite As Integer
+    Private _iSync_osUpdate As Integer
+    Private _iSync_osMiss As Integer
+
+    Private _iSync_wbWrite As Integer
+    Private _iSync_wbUpdate As Integer
+    Private _iSync_wbMiss As Integer
+
+
     Friend MustOverride Function DBRead() As Boolean
-    Friend MustOverride Function DBUpdate(Nr As String, Text As String) As Boolean
-    Friend MustOverride Function DBInsert(Nr As String, Text As String) As Boolean
+    Friend MustOverride Function DBUpdate(Nr As String, Text As String, Gruppe As String) As Boolean
+    Friend MustOverride Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
 
     ''' <summary>
     ''' Die WinBack.Bezeichnung ist leer.
@@ -52,28 +69,101 @@ Public MustInherit Class wb_Sync
         End Get
     End Property
 
+    Public ReadOnly Property CntSyncAll As Integer
+        Get
+            Return _iSync_Count
+        End Get
+    End Property
+
+    Public ReadOnly Property CntSyncNOK As Integer
+        Get
+            Return _iSyncNOK
+        End Get
+    End Property
+
+    Public ReadOnly Property CntSyncOK As Integer
+        Get
+            Return _iSyncOK
+        End Get
+    End Property
+
+    Public ReadOnly Property CntSync_osErr As Integer
+        Get
+            Return _iSync_osErr
+        End Get
+    End Property
+
+    Public ReadOnly Property CntSync_wbErr As Integer
+        Get
+            Return _iSync_wbErr
+        End Get
+    End Property
+
+    Public ReadOnly Property CntSync_osWrite As Integer
+        Get
+            Return _iSync_osWrite
+        End Get
+    End Property
+
+    Public ReadOnly Property CntSync_osUpdate As Integer
+        Get
+            Return _iSync_osUpdate
+        End Get
+    End Property
+
+    Public ReadOnly Property CntSync_osMiss As Integer
+        Get
+            Return _iSync_osMiss
+        End Get
+    End Property
+
+    Public ReadOnly Property CntSync_wbWrite As Integer
+        Get
+            Return _iSync_wbWrite
+        End Get
+    End Property
+
+    Public ReadOnly Property CntSync_wbUpdate As Integer
+        Get
+            Return _iSync_wbUpdate
+        End Get
+    End Property
+
+    Public ReadOnly Property CntSync_wbMiss As Integer
+        Get
+            Return _iSync_wbMiss
+        End Get
+    End Property
+
     Friend Overridable Sub CheckData(_CheckDataErrFlag As wb_Global.SyncState)
         Dim LastNummer As String = "x"
+        _iSync_Count = _Data.Count
 
         'WinBack-Check
+        _iSync_wbErr = 0
         If _CheckDataErrFlag = wb_Global.SyncState.WinBackErr Then
             'Prüfen auf doppelte Einträge bei Nummern
             For Each x As wb_SyncItem In _Data
                 If x.wb_Nummer = "0" Or x.wb_Nummer = "" Or x.wb_Nummer = LastNummer Then
                     x.SyncOK = wb_Global.SyncState.WinBackErr
+                    _iSync_wbErr += 1
+                    x.ToolTipText = "Nummer gleich Null oder doppelt vorhanden"
                     LastNummer = x.wb_Nummer
                 End If
             Next
         End If
 
         'OrgaBack-Check
+        _iSync_osErr = 0
         If _CheckDataErrFlag = wb_Global.SyncState.OrgaBackErr Then
             'Prüfen auf doppelte Einträge bei Nummern
             For Each x As wb_SyncItem In _Data
                 If x.os_Nummer = "0" Or x.os_Nummer = "" Or x.os_Nummer = LastNummer Then
                     x.SyncOK = wb_Global.SyncState.OrgaBackErr
-                    LastNummer = x.os_Nummer
+                    _iSync_osErr += 1
+                    x.ToolTipText = "Nummer gleich Null oder doppelt vorhanden"
                 End If
+                LastNummer = x.os_Nummer
             Next
         End If
     End Sub
@@ -81,10 +171,16 @@ Public MustInherit Class wb_Sync
     Public Sub CheckSync(SyncData As ArrayList)
         'beide Arrays aneinanderhängen
         _Data.AddRange(SyncData)
+        Debug.Print("AddRange ***************************")
+        PrintSync()
         'nach Nummer(Sortiertkriterium) sortieren
         _Data.Sort()
+        Debug.Print("DataSort ***************************")
+        PrintSync()
         'doppelte Einträge zusammenfassen
         DelDubletten()
+        Debug.Print("DelDoubletten ***************************")
+        PrintSync()
         'Prüfen ob beide Einträge im Array identisch sind
         CheckSyncResult()
     End Sub
@@ -114,12 +210,44 @@ Public MustInherit Class wb_Sync
     End Sub
 
     Friend Overridable Sub CheckSyncResult()
+        'Zusammenfassung Sync-Result löschen
+        ClearSyncCounter()
+
         For Each x As wb_SyncItem In _Data
             If x.SyncOK = wb_Global.SyncState.NOK Then
                 x.SyncOK = GetSyncResult(x)
+                x.ToolTipText = GetSyncToolTipText(x.SyncOK)
+                'Zähler aktualisiere
+                addSyncCounter(x.SyncOK)
             End If
         Next
     End Sub
+
+    Friend Overridable Function GetSyncToolTipText(x As wb_Global.SyncState) As String
+        Select Case x
+            Case wb_Global.SyncState.NOK
+                Return "Datensatz wurde noch nicht ausgewertet"
+            Case wb_Global.SyncState.OK
+                Return "Beide Datensätze sind in beiden Datenbanken identisch"
+
+            Case wb_Global.SyncState.OrgaBackWrite
+                Return "Datensätze wird in OrgaBack angelegt"
+            Case wb_Global.SyncState.OrgaBackUpdate
+                Return "Datensatz ist in OrgaBack vorhanden, aber nicht identisch. Wird in OrgaBack überschrieben"
+            Case wb_Global.SyncState.OrgaBackMiss
+                Return "Datensatz fehlt in OrgaBack und wird NICHT angelegt!"
+
+            Case wb_Global.SyncState.WinBackWrite
+                Return "Datensätze wird in WinBack angelegt"
+            Case wb_Global.SyncState.WinBackUpdate
+                Return "Datensatz ist in WinBack vorhanden, aber nicht identisch. Wird in WinBack überschrieben"
+            Case wb_Global.SyncState.WinBackMiss
+                Return "Datensatz fehlt in WinBack und wird NICHT angelegt!"
+
+            Case Else
+                Return ""
+        End Select
+    End Function
 
     Friend Overridable Function GetSyncResult(ByVal x As wb_SyncItem) As wb_Global.SyncState
 
@@ -145,6 +273,41 @@ Public MustInherit Class wb_Sync
 
         Return wb_Global.SyncState.NOK
     End Function
+
+    Private Sub ClearSyncCounter()
+        _iSyncNOK = 0
+        _iSyncOK = 0
+        _iSync_osWrite = 0
+        _iSync_osUpdate = 0
+        _iSync_osMiss = 0
+        _iSync_wbWrite = 0
+        _iSync_wbUpdate = 0
+        _iSync_wbMiss = 0
+    End Sub
+
+    Private Sub addSyncCounter(x As wb_Global.SyncState)
+        Select Case x
+            Case wb_Global.SyncState.NOK
+                _iSyncNOK += 1
+            Case wb_Global.SyncState.OK
+                _iSyncOK += 1
+
+            Case wb_Global.SyncState.OrgaBackWrite
+                _iSync_osWrite += 1
+            Case wb_Global.SyncState.OrgaBackUpdate
+                _iSync_osUpdate += 1
+            Case wb_Global.SyncState.OrgaBackMiss
+                _iSync_osMiss += 1
+
+            Case wb_Global.SyncState.WinBackWrite
+                _iSync_wbWrite += 1
+            Case wb_Global.SyncState.WinBackUpdate
+                _iSync_wbUpdate += 1
+            Case wb_Global.SyncState.WinBackMiss
+                _iSync_wbMiss += 1
+        End Select
+
+    End Sub
 
     Public Sub PrintSync()
         For Each x As wb_SyncItem In _Data

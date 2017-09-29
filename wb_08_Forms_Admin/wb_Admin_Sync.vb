@@ -14,10 +14,16 @@ Public Class wb_Admin_Sync
     Dim SyncResultGrid As wb_SyncGridView
     Dim SyncType As wb_Global.SyncType = wb_Global.SyncType.Undefined
 
+    Private Sub wb_Admin_Sync_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        HideResult()
+    End Sub
+
     Private Sub btnSyncUserGruppen_Click(sender As Object, e As EventArgs) Handles btnSyncUserGruppen.Click
         'Liste der Tabellen-Überschriften
-        Dim sColNames As New List(Of String) From {"", "Nr", "&WinBack-Benutzer-Gruppe", "Nr", "&OrgaBack-Benutzer-Gruppe", "Status"}
+        Dim sColNames As New List(Of String) From {"", "Nr", "&WinBack-Benutzer-Gruppe", "", "Nr", "&OrgaBack-Benutzer-Gruppe", "", "Status"}
+        Text = "Synchronisation Datenbank - Benutzergruppen"
         SyncType = wb_Global.SyncType.BenutzerGruppen
+        HideResult()
 
         'Cursor umschalten
         Me.Cursor = Cursors.WaitCursor
@@ -25,18 +31,26 @@ Public Class wb_Admin_Sync
         wbUserGrp.DBRead()
         'Benutzer aus OrgaSoft in Array einlesen
         osUserGrp.DBRead()
+
         'Daten/Synchronisation prüfen und Ergebnis berechnen
+        wbUserGrp.Case_01 = wb_Global.SyncState.WinBackMiss     'falls ein Eintrag in WinBack fehlt, wird der Konflikt nicht repariert
+        wbUserGrp.Case_11 = wb_Global.SyncState.OrgaBackUpdate  'falls ein Eintrag in beiden Datenbanken vorhanden ist, wird in OrgaBack geschrieben
         wbUserGrp.CheckSync(osUserGrp.Data)
+
         'Ergebnis im Grid anzeigen
         DisplayResultGrid(wbUserGrp.Data, sColNames)
+        DisplayResultText(wbUserGrp, osUserGrp)
+        ShowResult()
         'Cursor wieder umschalten
         Me.Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSyncUser_Click(sender As Object, e As EventArgs) Handles btnSyncUser.Click
         'Liste der Tabellen-Überschriften
-        Dim sColNames As New List(Of String) From {"", "Login", "&WinBack-Benutzer", "Kassierer-Nr", "&OrgaBack-Benutzer", "Status"}
+        Dim sColNames As New List(Of String) From {"", "Login", "&WinBack-Benutzer", "Grp", "Kassierer-Nr", "&OrgaBack-Benutzer", "Grp", "Status"}
+        Text = "Synchronisation Datenbank - Mitarbeiter"
         SyncType = wb_Global.SyncType.Benutzer
+        HideResult()
 
         'Cursor umschalten
         Me.Cursor = Cursors.WaitCursor
@@ -51,6 +65,8 @@ Public Class wb_Admin_Sync
 
         'Ergebnis im Grid anzeigen
         DisplayResultGrid(wbUser.Data, sColNames)
+        DisplayResultText(wbUser, osUser)
+        ShowResult()
         'Cursor wieder umschalten
         Me.Cursor = Cursors.Default
     End Sub
@@ -64,27 +80,26 @@ Public Class wb_Admin_Sync
         End Select
     End Sub
 
-    Private Sub ExcecuteSync(wb As wb_Sync, os As wb_Sync)
+    Private Sub ExcecuteSync(ByRef wb As wb_Sync, ByRef os As wb_Sync)
         'Synchronisation in WinBack-DB
         For Each x As wb_SyncItem In wb.Data
             Select Case x.SyncOK
                 Case wb_Global.SyncState.WinBackWrite
-                    wb.DBInsert(x.os_Nummer, x.os_Bezeichnung)
+                    wb.DBInsert(x.os_Nummer, x.os_Bezeichnung, x.os_Gruppe)
                 Case wb_Global.SyncState.WinBackUpdate
-                    wb.DBUpdate(x.os_Nummer, x.os_Bezeichnung)
+                    wb.DBUpdate(x.os_Nummer, x.os_Bezeichnung, x.os_Gruppe)
             End Select
         Next
         'Synchronisation in OrgaBack-DB
         For Each x As wb_SyncItem In os.Data
             Select Case x.SyncOK
                 Case wb_Global.SyncState.OrgaBackWrite
-                    os.DBInsert(x.wb_Nummer, x.wb_Bezeichnung)
+                    os.DBInsert(x.wb_Nummer, x.wb_Bezeichnung, x.wb_Gruppe)
                 Case wb_Global.SyncState.OrgaBackUpdate
-                    os.DBUpdate(x.wb_Nummer, x.wb_Bezeichnung)
+                    os.DBUpdate(x.wb_Nummer, x.wb_Bezeichnung, x.wb_Gruppe)
             End Select
         Next
     End Sub
-
 
     Private Sub DisplayResultGrid(ByVal xArray As ArrayList, ByVal sColNames As List(Of String))
         'Wenn alte Daten vorhanden sind vorher löschen
@@ -92,12 +107,44 @@ Public Class wb_Admin_Sync
             SyncResultGrid.Dispose()
             SyncResultGrid = Nothing
         End If
+
         'Daten im Grid anzeigen
         SyncResultGrid = New wb_SyncGridView(xArray, sColNames)
         SyncResultGrid.BackgroundColor = Me.BackColor
         SyncResultGrid.GridLocation(tbSyncResult)
         SyncResultGrid.PerformLayout()
         SyncResultGrid.Refresh()
+    End Sub
+
+    Private Sub DisplayResultText(ByRef wb As wb_Sync, ByRef os As wb_Sync)
+        'Zusammenfassung (Summe der Datensätze) anzeigen
+        lvSyncResult.Items.Clear()
+        lvSyncResult.Items.Add("OrgaBack")
+        lvSyncResult.Items.Add("WinBack")
+
+        lvSyncResult.Items(0).SubItems.Add(os.CntSyncAll)
+        lvSyncResult.Items(0).SubItems.Add(wb.CntSync_osErr + os.CntSync_osErr)
+        lvSyncResult.Items(0).SubItems.Add(wb.CntSync_osWrite + os.CntSync_osWrite)
+        lvSyncResult.Items(0).SubItems.Add(wb.CntSync_osUpdate + os.CntSync_osUpdate)
+        lvSyncResult.Items(0).SubItems.Add(wb.CntSync_osMiss + os.CntSync_osMiss)
+        lvSyncResult.Items(1).SubItems.Add(wb.CntSyncAll)
+        lvSyncResult.Items(1).SubItems.Add(wb.CntSync_wbErr + os.CntSync_wbErr)
+        lvSyncResult.Items(1).SubItems.Add(wb.CntSync_wbWrite + os.CntSync_wbWrite)
+        lvSyncResult.Items(1).SubItems.Add(wb.CntSync_wbUpdate + os.CntSync_wbUpdate)
+        lvSyncResult.Items(1).SubItems.Add(wb.CntSync_wbMiss + os.CntSync_wbMiss)
+    End Sub
+
+    Private Sub HideResult()
+        btnExportExcel.Enabled = False
+        btnSyncStart.Enabled = False
+        lvSyncResult.Items.Clear()
+        lvSyncResult.Enabled = False
+    End Sub
+
+    Private Sub ShowResult()
+        btnExportExcel.Enabled = True
+        btnSyncStart.Enabled = True
+        lvSyncResult.Enabled = True
     End Sub
 
 End Class

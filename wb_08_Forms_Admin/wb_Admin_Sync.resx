@@ -133,7 +133,7 @@
     <value>0</value>
   </data>
   <data name="btnSyncUserGruppen.Text" xml:space="preserve">
-    <value>Benutzer-Gruppen</value>
+    <value>Mitarbeiter-Gruppen</value>
   </data>
   <data name="&gt;&gt;btnSyncUserGruppen.Name" xml:space="preserve">
     <value>btnSyncUserGruppen</value>
@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncUserGruppen.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="tbSyncResult.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -154,7 +154,7 @@
     <value>153, 12</value>
   </data>
   <data name="tbSyncResult.Size" type="System.Drawing.Size, System.Drawing">
-    <value>740, 528</value>
+    <value>740, 512</value>
   </data>
   <data name="tbSyncResult.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -169,7 +169,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tbSyncResult.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="btnSyncUser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -184,7 +184,7 @@
     <value>2</value>
   </data>
   <data name="btnSyncUser.Text" xml:space="preserve">
-    <value>Benutzer</value>
+    <value>Mitarbeiter</value>
   </data>
   <data name="&gt;&gt;btnSyncUser.Name" xml:space="preserve">
     <value>btnSyncUser</value>
@@ -196,7 +196,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncUser.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="btnSyncStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -205,7 +205,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnSyncStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>758, 549</value>
+    <value>758, 536</value>
   </data>
   <data name="btnSyncStart.Size" type="System.Drawing.Size, System.Drawing">
     <value>135, 43</value>
@@ -226,7 +226,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncStart.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btnExportExcel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -235,7 +235,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnExportExcel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>617, 549</value>
+    <value>617, 536</value>
   </data>
   <data name="btnExportExcel.Size" type="System.Drawing.Size, System.Drawing">
     <value>135, 43</value>
@@ -256,7 +256,64 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnExportExcel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lvSyncResult.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="lvSyncResult.Location" type="System.Drawing.Point, System.Drawing">
+    <value>153, 530</value>
+  </data>
+  <data name="lvSyncResult.Size" type="System.Drawing.Size, System.Drawing">
+    <value>369, 66</value>
+  </data>
+  <data name="lvSyncResult.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.Name" xml:space="preserve">
+    <value>lvSyncResult</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="clHeader0.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="clHeader1.Text" xml:space="preserve">
+    <value>Gesamt</value>
+  </data>
+  <data name="clHeader1.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="clHeader2.Text" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="clHeader2.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="clHeader3.Text" xml:space="preserve">
+    <value>Schreiben</value>
+  </data>
+  <data name="clHeader3.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="clHeader4.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="clHeader4.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="clHeader5.Text" xml:space="preserve">
+    <value>Miss</value>
+  </data>
+  <data name="clHeader5.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Center</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -272,6 +329,42 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Synchronisation Datenbank</value>
+  </data>
+  <data name="&gt;&gt;clHeader0.Name" xml:space="preserve">
+    <value>clHeader0</value>
+  </data>
+  <data name="&gt;&gt;clHeader0.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;clHeader1.Name" xml:space="preserve">
+    <value>clHeader1</value>
+  </data>
+  <data name="&gt;&gt;clHeader1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;clHeader2.Name" xml:space="preserve">
+    <value>clHeader2</value>
+  </data>
+  <data name="&gt;&gt;clHeader2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;clHeader3.Name" xml:space="preserve">
+    <value>clHeader3</value>
+  </data>
+  <data name="&gt;&gt;clHeader3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;clHeader4.Name" xml:space="preserve">
+    <value>clHeader4</value>
+  </data>
+  <data name="&gt;&gt;clHeader4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;clHeader5.Name" xml:space="preserve">
+    <value>clHeader5</value>
+  </data>
+  <data name="&gt;&gt;clHeader5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>wb_Admin_Sync</value>

@@ -24,11 +24,29 @@
         Return False
     End Function
 
-    Friend Overrides Function DBInsert(Nr As String, Text As String) As Boolean
-        Throw New NotImplementedException()
+    Friend Overrides Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
+        'Gruppen-Nummer formatieren
+        Dim sGrpNr As String
+        sGrpNr = Strings.Right("0000" + Nr.ToString, 4)
+
+        'Verbindung zu MsSQL-Datenbank
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Update OrgaBackMain.dbo.MitarbeiterMultiFunktionsFeld
+        DBInsert = orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlUpdateMitarbeiterGruppen, sGrpNr, Text))
+        'Datenbank-Verbindung wieder schliessen
+        orgaback.Close()
     End Function
 
-    Friend Overrides Function DBUpdate(Nr As String, Text As String) As Boolean
-        Throw New NotImplementedException()
+    Friend Overrides Function DBUpdate(Nr As String, Text As String, Gruppe As String) As Boolean
+        'Gruppen-Nummer formatieren
+        Dim sGrpNr As String
+        sGrpNr = Strings.Right("0000" + Nr.ToString, 4)
+
+        'Verbindung zu MsSQL-Datenbank
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Update OrgaBackMain.dbo.MitarbeiterMultiFunktionsFeld
+        DBUpdate = orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertMitarbeiterGruppen, sGrpNr, Text, 1))
+        'Datenbank-Verbindung wieder schliessen
+        orgaback.Close()
     End Function
 End Class

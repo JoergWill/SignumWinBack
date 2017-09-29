@@ -92,7 +92,7 @@ Public MustInherit Class wb_ArrayGridView
             .AllowDrop = False
             .AllowUserToAddRows = False
             .AllowUserToDeleteRows = False
-            .AllowUserToOrderColumns = False
+            .AllowUserToOrderColumns = True
             .AllowUserToResizeRows = False
 
             ' Maus-Click auf Column/Rowheader soll NICHT zur Markierung führen
@@ -121,8 +121,6 @@ Public MustInherit Class wb_ArrayGridView
 
             ' Row-Einstellungen
             With .RowsDefaultCellStyle
-                ' Zahlen werden nach rechts ausgerichtet
-                .Alignment = DataGridViewContentAlignment.MiddleRight
                 .BackColor = Color.White
                 .ForeColor = Color.Black
                 ' 'Cursor'-Farbe
@@ -133,7 +131,7 @@ Public MustInherit Class wb_ArrayGridView
 
             With .AlternatingRowsDefaultCellStyle
                 ' für bessere Lesbarkeit der DatenZeilen
-                .BackColor = Color.LightBlue
+                .BackColor = gray245
             End With
 
             ' Weitere allgemeine Eigenschaften
@@ -166,7 +164,6 @@ Public MustInherit Class wb_ArrayGridView
         MyBase.Location = New System.Drawing.Point(Parent.Top, Parent.Left)
         MyBase.Size = New System.Drawing.Size(Parent.Width, Parent.Height)
         MyBase.Dock = Windows.Forms.DockStyle.Fill
-
     End Sub
 
 End Class

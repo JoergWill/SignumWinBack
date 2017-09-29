@@ -24,11 +24,11 @@
         Return False
     End Function
 
-    Friend Overrides Function DBUpdate(Nr As String, Text As String) As Boolean
+    Friend Overrides Function DBUpdate(Nr As String, Text As String, Gruppe As String) As Boolean
         Throw New NotImplementedException()
     End Function
 
-    Friend Overrides Function DBInsert(Nr As String, Text As String) As Boolean
+    Friend Overrides Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
         Throw New NotImplementedException()
     End Function
 
