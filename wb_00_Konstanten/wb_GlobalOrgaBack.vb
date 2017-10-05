@@ -99,6 +99,9 @@ Public Class wb_GlobalOrgaBack
     ''' Liest alle benötigten Einträge aus der OrgaBack.Admin-Tabelle dbo.Settings
     ''' </summary>
     Private Shared Sub DbReadSetting(Category As String)
+        'TODO kann auch aus wb_Main.settings-object gelesen werden (bei Programmstart)
+        'REFAKTORIEREN !!
+
         'Datenbank-Verbindung öffnen - MsSQL
         Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackAdminConString, wb_Sql.dbType.msSql)
 

@@ -144,11 +144,11 @@ Public MustInherit Class wb_Sync
         If _CheckDataErrFlag = wb_Global.SyncState.WinBackErr Then
             'Prüfen auf doppelte Einträge bei Nummern
             For Each x As wb_SyncItem In _Data
-                If x.wb_Nummer = "0" Or x.wb_Nummer = "" Or x.wb_Nummer = LastNummer Then
+                If x.Wb_Nummer = "0" Or x.Wb_Nummer = "" Or x.Wb_Nummer = LastNummer Then
                     x.SyncOK = wb_Global.SyncState.WinBackErr
                     _iSync_wbErr += 1
                     x.ToolTipText = "Nummer gleich Null oder doppelt vorhanden"
-                    LastNummer = x.wb_Nummer
+                    LastNummer = x.Wb_Nummer
                 End If
             Next
         End If
@@ -158,12 +158,12 @@ Public MustInherit Class wb_Sync
         If _CheckDataErrFlag = wb_Global.SyncState.OrgaBackErr Then
             'Prüfen auf doppelte Einträge bei Nummern
             For Each x As wb_SyncItem In _Data
-                If x.os_Nummer = "0" Or x.os_Nummer = "" Or x.os_Nummer = LastNummer Then
+                If x.Os_Nummer = "0" Or x.Os_Nummer = "" Or x.Os_Nummer = LastNummer Then
                     x.SyncOK = wb_Global.SyncState.OrgaBackErr
                     _iSync_osErr += 1
                     x.ToolTipText = "Nummer gleich Null oder doppelt vorhanden"
                 End If
-                LastNummer = x.os_Nummer
+                LastNummer = x.Os_Nummer
             Next
         End If
     End Sub
@@ -171,15 +171,12 @@ Public MustInherit Class wb_Sync
     Public Sub CheckSync(SyncData As ArrayList)
         'beide Arrays aneinanderhängen
         _Data.AddRange(SyncData)
-        Debug.Print("AddRange ***************************")
         PrintSync()
         'nach Nummer(Sortiertkriterium) sortieren
         _Data.Sort()
-        Debug.Print("DataSort ***************************")
         PrintSync()
         'doppelte Einträge zusammenfassen
         DelDubletten()
-        Debug.Print("DelDoubletten ***************************")
         PrintSync()
         'Prüfen ob beide Einträge im Array identisch sind
         CheckSyncResult()
@@ -252,8 +249,8 @@ Public MustInherit Class wb_Sync
     Friend Overridable Function GetSyncResult(ByVal x As wb_SyncItem) As wb_Global.SyncState
 
         'Beide Nummern sind identisch
-        If x.wb_Nummer = x.os_Nummer Then
-            If x.wb_Bezeichnung = x.os_Bezeichnung Then
+        If x.Wb_Nummer = x.Os_Nummer Then
+            If x.Wb_Bezeichnung = x.Os_Bezeichnung Then
                 'Beide Bezeichnungen sind identisch
                 Return wb_Global.SyncState.OK
             Else
@@ -263,10 +260,10 @@ Public MustInherit Class wb_Sync
         End If
 
         'Nummern sind unterschiedlich oder eine Nummer ist leer       
-        If x.wb_Bezeichnung = "" Then
+        If x.Wb_Bezeichnung = "" Then
             'WinBack-Bezeichnung ist leer
             Return _Case_01
-        ElseIf x.os_Bezeichnung = "" Then
+        ElseIf x.Os_Bezeichnung = "" Then
             'OrgaBack-Bezeichnung ist leer
             Return _Case_10
         End If
@@ -311,7 +308,7 @@ Public MustInherit Class wb_Sync
 
     Public Sub PrintSync()
         For Each x As wb_SyncItem In _Data
-            Debug.Print(" wb " & x.wb_Nummer & " " & x.wb_Bezeichnung & vbTab & "os " & x.os_Nummer & " " & x.os_Bezeichnung)
+            Debug.Print(" wb " & x.Wb_Nummer & " " & x.Wb_Bezeichnung & vbTab & "os " & x.Os_Nummer & " " & x.Os_Bezeichnung)
         Next
     End Sub
 End Class

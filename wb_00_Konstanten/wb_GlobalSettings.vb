@@ -19,6 +19,11 @@ Imports WinBack.wb_Global
 Public Class wb_GlobalSettings
     Private Shared _pVariante As wb_Global.ProgVariante = wb_Global.ProgVariante.Undef
     Private Shared _pAddInPath As String = Nothing
+    Private Shared _pListenPath As String
+    Private Shared _pWinBackIniPath As String = Nothing
+    Private Shared _pProgrammPath As String = ""
+    Private Shared _pDatenPath As String = ""
+
     Private Shared _OrgaBackDBVersion As String = Nothing
     Private Shared _WinBackDBVersion As String = Nothing
 
@@ -27,6 +32,9 @@ Public Class wb_GlobalSettings
     Private Shared _MsSQLServer As String = Nothing
     Private Shared _MsSQLUserId As String = Nothing
     Private Shared _MsSQLPasswd As String = Nothing
+
+    Private Shared _osGrpRohstoffe As String = Nothing  'Warengruppe Rohstoffe in OrgaBack
+    Private Shared _osGrpBackwaren As String = Nothing  'Warengruppe Verkaufsartikel(Backwaren) in OrgaBack
 
     Private Shared _WinBackDBType As wb_Sql.dbType = wb_Sql.dbType.undef
     Private Shared _MySQLServerIP As String = Nothing
@@ -46,6 +54,9 @@ Public Class wb_GlobalSettings
     Private Shared _AktUser As String = ""
     Private Shared _AktUserNr As Integer = wb_Global.UNDEFINED
 
+    Private Shared _SauerteigAnlage As Boolean = Nothing
+    Private Shared _SauerteigAnzBeh As Integer = wb_Global.UNDEFINED
+
     Public Shared Property pVariante As wb_Global.ProgVariante
         Get
             Return _pVariante
@@ -55,7 +66,7 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Private Shared Property MsSQLMain As String
+    Public Shared Property MsSQLMain As String
         Get
             If _MsSQLMainDB Is Nothing Then
                 getWinBackIni("SQL")
@@ -64,10 +75,11 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _MsSQLMainDB = value
+            setWinBackIni("winback", "MsSQLServer_MainDB", value)
         End Set
     End Property
 
-    Private Shared Property MsSQLAdmn As String
+    Public Shared Property MsSQLAdmn As String
         Get
             If _MsSQLAdmnDB Is Nothing Then
                 getWinBackIni("SQL")
@@ -440,6 +452,97 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    ''' <summary>
+    ''' Pfad für die List&Label-Listen-Files
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property pListenPath As String
+        Get
+            Return _pListenPath
+        End Get
+        Set(value As String)
+            _pListenPath = value
+        End Set
+    End Property
+
+    Public Shared Property OsGrpRohstoffe As String
+        Get
+            If _osGrpRohstoffe Is Nothing Then
+                getWinBackIni("OrgaBack")
+            End If
+            Return _osGrpRohstoffe
+        End Get
+        Set(value As String)
+            _osGrpRohstoffe = value
+        End Set
+    End Property
+
+    Public Shared Property OsGrpBackwaren As String
+        Get
+            If _osGrpBackwaren Is Nothing Then
+                getWinBackIni("OrgaBack")
+            End If
+            Return _osGrpBackwaren
+        End Get
+        Set(value As String)
+            _osGrpBackwaren = value
+        End Set
+    End Property
+
+    Public Shared Property PWinBackIniPath As String
+        Get
+            If _pWinBackIniPath = Nothing Then
+                _pWinBackIniPath = My.Application.Info.DirectoryPath & "\WinBack.ini"
+            End If
+            Return _pWinBackIniPath
+        End Get
+        Set(value As String)
+            _pWinBackIniPath = value
+        End Set
+    End Property
+
+    Public Shared Property PProgrammPath As String
+        Get
+            Return _pProgrammPath
+        End Get
+        Set(value As String)
+            _pProgrammPath = value
+        End Set
+    End Property
+
+    Public Shared Property PDatenPath As String
+        Get
+            Return _pDatenPath
+        End Get
+        Set(value As String)
+            _pDatenPath = value
+        End Set
+    End Property
+
+    Public Shared ReadOnly Property SauerteigAnlage As Boolean
+        Get
+            If _SauerteigAnlage = Nothing Then
+                _SauerteigAnlage = (wb_sql_Functions.Lookup("BC9000Liste", "BC9_aktiv", "BC9_IpAdresse='11'") = "1")
+            End If
+            Return _SauerteigAnlage
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property SauerteigAnzBeh As Integer
+        Get
+            If _SauerteigAnzBeh = wb_Global.UNDEFINED Then
+                getWinBackKonfiguration()
+            End If
+            Return _SauerteigAnzBeh
+        End Get
+    End Property
+
+    Private Shared Sub setWinBackIni(Section As String, Key As String, value As String)
+        Dim Inifile As New wb_IniFile
+        Inifile.WriteString(Section, Key, value)
+        Inifile = Nothing
+    End Sub
+
     Private Shared Sub getWinBackIni(Key As String)
         Dim IniFile As New wb_IniFile
 
@@ -454,8 +557,8 @@ Public Class wb_GlobalSettings
 
                 'Default-Wert für die IP-Adresse is der Rechner-Name sonst funktioniert der Zugriff auf die MS-SQL2014-Datenbank nicht
                 _MsSQLServerIP = IniFile.ReadString("winback", "eMsSQLServerIP", Environment.MachineName)
-                _MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
-                _MySQLWbDaten = IniFile.ReadString("winback", "eMySQLDatabaseDaten", "wbdaten")
+                _MsSQLWinBack = IniFile.ReadString("winback", "eMsSQLDatabase", "winback")
+                _MsSQLWbDaten = IniFile.ReadString("winback", "eMsSQLDatabaseDaten", "wbdaten")
 
                 _MsSQLMainDB = IniFile.ReadString("winback", "MsSQLServer_MainDB", "DemoOrgaBack_Main3")
                 _MsSQLAdmnDB = IniFile.ReadString("winback", "MsSQLServer_AdmnDB", "DemoOrgaBack_Admin3")
@@ -469,6 +572,10 @@ Public Class wb_GlobalSettings
                 _LogToTextFile = IniFile.ReadInt("winback", "LogToTextFile", wbFALSE)
                 _LogToDataBase = IniFile.ReadInt("winback", "LogToDataBase", wbFALSE)
 
+            Case "OrgaBack"
+                _osGrpBackwaren = IniFile.ReadString("orgaback", "GruppeBackwaren", "0")
+                _osGrpRohstoffe = IniFile.ReadString("orgaback", "GruppeRohstoffe", "40")
+
         End Select
     End Sub
 
@@ -481,6 +588,8 @@ Public Class wb_GlobalSettings
                 Select Case winback.sField("KF_Tag")
                     Case "DatenbankVersion"
                         _WinBackDBVersion = winback.sField("KF_Wert")
+                    Case "vts__anzahl_behaelter"
+                        _SauerteigAnzBeh = winback.sField("KF_Wert")
                 End Select
             End While
         End If

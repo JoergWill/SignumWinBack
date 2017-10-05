@@ -76,8 +76,8 @@ Public Class wb_Rohstoff
         KO_Bezeichnung = dataGridView.Field("KO_Bezeichnung")
         KO_Kommentar = dataGridView.Field("KO_Kommentar")
         KA_Preis = dataGridView.Field("KA_Preis")
-        KA_Grp1 = CInt(dataGridView.Field("KA_Grp1"))
-        KA_Grp2 = CInt(dataGridView.Field("KA_Grp2"))
+        KA_Grp1 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp1"))
+        KA_Grp2 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp2"))
     End Sub
 End Class
 

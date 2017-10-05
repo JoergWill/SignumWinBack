@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncUserGruppen.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>9</value>
   </data>
   <data name="tbSyncResult.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -154,7 +154,7 @@
     <value>153, 12</value>
   </data>
   <data name="tbSyncResult.Size" type="System.Drawing.Size, System.Drawing">
-    <value>740, 512</value>
+    <value>855, 512</value>
   </data>
   <data name="tbSyncResult.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -169,7 +169,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tbSyncResult.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>8</value>
   </data>
   <data name="btnSyncUser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -196,7 +196,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncUser.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>7</value>
   </data>
   <data name="btnSyncStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -205,7 +205,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnSyncStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>758, 536</value>
+    <value>873, 536</value>
   </data>
   <data name="btnSyncStart.Size" type="System.Drawing.Size, System.Drawing">
     <value>135, 43</value>
@@ -226,37 +226,34 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncStart.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>6</value>
   </data>
-  <data name="btnExportExcel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
+  <data name="btnExportPrint.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
-  <data name="btnExportExcel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="btnExportPrint.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 536</value>
   </data>
-  <data name="btnExportExcel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>617, 536</value>
-  </data>
-  <data name="btnExportExcel.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="btnExportPrint.Size" type="System.Drawing.Size, System.Drawing">
     <value>135, 43</value>
   </data>
-  <data name="btnExportExcel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="btnExportPrint.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
   </data>
-  <data name="btnExportExcel.Text" xml:space="preserve">
-    <value>Ergebnis in Excel anzeigen</value>
+  <data name="btnExportPrint.Text" xml:space="preserve">
+    <value>Ergebnis Drucken/Exportieren</value>
   </data>
-  <data name="&gt;&gt;btnExportExcel.Name" xml:space="preserve">
-    <value>btnExportExcel</value>
+  <data name="&gt;&gt;btnExportPrint.Name" xml:space="preserve">
+    <value>btnExportPrint</value>
   </data>
-  <data name="&gt;&gt;btnExportExcel.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnExportPrint.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnExportExcel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;btnExportPrint.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btnExportExcel.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;btnExportPrint.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="lvSyncResult.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -280,7 +277,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lvSyncResult.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>4</value>
   </data>
   <data name="clHeader0.Text" xml:space="preserve">
     <value />
@@ -315,6 +312,117 @@
   <data name="clHeader5.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Center</value>
   </data>
+  <data name="btnSyncArtikelGruppen.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnSyncArtikelGruppen.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 140</value>
+  </data>
+  <data name="btnSyncArtikelGruppen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 43</value>
+  </data>
+  <data name="btnSyncArtikelGruppen.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="btnSyncArtikelGruppen.Text" xml:space="preserve">
+    <value>Artikel-Gruppen</value>
+  </data>
+  <data name="&gt;&gt;btnSyncArtikelGruppen.Name" xml:space="preserve">
+    <value>btnSyncArtikelGruppen</value>
+  </data>
+  <data name="&gt;&gt;btnSyncArtikelGruppen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSyncArtikelGruppen.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnSyncArtikelGruppen.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="btnSyncArtikel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnSyncArtikel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 189</value>
+  </data>
+  <data name="btnSyncArtikel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 43</value>
+  </data>
+  <data name="btnSyncArtikel.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="btnSyncArtikel.Text" xml:space="preserve">
+    <value>Artikel</value>
+  </data>
+  <data name="&gt;&gt;btnSyncArtikel.Name" xml:space="preserve">
+    <value>btnSyncArtikel</value>
+  </data>
+  <data name="&gt;&gt;btnSyncArtikel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSyncArtikel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnSyncArtikel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btnSyncRohstoffe.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnSyncRohstoffe.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 238</value>
+  </data>
+  <data name="btnSyncRohstoffe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 43</value>
+  </data>
+  <data name="btnSyncRohstoffe.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="btnSyncRohstoffe.Text" xml:space="preserve">
+    <value>Rohstoffe</value>
+  </data>
+  <data name="&gt;&gt;btnSyncRohstoffe.Name" xml:space="preserve">
+    <value>btnSyncRohstoffe</value>
+  </data>
+  <data name="&gt;&gt;btnSyncRohstoffe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSyncRohstoffe.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnSyncRohstoffe.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnTryToMatch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="btnTryToMatch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnTryToMatch.Location" type="System.Drawing.Point, System.Drawing">
+    <value>732, 536</value>
+  </data>
+  <data name="btnTryToMatch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 43</value>
+  </data>
+  <data name="btnTryToMatch.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="btnTryToMatch.Text" xml:space="preserve">
+    <value>Match (Versuch)</value>
+  </data>
+  <data name="&gt;&gt;btnTryToMatch.Name" xml:space="preserve">
+    <value>btnTryToMatch</value>
+  </data>
+  <data name="&gt;&gt;btnTryToMatch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnTryToMatch.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnTryToMatch.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -322,7 +430,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>905, 604</value>
+    <value>1020, 604</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>

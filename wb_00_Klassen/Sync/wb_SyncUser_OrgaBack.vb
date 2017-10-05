@@ -5,29 +5,54 @@
         Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
         _Data.Clear()
 
-        If orgaback.sqlSelect(wb_Sql_Selects.mssqlMitarbeiter) Then
+        If orgaback.sqlSelect(wb_Sql_Selects.mssqlMitarbeiterMFF500) Then
             While orgaback.Read
                 _Item = New wb_SyncItem
-                _Item.os_Nummer = orgaback.iField("KassiererNummer")
-                _Item.os_Bezeichnung = orgaback.sField("Vorname") & " " & orgaback.sField("Nachname")
-                _Item.os_Gruppe = FormatNumber(orgaback.sField("Inhalt"), 0, 0,, 0)
+                _Item.Os_Nummer = orgaback.iField("KassiererNummer")
+                _Item.Os_Bezeichnung = orgaback.sField("Vorname") & " " & orgaback.sField("Nachname")
+                _Item.Os_Gruppe = FormatNumber(orgaback.sField("Inhalt"), 0, 0,, 0)
                 _Item.SyncOK = wb_Global.SyncState.NOK
-                _Item.Sort = _Item.os_Nummer
-                Trace.WriteLine("Read OrgaBack Mitarbeiter Nummer " & _Item.os_Nummer.ToString + " Mitarbeiter Name " & _Item.os_Bezeichnung)
+                _Item.Sort = _Item.Os_Nummer
 
                 'Datensatz wird nur verwendet wenn der Mitarbeiter einer Produktions-Filiale zugeordnet ist
                 If MitarbeiterHatProduktionsFiliale(orgaback.sField("Filialzuordnung")) Then
                     _Data.Add(_Item)
                 End If
-
             End While
+        Else
             orgaback.Close()
-
-            CheckData(wb_Global.SyncState.OrgaBackErr)
-            Return True
+            Return False
         End If
+
+        'wenn keine Datensätze gefunden worden sind, fehlt das MFF500 in OrgaBack
+        If _Data.Count = 0 Then
+            'Meldung ausgeben
+            MsgBox("Fehler OrgaBack !!" & vbCr & "MFF500 (WinBack-Gruppe) ist nicht definiert", MsgBoxStyle.Critical, "Lesen Mitarbeiter OrgaBack")
+
+            orgaback.CloseRead()
+            If orgaback.sqlSelect(wb_Sql_Selects.mssqlMitarbeiter) Then
+                While orgaback.Read
+                    _Item = New wb_SyncItem
+                    _Item.Os_Nummer = orgaback.iField("KassiererNummer")
+                    _Item.Os_Bezeichnung = orgaback.sField("Vorname") & " " & orgaback.sField("Nachname")
+                    _Item.Os_Gruppe = "" 'in dieser Abfrage ist die Zuordnung Mitarbeiter zu WinBack-Gruppe nicht enthalten (MFF500)
+                    _Item.SyncOK = wb_Global.SyncState.NOK
+                    _Item.Sort = _Item.Os_Nummer
+
+                    'Datensatz wird nur verwendet wenn der Mitarbeiter einer Produktions-Filiale zugeordnet ist
+                    If MitarbeiterHatProduktionsFiliale(orgaback.sField("Filialzuordnung")) Then
+                        _Data.Add(_Item)
+                    End If
+                End While
+            Else
+                orgaback.Close()
+                Return False
+            End If
+        End If
+
         orgaback.Close()
-        Return False
+        CheckData(wb_Global.SyncState.OrgaBackErr)
+        Return True
     End Function
 
     ''' <summary>

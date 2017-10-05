@@ -273,6 +273,10 @@
         WinBackUpdate           'Datensatz ist in beiden Datenbanken vorhanden und muss in WinBack aktualisiert werden
         WinBackMiss             'Datensatz ist nur in OrgaBack vorhanden - Fehlt in WinBack, KEIN Update
         WinBackErr              'Datenfehler in WinBack - Datenintegrität, doppelte Einträge o.ä.
+
+        TryMatchWinBackUpdate   'Datensatz wurde nach TryMatch zugeordnet - Update in WinBack
+        TryMatchOrgaBackUpdate  'Datensatz wurde nach TryMatch zugeordnet - Update in OrgaBack(?)
+        TryMatchDel             'Datensatz kann nach TryMatch gelöscht werden
     End Enum
 
     Enum SyncType

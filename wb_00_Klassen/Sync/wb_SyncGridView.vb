@@ -80,6 +80,8 @@ Public Class wb_SyncGridView
                     e.CellStyle.ForeColor = Color.Red
                 Case wb_Global.SyncState.OK
                     e.CellStyle.ForeColor = Color.Green
+                Case wb_Global.SyncState.TryMatchWinBackUpdate, wb_Global.SyncState.TryMatchOrgaBackUpdate
+                    e.CellStyle.BackColor = Color.Aquamarine
             End Select
         End If
     End Sub

@@ -292,7 +292,15 @@ Public Class wb_Main_Menu
         'Programm-Einstellung OrgaBack
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
         'Signum.OrgaSoft.Common.Settings.Verzeichnisse.AddInPfad
-        wb_GlobalSettings.PAddInPath = TryCast(oSetting.GetSetting("Verzeichnisse.AddInPfad"), String)
+        wb_GlobalSettings.pAddInPath = TryCast(oSetting.GetSetting("Verzeichnisse.AddInPfad"), String)
+        'Signum.OrgaSoft.Common.Settings.Verzeichnisse.ListenPfad
+        wb_GlobalSettings.pListenPath = TryCast(oSetting.GetSetting("Verzeichnisse.ListenPfad"), String)
+        'Signum.OrgaSoft.Common.Settings.Verzeichnisse.ProgrammPfad
+        wb_GlobalSettings.pProgrammPath = TryCast(oSetting.GetSetting("Verzeichnisse.ProgrammPfad"), String)
+        'Signum.OrgaSoft.Common.Settings.Verzeichnisse.DatenPfad
+        wb_GlobalSettings.pDatenPath = TryCast(oSetting.GetSetting("Verzeichnisse.DatenPfad"), String)
+        'Signum.OrgaSoft.Common.Settings.Datenbank.Hauptdatenbank
+        wb_GlobalSettings.MsSQLMain = TryCast(oSetting.GetSetting("Datenbank.Hauptdatenbank"), String)
 
         'Programm-Version OrgaBack
         Dim PVersion = Assembly.GetEntryAssembly().GetName().Version

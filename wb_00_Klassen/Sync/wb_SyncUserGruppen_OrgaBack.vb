@@ -8,11 +8,10 @@
         If orgaback.sqlSelect(wb_Sql_Selects.mssqlMitarbeiterGruppen) Then
             While orgaback.Read
                 _Item = New wb_SyncItem
-                _Item.os_Nummer = orgaback.iField("Hierarchie")
-                _Item.os_Bezeichnung = orgaback.sField("Bezeichnung")
+                _Item.Os_Nummer = orgaback.iField("Hierarchie")
+                _Item.Os_Bezeichnung = orgaback.sField("Bezeichnung")
                 _Item.SyncOK = wb_Global.SyncState.NOK
-                _Item.Sort = _Item.os_Nummer
-                Trace.WriteLine("Read OrgaBack Mitarbeiter-Gruppe Nummer " & _Item.os_Nummer.ToString + " Mitarbeiter-Gruppe Bezeichnung " & _Item.os_Bezeichnung)
+                _Item.Sort = _Item.Os_Nummer
                 _Data.Add(_Item)
             End While
             orgaback.Close()

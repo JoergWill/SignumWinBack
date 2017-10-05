@@ -127,4 +127,23 @@ Public Class wb_sql_Functions
         winback.Close()
     End Function
 
+    Public Shared Function Lookup(Tabelle As String, Feldname As String, Bedingung As String) As String
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String = "SELECT " & Feldname & " FROM " & Tabelle & " WHERE " & Bedingung
+        Lookup = ""
+
+        'Select-Statement ausführen
+        Try
+            winback.sqlSelect(sql)
+            If winback.Read Then
+                Lookup = winback.sField(Feldname)
+            End If
+        Catch ex As Exception
+        End Try
+
+        winback.Close()
+        Return Lookup
+    End Function
+
 End Class

@@ -16,7 +16,7 @@ Public Class wb_Artikel_Liste
         wb_Artikel_Shared.LoadRzptNamen()
 
         'DataGrid füllen
-        DataGridView.LoadData(wb_Sql_Selects.sqlArtikelLste, "ArtikelListe")
+        DataGridView.LoadData(wb_Sql_Selects.sqlArtikelLst, "ArtikelListe")
 
     End Sub
 

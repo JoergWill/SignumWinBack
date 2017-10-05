@@ -12,6 +12,7 @@ Public Class wb_Admin_Main
     Public AdminSync As wb_Admin_Sync
     Public AdminUpdate As wb_Admin_UpdateDatabase
     Public AdminDatensicherung As wb_Admin_Datensicherung
+    Public AdminEditIni As wb_Admin_EditIni
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
@@ -57,6 +58,8 @@ Public Class wb_Admin_Main
                 oGrp.AddButton("btnSync", "Synchronisation Datenbanken WinBack-OrgaBack", "", My.Resources.MainSync_16x16, My.Resources.MainSync_32x32, AddressOf BtnAdminSyncForm)
                 oGrp.AddButton("btnDatensicherung", "Sicherung/Rücksicherung Datenbanken WinBack", "", My.Resources.DatenSicherung_16x16, My.Resources.DatenSicherung_32x32, AddressOf BtnAdminDatensicherung)
                 oGrp.AddButton("btnUpdate", "Update/Versionsinformation WinBack", "", My.Resources.UpdateDataBase_16x16, My.Resources.UpdateDataBase_32x32, AddressOf BtnAdminUpdate)
+                oGrp.AddButton("btnListLabel", "List&Label Designer", "", My.Resources.ListUndLabel_16x16, My.Resources.ListUndLabel_32x32, AddressOf btnListUndLabelDesigner)
+                oGrp.AddButton("btnEditWinBackIni", "Edit Konfiguration", "", My.Resources.EditKonfig_16x16, My.Resources.EditKonfig_32x32, AddressOf btnEditKonfig)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -86,6 +89,11 @@ Public Class wb_Admin_Main
                 _DockPanelList.Add(AdminDatensicherung)
                 Return AdminDatensicherung
 
+            Case "WinBack.wb_Admin_EditIni"
+                AdminEditIni = New wb_Admin_EditIni
+                _DockPanelList.Add(AdminEditIni)
+                Return AdminEditIni
+
             Case Else
                 Return Nothing
         End Select
@@ -105,5 +113,20 @@ Public Class wb_Admin_Main
     Private Sub btnAdminUpdate()
         AdminUpdate = New wb_Admin_UpdateDatabase
         AdminUpdate.Show(DockPanel, DockState.DockRight)
+    End Sub
+
+    Private Sub btnListUndLabelDesigner()
+        Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
+        Dim gList As New List(Of Object)
+        pDialog.LL.DataSource = gList
+        pDialog.ListSubDirectory = ""
+        pDialog.ListFileName = "wbStandard.lst"
+        pDialog.LL.AutoDialogTitle = "Vorlage"
+        pDialog.LL.Design()
+    End Sub
+
+    Private Sub btnEditKonfig()
+        AdminEditIni = New wb_Admin_EditIni
+        AdminEditIni.Show(DockPanel, DockState.DockRight)
     End Sub
 End Class

@@ -30,7 +30,7 @@ Partial Class wb_Admin_Sync
         Me.tbSyncResult = New System.Windows.Forms.Panel()
         Me.btnSyncUser = New System.Windows.Forms.Button()
         Me.btnSyncStart = New System.Windows.Forms.Button()
-        Me.btnExportExcel = New System.Windows.Forms.Button()
+        Me.btnExportPrint = New System.Windows.Forms.Button()
         Me.lvSyncResult = New System.Windows.Forms.ListView()
         Me.clHeader0 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -38,6 +38,10 @@ Partial Class wb_Admin_Sync
         Me.clHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.btnSyncArtikelGruppen = New System.Windows.Forms.Button()
+        Me.btnSyncArtikel = New System.Windows.Forms.Button()
+        Me.btnSyncRohstoffe = New System.Windows.Forms.Button()
+        Me.btnTryToMatch = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnSyncUserGruppen
@@ -65,11 +69,11 @@ Partial Class wb_Admin_Sync
         Me.btnSyncStart.Name = "btnSyncStart"
         Me.btnSyncStart.UseVisualStyleBackColor = True
         '
-        'btnExportExcel
+        'btnExportPrint
         '
-        resources.ApplyResources(Me.btnExportExcel, "btnExportExcel")
-        Me.btnExportExcel.Name = "btnExportExcel"
-        Me.btnExportExcel.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.btnExportPrint, "btnExportPrint")
+        Me.btnExportPrint.Name = "btnExportPrint"
+        Me.btnExportPrint.UseVisualStyleBackColor = True
         '
         'lvSyncResult
         '
@@ -103,12 +107,40 @@ Partial Class wb_Admin_Sync
         '
         resources.ApplyResources(Me.clHeader5, "clHeader5")
         '
+        'btnSyncArtikelGruppen
+        '
+        resources.ApplyResources(Me.btnSyncArtikelGruppen, "btnSyncArtikelGruppen")
+        Me.btnSyncArtikelGruppen.Name = "btnSyncArtikelGruppen"
+        Me.btnSyncArtikelGruppen.UseVisualStyleBackColor = True
+        '
+        'btnSyncArtikel
+        '
+        resources.ApplyResources(Me.btnSyncArtikel, "btnSyncArtikel")
+        Me.btnSyncArtikel.Name = "btnSyncArtikel"
+        Me.btnSyncArtikel.UseVisualStyleBackColor = True
+        '
+        'btnSyncRohstoffe
+        '
+        resources.ApplyResources(Me.btnSyncRohstoffe, "btnSyncRohstoffe")
+        Me.btnSyncRohstoffe.Name = "btnSyncRohstoffe"
+        Me.btnSyncRohstoffe.UseVisualStyleBackColor = True
+        '
+        'btnTryToMatch
+        '
+        resources.ApplyResources(Me.btnTryToMatch, "btnTryToMatch")
+        Me.btnTryToMatch.Name = "btnTryToMatch"
+        Me.btnTryToMatch.UseVisualStyleBackColor = True
+        '
         'wb_Admin_Sync
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.btnTryToMatch)
+        Me.Controls.Add(Me.btnSyncRohstoffe)
+        Me.Controls.Add(Me.btnSyncArtikel)
+        Me.Controls.Add(Me.btnSyncArtikelGruppen)
         Me.Controls.Add(Me.lvSyncResult)
-        Me.Controls.Add(Me.btnExportExcel)
+        Me.Controls.Add(Me.btnExportPrint)
         Me.Controls.Add(Me.btnSyncStart)
         Me.Controls.Add(Me.btnSyncUser)
         Me.Controls.Add(Me.tbSyncResult)
@@ -122,7 +154,7 @@ Partial Class wb_Admin_Sync
     Friend WithEvents tbSyncResult As Windows.Forms.Panel
     Friend WithEvents btnSyncUser As Windows.Forms.Button
     Friend WithEvents btnSyncStart As Windows.Forms.Button
-    Friend WithEvents btnExportExcel As Windows.Forms.Button
+    Friend WithEvents btnExportPrint As Windows.Forms.Button
     Friend WithEvents lvSyncResult As Windows.Forms.ListView
     Friend WithEvents clHeader0 As Windows.Forms.ColumnHeader
     Friend WithEvents clHeader1 As Windows.Forms.ColumnHeader
@@ -130,4 +162,8 @@ Partial Class wb_Admin_Sync
     Friend WithEvents clHeader3 As Windows.Forms.ColumnHeader
     Friend WithEvents clHeader4 As Windows.Forms.ColumnHeader
     Friend WithEvents clHeader5 As Windows.Forms.ColumnHeader
+    Friend WithEvents btnSyncArtikelGruppen As Windows.Forms.Button
+    Friend WithEvents btnSyncArtikel As Windows.Forms.Button
+    Friend WithEvents btnSyncRohstoffe As Windows.Forms.Button
+    Friend WithEvents btnTryToMatch As Windows.Forms.Button
 End Class

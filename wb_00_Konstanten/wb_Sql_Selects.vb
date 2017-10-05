@@ -36,7 +36,7 @@
     Public Const sqlENummern = "SELECT * FROM enummern"
 
     'Sql-Statement Artikelliste aus winback.Komponenten
-    Public Const sqlArtikelLste = "Select KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, " &
+    Public Const sqlArtikelLst = "Select KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, " &
                                   "KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type = 0"
 
     'Sql-Statement Userliste aus winback.ItemParameter
@@ -147,9 +147,13 @@
                                  "B_ARZ_TW_Nr = " & Chr(34) & "[0]" & Chr(34) & " ORDER BY B_ARZ_TW_Idx, B_ARZ_Timestamp"
 
     'Sql-Statement Abfrage Vorname, Nachname und Nummer aus [OrgaBackMain].[dbo].[Mitarbeiter]"
-    Public Const mssqlMitarbeiter = "SELECT * FROM [dbo].[Mitarbeiter] LEFT JOIN MitarbeiterHatMultiFeld " &
+    Public Const mssqlMitarbeiterMFF500 = "SELECT * FROM [dbo].[Mitarbeiter] LEFT JOIN MitarbeiterHatMultiFeld " &
                                     "ON Mitarbeiter.MitarbeiterKürzel = MitarbeiterHatMultiFeld.MitarbeiterKürzel " &
                                     "WHERE MitarbeiterHatMultiFeld.FeldNummer = 500 ORDER BY KassiererNummer"
+    Public Const mssqlMitarbeiter = "SELECT * FROM [dbo].[Mitarbeiter] LEFT JOIN MitarbeiterHatMultiFeld " &
+                                    "ON Mitarbeiter.MitarbeiterKürzel = MitarbeiterHatMultiFeld.MitarbeiterKürzel ORDER BY KassiererNummer"
+
+
     'Sql-Statement Abfrage Gruppen-Nr(Hierarchie) und Gruppen-Bezeichnung aus [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"
     Public Const mssqlMitarbeiterGruppen = "SELECT * FROM [dbo].[MitarbeiterMultiFunktionsFeld] WHERE GruppenNr=1 ORDER BY Hierarchie"
     'Sql-Statement Update Gruppen-Bezeichnung aus [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"
@@ -157,14 +161,17 @@
     'Sql-Statement Insert Mitarbeiter-Gruppe [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"
     Public Const mssqlInsertMitarbeiterGruppen = "INSERT INTO [dbo].[MitarbeiterMultiFunktionsFeld] (GruppenNr, Hierarchie, Bezeichnung) VALUES ('[2]','[0]','[1]')"
 
+    'Sql-Statement Artikel
+    Public Const mssqlArtikel = "SELECT ArtikelNr,Kurztext,Sortiment FROM [dbo].[Artikel] WHERE Artikelgruppe = [0] ORDER BY ArtikelNr"
+
     'Sql-Statement Filiale zugeordnet zu Produktion (Typ=4)
-    Public Const mssqlFiliale = "SELECT Filialnummer, Name1 FROM Filialen WHERE [Typ] = [0]"
+    Public Const mssqlFiliale = "Select Filialnummer, Name1 FROM Filialen WHERE [Typ] = [0]"
     'Sql-Statament Sortiment zugeordnet zu Filiale mit Typ Produktion
-    Public Const mssqlSortiment = "SELECT * FROM FilialeHatSortiment INNER JOIN Filialen ON FilialeHatSortiment.Filialnr =  Filialen.Filialnummer " &
+    Public Const mssqlSortiment = "Select * FROM FilialeHatSortiment INNER JOIN Filialen On FilialeHatSortiment.Filialnr =  Filialen.Filialnummer " &
                                   "WHERE [Typ] = [0] ORDER BY SortimentsKürzel"
 
     'Sql-Statement Abfrage dbo.Settings.Category
-    Public Const mssqlSettings = "SELECT * FROM Settings WHERE [Category] = '[0]'"
+    Public Const mssqlSettings = "Select * FROM Settings WHERE [Category] = '[0]'"
     'Sql-Statement Abfrage dbo.WorkStations.Computername
     Public Const mssqlWrkStations = "SELECT * FROM WorkStations WHERE [ComputerName] = '[0]'"
     'Sql-Statement Abfrage dbo.SystemInfo

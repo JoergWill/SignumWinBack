@@ -88,6 +88,72 @@
     <CodeAnalysisRuleSet>..\..\..\..\SharedBinaries\Basic Correctness and Design Guideline.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M1|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug-M1\</OutputPath>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M1|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug-M1\</OutputPath>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M2|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug-M2\</OutputPath>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M2|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug-M2\</OutputPath>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M3|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug-M3\</OutputPath>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M3|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug-M3\</OutputPath>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="combit.ListLabel22, Version=22.2.6290.25045, Culture=neutral, PublicKeyToken=a7a30592cb4a94be, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -182,29 +248,33 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_ArrayGridView.Designer.vb">
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridView.Designer.vb">
       <DependentUpon>wb_ArrayGridView.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_ArrayGridView.vb">
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridView.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_SyncGridView.Designer.vb">
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncRohstoffe_WinBack.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncArtikel_OrgaBack.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncArtikel_WinBack.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncGridView.Designer.vb">
       <DependentUpon>wb_SyncGridView.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_SyncGridView.vb">
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncGridView.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_SyncItem.vb" />
-    <Compile Include="wb_00_Klassen\wb_SyncUser_OrgaBack.vb" />
-    <Compile Include="wb_00_Klassen\wb_SyncUserGruppen_OrgaBack.vb" />
-    <Compile Include="wb_00_Klassen\wb_SyncUser_WinBack.vb" />
-    <Compile Include="wb_00_Klassen\wb_SyncUserGruppen_WinBack.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncItem.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncRohstoffe_OrgaBack.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncUser_OrgaBack.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncUserGruppen_OrgaBack.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncUser_WinBack.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncUserGruppen_WinBack.vb" />
     <Compile Include="wb_00_Klassen\wb_ChangeLog.vb" />
-    <Compile Include="wb_00_Klassen\wb_DataGridViewVerwendung.vb">
+    <Compile Include="wb_00_Klassen\Komponenten\wb_DataGridViewVerwendung.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_DockBarPanelShared.vb" />
-    <Compile Include="wb_00_Klassen\wb_Sync.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_Sync.vb" />
     <Compile Include="wb_00_Main\wb_Finalizer_Shared.vb" />
     <Compile Include="wb_00_Klassen\WinBack_DockMain.Designer.vb">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
@@ -221,10 +291,10 @@
     <Compile Include="wb_00_Klassen\wb_KomponParam301.vb" />
     <Compile Include="wb_00_Klassen\wb_Komponenten.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam301_Global.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam301_GridView.Designer.vb">
+    <Compile Include="wb_00_Klassen\Komponenten\wb_KomponParam301_GridView.Designer.vb">
       <DependentUpon>wb_KomponParam301_GridView.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_KomponParam301_GridView.vb">
+    <Compile Include="wb_00_Klassen\Komponenten\wb_KomponParam301_GridView.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_nwtCloud.vb" />
@@ -240,19 +310,19 @@
     <Compile Include="wb_00_Klassen\wb_DockBarPanelMain.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_sql_BackupRestore.vb" />
+    <Compile Include="wb_00_Klassen\wb_Sql_BackupRestore.vb" />
     <Compile Include="wb_00_Klassen\wb_Hinweise.vb" />
-    <Compile Include="wb_00_Klassen\wb_SyncUser_X.vb" />
-    <Compile Include="wb_00_Klassen\wb_ComboBox.Designer.vb">
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncUser_X.vb" />
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ComboBox.Designer.vb">
       <DependentUpon>wb_ComboBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_ComboBox.vb">
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ComboBox.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
     <Compile Include="wb_00_Klassen\wb_Filiale.vb" />
     <Compile Include="wb_00_Klassen\wb_Language.vb" />
-    <Compile Include="wb_00_Klassen\wb_TabControl.vb">
+    <Compile Include="wb_00_Klassen\Komponenten\wb_TabControl.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_TcpIPConnection.vb" />
@@ -262,6 +332,12 @@
     <Compile Include="wb_00_Konstanten\wb_Credentials.vb" />
     <Compile Include="wb_00_Konstanten\wb_GlobalOrgaBack.vb" />
     <Compile Include="wb_00_Konstanten\wb_GlobalSettings.vb" />
+    <Compile Include="wb_00_Main\wb_PrinterDialog.Designer.vb">
+      <DependentUpon>wb_PrinterDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Main\wb_PrinterDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_00_Main\wb_Printer_Shared.vb" />
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.Designer.vb">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
@@ -401,7 +477,7 @@
     <Compile Include="wb_05_Forms_User\wb_User_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_DataGridView.vb">
+    <Compile Include="wb_00_Klassen\Komponenten\wb_DataGridView.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_Functions.vb" />
@@ -461,6 +537,12 @@
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Vorlage.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_EditIni.Designer.vb">
+      <DependentUpon>wb_Admin_EditIni.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_EditIni.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_08_Forms_Admin\wb_Admin_Log.Designer.vb">
       <DependentUpon>wb_Admin_Log.vb</DependentUpon>
     </Compile>
@@ -515,6 +597,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\wb_DockBarPanelMain.resx">
       <DependentUpon>wb_DockBarPanelMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Main\wb_PrinterDialog.resx">
+      <DependentUpon>wb_PrinterDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.resx">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
@@ -606,6 +691,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Vorlage.resx">
       <DependentUpon>wb_Planung_Vorlage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_EditIni.resx">
+      <DependentUpon>wb_Admin_EditIni.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Log.resx">
       <DependentUpon>wb_Admin_Log.vb</DependentUpon>
@@ -746,6 +834,10 @@
     <None Include="Resources\IconSave_16x16.png" />
     <None Include="Resources\IconSaveAs_24x24.png" />
     <None Include="Resources\IconReload_24x24.png" />
+    <None Include="Resources\Excel_16x16.png" />
+    <None Include="Resources\Excel_32x32.png" />
+    <None Include="Resources\EditKonfig_16x16.png" />
+    <None Include="Resources\EditKonfig_32x32.png" />
     <Content Include="Resources\Leer_32x32.png" />
     <None Include="Resources\StatusStripBackground.png" />
     <None Include="Resources\SaveIcon_24x24.png" />
@@ -754,6 +846,8 @@
     <None Include="Resources\RohstoffeVerwendung_32x32.png" />
     <None Include="Resources\UpdateDataBase_16x16.png" />
     <None Include="Resources\UpdateDataBase_32x32.png" />
+    <None Include="Resources\ListUndLabel_16x16.png" />
+    <None Include="Resources\ListUndLabel_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

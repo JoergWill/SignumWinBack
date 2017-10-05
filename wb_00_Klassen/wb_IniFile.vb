@@ -20,7 +20,7 @@ Public Class wb_IniFile
     ''' </summary>
     Sub New() 'kein Pfad notwendig...
 
-        Pfad = My.Application.Info.DirectoryPath & "\WinBack.ini"
+        Pfad = wb_GlobalSettings.PWinBackIniPath
         'TODO WinBack.ini  in User-Verzeichnis kopieren
         'Pfad = "C:\ProgramData\OrgaSoft\AddIn\WinBack.ini"
         'Pfad = "C:\ProgramData\OrgaSoft\WinBack.ini"
