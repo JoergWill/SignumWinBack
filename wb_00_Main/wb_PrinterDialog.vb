@@ -5,6 +5,7 @@ Imports combit.ListLabel22
 Public Class wb_PrinterDialog
     Private _ListSubDirectory As String
     Private _ListFileName As String
+
     Public LL As New ListLabel()
 
     Public WriteOnly Property ListSubDirectory As String
@@ -18,7 +19,8 @@ Public Class wb_PrinterDialog
         Set(value As String)
             _ListFileName = value
             'Den Standard-Projektnamen setzen
-            LL.AutoProjectFile = _ListSubDirectory & value
+            LL.AutoProjectFile = _ListSubDirectory & _ListFileName
+
             'wenn die Datei existiert wird kein Auswahl-Dialog bei Start von List&Label angezeigt
             If File.Exists(LL.AutoProjectFile) Then
                 LL.AutoShowSelectFile = False
@@ -58,5 +60,19 @@ Public Class wb_PrinterDialog
         Catch
         End Try
         Me.Close()
+    End Sub
+
+    Private Sub wb_PrinterDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ShowPreview()
+    End Sub
+
+    Private Sub ShowPreview()
+        'Preview anzeigen
+        LL.PreviewControl = LLPreview
+        LL.AutoDestination = LlPrintMode.PreviewControl
+        LL.AutoShowPrintOptions = False
+        LL.ExportOptions.Clear()
+        LL.ExportOptions.Add(LlExportOption.ExportShowResult, "0")
+        LL.Print()
     End Sub
 End Class
