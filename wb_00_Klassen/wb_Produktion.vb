@@ -20,7 +20,6 @@
     Private _SQLProduktionsSchritt As New wb_Produktionsschritt(Nothing, "")
     Private _ProduktionsSchritt As wb_Produktionsschritt
 
-
     ''' <summary>
     ''' Erster (unsichtbarer) Produktions-Schritt (Root-Node)
     ''' </summary>
@@ -31,6 +30,49 @@
         End Get
     End Property
 
+    ''' <summary>
+    ''' Fügt eine (Artikel)Charge an die bestehende Liste an.
+    ''' Der Artikel-Datensatz wird aus der Datenbank eingelesen und als Kopfdatensatz eingefügt. Die Rezeptzeilen werden entsprechend der Chargen-Aufteilung angefügt.
+    ''' </summary>
+    ''' <param name="Nummer">String - Artikelnummer(alpha)</param>
+    ''' <param name="Nr">Integer - interne Artikelnummer</param>
+    ''' <param name="Sollwert">Double - Sollmenge in Stück</param>
+    ''' <returns></returns>
+    Public Function AddArtikelCharge(Tour As String, Nummer As String, Nr As Integer, Sollwert As Double, Optional Bestellmenge As Double = wb_Global.UNDEFINED, Optional BestellText As String = "", Optional LoseText As String = "") As Boolean
+        Dim Artikel As New wb_Komponenten
+        If Artikel.MySQLdbRead(Nr, Nummer) Then
+            'Artikelzeilen hängen immer am ersten (Dummy)Schritt
+            Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
+            Dim Rzpt As wb_Produktionsschritt
+
+            'Neue Zeile  einfügen (ArtikelZeile)
+            Root = New wb_Produktionsschritt(Root, Artikel.Bezeichung)
+
+            'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
+            Root.CopyFromKomponenten(Artikel, wb_Global.wbDatenArtikel)
+            Root.Sollwert_Stk = Sollwert
+            Root.Tour = Tour
+
+            If Bestellmenge > 0 Then
+                Root.Bestellt_Stk = Bestellmenge
+            Else
+                Root.Bestellt_Stk = Sollwert
+            End If
+
+            Root.BestellText = BestellText
+            Root.LoseText = LoseText
+
+            'Rezept-Zeile anhängen
+            Rzpt = New wb_Produktionsschritt(Root, Artikel.RezeptName)
+            'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
+            Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
+            Rzpt.Sollwert_kg = 10
+            Rzpt.Tour = Tour
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
     ''' <summary>
     ''' Liest alle Datensätze aus wbdaten zur angegeben Tageswechselnummer sortiert nach Produktionsdatum ein 
@@ -80,6 +122,7 @@
                         'Artikelnummer merken
                         ArtikelNummer = _SQLProduktionsSchritt.ArtikelNummer
                     End If
+
                     'Rezeptzeile anfügen
                     _SQLProduktionsSchritt.Typ = wb_Global.wbDatenRezept
                     GesamtStueck += _SQLProduktionsSchritt.Sollwert_Stk
@@ -99,7 +142,7 @@
     End Function
 
     ''' <summary>
-    ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Obejkt-Eigenschaften
+    ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
     ''' </summary>
     ''' <param name="Name">String - Spalten-Name aus Datenbank</param>
     ''' <param name="Value">Object - Wert aus Datenbank</param>

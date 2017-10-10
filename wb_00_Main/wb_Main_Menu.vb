@@ -233,7 +233,7 @@ Public Class wb_Main_Menu
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Planung_Main(ServiceProvider), My.Resources.MainProduktionsPlanung_16x16)
         'Fensterposition aus winback.ini
-        wb_DockBarPanelShared.SetFormBoundaries(xForm, "ProduktionsPlanung")
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "Produktion")
     End Sub
 
     ''' <summary>

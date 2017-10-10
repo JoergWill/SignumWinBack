@@ -19,6 +19,7 @@ Public Class wb_Komponenten
     Private _LastErrorText As String
     Private _RezeptNummer As String = Nothing
     Private _RezeptName As String = Nothing
+    Private _LinienGruppe As Integer
 
     Private KO_DeklBezeichungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
@@ -104,9 +105,11 @@ Public Class wb_Komponenten
                     Dim Rezept As New wb_Rezept(RzNr)
                     _RezeptNummer = Rezept.RezeptNummer
                     _RezeptName = Rezept.RezeptBezeichnung
+                    LinienGruppe = Rezept.LinienGruppe
                 Else
                     _RezeptName = ""
                     _RezeptNummer = ""
+                    _LinienGruppe = wb_Global.UNDEFINED
                 End If
             End If
             Return _RezeptNummer
@@ -123,9 +126,11 @@ Public Class wb_Komponenten
                     Dim Rezept As New wb_Rezept(RzNr)
                     _RezeptNummer = Rezept.RezeptNummer
                     _RezeptName = Rezept.RezeptBezeichnung
+                    LinienGruppe = Rezept.LinienGruppe
                 Else
                     _RezeptName = ""
                     _RezeptNummer = ""
+                    _LinienGruppe = wb_Global.UNDEFINED
                 End If
             End If
             Return _RezeptName
@@ -134,6 +139,28 @@ Public Class wb_Komponenten
 
         End Set
     End Property
+
+    Public Property LinienGruppe As Integer
+        Get
+            If _LinienGruppe = wb_Global.UNDEFINED Then
+                If RzNr > 0 Then
+                    Dim Rezept As New wb_Rezept(RzNr)
+                    _RezeptNummer = Rezept.RezeptNummer
+                    _RezeptName = Rezept.RezeptBezeichnung
+                    _LinienGruppe = Rezept.LinienGruppe
+                Else
+                    _RezeptName = ""
+                    _RezeptNummer = ""
+                    _LinienGruppe = wb_Global.UNDEFINED
+                End If
+            End If
+            Return _LinienGruppe
+        End Get
+        Set(value As Integer)
+            _LinienGruppe = value
+        End Set
+    End Property
+
 
     Public Property Lieferant As String
         Set(value As String)

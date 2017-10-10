@@ -30,8 +30,34 @@ Public Class wb_Planung_Liste
 
     End Sub
 
-    Private Sub BtnBackZettelDrucken_Click(sender As Object, e As EventArgs) Handles BtnBackZettelDrucken.Click
-        wb_Printer_Shared.LL.DataSource = New ObjectDataProvider(Produktion)
-        wb_Printer_Shared.LL.Print()
+    ''' <summary>
+    ''' Neue Artikel-Zeile (mit Rezeptur anlegen)
+    ''' TEST Artikel-Nummer 12
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
+        'TEST
+        Produktion.AddArtikelCharge("2", "12", 0, 200)
+        Produktion.AddArtikelCharge("1", "300", 0, 25, 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
+        Produktion.AddArtikelCharge("1", "12", 0, 100, 90)
+        Produktion.AddArtikelCharge("2", "300", 0, 50)
+        'Virtual Tree anzeigen
+        VirtualTree.DataSource = Produktion.RootRezeptSchritt
     End Sub
+
+    Private Sub BtnBackZettelDrucken_Click(sender As Object, e As EventArgs) Handles BtnBackZettelDrucken.Click
+        'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
+        Produktion.RootRezeptSchritt.SortBackListe()
+
+        Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
+        'Druck-Daten
+        pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootRezeptSchritt.ChildSteps)
+        'List und Label-Verzeichnis für die Listen
+        pDialog.ListSubDirectory = "Produktion"
+        pDialog.ListFileName = "Backzettel.lst"
+        pDialog.ShowDialog()
+
+    End Sub
+
 End Class

@@ -7,7 +7,6 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class wb_Planung_Main
     Implements IExternalFormUserControl
 
-
     'Default-Fenster
     Public PlanungListe As New wb_Planung_Liste
 
@@ -35,7 +34,7 @@ Public Class wb_Planung_Main
     ''' <returns></returns>
     Public Overrides ReadOnly Property FormName As String
         Get
-            Return "ProduktionsPlanung"
+            Return "Produktion"
         End Get
     End Property
 
@@ -95,13 +94,6 @@ Public Class wb_Planung_Main
         Dim oFactory As IFactoryService = TryCast(_ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
         Dim oSetting As ISettingService = TryCast(_ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
         Dim oData As IData = oFactory.GetData
-        Dim sEmployee As String = TryCast(oSetting.GetSetting("Anmeldung.Mitarbeiter"), String)
-        'Dim sName As String
-
-        'Using oTable = oData.OpenDataTable(Database.Main, "SELECT Vorname, Nachname FROM Mitarbeiter WHERE MitarbeiterKürzel=@M", LockType.ReadOnly, sEmployee)
-        '    sName = CType(oTable.Rows(0)(0), String) & " " & CType(oTable.Rows(0)(1), String)
-        'End Using
-        'Debug.Print("sName " & sName)
 
         'TODO Query muss überarbeitet werden - Backzettel wird in OrgaBack erzeugt (31.08.2017)
         Using oTable = oData.OpenQuery(Database.Main, "pq_Produktionsauftrag", LockType.ReadOnly, (1), (-1), ("FB"), ("KB"), ("20170830"))

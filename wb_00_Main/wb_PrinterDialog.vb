@@ -73,6 +73,11 @@ Public Class wb_PrinterDialog
         LL.AutoShowPrintOptions = False
         LL.ExportOptions.Clear()
         LL.ExportOptions.Add(LlExportOption.ExportShowResult, "0")
-        LL.Print()
+        If File.Exists(LL.AutoProjectFile) Then
+            Try
+                LL.Print()
+            Catch
+            End Try
+        End If
     End Sub
 End Class

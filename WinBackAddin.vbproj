@@ -358,6 +358,7 @@
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_05_Forms_User\ob_User_DockingExtension.vb" />
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_Gruppe.vb" />
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff.vb" />

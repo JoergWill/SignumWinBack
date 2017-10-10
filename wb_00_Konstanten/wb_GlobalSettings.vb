@@ -458,6 +458,11 @@ Public Class wb_GlobalSettings
     ''' <returns></returns>
     Public Shared Property pListenPath As String
         Get
+            If _pListenPath = Nothing Then
+                If pVariante = wb_Global.ProgVariante.WinBack Then
+                    _pListenPath = PProgrammPath & "Listen\"
+                End If
+            End If
             Return _pListenPath
         End Get
         Set(value As String)
@@ -492,7 +497,7 @@ Public Class wb_GlobalSettings
     Public Shared Property PWinBackIniPath As String
         Get
             If _pWinBackIniPath = Nothing Then
-                _pWinBackIniPath = My.Application.Info.DirectoryPath & "\WinBack.ini"
+                _pWinBackIniPath = _pProgrammPath & "WinBack.ini"
             End If
             Return _pWinBackIniPath
         End Get
@@ -503,6 +508,9 @@ Public Class wb_GlobalSettings
 
     Public Shared Property PProgrammPath As String
         Get
+            If _pProgrammPath = Nothing Then
+                _pProgrammPath = My.Application.Info.DirectoryPath & "\"
+            End If
             Return _pProgrammPath
         End Get
         Set(value As String)

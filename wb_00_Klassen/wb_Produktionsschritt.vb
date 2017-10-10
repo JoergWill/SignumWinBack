@@ -1,9 +1,12 @@
 ﻿Imports System.Reflection
 
 Public Class wb_Produktionsschritt
+    Implements IComparable
+
     Private _parentStep As wb_Produktionsschritt
     Private _childSteps As New ArrayList()
 
+    Private _SortKriterium As String
     Private _ArtikelBezeichnung As String
     Private _RezeptBezeichnung As String
     Private _AuftragsNummer As String
@@ -13,8 +16,12 @@ Public Class wb_Produktionsschritt
     Private _RezeptNr As Integer
     Private _RezeptVar As Integer
     Private _Linie As Integer
+    Private _Tour As String
     Private _Sollwert_kg As Double
     Private _Sollwert_Stk As Double
+    Private _Bestellt_Stk As Double
+    Private _LoseText As String
+    Private _BestellText As String
 
     ''' <summary>
     ''' Kopiert alle Properties dieser Klasse auf die Properties der übergebenen Klasse.
@@ -22,10 +29,10 @@ Public Class wb_Produktionsschritt
     ''' 
     ''' aus: https://stackoverflow.com/questions/531384/how-to-loop-through-all-the-properties-of-a-class
     '''
-    ''' Dient dazu, die Inhalte eines Rezeptschrittes auf einen anderen zu kopieren.
+    ''' Dient dazu, die Inhalte eines Produktions-Schrittes auf einen anderen zu kopieren.
     ''' Durch die Schleife über alle Properties ist die Funktion unabhängig von eventuellen Erweiterungen.
     ''' </summary>
-    ''' <param name="rs">wb_Rezeptschritt nimmt die Werte der Properties der Klasse auf</param>
+    ''' <param name="rs">wb_Produktionsschritt nimmt die Werte der Properties der Klasse auf</param>
     Public Sub CopyFrom(rs As wb_Produktionsschritt)
         Dim _type As Type = Me.GetType()
         Dim properties() As PropertyInfo = _type.GetProperties()
@@ -34,6 +41,31 @@ Public Class wb_Produktionsschritt
                 _property.SetValue(Me, _property.GetValue(rs, Nothing))
             End If
         Next
+    End Sub
+
+    ''' <summary>
+    ''' Kopiert alle Artikel-Daten in den aktuellen Produktions-Schritt
+    ''' </summary>
+    ''' <param name="rs">wb_Komponenten hält alle notwendigen Werte der Artikel für die Produktion</param>
+    Public Sub CopyFromKomponenten(rs As wb_Komponenten, ChargenTyp As Integer)
+        With rs
+            Select Case ChargenTyp
+                Case wb_Global.wbDatenRezept
+                    Typ = wb_Global.wbDatenRezept
+                    ArtikelNummer = "0"
+                    RezeptNr = .RzNr
+                    RezeptNummer = .RezeptNummer
+                    RezeptBezeichnung = .RezeptName
+                    Linie = .LinienGruppe
+                Case wb_Global.wbDatenArtikel
+                    Typ = wb_Global.wbDatenArtikel
+                    ArtikelBezeichnung = .Bezeichung
+                    ArtikelNummer = .Nummer
+                    RezeptNummer = .RezeptNummer
+                    RezeptBezeichnung = .RezeptName
+                    Linie = .LinienGruppe
+            End Select
+        End With
     End Sub
 
     '' <summary>
@@ -69,6 +101,20 @@ Public Class wb_Produktionsschritt
             Return _childSteps
         End Get
     End Property
+
+    ''' <summary>
+    ''' Sortieren BackListe
+    ''' Die einzelnen Produktions-Schritte werden sortiert nach Teig(Rezeptnummer), Artikelnummer und Tour
+    ''' </summary>
+    ''' <param name="obj"></param>
+    ''' <returns></returns>
+    Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
+        Return String.Compare(SortKriterium, DirectCast(obj, wb_Produktionsschritt).SortKriterium)
+    End Function
+
+    Public Sub SortBackListe()
+        _childSteps.Sort()
+    End Sub
 
     Public ReadOnly Property VirtTreeStart As String
         Get
@@ -169,6 +215,7 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As String)
             _ArtikelNummer = value
+            setSortKriterium()
         End Set
     End Property
 
@@ -178,6 +225,7 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As String)
             _RezeptNummer = value
+            setSortKriterium()
         End Set
     End Property
 
@@ -243,6 +291,67 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As String)
             _RezeptBezeichnung = value
+        End Set
+    End Property
+
+    Public Property Tour As String
+        Get
+            Return _Tour
+        End Get
+        Set(value As String)
+            _Tour = value
+            setSortKriterium()
+        End Set
+    End Property
+
+    Private Sub setSortKriterium()
+        If RezeptNummer IsNot Nothing And ArtikelNummer IsNot Nothing And Tour IsNot Nothing Then
+            _SortKriterium = RezeptNummer.PadLeft(10, "0"c) & ArtikelNummer.PadLeft(16, "0"c) & Tour.PadLeft(3, "0"c)
+            Debug.Print("Sortierkriterium " & _SortKriterium)
+        Else
+            _SortKriterium = Nothing
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Datenfeld für Sortierung der Liste
+    ''' enthält Teignummer & Artikelnumer & Tour als String, so dass die Sortierung über ein Feld erfolgen kann
+    ''' Teignummern und Artikelnummer werden mit führenden Nullen aufgefüllt.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property SortKriterium As String
+        Get
+            Return _SortKriterium
+        End Get
+        Set(value As String)
+            _SortKriterium = value
+        End Set
+    End Property
+
+    Public Property Bestellt_Stk As Double
+        Get
+            Return _Bestellt_Stk
+        End Get
+        Set(value As Double)
+            _Bestellt_Stk = value
+        End Set
+    End Property
+
+    Public Property LoseText As String
+        Get
+            Return _LoseText
+        End Get
+        Set(value As String)
+            _LoseText = value
+        End Set
+    End Property
+
+    Public Property BestellText As String
+        Get
+            Return _BestellText
+        End Get
+        Set(value As String)
+            _BestellText = value
         End Set
     End Property
 End Class

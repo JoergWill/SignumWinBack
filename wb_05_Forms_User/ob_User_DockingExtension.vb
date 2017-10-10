@@ -234,7 +234,7 @@ Public Class ob_User_DockingExtension
     Private Sub ShowUserForm(sender As Object, e As EventArgs)
         xForm = _ViewProvider.OpenForm(New wb_User_Main(ServiceProvider), My.Resources.MainUser_16x16)
         'Fensterposition aus winback.ini
-        wb_Konfig.SetFormBoundaries(xForm, "User")
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "User")
 
     End Sub
 
