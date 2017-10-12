@@ -10,13 +10,22 @@
         LinienGruppen.Clear()
 
         While winback.Read
+            'Liniengruppe
             L.LinienGruppe = winback.sField("LG_Nr")
             L.Bezeichnung = winback.sField("LG_Bezeichnung")
             L.Abteilung = winback.sField("LG_Abteilung")
+
+            'Linien in der Liniengruppe
             Linien = winback.sField("LG_Linien")
             L.Linen = Linien.Split(",")
+            LinienGruppen.Add(L.LinienGruppe, L.Linen())
 
-            LinienGruppen.Add(L.LinienGruppe, L)
+            'Formularsteuerung
+            L.BackZettelDrucken = winback.sField("LG_BZ_Drucken")
+            L.TeigZettelDrucken = winback.sField("LG_TZ_Drucken")
+            L.TeigRezeptDrucken = winback.sField("LG_TR_Drucken")
+            L.BackZettelSenden = winback.sField("LG_BZ_Senden")
+            L.TeigZettelSenden = winback.sField("LG_TZ_Senden")
         End While
         winback.Close()
     End Sub

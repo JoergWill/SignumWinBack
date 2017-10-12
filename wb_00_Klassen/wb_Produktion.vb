@@ -38,7 +38,7 @@
     ''' <param name="Nr">Integer - interne Artikelnummer</param>
     ''' <param name="Sollwert">Double - Sollmenge in Stück</param>
     ''' <returns></returns>
-    Public Function AddArtikelCharge(Tour As String, Nummer As String, Nr As Integer, Sollwert As Double, Optional Bestellmenge As Double = wb_Global.UNDEFINED, Optional BestellText As String = "", Optional LoseText As String = "") As Boolean
+    Public Function AddArtikelCharge(Tour As String, Nummer As String, Nr As Integer, Sollwert As Double, Optional Bestellmenge As Double = wb_Global.UNDEFINED, Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
         Dim Artikel As New wb_Komponenten
         If Artikel.MySQLdbRead(Nr, Nummer) Then
             'Artikelzeilen hängen immer am ersten (Dummy)Schritt
@@ -52,17 +52,15 @@
             Root.CopyFromKomponenten(Artikel, wb_Global.wbDatenArtikel)
             Root.Sollwert_Stk = Sollwert
             Root.Tour = Tour
+            Root.Bestellt_Stk = CalcBestellMenge(Bestellmenge, Sollwert)
+            Root.Bestellt_SonderText = Bestellt_SonderText
+            Root.Sollwert_TeilungText = Sollwert_TeilungText
 
-            If Bestellmenge > 0 Then
-                Root.Bestellt_Stk = Bestellmenge
-            Else
-                Root.Bestellt_Stk = Sollwert
-            End If
+            'Chargengrößen berechnen
 
-            Root.Bestellt_SonderText = BestellText
-            Root.Sollwert_TeilungText = LoseText
 
-            'Rezept-Zeile anhängen
+
+            'Rezeptkopf-Zeile anhängen
             Rzpt = New wb_Produktionsschritt(Root, Artikel.RezeptName)
             'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
             Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
@@ -73,6 +71,132 @@
             Return False
         End If
     End Function
+
+    ''' <summary>
+    ''' Gibt einen Wert für die Bestellmenge zurück. Ist die Bestellmenge undefiniert wird die Bestellmenge gleich der Sollmenge gesetzt.
+    ''' </summary>
+    ''' <param name="BestellMenge"></param>
+    ''' <param name="Sollwert"></param>
+    ''' <returns>BestellMenge - Double - Wenn die Bestellmenge undefiniert ist, wird die Sollmenge zurückgegeben</returns>
+    Private Function CalcBestellMenge(BestellMenge As Double, Sollwert As Double) As Double
+        If BestellMenge > 0 Then
+            Return BestellMenge
+        Else
+            Return Sollwert
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Berechnung der Chargengrößen abhängig von Min/Max/Optimal
+    ''' Charge. Zurückgegeben werden die Anzahl der Optimal- und
+    ''' Restchargen und Größe von Optimal/Restchargen.
+    ''' 
+    ''' Modus
+    '''     wb_global.XGleiche            '(M1) Aufteilung in gleich große Chargen
+    '''     wb_global.NurOptimal          '(00) Aufteilung nur in Optimal-Chargen
+    '''     wb_global.OptimalUndRest      '(01) Aufteilung in Optimal- und Rest-Chargen
+    '''     wb_global.MaximalUndRest      '(02) Aufteilung in Maximal- und Rest-Chargen
+    '''     wb_global.RezeptGroesse       '(09) Aufteilung in Rezept-Größe (keine Chargen angegeben)
+    '''     
+    ''' Result
+    '''     wb_global.OK                  'Chargenaufteilung in Ordnung
+    '''     wb_global.EM1                 'Nach Aufteilung in Optimalchargen bleibt eine Restmenge offen, die nicht produziert werden kann
+    '''     wb_global.EM2                 'Nach Aufteilung in Optimalchargen wird mehr produziert als gefordert
+    '''     wb_global.EP1                 'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
+    '''     wb_global.EP9                 'Keine Chargengrößen angegeben, Aufteilung nach Rezeptgröße
+    ''' 
+    ''' Wenn das Flag Vorproduktion auf True gesetzt ist, wird
+    ''' mindestens eine Charge (je nach Modus Min/Opt) produziert
+    ''' damit auf alle Fälle die entsprechende Zeile In der
+    ''' Produktionsplanung gesetzt wird.
+    ''' </summary>
+    ''' <param name="Sollwert"></param>
+    ''' <param name="ChargeMin"></param>
+    ''' <param name="ChargeMax"></param>
+    ''' <param name="ChargeOpt"></param>
+    ''' <param name="Modus"></param>
+    ''' <param name="VorProduktion"></param>
+    ''' <returns></returns>
+    Private Function CalcChargenMenge(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, Modus As wb_Global.ModusChargenTeiler, VorProduktion As Boolean) As wb_Global.ChargenMengen
+        Select Case Modus
+            Case wb_Global.ModusChargenTeiler.NurOptimal
+                Return CalcBatchM1(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
+            Case wb_Global.ModusChargenTeiler.NurOptimal
+                Return CalcBatch00(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
+            Case wb_Global.ModusChargenTeiler.NurOptimal
+                Return CalcBatch02(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
+            Case wb_Global.ModusChargenTeiler.NurOptimal
+                Return CalcBatch02(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
+            Case Else
+                Return CalcBatch09(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
+        End Select
+    End Function
+
+    Private Function CalcBatchM1(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
+        'Es gibt keine Restchargen
+        CalcBatchM1.MengeRest = 0
+        CalcBatchM1.AnzahlRest = 0
+
+        'Anzahl der Chargen - Menge durch Maximalchargen teilen
+        Dim x As Integer = Math.Round(SaveDiv(Sollwert, ChargeMax), 0)
+
+        'Teiler plus 1 ergibt die Anzahl der Chargen wenn ein Rest auftritt
+        If (Sollwert - ChargeMax * x) > 0.1 Then
+            CalcBatchM1.AnzahlOpt = x + 1
+        Else
+            CalcBatchM1.AnzahlOpt = x
+        End If
+
+        'Chargengröße berechnen
+        CalcBatchM1.MengeOpt = SaveDiv(Sollwert, CalcBatchM1.AnzahlOpt)
+        CalcBatchM1.Result = wb_Global.ChargenTeilerResult.OK
+
+        'Prüfen ob wir innerhalb der Chargengrenzen sind
+        If (CalcBatchM1.MengeOpt < ChargeMin) Then
+            'Abweichung ermitteln wenn Minimal-Charge verwendet wird
+            Dim m1 As Double = CalcBatchM1.AnzahlOpt * ChargeMin
+            Dim a1 As Double = Math.Abs(Sollwert - m1)
+
+            'Abweichung ermitteln wenn eine Charge weniger gemacht wird
+            Dim m2 As Double = (CalcBatchM1.AnzahlOpt - 1) * ChargeMax
+            Dim a2 As Double = Math.Abs(Sollwert - m2)
+
+            'Wenn die Abweichung bei einer Charge weniger kleiner ist - Ergebnis korrigieren
+            If (a2 <= a1) And (CalcBatchM1.AnzahlOpt > 1) Then
+                CalcBatchM1.AnzahlOpt = CalcBatchM1.AnzahlOpt - 1
+                CalcBatchM1.MengeOpt = ChargeMax
+                CalcBatchM1.Result = wb_Global.ChargenTeilerResult.EM1
+            Else
+                CalcBatchM1.MengeOpt = ChargeMin
+                CalcBatchM1.Result = wb_Global.ChargenTeilerResult.EM2
+            End If
+        End If
+    End Function
+
+    Private Function CalcBatch00(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
+
+    End Function
+
+    Private Function CalcBatch01(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
+
+    End Function
+
+    Private Function CalcBatch02(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
+
+    End Function
+
+    Private Function CalcBatch09(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
+
+    End Function
+
+    Private Function SaveDiv(Divident As Double, Divisor As Double) As Double
+        If (Divisor > 0) Then
+            Return Divident / Divisor
+        Else
+            Return 0
+        End If
+    End Function
+
 
     ''' <summary>
     ''' Liest alle Datensätze aus wbdaten zur angegeben Tageswechselnummer sortiert nach Produktionsdatum ein 

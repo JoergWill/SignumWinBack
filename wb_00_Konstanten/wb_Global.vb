@@ -323,6 +323,35 @@
         Public Bezeichnung As String
         Public Linen As Array
         Public Abteilung As String
+        Public BackZettelDrucken As String
+        Public TeigZettelDrucken As String
+        Public TeigRezeptDrucken As String
+        Public BackZettelSenden As String
+        Public TeigZettelSenden As String
+    End Structure
+
+    Enum ModusChargenTeiler
+        XGleiche            'Aufteilung in gleich große Chargen
+        NurOptimal          'Aufteilung nur in Optimal-Chargen
+        OptimalUndRest      'Aufteilung in Optimal- und Rest-Chargen
+        MaximalUndRest      'Aufteilung in Maximal- und Rest-Chargen
+        RezeptGroesse       'Aufteilung in Rezept-Größe (keine Chargen angegeben)
+    End Enum
+
+    Enum ChargenTeilerResult
+        OK      'Chargenaufteilung in Ordnung
+        EM1     'Nach Aufteilung in Optimalchargen bleibt eine Restmenge offen, die nicht produziert werden kann
+        EM2     'Nach Aufteilung in Optimalchargen wird mehr produziert als gefordert
+        EP1     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
+        EP9     'Keine Chargengrößen angegeben, Aufteilung nach Rezeptgröße
+    End Enum
+
+    Public Structure ChargenMengen
+        Public AnzahlOpt As Integer
+        Public MengeOpt As Double
+        Public AnzahlRest As Integer
+        Public MengeRest As Double
+        Public Result As ChargenTeilerResult
     End Structure
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)
