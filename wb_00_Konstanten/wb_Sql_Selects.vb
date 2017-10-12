@@ -2,6 +2,9 @@
     'Sql-Statement Konfiguration
     Public Const sqlKonfiguration = "SELECT * FROM Konfiguration WHERE KF_Tag LIKE '[0]'"
 
+    'Sql-Statement Liniengruppen
+    Public Const sqlLinienGruppen = "SELECT * FROM Liniengruppen"
+
     'Sql-Statement Rezeptliste aus winback.Rezepte
     Public Const sqlRezeptListe = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
                                   "RZ_Aenderung_Nr, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Liniengruppe, " &

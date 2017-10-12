@@ -15,13 +15,13 @@ Public Class wb_Produktionsschritt
     Private _RezeptNummer As String
     Private _RezeptNr As Integer
     Private _RezeptVar As Integer
-    Private _Linie As Integer
+    Private _LinienGruppe As Integer
     Private _Tour As String
     Private _Sollwert_kg As Double
     Private _Sollwert_Stk As Double
     Private _Bestellt_Stk As Double
-    Private _LoseText As String
-    Private _BestellText As String
+    Private _Sollwert_TeilungText As String
+    Private _Bestellt_SonderText As String
 
     ''' <summary>
     ''' Kopiert alle Properties dieser Klasse auf die Properties der übergebenen Klasse.
@@ -56,14 +56,14 @@ Public Class wb_Produktionsschritt
                     RezeptNr = .RzNr
                     RezeptNummer = .RezeptNummer
                     RezeptBezeichnung = .RezeptName
-                    Linie = .LinienGruppe
+                    LinienGruppe = .LinienGruppe
                 Case wb_Global.wbDatenArtikel
                     Typ = wb_Global.wbDatenArtikel
                     ArtikelBezeichnung = .Bezeichung
                     ArtikelNummer = .Nummer
                     RezeptNummer = .RezeptNummer
                     RezeptBezeichnung = .RezeptName
-                    Linie = .LinienGruppe
+                    LinienGruppe = .LinienGruppe
             End Select
         End With
     End Sub
@@ -160,10 +160,9 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeLinie As String
         Get
-            Return _Linie
+            Return _LinienGruppe
         End Get
     End Property
-
 
     ''' <summary>
     ''' Sollwert. Anzeige im VitualTree
@@ -181,6 +180,7 @@ Public Class wb_Produktionsschritt
             '_Sollwert = value
         End Set
     End Property
+
     Public ReadOnly Property VirtTreeEinheit As String
         Get
             If Typ = wb_Global.wbDatenArtikel Then
@@ -219,6 +219,15 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public Property ArtikelBezeichnung As String
+        Get
+            Return _ArtikelBezeichnung
+        End Get
+        Set(value As String)
+            _ArtikelBezeichnung = value
+        End Set
+    End Property
+
     Public Property RezeptNummer As String
         Get
             Return _RezeptNummer
@@ -249,12 +258,12 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
-    Public Property ArtikelBezeichnung As String
+    Public Property RezeptBezeichnung As String
         Get
-            Return _ArtikelBezeichnung
+            Return _RezeptBezeichnung
         End Get
         Set(value As String)
-            _ArtikelBezeichnung = value
+            _RezeptBezeichnung = value
         End Set
     End Property
 
@@ -275,23 +284,47 @@ Public Class wb_Produktionsschritt
             _Sollwert_Stk = value
         End Set
     End Property
-
-    Public Property Linie As Integer
+    Public Property Sollwert_TeilungText As String
         Get
-            Return _Linie
+            Return _Sollwert_TeilungText
         End Get
-        Set(value As Integer)
-            _Linie = value
+        Set(value As String)
+            _Sollwert_TeilungText = value
         End Set
     End Property
 
-    Public Property RezeptBezeichnung As String
+    Public Property Bestellt_Stk As Double
         Get
-            Return _RezeptBezeichnung
+            Return _Bestellt_Stk
+        End Get
+        Set(value As Double)
+            _Bestellt_Stk = value
+        End Set
+    End Property
+
+    Public Property Bestellt_SonderText As String
+        Get
+            Return _Bestellt_SonderText
         End Get
         Set(value As String)
-            _RezeptBezeichnung = value
+            _Bestellt_SonderText = value
         End Set
+    End Property
+
+    Public Property LinienGruppe As Integer
+        Get
+            Return _LinienGruppe
+        End Get
+        Set(value As Integer)
+            _LinienGruppe = value
+            setSortKriterium()
+        End Set
+    End Property
+
+    Public ReadOnly Property LinienGruppeText As String
+        Get
+            Return wb_Linien_Global.GetBezeichnung(_LinienGruppe)
+        End Get
     End Property
 
     Public Property Tour As String
@@ -306,7 +339,7 @@ Public Class wb_Produktionsschritt
 
     Private Sub setSortKriterium()
         If RezeptNummer IsNot Nothing And ArtikelNummer IsNot Nothing And Tour IsNot Nothing Then
-            _SortKriterium = RezeptNummer.PadLeft(10, "0"c) & ArtikelNummer.PadLeft(16, "0"c) & Tour.PadLeft(3, "0"c)
+            _SortKriterium = LinienGruppe.ToString.PadLeft(3, "0"c) & RezeptNummer.PadLeft(10, "0"c) & ArtikelNummer.PadLeft(16, "0"c) & Tour.PadLeft(3, "0"c)
             Debug.Print("Sortierkriterium " & _SortKriterium)
         Else
             _SortKriterium = Nothing
@@ -315,7 +348,7 @@ Public Class wb_Produktionsschritt
 
     ''' <summary>
     ''' Datenfeld für Sortierung der Liste
-    ''' enthält Teignummer & Artikelnumer & Tour als String, so dass die Sortierung über ein Feld erfolgen kann
+    ''' enthält LinienGruppe & Teignummer & Artikelnumer & Tour als String, so dass die Sortierung über ein Feld erfolgen kann
     ''' Teignummern und Artikelnummer werden mit führenden Nullen aufgefüllt.
     ''' </summary>
     ''' <returns></returns>
@@ -328,30 +361,4 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
-    Public Property Bestellt_Stk As Double
-        Get
-            Return _Bestellt_Stk
-        End Get
-        Set(value As Double)
-            _Bestellt_Stk = value
-        End Set
-    End Property
-
-    Public Property LoseText As String
-        Get
-            Return _LoseText
-        End Get
-        Set(value As String)
-            _LoseText = value
-        End Set
-    End Property
-
-    Public Property BestellText As String
-        Get
-            Return _BestellText
-        End Get
-        Set(value As String)
-            _BestellText = value
-        End Set
-    End Property
 End Class

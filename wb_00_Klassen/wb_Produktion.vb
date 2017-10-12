@@ -59,8 +59,8 @@
                 Root.Bestellt_Stk = Sollwert
             End If
 
-            Root.BestellText = BestellText
-            Root.LoseText = LoseText
+            Root.Bestellt_SonderText = BestellText
+            Root.Sollwert_TeilungText = LoseText
 
             'Rezept-Zeile anhängen
             Rzpt = New wb_Produktionsschritt(Root, Artikel.RezeptName)
@@ -183,7 +183,7 @@
                     _SQLProduktionsSchritt.RezeptVar = Value
                 'Linie
                 Case "B_ARZ_LiBeh_Nr"
-                    _SQLProduktionsSchritt.Linie = wb_Functions.StrToInt(Value) - 100
+                    _SQLProduktionsSchritt.LinienGruppe = wb_Functions.StrToInt(Value) - 100
                 'Sollwert
                 Case "B_ARZ_Sollmenge_kg"
                     _SQLProduktionsSchritt.Sollwert_kg = wb_Functions.StrToDouble(Value)

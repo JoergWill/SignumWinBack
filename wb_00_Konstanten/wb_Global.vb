@@ -318,6 +318,12 @@
         Public SyncOK As SyncState    'Synchronisations-Status
     End Structure
 
+    Public Structure wb_LinienGruppe
+        Public LinienGruppe As String
+        Public Bezeichnung As String
+        Public Linen As Array
+        Public Abteilung As String
+    End Structure
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)
     Public Const NewUserName = "Neu"

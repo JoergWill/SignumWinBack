@@ -311,6 +311,9 @@
   <ItemGroup>
     <None Include="Resources\WinBack_32x32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Backzettel.lst" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)winback.ini" "$(TargetDir)" /C /R /Y</PostBuildEvent>
