@@ -18,7 +18,7 @@ Public Class wb_Produktionsschritt
     Private _LinienGruppe As Integer
     Private _Tour As String
     Private _Sollwert_kg As Double
-    Private _Sollwert_Stk As Double
+    Private _Sollmenge_Stk As Double
     Private _Bestellt_Stk As Double
     Private _Sollwert_TeilungText As String
     Private _Bestellt_SonderText As String
@@ -171,7 +171,7 @@ Public Class wb_Produktionsschritt
     Public Property VirtTreeSollwert As String
         Get
             If Typ = wb_Global.wbDatenArtikel Then
-                Return wb_Functions.FormatStr(Sollwert_Stk, 0)
+                Return wb_Functions.FormatStr(Sollmenge_Stk, 0)
             Else
                 Return wb_Functions.FormatStr(Sollwert_kg, 3)
             End If
@@ -276,14 +276,15 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
-    Public Property Sollwert_Stk As Double
+    Public Property Sollmenge_Stk As Double
         Get
-            Return _Sollwert_Stk
+            Return _Sollmenge_Stk
         End Get
         Set(value As Double)
-            _Sollwert_Stk = value
+            _Sollmenge_Stk = value
         End Set
     End Property
+
     Public Property Sollwert_TeilungText As String
         Get
             Return _Sollwert_TeilungText

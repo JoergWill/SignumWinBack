@@ -343,6 +343,7 @@
         EM1     'Nach Aufteilung in Optimalchargen bleibt eine Restmenge offen, die nicht produziert werden kann
         EM2     'Nach Aufteilung in Optimalchargen wird mehr produziert als gefordert
         EP1     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
+        EP2     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
         EP9     'Keine Chargengrößen angegeben, Aufteilung nach Rezeptgröße
     End Enum
 

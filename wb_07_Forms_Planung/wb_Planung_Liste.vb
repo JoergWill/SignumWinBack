@@ -38,10 +38,10 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TEST
-        Produktion.AddArtikelCharge("2", "12", 0, 200)
-        Produktion.AddArtikelCharge("1", "300", 0, 25, 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
-        Produktion.AddArtikelCharge("1", "12", 0, 100, 90)
-        Produktion.AddArtikelCharge("2", "300", 0, 50)
+        Produktion.AddArtikelCharge("2", "12", 0, 2000, wb_Global.ModusChargenTeiler.OptimalUndRest)
+        Produktion.AddArtikelCharge("1", "300", 0, 250, wb_Global.ModusChargenTeiler.OptimalUndRest, 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
+        Produktion.AddArtikelCharge("1", "12", 0, 1000, wb_Global.ModusChargenTeiler.OptimalUndRest, 90)
+        Produktion.AddArtikelCharge("2", "300", 0, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootRezeptSchritt
     End Sub

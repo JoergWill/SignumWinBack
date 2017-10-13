@@ -16,6 +16,10 @@ Public Class wb_Komponenten
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
+    Private KA_Stueckgewicht As Double
+    Private KA_Charge_Min As Double
+    Private KA_Charge_Max As Double
+    Private KA_Charge_Opt As Double
     Private _LastErrorText As String
     Private _RezeptNummer As String = Nothing
     Private _RezeptName As String = Nothing
@@ -231,6 +235,69 @@ Public Class wb_Komponenten
         Get
             Return _LastErrorText
         End Get
+    End Property
+
+    Public Property StkGewicht As Double
+        Get
+            Return KA_Stueckgewicht
+        End Get
+        Set(value As Double)
+            KA_Stueckgewicht = value
+        End Set
+    End Property
+
+    Public Property MinChargeStk As Double
+        Get
+            Return KA_Charge_Min
+        End Get
+        Set(value As Double)
+            KA_Charge_Min = value
+        End Set
+    End Property
+
+    Public Property MaxChargeStk As Double
+        Get
+            Return KA_Charge_Max
+        End Get
+        Set(value As Double)
+            KA_Charge_Max = value
+        End Set
+    End Property
+
+    Public Property OptChargeStkg As Double
+        Get
+            Return KA_Charge_Opt
+        End Get
+        Set(value As Double)
+            KA_Charge_Opt = value
+        End Set
+    End Property
+
+    Public Property MinChargekg As Double
+        Get
+            Return KA_Charge_Min * KA_Stueckgewicht / 1000
+        End Get
+        Set(value As Double)
+            KA_Charge_Min = value
+        End Set
+    End Property
+
+    Public Property MaxChargekg As Double
+        Get
+            Return KA_Charge_Max * KA_Stueckgewicht / 1000
+        End Get
+        Set(value As Double)
+            KA_Charge_Max = value
+        End Set
+    End Property
+
+    Public Property OptChargekg As Double
+        Get
+            Return KA_Charge_Opt * KA_Stueckgewicht / 1000
+        End Get
+        Set(value As Double)
+            KA_Charge_Opt = value
+        End Set
     End Property
 
     ''' <summary>
@@ -535,6 +602,19 @@ Public Class wb_Komponenten
                 'Lagerort
                 Case "KA_Lagerort"
                     KA_Lagerort = Value
+
+                    'Stückgewicht in Gramm
+                Case "KA_Stueckgewicht"
+                    KA_Stueckgewicht = wb_Functions.StrToDouble(Value)
+                'Minimal-Charge
+                Case "KA_Charge_Min"
+                    KA_Charge_Min = wb_Functions.StrToDouble(Value)
+                'Maximal-Charge
+                Case "KA_Charge_Max"
+                    KA_Charge_Max = wb_Functions.StrToDouble(Value)
+                'Optimal-Charge
+                Case "KA_Charge_Opt"
+                    KA_Charge_Opt = wb_Functions.StrToDouble(Value)
 
             End Select
         Catch ex As Exception

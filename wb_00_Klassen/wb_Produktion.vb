@@ -36,10 +36,13 @@
     ''' </summary>
     ''' <param name="Nummer">String - Artikelnummer(alpha)</param>
     ''' <param name="Nr">Integer - interne Artikelnummer</param>
-    ''' <param name="Sollwert">Double - Sollmenge in Stück</param>
+    ''' <param name="Sollmenge_Stk">Double - Sollmenge in Stück</param>
     ''' <returns></returns>
-    Public Function AddArtikelCharge(Tour As String, Nummer As String, Nr As Integer, Sollwert As Double, Optional Bestellmenge As Double = wb_Global.UNDEFINED, Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
+    Public Function AddArtikelCharge(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Modus As wb_Global.ModusChargenTeiler, Optional Bestellmenge As Double = wb_Global.UNDEFINED, Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
         Dim Artikel As New wb_Komponenten
+        Dim TeigMenge As Double
+        Dim TeigChargen As wb_Global.ChargenMengen
+
         If Artikel.MySQLdbRead(Nr, Nummer) Then
             'Artikelzeilen hängen immer am ersten (Dummy)Schritt
             Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
@@ -50,22 +53,36 @@
 
             'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
             Root.CopyFromKomponenten(Artikel, wb_Global.wbDatenArtikel)
-            Root.Sollwert_Stk = Sollwert
+            Root.Sollmenge_Stk = Sollmenge_Stk
             Root.Tour = Tour
-            Root.Bestellt_Stk = CalcBestellMenge(Bestellmenge, Sollwert)
+            Root.Bestellt_Stk = CalcBestellMenge(Bestellmenge, Sollmenge_Stk)
             Root.Bestellt_SonderText = Bestellt_SonderText
             Root.Sollwert_TeilungText = Sollwert_TeilungText
 
+            'Teig-Gesamtmenge berechnen
+            TeigMenge = CalcTeigMenge(Sollmenge_Stk, Artikel.StkGewicht / 1000)
+
             'Chargengrößen berechnen
+            TeigChargen = CalcChargenMenge(TeigMenge, Artikel.MinChargekg, Artikel.MaxChargekg, Artikel.OptChargekg, Modus, False)
 
+            'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
+            For i = 1 To TeigChargen.AnzahlOpt
+                Rzpt = New wb_Produktionsschritt(Root, Artikel.RezeptName)
+                'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
+                Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
+                Rzpt.Sollwert_kg = TeigChargen.MengeOpt
+                Rzpt.Tour = Tour
+            Next
 
+            'Rezept-Kopf-Zeilen anhängen (Rest-Chargen)
+            For i = 1 To TeigChargen.AnzahlRest
+                Rzpt = New wb_Produktionsschritt(Root, Artikel.RezeptName)
+                'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
+                Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
+                Rzpt.Sollwert_kg = TeigChargen.MengeRest
+                Rzpt.Tour = Tour
+            Next
 
-            'Rezeptkopf-Zeile anhängen
-            Rzpt = New wb_Produktionsschritt(Root, Artikel.RezeptName)
-            'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
-            Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
-            Rzpt.Sollwert_kg = 10
-            Rzpt.Tour = Tour
             Return True
         Else
             Return False
@@ -84,6 +101,19 @@
         Else
             Return Sollwert
         End If
+    End Function
+
+    ''' <summary>
+    ''' Berechnung der Teigmenge aus Stück-Gewicht und Soll-Stückzahl
+    ''' Der Backverlust wird prozentual abgezogen.
+    ''' </summary>
+    ''' <param name="SollStk"></param>
+    ''' <param name="StkGewicht"></param>
+    ''' <param name="Backverlust"></param>
+    ''' <returns></returns>
+    Private Function CalcTeigMenge(SollStk As Integer, StkGewicht As Double, Optional Backverlust As Double = 0) As Double
+        CalcTeigMenge = SollStk * StkGewicht
+        Return CalcTeigMenge - ((CalcTeigMenge * Backverlust) / 100)
     End Function
 
     ''' <summary>
@@ -117,21 +147,34 @@
     ''' <param name="Modus"></param>
     ''' <param name="VorProduktion"></param>
     ''' <returns></returns>
-    Private Function CalcChargenMenge(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, Modus As wb_Global.ModusChargenTeiler, VorProduktion As Boolean) As wb_Global.ChargenMengen
+    Public Function CalcChargenMenge(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, Modus As wb_Global.ModusChargenTeiler, VorProduktion As Boolean) As wb_Global.ChargenMengen
         Select Case Modus
-            Case wb_Global.ModusChargenTeiler.NurOptimal
+            Case wb_Global.ModusChargenTeiler.XGleiche
                 Return CalcBatchM1(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
             Case wb_Global.ModusChargenTeiler.NurOptimal
                 Return CalcBatch00(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
-            Case wb_Global.ModusChargenTeiler.NurOptimal
-                Return CalcBatch02(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
-            Case wb_Global.ModusChargenTeiler.NurOptimal
+            Case wb_Global.ModusChargenTeiler.OptimalUndRest
+                Return CalcBatch01(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
+            Case wb_Global.ModusChargenTeiler.MaximalUndRest
                 Return CalcBatch02(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
             Case Else
                 Return CalcBatch09(Sollwert, ChargeMin, ChargeMax, ChargeOpt, VorProduktion)
         End Select
     End Function
 
+    ''' <summary>
+    ''' Aufteilung in gleiche Chargen mit möglichst großer Chargengröße
+    ''' 
+    ''' Result.Error ist  0 wenn die Sollmenge komplett produziert werden kann.
+    ''' Result.Error ist +1 wenn die Anzahl der Chargen reduziert wurde damit die Sollmenge ungefähr erreicht wird.
+    ''' Result.Error ist +2 wenn die Chargengröße verringert wurde damit die Sollmenge ungefährt erreicht wird.
+    ''' </summary>
+    ''' <param name="Sollwert"></param>
+    ''' <param name="ChargeMin"></param>
+    ''' <param name="ChargeMax"></param>
+    ''' <param name="ChargeOpt"></param>
+    ''' <param name="VorProduktion"></param>
+    ''' <returns></returns>
     Private Function CalcBatchM1(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
         'Es gibt keine Restchargen
         CalcBatchM1.MengeRest = 0
@@ -165,28 +208,241 @@
             If (a2 <= a1) And (CalcBatchM1.AnzahlOpt > 1) Then
                 CalcBatchM1.AnzahlOpt = CalcBatchM1.AnzahlOpt - 1
                 CalcBatchM1.MengeOpt = ChargeMax
-                CalcBatchM1.Result = wb_Global.ChargenTeilerResult.EM1
+                CalcBatchM1.Result = wb_Global.ChargenTeilerResult.EP1
             Else
                 CalcBatchM1.MengeOpt = ChargeMin
-                CalcBatchM1.Result = wb_Global.ChargenTeilerResult.EM2
+                CalcBatchM1.Result = wb_Global.ChargenTeilerResult.EP2
             End If
         End If
     End Function
 
+    ''' <summary>
+    ''' Aufteilung in OptimalChargen
+    ''' 
+    ''' Result.Error ist  0 wenn die Sollmenge komplett produziert werden kann.
+    ''' Result.Error ist -1 wenn eine Restmenge übrig bleibt
+    ''' Result.Error ist -2 wenn mehr produziert wird als gefordert (@V3.0.5)
+    ''' </summary>
+    ''' <param name="Sollwert"></param>
+    ''' <param name="ChargeMin"></param>
+    ''' <param name="ChargeMax"></param>
+    ''' <param name="ChargeOpt"></param>
+    ''' <param name="VorProduktion"></param>
+    ''' <returns></returns>
     Private Function CalcBatch00(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
+        'es gibt keine Restchargen
+        CalcBatch00.MengeOpt = ChargeOpt
+        CalcBatch00.MengeRest = 0
+        CalcBatch00.AnzahlRest = 0
+        CalcBatch00.Result = wb_Global.ChargenTeilerResult.OK
+
+        'erlaubter Rundungsfehler in Prozent der Chargengröße
+        Dim ErlaubterRundungsfehler As Double = ChargeOpt / 10 ' (1% der Chargengröße)
+
+        'Anzahl der Chargen - Menge durch Maximalchargen teilen
+        CalcBatch00.AnzahlOpt = Math.Round(Int(SaveDiv(Sollwert, ChargeOpt)))
+
+        'Größe der Restcharge berechnen
+        Dim MengeRest As Double = Sollwert - (CalcBatch00.AnzahlOpt * CalcBatch00.MengeOpt)
+
+        'Wie groß wäre die Abweichung wenn eine Charge mehr prodziert werden würde
+        Dim OptimierterRest As Double = Sollwert - ((CalcBatch00.AnzahlOpt + 1) * CalcBatch00.MengeOpt)
+        If Math.Abs(OptimierterRest) < Math.Abs(MengeRest) Then
+            'Anzahl der OptimalChargen um Eins erhöhen wenn damit ein besseres Ergebnis erreicht werden kann
+            CalcBatch00.AnzahlOpt = CalcBatch00.AnzahlOpt + 1
+            MengeRest = Sollwert - (CalcBatch00.AnzahlOpt * CalcBatch00.MengeOpt)
+        End If
+
+        If (Math.Abs(MengeRest) > ErlaubterRundungsfehler) Then
+            If (MengeRest < 0) Then
+                CalcBatch00.Result = wb_Global.ChargenTeilerResult.EM2
+            Else
+                CalcBatch00.Result = wb_Global.ChargenTeilerResult.EM1
+            End If
+        Else
+            CalcBatch00.Result = wb_Global.ChargenTeilerResult.OK
+        End If
+
+        'Vorproduktion (immer eine Charge anlegen)
+        If VorProduktion And ((CalcBatch00.AnzahlOpt = 0) Or CalcBatch00.Result = wb_Global.ChargenTeilerResult.EM1) Then
+            CalcBatch00.AnzahlOpt = CalcBatch00.AnzahlOpt + 1
+            CalcBatch00.Result = wb_Global.ChargenTeilerResult.EM2
+        End If
 
     End Function
 
+    ''' <summary>
+    ''' Aufteilung in Optimal-Chargen und Rest
+    '''   
+    ''' Result.Error ist  0 wenn die Sollmenge komplett produziert werden kann.
+    ''' Result.Error ist -1 Sollmenge kann nicht erreicht werden da die Restcharge die Mindestmenge unterschreitet
+    ''' </summary>
+    ''' <param name="Sollwert"></param>
+    ''' <param name="ChargeMin"></param>
+    ''' <param name="ChargeMax"></param>
+    ''' <param name="ChargeOpt"></param>
+    ''' <param name="VorProduktion"></param>
+    ''' <returns></returns>
     Private Function CalcBatch01(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
+        ' Variablen initialisieren
+        CalcBatch01.MengeOpt = ChargeOpt
 
+        ' Anzahl der Chargen - Menge durch Optimalchargen teilen
+        CalcBatch01.AnzahlOpt = Math.Round(Int(SaveDiv(Sollwert, ChargeOpt)))
+        CalcBatch01.Result = wb_Global.ChargenTeilerResult.OK
+        If CalcBatch01.AnzahlOpt = 0 Then
+            CalcBatch01.MengeOpt = 0
+        End If
+
+        ' Größe der Restcharge berechnen
+        CalcBatch01.MengeRest = Sollwert - (CalcBatch01.AnzahlOpt * CalcBatch01.MengeOpt)
+        CalcBatch01.AnzahlRest = 1
+
+        ' Prüfen ob innerhalb der Chargengrenzen
+        If (CalcBatch01.MengeRest < ChargeMin) Then
+            ' Wenn keine Restmenge vorhanden - keinen Fehler ausgeben
+            If (CalcBatch01.MengeRest = 0) Then
+                CalcBatch01.AnzahlRest = 0
+                CalcBatch01.Result = wb_Global.ChargenTeilerResult.OK
+            Else
+                If VorProduktion Then
+                    CalcBatch01.AnzahlRest = 1
+                    CalcBatch01.MengeRest = ChargeMin
+                    CalcBatch01.Result = wb_Global.ChargenTeilerResult.OK ' REMEMBER Me war -2
+                Else
+                    ' Sollmenge kann nicht erreicht werden weil die
+                    ' Restcharge kleiner als die Min-Charge ist
+                    CalcBatch01.AnzahlRest = 0
+                    CalcBatch01.MengeRest = 0
+                    CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM1
+                End If
+            End If
+            ' (@V3.0.5) Vorproduktion
+            If (CalcBatch01.AnzahlOpt = 0) And (CalcBatch01.AnzahlRest = 0) And VorProduktion Then
+                CalcBatch01.AnzahlRest = 1
+                CalcBatch01.MengeRest = ChargeMin
+                CalcBatch01.MengeOpt = 0
+            End If
+        End If
     End Function
 
+    ''' <summary>
+    ''' Aufteilung in möglichst große Chargen und Rest
+    ''' 
+    ''' CalcBatch01.Result ist  0 wenn die Sollmenge komplett produziert werden kann.
+    ''' CalcBatch01.Result ist -1 Sollmenge kann nicht erreicht werden da die Restcharge die Mindestmenge unterschreitet
+    ''' </summary>
+    ''' <param name="Sollwert"></param>
+    ''' <param name="ChargeMin"></param>
+    ''' <param name="ChargeMax"></param>
+    ''' <param name="ChargeOpt"></param>
+    ''' <param name="VorProduktion"></param>
+    ''' <returns></returns>
     Private Function CalcBatch02(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
+        ' Variablen initialisieren
+        CalcBatch02.Result = wb_Global.ChargenTeilerResult.OK
+        CalcBatch02.AnzahlRest = 0
+
+        ' Anzahl der Chargen - Menge durch Maximalchargen teilen
+        CalcBatch02.AnzahlOpt = Math.Round(Int(SaveDiv(Sollwert, ChargeMax)))
+        CalcBatch02.MengeOpt = SaveDiv(Sollwert, CalcBatch02.AnzahlOpt)
+
+        ' Wenn keine Optimalchargen produziert werden - Menge auf Null setzen
+        If CalcBatch02.AnzahlOpt = 0 Then
+            CalcBatch02.MengeOpt = 0
+        End If
+
+        ' auf Chargengrenzen prüfen
+        If (CalcBatch02.MengeOpt > ChargeMax) Then
+            CalcBatch02.MengeOpt = ChargeMax
+        End If
+        If (CalcBatch02.MengeOpt < ChargeMin) Then
+            CalcBatch02.MengeOpt = ChargeMin
+        End If
+
+        ' Restmenge berechnen
+        CalcBatch02.MengeRest = Sollwert - CalcBatch02.MengeOpt * CalcBatch02.AnzahlOpt
+        If (CalcBatch02.MengeRest > 0) Then
+            CalcBatch02.AnzahlRest = 1
+
+            ' Prüfen ob die Restmenge kleiner als die Minimalcharge ist
+            If (CalcBatch02.MengeRest < ChargeMin) Then
+                ' neue Sollmenge berechnen
+                Dim SollNeu As Double = Sollwert - ChargeMin
+                ' Chargengrößen neu berechnen
+                CalcBatch02.MengeOpt = SaveDiv(SollNeu, CalcBatch02.AnzahlOpt)
+
+                ' auf Chargengrenzen prüfen
+                If (CalcBatch02.MengeOpt > ChargeMax) Then
+                    CalcBatch02.MengeOpt = ChargeMax
+                End If
+                If (CalcBatch02.MengeOpt < ChargeMin) Then
+                    CalcBatch02.MengeOpt = ChargeMin
+                End If
+
+                ' Restmenge berechnen
+                Dim Rest As Double = Sollwert - (CalcBatch02.MengeOpt * CalcBatch02.AnzahlOpt)
+                ' Anzahl der Chargen - Menge durch Maximalchargen teilen
+                CalcBatch02.AnzahlRest = Math.Round(Int(SaveDiv(Rest, ChargeMax)))
+                If (CalcBatch02.AnzahlRest = 0) Then
+                    CalcBatch02.AnzahlRest = 1
+                End If
+                CalcBatch02.MengeRest = SaveDiv(Rest, CalcBatch02.AnzahlRest)
+
+                ' auf Chargengrenzen prüfen
+                If (CalcBatch02.MengeRest < ChargeMin) Then
+                    CalcBatch02.MengeRest = 0
+                    CalcBatch02.AnzahlRest = 0
+                    CalcBatch02.Result = wb_Global.ChargenTeilerResult.EM1
+                End If
+            End If ' (CalcBatch02.MengeRest < CMin)
+        End If ' (CalcBatch02.MengeRest > 0)
+
+        ' (@V3.0.5) Vorproduktion
+        If (CalcBatch02.AnzahlOpt = 0) And (CalcBatch02.AnzahlRest = 0) And VorProduktion Then
+            CalcBatch02.AnzahlRest = 1
+            CalcBatch02.MengeRest = ChargeMin
+            CalcBatch02.MengeOpt = 0
+        End If
 
     End Function
 
+    ''' <summary>
+    ''' Aufteilung nach Rezeptgröße (Maximal-Charge)
+    ''' 
+    ''' CalcBatch09.Result ist immer 9
+    ''' </summary>
+    ''' <param name="Sollwert"></param>
+    ''' <param name="ChargeMin"></param>
+    ''' <param name="ChargeMax"></param>
+    ''' <param name="ChargeOpt"></param>
+    ''' <param name="VorProduktion"></param>
+    ''' <returns></returns>
     Private Function CalcBatch09(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
+        ' es gibt keine Restchargen
+        CalcBatch09.MengeRest = 0
+        CalcBatch09.AnzahlRest = 0
 
+        ' Anzahl der Chargen - Menge durch Rezeptgröße (hier CMax) teilen
+        Dim x As Double = Math.Round(SaveDiv(Sollwert, ChargeMax))
+
+        ' Teiler plus 1 ergibt die Anzahl der Chargen wenn ein Rest auftritt
+        If (Sollwert - ChargeMax * x) > 0.1 Then
+            CalcBatch09.AnzahlOpt = x + 1
+        Else
+            CalcBatch09.AnzahlOpt = x
+        End If
+
+        ' Chargengröße berechnen
+        CalcBatch09.MengeOpt = SaveDiv(Sollwert, CalcBatch09.AnzahlOpt)
+        ' Ergebnis ist immer 9
+        CalcBatch09.Result = wb_Global.ChargenTeilerResult.EP9
+
+        ' (@V3.0.5) Vorproduktion
+        If (CalcBatch09.AnzahlOpt = 0) And VorProduktion Then
+            CalcBatch09.AnzahlOpt = 1
+            CalcBatch09.MengeOpt = Sollwert
+        End If
     End Function
 
     Private Function SaveDiv(Divident As Double, Divisor As Double) As Double
@@ -233,7 +489,7 @@
                     'Chargen mit gleicher Artikel/Rezeptnummer zusammenfassen
                     If ArtikelNummer <> _SQLProduktionsSchritt.ArtikelNummer Then
                         'Der Root-Knoten enthält die Summe aller Chargen in Stück
-                        Root.Sollwert_Stk = GesamtStueck
+                        Root.Sollmenge_Stk = GesamtStueck
                         GesamtStueck = 0
 
                         'Artikelzeilen hängen immer am ersten (Dummy)Schritt
@@ -249,7 +505,7 @@
 
                     'Rezeptzeile anfügen
                     _SQLProduktionsSchritt.Typ = wb_Global.wbDatenRezept
-                    GesamtStueck += _SQLProduktionsSchritt.Sollwert_Stk
+                    GesamtStueck += _SQLProduktionsSchritt.Sollmenge_Stk
                     _ProduktionsSchritt = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
                     'Daten aus MySQL in Produktionsschritt kopieren
                     _ProduktionsSchritt.CopyFrom(_SQLProduktionsSchritt)
@@ -312,7 +568,7 @@
                 Case "B_ARZ_Sollmenge_kg"
                     _SQLProduktionsSchritt.Sollwert_kg = wb_Functions.StrToDouble(Value)
                 Case "B_ARZ_Sollmenge_stueck"
-                    _SQLProduktionsSchritt.Sollwert_Stk = wb_Functions.StrToDouble(Value)
+                    _SQLProduktionsSchritt.Sollmenge_Stk = wb_Functions.StrToDouble(Value)
 
 
             End Select
