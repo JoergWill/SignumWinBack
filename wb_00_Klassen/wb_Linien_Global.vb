@@ -17,8 +17,7 @@
 
             'Linien in der Liniengruppe
             Linien = winback.sField("LG_Linien")
-            L.Linen = Linien.Split(",")
-            LinienGruppen.Add(L.LinienGruppe, L.Linen())
+            L.Linien = Linien.Split(",")
 
             'Formularsteuerung
             L.BackZettelDrucken = winback.sField("LG_BZ_Drucken")
@@ -26,6 +25,9 @@
             L.TeigRezeptDrucken = winback.sField("LG_TR_Drucken")
             L.BackZettelSenden = winback.sField("LG_BZ_Senden")
             L.TeigZettelSenden = winback.sField("LG_TZ_Senden")
+
+            'zum Dictonary hinzufügen
+            LinienGruppen.Add(L.LinienGruppe, L)
         End While
         winback.Close()
     End Sub

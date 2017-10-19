@@ -321,7 +321,7 @@
     Public Structure wb_LinienGruppe
         Public LinienGruppe As String
         Public Bezeichnung As String
-        Public Linen As Array
+        Public Linien As Array
         Public Abteilung As String
         Public BackZettelDrucken As String
         Public TeigZettelDrucken As String

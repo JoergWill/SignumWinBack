@@ -101,7 +101,6 @@ Public Class wb_Komponenten
         End Set
     End Property
 
-    'TODO Rzeptnummer und Name aus DB ermitteln
     Public Property RezeptNummer As String
         Get
             If _RezeptNummer Is Nothing Then
@@ -164,7 +163,6 @@ Public Class wb_Komponenten
             _LinienGruppe = value
         End Set
     End Property
-
 
     Public Property Lieferant As String
         Set(value As String)

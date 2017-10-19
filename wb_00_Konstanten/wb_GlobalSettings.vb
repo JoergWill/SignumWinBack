@@ -460,7 +460,11 @@ Public Class wb_GlobalSettings
         Get
             If _pListenPath = Nothing Then
                 If pVariante = wb_Global.ProgVariante.WinBack Then
+#If DEBUG Then
+                    _pListenPath = PProgrammPath.Replace("WinBackStart\bin\Debug", "ListLabel")
+#Else
                     _pListenPath = PProgrammPath & "Listen\"
+#End If
                 End If
             End If
             Return _pListenPath

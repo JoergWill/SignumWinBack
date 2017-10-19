@@ -301,16 +301,19 @@ Public Class wb_Main_Menu
         wb_GlobalSettings.pDatenPath = TryCast(oSetting.GetSetting("Verzeichnisse.DatenPfad"), String)
         'Signum.OrgaSoft.Common.Settings.Datenbank.Hauptdatenbank
         wb_GlobalSettings.MsSQLMain = TryCast(oSetting.GetSetting("Datenbank.Hauptdatenbank"), String)
-
         'Programm-Version OrgaBack
         Dim PVersion = Assembly.GetEntryAssembly().GetName().Version
 
         Dim asm As Assembly = Assembly.GetExecutingAssembly()
         Dim location As String = asm.Location
         Dim version = asm.GetName.Version
-        Dim appName As String = System.IO.Path.GetDirectoryName(location)
+        'TODO Hier fliegt die Relase-Version auf die Nase
+        'Try
+        '    Dim appName As String = System.IO.Path.GetDirectoryName(location)
+        'Catch
+        'End Try
 
-        Debug.Print("STOP")
+        'Debug.Print("STOP")
         'Dim  As String = Signum.OrgaSoft.Common.Settings.Verzeichnisse.AddInPfad
 
         'Dim sAssemblyName As String = New AssemblyName(args.Name).Name

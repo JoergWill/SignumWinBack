@@ -55,7 +55,7 @@ Public Class wb_Planung_Liste
         pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootRezeptSchritt.ChildSteps)
         'List und Label-Verzeichnis für die Listen
         pDialog.ListSubDirectory = "Produktion"
-        pDialog.ListFileName = "Backzettel.lst"
+        pDialog.ListFileName = "Teigzettel.lst"
         pDialog.ShowDialog()
 
     End Sub
