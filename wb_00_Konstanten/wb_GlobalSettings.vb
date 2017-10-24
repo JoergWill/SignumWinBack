@@ -23,6 +23,7 @@ Public Class wb_GlobalSettings
     Private Shared _pWinBackIniPath As String = Nothing
     Private Shared _pProgrammPath As String = ""
     Private Shared _pDatenPath As String = ""
+    Private Shared _pExportPath As String = Nothing
 
     Private Shared _OrgaBackDBVersion As String = Nothing
     Private Shared _WinBackDBVersion As String = Nothing
@@ -454,6 +455,7 @@ Public Class wb_GlobalSettings
 
     ''' <summary>
     ''' Pfad für die List&Label-Listen-Files
+    ''' Im Debug-Modus wird als Verzeichnis direkt das Repository zurückgegeben, damit werden alle Änderungen automatisch synchronisiert.
     ''' </summary>
     ''' <returns></returns>
     Public Shared Property pListenPath As String
@@ -501,7 +503,7 @@ Public Class wb_GlobalSettings
     Public Shared Property PWinBackIniPath As String
         Get
             If _pWinBackIniPath = Nothing Then
-                _pWinBackIniPath = _pProgrammPath & "WinBack.ini"
+                _pWinBackIniPath = PProgrammPath & "WinBack.ini"
             End If
             Return _pWinBackIniPath
         End Get
@@ -510,7 +512,7 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Public Shared Property PProgrammPath As String
+    Public Shared Property pProgrammPath As String
         Get
             If _pProgrammPath = Nothing Then
                 _pProgrammPath = My.Application.Info.DirectoryPath & "\"
@@ -549,6 +551,22 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    Public Shared Property pExportPath As String
+        Get
+            If _pExportPath = Nothing Then
+                _pExportPath = System.IO.Path.GetTempPath
+            End If
+            Return _pExportPath
+        End Get
+        Set(value As String)
+            _pExportPath = value
+        End Set
+    End Property
+
+    Public Shared Function GetFileName(Tabelle As String) As String
+        Return pExportPath & Tabelle & ".csv"
+    End Function
+
     Private Shared Sub setWinBackIni(Section As String, Key As String, value As String)
         Dim Inifile As New wb_IniFile
         Inifile.WriteString(Section, Key, value)
@@ -575,8 +593,8 @@ Public Class wb_GlobalSettings
                 _MsSQLMainDB = IniFile.ReadString("winback", "MsSQLServer_MainDB", "DemoOrgaBack_Main3")
                 _MsSQLAdmnDB = IniFile.ReadString("winback", "MsSQLServer_AdmnDB", "DemoOrgaBack_Admin3")
                 _MsSQLServer = IniFile.ReadString("winback", "MsSQLServer_Source", "WILL-WIN10\SIGNUM")
-                _MsSQLUserId = IniFile.ReadString("winback", "MsSQLServer_UserId", "xx")
-                _MsSQLPasswd = IniFile.ReadString("winback", "MsSQLServer_Passwd", "xx")
+                _MsSQLUserId = IniFile.ReadString("winback", "MsSQLServer_UserId", "sa")
+                _MsSQLPasswd = IniFile.ReadString("winback", "MsSQLServer_Passwd", "OrgaSoft.NET")
 
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
 

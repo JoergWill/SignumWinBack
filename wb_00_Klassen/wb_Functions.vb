@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 Imports System.IO
+Imports System.Net
 Imports ICSharpCode.SharpZipLib.BZip2
 Imports Tamir.SharpSsh
 
@@ -523,6 +524,16 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt einen Double-Wert in einen String um. Dabei wird das Dezimal-Trennzeichen als Punkt dargestellt !!!!
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Function DoubleToXString(d As Double) As String
+        Dim s As String = d.ToString("G")
+        s = s.Replace(",", ".")
+        Return s
+    End Function
+
+    ''' <summary>
     ''' Wandelt einen String sicher in Float um. Das Zahlenformat kann US/DE sein. Punkte werden vor der Konvertierung in Koma umgewandelt.
     ''' 1000er - Trennzeichen sind nicht erlaubt
     ''' </summary>
@@ -596,6 +607,48 @@ Public Class wb_Functions
         End Try
     End Function
 
+    Public Shared Function SaveDiv(Divident As Double, Divisor As Double) As Double
+        If Divisor <> 0 Then
+            Return Divident / Divisor
+        Else
+            Return 0
+        End If
+    End Function
+
+    Public Shared Function ProzentSatz(Grundwert As Double, Prozentwert As Double, Optional Dezimalstellen As Integer = 0) As Double
+        Return Math.Round(100 * SaveDiv(Prozentwert, Grundwert), Dezimalstellen)
+    End Function
+
+    Public Shared Function FTP_Upload_File(ByVal filetoupload As String) As Boolean
+        ', ByVal ftpuri As String, ByVal ftpusername As String, ByVal ftppassword As String) As Long
+        Dim FtpURI As String = "ftp://" & wb_GlobalSettings.MySQLServerIP & wb_Global.WinBackServerProdDirectory
+        Dim FtpUser As String = wb_GlobalSettings.MySQLUser
+        Dim FtpPass As String = wb_GlobalSettings.MySQLPass
+
+        ' Create a web request that will be used to talk with the server and set the request method to upload a file by ftp.
+        Dim ftpRequest As FtpWebRequest = CType(WebRequest.Create(FtpURI), FtpWebRequest)
+
+        Try
+            ftpRequest.Method = WebRequestMethods.Ftp.UploadFile
+
+            ' Confirm the Network credentials based on the user name and password passed in.
+            ftpRequest.Credentials = New NetworkCredential(FtpUser, FtpPass)
+
+            ' Read into a Byte array the contents of the file to be uploaded 
+            Dim bytes() As Byte = System.IO.File.ReadAllBytes(filetoupload)
+
+            ' Transfer the byte array contents into the request stream, write and then close when done.
+            ftpRequest.ContentLength = bytes.Length
+            Using UploadStream As Stream = ftpRequest.GetRequestStream()
+                UploadStream.Write(bytes, 0, bytes.Length)
+                UploadStream.Close()
+            End Using
+        Catch ex As Exception
+            Console.WriteLine(ex.Message)
+            Return False
+        End Try
+        Return True
+    End Function
 
     ''' <summary>
     ''' Für ein Batch-File im Verzeichnis MySQLBatch aus. Über Argument wird %2 an das Batch-File übergeben

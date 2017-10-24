@@ -244,4 +244,11 @@ Imports WinBack.wb_Global
 
     End Sub
 
+    <TestMethod()> Public Sub Test_DoubleToXString()
+        Assert.AreEqual("10.1", wb_Functions.DoubleToXString(10.1))
+        Assert.AreEqual("0", wb_Functions.DoubleToXString(0))
+        Assert.AreEqual("10", wb_Functions.DoubleToXString(10))
+        Assert.AreEqual("-10", wb_Functions.DoubleToXString(-10))
+    End Sub
+
 End Class

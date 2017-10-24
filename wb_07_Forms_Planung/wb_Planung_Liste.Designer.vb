@@ -58,6 +58,7 @@ Partial Class wb_Planung_Liste
         Me.UniversalEditBox1 = New Infralution.Controls.UniversalEditBox()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.btnNeueCharge = New System.Windows.Forms.Button()
+        Me.BtnTeigListeDrucken = New System.Windows.Forms.Button()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -180,7 +181,7 @@ Partial Class wb_Planung_Liste
         'BtVorproduktion
         '
         Me.BtVorproduktion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtVorproduktion.Location = New System.Drawing.Point(558, 12)
+        Me.BtVorproduktion.Location = New System.Drawing.Point(429, 12)
         Me.BtVorproduktion.Name = "BtVorproduktion"
         Me.BtVorproduktion.Size = New System.Drawing.Size(123, 53)
         Me.BtVorproduktion.TabIndex = 3
@@ -190,7 +191,7 @@ Partial Class wb_Planung_Liste
         'BtnBackZettelDrucken
         '
         Me.BtnBackZettelDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnBackZettelDrucken.Location = New System.Drawing.Point(687, 12)
+        Me.BtnBackZettelDrucken.Location = New System.Drawing.Point(558, 12)
         Me.BtnBackZettelDrucken.Name = "BtnBackZettelDrucken"
         Me.BtnBackZettelDrucken.Size = New System.Drawing.Size(123, 53)
         Me.BtnBackZettelDrucken.TabIndex = 4
@@ -333,11 +334,22 @@ Partial Class wb_Planung_Liste
         Me.btnNeueCharge.Text = "Neu"
         Me.btnNeueCharge.UseVisualStyleBackColor = True
         '
+        'BtnTeigListeDrucken
+        '
+        Me.BtnTeigListeDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnTeigListeDrucken.Location = New System.Drawing.Point(687, 12)
+        Me.BtnTeigListeDrucken.Name = "BtnTeigListeDrucken"
+        Me.BtnTeigListeDrucken.Size = New System.Drawing.Size(123, 53)
+        Me.BtnTeigListeDrucken.TabIndex = 13
+        Me.BtnTeigListeDrucken.Text = "Teigliste drucken"
+        Me.BtnTeigListeDrucken.UseVisualStyleBackColor = True
+        '
         'wb_Planung_Liste
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(951, 663)
+        Me.Controls.Add(Me.BtnTeigListeDrucken)
         Me.Controls.Add(Me.btnNeueCharge)
         Me.Controls.Add(Me.VirtualTree)
         Me.Controls.Add(Me.RichTextBox1)
@@ -383,4 +395,5 @@ Partial Class wb_Planung_Liste
     Friend WithEvents ColEinheit As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ObjectRowBinding1 As Infralution.Controls.VirtualTree.ObjectRowBinding
     Friend WithEvents btnNeueCharge As Windows.Forms.Button
+    Friend WithEvents BtnTeigListeDrucken As Windows.Forms.Button
 End Class

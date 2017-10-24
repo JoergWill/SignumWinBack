@@ -353,7 +353,13 @@
         Public AnzahlRest As Integer
         Public MengeRest As Double
         Public Result As ChargenTeilerResult
+        Public Modus As ModusChargenTeiler
     End Structure
+
+    Enum SortOrder
+        BackZettel
+        ProdPlan
+    End Enum
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)
     Public Const NewUserName = "Neu"
@@ -365,4 +371,7 @@
 
     'WinBack-Server-Task Port
     Public Const WinBackServerTaskPort = "22046"
+
+    'WinBack-Server-Verzeichnis Produktionsdaten
+    Public Const WinBackServerProdDirectory = "/bakelink/1101_Produktion.csv"
 End Class

@@ -830,6 +830,9 @@
     <None Include="Resources\MainLinien_32x32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ListLabel\Produktion\Backzettel.lst" />
+    <Content Include="ListLabel\Produktion\Teigzettel.lst" />
+    <Content Include="ListLabel\wbStandard.lst" />
     <Content Include="Resources\DatenRueckSicherung_16x16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -877,7 +880,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ListLabel\" />
     <Folder Include="wb_99_Sample\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

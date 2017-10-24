@@ -1,4 +1,5 @@
 ﻿Imports System.Reflection
+Imports WinBack
 
 Public Class wb_Produktionsschritt
     Implements IComparable
@@ -6,21 +7,27 @@ Public Class wb_Produktionsschritt
     Private _parentStep As wb_Produktionsschritt
     Private _childSteps As New ArrayList()
 
-    Private _SortKriterium As String
-    Private _ArtikelBezeichnung As String
-    Private _RezeptBezeichnung As String
-    Private _AuftragsNummer As String
+    Private Shared _SortOrder As wb_Global.SortOrder
+    Private _SortKriteriumBackPlan As String
+    Private _SortKriteriumProdPlan As String
+
+    Private _LinienGruppe As Integer
     Private _Typ As String
+    Private _Tour As String
+    Private _ChargenNummer As Integer
+    Private _AuftragsNummer As String
+
     Private _ArtikelNummer As String
+    Private _ArtikelBezeichnung As String
     Private _RezeptNummer As String
+    Private _RezeptBezeichnung As String
     Private _RezeptNr As Integer
     Private _RezeptVar As Integer
-    Private _LinienGruppe As Integer
-    Private _Tour As String
     Private _Sollwert_kg As Double
     Private _Sollmenge_Stk As Double
-    Private _Bestellt_Stk As Double
     Private _Sollwert_TeilungText As String
+    Private _TeigChargen As wb_Global.ChargenMengen
+    Private _Bestellt_Stk As Double
     Private _Bestellt_SonderText As String
 
     ''' <summary>
@@ -52,9 +59,10 @@ Public Class wb_Produktionsschritt
             Select Case ChargenTyp
                 Case wb_Global.wbDatenRezept
                     Typ = wb_Global.wbDatenRezept
-                    ArtikelNummer = "0"
+                    ArtikelNummer = .Nummer
                     RezeptNr = .RzNr
                     RezeptNummer = .RezeptNummer
+                    RezeptVar = 1
                     RezeptBezeichnung = .RezeptName
                     LinienGruppe = .LinienGruppe
                 Case wb_Global.wbDatenArtikel
@@ -62,6 +70,7 @@ Public Class wb_Produktionsschritt
                     ArtikelBezeichnung = .Bezeichung
                     ArtikelNummer = .Nummer
                     RezeptNummer = .RezeptNummer
+                    RezeptVar = 1
                     RezeptBezeichnung = .RezeptName
                     LinienGruppe = .LinienGruppe
             End Select
@@ -112,7 +121,13 @@ Public Class wb_Produktionsschritt
         Return String.Compare(SortKriterium, DirectCast(obj, wb_Produktionsschritt).SortKriterium)
     End Function
 
-    Public Sub SortBackListe()
+    Public Sub SortBackZettel()
+        _SortOrder = wb_Global.SortOrder.BackZettel
+        _childSteps.Sort()
+    End Sub
+
+    Public Sub SortProduktionsPlan()
+        _SortOrder = wb_Global.SortOrder.ProdPlan
         _childSteps.Sort()
     End Sub
 
@@ -339,12 +354,14 @@ Public Class wb_Produktionsschritt
     End Property
 
     Private Sub setSortKriterium()
+        'Sortieren Backplan
         If RezeptNummer IsNot Nothing And ArtikelNummer IsNot Nothing And Tour IsNot Nothing Then
-            _SortKriterium = LinienGruppe.ToString.PadLeft(3, "0"c) & RezeptNummer.PadLeft(10, "0"c) & ArtikelNummer.PadLeft(16, "0"c) & Tour.PadLeft(3, "0"c)
-            Debug.Print("Sortierkriterium " & _SortKriterium)
+            _SortKriteriumBackPlan = LinienGruppe.ToString.PadLeft(3, "0"c) & RezeptNummer.PadLeft(10, "0"c) & ArtikelNummer.PadLeft(16, "0"c) & Tour.PadLeft(3, "0"c)
         Else
-            _SortKriterium = Nothing
+            _SortKriteriumBackPlan = Nothing
         End If
+        'Sortieren Produktions-Liste
+        _SortKriteriumProdPlan = _ChargenNummer
     End Sub
 
     ''' <summary>
@@ -353,13 +370,78 @@ Public Class wb_Produktionsschritt
     ''' Teignummern und Artikelnummer werden mit führenden Nullen aufgefüllt.
     ''' </summary>
     ''' <returns></returns>
-    Public Property SortKriterium As String
+    Public ReadOnly Property SortKriterium As String
         Get
-            Return _SortKriterium
+            Select Case _SortOrder
+                Case wb_Global.SortOrder.BackZettel
+                    Return _SortKriteriumBackPlan
+
+                Case wb_Global.SortOrder.ProdPlan
+                    Return _SortKriteriumProdPlan
+
+                Case Else
+                    Return ""
+            End Select
         End Get
-        Set(value As String)
-            _SortKriterium = value
+    End Property
+
+    Public Property TeigChargen As wb_Global.ChargenMengen
+        Get
+            Return _TeigChargen
+        End Get
+        Set(value As wb_Global.ChargenMengen)
+            _TeigChargen = value
         End Set
+    End Property
+
+    ''' <summary>
+    ''' Anzeige der Teigchargen-Optimalmenge in List&Label
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property TeigOptMengekg As Double
+        Get
+            Return _TeigChargen.MengeOpt
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Anzeige der Anzahl der Optimalchargen in List&Label
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property TeigOptMengeStk As Integer
+        Get
+            Return _TeigChargen.AnzahlOpt
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Anzeige der Teigchargen-Restmenge in List&Label
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property TeigRestMengekg As Double
+        Get
+            Return _TeigChargen.MengeRest
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Anzeige der Anzahl der Restchargen in List&Label
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property TeigRestMengeStk As Integer
+        Get
+            Return _TeigChargen.AnzahlRest
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Anzeige der Prozentualen Größe der Restteigmenge in List&Label
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property TeigRestMengeProzent As Double
+        Get
+            Return wb_Functions.ProzentSatz(_TeigChargen.MengeOpt, _TeigChargen.MengeRest)
+        End Get
     End Property
 
 End Class

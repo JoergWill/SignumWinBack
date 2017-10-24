@@ -14,9 +14,12 @@ Public Class wb_Admin_UpdateDatabase
         tbOrgaBackDataBase.Text = wb_GlobalSettings.OrgaBackDBVersion
 
         'Anzahl der verfügbaren WinBack-Datenbank-Updates
-        For Each F As String In IO.Directory.GetFiles(wb_GlobalSettings.pDBUpdatePath, "*.sql")
-            DBUpdateFiles.Add(F)
-        Next
+        DBUpdateFiles.Clear()
+        If IO.Directory.Exists(wb_GlobalSettings.pDBUpdatePath) Then
+            For Each F As String In IO.Directory.GetFiles(wb_GlobalSettings.pDBUpdatePath, "*.sql")
+                DBUpdateFiles.Add(F)
+            Next
+        End If
 
         'Update-Button, Anzeige und Progress-Bar anzeigen
         ShowHideUpdate(DBUpdateFiles.Count)
@@ -29,7 +32,6 @@ Public Class wb_Admin_UpdateDatabase
         pbFiles.Maximum = DBUpdateFiles.Count
         pbFiles.Value = 0
         pbFiles.Step = 1
-
 
         Me.Cursor = Cursors.WaitCursor
         For Each Update As String In DBUpdateFiles

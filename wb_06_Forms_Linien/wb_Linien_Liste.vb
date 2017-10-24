@@ -114,7 +114,11 @@ Public Class wb_Linien_Liste
         Dim p As New Process
 
         'VNC-Viewer starten
-        cmdLinie = "c:\Programme\Winback\vncviewer.exe"
+        If wb_GlobalSettings.pAddInPath IsNot Nothing Then
+            cmdLinie = wb_GlobalSettings.pAddInPath & "vncviewer.exe"
+        Else
+            cmdLinie = wb_GlobalSettings.PProgrammPath & "vncviewer.exe"
+        End If
         If VNCviewIsSelected() Then
             cmdParam = VNCview.SelectedItems.Item(0).Name() & " /password herbst"
 

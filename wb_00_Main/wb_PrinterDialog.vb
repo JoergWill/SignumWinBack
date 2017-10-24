@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Windows.Forms
 Imports combit.ListLabel22
+Imports WinBack
 
 Public Class wb_PrinterDialog
     Private _ListSubDirectory As String

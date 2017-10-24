@@ -23,8 +23,8 @@
     ''' <summary>
     ''' Erster (unsichtbarer) Produktions-Schritt (Root-Node)
     ''' </summary>
-    ''' <returns>wb_RezeptSchritt - Root-Node des Rezeptes</returns>
-    Public ReadOnly Property RootRezeptSchritt As wb_Produktionsschritt
+    ''' <returns>wb_Produktionsschritt - Root-Node des Rezeptes</returns>
+    Public ReadOnly Property RootProduktionsSchritt As wb_Produktionsschritt
         Get
             Return _RootProduktionsSchritt
         End Get
@@ -41,7 +41,6 @@
     Public Function AddArtikelCharge(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Modus As wb_Global.ModusChargenTeiler, Optional Bestellmenge As Double = wb_Global.UNDEFINED, Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
         Dim Artikel As New wb_Komponenten
         Dim TeigMenge As Double
-        Dim TeigChargen As wb_Global.ChargenMengen
 
         If Artikel.MySQLdbRead(Nr, Nummer) Then
             'Artikelzeilen hängen immer am ersten (Dummy)Schritt
@@ -63,23 +62,23 @@
             TeigMenge = CalcTeigMenge(Sollmenge_Stk, Artikel.StkGewicht / 1000)
 
             'Chargengrößen berechnen
-            TeigChargen = CalcChargenMenge(TeigMenge, Artikel.MinChargekg, Artikel.MaxChargekg, Artikel.OptChargekg, Modus, False)
+            Root.TeigChargen = CalcChargenMenge(TeigMenge, Artikel.MinChargekg, Artikel.MaxChargekg, Artikel.OptChargekg, Modus, False)
 
             'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
-            For i = 1 To TeigChargen.AnzahlOpt
+            For i = 1 To Root.TeigChargen.AnzahlOpt
                 Rzpt = New wb_Produktionsschritt(Root, Artikel.RezeptName)
                 'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
                 Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
-                Rzpt.Sollwert_kg = TeigChargen.MengeOpt
+                Rzpt.Sollwert_kg = Root.TeigChargen.MengeOpt
                 Rzpt.Tour = Tour
             Next
 
             'Rezept-Kopf-Zeilen anhängen (Rest-Chargen)
-            For i = 1 To TeigChargen.AnzahlRest
+            For i = 1 To Root.TeigChargen.AnzahlRest
                 Rzpt = New wb_Produktionsschritt(Root, Artikel.RezeptName)
                 'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
                 Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
-                Rzpt.Sollwert_kg = TeigChargen.MengeRest
+                Rzpt.Sollwert_kg = Root.TeigChargen.MengeRest
                 Rzpt.Tour = Tour
             Next
 
@@ -179,6 +178,7 @@
         'Es gibt keine Restchargen
         CalcBatchM1.MengeRest = 0
         CalcBatchM1.AnzahlRest = 0
+        CalcBatchM1.Modus = wb_Global.ModusChargenTeiler.XGleiche
 
         'Anzahl der Chargen - Menge durch Maximalchargen teilen
         Dim x As Integer = Math.Round(SaveDiv(Sollwert, ChargeMax), 0)
@@ -235,6 +235,7 @@
         CalcBatch00.MengeRest = 0
         CalcBatch00.AnzahlRest = 0
         CalcBatch00.Result = wb_Global.ChargenTeilerResult.OK
+        CalcBatch00.Modus = wb_Global.ModusChargenTeiler.NurOptimal
 
         'erlaubter Rundungsfehler in Prozent der Chargengröße
         Dim ErlaubterRundungsfehler As Double = ChargeOpt / 10 ' (1% der Chargengröße)
@@ -286,6 +287,7 @@
     Private Function CalcBatch01(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
         ' Variablen initialisieren
         CalcBatch01.MengeOpt = ChargeOpt
+        CalcBatch01.Modus = wb_Global.ModusChargenTeiler.OptimalUndRest
 
         ' Anzahl der Chargen - Menge durch Optimalchargen teilen
         CalcBatch01.AnzahlOpt = Math.Round(Int(SaveDiv(Sollwert, ChargeOpt)))
@@ -342,6 +344,7 @@
         ' Variablen initialisieren
         CalcBatch02.Result = wb_Global.ChargenTeilerResult.OK
         CalcBatch02.AnzahlRest = 0
+        CalcBatch02.Modus = wb_Global.ModusChargenTeiler.MaximalUndRest
 
         ' Anzahl der Chargen - Menge durch Maximalchargen teilen
         CalcBatch02.AnzahlOpt = Math.Round(Int(SaveDiv(Sollwert, ChargeMax)))
@@ -422,6 +425,7 @@
         ' es gibt keine Restchargen
         CalcBatch09.MengeRest = 0
         CalcBatch09.AnzahlRest = 0
+        CalcBatch09.Modus = wb_Global.ModusChargenTeiler.RezeptGroesse
 
         ' Anzahl der Chargen - Menge durch Rezeptgröße (hier CMax) teilen
         Dim x As Double = Math.Round(SaveDiv(Sollwert, ChargeMax))

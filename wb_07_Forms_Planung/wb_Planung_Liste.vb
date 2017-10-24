@@ -22,7 +22,7 @@ Public Class wb_Planung_Liste
                 VirtualTree.Invalidate()
             Else
                 'Virtual Tree anzeigen
-                VirtualTree.DataSource = Produktion.RootRezeptSchritt
+                VirtualTree.DataSource = Produktion.RootProduktionsSchritt
             End If
         End If
         'Default-Cursor
@@ -38,26 +38,174 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TEST
-        Produktion.AddArtikelCharge("2", "12", 0, 2000, wb_Global.ModusChargenTeiler.OptimalUndRest)
-        Produktion.AddArtikelCharge("1", "300", 0, 250, wb_Global.ModusChargenTeiler.OptimalUndRest, 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
-        Produktion.AddArtikelCharge("1", "12", 0, 1000, wb_Global.ModusChargenTeiler.OptimalUndRest, 90)
-        Produktion.AddArtikelCharge("2", "300", 0, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
+        Produktion.AddArtikelCharge("2", "78567", 0, 2000, wb_Global.ModusChargenTeiler.OptimalUndRest)
+        Produktion.AddArtikelCharge("1", "78567", 0, 250, wb_Global.ModusChargenTeiler.OptimalUndRest, 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
+        Produktion.AddArtikelCharge("1", "78567", 0, 1000, wb_Global.ModusChargenTeiler.OptimalUndRest, 90)
+        Produktion.AddArtikelCharge("2", "78567", 0, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
         'Virtual Tree anzeigen
-        VirtualTree.DataSource = Produktion.RootRezeptSchritt
+        VirtualTree.DataSource = Produktion.RootProduktionsSchritt
     End Sub
 
     Private Sub BtnBackZettelDrucken_Click(sender As Object, e As EventArgs) Handles BtnBackZettelDrucken.Click
         'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
-        Produktion.RootRezeptSchritt.SortBackListe()
+        Produktion.RootProduktionsSchritt.SortBackZettel()
 
         Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
+
         'Druck-Daten
-        pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootRezeptSchritt.ChildSteps)
+        pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
         'List und Label-Verzeichnis für die Listen
         pDialog.ListSubDirectory = "Produktion"
-        pDialog.ListFileName = "Teigzettel.lst"
+        pDialog.ListFileName = "BackZettel.lst"
         pDialog.ShowDialog()
-
     End Sub
 
+    Private Sub BtnTeigListeDrucken_Click(sender As Object, e As EventArgs) Handles BtnTeigListeDrucken.Click
+        'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
+        Produktion.RootProduktionsSchritt.SortBackZettel()
+
+        Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
+
+        'Druck-Daten
+        pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
+        'List und Label-Verzeichnis für die Listen
+        pDialog.ListSubDirectory = "Produktion"
+        pDialog.ListFileName = "TeigListe.lst"
+        pDialog.ShowDialog()
+    End Sub
+
+    Private Sub BtnTeigListeExport_Click(sender As Object, e As EventArgs) Handles BtnTeigListeExport.Click
+        'Export-File erzeugen
+        Dim T1001 As New IO.FileInfo(wb_GlobalSettings.GetFileName("T1001"))
+
+        'wenn das Verzeichnis nicht existiert wird es erzeugt
+        If Not IO.Directory.Exists(T1001.DirectoryName) Then
+            T1001.Directory.Create()
+        End If
+
+        'wenn die Datei schon exisitiert, wird sie vorher gelöscht
+        If T1001.Exists Then
+            T1001.Delete()
+        End If
+
+        'Datei neu anlegen
+        Using fs As IO.FileStream = T1001.Open(IO.FileMode.OpenOrCreate, IO.FileAccess.Write)
+            Using sw As New IO.StreamWriter(fs)
+
+                'Kopfzeilen schreiben
+                sw.WriteLine(ProdDatenKopfZeile_1)
+                sw.WriteLine(ProdDatenKopfZeile_2)
+
+                'Artikelzeilen
+                For Each a As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
+                    'ChargenZeilen
+                    For Each r As wb_Produktionsschritt In a.ChildSteps
+                        sw.WriteLine(ProdDatenSatz(r))
+                    Next
+                Next
+                sw.Flush()
+            End Using
+        End Using
+
+        'per FTP zu WinBack übertragen
+        wb_Functions.FTP_Upload_File(T1001.FullName)
+    End Sub
+
+    Private Function ProdDatenKopfZeile_1() As String
+        Dim ExpStr As String = ""
+        Dim SepStr As String = ","
+
+        For i = 1 To 48
+            Select Case i
+                Case 5      ' [5] Bestellnummer
+                    ExpStr = ExpStr + "Bestellnummer" + SepStr
+                Case 14     ' [14] Anzahl der Produktions-Chargen (immer 1)
+                    ExpStr = ExpStr + "MengeOptChargen" + SepStr
+                Case 20     ' [20] Herstellungsdatum
+                    ExpStr = ExpStr + "Herstellungsdatum" + SepStr
+                Case 22     ' [22] Artikelnummer
+                    ExpStr = ExpStr + "Artikelnummer" + SepStr
+                Case 24     ' [24] Variante
+                    ExpStr = ExpStr + "Variante" + SepStr
+                Case 28     ' [28] Rezeptnummer (nur Info)
+                    ExpStr = ExpStr + "Rezepturnummer" + SepStr
+                Case 40     ' [40] Produktionsblock
+                    ExpStr = ExpStr + "Produktionsblock" + SepStr
+                Case 41     ' [41] Sollchargengröße in %
+                    ExpStr = ExpStr + "ChargeRestProzent" + SepStr
+                Case 42     ' [42] Sollanzahl Optimalchargen
+                    ExpStr = ExpStr + "AnzOptChargen" + SepStr
+                Case 43     ' [43] Sollanzahl Restchargen
+                    ExpStr = ExpStr + "AnzRestChargen" + SepStr
+                Case 44     ' [44] Produktionsmenge in [kg]
+                    ExpStr = ExpStr + "Sollmenge" + SepStr
+                Case 45     ' [45] Sollmenge Restchargen
+                    ExpStr = ExpStr + "MengeRestChargen" + SepStr
+                Case 46     ' [46] Gesamtmenge Auftrag
+                    ExpStr = ExpStr + "GesMengeAuftrag" + SepStr
+                Case 47     ' [47] Sollzeit
+                    ExpStr = ExpStr + "SollZeit" + SepStr
+                Case 48     ' [48] Produktionsfolge
+                    ExpStr = ExpStr + "ProdFolge" + SepStr
+                Case Else
+                    ExpStr = ExpStr + SepStr
+            End Select
+        Next
+        Return ExpStr
+    End Function
+
+    Private Function ProdDatenKopfZeile_2() As String
+        Dim ExpStr As String = ""
+        Dim SepStr As String = ","
+
+        For i = 1 To 48
+            Select Case i
+                Case 5  ' [5] Bestellnummer
+                    ExpStr = ExpStr + "ARZ_Best_Nr" + SepStr
+                Case 14  ' [14] Anzahl der Produktions-Chargen (immer 1)
+                    ExpStr = ExpStr + "ARZ_Sollmenge" + SepStr
+                Case 20  ' [20] Herstellungsdatum
+                    ExpStr = ExpStr + "ARZ_Zp_Gestartet" + SepStr
+                Case 22  ' [22] Artikelnummer
+                    ExpStr = ExpStr + "ARZ_KA_NrAlNum" + SepStr
+                Case 24  ' [24] Variante
+                    ExpStr = ExpStr + "ARZ_RZ_Typ" + SepStr
+                Case 28 ' [28] Rezeptnummer (nur Info)
+                    ExpStr = ExpStr + "ARZ_RZ_Nr_AlNum" + SepStr
+                Case 44  ' [44] Produktionsmenge in [kg]
+                    ExpStr = ExpStr + "ARZ_Sollmenge_kg" + SepStr
+                Case Else
+                    ExpStr = ExpStr + SepStr
+            End Select
+        Next
+        Return ExpStr
+    End Function
+
+    Private Function ProdDatenSatz(x As wb_Produktionsschritt) As String
+        Dim ExpStr As String = ""
+        Dim SepStr As String = ","
+
+        For i = 1 To 48
+            Select Case i
+                Case 5  ' [5] Bestellnummer
+                    ExpStr = ExpStr + x.AuftragsNummer + SepStr
+                Case 14  ' [14] Anzahl der Produktions-Chargen (immer 1)
+                    ExpStr = ExpStr + "1" + SepStr
+                Case 20  ' [20] Herstellungsdatum
+                    ExpStr = ExpStr + DateTime.Now.ToString("yyyyMMdd") + SepStr
+                Case 22  ' [22] Artikelnummer
+                    ExpStr = ExpStr + x.ArtikelNummer + SepStr
+                Case 24  ' [24] Variante
+                    ExpStr = ExpStr + x.RezeptVar.ToString + SepStr
+                Case 28 ' [28] Rezeptnummer (nur Info)
+                    ExpStr = ExpStr + x.RezeptNummer + SepStr
+                Case 44  ' [44] Produktionsmenge in [kg]
+                    ExpStr = ExpStr + wb_Functions.DoubleToXString(x.Sollwert_kg) + SepStr
+                Case Else
+                    ExpStr = ExpStr + SepStr
+            End Select
+        Next
+        Return ExpStr
+
+    End Function
 End Class
