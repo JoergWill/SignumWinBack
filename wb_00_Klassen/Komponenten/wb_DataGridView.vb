@@ -267,7 +267,7 @@ Public Class wb_DataGridView
         End Set
         Get
             Try
-                Return CInt(CurrentRow.Cells(FieldName).Value.ToString)
+                Return wb_Functions.StrToInt(CurrentRow.Cells(FieldName).Value.ToString)
             Catch
                 Return 0
             End Try

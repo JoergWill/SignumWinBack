@@ -1,5 +1,4 @@
 ﻿Imports System.Reflection
-Imports WinBack
 
 Public Class wb_Produktionsschritt
     Implements IComparable
@@ -19,6 +18,7 @@ Public Class wb_Produktionsschritt
 
     Private _ArtikelNummer As String
     Private _ArtikelBezeichnung As String
+    Private _ArtikelNr As Integer
     Private _RezeptNummer As String
     Private _RezeptBezeichnung As String
     Private _RezeptNr As Integer
@@ -56,24 +56,34 @@ Public Class wb_Produktionsschritt
     ''' <param name="rs">wb_Komponenten hält alle notwendigen Werte der Artikel für die Produktion</param>
     Public Sub CopyFromKomponenten(rs As wb_Komponenten, ChargenTyp As Integer)
         With rs
-            Select Case ChargenTyp
-                Case wb_Global.wbDatenRezept
-                    Typ = wb_Global.wbDatenRezept
-                    ArtikelNummer = .Nummer
-                    RezeptNr = .RzNr
-                    RezeptNummer = .RezeptNummer
-                    RezeptVar = 1
-                    RezeptBezeichnung = .RezeptName
-                    LinienGruppe = .LinienGruppe
-                Case wb_Global.wbDatenArtikel
-                    Typ = wb_Global.wbDatenArtikel
-                    ArtikelBezeichnung = .Bezeichung
-                    ArtikelNummer = .Nummer
-                    RezeptNummer = .RezeptNummer
-                    RezeptVar = 1
-                    RezeptBezeichnung = .RezeptName
-                    LinienGruppe = .LinienGruppe
-            End Select
+            Typ = ChargenTyp
+            ArtikelNummer = .Nummer
+            RezeptNr = .RzNr
+            RezeptNummer = .RezeptNummer
+            RezeptVar = 1
+            RezeptBezeichnung = .RezeptName
+            LinienGruppe = .LinienGruppe
+        End With
+    End Sub
+
+    Public Sub CopyFromRezeptSchritt(rs As wb_Rezeptschritt, Faktor As Double)
+        With rs
+            'als Rezepturschritt kennzeichnen
+            Typ = wb_Global.wbDatenKomponente
+            'Komponenten-Nummer
+            ArtikelNummer = .Nummer
+            'Komponenten-Bezeichnung
+            ArtikelBezeichnung = .Bezeichnung
+            'interne Komponenten-Nummer
+            ArtikelNr = .RohNr
+            'Verweis auf Rezeptnummer
+            RezeptNr = .RezeptNr
+            'Sollwert auf Rezeptgröße umrechnen
+            If wb_Functions.TypeIstSollwert(.Type, .ParamNr) Then
+                Sollwert_kg = .Sollwert * Faktor
+
+                'TODO Text Produktions-Stufe o.ä.
+            End If
         End With
     End Sub
 
@@ -145,7 +155,7 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeNummer As String
         Get
-            If Typ = wb_Global.wbDatenArtikel Then
+            If Typ = wb_Global.wbDatenArtikel Or Typ = wb_Global.wbDatenKomponente Then
                 Return ArtikelNummer
             Else
                 Return RezeptNummer
@@ -159,7 +169,7 @@ Public Class wb_Produktionsschritt
     ''' <returns>String - Bezeichnung</returns>
     Public ReadOnly Property VirtTreeBezeichnung() As String
         Get
-            If Typ = wb_Global.wbDatenArtikel Then
+            If Typ = wb_Global.wbDatenArtikel Or Typ = wb_Global.wbDatenKomponente Then
                 Return _ArtikelBezeichnung
             Else
                 Return RezeptBezeichnung
@@ -240,6 +250,15 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As String)
             _ArtikelBezeichnung = value
+        End Set
+    End Property
+
+    Public Property ArtikelNr As Integer
+        Get
+            Return _ArtikelNr
+        End Get
+        Set(value As Integer)
+            _ArtikelNr = value
         End Set
     End Property
 

@@ -38,14 +38,16 @@
     ''' <param name="Nr">Integer - interne Artikelnummer</param>
     ''' <param name="Sollmenge_Stk">Double - Sollmenge in Stück</param>
     ''' <returns></returns>
-    Public Function AddArtikelCharge(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Modus As wb_Global.ModusChargenTeiler, Optional Bestellmenge As Double = wb_Global.UNDEFINED, Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
+    Public Function AddArtikelCharge(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Modus As wb_Global.ModusChargenTeiler,
+                                     Optional AuftragsNummer As String = "", Optional Bestellmenge As Double = wb_Global.UNDEFINED,
+                                     Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
+
         Dim Artikel As New wb_Komponenten
         Dim TeigMenge As Double
 
         If Artikel.MySQLdbRead(Nr, Nummer) Then
             'Artikelzeilen hängen immer am ersten (Dummy)Schritt
             Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
-            Dim Rzpt As wb_Produktionsschritt
 
             'Neue Zeile  einfügen (ArtikelZeile)
             Root = New wb_Produktionsschritt(Root, Artikel.Bezeichung)
@@ -54,6 +56,7 @@
             Root.CopyFromKomponenten(Artikel, wb_Global.wbDatenArtikel)
             Root.Sollmenge_Stk = Sollmenge_Stk
             Root.Tour = Tour
+            Root.AuftragsNummer = AuftragsNummer
             Root.Bestellt_Stk = CalcBestellMenge(Bestellmenge, Sollmenge_Stk)
             Root.Bestellt_SonderText = Bestellt_SonderText
             Root.Sollwert_TeilungText = Sollwert_TeilungText
@@ -61,30 +64,67 @@
             'Teig-Gesamtmenge berechnen
             TeigMenge = CalcTeigMenge(Sollmenge_Stk, Artikel.StkGewicht / 1000)
 
-            'Chargengrößen berechnen
+            'Chargen berechnen - Aufteilung in Optimal- und Restchargen
             Root.TeigChargen = CalcChargenMenge(TeigMenge, Artikel.MinChargekg, Artikel.MaxChargekg, Artikel.OptChargekg, Modus, False)
 
             'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
             For i = 1 To Root.TeigChargen.AnzahlOpt
-                Rzpt = New wb_Produktionsschritt(Root, Artikel.RezeptName)
-                'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
-                Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
-                Rzpt.Sollwert_kg = Root.TeigChargen.MengeOpt
-                Rzpt.Tour = Tour
+                AddRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeOpt)
             Next
 
             'Rezept-Kopf-Zeilen anhängen (Rest-Chargen)
             For i = 1 To Root.TeigChargen.AnzahlRest
-                Rzpt = New wb_Produktionsschritt(Root, Artikel.RezeptName)
-                'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
-                Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
-                Rzpt.Sollwert_kg = Root.TeigChargen.MengeRest
-                Rzpt.Tour = Tour
+                AddRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeRest)
             Next
 
             Return True
         Else
             Return False
+        End If
+    End Function
+
+    Private Sub AddRezeptCharge(ByRef Root As wb_Produktionsschritt, Artikel As wb_Komponenten, AuftragsNummer As String, Tour As String, Menge As Double)
+        Dim Rzpt As New wb_Produktionsschritt(Root, Artikel.RezeptName)
+
+        'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
+        Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
+        Rzpt.Sollwert_kg = Menge
+        Rzpt.AuftragsNummer = GetAuftragsNummer(AuftragsNummer, Tour)
+        Rzpt.Tour = Tour
+
+        'Rezeptur anhängen
+        AddRezeptSchritte(Rzpt, Menge, Nothing)
+
+    End Sub
+
+    Private Sub AddRezeptSchritte(ByRef Rzpt As wb_Produktionsschritt, Menge As Double, Parent As Object)
+        'Rezeptur einlesen
+        Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent)
+        Dim Faktor As Double = SaveDiv(Menge, Rezeptur.RezeptGewicht)
+
+        'alle Rezeptschritte an Child-Knoten anhängen
+        For Each rs As wb_Rezeptschritt In Rezeptur.LLRezept
+            Dim RzSchritt As New wb_Produktionsschritt(Rzpt, rs.Bezeichnung & "XX")
+            RzSchritt.CopyFromRezeptSchritt(rs, Faktor)
+
+            'Rezept-im-Rezept-Struktur auflösen
+            If RzSchritt.RezeptNr > 0 Then
+                AddRezeptSchritte(RzSchritt, RzSchritt.Sollwert_kg, Nothing)
+            End If
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Gibt einen Wet für die Auftrags-Nummer zurück. Ist keine Auftrags-Nummer definiert, wird die Tour zurückgegeben.
+    ''' </summary>
+    ''' <param name="AuftragsNummer"></param>
+    ''' <param name="Tour"></param>
+    ''' <returns></returns>
+    Private Function GetAuftragsNummer(AuftragsNummer As String, Tour As String) As String
+        If AuftragsNummer = "" Then
+            Return "Tour " & Tour
+        Else
+            Return AuftragsNummer
         End If
     End Function
 
@@ -538,7 +578,6 @@
         End If
 
         'Feldname aus der Datenbank
-        Debug.Print("Feldname/Wert " & Name & "/" & Value.ToString)
         Try
             Select Case Name
 

@@ -564,7 +564,7 @@ Public Class wb_GlobalSettings
     End Property
 
     Public Shared Function GetFileName(Tabelle As String) As String
-        Return pExportPath & Tabelle & ".csv"
+        Return pExportPath & Tabelle & "_" & DateTime.Now.ToString("yyMMdd") & "_" & DateTime.Now.ToString("hhmmss") & ".csv"
     End Function
 
     Private Shared Sub setWinBackIni(Section As String, Key As String, value As String)

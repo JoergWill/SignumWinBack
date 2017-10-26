@@ -38,10 +38,10 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TEST
-        Produktion.AddArtikelCharge("2", "78567", 0, 2000, wb_Global.ModusChargenTeiler.OptimalUndRest)
-        Produktion.AddArtikelCharge("1", "78567", 0, 250, wb_Global.ModusChargenTeiler.OptimalUndRest, 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
-        Produktion.AddArtikelCharge("1", "78567", 0, 1000, wb_Global.ModusChargenTeiler.OptimalUndRest, 90)
-        Produktion.AddArtikelCharge("2", "78567", 0, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
+        Produktion.AddArtikelCharge("1", "", 7036, 540, wb_Global.ModusChargenTeiler.OptimalUndRest)
+        Produktion.AddArtikelCharge("1", "", 7036, 250, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
+        'Produktion.AddArtikelCharge("1", "", 7035, 1000, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 90)
+        'Produktion.AddArtikelCharge("2", "", 7035, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
     End Sub
@@ -108,7 +108,16 @@ Public Class wb_Planung_Liste
         End Using
 
         'per FTP zu WinBack übertragen
-        wb_Functions.FTP_Upload_File(T1001.FullName)
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
+        Dim Result As String = wb_Functions.FTP_Upload_File(T1001.FullName)
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
+
+        'Ergebnis der Datenübertragung anzeigen
+        If Result IsNot Nothing Then
+            MessageBox.Show("Fehler bei der Datenübertragung zum WinBack-Server" & vbCrLf & Result, "Übertragen der Produktionsdaten zu WinBack", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        Else
+            MessageBox.Show("Alle Produktionsdaten übertragen" & vbCrLf & Result, "Übertragen der Produktionsdaten zu WinBack", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
     End Sub
 
     Private Function ProdDatenKopfZeile_1() As String

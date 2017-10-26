@@ -619,7 +619,7 @@ Public Class wb_Functions
         Return Math.Round(100 * SaveDiv(Prozentwert, Grundwert), Dezimalstellen)
     End Function
 
-    Public Shared Function FTP_Upload_File(ByVal filetoupload As String) As Boolean
+    Public Shared Function FTP_Upload_File(ByVal filetoupload As String) As String
         ', ByVal ftpuri As String, ByVal ftpusername As String, ByVal ftppassword As String) As Long
         Dim FtpURI As String = "ftp://" & wb_GlobalSettings.MySQLServerIP & wb_Global.WinBackServerProdDirectory
         Dim FtpUser As String = wb_GlobalSettings.MySQLUser
@@ -644,10 +644,9 @@ Public Class wb_Functions
                 UploadStream.Close()
             End Using
         Catch ex As Exception
-            Console.WriteLine(ex.Message)
-            Return False
+            Return ex.Message
         End Try
-        Return True
+        Return Nothing
     End Function
 
     ''' <summary>

@@ -541,7 +541,6 @@ Public Class wb_Rezept
         End If
 
         'Feldname aus der Datenbank
-        Debug.Print("Feldname/Wert " & Name & "/" & Value.ToString)
         Try
             Select Case Name
 
