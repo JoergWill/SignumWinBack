@@ -53,7 +53,7 @@
             Root = New wb_Produktionsschritt(Root, Artikel.Bezeichung)
 
             'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
-            Root.CopyFromKomponenten(Artikel, wb_Global.wbDatenArtikel)
+            Root.CopyFromKomponenten(Artikel, wb_Global.KomponTypen.KO_ZEILE_ARTIKEL)
             Root.Sollmenge_Stk = Sollmenge_Stk
             Root.Tour = Tour
             Root.AuftragsNummer = AuftragsNummer
@@ -87,7 +87,7 @@
         Dim Rzpt As New wb_Produktionsschritt(Root, Artikel.RezeptName)
 
         'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
-        Rzpt.CopyFromKomponenten(Artikel, wb_Global.wbDatenRezept)
+        Rzpt.CopyFromKomponenten(Artikel, wb_Global.KomponTypen.KO_ZEILE_REZEPT)
         Rzpt.Sollwert_kg = Menge
         Rzpt.AuftragsNummer = GetAuftragsNummer(AuftragsNummer, Tour)
         Rzpt.Tour = Tour
@@ -104,12 +104,14 @@
 
         'alle Rezeptschritte an Child-Knoten anhängen
         For Each rs As wb_Rezeptschritt In Rezeptur.LLRezept
-            Dim RzSchritt As New wb_Produktionsschritt(Rzpt, rs.Bezeichnung & "XX")
+
+            Dim RzSchritt As New wb_Produktionsschritt(Rzpt, rs.Bezeichnung)
             RzSchritt.CopyFromRezeptSchritt(rs, Faktor)
 
             'Rezept-im-Rezept-Struktur auflösen
             If RzSchritt.RezeptNr > 0 Then
-                AddRezeptSchritte(RzSchritt, RzSchritt.Sollwert_kg, Nothing)
+                RzSchritt.ChargenNummer = "VP"
+                AddRezeptSchritte(RzSchritt, RzSchritt.Sollwert_kg, Rezeptur)
             End If
         Next
     End Sub
@@ -548,7 +550,7 @@
                     End If
 
                     'Rezeptzeile anfügen
-                    _SQLProduktionsSchritt.Typ = wb_Global.wbDatenRezept
+                    _SQLProduktionsSchritt.Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT
                     GesamtStueck += _SQLProduktionsSchritt.Sollmenge_Stk
                     _ProduktionsSchritt = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
                     'Daten aus MySQL in Produktionsschritt kopieren
@@ -585,7 +587,7 @@
                 Case "B_ARZ_Best_Nr"
                     _SQLProduktionsSchritt.AuftragsNummer = Value
                 'Typ (Artikel oder Rezept-Zeile)
-                Case "B_ARZ_Typ"
+                Case "B_ARZ_Typ" 'TODO in genormten Typ umsetzen wb_global.wbArtikel...
                     _SQLProduktionsSchritt.Typ = Value
                'Artikelnummer(alpha)
                 Case "B_ARZ_KA_NrAlNum"

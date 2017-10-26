@@ -383,7 +383,7 @@ Public Class wb_Rezeptschritt
     ''' <returns>Double - Sollwert</returns>
     Private ReadOnly Property _BruttoGewicht As Double
         Get
-            If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
+            If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
                 Return wb_Functions.StrToDouble(_Sollwert)
             Else
                 Return 0
@@ -565,7 +565,7 @@ Public Class wb_Rezeptschritt
                 End If
                 Return _PreisProKg * wb_Functions.StrToDouble(_Sollwert)
             Else
-                If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
+                If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
                     Return _PreisProKg * wb_Functions.StrToDouble(_Sollwert)
                 Else
                     Return 0
@@ -633,7 +633,7 @@ Public Class wb_Rezeptschritt
                 Else
 
                     'Nährwert-Info aus Datenbank lesen
-                    If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
+                    If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
                         ReadktTyp301()
                         Debug.Print("Komponente " & Bezeichnung)
                     End If
@@ -677,7 +677,7 @@ Public Class wb_Rezeptschritt
 
     Public Sub CalcZutaten(ByRef zListe As ArrayList, Optional Faktor As Double = 1)
         'Angaben zum Rezeptschritt in Liste anhängen
-        If wb_Functions.TypeIstSollwert(_Type, _ParamNr) Then
+        If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
             zListe.Add(ZutatenListe(Faktor))
         End If
 

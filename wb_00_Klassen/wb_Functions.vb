@@ -150,7 +150,9 @@ Public Class wb_Functions
             Case -1
                 Return wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
             Case -2
-                Return wb_Global.KomponTypen.KO_ZEILE_CHARGE
+                Return wb_Global.KomponTypen.KO_ZEILE_REZEPT
+            Case -3
+                Return wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE
             Case 0
                 Return wb_Global.KomponTypen.KO_TYPE_ARTIKEL
 
@@ -219,8 +221,10 @@ Public Class wb_Functions
         Select Case KO_Type
             Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
                 Return -1
-            Case wb_Global.KomponTypen.KO_ZEILE_CHARGE
+            Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
                 Return -2
+            Case wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE
+                Return -3
             Case wb_Global.KomponTypen.KO_TYPE_ARTIKEL
                 Return 0
 
@@ -289,15 +293,15 @@ Public Class wb_Functions
 
     ''' <summary>
     ''' Ermittelt, ob Typ und Parameter-Nummer einen Gewichts-relevanten Sollwert enthalten.
-    '''     Automatike-Komponenten (Produktion und Sauerteig)
+    '''     Automatik-Komponenten (Produktion und Sauerteig)
     '''     Hand-Verwiegung 
     '''     Wasser-Sollmenge (Produktion und Sauerteig)
     '''     Anstellgut Sauerteig
     ''' </summary>
     ''' <param name="Type"></param>
     ''' <param name="Param"></param>
-    ''' <returns>Boolean - True wenn der Typ einen Sollwert enthält, False wenn der Typ keinen Sollwert (Gewicht) enthält</returns>
-    Public Shared Function TypeIstSollwert(Type As wb_Global.KomponTypen, Param As Integer) As Boolean
+    ''' <returns>Boolean - True wenn der Typ einen Sollwert enthält, False wenn der Typ keinen Sollwert (Gewicht/Menge/Länge) enthält, der umgerechnet werden muss/kann</returns>
+    Public Shared Function TypeIstSollMenge(Type As wb_Global.KomponTypen, Param As Integer) As Boolean
         If Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or
            Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE Or
            Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or
@@ -305,11 +309,63 @@ Public Class wb_Functions
            Type = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Or
            Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Or
            Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE And Param = 1 Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER And Param = 1 Then
-
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER And Param = 1 Or
+           Type = wb_Global.KomponTypen.KO_TYPE_METER Or
+           Type = wb_Global.KomponTypen.KO_TYPE_STUECK Then
             Return True
         Else
             Return False
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt ob Type und Parameter-Nummer einen (anderen)Sollwert enthalten. (Keinen Gewichtswert!)
+    ''' </summary>
+    ''' <param name="Type"></param>
+    ''' <param name="Param"></param>
+    ''' <returns></returns>
+    Public Shared Function TypeIstSollWert(Type As wb_Global.KomponTypen, Param As Integer) As Boolean
+        If Type = wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG Or
+           Type = wb_Global.KomponTypen.KO_TYPE_KNETER Or
+           Type = wb_Global.KomponTypen.KO_TYPE_TEIGZETTEL Or
+           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE And Param = 3 Or
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER And Param = 3 Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt ob Type und Parameter-Nummer einen Text als Sollwert enthalten.
+    ''' </summary>
+    ''' <param name="Type"></param>
+    ''' <returns></returns>
+    Public Shared Function TypeIstText(Type As wb_Global.KomponTypen) As Boolean
+        If Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Or
+           Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+
+    ''' <summary>
+    ''' Ermittelt anhand der Komponenten-Type ob eine Einheit(Text) ausgeben werden soll.
+    ''' </summary>
+    ''' <param name="Type"></param>
+    ''' <returns></returns>
+    Public Shared Function TypeHatEinheit(Type As wb_Global.KomponTypen) As Boolean
+        If Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Or
+           Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
+            Return False
+        Else
+            Return True
         End If
     End Function
 

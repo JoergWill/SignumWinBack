@@ -13,7 +13,7 @@ Public Class wb_Produktionsschritt
     Private _LinienGruppe As Integer
     Private _Typ As String
     Private _Tour As String
-    Private _ChargenNummer As Integer
+    Private _ChargenNummer As String
     Private _AuftragsNummer As String
 
     Private _ArtikelNummer As String
@@ -23,9 +23,11 @@ Public Class wb_Produktionsschritt
     Private _RezeptBezeichnung As String
     Private _RezeptNr As Integer
     Private _RezeptVar As Integer
+    Private _Sollwert As String
     Private _Sollwert_kg As Double
     Private _Sollmenge_Stk As Double
     Private _Sollwert_TeilungText As String
+    Private _Einheit As String
     Private _TeigChargen As wb_Global.ChargenMengen
     Private _Bestellt_Stk As Double
     Private _Bestellt_SonderText As String
@@ -69,7 +71,7 @@ Public Class wb_Produktionsschritt
     Public Sub CopyFromRezeptSchritt(rs As wb_Rezeptschritt, Faktor As Double)
         With rs
             'als Rezepturschritt kennzeichnen
-            Typ = wb_Global.wbDatenKomponente
+            Typ = .Type
             'Komponenten-Nummer
             ArtikelNummer = .Nummer
             'Komponenten-Bezeichnung
@@ -78,11 +80,19 @@ Public Class wb_Produktionsschritt
             ArtikelNr = .RohNr
             'Verweis auf Rezeptnummer
             RezeptNr = .RezeptNr
-            'Sollwert auf Rezeptgröße umrechnen
-            If wb_Functions.TypeIstSollwert(.Type, .ParamNr) Then
-                Sollwert_kg = .Sollwert * Faktor
+            'Einheit
+            If wb_Functions.TypeHatEinheit(Typ) Then
+                Einheit = .Einheit
+            Else
+                Einheit = ""
+            End If
 
-                'TODO Text Produktions-Stufe o.ä.
+            'Sollwert auf Rezeptgröße umrechnen
+            If wb_Functions.TypeIstSollMenge(.Type, .ParamNr) Then
+                Sollwert_kg = .Sollwert * Faktor
+                Sollwert = wb_Functions.FormatStr(Sollwert_kg.ToString, 3)
+            Else
+                Sollwert = .Sollwert
             End If
         End With
     End Sub
@@ -149,16 +159,16 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeCharge As String
         Get
-            Return ""
+            Return _ChargenNummer
         End Get
     End Property
 
     Public ReadOnly Property VirtTreeNummer As String
         Get
-            If Typ = wb_Global.wbDatenArtikel Or Typ = wb_Global.wbDatenKomponente Then
-                Return ArtikelNummer
-            Else
+            If Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT Then
                 Return RezeptNummer
+            Else
+                Return ArtikelNummer
             End If
         End Get
     End Property
@@ -169,10 +179,12 @@ Public Class wb_Produktionsschritt
     ''' <returns>String - Bezeichnung</returns>
     Public ReadOnly Property VirtTreeBezeichnung() As String
         Get
-            If Typ = wb_Global.wbDatenArtikel Or Typ = wb_Global.wbDatenKomponente Then
-                Return _ArtikelBezeichnung
-            Else
+            If Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT Then
                 Return RezeptBezeichnung
+            ElseIf wb_Functions.TypeIstText(Typ) Then
+                Return _Sollwert
+            Else
+                Return _ArtikelBezeichnung
             End If
         End Get
     End Property
@@ -185,20 +197,35 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeLinie As String
         Get
-            Return _LinienGruppe
+            If _LinienGruppe > 0 Then
+                Return _LinienGruppe
+            Else
+                Return ""
+            End If
         End Get
     End Property
 
     ''' <summary>
-    ''' Sollwert. Anzeige im VitualTree
+    ''' Sollwert. Anzeige im VitualTree. Unterscheidung anhand der Type:
+    '''     -   Artikel-Chargen-Zeilen  Sollmenge in Stück
+    '''     -   Rezept-Chargen-Zeilen   Sollmenge in kg
+    '''     -   Rezept-Schritte         Sollwert als formatierter Zahlenwert
+    '''                                 enthält der Rezept-Sollwert einen Textbaustein, wird kein Sollwert ausgegeben
+    ''' 
     ''' </summary>
     ''' <returns>String - Sollwert</returns>
     Public Property VirtTreeSollwert As String
         Get
-            If Typ = wb_Global.wbDatenArtikel Then
+            If Typ = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL Then
                 Return wb_Functions.FormatStr(Sollmenge_Stk, 0)
-            Else
+
+            ElseIf Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT Then
                 Return wb_Functions.FormatStr(Sollwert_kg, 3)
+
+            ElseIf Typ = wb_Functions.TypeIstText(Typ) Then
+                Return ""
+            Else
+                Return Sollwert
             End If
         End Get
         Set(value As String)
@@ -208,10 +235,12 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeEinheit As String
         Get
-            If Typ = wb_Global.wbDatenArtikel Then
+            If Typ = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL Then
                 Return "Stk"
-            Else
+            ElseIf Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT Then
                 Return "kg"
+            Else
+                Return Einheit
             End If
         End Get
     End Property
@@ -301,6 +330,15 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public Property Sollwert As String
+        Get
+            Return _Sollwert
+        End Get
+        Set(value As String)
+            _Sollwert = value
+        End Set
+    End Property
+
     Public Property Sollwert_kg As Double
         Get
             Return _Sollwert_kg
@@ -325,6 +363,15 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As String)
             _Sollwert_TeilungText = value
+        End Set
+    End Property
+
+    Public Property Einheit As String
+        Get
+            Return _Einheit
+        End Get
+        Set(value As String)
+            _Einheit = value
         End Set
     End Property
 
@@ -380,12 +427,12 @@ Public Class wb_Produktionsschritt
             _SortKriteriumBackPlan = Nothing
         End If
         'Sortieren Produktions-Liste
-        _SortKriteriumProdPlan = _ChargenNummer
+        _SortKriteriumProdPlan = ChargenNummer
     End Sub
 
     ''' <summary>
     ''' Datenfeld für Sortierung der Liste
-    ''' enthält LinienGruppe & Teignummer & Artikelnumer & Tour als String, so dass die Sortierung über ein Feld erfolgen kann
+    ''' enthält LinienGruppe + Teignummer + Artikelnumer + Tour als String, so dass die Sortierung über ein Feld erfolgen kann
     ''' Teignummern und Artikelnummer werden mit führenden Nullen aufgefüllt.
     ''' </summary>
     ''' <returns></returns>
@@ -414,7 +461,7 @@ Public Class wb_Produktionsschritt
     End Property
 
     ''' <summary>
-    ''' Anzeige der Teigchargen-Optimalmenge in List&Label
+    ''' Anzeige der Teigchargen-Optimalmenge in ListUndLabel
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property TeigOptMengekg As Double
@@ -424,7 +471,7 @@ Public Class wb_Produktionsschritt
     End Property
 
     ''' <summary>
-    ''' Anzeige der Anzahl der Optimalchargen in List&Label
+    ''' Anzeige der Anzahl der Optimalchargen in ListUndLabel
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property TeigOptMengeStk As Integer
@@ -434,7 +481,7 @@ Public Class wb_Produktionsschritt
     End Property
 
     ''' <summary>
-    ''' Anzeige der Teigchargen-Restmenge in List&Label
+    ''' Anzeige der Teigchargen-Restmenge in ListUndLabel
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property TeigRestMengekg As Double
@@ -444,7 +491,7 @@ Public Class wb_Produktionsschritt
     End Property
 
     ''' <summary>
-    ''' Anzeige der Anzahl der Restchargen in List&Label
+    ''' Anzeige der Anzahl der Restchargen in ListUndLabel
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property TeigRestMengeStk As Integer
@@ -454,7 +501,7 @@ Public Class wb_Produktionsschritt
     End Property
 
     ''' <summary>
-    ''' Anzeige der Prozentualen Größe der Restteigmenge in List&Label
+    ''' Anzeige der Prozentualen Größe der Restteigmenge in ListUndLabel
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property TeigRestMengeProzent As Double
@@ -463,4 +510,12 @@ Public Class wb_Produktionsschritt
         End Get
     End Property
 
+    Public Property ChargenNummer As String
+        Get
+            Return _ChargenNummer
+        End Get
+        Set(value As String)
+            _ChargenNummer = value
+        End Set
+    End Property
 End Class

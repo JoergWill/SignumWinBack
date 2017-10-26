@@ -454,7 +454,7 @@ Public Class wb_GlobalSettings
     End Property
 
     ''' <summary>
-    ''' Pfad für die List&Label-Listen-Files
+    ''' Pfad für die ListUndLabel-Listen-Files
     ''' Im Debug-Modus wird als Verzeichnis direkt das Repository zurückgegeben, damit werden alle Änderungen automatisch synchronisiert.
     ''' </summary>
     ''' <returns></returns>

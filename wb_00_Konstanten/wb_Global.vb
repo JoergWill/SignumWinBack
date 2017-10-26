@@ -62,15 +62,16 @@
         UserLokal                   'Layout-File im Verzeichnis ..\Temp\xx (xx - Arbeitsplatz-Nummer)
     End Enum
 
-    Public Const wbDatenRezept = 1      'Chargendaten Rezeptzeile
-    Public Const wbDatenArtikel = 2     'Chargendaten Artikelzeile
-    Public Const wbDatenKomponente = 3  'Chargendaten KomponentenZeile
+    'Public Const wbDatenRezept = 1      'Chargendaten Rezeptzeile
+    'Public Const wbDatenArtikel = 2     'Chargendaten Artikelzeile
+    'Public Const wbDatenKomponente = 3  'Chargendaten KomponentenZeile
 
     Enum KomponTypen
         KO_TYPE_UNDEFINED
 
         KO_ZEILE_ARTIKEL             '-1
-        KO_ZEILE_CHARGE              '-2
+        KO_ZEILE_REZEPT              '-2
+        KO_ZEILE_KOMPONENTE          '-3
 
         KO_TYPE_ARTIKEL             '0
         KO_TYPE_AUTOKOMPONENTE      '101
