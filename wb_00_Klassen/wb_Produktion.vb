@@ -20,6 +20,8 @@
     Private _SQLProduktionsSchritt As New wb_Produktionsschritt(Nothing, "")
     Private _ProduktionsSchritt As wb_Produktionsschritt
 
+    Private _VorProduktion As New ArrayList
+
     ''' <summary>
     ''' Erster (unsichtbarer) Produktions-Schritt (Root-Node)
     ''' </summary>
@@ -29,6 +31,53 @@
             Return _RootProduktionsSchritt
         End Get
     End Property
+
+    ''' <summary>
+    ''' Berechnet alle Vorproduktions-Chargen.
+    ''' Die Funktion interiert über alle Einträge in der Liste Produktions-Schritte und summiert nach Rezeptnummer die 
+    ''' Vorproduktions-Chargen. Der Suchlauf erfolgt rekursiv über alle Child-Produktions-Schritte beginnend von Root-Node
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function CalcVorproduktion(ps As wb_Produktionsschritt) As Boolean
+        'Liste löschen
+        _VorProduktion.Clear()
+
+        getVorProduktionListe(ps)
+
+        'Schleife über alle Vorproduktions-Chargen
+        For Each v As wb_VorProduktionsSchritt In _VorProduktion
+            Debug.Print("Vorproduktion " & v.ArtikelNr & "/" & v.RezeptNr & "/" & v.Sollwert_kg)
+        Next
+
+
+        Return True
+    End Function
+
+    Private Function getVorProduktionListe(ps As wb_Produktionsschritt)
+        Dim vp As New wb_VorProduktionsSchritt
+
+        'Iteration über alle Produktions-Schritte
+        For Each p As wb_Produktionsschritt In ps.ChildSteps
+            Debug.Print("Calc Vorproduktion " & p.ArtikelNummer & "/" & p.ArtikelBezeichnung & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung)
+
+            If p.ChargenNummer = "VP" Then
+                vp.RezeptNr = p.RezeptNr
+                vp.LinienGruppe = p.LinienGruppe
+                vp.RezeptGroesse = 0
+                vp.RezeptVar = p.RezeptVar
+                vp.Sollwert_kg = p.Sollwert_kg
+                vp.ArtikelNr = p.ArtikelNr
+                vp.TeigChargen = p.TeigChargen
+                _VorProduktion.Add(vp)
+            End If
+            'Rekursiver Aufruf für die Child-Nodes
+            If p.ChildSteps IsNot Nothing Then
+                getVorProduktionListe(p)
+            End If
+        Next
+
+        Return True
+    End Function
 
     ''' <summary>
     ''' Fügt eine (Artikel)Charge an die bestehende Liste an.

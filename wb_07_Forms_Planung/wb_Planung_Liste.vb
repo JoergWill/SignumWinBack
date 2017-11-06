@@ -38,12 +38,16 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TEST
-        Produktion.AddArtikelCharge("1", "", 7036, 540, wb_Global.ModusChargenTeiler.OptimalUndRest)
-        Produktion.AddArtikelCharge("1", "", 7036, 250, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
+        Produktion.AddArtikelCharge("1", "12", 0, 540, wb_Global.ModusChargenTeiler.OptimalUndRest)
+        Produktion.AddArtikelCharge("1", "12", 0, 250, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
         'Produktion.AddArtikelCharge("1", "", 7035, 1000, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 90)
         'Produktion.AddArtikelCharge("2", "", 7035, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
+    End Sub
+
+    Private Sub BtVorproduktion_Click(sender As Object, e As EventArgs) Handles BtVorproduktion.Click
+        Produktion.CalcVorproduktion(Produktion.RootProduktionsSchritt)
     End Sub
 
     Private Sub BtnBackZettelDrucken_Click(sender As Object, e As EventArgs) Handles BtnBackZettelDrucken.Click
@@ -217,4 +221,5 @@ Public Class wb_Planung_Liste
         Return ExpStr
 
     End Function
+
 End Class

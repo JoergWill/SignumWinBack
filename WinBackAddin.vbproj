@@ -276,6 +276,7 @@
     <Compile Include="wb_00_Klassen\wb_DockBarPanelShared.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_Sync.vb" />
     <Compile Include="wb_00_Klassen\wb_Linien_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_VorProduktionsSchritt.vb" />
     <Compile Include="wb_00_Main\wb_Finalizer_Shared.vb" />
     <Compile Include="wb_00_Klassen\WinBack_DockMain.Designer.vb">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
