@@ -29,6 +29,7 @@ Public Class wb_Komponenten
     Private KO_DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
 
     Public NwtUpdate As New wb_Hinweise(Hinweise.NaehrwertUpdate)
+    Public ktTyp300 As New wb_KomponParam300
     Public ktTyp301 As New wb_KomponParam301
 
     Public Property Nr As Integer
@@ -104,16 +105,7 @@ Public Class wb_Komponenten
     Public Property RezeptNummer As String
         Get
             If _RezeptNummer Is Nothing Then
-                If RzNr > 0 Then
-                    Dim Rezept As New wb_Rezept(RzNr)
-                    _RezeptNummer = Rezept.RezeptNummer
-                    _RezeptName = Rezept.RezeptBezeichnung
-                    LinienGruppe = Rezept.LinienGruppe
-                Else
-                    _RezeptName = ""
-                    _RezeptNummer = ""
-                    _LinienGruppe = wb_Global.UNDEFINED
-                End If
+                GetProduktionsDaten()
             End If
             Return _RezeptNummer
         End Get
@@ -125,16 +117,7 @@ Public Class wb_Komponenten
     Public Property RezeptName As String
         Get
             If _RezeptName Is Nothing Then
-                If RzNr > 0 Then
-                    Dim Rezept As New wb_Rezept(RzNr)
-                    _RezeptNummer = Rezept.RezeptNummer
-                    _RezeptName = Rezept.RezeptBezeichnung
-                    LinienGruppe = Rezept.LinienGruppe
-                Else
-                    _RezeptName = ""
-                    _RezeptNummer = ""
-                    _LinienGruppe = wb_Global.UNDEFINED
-                End If
+                GetProduktionsDaten()
             End If
             Return _RezeptName
         End Get
@@ -146,16 +129,7 @@ Public Class wb_Komponenten
     Public Property LinienGruppe As Integer
         Get
             If _LinienGruppe = wb_Global.UNDEFINED Then
-                If RzNr > 0 Then
-                    Dim Rezept As New wb_Rezept(RzNr)
-                    _RezeptNummer = Rezept.RezeptNummer
-                    _RezeptName = Rezept.RezeptBezeichnung
-                    _LinienGruppe = Rezept.LinienGruppe
-                Else
-                    _RezeptName = ""
-                    _RezeptNummer = ""
-                    _LinienGruppe = wb_Global.UNDEFINED
-                End If
+                GetProduktionsDaten()
             End If
             Return _LinienGruppe
         End Get
@@ -186,6 +160,37 @@ Public Class wb_Komponenten
             KO_IdxCloud = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Daten für die Produktion dieser Komponente ermitteln. 
+    '''     Teig-Rezept aus Rezept-im-Rezept-Struktur
+    '''     Liniengruppe aus RohParams(5)
+    '''     Artikel-Rezept aus RohParams(6)
+    ''' </summary>
+    Private Sub GetProduktionsDaten()
+        If RzNr > 0 Then
+            'Teig-Rezeptur
+            Dim Rezept As New wb_Rezept(RzNr)
+            _RezeptNummer = Rezept.RezeptNummer
+            _RezeptName = Rezept.RezeptBezeichnung
+            _LinienGruppe = Rezept.LinienGruppe
+        Else
+            'normale Komponente ohne Produktion
+            _RezeptName = ""
+            _RezeptNummer = ""
+            _LinienGruppe = wb_Global.UNDEFINED
+        End If
+
+        If ktTyp300.Liniengruppe > 0 Then
+            'Produktions-Liniengruppe aus RohParams(5)
+            _LinienGruppe = ktTyp300.Liniengruppe
+        End If
+        If ktTyp300.RzNr > 0 Then
+            'Artikel-Rezeptur
+            Dim Rezept As New wb_Rezept(ktTyp300.RzNr)
+            _LinienGruppe = Rezept.LinienGruppe
+        End If
+    End Sub
 
     Public Sub ClearReport()
         ChangeLogClear()
@@ -524,7 +529,14 @@ Public Class wb_Komponenten
         If winback.sqlSelect(sql) Then
             If winback.Read Then
                 MySQLdbRead(winback.MySqlRead)
-                'TODO ... weiter Parameter lesen
+                winback.CloseRead()
+                'weitere Parameter einlesen
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompTypXXX, Nr)
+                If winback.sqlSelect(sql) Then
+                    If winback.Read Then
+                        MySQLdbRead(winback.MySqlRead)
+                    End If
+                End If
                 winback.Close()
                 Return True
             End If
@@ -540,10 +552,12 @@ Public Class wb_Komponenten
     ''' <param name="sqlReader"></param>
     ''' <returns>True wenn kein Fehler aufgetreten ist</returns>
     Public Function MySQLdbRead(ByRef sqlReader As MySqlDataReader) As Boolean
-
         'Stammdaten - Anzahl der Felder im DataSet
         For i = 0 To sqlReader.FieldCount - 1
-            MySQLdbRead_StammDaten(sqlReader.GetName(i), sqlReader.GetValue(i))
+            Try
+                MySQLdbRead_StammDaten(sqlReader.GetName(i), sqlReader.GetValue(i))
+            Catch ex As Exception
+            End Try
         Next
 
         'Schleife über alle Parameter-Datensätze
@@ -551,7 +565,10 @@ Public Class wb_Komponenten
         Do
             'Parameter - Anzahl der Felder im DataSet
             For i = 0 To sqlReader.FieldCount - 1
-                MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
+                Try
+                    MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
+                Catch ex As Exception
+                End Try
             Next
         Loop While sqlReader.Read
         Return True
@@ -601,7 +618,7 @@ Public Class wb_Komponenten
                 Case "KA_Lagerort"
                     KA_Lagerort = Value
 
-                    'Stückgewicht in Gramm
+                'Stückgewicht in Gramm
                 Case "KA_Stueckgewicht"
                     KA_Stueckgewicht = wb_Functions.StrToDouble(Value)
                 'Minimal-Charge
@@ -657,6 +674,9 @@ Public Class wb_Komponenten
                         'Froster
                     Case 220
                         'Teig-Gare
+                    Case 300
+                        'Parameter Produktion
+                        ktTyp300.Wert(ParamNr) = Value.ToString
                     Case 301
                         'Nährwert-Informationen
                         ktTyp301.Wert(ParamNr) = Value.ToString
@@ -664,14 +684,17 @@ Public Class wb_Komponenten
 
             'TimeStamp
             Case "RP_Timestamp"
-                ktTyp301.TimeStamp = CDate(Value.ToString)
-
+                Select Case ParamTyp
+                    Case 301
+                        'Nährwert-Informationen
+                        ktTyp301.TimeStamp = CDate(Value.ToString)
+                End Select
         End Select
         Return True
     End Function
 
     ''' <summary>
-    ''' schreibt alle Datenfelder aus dem Komponenten-Objekt mir der angegebenen Komponenten-Nummer in die Datenbank.
+    ''' schreibt alle Datenfelder aus dem Komponenten-Objekt mit der angegebenen Komponenten-Nummer in die Datenbank.
     ''' </summary>
     ''' <param name="InterneKomponentenNummer"></param>
     ''' <returns></returns>

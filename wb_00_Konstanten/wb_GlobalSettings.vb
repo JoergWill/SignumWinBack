@@ -234,11 +234,17 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    ''' <summary>
+    ''' Liefert den Connection-String für die WinBack-Datenbank zurück.
+    '''     Für mysql wird mit "ConvertZeroDateTime=True" der Konvertierungs-Fehler bei der Umwandlung der TimeStamp-Daten unterdrückt
+    '''     (siehe https://www.connectionstrings.com/mysql/)
+    ''' </summary>
+    ''' <returns></returns>
     Public Shared ReadOnly Property SqlConWinBack As String
         Get
             Select Case wb_GlobalSettings.WinBackDBType
                 Case wb_Sql.dbType.mySql
-                    Return "server=" & MySQLServerIP & ";" & "user id=" & MySQLUser & ";" & "password=" & MySQLPass & ";" & "database=" & MySQLWinBack & ";"
+                    Return "server=" & MySQLServerIP & ";" & "user id=" & MySQLUser & ";" & "password=" & MySQLPass & ";" & "database=" & MySQLWinBack & ";" & "ConvertZeroDateTime=True;"
                 Case wb_Sql.dbType.msSql
                     If MsSQLUserId <> "xx" Then
                         Return "Data Source=" & MsSQLServer & "; Database=" & MySQLWinBack & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd
@@ -255,7 +261,7 @@ Public Class wb_GlobalSettings
         Get
             Select Case wb_GlobalSettings.WinBackDBType
                 Case wb_Sql.dbType.mySql
-                    Return "server=" & MySQLServerIP & ";" & "user id=" & MySQLUser & ";" & "password=" & MySQLPass & ";" & "database=" & MySQLWbDaten & ";"
+                    Return "server=" & MySQLServerIP & ";" & "user id=" & MySQLUser & ";" & "password=" & MySQLPass & ";" & "database=" & MySQLWbDaten & ";" & "ConvertZeroDateTime=True;"
                 Case wb_Sql.dbType.msSql
                     If MsSQLUserId <> "xx" Then
                         Return "Data Source=" & MsSQLServer & "; Database=" & MySQLWbDaten & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd
@@ -592,9 +598,9 @@ Public Class wb_GlobalSettings
 
                 _MsSQLMainDB = IniFile.ReadString("winback", "MsSQLServer_MainDB", "DemoOrgaBack_Main3")
                 _MsSQLAdmnDB = IniFile.ReadString("winback", "MsSQLServer_AdmnDB", "DemoOrgaBack_Admin3")
-                _MsSQLServer = IniFile.ReadString("winback", "MsSQLServer_Source", "WILL-WIN10\SIGNUM")
+                _MsSQLServer = IniFile.ReadString("winback", "MsSQLServer_Source", "WILL-WIN10\ORGA")
                 _MsSQLUserId = IniFile.ReadString("winback", "MsSQLServer_UserId", "sa")
-                _MsSQLPasswd = IniFile.ReadString("winback", "MsSQLServer_Passwd", "OrgaSoft.NET")
+                _MsSQLPasswd = IniFile.ReadString("winback", "MsSQLServer_Passwd", "OrgaBack.NET")
 
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
 

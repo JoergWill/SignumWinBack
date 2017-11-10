@@ -10,6 +10,8 @@
     Public Const LogFileName = "\OrgaBack.log"        'Datei-Name des Log-Files
     Public Const LogFileEntries = 20                  'Anzahl der Einträge im Puffer
 
+    Public Const LinienGruppeSauerteig = 999          'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
+
     Public Enum ktTyp301Gruppen
         xxx
         Big4
@@ -113,6 +115,13 @@
         C   'contains
         ERR 'Fehler bei der Berechnung
     End Enum
+
+    Public Const maxTyp300 = 14
+
+    Public Const T300_LinienGruppe = 5
+    Public Const T300_RzNr = 6
+    Public Const T300_RezeptNummer = 7
+    Public Const T300_RezeptName = 8
 
     Public Const maxTyp301 = 211
     Public Const minTyp301Allergen = 141

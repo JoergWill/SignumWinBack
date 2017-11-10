@@ -114,6 +114,10 @@
     Public Const sqlKompTyp301 = "SELECT KomponTypen.*, Einheiten.E_Einheit " &
                                  "FROM KomponTypen INNER JOIN Einheiten ON KomponTypen.KT_EinheitIndex = (Einheiten.E_LfdNr) " &
                                  "WHERE (((KomponTypen.KT_Typ_Nr)=301)) ORDER BY KomponTypen.KT_ParamNr"
+    'Sql-Statmente Liste aller Komponenten-Parameter
+    Public Const sqlKompTypXXX = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
+                                 "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0]) ORDER BY RP_Typ_Nr, RP_ParamNr"
+
     'Sql-Statement Suche nächsten Rohstoffdatensatz nach KO_Nr (Update Nährwerte)
     Public Const sqlUpdateNWT = "SELECT * FROM Komponenten WHERE KA_Matchcode <> '' AND KO_Nr > [0] " &
                                  "ORDER BY Komponenten.KO_Nr LIMIT 1"
@@ -124,7 +128,6 @@
 
     'Sql-Statement Komponenten-Parameter zum Komponenten-Nummer und Parameter-Nummer 
     Public Const sqlKompParams = "SELECT KP_Wert FROM KomponParams WHERE KP_KO_Nr = [0] AND KP_ParamNr = [1]"
-
 
 
     'sql-Statement komplette Rezeptur nach RzNr und Variante

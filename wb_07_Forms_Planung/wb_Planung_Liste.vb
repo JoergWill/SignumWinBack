@@ -30,6 +30,27 @@ Public Class wb_Planung_Liste
 
     End Sub
 
+    Private Sub BtnBestellungen_Click(sender As Object, e As EventArgs) Handles BtnBestellungen.Click
+
+        Dim ProduktionsDatum As String = "10.11.2017"
+
+        'Daten aus der Stored-Procedure in OrgaBack einlesen
+        Me.Cursor = Cursors.WaitCursor
+        If Not Produktion.MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum) Then
+            'Default-Cursor
+            Me.Cursor = Cursors.Default
+            'keine Datensätze in der Vorlage
+            MsgBox("Keine Datensätze in der Bestell-Liste", MsgBoxStyle.Exclamation, "Laden Produktionsdaten aus Bestellung")
+            VirtualTree.Invalidate()
+        Else
+            'Virtual Tree anzeigen
+            VirtualTree.DataSource = Produktion.RootProduktionsSchritt
+        End If
+        'Default-Cursor
+        Me.Cursor = Cursors.Default
+
+    End Sub
+
     ''' <summary>
     ''' Neue Artikel-Zeile (mit Rezeptur anlegen)
     ''' TEST Artikel-Nummer 12
@@ -38,9 +59,9 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TEST
-        Produktion.AddArtikelCharge("1", "12", 0, 540, wb_Global.ModusChargenTeiler.OptimalUndRest)
-        Produktion.AddArtikelCharge("1", "12", 0, 250, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
-        'Produktion.AddArtikelCharge("1", "", 7035, 1000, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 90)
+        Produktion.AddArtikelCharge("1", "", 3518, 540, wb_Global.ModusChargenTeiler.OptimalUndRest)
+        Produktion.AddArtikelCharge("1", "8383", 0, 1000, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 90)
+        Produktion.AddArtikelCharge("1", "", 3518, 250, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
         'Produktion.AddArtikelCharge("2", "", 7035, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt

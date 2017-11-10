@@ -89,7 +89,7 @@ Public Class wb_Produktionsschritt
 
             'Sollwert auf Rezeptgröße umrechnen
             If wb_Functions.TypeIstSollMenge(.Type, .ParamNr) Then
-                Sollwert_kg = .Sollwert * Faktor
+                Sollwert_kg = wb_Functions.StrToDouble(.Sollwert) * Faktor
                 Sollwert = wb_Functions.FormatStr(Sollwert_kg.ToString, 3)
             Else
                 Sollwert = .Sollwert
@@ -197,7 +197,9 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeLinie As String
         Get
-            If _LinienGruppe > 0 Then
+            If _LinienGruppe = wb_Global.LinienGruppeSauerteig Then
+                Return "ST"
+            ElseIf _LinienGruppe > 0 Then
                 Return _LinienGruppe
             Else
                 Return ""
@@ -222,7 +224,7 @@ Public Class wb_Produktionsschritt
             ElseIf Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT Then
                 Return wb_Functions.FormatStr(Sollwert_kg, 3)
 
-            ElseIf Typ = wb_Functions.TypeIstText(Typ) Then
+            ElseIf wb_Functions.TypeIstText(Typ) Then
                 Return ""
             Else
                 Return Sollwert

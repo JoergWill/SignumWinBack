@@ -83,7 +83,8 @@
     End Property
 
     Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
-        Throw New NotImplementedException()
+        'TODO Nach Produktionsdatum sortieren !!
+        Return String.Compare(RezeptNr, DirectCast(obj, wb_VorProduktionsSchritt).RezeptNr)
     End Function
 
     '    ArtikelNr: String;                 // (@3.0.5) Rezept im Rezept

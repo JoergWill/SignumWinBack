@@ -269,12 +269,14 @@
     <Compile Include="wb_00_Klassen\Sync\wb_SyncUserGruppen_OrgaBack.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_SyncUser_WinBack.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_SyncUserGruppen_WinBack.vb" />
+    <Compile Include="wb_00_Klassen\wb_BestellDatenSchritt.vb" />
     <Compile Include="wb_00_Klassen\wb_ChangeLog.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_DataGridViewVerwendung.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_DockBarPanelShared.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_Sync.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam300.vb" />
     <Compile Include="wb_00_Klassen\wb_Linien_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_VorProduktionsSchritt.vb" />
     <Compile Include="wb_00_Main\wb_Finalizer_Shared.vb" />
@@ -727,6 +729,7 @@
     <None Include="app.config" />
     <Content Include="DBUpdate\2.30_ENummern_A.sql" />
     <Content Include="DBUpdate\2.30_ENummern_B.sql" />
+    <Content Include="DBUpdate\2.30_KomponTypen.sql" />
     <Content Include="DBUpdate\2.30_LinienGruppen.sql" />
     <None Include="Dokumentation\OrgaBack.docx" />
     <None Include="My Project\Application.myapp">

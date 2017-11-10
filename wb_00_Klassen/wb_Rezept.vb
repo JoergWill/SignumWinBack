@@ -229,9 +229,18 @@ Public Class wb_Rezept
         End Get
     End Property
 
+    ''' <summary>
+    ''' Gibt die Liniengruppe der Rezeptur zurück. 
+    ''' Wenn die Rezeptvariante gleich 0 ist (Sauerteig) , wird als Liniengruppe 999 zurückgegeben
+    ''' </summary>
+    ''' <returns></returns>
     Public Property LinienGruppe As Integer
         Get
-            Return _LinienGruppe
+            If _RezeptVariante = 0 Then
+                Return wb_Global.LinienGruppeSauerteig
+            Else
+                Return _LinienGruppe
+            End If
         End Get
         Set(value As Integer)
             _LinienGruppe = value

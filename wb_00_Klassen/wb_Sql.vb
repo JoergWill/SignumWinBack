@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Imports MySql.Data.MySqlClient
+Imports WinBack
 
 ''' <summary>
 ''' Kapselt die Zugriffe auf die Datenbank
@@ -14,6 +15,11 @@ Public Class wb_Sql
     Dim msCon As New SqlConnection
     Dim msCommand As New SqlCommand
     Public msRead As SqlDataReader
+
+    Public Structure StoredProceduresParameter
+        Public Parameter As String
+        Public Value As String
+    End Structure
 
     ''' <summary>
     ''' WinBack-Datenbank-Type (mysql/Microsoft-SQL)
@@ -79,7 +85,7 @@ Public Class wb_Sql
             'Verbindung über mySql
                     Case dbType.mySql
                         Return MySqlRead(FieldName).ToString
-            'Verbindung über mysSql
+            'Verbindung über msSql
                     Case dbType.msSql
                         Return msRead(FieldName).ToString
                     Case Else
@@ -103,7 +109,7 @@ Public Class wb_Sql
             'Verbindung über mySql
                     Case dbType.mySql
                         Return MySqlRead(FieldName)
-            'Verbindung über mysSql
+            'Verbindung über msSql
                     Case dbType.msSql
                         Return Convert.ToDateTime(msRead(FieldName).ToString)
                     Case Else
@@ -223,6 +229,31 @@ Public Class wb_Sql
         Catch ex As Exception
             MsgBox("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
             Return -1
+        End Try
+    End Function
+
+    Function sqlExecStoredProcedure(sql As String, Parameter As Array) As Boolean
+        'sql-Stored Procedure ausführen
+        Try
+            Select Case conType
+                Case dbType.mySql
+                    Return False
+                Case dbType.msSql
+                    'sql-Kommando ausführen
+                    msCommand = New SqlCommand(sql, msCon)
+                    msCommand.CommandType = CommandType.StoredProcedure
+                    'Parameter for Stored-Procedure
+                    For Each p As StoredProceduresParameter In Parameter
+                        msCommand.Parameters.AddWithValue(p.Parameter, p.Value)
+                    Next
+                    msRead = msCommand.ExecuteReader
+                    Return True
+                Case Else
+                    Return False
+            End Select
+        Catch ex As Exception
+            MsgBox("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
+            Return False
         End Try
     End Function
 

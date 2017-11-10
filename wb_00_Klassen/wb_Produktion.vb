@@ -42,7 +42,14 @@
         'Liste löschen
         _VorProduktion.Clear()
 
-        getVorProduktionListe(ps)
+        'Liste aller Vorproduktions-Chargen erstellen
+        _VorProduktionListe_Erzeugen(ps)
+
+        'Vorproduktions-Liste sortieren nach Produktions-Datum und Rezept-Nummer
+        _VorProduktion.Sort()
+
+        'Vorproduktions-Liste Mengen zusammenfassen
+        _VorProduktionListe_Optimieren()
 
         'Schleife über alle Vorproduktions-Chargen
         For Each v As wb_VorProduktionsSchritt In _VorProduktion
@@ -50,10 +57,11 @@
         Next
 
 
+
         Return True
     End Function
 
-    Private Function getVorProduktionListe(ps As wb_Produktionsschritt)
+    Private Function _VorProduktionListe_Erzeugen(ps As wb_Produktionsschritt)
         Dim vp As New wb_VorProduktionsSchritt
 
         'Iteration über alle Produktions-Schritte
@@ -72,12 +80,34 @@
             End If
             'Rekursiver Aufruf für die Child-Nodes
             If p.ChildSteps IsNot Nothing Then
-                getVorProduktionListe(p)
+                _VorProduktionListe_Erzeugen(p)
             End If
         Next
 
         Return True
     End Function
+
+    Private Sub _VorProduktionListe_Optimieren()
+        Dim l As Integer = _VorProduktion.Count
+        Dim i As Integer = 1
+        Dim v1 As wb_VorProduktionsSchritt
+        Dim v2 As wb_VorProduktionsSchritt
+
+        While i < l
+            v1 = _VorProduktion(i - 1)
+            v2 = _VorProduktion(i)
+
+            If v1.RezeptNr = v2.RezeptNr Then
+                v1.Sollwert_kg = v1.Sollwert_kg + v2.Sollwert_kg
+                _VorProduktion(i - 1) = v1
+                _VorProduktion.RemoveAt(i)
+                l = l - 1
+            Else
+                i = i + 1
+            End If
+        End While
+    End Sub
+
 
     ''' <summary>
     ''' Fügt eine (Artikel)Charge an die bestehende Liste an.
@@ -141,15 +171,17 @@
         Rzpt.AuftragsNummer = GetAuftragsNummer(AuftragsNummer, Tour)
         Rzpt.Tour = Tour
 
-        'Rezeptur anhängen
-        AddRezeptSchritte(Rzpt, Menge, Nothing)
+        'Rezeptur anhängen (Die Linengruppe wird aus der Rezeptur ermittelt)
+        Rzpt.LinienGruppe = AddRezeptSchritte(Rzpt, Menge, Nothing)
 
     End Sub
 
-    Private Sub AddRezeptSchritte(ByRef Rzpt As wb_Produktionsschritt, Menge As Double, Parent As Object)
+    Private Function AddRezeptSchritte(ByRef Rzpt As wb_Produktionsschritt, Menge As Double, Parent As Object) As Integer
         'Rezeptur einlesen
         Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent)
         Dim Faktor As Double = SaveDiv(Menge, Rezeptur.RezeptGewicht)
+        'gibt die Liniengruppe aus dem Rezeptkopf zurück
+        AddRezeptSchritte = Rezeptur.LinienGruppe
 
         'alle Rezeptschritte an Child-Knoten anhängen
         For Each rs As wb_Rezeptschritt In Rezeptur.LLRezept
@@ -160,10 +192,10 @@
             'Rezept-im-Rezept-Struktur auflösen
             If RzSchritt.RezeptNr > 0 Then
                 RzSchritt.ChargenNummer = "VP"
-                AddRezeptSchritte(RzSchritt, RzSchritt.Sollwert_kg, Rezeptur)
+                RzSchritt.LinienGruppe = AddRezeptSchritte(RzSchritt, RzSchritt.Sollwert_kg, Rezeptur)
             End If
         Next
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Gibt einen Wet für die Auftrags-Nummer zurück. Ist keine Auftrags-Nummer definiert, wird die Tour zurückgegeben.
@@ -548,6 +580,42 @@
         End If
     End Function
 
+    Friend Function MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum As String) As Boolean
+        Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
+        Dim ArtikelNummer As String = ""
+        Dim GesamtStueck As Integer = 0
+        MsSQLdbProcedure_Produktionsauftrag = False
+
+        'Datenbankverbindung öffnen MsSQL
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim p(1) As wb_Sql.StoredProceduresParameter
+
+        'Filiale Produktion
+        p(0).Parameter = "Filiale"
+        p(0).Value = "1" 'TODO aus Filialen ermitteln
+        'Produktionsdatum
+        p(1).Parameter = "LieferDatum"
+        p(1).Value = ProduktionsDatum
+        'Stored Procedure ausführen
+        orgaback.sqlExecStoredProcedure("pq_Produktionsauftrag", p)
+
+        'Produktionsdaten aufbauen
+        Dim BestellDaten As New wb_BestellDatenSchritt
+
+        'alle Datensätze einlesen
+        While orgaback.Read
+            For i = 0 To orgaback.msRead.FieldCount - 1
+                Debug.Print("OrgaBack StoredProcedure Read " & orgaback.msRead.GetName(i) & "/" & orgaback.msRead.GetValue(i))
+                MsSQLdbProcedure_Produktionsauftrag = True
+                'Daten aus der view einlesen
+                BestellDaten.MsSQLdbRead_Fields(orgaback.msRead.GetName(i), orgaback.msRead.GetValue(i))
+            Next
+
+            'Produktions-Auftrag zu Liste hinzufügen
+            AddArtikelCharge(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler)
+        End While
+        orgaback.Close()
+    End Function
 
     ''' <summary>
     ''' Liest alle Datensätze aus wbdaten zur angegeben Tageswechselnummer sortiert nach Produktionsdatum ein 
@@ -639,7 +707,7 @@
                 Case "B_ARZ_Typ" 'TODO in genormten Typ umsetzen wb_global.wbArtikel...
                     _SQLProduktionsSchritt.Typ = Value
                'Artikelnummer(alpha)
-                Case "B_ARZ_KA_NrAlNum"
+                Case "B_ARZ_KA_NrAlNum", "ArtikelNr"
                     _SQLProduktionsSchritt.ArtikelNummer = Value
                'Bezeichnung
                 Case "B_ARZ_Bezeichnung"
@@ -661,7 +729,7 @@
                 'Sollwert
                 Case "B_ARZ_Sollmenge_kg"
                     _SQLProduktionsSchritt.Sollwert_kg = wb_Functions.StrToDouble(Value)
-                Case "B_ARZ_Sollmenge_stueck"
+                Case "B_ARZ_Sollmenge_stueck", "Produktionsmenge"
                     _SQLProduktionsSchritt.Sollmenge_Stk = wb_Functions.StrToDouble(Value)
 
 
