@@ -59,6 +59,7 @@ Partial Class wb_Planung_Liste
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.btnNeueCharge = New System.Windows.Forms.Button()
         Me.BtnTeigListeDrucken = New System.Windows.Forms.Button()
+        Me.dtBestellungen = New System.Windows.Forms.DateTimePicker()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -70,7 +71,7 @@ Partial Class wb_Planung_Liste
         Me.ColStart.Movable = False
         Me.ColStart.Name = "ColStart"
         Me.ColStart.Sortable = False
-        Me.ColStart.Width = 50
+        Me.ColStart.Width = 51
         '
         'ColCharge
         '
@@ -80,6 +81,7 @@ Partial Class wb_Planung_Liste
         Me.ColCharge.Movable = False
         Me.ColCharge.Name = "ColCharge"
         Me.ColCharge.Sortable = False
+        Me.ColCharge.Width = 101
         '
         'CoNr
         '
@@ -87,6 +89,7 @@ Partial Class wb_Planung_Liste
         Me.CoNr.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.CoNr.MinWidth = 100
         Me.CoNr.Name = "CoNr"
+        Me.CoNr.Width = 101
         '
         'ColBezeichnung
         '
@@ -98,7 +101,7 @@ Partial Class wb_Planung_Liste
         Me.ColBezeichnung.Movable = False
         Me.ColBezeichnung.Name = "ColBezeichnung"
         Me.ColBezeichnung.Sortable = False
-        Me.ColBezeichnung.Width = 200
+        Me.ColBezeichnung.Width = 201
         '
         'CellEditor4
         '
@@ -129,7 +132,7 @@ Partial Class wb_Planung_Liste
         Me.ColKommentar.Name = "ColKommentar"
         Me.ColKommentar.Selectable = False
         Me.ColKommentar.Sortable = False
-        Me.ColKommentar.Width = 291
+        Me.ColKommentar.Width = 441
         '
         'ColLinie
         '
@@ -162,6 +165,7 @@ Partial Class wb_Planung_Liste
         '
         'BtnVorlage
         '
+        Me.BtnVorlage.Enabled = False
         Me.BtnVorlage.Location = New System.Drawing.Point(12, 12)
         Me.BtnVorlage.Name = "BtnVorlage"
         Me.BtnVorlage.Size = New System.Drawing.Size(123, 53)
@@ -181,7 +185,8 @@ Partial Class wb_Planung_Liste
         'BtVorproduktion
         '
         Me.BtVorproduktion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtVorproduktion.Location = New System.Drawing.Point(429, 12)
+        Me.BtVorproduktion.Enabled = False
+        Me.BtVorproduktion.Location = New System.Drawing.Point(582, 12)
         Me.BtVorproduktion.Name = "BtVorproduktion"
         Me.BtVorproduktion.Size = New System.Drawing.Size(123, 53)
         Me.BtVorproduktion.TabIndex = 3
@@ -191,7 +196,7 @@ Partial Class wb_Planung_Liste
         'BtnBackZettelDrucken
         '
         Me.BtnBackZettelDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnBackZettelDrucken.Location = New System.Drawing.Point(558, 12)
+        Me.BtnBackZettelDrucken.Location = New System.Drawing.Point(711, 12)
         Me.BtnBackZettelDrucken.Name = "BtnBackZettelDrucken"
         Me.BtnBackZettelDrucken.Size = New System.Drawing.Size(123, 53)
         Me.BtnBackZettelDrucken.TabIndex = 4
@@ -201,7 +206,7 @@ Partial Class wb_Planung_Liste
         'BtnTeigListeExport
         '
         Me.BtnTeigListeExport.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnTeigListeExport.Location = New System.Drawing.Point(816, 12)
+        Me.BtnTeigListeExport.Location = New System.Drawing.Point(969, 12)
         Me.BtnTeigListeExport.Name = "BtnTeigListeExport"
         Me.BtnTeigListeExport.Size = New System.Drawing.Size(123, 53)
         Me.BtnTeigListeExport.TabIndex = 5
@@ -240,7 +245,7 @@ Partial Class wb_Planung_Liste
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.Cell
         Me.VirtualTree.ShowRootRow = False
-        Me.VirtualTree.Size = New System.Drawing.Size(927, 551)
+        Me.VirtualTree.Size = New System.Drawing.Size(1080, 551)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 11
         '
@@ -337,18 +342,26 @@ Partial Class wb_Planung_Liste
         'BtnTeigListeDrucken
         '
         Me.BtnTeigListeDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnTeigListeDrucken.Location = New System.Drawing.Point(687, 12)
+        Me.BtnTeigListeDrucken.Location = New System.Drawing.Point(840, 12)
         Me.BtnTeigListeDrucken.Name = "BtnTeigListeDrucken"
         Me.BtnTeigListeDrucken.Size = New System.Drawing.Size(123, 53)
         Me.BtnTeigListeDrucken.TabIndex = 13
         Me.BtnTeigListeDrucken.Text = "Teigliste drucken"
         Me.BtnTeigListeDrucken.UseVisualStyleBackColor = True
         '
+        'dtBestellungen
+        '
+        Me.dtBestellungen.Location = New System.Drawing.Point(141, 71)
+        Me.dtBestellungen.Name = "dtBestellungen"
+        Me.dtBestellungen.Size = New System.Drawing.Size(252, 20)
+        Me.dtBestellungen.TabIndex = 14
+        '
         'wb_Planung_Liste
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(951, 663)
+        Me.ClientSize = New System.Drawing.Size(1104, 663)
+        Me.Controls.Add(Me.dtBestellungen)
         Me.Controls.Add(Me.BtnTeigListeDrucken)
         Me.Controls.Add(Me.btnNeueCharge)
         Me.Controls.Add(Me.VirtualTree)
@@ -396,4 +409,5 @@ Partial Class wb_Planung_Liste
     Friend WithEvents ObjectRowBinding1 As Infralution.Controls.VirtualTree.ObjectRowBinding
     Friend WithEvents btnNeueCharge As Windows.Forms.Button
     Friend WithEvents BtnTeigListeDrucken As Windows.Forms.Button
+    Friend WithEvents dtBestellungen As Windows.Forms.DateTimePicker
 End Class

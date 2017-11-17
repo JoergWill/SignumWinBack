@@ -506,10 +506,14 @@ Public Class wb_Rezept
         'letzter Rezeptschritt war Wasser
         If TypeLast = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE Then
             If TypeNow <> wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE Then
-                Return AKT_Node
+                If AKT_Node Is Nothing Then
+                    Return RootRezeptSchritt
+                Else
+                    Return AKT_Node
+                End If
                 Exit Function
             Else
-                If ParamNrLast = 1 Then
+                If ParamNrLast = 1 Or ParamNrLast = 3 Then
                     Return _RezeptSchritt
                     Exit Function
                 End If
@@ -519,7 +523,11 @@ Public Class wb_Rezept
         'letzter Rezeptschritt war Kneter-Kopfzeile
         If TypeLast = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
             If TypeNow <> wb_Global.KomponTypen.KO_TYPE_KNETER Then
-                Return AKT_Node
+                If AKT_Node Is Nothing Then
+                    Return RootRezeptSchritt
+                Else
+                    Return AKT_Node
+                End If
                 Exit Function
             Else
                 Return _RezeptSchritt
@@ -529,7 +537,11 @@ Public Class wb_Rezept
 
         'letzter Rezeptschritt war Kneter-Zeile
         If TypeLast = wb_Global.KomponTypen.KO_TYPE_KNETER And TypeNow <> wb_Global.KomponTypen.KO_TYPE_KNETER Then
-            Return AKT_Node
+            If AKT_Node Is Nothing Then
+                Return RootRezeptSchritt
+            Else
+                Return AKT_Node
+            End If
             Exit Function
         End If
 
@@ -548,6 +560,9 @@ Public Class wb_Rezept
         If IsDBNull(Value) Then
             Value = ""
         End If
+
+        'Debug
+        'Debug.Print("Feld/Value " & Name & "/" & Value.ToString)
 
         'Feldname aus der Datenbank
         Try
@@ -611,7 +626,7 @@ Public Class wb_Rezept
                     _AenderungName = Value
                 'Rezeptkopf - Liniengruppe
                 Case "RZ_Liniengruppe"
-                    _LinienGruppe = Value
+                    _LinienGruppe = wb_Functions.ValueToInt(Value)
 
             End Select
         Catch ex As Exception

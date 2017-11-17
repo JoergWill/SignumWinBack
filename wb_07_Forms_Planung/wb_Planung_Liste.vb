@@ -6,6 +6,11 @@ Public Class wb_Planung_Liste
     Inherits DockContent
     Dim Produktion As New wb_Produktion
 
+    Private Sub wb_Planung_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Datum heute plus einen Tag
+        dtBestellungen.Value = DateTime.Today.AddDays(1) 'TODO Tage im vorraus in WinBack-ini festhalten
+    End Sub
+
     Private Sub BtnVorlage_Click(sender As Object, e As EventArgs) Handles BtnVorlage.Click
         'Fenster Auswahl Vorlage anzeigen
         Dim Vorlage As New wb_Planung_Vorlage
@@ -32,11 +37,11 @@ Public Class wb_Planung_Liste
 
     Private Sub BtnBestellungen_Click(sender As Object, e As EventArgs) Handles BtnBestellungen.Click
 
-        Dim ProduktionsDatum As String = "10.11.2017"
+        Dim ProduktionsDatum As String = dtBestellungen.Value.ToString("yyyyMMdd")
 
         'Daten aus der Stored-Procedure in OrgaBack einlesen
         Me.Cursor = Cursors.WaitCursor
-        If Not Produktion.MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum) Then
+        If Not Produktion.MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum, "2") Then
             'Default-Cursor
             Me.Cursor = Cursors.Default
             'keine Datensätze in der Vorlage
@@ -59,9 +64,15 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TEST
-        Produktion.AddArtikelCharge("1", "", 3518, 540, wb_Global.ModusChargenTeiler.OptimalUndRest)
-        Produktion.AddArtikelCharge("1", "8383", 0, 1000, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 90)
-        Produktion.AddArtikelCharge("1", "", 3518, 250, wb_Global.ModusChargenTeiler.OptimalUndRest, "", 25, "Filiale Seestrasse 5 Stk geschnitten anliefern")
+        Produktion.AddArtikelCharge("1", "11102", 0, 24, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddArtikelCharge("2", "11102", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddArtikelCharge("3", "11102", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddArtikelCharge("4", "11102", 0, 2, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddArtikelCharge("1", "11103", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True, "", 4)
+        Produktion.AddArtikelCharge("1", "11101", 0, 34, wb_Global.ModusChargenTeiler.OptimalUndRest, True, "", 35, "Filiale Seestrasse 5 Stk geschnitten anliefern")
+        Produktion.AddArtikelCharge("2", "11101", 0, 6, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddArtikelCharge("3", "11101", 0, 6, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddArtikelCharge("4", "11101", 0, 2, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
         'Produktion.AddArtikelCharge("2", "", 7035, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
@@ -100,6 +111,11 @@ Public Class wb_Planung_Liste
     End Sub
 
     Private Sub BtnTeigListeExport_Click(sender As Object, e As EventArgs) Handles BtnTeigListeExport.Click
+        'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
+        Produktion.RootProduktionsSchritt.SortBackZettel() 'TODO hier eventuell SortTeigZettel
+        'gleiche (Rest-)Teige zusammenfassen
+        Produktion.TeigeZusammenfassen()
+
         'Export-File erzeugen
         Dim T1001 As New IO.FileInfo(wb_GlobalSettings.GetFileName("T1001"))
 

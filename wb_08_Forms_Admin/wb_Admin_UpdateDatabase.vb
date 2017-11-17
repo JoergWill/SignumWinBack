@@ -48,7 +48,8 @@ Public Class wb_Admin_UpdateDatabase
                 If winback.sqlCommand(sql) < 0 Then
                     Me.Cursor = Cursors.Default
                     MsgBox("Datenbank Update fehlgeschlagen !", MsgBoxStyle.Critical, "Update WinBack-Datenbank")
-                    Exit For
+                    Me.Cursor = Cursors.Default
+                    Exit Sub
                 End If
             Next
 

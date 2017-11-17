@@ -56,8 +56,6 @@
             Debug.Print("Vorproduktion " & v.ArtikelNr & "/" & v.RezeptNr & "/" & v.Sollwert_kg)
         Next
 
-
-
         Return True
     End Function
 
@@ -108,6 +106,55 @@
         End While
     End Sub
 
+    ''' <summary>
+    ''' Fasst alle (Rest-)Teige zu einem/mehreren Teigchargen zusammen (Optimierung der Produktions-Liste)
+    ''' Die Produktions-Liste ist vorher schon nach Teigen sortiert.
+    ''' </summary>
+    Friend Sub TeigeZusammenfassen()
+        Dim RezeptNr As Integer = wb_Global.UNDEFINED
+        Dim RezeptBezeichnung As String = ""
+        Dim TeigMenge As Double = 0
+
+        For Each p As wb_Produktionsschritt In RootProduktionsSchritt.ChildSteps
+            If p.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM2 Then
+                Debug.Print("Optimiere Produktion " & p.ArtikelNummer & "/" & p.ArtikelBezeichnung & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung)
+                If p.ChildSteps(0) IsNot Nothing Then
+                    With p.ChildSteps(0)
+                        'Rezeptnummer hat sich geändert
+                        If (.RezeptNr <> RezeptNr) Then
+
+                            'neuen Produktionsschritt anhängen
+                            AddZusammenGefasstenTeig(RezeptNr, RezeptBezeichnung, TeigMenge)
+
+                            'neue Rezeptnummer merken
+                            RezeptNr = .RezeptNr
+                            RezeptBezeichnung = .RezeptBezeichnung
+                            'Teigmenge
+                            TeigMenge = .Sollwert_kg
+                        Else
+                            'Mengen addieren
+                            TeigMenge += .Sollwert_kg
+                        End If
+
+                        'Rezeptnummer merken
+                        RezeptNr = .RezeptNr
+                    End With
+                End If
+            End If
+        Next
+
+        'neuen Produktions-Schritt anhängen (letzer Eintrag)
+        AddZusammenGefasstenTeig(RezeptNr, RezeptBezeichnung, TeigMenge)
+    End Sub
+
+    Private Sub AddZusammenGefasstenTeig(ByRef Nr As Integer, Bezeichnung As String, Sollmenge As Double)
+        If Nr <> wb_Global.UNDEFINED Then
+            Debug.Print("Neuer Rezeptschritt " & Nr & " " & Bezeichnung & " " & Sollmenge.ToString)
+            Nr = wb_Global.UNDEFINED
+        End If
+    End Sub
+
+
 
     ''' <summary>
     ''' Fügt eine (Artikel)Charge an die bestehende Liste an.
@@ -118,7 +165,7 @@
     ''' <param name="Sollmenge_Stk">Double - Sollmenge in Stück</param>
     ''' <returns></returns>
     Public Function AddArtikelCharge(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Modus As wb_Global.ModusChargenTeiler,
-                                     Optional AuftragsNummer As String = "", Optional Bestellmenge As Double = wb_Global.UNDEFINED,
+                                     Optional RestKleinerMin As Boolean = False, Optional AuftragsNummer As String = "", Optional Bestellmenge As Double = wb_Global.UNDEFINED,
                                      Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
 
         Dim Artikel As New wb_Komponenten
@@ -144,16 +191,16 @@
             TeigMenge = CalcTeigMenge(Sollmenge_Stk, Artikel.StkGewicht / 1000)
 
             'Chargen berechnen - Aufteilung in Optimal- und Restchargen
-            Root.TeigChargen = CalcChargenMenge(TeigMenge, Artikel.MinChargekg, Artikel.MaxChargekg, Artikel.OptChargekg, Modus, False)
+            Root.TeigChargen = CalcChargenMenge(TeigMenge, Artikel.MinChargekg, Artikel.MaxChargekg, Artikel.OptChargekg, Modus, RestKleinerMin)
 
             'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
             For i = 1 To Root.TeigChargen.AnzahlOpt
-                AddRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeOpt)
+                AddRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeOpt, Root.TeigChargen)
             Next
 
             'Rezept-Kopf-Zeilen anhängen (Rest-Chargen)
             For i = 1 To Root.TeigChargen.AnzahlRest
-                AddRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeRest)
+                AddRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeRest, Root.TeigChargen)
             Next
 
             Return True
@@ -162,7 +209,7 @@
         End If
     End Function
 
-    Private Sub AddRezeptCharge(ByRef Root As wb_Produktionsschritt, Artikel As wb_Komponenten, AuftragsNummer As String, Tour As String, Menge As Double)
+    Private Sub AddRezeptCharge(ByRef Root As wb_Produktionsschritt, Artikel As wb_Komponenten, AuftragsNummer As String, Tour As String, Menge As Double, TeigChargen As wb_Global.ChargenMengen)
         Dim Rzpt As New wb_Produktionsschritt(Root, Artikel.RezeptName)
 
         'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
@@ -170,6 +217,8 @@
         Rzpt.Sollwert_kg = Menge
         Rzpt.AuftragsNummer = GetAuftragsNummer(AuftragsNummer, Tour)
         Rzpt.Tour = Tour
+        'Chargenaufteilung wird jedem Schritt mitgegeben
+        Rzpt.TeigChargen = TeigChargen
 
         'Rezeptur anhängen (Die Linengruppe wird aus der Rezeptur ermittelt)
         Rzpt.LinienGruppe = AddRezeptSchritte(Rzpt, Menge, Nothing)
@@ -198,7 +247,7 @@
     End Function
 
     ''' <summary>
-    ''' Gibt einen Wet für die Auftrags-Nummer zurück. Ist keine Auftrags-Nummer definiert, wird die Tour zurückgegeben.
+    ''' Gibt einen Wert für die Auftrags-Nummer zurück. Ist keine Auftrags-Nummer definiert, wird die Tour zurückgegeben.
     ''' </summary>
     ''' <param name="AuftragsNummer"></param>
     ''' <param name="Tour"></param>
@@ -400,14 +449,18 @@
     '''   
     ''' Result.Error ist  0 wenn die Sollmenge komplett produziert werden kann.
     ''' Result.Error ist -1 Sollmenge kann nicht erreicht werden da die Restcharge die Mindestmenge unterschreitet
+    ''' 
+    ''' Ist das Flag RestKleinerMin gesetzt, wird die Rest-Charge auch dann berechnet, wenn Sie kleiner als die Minimal-Charge ist.
+    ''' Dies ist notwendig für die Berechnung der Vorproduktion oder die Kalkulation der bestellten Mengen aus den OrgaBack-Bestellungen,
+    ''' da hier sonst Teigmengen verloren gehen können!
     ''' </summary>
     ''' <param name="Sollwert"></param>
     ''' <param name="ChargeMin"></param>
     ''' <param name="ChargeMax"></param>
     ''' <param name="ChargeOpt"></param>
-    ''' <param name="VorProduktion"></param>
+    ''' <param name="RestKleinerMin"></param>
     ''' <returns></returns>
-    Private Function CalcBatch01(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
+    Private Function CalcBatch01(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, RestKleinerMin As Boolean) As wb_Global.ChargenMengen
         ' Variablen initialisieren
         CalcBatch01.MengeOpt = ChargeOpt
         CalcBatch01.Modus = wb_Global.ModusChargenTeiler.OptimalUndRest
@@ -430,10 +483,10 @@
                 CalcBatch01.AnzahlRest = 0
                 CalcBatch01.Result = wb_Global.ChargenTeilerResult.OK
             Else
-                If VorProduktion Then
+                If RestKleinerMin Then
                     CalcBatch01.AnzahlRest = 1
-                    CalcBatch01.MengeRest = ChargeMin
-                    CalcBatch01.Result = wb_Global.ChargenTeilerResult.OK ' REMEMBER Me war -2
+                    'CalcBatch01.MengeRest = ChargeMin
+                    CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM2 ' REMEMBER Me war -2
                 Else
                     ' Sollmenge kann nicht erreicht werden weil die
                     ' Restcharge kleiner als die Min-Charge ist
@@ -442,8 +495,8 @@
                     CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM1
                 End If
             End If
-            ' (@V3.0.5) Vorproduktion
-            If (CalcBatch01.AnzahlOpt = 0) And (CalcBatch01.AnzahlRest = 0) And VorProduktion Then
+            ' (@V3.0.5) Vorproduktion TODO Kommen wir hier hin ???
+            If (CalcBatch01.AnzahlOpt = 0) And (CalcBatch01.AnzahlRest = 0) And RestKleinerMin Then
                 CalcBatch01.AnzahlRest = 1
                 CalcBatch01.MengeRest = ChargeMin
                 CalcBatch01.MengeOpt = 0
@@ -580,7 +633,7 @@
         End If
     End Function
 
-    Friend Function MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum As String) As Boolean
+    Friend Function MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum As String, Filiale As String) As Boolean
         Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
         Dim ArtikelNummer As String = ""
         Dim GesamtStueck As Integer = 0
@@ -592,7 +645,7 @@
 
         'Filiale Produktion
         p(0).Parameter = "Filiale"
-        p(0).Value = "1" 'TODO aus Filialen ermitteln
+        p(0).Value = Filiale 'TODO aus Filialen ermitteln
         'Produktionsdatum
         p(1).Parameter = "LieferDatum"
         p(1).Value = ProduktionsDatum
@@ -601,9 +654,11 @@
 
         'Produktionsdaten aufbauen
         Dim BestellDaten As New wb_BestellDatenSchritt
+        Dim DebugCounter As Integer = 0
 
         'alle Datensätze einlesen
-        While orgaback.Read
+        While orgaback.Read And (DebugCounter < 10)
+            DebugCounter += 1
             For i = 0 To orgaback.msRead.FieldCount - 1
                 Debug.Print("OrgaBack StoredProcedure Read " & orgaback.msRead.GetName(i) & "/" & orgaback.msRead.GetValue(i))
                 MsSQLdbProcedure_Produktionsauftrag = True
@@ -612,7 +667,7 @@
             Next
 
             'Produktions-Auftrag zu Liste hinzufügen
-            AddArtikelCharge(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler)
+            AddArtikelCharge(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler, True)
         End While
         orgaback.Close()
     End Function

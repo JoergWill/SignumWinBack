@@ -215,4 +215,35 @@ Imports WinBack
         Assert.AreEqual(wb_Global.ChargenTeilerResult.EP9, TestResult.Result)
 
     End Sub
+
+    <TestMethod()> Public Sub Test_wb_Produktion_ChargenBerechnung_01_NurRest()
+        Dim Produktion As New wb_Produktion
+        Dim TestResult As wb_Global.ChargenMengen
+
+        'Soll 10kg aufgeteilt in 0 Optimal-Charge zund eine RestCharge zu 10kg
+        TestResult = Produktion.CalcChargenMenge(10, 10, 100, 100, wb_Global.ModusChargenTeiler.OptimalUndRest, False)
+        Assert.AreEqual(0, TestResult.AnzahlOpt)
+        Assert.AreEqual(0.0, TestResult.MengeOpt)
+        Assert.AreEqual(1, TestResult.AnzahlRest)
+        Assert.AreEqual(10.0, TestResult.MengeRest)
+        Assert.AreEqual(wb_Global.ChargenTeilerResult.OK, TestResult.Result)
+
+        'Soll 8kg aufgeteilt in 0 Optimal-Charge zund eine RestCharge zu 8kg (Flag RestKleinerMin nicht gesetzt)
+        TestResult = Produktion.CalcChargenMenge(8, 10, 100, 100, wb_Global.ModusChargenTeiler.OptimalUndRest, False)
+        Assert.AreEqual(0, TestResult.AnzahlOpt)
+        Assert.AreEqual(0.0, TestResult.MengeOpt)
+        Assert.AreEqual(0, TestResult.AnzahlRest)
+        Assert.AreEqual(0.0, TestResult.MengeRest)
+        Assert.AreEqual(wb_Global.ChargenTeilerResult.EM1, TestResult.Result)
+
+        'Soll 8kg aufgeteilt in 0 Optimal-Charge zund eine RestCharge zu 8kg (Flag RestKleinerMin gesetzt)
+        TestResult = Produktion.CalcChargenMenge(8, 10, 100, 100, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Assert.AreEqual(0, TestResult.AnzahlOpt)
+        Assert.AreEqual(0.0, TestResult.MengeOpt)
+        Assert.AreEqual(1, TestResult.AnzahlRest)
+        Assert.AreEqual(8.0, TestResult.MengeRest)
+        Assert.AreEqual(wb_Global.ChargenTeilerResult.EM2, TestResult.Result)
+
+    End Sub
+
 End Class

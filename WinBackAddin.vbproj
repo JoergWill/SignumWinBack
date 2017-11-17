@@ -154,6 +154,28 @@
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M4|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug-M4\</OutputPath>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M4|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug-M4\</OutputPath>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="combit.ListLabel22, Version=22.2.6290.25045, Culture=neutral, PublicKeyToken=a7a30592cb4a94be, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -342,6 +364,12 @@
     <Compile Include="wb_00_Main\wb_PrinterDialog.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_00_Main\wb_PrinterPreview.Designer.vb">
+      <DependentUpon>wb_PrinterPreview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Main\wb_PrinterPreview.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_00_Main\wb_Printer_Shared.vb" />
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.Designer.vb">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
@@ -524,6 +552,7 @@
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_07_Forms_Planung\ob_Planung_DockingExtension.vb" />
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.Designer.vb">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
     </Compile>
@@ -605,6 +634,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Main\wb_PrinterDialog.resx">
       <DependentUpon>wb_PrinterDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Main\wb_PrinterPreview.resx">
+      <DependentUpon>wb_PrinterPreview.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.resx">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
