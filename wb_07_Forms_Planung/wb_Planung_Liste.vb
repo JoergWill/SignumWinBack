@@ -64,7 +64,7 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TEST
-        Produktion.AddArtikelCharge("1", "11102", 0, 24, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddArtikelCharge("1", "11102", 0, 240, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
         Produktion.AddArtikelCharge("2", "11102", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
         Produktion.AddArtikelCharge("3", "11102", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
         Produktion.AddArtikelCharge("4", "11102", 0, 2, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
@@ -112,7 +112,10 @@ Public Class wb_Planung_Liste
 
     Private Sub BtnTeigListeExport_Click(sender As Object, e As EventArgs) Handles BtnTeigListeExport.Click
         'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
-        Produktion.RootProduktionsSchritt.SortBackZettel() 'TODO hier eventuell SortTeigZettel
+        Produktion.RootProduktionsSchritt.SortProduktionsPlan()
+        For Each a As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
+            Debug.Print("Nach Sort " & a.Tour & "/" & a.RezeptNummer & "/" & a.RezeptBezeichnung & "/" & a.Sollmenge_Stk & "/" & a.TeigChargenTeilerResult & "/" & a.SortKriterium)
+        Next
         'gleiche (Rest-)Teige zusammenfassen
         Produktion.TeigeZusammenfassen()
 
@@ -141,7 +144,10 @@ Public Class wb_Planung_Liste
                 For Each a As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
                     'ChargenZeilen
                     For Each r As wb_Produktionsschritt In a.ChildSteps
-                        sw.WriteLine(ProdDatenSatz(r))
+                        If Not r.Optimiert Then
+                            sw.WriteLine(ProdDatenSatz(r))
+                            Debug.Print("Produktion " & ProdDatenSatz(r))
+                        End If
                     Next
                 Next
                 sw.Flush()
@@ -243,7 +249,7 @@ Public Class wb_Planung_Liste
                     ExpStr = ExpStr + "1" + SepStr
                 Case 20  ' [20] Herstellungsdatum
                     ExpStr = ExpStr + DateTime.Now.ToString("yyyyMMdd") + SepStr
-                Case 22  ' [22] Artikelnummer
+                Case 22  ' [22] Artikelnummer (entfällt bei Rezept-Chargen)
                     ExpStr = ExpStr + x.ArtikelNummer + SepStr
                 Case 24  ' [24] Variante
                     ExpStr = ExpStr + x.RezeptVar.ToString + SepStr

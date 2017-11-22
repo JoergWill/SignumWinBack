@@ -121,14 +121,16 @@ Public Class wb_Linien_Liste
         End If
         If VNCviewIsSelected() Then
             cmdParam = VNCview.SelectedItems.Item(0).Name() & " /password herbst"
-
-            p.StartInfo.FileName = cmdLinie
-            p.StartInfo.Arguments = cmdParam
-            p.StartInfo.UseShellExecute = False
-            p.StartInfo.RedirectStandardOutput = False
-            p.StartInfo.CreateNoWindow = False
-            p.Start()
-
+            Try
+                p.StartInfo.FileName = cmdLinie
+                p.StartInfo.Arguments = cmdParam
+                p.StartInfo.UseShellExecute = False
+                p.StartInfo.RedirectStandardOutput = False
+                p.StartInfo.CreateNoWindow = False
+                p.Start()
+            Catch ex As Exception
+                MsgBox("Fehler beim Starten des VNC-Viewers", MsgBoxStyle.Exclamation, "WinBack-Produktions-Linien")
+            End Try
         End If
     End Sub
 

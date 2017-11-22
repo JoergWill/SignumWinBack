@@ -74,6 +74,7 @@
         KO_ZEILE_ARTIKEL             '-1
         KO_ZEILE_REZEPT              '-2
         KO_ZEILE_KOMPONENTE          '-3
+        KO_ZEILE_DUMMYARTIKEL        '-4
 
         KO_TYPE_ARTIKEL             '0
         KO_TYPE_AUTOKOMPONENTE      '101
@@ -353,6 +354,7 @@
         OK      'Chargenaufteilung in Ordnung
         EM1     'Nach Aufteilung in Optimalchargen bleibt eine Restmenge offen, die nicht produziert werden kann
         EM2     'Nach Aufteilung in Optimalchargen wird mehr produziert als gefordert
+        EM3     'Nur eine Restcharge, Restmenge unterhalb Mindestchargen - Chargen gleicher Teig müssen zusammengefasst werden.
         EP1     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
         EP2     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
         EP9     'Keine Chargengrößen angegeben, Aufteilung nach Rezeptgröße

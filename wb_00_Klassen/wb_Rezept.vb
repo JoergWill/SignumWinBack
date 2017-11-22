@@ -25,6 +25,9 @@ Public Class wb_Rezept
     Private _AenderungName As String
     Private _RezeptTeigTemperatur As Double
     Private _LinienGruppe As Integer
+    Private _Charge_Min As Double
+    Private _Charge_Max As Double
+    Private _Charge_Opt As Double
 
     Private _RootRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
     Private _SQLRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
@@ -303,6 +306,45 @@ Public Class wb_Rezept
             'Druckfähige Zutatenliste 
             Return _Zutaten.Print(Mode)
         End Get
+    End Property
+
+    Public Property MinChargekg As Double
+        Get
+            If _Charge_Min > 0 Then
+                Return _Charge_Min
+            Else
+                Return RezeptGewicht
+            End If
+        End Get
+        Set(value As Double)
+            _Charge_Min = value
+        End Set
+    End Property
+
+    Public Property MaxChargekg As Double
+        Get
+            If _Charge_Max > 0 Then
+                Return _Charge_Max
+            Else
+                Return RezeptGewicht
+            End If
+        End Get
+        Set(value As Double)
+            _Charge_Max = value
+        End Set
+    End Property
+
+    Public Property OptChargekg As Double
+        Get
+            If _Charge_Opt > 0 Then
+                Return _Charge_Opt
+            Else
+                Return RezeptGewicht
+            End If
+        End Get
+        Set(value As Double)
+            _Charge_Opt = value
+        End Set
     End Property
 
     ''' <summary>
@@ -627,6 +669,16 @@ Public Class wb_Rezept
                 'Rezeptkopf - Liniengruppe
                 Case "RZ_Liniengruppe"
                     _LinienGruppe = wb_Functions.ValueToInt(Value)
+
+                'Rezeptkopf - MinCharge in kg
+                Case "RZ_Charge_Min"
+                    _Charge_Min = wb_Functions.StrToDouble(Value)
+                'Rezeptkopf - MaxCharge in kg
+                Case "RZ_Charge_Max"
+                    _Charge_Max = wb_Functions.StrToDouble(Value)
+                'Rezeptkopf - OptCharge in kg
+                Case "RZ_Charge_Opt"
+                    _Charge_Opt = wb_Functions.StrToDouble(Value)
 
             End Select
         Catch ex As Exception

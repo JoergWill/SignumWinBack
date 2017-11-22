@@ -10,6 +10,7 @@ Public Class wb_Produktionsschritt
     Private _SortKriteriumBackPlan As String
     Private _SortKriteriumProdPlan As String
 
+    Private _Optimiert As Boolean = False
     Private _LinienGruppe As Integer
     Private _Typ As String
     Private _Tour As String
@@ -159,7 +160,8 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeCharge As String
         Get
-            Return _ChargenNummer
+            Return _Tour
+            'Return _ChargenNummer
         End Get
     End Property
 
@@ -191,7 +193,7 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeKommentar As String
         Get
-            Return ""
+            Return TeigChargen.Result
         End Get
     End Property
 
@@ -429,7 +431,12 @@ Public Class wb_Produktionsschritt
             _SortKriteriumBackPlan = Nothing
         End If
         'Sortieren Produktions-Liste
-        _SortKriteriumProdPlan = ChargenNummer
+        If RezeptNummer IsNot Nothing And Tour IsNot Nothing And ArtikelNummer IsNot Nothing Then
+            _SortKriteriumProdPlan = RezeptNummer.PadLeft(10, "0"c) & TeigChargenTeilerResult & Tour.PadLeft(3, "0"c) & ArtikelNummer.PadLeft(16, "0"c)
+            'Debug.Print("SortKritProdPlan " & _SortKriteriumProdPlan)
+        Else
+            _SortKriteriumProdPlan = Nothing
+        End If
     End Sub
 
     ''' <summary>
@@ -459,6 +466,7 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As wb_Global.ChargenMengen)
             _TeigChargen = value
+            setSortKriterium()
         End Set
     End Property
 
@@ -502,6 +510,12 @@ Public Class wb_Produktionsschritt
         End Get
     End Property
 
+    Public ReadOnly Property TeigChargenTeilerResult As String
+        Get
+            Return _TeigChargen.Result.ToString
+        End Get
+    End Property
+
     ''' <summary>
     ''' Anzeige der Prozentualen Größe der Restteigmenge in ListUndLabel
     ''' </summary>
@@ -518,6 +532,15 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As String)
             _ChargenNummer = value
+        End Set
+    End Property
+
+    Public Property Optimiert As Boolean
+        Get
+            Return _Optimiert
+        End Get
+        Set(value As Boolean)
+            _Optimiert = value
         End Set
     End Property
 End Class
