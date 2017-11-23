@@ -137,18 +137,24 @@
                 'Letzter Teig
                 If i = ProdChildSteps Then
                     AddChargenZeile(p2.Tour, p2.RezeptNr, TeigMenge, wb_Global.ModusChargenTeiler.OptimalUndRest)
+                    Debug.Print("AddCharge LAST " & p2.Tour & "/" & p2.RezeptNr & "/" & p2.RezeptNummer & "/" & p2.RezeptBezeichnung & "/" & TeigMenge)
                 End If
             Else
-                'neuen Produktions - Schritt anhängen
-                AddChargenZeile(p1.Tour, p1.RezeptNr, TeigMenge, wb_Global.ModusChargenTeiler.OptimalUndRest)
-                TeigMenge = 0
+                'Wenn mehrere Teig zusammengefasst werden sollen
+                If TeigMenge > 0 Then
+                    'neuen Produktions - Schritt anhängen
+                    AddChargenZeile(p1.Tour, p1.RezeptNr, TeigMenge, wb_Global.ModusChargenTeiler.OptimalUndRest)
+                    Debug.Print("AddCharge NEW " & p1.Tour & "/" & p1.RezeptNr & "/" & p1.RezeptNummer & "/" & p1.RezeptBezeichnung & "/" & TeigMenge)
+                    TeigMenge = 0
+                End If
             End If
         Next i
 
     End Sub
 
     Private Function Zusammenfassen(p1 As wb_Produktionsschritt, p2 As wb_Produktionsschritt) As Boolean
-        If p1.RezeptNr = p2.RezeptNr And p1.Tour = p2.Tour And p1.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 And p2.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 Then
+        '        If p1.RezeptNr = p2.RezeptNr And p1.Tour = p2.Tour And p1.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 And p2.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 Then
+        If p1.RezeptNr = p2.RezeptNr And p1.Tour = p2.Tour Then
             Return True
         Else
             Return False
@@ -198,6 +204,7 @@
             AddArtikelRezeptCharge(Root, Artikel, "", Tour, Root.TeigChargen.MengeRest, Root.TeigChargen)
         Next
 
+        Return True
     End Function
 
     ''' <summary>
@@ -208,7 +215,7 @@
     ''' <param name="Nr">Integer - interne Artikelnummer</param>
     ''' <param name="Sollmenge_Stk">Double - Sollmenge in Stück</param>
     ''' <returns></returns>
-    Public Function AddArtikelCharge(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Modus As wb_Global.ModusChargenTeiler,
+    Public Function AddChargenZeile(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Modus As wb_Global.ModusChargenTeiler,
                                      Optional Vorproduktion As Boolean = False, Optional AuftragsNummer As String = "", Optional Bestellmenge As Double = wb_Global.UNDEFINED,
                                      Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
 
@@ -300,7 +307,7 @@
         If AuftragsNummer = "" Then
             Return "Tour " & Tour
         Else
-            Return AuftragsNummer
+            Return AuftragsNummer & "-" & Tour
         End If
     End Function
 
@@ -716,7 +723,7 @@
             Next
 
             'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
-            AddArtikelCharge(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler, True)
+            AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler, True)
         End While
         orgaback.Close()
     End Function

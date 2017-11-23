@@ -6,11 +6,6 @@ Public Class wb_Planung_Liste
     Inherits DockContent
     Dim Produktion As New wb_Produktion
 
-    Private Sub wb_Planung_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Datum heute plus einen Tag
-        dtBestellungen.Value = DateTime.Today.AddDays(1) 'TODO Tage im vorraus in WinBack-ini festhalten
-    End Sub
-
     Private Sub BtnVorlage_Click(sender As Object, e As EventArgs) Handles BtnVorlage.Click
         'Fenster Auswahl Vorlage anzeigen
         Dim Vorlage As New wb_Planung_Vorlage
@@ -35,13 +30,40 @@ Public Class wb_Planung_Liste
 
     End Sub
 
-    Private Sub BtnBestellungen_Click(sender As Object, e As EventArgs) Handles BtnBestellungen.Click
+    ''' <summary>
+    ''' Abruf-Datum der Bestell-Liste von OrgaBack. Voreingestellt ist immer das aktuelle Datum plus x Tage
+    ''' Auswahl der Filiale aus Drop-Down-Liste. Die Liste wird aus den OrgaBack-Filialen mit Filialtyp Produktion erzeugt.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub wb_Planung_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Liste mit Produktions-Filialen
+        cbProduktionsFiliale.Fill(wb_Filiale.ProduktionsFilialen)
+        'erste Filiale auswählen
+        cbProduktionsFiliale.SelectedIndex = 0
 
+        'Datum heute plus einen Tag
+        dtBestellungen.Value = DateTime.Today.AddDays(1) 'TODO Tage im vorraus in WinBack-ini festhalten
+
+        'Einlesen der Bestellungen nur wenn auch OrgaBack aktiv ist
+        BtnBestellungen.Enabled = (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack)
+    End Sub
+
+    Private Sub BtnBestellungen_Click(sender As Object, e As EventArgs) Handles BtnBestellungen.Click
+        'Bestellungen einlesen für Produktions-Datum
         Dim ProduktionsDatum As String = dtBestellungen.Value.ToString("yyyyMMdd")
+        Dim ProduktionsFilialeNummer As String = cbProduktionsFiliale.GetKeyFromSelection()
+
+        'Prüfen ob schon Daten vorhanden sind
+        If Produktion.RootProduktionsSchritt.ChildSteps.Count > 0 Then
+            If MsgBox("Die Liste enthält schon Produktions-Daten!" & vbCrLf & "Sollen diese vorher gelöscht werden?", MsgBoxStyle.YesNo, "Laden Produktionsdaten aus Bestellung") = vbYes Then
+                Produktion.RootProduktionsSchritt.ChildSteps.Clear()
+            End If
+        End If
 
         'Daten aus der Stored-Procedure in OrgaBack einlesen
         Me.Cursor = Cursors.WaitCursor
-        If Not Produktion.MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum, "2") Then
+        If Not Produktion.MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum, ProduktionsFilialeNummer) Then
             'Default-Cursor
             Me.Cursor = Cursors.Default
             'keine Datensätze in der Vorlage
@@ -64,15 +86,15 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TEST
-        Produktion.AddArtikelCharge("1", "11102", 0, 240, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddArtikelCharge("2", "11102", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddArtikelCharge("3", "11102", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddArtikelCharge("4", "11102", 0, 2, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddArtikelCharge("1", "11103", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True, "", 4)
-        Produktion.AddArtikelCharge("1", "11101", 0, 34, wb_Global.ModusChargenTeiler.OptimalUndRest, True, "", 35, "Filiale Seestrasse 5 Stk geschnitten anliefern")
-        Produktion.AddArtikelCharge("2", "11101", 0, 6, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddArtikelCharge("3", "11101", 0, 6, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddArtikelCharge("4", "11101", 0, 2, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddChargenZeile("1", "11102", 0, 240, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddChargenZeile("2", "11102", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddChargenZeile("3", "11102", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddChargenZeile("4", "11102", 0, 2, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddChargenZeile("1", "11103", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True, "", 4)
+        Produktion.AddChargenZeile("1", "11101", 0, 34, wb_Global.ModusChargenTeiler.OptimalUndRest, True, "", 35, "Filiale Seestrasse 5 Stk geschnitten anliefern")
+        Produktion.AddChargenZeile("2", "11101", 0, 6, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddChargenZeile("3", "11101", 0, 6, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddChargenZeile("4", "11101", 0, 2, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
         'Produktion.AddArtikelCharge("2", "", 7035, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
@@ -111,13 +133,13 @@ Public Class wb_Planung_Liste
     End Sub
 
     Private Sub BtnTeigListeExport_Click(sender As Object, e As EventArgs) Handles BtnTeigListeExport.Click
-        'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
+        DebugPrint("VorSort")
+        'Sortieren nach Teig(RezeptNummer), Ergebnis ChargenAufteilung, Tour und ArtikelNummer
         Produktion.RootProduktionsSchritt.SortProduktionsPlan()
-        For Each a As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
-            Debug.Print("Nach Sort " & a.Tour & "/" & a.RezeptNummer & "/" & a.RezeptBezeichnung & "/" & a.Sollmenge_Stk & "/" & a.TeigChargenTeilerResult & "/" & a.SortKriterium)
-        Next
+        DebugPrint("NachSort")
         'gleiche (Rest-)Teige zusammenfassen
         Produktion.TeigeZusammenfassen()
+        DebugPrint("NachOpt")
 
         'Export-File erzeugen
         Dim T1001 As New IO.FileInfo(wb_GlobalSettings.GetFileName("T1001"))
@@ -146,7 +168,6 @@ Public Class wb_Planung_Liste
                     For Each r As wb_Produktionsschritt In a.ChildSteps
                         If Not r.Optimiert Then
                             sw.WriteLine(ProdDatenSatz(r))
-                            Debug.Print("Produktion " & ProdDatenSatz(r))
                         End If
                     Next
                 Next
@@ -165,6 +186,12 @@ Public Class wb_Planung_Liste
         Else
             MessageBox.Show("Alle Produktionsdaten übertragen" & vbCrLf & Result, "Übertragen der Produktionsdaten zu WinBack", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
+    End Sub
+
+    Private Sub DebugPrint(s As String)
+        For Each a As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
+            Debug.Print(s & " Tour/Artikel/Rezept/Sollmenge/TeilerResult " & a.Tour & "/" & a.ArtikelNummer & "-" & a.ArtikelBezeichnung & "/" & a.RezeptNummer & "-" & a.RezeptBezeichnung & "/" & a.Sollmenge_Stk & " Stk -" & a.Sollwert_kg & " kg /" & a.TeigChargenTeilerResult)
+        Next
     End Sub
 
     Private Function ProdDatenKopfZeile_1() As String

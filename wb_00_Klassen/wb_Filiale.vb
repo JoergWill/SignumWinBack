@@ -11,6 +11,7 @@ Public Class wb_Filiale
 
     Private Shared pFiliale As ArrayList = Nothing
     Private Shared pSortiment As ArrayList = Nothing
+    Private Shared hFiliale As New SortedList
 
     ''' <summary>
     ''' Wird automatisch beim Aufruf einer der shared Functions aufgerufen (Shared Object)
@@ -26,13 +27,16 @@ Public Class wb_Filiale
             Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
             Trace.WriteLine("OrgaBackMainConString= " & wb_GlobalSettings.OrgaBackMainConString)
             Dim FNr As String
+            Dim FName As String
             Dim Srt As String
 
             ''Daten aus Tabelle Filialen lesen
             If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlFiliale, wb_Global.ProduktionsFiliale)) Then
                 While OrgasoftMain.Read
                     FNr = (OrgasoftMain.sField("Filialnummer"))
+                    FName = (OrgasoftMain.sField("Name1"))
                     pFiliale.Add(FNr)
+                    hFiliale.Add(FNr, FName)
                 End While
             End If
 
@@ -46,6 +50,9 @@ Public Class wb_Filiale
                     pSortiment.Add(Srt)
                 End While
             End If
+        Else
+            hFiliale.Add("1", "Bäckerei")
+            hFiliale.Add("2", "Konditorei")
         End If
     End Sub
 
@@ -111,4 +118,9 @@ Public Class wb_Filiale
         End Get
     End Property
 
+    Public Shared ReadOnly Property ProduktionsFilialen As SortedList
+        Get
+            Return hFiliale
+        End Get
+    End Property
 End Class

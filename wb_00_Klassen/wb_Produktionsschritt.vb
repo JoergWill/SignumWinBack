@@ -433,7 +433,6 @@ Public Class wb_Produktionsschritt
         'Sortieren Produktions-Liste
         If RezeptNummer IsNot Nothing And Tour IsNot Nothing And ArtikelNummer IsNot Nothing Then
             _SortKriteriumProdPlan = RezeptNummer.PadLeft(10, "0"c) & TeigChargenTeilerResult & Tour.PadLeft(3, "0"c) & ArtikelNummer.PadLeft(16, "0"c)
-            'Debug.Print("SortKritProdPlan " & _SortKriteriumProdPlan)
         Else
             _SortKriteriumProdPlan = Nothing
         End If

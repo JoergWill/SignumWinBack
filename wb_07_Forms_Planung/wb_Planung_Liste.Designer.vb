@@ -56,10 +56,11 @@ Partial Class wb_Planung_Liste
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CellEditor3 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.UniversalEditBox1 = New Infralution.Controls.UniversalEditBox()
-        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.btnNeueCharge = New System.Windows.Forms.Button()
         Me.BtnTeigListeDrucken = New System.Windows.Forms.Button()
         Me.dtBestellungen = New System.Windows.Forms.DateTimePicker()
+        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
+        Me.cbProduktionsFiliale = New wb_ComboBox()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -299,6 +300,32 @@ Partial Class wb_Planung_Liste
         Me.UniversalEditBox1.TabIndex = 9
         Me.UniversalEditBox1.Visible = False
         '
+        'btnNeueCharge
+        '
+        Me.btnNeueCharge.Location = New System.Drawing.Point(270, 12)
+        Me.btnNeueCharge.Name = "btnNeueCharge"
+        Me.btnNeueCharge.Size = New System.Drawing.Size(123, 53)
+        Me.btnNeueCharge.TabIndex = 12
+        Me.btnNeueCharge.Text = "Neu"
+        Me.btnNeueCharge.UseVisualStyleBackColor = True
+        '
+        'BtnTeigListeDrucken
+        '
+        Me.BtnTeigListeDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnTeigListeDrucken.Location = New System.Drawing.Point(840, 12)
+        Me.BtnTeigListeDrucken.Name = "BtnTeigListeDrucken"
+        Me.BtnTeigListeDrucken.Size = New System.Drawing.Size(123, 53)
+        Me.BtnTeigListeDrucken.TabIndex = 13
+        Me.BtnTeigListeDrucken.Text = "Teigliste drucken"
+        Me.BtnTeigListeDrucken.UseVisualStyleBackColor = True
+        '
+        'dtBestellungen
+        '
+        Me.dtBestellungen.Location = New System.Drawing.Point(196, 71)
+        Me.dtBestellungen.Name = "dtBestellungen"
+        Me.dtBestellungen.Size = New System.Drawing.Size(197, 20)
+        Me.dtBestellungen.TabIndex = 14
+        '
         'ObjectRowBinding1
         '
         ObjectCellBinding1.Column = Me.ColStart
@@ -330,37 +357,20 @@ Partial Class wb_Planung_Liste
         Me.ObjectRowBinding1.ParentProperty = "ParentStep"
         Me.ObjectRowBinding1.TypeName = "WinBack.wb_Produktionsschritt"
         '
-        'btnNeueCharge
+        'cbProduktionsFiliale
         '
-        Me.btnNeueCharge.Location = New System.Drawing.Point(270, 12)
-        Me.btnNeueCharge.Name = "btnNeueCharge"
-        Me.btnNeueCharge.Size = New System.Drawing.Size(123, 53)
-        Me.btnNeueCharge.TabIndex = 12
-        Me.btnNeueCharge.Text = "Neu"
-        Me.btnNeueCharge.UseVisualStyleBackColor = True
-        '
-        'BtnTeigListeDrucken
-        '
-        Me.BtnTeigListeDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnTeigListeDrucken.Location = New System.Drawing.Point(840, 12)
-        Me.BtnTeigListeDrucken.Name = "BtnTeigListeDrucken"
-        Me.BtnTeigListeDrucken.Size = New System.Drawing.Size(123, 53)
-        Me.BtnTeigListeDrucken.TabIndex = 13
-        Me.BtnTeigListeDrucken.Text = "Teigliste drucken"
-        Me.BtnTeigListeDrucken.UseVisualStyleBackColor = True
-        '
-        'dtBestellungen
-        '
-        Me.dtBestellungen.Location = New System.Drawing.Point(141, 71)
-        Me.dtBestellungen.Name = "dtBestellungen"
-        Me.dtBestellungen.Size = New System.Drawing.Size(252, 20)
-        Me.dtBestellungen.TabIndex = 14
+        Me.cbProduktionsFiliale.FormattingEnabled = True
+        Me.cbProduktionsFiliale.Location = New System.Drawing.Point(12, 70)
+        Me.cbProduktionsFiliale.Name = "cbProduktionsFiliale"
+        Me.cbProduktionsFiliale.Size = New System.Drawing.Size(178, 21)
+        Me.cbProduktionsFiliale.TabIndex = 15
         '
         'wb_Planung_Liste
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1104, 663)
+        Me.Controls.Add(Me.cbProduktionsFiliale)
         Me.Controls.Add(Me.dtBestellungen)
         Me.Controls.Add(Me.BtnTeigListeDrucken)
         Me.Controls.Add(Me.btnNeueCharge)
@@ -410,4 +420,5 @@ Partial Class wb_Planung_Liste
     Friend WithEvents btnNeueCharge As Windows.Forms.Button
     Friend WithEvents BtnTeigListeDrucken As Windows.Forms.Button
     Friend WithEvents dtBestellungen As Windows.Forms.DateTimePicker
+    Friend WithEvents cbProduktionsFiliale As wb_ComboBox
 End Class
