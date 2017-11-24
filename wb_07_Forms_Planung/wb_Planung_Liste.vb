@@ -5,6 +5,8 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class wb_Planung_Liste
     Inherits DockContent
     Dim Produktion As New wb_Produktion
+    Dim oFont As Drawing.Font
+    Dim iFont As Drawing.Font
 
     Private Sub BtnVorlage_Click(sender As Object, e As EventArgs) Handles BtnVorlage.Click
         'Fenster Auswahl Vorlage anzeigen
@@ -47,6 +49,10 @@ Public Class wb_Planung_Liste
 
         'Einlesen der Bestellungen nur wenn auch OrgaBack aktiv ist
         BtnBestellungen.Enabled = (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack)
+
+        'Font für die Anzeige Artikelzeile im VirtualTree
+        oFont = VirtualTree.Font
+        iFont = New Drawing.Font(oFont.Name, oFont.Size, Drawing.FontStyle.Italic)
     End Sub
 
     Private Sub BtnBestellungen_Click(sender As Object, e As EventArgs) Handles BtnBestellungen.Click
@@ -57,7 +63,11 @@ Public Class wb_Planung_Liste
         'Prüfen ob schon Daten vorhanden sind
         If Produktion.RootProduktionsSchritt.ChildSteps.Count > 0 Then
             If MsgBox("Die Liste enthält schon Produktions-Daten!" & vbCrLf & "Sollen diese vorher gelöscht werden?", MsgBoxStyle.YesNo, "Laden Produktionsdaten aus Bestellung") = vbYes Then
+                'alle Einträge löschen
                 Produktion.RootProduktionsSchritt.ChildSteps.Clear()
+                VirtualTree.Invalidate()
+                'Tree neu zeichnen(leer)
+                VirtualTree.DataSource = Produktion.RootProduktionsSchritt
             End If
         End If
 
@@ -138,9 +148,22 @@ Public Class wb_Planung_Liste
         Produktion.RootProduktionsSchritt.SortProduktionsPlan()
         DebugPrint("NachSort")
         'gleiche (Rest-)Teige zusammenfassen
-        Produktion.TeigeZusammenfassen()
+        Produktion.TeigeZusammenfassen(wb_Global.ModusTeigOptimierung.AlleTeige)
         DebugPrint("NachOpt")
+        'Neu erstellte Chargen anzeigen 
+        VirtualTree.DataSource = Produktion.RootProduktionsSchritt
 
+        'Produktions-Daten nach WinBack exportieren
+        ProdDatenExport()
+    End Sub
+
+    Private Sub DebugPrint(s As String)
+        For Each a As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
+            Debug.Print(s & " Tour/Artikel/Rezept/Sollmenge/TeilerResult " & a.Tour & "/" & a.ArtikelNummer & "-" & a.ArtikelBezeichnung & "/" & a.RezeptNummer & "-" & a.RezeptBezeichnung & "/" & a.Sollmenge_Stk & " Stk -" & a.Sollwert_kg & " kg /" & a.TeigChargenTeilerResult)
+        Next
+    End Sub
+
+    Private Sub ProdDatenExport()
         'Export-File erzeugen
         Dim T1001 As New IO.FileInfo(wb_GlobalSettings.GetFileName("T1001"))
 
@@ -186,12 +209,6 @@ Public Class wb_Planung_Liste
         Else
             MessageBox.Show("Alle Produktionsdaten übertragen" & vbCrLf & Result, "Übertragen der Produktionsdaten zu WinBack", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
-    End Sub
-
-    Private Sub DebugPrint(s As String)
-        For Each a As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
-            Debug.Print(s & " Tour/Artikel/Rezept/Sollmenge/TeilerResult " & a.Tour & "/" & a.ArtikelNummer & "-" & a.ArtikelBezeichnung & "/" & a.RezeptNummer & "-" & a.RezeptBezeichnung & "/" & a.Sollmenge_Stk & " Stk -" & a.Sollwert_kg & " kg /" & a.TeigChargenTeilerResult)
-        Next
     End Sub
 
     Private Function ProdDatenKopfZeile_1() As String
@@ -292,4 +309,30 @@ Public Class wb_Planung_Liste
 
     End Function
 
+    'Private Sub VirtualTree_GetRowData(sender As Object, e As Infralution.Controls.VirtualTree.GetRowDataEventArgs) Handles VirtualTree.GetRowData
+    '    'e.Row.Expanded
+    '    'e.RowData.Icon = Icon
+    'End Sub
+
+    'Private Sub VirtualTree_GetCellData(sender As Object, e As Infralution.Controls.VirtualTree.GetCellDataEventArgs) Handles VirtualTree.GetCellData
+    '    Static bfont As Boolean
+    '    'Get the binding for the given row and get the cell data
+    '    Dim RowBinding As Infralution.Controls.VirtualTree.RowBinding = VirtualTree.GetRowBinding(e.Row)
+    '    RowBinding.GetCellData(e.Row, e.Column, e.CellData)
+
+
+    '    If e.Column.Name = "ColState" Then
+    '        If e.CellData.Value = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL Then
+    '            bFont = True
+    '        Else
+    '            bfont = False
+    '        End If
+    '    End If
+    '    If bfont Then
+    '        e.Column.CellStyle.Font = iFont
+    '    Else
+    '        e.Column.CellStyle.Font = oFont
+    '    End If
+
+    'End Sub
 End Class

@@ -1,4 +1,5 @@
 ﻿Imports System.Reflection
+Imports WinBack.wb_Global.KomponTypen
 
 Public Class wb_Produktionsschritt
     Implements IComparable
@@ -11,7 +12,8 @@ Public Class wb_Produktionsschritt
     Private _SortKriteriumProdPlan As String
 
     Private _Optimiert As Boolean = False
-    Private _LinienGruppe As Integer
+    Private _Linie As Integer = wb_Global.UNDEFINED
+    Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _Typ As String
     Private _Tour As String
     Private _ChargenNummer As String
@@ -160,8 +162,11 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeCharge As String
         Get
-            Return _Tour
-            'Return _ChargenNummer
+            If _Optimiert Then
+                Return ""
+            Else
+                Return _ChargenNummer
+            End If
         End Get
     End Property
 
@@ -181,7 +186,7 @@ Public Class wb_Produktionsschritt
     ''' <returns>String - Bezeichnung</returns>
     Public ReadOnly Property VirtTreeBezeichnung() As String
         Get
-            If Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT Then
+            If Typ = KO_ZEILE_REZEPT Then
                 Return RezeptBezeichnung
             ElseIf wb_Functions.TypeIstText(Typ) Then
                 Return _Sollwert
@@ -193,7 +198,11 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeKommentar As String
         Get
-            Return TeigChargen.Result
+            If _Optimiert Then
+                Return "zusammengefasst in Charge " & _ChargenNummer
+            Else
+                Return _Bestellt_SonderText
+            End If
         End Get
     End Property
 
@@ -208,6 +217,11 @@ Public Class wb_Produktionsschritt
             End If
         End Get
     End Property
+    Public ReadOnly Property VirtTreeTour As String
+        Get
+            Return _Tour
+        End Get
+    End Property
 
     ''' <summary>
     ''' Sollwert. Anzeige im VitualTree. Unterscheidung anhand der Type:
@@ -220,16 +234,21 @@ Public Class wb_Produktionsschritt
     ''' <returns>String - Sollwert</returns>
     Public Property VirtTreeSollwert As String
         Get
-            If Typ = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL Then
+            If Typ = KO_ZEILE_ARTIKEL Then
                 Return wb_Functions.FormatStr(Sollmenge_Stk, 0)
 
-            ElseIf Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT Then
+            ElseIf Typ = KO_ZEILE_REZEPT Then
                 Return wb_Functions.FormatStr(Sollwert_kg, 3)
 
-            ElseIf wb_Functions.TypeIstText(Typ) Then
-                Return ""
             Else
-                Return Sollwert
+                Select Case Typ
+                    Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
+                        Return ""
+                    Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
+                        Return wb_Functions.FormatStr(_Sollwert, 3)
+                    Case Else
+                        Return _Sollwert
+                End Select
             End If
         End Get
         Set(value As String)
@@ -239,9 +258,9 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeEinheit As String
         Get
-            If Typ = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL Then
+            If Typ = KO_ZEILE_ARTIKEL Then
                 Return "Stk"
-            ElseIf Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT Then
+            ElseIf Typ = KO_ZEILE_REZEPT Then
                 Return "kg"
             Else
                 Return Einheit
@@ -411,6 +430,21 @@ Public Class wb_Produktionsschritt
         Get
             Return wb_Linien_Global.GetBezeichnung(_LinienGruppe)
         End Get
+    End Property
+
+    Public Property Linie As Integer
+        Get
+            If _Linie = wb_Global.UNDEFINED Then
+                _Linie = wb_Linien_Global.GetLinieFromLinienGruppe(LinienGruppe)
+            End If
+            Return _Linie
+        End Get
+        Set(value As Integer)
+            _Linie = value
+            If _LinienGruppe = wb_Global.UNDEFINED Then
+                LinienGruppe = wb_Linien_Global.GetLinienGruppeFromLinie(_Linie)
+            End If
+        End Set
     End Property
 
     Public Property Tour As String

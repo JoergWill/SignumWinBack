@@ -11,6 +11,21 @@
     Public Const LogFileEntries = 20                  'Anzahl der Einträge im Puffer
 
     Public Const LinienGruppeSauerteig = 999          'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
+    Public Const MaxLinien = 99
+
+    'Anlegen neuer Dummy-User (Felder vorbelegen)
+    Public Const NewUserName = "Neu"
+    Public Const NewUserPass = "-1"
+    Public Const NewUserGrpe = "1"
+
+    'Filiale.Typ ist Produktions-Filiale
+    Public Const ProduktionsFiliale = 4
+
+    'WinBack-Server-Task Port
+    Public Const WinBackServerTaskPort = "22046"
+
+    'WinBack-Server-Verzeichnis Produktionsdaten
+    Public Const WinBackServerProdDirectory = "/bakelink/1101_Produktion.csv"
 
     Public Enum ktTyp301Gruppen
         xxx
@@ -331,7 +346,7 @@
     End Structure
 
     Public Structure wb_LinienGruppe
-        Public LinienGruppe As String
+        Public LinienGruppe As Integer
         Public Bezeichnung As String
         Public Linien As Array
         Public Abteilung As String
@@ -341,6 +356,11 @@
         Public BackZettelSenden As String
         Public TeigZettelSenden As String
     End Structure
+
+    Enum ModusTeigOptimierung
+        NurTeigeKleinerMinChargen
+        AlleTeige
+    End Enum
 
     Enum ModusChargenTeiler
         XGleiche            'Aufteilung in gleich große Chargen
@@ -374,17 +394,4 @@
         ProdPlan
     End Enum
 
-    'Anlegen neuer Dummy-User (Felder vorbelegen)
-    Public Const NewUserName = "Neu"
-    Public Const NewUserPass = "-1"
-    Public Const NewUserGrpe = "1"
-
-    'Filiale.Typ ist Produktions-Filiale
-    Public Const ProduktionsFiliale = 4
-
-    'WinBack-Server-Task Port
-    Public Const WinBackServerTaskPort = "22046"
-
-    'WinBack-Server-Verzeichnis Produktionsdaten
-    Public Const WinBackServerProdDirectory = "/bakelink/1101_Produktion.csv"
 End Class

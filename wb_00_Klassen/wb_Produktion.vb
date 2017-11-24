@@ -19,8 +19,58 @@
     Private _RootProduktionsSchritt As New wb_Produktionsschritt(Nothing, "")
     Private _SQLProduktionsSchritt As New wb_Produktionsschritt(Nothing, "")
     Private _ProduktionsSchritt As wb_Produktionsschritt
+    Private _ChargenNummer() As Integer
 
     Private _VorProduktion As New ArrayList
+
+    Private ReadOnly Property GetNewChargenNummer(Linie As Integer) As String
+        Get
+            If CheckLinie(Linie) Then
+                If _ChargenNummer(Linie) = 0 Then
+                    _ChargenNummer(Linie) = Linie * 1000
+                Else
+                    _ChargenNummer(Linie) = _ChargenNummer(Linie) + 1
+                End If
+                Return _ChargenNummer(Linie).ToString
+            Else
+                Return ""
+            End If
+        End Get
+    End Property
+
+    Private ReadOnly Property GetChargenNummer(Linie As Integer) As String
+        Get
+            If CheckLinie(Linie) Then
+                Return _ChargenNummer(Linie).ToString
+            Else
+                Return ""
+            End If
+        End Get
+    End Property
+
+    Private ReadOnly Property GetNextChargenNummer(Linie As Integer) As String
+        Get
+            If CheckLinie(Linie) Then
+                Return (_ChargenNummer(Linie) + 1).ToString
+            Else
+                Return ""
+            End If
+        End Get
+    End Property
+
+    Private Function CheckLinie(Linie) As Boolean
+        If (Linie > 0) And (Linie < wb_Global.MaxLinien) Then
+            If _ChargenNummer Is Nothing Then
+                ReDim _ChargenNummer(Linie)
+            End If
+            If _ChargenNummer.Length < Linie Then
+                ReDim _ChargenNummer(Linie)
+            End If
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
     ''' <summary>
     ''' Erster (unsichtbarer) Produktions-Schritt (Root-Node)
@@ -110,41 +160,49 @@
     ''' Fasst alle (Rest-)Teige zu einem/mehreren Teigchargen zusammen (Optimierung der Produktions-Liste)
     ''' Die Produktions-Liste ist vorher schon nach TeigNr/Tour/Artikelnr sortiert.
     ''' </summary>
-    Friend Sub TeigeZusammenfassen()
+    Friend Sub TeigeZusammenfassen(Modus As wb_Global.ModusTeigOptimierung)
+
         'Teigmenge Summe
         Dim TeigMenge As Double = 0
         'Anzahl der Produktions-Schritte die zu optimieren sind
         Dim ProdChildSteps As Integer = RootProduktionsSchritt.ChildSteps.Count - 1
 
         For i = 1 To ProdChildSteps
-            Dim p1 As wb_Produktionsschritt = RootProduktionsSchritt.ChildSteps(i - 1).ChildSteps(0)
-            Dim p2 As wb_Produktionsschritt = RootProduktionsSchritt.ChildSteps(i).ChildSteps(0)
+            '(Erster)Teig der vorhergehenenden Artikelzeile
+            Dim p1 As wb_Produktionsschritt = RootProduktionsSchritt.ChildSteps(i - 1)
+            Dim p1c0 As wb_Produktionsschritt = p1.ChildSteps(0)
+            '(Erster)Teig der folgenden Artikelzeile
+            Dim p2 As wb_Produktionsschritt = RootProduktionsSchritt.ChildSteps(i)
+            Dim p2c0 As wb_Produktionsschritt = p2.ChildSteps(0)
 
-            'Prüfen ob ein Zusammenfassen der Teig möglich ist
-            If Zusammenfassen(p1, p2) Then
+            'Prüfen ob ein Zusammenfassen der Teig möglich ist (wenn die Teige der 2 Artikel identisch sind)
+            'wenn die Artikel-Zeile mehrere Teig-Zeilen hat, werden diese in der Funktion 'Zusammenfassen' je nach Modus addiert
+            If Zusammenfassen(p1c0, p2c0, Modus) Then
                 'Teig schon berücksichtigt
-                If Not p1.Optimiert Then
-                    TeigMenge = TeigMenge + p1.Sollwert_kg
-                    p1.Optimiert = True
-                    Debug.Print("Optimiere Produktion " & p1.Tour & "/" & p1.ArtikelNummer & "/" & p1.ArtikelBezeichnung & "/" & p1.RezeptNummer & "/" & p1.RezeptBezeichnung & "/" & p1.Sollwert_kg)
+                If Not p1c0.Optimiert Then
+                    TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p1, Modus) 'p1.Sollwert_kg
+                    p1c0.Optimiert = True
+                    p1c0.ChargenNummer = GetNextChargenNummer(p1.LinienGruppe)
+                    Debug.Print("Optimiere Produktion " & p1c0.Tour & "/" & p1c0.ArtikelNummer & "/" & p1c0.ArtikelBezeichnung & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & p1c0.Sollwert_kg)
                 End If
                 'Teig schon berücksichtigt
-                If Not p2.Optimiert Then
-                    TeigMenge = TeigMenge + p2.Sollwert_kg
-                    p2.Optimiert = True
-                    Debug.Print("Optimiere Produktion " & p2.Tour & "/" & p2.ArtikelNummer & "/" & p2.ArtikelBezeichnung & "/" & p2.RezeptNummer & "/" & p2.RezeptBezeichnung & "/" & p2.Sollwert_kg)
+                If Not p2c0.Optimiert Then
+                    TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p2, Modus) 'p2.Sollwert_kg
+                    p2c0.Optimiert = True
+                    p2c0.ChargenNummer = GetNextChargenNummer(p2.LinienGruppe)
+                    Debug.Print("Optimiere Produktion " & p2c0.Tour & "/" & p2c0.ArtikelNummer & "/" & p2c0.ArtikelBezeichnung & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & p2c0.Sollwert_kg)
                 End If
                 'Letzter Teig
                 If i = ProdChildSteps Then
-                    AddChargenZeile(p2.Tour, p2.RezeptNr, TeigMenge, wb_Global.ModusChargenTeiler.OptimalUndRest)
-                    Debug.Print("AddCharge LAST " & p2.Tour & "/" & p2.RezeptNr & "/" & p2.RezeptNummer & "/" & p2.RezeptBezeichnung & "/" & TeigMenge)
+                    AddChargenZeile(p2c0.Tour, p2c0.RezeptNr, TeigMenge, wb_Global.ModusChargenTeiler.OptimalUndRest)
+                    Debug.Print("AddCharge LAST " & p2c0.Tour & "/" & p2c0.RezeptNr & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & TeigMenge)
                 End If
             Else
                 'Wenn mehrere Teig zusammengefasst werden sollen
                 If TeigMenge > 0 Then
                     'neuen Produktions - Schritt anhängen
-                    AddChargenZeile(p1.Tour, p1.RezeptNr, TeigMenge, wb_Global.ModusChargenTeiler.OptimalUndRest)
-                    Debug.Print("AddCharge NEW " & p1.Tour & "/" & p1.RezeptNr & "/" & p1.RezeptNummer & "/" & p1.RezeptBezeichnung & "/" & TeigMenge)
+                    AddChargenZeile(p1c0.Tour, p1c0.RezeptNr, TeigMenge, wb_Global.ModusChargenTeiler.OptimalUndRest)
+                    Debug.Print("AddCharge NEW " & p1c0.Tour & "/" & p1c0.RezeptNr & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & TeigMenge)
                     TeigMenge = 0
                 End If
             End If
@@ -152,14 +210,44 @@
 
     End Sub
 
-    Private Function Zusammenfassen(p1 As wb_Produktionsschritt, p2 As wb_Produktionsschritt) As Boolean
-        '        If p1.RezeptNr = p2.RezeptNr And p1.Tour = p2.Tour And p1.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 And p2.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 Then
-        If p1.RezeptNr = p2.RezeptNr And p1.Tour = p2.Tour Then
-            Return True
-        Else
-            Return False
-        End If
+    Private Function Zusammenfassen(p1c0 As wb_Produktionsschritt, p2c0 As wb_Produktionsschritt, Modus As wb_Global.ModusTeigOptimierung) As Boolean
+        'Modus Teig-Optimierung
+        Select Case Modus
 
+            Case wb_Global.ModusTeigOptimierung.AlleTeige
+                'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
+                Return (p1c0.RezeptNr = p2c0.RezeptNr) And (p1c0.Tour = p2c0.Tour)
+
+            Case wb_Global.ModusTeigOptimierung.NurTeigeKleinerMinChargen
+                'optimiere alle Teige mit Restcharge kleiner Minimal-Charge
+                Return (p1c0.RezeptNr = p2c0.RezeptNr And p1c0.Tour = p2c0.Tour And p1c0.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 And p2c0.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3)
+
+            Case Else
+                Return False
+        End Select
+    End Function
+
+    Private Function ZusammenfassenTeigSumme(p As wb_Produktionsschritt, Modus As wb_Global.ModusTeigOptimierung) As Double
+        'Default-Rückgabeert
+        ZusammenfassenTeigSumme = 0
+        'Modus Teig-Optimierung
+        Select Case Modus
+
+            Case wb_Global.ModusTeigOptimierung.AlleTeige
+                'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
+                For Each c As wb_Produktionsschritt In p.ChildSteps
+                    ZusammenfassenTeigSumme = ZusammenfassenTeigSumme + c.Sollwert_kg
+                    Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & ZusammenfassenTeigSumme)
+                Next
+
+            Case wb_Global.ModusTeigOptimierung.NurTeigeKleinerMinChargen
+                'optimiere alle Teige mit Restcharge kleiner Minimal-Charge
+                ZusammenfassenTeigSumme = p.Sollwert_kg
+                Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & ZusammenfassenTeigSumme)
+
+            Case Else
+                Return False
+        End Select
     End Function
 
     ''' <summary>
@@ -273,7 +361,8 @@
 
         'Rezeptur anhängen (Die Linengruppe wird aus der Rezeptur ermittelt)
         Rzpt.LinienGruppe = AddRezeptSchritte(Rzpt, Menge, Nothing)
-
+        '(vorläufige Chargen-Nummer)
+        Rzpt.ChargenNummer = GetNewChargenNummer(Rzpt.LinienGruppe)
     End Sub
 
     Private Function AddRezeptSchritte(ByRef Rzpt As wb_Produktionsschritt, Menge As Double, Parent As Object) As Integer
@@ -701,7 +790,7 @@
 
         'Filiale Produktion
         p(0).Parameter = "Filiale"
-        p(0).Value = Filiale 'TODO aus Filialen ermitteln
+        p(0).Value = Filiale
         'Produktionsdatum
         p(1).Parameter = "LieferDatum"
         p(1).Value = ProduktionsDatum
@@ -713,7 +802,7 @@
         Dim DebugCounter As Integer = 0
 
         'alle Datensätze einlesen
-        While orgaback.Read And (DebugCounter < 10)
+        While orgaback.Read
             DebugCounter += 1
             For i = 0 To orgaback.msRead.FieldCount - 1
                 Debug.Print("OrgaBack StoredProcedure Read " & orgaback.msRead.GetName(i) & "/" & orgaback.msRead.GetValue(i))
