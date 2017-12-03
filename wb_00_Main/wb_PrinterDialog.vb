@@ -1,13 +1,15 @@
 ﻿Imports System.IO
 Imports System.Windows.Forms
 Imports combit.ListLabel22
-Imports WinBack
 
 Public Class wb_PrinterDialog
     Private _ListSubDirectory As String
     Private _ListFileName As String
 
-    Public LL As New ListLabel()
+    Private _LL_KopfZeile_1 As String = ""
+    Private _LL_KopfZeile_2 As String = ""
+
+    Public WithEvents LL As New ListLabel()
 
     Public WriteOnly Property ListSubDirectory As String
         Set(value As String)
@@ -29,7 +31,19 @@ Public Class wb_PrinterDialog
         End Set
     End Property
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Public WriteOnly Property LL_KopfZeile_1 As String
+        Set(value As String)
+            _LL_KopfZeile_1 = value
+        End Set
+    End Property
+
+    Public WriteOnly Property LL_KopfZeile_2 As String
+        Set(value As String)
+            _LL_KopfZeile_2 = value
+        End Set
+    End Property
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         'Try
         LL.AutoDestination = LlPrintMode.Normal
         LL.AutoShowPrintOptions = False
@@ -40,14 +54,18 @@ Public Class wb_PrinterDialog
         LL.Core.LlSetPrinterInPrinterFile(LlProject.List, LL.AutoProjectFile, LlPrinterIndex.AllPages, Settings)
 
         'Druckauftrag starten
-        LL.Print()
-        'Catch
-        'End Try
+        Try
+            LL.Print()
+        Catch LLException As Exception
+            MessageBox.Show(LLException.Message & vbCrLf & "Fehler in List&Label", "Drucken/Vorschau", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End Try
+
+        'Dialog-Fenster wird geschlossen
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
@@ -68,18 +86,24 @@ Public Class wb_PrinterDialog
         LL.ExportOptions.Add(LlExportOption.XlsIgnoreGroupLines, "TRUE")
         LL.ExportOptions.Add(LlExportOption.XlsIgnoreHeaderFooterLines, "TRUE")
         LL.ExportOptions.Add(LlExportOption.XlsIgnoreLineWrapForDataOnlyExport, "TRUE")
-        'Try
-        LL.Print()
-        'Catch
-        'End Try
+        Try
+            LL.Print()
+        Catch LLException As Exception
+            MessageBox.Show(LLException.Message & vbCrLf & "Fehler in List&Label", "Drucken/Vorschau", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End Try
         Me.Close()
     End Sub
 
     Private Sub wb_PrinterDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim IdxProjectPrinter As Integer = wb_Global.UNDEFINED
+        Dim llProjectPrinter As String = wb_Global.UNDEFINED
 
         'Letzter verwendeter Drucker aus der List&Label-Projektdatei
-        Dim LLProjectPrinter As String = LL.Core.LlGetPrinterFromPrinterFile(LlProject.List, LL.AutoProjectFile, LlPrinterIndex.AllPages).dmDeviceName
-        Dim IdxProjectPrinter As Integer = wb_Global.UNDEFINED
+        Try
+            llProjectPrinter = LL.Core.LlGetPrinterFromPrinterFile(LlProject.List, LL.AutoProjectFile, LlPrinterIndex.AllPages).dmDeviceName
+        Catch ex As Exception
+        End Try
+
         'Windows-Standard-Drucker
         Dim pd As New Drawing.Printing.PrintDocument
         Dim DefaultPrinter As String = pd.PrinterSettings.PrinterName
@@ -95,7 +119,7 @@ Public Class wb_PrinterDialog
             End If
 
             'Default-Drucker aus Projekt-File (letzter angewählter Drucker)
-            If Printername = LLProjectPrinter Then
+            If Printername = llProjectPrinter Then
                 IdxProjectPrinter = cbPrinterAuswahl.Items.Count - 1
             End If
         Next
@@ -110,20 +134,28 @@ Public Class wb_PrinterDialog
         End If
 
         'Vorschau (Miniatur) anzeigen
-        'ShowPreview()
+        ShowPreview()
     End Sub
 
     Private Sub ShowPreview()
+
         'Preview anzeigen
         LL.PreviewControl = LLPreview
         LL.AutoDestination = LlPrintMode.PreviewControl
         LL.AutoShowPrintOptions = False
         LL.ExportOptions.Clear()
+        'spezielles File für die Preview - sonst kolldiert der Print-Befehl mit der offenen Preview-Datei
+        LL.Core.LlSetOptionString(LlOptionString.PreviewFileName, wb_GlobalSettings.pTempPath & "LLPreview.ll")
         LL.ExportOptions.Add(LlExportOption.ExportShowResult, "0")
         If File.Exists(LL.AutoProjectFile) Then
             Try
                 LL.Print()
-            Catch
+            Catch LLException As LL_NoData_Exception
+                'keine Datensätze vorhanden - Drucken wird beendet
+                MessageBox.Show("Keine Daten zum Drucken oder Anzeigen", "Drucken/Vorschau", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Me.Close()
+            Catch LLException As Exception
+                MessageBox.Show(LLException.Message & vbCrLf & "Fehler in List&Label", "Drucken/Vorschau", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End Try
         End If
     End Sub
@@ -145,16 +177,44 @@ Public Class wb_PrinterDialog
         Dim Preview As New wb_PrinterPreview
 
         LL.PreviewControl = Preview.LLPreview
+        LL.PreviewControl.Filename = String.Empty
         Preview.Show()
         LL.AutoDestination = LlPrintMode.PreviewControl
         LL.AutoShowPrintOptions = False
         LL.ExportOptions.Clear()
         LL.ExportOptions.Add(LlExportOption.ExportShowResult, "0")
         If File.Exists(LL.AutoProjectFile) Then
-            'Try
-            LL.Print()
-            'Catch
-            'End Try
+            Try
+                LL.Print()
+            Catch LLException As Exception
+                MessageBox.Show(LLException.Message & vbCrLf & "Fehler in List&Label", "Drucken/Vorschau", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End Try
         End If
     End Sub
+
+    ''' <summary>
+    '''  Zusätzliche Felder anmelden:
+    '''  Innerhalb des "AutoDefineNewLine" Events können In der Fields-Collection mit der Methode "Add" Felder hinzugefügt werden
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub LL_AutoDefineNewLinie(sender As Object, e As AutoDefineNewLineEventArgs) Handles LL.AutoDefineNewLine
+        'LL.Fields.Add("MyNewField", "Ein neues Feld")
+    End Sub
+
+    ''' <summary>
+    ''' Zusätzliche Variablen anmelden:
+    ''' Um zusätzliche Variablen zu definieren, kann man das Event "AutoDefineNewPage" verwenden. Auch hier funktioniert die Variables-Collection.
+    ''' 
+    ''' Fügt zwei zusätzliche Variablen in List&Label ein:
+    '''     -Kopfzeile1
+    '''     -Kopfzeile2
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub LL_AutoDefineNewPage(sender As Object, e As AutoDefineNewPageEventArgs) Handles LL.AutoDefineNewPage
+        LL.Variables.Add("KopfZeile1", _LL_KopfZeile_1)
+        LL.Variables.Add("KopfZeile2", _LL_KopfZeile_2)
+    End Sub
+
 End Class

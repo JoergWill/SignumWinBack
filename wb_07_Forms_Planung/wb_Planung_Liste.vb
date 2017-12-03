@@ -118,28 +118,32 @@ Public Class wb_Planung_Liste
         'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
         Produktion.RootProduktionsSchritt.SortBackZettel()
 
-        Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
-
         'Druck-Daten
+        Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
+        pDialog.LL_KopfZeile_1 = "für " & dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
         pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
+
         'List und Label-Verzeichnis für die Listen
         pDialog.ListSubDirectory = "Produktion"
         pDialog.ListFileName = "BackZettel.lst"
         pDialog.ShowDialog()
+        pDialog = Nothing
     End Sub
 
     Private Sub BtnTeigListeDrucken_Click(sender As Object, e As EventArgs) Handles BtnTeigListeDrucken.Click
         'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
         Produktion.RootProduktionsSchritt.SortBackZettel()
 
-        Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
-
         'Druck-Daten
+        Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
+        pDialog.LL_KopfZeile_1 = "für " & dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
         pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
+
         'List und Label-Verzeichnis für die Listen
         pDialog.ListSubDirectory = "Produktion"
         pDialog.ListFileName = "TeigListe.lst"
         pDialog.ShowDialog()
+        pDialog = Nothing
     End Sub
 
     Private Sub BtnTeigListeExport_Click(sender As Object, e As EventArgs) Handles BtnTeigListeExport.Click
@@ -154,7 +158,7 @@ Public Class wb_Planung_Liste
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
 
         'Produktions-Daten nach WinBack exportieren
-        ProdDatenExport()
+        'ProdDatenExport() 'TODO nach Test wiedern aktivieren
     End Sub
 
     Private Sub DebugPrint(s As String)

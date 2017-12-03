@@ -180,16 +180,16 @@
             If Zusammenfassen(p1c0, p2c0, Modus) Then
                 'Teig schon berücksichtigt
                 If Not p1c0.Optimiert Then
-                    TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p1, Modus) 'p1.Sollwert_kg
                     p1c0.Optimiert = True
                     p1c0.ChargenNummer = GetNextChargenNummer(p1.LinienGruppe)
+                    TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p1, Modus, p1c0.ChargenNummer) 'p1.Sollwert_kg
                     Debug.Print("Optimiere Produktion " & p1c0.Tour & "/" & p1c0.ArtikelNummer & "/" & p1c0.ArtikelBezeichnung & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & p1c0.Sollwert_kg)
                 End If
                 'Teig schon berücksichtigt
                 If Not p2c0.Optimiert Then
-                    TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p2, Modus) 'p2.Sollwert_kg
                     p2c0.Optimiert = True
                     p2c0.ChargenNummer = GetNextChargenNummer(p2.LinienGruppe)
+                    TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p2, Modus, p2c0.ChargenNummer) 'p2.Sollwert_kg
                     Debug.Print("Optimiere Produktion " & p2c0.Tour & "/" & p2c0.ArtikelNummer & "/" & p2c0.ArtikelBezeichnung & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & p2c0.Sollwert_kg)
                 End If
                 'Letzter Teig
@@ -198,7 +198,7 @@
                     Debug.Print("AddCharge LAST " & p2c0.Tour & "/" & p2c0.RezeptNr & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & TeigMenge)
                 End If
             Else
-                'Wenn mehrere Teig zusammengefasst werden sollen
+                'Wenn mehrere Teige zusammengefasst werden sollen
                 If TeigMenge > 0 Then
                     'neuen Produktions - Schritt anhängen
                     AddChargenZeile(p1c0.Tour, p1c0.RezeptNr, TeigMenge, wb_Global.ModusChargenTeiler.OptimalUndRest)
@@ -227,7 +227,7 @@
         End Select
     End Function
 
-    Private Function ZusammenfassenTeigSumme(p As wb_Produktionsschritt, Modus As wb_Global.ModusTeigOptimierung) As Double
+    Private Function ZusammenfassenTeigSumme(p As wb_Produktionsschritt, Modus As wb_Global.ModusTeigOptimierung, ChargenNummer As String) As Double
         'Default-Rückgabeert
         ZusammenfassenTeigSumme = 0
         'Modus Teig-Optimierung
@@ -237,8 +237,11 @@
                 'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
                 For Each c As wb_Produktionsschritt In p.ChildSteps
                     ZusammenfassenTeigSumme = ZusammenfassenTeigSumme + c.Sollwert_kg
+                    c.Optimiert = True
+                    c.ChargenNummer = ChargenNummer
                     Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & ZusammenfassenTeigSumme)
                 Next
+                p.Optimiert = True
 
             Case wb_Global.ModusTeigOptimierung.NurTeigeKleinerMinChargen
                 'optimiere alle Teige mit Restcharge kleiner Minimal-Charge

@@ -26,6 +26,9 @@ Partial Class wb_PrinterPreview
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.LLPreview = New combit.ListLabel22.ListLabelPreviewControl(Me.components)
+        Me.BtnPrint = New System.Windows.Forms.Button()
+        Me.BtnPrintSelect = New System.Windows.Forms.Button()
+        Me.BtnAbbruch = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'LLPreview
@@ -35,45 +38,77 @@ Partial Class wb_PrinterPreview
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LLPreview.BackColor = System.Drawing.SystemColors.Control
+        Me.LLPreview.CloseMode = combit.ListLabel22.LlPreviewControlCloseMode.DeleteFile
         Me.LLPreview.CurrentPage = 0
         Me.LLPreview.ForceReadOnly = False
         Me.LLPreview.Location = New System.Drawing.Point(12, 12)
         Me.LLPreview.Name = "LLPreview"
+        Me.LLPreview.ShowToolbar = False
         Me.LLPreview.ShowUnprintableArea = True
-        Me.LLPreview.Size = New System.Drawing.Size(898, 535)
+        Me.LLPreview.Size = New System.Drawing.Size(898, 491)
         Me.LLPreview.SlideshowMode = False
         Me.LLPreview.TabIndex = 5
         Me.LLPreview.Text = "Vorschau"
-        Me.LLPreview.ToolbarButtons.Exit = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.GotoFirst = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.GotoLast = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.GotoNext = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.GotoPrev = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.MouseModeMove = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.MouseModeZoom = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.NextFile = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.PageRange = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.PreviousFile = combit.ListLabel22.LlButtonState.[Default]
+        Me.LLPreview.ToolbarButtons.Exit = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.GotoFirst = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.GotoLast = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.GotoNext = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.GotoPrev = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.MouseModeMove = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.MouseModeZoom = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.NextFile = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.PageRange = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.PreviousFile = combit.ListLabel22.LlButtonState.Invisible
         Me.LLPreview.ToolbarButtons.PrintAllPages = combit.ListLabel22.LlButtonState.[Default]
         Me.LLPreview.ToolbarButtons.PrintCurrentPage = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.PrintToFax = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SaveAs = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SearchNext = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SearchOptions = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SearchStart = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SearchText = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SendTo = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SlideshowMode = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomCombo = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomReset = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomRevert = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomTimes2 = combit.ListLabel22.LlButtonState.[Default]
+        Me.LLPreview.ToolbarButtons.PrintToFax = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.SaveAs = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.SearchNext = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.SearchOptions = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.SearchStart = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.SearchText = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.SendTo = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.SlideshowMode = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.ZoomCombo = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.ZoomReset = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.ZoomRevert = combit.ListLabel22.LlButtonState.Invisible
+        Me.LLPreview.ToolbarButtons.ZoomTimes2 = combit.ListLabel22.LlButtonState.Invisible
+        '
+        'BtnPrint
+        '
+        Me.BtnPrint.Location = New System.Drawing.Point(610, 509)
+        Me.BtnPrint.Name = "BtnPrint"
+        Me.BtnPrint.Size = New System.Drawing.Size(96, 38)
+        Me.BtnPrint.TabIndex = 6
+        Me.BtnPrint.Text = "Drucken"
+        Me.BtnPrint.UseVisualStyleBackColor = True
+        '
+        'BtnPrintSelect
+        '
+        Me.BtnPrintSelect.Location = New System.Drawing.Point(712, 509)
+        Me.BtnPrintSelect.Name = "BtnPrintSelect"
+        Me.BtnPrintSelect.Size = New System.Drawing.Size(96, 38)
+        Me.BtnPrintSelect.TabIndex = 7
+        Me.BtnPrintSelect.Text = "Drucken..."
+        Me.BtnPrintSelect.UseVisualStyleBackColor = True
+        '
+        'BtnAbbruch
+        '
+        Me.BtnAbbruch.Location = New System.Drawing.Point(814, 509)
+        Me.BtnAbbruch.Name = "BtnAbbruch"
+        Me.BtnAbbruch.Size = New System.Drawing.Size(96, 38)
+        Me.BtnAbbruch.TabIndex = 8
+        Me.BtnAbbruch.Text = "Abbruch"
+        Me.BtnAbbruch.UseVisualStyleBackColor = True
         '
         'wb_PrinterPreview
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(922, 559)
+        Me.Controls.Add(Me.BtnAbbruch)
+        Me.Controls.Add(Me.BtnPrintSelect)
+        Me.Controls.Add(Me.BtnPrint)
         Me.Controls.Add(Me.LLPreview)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "wb_PrinterPreview"
@@ -83,4 +118,7 @@ Partial Class wb_PrinterPreview
     End Sub
 
     Public WithEvents LLPreview As combit.ListLabel22.ListLabelPreviewControl
+    Friend WithEvents BtnPrint As Windows.Forms.Button
+    Friend WithEvents BtnPrintSelect As Windows.Forms.Button
+    Friend WithEvents BtnAbbruch As Windows.Forms.Button
 End Class

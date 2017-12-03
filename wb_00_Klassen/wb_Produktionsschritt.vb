@@ -256,6 +256,51 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Gibt eine boolschen Wert zurück, ob der aktuelle Schritt in ListUndLabel gedruckt werden soll. Bei Dummy-Artikeln
+    ''' wird keine Zeile im Report ausgegeben.
+    ''' </summary>
+    ''' <returns>Flag Zeile in Report drucken</returns>
+    Public ReadOnly Property VirtTreePrintBackZettel As Boolean
+        Get
+            If Typ = KO_ZEILE_DUMMYARTIKEL Then
+                Return False
+            Else
+                Return True
+            End If
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Gibt eine boolschen Wert zurück, ob der aktuelle Schritt in ListUndLabel gedruckt werden soll. Bei optimierten Zeilen
+    ''' wird keine Zeile im Report ausgegeben.
+    ''' </summary>
+    ''' <returns>Flag Zeile in Report drucken</returns>
+    Public ReadOnly Property VirtTreePrintTeigListe As Boolean
+        Get
+            If _Optimiert Then
+                Return False
+            End If
+            Return True
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Gibt FÜr Artikelzeilen die Summe aller Sollwerte der Child-Steps zurück
+    ''' Zur Anzeige der Teigmenge bzw. Teig-Gesamt-Menge in der Backliste
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property VirtTreeSumSollwerte As Double
+        Get
+            VirtTreeSumSollwerte = 0
+            If Typ = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL Then
+                For Each c As wb_Produktionsschritt In ChildSteps
+                    VirtTreeSumSollwerte = VirtTreeSumSollwerte + c.Sollwert_kg
+                Next
+            End If
+        End Get
+    End Property
+
     Public ReadOnly Property VirtTreeEinheit As String
         Get
             If Typ = KO_ZEILE_ARTIKEL Then

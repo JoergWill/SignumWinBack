@@ -469,7 +469,12 @@ Public Class wb_GlobalSettings
             If _pListenPath = Nothing Then
                 If pVariante = wb_Global.ProgVariante.WinBack Then
 #If DEBUG Then
-                    _pListenPath = PProgrammPath.Replace("WinBackStart\bin\Debug", "ListLabel")
+                    _pListenPath = pProgrammPath
+                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M4", "ListLabel")
+                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M3", "ListLabel")
+                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M2", "ListLabel")
+                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M1", "ListLabel")
+                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug", "ListLabel")
 #Else
                     _pListenPath = PProgrammPath & "Listen\"
 #End If
@@ -506,10 +511,10 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Public Shared Property PWinBackIniPath As String
+    Public Shared Property pWinBackIniPath As String
         Get
             If _pWinBackIniPath = Nothing Then
-                _pWinBackIniPath = PProgrammPath & "WinBack.ini"
+                _pWinBackIniPath = pProgrammPath & "WinBack.ini"
             End If
             Return _pWinBackIniPath
         End Get
@@ -530,13 +535,23 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Public Shared Property PDatenPath As String
+    Public Shared Property pDatenPath As String
         Get
             Return _pDatenPath
         End Get
         Set(value As String)
             _pDatenPath = value
         End Set
+    End Property
+
+    Public Shared ReadOnly Property pTempPath As String
+        Get
+            Try
+                Return IO.Path.GetTempPath()
+            Catch ex As Exception
+                Return "C:\"
+            End Try
+        End Get
     End Property
 
     Public Shared ReadOnly Property SauerteigAnlage As Boolean
