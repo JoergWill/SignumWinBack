@@ -201,7 +201,7 @@ Partial Class wb_Planung_Liste
         'BtnBackZettelDrucken
         '
         Me.BtnBackZettelDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnBackZettelDrucken.Location = New System.Drawing.Point(711, 12)
+        Me.BtnBackZettelDrucken.Location = New System.Drawing.Point(969, 12)
         Me.BtnBackZettelDrucken.Name = "BtnBackZettelDrucken"
         Me.BtnBackZettelDrucken.Size = New System.Drawing.Size(123, 53)
         Me.BtnBackZettelDrucken.TabIndex = 4
@@ -211,7 +211,7 @@ Partial Class wb_Planung_Liste
         'BtnTeigListeExport
         '
         Me.BtnTeigListeExport.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnTeigListeExport.Location = New System.Drawing.Point(969, 12)
+        Me.BtnTeigListeExport.Location = New System.Drawing.Point(711, 12)
         Me.BtnTeigListeExport.Name = "BtnTeigListeExport"
         Me.BtnTeigListeExport.Size = New System.Drawing.Size(123, 53)
         Me.BtnTeigListeExport.TabIndex = 5
@@ -341,6 +341,7 @@ Partial Class wb_Planung_Liste
         '
         'btnNeueCharge
         '
+        Me.btnNeueCharge.Enabled = False
         Me.btnNeueCharge.Location = New System.Drawing.Point(270, 12)
         Me.btnNeueCharge.Name = "btnNeueCharge"
         Me.btnNeueCharge.Size = New System.Drawing.Size(123, 53)

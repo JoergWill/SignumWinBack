@@ -147,18 +147,19 @@ Public Class wb_Planung_Liste
     End Sub
 
     Private Sub BtnTeigListeExport_Click(sender As Object, e As EventArgs) Handles BtnTeigListeExport.Click
-        DebugPrint("VorSort")
         'Sortieren nach Teig(RezeptNummer), Ergebnis ChargenAufteilung, Tour und ArtikelNummer
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
         Produktion.RootProduktionsSchritt.SortProduktionsPlan()
-        DebugPrint("NachSort")
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
         'gleiche (Rest-)Teige zusammenfassen
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
         Produktion.TeigeZusammenfassen(wb_Global.ModusTeigOptimierung.AlleTeige)
-        DebugPrint("NachOpt")
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
         'Neu erstellte Chargen anzeigen 
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
 
         'Produktions-Daten nach WinBack exportieren
-        'ProdDatenExport() 'TODO nach Test wiedern aktivieren
+        ProdDatenExport()
     End Sub
 
     Private Sub DebugPrint(s As String)

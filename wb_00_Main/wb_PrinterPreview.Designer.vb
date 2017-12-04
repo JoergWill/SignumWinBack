@@ -76,6 +76,7 @@ Partial Class wb_PrinterPreview
         '
         'BtnPrint
         '
+        Me.BtnPrint.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BtnPrint.Location = New System.Drawing.Point(610, 509)
         Me.BtnPrint.Name = "BtnPrint"
         Me.BtnPrint.Size = New System.Drawing.Size(96, 38)
@@ -85,6 +86,7 @@ Partial Class wb_PrinterPreview
         '
         'BtnPrintSelect
         '
+        Me.BtnPrintSelect.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BtnPrintSelect.Location = New System.Drawing.Point(712, 509)
         Me.BtnPrintSelect.Name = "BtnPrintSelect"
         Me.BtnPrintSelect.Size = New System.Drawing.Size(96, 38)
@@ -94,6 +96,7 @@ Partial Class wb_PrinterPreview
         '
         'BtnAbbruch
         '
+        Me.BtnAbbruch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BtnAbbruch.Location = New System.Drawing.Point(814, 509)
         Me.BtnAbbruch.Name = "BtnAbbruch"
         Me.BtnAbbruch.Size = New System.Drawing.Size(96, 38)

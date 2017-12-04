@@ -2,6 +2,12 @@
 Imports System.Windows.Forms
 Imports combit.ListLabel22
 
+''' <summary>
+''' KLasse zum Drucken von Reports über ListUndLabel
+''' Erzeugt zusätzliche Variablen in LL
+'''     Kopfzeile_1
+'''     Kopfzeile_2
+''' </summary>
 Public Class wb_PrinterDialog
     Private _ListSubDirectory As String
     Private _ListFileName As String
@@ -11,6 +17,11 @@ Public Class wb_PrinterDialog
 
     Public WithEvents LL As New ListLabel()
 
+    ''' <summary>
+    ''' Name des Unter-Verzeichnis für die ListUndLabel-Report-Files
+    ''' Das Stammverzeichnis wird in wb_globalSettings festgelegt
+    '''     Programm-Verzeichnis/Listen
+    ''' </summary>
     Public WriteOnly Property ListSubDirectory As String
         Set(value As String)
             _ListSubDirectory = wb_GlobalSettings.pListenPath & value & "\"
@@ -18,6 +29,9 @@ Public Class wb_PrinterDialog
         End Set
     End Property
 
+    ''' <summary>
+    ''' Datei-Name des ListUndLabel-Report-Files
+    ''' </summary>
     Public WriteOnly Property ListFileName As String
         Set(value As String)
             _ListFileName = value
@@ -31,18 +45,29 @@ Public Class wb_PrinterDialog
         End Set
     End Property
 
+    ''' <summary>
+    ''' Kopfzeile 1 ListUndLabel
+    ''' </summary>
     Public WriteOnly Property LL_KopfZeile_1 As String
         Set(value As String)
             _LL_KopfZeile_1 = value
         End Set
     End Property
 
+    ''' <summary>
+    ''' Kopfzeile 2 ListUndLabel
+    ''' </summary>
     Public WriteOnly Property LL_KopfZeile_2 As String
         Set(value As String)
             _LL_KopfZeile_2 = value
         End Set
     End Property
 
+    ''' <summary>
+    ''' Start Druck
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         'Try
         LL.AutoDestination = LlPrintMode.Normal
@@ -65,11 +90,21 @@ Public Class wb_PrinterDialog
         Me.Close()
     End Sub
 
+    ''' <summary>
+    ''' Abbruch Drucken
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 
+    ''' <summary>
+    ''' Edit ListUndLabel-Vorlage-Datei
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub btnEditVorlage_Click(sender As Object, e As EventArgs) Handles btnEditVorlage.Click
         Try
             LL.Design()
@@ -77,6 +112,11 @@ Public Class wb_PrinterDialog
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Export nach Excel über ListUndLabel
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub btnExportExcel_Click(sender As Object, e As EventArgs) Handles btnExportExcel.Click
         LL.ExportOptions.Clear()
         LL.ExportOptions.Add(LlExportOption.ExportTarget, "XLS")
@@ -94,6 +134,19 @@ Public Class wb_PrinterDialog
         Me.Close()
     End Sub
 
+    ''' <summary>
+    ''' Initialisierung.
+    ''' Laden aller Windows-Drucker. Ermittlung Windows-Standard-Drucker
+    ''' Laden des letzten verwendeten Druckers aus dem ListundLabel-Report-File
+    ''' 
+    ''' Das Drucker-Auswahl-Feld wird mit allen verfügbaren Druckern initialisiert.
+    ''' Der Default-Drucker ist entweder der Windows-Standard-Drucker oder der letzte
+    ''' verwendete Drucker aus dem LL-Report-File
+    ''' 
+    ''' Anzeige der Miniatur-Vorschau
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub wb_PrinterDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim IdxProjectPrinter As Integer = wb_Global.UNDEFINED
         Dim llProjectPrinter As String = wb_Global.UNDEFINED
@@ -137,6 +190,10 @@ Public Class wb_PrinterDialog
         ShowPreview()
     End Sub
 
+    ''' <summary>
+    ''' Anzeige der Miniatur-Vorschau. Wenn keine Daten vorhanden sind, wird das Fenster 
+    ''' geschlossen und eine Fehlermeldung ausgegeben.
+    ''' </summary>
     Private Sub ShowPreview()
 
         'Preview anzeigen
@@ -172,6 +229,11 @@ Public Class wb_PrinterDialog
         End If
     End Sub
 
+    ''' <summary>
+    ''' Anzeige eines (großen) Vorschau-Fensters. Aus diesem Fenster kann auch gedruckt werden.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnVorschau_Click(sender As Object, e As EventArgs) Handles BtnVorschau.Click
         'Preview in eigenem Fenster anzeigen
         Dim Preview As New wb_PrinterPreview

@@ -281,6 +281,10 @@
         Root.Sollwert_kg = TeigMenge
         Root.Tour = Tour
         Root.Typ = wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
+        'Chargen-Größen aus Rezept
+        Root.OptChargekg = Rezept.OptChargekg
+        Root.MaxChargekg = Rezept.MaxChargekg
+        Root.MinChargekg = Rezept.MinChargekg
 
         'Chargen berechnen - Aufteilung in Optimal- und Restchargen
         Root.TeigChargen = CalcChargenMenge(TeigMenge, Rezept.MinChargekg, Rezept.MaxChargekg, Rezept.OptChargekg, Modus, True)

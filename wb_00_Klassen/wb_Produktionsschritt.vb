@@ -26,6 +26,11 @@ Public Class wb_Produktionsschritt
     Private _RezeptBezeichnung As String
     Private _RezeptNr As Integer
     Private _RezeptVar As Integer
+
+    Private _OptChargekg As Double
+    Private _MinChargekg As Double
+    Private _MaxChargekg As Double
+
     Private _Sollwert As String
     Private _Sollwert_kg As Double
     Private _Sollmenge_Stk As Double
@@ -68,6 +73,9 @@ Public Class wb_Produktionsschritt
             RezeptVar = 1
             RezeptBezeichnung = .RezeptName
             LinienGruppe = .LinienGruppe
+            OptChargekg = .OptChargekg
+            MaxChargekg = .MaxChargekg
+            MinChargekg = .MinChargekg
         End With
     End Sub
 
@@ -595,12 +603,12 @@ Public Class wb_Produktionsschritt
     End Property
 
     ''' <summary>
-    ''' Anzeige der Prozentualen Größe der Restteigmenge in ListUndLabel
+    ''' Anzeige der Prozentualen Größe der Restteigmenge bezogen auf die Optimalcharge in ListUndLabel
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property TeigRestMengeProzent As Double
         Get
-            Return wb_Functions.ProzentSatz(_TeigChargen.MengeOpt, _TeigChargen.MengeRest)
+            Return wb_Functions.ProzentSatz(OptChargekg, _TeigChargen.MengeRest)
         End Get
     End Property
 
@@ -619,6 +627,33 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As Boolean)
             _Optimiert = value
+        End Set
+    End Property
+
+    Public Property OptChargekg As Double
+        Get
+            Return _OptChargekg
+        End Get
+        Set(value As Double)
+            _OptChargekg = value
+        End Set
+    End Property
+
+    Public Property MinChargekg As Double
+        Get
+            Return _MinChargekg
+        End Get
+        Set(value As Double)
+            _MinChargekg = value
+        End Set
+    End Property
+
+    Public Property MaxChargekg As Double
+        Get
+            Return _MaxChargekg
+        End Get
+        Set(value As Double)
+            _MaxChargekg = value
         End Set
     End Property
 End Class
