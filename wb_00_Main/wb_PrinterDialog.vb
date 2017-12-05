@@ -148,6 +148,9 @@ Public Class wb_PrinterDialog
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub wb_PrinterDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Lizenz-Information eintragen
+        LL.LicensingInfo = "PcyjD"
+
         Dim IdxProjectPrinter As Integer = wb_Global.UNDEFINED
         Dim llProjectPrinter As String = wb_Global.UNDEFINED
 

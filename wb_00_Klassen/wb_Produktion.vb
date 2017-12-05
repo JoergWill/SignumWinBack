@@ -214,6 +214,10 @@
         'Modus Teig-Optimierung
         Select Case Modus
 
+            Case wb_Global.ModusTeigOptimierung.AlleTeigeAlleTouren
+                'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
+                Return (p1c0.RezeptNr = p2c0.RezeptNr)
+
             Case wb_Global.ModusTeigOptimierung.AlleTeige
                 'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
                 Return (p1c0.RezeptNr = p2c0.RezeptNr) And (p1c0.Tour = p2c0.Tour)
@@ -233,7 +237,7 @@
         'Modus Teig-Optimierung
         Select Case Modus
 
-            Case wb_Global.ModusTeigOptimierung.AlleTeige
+            Case wb_Global.ModusTeigOptimierung.AlleTeige, wb_Global.ModusTeigOptimierung.AlleTeigeAlleTouren
                 'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
                 For Each c As wb_Produktionsschritt In p.ChildSteps
                     ZusammenfassenTeigSumme = ZusammenfassenTeigSumme + c.Sollwert_kg

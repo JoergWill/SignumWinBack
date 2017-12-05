@@ -360,6 +360,7 @@
     Enum ModusTeigOptimierung
         NurTeigeKleinerMinChargen
         AlleTeige
+        AlleTeigeAlleTouren
     End Enum
 
     Enum ModusChargenTeiler

@@ -10,10 +10,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("WinBackAddin")>
-<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyDescription("OrgaBack")>
 <Assembly: AssemblyCompany("WinBack GmbH")>
 <Assembly: AssemblyProduct("WinBackAddin")>
-<Assembly: AssemblyCopyright("Copyright ©  2016")>
+<Assembly: AssemblyCopyright("Copyright ©  2017")>
 <Assembly: AssemblyTrademark("WinBack")>
 
 <Assembly: ComVisible(False)>
@@ -32,6 +32,6 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.0.2")>
-<Assembly: AssemblyFileVersion("1.0.0.2")>
+<Assembly: AssemblyVersion("1.0.1.0")>
+<Assembly: AssemblyFileVersion("1.0.1.0")>
 <Assembly: NeutralResourcesLanguage("de-DE")>
