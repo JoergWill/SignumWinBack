@@ -22,6 +22,7 @@ Public Class wb_Produktionsschritt
     Private _ArtikelNummer As String
     Private _ArtikelBezeichnung As String
     Private _ArtikelNr As Integer
+    Private _StkGewicht As Double
     Private _RezeptNummer As String
     Private _RezeptBezeichnung As String
     Private _RezeptNr As Integer
@@ -68,6 +69,7 @@ Public Class wb_Produktionsschritt
         With rs
             Typ = ChargenTyp
             ArtikelNummer = .Nummer
+            StkGewicht = .StkGewicht
             RezeptNr = .RzNr
             RezeptNummer = .RezeptNummer
             RezeptVar = 1
@@ -364,6 +366,15 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As Integer)
             _ArtikelNr = value
+        End Set
+    End Property
+
+    Public Property StkGewicht As Double
+        Get
+            Return _StkGewicht
+        End Get
+        Set(value As Double)
+            _StkGewicht = value
         End Set
     End Property
 

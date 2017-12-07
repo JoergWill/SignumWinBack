@@ -75,6 +75,13 @@ Public Class wb_Functions
         End Try
     End Function
 
+    Public Shared Function ConvertUSDateStringToDate(us As String) As Date
+        Try
+            Return DateTime.ParseExact(us, "yyyyMMdd", Nothing)
+        Catch ex As Exception
+            Return #11/22/1964 00:00:00#
+        End Try
+    End Function
     ''' <summary>
     ''' Wandelt einen String in AllergenInfo um. Wenn der String umgültig ist wird ERR zurückgegeben
     ''' </summary>
@@ -116,6 +123,42 @@ Public Class wb_Functions
                 Return "ERR"
         End Select
     End Function
+
+    Public Shared Function ModusChargenTeilerToString(c As wb_Global.ModusChargenTeiler) As String
+        Select Case c
+            Case wb_Global.ModusChargenTeiler.XGleiche            'Aufteilung in gleich große Chargen
+                Return "Gleich große Chargen"
+            Case wb_Global.ModusChargenTeiler.NurOptimal          'Aufteilung nur in Optimal-Chargen
+                Return "Nur Optimalchargen"
+            Case wb_Global.ModusChargenTeiler.OptimalUndRest      'Aufteilung in Optimal- und Rest-Chargen
+                Return "Optimalchargen und Rest"
+            Case wb_Global.ModusChargenTeiler.MaximalUndRest      'Aufteilung in Maximal- und Rest-Chargen
+                Return "Maximalchargen und Rest"
+            Case wb_Global.ModusChargenTeiler.RezeptGroesse       'Aufteilung in Rezept-Größe (keine Chargen angegeben)
+                Return "Rezeptgröße"
+            Case Else
+                Return ""
+        End Select
+    End Function
+    Enum ModusTeigOptimierung
+        NurTeigeKleinerMinChargen
+        AlleTeige
+        AlleTeigeAlleTouren
+    End Enum
+
+    Public Shared Function ModusTeigOptimierungToString(c As wb_Global.ModusChargenTeiler) As String
+        Select Case c
+            Case wb_Global.ModusTeigOptimierung.NurTeigeKleinerMinChargen   'alle Teige kleiner als Min-Charge zusammenfassen
+                Return "alle Teige kleiner als Minimumcharge"
+            Case wb_Global.ModusTeigOptimierung.AlleTeige                   'alle Teige pro Tour zusammenfassen
+                Return "alle Teige pro Tour"
+            Case wb_Global.ModusTeigOptimierung.AlleTeigeAlleTouren         'alle Teige zusammenfassen unabhängig von Tour
+                Return "alle Teige alle Touren"
+            Case Else
+                Return ""
+        End Select
+    End Function
+
 
     ''' <summary>
     ''' Wandelt LogType in String

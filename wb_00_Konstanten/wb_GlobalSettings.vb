@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Reflection
+Imports WinBack
 Imports WinBack.wb_Global
 ''' <summary>
 ''' Shared Objekt. Hält alle globalen Programm-Einstellungen zentral in einem Objekt.
@@ -57,6 +58,13 @@ Public Class wb_GlobalSettings
 
     Private Shared _SauerteigAnlage As Boolean = Nothing
     Private Shared _SauerteigAnzBeh As Integer = wb_Global.UNDEFINED
+
+    Private Shared _ChargenTeiler As wb_Global.ModusChargenTeiler
+    Private Shared _TeigOptimierung As wb_Global.ModusTeigOptimierung
+    Private Shared _ProdPlanDatum As Date = Nothing
+    Private Shared _ProdPlanfiliale As String = Nothing
+    Private Shared _ProdPlanReadOnOpen As Boolean = False
+
 
     Public Shared Property pVariante As wb_Global.ProgVariante
         Get
@@ -584,6 +592,62 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property ChargenTeiler As ModusChargenTeiler
+        Get
+            If _ChargenTeiler = Nothing Then
+                getWinBackIni("Produktion")
+            End If
+            Return _ChargenTeiler
+        End Get
+        Set(value As ModusChargenTeiler)
+            _ChargenTeiler = value
+            setWinBackIni("Produktion", "ChargenTeiler", value)
+        End Set
+    End Property
+
+    Public Shared Property TeigOptimierung As ModusTeigOptimierung
+        Get
+            If _TeigOptimierung = Nothing Then
+                getWinBackIni("Produktion")
+            End If
+            Return _TeigOptimierung
+        End Get
+        Set(value As ModusTeigOptimierung)
+            _TeigOptimierung = value
+            setWinBackIni("Produktion", "TeigOptimierung", value)
+        End Set
+    End Property
+
+    Public Shared Property ProdPlanDatum As String
+        Get
+            If _ProdPlanDatum = Nothing Then
+                _ProdPlanDatum = DateTime.Today.AddDays(1)
+            End If
+            Return _ProdPlanDatum
+        End Get
+        Set(value As String)
+            _ProdPlanDatum = wb_Functions.ConvertUSDateStringToDate(value)
+        End Set
+    End Property
+
+    Public Shared Property ProdPlanfiliale As String
+        Get
+            Return _ProdPlanfiliale
+        End Get
+        Set(value As String)
+            _ProdPlanfiliale = value
+        End Set
+    End Property
+
+    Public Shared Property ProdPlanReadOnOpen As Boolean
+        Get
+            Return _ProdPlanReadOnOpen
+        End Get
+        Set(value As Boolean)
+            _ProdPlanReadOnOpen = value
+        End Set
+    End Property
+
     Public Shared Function GetFileName(Tabelle As String) As String
         Return pExportPath & Tabelle & "_" & DateTime.Now.ToString("yyMMdd") & "_" & DateTime.Now.ToString("hhmmss") & ".csv"
     End Function
@@ -626,6 +690,10 @@ Public Class wb_GlobalSettings
             Case "OrgaBack"
                 _osGrpBackwaren = IniFile.ReadString("orgaback", "GruppeBackwaren", "0")
                 _osGrpRohstoffe = IniFile.ReadString("orgaback", "GruppeRohstoffe", "40")
+
+            Case "Produktion"
+                _ChargenTeiler = IniFile.ReadString("Produktion", "ChargenTeiler", wb_Global.ModusChargenTeiler.OptimalUndRest)
+                _TeigOptimierung = IniFile.ReadString("Produktion", "TeigOptimierung", wb_Global.ModusTeigOptimierung.AlleTeige)
 
         End Select
     End Sub

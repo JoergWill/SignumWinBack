@@ -223,7 +223,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>dll\OrgaSoft V3.0.6393\Signum.OrgaSoft.Contracts.dll</HintPath>
+      <HintPath>dll\OrgaSoft V3.0.6530\Signum.OrgaSoft.Contracts.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -274,6 +274,12 @@
       <DependentUpon>wb_ArrayGridView.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_CheckedListBox.Designer.vb">
+      <DependentUpon>wb_CheckedListBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_CheckedListBox.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\Sync\wb_SyncRohstoffe_WinBack.vb" />
@@ -565,6 +571,12 @@
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Teiler.Designer.vb">
+      <DependentUpon>wb_Planung_Teiler.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Teiler.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Vorlage.Designer.vb">
       <DependentUpon>wb_Planung_Vorlage.vb</DependentUpon>
     </Compile>
@@ -725,6 +737,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Teiler.resx">
+      <DependentUpon>wb_Planung_Teiler.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Vorlage.resx">
       <DependentUpon>wb_Planung_Vorlage.vb</DependentUpon>

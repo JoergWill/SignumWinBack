@@ -97,7 +97,7 @@ Public Class wb_PrinterDialog
     ''' <param name="e"></param>
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        'Me.Close()
     End Sub
 
     ''' <summary>
@@ -271,7 +271,7 @@ Public Class wb_PrinterDialog
     ''' Zusätzliche Variablen anmelden:
     ''' Um zusätzliche Variablen zu definieren, kann man das Event "AutoDefineNewPage" verwenden. Auch hier funktioniert die Variables-Collection.
     ''' 
-    ''' Fügt zwei zusätzliche Variablen in List&Label ein:
+    ''' Fügt zwei zusätzliche Variablen in ListUundLabel ein:
     '''     -Kopfzeile1
     '''     -Kopfzeile2
     ''' </summary>

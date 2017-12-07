@@ -1,7 +1,8 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Produktion_Main
     Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbProduktion.xml"
-    Public ProduktionListe As New wb_Planung_Liste
+    Public PlanungListe As New wb_Planung_Liste
+    Public PlanungTeiler As New wb_Planung_Teiler
 
     Private Sub SaveDockBarConfig()
         DockPanel.SaveAsXml(DkPnlPath)
@@ -13,14 +14,18 @@ Public Class Produktion_Main
         Catch ex As Exception
         End Try
 
-        ProduktionListe.Show(DockPanel, DockState.DockLeft)
-        ProduktionListe.CloseButtonVisible = False
+        PlanungListe.Show(DockPanel, DockState.DockLeft)
+        PlanungListe.CloseButtonVisible = False
+        PlanungTeiler.Show(DockPanel, DockState.DockRight)
+        PlanungTeiler.CloseButtonVisible = False
     End Sub
 
     Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "ProduktionListe"
-                Return ProduktionListe
+            Case "PlanungListe"
+                Return PlanungListe
+            Case "PlanungTeiler"
+                Return PlanungTeiler
             Case Else
                 Return Nothing
         End Select
@@ -30,7 +35,8 @@ Public Class Produktion_Main
         'Anzeige sichern
         SaveDockBarConfig()
         'alle erzeugten Fenster wieder schliessen
-        ProduktionListe.Close()
+        PlanungListe.Close()
+        PlanungTeiler.Close()
     End Sub
 
     Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load

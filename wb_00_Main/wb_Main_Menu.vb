@@ -84,7 +84,7 @@ Public Class wb_Main_Menu
         Dim oGrpStammdaten = oNewTab.AddGroup("WinBack", "Stammdaten (Produktion)")
         Dim oGrpChargen = oNewTab.AddGroup("WinBack", "Auswertung (Produktion)")
         Dim oGrpLinien = oNewTab.AddGroup("WinBack", "Linien")
-        Dim oGrpPlanung = oNewTab.AddGroup("WinBack", "Produktions-Planung")
+        Dim oGrpPlanung = oNewTab.AddGroup("WinBack", "Teig-Herstellung")
         Dim oGrpAdmin = oNewTab.AddGroup("WinBack", "Administration")
 
         'Gruppe Stammdaten
@@ -103,7 +103,7 @@ Public Class wb_Main_Menu
         oGrpLinien.AddButton("btnLinien", "Produktions-Linien", "WinBack Produktion Linie 1...", My.Resources.MainLinien_32x32, My.Resources.MainLinien_32x32, AddressOf ShowLinienForm)
 
         'Gruppe Produktions-Planung
-        oGrpPlanung.AddButton("btnProdPlan", "WinBack Produktions-Planung", "", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf ShowProduktionsPlanungForm)
+        oGrpPlanung.AddButton("btnProdPlan", "WinBack Teig-Herstellung", "", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf ShowProduktionsPlanungForm)
 
         'Gruppe Administration
         oGrpAdmin.AddButton("btnAdmin", "WinBack Administration", "", My.Resources.Admin_16x16, My.Resources.Admin_32x32, AddressOf ShowAdminAdministrationForm)
@@ -230,6 +230,10 @@ Public Class wb_Main_Menu
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub ShowProduktionsPlanungForm(sender As Object, e As EventArgs)
+
+        'Produktions-Daten beim Öffnen des WinBack-Formulars (nicht)einlesen
+        wb_GlobalSettings.ProdPlanReadOnOpen = False
+
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Planung_Main(ServiceProvider), My.Resources.MainProduktionsPlanung_16x16)
         'Fensterposition aus winback.ini

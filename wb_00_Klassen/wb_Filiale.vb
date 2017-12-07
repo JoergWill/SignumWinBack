@@ -23,14 +23,14 @@ Public Class wb_Filiale
             pFiliale = New ArrayList()
             pSortiment = New ArrayList()
 
-            ''Datenbank-Verbindung öffnen - MsSQL
+            'Datenbank-Verbindung öffnen - MsSQL
             Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
             Trace.WriteLine("OrgaBackMainConString= " & wb_GlobalSettings.OrgaBackMainConString)
             Dim FNr As String
             Dim FName As String
             Dim Srt As String
 
-            ''Daten aus Tabelle Filialen lesen
+            'Daten aus Tabelle Filialen lesen
             If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlFiliale, wb_Global.ProduktionsFiliale)) Then
                 While OrgasoftMain.Read
                     FNr = (OrgasoftMain.sField("Filialnummer"))
@@ -40,10 +40,10 @@ Public Class wb_Filiale
                 End While
             End If
 
-            ''Kanal wieder schliessen
+            'Kanal wieder schliessen
             OrgasoftMain.CloseRead()
 
-            ''Daten aus Tabelle FilialeHatSortiment lesen
+            'Daten aus Tabelle FilialeHatSortiment lesen
             If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSortiment, wb_Global.ProduktionsFiliale)) Then
                 While OrgasoftMain.Read
                     Srt = (OrgasoftMain.sField("SortimentsKürzel"))
@@ -123,4 +123,13 @@ Public Class wb_Filiale
             Return hFiliale
         End Get
     End Property
+
+    Public Shared Function IdxProduktionsFiliale(Key As String) As Integer
+        IdxProduktionsFiliale = 0
+        If Key IsNot Nothing Then
+            If hFiliale.ContainsKey(Key) Then
+                Return hFiliale.IndexOfKey(Key)
+            End If
+        End If
+    End Function
 End Class

@@ -252,4 +252,9 @@ Imports WinBack.wb_Global
         Assert.AreEqual("-10", wb_Functions.DoubleToXString(-10))
     End Sub
 
+    <TestMethod()> Public Sub Test_UsDateToString()
+        Assert.AreEqual(#11/08/2017#, wb_Functions.ConvertUSDateStringToDate("20171108"))
+    End Sub
+
+
 End Class

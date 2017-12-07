@@ -194,14 +194,16 @@
                 End If
                 'Letzter Teig
                 If i = ProdChildSteps Then
-                    AddChargenZeile(p2c0.Tour, p2c0.RezeptNr, TeigMenge, wb_Global.ModusChargenTeiler.OptimalUndRest)
+                    'TODO Chargenteiler auch aus Rezeptur berücksichtigen
+                    AddChargenZeile(TourInfo(p2c0.Tour, Modus), p2c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler)
                     Debug.Print("AddCharge LAST " & p2c0.Tour & "/" & p2c0.RezeptNr & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & TeigMenge)
                 End If
             Else
                 'Wenn mehrere Teige zusammengefasst werden sollen
                 If TeigMenge > 0 Then
                     'neuen Produktions - Schritt anhängen
-                    AddChargenZeile(p1c0.Tour, p1c0.RezeptNr, TeigMenge, wb_Global.ModusChargenTeiler.OptimalUndRest)
+                    'TODO Chargenteiler auch aus Rezeptur berücksichtigen
+                    AddChargenZeile(TourInfo(p1c0.Tour, Modus), p1c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler)
                     Debug.Print("AddCharge NEW " & p1c0.Tour & "/" & p1c0.RezeptNr & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & TeigMenge)
                     TeigMenge = 0
                 End If
@@ -209,6 +211,20 @@
         Next i
 
     End Sub
+
+    ''' <summary>
+    ''' Wenn alle Touren zusammengefasst werden - Tour-Info anpassen
+    ''' </summary>
+    ''' <param name="Tour"></param>
+    ''' <param name="Modus"></param>
+    ''' <returns></returns>
+    Private Function TourInfo(Tour As String, Modus As wb_Global.ModusTeigOptimierung) As String
+        If Modus = wb_Global.ModusTeigOptimierung.AlleTeigeAlleTouren Then
+            Return "1..."
+        Else
+            Return Tour
+        End If
+    End Function
 
     Private Function Zusammenfassen(p1c0 As wb_Produktionsschritt, p2c0 As wb_Produktionsschritt, Modus As wb_Global.ModusTeigOptimierung) As Boolean
         'Modus Teig-Optimierung
@@ -811,12 +827,14 @@
         'Produktionsdaten aufbauen
         Dim BestellDaten As New wb_BestellDatenSchritt
         Dim DebugCounter As Integer = 0
+        'Chargen-Teiler (Vorgabe aus Einstellungen/Planung-Teiler)
+        BestellDaten.ChargenTeiler = wb_GlobalSettings.ChargenTeiler
 
         'alle Datensätze einlesen
         While orgaback.Read
             DebugCounter += 1
             For i = 0 To orgaback.msRead.FieldCount - 1
-                Debug.Print("OrgaBack StoredProcedure Read " & orgaback.msRead.GetName(i) & "/" & orgaback.msRead.GetValue(i))
+                'Debug.Print("OrgaBack StoredProcedure Read " & orgaback.msRead.GetName(i) & "/" & orgaback.msRead.GetValue(i))
                 MsSQLdbProcedure_Produktionsauftrag = True
                 'Daten aus der view einlesen
                 BestellDaten.MsSQLdbRead_Fields(orgaback.msRead.GetName(i), orgaback.msRead.GetValue(i))
@@ -942,7 +960,6 @@
                     _SQLProduktionsSchritt.Sollwert_kg = wb_Functions.StrToDouble(Value)
                 Case "B_ARZ_Sollmenge_stueck", "Produktionsmenge"
                     _SQLProduktionsSchritt.Sollmenge_Stk = wb_Functions.StrToDouble(Value)
-
 
             End Select
         Catch ex As Exception

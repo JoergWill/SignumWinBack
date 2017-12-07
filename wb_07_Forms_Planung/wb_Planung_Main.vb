@@ -9,6 +9,7 @@ Public Class wb_Planung_Main
 
     'Default-Fenster
     Public PlanungListe As New wb_Planung_Liste
+    Public PlanungTeiler As New wb_Planung_Teiler
 
 #Region "Signum"
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -47,12 +48,12 @@ Public Class wb_Planung_Main
             If _ContextTabs Is Nothing Then
                 _ContextTabs = New List(Of GUI.ITab)
                 ' Fügt dem Ribbon ein neues RibbonTab hinzu
-                Dim oNewTab = _MenuService.AddContextTab("Planung", "Planung", "WinBack Produktionsplanung")
+                Dim oNewTab = _MenuService.AddContextTab("Teig-Herstellung", "Teig-Herstellung", "WinBack Teig-Herstellung")
                 ' Das neue RibbonTab erhält eine Gruppe
-                Dim oGrp = oNewTab.AddGroup("GrpPlanung", "Produktions-Liste/Backzettel")
+                Dim oGrp = oNewTab.AddGroup("GrpPlanung", "Teigliste/Backzettel")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("BtnExportProdListe", "Export", "Produktionsplan an WinBack senden", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnProdListeExport)
-                oGrp.AddButton("BtnPrintProdListe", "Drucken", "Backzettel drucken", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnProdListePrint)
+                oGrp.AddButton("BtnExportProdListen", "Export/Drucken", "Backzettel und Teigliste drucken. Produktionsplan an WinBack senden", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnProdListeExport)
+                oGrp.AddButton("BtnProdTeiler", "Einstellungen Optimierung", "Einstellungen zur Optimierung der Teigliste", My.Resources.EditKonfig_16x16, My.Resources.EditKonfig_32x32, AddressOf BtnPlanungTeiler)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -67,6 +68,11 @@ Public Class wb_Planung_Main
                 _DockPanelList.Add(PlanungListe)
                 Return PlanungListe
 
+            Case "WinBack.wb_Planung_Teiler"
+                PlanungTeiler = New wb_Planung_Teiler
+                _DockPanelList.Add(PlanungTeiler)
+                Return PlanungTeiler
+
             Case Else
                 Return Nothing
         End Select
@@ -76,15 +82,17 @@ Public Class wb_Planung_Main
     Public Overrides Function Init() As Boolean Implements IBasicFormUserControl.Init
         'Init aus der Basis-Klasse aufrufen (zuerst)
         Init = MyBase.Init()
-        'Bestelldaten aus Stored-Procedure lsen
-        GetOrderData()
+        'Bestelldaten aus Stored-Procedure lesen
+        'GetOrderData()
 
     End Function
 
     Private Sub BtnProdListeExport()
     End Sub
 
-    Private Sub BtnProdListePrint()
+    Private Sub BtnPlanungTeiler()
+        PlanungTeiler = New wb_Planung_Teiler
+        PlanungTeiler.Show(DockPanel, DockState.DockTop)
     End Sub
 
     ''' <summary>
@@ -95,7 +103,6 @@ Public Class wb_Planung_Main
         Dim oSetting As ISettingService = TryCast(_ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
         Dim oData As IData = oFactory.GetData
 
-        'TODO Query muss überarbeitet werden - Backzettel wird in OrgaBack erzeugt (31.08.2017)
         Using oTable = oData.OpenQuery(Database.Main, "pq_Produktionsauftrag", LockType.ReadOnly, (1), (-1), ("FB"), ("KB"), ("20170830"))
             Debug.Print("Anzahl der Spalten " & oTable.Columns.Count)
             Debug.Print("Anzahl der Zeilen  " & oTable.Rows.Count)

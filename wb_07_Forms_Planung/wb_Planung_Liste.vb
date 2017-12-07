@@ -41,21 +41,38 @@ Public Class wb_Planung_Liste
     Private Sub wb_Planung_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Liste mit Produktions-Filialen
         cbProduktionsFiliale.Fill(wb_Filiale.ProduktionsFilialen)
-        'erste Filiale auswählen
-        cbProduktionsFiliale.SelectedIndex = 0
-
-        'Datum heute plus einen Tag
-        dtBestellungen.Value = DateTime.Today.AddDays(1) 'TODO Tage im vorraus in WinBack-ini festhalten
-
-        'Einlesen der Bestellungen nur wenn auch OrgaBack aktiv ist
-        BtnBestellungen.Enabled = (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack)
 
         'Font für die Anzeige Artikelzeile im VirtualTree
         oFont = VirtualTree.Font
         iFont = New Drawing.Font(oFont.Name, oFont.Size, Drawing.FontStyle.Italic)
+
+        'OrgaBack aktiv
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            'Einlesen der Bestellungen nur wenn auch OrgaBack aktiv ist
+            BtnBestellungen.Enabled = True
+            'erste Filiale auswählen
+            cbProduktionsFiliale.SelectedIndex = wb_Filiale.IdxProduktionsFiliale(wb_GlobalSettings.ProdPlanfiliale)
+            'Produktions-Datum
+            dtBestellungen.Value = wb_GlobalSettings.ProdPlanDatum
+            'Bestellungen automatisch einlesen
+            If wb_GlobalSettings.ProdPlanReadOnOpen Then
+                ReadBestellungenOrgaBack()
+            End If
+        Else
+            'Einlesen der Bestellungen nur wenn auch OrgaBack aktiv ist
+            BtnBestellungen.Enabled = False
+            'erste Filiale auswählen
+            cbProduktionsFiliale.SelectedIndex = 0
+            'Datum heute plus einen Tag
+            dtBestellungen.Value = DateTime.Today.AddDays(1) 'TODO Tage im vorraus in WinBack-ini festhalten
+        End If
     End Sub
 
     Private Sub BtnBestellungen_Click(sender As Object, e As EventArgs) Handles BtnBestellungen.Click
+        ReadBestellungenOrgaBack()
+    End Sub
+
+    Private Sub ReadBestellungenOrgaBack()
         'Bestellungen einlesen für Produktions-Datum
         Dim ProduktionsDatum As String = dtBestellungen.Value.ToString("yyyyMMdd")
         Dim ProduktionsFilialeNummer As String = cbProduktionsFiliale.GetKeyFromSelection()
@@ -96,15 +113,15 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TEST
-        Produktion.AddChargenZeile("1", "11102", 0, 240, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddChargenZeile("2", "11102", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddChargenZeile("3", "11102", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddChargenZeile("4", "11102", 0, 2, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddChargenZeile("1", "11103", 0, 4, wb_Global.ModusChargenTeiler.OptimalUndRest, True, "", 4)
-        Produktion.AddChargenZeile("1", "11101", 0, 34, wb_Global.ModusChargenTeiler.OptimalUndRest, True, "", 35, "Filiale Seestrasse 5 Stk geschnitten anliefern")
-        Produktion.AddChargenZeile("2", "11101", 0, 6, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddChargenZeile("3", "11101", 0, 6, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
-        Produktion.AddChargenZeile("4", "11101", 0, 2, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+        Produktion.AddChargenZeile("1", "11102", 0, 240, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("2", "11102", 0, 200, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("3", "11102", 0, 4, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("4", "11102", 0, 2, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("1", "11103", 0, 4, wb_GlobalSettings.ChargenTeiler, True, "", 4)
+        Produktion.AddChargenZeile("1", "11101", 0, 34, wb_GlobalSettings.ChargenTeiler, True, "", 35, "Filiale Seestrasse 5 Stk geschnitten anliefern")
+        Produktion.AddChargenZeile("2", "11101", 0, 6, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("3", "11101", 0, 6, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("4", "11101", 0, 2, wb_GlobalSettings.ChargenTeiler, True)
         'Produktion.AddArtikelCharge("2", "", 7035, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
@@ -153,7 +170,7 @@ Public Class wb_Planung_Liste
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
         'gleiche (Rest-)Teige zusammenfassen
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
-        Produktion.TeigeZusammenfassen(wb_Global.ModusTeigOptimierung.AlleTeige)
+        Produktion.TeigeZusammenfassen(wb_GlobalSettings.TeigOptimierung)
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
         'Neu erstellte Chargen anzeigen 
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt

@@ -375,7 +375,7 @@
         OK      'Chargenaufteilung in Ordnung
         EM1     'Nach Aufteilung in Optimalchargen bleibt eine Restmenge offen, die nicht produziert werden kann
         EM2     'Nach Aufteilung in Optimalchargen wird mehr produziert als gefordert
-        EM3     'Nur eine Restcharge, Restmenge unterhalb Mindestchargen - Chargen gleicher Teig müssen zusammengefasst werden.
+        EM3     'Nur eine Restcharge, Restmenge unterhalb Mindestchargen - Chargen gleicher Teige müssen zusammengefasst werden.
         EP1     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
         EP2     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
         EP9     'Keine Chargengrößen angegeben, Aufteilung nach Rezeptgröße

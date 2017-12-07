@@ -5,7 +5,7 @@ Public Class wb_BestellDatenSchritt
     Private _TourNr As Integer
     Private _ArtikelNummer As String
     Private _Produktionsmenge As Double
-    Private _ChargenTeiler As wb_Global.ModusChargenTeiler
+    Private _ChargenTeiler As wb_Global.ModusChargenTeiler = wb_Global.ModusChargenTeiler.OptimalUndRest
 
     Public Property TourNr As Integer
         Get
@@ -36,7 +36,7 @@ Public Class wb_BestellDatenSchritt
 
     Public Property ChargenTeiler As wb_Global.ModusChargenTeiler
         Get
-            Return wb_Global.ModusChargenTeiler.OptimalUndRest
+            Return _ChargenTeiler
         End Get
         Set(value As wb_Global.ModusChargenTeiler)
             _ChargenTeiler = value
