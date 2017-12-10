@@ -5,7 +5,7 @@ Public Class wb_Rezept_Shared
     Public Shared Event eEdit_Leave(sender As Object)
 
     Public Shared RzVariante As New SortedList
-    Public Shared LinienGruppe As New SortedList
+    'Public Shared LinienGruppe As New SortedList
 
     Public Shared aktRzNr As Integer            'Rezept-Index
     Public Shared aktRzNummer As String         'Rezept-Nummer  (alpha)
@@ -25,7 +25,7 @@ Public Class wb_Rezept_Shared
 
     Public Sub New()
         LoadVariantenTexte()
-        LoadLinienGruppenTexte()
+        'LoadLinienGruppenTexte()
 
     End Sub
 
@@ -42,18 +42,18 @@ Public Class wb_Rezept_Shared
         winback.Close()
     End Sub
 
-    Private Shared Sub LoadLinienGruppenTexte()
-        'HashTable mit der Übersetzung der Liniengruppen-Nummer in die Liniengruppen-Bezeichnung laden
-        'wenn die Liniengruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
-        'entsprechende Übersetzung aus winback.Texte geladen
-        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
-        winback.sqlSelect("SELECT LG_Nr, LG_Bezeichnung FROM LinienGruppen")
-        LinienGruppe.Clear()
-        While winback.Read
-            LinienGruppe.Add(winback.iField("LG_Nr"), winback.sField("LG_Bezeichnung"))
-        End While
-        winback.Close()
-    End Sub
+    'Private Shared Sub LoadLinienGruppenTexte()
+    '    'HashTable mit der Übersetzung der Liniengruppen-Nummer in die Liniengruppen-Bezeichnung laden
+    '    'wenn die Liniengruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
+    '    'entsprechende Übersetzung aus winback.Texte geladen
+    '    Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
+    '    winback.sqlSelect("SELECT LG_Nr, LG_Bezeichnung FROM LinienGruppen")
+    '    LinienGruppe.Clear()
+    '    While winback.Read
+    '        LinienGruppe.Add(winback.iField("LG_Nr"), winback.sField("LG_Bezeichnung"))
+    '    End While
+    '    winback.Close()
+    'End Sub
 
     Public Shared Sub Liste_Click(sender As Object)
         RaiseEvent eListe_Click(sender)

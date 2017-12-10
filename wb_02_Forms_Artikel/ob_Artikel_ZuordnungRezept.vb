@@ -6,6 +6,20 @@ Public Class ob_Artikel_ZuordnungRezept
     Implements IBasicFormUserControl
     Private RzNr As Integer = 0
 
+#Region "Signum"
+
+    Private _DockingExtension As IDockingExtension
+
+    Public Sub New(DockingExtension As IDockingExtension)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        _DockingExtension = DockingExtension
+
+    End Sub
+
     ''' <summary>
     ''' Eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn
     ''' </summary>
@@ -53,30 +67,6 @@ Public Class ob_Artikel_ZuordnungRezept
 
     Public Event Close As EventHandler Implements IBasicFormUserControl.Close
 
-    Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
-    End Sub
-
-    Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
-        Select Case CommandId
-            Case "INVALID"
-                BtnRzpShow.Enabled = False
-                BtnRzptChange.Enabled = False
-                RzNr = 0
-                tRezeptNr.Text = ""
-                tRezeptName.Text = ""
-
-            Case "VALID"
-
-            Case "wbFOUND"
-                RzNr = DirectCast(Parameter, wb_Komponenten).RzNr
-                tRezeptNr.Text = DirectCast(Parameter, wb_Komponenten).RezeptNummer
-                tRezeptName.Text = DirectCast(Parameter, wb_Komponenten).RezeptName
-                BtnRzpShow.Enabled = True
-
-        End Select
-        Return Nothing
-    End Function
-
     ''' <summary>
     ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
     ''' </summary>
@@ -90,23 +80,52 @@ Public Class ob_Artikel_ZuordnungRezept
         Return False
     End Function
 
+    Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
+    End Sub
+#End Region
+
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
-        MyBase.Text = "WinBack Produktion"
+        MyBase.Text = "WinBack Artikel-Rezept-Zuordnung"
+
+        'Form anzeigen
         Me.Show()
+
+        'ComboBox Liniengruppe füllen
+        cbLiniengruppe.Fill(wb_Linien_Global.LinienGruppen)
+        cbArtikelLinienGruppe.Fill(wb_Linien_Global.LinienGruppen)
+
         Return True
     End Function
 
-    Private _DockingExtension As IDockingExtension
+    Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
+        Select Case CommandId
+            Case "INVALID"
 
-    Public Sub New(DockingExtension As IDockingExtension)
+                'alle Steuerelemente sperren
+                EnableKomponenten(False)
 
-        ' This call is required by the designer.
-        InitializeComponent()
+                RzNr = 0
+                tRezeptNr.Text = ""
+                tRezeptName.Text = ""
 
-        ' Add any initialization after the InitializeComponent() call.
-        _DockingExtension = DockingExtension
+            Case "VALID"
 
-    End Sub
+            Case "wbFOUND"
+                RzNr = DirectCast(Parameter, wb_Komponenten).RzNr
+                tRezeptNr.Text = DirectCast(Parameter, wb_Komponenten).RezeptNummer
+                tRezeptName.Text = DirectCast(Parameter, wb_Komponenten).RezeptName
+
+                cbLiniengruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponenten).LinienGruppe)
+                cbArtikelLinienGruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponenten).ArtikelLinienGruppe)
+
+                tStkGewicht.Text = DirectCast(Parameter, wb_Komponenten).StkGewicht
+
+                'alle Steuerelemente aktivieren
+                EnableKomponenten(True)
+
+        End Select
+        Return Nothing
+    End Function
 
     Private Sub BtnRzpShow_Click(sender As Object, e As EventArgs) Handles BtnRzpShow.Click
         Me.Cursor = Cursors.WaitCursor
@@ -114,5 +133,13 @@ Public Class ob_Artikel_ZuordnungRezept
         'MDI-Fenster anzeigen
         Rezeptur.Show()
         Me.Cursor = Cursors.Default
+    End Sub
+
+    Private Sub EnableKomponenten(Enable As Boolean)
+        BtnRzpShow.Enabled = Enable
+        BtnRzptChange.Enabled = Enable
+
+        cbLiniengruppe.Enabled = Enable
+        cbArtikelLinienGruppe.Enabled = Enable
     End Sub
 End Class

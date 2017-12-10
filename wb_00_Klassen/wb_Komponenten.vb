@@ -23,7 +23,8 @@ Public Class wb_Komponenten
     Private _LastErrorText As String
     Private _RezeptNummer As String = Nothing
     Private _RezeptName As String = Nothing
-    Private _LinienGruppe As Integer
+    Private _LinienGruppe As Integer = wb_Global.UNDEFINED
+    Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
 
     Private KO_DeklBezeichungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
@@ -138,6 +139,18 @@ Public Class wb_Komponenten
         End Set
     End Property
 
+    Public Property ArtikelLinienGruppe As Integer
+        Get
+            If _ArtikelLinienGruppe = wb_Global.UNDEFINED Then
+                GetProduktionsDaten()
+            End If
+            Return _ArtikelLinienGruppe
+        End Get
+        Set(value As Integer)
+            _ArtikelLinienGruppe = value
+        End Set
+    End Property
+
     Public Property Lieferant As String
         Set(value As String)
             'Änderungen loggen
@@ -183,12 +196,12 @@ Public Class wb_Komponenten
 
         If ktTyp300.Liniengruppe > 0 Then
             'Produktions-Liniengruppe aus RohParams(5)
-            _LinienGruppe = ktTyp300.Liniengruppe
+            _ArtikelLinienGruppe = ktTyp300.Liniengruppe
         End If
         If ktTyp300.RzNr > 0 Then
             'Artikel-Rezeptur
             Dim Rezept As New wb_Rezept(ktTyp300.RzNr)
-            _LinienGruppe = Rezept.LinienGruppe
+            _ArtikelLinienGruppe = Rezept.LinienGruppe
         End If
     End Sub
 

@@ -7,7 +7,7 @@ Public Class wb_Rezept_Details
         'Combo-Box(Rezept-Varianten) mit Werten füllen
         cbVariante.Fill(wb_Rezept_Shared.RzVariante)
         'Combo-Box(Rezept-Varianten) mit Werten füllen
-        cbLiniengruppe.Fill(wb_Rezept_Shared.LinienGruppe)
+        cbLiniengruppe.Fill(wb_Linien_Global.LinienGruppen)
 
         'Event-Handler (Klick auf Rezept-Liste -> Anzeige der Detail-Info)
         AddHandler wb_Rezept_Shared.eListe_Click, AddressOf DetailInfo

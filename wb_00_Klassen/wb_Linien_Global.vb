@@ -1,5 +1,6 @@
 ﻿Public Class wb_Linien_Global
-    Private Shared LinienGruppen As New Dictionary(Of String, wb_Global.wb_LinienGruppe)
+    Private Shared LGruppen As New Dictionary(Of String, wb_Global.wb_LinienGruppe)
+    Public Shared LinienGruppen As New SortedList
 
     Shared Sub New()
         Dim L As wb_Global.wb_LinienGruppe = Nothing
@@ -7,6 +8,7 @@
 
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlLinienGruppen)
+        LGruppen.Clear()
         LinienGruppen.Clear()
 
         While winback.Read
@@ -32,14 +34,17 @@
             End Try
 
             'zum Dictonary hinzufügen
-            LinienGruppen.Add(L.LinienGruppe, L)
+            LGruppen.Add(L.LinienGruppe, L)
+            'SortedList
+            LinienGruppen.Add(L.LinienGruppe, L.Bezeichnung)
         End While
+
         winback.Close()
     End Sub
 
     Shared Function GetBezeichnung(LinienGruppe As Integer) As String
-        If LinienGruppen.ContainsKey(LinienGruppe) Then
-            Return LinienGruppen(LinienGruppe).Bezeichnung
+        If LGruppen.ContainsKey(LinienGruppe) Then
+            Return LGruppen(LinienGruppe).Bezeichnung
         Else
             Return ""
         End If
@@ -52,8 +57,8 @@
     ''' <param name="LinienGruppe"></param>
     ''' <returns></returns>
     Shared Function GetLinieFromLinienGruppe(LinienGruppe As Integer) As Integer
-        If LinienGruppen.ContainsKey(LinienGruppe) Then
-            Return wb_Functions.StrToInt(LinienGruppen(LinienGruppe).Linien(0))
+        If LGruppen.ContainsKey(LinienGruppe) Then
+            Return wb_Functions.StrToInt(LGruppen(LinienGruppe).Linien(0))
         Else
             Return wb_Global.UNDEFINED
         End If
@@ -66,7 +71,7 @@
     ''' <param name="Linie"></param>
     ''' <returns></returns>
     Friend Shared Function GetLinienGruppeFromLinie(Linie As Integer) As Integer
-        For Each lg In LinienGruppen
+        For Each lg In LGruppen
             For Each l As Integer In lg.Value.Linien
                 If l = Linie Then
                     Return lg.Value.LinienGruppe

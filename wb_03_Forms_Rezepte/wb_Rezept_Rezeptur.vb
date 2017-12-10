@@ -52,7 +52,8 @@ Public Class wb_Rezept_Rezeptur
         'Combo-Box(Rezept-Varianten) mit Werten füllen
         cbVariante.Fill(wb_Rezept_Shared.RzVariante)
         'Combo-Box(Rezept-Varianten) mit Werten füllen
-        cbLiniengruppe.Fill(wb_Rezept_Shared.LinienGruppe)
+        'cbLiniengruppe.Fill(wb_Rezept_Shared.LinienGruppe)
+        cbLiniengruppe.Fill(wb_Linien_Global.LinienGruppen)
         'Eintrag in Combo-Box Liniengruppe ausfüllen
         cbLiniengruppe.SetTextFromKey(Rezept.LinienGruppe)
         'Eintrag in Combo-Box Rezeptvariante ausfüllen
