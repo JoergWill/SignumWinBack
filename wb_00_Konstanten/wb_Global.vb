@@ -227,9 +227,6 @@
     Public Const TA_Null = 0
     Public Const TA_Mehl = 100
 
-
-
-
     Enum Parameter
         Tx_AlNum               'Rohstoff/Artikelnummer(alphanumerisch)
         Tx_Bezeichnung         'Rohstoff/Artikelbezeichnung
@@ -395,4 +392,13 @@
         ProdPlan
     End Enum
 
+    Enum MinMaxOptChargenError
+        NoError     'kein Fehler
+        MinGrOpt    'Minimal-Charge größer als Optimal-Charge
+        MinGrMax    'Minimal-Charge größer als Maximal-Charge
+        OptGrMax    'Optimal-Charge größer als Maximal-Charge
+        OptKlMin    'Optimal-Charge kleiner als Minimal-Charge
+        MaxKlOpt    'Maximal-Charge kleiner als Optimal-Charge
+        MaxKlMin    'Maximal-Charge kleiner als Minimal-Charge
+    End Enum
 End Class

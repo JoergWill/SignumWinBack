@@ -17,14 +17,16 @@ Public Class wb_Komponenten
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
     Private KA_Stueckgewicht As Double
-    Private KA_Charge_Min As Double
+    Private KA_Charge_Min As Double 'TODO bei Type 102 stkgewicht in kg !!
     Private KA_Charge_Max As Double
     Private KA_Charge_Opt As Double
     Private _LastErrorText As String
     Private _RezeptNummer As String = Nothing
     Private _RezeptName As String = Nothing
+    Private _BruttoRezeptGewicht As Double = 0
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
+
 
     Private KO_DeklBezeichungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
@@ -32,6 +34,7 @@ Public Class wb_Komponenten
     Public NwtUpdate As New wb_Hinweise(Hinweise.NaehrwertUpdate)
     Public ktTyp300 As New wb_KomponParam300
     Public ktTyp301 As New wb_KomponParam301
+    Public ChargenMengen As New wb_MinMaxOptCharge
 
     Public Property Nr As Integer
         Set(value As Integer)
@@ -202,6 +205,7 @@ Public Class wb_Komponenten
             'Artikel-Rezeptur
             Dim Rezept As New wb_Rezept(ktTyp300.RzNr)
             _ArtikelLinienGruppe = Rezept.LinienGruppe
+            _BruttoRezeptGewicht = Rezept.BruttoRezeptGewicht
         End If
     End Sub
 
@@ -280,7 +284,7 @@ Public Class wb_Komponenten
         End Set
     End Property
 
-    Public Property OptChargeStkg As Double
+    Public Property OptChargeStk As Double
         Get
             Return KA_Charge_Opt
         End Get
@@ -313,6 +317,15 @@ Public Class wb_Komponenten
         End Get
         Set(value As Double)
             KA_Charge_Opt = value
+        End Set
+    End Property
+
+    Public Property BruttoRezeptGewicht As String
+        Get
+            Return _BruttoRezeptGewicht
+        End Get
+        Set(value As String)
+            _BruttoRezeptGewicht = value
         End Set
     End Property
 
@@ -634,15 +647,19 @@ Public Class wb_Komponenten
                 'Stückgewicht in Gramm
                 Case "KA_Stueckgewicht"
                     KA_Stueckgewicht = wb_Functions.StrToDouble(Value)
+                    ChargenMengen.StkGewicht = Value
                 'Minimal-Charge
                 Case "KA_Charge_Min"
                     KA_Charge_Min = wb_Functions.StrToDouble(Value)
+                    ChargenMengen.MinCharge.MengeInStk = Value
                 'Maximal-Charge
                 Case "KA_Charge_Max"
                     KA_Charge_Max = wb_Functions.StrToDouble(Value)
+                    ChargenMengen.MaxCharge.MengeInStk = Value
                 'Optimal-Charge
                 Case "KA_Charge_Opt"
                     KA_Charge_Opt = wb_Functions.StrToDouble(Value)
+                    ChargenMengen.OptCharge.MengeInStk = Value
 
             End Select
         Catch ex As Exception

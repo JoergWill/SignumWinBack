@@ -581,6 +581,33 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Gibt den entsprechenden Fehlertext zum Fehler-Code bei der Eingabeprüfung von 
+    ''' Minimal/Optimal/Maximal-Charge zurück
+    ''' </summary>
+    ''' <param name="ErrCode"></param>
+    ''' <returns></returns>
+    Public Shared Function MinMaxOptChargeToString(ErrCode As wb_Global.MinMaxOptChargenError) As String
+        Select Case ErrCode
+            Case wb_Global.MinMaxOptChargenError.NoError     'kein Fehler
+                Return ""
+            Case wb_Global.MinMaxOptChargenError.MinGrOpt    'Minimal-Charge größer als Optimal-Charge
+                Return "Die Minimal-Charge muss kleiner als die Optimal-Charge sein"
+            Case wb_Global.MinMaxOptChargenError.MinGrMax  'Minimal-Charge größer als Maximal-Charge
+                Return "Die Minimal-Charge muss kleiner als die Maximal-Charge sein"
+            Case wb_Global.MinMaxOptChargenError.OptGrMax    'Optimal-Charge größer als Maximal-Charge
+                Return "Die Optimal-Charge muss kleiner als die Maximal-Charge sein"
+            Case wb_Global.MinMaxOptChargenError.OptKlMin    'Optimal-Charge kleiner als Minimal-Charge
+                Return "Die Optimal-Charge muss größer als die Minimal-Charge sein"
+            Case wb_Global.MinMaxOptChargenError.MaxKlOpt    'Maximal-Charge kleiner als Optimal-Charge
+                Return "Die Maximal-Charge muss größer als die Optimal-Charge sein"
+            Case wb_Global.MinMaxOptChargenError.MaxKlMin    'Maximal-Charge kleiner als Minimal-Charge
+                Return "Die Maximal-Charge muss größer als die Minimal-Charge sein"
+            Case Else
+                Return "Unbekannter Fehler bei der Eingabe der Chargengrößen"
+        End Select
+    End Function
+
+    ''' <summary>
     ''' Formatiert einen String mit der angegebenen Vorkomma und Nachkomma-Stelle
     ''' </summary>
     ''' <param name="value">Zahlenwert als String</param>

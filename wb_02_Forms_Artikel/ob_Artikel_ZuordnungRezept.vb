@@ -5,6 +5,8 @@ Imports Signum.OrgaSoft.GUI
 Public Class ob_Artikel_ZuordnungRezept
     Implements IBasicFormUserControl
     Private RzNr As Integer = 0
+    Private WithEvents ChargenMengen As New wb_MinMaxOptCharge
+
 
 #Region "Signum"
 
@@ -115,10 +117,20 @@ Public Class ob_Artikel_ZuordnungRezept
                 tRezeptNr.Text = DirectCast(Parameter, wb_Komponenten).RezeptNummer
                 tRezeptName.Text = DirectCast(Parameter, wb_Komponenten).RezeptName
 
+                'Chargengrößen
+                ChargenMengen = DirectCast(Parameter, wb_Komponenten).ChargenMengen
+                'Chargengrößen anzeigen
+                MinMaxOptChargeShowValues()
+                'ChargenMengen.StkGewicht = DirectCast(Parameter, wb_Komponenten).StkGewicht
+                'ChargenMengen.TeigGewicht = DirectCast(Parameter, wb_Komponenten).BruttoRezeptGewicht
+                'ChargenMengen.MinCharge.MengeInStk = DirectCast(Parameter, wb_Komponenten).MinChargeStk
+                'ChargenMengen.MaxCharge.MengeInStk = DirectCast(Parameter, wb_Komponenten).MaxChargeStk
+                'ChargenMengen.OptCharge.MengeInStk = DirectCast(Parameter, wb_Komponenten).OptChargeStk
+
+
                 cbLiniengruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponenten).LinienGruppe)
                 cbArtikelLinienGruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponenten).ArtikelLinienGruppe)
 
-                tStkGewicht.Text = DirectCast(Parameter, wb_Komponenten).StkGewicht
 
                 'alle Steuerelemente aktivieren
                 EnableKomponenten(True)
@@ -141,5 +153,38 @@ Public Class ob_Artikel_ZuordnungRezept
 
         cbLiniengruppe.Enabled = Enable
         cbArtikelLinienGruppe.Enabled = Enable
+    End Sub
+
+    Private Sub tChrgMinkg_Leave(sender As Object, e As EventArgs) Handles tChrgMinkg.Leave
+        ChargenMengen.MinCharge.MengeInkg = tChrgMinkg.Text
+    End Sub
+
+    Private Sub OnErrorMinMaxOpt(sender As Object) Handles ChargenMengen.OnError
+
+        'TODO 
+        'Routine wird zweimal angesprungen !!!
+
+        'Artikel/Komponenten umstellen auf ChargenMengen-Klasse (Einzelwerte entfallen)
+        If ChargenMengen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
+            MsgBox(wb_Functions.MinMaxOptChargeToString(ChargenMengen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Chargengrößen")
+        End If
+        'Felder neu zeichnen
+        MinMaxOptChargeShowValues()
+    End Sub
+
+    Private Sub MinMaxOptChargeShowValues()
+        tStkGewicht.Text = ChargenMengen.StkGewicht & " gr"
+
+        tChrgMinkg.Text = ChargenMengen.MinCharge.MengeInkg & " kg"
+        tChrgOptkg.Text = ChargenMengen.OptCharge.MengeInkg & " kg"
+        tChrgMaxkg.Text = ChargenMengen.MaxCharge.MengeInkg & " kg"
+
+        tChrgMinPrz.Text = ChargenMengen.MinCharge.MengeInProzent & " %"
+        tChrgOptPrz.Text = ChargenMengen.OptCharge.MengeInProzent & " %"
+        tChrgMaxPrz.Text = ChargenMengen.MaxCharge.MengeInProzent & " %"
+
+        tChrgMinStk.Text = ChargenMengen.MinCharge.MengeInStk & " Stk"
+        tChrgOptStk.Text = ChargenMengen.OptCharge.MengeInStk & " Stk"
+        tChrgMaxStk.Text = ChargenMengen.MaxCharge.MengeInStk & " Stk"
     End Sub
 End Class
