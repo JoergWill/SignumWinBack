@@ -16,7 +16,7 @@ Public Class wb_Komponenten
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
-    Private KA_Stueckgewicht As Double
+    Private KA_Stueckgewicht As Double 'TODO Chargengrößen in Klasse wb_MinMaxOptCharge
     Private KA_Charge_Min As Double 'TODO bei Type 102 stkgewicht in kg !!
     Private KA_Charge_Max As Double
     Private KA_Charge_Opt As Double
@@ -27,14 +27,15 @@ Public Class wb_Komponenten
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
 
-
     Private KO_DeklBezeichungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
 
     Public NwtUpdate As New wb_Hinweise(Hinweise.NaehrwertUpdate)
     Public ktTyp300 As New wb_KomponParam300
     Public ktTyp301 As New wb_KomponParam301
-    Public ChargenMengen As New wb_MinMaxOptCharge
+
+    Public ArtikelChargen As New wb_MinMaxOptCharge
+    Public TeigChargen As New wb_MinMaxOptCharge
 
     Public Property Nr As Integer
         Set(value As Integer)
@@ -190,6 +191,10 @@ Public Class wb_Komponenten
             _RezeptNummer = Rezept.RezeptNummer
             _RezeptName = Rezept.RezeptBezeichnung
             _LinienGruppe = Rezept.LinienGruppe
+            _BruttoRezeptGewicht = Rezept.BruttoRezeptGewicht
+            ArtikelChargen.TeigGewicht = Rezept.RezeptGewicht
+            TeigChargen = Rezept.TeigChargen
+
         Else
             'normale Komponente ohne Produktion
             _RezeptName = ""
@@ -205,7 +210,6 @@ Public Class wb_Komponenten
             'Artikel-Rezeptur
             Dim Rezept As New wb_Rezept(ktTyp300.RzNr)
             _ArtikelLinienGruppe = Rezept.LinienGruppe
-            _BruttoRezeptGewicht = Rezept.BruttoRezeptGewicht
         End If
     End Sub
 
@@ -647,19 +651,19 @@ Public Class wb_Komponenten
                 'Stückgewicht in Gramm
                 Case "KA_Stueckgewicht"
                     KA_Stueckgewicht = wb_Functions.StrToDouble(Value)
-                    ChargenMengen.StkGewicht = Value
+                    ArtikelChargen.StkGewicht = Value
                 'Minimal-Charge
                 Case "KA_Charge_Min"
                     KA_Charge_Min = wb_Functions.StrToDouble(Value)
-                    ChargenMengen.MinCharge.MengeInStk = Value
+                    ArtikelChargen.MinCharge.MengeInStk = Value
                 'Maximal-Charge
                 Case "KA_Charge_Max"
                     KA_Charge_Max = wb_Functions.StrToDouble(Value)
-                    ChargenMengen.MaxCharge.MengeInStk = Value
+                    ArtikelChargen.MaxCharge.MengeInStk = Value
                 'Optimal-Charge
                 Case "KA_Charge_Opt"
                     KA_Charge_Opt = wb_Functions.StrToDouble(Value)
-                    ChargenMengen.OptCharge.MengeInStk = Value
+                    ArtikelChargen.OptCharge.MengeInStk = Value
 
             End Select
         Catch ex As Exception
@@ -735,7 +739,14 @@ Public Class wb_Komponenten
 
         'Update-Statement wird dynamisch erzeugt    
         sql = "KO_Nr_AlNum = '" & Nummer & "'," &
-              "KO_Bezeichnung = '" & Bezeichung & "'"
+              "KO_Bezeichnung = '" & Bezeichung & "'," &
+              "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
+              "KA_Charge_Min = '" & ArtikelChargen.MinCharge.MengeInStk & "'," &
+              "KA_Charge_Max = '" & ArtikelChargen.MaxCharge.MengeInStk & "'," &
+              "KA_Charge_Opt = '" & ArtikelChargen.OptCharge.MengeInStk & "'"
+
+
+
         'TODO weitere Felder
 
         'Update ausführen

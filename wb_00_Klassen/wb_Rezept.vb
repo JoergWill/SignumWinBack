@@ -33,11 +33,12 @@ Public Class wb_Rezept
     Private _SQLRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
     Private _RezeptSchritt As wb_Rezeptschritt
 
-    Private _RezeptGewicht As Double
-    Private _BruttoRezeptGewicht As Double
-    Private _RezeptPreis As Double
-    Private _RezeptGesamtMehlmenge As Double
-    Private _RezeptGesamtWasserMenge As Double
+    Private _RZ_Gewicht As Double
+    Private _RezeptGewicht As Double = wb_Global.UNDEFINED
+    Private _BruttoRezeptGewicht As Double = wb_Global.UNDEFINED
+    Private _RezeptPreis As Double = wb_Global.UNDEFINED
+    Private _RezeptGesamtMehlmenge As Double = wb_Global.UNDEFINED
+    Private _RezeptGesamtWasserMenge As Double = wb_Global.UNDEFINED
     Private _RezeptNr As Integer
     Private _RezeptVariante As Integer
     Private _ktTyp301 As New wb_KomponParam301
@@ -47,6 +48,7 @@ Public Class wb_Rezept
     Private _LLBig4 As New ArrayList
 
     Public _Parent As Object
+    Public TeigChargen As New wb_MinMaxOptCharge
 
     Public ReadOnly Property RezeptNr As Integer
         Get
@@ -65,14 +67,19 @@ Public Class wb_Rezept
 
     ''' <summary>
     ''' Das Rezept-Gesamtgewicht steht als Gewichtswert im Root-Node
-    ''' Die Berechnung erfolgt über RezeptSchritt.Gewicht(Get)
+    ''' Die Berechnung erfolgt über RezeptSchritt.Gewicht(Get). Wenn keine Child-Steps vorhanden sind wird der Wert aus dem Rezept-Kopf(Datenbank) zurückgegeben
     ''' </summary>
     ''' <returns>Double - Rezept-Gesamtgewicht</returns>
     Public ReadOnly Property RezeptGewicht As Double
         Get
             'wenn der Wert noch nicht berechnet wurde
             If _RezeptGewicht = wb_Global.UNDEFINED Then
-                _RezeptGewicht = _RootRezeptSchritt.Gewicht
+                If _RootRezeptSchritt.ChildSteps.Count = 0 Then
+                    _RezeptGewicht = _RZ_Gewicht
+                Else
+                    _RezeptGewicht = _RootRezeptSchritt.Gewicht
+                    TeigChargen.TeigGewicht = _RezeptGewicht
+                End If
             End If
             Return _RezeptGewicht
         End Get
@@ -673,12 +680,19 @@ Public Class wb_Rezept
                 'Rezeptkopf - MinCharge in kg
                 Case "RZ_Charge_Min"
                     _Charge_Min = wb_Functions.StrToDouble(Value)
+                    TeigChargen.MinCharge.MengeInkg = wb_Functions.StrToDouble(Value)
                 'Rezeptkopf - MaxCharge in kg
                 Case "RZ_Charge_Max"
                     _Charge_Max = wb_Functions.StrToDouble(Value)
+                    TeigChargen.MaxCharge.MengeInkg = wb_Functions.StrToDouble(Value)
                 'Rezeptkopf - OptCharge in kg
                 Case "RZ_Charge_Opt"
                     _Charge_Opt = wb_Functions.StrToDouble(Value)
+                    TeigChargen.OptCharge.MengeInkg = wb_Functions.StrToDouble(Value)
+                'Rezeptkopf - Rezeptgewicht
+                Case "RZ_Gewicht"
+                    _RZ_Gewicht = wb_Functions.StrToDouble(Value)
+                    TeigChargen.TeigGewicht = wb_Functions.StrToDouble(Value)
 
             End Select
         Catch ex As Exception

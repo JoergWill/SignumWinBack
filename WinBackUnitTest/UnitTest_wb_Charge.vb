@@ -65,6 +65,14 @@ Imports WinBack
         c.TeigGewicht = "100"
 
         'Chargen-Größe in kg
+        c.MengeInkg = "10KG"
+        Assert.AreEqual("10,000", c.MengeInkg)
+        c.MengeInkg = "10kg"
+        Assert.AreEqual("10,000", c.MengeInkg)
+        c.MengeInkg = "10,0KG"
+        Assert.AreEqual("10,000", c.MengeInkg)
+
+        'Chargen-Größe in kg
         c.MengeInkg = "10"
         Assert.AreEqual("10", c.MengeInProzent)
         c.MengeInkg = "100"

@@ -164,6 +164,10 @@ Public Class ob_Artikel_DockingExtension
         If bSortimentIstProduktion Then
             Debug.Print("WinBack Artikel")
             UpdateKomponentenDaten()
+
+            'Daten aus Unterfenster sichern
+            Extendee_ExecuteCommand("wb_Save", Komponente)
+
             'geänderten Datensatz in WinBack-DB schreiben
             Komponente.MySQLdbUpdate(Komponente.Nr)
         End If

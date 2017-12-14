@@ -10,6 +10,7 @@ Imports Tamir.SharpSsh
 ''' </summary>
 
 Public Class wb_Functions
+
     ''' <summary>
     ''' Erzeugt einen String aus Key-Down-Ereignissen
     ''' alle gültigen Zeichen werden an den String angehängt,
@@ -661,7 +662,9 @@ Public Class wb_Functions
 
     ''' <summary>
     ''' Wandelt einen String sicher in Float um. Das Zahlenformat kann US/DE sein. Punkte werden vor der Konvertierung in Koma umgewandelt.
-    ''' 1000er - Trennzeichen sind nicht erlaubt
+    ''' 1000er - Trennzeichen sind nicht erlaubt.
+    ''' Wenn die Umwandlung per TryParse fehlschlägt (Result=False) wird die einfache Umwandlung per val() versucht. Damit können auch Werte
+    ''' umgewandelt werden, die Strings enthalten (z.B. 10kg)
     ''' </summary>
     ''' <param name="value"></param>
     ''' <returns>Kovertierten String im Format Double</returns>
@@ -669,8 +672,17 @@ Public Class wb_Functions
         Dim d As Double
         Try
             value = value.Replace(".", ",")
-            Double.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d)
-            Return d
+            If Double.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d) Then
+                Return d
+            Else
+                'mögliche Strings oder Sonderzeichen entfernen
+                value = New System.Text.RegularExpressions.Regex("[a-zA-ZüöäÜÖÄß%°\\s\\n]").Replace(value, String.Empty)
+                If Double.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d) Then
+                    Return d
+                Else
+                    Return 0.0F
+                End If
+            End If
         Catch ex As Exception
             Return 0.0F
         End Try
@@ -685,8 +697,15 @@ Public Class wb_Functions
         Dim i As Integer
         Try
             value = value.Replace(".", ",")
-            Integer.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), i)
-            Return i
+            If Integer.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), i) Then
+                Return i
+            Else
+                Try
+                    Return Int(Val(value))
+                Catch
+                    Return 0
+                End Try
+            End If
         Catch ex As Exception
             Return 0
         End Try

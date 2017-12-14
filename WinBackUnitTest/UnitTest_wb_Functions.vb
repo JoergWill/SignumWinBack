@@ -191,6 +191,17 @@ Imports WinBack.wb_Global
     <TestMethod()> Public Sub Test_StrToDouble()
         Assert.AreEqual(0.1, StrToDouble("0.1"))
         Assert.AreEqual(0.1, StrToDouble("0,1"))
+        Assert.AreEqual(0.6, StrToDouble("0,6"))
+
+        Assert.AreEqual(0.6, StrToDouble("0,6 kg"))
+        Assert.AreEqual(0.6, StrToDouble("0,6kg"))
+
+        Assert.AreEqual(0.6, StrToDouble("0,6%"))
+        Assert.AreEqual(0.6, StrToDouble("0,6 %"))
+
+        Assert.AreEqual(0.6, StrToDouble("0,6°C"))
+        Assert.AreEqual(0.6, StrToDouble("0,6 °C"))
+
         Assert.AreEqual(1000.1, StrToDouble("1000,1"))
         Assert.AreNotEqual(1000.1, StrToDouble("1.000,1"))
         Assert.AreEqual(1000.1, StrToDouble("1000.1"))
@@ -199,6 +210,7 @@ Imports WinBack.wb_Global
         Assert.AreEqual(-1000.1, StrToDouble("-1000.1"))
 
         Assert.AreEqual(0.0, StrToDouble(""))
+        Assert.AreEqual(0.0, StrToDouble(Nothing))
         Assert.AreEqual(0.0, StrToDouble("xxx"))
 
     End Sub

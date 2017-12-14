@@ -5,7 +5,9 @@ Imports Signum.OrgaSoft.GUI
 Public Class ob_Artikel_ZuordnungRezept
     Implements IBasicFormUserControl
     Private RzNr As Integer = 0
-    Private WithEvents ChargenMengen As New wb_MinMaxOptCharge
+    Private WithEvents ArtikelChargen As New wb_MinMaxOptCharge
+    Private WithEvents TeigChargen As New wb_MinMaxOptCharge
+    Private OnErrorSetFocus As Object
 
 
 #Region "Signum"
@@ -87,13 +89,14 @@ Public Class ob_Artikel_ZuordnungRezept
 #End Region
 
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
-        MyBase.Text = "WinBack Artikel-Rezept-Zuordnung"
+        MyBase.Text = "WinBack Artikel Produktions-Parameter"
 
         'Form anzeigen
         Me.Show()
 
-        'ComboBox Liniengruppe füllen
+        'ComboBox Liniengruppe Rezepte(Teig) füllen
         cbLiniengruppe.Fill(wb_Linien_Global.LinienGruppen)
+        'ComboBox Liniengruppe Artikel füllen
         cbArtikelLinienGruppe.Fill(wb_Linien_Global.LinienGruppen)
 
         Return True
@@ -113,27 +116,29 @@ Public Class ob_Artikel_ZuordnungRezept
             Case "VALID"
 
             Case "wbFOUND"
+                '(interne) Rezeptnummer
                 RzNr = DirectCast(Parameter, wb_Komponenten).RzNr
                 tRezeptNr.Text = DirectCast(Parameter, wb_Komponenten).RezeptNummer
                 tRezeptName.Text = DirectCast(Parameter, wb_Komponenten).RezeptName
 
-                'Chargengrößen
-                ChargenMengen = DirectCast(Parameter, wb_Komponenten).ChargenMengen
-                'Chargengrößen anzeigen
-                MinMaxOptChargeShowValues()
-                'ChargenMengen.StkGewicht = DirectCast(Parameter, wb_Komponenten).StkGewicht
-                'ChargenMengen.TeigGewicht = DirectCast(Parameter, wb_Komponenten).BruttoRezeptGewicht
-                'ChargenMengen.MinCharge.MengeInStk = DirectCast(Parameter, wb_Komponenten).MinChargeStk
-                'ChargenMengen.MaxCharge.MengeInStk = DirectCast(Parameter, wb_Komponenten).MaxChargeStk
-                'ChargenMengen.OptCharge.MengeInStk = DirectCast(Parameter, wb_Komponenten).OptChargeStk
-
-
-                cbLiniengruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponenten).LinienGruppe)
+                'Chargengrößen Artikel(Objekt)
+                ArtikelChargen = DirectCast(Parameter, wb_Komponenten).ArtikelChargen
+                'Chargengrößen Rezept(Objekt)
+                TeigChargen = DirectCast(Parameter, wb_Komponenten).TeigChargen
+                'Chargengrößen Artikel anzeigen
+                MinMaxOptArtikelShowValues()
+                'Chargengrößen Rezept(Teig) anzeigen
+                MinMaxRezeptShowValues()
+                'Liniengruppe Artikel
                 cbArtikelLinienGruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponenten).ArtikelLinienGruppe)
-
+                'Liniengruppe Rezept(Teig)
+                cbLiniengruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponenten).LinienGruppe)
 
                 'alle Steuerelemente aktivieren
                 EnableKomponenten(True)
+
+            Case "wb_Save"
+                DirectCast(Parameter, wb_Komponenten).ArtikelChargen = ArtikelChargen
 
         End Select
         Return Nothing
@@ -146,6 +151,167 @@ Public Class ob_Artikel_ZuordnungRezept
         Rezeptur.Show()
         Me.Cursor = Cursors.Default
     End Sub
+#Region "Änderung Chargen"
+    Private Sub tStkGewicht_Leave(sender As Object, e As EventArgs) Handles tStkGewicht.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus
+        ArtikelChargen.StkGewicht = tStkGewicht.Text
+    End Sub
+
+    Private Sub tChrgMinkg_Leave(sender As Object, e As EventArgs) Handles tChrgMinkg.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        ArtikelChargen.MinCharge.MengeInkg = tChrgMinkg.Text
+    End Sub
+
+    Private Sub tChrgMinPrz_Leave(sender As Object, e As EventArgs) Handles tChrgMinPrz.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        ArtikelChargen.MinCharge.MengeInProzent = tChrgMinPrz.Text
+    End Sub
+
+    Private Sub tChrgMinStk_Leave(sender As Object, e As EventArgs) Handles tChrgMinStk.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        ArtikelChargen.MinCharge.MengeInStk = tChrgMinStk.Text
+    End Sub
+
+    Private Sub tChrgMaxkg_Leave(sender As Object, e As EventArgs) Handles tChrgMaxkg.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        ArtikelChargen.MaxCharge.MengeInkg = tChrgMaxkg.Text
+    End Sub
+
+    Private Sub tChrgMaxPrz_Leave(sender As Object, e As EventArgs) Handles tChrgMaxPrz.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        ArtikelChargen.MaxCharge.MengeInProzent = tChrgMaxPrz.Text
+    End Sub
+
+    Private Sub tChrgMaxStk_Leave(sender As Object, e As EventArgs) Handles tChrgMaxStk.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        ArtikelChargen.MaxCharge.MengeInStk = tChrgMaxStk.Text
+    End Sub
+
+    Private Sub tChrgOptkg_Leave(sender As Object, e As EventArgs) Handles tChrgOptkg.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        ArtikelChargen.OptCharge.MengeInkg = tChrgOptkg.Text
+    End Sub
+
+    Private Sub tChrgOptPrz_Leave(sender As Object, e As EventArgs) Handles tChrgOptPrz.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        ArtikelChargen.OptCharge.MengeInProzent = tChrgOptPrz.Text
+    End Sub
+    Private Sub tChrgOptStk_Leave(sender As Object, e As EventArgs) Handles tChrgOptStk.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        ArtikelChargen.OptCharge.MengeInStk = tChrgOptStk.Text
+    End Sub
+
+    Private Sub tRezMinkg_Leave(sender As Object, e As EventArgs) Handles tRezMinkg.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        TeigChargen.MinCharge.MengeInkg = tRezMinkg.Text
+    End Sub
+
+    Private Sub tRezMinPrz_Leave(sender As Object, e As EventArgs) Handles tRezMinPrz.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        TeigChargen.MinCharge.MengeInProzent = tRezMinPrz.Text
+    End Sub
+
+    Private Sub tRezOptkg_Leave(sender As Object, e As EventArgs) Handles tRezOptkg.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        TeigChargen.OptCharge.MengeInkg = tRezOptkg.Text
+    End Sub
+
+    Private Sub tRezOptPrz_Leave(sender As Object, e As EventArgs) Handles tRezOptPrz.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        TeigChargen.OptCharge.MengeInProzent = tRezOptPrz.Text
+    End Sub
+
+    Private Sub tRezMaxkg_Leave(sender As Object, e As EventArgs) Handles tRezMaxkg.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        TeigChargen.MaxCharge.MengeInkg = tRezMaxkg.Text
+    End Sub
+
+    Private Sub tRezMaxPrz_Leave(sender As Object, e As EventArgs) Handles tRezMaxPrz.Leave
+        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
+        OnErrorSetFocus = sender
+        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
+        TeigChargen.MaxCharge.MengeInProzent = tRezMaxPrz.Text
+    End Sub
+
+    Private Sub OnErrorMinMaxOptArtikel(sender As Object) Handles ArtikelChargen.OnError
+        'TODO Artikel/Komponenten umstellen auf ChargenMengen-Klasse (Einzelwerte entfallen)
+        If ArtikelChargen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
+            'Eingabe-Focus auf das auslösende Objekt setzen
+            OnErrorSetFocus.Focus()
+            'Fehlermeldung entsprechend der Eingabe-Felder ausgeben
+            MsgBox(wb_Functions.MinMaxOptChargeToString(ArtikelChargen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Artikel-Chargengrößen")
+        End If
+        'Felder neu zeichnen
+        MinMaxOptArtikelShowValues()
+    End Sub
+
+    Private Sub OnErrorMinMaxOptTeig(Sender As Object) Handles TeigChargen.OnError
+        If TeigChargen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
+            OnErrorSetFocus.focus()
+            'Fehlermeldung entsprechend der Eingabe-Felder ausgeben
+            MsgBox(wb_Functions.MinMaxOptChargeToString(TeigChargen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Rezept-Chargengrößen")
+        End If
+        'Felder neu zeichnen
+        MinMaxRezeptShowValues()
+    End Sub
+#End Region
+    Private Sub MinMaxOptArtikelShowValues()
+        tStkGewicht.Text = ArtikelChargen.StkGewicht & " gr"
+
+        tChrgMinkg.Text = ArtikelChargen.MinCharge.MengeInkg & " kg"
+        tChrgOptkg.Text = ArtikelChargen.OptCharge.MengeInkg & " kg"
+        tChrgMaxkg.Text = ArtikelChargen.MaxCharge.MengeInkg & " kg"
+
+        tChrgMinPrz.Text = ArtikelChargen.MinCharge.MengeInProzent & "%"
+        tChrgOptPrz.Text = ArtikelChargen.OptCharge.MengeInProzent & "%"
+        tChrgMaxPrz.Text = ArtikelChargen.MaxCharge.MengeInProzent & "%"
+
+        tChrgMinStk.Text = ArtikelChargen.MinCharge.MengeInStk & " Stk"
+        tChrgOptStk.Text = ArtikelChargen.OptCharge.MengeInStk & " Stk"
+        tChrgMaxStk.Text = ArtikelChargen.MaxCharge.MengeInStk & " Stk"
+    End Sub
+
+    Private Sub MinMaxRezeptShowValues()
+        tRezGesamt.Text = TeigChargen.TeigGewicht & " kg"
+
+        tRezMinkg.Text = TeigChargen.MinCharge.MengeInkg & " kg"
+        tRezOptkg.Text = TeigChargen.OptCharge.MengeInkg & " kg"
+        tRezMaxkg.Text = TeigChargen.MaxCharge.MengeInkg & " kg"
+
+        tRezMinPrz.Text = TeigChargen.MinCharge.MengeInProzent & "%"
+        tRezOptPrz.Text = TeigChargen.OptCharge.MengeInProzent & "%"
+        tRezMaxPrz.Text = TeigChargen.MaxCharge.MengeInProzent & "%"
+    End Sub
 
     Private Sub EnableKomponenten(Enable As Boolean)
         BtnRzpShow.Enabled = Enable
@@ -153,38 +319,9 @@ Public Class ob_Artikel_ZuordnungRezept
 
         cbLiniengruppe.Enabled = Enable
         cbArtikelLinienGruppe.Enabled = Enable
+
+        pArtikelChargen.Enabled = Enable
+        pTeigChargen.Enabled = Enable
     End Sub
 
-    Private Sub tChrgMinkg_Leave(sender As Object, e As EventArgs) Handles tChrgMinkg.Leave
-        ChargenMengen.MinCharge.MengeInkg = tChrgMinkg.Text
-    End Sub
-
-    Private Sub OnErrorMinMaxOpt(sender As Object) Handles ChargenMengen.OnError
-
-        'TODO 
-        'Routine wird zweimal angesprungen !!!
-
-        'Artikel/Komponenten umstellen auf ChargenMengen-Klasse (Einzelwerte entfallen)
-        If ChargenMengen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
-            MsgBox(wb_Functions.MinMaxOptChargeToString(ChargenMengen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Chargengrößen")
-        End If
-        'Felder neu zeichnen
-        MinMaxOptChargeShowValues()
-    End Sub
-
-    Private Sub MinMaxOptChargeShowValues()
-        tStkGewicht.Text = ChargenMengen.StkGewicht & " gr"
-
-        tChrgMinkg.Text = ChargenMengen.MinCharge.MengeInkg & " kg"
-        tChrgOptkg.Text = ChargenMengen.OptCharge.MengeInkg & " kg"
-        tChrgMaxkg.Text = ChargenMengen.MaxCharge.MengeInkg & " kg"
-
-        tChrgMinPrz.Text = ChargenMengen.MinCharge.MengeInProzent & " %"
-        tChrgOptPrz.Text = ChargenMengen.OptCharge.MengeInProzent & " %"
-        tChrgMaxPrz.Text = ChargenMengen.MaxCharge.MengeInProzent & " %"
-
-        tChrgMinStk.Text = ChargenMengen.MinCharge.MengeInStk & " Stk"
-        tChrgOptStk.Text = ChargenMengen.OptCharge.MengeInStk & " Stk"
-        tChrgMaxStk.Text = ChargenMengen.MaxCharge.MengeInStk & " Stk"
-    End Sub
 End Class

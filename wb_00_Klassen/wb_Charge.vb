@@ -18,7 +18,7 @@
         Set(value As String)
             _TeigGewicht = wb_Functions.StrToDouble(value)
             'Chargengröße in [%] neu berechnen
-            CalcMengeInProzent()
+            _MengeInProzent = CalcMengeInProzent()
             'Event - Werte haben sich geändert
             ValuesChanged()
         End Set
@@ -36,15 +36,10 @@
         End Get
         Set(value As String)
             _StkGewicht = wb_Functions.StrToDouble(value)
-            If _StkGewicht <= 0 Then
-                _StkGewicht = 1000
-            End If
             'Chargengröße in [kg] neu berechen
             _MengeInkg = CalcMengeInkg()
             'Chargengröße in [%] neu berechnen
             _MengeInProzent = CalcMengeInProzent()
-            'Event - Werte haben sich geändert
-            ValuesChanged()
         End Set
     End Property
 
@@ -70,12 +65,23 @@
 
     ''' <summary>
     ''' Chargengröße in kg als Double.
-    ''' Wird für Vergleich der Min/Max/Opt-Charge und zur Berechnung der Chargengrößen verwendet
+    ''' Wird zur Berechnung der Chargengrößen verwendet
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property fMengeInkg As Double
         Get
             Return _MengeInkg
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Chargengröße in kg als Double gerundet auf 3 Nachkomma-Stellen.
+    ''' Wird für Vergleich der Min/Max/Opt-Charge.
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property cMengeInkg As Double
+        Get
+            Return Int(_MengeInkg * 1000) / 1000
         End Get
     End Property
 
@@ -106,7 +112,7 @@
     ''' <returns></returns>
     Public ReadOnly Property fMengeInProzent As Double
         Get
-            Return _MengeInkg
+            Return _MengeInProzent
         End Get
     End Property
 
@@ -137,7 +143,7 @@
     ''' <returns></returns>
     Public ReadOnly Property fMengeInStk As Double
         Get
-            Return _MengeInkg
+            Return _MengeInStk
         End Get
     End Property
 
@@ -154,7 +160,7 @@
     ''' </summary>
     ''' <returns></returns>
     Private Function CalcMengeInProzent() As Double
-        If _MengeInkg > 0 Then
+        If _TeigGewicht > 0 Then
             Return (_MengeInkg * 100) / _TeigGewicht
         Else
             Return 0.0

@@ -24,6 +24,8 @@ Partial Class ob_Artikel_ZuordnungRezept
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ob_Artikel_ZuordnungRezept))
         Me.tRezeptName = New System.Windows.Forms.TextBox()
         Me.lblRzeptBezeichnung = New System.Windows.Forms.Label()
         Me.tRezeptNr = New System.Windows.Forms.TextBox()
@@ -32,8 +34,6 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.BtnRzpShow = New System.Windows.Forms.Button()
         Me.lblLinienGruppe = New System.Windows.Forms.Label()
         Me.lblLinieArtikel = New System.Windows.Forms.Label()
-        Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
-        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.tStkGewicht = New System.Windows.Forms.TextBox()
         Me.lblProStk = New System.Windows.Forms.Label()
         Me.lblMin = New System.Windows.Forms.Label()
@@ -59,8 +59,11 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.tRezMinkg = New System.Windows.Forms.TextBox()
         Me.tRezMinPrz = New System.Windows.Forms.TextBox()
         Me.lblTeigGesamt = New System.Windows.Forms.Label()
-        Me.tTeigGesamt = New System.Windows.Forms.TextBox()
+        Me.tRezGesamt = New System.Windows.Forms.TextBox()
         Me.lblTeigChargen = New System.Windows.Forms.Label()
+        Me.ToolTip = New System.Windows.Forms.ToolTip(Me.components)
+        Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
+        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.pArtikelChargen.SuspendLayout()
         Me.pTeigChargen.SuspendLayout()
         Me.SuspendLayout()
@@ -70,7 +73,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.tRezeptName.Location = New System.Drawing.Point(3, 66)
         Me.tRezeptName.Name = "tRezeptName"
         Me.tRezeptName.ReadOnly = True
-        Me.tRezeptName.Size = New System.Drawing.Size(368, 20)
+        Me.tRezeptName.Size = New System.Drawing.Size(384, 20)
         Me.tRezeptName.TabIndex = 6
         Me.tRezeptName.TabStop = False
         '
@@ -89,7 +92,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.tRezeptNr.Location = New System.Drawing.Point(3, 23)
         Me.tRezeptNr.Name = "tRezeptNr"
         Me.tRezeptNr.ReadOnly = True
-        Me.tRezeptNr.Size = New System.Drawing.Size(156, 20)
+        Me.tRezeptNr.Size = New System.Drawing.Size(72, 20)
         Me.tRezeptNr.TabIndex = 8
         Me.tRezeptNr.TabStop = False
         '
@@ -105,16 +108,17 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         'BtnRzptChange
         '
-        Me.BtnRzptChange.Location = New System.Drawing.Point(165, 12)
+        Me.BtnRzptChange.Location = New System.Drawing.Point(82, 12)
         Me.BtnRzptChange.Name = "BtnRzptChange"
         Me.BtnRzptChange.Size = New System.Drawing.Size(100, 40)
         Me.BtnRzptChange.TabIndex = 10
         Me.BtnRzptChange.Text = "Auswählen"
+        Me.ToolTip.SetToolTip(Me.BtnRzptChange, "Zuordnung einer (Teig)Rezeptur zum Artikel")
         Me.BtnRzptChange.UseVisualStyleBackColor = True
         '
         'BtnRzpShow
         '
-        Me.BtnRzpShow.Location = New System.Drawing.Point(271, 12)
+        Me.BtnRzpShow.Location = New System.Drawing.Point(188, 12)
         Me.BtnRzpShow.Name = "BtnRzpShow"
         Me.BtnRzpShow.Size = New System.Drawing.Size(100, 40)
         Me.BtnRzpShow.TabIndex = 11
@@ -135,33 +139,15 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         Me.lblLinieArtikel.AutoSize = True
         Me.lblLinieArtikel.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblLinieArtikel.Location = New System.Drawing.Point(201, 89)
+        Me.lblLinieArtikel.Location = New System.Drawing.Point(218, 89)
         Me.lblLinieArtikel.Name = "lblLinieArtikel"
         Me.lblLinieArtikel.Size = New System.Drawing.Size(137, 13)
         Me.lblLinieArtikel.TabIndex = 33
         Me.lblLinieArtikel.Text = "Liniengruppe Artikel-Rezept"
         '
-        'cbArtikelLinienGruppe
-        '
-        Me.cbArtikelLinienGruppe.FormattingEnabled = True
-        Me.cbArtikelLinienGruppe.Location = New System.Drawing.Point(204, 105)
-        Me.cbArtikelLinienGruppe.Name = "cbArtikelLinienGruppe"
-        Me.cbArtikelLinienGruppe.Size = New System.Drawing.Size(167, 21)
-        Me.cbArtikelLinienGruppe.TabIndex = 32
-        Me.cbArtikelLinienGruppe.TabStop = False
-        '
-        'cbLiniengruppe
-        '
-        Me.cbLiniengruppe.FormattingEnabled = True
-        Me.cbLiniengruppe.Location = New System.Drawing.Point(3, 105)
-        Me.cbLiniengruppe.Name = "cbLiniengruppe"
-        Me.cbLiniengruppe.Size = New System.Drawing.Size(145, 21)
-        Me.cbLiniengruppe.TabIndex = 30
-        Me.cbLiniengruppe.TabStop = False
-        '
         'tStkGewicht
         '
-        Me.tStkGewicht.Location = New System.Drawing.Point(106, 15)
+        Me.tStkGewicht.Location = New System.Drawing.Point(116, 15)
         Me.tStkGewicht.Name = "tStkGewicht"
         Me.tStkGewicht.Size = New System.Drawing.Size(54, 20)
         Me.tStkGewicht.TabIndex = 34
@@ -183,7 +169,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         'lblMin
         '
         Me.lblMin.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblMin.Location = New System.Drawing.Point(150, 200)
+        Me.lblMin.Location = New System.Drawing.Point(157, 200)
         Me.lblMin.Name = "lblMin"
         Me.lblMin.Size = New System.Drawing.Size(52, 13)
         Me.lblMin.TabIndex = 37
@@ -194,18 +180,18 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         Me.tChrgMinkg.Location = New System.Drawing.Point(3, 41)
         Me.tChrgMinkg.Name = "tChrgMinkg"
-        Me.tChrgMinkg.Size = New System.Drawing.Size(57, 20)
+        Me.tChrgMinkg.Size = New System.Drawing.Size(67, 20)
         Me.tChrgMinkg.TabIndex = 36
         Me.tChrgMinkg.TabStop = False
-        Me.tChrgMinkg.Text = "2000,0 kg"
+        Me.tChrgMinkg.Text = "2000,000 kg"
         Me.tChrgMinkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.tChrgMinkg.WordWrap = False
         '
         'tChrgMinPrz
         '
-        Me.tChrgMinPrz.Location = New System.Drawing.Point(66, 41)
+        Me.tChrgMinPrz.Location = New System.Drawing.Point(73, 41)
         Me.tChrgMinPrz.Name = "tChrgMinPrz"
-        Me.tChrgMinPrz.Size = New System.Drawing.Size(34, 20)
+        Me.tChrgMinPrz.Size = New System.Drawing.Size(40, 20)
         Me.tChrgMinPrz.TabIndex = 38
         Me.tChrgMinPrz.TabStop = False
         Me.tChrgMinPrz.Text = "999%"
@@ -227,14 +213,15 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.pArtikelChargen.Controls.Add(Me.tChrgMinPrz)
         Me.pArtikelChargen.Controls.Add(Me.lblProStk)
         Me.pArtikelChargen.Controls.Add(Me.tStkGewicht)
-        Me.pArtikelChargen.Location = New System.Drawing.Point(204, 154)
+        Me.pArtikelChargen.Location = New System.Drawing.Point(211, 154)
         Me.pArtikelChargen.Name = "pArtikelChargen"
-        Me.pArtikelChargen.Size = New System.Drawing.Size(167, 122)
+        Me.pArtikelChargen.Size = New System.Drawing.Size(176, 122)
         Me.pArtikelChargen.TabIndex = 40
+        Me.ToolTip.SetToolTip(Me.pArtikelChargen, resources.GetString("pArtikelChargen.ToolTip"))
         '
         'tChrgOptStk
         '
-        Me.tChrgOptStk.Location = New System.Drawing.Point(106, 93)
+        Me.tChrgOptStk.Location = New System.Drawing.Point(116, 93)
         Me.tChrgOptStk.Name = "tChrgOptStk"
         Me.tChrgOptStk.Size = New System.Drawing.Size(54, 20)
         Me.tChrgOptStk.TabIndex = 45
@@ -247,18 +234,18 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         Me.tChrgOptkg.Location = New System.Drawing.Point(3, 93)
         Me.tChrgOptkg.Name = "tChrgOptkg"
-        Me.tChrgOptkg.Size = New System.Drawing.Size(57, 20)
+        Me.tChrgOptkg.Size = New System.Drawing.Size(67, 20)
         Me.tChrgOptkg.TabIndex = 43
         Me.tChrgOptkg.TabStop = False
-        Me.tChrgOptkg.Text = "2000,0 kg"
+        Me.tChrgOptkg.Text = "2000,000 kg"
         Me.tChrgOptkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.tChrgOptkg.WordWrap = False
         '
         'tChrgOptPrz
         '
-        Me.tChrgOptPrz.Location = New System.Drawing.Point(66, 93)
+        Me.tChrgOptPrz.Location = New System.Drawing.Point(73, 93)
         Me.tChrgOptPrz.Name = "tChrgOptPrz"
-        Me.tChrgOptPrz.Size = New System.Drawing.Size(34, 20)
+        Me.tChrgOptPrz.Size = New System.Drawing.Size(40, 20)
         Me.tChrgOptPrz.TabIndex = 44
         Me.tChrgOptPrz.TabStop = False
         Me.tChrgOptPrz.Text = "999%"
@@ -267,7 +254,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         'tChrgMaxStk
         '
-        Me.tChrgMaxStk.Location = New System.Drawing.Point(106, 67)
+        Me.tChrgMaxStk.Location = New System.Drawing.Point(116, 67)
         Me.tChrgMaxStk.Name = "tChrgMaxStk"
         Me.tChrgMaxStk.Size = New System.Drawing.Size(54, 20)
         Me.tChrgMaxStk.TabIndex = 42
@@ -280,18 +267,18 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         Me.tChrgMaxkg.Location = New System.Drawing.Point(3, 67)
         Me.tChrgMaxkg.Name = "tChrgMaxkg"
-        Me.tChrgMaxkg.Size = New System.Drawing.Size(57, 20)
+        Me.tChrgMaxkg.Size = New System.Drawing.Size(67, 20)
         Me.tChrgMaxkg.TabIndex = 40
         Me.tChrgMaxkg.TabStop = False
-        Me.tChrgMaxkg.Text = "2000,0 kg"
+        Me.tChrgMaxkg.Text = "2000,000 kg"
         Me.tChrgMaxkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.tChrgMaxkg.WordWrap = False
         '
         'tChrgMaxPrz
         '
-        Me.tChrgMaxPrz.Location = New System.Drawing.Point(66, 67)
+        Me.tChrgMaxPrz.Location = New System.Drawing.Point(73, 67)
         Me.tChrgMaxPrz.Name = "tChrgMaxPrz"
-        Me.tChrgMaxPrz.Size = New System.Drawing.Size(34, 20)
+        Me.tChrgMaxPrz.Size = New System.Drawing.Size(40, 20)
         Me.tChrgMaxPrz.TabIndex = 41
         Me.tChrgMaxPrz.TabStop = False
         Me.tChrgMaxPrz.Text = "999%"
@@ -300,7 +287,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         'tChrgMinStk
         '
-        Me.tChrgMinStk.Location = New System.Drawing.Point(106, 41)
+        Me.tChrgMinStk.Location = New System.Drawing.Point(116, 41)
         Me.tChrgMinStk.Name = "tChrgMinStk"
         Me.tChrgMinStk.Size = New System.Drawing.Size(54, 20)
         Me.tChrgMinStk.TabIndex = 39
@@ -313,7 +300,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         Me.lblArtikelChargen.AutoSize = True
         Me.lblArtikelChargen.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblArtikelChargen.Location = New System.Drawing.Point(214, 148)
+        Me.lblArtikelChargen.Location = New System.Drawing.Point(221, 148)
         Me.lblArtikelChargen.Name = "lblArtikelChargen"
         Me.lblArtikelChargen.Size = New System.Drawing.Size(79, 13)
         Me.lblArtikelChargen.TabIndex = 41
@@ -322,7 +309,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         'lblGewicht
         '
         Me.lblGewicht.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblGewicht.Location = New System.Drawing.Point(150, 174)
+        Me.lblGewicht.Location = New System.Drawing.Point(157, 174)
         Me.lblGewicht.Name = "lblGewicht"
         Me.lblGewicht.Size = New System.Drawing.Size(52, 13)
         Me.lblGewicht.TabIndex = 42
@@ -332,7 +319,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         'lblMax
         '
         Me.lblMax.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblMax.Location = New System.Drawing.Point(151, 226)
+        Me.lblMax.Location = New System.Drawing.Point(158, 226)
         Me.lblMax.Name = "lblMax"
         Me.lblMax.Size = New System.Drawing.Size(51, 13)
         Me.lblMax.TabIndex = 43
@@ -342,7 +329,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         'lblOpt
         '
         Me.lblOpt.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblOpt.Location = New System.Drawing.Point(151, 252)
+        Me.lblOpt.Location = New System.Drawing.Point(158, 252)
         Me.lblOpt.Name = "lblOpt"
         Me.lblOpt.Size = New System.Drawing.Size(51, 13)
         Me.lblOpt.TabIndex = 44
@@ -360,28 +347,31 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.pTeigChargen.Controls.Add(Me.tRezMinkg)
         Me.pTeigChargen.Controls.Add(Me.tRezMinPrz)
         Me.pTeigChargen.Controls.Add(Me.lblTeigGesamt)
-        Me.pTeigChargen.Controls.Add(Me.tTeigGesamt)
+        Me.pTeigChargen.Controls.Add(Me.tRezGesamt)
         Me.pTeigChargen.Location = New System.Drawing.Point(4, 154)
         Me.pTeigChargen.Name = "pTeigChargen"
-        Me.pTeigChargen.Size = New System.Drawing.Size(144, 122)
+        Me.pTeigChargen.Size = New System.Drawing.Size(151, 122)
         Me.pTeigChargen.TabIndex = 46
+        Me.ToolTip.SetToolTip(Me.pTeigChargen, "Wenn in der Produktions-Planung Teige zusammen-" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "gefasst werden können, wird die " &
+        "Teiggrößen für die " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Aufteilung der Gesamt-Teigmenge anhand der Teig-" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Chargen-G" &
+        "rößen vorgenommen.")
         '
         'tRezOptkg
         '
         Me.tRezOptkg.Location = New System.Drawing.Point(3, 93)
         Me.tRezOptkg.Name = "tRezOptkg"
-        Me.tRezOptkg.Size = New System.Drawing.Size(57, 20)
+        Me.tRezOptkg.Size = New System.Drawing.Size(67, 20)
         Me.tRezOptkg.TabIndex = 43
         Me.tRezOptkg.TabStop = False
-        Me.tRezOptkg.Text = "2000,0 kg"
+        Me.tRezOptkg.Text = "2000,000 kg"
         Me.tRezOptkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.tRezOptkg.WordWrap = False
         '
         'tRezOptPrz
         '
-        Me.tRezOptPrz.Location = New System.Drawing.Point(66, 93)
+        Me.tRezOptPrz.Location = New System.Drawing.Point(77, 93)
         Me.tRezOptPrz.Name = "tRezOptPrz"
-        Me.tRezOptPrz.Size = New System.Drawing.Size(34, 20)
+        Me.tRezOptPrz.Size = New System.Drawing.Size(50, 20)
         Me.tRezOptPrz.TabIndex = 44
         Me.tRezOptPrz.TabStop = False
         Me.tRezOptPrz.Text = "999%"
@@ -392,18 +382,18 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         Me.tRezMaxkg.Location = New System.Drawing.Point(3, 67)
         Me.tRezMaxkg.Name = "tRezMaxkg"
-        Me.tRezMaxkg.Size = New System.Drawing.Size(57, 20)
+        Me.tRezMaxkg.Size = New System.Drawing.Size(67, 20)
         Me.tRezMaxkg.TabIndex = 40
         Me.tRezMaxkg.TabStop = False
-        Me.tRezMaxkg.Text = "2000,0 kg"
+        Me.tRezMaxkg.Text = "2000,000 kg"
         Me.tRezMaxkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.tRezMaxkg.WordWrap = False
         '
         'tRezMaxPrz
         '
-        Me.tRezMaxPrz.Location = New System.Drawing.Point(66, 67)
+        Me.tRezMaxPrz.Location = New System.Drawing.Point(77, 67)
         Me.tRezMaxPrz.Name = "tRezMaxPrz"
-        Me.tRezMaxPrz.Size = New System.Drawing.Size(34, 20)
+        Me.tRezMaxPrz.Size = New System.Drawing.Size(50, 20)
         Me.tRezMaxPrz.TabIndex = 41
         Me.tRezMaxPrz.TabStop = False
         Me.tRezMaxPrz.Text = "999%"
@@ -414,18 +404,18 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         Me.tRezMinkg.Location = New System.Drawing.Point(3, 41)
         Me.tRezMinkg.Name = "tRezMinkg"
-        Me.tRezMinkg.Size = New System.Drawing.Size(57, 20)
+        Me.tRezMinkg.Size = New System.Drawing.Size(67, 20)
         Me.tRezMinkg.TabIndex = 36
         Me.tRezMinkg.TabStop = False
-        Me.tRezMinkg.Text = "2000,0 kg"
+        Me.tRezMinkg.Text = "2000,000 kg"
         Me.tRezMinkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.tRezMinkg.WordWrap = False
         '
         'tRezMinPrz
         '
-        Me.tRezMinPrz.Location = New System.Drawing.Point(66, 41)
+        Me.tRezMinPrz.Location = New System.Drawing.Point(77, 41)
         Me.tRezMinPrz.Name = "tRezMinPrz"
-        Me.tRezMinPrz.Size = New System.Drawing.Size(34, 20)
+        Me.tRezMinPrz.Size = New System.Drawing.Size(50, 20)
         Me.tRezMinPrz.TabIndex = 38
         Me.tRezMinPrz.TabStop = False
         Me.tRezMinPrz.Text = "999%"
@@ -436,22 +426,23 @@ Partial Class ob_Artikel_ZuordnungRezept
         '
         Me.lblTeigGesamt.AutoSize = True
         Me.lblTeigGesamt.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblTeigGesamt.Location = New System.Drawing.Point(66, 18)
+        Me.lblTeigGesamt.Location = New System.Drawing.Point(71, 18)
         Me.lblTeigGesamt.Name = "lblTeigGesamt"
         Me.lblTeigGesamt.Size = New System.Drawing.Size(73, 13)
         Me.lblTeigGesamt.TabIndex = 35
         Me.lblTeigGesamt.Text = "Teig (Gesamt)"
         '
-        'tTeigGesamt
+        'tRezGesamt
         '
-        Me.tTeigGesamt.Location = New System.Drawing.Point(3, 15)
-        Me.tTeigGesamt.Name = "tTeigGesamt"
-        Me.tTeigGesamt.Size = New System.Drawing.Size(57, 20)
-        Me.tTeigGesamt.TabIndex = 34
-        Me.tTeigGesamt.TabStop = False
-        Me.tTeigGesamt.Text = "245,9 kg"
-        Me.tTeigGesamt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tTeigGesamt.WordWrap = False
+        Me.tRezGesamt.Location = New System.Drawing.Point(3, 15)
+        Me.tRezGesamt.Name = "tRezGesamt"
+        Me.tRezGesamt.ReadOnly = True
+        Me.tRezGesamt.Size = New System.Drawing.Size(67, 20)
+        Me.tRezGesamt.TabIndex = 34
+        Me.tRezGesamt.TabStop = False
+        Me.tRezGesamt.Text = "245,999 kg"
+        Me.tRezGesamt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.tRezGesamt.WordWrap = False
         '
         'lblTeigChargen
         '
@@ -462,6 +453,26 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.lblTeigChargen.Size = New System.Drawing.Size(71, 13)
         Me.lblTeigChargen.TabIndex = 47
         Me.lblTeigChargen.Text = "Teig-Chargen"
+        '
+        'cbArtikelLinienGruppe
+        '
+        Me.cbArtikelLinienGruppe.FormattingEnabled = True
+        Me.cbArtikelLinienGruppe.Location = New System.Drawing.Point(215, 105)
+        Me.cbArtikelLinienGruppe.Name = "cbArtikelLinienGruppe"
+        Me.cbArtikelLinienGruppe.Size = New System.Drawing.Size(172, 21)
+        Me.cbArtikelLinienGruppe.TabIndex = 32
+        Me.cbArtikelLinienGruppe.TabStop = False
+        Me.ToolTip.SetToolTip(Me.cbArtikelLinienGruppe, "Produktions-Ort für den Artikel z.B." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Brötchen-Maschine, Aufarbeitung...")
+        '
+        'cbLiniengruppe
+        '
+        Me.cbLiniengruppe.FormattingEnabled = True
+        Me.cbLiniengruppe.Location = New System.Drawing.Point(3, 105)
+        Me.cbLiniengruppe.Name = "cbLiniengruppe"
+        Me.cbLiniengruppe.Size = New System.Drawing.Size(176, 21)
+        Me.cbLiniengruppe.TabIndex = 30
+        Me.cbLiniengruppe.TabStop = False
+        Me.ToolTip.SetToolTip(Me.cbLiniengruppe, "Produktions-Liniengruppe aus der" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Teig-Rezeptur")
         '
         'ob_Artikel_ZuordnungRezept
         '
@@ -490,7 +501,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.Controls.Add(Me.lblRezeptNr)
         Me.MinimumSize = New System.Drawing.Size(190, 268)
         Me.Name = "ob_Artikel_ZuordnungRezept"
-        Me.Size = New System.Drawing.Size(378, 280)
+        Me.Size = New System.Drawing.Size(392, 280)
         Me.pArtikelChargen.ResumeLayout(False)
         Me.pArtikelChargen.PerformLayout()
         Me.pTeigChargen.ResumeLayout(False)
@@ -535,8 +546,9 @@ Partial Class ob_Artikel_ZuordnungRezept
     Friend WithEvents tRezMinkg As Windows.Forms.TextBox
     Friend WithEvents tRezMinPrz As Windows.Forms.TextBox
     Friend WithEvents lblTeigGesamt As Windows.Forms.Label
-    Friend WithEvents tTeigGesamt As Windows.Forms.TextBox
+    Friend WithEvents tRezGesamt As Windows.Forms.TextBox
     Friend WithEvents lblTeigChargen As Windows.Forms.Label
+    Friend WithEvents ToolTip As Windows.Forms.ToolTip
 
     'Friend WithEvents PropertyGrid As Signum.OrgaSoft.GUI.Controls.PropertyGrid
 End Class
