@@ -354,10 +354,10 @@
             Root.Sollwert_TeilungText = Sollwert_TeilungText
 
             'Teig-Gesamtmenge berechnen
-            TeigMenge = CalcTeigMenge(Sollmenge_Stk, Artikel.StkGewicht / 1000)
+            TeigMenge = CalcTeigMenge(Sollmenge_Stk, Artikel.ArtikelChargen.StkGewicht / 1000)
 
             'Chargen berechnen - Aufteilung in Optimal- und Restchargen
-            Root.TeigChargen = CalcChargenMenge(TeigMenge, Artikel.MinChargekg, Artikel.MaxChargekg, Artikel.OptChargekg, Modus, Vorproduktion)
+            Root.TeigChargen = CalcChargenMenge(TeigMenge, Artikel.ArtikelChargen.MinCharge.fMengeInkg, Artikel.ArtikelChargen.MaxCharge.fMengeInkg, Artikel.ArtikelChargen.OptCharge.fMengeInkg, Modus, Vorproduktion)
 
             'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
             For i = 1 To Root.TeigChargen.AnzahlOpt

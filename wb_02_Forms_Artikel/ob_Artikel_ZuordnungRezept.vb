@@ -151,6 +151,15 @@ Public Class ob_Artikel_ZuordnungRezept
         Rezeptur.Show()
         Me.Cursor = Cursors.Default
     End Sub
+
+    Private Sub BtnRzptChange_Click(sender As Object, e As EventArgs) Handles BtnRzptChange.Click
+        Dim RezeptAuswahl As New wb_Rezept_AuswahlListe
+        RezeptAuswahl.ShowDialog()
+
+        tRezeptNr.Text = RezeptAuswahl.RezeptNummer
+
+    End Sub
+
 #Region "Änderung Chargen"
     Private Sub tStkGewicht_Leave(sender As Object, e As EventArgs) Handles tStkGewicht.Leave
         'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt

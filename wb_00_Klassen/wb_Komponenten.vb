@@ -16,14 +16,9 @@ Public Class wb_Komponenten
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
-    Private KA_Stueckgewicht As Double 'TODO Chargengrößen in Klasse wb_MinMaxOptCharge
-    Private KA_Charge_Min As Double 'TODO bei Type 102 stkgewicht in kg !!
-    Private KA_Charge_Max As Double
-    Private KA_Charge_Opt As Double
     Private _LastErrorText As String
     Private _RezeptNummer As String = Nothing
     Private _RezeptName As String = Nothing
-    Private _BruttoRezeptGewicht As Double = 0
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
 
@@ -191,7 +186,6 @@ Public Class wb_Komponenten
             _RezeptNummer = Rezept.RezeptNummer
             _RezeptName = Rezept.RezeptBezeichnung
             _LinienGruppe = Rezept.LinienGruppe
-            _BruttoRezeptGewicht = Rezept.BruttoRezeptGewicht
             ArtikelChargen.TeigGewicht = Rezept.RezeptGewicht
             TeigChargen = Rezept.TeigChargen
 
@@ -259,78 +253,6 @@ Public Class wb_Komponenten
         Get
             Return _LastErrorText
         End Get
-    End Property
-
-    Public Property StkGewicht As Double
-        Get
-            Return KA_Stueckgewicht
-        End Get
-        Set(value As Double)
-            KA_Stueckgewicht = value
-        End Set
-    End Property
-
-    Public Property MinChargeStk As Double
-        Get
-            Return KA_Charge_Min
-        End Get
-        Set(value As Double)
-            KA_Charge_Min = value
-        End Set
-    End Property
-
-    Public Property MaxChargeStk As Double
-        Get
-            Return KA_Charge_Max
-        End Get
-        Set(value As Double)
-            KA_Charge_Max = value
-        End Set
-    End Property
-
-    Public Property OptChargeStk As Double
-        Get
-            Return KA_Charge_Opt
-        End Get
-        Set(value As Double)
-            KA_Charge_Opt = value
-        End Set
-    End Property
-
-    Public Property MinChargekg As Double
-        Get
-            Return KA_Charge_Min * KA_Stueckgewicht / 1000
-        End Get
-        Set(value As Double)
-            KA_Charge_Min = value
-        End Set
-    End Property
-
-    Public Property MaxChargekg As Double
-        Get
-            Return KA_Charge_Max * KA_Stueckgewicht / 1000
-        End Get
-        Set(value As Double)
-            KA_Charge_Max = value
-        End Set
-    End Property
-
-    Public Property OptChargekg As Double
-        Get
-            Return KA_Charge_Opt * KA_Stueckgewicht / 1000
-        End Get
-        Set(value As Double)
-            KA_Charge_Opt = value
-        End Set
-    End Property
-
-    Public Property BruttoRezeptGewicht As String
-        Get
-            Return _BruttoRezeptGewicht
-        End Get
-        Set(value As String)
-            _BruttoRezeptGewicht = value
-        End Set
     End Property
 
     ''' <summary>
@@ -650,22 +572,42 @@ Public Class wb_Komponenten
 
                 'Stückgewicht in Gramm
                 Case "KA_Stueckgewicht"
-                    KA_Stueckgewicht = wb_Functions.StrToDouble(Value)
-                    ArtikelChargen.StkGewicht = Value
-                'Minimal-Charge
-                Case "KA_Charge_Min"
-                    KA_Charge_Min = wb_Functions.StrToDouble(Value)
-                    ArtikelChargen.MinCharge.MengeInStk = Value
-                'Maximal-Charge
-                Case "KA_Charge_Max"
-                    KA_Charge_Max = wb_Functions.StrToDouble(Value)
-                    ArtikelChargen.MaxCharge.MengeInStk = Value
-                'Optimal-Charge
-                Case "KA_Charge_Opt"
-                    KA_Charge_Opt = wb_Functions.StrToDouble(Value)
-                    ArtikelChargen.OptCharge.MengeInStk = Value
-
+                    If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Then
+                        ArtikelChargen.StkGewicht = Value
+                    End If
             End Select
+
+            'Artikel - Chargengrößen in Stück
+            If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Then
+                Select Case Name
+                'Minimal-Charge
+                    Case "KA_Charge_Min"
+                        ArtikelChargen.MinCharge.MengeInStk = Value
+                'Maximal-Charge
+                    Case "KA_Charge_Max"
+                        ArtikelChargen.MaxCharge.MengeInStk = Value
+                'Optimal-Charge
+                    Case "KA_Charge_Opt"
+                        ArtikelChargen.OptCharge.MengeInStk = Value
+                End Select
+            End If
+
+            'Rohstoffe - Chargengrößen in kg
+            If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE) _
+            Or Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE) Then
+                Select Case Name
+                'Minimal-Charge
+                    Case "KA_Charge_Min_kg"
+                        ArtikelChargen.MinCharge.MengeInkg = Value
+                'Maximal-Charge
+                    Case "KA_Charge_Max_kg"
+                        ArtikelChargen.MaxCharge.MengeInkg = Value
+                'Optimal-Charge
+                    Case "KA_Charge_Opt_kg"
+                        ArtikelChargen.OptCharge.MengeInkg = Value
+                End Select
+            End If
+
         Catch ex As Exception
         End Try
         Return True
@@ -740,14 +682,30 @@ Public Class wb_Komponenten
         'Update-Statement wird dynamisch erzeugt    
         sql = "KO_Nr_AlNum = '" & Nummer & "'," &
               "KO_Bezeichnung = '" & Bezeichung & "'," &
-              "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
-              "KA_Charge_Min = '" & ArtikelChargen.MinCharge.MengeInStk & "'," &
-              "KA_Charge_Max = '" & ArtikelChargen.MaxCharge.MengeInStk & "'," &
-              "KA_Charge_Opt = '" & ArtikelChargen.OptCharge.MengeInStk & "'"
+              "KO_Kommentar = '" & Kommentar & "'," &
+              "KO_Temp_Korr = '" & KO_Backverlust & "'," &
+              "KA_Matchcode = '" & KO_IdxCloud & "'," &
+              "KA_RZ_Nr = '" & KA_Rz_Nr & "'," &
+              "KA_Lagerort = '" & KA_Lagerort & "'," &
+              "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'"
 
 
+        'Artikel - Chargengrößen in Stk
+        If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Then
+            sql = sql + "," &
+                        "KA_Charge_Min = '" & ArtikelChargen.MinCharge.MengeInStk & "'," &
+                        "KA_Charge_Max = '" & ArtikelChargen.MaxCharge.MengeInStk & "'," &
+                        "KA_Charge_Opt = '" & ArtikelChargen.OptCharge.MengeInStk & "'"
+        End If
 
-        'TODO weitere Felder
+        'Rohstoffe - Chargengrößen in kg
+        If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE) _
+        Or Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE) Then
+            sql = sql + "," &
+                        "KA_Charge_Min_kg = '" & ArtikelChargen.MinCharge.MengeInkg & "'," &
+                        "KA_Charge_Max_kg = '" & ArtikelChargen.MaxCharge.MengeInkg & "'," &
+                        "KA_Charge_Opt_kg = '" & ArtikelChargen.OptCharge.MengeInkg & "'"
+        End If
 
         'Update ausführen
         If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then

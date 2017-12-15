@@ -69,15 +69,15 @@ Public Class wb_Produktionsschritt
         With rs
             Typ = ChargenTyp
             ArtikelNummer = .Nummer
-            StkGewicht = .StkGewicht
+            StkGewicht = wb_Functions.StrToDouble(.ArtikelChargen.StkGewicht)
             RezeptNr = .RzNr
             RezeptNummer = .RezeptNummer
             RezeptVar = 1
             RezeptBezeichnung = .RezeptName
             LinienGruppe = .LinienGruppe
-            OptChargekg = .OptChargekg
-            MaxChargekg = .MaxChargekg
-            MinChargekg = .MinChargekg
+            OptChargekg = .ArtikelChargen.OptCharge.fMengeInkg
+            MaxChargekg = .ArtikelChargen.MaxCharge.fMengeInkg
+            MinChargekg = .ArtikelChargen.MinCharge.fMengeInkg
         End With
     End Sub
 
