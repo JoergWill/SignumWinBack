@@ -34,6 +34,9 @@ Public Class wb_Rohstoffe_Liste
             DataGridView.ColNames.Add(sName)
         Next
 
+        'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
+        DataGridView.x8859_5_FieldName = "KO_Bezeichnung"
+
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffLst, "RohstoffListe")
         'DataGrid Initialisierung Anzeige ohne Sauerteig, nur aktive Rohstoffe

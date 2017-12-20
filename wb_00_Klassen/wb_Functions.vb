@@ -1,6 +1,7 @@
 ﻿Imports System.Globalization
 Imports System.IO
 Imports System.Net
+Imports System.Text
 Imports ICSharpCode.SharpZipLib.BZip2
 Imports Tamir.SharpSsh
 
@@ -10,6 +11,9 @@ Imports Tamir.SharpSsh
 ''' </summary>
 
 Public Class wb_Functions
+
+    Private Shared Encoding_iso8859_5 As Encoding = Encoding.GetEncoding("iso-8859-5")
+    Private Shared Encoding_iso8859_15 As Encoding = Encoding.GetEncoding("iso-8859-15")
 
     ''' <summary>
     ''' Erzeugt einen String aus Key-Down-Ereignissen
@@ -750,6 +754,26 @@ Public Class wb_Functions
         Catch ex As Exception
             Return 0.0F
         End Try
+    End Function
+
+    ''' <summary>
+    ''' Wandelt einen String aus der MySQL-Datenbank (Latin-1) in Utf-8
+    ''' </summary>
+    ''' <param name="value"></param>
+    ''' <returns></returns>
+    Public Shared Function MySqlToUtf8(Value As String) As String
+        Dim o15 As Byte() = Encoding_iso8859_15.GetBytes(Value)
+        Return Encoding_iso8859_5.GetString(o15)
+    End Function
+
+    ''' <summary>
+    ''' Wandelt einen String von Utf-8 nach Iso-8859-5 (Schreiben in MySql-Datenbank)
+    ''' </summary>
+    ''' <param name="Value"></param>
+    ''' <returns></returns>
+    Public Shared Function UTF8toMySql(Value As String) As String
+        Dim o5 As Byte() = Encoding_iso8859_5.GetBytes(Value)
+        Return Encoding_iso8859_15.GetString(o5)
     End Function
 
     Public Shared Function SaveDiv(Divident As Double, Divisor As Double) As Double

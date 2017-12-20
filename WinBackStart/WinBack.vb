@@ -215,7 +215,7 @@ Public Class WinBack
         isInitialised = True
 
         'TEST PRODUKTION
-        ProduktionMainShow()
+        'ProduktionMainShow()
     End Sub
 
     'Umschaltung aktive Sprache
@@ -227,6 +227,11 @@ Public Class WinBack
         wb_Language.SetLanguage("en-US")
         changeLanguage()
     End Sub
+    Private Sub rbSprache_RU_Click(sender As Object, e As EventArgs) Handles rbSprache_RU.Click
+        wb_Language.SetLanguage("ru-RU")
+        changeLanguage()
+    End Sub
+
     Private Sub changeLanguage()
         'alle offenen Fenster schliessen
         CloseAllForms()

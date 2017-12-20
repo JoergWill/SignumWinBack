@@ -691,6 +691,9 @@
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.resx">
       <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.ru.resx">
+      <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.resx">
       <DependentUpon>wb_Rohstoffe_Main.vb</DependentUpon>
     </EmbeddedResource>

@@ -23,4 +23,11 @@ Public Class wb_Rohstoffe_Details
         cbRohstoffGrp1.SetTextFromKey(RohStoff.Gruppe1)
         cbRohstoffGrp2.SetTextFromKey(RohStoff.Gruppe2)
     End Sub
+
+    Private Sub tRohstoffName_Leave(sender As Object, e As EventArgs) Handles tRohstoffName.Leave
+        'TODO Dies ist ein Test der Umsetzung Russisch - WinBack nach utf8
+        Dim x As String = tRohstoffName.Text
+        Dim y As String = wb_Functions.MySqlToUtf8(x)
+        Debug.Print(y & " " & x)
+    End Sub
 End Class

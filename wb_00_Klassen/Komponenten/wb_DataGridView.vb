@@ -40,6 +40,7 @@ Public Class wb_DataGridView
 
     Private _tDataChangedTime = 500
     Private _Filter As String = ""
+    Private _8859_5_FieldName As String = ""
 
     Public ColNames As New List(Of String)
     Dim sFilter As String = ""
@@ -239,14 +240,22 @@ Public Class wb_DataGridView
         Set(value As String)
             Try
                 If value IsNot Nothing Then
-                    CurrentRow.Cells(FieldName).Value = value
+                    If FieldName = x8859_5_FieldName Then
+                        CurrentRow.Cells(FieldName).Value = wb_Functions.UTF8toMySql(value)
+                    Else
+                        CurrentRow.Cells(FieldName).Value = value
+                    End If
                 End If
             Catch
             End Try
         End Set
         Get
             Try
-                Return CurrentRow.Cells(FieldName).Value.ToString
+                If FieldName = x8859_5_FieldName Then
+                    Return wb_Functions.MySqlToUtf8(CurrentRow.Cells(FieldName).Value.ToString())
+                Else
+                    Return CurrentRow.Cells(FieldName).Value.ToString
+                End If
             Catch
                 Return Nothing
             End Try
@@ -272,6 +281,19 @@ Public Class wb_DataGridView
                 Return 0
             End Try
         End Get
+    End Property
+
+    ''' <summary>
+    ''' Feld-Name des Datenbank-Feldes, das bei Fremdsprachen konvertiert werden muss (ISO8859-5 nach UTF-8)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property x8859_5_FieldName As String
+        Get
+            Return _8859_5_FieldName
+        End Get
+        Set(value As String)
+            _8859_5_FieldName = value
+        End Set
     End Property
 
     ''' <summary>
@@ -440,6 +462,21 @@ Public Class wb_DataGridView
             DtaView.RowFilter = _Filter
         End If
     End Sub
+
+    ''' <summary>
+    ''' Ausgabe des Datenbank-Feldes.
+    ''' Es wird anhand des Feldnamens geprüft, ob das Datenbank-Feld aus der MySQL-Datenbank von iso-8859-5 nach utf-8 konvertiert werden muss.
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub DataGridView_CellFormating(ByVal Sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles MyBase.CellFormatting
+        If MyBase.Columns(e.ColumnIndex).Name = x8859_5_FieldName Then
+            If Not IsDBNull(e.Value) Then
+                e.Value = MySqlToUtf8(e.Value)
+            End If
+        End If
+    End Sub
+
 
     ''' <summary>
     ''' Abfangen den Data-Error-Meldungen

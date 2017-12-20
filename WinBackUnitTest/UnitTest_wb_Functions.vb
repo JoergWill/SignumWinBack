@@ -268,5 +268,31 @@ Imports WinBack.wb_Global
         Assert.AreEqual(#11/08/2017#, wb_Functions.ConvertUSDateStringToDate("20171108"))
     End Sub
 
+    <TestMethod()> Public Sub Test_MySqlToUtf8()
+
+        'Test utf-8 nach MySql
+        Dim x As String = wb_Functions.UTF8toMySql("Статус")
+        Assert.AreEqual("ÁâÐâãá", x)
+        Dim s As String = wb_Functions.MySqlToUtf8(x)
+        Assert.AreEqual("Статус", s)
+
+        'Datensatz aus MySQL lesen - Texte 1/24/6
+        wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Daten aus Tabelle Texte lesen (Text: Status - статус)
+        If winback.sqlSelect("SELECT * FROM Texte WHERE T_Typ=1 AND T_TextIndex=24 AND T_Sprache=6") Then
+            If winback.Read Then
+                Dim sString As String = winback.sField("T_Text")
+                Assert.AreEqual("ÁâÐâãá", sString)
+
+                Dim xString As String = wb_Functions.MySqlToUtf8(sString)
+                Assert.AreEqual("Статус", xString)
+            End If
+        End If
+
+        winback.CloseRead()
+    End Sub
 
 End Class

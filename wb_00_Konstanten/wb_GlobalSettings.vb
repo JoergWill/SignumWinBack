@@ -252,7 +252,7 @@ Public Class wb_GlobalSettings
         Get
             Select Case wb_GlobalSettings.WinBackDBType
                 Case wb_Sql.dbType.mySql
-                    Return "server=" & MySQLServerIP & ";" & "user id=" & MySQLUser & ";" & "password=" & MySQLPass & ";" & "database=" & MySQLWinBack & ";" & "ConvertZeroDateTime=True;"
+                    Return "server=" & MySQLServerIP & ";" & "user id=" & MySQLUser & ";" & "password=" & MySQLPass & ";" & "database=" & MySQLWinBack & ";" & "ConvertZeroDateTime=True,"
                 Case wb_Sql.dbType.msSql
                     If MsSQLUserId <> "xx" Then
                         Return "Data Source=" & MsSQLServer & "; Database=" & MySQLWinBack & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd

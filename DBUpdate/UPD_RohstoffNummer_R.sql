@@ -1,0 +1,1 @@
+UPDATE Komponenten SET KO_Nr_AlNum = CONCAT("R",KO_Nr_AlNum) WHERE KO_Type>100 AND KA_aktiv = 1

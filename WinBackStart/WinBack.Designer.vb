@@ -75,6 +75,7 @@ Partial Class WinBack
         Me.rbLinienPrint = New System.Windows.Forms.RibbonButton()
         Me.rbPlanung = New System.Windows.Forms.RibbonTab()
         Me.rbExtra = New System.Windows.Forms.RibbonTab()
+        Me.rbSprache_RU = New System.Windows.Forms.RibbonButton()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -116,6 +117,7 @@ Partial Class WinBack
         Me.rTab.QuickAcessToolbar.DropDownButtonItems.Add(Me.rbSprache_DE)
         Me.rTab.QuickAcessToolbar.DropDownButtonItems.Add(Me.rbSprache_EN)
         Me.rTab.QuickAcessToolbar.DropDownButtonItems.Add(Me.rbSprache_FR)
+        Me.rTab.QuickAcessToolbar.DropDownButtonItems.Add(Me.rbSprache_RU)
         Me.rTab.RibbonTabFont = New System.Drawing.Font("Trebuchet MS", 9.0!)
         Me.rTab.Tabs.Add(Me.rbChargen)
         Me.rTab.Tabs.Add(Me.rbArtikel)
@@ -130,7 +132,6 @@ Partial Class WinBack
         '
         'rbSprache_DE
         '
-        Me.rbSprache_DE.Checked = True
         Me.rbSprache_DE.CheckedGroup = "cgSprache"
         Me.rbSprache_DE.CheckOnClick = True
         Me.rbSprache_DE.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
@@ -140,6 +141,7 @@ Partial Class WinBack
         '
         'rbSprache_EN
         '
+        Me.rbSprache_EN.Checked = True
         Me.rbSprache_EN.CheckedGroup = "cgSprache"
         Me.rbSprache_EN.CheckOnClick = True
         Me.rbSprache_EN.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
@@ -416,6 +418,13 @@ Partial Class WinBack
         '
         resources.ApplyResources(Me.rbExtra, "rbExtra")
         '
+        'rbSprache_RU
+        '
+        Me.rbSprache_RU.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
+        Me.rbSprache_RU.Image = CType(resources.GetObject("rbSprache_RU.Image"), System.Drawing.Image)
+        Me.rbSprache_RU.SmallImage = CType(resources.GetObject("rbSprache_RU.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbSprache_RU, "rbSprache_RU")
+        '
         'WinBack
         '
         resources.ApplyResources(Me, "$this")
@@ -483,4 +492,5 @@ Partial Class WinBack
     Friend WithEvents rbSprache_DE As RibbonButton
     Friend WithEvents rbSprache_EN As RibbonButton
     Friend WithEvents rbSprache_FR As RibbonButton
+    Friend WithEvents rbSprache_RU As RibbonButton
 End Class
