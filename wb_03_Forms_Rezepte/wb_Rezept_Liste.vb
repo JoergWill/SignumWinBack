@@ -14,6 +14,8 @@ Public Class wb_Rezept_Liste
             DataGridView.ColNames.Add(sName)
         Next
 
+        'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
+        DataGridView.x8859_5_FieldName = "RZ_Bezeichnung"
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlRezeptListe, "RezeptListe")
 

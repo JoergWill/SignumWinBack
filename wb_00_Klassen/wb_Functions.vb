@@ -757,23 +757,41 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
-    ''' Wandelt einen String aus der MySQL-Datenbank (Latin-1) in Utf-8
+    ''' Wandelt einen String aus der MySQL-Datenbank (Latin-1) in Utf-8.
+    ''' Abhängig vom Ländercode wird die Übersetzung aus der entsprechenden Code-Page vorgenommen
     ''' </summary>
     ''' <param name="value"></param>
     ''' <returns></returns>
     Public Shared Function MySqlToUtf8(Value As String) As String
-        Dim o15 As Byte() = Encoding_iso8859_15.GetBytes(Value)
-        Return Encoding_iso8859_5.GetString(o15)
+        'abhängig von der eingestellten Code-Page
+        Select Case wb_GlobalSettings.ConvertMySQL_CodePage
+            Case wb_Global.MySqlCodepage.iso8859_15
+                Return Value
+            Case wb_Global.MySqlCodepage.iso8859_5
+                Dim o15 As Byte() = Encoding_iso8859_15.GetBytes(Value)
+                Return Encoding_iso8859_5.GetString(o15)
+            Case Else
+                Return Value
+        End Select
     End Function
 
     ''' <summary>
-    ''' Wandelt einen String von Utf-8 nach Iso-8859-5 (Schreiben in MySql-Datenbank)
+    ''' Wandelt einen String von Utf-8 nach Latin1 (Schreiben in MySql-Datenbank)
+    ''' Abhängig vom Ländercode wird die Übersetzung aus der entsprechenden Code-Page vorgenommen
     ''' </summary>
     ''' <param name="Value"></param>
     ''' <returns></returns>
     Public Shared Function UTF8toMySql(Value As String) As String
-        Dim o5 As Byte() = Encoding_iso8859_5.GetBytes(Value)
-        Return Encoding_iso8859_15.GetString(o5)
+        'abhängig von der eingestellten Code-Page
+        Select Case wb_GlobalSettings.ConvertMySQL_CodePage
+            Case wb_Global.MySqlCodepage.iso8859_15
+                Return Value
+            Case wb_Global.MySqlCodepage.iso8859_5
+                Dim o5 As Byte() = Encoding_iso8859_5.GetBytes(Value)
+                Return Encoding_iso8859_15.GetString(o5)
+            Case Else
+                Return Value
+        End Select
     End Function
 
     Public Shared Function SaveDiv(Divident As Double, Divisor As Double) As Double

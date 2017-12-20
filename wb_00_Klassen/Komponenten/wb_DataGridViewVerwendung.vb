@@ -14,6 +14,9 @@ Public Class wb_DataGridViewVerwendung
         For Each sName In sColNames
             ColNames.Add(sName)
         Next
+
+        'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
+        MyBase.x8859_5_FieldName = "RZ_Bezeichnung"
         'DataGrid füllen
         LoadData(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohstoffUse, Nr), "RohstoffVerwendung")
     End Sub

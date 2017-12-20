@@ -26,9 +26,6 @@
     <Setting Name="AktUserNr" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">9998</Value>
     </Setting>
-    <Setting Name="AktLanguage" Type="System.String" Scope="User">
-      <Value Profile="(Default)">de</Value>
-    </Setting>
     <Setting Name="OrgaBackMainConString" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=WILL-WIN10\SIGNUM; Database=DemoOrgaBack_Main3; Integrated Security=True</Value>
     </Setting>

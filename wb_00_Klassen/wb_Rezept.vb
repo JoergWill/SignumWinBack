@@ -634,13 +634,13 @@ Public Class wb_Rezept
                     _SQLRezeptSchritt.Type = wb_Functions.IntToKomponType(Value)
                 'Bezeichnung
                 Case "KO_Bezeichnung"
-                    _SQLRezeptSchritt.Bezeichnung = Value
+                    _SQLRezeptSchritt.Bezeichnung = wb_Functions.MySqlToUtf8(Value)
                 'Sollwert
                 Case "RS_Wert"
                     _SQLRezeptSchritt.Sollwert = Value
                 'Einheit
                 Case "E_Einheit"
-                    _SQLRezeptSchritt.Einheit = Value
+                    _SQLRezeptSchritt.Einheit = wb_Language.TextFilter(Value)
                 'zählt NICHT zum Rezeptgesamtgewicht
                 Case "KA_zaehlt_zu_RZ_Gesamtmenge"
                     _SQLRezeptSchritt.ZaehltNichtZumRezeptGewicht = wb_sql_Functions.MySQLBoolean(Value)
@@ -660,7 +660,7 @@ Public Class wb_Rezept
                     _RezeptVariante = Value
                 'Rezeptkopf - Rezept-Bezeichnung
                 Case "RZ_Bezeichnung"
-                    RezeptBezeichnung = Value
+                    RezeptBezeichnung = wb_Functions.MySqlToUtf8(Value)
                 'Rezeptkopf Teigtemperatur
                 Case "RZ_Teigtemperatur"
                     _RezeptTeigTemperatur = wb_Functions.ValueToDouble(Value)

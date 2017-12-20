@@ -470,13 +470,16 @@ Public Class wb_DataGridView
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub DataGridView_CellFormating(ByVal Sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles MyBase.CellFormatting
+        'Debug.Print("DataGridView FieldName " & MyBase.Columns(e.ColumnIndex).Name)
         If MyBase.Columns(e.ColumnIndex).Name = x8859_5_FieldName Then
+            'Debug.Print("DataGridView FieldName found ")
             If Not IsDBNull(e.Value) Then
+                'Debug.Print("DataGridView Field vor Convert " & e.Value)
                 e.Value = MySqlToUtf8(e.Value)
+                'Debug.Print("DataGridView Field nach Convert " & e.Value)
             End If
         End If
     End Sub
-
 
     ''' <summary>
     ''' Abfangen den Data-Error-Meldungen

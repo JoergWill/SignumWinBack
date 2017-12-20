@@ -550,7 +550,7 @@ Public Class wb_Komponenten
                     KO_Type = IntToKomponType(CInt(Value))
                 'Bezeichnung
                 Case "KO_Bezeichnung"
-                    KO_Bezeichnung = Value
+                    KO_Bezeichnung = wb_Functions.MySqlToUtf8(Value)
                 'Kommentar
                 Case "KO_Kommentar"
                     KO_Kommentar = Value

@@ -19,6 +19,8 @@ Imports WinBack.wb_Global
 ''' </summary>
 Public Class wb_GlobalSettings
     Private Shared _pVariante As wb_Global.ProgVariante = wb_Global.ProgVariante.Undef
+    Private Shared _AktLanguage As String = "de-DE"
+    Private Shared _ConvertMySQL_CodePage As MySqlCodepage = MySqlCodepage.iso8859_15
     Private Shared _pAddInPath As String = Nothing
     Private Shared _pListenPath As String
     Private Shared _pWinBackIniPath As String = Nothing
@@ -645,6 +647,26 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As Boolean)
             _ProdPlanReadOnOpen = value
+        End Set
+    End Property
+
+    Public Shared Property AktLanguage As String
+        Get
+            Return _AktLanguage
+        End Get
+        Set(value As String)
+            _AktLanguage = value
+        End Set
+    End Property
+
+    Public Shared Property ConvertMySQL_CodePage As MySqlCodepage
+        Get
+            'TODO Test
+            Return MySqlCodepage.iso8859_5
+            Return _ConvertMySQL_CodePage
+        End Get
+        Set(value As MySqlCodepage)
+            _ConvertMySQL_CodePage = value
         End Set
     End Property
 

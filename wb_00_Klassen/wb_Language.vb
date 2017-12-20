@@ -11,12 +11,12 @@
             Language = Lang
             IniFile.WriteString("winback", "Language", Language)
         End If
-        My.Settings.AktLanguage = Language
+        wb_GlobalSettings.AktLanguage = Language
     End Sub
 
     Public Shared Function GetLanguage() As String
         Try
-            Language = My.Settings.AktLanguage
+            Language = wb_GlobalSettings.AktLanguage
         Catch
             Language = "de-DE"
         End Try

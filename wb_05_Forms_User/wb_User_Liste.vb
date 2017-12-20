@@ -14,6 +14,8 @@ Public Class wb_User_Liste
 
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
         LoadGrpTexte()
+        'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
+        DataGridView.x8859_5_FieldName = "IP_Wert4str"
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlUsersListe, "UserListe")
 

@@ -80,7 +80,7 @@
     ''' <param name="dataGridView"> DataGrid Mitarbeiter-Liste</param>
     Friend Sub LoadData(dataGridView As wb_DataGridView)
         'Benutzer-Name
-        IP_Wert4Str = dataGridView.Field("IP_Wert4Str")
+        IP_Wert4Str = dataGridView.Field("IP_Wert4str")
         'Benutzer-Gruppe
         IP_ItemID = CInt(dataGridView.Field("IP_ItemID"))
         'Passwort
@@ -99,7 +99,7 @@
     ''' </returns>
     Friend Function SaveData(dataGridView As wb_DataGridView) As Boolean
         If DataHasChanged Then
-            dataGridView.Field("IP_Wert4Str") = IP_Wert4Str
+            dataGridView.Field("IP_Wert4str") = IP_Wert4Str
             dataGridView.Field("IP_ItemID") = IP_ItemID
             dataGridView.Field("IP_Wert1int") = IP_Wert1int
             dataGridView.Field("IP_lfd_Nr") = IP_Wert1int

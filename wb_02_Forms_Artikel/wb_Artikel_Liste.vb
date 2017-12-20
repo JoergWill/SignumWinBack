@@ -15,6 +15,8 @@ Public Class wb_Artikel_Liste
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
         wb_Artikel_Shared.LoadRzptNamen()
 
+        'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
+        DataGridView.x8859_5_FieldName = "KO_Bezeichnung"
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlArtikelLst, "ArtikelListe")
 

@@ -61,6 +61,11 @@
         Public FehlerText As String
     End Structure
 
+    Enum MySqlCodepage
+        iso8859_15                  'Code-Wandlung von iso-8859-15 nach utf8 (Deutschland) - Keine Umwandlung
+        iso8859_5                   'Code-Wandlung von iso-8859-5  nach utf8 (Russland)
+    End Enum
+
     Enum ProgVariante
         OrgaBack                    'Programm läuft als Addin unter OrgaBack
         WinBack                     'Programm läuft als Standalone
