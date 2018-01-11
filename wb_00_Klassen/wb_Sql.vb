@@ -92,6 +92,7 @@ Public Class wb_Sql
                         Return ""
                 End Select
             Catch
+                Trace.WriteLine("STRING-FIELD NOT FOUND " & FieldName)
                 Return "STRING-FIELD NOT FOUND " & FieldName
             End Try
         End Get

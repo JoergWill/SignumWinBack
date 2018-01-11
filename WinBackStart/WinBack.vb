@@ -13,14 +13,15 @@ Public Class WinBack
     Dim MdiProduktion As Produktion_Main
     Dim MdiService As Service_Main
 
+
     Private Sub Ribbon_ActiveTabChanged(sender As Object, e As EventArgs) Handles rTab.ActiveTabChanged
         If isInitialised Then
 
             ' CloseAllForms()
 
             'Umschaltung aktive Sprache
-            Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Language.GetLanguage)
-            Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Language.GetLanguage)
+            'Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Language.GetLanguage)
+            'Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Language.GetLanguage)
 
             If rbChargen.Active Then
                 ChargenMainShow()
@@ -202,14 +203,9 @@ Public Class WinBack
     Private Sub WinBack_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Programm und Datei-Pfade einstellen
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack
-        'Version in Status-Bar anzeigen
-        lblVersion.Text = "WinBack V" & wb_GlobalSettings.WinBackVersion
-        'IP-Adresse in Status-Bar anzeigen
-        lblNetworkIP.Text = wb_GlobalSettings.WinBackDBType.ToString & " " & wb_GlobalSettings.MySQLServerIP
-        'aktuelle(letzte) Sprache einstellen
-        wb_Language.SetLanguage("")
-        'Hash-Table Texte laden
-        wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
+
+        'Sprache und Versions-Nummer in Status-Bar anzeigen
+        ShowStatusBar()
 
         'Initialisierung beendet
         isInitialised = True
@@ -218,72 +214,119 @@ Public Class WinBack
         'ProduktionMainShow()
     End Sub
 
-    'Umschaltung aktive Sprache
-    Private Sub rbSprache_DE_Click(sender As Object, e As EventArgs) Handles rbSprache_DE.Click
+    Private Sub WinBack_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        ShowLogin()
+        wb_AktUser.SetUserRechte(Me)
+    End Sub
+
+    Private Sub rbAbmelden_Click(sender As Object, e As EventArgs) Handles rbAbmelden.Click
+        ShowLogin()
+        wb_AktUser.SetUserRechte(Me)
+    End Sub
+
+    Private Sub ChangeLanguage()
+        'Prüfen ob die Sprache geändert werden muss
+        Dim CurrentLanguage As String = Thread.CurrentThread.CurrentUICulture.Name
+        If CurrentLanguage <> wb_Language.GetLanguage Then
+
+            'alle offenen Fenster schliessen
+            CloseAllForms()
+            'Verarbeitung sperren
+            isInitialised = False
+
+            'Aktuelle Position und Größe merken
+            Dim pt As Point = Me.Location
+            Dim sz As Size = Me.Size
+            Dim cz As Size = Me.ClientSize
+
+            'Umschaltung aktive Sprache
+            Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Language.GetLanguage)
+            Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Language.GetLanguage)
+
+            'Entfernen aller Controls
+            Me.Controls.Clear()
+            InitializeComponent()
+
+            'Wiederherstellen der Fensterposition
+            'Me.Location = pt
+
+            'Verarbeitung wieder freigeben
+            isInitialised = True
+        End If
+
+        'Sprache und Versions-Nummer in Status-Bar anzeigen
+        ShowStatusBar()
+    End Sub
+
+    Private Sub ShowLogin()
+        'Anmelde-Bildschirm anzeigen
+        Dim UserLogin As New Login
+        'User-Nummer prüfen
+        If Not UserLogin.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            'aktuelle(letzte) Sprache einstellen
+            wb_Language.SetLanguage("")
+        End If
+
+        'Sprache einstellen
+        ChangeLanguage()
+        'Hash-Table Texte laden
+        wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
+    End Sub
+
+    Private Sub ShowStatusBar()
+        'Version in Status-Bar anzeigen
+        lblVersion.Text = "WinBack V" & wb_GlobalSettings.WinBackVersion
+        'IP-Adresse in Status-Bar anzeigen
+        lblNetworkIP.Text = wb_GlobalSettings.WinBackDBType.ToString & " " & wb_GlobalSettings.MySQLServerIP
+
+        'Status-Bar - Länderflagge anzeigen
+        Dim AktiveSprache As Integer = wb_Language.GetLanguageNr()
+        lblLanguage.Image = LanguageFlags.Images(AktiveSprache)
+    End Sub
+
+    Private Sub rbSprache_DE_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem0.Click
         wb_Language.SetLanguage("de-DE")
-        changeLanguage()
+        ChangeLanguage()
     End Sub
-    Private Sub rbSprache_EN_Click(sender As Object, e As EventArgs) Handles rbSprache_EN.Click
+    Private Sub rbSprache_HU_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem1.Click
+        wb_Language.SetLanguage("hu-HU")
+        ChangeLanguage()
+    End Sub
+    Private Sub rbSprache_NL_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem2.Click
+        wb_Language.SetLanguage("nl-NL")
+        ChangeLanguage()
+    End Sub
+    Private Sub rbSprache_EN_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem3.Click
         wb_Language.SetLanguage("en-US")
-        changeLanguage()
+        ChangeLanguage()
     End Sub
-    Private Sub rbSprache_RU_Click(sender As Object, e As EventArgs) Handles rbSprache_RU.Click
+    Private Sub rbSprache_PT_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem4.Click
+        wb_Language.SetLanguage("pt-PT")
+        ChangeLanguage()
+    End Sub
+    Private Sub rbSprache_SL_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem5.Click
+        wb_Language.SetLanguage("sl-SL")
+        ChangeLanguage()
+    End Sub
+    Private Sub rbSprache_RU_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem6.Click
         wb_Language.SetLanguage("ru-RU")
-        changeLanguage()
+        ChangeLanguage()
     End Sub
-
-    Private Sub changeLanguage()
-        'alle offenen Fenster schliessen
-        CloseAllForms()
-        'Umschaltung aktive Sprache
-        Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Language.GetLanguage)
-        Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Language.GetLanguage)
-        'alle Texte in WinBack neu aufbauen
-        ChangeAllControls(Me)
+    Private Sub rbSprache_FR_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem7.Click
+        wb_Language.SetLanguage("fr-FR")
+        ChangeLanguage()
     End Sub
-
-    Sub ChangeAllControls(ByVal m_Control As Control)
-        ' Neues Objekt, dass die sprachlich passenden Strings für das Form 
-        ' bereit stellt
-        Dim Resource As ResourceManager = New ResourceManager(Me.GetType())
-
-        For Each ctrl As Control In m_Control.Controls
-            'If ctrl.Controls.Count > 0 Then
-            '    ChangeAllControls(ctrl)
-            'End If
-
-            If ctrl.GetType().Equals(GetType(StatusStrip)) Then
-                For Each item As ToolStripItem In DirectCast(ctrl, ToolStrip).Items
-                    Debug.Print("ToolStrip " & item.Text)
-                    Debug.Print("ToolStrip " & item.Name)
-                Next
-            End If
-
-            If ctrl.GetType().Equals(GetType(ToolStrip)) Then
-                For Each item As ToolStripItem In DirectCast(ctrl, ToolStrip).Items
-                    Debug.Print("ToolStrip " & item.Text)
-                Next
-            End If
-
-            If ctrl.GetType().Equals(GetType(Ribbon)) Then
-                For Each rTab As RibbonTab In DirectCast(ctrl, Ribbon).Tabs
-                    Debug.Print("RibbonTab " & rTab.Text)
-
-                    For Each rPnl As RibbonPanel In rTab.Panels
-                        Debug.Print("      RibbonPanel " & rPnl.Text)
-
-                        'For Each rBtn As RibbonItem In rPnl.Items
-                        '    If rBtn.GetType().Equals(GetType(RibbonItem)) Then
-                        '        Debug.Print("          RibbonButton " & rBtn.Text)
-                        '        If rBtn.Tag Then
-                        '        End If
-                        'Next
-                    Next
-                Next
-            End If
-
-            Debug.Print("Control " & ctrl.Text)
-        Next
+    Private Sub rbSprache_ES_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem8.Click
+        wb_Language.SetLanguage("es-ES")
+        ChangeLanguage()
+    End Sub
+    Private Sub rbSprache_SK_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem9.Click
+        wb_Language.SetLanguage("sk-SK")
+        ChangeLanguage()
+    End Sub
+    Private Sub rbSprache_RO_Click(sender As Object, e As EventArgs) Handles RibbonOrbRecentItem10.Click
+        wb_Language.SetLanguage("ro-RO")
+        ChangeLanguage()
     End Sub
 
 End Class

@@ -1,4 +1,6 @@
-﻿Public Class wb_Language
+﻿Imports WinBack.wb_Global
+
+Public Class wb_Language
 
     Shared Language As String
     Public Shared TexteTabelle As New Hashtable
@@ -10,6 +12,7 @@
         Else
             Language = Lang
             IniFile.WriteString("winback", "Language", Language)
+            wb_AktUser.UserLanguage = Lang
         End If
         wb_GlobalSettings.AktLanguage = Language
     End Sub
@@ -53,6 +56,19 @@
                 Return "10"
             Case Else
                 Return 0
+        End Select
+    End Function
+
+    Public Shared Function GetLanguageSQLCodePage(LangNr As Integer) As MySqlCodepage
+        Select Case LangNr
+            Case 0  'Deutsch
+                Return MySqlCodepage.iso8859_15
+            Case 1 ' Ungarisch
+                Return MySqlCodepage.iso8859_5
+            Case 6 ' Russisch
+                Return MySqlCodepage.iso8859_5
+            Case Else
+                Return MySqlCodepage.iso8859_15
         End Select
     End Function
 

@@ -117,171 +117,350 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="StatusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="StatusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="StatusStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 624</value>
-  </data>
-  <data name="StatusStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1059, 22</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="StatusStrip1.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="StatusStrip1.Text" xml:space="preserve">
-    <value>StatusStrip1</value>
-  </data>
-  <data name="&gt;&gt;StatusStrip1.Name" xml:space="preserve">
-    <value>StatusStrip1</value>
-  </data>
-  <data name="&gt;&gt;StatusStrip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;StatusStrip1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;StatusStrip1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="lblVersion.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 17</value>
   </data>
   <data name="lblVersion.Text" xml:space="preserve">
     <value>Version</value>
-  </data>
+  <comment>@Invariant</comment></data>
   <data name="lblNetworkIP.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 17</value>
   </data>
   <data name="lblNetworkIP.Text" xml:space="preserve">
     <value>DBVersion</value>
+  <comment>@Invariant</comment></data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="lblLanguage.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="lblLanguage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 17</value>
+  </data>
+  <data name="lblLanguage.Text" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="StatusStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 624</value>
+  </data>
+  <data name="StatusStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1059, 22</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="StatusStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="StatusStrip.Text" xml:space="preserve">
+    <value>StatusStrip</value>
+  <comment>@Invariant</comment></data>
+  <data name="&gt;&gt;StatusStrip.Name" xml:space="preserve">
+    <value>StatusStrip</value>
+  </data>
+  <data name="&gt;&gt;StatusStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;StatusStrip.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;StatusStrip.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="rTab.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
+    <value>Arial, 9pt</value>
   </data>
   <data name="rTab.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="rTab.OrbDropDown.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="rTab.OrbDropDown.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="rTab.OrbDropDown.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 9pt</value>
+  </data>
+  <data name="rTab.OrbDropDown.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="rTab.OrbDropDown.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="rbAbmelden.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="rbAbmelden.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbAbmelden.Text" xml:space="preserve">
+    <value>Abmelden</value>
+  </data>
+  <data name="rbEnde.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="rbEnde.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbEnde.Text" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="rbInfo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="rbInfo.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbInfo.Text" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="RibbonButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonButton1.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonButton1.Text" xml:space="preserve">
+    <value>RibbonButton1</value>
+  <comment>@Invariant</comment></data>
+  <data name="RibbonOrbRecentItem0.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem0.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem0.Text" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="RibbonOrbRecentItem0.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="RibbonOrbRecentItem1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem1.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem1.Text" xml:space="preserve">
+    <value>Ungarisch</value>
+  </data>
+  <data name="RibbonOrbRecentItem1.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="RibbonOrbRecentItem2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem2.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem2.Text" xml:space="preserve">
+    <value>Niederländisch</value>
+  </data>
+  <data name="RibbonOrbRecentItem2.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="RibbonOrbRecentItem3.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem3.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem3.Text" xml:space="preserve">
+    <value>Englisch</value>
+  </data>
+  <data name="RibbonOrbRecentItem3.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="RibbonOrbRecentItem4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem4.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem4.Text" xml:space="preserve">
+    <value>Portugiesisch</value>
+  </data>
+  <data name="RibbonOrbRecentItem4.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="RibbonOrbRecentItem5.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem5.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem5.Text" xml:space="preserve">
+    <value>Slovenisch</value>
+  </data>
+  <data name="RibbonOrbRecentItem5.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="RibbonOrbRecentItem6.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem6.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem6.Text" xml:space="preserve">
+    <value>Russisch</value>
+  </data>
+  <data name="RibbonOrbRecentItem6.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="RibbonOrbRecentItem7.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem7.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem7.Text" xml:space="preserve">
+    <value>Französisch</value>
+  </data>
+  <data name="RibbonOrbRecentItem7.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="RibbonOrbRecentItem8.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem8.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem8.Text" xml:space="preserve">
+    <value>Spanisch</value>
+  </data>
+  <data name="RibbonOrbRecentItem8.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="RibbonOrbRecentItem9.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem9.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem9.Text" xml:space="preserve">
+    <value>Slovakisch</value>
+  </data>
+  <data name="RibbonOrbRecentItem9.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="RibbonOrbRecentItem10.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem10.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="RibbonOrbRecentItem10.Text" xml:space="preserve">
+    <value>Rumänisch</value>
+  </data>
+  <data name="RibbonOrbRecentItem10.ToolTip" xml:space="preserve">
+    <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="rTab.OrbDropDown.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
   <data name="rTab.OrbDropDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>527, 72</value>
+    <value>300, 339</value>
   </data>
   <data name="rTab.OrbDropDown.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="rbSprache_DE.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="rbSprache_DE.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="rbSprache_DE.Text" xml:space="preserve">
-    <value>Deutsch</value>
-  </data>
-  <data name="rbSprache_EN.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="rbSprache_EN.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="rbSprache_EN.Text" xml:space="preserve">
-    <value>Englisch</value>
-  </data>
-  <data name="rbSprache_FR.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="rbSprache_FR.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="rbSprache_FR.Text" xml:space="preserve">
-    <value>Französisch</value>
-  </data>
-  <data name="rbSprache_RU.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQIAABnXhJ
-        QwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="rbSprache_RU.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxjAAAAAElF
-        TkSuQmCC
-</value>
-  </data>
-  <data name="rbSprache_RU.Text" xml:space="preserve">
-    <value>Russisch</value>
   </data>
   <data name="rTab.Size" type="System.Drawing.Size, System.Drawing">
     <value>1059, 163</value>
   </data>
   <data name="rTab.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="rbChargen.Text" xml:space="preserve">
-    <value>Statistik</value>
-  </data>
-  <data name="rbArtikel.Text" xml:space="preserve">
-    <value>Artikel</value>
-  </data>
-  <data name="rbRezepte.Text" xml:space="preserve">
-    <value>Rezepte</value>
-  </data>
-  <data name="rbRohstoffe.Text" xml:space="preserve">
-    <value>Rohstoffe</value>
-  </data>
-  <data name="rbUser.Text" xml:space="preserve">
-    <value>Mitarbeiter</value>
-  </data>
-  <data name="rbLinien.Text" xml:space="preserve">
-    <value>Linien</value>
-  </data>
-  <data name="rbPlanung.Text" xml:space="preserve">
-    <value>Planung</value>
-  </data>
-  <data name="rbExtra.Text" xml:space="preserve">
-    <value>Service</value>
-  </data>
-  <data name="rTab.Text" xml:space="preserve">
-    <value>WinBack</value>
-  </data>
-  <data name="&gt;&gt;rTab.Name" xml:space="preserve">
-    <value>rTab</value>
-  </data>
-  <data name="&gt;&gt;rTab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Ribbon, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rTab.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;rTab.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="rpChargen.Text" xml:space="preserve">
-    <value>Chargen</value>
   </data>
   <data name="rbChargenListe.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -313,8 +492,8 @@
   <data name="rbChargenDetails.Text" xml:space="preserve">
     <value>Details</value>
   </data>
-  <data name="rpChargenExport.Text" xml:space="preserve">
-    <value>Export Chargendaten nach Excel</value>
+  <data name="rpChargen.Text" xml:space="preserve">
+    <value>Chargen</value>
   </data>
   <data name="rbChargenExcelSumme.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -361,8 +540,8 @@
   <data name="rbChargenExcelDetails.Text" xml:space="preserve">
     <value>Chargen Details</value>
   </data>
-  <data name="rpStatRohStoffe.Text" xml:space="preserve">
-    <value>Statistik Rohstoffe</value>
+  <data name="rpChargenExport.Text" xml:space="preserve">
+    <value>Export Chargendaten nach Excel</value>
   </data>
   <data name="rbStatRohstoffe.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -394,8 +573,8 @@
   <data name="rbStatRohstoffeDetail.Text" xml:space="preserve">
     <value>Auswertung Detail</value>
   </data>
-  <data name="rpStatRezepte.Text" xml:space="preserve">
-    <value>Statistik Rezepte</value>
+  <data name="rpStatRohStoffe.Text" xml:space="preserve">
+    <value>Statistik Rohstoffe</value>
   </data>
   <data name="rbStatRezepte.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -412,8 +591,11 @@
   <data name="rbStatRezepte.Text" xml:space="preserve">
     <value>Auswertung Rezepte</value>
   </data>
-  <data name="rpArtikel.Text" xml:space="preserve">
-    <value>Bearbeiten</value>
+  <data name="rpStatRezepte.Text" xml:space="preserve">
+    <value>Statistik Rezepte</value>
+  </data>
+  <data name="rbChargen.Text" xml:space="preserve">
+    <value>Statistik</value>
   </data>
   <data name="rbArtikelNeu.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -490,8 +672,8 @@
   <data name="rbArtikelCalc.Text" xml:space="preserve">
     <value>Kalkulation</value>
   </data>
-  <data name="rpArtikelListe.Text" xml:space="preserve">
-    <value>Artikel-Liste</value>
+  <data name="rpArtikel.Text" xml:space="preserve">
+    <value>Bearbeiten</value>
   </data>
   <data name="rbArtikelListePrint.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -523,8 +705,8 @@
   <data name="rbArtikelListeExport.Text" xml:space="preserve">
     <value>Liste exportieren</value>
   </data>
-  <data name="rpArtikelInfo.Text" xml:space="preserve">
-    <value>Nährwerte</value>
+  <data name="rpArtikelListe.Text" xml:space="preserve">
+    <value>Artikel-Liste</value>
   </data>
   <data name="rbArtikelProduktInfo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -556,8 +738,17 @@
   <data name="rbArtikelProduktInfoPrint.Text" xml:space="preserve">
     <value>Liste drucken</value>
   </data>
-  <data name="rpUser.Text" xml:space="preserve">
-    <value>Bearbeiten</value>
+  <data name="rpArtikelInfo.Text" xml:space="preserve">
+    <value>Nährwerte</value>
+  </data>
+  <data name="rbArtikel.Text" xml:space="preserve">
+    <value>Artikel</value>
+  </data>
+  <data name="rbRezepte.Text" xml:space="preserve">
+    <value>Rezepte</value>
+  </data>
+  <data name="rbRohstoffe.Text" xml:space="preserve">
+    <value>Rohstoffe</value>
   </data>
   <data name="rbUserNeu.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -598,8 +789,8 @@
   <data name="rbUserListe.Text" xml:space="preserve">
     <value>Liste drucken</value>
   </data>
-  <data name="rpUserGruppen.Text" xml:space="preserve">
-    <value>Gruppen</value>
+  <data name="rpUser.Text" xml:space="preserve">
+    <value>Bearbeiten</value>
   </data>
   <data name="rbUserRechte.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -610,8 +801,11 @@
   <data name="rbUserRechte.Text" xml:space="preserve">
     <value>Rechte Bearbeiten</value>
   </data>
-  <data name="rpLinien.Text" xml:space="preserve">
-    <value>Linien</value>
+  <data name="rpUserGruppen.Text" xml:space="preserve">
+    <value>Gruppen</value>
+  </data>
+  <data name="rbUser.Text" xml:space="preserve">
+    <value>Mitarbeiter</value>
   </data>
   <data name="rbLinienAdd.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -655,6 +849,113 @@
   <data name="rbLinienPrint.Text" xml:space="preserve">
     <value>Liste Drucken</value>
   </data>
+  <data name="rpLinien.Text" xml:space="preserve">
+    <value>Linien</value>
+  </data>
+  <data name="rbLinien.Text" xml:space="preserve">
+    <value>Linien</value>
+  </data>
+  <data name="rbPlanung.Text" xml:space="preserve">
+    <value>Planung</value>
+  </data>
+  <data name="rbExtra.Text" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="rTab.Text" xml:space="preserve">
+    <value>WinBack</value>
+  </data>
+  <data name="&gt;&gt;rTab.Name" xml:space="preserve">
+    <value>rTab</value>
+  </data>
+  <data name="&gt;&gt;rTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Ribbon, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rTab.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;rTab.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="LanguageFlags.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>134, 17</value>
+  </metadata>
+  <data name="LanguageFlags.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAA4
+        EAAAAk1TRnQBSQFMAgEBCwEAATgBAAE4AQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
+        AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
+        AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
+        AWYDAAGZAwABzAIAATMDAAIzAgABMwFmAgABMwGZAgABMwHMAgABMwH/AgABZgMAAWYBMwIAAmYCAAFm
+        AZkCAAFmAcwCAAFmAf8CAAGZAwABmQEzAgABmQFmAgACmQIAAZkBzAIAAZkB/wIAAcwDAAHMATMCAAHM
+        AWYCAAHMAZkCAALMAgABzAH/AgAB/wFmAgAB/wGZAgAB/wHMAQABMwH/AgAB/wEAATMBAAEzAQABZgEA
+        ATMBAAGZAQABMwEAAcwBAAEzAQAB/wEAAf8BMwIAAzMBAAIzAWYBAAIzAZkBAAIzAcwBAAIzAf8BAAEz
+        AWYCAAEzAWYBMwEAATMCZgEAATMBZgGZAQABMwFmAcwBAAEzAWYB/wEAATMBmQIAATMBmQEzAQABMwGZ
+        AWYBAAEzApkBAAEzAZkBzAEAATMBmQH/AQABMwHMAgABMwHMATMBAAEzAcwBZgEAATMBzAGZAQABMwLM
+        AQABMwHMAf8BAAEzAf8BMwEAATMB/wFmAQABMwH/AZkBAAEzAf8BzAEAATMC/wEAAWYDAAFmAQABMwEA
+        AWYBAAFmAQABZgEAAZkBAAFmAQABzAEAAWYBAAH/AQABZgEzAgABZgIzAQABZgEzAWYBAAFmATMBmQEA
+        AWYBMwHMAQABZgEzAf8BAAJmAgACZgEzAQADZgEAAmYBmQEAAmYBzAEAAWYBmQIAAWYBmQEzAQABZgGZ
+        AWYBAAFmApkBAAFmAZkBzAEAAWYBmQH/AQABZgHMAgABZgHMATMBAAFmAcwBmQEAAWYCzAEAAWYBzAH/
+        AQABZgH/AgABZgH/ATMBAAFmAf8BmQEAAWYB/wHMAQABzAEAAf8BAAH/AQABzAEAApkCAAGZATMBmQEA
+        AZkBAAGZAQABmQEAAcwBAAGZAwABmQIzAQABmQEAAWYBAAGZATMBzAEAAZkBAAH/AQABmQFmAgABmQFm
+        ATMBAAGZATMBZgEAAZkBZgGZAQABmQFmAcwBAAGZATMB/wEAApkBMwEAApkBZgEAA5kBAAKZAcwBAAKZ
+        Af8BAAGZAcwCAAGZAcwBMwEAAWYBzAFmAQABmQHMAZkBAAGZAswBAAGZAcwB/wEAAZkB/wIAAZkB/wEz
+        AQABmQHMAWYBAAGZAf8BmQEAAZkB/wHMAQABmQL/AQABzAMAAZkBAAEzAQABzAEAAWYBAAHMAQABmQEA
+        AcwBAAHMAQABmQEzAgABzAIzAQABzAEzAWYBAAHMATMBmQEAAcwBMwHMAQABzAEzAf8BAAHMAWYCAAHM
+        AWYBMwEAAZkCZgEAAcwBZgGZAQABzAFmAcwBAAGZAWYB/wEAAcwBmQIAAcwBmQEzAQABzAGZAWYBAAHM
+        ApkBAAHMAZkBzAEAAcwBmQH/AQACzAIAAswBMwEAAswBZgEAAswBmQEAA8wBAALMAf8BAAHMAf8CAAHM
+        Af8BMwEAAZkB/wFmAQABzAH/AZkBAAHMAf8BzAEAAcwC/wEAAcwBAAEzAQAB/wEAAWYBAAH/AQABmQEA
+        AcwBMwIAAf8CMwEAAf8BMwFmAQAB/wEzAZkBAAH/ATMBzAEAAf8BMwH/AQAB/wFmAgAB/wFmATMBAAHM
+        AmYBAAH/AWYBmQEAAf8BZgHMAQABzAFmAf8BAAH/AZkCAAH/AZkBMwEAAf8BmQFmAQAB/wKZAQAB/wGZ
+        AcwBAAH/AZkB/wEAAf8BzAIAAf8BzAEzAQAB/wHMAWYBAAH/AcwBmQEAAf8CzAEAAf8BzAH/AQAC/wEz
+        AQABzAH/AWYBAAL/AZkBAAL/AcwBAAJmAf8BAAFmAf8BZgEAAWYC/wEAAf8CZgEAAf8BZgH/AQAC/wFm
+        AQABIQEAAaUBAANfAQADdwEAA4YBAAOWAQADywEAA7IBAAPXAQAD3QEAA+MBAAPqAQAD8QEAA/gBAAHw
+        AfsB/wEAAaQCoAEAA4ADAAH/AgAB/wMAAv8BAAH/AwAB/wEAAf8BAAL/AgAD/wEAIBYFzwZ6BRYQAAH5
+        CEcE+QMgAfkIRwT5AyABoQSnBFkCOAL5AyAQAAH5A+MFFwZHASAB+QTjBBcGRwEgAYUCtALPAeUEXgFZ
+        BEcBIBAAAfkB4wMXB0cC+QFHASAB+QHjARcB4wGUAeMHRwH5AUcBIAGhAbQDrQVeAVkERwEgEAABLAF1
+        AVMBbwJNAW8BUwNNAywBUwErASAC4wGUAbYBlAEXBkYBQAFGASABoQG0A60FXgFZA/kBRwEgEAAB+wHl
+        AV4BCAFZAVIBmQVeAvsBXgE3AekBjgGTAbwBzwG8AZMIaQEfAaEBtAOtBV4BWQFHAvkBRwEgEAAB+wHl
+        AV4BGwF0AeMBGwFZBV4B+wFeATcBhgG1AbwBtQLPAbYFzwKoAc8BBAGhAbQDrQVeAVkCRwH5AUcBIBAA
+        AfsC5QEaAW8BlAEaAVkFXgH7AV4BNwHHAdYBkwGOAbYBjgEWAs8FrQHPAYUBoQG0Ac8CrQVeAVkCRwH5
+        AUcBIBAAAfsC5QGaAeMBGgGaAVkHXgE3AccB1gHjARYB8wGUAeMDzwStAc8BhQGhAbQCzwGtBV4BWQRH
+        AfkQAAH7A+UC4wGaCF4BNwHHAdYB4wG9AfQBvQHjA88ErQHPAYUBxwK0Ac8BrQHlBV4ERwH5EAAB+wPl
+        AXoBdQHlCF4BNwGnAdYBFgGUAfMBlAHjAbUDtAPPAbQBhQHHArQCzwHlBV4DRwEXAfkQAAE4BHoKWQEy
+        Ac8B3QEWAeMBvQGUAeMECQO1AQkBpwHHA7QBzwHlBV4DRwEXAfkQAAH5ARYD4wYXA0cBFwH5AfQB/wWU
+        BP8E9AHwAccEtALlBF4DRwEXAfkQAAH5ARYH4wYXAfkC/wW9Bv8C9AHzAccEtAblBBcB+RAAAfkKFwRH
+        AfkN/wL0AfMBxwTPAeUFXgRHAfkQABD5CP8G9ALzBccGOAX5EAAG7CoWBbUD8AK8AQcFbwEhA0MCEQNH
+        BPkDIAH5CEcE+QMgAfkIRwL5BSABrQPPAa0CvAQHBEYBIAEhBXIDFwZHASAB+QPjBRcGRwEgAfkD4wUX
+        BkcBIAGtBAkE8wLyBOMBIAEhAXIETwZHAvkBRwEgAfkB4wMXB0cC+QFHASAB+QHjAxcHRwL5AUcBIAHP
+        AgkCuwPzA/IDFwHjASABIQFyAk8BUAFRAk0DRwP5AUcCIAEWA2kHRgJAAUYBHwEgAeMEFwZGAkABRgEg
+        Ac8CCQG7AbUD8wPyAxcB4wEgASEBcgFPAVACWAFTAVIBTQNHAvkBRwEgAT4BjgKCC2gBCwHpAY4CiAZp
+        AmgCYgFpAT4BzwMJAbsE8wLyAxcB4wEgASECcgFRAVgBdAF1AlgERwH5AUcBIAGiAa8CzwOoBKcDhgGn
+        AV8BxAHQBqgEpwLEAagBoQG0BAkB9ATzAfIB4wIXAeMBIAEhAnIBeQFSAZQBGgFSAVkGRwEgAaEEzwqn
+        AQQB/ALmDMgBoQG0BAkB9AXzAuMBFwHjASABIQJyAXkBTQHyAfMB4wFZBkcBIAGhAc8BjQKOAa0JpwEE
+        AfwD5gvIAaEBtAQJAfQF8wLjARcB4wEgASECcgF5AU0BGgHxAeMBWQZHASABoQHPAbcB8wG3Aa0JpwEE
+        AfwD5gvIAaEBtAHdAwkF8wHyBOMBIAEhAnIBeQF0ApQBUwFZBUcBFwEgAaEBtQG2AfMBtgXPAa0DpwHP
+        AQQByAHWDeYBoQG0Ad0DCQXzAfID4wEWASABIQJyAnkBdAFNAlMFRwEXASABpwEJAbUB3QG0B7UBtAHP
+        AbUBhgHmAd0DCQrWAacBtAHdAwkF8wHyARYC4wEWASABIQGXAnIBeAF5AXoBUwIXBEcBFwH5AfMB/wG1
+        AbQBzwb/BPQB8QH0Cv8E9AHxAbQB3QMJBfMB8gEWAuMBFgEgASEBlwJyAngCdQHjBhcB+QH0Af8D3Qj/
+        AvQB8w3/AvQB8gG0Ad0DCQX0AfMEFgEgASEFcgUXBEcB+QH0Cf8F9AHzDf8C9AHzAbQECQH0BfMC4wIX
+        ASAGIQr5CPQF8wPyCP8G9ALzBbQC8QLwArwC+QMgEJkQ7ATPBa4H7AOUDZMBUgd0B1IBSwEhBUkDEQMh
+        Aw8BAAEEBIYEZgZlAQoBdAGUDJMBHAFvAVIEoAOaB3oBSwEhBXIJTwEAAQQEtAGzB60CiwEKAfAB/wX0
+        BPMC8gLxAeMBUgGgBnoGWQF6AVEBIQFyCk8CAgFPAQABBAG0Bq0EiwKKAYsBCgGUAb0ClAMWA+MEFwGU
+        AUwBUgGaBHoHWQFSAXoBSwEhAZcJTwMCAU8BAAEEAbQBswWtBYsBigGtAQoBlAG9AZoFlAMWA+MBlAFu
+        AUsBmgV1BFMDTQF1AUUBSQGXBHIJTwEPAYYBtQe0Ba0BtAFmAfAB9APzAfIC8QHwBBoBvAG9AewBRgGa
+        ARYE4wMXBEcBdQFFAbwB8wPyBPACCAO8AfABBwG8BPMD8gPxA/AB8QHvAc8BCQPVArMBrQGnAeMEFwGU
+        AW4BRgGaARYD4wQXBEcBFgFFCf8G9AHyAfMI/wb0AfABzwEZAc4B3AHOAbQBrAG0AccDlAIWARoBdAFG
+        AZoBFgTjAxcERwEWAUUJ/wb0AfIB9An/BfQB8AHPAfQBzgEZAc4B3QHNAQkBrAUaAfIBHAFGAZoCFgTj
+        AxcDRwEWAUUK/wX0AfIB9Ar/BPQB8AHPAQkBzgHVAc4B1AHOAdQBrALjAxcBlAFvAUUBmQdvBUUBdAFE
+        AW8BvQiUAZMDFgGTAW8BFga9A7cElAG3AW8BzwIJAc4BCQHOAQkBzgGsBJQBUwG9AZMBEwEHBOwCbgFt
+        AxICRAHsARUBIAEWAm8EFwdGAR8BQQGUBRYG4wEXAeMB+QHPAQkBGQHOARkBzgHdAc4BzQEaA70BegEb
+        AZkBFAEHBOwDbQISAhMBFAHsARUBIAEWA28DFwdGAR8B+QEWBeMFFwJHARcB+QHPAQkB1QLUAc4B1ALO
+        ARYC4wEXAUcBlAFvARQBBwL3ApID7QLsA+sB7QEVASACFgZvBBcBRgEXAR8B+QQWBuMEFwH5Ac8BGQHW
+        Ad0B1QEJAdUBCQHVBr0BdAEUBe0F7ATrARUBIAQXAm8CFwZGAR8B+QwXAkcB+QHPAd0B1gHdAdYB3QG1
+        AfABtQK9BBoBkwETBBQLFQ8gAR8Q+QnPARYB4wMXAkwBQgFNAT4HAAE+AwABKAMAAUADAAEwAwABAQEA
+        AQEFAAGAAQEWAAP//wCCAAs=
+</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -696,23 +997,107 @@
   <data name="&gt;&gt;lblNetworkIP.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;rbSprache_DE.Name" xml:space="preserve">
-    <value>rbSprache_DE</value>
+  <data name="&gt;&gt;lblLanguage.Name" xml:space="preserve">
+    <value>lblLanguage</value>
   </data>
-  <data name="&gt;&gt;rbSprache_DE.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblLanguage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbAbmelden.Name" xml:space="preserve">
+    <value>rbAbmelden</value>
+  </data>
+  <data name="&gt;&gt;rbAbmelden.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rbSprache_EN.Name" xml:space="preserve">
-    <value>rbSprache_EN</value>
+  <data name="&gt;&gt;rbEnde.Name" xml:space="preserve">
+    <value>rbEnde</value>
   </data>
-  <data name="&gt;&gt;rbSprache_EN.Type" xml:space="preserve">
+  <data name="&gt;&gt;rbEnde.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rbSprache_FR.Name" xml:space="preserve">
-    <value>rbSprache_FR</value>
+  <data name="&gt;&gt;rbSeparator.Name" xml:space="preserve">
+    <value>rbSeparator</value>
   </data>
-  <data name="&gt;&gt;rbSprache_FR.Type" xml:space="preserve">
+  <data name="&gt;&gt;rbSeparator.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonSeparator, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbInfo.Name" xml:space="preserve">
+    <value>rbInfo</value>
+  </data>
+  <data name="&gt;&gt;rbInfo.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem0.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem0</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem0.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonButton1.Name" xml:space="preserve">
+    <value>RibbonButton1</value>
+  </data>
+  <data name="&gt;&gt;RibbonButton1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem1.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem1</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem2.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem2</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem3.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem3</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem4.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem4</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem5.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem5</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem6.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem6</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem7.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem7</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem8.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem8</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem9.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem9</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem10.Name" xml:space="preserve">
+    <value>RibbonOrbRecentItem10</value>
+  </data>
+  <data name="&gt;&gt;RibbonOrbRecentItem10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;rbChargen.Name" xml:space="preserve">
     <value>rbChargen</value>
@@ -984,11 +1369,11 @@
   <data name="&gt;&gt;rbExtra.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rbSprache_RU.Name" xml:space="preserve">
-    <value>rbSprache_RU</value>
+  <data name="&gt;&gt;LanguageFlags.Name" xml:space="preserve">
+    <value>LanguageFlags</value>
   </data>
-  <data name="&gt;&gt;rbSprache_RU.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;LanguageFlags.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>WinBack</value>

@@ -168,6 +168,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Login.Designer.vb">
+      <DependentUpon>Login.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Login.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Service_Main.Designer.vb">
       <DependentUpon>Service_Main.vb</DependentUpon>
     </Compile>
@@ -239,6 +245,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Service_Main.resx">
       <DependentUpon>Service_Main.vb</DependentUpon>
     </EmbeddedResource>
@@ -276,6 +285,9 @@
       <DependentUpon>WinBack.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinBack.resx">
+      <DependentUpon>WinBack.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinBack.ru.resx">
       <DependentUpon>WinBack.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -328,6 +340,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Backzettel.lst" />
+    <None Include="Resources\us.gif" />
+    <None Include="Resources\ro.gif" />
+    <None Include="Resources\sk.gif" />
+    <None Include="Resources\es.gif" />
+    <None Include="Resources\fr.gif" />
+    <None Include="Resources\ru.gif" />
+    <None Include="Resources\si.gif" />
+    <None Include="Resources\sl.gif" />
+    <None Include="Resources\pt.gif" />
+    <None Include="Resources\gb.gif" />
+    <None Include="Resources\nl.gif" />
+    <None Include="Resources\hu.gif" />
+    <None Include="Resources\de.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

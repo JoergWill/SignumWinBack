@@ -54,12 +54,12 @@
         Dim OK_Result As String
 
         'Aktueller User
-        wb_GlobalSettings.AktUser = "TestUser"
+        wb_GlobalSettings.AktUserLogin("TestUser")
 
         'Test ohne Stack-Trace
         Logger.EchoStackTrace = vbFalse
         LogResult = ""
-        OK_Result = OK_Datum & vbTab & wb_GlobalSettings.AktUser & vbTab & OK_Message & vbCrLf
+        OK_Result = OK_Datum & vbTab & wb_GlobalSettings.AktUserName & vbTab & OK_Message & vbCrLf
         Trace.WriteLine(OK_Message)
         Trace.Flush()
         Assert.AreEqual(OK_Result, LogResult)
@@ -67,7 +67,7 @@
         'Test mit Stack-Trace
         Logger.EchoStackTrace = vbTrue
         LogResult = ""
-        OK_Result = OK_Datum & vbTab & wb_GlobalSettings.AktUser & vbTab & OK_Message & vbTab & OK_Class & vbTab & OK_Zeile & vbCrLf
+        OK_Result = OK_Datum & vbTab & wb_GlobalSettings.AktUserName & vbTab & OK_Message & vbTab & OK_Class & vbTab & OK_Zeile & vbCrLf
         Trace.WriteLine(OK_Message)
         Trace.Flush()
         Assert.AreEqual(OK_Result, LogResult)

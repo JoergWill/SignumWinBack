@@ -36,6 +36,7 @@ Partial Class wb_Rohstoffe_Liste
         Me.DataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView.Name = "DataGridView"
+        Me.DataGridView.x8859_5_FieldName = ""
         '
         'wb_Rohstoffe_Liste
         '

@@ -240,7 +240,7 @@ Public Class wb_DataGridView
         Set(value As String)
             Try
                 If value IsNot Nothing Then
-                    If FieldName = x8859_5_FieldName Then
+                    If FieldName = _8859_5_FieldName Then
                         CurrentRow.Cells(FieldName).Value = wb_Functions.UTF8toMySql(value)
                     Else
                         CurrentRow.Cells(FieldName).Value = value
@@ -251,7 +251,7 @@ Public Class wb_DataGridView
         End Set
         Get
             Try
-                If FieldName = x8859_5_FieldName Then
+                If FieldName = _8859_5_FieldName Then
                     Return wb_Functions.MySqlToUtf8(CurrentRow.Cells(FieldName).Value.ToString())
                 Else
                     Return CurrentRow.Cells(FieldName).Value.ToString

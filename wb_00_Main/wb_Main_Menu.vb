@@ -277,8 +277,7 @@ Public Class wb_Main_Menu
                 sName = CType(oTable.Rows(0)(0), String) & " " & CType(oTable.Rows(0)(1), String)
             End Using
 
-            wb_GlobalSettings.AktUser = sName
-            'TODO UserNummer ermitteln und in wb_Global
+            wb_GlobalSettings.AktUserLogin(sName)
         End If
     End Sub
 

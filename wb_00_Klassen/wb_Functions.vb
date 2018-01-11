@@ -12,6 +12,7 @@ Imports Tamir.SharpSsh
 
 Public Class wb_Functions
 
+    Private Shared Encoding_iso8859_1 As Encoding = Encoding.GetEncoding("iso-8859-1")
     Private Shared Encoding_iso8859_5 As Encoding = Encoding.GetEncoding("iso-8859-5")
     Private Shared Encoding_iso8859_15 As Encoding = Encoding.GetEncoding("iso-8859-15")
 
@@ -770,6 +771,9 @@ Public Class wb_Functions
             Case wb_Global.MySqlCodepage.iso8859_5
                 Dim o15 As Byte() = Encoding_iso8859_15.GetBytes(Value)
                 Return Encoding_iso8859_5.GetString(o15)
+            Case wb_Global.MySqlCodepage.iso8859_1
+                Dim o15 As Byte() = Encoding_iso8859_15.GetBytes(Value)
+                Return Encoding_iso8859_1.GetString(o15)
             Case Else
                 Return Value
         End Select
@@ -788,6 +792,9 @@ Public Class wb_Functions
                 Return Value
             Case wb_Global.MySqlCodepage.iso8859_5
                 Dim o5 As Byte() = Encoding_iso8859_5.GetBytes(Value)
+                Return Encoding_iso8859_15.GetString(o5)
+            Case wb_Global.MySqlCodepage.iso8859_1
+                Dim o5 As Byte() = Encoding_iso8859_1.GetBytes(Value)
                 Return Encoding_iso8859_15.GetString(o5)
             Case Else
                 Return Value

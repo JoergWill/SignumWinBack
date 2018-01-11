@@ -22,14 +22,29 @@ Partial Class WinBack
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(WinBack))
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.lblVersion = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblNetworkIP = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblLanguage = New System.Windows.Forms.ToolStripStatusLabel()
         Me.rTab = New System.Windows.Forms.Ribbon()
-        Me.rbSprache_DE = New System.Windows.Forms.RibbonButton()
-        Me.rbSprache_EN = New System.Windows.Forms.RibbonButton()
-        Me.rbSprache_FR = New System.Windows.Forms.RibbonButton()
+        Me.rbAbmelden = New System.Windows.Forms.RibbonButton()
+        Me.rbEnde = New System.Windows.Forms.RibbonButton()
+        Me.rbSeparator = New System.Windows.Forms.RibbonSeparator()
+        Me.rbInfo = New System.Windows.Forms.RibbonButton()
+        Me.RibbonOrbRecentItem0 = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.RibbonButton1 = New System.Windows.Forms.RibbonButton()
+        Me.RibbonOrbRecentItem1 = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.RibbonOrbRecentItem2 = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.RibbonOrbRecentItem3 = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.RibbonOrbRecentItem4 = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.RibbonOrbRecentItem5 = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.RibbonOrbRecentItem6 = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.RibbonOrbRecentItem7 = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.RibbonOrbRecentItem8 = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.RibbonOrbRecentItem9 = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.RibbonOrbRecentItem10 = New System.Windows.Forms.RibbonOrbRecentItem()
         Me.rbChargen = New System.Windows.Forms.RibbonTab()
         Me.rpChargen = New System.Windows.Forms.RibbonPanel()
         Me.rbChargenListe = New System.Windows.Forms.RibbonButton()
@@ -75,15 +90,15 @@ Partial Class WinBack
         Me.rbLinienPrint = New System.Windows.Forms.RibbonButton()
         Me.rbPlanung = New System.Windows.Forms.RibbonTab()
         Me.rbExtra = New System.Windows.Forms.RibbonTab()
-        Me.rbSprache_RU = New System.Windows.Forms.RibbonButton()
-        Me.StatusStrip1.SuspendLayout()
+        Me.LanguageFlags = New System.Windows.Forms.ImageList(Me.components)
+        Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
-        'StatusStrip1
+        'StatusStrip
         '
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblVersion, Me.lblNetworkIP})
-        resources.ApplyResources(Me.StatusStrip1, "StatusStrip1")
-        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblVersion, Me.lblNetworkIP, Me.lblLanguage})
+        resources.ApplyResources(Me.StatusStrip, "StatusStrip")
+        Me.StatusStrip.Name = "StatusStrip"
         '
         'lblVersion
         '
@@ -95,30 +110,60 @@ Partial Class WinBack
         Me.lblNetworkIP.Name = "lblNetworkIP"
         resources.ApplyResources(Me.lblNetworkIP, "lblNetworkIP")
         '
+        'lblLanguage
+        '
+        Me.lblLanguage.Image = Global.WinBack.My.Resources.Resources.de
+        resources.ApplyResources(Me.lblLanguage, "lblLanguage")
+        Me.lblLanguage.Name = "lblLanguage"
+        '
         'rTab
         '
         Me.rTab.AllowDrop = True
+        Me.rTab.BackColor = System.Drawing.SystemColors.Control
         resources.ApplyResources(Me.rTab, "rTab")
         Me.rTab.Minimized = False
         Me.rTab.Name = "rTab"
         '
         '
         '
+        Me.rTab.OrbDropDown.Anchor = CType(resources.GetObject("rTab.OrbDropDown.Anchor"), System.Windows.Forms.AnchorStyles)
+        Me.rTab.OrbDropDown.AutoSizeContentButtons = False
+        Me.rTab.OrbDropDown.BackgroundImageLayout = CType(resources.GetObject("rTab.OrbDropDown.BackgroundImageLayout"), System.Windows.Forms.ImageLayout)
         Me.rTab.OrbDropDown.BorderRoundness = 8
+        Me.rTab.OrbDropDown.ContentButtonsMinWidth = 120
+        Me.rTab.OrbDropDown.ContentRecentItemsMinWidth = 75
+        Me.rTab.OrbDropDown.Font = CType(resources.GetObject("rTab.OrbDropDown.Font"), System.Drawing.Font)
+        Me.rTab.OrbDropDown.ImeMode = CType(resources.GetObject("rTab.OrbDropDown.ImeMode"), System.Windows.Forms.ImeMode)
         Me.rTab.OrbDropDown.Location = CType(resources.GetObject("rTab.OrbDropDown.Location"), System.Drawing.Point)
+        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbAbmelden)
+        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbEnde)
+        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbSeparator)
+        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbInfo)
         Me.rTab.OrbDropDown.Name = ""
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem0)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem1)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem2)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem3)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem4)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem5)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem6)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem7)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem8)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem9)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem10)
+        Me.rTab.OrbDropDown.RecentItemsCaption = "Sprache"
+        Me.rTab.OrbDropDown.RightToLeft = CType(resources.GetObject("rTab.OrbDropDown.RightToLeft"), System.Windows.Forms.RightToLeft)
         Me.rTab.OrbDropDown.Size = CType(resources.GetObject("rTab.OrbDropDown.Size"), System.Drawing.Size)
         Me.rTab.OrbDropDown.TabIndex = CType(resources.GetObject("rTab.OrbDropDown.TabIndex"), Integer)
-        Me.rTab.OrbImage = Nothing
-        Me.rTab.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2010
+        Me.rTab.OrbImage = Global.WinBack.My.Resources.Resources.WinBack_32x32
+        Me.rTab.OrbText = "Datei"
         '
         '
         '
-        Me.rTab.QuickAcessToolbar.DropDownButtonItems.Add(Me.rbSprache_DE)
-        Me.rTab.QuickAcessToolbar.DropDownButtonItems.Add(Me.rbSprache_EN)
-        Me.rTab.QuickAcessToolbar.DropDownButtonItems.Add(Me.rbSprache_FR)
-        Me.rTab.QuickAcessToolbar.DropDownButtonItems.Add(Me.rbSprache_RU)
-        Me.rTab.RibbonTabFont = New System.Drawing.Font("Trebuchet MS", 9.0!)
+        Me.rTab.QuickAcessToolbar.Checked = True
+        Me.rTab.QuickAcessToolbar.DropDownButtonVisible = False
+        Me.rTab.QuickAcessToolbar.Visible = False
+        Me.rTab.RibbonTabFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rTab.Tabs.Add(Me.rbChargen)
         Me.rTab.Tabs.Add(Me.rbArtikel)
         Me.rTab.Tabs.Add(Me.rbRezepte)
@@ -130,33 +175,109 @@ Partial Class WinBack
         Me.rTab.TabsMargin = New System.Windows.Forms.Padding(12, 26, 20, 0)
         Me.rTab.ThemeColor = System.Windows.Forms.RibbonTheme.Black
         '
-        'rbSprache_DE
+        'rbAbmelden
         '
-        Me.rbSprache_DE.CheckedGroup = "cgSprache"
-        Me.rbSprache_DE.CheckOnClick = True
-        Me.rbSprache_DE.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
-        Me.rbSprache_DE.Image = CType(resources.GetObject("rbSprache_DE.Image"), System.Drawing.Image)
-        Me.rbSprache_DE.SmallImage = CType(resources.GetObject("rbSprache_DE.SmallImage"), System.Drawing.Image)
-        resources.ApplyResources(Me.rbSprache_DE, "rbSprache_DE")
+        Me.rbAbmelden.Image = CType(resources.GetObject("rbAbmelden.Image"), System.Drawing.Image)
+        Me.rbAbmelden.SmallImage = CType(resources.GetObject("rbAbmelden.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbAbmelden, "rbAbmelden")
         '
-        'rbSprache_EN
+        'rbEnde
         '
-        Me.rbSprache_EN.Checked = True
-        Me.rbSprache_EN.CheckedGroup = "cgSprache"
-        Me.rbSprache_EN.CheckOnClick = True
-        Me.rbSprache_EN.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
-        Me.rbSprache_EN.Image = CType(resources.GetObject("rbSprache_EN.Image"), System.Drawing.Image)
-        Me.rbSprache_EN.SmallImage = CType(resources.GetObject("rbSprache_EN.SmallImage"), System.Drawing.Image)
-        resources.ApplyResources(Me.rbSprache_EN, "rbSprache_EN")
+        Me.rbEnde.Image = CType(resources.GetObject("rbEnde.Image"), System.Drawing.Image)
+        Me.rbEnde.SmallImage = CType(resources.GetObject("rbEnde.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbEnde, "rbEnde")
         '
-        'rbSprache_FR
+        'rbInfo
         '
-        Me.rbSprache_FR.CheckedGroup = "cgSprache"
-        Me.rbSprache_FR.CheckOnClick = True
-        Me.rbSprache_FR.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
-        Me.rbSprache_FR.Image = CType(resources.GetObject("rbSprache_FR.Image"), System.Drawing.Image)
-        Me.rbSprache_FR.SmallImage = CType(resources.GetObject("rbSprache_FR.SmallImage"), System.Drawing.Image)
-        resources.ApplyResources(Me.rbSprache_FR, "rbSprache_FR")
+        Me.rbInfo.Image = CType(resources.GetObject("rbInfo.Image"), System.Drawing.Image)
+        Me.rbInfo.SmallImage = CType(resources.GetObject("rbInfo.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbInfo, "rbInfo")
+        '
+        'RibbonOrbRecentItem0
+        '
+        Me.RibbonOrbRecentItem0.Checked = True
+        Me.RibbonOrbRecentItem0.CheckOnClick = True
+        Me.RibbonOrbRecentItem0.DropDownItems.Add(Me.RibbonButton1)
+        Me.RibbonOrbRecentItem0.Image = CType(resources.GetObject("RibbonOrbRecentItem0.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem0.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem0.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem0, "RibbonOrbRecentItem0")
+        Me.RibbonOrbRecentItem0.ToolTipImage = Global.WinBack.My.Resources.Resources.de
+        '
+        'RibbonButton1
+        '
+        Me.RibbonButton1.Image = CType(resources.GetObject("RibbonButton1.Image"), System.Drawing.Image)
+        Me.RibbonButton1.SmallImage = CType(resources.GetObject("RibbonButton1.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonButton1, "RibbonButton1")
+        '
+        'RibbonOrbRecentItem1
+        '
+        Me.RibbonOrbRecentItem1.Image = CType(resources.GetObject("RibbonOrbRecentItem1.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem1.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem1.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem1, "RibbonOrbRecentItem1")
+        Me.RibbonOrbRecentItem1.ToolTipImage = Global.WinBack.My.Resources.Resources.hu
+        '
+        'RibbonOrbRecentItem2
+        '
+        Me.RibbonOrbRecentItem2.Image = CType(resources.GetObject("RibbonOrbRecentItem2.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem2.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem2.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem2, "RibbonOrbRecentItem2")
+        Me.RibbonOrbRecentItem2.ToolTipImage = Global.WinBack.My.Resources.Resources.nl
+        '
+        'RibbonOrbRecentItem3
+        '
+        Me.RibbonOrbRecentItem3.Image = CType(resources.GetObject("RibbonOrbRecentItem3.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem3.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem3.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem3, "RibbonOrbRecentItem3")
+        Me.RibbonOrbRecentItem3.ToolTipImage = Global.WinBack.My.Resources.Resources.us
+        '
+        'RibbonOrbRecentItem4
+        '
+        Me.RibbonOrbRecentItem4.Image = CType(resources.GetObject("RibbonOrbRecentItem4.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem4.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem4.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem4, "RibbonOrbRecentItem4")
+        Me.RibbonOrbRecentItem4.ToolTipImage = Global.WinBack.My.Resources.Resources.pt
+        '
+        'RibbonOrbRecentItem5
+        '
+        Me.RibbonOrbRecentItem5.Image = CType(resources.GetObject("RibbonOrbRecentItem5.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem5.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem5.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem5, "RibbonOrbRecentItem5")
+        Me.RibbonOrbRecentItem5.ToolTipImage = Global.WinBack.My.Resources.Resources.si
+        '
+        'RibbonOrbRecentItem6
+        '
+        Me.RibbonOrbRecentItem6.Image = CType(resources.GetObject("RibbonOrbRecentItem6.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem6.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem6.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem6, "RibbonOrbRecentItem6")
+        Me.RibbonOrbRecentItem6.ToolTipImage = Global.WinBack.My.Resources.Resources.ru
+        '
+        'RibbonOrbRecentItem7
+        '
+        Me.RibbonOrbRecentItem7.Image = CType(resources.GetObject("RibbonOrbRecentItem7.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem7.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem7.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem7, "RibbonOrbRecentItem7")
+        Me.RibbonOrbRecentItem7.ToolTipImage = Global.WinBack.My.Resources.Resources.fr
+        '
+        'RibbonOrbRecentItem8
+        '
+        Me.RibbonOrbRecentItem8.Image = CType(resources.GetObject("RibbonOrbRecentItem8.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem8.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem8.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem8, "RibbonOrbRecentItem8")
+        Me.RibbonOrbRecentItem8.ToolTipImage = Global.WinBack.My.Resources.Resources.es
+        '
+        'RibbonOrbRecentItem9
+        '
+        Me.RibbonOrbRecentItem9.Image = CType(resources.GetObject("RibbonOrbRecentItem9.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem9.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem9.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem9, "RibbonOrbRecentItem9")
+        Me.RibbonOrbRecentItem9.ToolTipImage = Global.WinBack.My.Resources.Resources.sk
+        '
+        'RibbonOrbRecentItem10
+        '
+        Me.RibbonOrbRecentItem10.Image = CType(resources.GetObject("RibbonOrbRecentItem10.Image"), System.Drawing.Image)
+        Me.RibbonOrbRecentItem10.SmallImage = CType(resources.GetObject("RibbonOrbRecentItem10.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.RibbonOrbRecentItem10, "RibbonOrbRecentItem10")
+        Me.RibbonOrbRecentItem10.ToolTipImage = Global.WinBack.My.Resources.Resources.ro
         '
         'rbChargen
         '
@@ -164,7 +285,7 @@ Partial Class WinBack
         Me.rbChargen.Panels.Add(Me.rpChargenExport)
         Me.rbChargen.Panels.Add(Me.rpStatRohStoffe)
         Me.rbChargen.Panels.Add(Me.rpStatRezepte)
-        Me.rbChargen.Tag = "rbChargen"
+        Me.rbChargen.Tag = "101"
         resources.ApplyResources(Me.rbChargen, "rbChargen")
         '
         'rpChargen
@@ -196,18 +317,21 @@ Partial Class WinBack
         '
         Me.rbChargenExcelSumme.Image = CType(resources.GetObject("rbChargenExcelSumme.Image"), System.Drawing.Image)
         Me.rbChargenExcelSumme.SmallImage = CType(resources.GetObject("rbChargenExcelSumme.SmallImage"), System.Drawing.Image)
+        Me.rbChargenExcelSumme.Tag = "125"
         resources.ApplyResources(Me.rbChargenExcelSumme, "rbChargenExcelSumme")
         '
         'rbChargenExcelEinzel
         '
         Me.rbChargenExcelEinzel.Image = CType(resources.GetObject("rbChargenExcelEinzel.Image"), System.Drawing.Image)
         Me.rbChargenExcelEinzel.SmallImage = CType(resources.GetObject("rbChargenExcelEinzel.SmallImage"), System.Drawing.Image)
+        Me.rbChargenExcelEinzel.Tag = "125"
         resources.ApplyResources(Me.rbChargenExcelEinzel, "rbChargenExcelEinzel")
         '
         'rbChargenExcelDetails
         '
         Me.rbChargenExcelDetails.Image = CType(resources.GetObject("rbChargenExcelDetails.Image"), System.Drawing.Image)
         Me.rbChargenExcelDetails.SmallImage = CType(resources.GetObject("rbChargenExcelDetails.SmallImage"), System.Drawing.Image)
+        Me.rbChargenExcelDetails.Tag = "125"
         resources.ApplyResources(Me.rbChargenExcelDetails, "rbChargenExcelDetails")
         '
         'rpStatRohStoffe
@@ -220,12 +344,14 @@ Partial Class WinBack
         '
         Me.rbStatRohstoffe.Image = CType(resources.GetObject("rbStatRohstoffe.Image"), System.Drawing.Image)
         Me.rbStatRohstoffe.SmallImage = CType(resources.GetObject("rbStatRohstoffe.SmallImage"), System.Drawing.Image)
+        Me.rbStatRohstoffe.Tag = "122"
         resources.ApplyResources(Me.rbStatRohstoffe, "rbStatRohstoffe")
         '
         'rbStatRohstoffeDetail
         '
         Me.rbStatRohstoffeDetail.Image = CType(resources.GetObject("rbStatRohstoffeDetail.Image"), System.Drawing.Image)
         Me.rbStatRohstoffeDetail.SmallImage = CType(resources.GetObject("rbStatRohstoffeDetail.SmallImage"), System.Drawing.Image)
+        Me.rbStatRohstoffeDetail.Tag = "122"
         resources.ApplyResources(Me.rbStatRohstoffeDetail, "rbStatRohstoffeDetail")
         '
         'rpStatRezepte
@@ -237,6 +363,7 @@ Partial Class WinBack
         '
         Me.rbStatRezepte.Image = CType(resources.GetObject("rbStatRezepte.Image"), System.Drawing.Image)
         Me.rbStatRezepte.SmallImage = CType(resources.GetObject("rbStatRezepte.SmallImage"), System.Drawing.Image)
+        Me.rbStatRezepte.Tag = "122"
         resources.ApplyResources(Me.rbStatRezepte, "rbStatRezepte")
         '
         'rbArtikel
@@ -244,6 +371,7 @@ Partial Class WinBack
         Me.rbArtikel.Panels.Add(Me.rpArtikel)
         Me.rbArtikel.Panels.Add(Me.rpArtikelListe)
         Me.rbArtikel.Panels.Add(Me.rpArtikelInfo)
+        Me.rbArtikel.Tag = "102"
         resources.ApplyResources(Me.rbArtikel, "rbArtikel")
         '
         'rpArtikel
@@ -313,26 +441,31 @@ Partial Class WinBack
         '
         Me.rbArtikelProduktInfo.Image = CType(resources.GetObject("rbArtikelProduktInfo.Image"), System.Drawing.Image)
         Me.rbArtikelProduktInfo.SmallImage = CType(resources.GetObject("rbArtikelProduktInfo.SmallImage"), System.Drawing.Image)
+        Me.rbArtikelProduktInfo.Tag = "128"
         resources.ApplyResources(Me.rbArtikelProduktInfo, "rbArtikelProduktInfo")
         '
         'rbArtikelProduktInfoPrint
         '
         Me.rbArtikelProduktInfoPrint.Image = CType(resources.GetObject("rbArtikelProduktInfoPrint.Image"), System.Drawing.Image)
         Me.rbArtikelProduktInfoPrint.SmallImage = CType(resources.GetObject("rbArtikelProduktInfoPrint.SmallImage"), System.Drawing.Image)
+        Me.rbArtikelProduktInfoPrint.Tag = "128"
         resources.ApplyResources(Me.rbArtikelProduktInfoPrint, "rbArtikelProduktInfoPrint")
         '
         'rbRezepte
         '
+        Me.rbRezepte.Tag = "103"
         resources.ApplyResources(Me.rbRezepte, "rbRezepte")
         '
         'rbRohstoffe
         '
+        Me.rbRohstoffe.Tag = "104"
         resources.ApplyResources(Me.rbRohstoffe, "rbRohstoffe")
         '
         'rbUser
         '
         Me.rbUser.Panels.Add(Me.rpUser)
         Me.rbUser.Panels.Add(Me.rpUserGruppen)
+        Me.rbUser.Tag = "120"
         resources.ApplyResources(Me.rbUser, "rbUser")
         '
         'rpUser
@@ -341,12 +474,14 @@ Partial Class WinBack
         Me.rpUser.Items.Add(Me.RnUserRemove)
         Me.rpUser.Items.Add(Me.rsUser)
         Me.rpUser.Items.Add(Me.rbUserListe)
+        Me.rpUser.Tag = ""
         resources.ApplyResources(Me.rpUser, "rpUser")
         '
         'rbUserNeu
         '
         Me.rbUserNeu.Image = Global.WinBack.My.Resources.Resources.UserNeu_32x32
         Me.rbUserNeu.SmallImage = CType(resources.GetObject("rbUserNeu.SmallImage"), System.Drawing.Image)
+        Me.rbUserNeu.Tag = ""
         resources.ApplyResources(Me.rbUserNeu, "rbUserNeu")
         '
         'RnUserRemove
@@ -364,6 +499,7 @@ Partial Class WinBack
         'rpUserGruppen
         '
         Me.rpUserGruppen.Items.Add(Me.rbUserRechte)
+        Me.rpUserGruppen.Tag = ""
         resources.ApplyResources(Me.rpUserGruppen, "rpUserGruppen")
         '
         'rbUserRechte
@@ -375,6 +511,7 @@ Partial Class WinBack
         'rbLinien
         '
         Me.rbLinien.Panels.Add(Me.rpLinien)
+        Me.rbLinien.Tag = "121"
         resources.ApplyResources(Me.rbLinien, "rbLinien")
         '
         'rpLinien
@@ -412,34 +549,45 @@ Partial Class WinBack
         '
         'rbPlanung
         '
+        Me.rbPlanung.Tag = "130"
         resources.ApplyResources(Me.rbPlanung, "rbPlanung")
         '
         'rbExtra
         '
+        Me.rbExtra.Tag = "105"
         resources.ApplyResources(Me.rbExtra, "rbExtra")
         '
-        'rbSprache_RU
+        'LanguageFlags
         '
-        Me.rbSprache_RU.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left
-        Me.rbSprache_RU.Image = CType(resources.GetObject("rbSprache_RU.Image"), System.Drawing.Image)
-        Me.rbSprache_RU.SmallImage = CType(resources.GetObject("rbSprache_RU.SmallImage"), System.Drawing.Image)
-        resources.ApplyResources(Me.rbSprache_RU, "rbSprache_RU")
+        Me.LanguageFlags.ImageStream = CType(resources.GetObject("LanguageFlags.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.LanguageFlags.TransparentColor = System.Drawing.Color.Transparent
+        Me.LanguageFlags.Images.SetKeyName(0, "de.gif")
+        Me.LanguageFlags.Images.SetKeyName(1, "hu.gif")
+        Me.LanguageFlags.Images.SetKeyName(2, "nl.gif")
+        Me.LanguageFlags.Images.SetKeyName(3, "us.gif")
+        Me.LanguageFlags.Images.SetKeyName(4, "pt.gif")
+        Me.LanguageFlags.Images.SetKeyName(5, "si.gif")
+        Me.LanguageFlags.Images.SetKeyName(6, "ru.gif")
+        Me.LanguageFlags.Images.SetKeyName(7, "fr.gif")
+        Me.LanguageFlags.Images.SetKeyName(8, "es.gif")
+        Me.LanguageFlags.Images.SetKeyName(9, "sk.gif")
+        Me.LanguageFlags.Images.SetKeyName(10, "ro.gif")
         '
         'WinBack
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.rTab)
-        Me.Controls.Add(Me.StatusStrip1)
+        Me.Controls.Add(Me.StatusStrip)
         Me.IsMdiContainer = True
         Me.Name = "WinBack"
-        Me.StatusStrip1.ResumeLayout(False)
-        Me.StatusStrip1.PerformLayout()
+        Me.StatusStrip.ResumeLayout(False)
+        Me.StatusStrip.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents StatusStrip1 As StatusStrip
+    Friend WithEvents StatusStrip As StatusStrip
     Friend WithEvents lblVersion As ToolStripStatusLabel
     Friend WithEvents lblNetworkIP As ToolStripStatusLabel
     Friend WithEvents rTab As Ribbon
@@ -489,8 +637,22 @@ Partial Class WinBack
     Friend WithEvents rbStatRohstoffeDetail As RibbonButton
     Friend WithEvents rpStatRezepte As RibbonPanel
     Friend WithEvents rbStatRezepte As RibbonButton
-    Friend WithEvents rbSprache_DE As RibbonButton
-    Friend WithEvents rbSprache_EN As RibbonButton
-    Friend WithEvents rbSprache_FR As RibbonButton
-    Friend WithEvents rbSprache_RU As RibbonButton
+    Friend WithEvents rbAbmelden As RibbonButton
+    Friend WithEvents rbEnde As RibbonButton
+    Friend WithEvents RibbonOrbRecentItem0 As RibbonOrbRecentItem
+    Friend WithEvents RibbonOrbRecentItem1 As RibbonOrbRecentItem
+    Friend WithEvents rbSeparator As RibbonSeparator
+    Friend WithEvents rbInfo As RibbonButton
+    Friend WithEvents RibbonButton1 As RibbonButton
+    Friend WithEvents RibbonOrbRecentItem2 As RibbonOrbRecentItem
+    Friend WithEvents RibbonOrbRecentItem3 As RibbonOrbRecentItem
+    Friend WithEvents RibbonOrbRecentItem4 As RibbonOrbRecentItem
+    Friend WithEvents RibbonOrbRecentItem5 As RibbonOrbRecentItem
+    Friend WithEvents RibbonOrbRecentItem6 As RibbonOrbRecentItem
+    Friend WithEvents RibbonOrbRecentItem7 As RibbonOrbRecentItem
+    Friend WithEvents RibbonOrbRecentItem8 As RibbonOrbRecentItem
+    Friend WithEvents RibbonOrbRecentItem9 As RibbonOrbRecentItem
+    Friend WithEvents RibbonOrbRecentItem10 As RibbonOrbRecentItem
+    Friend WithEvents lblLanguage As ToolStripStatusLabel
+    Friend WithEvents LanguageFlags As ImageList
 End Class

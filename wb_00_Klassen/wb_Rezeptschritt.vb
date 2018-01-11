@@ -10,6 +10,7 @@ Public Class wb_Rezeptschritt
     Private _Type As wb_Global.KomponTypen
     Private _Nummer As String
     Private _Bezeichnung As String
+    Private _Kommentar As String
     Private _Sollwert As String
     Private _Einheit As String
     Private _PreisProKg As Double = 0
@@ -171,6 +172,19 @@ Public Class wb_Rezeptschritt
     End Property
 
     ''' <summary>
+    ''' Komponenten-Kommentar (bei Sprachumschaltung die deutsche Bezeichnung)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Kommentar As String
+        Get
+            Return _Kommentar
+        End Get
+        Set(value As String)
+            _Kommentar = value
+        End Set
+    End Property
+
+    ''' <summary>
     ''' Sollwert
     ''' </summary>
     ''' <returns></returns>
@@ -187,7 +201,6 @@ Public Class wb_Rezeptschritt
     ''' Bezeichnung. Anzeige im VirtualTree (Rezeptur)
     ''' Bei Produktions-Stufen, Kessel und Text-Komponenten wird der Sollwert als Text angezeigt
     ''' bei allen anderen Komponenten-Typen die Komponenten-Bezeichnung.
-    ''' 'TODO Bei Sprachumschaltung wird wahlweise der Kommentar angezeigt
     ''' </summary>
     ''' <returns>String - Bezeichnung</returns>
     Public ReadOnly Property VirtTreeBezeichnung() As String
@@ -197,10 +210,19 @@ Public Class wb_Rezeptschritt
                 Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
                     Return _Sollwert
                 Case Else
-                    If _RezeptNr > 0 Then
-                        Return _Bezeichnung & "®"
+                    'Anzeige Kommentar statt Rezeptbezeichnung
+                    If wb_GlobalSettings.KommentarStattBezeichnung And _Kommentar <> "" Then
+                        If _RezeptNr > 0 Then
+                            Return _Kommentar & "®"
+                        Else
+                            Return _Kommentar
+                        End If
                     Else
-                        Return _Bezeichnung
+                        If _RezeptNr > 0 Then
+                            Return _Bezeichnung & "®"
+                        Else
+                            Return _Bezeichnung
+                        End If
                     End If
             End Select
         End Get

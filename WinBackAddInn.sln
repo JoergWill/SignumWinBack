@@ -253,4 +253,8 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_AutoCreateNewLanguageFiles = False
+		RESX_NeutralResourcesLanguage = de-DE
+	EndGlobalSection
 EndGlobal

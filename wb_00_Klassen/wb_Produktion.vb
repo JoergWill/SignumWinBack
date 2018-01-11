@@ -61,10 +61,10 @@
     Private Function CheckLinie(Linie) As Boolean
         If (Linie > 0) And (Linie < wb_Global.MaxLinien) Then
             If _ChargenNummer Is Nothing Then
-                ReDim _ChargenNummer(Linie)
+                ReDim _ChargenNummer(Linie + 1)
             End If
             If _ChargenNummer.Length < Linie Then
-                ReDim _ChargenNummer(Linie)
+                ReDim _ChargenNummer(Linie + 1)
             End If
             Return True
         Else

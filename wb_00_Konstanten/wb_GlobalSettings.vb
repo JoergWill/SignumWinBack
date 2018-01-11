@@ -20,7 +20,10 @@ Imports WinBack.wb_Global
 Public Class wb_GlobalSettings
     Private Shared _pVariante As wb_Global.ProgVariante = wb_Global.ProgVariante.Undef
     Private Shared _AktLanguage As String = "de-DE"
-    Private Shared _ConvertMySQL_CodePage As MySqlCodepage = MySqlCodepage.iso8859_15
+    Private Shared _WinBackLanguage1 As Integer = UNDEFINED
+    Private Shared _WinBackLanguage2 As Integer = UNDEFINED
+    Private Shared _WinBackLanguageVariante As Integer = UNDEFINED
+
     Private Shared _pAddInPath As String = Nothing
     Private Shared _pListenPath As String
     Private Shared _pWinBackIniPath As String = Nothing
@@ -55,8 +58,9 @@ Public Class wb_GlobalSettings
     Private Shared _LogToTextFile As Integer = wb_Global.UNDEFINED
     Private Shared _LogToDataBase As Integer = wb_Global.UNDEFINED
 
-    Private Shared _AktUser As String = ""
+    Private Shared _AktUserName As String = ""
     Private Shared _AktUserNr As Integer = wb_Global.UNDEFINED
+    Private Shared _AktUserGruppe As Integer = -1
 
     Private Shared _SauerteigAnlage As Boolean = Nothing
     Private Shared _SauerteigAnzBeh As Integer = wb_Global.UNDEFINED
@@ -186,22 +190,34 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
-    Public Shared Property AktUser As String
+    Public Shared Function AktUserLogin(Nummer As Integer)
+        If wb_AktUser.Login(Nummer) Then
+            wb_Language.SetLanguage(wb_AktUser.UserLanguage)
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function AktUserLogin(Name As String)
+        If wb_AktUser.Login(Name) Then
+            wb_Language.SetLanguage(wb_AktUser.UserLanguage)
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared ReadOnly Property AktUserName As String
         Get
-            Return _AktUser
+            Return wb_AktUser.UserName
         End Get
-        Set(value As String)
-            _AktUser = value
-        End Set
     End Property
 
-    Public Shared Property AktUserNr As Integer
+    Public Shared ReadOnly Property AktUserNr As Integer
         Get
-            Return _AktUserNr
+            Return wb_AktUser.UserNr
         End Get
-        Set(value As Integer)
-            _AktUserNr = value
-        End Set
     End Property
 
     Public Shared ReadOnly Property DataGridAlternateRowColor As Color
@@ -659,15 +675,34 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Public Shared Property ConvertMySQL_CodePage As MySqlCodepage
+    Public Shared ReadOnly Property ConvertMySQL_CodePage As MySqlCodepage
         Get
-            'TODO Test
-            Return MySqlCodepage.iso8859_5
-            Return _ConvertMySQL_CodePage
+            If _WinBackLanguage1 = UNDEFINED Then
+                getWinBackKonfiguration()
+            End If
+
+            Return wb_Language.GetLanguageSQLCodePage(_WinBackLanguage1)
         End Get
-        Set(value As MySqlCodepage)
-            _ConvertMySQL_CodePage = value
-        End Set
+    End Property
+
+    ''' <summary>
+    ''' Anzeige des Kommentarfeldes anstelle der Bezeichnung für Installationen im Ausland.
+    ''' Wenn die WinBack.Konfiguration.SprachenVariante eingeschaltet ist (1) wird anstelle der Komponenten/Artikel/Rezeptbezeichnung das
+    ''' entsprechende Kommentarfeld eingeblendet. Dies passiert nur, wenn die eingestellte Sprache in WinBack-Office gleiche der Sprache2
+    ''' in der WinBack Konfiguration ist.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property KommentarStattBezeichnung As Boolean
+        Get
+            If _WinBackLanguage2 = UNDEFINED Then
+                getWinBackKonfiguration()
+            End If
+            If _WinBackLanguageVariante = 1 And (_WinBackLanguage2 = wb_Language.GetLanguageNr) Then
+                Return True
+            Else
+                Return False
+            End If
+        End Get
     End Property
 
     Public Shared Function GetFileName(Tabelle As String) As String
@@ -731,6 +766,12 @@ Public Class wb_GlobalSettings
                         _WinBackDBVersion = winback.sField("KF_Wert")
                     Case "vts__anzahl_behaelter"
                         _SauerteigAnzBeh = winback.sField("KF_Wert")
+                    Case "Sprache1"
+                        _WinBackLanguage1 = wb_Functions.StrToInt(winback.sField("KF_Wert"))
+                    Case "Sprache2"
+                        _WinBackLanguage2 = wb_Functions.StrToInt(winback.sField("KF_Wert"))
+                    Case "SprachenVariante"
+                        _WinBackLanguageVariante = wb_Functions.StrToInt(winback.sField("KF_Wert"))
                 End Select
             End While
         End If

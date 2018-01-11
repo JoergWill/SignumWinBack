@@ -572,13 +572,14 @@ Public Class wb_Komponenten
 
                 'Stückgewicht in Gramm
                 Case "KA_Stueckgewicht"
-                    If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Then
+                    If Type = KomponTypen.KO_TYPE_ARTIKEL Then
                         ArtikelChargen.StkGewicht = Value
                     End If
             End Select
 
             'Artikel - Chargengrößen in Stück
-            If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Then
+            If Type = KomponTypen.KO_TYPE_ARTIKEL Then
+
                 Select Case Name
                 'Minimal-Charge
                     Case "KA_Charge_Min"
@@ -593,8 +594,8 @@ Public Class wb_Komponenten
             End If
 
             'Rohstoffe - Chargengrößen in kg
-            If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE) _
-            Or Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE) Then
+            If Type = KomponTypen.KO_TYPE_HANDKOMPONENTE Or Type = KomponTypen.KO_TYPE_AUTOKOMPONENTE Then
+
                 Select Case Name
                 'Minimal-Charge
                     Case "KA_Charge_Min_kg"

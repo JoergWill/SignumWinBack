@@ -635,6 +635,9 @@ Public Class wb_Rezept
                 'Bezeichnung
                 Case "KO_Bezeichnung"
                     _SQLRezeptSchritt.Bezeichnung = wb_Functions.MySqlToUtf8(Value)
+                'Kommentar
+                Case "KO_Kommentar"
+                    _SQLRezeptSchritt.Kommentar = Value
                 'Sollwert
                 Case "RS_Wert"
                     _SQLRezeptSchritt.Sollwert = Value

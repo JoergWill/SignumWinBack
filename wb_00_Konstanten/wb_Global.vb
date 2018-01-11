@@ -64,6 +64,7 @@
     Enum MySqlCodepage
         iso8859_15                  'Code-Wandlung von iso-8859-15 nach utf8 (Deutschland) - Keine Umwandlung
         iso8859_5                   'Code-Wandlung von iso-8859-5  nach utf8 (Russland)
+        iso8859_1                   'Code-Wandlung von iso-8859-1  nach utf8 (Ungarisch)
     End Enum
 
     Enum ProgVariante

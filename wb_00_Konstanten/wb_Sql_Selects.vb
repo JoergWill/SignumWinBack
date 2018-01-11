@@ -51,9 +51,11 @@
     'Sql-Statement User Datensatz ändern        [0]-Name [1]-NewPassword [2]-Gruppe [3]-NewPassword
     Public Const sqlUserUpdate = "UPDATE ItemParameter SET IP_ItemID = [2], IP_Lfd_Nr = [1], IP_Wert1int = [1], IP_Wert4str = '[0]' " &
                                  "WHERE IP_Wert1Int = [3] AND IP_ItemTyp = 500 AND IP_ItemAttr = 501"
-    'Sql-Statemant User Datensatz löschen
+    'Sql-Statement User Datensatz ändern        [0]-Password [1]-Sprache
+    Public Const sqlUserUpdateLang = "UPDATE ItemParameter SET IP_Wert5str = '[1]' WHERE IP_Wert1Int = [0] AND IP_ItemTyp = 500 AND IP_ItemAttr = 501"
+    'Sql-Statement User Datensatz löschen
     Public Const sqlUserDelete = "DELETE FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int = [0]"
-    'Sql-Statemant User mit diesem Passwort existiert
+    'Sql-Statement User mit diesem Passwort existiert
     Public Const sqlUserExists = "SELECT COUNT(*) as IP_Cnt FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int = [0]"
 
     'Sql-Statement Gruppen-Nummer und Gruppen-Bezeichnung aus winback.II_ItemID
@@ -66,6 +68,12 @@
                                  "INNER JOIN Texte On IAttrParams.AT_Wert2int = Texte.T_TextIndex AND IAttrParams.AT_Attr_Nr = Texte.T_Typ " &
                                  "WHERE ItemIDs.II_ItemTyp <= 230 AND ItemParameter.IP_Wert1int = [0] AND  Texte.T_Sprache = [1] " &
                                  "ORDER BY ItemIDs.II_ItemTyp, ItemIDs.II_ItemID;"
+    'Sql-Statement UserGruppenRechte aus winback.ItemParameter
+    Public Const sqlUserGrpRechte = "Select * FROM ItemParameter WHERE IP_ItemTyp = 2 AND IP_Wert1int = [0] ORDER BY IP_ItemID;"
+    'Sql-Statement User Datensatz lesen
+    Public Const sqlUserLogin = "SELECT * FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int = [0]"
+    'Sql-Statement User Datensatz lesen
+    Public Const sqlUserName = "SELECT * FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert4str = [0]"
 
     'Sql-Statement alle Texte aus winback.Texte
     Public Const sqlWinBackTxte = "SELECT T_TextIndex, T_Typ, T_Text FROM Texte WHERE T_Sprache = [0]"
