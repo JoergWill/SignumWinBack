@@ -145,40 +145,76 @@
   <data name="WinBack_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WinBack_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="de" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangDE" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\de.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="es" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangES" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\es.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="fr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangFR" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fr.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="gb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangGB" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\gb.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="hu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangHU" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hu.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="nl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\nl.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="pt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangPT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\pt.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ro" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangRO" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ro.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ru" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangRU" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ru.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="si" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangSI" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\si.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="sk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangSK" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sk.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="us" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LangUS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\us.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelBearbeiten_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelBearbeiten_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelDeklaration_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelDeklaration_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelDrucken_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelDrucken_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelHinweise_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelHinweise_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelKalkulation_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelKalkulation_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelKopieren_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelKopieren_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelLoeschen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelLoeschen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelNeu_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelNeu_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelParameter_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelParameter_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelProduktInfo_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelProduktInfo_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

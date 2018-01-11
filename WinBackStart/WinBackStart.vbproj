@@ -340,6 +340,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Backzettel.lst" />
+    <None Include="Resources\ArtikelDrucken_32x32.png" />
+    <None Include="Resources\ArtikelProduktInfo_32x32.png" />
+    <None Include="Resources\ArtikelDeklaration_32x32.png" />
+    <None Include="Resources\ArtikelKalkulation_32x32.png" />
+    <None Include="Resources\ArtikelHinweise_32x32.png" />
+    <None Include="Resources\ArtikelParameter_32x32.png" />
+    <None Include="Resources\ArtikelListe_32x32.png" />
+    <None Include="Resources\ArtikelDetails_32x32.png" />
+    <None Include="Resources\ArtikelKopieren_32x32.png" />
+    <None Include="Resources\ArtikelBearbeiten_32x32.png" />
+    <None Include="Resources\ArtikelLoeschen_32x32.png" />
+    <None Include="Resources\ArtikelNeu_32x32.png" />
     <None Include="Resources\us.gif" />
     <None Include="Resources\ro.gif" />
     <None Include="Resources\sk.gif" />

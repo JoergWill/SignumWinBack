@@ -119,11 +119,12 @@ Public Class wb_AktUser
         winback.Close()
     End Sub
 
-    Private Shared Function RechtOK(Tag As Integer) As Boolean
-        If Tag = 0 Then
+    Private Shared Function RechtOK(Tag As String) As Boolean
+        Dim t As Integer = wb_Functions.StrToInt(Tag)
+        If t = 0 Then
             Return True
         Else
-            If _UserGruppenRechte.TryGetValue(Tag - 100, RechtOK) Then
+            If _UserGruppenRechte.TryGetValue(t - 100, RechtOK) Then
                 Return RechtOK
             Else
                 Return False
