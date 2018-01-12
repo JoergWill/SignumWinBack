@@ -141,7 +141,7 @@ Public Class WinBack
     ''' <summary>
     ''' Löscht den aktuellen Benutzer
     ''' </summary>
-    Private Sub RnUserRemove_Click(sender As Object, e As EventArgs) Handles RnUserRemove.Click
+    Private Sub RnUserRemove_Click(sender As Object, e As EventArgs) Handles RbUserRemove.Click
         MdiUser.BtnUserDelete()
     End Sub
 

@@ -700,20 +700,24 @@ Public Class wb_Functions
     ''' <returns>Konvertierten String im Format Integer</returns>
     Public Shared Function StrToInt(value As String) As Integer
         Dim i As Integer
-        Try
-            value = value.Replace(".", ",")
-            If Integer.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), i) Then
-                Return i
-            Else
-                Try
-                    Return Int(Val(value))
-                Catch
-                    Return 0
-                End Try
-            End If
-        Catch ex As Exception
+        If value IsNot Nothing Then
+            Try
+                value = value.Replace(".", ",")
+                If Integer.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), i) Then
+                    Return i
+                Else
+                    Try
+                        Return Int(Val(value))
+                    Catch
+                        Return 0
+                    End Try
+                End If
+            Catch ex As Exception
+                Return 0
+            End Try
+        Else
             Return 0
-        End Try
+        End If
     End Function
 
     ''' <summary>

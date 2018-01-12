@@ -138,7 +138,7 @@
     <value>None</value>
   </data>
   <data name="lblLanguage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 17</value>
+    <value>66, 15</value>
   </data>
   <data name="lblLanguage.Text" xml:space="preserve">
     <value>Deutsch</value>
@@ -168,12 +168,6 @@
   <data name="&gt;&gt;StatusStrip.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="rbChargenListe.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="rbChargenListe.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -181,13 +175,7 @@
 </value>
   </data>
   <data name="rbChargenListe.Text" xml:space="preserve">
-    <value>Liste</value>
-  </data>
-  <data name="rbChargenDetails.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
+    <value>Produktion Tage</value>
   </data>
   <data name="rbChargenDetails.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -196,16 +184,10 @@
 </value>
   </data>
   <data name="rbChargenDetails.Text" xml:space="preserve">
-    <value>Details</value>
+    <value>Chargen Details</value>
   </data>
   <data name="rpChargen.Text" xml:space="preserve">
     <value>Chargen</value>
-  </data>
-  <data name="rbChargenExcelSumme.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
   </data>
   <data name="rbChargenExcelSumme.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -216,12 +198,6 @@
   <data name="rbChargenExcelSumme.Text" xml:space="preserve">
     <value>Summe Chargen</value>
   </data>
-  <data name="rbChargenExcelEinzel.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="rbChargenExcelEinzel.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -230,12 +206,6 @@
   </data>
   <data name="rbChargenExcelEinzel.Text" xml:space="preserve">
     <value>Einzel chargen</value>
-  </data>
-  <data name="rbChargenExcelDetails.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
   </data>
   <data name="rbChargenExcelDetails.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -249,12 +219,6 @@
   <data name="rpChargenExport.Text" xml:space="preserve">
     <value>Export Chargendaten nach Excel</value>
   </data>
-  <data name="rbStatRohstoffe.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="rbStatRohstoffe.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -263,12 +227,6 @@
   </data>
   <data name="rbStatRohstoffe.Text" xml:space="preserve">
     <value>Auswertung schnell</value>
-  </data>
-  <data name="rbStatRohstoffeDetail.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
   </data>
   <data name="rbStatRohstoffeDetail.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -281,12 +239,6 @@
   </data>
   <data name="rpStatRohStoffe.Text" xml:space="preserve">
     <value>Statistik Rohstoffe</value>
-  </data>
-  <data name="rbStatRezepte.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
   </data>
   <data name="rbStatRezepte.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -496,35 +448,19 @@
   <data name="rbArtikel.Text" xml:space="preserve">
     <value>Artikel</value>
   </data>
-  <data name="rbRezeptNeu.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQIAABnXhJ
-        QwAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="rbRezeptNeu.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxjAAAAAElF
-        TkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="rbRezeptNeu.Text" xml:space="preserve">
     <value>Rezept Neu</value>
   </data>
-  <data name="rbRezeptBearbeiten.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQIAABnXhJ
-        QwAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="rbRezeptBearbeiten.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxjAAAAAElF
-        TkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="rbRezeptBearbeiten.Text" xml:space="preserve">
@@ -533,133 +469,242 @@
   <data name="rpRezeptBearbeiten.Text" xml:space="preserve">
     <value>Rezept</value>
   </data>
-  <data name="rbRezeptListe.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQIAABnXhJ
-        QwAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="rbRezeptListe.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxjAAAAAElF
-        TkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="rbRezeptListe.Text" xml:space="preserve">
     <value>Rezept Liste</value>
   </data>
-  <data name="rbRezeptDetails.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQIAABnXhJ
-        QwAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="rbRezeptDetails.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxjAAAAAElF
-        TkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="rbRezeptDetails.Text" xml:space="preserve">
-    <value>Rezept Details</value>
-  </data>
-  <data name="rbRezeptHinweis.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQIAABnXhJ
-        QwAAAABJRU5ErkJggg==
-</value>
+    <value>Detail Fenster</value>
   </data>
   <data name="rbRezeptHinweis.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxjAAAAAElF
-        TkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="rbRezeptHinweis.Text" xml:space="preserve">
     <value>Verarbeitungs Hinweise</value>
   </data>
-  <data name="rbRezeptVerwendung.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQIAABnXhJ
-        QwAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="rbRezeptVerwendung.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxjAAAAAElF
-        TkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="rbRezeptVerwendung.Text" xml:space="preserve">
     <value>Verwendung in Artikel</value>
   </data>
-  <data name="rbRezeptHistorie.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQIAABnXhJ
-        QwAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="rbRezeptHistorie.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxjAAAAAElF
-        TkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="rbRezeptHistorie.Text" xml:space="preserve">
     <value>Änderungs Historie</value>
   </data>
+  <data name="rlArtikel.Text" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="rlProduktion.Text" xml:space="preserve">
+    <value>Produktion</value>
+  </data>
+  <data name="rlSauerteig.Text" xml:space="preserve">
+    <value>Sauerteig</value>
+  </data>
+  <data name="cbRezeptAnsicht.Text" xml:space="preserve">
+    <value />
+  </data>
   <data name="rpRezeptAnsicht.Text" xml:space="preserve">
     <value>Ansicht</value>
   </data>
-  <data name="rbRezeptDrucken.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="rbRezeptDruckenListe.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQIAABnXhJ
-        QwAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
 </value>
+  </data>
+  <data name="rbRezeptDruckenListe.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRezeptDruckenListe.Text" xml:space="preserve">
+    <value>Liste aller Rezepte</value>
+  </data>
+  <data name="rbRezeptDruckenStammblatt.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="rbRezeptDruckenStammblatt.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRezeptDruckenStammblatt.Text" xml:space="preserve">
+    <value>Rezept Stammblatt</value>
   </data>
   <data name="rbRezeptDrucken.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxjAAAAAElF
-        TkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="rbRezeptDrucken.Text" xml:space="preserve">
-    <value>Rezeptur Drucken</value>
-  </data>
-  <data name="rbRezeptListeDrucken.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAaSURBVFhH7cEBAQAAAIIg/69uSEAAAADAuRoQIAABnXhJ
-        QwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="rbRezeptListeDrucken.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAATSURBVDhPYxgFo2AUjAIwYGAAAAQQAAGnRHxjAAAAAElF
-        TkSuQmCC
-</value>
-  </data>
-  <data name="rbRezeptListeDrucken.Text" xml:space="preserve">
-    <value>Liste aller Rezepte</value>
+    <value>Rezept Drucken</value>
   </data>
   <data name="rpRezeptDrucken.Text" xml:space="preserve">
     <value>Drucken</value>
   </data>
   <data name="rbRezepte.Text" xml:space="preserve">
     <value>Rezepte</value>
+  </data>
+  <data name="rbRohstoffeNeu.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRohstoffeNeu.Text" xml:space="preserve">
+    <value>Rohstoff Neu</value>
+  </data>
+  <data name="rbRohstoffeBearbeiten.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRohstoffeBearbeiten.Text" xml:space="preserve">
+    <value>Rohstoff Bearbeiten</value>
+  </data>
+  <data name="rbRohstoffeLöschen.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRohstoffeLöschen.Text" xml:space="preserve">
+    <value>Rohstoff(e) Löschen</value>
+  </data>
+  <data name="rpRohstoffeBearbeiten.Text" xml:space="preserve">
+    <value>Rohstoffe</value>
+  </data>
+  <data name="rbRohstoffeListe.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRohstoffeListe.Text" xml:space="preserve">
+    <value>Rohstoffe Liste</value>
+  </data>
+  <data name="rbRohstoffeDetails.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRohstoffeDetails.Text" xml:space="preserve">
+    <value>Fenster Details</value>
+  </data>
+  <data name="rbRohstoffeVerwendung.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRohstoffeVerwendung.Text" xml:space="preserve">
+    <value>Verwendung in Rezepten</value>
+  </data>
+  <data name="rbRohstoffeLieferungen.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRohstoffeLieferungen.Text" xml:space="preserve">
+    <value>Rohstoff Lieferungen</value>
+  </data>
+  <data name="rbRohstoffeAnsicht.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="rbRohstoffeAnsicht.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rlRohstoffe.Text" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="rlRohstoffeAlle.Text" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="rlRohstoffeHand.Text" xml:space="preserve">
+    <value>Hand</value>
+  </data>
+  <data name="rlRohstoffeAuto.Text" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="rlRohstoffeSauerteig.Text" xml:space="preserve">
+    <value>Sauerteig</value>
+  </data>
+  <data name="rlRohstoffeInstall.Text" xml:space="preserve">
+    <value>Installation</value>
+  </data>
+  <data name="rpRohstoffeAnsicht.Text" xml:space="preserve">
+    <value>Ansicht</value>
+  </data>
+  <data name="rbRohstoffeImportText.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRohstoffeImportText.Text" xml:space="preserve">
+    <value>Import aus Textdatei</value>
+  </data>
+  <data name="rbRohstoffeImportCloud.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRohstoffeImportCloud.Text" xml:space="preserve">
+    <value>Nährwert Cloud</value>
+  </data>
+  <data name="rpRohstoffeImport.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="rbRohstoffeDruck.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRohstoffeDruck.Text" xml:space="preserve">
+    <value>Rohstoffe Liste</value>
+  </data>
+  <data name="rbRohstoffeDrucken.Text" xml:space="preserve">
+    <value>Drucken</value>
   </data>
   <data name="rbRohstoffe.Text" xml:space="preserve">
     <value>Rohstoffe</value>
@@ -671,52 +716,88 @@
 </value>
   </data>
   <data name="rbUserNeu.Text" xml:space="preserve">
-    <value>Benutzer Neu</value>
+    <value>Neu anlegen</value>
   </data>
-  <data name="RnUserRemove.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="rbUserBearbeiten.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="RnUserRemove.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="rbUserBearbeiten.Text" xml:space="preserve">
+    <value>Daten Bearbeiten</value>
+  </data>
+  <data name="RbUserRemove.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         vAAADrwBlbxySQAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="RnUserRemove.Text" xml:space="preserve">
+  <data name="RbUserRemove.Text" xml:space="preserve">
     <value>Benutzer löschen</value>
   </data>
-  <data name="rbUserListe.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="rbUserChangePass.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="rbUserListe.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="rbUserChangePass.Text" xml:space="preserve">
+    <value>Passwort ändern</value>
+  </data>
+  <data name="rpUser.Text" xml:space="preserve">
+    <value>Mitarbeiter</value>
+  </data>
+  <data name="rbListe.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbListe.Text" xml:space="preserve">
+    <value>Liste aller Mitarbeiter</value>
+  </data>
+  <data name="rbUserDetails.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         vAAADrwBlbxySQAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="rbUserListe.Text" xml:space="preserve">
-    <value>Liste drucken</value>
-  </data>
-  <data name="rpUser.Text" xml:space="preserve">
-    <value>Bearbeiten</value>
+  <data name="rbUserDetails.Text" xml:space="preserve">
+    <value>Fenster Details</value>
   </data>
   <data name="rbUserRechte.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="rbUserRechte.Text" xml:space="preserve">
-    <value>Rechte Bearbeiten</value>
+    <value>Anzeige Berechtigungen</value>
+  </data>
+  <data name="rbUserGruppenRechte.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbUserGruppenRechte.Text" xml:space="preserve">
+    <value>Gruppen Rechte</value>
   </data>
   <data name="rpUserGruppen.Text" xml:space="preserve">
-    <value>Gruppen</value>
+    <value>Ansicht</value>
+  </data>
+  <data name="rbUserDrucken.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbUserDrucken.Text" xml:space="preserve">
+    <value>Liste Drucken</value>
+  </data>
+  <data name="rpDrucken.Text" xml:space="preserve">
+    <value>Drucken</value>
   </data>
   <data name="rbUser.Text" xml:space="preserve">
     <value>Mitarbeiter</value>
@@ -748,23 +829,20 @@
   <data name="rbLinienAuto.Text" xml:space="preserve">
     <value>Auto Install</value>
   </data>
-  <data name="rbLinienPrint.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
+  <data name="rpLinienBearbeiten.Text" xml:space="preserve">
+    <value>Linien</value>
   </data>
-  <data name="rbLinienPrint.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="rbLinienDrucken.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="rbLinienPrint.Text" xml:space="preserve">
+  <data name="rbLinienDrucken.Text" xml:space="preserve">
     <value>Liste Drucken</value>
   </data>
-  <data name="rpLinien.Text" xml:space="preserve">
-    <value>Linien</value>
+  <data name="rpLinienDrucken.Text" xml:space="preserve">
+    <value>Drucken</value>
   </data>
   <data name="rbLinien.Text" xml:space="preserve">
     <value>Linien</value>
@@ -783,7 +861,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAA4
-        EAAAAk1TRnQBSQFMAgEBCwEAAQgBAQEIAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        EAAAAk1TRnQBSQFMAgEBCwEAAZgBAgGYAQIBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -1190,6 +1268,9 @@
         AP/CAAP/wABv/8AI///ADv//8A////wP////P////////////////////////w==
 </value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>WinBack-Office</value>
   </data>
@@ -1203,12 +1284,6 @@
     <value>lblNetworkIP</value>
   </data>
   <data name="&gt;&gt;lblNetworkIP.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblLanguage.Name" xml:space="preserve">
-    <value>lblLanguage</value>
-  </data>
-  <data name="&gt;&gt;lblLanguage.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbSeparator.Name" xml:space="preserve">
@@ -1229,6 +1304,222 @@
   <data name="&gt;&gt;rpChargen.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
+  <data name="&gt;&gt;rpChargenExport.Name" xml:space="preserve">
+    <value>rpChargenExport</value>
+  </data>
+  <data name="&gt;&gt;rpChargenExport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpStatRohStoffe.Name" xml:space="preserve">
+    <value>rpStatRohStoffe</value>
+  </data>
+  <data name="&gt;&gt;rpStatRohStoffe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpStatRezepte.Name" xml:space="preserve">
+    <value>rpStatRezepte</value>
+  </data>
+  <data name="&gt;&gt;rpStatRezepte.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbArtikel.Name" xml:space="preserve">
+    <value>rbArtikel</value>
+  </data>
+  <data name="&gt;&gt;rbArtikel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpArtikelBearbeiten.Name" xml:space="preserve">
+    <value>rpArtikelBearbeiten</value>
+  </data>
+  <data name="&gt;&gt;rpArtikelBearbeiten.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbArtikelAnsicht.Name" xml:space="preserve">
+    <value>rbArtikelAnsicht</value>
+  </data>
+  <data name="&gt;&gt;rbArtikelAnsicht.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbArtikelSep.Name" xml:space="preserve">
+    <value>rbArtikelSep</value>
+  </data>
+  <data name="&gt;&gt;rbArtikelSep.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonSeparator, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpArtikelDrucken.Name" xml:space="preserve">
+    <value>rpArtikelDrucken</value>
+  </data>
+  <data name="&gt;&gt;rpArtikelDrucken.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRezepte.Name" xml:space="preserve">
+    <value>rbRezepte</value>
+  </data>
+  <data name="&gt;&gt;rbRezepte.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpRezeptBearbeiten.Name" xml:space="preserve">
+    <value>rpRezeptBearbeiten</value>
+  </data>
+  <data name="&gt;&gt;rpRezeptBearbeiten.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpRezeptDrucken.Name" xml:space="preserve">
+    <value>rpRezeptDrucken</value>
+  </data>
+  <data name="&gt;&gt;rpRezeptDrucken.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffe.Name" xml:space="preserve">
+    <value>rbRohstoffe</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpRohstoffeBearbeiten.Name" xml:space="preserve">
+    <value>rpRohstoffeBearbeiten</value>
+  </data>
+  <data name="&gt;&gt;rpRohstoffeBearbeiten.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpRohstoffeAnsicht.Name" xml:space="preserve">
+    <value>rpRohstoffeAnsicht</value>
+  </data>
+  <data name="&gt;&gt;rpRohstoffeAnsicht.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rsRohstoffeSep.Name" xml:space="preserve">
+    <value>rsRohstoffeSep</value>
+  </data>
+  <data name="&gt;&gt;rsRohstoffeSep.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonSeparator, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffe.Name" xml:space="preserve">
+    <value>rlRohstoffe</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonLabel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;cbRohstoffeAnsicht.Name" xml:space="preserve">
+    <value>cbRohstoffeAnsicht</value>
+  </data>
+  <data name="&gt;&gt;cbRohstoffeAnsicht.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonComboBox, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffeAlle.Name" xml:space="preserve">
+    <value>rlRohstoffeAlle</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffeAlle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonLabel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffeHand.Name" xml:space="preserve">
+    <value>rlRohstoffeHand</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffeHand.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonLabel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffeAuto.Name" xml:space="preserve">
+    <value>rlRohstoffeAuto</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffeAuto.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonLabel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffeSauerteig.Name" xml:space="preserve">
+    <value>rlRohstoffeSauerteig</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffeSauerteig.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonLabel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffeInstall.Name" xml:space="preserve">
+    <value>rlRohstoffeInstall</value>
+  </data>
+  <data name="&gt;&gt;rlRohstoffeInstall.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonLabel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpRohstoffeImport.Name" xml:space="preserve">
+    <value>rpRohstoffeImport</value>
+  </data>
+  <data name="&gt;&gt;rpRohstoffeImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeDrucken.Name" xml:space="preserve">
+    <value>rbRohstoffeDrucken</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeDrucken.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbUser.Name" xml:space="preserve">
+    <value>rbUser</value>
+  </data>
+  <data name="&gt;&gt;rbUser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpUser.Name" xml:space="preserve">
+    <value>rpUser</value>
+  </data>
+  <data name="&gt;&gt;rpUser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpUserGruppen.Name" xml:space="preserve">
+    <value>rpUserGruppen</value>
+  </data>
+  <data name="&gt;&gt;rpUserGruppen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpDrucken.Name" xml:space="preserve">
+    <value>rpDrucken</value>
+  </data>
+  <data name="&gt;&gt;rpDrucken.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbLinien.Name" xml:space="preserve">
+    <value>rbLinien</value>
+  </data>
+  <data name="&gt;&gt;rbLinien.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpLinienBearbeiten.Name" xml:space="preserve">
+    <value>rpLinienBearbeiten</value>
+  </data>
+  <data name="&gt;&gt;rpLinienBearbeiten.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rsLinien.Name" xml:space="preserve">
+    <value>rsLinien</value>
+  </data>
+  <data name="&gt;&gt;rsLinien.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonSeparator, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rpLinienDrucken.Name" xml:space="preserve">
+    <value>rpLinienDrucken</value>
+  </data>
+  <data name="&gt;&gt;rpLinienDrucken.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbPlanung.Name" xml:space="preserve">
+    <value>rbPlanung</value>
+  </data>
+  <data name="&gt;&gt;rbPlanung.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbExtra.Name" xml:space="preserve">
+    <value>rbExtra</value>
+  </data>
+  <data name="&gt;&gt;rbExtra.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;LanguageFlags.Name" xml:space="preserve">
+    <value>LanguageFlags</value>
+  </data>
+  <data name="&gt;&gt;LanguageFlags.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblLanguage.Name" xml:space="preserve">
+    <value>lblLanguage</value>
+  </data>
+  <data name="&gt;&gt;lblLanguage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;rbChargenListe.Name" xml:space="preserve">
     <value>rbChargenListe</value>
   </data>
@@ -1240,12 +1531,6 @@
   </data>
   <data name="&gt;&gt;rbChargenDetails.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rpChargenExport.Name" xml:space="preserve">
-    <value>rpChargenExport</value>
-  </data>
-  <data name="&gt;&gt;rpChargenExport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;rbChargenExcelSumme.Name" xml:space="preserve">
     <value>rbChargenExcelSumme</value>
@@ -1265,12 +1550,6 @@
   <data name="&gt;&gt;rbChargenExcelDetails.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rpStatRohStoffe.Name" xml:space="preserve">
-    <value>rpStatRohStoffe</value>
-  </data>
-  <data name="&gt;&gt;rpStatRohStoffe.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
   <data name="&gt;&gt;rbStatRohstoffe.Name" xml:space="preserve">
     <value>rbStatRohstoffe</value>
   </data>
@@ -1283,29 +1562,11 @@
   <data name="&gt;&gt;rbStatRohstoffeDetail.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rpStatRezepte.Name" xml:space="preserve">
-    <value>rpStatRezepte</value>
-  </data>
-  <data name="&gt;&gt;rpStatRezepte.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
   <data name="&gt;&gt;rbStatRezepte.Name" xml:space="preserve">
     <value>rbStatRezepte</value>
   </data>
   <data name="&gt;&gt;rbStatRezepte.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbArtikel.Name" xml:space="preserve">
-    <value>rbArtikel</value>
-  </data>
-  <data name="&gt;&gt;rbArtikel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rpArtikelBearbeiten.Name" xml:space="preserve">
-    <value>rpArtikelBearbeiten</value>
-  </data>
-  <data name="&gt;&gt;rpArtikelBearbeiten.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;rbArtikelNeu.Name" xml:space="preserve">
     <value>rbArtikelNeu</value>
@@ -1331,12 +1592,6 @@
   <data name="&gt;&gt;rbArtikelCopy.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rbArtikelAnsicht.Name" xml:space="preserve">
-    <value>rbArtikelAnsicht</value>
-  </data>
-  <data name="&gt;&gt;rbArtikelAnsicht.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
   <data name="&gt;&gt;rbArtikelListe.Name" xml:space="preserve">
     <value>rbArtikelListe</value>
   </data>
@@ -1348,12 +1603,6 @@
   </data>
   <data name="&gt;&gt;rbArtikelDetails.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbArtikelSep.Name" xml:space="preserve">
-    <value>rbArtikelSep</value>
-  </data>
-  <data name="&gt;&gt;rbArtikelSep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonSeparator, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;rbArtikelParameter.Name" xml:space="preserve">
     <value>rbArtikelParameter</value>
@@ -1385,12 +1634,6 @@
   <data name="&gt;&gt;rbArtikelKalkulation.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rpArtikelDrucken.Name" xml:space="preserve">
-    <value>rpArtikelDrucken</value>
-  </data>
-  <data name="&gt;&gt;rpArtikelDrucken.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
   <data name="&gt;&gt;rbArtikelPrint.Name" xml:space="preserve">
     <value>rbArtikelPrint</value>
   </data>
@@ -1421,17 +1664,17 @@
   <data name="&gt;&gt;rbPrintArtikelProduktInfoMore.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rbRezepte.Name" xml:space="preserve">
-    <value>rbRezepte</value>
+  <data name="&gt;&gt;rbRezeptNeu.Name" xml:space="preserve">
+    <value>rbRezeptNeu</value>
   </data>
-  <data name="&gt;&gt;rbRezepte.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;rbRezeptNeu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rpRezeptBearbeiten.Name" xml:space="preserve">
-    <value>rpRezeptBearbeiten</value>
+  <data name="&gt;&gt;rbRezeptBearbeiten.Name" xml:space="preserve">
+    <value>rbRezeptBearbeiten</value>
   </data>
-  <data name="&gt;&gt;rpRezeptBearbeiten.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;rbRezeptBearbeiten.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;rpRezeptAnsicht.Name" xml:space="preserve">
     <value>rpRezeptAnsicht</value>
@@ -1439,29 +1682,149 @@
   <data name="&gt;&gt;rpRezeptAnsicht.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rpRezeptDrucken.Name" xml:space="preserve">
-    <value>rpRezeptDrucken</value>
+  <data name="&gt;&gt;rbRezeptListe.Name" xml:space="preserve">
+    <value>rbRezeptListe</value>
   </data>
-  <data name="&gt;&gt;rpRezeptDrucken.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;rbRezeptListe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rbRohstoffe.Name" xml:space="preserve">
-    <value>rbRohstoffe</value>
+  <data name="&gt;&gt;rbRezeptDetails.Name" xml:space="preserve">
+    <value>rbRezeptDetails</value>
   </data>
-  <data name="&gt;&gt;rbRohstoffe.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;rbRezeptDetails.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rbUser.Name" xml:space="preserve">
-    <value>rbUser</value>
+  <data name="&gt;&gt;rbRezeptHinweis.Name" xml:space="preserve">
+    <value>rbRezeptHinweis</value>
   </data>
-  <data name="&gt;&gt;rbUser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;rbRezeptHinweis.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rpUser.Name" xml:space="preserve">
-    <value>rpUser</value>
+  <data name="&gt;&gt;rbRezeptVerwendung.Name" xml:space="preserve">
+    <value>rbRezeptVerwendung</value>
   </data>
-  <data name="&gt;&gt;rpUser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;rbRezeptVerwendung.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRezeptHistorie.Name" xml:space="preserve">
+    <value>rbRezeptHistorie</value>
+  </data>
+  <data name="&gt;&gt;rbRezeptHistorie.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRezeptSep.Name" xml:space="preserve">
+    <value>rbRezeptSep</value>
+  </data>
+  <data name="&gt;&gt;rbRezeptSep.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonSeparator, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rlArtikel.Name" xml:space="preserve">
+    <value>rlArtikel</value>
+  </data>
+  <data name="&gt;&gt;rlArtikel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonLabel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;cbRezeptAnsicht.Name" xml:space="preserve">
+    <value>cbRezeptAnsicht</value>
+  </data>
+  <data name="&gt;&gt;cbRezeptAnsicht.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonComboBox, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rlProduktion.Name" xml:space="preserve">
+    <value>rlProduktion</value>
+  </data>
+  <data name="&gt;&gt;rlProduktion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonLabel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rlSauerteig.Name" xml:space="preserve">
+    <value>rlSauerteig</value>
+  </data>
+  <data name="&gt;&gt;rlSauerteig.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonLabel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRezeptDrucken.Name" xml:space="preserve">
+    <value>rbRezeptDrucken</value>
+  </data>
+  <data name="&gt;&gt;rbRezeptDrucken.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRezeptDruckenListe.Name" xml:space="preserve">
+    <value>rbRezeptDruckenListe</value>
+  </data>
+  <data name="&gt;&gt;rbRezeptDruckenListe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRezeptDruckenStammblatt.Name" xml:space="preserve">
+    <value>rbRezeptDruckenStammblatt</value>
+  </data>
+  <data name="&gt;&gt;rbRezeptDruckenStammblatt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeNeu.Name" xml:space="preserve">
+    <value>rbRohstoffeNeu</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeNeu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeBearbeiten.Name" xml:space="preserve">
+    <value>rbRohstoffeBearbeiten</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeBearbeiten.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeLöschen.Name" xml:space="preserve">
+    <value>rbRohstoffeLöschen</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeLöschen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeListe.Name" xml:space="preserve">
+    <value>rbRohstoffeListe</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeListe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeDetails.Name" xml:space="preserve">
+    <value>rbRohstoffeDetails</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeDetails.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeVerwendung.Name" xml:space="preserve">
+    <value>rbRohstoffeVerwendung</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeVerwendung.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeLieferungen.Name" xml:space="preserve">
+    <value>rbRohstoffeLieferungen</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeLieferungen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeAnsicht.Name" xml:space="preserve">
+    <value>rbRohstoffeAnsicht</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeAnsicht.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeImportText.Name" xml:space="preserve">
+    <value>rbRohstoffeImportText</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeImportText.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeImportCloud.Name" xml:space="preserve">
+    <value>rbRohstoffeImportCloud</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeImportCloud.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeDruck.Name" xml:space="preserve">
+    <value>rbRohstoffeDruck</value>
+  </data>
+  <data name="&gt;&gt;rbRohstoffeDruck.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;rbUserNeu.Name" xml:space="preserve">
     <value>rbUserNeu</value>
@@ -1469,29 +1832,35 @@
   <data name="&gt;&gt;rbUserNeu.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;RnUserRemove.Name" xml:space="preserve">
-    <value>RnUserRemove</value>
+  <data name="&gt;&gt;rbUserBearbeiten.Name" xml:space="preserve">
+    <value>rbUserBearbeiten</value>
   </data>
-  <data name="&gt;&gt;RnUserRemove.Type" xml:space="preserve">
+  <data name="&gt;&gt;rbUserBearbeiten.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rsUser.Name" xml:space="preserve">
-    <value>rsUser</value>
+  <data name="&gt;&gt;RbUserRemove.Name" xml:space="preserve">
+    <value>RbUserRemove</value>
   </data>
-  <data name="&gt;&gt;rsUser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonSeparator, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbUserListe.Name" xml:space="preserve">
-    <value>rbUserListe</value>
-  </data>
-  <data name="&gt;&gt;rbUserListe.Type" xml:space="preserve">
+  <data name="&gt;&gt;RbUserRemove.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rpUserGruppen.Name" xml:space="preserve">
-    <value>rpUserGruppen</value>
+  <data name="&gt;&gt;rbUserChangePass.Name" xml:space="preserve">
+    <value>rbUserChangePass</value>
   </data>
-  <data name="&gt;&gt;rpUserGruppen.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;rbUserChangePass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbListe.Name" xml:space="preserve">
+    <value>rbListe</value>
+  </data>
+  <data name="&gt;&gt;rbListe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rbUserDetails.Name" xml:space="preserve">
+    <value>rbUserDetails</value>
+  </data>
+  <data name="&gt;&gt;rbUserDetails.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;rbUserRechte.Name" xml:space="preserve">
     <value>rbUserRechte</value>
@@ -1499,17 +1868,17 @@
   <data name="&gt;&gt;rbUserRechte.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rbLinien.Name" xml:space="preserve">
-    <value>rbLinien</value>
+  <data name="&gt;&gt;rbUserGruppenRechte.Name" xml:space="preserve">
+    <value>rbUserGruppenRechte</value>
   </data>
-  <data name="&gt;&gt;rbLinien.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;rbUserGruppenRechte.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rpLinien.Name" xml:space="preserve">
-    <value>rpLinien</value>
+  <data name="&gt;&gt;rbUserDrucken.Name" xml:space="preserve">
+    <value>rbUserDrucken</value>
   </data>
-  <data name="&gt;&gt;rpLinien.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonPanel, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;rbUserDrucken.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;rbLinienAdd.Name" xml:space="preserve">
     <value>rbLinienAdd</value>
@@ -1529,35 +1898,11 @@
   <data name="&gt;&gt;rbLinienAuto.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;rsLinien.Name" xml:space="preserve">
-    <value>rsLinien</value>
+  <data name="&gt;&gt;rbLinienDrucken.Name" xml:space="preserve">
+    <value>rbLinienDrucken</value>
   </data>
-  <data name="&gt;&gt;rsLinien.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonSeparator, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbLinienPrint.Name" xml:space="preserve">
-    <value>rbLinienPrint</value>
-  </data>
-  <data name="&gt;&gt;rbLinienPrint.Type" xml:space="preserve">
+  <data name="&gt;&gt;rbLinienDrucken.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbPlanung.Name" xml:space="preserve">
-    <value>rbPlanung</value>
-  </data>
-  <data name="&gt;&gt;rbPlanung.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbExtra.Name" xml:space="preserve">
-    <value>rbExtra</value>
-  </data>
-  <data name="&gt;&gt;rbExtra.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonTab, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;LanguageFlags.Name" xml:space="preserve">
-    <value>LanguageFlags</value>
-  </data>
-  <data name="&gt;&gt;LanguageFlags.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbAbmelden.Name" xml:space="preserve">
     <value>rbAbmelden</value>
@@ -1648,60 +1993,6 @@
   </data>
   <data name="&gt;&gt;RibbonOrbRecentItem10.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptNeu.Name" xml:space="preserve">
-    <value>rbRezeptNeu</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptNeu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptBearbeiten.Name" xml:space="preserve">
-    <value>rbRezeptBearbeiten</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptBearbeiten.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptListe.Name" xml:space="preserve">
-    <value>rbRezeptListe</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptListe.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptDetails.Name" xml:space="preserve">
-    <value>rbRezeptDetails</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptDetails.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptHinweis.Name" xml:space="preserve">
-    <value>rbRezeptHinweis</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptHinweis.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptVerwendung.Name" xml:space="preserve">
-    <value>rbRezeptVerwendung</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptVerwendung.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptHistorie.Name" xml:space="preserve">
-    <value>rbRezeptHistorie</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptHistorie.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptDrucken.Name" xml:space="preserve">
-    <value>rbRezeptDrucken</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptDrucken.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptListeDrucken.Name" xml:space="preserve">
-    <value>rbRezeptListeDrucken</value>
-  </data>
-  <data name="&gt;&gt;rbRezeptListeDrucken.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon35, Version=3.5.8.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>WinBack</value>
