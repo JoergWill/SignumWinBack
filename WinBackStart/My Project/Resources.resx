@@ -181,6 +181,15 @@
   <data name="LangUS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\us.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AdminEditKonfig_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AdminEditKonfig_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AdminMain_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AdminMain_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AdminUpdateDataBase_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AdminUpdateDataBase_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ArtikelBearbeiten_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArtikelBearbeiten_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -243,6 +252,9 @@
   </data>
   <data name="LinienDrucken_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LinienDrucken_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlanungMain_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlanungMain_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RezeptBearbeiten_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RezeptBearbeiten_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

@@ -27,70 +27,44 @@ Partial Class WinBack
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.lblVersion = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblNetworkIP = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblLanguage = New System.Windows.Forms.ToolStripStatusLabel()
         Me.rbSeparator = New System.Windows.Forms.RibbonSeparator()
         Me.rbChargen = New System.Windows.Forms.RibbonTab()
         Me.rpChargen = New System.Windows.Forms.RibbonPanel()
-        Me.rpChargenExport = New System.Windows.Forms.RibbonPanel()
-        Me.rpStatRohStoffe = New System.Windows.Forms.RibbonPanel()
-        Me.rpStatRezepte = New System.Windows.Forms.RibbonPanel()
-        Me.rbArtikel = New System.Windows.Forms.RibbonTab()
-        Me.rpArtikelBearbeiten = New System.Windows.Forms.RibbonPanel()
-        Me.rbArtikelAnsicht = New System.Windows.Forms.RibbonPanel()
-        Me.rbArtikelSep = New System.Windows.Forms.RibbonSeparator()
-        Me.rpArtikelDrucken = New System.Windows.Forms.RibbonPanel()
-        Me.rbRezepte = New System.Windows.Forms.RibbonTab()
-        Me.rpRezeptBearbeiten = New System.Windows.Forms.RibbonPanel()
-        Me.rpRezeptDrucken = New System.Windows.Forms.RibbonPanel()
-        Me.rbRohstoffe = New System.Windows.Forms.RibbonTab()
-        Me.rpRohstoffeBearbeiten = New System.Windows.Forms.RibbonPanel()
-        Me.rpRohstoffeAnsicht = New System.Windows.Forms.RibbonPanel()
-        Me.rsRohstoffeSep = New System.Windows.Forms.RibbonSeparator()
-        Me.rlRohstoffe = New System.Windows.Forms.RibbonLabel()
-        Me.cbRohstoffeAnsicht = New System.Windows.Forms.RibbonComboBox()
-        Me.rlRohstoffeAlle = New System.Windows.Forms.RibbonLabel()
-        Me.rlRohstoffeHand = New System.Windows.Forms.RibbonLabel()
-        Me.rlRohstoffeAuto = New System.Windows.Forms.RibbonLabel()
-        Me.rlRohstoffeSauerteig = New System.Windows.Forms.RibbonLabel()
-        Me.rlRohstoffeInstall = New System.Windows.Forms.RibbonLabel()
-        Me.rpRohstoffeImport = New System.Windows.Forms.RibbonPanel()
-        Me.rbRohstoffeDrucken = New System.Windows.Forms.RibbonPanel()
-        Me.rbUser = New System.Windows.Forms.RibbonTab()
-        Me.rpUser = New System.Windows.Forms.RibbonPanel()
-        Me.rpUserGruppen = New System.Windows.Forms.RibbonPanel()
-        Me.rpDrucken = New System.Windows.Forms.RibbonPanel()
-        Me.rbLinien = New System.Windows.Forms.RibbonTab()
-        Me.rpLinienBearbeiten = New System.Windows.Forms.RibbonPanel()
-        Me.rsLinien = New System.Windows.Forms.RibbonSeparator()
-        Me.rpLinienDrucken = New System.Windows.Forms.RibbonPanel()
-        Me.rbPlanung = New System.Windows.Forms.RibbonTab()
-        Me.rbExtra = New System.Windows.Forms.RibbonTab()
-        Me.LanguageFlags = New System.Windows.Forms.ImageList(Me.components)
-        Me.rTab = New System.Windows.Forms.Ribbon()
-        Me.lblLanguage = New System.Windows.Forms.ToolStripStatusLabel()
         Me.rbChargenListe = New System.Windows.Forms.RibbonButton()
         Me.rbChargenDetails = New System.Windows.Forms.RibbonButton()
+        Me.rpChargenExport = New System.Windows.Forms.RibbonPanel()
         Me.rbChargenExcelSumme = New System.Windows.Forms.RibbonButton()
         Me.rbChargenExcelEinzel = New System.Windows.Forms.RibbonButton()
         Me.rbChargenExcelDetails = New System.Windows.Forms.RibbonButton()
+        Me.rpStatRohStoffe = New System.Windows.Forms.RibbonPanel()
         Me.rbStatRohstoffe = New System.Windows.Forms.RibbonButton()
         Me.rbStatRohstoffeDetail = New System.Windows.Forms.RibbonButton()
+        Me.rpStatRezepte = New System.Windows.Forms.RibbonPanel()
         Me.rbStatRezepte = New System.Windows.Forms.RibbonButton()
+        Me.rbArtikel = New System.Windows.Forms.RibbonTab()
+        Me.rpArtikelBearbeiten = New System.Windows.Forms.RibbonPanel()
         Me.rbArtikelNeu = New System.Windows.Forms.RibbonButton()
         Me.rbArtikelBearbeiten = New System.Windows.Forms.RibbonButton()
         Me.rbArtikelRemove = New System.Windows.Forms.RibbonButton()
         Me.rbArtikelCopy = New System.Windows.Forms.RibbonButton()
+        Me.rbArtikelAnsicht = New System.Windows.Forms.RibbonPanel()
         Me.rbArtikelListe = New System.Windows.Forms.RibbonButton()
         Me.rbArtikelDetails = New System.Windows.Forms.RibbonButton()
+        Me.rbArtikelSep = New System.Windows.Forms.RibbonSeparator()
         Me.rbArtikelParameter = New System.Windows.Forms.RibbonButton()
         Me.rbArtikelHinweise = New System.Windows.Forms.RibbonButton()
         Me.rbArtikelDeklaration = New System.Windows.Forms.RibbonButton()
         Me.rbArtikelProduktInfo = New System.Windows.Forms.RibbonButton()
         Me.rbArtikelKalkulation = New System.Windows.Forms.RibbonButton()
+        Me.rpArtikelDrucken = New System.Windows.Forms.RibbonPanel()
         Me.rbArtikelPrint = New System.Windows.Forms.RibbonButton()
         Me.rbPrintArtikelStammblatt = New System.Windows.Forms.RibbonButton()
         Me.rbPrintArtikelListe = New System.Windows.Forms.RibbonButton()
         Me.rbPrintArtikelProduktInfo = New System.Windows.Forms.RibbonButton()
         Me.rbPrintArtikelProduktInfoMore = New System.Windows.Forms.RibbonButton()
+        Me.rbRezepte = New System.Windows.Forms.RibbonTab()
+        Me.rpRezeptBearbeiten = New System.Windows.Forms.RibbonPanel()
         Me.rbRezeptNeu = New System.Windows.Forms.RibbonButton()
         Me.rbRezeptBearbeiten = New System.Windows.Forms.RibbonButton()
         Me.rpRezeptAnsicht = New System.Windows.Forms.RibbonPanel()
@@ -104,33 +78,66 @@ Partial Class WinBack
         Me.cbRezeptAnsicht = New System.Windows.Forms.RibbonComboBox()
         Me.rlProduktion = New System.Windows.Forms.RibbonLabel()
         Me.rlSauerteig = New System.Windows.Forms.RibbonLabel()
+        Me.rpRezeptDrucken = New System.Windows.Forms.RibbonPanel()
         Me.rbRezeptDrucken = New System.Windows.Forms.RibbonButton()
         Me.rbRezeptDruckenListe = New System.Windows.Forms.RibbonButton()
         Me.rbRezeptDruckenStammblatt = New System.Windows.Forms.RibbonButton()
+        Me.rbRohstoffe = New System.Windows.Forms.RibbonTab()
+        Me.rpRohstoffeBearbeiten = New System.Windows.Forms.RibbonPanel()
         Me.rbRohstoffeNeu = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeBearbeiten = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeLöschen = New System.Windows.Forms.RibbonButton()
+        Me.rpRohstoffeAnsicht = New System.Windows.Forms.RibbonPanel()
         Me.rbRohstoffeListe = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeDetails = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeVerwendung = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeLieferungen = New System.Windows.Forms.RibbonButton()
+        Me.rsRohstoffeSep = New System.Windows.Forms.RibbonSeparator()
         Me.rbRohstoffeAnsicht = New System.Windows.Forms.RibbonButton()
+        Me.rlRohstoffe = New System.Windows.Forms.RibbonLabel()
+        Me.cbRohstoffeAnsicht = New System.Windows.Forms.RibbonComboBox()
+        Me.rlRohstoffeAlle = New System.Windows.Forms.RibbonLabel()
+        Me.rlRohstoffeHand = New System.Windows.Forms.RibbonLabel()
+        Me.rlRohstoffeAuto = New System.Windows.Forms.RibbonLabel()
+        Me.rlRohstoffeSauerteig = New System.Windows.Forms.RibbonLabel()
+        Me.rlRohstoffeInstall = New System.Windows.Forms.RibbonLabel()
+        Me.rpRohstoffeImport = New System.Windows.Forms.RibbonPanel()
         Me.rbRohstoffeImportText = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeImportCloud = New System.Windows.Forms.RibbonButton()
+        Me.rbRohstoffeDrucken = New System.Windows.Forms.RibbonPanel()
         Me.rbRohstoffeDruck = New System.Windows.Forms.RibbonButton()
+        Me.rbUser = New System.Windows.Forms.RibbonTab()
+        Me.rpUser = New System.Windows.Forms.RibbonPanel()
         Me.rbUserNeu = New System.Windows.Forms.RibbonButton()
         Me.rbUserBearbeiten = New System.Windows.Forms.RibbonButton()
         Me.RbUserRemove = New System.Windows.Forms.RibbonButton()
         Me.rbUserChangePass = New System.Windows.Forms.RibbonButton()
+        Me.rpUserGruppen = New System.Windows.Forms.RibbonPanel()
         Me.rbListe = New System.Windows.Forms.RibbonButton()
         Me.rbUserDetails = New System.Windows.Forms.RibbonButton()
         Me.rbUserRechte = New System.Windows.Forms.RibbonButton()
         Me.rbUserGruppenRechte = New System.Windows.Forms.RibbonButton()
+        Me.rpDrucken = New System.Windows.Forms.RibbonPanel()
         Me.rbUserDrucken = New System.Windows.Forms.RibbonButton()
+        Me.rbLinien = New System.Windows.Forms.RibbonTab()
+        Me.rpLinienBearbeiten = New System.Windows.Forms.RibbonPanel()
         Me.rbLinienAdd = New System.Windows.Forms.RibbonButton()
         Me.rbLinienDel = New System.Windows.Forms.RibbonButton()
+        Me.rsLinien = New System.Windows.Forms.RibbonSeparator()
         Me.rbLinienAuto = New System.Windows.Forms.RibbonButton()
+        Me.rpLinienDrucken = New System.Windows.Forms.RibbonPanel()
         Me.rbLinienDrucken = New System.Windows.Forms.RibbonButton()
+        Me.rbPlanung = New System.Windows.Forms.RibbonTab()
+        Me.rpProduktionAnsicht = New System.Windows.Forms.RibbonPanel()
+        Me.rbProduktionPlanung = New System.Windows.Forms.RibbonButton()
+        Me.rbExtra = New System.Windows.Forms.RibbonTab()
+        Me.rbAdminAnsicht = New System.Windows.Forms.RibbonPanel()
+        Me.rbDatensicherung = New System.Windows.Forms.RibbonButton()
+        Me.rbAdminWinBackIni = New System.Windows.Forms.RibbonButton()
+        Me.rsAdmin = New System.Windows.Forms.RibbonSeparator()
+        Me.rbAdminUpdate = New System.Windows.Forms.RibbonButton()
+        Me.LanguageFlags = New System.Windows.Forms.ImageList(Me.components)
+        Me.rTab = New System.Windows.Forms.Ribbon()
         Me.rbAbmelden = New System.Windows.Forms.RibbonButton()
         Me.rbEnde = New System.Windows.Forms.RibbonButton()
         Me.rbInfo = New System.Windows.Forms.RibbonButton()
@@ -151,19 +158,29 @@ Partial Class WinBack
         '
         'StatusStrip
         '
-        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblVersion, Me.lblNetworkIP, Me.lblLanguage})
         resources.ApplyResources(Me.StatusStrip, "StatusStrip")
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblVersion, Me.lblNetworkIP, Me.lblLanguage})
         Me.StatusStrip.Name = "StatusStrip"
         '
         'lblVersion
         '
-        Me.lblVersion.Name = "lblVersion"
         resources.ApplyResources(Me.lblVersion, "lblVersion")
+        Me.lblVersion.Name = "lblVersion"
         '
         'lblNetworkIP
         '
-        Me.lblNetworkIP.Name = "lblNetworkIP"
         resources.ApplyResources(Me.lblNetworkIP, "lblNetworkIP")
+        Me.lblNetworkIP.Name = "lblNetworkIP"
+        '
+        'lblLanguage
+        '
+        resources.ApplyResources(Me.lblLanguage, "lblLanguage")
+        Me.lblLanguage.Image = Global.WinBack.My.Resources.Resources.LangDE
+        Me.lblLanguage.Name = "lblLanguage"
+        '
+        'rbSeparator
+        '
+        resources.ApplyResources(Me.rbSeparator, "rbSeparator")
         '
         'rbChargen
         '
@@ -182,6 +199,20 @@ Partial Class WinBack
         Me.rpChargen.Items.Add(Me.rbChargenDetails)
         resources.ApplyResources(Me.rpChargen, "rpChargen")
         '
+        'rbChargenListe
+        '
+        Me.rbChargenListe.Image = CType(resources.GetObject("rbChargenListe.Image"), System.Drawing.Image)
+        Me.rbChargenListe.MinimumSize = New System.Drawing.Size(70, 0)
+        Me.rbChargenListe.SmallImage = CType(resources.GetObject("rbChargenListe.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbChargenListe, "rbChargenListe")
+        '
+        'rbChargenDetails
+        '
+        Me.rbChargenDetails.Image = CType(resources.GetObject("rbChargenDetails.Image"), System.Drawing.Image)
+        Me.rbChargenDetails.MinimumSize = New System.Drawing.Size(70, 0)
+        Me.rbChargenDetails.SmallImage = CType(resources.GetObject("rbChargenDetails.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbChargenDetails, "rbChargenDetails")
+        '
         'rpChargenExport
         '
         Me.rpChargenExport.ButtonMoreVisible = False
@@ -189,6 +220,30 @@ Partial Class WinBack
         Me.rpChargenExport.Items.Add(Me.rbChargenExcelEinzel)
         Me.rpChargenExport.Items.Add(Me.rbChargenExcelDetails)
         resources.ApplyResources(Me.rpChargenExport, "rpChargenExport")
+        '
+        'rbChargenExcelSumme
+        '
+        Me.rbChargenExcelSumme.Image = CType(resources.GetObject("rbChargenExcelSumme.Image"), System.Drawing.Image)
+        Me.rbChargenExcelSumme.MinimumSize = New System.Drawing.Size(60, 0)
+        Me.rbChargenExcelSumme.SmallImage = CType(resources.GetObject("rbChargenExcelSumme.SmallImage"), System.Drawing.Image)
+        Me.rbChargenExcelSumme.Tag = "125"
+        resources.ApplyResources(Me.rbChargenExcelSumme, "rbChargenExcelSumme")
+        '
+        'rbChargenExcelEinzel
+        '
+        Me.rbChargenExcelEinzel.Image = CType(resources.GetObject("rbChargenExcelEinzel.Image"), System.Drawing.Image)
+        Me.rbChargenExcelEinzel.MinimumSize = New System.Drawing.Size(60, 0)
+        Me.rbChargenExcelEinzel.SmallImage = CType(resources.GetObject("rbChargenExcelEinzel.SmallImage"), System.Drawing.Image)
+        Me.rbChargenExcelEinzel.Tag = "125"
+        resources.ApplyResources(Me.rbChargenExcelEinzel, "rbChargenExcelEinzel")
+        '
+        'rbChargenExcelDetails
+        '
+        Me.rbChargenExcelDetails.Image = CType(resources.GetObject("rbChargenExcelDetails.Image"), System.Drawing.Image)
+        Me.rbChargenExcelDetails.MinimumSize = New System.Drawing.Size(60, 0)
+        Me.rbChargenExcelDetails.SmallImage = CType(resources.GetObject("rbChargenExcelDetails.SmallImage"), System.Drawing.Image)
+        Me.rbChargenExcelDetails.Tag = "125"
+        resources.ApplyResources(Me.rbChargenExcelDetails, "rbChargenExcelDetails")
         '
         'rpStatRohStoffe
         '
@@ -198,11 +253,35 @@ Partial Class WinBack
         Me.rpStatRohStoffe.Items.Add(Me.rbStatRohstoffeDetail)
         resources.ApplyResources(Me.rpStatRohStoffe, "rpStatRohStoffe")
         '
+        'rbStatRohstoffe
+        '
+        Me.rbStatRohstoffe.Image = CType(resources.GetObject("rbStatRohstoffe.Image"), System.Drawing.Image)
+        Me.rbStatRohstoffe.MinimumSize = New System.Drawing.Size(70, 0)
+        Me.rbStatRohstoffe.SmallImage = CType(resources.GetObject("rbStatRohstoffe.SmallImage"), System.Drawing.Image)
+        Me.rbStatRohstoffe.Tag = "122"
+        resources.ApplyResources(Me.rbStatRohstoffe, "rbStatRohstoffe")
+        '
+        'rbStatRohstoffeDetail
+        '
+        Me.rbStatRohstoffeDetail.Image = CType(resources.GetObject("rbStatRohstoffeDetail.Image"), System.Drawing.Image)
+        Me.rbStatRohstoffeDetail.MinimumSize = New System.Drawing.Size(70, 0)
+        Me.rbStatRohstoffeDetail.SmallImage = CType(resources.GetObject("rbStatRohstoffeDetail.SmallImage"), System.Drawing.Image)
+        Me.rbStatRohstoffeDetail.Tag = "122"
+        resources.ApplyResources(Me.rbStatRohstoffeDetail, "rbStatRohstoffeDetail")
+        '
         'rpStatRezepte
         '
         Me.rpStatRezepte.ButtonMoreVisible = False
         Me.rpStatRezepte.Items.Add(Me.rbStatRezepte)
         resources.ApplyResources(Me.rpStatRezepte, "rpStatRezepte")
+        '
+        'rbStatRezepte
+        '
+        Me.rbStatRezepte.Image = CType(resources.GetObject("rbStatRezepte.Image"), System.Drawing.Image)
+        Me.rbStatRezepte.MinimumSize = New System.Drawing.Size(70, 0)
+        Me.rbStatRezepte.SmallImage = CType(resources.GetObject("rbStatRezepte.SmallImage"), System.Drawing.Image)
+        Me.rbStatRezepte.Tag = "122"
+        resources.ApplyResources(Me.rbStatRezepte, "rbStatRezepte")
         '
         'rbArtikel
         '
@@ -221,336 +300,6 @@ Partial Class WinBack
         Me.rpArtikelBearbeiten.Items.Add(Me.rbArtikelCopy)
         resources.ApplyResources(Me.rpArtikelBearbeiten, "rpArtikelBearbeiten")
         '
-        'rbArtikelAnsicht
-        '
-        Me.rbArtikelAnsicht.ButtonMoreVisible = False
-        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelListe)
-        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelDetails)
-        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelSep)
-        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelParameter)
-        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelHinweise)
-        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelDeklaration)
-        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelProduktInfo)
-        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelKalkulation)
-        resources.ApplyResources(Me.rbArtikelAnsicht, "rbArtikelAnsicht")
-        '
-        'rpArtikelDrucken
-        '
-        Me.rpArtikelDrucken.ButtonMoreVisible = False
-        Me.rpArtikelDrucken.Items.Add(Me.rbArtikelPrint)
-        resources.ApplyResources(Me.rpArtikelDrucken, "rpArtikelDrucken")
-        '
-        'rbRezepte
-        '
-        Me.rbRezepte.Panels.Add(Me.rpRezeptBearbeiten)
-        Me.rbRezepte.Panels.Add(Me.rpRezeptAnsicht)
-        Me.rbRezepte.Panels.Add(Me.rpRezeptDrucken)
-        Me.rbRezepte.Tag = "103"
-        resources.ApplyResources(Me.rbRezepte, "rbRezepte")
-        '
-        'rpRezeptBearbeiten
-        '
-        Me.rpRezeptBearbeiten.ButtonMoreVisible = False
-        Me.rpRezeptBearbeiten.Items.Add(Me.rbRezeptNeu)
-        Me.rpRezeptBearbeiten.Items.Add(Me.rbRezeptBearbeiten)
-        resources.ApplyResources(Me.rpRezeptBearbeiten, "rpRezeptBearbeiten")
-        '
-        'rpRezeptDrucken
-        '
-        Me.rpRezeptDrucken.ButtonMoreVisible = False
-        Me.rpRezeptDrucken.Items.Add(Me.rbRezeptDrucken)
-        resources.ApplyResources(Me.rpRezeptDrucken, "rpRezeptDrucken")
-        '
-        'rbRohstoffe
-        '
-        Me.rbRohstoffe.Panels.Add(Me.rpRohstoffeBearbeiten)
-        Me.rbRohstoffe.Panels.Add(Me.rpRohstoffeAnsicht)
-        Me.rbRohstoffe.Panels.Add(Me.rpRohstoffeImport)
-        Me.rbRohstoffe.Panels.Add(Me.rbRohstoffeDrucken)
-        Me.rbRohstoffe.Tag = "104"
-        resources.ApplyResources(Me.rbRohstoffe, "rbRohstoffe")
-        '
-        'rpRohstoffeBearbeiten
-        '
-        Me.rpRohstoffeBearbeiten.ButtonMoreVisible = False
-        Me.rpRohstoffeBearbeiten.Items.Add(Me.rbRohstoffeNeu)
-        Me.rpRohstoffeBearbeiten.Items.Add(Me.rbRohstoffeBearbeiten)
-        Me.rpRohstoffeBearbeiten.Items.Add(Me.rbRohstoffeLöschen)
-        resources.ApplyResources(Me.rpRohstoffeBearbeiten, "rpRohstoffeBearbeiten")
-        '
-        'rpRohstoffeAnsicht
-        '
-        Me.rpRohstoffeAnsicht.ButtonMoreVisible = False
-        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeListe)
-        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeDetails)
-        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeVerwendung)
-        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeLieferungen)
-        Me.rpRohstoffeAnsicht.Items.Add(Me.rsRohstoffeSep)
-        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeAnsicht)
-        Me.rpRohstoffeAnsicht.Items.Add(Me.rlRohstoffe)
-        Me.rpRohstoffeAnsicht.Items.Add(Me.cbRohstoffeAnsicht)
-        resources.ApplyResources(Me.rpRohstoffeAnsicht, "rpRohstoffeAnsicht")
-        '
-        'rlRohstoffe
-        '
-        resources.ApplyResources(Me.rlRohstoffe, "rlRohstoffe")
-        '
-        'cbRohstoffeAnsicht
-        '
-        Me.cbRohstoffeAnsicht.DropDownItems.Add(Me.rlRohstoffeAlle)
-        Me.cbRohstoffeAnsicht.DropDownItems.Add(Me.rlRohstoffeHand)
-        Me.cbRohstoffeAnsicht.DropDownItems.Add(Me.rlRohstoffeAuto)
-        Me.cbRohstoffeAnsicht.DropDownItems.Add(Me.rlRohstoffeSauerteig)
-        Me.cbRohstoffeAnsicht.DropDownItems.Add(Me.rlRohstoffeInstall)
-        Me.cbRohstoffeAnsicht.TextBoxText = "Alle"
-        '
-        'rlRohstoffeAlle
-        '
-        resources.ApplyResources(Me.rlRohstoffeAlle, "rlRohstoffeAlle")
-        Me.rlRohstoffeAlle.Value = "1"
-        '
-        'rlRohstoffeHand
-        '
-        resources.ApplyResources(Me.rlRohstoffeHand, "rlRohstoffeHand")
-        Me.rlRohstoffeHand.Value = "2"
-        '
-        'rlRohstoffeAuto
-        '
-        resources.ApplyResources(Me.rlRohstoffeAuto, "rlRohstoffeAuto")
-        Me.rlRohstoffeAuto.Value = "3"
-        '
-        'rlRohstoffeSauerteig
-        '
-        resources.ApplyResources(Me.rlRohstoffeSauerteig, "rlRohstoffeSauerteig")
-        Me.rlRohstoffeSauerteig.Value = "4"
-        '
-        'rlRohstoffeInstall
-        '
-        resources.ApplyResources(Me.rlRohstoffeInstall, "rlRohstoffeInstall")
-        Me.rlRohstoffeInstall.Value = "5"
-        '
-        'rpRohstoffeImport
-        '
-        Me.rpRohstoffeImport.ButtonMoreVisible = False
-        Me.rpRohstoffeImport.Items.Add(Me.rbRohstoffeImportText)
-        Me.rpRohstoffeImport.Items.Add(Me.rbRohstoffeImportCloud)
-        resources.ApplyResources(Me.rpRohstoffeImport, "rpRohstoffeImport")
-        '
-        'rbRohstoffeDrucken
-        '
-        Me.rbRohstoffeDrucken.ButtonMoreVisible = False
-        Me.rbRohstoffeDrucken.Items.Add(Me.rbRohstoffeDruck)
-        resources.ApplyResources(Me.rbRohstoffeDrucken, "rbRohstoffeDrucken")
-        '
-        'rbUser
-        '
-        Me.rbUser.Panels.Add(Me.rpUser)
-        Me.rbUser.Panels.Add(Me.rpUserGruppen)
-        Me.rbUser.Panels.Add(Me.rpDrucken)
-        Me.rbUser.Tag = "120"
-        resources.ApplyResources(Me.rbUser, "rbUser")
-        '
-        'rpUser
-        '
-        Me.rpUser.ButtonMoreVisible = False
-        Me.rpUser.Items.Add(Me.rbUserNeu)
-        Me.rpUser.Items.Add(Me.rbUserBearbeiten)
-        Me.rpUser.Items.Add(Me.RbUserRemove)
-        Me.rpUser.Items.Add(Me.rbUserChangePass)
-        Me.rpUser.Tag = ""
-        resources.ApplyResources(Me.rpUser, "rpUser")
-        '
-        'rpUserGruppen
-        '
-        Me.rpUserGruppen.ButtonMoreVisible = False
-        Me.rpUserGruppen.Items.Add(Me.rbListe)
-        Me.rpUserGruppen.Items.Add(Me.rbUserDetails)
-        Me.rpUserGruppen.Items.Add(Me.rbUserRechte)
-        Me.rpUserGruppen.Items.Add(Me.rbUserGruppenRechte)
-        Me.rpUserGruppen.Tag = ""
-        resources.ApplyResources(Me.rpUserGruppen, "rpUserGruppen")
-        '
-        'rpDrucken
-        '
-        Me.rpDrucken.Items.Add(Me.rbUserDrucken)
-        resources.ApplyResources(Me.rpDrucken, "rpDrucken")
-        '
-        'rbLinien
-        '
-        Me.rbLinien.Panels.Add(Me.rpLinienBearbeiten)
-        Me.rbLinien.Panels.Add(Me.rpLinienDrucken)
-        Me.rbLinien.Tag = "121"
-        resources.ApplyResources(Me.rbLinien, "rbLinien")
-        '
-        'rpLinienBearbeiten
-        '
-        Me.rpLinienBearbeiten.ButtonMoreVisible = False
-        Me.rpLinienBearbeiten.Items.Add(Me.rbLinienAdd)
-        Me.rpLinienBearbeiten.Items.Add(Me.rbLinienDel)
-        Me.rpLinienBearbeiten.Items.Add(Me.rsLinien)
-        Me.rpLinienBearbeiten.Items.Add(Me.rbLinienAuto)
-        resources.ApplyResources(Me.rpLinienBearbeiten, "rpLinienBearbeiten")
-        '
-        'rpLinienDrucken
-        '
-        Me.rpLinienDrucken.ButtonMoreEnabled = False
-        Me.rpLinienDrucken.ButtonMoreVisible = False
-        Me.rpLinienDrucken.Items.Add(Me.rbLinienDrucken)
-        resources.ApplyResources(Me.rpLinienDrucken, "rpLinienDrucken")
-        '
-        'rbPlanung
-        '
-        Me.rbPlanung.Tag = "130"
-        resources.ApplyResources(Me.rbPlanung, "rbPlanung")
-        '
-        'rbExtra
-        '
-        Me.rbExtra.Tag = "105"
-        resources.ApplyResources(Me.rbExtra, "rbExtra")
-        '
-        'LanguageFlags
-        '
-        Me.LanguageFlags.ImageStream = CType(resources.GetObject("LanguageFlags.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.LanguageFlags.TransparentColor = System.Drawing.Color.Transparent
-        Me.LanguageFlags.Images.SetKeyName(0, "de.gif")
-        Me.LanguageFlags.Images.SetKeyName(1, "hu.gif")
-        Me.LanguageFlags.Images.SetKeyName(2, "nl.gif")
-        Me.LanguageFlags.Images.SetKeyName(3, "us.gif")
-        Me.LanguageFlags.Images.SetKeyName(4, "pt.gif")
-        Me.LanguageFlags.Images.SetKeyName(5, "si.gif")
-        Me.LanguageFlags.Images.SetKeyName(6, "ru.gif")
-        Me.LanguageFlags.Images.SetKeyName(7, "fr.gif")
-        Me.LanguageFlags.Images.SetKeyName(8, "es.gif")
-        Me.LanguageFlags.Images.SetKeyName(9, "sk.gif")
-        Me.LanguageFlags.Images.SetKeyName(10, "ro.gif")
-        '
-        'rTab
-        '
-        Me.rTab.AllowDrop = True
-        Me.rTab.BackColor = System.Drawing.SystemColors.Control
-        resources.ApplyResources(Me.rTab, "rTab")
-        Me.rTab.Minimized = False
-        Me.rTab.Name = "rTab"
-        '
-        '
-        '
-        Me.rTab.OrbDropDown.Anchor = CType(resources.GetObject("rTab.OrbDropDown.Anchor"), System.Windows.Forms.AnchorStyles)
-        Me.rTab.OrbDropDown.AutoSizeContentButtons = False
-        Me.rTab.OrbDropDown.BackgroundImageLayout = CType(resources.GetObject("rTab.OrbDropDown.BackgroundImageLayout"), System.Windows.Forms.ImageLayout)
-        Me.rTab.OrbDropDown.BorderRoundness = 8
-        Me.rTab.OrbDropDown.ContentButtonsMinWidth = 120
-        Me.rTab.OrbDropDown.ContentRecentItemsMinWidth = 75
-        Me.rTab.OrbDropDown.Font = CType(resources.GetObject("rTab.OrbDropDown.Font"), System.Drawing.Font)
-        Me.rTab.OrbDropDown.ImeMode = CType(resources.GetObject("rTab.OrbDropDown.ImeMode"), System.Windows.Forms.ImeMode)
-        Me.rTab.OrbDropDown.Location = CType(resources.GetObject("rTab.OrbDropDown.Location"), System.Drawing.Point)
-        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbAbmelden)
-        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbEnde)
-        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbSeparator)
-        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbInfo)
-        Me.rTab.OrbDropDown.Name = ""
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem0)
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem1)
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem2)
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem3)
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem4)
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem5)
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem6)
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem7)
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem8)
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem9)
-        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem10)
-        Me.rTab.OrbDropDown.RecentItemsCaption = "Sprache"
-        Me.rTab.OrbDropDown.RightToLeft = CType(resources.GetObject("rTab.OrbDropDown.RightToLeft"), System.Windows.Forms.RightToLeft)
-        Me.rTab.OrbDropDown.Size = CType(resources.GetObject("rTab.OrbDropDown.Size"), System.Drawing.Size)
-        Me.rTab.OrbDropDown.TabIndex = CType(resources.GetObject("rTab.OrbDropDown.TabIndex"), Integer)
-        Me.rTab.OrbImage = Global.WinBack.My.Resources.Resources.WinBack_32x32
-        Me.rTab.OrbText = "Datei"
-        '
-        '
-        '
-        Me.rTab.QuickAcessToolbar.Checked = True
-        Me.rTab.QuickAcessToolbar.DropDownButtonVisible = False
-        Me.rTab.QuickAcessToolbar.Visible = False
-        Me.rTab.RibbonTabFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rTab.Tabs.Add(Me.rbChargen)
-        Me.rTab.Tabs.Add(Me.rbArtikel)
-        Me.rTab.Tabs.Add(Me.rbRezepte)
-        Me.rTab.Tabs.Add(Me.rbRohstoffe)
-        Me.rTab.Tabs.Add(Me.rbUser)
-        Me.rTab.Tabs.Add(Me.rbLinien)
-        Me.rTab.Tabs.Add(Me.rbPlanung)
-        Me.rTab.Tabs.Add(Me.rbExtra)
-        Me.rTab.TabsMargin = New System.Windows.Forms.Padding(12, 26, 20, 0)
-        Me.rTab.ThemeColor = System.Windows.Forms.RibbonTheme.Black
-        '
-        'lblLanguage
-        '
-        Me.lblLanguage.Image = Global.WinBack.My.Resources.Resources.LangDE
-        resources.ApplyResources(Me.lblLanguage, "lblLanguage")
-        Me.lblLanguage.Name = "lblLanguage"
-        '
-        'rbChargenListe
-        '
-        Me.rbChargenListe.Image = Global.WinBack.My.Resources.Resources.ChargenMain_32x32
-        Me.rbChargenListe.MinimumSize = New System.Drawing.Size(70, 0)
-        Me.rbChargenListe.SmallImage = CType(resources.GetObject("rbChargenListe.SmallImage"), System.Drawing.Image)
-        resources.ApplyResources(Me.rbChargenListe, "rbChargenListe")
-        '
-        'rbChargenDetails
-        '
-        Me.rbChargenDetails.Image = Global.WinBack.My.Resources.Resources.ChargenDetails_32x32
-        Me.rbChargenDetails.MinimumSize = New System.Drawing.Size(70, 0)
-        Me.rbChargenDetails.SmallImage = CType(resources.GetObject("rbChargenDetails.SmallImage"), System.Drawing.Image)
-        resources.ApplyResources(Me.rbChargenDetails, "rbChargenDetails")
-        '
-        'rbChargenExcelSumme
-        '
-        Me.rbChargenExcelSumme.Image = Global.WinBack.My.Resources.Resources.ChargenStatistikSumme_32x32
-        Me.rbChargenExcelSumme.MinimumSize = New System.Drawing.Size(60, 0)
-        Me.rbChargenExcelSumme.SmallImage = CType(resources.GetObject("rbChargenExcelSumme.SmallImage"), System.Drawing.Image)
-        Me.rbChargenExcelSumme.Tag = "125"
-        resources.ApplyResources(Me.rbChargenExcelSumme, "rbChargenExcelSumme")
-        '
-        'rbChargenExcelEinzel
-        '
-        Me.rbChargenExcelEinzel.Image = Global.WinBack.My.Resources.Resources.ChargenStatistikEinzel_32x32
-        Me.rbChargenExcelEinzel.MinimumSize = New System.Drawing.Size(60, 0)
-        Me.rbChargenExcelEinzel.SmallImage = CType(resources.GetObject("rbChargenExcelEinzel.SmallImage"), System.Drawing.Image)
-        Me.rbChargenExcelEinzel.Tag = "125"
-        resources.ApplyResources(Me.rbChargenExcelEinzel, "rbChargenExcelEinzel")
-        '
-        'rbChargenExcelDetails
-        '
-        Me.rbChargenExcelDetails.Image = Global.WinBack.My.Resources.Resources.ChargenStatistikDetails_32x32
-        Me.rbChargenExcelDetails.MinimumSize = New System.Drawing.Size(60, 0)
-        Me.rbChargenExcelDetails.SmallImage = CType(resources.GetObject("rbChargenExcelDetails.SmallImage"), System.Drawing.Image)
-        Me.rbChargenExcelDetails.Tag = "125"
-        resources.ApplyResources(Me.rbChargenExcelDetails, "rbChargenExcelDetails")
-        '
-        'rbStatRohstoffe
-        '
-        Me.rbStatRohstoffe.Image = Global.WinBack.My.Resources.Resources.ChargenRohstoffeSchnell_32x32
-        Me.rbStatRohstoffe.MinimumSize = New System.Drawing.Size(70, 0)
-        Me.rbStatRohstoffe.SmallImage = CType(resources.GetObject("rbStatRohstoffe.SmallImage"), System.Drawing.Image)
-        Me.rbStatRohstoffe.Tag = "122"
-        resources.ApplyResources(Me.rbStatRohstoffe, "rbStatRohstoffe")
-        '
-        'rbStatRohstoffeDetail
-        '
-        Me.rbStatRohstoffeDetail.Image = Global.WinBack.My.Resources.Resources.ChargenRohstoffeDetail_32x32
-        Me.rbStatRohstoffeDetail.MinimumSize = New System.Drawing.Size(70, 0)
-        Me.rbStatRohstoffeDetail.SmallImage = CType(resources.GetObject("rbStatRohstoffeDetail.SmallImage"), System.Drawing.Image)
-        Me.rbStatRohstoffeDetail.Tag = "122"
-        resources.ApplyResources(Me.rbStatRohstoffeDetail, "rbStatRohstoffeDetail")
-        '
-        'rbStatRezepte
-        '
-        Me.rbStatRezepte.Image = Global.WinBack.My.Resources.Resources.ChargenRezepte_32x32
-        Me.rbStatRezepte.MinimumSize = New System.Drawing.Size(70, 0)
-        Me.rbStatRezepte.SmallImage = CType(resources.GetObject("rbStatRezepte.SmallImage"), System.Drawing.Image)
-        Me.rbStatRezepte.Tag = "122"
-        resources.ApplyResources(Me.rbStatRezepte, "rbStatRezepte")
-        '
         'rbArtikelNeu
         '
         Me.rbArtikelNeu.Image = CType(resources.GetObject("rbArtikelNeu.Image"), System.Drawing.Image)
@@ -567,17 +316,30 @@ Partial Class WinBack
         '
         'rbArtikelRemove
         '
-        Me.rbArtikelRemove.Image = Global.WinBack.My.Resources.Resources.ArtikelLoeschen_32x32
+        Me.rbArtikelRemove.Image = CType(resources.GetObject("rbArtikelRemove.Image"), System.Drawing.Image)
         Me.rbArtikelRemove.MinimumSize = New System.Drawing.Size(60, 0)
         Me.rbArtikelRemove.SmallImage = CType(resources.GetObject("rbArtikelRemove.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbArtikelRemove, "rbArtikelRemove")
         '
         'rbArtikelCopy
         '
-        Me.rbArtikelCopy.Image = Global.WinBack.My.Resources.Resources.ArtikelKopieren_32x32
+        Me.rbArtikelCopy.Image = CType(resources.GetObject("rbArtikelCopy.Image"), System.Drawing.Image)
         Me.rbArtikelCopy.MinimumSize = New System.Drawing.Size(60, 0)
         Me.rbArtikelCopy.SmallImage = CType(resources.GetObject("rbArtikelCopy.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbArtikelCopy, "rbArtikelCopy")
+        '
+        'rbArtikelAnsicht
+        '
+        Me.rbArtikelAnsicht.ButtonMoreVisible = False
+        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelListe)
+        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelDetails)
+        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelSep)
+        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelParameter)
+        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelHinweise)
+        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelDeklaration)
+        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelProduktInfo)
+        Me.rbArtikelAnsicht.Items.Add(Me.rbArtikelKalkulation)
+        resources.ApplyResources(Me.rbArtikelAnsicht, "rbArtikelAnsicht")
         '
         'rbArtikelListe
         '
@@ -592,6 +354,10 @@ Partial Class WinBack
         Me.rbArtikelDetails.MinimumSize = New System.Drawing.Size(70, 0)
         Me.rbArtikelDetails.SmallImage = CType(resources.GetObject("rbArtikelDetails.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbArtikelDetails, "rbArtikelDetails")
+        '
+        'rbArtikelSep
+        '
+        resources.ApplyResources(Me.rbArtikelSep, "rbArtikelSep")
         '
         'rbArtikelParameter
         '
@@ -616,7 +382,7 @@ Partial Class WinBack
         '
         'rbArtikelProduktInfo
         '
-        Me.rbArtikelProduktInfo.Image = Global.WinBack.My.Resources.Resources.ArtikelProduktInfo_32x32
+        Me.rbArtikelProduktInfo.Image = CType(resources.GetObject("rbArtikelProduktInfo.Image"), System.Drawing.Image)
         Me.rbArtikelProduktInfo.MinimumSize = New System.Drawing.Size(70, 0)
         Me.rbArtikelProduktInfo.SmallImage = CType(resources.GetObject("rbArtikelProduktInfo.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbArtikelProduktInfo, "rbArtikelProduktInfo")
@@ -628,13 +394,19 @@ Partial Class WinBack
         Me.rbArtikelKalkulation.SmallImage = CType(resources.GetObject("rbArtikelKalkulation.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbArtikelKalkulation, "rbArtikelKalkulation")
         '
+        'rpArtikelDrucken
+        '
+        Me.rpArtikelDrucken.ButtonMoreVisible = False
+        Me.rpArtikelDrucken.Items.Add(Me.rbArtikelPrint)
+        resources.ApplyResources(Me.rpArtikelDrucken, "rpArtikelDrucken")
+        '
         'rbArtikelPrint
         '
         Me.rbArtikelPrint.DropDownItems.Add(Me.rbPrintArtikelStammblatt)
         Me.rbArtikelPrint.DropDownItems.Add(Me.rbPrintArtikelListe)
         Me.rbArtikelPrint.DropDownItems.Add(Me.rbPrintArtikelProduktInfo)
         Me.rbArtikelPrint.DropDownItems.Add(Me.rbPrintArtikelProduktInfoMore)
-        Me.rbArtikelPrint.Image = Global.WinBack.My.Resources.Resources.ArtikelDrucken_32x32
+        Me.rbArtikelPrint.Image = CType(resources.GetObject("rbArtikelPrint.Image"), System.Drawing.Image)
         Me.rbArtikelPrint.MinimumSize = New System.Drawing.Size(70, 0)
         Me.rbArtikelPrint.SmallImage = CType(resources.GetObject("rbArtikelPrint.SmallImage"), System.Drawing.Image)
         Me.rbArtikelPrint.Style = System.Windows.Forms.RibbonButtonStyle.DropDown
@@ -667,6 +439,21 @@ Partial Class WinBack
         Me.rbPrintArtikelProduktInfoMore.Image = CType(resources.GetObject("rbPrintArtikelProduktInfoMore.Image"), System.Drawing.Image)
         Me.rbPrintArtikelProduktInfoMore.SmallImage = CType(resources.GetObject("rbPrintArtikelProduktInfoMore.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbPrintArtikelProduktInfoMore, "rbPrintArtikelProduktInfoMore")
+        '
+        'rbRezepte
+        '
+        Me.rbRezepte.Panels.Add(Me.rpRezeptBearbeiten)
+        Me.rbRezepte.Panels.Add(Me.rpRezeptAnsicht)
+        Me.rbRezepte.Panels.Add(Me.rpRezeptDrucken)
+        Me.rbRezepte.Tag = "103"
+        resources.ApplyResources(Me.rbRezepte, "rbRezepte")
+        '
+        'rpRezeptBearbeiten
+        '
+        Me.rpRezeptBearbeiten.ButtonMoreVisible = False
+        Me.rpRezeptBearbeiten.Items.Add(Me.rbRezeptNeu)
+        Me.rpRezeptBearbeiten.Items.Add(Me.rbRezeptBearbeiten)
+        resources.ApplyResources(Me.rpRezeptBearbeiten, "rpRezeptBearbeiten")
         '
         'rbRezeptNeu
         '
@@ -731,6 +518,10 @@ Partial Class WinBack
         Me.rbRezeptHistorie.SmallImage = CType(resources.GetObject("rbRezeptHistorie.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRezeptHistorie, "rbRezeptHistorie")
         '
+        'rbRezeptSep
+        '
+        resources.ApplyResources(Me.rbRezeptSep, "rbRezeptSep")
+        '
         'rlArtikel
         '
         resources.ApplyResources(Me.rlArtikel, "rlArtikel")
@@ -757,6 +548,12 @@ Partial Class WinBack
         resources.ApplyResources(Me.rlSauerteig, "rlSauerteig")
         Me.rlSauerteig.Value = "2"
         '
+        'rpRezeptDrucken
+        '
+        Me.rpRezeptDrucken.ButtonMoreVisible = False
+        Me.rpRezeptDrucken.Items.Add(Me.rbRezeptDrucken)
+        resources.ApplyResources(Me.rpRezeptDrucken, "rpRezeptDrucken")
+        '
         'rbRezeptDrucken
         '
         Me.rbRezeptDrucken.DropDownItems.Add(Me.rbRezeptDruckenListe)
@@ -781,6 +578,23 @@ Partial Class WinBack
         Me.rbRezeptDruckenStammblatt.SmallImage = CType(resources.GetObject("rbRezeptDruckenStammblatt.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRezeptDruckenStammblatt, "rbRezeptDruckenStammblatt")
         '
+        'rbRohstoffe
+        '
+        Me.rbRohstoffe.Panels.Add(Me.rpRohstoffeBearbeiten)
+        Me.rbRohstoffe.Panels.Add(Me.rpRohstoffeAnsicht)
+        Me.rbRohstoffe.Panels.Add(Me.rpRohstoffeImport)
+        Me.rbRohstoffe.Panels.Add(Me.rbRohstoffeDrucken)
+        Me.rbRohstoffe.Tag = "104"
+        resources.ApplyResources(Me.rbRohstoffe, "rbRohstoffe")
+        '
+        'rpRohstoffeBearbeiten
+        '
+        Me.rpRohstoffeBearbeiten.ButtonMoreVisible = False
+        Me.rpRohstoffeBearbeiten.Items.Add(Me.rbRohstoffeNeu)
+        Me.rpRohstoffeBearbeiten.Items.Add(Me.rbRohstoffeBearbeiten)
+        Me.rpRohstoffeBearbeiten.Items.Add(Me.rbRohstoffeLöschen)
+        resources.ApplyResources(Me.rpRohstoffeBearbeiten, "rpRohstoffeBearbeiten")
+        '
         'rbRohstoffeNeu
         '
         Me.rbRohstoffeNeu.Image = Global.WinBack.My.Resources.Resources.RohstoffNeu_32x32
@@ -801,6 +615,19 @@ Partial Class WinBack
         Me.rbRohstoffeLöschen.MinimumSize = New System.Drawing.Size(65, 0)
         Me.rbRohstoffeLöschen.SmallImage = CType(resources.GetObject("rbRohstoffeLöschen.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRohstoffeLöschen, "rbRohstoffeLöschen")
+        '
+        'rpRohstoffeAnsicht
+        '
+        Me.rpRohstoffeAnsicht.ButtonMoreVisible = False
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeListe)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeDetails)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeVerwendung)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeLieferungen)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rsRohstoffeSep)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeAnsicht)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rlRohstoffe)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.cbRohstoffeAnsicht)
+        resources.ApplyResources(Me.rpRohstoffeAnsicht, "rpRohstoffeAnsicht")
         '
         'rbRohstoffeListe
         '
@@ -830,11 +657,62 @@ Partial Class WinBack
         Me.rbRohstoffeLieferungen.SmallImage = CType(resources.GetObject("rbRohstoffeLieferungen.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRohstoffeLieferungen, "rbRohstoffeLieferungen")
         '
+        'rsRohstoffeSep
+        '
+        resources.ApplyResources(Me.rsRohstoffeSep, "rsRohstoffeSep")
+        '
         'rbRohstoffeAnsicht
         '
         Me.rbRohstoffeAnsicht.Image = CType(resources.GetObject("rbRohstoffeAnsicht.Image"), System.Drawing.Image)
         Me.rbRohstoffeAnsicht.MinimumSize = New System.Drawing.Size(70, 0)
         Me.rbRohstoffeAnsicht.SmallImage = CType(resources.GetObject("rbRohstoffeAnsicht.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbRohstoffeAnsicht, "rbRohstoffeAnsicht")
+        '
+        'rlRohstoffe
+        '
+        resources.ApplyResources(Me.rlRohstoffe, "rlRohstoffe")
+        '
+        'cbRohstoffeAnsicht
+        '
+        Me.cbRohstoffeAnsicht.DropDownItems.Add(Me.rlRohstoffeAlle)
+        Me.cbRohstoffeAnsicht.DropDownItems.Add(Me.rlRohstoffeHand)
+        Me.cbRohstoffeAnsicht.DropDownItems.Add(Me.rlRohstoffeAuto)
+        Me.cbRohstoffeAnsicht.DropDownItems.Add(Me.rlRohstoffeSauerteig)
+        Me.cbRohstoffeAnsicht.DropDownItems.Add(Me.rlRohstoffeInstall)
+        resources.ApplyResources(Me.cbRohstoffeAnsicht, "cbRohstoffeAnsicht")
+        Me.cbRohstoffeAnsicht.TextBoxText = "Alle"
+        '
+        'rlRohstoffeAlle
+        '
+        resources.ApplyResources(Me.rlRohstoffeAlle, "rlRohstoffeAlle")
+        Me.rlRohstoffeAlle.Value = "1"
+        '
+        'rlRohstoffeHand
+        '
+        resources.ApplyResources(Me.rlRohstoffeHand, "rlRohstoffeHand")
+        Me.rlRohstoffeHand.Value = "2"
+        '
+        'rlRohstoffeAuto
+        '
+        resources.ApplyResources(Me.rlRohstoffeAuto, "rlRohstoffeAuto")
+        Me.rlRohstoffeAuto.Value = "3"
+        '
+        'rlRohstoffeSauerteig
+        '
+        resources.ApplyResources(Me.rlRohstoffeSauerteig, "rlRohstoffeSauerteig")
+        Me.rlRohstoffeSauerteig.Value = "4"
+        '
+        'rlRohstoffeInstall
+        '
+        resources.ApplyResources(Me.rlRohstoffeInstall, "rlRohstoffeInstall")
+        Me.rlRohstoffeInstall.Value = "5"
+        '
+        'rpRohstoffeImport
+        '
+        Me.rpRohstoffeImport.ButtonMoreVisible = False
+        Me.rpRohstoffeImport.Items.Add(Me.rbRohstoffeImportText)
+        Me.rpRohstoffeImport.Items.Add(Me.rbRohstoffeImportCloud)
+        resources.ApplyResources(Me.rpRohstoffeImport, "rpRohstoffeImport")
         '
         'rbRohstoffeImportText
         '
@@ -850,11 +728,35 @@ Partial Class WinBack
         Me.rbRohstoffeImportCloud.SmallImage = CType(resources.GetObject("rbRohstoffeImportCloud.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRohstoffeImportCloud, "rbRohstoffeImportCloud")
         '
+        'rbRohstoffeDrucken
+        '
+        Me.rbRohstoffeDrucken.ButtonMoreVisible = False
+        Me.rbRohstoffeDrucken.Items.Add(Me.rbRohstoffeDruck)
+        resources.ApplyResources(Me.rbRohstoffeDrucken, "rbRohstoffeDrucken")
+        '
         'rbRohstoffeDruck
         '
         Me.rbRohstoffeDruck.Image = Global.WinBack.My.Resources.Resources.RohstoffeDrucken_32x32
         Me.rbRohstoffeDruck.SmallImage = CType(resources.GetObject("rbRohstoffeDruck.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRohstoffeDruck, "rbRohstoffeDruck")
+        '
+        'rbUser
+        '
+        Me.rbUser.Panels.Add(Me.rpUser)
+        Me.rbUser.Panels.Add(Me.rpUserGruppen)
+        Me.rbUser.Panels.Add(Me.rpDrucken)
+        Me.rbUser.Tag = "120"
+        resources.ApplyResources(Me.rbUser, "rbUser")
+        '
+        'rpUser
+        '
+        Me.rpUser.ButtonMoreVisible = False
+        Me.rpUser.Items.Add(Me.rbUserNeu)
+        Me.rpUser.Items.Add(Me.rbUserBearbeiten)
+        Me.rpUser.Items.Add(Me.RbUserRemove)
+        Me.rpUser.Items.Add(Me.rbUserChangePass)
+        Me.rpUser.Tag = ""
+        resources.ApplyResources(Me.rpUser, "rpUser")
         '
         'rbUserNeu
         '
@@ -881,6 +783,16 @@ Partial Class WinBack
         Me.rbUserChangePass.SmallImage = CType(resources.GetObject("rbUserChangePass.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbUserChangePass, "rbUserChangePass")
         '
+        'rpUserGruppen
+        '
+        Me.rpUserGruppen.ButtonMoreVisible = False
+        Me.rpUserGruppen.Items.Add(Me.rbListe)
+        Me.rpUserGruppen.Items.Add(Me.rbUserDetails)
+        Me.rpUserGruppen.Items.Add(Me.rbUserRechte)
+        Me.rpUserGruppen.Items.Add(Me.rbUserGruppenRechte)
+        Me.rpUserGruppen.Tag = ""
+        resources.ApplyResources(Me.rpUserGruppen, "rpUserGruppen")
+        '
         'rbListe
         '
         Me.rbListe.Image = Global.WinBack.My.Resources.Resources.User_32x32
@@ -905,11 +817,33 @@ Partial Class WinBack
         Me.rbUserGruppenRechte.SmallImage = CType(resources.GetObject("rbUserGruppenRechte.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbUserGruppenRechte, "rbUserGruppenRechte")
         '
+        'rpDrucken
+        '
+        Me.rpDrucken.ButtonMoreVisible = False
+        Me.rpDrucken.Items.Add(Me.rbUserDrucken)
+        resources.ApplyResources(Me.rpDrucken, "rpDrucken")
+        '
         'rbUserDrucken
         '
         Me.rbUserDrucken.Image = Global.WinBack.My.Resources.Resources.UserListe_32x32
         Me.rbUserDrucken.SmallImage = CType(resources.GetObject("rbUserDrucken.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbUserDrucken, "rbUserDrucken")
+        '
+        'rbLinien
+        '
+        Me.rbLinien.Panels.Add(Me.rpLinienBearbeiten)
+        Me.rbLinien.Panels.Add(Me.rpLinienDrucken)
+        Me.rbLinien.Tag = "121"
+        resources.ApplyResources(Me.rbLinien, "rbLinien")
+        '
+        'rpLinienBearbeiten
+        '
+        Me.rpLinienBearbeiten.ButtonMoreVisible = False
+        Me.rpLinienBearbeiten.Items.Add(Me.rbLinienAdd)
+        Me.rpLinienBearbeiten.Items.Add(Me.rbLinienDel)
+        Me.rpLinienBearbeiten.Items.Add(Me.rsLinien)
+        Me.rpLinienBearbeiten.Items.Add(Me.rbLinienAuto)
+        resources.ApplyResources(Me.rpLinienBearbeiten, "rpLinienBearbeiten")
         '
         'rbLinienAdd
         '
@@ -923,17 +857,169 @@ Partial Class WinBack
         Me.rbLinienDel.SmallImage = CType(resources.GetObject("rbLinienDel.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbLinienDel, "rbLinienDel")
         '
+        'rsLinien
+        '
+        resources.ApplyResources(Me.rsLinien, "rsLinien")
+        '
         'rbLinienAuto
         '
         Me.rbLinienAuto.Image = Global.WinBack.My.Resources.Resources.LinienAutoInstall_32x32
         Me.rbLinienAuto.SmallImage = CType(resources.GetObject("rbLinienAuto.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbLinienAuto, "rbLinienAuto")
         '
+        'rpLinienDrucken
+        '
+        Me.rpLinienDrucken.ButtonMoreEnabled = False
+        Me.rpLinienDrucken.ButtonMoreVisible = False
+        Me.rpLinienDrucken.Items.Add(Me.rbLinienDrucken)
+        resources.ApplyResources(Me.rpLinienDrucken, "rpLinienDrucken")
+        '
         'rbLinienDrucken
         '
         Me.rbLinienDrucken.Image = Global.WinBack.My.Resources.Resources.LinienDrucken_32x32
         Me.rbLinienDrucken.SmallImage = CType(resources.GetObject("rbLinienDrucken.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbLinienDrucken, "rbLinienDrucken")
+        '
+        'rbPlanung
+        '
+        Me.rbPlanung.Panels.Add(Me.rpProduktionAnsicht)
+        Me.rbPlanung.Tag = "130"
+        resources.ApplyResources(Me.rbPlanung, "rbPlanung")
+        '
+        'rpProduktionAnsicht
+        '
+        Me.rpProduktionAnsicht.ButtonMoreVisible = False
+        Me.rpProduktionAnsicht.Items.Add(Me.rbProduktionPlanung)
+        resources.ApplyResources(Me.rpProduktionAnsicht, "rpProduktionAnsicht")
+        '
+        'rbProduktionPlanung
+        '
+        Me.rbProduktionPlanung.Image = Global.WinBack.My.Resources.Resources.PlanungMain_32x32
+        Me.rbProduktionPlanung.SmallImage = CType(resources.GetObject("rbProduktionPlanung.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbProduktionPlanung, "rbProduktionPlanung")
+        '
+        'rbExtra
+        '
+        Me.rbExtra.Panels.Add(Me.rbAdminAnsicht)
+        Me.rbExtra.Tag = "105"
+        resources.ApplyResources(Me.rbExtra, "rbExtra")
+        '
+        'rbAdminAnsicht
+        '
+        Me.rbAdminAnsicht.ButtonMoreVisible = False
+        Me.rbAdminAnsicht.Items.Add(Me.rbDatensicherung)
+        Me.rbAdminAnsicht.Items.Add(Me.rbAdminWinBackIni)
+        Me.rbAdminAnsicht.Items.Add(Me.rsAdmin)
+        Me.rbAdminAnsicht.Items.Add(Me.rbAdminUpdate)
+        resources.ApplyResources(Me.rbAdminAnsicht, "rbAdminAnsicht")
+        '
+        'rbDatensicherung
+        '
+        Me.rbDatensicherung.Image = Global.WinBack.My.Resources.Resources.AdminMain_32x32
+        Me.rbDatensicherung.MinimumSize = New System.Drawing.Size(70, 0)
+        Me.rbDatensicherung.SmallImage = CType(resources.GetObject("rbDatensicherung.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbDatensicherung, "rbDatensicherung")
+        '
+        'rbAdminWinBackIni
+        '
+        Me.rbAdminWinBackIni.Image = Global.WinBack.My.Resources.Resources.AdminEditKonfig_32x32
+        Me.rbAdminWinBackIni.MinimumSize = New System.Drawing.Size(70, 0)
+        Me.rbAdminWinBackIni.SmallImage = CType(resources.GetObject("rbAdminWinBackIni.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbAdminWinBackIni, "rbAdminWinBackIni")
+        '
+        'rsAdmin
+        '
+        resources.ApplyResources(Me.rsAdmin, "rsAdmin")
+        '
+        'rbAdminUpdate
+        '
+        Me.rbAdminUpdate.Image = Global.WinBack.My.Resources.Resources.AdminUpdateDataBase_32x32
+        Me.rbAdminUpdate.MinimumSize = New System.Drawing.Size(90, 0)
+        Me.rbAdminUpdate.SmallImage = CType(resources.GetObject("rbAdminUpdate.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbAdminUpdate, "rbAdminUpdate")
+        '
+        'LanguageFlags
+        '
+        Me.LanguageFlags.ImageStream = CType(resources.GetObject("LanguageFlags.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.LanguageFlags.TransparentColor = System.Drawing.Color.Transparent
+        Me.LanguageFlags.Images.SetKeyName(0, "de.gif")
+        Me.LanguageFlags.Images.SetKeyName(1, "hu.gif")
+        Me.LanguageFlags.Images.SetKeyName(2, "nl.gif")
+        Me.LanguageFlags.Images.SetKeyName(3, "us.gif")
+        Me.LanguageFlags.Images.SetKeyName(4, "pt.gif")
+        Me.LanguageFlags.Images.SetKeyName(5, "si.gif")
+        Me.LanguageFlags.Images.SetKeyName(6, "ru.gif")
+        Me.LanguageFlags.Images.SetKeyName(7, "fr.gif")
+        Me.LanguageFlags.Images.SetKeyName(8, "es.gif")
+        Me.LanguageFlags.Images.SetKeyName(9, "sk.gif")
+        Me.LanguageFlags.Images.SetKeyName(10, "ro.gif")
+        '
+        'rTab
+        '
+        resources.ApplyResources(Me.rTab, "rTab")
+        Me.rTab.AllowDrop = True
+        Me.rTab.BackColor = System.Drawing.SystemColors.Control
+        Me.rTab.Minimized = False
+        Me.rTab.Name = "rTab"
+        '
+        '
+        '
+        Me.rTab.OrbDropDown.AccessibleDescription = resources.GetString("rTab.OrbDropDown.AccessibleDescription")
+        Me.rTab.OrbDropDown.AccessibleName = resources.GetString("rTab.OrbDropDown.AccessibleName")
+        Me.rTab.OrbDropDown.Anchor = CType(resources.GetObject("rTab.OrbDropDown.Anchor"), System.Windows.Forms.AnchorStyles)
+        Me.rTab.OrbDropDown.AutoSizeContentButtons = False
+        Me.rTab.OrbDropDown.BackgroundImage = CType(resources.GetObject("rTab.OrbDropDown.BackgroundImage"), System.Drawing.Image)
+        Me.rTab.OrbDropDown.BackgroundImageLayout = CType(resources.GetObject("rTab.OrbDropDown.BackgroundImageLayout"), System.Windows.Forms.ImageLayout)
+        Me.rTab.OrbDropDown.BorderRoundness = 8
+        Me.rTab.OrbDropDown.ContentButtonsMinWidth = 120
+        Me.rTab.OrbDropDown.ContentRecentItemsMinWidth = 75
+        Me.rTab.OrbDropDown.Dock = CType(resources.GetObject("rTab.OrbDropDown.Dock"), System.Windows.Forms.DockStyle)
+        Me.rTab.OrbDropDown.Font = CType(resources.GetObject("rTab.OrbDropDown.Font"), System.Drawing.Font)
+        Me.rTab.OrbDropDown.ImeMode = CType(resources.GetObject("rTab.OrbDropDown.ImeMode"), System.Windows.Forms.ImeMode)
+        Me.rTab.OrbDropDown.Location = CType(resources.GetObject("rTab.OrbDropDown.Location"), System.Drawing.Point)
+        Me.rTab.OrbDropDown.MaximumSize = CType(resources.GetObject("rTab.OrbDropDown.MaximumSize"), System.Drawing.Size)
+        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbAbmelden)
+        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbEnde)
+        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbSeparator)
+        Me.rTab.OrbDropDown.MenuItems.Add(Me.rbInfo)
+        Me.rTab.OrbDropDown.Name = ""
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem0)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem1)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem2)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem3)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem4)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem5)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem6)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem7)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem8)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem9)
+        Me.rTab.OrbDropDown.RecentItems.Add(Me.RibbonOrbRecentItem10)
+        Me.rTab.OrbDropDown.RecentItemsCaption = "Sprache"
+        Me.rTab.OrbDropDown.RightToLeft = CType(resources.GetObject("rTab.OrbDropDown.RightToLeft"), System.Windows.Forms.RightToLeft)
+        Me.rTab.OrbDropDown.Size = CType(resources.GetObject("rTab.OrbDropDown.Size"), System.Drawing.Size)
+        Me.rTab.OrbDropDown.TabIndex = CType(resources.GetObject("rTab.OrbDropDown.TabIndex"), Integer)
+        Me.rTab.OrbImage = Global.WinBack.My.Resources.Resources.WinBack_32x32
+        Me.rTab.OrbText = "Datei"
+        '
+        '
+        '
+        Me.rTab.QuickAcessToolbar.Checked = True
+        Me.rTab.QuickAcessToolbar.DropDownButtonVisible = False
+        Me.rTab.QuickAcessToolbar.Text = resources.GetString("rTab.QuickAcessToolbar.Text")
+        Me.rTab.QuickAcessToolbar.ToolTip = resources.GetString("rTab.QuickAcessToolbar.ToolTip")
+        Me.rTab.QuickAcessToolbar.ToolTipImage = CType(resources.GetObject("rTab.QuickAcessToolbar.ToolTipImage"), System.Drawing.Image)
+        Me.rTab.QuickAcessToolbar.Visible = False
+        Me.rTab.RibbonTabFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rTab.Tabs.Add(Me.rbChargen)
+        Me.rTab.Tabs.Add(Me.rbArtikel)
+        Me.rTab.Tabs.Add(Me.rbRezepte)
+        Me.rTab.Tabs.Add(Me.rbRohstoffe)
+        Me.rTab.Tabs.Add(Me.rbUser)
+        Me.rTab.Tabs.Add(Me.rbLinien)
+        Me.rTab.Tabs.Add(Me.rbPlanung)
+        Me.rTab.Tabs.Add(Me.rbExtra)
+        Me.rTab.TabsMargin = New System.Windows.Forms.Padding(12, 26, 20, 0)
+        Me.rTab.ThemeColor = System.Windows.Forms.RibbonTheme.Black
         '
         'rbAbmelden
         '
@@ -1177,4 +1263,11 @@ Partial Class WinBack
     Friend WithEvents rbUserDrucken As RibbonButton
     Friend WithEvents rpLinienDrucken As RibbonPanel
     Friend WithEvents rbLinienDrucken As RibbonButton
+    Friend WithEvents rpProduktionAnsicht As RibbonPanel
+    Friend WithEvents rbProduktionPlanung As RibbonButton
+    Friend WithEvents rbAdminAnsicht As RibbonPanel
+    Friend WithEvents rbDatensicherung As RibbonButton
+    Friend WithEvents rbAdminWinBackIni As RibbonButton
+    Friend WithEvents rsAdmin As RibbonSeparator
+    Friend WithEvents rbAdminUpdate As RibbonButton
 End Class

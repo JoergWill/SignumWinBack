@@ -137,7 +137,7 @@ Public Class ob_Artikel_ZuordnungRezept
                 'alle Steuerelemente aktivieren
                 EnableKomponenten(True)
 
-            Case "wb_Save"
+            Case "wbSAVE"
                 DirectCast(Parameter, wb_Komponenten).ArtikelChargen = ArtikelChargen
 
         End Select

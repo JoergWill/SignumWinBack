@@ -7,6 +7,7 @@ Public Class wb_Komponenten
 
     Private KO_Nr As Integer
     Private KO_Type As KomponTypen
+    Private KA_Art As String
     Private KO_Nr_AlNum As String
     Private KO_Bezeichnung As String
     Private KO_Kommentar As String
@@ -99,6 +100,12 @@ Public Class wb_Komponenten
         End Get
         Set(value As Integer)
             KA_Rz_Nr = value
+            'KA_Art setzen (Für Artikel immmer gleich Eins)
+            If KA_Rz_Nr > 0 Or KO_Type = KomponTypen.KO_TYPE_ARTIKEL Then
+                KA_Art = "1"
+            Else
+                KA_Art = "0"
+            End If
         End Set
     End Property
 
@@ -188,9 +195,11 @@ Public Class wb_Komponenten
             _LinienGruppe = Rezept.LinienGruppe
             ArtikelChargen.TeigGewicht = Rezept.RezeptGewicht
             TeigChargen = Rezept.TeigChargen
+            KA_Art = 1
 
         Else
             'normale Komponente ohne Produktion
+            KA_Art = 0
             _RezeptName = ""
             _RezeptNummer = ""
             _LinienGruppe = wb_Global.UNDEFINED
@@ -322,8 +331,8 @@ Public Class wb_Komponenten
 
             'Verkaufs-Artikel - Verwendung in der Produktion prüfen
             Case KomponTypen.KO_TYPE_ARTIKEL
-                If MySQLIsUsedInProdcution(KO_Nr) Then
-                    _LastErrorText = "Dieser Artikel wird in der Produktion noch verwendet und kann nicht gelöscht werden"
+                If MySQLIsUsedInProduction(KO_Nr) Then
+                    _LastErrorText = "Dieser Artikel wird In der Produktion noch verwendet und kann nicht gelöscht werden"
                     Return False
                 Else
                     Return True
@@ -331,11 +340,11 @@ Public Class wb_Komponenten
 
             'Rohstoff - Verwendung in der Produktion und in Rezepten prüfen
             Case KomponTypen.KO_TYPE_HANDKOMPONENTE
-                If MySQLIsUsedInProdcution(KO_Nr) Then
-                    _LastErrorText = "Dieser Rohstoff wird in der Produktion noch verwendet und kann nicht gelöscht werden"
+                If MySQLIsUsedInProduction(KO_Nr) Then
+                    _LastErrorText = "Dieser Rohstoff wird In der Produktion noch verwendet und kann nicht gelöscht werden"
                     Return False
                 ElseIf MySQLIsUsedInRecipe(KO_Nr) Then
-                    _LastErrorText = "Dieser Rohstoff wird noch in Rezepturen verwendet und kann nicht gelöscht werden"
+                    _LastErrorText = "Dieser Rohstoff wird noch In Rezepturen verwendet und kann nicht gelöscht werden"
                     Return False
                 Else
                     Return True
@@ -352,7 +361,7 @@ Public Class wb_Komponenten
     ''' </summary>
     ''' <param name="InterneKomponentenNummer">Integer - Interne Komponenten-Nummer</param>
     ''' <returns>Boolean - Löschen ist erlaubt</returns>
-    Private Function MySQLIsUsedInProdcution(InterneKomponentenNummer As Integer) As Boolean
+    Private Function MySQLIsUsedInProduction(InterneKomponentenNummer As Integer) As Boolean
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompInArbRzp, InterneKomponentenNummer)
         Dim Count As Integer = -1
@@ -450,6 +459,13 @@ Public Class wb_Komponenten
         KO_Nr = wb_sql_Functions.getNewKomponNummer()
         'Komponenten-Type (Artikel/Handkomponente)
         KO_Type = KType
+        'Komponenten-Art (vorab) festlegen
+        If KO_Type = KomponTypen.KO_TYPE_ARTIKEL Then
+            KA_Art = "1"
+        Else
+            KA_Art = "0"
+        End If
+
         'Datensatz neu anlegen
         winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewKompon, KO_Nr, KO_Nr_AlNum, wb_Functions.KomponTypeToInt(KO_Type), "Neu angelegt " & Date.Now))
         winback.Close()
@@ -548,6 +564,9 @@ Public Class wb_Komponenten
                'Type
                 Case "KO_Type"
                     KO_Type = IntToKomponType(CInt(Value))
+               'Type
+                Case "KA_Art"
+                    KA_Art = Value
                 'Bezeichnung
                 Case "KO_Bezeichnung"
                     KO_Bezeichnung = wb_Functions.MySqlToUtf8(Value)
@@ -688,8 +707,8 @@ Public Class wb_Komponenten
               "KA_Matchcode = '" & KO_IdxCloud & "'," &
               "KA_RZ_Nr = '" & KA_Rz_Nr & "'," &
               "KA_Lagerort = '" & KA_Lagerort & "'," &
-              "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'"
-
+              "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
+              "KA_Art = '" & KA_Art & "'"
 
         'Artikel - Chargengrößen in Stk
         If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Then

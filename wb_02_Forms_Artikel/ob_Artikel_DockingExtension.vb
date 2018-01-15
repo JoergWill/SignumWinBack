@@ -82,6 +82,14 @@ Public Class ob_Artikel_DockingExtension
         End Set
     End Property
 
+    Private Sub Extendee_ExecuteCommand(Command As String, Parameter As Object)
+        For Each oForm In _SubForms.Values
+            If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
+                oForm.ExecuteCommand(Command, Parameter)
+            End If
+        Next
+    End Sub
+
     Private Sub Extendee_Valid(sender As Object, e As EventArgs)
         Extendee_ExecuteCommand("VALID", Nothing)
         Debug.Print("Article_DockingExtension Valid")
@@ -94,16 +102,9 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="e"></param>
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
         Extendee_ExecuteCommand("INVALID", Nothing)
-        Komponente.Invalidate()
+        Dim Komponente As New wb_Komponenten
+        'Komponente.Invalidate()
         Debug.Print("Article_DockingExtension Invalid")
-    End Sub
-
-    Private Sub Extendee_ExecuteCommand(Command As String, Parameter As Object)
-        For Each oForm In _SubForms.Values
-            If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
-                oForm.ExecuteCommand(Command, Parameter)
-            End If
-        Next
     End Sub
 
     ''' <summary>
@@ -112,6 +113,7 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_AddNew(sender As Object, e As EventArgs)
+        Dim Komponente As New wb_Komponenten
         Debug.Print("Article_DockingExtension AddNew")
     End Sub
 
@@ -138,6 +140,8 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="e"></param>
     Private Sub Extendee_BeforeUpdate(sender As Object, e As EventArgs)
         Debug.Print("Article_DockingExtension BeforeUpdate")
+        'Artikel-Informationen (erneut)in Klasse Komponenten einlesen. Wenn der Artikel/Rohstoff neu angelegt wurde müssen die Daten neu eingelesen werden
+        bSortimentIstProduktion = GetKomponentenDaten()
         If bSortimentIstProduktion Then
             Debug.Print("WinBack Artikel")
             SetKomponentenDaten()
@@ -166,7 +170,7 @@ Public Class ob_Artikel_DockingExtension
             UpdateKomponentenDaten()
 
             'Daten aus Unterfenster sichern
-            Extendee_ExecuteCommand("wb_Save", Komponente)
+            Extendee_ExecuteCommand("wbSAVE", Komponente)
 
             'geänderten Datensatz in WinBack-DB schreiben
             Komponente.MySQLdbUpdate(Komponente.Nr)
@@ -393,17 +397,10 @@ Public Class ob_Artikel_DockingExtension
             Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF226 - Index auf interne Komponenten-Nummer
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString            'Artikel/Komponenten-Nummer alphanumerisch
             'Artikel/Komponente aus WinBack-Db einlesen
+            Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
             If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer) Then
                 'Datensatz ist in Winback nicht vorhanden
-                Dim KType As wb_Global.KomponTypen = wb_Global.KomponTypen.KO_TYPE_UNDEFINED
-                Select Case _Extendee.GetPropertyValue("ArtikelGruppe").ToString
-                    Case "0"
-                        KType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL
-                    Case "40"
-                        KType = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
-                    Case Else
-                        KType = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
-                End Select
+                Dim KType As wb_Global.KomponTypen = wb_Functions.obKtypeToKType(obKType)
                 'Datensatz in WinBack neu anlegen
                 Komponente.MySQLdbNew(KType)
             End If

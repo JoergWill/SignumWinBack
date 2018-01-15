@@ -4,6 +4,7 @@ Imports System.Net
 Imports System.Text
 Imports ICSharpCode.SharpZipLib.BZip2
 Imports Tamir.SharpSsh
+Imports WinBack
 
 ''' <summary>
 ''' Beschreibung:
@@ -481,6 +482,28 @@ Public Class wb_Functions
                 Return "Undefiniert"
         End Select
     End Function
+
+    ''' <summary>
+    ''' Wandelt die Artikelgruppe aus OrgaBack in die WinBack-Komponenten-Type um.
+    ''' Die Artikelgruppen in OrgaBack sind frei definiert. Die Zuordnung von Artikelgruppe zu Komponenten-Type wird in winback.ini festgelegt
+    ''' 
+    '''     [OrgaBack].
+    ''' </summary>
+    ''' <param name="obKType"></param>
+    ''' <returns></returns>
+    Friend Shared Function obKtypeToKType(obKType As String) As wb_Global.KomponTypen
+
+        If obKType = wb_GlobalSettings.OsGrpBackwaren Then
+            Return wb_Global.KomponTypen.KO_TYPE_ARTIKEL
+
+        ElseIf obKType = wb_GlobalSettings.OsGrpRohstoffe Then
+            Return wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+
+        Else
+            Return wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+        End If
+    End Function
+
     ''' <summary>
     ''' Wandelt die DatenLink-Nährwert und Allergen-Bezeichnungen in 
     ''' WinBack-Index-Nummern um

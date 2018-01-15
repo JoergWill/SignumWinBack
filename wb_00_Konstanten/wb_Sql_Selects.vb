@@ -73,7 +73,7 @@
     'Sql-Statement User Datensatz lesen
     Public Const sqlUserLogin = "SELECT * FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int = [0]"
     'Sql-Statement User Datensatz lesen
-    Public Const sqlUserName = "SELECT * FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert4str = [0]"
+    Public Const sqlUserName = "SELECT * FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert4str = '[0]'"
 
     'Sql-Statement alle Texte aus winback.Texte
     Public Const sqlWinBackTxte = "SELECT T_TextIndex, T_Typ, T_Text FROM Texte WHERE T_Sprache = [0]"
