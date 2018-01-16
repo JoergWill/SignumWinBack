@@ -399,7 +399,7 @@ Public Class ob_Artikel_DockingExtension
             'Artikel/Komponente aus WinBack-Db einlesen
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
             If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer) Then
-                'Datensatz ist in Winback nicht vorhanden
+                'Datensatz ist in Winback nicht vorhanden - Komponententype (Artikel/Handkomponente) ermitteln
                 Dim KType As wb_Global.KomponTypen = wb_Functions.obKtypeToKType(obKType)
                 'Datensatz in WinBack neu anlegen
                 Komponente.MySQLdbNew(KType)

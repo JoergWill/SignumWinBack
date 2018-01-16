@@ -195,14 +195,19 @@ Public Class wb_Komponenten
             _LinienGruppe = Rezept.LinienGruppe
             ArtikelChargen.TeigGewicht = Rezept.RezeptGewicht
             TeigChargen = Rezept.TeigChargen
-            KA_Art = 1
 
         Else
             'normale Komponente ohne Produktion
-            KA_Art = 0
             _RezeptName = ""
             _RezeptNummer = ""
             _LinienGruppe = wb_Global.UNDEFINED
+        End If
+
+        'Artikel-Typ = 1 für Auto/Handkomponenten mit anhängender Rezeptur
+        If KO_Type = KomponTypen.KO_TYPE_ARTIKEL Or RzNr > 0 Then
+            KA_Art = 1
+        Else
+            KA_Art = 0
         End If
 
         If ktTyp300.Liniengruppe > 0 Then
