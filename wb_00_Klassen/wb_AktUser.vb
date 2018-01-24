@@ -52,7 +52,7 @@ Public Class wb_AktUser
         winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserLogin, UserNr.ToString))
 
         If winback.Read Then
-            UserNr = UserNr
+            _UserNr = UserNr
             UserName = winback.sField("IP_Wert4str")
             UserGruppe = winback.iField("IP_ItemID")
             _UserLanguage = winback.sField("IP_Wert5str")
@@ -75,7 +75,7 @@ Public Class wb_AktUser
 
         If winback.Read Then
             UserNr = winback.iField("IP_Wert1int")
-            UserName = UserName
+            _UserName = UserName
             UserGruppe = winback.iField("IP_ItemID")
             _UserLanguage = winback.sField("IP_Wert5str")
 

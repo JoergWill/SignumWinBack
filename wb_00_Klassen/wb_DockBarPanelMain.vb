@@ -178,7 +178,7 @@ Public Class wb_DockBarPanelMain
 #End Region
 
     ''' <summary>
-    ''' Die Information kommt aus der winback.ini und wird in der Routine wb_Konfig.SetFormBoundaries ausgelesen (in wb_Main_Menu)
+    ''' Die Information kommt aus der winback.ini und wird in der Routine wb_DockBarPanelShared.SetFormBoundaries ausgelesen (in wb_Main_Menu)
     ''' </summary>
     ''' <returns>String - Layout-Filename</returns>
     Private Property LayoutFilename As String

@@ -30,7 +30,6 @@ Partial Class Login
         '
         'BtnOK
         '
-        Me.BtnOK.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.BtnOK.Location = New System.Drawing.Point(171, 55)
         Me.BtnOK.Name = "BtnOK"
         Me.BtnOK.Size = New System.Drawing.Size(107, 37)

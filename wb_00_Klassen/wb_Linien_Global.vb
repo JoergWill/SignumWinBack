@@ -1,5 +1,6 @@
 ﻿Public Class wb_Linien_Global
     Private Shared LGruppen As New Dictionary(Of String, wb_Global.wb_LinienGruppe)
+    Private Shared WinBackLinienFormularSteuerung As Boolean = True
     Public Shared LinienGruppen As New SortedList
 
     Shared Sub New()
@@ -22,16 +23,19 @@
             L.Linien = Linien.Split(",")
 
             'Formularsteuerung
-            Try
-                L.BackZettelDrucken = winback.sField("LG_BZ_Drucken")
-                L.TeigZettelDrucken = winback.sField("LG_TZ_Drucken")
-                L.TeigRezeptDrucken = winback.sField("LG_TR_Drucken")
-                L.BackZettelSenden = winback.sField("LG_BZ_Senden")
-                L.TeigZettelSenden = winback.sField("LG_TZ_Senden")
-            Catch ex As Exception
-                'Erweiterung Tabelle Liniengruppen ist notwendig !
-                'TODO Fehler in Log-File ausgeben
-            End Try
+            If WinBackLinienFormularSteuerung Then
+                Try
+                    L.BackZettelDrucken = winback.sField("LG_BZ_Drucken")
+                    L.TeigZettelDrucken = winback.sField("LG_TZ_Drucken")
+                    L.TeigRezeptDrucken = winback.sField("LG_TR_Drucken")
+                    L.BackZettelSenden = winback.sField("LG_BZ_Senden")
+                    L.TeigZettelSenden = winback.sField("LG_TZ_Senden")
+                Catch ex As Exception
+                    WinBackLinienFormularSteuerung = False
+                    'Erweiterung Tabelle Liniengruppen ist notwendig !
+                    Trace.WriteLine("Tabelle WinBack.Liniengruppen muss erweitert werden! (Formular-Steuerung)")
+                End Try
+            End If
 
             'zum Dictonary hinzufügen
             LGruppen.Add(L.LinienGruppe, L)

@@ -11,6 +11,7 @@
     Public Const Datenlink_CAT = "37FB090516F091A8236AD70D16543EF3BDF91B23"
     Public Const Datenlink_PAT = "51A7C4A02782876A05CC8EF7398E596E35390BB2"
 
-
+    'Master-User
+    Public Const WinBackMasterUser = "709760"
 
 End Class

@@ -44,7 +44,7 @@
 
     'Sql-Statement Userliste aus winback.ItemParameter
     Public Const sqlUsersListe = "Select IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter " &
-                                  "WHERE IP_ItemTyp = 500 And IP_ItemAttr = 501 And IP_Wert1int <> 709760"
+                                  "WHERE IP_ItemTyp = 500 And IP_ItemAttr = 501 And IP_Wert1int <> " & wb_Credentials.WinBackMasterUser
     'Sql-Statement User Datensatz neu anlegen   [0]-Name [1]-Password [2]-Gruppe
     Public Const sqlUserInsert = "INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert4str) " &
                                  "VALUES (500, [2], 501, [1], [1], '[0]')"

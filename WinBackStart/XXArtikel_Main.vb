@@ -1,13 +1,11 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 Imports WinBack
 
-Public Class Rezepte_Main
+Public Class XXArtikel_Main
     Implements IMainMenu
 
-    Public RezeptListe As New wb_Rezept_Liste
-    Public RezeptDetails As wb_Rezept_Details
-    Public RezeptHinweise As wb_Rezept_Hinweise
-    Public RezeptHistorie As wb_Rezept_Historie
+    Public ArtikelListe As New wb_Artikel_Liste
+    Public ArtikelDetails As wb_Artikel_Details
 
     Private _DkPnlConfigFileName As String = ""
     Protected _DockPanelList As New List(Of DockContent)
@@ -41,8 +39,8 @@ Public Class Rezepte_Main
                 Return True
 
             Case "OPENDETAILS"
-                RezeptDetails = New wb_Rezept_Details
-                RezeptDetails.Show(DockPanel, DockState.DockLeft)
+                ArtikelDetails = New wb_Artikel_Details
+                ArtikelDetails.Show(DockPanel, DockState.DockLeft)
                 Return True
 
             Case Else
@@ -58,6 +56,7 @@ Public Class Rezepte_Main
             _DkPnlConfigFileName = value
         End Set
     End Property
+
     Private Sub SaveDockBarConfig()
         Try
             DockPanel.SaveAsXml(DkPnlConfigFileName)
@@ -84,19 +83,15 @@ Public Class Rezepte_Main
 
             'Laden der Konfiguration
             DockPanel.LoadFromXml(DkPnlConfigFileName, AddressOf wbBuildDocContent)
-            If _DockPanelList.Count = 0 Then
-                setDefaultLayout()
-            Else
-                'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
-                For Each x In _DockPanelList
-                    'Wenn ein Fenster beim Speichern Im State Float war, wird es anschliessend nicht mehr angezeigt
-                    If x.DockState = DockState.Float Then
-                        x.DockState = DockState.Document
-                    End If
-                    x.Show(DockPanel, x.DockState)
-                    Debug.Print("DockState " & x.DockState.ToString)
-                Next
-            End If
+            'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
+            For Each x In _DockPanelList
+                'Wenn ein Fenster beim Speichern Im State Float war, wird es anschliessend nicht mehr angezeigt
+                If x.DockState = DockState.Float Then
+                    x.DockState = DockState.Document
+                End If
+                x.Show(DockPanel, x.DockState)
+                Debug.Print("DockState " & x.DockState.ToString)
+            Next
         Else
             'Default Fenster-Konfiguration (wenn alles schief geht)
             setDefaultLayout()
@@ -104,40 +99,29 @@ Public Class Rezepte_Main
     End Sub
 
     Private Sub setDefaultLayout()
-        RezeptListe.Show(DockPanel, DockState.DockLeft)
-        RezeptListe.CloseButtonVisible = False
+        ArtikelListe.Show(DockPanel, DockState.DockLeft)
+        ArtikelListe.CloseButtonVisible = False
         WinBack.LayoutFilename = "Default"
     End Sub
 
     Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "WinBack.wb_RezeptListe"
-                _DockPanelList.Add(RezeptListe)
-                Return RezeptListe
-            Case "WinBack.wb_RezeptDetails"
-                _DockPanelList.Add(RezeptDetails)
-                Return RezeptDetails
-            Case "WinBack.wb_RezeptHinweise"
-                _DockPanelList.Add(RezeptHinweise)
-                Return RezeptHinweise
-            Case "WinBack.wb_RezeptHistorie"
-                _DockPanelList.Add(RezeptHistorie)
-                Return RezeptHistorie
+            Case "WinBack.wb_Artikel_Liste"
+                ArtikelListe.CloseButtonVisible = False
+                _DockPanelList.Add(ArtikelListe)
+                Return ArtikelListe
+
+            Case "WinBack.wb_Artikel_Details"
+                ArtikelDetails = New wb_Artikel_Details
+                _DockPanelList.Add(ArtikelDetails)
+                Return ArtikelDetails
+
             Case Else
                 Return Nothing
         End Select
     End Function
 
-    Private Sub Rezepte_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'HashTable mit der Übersetzung der Varianten-Nummer zu Rezept-Varianten-Bezeichnung
-        'HashTable mit der Übersetzung der Liniengruppen-Nummer zu Liniengruppen-Bezeichnung
-        'wb_Rezept_Shared.LoadLinienGruppenTexte()
-
-        'Fenster laden
-        LoadDockBarConfig()
-    End Sub
-
-    Private Sub Rezepte_Main_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+    Private Sub Main_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
         'Anzeige sichern
         SaveDockBarConfig()
         'LayoutFilename aus DockPanelConfigFilenamen ermitteln
@@ -146,6 +130,12 @@ Public Class Rezepte_Main
         wb_DockBarPanelShared.SaveFormBoundaries(Me.Top, Me.Left, Me.Width, Me.Height, LayoutFilename, Me.Text)
 
         'alle erzeugten Fenster wieder schliessen
-        RezeptListe.Close()
+        ArtikelListe.Close()
     End Sub
+
+    Private Sub Main_FormLoad(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Fenster laden
+        LoadDockBarConfig()
+    End Sub
+
 End Class

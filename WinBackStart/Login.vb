@@ -7,6 +7,8 @@ Public Class Login
         Dim UserNummer As Integer = wb_Functions.StrToInt(tUserNummer.Text)
         If Not wb_GlobalSettings.AktUserLogin(UserNummer) Then
             MsgBox("Unbekannter Benutzer. Bitte Eingabe wiederholen", MsgBoxStyle.Critical)
+            tUserNummer.Text = ""
+            tUserNummer.Focus()
         Else
             Close()
         End If

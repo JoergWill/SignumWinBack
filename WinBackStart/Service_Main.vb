@@ -1,6 +1,6 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 Public Class Service_Main
-    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbService.xml"
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbArtikel.xml"
     Public ServiceListe As New wb_Service_Liste
 
     Private Sub SaveDockBarConfig()

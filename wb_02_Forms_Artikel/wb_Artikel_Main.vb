@@ -11,7 +11,6 @@ Public Class wb_Artikel_Main
     Public ArtikelDetails As New wb_Artikel_Details
 
     'alle anderen Fenster werden zur Laufzeit erzeugt
-    'TODO Artikel-Fenster
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
     End Sub

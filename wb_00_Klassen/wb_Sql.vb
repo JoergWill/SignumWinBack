@@ -93,7 +93,7 @@ Public Class wb_Sql
                 End Select
             Catch
                 Trace.WriteLine("STRING-FIELD NOT FOUND " & FieldName)
-                Return "STRING-FIELD NOT FOUND " & FieldName
+                Throw New System.Exception("STRING-FIELD NOT FOUND " & FieldName)
             End Try
         End Get
     End Property

@@ -136,7 +136,7 @@
     <value>DockPanel</value>
   </data>
   <data name="&gt;&gt;DockPanel.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockPanel, WeifenLuo.WinFormsUI.Docking, Version=2.8.0.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab</value>
+    <value>WeifenLuo.WinFormsUI.Docking.DockPanel, WeifenLuo.WinFormsUI.Docking, Version=2.13.0.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab</value>
   </data>
   <data name="&gt;&gt;DockPanel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -154,7 +154,7 @@
     <value>764, 572</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Rohstoffe_Main</value>
+    <value>Rohstoffe</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Rohstoffe_Main</value>
