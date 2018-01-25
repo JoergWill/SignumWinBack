@@ -1,6 +1,6 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Rezepte_Main
-    Inherits System.Windows.Forms.Form
+    Inherits DockPanel_Main
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()>
@@ -10,7 +10,10 @@ Partial Class Rezepte_Main
                 components.Dispose()
             End If
         Finally
-            MyBase.Dispose(disposing)
+            Try
+                MyBase.Dispose(disposing)
+            Catch
+            End Try
         End Try
     End Sub
 
@@ -22,28 +25,9 @@ Partial Class Rezepte_Main
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Rezepte_Main))
-        Me.DockPanel = New WeifenLuo.WinFormsUI.Docking.DockPanel()
-        Me.SuspendLayout()
-        '
-        'DockPanel
-        '
-        resources.ApplyResources(Me.DockPanel, "DockPanel")
-        Me.DockPanel.BackColor = System.Drawing.Color.Gainsboro
-        Me.DockPanel.DockBackColor = System.Drawing.Color.Gainsboro
-        Me.DockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow
-        Me.DockPanel.Name = "DockPanel"
-        '
-        'Rezepte_Main
-        '
-        resources.ApplyResources(Me, "$this")
+        components = New System.ComponentModel.Container
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.DockPanel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "Rezepte_Main"
-        Me.ResumeLayout(False)
-
+        Me.Text = "Rezepte"
     End Sub
-
-    Friend WithEvents DockPanel As WeifenLuo.WinFormsUI.Docking.DockPanel
 End Class

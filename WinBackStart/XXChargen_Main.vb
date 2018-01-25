@@ -1,7 +1,7 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
-Public Class Service_Main
-    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbArtikel.xml"
-    Public ServiceListe As New wb_Service_Liste
+Public Class XXChargen_Main
+    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbChargen.xml"
+    Public ChargenListe As New wb_Chargen_Liste
 
     Private Sub SaveDockBarConfig()
         DockPanel.SaveAsXml(DkPnlPath)
@@ -13,14 +13,14 @@ Public Class Service_Main
         Catch ex As Exception
         End Try
 
-        ServiceListe.Show(DockPanel, DockState.DockLeft)
-        ServiceListe.CloseButtonVisible = False
+        ChargenListe.Show(DockPanel, DockState.DockLeft)
+        ChargenListe.CloseButtonVisible = False
     End Sub
 
     Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "ServiceListe"
-                Return ServiceListe
+            Case "ChargenListe"
+                Return ChargenListe
             Case Else
                 Return Nothing
         End Select
@@ -30,7 +30,7 @@ Public Class Service_Main
         'Anzeige sichern
         SaveDockBarConfig()
         'alle erzeugten Fenster wieder schliessen
-        ServiceListe.Close()
+        ChargenListe.Close()
     End Sub
 
     Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load

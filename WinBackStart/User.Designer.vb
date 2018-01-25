@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class Linien_Main
+Partial Class User_Main
     Inherits DockPanel_Main
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
@@ -28,6 +28,6 @@ Partial Class Linien_Main
         components = New System.ComponentModel.Container
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Text = "Linien"
+        Me.Text = "Mitarbeiter"
     End Sub
 End Class

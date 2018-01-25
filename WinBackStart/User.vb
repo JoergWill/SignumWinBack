@@ -1,23 +1,23 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 
 ''' <summary>
-''' MDI-Main-Fenster Linien(VNC)
+''' MDI-Main-Fenster Artikelverwaltung
 ''' Abgeleitet von DockPanel_Main
 '''     In DockPanelMain werden alle Funktionen für die Verwaltung der Layouts abgewickelt
 '''     Default-Layout, Laden, Sichern, Löschen der Layouts
 '''     Die Layouts werden, im Unetrschied zu OrgaBack nicht vom jeweiligen Fenster sondern
 '''     von der WinBack-Main-Form verwaltet.
 ''' </summary>
-Public Class Linien_Main
+Public Class User_Main
 
-    Public LinienListe As New wb_Linien_Liste
-    Private LinienDetails As New wb_Linien_Details
+    Public UserListe As New wb_User_Liste
+    Public UserDetails As New wb_User_Details
+    Private UserRechte As New wb_User_Rechte
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
     ''' Routine wird von Winback-Main aufgerufen um verschiedene Funktionen in der MDI-Form auszuführen.
     ''' 
-    '''     OPENDLISTE          -   Listen-Fenster wird geöffnet und angezeigt.
     '''     OPENDETAILS         -   Detail-Fenster wird geöffnet und angezeigt.
     '''     
     ''' </summary>
@@ -27,46 +27,52 @@ Public Class Linien_Main
     Public Overrides Function ExtendedCmd(Cmd As String, Prm As String) As Boolean
         Select Case Cmd
             Case "OPENLISTE"
-                LinienListe.Show(DockPanel, DockState.DockLeft)
+                UserListe.Show(DockPanel, DockState.DockLeft)
                 Return True
             Case "OPENDETAILS"
-                LinienDetails = New wb_Linien_Details
-                LinienDetails.Show(DockPanel, DockState.DockLeft)
+                UserDetails = New wb_User_Details
+                UserDetails.Show(DockPanel, DockState.DockLeft)
+                Return True
+            Case "OPENPARAMETER"
+                UserRechte = New wb_User_Rechte
+                UserRechte.Show(DockPanel, DockState.DockLeft)
                 Return True
 
-            Case "LINIE_NEU"
-                Return LinieNeu()
-            Case "LINIE_DEL"
-                Return LinieDel()
-            Case "LINIE_AUTOINSTALL"
-                Return LinienAutoInstall()
-            Case "LISTE_DRUCKEN"
-                Return LinienListeDrucken()
+            Case "USER_NEU"
+                Return UserNeu()
+            Case "USER_DEL"
+                Return UserDel()
+            Case "USER_PASSWD"
+                Return UserPassWd()
+            Case "USER_DRUCKEN"
+                Return UserDrucken()
 
             Case Else
                 Return False
         End Select
     End Function
 
-    Private Function LinieNeu() As Boolean
-        LinienListe.AddItems("", "Neuer Eintrag")
-        LinienListe.SelectLastItem()
-        LinienDetails.DetailInfo()
-        LinienDetails.DetailEdit()
+    Private Function UserNeu() As Boolean
+        'neuen (Dummy)Datensatz anlegen
+        wb_User_Shared.User.AddNew()
+        'Mitarbeiter-Liste aktualisieren
+        UserListe.RefreshData()
+        'auf den neuen Datensatz positionieren (lfd.Nummer = -1)
+        UserListe.SelectData(1, wb_Global.NewUserPass)
         Return True
     End Function
 
-    Private Function LinieDel() As Boolean
-        LinienListe.RemoveItem()
+    Private Function UserDel() As Boolean
+        wb_User_Shared.User.Delete(wb_User_Shared.User.Passwort)
+        UserListe.RefreshData()
         Return True
     End Function
 
-    Private Function LinienAutoInstall() As Boolean
-        LinienListe.AddFromDataBase()
+    Private Function UserPassWd() As Boolean
         Return True
     End Function
 
-    Private Function LinienListeDrucken() As Boolean
+    Private Function UserDrucken() As Boolean
         Return True
     End Function
 
@@ -75,8 +81,8 @@ Public Class Linien_Main
     ''' Falls keine Layout-Definitionen verhanden sind, wird das Haupt-Fenster (Liste) angezeigt.
     ''' </summary>
     Public Overrides Sub setDefaultLayout()
-        LinienListe.Show(DockPanel, DockState.DockLeft)
-        LinienListe.CloseButtonVisible = False
+        UserListe.Show(DockPanel, DockState.DockLeft)
+        UserListe.CloseButtonVisible = False
         WinBack.LayoutFilename = "Default"
     End Sub
 
@@ -88,16 +94,16 @@ Public Class Linien_Main
     ''' <returns></returns>
     Public Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "WinBack.wb_Linien_Liste"
-                LinienListe.CloseButtonVisible = False
-                _DockPanelList.Add(LinienListe)
-                Return LinienListe
-
-            Case "WinBack.wb_Linien_Details"
-                LinienDetails = New wb_Linien_Details
-                _DockPanelList.Add(LinienDetails)
-                Return LinienDetails
-
+            Case "WinBack.wb_User_Liste"
+                UserListe.CloseButtonVisible = False
+                _DockPanelList.Add(UserListe)
+                Return UserListe
+            Case "UserDetails"
+                _DockPanelList.Add(UserDetails)
+                Return UserDetails
+            Case "UserRechte"
+                _DockPanelList.Add(UserRechte)
+                Return UserRechte
             Case Else
                 Return Nothing
         End Select
@@ -120,7 +126,8 @@ Public Class Linien_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        LinienDetails.Close()
-        LinienListe.Close()
+        UserDetails.Close()
+        UserListe.Close()
+        UserRechte.Close()
     End Sub
 End Class

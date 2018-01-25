@@ -7,14 +7,13 @@ Public Class WinBack
 
     Private AktForm As Object
     Dim MdiChargen As Chargen_Main
-    '    Dim MdiArtikel As Artikel_Main
     Dim MdiArtikel As Artikel_Main
     Dim MdiRezepte As Rezepte_Main
     Dim MdiRohstoffe As Rohstoffe_Main
     Dim MdiUser As User_Main
     Dim MdiLinien As Linien_Main
-    Dim MdiProduktion As Produktion_Main
-    Dim MdiService As Service_Main
+    Dim MdiPlanung As Planung_Main
+    Dim MdiAdmin As Admin_Main
 
 #Region "MainMenu"
     ''' <summary>
@@ -56,11 +55,11 @@ Public Class WinBack
             End If
             'Produktions-Planung
             If rbPlanung.Active Then
-                MainFormShow(MdiProduktion, GetType(Produktion_Main))
+                MainFormShow(MdiPlanung, GetType(Planung_Main))
             End If
             'Service/Administration
             If rbExtra.Active Then
-                MainFormShow(MdiService, GetType(Service_Main))
+                MainFormShow(MdiAdmin, GetType(Admin_Main))
             End If
         End If
     End Sub
@@ -163,8 +162,11 @@ Public Class WinBack
 
                     'User-Login(Master)
                     Case "-w"
-                        If Not wb_GlobalSettings.AktUserLogin(Int(wb_Credentials.WinBackMasterUser)) Then
+                        Dim l As Integer = Int(wb_Credentials.WinBackMasterUser)
+                        If Not wb_GlobalSettings.AktUserLogin(l) Then
                             MsgBox("Benutzer nicht gefunden. Bitte Parameter prüfen!", MsgBoxStyle.Critical)
+                        Else
+                            wb_AktUser.SuperUser = True
                         End If
 
                         'Falscher Parameter angegeben
@@ -478,45 +480,51 @@ Public Class WinBack
 
 #End Region
 
-
-
-
-
-
-    Private Sub rbArtikelDetails_Click(sender As Object, e As EventArgs) Handles rbArtikelDetails.Click
-        MdiArtikel.ExecuteCmd("OPENDETAILS", "")
-    End Sub
-
-
     ''' <summary>
-    ''' Neuen Benutzer anlegen.
+    ''' Button Ansicht-Liste
+    ''' Ruft das Detail-Fenster der aktuell angezeigten MDI-Form auf. Über ExecuteCmd wird der entsprechenden
+    ''' Form das Kommando übertragen.
     ''' </summary>
-    Private Sub rbUserNeu_Click(sender As Object, e As EventArgs) Handles rbUserNeu.Click
-        MdiUser.BtnUserNew()
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbArtikelDetails.Click, rbRohstoffeDetails.Click, rbRezeptDetails.Click, rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click, rbArtikelListe.Click
+        AktFormSendCommand("OPENLISTE", "")
     End Sub
 
     ''' <summary>
-    ''' Löscht den aktuellen Benutzer
+    ''' Button Ansicht-Details
+    ''' Ruft das Detail-Fenster der aktuell angezeigten MDI-Form auf. Über ExecuteCmd wird der entsprechenden
+    ''' Form das Kommando übertragen.
     ''' </summary>
-    Private Sub RnUserRemove_Click(sender As Object, e As EventArgs) Handles RbUserRemove.Click
-        MdiUser.BtnUserDelete()
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub rbDetails_Click(sender As Object, e As EventArgs) Handles rbArtikelDetails.Click, rbUserDetails.Click, rbRohstoffeDetails.Click, rbRezeptDetails.Click, rbUserBearbeiten.Click
+        AktFormSendCommand("OPENDETAILS", "")
     End Sub
 
-
-    Private Sub rbLinienAdd_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click
-        MdiLinien.BtnLinienNew()
+    ''' <summary>
+    ''' Button Ansicht-Parameter
+    ''' Ruft das Detail-Fenster der aktuell angezeigten MDI-Form auf. Über ExecuteCmd wird der entsprechenden
+    ''' Form das Kommando übertragen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub rbParameter_Click(sender As Object, e As EventArgs) Handles rbUserRechte.Click
+        AktFormSendCommand("OPENPARAMETER", "")
     End Sub
 
-    'Private Sub rbLinienEdit_Click(sender As Object, e As EventArgs) Handles rbLinienEdit.Click
-    '    MdiLinien.BtnLinien()
-    'End Sub
-
-    Private Sub rbLinienDel_Click(sender As Object, e As EventArgs) Handles rbLinienDel.Click
-        MdiLinien.BtnLinienRemove()
+    ''' <summary>
+    ''' Button SendCommand
+    ''' Sendet ein Kommando an die aktuelle MDI-Form. Der Kommando-String steht in Btn.Value. Über ExecuteCmd wird der entsprechenden
+    ''' Form das Kommando übertragen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienDrucken.Click, rbLinienDel.Click, rbLinienAuto.Click, rbLinienAdd.Click,
+                                                                          rbUserRemove.Click, rbUserNeu.Click, rbUserChangePass.Click, rbUserDrucken.Click
+        Dim Cmd As String = DirectCast(sender, RibbonButton).Value
+        If Cmd <> "" Then
+            AktFormSendCommand(Cmd, "")
+        End If
     End Sub
-
-    Private Sub rbLinienAuto_Click(sender As Object, e As EventArgs) Handles rbLinienAuto.Click
-        MdiLinien.btnLinienAutoInstall()
-    End Sub
-
 End Class

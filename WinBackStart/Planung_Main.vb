@@ -1,17 +1,17 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 
 ''' <summary>
-''' MDI-Main-Fenster Linien(VNC)
+''' MDI-Main-Fenster Planungverwaltung
 ''' Abgeleitet von DockPanel_Main
 '''     In DockPanelMain werden alle Funktionen für die Verwaltung der Layouts abgewickelt
 '''     Default-Layout, Laden, Sichern, Löschen der Layouts
 '''     Die Layouts werden, im Unetrschied zu OrgaBack nicht vom jeweiligen Fenster sondern
 '''     von der WinBack-Main-Form verwaltet.
 ''' </summary>
-Public Class Linien_Main
+Public Class Planung_Main
 
-    Public LinienListe As New wb_Linien_Liste
-    Private LinienDetails As New wb_Linien_Details
+    Public PlanungListe As New wb_Planung_Liste
+    Public PlanungTeiler As New wb_Planung_Teiler
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -27,47 +27,15 @@ Public Class Linien_Main
     Public Overrides Function ExtendedCmd(Cmd As String, Prm As String) As Boolean
         Select Case Cmd
             Case "OPENLISTE"
-                LinienListe.Show(DockPanel, DockState.DockLeft)
+                PlanungListe.Show(DockPanel, DockState.DockLeft)
                 Return True
-            Case "OPENDETAILS"
-                LinienDetails = New wb_Linien_Details
-                LinienDetails.Show(DockPanel, DockState.DockLeft)
+            Case "OPENPARAMETER"
+                PlanungTeiler = New wb_Planung_Teiler
+                PlanungTeiler.Show(DockPanel, DockState.DockLeft)
                 Return True
-
-            Case "LINIE_NEU"
-                Return LinieNeu()
-            Case "LINIE_DEL"
-                Return LinieDel()
-            Case "LINIE_AUTOINSTALL"
-                Return LinienAutoInstall()
-            Case "LISTE_DRUCKEN"
-                Return LinienListeDrucken()
-
             Case Else
                 Return False
         End Select
-    End Function
-
-    Private Function LinieNeu() As Boolean
-        LinienListe.AddItems("", "Neuer Eintrag")
-        LinienListe.SelectLastItem()
-        LinienDetails.DetailInfo()
-        LinienDetails.DetailEdit()
-        Return True
-    End Function
-
-    Private Function LinieDel() As Boolean
-        LinienListe.RemoveItem()
-        Return True
-    End Function
-
-    Private Function LinienAutoInstall() As Boolean
-        LinienListe.AddFromDataBase()
-        Return True
-    End Function
-
-    Private Function LinienListeDrucken() As Boolean
-        Return True
     End Function
 
     ''' <summary>
@@ -75,8 +43,8 @@ Public Class Linien_Main
     ''' Falls keine Layout-Definitionen verhanden sind, wird das Haupt-Fenster (Liste) angezeigt.
     ''' </summary>
     Public Overrides Sub setDefaultLayout()
-        LinienListe.Show(DockPanel, DockState.DockLeft)
-        LinienListe.CloseButtonVisible = False
+        PlanungListe.Show(DockPanel, DockState.DockLeft)
+        PlanungListe.CloseButtonVisible = False
         WinBack.LayoutFilename = "Default"
     End Sub
 
@@ -88,15 +56,15 @@ Public Class Linien_Main
     ''' <returns></returns>
     Public Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "WinBack.wb_Linien_Liste"
-                LinienListe.CloseButtonVisible = False
-                _DockPanelList.Add(LinienListe)
-                Return LinienListe
+            Case "WinBack.wb_Planung_Liste"
+                PlanungListe.CloseButtonVisible = False
+                _DockPanelList.Add(PlanungListe)
+                Return PlanungListe
 
-            Case "WinBack.wb_Linien_Details"
-                LinienDetails = New wb_Linien_Details
-                _DockPanelList.Add(LinienDetails)
-                Return LinienDetails
+            Case "WinBack.wb_Planung_Details"
+                PlanungTeiler = New wb_Planung_Teiler
+                _DockPanelList.Add(PlanungTeiler)
+                Return PlanungTeiler
 
             Case Else
                 Return Nothing
@@ -120,7 +88,7 @@ Public Class Linien_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        LinienDetails.Close()
-        LinienListe.Close()
+        PlanungTeiler.Close()
+        PlanungListe.Close()
     End Sub
 End Class

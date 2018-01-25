@@ -106,7 +106,7 @@ Partial Class WinBack
         Me.rpUser = New System.Windows.Forms.RibbonPanel()
         Me.rbUserNeu = New System.Windows.Forms.RibbonButton()
         Me.rbUserBearbeiten = New System.Windows.Forms.RibbonButton()
-        Me.RbUserRemove = New System.Windows.Forms.RibbonButton()
+        Me.rbUserRemove = New System.Windows.Forms.RibbonButton()
         Me.rbUserChangePass = New System.Windows.Forms.RibbonButton()
         Me.rpUserGruppen = New System.Windows.Forms.RibbonPanel()
         Me.rbListe = New System.Windows.Forms.RibbonButton()
@@ -718,7 +718,7 @@ Partial Class WinBack
         Me.rpUser.ButtonMoreVisible = False
         Me.rpUser.Items.Add(Me.rbUserNeu)
         Me.rpUser.Items.Add(Me.rbUserBearbeiten)
-        Me.rpUser.Items.Add(Me.RbUserRemove)
+        Me.rpUser.Items.Add(Me.rbUserRemove)
         Me.rpUser.Items.Add(Me.rbUserChangePass)
         Me.rpUser.Tag = ""
         resources.ApplyResources(Me.rpUser, "rpUser")
@@ -729,6 +729,7 @@ Partial Class WinBack
         Me.rbUserNeu.SmallImage = CType(resources.GetObject("rbUserNeu.SmallImage"), System.Drawing.Image)
         Me.rbUserNeu.Tag = ""
         resources.ApplyResources(Me.rbUserNeu, "rbUserNeu")
+        Me.rbUserNeu.Value = "USER_NEU"
         '
         'rbUserBearbeiten
         '
@@ -736,17 +737,19 @@ Partial Class WinBack
         Me.rbUserBearbeiten.SmallImage = CType(resources.GetObject("rbUserBearbeiten.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbUserBearbeiten, "rbUserBearbeiten")
         '
-        'RbUserRemove
+        'rbUserRemove
         '
-        Me.RbUserRemove.Image = Global.WinBack.My.Resources.Resources.UserLoeschen_32x32
-        Me.RbUserRemove.SmallImage = CType(resources.GetObject("RbUserRemove.SmallImage"), System.Drawing.Image)
-        resources.ApplyResources(Me.RbUserRemove, "RbUserRemove")
+        Me.rbUserRemove.Image = Global.WinBack.My.Resources.Resources.UserLoeschen_32x32
+        Me.rbUserRemove.SmallImage = CType(resources.GetObject("rbUserRemove.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbUserRemove, "rbUserRemove")
+        Me.rbUserRemove.Value = "USER_DEL"
         '
         'rbUserChangePass
         '
         Me.rbUserChangePass.Image = Global.WinBack.My.Resources.Resources.UserPasswd_32x32
         Me.rbUserChangePass.SmallImage = CType(resources.GetObject("rbUserChangePass.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbUserChangePass, "rbUserChangePass")
+        Me.rbUserChangePass.Value = "USER_PASSWD"
         '
         'rpUserGruppen
         '
@@ -793,6 +796,7 @@ Partial Class WinBack
         Me.rbUserDrucken.Image = Global.WinBack.My.Resources.Resources.UserListe_32x32
         Me.rbUserDrucken.SmallImage = CType(resources.GetObject("rbUserDrucken.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbUserDrucken, "rbUserDrucken")
+        Me.rbUserDrucken.Value = "USER_DRUCKEN"
         '
         'rbLinien
         '
@@ -815,18 +819,21 @@ Partial Class WinBack
         Me.rbLinienAdd.Image = Global.WinBack.My.Resources.Resources.LinienNeu_32x32
         Me.rbLinienAdd.SmallImage = CType(resources.GetObject("rbLinienAdd.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbLinienAdd, "rbLinienAdd")
+        Me.rbLinienAdd.Value = "LINIE_NEU"
         '
         'rbLinienDel
         '
         Me.rbLinienDel.Image = Global.WinBack.My.Resources.Resources.LinienLoeschen_32x32
         Me.rbLinienDel.SmallImage = CType(resources.GetObject("rbLinienDel.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbLinienDel, "rbLinienDel")
+        Me.rbLinienDel.Value = "LINIE_DEL"
         '
         'rbLinienAuto
         '
         Me.rbLinienAuto.Image = Global.WinBack.My.Resources.Resources.LinienAutoInstall_32x32
         Me.rbLinienAuto.SmallImage = CType(resources.GetObject("rbLinienAuto.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbLinienAuto, "rbLinienAuto")
+        Me.rbLinienAuto.Value = "LINIE_AUTOINSTALL"
         '
         'rpLinienDrucken
         '
@@ -840,6 +847,7 @@ Partial Class WinBack
         Me.rbLinienDrucken.Image = Global.WinBack.My.Resources.Resources.LinienDrucken_32x32
         Me.rbLinienDrucken.SmallImage = CType(resources.GetObject("rbLinienDrucken.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbLinienDrucken, "rbLinienDrucken")
+        Me.rbLinienDrucken.Value = "LINIE_DRUCKEN"
         '
         'rbPlanung
         '
@@ -1201,7 +1209,7 @@ Partial Class WinBack
     Friend WithEvents rbUser As RibbonTab
     Friend WithEvents rpUser As RibbonPanel
     Friend WithEvents rbUserNeu As RibbonButton
-    Friend WithEvents RbUserRemove As RibbonButton
+    Friend WithEvents rbUserRemove As RibbonButton
     Friend WithEvents rpUserGruppen As RibbonPanel
     Friend WithEvents rbUserDetails As RibbonButton
     Friend WithEvents rbLinien As RibbonTab

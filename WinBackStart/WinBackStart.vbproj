@@ -168,54 +168,16 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DockPanel_Main.Designer.vb">
-      <DependentUpon>DockPanel_Main.vb</DependentUpon>
+    <Compile Include="Admin_Main.Designer.vb">
+      <DependentUpon>Admin_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="DockPanel_Main.vb">
+    <Compile Include="Admin_Main.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Artikel_Main.Designer.vb">
-      <DependentUpon>Artikel_Main.vb</DependentUpon>
+    <Compile Include="Planung_Main.Designer.vb">
+      <DependentUpon>Planung_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Artikel_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="XXDockBarPanelMain.vb" />
-    <Compile Include="IMainMenu.vb" />
-    <Compile Include="Login.Designer.vb">
-      <DependentUpon>Login.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Login.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="XXArtikel_Main.Designer.vb">
-      <DependentUpon>XXArtikel_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="XXArtikel_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Service_Main.Designer.vb">
-      <DependentUpon>Service_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Service_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Produktion_Main.Designer.vb">
-      <DependentUpon>Produktion_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Produktion_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Rohstoffe_Main.Designer.vb">
-      <DependentUpon>Rohstoffe_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Rohstoffe_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Rezepte_Main.Designer.vb">
-      <DependentUpon>Rezepte_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Rezepte_Main.vb">
+    <Compile Include="Planung_Main.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Linien_Main.Designer.vb">
@@ -230,10 +192,77 @@
     <Compile Include="Chargen_Main.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="User_Main.Designer.vb">
-      <DependentUpon>User_Main.vb</DependentUpon>
+    <Compile Include="User.Designer.vb">
+      <DependentUpon>User.vb</DependentUpon>
     </Compile>
-    <Compile Include="User_Main.vb">
+    <Compile Include="User.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rohstoffe_Main.Designer.vb">
+      <DependentUpon>Rohstoffe_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Rohstoffe_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rezepte_Main.Designer.vb">
+      <DependentUpon>Rezepte_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Rezepte_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockPanel_Main.Designer.vb">
+      <DependentUpon>DockPanel_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DockPanel_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Artikel_Main.Designer.vb">
+      <DependentUpon>Artikel_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Artikel_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IMainMenu.vb" />
+    <Compile Include="Login.Designer.vb">
+      <DependentUpon>Login.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Login.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XXArtikel_Main.Designer.vb">
+      <DependentUpon>XXArtikel_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XXArtikel_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XXService_Main.Designer.vb">
+      <DependentUpon>XXService_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XXService_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XXProduktion_Main.Designer.vb">
+      <DependentUpon>XXProduktion_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XXProduktion_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XXRohstoffe_Main.Designer.vb">
+      <DependentUpon>XXRohstoffe_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XXRohstoffe_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XXRezepte_Main.Designer.vb">
+      <DependentUpon>XXRezepte_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XXRezepte_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XXChargen_Main.Designer.vb">
+      <DependentUpon>XXChargen_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XXChargen_Main.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WinBack.Designer.vb">
@@ -268,20 +297,17 @@
     <EmbeddedResource Include="XXArtikel_Main.resx">
       <DependentUpon>XXArtikel_Main.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Service_Main.resx">
-      <DependentUpon>Service_Main.vb</DependentUpon>
+    <EmbeddedResource Include="XXService_Main.resx">
+      <DependentUpon>XXService_Main.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Produktion_Main.resx">
-      <DependentUpon>Produktion_Main.vb</DependentUpon>
+    <EmbeddedResource Include="XXProduktion_Main.resx">
+      <DependentUpon>XXProduktion_Main.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Rohstoffe_Main.resx">
-      <DependentUpon>Rohstoffe_Main.vb</DependentUpon>
+    <EmbeddedResource Include="XXRohstoffe_Main.resx">
+      <DependentUpon>XXRohstoffe_Main.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Rezepte_Main.resx">
-      <DependentUpon>Rezepte_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Linien_Main.resx">
-      <DependentUpon>Linien_Main.vb</DependentUpon>
+    <EmbeddedResource Include="XXRezepte_Main.resx">
+      <DependentUpon>XXRezepte_Main.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -289,11 +315,8 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Chargen_Main.resx">
-      <DependentUpon>Chargen_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="User_Main.resx">
-      <DependentUpon>User_Main.vb</DependentUpon>
+    <EmbeddedResource Include="XXChargen_Main.resx">
+      <DependentUpon>XXChargen_Main.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinBack.en-US.resx">
       <DependentUpon>WinBack.vb</DependentUpon>

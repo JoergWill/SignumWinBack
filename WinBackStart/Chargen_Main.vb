@@ -1,43 +1,83 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
+
+''' <summary>
+''' MDI-Main-Fenster Statistische Auswertung
+''' Abgeleitet von DockPanel_Main
+'''     In DockPanelMain werden alle Funktionen für die Verwaltung der Layouts abgewickelt
+'''     Default-Layout, Laden, Sichern, Löschen der Layouts
+'''     Die Layouts werden, im Unterschied zu OrgaBack nicht vom jeweiligen Fenster sondern
+'''     von der WinBack-Main-Form verwaltet.
+''' </summary>
 Public Class Chargen_Main
-    Dim DkPnlPath As String = wb_GlobalSettings.DockPanelPath & "wbChargen.xml"
-    Public ChargenListe As New wb_Chargen_Liste
 
-    Private Sub SaveDockBarConfig()
-        DockPanel.SaveAsXml(DkPnlPath)
-    End Sub
+    Public ChargenListe As New wb_Chargen_Liste     'Default-Fenster    (wird beim Öffnen immer angezeigt)
 
-    Private Sub LoadDockBarConfig()
-        Try
-            DockPanel.LoadFromXml(DkPnlPath, AddressOf wbBuildDocContent)
-        Catch ex As Exception
-        End Try
+    ''' <summary>
+    ''' Execute-Command von Winback-Main-Form.
+    ''' Routine wird von Winback-Main aufgerufen um verschiedene Funktionen in der MDI-Form auszuführen.
+    ''' 
+    '''     OPENDLISTE          -   Listen-Fenster wird geöffnet und angezeigt.
+    '''     OPENDETAILS         -   Detail-Fenster wird geöffnet und angezeigt.
+    '''     
+    ''' </summary>
+    ''' <param name="Cmd"></param>
+    ''' <param name="Prm"></param>
+    ''' <returns></returns>
+    Public Overrides Function ExtendedCmd(Cmd As String, Prm As String) As Boolean
+        Select Case Cmd
+            Case "OPENLISTE"
+                ChargenListe.Show(DockPanel, DockState.DockLeft)
+                Return True
+            Case Else
+                Return False
+        End Select
+    End Function
 
+    ''' <summary>
+    ''' Default-Layout anzeigen.
+    ''' Falls keine Layout-Definitionen verhanden sind, wird das Haupt-Fenster (Liste) angezeigt.
+    ''' </summary>
+    Public Overrides Sub setDefaultLayout()
         ChargenListe.Show(DockPanel, DockState.DockLeft)
         ChargenListe.CloseButtonVisible = False
+        WinBack.LayoutFilename = "Default"
     End Sub
 
-    Private Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
+    ''' <summary>
+    ''' Gibt für den jeweiligen Form-Namen die entsprechenden Klasse zurück, die dann im Dock dargestellt wird.
+    ''' Füllt das Array DockPanelList in der Basis-Klasse
+    ''' </summary>
+    ''' <param name="persistString"></param>
+    ''' <returns></returns>
+    Public Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "ChargenListe"
+            Case "WinBack.wb_Chargen_Liste"
+                ChargenListe.CloseButtonVisible = False
+                _DockPanelList.Add(ChargenListe)
                 Return ChargenListe
+
             Case Else
                 Return Nothing
         End Select
     End Function
 
-    Private Sub User_Main_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
-        'Anzeige sichern
-        SaveDockBarConfig()
+    ''' <summary>
+    ''' MID-Form wird geöffnet. Vorher wurde schon in der Basis-Klasse die DockBar-Konfiguration geladen
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Public Overrides Sub FormOpen(Sender As Object, e As EventArgs)
+
+    End Sub
+
+    ''' <summary>
+    ''' MDI-Form wird geschlossen. Vorher wurde schon in der Basis-Klasse die DockBar-Konfiguration gesichert.
+    ''' Schliesst alle erzeugten Fenster.
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
         ChargenListe.Close()
     End Sub
-
-    Private Sub User_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_User_Shared.LoadGrpTexte()
-        'Fenster laden
-        LoadDockBarConfig()
-    End Sub
-
 End Class

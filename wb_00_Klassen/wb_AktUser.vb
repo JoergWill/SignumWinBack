@@ -2,6 +2,7 @@
 
 Public Class wb_AktUser
 
+    Private Shared _SuperUser As Boolean = False
     Private Shared _UserNr As Integer = -1
     Private Shared _UserName As String = ""
     Private Shared _UserGruppe As Integer = -1
@@ -46,6 +47,15 @@ Public Class wb_AktUser
         End Set
     End Property
 
+    Public Shared Property SuperUser As Boolean
+        Get
+            Return _SuperUser
+        End Get
+        Set(value As Boolean)
+            _SuperUser = value
+        End Set
+    End Property
+
     Public Shared Function Login(UserNr As Integer) As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         'Neuen Benutzer aus WinBack-DB lesen
@@ -78,6 +88,7 @@ Public Class wb_AktUser
             _UserName = UserName
             UserGruppe = winback.iField("IP_ItemID")
             _UserLanguage = winback.sField("IP_Wert5str")
+            _SuperUser = False
 
             'Verbindung wieder schliessen
             winback.Close()
@@ -121,7 +132,7 @@ Public Class wb_AktUser
 
     Private Shared Function RechtOK(Tag As String) As Boolean
         Dim t As Integer = wb_Functions.StrToInt(Tag)
-        If t = 0 Then
+        If t = 0 Or _SuperUser Then
             Return True
         Else
             If _UserGruppenRechte.TryGetValue(t - 100, RechtOK) Then

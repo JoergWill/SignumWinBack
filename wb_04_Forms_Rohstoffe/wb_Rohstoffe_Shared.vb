@@ -15,6 +15,7 @@ Public Class wb_Rohstoffe_Shared
         Install     ' alle inaktiven Rohstoffe
         Sonstige    ' alle Rohstoffe Typ 105,106
     End Enum
+    'TODO evtl bei NEW Load_RohstoffTables()
 
     Public Shared Sub Load_RohstoffTables()
         'HashTable mit der Übersetzung der Rohstoffgruppen-Nummer in die Rohstoffgruppen-Bezeichnung laden
