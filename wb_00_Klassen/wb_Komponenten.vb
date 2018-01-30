@@ -33,6 +33,14 @@ Public Class wb_Komponenten
     Public ArtikelChargen As New wb_MinMaxOptCharge
     Public TeigChargen As New wb_MinMaxOptCharge
 
+    Public Sub Invalid()
+        _RezeptNummer = Nothing
+        _RezeptName = Nothing
+        _LinienGruppe = wb_Global.UNDEFINED
+        _ArtikelLinienGruppe = wb_Global.UNDEFINED
+        'TODO weitere Felder löschen
+    End Sub
+
     Public Property Nr As Integer
         Set(value As Integer)
             KO_Nr = value

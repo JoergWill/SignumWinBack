@@ -102,7 +102,7 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="e"></param>
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
         Extendee_ExecuteCommand("INVALID", Nothing)
-        Dim Komponente As New wb_Komponenten
+        Komponente.Invalid()
         'Komponente.Invalidate()
         Debug.Print("Article_DockingExtension Invalid")
     End Sub
@@ -113,7 +113,7 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_AddNew(sender As Object, e As EventArgs)
-        Dim Komponente As New wb_Komponenten
+        Komponente.Invalid()
         Debug.Print("Article_DockingExtension AddNew")
     End Sub
 
@@ -395,7 +395,7 @@ Public Class ob_Artikel_DockingExtension
             Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
             'Komponenten-Nummer aus OrgaBack ermitteln
             Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF226 - Index auf interne Komponenten-Nummer
-            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString            'Artikel/Komponenten-Nummer alphanumerisch
+            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString         'Artikel/Komponenten-Nummer alphanumerisch
             'Artikel/Komponente aus WinBack-Db einlesen
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
             If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer) Then

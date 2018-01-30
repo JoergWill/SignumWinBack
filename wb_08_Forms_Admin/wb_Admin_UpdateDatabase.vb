@@ -8,10 +8,15 @@ Public Class wb_Admin_UpdateDatabase
         tbWinBackOffice.Text = wb_GlobalSettings.WinBackVersion
         'Version WinBack-Datenbank
         tbWinBackDatabase.Text = wb_GlobalSettings.WinBackDBVersion
+        'Kunde-Name WinBack
+        tbWinbackKundeName.Text = wb_GlobalSettings.MandantName
+
         'Version OrgaBack
         tbOrgaBack.Text = wb_GlobalSettings.OrgaBackVersion
         'Version OrgaBack-Datenbank
         tbOrgaBackDataBase.Text = wb_GlobalSettings.OrgaBackDBVersion
+        'OrgaBack-Main-DB
+        tbMsSQLMain.Text = wb_GlobalSettings.MsSQLMain
 
         'Anzahl der verfügbaren WinBack-Datenbank-Updates
         DBUpdateFiles.Clear()

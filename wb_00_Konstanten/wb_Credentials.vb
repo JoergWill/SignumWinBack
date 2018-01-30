@@ -14,4 +14,7 @@
     'Master-User
     Public Const WinBackMasterUser = "709760"
 
+    'Passwort Verschlüsselung
+    Public Const Passwd3Des = "de2!a6DE2"
+
 End Class

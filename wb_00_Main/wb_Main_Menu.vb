@@ -67,10 +67,10 @@ Public Class wb_Main_Menu
             AddHandler IEB.LanguageChanged, AddressOf LanguageChange
         End If
 
-        ' Beim Laden des AddIns ist schon ein Mitarbeiter angemeldet
-        UserLogin(Me, EventArgs.Empty)
         'globale System-Einstellungen lesen
         ReadSystemKonfig()
+        'beim Laden des AddIns ist schon ein Mitarbeiter angemeldet
+        UserLogin(Me, EventArgs.Empty)
     End Sub
 
     ''' <summary>
@@ -270,6 +270,7 @@ Public Class wb_Main_Menu
 
         ' aktuelle angemeldeter Mitarbeiter
         Dim sEmployee As String = TryCast(oSetting.GetSetting("Anmeldung.Mitarbeiter"), String)
+        'TODO Dim sMandant As String = TryCast(oSetting.GetSetting("Anmeldung.Mandant"), String)
         If Not String.IsNullOrEmpty(sEmployee) Then
 
             Dim oData As IData = oFactory.GetData

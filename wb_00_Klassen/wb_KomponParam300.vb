@@ -24,7 +24,7 @@ Public Class wb_KomponParam300
     Public ReadOnly Property Liniengruppe As Integer
         Get
             If Wert(T300_LinienGruppe) IsNot Nothing Then
-                Return CInt(Wert(T300_LinienGruppe))
+                Return wb_Functions.StrToInt(Wert(T300_LinienGruppe))
             Else
                 Return wb_Global.UNDEFINED
             End If
@@ -34,7 +34,7 @@ Public Class wb_KomponParam300
     Public ReadOnly Property RzNr As Integer
         Get
             If Wert(T300_RzNr) IsNot Nothing Then
-                Return CInt(Wert(T300_RzNr))
+                Return wb_Functions.StrToInt(Wert(T300_RzNr))
             Else
                 Return wb_Global.UNDEFINED
             End If

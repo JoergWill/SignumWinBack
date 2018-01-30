@@ -194,6 +194,33 @@ Public Class wb_IniFile
     End Function
 
     ''' <summary>
+    ''' Liest einen verschlüsselten String-Wert aus der ini-Datei unter dem übergebenen Schlüssel.
+    ''' Wenn der Wert nicht verschlüsselt ist, wird der Wert verschlüsselt und neu in die ini-Datei zurückgeschrieben, so dass
+    ''' beim nächsten Mal nur noch der verschlüsselte Wert verfügbar ist.
+    ''' </summary>
+    ''' <param name="Sektion">String - Abschnitt in der ini-Datei</param>
+    ''' <param name="Schlüssel">String - Schlüssel innerhalb des Abschnitts</param>
+    ''' <param name="Standardwert">String - Defaultwert, wenn der Schlüssel nicht existiert</param>
+    ''' <param name="BufferSize">Integer - maximale Länge des Strings</param>
+    ''' <returns>String - Eintrag aus ini-File</returns>
+    Public Function ReadEncryptedString(ByVal Sektion As String, ByVal Schlüssel As String, Optional ByVal Standardwert As String = "", Optional ByVal BufferSize As Integer = 1024) As String
+        'String aus ini-Datei lesen
+        Dim s As String = ReadString(Sektion, Schlüssel, Standardwert, BufferSize)
+        'String entschlüsseln
+        Dim cipher As New WinBack.wb_Simple3Des(wb_Credentials.Passwd3Des)
+        Dim x As String = cipher.DecryptData(s)
+
+        'prüfen ob String verschlüsselt ist
+        If x = "NOTENCRYPTED" Then
+            Dim cipherText As String = cipher.EncryptData(s)
+            WriteString(Sektion, Schlüssel, cipherText)
+            Return s
+        Else
+            Return x
+        End If
+    End Function
+
+    ''' <summary>
     ''' Liest einen Integer-Wert aus der ini-Datei unter dem übergebenen Schlüssel
     ''' </summary>
     ''' <param name="Sektion">String - Abschnitt in der ini-Datei</param>

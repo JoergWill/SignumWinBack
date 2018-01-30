@@ -141,6 +141,7 @@ Public Class WinBack
     ''' Gültige Parameter
     '''     -uXXX   Anmeldung mit User-Nummer(XXX)
     '''     -w      Anmeldung als Master-User
+    '''     -m      Mandant
     '''     
     ''' </summary>
     Private Sub ProcessParameter()
@@ -162,8 +163,8 @@ Public Class WinBack
 
                     'User-Login(Master)
                     Case "-w"
-                        Dim l As Integer = Int(wb_Credentials.WinBackMasterUser)
-                        If Not wb_GlobalSettings.AktUserLogin(l) Then
+                        Dim LoginMaster As Integer = Int(wb_Credentials.WinBackMasterUser)
+                        If Not wb_GlobalSettings.AktUserLogin(LoginMaster) Then
                             MsgBox("Benutzer nicht gefunden. Bitte Parameter prüfen!", MsgBoxStyle.Critical)
                         Else
                             wb_AktUser.SuperUser = True
@@ -232,11 +233,12 @@ Public Class WinBack
         'Version in Status-Bar anzeigen
         lblVersion.Text = "WinBack V" & wb_GlobalSettings.WinBackVersion
         'IP-Adresse in Status-Bar anzeigen
-        lblNetworkIP.Text = wb_GlobalSettings.WinBackDBType.ToString & " " & wb_GlobalSettings.MySQLServerIP
+        lblNetworkIP.Text = wb_GlobalSettings.WinBackDBType.ToString & " " & wb_GlobalSettings.MySQLServerIP & " " & wb_GlobalSettings.MandantName
 
         'Status-Bar - Länderflagge anzeigen
         Dim AktiveSprache As Integer = wb_Language.GetLanguageNr()
         lblLanguage.Image = LanguageFlags.Images(AktiveSprache)
+        lblLanguage.Text = wb_GlobalSettings.AktUserName
     End Sub
 
 #Region "Sprachumschaltung"

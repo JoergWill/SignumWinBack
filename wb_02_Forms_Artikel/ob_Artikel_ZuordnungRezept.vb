@@ -139,6 +139,7 @@ Public Class ob_Artikel_ZuordnungRezept
 
             Case "wbSAVE"
                 DirectCast(Parameter, wb_Komponenten).ArtikelChargen = ArtikelChargen
+                DirectCast(Parameter, wb_Komponenten).RzNr = RzNr
 
         End Select
         Return Nothing
@@ -154,9 +155,11 @@ Public Class ob_Artikel_ZuordnungRezept
 
     Private Sub BtnRzptChange_Click(sender As Object, e As EventArgs) Handles BtnRzptChange.Click
         Dim RezeptAuswahl As New wb_Rezept_AuswahlListe
-        RezeptAuswahl.ShowDialog()
-
-        tRezeptNr.Text = RezeptAuswahl.RezeptNummer
+        If RezeptAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            RzNr = RezeptAuswahl.RezeptNr
+            tRezeptNr.Text = RezeptAuswahl.RezeptNummer
+            tRezeptName.Text = RezeptAuswahl.RezeptName
+        End If
 
     End Sub
 

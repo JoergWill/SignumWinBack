@@ -23,6 +23,7 @@ Public Class wb_GlobalSettings
     Private Shared _WinBackLanguage1 As Integer = UNDEFINED
     Private Shared _WinBackLanguage2 As Integer = UNDEFINED
     Private Shared _WinBackLanguageVariante As Integer = UNDEFINED
+    Private Shared _MandantName As String = Nothing
 
     Private Shared _pAddInPath As String = Nothing
     Private Shared _pListenPath As String
@@ -496,6 +497,7 @@ Public Class wb_GlobalSettings
                 If pVariante = wb_Global.ProgVariante.WinBack Then
 #If DEBUG Then
                     _pListenPath = pProgrammPath
+                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M5", "ListLabel")
                     _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M4", "ListLabel")
                     _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M3", "ListLabel")
                     _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M2", "ListLabel")
@@ -705,6 +707,19 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    Public Shared Property MandantName As String
+        Get
+            If _MandantName Is Nothing Then
+                getWinBackKonfiguration()
+            End If
+            Return _MandantName
+        End Get
+        Set(value As String)
+            _MandantName = value
+            'TODO Name setzen - DB und Konfig neu lesen
+        End Set
+    End Property
+
     Public Shared Function GetFileName(Tabelle As String) As String
         Return pExportPath & Tabelle & "_" & DateTime.Now.ToString("yyMMdd") & "_" & DateTime.Now.ToString("hhmmss") & ".csv"
     End Function
@@ -736,7 +751,7 @@ Public Class wb_GlobalSettings
                 _MsSQLAdmnDB = IniFile.ReadString("winback", "MsSQLServer_AdmnDB", "DemoOrgaBack_Admin3")
                 _MsSQLServer = IniFile.ReadString("winback", "MsSQLServer_Source", "WILL-WIN10\ORGA")
                 _MsSQLUserId = IniFile.ReadString("winback", "MsSQLServer_UserId", "sa")
-                _MsSQLPasswd = IniFile.ReadString("winback", "MsSQLServer_Passwd", "OrgaBack.NET")
+                _MsSQLPasswd = IniFile.ReadEncryptedString("winback", "MsSQLServer_Passwd", "OrgaBack.NET")
 
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
 
@@ -762,6 +777,8 @@ Public Class wb_GlobalSettings
         If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKonfiguration, Key)) Then
             While winback.Read
                 Select Case winback.sField("KF_Tag")
+                    Case "KundenName"
+                        _MandantName = winback.sField("KF_Wert")
                     Case "DatenbankVersion"
                         _WinBackDBVersion = winback.sField("KF_Wert")
                     Case "vts__anzahl_behaelter"

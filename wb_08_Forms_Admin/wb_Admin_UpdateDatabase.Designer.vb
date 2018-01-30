@@ -37,6 +37,8 @@ Partial Class wb_Admin_UpdateDatabase
         Me.lblUpdateFilesCount = New System.Windows.Forms.Label()
         Me.pbData = New MetroFramework.Controls.MetroProgressBar()
         Me.pbFiles = New MetroFramework.Controls.MetroProgressBar()
+        Me.tbWinbackKundeName = New System.Windows.Forms.TextBox()
+        Me.tbMsSQLMain = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'lblWinBackOffice
@@ -157,11 +159,33 @@ Partial Class wb_Admin_UpdateDatabase
         Me.pbFiles.Size = New System.Drawing.Size(122, 15)
         Me.pbFiles.TabIndex = 12
         '
+        'tbWinbackKundeName
+        '
+        Me.tbWinbackKundeName.BackColor = System.Drawing.SystemColors.Control
+        Me.tbWinbackKundeName.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbWinbackKundeName.Location = New System.Drawing.Point(294, 28)
+        Me.tbWinbackKundeName.Name = "tbWinbackKundeName"
+        Me.tbWinbackKundeName.Size = New System.Drawing.Size(123, 20)
+        Me.tbWinbackKundeName.TabIndex = 13
+        Me.tbWinbackKundeName.TabStop = False
+        '
+        'tbMsSQLMain
+        '
+        Me.tbMsSQLMain.BackColor = System.Drawing.SystemColors.Control
+        Me.tbMsSQLMain.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbMsSQLMain.Location = New System.Drawing.Point(294, 83)
+        Me.tbMsSQLMain.Name = "tbMsSQLMain"
+        Me.tbMsSQLMain.Size = New System.Drawing.Size(123, 20)
+        Me.tbMsSQLMain.TabIndex = 14
+        Me.tbMsSQLMain.TabStop = False
+        '
         'wb_Admin_UpdateDatabase
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(471, 194)
+        Me.Controls.Add(Me.tbMsSQLMain)
+        Me.Controls.Add(Me.tbWinbackKundeName)
         Me.Controls.Add(Me.pbFiles)
         Me.Controls.Add(Me.pbData)
         Me.Controls.Add(Me.lblUpdateFilesCount)
@@ -193,4 +217,6 @@ Partial Class wb_Admin_UpdateDatabase
     Friend WithEvents lblUpdateFilesCount As Windows.Forms.Label
     Friend WithEvents pbData As MetroFramework.Controls.MetroProgressBar
     Friend WithEvents pbFiles As MetroFramework.Controls.MetroProgressBar
+    Friend WithEvents tbWinbackKundeName As Windows.Forms.TextBox
+    Friend WithEvents tbMsSQLMain As Windows.Forms.TextBox
 End Class

@@ -1,6 +1,7 @@
 ﻿Public Class wb_Rezept_AuswahlListe
     Private _RezeptNr As Integer = wb_Global.UNDEFINED
     Private _RezeptNummer As String = ""
+    Private _RezeptName As String = ""
 
     Public ReadOnly Property RezeptNummer As String
         Get
@@ -12,6 +13,15 @@
         Get
             Return _RezeptNr
         End Get
+    End Property
+
+    Public Property RezeptName As String
+        Get
+            Return _RezeptName
+        End Get
+        Set(value As String)
+            _RezeptName = value
+        End Set
     End Property
 
     Private Sub wb_Rezept_AuswahlListe_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -34,6 +44,8 @@
     Private Sub DataGridView_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView.DoubleClick
         _RezeptNr = DataGridView.iField("RZ_Nr")
         _RezeptNummer = DataGridView.iField("RZ_Nr_AlNum")
+        _RezeptName = DataGridView.Field("RZ_Bezeichnung")
+        Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
