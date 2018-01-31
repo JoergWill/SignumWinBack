@@ -305,8 +305,13 @@ Public Class wb_Main_Menu
         wb_GlobalSettings.pDatenPath = TryCast(oSetting.GetSetting("Verzeichnisse.DatenPfad"), String)
         'Signum.OrgaSoft.Common.Settings.Datenbank.Hauptdatenbank
         wb_GlobalSettings.MsSQLMain = TryCast(oSetting.GetSetting("Datenbank.Hauptdatenbank"), String)
+        'Signum.OrgaSoft.Common.Settings.Datenbank.VerwaltungsDatenbank
+        wb_GlobalSettings.MsSQLAdmn = TryCast(oSetting.GetSetting("Datenbank.VerwaltungsDatenbank"), String)
         'Programm-Version OrgaBack
         Dim PVersion = Assembly.GetEntryAssembly().GetName().Version
+
+        'WinBack-Mandant entspricht der Mandant-Nummer in OrgaBack
+        wb_GlobalSettings.MandantNr = wb_GlobalSettings.OrgaBackMandantNr
 
         Dim asm As Assembly = Assembly.GetExecutingAssembly()
         Dim location As String = asm.Location

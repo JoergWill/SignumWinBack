@@ -246,7 +246,8 @@ Public Class wb_Rezeptschritt
             End Select
         End Get
         Set(value As String)
-            '_Sollwert = value
+            _Sollwert = value
+            'jashdflkajshdlfk
         End Set
     End Property
 

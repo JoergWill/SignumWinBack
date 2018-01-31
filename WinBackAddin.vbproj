@@ -295,6 +295,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_EditControl.Designer.vb">
+      <DependentUpon>wb_EditControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\wb_EditControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridView.Designer.vb">
       <DependentUpon>wb_ArrayGridView.vb</DependentUpon>
     </Compile>

@@ -190,6 +190,7 @@ Public Class WinBack
             ShowLogin()
         End If
         wb_AktUser.SetUserRechte(Me)
+
     End Sub
 
     ''' <summary>
@@ -489,7 +490,7 @@ Public Class WinBack
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbArtikelDetails.Click, rbRohstoffeDetails.Click, rbRezeptDetails.Click, rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click, rbArtikelListe.Click
+    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click, rbArtikelListe.Click
         AktFormSendCommand("OPENLISTE", "")
     End Sub
 

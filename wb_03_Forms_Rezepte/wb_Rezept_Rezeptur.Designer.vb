@@ -23,6 +23,7 @@ Partial Class wb_Rezept_Rezeptur
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rezept_Rezeptur))
         Dim ObjectCellBinding1 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding2 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding3 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
@@ -35,8 +36,8 @@ Partial Class wb_Rezept_Rezeptur
         Me.ColBezeichung = New Infralution.Controls.VirtualTree.Column()
         Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
         Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
-        Me.CellEditor4 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.UniversalEditBox2 = New Infralution.Controls.UniversalEditBox()
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
@@ -88,12 +89,18 @@ Partial Class wb_Rezept_Rezeptur
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tb_Rezeptur = New System.Windows.Forms.TabPage()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
-        Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
-        Me.CellEditor1 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.CellEditor3 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.UniversalEditBox1 = New Infralution.Controls.UniversalEditBox()
+        Me.headerContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.sortAscendingMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.sortDescendingMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.separator1MenuItem = New System.Windows.Forms.ToolStripSeparator()
+        Me.bestFitMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.bestFitAllMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.autoFitMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.separator2MenuItem = New System.Windows.Forms.ToolStripSeparator()
+        Me.pinnedMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.separator3MenuItem = New System.Windows.Forms.ToolStripSeparator()
+        Me.showColumnsMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.customizeMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.tb_Naehrwerte = New System.Windows.Forms.TabPage()
         Me.tb_Zutaten = New System.Windows.Forms.TabPage()
@@ -113,6 +120,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.Wb_TabControl.SuspendLayout()
         Me.tb_Rezeptur.SuspendLayout()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.headerContextMenu.SuspendLayout()
         Me.tb_Zutaten.SuspendLayout()
         Me.tb_Hinweise.SuspendLayout()
         Me.tb_Verwendung.SuspendLayout()
@@ -149,7 +157,7 @@ Partial Class wb_Rezept_Rezeptur
         'ColSollwert
         '
         Me.ColSollwert.Caption = Nothing
-        Me.ColSollwert.CellEditor = Me.CellEditor4
+        Me.ColSollwert.CellEditor = Me.CellEditor2
         Me.ColSollwert.CellStyle.VertAlignment = System.Drawing.StringAlignment.Center
         Me.ColSollwert.MinWidth = 100
         Me.ColSollwert.Movable = False
@@ -158,25 +166,18 @@ Partial Class wb_Rezept_Rezeptur
         Me.ColSollwert.Sortable = False
         Me.ColSollwert.Width = 126
         '
-        'CellEditor4
+        'CellEditor2
         '
-        Me.CellEditor4.Control = Me.TextBox1
-        Me.CellEditor4.UseCellPadding = True
+        Me.CellEditor2.Control = Me.UniversalEditBox2
         '
-        'TextBox1
+        'UniversalEditBox2
         '
-        Me.TextBox1.AcceptsReturn = True
-        Me.TextBox1.AcceptsTab = True
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TextBox1.HideSelection = False
-        Me.TextBox1.Location = New System.Drawing.Point(-302, -253)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 13)
-        Me.TextBox1.TabIndex = 5
-        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.TextBox1.Visible = False
-        Me.TextBox1.WordWrap = False
+        Me.UniversalEditBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.UniversalEditBox2.Location = New System.Drawing.Point(0, 0)
+        Me.UniversalEditBox2.Name = "UniversalEditBox2"
+        Me.UniversalEditBox2.Size = New System.Drawing.Size(195, 21)
+        Me.UniversalEditBox2.TabIndex = 0
+        Me.UniversalEditBox2.Visible = False
         '
         'ColEinheit
         '
@@ -672,10 +673,6 @@ Partial Class wb_Rezept_Rezeptur
         'tb_Rezeptur
         '
         Me.tb_Rezeptur.Controls.Add(Me.VirtualTree)
-        Me.tb_Rezeptur.Controls.Add(Me.RichTextBox1)
-        Me.tb_Rezeptur.Controls.Add(Me.TextBox1)
-        Me.tb_Rezeptur.Controls.Add(Me.Label1)
-        Me.tb_Rezeptur.Controls.Add(Me.UniversalEditBox1)
         Me.tb_Rezeptur.Location = New System.Drawing.Point(4, 23)
         Me.tb_Rezeptur.Name = "tb_Rezeptur"
         Me.tb_Rezeptur.Padding = New System.Windows.Forms.Padding(3)
@@ -700,9 +697,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.Columns.Add(Me.ColProzent)
         Me.VirtualTree.EditOnKeyPress = True
         Me.VirtualTree.Editors.Add(Me.CellEditor2)
-        Me.VirtualTree.Editors.Add(Me.CellEditor1)
-        Me.VirtualTree.Editors.Add(Me.CellEditor3)
-        Me.VirtualTree.Editors.Add(Me.CellEditor4)
+        Me.VirtualTree.HeaderContextMenu = Me.headerContextMenu
         Me.VirtualTree.HeaderHeight = 24
         Me.VirtualTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.None
@@ -718,55 +713,89 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 6
         '
-        'CellEditor2
+        'headerContextMenu
         '
-        Me.CellEditor2.Control = Me.RichTextBox1
-        Me.CellEditor2.UseCellPadding = True
+        Me.headerContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.sortAscendingMenuItem, Me.sortDescendingMenuItem, Me.separator1MenuItem, Me.bestFitMenuItem, Me.bestFitAllMenuItem, Me.autoFitMenuItem, Me.separator2MenuItem, Me.pinnedMenuItem, Me.separator3MenuItem, Me.showColumnsMenuItem, Me.customizeMenuItem})
+        Me.headerContextMenu.Name = "headerContextMenu"
+        Me.headerContextMenu.Size = New System.Drawing.Size(277, 198)
         '
-        'RichTextBox1
+        'sortAscendingMenuItem
         '
-        Me.RichTextBox1.AcceptsTab = True
-        Me.RichTextBox1.AutoWordSelection = True
-        Me.RichTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.RichTextBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.RichTextBox1.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RichTextBox1.Location = New System.Drawing.Point(-302, -253)
-        Me.RichTextBox1.Multiline = False
-        Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None
-        Me.RichTextBox1.Size = New System.Drawing.Size(100, 96)
-        Me.RichTextBox1.TabIndex = 2
-        Me.RichTextBox1.Text = ""
-        Me.RichTextBox1.Visible = False
+        Me.sortAscendingMenuItem.Image = CType(resources.GetObject("sortAscendingMenuItem.Image"), System.Drawing.Image)
+        Me.sortAscendingMenuItem.Name = "sortAscendingMenuItem"
+        Me.sortAscendingMenuItem.Size = New System.Drawing.Size(276, 22)
+        Me.sortAscendingMenuItem.Tag = "sortAscendingMenuItem"
+        Me.sortAscendingMenuItem.Text = "Aufsteigend sortieren"
         '
-        'CellEditor1
+        'sortDescendingMenuItem
         '
-        Me.CellEditor1.Control = Me.Label1
+        Me.sortDescendingMenuItem.Image = CType(resources.GetObject("sortDescendingMenuItem.Image"), System.Drawing.Image)
+        Me.sortDescendingMenuItem.Name = "sortDescendingMenuItem"
+        Me.sortDescendingMenuItem.Size = New System.Drawing.Size(276, 22)
+        Me.sortDescendingMenuItem.Tag = "sortDescendingMenuItem"
+        Me.sortDescendingMenuItem.Text = "Absteigend sortieren"
         '
-        'Label1
+        'separator1MenuItem
         '
-        Me.Label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Label1.Location = New System.Drawing.Point(-202, -153)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(10, 10)
-        Me.Label1.TabIndex = 3
-        Me.Label1.Text = "dfsdfsdfasdfasf"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.separator1MenuItem.Name = "separator1MenuItem"
+        Me.separator1MenuItem.Size = New System.Drawing.Size(273, 6)
         '
-        'CellEditor3
+        'bestFitMenuItem
         '
-        Me.CellEditor3.Control = Me.UniversalEditBox1
-        Me.CellEditor3.UseCellPadding = True
+        Me.bestFitMenuItem.Image = CType(resources.GetObject("bestFitMenuItem.Image"), System.Drawing.Image)
+        Me.bestFitMenuItem.Name = "bestFitMenuItem"
+        Me.bestFitMenuItem.Size = New System.Drawing.Size(276, 22)
+        Me.bestFitMenuItem.Tag = "bestFitMenuItem"
+        Me.bestFitMenuItem.Text = "Beste Anpassung"
         '
-        'UniversalEditBox1
+        'bestFitAllMenuItem
         '
-        Me.UniversalEditBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UniversalEditBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.UniversalEditBox1.Location = New System.Drawing.Point(-302, -253)
-        Me.UniversalEditBox1.Name = "UniversalEditBox1"
-        Me.UniversalEditBox1.Size = New System.Drawing.Size(195, 19)
-        Me.UniversalEditBox1.TabIndex = 4
-        Me.UniversalEditBox1.Visible = False
+        Me.bestFitAllMenuItem.Image = CType(resources.GetObject("bestFitAllMenuItem.Image"), System.Drawing.Image)
+        Me.bestFitAllMenuItem.Name = "bestFitAllMenuItem"
+        Me.bestFitAllMenuItem.Size = New System.Drawing.Size(276, 22)
+        Me.bestFitAllMenuItem.Tag = "bestFitAllMenuItem"
+        Me.bestFitAllMenuItem.Text = "Beste Anpassung alles"
+        '
+        'autoFitMenuItem
+        '
+        Me.autoFitMenuItem.Image = CType(resources.GetObject("autoFitMenuItem.Image"), System.Drawing.Image)
+        Me.autoFitMenuItem.Name = "autoFitMenuItem"
+        Me.autoFitMenuItem.Size = New System.Drawing.Size(276, 22)
+        Me.autoFitMenuItem.Tag = "autoFitMenuItem"
+        Me.autoFitMenuItem.Text = "Automatisch anpassen (nicht scrollen)"
+        '
+        'separator2MenuItem
+        '
+        Me.separator2MenuItem.Name = "separator2MenuItem"
+        Me.separator2MenuItem.Size = New System.Drawing.Size(273, 6)
+        '
+        'pinnedMenuItem
+        '
+        Me.pinnedMenuItem.Image = CType(resources.GetObject("pinnedMenuItem.Image"), System.Drawing.Image)
+        Me.pinnedMenuItem.Name = "pinnedMenuItem"
+        Me.pinnedMenuItem.Size = New System.Drawing.Size(276, 22)
+        Me.pinnedMenuItem.Tag = "pinnedMenuItem"
+        Me.pinnedMenuItem.Text = "Angesteckt"
+        '
+        'separator3MenuItem
+        '
+        Me.separator3MenuItem.Name = "separator3MenuItem"
+        Me.separator3MenuItem.Size = New System.Drawing.Size(273, 6)
+        '
+        'showColumnsMenuItem
+        '
+        Me.showColumnsMenuItem.Name = "showColumnsMenuItem"
+        Me.showColumnsMenuItem.Size = New System.Drawing.Size(276, 22)
+        Me.showColumnsMenuItem.Tag = "showColumnsMenuItem"
+        Me.showColumnsMenuItem.Text = "Spalte anzeigen/verstecken"
+        '
+        'customizeMenuItem
+        '
+        Me.customizeMenuItem.Image = CType(resources.GetObject("customizeMenuItem.Image"), System.Drawing.Image)
+        Me.customizeMenuItem.Name = "customizeMenuItem"
+        Me.customizeMenuItem.Size = New System.Drawing.Size(276, 22)
+        Me.customizeMenuItem.Tag = "customizeMenuItem"
+        Me.customizeMenuItem.Text = "Spaltenauswähler"
         '
         'ObjectRowBinding1
         '
@@ -959,6 +988,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.GridView_RzVerwendung.ReadOnly = True
         Me.GridView_RzVerwendung.Size = New System.Drawing.Size(943, 459)
         Me.GridView_RzVerwendung.TabIndex = 0
+        Me.GridView_RzVerwendung.x8859_5_FieldName = ""
         '
         'wb_Rezept_Rezeptur
         '
@@ -979,8 +1009,8 @@ Partial Class wb_Rezept_Rezeptur
         Me.GroupBox1.ResumeLayout(False)
         Me.Wb_TabControl.ResumeLayout(False)
         Me.tb_Rezeptur.ResumeLayout(False)
-        Me.tb_Rezeptur.PerformLayout()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.headerContextMenu.ResumeLayout(False)
         Me.tb_Zutaten.ResumeLayout(False)
         Me.tb_Zutaten.PerformLayout()
         Me.tb_Hinweise.ResumeLayout(False)
@@ -998,16 +1028,8 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents ColBezeichung As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColPreis As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColSollwert As Infralution.Controls.VirtualTree.Column
-    Friend WithEvents CellEditor4 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents TextBox1 As Windows.Forms.TextBox
     Friend WithEvents ColEinheit As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColProzent As Infralution.Controls.VirtualTree.Column
-    Friend WithEvents CellEditor2 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents RichTextBox1 As Windows.Forms.RichTextBox
-    Friend WithEvents CellEditor1 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents CellEditor3 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents UniversalEditBox1 As Infralution.Controls.UniversalEditBox
     Friend WithEvents ObjectRowBinding1 As Infralution.Controls.VirtualTree.ObjectRowBinding
     Friend WithEvents tb_Hinweise As Windows.Forms.TabPage
     Friend WithEvents tb_Verwendung As Windows.Forms.TabPage
@@ -1066,4 +1088,18 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents lblListeOptimieren As Windows.Forms.Label
     Friend WithEvents SwENummern As MetroFramework.Controls.MetroToggle
     Friend WithEvents lblENummern As Windows.Forms.Label
+    Friend WithEvents headerContextMenu As Windows.Forms.ContextMenuStrip
+    Friend WithEvents sortAscendingMenuItem As Windows.Forms.ToolStripMenuItem
+    Friend WithEvents sortDescendingMenuItem As Windows.Forms.ToolStripMenuItem
+    Friend WithEvents separator1MenuItem As Windows.Forms.ToolStripSeparator
+    Friend WithEvents bestFitMenuItem As Windows.Forms.ToolStripMenuItem
+    Friend WithEvents bestFitAllMenuItem As Windows.Forms.ToolStripMenuItem
+    Friend WithEvents autoFitMenuItem As Windows.Forms.ToolStripMenuItem
+    Friend WithEvents separator2MenuItem As Windows.Forms.ToolStripSeparator
+    Friend WithEvents pinnedMenuItem As Windows.Forms.ToolStripMenuItem
+    Friend WithEvents separator3MenuItem As Windows.Forms.ToolStripSeparator
+    Friend WithEvents showColumnsMenuItem As Windows.Forms.ToolStripMenuItem
+    Friend WithEvents customizeMenuItem As Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CellEditor2 As Infralution.Controls.VirtualTree.CellEditor
+    Friend WithEvents UniversalEditBox2 As Infralution.Controls.UniversalEditBox
 End Class

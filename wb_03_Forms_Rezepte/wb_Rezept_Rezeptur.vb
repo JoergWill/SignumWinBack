@@ -256,4 +256,17 @@ Public Class wb_Rezept_Rezeptur
         End If
     End Sub
 
+    ''' <summary>
+    ''' Verhindert, dass einzelne Zellen markiert werden 
+    ''' (Infralution Support): handle the SelectionChanging event and set Cancel to true. This prevents any selection occurring
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VirtualTree_SelectionChanging(sender As Object, e As SelectionChangingEventArgs) Handles VirtualTree.SelectionChanging
+        e.Cancel = True
+    End Sub
+
+    Private Sub CellEditor2_InitializeControl(sender As Object, e As CellEditorInitializeEventArgs) Handles CellEditor2.InitializeControl
+
+    End Sub
 End Class

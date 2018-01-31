@@ -976,7 +976,7 @@ Partial Class WinBack
         Me.rTab.Tabs.Add(Me.rbPlanung)
         Me.rTab.Tabs.Add(Me.rbExtra)
         Me.rTab.TabsMargin = New System.Windows.Forms.Padding(12, 26, 20, 0)
-        Me.rTab.ThemeColor = System.Windows.Forms.RibbonTheme.Black
+        Me.rTab.ThemeColor = System.Windows.Forms.RibbonTheme.Blue
         '
         'rbAbmelden
         '

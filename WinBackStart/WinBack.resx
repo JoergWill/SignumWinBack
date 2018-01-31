@@ -731,25 +731,10 @@
   <data name="rbRohstoffeDruck.Text" xml:space="preserve">
     <value>Rohstoffe Liste</value>
   </data>
-  <data name="rpUser.Text" xml:space="preserve">
+  <data name="rbUser.Text" xml:space="preserve">
     <value>Mitarbeiter</value>
   </data>
-  <data name="rpUserGruppen.Text" xml:space="preserve">
-    <value>Ansicht</value>
-  </data>
-  <data name="rbUserDrucken.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="rbUserDrucken.Text" xml:space="preserve">
-    <value>Liste Drucken</value>
-  </data>
-  <data name="rpDrucken.Text" xml:space="preserve">
-    <value>Drucken</value>
-  </data>
-  <data name="rbUser.Text" xml:space="preserve">
+  <data name="rpUser.Text" xml:space="preserve">
     <value>Mitarbeiter</value>
   </data>
   <data name="rbUserNeu.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -788,6 +773,9 @@
   <data name="rbUserChangePass.Text" xml:space="preserve">
     <value>Passwort ändern</value>
   </data>
+  <data name="rpUserGruppen.Text" xml:space="preserve">
+    <value>Ansicht</value>
+  </data>
   <data name="rbListe.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -823,6 +811,18 @@
   </data>
   <data name="rbUserGruppenRechte.Text" xml:space="preserve">
     <value>Gruppen Rechte</value>
+  </data>
+  <data name="rpDrucken.Text" xml:space="preserve">
+    <value>Drucken</value>
+  </data>
+  <data name="rbUserDrucken.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbUserDrucken.Text" xml:space="preserve">
+    <value>Liste Drucken</value>
   </data>
   <data name="rbLinien.Text" xml:space="preserve">
     <value>Linien</value>
@@ -925,7 +925,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAA4
-        EAAAAk1TRnQBSQFMAgEBCwEAATQBAwE0AQMBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        EAAAAk1TRnQBSQFMAgEBCwEAATwBAwE8AQMBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA

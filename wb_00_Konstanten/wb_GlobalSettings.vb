@@ -24,6 +24,9 @@ Public Class wb_GlobalSettings
     Private Shared _WinBackLanguage2 As Integer = UNDEFINED
     Private Shared _WinBackLanguageVariante As Integer = UNDEFINED
     Private Shared _MandantName As String = Nothing
+    Private Shared _MandantNr As Integer = UNDEFINED
+    Private Shared _OrgaBackMandantName As String = Nothing
+    Private Shared _OrgaBackMandantNr As Integer = UNDEFINED
 
     Private Shared _pAddInPath As String = Nothing
     Private Shared _pListenPath As String
@@ -104,6 +107,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _MsSQLAdmnDB = value
+            setWinBackIni("winback", "MsSQLServer_AdmnDB", value)
         End Set
     End Property
 
@@ -720,6 +724,80 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property MandantNr As Integer
+        Get
+            Return _MandantNr
+        End Get
+        Set(value As Integer)
+            _MandantNr = value
+        End Set
+    End Property
+
+    Public Shared ReadOnly Property OrgaBackMandantName As String
+        Get
+            If _OrgaBackMandantName = Nothing Then
+                GetOrgaBackMandant()
+            End If
+            Return _OrgaBackMandantName
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property OrgaBackMandantNr As Integer
+        Get
+            If _OrgaBackMandantNr = UNDEFINED Then
+                GetOrgaBackMandant()
+            End If
+            Return _OrgaBackMandantNr
+        End Get
+    End Property
+
+    Private Shared Sub GetOrgaBackMandant()
+        'xml-File OrgaBack.ini aus DatenPfad einlesen
+        Dim XMLReader As Xml.XmlReader = New Xml.XmlTextReader(pDatenPath & "OrgaSoft.ini")
+        'Anzahl der Mandanten
+        Dim MandantNr As Integer = 0
+        Dim MandantName As String = ""
+        Dim AdminDBName As String = ""
+
+        'alle Mandanten durchlaufen bis Admin-DB gefunden
+        With XMLReader
+            Do While .Read
+                Select Case .NodeType
+
+                    'Ein Element 
+                    Case Xml.XmlNodeType.Element
+                        'Name
+                        Select Case .Name
+                            'Mandant
+                            Case "Mandant"
+                                MandantNr += 1
+                                'mehrere Attribute
+                                If .AttributeCount > 0 Then
+                                    While .MoveToNextAttribute
+                                        'Attribut-Name
+                                        Select Case .Name
+                                            'Mandant-Name
+                                            Case "Mandantname"
+                                                MandantName = .Value
+                                            'Admin-Datenbank
+                                            Case "AdminDatabaseName"
+                                                AdminDBName = .Value
+                                        End Select
+                                    End While
+                                End If
+                        End Select
+
+                        'Wenn die Admin-Datenbank mit der aktuelle Admin-DB übereinstimmt, ist der Mandant gefunden
+                        If AdminDBName = _MsSQLAdmnDB Then
+                            _OrgaBackMandantName = MandantName
+                            _OrgaBackMandantNr = MandantNr
+                        End If
+                End Select
+            Loop
+            .Close()
+        End With
+    End Sub
+
     Public Shared Function GetFileName(Tabelle As String) As String
         Return pExportPath & Tabelle & "_" & DateTime.Now.ToString("yyMMdd") & "_" & DateTime.Now.ToString("hhmmss") & ".csv"
     End Function
@@ -732,6 +810,10 @@ Public Class wb_GlobalSettings
 
     Private Shared Sub getWinBackIni(Key As String)
         Dim IniFile As New wb_IniFile
+
+        'Keys aufgeteilt nach Mandant-Nummer
+        Dim IniWinBack_Mandant As String = "winback-m" & MandantNr.ToString
+        Dim IniOrgaBack_Mandant As String = "orgaback-m" & MandantNr.ToString
 
         Select Case Key
             Case "SQL"
@@ -755,6 +837,13 @@ Public Class wb_GlobalSettings
 
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
 
+                'wenn eine Mandanten-Nummer angegeben ist, wird versucht entsprechend der Mandanten-Nummer die Daten aus der Ini-Datei zu lesen
+                If MandantNr <> UNDEFINED Then
+                    _MySQLServerIP = IniFile.ReadString(IniWinBack_Mandant, "eMySQLServerIP", _MySQLServerIP)
+                    _MySQLWinBack = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabase", _MySQLWinBack)
+                    _MySQLWbDaten = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabaseDaten", _MySQLWbDaten)
+                End If
+
             Case "Logger"
                 _LogToTextFile = IniFile.ReadInt("winback", "LogToTextFile", wbFALSE)
                 _LogToDataBase = IniFile.ReadInt("winback", "LogToDataBase", wbFALSE)
@@ -762,6 +851,12 @@ Public Class wb_GlobalSettings
             Case "OrgaBack"
                 _osGrpBackwaren = IniFile.ReadString("orgaback", "GruppeBackwaren", "0")
                 _osGrpRohstoffe = IniFile.ReadString("orgaback", "GruppeRohstoffe", "40")
+
+                'wenn eine Mandanten-Nummer angegeben ist, wird versucht entsprechend der Mandanten-Nummer die Daten aus der Ini-Datei zu lesen
+                If MandantNr <> UNDEFINED Then
+                    _osGrpBackwaren = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeBackwaren", _osGrpBackwaren)
+                    _osGrpRohstoffe = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeRohstoffe", _osGrpRohstoffe)
+                End If
 
             Case "Produktion"
                 _ChargenTeiler = IniFile.ReadString("Produktion", "ChargenTeiler", wb_Global.ModusChargenTeiler.OptimalUndRest)
