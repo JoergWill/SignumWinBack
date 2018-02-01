@@ -192,6 +192,10 @@ Public Class wb_Rezept_Rezeptur
             RezeptHinweise.Memo = TextHinweise.Text
             RezeptHinweise.Write()
         End If
+
+        'Rezeptur ist geändert worden
+        'TODO Hier wird der Aufruf eingebaut Reeptur speichern !! wenn geändert wurde
+        Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante)
     End Sub
 
     ''' <summary>
@@ -243,7 +247,6 @@ Public Class wb_Rezept_Rezeptur
 
     End Sub
 
-
     Private Sub SwENummern_Click(sender As Object, e As EventArgs) Handles SwENummern.Click
         Show_ZutatenListe()
     End Sub
@@ -268,5 +271,33 @@ Public Class wb_Rezept_Rezeptur
 
     Private Sub CellEditor2_InitializeControl(sender As Object, e As CellEditorInitializeEventArgs) Handles CellEditor2.InitializeControl
 
+    End Sub
+
+    ''' <summary>
+    ''' Rechte-Maus-Click auf eine Zeile im VirtualTree.
+    ''' 
+    ''' Über e.Row.Item wird die entsprechende Zeile(wb_Rezeptschritt) im Grid ermittelt.
+    ''' Abhängig vom Komponenten-Typ werden verschiedene Aktionen erlaubt/ausgelöst. (Popup-Menu)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VirtualTree_GetContextMenuStrip(sender As Object, e As GetContextMenuStripEventArgs) Handles VirtualTree.GetContextMenuStrip
+        VTPopUpMenu.Items.Clear()
+        Dim o As wb_Rezeptschritt = DirectCast(e.Row.Item, wb_Rezeptschritt)
+        Debug.Print(o.Bezeichnung)
+        'o.Delete()
+        'VirtualTree.Invalidate()
+        'VirtualTree.DataSource = Rezept.RootRezeptSchritt
+
+        Dim rs As New wb_Rezeptschritt(Nothing, "TEST insert")
+        rs.RohNr = 735
+        rs.ParamNr = 1
+        rs.Sollwert = "0,000"
+
+        o.Insert(rs, True)
+        VirtualTree.Invalidate()
+        VirtualTree.DataSource = Rezept.RootRezeptSchritt
+
+        VTPopUpMenu.Items.Add("TEST" & o.Bezeichnung)
     End Sub
 End Class

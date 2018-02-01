@@ -402,7 +402,6 @@ Public Class wb_Functions
         End If
     End Function
 
-
     ''' <summary>
     ''' Ermittelt anhand der Komponenten-Type ob eine Einheit(Text) ausgeben werden soll.
     ''' </summary>
@@ -416,6 +415,21 @@ Public Class wb_Functions
             Return False
         Else
             Return True
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt anhand der Komponenten-Type ob Child-Steps vorhanden sind.
+    ''' </summary>
+    ''' <param name="Type"></param>
+    ''' <returns></returns>
+    Public Shared Function TypeHasChildSteps(Type As wb_Global.KomponTypen) As Boolean
+        If Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Or
+           Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
+            Return True
+        Else
+            Return False
         End If
     End Function
 

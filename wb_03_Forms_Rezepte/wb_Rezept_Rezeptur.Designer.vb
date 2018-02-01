@@ -89,6 +89,10 @@ Partial Class wb_Rezept_Rezeptur
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tb_Rezeptur = New System.Windows.Forms.TabPage()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
+        Me.VTPopUpMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
         Me.headerContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.sortAscendingMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.sortDescendingMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -120,6 +124,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.Wb_TabControl.SuspendLayout()
         Me.tb_Rezeptur.SuspendLayout()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.VTPopUpMenu.SuspendLayout()
         Me.headerContextMenu.SuspendLayout()
         Me.tb_Zutaten.SuspendLayout()
         Me.tb_Hinweise.SuspendLayout()
@@ -695,6 +700,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.Columns.Add(Me.ColSollwert)
         Me.VirtualTree.Columns.Add(Me.ColEinheit)
         Me.VirtualTree.Columns.Add(Me.ColProzent)
+        Me.VirtualTree.ContextMenuStrip = Me.VTPopUpMenu
         Me.VirtualTree.EditOnKeyPress = True
         Me.VirtualTree.Editors.Add(Me.CellEditor2)
         Me.VirtualTree.HeaderContextMenu = Me.headerContextMenu
@@ -712,6 +718,30 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.Size = New System.Drawing.Size(948, 463)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 6
+        '
+        'VTPopUpMenu
+        '
+        Me.VTPopUpMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.ToolStripMenuItem2, Me.ToolStripMenuItem3})
+        Me.VTPopUpMenu.Name = "VTPopUpMenu"
+        Me.VTPopUpMenu.Size = New System.Drawing.Size(122, 70)
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(121, 22)
+        Me.ToolStripMenuItem1.Text = "Einfügen"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(121, 22)
+        Me.ToolStripMenuItem2.Text = "Anfügen"
+        '
+        'ToolStripMenuItem3
+        '
+        Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(121, 22)
+        Me.ToolStripMenuItem3.Text = "Löschen"
         '
         'headerContextMenu
         '
@@ -1010,6 +1040,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.Wb_TabControl.ResumeLayout(False)
         Me.tb_Rezeptur.ResumeLayout(False)
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.VTPopUpMenu.ResumeLayout(False)
         Me.headerContextMenu.ResumeLayout(False)
         Me.tb_Zutaten.ResumeLayout(False)
         Me.tb_Zutaten.PerformLayout()
@@ -1102,4 +1133,8 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents customizeMenuItem As Windows.Forms.ToolStripMenuItem
     Friend WithEvents CellEditor2 As Infralution.Controls.VirtualTree.CellEditor
     Friend WithEvents UniversalEditBox2 As Infralution.Controls.UniversalEditBox
+    Friend WithEvents VTPopUpMenu As Windows.Forms.ContextMenuStrip
+    Friend WithEvents ToolStripMenuItem1 As Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem2 As Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem3 As Windows.Forms.ToolStripMenuItem
 End Class

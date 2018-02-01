@@ -156,6 +156,12 @@
                                "AND ((KomponTypen.KT_Rezept='R') OR (KomponTypen.KT_Rezept='X')) " &
                                "ORDER BY RezeptSchritte.RS_Schritt_Nr, RezeptSchritte.RS_ParamNr"
 
+    'Sql-Statement Rezeptschritte löschen
+    Public Const sqlDelRZSchritt = "DELETE FROM RezeptSchritte WHERE RS_RZ_Nr = [0] AND RS_RZ_Variante_Nr = [1]"
+
+    'Sql-Statement neuen Rezeptschritt schreiben
+    Public Const sqlAddRZSchritt = "INSERT INTO RezeptSchritte([0]) VALUES ([1])"
+
 
     Public Const bakArbRezepte = "SELECT * FROM BAK_ArbRezepte WHERE (B_ARZ_LiBeh_Nr>100) AND " &
                                  "B_ARZ_TW_Nr = " & Chr(34) & "[0]" & Chr(34) & " ORDER BY B_ARZ_TW_Idx, B_ARZ_Timestamp"

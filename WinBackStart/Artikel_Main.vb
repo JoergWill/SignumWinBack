@@ -88,7 +88,7 @@ Public Class Artikel_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        ArtikelDetails.Close()
+        'ArtikelDetails.Close()
         ArtikelListe.Close()
     End Sub
 End Class

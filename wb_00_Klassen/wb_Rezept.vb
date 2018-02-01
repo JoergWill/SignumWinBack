@@ -395,8 +395,8 @@ Public Class wb_Rezept
         'wird benötigt zur Berechnung der Nährwerte
         _RootRezeptSchritt.BruttoRezGewicht = BruttoRezeptGewicht
         _RootRezeptSchritt.Sollwert = BruttoRezeptGewicht
-        'Root-Rezeptschritt kennzeichnen
-        _RootRezeptSchritt.SchrittNr = -1
+        'Root-Rezeptschritt kennzeichnen (war -1 !!!)
+        _RootRezeptSchritt.SchrittNr = 0
 
     End Sub
 
@@ -641,6 +641,18 @@ Public Class wb_Rezept
                 'Sollwert
                 Case "RS_Wert"
                     _SQLRezeptSchritt.Sollwert = Value
+                'Sollwert Produktion
+                Case "RS_Wert_Prod"
+                    _SQLRezeptSchritt.WertProd = Value
+                'Par1
+                Case "RS_Par1"
+                    _SQLRezeptSchritt.Par1 = Value
+                'Par2
+                Case "RS_Par2"
+                    _SQLRezeptSchritt.Par2 = Value
+                'Par3
+                Case "RS_Par3"
+                    _SQLRezeptSchritt.Par3 = Value
                 'Einheit
                 Case "E_Einheit"
                     _SQLRezeptSchritt.Einheit = wb_Language.TextFilter(Value)
@@ -653,7 +665,6 @@ Public Class wb_Rezept
                 'RezeptNr (Rezept im Rezept)
                 Case "KA_RZ_Nr"
                     _SQLRezeptSchritt.RezeptNr = Value
-
 
                 'Rezeptkopf - Rezept-Alphanummer
                 Case "RZ_Nr_AlNum"
@@ -704,4 +715,53 @@ Public Class wb_Rezept
 
     End Function
 
+    Public Function MySQLdbWrite_RzSchritt(RezeptNummer As Integer, Variante As Integer) As Boolean
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+        Dim sqlFelder As String
+        Dim sqlData As String
+
+        'alte Rezeptur in Historie speichern
+
+        'vorhandene Rezeptur in Datenbank löschen
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRZSchritt, RezeptNummer, Variante))
+
+        'sql-Kommando INSERT bilden
+        sqlFelder = "RS_RZ_NR, RS_RZ_Variante_Nr, RS_Index, RS_Schritt_Nr, RS_Ko_Nr, RS_ParamNr, " &
+                    "RS_Wert, RS_Wert_Prod, RS_Par1, RS_Par2, RS_Par3"
+        'Index
+        Dim Idx As Integer = 0
+
+        'Schleife über alle Rezeptschritte
+        For Each rz As wb_Rezeptschritt In RootRezeptSchritt.Steps
+            Idx += 1
+            sqlData = RezeptNummer.ToString & "," & Variante.ToString & "," & Idx.ToString & "," &
+                      rz.SchrittNr.ToString & "," & rz.RohNr.ToString & "," & rz.ParamNr.ToString & ",'" &
+                      rz.Sollwert & "','" & rz.WertProd & "','" & rz.Par1 & "','" & rz.Par2 & "','" & rz.Par3 & "'"
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddRZSchritt, sqlFelder, sqlData)
+            winback.sqlCommand(sql)
+
+            Debug.Print("Rezept Schreiben " & rz.SchrittNr & "-" & rz.RohNr & "/" & rz.Nummer & " " & rz.Bezeichnung)
+        Next
+        winback.Close()
+        Return True
+    End Function
+
+
 End Class
+
+'RS_RZ_Nr	
+'RS_RZ_Variante_Nr
+'RS_Index
+'RS_Schritt_Nr
+'RS_Ko_Nr
+'RS_ParamNr
+'RS_Wert
+'RS_Wert_Prod
+'RS_Par1
+'RS_Par2
+'RS_Par3
+'RS_Preis
+'RS_PreisEinheit
+'RS_Timestamp

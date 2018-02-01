@@ -29,6 +29,27 @@ Public Class wb_Rezeptschritt
     Private _childSteps As New ArrayList()
     Public RezeptImRezept As wb_Rezept
 
+    ' Bedeutung der Zusatzparameter
+    '=============================
+    ' Wasser-Mengen-Satz   RS_Par2       - letzte Dosiertemperatur
+    '
+    ' Wasser-Temp-Satz     RS_Par1       - TTS-Korrekturwert 1
+    '                      RS_Par2       - TTS-Korrekturwert 2
+    '                      RS_Par2       - TTS-Korrekturwert 3
+    '                      RS_Wert_Prod  - RMF-Basiswert dieses Rezeptes
+
+    ' Bedeutung der Zusatzparameter Eis
+    '=================================
+    ' Eis-Mengen-Satz      RS_Wert       - Handausgleichswert (manuelle Mengenkorrektur Eis in Produktion)
+    '                      RS_Par1
+    '                      RS_Par2
+    '                      RS_Par3       - Mindestmenge Eis
+    Private _Par1 As String
+    Private _Par2 As String
+    Private _Par3 As String
+    Private _WertProd As String
+
+
     ''' <summary>
     ''' Kopiert alle Properties dieser Klasse auf die Properties der übergebenen Klasse.
     ''' Geschrieben werden nur die Properties, die nicht als ReadOnly deklariert sind.
@@ -43,7 +64,7 @@ Public Class wb_Rezeptschritt
         Dim _type As Type = Me.GetType()
         Dim properties() As PropertyInfo = _type.GetProperties()
         For Each _property As PropertyInfo In properties
-            If _property.CanWrite And _property.CanRead Then
+            If _property.CanWrite And _property.CanRead And _property.Name <> "ParentStep" Then
                 _property.SetValue(Me, _property.GetValue(rs, Nothing))
             End If
         Next
@@ -62,6 +83,31 @@ Public Class wb_Rezeptschritt
             parent._childSteps.Add(Me)
         End If
     End Sub 'New
+
+    ''' <summary>
+    ''' Fügt einen Rezeptschritt VOR oder NACH dem aktuellen Schritt ein
+    ''' </summary>
+    ''' <param name="rs"></param>
+    Public Sub Insert(rs As wb_Rezeptschritt, InsertAfter As Boolean)
+        'Index des aktuellen Rezept-Schritts
+        Dim idx As Integer = ParentStep.ChildSteps.IndexOf(Me)
+        'wenn nach dem aktuellen Schritt eingefügt werden soll - Index+1
+        If InsertAfter Then
+            idx += 1
+        End If
+        'Rezeptschritt am Index einfügen
+        ParentStep.ChildSteps.Insert(idx, rs)
+        'Numerierung der Rezeptschritte neu aufbauen
+        ParentStep.ReCalcRzSteps(ParentStep.SchrittNr)
+    End Sub
+
+    ''' <summary>
+    ''' Löscht den aktuellen Rezeptschritt (Me)
+    ''' </summary>
+    Public Sub Delete()
+        'Diesen Eintrag in der Child-Liste des Parent-Step löschen
+        ParentStep.ChildSteps.Remove(Me)
+    End Sub
 
     '' <summary>
     '' Parent dieses Rezeptschrittes
@@ -88,7 +134,7 @@ Public Class wb_Rezeptschritt
     ''' Liste aller Rezeptschritte. Es werden alle Child-Rezeptschritte durchlaufen und als flache Liste nach oben
     ''' weiter propagiert.
     ''' Der Root-Rezeptschritt enthält eine Liste aller Rezeptschritte (Rezeptur)
-    ''' Wird zum Drucken der Rezeptur verwendet
+    ''' Wird zum Drucken und Speichern der Rezeptur verwendet
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property Steps As IList
@@ -106,6 +152,28 @@ Public Class wb_Rezeptschritt
             Return _Steps
         End Get
     End Property
+
+    ''' <summary>
+    ''' Berechnet die Schritt-Nummer aller Child-Steps neu
+    ''' Nach Insert/Delete
+    ''' </summary>
+    ''' <param name="RsStep">Start-Index</param>
+    ''' <returns></returns>
+    Public Function ReCalcRzSteps(RsStep As Integer) As Integer
+        For Each rs As wb_Rezeptschritt In ChildSteps
+            RsStep += 1
+            rs.SchrittNr = RsStep
+
+            For Each c As wb_Rezeptschritt In rs.ChildSteps
+                If wb_Functions.TypeHasChildSteps(c.Type) Then
+                    RsStep = rs.ReCalcRzSteps(RsStep)
+                Else
+                    c.SchrittNr = RsStep
+                End If
+            Next
+        Next
+        Return RsStep
+    End Function
 
     ''' <summary>
     ''' (Interne) Komponenten-Nummer
@@ -696,6 +764,42 @@ Public Class wb_Rezeptschritt
 
             Return _ZutatenListe
         End Get
+    End Property
+
+    Public Property Par1 As String
+        Get
+            Return _Par1
+        End Get
+        Set(value As String)
+            _Par1 = value
+        End Set
+    End Property
+
+    Public Property Par2 As String
+        Get
+            Return _Par2
+        End Get
+        Set(value As String)
+            _Par2 = value
+        End Set
+    End Property
+
+    Public Property Par3 As String
+        Get
+            Return _Par3
+        End Get
+        Set(value As String)
+            _Par3 = value
+        End Set
+    End Property
+
+    Public Property WertProd As String
+        Get
+            Return _WertProd
+        End Get
+        Set(value As String)
+            _WertProd = value
+        End Set
     End Property
 
     Public Sub CalcZutaten(ByRef zListe As ArrayList, Optional Faktor As Double = 1)
