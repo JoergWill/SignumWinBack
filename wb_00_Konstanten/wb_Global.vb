@@ -407,4 +407,37 @@
         MaxKlOpt    'Maximal-Charge kleiner als Optimal-Charge
         MaxKlMin    'Maximal-Charge kleiner als Minimal-Charge
     End Enum
+
+    Enum TPopupFunctions
+        TP_NeueProduktionsStufe
+        TP_NeueProduktionsStufe_Davor
+        TP_NeueProduktionsStufe_Danach
+
+        TP_NeuerKessel_Darunter
+        TP_NeuerKessel_Davor
+        TP_NeuerKessel_Danach
+
+        TP_NeueTextKomponente
+        TP_NeueTextKomponente_Darunter
+        TP_NeueTextKomponente_Davor
+        TP_NeueTextKomponente_Danach
+
+        TP_NeueKomponente
+        TP_NeueKomponente_Darunter
+        TP_NeueKomponente_Davor
+        TP_NeueKomponente_Danach
+
+        TP_Editieren
+        TP_Loeschen
+        TP_TTS_loeschen
+
+        TP_Verschieben_Oben
+        TP_Verschieben_Unten
+
+        TP_TeigTemp
+
+        TP_RohstoffVerwaltung
+        TP_Naehrwerte_Laden
+        TP_QuidDeklaration
+    End Enum
 End Class

@@ -199,10 +199,8 @@ Public Class wb_AktUser
             'Sonderfunktion für Ribbon, RibbonTab, RibbonPanel und RibbonItem
             If ctrl.GetType().Equals(GetType(Ribbon)) Then
                 For Each rTab As RibbonTab In DirectCast(ctrl, Ribbon).Tabs
-                    Debug.Print("RibbonPanel " & rTab.Text & " Tag " & rTab.Tag)
                     rTab.Visible = RechtOK(rTab.Tag)
                     For Each rPnl As RibbonPanel In rTab.Panels
-                        Debug.Print("RibbonPanel " & rPnl.Text & " Tag " & rPnl.Tag)
                         rPnl.Enabled = RechtOK(rPnl.Tag)
                         For Each rBtn As RibbonItem In rPnl.Items
                             rBtn.Enabled = RechtOK(rBtn.Tag)

@@ -85,13 +85,59 @@ Public Class wb_Rezeptschritt
     End Sub 'New
 
     ''' <summary>
+    ''' Einen neuen Rezeptschritt mit der angegebenen Komponenten-Type anhängen.
+    ''' Die Komponenten-Daten werden in wb_Komponenten statisch aus dem ersten Datensatz einer Komponente
+    ''' mit dem passenden Kompoententyp erzeugt.
+    ''' </summary>
+    ''' <param name="Parent"></param>
+    ''' <param name="KomponType"></param>
+    Public Sub New(Parent As wb_Rezeptschritt, KomponType As wb_Global.KomponTypen)
+        Dim NewKomp As wb_Komponenten = Nothing
+
+        'neuer Rezeptschritt abhängig von der Komponenten-Type
+        Select Case KomponType
+            Case wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
+                NewKomp = wb_Komponenten.ProduktionsStufe
+                _Sollwert = NewKomp.Bezeichung
+                _Einheit = "-"
+                _TA = 0
+            Case wb_Global.KomponTypen.KO_TYPE_KESSEL
+                NewKomp = wb_Komponenten.Kessel
+                _Sollwert = NewKomp.Bezeichung
+                _Einheit = "-"
+                _TA = 0
+            Case wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
+                NewKomp = wb_Komponenten.TextKomponente
+                _Sollwert = NewKomp.Bezeichung
+                _Einheit = "-"
+                _TA = 0
+            Case Else
+                NewKomp = Nothing
+        End Select
+
+        'neue Komponente(Type) anhängen
+        If NewKomp IsNot Nothing Then
+            _parentStep = Parent
+            _Bezeichnung = NewKomp.Bezeichung
+            _Nummer = NewKomp.Nummer
+            _RohNr = NewKomp.Nr
+            _Type = KomponType
+            _ParamNr = 1
+
+            If Not (_parentStep Is Nothing) Then
+                Parent._childSteps.Add(Me)
+            End If
+        End If
+    End Sub
+
+    ''' <summary>
     ''' Fügt einen Rezeptschritt VOR oder NACH dem aktuellen Schritt ein
     ''' </summary>
     ''' <param name="rs"></param>
     Public Sub Insert(rs As wb_Rezeptschritt, InsertAfter As Boolean)
         'Index des aktuellen Rezept-Schritts
         Dim idx As Integer = ParentStep.ChildSteps.IndexOf(Me)
-        'wenn nach dem aktuellen Schritt eingefügt werden soll - Index+1
+        'wenn nach dem aktuellen Schritt eingefügt werden soll - Index + 1
         If InsertAfter Then
             idx += 1
         End If
@@ -314,8 +360,9 @@ Public Class wb_Rezeptschritt
             End Select
         End Get
         Set(value As String)
-            _Sollwert = value
-            'jashdflkajshdlfk
+            If wb_Functions.TypeIstSollMenge(_Type, 1) Or wb_Functions.TypeIstSollWert(_Type, 1) Then
+                _Sollwert = value
+            End If
         End Set
     End Property
 
@@ -886,4 +933,5 @@ Public Class wb_Rezeptschritt
         End If
         Return True
     End Function
+
 End Class

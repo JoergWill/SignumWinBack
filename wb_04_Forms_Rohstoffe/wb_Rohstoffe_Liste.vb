@@ -38,9 +38,11 @@ Public Class wb_Rohstoffe_Liste
         DataGridView.x8859_5_FieldName = "KO_Bezeichnung"
 
         'DataGrid füllen
-        DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffLst, "RohstoffListe")
+        DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffSimpleLst, "RohstoffListe")
         'DataGrid Initialisierung Anzeige ohne Sauerteig, nur aktive Rohstoffe
         Me.Anzeige = AnzeigeFilter.Alle
+
+        AddHandler eEdit_Leave, AddressOf SaveData
     End Sub
 
     Public Sub RefreshData()
@@ -53,6 +55,14 @@ Public Class wb_Rohstoffe_Liste
         DataGridView.UpdateDataBase()
         'Layout sichern
         DataGridView.SaveToDisk("RohstoffListe")
+    End Sub
+
+    'Datensatz in Datenbank sichern
+    Private Sub SaveData()
+        'Daten in Datenbank sichern
+        If RohStoff.SaveData(DataGridView) Then
+            DataGridView.UpdateDataBase()
+        End If
     End Sub
 
     Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged

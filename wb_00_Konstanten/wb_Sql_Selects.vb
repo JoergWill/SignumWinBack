@@ -22,21 +22,30 @@
                                   "FROM Komponenten WHERE KA_RZ_Nr = [0]"
 
     'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
+    Public Const sqlRohstoffSimpleLst = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KO_Type, KA_aktiv, " &
+                                  "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2 FROM Komponenten"
+    'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
     Public Const sqlRohstoffLst = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KO_Type, KA_aktiv, " &
-                                  "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type <> 0"
+                                  "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2, E_Einheit FROM Komponenten " &
+                                  "INNER JOIN KomponTypen On Komponenten.KO_Type = KomponTypen.KT_Typ_Nr " &
+                                  "INNER JOIN Einheiten On KomponTypen.KT_EinheitIndex = Einheiten.E_LfdNr " &
+                                  "WHERE KO_Type <> 0 AND KT_ParamNr = 1"
+
+
+
     'Sql-Statement RohstoffGruppen aus winback.ItemParameter
-    Public Const sqlRohstoffGrp = "SELECT IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
+    Public Const sqlRohstoffGrp = "Select IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
                                   "IP_ItemTyp = 600 And IP_Wert3int = 0 ORDER BY IP_Lfd_Nr DESC"
     'Sql-Statement Rohstoff-Verwendung aus winback.Rezeptschritte
-    Public Const sqlRohstoffUse = "SELECT Rezepte.RZ_Nr, Rezepte.RZ_Nr_AlNum, Rezepte.RZ_Bezeichnung FROM RezeptSchritte INNER JOIN " &
-                                  "Rezepte ON (RezeptSchritte.RS_RZ_Variante_Nr = Rezepte.RZ_Variante_Nr) And (RezeptSchritte.RS_RZ_Nr = Rezepte.RZ_Nr) " &
+    Public Const sqlRohstoffUse = "Select Rezepte.RZ_Nr, Rezepte.RZ_Nr_AlNum, Rezepte.RZ_Bezeichnung FROM RezeptSchritte INNER JOIN " &
+                                  "Rezepte On (RezeptSchritte.RS_RZ_Variante_Nr = Rezepte.RZ_Variante_Nr) And (RezeptSchritte.RS_RZ_Nr = Rezepte.RZ_Nr) " &
                                   "WHERE RezeptSchritte.RS_Ko_Nr= [0] And RezeptSchritte.RS_ParamNr = 1"
     'Sql-Statement Automatik-Rohstoffe aus winback.Lagerorte
-    Public Const sqlRohstoffAct = "SELECT Komponenten.KO_Nr, Lagerorte.LG_aktiv FROM Komponenten " &
-                                  "INNER JOIN Lagerorte ON Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
+    Public Const sqlRohstoffAct = "Select Komponenten.KO_Nr, Lagerorte.LG_aktiv FROM Komponenten " &
+                                  "INNER JOIN Lagerorte On Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
                                   "WHERE KO_TYPE = 101 Or KO_TYPE = 103 Or KO_TYPE = 104"
 
-    Public Const sqlENummern = "SELECT * FROM enummern"
+    Public Const sqlENummern = "Select * FROM enummern"
 
     'Sql-Statement Artikelliste aus winback.Komponenten
     Public Const sqlArtikelLst = "Select KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, " &
@@ -81,12 +90,13 @@
     'Sql-Statement Lesen Komponenten nach KO_Nr (Select KO_Nr=x)
     Public Const sqlSelectKomp_KO_Nr = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "
     Public Const sqlSelectKomp_AlNum = "SELECT * FROM Komponenten WHERE KO_Nr_AlNum = '[0]' "
+    Public Const sqlSelectKomp_KO_Type = "SELECT * FROM Komponenten WHERE KO_Type = [0] "
     'Sql-Statement Update Komponenten nach KO_Nr (Select KO_Nr=x)
     Public Const sqlUpdateKomp_KO_Nr = "UPDATE Komponenten SET [1] WHERE KO_Nr = [0] "
     'Sql-Statement letzte interne Komponenten-Nummer (Max(KO-Nr))
     Public Const sqlMaxKompNummer = "SELECT MAX(KO_Nr) FROM Komponenten"
     'Sql-Statement neue Komponente/Artikel anlegen
-    Public Const sqlAddNewKompon = "INSERT INTO Komponenten(KO_Nr, KO_Nr_AlNum, KO_TYPE, KO_Bezeichnung) VALUES ([0],'[1]',[2],'[3]')"
+    Public Const sqlAddNewKompon = "INSERT INTO Komponenten(KO_Nr, KO_Nr_AlNum, KO_Type, KO_Bezeichnung) VALUES ([0],'[1]',[2],'[3]')"
     'Sql-Statement Verwendung Komponente in Rezeptschritten
     Public Const sqlKompInRezept = "SELECT COUNT(*) AS Used FROM RezeptSchritte WHERE RS_Ko_nr = [0]"
     'Sql-Statement Verwendung Komponente in Arbeits-Rezeptschritten

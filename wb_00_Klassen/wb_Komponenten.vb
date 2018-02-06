@@ -1,4 +1,5 @@
 ﻿Imports MySql.Data.MySqlClient
+Imports WinBack
 Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
@@ -32,6 +33,11 @@ Public Class wb_Komponenten
 
     Public ArtikelChargen As New wb_MinMaxOptCharge
     Public TeigChargen As New wb_MinMaxOptCharge
+
+    Private Shared _ProduktionsStufe As wb_Komponenten
+    Private Shared _Kessel As wb_Komponenten
+    Private Shared _TextKomponente As wb_Komponenten
+
 
     Public Sub Invalid()
         _RezeptNummer = Nothing
@@ -274,6 +280,53 @@ Public Class wb_Komponenten
     Public ReadOnly Property LastErrorText As String
         Get
             Return _LastErrorText
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Standard-Komponente für Produktions-Stufen.
+    ''' Es wird versucht, die erste Komponente mit der passenden Komponenten-Type aus dem Komponenten-Stamm zu lesen. Wenn keine
+    ''' passende Komponente gefunden wurde, wird ein Dummy neu angelegt.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property ProduktionsStufe As wb_Komponenten
+        Get
+            If _ProduktionsStufe Is Nothing Then
+                _ProduktionsStufe = New wb_Komponenten
+                If Not _ProduktionsStufe.MysqldbRead(wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) Then
+                    _ProduktionsStufe.KO_Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
+                    _ProduktionsStufe.Bezeichung = "Produktions-Stufe"
+                    _ProduktionsStufe.Nummer = "PST"
+                    _ProduktionsStufe.Nr = wb_sql_Functions.getNewKomponNummer()
+                End If
+            End If
+            Return _ProduktionsStufe
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property Kessel As wb_Komponenten
+        Get
+            _Kessel = New wb_Komponenten
+            If Not _Kessel.MysqldbRead(wb_Global.KomponTypen.KO_TYPE_KESSEL) Then
+                _Kessel.KO_Type = wb_Global.KomponTypen.KO_TYPE_KESSEL
+                _Kessel.Bezeichung = "Kessel"
+                _Kessel.Nummer = "KSL"
+                _Kessel.Nr = wb_sql_Functions.getNewKomponNummer()
+            End If
+            Return _Kessel
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property TextKomponente As wb_Komponenten
+        Get
+            _TextKomponente = New wb_Komponenten
+            If Not _TextKomponente.MysqldbRead(wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE) Then
+                _TextKomponente.KO_Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
+                _TextKomponente.Bezeichung = "Text"
+                _TextKomponente.Nummer = "TXT"
+                _TextKomponente.Nr = wb_sql_Functions.getNewKomponNummer()
+            End If
+            Return _TextKomponente
         End Get
     End Property
 
@@ -523,6 +576,24 @@ Public Class wb_Komponenten
             End If
         End If
         winback.Close()
+        Return False
+    End Function
+
+    Public Function MysqldbRead(KomponType As wb_Global.KomponTypen)
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+        'Suche nach dem ersten Datensatz mit dieser Komponenten-Type
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_KO_Type, wb_Functions.KomponTypeToInt(KomponType))
+
+        'ersten Datensatz aus Tabelle Komponenten lesen
+        If winback.sqlSelect(sql) Then
+            If winback.Read Then
+                MySQLdbRead(winback.MySqlRead)
+                winback.CloseRead()
+                Return True
+            End If
+        End If
         Return False
     End Function
 

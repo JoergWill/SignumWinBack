@@ -10,6 +10,20 @@ Public Class wb_Rohstoff
     Private KA_Preis As String
     Private KA_Grp1 As Integer
     Private KA_Grp2 As Integer
+    Private DataHasChanged As Boolean = False
+
+    ''' <summary>
+    ''' Eine der Rohstoff-Eigenschaften wurde geändert
+    ''' </summary>
+    ''' <returns>
+    ''' True  - Eingenschaften sind geändert worden, der Datensatz muss gespeichert werden
+    ''' False - keine Änderung, kein Speichern notwendig
+    '''     </returns>
+    Public ReadOnly Property Changed As Boolean
+        Get
+            Return DataHasChanged
+        End Get
+    End Property
 
     Public ReadOnly Property Nr As Integer
         Get
@@ -26,6 +40,7 @@ Public Class wb_Rohstoff
     Public Property Nummer As String
         Set(value As String)
             KO_Nr_AlNum = value
+            DataHasChanged = True
         End Set
         Get
             Return KO_Nr_AlNum
@@ -34,6 +49,7 @@ Public Class wb_Rohstoff
     Public Property Bezeichung As String
         Set(value As String)
             KO_Bezeichnung = value
+            DataHasChanged = True
         End Set
         Get
             Return KO_Bezeichnung
@@ -42,6 +58,7 @@ Public Class wb_Rohstoff
     Public Property Kommentar As String
         Set(value As String)
             KO_Kommentar = value
+            DataHasChanged = True
         End Set
         Get
             Return KO_Kommentar
@@ -50,6 +67,7 @@ Public Class wb_Rohstoff
     Public Property Preis As String
         Set(value As String)
             KA_Preis = value
+            DataHasChanged = True
         End Set
         Get
             'Zahlenwerte aus der Datenbank immer inm Format de-DE
@@ -79,6 +97,19 @@ Public Class wb_Rohstoff
         KA_Grp1 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp1"))
         KA_Grp2 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp2"))
     End Sub
+
+    Friend Function SaveData(dataGridView As wb_DataGridView) As Boolean
+        If DataHasChanged Then
+            dataGridView.Field("KO_Nr_AlNum") = KO_Nr_AlNum
+            dataGridView.Field("KO_Bezeichnung") = KO_Bezeichnung
+            dataGridView.Field("KO_Kommentar") = KO_Kommentar
+            dataGridView.Field("KA_Preis") = KA_Preis
+            DataHasChanged = False
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 End Class
 
 'CREATE TABLE winback.Komponenten (

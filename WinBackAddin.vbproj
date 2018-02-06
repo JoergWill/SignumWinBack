@@ -437,6 +437,12 @@
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.Designer.vb">
+      <DependentUpon>wb_Rohstoff_AuswahlListe.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_05_Forms_User\ob_User_DockingExtension.vb" />
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_Gruppe.vb" />
@@ -717,6 +723,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.resx">
       <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.resx">
+      <DependentUpon>wb_Rohstoff_AuswahlListe.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.resx">
       <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>

@@ -473,7 +473,7 @@ Public Class wb_Rezept
         Dim Root As wb_Rezeptschritt = _RootRezeptSchritt
 
         'Schleife über alle Rezeptschritt-Datensätze
-        'Bis alle Datensätze eingelesen sind
+        'bis alle Datensätze eingelesen sind
         Do
             'Rezeptschritt - Anzahl der Felder im DataSet
             For i = 0 To sqlReader.FieldCount - 1

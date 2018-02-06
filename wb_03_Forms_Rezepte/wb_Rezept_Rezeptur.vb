@@ -12,6 +12,9 @@ Public Class wb_Rezept_Rezeptur
     Private _RzVariante As Integer
     Private _RzHinweiseChanged As Boolean
 
+    Private _RezeptSchritt As wb_Rezeptschritt = Nothing
+    Private _RezeptSchrittNeu As wb_Rezeptschritt = Nothing
+
     ''' <summary>
     ''' Objekt Rezeptur instanzieren
     ''' </summary>
@@ -64,6 +67,8 @@ Public Class wb_Rezept_Rezeptur
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
         'alle Zeilen aufklappen
         VirtualTree.RootRow.ExpandChildren(True)
+        'falls keine Rezeptschritte vorhanden sind muss das Popup-Menu ausserhalb erstellt werden
+        VT_MakeTreePopup()
 
         'Gesamt-Rohstoffpreis der Rezeptur (aktuell berechnet)
         tbRzPreis.Text = wb_Functions.FormatStr(Rezept.RezeptPreis, 2)
@@ -282,22 +287,299 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub VirtualTree_GetContextMenuStrip(sender As Object, e As GetContextMenuStripEventArgs) Handles VirtualTree.GetContextMenuStrip
-        VTPopUpMenu.Items.Clear()
-        Dim o As wb_Rezeptschritt = DirectCast(e.Row.Item, wb_Rezeptschritt)
-        Debug.Print(o.Bezeichnung)
+        'aktuell ausgewählten Rezeptschritt merken (Popup)
+        _RezeptSchritt = DirectCast(e.Row.Item, wb_Rezeptschritt)
+        'Popup-Menu wird dynamisch erzeugt
+        VT_MakeTreePopup()
+    End Sub
+
+    Private Sub VTP_NeuProduktionsStufe(sender As Object, e As EventArgs)
+
+        Dim rs As wb_Rezeptschritt
+        Debug.Print(_RezeptSchritt.Bezeichnung)
         'o.Delete()
         'VirtualTree.Invalidate()
         'VirtualTree.DataSource = Rezept.RootRezeptSchritt
 
-        Dim rs As New wb_Rezeptschritt(Nothing, "TEST insert")
-        rs.RohNr = 735
-        rs.ParamNr = 1
-        rs.Sollwert = "0,000"
+        Dim RohstoffAuswahl As New wb_Rohstoff_AuswahlListe
+        If RohstoffAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Dim RohNr As Integer = RohstoffAuswahl.RohstoffNr
+            Dim RohNummer As String = RohstoffAuswahl.RohstoffNummer
+            Dim RohName As String = RohstoffAuswahl.RohstoffName
 
-        o.Insert(rs, True)
+            rs = New wb_Rezeptschritt(Nothing, RohName)
+            rs.RohNr = RohNr
+            rs.ParamNr = 1
+            rs.Sollwert = "0,000"
+            rs.Bezeichnung = RohName
+            rs.Nummer = RohNummer
+
+            _RezeptSchritt.Insert(rs, True)
+            VirtualTree.Invalidate()
+            VirtualTree.DataSource = Rezept.RootRezeptSchritt
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Neue Komponente(Auswahl) in leeres Rezept ein- oder an eine Rezeptur anfügen (Click in das leere Feld unterhalb VirtualTree)
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_NeueKomponente(Sender As Object, e As EventArgs)
+        'Auswahlliste Rohstoff
+        If VT_AuswahlRohstoff() Then
+            _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, _RezeptSchrittNeu.Bezeichnung)
+            _RezeptSchritt.CopyFrom(_RezeptSchrittNeu)
+            _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count
+            VT_Aktualisieren()
+        End If
+    End Sub
+
+
+    ''' <summary>
+    ''' Neue Komponente(Auswahl) vor der aktuellen Zeile einfügen
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_NeueKomponenteDavor(Sender As Object, e As EventArgs)
+        'Auswahlliste Rohstoff
+        If VT_AuswahlRohstoff() Then
+            _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
+            VT_Aktualisieren()
+        End If
+    End Sub
+
+
+    ''' <summary>
+    ''' Neue Komponente(Auswahl) nach der aktuellen Zeile einfügen
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_NeueKomponenteDanach(Sender As Object, e As EventArgs)
+        'Auswahlliste Rohstoff
+        If VT_AuswahlRohstoff() Then
+            _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
+            VT_Aktualisieren()
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Neue Produktions-Stufe in ein leeres Rezept ein- oder an eine Rezeptur anfügen (Click in das leere Feld unterhalb VirtualTree)
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_NeueProduktionsStufe(Sender As Object, e As EventArgs)
+        _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE)
+        _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count
+        VT_Aktualisieren()
+    End Sub
+
+    ''' <summary>
+    ''' Neue Text-Komponente in ein leeres Rezept ein- oder an eine Rezeptur anfügen (Click in das leere Feld unterhalb VirtualTree)
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_NeueTextKomponente(Sender As Object, e As EventArgs)
+        _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE)
+        _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count
+        VT_Aktualisieren()
+    End Sub
+
+    Private Sub VTP_Delete(Sender As Object, e As EventArgs)
+        _RezeptSchritt.Delete()
+        VT_Aktualisieren()
+    End Sub
+    ''' <summary>
+    ''' Anzeige der Rohstoff-Liste. 
+    ''' Auswahl eines Rohstoffes für die Funktionen Einfügen, Anfügen, ..
+    ''' </summary>
+    ''' <returns></returns>
+    Private Function VT_AuswahlRohstoff() As Boolean
+        'Rohstoff-Auswahl-Liste
+        Dim RohstoffAuswahl As New wb_Rohstoff_AuswahlListe
+        If RohstoffAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, RohstoffAuswahl.RohstoffName)
+            _RezeptSchrittNeu.RohNr = RohstoffAuswahl.RohstoffNr
+            _RezeptSchrittNeu.ParamNr = 1
+            _RezeptSchrittNeu.Sollwert = "0,000"
+            _RezeptSchrittNeu.Nummer = RohstoffAuswahl.RohstoffNummer
+            _RezeptSchrittNeu.Type = RohstoffAuswahl.RohstoffType
+            _RezeptSchrittNeu.Einheit = RohstoffAuswahl.RohstoffEinheit
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Anzeige im Virtual-Tree aktualisieren
+    ''' </summary>
+    Private Sub VT_Aktualisieren()
         VirtualTree.Invalidate()
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
+    End Sub
 
-        VTPopUpMenu.Items.Add("TEST" & o.Bezeichnung)
+    Private Sub VT_MakeTreePopup()
+        'Größe des Arrays entspricht der Anzahl der Einträge in der Enumeration in wb_global
+        Dim _PopupFunctions([Enum].GetValues(GetType(wb_Global.TPopupFunctions)).Length + 1) As Boolean
+
+        'Sonderfall - das Rezept ist leer
+        If _RezeptSchritt Is Nothing Then
+            _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe) = True
+            _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente) = True
+            _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente) = True
+        Else
+            'Type des aktuell ausgewählten Rezeptschrittes
+            Dim rsTypeAkt As wb_Global.KomponTypen = _RezeptSchritt.Type
+
+            'Popup-Menu wird abhängig von der ausgewählten Zeile dynamisch erstellt
+            Select Case rsTypeAkt
+
+                Case wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Davor) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Danach) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Danach) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
+
+                Case wb_Global.KomponTypen.KO_TYPE_KESSEL
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Davor) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Danach) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
+
+                Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
+
+                Case wb_Global.KomponTypen.KO_TYPE_KNETER
+
+                Case Else
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Davor) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) = True
+                    '_PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Darunter) = True
+                    '_PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Davor) = True
+
+            End Select
+
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Darunter) = True
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) = True
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Darunter) = True
+
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_Editieren) = True
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_TTS_loeschen) = True
+
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_Verschieben_Oben) = True
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_Verschieben_Unten) = True
+
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_TeigTemp) = True
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_RohstoffVerwaltung) = True
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_Naehrwerte_Laden) = True
+            '_PopupFunctions(wb_Global.TPopupFunctions.TP_QuidDeklaration) = True
+
+        End If
+
+        'Popup-Menu erstellen
+        VTPopUpMenu.Items.Clear()
+        'Neue Produktions-Stufe
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe) Then
+            VTPopUpMenu.Items.Add("Neue Produktions-Stufe", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'Neue Produktions-Stufe danach
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Davor) Then
+            VTPopUpMenu.Items.Add("Neue Produktions-Stufe davor", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'Neue Produktions-Stufe davor
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Danach) Then
+            VTPopUpMenu.Items.Add("Neue Produktions-Stufe danach", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+
+        'Neuer Kessel nach der Produktions-Stufe
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Darunter) Then
+            VTPopUpMenu.Items.Add("Neuer Kessel", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'Neuer Kessel davor
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Davor) Then
+            VTPopUpMenu.Items.Add("Neuer Kessel davor", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'Neuer Kessel danach
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Danach) Then
+            VTPopUpMenu.Items.Add("Neuer Kessel danach", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+
+        'Neue Textkomponente
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente) Then
+            VTPopUpMenu.Items.Add("Neue Textkomponente", Nothing, AddressOf VTP_NeueTextKomponente)
+        End If
+        'Neue Textkomponente am Ende anfügen
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Darunter) Then
+            VTPopUpMenu.Items.Add("Neue Textkomponente anfügen", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'Neue Textkomponente davor
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Davor) Then
+            VTPopUpMenu.Items.Add("Neue Textkomponente davor", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'Neue Textkomponente danach
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) Then
+            VTPopUpMenu.Items.Add("Neue Textkomponente danach", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+
+        'Neue Komponente
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente) Then
+            VTPopUpMenu.Items.Add("Neue Komponente", Nothing, AddressOf VTP_NeueKomponente)
+        End If
+        'Neue Komponente am Ende anfügen
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Darunter) Then
+            VTPopUpMenu.Items.Add("Neue Komponente anfügen", Nothing, AddressOf VTP_NeueKomponenteDanach)
+        End If
+        'Neue Komponente davor
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Davor) Then
+            VTPopUpMenu.Items.Add("Neue Komponente davor", Nothing, AddressOf VTP_NeueKomponenteDavor)
+        End If
+        'Neue Komponente danach
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) Then
+            VTPopUpMenu.Items.Add("Neue Komponente danach", Nothing, AddressOf VTP_NeueKomponenteDanach)
+        End If
+
+        'Bearbeiten
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_Editieren) Then
+            VTPopUpMenu.Items.Add("Bearbeiten", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'Löschen
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) Then
+            VTPopUpMenu.Items.Add("Löschen", Nothing, AddressOf VTP_Delete)
+        End If
+        'TTS-Parameter löschen
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_TTS_loeschen) Then
+            VTPopUpMenu.Items.Add("Reset TTS-Parameter", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+
+        'Nach oben verschieben
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_Verschieben_Oben) Then
+            VTPopUpMenu.Items.Add("Zeile nach oben verschieben", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'Nach unten verschieben
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_Verschieben_Unten) Then
+            VTPopUpMenu.Items.Add("Zeile nach unten verschieben", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+
+        'Anzeige Teigtemperatur-Parameter
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_TeigTemp) Then
+            VTPopUpMenu.Items.Add("Anzeige der TTS-Parameter", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+
+        'Rohstoff-Verwaltung
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_RohstoffVerwaltung) Then
+            VTPopUpMenu.Items.Add("Rohstoff-Verwaltung", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'Nährwerte laden
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_Naehrwerte_Laden) Then
+            VTPopUpMenu.Items.Add("Nährwerte aktualisieren", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'QUID-Deklaration
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_QuidDeklaration) Then
+            VTPopUpMenu.Items.Add("QUID relevant", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+
+
+
+
     End Sub
 End Class
