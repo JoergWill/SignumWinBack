@@ -28,6 +28,7 @@ Public Class wb_Rezept
     Private _Charge_Min As Double
     Private _Charge_Max As Double
     Private _Charge_Opt As Double
+    Private DataHasChanged As Boolean = False
 
     Private _RootRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
     Private _SQLRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
@@ -221,6 +222,7 @@ Public Class wb_Rezept
         End Get
         Set(value As String)
             _RezeptNummer = value
+            DataHasChanged = True
         End Set
     End Property
 
@@ -230,6 +232,7 @@ Public Class wb_Rezept
         End Get
         Set(value As String)
             _RezeptBezeichnung = value
+            DataHasChanged = True
         End Set
     End Property
 
@@ -254,6 +257,7 @@ Public Class wb_Rezept
         End Get
         Set(value As Integer)
             _LinienGruppe = value
+            DataHasChanged = True
         End Set
     End Property
 
@@ -263,6 +267,7 @@ Public Class wb_Rezept
         End Get
         Set(value As String)
             _RezeptKommentar = value
+            DataHasChanged = True
         End Set
     End Property
 
@@ -404,6 +409,39 @@ Public Class wb_Rezept
         'Rezeptkopf mit Variante x aus der Datenbank einlesen
         MySQLdbSelect_RzKopf(RzNr, 1)
     End Sub
+
+    Public Sub New()
+        'Erzeugt eine zunächst 'leere' Hülle ohne Daten
+    End Sub
+
+    Friend Sub LoadData(dataGridView As wb_DataGridView)
+        _RezeptNr = dataGridView.iField("RZ_Nr")
+        _RezeptGewicht = dataGridView.Field("RZ_Gewicht")
+        _RezeptVariante = dataGridView.iField("RZ_Variante_Nr")
+
+        RezeptNummer = dataGridView.Field("RZ_Nr_AlNum")
+        RezeptBezeichnung = dataGridView.Field("RZ_Bezeichnung")
+        RezeptKommentar = dataGridView.Field("RZ_Kommentar")
+        LinienGruppe = dataGridView.iField("RZ_Liniengruppe")
+
+        AenderungNummer = dataGridView.iField("RZ_Aenderung_Nr")
+        AenderungDatum = dataGridView.Field("RZ_Aenderung_Datum")
+        AenderungName = dataGridView.Field("RZ_Aenderung_Name")
+        DataHasChanged = False
+    End Sub
+
+    Friend Function SaveData(dataGridView As wb_DataGridView) As Boolean
+        If DataHasChanged Then
+            dataGridView.Field("RZ_Nr_AlNum") = RezeptNummer
+            dataGridView.Field("RZ_Bezeichnung") = RezeptBezeichnung
+            dataGridView.Field("RZ_Kommentar") = RezeptKommentar
+            dataGridView.Field("RZ_Liniengruppe") = LinienGruppe
+            DataHasChanged = False
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
     ''' <summary>
     ''' Liest die Rezeptkopfdaten der RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht

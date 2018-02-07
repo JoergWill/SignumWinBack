@@ -15,33 +15,39 @@ Public Class wb_Rezept_Details
 
     Public Sub DetailInfo()
         'Rezept-Nummer
-        tRezeptNr.Text = wb_Rezept_Shared.aktRzNummer
+        tRezeptNr.Text = wb_Rezept_Shared.Rezept.RezeptNummer
         'Rezept-Bezeichnung
-        tRezeptName.Text = wb_Rezept_Shared.aktRzName
+        tRezeptName.Text = wb_Rezept_Shared.Rezept.RezeptBezeichnung
         'Rezept-Kommentar
-        tRezeptKommentar.Text = wb_Rezept_Shared.aktRzKommentar
+        tRezeptKommentar.Text = wb_Rezept_Shared.Rezept.RezeptKommentar
         'Rezept-Gewicht
-        tRezeptGewicht.Text = Format(wb_Rezept_Shared.aktRzGewicht, "####.000")
+        tRezeptGewicht.Text = Format(wb_Rezept_Shared.Rezept.RezeptGewicht, "####.000")
 
         'letzte Änderung Nummer
-        tChangeNr.Text = wb_Rezept_Shared.aktChangeNr.ToString
+        tChangeNr.Text = wb_Rezept_Shared.Rezept.AenderungNummer.ToString
         'letzte Änderung Datum
-        tChangeDatum.Text = wb_Rezept_Shared.aktChangeDatum
+        tChangeDatum.Text = wb_Rezept_Shared.Rezept.AenderungNummer
         'letzte Änderung Name
-        tChangeName.Text = wb_Rezept_Shared.aktChangeName
+        tChangeName.Text = wb_Rezept_Shared.Rezept.AenderungName
 
         'Minimal-Charge
-        tChargeMin.Text = Format(wb_Rezept_Shared.aktChargeMin, "####.000")
+        tChargeMin.Text = Format(wb_Rezept_Shared.Rezept.MinChargekg, "####.000")
         'Maximal-Charge
-        tChargeMax.Text = Format(wb_Rezept_Shared.aktChargeMax, "####.000")
+        tChargeMax.Text = Format(wb_Rezept_Shared.Rezept.MaxChargekg, "####.000")
         'Optimal-Charge
-        tChargeOpt.Text = Format(wb_Rezept_Shared.aktChargeOpt, "####.000")
+        tChargeOpt.Text = Format(wb_Rezept_Shared.Rezept.OptChargekg, "####.000")
 
         'Eintrag in Combo-Box Liniengruppe ausfüllen
-        cbLiniengruppe.SetTextFromKey(wb_Rezept_Shared.aktRzLinienGrp)
+        cbLiniengruppe.SetTextFromKey(wb_Rezept_Shared.Rezept.LinienGruppe)
         'Eintrag in Combo-Box Rezeptvariante ausfüllen
-        cbVariante.SetTextFromKey(wb_Rezept_Shared.aktRzVariante)
+        cbVariante.SetTextFromKey(wb_Rezept_Shared.Rezept.LinienGruppe)
 
+    End Sub
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRezeptNr.Leave, tRezeptName.Leave, tRezeptKommentar.Leave
+        wb_Rezept_Shared.Rezept.RezeptBezeichnung = tRezeptName.Text
+        wb_Rezept_Shared.Rezept.RezeptKommentar = tRezeptKommentar.Text
+        wb_Rezept_Shared.Rezept.RezeptNummer = tRezeptNr.Text
+        wb_Rezept_Shared.Edit_Leave(sender)
     End Sub
 
 End Class

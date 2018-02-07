@@ -6,22 +6,23 @@ Public Class wb_Rezept_Shared
 
     Public Shared RzVariante As New SortedList
     'Public Shared LinienGruppe As New SortedList
+    Public Shared Rezept As New wb_Rezept
 
-    Public Shared aktRzNr As Integer            'Rezept-Index
-    Public Shared aktRzNummer As String         'Rezept-Nummer  (alpha)
-    Public Shared aktRzName As String           'Rezept-Name    (alpha)
-    Public Shared aktRzKommentar As String
-    Public Shared aktRzGewicht As Double
-    Public Shared aktRzLinienGrp As Integer
-    Public Shared aktRzVariante As Integer
+    'Public Shared aktRzNr As Integer            'Rezept-Index
+    'Public Shared aktRzNummer As String         'Rezept-Nummer  (alpha)
+    'Public Shared aktRzName As String           'Rezept-Name    (alpha)
+    'Public Shared aktRzKommentar As String
+    'Public Shared aktRzGewicht As Double
+    'Public Shared aktRzLinienGrp As Integer
+    'Public Shared aktRzVariante As Integer
 
-    Public Shared aktChangeNr As Integer
-    Public Shared aktChangeDatum As String
-    Public Shared aktChangeName As String
+    'Public Shared aktChangeNr As Integer
+    'Public Shared aktChangeDatum As String
+    'Public Shared aktChangeName As String
 
-    Public Shared aktChargeMin As Double
-    Public Shared aktChargeMax As Double
-    Public Shared aktChargeOpt As Double
+    'Public Shared aktChargeMin As Double
+    'Public Shared aktChargeMax As Double
+    'Public Shared aktChargeOpt As Double
 
     Public Sub New()
         LoadVariantenTexte()
