@@ -572,6 +572,7 @@ Partial Class WinBack
         Me.rbRohstoffeNeu.MinimumSize = New System.Drawing.Size(65, 0)
         Me.rbRohstoffeNeu.SmallImage = CType(resources.GetObject("rbRohstoffeNeu.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRohstoffeNeu, "rbRohstoffeNeu")
+        Me.rbRohstoffeNeu.Value = "NEW"
         '
         'rbRohstoffeBearbeiten
         '
@@ -586,6 +587,7 @@ Partial Class WinBack
         Me.rbRohstoffeLöschen.MinimumSize = New System.Drawing.Size(65, 0)
         Me.rbRohstoffeLöschen.SmallImage = CType(resources.GetObject("rbRohstoffeLöschen.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRohstoffeLöschen, "rbRohstoffeLöschen")
+        Me.rbRohstoffeLöschen.Value = "DELETE"
         '
         'rpRohstoffeAnsicht
         '
@@ -620,6 +622,7 @@ Partial Class WinBack
         Me.rbRohstoffeVerwendung.MinimumSize = New System.Drawing.Size(70, 0)
         Me.rbRohstoffeVerwendung.SmallImage = CType(resources.GetObject("rbRohstoffeVerwendung.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRohstoffeVerwendung, "rbRohstoffeVerwendung")
+        Me.rbRohstoffeVerwendung.Value = "OPENVERWENDUNG"
         '
         'rbRohstoffeLieferungen
         '

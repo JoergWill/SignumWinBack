@@ -42,6 +42,11 @@ Public Class Rohstoffe_Main
                 RohstoffParameter = New wb_Rohstoffe_Parameter
                 RohstoffParameter.Show(DockPanel, DockState.DockLeft)
                 Return True
+
+            Case "NEW"
+                RohstoffNeuAnlegen()
+            Case "DELETE"
+                RohstoffLöschen()
             Case Else
                 Return False
         End Select
@@ -102,5 +107,25 @@ Public Class Rohstoffe_Main
         'alle erzeugten Fenster wieder schliessen
         RohstoffDetails.Close()
         RohstoffListe.Close()
+    End Sub
+
+    Public Sub RohstoffNeuAnlegen()
+        Dim Komponente As New wb_Komponenten
+        Dim KompNrNeu As Integer = Komponente.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE)
+        RohstoffListe.RefreshData(KompNrNeu)
+        Komponente = Nothing
+    End Sub
+
+    Public Sub RohstoffLöschen()
+        Dim Komponente As New wb_Komponenten
+        Dim KompNrDel As Integer = wb_Rohstoffe_Shared.RohStoff.Nr
+        If Komponente.MySQLdbCanBeDeleted(KompNrDel) Then
+            Komponente.Nr = KompNrDel
+            Komponente.MySQLdbDelete()
+            RohstoffListe.RefreshData()
+        Else
+            MsgBox(Komponente.LastErrorText)
+        End If
+        Komponente = Nothing
     End Sub
 End Class

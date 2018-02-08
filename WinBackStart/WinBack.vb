@@ -524,7 +524,8 @@ Public Class WinBack
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienDrucken.Click, rbLinienDel.Click, rbLinienAuto.Click, rbLinienAdd.Click,
-                                                                          rbUserRemove.Click, rbUserNeu.Click, rbUserChangePass.Click, rbUserDrucken.Click
+                                                                          rbUserRemove.Click, rbUserNeu.Click, rbUserChangePass.Click, rbUserDrucken.Click,
+                                                                          rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeVerwendung.Click
         Dim Cmd As String = DirectCast(sender, RibbonButton).Value
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")
