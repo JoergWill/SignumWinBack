@@ -295,6 +295,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_AktRechte.vb" />
+    <Compile Include="wb_00_Klassen\wb_AktSysKonfig.vb" />
     <Compile Include="wb_00_Klassen\wb_EditControl.Designer.vb">
       <DependentUpon>wb_EditControl.vb</DependentUpon>
     </Compile>
@@ -847,7 +849,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="winback.ini" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MySql_Dump.bat">

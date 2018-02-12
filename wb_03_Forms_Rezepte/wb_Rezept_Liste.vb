@@ -3,6 +3,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Rezept_Liste
     Inherits DockContent
+    Const ColumnRzNr = 0
 
     'Event Form wird geladen
     Private Sub wb_Rezept_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -25,6 +26,13 @@ Public Class wb_Rezept_Liste
     Public Sub RefreshData()
         'Daten neu einlesen
         DataGridView.RefreshData()
+    End Sub
+
+    Public Sub RefreshData(RezeptNr As Integer)
+        DataGridView.RefreshData()
+        DataGridView.SelectData(ColumnRzNr, RezeptNr.ToString)
+        'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
+        wb_Rezept_Shared.Liste_Click(Nothing)
     End Sub
 
     'Event Form wird geschlossen

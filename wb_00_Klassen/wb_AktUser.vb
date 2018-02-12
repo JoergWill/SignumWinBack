@@ -1,13 +1,13 @@
 ﻿Imports System.Windows.Forms
 
 Public Class wb_AktUser
+    Inherits wb_AktRechte
 
     Private Shared _SuperUser As Boolean = False
     Private Shared _UserNr As Integer = -1
     Private Shared _UserName As String = ""
     Private Shared _UserGruppe As Integer = -1
     Private Shared _UserLanguage As String = ""
-    Private Shared _UserGruppenRechte As New Dictionary(Of Integer, Boolean)
 
     Public Shared Property UserNr As Integer
         Get
@@ -33,7 +33,7 @@ Public Class wb_AktUser
         End Get
         Set(value As Integer)
             _UserGruppe = value
-            UpdateUserGruppenRechteTabelle()
+            UpdateUserGruppenRechteTabelle(_UserGruppe)
         End Set
     End Property
 
@@ -112,40 +112,10 @@ Public Class wb_AktUser
         winback.Close()
     End Sub
 
-    Private Shared Sub UpdateUserGruppenRechteTabelle()
-        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
-        Dim Tag As Integer
-        Dim GrpRecht As Integer
-
-        _UserGruppenRechte.Clear()
-        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserGrpRechte, UserGruppe))
-
-        While winback.Read
-            Tag = winback.iField("IP_ItemID")
-            GrpRecht = winback.iField("IP_Wert2int")
-            _UserGruppenRechte.Add(Tag, (GrpRecht > 0))
-        End While
-
-        'Verbindung wieder schliessen
-        winback.Close()
-    End Sub
-
-    Private Shared Function RechtOK(Tag As String) As Boolean
-        Dim t As Integer = wb_Functions.StrToInt(Tag)
-        If t = 0 Or _SuperUser Then
-            Return True
-        Else
-            If _UserGruppenRechte.TryGetValue(t - 100, RechtOK) Then
-                Return RechtOK
-            Else
-                Return False
-            End If
-        End If
-    End Function
-
     ''' <summary>
     ''' Blendet die einzelnen Elemente abhängig von den User-Rechten der Gruppe ein bzw. aus
     ''' Alle Controls mit Tag ungleich 0 werden bearbeitet.
+    ''' In wb_AktSysKonfig.SysKonfigOK() steht die globale System-Konfiguration (User-Gruppe -1)
     ''' 
     ''' Die Rechte für die einzelnen Gruppe kommen aus der Tabelle winback.ItemParameter(IP_ItemTyp=2)
     ''' Die TagNummer der Controls ist winback-ItemParameter.IP_ItemID + 100
@@ -189,7 +159,7 @@ Public Class wb_AktUser
 
         'Schleife über alle Controls
         For Each ctrl As Control In m_Control.Controls
-            ctrl.Enabled = RechtOK(ctrl.Tag)
+            ctrl.Enabled = RechtOK(ctrl.Tag, _SuperUser) And wb_AktSysKonfig.SysKonfigOK(ctrl.Tag)
 
             'Rekursiver Aufruf bei verschachtelten Controls
             If ctrl.Controls.Count > 0 Then
@@ -199,16 +169,15 @@ Public Class wb_AktUser
             'Sonderfunktion für Ribbon, RibbonTab, RibbonPanel und RibbonItem
             If ctrl.GetType().Equals(GetType(Ribbon)) Then
                 For Each rTab As RibbonTab In DirectCast(ctrl, Ribbon).Tabs
-                    rTab.Visible = RechtOK(rTab.Tag)
+                    rTab.Visible = RechtOK(rTab.Tag, _SuperUser) And wb_AktSysKonfig.SysKonfigOK(rTab.Tag)
                     For Each rPnl As RibbonPanel In rTab.Panels
-                        rPnl.Enabled = RechtOK(rPnl.Tag)
+                        rPnl.Enabled = RechtOK(rPnl.Tag, _SuperUser) And wb_AktSysKonfig.SysKonfigOK(rPnl.Tag)
                         For Each rBtn As RibbonItem In rPnl.Items
-                            rBtn.Enabled = RechtOK(rBtn.Tag)
+                            rBtn.Enabled = RechtOK(rBtn.Tag, _SuperUser) And wb_AktSysKonfig.SysKonfigOK(rBtn.Tag)
                         Next
                     Next
                 Next
             End If
         Next
     End Sub
-
 End Class

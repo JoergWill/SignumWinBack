@@ -444,6 +444,31 @@ Public Class wb_Rezept
     End Function
 
     ''' <summary>
+    ''' Rezeptkopf-Datensatz neu anlegen
+    ''' Es wird nur die Rezept-Nummer (intern) angelegt.
+    ''' Die Komponenten-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit
+    ''' 
+    ''' Alle weiteren Rezept-Daten werden mit MySQLdbUpdate eingetragen.
+    ''' </summary>
+    ''' <returns>Integer - neu anglegte (interne) Rezept-Nummer</returns>
+    Public Function MySQLdbNew(Variante As Integer) As Integer
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'interne Rezept-Nummer ermitteln aus max(RZ_NR)
+        _RezeptNr = wb_sql_Functions.getNewRezeptNummer()
+        'Variante
+        _RezeptVariante = Variante
+        'Liniengruppe
+        _LinienGruppe = 1
+
+        'Datensatz neu anlegen
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewRezept, _RezeptNr, _RezeptVariante, "Neu angelegt " & Date.Now))
+        winback.Close()
+        'neuen KompNummer zurückgeben
+        Return _RezeptNr
+    End Function
+
+    ''' <summary>
     ''' Liest die Rezeptkopfdaten der RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht
     ''' existiert, wird die Variante 1 gelesen (Standard-Variante). Wenn Variante 1 nicht exisitiert (Sauerteig-Rezept) wird Variante 0
     ''' gelesen. Die entsprechende Variante wird (byRef) korrigiert.

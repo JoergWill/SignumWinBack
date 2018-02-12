@@ -11,9 +11,9 @@
 Public Class Rohstoffe_Main
 
     Public RohstoffListe As New wb_Rohstoffe_Liste
-    Public RohstoffDetails As New wb_Rohstoffe_Details
-    Public RohstoffVerwendung As New wb_Rohstoffe_Verwendung
-    Public RohstoffParameter As New wb_Rohstoffe_Parameter
+    Public RohstoffDetails As wb_Rohstoffe_Details
+    Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
+    Public RohstoffParameter As wb_Rohstoffe_Parameter
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -70,16 +70,19 @@ Public Class Rohstoffe_Main
     ''' <returns></returns>
     Public Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "WinBack.wb_Rohstoff_Liste"
+            Case "WinBack.wb_Rohstoffe_Liste"
                 _DockPanelList.Add(RohstoffListe)
                 Return RohstoffListe
-            Case "WinBack.wb_Rohstoff_Details"
+            Case "WinBack.wb_Rohstoffe_Details"
+                RohstoffDetails = New wb_Rohstoffe_Details
                 _DockPanelList.Add(RohstoffDetails)
                 Return RohstoffDetails
-            Case "WinBack.wb_Rohstoff_Verwendung"
+            Case "WinBack.wb_Rohstoffe_Verwendung"
+                RohstoffVerwendung = New wb_Rohstoffe_Verwendung
                 _DockPanelList.Add(RohstoffVerwendung)
                 Return RohstoffVerwendung
-            Case "WinBack.wb_Rohstoff_Parameter"
+            Case "WinBack.wb_Rohstoffe_Parameter"
+                RohstoffParameter = New wb_Rohstoffe_Parameter
                 _DockPanelList.Add(RohstoffParameter)
                 Return RohstoffParameter
             Case Else
@@ -105,8 +108,12 @@ Public Class Rohstoffe_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        RohstoffDetails.Close()
-        RohstoffListe.Close()
+        If RohstoffDetails IsNot Nothing Then
+            RohstoffDetails.Close()
+        End If
+        If RohstoffListe IsNot Nothing Then
+            RohstoffListe.Close()
+        End If
     End Sub
 
     Public Sub RohstoffNeuAnlegen()

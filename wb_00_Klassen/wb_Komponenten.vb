@@ -510,7 +510,7 @@ Public Class wb_Komponenten
     End Sub
 
     ''' <summary>
-    ''' Kompoenten-Datensatz neu anlegen
+    ''' Komponenten-Datensatz neu anlegen
     ''' Es werden nur die Komponenten-Nummern (intern/extern) und die Komponenten-Type angelegt.
     ''' Die Komponenten-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit
     ''' 

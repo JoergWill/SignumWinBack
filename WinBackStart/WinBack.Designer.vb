@@ -149,6 +149,12 @@ Partial Class WinBack
         Me.rbES = New System.Windows.Forms.RibbonOrbRecentItem()
         Me.rbSK = New System.Windows.Forms.RibbonOrbRecentItem()
         Me.rbRO = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.rbAbout = New System.Windows.Forms.RibbonTab()
+        Me.rbAnmelden = New System.Windows.Forms.RibbonPanel()
+        Me.rbLogin = New System.Windows.Forms.RibbonButton()
+        Me.rbClose = New System.Windows.Forms.RibbonButton()
+        Me.rbVersion = New System.Windows.Forms.RibbonPanel()
+        Me.rbVersionInfo = New System.Windows.Forms.RibbonButton()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.lblVersion = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblNetworkIP = New System.Windows.Forms.ToolStripStatusLabel()
@@ -436,6 +442,7 @@ Partial Class WinBack
         Me.rbRezeptNeu.MinimumSize = New System.Drawing.Size(65, 0)
         Me.rbRezeptNeu.SmallImage = CType(resources.GetObject("rbRezeptNeu.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRezeptNeu, "rbRezeptNeu")
+        Me.rbRezeptNeu.Value = "NEW"
         '
         'rbRezeptBearbeiten
         '
@@ -732,7 +739,7 @@ Partial Class WinBack
         Me.rbUserNeu.SmallImage = CType(resources.GetObject("rbUserNeu.SmallImage"), System.Drawing.Image)
         Me.rbUserNeu.Tag = ""
         resources.ApplyResources(Me.rbUserNeu, "rbUserNeu")
-        Me.rbUserNeu.Value = "USER_NEU"
+        Me.rbUserNeu.Value = "NEW"
         '
         'rbUserBearbeiten
         '
@@ -745,7 +752,7 @@ Partial Class WinBack
         Me.rbUserRemove.Image = Global.WinBack.My.Resources.Resources.UserLoeschen_32x32
         Me.rbUserRemove.SmallImage = CType(resources.GetObject("rbUserRemove.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbUserRemove, "rbUserRemove")
-        Me.rbUserRemove.Value = "USER_DEL"
+        Me.rbUserRemove.Value = "DELETE"
         '
         'rbUserChangePass
         '
@@ -781,6 +788,7 @@ Partial Class WinBack
         Me.rbUserRechte.Image = Global.WinBack.My.Resources.Resources.UserBerechtigungen_32x32
         Me.rbUserRechte.SmallImage = CType(resources.GetObject("rbUserRechte.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbUserRechte, "rbUserRechte")
+        Me.rbUserRechte.Value = "OPENPARAMETER"
         '
         'rbUserGruppenRechte
         '
@@ -978,6 +986,7 @@ Partial Class WinBack
         Me.rTab.Tabs.Add(Me.rbLinien)
         Me.rTab.Tabs.Add(Me.rbPlanung)
         Me.rTab.Tabs.Add(Me.rbExtra)
+        Me.rTab.Tabs.Add(Me.rbAbout)
         Me.rTab.TabsMargin = New System.Windows.Forms.Padding(12, 26, 20, 0)
         Me.rTab.ThemeColor = System.Windows.Forms.RibbonTheme.Blue
         '
@@ -1094,6 +1103,49 @@ Partial Class WinBack
         resources.ApplyResources(Me.rbRO, "rbRO")
         Me.rbRO.ToolTipImage = Global.WinBack.My.Resources.Resources.LangRO
         Me.rbRO.Value = "ro_RO"
+        '
+        'rbAbout
+        '
+        Me.rbAbout.Panels.Add(Me.rbAnmelden)
+        Me.rbAbout.Panels.Add(Me.rbVersion)
+        resources.ApplyResources(Me.rbAbout, "rbAbout")
+        '
+        'rbAnmelden
+        '
+        Me.rbAnmelden.ButtonMoreEnabled = False
+        Me.rbAnmelden.ButtonMoreVisible = False
+        Me.rbAnmelden.Items.Add(Me.rbLogin)
+        Me.rbAnmelden.Items.Add(Me.rbClose)
+        resources.ApplyResources(Me.rbAnmelden, "rbAnmelden")
+        '
+        'rbLogin
+        '
+        Me.rbLogin.Image = Global.WinBack.My.Resources.Resources.User_32x32
+        Me.rbLogin.MinimumSize = New System.Drawing.Size(90, 0)
+        Me.rbLogin.SmallImage = CType(resources.GetObject("rbLogin.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbLogin, "rbLogin")
+        Me.rbLogin.TextAlignment = System.Windows.Forms.RibbonItem.RibbonItemTextAlignment.Center
+        '
+        'rbClose
+        '
+        Me.rbClose.MinimumSize = New System.Drawing.Size(90, 0)
+        Me.rbClose.SmallImage = CType(resources.GetObject("rbClose.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbClose, "rbClose")
+        '
+        'rbVersion
+        '
+        Me.rbVersion.ButtonMoreEnabled = False
+        Me.rbVersion.ButtonMoreVisible = False
+        Me.rbVersion.Items.Add(Me.rbVersionInfo)
+        resources.ApplyResources(Me.rbVersion, "rbVersion")
+        '
+        'rbVersionInfo
+        '
+        Me.rbVersionInfo.Image = Global.WinBack.My.Resources.Resources.WinBack_32x32
+        Me.rbVersionInfo.MinimumSize = New System.Drawing.Size(90, 0)
+        Me.rbVersionInfo.SmallImage = CType(resources.GetObject("rbVersionInfo.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbVersionInfo, "rbVersionInfo")
+        Me.rbVersionInfo.Value = ""
         '
         'StatusStrip
         '
@@ -1325,4 +1377,10 @@ Partial Class WinBack
     Friend WithEvents BtnDelete As Button
     Friend WithEvents BtnSaveAs As Button
     Friend WithEvents BtnSave As Button
+    Friend WithEvents rbAbout As RibbonTab
+    Friend WithEvents rbAnmelden As RibbonPanel
+    Friend WithEvents rbVersion As RibbonPanel
+    Friend WithEvents rbLogin As RibbonButton
+    Friend WithEvents rbClose As RibbonButton
+    Friend WithEvents rbVersionInfo As RibbonButton
 End Class

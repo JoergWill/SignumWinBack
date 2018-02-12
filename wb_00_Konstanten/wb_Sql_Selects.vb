@@ -20,6 +20,8 @@
     'Sql-Statement Rezept-Verwendung aus winback.Komponenten
     Public Const sqlRezeptVerwendung = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Kommentar, KA_Art, KA_Matchcode " &
                                   "FROM Komponenten WHERE KA_RZ_Nr = [0]"
+    Public Const sqlAddNewRezept = "INSERT INTO Rezepte(RZ_Nr, RZ_Variante_Nr, RZ_Bezeichnung) VALUES ([0],[1],'[2]')"
+    Public Const sqlMaxRzNummer = "SELECT MAX(RZ_Nr) FROM Rezepte"
 
     'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
     Public Const sqlRohstoffSimpleLst = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KO_Type, KA_aktiv, " &
@@ -78,6 +80,7 @@
                                  "WHERE ItemIDs.II_ItemTyp <= 230 AND ItemParameter.IP_Wert1int = [0] AND  Texte.T_Sprache = [1] " &
                                  "ORDER BY ItemIDs.II_ItemTyp, ItemIDs.II_ItemID;"
     'Sql-Statement UserGruppenRechte aus winback.ItemParameter
+    'Public Const sqlUserGrpRechte = "Select * FROM ItemParameter WHERE IP_ItemTyp = 2 AND IP_Wert1int = [0] AND IP_Wert5Str <> 'X' ORDER BY IP_ItemID;"
     Public Const sqlUserGrpRechte = "Select * FROM ItemParameter WHERE IP_ItemTyp = 2 AND IP_Wert1int = [0] ORDER BY IP_ItemID;"
     'Sql-Statement User Datensatz lesen
     Public Const sqlUserLogin = "SELECT * FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int = [0]"
@@ -111,9 +114,9 @@
     'Löschen Rohstoff/Artikel in RohParams
     Public Const sqlDelRohParams = "DELETE FROM RohParams WHERE RP_Ko_NR = [0]"
     'Löschen Rohstoff/Artikel in Lagerorte
-    Public Const sqlDelLagerOrte = "DELETE FROM Lagerorte WHERE LG_Ort = [0]"
+    Public Const sqlDelLagerOrte = "DELETE FROM Lagerorte WHERE LG_Ort = '[0]'"
     'Löschen Rohstoff/Artikel in Lieferungen
-    Public Const sqlDelLieferungen = "DELETE FROM Lieferungen WHERE LF_LG_Ort = [0]"
+    Public Const sqlDelLieferungen = "DELETE FROM Lieferungen WHERE LF_LG_Ort = '[0]'"
 
 
     'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)

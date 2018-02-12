@@ -15,7 +15,7 @@ Public Class wb_Rezept_Details
 
     Public Sub DetailInfo()
         'Rezept-Nummer
-        tRezeptNr.Text = wb_Rezept_Shared.Rezept.RezeptNummer
+        tRezeptNummer.Text = wb_Rezept_Shared.Rezept.RezeptNummer
         'Rezept-Bezeichnung
         tRezeptName.Text = wb_Rezept_Shared.Rezept.RezeptBezeichnung
         'Rezept-Kommentar
@@ -43,10 +43,10 @@ Public Class wb_Rezept_Details
         cbVariante.SetTextFromKey(wb_Rezept_Shared.Rezept.LinienGruppe)
 
     End Sub
-    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRezeptNr.Leave, tRezeptName.Leave, tRezeptKommentar.Leave
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRezeptNummer.Leave, tRezeptName.Leave, tRezeptKommentar.Leave
         wb_Rezept_Shared.Rezept.RezeptBezeichnung = tRezeptName.Text
         wb_Rezept_Shared.Rezept.RezeptKommentar = tRezeptKommentar.Text
-        wb_Rezept_Shared.Rezept.RezeptNummer = tRezeptNr.Text
+        wb_Rezept_Shared.Rezept.RezeptNummer = tRezeptNummer.Text
         wb_Rezept_Shared.Edit_Leave(sender)
     End Sub
 

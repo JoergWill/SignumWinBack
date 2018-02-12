@@ -128,6 +128,7 @@ Public Class WinBack
         ShowStatusBar()
 
         'Initialisierung beendet
+        rTab.ActiveTab = rbAbout
         isInitialised = True
 
         'TEST PRODUKTION
@@ -198,7 +199,10 @@ Public Class WinBack
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbAbmelden_Click(sender As Object, e As EventArgs) Handles rbAbmelden.Click
+    Private Sub rbAbmelden_Click(sender As Object, e As EventArgs) Handles rbAbmelden.Click, rbLogin.Click
+        'alle offenen Fenster schliessen
+        CloseAllForms()
+        'Login-Fenster
         ShowLogin()
         wb_AktUser.SetUserRechte(Me)
     End Sub
@@ -208,7 +212,7 @@ Public Class WinBack
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbEnde_Click(sender As Object, e As EventArgs) Handles rbEnde.Click
+    Private Sub rbEnde_Click(sender As Object, e As EventArgs) Handles rbEnde.Click, rbClose.Click
         Close()
     End Sub
 
@@ -490,30 +494,22 @@ Public Class WinBack
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click, rbArtikelListe.Click
+    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbArtikelListe.Click, rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click
         AktFormSendCommand("OPENLISTE", "")
     End Sub
 
     ''' <summary>
-    ''' Button Ansicht-Details
+    ''' Button Ansicht-Details und Button Bearbeiten
     ''' Ruft das Detail-Fenster der aktuell angezeigten MDI-Form auf. Über ExecuteCmd wird der entsprechenden
     ''' Form das Kommando übertragen.
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbDetails_Click(sender As Object, e As EventArgs) Handles rbArtikelDetails.Click, rbUserDetails.Click, rbRohstoffeDetails.Click, rbRezeptDetails.Click, rbUserBearbeiten.Click
+    Private Sub rbDetails_Click(sender As Object, e As EventArgs) Handles rbArtikelDetails.Click, rbArtikelBearbeiten.Click,
+                                                                          rbUserDetails.Click, rbUserBearbeiten.Click,
+                                                                          rbRohstoffeDetails.Click, rbRohstoffeBearbeiten.Click,
+                                                                          rbUserDetails.Click, rbUserBearbeiten.Click
         AktFormSendCommand("OPENDETAILS", "")
-    End Sub
-
-    ''' <summary>
-    ''' Button Ansicht-Parameter
-    ''' Ruft das Detail-Fenster der aktuell angezeigten MDI-Form auf. Über ExecuteCmd wird der entsprechenden
-    ''' Form das Kommando übertragen.
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub rbParameter_Click(sender As Object, e As EventArgs) Handles rbUserRechte.Click
-        AktFormSendCommand("OPENPARAMETER", "")
     End Sub
 
     ''' <summary>
@@ -523,9 +519,10 @@ Public Class WinBack
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienDrucken.Click, rbLinienDel.Click, rbLinienAuto.Click, rbLinienAdd.Click,
-                                                                          rbUserRemove.Click, rbUserNeu.Click, rbUserChangePass.Click, rbUserDrucken.Click,
-                                                                          rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeVerwendung.Click
+    Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click, rbLinienDel.Click, rbLinienDrucken.Click, rbLinienAuto.Click,
+                                                                          rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click,
+                                                                          rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeVerwendung.Click,
+                                                                          rbRezeptNeu.Click
         Dim Cmd As String = DirectCast(sender, RibbonButton).Value
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")

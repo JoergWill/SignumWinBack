@@ -204,10 +204,10 @@
     <Compile Include="Chargen_Main.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="User.Designer.vb">
-      <DependentUpon>User.vb</DependentUpon>
+    <Compile Include="User_Main.Designer.vb">
+      <DependentUpon>User_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="User.vb">
+    <Compile Include="User_Main.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Rohstoffe_Main.Designer.vb">

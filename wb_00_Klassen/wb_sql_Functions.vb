@@ -127,6 +127,24 @@ Public Class wb_sql_Functions
         winback.Close()
     End Function
 
+    ''' <summary>
+    ''' Ermittelt die nächste freie interne Rezept-Nummer (RZ_Nr) aus der Tabelle Rezepte
+    ''' </summary>
+    ''' <returns>Integer - nächste freie Rezept-Nummer</returns>
+    Public Shared Function getNewRezeptNummer() As Integer
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Max-Wert KO-Nr aus Tabelle Komponenten ermitteln
+        winback.sqlSelect(sqlMaxRzNummer)
+        If winback.Read Then
+            getNewRezeptNummer = winback.iField("MAX(RZ_Nr)") + 1
+        Else
+            getNewRezeptNummer = 1
+        End If
+        winback.Close()
+    End Function
+
     Public Shared Function Lookup(Tabelle As String, Feldname As String, Bedingung As String) As String
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)

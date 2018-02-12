@@ -220,14 +220,21 @@ Public Class wb_DataGridView
     Public Sub UpdateDataBase()
         'damit die Update-Routine richtig funktioniert 
         'muss vorher die Zeile im DataGrid gewechselt worden sein !!
-        Me.CurrentCell = Nothing
+        Try
+            Me.CurrentCell = Nothing
+        Catch
+        End Try
         Select Case wb_GlobalSettings.WinBackDBType
             ' Verbindung über mySql
             Case dbType.mySql
-                MySqlDta.Update(DtaTable)
-            ' Verbindung über msSQL
+                If MySqlDta IsNot Nothing Then
+                    MySqlDta.Update(DtaTable)
+                End If
+                ' Verbindung über msSQL
             Case dbType.msSql
-                msDta.Update(DtaTable)
+                If msDta IsNot Nothing Then
+                    msDta.Update(DtaTable)
+                End If
         End Select
     End Sub
 

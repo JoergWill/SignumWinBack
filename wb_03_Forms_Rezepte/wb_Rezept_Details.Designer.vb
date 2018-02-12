@@ -25,7 +25,7 @@ Partial Class wb_Rezept_Details
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.tRezeptNr = New System.Windows.Forms.TextBox()
+        Me.tRezeptNummer = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tRezeptName = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -48,20 +48,19 @@ Partial Class wb_Rezept_Details
         Me.tChargeOpt = New System.Windows.Forms.TextBox()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
-        Me.cbVariante = New Global.WinBack.wb_ComboBox()
+        Me.cbVariante = New WinBack.wb_ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
-        Me.cbLiniengruppe = New Global.WinBack.wb_ComboBox()
+        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.SuspendLayout()
         '
         'tRezeptNr
         '
-        Me.tRezeptNr.Location = New System.Drawing.Point(12, 41)
-        Me.tRezeptNr.Name = "tRezeptNr"
-        Me.tRezeptNr.ReadOnly = True
-        Me.tRezeptNr.Size = New System.Drawing.Size(136, 20)
-        Me.tRezeptNr.TabIndex = 4
-        Me.tRezeptNr.TabStop = False
+        Me.tRezeptNummer.Location = New System.Drawing.Point(12, 41)
+        Me.tRezeptNummer.Name = "tRezeptNr"
+        Me.tRezeptNummer.Size = New System.Drawing.Size(136, 20)
+        Me.tRezeptNummer.TabIndex = 4
+        Me.tRezeptNummer.TabStop = False
         '
         'Label1
         '
@@ -359,7 +358,7 @@ Partial Class wb_Rezept_Details
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.tRezeptName)
         Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.tRezeptNr)
+        Me.Controls.Add(Me.tRezeptNummer)
         Me.Controls.Add(Me.Label1)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "wb_Rezept_Details"
@@ -369,7 +368,7 @@ Partial Class wb_Rezept_Details
 
     End Sub
 
-    Friend WithEvents tRezeptNr As Windows.Forms.TextBox
+    Friend WithEvents tRezeptNummer As Windows.Forms.TextBox
     Friend WithEvents Label1 As Windows.Forms.Label
     Friend WithEvents tRezeptName As Windows.Forms.TextBox
     Friend WithEvents Label2 As Windows.Forms.Label

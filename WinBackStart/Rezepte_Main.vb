@@ -42,6 +42,10 @@ Public Class Rezepte_Main
                 RezeptHistorie = New wb_Rezept_Historie
                 RezeptHistorie.Show(DockPanel)
                 Return True
+
+            Case "NEW"
+                RezeptNeuAnlegen()
+
             Case Else
                 Return False
         End Select
@@ -107,4 +111,13 @@ Public Class Rezepte_Main
         'alle erzeugten Fenster wieder schliessen
         RezeptListe.Close()
     End Sub
+
+    Public Sub RezeptNeuAnlegen()
+        Dim Rezept As New wb_Rezept
+        Dim RezeptNrNeu As Integer = Rezept.MySQLdbNew(1)
+        RezeptListe.RefreshData(RezeptNrNeu)
+        Rezept = Nothing
+    End Sub
+
+
 End Class

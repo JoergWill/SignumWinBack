@@ -38,9 +38,9 @@ Public Class User_Main
                 UserRechte.Show(DockPanel, DockState.DockLeft)
                 Return True
 
-            Case "USER_NEU"
+            Case "NEW"
                 Return UserNeu()
-            Case "USER_DEL"
+            Case "DELETE"
                 Return UserDel()
             Case "USER_PASSWD"
                 Return UserPassWd()
@@ -98,10 +98,10 @@ Public Class User_Main
                 UserListe.CloseButtonVisible = False
                 _DockPanelList.Add(UserListe)
                 Return UserListe
-            Case "UserDetails"
+            Case "WinBack.wb_User_Details"
                 _DockPanelList.Add(UserDetails)
                 Return UserDetails
-            Case "UserRechte"
+            Case "WinBack.wb_User_Rechte"
                 _DockPanelList.Add(UserRechte)
                 Return UserRechte
             Case Else

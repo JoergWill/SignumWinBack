@@ -103,19 +103,26 @@ Public MustInherit Class DockPanel_Main
             _DockPanelList.Clear()
 
             'Laden der Konfiguration
-            DockPanel.LoadFromXml(DkPnlConfigFileName, AddressOf wbBuildDocContent)
+            Try
+                DockPanel.LoadFromXml(DkPnlConfigFileName, AddressOf wbBuildDocContent)
+            Catch
+            End Try
             'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
 
             If _DockPanelList.Count = 0 Then
                 setDefaultLayout()
             Else
                 For Each x In _DockPanelList
-                    'Wenn ein Fenster beim Speichern Im State Float war, wird es anschliessend nicht mehr angezeigt
-                    If x.DockState = DockState.Float Then
-                        x.DockState = DockState.Document
+                    If x IsNot Nothing Then
+                        'Wenn ein Fenster beim Speichern Im State Float war, wird es anschliessend nicht mehr angezeigt
+                        If x.DockState = DockState.Float Then
+                            x.DockState = DockState.Document
+                        End If
+                        Try
+                            x.Show(DockPanel, x.DockState)
+                        Catch
+                        End Try
                     End If
-                    x.Show(DockPanel, x.DockState)
-                    Debug.Print("DockState " & x.DockState.ToString)
                 Next
             End If
         Else
