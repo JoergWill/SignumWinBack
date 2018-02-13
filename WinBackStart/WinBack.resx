@@ -470,32 +470,8 @@
   <data name="rbPrintArtikelProduktInfoMore.Text" xml:space="preserve">
     <value>Produktinfo ...</value>
   </data>
-  <data name="rbRezepte.Text" xml:space="preserve">
-    <value>Rezepte</value>
-  </data>
   <data name="rpRezeptBearbeiten.Text" xml:space="preserve">
     <value>Rezept</value>
-  </data>
-  <data name="rbRezeptNeu.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="rbRezeptNeu.Text" xml:space="preserve">
-    <value>Rezept Neu</value>
-  </data>
-  <data name="rbRezeptBearbeiten.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="rbRezeptBearbeiten.Text" xml:space="preserve">
-    <value>Rezept bearbeiten</value>
-  </data>
-  <data name="rpRezeptAnsicht.Text" xml:space="preserve">
-    <value>Ansicht</value>
   </data>
   <data name="rbRezeptListe.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -545,17 +521,38 @@
   <data name="rlArtikel.Text" xml:space="preserve">
     <value>Filter</value>
   </data>
-  <data name="cbRezeptAnsicht.Text" xml:space="preserve">
-    <value />
+  <data name="rpRezeptAnsicht.Text" xml:space="preserve">
+    <value>Ansicht</value>
+  </data>
+  <data name="rpRezeptDrucken.Text" xml:space="preserve">
+    <value>Drucken</value>
+  </data>
+  <data name="rbRezepte.Text" xml:space="preserve">
+    <value>Rezepte</value>
+  </data>
+  <data name="rbRezeptNeu.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRezeptNeu.Text" xml:space="preserve">
+    <value>Rezept Neu</value>
+  </data>
+  <data name="rbRezeptBearbeiten.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbRezeptBearbeiten.Text" xml:space="preserve">
+    <value>Rezept bearbeiten</value>
   </data>
   <data name="rlProduktion.Text" xml:space="preserve">
     <value>Produktion</value>
   </data>
   <data name="rlSauerteig.Text" xml:space="preserve">
     <value>Sauerteig</value>
-  </data>
-  <data name="rpRezeptDrucken.Text" xml:space="preserve">
-    <value>Drucken</value>
   </data>
   <data name="rbRezeptDrucken.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -925,7 +922,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAA4
-        EAAAAk1TRnQBSQFMAgEBCwEAAXwBAwF8AQMBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        EAAAAk1TRnQBSQFMAgEBCwEAAZABAwGQAQMBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -1035,39 +1032,6 @@
   <data name="rTab.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="rbLogin.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="rbLogin.Text" xml:space="preserve">
-    <value>Benutzer wechseln</value>
-  </data>
-  <data name="rbClose.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="rbClose.Text" xml:space="preserve">
-    <value>WinBack Beenden</value>
-  </data>
-  <data name="rbAnmelden.Text" xml:space="preserve">
-    <value>Anmelden</value>
-  </data>
-  <data name="rbVersionInfo.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="rbVersionInfo.Text" xml:space="preserve">
-    <value>Programm Version</value>
-  </data>
-  <data name="rbVersion.Text" xml:space="preserve">
-    <value>Info</value>
-  </data>
   <data name="rbAbout.Text" xml:space="preserve">
     <value>Info</value>
   </data>
@@ -1163,7 +1127,7 @@
   </data>
   <data name="RibbonButton1.Text" xml:space="preserve">
     <value>RibbonButton1</value>
-  <comment>@Invariant</comment></data>
+  </data>
   <data name="rbHU.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -1344,6 +1308,45 @@
   <data name="rbRO.ToolTip" xml:space="preserve">
     <value>Umschaltung der aktiven Sprache</value>
   </data>
+  <data name="rbAnmelden.Text" xml:space="preserve">
+    <value>Anmelden</value>
+  </data>
+  <data name="rbLogin.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbLogin.Text" xml:space="preserve">
+    <value>Benutzer wechseln</value>
+  </data>
+  <data name="rbClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="rbClose.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbClose.Text" xml:space="preserve">
+    <value>WinBack Beenden</value>
+  </data>
+  <data name="rbVersion.Text" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="rbVersionInfo.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="rbVersionInfo.Text" xml:space="preserve">
+    <value>Programm Version</value>
+  </data>
   <metadata name="StatusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
@@ -1361,7 +1364,7 @@
   </data>
   <data name="StatusStrip.Text" xml:space="preserve">
     <value>StatusStrip</value>
-  <comment>@Invariant</comment></data>
+  </data>
   <data name="&gt;&gt;StatusStrip.Name" xml:space="preserve">
     <value>StatusStrip</value>
   </data>
@@ -1379,13 +1382,13 @@
   </data>
   <data name="lblVersion.Text" xml:space="preserve">
     <value>Version</value>
-  <comment>@Invariant</comment></data>
+  </data>
   <data name="lblNetworkIP.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 30</value>
   </data>
   <data name="lblNetworkIP.Text" xml:space="preserve">
     <value>DBVersion</value>
-  <comment>@Invariant</comment></data>
+  </data>
   <data name="lblLanguage.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
     <value>None</value>
   </data>

@@ -714,17 +714,29 @@
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_AuswahlListe.resx">
       <DependentUpon>wb_Rezept_AuswahlListe.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Details.ru.resx">
+      <DependentUpon>wb_Rezept_Details.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Historie.resx">
       <DependentUpon>wb_Rezept_Historie.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Hinweise.resx">
       <DependentUpon>wb_Rezept_Hinweise.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.ru.resx">
+      <DependentUpon>wb_Rezept_Liste.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Main.resx">
       <DependentUpon>wb_Rezept_Main.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.resx">
       <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.ru.resx">
+      <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.ru.resx">
+      <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.resx">
       <DependentUpon>wb_Rohstoff_AuswahlListe.vb</DependentUpon>
@@ -747,7 +759,13 @@
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.resx">
       <DependentUpon>wb_Rohstoffe_Verwendung.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Details.ru.resx">
+      <DependentUpon>wb_User_Details.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_05_Forms_User\wb_User_Liste.en.resx">
+      <DependentUpon>wb_User_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Liste.ru.resx">
       <DependentUpon>wb_User_Liste.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.en.resx">
@@ -761,6 +779,9 @@
       <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Liste.resx">
+      <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Liste.ru.resx">
       <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Main.resx">

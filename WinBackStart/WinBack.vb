@@ -508,7 +508,7 @@ Public Class WinBack
     Private Sub rbDetails_Click(sender As Object, e As EventArgs) Handles rbArtikelDetails.Click, rbArtikelBearbeiten.Click,
                                                                           rbUserDetails.Click, rbUserBearbeiten.Click,
                                                                           rbRohstoffeDetails.Click, rbRohstoffeBearbeiten.Click,
-                                                                          rbUserDetails.Click, rbUserBearbeiten.Click
+                                                                          rbUserDetails.Click, rbUserBearbeiten.Click, rbRezeptBearbeiten.Click, rbRezeptDetails.Click
         AktFormSendCommand("OPENDETAILS", "")
     End Sub
 

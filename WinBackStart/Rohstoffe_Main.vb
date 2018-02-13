@@ -45,8 +45,10 @@ Public Class Rohstoffe_Main
 
             Case "NEW"
                 RohstoffNeuAnlegen()
+                Return True
             Case "DELETE"
                 RohstoffLöschen()
+                Return True
             Case Else
                 Return False
         End Select

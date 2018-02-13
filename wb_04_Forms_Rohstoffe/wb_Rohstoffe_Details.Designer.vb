@@ -25,6 +25,7 @@ Partial Class wb_Rohstoffe_Details
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rohstoffe_Details))
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tRohstoffName = New System.Windows.Forms.TextBox()
@@ -41,117 +42,70 @@ Partial Class wb_Rohstoffe_Details
         '
         'Label14
         '
-        Me.Label14.AutoSize = True
-        Me.Label14.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label14.Location = New System.Drawing.Point(9, 128)
+        resources.ApplyResources(Me.Label14, "Label14")
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(51, 13)
-        Me.Label14.TabIndex = 29
-        Me.Label14.Text = "Gruppe 1"
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label1.Location = New System.Drawing.Point(9, 166)
+        resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(51, 13)
-        Me.Label1.TabIndex = 31
-        Me.Label1.Text = "Gruppe 2"
         '
         'tRohstoffName
         '
-        Me.tRohstoffName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tRohstoffName.Location = New System.Drawing.Point(165, 24)
+        resources.ApplyResources(Me.tRohstoffName, "tRohstoffName")
         Me.tRohstoffName.Name = "tRohstoffName"
-        Me.tRohstoffName.Size = New System.Drawing.Size(486, 20)
-        Me.tRohstoffName.TabIndex = 32
         '
         'Label2
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label2.Location = New System.Drawing.Point(162, 8)
+        resources.ApplyResources(Me.Label2, "Label2")
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(112, 13)
-        Me.Label2.TabIndex = 33
-        Me.Label2.Text = "Rohstoff-Bezeichnung"
         '
         'tRohstoffNummer
         '
-        Me.tRohstoffNummer.Location = New System.Drawing.Point(12, 24)
+        resources.ApplyResources(Me.tRohstoffNummer, "tRohstoffNummer")
         Me.tRohstoffNummer.Name = "tRohstoffNummer"
-        Me.tRohstoffNummer.Size = New System.Drawing.Size(136, 20)
-        Me.tRohstoffNummer.TabIndex = 34
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label3.Location = New System.Drawing.Point(9, 8)
+        resources.ApplyResources(Me.Label3, "Label3")
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(46, 13)
-        Me.Label3.TabIndex = 35
-        Me.Label3.Text = "Nummer"
         '
         'tRohstoffKommentar
         '
-        Me.tRohstoffKommentar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tRohstoffKommentar.Location = New System.Drawing.Point(165, 63)
+        resources.ApplyResources(Me.tRohstoffKommentar, "tRohstoffKommentar")
         Me.tRohstoffKommentar.Name = "tRohstoffKommentar"
-        Me.tRohstoffKommentar.Size = New System.Drawing.Size(486, 20)
-        Me.tRohstoffKommentar.TabIndex = 36
         '
         'Label4
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label4.Location = New System.Drawing.Point(162, 47)
+        resources.ApplyResources(Me.Label4, "Label4")
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(60, 13)
-        Me.Label4.TabIndex = 37
-        Me.Label4.Text = "Kommentar"
         '
         'cbRohstoffGrp2
         '
+        resources.ApplyResources(Me.cbRohstoffGrp2, "cbRohstoffGrp2")
         Me.cbRohstoffGrp2.FormattingEnabled = True
-        Me.cbRohstoffGrp2.Location = New System.Drawing.Point(12, 182)
         Me.cbRohstoffGrp2.Name = "cbRohstoffGrp2"
-        Me.cbRohstoffGrp2.Size = New System.Drawing.Size(310, 21)
-        Me.cbRohstoffGrp2.TabIndex = 30
         '
         'cbRohstoffGrp1
         '
+        resources.ApplyResources(Me.cbRohstoffGrp1, "cbRohstoffGrp1")
         Me.cbRohstoffGrp1.FormattingEnabled = True
-        Me.cbRohstoffGrp1.Location = New System.Drawing.Point(12, 144)
         Me.cbRohstoffGrp1.Name = "cbRohstoffGrp1"
-        Me.cbRohstoffGrp1.Size = New System.Drawing.Size(310, 21)
-        Me.cbRohstoffGrp1.TabIndex = 28
         '
         'tRohstoffPreis
         '
-        Me.tRohstoffPreis.Location = New System.Drawing.Point(12, 94)
+        resources.ApplyResources(Me.tRohstoffPreis, "tRohstoffPreis")
         Me.tRohstoffPreis.Name = "tRohstoffPreis"
-        Me.tRohstoffPreis.Size = New System.Drawing.Size(96, 20)
-        Me.tRohstoffPreis.TabIndex = 38
         '
         'Label5
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label5.Location = New System.Drawing.Point(9, 78)
+        resources.ApplyResources(Me.Label5, "Label5")
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(47, 13)
-        Me.Label5.TabIndex = 39
-        Me.Label5.Text = "Preis/kg"
         '
         'wb_Rohstoffe_Details
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(663, 449)
         Me.Controls.Add(Me.tRohstoffPreis)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.tRohstoffKommentar)
@@ -164,9 +118,7 @@ Partial Class wb_Rohstoffe_Details
         Me.Controls.Add(Me.cbRohstoffGrp2)
         Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.cbRohstoffGrp1)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "wb_Rohstoffe_Details"
-        Me.Text = "Rohstoff Details"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

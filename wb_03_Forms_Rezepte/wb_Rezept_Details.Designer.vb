@@ -25,6 +25,7 @@ Partial Class wb_Rezept_Details
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rezept_Details))
         Me.tRezeptNummer = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tRezeptName = New System.Windows.Forms.TextBox()
@@ -54,285 +55,157 @@ Partial Class wb_Rezept_Details
         Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.SuspendLayout()
         '
-        'tRezeptNr
+        'tRezeptNummer
         '
-        Me.tRezeptNummer.Location = New System.Drawing.Point(12, 41)
-        Me.tRezeptNummer.Name = "tRezeptNr"
-        Me.tRezeptNummer.Size = New System.Drawing.Size(136, 20)
-        Me.tRezeptNummer.TabIndex = 4
+        resources.ApplyResources(Me.tRezeptNummer, "tRezeptNummer")
+        Me.tRezeptNummer.Name = "tRezeptNummer"
         Me.tRezeptNummer.TabStop = False
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label1.Location = New System.Drawing.Point(9, 25)
+        resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(58, 13)
-        Me.Label1.TabIndex = 3
-        Me.Label1.Text = "Rezept-Nr."
         '
         'tRezeptName
         '
-        Me.tRezeptName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tRezeptName.Location = New System.Drawing.Point(154, 41)
+        resources.ApplyResources(Me.tRezeptName, "tRezeptName")
         Me.tRezeptName.Name = "tRezeptName"
-        Me.tRezeptName.Size = New System.Drawing.Size(381, 20)
-        Me.tRezeptName.TabIndex = 1
         '
         'Label2
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label2.Location = New System.Drawing.Point(151, 25)
+        resources.ApplyResources(Me.Label2, "Label2")
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(106, 13)
-        Me.Label2.TabIndex = 5
-        Me.Label2.Text = "Rezept-Bezeichnung"
         '
         'tRezeptKommentar
         '
-        Me.tRezeptKommentar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tRezeptKommentar.Location = New System.Drawing.Point(12, 82)
+        resources.ApplyResources(Me.tRezeptKommentar, "tRezeptKommentar")
         Me.tRezeptKommentar.Name = "tRezeptKommentar"
-        Me.tRezeptKommentar.Size = New System.Drawing.Size(440, 20)
-        Me.tRezeptKommentar.TabIndex = 2
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label3.Location = New System.Drawing.Point(9, 66)
+        resources.ApplyResources(Me.Label3, "Label3")
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(60, 13)
-        Me.Label3.TabIndex = 7
-        Me.Label3.Text = "Kommentar"
         '
         'tRezeptGewicht
         '
-        Me.tRezeptGewicht.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tRezeptGewicht.Location = New System.Drawing.Point(458, 82)
+        resources.ApplyResources(Me.tRezeptGewicht, "tRezeptGewicht")
         Me.tRezeptGewicht.Name = "tRezeptGewicht"
         Me.tRezeptGewicht.ReadOnly = True
-        Me.tRezeptGewicht.Size = New System.Drawing.Size(77, 20)
-        Me.tRezeptGewicht.TabIndex = 10
         Me.tRezeptGewicht.TabStop = False
-        Me.tRezeptGewicht.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label4
         '
-        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label4.AutoSize = True
-        Me.Label4.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label4.Location = New System.Drawing.Point(455, 66)
+        resources.ApplyResources(Me.Label4, "Label4")
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(83, 13)
-        Me.Label4.TabIndex = 9
-        Me.Label4.Text = "Rezept-Gewicht"
         '
         'tChangeNr
         '
-        Me.tChangeNr.Location = New System.Drawing.Point(12, 208)
+        resources.ApplyResources(Me.tChangeNr, "tChangeNr")
         Me.tChangeNr.Name = "tChangeNr"
         Me.tChangeNr.ReadOnly = True
-        Me.tChangeNr.Size = New System.Drawing.Size(57, 20)
-        Me.tChangeNr.TabIndex = 12
         Me.tChangeNr.TabStop = False
         '
         'Label5
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label5.Location = New System.Drawing.Point(9, 192)
+        resources.ApplyResources(Me.Label5, "Label5")
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(85, 13)
-        Me.Label5.TabIndex = 11
-        Me.Label5.Text = "Letzte Änderung"
         '
         'tChangeDatum
         '
-        Me.tChangeDatum.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tChangeDatum.Location = New System.Drawing.Point(75, 208)
+        resources.ApplyResources(Me.tChangeDatum, "tChangeDatum")
         Me.tChangeDatum.Name = "tChangeDatum"
         Me.tChangeDatum.ReadOnly = True
-        Me.tChangeDatum.Size = New System.Drawing.Size(377, 20)
-        Me.tChangeDatum.TabIndex = 13
         Me.tChangeDatum.TabStop = False
         '
         'tChangeName
         '
-        Me.tChangeName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tChangeName.Location = New System.Drawing.Point(12, 250)
+        resources.ApplyResources(Me.tChangeName, "tChangeName")
         Me.tChangeName.Name = "tChangeName"
         Me.tChangeName.ReadOnly = True
-        Me.tChangeName.Size = New System.Drawing.Size(440, 20)
-        Me.tChangeName.TabIndex = 15
         Me.tChangeName.TabStop = False
         '
         'Label6
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label6.Location = New System.Drawing.Point(9, 234)
+        resources.ApplyResources(Me.Label6, "Label6")
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(28, 13)
-        Me.Label6.TabIndex = 14
-        Me.Label6.Text = "von:"
         '
         'Label7
         '
-        Me.Label7.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label7.AutoSize = True
-        Me.Label7.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label7.Location = New System.Drawing.Point(541, 82)
+        resources.ApplyResources(Me.Label7, "Label7")
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(19, 13)
-        Me.Label7.TabIndex = 16
-        Me.Label7.Text = "kg"
         '
         'Label8
         '
-        Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label8.AutoSize = True
-        Me.Label8.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label8.Location = New System.Drawing.Point(541, 166)
+        resources.ApplyResources(Me.Label8, "Label8")
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(19, 13)
-        Me.Label8.TabIndex = 19
-        Me.Label8.Text = "kg"
         '
         'tChargeMin
         '
-        Me.tChargeMin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tChargeMin.Location = New System.Drawing.Point(458, 166)
+        resources.ApplyResources(Me.tChargeMin, "tChargeMin")
         Me.tChargeMin.Name = "tChargeMin"
-        Me.tChargeMin.Size = New System.Drawing.Size(77, 20)
-        Me.tChargeMin.TabIndex = 5
-        Me.tChargeMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label9
         '
-        Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label9.AutoSize = True
-        Me.Label9.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label9.Location = New System.Drawing.Point(455, 150)
+        resources.ApplyResources(Me.Label9, "Label9")
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(61, 13)
-        Me.Label9.TabIndex = 17
-        Me.Label9.Text = "Min-Charge"
         '
         'tChargeMax
         '
-        Me.tChargeMax.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tChargeMax.Location = New System.Drawing.Point(458, 208)
+        resources.ApplyResources(Me.tChargeMax, "tChargeMax")
         Me.tChargeMax.Name = "tChargeMax"
-        Me.tChargeMax.Size = New System.Drawing.Size(77, 20)
-        Me.tChargeMax.TabIndex = 6
-        Me.tChargeMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label10
         '
-        Me.Label10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label10.AutoSize = True
-        Me.Label10.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label10.Location = New System.Drawing.Point(455, 192)
+        resources.ApplyResources(Me.Label10, "Label10")
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(64, 13)
-        Me.Label10.TabIndex = 20
-        Me.Label10.Text = "Max-Charge"
         '
         'Label11
         '
-        Me.Label11.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label11.AutoSize = True
-        Me.Label11.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label11.Location = New System.Drawing.Point(541, 250)
+        resources.ApplyResources(Me.Label11, "Label11")
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(19, 13)
-        Me.Label11.TabIndex = 24
-        Me.Label11.Text = "kg"
         '
         'tChargeOpt
         '
-        Me.tChargeOpt.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tChargeOpt.Location = New System.Drawing.Point(458, 250)
+        resources.ApplyResources(Me.tChargeOpt, "tChargeOpt")
         Me.tChargeOpt.Name = "tChargeOpt"
-        Me.tChargeOpt.Size = New System.Drawing.Size(77, 20)
-        Me.tChargeOpt.TabIndex = 7
-        Me.tChargeOpt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label12
         '
-        Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label12.AutoSize = True
-        Me.Label12.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label12.Location = New System.Drawing.Point(455, 234)
+        resources.ApplyResources(Me.Label12, "Label12")
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(61, 13)
-        Me.Label12.TabIndex = 22
-        Me.Label12.Text = "Opt-Charge"
         '
         'Label13
         '
-        Me.Label13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label13.AutoSize = True
-        Me.Label13.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label13.Location = New System.Drawing.Point(541, 208)
+        resources.ApplyResources(Me.Label13, "Label13")
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(19, 13)
-        Me.Label13.TabIndex = 25
-        Me.Label13.Text = "kg"
         '
         'cbVariante
         '
-        Me.cbVariante.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.cbVariante, "cbVariante")
         Me.cbVariante.FormattingEnabled = True
-        Me.cbVariante.Location = New System.Drawing.Point(12, 125)
         Me.cbVariante.Name = "cbVariante"
-        Me.cbVariante.Size = New System.Drawing.Size(440, 21)
-        Me.cbVariante.TabIndex = 26
         '
         'Label14
         '
-        Me.Label14.AutoSize = True
-        Me.Label14.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label14.Location = New System.Drawing.Point(9, 109)
+        resources.ApplyResources(Me.Label14, "Label14")
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(46, 13)
-        Me.Label14.TabIndex = 27
-        Me.Label14.Text = "Variante"
         '
         'Label15
         '
-        Me.Label15.AutoSize = True
-        Me.Label15.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label15.Location = New System.Drawing.Point(9, 149)
+        resources.ApplyResources(Me.Label15, "Label15")
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(68, 13)
-        Me.Label15.TabIndex = 29
-        Me.Label15.Text = "Liniengruppe"
         '
         'cbLiniengruppe
         '
-        Me.cbLiniengruppe.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.cbLiniengruppe, "cbLiniengruppe")
         Me.cbLiniengruppe.FormattingEnabled = True
-        Me.cbLiniengruppe.Location = New System.Drawing.Point(12, 166)
         Me.cbLiniengruppe.Name = "cbLiniengruppe"
-        Me.cbLiniengruppe.Size = New System.Drawing.Size(440, 21)
-        Me.cbLiniengruppe.TabIndex = 28
         '
         'wb_Rezept_Details
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGray
-        Me.ClientSize = New System.Drawing.Size(572, 281)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.cbLiniengruppe)
         Me.Controls.Add(Me.Label14)
@@ -360,9 +233,7 @@ Partial Class wb_Rezept_Details
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.tRezeptNummer)
         Me.Controls.Add(Me.Label1)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "wb_Rezept_Details"
-        Me.Text = "Rezept Details"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

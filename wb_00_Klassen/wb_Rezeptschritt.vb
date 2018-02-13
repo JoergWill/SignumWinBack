@@ -143,6 +143,8 @@ Public Class wb_Rezeptschritt
         End If
         'Rezeptschritt am Index einfügen
         ParentStep.ChildSteps.Insert(idx, rs)
+        'Parent für den neuen Rezeptschritt ist der Parent des aktuellen Rezeptschrittes
+        rs.ParentStep = ParentStep
         'Numerierung der Rezeptschritte neu aufbauen
         ParentStep.ReCalcRzSteps(ParentStep.SchrittNr)
     End Sub

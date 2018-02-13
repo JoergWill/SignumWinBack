@@ -339,6 +339,7 @@ Partial Class WinBack
         Me.rbArtikelDetails.MinimumSize = New System.Drawing.Size(70, 0)
         Me.rbArtikelDetails.SmallImage = CType(resources.GetObject("rbArtikelDetails.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbArtikelDetails, "rbArtikelDetails")
+        Me.rbArtikelDetails.Value = "OPENDETAILS"
         '
         'rbArtikelParameter
         '
@@ -478,6 +479,7 @@ Partial Class WinBack
         Me.rbRezeptDetails.MinimumSize = New System.Drawing.Size(70, 0)
         Me.rbRezeptDetails.SmallImage = CType(resources.GetObject("rbRezeptDetails.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRezeptDetails, "rbRezeptDetails")
+        Me.rbRezeptDetails.Value = "OPENDETAILS"
         '
         'rbRezeptHinweis
         '
@@ -511,7 +513,6 @@ Partial Class WinBack
         Me.cbRezeptAnsicht.DrawIconsBar = False
         Me.cbRezeptAnsicht.DropDownItems.Add(Me.rlProduktion)
         Me.cbRezeptAnsicht.DropDownItems.Add(Me.rlSauerteig)
-        resources.ApplyResources(Me.cbRezeptAnsicht, "cbRezeptAnsicht")
         Me.cbRezeptAnsicht.TextAlignment = System.Windows.Forms.RibbonItem.RibbonItemTextAlignment.Center
         Me.cbRezeptAnsicht.TextBoxText = "Produktion"
         Me.cbRezeptAnsicht.TextBoxWidth = 105
@@ -622,6 +623,7 @@ Partial Class WinBack
         Me.rbRohstoffeDetails.MinimumSize = New System.Drawing.Size(70, 0)
         Me.rbRohstoffeDetails.SmallImage = CType(resources.GetObject("rbRohstoffeDetails.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRohstoffeDetails, "rbRohstoffeDetails")
+        Me.rbRohstoffeDetails.Value = "OPENDETAILS"
         '
         'rbRohstoffeVerwendung
         '
@@ -782,6 +784,7 @@ Partial Class WinBack
         Me.rbUserDetails.Image = Global.WinBack.My.Resources.Resources.UserDetails_32x32
         Me.rbUserDetails.SmallImage = CType(resources.GetObject("rbUserDetails.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbUserDetails, "rbUserDetails")
+        Me.rbUserDetails.Value = "OPENDETAILS"
         '
         'rbUserRechte
         '
@@ -1128,6 +1131,7 @@ Partial Class WinBack
         '
         'rbClose
         '
+        Me.rbClose.Image = CType(resources.GetObject("rbClose.Image"), System.Drawing.Image)
         Me.rbClose.MinimumSize = New System.Drawing.Size(90, 0)
         Me.rbClose.SmallImage = CType(resources.GetObject("rbClose.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbClose, "rbClose")

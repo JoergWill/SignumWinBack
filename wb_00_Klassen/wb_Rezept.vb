@@ -718,7 +718,7 @@ Public Class wb_Rezept
                     _SQLRezeptSchritt.Par3 = Value
                 'Einheit
                 Case "E_Einheit"
-                    _SQLRezeptSchritt.Einheit = wb_Language.TextFilter(Value)
+                    _SQLRezeptSchritt.Einheit = wb_Language.TextFilter(wb_Functions.MySqlToUtf8(Value))
                 'zählt NICHT zum Rezeptgesamtgewicht
                 Case "KA_zaehlt_zu_RZ_Gesamtmenge"
                     _SQLRezeptSchritt.ZaehltNichtZumRezeptGewicht = wb_sql_Functions.MySQLBoolean(Value)

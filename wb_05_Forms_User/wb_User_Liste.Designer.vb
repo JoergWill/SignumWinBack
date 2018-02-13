@@ -25,7 +25,7 @@ Partial Class wb_User_Liste
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_User_Liste))
-        Me.DataGridView = New Global.WinBack.wb_DataGridView()
+        Me.DataGridView = New WinBack.wb_DataGridView()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -34,6 +34,7 @@ Partial Class wb_User_Liste
         resources.ApplyResources(Me.DataGridView, "DataGridView")
         Me.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView.Name = "DataGridView"
+        Me.DataGridView.x8859_5_FieldName = ""
         '
         'wb_User_Liste
         '

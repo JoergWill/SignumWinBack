@@ -45,6 +45,7 @@ Public Class Rezepte_Main
 
             Case "NEW"
                 RezeptNeuAnlegen()
+                Return True
 
             Case Else
                 Return False
@@ -80,10 +81,12 @@ Public Class Rezepte_Main
                 Return RezeptDetails
 
             Case "WinBack.wb_Rezept_Hinweise"
+                RezeptHinweise = New wb_Rezept_Hinweise
                 _DockPanelList.Add(RezeptHinweise)
                 Return RezeptHinweise
 
             Case "WinBack.wb_Rezept_Historie"
+                RezeptHistorie = New wb_Rezept_Historie
                 _DockPanelList.Add(RezeptHistorie)
                 Return RezeptHistorie
 
@@ -118,6 +121,5 @@ Public Class Rezepte_Main
         RezeptListe.RefreshData(RezeptNrNeu)
         Rezept = Nothing
     End Sub
-
 
 End Class

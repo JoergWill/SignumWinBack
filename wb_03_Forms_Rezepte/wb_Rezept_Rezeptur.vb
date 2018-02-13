@@ -12,8 +12,8 @@ Public Class wb_Rezept_Rezeptur
     Private _RzVariante As Integer
     Private _RzHinweiseChanged As Boolean
 
-    Private _RezeptSchritt As wb_Rezeptschritt = Nothing
-    Private _RezeptSchrittNeu As wb_Rezeptschritt = Nothing
+    Private _RezeptSchritt As wb_Rezeptschritt = Nothing    'aktuelle ausgewählter Rezeptschritt (Popup)
+    Private _RezeptSchrittNeu As wb_Rezeptschritt = Nothing 'neuer Rezeptschritt (Auswahl-Liste)
 
     ''' <summary>
     ''' Objekt Rezeptur instanzieren
@@ -328,6 +328,7 @@ Public Class wb_Rezept_Rezeptur
     Private Sub VTP_NeueKomponente(Sender As Object, e As EventArgs)
         'Auswahlliste Rohstoff
         If VT_AuswahlRohstoff() Then
+            'Es gibt keinen ausgewählten Rezeptschritt - neu erstellen
             _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, _RezeptSchrittNeu.Bezeichnung)
             _RezeptSchritt.CopyFrom(_RezeptSchrittNeu)
             _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count
@@ -335,9 +336,8 @@ Public Class wb_Rezept_Rezeptur
         End If
     End Sub
 
-
     ''' <summary>
-    ''' Neue Komponente(Auswahl) vor der aktuellen Zeile einfügen
+    ''' Neue Komponente(Auswahl) vor der aktuellen Zeile (_Rezeptschritt) einfügen
     ''' </summary>
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
@@ -356,9 +356,9 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueKomponenteDanach(Sender As Object, e As EventArgs)
-        'Auswahlliste Rohstoff
+        'Auswahlliste Rohstoff - TODO ROOTREZEPTSCHRITT
         If VT_AuswahlRohstoff() Then
-            _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
+            _RezeptSchritt.Insert(_RezeptSchrittNeu, True)
             VT_Aktualisieren()
         End If
     End Sub
@@ -392,6 +392,9 @@ Public Class wb_Rezept_Rezeptur
     ''' <summary>
     ''' Anzeige der Rohstoff-Liste. 
     ''' Auswahl eines Rohstoffes für die Funktionen Einfügen, Anfügen, ..
+    ''' 
+    ''' Der Rezeptschritt hat keine Verbindung zur Rezeptur und wird nur zur Auswahl des Rohstoffes verwendet.
+    ''' Die Verknüpfung erfolgt über Rezeptschritt.Insert
     ''' </summary>
     ''' <returns></returns>
     Private Function VT_AuswahlRohstoff() As Boolean
@@ -404,7 +407,7 @@ Public Class wb_Rezept_Rezeptur
             _RezeptSchrittNeu.Sollwert = "0,000"
             _RezeptSchrittNeu.Nummer = RohstoffAuswahl.RohstoffNummer
             _RezeptSchrittNeu.Type = RohstoffAuswahl.RohstoffType
-            _RezeptSchrittNeu.Einheit = RohstoffAuswahl.RohstoffEinheit
+            _RezeptSchrittNeu.Einheit = wb_Language.TextFilter(RohstoffAuswahl.RohstoffEinheit)
             Return True
         Else
             Return False
