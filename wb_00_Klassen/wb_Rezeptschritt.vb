@@ -141,12 +141,31 @@ Public Class wb_Rezeptschritt
         If InsertAfter Then
             idx += 1
         End If
+
         'Rezeptschritt am Index einfügen
         ParentStep.ChildSteps.Insert(idx, rs)
         'Parent für den neuen Rezeptschritt ist der Parent des aktuellen Rezeptschrittes
         rs.ParentStep = ParentStep
         'Numerierung der Rezeptschritte neu aufbauen
         ParentStep.ReCalcRzSteps(ParentStep.SchrittNr)
+
+        'TODO Einfügen von Komponenten mit mehreren Schritten (Wasser ...)
+
+
+    End Sub
+
+    ''' <summary>
+    ''' Fügt einen Child-Rezeptschritt NACH dem aktuellen Schritt ein.
+    ''' Der aktuelle Schritt wird dabei zum Parent
+    ''' </summary>
+    ''' <param name="rs"></param>
+    Public Sub InsertChild(rs As wb_Rezeptschritt)
+        'Rezeptschritt als erstes Child einfügen (Index = 0)
+        ChildSteps.Insert(0, rs)
+        'Parent für den neuen Rezeptschritt ist der aktuelle Schritt
+        rs.ParentStep = Me
+        'Numerierung der Rezeptschritte neu aufbauen
+        ReCalcRzSteps(SchrittNr)
     End Sub
 
     ''' <summary>

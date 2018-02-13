@@ -131,8 +131,8 @@ Public Class WinBack
         rTab.ActiveTab = rbAbout
         isInitialised = True
 
-        'TEST PRODUKTION
-        'ProduktionMainShow()
+        'TEST REZEPTE
+        rTab.ActiveTab = rbRezepte
     End Sub
 
     ''' <summary>
@@ -189,9 +189,10 @@ Public Class WinBack
         'Wenn noch kein Benutzer angemeldet ist (Parameter -u)
         If wb_AktUser.UserNr < 0 Then
             ShowLogin()
+        Else
+            wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
         End If
         wb_AktUser.SetUserRechte(Me)
-
     End Sub
 
     ''' <summary>

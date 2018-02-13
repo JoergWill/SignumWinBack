@@ -1,4 +1,5 @@
 ﻿Imports WinBack
+Imports WinBack.wb_Rohstoffe_Shared
 
 Public Class wb_Rohstoff_AuswahlListe
     Private _RohstoffNr As Integer = wb_Global.UNDEFINED
@@ -6,6 +7,20 @@ Public Class wb_Rohstoff_AuswahlListe
     Private _RohstoffName As String = ""
     Private _RohstoffType As wb_Global.KomponTypen
     Private _RohstoffEinheit As String = ""
+    Private _Filter As String = ""
+
+    Public WriteOnly Property Anzeige As AnzeigeFilter
+        Set(value As AnzeigeFilter)
+            Select Case value
+                Case AnzeigeFilter.Alle        ' alle aktiven Rohstoffe Typ > 100
+                    _Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+                Case AnzeigeFilter.Sauerteig   ' alle aktiven Rohstoffe Sauerteig
+                    _Filter = "(KO_Type < 100) AND KA_aktiv = 1"
+                Case Else
+                    _Filter = ""
+            End Select
+        End Set
+    End Property
 
     Public Property RohstoffNr As Integer
         Get
@@ -60,9 +75,13 @@ Public Class wb_Rohstoff_AuswahlListe
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
+        'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
+        DataGridView.x8859_5_FieldName = "KO_Bezeichnung"
 
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffLst, "RohstoffListe")
+        'Filter einschalten
+        DataGridView.Filter = _Filter
     End Sub
 
     Private Sub BtnCancel_Click(sender As Object, e As EventArgs) Handles BtnCancel.Click
@@ -74,6 +93,7 @@ Public Class wb_Rohstoff_AuswahlListe
         RohstoffNummer = DataGridView.Field("KO_Nr_AlNum")
         RohstoffName = DataGridView.Field("KO_Bezeichnung")
         RohstoffType = wb_Functions.IntToKomponType(DataGridView.iField("KO_Type"))
+        'TODO Einheit Text-Konvertierung ??
         RohstoffEinheit = DataGridView.Field("E_Einheit")
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
