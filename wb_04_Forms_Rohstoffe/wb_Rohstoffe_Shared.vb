@@ -14,6 +14,7 @@ Public Class wb_Rohstoffe_Shared
         Sauerteig   ' alle aktiven Rohstoffe Sauerteig
         Install     ' alle inaktiven Rohstoffe
         Sonstige    ' alle Rohstoffe Typ 105,106
+        RezeptKomp  ' alle aktiven Komponenten für Rezeptverwaltung (101..104, 118,128)
     End Enum
     'TODO evtl bei NEW Load_RohstoffTables()
 
@@ -32,7 +33,7 @@ Public Class wb_Rohstoffe_Shared
         winback.CloseRead()
 
         'HashTable aktive Rohstoffe (Silo-Umschaltung)
-        winback.sqlSelect(wb_Sql_Selects.sqlRohstoffAct)
+        winback.sqlSelect(wb_Sql_Selects.sqlRohstoffAut)
         RohAktiv.Clear()
         While winback.Read
             RohAktiv.Add(winback.iField("KO_Nr"), TextFilter(winback.sField("LG_aktiv")))

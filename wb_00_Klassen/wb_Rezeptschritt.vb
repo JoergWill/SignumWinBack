@@ -14,7 +14,7 @@ Public Class wb_Rezeptschritt
     Private _Sollwert As String
     Private _Einheit As String
     Private _PreisProKg As Double = 0
-    Private _RezeptNr As Integer
+    Private _RezeptNr As Integer = -1
     Private _TA As Integer = wb_Global.TA_Undefined
     Private _RezGewicht As Double
     Private _BruttoRezGewicht As Double
@@ -99,16 +99,19 @@ Public Class wb_Rezeptschritt
             Case wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
                 NewKomp = wb_Komponenten.ProduktionsStufe
                 _Sollwert = NewKomp.Bezeichung
+                _Nummer = NewKomp.Nummer
                 _Einheit = "-"
                 _TA = 0
             Case wb_Global.KomponTypen.KO_TYPE_KESSEL
                 NewKomp = wb_Komponenten.Kessel
                 _Sollwert = NewKomp.Bezeichung
+                _Nummer = NewKomp.Nummer
                 _Einheit = "-"
                 _TA = 0
             Case wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
                 NewKomp = wb_Komponenten.TextKomponente
                 _Sollwert = NewKomp.Bezeichung
+                _Nummer = NewKomp.Nummer
                 _Einheit = "-"
                 _TA = 0
             Case Else
@@ -148,10 +151,6 @@ Public Class wb_Rezeptschritt
         rs.ParentStep = ParentStep
         'Numerierung der Rezeptschritte neu aufbauen
         ParentStep.ReCalcRzSteps(ParentStep.SchrittNr)
-
-        'TODO Einfügen von Komponenten mit mehreren Schritten (Wasser ...)
-
-
     End Sub
 
     ''' <summary>
@@ -165,7 +164,7 @@ Public Class wb_Rezeptschritt
         'Parent für den neuen Rezeptschritt ist der aktuelle Schritt
         rs.ParentStep = Me
         'Numerierung der Rezeptschritte neu aufbauen
-        ReCalcRzSteps(SchrittNr)
+        'ReCalcRzSteps(SchrittNr)
     End Sub
 
     ''' <summary>
@@ -340,7 +339,6 @@ Public Class wb_Rezeptschritt
     ''' <returns>String - Bezeichnung</returns>
     Public ReadOnly Property VirtTreeBezeichnung() As String
         Get
-            Debug.Print("Get VirtTreeBezeichnung " & _Type.ToString & " " & _Sollwert)
             Select Case _Type
                 Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
                     Return _Sollwert
@@ -922,9 +920,6 @@ Public Class wb_Rezeptschritt
                            'Parameter-Wert
                             Case "RP_Wert"
                                 If ParamTyp = 301 Then
-
-                                    Debug.Print("BEZEICHNUNG PARAM_NR RP_WERT " & _Bezeichnung & " " & ParamNr & " " & Value)
-
 
                                     If wb_KomponParam301_Global.IsAllergen(ParamNr) Then
                                         'TODO if undefined set merker

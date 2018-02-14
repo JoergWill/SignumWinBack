@@ -419,12 +419,17 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
-    ''' Ermittelt anhand der Komponenten-Type ob Child-Steps vorhanden sind.
+    ''' Ermittelt anhand der Komponenten-Type ob Child-Steps vorhanden sind, oder ob beim Einfügen in
+    ''' Rezepturen mehrere Zeilen erforderlich sind.
+    ''' (Wasser/Eis/Kneter/Produktions-Stufe/Kessel)
     ''' </summary>
     ''' <param name="Type"></param>
     ''' <returns></returns>
     Public Shared Function TypeHasChildSteps(Type As wb_Global.KomponTypen) As Boolean
         If Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Or
+           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER Or
            Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or
            Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
             Return True

@@ -5,6 +5,7 @@ Public Class wb_Rohstoff_AuswahlListe
     Private _RohstoffNr As Integer = wb_Global.UNDEFINED
     Private _RohstoffNummer As String = ""
     Private _RohstoffName As String = ""
+    Private _RohstoffKommentar As String = ""
     Private _RohstoffType As wb_Global.KomponTypen
     Private _RohstoffEinheit As String = ""
     Private _Filter As String = ""
@@ -14,6 +15,8 @@ Public Class wb_Rohstoff_AuswahlListe
             Select Case value
                 Case AnzeigeFilter.Alle        ' alle aktiven Rohstoffe Typ > 100
                     _Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+                Case AnzeigeFilter.RezeptKomp   'alle Rohstoffe Rezeptauswahl
+                    _Filter = "(KO_Type > 100 and KO_Type <> " & wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE " AND KA_aktiv = 1"
                 Case AnzeigeFilter.Sauerteig   ' alle aktiven Rohstoffe Sauerteig
                     _Filter = "(KO_Type < 100) AND KA_aktiv = 1"
                 Case Else
@@ -67,6 +70,15 @@ Public Class wb_Rohstoff_AuswahlListe
         End Set
     End Property
 
+    Public Property RohstoffKommentar As String
+        Get
+            Return _RohstoffKommentar
+        End Get
+        Set(value As String)
+            _RohstoffKommentar = value
+        End Set
+    End Property
+
     Private Sub wb_Rezept_AuswahlListe_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
@@ -92,8 +104,8 @@ Public Class wb_Rohstoff_AuswahlListe
         RohstoffNr = DataGridView.iField("KO_Nr")
         RohstoffNummer = DataGridView.Field("KO_Nr_AlNum")
         RohstoffName = DataGridView.Field("KO_Bezeichnung")
+        RohstoffKommentar = DataGridView.Field("KO_Kommentar")
         RohstoffType = wb_Functions.IntToKomponType(DataGridView.iField("KO_Type"))
-        'TODO Einheit Text-Konvertierung ??
         RohstoffEinheit = DataGridView.Field("E_Einheit")
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()

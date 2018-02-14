@@ -33,7 +33,15 @@
                                   "INNER JOIN Einheiten On KomponTypen.KT_EinheitIndex = Einheiten.E_LfdNr " &
                                   "WHERE KO_Type <> 0 AND KT_ParamNr = 1"
 
+    'Sql-Statement Rohstoff aus winback.Komponenten (KO_Nr alle Zeilen mit KomponTypen.KT_Rezept = "R"
+    Public Const sqlRohstoffRez = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KO_Type, KA_aktiv, " &
+                                  "KA_Preis, KT_ParamNr, E_Einheit FROM Komponenten " &
+                                  "INNER JOIN KomponTypen On Komponenten.KO_Type = KomponTypen.KT_Typ_Nr " &
+                                  "INNER JOIN Einheiten On KomponTypen.KT_EinheitIndex = Einheiten.E_LfdNr " &
+                                  "WHERE KO_Nr = [0] AND KT_Rezept = 'R' AND KT_ParamNr > 1"
 
+    'Sql-Statement Kenter_Rezept aus winback.KomponParams
+    Public Const sqlKneterRezept = "SELECT * from RohParams WHERE RP_KO_Nr = [0]"
 
     'Sql-Statement RohstoffGruppen aus winback.ItemParameter
     Public Const sqlRohstoffGrp = "Select IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
@@ -43,7 +51,7 @@
                                   "Rezepte On (RezeptSchritte.RS_RZ_Variante_Nr = Rezepte.RZ_Variante_Nr) And (RezeptSchritte.RS_RZ_Nr = Rezepte.RZ_Nr) " &
                                   "WHERE RezeptSchritte.RS_Ko_Nr= [0] And RezeptSchritte.RS_ParamNr = 1"
     'Sql-Statement Automatik-Rohstoffe aus winback.Lagerorte
-    Public Const sqlRohstoffAct = "Select Komponenten.KO_Nr, Lagerorte.LG_aktiv FROM Komponenten " &
+    Public Const sqlRohstoffAut = "Select Komponenten.KO_Nr, Lagerorte.LG_aktiv FROM Komponenten " &
                                   "INNER JOIN Lagerorte On Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
                                   "WHERE KO_TYPE = 101 Or KO_TYPE = 103 Or KO_TYPE = 104"
 

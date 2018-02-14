@@ -214,11 +214,20 @@ Public Class wb_Rezept_Rezeptur
         ToolStripRezeptChange.Visible = True
     End Sub
 
+    ''' <summary>
+    ''' Doppel-Click auf eine Rezept-Zeile öffnet das Rezept-im-Rezept, falls vorhanden.
+    ''' 
+    ''' Wenn VirtualTree.RowSelect = False ist, muss die Rezeptnummer über
+    '''     Dim RezeptNr As Integer = DirectCast(sCellWidget.Tree.SelectedItem, wb_Rezeptschritt).RezeptNr
+    ''' ermittelt werden.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub VirtualTree_CellDoubleClick(sender As Object, e As EventArgs) Handles VirtualTree.CellDoubleClick
         'Doppel-Click auf VirtualTree-Cell
         Dim sCellWidget As CellWidget = sender
         'interne Rezeptnummer zum Rezeptschritt ermitteln
-        Dim RezeptNr As Integer = DirectCast(sCellWidget.Tree.SelectedItem, wb_Rezeptschritt).RezeptNr
+        Dim RezeptNr As Integer = DirectCast(sCellWidget.Row.Item, wb_Rezeptschritt).RezeptNr
         'wenn es eine Rezept-Im-Rezept-Struktur gibt wird das Rezept in einem neuen Fenster geöffnet
         If RezeptNr > 0 Then
             'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen
@@ -245,8 +254,6 @@ Public Class wb_Rezept_Rezeptur
 
             'DataGrid füllen
             GridView_RzVerwendung.LoadData(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptVerwendung, _RzNummer), "Rezept-Verwendung")
-
-
             Wb_TabControl.SelectedTab = tb_Verwendung
         End If
 
@@ -283,12 +290,19 @@ Public Class wb_Rezept_Rezeptur
     ''' 
     ''' Über e.Row.Item wird die entsprechende Zeile(wb_Rezeptschritt) im Grid ermittelt.
     ''' Abhängig vom Komponenten-Typ werden verschiedene Aktionen erlaubt/ausgelöst. (Popup-Menu)
+    ''' Wenn die aktuelle Rezeptzeile ein Child eine Rezeptschrittes ist (Wassertemperatur o.ä.) 
+    ''' wird auf den jeweiligen Parent verwiesen.
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub VirtualTree_GetContextMenuStrip(sender As Object, e As GetContextMenuStripEventArgs) Handles VirtualTree.GetContextMenuStrip
         'aktuell ausgewählten Rezeptschritt merken (Popup)
         _RezeptSchritt = DirectCast(e.Row.Item, wb_Rezeptschritt)
+        'Click auf Rezept-Zeile mit Parameter ungleich 1
+        If _RezeptSchritt.ParamNr <> 1 Then
+            _RezeptSchritt = _RezeptSchritt.ParentStep
+        End If
+
         'Popup-Menu wird dynamisch erzeugt
         VT_MakeTreePopup()
     End Sub
@@ -355,6 +369,62 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     ''' <summary>
+    ''' Neuen Kessel nach Produktions-Stufe einfügen
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_NeuerKesselNachProduktionsStufe(Sender As Object, e As EventArgs)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_KESSEL)
+        _RezeptSchritt.Insert(_RezeptSchrittNeu, True)
+        VT_Aktualisieren()
+    End Sub
+
+    ''' <summary>
+    ''' Neuen Kessel oberhalb der aktuellen Kessel-Zeile einfügen
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_NeuerKesselDavor(Sender As Object, e As EventArgs)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_KESSEL)
+        _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
+        VT_Aktualisieren()
+    End Sub
+
+    ''' <summary>
+    ''' Neuen Kessel unterhalb der aktuellen Kessel-Zeile einfügen
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_NeuerKesselDanach(Sender As Object, e As EventArgs)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_KESSEL)
+        'Anfügen Rezeptschritt unterhalb Kessel
+        _RezeptSchritt.Insert(_RezeptSchrittNeu, True)
+        VT_Aktualisieren()
+    End Sub
+
+    ''' <summary>
+    ''' Neue Produktions-Stufe nach demr aktuellen Zeile (_Rezeptschritt) einfügen
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_NeueProduktionsStufeDanach(Sender As Object, e As EventArgs)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE)
+        _RezeptSchritt.Insert(_RezeptSchrittNeu, True)
+        VT_Aktualisieren()
+    End Sub
+
+    ''' <summary>
+    ''' Neuer Kessel nach Produktions-Stufe einfügen
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_NeueProduktionsStufeDavor(Sender As Object, e As EventArgs)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE)
+        _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
+        VT_Aktualisieren()
+    End Sub
+
+    ''' <summary>
     ''' Neue Text-Komponente in ein leeres Rezept ein- oder an eine Rezeptur anfügen (Click in das leere Feld unterhalb VirtualTree)
     ''' </summary>
     ''' <param name="Sender"></param>
@@ -371,7 +441,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueTextKomponenteDavor(Sender As Object, e As EventArgs)
-        _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE)
         _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
         VT_Aktualisieren()
     End Sub
@@ -382,7 +452,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueTextKomponenteDanach(Sender As Object, e As EventArgs)
-        _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE)
         'Anfügen Rezeptschritt unterhalb Produktions-Stufe oder Kessel
         If _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
             _RezeptSchritt.InsertChild(_RezeptSchrittNeu)
@@ -419,16 +489,17 @@ Public Class wb_Rezept_Rezeptur
         If _RzVariante = 0 Then
             RohstoffAuswahl.Anzeige = wb_Rohstoffe_Shared.AnzeigeFilter.Sauerteig
         Else
-            RohstoffAuswahl.Anzeige = wb_Rohstoffe_Shared.AnzeigeFilter.Alle
+            RohstoffAuswahl.Anzeige = wb_Rohstoffe_Shared.AnzeigeFilter.RezeptKomp
         End If
 
         'Anzeige Auswahl-Fenster
         If RohstoffAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
             _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, RohstoffAuswahl.RohstoffName)
             _RezeptSchrittNeu.RohNr = RohstoffAuswahl.RohstoffNr
+            _RezeptSchrittNeu.Nummer = RohstoffAuswahl.RohstoffNummer
+            _RezeptSchrittNeu.Kommentar = RohstoffAuswahl.RohstoffKommentar
             _RezeptSchrittNeu.ParamNr = 1
             _RezeptSchrittNeu.Sollwert = "0,000"
-            _RezeptSchrittNeu.Nummer = RohstoffAuswahl.RohstoffNummer
             _RezeptSchrittNeu.Type = RohstoffAuswahl.RohstoffType
             _RezeptSchrittNeu.Einheit = wb_Language.TextFilter(RohstoffAuswahl.RohstoffEinheit)
             Return True
@@ -447,15 +518,41 @@ Public Class wb_Rezept_Rezeptur
         VirtualTree.RootRow.ExpandChildren(True)
     End Sub
 
+    ''' <summary>
+    ''' Wenn der neu eingefügte Rezeptschritt mehrere Zeilen haben kann werden diese aus der KomponTypen-Tabelle
+    ''' ausgelesen und als Child-Rezeptschritte eingefügt.
+    ''' 
+    ''' Kneter-Zeilen werden aus der Tabelle RohParams eingefügt
+    ''' </summary>
     Private Sub VT_AddChildSteps()
-        If _RezeptSchrittNeu.Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE Then
-            Dim rsChild As New wb_Rezeptschritt(Nothing, "Wassertemperatur")
-            rsChild.RohNr = _RezeptSchrittNeu.RohNr
-            rsChild.Nummer = _RezeptSchrittNeu.Nummer
-            rsChild.Sollwert = "0.000"
-            rsChild.Type = _RezeptSchrittNeu.Type
-            rsChild.ParamNr = 3
-            _RezeptSchrittNeu.InsertChild(rsChild)
+        If wb_Functions.TypeHasChildSteps(_RezeptSchrittNeu.Type) Then
+            Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+            Dim sql As String = ""
+
+            If _RezeptSchrittNeu.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
+                'Die Kneter-Rezeptur wird aus der Tabelle KomponTypen gelesen
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKneterRezept, _RezeptSchrittNeu.RohNr)
+            Else
+                'Nachfolgende Rezept-Schritte aus Tabelle KomponParams 
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohstoffRez, _RezeptSchrittNeu.RohNr)
+            End If
+
+            'Datenbank-Verbindung
+            winback.sqlSelect(sql)
+            While winback.Read
+                Dim Bezeichnung As String = wb_Functions.MySqlToUtf8(winback.sField("KO_Bezeichnung"))
+                Dim _RezeptSchrittNeuChild As New wb_Rezeptschritt(Nothing, Bezeichnung)
+                _RezeptSchrittNeuChild.RohNr = _RezeptSchrittNeu.RohNr
+                _RezeptSchrittNeuChild.Nummer = _RezeptSchrittNeu.Nummer
+                _RezeptSchrittNeuChild.Kommentar = wb_Functions.MySqlToUtf8(winback.sField("KO_Kommentar"))
+                _RezeptSchrittNeuChild.SchrittNr = _RezeptSchrittNeu.SchrittNr
+                _RezeptSchrittNeuChild.Type = _RezeptSchrittNeu.Type
+                _RezeptSchrittNeuChild.ParamNr = winback.iField("KT_ParamNr")
+                _RezeptSchrittNeuChild.Sollwert = "0,000"
+                _RezeptSchrittNeuChild.Einheit = wb_Language.TextFilter(winback.sField("E_Einheit"))
+
+                _RezeptSchrittNeu.InsertChild(_RezeptSchrittNeuChild)
+            End While
         End If
     End Sub
 
@@ -478,19 +575,30 @@ Public Class wb_Rezept_Rezeptur
                 Case wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Davor) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Danach) = True
-                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) = True
-                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Danach) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
-                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Darunter) = True
-                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Davor) = True
+
+                    'neuer Kessel/Komponente nur wenn noch keine Child-Schritte vorhanden sind
+                    If _RezeptSchritt.ChildSteps.Count = 0 Then
+                        _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Darunter) = True
+                        _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) = True
+                        _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) = True
+                    Else
+                        'wenn der erste Child-Step ein Kessel ist dürfen nur noch Kessel angefügt werden
+                        'sonst nur Komponenten oder Text-Zeilen
+                        If DirectCast(_RezeptSchritt.ChildSteps(0), wb_Rezeptschritt).Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
+                            _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Darunter) = True
+                        Else
+                            _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) = True
+                            _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) = True
+                        End If
+                    End If
 
                 Case wb_Global.KomponTypen.KO_TYPE_KESSEL
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Davor) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Danach) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
-                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Darunter) = True
-                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Davor) = True
 
                 Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
 
@@ -499,15 +607,11 @@ Public Class wb_Rezept_Rezeptur
                 Case Else
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Davor) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) = True
-                    _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
-                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Darunter) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Davor) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
 
             End Select
-
-            '_PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Darunter) = True
-            '_PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) = True
-            '_PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Darunter) = True
 
             '_PopupFunctions(wb_Global.TPopupFunctions.TP_Editieren) = True
             '_PopupFunctions(wb_Global.TPopupFunctions.TP_TTS_loeschen) = True
@@ -524,30 +628,48 @@ Public Class wb_Rezept_Rezeptur
 
         'Popup-Menu erstellen
         VTPopUpMenu.Items.Clear()
+
+        'Neue Komponente
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente) Then
+            VTPopUpMenu.Items.Add("Neue Komponente", Nothing, AddressOf VTP_NeueKomponente)
+        End If
+        'Neue Komponente am Ende anfügen
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Darunter) Then
+            VTPopUpMenu.Items.Add("Neue Komponente anfügen", Nothing, AddressOf VTP_NeueKomponenteDanach)
+        End If
+        'Neue Komponente davor
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Davor) Then
+            VTPopUpMenu.Items.Add("Neue Komponente davor", Nothing, AddressOf VTP_NeueKomponenteDavor)
+        End If
+        'Neue Komponente danach
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) Then
+            VTPopUpMenu.Items.Add("Neue Komponente danach", Nothing, AddressOf VTP_NeueKomponenteDanach)
+        End If
+
         'Neue Produktions-Stufe
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe) Then
             VTPopUpMenu.Items.Add("Neue Produktions-Stufe", Nothing, AddressOf VTP_NeueProduktionsStufe)
         End If
         'Neue Produktions-Stufe danach
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Davor) Then
-            VTPopUpMenu.Items.Add("Neue Produktions-Stufe davor", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Neue Produktions-Stufe davor", Nothing, AddressOf VTP_NeueProduktionsStufeDavor)
         End If
         'Neue Produktions-Stufe davor
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Danach) Then
-            VTPopUpMenu.Items.Add("Neue Produktions-Stufe danach", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Neue Produktions-Stufe danach", Nothing, AddressOf VTP_NeueKomponenteDanach)
         End If
 
         'Neuer Kessel nach der Produktions-Stufe
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Darunter) Then
-            VTPopUpMenu.Items.Add("Neuer Kessel", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Neuer Kessel", Nothing, AddressOf VTP_NeuerKesselNachProduktionsStufe)
         End If
         'Neuer Kessel davor
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Davor) Then
-            VTPopUpMenu.Items.Add("Neuer Kessel davor", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Neuer Kessel davor", Nothing, AddressOf VTP_NeuerKesselDavor)
         End If
         'Neuer Kessel danach
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Danach) Then
-            VTPopUpMenu.Items.Add("Neuer Kessel danach", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Neuer Kessel danach", Nothing, AddressOf VTP_NeuerKesselDanach)
         End If
 
         'Neue Textkomponente
@@ -565,23 +687,6 @@ Public Class wb_Rezept_Rezeptur
         'Neue Textkomponente danach
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) Then
             VTPopUpMenu.Items.Add("Neue Textkomponente danach", Nothing, AddressOf VTP_NeueTextKomponenteDanach)
-        End If
-
-        'Neue Komponente
-        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente) Then
-            VTPopUpMenu.Items.Add("Neue Komponente", Nothing, AddressOf VTP_NeueKomponente)
-        End If
-        'Neue Komponente am Ende anfügen
-        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Darunter) Then
-            VTPopUpMenu.Items.Add("Neue Komponente anfügen", Nothing, AddressOf VTP_NeueKomponenteDanach)
-        End If
-        'Neue Komponente davor
-        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Davor) Then
-            VTPopUpMenu.Items.Add("Neue Komponente davor", Nothing, AddressOf VTP_NeueKomponenteDavor)
-        End If
-        'Neue Komponente danach
-        If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) Then
-            VTPopUpMenu.Items.Add("Neue Komponente danach", Nothing, AddressOf VTP_NeueKomponenteDanach)
         End If
 
         'Bearbeiten

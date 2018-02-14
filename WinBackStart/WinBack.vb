@@ -363,7 +363,9 @@ Public Class WinBack
                 'Wenn dieses Layout im Arbeitsplatz-Ordner nicht vorhanden ist
                 If Not My.Computer.FileSystem.FileExists(DkPnlConfigFileName) Then
                     'vom Default-Ordner kopieren
-                    System.IO.File.Copy(DkPnlConfigFileName(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), DkPnlConfigFileName)
+                    If My.Computer.FileSystem.FileExists(DkPnlConfigFileName(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal)) Then
+                        System.IO.File.Copy(DkPnlConfigFileName(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), DkPnlConfigFileName)
+                    End If
                 End If
             Catch ex As Exception
             End Try

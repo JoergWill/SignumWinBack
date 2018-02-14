@@ -49,6 +49,19 @@ Public Class wb_Sql
         End Get
     End Property
 
+    ReadOnly Property FieldCount As Integer
+        Get
+            Select Case conType
+                Case dbType.mySql
+                    Return MySqlRead.FieldCount
+                Case dbType.msSql
+                    Return msRead.FieldCount
+                Case Else
+                    Return wb_Global.UNDEFINED
+            End Select
+        End Get
+    End Property
+
     ''' <summary>
     ''' Einen Datensatz lesen
     ''' </summary>
