@@ -8,6 +8,7 @@ Public Class wb_Rohstoffe_Shared
     Public Shared RohStoff As New wb_Rohstoff
 
     Enum AnzeigeFilter
+        Undefined   ' nicht definiert
         Alle        ' alle aktiven Rohstoffe Typ > 100
         Hand        ' alle aktiven Rohstoffe Typ 102
         Auto        ' alle aktiven Rohstoffe Typ 101,103,104
@@ -15,6 +16,8 @@ Public Class wb_Rohstoffe_Shared
         Install     ' alle inaktiven Rohstoffe
         Sonstige    ' alle Rohstoffe Typ 105,106
         RezeptKomp  ' alle aktiven Komponenten für Rezeptverwaltung (101..104, 118,128)
+        OhneKneter  ' alle aktiven Komponenten für die Rezeptverwaltung ohne 118/128
+        NurKneter   ' alle aktiven Komponenten 118
     End Enum
     'TODO evtl bei NEW Load_RohstoffTables()
 

@@ -319,6 +319,7 @@ Public Class wb_Rezept_Rezeptur
             _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, _RezeptSchrittNeu.Bezeichnung)
             _RezeptSchritt.CopyFrom(_RezeptSchrittNeu)
             _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count
+            VT_AddChildSteps()
             VT_Aktualisieren()
         End If
     End Sub
@@ -329,9 +330,21 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueKomponenteDavor(Sender As Object, e As EventArgs)
+        'Auswahl der Rohstoffe in der Liste begrenzen
+        Dim AuswahlFilter As wb_Rohstoffe_Shared.AnzeigeFilter
+        Select Case _RezeptSchritt.Type
+            Case wb_Global.KomponTypen.KO_TYPE_KNETER
+                AuswahlFilter = wb_Rohstoffe_Shared.AnzeigeFilter.NurKneter
+            Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
+                AuswahlFilter = wb_Rohstoffe_Shared.AnzeigeFilter.OhneKneter
+            Case Else
+                AuswahlFilter = wb_Rohstoffe_Shared.AnzeigeFilter.OhneKneter
+        End Select
+
         'Auswahlliste Rohstoff
-        If VT_AuswahlRohstoff() Then
+        If VT_AuswahlRohstoff(AuswahlFilter) Then
             _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
+            VT_AddChildSteps()
             VT_Aktualisieren()
         End If
     End Sub
@@ -342,8 +355,20 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueKomponenteDanach(Sender As Object, e As EventArgs)
+        'Auswahl der Rohstoffe in der Liste begrenzen
+        Dim AuswahlFilter As wb_Rohstoffe_Shared.AnzeigeFilter
+        Select Case _RezeptSchritt.Type
+            Case wb_Global.KomponTypen.KO_TYPE_KNETER
+                AuswahlFilter = wb_Rohstoffe_Shared.AnzeigeFilter.NurKneter
+            Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
+                AuswahlFilter = wb_Rohstoffe_Shared.AnzeigeFilter.OhneKneter
+            Case Else
+                AuswahlFilter = wb_Rohstoffe_Shared.AnzeigeFilter.Undefined
+        End Select
+
         'Auswahlliste Rohstoff
-        If VT_AuswahlRohstoff() Then
+        If VT_AuswahlRohstoff(AuswahlFilter) Then
+            'Bei KneterKomponenten
             'Anfügen Rezeptschritt unterhalb Produktions-Stufe oder Kessel
             If _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
                 _RezeptSchritt.InsertChild(_RezeptSchrittNeu)
@@ -481,7 +506,7 @@ Public Class wb_Rezept_Rezeptur
     ''' Die Verknüpfung erfolgt über Rezeptschritt.Insert
     ''' </summary>
     ''' <returns></returns>
-    Private Function VT_AuswahlRohstoff() As Boolean
+    Private Function VT_AuswahlRohstoff(Optional AnzeigeFilter As wb_Rohstoffe_Shared.AnzeigeFilter = wb_Rohstoffe_Shared.AnzeigeFilter.Undefined) As Boolean
         'Rohstoff-Auswahl-Liste
         Dim RohstoffAuswahl As New wb_Rohstoff_AuswahlListe
 
@@ -489,7 +514,11 @@ Public Class wb_Rezept_Rezeptur
         If _RzVariante = 0 Then
             RohstoffAuswahl.Anzeige = wb_Rohstoffe_Shared.AnzeigeFilter.Sauerteig
         Else
-            RohstoffAuswahl.Anzeige = wb_Rohstoffe_Shared.AnzeigeFilter.RezeptKomp
+            If AnzeigeFilter <> wb_Rohstoffe_Shared.AnzeigeFilter.Undefined Then
+                RohstoffAuswahl.Anzeige = AnzeigeFilter
+            Else
+                RohstoffAuswahl.Anzeige = wb_Rohstoffe_Shared.AnzeigeFilter.RezeptKomp
+            End If
         End If
 
         'Anzeige Auswahl-Fenster
@@ -502,6 +531,8 @@ Public Class wb_Rezept_Rezeptur
             _RezeptSchrittNeu.Sollwert = "0,000"
             _RezeptSchrittNeu.Type = RohstoffAuswahl.RohstoffType
             _RezeptSchrittNeu.Einheit = wb_Language.TextFilter(RohstoffAuswahl.RohstoffEinheit)
+            'bei Kneterkomponenten müssen die Paramter aus Tabelle KomponParams gesetzt werden
+            _RezeptSchrittNeu.SetType118()
             Return True
         Else
             Return False
@@ -528,9 +559,10 @@ Public Class wb_Rezept_Rezeptur
         If wb_Functions.TypeHasChildSteps(_RezeptSchrittNeu.Type) Then
             Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
             Dim sql As String = ""
+            Dim SchrittNr As Integer = _RezeptSchrittNeu.SchrittNr
 
             If _RezeptSchrittNeu.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
-                'Die Kneter-Rezeptur wird aus der Tabelle KomponTypen gelesen
+                'Die Kneter-Rezeptur wird aus der Tabelle RohParams gelesen
                 sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKneterRezept, _RezeptSchrittNeu.RohNr)
             Else
                 'Nachfolgende Rezept-Schritte aus Tabelle KomponParams 
@@ -542,14 +574,25 @@ Public Class wb_Rezept_Rezeptur
             While winback.Read
                 Dim Bezeichnung As String = wb_Functions.MySqlToUtf8(winback.sField("KO_Bezeichnung"))
                 Dim _RezeptSchrittNeuChild As New wb_Rezeptschritt(Nothing, Bezeichnung)
-                _RezeptSchrittNeuChild.RohNr = _RezeptSchrittNeu.RohNr
-                _RezeptSchrittNeuChild.Nummer = _RezeptSchrittNeu.Nummer
                 _RezeptSchrittNeuChild.Kommentar = wb_Functions.MySqlToUtf8(winback.sField("KO_Kommentar"))
-                _RezeptSchrittNeuChild.SchrittNr = _RezeptSchrittNeu.SchrittNr
-                _RezeptSchrittNeuChild.Type = _RezeptSchrittNeu.Type
-                _RezeptSchrittNeuChild.ParamNr = winback.iField("KT_ParamNr")
-                _RezeptSchrittNeuChild.Sollwert = "0,000"
-                _RezeptSchrittNeuChild.Einheit = wb_Language.TextFilter(winback.sField("E_Einheit"))
+
+                If _RezeptSchrittNeu.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
+                    SchrittNr += 1
+                    _RezeptSchrittNeuChild.SchrittNr = SchrittNr
+                    _RezeptSchrittNeuChild.RohNr = winback.iField("KO_Nr")
+                    _RezeptSchrittNeuChild.Nummer = winback.sField("KO_Nr_AlNum")
+                    _RezeptSchrittNeuChild.Type = wb_Functions.IntToKomponType(winback.iField("KT_Typ_Nr"))
+                    _RezeptSchrittNeuChild.ParamNr = 1
+                    _RezeptSchrittNeuChild.SetType118()
+                Else
+                    _RezeptSchrittNeuChild.SchrittNr = _RezeptSchrittNeu.SchrittNr
+                    _RezeptSchrittNeuChild.RohNr = _RezeptSchrittNeu.RohNr
+                    _RezeptSchrittNeuChild.Nummer = _RezeptSchrittNeu.Nummer
+                    _RezeptSchrittNeuChild.Type = _RezeptSchrittNeu.Type
+                    _RezeptSchrittNeuChild.ParamNr = winback.iField("KT_ParamNr")
+                    _RezeptSchrittNeuChild.Sollwert = "0,000"
+                    _RezeptSchrittNeuChild.Einheit = wb_Language.TextFilter(winback.sField("E_Einheit"))
+                End If
 
                 _RezeptSchrittNeu.InsertChild(_RezeptSchrittNeuChild)
             End While
@@ -601,8 +644,16 @@ Public Class wb_Rezept_Rezeptur
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
 
                 Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Davor) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Davor) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
 
                 Case wb_Global.KomponTypen.KO_TYPE_KNETER
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Davor) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
 
                 Case Else
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Davor) = True

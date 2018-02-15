@@ -160,7 +160,7 @@ Public Class wb_Rezeptschritt
     ''' <param name="rs"></param>
     Public Sub InsertChild(rs As wb_Rezeptschritt)
         'Rezeptschritt als erstes Child einfügen (Index = 0)
-        ChildSteps.Insert(0, rs)
+        ChildSteps.Add(rs)
         'Parent für den neuen Rezeptschritt ist der aktuelle Schritt
         rs.ParentStep = Me
         'Numerierung der Rezeptschritte neu aufbauen
@@ -480,6 +480,19 @@ Public Class wb_Rezeptschritt
             _RezeptNr = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Setzt die Werte für Einheit, Format und Sollwert bei Kneter-Komponenten.
+    ''' Erzeugen von Kneter-Rezepten aus Komponenten(128)
+    ''' </summary>
+    Public Sub SetType118()
+        If _Type = wb_Global.KomponTypen.KO_TYPE_KNETER Then
+            Dim EinheitenIndex As String = wb_sql_Functions.getKomponParam(RohNr, 4)
+            _Einheit = wb_Language.TextFilter(wb_sql_Functions.Lookup("Einheiten", "E_Einheit", "E_LfdNr = " & EinheitenIndex))
+            _Sollwert = wb_sql_Functions.getKomponParam(RohNr, 1)
+            '_Format =  wb_sql_Functions.getKomponParam(RohNr, 9)
+        End If
+    End Sub
 
     ''' <summary>
     ''' TA der Rezeptzeile aus KomponentenParametern lesen. Wenn die Komponente auf ein Rezept zeigt (RezeptNr größer Null)

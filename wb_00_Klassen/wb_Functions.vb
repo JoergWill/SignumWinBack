@@ -294,7 +294,7 @@ Public Class wb_Functions
             Case wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG
                 Return 111
             Case wb_Global.KomponTypen.KO_TYPE_KNETER
-                Return 119
+                Return 118
             Case wb_Global.KomponTypen.KO_TYPE_TEIGZETTEL
                 Return 119
             Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT

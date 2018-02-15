@@ -102,7 +102,6 @@ Public Class wb_sql_Functions
         winback.sqlSelect(setParams(sqlKompParams, KomponentenNummer, ParameterNummer))
         If winback.Read Then
             getKomponParam = winback.sField("KP_Wert")
-            Debug.Print("TA " & getKomponParam.ToString)
         Else
             getKomponParam = DefaultWert
         End If

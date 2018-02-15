@@ -13,12 +13,29 @@ Public Class wb_Rohstoff_AuswahlListe
     Public WriteOnly Property Anzeige As AnzeigeFilter
         Set(value As AnzeigeFilter)
             Select Case value
+
                 Case AnzeigeFilter.Alle        ' alle aktiven Rohstoffe Typ > 100
                     _Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+
                 Case AnzeigeFilter.RezeptKomp   'alle Rohstoffe Rezeptauswahl
-                    _Filter = "(KO_Type > 100 and KO_Type <> " & wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE " AND KA_aktiv = 1"
+                    _Filter = "(KO_Type > 100) AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE) &
+                              ") AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) &
+                              ") AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_KESSEL) &
+                              ") AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_KNETER) & ") AND KA_aktiv = 1"
+
+                Case AnzeigeFilter.OhneKneter   'alle Rohstoffe Rezeptauswahl ohne Kneter-Komponenten
+                    _Filter = "(KO_Type > 100) AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE) &
+                              ") AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) &
+                              ") AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_KESSEL) &
+                              ") AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_KNETER) &
+                              ") AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT) & ") AND KA_aktiv = 1"
+
+                Case AnzeigeFilter.NurKneter   'alle aktiven Rohstoffe Type Kneter-Schritt
+                    _Filter = "(KO_Type = 118) AND KA_aktiv = 1"
+
                 Case AnzeigeFilter.Sauerteig   ' alle aktiven Rohstoffe Sauerteig
                     _Filter = "(KO_Type < 100) AND KA_aktiv = 1"
+
                 Case Else
                     _Filter = ""
             End Select
