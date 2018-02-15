@@ -428,6 +428,7 @@
         TP_NeueKomponente_Danach
 
         TP_Editieren
+        TP_KneterRezept_Speichern
         TP_Loeschen
         TP_TTS_loeschen
 

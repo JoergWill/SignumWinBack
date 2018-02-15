@@ -489,6 +489,39 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     ''' <summary>
+    ''' Aktuelles Kneter-Rezept speichern in Tabelle RohParams
+    ''' 
+    ''' Alle Child-Steps unterhalb der Kneter-Kopfzeile werden als neues Rezept in der Tabelle RohParams
+    ''' gespeichert
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_KneterRezept_Speichern(Sender As Object, e As EventArgs)
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+
+        'vorhandene Kneter-Rezeptur in Datenbank löschen
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelKneterRzt, _RezeptSchritt.RohNr))
+
+        'Index
+        Dim Idx As Integer = 0
+
+        'Schleife über alle Rezeptschritte
+        For Each rz As wb_Rezeptschritt In _RezeptSchritt.ChildSteps
+            Idx += 1
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsKneterRzt, _RezeptSchritt.RohNr, Idx & ",'" & rz.RohNr & "','" & rz.Bezeichnung & "'")
+            winback.sqlCommand(sql)
+        Next
+        winback.Close()
+
+        'Meldung ausgeben
+        MsgBox("Die Kneter-Rezeptur wurde unter " & _RezeptSchritt.Bezeichnung & " gespeichert ", MsgBoxStyle.Information, "Kneter-Rezeptur")
+
+    End Sub
+
+
+    ''' <summary>
     ''' Aktuelle Rezeptzeile löschen (Popup oder DEL-Key)
     ''' </summary>
     ''' <param name="Sender"></param>
@@ -648,6 +681,7 @@ Public Class wb_Rezept_Rezeptur
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Davor) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_KneterRezept_Speichern) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
 
                 Case wb_Global.KomponTypen.KO_TYPE_KNETER
@@ -743,6 +777,10 @@ Public Class wb_Rezept_Rezeptur
         'Bearbeiten
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_Editieren) Then
             VTPopUpMenu.Items.Add("Bearbeiten", Nothing, AddressOf VTP_NeueProduktionsStufe)
+        End If
+        'Kneter-Rezept speichern
+        If _PopupFunctions(wb_Global.TPopupFunctions.TP_KneterRezept_Speichern) Then
+            VTPopUpMenu.Items.Add("Kneter-Rezeptur speichern", Nothing, AddressOf VTP_KneterRezept_Speichern)
         End If
         'Löschen
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) Then

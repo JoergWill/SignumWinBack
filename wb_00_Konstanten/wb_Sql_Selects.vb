@@ -44,6 +44,12 @@
                                   "INNER JOIN Einheiten On KomponTypen.KT_EinheitIndex = Einheiten.E_LfdNr " &
                                    "WHERE RP_KO_Nr = [0] AND KT_Rezept = 'R'"
 
+    'Sql-Statement Kneter-Rezept löschen in RohParams
+    Public Const sqlDelKneterRzt = "DELETE FROM RohParams WHERE RP_KO_Nr = [0]"
+    'Sql-Statement Kneter-Rezept anlegen in RohParams
+    Public Const sqlInsKneterRzt = "INSERT INTO RohParams(RP_KO_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES ([0],118,[1])"
+
+
     'Sql-Statement RohstoffGruppen aus winback.ItemParameter
     Public Const sqlRohstoffGrp = "Select IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
                                   "IP_ItemTyp = 600 And IP_Wert3int = 0 ORDER BY IP_Lfd_Nr DESC"
