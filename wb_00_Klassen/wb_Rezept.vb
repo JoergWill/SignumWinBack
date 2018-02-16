@@ -625,6 +625,12 @@ Public Class wb_Rezept
                 End If
                 Exit Function
             Else
+                'Sonderfall zweimal Wasser nacheinander !!
+                If ParamNrNow < ParamNrLast Then
+                    Return DefaultNode.ParentStep
+                    Exit Function
+                End If
+
                 If ParamNrLast = 1 Or ParamNrLast = 3 Then
                     Return _RezeptSchritt
                     Exit Function
@@ -784,6 +790,9 @@ Public Class wb_Rezept
         Dim sql As String
         Dim sqlFelder As String
         Dim sqlData As String
+
+        'Rezeptschritte neu durchnumerieren (sicherheitshalber)
+        RootRezeptSchritt.ReCalcRzSteps(0)
 
         'alte Rezeptur in Historie speichern
 

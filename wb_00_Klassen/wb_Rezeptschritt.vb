@@ -138,19 +138,21 @@ Public Class wb_Rezeptschritt
     ''' </summary>
     ''' <param name="rs"></param>
     Public Sub Insert(rs As wb_Rezeptschritt, InsertAfter As Boolean)
-        'Index des aktuellen Rezept-Schritts
-        Dim idx As Integer = ParentStep.ChildSteps.IndexOf(Me)
-        'wenn nach dem aktuellen Schritt eingefügt werden soll - Index + 1
-        If InsertAfter Then
-            idx += 1
-        End If
+        If ParentStep IsNot Nothing Then
+            'Index des aktuellen Rezept-Schritts
+            Dim idx As Integer = ParentStep.ChildSteps.IndexOf(Me)
+            'wenn nach dem aktuellen Schritt eingefügt werden soll - Index + 1
+            If InsertAfter Then
+                idx += 1
+            End If
 
-        'Rezeptschritt am Index einfügen
-        ParentStep.ChildSteps.Insert(idx, rs)
-        'Parent für den neuen Rezeptschritt ist der Parent des aktuellen Rezeptschrittes
-        rs.ParentStep = ParentStep
-        'Numerierung der Rezeptschritte neu aufbauen
-        ParentStep.ReCalcRzSteps(ParentStep.SchrittNr)
+            'Rezeptschritt am Index einfügen
+            ParentStep.ChildSteps.Insert(idx, rs)
+            'Parent für den neuen Rezeptschritt ist der Parent des aktuellen Rezeptschrittes
+            rs.ParentStep = ParentStep
+            'Numerierung der Rezeptschritte neu aufbauen
+            ParentStep.ReCalcRzSteps(ParentStep.SchrittNr)
+        End If
     End Sub
 
     ''' <summary>
@@ -172,7 +174,9 @@ Public Class wb_Rezeptschritt
     ''' </summary>
     Public Sub Delete()
         'Diesen Eintrag in der Child-Liste des Parent-Step löschen
-        ParentStep.ChildSteps.Remove(Me)
+        If ParentStep IsNot Nothing Then
+            ParentStep.ChildSteps.Remove(Me)
+        End If
     End Sub
 
     '' <summary>
@@ -227,16 +231,13 @@ Public Class wb_Rezeptschritt
     ''' <returns></returns>
     Public Function ReCalcRzSteps(RsStep As Integer) As Integer
         For Each rs As wb_Rezeptschritt In ChildSteps
-            RsStep += 1
-            rs.SchrittNr = RsStep
-
-            For Each c As wb_Rezeptschritt In rs.ChildSteps
-                If wb_Functions.TypeHasChildSteps(c.Type) Then
-                    RsStep = rs.ReCalcRzSteps(RsStep)
-                Else
-                    c.SchrittNr = RsStep
-                End If
-            Next
+            If rs.ParamNr <= 1 Then
+                RsStep += 1
+                rs.SchrittNr = RsStep
+            End If
+            If wb_Functions.TypeHasChildSteps(rs.Type) Then
+                RsStep = rs.ReCalcRzSteps(RsStep)
+            End If
         Next
         Return RsStep
     End Function

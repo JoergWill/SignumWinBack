@@ -318,8 +318,8 @@ Public Class wb_Rezept_Rezeptur
             'Es gibt keinen ausgewählten Rezeptschritt - neu erstellen
             _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, _RezeptSchrittNeu.Bezeichnung)
             _RezeptSchritt.CopyFrom(_RezeptSchrittNeu)
-            _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count
-            VT_AddChildSteps()
+            _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count + 1
+            VT_AddChildSteps(_RezeptSchritt)
             VT_Aktualisieren()
         End If
     End Sub
@@ -344,7 +344,7 @@ Public Class wb_Rezept_Rezeptur
         'Auswahlliste Rohstoff
         If VT_AuswahlRohstoff(AuswahlFilter) Then
             _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
-            VT_AddChildSteps()
+            VT_AddChildSteps(_RezeptSchrittNeu)
             VT_Aktualisieren()
         End If
     End Sub
@@ -375,7 +375,7 @@ Public Class wb_Rezept_Rezeptur
             Else
                 _RezeptSchritt.Insert(_RezeptSchrittNeu, True)
             End If
-            VT_AddChildSteps()
+            VT_AddChildSteps(_RezeptSchrittNeu)
             'Der neu eingefügte Rezeptschritt wird der aktuelle Rezeptschritt (Tastatur-Bedienung INSERT)
             _RezeptSchritt = _RezeptSchrittNeu
             VT_Aktualisieren()
@@ -588,46 +588,46 @@ Public Class wb_Rezept_Rezeptur
     ''' 
     ''' Kneter-Zeilen werden aus der Tabelle RohParams eingefügt
     ''' </summary>
-    Private Sub VT_AddChildSteps()
-        If wb_Functions.TypeHasChildSteps(_RezeptSchrittNeu.Type) Then
+    Private Sub VT_AddChildSteps(ByRef rs As wb_Rezeptschritt)
+        If wb_Functions.TypeHasChildSteps(rs.Type) Then
             Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
             Dim sql As String = ""
-            Dim SchrittNr As Integer = _RezeptSchrittNeu.SchrittNr
+            Dim SchrittNr As Integer = rs.SchrittNr
 
-            If _RezeptSchrittNeu.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
+            If rs.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
                 'Die Kneter-Rezeptur wird aus der Tabelle RohParams gelesen
-                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKneterRezept, _RezeptSchrittNeu.RohNr)
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKneterRezept, rs.RohNr)
             Else
                 'Nachfolgende Rezept-Schritte aus Tabelle KomponParams 
-                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohstoffRez, _RezeptSchrittNeu.RohNr)
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohstoffRez, rs.RohNr)
             End If
 
             'Datenbank-Verbindung
             winback.sqlSelect(sql)
             While winback.Read
                 Dim Bezeichnung As String = wb_Functions.MySqlToUtf8(winback.sField("KO_Bezeichnung"))
-                Dim _RezeptSchrittNeuChild As New wb_Rezeptschritt(Nothing, Bezeichnung)
-                _RezeptSchrittNeuChild.Kommentar = wb_Functions.MySqlToUtf8(winback.sField("KO_Kommentar"))
+                Dim rsc As New wb_Rezeptschritt(Nothing, Bezeichnung)
+                rsc.Kommentar = wb_Functions.MySqlToUtf8(winback.sField("KO_Kommentar"))
 
-                If _RezeptSchrittNeu.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
+                If rs.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
                     SchrittNr += 1
-                    _RezeptSchrittNeuChild.SchrittNr = SchrittNr
-                    _RezeptSchrittNeuChild.RohNr = winback.iField("KO_Nr")
-                    _RezeptSchrittNeuChild.Nummer = winback.sField("KO_Nr_AlNum")
-                    _RezeptSchrittNeuChild.Type = wb_Functions.IntToKomponType(winback.iField("KT_Typ_Nr"))
-                    _RezeptSchrittNeuChild.ParamNr = 1
-                    _RezeptSchrittNeuChild.SetType118()
+                    rsc.SchrittNr = SchrittNr
+                    rsc.RohNr = winback.iField("KO_Nr")
+                    rsc.Nummer = winback.sField("KO_Nr_AlNum")
+                    rsc.Type = wb_Functions.IntToKomponType(winback.iField("KT_Typ_Nr"))
+                    rsc.ParamNr = 1
+                    rsc.SetType118()
                 Else
-                    _RezeptSchrittNeuChild.SchrittNr = _RezeptSchrittNeu.SchrittNr
-                    _RezeptSchrittNeuChild.RohNr = _RezeptSchrittNeu.RohNr
-                    _RezeptSchrittNeuChild.Nummer = _RezeptSchrittNeu.Nummer
-                    _RezeptSchrittNeuChild.Type = _RezeptSchrittNeu.Type
-                    _RezeptSchrittNeuChild.ParamNr = winback.iField("KT_ParamNr")
-                    _RezeptSchrittNeuChild.Sollwert = "0,000"
-                    _RezeptSchrittNeuChild.Einheit = wb_Language.TextFilter(winback.sField("E_Einheit"))
+                    rsc.SchrittNr = rs.SchrittNr
+                    rsc.RohNr = rs.RohNr
+                    rsc.Nummer = rs.Nummer
+                    rsc.Type = rs.Type
+                    rsc.ParamNr = winback.iField("KT_ParamNr")
+                    rsc.Sollwert = "0,000"
+                    rsc.Einheit = wb_Language.TextFilter(winback.sField("E_Einheit"))
                 End If
 
-                _RezeptSchrittNeu.InsertChild(_RezeptSchrittNeuChild)
+                rs.InsertChild(rsc)
             End While
         End If
     End Sub
