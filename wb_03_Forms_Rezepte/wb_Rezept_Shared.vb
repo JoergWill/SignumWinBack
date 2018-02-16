@@ -3,6 +3,7 @@ Public Class wb_Rezept_Shared
 
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
+    Public Shared Event eListe_Refresh(Sender As Object)
 
     Public Shared RzVariante As New SortedList
     'Public Shared LinienGruppe As New SortedList
@@ -62,5 +63,9 @@ Public Class wb_Rezept_Shared
 
     Public Shared Sub Edit_Leave(sender As Object)
         RaiseEvent eEdit_Leave(sender)
+    End Sub
+
+    Public Shared Sub Liste_Refresh(sender As Object)
+        RaiseEvent eListe_Refresh(sender)
     End Sub
 End Class

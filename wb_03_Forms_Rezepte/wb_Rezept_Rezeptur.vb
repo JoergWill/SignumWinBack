@@ -10,6 +10,7 @@ Public Class wb_Rezept_Rezeptur
 
     Private _RzNummer As Integer
     Private _RzVariante As Integer
+    Private _RzChanged As Boolean = False
     Private _RzHinweiseChanged As Boolean
 
     Private _RezeptSchritt As wb_Rezeptschritt = Nothing    'aktuelle ausgewählter Rezeptschritt (Popup)
@@ -83,9 +84,75 @@ Public Class wb_Rezept_Rezeptur
         Me.Cursor = Cursors.Default
     End Sub
 
+    ''' <summary>
+    ''' Rezeptur drucken.
+    ''' Der Ausdruck erfolgt über Printer-Sub-Funktion (List&Label)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
+        'TODO anpassen (siehe Produktionsplanung)
         wb_Printer_Shared.LL.DataSource = New ObjectDataProvider(Rezept)
         wb_Printer_Shared.LL.Design()
+    End Sub
+
+    ''' <summary>
+    ''' Aktuelle Rezeptur löschen.
+    ''' Löschen ist nur möglich, wenn die Rezeptur nicht mehr verwendet wird und, bei Variante Eins, wenn keine weitere Variante existiert
+    ''' Vor dem Löschen erfolgt eine Sicherheits-Abfrage
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnLoeschen_Click(sender As Object, e As EventArgs) Handles BtnLoeschen.Click
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptInKomp, Rezept.RezeptNr)
+        Dim Count As Integer = -1
+
+        'Suche nach RezeptNr
+        If winback.sqlSelect(sql) Then
+            If winback.Read Then
+                Count = winback.iField("Used")
+            End If
+        End If
+        'Datenbank wieder schliessen
+        winback.Close()
+
+        'Prüfen ob die Rezeptur noch in verschiedenen Artikeln verwendet wird
+        If Count > 0 Then
+
+            'Die Hauptvariante kann nur gelöscht werden, wenn das Rezept nicht mehr verwendet wird
+            If Rezept.Variante = 1 Then
+                MsgBox("Dieses Rezept wird noch verwendet" & vbCrLf & "Die Hauptvariante kann nicht gelöscht werden", MsgBoxStyle.Exclamation, "Rezeptur löschen")
+                Exit Sub
+            Else
+                If MsgBox("Dieses Rezept wird noch verwendet" & vbCrLf & "Soll diese Variante trotzdem gelöscht werden ?", MsgBoxStyle.YesNo, "Rezeptur löschen") = vbNo Then
+                    Exit Sub
+                End If
+            End If
+        Else
+
+            'Rezept kann gelöscht werden - Sicherheitshalber nochmal nachfragen
+            If MsgBox("Soll dieses Rezept komplett gelöscht werden ?", MsgBoxStyle.YesNo, "Rezeptur löschen") = vbNo Then
+                Exit Sub
+            End If
+
+            'Rezept-Historie löschen
+            Rezept.MySQLdbDelete_HisRezept()
+            Rezept.MySQLdbDelete_HisRezeptSchritte()
+
+            'Rezept löschen
+            Rezept.MySQLdbDelete_Rezept()
+            Rezept.MySQLdbDelete_RezeptSchritte()
+
+            'Rezept-Verarbeitungshinweise löschen
+            RezeptHinweise.Delete()
+
+            'Rezept muss nicht mehr gespeichert werden
+            _RzChanged = False
+
+            'Fenster schliessen
+            Me.Close()
+        End If
     End Sub
 
     ''' <summary>
@@ -199,8 +266,12 @@ Public Class wb_Rezept_Rezeptur
         End If
 
         'Rezeptur ist geändert worden
-        'TODO Hier wird der Aufruf eingebaut Reeptur speichern !! wenn geändert wurde
-        Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante)
+        If _RzChanged Then
+            Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante)
+            wb_Rezept_Shared.Edit_Leave(sender)
+        Else
+            wb_Rezept_Shared.Liste_Refresh(sender)
+        End If
     End Sub
 
     ''' <summary>
@@ -580,6 +651,8 @@ Public Class wb_Rezept_Rezeptur
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
         'alle Zeilen aufklappen
         VirtualTree.RootRow.ExpandChildren(True)
+        'Rezeptur wurde geänert
+        _RzChanged = True
     End Sub
 
     ''' <summary>

@@ -22,6 +22,18 @@
                                   "FROM Komponenten WHERE KA_RZ_Nr = [0]"
     Public Const sqlAddNewRezept = "INSERT INTO Rezepte(RZ_Nr, RZ_Variante_Nr, RZ_Bezeichnung) VALUES ([0],[1],'[2]')"
     Public Const sqlMaxRzNummer = "SELECT MAX(RZ_Nr) FROM Rezepte"
+    'Sql-Statement Verwendung Rezept in Artikeln/Rohstoffen
+    Public Const sqlRezeptInKomp = "SELECT COUNT(*) AS Used FROM Komponenten WHERE KA_RZ_Nr = [0]"
+
+    'Sql-Statement Rezeptschritte Datensatze löschen
+    Public Const sqlDelRzptSchr = "DELETE FROM RezeptSchritte WHERE RS_RZ_Nr = [0] AND RS_RZ_Variante_Nr = [1]"
+    'Sql-Statement Rezeptkopf Datensatze löschen
+    Public Const sqlDelRzptKopf = "DELETE FROM Rezepte WHERE RZ_Nr = [0] AND RZ_Variante_Nr = [1]"
+    'Sql-Statement HisRezeptschritte Datensatze löschen
+    Public Const sqlDelHRzptSchr = "DELETE FROM His_RezeptSchritte WHERE H_RS_RZ_Nr = [0] AND H_RS_RZ_Variante_Nr = [1]"
+    'Sql-Statement HisRezepte Datensatze löschen (Rezeptkopf)
+    Public Const sqlDelHRzptKopf = "DELETE FROM His_Rezepte WHERE H_RZ_Nr = [0] AND H_RZ_Variante_Nr = [1]"
+
 
     'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
     Public Const sqlRohstoffSimpleLst = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KO_Type, KA_aktiv, " &
@@ -183,9 +195,6 @@
                                "WHERE (Rezepte.RZ_Nr = [0]) AND (Rezepte.RZ_Variante_Nr = [1]) " &
                                "AND ((KomponTypen.KT_Rezept='R') OR (KomponTypen.KT_Rezept='X')) " &
                                "ORDER BY RezeptSchritte.RS_Schritt_Nr, RezeptSchritte.RS_ParamNr"
-
-    'Sql-Statement Rezeptschritte löschen
-    Public Const sqlDelRZSchritt = "DELETE FROM RezeptSchritte WHERE RS_RZ_Nr = [0] AND RS_RZ_Variante_Nr = [1]"
 
     'Sql-Statement neuen Rezeptschritt schreiben
     Public Const sqlAddRZSchritt = "INSERT INTO RezeptSchritte([0]) VALUES ([1])"

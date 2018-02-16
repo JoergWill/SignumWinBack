@@ -21,9 +21,13 @@ Public Class wb_Rezept_Liste
         DataGridView.LoadData(wb_Sql_Selects.sqlRezeptListe, "RezeptListe")
 
         AddHandler wb_Rezept_Shared.eEdit_Leave, AddressOf SaveData
+        AddHandler wb_Rezept_Shared.eListe_Refresh, AddressOf RefreshData
     End Sub
 
-    Public Sub RefreshData()
+    ''' <summary>
+    ''' Liste neu laden nach Löschen/Ändern Rezeptur
+    ''' </summary>
+    Public Sub RefreshData(sender As Object)
         'Daten neu einlesen
         DataGridView.RefreshData()
     End Sub

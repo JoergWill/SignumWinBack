@@ -797,7 +797,7 @@ Public Class wb_Rezept
         'alte Rezeptur in Historie speichern
 
         'vorhandene Rezeptur in Datenbank löschen
-        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRZSchritt, RezeptNummer, Variante))
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRzptSchr, RezeptNummer, Variante))
 
         'sql-Kommando INSERT bilden
         sqlFelder = "RS_RZ_NR, RS_RZ_Variante_Nr, RS_Index, RS_Schritt_Nr, RS_Ko_Nr, RS_ParamNr, " &
@@ -820,6 +820,25 @@ Public Class wb_Rezept
         Return True
     End Function
 
+    Public Function MySQLdbDelete_Rezept()
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Return (winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRzptKopf, _RezeptNr, _RezeptVariante)) > 0)
+    End Function
+
+    Public Function MySQLdbDelete_RezeptSchritte()
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Return (winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRzptSchr, _RezeptNr, _RezeptVariante)) > 0)
+    End Function
+
+    Public Function MySQLdbDelete_HisRezept()
+        Dim wbdaten = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
+        Return (wbdaten.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelHRzptKopf, _RezeptNr, _RezeptVariante)) > 0)
+    End Function
+
+    Public Function MySQLdbDelete_HisRezeptSchritte()
+        Dim wbdaten = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
+        Return (wbdaten.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelHRzptSchr, _RezeptNr, _RezeptVariante)) > 0)
+    End Function
 
 End Class
 
