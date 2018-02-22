@@ -40,11 +40,19 @@ Public Class wb_Komponenten
 
 
     Public Sub Invalid()
+        KO_Nr = wb_Global.UNDEFINED
+        KO_Type = wb_Global.KomponTypen.KO_TYPE_UNDEFINED
+        KA_Art = wb_Global.UNDEFINED
+        KO_Nr_AlNum = "-1"
+        KO_Bezeichnung = ""
+        KO_Kommentar = ""
+        KA_Kurzname = ""
+
+        KA_Rz_Nr = wb_Global.UNDEFINED
         _RezeptNummer = Nothing
         _RezeptName = Nothing
         _LinienGruppe = wb_Global.UNDEFINED
         _ArtikelLinienGruppe = wb_Global.UNDEFINED
-        'TODO weitere Felder löschen
     End Sub
 
     Public Property Nr As Integer

@@ -23,6 +23,7 @@ Public Class wb_Rezept
     Private _AenderungNummer As Integer
     Private _AenderungDatum As String
     Private _AenderungName As String
+    Private _AenderungUserNr As Integer
     Private _RezeptTeigTemperatur As Double
     Private _LinienGruppe As Integer
     Private _Charge_Min As Double
@@ -295,6 +296,15 @@ Public Class wb_Rezept
         End Get
         Set(value As String)
             _AenderungName = value
+        End Set
+    End Property
+
+    Public Property AenderungUserNr As Integer
+        Get
+            Return _AenderungUserNr
+        End Get
+        Set(value As Integer)
+            _AenderungUserNr = value
         End Set
     End Property
 
@@ -819,6 +829,30 @@ Public Class wb_Rezept
         winback.Close()
         Return True
     End Function
+    Public Function MySQLdbWrite_Rezept() As Boolean
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+        Dim sqlData As String
+
+        'Änderungsdatum ist das aktuelle Datum
+        AenderungDatum = Date.Now
+        'aktuellen Benutzer NUmmer/Name eintragen
+        AenderungUserNr = wb_GlobalSettings.AktUserNr
+        AenderungName = wb_GlobalSettings.AktUserName
+        'Änderungs-Index wird um Eins erhöht
+        AenderungNummer += 1
+
+        'sql-Kommando UPDATE bilden
+        sqlData = "RZ_Nr_AlNum = '" & _RezeptNummer & "', RZ_Bezeichnung = '" & _RezeptBezeichnung & "', RZ_Gewicht = '" & wb_Functions.FormatStr(RezeptGewicht, 3) & "', " &
+                  "RZ_Kommentar = '" & _RezeptKommentar & "', RZ_Aenderung_Datum = '" & wb_sql_Functions.MySQLdatetime(_AenderungDatum) & "', " &
+                  "RZ_Aenderung_Name = '" & _AenderungName & "', RZ_Aenderung_User = " & _AenderungUserNr & ", RZ_Aenderung_Nr = " & _AenderungNummer
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptUpdate, _RezeptNr, _RezeptVariante, sqlData)
+        winback.sqlCommand(sql)
+
+        winback.Close()
+        Return True
+    End Function
 
     Public Function MySQLdbDelete_Rezept()
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
@@ -856,3 +890,28 @@ End Class
 'RS_Preis
 'RS_PreisEinheit
 'RS_Timestamp
+
+'RZ_Nr
+'RZ_Variante_Nr
+'RZ_Nr_AlNum
+'RZ_Bezeichnung
+'RZ_Gewicht
+'RZ_Kommentar
+'RZ_Kurzname
+'RZ_Matchcode
+'RZ_Type
+'RZ_Charge_Opt
+'RZ_Charge_Min
+'RZ_Charge_Max
+'RZ_Aenderung_Datum
+'RZ_Aenderung_User
+'RZ_Aenderung_Name
+'RZ_Aenderung_Nr
+'RZ_Teigtemperatur
+'RZ_Kneterkennlinie
+'RZ_Verarbeitungshinweise
+'RZ_Liniengruppe
+'RZ_Gruppe
+'KA_Gruppe
+'RZ_Timestamp
+

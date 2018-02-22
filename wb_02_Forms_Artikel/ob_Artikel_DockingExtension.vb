@@ -127,7 +127,9 @@ Public Class ob_Artikel_DockingExtension
         'Artikel-Informationen in Klasse Komponenten einlesen
         bSortimentIstProduktion = GetKomponentenDaten()
         'Sub-Fenster WinBack aktualisieren
+        Debug.Print("Article_DockingExtension Found")
         If bSortimentIstProduktion Then
+            Debug.Print("Article_DockingExtension Found - Sortiment ist Produktion")
             Extendee_ExecuteCommand("wbFOUND", Komponente)
         End If
 

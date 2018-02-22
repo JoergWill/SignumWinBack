@@ -24,14 +24,14 @@ Partial Class wb_Rezept_Rezeptur
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rezept_Rezeptur))
-        Dim ObjectCellBinding1 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding2 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding3 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding4 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding5 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding6 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ObjectCellBinding13 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding14 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding15 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding16 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding17 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding18 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ColNr = New Infralution.Controls.VirtualTree.Column()
         Me.ColBezeichung = New Infralution.Controls.VirtualTree.Column()
         Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
@@ -609,35 +609,35 @@ Partial Class wb_Rezept_Rezeptur
         Me.ObjectRowBinding1.AllowDrag = True
         Me.ObjectRowBinding1.AllowDropAboveRow = True
         Me.ObjectRowBinding1.AllowDropBelowRow = True
-        ObjectCellBinding1.Column = Me.ColNr
-        ObjectCellBinding1.Field = "Nummer"
-        ObjectCellBinding1.Style.Font = CType(resources.GetObject("resource.Font1"), System.Drawing.Font)
-        ObjectCellBinding1.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment"), System.Drawing.StringAlignment)
-        ObjectCellBinding2.Column = Me.ColBezeichung
-        ObjectCellBinding2.Field = "VirtTreeBezeichnung"
-        ObjectCellBinding2.Style.Font = CType(resources.GetObject("resource.Font2"), System.Drawing.Font)
-        ObjectCellBinding3.Column = Me.ColPreis
-        ObjectCellBinding3.Field = "VirtTreePreis"
-        resources.ApplyResources(ObjectCellBinding3, "ObjectCellBinding3")
-        ObjectCellBinding3.Style.Font = CType(resources.GetObject("resource.Font3"), System.Drawing.Font)
-        ObjectCellBinding3.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment1"), System.Drawing.StringAlignment)
-        ObjectCellBinding4.Column = Me.ColSollwert
-        ObjectCellBinding4.Field = "VirtTreeSollwert"
-        resources.ApplyResources(ObjectCellBinding4, "ObjectCellBinding4")
-        ObjectCellBinding4.Style.Font = CType(resources.GetObject("resource.Font4"), System.Drawing.Font)
-        ObjectCellBinding4.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment2"), System.Drawing.StringAlignment)
-        ObjectCellBinding5.Column = Me.ColEinheit
-        ObjectCellBinding5.Field = "VirtTreeEinheit"
-        ObjectCellBinding5.Style.Font = CType(resources.GetObject("resource.Font5"), System.Drawing.Font)
-        ObjectCellBinding6.Column = Me.ColProzent
-        ObjectCellBinding6.Field = "VirtTreeProzent"
-        ObjectCellBinding6.Style.Font = CType(resources.GetObject("resource.Font6"), System.Drawing.Font)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding4)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding5)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
+        ObjectCellBinding13.Column = Me.ColNr
+        ObjectCellBinding13.Field = "Nummer"
+        ObjectCellBinding13.Style.Font = CType(resources.GetObject("resource.Font1"), System.Drawing.Font)
+        ObjectCellBinding13.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment"), System.Drawing.StringAlignment)
+        ObjectCellBinding14.Column = Me.ColBezeichung
+        ObjectCellBinding14.Field = "VirtTreeBezeichnung"
+        ObjectCellBinding14.Style.Font = CType(resources.GetObject("resource.Font2"), System.Drawing.Font)
+        ObjectCellBinding15.Column = Me.ColPreis
+        ObjectCellBinding15.Field = "VirtTreePreis"
+        resources.ApplyResources(ObjectCellBinding15, "ObjectCellBinding15")
+        ObjectCellBinding15.Style.Font = CType(resources.GetObject("resource.Font3"), System.Drawing.Font)
+        ObjectCellBinding15.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment1"), System.Drawing.StringAlignment)
+        ObjectCellBinding16.Column = Me.ColSollwert
+        ObjectCellBinding16.Field = "VirtTreeSollwert"
+        resources.ApplyResources(ObjectCellBinding16, "ObjectCellBinding16")
+        ObjectCellBinding16.Style.Font = CType(resources.GetObject("resource.Font4"), System.Drawing.Font)
+        ObjectCellBinding16.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment2"), System.Drawing.StringAlignment)
+        ObjectCellBinding17.Column = Me.ColEinheit
+        ObjectCellBinding17.Field = "VirtTreeEinheit"
+        ObjectCellBinding17.Style.Font = CType(resources.GetObject("resource.Font5"), System.Drawing.Font)
+        ObjectCellBinding18.Column = Me.ColProzent
+        ObjectCellBinding18.Field = "VirtTreeProzent"
+        ObjectCellBinding18.Style.Font = CType(resources.GetObject("resource.Font6"), System.Drawing.Font)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding13)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding14)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding15)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding16)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding17)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding18)
         Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
         resources.ApplyResources(Me.ObjectRowBinding1, "ObjectRowBinding1")
         Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
@@ -725,23 +725,23 @@ Partial Class wb_Rezept_Rezeptur
         '
         'GridView_RzVerwendung
         '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.GridView_RzVerwendung.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.GridView_RzVerwendung.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
         Me.GridView_RzVerwendung.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.GridView_RzVerwendung.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.GridView_RzVerwendung.DefaultCellStyle = DataGridViewCellStyle6
         resources.ApplyResources(Me.GridView_RzVerwendung, "GridView_RzVerwendung")
         Me.GridView_RzVerwendung.MultiSelect = False
         Me.GridView_RzVerwendung.Name = "GridView_RzVerwendung"

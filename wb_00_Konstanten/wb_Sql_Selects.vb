@@ -34,6 +34,9 @@
     'Sql-Statement HisRezepte Datensatze löschen (Rezeptkopf)
     Public Const sqlDelHRzptKopf = "DELETE FROM His_Rezepte WHERE H_RZ_Nr = [0] AND H_RZ_Variante_Nr = [1]"
 
+    'Sql-Statement Tabelle Rezepte Update
+    Public Const sqlRezeptUpdate = "UPDATE Rezepte SET [2] WHERE RZ_Nr = [0] AND RZ_Variante_Nr = [1]"
+
 
     'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
     Public Const sqlRohstoffSimpleLst = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KO_Type, KA_aktiv, " &

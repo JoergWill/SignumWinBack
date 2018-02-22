@@ -204,30 +204,6 @@
   <data name="StatusStrip.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="ToolStripLeftMargin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 17</value>
-  </data>
-  <data name="ToolStripLeftMargin.Text" xml:space="preserve">
-    <value>   </value>
-  </data>
-  <data name="ToolStripRezeptChange.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 17</value>
-  </data>
-  <data name="ToolStripRezeptChange.Text" xml:space="preserve">
-    <value>Rezept wurde geändert</value>
-  </data>
-  <data name="ToolStripRezeptChange.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="ToolStripAllergenLegende.Size" type="System.Drawing.Size, System.Drawing">
-    <value>521, 17</value>
-  </data>
-  <data name="ToolStripAllergenLegende.Text" xml:space="preserve">
-    <value>Allergen-Kennzeichnung   K - keine Angaben / N - nicht enthalten  / T - Spuren von / C -Contains</value>
-  </data>
-  <data name="ToolStripAllergenLegende.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="StatusStrip.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 709</value>
   </data>
@@ -251,6 +227,30 @@
   </data>
   <data name="&gt;&gt;StatusStrip.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="ToolStripLeftMargin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 17</value>
+  </data>
+  <data name="ToolStripLeftMargin.Text" xml:space="preserve">
+    <value>   </value>
+  </data>
+  <data name="ToolStripRezeptChange.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 17</value>
+  </data>
+  <data name="ToolStripRezeptChange.Text" xml:space="preserve">
+    <value>Rezept wurde geändert</value>
+  </data>
+  <data name="ToolStripRezeptChange.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="ToolStripAllergenLegende.Size" type="System.Drawing.Size, System.Drawing">
+    <value>521, 17</value>
+  </data>
+  <data name="ToolStripAllergenLegende.Text" xml:space="preserve">
+    <value>Allergen-Kennzeichnung   K - keine Angaben / N - nicht enthalten  / T - Spuren von / C -Contains</value>
+  </data>
+  <data name="ToolStripAllergenLegende.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="gbDetail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1155,6 +1155,111 @@
   <data name="&gt;&gt;gbDetail.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="&gt;&gt;BtnClose.Name" xml:space="preserve">
+    <value>BtnClose</value>
+  </data>
+  <data name="&gt;&gt;BtnClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnClose.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnClose.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;BtnNwt.Name" xml:space="preserve">
+    <value>BtnNwt</value>
+  </data>
+  <data name="&gt;&gt;BtnNwt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnNwt.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnNwt.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;BtnHinweise.Name" xml:space="preserve">
+    <value>BtnHinweise</value>
+  </data>
+  <data name="&gt;&gt;BtnHinweise.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnHinweise.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnHinweise.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;BtnVerwendung.Name" xml:space="preserve">
+    <value>BtnVerwendung</value>
+  </data>
+  <data name="&gt;&gt;BtnVerwendung.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnVerwendung.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnVerwendung.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;BtnLoeschen.Name" xml:space="preserve">
+    <value>BtnLoeschen</value>
+  </data>
+  <data name="&gt;&gt;BtnLoeschen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnLoeschen.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnLoeschen.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;BtnKopieren.Name" xml:space="preserve">
+    <value>BtnKopieren</value>
+  </data>
+  <data name="&gt;&gt;BtnKopieren.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnKopieren.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnKopieren.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;BtnDrucken.Name" xml:space="preserve">
+    <value>BtnDrucken</value>
+  </data>
+  <data name="&gt;&gt;BtnDrucken.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnDrucken.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnDrucken.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 138</value>
+  </data>
+  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>953, 75</value>
+  </data>
+  <data name="GroupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
   <data name="BtnClose.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 9.75pt</value>
   </data>
@@ -1365,27 +1470,6 @@
   <data name="&gt;&gt;BtnDrucken.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 138</value>
-  </data>
-  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>953, 75</value>
-  </data>
-  <data name="GroupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <metadata name="VTPopUpMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>290, 17</value>
   </metadata>
@@ -1401,6 +1485,15 @@
   <metadata name="headerContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>127, 17</value>
   </metadata>
+  <data name="headerContextMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>277, 198</value>
+  </data>
+  <data name="&gt;&gt;headerContextMenu.Name" xml:space="preserve">
+    <value>headerContextMenu</value>
+  </data>
+  <data name="&gt;&gt;headerContextMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="sortAscendingMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
@@ -1518,74 +1611,89 @@
   <data name="customizeMenuItem.Text" xml:space="preserve">
     <value>Spaltenauswähler</value>
   </data>
-  <data name="headerContextMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 198</value>
-  </data>
-  <data name="&gt;&gt;headerContextMenu.Name" xml:space="preserve">
-    <value>headerContextMenu</value>
-  </data>
-  <data name="&gt;&gt;headerContextMenu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="Wb_TabControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="VirtualTree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="&gt;&gt;tb_Rezeptur.Name" xml:space="preserve">
+    <value>tb_Rezeptur</value>
   </data>
-  <data name="VirtualTree.HeaderHeight" type="System.Int32, mscorlib">
-    <value>24</value>
+  <data name="&gt;&gt;tb_Rezeptur.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="resource.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 9.75pt</value>
+  <data name="&gt;&gt;tb_Rezeptur.Parent" xml:space="preserve">
+    <value>Wb_TabControl</value>
   </data>
-  <data name="VirtualTree.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-4, 0</value>
+  <data name="&gt;&gt;tb_Rezeptur.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="resource.Font1" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 12pt</value>
+  <data name="&gt;&gt;tb_Naehrwerte.Name" xml:space="preserve">
+    <value>tb_Naehrwerte</value>
   </data>
-  <data name="resource.HorzAlignment" type="System.Drawing.StringAlignment, System.Drawing">
-    <value>Near</value>
+  <data name="&gt;&gt;tb_Naehrwerte.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="resource.Font2" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 12pt</value>
+  <data name="&gt;&gt;tb_Naehrwerte.Parent" xml:space="preserve">
+    <value>Wb_TabControl</value>
   </data>
-  <data name="ObjectCellBinding3.Format" xml:space="preserve">
-    <value>{0:C}</value>
+  <data name="&gt;&gt;tb_Naehrwerte.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="resource.Font3" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 12pt</value>
+  <data name="&gt;&gt;tb_Zutaten.Name" xml:space="preserve">
+    <value>tb_Zutaten</value>
   </data>
-  <data name="resource.HorzAlignment1" type="System.Drawing.StringAlignment, System.Drawing">
-    <value>Far</value>
+  <data name="&gt;&gt;tb_Zutaten.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ObjectCellBinding4.Format" xml:space="preserve">
-    <value>{0:N3}</value>
+  <data name="&gt;&gt;tb_Zutaten.Parent" xml:space="preserve">
+    <value>Wb_TabControl</value>
   </data>
-  <data name="resource.Font4" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 12pt</value>
+  <data name="&gt;&gt;tb_Zutaten.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
-  <data name="resource.HorzAlignment2" type="System.Drawing.StringAlignment, System.Drawing">
-    <value>Far</value>
+  <data name="&gt;&gt;tb_Hinweise.Name" xml:space="preserve">
+    <value>tb_Hinweise</value>
   </data>
-  <data name="resource.Font5" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 12pt</value>
+  <data name="&gt;&gt;tb_Hinweise.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="resource.Font6" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 12pt</value>
+  <data name="&gt;&gt;tb_Hinweise.Parent" xml:space="preserve">
+    <value>Wb_TabControl</value>
   </data>
-  <data name="ObjectRowBinding1.Height" type="System.Int32, mscorlib">
-    <value>24</value>
+  <data name="&gt;&gt;tb_Hinweise.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="ObjectRowBinding1.Style.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 12pt</value>
+  <data name="&gt;&gt;tb_Verwendung.Name" xml:space="preserve">
+    <value>tb_Verwendung</value>
   </data>
-  <data name="VirtualTree.Size" type="System.Drawing.Size, System.Drawing">
-    <value>948, 463</value>
+  <data name="&gt;&gt;tb_Verwendung.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="VirtualTree.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <data name="&gt;&gt;tb_Verwendung.Parent" xml:space="preserve">
+    <value>Wb_TabControl</value>
+  </data>
+  <data name="&gt;&gt;tb_Verwendung.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="Wb_TabControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 212</value>
+  </data>
+  <data name="Wb_TabControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>951, 486</value>
+  </data>
+  <data name="Wb_TabControl.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;Wb_TabControl.Name" xml:space="preserve">
+    <value>Wb_TabControl</value>
+  </data>
+  <data name="&gt;&gt;Wb_TabControl.Type" xml:space="preserve">
+    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.0.2.1, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;Wb_TabControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Wb_TabControl.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="&gt;&gt;VirtualTree.Name" xml:space="preserve">
     <value>VirtualTree</value>
@@ -1626,6 +1734,75 @@
   <data name="&gt;&gt;tb_Rezeptur.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="VirtualTree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="VirtualTree.HeaderHeight" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="resource.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 9.75pt</value>
+  </data>
+  <data name="VirtualTree.Location" type="System.Drawing.Point, System.Drawing">
+    <value>-4, 0</value>
+  </data>
+  <data name="resource.Font1" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 12pt</value>
+  </data>
+  <data name="resource.HorzAlignment" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Near</value>
+  </data>
+  <data name="resource.Font2" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 12pt</value>
+  </data>
+  <data name="ObjectCellBinding15.Format" xml:space="preserve">
+    <value>{0:C}</value>
+  </data>
+  <data name="resource.Font3" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 12pt</value>
+  </data>
+  <data name="resource.HorzAlignment1" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Far</value>
+  </data>
+  <data name="ObjectCellBinding16.Format" xml:space="preserve">
+    <value>{0:N3}</value>
+  </data>
+  <data name="resource.Font4" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 12pt</value>
+  </data>
+  <data name="resource.HorzAlignment2" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Far</value>
+  </data>
+  <data name="resource.Font5" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 12pt</value>
+  </data>
+  <data name="resource.Font6" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 12pt</value>
+  </data>
+  <data name="ObjectRowBinding1.Height" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="ObjectRowBinding1.Style.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 12pt</value>
+  </data>
+  <data name="VirtualTree.Size" type="System.Drawing.Size, System.Drawing">
+    <value>948, 463</value>
+  </data>
+  <data name="VirtualTree.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;VirtualTree.Name" xml:space="preserve">
+    <value>VirtualTree</value>
+  </data>
+  <data name="&gt;&gt;VirtualTree.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.VirtualTree, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;VirtualTree.Parent" xml:space="preserve">
+    <value>tb_Rezeptur</value>
+  </data>
+  <data name="&gt;&gt;VirtualTree.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="tb_Naehrwerte.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 23</value>
   </data>
@@ -1652,6 +1829,105 @@
   </data>
   <data name="&gt;&gt;tb_Naehrwerte.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;SwListeOptimieren.Name" xml:space="preserve">
+    <value>SwListeOptimieren</value>
+  </data>
+  <data name="&gt;&gt;SwListeOptimieren.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroToggle, MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;SwListeOptimieren.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;SwListeOptimieren.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lblListeOptimieren.Name" xml:space="preserve">
+    <value>lblListeOptimieren</value>
+  </data>
+  <data name="&gt;&gt;lblListeOptimieren.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblListeOptimieren.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;lblListeOptimieren.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;SwENummern.Name" xml:space="preserve">
+    <value>SwENummern</value>
+  </data>
+  <data name="&gt;&gt;SwENummern.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroToggle, MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;SwENummern.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;SwENummern.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;lblENummern.Name" xml:space="preserve">
+    <value>lblENummern</value>
+  </data>
+  <data name="&gt;&gt;lblENummern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblENummern.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;lblENummern.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;tb_ZutatenListe.Name" xml:space="preserve">
+    <value>tb_ZutatenListe</value>
+  </data>
+  <data name="&gt;&gt;tb_ZutatenListe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_ZutatenListe.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;tb_ZutatenListe.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
+    <value>Label2</value>
+  </data>
+  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tb_Zutaten.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 11.25pt</value>
+  </data>
+  <data name="tb_Zutaten.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 23</value>
+  </data>
+  <data name="tb_Zutaten.Size" type="System.Drawing.Size, System.Drawing">
+    <value>943, 459</value>
+  </data>
+  <data name="tb_Zutaten.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="tb_Zutaten.Text" xml:space="preserve">
+    <value>ZutatenListe</value>
+  </data>
+  <data name="&gt;&gt;tb_Zutaten.Name" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;tb_Zutaten.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_Zutaten.Parent" xml:space="preserve">
+    <value>Wb_TabControl</value>
+  </data>
+  <data name="&gt;&gt;tb_Zutaten.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="SwListeOptimieren.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1839,51 +2115,6 @@
   <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="tb_Zutaten.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 11.25pt</value>
-  </data>
-  <data name="tb_Zutaten.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 23</value>
-  </data>
-  <data name="tb_Zutaten.Size" type="System.Drawing.Size, System.Drawing">
-    <value>943, 459</value>
-  </data>
-  <data name="tb_Zutaten.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="tb_Zutaten.Text" xml:space="preserve">
-    <value>ZutatenListe</value>
-  </data>
-  <data name="&gt;&gt;tb_Zutaten.Name" xml:space="preserve">
-    <value>tb_Zutaten</value>
-  </data>
-  <data name="&gt;&gt;tb_Zutaten.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tb_Zutaten.Parent" xml:space="preserve">
-    <value>Wb_TabControl</value>
-  </data>
-  <data name="&gt;&gt;tb_Zutaten.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="TextHinweise.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="TextHinweise.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 11.25pt</value>
-  </data>
-  <data name="TextHinweise.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="TextHinweise.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="TextHinweise.Size" type="System.Drawing.Size, System.Drawing">
-    <value>943, 459</value>
-  </data>
-  <data name="TextHinweise.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;TextHinweise.Name" xml:space="preserve">
     <value>TextHinweise</value>
   </data>
@@ -1920,16 +2151,34 @@
   <data name="&gt;&gt;tb_Hinweise.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="GridView_RzVerwendung.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="TextHinweise.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="GridView_RzVerwendung.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="TextHinweise.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 11.25pt</value>
+  </data>
+  <data name="TextHinweise.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="GridView_RzVerwendung.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="TextHinweise.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="TextHinweise.Size" type="System.Drawing.Size, System.Drawing">
     <value>943, 459</value>
   </data>
-  <data name="GridView_RzVerwendung.TabIndex" type="System.Int32, mscorlib">
+  <data name="TextHinweise.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;TextHinweise.Name" xml:space="preserve">
+    <value>TextHinweise</value>
+  </data>
+  <data name="&gt;&gt;TextHinweise.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TextHinweise.Parent" xml:space="preserve">
+    <value>tb_Hinweise</value>
+  </data>
+  <data name="&gt;&gt;TextHinweise.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Name" xml:space="preserve">
@@ -1968,26 +2217,29 @@
   <data name="&gt;&gt;tb_Verwendung.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="Wb_TabControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 212</value>
+  <data name="GridView_RzVerwendung.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="Wb_TabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>951, 486</value>
+  <data name="GridView_RzVerwendung.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="Wb_TabControl.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
+  <data name="GridView_RzVerwendung.Size" type="System.Drawing.Size, System.Drawing">
+    <value>943, 459</value>
   </data>
-  <data name="&gt;&gt;Wb_TabControl.Name" xml:space="preserve">
-    <value>Wb_TabControl</value>
+  <data name="GridView_RzVerwendung.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;Wb_TabControl.Type" xml:space="preserve">
-    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.0.2.1, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;GridView_RzVerwendung.Name" xml:space="preserve">
+    <value>GridView_RzVerwendung</value>
   </data>
-  <data name="&gt;&gt;Wb_TabControl.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;GridView_RzVerwendung.Type" xml:space="preserve">
+    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.0.2.1, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;Wb_TabControl.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;GridView_RzVerwendung.Parent" xml:space="preserve">
+    <value>tb_Verwendung</value>
+  </data>
+  <data name="&gt;&gt;GridView_RzVerwendung.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

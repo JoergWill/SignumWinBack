@@ -501,6 +501,7 @@ Public Class wb_GlobalSettings
                 If pVariante = wb_Global.ProgVariante.WinBack Then
 #If DEBUG Then
                     _pListenPath = pProgrammPath
+                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Messe", "ListLabel")
                     _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M5", "ListLabel")
                     _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M4", "ListLabel")
                     _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M3", "ListLabel")
@@ -834,6 +835,12 @@ Public Class wb_GlobalSettings
                 _MsSQLServer = IniFile.ReadString("winback", "MsSQLServer_Source", "WILL-WIN10\ORGA")
                 _MsSQLUserId = IniFile.ReadString("winback", "MsSQLServer_UserId", "sa")
                 _MsSQLPasswd = IniFile.ReadEncryptedString("winback", "MsSQLServer_Passwd", "OrgaBack.NET")
+
+                Debug.Print("_MsSQLMainDB " & _MsSQLMainDB)
+                Debug.Print("_MsSQLAdmnDB " & _MsSQLAdmnDB)
+                Debug.Print("_MsSQLServer " & _MsSQLServer)
+                Debug.Print("_MsSQLUserId " & _MsSQLUserId)
+                Debug.Print("_MsSQLPasswd " & _MsSQLPasswd)
 
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
 

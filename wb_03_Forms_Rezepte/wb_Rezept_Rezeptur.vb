@@ -11,6 +11,7 @@ Public Class wb_Rezept_Rezeptur
     Private _RzNummer As Integer
     Private _RzVariante As Integer
     Private _RzChanged As Boolean = False
+    Private _RzKopfChanged As Boolean = False
     Private _RzHinweiseChanged As Boolean
 
     Private _RezeptSchritt As wb_Rezeptschritt = Nothing    'aktuelle ausgewählter Rezeptschritt (Popup)
@@ -149,6 +150,7 @@ Public Class wb_Rezept_Rezeptur
 
             'Rezept muss nicht mehr gespeichert werden
             _RzChanged = False
+            _RzKopfChanged = False
 
             'Fenster schliessen
             Me.Close()
@@ -263,6 +265,11 @@ Public Class wb_Rezept_Rezeptur
             'Rezept-Verarbeitungs-Hinweise speichern
             RezeptHinweise.Memo = TextHinweise.Text
             RezeptHinweise.Write()
+        End If
+
+        'Rezeptkopfdaten schreiben
+        If _RzKopfChanged Or _RzChanged Then
+            Rezept.MySQLdbWrite_Rezept()
         End If
 
         'Rezeptur ist geändert worden
@@ -920,5 +927,20 @@ Public Class wb_Rezept_Rezeptur
                 VTP_Delete(sender, e)
         End Select
 
+    End Sub
+
+    Private Sub tbRezeptName_Leave(sender As Object, e As EventArgs) Handles tbRezeptName.Leave
+        _RzKopfChanged = True
+        Rezept.RezeptBezeichnung = tbRezeptName.Text
+    End Sub
+
+    Private Sub tbRzKommentar_Leave(sender As Object, e As EventArgs) Handles tbRzKommentar.Leave
+        _RzKopfChanged = True
+        Rezept.RezeptKommentar = tbRzKommentar.Text
+    End Sub
+
+    Private Sub tbRzNummer_TextChanged(sender As Object, e As EventArgs) Handles tbRzNummer.TextChanged
+        _RzKopfChanged = True
+        Rezept.RezeptNummer = tbRzNummer.Text
     End Sub
 End Class
