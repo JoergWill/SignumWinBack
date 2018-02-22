@@ -139,7 +139,7 @@
       <HintPath>..\dll\MySql V1.0.10.1\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>..\dll\OrgaSoft V3.0.6530\Signum.OrgaSoft.Contracts.dll</HintPath>
+      <HintPath>..\dll\OrgaSoft V3.0.6607\Signum.OrgaSoft.Contracts.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />

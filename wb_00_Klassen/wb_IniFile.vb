@@ -206,6 +206,7 @@ Public Class wb_IniFile
     Public Function ReadEncryptedString(ByVal Sektion As String, ByVal Schlüssel As String, Optional ByVal Standardwert As String = "", Optional ByVal BufferSize As Integer = 1024) As String
         'String aus ini-Datei lesen
         Dim s As String = ReadString(Sektion, Schlüssel, Standardwert, BufferSize)
+        Debug.Print(s)
         'String entschlüsseln
         Dim cipher As New WinBack.wb_Simple3Des(wb_Credentials.Passwd3Des)
         Dim x As String = cipher.DecryptData(s)
@@ -253,6 +254,8 @@ Public Class wb_IniFile
     ''' <param name="Schlüssel">String - Schlüssel innerhalb des Abschnitts</param>
     ''' <param name="Wert">String - neuer Eintrag</param>
     Public Sub WriteString(ByVal Sektion As String, ByVal Schlüssel As String, ByVal Wert As String)
+
+        Debug.Print("WRITE INIFILE " & Sektion & "/" & Schlüssel & "/" & Wert)
         Try
             ' Testen, ob ein Pfad zur INI vorhanden ist und ob das Verzeichnis existiert
             If Not TestIniPfadEmpty(Sektion, Schlüssel) Or Not TestIniOrdnerExists(Sektion, Schlüssel) Then

@@ -151,7 +151,7 @@
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts, Version=3.0.6393.33110, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\OrgaSoft V3.0.6530\Signum.OrgaSoft.Contracts.dll</HintPath>
+      <HintPath>..\dll\OrgaSoft V3.0.6607\Signum.OrgaSoft.Contracts.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />

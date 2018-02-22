@@ -10,7 +10,7 @@
     Public Const LogFileName = "\OrgaBack.log"        'Datei-Name des Log-Files
     Public Const LogFileEntries = 20                  'Anzahl der Einträge im Puffer
 
-    Public Const LinienGruppeSauerteig = 999          'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
+    Public Const LinienGruppeSauerteig = 127          'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
     Public Const MaxLinien = 99
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)
