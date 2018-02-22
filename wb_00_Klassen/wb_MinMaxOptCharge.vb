@@ -109,7 +109,6 @@ Public Class wb_MinMaxOptCharge
         RaiseError(wb_Global.MinMaxOptChargenError.NoError)
     End Sub
 
-
     Private Sub RaiseError(ErrCode As wb_Global.MinMaxOptChargenError)
         _ErrorCode = ErrCode
         RaiseEvent OnError(Me)

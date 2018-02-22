@@ -53,6 +53,7 @@ Partial Class wb_Rezept_Details
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.cbLiniengruppe = New WinBack.wb_ComboBox()
+        Me.Label16 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'tRezeptNummer
@@ -182,8 +183,11 @@ Partial Class wb_Rezept_Details
         'cbVariante
         '
         resources.ApplyResources(Me.cbVariante, "cbVariante")
+        Me.cbVariante.BackColor = System.Drawing.SystemColors.Window
+        Me.cbVariante.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple
         Me.cbVariante.FormattingEnabled = True
         Me.cbVariante.Name = "cbVariante"
+        Me.cbVariante.TabStop = False
         '
         'Label14
         '
@@ -201,11 +205,17 @@ Partial Class wb_Rezept_Details
         Me.cbLiniengruppe.FormattingEnabled = True
         Me.cbLiniengruppe.Name = "cbLiniengruppe"
         '
+        'Label16
+        '
+        resources.ApplyResources(Me.Label16, "Label16")
+        Me.Label16.Name = "Label16"
+        '
         'wb_Rezept_Details
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGray
+        Me.Controls.Add(Me.Label16)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.cbLiniengruppe)
         Me.Controls.Add(Me.Label14)
@@ -266,4 +276,5 @@ Partial Class wb_Rezept_Details
     Friend WithEvents Label14 As Windows.Forms.Label
     Friend WithEvents Label15 As Windows.Forms.Label
     Friend WithEvents cbLiniengruppe As wb_ComboBox
+    Friend WithEvents Label16 As Windows.Forms.Label
 End Class

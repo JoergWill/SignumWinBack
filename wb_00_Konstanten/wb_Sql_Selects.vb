@@ -20,7 +20,7 @@
     'Sql-Statement Rezept-Verwendung aus winback.Komponenten
     Public Const sqlRezeptVerwendung = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Kommentar, KA_Art, KA_Matchcode " &
                                   "FROM Komponenten WHERE KA_RZ_Nr = [0]"
-    Public Const sqlAddNewRezept = "INSERT INTO Rezepte(RZ_Nr, RZ_Variante_Nr, RZ_Bezeichnung) VALUES ([0],[1],'[2]')"
+    Public Const sqlAddNewRezept = "INSERT INTO Rezepte([0]) VALUES ([1])"
     Public Const sqlMaxRzNummer = "SELECT MAX(RZ_Nr) FROM Rezepte"
     'Sql-Statement Verwendung Rezept in Artikeln/Rohstoffen
     Public Const sqlRezeptInKomp = "SELECT COUNT(*) AS Used FROM Komponenten WHERE KA_RZ_Nr = [0]"

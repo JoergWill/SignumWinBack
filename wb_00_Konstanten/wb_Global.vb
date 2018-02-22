@@ -11,6 +11,7 @@
     Public Const LogFileEntries = 20                  'Anzahl der Einträge im Puffer
 
     Public Const LinienGruppeSauerteig = 127          'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
+    Public Const LinienGruppeStandard = 1             'Liniengruppe für neue Rezepte
     Public Const MaxLinien = 99
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)

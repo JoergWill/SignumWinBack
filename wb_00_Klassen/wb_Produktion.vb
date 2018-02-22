@@ -302,12 +302,12 @@
         Root.Tour = Tour
         Root.Typ = wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
         'Chargen-Größen aus Rezept
-        Root.OptChargekg = Rezept.OptChargekg
-        Root.MaxChargekg = Rezept.MaxChargekg
-        Root.MinChargekg = Rezept.MinChargekg
+        Root.OptChargekg = Rezept.TeigChargen.OptCharge.fMengeInkg
+        Root.MaxChargekg = Rezept.TeigChargen.MaxCharge.fMengeInkg
+        Root.MinChargekg = Rezept.TeigChargen.MinCharge.fMengeInkg
 
         'Chargen berechnen - Aufteilung in Optimal- und Restchargen
-        Root.TeigChargen = CalcChargenMenge(TeigMenge, Rezept.MinChargekg, Rezept.MaxChargekg, Rezept.OptChargekg, Modus, True)
+        Root.TeigChargen = CalcChargenMenge(TeigMenge, Root.MinChargekg, Root.MaxChargekg, Root.OptChargekg, Modus, True)
 
         'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
         For i = 1 To Root.TeigChargen.AnzahlOpt

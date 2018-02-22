@@ -477,13 +477,10 @@ Public Class wb_DataGridView
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub DataGridView_CellFormating(ByVal Sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles MyBase.CellFormatting
-        'Debug.Print("DataGridView FieldName " & MyBase.Columns(e.ColumnIndex).Name)
         If MyBase.Columns(e.ColumnIndex).Name = x8859_5_FieldName Then
             'Debug.Print("DataGridView FieldName found ")
             If Not IsDBNull(e.Value) Then
-                'Debug.Print("DataGridView Field vor Convert " & e.Value)
                 e.Value = MySqlToUtf8(e.Value)
-                'Debug.Print("DataGridView Field nach Convert " & e.Value)
             End If
         End If
     End Sub
@@ -497,4 +494,16 @@ Public Class wb_DataGridView
         'Exception-Text ausgeben
         Debug.Print(e.Exception.ToString)
     End Sub
+
+    ''' <summary>
+    ''' Beim Doppelclick auf die Datenzeile wird vorher der Event HasChanged ausgelöst. Damit werden die Daten sicher geladen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Overloads Sub DataGridView_DoubleClick(sender As Object, e As EventArgs) Handles MyBase.DoubleClick
+        If tDataHasChanged.Enabled Then
+            RaiseEvent HasChanged(Me, EventArgs.Empty)
+        End If
+    End Sub
+
 End Class

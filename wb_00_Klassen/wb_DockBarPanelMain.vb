@@ -89,6 +89,13 @@ Public Class wb_DockBarPanelMain
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
     End Sub
 
+    Public Sub New()
+        ' Dieser Aufruf ist für den Designer erforderlich.
+        InitializeComponent()
+
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+    End Sub
+
     ''' <summary>
     ''' Routine wird aufgerufen, wenn das Fenster geladen wurde und angezeigt werden soll
     ''' </summary>

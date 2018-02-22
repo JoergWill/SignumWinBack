@@ -255,7 +255,6 @@ Public Class wb_IniFile
     ''' <param name="Wert">String - neuer Eintrag</param>
     Public Sub WriteString(ByVal Sektion As String, ByVal Schlüssel As String, ByVal Wert As String)
 
-        Debug.Print("WRITE INIFILE " & Sektion & "/" & Schlüssel & "/" & Wert)
         Try
             ' Testen, ob ein Pfad zur INI vorhanden ist und ob das Verzeichnis existiert
             If Not TestIniPfadEmpty(Sektion, Schlüssel) Or Not TestIniOrdnerExists(Sektion, Schlüssel) Then

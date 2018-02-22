@@ -72,6 +72,17 @@ Public Class wb_Rezept_Rezeptur
         'falls keine Rezeptschritte vorhanden sind muss das Popup-Menu ausserhalb erstellt werden
         VT_MakeTreePopup()
 
+        'Berechnete Rezepturwerte anzeigen
+        ShowCalculateRezeptDaten(False)
+
+        'Cursor wieder zurücksetzen
+        Me.Cursor = Cursors.Default
+    End Sub
+
+    Private Sub ShowCalculateRezeptDaten(Recalculate As Boolean)
+        'Neuberechnung erzwingen
+        Rezept.Recalculate = Recalculate
+
         'Gesamt-Rohstoffpreis der Rezeptur (aktuell berechnet)
         tbRzPreis.Text = wb_Functions.FormatStr(Rezept.RezeptPreis, 2)
         'Rezeptgewicht (aktuell berechnet)
@@ -81,13 +92,11 @@ Public Class wb_Rezept_Rezeptur
         'Rezept TA
         tbRzTA.Text = CInt(Rezept.RezeptTA)
 
-        'Cursor wieder zurücksetzen
-        Me.Cursor = Cursors.Default
     End Sub
 
     ''' <summary>
     ''' Rezeptur drucken.
-    ''' Der Ausdruck erfolgt über Printer-Sub-Funktion (List&Label)
+    ''' Der Ausdruck erfolgt über Printer-Sub-Funktion (List+Label)
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -358,10 +367,30 @@ Public Class wb_Rezept_Rezeptur
     Private Sub VirtualTree_SelectionChanging(sender As Object, e As SelectionChangingEventArgs) Handles VirtualTree.SelectionChanging
         e.Cancel = True
     End Sub
-
-    Private Sub CellEditor2_InitializeControl(sender As Object, e As CellEditorInitializeEventArgs) Handles CellEditor2.InitializeControl
+    Private Sub VirtualTree_SetCellValue(sender As Object, e As SetCellValueEventArgs) Handles VirtualTree.SetCellValue
+        Debug.Print("SETCELLVALUE")
+        Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
+        Binding.SetCellValue(e.Row, e.Column, e.OldValue, e.NewValue)
+        ShowCalculateRezeptDaten(True)
+        'Rezeptur wurde geändert
+        _RzChanged = True
 
     End Sub
+
+    'Private Sub CellEditor2_InitializeControl(sender As Object, e As CellEditorInitializeEventArgs) Handles CellEditor2.InitializeControl
+    '    'Try to Start Edit-Mode
+    '    Debug.Print("InitialiizeControl")
+    'End Sub
+
+    'Private Sub CellEditor2_SetControlValue(sender As Object, e As CellEditorSetValueEventArgs) Handles CellEditor2.SetControlValue
+    '    'Maybe EndOf Edit
+    '    Debug.Print("SetControlValue")
+    'End Sub
+
+    'Private Sub CellEditor2_GetControlValue(sender As Object, e As CellEditorGetValueEventArgs) Handles CellEditor2.GetControlValue
+    '    'Maybe EndOf Edit
+    '    Debug.Print("GetControlValue")
+    'End Sub
 
     ''' <summary>
     ''' Rechte-Maus-Click auf eine Zeile im VirtualTree.
@@ -598,7 +627,6 @@ Public Class wb_Rezept_Rezeptur
 
     End Sub
 
-
     ''' <summary>
     ''' Aktuelle Rezeptzeile löschen (Popup oder DEL-Key)
     ''' </summary>
@@ -658,7 +686,7 @@ Public Class wb_Rezept_Rezeptur
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
         'alle Zeilen aufklappen
         VirtualTree.RootRow.ExpandChildren(True)
-        'Rezeptur wurde geänert
+        'Rezeptur wurde geändert
         _RzChanged = True
     End Sub
 

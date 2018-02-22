@@ -15,6 +15,8 @@ Public Class wb_Linien_Main
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
+        'verhindert Warnung BC40054
+        InitializeComponent()
     End Sub
 
     Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing

@@ -26,9 +26,8 @@ Public Class wb_Rezept
     Private _AenderungUserNr As Integer
     Private _RezeptTeigTemperatur As Double
     Private _LinienGruppe As Integer
-    Private _Charge_Min As Double
-    Private _Charge_Max As Double
-    Private _Charge_Opt As Double
+
+    Public TeigChargen As New wb_MinMaxOptCharge
     Private DataHasChanged As Boolean = False
 
     Private _RootRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
@@ -36,7 +35,7 @@ Public Class wb_Rezept
     Private _RezeptSchritt As wb_Rezeptschritt
 
     Private _RZ_Gewicht As Double
-    Private _RezeptGewicht As Double = wb_Global.UNDEFINED
+    'Private _RezeptGewicht As Double = wb_Global.UNDEFINED
     Private _BruttoRezeptGewicht As Double = wb_Global.UNDEFINED
     Private _RezeptPreis As Double = wb_Global.UNDEFINED
     Private _RezeptGesamtMehlmenge As Double = wb_Global.UNDEFINED
@@ -50,13 +49,13 @@ Public Class wb_Rezept
     Private _LLBig4 As New ArrayList
 
     Public _Parent As Object
-    Public TeigChargen As New wb_MinMaxOptCharge
 
     Public ReadOnly Property RezeptNr As Integer
         Get
             Return _RezeptNr
         End Get
     End Property
+
     ''' <summary>
     ''' Erster (unsichtbarer) Rezept-Schritt (Root-Node)
     ''' </summary>
@@ -75,15 +74,14 @@ Public Class wb_Rezept
     Public ReadOnly Property RezeptGewicht As Double
         Get
             'wenn der Wert noch nicht berechnet wurde
-            If _RezeptGewicht = wb_Global.UNDEFINED Then
+            If TeigChargen.TeigGewicht = wb_Global.UNDEFINED Then
                 If _RootRezeptSchritt.ChildSteps.Count = 0 Then
-                    _RezeptGewicht = _RZ_Gewicht
+                    TeigChargen.TeigGewicht = _RZ_Gewicht
                 Else
-                    _RezeptGewicht = _RootRezeptSchritt.Gewicht
-                    TeigChargen.TeigGewicht = _RezeptGewicht
+                    TeigChargen.TeigGewicht = _RootRezeptSchritt.Gewicht
                 End If
             End If
-            Return _RezeptGewicht
+            Return TeigChargen.TeigGewicht
         End Get
     End Property
 
@@ -196,7 +194,7 @@ Public Class wb_Rezept
     ''' </summary>
     Public WriteOnly Property Recalculate As Boolean
         Set(value As Boolean)
-            _RezeptGewicht = wb_Global.UNDEFINED
+            TeigChargen.TeigGewicht = wb_Global.UNDEFINED
             _BruttoRezeptGewicht = wb_Global.UNDEFINED
             _RezeptPreis = wb_Global.UNDEFINED
             _RezeptGesamtMehlmenge = wb_Global.UNDEFINED
@@ -330,45 +328,6 @@ Public Class wb_Rezept
         End Get
     End Property
 
-    Public Property MinChargekg As Double
-        Get
-            If _Charge_Min > 0 Then
-                Return _Charge_Min
-            Else
-                Return RezeptGewicht
-            End If
-        End Get
-        Set(value As Double)
-            _Charge_Min = value
-        End Set
-    End Property
-
-    Public Property MaxChargekg As Double
-        Get
-            If _Charge_Max > 0 Then
-                Return _Charge_Max
-            Else
-                Return RezeptGewicht
-            End If
-        End Get
-        Set(value As Double)
-            _Charge_Max = value
-        End Set
-    End Property
-
-    Public Property OptChargekg As Double
-        Get
-            If _Charge_Opt > 0 Then
-                Return _Charge_Opt
-            Else
-                Return RezeptGewicht
-            End If
-        End Get
-        Set(value As Double)
-            _Charge_Opt = value
-        End Set
-    End Property
-
     ''' <summary>
     ''' Erzeugt ein neues Rezeptur-Objekt.
     ''' Nach dem Einlesen der Rezeptschritte aus der Datenbank wird das Rezept-Gesamtgewicht berechnet.
@@ -383,6 +342,7 @@ Public Class wb_Rezept
         _Parent = Parent
         _RezeptNr = RzNr
         _RezeptVariante = RzVariante
+        TeigChargen.TeigGewicht = wb_Global.UNDEFINED
 
         'Rekursion begrenzen - Parent ermitteln
         Dim x As wb_Rezept = Me._Parent
@@ -396,8 +356,6 @@ Public Class wb_Rezept
 
         'Rezeptkopf mit Variante x aus der Datenbank einlesen
         MySQLdbSelect_RzKopf(_RezeptNr, _RezeptVariante)
-        'Rezept-Nummer/Name/Variante im Fenster-Titel 
-
 
         'alle Rezeptschritte aus der Datenbank einlesen
         MySQLdbSelect_RzSchritt(_RezeptNr, _RezeptVariante)
@@ -426,7 +384,6 @@ Public Class wb_Rezept
 
     Friend Sub LoadData(dataGridView As wb_DataGridView)
         _RezeptNr = dataGridView.iField("RZ_Nr")
-        _RezeptGewicht = dataGridView.Field("RZ_Gewicht")
         _RezeptVariante = dataGridView.iField("RZ_Variante_Nr")
 
         RezeptNummer = dataGridView.Field("RZ_Nr_AlNum")
@@ -437,6 +394,12 @@ Public Class wb_Rezept
         AenderungNummer = dataGridView.iField("RZ_Aenderung_Nr")
         AenderungDatum = dataGridView.Field("RZ_Aenderung_Datum")
         AenderungName = dataGridView.Field("RZ_Aenderung_Name")
+
+        TeigChargen.TeigGewicht = dataGridView.Field("RZ_Gewicht")
+        TeigChargen.MaxCharge.MengeInkg = dataGridView.Field("RZ_Charge_Max")
+        TeigChargen.MinCharge.MengeInkg = dataGridView.Field("RZ_Charge_Min")
+        TeigChargen.OptCharge.MengeInkg = dataGridView.Field("RZ_Charge_Opt")
+
         DataHasChanged = False
     End Sub
 
@@ -446,6 +409,10 @@ Public Class wb_Rezept
             dataGridView.Field("RZ_Bezeichnung") = RezeptBezeichnung
             dataGridView.Field("RZ_Kommentar") = RezeptKommentar
             dataGridView.Field("RZ_Liniengruppe") = LinienGruppe
+
+            dataGridView.Field("RZ_Charge_Max") = TeigChargen.MaxCharge.MengeInkg
+            dataGridView.Field("RZ_Charge_Min") = TeigChargen.MinCharge.MengeInkg
+            dataGridView.Field("RZ_Charge_Opt") = TeigChargen.OptCharge.MengeInkg
             DataHasChanged = False
             Return True
         Else
@@ -466,13 +433,30 @@ Public Class wb_Rezept
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'interne Rezept-Nummer ermitteln aus max(RZ_NR)
         _RezeptNr = wb_sql_Functions.getNewRezeptNummer()
+        _RezeptBezeichnung = "Neu angelegt " & Date.Now
+
         'Variante
         _RezeptVariante = Variante
         'Liniengruppe
-        _LinienGruppe = 1
+        _LinienGruppe = wb_Global.LinienGruppeStandard
+
+        'Änderungsdatum ist das aktuelle Datum
+        AenderungDatum = Date.Now
+        'aktuellen Benutzer NUmmer/Name eintragen
+        AenderungUserNr = wb_GlobalSettings.AktUserNr
+        AenderungName = wb_GlobalSettings.AktUserName
+        'Änderungs-Index ist gleich 0
+        AenderungNummer = 0
+        'Rezeptgewicht ist gleich 0
+        TeigChargen.TeigGewicht = 0
+
+        'sql-Kommando INSERT bilden
+        Dim sqlFeld = "RZ_Nr, RZ_Variante_Nr, RZ_Bezeichnung, RZ_Liniengruppe, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Aenderung_User, RZ_Aenderung_Nr"
+        Dim sqlData = _RezeptNr & "," & _RezeptVariante & ", '" & _RezeptBezeichnung & "'," & _LinienGruppe & ",'" &
+                      wb_sql_Functions.MySQLdatetime(_AenderungDatum) & "','" & _AenderungName & "'," & _AenderungUserNr & "," & _AenderungNummer
 
         'Datensatz neu anlegen
-        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewRezept, _RezeptNr, _RezeptVariante, "Neu angelegt " & Date.Now))
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewRezept, sqlFeld, sqlData))
         winback.Close()
         'neuen KompNummer zurückgeben
         Return _RezeptNr
@@ -772,15 +756,15 @@ Public Class wb_Rezept
 
                 'Rezeptkopf - MinCharge in kg
                 Case "RZ_Charge_Min"
-                    _Charge_Min = wb_Functions.StrToDouble(Value)
+                    '_Charge_Min = wb_Functions.StrToDouble(Value)
                     TeigChargen.MinCharge.MengeInkg = wb_Functions.StrToDouble(Value)
                 'Rezeptkopf - MaxCharge in kg
                 Case "RZ_Charge_Max"
-                    _Charge_Max = wb_Functions.StrToDouble(Value)
+                    '_Charge_Max = wb_Functions.StrToDouble(Value)
                     TeigChargen.MaxCharge.MengeInkg = wb_Functions.StrToDouble(Value)
                 'Rezeptkopf - OptCharge in kg
                 Case "RZ_Charge_Opt"
-                    _Charge_Opt = wb_Functions.StrToDouble(Value)
+                    '_Charge_Opt = wb_Functions.StrToDouble(Value)
                     TeigChargen.OptCharge.MengeInkg = wb_Functions.StrToDouble(Value)
                 'Rezeptkopf - Rezeptgewicht
                 Case "RZ_Gewicht"

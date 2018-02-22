@@ -6,29 +6,10 @@ Public Class wb_Rezept_Shared
     Public Shared Event eListe_Refresh(Sender As Object)
 
     Public Shared RzVariante As New SortedList
-    'Public Shared LinienGruppe As New SortedList
     Public Shared Rezept As New wb_Rezept
 
-    'Public Shared aktRzNr As Integer            'Rezept-Index
-    'Public Shared aktRzNummer As String         'Rezept-Nummer  (alpha)
-    'Public Shared aktRzName As String           'Rezept-Name    (alpha)
-    'Public Shared aktRzKommentar As String
-    'Public Shared aktRzGewicht As Double
-    'Public Shared aktRzLinienGrp As Integer
-    'Public Shared aktRzVariante As Integer
-
-    'Public Shared aktChangeNr As Integer
-    'Public Shared aktChangeDatum As String
-    'Public Shared aktChangeName As String
-
-    'Public Shared aktChargeMin As Double
-    'Public Shared aktChargeMax As Double
-    'Public Shared aktChargeOpt As Double
-
-    Public Sub New()
+    Shared Sub New()
         LoadVariantenTexte()
-        'LoadLinienGruppenTexte()
-
     End Sub
 
     Private Shared Sub LoadVariantenTexte()
@@ -44,19 +25,6 @@ Public Class wb_Rezept_Shared
         winback.Close()
     End Sub
 
-    'Private Shared Sub LoadLinienGruppenTexte()
-    '    'HashTable mit der Übersetzung der Liniengruppen-Nummer in die Liniengruppen-Bezeichnung laden
-    '    'wenn die Liniengruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
-    '    'entsprechende Übersetzung aus winback.Texte geladen
-    '    Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
-    '    winback.sqlSelect("SELECT LG_Nr, LG_Bezeichnung FROM LinienGruppen")
-    '    LinienGruppe.Clear()
-    '    While winback.Read
-    '        LinienGruppe.Add(winback.iField("LG_Nr"), winback.sField("LG_Bezeichnung"))
-    '    End While
-    '    winback.Close()
-    'End Sub
-
     Public Shared Sub Liste_Click(sender As Object)
         RaiseEvent eListe_Click(sender)
     End Sub
@@ -68,4 +36,5 @@ Public Class wb_Rezept_Shared
     Public Shared Sub Liste_Refresh(sender As Object)
         RaiseEvent eListe_Refresh(sender)
     End Sub
+
 End Class

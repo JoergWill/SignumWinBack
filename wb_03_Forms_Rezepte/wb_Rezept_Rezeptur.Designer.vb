@@ -24,22 +24,14 @@ Partial Class wb_Rezept_Rezeptur
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rezept_Rezeptur))
-        Dim ObjectCellBinding13 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding14 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding15 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding16 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding17 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding18 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.ColNr = New Infralution.Controls.VirtualTree.Column()
-        Me.ColBezeichung = New Infralution.Controls.VirtualTree.Column()
-        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
-        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
-        Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.UniversalEditBox2 = New Infralution.Controls.UniversalEditBox()
-        Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
-        Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
+        Dim ObjectCellBinding1 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding2 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding3 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding4 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding5 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding6 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.ToolStripLeftMargin = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripRezeptChange = New System.Windows.Forms.ToolStripStatusLabel()
@@ -69,8 +61,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.lblEinhRzGewicht = New System.Windows.Forms.Label()
         Me.lblRzMehlMenge = New System.Windows.Forms.Label()
         Me.lblRzVariante = New System.Windows.Forms.Label()
-        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
-        Me.cbVariante = New WinBack.wb_ComboBox()
         Me.lblRzKommentar = New System.Windows.Forms.Label()
         Me.tbRzKommentar = New System.Windows.Forms.TextBox()
         Me.tbRezeptName = New System.Windows.Forms.TextBox()
@@ -99,9 +89,19 @@ Partial Class wb_Rezept_Rezeptur
         Me.separator3MenuItem = New System.Windows.Forms.ToolStripSeparator()
         Me.showColumnsMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.customizeMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
+        Me.cbVariante = New WinBack.wb_ComboBox()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tb_Rezeptur = New System.Windows.Forms.TabPage()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
+        Me.ColNr = New Infralution.Controls.VirtualTree.Column()
+        Me.ColBezeichung = New Infralution.Controls.VirtualTree.Column()
+        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
+        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
+        Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.UniversalEditBox2 = New Infralution.Controls.UniversalEditBox()
+        Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
+        Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.tb_Naehrwerte = New System.Windows.Forms.TabPage()
         Me.tb_Zutaten = New System.Windows.Forms.TabPage()
@@ -127,63 +127,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Verwendung.SuspendLayout()
         CType(Me.GridView_RzVerwendung, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'ColNr
-        '
-        resources.ApplyResources(Me.ColNr, "ColNr")
-        Me.ColNr.Movable = False
-        Me.ColNr.Name = "ColNr"
-        Me.ColNr.Sortable = False
-        '
-        'ColBezeichung
-        '
-        resources.ApplyResources(Me.ColBezeichung, "ColBezeichung")
-        Me.ColBezeichung.Movable = False
-        Me.ColBezeichung.Name = "ColBezeichung"
-        Me.ColBezeichung.Sortable = False
-        '
-        'ColPreis
-        '
-        resources.ApplyResources(Me.ColPreis, "ColPreis")
-        Me.ColPreis.Name = "ColPreis"
-        Me.ColPreis.Resizable = False
-        Me.ColPreis.Sortable = False
-        '
-        'ColSollwert
-        '
-        resources.ApplyResources(Me.ColSollwert, "ColSollwert")
-        Me.ColSollwert.CellEditor = Me.CellEditor2
-        Me.ColSollwert.CellStyle.VertAlignment = CType(resources.GetObject("ColSollwert.CellStyle.VertAlignment"), System.Drawing.StringAlignment)
-        Me.ColSollwert.Movable = False
-        Me.ColSollwert.Name = "ColSollwert"
-        Me.ColSollwert.Resizable = False
-        Me.ColSollwert.Sortable = False
-        '
-        'CellEditor2
-        '
-        Me.CellEditor2.Control = Me.UniversalEditBox2
-        '
-        'UniversalEditBox2
-        '
-        Me.UniversalEditBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        resources.ApplyResources(Me.UniversalEditBox2, "UniversalEditBox2")
-        Me.UniversalEditBox2.Name = "UniversalEditBox2"
-        '
-        'ColEinheit
-        '
-        resources.ApplyResources(Me.ColEinheit, "ColEinheit")
-        Me.ColEinheit.Name = "ColEinheit"
-        Me.ColEinheit.Resizable = False
-        Me.ColEinheit.Selectable = False
-        Me.ColEinheit.Sortable = False
-        '
-        'ColProzent
-        '
-        resources.ApplyResources(Me.ColProzent, "ColProzent")
-        Me.ColProzent.CellStyle.HorzAlignment = CType(resources.GetObject("ColProzent.CellStyle.HorzAlignment"), System.Drawing.StringAlignment)
-        Me.ColProzent.Name = "ColProzent"
-        Me.ColProzent.Resizable = False
-        Me.ColProzent.Sortable = False
         '
         'StatusStrip
         '
@@ -376,18 +319,6 @@ Partial Class wb_Rezept_Rezeptur
         resources.ApplyResources(Me.lblRzVariante, "lblRzVariante")
         Me.lblRzVariante.Name = "lblRzVariante"
         '
-        'cbLiniengruppe
-        '
-        Me.cbLiniengruppe.FormattingEnabled = True
-        resources.ApplyResources(Me.cbLiniengruppe, "cbLiniengruppe")
-        Me.cbLiniengruppe.Name = "cbLiniengruppe"
-        '
-        'cbVariante
-        '
-        Me.cbVariante.FormattingEnabled = True
-        resources.ApplyResources(Me.cbVariante, "cbVariante")
-        Me.cbVariante.Name = "cbVariante"
-        '
         'lblRzKommentar
         '
         resources.ApplyResources(Me.lblRzKommentar, "lblRzKommentar")
@@ -559,6 +490,18 @@ Partial Class wb_Rezept_Rezeptur
         Me.customizeMenuItem.Name = "customizeMenuItem"
         Me.customizeMenuItem.Tag = "customizeMenuItem"
         '
+        'cbLiniengruppe
+        '
+        Me.cbLiniengruppe.FormattingEnabled = True
+        resources.ApplyResources(Me.cbLiniengruppe, "cbLiniengruppe")
+        Me.cbLiniengruppe.Name = "cbLiniengruppe"
+        '
+        'cbVariante
+        '
+        Me.cbVariante.FormattingEnabled = True
+        resources.ApplyResources(Me.cbVariante, "cbVariante")
+        Me.cbVariante.Name = "cbVariante"
+        '
         'Wb_TabControl
         '
         resources.ApplyResources(Me.Wb_TabControl, "Wb_TabControl")
@@ -604,40 +547,97 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.ShowRootRow = False
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         '
+        'ColNr
+        '
+        resources.ApplyResources(Me.ColNr, "ColNr")
+        Me.ColNr.Movable = False
+        Me.ColNr.Name = "ColNr"
+        Me.ColNr.Sortable = False
+        '
+        'ColBezeichung
+        '
+        resources.ApplyResources(Me.ColBezeichung, "ColBezeichung")
+        Me.ColBezeichung.Movable = False
+        Me.ColBezeichung.Name = "ColBezeichung"
+        Me.ColBezeichung.Sortable = False
+        '
+        'ColPreis
+        '
+        resources.ApplyResources(Me.ColPreis, "ColPreis")
+        Me.ColPreis.Name = "ColPreis"
+        Me.ColPreis.Resizable = False
+        Me.ColPreis.Sortable = False
+        '
+        'ColSollwert
+        '
+        resources.ApplyResources(Me.ColSollwert, "ColSollwert")
+        Me.ColSollwert.CellEditor = Me.CellEditor2
+        Me.ColSollwert.CellStyle.VertAlignment = CType(resources.GetObject("ColSollwert.CellStyle.VertAlignment"), System.Drawing.StringAlignment)
+        Me.ColSollwert.Movable = False
+        Me.ColSollwert.Name = "ColSollwert"
+        Me.ColSollwert.Resizable = False
+        Me.ColSollwert.Sortable = False
+        '
+        'CellEditor2
+        '
+        Me.CellEditor2.Control = Me.UniversalEditBox2
+        '
+        'UniversalEditBox2
+        '
+        Me.UniversalEditBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        resources.ApplyResources(Me.UniversalEditBox2, "UniversalEditBox2")
+        Me.UniversalEditBox2.Name = "UniversalEditBox2"
+        '
+        'ColEinheit
+        '
+        resources.ApplyResources(Me.ColEinheit, "ColEinheit")
+        Me.ColEinheit.Name = "ColEinheit"
+        Me.ColEinheit.Resizable = False
+        Me.ColEinheit.Selectable = False
+        Me.ColEinheit.Sortable = False
+        '
+        'ColProzent
+        '
+        resources.ApplyResources(Me.ColProzent, "ColProzent")
+        Me.ColProzent.CellStyle.HorzAlignment = CType(resources.GetObject("ColProzent.CellStyle.HorzAlignment"), System.Drawing.StringAlignment)
+        Me.ColProzent.Name = "ColProzent"
+        Me.ColProzent.Resizable = False
+        Me.ColProzent.Sortable = False
+        '
         'ObjectRowBinding1
         '
         Me.ObjectRowBinding1.AllowDrag = True
         Me.ObjectRowBinding1.AllowDropAboveRow = True
         Me.ObjectRowBinding1.AllowDropBelowRow = True
-        ObjectCellBinding13.Column = Me.ColNr
-        ObjectCellBinding13.Field = "Nummer"
-        ObjectCellBinding13.Style.Font = CType(resources.GetObject("resource.Font1"), System.Drawing.Font)
-        ObjectCellBinding13.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment"), System.Drawing.StringAlignment)
-        ObjectCellBinding14.Column = Me.ColBezeichung
-        ObjectCellBinding14.Field = "VirtTreeBezeichnung"
-        ObjectCellBinding14.Style.Font = CType(resources.GetObject("resource.Font2"), System.Drawing.Font)
-        ObjectCellBinding15.Column = Me.ColPreis
-        ObjectCellBinding15.Field = "VirtTreePreis"
-        resources.ApplyResources(ObjectCellBinding15, "ObjectCellBinding15")
-        ObjectCellBinding15.Style.Font = CType(resources.GetObject("resource.Font3"), System.Drawing.Font)
-        ObjectCellBinding15.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment1"), System.Drawing.StringAlignment)
-        ObjectCellBinding16.Column = Me.ColSollwert
-        ObjectCellBinding16.Field = "VirtTreeSollwert"
-        resources.ApplyResources(ObjectCellBinding16, "ObjectCellBinding16")
-        ObjectCellBinding16.Style.Font = CType(resources.GetObject("resource.Font4"), System.Drawing.Font)
-        ObjectCellBinding16.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment2"), System.Drawing.StringAlignment)
-        ObjectCellBinding17.Column = Me.ColEinheit
-        ObjectCellBinding17.Field = "VirtTreeEinheit"
-        ObjectCellBinding17.Style.Font = CType(resources.GetObject("resource.Font5"), System.Drawing.Font)
-        ObjectCellBinding18.Column = Me.ColProzent
-        ObjectCellBinding18.Field = "VirtTreeProzent"
-        ObjectCellBinding18.Style.Font = CType(resources.GetObject("resource.Font6"), System.Drawing.Font)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding13)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding14)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding15)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding16)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding17)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding18)
+        ObjectCellBinding1.Column = Me.ColNr
+        ObjectCellBinding1.Field = "Nummer"
+        ObjectCellBinding1.Style.Font = CType(resources.GetObject("resource.Font1"), System.Drawing.Font)
+        ObjectCellBinding1.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment"), System.Drawing.StringAlignment)
+        ObjectCellBinding2.Column = Me.ColBezeichung
+        ObjectCellBinding2.Field = "VirtTreeBezeichnung"
+        ObjectCellBinding2.Style.Font = CType(resources.GetObject("resource.Font2"), System.Drawing.Font)
+        ObjectCellBinding3.Column = Me.ColPreis
+        ObjectCellBinding3.Field = "VirtTreePreis"
+        resources.ApplyResources(ObjectCellBinding3, "ObjectCellBinding3")
+        ObjectCellBinding3.Style.Font = CType(resources.GetObject("resource.Font3"), System.Drawing.Font)
+        ObjectCellBinding3.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment1"), System.Drawing.StringAlignment)
+        ObjectCellBinding4.Column = Me.ColSollwert
+        ObjectCellBinding4.Field = "VirtTreeSollwert"
+        resources.ApplyResources(ObjectCellBinding4, "ObjectCellBinding4")
+        ObjectCellBinding4.Style.Font = CType(resources.GetObject("resource.Font4"), System.Drawing.Font)
+        ObjectCellBinding4.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment2"), System.Drawing.StringAlignment)
+        ObjectCellBinding5.Column = Me.ColEinheit
+        ObjectCellBinding5.Field = "VirtTreeEinheit"
+        ObjectCellBinding5.Style.Font = CType(resources.GetObject("resource.Font5"), System.Drawing.Font)
+        ObjectCellBinding6.Column = Me.ColProzent
+        ObjectCellBinding6.Field = "VirtTreeProzent"
+        ObjectCellBinding6.Style.Font = CType(resources.GetObject("resource.Font6"), System.Drawing.Font)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding4)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding5)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
         Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
         resources.ApplyResources(Me.ObjectRowBinding1, "ObjectRowBinding1")
         Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
@@ -725,23 +725,23 @@ Partial Class wb_Rezept_Rezeptur
         '
         'GridView_RzVerwendung
         '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.GridView_RzVerwendung.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.GridView_RzVerwendung.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.GridView_RzVerwendung.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.GridView_RzVerwendung.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.GridView_RzVerwendung.DefaultCellStyle = DataGridViewCellStyle2
         resources.ApplyResources(Me.GridView_RzVerwendung, "GridView_RzVerwendung")
         Me.GridView_RzVerwendung.MultiSelect = False
         Me.GridView_RzVerwendung.Name = "GridView_RzVerwendung"

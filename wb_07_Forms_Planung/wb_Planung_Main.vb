@@ -14,6 +14,8 @@ Public Class wb_Planung_Main
 #Region "Signum"
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
+        'verhindert Warnung BC40054
+        InitializeComponent()
     End Sub
 
     ''' <summary>
