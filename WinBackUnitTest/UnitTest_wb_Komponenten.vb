@@ -22,13 +22,13 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten
-            Dim nwtDaten As New wb_Komponenten
+            Dim nwtDaten As New wb_Komponente
 
             'ersten Datensatz aus Tabelle Komponenten lesen
             Assert.IsTrue(nwtDaten.MySQLdbRead(211))
             Assert.AreEqual(211, nwtDaten.Nr)
             Assert.AreEqual(wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE, nwtDaten.Type)
-            Assert.AreEqual("Schüttwasser", nwtDaten.Bezeichung)
+            Assert.AreEqual("Schüttwasser", nwtDaten.Bezeichnung)
         End If
     End Sub
 
@@ -37,18 +37,18 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten
-            Dim nwtDaten As New wb_Komponenten
+            Dim nwtDaten As New wb_Komponente
             'ersten Datensatz aus Tabelle Komponenten lesen
             Assert.IsTrue(nwtDaten.MySQLdbRead(211))
             'Rohstoff-Bezeichnung ändern
-            nwtDaten.Bezeichung = "TEST"
+            nwtDaten.Bezeichnung = "TEST"
             'Datensatz in WinBack-DB schreiben
             Assert.IsTrue(nwtDaten.MySQLdbUpdate(211))
             'ersten Datensatz aus Tabelle Komponenten lesen
             Assert.IsTrue(nwtDaten.MySQLdbRead(211))
-            Assert.AreEqual("TEST", nwtDaten.Bezeichung)
+            Assert.AreEqual("TEST", nwtDaten.Bezeichnung)
             'Daten wieder richtigstellen
-            nwtDaten.Bezeichung = "Schüttwasser"
+            nwtDaten.Bezeichnung = "Schüttwasser"
             'Datensatz in WinBack-DB schreiben
             Assert.IsTrue(nwtDaten.MySQLdbUpdate(211))
 
@@ -60,7 +60,7 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten
-            Dim nwtDaten As New wb_Komponenten
+            Dim nwtDaten As New wb_Komponente
 
             Dim sql As String = setParams(sqlTestktTypX, "211")
             'Datenbank-Verbindung öffnen - MySQL
@@ -72,7 +72,7 @@ Imports WinBack.wb_Sql_Selects
                     Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
                     Assert.AreEqual(211, nwtDaten.Nr)
                     Assert.AreEqual(wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE, nwtDaten.Type)
-                    Assert.AreEqual("Schüttwasser", nwtDaten.Bezeichung)
+                    Assert.AreEqual("Schüttwasser", nwtDaten.Bezeichnung)
                 End If
             End If
         End If
@@ -84,7 +84,7 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten
-            Dim nwtDaten As New wb_Komponenten
+            Dim nwtDaten As New wb_Komponente
 
             Dim sql As String = setParams(sqlTestktTyp3, "211")
             'Datenbank-Verbindung öffnen - MySQL
@@ -109,7 +109,7 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten
-            Dim nwtDaten As New wb_Komponenten
+            Dim nwtDaten As New wb_Komponente
 
             'Eintrag Lieferant ändern
             nwtDaten.ClearReport()
@@ -137,7 +137,7 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten
-            Dim nwtDaten As New wb_Komponenten
+            Dim nwtDaten As New wb_Komponente
             nwtDaten.Nummer = "1111TEST"
             'Datenatz neu anlegen
             Dim NewKoNr As Integer = nwtDaten.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_ARTIKEL)
@@ -146,7 +146,7 @@ Imports WinBack.wb_Sql_Selects
             Assert.IsTrue(nwtDaten.MySQLdbRead(NewKoNr))
             Assert.AreEqual(NewKoNr, nwtDaten.Nr)
             Assert.AreEqual(wb_Global.KomponTypen.KO_TYPE_ARTIKEL, nwtDaten.Type)
-            Assert.AreEqual("Neu angelegt", Left(nwtDaten.Bezeichung, 12))
+            Assert.AreEqual("Neu angelegt", Left(nwtDaten.Bezeichnung, 12))
 
             nwtDaten.Nummer = "1112TEST"
             'Datenatz neu anlegen
@@ -156,7 +156,7 @@ Imports WinBack.wb_Sql_Selects
             Assert.IsTrue(nwtDaten.MySQLdbRead(NewKoNr))
             Assert.AreEqual(NewKoNr, nwtDaten.Nr)
             Assert.AreEqual(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE, nwtDaten.Type)
-            Assert.AreEqual("Neu angelegt", Left(nwtDaten.Bezeichung, 12))
+            Assert.AreEqual("Neu angelegt", Left(nwtDaten.Bezeichnung, 12))
 
             'wieder aufräumen
             Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
@@ -172,7 +172,7 @@ Imports WinBack.wb_Sql_Selects
         If My.Settings.TestMySQL Then
 
             'Rohstoff-Daten (Test Wasser)
-            Dim KompDaten As New wb_Komponenten
+            Dim KompDaten As New wb_Komponente
 
             'Verwendung im Rezept
             Assert.IsFalse(KompDaten.MySQLdbCanBeDeleted(211))

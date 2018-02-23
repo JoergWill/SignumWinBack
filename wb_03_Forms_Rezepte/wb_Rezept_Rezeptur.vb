@@ -279,14 +279,15 @@ Public Class wb_Rezept_Rezeptur
         'Rezeptkopfdaten schreiben
         If _RzKopfChanged Or _RzChanged Then
             Rezept.MySQLdbWrite_Rezept()
+            wb_Rezept_Shared.Edit_Leave(sender)
         End If
 
         'Rezeptur ist geändert worden
         If _RzChanged Then
             Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante)
             wb_Rezept_Shared.Edit_Leave(sender)
-        Else
-            wb_Rezept_Shared.Liste_Refresh(sender)
+            'Else
+            '    wb_Rezept_Shared.Liste_Refresh(sender)
         End If
     End Sub
 
@@ -368,30 +369,33 @@ Public Class wb_Rezept_Rezeptur
         e.Cancel = True
     End Sub
     Private Sub VirtualTree_SetCellValue(sender As Object, e As SetCellValueEventArgs) Handles VirtualTree.SetCellValue
-        Debug.Print("SETCELLVALUE")
         Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
         Binding.SetCellValue(e.Row, e.Column, e.OldValue, e.NewValue)
         ShowCalculateRezeptDaten(True)
         'Rezeptur wurde geändert
         _RzChanged = True
-
     End Sub
+    Private Sub VirtualTree_GetCellData(sender As Object, e As GetCellDataEventArgs) Handles VirtualTree.GetCellData
+        'get the default binding for the given row And use it to populate the cell data
+        Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
+        Binding.GetCellData(e.Row, e.Column, e.CellData)
 
-    'Private Sub CellEditor2_InitializeControl(sender As Object, e As CellEditorInitializeEventArgs) Handles CellEditor2.InitializeControl
-    '    'Try to Start Edit-Mode
-    '    Debug.Print("InitialiizeControl")
-    'End Sub
+        'aktuell ausgewählten Rezeptschritt merken (Popup)
+        _RezeptSchritt = DirectCast(e.Row.Item, wb_Rezeptschritt)
 
-    'Private Sub CellEditor2_SetControlValue(sender As Object, e As CellEditorSetValueEventArgs) Handles CellEditor2.SetControlValue
-    '    'Maybe EndOf Edit
-    '    Debug.Print("SetControlValue")
-    'End Sub
+        'Edit Bezeichnungs-Text
+        If e.Column.Name = "ColBezeichnung" And wb_Functions.TypeIstText(_RezeptSchritt.Type) Then
+            Exit Sub
+        End If
 
-    'Private Sub CellEditor2_GetControlValue(sender As Object, e As CellEditorGetValueEventArgs) Handles CellEditor2.GetControlValue
-    '    'Maybe EndOf Edit
-    '    Debug.Print("GetControlValue")
-    'End Sub
+        'Edit Sollwert
+        If e.Column.Name = "ColSollwert" And (wb_Functions.TypeIstSollMenge(_RezeptSchritt.Type, 1) Or wb_Functions.TypeIstSollWert(_RezeptSchritt.Type, 1)) Then
+            Exit Sub
+        End If
 
+        'Edit nicht erlaubt
+        e.CellData.Editor = Nothing
+    End Sub
     ''' <summary>
     ''' Rechte-Maus-Click auf eine Zeile im VirtualTree.
     ''' 
@@ -971,4 +975,5 @@ Public Class wb_Rezept_Rezeptur
         _RzKopfChanged = True
         Rezept.RezeptNummer = tbRzNummer.Text
     End Sub
+
 End Class

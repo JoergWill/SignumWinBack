@@ -19,7 +19,7 @@ Public Class ob_Artikel_DockingExtension
 
     Private bContextTabInitialized As Boolean = False
     Private bSortimentIstProduktion As Boolean = False
-    Private Komponente As New wb_Komponenten
+    Private Komponente As New wb_Komponente
     Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
     Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
 
@@ -391,24 +391,31 @@ Public Class ob_Artikel_DockingExtension
 
         'Sortiment-Kürzel aus Artikel.Sortiment
         Dim sSortiment As String = _Extendee.GetPropertyValue("Sortiment").ToString
+        Debug.Print("DockingExtension-GetKomponentenDaten sSortiment " & sSortiment)
         If wb_Filiale.SortimentIstProduktion(sSortiment) Then
+            Debug.Print("DockingExtension-GetKomponentenDaten sSortiment - Sortiment ist Produktion" & sSortiment)
 
             'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
             Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
             'Komponenten-Nummer aus OrgaBack ermitteln
             Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF226 - Index auf interne Komponenten-Nummer
+            Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString         'Artikel/Komponenten-Nummer alphanumerisch
+            Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
             'Artikel/Komponente aus WinBack-Db einlesen
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
             If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer) Then
+                Debug.Print("DockingExtension-GetKomponentenDaten Komponente in WinBack nicht vorhanden " & Komponente.Bezeichnung)
                 'Datensatz ist in Winback nicht vorhanden - Komponententype (Artikel/Handkomponente) ermitteln
                 Dim KType As wb_Global.KomponTypen = wb_Functions.obKtypeToKType(obKType)
                 'Datensatz in WinBack neu anlegen
                 Komponente.MySQLdbNew(KType)
             End If
+            Debug.Print("DockingExtension-GetKomponentenDaten Komponente in WinBack (jetzt) vorhanden " & Komponente.Bezeichnung)
             Return True
         Else
             'Artikel/Rohstoff ist keiner Produktions-Filiale zugeordnet
+            Debug.Print("DockingExtension-GetKomponentenDaten Komponente keiner ProduktionsFiliale zugeordnet" & Komponente.Bezeichnung)
             Return False
         End If
     End Function
@@ -469,7 +476,7 @@ Public Class ob_Artikel_DockingExtension
         Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
 
         'Update aller in OrgaBack geänderten Daten
-        Komponente.Bezeichung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
+        Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
         Komponente.MatchCode = MFFValue(oFil, wb_Global.MFF_MatchCode)       'MFF281 - MatchCode
         Komponente.ZutatenListe = MFFValue(oFil, wb_Global.MFF_Zutatenliste) 'MFF209 - Zutatenliste
         Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)       'MFF225 - Kommentar
@@ -477,7 +484,7 @@ Public Class ob_Artikel_DockingExtension
 
         'Testausgabe
         Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
-        Debug.Print("Artikel-Bezeichnung    " & Komponente.Bezeichung)
+        Debug.Print("Artikel-Bezeichnung    " & Komponente.Bezeichnung)
         Debug.Print("Artikel-Kurzname       " & Komponente.Kurzname)
         Debug.Print("Index                  " & Komponente.Nr)
         Debug.Print("Komponenten-Type       " & wb_Functions.KomponTypeToInt(Komponente.Type).ToString)

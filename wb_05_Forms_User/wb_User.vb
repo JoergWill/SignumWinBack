@@ -27,7 +27,7 @@
             If value <> IP_Wert4Str And value <> "" Then
                 DataHasChanged = True
             End If
-            IP_Wert4Str = value
+            IP_Wert4Str = wb_Functions.XRemoveSonderZeichen(value)
         End Set
         Get
             Return IP_Wert4Str

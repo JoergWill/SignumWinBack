@@ -65,7 +65,7 @@ Public Class ob_Artikel_VerwendungRezept
             Case "VALID"
 
             Case "wbFOUND"
-                Nr = DirectCast(Parameter, wb_Komponenten).Nr
+                Nr = DirectCast(Parameter, wb_Komponente).Nr
                 'Tabelle Verwendung mit Daten füllen
                 HisDataGridView.LoadVerwendung(Nr)
         End Select

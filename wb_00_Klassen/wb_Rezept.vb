@@ -220,7 +220,7 @@ Public Class wb_Rezept
             Return _RezeptNummer
         End Get
         Set(value As String)
-            _RezeptNummer = value
+            _RezeptNummer = wb_Functions.XRemoveSonderZeichen(value)
             DataHasChanged = True
         End Set
     End Property
@@ -230,7 +230,7 @@ Public Class wb_Rezept
             Return _RezeptBezeichnung
         End Get
         Set(value As String)
-            _RezeptBezeichnung = value
+            _RezeptBezeichnung = wb_Functions.XRemoveSonderZeichen(value)
             DataHasChanged = True
         End Set
     End Property
@@ -265,7 +265,7 @@ Public Class wb_Rezept
             Return _RezeptKommentar
         End Get
         Set(value As String)
-            _RezeptKommentar = value
+            _RezeptKommentar = wb_Functions.XRemoveSonderZeichen(value)
             DataHasChanged = True
         End Set
     End Property
@@ -808,7 +808,7 @@ Public Class wb_Rezept
             sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddRZSchritt, sqlFelder, sqlData)
             winback.sqlCommand(sql)
 
-            Debug.Print("Rezept Schreiben " & rz.SchrittNr & "-" & rz.RohNr & "/" & rz.Nummer & " " & rz.Bezeichnung)
+            Debug.Print("Rezept Schreiben " & rz.SchrittNr & "-" & rz.RohNr & "/" & rz.Nummer & " " & rz.Bezeichnung & " " & rz.Sollwert)
         Next
         winback.Close()
         Return True

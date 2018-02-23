@@ -119,14 +119,14 @@ Public Class Rohstoffe_Main
     End Sub
 
     Public Sub RohstoffNeuAnlegen()
-        Dim Komponente As New wb_Komponenten
+        Dim Komponente As New wb_Komponente
         Dim KompNrNeu As Integer = Komponente.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE)
         RohstoffListe.RefreshData(KompNrNeu)
         Komponente = Nothing
     End Sub
 
     Public Sub RohstoffLöschen()
-        Dim Komponente As New wb_Komponenten
+        Dim Komponente As New wb_Komponente
         Dim KompNrDel As Integer = wb_Rohstoffe_Shared.RohStoff.Nr
         If Komponente.MySQLdbCanBeDeleted(KompNrDel) Then
             Komponente.Nr = KompNrDel

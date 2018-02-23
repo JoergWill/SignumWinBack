@@ -92,25 +92,25 @@ Public Class wb_Rezeptschritt
     ''' <param name="Parent"></param>
     ''' <param name="KomponType"></param>
     Public Sub New(Parent As wb_Rezeptschritt, KomponType As wb_Global.KomponTypen)
-        Dim NewKomp As wb_Komponenten = Nothing
+        Dim NewKomp As wb_Komponente = Nothing
 
         'neuer Rezeptschritt abhängig von der Komponenten-Type
         Select Case KomponType
             Case wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
-                NewKomp = wb_Komponenten.ProduktionsStufe
-                _Sollwert = NewKomp.Bezeichung
+                NewKomp = wb_Komponente.ProduktionsStufe
+                _Sollwert = NewKomp.Bezeichnung
                 _Nummer = NewKomp.Nummer
                 _Einheit = "-"
                 _TA = 0
             Case wb_Global.KomponTypen.KO_TYPE_KESSEL
-                NewKomp = wb_Komponenten.Kessel
-                _Sollwert = NewKomp.Bezeichung
+                NewKomp = wb_Komponente.Kessel
+                _Sollwert = NewKomp.Bezeichnung
                 _Nummer = NewKomp.Nummer
                 _Einheit = "-"
                 _TA = 0
             Case wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
-                NewKomp = wb_Komponenten.TextKomponente
-                _Sollwert = NewKomp.Bezeichung
+                NewKomp = wb_Komponente.TextKomponente
+                _Sollwert = NewKomp.Bezeichnung
                 _Nummer = NewKomp.Nummer
                 _Einheit = "-"
                 _TA = 0
@@ -121,7 +121,7 @@ Public Class wb_Rezeptschritt
         'neue Komponente(Type) anhängen
         If NewKomp IsNot Nothing Then
             _parentStep = Parent
-            _Bezeichnung = NewKomp.Bezeichung
+            _Bezeichnung = NewKomp.Bezeichnung
             _Nummer = NewKomp.Nummer
             _RohNr = NewKomp.Nr
             _Type = KomponType
@@ -338,7 +338,7 @@ Public Class wb_Rezeptschritt
     ''' bei allen anderen Komponenten-Typen die Komponenten-Bezeichnung.
     ''' </summary>
     ''' <returns>String - Bezeichnung</returns>
-    Public ReadOnly Property VirtTreeBezeichnung() As String
+    Public Property VirtTreeBezeichnung() As String
         Get
             Select Case _Type
                 Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
@@ -360,12 +360,20 @@ Public Class wb_Rezeptschritt
                     End If
             End Select
         End Get
+        Set(value As String)
+            Select Case _Type
+                Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
+                    _Sollwert = value
+                Case Else
+                    _Bezeichnung = value
+            End Select
+        End Set
     End Property
 
     ''' <summary>
     ''' Sollwert. Anzeige im VitualTree (Rezeptur)
     ''' Bei Produktions-Stufen, Kessel und Text-Komponenten wird ein leeres Feld angezeigt,
-    ''' bei Automatik, Hand, Eis und Wasser wird der Sollwert formatiert mit 3 Nachkomma-Stellen angezeigt.
+    ''' bei Automatik, Hand, Eis, Wasser oder Verpackung/Stk wird der Sollwert formatiert mit 3 Nachkomma-Stellen angezeigt.
     ''' </summary>
     ''' <returns>String - Sollwert</returns>
     Public Property VirtTreeSollwert As String
@@ -373,10 +381,14 @@ Public Class wb_Rezeptschritt
             Select Case _Type
                 Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
                     Return ""
-                Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
-                    Return wb_Functions.FormatStr(_Sollwert, 3)
+                    'Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
+                    '    Return wb_Functions.FormatStr(_Sollwert, 3)
                 Case Else
-                    Return _Sollwert
+                    If wb_Functions.TypeIstSollMenge(_Type, 1) Then
+                        Return wb_Functions.FormatStr(_Sollwert, 3)
+                    Else
+                        Return _Sollwert
+                    End If
             End Select
         End Get
         Set(value As String)
@@ -408,12 +420,17 @@ Public Class wb_Rezeptschritt
     ''' <returns>String- Einheit</returns>
     Public ReadOnly Property VirtTreeEinheit As String
         Get
-            Select Case _Type
-                Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE, KO_TYPE_TEMPERATURERFASSUNG, KO_TYPE_KNETER
-                    Return _Einheit
-                Case Else
-                    Return ""
-            End Select
+            'Select Case _Type
+            '    Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE, KO_TYPE_TEMPERATURERFASSUNG, KO_TYPE_KNETER
+            '        Return _Einheit
+            '    Case Else
+            '        Return ""
+            'End Select
+            If wb_Functions.TypeHatEinheit(_Type) Then
+                Return _Einheit
+            Else
+                Return ""
+            End If
         End Get
     End Property
 

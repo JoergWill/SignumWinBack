@@ -65,7 +65,7 @@ Public Class wb_Produktionsschritt
     ''' Kopiert alle Artikel-Daten in den aktuellen Produktions-Schritt
     ''' </summary>
     ''' <param name="rs">wb_Komponenten hält alle notwendigen Werte der Artikel für die Produktion</param>
-    Public Sub CopyFromKomponenten(rs As wb_Komponenten, ChargenTyp As Integer)
+    Public Sub CopyFromKomponenten(rs As wb_Komponente, ChargenTyp As Integer)
         With rs
             Typ = ChargenTyp
             ArtikelNummer = .Nummer

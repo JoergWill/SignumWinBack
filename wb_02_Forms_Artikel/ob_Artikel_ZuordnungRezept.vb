@@ -117,29 +117,29 @@ Public Class ob_Artikel_ZuordnungRezept
 
             Case "wbFOUND"
                 '(interne) Rezeptnummer
-                RzNr = DirectCast(Parameter, wb_Komponenten).RzNr
-                tRezeptNr.Text = DirectCast(Parameter, wb_Komponenten).RezeptNummer
-                tRezeptName.Text = DirectCast(Parameter, wb_Komponenten).RezeptName
+                RzNr = DirectCast(Parameter, wb_Komponente).RzNr
+                tRezeptNr.Text = DirectCast(Parameter, wb_Komponente).RezeptNummer
+                tRezeptName.Text = DirectCast(Parameter, wb_Komponente).RezeptName
 
                 'Chargengrößen Artikel(Objekt)
-                ArtikelChargen = DirectCast(Parameter, wb_Komponenten).ArtikelChargen
+                ArtikelChargen = DirectCast(Parameter, wb_Komponente).ArtikelChargen
                 'Chargengrößen Rezept(Objekt)
-                TeigChargen = DirectCast(Parameter, wb_Komponenten).TeigChargen
+                TeigChargen = DirectCast(Parameter, wb_Komponente).TeigChargen
                 'Chargengrößen Artikel anzeigen
                 MinMaxOptArtikelShowValues()
                 'Chargengrößen Rezept(Teig) anzeigen
                 MinMaxRezeptShowValues()
                 'Liniengruppe Artikel
-                cbArtikelLinienGruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponenten).ArtikelLinienGruppe)
+                cbArtikelLinienGruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponente).ArtikelLinienGruppe)
                 'Liniengruppe Rezept(Teig)
-                cbLiniengruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponenten).LinienGruppe)
+                cbLiniengruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponente).LinienGruppe)
 
                 'alle Steuerelemente aktivieren
                 EnableKomponenten(True)
 
             Case "wbSAVE"
-                DirectCast(Parameter, wb_Komponenten).ArtikelChargen = ArtikelChargen
-                DirectCast(Parameter, wb_Komponenten).RzNr = RzNr
+                DirectCast(Parameter, wb_Komponente).ArtikelChargen = ArtikelChargen
+                DirectCast(Parameter, wb_Komponente).RzNr = RzNr
 
         End Select
         Return Nothing

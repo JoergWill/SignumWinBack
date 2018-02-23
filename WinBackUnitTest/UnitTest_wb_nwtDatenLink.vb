@@ -34,7 +34,7 @@ Imports WinBack
 
     <TestMethod()> Public Sub Test_DatenLinkUpdate()
         Dim nwtUpdate As New wb_nwtUpdate
-        Dim nwtDaten As New wb_Komponenten
+        Dim nwtDaten As New wb_Komponente
 
         'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung)
         Dim LastChange As Date = nwtUpdate.GetNaehrwerte("DL-CE3-C4D", nwtDaten)
@@ -42,7 +42,7 @@ Imports WinBack
         'Ergebnis aus DatenLink XML auswerten
         Assert.AreEqual(nwtDaten.ktTyp301.TimeStamp, #03/09/2013 08:14:03#)
         Assert.AreEqual(nwtDaten.Lieferant, "BÄKO-Zentrale Süddeutschland eG")
-        Assert.AreEqual(nwtDaten.Bezeichung, "BÄKO BiO Weizenschrot mittel")
+        Assert.AreEqual(nwtDaten.Bezeichnung, "BÄKO BiO Weizenschrot mittel")
 
         'Nährwert-Info Kalorien(KJoule)
         Assert.AreEqual(nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_KiloJoule), 1293.0)

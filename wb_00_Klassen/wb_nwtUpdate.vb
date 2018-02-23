@@ -25,7 +25,7 @@ Public Class wb_nwtUpdate
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Komponenten-Objekt nimmt die aktuellen Daten auf
-        Dim nwtDaten As New wb_Komponenten
+        Dim nwtDaten As New wb_Komponente
         UpdateNext = False
 
         'nächsten Datensatz aus Tabelle Komponenten lesen
@@ -60,7 +60,7 @@ Public Class wb_nwtUpdate
                     Debug.Print(nwtDaten.GetReport)
 
                     'Ausgabe-Text
-                    _InfoText = "(" & nwtDaten.Nr.ToString("00000") & ") " & nwtDaten.Bezeichung
+                    _InfoText = "(" & nwtDaten.Nr.ToString("00000") & ") " & nwtDaten.Bezeichnung
                     UpdateNext = True
                 End If
             Else
@@ -84,7 +84,7 @@ Public Class wb_nwtUpdate
     ''' </summary>
     ''' <param name="ID"></param>
     ''' <returns>Gibt das Datum der letzten Änderung in der Cloud zurück</returns>
-    Public Function GetNaehrwerte(ID As String, nwtdaten As wb_Komponenten) As Date
+    Public Function GetNaehrwerte(ID As String, nwtdaten As wb_Komponente) As Date
         If Left(ID, 3) = "DL-" Then
             Return GetNaehrwerteDatenlink(ID, nwtdaten)
         Else
@@ -99,7 +99,7 @@ Public Class wb_nwtUpdate
     ''' </summary>
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
-    Private Function GetNaehrwerteHetzner(iD As String, nwtdaten As wb_Komponenten) As Date
+    Private Function GetNaehrwerteHetzner(iD As String, nwtdaten As wb_Komponente) As Date
         Dim nwt As New wb_nwtCloud(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
         If nwt.GetProductData(iD, nwtdaten) > 0 Then
             Return nwtdaten.ktTyp301.TimeStamp
@@ -115,7 +115,7 @@ Public Class wb_nwtUpdate
     ''' </summary>
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
-    Private Function GetNaehrwerteDatenlink(iD As String, nwtdaten As wb_Komponenten) As Date
+    Private Function GetNaehrwerteDatenlink(iD As String, nwtdaten As wb_Komponente) As Date
         'Create new instance of nwtCloud
         Dim dl As New wb_nwtDatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
         If dl.GetProductData(iD, nwtdaten) > 0 Then

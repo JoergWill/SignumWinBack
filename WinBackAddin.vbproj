@@ -380,7 +380,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_KomponParam301.vb" />
-    <Compile Include="wb_00_Klassen\wb_Komponenten.vb" />
+    <Compile Include="wb_00_Klassen\wb_Komponente.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam301_Global.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_KomponParam301_GridView.Designer.vb">
       <DependentUpon>wb_KomponParam301_GridView.vb</DependentUpon>

@@ -409,9 +409,9 @@ Public Class wb_Functions
     ''' <returns></returns>
     Public Shared Function TypeHatEinheit(Type As wb_Global.KomponTypen) As Boolean
         If Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Or
-           Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
+            Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or
+            Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Or
+            Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
             Return False
         Else
             Return True
@@ -695,6 +695,21 @@ Public Class wb_Functions
         Catch
             Return "-"
         End Try
+    End Function
+
+    ''' <summary>
+    ''' Entfernt alle "störenden" Sonderzeichen aus einem String
+    '''     ' - wird ersatzlos gestrichen (verhindert Speichern eines Strings in DB)
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Public Shared Function XRemoveSonderZeichen(s As String) As String
+        Dim r As String
+
+        'alle Hochkomma entfernen
+        r = s.Replace("'", "")
+
+        Return r
     End Function
 
     ''' <summary>

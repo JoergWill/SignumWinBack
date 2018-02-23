@@ -1464,26 +1464,11 @@
   <data name="ColNr.Width" type="System.Int32, mscorlib">
     <value>150</value>
   </data>
-  <data name="ColBezeichung.AutoFitWeight" type="System.Single, mscorlib">
+  <data name="ColBezeichnung.AutoFitWeight" type="System.Single, mscorlib">
     <value>200</value>
   </data>
-  <data name="ColBezeichung.Caption" xml:space="preserve">
+  <data name="ColBezeichnung.Caption" xml:space="preserve">
     <value>Bezeichnung</value>
-  </data>
-  <data name="ColBezeichung.MinWidth" type="System.Int32, mscorlib">
-    <value>300</value>
-  </data>
-  <data name="ColBezeichung.Width" type="System.Int32, mscorlib">
-    <value>479</value>
-  </data>
-  <data name="ColPreis.Caption" xml:space="preserve">
-    <value>Preis</value>
-  </data>
-  <data name="ColPreis.MinWidth" type="System.Int32, mscorlib">
-    <value>100</value>
-  </data>
-  <data name="ColSollwert.Caption" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
   </data>
   <data name="UniversalEditBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -1502,6 +1487,21 @@
   </data>
   <data name="&gt;&gt;UniversalEditBox2.Type" xml:space="preserve">
     <value>Infralution.Controls.UniversalEditBox, Infralution.Controls, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="ColBezeichnung.MinWidth" type="System.Int32, mscorlib">
+    <value>300</value>
+  </data>
+  <data name="ColBezeichnung.Width" type="System.Int32, mscorlib">
+    <value>479</value>
+  </data>
+  <data name="ColPreis.Caption" xml:space="preserve">
+    <value>Preis</value>
+  </data>
+  <data name="ColPreis.MinWidth" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="ColSollwert.Caption" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="ColSollwert.CellStyle.VertAlignment" type="System.Drawing.StringAlignment, System.Drawing">
     <value>Center</value>
@@ -1998,6 +1998,9 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>976, 731</value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Rezeptur</value>
   </data>
@@ -2091,11 +2094,17 @@
   <data name="&gt;&gt;ColNr.Type" xml:space="preserve">
     <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
-  <data name="&gt;&gt;ColBezeichung.Name" xml:space="preserve">
-    <value>ColBezeichung</value>
+  <data name="&gt;&gt;ColBezeichnung.Name" xml:space="preserve">
+    <value>ColBezeichnung</value>
   </data>
-  <data name="&gt;&gt;ColBezeichung.Type" xml:space="preserve">
+  <data name="&gt;&gt;ColBezeichnung.Type" xml:space="preserve">
     <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;CellEditor2.Name" xml:space="preserve">
+    <value>CellEditor2</value>
+  </data>
+  <data name="&gt;&gt;CellEditor2.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.CellEditor, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColPreis.Name" xml:space="preserve">
     <value>ColPreis</value>
@@ -2108,12 +2117,6 @@
   </data>
   <data name="&gt;&gt;ColSollwert.Type" xml:space="preserve">
     <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
-  </data>
-  <data name="&gt;&gt;CellEditor2.Name" xml:space="preserve">
-    <value>CellEditor2</value>
-  </data>
-  <data name="&gt;&gt;CellEditor2.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.CellEditor, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColEinheit.Name" xml:space="preserve">
     <value>ColEinheit</value>

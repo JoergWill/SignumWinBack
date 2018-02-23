@@ -202,13 +202,13 @@ Public Class wb_nwtCloud
     ''' </summary>
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
-    Public Function GetProductData(id As String, ByRef nwtDaten As wb_Komponenten) As Integer
+    Public Function GetProductData(id As String, ByRef nwtDaten As wb_Komponente) As Integer
         'Produktdaten aus WinBack-Cloud lesen
         If Me.GetProductData(id) > 0 Then
             'Ergebnis ist ein verschachteltes JSON-Objekt
             Dim jsonData As JObject = JObject.Parse(Me.GetResult(0))
             'Rohstoff-Bezeichnung
-            nwtDaten.Bezeichung = GetJData(jsonData, "name")
+            nwtDaten.Bezeichnung = GetJData(jsonData, "name")
             'Rohstoff-Lieferant(Text)
             nwtDaten.Lieferant = GetJData(jsonData, "lieferant")
             'Rohstoff-Deklaration

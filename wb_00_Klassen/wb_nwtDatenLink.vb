@@ -313,7 +313,7 @@ Public Class wb_nwtDatenLink
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
 
-    Public Function GetProductData(id As String, ByRef nwtDaten As wb_Komponenten) As Integer
+    Public Function GetProductData(id As String, ByRef nwtDaten As wb_Komponente) As Integer
         'Produktdaten von Datenlink lesen
         If Me.GetProductData(id) > 0 Then
             'Auswertung XML-Info
@@ -347,7 +347,7 @@ Public Class wb_nwtDatenLink
                                 Select Case oTag.Name
                                     Case "TextValue"
                                         'Komponenten-Bezeichnung
-                                        nwtDaten.Bezeichung = oTag.InnerText
+                                        nwtDaten.Bezeichnung = oTag.InnerText
                                     Case "ProductNumber"
                                         'Bestellnummer beim Hersteller/Lieferant
                                         nwtDaten.BestellNummer = oTag.InnerText

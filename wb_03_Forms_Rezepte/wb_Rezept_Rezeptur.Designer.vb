@@ -95,11 +95,11 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Rezeptur = New System.Windows.Forms.TabPage()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
         Me.ColNr = New Infralution.Controls.VirtualTree.Column()
-        Me.ColBezeichung = New Infralution.Controls.VirtualTree.Column()
-        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
-        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
+        Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
         Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.UniversalEditBox2 = New Infralution.Controls.UniversalEditBox()
+        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
+        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
@@ -528,7 +528,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.AutoFitColumns = True
         Me.VirtualTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.VirtualTree.Columns.Add(Me.ColNr)
-        Me.VirtualTree.Columns.Add(Me.ColBezeichung)
+        Me.VirtualTree.Columns.Add(Me.ColBezeichnung)
         Me.VirtualTree.Columns.Add(Me.ColPreis)
         Me.VirtualTree.Columns.Add(Me.ColSollwert)
         Me.VirtualTree.Columns.Add(Me.ColEinheit)
@@ -554,12 +554,23 @@ Partial Class wb_Rezept_Rezeptur
         Me.ColNr.Name = "ColNr"
         Me.ColNr.Sortable = False
         '
-        'ColBezeichung
+        'ColBezeichnung
         '
-        resources.ApplyResources(Me.ColBezeichung, "ColBezeichung")
-        Me.ColBezeichung.Movable = False
-        Me.ColBezeichung.Name = "ColBezeichung"
-        Me.ColBezeichung.Sortable = False
+        resources.ApplyResources(Me.ColBezeichnung, "ColBezeichnung")
+        Me.ColBezeichnung.CellEditor = Me.CellEditor2
+        Me.ColBezeichnung.Movable = False
+        Me.ColBezeichnung.Name = "ColBezeichnung"
+        Me.ColBezeichnung.Sortable = False
+        '
+        'CellEditor2
+        '
+        Me.CellEditor2.Control = Me.UniversalEditBox2
+        '
+        'UniversalEditBox2
+        '
+        Me.UniversalEditBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        resources.ApplyResources(Me.UniversalEditBox2, "UniversalEditBox2")
+        Me.UniversalEditBox2.Name = "UniversalEditBox2"
         '
         'ColPreis
         '
@@ -577,16 +588,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.ColSollwert.Name = "ColSollwert"
         Me.ColSollwert.Resizable = False
         Me.ColSollwert.Sortable = False
-        '
-        'CellEditor2
-        '
-        Me.CellEditor2.Control = Me.UniversalEditBox2
-        '
-        'UniversalEditBox2
-        '
-        Me.UniversalEditBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        resources.ApplyResources(Me.UniversalEditBox2, "UniversalEditBox2")
-        Me.UniversalEditBox2.Name = "UniversalEditBox2"
         '
         'ColEinheit
         '
@@ -613,7 +614,7 @@ Partial Class wb_Rezept_Rezeptur
         ObjectCellBinding1.Field = "Nummer"
         ObjectCellBinding1.Style.Font = CType(resources.GetObject("resource.Font1"), System.Drawing.Font)
         ObjectCellBinding1.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment"), System.Drawing.StringAlignment)
-        ObjectCellBinding2.Column = Me.ColBezeichung
+        ObjectCellBinding2.Column = Me.ColBezeichnung
         ObjectCellBinding2.Field = "VirtTreeBezeichnung"
         ObjectCellBinding2.Style.Font = CType(resources.GetObject("resource.Font2"), System.Drawing.Font)
         ObjectCellBinding3.Column = Me.ColPreis
@@ -781,7 +782,7 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents tb_Naehrwerte As Windows.Forms.TabPage
     Friend WithEvents VirtualTree As Infralution.Controls.VirtualTree.VirtualTree
     Friend WithEvents ColNr As Infralution.Controls.VirtualTree.Column
-    Friend WithEvents ColBezeichung As Infralution.Controls.VirtualTree.Column
+    Friend WithEvents ColBezeichnung As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColPreis As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColSollwert As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColEinheit As Infralution.Controls.VirtualTree.Column

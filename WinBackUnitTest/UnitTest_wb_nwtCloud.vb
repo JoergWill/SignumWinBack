@@ -27,7 +27,7 @@
 
     <TestMethod()> Public Sub Test_CloudUpdate()
         Dim nwtUpdate As New wb_nwtUpdate
-        Dim nwtDaten As New wb_Komponenten
+        Dim nwtDaten As New wb_Komponente
 
         'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung)
         nwtDaten.ClearReport()
@@ -36,7 +36,7 @@
         'Ergebnis aus Cloud(JSON) auswerten
         Assert.AreEqual(nwtDaten.ktTyp301.TimeStamp, #12/16/2014 09:22:59#)
         Assert.AreEqual(nwtDaten.Lieferant, "LINDEMANN")
-        Assert.AreEqual(nwtDaten.Bezeichung, "Westfalia Kornkruste Kornfit")
+        Assert.AreEqual(nwtDaten.Bezeichnung, "Westfalia Kornkruste Kornfit")
         Debug.Print(nwtDaten.GetReport)
 
         'Nährwert-Info Kalorien(KJoule)

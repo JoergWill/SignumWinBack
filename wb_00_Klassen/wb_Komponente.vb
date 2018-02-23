@@ -3,7 +3,7 @@ Imports WinBack
 Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
 
-Public Class wb_Komponenten
+Public Class wb_Komponente
     Inherits wb_ChangeLog
 
     Private KO_Nr As Integer
@@ -24,8 +24,8 @@ Public Class wb_Komponenten
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
 
-    Private KO_DeklBezeichungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
-    Private KO_DeklBezeichungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
+    Private KO_DeklBezeichnungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
+    Private KO_DeklBezeichnungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
 
     Public NwtUpdate As New wb_Hinweise(Hinweise.NaehrwertUpdate)
     Public ktTyp300 As New wb_KomponParam300
@@ -34,9 +34,9 @@ Public Class wb_Komponenten
     Public ArtikelChargen As New wb_MinMaxOptCharge
     Public TeigChargen As New wb_MinMaxOptCharge
 
-    Private Shared _ProduktionsStufe As wb_Komponenten
-    Private Shared _Kessel As wb_Komponenten
-    Private Shared _TextKomponente As wb_Komponenten
+    Private Shared _ProduktionsStufe As wb_Komponente
+    Private Shared _Kessel As wb_Komponente
+    Private Shared _TextKomponente As wb_Komponente
 
 
     Public Sub Invalid()
@@ -86,10 +86,10 @@ Public Class wb_Komponenten
         End Get
     End Property
 
-    Public Property Bezeichung As String
+    Public Property Bezeichnung As String
         Set(value As String)
             'Änderungen loggen
-            KO_Bezeichnung = ChangeLogAdd(LogType.Prm, Parameter.Tx_Bezeichnung, KO_Bezeichnung, value)
+            KO_Bezeichnung = ChangeLogAdd(LogType.Prm, Parameter.Tx_Bezeichnung, KO_Bezeichnung, wb_Functions.XRemoveSonderZeichen(value))
         End Set
         Get
             Return KO_Bezeichnung
@@ -99,7 +99,7 @@ Public Class wb_Komponenten
     Public Property Kommentar As String
         Set(value As String)
             'Änderungen loggen
-            KO_Kommentar = ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KO_Kommentar, value)
+            KO_Kommentar = ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KO_Kommentar, wb_Functions.XRemoveSonderZeichen(value))
         End Set
         Get
             Return KO_Kommentar
@@ -109,7 +109,7 @@ Public Class wb_Komponenten
     Public Property Kurzname As String
         Set(value As String)
             'Änderungen loggen
-            KA_Kurzname = ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KA_Kurzname, value)
+            KA_Kurzname = ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KA_Kurzname, wb_Functions.XRemoveSonderZeichen(value))
         End Set
         Get
             Return KA_Kurzname
@@ -249,7 +249,7 @@ Public Class wb_Komponenten
     End Sub
 
     Public Sub SaveReport()
-        Dim Ueberschrift As String = "Änderungen für Rohstoff " & Nummer & " " & Bezeichung & " " & vbNewLine
+        Dim Ueberschrift As String = "Änderungen für Rohstoff " & Nummer & " " & Bezeichnung & " " & vbNewLine
         Dim Strich = New String("="c, Len(Ueberschrift)) & vbNewLine
         NwtUpdate.Memo = Ueberschrift & Strich & GetReport()
         NwtUpdate.Write()
@@ -275,13 +275,13 @@ Public Class wb_Komponenten
     Public Property DeklBezeichungExtern As String
         Get
             'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
-            If Not KO_DeklBezeichungExtern.ReadOK Then
-                KO_DeklBezeichungExtern.Read(KO_Nr)
+            If Not KO_DeklBezeichnungExtern.ReadOK Then
+                KO_DeklBezeichnungExtern.Read(KO_Nr)
             End If
-            Return KO_DeklBezeichungExtern.Memo
+            Return KO_DeklBezeichnungExtern.Memo
         End Get
         Set(value As String)
-            KO_DeklBezeichungExtern.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_DeklarationExtern, DeklBezeichungExtern, value)
+            KO_DeklBezeichnungExtern.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_DeklarationExtern, DeklBezeichungExtern, value)
         End Set
     End Property
 
@@ -297,13 +297,13 @@ Public Class wb_Komponenten
     ''' passende Komponente gefunden wurde, wird ein Dummy neu angelegt.
     ''' </summary>
     ''' <returns></returns>
-    Public Shared ReadOnly Property ProduktionsStufe As wb_Komponenten
+    Public Shared ReadOnly Property ProduktionsStufe As wb_Komponente
         Get
             If _ProduktionsStufe Is Nothing Then
-                _ProduktionsStufe = New wb_Komponenten
+                _ProduktionsStufe = New wb_Komponente
                 If Not _ProduktionsStufe.MysqldbRead(wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) Then
                     _ProduktionsStufe.KO_Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
-                    _ProduktionsStufe.Bezeichung = "Produktions-Stufe"
+                    _ProduktionsStufe.Bezeichnung = "Produktions-Stufe"
                     _ProduktionsStufe.Nummer = "PST"
                     _ProduktionsStufe.Nr = wb_sql_Functions.getNewKomponNummer()
                 End If
@@ -312,12 +312,12 @@ Public Class wb_Komponenten
         End Get
     End Property
 
-    Public Shared ReadOnly Property Kessel As wb_Komponenten
+    Public Shared ReadOnly Property Kessel As wb_Komponente
         Get
-            _Kessel = New wb_Komponenten
+            _Kessel = New wb_Komponente
             If Not _Kessel.MysqldbRead(wb_Global.KomponTypen.KO_TYPE_KESSEL) Then
                 _Kessel.KO_Type = wb_Global.KomponTypen.KO_TYPE_KESSEL
-                _Kessel.Bezeichung = "Kessel"
+                _Kessel.Bezeichnung = "Kessel"
                 _Kessel.Nummer = "KSL"
                 _Kessel.Nr = wb_sql_Functions.getNewKomponNummer()
             End If
@@ -325,12 +325,12 @@ Public Class wb_Komponenten
         End Get
     End Property
 
-    Public Shared ReadOnly Property TextKomponente As wb_Komponenten
+    Public Shared ReadOnly Property TextKomponente As wb_Komponente
         Get
-            _TextKomponente = New wb_Komponenten
+            _TextKomponente = New wb_Komponente
             If Not _TextKomponente.MysqldbRead(wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE) Then
                 _TextKomponente.KO_Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
-                _TextKomponente.Bezeichung = "Text"
+                _TextKomponente.Bezeichnung = "Text"
                 _TextKomponente.Nummer = "TXT"
                 _TextKomponente.Nr = wb_sql_Functions.getNewKomponNummer()
             End If
@@ -793,7 +793,7 @@ Public Class wb_Komponenten
 
         'Update-Statement wird dynamisch erzeugt    
         sql = "KO_Nr_AlNum = '" & Nummer & "'," &
-              "KO_Bezeichnung = '" & Bezeichung & "'," &
+              "KO_Bezeichnung = '" & Bezeichnung & "'," &
               "KO_Kommentar = '" & Kommentar & "'," &
               "KO_Temp_Korr = '" & KO_Backverlust & "'," &
               "KA_Matchcode = '" & KO_IdxCloud & "'," &

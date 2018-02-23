@@ -283,10 +283,10 @@
     ''' <param name="Modus"></param>
     ''' <returns></returns>
     Function AddChargenZeile(Tour As String, RzNr As Integer, TeigMenge As Double, Modus As wb_Global.ModusChargenTeiler) As Boolean
-        Dim Artikel As New wb_Komponenten
+        Dim Artikel As New wb_Komponente
         Dim Rezept As New wb_Rezept(RzNr)
 
-        Artikel.Bezeichung = Rezept.RezeptBezeichnung
+        Artikel.Bezeichnung = Rezept.RezeptBezeichnung
         Artikel.Nummer = "K"
         Artikel.RzNr = RzNr
 
@@ -294,7 +294,7 @@
         Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
 
         'Neue Zeile  einfügen (ArtikelZeile)
-        Root = New wb_Produktionsschritt(Root, Artikel.Bezeichung)
+        Root = New wb_Produktionsschritt(Root, Artikel.Bezeichnung)
 
         'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
         Root.CopyFromKomponenten(Artikel, wb_Global.KomponTypen.KO_ZEILE_ARTIKEL)
@@ -334,7 +334,7 @@
                                      Optional Vorproduktion As Boolean = False, Optional AuftragsNummer As String = "", Optional Bestellmenge As Double = wb_Global.UNDEFINED,
                                      Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
 
-        Dim Artikel As New wb_Komponenten
+        Dim Artikel As New wb_Komponente
         Dim TeigMenge As Double
 
         If Artikel.MySQLdbRead(Nr, Nummer) Then
@@ -342,7 +342,7 @@
             Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
 
             'Neue Zeile  einfügen (ArtikelZeile)
-            Root = New wb_Produktionsschritt(Root, Artikel.Bezeichung)
+            Root = New wb_Produktionsschritt(Root, Artikel.Bezeichnung)
 
             'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
             Root.CopyFromKomponenten(Artikel, wb_Global.KomponTypen.KO_ZEILE_ARTIKEL)
@@ -375,7 +375,7 @@
         End If
     End Function
 
-    Private Sub AddArtikelRezeptCharge(ByRef Root As wb_Produktionsschritt, Artikel As wb_Komponenten, AuftragsNummer As String, Tour As String, Menge As Double, TeigChargen As wb_Global.ChargenMengen)
+    Private Sub AddArtikelRezeptCharge(ByRef Root As wb_Produktionsschritt, Artikel As wb_Komponente, AuftragsNummer As String, Tour As String, Menge As Double, TeigChargen As wb_Global.ChargenMengen)
         Dim Rzpt As New wb_Produktionsschritt(Root, Artikel.RezeptName)
 
         'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
