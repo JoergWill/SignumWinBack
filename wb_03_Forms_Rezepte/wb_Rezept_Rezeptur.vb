@@ -280,14 +280,14 @@ Public Class wb_Rezept_Rezeptur
         If _RzKopfChanged Or _RzChanged Then
             Rezept.MySQLdbWrite_Rezept()
             wb_Rezept_Shared.Edit_Leave(sender)
+            wb_Rezept_Shared.Liste_Refresh(sender)
         End If
 
         'Rezeptur ist geändert worden
         If _RzChanged Then
             Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante)
             wb_Rezept_Shared.Edit_Leave(sender)
-            'Else
-            '    wb_Rezept_Shared.Liste_Refresh(sender)
+            wb_Rezept_Shared.Liste_Refresh(sender)
         End If
     End Sub
 

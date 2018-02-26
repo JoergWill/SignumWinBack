@@ -179,6 +179,14 @@ Public Class wb_DataGridView
     ''' Daten im Grid neu laden
     ''' </summary>
     Sub RefreshData()
+        'aktuellen Datensatz merken
+        Dim SaveRow As Integer = wb_Global.UNDEFINED
+        Dim AktRow As Integer = wb_Global.UNDEFINED
+        If (Me.Rows.Count > 0) Then
+            AktRow = Me.SelectedRows(0).Index
+            SaveRow = Me.FirstDisplayedCell.RowIndex
+        End If
+
         Select Case wb_GlobalSettings.WinBackDBType
             ' Verbindung über mySql
             Case dbType.mySql
@@ -191,6 +199,12 @@ Public Class wb_DataGridView
             Case dbType.msSql
                 Throw New NotImplementedException
         End Select
+
+        'zurück zur aktuellen Zeile
+        If SaveRow <> wb_Global.UNDEFINED And AktRow <> wb_Global.UNDEFINED And SaveRow < Me.RowCount Then
+            Me.FirstDisplayedScrollingRowIndex = SaveRow
+            Me.Rows(AktRow).Selected = True
+        End If
     End Sub
 
     ''' <summary>
