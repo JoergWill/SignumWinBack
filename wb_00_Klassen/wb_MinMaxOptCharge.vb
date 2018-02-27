@@ -8,6 +8,7 @@ Public Class wb_MinMaxOptCharge
 
     Private _StkGewicht As Double
     Private _TeigGewicht As Double
+    Private _NoErrorCheck As Boolean = False
     Private _ErrorCode As wb_Global.MinMaxOptChargenError
 
     Public Property TeigGewicht As String
@@ -45,6 +46,17 @@ Public Class wb_MinMaxOptCharge
             Return _ErrorCode
         End Get
     End Property
+
+    ''' <summary>
+    ''' Alle Werte mit Null initialisieren
+    ''' </summary>
+    Public Sub Invalidate()
+        MinCharge.MengeInkg = 0
+        OptCharge.MengeInkg = 0
+        MaxCharge.MengeInkg = 0
+        TeigGewicht = 0
+        StkGewicht = 0
+    End Sub
 
     ''' <summary>
     ''' Der Wert für die Minimal-Charge hat sich geändert: 

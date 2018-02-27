@@ -359,9 +359,7 @@ Public Class wb_Functions
            Type = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Or
            Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Or
            Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE And Param = 1 Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER And Param = 1 Or
-           Type = wb_Global.KomponTypen.KO_TYPE_METER Or
-           Type = wb_Global.KomponTypen.KO_TYPE_STUECK Then
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER And Param = 1 Then
             Return True
         Else
             Return False
@@ -704,12 +702,11 @@ Public Class wb_Functions
     ''' <param name="s"></param>
     ''' <returns></returns>
     Public Shared Function XRemoveSonderZeichen(s As String) As String
-        Dim r As String
-
-        'alle Hochkomma entfernen
-        r = s.Replace("'", "")
-
-        Return r
+        If s IsNot Nothing Then
+            Return s.Replace("'", "")
+        Else
+            Return ""
+        End If
     End Function
 
     ''' <summary>

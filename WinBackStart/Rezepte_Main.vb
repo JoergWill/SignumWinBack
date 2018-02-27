@@ -112,7 +112,12 @@ Public Class Rezepte_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
+        If RezeptDetails IsNot Nothing Then
+            RezeptDetails.Close()
+            RezeptDetails = Nothing
+        End If
         RezeptListe.Close()
+        RezeptListe = Nothing
     End Sub
 
     Public Sub RezeptNeuAnlegen()

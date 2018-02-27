@@ -38,6 +38,7 @@ Public Class wb_DataGridView
     Private DtaView As DataView = Nothing
     Dim DtaTable As New DataTable
 
+    Private _SuppressChangeEvent As Boolean = False
     Private _tDataChangedTime = 500
     Private _Filter As String = ""
     Private _8859_5_FieldName As String = ""
@@ -179,9 +180,13 @@ Public Class wb_DataGridView
     ''' Daten im Grid neu laden
     ''' </summary>
     Sub RefreshData()
-        'aktuellen Datensatz merken
         Dim SaveRow As Integer = wb_Global.UNDEFINED
         Dim AktRow As Integer = wb_Global.UNDEFINED
+        'ermittelt die erste sichtbare Spalte im Grid. Ist notwendig,
+        'weil Me.CurrentCell keine unsichtbaren Spalten selektieren kann
+        Dim xcol As Integer = Me.FirstDisplayedCell.ColumnIndex
+
+        'aktuellen Datensatz merken
         If (Me.Rows.Count > 0) Then
             AktRow = Me.SelectedRows(0).Index
             SaveRow = Me.FirstDisplayedCell.RowIndex
@@ -204,6 +209,8 @@ Public Class wb_DataGridView
         If SaveRow <> wb_Global.UNDEFINED And AktRow <> wb_Global.UNDEFINED And SaveRow < Me.RowCount Then
             Me.FirstDisplayedScrollingRowIndex = SaveRow
             Me.Rows(AktRow).Selected = True
+            Me.CurrentCell = Me.Item(xcol, AktRow)
+            RaiseEvent HasChanged(Me, EventArgs.Empty)
         End If
     End Sub
 
@@ -229,9 +236,13 @@ Public Class wb_DataGridView
     End Property
 
     ''' <summary>
-    ''' Update Datenbank nach Änderung eines Datenfeldes
+    ''' Update Datenbank nach Änderung eines Datenfeldes.
+    ''' Der DataHasChanged-Event muss unterdrückt werden, sonst treten beim Schliessen der Forms Fehler auf, da dann
+    ''' mit x Sekunden Zeitverzögerung der Change-Event auftritt und ins Leere läuft.
     ''' </summary>
     Public Sub UpdateDataBase()
+        'DataHasChanged-Event unterdrücken
+        _SuppressChangeEvent = True
         'damit die Update-Routine richtig funktioniert 
         'muss vorher die Zeile im DataGrid gewechselt worden sein !!
         Try
@@ -250,6 +261,8 @@ Public Class wb_DataGridView
                     msDta.Update(DtaTable)
                 End If
         End Select
+        'DataHasChanged-Event wieder freigeben
+        _SuppressChangeEvent = False
     End Sub
 
     ''' <summary>
@@ -268,6 +281,7 @@ Public Class wb_DataGridView
                     End If
                 End If
             Catch
+                Debug.Print("Exception in DataGridView.Field: FieldName = " & FieldName)
             End Try
         End Set
         Get
@@ -417,13 +431,18 @@ Public Class wb_DataGridView
     ''' <summary>
     '''Start Timer nach Änderung Datensatz-Zeiger
     ''' x Sekunden nach Änderung des Datensatz-Zeigers wird der
-    ''' Event HasChanged() ausgelöst
+    ''' Event HasChanged() ausgelöst.
+    ''' 
+    ''' Der Timer wird nicht gestartet, wenn der Event unterdrückt werden soll (_SuppressChangeEvent), z.B. beim
+    ''' Speichern des Datensatzes im Grid (UpdateDataBase)
     ''' </summary>
     Private Overloads Sub DataGridView_CurrentCellChanged(sender As Object, e As EventArgs) Handles MyBase.CurrentCellChanged
         'Reset Timer
         tDataHasChanged.Enabled = False
-        'Start Timer
-        tDataHasChanged.Enabled = True
+        'Start Timer wenn die Freigabe des Change-Events da ist
+        If Not _SuppressChangeEvent Then
+            tDataHasChanged.Enabled = True
+        End If
     End Sub
 
     ''' <summary>

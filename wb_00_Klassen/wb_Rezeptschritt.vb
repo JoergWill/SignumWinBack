@@ -565,7 +565,7 @@ Public Class wb_Rezeptschritt
     End Property
 
     ''' <summary>
-    ''' Brutto-Gewichtswert des Rezeptschrittes. Gibt den Sollwert der Rezept-Zeile zurück, unabhängig vom Falg
+    ''' Brutto-Gewichtswert des Rezeptschrittes. Gibt den Sollwert der Rezept-Zeile zurück, unabhängig vom Flag
     ''' 'zählt zum Rezeptgewicht'
     ''' </summary>
     ''' <returns>Double - Sollwert</returns>

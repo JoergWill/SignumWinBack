@@ -132,7 +132,7 @@ Public Class WinBack
         isInitialised = True
 
         'TEST REZEPTE
-        rTab.ActiveTab = rbRezepte
+        'rTab.ActiveTab = rbRezepte
     End Sub
 
     ''' <summary>

@@ -16,7 +16,7 @@ Public Class wb_Rezept_Details
         AddHandler wb_Rezept_Shared.Rezept.TeigChargen.OnError, AddressOf OnErrorMinMaxOptTeig
     End Sub
 
-    Public Sub DetailInfo()
+    Public Sub DetailInfo(sender As Object)
         'Rezept-Nummer
         tRezeptNummer.Text = wb_Rezept_Shared.Rezept.RezeptNummer
         'Rezept-Bezeichnung
@@ -72,6 +72,7 @@ Public Class wb_Rezept_Details
         'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
         wb_Rezept_Shared.Rezept.TeigChargen.MinCharge.MengeInkg = tChargeMin.Text
         'geändete Daten speichern
+        wb_Rezept_Shared.Rezept.DataHasChanged = True
         wb_Rezept_Shared.Edit_Leave(sender)
     End Sub
 
@@ -80,6 +81,7 @@ Public Class wb_Rezept_Details
         OnErrorSetFocus = sender
         wb_Rezept_Shared.Rezept.TeigChargen.MaxCharge.MengeInkg = tChargeMax.Text
         'geändete Daten speichern
+        wb_Rezept_Shared.Rezept.DataHasChanged = True
         wb_Rezept_Shared.Edit_Leave(sender)
     End Sub
 
@@ -88,6 +90,7 @@ Public Class wb_Rezept_Details
         OnErrorSetFocus = sender
         wb_Rezept_Shared.Rezept.TeigChargen.OptCharge.MengeInkg = tChargeOpt.Text
         'geändete Daten speichern
+        wb_Rezept_Shared.Rezept.DataHasChanged = True
         wb_Rezept_Shared.Edit_Leave(sender)
     End Sub
 
@@ -102,5 +105,11 @@ Public Class wb_Rezept_Details
         End If
         'Felder neu zeichnen
         MinMaxRezeptShowValues()
+    End Sub
+
+    Private Sub wb_Rezept_Details_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        'Event-Handler wieder freigeben
+        RemoveHandler wb_Rezept_Shared.eListe_Click, AddressOf DetailInfo
+        RemoveHandler wb_Rezept_Shared.Rezept.TeigChargen.OnError, AddressOf OnErrorMinMaxOptTeig
     End Sub
 End Class

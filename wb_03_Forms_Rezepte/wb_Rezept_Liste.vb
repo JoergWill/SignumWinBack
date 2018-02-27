@@ -41,6 +41,9 @@ Public Class wb_Rezept_Liste
 
     'Event Form wird geschlossen
     Private Sub wb_Rezept_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        'Event-Handler freigeben
+        RemoveHandler wb_Rezept_Shared.eListe_Refresh, AddressOf RefreshData
+        RemoveHandler wb_Rezept_Shared.eEdit_Leave, AddressOf SaveData
         'Daten in Datenbank sichern
         DataGridView.UpdateDataBase()
         'Layout sichern
@@ -48,7 +51,7 @@ Public Class wb_Rezept_Liste
     End Sub
 
     'Datensatz in Datenbank sichern
-    Private Sub SaveData()
+    Private Sub SaveData(sender As Object)
         'Daten in Datenbank sichern
         If wb_Rezept_Shared.Rezept.SaveData(DataGridView) Then
             DataGridView.UpdateDataBase()

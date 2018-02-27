@@ -28,13 +28,13 @@ Public Class wb_Rezept
     Private _LinienGruppe As Integer
 
     Public TeigChargen As New wb_MinMaxOptCharge
-    Private DataHasChanged As Boolean = False
+    Private _DataHasChanged As Boolean = False
 
     Private _RootRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
     Private _SQLRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
     Private _RezeptSchritt As wb_Rezeptschritt
 
-    Private _RZ_Gewicht As Double
+    'Private _RZ_Gewicht As Double
     'Private _RezeptGewicht As Double = wb_Global.UNDEFINED
     Private _BruttoRezeptGewicht As Double = wb_Global.UNDEFINED
     Private _RezeptPreis As Double = wb_Global.UNDEFINED
@@ -49,6 +49,12 @@ Public Class wb_Rezept
     Private _LLBig4 As New ArrayList
 
     Public _Parent As Object
+
+    Public WriteOnly Property DataHasChanged As Boolean
+        Set(value As Boolean)
+            _DataHasChanged = value
+        End Set
+    End Property
 
     Public ReadOnly Property RezeptNr As Integer
         Get
@@ -68,17 +74,17 @@ Public Class wb_Rezept
 
     ''' <summary>
     ''' Das Rezept-Gesamtgewicht steht als Gewichtswert im Root-Node
-    ''' Die Berechnung erfolgt über RezeptSchritt.Gewicht(Get). Wenn keine Child-Steps vorhanden sind wird der Wert aus dem Rezept-Kopf(Datenbank) zurückgegeben
+    ''' Die Berechnung erfolgt über RezeptSchritt.Gewicht(Get). Wenn keine Child-Steps vorhanden sind wird der Wert auf Null gesetzt
     ''' </summary>
     ''' <returns>Double - Rezept-Gesamtgewicht</returns>
     Public ReadOnly Property RezeptGewicht As Double
         Get
             'wenn der Wert noch nicht berechnet wurde
             If TeigChargen.TeigGewicht = wb_Global.UNDEFINED Then
-                If _RootRezeptSchritt.ChildSteps.Count = 0 Then
-                    TeigChargen.TeigGewicht = _RZ_Gewicht
-                Else
+                If _RootRezeptSchritt.ChildSteps.Count > 0 Then
                     TeigChargen.TeigGewicht = _RootRezeptSchritt.Gewicht
+                Else
+                    TeigChargen.TeigGewicht = 0
                 End If
             End If
             Return TeigChargen.TeigGewicht
@@ -221,7 +227,7 @@ Public Class wb_Rezept
         End Get
         Set(value As String)
             _RezeptNummer = wb_Functions.XRemoveSonderZeichen(value)
-            DataHasChanged = True
+            _DataHasChanged = True
         End Set
     End Property
 
@@ -231,7 +237,7 @@ Public Class wb_Rezept
         End Get
         Set(value As String)
             _RezeptBezeichnung = wb_Functions.XRemoveSonderZeichen(value)
-            DataHasChanged = True
+            _DataHasChanged = True
         End Set
     End Property
 
@@ -256,7 +262,7 @@ Public Class wb_Rezept
         End Get
         Set(value As Integer)
             _LinienGruppe = value
-            DataHasChanged = True
+            _DataHasChanged = True
         End Set
     End Property
 
@@ -266,7 +272,7 @@ Public Class wb_Rezept
         End Get
         Set(value As String)
             _RezeptKommentar = wb_Functions.XRemoveSonderZeichen(value)
-            DataHasChanged = True
+            _DataHasChanged = True
         End Set
     End Property
 
@@ -395,16 +401,19 @@ Public Class wb_Rezept
         AenderungDatum = dataGridView.Field("RZ_Aenderung_Datum")
         AenderungName = dataGridView.Field("RZ_Aenderung_Name")
 
+        'vor dem Einlesen der neuen Werte löschen - sonst Fehler bei der Berechnung
+        TeigChargen.Invalidate()
+
         TeigChargen.TeigGewicht = dataGridView.Field("RZ_Gewicht")
         TeigChargen.MaxCharge.MengeInkg = dataGridView.Field("RZ_Charge_Max")
         TeigChargen.MinCharge.MengeInkg = dataGridView.Field("RZ_Charge_Min")
         TeigChargen.OptCharge.MengeInkg = dataGridView.Field("RZ_Charge_Opt")
 
-        DataHasChanged = False
+        _DataHasChanged = False
     End Sub
 
     Friend Function SaveData(dataGridView As wb_DataGridView) As Boolean
-        If DataHasChanged Then
+        If _DataHasChanged Then
             dataGridView.Field("RZ_Nr_AlNum") = RezeptNummer
             dataGridView.Field("RZ_Bezeichnung") = RezeptBezeichnung
             dataGridView.Field("RZ_Kommentar") = RezeptKommentar
@@ -413,7 +422,7 @@ Public Class wb_Rezept
             dataGridView.Field("RZ_Charge_Max") = TeigChargen.MaxCharge.MengeInkg
             dataGridView.Field("RZ_Charge_Min") = TeigChargen.MinCharge.MengeInkg
             dataGridView.Field("RZ_Charge_Opt") = TeigChargen.OptCharge.MengeInkg
-            DataHasChanged = False
+            _DataHasChanged = False
             Return True
         Else
             Return False
@@ -768,7 +777,7 @@ Public Class wb_Rezept
                     TeigChargen.OptCharge.MengeInkg = wb_Functions.StrToDouble(Value)
                 'Rezeptkopf - Rezeptgewicht
                 Case "RZ_Gewicht"
-                    _RZ_Gewicht = wb_Functions.StrToDouble(Value)
+                    '_RZ_Gewicht = wb_Functions.StrToDouble(Value)
                     TeigChargen.TeigGewicht = wb_Functions.StrToDouble(Value)
 
             End Select
@@ -829,6 +838,9 @@ Public Class wb_Rezept
 
         'sql-Kommando UPDATE bilden
         sqlData = "RZ_Nr_AlNum = '" & _RezeptNummer & "', RZ_Bezeichnung = '" & _RezeptBezeichnung & "', RZ_Gewicht = '" & wb_Functions.FormatStr(RezeptGewicht, 3) & "', " &
+                  "RZ_Charge_Opt = '" & wb_Functions.FormatStr(TeigChargen.OptCharge.MengeInkg, 3) & "', " &
+                  "RZ_Charge_Min = '" & wb_Functions.FormatStr(TeigChargen.MinCharge.MengeInkg, 3) & "', " &
+                  "RZ_Charge_Max = '" & wb_Functions.FormatStr(TeigChargen.MaxCharge.MengeInkg, 3) & "', " &
                   "RZ_Kommentar = '" & _RezeptKommentar & "', RZ_Aenderung_Datum = '" & wb_sql_Functions.MySQLdatetime(_AenderungDatum) & "', " &
                   "RZ_Aenderung_Name = '" & _AenderungName & "', RZ_Aenderung_User = " & _AenderungUserNr & ", RZ_Aenderung_Nr = " & _AenderungNummer
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptUpdate, _RezeptNr, _RezeptVariante, sqlData)

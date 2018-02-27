@@ -279,15 +279,12 @@ Public Class wb_Rezept_Rezeptur
         'Rezeptkopfdaten schreiben
         If _RzKopfChanged Or _RzChanged Then
             Rezept.MySQLdbWrite_Rezept()
-            wb_Rezept_Shared.Edit_Leave(sender)
             wb_Rezept_Shared.Liste_Refresh(sender)
         End If
 
         'Rezeptur ist geändert worden
         If _RzChanged Then
             Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante)
-            wb_Rezept_Shared.Edit_Leave(sender)
-            wb_Rezept_Shared.Liste_Refresh(sender)
         End If
     End Sub
 
@@ -374,6 +371,7 @@ Public Class wb_Rezept_Rezeptur
         ShowCalculateRezeptDaten(True)
         'Rezeptur wurde geändert
         _RzChanged = True
+        ToolStripRezeptChange.Visible = True
     End Sub
     Private Sub VirtualTree_GetCellData(sender As Object, e As GetCellDataEventArgs) Handles VirtualTree.GetCellData
         'get the default binding for the given row And use it to populate the cell data
@@ -692,6 +690,7 @@ Public Class wb_Rezept_Rezeptur
         VirtualTree.RootRow.ExpandChildren(True)
         'Rezeptur wurde geändert
         _RzChanged = True
+        ToolStripRezeptChange.Visible = True
     End Sub
 
     ''' <summary>
@@ -964,16 +963,19 @@ Public Class wb_Rezept_Rezeptur
     Private Sub tbRezeptName_Leave(sender As Object, e As EventArgs) Handles tbRezeptName.Leave
         _RzKopfChanged = True
         Rezept.RezeptBezeichnung = tbRezeptName.Text
+        ToolStripRezeptChange.Visible = True
     End Sub
 
     Private Sub tbRzKommentar_Leave(sender As Object, e As EventArgs) Handles tbRzKommentar.Leave
         _RzKopfChanged = True
         Rezept.RezeptKommentar = tbRzKommentar.Text
+        ToolStripRezeptChange.Visible = True
     End Sub
 
     Private Sub tbRzNummer_TextChanged(sender As Object, e As EventArgs) Handles tbRzNummer.TextChanged
         _RzKopfChanged = True
         Rezept.RezeptNummer = tbRzNummer.Text
+        ToolStripRezeptChange.Visible = True
     End Sub
 
 End Class
