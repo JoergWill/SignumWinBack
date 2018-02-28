@@ -341,7 +341,6 @@ Partial Class wb_Planung_Liste
         '
         'btnNeueCharge
         '
-        Me.btnNeueCharge.Enabled = False
         Me.btnNeueCharge.Location = New System.Drawing.Point(270, 12)
         Me.btnNeueCharge.Name = "btnNeueCharge"
         Me.btnNeueCharge.Size = New System.Drawing.Size(123, 53)

@@ -111,7 +111,7 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Private Shared Property MsSQLServer As String
+    Public Shared Property MsSQLServer As String
         Get
             If _MsSQLServer Is Nothing Then
                 getWinBackIni("SQL")

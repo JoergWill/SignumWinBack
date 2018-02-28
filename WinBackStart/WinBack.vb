@@ -525,7 +525,7 @@ Public Class WinBack
     Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click, rbLinienDel.Click, rbLinienDrucken.Click, rbLinienAuto.Click,
                                                                           rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click,
                                                                           rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeVerwendung.Click,
-                                                                          rbRezeptNeu.Click
+                                                                          rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click
         Dim Cmd As String = DirectCast(sender, RibbonButton).Value
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")

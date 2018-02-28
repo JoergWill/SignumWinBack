@@ -6,6 +6,10 @@ Public Class wb_BestellDatenSchritt
     Private _ArtikelNummer As String
     Private _Produktionsmenge As Double
     Private _ChargenTeiler As wb_Global.ModusChargenTeiler = wb_Global.ModusChargenTeiler.OptimalUndRest
+    Private _AnzahlLose As Integer
+    Private _Losgroesse As Double
+    Private _AnzahlVorschlag As Integer
+
 
     Public Property TourNr As Integer
         Get
@@ -56,6 +60,7 @@ Public Class wb_BestellDatenSchritt
         End If
 
         'Feldname aus der Datenbank
+        Debug.Print("StoredProcedure Produktionsplanung Fieldname " & Name)
         Try
             Select Case Name
                 'Tour
@@ -67,6 +72,21 @@ Public Class wb_BestellDatenSchritt
                 'Soll-Produktionsmenge in Stück
                 Case "Produktionsmenge"
                     _Produktionsmenge = wb_Functions.StrToDouble(Value)
+
+
+                'Anzahl der Lose
+                Case "AnzahlLoseVorschlag"
+                    _AnzahlLose = wb_Functions.StrToInt(Value)
+                'Losgröße
+                Case "Losgroesse"
+                    _Losgroesse = wb_Functions.StrToDouble(Value)
+                'Anzahl Lose Vorschlag
+                Case "AnzahlVorschlag"
+                    _AnzahlVorschlag = wb_Functions.StrToInt(Value)
+
+                    'Einheit Losgröße (TODO)
+                    'Case "Produktionsmenge"
+                    '    _Produktionsmenge = wb_Functions.StrToDouble(Value)
 
             End Select
         Catch ex As Exception

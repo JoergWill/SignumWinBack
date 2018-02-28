@@ -13,8 +13,6 @@ Public Class wb_Artikel_Main
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
-        'verhindert Warnung BC40054
-        InitializeComponent()
     End Sub
 
     ''' <summary>

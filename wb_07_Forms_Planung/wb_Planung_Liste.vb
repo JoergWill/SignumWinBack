@@ -113,15 +113,15 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TEST
-        Produktion.AddChargenZeile("1", "11102", 0, 240, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("2", "11102", 0, 200, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("3", "11102", 0, 4, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("4", "11102", 0, 2, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("1", "11103", 0, 4, wb_GlobalSettings.ChargenTeiler, True, "", 4)
-        Produktion.AddChargenZeile("1", "11101", 0, 34, wb_GlobalSettings.ChargenTeiler, True, "", 35, "Filiale Seestrasse 5 Stk geschnitten anliefern")
-        Produktion.AddChargenZeile("2", "11101", 0, 6, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("3", "11101", 0, 6, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("4", "11101", 0, 2, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("1", "230", 0, 240, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("2", "233", 0, 200, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("3", "230", 0, 4, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("4", "233", 0, 2, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("1", "230", 0, 4, wb_GlobalSettings.ChargenTeiler, True, "", 4)
+        Produktion.AddChargenZeile("1", "230", 0, 34, wb_GlobalSettings.ChargenTeiler, True, "", 35, "Filiale Seestrasse 5 Stk geschnitten anliefern")
+        Produktion.AddChargenZeile("2", "233", 0, 6, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("3", "233", 0, 6, wb_GlobalSettings.ChargenTeiler, True)
+        Produktion.AddChargenZeile("4", "233", 0, 2, wb_GlobalSettings.ChargenTeiler, True)
         'Produktion.AddArtikelCharge("2", "", 7035, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt

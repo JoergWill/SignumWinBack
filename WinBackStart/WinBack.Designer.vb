@@ -487,6 +487,7 @@ Partial Class WinBack
         Me.rbRezeptHinweis.MinimumSize = New System.Drawing.Size(70, 0)
         Me.rbRezeptHinweis.SmallImage = CType(resources.GetObject("rbRezeptHinweis.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRezeptHinweis, "rbRezeptHinweis")
+        Me.rbRezeptHinweis.Value = "OPENHINWEISE"
         '
         'rbRezeptVerwendung
         '
@@ -501,6 +502,7 @@ Partial Class WinBack
         Me.rbRezeptHistorie.MinimumSize = New System.Drawing.Size(70, 0)
         Me.rbRezeptHistorie.SmallImage = CType(resources.GetObject("rbRezeptHistorie.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRezeptHistorie, "rbRezeptHistorie")
+        Me.rbRezeptHistorie.Value = "OPENHISTORIE"
         '
         'rlArtikel
         '

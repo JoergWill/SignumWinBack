@@ -18,6 +18,13 @@ Public Class wb_Admin_UpdateDatabase
         'OrgaBack-Main-DB
         tbMsSQLMain.Text = wb_GlobalSettings.MsSQLMain
 
+        'OrgaBack Datenbank-Server
+        tbOrgaBackDBServer.Text = wb_GlobalSettings.MsSQLServer
+        'OrgaBack Admin-Datenbank
+        tbOrgaBackAdminDB.Text = wb_GlobalSettings.MsSQLAdmn
+        'OrgaBack Main-Datenbank
+        tbOrgaBackMainDB.Text = wb_GlobalSettings.MsSQLMain
+
         'Anzahl der verfügbaren WinBack-Datenbank-Updates
         DBUpdateFiles.Clear()
         If IO.Directory.Exists(wb_GlobalSettings.pDBUpdatePath) Then
@@ -52,9 +59,9 @@ Public Class wb_Admin_UpdateDatabase
                 pbData.PerformStep()
                 If winback.sqlCommand(sql) < 0 Then
                     Me.Cursor = Cursors.Default
-                    MsgBox("Datenbank Update fehlgeschlagen !", MsgBoxStyle.Critical, "Update WinBack-Datenbank")
+                    MsgBox("Datenbank Update fehlgeschlagen ! " & vbCrLf & "Update : " & Update, MsgBoxStyle.Critical, "Update WinBack-Datenbank")
                     Me.Cursor = Cursors.Default
-                    Exit Sub
+                    Exit For
                 End If
             Next
 

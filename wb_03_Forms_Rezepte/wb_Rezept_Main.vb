@@ -16,8 +16,6 @@ Public Class wb_Rezept_Main
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
-        'verhindert Warnung BC40054
-        InitializeComponent()
     End Sub
 
     ''' <summary>
@@ -57,16 +55,44 @@ Public Class wb_Rezept_Main
                 ' Fügt dem Ribbon ein neues RibbonTab hinzu
                 Dim oNewTab = _MenuService.AddContextTab("RezeptVerwaltung", "WinBack-Rezepte", "Verwaltung der WinBack-Rezepturen")
                 ' Das neue RibbonTab erhält eine Gruppe
-                Dim oGrp = oNewTab.AddGroup("GrpRezepte", "WinBack Rezepte")
+                Dim oGrp = oNewTab.AddGroup("GrpRezepte", "Ansicht")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("BtnRezeptPrintList", "Liste drucken", "Liste aller Rezepte drucken", My.Resources.UserListe_32x32, My.Resources.UserListe_32x32, AddressOf BtnPrintRecipeList)
+                oGrp.AddButton("BtnRezeptListe", "Rezepte Liste", "Liste aller Rezepte anzeigen", My.Resources.RezeptListe_32x32, My.Resources.RezeptListe_32x32, AddressOf BtnRezeptListe)
+                oGrp.AddButton("BtnRezeptDetails", "Rezept Details", "Fenster Rezept-Details", My.Resources.RezeptDetails_32x32, My.Resources.RezeptDetails_32x32, AddressOf BtnRezeptDetails)
+                oGrp.AddButton("BtnRezeptHinweise", "Rezept Hinweise", "Rezept Verarbeitungshinweise", My.Resources.RezeptHinweise_32x32, My.Resources.RezeptHinweise_32x32, AddressOf BtnRezeptHinweise)
+                oGrp.AddButton("BtnRezeptHistorie", "Rezept Historie", "Anzeige der Änderungshistorie der Rezeptur", My.Resources.RezeptHistorie_32x32, My.Resources.RezeptHistorie_32x32, AddressOf BtnRezeptHistorie)
+                Dim oGrpPrnt = oNewTab.AddGroup("Printer", "Drucken")
+                ' ... und dieser Gruppe wird ein Button hinzugefügt
+                oGrpPrnt.AddButton("BtnRezeptListeDrucken", "Drucke Rezeptliste", "Liste aller Rezepte drucken", My.Resources.RezeptDruckenListe_32x32, My.Resources.RezeptDruckenListe_32x32, AddressOf BtnRezeptListeDrucken)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
         End Get
     End Property
 
-    Private Sub BtnPrintRecipeList()
+    Private Sub BtnRezeptListe()
+        RezeptListe.Show(DockPanel, DockState.DockLeft)
+    End Sub
+
+    Private Sub BtnRezeptDetails()
+        RezeptDetails.Show(DockPanel)
+    End Sub
+
+    Private Sub BtnRezeptHinweise()
+        If RezeptHinweise Is Nothing Then
+            RezeptHinweise = New wb_Rezept_Hinweise
+        End If
+        RezeptHinweise.Show(DockPanel)
+    End Sub
+
+    Private Sub BtnRezeptHistorie()
+        If RezeptHistorie Is Nothing Then
+            RezeptHistorie = New wb_Rezept_Historie
+        End If
+        RezeptHistorie.Show(DockPanel)
+    End Sub
+
+    Private Sub BtnRezeptListeDrucken()
     End Sub
 
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
@@ -76,8 +102,10 @@ Public Class wb_Rezept_Main
             Case "WinBack.wb_Rezept_Details"
                 Return RezeptDetails
             Case "WinBack.wb_Rezept_Hinweise"
+                RezeptHinweise = New wb_Rezept_Hinweise
                 Return RezeptHinweise
             Case "WinBack.wb_Rezept_Historie"
+                RezeptHistorie = New wb_Rezept_Historie
                 Return RezeptHistorie
             Case Else
                 Return Nothing

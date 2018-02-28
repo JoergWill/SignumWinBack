@@ -39,6 +39,12 @@ Partial Class wb_Admin_UpdateDatabase
         Me.pbFiles = New MetroFramework.Controls.MetroProgressBar()
         Me.tbWinbackKundeName = New System.Windows.Forms.TextBox()
         Me.tbMsSQLMain = New System.Windows.Forms.TextBox()
+        Me.tbOrgaBackDBServer = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.tbOrgaBackAdminDB = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.tbOrgaBackMainDB = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'lblWinBackOffice
@@ -122,7 +128,7 @@ Partial Class wb_Admin_UpdateDatabase
         Me.BtnUpdateWinBackDataBase.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.BtnUpdateWinBackDataBase.Image = Global.WinBack.My.Resources.Resources.UpdateDataBase_32x32
         Me.BtnUpdateWinBackDataBase.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnUpdateWinBackDataBase.Location = New System.Drawing.Point(12, 131)
+        Me.BtnUpdateWinBackDataBase.Location = New System.Drawing.Point(12, 382)
         Me.BtnUpdateWinBackDataBase.Name = "BtnUpdateWinBackDataBase"
         Me.BtnUpdateWinBackDataBase.Size = New System.Drawing.Size(145, 51)
         Me.BtnUpdateWinBackDataBase.TabIndex = 9
@@ -135,7 +141,7 @@ Partial Class wb_Admin_UpdateDatabase
         '
         Me.lblUpdateFilesCount.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblUpdateFilesCount.AutoSize = True
-        Me.lblUpdateFilesCount.Location = New System.Drawing.Point(163, 131)
+        Me.lblUpdateFilesCount.Location = New System.Drawing.Point(163, 382)
         Me.lblUpdateFilesCount.Name = "lblUpdateFilesCount"
         Me.lblUpdateFilesCount.Size = New System.Drawing.Size(108, 13)
         Me.lblUpdateFilesCount.TabIndex = 10
@@ -144,7 +150,7 @@ Partial Class wb_Admin_UpdateDatabase
         'pbData
         '
         Me.pbData.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.pbData.Location = New System.Drawing.Point(166, 168)
+        Me.pbData.Location = New System.Drawing.Point(166, 419)
         Me.pbData.Name = "pbData"
         Me.pbData.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Blocks
         Me.pbData.Size = New System.Drawing.Size(122, 14)
@@ -153,7 +159,7 @@ Partial Class wb_Admin_UpdateDatabase
         'pbFiles
         '
         Me.pbFiles.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.pbFiles.Location = New System.Drawing.Point(166, 148)
+        Me.pbFiles.Location = New System.Drawing.Point(166, 399)
         Me.pbFiles.Name = "pbFiles"
         Me.pbFiles.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Blocks
         Me.pbFiles.Size = New System.Drawing.Size(122, 15)
@@ -179,11 +185,74 @@ Partial Class wb_Admin_UpdateDatabase
         Me.tbMsSQLMain.TabIndex = 14
         Me.tbMsSQLMain.TabStop = False
         '
+        'tbOrgaBackDBServer
+        '
+        Me.tbOrgaBackDBServer.BackColor = System.Drawing.SystemColors.Control
+        Me.tbOrgaBackDBServer.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbOrgaBackDBServer.Location = New System.Drawing.Point(165, 110)
+        Me.tbOrgaBackDBServer.Name = "tbOrgaBackDBServer"
+        Me.tbOrgaBackDBServer.Size = New System.Drawing.Size(252, 20)
+        Me.tbOrgaBackDBServer.TabIndex = 16
+        Me.tbOrgaBackDBServer.TabStop = False
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(12, 113)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(107, 13)
+        Me.Label1.TabIndex = 15
+        Me.Label1.Text = "DB-Server OrgaBack"
+        '
+        'tbOrgaBackAdminDB
+        '
+        Me.tbOrgaBackAdminDB.BackColor = System.Drawing.SystemColors.Control
+        Me.tbOrgaBackAdminDB.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbOrgaBackAdminDB.Location = New System.Drawing.Point(165, 132)
+        Me.tbOrgaBackAdminDB.Name = "tbOrgaBackAdminDB"
+        Me.tbOrgaBackAdminDB.Size = New System.Drawing.Size(123, 20)
+        Me.tbOrgaBackAdminDB.TabIndex = 18
+        Me.tbOrgaBackAdminDB.TabStop = False
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(12, 135)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(105, 13)
+        Me.Label2.TabIndex = 17
+        Me.Label2.Text = "Admin-DB OrgaBack"
+        '
+        'tbOrgaBackMainDB
+        '
+        Me.tbOrgaBackMainDB.BackColor = System.Drawing.SystemColors.Control
+        Me.tbOrgaBackMainDB.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbOrgaBackMainDB.Location = New System.Drawing.Point(165, 154)
+        Me.tbOrgaBackMainDB.Name = "tbOrgaBackMainDB"
+        Me.tbOrgaBackMainDB.Size = New System.Drawing.Size(123, 20)
+        Me.tbOrgaBackMainDB.TabIndex = 20
+        Me.tbOrgaBackMainDB.TabStop = False
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(12, 157)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(99, 13)
+        Me.Label3.TabIndex = 19
+        Me.Label3.Text = "Main-DB OrgaBack"
+        '
         'wb_Admin_UpdateDatabase
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(471, 194)
+        Me.ClientSize = New System.Drawing.Size(471, 445)
+        Me.Controls.Add(Me.tbOrgaBackMainDB)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.tbOrgaBackAdminDB)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.tbOrgaBackDBServer)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.tbMsSQLMain)
         Me.Controls.Add(Me.tbWinbackKundeName)
         Me.Controls.Add(Me.pbFiles)
@@ -219,4 +288,10 @@ Partial Class wb_Admin_UpdateDatabase
     Friend WithEvents pbFiles As MetroFramework.Controls.MetroProgressBar
     Friend WithEvents tbWinbackKundeName As Windows.Forms.TextBox
     Friend WithEvents tbMsSQLMain As Windows.Forms.TextBox
+    Friend WithEvents tbOrgaBackDBServer As Windows.Forms.TextBox
+    Friend WithEvents Label1 As Windows.Forms.Label
+    Friend WithEvents tbOrgaBackAdminDB As Windows.Forms.TextBox
+    Friend WithEvents Label2 As Windows.Forms.Label
+    Friend WithEvents tbOrgaBackMainDB As Windows.Forms.TextBox
+    Friend WithEvents Label3 As Windows.Forms.Label
 End Class

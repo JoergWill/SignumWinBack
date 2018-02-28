@@ -184,7 +184,10 @@ Public Class wb_DataGridView
         Dim AktRow As Integer = wb_Global.UNDEFINED
         'ermittelt die erste sichtbare Spalte im Grid. Ist notwendig,
         'weil Me.CurrentCell keine unsichtbaren Spalten selektieren kann
-        Dim xcol As Integer = Me.FirstDisplayedCell.ColumnIndex
+        Dim xcol As Integer = wb_Global.UNDEFINED
+        If Me.FirstDisplayedCell IsNot Nothing Then
+            xcol = Me.FirstDisplayedCell.ColumnIndex
+        End If
 
         'aktuellen Datensatz merken
         If (Me.Rows.Count > 0) Then
@@ -206,7 +209,7 @@ Public Class wb_DataGridView
         End Select
 
         'zurück zur aktuellen Zeile
-        If SaveRow <> wb_Global.UNDEFINED And AktRow <> wb_Global.UNDEFINED And SaveRow < Me.RowCount Then
+        If SaveRow <> wb_Global.UNDEFINED And AktRow <> wb_Global.UNDEFINED And xcol <> wb_Global.UNDEFINED And SaveRow < Me.RowCount Then
             Me.FirstDisplayedScrollingRowIndex = SaveRow
             Me.Rows(AktRow).Selected = True
             Me.CurrentCell = Me.Item(xcol, AktRow)

@@ -871,6 +871,13 @@ Public Class wb_Functions
         Return Math.Round(100 * SaveDiv(Prozentwert, Grundwert), Dezimalstellen)
     End Function
 
+    Public Shared Sub CloseAndDisposeSubForm(ByRef frm As Windows.Forms.Form)
+        If frm IsNot Nothing Then
+            frm.Close()
+            frm = Nothing
+        End If
+    End Sub
+
     Public Shared Function FTP_Upload_File(ByVal filetoupload As String) As String
         ', ByVal ftpuri As String, ByVal ftpusername As String, ByVal ftppassword As String) As Long
         Dim FtpURI As String = "ftp://" & wb_GlobalSettings.MySQLServerIP & wb_Global.WinBackServerProdDirectory
