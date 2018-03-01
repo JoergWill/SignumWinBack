@@ -607,13 +607,18 @@ Public Class wb_Komponente
 
     ''' <summary>
     ''' Liest alle Datenfelder aus dem aktuellen Datensatz in das Komponenten-Objekt
-    ''' Die Daten werden anhand der Feldbezeichnung in die einzelnen Properties eingetragen
+    ''' Die Daten werden anhand der Feldbezeichnung in die einzelnen Properties eingetragen.
+    ''' 
+    ''' Das letzte Datenfeld ist der TimeStamp und wird NICHT eingelesen, da es Probleme mit
+    ''' der Konvertierung von MySQLDateTime in DateTime gibt
+    ''' (https://bugs.mysql.com/bug.php?id=87120)
     ''' </summary>
     ''' <param name="sqlReader"></param>
     ''' <returns>True wenn kein Fehler aufgetreten ist</returns>
     Public Function MySQLdbRead(ByRef sqlReader As MySqlDataReader) As Boolean
         'Stammdaten - Anzahl der Felder im DataSet
-        For i = 0 To sqlReader.FieldCount - 1
+        'FieldCount-2 unterdrückt das Feld TimeStamp
+        For i = 0 To sqlReader.FieldCount - 2
             Try
                 MySQLdbRead_StammDaten(sqlReader.GetName(i), sqlReader.GetValue(i))
             Catch ex As Exception
@@ -624,7 +629,8 @@ Public Class wb_Komponente
         'Bis alle Datensätze eingelesen sind
         Do
             'Parameter - Anzahl der Felder im DataSet
-            For i = 0 To sqlReader.FieldCount - 1
+            'FieldCount-2 unterdrückt das Feld TimeStamp
+            For i = 0 To sqlReader.FieldCount - 2
                 Try
                     MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
                 Catch ex As Exception
@@ -647,6 +653,7 @@ Public Class wb_Komponente
         End If
 
         'Feldname aus der Datenbank
+        'Debug.Print("ReadStammdaten " & Name)
         Try
             Select Case Name
 
@@ -739,6 +746,7 @@ Public Class wb_Komponente
         Static ParamNr, ParamTyp As Integer
 
         'Feldname aus der Datenbank
+        'Debug.Print("ReadParameter " & Name)
         Select Case Name
 
             'Parameter-Nummer
@@ -797,10 +805,14 @@ Public Class wb_Komponente
               "KO_Kommentar = '" & Kommentar & "'," &
               "KO_Temp_Korr = '" & KO_Backverlust & "'," &
               "KA_Matchcode = '" & KO_IdxCloud & "'," &
-              "KA_RZ_Nr = '" & KA_Rz_Nr & "'," &
               "KA_Lagerort = '" & KA_Lagerort & "'," &
               "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
               "KA_Art = '" & KA_Art & "'"
+
+        'Rezeptnummer nur updaten wenn gültig
+        If KA_Rz_Nr <> wb_Global.UNDEFINED Then
+            sql = sql & "KA_RZ_Nr = " & KA_Rz_Nr.ToString & ","
+        End If
 
         'Artikel - Chargengrößen in Stk
         If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Then
@@ -820,6 +832,8 @@ Public Class wb_Komponente
         End If
 
         'Update ausführen
+        Debug.Print("Komponente.MysqldbUpdate " & sql)
+
         If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then
             Return True
         Else

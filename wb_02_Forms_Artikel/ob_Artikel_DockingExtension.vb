@@ -393,7 +393,7 @@ Public Class ob_Artikel_DockingExtension
         Dim sSortiment As String = _Extendee.GetPropertyValue("Sortiment").ToString
         Debug.Print("DockingExtension-GetKomponentenDaten sSortiment " & sSortiment)
         If wb_Filiale.SortimentIstProduktion(sSortiment) Then
-            Debug.Print("DockingExtension-GetKomponentenDaten sSortiment - Sortiment ist Produktion" & sSortiment)
+            Debug.Print("DockingExtension-GetKomponentenDaten sSortiment - Sortiment " & sSortiment & " ist Produktion")
 
             'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
             Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)

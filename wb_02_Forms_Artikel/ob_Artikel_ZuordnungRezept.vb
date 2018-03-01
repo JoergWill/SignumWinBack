@@ -109,7 +109,7 @@ Public Class ob_Artikel_ZuordnungRezept
                 'alle Steuerelemente sperren
                 EnableKomponenten(False)
 
-                RzNr = 0
+                RzNr = wb_Global.UNDEFINED
                 tRezeptNr.Text = ""
                 tRezeptName.Text = ""
 
