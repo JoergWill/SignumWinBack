@@ -598,10 +598,11 @@ Public Class wb_Komponente
         If winback.sqlSelect(sql) Then
             If winback.Read Then
                 MySQLdbRead(winback.MySqlRead)
-                winback.CloseRead()
+                winback.Close()
                 Return True
             End If
         End If
+        winback.Close()
         Return False
     End Function
 
@@ -811,12 +812,13 @@ Public Class wb_Komponente
 
         'Rezeptnummer nur updaten wenn gültig
         If KA_Rz_Nr <> wb_Global.UNDEFINED Then
-            sql = sql & "KA_RZ_Nr = " & KA_Rz_Nr.ToString & ","
+            sql = sql & "," &
+                        "KA_RZ_Nr = " & KA_Rz_Nr.ToString
         End If
 
         'Artikel - Chargengrößen in Stk
         If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Then
-            sql = sql + "," &
+            sql = sql & "," &
                         "KA_Charge_Min = '" & ArtikelChargen.MinCharge.MengeInStk & "'," &
                         "KA_Charge_Max = '" & ArtikelChargen.MaxCharge.MengeInStk & "'," &
                         "KA_Charge_Opt = '" & ArtikelChargen.OptCharge.MengeInStk & "'"
@@ -825,14 +827,14 @@ Public Class wb_Komponente
         'Rohstoffe - Chargengrößen in kg
         If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE) _
         Or Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE) Then
-            sql = sql + "," &
+            sql = sql & "," &
                         "KA_Charge_Min_kg = '" & ArtikelChargen.MinCharge.MengeInkg & "'," &
                         "KA_Charge_Max_kg = '" & ArtikelChargen.MaxCharge.MengeInkg & "'," &
                         "KA_Charge_Opt_kg = '" & ArtikelChargen.OptCharge.MengeInkg & "'"
         End If
 
         'Update ausführen
-        Debug.Print("Komponente.MysqldbUpdate " & sql)
+        'Debug.Print("Komponente.MysqldbUpdate " & sql)
 
         If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then
             Return True

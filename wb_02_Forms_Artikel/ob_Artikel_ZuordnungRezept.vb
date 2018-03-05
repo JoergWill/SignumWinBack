@@ -9,9 +9,10 @@ Public Class ob_Artikel_ZuordnungRezept
     Private WithEvents TeigChargen As New wb_MinMaxOptCharge
     Private OnErrorSetFocus As Object
 
+    Private DataHasChanged As Boolean
+    Public Event DataHasChanged_SubFormClosing()
 
 #Region "Signum"
-
     Private _DockingExtension As IDockingExtension
 
     Public Sub New(DockingExtension As IDockingExtension)
@@ -81,6 +82,11 @@ Public Class ob_Artikel_ZuordnungRezept
     ''' </returns>
     ''' <remarks></remarks>
     Public Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
+        'Event an ob_Artikel_DockingExtension - Daten wurden geändert - MsgBox "Soll der Datensazu gespeichert werden"
+        If DataHasChanged Then
+            RaiseEvent DataHasChanged_SubFormClosing()
+        End If
+        'Fenster kann geschlossen werden (nach Speichern Datensatz)
         Return False
     End Function
 
@@ -112,6 +118,8 @@ Public Class ob_Artikel_ZuordnungRezept
                 RzNr = wb_Global.UNDEFINED
                 tRezeptNr.Text = ""
                 tRezeptName.Text = ""
+                'Reset Flag
+                DataHasChanged = False
 
             Case "VALID"
 
@@ -136,10 +144,14 @@ Public Class ob_Artikel_ZuordnungRezept
 
                 'alle Steuerelemente aktivieren
                 EnableKomponenten(True)
+                'Reset Flag
+                DataHasChanged = False
 
             Case "wbSAVE"
                 DirectCast(Parameter, wb_Komponente).ArtikelChargen = ArtikelChargen
                 DirectCast(Parameter, wb_Komponente).RzNr = RzNr
+                'Reset Flag
+                DataHasChanged = False
 
         End Select
         Return Nothing
@@ -159,8 +171,9 @@ Public Class ob_Artikel_ZuordnungRezept
             RzNr = RezeptAuswahl.RezeptNr
             tRezeptNr.Text = RezeptAuswahl.RezeptNummer
             tRezeptName.Text = RezeptAuswahl.RezeptName
+            'Flag - Die Daten haben sich geändert
+            DataHasChanged = True
         End If
-
     End Sub
 
 #Region "Änderung Chargen"
@@ -276,7 +289,6 @@ Public Class ob_Artikel_ZuordnungRezept
     End Sub
 
     Private Sub OnErrorMinMaxOptArtikel(sender As Object) Handles ArtikelChargen.OnError
-        'TODO Artikel/Komponenten umstellen auf ChargenMengen-Klasse (Einzelwerte entfallen)
         If ArtikelChargen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
             'Eingabe-Focus auf das auslösende Objekt setzen
             OnErrorSetFocus.Focus()
@@ -285,6 +297,8 @@ Public Class ob_Artikel_ZuordnungRezept
         End If
         'Felder neu zeichnen
         MinMaxOptArtikelShowValues()
+        'Flag setzen
+        DataHasChanged = True
     End Sub
 
     Private Sub OnErrorMinMaxOptTeig(Sender As Object) Handles TeigChargen.OnError
@@ -295,6 +309,8 @@ Public Class ob_Artikel_ZuordnungRezept
         End If
         'Felder neu zeichnen
         MinMaxRezeptShowValues()
+        'Flag setzen
+        DataHasChanged = True
     End Sub
 #End Region
     Private Sub MinMaxOptArtikelShowValues()

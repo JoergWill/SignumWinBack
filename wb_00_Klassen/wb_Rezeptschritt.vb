@@ -347,13 +347,13 @@ Public Class wb_Rezeptschritt
                     'Anzeige Kommentar statt Rezeptbezeichnung
                     If wb_GlobalSettings.KommentarStattBezeichnung And _Kommentar <> "" Then
                         If _RezeptNr > 0 Then
-                            Return _Kommentar & "®"
+                            Return _Kommentar & wb_Global.RezeptImRezept
                         Else
                             Return _Kommentar
                         End If
                     Else
                         If _RezeptNr > 0 Then
-                            Return _Bezeichnung & "®"
+                            Return _Bezeichnung & wb_Global.RezeptImRezept
                         Else
                             Return _Bezeichnung
                         End If
@@ -365,7 +365,7 @@ Public Class wb_Rezeptschritt
                 Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
                     _Sollwert = value
                 Case Else
-                    _Bezeichnung = value
+                    'keine Änderung !
             End Select
         End Set
     End Property

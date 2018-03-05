@@ -19,6 +19,9 @@
     Public Const NewUserPass = "-1"
     Public Const NewUserGrpe = "1"
 
+    'Symbol Rezept-im-Rezept
+    Public Const RezeptImRezept = "®"
+
     'Filiale.Typ ist Produktions-Filiale
     Public Const ProduktionsFiliale = 4
 

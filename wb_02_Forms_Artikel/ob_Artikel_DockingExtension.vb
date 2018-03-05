@@ -19,6 +19,8 @@ Public Class ob_Artikel_DockingExtension
 
     Private bContextTabInitialized As Boolean = False
     Private bSortimentIstProduktion As Boolean = False
+    Private bAddNew As Boolean = False
+
     Private Komponente As New wb_Komponente
     Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
     Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
@@ -101,9 +103,8 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
+        bAddNew = False
         Extendee_ExecuteCommand("INVALID", Nothing)
-        Komponente.Invalid()
-        'Komponente.Invalidate()
         Debug.Print("Article_DockingExtension Invalid")
     End Sub
 
@@ -114,6 +115,8 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="e"></param>
     Private Sub Extendee_AddNew(sender As Object, e As EventArgs)
         Komponente.Invalid()
+        bAddNew = True
+        Extendee_ExecuteCommand("INVALID", Nothing)
         Debug.Print("Article_DockingExtension AddNew")
     End Sub
 
@@ -143,7 +146,9 @@ Public Class ob_Artikel_DockingExtension
     Private Sub Extendee_BeforeUpdate(sender As Object, e As EventArgs)
         Debug.Print("Article_DockingExtension BeforeUpdate")
         'Artikel-Informationen (erneut)in Klasse Komponenten einlesen. Wenn der Artikel/Rohstoff neu angelegt wurde müssen die Daten neu eingelesen werden
-        bSortimentIstProduktion = GetKomponentenDaten()
+        If bAddNew Then
+            bSortimentIstProduktion = GetKomponentenDaten()
+        End If
         If bSortimentIstProduktion Then
             Debug.Print("WinBack Artikel")
             SetKomponentenDaten()
@@ -298,6 +303,13 @@ Public Class ob_Artikel_DockingExtension
                 Extendee_ExecuteCommand("wbFOUND", Komponente)
             End If
         End If
+
+
+    End Sub
+
+    Private Sub SaveAtClose()
+        Debug.Print("SaveAtClose")
+        _Extendee.Changed = True
     End Sub
 
     ''' <summary>
@@ -315,6 +327,7 @@ Public Class ob_Artikel_DockingExtension
                     If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
                         ' Adresse der Klasse, die die Arbeit macht !!
                         oForm = New ob_Artikel_ZuordnungRezept(Me)
+                        AddHandler DirectCast(oForm, ob_Artikel_ZuordnungRezept).DataHasChanged_SubFormClosing, AddressOf SaveAtClose
                         _SubForms(FormKey) = oForm
                     End If
                     Return oForm
