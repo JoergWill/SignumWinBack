@@ -366,6 +366,11 @@
     <Compile Include="wb_00_Klassen\wb_AktUser.vb" />
     <Compile Include="wb_00_Klassen\wb_Simple3Des.vb" />
     <Compile Include="wb_00_Klassen\wb_VorProduktionsSchritt.vb" />
+    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Konfiguration.vb" />
+    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_OrgaBack.vb" />
+    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Rezepte.vb" />
+    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Komponenten.vb" />
+    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_User.vb" />
     <Compile Include="wb_00_Main\wb_Finalizer_Shared.vb" />
     <Compile Include="wb_00_Klassen\WinBack_DockMain.Designer.vb">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
@@ -473,7 +478,7 @@
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_Functions.vb" />
     <Compile Include="wb_00_Konstanten\wb_Global.vb" />
-    <Compile Include="wb_00_Konstanten\wb_Sql_Selects.vb" />
+    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects.vb" />
     <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Shared.vb" />
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Historie.Designer.vb">
       <DependentUpon>wb_Rezept_Historie.vb</DependentUpon>
@@ -1041,8 +1046,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>mkdir "C:\ProgramData\OrgaSoft\AddIn"
-xcopy "$(TargetDir)$(TargetName).*" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).*" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
 xcopy "$(TargetDir)$(TargetName).*" "\\ORGAMESSE\OrgaSoft\AddIn" /E /C /R /Y
 xcopy "$(TargetDir)*.dll" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
 xcopy "$(TargetDir)*.dll" "\\ORGAMESSE\OrgaSoft\AddIn" /E /C /R /Y
