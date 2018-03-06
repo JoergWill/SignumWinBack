@@ -308,15 +308,21 @@ Public Class WinBack
 
     ''' <summary>
     ''' Alle geöffneten Formulare schliessen (Umschaltung Sprache)
+    ''' innerhalb der Schleife muss nochmals geprüft werden, ob sich der Wert für OpenForms.Count geändert hat,
+    ''' da Docking-Fenster, die ausserhalb der Main-Form geöffnet werden (freie Fenster) mitgezählt werden. Diese
+    ''' werden beim Schliessen der Hauptform mit geschlossen.
     ''' </summary>
     Private Sub CloseAllForms()
-        For i = System.Windows.Forms.Application.OpenForms.Count - 1 To 1 Step -1
-            Dim oForm As Form = Application.OpenForms(i)
-            If oForm.Name <> "WinBack" Then
-                oForm.Parent = Nothing
-                oForm.Close()
-                oForm.Dispose()
-                oForm = Nothing
+        Dim iOpenForms As Integer = System.Windows.Forms.Application.OpenForms.Count - 1
+        For i = iOpenForms To 1 Step -1
+            If i < System.Windows.Forms.Application.OpenForms.Count Then
+                Dim oForm As Form = Application.OpenForms(i)
+                If oForm.Name <> "WinBack" Then
+                    oForm.Parent = Nothing
+                    oForm.Close()
+                    oForm.Dispose()
+                    oForm = Nothing
+                End If
             End If
         Next i
     End Sub

@@ -256,42 +256,6 @@
     <Compile Include="Login.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="XXArtikel_Main.Designer.vb">
-      <DependentUpon>XXArtikel_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="XXArtikel_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="XXService_Main.Designer.vb">
-      <DependentUpon>XXService_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="XXService_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="XXProduktion_Main.Designer.vb">
-      <DependentUpon>XXProduktion_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="XXProduktion_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="XXRohstoffe_Main.Designer.vb">
-      <DependentUpon>XXRohstoffe_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="XXRohstoffe_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="XXRezepte_Main.Designer.vb">
-      <DependentUpon>XXRezepte_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="XXRezepte_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="XXChargen_Main.Designer.vb">
-      <DependentUpon>XXChargen_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="XXChargen_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="WinBack.Designer.vb">
       <DependentUpon>WinBack.vb</DependentUpon>
     </Compile>
@@ -321,29 +285,11 @@
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="XXArtikel_Main.resx">
-      <DependentUpon>XXArtikel_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XXService_Main.resx">
-      <DependentUpon>XXService_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XXProduktion_Main.resx">
-      <DependentUpon>XXProduktion_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XXRohstoffe_Main.resx">
-      <DependentUpon>XXRohstoffe_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XXRezepte_Main.resx">
-      <DependentUpon>XXRezepte_Main.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XXChargen_Main.resx">
-      <DependentUpon>XXChargen_Main.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinBack.en-US.resx">
       <DependentUpon>WinBack.vb</DependentUpon>

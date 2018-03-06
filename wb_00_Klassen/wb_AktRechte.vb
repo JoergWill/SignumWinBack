@@ -16,8 +16,10 @@ Public Class wb_AktRechte
         While winback.Read
             Tag = winback.iField("IP_ItemID")
             GrpRecht = winback.iField("IP_Wert2int")
-            _UserGruppenRechte.Add(Tag, (GrpRecht > 0))
-            _NoEntryInItemParameter = False
+            If Not _UserGruppenRechte.ContainsKey(Tag) Then
+                _UserGruppenRechte.Add(Tag, (GrpRecht > 0))
+                _NoEntryInItemParameter = False
+            End If
         End While
 
         'Verbindung wieder schliessen

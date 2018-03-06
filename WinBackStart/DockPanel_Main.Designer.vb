@@ -22,7 +22,7 @@ Partial Class DockPanel_Main
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(XXArtikel_Main))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(WinBack))
         Me.DockPanel = New WeifenLuo.WinFormsUI.Docking.DockPanel()
         Me.SuspendLayout()
         '

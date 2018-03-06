@@ -31,7 +31,9 @@ Public Class wb_Rohstoffe_Shared
         winback.sqlSelect(wb_Sql_Selects.sqlRohstoffGrp)
         RohGruppe.Clear()
         While winback.Read
-            RohGruppe.Add(winback.iField("IP_Wert1int"), TextFilter(winback.sField("IP_Wert4str")))
+            If Not RohGruppe.ContainsKey((winback.iField("IP_Wert1int"))) Then
+                RohGruppe.Add(winback.iField("IP_Wert1int"), TextFilter(winback.sField("IP_Wert4str")))
+            End If
         End While
         winback.CloseRead()
 

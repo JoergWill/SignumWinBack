@@ -34,12 +34,17 @@ Public Class wb_Artikel_Liste
         Try
             If e.ColumnIndex = RzpIdxColumn Then
                 If CInt(e.Value) > 0 Then
-                    e.Value = wb_Artikel_Shared.Rzpt(CInt(e.Value)).ToString
+                    If wb_Artikel_Shared.Rzpt.ContainsKey(CInt(e.Value)) Then
+                        e.Value = wb_Artikel_Shared.Rzpt(CInt(e.Value)).ToString
+                    Else
+                        e.Value = "Rezept fehlt (Index) " & CInt(e.Value)
+                    End If
                 Else
                     e.Value = ""
                 End If
             End If
         Catch
+            Debug.Print("CellFormatting " & e.Value)
         End Try
     End Sub
 

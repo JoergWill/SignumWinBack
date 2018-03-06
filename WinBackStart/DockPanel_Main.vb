@@ -145,6 +145,8 @@ Public MustInherit Class DockPanel_Main
     End Function
 
     Private Sub Main_FormLoad(sender As Object, e As EventArgs) Handles MyBase.Load
+        'DockPanel-Hauptformular auf Maximalgröße aufziehen
+        DockPanel.Dock = DockStyle.Fill
         'Fenster laden
         LoadDockBarConfig()
         'weitere Aktionen beim Öffnen des MDI-Main-Formulars
