@@ -164,8 +164,8 @@
       <HintPath>..\dll\TreeListView\System.Runtime.InteropServices.APIs.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.Ribbon35">
-      <HintPath>..\dll\OfficeRibbon\System.Windows.Forms.Ribbon35.dll</HintPath>
+    <Reference Include="System.Windows.Forms.Ribbon">
+      <HintPath>..\dll\OfficeRibbon 4.0\System.Windows.Forms.Ribbon.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms.TreeListView">
       <HintPath>..\dll\TreeListView\System.Windows.Forms.TreeListView.dll</HintPath>
@@ -432,6 +432,7 @@
     <None Include="Resources\IconSaveAs_24x24.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\WinBackLogo_945x514.png" />
     <Content Include="WinBack Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

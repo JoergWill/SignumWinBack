@@ -4,8 +4,8 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class wb_Rohstoffe_Liste
     Inherits DockContent
 
-    Const ColumnKompNr As Integer = 2
-    Const ColumnRzpIdx As Integer = 3
+    Const ColumnKompNr As Integer = 3
+    Const ColumnRzpIdx As Integer = 5
 
     Public WriteOnly Property Anzeige As AnzeigeFilter
         Set(value As AnzeigeFilter)
@@ -32,7 +32,7 @@ Public Class wb_Rohstoffe_Liste
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"Nummer", "Name", "A", "&Kommentar"}
+        Dim sColNames As New List(Of String) From {"", "Nummer", "Name", "A", "&Kommentar"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
@@ -88,7 +88,11 @@ Public Class wb_Rohstoffe_Liste
     Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
         Try
             If e.ColumnIndex = ColumnKompNr Then
-                e.Value = RohAktiv(CInt(e.Value.ToString))
+                If RohAktiv.ContainsKey(CInt(e.Value)) Then
+                    e.Value = RohAktiv(CInt(e.Value.ToString))
+                Else
+                    e.Value = ""
+                End If
             End If
         Catch
         End Try
@@ -97,8 +101,6 @@ Public Class wb_Rohstoffe_Liste
     Private Sub DataGridView_CellDoubleClick(sender As Object, e As Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
         'Zeile im Grid
         Dim eRow As Integer = e.RowIndex
-        'Die RezeptNummer steht in Spalte 4
-        'TODO als Konstante definieren in wb_sql_Selects
         Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(ColumnRzpIdx, eRow).Value)
         'Wenn die Rezeptnummer gültig ist
         If RezeptNr > 0 Then

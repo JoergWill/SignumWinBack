@@ -298,6 +298,9 @@ Public Class WinBack
             Me.Controls.Clear()
             InitializeComponent()
 
+            'Me.Location = pt
+            'Me.Size = sz
+
             'Verarbeitung wieder freigeben
             isInitialised = True
         End If
@@ -536,5 +539,9 @@ Public Class WinBack
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")
         End If
+    End Sub
+
+    Private Sub StatusStrip_Resize(sender As Object, e As EventArgs) Handles StatusStrip.Resize
+        Debug.Print("Resize StatusBar " & StatusStrip.Top & "/" & StatusStrip.Left & "//" & StatusStrip.Width & "/" & StatusStrip.Height)
     End Sub
 End Class
