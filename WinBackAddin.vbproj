@@ -275,8 +275,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.Ribbon35">
-      <HintPath>dll\OfficeRibbon\System.Windows.Forms.Ribbon35.dll</HintPath>
+    <Reference Include="System.Windows.Forms.Ribbon">
+      <HintPath>dll\OfficeRibbon 4.0\System.Windows.Forms.Ribbon.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms.TreeListView">
       <HintPath>dll\TreeListView\System.Windows.Forms.TreeListView.dll</HintPath>

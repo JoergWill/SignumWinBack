@@ -1125,7 +1125,7 @@ Partial Class WinBack
         'rTab
         '
         Me.rTab.AllowDrop = True
-        Me.rTab.BackColor = System.Drawing.SystemColors.Control
+        Me.rTab.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         resources.ApplyResources(Me.rTab, "rTab")
         Me.rTab.Minimized = False
         Me.rTab.Name = "rTab"
@@ -1452,7 +1452,7 @@ Partial Class WinBack
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.DarkGray
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.BackgroundImage = Global.WinBack.My.Resources.Resources.WinBackLogo_945x514
         Me.Controls.Add(Me.BtnReload)
         Me.Controls.Add(Me.cbLayouts)
@@ -1464,6 +1464,7 @@ Partial Class WinBack
         Me.IsMdiContainer = True
         Me.KeyPreview = True
         Me.Name = "WinBack"
+        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.ResumeLayout(False)
 

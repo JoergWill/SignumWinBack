@@ -797,7 +797,24 @@ Public Class wb_Rezept
         'Rezeptschritte neu durchnumerieren (sicherheitshalber)
         RootRezeptSchritt.ReCalcRzSteps(0)
 
-        'alte Rezeptur in Historie speichern
+        'alte Rezeptur in Historie speichern - Rezeptkopf und Rezeptschritte
+
+        'wenn schon ein Rezeptkopf in His_Rezepte vorhanden ist, wird er gelöscht
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRezKopfInHisRezepte, RezeptNummer, Variante, AenderungNummer)
+        winback.sqlCommand(sql)
+        'bestehenden Rezeptkopf in wb_daten.His_Rezepte kopieren
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlCopyRezKopfInHisRezepte, RezeptNummer, Variante)
+        winback.sqlCommand(sql)
+
+        'wenn schon Rezeptschritte in His_Rezeptschritte vorhanden sind werden diese gelöscht
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRezSchritteInHisRezepte, RezeptNummer, Variante, AenderungNummer)
+        winback.sqlCommand(sql)
+        'bestehende Rezeptschritte in wb_daten.His_Rezeptschritte kopieren
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlCopyRezSchritteInHisRezepte, RezeptNummer, Variante, AenderungNummer)
+        winback.sqlCommand(sql)
+
+
+
 
         'vorhandene Rezeptur in Datenbank löschen
         winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRzptSchr, RezeptNummer, Variante))

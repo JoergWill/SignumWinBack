@@ -276,15 +276,15 @@ Public Class wb_Rezept_Rezeptur
             RezeptHinweise.Write()
         End If
 
+        'Rezeptur ist geändert worden
+        If _RzChanged Then
+            Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante)
+        End If
+
         'Rezeptkopfdaten schreiben
         If _RzKopfChanged Or _RzChanged Then
             Rezept.MySQLdbWrite_Rezept()
             wb_Rezept_Shared.Liste_Refresh(sender)
-        End If
-
-        'Rezeptur ist geändert worden
-        If _RzChanged Then
-            Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante)
         End If
     End Sub
 
