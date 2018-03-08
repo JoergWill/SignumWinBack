@@ -1161,7 +1161,6 @@ Partial Class WinBack
         Me.rTab.OrbDropDown.RightToLeft = CType(resources.GetObject("rTab.OrbDropDown.RightToLeft"), System.Windows.Forms.RightToLeft)
         Me.rTab.OrbDropDown.Size = CType(resources.GetObject("rTab.OrbDropDown.Size"), System.Drawing.Size)
         Me.rTab.OrbDropDown.TabIndex = CType(resources.GetObject("rTab.OrbDropDown.TabIndex"), Integer)
-        Me.rTab.OrbImage = Global.WinBack.My.Resources.Resources.WinBack_32x32
         Me.rTab.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2013
         Me.rTab.OrbText = "Datei"
         Me.rTab.RibbonTabFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
