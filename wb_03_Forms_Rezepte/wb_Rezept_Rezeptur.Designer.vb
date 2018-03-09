@@ -32,13 +32,21 @@ Partial Class wb_Rezept_Rezeptur
         Dim ObjectCellBinding6 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Me.ColNr = New Infralution.Controls.VirtualTree.Column()
+        Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
+        Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.UniversalEditBox2 = New Infralution.Controls.UniversalEditBox()
+        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
+        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
+        Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
+        Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.ToolStripLeftMargin = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripRezeptChange = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripAllergenLegende = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gbDetail = New System.Windows.Forms.GroupBox()
         Me.tbRzVariante = New System.Windows.Forms.TextBox()
-        Me.TextBox9 = New System.Windows.Forms.TextBox()
+        Me.tbKnetKennlinie = New System.Windows.Forms.TextBox()
         Me.lblRzKnKennLinie = New System.Windows.Forms.Label()
         Me.lblEinhPreis = New System.Windows.Forms.Label()
         Me.lblEinhMehlmenge = New System.Windows.Forms.Label()
@@ -61,6 +69,8 @@ Partial Class wb_Rezept_Rezeptur
         Me.lblEinhRzGewicht = New System.Windows.Forms.Label()
         Me.lblRzMehlMenge = New System.Windows.Forms.Label()
         Me.lblRzVariante = New System.Windows.Forms.Label()
+        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
+        Me.cbVariante = New WinBack.wb_ComboBox()
         Me.lblRzKommentar = New System.Windows.Forms.Label()
         Me.tbRzKommentar = New System.Windows.Forms.TextBox()
         Me.tbRezeptName = New System.Windows.Forms.TextBox()
@@ -89,19 +99,9 @@ Partial Class wb_Rezept_Rezeptur
         Me.separator3MenuItem = New System.Windows.Forms.ToolStripSeparator()
         Me.showColumnsMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.customizeMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
-        Me.cbVariante = New WinBack.wb_ComboBox()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tb_Rezeptur = New System.Windows.Forms.TabPage()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
-        Me.ColNr = New Infralution.Controls.VirtualTree.Column()
-        Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
-        Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.UniversalEditBox2 = New Infralution.Controls.UniversalEditBox()
-        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
-        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
-        Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
-        Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.tb_Naehrwerte = New System.Windows.Forms.TabPage()
         Me.tb_Zutaten = New System.Windows.Forms.TabPage()
@@ -128,6 +128,64 @@ Partial Class wb_Rezept_Rezeptur
         CType(Me.GridView_RzVerwendung, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
+        'ColNr
+        '
+        resources.ApplyResources(Me.ColNr, "ColNr")
+        Me.ColNr.Movable = False
+        Me.ColNr.Name = "ColNr"
+        Me.ColNr.Sortable = False
+        '
+        'ColBezeichnung
+        '
+        resources.ApplyResources(Me.ColBezeichnung, "ColBezeichnung")
+        Me.ColBezeichnung.CellEditor = Me.CellEditor2
+        Me.ColBezeichnung.Movable = False
+        Me.ColBezeichnung.Name = "ColBezeichnung"
+        Me.ColBezeichnung.Sortable = False
+        '
+        'CellEditor2
+        '
+        Me.CellEditor2.Control = Me.UniversalEditBox2
+        '
+        'UniversalEditBox2
+        '
+        Me.UniversalEditBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        resources.ApplyResources(Me.UniversalEditBox2, "UniversalEditBox2")
+        Me.UniversalEditBox2.Name = "UniversalEditBox2"
+        '
+        'ColPreis
+        '
+        resources.ApplyResources(Me.ColPreis, "ColPreis")
+        Me.ColPreis.Name = "ColPreis"
+        Me.ColPreis.Resizable = False
+        Me.ColPreis.Sortable = False
+        '
+        'ColSollwert
+        '
+        resources.ApplyResources(Me.ColSollwert, "ColSollwert")
+        Me.ColSollwert.CellEditor = Me.CellEditor2
+        Me.ColSollwert.CellStyle.VertAlignment = CType(resources.GetObject("ColSollwert.CellStyle.VertAlignment"), System.Drawing.StringAlignment)
+        Me.ColSollwert.Movable = False
+        Me.ColSollwert.Name = "ColSollwert"
+        Me.ColSollwert.Resizable = False
+        Me.ColSollwert.Sortable = False
+        '
+        'ColEinheit
+        '
+        resources.ApplyResources(Me.ColEinheit, "ColEinheit")
+        Me.ColEinheit.Name = "ColEinheit"
+        Me.ColEinheit.Resizable = False
+        Me.ColEinheit.Selectable = False
+        Me.ColEinheit.Sortable = False
+        '
+        'ColProzent
+        '
+        resources.ApplyResources(Me.ColProzent, "ColProzent")
+        Me.ColProzent.CellStyle.HorzAlignment = CType(resources.GetObject("ColProzent.CellStyle.HorzAlignment"), System.Drawing.StringAlignment)
+        Me.ColProzent.Name = "ColProzent"
+        Me.ColProzent.Resizable = False
+        Me.ColProzent.Sortable = False
+        '
         'StatusStrip
         '
         resources.ApplyResources(Me.StatusStrip, "StatusStrip")
@@ -153,7 +211,7 @@ Partial Class wb_Rezept_Rezeptur
         '
         resources.ApplyResources(Me.gbDetail, "gbDetail")
         Me.gbDetail.Controls.Add(Me.tbRzVariante)
-        Me.gbDetail.Controls.Add(Me.TextBox9)
+        Me.gbDetail.Controls.Add(Me.tbKnetKennlinie)
         Me.gbDetail.Controls.Add(Me.lblRzKnKennLinie)
         Me.gbDetail.Controls.Add(Me.lblEinhPreis)
         Me.gbDetail.Controls.Add(Me.lblEinhMehlmenge)
@@ -190,13 +248,15 @@ Partial Class wb_Rezept_Rezeptur
         '
         'tbRzVariante
         '
+        Me.tbRzVariante.BackColor = System.Drawing.Color.Silver
         resources.ApplyResources(Me.tbRzVariante, "tbRzVariante")
         Me.tbRzVariante.Name = "tbRzVariante"
+        Me.tbRzVariante.ReadOnly = True
         '
-        'TextBox9
+        'tbKnetKennlinie
         '
-        resources.ApplyResources(Me.TextBox9, "TextBox9")
-        Me.TextBox9.Name = "TextBox9"
+        resources.ApplyResources(Me.tbKnetKennlinie, "tbKnetKennlinie")
+        Me.tbKnetKennlinie.Name = "tbKnetKennlinie"
         '
         'lblRzKnKennLinie
         '
@@ -239,12 +299,14 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzAendName.BackColor = System.Drawing.Color.Silver
         resources.ApplyResources(Me.tbRzAendName, "tbRzAendName")
         Me.tbRzAendName.Name = "tbRzAendName"
+        Me.tbRzAendName.ReadOnly = True
         '
         'tbRzGewicht
         '
         Me.tbRzGewicht.BackColor = System.Drawing.Color.Silver
         resources.ApplyResources(Me.tbRzGewicht, "tbRzGewicht")
         Me.tbRzGewicht.Name = "tbRzGewicht"
+        Me.tbRzGewicht.ReadOnly = True
         '
         'lblRzLinienGruppe
         '
@@ -266,6 +328,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzAendDatum.BackColor = System.Drawing.Color.Silver
         resources.ApplyResources(Me.tbRzAendDatum, "tbRzAendDatum")
         Me.tbRzAendDatum.Name = "tbRzAendDatum"
+        Me.tbRzAendDatum.ReadOnly = True
         '
         'lblRzAendDatum
         '
@@ -318,6 +381,18 @@ Partial Class wb_Rezept_Rezeptur
         '
         resources.ApplyResources(Me.lblRzVariante, "lblRzVariante")
         Me.lblRzVariante.Name = "lblRzVariante"
+        '
+        'cbLiniengruppe
+        '
+        Me.cbLiniengruppe.FormattingEnabled = True
+        resources.ApplyResources(Me.cbLiniengruppe, "cbLiniengruppe")
+        Me.cbLiniengruppe.Name = "cbLiniengruppe"
+        '
+        'cbVariante
+        '
+        Me.cbVariante.FormattingEnabled = True
+        resources.ApplyResources(Me.cbVariante, "cbVariante")
+        Me.cbVariante.Name = "cbVariante"
         '
         'lblRzKommentar
         '
@@ -490,18 +565,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.customizeMenuItem.Name = "customizeMenuItem"
         Me.customizeMenuItem.Tag = "customizeMenuItem"
         '
-        'cbLiniengruppe
-        '
-        Me.cbLiniengruppe.FormattingEnabled = True
-        resources.ApplyResources(Me.cbLiniengruppe, "cbLiniengruppe")
-        Me.cbLiniengruppe.Name = "cbLiniengruppe"
-        '
-        'cbVariante
-        '
-        Me.cbVariante.FormattingEnabled = True
-        resources.ApplyResources(Me.cbVariante, "cbVariante")
-        Me.cbVariante.Name = "cbVariante"
-        '
         'Wb_TabControl
         '
         resources.ApplyResources(Me.Wb_TabControl, "Wb_TabControl")
@@ -546,64 +609,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.ShowRootRow = False
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
-        '
-        'ColNr
-        '
-        resources.ApplyResources(Me.ColNr, "ColNr")
-        Me.ColNr.Movable = False
-        Me.ColNr.Name = "ColNr"
-        Me.ColNr.Sortable = False
-        '
-        'ColBezeichnung
-        '
-        resources.ApplyResources(Me.ColBezeichnung, "ColBezeichnung")
-        Me.ColBezeichnung.CellEditor = Me.CellEditor2
-        Me.ColBezeichnung.Movable = False
-        Me.ColBezeichnung.Name = "ColBezeichnung"
-        Me.ColBezeichnung.Sortable = False
-        '
-        'CellEditor2
-        '
-        Me.CellEditor2.Control = Me.UniversalEditBox2
-        '
-        'UniversalEditBox2
-        '
-        Me.UniversalEditBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        resources.ApplyResources(Me.UniversalEditBox2, "UniversalEditBox2")
-        Me.UniversalEditBox2.Name = "UniversalEditBox2"
-        '
-        'ColPreis
-        '
-        resources.ApplyResources(Me.ColPreis, "ColPreis")
-        Me.ColPreis.Name = "ColPreis"
-        Me.ColPreis.Resizable = False
-        Me.ColPreis.Sortable = False
-        '
-        'ColSollwert
-        '
-        resources.ApplyResources(Me.ColSollwert, "ColSollwert")
-        Me.ColSollwert.CellEditor = Me.CellEditor2
-        Me.ColSollwert.CellStyle.VertAlignment = CType(resources.GetObject("ColSollwert.CellStyle.VertAlignment"), System.Drawing.StringAlignment)
-        Me.ColSollwert.Movable = False
-        Me.ColSollwert.Name = "ColSollwert"
-        Me.ColSollwert.Resizable = False
-        Me.ColSollwert.Sortable = False
-        '
-        'ColEinheit
-        '
-        resources.ApplyResources(Me.ColEinheit, "ColEinheit")
-        Me.ColEinheit.Name = "ColEinheit"
-        Me.ColEinheit.Resizable = False
-        Me.ColEinheit.Selectable = False
-        Me.ColEinheit.Sortable = False
-        '
-        'ColProzent
-        '
-        resources.ApplyResources(Me.ColProzent, "ColProzent")
-        Me.ColProzent.CellStyle.HorzAlignment = CType(resources.GetObject("ColProzent.CellStyle.HorzAlignment"), System.Drawing.StringAlignment)
-        Me.ColProzent.Name = "ColProzent"
-        Me.ColProzent.Resizable = False
-        Me.ColProzent.Sortable = False
         '
         'ObjectRowBinding1
         '
@@ -820,7 +825,7 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents BtnLoeschen As Windows.Forms.Button
     Friend WithEvents BtnKopieren As Windows.Forms.Button
     Friend WithEvents BtnDrucken As Windows.Forms.Button
-    Friend WithEvents TextBox9 As Windows.Forms.TextBox
+    Friend WithEvents tbKnetKennlinie As Windows.Forms.TextBox
     Friend WithEvents lblRzKnKennLinie As Windows.Forms.Label
     Friend WithEvents lblEinhPreis As Windows.Forms.Label
     Friend WithEvents lblEinhMehlmenge As Windows.Forms.Label

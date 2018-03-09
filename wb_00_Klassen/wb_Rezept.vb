@@ -1,5 +1,4 @@
 ﻿Imports MySql.Data.MySqlClient
-Imports WinBack
 
 ''' <summary>
 ''' Enthält die komplette Rezeptur als Liste von Rezeptschritten (wb_Rezeptschritt).
@@ -26,6 +25,7 @@ Public Class wb_Rezept
     Private _AenderungUserNr As Integer
     Private _RezeptTeigTemperatur As Double
     Private _LinienGruppe As Integer
+    Private _KneterKennLinie As Integer
 
     Public TeigChargen As New wb_MinMaxOptCharge
     Private _DataHasChanged As Boolean = False
@@ -334,6 +334,15 @@ Public Class wb_Rezept
         End Get
     End Property
 
+    Public Property c As Integer
+        Get
+            Return _KneterKennLinie
+        End Get
+        Set(value As Integer)
+            _KneterKennLinie = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Erzeugt ein neues Rezeptur-Objekt.
     ''' Nach dem Einlesen der Rezeptschritte aus der Datenbank wird das Rezept-Gesamtgewicht berechnet.
@@ -382,6 +391,20 @@ Public Class wb_Rezept
     Public Sub New(RzNr As Integer)
         'Rezeptkopf mit Variante x aus der Datenbank einlesen
         MySQLdbSelect_RzKopf(RzNr, 1)
+    End Sub
+
+    ''' <summary>
+    ''' Einlesen Rezeptkopf und Rezeptur aus der Historie
+    ''' </summary>
+    ''' <param name="RzNr"></param>
+    ''' <param name="RzVariante"></param>
+    ''' <param name="RzAendIndex"></param>
+    Public Sub New(RzNr As Integer, Parent As Object, RzVariante As Integer, RzAendIndex As Integer)
+        'Rezeptkopf mit Variante x aus der Datenbank einlesen
+        MySQLdbSelect_RzKopf(RzNr, RzVariante, RzAendIndex)
+
+        'alle Rezeptschritte aus der Datenbank einlesen
+        MySQLdbSelect_RzSchritt(RzNr, RzVariante, RzAendIndex)
     End Sub
 
     Public Sub New()
@@ -480,15 +503,24 @@ Public Class wb_Rezept
     ''' <param name="RezeptNummer"></param>
     ''' <param name="Variante"></param>
     ''' <returns></returns>
-    Private Function MySQLdbSelect_RzKopf(RezeptNummer As Integer, ByRef Variante As Integer) As Boolean
-        'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+    Private Function MySQLdbSelect_RzKopf(RezeptNummer As Integer, ByRef Variante As Integer, Optional AendIndex As Integer = wb_Global.UNDEFINED) As Boolean
         Dim sql As String
+        Dim winback As wb_Sql
 
-        'Suche nach Rz_Nr
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptKopf, RezeptNummer, Variante)
+        'Lesen Rezeptdaten
+        If AendIndex = wb_Global.UNDEFINED Then
+            'Datenbank-Verbindung öffnen - MySQL-winback
+            winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+            'Suche nach Rz_Nr
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptKopf, RezeptNummer, Variante)
+        Else
+            'Datenbank-Verbindung öffnen - MySQL-wbdaten
+            winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
+            'Suche nach Rz_Nr in His_Rezepte
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlHisRezeptKopf, RezeptNummer, Variante, AendIndex)
+        End If
 
-        'Datensätze aus Tabelle Rezeptschritte lesen
+        'Datensätze aus Tabelle Rezepte lesen
         If winback.sqlSelect(sql) Then
             If winback.Read Then
                 For i = 0 To winback.MySqlRead.FieldCount - 1
@@ -507,13 +539,22 @@ Public Class wb_Rezept
     ''' 
     ''' Gibt True zurück, wenn der Datensatz gefunden wurde.
     ''' </summary>
-    Private Function MySQLdbSelect_RzSchritt(RezeptNummer As Integer, Variante As Integer) As Boolean
-        'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+    Private Function MySQLdbSelect_RzSchritt(RezeptNummer As Integer, Variante As Integer, Optional AendIndex As Integer = wb_Global.UNDEFINED) As Boolean
         Dim sql As String
+        Dim winback As wb_Sql
 
-        'Suche nach Rz_Nr
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptur, RezeptNummer, Variante)
+        'Lesen Rezeptdaten
+        If AendIndex = wb_Global.UNDEFINED Then
+            'Datenbank-Verbindung öffnen - MySQL
+            winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+            'Suche nach Rz_Nr
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptur, RezeptNummer, Variante)
+        Else
+            'Datenbank-Verbindung öffnen - MySQL-wbdaten
+            winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
+            'Suche nach Rz_Nr in His_Rezeptschritte
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlHisRezeptur, RezeptNummer, Variante, AendIndex)
+        End If
 
         'Datensätze aus Tabelle Rezeptschritte lesen
         If winback.sqlSelect(sql) Then
@@ -690,80 +731,86 @@ Public Class wb_Rezept
             Select Case Name
 
                 'Nummer(intern)
-                Case "KO_Nr"
+                Case "KO_Nr", "H_RS_Ko_Nr"
                     _SQLRezeptSchritt.RohNr = Value
                 'Nummer(alpha)
-                Case "KO_Nr_AlNum"
+                Case "KO_Nr_AlNum", "H_KO_Nr_AlNum"
                     _SQLRezeptSchritt.Nummer = Value
                 'Schritt-Nummer
-                Case "RS_Schritt_Nr"
+                Case "RS_Schritt_Nr", "H_RS_Schritt_Nr"
                     _SQLRezeptSchritt.SchrittNr = Value
                 'Parameter-Nummer
-                Case "RS_ParamNr"
+                Case "RS_ParamNr", "H_RS_ParamNr"
                     _SQLRezeptSchritt.ParamNr = Value
                 'Komponenten-Type
-                Case "KO_Type"
+                Case "KO_Type", "H_KO_Type"
                     _SQLRezeptSchritt.Type = wb_Functions.IntToKomponType(Value)
                 'Bezeichnung
-                Case "KO_Bezeichnung"
+                Case "KO_Bezeichnung", "H_KO_Bezeichnung"
                     _SQLRezeptSchritt.Bezeichnung = wb_Functions.MySqlToUtf8(Value)
                 'Kommentar
-                Case "KO_Kommentar"
+                Case "KO_Kommentar", "H_KO_Kommentar"
                     _SQLRezeptSchritt.Kommentar = Value
                 'Sollwert
-                Case "RS_Wert"
+                Case "RS_Wert", "H_RS_Wert"
                     _SQLRezeptSchritt.Sollwert = Value
                 'Sollwert Produktion
-                Case "RS_Wert_Prod"
+                Case "RS_Wert_Prod", "H_RS_Wert_Prod"
                     _SQLRezeptSchritt.WertProd = Value
                 'Par1
-                Case "RS_Par1"
+                Case "RS_Par1", "H_RS_Par1"
                     _SQLRezeptSchritt.Par1 = Value
                 'Par2
-                Case "RS_Par2"
+                Case "RS_Par2", "H_RS_Par2"
                     _SQLRezeptSchritt.Par2 = Value
                 'Par3
-                Case "RS_Par3"
+                Case "RS_Par3", "H_RS_Par3"
                     _SQLRezeptSchritt.Par3 = Value
                 'Einheit
-                Case "E_Einheit"
+                Case "E_Einheit", "H_E_Einheit"
                     _SQLRezeptSchritt.Einheit = wb_Language.TextFilter(wb_Functions.MySqlToUtf8(Value))
                 'zählt NICHT zum Rezeptgesamtgewicht
-                Case "KA_zaehlt_zu_RZ_Gesamtmenge"
+                Case "KA_zaehlt_zu_RZ_Gesamtmenge", "H_KA_zaehlt_zu_RZ_Gesamtmenge"
                     _SQLRezeptSchritt.ZaehltNichtZumRezeptGewicht = wb_sql_Functions.MySQLBoolean(Value)
                     'Preis
-                Case "KA_Preis"
+                Case "KA_Preis", "H_RS_Preis"
                     _SQLRezeptSchritt.PreisProKg = wb_Functions.StrToDouble(Value)
                 'RezeptNr (Rezept im Rezept)
-                Case "KA_RZ_Nr"
+                Case "KA_RZ_Nr", "H_KA_RZ_Nr"
                     _SQLRezeptSchritt.RezeptNr = Value
 
                 'Rezeptkopf - Rezept-Alphanummer
-                Case "RZ_Nr_AlNum"
+                Case "RZ_Nr_AlNum", "H_RZ_Nr_AlNum"
                     RezeptNummer = Value
                 'Rezeptkopf - Rezept-Variante
-                Case "RZ_Variante_Nr"
+                Case "RZ_Variante_Nr", "H_RZ_Variante_Nr"
                     _RezeptVariante = Value
                 'Rezeptkopf - Rezept-Bezeichnung
-                Case "RZ_Bezeichnung"
+                Case "RZ_Bezeichnung", "H_RZ_Bezeichnung"
                     RezeptBezeichnung = wb_Functions.MySqlToUtf8(Value)
+                'Rezeptkopf - Rezept-Kommentar
+                Case "RZ_Kommentar", "H_RZ_Kommentar"
+                    RezeptKommentar = wb_Functions.MySqlToUtf8(Value)
                 'Rezeptkopf Teigtemperatur
-                Case "RZ_Teigtemperatur"
+                Case "RZ_Teigtemperatur", "H_RZ_Teigtemperatur"
                     _RezeptTeigTemperatur = wb_Functions.ValueToDouble(Value)
                 'Rezeptkopf - Änderung-Nummer
-                Case "RZ_Aenderung_Nr"
+                Case "RZ_Aenderung_Nr", "H_RZ_Aenderung_Nr"
                     _AenderungNummer = wb_Functions.ValueToInt(Value)
                 'Rezeptkopf - Änderung-Datum
-                Case "RZ_Aenderung_Datum"
+                Case "RZ_Aenderung_Datum", "H_RZ_Aenderung_Datum"
                     _AenderungDatum = Value
                 'Rezeptkopf - Änderung-Name
-                Case "RZ_Aenderung_Name"
+                Case "RZ_Aenderung_Name", "H_RZ_Aenderung_Name"
                     _AenderungName = Value
+                'Rezeptkopf - Änderung-UserNummer
+                Case "RZ_Aenderung_User", "H_RZ_Aenderung_User"
+                    _AenderungUserNr = wb_Functions.ValueToInt(Value)
                 'Rezeptkopf - Liniengruppe
-                Case "RZ_Liniengruppe"
+                Case "RZ_Liniengruppe", "H_RZ_Liniengruppe"
                     _LinienGruppe = wb_Functions.ValueToInt(Value)
 
-                'Rezeptkopf - MinCharge in kg
+                    'Rezeptkopf - MinCharge in kg
                 Case "RZ_Charge_Min"
                     '_Charge_Min = wb_Functions.StrToDouble(Value)
                     TeigChargen.MinCharge.MengeInkg = wb_Functions.StrToDouble(Value)
@@ -776,9 +823,12 @@ Public Class wb_Rezept
                     '_Charge_Opt = wb_Functions.StrToDouble(Value)
                     TeigChargen.OptCharge.MengeInkg = wb_Functions.StrToDouble(Value)
                 'Rezeptkopf - Rezeptgewicht
-                Case "RZ_Gewicht"
+                Case "RZ_Gewicht", "H_RZ_Gewicht"
                     '_RZ_Gewicht = wb_Functions.StrToDouble(Value)
                     TeigChargen.TeigGewicht = wb_Functions.StrToDouble(Value)
+                'Rezeptkopf - Kneterkennlinie
+                Case "RZ_Kneterkennlinie", "H_RZ_Kneterkennlinie"
+                    _KneterKennLinie = wb_Functions.StrToInt(Value)
 
             End Select
         Catch ex As Exception
@@ -839,19 +889,23 @@ Public Class wb_Rezept
         winback.Close()
         Return True
     End Function
-    Public Function MySQLdbWrite_Rezept() As Boolean
+
+    Public Function MySQLdbWrite_Rezept(RezepturChanged As Boolean) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
         Dim sqlData As String
 
-        'Änderungsdatum ist das aktuelle Datum
-        AenderungDatum = Date.Now
-        'aktuellen Benutzer NUmmer/Name eintragen
-        AenderungUserNr = wb_GlobalSettings.AktUserNr
-        AenderungName = wb_GlobalSettings.AktUserName
-        'Änderungs-Index wird um Eins erhöht
-        AenderungNummer += 1
+        'wenn die Rezeptur geändert wurde, wird der Änderungs-Index hochgezählt
+        If RezepturChanged Then
+            'Änderungsdatum ist das aktuelle Datum
+            AenderungDatum = Date.Now
+            'aktuellen Benutzer NUmmer/Name eintragen
+            AenderungUserNr = wb_GlobalSettings.AktUserNr
+            AenderungName = wb_GlobalSettings.AktUserName
+            'Änderungs-Index wird um Eins erhöht
+            AenderungNummer += 1
+        End If
 
         'sql-Kommando UPDATE bilden
         sqlData = "RZ_Nr_AlNum = '" & _RezeptNummer & "', RZ_Bezeichnung = '" & _RezeptBezeichnung & "', RZ_Gewicht = '" & wb_Functions.FormatStr(RezeptGewicht, 3) & "', " &

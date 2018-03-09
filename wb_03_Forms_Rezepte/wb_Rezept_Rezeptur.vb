@@ -13,16 +13,22 @@ Public Class wb_Rezept_Rezeptur
     Private _RzChanged As Boolean = False
     Private _RzKopfChanged As Boolean = False
     Private _RzHinweiseChanged As Boolean
+    Private _Historical As Boolean = False
 
     Private _RezeptSchritt As wb_Rezeptschritt = Nothing    'aktuelle ausgewählter Rezeptschritt (Popup)
     Private _RezeptSchrittNeu As wb_Rezeptschritt = Nothing 'neuer Rezeptschritt (Auswahl-Liste)
 
     ''' <summary>
-    ''' Objekt Rezeptur instanzieren
+    ''' Objekt Rezeptur instanzieren.
+    ''' 
+    ''' Optional kann eine Änderungs-Nummer mit übergeben werden, dann werden die Rezept-Daten aus der Historie geladen.
+    ''' Eine Änderung der Rezeptur ist dann nicht möglich
     ''' </summary>
     ''' <param name="RzNummer"></param>
     ''' <param name="RzVariante"></param>
-    Public Sub New(RzNummer As Integer, RzVariante As Integer)
+    Public Sub New(RzNummer As Integer, RzVariante As Integer, Optional RzAendIndex As Integer = wb_Global.UNDEFINED)
+        'Nur Anzeige bei historischen Rezepten
+        _Historical = (RzAendIndex <> wb_Global.UNDEFINED)
 
         'Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -35,8 +41,16 @@ Public Class wb_Rezept_Rezeptur
         ' TabControl - HideTabs
         Wb_TabControl.HideTabs = True
 
-        Rezept = New wb_Rezept(_RzNummer, Nothing, _RzVariante)
-        Me.Text = Rezept.RezeptNummer & "/V" & Rezept.Variante & " " & Rezept.RezeptBezeichnung
+        'Einlesen Rezeptkopf und Rezeptschritte 
+        If RzAendIndex = wb_Global.UNDEFINED Then
+            'Rezeptkopf und Rezeptschritte aktuell (winback)
+            Rezept = New wb_Rezept(_RzNummer, Nothing, _RzVariante)
+            Me.Text = Rezept.RezeptNummer & "/V" & Rezept.Variante & " " & Rezept.RezeptBezeichnung
+        Else
+            'Rezeptkopf und Rezeptschritte aus der Historie (wbdaten)
+            Rezept = New wb_Rezept(_RzNummer, Nothing, _RzVariante, RzAendIndex)
+            Me.Text = Rezept.RezeptNummer & "/V" & Rezept.Variante & " " & Rezept.RezeptBezeichnung & " Änderung " & RzAendIndex & " vom " & Rezept.AenderungDatum
+        End If
 
         'Rezeptnummer
         tbRzNummer.Text = Rezept.RezeptNummer
@@ -72,8 +86,22 @@ Public Class wb_Rezept_Rezeptur
         'falls keine Rezeptschritte vorhanden sind muss das Popup-Menu ausserhalb erstellt werden
         VT_MakeTreePopup()
 
-        'Berechnete Rezepturwerte anzeigen
-        ShowCalculateRezeptDaten(False)
+        'Bei der Anzeige von Rezepten aus der Historie sind keine Änderungen zulässig
+        If _Historical Then
+            tbRzNummer.Enabled = False
+            tbRezeptName.Enabled = False
+            tbRzKommentar.Enabled = False
+            tbRzTeigTemp.Enabled = False
+            tbKnetKennlinie.Enabled = False
+
+            cbVariante.Enabled = False
+            cbLiniengruppe.Enabled = False
+
+            VirtualTree.Enabled = False
+        Else
+            'Berechnete Rezepturwerte anzeigen
+            ShowCalculateRezeptDaten(False)
+        End If
 
         'Cursor wieder zurücksetzen
         Me.Cursor = Cursors.Default
@@ -264,7 +292,10 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     ''' <summary>
-    ''' Fenster schliessen. Falls notwendig Daten sichern
+    ''' Fenster schliessen. Falls notwendig Daten sichern. Beim Schliessen werden geänderte Rezepthinweise, Rezepturdaten und Rezeptkopf-Daten
+    ''' in die MySQL-DB geschrieben.
+    ''' Beim Sichern der Rezepturdaten wird auch eine Kopie der aktuellen Rezeptur in die Rezept-Historie geschrieben
+    ''' Mit dem Sicherung des Rezeptkopfes wird der Änderungs-Index erhöht (falls die Rezeptur geändert wurde).
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -283,7 +314,7 @@ Public Class wb_Rezept_Rezeptur
 
         'Rezeptkopfdaten schreiben
         If _RzKopfChanged Or _RzChanged Then
-            Rezept.MySQLdbWrite_Rezept()
+            Rezept.MySQLdbWrite_Rezept(_RzChanged)
             wb_Rezept_Shared.Liste_Refresh(sender)
         End If
     End Sub
@@ -961,21 +992,25 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     Private Sub tbRezeptName_Leave(sender As Object, e As EventArgs) Handles tbRezeptName.Leave
-        _RzKopfChanged = True
-        Rezept.RezeptBezeichnung = tbRezeptName.Text
-        ToolStripRezeptChange.Visible = True
+        CheckTextBoxChanged(tbRezeptName, Rezept.RezeptBezeichnung)
     End Sub
 
     Private Sub tbRzKommentar_Leave(sender As Object, e As EventArgs) Handles tbRzKommentar.Leave
-        _RzKopfChanged = True
-        Rezept.RezeptKommentar = tbRzKommentar.Text
-        ToolStripRezeptChange.Visible = True
+        CheckTextBoxChanged(tbRzKommentar, Rezept.RezeptKommentar)
     End Sub
 
-    Private Sub tbRzNummer_TextChanged(sender As Object, e As EventArgs) Handles tbRzNummer.TextChanged
-        _RzKopfChanged = True
-        Rezept.RezeptNummer = tbRzNummer.Text
-        ToolStripRezeptChange.Visible = True
+    Private Sub tbRzNummer_Leave(sender As Object, e As EventArgs) Handles tbRzNummer.Leave
+        CheckTextBoxChanged(tbRzNummer, Rezept.RezeptNummer)
     End Sub
 
+    Private Function CheckTextBoxChanged(tb As TextBox, ByRef Value As String) As Boolean
+        If tb.Text <> Value Then
+            _RzKopfChanged = True
+            Value = tb.Text
+            ToolStripRezeptChange.Visible = True
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 End Class

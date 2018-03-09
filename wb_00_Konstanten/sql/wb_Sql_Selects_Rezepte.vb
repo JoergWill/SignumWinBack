@@ -111,6 +111,15 @@
                                                   "And ((KomponTypen.KT_Rezept='R') OR (KomponTypen.KT_Rezept='X')) " &
                                                   "ORDER BY RezeptSchritte.RS_Schritt_Nr, RezeptSchritte.RS_ParamNr"
 
+    'Sql-Statemente Lesen Rezeptkopf aus His_Rezepte
+    Public Const sqlHisRezeptKopf = "SELECT * FROM His_Rezepte WHERE H_RZ_Nr=[0] " &
+                                    "AND (H_RZ_Variante_Nr=[1] Or H_RZ_Variante_Nr=1 Or H_RZ_Variante_Nr=0) " &
+                                    "AND H_RZ_Aenderung_Nr=[2] ORDER BY H_RZ_Variante_Nr DESC"
+
+    'Sql-Statemente Lesen Rezeptur aus His_RezeptSchritte
+    Public Const sqlHisRezeptur = "SELECT * FROM His_RezeptSchritte WHERE H_RS_RZ_Nr=[0] " &
+                                  "AND H_RS_RZ_Variante_Nr=[1] AND H_RS_Aenderung_Nr=[2] ORDER BY H_RS_Schritt_Nr, H_RS_ParamNr"
+
 
     'Sql-Statement neuen Rezeptschritt schreiben
     Public Const sqlAddRZSchritt = "INSERT INTO RezeptSchritte([0]) VALUES ([1])"
