@@ -29,6 +29,7 @@ Public Class WinBack
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Ribbon_ActiveTabChanged(sender As Object, e As EventArgs) Handles rTab.ActiveTabChanged
+
         If isInitialised Then
 
             'Chargen/Statistik
@@ -136,12 +137,6 @@ Public Class WinBack
         'Programm-Fenster maximieren
         Me.WindowState = FormWindowState.Maximized
 
-        'Initialisierung beendet
-        rTab.ActiveTab = rbAbout
-        isInitialised = True
-
-        'TEST REZEPTE
-        'rTab.ActiveTab = rbRezepte
     End Sub
 
     ''' <summary>
@@ -202,6 +197,10 @@ Public Class WinBack
             wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
         End If
         wb_AktUser.SetUserRechte(Me)
+
+        'Initialisierung beendet
+        isInitialised = True
+        rTab.ActiveTab = rbAbout
     End Sub
 
     ''' <summary>
@@ -278,7 +277,7 @@ Public Class WinBack
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbSprache_Click(sender As Object, e As EventArgs) Handles rbDE.Click, rbSL.Click, rbSK.Click, rbRU.Click, rbRO.Click, rbPT.Click, rbNL.Click, rbHU.Click, rbFR.Click, rbES.Click, rbEN.Click
+    Private Sub rbSprache_Click(sender As Object, e As EventArgs) Handles rbSL.Click, rbSK.Click, rbRU.Click, rbRO.Click, rbPT.Click, rbNL.Click, rbHU.Click, rbFR.Click, rbES.Click, rbEN.Click, rbDE.Click
         Dim Language As String = DirectCast(sender, RibbonButton).Value
         wb_Language.SetLanguage(Language)
         ChangeLanguage()
@@ -318,6 +317,10 @@ Public Class WinBack
         ShowStatusBar()
     End Sub
 
+    ''' <summary>
+    ''' Speichert die Größe und Position aller Controls. Danach werden alle Controls gelöscht.
+    ''' Größe und Position des Main-Windows werden unter WinBack im Dictionary gespeichert.
+    ''' </summary>
     Private Sub RemoveSaveControls()
         Dim clp As wb_Global.controlSizeandLocation
         'Liste löschen (Dictonary)
@@ -341,6 +344,12 @@ Public Class WinBack
         _Controls.Add("WinBack", clp)
     End Sub
 
+    ''' <summary>
+    ''' Stellt Größe und Position aller Controls nach dem Neuzeichenen durch InitializeComponent
+    ''' wieder her. Zunächst wird das Main-Window (WinBack) wiederhergestellt.
+    ''' 
+    ''' Die Daten müssen zuvor mit RemoveSaveControls im Dictionary gepeichert werden.
+    ''' </summary>
     Private Sub ResizeControls()
         Dim clp As wb_Global.controlSizeandLocation
         'Main Window
@@ -353,8 +362,6 @@ Public Class WinBack
             If _Controls.TryGetValue(ctl.Name, clp) Then
                 ctl.Size = clp.cSize
                 ctl.Location = clp.cLocation
-
-                Debug.Print("Resize " & ctl.Name & "/" & ctl.Top & "/" & ctl.Left & "/" & ctl.Height & "/" & ctl.Width)
             End If
         Next
     End Sub
@@ -589,10 +596,6 @@ Public Class WinBack
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")
         End If
-    End Sub
-
-    Private Sub StatusStrip_Resize(sender As Object, e As EventArgs) Handles StatusStrip.Resize
-        Debug.Print("Event Resize " & StatusStrip.Name & "/" & StatusStrip.Top & "/" & StatusStrip.Left & "/" & StatusStrip.Height & "/" & StatusStrip.Width)
     End Sub
 
     Private Sub rbChargenListe_Click(sender As Object, e As EventArgs) Handles rbChargenListe.Click

@@ -1049,7 +1049,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAA4
-        EAAAAk1TRnQBSQFMAgEBCwEAAegBAwHoAQMBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        EAAAAk1TRnQBSQFMAgEBCwEAAQgBBAEIAQQBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -1143,40 +1143,6 @@
   <data name="rTab.OrbDropDown.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="rTab.OrbDropDown.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="rTab.OrbDropDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>300, 339</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="rTab.OrbDropDown.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="rTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1024, 163</value>
-  </data>
-  <data name="rTab.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="rbAbout.Text" xml:space="preserve">
-    <value>Info</value>
-  </data>
-  <data name="rTab.Text" xml:space="preserve">
-    <value>WinBack</value>
-  </data>
-  <data name="&gt;&gt;rTab.Name" xml:space="preserve">
-    <value>rTab</value>
-  </data>
-  <data name="&gt;&gt;rTab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Ribbon, System.Windows.Forms.Ribbon, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;rTab.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;rTab.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="rbAbmelden.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -1240,50 +1206,11 @@
   <data name="rbInfo.Text" xml:space="preserve">
     <value>Info</value>
   </data>
-  <data name="rbDE.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="rbDE.LargeImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="rbDE.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
   <data name="rbDE.Text" xml:space="preserve">
     <value>Deutsch</value>
   </data>
   <data name="rbDE.ToolTip" xml:space="preserve">
     <value>Umschaltung der aktiven Sprache</value>
-  </data>
-  <data name="RibbonButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="RibbonButton1.LargeImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABpJREFUWEftwQEBAAAAgiD/r25IQAAAAMC5GhAgAAGdeElDAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="RibbonButton1.SmallImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABNJREFUOE9jGAWjYBSMAjBgYAAABBAAAadEfGMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="RibbonButton1.Text" xml:space="preserve">
-    <value>RibbonButton1</value>
   </data>
   <data name="rbHU.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1524,6 +1451,40 @@
   </data>
   <data name="rbRO.ToolTip" xml:space="preserve">
     <value>Umschaltung der aktiven Sprache</value>
+  </data>
+  <data name="rTab.OrbDropDown.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="rTab.OrbDropDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>300, 339</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="rTab.OrbDropDown.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="rTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1024, 163</value>
+  </data>
+  <data name="rTab.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="rbAbout.Text" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="rTab.Text" xml:space="preserve">
+    <value>WinBack</value>
+  </data>
+  <data name="&gt;&gt;rTab.Name" xml:space="preserve">
+    <value>rTab</value>
+  </data>
+  <data name="&gt;&gt;rTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Ribbon, System.Windows.Forms.Ribbon, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;rTab.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;rTab.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="rbAnmelden.Text" xml:space="preserve">
     <value>Anmelden</value>
@@ -2489,12 +2450,6 @@
   </data>
   <data name="&gt;&gt;rbDE.Type" xml:space="preserve">
     <value>System.Windows.Forms.RibbonOrbRecentItem, System.Windows.Forms.Ribbon, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;RibbonButton1.Name" xml:space="preserve">
-    <value>RibbonButton1</value>
-  </data>
-  <data name="&gt;&gt;RibbonButton1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RibbonButton, System.Windows.Forms.Ribbon, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;rbHU.Name" xml:space="preserve">
     <value>rbHU</value>

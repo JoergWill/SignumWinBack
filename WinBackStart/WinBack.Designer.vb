@@ -139,7 +139,6 @@ Partial Class WinBack
         Me.rbEnde = New System.Windows.Forms.RibbonButton()
         Me.rbInfo = New System.Windows.Forms.RibbonButton()
         Me.rbDE = New System.Windows.Forms.RibbonOrbRecentItem()
-        Me.RibbonButton1 = New System.Windows.Forms.RibbonButton()
         Me.rbHU = New System.Windows.Forms.RibbonOrbRecentItem()
         Me.rbNL = New System.Windows.Forms.RibbonOrbRecentItem()
         Me.rbEN = New System.Windows.Forms.RibbonOrbRecentItem()
@@ -165,6 +164,7 @@ Partial Class WinBack
         Me.BtnDelete = New System.Windows.Forms.Button()
         Me.BtnSaveAs = New System.Windows.Forms.Button()
         Me.BtnSave = New System.Windows.Forms.Button()
+        Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
         'rbSeparator
@@ -1204,23 +1204,10 @@ Partial Class WinBack
         '
         'rbDE
         '
-        Me.rbDE.CheckOnClick = True
-        Me.rbDE.DropDownItems.Add(Me.RibbonButton1)
-        Me.rbDE.Image = CType(resources.GetObject("rbDE.Image"), System.Drawing.Image)
-        Me.rbDE.LargeImage = CType(resources.GetObject("rbDE.LargeImage"), System.Drawing.Image)
         Me.rbDE.Name = "rbDE"
-        Me.rbDE.SmallImage = CType(resources.GetObject("rbDE.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbDE, "rbDE")
         Me.rbDE.ToolTipImage = Global.WinBack.My.Resources.Resources.LangDE
         Me.rbDE.Value = "de-DE"
-        '
-        'RibbonButton1
-        '
-        Me.RibbonButton1.Image = CType(resources.GetObject("RibbonButton1.Image"), System.Drawing.Image)
-        Me.RibbonButton1.LargeImage = CType(resources.GetObject("RibbonButton1.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton1.Name = "RibbonButton1"
-        Me.RibbonButton1.SmallImage = CType(resources.GetObject("RibbonButton1.SmallImage"), System.Drawing.Image)
-        resources.ApplyResources(Me.RibbonButton1, "RibbonButton1")
         '
         'rbHU
         '
@@ -1379,20 +1366,24 @@ Partial Class WinBack
         '
         resources.ApplyResources(Me.StatusStrip, "StatusStrip")
         Me.StatusStrip.BackgroundImage = Global.WinBack.My.Resources.Resources.StatusStripBackground
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblVersion, Me.lblNetworkIP, Me.lblLanguage})
         Me.StatusStrip.Name = "StatusStrip"
         '
         'lblVersion
         '
+        Me.lblVersion.BackColor = System.Drawing.Color.Transparent
         Me.lblVersion.Name = "lblVersion"
         resources.ApplyResources(Me.lblVersion, "lblVersion")
         '
         'lblNetworkIP
         '
+        Me.lblNetworkIP.BackColor = System.Drawing.Color.Transparent
         Me.lblNetworkIP.Name = "lblNetworkIP"
         resources.ApplyResources(Me.lblNetworkIP, "lblNetworkIP")
         '
         'lblLanguage
         '
+        Me.lblLanguage.BackColor = System.Drawing.Color.Transparent
         Me.lblLanguage.Image = Global.WinBack.My.Resources.Resources.LangDE
         resources.ApplyResources(Me.lblLanguage, "lblLanguage")
         Me.lblLanguage.Name = "lblLanguage"
@@ -1466,6 +1457,8 @@ Partial Class WinBack
         Me.KeyPreview = True
         Me.Name = "WinBack"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
+        Me.StatusStrip.ResumeLayout(False)
+        Me.StatusStrip.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1511,11 +1504,10 @@ Partial Class WinBack
     Friend WithEvents rbStatRezepte As RibbonButton
     Friend WithEvents rbAbmelden As RibbonButton
     Friend WithEvents rbEnde As RibbonButton
-    Friend WithEvents rbDE As RibbonOrbRecentItem
     Friend WithEvents rbHU As RibbonOrbRecentItem
     Friend WithEvents rbSeparator As RibbonSeparator
     Friend WithEvents rbInfo As RibbonButton
-    Friend WithEvents RibbonButton1 As RibbonButton
+    Friend WithEvents rbDE As RibbonOrbRecentItem
     Friend WithEvents rbNL As RibbonOrbRecentItem
     Friend WithEvents rbEN As RibbonOrbRecentItem
     Friend WithEvents rbPT As RibbonOrbRecentItem
