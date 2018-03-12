@@ -1,6 +1,7 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class WinBack
     Inherits System.Windows.Forms.RibbonForm
+    Private _FirstRun As Boolean = True
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()>
@@ -1459,13 +1460,12 @@ Partial Class WinBack
         Me.Controls.Add(Me.BtnDelete)
         Me.Controls.Add(Me.BtnSaveAs)
         Me.Controls.Add(Me.BtnSave)
-        Me.Controls.Add(Me.rTab)
         Me.Controls.Add(Me.StatusStrip)
+        Me.Controls.Add(Me.rTab)
         Me.IsMdiContainer = True
         Me.KeyPreview = True
         Me.Name = "WinBack"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
-        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.ResumeLayout(False)
 
     End Sub

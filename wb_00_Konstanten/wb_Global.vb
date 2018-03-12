@@ -45,6 +45,11 @@
         Gesamtkennzahlen
     End Enum
 
+    Public Structure controlSizeandLocation
+        Public cSize As Drawing.Size
+        Public cLocation As Drawing.Point
+    End Structure
+
     Public Structure ktTyp301Param
         Public ParamNr As Integer
         Public Bezeichnung As String

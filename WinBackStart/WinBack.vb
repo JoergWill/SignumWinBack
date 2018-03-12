@@ -1,9 +1,11 @@
-﻿Imports System.Globalization
+﻿Imports System.ComponentModel
+Imports System.Globalization
 Imports System.Threading
 
 Public Class WinBack
     Private isInitialised As Boolean = False
     Private _LayoutFilename As String = Nothing
+    Private _Controls As New Dictionary(Of String, wb_Global.controlSizeandLocation)
 
     Private AktForm As Object
     Dim MdiChargen As Chargen_Main
@@ -85,6 +87,9 @@ Public Class WinBack
             'Auswahl-Box mit Layoutnamen laden (Der letzte Layout-Name wir aus der Ini-Datei geladen)
             GetLayoutFileNames(LayoutFilename)
             'nach vorne holen und anzeigen
+            'Mdi-Fenster
+            oForm.MdiParent = Me
+            oForm.Dock = DockStyle.Fill
             oForm.BringToFront()
         Else
             'Layout muss neu geladen werden
@@ -94,12 +99,13 @@ Public Class WinBack
             'Layout-Filename laden
             AktFormSendCommand("SETDKPNLFILENAME", DkPnlConfigFileName)
             'anzeigen
+            'Mdi-Fenster
+            oForm.MdiParent = Me
+            oForm.Dock = DockStyle.Fill
             oForm.Show()
         End If
 
-        'Mdi-Fenster
-        oForm.MdiParent = Me
-        oForm.Dock = DockStyle.Fill
+
     End Sub
 
     ''' <summary>
@@ -126,6 +132,9 @@ Public Class WinBack
         ProcessParameter()
         'Sprache und Versions-Nummer in Status-Bar anzeigen
         ShowStatusBar()
+
+        'Programm-Fenster maximieren
+        Me.WindowState = FormWindowState.Maximized
 
         'Initialisierung beendet
         rTab.ActiveTab = rbAbout
@@ -294,12 +303,12 @@ Public Class WinBack
             Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Language.GetLanguage)
             Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Language.GetLanguage)
 
-            'Entfernen aller Controls
-            Me.Controls.Clear()
+            'Größe und Position aller Controls merken und Controls entfernen
+            RemoveSaveControls()
+            'Control neu initialisieren
             InitializeComponent()
-
-            'Me.Location = pt
-            'Me.Size = sz
+            'Größe und Position alle Controls wiederherstellen
+            ResizeControls()
 
             'Verarbeitung wieder freigeben
             isInitialised = True
@@ -307,6 +316,47 @@ Public Class WinBack
 
         'Sprache und Versions-Nummer in Status-Bar anzeigen
         ShowStatusBar()
+    End Sub
+
+    Private Sub RemoveSaveControls()
+        Dim clp As wb_Global.controlSizeandLocation
+        'Liste löschen (Dictonary)
+        _Controls.Clear()
+
+        'Liste aller Controls mit Name und Location
+        For Each ctl As Control In Me.Controls
+            clp.cLocation = ctl.Location
+            clp.cSize = ctl.Size
+            _Controls.Add(ctl.Name, clp)
+        Next
+
+        'alle Controls aus der Liste löschen
+        For Each c As String In _Controls.Keys
+            Me.Controls.RemoveByKey(c)
+        Next
+
+        'Main Window
+        clp.cLocation = Me.Location
+        clp.cSize = Me.Size
+        _Controls.Add("WinBack", clp)
+    End Sub
+
+    Private Sub ResizeControls()
+        Dim clp As wb_Global.controlSizeandLocation
+        'Main Window
+        If _Controls.TryGetValue("WinBack", clp) Then
+            Me.Size = clp.cSize
+            Me.Location = clp.cLocation
+        End If
+        'Resize all Controls
+        For Each ctl As Control In Me.Controls
+            If _Controls.TryGetValue(ctl.Name, clp) Then
+                ctl.Size = clp.cSize
+                ctl.Location = clp.cLocation
+
+                Debug.Print("Resize " & ctl.Name & "/" & ctl.Top & "/" & ctl.Left & "/" & ctl.Height & "/" & ctl.Width)
+            End If
+        Next
     End Sub
 
     ''' <summary>
@@ -542,6 +592,24 @@ Public Class WinBack
     End Sub
 
     Private Sub StatusStrip_Resize(sender As Object, e As EventArgs) Handles StatusStrip.Resize
-        Debug.Print("Resize StatusBar " & StatusStrip.Top & "/" & StatusStrip.Left & "//" & StatusStrip.Width & "/" & StatusStrip.Height)
+        Debug.Print("Event Resize " & StatusStrip.Name & "/" & StatusStrip.Top & "/" & StatusStrip.Left & "/" & StatusStrip.Height & "/" & StatusStrip.Width)
+    End Sub
+
+    Private Sub rbChargenListe_Click(sender As Object, e As EventArgs) Handles rbChargenListe.Click
+        Dim ct = DirectCast(rTab.Renderer, RibbonProfessionalRenderer).ColorTable
+        ct.ThemeName = "WinBack"
+        ct.ThemeAuthor = "JWill"
+        ct.ThemeAuthorEmail = "jw@winback.de"
+        ct.ThemeAuthorWebsite = "www.winback.de"
+        ct.ThemeDateCreated = DateTime.Now()
+        Dim content As String = ct.WriteThemeIniFile()
+        System.IO.File.WriteAllText("WinBackTheme.ini", content)
+    End Sub
+
+    Private Sub rbChargenDetails_Click(sender As Object, e As EventArgs) Handles rbChargenDetails.Click
+        Dim content As String = System.IO.File.ReadAllText("WinBackTheme.ini")
+        Theme.ColorTable.ReadThemeIniFile(content)
+        rTab.Refresh()
+        Me.Refresh()
     End Sub
 End Class
