@@ -20,6 +20,7 @@ Public Class wb_Rezeptschritt
     Private _BruttoRezGewicht As Double
     Private _RezPreis As Double
     Private _ZaehltNichtZumRezeptGewicht As Boolean
+    Private _QUIDRelevant As Boolean = False
     Private _ktTyp301 As New wb_KomponParam301
     Private _ZutatenListe As wb_Global.ZutatenListe
     Private _ZutatenListeExtern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoff)
@@ -31,6 +32,9 @@ Public Class wb_Rezeptschritt
 
     ' Bedeutung der Zusatzparameter
     '=============================
+    '
+    'Hand/Auto-Komponente  RS_Par1       - QUID-Relevant (RS_Par1 = -1)
+    '
     ' Wasser-Mengen-Satz   RS_Par2       - letzte Dosiertemperatur
     '
     ' Wasser-Temp-Satz     RS_Par1       - TTS-Korrekturwert 1
@@ -47,7 +51,7 @@ Public Class wb_Rezeptschritt
     Private _Par1 As String
     Private _Par2 As String
     Private _Par3 As String
-    Private _WertProd As String
+    Private _WertProd As String = ""
 
 
     ''' <summary>
@@ -868,6 +872,11 @@ Public Class wb_Rezeptschritt
             Return _Par1
         End Get
         Set(value As String)
+            'Bei Komponenten-Type 101 und 102 wird in RS_Par1=-1 das Flag QUID-Relevant gespeichert
+            If value = wb_Global.RS_Par1_QUID And Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Then
+                _QUIDRelevant = True
+            End If
+            'Wert speichern
             _Par1 = value
         End Set
     End Property
@@ -896,6 +905,25 @@ Public Class wb_Rezeptschritt
         End Get
         Set(value As String)
             _WertProd = value
+        End Set
+    End Property
+
+    Public Sub SaveSollwert_org()
+        If _WertProd = "" And wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
+            _WertProd = Sollwert
+        End If
+    End Sub
+
+    Public Property QUIDRelevant As Boolean
+        Get
+            Return _QUIDRelevant
+        End Get
+        Set(value As Boolean)
+            If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
+                'Setze Bit in Rezeptschritte.RS_Par1)
+                _Par1 = wb_Global.RS_Par1_QUID
+            End If
+            _QUIDRelevant = value
         End Set
     End Property
 

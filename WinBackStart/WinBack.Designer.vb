@@ -1164,6 +1164,7 @@ Partial Class WinBack
         Me.rTab.OrbDropDown.TabIndex = CType(resources.GetObject("rTab.OrbDropDown.TabIndex"), Integer)
         Me.rTab.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2013
         Me.rTab.OrbText = "Datei"
+        Me.rTab.PanelCaptionHeight = 20
         Me.rTab.RibbonTabFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rTab.Tabs.Add(Me.rbChargen)
         Me.rTab.Tabs.Add(Me.rbArtikel)
@@ -1204,7 +1205,10 @@ Partial Class WinBack
         '
         'rbDE
         '
+        Me.rbDE.Image = CType(resources.GetObject("rbDE.Image"), System.Drawing.Image)
+        Me.rbDE.LargeImage = CType(resources.GetObject("rbDE.LargeImage"), System.Drawing.Image)
         Me.rbDE.Name = "rbDE"
+        Me.rbDE.SmallImage = CType(resources.GetObject("rbDE.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbDE, "rbDE")
         Me.rbDE.ToolTipImage = Global.WinBack.My.Resources.Resources.LangDE
         Me.rbDE.Value = "de-DE"
@@ -1453,10 +1457,11 @@ Partial Class WinBack
         Me.Controls.Add(Me.BtnSave)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.rTab)
+        Me.DoubleBuffered = True
         Me.IsMdiContainer = True
         Me.KeyPreview = True
         Me.Name = "WinBack"
-        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
+        Me.TransparencyKey = System.Drawing.Color.Transparent
         Me.StatusStrip.ResumeLayout(False)
         Me.StatusStrip.PerformLayout()
         Me.ResumeLayout(False)

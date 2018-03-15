@@ -182,8 +182,9 @@
       <HintPath>..\dll\TreeListView\System.Runtime.InteropServices.APIs.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.Ribbon">
-      <HintPath>..\dll\OfficeRibbon 4.0\System.Windows.Forms.Ribbon.dll</HintPath>
+    <Reference Include="System.Windows.Forms.Ribbon, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\OfficeRibbon 4.6\System.Windows.Forms.Ribbon.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms.TreeListView">
       <HintPath>..\dll\TreeListView\System.Windows.Forms.TreeListView.dll</HintPath>
@@ -213,6 +214,18 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About_WinBack.Designer.vb">
+      <DependentUpon>About_WinBack.vb</DependentUpon>
+    </Compile>
+    <Compile Include="About_WinBack.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin_ThemeControl.Designer.vb">
+      <DependentUpon>Admin_ThemeControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Admin_ThemeControl.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Admin_Main.Designer.vb">
       <DependentUpon>Admin_Main.vb</DependentUpon>
     </Compile>
@@ -298,6 +311,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="About_WinBack.resx">
+      <DependentUpon>About_WinBack.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin_ThemeControl.resx">
+      <DependentUpon>Admin_ThemeControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DockPanel_Main.resx">
       <DependentUpon>DockPanel_Main.vb</DependentUpon>
     </EmbeddedResource>

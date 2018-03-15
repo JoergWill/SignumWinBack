@@ -556,6 +556,18 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared ReadOnly Property pVersionTxtPath As String
+        Get
+            Return pProgrammPath & "Version.txt"
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property pColorThemePath As String
+        Get
+            Return pProgrammPath & "WinBackTheme.ini"
+        End Get
+    End Property
+
     Public Shared Property pProgrammPath As String
         Get
             If _pProgrammPath = Nothing Then

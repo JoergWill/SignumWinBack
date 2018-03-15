@@ -1,11 +1,13 @@
 ﻿Imports System.ComponentModel
 Imports System.Globalization
+Imports System.Runtime.InteropServices
 Imports System.Threading
 
 Public Class WinBack
     Private isInitialised As Boolean = False
     Private _LayoutFilename As String = Nothing
     Private _Controls As New Dictionary(Of String, wb_Global.controlSizeandLocation)
+    Private _WinBackWindowState As FormWindowState
 
     Private AktForm As Object
     Dim MdiChargen As Chargen_Main
@@ -16,6 +18,7 @@ Public Class WinBack
     Dim MdiLinien As Linien_Main
     Dim MdiPlanung As Planung_Main
     Dim MdiAdmin As Admin_Main
+    Private WithEvents About As New About_WinBack
 
 #Region "MainMenu"
     ''' <summary>
@@ -293,11 +296,6 @@ Public Class WinBack
             'Verarbeitung sperren
             isInitialised = False
 
-            'Aktuelle Position und Größe merken
-            Dim pt As Point = Me.Location
-            Dim sz As Size = Me.Size
-            Dim cz As Size = Me.ClientSize
-
             'Umschaltung aktive Sprache
             Thread.CurrentThread.CurrentUICulture = New CultureInfo(wb_Language.GetLanguage)
             Thread.CurrentThread.CurrentCulture = New CultureInfo(wb_Language.GetLanguage)
@@ -342,6 +340,7 @@ Public Class WinBack
         clp.cLocation = Me.Location
         clp.cSize = Me.Size
         _Controls.Add("WinBack", clp)
+        _WinBackWindowState = Me.WindowState
     End Sub
 
     ''' <summary>
@@ -356,6 +355,7 @@ Public Class WinBack
         If _Controls.TryGetValue("WinBack", clp) Then
             Me.Size = clp.cSize
             Me.Location = clp.cLocation
+            Me.WindowState = _WinBackWindowState
         End If
         'Resize all Controls
         For Each ctl As Control In Me.Controls
@@ -563,7 +563,7 @@ Public Class WinBack
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbArtikelListe.Click, rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click
+    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbArtikelListe.Click, rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click, rbChargenListe.Click
         AktFormSendCommand("OPENLISTE", "")
     End Sub
 
@@ -577,7 +577,8 @@ Public Class WinBack
     Private Sub rbDetails_Click(sender As Object, e As EventArgs) Handles rbArtikelDetails.Click, rbArtikelBearbeiten.Click,
                                                                           rbUserDetails.Click, rbUserBearbeiten.Click,
                                                                           rbRohstoffeDetails.Click, rbRohstoffeBearbeiten.Click,
-                                                                          rbUserDetails.Click, rbUserBearbeiten.Click, rbRezeptBearbeiten.Click, rbRezeptDetails.Click
+                                                                          rbUserDetails.Click, rbUserBearbeiten.Click, rbRezeptBearbeiten.Click, rbRezeptDetails.Click,
+                                                                          rbChargenDetails.Click
         AktFormSendCommand("OPENDETAILS", "")
     End Sub
 
@@ -598,7 +599,27 @@ Public Class WinBack
         End If
     End Sub
 
-    Private Sub rbChargenListe_Click(sender As Object, e As EventArgs) Handles rbChargenListe.Click
+    Private Sub rbVersionInfo_Click(sender As Object, e As EventArgs) Handles rbVersionInfo.Click
+        About.ShowDialog()
+    End Sub
+
+    Private Sub LoadColorTable(FileName As String) Handles About.Ab_LoadColorTable
+
+        If RibbonTheme.IsDefined(GetType(RibbonTheme), FileName) Then
+            rTab.ThemeColor = DirectCast([Enum].Parse(GetType(RibbonTheme), FileName), RibbonTheme)
+        ElseIf FileName = "SaveAsDefault" Then
+            SaveColorTable()
+        Else
+            Dim content As String = System.IO.File.ReadAllText(wb_GlobalSettings.pColorThemePath)
+            Theme.ColorTable.ReadThemeIniFile(content)
+        End If
+
+        'Ribbon Tab - Farben updaten
+        rTab.Refresh()
+        Me.Refresh()
+    End Sub
+
+    Private Sub SaveColorTable()
         Dim ct = DirectCast(rTab.Renderer, RibbonProfessionalRenderer).ColorTable
         ct.ThemeName = "WinBack"
         ct.ThemeAuthor = "JWill"
@@ -606,13 +627,6 @@ Public Class WinBack
         ct.ThemeAuthorWebsite = "www.winback.de"
         ct.ThemeDateCreated = DateTime.Now()
         Dim content As String = ct.WriteThemeIniFile()
-        System.IO.File.WriteAllText("WinBackTheme.ini", content)
-    End Sub
-
-    Private Sub rbChargenDetails_Click(sender As Object, e As EventArgs) Handles rbChargenDetails.Click
-        Dim content As String = System.IO.File.ReadAllText("WinBackTheme.ini")
-        Theme.ColorTable.ReadThemeIniFile(content)
-        rTab.Refresh()
-        Me.Refresh()
+        System.IO.File.WriteAllText(wb_GlobalSettings.pColorThemePath, content)
     End Sub
 End Class

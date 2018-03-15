@@ -18,6 +18,9 @@ Public Class wb_Rezept_Rezeptur
     Private _RezeptSchritt As wb_Rezeptschritt = Nothing    'aktuelle ausgewählter Rezeptschritt (Popup)
     Private _RezeptSchrittNeu As wb_Rezeptschritt = Nothing 'neuer Rezeptschritt (Auswahl-Liste)
 
+    Private _HisSollwertDeltaStyle As New Infralution.Controls.StyleDelta
+    Private _HisSollwertChangedStyle As Infralution.Controls.Style
+
     ''' <summary>
     ''' Objekt Rezeptur instanzieren.
     ''' 
@@ -32,8 +35,8 @@ Public Class wb_Rezept_Rezeptur
 
         'Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
-
         'Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+
         'Rezeptnummer und Rezept-Variante merken
         _RzNummer = RzNummer
         _RzVariante = RzVariante
@@ -398,6 +401,12 @@ Public Class wb_Rezept_Rezeptur
     End Sub
     Private Sub VirtualTree_SetCellValue(sender As Object, e As SetCellValueEventArgs) Handles VirtualTree.SetCellValue
         Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
+
+        'aktuell ausgewählten Rezeptschritt
+        _RezeptSchritt = DirectCast(e.Row.Item, wb_Rezeptschritt)
+        'alten Sollwert merken (wird in RS_Wert_HIS gespeichert)
+        _RezeptSchritt.SaveSollwert_org()
+
         Binding.SetCellValue(e.Row, e.Column, e.OldValue, e.NewValue)
         ShowCalculateRezeptDaten(True)
         'Rezeptur wurde geändert
@@ -414,11 +423,21 @@ Public Class wb_Rezept_Rezeptur
 
         'Edit Bezeichnungs-Text
         If e.Column.Name = "ColBezeichnung" And wb_Functions.TypeIstText(_RezeptSchritt.Type) Then
+            'Bei Anzeige der Rezept-Historie werden die geänderten Werte Fett/Kursiv dargestellt
+            If _Historical And _RezeptSchritt.WertProd <> "" Then
+                VirtualTree_SetFontStyle(e.CellData.EvenStyle)
+                VirtualTree_SetFontStyle(e.CellData.OddStyle)
+            End If
             Exit Sub
         End If
 
         'Edit Sollwert
-        If e.Column.Name = "ColSollwert" And (wb_Functions.TypeIstSollMenge(_RezeptSchritt.Type, 1) Or wb_Functions.TypeIstSollWert(_RezeptSchritt.Type, 1)) Then
+        If e.Column.Name = "ColSollwert" And (wb_Functions.TypeIstSollMenge(_RezeptSchritt.Type, 1) Or wb_Functions.TypeIstSollWert(_RezeptSchritt.Type, 3)) Then
+            'Bei Anzeige der Rezept-Historie werden die geänderten Werte Fett/Kursiv dargestellt
+            If _Historical And _RezeptSchritt.WertProd <> "" Then
+                VirtualTree_SetFontStyle(e.CellData.EvenStyle)
+                VirtualTree_SetFontStyle(e.CellData.OddStyle)
+            End If
             Exit Sub
         End If
 
@@ -445,6 +464,17 @@ Public Class wb_Rezept_Rezeptur
 
         'Popup-Menu wird dynamisch erzeugt
         VT_MakeTreePopup()
+    End Sub
+
+    ''' <summary>
+    ''' Setzt den Font.Style für die angegebene Zelle auf Bold+Italic
+    ''' Anzeige der geänderten Werte in der Rezept-Historie
+    ''' </summary>
+    ''' <param name="ColumnStyle"></param>
+    Private Sub VirtualTree_SetFontStyle(ByRef ColumnStyle As Infralution.Controls.Style)
+        _HisSollwertDeltaStyle.Font = New Drawing.Font(ColumnStyle.Font, 3)
+        _HisSollwertChangedStyle = New Infralution.Controls.Style(ColumnStyle, _HisSollwertDeltaStyle)
+        ColumnStyle = _HisSollwertChangedStyle
     End Sub
 
     ''' <summary>

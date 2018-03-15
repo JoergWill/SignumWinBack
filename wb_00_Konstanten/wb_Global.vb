@@ -13,6 +13,7 @@
     Public Const LinienGruppeSauerteig = 127          'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
     Public Const LinienGruppeStandard = 1             'Liniengruppe für neue Rezepte
     Public Const MaxLinien = 99
+    Public Const RS_Par1_QUID = "-1"                   'Komponente im Rezept ist QUID-Relevant (In RS_Par1)
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)
     Public Const NewUserName = "Neu"

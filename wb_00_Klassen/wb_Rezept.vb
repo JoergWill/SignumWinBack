@@ -550,7 +550,7 @@ Public Class wb_Rezept
             'Suche nach Rz_Nr
             sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptur, RezeptNummer, Variante)
         Else
-            'Datenbank-Verbindung öffnen - MySQL-wbdaten
+            'Datenbank-Verbindung öffnen - MySQL-wbdaten (Rezept-Historie)
             winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
             'Suche nach Rz_Nr in His_Rezeptschritte
             sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlHisRezeptur, RezeptNummer, Variante, AendIndex)
@@ -754,9 +754,14 @@ Public Class wb_Rezept
                 'Sollwert
                 Case "RS_Wert", "H_RS_Wert"
                     _SQLRezeptSchritt.Sollwert = Value
-                'Sollwert Produktion
-                Case "RS_Wert_Prod", "H_RS_Wert_Prod"
-                    _SQLRezeptSchritt.WertProd = Value
+                'Sollwert Produktion (nur Wasser-Temp-Satz - RMF-Basis-Wert) 
+                Case "RS_Wert_Prod"
+                    If (_SQLRezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE) And (_SQLRezeptSchritt.ParamNr = 3) Then
+                        _SQLRezeptSchritt.WertProd = Value
+                    End If
+                'Sollwert Produktion (nur His_Rezepte)
+                Case "H_RS_Wert_Prod"
+                        _SQLRezeptSchritt.WertProd = Value
                 'Par1
                 Case "RS_Par1", "H_RS_Par1"
                     _SQLRezeptSchritt.Par1 = Value
@@ -862,9 +867,6 @@ Public Class wb_Rezept
         'bestehende Rezeptschritte in wb_daten.His_Rezeptschritte kopieren
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlCopyRezSchritteInHisRezepte, RezeptNummer, Variante, AenderungNummer)
         winback.sqlCommand(sql)
-
-
-
 
         'vorhandene Rezeptur in Datenbank löschen
         winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRzptSchr, RezeptNummer, Variante))
