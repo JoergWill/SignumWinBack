@@ -1474,7 +1474,7 @@
     <value>0, 0</value>
   </data>
   <data name="UniversalEditBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 19</value>
+    <value>195, 17</value>
   </data>
   <data name="UniversalEditBox2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1535,6 +1535,30 @@
   </data>
   <data name="ColProzent.Width" type="System.Int32, mscorlib">
     <value>50</value>
+  </data>
+  <data name="EnhEdit1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="EnhEdit1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="EnhEdit1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 13</value>
+  </data>
+  <data name="EnhEdit1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="EnhEdit1.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="EnhEdit1.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;EnhEdit1.Name" xml:space="preserve">
+    <value>EnhEdit1</value>
+  </data>
+  <data name="&gt;&gt;EnhEdit1.Type" xml:space="preserve">
+    <value>WinBack.EnhEdit, EnhancedEdit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="VirtualTree.HeaderHeight" type="System.Int32, mscorlib">
     <value>24</value>
@@ -2138,6 +2162,12 @@
   </data>
   <data name="&gt;&gt;ObjectRowBinding1.Type" xml:space="preserve">
     <value>Infralution.Controls.VirtualTree.ObjectRowBinding, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;CellEditor1.Name" xml:space="preserve">
+    <value>CellEditor1</value>
+  </data>
+  <data name="&gt;&gt;CellEditor1.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.CellEditor, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>wb_Rezept_Rezeptur</value>

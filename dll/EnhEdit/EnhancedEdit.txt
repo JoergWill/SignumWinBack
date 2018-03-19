@@ -1,0 +1,4 @@
+Die dll wird automatisch nach Erstellen des Projektes Enhanced Edit über das PostBuild-Ereignis
+in dieses Verzeichnis kopiert.
+
+Die weiteren Projekte dieser Projektmappe enthalten einen Verweis auf diese dll

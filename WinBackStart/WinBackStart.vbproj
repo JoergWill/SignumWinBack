@@ -143,17 +143,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\Combit List&amp;Label V22\combit.ListLabel22.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Common, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\Infralution VirtualTree V4.x\Infralution.Common.dll</HintPath>
+    <Reference Include="EnhancedEdit">
+      <HintPath>..\dll\EnhEdit\EnhancedEdit.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Controls, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Common, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\Infralution VirtualTree V4.x\Infralution.Controls.dll</HintPath>
+      <HintPath>..\dll\Infralution VirtualTree V4.8.9\Infralution.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Controls, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\Infralution VirtualTree V4.x\Infralution.Controls.VirtualTree.dll</HintPath>
+      <HintPath>..\dll\Infralution VirtualTree V4.8.9\Infralution.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\Infralution VirtualTree V4.8.9\Infralution.Controls.VirtualTree.dll</HintPath>
     </Reference>
     <Reference Include="MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>..\packages\MetroFramework.RunTime.1.2.0.3\lib\net40-Client\MetroFramework.dll</HintPath>
@@ -251,6 +254,12 @@
     <Compile Include="Chargen_Main.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Test_Main.Designer.vb">
+      <DependentUpon>Test_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Test_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User_Main.Designer.vb">
       <DependentUpon>User_Main.vb</DependentUpon>
     </Compile>
@@ -328,6 +337,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Test_Main.resx">
+      <DependentUpon>Test_Main.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinBack.en-US.resx">
       <DependentUpon>WinBack.vb</DependentUpon>

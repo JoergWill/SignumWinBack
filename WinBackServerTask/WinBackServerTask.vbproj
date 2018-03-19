@@ -127,6 +127,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EnhancedEdit">
+      <HintPath>..\dll\EnhEdit\EnhancedEdit.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\dll\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>

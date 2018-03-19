@@ -18,6 +18,7 @@ Public Class WinBack
     Dim MdiLinien As Linien_Main
     Dim MdiPlanung As Planung_Main
     Dim MdiAdmin As Admin_Main
+    Dim MdiTEst As Test_Main
     Private WithEvents About As New About_WinBack
 
 #Region "MainMenu"
@@ -66,6 +67,13 @@ Public Class WinBack
             'Service/Administration
             If rbExtra.Active Then
                 MainFormShow(MdiAdmin, GetType(Admin_Main))
+            End If
+
+            'Info/Test
+            If rbAbout.Active Then
+                If Debugger.IsAttached Then
+                    MainFormShow(MdiTest, GetType(Test_Main))
+                End If
             End If
         End If
     End Sub

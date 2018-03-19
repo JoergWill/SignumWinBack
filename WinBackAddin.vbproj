@@ -228,23 +228,23 @@
     <Reference Include="DiffieHellman">
       <HintPath>dll\SharpSSH\DiffieHellman.dll</HintPath>
     </Reference>
+    <Reference Include="EnhancedEdit">
+      <HintPath>dll\EnhEdit\EnhancedEdit.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>dll\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Common, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Common, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\Infralution VirtualTree V4.x\Infralution.Common.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>dll\Infralution VirtualTree V4.8.9\Infralution.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Controls, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Controls, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\Infralution VirtualTree V4.x\Infralution.Controls.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>dll\Infralution VirtualTree V4.8.9\Infralution.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\Infralution VirtualTree V4.x\Infralution.Controls.VirtualTree.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>dll\Infralution VirtualTree V4.8.9\Infralution.Controls.VirtualTree.dll</HintPath>
     </Reference>
     <Reference Include="MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>packages\MetroFramework.RunTime.1.2.0.3\lib\net40-Client\MetroFramework.dll</HintPath>
@@ -317,6 +317,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_VirtualTreeEditor.vb" />
     <Compile Include="wb_00_Klassen\wb_AktRechte.vb" />
     <Compile Include="wb_00_Klassen\wb_AktSysKonfig.vb" />
     <Compile Include="wb_00_Klassen\wb_EditControl.Designer.vb">

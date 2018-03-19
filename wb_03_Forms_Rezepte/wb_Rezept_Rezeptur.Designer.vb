@@ -100,9 +100,11 @@ Partial Class wb_Rezept_Rezeptur
         Me.UniversalEditBox2 = New Infralution.Controls.UniversalEditBox()
         Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
         Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
+        Me.EnhEdit1 = New WinBack.EnhEdit(Me.components)
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
+        Me.CellEditor1 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.tb_Naehrwerte = New System.Windows.Forms.TabPage()
         Me.tb_Zutaten = New System.Windows.Forms.TabPage()
         Me.SwListeOptimieren = New MetroFramework.Controls.MetroToggle()
@@ -541,6 +543,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.ContextMenuStrip = Me.VTPopUpMenu
         Me.VirtualTree.EditOnKeyPress = True
         Me.VirtualTree.Editors.Add(Me.CellEditor2)
+        Me.VirtualTree.Editors.Add(Me.CellEditor1)
         Me.VirtualTree.HeaderContextMenu = Me.headerContextMenu
         Me.VirtualTree.HeaderStyle.Font = CType(resources.GetObject("resource.Font"), System.Drawing.Font)
         Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.None
@@ -573,7 +576,7 @@ Partial Class wb_Rezept_Rezeptur
         '
         'UniversalEditBox2
         '
-        Me.UniversalEditBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.UniversalEditBox2.BorderStyle = System.Windows.Forms.BorderStyle.None
         resources.ApplyResources(Me.UniversalEditBox2, "UniversalEditBox2")
         Me.UniversalEditBox2.Name = "UniversalEditBox2"
         '
@@ -593,6 +596,15 @@ Partial Class wb_Rezept_Rezeptur
         Me.ColSollwert.Name = "ColSollwert"
         Me.ColSollwert.Resizable = False
         Me.ColSollwert.Sortable = False
+        '
+        'EnhEdit1
+        '
+        Me.EnhEdit1.AcceptsReturn = True
+        Me.EnhEdit1.AcceptsTab = True
+        Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        resources.ApplyResources(Me.EnhEdit1, "EnhEdit1")
+        Me.EnhEdit1.eFont = Nothing
+        Me.EnhEdit1.Name = "EnhEdit1"
         '
         'ColEinheit
         '
@@ -620,6 +632,7 @@ Partial Class wb_Rezept_Rezeptur
         ObjectCellBinding1.Style.Font = CType(resources.GetObject("resource.Font1"), System.Drawing.Font)
         ObjectCellBinding1.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment"), System.Drawing.StringAlignment)
         ObjectCellBinding2.Column = Me.ColBezeichnung
+        ObjectCellBinding2.Editor = Me.CellEditor1
         ObjectCellBinding2.Field = "VirtTreeBezeichnung"
         ObjectCellBinding2.Style.Font = CType(resources.GetObject("resource.Font2"), System.Drawing.Font)
         ObjectCellBinding3.Column = Me.ColPreis
@@ -628,6 +641,7 @@ Partial Class wb_Rezept_Rezeptur
         ObjectCellBinding3.Style.Font = CType(resources.GetObject("resource.Font3"), System.Drawing.Font)
         ObjectCellBinding3.Style.HorzAlignment = CType(resources.GetObject("resource.HorzAlignment1"), System.Drawing.StringAlignment)
         ObjectCellBinding4.Column = Me.ColSollwert
+        ObjectCellBinding4.Editor = Me.CellEditor1
         ObjectCellBinding4.Field = "VirtTreeSollwert"
         resources.ApplyResources(ObjectCellBinding4, "ObjectCellBinding4")
         ObjectCellBinding4.Style.Font = CType(resources.GetObject("resource.Font4"), System.Drawing.Font)
@@ -650,6 +664,12 @@ Partial Class wb_Rezept_Rezeptur
         Me.ObjectRowBinding1.ParentProperty = "ParentStep"
         Me.ObjectRowBinding1.Style.Font = CType(resources.GetObject("ObjectRowBinding1.Style.Font"), System.Drawing.Font)
         Me.ObjectRowBinding1.TypeName = "WinBack.wb_Rezeptschritt"
+        '
+        'CellEditor1
+        '
+        Me.CellEditor1.CellAlignment = System.Drawing.ContentAlignment.MiddleCenter
+        Me.CellEditor1.Control = Me.EnhEdit1
+        Me.CellEditor1.UseCellPadding = True
         '
         'tb_Naehrwerte
         '
@@ -865,4 +885,6 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents CellEditor2 As Infralution.Controls.VirtualTree.CellEditor
     Friend WithEvents UniversalEditBox2 As Infralution.Controls.UniversalEditBox
     Friend WithEvents VTPopUpMenu As Windows.Forms.ContextMenuStrip
+    Friend WithEvents CellEditor1 As Infralution.Controls.VirtualTree.CellEditor
+    Friend WithEvents EnhEdit1 As EnhEdit
 End Class
