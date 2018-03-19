@@ -29,13 +29,13 @@ Partial Class About_WinBack
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(About_WinBack))
         Me.TableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.BtnUpdate = New System.Windows.Forms.Button()
+        Me.BtnColors = New System.Windows.Forms.Button()
         Me.LogoPictureBox = New System.Windows.Forms.PictureBox()
         Me.LabelProductName = New System.Windows.Forms.Label()
         Me.LabelVersion = New System.Windows.Forms.Label()
         Me.LabelCopyright = New System.Windows.Forms.Label()
         Me.BtnOK = New System.Windows.Forms.Button()
-        Me.BtnColors = New System.Windows.Forms.Button()
-        Me.BtnUpdate = New System.Windows.Forms.Button()
         Me.lbVersionsHistorie = New System.Windows.Forms.LinkLabel()
         Me.TableLayoutPanel.SuspendLayout()
         CType(Me.LogoPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -86,6 +86,29 @@ Partial Class About_WinBack
         Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel.Size = New System.Drawing.Size(683, 403)
         Me.TableLayoutPanel.TabIndex = 0
+        '
+        'BtnUpdate
+        '
+        Me.BtnUpdate.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.BtnUpdate.Location = New System.Drawing.Point(499, 370)
+        Me.BtnUpdate.Margin = New System.Windows.Forms.Padding(8)
+        Me.BtnUpdate.Name = "BtnUpdate"
+        Me.BtnUpdate.Size = New System.Drawing.Size(78, 25)
+        Me.BtnUpdate.TabIndex = 4
+        Me.BtnUpdate.Text = "Update"
+        Me.BtnUpdate.UseVisualStyleBackColor = True
+        '
+        'BtnColors
+        '
+        Me.BtnColors.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.BtnColors.Location = New System.Drawing.Point(311, 28)
+        Me.BtnColors.Margin = New System.Windows.Forms.Padding(8)
+        Me.BtnColors.Name = "BtnColors"
+        Me.TableLayoutPanel.SetRowSpan(Me.BtnColors, 2)
+        Me.BtnColors.Size = New System.Drawing.Size(78, 24)
+        Me.BtnColors.TabIndex = 3
+        Me.BtnColors.Text = "Farb-Themen"
+        Me.BtnColors.UseVisualStyleBackColor = True
         '
         'LogoPictureBox
         '
@@ -148,29 +171,6 @@ Partial Class About_WinBack
         Me.BtnOK.TabIndex = 2
         Me.BtnOK.Text = "OK"
         Me.BtnOK.UseVisualStyleBackColor = True
-        '
-        'BtnColors
-        '
-        Me.BtnColors.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.BtnColors.Location = New System.Drawing.Point(311, 28)
-        Me.BtnColors.Margin = New System.Windows.Forms.Padding(8)
-        Me.BtnColors.Name = "BtnColors"
-        Me.TableLayoutPanel.SetRowSpan(Me.BtnColors, 2)
-        Me.BtnColors.Size = New System.Drawing.Size(78, 24)
-        Me.BtnColors.TabIndex = 3
-        Me.BtnColors.Text = "Farb-Themen"
-        Me.BtnColors.UseVisualStyleBackColor = True
-        '
-        'BtnUpdate
-        '
-        Me.BtnUpdate.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.BtnUpdate.Location = New System.Drawing.Point(499, 370)
-        Me.BtnUpdate.Margin = New System.Windows.Forms.Padding(8)
-        Me.BtnUpdate.Name = "BtnUpdate"
-        Me.BtnUpdate.Size = New System.Drawing.Size(78, 25)
-        Me.BtnUpdate.TabIndex = 4
-        Me.BtnUpdate.Text = "Update"
-        Me.BtnUpdate.UseVisualStyleBackColor = True
         '
         'lbVersionsHistorie
         '

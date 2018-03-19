@@ -1486,7 +1486,7 @@
     <value>UniversalEditBox2</value>
   </data>
   <data name="&gt;&gt;UniversalEditBox2.Type" xml:space="preserve">
-    <value>Infralution.Controls.UniversalEditBox, Infralution.Controls, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.UniversalEditBox, Infralution.Controls, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="ColBezeichnung.MinWidth" type="System.Int32, mscorlib">
     <value>300</value>
@@ -1618,7 +1618,7 @@
     <value>VirtualTree</value>
   </data>
   <data name="&gt;&gt;VirtualTree.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.VirtualTree, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.VirtualTree, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;VirtualTree.Parent" xml:space="preserve">
     <value>tb_Rezeptur</value>
@@ -2119,55 +2119,55 @@
     <value>ColNr</value>
   </data>
   <data name="&gt;&gt;ColNr.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColBezeichnung.Name" xml:space="preserve">
     <value>ColBezeichnung</value>
   </data>
   <data name="&gt;&gt;ColBezeichnung.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;CellEditor2.Name" xml:space="preserve">
     <value>CellEditor2</value>
   </data>
   <data name="&gt;&gt;CellEditor2.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.CellEditor, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.CellEditor, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColPreis.Name" xml:space="preserve">
     <value>ColPreis</value>
   </data>
   <data name="&gt;&gt;ColPreis.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColSollwert.Name" xml:space="preserve">
     <value>ColSollwert</value>
   </data>
   <data name="&gt;&gt;ColSollwert.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColEinheit.Name" xml:space="preserve">
     <value>ColEinheit</value>
   </data>
   <data name="&gt;&gt;ColEinheit.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColProzent.Name" xml:space="preserve">
     <value>ColProzent</value>
   </data>
   <data name="&gt;&gt;ColProzent.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ObjectRowBinding1.Name" xml:space="preserve">
     <value>ObjectRowBinding1</value>
   </data>
   <data name="&gt;&gt;ObjectRowBinding1.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.ObjectRowBinding, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.ObjectRowBinding, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;CellEditor1.Name" xml:space="preserve">
     <value>CellEditor1</value>
   </data>
   <data name="&gt;&gt;CellEditor1.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.CellEditor, Infralution.Controls.VirtualTree, Version=4.8.8.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.CellEditor, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>wb_Rezept_Rezeptur</value>

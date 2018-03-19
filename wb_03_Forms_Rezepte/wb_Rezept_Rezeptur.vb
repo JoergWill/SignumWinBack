@@ -439,9 +439,9 @@ Public Class wb_Rezept_Rezeptur
                 VirtualTree_SetFontStyle(e.CellData.OddStyle)
             End If
             'Einstellungen Editor
-            DirectCast(CellEditor1.Control, EnhEdit).eFont = e.CellData.EvenStyle.Font
-            DirectCast(CellEditor1.Control, EnhEdit).eBackcolor = VirtualTree.RowSelectedStyle.GradientColor
-            DirectCast(CellEditor1.Control, EnhEdit).eBorderColor = VirtualTree.RowSelectedStyle.BorderColor
+            DirectCast(CellEditor1.Control, EnhEdit.EnhEdit).eFont = e.CellData.EvenStyle.Font
+            DirectCast(CellEditor1.Control, EnhEdit.EnhEdit).eBackcolor = VirtualTree.RowSelectedStyle.GradientColor
+            DirectCast(CellEditor1.Control, EnhEdit.EnhEdit).eBorderColor = VirtualTree.RowSelectedStyle.BorderColor
             Exit Sub
         End If
 

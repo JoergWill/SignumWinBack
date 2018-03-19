@@ -100,7 +100,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.UniversalEditBox2 = New Infralution.Controls.UniversalEditBox()
         Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
         Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
-        Me.EnhEdit1 = New WinBack.EnhEdit(Me.components)
+        Me.EnhEdit1 = New EnhEdit.EnhEdit(Me.components)
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
@@ -603,6 +603,8 @@ Partial Class wb_Rezept_Rezeptur
         Me.EnhEdit1.AcceptsTab = True
         Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
         resources.ApplyResources(Me.EnhEdit1, "EnhEdit1")
+        Me.EnhEdit1.eBackcolor = System.Drawing.Color.Empty
+        Me.EnhEdit1.eBorderColor = System.Drawing.Color.Empty
         Me.EnhEdit1.eFont = Nothing
         Me.EnhEdit1.Name = "EnhEdit1"
         '
@@ -886,5 +888,5 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents UniversalEditBox2 As Infralution.Controls.UniversalEditBox
     Friend WithEvents VTPopUpMenu As Windows.Forms.ContextMenuStrip
     Friend WithEvents CellEditor1 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents EnhEdit1 As EnhEdit
+    Friend WithEvents EnhEdit1 As EnhEdit.EnhEdit
 End Class

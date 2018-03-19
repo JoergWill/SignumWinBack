@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B9549613-9C0C-4BC3-82A5-21D834813A25}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>WinBack</RootNamespace>
+    <RootNamespace>EnhEdit</RootNamespace>
     <AssemblyName>EnhancedEdit</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>

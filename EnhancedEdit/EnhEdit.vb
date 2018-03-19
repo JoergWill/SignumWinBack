@@ -2,7 +2,7 @@
 Imports System.Windows.Forms
 
 Public Class EnhEdit
-    Private _eFont As Font = Nothing
+    Private _eFont As Font
     Private _eBackColor As Color
     Private _eBorderColor As Color
 
@@ -45,16 +45,17 @@ Public Class EnhEdit
 
 
     Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
-        Dim Rect As New Rectangle(-1, -1, ClientSize.Width, ClientSize.Height)
+        Dim Rect As New Rectangle(-1, +2, ClientSize.Width - 1, ClientSize.Height - 1)
         Dim Format As New StringFormat
         Format.Alignment = StringAlignment.Near
-        Dim B As New SolidBrush(_eBackColor)
+        Dim B As New SolidBrush(Me.BackColor)
 
         Using p As Pen = New Pen(_eBorderColor, 1)
             e.Graphics.FillRectangle(B, Rect)
-            e.Graphics.DrawRectangle(p, Rect)
-            e.Graphics.DrawString(Me.Text, _eFont, New SolidBrush(Me.ForeColor), Rect)
+            'e.Graphics.DrawRectangle(p, Rect)
+            e.Graphics.DrawString(Me.Text, Me.Font, New SolidBrush(Me.ForeColor), Rect)
         End Using
     End Sub
 
 End Class
+
