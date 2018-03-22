@@ -491,7 +491,7 @@ Public Class wb_Rezeptschritt
 
     ''' <summary>
     ''' Rezept-Nummer aus Komponente in der Rezept-Zeile. Wenn die Rezeptnummer größer als Null ist, beeinhaltet die
-    ''' Komponente eine untrelagerte Rezeptur.
+    ''' Komponente eine unterlagerte Rezeptur.
     ''' </summary>
     ''' <returns>Integer - Rezeptnummer</returns>
     Public Property RezeptNr As Integer
