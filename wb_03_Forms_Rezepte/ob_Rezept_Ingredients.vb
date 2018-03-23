@@ -64,6 +64,7 @@ Public Class ob_RecipeInfo
             Else
                 'Rezeptur einlesen
                 Dim Rz As New wb_Rezept(RzNr, Nothing, Variante)
+                Debug.Print("Rezept " & Rz.RezeptTA)
                 'alle Child-Rezeptschritte aus dem Root-Rezeptschritt
                 _Ingredients = Rz.RootRezeptSchritt.Ingredients
             End If

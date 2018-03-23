@@ -931,21 +931,31 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    'TODO Sollwert berechnen (aus Nassgewicht !!)
     Public ReadOnly Property Ingredients As IList
         Get
+            'Liste(IRecipeIngredient) löschen
             oi.Clear()
-            For Each c As wb_Rezeptschritt In _childSteps
-                Dim ri As New ob_RecipeIngredient
-                ri.ArticleNo = c.Nummer
-                ri.Amount = wb_Functions.StrToDouble(c.Sollwert)
+            For Each c As wb_Rezeptschritt In Steps
 
-                'Rezept im Rezept
-                If (c.RezeptNr > 0) And c.RezeptImRezept IsNot Nothing Then
-                    ri.Ingredients = c.Ingredients
+                'Es werden nur Rezeptschritte in die Liste aufgenommen, die einen Sollwert enthalten
+                If wb_Functions.TypeIstSollMenge(c.Type, c.ParamNr) Then
+
+                    'Schnittstelle IRecipeIngredient
+                    Dim ri As New ob_RecipeIngredient
+                    ri.ArticleNo = c.Nummer
+                    ri.Amount = wb_Functions.StrToDouble(c.Sollwert)
+
+                    'Rezept im Rezept
+                    If (c.RezeptNr > 0) And c.RezeptImRezept IsNot Nothing Then
+                        'Rezeptschritte aus Rezept-Im-Rezept hängen am RootRezeptschritt
+                        ri.Ingredients = c.RezeptImRezept.RootRezeptSchritt.Ingredients
+                    End If
+                    'Rezeptzeile in Liste(IRecipeIngredient)
+                    oi.Add(ri)
                 End If
-
-                oi.Add(ri)
             Next
+            'Liste(IRecipeIngredient) zurückgeben
             Return oi
         End Get
     End Property
