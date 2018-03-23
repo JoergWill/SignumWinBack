@@ -1,14 +1,14 @@
 ﻿Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.Services
 
-#Region "obRezept_Ingredients"
-Public Class ob_Rezept_Ingredients
+#Region "ob_RecipeProvider"
+Public Class ob_RecipeProvider
     Implements IRecipeProvider
     Dim RecipeInfo As ob_RecipeInfo
 
     Public ReadOnly Property ServiceName As String Implements IOrgasoftService.ServiceName
         Get
-            Return "WinBackRezepturSchnittstelle"
+            Return "@WinBackRezepturSchnittstelle"
         End Get
     End Property
 
@@ -63,9 +63,9 @@ Public Class ob_RecipeInfo
                 _Ingredients = Nothing
             Else
                 'Rezeptur einlesen
-                Dim Rz As New wb_Rezept(RzNr, Nothing, Version)
-                'alle Child-Rezeptschritte aus dem Root-Rezeptschritt in die IListe kopieren
-                '_Ingredients = Rz.Ingredients
+                Dim Rz As New wb_Rezept(RzNr, Nothing, Variante)
+                'alle Child-Rezeptschritte aus dem Root-Rezeptschritt
+                _Ingredients = Rz.RootRezeptSchritt.Ingredients
             End If
         End If
     End Sub
@@ -225,6 +225,138 @@ Public Class ob_RecipeInfo
         End Get
         Set(value As Short)
             _Version = value
+        End Set
+    End Property
+
+    Public Property Variante As Short
+        Get
+            Return _Version + 1
+        End Get
+        Set(value As Short)
+            _Version = value - 1
+        End Set
+    End Property
+End Class
+#End Region
+#Region "IRecipeIngredient"
+Public Class ob_RecipeIngredient
+    Implements IRecipeIngredient
+
+    Private _ArticleNo As String
+    Private _Branch As Short
+    Private _Color As Short
+    Private _ProductionArticle As Boolean
+    Private _RecipeType As Short
+    Private _Size As String
+    Private _Unit As Short
+    Private _Variable As Boolean
+    Private _Version As Short
+    Private _Amount As Decimal
+    Private _LossPercentage As Decimal
+    Private _Ingredients As IList
+
+    Public Property ArticleNo As String Implements IRecipeIngredient.ArticleNo
+        Get
+            Return _ArticleNo
+        End Get
+        Set(value As String)
+            _ArticleNo = value
+        End Set
+    End Property
+
+    Public Property Unit As Short Implements IRecipeIngredient.Unit
+        Get
+            'Rezeptschritte in Winback immer in Gramm
+            Return wb_Global.EinheitGramm
+        End Get
+        Set(value As Short)
+            _Unit = value
+        End Set
+    End Property
+
+    Public Property Color As Short Implements IRecipeIngredient.Color
+        Get
+            'Keine Farbe
+            Return 0
+        End Get
+        Set(value As Short)
+            _Color = value
+        End Set
+    End Property
+
+    Public Property Size As String Implements IRecipeIngredient.Size
+        Get
+            'Rezeptschritte haben immer Faktor Eins
+            Return 1
+        End Get
+        Set(value As String)
+            _Size = value
+        End Set
+    End Property
+
+    Public Property Version As Short Implements IRecipeIngredient.Version
+        Get
+            Return _Version
+        End Get
+        Set(value As Short)
+            _Version = value
+        End Set
+    End Property
+
+    Public Property RecipeType As Short Implements IRecipeIngredient.RecipeType
+        Get
+            Return 1
+        End Get
+        Set(value As Short)
+            _RecipeType = value
+        End Set
+    End Property
+
+    Public Property ProductionArticle As Boolean Implements IRecipeIngredient.ProductionArticle
+        Get
+            'TODO JErhardt nach der Bedeutung fragen
+            Return False
+        End Get
+        Set(value As Boolean)
+            _ProductionArticle = value
+        End Set
+    End Property
+
+    Public Property Variable As Boolean Implements IRecipeIngredient.Variable
+        Get
+            'TODO JErhardt nach der Bedeutung fragen
+            Return False
+        End Get
+        Set(value As Boolean)
+            _Variable = value
+        End Set
+    End Property
+
+    Public Property Amount As Decimal Implements IRecipeIngredient.Amount
+        Get
+            Return _Amount
+        End Get
+        Set(value As Decimal)
+            _Amount = value
+        End Set
+    End Property
+
+    Public Property LossPercentage As Decimal Implements IRecipeIngredient.LossPercentage
+        Get
+            'TODO Backverlust ermitteln !!
+            Return _LossPercentage
+        End Get
+        Set(value As Decimal)
+            _LossPercentage = value
+        End Set
+    End Property
+
+    Public Property Ingredients As IList Implements IRecipeIngredient.Ingredients
+        Get
+            Return _Ingredients
+        End Get
+        Set(value As IList)
+            _Ingredients = value
         End Set
     End Property
 End Class

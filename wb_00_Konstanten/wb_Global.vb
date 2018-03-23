@@ -25,6 +25,8 @@
 
     'Filiale.Typ ist Produktions-Filiale
     Public Const ProduktionsFiliale = 4
+    'OrgaBack.Einheit [gr] aus dbo.Einheiten
+    Public Const EinheitGramm = 12
 
     'WinBack-Server-Task Port
     Public Const WinBackServerTaskPort = "22046"

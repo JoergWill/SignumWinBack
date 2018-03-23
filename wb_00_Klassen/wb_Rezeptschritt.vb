@@ -1,4 +1,5 @@
 ﻿Imports System.Reflection
+Imports Signum.OrgaSoft.Services
 Imports WinBack.wb_Global.KomponTypen
 Imports WinBack.wb_Sql_Selects
 
@@ -29,6 +30,9 @@ Public Class wb_Rezeptschritt
     Private _parentStep As wb_Rezeptschritt
     Private _childSteps As New ArrayList()
     Public RezeptImRezept As wb_Rezept
+
+    'Schnittstelle zu OrgaBack
+    Dim oi As New ArrayList
 
     ' Bedeutung der Zusatzparameter
     '=============================
@@ -925,6 +929,25 @@ Public Class wb_Rezeptschritt
             End If
             _QUIDRelevant = value
         End Set
+    End Property
+
+    Public ReadOnly Property Ingredients As IList
+        Get
+            oi.Clear()
+            For Each c As wb_Rezeptschritt In _childSteps
+                Dim ri As New ob_RecipeIngredient
+                ri.ArticleNo = c.Nummer
+                ri.Amount = wb_Functions.StrToDouble(c.Sollwert)
+
+                'Rezept im Rezept
+                If (c.RezeptNr > 0) And c.RezeptImRezept IsNot Nothing Then
+                    ri.Ingredients = c.Ingredients
+                End If
+
+                oi.Add(ri)
+            Next
+            Return oi
+        End Get
     End Property
 
     Public Sub CalcZutaten(ByRef zListe As ArrayList, Optional Faktor As Double = 1)
