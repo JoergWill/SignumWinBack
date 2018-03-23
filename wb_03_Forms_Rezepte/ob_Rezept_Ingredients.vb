@@ -44,8 +44,16 @@ Public Class ob_RecipeInfo
         'Parameter
         Me.ArticleNo = ArticleNo
         Me.Version = Version
-        Me.Size = Size
         Me.Branch = Branch
+
+        'Size ist immer 'NULL'
+        Me.Size = vbNull
+        'Unit ist immer 'kg'
+        Me.Unit = wb_Global.EinheitKilogramm
+        'Color ist immer '0'
+        Me.Color = 0
+        'RezeptType ist immer 5-ProduktionsRezept variabel
+        Me.RecipeType = wb_Global.RecipeTypeProdVariabel
 
         'Komponenten-Stammdaten    
         Dim Komponente As New wb_Komponente
@@ -57,6 +65,9 @@ Public Class ob_RecipeInfo
         Else
             'Rezeptnummer aus Komponenten-Stammdaten (Alphanumerische Komponenten-Nummer)
             Dim RzNr = Komponente.RzNr
+            'Stückgewicht(nass) aus Artikelstamm (Umrechnung in kg)
+            Dim StkGewicht As Double = wb_Functions.StrToDouble(Komponente.ArtikelChargen.StkGewicht) / 1000
+
             If RzNr <= 0 Then
                 Debug.Print("Keine Rezeptur mit Komponente verknüpft " & ArticleNo)
                 'Liste aller Rezeptbestandteile ist leer
@@ -64,9 +75,8 @@ Public Class ob_RecipeInfo
             Else
                 'Rezeptur einlesen
                 Dim Rz As New wb_Rezept(RzNr, Nothing, Variante)
-                Debug.Print("Rezept " & Rz.RezeptTA)
-                'alle Child-Rezeptschritte aus dem Root-Rezeptschritt
-                _Ingredients = Rz.RootRezeptSchritt.Ingredients
+                'Liste aller Child-Rezeptschritte aus dem Root-Rezeptschritt berechnet auf das Stückgewicht(Nass)
+                _Ingredients = Rz.RootRezeptSchritt.CalcIngredients(StkGewicht)
             End If
         End If
     End Sub
@@ -244,14 +254,14 @@ Public Class ob_RecipeIngredient
     Implements IRecipeIngredient
 
     Private _ArticleNo As String
-    Private _Branch As Short
-    Private _Color As Short
-    Private _ProductionArticle As Boolean
-    Private _RecipeType As Short
-    Private _Size As String
-    Private _Unit As Short
-    Private _Variable As Boolean
-    Private _Version As Short
+    Private _Branch As Short = 0
+    Private _Color As Short = 0
+    Private _ProductionArticle As Boolean = True
+    Private _RecipeType As Short = wb_Global.RecipeTypeProdVariabel
+    Private _Size As String = vbNull
+    Private _Unit As Short = wb_Global.EinheitKilogramm
+    Private _Variable As Boolean = True
+    Private _Version As Short = 0
     Private _Amount As Decimal
     Private _LossPercentage As Decimal
     Private _Ingredients As IList
@@ -267,8 +277,7 @@ Public Class ob_RecipeIngredient
 
     Public Property Unit As Short Implements IRecipeIngredient.Unit
         Get
-            'Rezeptschritte in Winback immer in Gramm
-            Return wb_Global.EinheitGramm
+            Return _Unit
         End Get
         Set(value As Short)
             _Unit = value
@@ -277,8 +286,7 @@ Public Class ob_RecipeIngredient
 
     Public Property Color As Short Implements IRecipeIngredient.Color
         Get
-            'Keine Farbe
-            Return 0
+            Return _Color
         End Get
         Set(value As Short)
             _Color = value
@@ -287,8 +295,7 @@ Public Class ob_RecipeIngredient
 
     Public Property Size As String Implements IRecipeIngredient.Size
         Get
-            'Rezeptschritte haben immer Faktor Eins
-            Return 1
+            Return vbNull
         End Get
         Set(value As String)
             _Size = value
@@ -306,7 +313,7 @@ Public Class ob_RecipeIngredient
 
     Public Property RecipeType As Short Implements IRecipeIngredient.RecipeType
         Get
-            Return 1
+            Return _RecipeType
         End Get
         Set(value As Short)
             _RecipeType = value
@@ -315,8 +322,7 @@ Public Class ob_RecipeIngredient
 
     Public Property ProductionArticle As Boolean Implements IRecipeIngredient.ProductionArticle
         Get
-            'TODO JErhardt nach der Bedeutung fragen
-            Return False
+            Return _ProductionArticle
         End Get
         Set(value As Boolean)
             _ProductionArticle = value
@@ -325,8 +331,7 @@ Public Class ob_RecipeIngredient
 
     Public Property Variable As Boolean Implements IRecipeIngredient.Variable
         Get
-            'TODO JErhardt nach der Bedeutung fragen
-            Return False
+            Return _Variable
         End Get
         Set(value As Boolean)
             _Variable = value

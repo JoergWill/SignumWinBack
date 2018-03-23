@@ -931,34 +931,34 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
-    'TODO Sollwert berechnen (aus Nassgewicht !!)
-    Public ReadOnly Property Ingredients As IList
-        Get
-            'Liste(IRecipeIngredient) löschen
-            oi.Clear()
-            For Each c As wb_Rezeptschritt In Steps
+    Public Function CalcIngredients(SollMenge As Double) As IList
+        'Umrechnungs-Faktor berechnen aus Sollmenge und Rezept-Gesamtgewicht
+        Dim Faktor As Double = SollMenge / _RezGewicht
 
-                'Es werden nur Rezeptschritte in die Liste aufgenommen, die einen Sollwert enthalten
-                If wb_Functions.TypeIstSollMenge(c.Type, c.ParamNr) Then
+        'Liste(IRecipeIngredient) löschen
+        oi.Clear()
+        For Each c As wb_Rezeptschritt In Steps
 
-                    'Schnittstelle IRecipeIngredient
-                    Dim ri As New ob_RecipeIngredient
-                    ri.ArticleNo = c.Nummer
-                    ri.Amount = wb_Functions.StrToDouble(c.Sollwert)
+            'Es werden nur Rezeptschritte in die Liste aufgenommen, die einen Sollwert enthalten
+            If wb_Functions.TypeIstSollMenge(c.Type, c.ParamNr) Then
 
-                    'Rezept im Rezept
-                    If (c.RezeptNr > 0) And c.RezeptImRezept IsNot Nothing Then
-                        'Rezeptschritte aus Rezept-Im-Rezept hängen am RootRezeptschritt
-                        ri.Ingredients = c.RezeptImRezept.RootRezeptSchritt.Ingredients
-                    End If
-                    'Rezeptzeile in Liste(IRecipeIngredient)
-                    oi.Add(ri)
+                'Schnittstelle IRecipeIngredient
+                Dim ri As New ob_RecipeIngredient
+                ri.ArticleNo = c.Nummer
+                ri.Amount = wb_Functions.StrToDouble(c.Sollwert) * Faktor
+
+                'Rezept im Rezept
+                If (c.RezeptNr > 0) And c.RezeptImRezept IsNot Nothing Then
+                    'Rezeptschritte aus Rezept-Im-Rezept hängen am RootRezeptschritt
+                    ri.Ingredients = c.RezeptImRezept.RootRezeptSchritt.CalcIngredients(ri.Amount)
                 End If
-            Next
-            'Liste(IRecipeIngredient) zurückgeben
-            Return oi
-        End Get
-    End Property
+                'Rezeptzeile in Liste(IRecipeIngredient)
+                oi.Add(ri)
+            End If
+        Next
+        'Liste(IRecipeIngredient) zurückgeben
+        Return oi
+    End Function
 
     Public Sub CalcZutaten(ByRef zListe As ArrayList, Optional Faktor As Double = 1)
         'Angaben zum Rezeptschritt in Liste anhängen
