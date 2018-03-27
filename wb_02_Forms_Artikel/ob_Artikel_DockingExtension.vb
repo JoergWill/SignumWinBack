@@ -371,33 +371,35 @@ Public Class ob_Artikel_DockingExtension
     ''' 
     '''     WinBack         Bezeichung                  OrgaBack
     '''     =======         ==========                  ========
+    '''     KO_Nr_AlNum     Artikel-Nummer              dbo.Artikel.ArtikelNr
+    '''     KO_Bezeichnung  Artikel-Bezeichnung         dbo.Artikel.KurzText
+    '''     KO_Type           0 - Artikel               .Artikelgruppe =  0 (Gruppe Backwaren aus winback.ini)
+    '''                     102 - Rohstoff              .Artikelgruppe = 40 (Gruppe Rohstoffe aus winback.ini)
     '''     KO_Nr           Index Rohstoff/Artikel      MFF226
-    '''     KO_Bezeichnung  Artikel-Bezeichnung         .KurzText
-    '''     KO_Type           0 - Artikel               .Artikelgruppe =  0 (Verkaufsartikel Backwaren)
-    '''                     102 - Rohstoff              .Artikelgruppe = 40 (Rohstoff)
-    '''     KA_Kurzname     Kurztext                    MFF224
     '''     KO_Kommentar    Artikel-Kommentar           MFF225
-    '''     KO_Nr_AlNum     Artikel-Nummer              .ArtikelNr
     '''     KA_Matchcode    ID für Nährwerte            MFF227
-    '''     KA_Grp1         Artikelgruppe 1
-    '''     KA_Grp2         Artikelgruppe 2
+    '''     Rezeptnummer zum Artikel                    MFF228 (WinBack schreibt)
     ''' 
+    '''     Hinweise2(03/0) Hinweise Artikel            nur WinBack
+    '''     Hinweise2(09/1) Zutatenliste Artikel        MFF209 (WinBack schreibt)
+    '''     Hinweise2(09/2) Mehlzusammensetzung         MFF210 (WinBack schreibt)
+    ''' 
+    '''     In WinBack nicht verwendet
+    '''     ==========================
     '''     200.2           Dateiname Bild              .ArtikelBildDateiname
     '''     200.3           Kurztext                    .Kurztext
     '''     200.7           Haltbarkeit                 MFF102
     '''     200.8           Lagerung                    MFF103
     '''     200.9           Verkaufstage                MFF104
     '''     200.17          Warengruppe
-    '''     200.20          Stk/Karton                  VPE
+    '''     200.20          Stk/Karton                  
     '''     
-    '''     Hinweise2(03/0) Hinweise Artikel            MFF208
-    '''     Hinweise2(09/1) Zutatenliste Artikel        MFF209
-    '''     Hinweise2(09/2) Mehlzusammensetzung         MFF210
     '''     Hinweise2(10/1) Gebäck-Charakteristik       MFF211
     '''     Hinweise2(10/2) Verzehr-Tipps               MFF212
     '''     Hinweise2(10/3) Wissenswertes               MFF213
-    '''     Rezeptnummer zum Artikel (WinBack schreibt) MFF228
     '''     Rezeptname zum Artikel (WinBack schreibt)   MFF229
+    '''     
+    '''     KA_Kurzname     Kurztext                    MFF224 ENTFÄLLT !!
     '''     
     ''' </summary>
     Private Function GetKomponentenDaten() As Boolean
@@ -490,10 +492,8 @@ Public Class ob_Artikel_DockingExtension
 
         'Update aller in OrgaBack geänderten Daten
         Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
-        Komponente.MatchCode = MFFValue(oFil, wb_Global.MFF_MatchCode)       'MFF281 - MatchCode
         Komponente.ZutatenListe = MFFValue(oFil, wb_Global.MFF_Zutatenliste) 'MFF209 - Zutatenliste
         Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)       'MFF225 - Kommentar
-        Komponente.Kurzname = MFFValue(oFil, wb_Global.MFF_Kurzname)         'MFF224 - Kurzname
 
         'Testausgabe
         Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
@@ -511,7 +511,8 @@ Public Class ob_Artikel_DockingExtension
 
         'Update aller in WinBack geänderten Daten
         MFFValue(oFil, wb_Global.MFF_RezeptNummer) = Komponente.RezeptNummer
-        MFFValue(oFil, wb_Global.MFF_RezeptName) = Komponente.RezeptName
+        MFFValue(oFil, wb_Global.MFF_Zutatenliste) = Komponente.ZutatenListe
+        MFFValue(oFil, wb_Global.MFF_MehlZusammensetzung) = Komponente.Mehlzusammensetzung
     End Sub
 
 End Class

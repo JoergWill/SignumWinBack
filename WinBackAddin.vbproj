@@ -367,6 +367,7 @@
     <Compile Include="wb_00_Klassen\wb_AktUser.vb" />
     <Compile Include="wb_00_Klassen\wb_Simple3Des.vb" />
     <Compile Include="wb_00_Klassen\wb_VorProduktionsSchritt.vb" />
+    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Chargen.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Konfiguration.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_OrgaBack.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Rezepte.vb" />
@@ -442,6 +443,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_00_Main\wb_Printer_Shared.vb" />
+    <Compile Include="wb_01_Forms_Chargen\ob_ChargenProduziert.vb" />
+    <Compile Include="wb_01_Forms_Chargen\ob_ProduzierteWare.vb" />
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.Designer.vb">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
     </Compile>

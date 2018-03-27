@@ -931,7 +931,7 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
-    Public Function CalcIngredients(SollMenge As Double) As IList
+    Public Function CalcIngredients(SollMenge As Double, Variante As Short) As IList
         'Umrechnungs-Faktor berechnen aus Sollmenge und Rezept-Gesamtgewicht
         Dim Faktor As Double = SollMenge / _RezGewicht
 
@@ -945,12 +945,13 @@ Public Class wb_Rezeptschritt
                 'Schnittstelle IRecipeIngredient
                 Dim ri As New ob_RecipeIngredient
                 ri.ArticleNo = c.Nummer
+                ri.Variante = Variante
                 ri.Amount = wb_Functions.StrToDouble(c.Sollwert) * Faktor
 
                 'Rezept im Rezept
                 If (c.RezeptNr > 0) And c.RezeptImRezept IsNot Nothing Then
-                    'Rezeptschritte aus Rezept-Im-Rezept hängen am RootRezeptschritt
-                    ri.Ingredients = c.RezeptImRezept.RootRezeptSchritt.CalcIngredients(ri.Amount)
+                    'Rezeptschritte aus Rezept-Im-Rezept hängen am RootRezeptschritt (es wird immer Variante 1 gelesen)
+                    ri.Ingredients = c.RezeptImRezept.RootRezeptSchritt.CalcIngredients(ri.Amount, c.RezeptImRezept.Variante)
                 End If
                 'Rezeptzeile in Liste(IRecipeIngredient)
                 oi.Add(ri)

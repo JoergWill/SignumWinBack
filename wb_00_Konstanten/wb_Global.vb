@@ -219,25 +219,22 @@
     ''' <summary>
     ''' Konstanten für MultifunktionsFelder Artikel
     ''' </summary>
-    Public Const MFF_Haltbarkeit = 102
-    Public Const MFF_Lagerung = 103
-    Public Const MFF_Verkaufstage = 104
+    '''Public Const MFF_Haltbarkeit = 102
+    '''Public Const MFF_Lagerung = 103
+    '''Public Const MFF_Verkaufstage = 104
+    '''Public Const MFF_VerarbeitungsHinweisArtikel = 208
+    '''Public Const MFF_MatchCode = 227
+    '''Public Const MFF_RezeptName = 229
 
-    Public Const MFF_VerarbeitungsHinweisArtikel = 208
     Public Const MFF_Zutatenliste = 209
     Public Const MFF_MehlZusammensetzung = 210
     Public Const MFF_Gebäckcharakeristik = 211
     Public Const MFF_Verzehrtipps = 212
     Public Const MFF_Wissenswertes = 213
 
-    Public Const MFF_Kurzname = 224
     Public Const MFF_Kommentar = 225
     Public Const MFF_KO_Nr = 226
-    Public Const MFF_MatchCode = 227
     Public Const MFF_RezeptNummer = 228
-    Public Const MFF_RezeptName = 229
-
-
 
     ''' <summary>
     ''' Konstanten für die Berechnung der Teigausbeute

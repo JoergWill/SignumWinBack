@@ -185,6 +185,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTest_ob_ProduzierteWare.vb" />
     <Compile Include="UnitTest_ob_Rezept_Ingredients.vb" />
     <Compile Include="UnitTest_wb_Simple3Des.vb" />
     <Compile Include="UnitTest_wb_Charge.vb" />
