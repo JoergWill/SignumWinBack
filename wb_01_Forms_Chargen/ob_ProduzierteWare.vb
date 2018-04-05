@@ -1,7 +1,10 @@
-﻿Public Class ob_ProduzierteWare
+﻿Imports MySql.Data.MySqlClient
+
+Public Class ob_ProduzierteWare
     Private _FilialNummer As Integer = wb_Global.UNDEFINED
     Private _ProduktionsDatum As DateTime = Now
-    Private _SatzTyp As Char = "V"
+    Private _SatzTyp As wb_Global.obSatzTyp = wb_Global.obSatzTyp.Rohstoff
+    Private _ChargeNr As String = "UNDEF"
     Private _ArtikelNr As String = ""
     Private _Unit As Integer = wb_Global.EinheitKilogramm
     Private _Color As Integer = 0
@@ -28,11 +31,11 @@
         End Set
     End Property
 
-    Public Property SatzTyp As Char
+    Public Property SatzTyp As wb_Global.obSatzTyp
         Get
             Return _SatzTyp
         End Get
-        Set(value As Char)
+        Set(value As wb_Global.obSatzTyp)
             _SatzTyp = value
         End Set
     End Property
@@ -99,4 +102,84 @@
             _Haltbarkeit = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Konstruktor übergibt die Chargen-Nummer des vorhergehenden Datensatzes. Ist die Chargen-Nummer identisch, ist der 
+    ''' Satztyp 'V' also eine Rohstoff-Zeile (Verbrauchsdaten)
+    ''' Ist die Chargen-Nummer geändert, ist der Satztyp NULL (Produzierter Artikel)
+    ''' 
+    ''' </summary>
+    ''' <param name="ChargeNr"></param>
+    Public Sub New(ChargeNr As String)
+        'Chargen-Nummer des letzten Datensatzes
+        _ChargeNr = ChargeNr
+    End Sub
+
+    ''' <summary>
+    ''' Einlesen aller Datenfelder aus der Datenbank wbdaten in ob_ProduzierteWare
+    ''' </summary>
+    ''' <param name="sqlReader"></param>
+    ''' <returns></returns>
+    Public Function MySQLdbRead_Chargen(ByRef sqlReader As MySqlDataReader) As Boolean
+
+        'Chargendaten - Anzahl der Felder im DataSet
+        For i = 0 To sqlReader.FieldCount - 1
+            MySQLdbRead_Fields(sqlReader.GetName(i), sqlReader.GetValue(i))
+        Next
+
+        Return True
+    End Function
+
+
+    ''' <summary>
+    ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
+    ''' </summary>
+    ''' <param name="Name">String - Spalten-Name aus Datenbank</param>
+    ''' <param name="Value">Object - Wert aus Datenbank</param>
+    ''' <returns></returns>
+    Private Function MySQLdbRead_Fields(Name As String, Value As Object)
+        'DB-Null aus der Datenbank
+        If IsDBNull(Value) Then
+            Value = ""
+        End If
+
+        'Debug
+        Debug.Print("Feld/Value " & Name & "/" & Value.ToString)
+
+        'Feldname aus der Datenbank
+        Try
+            Select Case Name
+                'wenn sich die Chargen-Nummer nicht geändert hat ist der
+                'Satztyp ein Rohstoff-Verbrauch
+                Case "B_ARZ_Charge_Nr"
+                    If Value = _ChargeNr Then
+                        SatzTyp = wb_Global.obSatzTyp.Rohstoff
+                    Else
+                        SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel
+                    End If
+
+                Case "B_ARZ_TW_Nr"
+                Case "B_ARZ_Status"
+                Case "Linie"
+                Case "B_ARZ_KA_NrAlNum"
+                Case "B_KO_Nr_AlNum"
+
+
+                Case "B_ARS_BF_Charge"
+                Case "B_ARZ_Art_Einheit"
+                Case "B_ARZ_Sollmenge_kg"
+                Case "B_ARZ_Sollmenge_stueck"
+                Case "B_ARS_Istwert"
+                Case "B_ARZ_Erststart"
+                Case "B_ARS_Gestartet"
+
+                Case Else
+                    Debug.Print("Field-Name " & Name & " wird nicht ausgewertet")
+            End Select
+        Catch ex As Exception
+        End Try
+        Return True
+    End Function
+
+
 End Class

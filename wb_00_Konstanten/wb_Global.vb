@@ -153,6 +153,11 @@
         ERR 'Fehler bei der Berechnung
     End Enum
 
+    Enum obSatzTyp
+        ProduzierterArtikel
+        Rohstoff
+    End Enum
+
     Public Const maxTyp300 = 14
 
     Public Const T300_LinienGruppe = 5
