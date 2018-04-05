@@ -6,6 +6,8 @@ Public Class ob_ProduzierteWare
     Private _SatzTyp As wb_Global.obSatzTyp = wb_Global.obSatzTyp.Rohstoff
     Private _ChargeNr As String = "UNDEF"
     Private _ArtikelNr As String = ""
+    Private _Type As wb_Global.KomponTypen
+    Private _ParamNr As Integer
     Private _Unit As Integer = wb_Global.EinheitKilogramm
     Private _Color As Integer = 0
     Private _Size As Integer = vbNull
@@ -144,7 +146,7 @@ Public Class ob_ProduzierteWare
         End If
 
         'Debug
-        Debug.Print("Feld/Value " & Name & "/" & Value.ToString)
+        'Debug.Print("Feld/Value " & Name & "/" & Value.ToString)
 
         'Feldname aus der Datenbank
         Try
@@ -152,26 +154,54 @@ Public Class ob_ProduzierteWare
                 'wenn sich die Chargen-Nummer nicht geändert hat ist der
                 'Satztyp ein Rohstoff-Verbrauch
                 Case "B_ARZ_Charge_Nr"
-                    If Value = _ChargeNr Then
+                    If _ChargeNr = Value.ToString Then
                         SatzTyp = wb_Global.obSatzTyp.Rohstoff
                     Else
                         SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel
+                        ChargenNummer = Value.ToString
+                    End If
+
+                Case "B_ARS_BF_Charge"
+                    If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
+                        ChargenNummer = Value
                     End If
 
                 Case "B_ARZ_TW_Nr"
                 Case "B_ARZ_Status"
                 Case "Linie"
+                    FilialNummer = wb_Functions.StrToInt(Value)
+
                 Case "B_ARZ_KA_NrAlNum"
+                    If SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
+                        ArtikelNr = Value
+                    End If
+
                 Case "B_KO_Nr_AlNum"
+                    If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
+                        ArtikelNr = Value
+                    End If
 
-
-                Case "B_ARS_BF_Charge"
                 Case "B_ARZ_Art_Einheit"
+                    If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
+                        Unit = wb_Functions.StrToInt(Value)
+                    End If
+
                 Case "B_ARZ_Sollmenge_kg"
                 Case "B_ARZ_Sollmenge_stueck"
                 Case "B_ARS_Istwert"
+                    If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
+                        Menge = wb_Functions.StrToDouble(Value)
+                    End If
+
                 Case "B_ARZ_Erststart"
+                    If SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
+                        ProduktionsDatum = Value
+                    End If
+
                 Case "B_ARS_Gestartet"
+                    If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
+                        ProduktionsDatum = Value
+                    End If
 
                 Case Else
                     Debug.Print("Field-Name " & Name & " wird nicht ausgewertet")

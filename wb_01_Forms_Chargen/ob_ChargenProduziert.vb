@@ -8,6 +8,8 @@
 ''' </summary>
 Public Class ob_ChargenProduziert
 
+    Private opw_Liste As New ArrayList
+
     ''' <summary>
     ''' Exportiert die einzelnen Produktions-Chargen-Daten ab der vorgegebenen 
     ''' Tageswechselnummer in dbo.ProduzierteWare. Zurückgegeben wird 
@@ -22,6 +24,9 @@ Public Class ob_ChargenProduziert
         Dim wbdaten As wb_Sql
         Dim ChargenNummer As String = ""
 
+        'Liste löschen
+        opw_Liste.Clear()
+
         'Lesen Chargen-Kopftdaten
         wbdaten = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlExportChargen, TWNr)
@@ -34,22 +39,27 @@ Public Class ob_ChargenProduziert
                 Do
                     Dim opw As New ob_ProduzierteWare(ChargenNummer)
                     opw.MySQLdbRead_Chargen(wbdaten.MySqlRead)
-
-
-
+                    opw_Liste.Add(opw)
 
                     'Der letzte Datensatz war ein Produktions-Artikel
                     If opw.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
                         'Chargen-Nummer merken
                         ChargenNummer = opw.ChargenNummer
 
+                        'Datensatz Rohstoff-Verbrauch wird zusätzlich angelegt
+                        Dim opw_ As New ob_ProduzierteWare(ChargenNummer)
+                        opw_.MySQLdbRead_Chargen(wbdaten.MySqlRead)
+                        opw_Liste.Add(opw_)
+
                     End If
-
-                    'Chargendaten speichern
-                    'TODO Array oder direkt in die Datenbank
                 Loop While wbdaten.MySqlRead.Read
-
                 wbdaten.Close()
+
+                'Chargendaten speichern
+                For Each o As ob_ProduzierteWare In opw_Liste
+                    Debug.Print("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit" & o.SatzTyp & o.ChargenNummer & o.ArtikelNr & o.Menge & o.Unit)
+                Next
+
                 Return True
             End If
         End If
