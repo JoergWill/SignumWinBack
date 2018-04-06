@@ -26,8 +26,12 @@
     'Filiale.Typ ist Produktions-Filiale
     Public Const ProduktionsFiliale = 4
     'OrgaBack.Einheit [gr] aus dbo.Einheiten
-    Public Const EinheitKilogramm = 11
-    Public Const EinheitGramm = 12
+    Public Const obEinheitKilogramm = 11
+    Public Const obEinheitGramm = 12
+    'WinBack.Einheit aus winback.Einheiten
+    Public Const wbEinheitKilogramm = 1
+    Public Const wbEinheitStk = 12
+
     'OrgaBack.RezeptType (Produktions-Rezept variabel)
     Public Const RecipeTypeProdVariabel = 5
 
@@ -156,6 +160,13 @@
     Enum obSatzTyp
         ProduzierterArtikel
         Rohstoff
+        UnDefined
+    End Enum
+
+    Enum wbSatzTyp
+        Artikel
+        Rezept
+        UnDefined
     End Enum
 
     Public Const maxTyp300 = 14
@@ -375,6 +386,20 @@
         Public TeigRezeptDrucken As String
         Public BackZettelSenden As String
         Public TeigZettelSenden As String
+    End Structure
+
+    Public Structure wb_Linien
+        Public Linie As Integer
+        Public Bezeichnung As String
+        Public SegIdx As Integer
+        Public Filiale As Integer
+    End Structure
+
+    Public Structure wb_Einheiten
+        Public Nr As Integer
+        Public Einheit As String
+        Public Bezeichnung As String
+        Public obNr As Integer
     End Structure
 
     Enum ModusTeigOptimierung

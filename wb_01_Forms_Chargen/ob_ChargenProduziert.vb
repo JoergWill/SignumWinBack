@@ -19,10 +19,11 @@ Public Class ob_ChargenProduziert
     ''' </summary>
     ''' <param name="TWNr"></param>
     ''' <returns></returns>
-    Public Function ExportChargen(TWNr As Integer) As Integer
+    Public Function ExportChargen(TWNr As Integer) As String
         Dim sql As String
         Dim wbdaten As wb_Sql
         Dim ChargenNummer As String = ""
+        Dim opw_Zeile As New ob_ProduzierteWare(ChargenNummer)
 
         'Liste löschen
         opw_Liste.Clear()
@@ -37,38 +38,55 @@ Public Class ob_ChargenProduziert
 
                 'Schleife über alle Chargen bis alle Datensätze eingelesen sind
                 Do
-                    Dim opw As New ob_ProduzierteWare(ChargenNummer)
-                    opw.MySQLdbRead_Chargen(wbdaten.MySqlRead)
-                    opw_Liste.Add(opw)
+                    'Datenzeile dekodieren und zur Liste hinzufügen
+                    opw_Zeile = AddtoListe(wbdaten.MySqlRead, ChargenNummer)
 
                     'Der letzte Datensatz war ein Produktions-Artikel
-                    If opw.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
+                    If opw_Zeile.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
                         'Chargen-Nummer merken
-                        ChargenNummer = opw.ChargenNummer
-
+                        ChargenNummer = opw_Zeile.ChargenNummer
                         'Datensatz Rohstoff-Verbrauch wird zusätzlich angelegt
-                        Dim opw_ As New ob_ProduzierteWare(ChargenNummer)
-                        opw_.MySQLdbRead_Chargen(wbdaten.MySqlRead)
-                        opw_Liste.Add(opw_)
-
+                        AddtoListe(wbdaten.MySqlRead, ChargenNummer)
                     End If
+
                 Loop While wbdaten.MySqlRead.Read
                 wbdaten.Close()
 
+                Dim i As Integer = 0
                 'Chargendaten speichern
                 For Each o As ob_ProduzierteWare In opw_Liste
-                    Debug.Print("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit" & o.SatzTyp & o.ChargenNummer & o.ArtikelNr & o.Menge & o.Unit)
+                    i += 1
+                    'Wenn die Liste komplett voll ist (LIMIT 1000 Datensätze) dann
+                    'wird vor Ende der Liste vor dem nächsten Artikel-Datensatz abgebrochen
+                    'Die weiteren Produktionsdaten werden im nächsten Durchlauf abgearbeitet
+                    If opw_Liste.Count >= 100 And i > 10 Then
+                        If o.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
+                            Exit For
+                        End If
+                    End If
+
+                    Debug.Print("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit " & o.SatzTyp & " " & o.ChargenNummer & " " & o.ArtikelNr & " " & o.Menge & " " & o.Unit)
                 Next
 
-                Return True
             End If
         End If
         wbdaten.Close()
+        Return opw_Zeile.ChargenNummer
     End Function
 
+    Private Function AddtoListe(Reader As MySqlDataReader, ByRef ChargenNummer As String) As ob_ProduzierteWare
+        'OrgaBack - ProduzierteWare
+        Dim opw As New ob_ProduzierteWare(ChargenNummer)
+        'Datensatz aus wbdaten lesen
+        opw.MySQLdbRead_Chargen(Reader)
 
-
-
+        'nur Zeilen mit Sollwerten sind für die Verbrauchsdaten relevant
+        If wb_Functions.TypeIstSollMenge(opw.Type, opw.ParamNr) Then
+            'zur Liste hinzufügen
+            opw_Liste.Add(opw)
+        End If
+        Return opw
+    End Function
 
     ''' <summary>
     ''' Markiert alle exportierten Chargendaten als bearbeitet.

@@ -3,7 +3,12 @@
     Public Const sqlKonfiguration = "SELECT * FROM Konfiguration WHERE KF_Tag LIKE '[0]'"
 
     'Sql-Statement Liniengruppen
-    Public Const sqlLinienGruppen = "SELECT * FROM LinienGruppen"
+    Public Const sqlLinienGruppen = "SELECT * FROM LinienGruppen ORDER BY LG_Nr"
+    'Sql-Statement Linien
+    Public Const sqlLinien = "SELECT * FROM Linien ORDER BY L_Nr"
+
+    'Sql-Statement Einheiten
+    Public Const sqlEinheiten = "Select * FROM Einheiten ORDER BY E_LfdNr"
 
     'Sql-Statement E-Nummern
     Public Const sqlENummern = "Select * FROM enummern"

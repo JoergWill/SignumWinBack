@@ -45,7 +45,7 @@ Public Class ob_RecipeInfo
 
     Private _Color As Short = 0                                         'Farbe ist immer 0
     Private _Size As String = vbNull                                    'Größe ist immer Null
-    Private _Unit As Short = wb_Global.EinheitKilogramm                 'Einheit ist immer kg(11)
+    Private _Unit As Short = wb_Global.obEinheitKilogramm                 'Einheit ist immer kg(11)
     Private _RecipeType As Short = wb_Global.RecipeTypeProdVariabel     'Rezept-Type ist immer variable Produktionsrezeptur(5)
     Private _ProductionArticle As Boolean = True                        'Rezept-Type Produktion
     Private _Variable As Boolean = True                                 'Rezept-Type variabel
@@ -251,7 +251,7 @@ Public Class ob_RecipeIngredient
     Private _ArticleNo As String
     Private _Version As Short = 0
     Private _Amount As Decimal
-    Private _Unit As Short = wb_Global.EinheitKilogramm
+    Private _Unit As Short = wb_Global.obEinheitKilogramm
     Private _LossPercentage As Decimal
     Private _Ingredients As IList
 

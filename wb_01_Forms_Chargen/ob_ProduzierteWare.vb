@@ -1,27 +1,29 @@
 ﻿Imports MySql.Data.MySqlClient
+Imports WinBack
 
 Public Class ob_ProduzierteWare
     Private _FilialNummer As Integer = wb_Global.UNDEFINED
+    Private _Linie As Integer = wb_Global.UNDEFINED
     Private _ProduktionsDatum As DateTime = Now
     Private _SatzTyp As wb_Global.obSatzTyp = wb_Global.obSatzTyp.Rohstoff
+    Private _Typ As wb_Global.wbSatzTyp = wb_Global.wbSatzTyp.Artikel
     Private _ChargeNr As String = "UNDEF"
+    Private _TWNr As Long = wb_Global.UNDEFINED
     Private _ArtikelNr As String = ""
     Private _Type As wb_Global.KomponTypen
     Private _ParamNr As Integer
-    Private _Unit As Integer = wb_Global.EinheitKilogramm
+    Private _Einheit As Integer = wb_Global.UNDEFINED
+    Private _Unit As Integer = wb_Global.obEinheitKilogramm
     Private _Color As Integer = 0
     Private _Size As Integer = vbNull
     Private _Menge As Double = 0
     Private _ChargenNummer As String = ""
     Private _Haltbarkeit As DateTime = Now
 
-    Public Property FilialNummer As Integer
+    Public ReadOnly Property FilialNummer As Integer
         Get
             Return _FilialNummer
         End Get
-        Set(value As Integer)
-            _FilialNummer = value
-        End Set
     End Property
 
     Public Property ProduktionsDatum As Date
@@ -51,13 +53,10 @@ Public Class ob_ProduzierteWare
         End Set
     End Property
 
-    Public Property Unit As Integer
+    Public ReadOnly Property Unit As Integer
         Get
             Return _Unit
         End Get
-        Set(value As Integer)
-            _Unit = value
-        End Set
     End Property
 
     Public Property Color As Integer
@@ -102,6 +101,62 @@ Public Class ob_ProduzierteWare
         End Get
         Set(value As Date)
             _Haltbarkeit = value
+        End Set
+    End Property
+
+    Public Property Linie As Integer
+        Get
+            Return _Linie
+        End Get
+        Set(value As Integer)
+            _Linie = value
+            _FilialNummer = wb_Linien_Global.GetFiliale(_Linie)
+        End Set
+    End Property
+
+    Public Property Type As wb_Global.KomponTypen
+        Get
+            Return _Type
+        End Get
+        Set(value As wb_Global.KomponTypen)
+            _Type = value
+        End Set
+    End Property
+
+    Public Property ParamNr As Integer
+        Get
+            Return _ParamNr
+        End Get
+        Set(value As Integer)
+            _ParamNr = value
+        End Set
+    End Property
+
+    Public Property Einheit As Integer
+        Get
+            Return _Einheit
+        End Get
+        Set(value As Integer)
+            _Einheit = value
+            _Unit = wb_Einheiten_Global.GetobEinheitNr(_Einheit)
+        End Set
+    End Property
+
+    Public Property TWNr As Long
+        Get
+            Return _TWNr
+        End Get
+        Set(value As Long)
+            _TWNr = value
+        End Set
+    End Property
+
+    Public Property Typ As wb_Global.wbSatzTyp
+        Get
+            Return _Typ
+        End Get
+        Set(value As wb_Global.wbSatzTyp)
+            _Typ = value
         End Set
     End Property
 
@@ -151,6 +206,7 @@ Public Class ob_ProduzierteWare
         'Feldname aus der Datenbank
         Try
             Select Case Name
+
                 'wenn sich die Chargen-Nummer nicht geändert hat ist der
                 'Satztyp ein Rohstoff-Verbrauch
                 Case "B_ARZ_Charge_Nr"
@@ -160,44 +216,75 @@ Public Class ob_ProduzierteWare
                         SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel
                         ChargenNummer = Value.ToString
                     End If
-
+                'Rohstoff-Chargen-Nummer
                 Case "B_ARS_BF_Charge"
                     If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
-                        ChargenNummer = Value
+                        ChargenNummer = Value.ToString
+                    End If
+                'Tageswechsel-Nummer
+                Case "B_ARZ_TW_Nr"
+                    TWNr = wb_Functions.StrToInt(Value)
+
+                'Datensatz Chargen-Type (Rezept/Artikel)
+                Case "B_ARZ_Typ"
+                    Typ = wb_Functions.IntToProduktionsTyp(wb_Functions.StrToInt(Value))
+
+                'Einheit (berechnet OrgaBack-Einheiten-Index)
+                Case "B_KT_EinheitIndex"
+                    If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
+                        Einheit = wb_Functions.StrToInt(Value)
                     End If
 
-                Case "B_ARZ_TW_Nr"
-                Case "B_ARZ_Status"
+                'Produktions-Linie (berechnet Produktions-Filiale)
                 Case "Linie"
-                    FilialNummer = wb_Functions.StrToInt(Value)
+                    Linie = wb_Functions.StrToInt(Value)
 
+                'Artikel-Nummer (Produzierter Artikel)
                 Case "B_ARZ_KA_NrAlNum"
                     If SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
                         ArtikelNr = Value
                     End If
-
+                'Rohstoff-Nummer
                 Case "B_KO_Nr_AlNum"
                     If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
                         ArtikelNr = Value
                     End If
 
-                Case "B_ARZ_Art_Einheit"
-                    If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
-                        Unit = wb_Functions.StrToInt(Value)
-                    End If
+                'Sollwert Parameter-Nummer
+                Case "B_ARS_ParamNr"
+                    ParamNr = wb_Functions.StrToInt(Value)
+                'Komponenten-Type
+                Case "B_KT_Typ_Nr"
+                    Type = wb_Functions.IntToKomponType(wb_Functions.StrToInt(Value))
 
-                Case "B_ARZ_Sollmenge_kg"
+                'Sollmenge produzierter Artikel in Stk (Aufruf über Artikel in WinBack)
                 Case "B_ARZ_Sollmenge_stueck"
+                    If SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel And Typ = wb_Global.wbSatzTyp.Artikel Then
+                        Menge = wb_Functions.StrToDouble(Value)
+                        'Einheit = wb_Global.wbEinheitStk
+                    End If
+                'Sollmenge produzierter Artikel in Stk (Aufruf über Rezept in WinBack)
+                Case "B_ARZ_Sollmenge_kg"
+                    If SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel And Typ = wb_Global.wbSatzTyp.Rezept Then
+                        Menge = wb_Functions.StrToDouble(Value)
+                        'Einheit = wb_Global.wbEinheitKilogramm
+                    End If
+                'Einheit (Satztyp Produzierter Artikel)
+                Case "B_ARZ_Art_Einheit"
+                    If SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
+                        Einheit = wb_Functions.StrToInt(Value)
+                    End If
+                'Rohstoff Istwert Verwiegung (Verbrauch)
                 Case "B_ARS_Istwert"
                     If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
                         Menge = wb_Functions.StrToDouble(Value)
                     End If
 
+                'Produktions-Datum
                 Case "B_ARZ_Erststart"
                     If SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
                         ProduktionsDatum = Value
                     End If
-
                 Case "B_ARS_Gestartet"
                     If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
                         ProduktionsDatum = Value

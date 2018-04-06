@@ -361,6 +361,7 @@
     <Compile Include="wb_00_Klassen\wb_Charge.vb" />
     <Compile Include="wb_00_Klassen\wb_DockBarPanelShared.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_Sync.vb" />
+    <Compile Include="wb_00_Klassen\wb_Einheiten_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam300.vb" />
     <Compile Include="wb_00_Klassen\wb_Linien_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_MinMaxOptCharge.vb" />

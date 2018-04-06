@@ -341,6 +341,17 @@ Public Class wb_Functions
         End Select
     End Function
 
+    Public Shared Function IntToProduktionsTyp(i As Integer) As wb_Global.wbSatzTyp
+        Select Case i
+            Case 1
+                Return wb_Global.wbSatzTyp.Rezept
+            Case 2
+                Return wb_Global.wbSatzTyp.Artikel
+            Case Else
+                Return wb_Global.wbSatzTyp.UnDefined
+        End Select
+    End Function
+
     ''' <summary>
     ''' Ermittelt, ob Typ und Parameter-Nummer einen Gewichts-relevanten Sollwert enthalten.
     '''     Automatik-Komponenten (Produktion und Sauerteig)
