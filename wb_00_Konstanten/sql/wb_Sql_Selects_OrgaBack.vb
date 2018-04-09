@@ -31,4 +31,8 @@
     'Sql-Statement Abfrage dbo.SystemInfo
     Public Const mssqlSystemInfo = "SELECT TOP(1) * FROM SystemInfo ORDER BY lfd DESC"
 
+    'Sql-Statement Insert Produktions/Verbrauchsdaten in [OrgaBackMain].[dbo].[ProduzierteWare]"
+    Public Const mssqlInsertProduktionsDaten = "INSERT INTO [dbo].[ProduzierteWare] (FilialNr, ProduktionsDatum, SatzTyp, ArtikelNr, " &
+                                               "Einheit, Farbe, Groesse, Menge, ChargenNr, HaltbarkeitsDatum) VALUES ([0])"
+
 End Class

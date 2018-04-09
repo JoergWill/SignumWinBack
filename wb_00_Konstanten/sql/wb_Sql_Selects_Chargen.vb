@@ -14,6 +14,6 @@
                                     "B_ARS_TW_Nr >= [0] AND BAK_ArbRezepte.B_ARZ_Status <> 'Exp' " &
                                     "ORDER BY BAK_ArbRezepte.B_ARZ_TW_Idx, BAK_ArbRezepte.B_ARZ_Timestamp, " &
                                     "BAK_ArbRZSchritte.B_ARS_Art_Index, BAK_ArbRZSchritte.B_ARS_Schritt_Nr, " &
-                                    "BAK_ArbRZSchritte.B_ARS_ParamNr LIMIT 1000"
+                                    "BAK_ArbRZSchritte.B_ARS_ParamNr LIMIT [1]"
 
 End Class

@@ -9,6 +9,7 @@
 Public Class ob_ChargenProduziert
 
     Private opw_Liste As New ArrayList
+    Private Const LIMIT = 1000
 
     ''' <summary>
     ''' Exportiert die einzelnen Produktions-Chargen-Daten ab der vorgegebenen 
@@ -19,18 +20,19 @@ Public Class ob_ChargenProduziert
     ''' </summary>
     ''' <param name="TWNr"></param>
     ''' <returns></returns>
-    Public Function ExportChargen(TWNr As Integer) As String
+    Public Function ExportChargen(TWNr As Integer) As Integer
         Dim sql As String
         Dim wbdaten As wb_Sql
         Dim ChargenNummer As String = ""
+        Dim TageswechselNr As Long = wb_Global.UNDEFINED
         Dim opw_Zeile As New ob_ProduzierteWare(ChargenNummer)
 
         'Liste löschen
         opw_Liste.Clear()
 
-        'Lesen Chargen-Kopftdaten
+        'Lesen Chargen-Kopfdaten (Anzahl der Datensätze begrenzt auf LIMIT)
         wbdaten = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlExportChargen, TWNr)
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlExportChargen, TWNr, LIMIT)
 
         'Datensätze aus Tabelle BAK_ArbRezepte lesen
         If wbdaten.sqlSelect(sql) Then
@@ -50,28 +52,52 @@ Public Class ob_ChargenProduziert
                     End If
 
                 Loop While wbdaten.MySqlRead.Read
-                wbdaten.Close()
+                wbdaten.CloseRead()
 
+                'Liste der produzierten Chargen abarbeiten
                 Dim i As Integer = 0
-                'Chargendaten speichern
+                ChargenNummer = ""
+                'Datenbank-Verbindung mssql öffnen
+                Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+
+                'Chargendaten in dbo.ProduzierteWare speichern
                 For Each o As ob_ProduzierteWare In opw_Liste
-                    i += 1
+
                     'Wenn die Liste komplett voll ist (LIMIT 1000 Datensätze) dann
                     'wird vor Ende der Liste vor dem nächsten Artikel-Datensatz abgebrochen
                     'Die weiteren Produktionsdaten werden im nächsten Durchlauf abgearbeitet
-                    If opw_Liste.Count >= 100 And i > 10 Then
+                    i += 1
+                    If opw_Liste.Count >= LIMIT And i > LIMIT - 100 Then
                         If o.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
                             Exit For
                         End If
                     End If
 
-                    Debug.Print("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit " & o.SatzTyp & " " & o.ChargenNummer & " " & o.ArtikelNr & " " & o.Menge & " " & o.Unit)
+                    'Datensatz in dbo.Produzierte Ware schreiben
+                    If Not SqlWriteProdWare(OrgasoftMain, o) Then
+                        'Insert in dbo.Produzierte Ware war nicht erfolgreich - Fehler-Log
+                        Trace.WriteLine("Fehler beim Schreiben in dbo.ProduzierteWare TW-Nr/Artikel/Charge" & o.TWNr & "/" & o.ArtikelNr & "/" & o.ChargenNummer)
+                    End If
+
+                    'Datensatz in wbdaten als exportiert markieren
+                    If o.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel And ChargenNummer <> "" Then
+                        MarkChargenKopf(wbdaten, TageswechselNr, ChargenNummer)
+                    End If
+                    'Chargen- und Tageswechselnummer merken (Markieren der Chargen in wbdaten)
+                    ChargenNummer = o.ChargenNummer
+                    TageswechselNr = o.TWNr
+
                 Next
+                'Datenbank-Verbindung dbo.ProduzierteWare wieder schliessen
+                OrgasoftMain.Close()
 
             End If
         End If
+
+        'Datenbank-Verbindung sicherheitshalber nochmals schliessen
         wbdaten.Close()
-        Return opw_Zeile.ChargenNummer
+        'Letzte gültige Tageswechsel-Nummer
+        Return TageswechselNr
     End Function
 
     Private Function AddtoListe(Reader As MySqlDataReader, ByRef ChargenNummer As String) As ob_ProduzierteWare
@@ -89,12 +115,50 @@ Public Class ob_ChargenProduziert
     End Function
 
     ''' <summary>
+    ''' Schreibt einen Datensatz aus ob_ProduzierteWare in die Tabelle dbo.ProduzierteWare
+    ''' Die Datenbank-Verbindung muss geöffnet sein.
+    ''' 
+    ''' INSERT INTO [dbo].[ProduzierteWare] 
+    '''     lfdNr                   Laufende Nummer (wird in der DB automatisch generiert - DB.Tabelle Update erforderlich !!)
+    '''     FilialNr                Produktions-Filiale
+    '''     ProduktionsDatum
+    '''     SatzTyp
+    '''     ArtikelNr
+    '''     Einheit
+    '''     Farbe
+    '''     Groesse
+    '''     Menge
+    '''     ChargenNr
+    '''     HaltbarkeitsDatum
+    ''' </summary>
+    ''' <param name="db"></param>
+    ''' <param name="o"></param>
+    ''' <returns></returns>
+    Private Function SqlWriteProdWare(db As wb_Sql, o As ob_ProduzierteWare) As Boolean
+        'Datensatz in dbo.Produzierte Ware schreiben
+        Debug.Print("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit " & o.SatzTyp & " " & o.ChargenNummer & " " & o.ArtikelNr & " " & o.Menge & " " & o.Unit)
+
+        'Der SQL-INSERT-Befehl wird dynamisch erzeugt
+        Dim sql As String = o.sFilialNummer & ", '" & o.sProduktionsDatum & "', '" & o.sSatzTyp & "', '" & o.ArtikelNr & "', " & o.Einheit & ", " &
+                            o.Color & ", '" & o.Size & "', " & o.Menge.ToString & ", '" & o.ChargenNummer & "', '" & o.sHaltbarkeit & "'"
+        'Insert ausführen
+        If db.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertProduktionsDaten, sql)) < 0 Then
+            ' Rückgabewert kleiner Null - Fehler
+            Return False
+        Else
+            'Result Insert OK
+            Return True
+        End If
+    End Function
+
+    ''' <summary>
     ''' Markiert alle exportierten Chargendaten als bearbeitet.
     ''' In der Tabelle BAK_ArbRezepte wird das Feld B_ARZ_Status auf EXP gesetzt
     ''' </summary>
     ''' <param name="TWNr"></param>
+    ''' <param name="ChargenNummer"></param>
     ''' <returns></returns>
-    Public Function MarkChargenKopf(TWNr As Integer) As Boolean
+    Private Function MarkChargenKopf(wb As wb_Sql, TWNr As Integer, ChargenNummer As String) As Boolean
 
     End Function
 

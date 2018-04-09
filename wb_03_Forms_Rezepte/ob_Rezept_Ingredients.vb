@@ -1,4 +1,5 @@
 ﻿Imports Signum.OrgaSoft.Common
+Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.Services
 
 ''' <summary>
@@ -6,14 +7,28 @@ Imports Signum.OrgaSoft.Services
 ''' </summary>
 #Region "ob_RecipeProvider"
 Public Class ob_RecipeProvider
+    Implements IExtension
     Implements IRecipeProvider
+
     Dim RecipeInfo As ob_RecipeInfo
+
+    Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
+    Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
 
     Public ReadOnly Property ServiceName As String Implements IOrgasoftService.ServiceName
         Get
             Return "@WinBackRezepturSchnittstelle"
         End Get
     End Property
+
+    Public Sub Initialize() Implements IExtension.Initialize
+
+        ' Diese Klasse als (benannten) Service registrieren
+        ServiceProvider.AddService(GetType(IRecipeProvider), Me.ServiceName, Me)
+        ' Den ServiceProvider so konfigurieren, dass er für diesen Service auf diese Implementierung zurückgreifen soll
+        ServiceProvider.ConfigureService(GetType(IRecipeProvider), Me.ServiceName)
+    End Sub
+
     ''' <summary>
     ''' Ermittelt die Rezeptur und liefert die Bestandteile zurück. Die Rezeptgröße wird dabei immer auf
     ''' ein Stück (Artikel-Nassgewicht) berechnet.

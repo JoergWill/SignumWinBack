@@ -12,9 +12,8 @@ Imports WinBack
     <TestMethod()> Public Sub TestRezeptschritte()
         Dim Ri As New ob_RecipeProvider
         Dim Rc As ob_RecipeInfo
-        Dim x As ob_RecipeIngredient
 
-        Rc = Ri.GetRecipe("308", 1, 0, 0, 0, 0)
+        Rc = Ri.GetRecipe("85276", 1, 0, 0, 0, 0)
         DebugPrintIngedients(Rc.Ingredients)
 
         Assert.AreEqual("@WinBackRezepturSchnittstelle", Ri.ServiceName)

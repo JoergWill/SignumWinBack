@@ -14,15 +14,15 @@ Public Class ob_ProduzierteWare
     Private _ParamNr As Integer
     Private _Einheit As Integer = wb_Global.UNDEFINED
     Private _Unit As Integer = wb_Global.obEinheitKilogramm
-    Private _Color As Integer = 0
-    Private _Size As Integer = vbNull
-    Private _Menge As Double = 0
+    Private _Color As String = "0"
+    Private _Size As String = "NULL"
+    Private _Menge As Double = 0.0
     Private _ChargenNummer As String = ""
     Private _Haltbarkeit As DateTime = Now
 
-    Public ReadOnly Property FilialNummer As Integer
+    Public ReadOnly Property sFilialNummer As String
         Get
-            Return _FilialNummer
+            Return _FilialNummer.ToString
         End Get
     End Property
 
@@ -35,6 +35,13 @@ Public Class ob_ProduzierteWare
         End Set
     End Property
 
+    Public ReadOnly Property sProduktionsDatum As String
+        Get
+            Return "10102017"
+            Return _ProduktionsDatum.ToShortDateString
+        End Get
+    End Property
+
     Public Property SatzTyp As wb_Global.obSatzTyp
         Get
             Return _SatzTyp
@@ -44,8 +51,22 @@ Public Class ob_ProduzierteWare
         End Set
     End Property
 
+    Public ReadOnly Property sSatzTyp As String
+        Get
+            Select Case _SatzTyp
+                Case wb_Global.obSatzTyp.ProduzierterArtikel
+                    Return ""
+                Case wb_Global.obSatzTyp.Rohstoff
+                    Return "V"
+                Case Else
+                    Return ""
+            End Select
+        End Get
+    End Property
+
     Public Property ArtikelNr As String
         Get
+            Return "1100"
             Return _ArtikelNr
         End Get
         Set(value As String)
@@ -53,28 +74,22 @@ Public Class ob_ProduzierteWare
         End Set
     End Property
 
-    Public ReadOnly Property Unit As Integer
+    Public ReadOnly Property Unit As String
         Get
-            Return _Unit
+            Return _Unit.ToString
         End Get
     End Property
 
-    Public Property Color As Integer
+    Public ReadOnly Property Color As String
         Get
-            Return _Color
+            Return _Color.ToString
         End Get
-        Set(value As Integer)
-            _Color = value
-        End Set
     End Property
 
-    Public Property Size As Integer
+    Public ReadOnly Property Size As String
         Get
             Return _Size
         End Get
-        Set(value As Integer)
-            _Size = value
-        End Set
     End Property
 
     Public Property Menge As Double
@@ -102,6 +117,13 @@ Public Class ob_ProduzierteWare
         Set(value As Date)
             _Haltbarkeit = value
         End Set
+    End Property
+
+    Public ReadOnly Property sHaltbarkeit As String
+        Get
+            Return "10102017"
+            Return _Haltbarkeit.ToShortDateString
+        End Get
     End Property
 
     Public Property Linie As Integer
@@ -186,7 +208,6 @@ Public Class ob_ProduzierteWare
 
         Return True
     End Function
-
 
     ''' <summary>
     ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften

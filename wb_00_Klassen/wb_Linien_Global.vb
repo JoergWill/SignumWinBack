@@ -68,7 +68,7 @@
 
             'Zuordnung Linien - OrgaBack.Filiale
             If winback.FieldCount > 8 Then
-                Linie.Filiale = winback.iField("L_Filiale")
+                Linie.Filiale = winback.iField("L_ProdFiliale")
             Else
                 'Erweiterung Tabelle Linien ist notwendig !
                 Trace.WriteLine("Tabelle WinBack.Linien muss erweitert werden! (Filiale)")

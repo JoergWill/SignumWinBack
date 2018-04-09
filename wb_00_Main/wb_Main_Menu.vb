@@ -22,6 +22,7 @@ Public Class wb_Main_Menu
 
     Private xForm As Form
     Private xLogger As New wb_TraceListener
+    Private oRecipeProvider As New ob_RecipeProvider
 
     ''' <summary>
     ''' Initialisierung Klasse
@@ -43,6 +44,8 @@ Public Class wb_Main_Menu
         AddLogIn()
         'Main-Menu erweitern
         AddMenu()
+        'RecipeProvider initialisieren
+        oRecipeProvider.Initialize()
 
     End Sub
 
