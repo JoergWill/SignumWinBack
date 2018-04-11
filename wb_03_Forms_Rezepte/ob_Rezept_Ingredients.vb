@@ -43,7 +43,7 @@ Public Class ob_RecipeProvider
     ''' <param name="Branch">Filiale, für die die Rezeptur aufgelöst werden soll. Bei Werten > 0 werden evtl. vorhandene filialspezifische Varianten berücksichtigt</param>
     ''' <returns></returns>
     Public Function GetRecipe(ArticleNo As String, Unit As Short, Color As Short, Size As String, Version As Short, Branch As Short) As IRecipeInfo Implements IRecipeProvider.GetRecipe
-        RecipeInfo = New ob_RecipeInfo(ArticleNo, Version, Branch)
+        RecipeInfo = New ob_RecipeInfo(ArticleNo, Unit, Size, Version, Branch)
         Return RecipeInfo
     End Function
 End Class
@@ -61,8 +61,8 @@ Public Class ob_RecipeInfo
     Private _Ingredients As IList
 
     Private _Color As Short = 0                                         'Farbe ist immer 0
-    Private _Size As String = vbNull                                    'Größe ist immer Null
-    Private _Unit As Short = wb_Global.obEinheitKilogramm                 'Einheit ist immer kg(11)
+    Private _Size As String = "NULL"                                    'Größe ist immer Null
+    Private _Unit As Short = wb_Global.obEinheitKilogramm               'Einheit ist immer kg(11)
     Private _RecipeType As Short = wb_Global.RecipeTypeProdVariabel     'Rezept-Type ist immer variable Produktionsrezeptur(5)
     Private _ProductionArticle As Boolean = True                        'Rezept-Type Produktion
     Private _Variable As Boolean = True                                 'Rezept-Type variabel
@@ -74,11 +74,13 @@ Public Class ob_RecipeInfo
     ''' <param name="ArticleNo">ArtikelNummer der Rezeptur, die aufgelöst werden soll</param>
     ''' <param name="Version">Versions-Nummer entspricht der Variante in WinBack - 1</param>
     ''' <param name="Branch">Filiale, für die die Rezeptur aufgelöst werden soll. Bei Werten > 0 werden evtl. vorhandene filialspezifische Varianten berücksichtigt</param>
-    Public Sub New(ArticleNo As String, Version As Short, Branch As Short)
+    Public Sub New(ArticleNo As String, Unit As Short, Size As String, Version As Short, Branch As Short)
         'Parameter
         Me.ArticleNo = ArticleNo
         Me.Version = Version
         Me.Branch = Branch
+        Me.Unit = Unit
+        Me.Size = Size
 
         'Komponenten-Stammdaten    
         Dim Komponente As New wb_Komponente
@@ -149,6 +151,7 @@ Public Class ob_RecipeInfo
 
     ''' <summary>
     ''' Size. Wird in WinBack nicht verwendet. Ist immer Null
+    ''' In der Kopfzeile wird der Wert aus dem Aufruf zurücgegeben
     ''' </summary>
     ''' <returns></returns>
     Public Property Size As String Implements IRecipeInfo.Size

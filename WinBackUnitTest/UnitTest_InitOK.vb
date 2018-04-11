@@ -2,8 +2,17 @@
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports WinBack
 
-<TestClass()> Public Class UnitTest_wb_AdminDatenbaseInfo
-
+''' <summary>
+''' Testet ob die Routine InitDBTests alle Einstellungen richtig setzt:
+''' 
+'''     Datenbank WinBack auf localhost
+'''     Datenbank Konfiguration.Kunde = UnitTest300
+'''     
+'''     Datenbank OrgaBack auf localhost (WILL/WIN10)
+'''     Datenbank OrgaBack Mandant UnitTest
+'''     
+''' </summary>
+<TestClass()> Public Class UnitTest_InitOK
 
     ''' <summary>
     ''' Initialisiert die Datenbank-Einstellungen.
@@ -13,10 +22,7 @@ Imports WinBack
     <ClassInitialize()> Public Shared Sub InitDBTests(ByVal testContext As TestContext)
         'Einstellungen in WinBack.ini für den Testlauf vornehmen
         UnitTest_Init.Init_WinBackIni()
-
     End Sub
-
-
 
     <TestMethod()> Public Sub TestDatebaseInfo()
 

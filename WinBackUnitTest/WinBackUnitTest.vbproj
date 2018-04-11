@@ -188,7 +188,7 @@
     <Compile Include="UnitTest_Init.vb" />
     <Compile Include="UnitTest_ob_ProduzierteWare.vb" />
     <Compile Include="UnitTest_ob_Rezept_Ingredients.vb" />
-    <Compile Include="UnitTest_wb_AdminDatenbaseInfo.vb" />
+    <Compile Include="UnitTest_InitOK.vb" />
     <Compile Include="UnitTest_wb_Simple3Des.vb" />
     <Compile Include="UnitTest_wb_Charge.vb" />
     <Compile Include="UnitTest_wb_Produktion.vb" />
