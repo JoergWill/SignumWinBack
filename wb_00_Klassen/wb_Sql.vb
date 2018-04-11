@@ -214,7 +214,11 @@ Public Class wb_Sql
                     Return False
             End Select
         Catch ex As Exception
-            MsgBox("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
+            If Debugger.IsAttached Then
+                MsgBox("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
+            Else
+                Trace.WriteLine("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
+            End If
             Return False
         End Try
     End Function
@@ -241,7 +245,11 @@ Public Class wb_Sql
                     Return -1
             End Select
         Catch ex As Exception
-            MsgBox("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
+            If Debugger.IsAttached Then
+                MsgBox("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
+            Else
+                Trace.WriteLine("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
+            End If
             Return -1
         End Try
     End Function

@@ -42,10 +42,18 @@ Public Class wb_sql_BackupRestore
     Public Function datenruecksicherung(FileName As String) As Boolean
         Dim OpenFileExtension As String
         Dim DumpFileName As String
+        Dim DBName As String
 
         'Cursor umschalten
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
         OpenFileExtension = IO.Path.GetExtension(FileName)
+
+        'Datenbank-Name winback oder wbdaten
+        If FileName.Contains("Chargen") Then
+            DBName = "wbdaten"
+        Else
+            DBName = "winback"
+        End If
 
         'Datenrücksicherung muss vorher dekomprimiert werden
         If OpenFileExtension = ".bz2" Then
@@ -56,7 +64,7 @@ Public Class wb_sql_BackupRestore
             wb_Functions.bz2DecompressFile(FileName, DumpFileName)
             'Kommentare aus .sql-File entfernen (Inkompatibilität MySql 3.xx nach 5.xx)
             Trace.WriteLine("Datensicherung bearbeiten (MySql 3.x.xx)")
-            PrepareSQLFile(DumpFileName, "winback")
+            PrepareSQLFile(DumpFileName, DBName)
             'Datenrücksicherung starten
             Trace.WriteLine("Start Datenrücksicherung WinBack")
             wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Restore.bat", DumpFileName, True)
@@ -66,7 +74,7 @@ Public Class wb_sql_BackupRestore
         Else
             'Kommentare aus .sql-File entfernen (Inkompatibilität MySql 3.xx nach 5.xx)
             Trace.WriteLine("Datensicherung bearbeiten (MySql 3.x.xx)")
-            PrepareSQLFile(FileName, "winback")
+            PrepareSQLFile(FileName, DBName)
             'Datenrücksicherung starten
             Trace.WriteLine("Start Datenrücksicherung WinBack")
             wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Restore.bat", FileName, True)

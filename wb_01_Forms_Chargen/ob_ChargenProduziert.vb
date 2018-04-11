@@ -76,7 +76,7 @@ Public Class ob_ChargenProduziert
                     'Datensatz in dbo.Produzierte Ware schreiben
                     If Not SqlWriteProdWare(OrgasoftMain, o) Then
                         'Insert in dbo.Produzierte Ware war nicht erfolgreich - Fehler-Log
-                        Trace.WriteLine("Fehler beim Schreiben in dbo.ProduzierteWare TW-Nr/Artikel/Charge" & o.TWNr & "/" & o.ArtikelNr & "/" & o.ChargenNummer)
+                        Trace.WriteLine("Fehler beim Schreiben in dbo.ProduzierteWare TW-Nr/Artikel/Charge " & o.TWNr & "/" & o.ArtikelNr & "/" & o.ChargenNummer)
                     End If
 
                     'Datensatz in wbdaten als exportiert markieren
@@ -140,7 +140,7 @@ Public Class ob_ChargenProduziert
 
         'Der SQL-INSERT-Befehl wird dynamisch erzeugt
         Dim sql As String = o.sFilialNummer & ", '" & o.sProduktionsDatum & "', '" & o.sSatzTyp & "', '" & o.ArtikelNr & "', " & o.Einheit & ", " &
-                            o.Color & ", '" & o.Size & "', " & o.Menge.ToString & ", '" & o.ChargenNummer & "', '" & o.sHaltbarkeit & "'"
+                            o.Color & ", '" & o.Size & "', '" & o.Menge.ToString & "', '" & o.ChargenNummer & "', '" & o.sHaltbarkeitsDatum & "'"
         'Insert ausführen
         If db.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertProduktionsDaten, sql)) < 0 Then
             ' Rückgabewert kleiner Null - Fehler

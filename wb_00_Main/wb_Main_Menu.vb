@@ -44,9 +44,6 @@ Public Class wb_Main_Menu
         AddLogIn()
         'Main-Menu erweitern
         AddMenu()
-        'RecipeProvider initialisieren
-        oRecipeProvider.Initialize()
-
     End Sub
 
     ''' <summary>

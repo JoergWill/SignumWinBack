@@ -18,7 +18,7 @@ Public Class ob_ProduzierteWare
     Private _Size As String = "NULL"
     Private _Menge As Double = 0.0
     Private _ChargenNummer As String = ""
-    Private _Haltbarkeit As DateTime = Now
+    Private _HaltbarkeitsDatum As DateTime = Now
 
     Public ReadOnly Property sFilialNummer As String
         Get
@@ -37,8 +37,7 @@ Public Class ob_ProduzierteWare
 
     Public ReadOnly Property sProduktionsDatum As String
         Get
-            Return "10102017"
-            Return _ProduktionsDatum.ToShortDateString
+            Return wb_sql_Functions.MsSQLShortDate(_ProduktionsDatum)
         End Get
     End Property
 
@@ -101,28 +100,35 @@ Public Class ob_ProduzierteWare
         End Set
     End Property
 
+    ''' <summary>
+    ''' Chargen-Nummer begrenzt auf maximal 15 Zeichen
+    ''' </summary>
+    ''' <returns></returns>
     Public Property ChargenNummer As String
         Get
-            Return _ChargenNummer
+            If _ChargenNummer.Length > 15 Then
+                Return Left(_ChargenNummer, 15)
+            Else
+                Return _ChargenNummer
+            End If
         End Get
         Set(value As String)
             _ChargenNummer = value
         End Set
     End Property
 
-    Public Property Haltbarkeit As Date
+    Public Property HaltbarkeitsDatum As Date
         Get
-            Return _Haltbarkeit
+            Return _HaltbarkeitsDatum
         End Get
         Set(value As Date)
-            _Haltbarkeit = value
+            _HaltbarkeitsDatum = value
         End Set
     End Property
 
-    Public ReadOnly Property sHaltbarkeit As String
+    Public ReadOnly Property sHaltbarkeitsDatum As String
         Get
-            Return "10102017"
-            Return _Haltbarkeit.ToShortDateString
+            Return wb_sql_Functions.MsSQLShortDate(_HaltbarkeitsDatum)
         End Get
     End Property
 
@@ -187,6 +193,7 @@ Public Class ob_ProduzierteWare
     ''' Satztyp 'V' also eine Rohstoff-Zeile (Verbrauchsdaten)
     ''' Ist die Chargen-Nummer geändert, ist der Satztyp NULL (Produzierter Artikel)
     ''' 
+    ''' Die Länge wird begrenzt auf 15 Zeichen, da sonst ein Überlauf beim Insert in die Datenbank auftritt.
     ''' </summary>
     ''' <param name="ChargeNr"></param>
     Public Sub New(ChargeNr As String)

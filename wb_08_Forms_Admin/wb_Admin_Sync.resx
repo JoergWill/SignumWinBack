@@ -258,27 +258,6 @@
   <data name="lvSyncResult.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
-  <data name="lvSyncResult.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 530</value>
-  </data>
-  <data name="lvSyncResult.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 66</value>
-  </data>
-  <data name="lvSyncResult.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;lvSyncResult.Name" xml:space="preserve">
-    <value>lvSyncResult</value>
-  </data>
-  <data name="&gt;&gt;lvSyncResult.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lvSyncResult.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lvSyncResult.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="clHeader0.Text" xml:space="preserve">
     <value />
   </data>
@@ -311,6 +290,30 @@
   </data>
   <data name="clHeader5.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Center</value>
+  </data>
+  <data name="lvSyncResult.Location" type="System.Drawing.Point, System.Drawing">
+    <value>153, 530</value>
+  </data>
+  <data name="lvSyncResult.Size" type="System.Drawing.Size, System.Drawing">
+    <value>369, 66</value>
+  </data>
+  <data name="lvSyncResult.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.Name" xml:space="preserve">
+    <value>lvSyncResult</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="btnSyncArtikelGruppen.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="btnSyncArtikelGruppen.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>

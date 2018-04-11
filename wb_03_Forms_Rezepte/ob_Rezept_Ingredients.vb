@@ -6,6 +6,8 @@ Imports Signum.OrgaSoft.Services
 ''' Klasse zum Auflösen von Rezepturen bzw. Stücklisten
 ''' </summary>
 #Region "ob_RecipeProvider"
+<Export(GetType(IExtension))>
+<ExportMetadata("Description", "Service Rezeptauflösung und Stückliste WinBack")>
 Public Class ob_RecipeProvider
     Implements IExtension
     Implements IRecipeProvider

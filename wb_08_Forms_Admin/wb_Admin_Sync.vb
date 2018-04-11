@@ -152,6 +152,9 @@ Public Class wb_Admin_Sync
     End Sub
 
     Private Sub btnSyncStart_Click(sender As Object, e As EventArgs) Handles btnSyncStart.Click
+        'Cursor umschalten
+        Me.Cursor = Cursors.WaitCursor
+
         Select Case SyncType
             Case wb_Global.SyncType.BenutzerGruppen
                 ExcecuteSync(wbUserGrp, osUserGrp)
@@ -162,6 +165,10 @@ Public Class wb_Admin_Sync
             Case wb_Global.SyncType.Rohstoffe
                 ExcecuteSync(wbRohstoffe, osUser)
         End Select
+
+        'Cursor wieder umschalten
+        Me.Cursor = Cursors.Default
+        MsgBox("Synchronisation erfolgreich abgeschlossen", MsgBoxStyle.Information, "Synchroniation")
     End Sub
 
     Private Sub ExcecuteSync(ByRef wb As wb_Sync, ByRef os As wb_Sync)
@@ -181,6 +188,10 @@ Public Class wb_Admin_Sync
                     os.DBInsert(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
                 Case wb_Global.SyncState.OrgaBackUpdate
                     os.DBUpdate(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
+
+                'TODO TESTEN OB WINBACK ODER ORGABACK
+                Case wb_Global.SyncState.TryMatchWinBackUpdate
+                    wb.DBNumber(x.Wb_Nummer, x.Os_Nummer, x.Os_Gruppe)
             End Select
         Next
     End Sub

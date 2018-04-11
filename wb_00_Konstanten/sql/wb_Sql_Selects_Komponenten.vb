@@ -83,6 +83,9 @@
     Public Const sqlTestktTyp3 = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"
 
-
+    'Sql-Statement Update Bezeichnung Artikel/Rohstoff (Sync OrgaBack-WinBack)
+    Public Const sqlUpdateSyncKomp = "UPDATE Komponenten SET KO_Bezeichnung = '[1]' WHERE KO_Nr_AlNum = '[0]'"
+    'Sql-Statement Update AlNummer Artikel/Rohstoff (Sync OrgaBack-WinBack)
+    Public Const sqlUpdateSyncKompAlNr = "UPDATE Komponenten SET KO_Nr_AlNum = '[1]' WHERE KO_Nr_AlNum = '[0]'"
 
 End Class

@@ -57,12 +57,21 @@ Public Class wb_sql_Functions
     End Function
 
     ''' <summary>
-    ''' Wandelt date(time) in MySQL-DateTime im Format YYY-MM-DD HH:MM:SS um
+    ''' Wandelt date(time) in MySQL-DateTime im Format YYYY-MM-DD HH:MM:SS um
     ''' </summary>
     ''' <param name="d">date</param>
     ''' <returns>String - im MySQL-DateTime-Format</returns>
     Public Shared Function MySQLdatetime(d As Date) As String
         Return d.ToString("yyyy-MM-dd HH:mm:ss")
+    End Function
+
+    ''' <summary>
+    ''' Wandelt date(time) in SQL-DateTime im Format YYYYMMDD um
+    ''' </summary>
+    ''' <param name="d">date</param>
+    ''' <returns>String - im MySQL-DateTime-Format</returns>
+    Public Shared Function MsSQLShortDate(d As Date) As String
+        Return d.ToString("yyyyMMdd")
     End Function
 
     ''' <summary>
