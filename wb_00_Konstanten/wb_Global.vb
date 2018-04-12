@@ -26,8 +26,10 @@
     'Filiale.Typ ist Produktions-Filiale
     Public Const ProduktionsFiliale = 4
     'OrgaBack.Einheit [gr] aus dbo.Einheiten
-    Public Const obEinheitKilogramm = 11
-    Public Const obEinheitGramm = 12
+    Public Const obEinheitStk As Short = 0
+    Public Const obEinheitKilogramm As Short = 11
+    Public Const obEinheitGramm As Short = 12
+    Public Const obEinheitLiter As Short = 16
     'WinBack.Einheit aus winback.Einheiten
     Public Const wbEinheitKilogramm = 1
     Public Const wbEinheitStk = 12

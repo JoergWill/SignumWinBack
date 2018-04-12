@@ -1,5 +1,6 @@
 ﻿Public Class wb_Einheiten_Global
     Private Shared Einheiten As New Dictionary(Of String, wb_Global.wb_Einheiten)
+    Private Shared EinhText As New Dictionary(Of String, wb_Global.wb_Einheiten)
 
     Shared Sub New()
         Dim E As wb_Global.wb_Einheiten = Nothing
@@ -25,6 +26,9 @@
 
             'zur Liste hinzufügen
             Einheiten.Add(E.Nr, E)
+            If Not EinhText.ContainsKey(E.Einheit) Then
+                EinhText.Add(E.Einheit, E)
+            End If
         End While
 
     End Sub
@@ -37,4 +41,19 @@
         End If
     End Function
 
+    Shared Function getEinheitFromText(eBez As String) As Integer
+        If EinhText.ContainsKey(eBez) Then
+            Return EinhText(eBez).Einheit
+        Else
+            Return wb_Global.UNDEFINED
+        End If
+    End Function
+
+    Shared Function getobEinheitFromText(eBez As String) As Integer
+        If EinhText.ContainsKey(eBez) Then
+            Return EinhText(eBez).obNr
+        Else
+            Return wb_Global.obEinheitKilogramm
+        End If
+    End Function
 End Class

@@ -947,6 +947,7 @@ Public Class wb_Rezeptschritt
                 ri.ArticleNo = c.Nummer
                 ri.Variante = Variante
                 ri.Amount = wb_Functions.StrToDouble(c.Sollwert) * Faktor
+                ri.Unit = wb_Einheiten_Global.getobEinheitFromText(c.Einheit)
 
                 'Rezept im Rezept
                 If (c.RezeptNr > 0) And c.RezeptImRezept IsNot Nothing Then
