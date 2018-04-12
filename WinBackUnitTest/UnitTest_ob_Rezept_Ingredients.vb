@@ -45,24 +45,44 @@ Imports WinBack
         Assert.AreEqual("500", Rc.ArticleNo)
         'Test Einheit (St)
         Assert.AreEqual(Unit_Stk, Rc.Unit)
-        'Test Size
+        'Test Size muss die übergebenen Parameter zurückgeben
         Assert.AreEqual("2", Rc.Size)
 
         'Anzahl der Rezeptbestandteile (=10)
         Assert.AreEqual(10, Rc.Ingredients.Count)
+        'Artikel ist Produktions-Artikel
+        Assert.AreEqual(True, Rc.ProductionArticle)
+        'Rezept-Type ist Produktions-Rezept variabel
+        Assert.AreEqual(wb_Global.RecipeTypeProdVariabel, Rc.RecipeType)
+
 
         'Rezept-Zeile 1 - Rohstoffnummer
         Assert.AreEqual("S01", DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).ArticleNo)
         'Rezept-Zeile 1 - Sollwert berechnet auf 1 Stk (1kg)
-        Dim Amount As Decimal = Math.Round(DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).Amount, 5)
-        Assert.AreEqual(0.44033D, Amount)
+        Assert.AreEqual(0.44033D, Math.Round(DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).Amount, 5))
         'Rezept-Zeile 1 - Einheit (kg)
         Assert.AreEqual(Unit_kg, DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).Unit)
+        'Rezept-Zeile 1 - Size (bei Unterartikeln immer NULL)
+        Assert.AreEqual("NULL", DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).Size)
+
+        'Rezept-Zeile 1 hat keine weiteren Rezept-im-Rezept-Verknüpfungen
+        Assert.AreEqual(Nothing, DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).Ingredients)
+        'Rezept-Zeile 1 hat keine weiteren Rezept-im-Rezept-Verknüpfungen - ProductionArticle=False
+        Assert.AreEqual(False, DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).ProductionArticle)
+        'Rezept-Zeile 1 hat keine weiteren Rezept-im-Rezept-Verknüpfungen - RecipeType=NoRercipe(0)
+        Assert.AreEqual(wb_Global.RecipeTypeNoRecipe, DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).RecipeType)
 
 
 
+        'Rezept-Zeile 2 - Rohstoffnummer
+        Assert.AreEqual("9906", DirectCast(Rc.Ingredients(1), ob_RecipeIngredient).ArticleNo)
+        'Rezept-Zeile 2 - Sollwert berechnet auf 1 Stk (1kg)
+        Assert.AreEqual(0.06605D, Math.Round(DirectCast(Rc.Ingredients(1), ob_RecipeIngredient).Amount, 5))
+        'Rezept-Zeile 2 - Einheit (kg)
+        Assert.AreEqual(Unit_kg, DirectCast(Rc.Ingredients(1), ob_RecipeIngredient).Unit)
+        'Rezept-Zeile 2 - Size (bei Unterartikeln immer NULL)
+        Assert.AreEqual("NULL", DirectCast(Rc.Ingredients(1), ob_RecipeIngredient).Size)
 
-        DebugPrintIngedients(Rc.Ingredients)
 
         'zweite Abfrage Artikelnummer=500, Unit=0(Stk), Color=0, Size="1", Version=0, Branch=0
         Rc = Ri.GetRecipe("500", 0, 0, "1", 0, 0)
@@ -73,7 +93,28 @@ Imports WinBack
         Assert.AreEqual(Unit_Stk, Rc.Unit)
         'Test Size
         Assert.AreEqual("1", Rc.Size)
-        DebugPrintIngedients(Rc.Ingredients)
+
+        'Anzahl der Rezeptbestandteile (=10)
+        Assert.AreEqual(10, Rc.Ingredients.Count)
+
+        'Rezept-Zeile 1 - Rohstoffnummer
+        Assert.AreEqual("S01", DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).ArticleNo)
+        'Rezept-Zeile 1 - Sollwert berechnet auf 1 Stk (1kg)
+        Assert.AreEqual(0.44033D, Math.Round(DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).Amount, 5))
+        'Rezept-Zeile 1 - Einheit (kg)
+        Assert.AreEqual(Unit_kg, DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).Unit)
+        'Rezept-Zeile 1 - Size (bei Unterartikeln immer NULL)
+        Assert.AreEqual("NULL", DirectCast(Rc.Ingredients(0), ob_RecipeIngredient).Size)
+
+        'Rezept-Zeile 2 - Rohstoffnummer
+        Assert.AreEqual("9906", DirectCast(Rc.Ingredients(1), ob_RecipeIngredient).ArticleNo)
+        'Rezept-Zeile 2 - Sollwert berechnet auf 1 Stk (1kg)
+        Assert.AreEqual(0.06605D, Math.Round(DirectCast(Rc.Ingredients(1), ob_RecipeIngredient).Amount, 5))
+        'Rezept-Zeile 2 - Einheit (kg)
+        Assert.AreEqual(Unit_kg, DirectCast(Rc.Ingredients(1), ob_RecipeIngredient).Unit)
+        'Rezept-Zeile 2 - Size (bei Unterartikeln immer NULL)
+        Assert.AreEqual("NULL", DirectCast(Rc.Ingredients(1), ob_RecipeIngredient).Size)
+
 
         'Abfrage Artikelnummer=9906 (Zucker), Unit=0(Stk), Color=0, Size="1", Version=0, Branch=0
         'Rohstoff hat KEINE Zutatenliste!

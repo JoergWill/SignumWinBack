@@ -33,7 +33,8 @@
     Public Const wbEinheitStk = 12
 
     'OrgaBack.RezeptType (Produktions-Rezept variabel)
-    Public Const RecipeTypeProdVariabel = 5
+    Public Const RecipeTypeNoRecipe As Short = 0
+    Public Const RecipeTypeProdVariabel As Short = 5
 
     'WinBack-Server-Task Port
     Public Const WinBackServerTaskPort = "22046"

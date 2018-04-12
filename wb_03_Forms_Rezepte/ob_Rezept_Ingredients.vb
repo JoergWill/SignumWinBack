@@ -89,6 +89,8 @@ Public Class ob_RecipeInfo
             Debug.Print("Komponente in WinBack nicht vorhanden " & ArticleNo)
             'Liste aller Rezeptbestandteile ist leer
             _Ingredients = Nothing
+            _ProductionArticle = False
+            _RecipeType = wb_Global.RecipeTypeNoRecipe
         Else
             'Rezeptnummer aus Komponenten-Stammdaten (Alphanumerische Komponenten-Nummer)
             Dim RzNr = Komponente.RzNr
@@ -99,6 +101,8 @@ Public Class ob_RecipeInfo
                 Debug.Print("Keine Rezeptur mit Komponente verknüpft " & ArticleNo)
                 'Liste aller Rezeptbestandteile ist leer
                 _Ingredients = Nothing
+                _ProductionArticle = False
+                _RecipeType = wb_Global.RecipeTypeNoRecipe
             Else
                 'Rezeptur einlesen
                 'TODO Sauerteig-Rezepte (Variante 0) und kein Rezept abfangen !!
@@ -106,6 +110,8 @@ Public Class ob_RecipeInfo
 
                 'Liste aller Child-Rezeptschritte aus dem Root-Rezeptschritt berechnet auf das Stückgewicht(Nass)
                 _Ingredients = Rz.RootRezeptSchritt.CalcIngredients(StkGewicht, Variante)
+                _ProductionArticle = True
+                _RecipeType = wb_Global.RecipeTypeProdVariabel
             End If
         End If
     End Sub
@@ -277,7 +283,7 @@ Public Class ob_RecipeIngredient
 
     Private _Branch As Short = 0
     Private _Color As Short = 0
-    Private _Size As String = vbNull
+    Private _Size As String = "NULL"
     Private _RecipeType As Short = wb_Global.RecipeTypeProdVariabel
     Private _ProductionArticle As Boolean = True
     Private _Variable As Boolean = True
@@ -405,6 +411,7 @@ Public Class ob_RecipeIngredient
 
     ''' <summary>
     ''' Art der Rezeptur. In WinBack immer (5)variable Produktionsrezeptur
+    '''     0=keine Rezeptur !!
     '''     1=normale Rezeptur
     '''     3=Produktionsrezeptur
     '''     4=variable Rezeptur

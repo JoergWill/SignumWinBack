@@ -952,6 +952,11 @@ Public Class wb_Rezeptschritt
                 If (c.RezeptNr > 0) And c.RezeptImRezept IsNot Nothing Then
                     'Rezeptschritte aus Rezept-Im-Rezept hängen am RootRezeptschritt (es wird immer Variante 1 gelesen)
                     ri.Ingredients = c.RezeptImRezept.RootRezeptSchritt.CalcIngredients(ri.Amount, c.RezeptImRezept.Variante)
+                    ri.ProductionArticle = True
+                    ri.RecipeType = wb_Global.RecipeTypeProdVariabel
+                Else
+                    ri.ProductionArticle = False
+                    ri.RecipeType = wb_Global.RecipeTypeNoRecipe
                 End If
                 'Rezeptzeile in Liste(IRecipeIngredient)
                 oi.Add(ri)
