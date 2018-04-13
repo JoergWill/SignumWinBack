@@ -134,9 +134,9 @@ Public Class wb_Admin_Sync
 
         'Cursor umschalten
         Me.Cursor = Cursors.WaitCursor
-        'Benutzer aus WinBack in Array einlesen
+        'Rohstoffe aus WinBack in Array einlesen
         wbRohstoffe.DBRead()
-        'Benutzer aus OrgaSoft in Array einlesen
+        'Rohstoffe aus OrgaSoft in Array einlesen
         osRohstoffe.DBRead()
 
         'Daten/Synchronisation prüfen und Ergebnis berechnen

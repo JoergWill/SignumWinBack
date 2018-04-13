@@ -7,9 +7,9 @@
 
         Dim sql As String = wb_Sql_Selects.sqlRohstoffLst
         If Not wb_GlobalSettings.SauerteigAnlage Then
-            sql = sql + " AND KO_Type > 100 AND KA_Aktiv = 1"
+            sql = sql + " AND KO_Type > 100 AND KO_Type < 109 AND KA_Aktiv = 1"
         Else
-            sql = sql + " AND KA_Aktiv = 1"
+            sql = sql + " AND KO_Type < 109 AND KA_Aktiv = 1"
         End If
 
         'Select KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type = 0
