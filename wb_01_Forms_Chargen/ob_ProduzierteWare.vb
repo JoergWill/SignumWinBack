@@ -65,7 +65,6 @@ Public Class ob_ProduzierteWare
 
     Public Property ArtikelNr As String
         Get
-            Return "1100"
             Return _ArtikelNr
         End Get
         Set(value As String)
@@ -98,6 +97,12 @@ Public Class ob_ProduzierteWare
         Set(value As Double)
             _Menge = value
         End Set
+    End Property
+
+    Public ReadOnly Property sMenge As String
+        Get
+            Return wb_sql_Functions.MsDoubleToString(Menge)
+        End Get
     End Property
 
     ''' <summary>
@@ -212,6 +217,11 @@ Public Class ob_ProduzierteWare
         For i = 0 To sqlReader.FieldCount - 1
             MySQLdbRead_Fields(sqlReader.GetName(i), sqlReader.GetValue(i))
         Next
+        'wenn in der Produktion eine Rezeptur aufgerufen wurde, wird ein Dummy-Artikel angelegt
+        If ((SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel) And (Typ = wb_Global.wbSatzTyp.Rezept)) Then
+            ArtikelNr = wb_Global.ProduktionDummyArtikel
+            Einheit = wb_Global.wbEinheitStk
+        End If
 
         Return True
     End Function
@@ -229,7 +239,7 @@ Public Class ob_ProduzierteWare
         End If
 
         'Debug
-        'Debug.Print("Feld/Value " & Name & "/" & Value.ToString)
+        Debug.Print("Feld/Value " & Name & "/" & Value.ToString)
 
         'Feldname aus der Datenbank
         Try
@@ -267,14 +277,14 @@ Public Class ob_ProduzierteWare
                 Case "Linie"
                     Linie = wb_Functions.StrToInt(Value)
 
-                'Artikel-Nummer (Produzierter Artikel)
+                'Artikel-Nummer (Produzierter Artikel) wenn in WinBack ein Artikel produziert wurde
                 Case "B_ARZ_KA_NrAlNum"
-                    If SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
+                    If (SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel) And (Typ = wb_Global.wbSatzTyp.Artikel) Then
                         ArtikelNr = Value
                     End If
-                'Rohstoff-Nummer
+                'Rohstoff-Nummer (oder die Rohstoff-Nummer des verknüpften Rezeptes bei Pseudo-Artikel)
                 Case "B_KO_Nr_AlNum"
-                    If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
+                    If (SatzTyp = wb_Global.obSatzTyp.Rohstoff) Then
                         ArtikelNr = Value
                     End If
 

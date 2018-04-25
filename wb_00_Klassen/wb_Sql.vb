@@ -140,21 +140,26 @@ Public Class wb_Sql
     ''' </summary>
     ''' <param name="FieldName">DB-Field-Name</param>
     ''' <returns>Integer Datenfeld-Inhalt</returns>
-    ReadOnly Property iField(FieldName As String) As Integer
+    ReadOnly Property iField(FieldName As String, Optional i As Integer = 0) As Integer
         Get
             Try
                 Select Case conType
             'Verbindung über mySql
                     Case dbType.mySql
-                        Return Int(MySqlRead(FieldName).ToString)
+                        Dim s = MySqlRead(FieldName).ToString
+                        If s IsNot Nothing And s <> "" Then
+                            Return Int(s)
+                        Else
+                            Return i
+                        End If
             'Verbindung über msSql
                     Case dbType.msSql
                         Return Int(msRead(FieldName).ToString)
                     Case Else
-                        Return 0
+                        Return i
                 End Select
             Catch
-                Return 0
+                Return i
             End Try
         End Get
     End Property

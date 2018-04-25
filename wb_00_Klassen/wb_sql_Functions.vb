@@ -57,6 +57,15 @@ Public Class wb_sql_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt einen Double-Wert in einen String. Dezimal-Komma werden ersatzt durch Dezimal-Punkte
+    ''' </summary>
+    ''' <param name="d"></param>
+    ''' <returns></returns>
+    Public Shared Function MsDoubleToString(d As Double) As String
+        Return d.ToString.Replace(",", ".")
+    End Function
+
+    ''' <summary>
     ''' Wandelt date(time) in MySQL-DateTime im Format YYYY-MM-DD HH:MM:SS um
     ''' </summary>
     ''' <param name="d">date</param>

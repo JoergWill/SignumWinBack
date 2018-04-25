@@ -2,6 +2,7 @@
     Private Shared LGruppen As New Dictionary(Of String, wb_Global.wb_LinienGruppe)
     Private Shared Linien As New Dictionary(Of String, wb_Global.wb_Linien)
     Public Shared LinienGruppen As New SortedList
+    Public Shared DefaultProdFiliale As Integer = wb_Global.UNDEFINED
 
     ''' <summary>
     ''' Array Liniengruppen aufbauen
@@ -56,6 +57,11 @@
     Private Shared Sub InitLinien()
         Dim Linie As wb_Global.wb_Linien = Nothing
 
+        'Default OrgaBack-Produktions-Filiale (Nummer)
+        If wb_Filiale.ProduktionsFilialen.Count > 0 Then
+            DefaultProdFiliale = wb_Filiale.ProduktionsFilialen.GetKey(0)
+        End If
+
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlLinien)
         Linien.Clear()
@@ -68,7 +74,7 @@
 
             'Zuordnung Linien - OrgaBack.Filiale
             If winback.FieldCount > 8 Then
-                Linie.Filiale = winback.iField("L_ProdFiliale")
+                Linie.Filiale = winback.iField("L_ProdFiliale", DefaultProdFiliale)
             Else
                 'Erweiterung Tabelle Linien ist notwendig !
                 Trace.WriteLine("Tabelle WinBack.Linien muss erweitert werden! (Filiale)")

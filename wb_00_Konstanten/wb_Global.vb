@@ -25,14 +25,17 @@
 
     'Filiale.Typ ist Produktions-Filiale
     Public Const ProduktionsFiliale = 4
-    'OrgaBack.Einheit [gr] aus dbo.Einheiten
+    'OrgaBack Dummy-Artikel für Rezepte ohne Zuordnung (ProduzierteWare)
+    Public Const ProduktionDummyArtikel = "R9999"
+
+    'OrgaBack.Einheit [gr] aus dbo.Einheiten (Unit-Test)
     Public Const obEinheitStk As Short = 0
     Public Const obEinheitKilogramm As Short = 11
     Public Const obEinheitGramm As Short = 12
     Public Const obEinheitLiter As Short = 16
-    'WinBack.Einheit aus winback.Einheiten
+    'WinBack.Einheit aus winback.Einheiten (Unit-Test)
     Public Const wbEinheitKilogramm = 1
-    Public Const wbEinheitStk = 12
+    Public Const wbEinheitStk = 11
 
     'OrgaBack.RezeptType (Produktions-Rezept variabel)
     Public Const RecipeTypeNoRecipe As Short = 0
@@ -92,6 +95,7 @@
     Enum ProgVariante
         OrgaBack                    'Programm läuft als Addin unter OrgaBack
         WinBack                     'Programm läuft als Standalone
+        UnitTest                    'Programm läuft im Test-Modus (UnitTest)
         Undef                       'nicht definiert
     End Enum
 

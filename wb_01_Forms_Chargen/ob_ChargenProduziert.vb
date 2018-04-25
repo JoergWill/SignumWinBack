@@ -139,8 +139,8 @@ Public Class ob_ChargenProduziert
         Debug.Print("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit " & o.SatzTyp & " " & o.ChargenNummer & " " & o.ArtikelNr & " " & o.Menge & " " & o.Unit)
 
         'Der SQL-INSERT-Befehl wird dynamisch erzeugt
-        Dim sql As String = o.sFilialNummer & ", '" & o.sProduktionsDatum & "', '" & o.sSatzTyp & "', '" & o.ArtikelNr & "', " & o.Einheit & ", " &
-                            o.Color & ", '" & o.Size & "', '" & o.Menge.ToString & "', '" & o.ChargenNummer & "', '" & o.sHaltbarkeitsDatum & "'"
+        Dim sql As String = o.sFilialNummer & ", '" & o.sProduktionsDatum & "', '" & o.sSatzTyp & "', '" & o.ArtikelNr & "', " & o.Unit & ", " &
+                            o.Color & ", '" & o.Size & "', '" & o.sMenge & "', '" & o.ChargenNummer & "', '" & o.sHaltbarkeitsDatum & "'"
         'Insert ausführen
         If db.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertProduktionsDaten, sql)) < 0 Then
             ' Rückgabewert kleiner Null - Fehler

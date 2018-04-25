@@ -19,13 +19,12 @@ Public Class wb_Filiale
     ''' </summary>
     Shared Sub New()
         'Wird nur verwendet in Programm-Variante OrgaBack
-        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+        If (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack) Or (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest) Then
             pFiliale = New ArrayList()
             pSortiment = New ArrayList()
 
             'Datenbank-Verbindung öffnen - MsSQL
             Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-            Trace.WriteLine("OrgaBackMainConString= " & wb_GlobalSettings.OrgaBackMainConString)
             Dim FNr As String
             Dim FName As String
             Dim Srt As String

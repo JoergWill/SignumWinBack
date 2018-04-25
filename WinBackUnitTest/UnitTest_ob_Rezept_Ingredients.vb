@@ -154,6 +154,9 @@ Imports WinBack
         'erste Abfrage Artikelnummer=602, Unit=0(Stk), Color=0, Size="1", Version=0, Branch=0
         Rc = Ri.GetRecipe("602", 0, 0, "1", 0, 0)
 
+        'Testausgabe
+        DebugPrintIngedients(Rc.Ingredients)
+
         'Test Artikel-Nummer
         Assert.AreEqual("602", Rc.ArticleNo)
         'Test Einheit (St)
@@ -199,6 +202,7 @@ Imports WinBack
         Assert.AreEqual(False, Rr.ProductionArticle)
         'Rezept-Zeile 1.1 hat keine weiteren Rezept-im-Rezept-Verknüpfungen - RecipeType=NoRercipe(0)
         Assert.AreEqual(wb_Global.RecipeTypeNoRecipe, Rr.RecipeType)
+
 
     End Sub
 
