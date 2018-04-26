@@ -36,6 +36,9 @@ Public Class Main
     Private cntCloudUpdate As Integer = 0
     Private maxCloudTxtLines As Integer = 10
 
+    Private AktionsTimerGrid As wb_TimerGridView
+    Private tArray As New ArrayList
+
     Public Delegate Sub addListBoxDelegate(name As String)
     Public Delegate Sub remListBoxDelegate(name As String)
     Public Delegate Sub addText(text As String)
@@ -198,6 +201,35 @@ Public Class Main
     End Sub
 
     ''' <summary>
+    ''' Zeigt das aktualisierte Array der Timer-Einstellungen aus der Tabelle winback.AktionsTimer
+    ''' </summary>
+    Private Sub ShowAktionsTimer()
+        'Daten im Grid anzeigen
+        AktionsTimerGrid.ScrollBars = ScrollBars.Vertical
+        AktionsTimerGrid.BackgroundColor = Me.BackColor
+        AktionsTimerGrid.GridLocation(tbAktionsTimer)
+        AktionsTimerGrid.PerformLayout()
+        AktionsTimerGrid.Refresh()
+    End Sub
+
+    ''' <summary>
+    ''' Läd die Daten aus der Tabelle winback.AktionsTimer in tArray
+    ''' </summary>
+    Private Sub LoadAktionsTimer()
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        If winback.sqlSelect(wb_Sql_Selects.sqlAktionsTimer) Then
+            While winback.Read
+                Dim _Item As New wb_TimerEvent
+                _Item.MySQLdbRead(winback.MySqlRead)
+                tArray.Add(_Item)
+            End While
+        End If
+
+        winback.Close()
+    End Sub
+
+    ''' <summary>
     ''' Initialisierung Server-Task.
     ''' - MySQL-Einstellungen aus ini-Datei laden
     ''' - Hash-Tables initialisieren
@@ -214,6 +246,12 @@ Public Class Main
         Dim listener As New System.Threading.Thread(AddressOf listen) 'initialize a new thread for the listener so our GUI doesn't lag
         listener.IsBackground = True
         listener.Start(wb_Global.WinBackServerTaskPort) 'start the listener, with the port specified as 22046
+
+        'Liste der Tabellen-Überschriften
+        Dim sColNames As New List(Of String)
+        sColNames.AddRange({"", "&Task", "Startzeit", "Periode", "Status"})
+        LoadAktionsTimer()
+        AktionsTimerGrid = New wb_TimerGridView(tArray, sColNames)
 
         'Status-Anzeige Backup/Restore
         lblBackupRestoreStatus.Text = ""
@@ -298,6 +336,20 @@ Public Class Main
     Private Sub BtnAdmin_Click(sender As Object, e As EventArgs) Handles BtnAdmin.Click
         Wb_TabControl.SelectedTab = TabPageAdmin
         Wb_TabControl.Show()
+    End Sub
+
+    ''' <summary>
+    ''' Button Timer
+    ''' Anzeige und Einstellungen aller Timer-Ereignisse
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnTimer_Click(sender As Object, e As EventArgs) Handles BtnTimer.Click
+        Wb_TabControl.SelectedTab = TabPageTimer
+        Wb_TabControl.Show()
+
+
+        ShowAktionsTimer()
     End Sub
 
     ''' <summary>
@@ -473,4 +525,5 @@ Public Class Main
         DetailAnsicht.tbDetails.Select(0, 0)
         DetailAnsicht.ShowDialog()
     End Sub
+
 End Class

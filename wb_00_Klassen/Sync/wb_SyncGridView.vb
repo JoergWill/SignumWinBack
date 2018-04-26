@@ -19,7 +19,7 @@ Public Class wb_SyncGridView
         ColNames = sColNames
         'Daten in das lokale Array übertragen
         GridArray = xArray.ToArray
-        'Grid Grundeistellungen
+        'Grid Grundeinstellungen
         _ShowTooltips = ShowTooltips
         'Grid initialisieren
         InitGrid()

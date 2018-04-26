@@ -16,4 +16,7 @@
                                     "BAK_ArbRZSchritte.B_ARS_Art_Index, BAK_ArbRZSchritte.B_ARS_Schritt_Nr, " &
                                     "BAK_ArbRZSchritte.B_ARS_ParamNr LIMIT [1]"
 
+    Public Const sqlMarkChargen = "Update BAK_ArbRezepte SET B_ARZ_Status = 'Exp' WHERE " &
+                                  "B_ARZ_TW_Nr = [0] and B_ARZ_Charge_Nr = [1]"
+
 End Class

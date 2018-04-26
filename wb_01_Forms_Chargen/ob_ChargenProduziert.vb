@@ -80,14 +80,17 @@ Public Class ob_ChargenProduziert
                     End If
 
                     'Datensatz in wbdaten als exportiert markieren
-                    If o.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel And ChargenNummer <> "" Then
+                    If o.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
                         MarkChargenKopf(wbdaten, TageswechselNr, ChargenNummer)
+                        'Chargen- und Tageswechselnummer merken (Markieren der Chargen in wbdaten)
+                        ChargenNummer = o.ChargenNummer
+                        TageswechselNr = o.TWNr
                     End If
-                    'Chargen- und Tageswechselnummer merken (Markieren der Chargen in wbdaten)
-                    ChargenNummer = o.ChargenNummer
-                    TageswechselNr = o.TWNr
 
                 Next
+                'letzten Datensatz auch noch markieren
+                MarkChargenKopf(wbdaten, TageswechselNr, ChargenNummer)
+
                 'Datenbank-Verbindung dbo.ProduzierteWare wieder schliessen
                 OrgasoftMain.Close()
 
@@ -159,7 +162,12 @@ Public Class ob_ChargenProduziert
     ''' <param name="ChargenNummer"></param>
     ''' <returns></returns>
     Private Function MarkChargenKopf(wb As wb_Sql, TWNr As Integer, ChargenNummer As String) As Boolean
-
+        If ChargenNummer <> "" Then
+            'Markiere alle Chargen mit TW-Nummer
+            Return wb.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlMarkChargen, TWNr, ChargenNummer))
+        Else
+            Return False
+        End If
     End Function
 
 

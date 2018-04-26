@@ -35,7 +35,7 @@ Partial Class Main
         Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.btnCloud = New System.Windows.Forms.Button()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.BtnTimer = New System.Windows.Forms.Button()
         Me.RemoveTextTimer = New System.Windows.Forms.Timer(Me.components)
         Me.lblServerStatus = New System.Windows.Forms.Label()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
@@ -53,11 +53,15 @@ Partial Class Main
         Me.TabPageCloud = New System.Windows.Forms.TabPage()
         Me.tbCloud = New System.Windows.Forms.TextBox()
         Me.lblCloud = New System.Windows.Forms.Label()
+        Me.TabPageTimer = New System.Windows.Forms.TabPage()
+        Me.tbAktionsTimer = New System.Windows.Forms.Panel()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.Wb_TabControl.SuspendLayout()
         Me.TabPageClients.SuspendLayout()
         Me.TabPageMessages.SuspendLayout()
         Me.TabPageAdmin.SuspendLayout()
         Me.TabPageCloud.SuspendLayout()
+        Me.TabPageTimer.SuspendLayout()
         Me.SuspendLayout()
         '
         'NotifyIcon
@@ -194,22 +198,22 @@ Partial Class Main
         Me.btnCloud.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         Me.btnCloud.UseVisualStyleBackColor = False
         '
-        'Button1
+        'BtnTimer
         '
-        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button1.BackColor = System.Drawing.Color.Gray
-        Me.Button1.FlatAppearance.BorderColor = System.Drawing.Color.Gray
-        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button1.ForeColor = System.Drawing.Color.White
-        Me.Button1.Image = Global.WinBackServerTask.My.Resources.Resources.Clock
-        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.Button1.Location = New System.Drawing.Point(128, 540)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(110, 65)
-        Me.Button1.TabIndex = 9
-        Me.Button1.Text = "Timer"
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.BottomLeft
-        Me.Button1.UseVisualStyleBackColor = False
+        Me.BtnTimer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtnTimer.BackColor = System.Drawing.Color.Gray
+        Me.BtnTimer.FlatAppearance.BorderColor = System.Drawing.Color.Gray
+        Me.BtnTimer.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnTimer.ForeColor = System.Drawing.Color.White
+        Me.BtnTimer.Image = Global.WinBackServerTask.My.Resources.Resources.Clock
+        Me.BtnTimer.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.BtnTimer.Location = New System.Drawing.Point(128, 540)
+        Me.BtnTimer.Name = "BtnTimer"
+        Me.BtnTimer.Size = New System.Drawing.Size(110, 65)
+        Me.BtnTimer.TabIndex = 9
+        Me.BtnTimer.Text = "Timer"
+        Me.BtnTimer.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnTimer.UseVisualStyleBackColor = False
         '
         'RemoveTextTimer
         '
@@ -233,6 +237,7 @@ Partial Class Main
         Me.Wb_TabControl.Controls.Add(Me.TabPageMessages)
         Me.Wb_TabControl.Controls.Add(Me.TabPageAdmin)
         Me.Wb_TabControl.Controls.Add(Me.TabPageCloud)
+        Me.Wb_TabControl.Controls.Add(Me.TabPageTimer)
         Me.Wb_TabControl.Location = New System.Drawing.Point(12, 81)
         Me.Wb_TabControl.Multiline = True
         Me.Wb_TabControl.Name = "Wb_TabControl"
@@ -428,6 +433,41 @@ Partial Class Main
         Me.lblCloud.TabIndex = 1
         Me.lblCloud.Text = "Updates Nährwerte"
         '
+        'TabPageTimer
+        '
+        Me.TabPageTimer.BackColor = System.Drawing.Color.LightGray
+        Me.TabPageTimer.Controls.Add(Me.tbAktionsTimer)
+        Me.TabPageTimer.Controls.Add(Me.Label3)
+        Me.TabPageTimer.ForeColor = System.Drawing.Color.White
+        Me.TabPageTimer.Location = New System.Drawing.Point(4, 23)
+        Me.TabPageTimer.Name = "TabPageTimer"
+        Me.TabPageTimer.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPageTimer.Size = New System.Drawing.Size(334, 426)
+        Me.TabPageTimer.TabIndex = 4
+        Me.TabPageTimer.Text = "Timer"
+        '
+        'tbAktionsTimer
+        '
+        Me.tbAktionsTimer.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tbAktionsTimer.BackColor = System.Drawing.Color.DarkGray
+        Me.tbAktionsTimer.ForeColor = System.Drawing.SystemColors.InfoText
+        Me.tbAktionsTimer.Location = New System.Drawing.Point(-4, 87)
+        Me.tbAktionsTimer.Name = "tbAktionsTimer"
+        Me.tbAktionsTimer.Size = New System.Drawing.Size(342, 339)
+        Me.tbAktionsTimer.TabIndex = 12
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(-4, 0)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(221, 22)
+        Me.Label3.TabIndex = 11
+        Me.Label3.Text = "Task/Timer-Einstellungen"
+        '
         'Main
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -435,7 +475,7 @@ Partial Class Main
         Me.ClientSize = New System.Drawing.Size(366, 688)
         Me.ControlBox = False
         Me.Controls.Add(Me.lblServerStatus)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.BtnTimer)
         Me.Controls.Add(Me.btnCloud)
         Me.Controls.Add(Me.BtnAdmin)
         Me.Controls.Add(Me.Wb_TabControl)
@@ -461,6 +501,8 @@ Partial Class Main
         Me.TabPageAdmin.PerformLayout()
         Me.TabPageCloud.ResumeLayout(False)
         Me.TabPageCloud.PerformLayout()
+        Me.TabPageTimer.ResumeLayout(False)
+        Me.TabPageTimer.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -491,8 +533,11 @@ Partial Class Main
     Friend WithEvents btnCloud As Button
     Friend WithEvents TabPageCloud As TabPage
     Friend WithEvents lblCloud As Label
-    Friend WithEvents Button1 As Button
+    Friend WithEvents BtnTimer As Button
     Friend WithEvents RemoveTextTimer As Timer
     Friend WithEvents lblServerStatus As Label
     Public WithEvents tbCloud As TextBox
+    Friend WithEvents TabPageTimer As TabPage
+    Friend WithEvents Label3 As Label
+    Friend WithEvents tbAktionsTimer As Panel
 End Class

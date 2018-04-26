@@ -16,4 +16,6 @@
     'Sql-Statement alle Texte aus winback.Texte
     Public Const sqlWinBackTxte = "SELECT T_TextIndex, T_Typ, T_Text FROM Texte WHERE T_Sprache = [0]"
 
+    'Sql-Statement AktionsTimer
+    Public Const sqlAktionsTimer = "Select * FROM AktionsTimer WHERE AT_Quelle_Typ = 'TW' OR AT_Quelle_Typ LIKE 'winback%' OR AT_Quelle_Typ LIKE 'office%'"
 End Class

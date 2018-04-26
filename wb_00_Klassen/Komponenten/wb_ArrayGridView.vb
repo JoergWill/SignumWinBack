@@ -5,8 +5,8 @@ Public MustInherit Class wb_ArrayGridView
     Inherits Windows.Forms.DataGridView
 
     'Anzeige von Zell-Tooltips?
-    Friend _ShowTooltips As Boolean
-    Friend ColNames As New List(Of String)
+    Public _ShowTooltips As Boolean
+    Public ColNames As New List(Of String)
     Private _Font As Drawing.Font = New Drawing.Font("Arial", 12, FontStyle.Regular, GraphicsUnit.Pixel)
 
     Public Sub New()
@@ -29,7 +29,7 @@ Public MustInherit Class wb_ArrayGridView
 
     MustOverride Sub FillGrid()
 
-    Friend Sub FillColumns()
+    Public Sub FillColumns()
         'alle Spalten löschen
         ColumnCount = 0
 
@@ -80,7 +80,7 @@ Public MustInherit Class wb_ArrayGridView
     ''' Grundeinstellungen des DataGridView
     ''' vor der Zuweisung von Array-Daten
     ''' </summary>
-    Friend Sub InitGrid()
+    Public Sub InitGrid()
         ' AlternatingRow-Hintergrundfarbe
         Dim gray245 As System.Drawing.Color = Color.FromArgb(255, 245, 245, 245)
         ' Cursor-Hintergrundfarbe
