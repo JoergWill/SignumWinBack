@@ -435,7 +435,7 @@ Partial Class Main
         '
         'TabPageTimer
         '
-        Me.TabPageTimer.BackColor = System.Drawing.Color.LightGray
+        Me.TabPageTimer.BackColor = System.Drawing.Color.Black
         Me.TabPageTimer.Controls.Add(Me.tbAktionsTimer)
         Me.TabPageTimer.Controls.Add(Me.Label3)
         Me.TabPageTimer.ForeColor = System.Drawing.Color.White
@@ -453,9 +453,9 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbAktionsTimer.BackColor = System.Drawing.Color.DarkGray
         Me.tbAktionsTimer.ForeColor = System.Drawing.SystemColors.InfoText
-        Me.tbAktionsTimer.Location = New System.Drawing.Point(-4, 87)
+        Me.tbAktionsTimer.Location = New System.Drawing.Point(-4, 35)
         Me.tbAktionsTimer.Name = "tbAktionsTimer"
-        Me.tbAktionsTimer.Size = New System.Drawing.Size(342, 339)
+        Me.tbAktionsTimer.Size = New System.Drawing.Size(342, 391)
         Me.tbAktionsTimer.TabIndex = 12
         '
         'Label3
