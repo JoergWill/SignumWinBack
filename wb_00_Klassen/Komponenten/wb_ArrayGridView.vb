@@ -14,14 +14,14 @@ Public MustInherit Class wb_ArrayGridView
         InitGrid()
     End Sub
 
-    Public Sub InitData()
+    Public Sub InitData(Optional ReadOnlyGrid As Boolean = True)
         'Start Initialisierung - Update Grid abschalten
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         ' Daten ins Grid eintragen
         FillGrid()
         ' Spaltenansicht einrichten
-        InitColumns()
+        InitColumns(ReadOnlyGrid)
         'Ende Initialisierung - Update Grid wieder einschalten
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(True)
@@ -44,6 +44,16 @@ Public MustInherit Class wb_ArrayGridView
                 'Spalten ohne Bezeichnung werden ausgeblendet
                 Columns.Add("C" & i, "")
                 Columns(i).Visible = False
+            ElseIf Microsoft.VisualBasic.Left(ColNames(i), 1) = "#" Then
+                'Spalten-Namen, die mit # beginnen werden als DateTime-Spalten formatiert
+                Dim c As New wb_GridCalendarColumn
+                c.Name = "C" & i
+                c.ReadOnly = False
+                c.HeaderText = ColNames(i).Remove(0, 1) + Chr(10)
+                c.DateFormat = "dd.MM.yy HH:mm"
+
+                Columns.Add(c)
+                Columns(i).Visible = True
             Else
                 'normale Spalten haben feste Breite
                 Columns.Add("C" & i, ColNames(i) + Chr(10))
@@ -53,7 +63,7 @@ Public MustInherit Class wb_ArrayGridView
         Next
     End Sub
 
-    Friend Sub InitColumns()
+    Friend Sub InitColumns(ReadOnlyGrid As Boolean)
         ' die meisten allgemeinen Einstellungen der Spalten
         ' müssen in jeder einzelnen Spalte vorgenommen werden
 
@@ -71,7 +81,7 @@ Public MustInherit Class wb_ArrayGridView
                 .ValueType = GetType(String)
 
                 ' nur Anzeige der Daten, kein Editieren zulassen
-                .ReadOnly = True
+                .ReadOnly = ReadOnlyGrid
             End With
         Next c
     End Sub

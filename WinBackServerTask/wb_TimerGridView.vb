@@ -6,6 +6,9 @@ Public Class wb_TimerGridView
 
     Const COLSORT = 0
     Const COLTASK = 1
+    Const COLSTRT = 2
+    Const COLPRDE = 3
+    Const COLSTAT = 4
 
     Public Sub New(ByVal xArray As ArrayList, ByVal sColNames As List(Of String), Optional ShowTooltips As Boolean = True)
         'Spalten-Überschriften
@@ -16,8 +19,8 @@ Public Class wb_TimerGridView
         _ShowTooltips = ShowTooltips
         'Grid initialisieren
         InitGrid()
-        'Daten anzeigen 
-        InitData()
+        'Daten anzeigen und Editieren (Readonly = False)
+        InitData(False)
     End Sub
 
     Public Overrides Sub FillGrid()
@@ -44,7 +47,11 @@ Public Class wb_TimerGridView
                 .DividerHeight = 0
 
                 .Cells(COLSORT).Value = GridArray(r).Sort
-                .Cells(COLTASK).Value = GridArray(r).Task
+                .Cells(COLTASK).Value = GridArray(r).Bezeichnung
+                .Cells(COLSTRT).Value = GridArray(r).sStartzeit
+                .Cells(COLPRDE).Value = GridArray(r).Periode
+                .Cells(COLSTAT).Value = GridArray(r).Status
+
             End With
         Next
 

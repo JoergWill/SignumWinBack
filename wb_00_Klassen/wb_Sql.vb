@@ -235,28 +235,32 @@ Public Class wb_Sql
     ''' <returns>Anzahl der Datensätze
     ''' -1 falls ein Fehler aufgetreten ist</returns>
     Function sqlCommand(sql As String) As Integer
-        Try
-            Select Case conType
-                Case dbType.mySql
-                    'sql-Kommando ausführen
-                    MySqlCommand = New MySqlCommand(sql, MySqlCon)
-                    MySqlCommand.CommandText = sql
-                    Return MySqlCommand.ExecuteNonQuery()
-                Case dbType.msSql
-                    msCommand = New SqlCommand(sql, msCon)
-                    msCommand.CommandText = sql
-                    Return msCommand.ExecuteNonQuery()
-                Case Else
-                    Return -1
-            End Select
-        Catch ex As Exception
-            If Debugger.IsAttached Then
-                MsgBox("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
-            Else
-                Trace.WriteLine("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
-            End If
-            Return -1
-        End Try
+        If sql <> "" Then
+            Try
+                Select Case conType
+                    Case dbType.mySql
+                        'sql-Kommando ausführen
+                        MySqlCommand = New MySqlCommand(sql, MySqlCon)
+                        MySqlCommand.CommandText = sql
+                        Return MySqlCommand.ExecuteNonQuery()
+                    Case dbType.msSql
+                        msCommand = New SqlCommand(sql, msCon)
+                        msCommand.CommandText = sql
+                        Return msCommand.ExecuteNonQuery()
+                    Case Else
+                        Return -1
+                End Select
+            Catch ex As Exception
+                If Debugger.IsAttached Then
+                    MsgBox("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
+                Else
+                    Trace.WriteLine("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
+                End If
+                Return -1
+            End Try
+        Else
+            Return 0
+        End If
     End Function
 
     Function sqlExecStoredProcedure(sql As String, Parameter As Array) As Boolean

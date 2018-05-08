@@ -18,4 +18,5 @@
 
     'Sql-Statement AktionsTimer
     Public Const sqlAktionsTimer = "Select * FROM AktionsTimer WHERE AT_Quelle_Typ = 'TW' OR AT_Quelle_Typ LIKE 'winback%' OR AT_Quelle_Typ LIKE 'office%'"
+    Public Const sqlUpdtAktionsTimer = "UPDATE AktionsTimer SET [0] WHERE AT_idx = '[1]'"
 End Class

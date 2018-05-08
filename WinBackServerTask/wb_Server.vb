@@ -29,15 +29,16 @@ Public Class Main
 
     Dim clients As New Hashtable 'new database (hashtable) to hold the clients
     Dim nwtUpdate As New wb_nwtUpdate
+    Dim Export As New ob_ChargenProduziert
     Dim ServerTaskState As ServerTaskErrors = ServerTaskErrors.OK
 
     Private cntCounter As Integer
     Private cntMySql As Integer = 0
-    Private cntCloudUpdate As Integer = 0
     Private maxCloudTxtLines As Integer = 10
 
     Private AktionsTimerGrid As wb_TimerGridView
     Private tArray As New ArrayList
+    Private AktTimerEvent As wb_TimerEvent
 
     Public Delegate Sub addListBoxDelegate(name As String)
     Public Delegate Sub remListBoxDelegate(name As String)
@@ -145,14 +146,24 @@ Public Class Main
             cntMySql = cntCounter + cntCheckMysql
         End If
 
+        'TODO KO-Nummer aus Str2 lesen
         'Abfrage Update Nährwert-Cloud
-        If MainTimer_Check(cntCloudUpdate) Then
+        If MainTimer_Check("office_nwt") Then
             'Datensatz wurde aus der Cloud aktualisiert
             If nwtUpdate.UpdateNext Then
                 'Info-Text ausgeben
                 ScrollTextBox(tbCloud, nwtUpdate.InfoText & vbNewLine)
             End If
-            cntCloudUpdate = cntCounter + cntCheckCloud
+        End If
+
+        'Abfrage produzierte Chargen und verbrauchte Rohstoffe
+        If MainTimer_Check("office_chargen") Then
+            'Export Chargen ab TW-Nr.x
+            Dim TWNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+            AktTimerEvent.Str2 = Export.ExportChargen(TWNr)
+            'Nach Ende Export neue Startzeit setzen
+            AktTimerEvent.Endezeit = Now
+            AktTimerEvent.MySQLdbUpdate_Fields()
         End If
 
         'Uhrzeit/Fehler anzeigen - Main-Timer OK
@@ -186,6 +197,22 @@ Public Class Main
         Else
             Return False
         End If
+    End Function
+
+    ''' <summary>
+    ''' Prüft ob die im Array angebene Zeit für diesen Task erreicht ist.
+    ''' Wenn der Task gestartet werden soll, wird True zurückgegeben und der Timer-Wert im
+    ''' Array neu gesetzt.
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Private Function MainTimer_Check(s As String) As Boolean
+        For Each AktTimerEvent In tArray
+            If AktTimerEvent.check(s) Then
+                Return True
+            End If
+        Next
+        Return False
     End Function
 
     ''' <summary>
@@ -249,9 +276,10 @@ Public Class Main
 
         'Liste der Tabellen-Überschriften
         Dim sColNames As New List(Of String)
-        sColNames.AddRange({"", "&Task", "Startzeit", "Periode", "Status"})
+        sColNames.AddRange({"", "&Task", "#Startzeit", "Periode", "Status"})
         LoadAktionsTimer()
         AktionsTimerGrid = New wb_TimerGridView(tArray, sColNames)
+        AktionsTimerGrid.ReadOnly = False
 
         'Status-Anzeige Backup/Restore
         lblBackupRestoreStatus.Text = ""
@@ -260,8 +288,6 @@ Public Class Main
         MainTimer.Enabled = True
         'Starte zyklischen Mysql-Ping
         cntMySql = cntCounter + cntCheckMysql + cntStartAfterOneSecond
-        'Starte Cloud-Abfrage
-        cntCloudUpdate = cntCounter + cntCheckCloud + cntStartAfterTwoSeconds
     End Sub
 
     ''' <summary>

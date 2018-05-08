@@ -317,6 +317,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_GridCalendarColumn.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_VirtualTreeEditor.vb" />
     <Compile Include="wb_00_Klassen\wb_AktRechte.vb" />
     <Compile Include="wb_00_Klassen\wb_AktSysKonfig.vb" />

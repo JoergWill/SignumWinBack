@@ -213,7 +213,9 @@ Public Class wb_PrinterDialog
             Catch LLException As LL_NoData_Exception
                 'keine Datensätze vorhanden - Drucken wird beendet
                 MessageBox.Show("Keine Daten zum Drucken oder Anzeigen", "Drucken/Vorschau", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                Me.Close()
+                If Not Debugger.IsAttached Then
+                    Me.Close()
+                End If
             Catch LLException As Exception
                 MessageBox.Show(LLException.Message & vbCrLf & "Fehler in List&Label", "Drucken/Vorschau", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End Try
