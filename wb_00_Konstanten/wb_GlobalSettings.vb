@@ -74,7 +74,6 @@ Public Class wb_GlobalSettings
     Private Shared _ProdPlanDatum As Date = Nothing
     Private Shared _ProdPlanfiliale As String = Nothing
     Private Shared _ProdPlanReadOnOpen As Boolean = False
-    Private Shared _ExportChargen_TWNr As Integer = wb_Global.UNDEFINED
 
 
     Public Shared Property pVariante As wb_Global.ProgVariante
@@ -763,18 +762,6 @@ Public Class wb_GlobalSettings
             End If
             Return _OrgaBackMandantNr
         End Get
-    End Property
-
-    Public Shared Property ExportChargen_TWNr As Integer
-        Get
-            If _ExportChargen_TWNr = wb_Global.UNDEFINED Then
-
-            End If
-            Return _ExportChargen_TWNr
-        End Get
-        Set(value As Integer)
-            _ExportChargen_TWNr = value
-        End Set
     End Property
 
     Private Shared Sub GetOrgaBackMandant()

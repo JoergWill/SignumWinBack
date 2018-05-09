@@ -4,11 +4,11 @@ Public Class wb_TimerGridView
     Inherits wb_ArrayGridView
     Public GridArray As Array
 
-    Const COLSORT = 0
-    Const COLTASK = 1
-    Const COLSTRT = 2
-    Const COLPRDE = 3
-    Const COLSTAT = 4
+    Public Const COLSORT = 0
+    Public Const COLTASK = 1
+    Public Const COLSTRT = 2
+    Public Const COLPRDE = 3
+    Public Const COLSTAT = 4
 
     Public Sub New(ByVal xArray As ArrayList, ByVal sColNames As List(Of String), Optional ShowTooltips As Boolean = True)
         'Spalten-Überschriften

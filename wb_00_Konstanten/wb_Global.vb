@@ -164,6 +164,13 @@
         ERR 'Fehler bei der Berechnung
     End Enum
 
+    Enum wbAktionsTimerStatus
+        Disabled = 0
+        Enabled = 1
+        Running = 2
+        Undfined = -1
+    End Enum
+
     Enum obSatzTyp
         ProduzierterArtikel
         Rohstoff

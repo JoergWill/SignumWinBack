@@ -5,12 +5,21 @@ Public Class wb_nwtUpdate
     Protected disposed As Boolean = False
 
     Private _InfoText As String = ""
-    Private AktKO_Nr As Integer = 0
+    Private _AktKO_Nr As Integer = 0
 
     Public ReadOnly Property InfoText As String
         Get
             Return DateTime.Now.ToLongTimeString & " " & _InfoText
         End Get
+    End Property
+
+    Public Property AktKO_Nr As Integer
+        Get
+            Return _AktKO_Nr
+        End Get
+        Set(value As Integer)
+            _AktKO_Nr = value
+        End Set
     End Property
 
     ''' <summary>
@@ -21,7 +30,9 @@ Public Class wb_nwtUpdate
     ''' die Daten werden aktualisiert.
     ''' </summary>
     ''' <returns>True wenn der Datensatz aktualisiert wurde</returns>
-    Public Function UpdateNext() As Boolean
+    Public Function UpdateNext(KompNr As Integer) As Boolean
+        'Aktuelle Komponenten-Nummer setzen
+        AktKO_Nr = KompNr
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Komponenten-Objekt nimmt die aktuellen Daten auf
@@ -126,20 +137,11 @@ Public Class wb_nwtUpdate
         End If
     End Function
 
-    Public Sub New()
-        'letzte aktualisierte Komponenten-ID aus der winback.ini lesen
-        Dim IniFile As New wb_IniFile
-        AktKO_Nr = IniFile.ReadInt("Cloud", "UpdateNaehrwerteKONr")
-    End Sub
-
     Protected Overridable Overloads Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposed Then
             If disposing Then
                 ' Insert Code to free managed resource
             End If
-            'Beim Programm-Ende wird die aktuelle Komponenten-Nummer gesichert
-            Dim IniFile As New wb_IniFile
-            IniFile.WriteInt("Cloud", "UpdateNaehrwerteKONr", AktKO_Nr)
         End If
         Me.disposed = True
     End Sub

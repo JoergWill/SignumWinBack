@@ -36,7 +36,7 @@ Public Class Main
     Private cntMySql As Integer = 0
     Private maxCloudTxtLines As Integer = 10
 
-    Private AktionsTimerGrid As wb_TimerGridView
+    Private WithEvents AktionsTimerGrid As wb_TimerGridView
     Private tArray As New ArrayList
     Private AktTimerEvent As wb_TimerEvent
 
@@ -146,13 +146,17 @@ Public Class Main
             cntMySql = cntCounter + cntCheckMysql
         End If
 
-        'TODO KO-Nummer aus Str2 lesen
         'Abfrage Update Nährwert-Cloud
         If MainTimer_Check("office_nwt") Then
             'Datensatz wurde aus der Cloud aktualisiert
-            If nwtUpdate.UpdateNext Then
+            Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+            If nwtUpdate.UpdateNext(AktKONr) Then
                 'Info-Text ausgeben
                 ScrollTextBox(tbCloud, nwtUpdate.InfoText & vbNewLine)
+                'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
+                AktTimerEvent.Str2 = nwtUpdate.AktKO_Nr
+                AktTimerEvent.Endezeit = Now
+                AktTimerEvent.MySQLdbUpdate_Fields()
             End If
         End If
 
@@ -181,7 +185,6 @@ Public Class Main
         MainTimer.Enabled = True
         'Beim Schliessen des Detail-Fensters bleiben markierte Textblöcke übrig. Markierung wieder löschen
         tbCloud.Select(0, 0)
-        'TODO Timer-Aufrufe überprüfen
     End Sub
 
     ''' <summary>
@@ -237,6 +240,27 @@ Public Class Main
         AktionsTimerGrid.GridLocation(tbAktionsTimer)
         AktionsTimerGrid.PerformLayout()
         AktionsTimerGrid.Refresh()
+    End Sub
+
+    Private Sub AktionsTimerDrawCell(ByVal sender As Object, ByVal e As DataGridViewCellPaintingEventArgs) Handles AktionsTimerGrid.CellPainting
+        Dim Grid = DirectCast(sender, DataGridView)
+        If e.ColumnIndex = wb_TimerGridView.COLSTAT And (e.RowIndex >= 0) Then
+            Dim _Brush As New SolidBrush(Color.Yellow)
+            Select Case e.Value
+                Case wb_Global.wbAktionsTimerStatus.Disabled
+                    _Brush.Color = Color.Red
+                Case wb_Global.wbAktionsTimerStatus.Enabled
+                    _Brush.Color = Color.Yellow
+                Case wb_Global.wbAktionsTimerStatus.Running
+                    _Brush.Color = Color.Green
+                Case Else
+                    Return
+            End Select
+            e.Graphics.FillRectangle(_Brush, e.CellBounds)
+            e.Handled = True
+        Else
+            Return
+        End If
     End Sub
 
     ''' <summary>
@@ -373,7 +397,6 @@ Public Class Main
     Private Sub BtnTimer_Click(sender As Object, e As EventArgs) Handles BtnTimer.Click
         Wb_TabControl.SelectedTab = TabPageTimer
         Wb_TabControl.Show()
-
 
         ShowAktionsTimer()
     End Sub

@@ -12,7 +12,8 @@ Public Class wb_TimerEvent
     Private _Startzeit As DateTime
     Private _Endezeit As DateTime
     Private _Periode As Int64
-    Private _Status As Char
+    Private _Status As Integer
+    Private _Running As Boolean = False
 
     ''' <summary>
     ''' Prüft ob der übergebene Task-Name übereinstimmt und ob der Event ausgelöst werden soll
@@ -31,6 +32,8 @@ Public Class wb_TimerEvent
                 _Startzeit = _Startzeit.AddSeconds(_Periode * (i + 1))
             End If
 
+            'Task auf aktiv setzen
+            _Running = True
             'Event auslösen
             Return True
         Else
@@ -95,13 +98,18 @@ Public Class wb_TimerEvent
         End Set
     End Property
 
-    Public Property Status As Char
+    Public ReadOnly Property Status As wb_Global.wbAktionsTimerStatus
         Get
-            Return _Status
+            If _Status > 0 Then
+                If _Running Then
+                    Return wb_Global.wbAktionsTimerStatus.Running
+                Else
+                    Return wb_Global.wbAktionsTimerStatus.Enabled
+                End If
+            Else
+                Return wb_Global.wbAktionsTimerStatus.Disabled
+            End If
         End Get
-        Set(value As Char)
-            _Status = value
-        End Set
     End Property
 
     Public Property Str2 As String
@@ -119,6 +127,7 @@ Public Class wb_TimerEvent
         End Get
         Set(value As Date)
             _Endezeit = value
+            _Running = False
         End Set
     End Property
 
@@ -165,6 +174,10 @@ Public Class wb_TimerEvent
             'Startzeit
                 Case "AT_Startzeit"
                     Startzeit = WinBack.wb_sql_Functions.MySQLdatetime(Value)
+
+            'Status
+                Case "AT_Ziel_Aktion"
+                    _Status = Value
 
             'String 1
                 Case "AT_Str1"
