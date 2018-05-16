@@ -124,6 +124,8 @@ Public Class ob_Artikel_ZuordnungRezept
             Case "VALID"
 
             Case "wbFOUND"
+                Debug.Print("Artikel_ZuordnungRezept: wbFOUND")
+
                 '(interne) Rezeptnummer
                 RzNr = DirectCast(Parameter, wb_Komponente).RzNr
                 tRezeptNr.Text = DirectCast(Parameter, wb_Komponente).RezeptNummer

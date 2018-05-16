@@ -65,6 +65,7 @@ Public Class ob_Artikel_VerwendungRezept
             Case "VALID"
 
             Case "wbFOUND"
+                Debug.Print("Artikel_VerwendungRezept: wbFOUND")
                 Nr = DirectCast(Parameter, wb_Komponente).Nr
                 'Tabelle Verwendung mit Daten füllen
                 HisDataGridView.LoadVerwendung(Nr)
