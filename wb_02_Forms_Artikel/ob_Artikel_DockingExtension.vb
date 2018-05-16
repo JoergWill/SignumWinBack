@@ -413,18 +413,14 @@ Public Class ob_Artikel_DockingExtension
             Debug.Print("DockingExtension-GetKomponentenDaten sSortiment - Sortiment " & sSortiment & " ist Produktion")
 
             'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
-            'TODO BROTMACHER TEST - ABSTURZ ORGABACK 2018-05-14/JW
-            'Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+            Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
             ''Komponenten-Nummer aus OrgaBack ermitteln
-            'Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF226 - Index auf interne Komponenten-Nummer
-            Komponente.Nr = 0
+            Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF226 - Index auf interne Komponenten-Nummer
             'Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString         'Artikel/Komponenten-Nummer alphanumerisch
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
             'Artikel/Komponente aus WinBack-Db einlesen
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
-
-
 
             If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer) Then
                 Debug.Print("DockingExtension-GetKomponentenDaten Komponente in WinBack nicht vorhanden " & Komponente.Bezeichnung)

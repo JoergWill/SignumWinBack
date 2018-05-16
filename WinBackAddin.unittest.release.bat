@@ -3,5 +3,5 @@ REM call msbuildpath.bat
 REM "%MSBUILDDIR%msbuild.exe" .\WinBackUnitTest\WinbackUnitTest.vbproj /p:Configuration=Release
 call mstestpath.bat
 cd ".\WinBackUnitTest\bin\Release"
-"%MSTESTDIR%vstest.console.exe" WinBackUnitTest.dll
+"%MSTESTDIR%vstest.console.exe" WinBackUnitTest.dll /Logger:trx
 cd ..\..\..
