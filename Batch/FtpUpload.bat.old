@@ -1,0 +1,28 @@
+@echo on
+
+:: ------------------------------------------
+::	Ftp-Upload Winback-Büro
+:: ------------------------------------------
+::
+:: ------------------------------------------
+::	ToDo:	
+::
+:: ------------------------------------------
+::
+::	- ftp-Transfer nach www.winback.de/software
+
+
+echo user p145032f1> ftpcmd.dat
+echo 501awin#>> ftpcmd.dat
+echo quote SYST>> ftpcmd.dat
+echo quote FEAT>> ftpcmd.dat
+echo quote OPTS UTF8 ON>> ftpcmd.dat
+echo quote TYPE I>> ftpcmd.dat
+echo quote PASV>> ftpcmd.dat
+echo quote STOR C:\Temp\Version.txt>> ftpcmd.dat
+echo QUIT>> ftpcmd.dat
+ftp -n -s:ftpcmd.dat www.winback.de
+::del ftpcmd.dat
+
+
+
