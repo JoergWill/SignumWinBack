@@ -5,12 +5,13 @@ REM "%MSBUILDDIR%msbuild.exe" .\WinBackUnitTest\WinbackUnitTest.vbproj /p:Config
 :: ------------------------------------------
 :: Pfad zu vstest.console.exe
 ::
+cd %WORKSPACE%\Batch
 call mstestpath.bat
-cd %WORKSPACE%\WinBackUnitTest\bin\Debug"
 
 :: ------------------------------------------
 :: Test ausführen
 ::
+cd %WORKSPACE%\WinBackUnitTest\bin\Debug"
 "%MSTESTDIR%vstest.console.exe" WinBackUnitTest.dll /Logger:trx
 
 :: ------------------------------------------
