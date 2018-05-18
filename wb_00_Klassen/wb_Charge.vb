@@ -36,6 +36,8 @@
         End Get
         Set(value As String)
             _StkGewicht = wb_Functions.StrToDouble(value)
+            'Null ist nicht erlaubt
+            If _StkGewicht = 0 Then _StkGewicht = 1000
             'Chargengröße in [kg] neu berechen
             _MengeInkg = CalcMengeInkg()
             'Chargengröße in [%] neu berechnen

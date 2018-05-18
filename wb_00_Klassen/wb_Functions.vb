@@ -856,6 +856,7 @@ Public Class wb_Functions
     ''' <returns></returns>
     Public Shared Function UTF8toMySql(Value As String) As String
         'abhängig von der eingestellten Code-Page
+        'TODO für UnitTest muss die Sprache einstellbar sein !!
         Select Case wb_GlobalSettings.ConvertMySQL_CodePage
             Case wb_Global.MySqlCodepage.iso8859_15
                 Return Value

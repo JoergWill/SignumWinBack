@@ -21,7 +21,7 @@ Public Class ob_Artikel_DockingExtension
     Private bSortimentIstProduktion As Boolean = False
     Private bAddNew As Boolean = False
 
-    Private Komponente As New wb_Komponente
+    Private Komponente As wb_Komponente
     Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
     Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
 
@@ -108,6 +108,7 @@ Public Class ob_Artikel_DockingExtension
         bAddNew = False
         Extendee_ExecuteCommand("INVALID", Nothing)
         Debug.Print("Article_DockingExtension Invalid")
+        Komponente = New wb_Komponente
     End Sub
 
     ''' <summary>
@@ -116,7 +117,7 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_AddNew(sender As Object, e As EventArgs)
-        Komponente.Invalid()
+        Komponente = New wb_Komponente
         bAddNew = True
         Extendee_ExecuteCommand("INVALID", Nothing)
         Debug.Print("Article_DockingExtension AddNew")
@@ -414,9 +415,10 @@ Public Class ob_Artikel_DockingExtension
 
             'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
             Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
-            ''Komponenten-Nummer aus OrgaBack ermitteln
+            'Komponenten-Nummer aus OrgaBack ermitteln
+            If Komponente Is Nothing Then Komponente = New wb_Komponente
             Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF226 - Index auf interne Komponenten-Nummer
-            'Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
+            Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString         'Artikel/Komponenten-Nummer alphanumerisch
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
             'Artikel/Komponente aus WinBack-Db einlesen

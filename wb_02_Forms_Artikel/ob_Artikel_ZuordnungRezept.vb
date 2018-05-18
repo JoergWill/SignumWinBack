@@ -5,6 +5,9 @@ Imports Signum.OrgaSoft.GUI
 Public Class ob_Artikel_ZuordnungRezept
     Implements IBasicFormUserControl
     Private RzNr As Integer = 0
+    Private RzNummer As String = ""
+    Private RzName As String = ""
+
     Private WithEvents ArtikelChargen As New wb_MinMaxOptCharge
     Private WithEvents TeigChargen As New wb_MinMaxOptCharge
     Private OnErrorSetFocus As Object
@@ -109,6 +112,9 @@ Public Class ob_Artikel_ZuordnungRezept
     End Function
 
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
+        Dim k As New wb_Komponente
+        k = Parameter
+
         Select Case CommandId
             Case "INVALID"
 
@@ -127,9 +133,11 @@ Public Class ob_Artikel_ZuordnungRezept
                 Debug.Print("Artikel_ZuordnungRezept: wbFOUND")
 
                 '(interne) Rezeptnummer
-                RzNr = DirectCast(Parameter, wb_Komponente).RzNr
-                tRezeptNr.Text = DirectCast(Parameter, wb_Komponente).RezeptNummer
-                tRezeptName.Text = DirectCast(Parameter, wb_Komponente).RezeptName
+                RzNr = DirectCast(k, wb_Komponente).RzNr
+                RzNummer = DirectCast(k, wb_Komponente).RezeptNummer
+                RzName = DirectCast(k, wb_Komponente).RezeptName
+                tRezeptNr.Text = RzNummer
+                tRezeptName.Text = RzName
 
                 'Chargengrößen Artikel(Objekt)
                 ArtikelChargen = DirectCast(Parameter, wb_Komponente).ArtikelChargen

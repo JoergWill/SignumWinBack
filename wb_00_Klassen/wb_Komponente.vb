@@ -655,7 +655,7 @@ Public Class wb_Komponente
         End If
 
         'Feldname aus der Datenbank
-        'Debug.Print("ReadStammdaten " & Name)
+        Debug.Print("ReadStammdaten " & Name & Value)
         Try
             Select Case Name
 
