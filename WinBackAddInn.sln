@@ -127,6 +127,14 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WinBackServerTask", "WinBac
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EnhancedEdit", "EnhancedEdit\EnhancedEdit.vbproj", "{B9549613-9C0C-4BC3-82A5-21D834813A25}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Batch", "Batch", "{84FB1C84-D108-4D40-8C86-65CA58B0BFBE}"
+	ProjectSection(SolutionItems) = preProject
+		Batch\WinBackAddin.build.release.bat = Batch\WinBackAddin.build.release.bat
+		Batch\WinBackAddin.getVersion.bat = Batch\WinBackAddin.getVersion.bat
+		Batch\WinBackAddin.unittest.debug.bat = Batch\WinBackAddin.unittest.debug.bat
+		Batch\WinBackAddin.unittest.release.bat = Batch\WinBackAddin.unittest.release.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		DB_Brotmacher|Any CPU = DB_Brotmacher|Any CPU
@@ -334,7 +342,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = de-DE
 		RESX_AutoCreateNewLanguageFiles = False
+		RESX_NeutralResourcesLanguage = de-DE
 	EndGlobalSection
 EndGlobal
