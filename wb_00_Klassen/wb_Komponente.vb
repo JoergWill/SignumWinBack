@@ -216,8 +216,9 @@ Public Class wb_Komponente
             _RezeptNummer = Rezept.RezeptNummer
             _RezeptName = Rezept.RezeptBezeichnung
             _LinienGruppe = Rezept.LinienGruppe
-            ArtikelChargen.TeigGewicht = Rezept.RezeptGewicht
+            'Chargengrößen aus Rezept
             TeigChargen = Rezept.TeigChargen
+            ArtikelChargen.TeigGewicht = Rezept.RezeptGewicht
 
         Else
             'normale Komponente ohne Produktion
@@ -233,6 +234,8 @@ Public Class wb_Komponente
             KA_Art = 0
         End If
 
+        'Aufarbeitung Artikel (Artikel-Liniengruppe) aus RohParams.Parameter.5
+        'wenn ein Artikel-Rezept in RohParams.Parameter.6 angegeben ist wird die Artikel-Liniengruppe aus der Artikel-Rezeptur bestimmt
         If ktTyp300.Liniengruppe > 0 Then
             'Produktions-Liniengruppe aus RohParams(5)
             _ArtikelLinienGruppe = ktTyp300.Liniengruppe
@@ -818,7 +821,7 @@ Public Class wb_Komponente
         End If
 
         'Artikel - Chargengrößen in Stk
-        If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Then
+        If Type = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
             sql = sql & "," &
                         "KA_Charge_Min = '" & ArtikelChargen.MinCharge.MengeInStk & "'," &
                         "KA_Charge_Max = '" & ArtikelChargen.MaxCharge.MengeInStk & "'," &
@@ -826,8 +829,7 @@ Public Class wb_Komponente
         End If
 
         'Rohstoffe - Chargengrößen in kg
-        If Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE) _
-        Or Type = wb_Functions.IntToKomponType(wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE) Then
+        If Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Then
             sql = sql & "," &
                         "KA_Charge_Min_kg = '" & ArtikelChargen.MinCharge.MengeInkg & "'," &
                         "KA_Charge_Max_kg = '" & ArtikelChargen.MaxCharge.MengeInkg & "'," &
@@ -843,6 +845,26 @@ Public Class wb_Komponente
             Return False
         End If
     End Function
+
+    Public Function MySQLdbUpdate_Parameter(InterneKomponentenNummer As Integer, ParamTyp As Integer, ParamNr As Integer, Value As String) As Boolean
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+
+        'Update-Statement wird dynamisch erzeugt    
+        sql = 
+
+        'Update ausführen
+        Debug.Print("KomponParams.MysqldbUpdate " & sql)
+
+        If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then
+            Return True
+        Else
+            Return False
+        End If
+
+    End Function
+
 
     Public Sub print()
         Debug.Print("Nummer      " & KO_Nr_AlNum)

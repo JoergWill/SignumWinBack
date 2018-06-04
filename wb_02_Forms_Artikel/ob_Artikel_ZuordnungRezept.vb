@@ -159,6 +159,9 @@ Public Class ob_Artikel_ZuordnungRezept
 
             Case "wbSAVE"
                 DirectCast(Parameter, wb_Komponente).ArtikelChargen = ArtikelChargen
+                DirectCast(Parameter, wb_Komponente).TeigChargen = TeigChargen
+                DirectCast(Parameter, wb_Komponente).LinienGruppe = cbLiniengruppe.GetKeyFromSelection
+                DirectCast(Parameter, wb_Komponente).ArtikelLinienGruppe = cbArtikelLinienGruppe.GetKeyFromSelection
                 DirectCast(Parameter, wb_Komponente).RzNr = RzNr
                 'Reset Flag
                 DataHasChanged = False
@@ -360,6 +363,35 @@ Public Class ob_Artikel_ZuordnungRezept
 
         pArtikelChargen.Enabled = Enable
         pTeigChargen.Enabled = Enable
+
+        'alte Zahlenwerte in den Felder löschen
+        If Not Enable Then
+            tStkGewicht.Text = ""
+
+            tChrgMinkg.Text = ""
+            tChrgOptkg.Text = ""
+            tChrgMaxkg.Text = ""
+
+            tChrgMinPrz.Text = ""
+            tChrgOptPrz.Text = ""
+            tChrgMaxPrz.Text = ""
+
+            tChrgMinStk.Text = ""
+            tChrgOptStk.Text = ""
+            tChrgMaxStk.Text = ""
+
+
+            tRezGesamt.Text = ""
+
+            tRezMinkg.Text = ""
+            tRezOptkg.Text = ""
+            tRezMaxkg.Text = ""
+
+            tRezMinPrz.Text = ""
+            tRezOptPrz.Text = ""
+            tRezMaxPrz.Text = ""
+        End If
+
     End Sub
 
 End Class
