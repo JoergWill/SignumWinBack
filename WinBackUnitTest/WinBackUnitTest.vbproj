@@ -133,8 +133,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\MySql V1.0.10.1\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>..\dll\OrgaSoft V3.0.6635\Signum.OrgaSoft.Contracts.dll</HintPath>
+    <Reference Include="Signum.OrgaSoft.Contracts, Version=3.0.6635.31719, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\OrgaSoft V3.0.6733\Signum.OrgaSoft.Contracts.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

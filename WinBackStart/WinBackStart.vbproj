@@ -165,9 +165,6 @@
     <Reference Include="MetroFramework.Design">
       <HintPath>..\dll\MetroFramework 1.2.0.3\MetroFramework.Design.dll</HintPath>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>..\dll\OrgaSoft V3.0.6635\Signum.OrgaSoft.Contracts.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />

@@ -418,7 +418,10 @@ Public Class ob_Artikel_DockingExtension
             'Komponenten-Nummer aus OrgaBack ermitteln
             If Komponente Is Nothing Then Komponente = New wb_Komponente
             Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF226 - Index auf interne Komponenten-Nummer
+            Dim Test As String = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)
+
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
+            Debug.Print("DockingExtension-GetKomponentenDaten ProduktionsL " & Test)
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString         'Artikel/Komponenten-Nummer alphanumerisch
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
             'Artikel/Komponente aus WinBack-Db einlesen

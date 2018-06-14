@@ -852,7 +852,8 @@ Public Class wb_Komponente
         Dim sql As String
 
         'Update-Statement wird dynamisch erzeugt    
-        sql = 
+        'sql = 
+        'TODO HIER GEHTS WEITER:::
 
         'Update ausführen
         Debug.Print("KomponParams.MysqldbUpdate " & sql)

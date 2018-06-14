@@ -94,6 +94,7 @@
 
     Enum ProgVariante
         OrgaBack                    'Programm läuft als Addin unter OrgaBack
+        ServerTask                  'Programm läuft als Hintergrund-Task auf dem OrgaBack-Server
         WinBack                     'Programm läuft als Standalone
         UnitTest                    'Programm läuft im Test-Modus (UnitTest)
         Undef                       'nicht definiert
@@ -255,6 +256,8 @@
     '''Public Const MFF_VerarbeitungsHinweisArtikel = 208
     '''Public Const MFF_MatchCode = 227
     '''Public Const MFF_RezeptName = 229
+
+    Public Const MFF_ProduktionsLinie = 107
 
     Public Const MFF_Zutatenliste = 209
     Public Const MFF_MehlZusammensetzung = 210

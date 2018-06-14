@@ -290,6 +290,9 @@ Public Class Main
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Programm und Datei-Pfade einstellen
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.ServerTask
+
         'Initialisierung Texte-Tabelle
         wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
 

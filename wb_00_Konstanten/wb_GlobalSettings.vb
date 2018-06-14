@@ -544,10 +544,26 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    ''' <summary>
+    ''' Setzt/gibt den Pfad zur winback.ini zurück.
+    ''' 
+    ''' Läuft das Programm als OrgaBack-AddIn ist der Pfad für die winback.ini im Verzeichnis OrgaSoft
+    ''' Das Addin läuft in OrgaSoft/Addin
+    ''' 
+    ''' Das Hintergrund-Programm WinBack-Server-Task startet im Verzeichnis OrgaSoft/AddIn, der Verweis
+    ''' auf die winback.ini liegt damit eine Ebene tiefer.
+    '''
+    ''' </summary>
+    ''' <returns></returns>
     Public Shared Property pWinBackIniPath As String
         Get
             If _pWinBackIniPath = Nothing Then
-                _pWinBackIniPath = pProgrammPath & "WinBack.ini"
+                'die Server-Task startet im AddIn-Verzeichnis, der Pfad zur winback.ini liegt eine Ebene davor
+                If _pVariante = wb_Global.ProgVariante.ServerTask Then
+                    _pWinBackIniPath = pProgrammPath & ".\..\WinBack.ini"
+                Else
+                    _pWinBackIniPath = pProgrammPath & "WinBack.ini"
+                End If
             End If
             Return _pWinBackIniPath
         End Get
