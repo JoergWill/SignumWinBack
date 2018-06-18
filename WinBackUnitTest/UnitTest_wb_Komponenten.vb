@@ -189,4 +189,26 @@ Imports WinBack.wb_Sql_Selects
 
         End If
     End Sub
+
+
+    <TestMethod()> Public Sub Test_ArtikelLinienGruppe()
+        Dim Komponente As New wb_Komponente
+
+        'normale Liniengruppe aus winback (Integer)
+        Komponente.iArtikelLinienGruppe = 1
+        Assert.AreEqual(1, Komponente.iArtikelLinienGruppe)
+
+        'Artikel-Liniengruppe aus winback (Integer)
+        Komponente.iArtikelLinienGruppe = 101
+        'Artikel-Liniengruppe OrgaBack (String)
+        Assert.AreEqual("0001", Komponente.sArtikeLinienGruppe)
+
+        'Artikel-Liniengruppe aus OrgaBack (MFF-Feld107)
+        Komponente.sArtikeLinienGruppe = "0002"
+        Assert.AreEqual(102, Komponente.iArtikelLinienGruppe)
+        Assert.AreEqual("0002", Komponente.sArtikeLinienGruppe)
+    End Sub
+
+
+
 End Class

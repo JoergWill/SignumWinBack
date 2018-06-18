@@ -153,7 +153,9 @@ Public Class ob_Artikel_DockingExtension
             bSortimentIstProduktion = GetKomponentenDaten()
         End If
         If bSortimentIstProduktion Then
-            Debug.Print("WinBack Artikel")
+            'Daten aus Unterfenster sichern
+            Extendee_ExecuteCommand("wbSAVE", Komponente)
+            'Komponentendaten nach OrgaBack schreiben (MFF..)
             SetKomponentenDaten()
         End If
     End Sub
@@ -179,11 +181,16 @@ Public Class ob_Artikel_DockingExtension
             Debug.Print("WinBack Artikel")
             UpdateKomponentenDaten()
 
-            'Daten aus Unterfenster sichern
-            Extendee_ExecuteCommand("wbSAVE", Komponente)
-
-            'geänderten Datensatz in WinBack-DB schreiben
+            'geänderten Datensatz(Stammdaten) in WinBack-DB schreiben
             Komponente.MySQLdbUpdate(Komponente.Nr)
+            'geänderte Komponentendaten(Rezeptur) in WinBack-DB schreiben
+            If Komponente.TeigChargen.HasChanged Then
+                Komponente.SaveProduktionsDaten()
+                Komponente.TeigChargen.HasChanged = False
+            End If
+            'geänderte Parameter in WinBack-DB schreiben (KomponParams 200)
+            'geänderte Parameter in WinBack-DB schreiben (KomponParams 300)
+            'geänderte Parameter in WinBack-DB schreiben (KomponParams 301)
         End If
     End Sub
 
@@ -306,8 +313,6 @@ Public Class ob_Artikel_DockingExtension
                 Extendee_ExecuteCommand("wbFOUND", Komponente)
             End If
         End If
-
-
     End Sub
 
     Private Sub SaveAtClose()
@@ -330,7 +335,7 @@ Public Class ob_Artikel_DockingExtension
                     If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
                         ' Adresse der Klasse, die die Arbeit macht !!
                         oForm = New ob_Artikel_ZuordnungRezept(Me)
-                        AddHandler DirectCast(oForm, ob_Artikel_ZuordnungRezept).DataHasChanged_SubFormClosing, AddressOf SaveAtClose
+                        AddHandler DirectCast(oForm, ob_Artikel_ZuordnungRezept).DataInvalidated, AddressOf SaveAtClose
                         _SubForms(FormKey) = oForm
                     End If
                     Return oForm
@@ -418,12 +423,10 @@ Public Class ob_Artikel_DockingExtension
             'Komponenten-Nummer aus OrgaBack ermitteln
             If Komponente Is Nothing Then Komponente = New wb_Komponente
             Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF226 - Index auf interne Komponenten-Nummer
-            Dim Test As String = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)
-
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
-            Debug.Print("DockingExtension-GetKomponentenDaten ProduktionsL " & Test)
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString         'Artikel/Komponenten-Nummer alphanumerisch
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
+            Komponente.sArtikeLinienGruppe = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)
             'Artikel/Komponente aus WinBack-Db einlesen
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
 
@@ -521,6 +524,7 @@ Public Class ob_Artikel_DockingExtension
         MFFValue(oFil, wb_Global.MFF_RezeptNummer) = Komponente.RezeptNummer
         MFFValue(oFil, wb_Global.MFF_Zutatenliste) = Komponente.ZutatenListe
         MFFValue(oFil, wb_Global.MFF_MehlZusammensetzung) = Komponente.Mehlzusammensetzung
+        MFFValue(oFil, wb_Global.MFF_ProduktionsLinie) = Komponente.sArtikeLinienGruppe
     End Sub
 
 End Class

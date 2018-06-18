@@ -23,6 +23,8 @@
     'Sql-Statament Sortiment zugeordnet zu Filiale mit Typ Produktion
     Public Const mssqlSortiment = "Select * FROM FilialeHatSortiment INNER JOIN Filialen On FilialeHatSortiment.Filialnr =  Filialen.Filialnummer " &
                                   "WHERE [Typ] = [0] ORDER BY SortimentsKürzel"
+    'Sql-Statement Abfrage dbo.ArtikelMultifunktionsfeld.Bezeichnung (Backorte)
+    Public Const mssqlBackorte = "SELECT * FROM ArtikelMultifunktionsfeld WHERE [GruppenNr] = '[0]'"
 
     'Sql-Statement Abfrage dbo.Settings.Category
     Public Const mssqlSettings = "Select * FROM Settings WHERE [Category] = '[0]'"

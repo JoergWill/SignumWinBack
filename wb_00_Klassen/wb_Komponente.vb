@@ -167,7 +167,7 @@ Public Class wb_Komponente
         End Set
     End Property
 
-    Public Property ArtikelLinienGruppe As Integer
+    Public Property iArtikelLinienGruppe As Integer
         Get
             If _ArtikelLinienGruppe = wb_Global.UNDEFINED Then
                 GetProduktionsDaten()
@@ -176,6 +176,19 @@ Public Class wb_Komponente
         End Get
         Set(value As Integer)
             _ArtikelLinienGruppe = value
+        End Set
+    End Property
+
+    Public Property sArtikeLinienGruppe As String
+        Get
+            Dim sValue As String = "0000" & _ArtikelLinienGruppe.ToString - wb_Global.OffsetBackorte
+            Return Right(sValue, 4)
+        End Get
+        Set(value As String)
+            Dim iValue As Integer = wb_Functions.StrToInt(value) + wb_Global.OffsetBackorte
+            If iValue <> 0 Then
+                _ArtikelLinienGruppe = iValue
+            End If
         End Set
     End Property
 
@@ -219,7 +232,8 @@ Public Class wb_Komponente
             'Chargengrößen aus Rezept
             TeigChargen = Rezept.TeigChargen
             ArtikelChargen.TeigGewicht = Rezept.RezeptGewicht
-
+            Rezept.Dispose()
+            Rezept = Nothing
         Else
             'normale Komponente ohne Produktion
             _RezeptName = ""
@@ -244,6 +258,22 @@ Public Class wb_Komponente
             'Artikel-Rezeptur
             Dim Rezept As New wb_Rezept(ktTyp300.RzNr)
             _ArtikelLinienGruppe = Rezept.LinienGruppe
+            Rezept.Dispose()
+            Rezept = Nothing
+        End If
+    End Sub
+
+    Public Sub SaveProduktionsDaten()
+        If RzNr > 0 Then
+            'Teig-Rezeptur
+            Dim Rezept As New wb_Rezept(RzNr)
+            'geänderte Teigchargen aus Komponenten.Teigchargen sichern (in winback.Rezepte)
+            Rezept.TeigChargen = TeigChargen
+            Rezept.LinienGruppe = LinienGruppe
+            'Rezeptkopfdaten sichern
+            Rezept.MySQLdbWrite_Rezept(True)
+            Rezept.Dispose()
+            Rezept = Nothing
         End If
     End Sub
 

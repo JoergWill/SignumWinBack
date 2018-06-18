@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.IO
 Imports System.Reflection
 Imports WinBack
 Imports WinBack.wb_Global
@@ -558,10 +559,13 @@ Public Class wb_GlobalSettings
     Public Shared Property pWinBackIniPath As String
         Get
             If _pWinBackIniPath = Nothing Then
-                'die Server-Task startet im AddIn-Verzeichnis, der Pfad zur winback.ini liegt eine Ebene davor
+                'Server-Task
                 If _pVariante = wb_Global.ProgVariante.ServerTask Then
-                    _pWinBackIniPath = pProgrammPath & ".\..\WinBack.ini"
+                    'die Server-Task startet im AddIn-Verzeichnis, der Pfad zur winback.ini liegt eine Ebene davor
+                    _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
+                    _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
                 Else
+                    'die winback.ini liegt direkt im AddIn-Pfad
                     _pWinBackIniPath = pProgrammPath & "WinBack.ini"
                 End If
             End If

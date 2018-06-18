@@ -12,8 +12,8 @@ Public Class ob_Artikel_ZuordnungRezept
     Private WithEvents TeigChargen As New wb_MinMaxOptCharge
     Private OnErrorSetFocus As Object
 
-    Private DataHasChanged As Boolean
-    Public Event DataHasChanged_SubFormClosing()
+    'setzt das Flag _Extendee.Changed in ob_Artikel_DockingExtension
+    Public Event DataInvalidated()
 
 #Region "Signum"
     Private _DockingExtension As IDockingExtension
@@ -85,10 +85,6 @@ Public Class ob_Artikel_ZuordnungRezept
     ''' </returns>
     ''' <remarks></remarks>
     Public Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        'Event an ob_Artikel_DockingExtension - Daten wurden geändert - MsgBox "Soll der Datensazu gespeichert werden"
-        If DataHasChanged Then
-            RaiseEvent DataHasChanged_SubFormClosing()
-        End If
         'Fenster kann geschlossen werden (nach Speichern Datensatz)
         Return False
     End Function
@@ -124,8 +120,6 @@ Public Class ob_Artikel_ZuordnungRezept
                 RzNr = wb_Global.UNDEFINED
                 tRezeptNr.Text = ""
                 tRezeptName.Text = ""
-                'Reset Flag
-                DataHasChanged = False
 
             Case "VALID"
 
@@ -148,23 +142,19 @@ Public Class ob_Artikel_ZuordnungRezept
                 'Chargengrößen Rezept(Teig) anzeigen
                 MinMaxRezeptShowValues()
                 'Liniengruppe Artikel
-                cbArtikelLinienGruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponente).ArtikelLinienGruppe)
+                cbArtikelLinienGruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponente).iArtikelLinienGruppe)
                 'Liniengruppe Rezept(Teig)
                 cbLiniengruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponente).LinienGruppe)
 
                 'alle Steuerelemente aktivieren
                 EnableKomponenten(True)
-                'Reset Flag
-                DataHasChanged = False
 
             Case "wbSAVE"
                 DirectCast(Parameter, wb_Komponente).ArtikelChargen = ArtikelChargen
                 DirectCast(Parameter, wb_Komponente).TeigChargen = TeigChargen
                 DirectCast(Parameter, wb_Komponente).LinienGruppe = cbLiniengruppe.GetKeyFromSelection
-                DirectCast(Parameter, wb_Komponente).ArtikelLinienGruppe = cbArtikelLinienGruppe.GetKeyFromSelection
+                DirectCast(Parameter, wb_Komponente).iArtikelLinienGruppe = cbArtikelLinienGruppe.GetKeyFromSelection
                 DirectCast(Parameter, wb_Komponente).RzNr = RzNr
-                'Reset Flag
-                DataHasChanged = False
 
         End Select
         Return Nothing
@@ -184,8 +174,8 @@ Public Class ob_Artikel_ZuordnungRezept
             RzNr = RezeptAuswahl.RezeptNr
             tRezeptNr.Text = RezeptAuswahl.RezeptNummer
             tRezeptName.Text = RezeptAuswahl.RezeptName
-            'Flag - Die Daten haben sich geändert
-            DataHasChanged = True
+            'Flag setzen - Daten wurden geändert, speichern notwendig
+            DataIsInvalid()
         End If
     End Sub
 
@@ -310,8 +300,9 @@ Public Class ob_Artikel_ZuordnungRezept
         End If
         'Felder neu zeichnen
         MinMaxOptArtikelShowValues()
-        'Flag setzen
-        DataHasChanged = True
+        'Flag setzen - Daten wurden geändert, speichern notwendig
+        ArtikelChargen.HasChanged = True
+        DataIsInvalid()
     End Sub
 
     Private Sub OnErrorMinMaxOptTeig(Sender As Object) Handles TeigChargen.OnError
@@ -322,8 +313,9 @@ Public Class ob_Artikel_ZuordnungRezept
         End If
         'Felder neu zeichnen
         MinMaxRezeptShowValues()
-        'Flag setzen
-        DataHasChanged = True
+        'Flag setzen - Daten wurden geändert, speichern notwendig
+        TeigChargen.HasChanged = True
+        DataIsInvalid()
     End Sub
 #End Region
     Private Sub MinMaxOptArtikelShowValues()
@@ -380,8 +372,9 @@ Public Class ob_Artikel_ZuordnungRezept
             tChrgOptStk.Text = ""
             tChrgMaxStk.Text = ""
 
-
             tRezGesamt.Text = ""
+            cbArtikelLinienGruppe.Text = ""
+            cbLiniengruppe.Text = ""
 
             tRezMinkg.Text = ""
             tRezOptkg.Text = ""
@@ -392,6 +385,28 @@ Public Class ob_Artikel_ZuordnungRezept
             tRezMaxPrz.Text = ""
         End If
 
+    End Sub
+
+    Private Sub cbArtikelLinienGruppe_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbArtikelLinienGruppe.SelectionChangeCommitted
+        'Flag setzen - Daten wurden geändert, speichern notwendig
+        DataIsInvalid()
+    End Sub
+
+    Private Sub cbLiniengruppe_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbLiniengruppe.SelectionChangeCommitted
+        'Flag setzen - Daten wurden geändert, speichern notwendig
+        DataIsInvalid()
+        TeigChargen.HasChanged = True
+    End Sub
+
+    ''' <summary>
+    ''' Die Daten im Fenster haben sich durch Benutzer-Eingabe geändert.
+    ''' Flag setzen (DataHasChanged). Über den Event DataInvalidated wird dem Haupt-Fenster mitgeteilt, dass die Daten vor dem Schliessen
+    ''' oder Löschen des Fensters gesichert werden müssen.
+    ''' 
+    ''' setzt das Flag _Extendee.Changed in ob_Artikel_DockingExtension
+    ''' </summary>
+    Private Sub DataIsInvalid()
+        RaiseEvent DataInvalidated()
     End Sub
 
 End Class

@@ -28,6 +28,11 @@
     'OrgaBack Dummy-Artikel für Rezepte ohne Zuordnung (ProduzierteWare)
     Public Const ProduktionDummyArtikel = "R9999"
 
+    'Artikelgruppe Backorte (GruppenNr)
+    Public Const GruppenNrBackorte = 3
+    'Offset WinBack.Linien zu OrgaBack-Backorte (ArtikelMultifunktionsfeld.Hierarchie)
+    Public Const OffsetBackorte = 100
+
     'OrgaBack.Einheit [gr] aus dbo.Einheiten (Unit-Test)
     Public Const obEinheitStk As Short = 0
     Public Const obEinheitKilogramm As Short = 11

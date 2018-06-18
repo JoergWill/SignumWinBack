@@ -16,6 +16,8 @@
 ''' Die Anzeige erfolgt im VirtualTree direkt mit der Angabe des Root-Nodes
 ''' </summary>
 Public Class wb_Rezept
+    Implements IDisposable
+
     Private _RezeptNummer As String
     Private _RezeptBezeichnung As String
     Private _RezeptKommentar As String
@@ -389,8 +391,11 @@ Public Class wb_Rezept
     End Sub
 
     Public Sub New(RzNr As Integer)
+        'Rezeptnr und Variante merken
+        _RezeptNr = RzNr
+        _RezeptVariante = 1
         'Rezeptkopf mit Variante x aus der Datenbank einlesen
-        MySQLdbSelect_RzKopf(RzNr, 1)
+        MySQLdbSelect_RzKopf(_RezeptNr, _RezeptVariante)
     End Sub
 
     ''' <summary>
@@ -400,6 +405,9 @@ Public Class wb_Rezept
     ''' <param name="RzVariante"></param>
     ''' <param name="RzAendIndex"></param>
     Public Sub New(RzNr As Integer, Parent As Object, RzVariante As Integer, RzAendIndex As Integer)
+        'Rezeptnr und Variante merken
+        _RezeptNr = RzNr
+        _RezeptVariante = RzVariante
         'Rezeptkopf mit Variante x aus der Datenbank einlesen
         MySQLdbSelect_RzKopf(RzNr, RzVariante, RzAendIndex)
 
@@ -761,7 +769,7 @@ Public Class wb_Rezept
                     End If
                 'Sollwert Produktion (nur His_Rezepte)
                 Case "H_RS_Wert_Prod"
-                        _SQLRezeptSchritt.WertProd = Value
+                    _SQLRezeptSchritt.WertProd = Value
                 'Par1
                 Case "RS_Par1", "H_RS_Par1"
                     _SQLRezeptSchritt.Par1 = Value
@@ -914,6 +922,7 @@ Public Class wb_Rezept
                   "RZ_Charge_Opt = '" & wb_Functions.FormatStr(TeigChargen.OptCharge.MengeInkg, 3) & "', " &
                   "RZ_Charge_Min = '" & wb_Functions.FormatStr(TeigChargen.MinCharge.MengeInkg, 3) & "', " &
                   "RZ_Charge_Max = '" & wb_Functions.FormatStr(TeigChargen.MaxCharge.MengeInkg, 3) & "', " &
+                  "RZ_Liniengruppe = " & LinienGruppe & ", " &
                   "RZ_Kommentar = '" & _RezeptKommentar & "', RZ_Aenderung_Datum = '" & wb_sql_Functions.MySQLdatetime(_AenderungDatum) & "', " &
                   "RZ_Aenderung_Name = '" & _AenderungName & "', RZ_Aenderung_User = " & _AenderungUserNr & ", RZ_Aenderung_Nr = " & _AenderungNummer
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptUpdate, _RezeptNr, _RezeptVariante, sqlData)
@@ -943,6 +952,12 @@ Public Class wb_Rezept
         Return (wbdaten.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelHRzptSchr, _RezeptNr, _RezeptVariante)) > 0)
     End Function
 
+    Public Sub Dispose() Implements IDisposable.Dispose
+        _RezeptSchritt = Nothing
+        _RootRezeptSchritt = Nothing
+        _SQLRezeptSchritt = Nothing
+        TeigChargen = Nothing
+    End Sub
 End Class
 
 'RS_RZ_Nr	

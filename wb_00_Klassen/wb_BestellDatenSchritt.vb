@@ -60,7 +60,11 @@ Public Class wb_BestellDatenSchritt
         End If
 
         'Feldname aus der Datenbank
-        Debug.Print("StoredProcedure Produktionsplanung Fieldname " & Name)
+        Try
+            Debug.Print("StoredProcedure Produktionsplanung Fieldname " & Name & " / " & Value)
+        Catch ex As Exception
+        End Try
+
         Try
             Select Case Name
                 'Tour

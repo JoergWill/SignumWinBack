@@ -9,8 +9,37 @@
     ''' Array Linien aufbauen
     ''' </summary>
     Shared Sub New()
+        GetOrgaBackOrte()
         InitLinienGruppen()
         InitLinien()
+    End Sub
+
+    Private Shared Sub GetOrgaBackOrte()
+        Dim LinieNummer As Integer
+        Dim LinieBezeichnung As String
+        Dim sql As String
+
+        'Datenbank-Verbindung öffnen - MsSQL
+        Dim orgasoft As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Daten aus Tabelle ArtikelMultifunktionsfeld lesen
+        If orgasoft.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlBackorte, wb_Global.GruppenNrBackorte)) Then
+            While orgasoft.Read
+                LinieNummer = wb_Functions.StrToInt(orgasoft.sField("Hierarchie")) + wb_Global.OffsetBackorte
+                LinieBezeichnung = orgasoft.sField("Bezeichnung")
+
+                'Backorte in Tabelle winback.Linien eintragen. Bestehende Einträge werden aktualisiert
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdteLinien, LinieNummer, LinieBezeichnung)
+                'Update ausführen
+                winback.sqlCommand(sql)
+            End While
+        End If
+
+        'Kanal wieder schliessen
+        orgasoft.Close()
+        winback.Close()
     End Sub
 
     Private Shared Sub InitLinienGruppen()

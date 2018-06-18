@@ -9,6 +9,7 @@ Public Class wb_MinMaxOptCharge
     Private _StkGewicht As Double
     Private _TeigGewicht As Double
     Private _NoErrorCheck As Boolean = False
+    Private _HasChanged As Boolean = False
     Private _ErrorCode As wb_Global.MinMaxOptChargenError
 
     Public Property TeigGewicht As String
@@ -45,6 +46,15 @@ Public Class wb_MinMaxOptCharge
         Get
             Return _ErrorCode
         End Get
+    End Property
+
+    Public Property HasChanged As Boolean
+        Get
+            Return _HasChanged
+        End Get
+        Set(value As Boolean)
+            _HasChanged = value
+        End Set
     End Property
 
     ''' <summary>
