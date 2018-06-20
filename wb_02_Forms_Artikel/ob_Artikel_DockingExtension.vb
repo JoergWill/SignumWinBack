@@ -180,17 +180,8 @@ Public Class ob_Artikel_DockingExtension
         If bSortimentIstProduktion Then
             Debug.Print("WinBack Artikel")
             UpdateKomponentenDaten()
-
-            'geänderten Datensatz(Stammdaten) in WinBack-DB schreiben
-            Komponente.MySQLdbUpdate(Komponente.Nr)
-            'geänderte Komponentendaten(Rezeptur) in WinBack-DB schreiben
-            If Komponente.TeigChargen.HasChanged Then
-                Komponente.SaveProduktionsDaten()
-                Komponente.TeigChargen.HasChanged = False
-            End If
-            'geänderte Parameter in WinBack-DB schreiben (KomponParams 200)
-            'geänderte Parameter in WinBack-DB schreiben (KomponParams 300)
-            'geänderte Parameter in WinBack-DB schreiben (KomponParams 301)
+            'Komponentendaten in Datenbank sichern
+            Komponente.UpdateDB()
         End If
     End Sub
 

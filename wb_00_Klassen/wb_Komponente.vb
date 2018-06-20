@@ -381,6 +381,28 @@ Public Class wb_Komponente
     End Sub
 
     ''' <summary>
+    ''' Speichert alle geänderten Komponenten-Daten in der Datenbank
+    '''     Stammdaten  (Tabelle Komponenten)
+    '''     Teigchargen (Tabelle Rezeptur)
+    ''' </summary>
+    Public Sub UpdateDB()
+        'geänderten Datensatz(Stammdaten) in WinBack-DB schreiben
+        MySQLdbUpdate()
+        'schreibt auch die Artikel-Chargen-Daten
+        ArtikelChargen.HasChanged = False
+
+        'geänderte Komponentendaten(Rezeptur) in WinBack-DB schreiben
+        If TeigChargen.HasChanged Then
+            SaveProduktionsDaten()
+            TeigChargen.HasChanged = False
+        End If
+
+        'TODO geänderte Parameter in WinBack-DB schreiben (KomponParams 200)
+        'TODO geänderte Parameter in WinBack-DB schreiben (KomponParams 300)
+        'TODO geänderte Parameter in WinBack-DB schreiben (KomponParams 301)
+    End Sub
+
+    ''' <summary>
     ''' Prüft ob der Rohstoff/Artikel noch verwendet wird. (Prüfung ob Löschen zulässig ist)
     ''' 
     ''' Abhängig von der Komponenten-Type wird geprüft ob:
@@ -827,9 +849,8 @@ Public Class wb_Komponente
     ''' <summary>
     ''' schreibt alle Datenfelder aus dem Komponenten-Objekt mit der angegebenen Komponenten-Nummer in die Datenbank.
     ''' </summary>
-    ''' <param name="InterneKomponentenNummer"></param>
     ''' <returns></returns>
-    Public Function MySQLdbUpdate(InterneKomponentenNummer As Integer) As Boolean
+    Public Function MySQLdbUpdate() As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
@@ -876,9 +897,20 @@ Public Class wb_Komponente
         End If
     End Function
 
-    Public Function MySQLdbUpdate_Parameter(InterneKomponentenNummer As Integer, ParamTyp As Integer, ParamNr As Integer, Value As String) As Boolean
+    Public Function MySQLdbUpdate_Parameter(Optional ktTyp As Integer = wb_Global.UNDEFINED) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Update Parameter-300 (Parameter Produktion)
+        If ktTyp = 300 Or ktTyp = wb_Global.UNDEFINED Then
+            ktTyp300.UpdateDB()
+        End If
+
+        'Update Parameter-301 (Nährwerte)
+
+
+
+
         Dim sql As String
 
         'Update-Statement wird dynamisch erzeugt    

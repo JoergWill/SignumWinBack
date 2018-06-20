@@ -71,6 +71,11 @@
         Public cLocation As Drawing.Point
     End Structure
 
+    Public Enum ktParam
+        kt300
+        kt301
+    End Enum
+
     Public Structure ktTyp301Param
         Public ParamNr As Integer
         Public Bezeichnung As String
