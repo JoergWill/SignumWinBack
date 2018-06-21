@@ -184,4 +184,44 @@ Public Class wb_KomponParam301
             Return Allergen2
         End If
     End Function
+
+    ''' <summary>
+    ''' Update aller geänderten Komponenten-Parameter in Tabelle winback.RohParams
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function MySQLdbUpdate(KoNr As Integer, ByRef winback As wb_Sql) As Boolean
+        'Update-Statement wird dynamisch erzeugt    
+        Dim sql As String
+        'Result OK
+        MySQLdbUpdate = True
+
+        'alle Datensätze im Array durchlaufen
+        For i = 0 To maxTyp301
+            If IsValidParameter(i) Then
+
+
+                'Update-Statement wird dynamisch erzeugt    
+                sql = "RP_ParamNr = '" & i.ToString & "'," &
+                      "RP_Wert = '" & Wert(i) & "'," &
+                      "RP_Kommentar = '" & kt301Param(i).Bezeichnung
+
+                'Update ausführen
+                Debug.Print("RohParams.MysqldbUpdate " & sql)
+
+                'If Not winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, KoNr, 301, sql)) Then
+                '    MySQLdbUpdate = False
+                'End If
+            End If
+        Next
+
+    End Function
+
+    'Tabelle RohParams
+    'RP_Ko_Nr
+    'RP_Typ_Nr
+    'RP_ParamNr
+    'RP_Wert
+    'RP_Kommentar
+    'RP_Timestamp
+
 End Class

@@ -41,4 +41,9 @@ Public Class wb_KomponParam300
         End Get
     End Property
 
+    Public Function MySQLdbUpdate(KoNr As Integer, ByRef winback As wb_Sql) As Boolean
+        Return False
+        'TODO siehe KT301 Datensatz (Array updaten)
+    End Function
+
 End Class

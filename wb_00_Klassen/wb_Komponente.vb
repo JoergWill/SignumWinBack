@@ -399,7 +399,9 @@ Public Class wb_Komponente
 
         'TODO geänderte Parameter in WinBack-DB schreiben (KomponParams 200)
         'TODO geänderte Parameter in WinBack-DB schreiben (KomponParams 300)
+        MySQLdbUpdate_Parameter(wb_Global.ktParam.kt300)
         'TODO geänderte Parameter in WinBack-DB schreiben (KomponParams 301)
+        MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
     End Sub
 
     ''' <summary>
@@ -897,33 +899,24 @@ Public Class wb_Komponente
         End If
     End Function
 
-    Public Function MySQLdbUpdate_Parameter(Optional ktTyp As Integer = wb_Global.UNDEFINED) As Boolean
+    Public Function MySQLdbUpdate_Parameter(Optional ktTyp As wb_Global.ktParam = wb_Global.ktParam.ktAlle) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'Result vorbelegen
+        MySQLdbUpdate_Parameter = True
 
         'Update Parameter-300 (Parameter Produktion)
-        If ktTyp = 300 Or ktTyp = wb_Global.UNDEFINED Then
-            ktTyp300.UpdateDB()
+        If ktTyp = wb_Global.ktParam.kt300 Or ktTyp = wb_Global.ktParam.ktAlle Then
+            If Not ktTyp300.MySQLdbUpdate(Nr, winback) Then
+                MySQLdbUpdate_Parameter = False
+            End If
         End If
 
         'Update Parameter-301 (Nährwerte)
-
-
-
-
-        Dim sql As String
-
-        'Update-Statement wird dynamisch erzeugt    
-        'sql = 
-        'TODO HIER GEHTS WEITER:::
-
-        'Update ausführen
-        Debug.Print("KomponParams.MysqldbUpdate " & sql)
-
-        If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then
-            Return True
-        Else
-            Return False
+        If ktTyp = wb_Global.ktParam.kt301 Or ktTyp = wb_Global.ktParam.ktAlle Then
+            If Not ktTyp301.MySQLdbUpdate(Nr, winback) Then
+                MySQLdbUpdate_Parameter = False
+            End If
         End If
 
     End Function

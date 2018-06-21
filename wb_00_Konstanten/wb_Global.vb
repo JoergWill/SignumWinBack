@@ -72,6 +72,7 @@
     End Structure
 
     Public Enum ktParam
+        ktAlle
         kt300
         kt301
     End Enum

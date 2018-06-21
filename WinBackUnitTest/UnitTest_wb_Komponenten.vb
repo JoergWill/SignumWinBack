@@ -43,14 +43,14 @@ Imports WinBack.wb_Sql_Selects
             'Rohstoff-Bezeichnung ändern
             nwtDaten.Bezeichnung = "TEST"
             'Datensatz in WinBack-DB schreiben
-            Assert.IsTrue(nwtDaten.MySQLdbUpdate(211))
+            Assert.IsTrue(nwtDaten.MySQLdbUpdate())
             'ersten Datensatz aus Tabelle Komponenten lesen
             Assert.IsTrue(nwtDaten.MySQLdbRead(211))
             Assert.AreEqual("TEST", nwtDaten.Bezeichnung)
             'Daten wieder richtigstellen
             nwtDaten.Bezeichnung = "Schüttwasser"
             'Datensatz in WinBack-DB schreiben
-            Assert.IsTrue(nwtDaten.MySQLdbUpdate(211))
+            Assert.IsTrue(nwtDaten.MySQLdbUpdate())
 
         End If
     End Sub
@@ -99,6 +99,41 @@ Imports WinBack.wb_Sql_Selects
                     Assert.IsTrue(nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser) > 90.0)
                     'Nährwert-Info - keine Allergene
                     Assert.AreEqual(wb_Global.AllergenInfo.N, nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten))
+                End If
+            End If
+        End If
+    End Sub
+
+
+    <TestMethod()> Public Sub Test_SchreibenRohstoff_Parameter()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
+
+            'Rohstoff-Daten
+            Dim nwtDaten As New wb_Komponente
+
+            Dim sql As String = setParams(sqlTestktTyp3, "211")
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+            'ersten Datensatz aus Tabelle RohParams lesen
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    'den ersten und alle weiteren Daensätze aus der sql-Abfrage lesen
+                    Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
+                    'Nährwert-Info - Wasser-Anteil
+                    Assert.IsTrue(nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser) > 90.0)
+                    'Nährwert-Info - keine Allergene
+                    Assert.AreEqual(wb_Global.AllergenInfo.K, nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten))
+
+                    'RohstoffParameter schreiben
+                    nwtDaten.UpdateDB()
+
+
+
+
+
+
                 End If
             End If
         End If

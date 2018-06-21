@@ -51,7 +51,15 @@ Public Class wb_KomponParam301_Global
     ''' <param name="p">Interger Parameter-Nummer</param>
     ''' <returns>ktTyp301Param</returns>
     Public Shared Function kt301Param(p As Integer) As wb_Global.ktTyp301Param
-        Return ktTyp301Params(p)
+        If ktTyp301Params.ContainsKey(p) Then
+            Return ktTyp301Params(p)
+        Else
+            Dim k As New ktTyp301Param
+            k.Bezeichnung = "---"
+            k.Used = False
+            Return k
+        End If
+
     End Function
 
     Public Shared Function IsAllergen(index As Integer) As Boolean
@@ -62,5 +70,8 @@ Public Class wb_KomponParam301_Global
         End If
     End Function
 
+    Public Shared Function IsValidParameter(index As Integer) As Boolean
+        Return ktTyp301Params.ContainsKey(index)
+    End Function
 
 End Class
