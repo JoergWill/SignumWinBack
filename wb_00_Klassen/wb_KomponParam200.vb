@@ -1,18 +1,15 @@
-﻿Imports WinBack.wb_Functions
-Imports WinBack.wb_Global
+﻿Imports WinBack.wb_Global
 Imports WinBack.wb_KomponParam300_Global
 
-Public Class wb_KomponParam300
-
-    Private Structure Typ300
+Public Class wb_KomponParam200
+    Private Structure Typ200
         Public _Wert As String
     End Structure
 
-    Private Parameter(wb_Global.maxTyp300) As Typ300
+    Private Parameter(wb_Global.maxTyp300) As Typ200
 
     Public Sub New()
-        Wert(T300_LinienGruppe) = wb_Global.UNDEFINED
-        Wert(T300_RzNr) = wb_Global.UNDEFINED
+        Wert(T200_Warengruppe) = wb_Global.UNDEFINED
     End Sub
 
     Public Property Wert(index As Integer) As String
@@ -24,27 +21,17 @@ Public Class wb_KomponParam300
         End Set
     End Property
 
-    Public Property Liniengruppe As Integer
+    Public Property Warengruppe As Integer
         Get
-            If Wert(T300_LinienGruppe) IsNot Nothing Then
-                Return wb_Functions.StrToInt(Wert(T300_LinienGruppe))
+            If Wert(T200_Warengruppe) IsNot Nothing Then
+                Return wb_Functions.StrToInt(Wert(T200_Warengruppe))
             Else
                 Return wb_Global.UNDEFINED
             End If
         End Get
         Set(value As Integer)
-            Wert(T300_LinienGruppe) = value.ToString
+            Wert(T200_Warengruppe) = value.ToString
         End Set
-    End Property
-
-    Public ReadOnly Property RzNr As Integer
-        Get
-            If Wert(T300_RzNr) IsNot Nothing Then
-                Return wb_Functions.StrToInt(Wert(T300_RzNr))
-            Else
-                Return wb_Global.UNDEFINED
-            End If
-        End Get
     End Property
 
     ''' <summary>
@@ -71,7 +58,7 @@ Public Class wb_KomponParam300
             If IsValidParameter(i) Then
                 'Update-Statement wird dynamisch erzeugt
                 'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
-                sql = KoNr & ", 300, " & i.ToString & ", '" & Wert(i) & "', '" & kt300Param(i).Bezeichnung & "'"
+                sql = KoNr & ", 200, " & i.ToString & ", '" & Wert(i) & "', '" & kt300Param(i).Bezeichnung & "'"
                 'Update ausführen
                 If Not winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, sql)) Then
                     MySQLdbUpdate = False

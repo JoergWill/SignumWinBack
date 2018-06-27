@@ -359,7 +359,14 @@
     <Compile Include="wb_00_Klassen\wb_DockBarPanelShared.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_Sync.vb" />
     <Compile Include="wb_00_Klassen\wb_Einheiten_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam200.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam200_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam201_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam202_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam210_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam220_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam300.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam300_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Linien_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_MinMaxOptCharge.vb" />
     <Compile Include="wb_00_Klassen\wb_AktUser.vb" />

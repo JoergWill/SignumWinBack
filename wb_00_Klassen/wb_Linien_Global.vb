@@ -14,6 +14,13 @@
         InitLinien()
     End Sub
 
+    ''' <summary>
+    ''' Kopiert alle Backorte aus OrgaBack in die Tabelle winback.Liniengruppen. 
+    ''' Der Backort steht in OrgaBack in Artikel-Multifunktionsfeld (Auswahlfeld) zum Artikel
+    ''' 
+    ''' Die Auswahlfeld-Inhalte stehen in der Tabelle dbo.ArtikelMultifunktionsfeld mit Gruppen-Nr=3
+    ''' Zur Linien-Nummer wird in WinBack ein Offset(100) dazu addiert)
+    ''' </summary>
     Private Shared Sub GetOrgaBackOrte()
         Dim LinieNummer As Integer
         Dim LinieBezeichnung As String

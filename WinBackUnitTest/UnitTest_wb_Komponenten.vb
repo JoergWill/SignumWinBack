@@ -139,6 +139,59 @@ Imports WinBack.wb_Sql_Selects
         End If
     End Sub
 
+    <TestMethod()> Public Sub Test_Schreiben_ArtikelLinienGruppe()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
+
+            'Rohstoff-Daten
+            Dim nwtDaten As New wb_Komponente
+
+            Dim sql As String = setParams(sqlTestktTyp3, "211")
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+            'ersten Datensatz aus Tabelle RohParams lesen
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    'den ersten und alle weiteren Daensätze aus der sql-Abfrage lesen
+                    Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
+
+                    'Artikel-Parameter (300,5) ändern
+                    nwtDaten.iArtikelLinienGruppe = 211
+                    'RohstoffParameter schreiben
+                    nwtDaten.UpdateDB()
+                End If
+            End If
+
+            'ersten Datensatz aus Tabelle RohParams lesen
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    'den ersten und alle weiteren Daensätze aus der sql-Abfrage lesen
+                    Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
+
+                    'Artikel-Parameter(300,5) prüfen (muss 211 sein)
+                    Assert.AreEqual(211, nwtDaten.iArtikelLinienGruppe)
+                    'Artikel-Parameter (300,5) ändern
+                    nwtDaten.iArtikelLinienGruppe = 0
+                    'RohstoffParameter schreiben
+                    nwtDaten.UpdateDB()
+                End If
+            End If
+
+            'ersten Datensatz aus Tabelle RohParams lesen
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    'den ersten und alle weiteren Daensätze aus der sql-Abfrage lesen
+                    Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
+
+                    'Artikel-Parameter(300,5) prüfen (muss wieder 0 sein)
+                    Assert.AreEqual(0, nwtDaten.iArtikelLinienGruppe)
+                End If
+            End If
+
+        End If
+    End Sub
+
     <TestMethod()> Public Sub Test_ChangeLog()
         'Test kann nur ausgeführt werden, wenn die Datenbank verfügbar ist
         If My.Settings.TestMySQL Then

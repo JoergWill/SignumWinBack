@@ -176,6 +176,8 @@ Public Class wb_Komponente
         End Get
         Set(value As Integer)
             _ArtikelLinienGruppe = value
+            'TODO wenn ein Rezept in Param6 angegeben ist, muss die Rezept-Liniengruppe angepasst werden
+            ktTyp300.Liniengruppe = value
         End Set
     End Property
 
@@ -631,7 +633,7 @@ Public Class wb_Komponente
                 MySQLdbRead(winback.MySqlRead)
                 winback.CloseRead()
                 'weitere Parameter einlesen
-                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompTypXXX, Nr)
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompParamsXXX, Nr)
                 If winback.sqlSelect(sql) Then
                     If winback.Read Then
                         MySQLdbRead(winback.MySqlRead)
@@ -712,7 +714,7 @@ Public Class wb_Komponente
         End If
 
         'Feldname aus der Datenbank
-        Debug.Print("ReadStammdaten " & Name & Value)
+        Debug.Print("ReadStammdaten " & Name & "/" & Value)
         Try
             Select Case Name
 

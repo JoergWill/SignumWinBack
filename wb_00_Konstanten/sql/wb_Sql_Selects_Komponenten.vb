@@ -16,14 +16,14 @@
                                   "WHERE KO_Nr = [0] AND KT_Rezept = 'R' AND KT_ParamNr > 1"
 
     'Sql-Statement RohstoffGruppen aus winback.ItemParameter
-    Public Const sqlRohstoffGrp = "Select IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
+    Public Const sqlRohstoffGrp = "SELECT IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
                                   "IP_ItemTyp = 600 And IP_Wert3int = 0 ORDER BY IP_Lfd_Nr DESC"
     'Sql-Statement Rohstoff-Verwendung aus winback.Rezeptschritte
-    Public Const sqlRohstoffUse = "Select Rezepte.RZ_Nr, Rezepte.RZ_Nr_AlNum, Rezepte.RZ_Bezeichnung FROM RezeptSchritte INNER JOIN " &
+    Public Const sqlRohstoffUse = "SELECT Rezepte.RZ_Nr, Rezepte.RZ_Nr_AlNum, Rezepte.RZ_Bezeichnung FROM RezeptSchritte INNER JOIN " &
                                   "Rezepte On (RezeptSchritte.RS_RZ_Variante_Nr = Rezepte.RZ_Variante_Nr) And (RezeptSchritte.RS_RZ_Nr = Rezepte.RZ_Nr) " &
                                   "WHERE RezeptSchritte.RS_Ko_Nr= [0] And RezeptSchritte.RS_ParamNr = 1"
     'Sql-Statement Automatik-Rohstoffe aus winback.Lagerorte
-    Public Const sqlRohstoffAut = "Select Komponenten.KO_Nr, Lagerorte.LG_aktiv FROM Komponenten " &
+    Public Const sqlRohstoffAut = "SELECT Komponenten.KO_Nr, Lagerorte.LG_aktiv FROM Komponenten " &
                                   "INNER JOIN Lagerorte On Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
                                   "WHERE KO_TYPE = 101 Or KO_TYPE = 103 Or KO_TYPE = 104"
 
@@ -41,11 +41,11 @@
     Public Const sqlDelLieferungen = "DELETE FROM Lieferungen WHERE LF_LG_Ort = '[0]'"
 
     'Sql-Statement Liste aller Komponenten-Parameter Typ301
-    Public Const sqlKompTyp301 = "SELECT KomponTypen.*, Einheiten.E_Einheit " &
+    Public Const sqlKompTypXXX = "SELECT KomponTypen.*, Einheiten.E_Einheit " &
                                  "FROM KomponTypen INNER JOIN Einheiten ON KomponTypen.KT_EinheitIndex = (Einheiten.E_LfdNr) " &
-                                 "WHERE (((KomponTypen.KT_Typ_Nr)=301)) ORDER BY KomponTypen.KT_ParamNr"
+                                 "WHERE (((KomponTypen.KT_Typ_Nr)=[0])) ORDER BY KomponTypen.KT_ParamNr"
     'Sql-Statmente Liste aller Komponenten-Parameter
-    Public Const sqlKompTypXXX = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
+    Public Const sqlKompParamsXXX = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0]) ORDER BY RP_Typ_Nr, RP_ParamNr"
 
     'Sql-Statement Suche nächsten Rohstoffdatensatz nach KO_Nr (Update Nährwerte)
@@ -54,18 +54,19 @@
     'Sql-Statement kompletten Rohstoffdatensatz nach KO_Nr (Update Nährwerte)
     Public Const sqlgetNWT = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"
-
+    'Sql-Statement Update(Replace) RohParams nach RP_Ko_Nr und RP_Typ_Nr und RP_ParamNr
+    Public Const sqlUpdateRohParams = "REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES ([0])"
 
     'Sql-Statement Komponenten-Parameter zum Komponenten-Nummer und Parameter-Nummer 
-    Public Const sqlKompParams = "SELECT KP_Wert FROM KomponParams WHERE KP_KO_Nr = [0] AND KP_ParamNr = [1]"
+    Public Const sqlKompParams = "Select KP_Wert FROM KomponParams WHERE KP_KO_Nr = [0] And KP_ParamNr = [1]"
 
     'Sql-Statement Artikelliste aus winback.Komponenten
     Public Const sqlArtikelLst = "Select KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, " &
                                   "KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type = 0"
 
     'Sql-Statement Lesen Komponenten nach KO_Nr (Select KO_Nr=x)
-    Public Const sqlSelectKomp_KO_Nr = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "
-    Public Const sqlSelectKomp_AlNum = "SELECT * FROM Komponenten WHERE KO_Nr_AlNum = '[0]' "
+    Public Const sqlSelectKomp_KO_Nr = "Select * FROM Komponenten WHERE KO_Nr = [0] "
+    Public Const sqlSelectKomp_AlNum = "Select * FROM Komponenten WHERE KO_Nr_AlNum = '[0]' "
     Public Const sqlSelectKomp_KO_Type = "SELECT * FROM Komponenten WHERE KO_Type = [0] "
     'Sql-Statement Update Komponenten nach KO_Nr (Select KO_Nr=x)
     Public Const sqlUpdateKomp_KO_Nr = "UPDATE Komponenten SET [1] WHERE KO_Nr = [0] "

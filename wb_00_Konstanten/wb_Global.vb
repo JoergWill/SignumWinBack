@@ -73,9 +73,29 @@
 
     Public Enum ktParam
         ktAlle
+        kt200
+        kt201
+        kt202
+        kt210
+        kt220
         kt300
         kt301
     End Enum
+
+    Public Structure ktTyp200Param
+        Public ParamNr As Integer
+        Public Bezeichnung As String
+        Public Einheit As String
+        Public Feld As String
+        Public Used As Boolean
+    End Structure
+
+    Public Structure ktTyp300Param
+        Public ParamNr As Integer
+        Public Bezeichnung As String
+        Public Einheit As String
+        Public Used As Boolean
+    End Structure
 
     Public Structure ktTyp301Param
         Public ParamNr As Integer
@@ -196,6 +216,8 @@
     End Enum
 
     Public Const maxTyp300 = 14
+
+    Public Const T200_Warengruppe = 17
 
     Public Const T300_LinienGruppe = 5
     Public Const T300_RzNr = 6
