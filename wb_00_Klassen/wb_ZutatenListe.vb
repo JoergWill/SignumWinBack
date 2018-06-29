@@ -195,10 +195,12 @@ Public Class wb_ZutatenListe
         'leere Einträge entfernen
         Dim lc As Integer = Liste.Count - 1
         For i = 0 To lc
-            If DirectCast(Liste(i), wb_Global.ZutatenListe).Zutaten = "" Then
-                Liste.RemoveAt(i)
-                lc -= 1
-                If i < lc Then Exit For
+            If i < Liste.Count Then
+                If DirectCast(Liste(i), wb_Global.ZutatenListe).Zutaten = "" Then
+                    Liste.RemoveAt(i)
+                    lc -= 1
+                    If i < lc Then Exit For
+                End If
             End If
         Next
     End Sub

@@ -831,7 +831,7 @@ Public Class wb_Rezeptschritt
                     'Nährwert-Info aus Datenbank lesen
                     If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
                         ReadktTyp301()
-                        Debug.Print("Komponente " & Bezeichnung)
+                        'Debug.Print("Komponente " & Bezeichnung)
                     End If
 
                     'alle Unter-Rezept-Schritte berechnen

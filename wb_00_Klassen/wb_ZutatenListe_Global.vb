@@ -26,7 +26,7 @@
 
             If eName <> E.Text Then
                 'Neuer Eintrag in sEListe (suche nach E-Nummer)
-                Debug.Print("E.Bezeichnung " & E.Bezeichnung)
+                'Debug.Print("E.Bezeichnung " & E.Bezeichnung)
                 If Not eEListe.ContainsKey(E.Text) Then
                     eEListe.Add(E.Text, E)
                     If Not sEListe.ContainsKey(E.Bezeichnung.ToLower) Then
@@ -36,7 +36,7 @@
                 eName = E.Text
             Else
                 'Neuer Eintrag in sEListe (suche nach String-Bezeichnung)
-                Debug.Print("E.Bezeichnung " & E.Bezeichnung)
+                'Debug.Print("E.Bezeichnung " & E.Bezeichnung)
                 If Not sEListe.ContainsKey(E.Bezeichnung.ToLower) Then
                     sEListe.Add(E.Bezeichnung.ToLower, E.Text)
                 End If
@@ -54,12 +54,13 @@
     End Function
 
     Public Shared Function Find_EBezeichnung(Text As String) As wb_Global.ENummern
-        'TODO Hier tritt manchmal ein Fehler auf NullReferenc Exception!!
-        If sEListe.ContainsKey(Text.ToLower) Then
-            Return eEListe(sEListe(Text.ToLower))
-        Else
-            Return EmptyENumber()
+        'Prüfen auf Null-Text
+        If Text IsNot Nothing Then
+            If sEListe.ContainsKey(Text.ToLower) Then
+                Return eEListe(sEListe(Text.ToLower))
+            End If
         End If
+        Return EmptyENumber()
     End Function
 
     Public Shared Function EmptyENumber() As wb_Global.ENummern

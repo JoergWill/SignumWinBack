@@ -16,7 +16,7 @@
                                   "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt FROM Rezepte WHERE RZ_Nr=[0] " &
                                   "AND (RZ_Variante_Nr=[1] Or RZ_Variante_Nr=1 Or RZ_Variante_Nr=0) ORDER BY RZ_Variante_Nr DESC"
     'Sql-Statement Rezept-Verwendung aus winback.Komponenten
-    Public Const sqlRezeptVerwendung = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Kommentar, KA_Art, KA_Matchcode " &
+    Public Const sqlRezeptVerwendung = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Kommentar, KA_Art, KA_Matchcode, KO_Nr " &
                                   "FROM Komponenten WHERE KA_RZ_Nr = [0]"
 
 
@@ -25,6 +25,8 @@
 
     'Sql-Statement Verwendung Rezept in Artikeln/Rohstoffen
     Public Const sqlRezeptInKomp = "SELECT COUNT(*) AS Used FROM Komponenten WHERE KA_RZ_Nr = [0]"
+    'Sql-Statement Verwengung Komponente in Rezepschritten (momentan nur Variante 1 !!!)
+    Public Const sqlKompInRZSchritte = "SELECT RS_RZ_Nr FROM RezeptSchritte WHERE RS_Ko_Nr = [0] AND RS_RZ_Variante_Nr = 1 ORDER BY RS_RZ_Nr"
 
     'Sql-Statement Rezeptschritte Datensatze löschen
     Public Const sqlDelRzptSchr = "DELETE FROM RezeptSchritte WHERE RS_RZ_Nr = [0] AND RS_RZ_Variante_Nr = [1]"

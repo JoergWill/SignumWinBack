@@ -153,11 +153,11 @@ Public Class Main
             If nwtUpdate.UpdateNext(AktKONr) Then
                 'Info-Text ausgeben
                 ScrollTextBox(tbCloud, nwtUpdate.InfoText & vbNewLine)
-                'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
-                AktTimerEvent.Str2 = nwtUpdate.AktKO_Nr
-                AktTimerEvent.Endezeit = Now
-                AktTimerEvent.MySQLdbUpdate_Fields()
             End If
+            'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
+            AktTimerEvent.Str2 = nwtUpdate.AktKO_Nr
+            AktTimerEvent.Endezeit = Now
+            AktTimerEvent.MySQLdbUpdate_Fields()
         End If
 
         'Abfrage produzierte Chargen und verbrauchte Rohstoffe
