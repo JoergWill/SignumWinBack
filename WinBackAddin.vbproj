@@ -361,9 +361,13 @@
     <Compile Include="wb_00_Klassen\wb_Einheiten_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam200.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam200_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam201.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam201_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam202.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam202_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam210.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam210_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam220.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam220_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam300.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam300_Global.vb" />

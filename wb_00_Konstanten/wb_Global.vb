@@ -215,15 +215,44 @@
         UnDefined
     End Enum
 
-    Public Const maxTyp300 = 14
 
+    ''' <summary>
+    ''' Produkt-Information
+    ''' </summary>
+    Public Const maxTyp200 = 330
     Public Const T200_Warengruppe = 17
 
+    ''' <summary>
+    ''' Verarbeitungshinweise
+    ''' </summary>
+    Public Const maxTyp201 = 12
+
+    ''' <summary>
+    ''' Kalkulation
+    ''' </summary>
+    Public Const maxTyp202 = 23
+
+    ''' <summary>
+    ''' Froster
+    ''' </summary>
+    Public Const maxTyp210 = 1
+
+    ''' <summary>
+    ''' Gare
+    ''' </summary>
+    Public Const maxTyp220 = 3
+
+    ''' <summary>
+    ''' Parameter Produktion
+    ''' </summary>
+    Public Const maxTyp300 = 14
     Public Const T300_LinienGruppe = 5
     Public Const T300_RzNr = 6
     Public Const T300_RezeptNummer = 7
     Public Const T300_RezeptName = 8
 
+    ''' <summary>
+    'Nährwerte
     Public Const maxTyp301 = 211
     Public Const minTyp301Allergen = 141
     Public Const maxTyp301Allergen = 189

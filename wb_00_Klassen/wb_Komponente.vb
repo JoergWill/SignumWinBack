@@ -28,6 +28,11 @@ Public Class wb_Komponente
     Private KO_DeklBezeichnungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
 
     Public NwtUpdate As New wb_Hinweise(Hinweise.NaehrwertUpdate)
+    Public ktTyp200 As New wb_KomponParam200
+    Public ktTyp201 As New wb_KomponParam201
+    Public ktTyp202 As New wb_KomponParam202
+    Public ktTyp210 As New wb_KomponParam210
+    Public ktTyp220 As New wb_KomponParam220
     Public ktTyp300 As New wb_KomponParam300
     Public ktTyp301 As New wb_KomponParam301
 
