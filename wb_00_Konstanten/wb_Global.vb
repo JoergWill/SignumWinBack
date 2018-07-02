@@ -215,6 +215,16 @@
         UnDefined
     End Enum
 
+    ''' <summary>
+    ''' Markierung der Artikel/Komponentendaten (KA_Artikel_Typ)
+    '''     -   Nährwertinfo fehlerhaft/nicht vollständig
+    '''     -   Nährwertinfo muss neu berechnet werden (Update Nährwerte Cloud)
+    ''' </summary>
+    Enum ArtikelMarker
+        nwtOK = 0
+        nwtFehlerhaft = 1
+        nwtUpdate = 2
+    End Enum
 
     ''' <summary>
     ''' Produkt-Information
@@ -252,7 +262,8 @@
     Public Const T300_RezeptName = 8
 
     ''' <summary>
-    'Nährwerte
+    ''' Nährwerte
+    ''' </summary>
     Public Const maxTyp301 = 211
     Public Const minTyp301Allergen = 141
     Public Const maxTyp301Allergen = 189

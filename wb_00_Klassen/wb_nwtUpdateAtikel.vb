@@ -8,10 +8,23 @@
 Public Class wb_nwtUpdateAtikel
 
     Public ListeRezeptNr As New List(Of Integer)
-    Public ListeArtikelNr As New List(Of Integer)
 
     Public kt301 As wb_KomponParam301                   'Public für Unit-Test
     Public ztListe As String                            'Public für Unit-Test
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Public Function getRezepteZumRohstoff(KoNr As Integer) As Integer
         'Datenbank-Verbindung öffnen - MySQL
@@ -34,9 +47,12 @@ Public Class wb_nwtUpdateAtikel
 
     'TODO als Funktion schreiben und Nährwertinfo unt ZTListe in Struktur zurückgeben !!
     Public Sub reCalcRezeptListe()
+        'Liste aller Artikel mit Verweis auf diese Artikelnummer
+        Dim ListeArtikelNr As New List(Of Integer)
+
         For Each RzNr In ListeRezeptNr
-            reCalcRezept(RzNr)
-            'alle Artikel mit Verweis auf dieses Rezept erhalten dise gerade berechneten Nährwerte und Zutatenliste
+            ListeArtikelNr = reCalcRezept(RzNr)
+            'alle Artikel mit Verweis auf dieses Rezept erhalten diese gerade berechneten Nährwerte und Zutatenliste
             If ListeArtikelNr.Count > 0 Then
                 For Each ArtNr In ListeArtikelNr
                     ReCalcArtikel(ArtNr)
@@ -46,7 +62,7 @@ Public Class wb_nwtUpdateAtikel
     End Sub
 
     'TODO als Funktion schreiben und Nährwertinfo unt ZTListe in Struktur zurückgeben !!
-    Public Sub reCalcRezept(RzNr As Integer)
+    Public Function reCalcRezept(RzNr As Integer) As IList
         'Rezept mit allen Rezeptschritten lesen
         Dim Rzpt As New wb_Rezept(RzNr, Nothing)
 
@@ -57,13 +73,11 @@ Public Class wb_nwtUpdateAtikel
         ztListe = Rzpt.ZutatenListe(wb_Global.ZutatenListeMode.Show_ENummer)
         Debug.Print("Zutatenliste " & ztListe)
 
-        'Liste aller Artikel/Komponenten mit Verweis auf dieses Rezept
-        ListeArtikelNr.Clear()
-        'TODO Liste aller Artikel in Klasse Rezept schreiben
-        ListeArtikelNr = Rzpt.ListeArtikelVerwendung()
-    End Sub
+        'Liste aller Artikel, die dieses Rezept verwenden
+        Return Rzpt.ArtikelVerwendung()
+    End Function
 
     Public Sub ReCalcArtikel(KoNr As Integer)
-
+        Debug.Print("ReCalc Artikel " & KoNr)
     End Sub
 End Class

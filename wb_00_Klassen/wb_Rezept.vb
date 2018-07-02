@@ -461,6 +461,27 @@ Public Class wb_Rezept
     End Function
 
     ''' <summary>
+    ''' Gibt eine Liste von Artikelnummern zurück, die mit dieser Rezeptur verknüpft sind
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function ArtikelVerwendung() As IList
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim ArtikelListe As New List(Of Integer)
+
+        'Datensätze aus Tabelle Komponenten lesen
+        If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptVerwendung, RezeptNr)) Then
+            While winback.Read
+                ArtikelListe.Add(winback.iField("KO_Nr"))
+            End While
+        End If
+
+        'Verbindung wieder schliessen
+        winback.Close()
+        Return ArtikelListe
+    End Function
+
+    ''' <summary>
     ''' Rezeptkopf-Datensatz neu anlegen
     ''' Es wird nur die Rezept-Nummer (intern) angelegt.
     ''' Die Komponenten-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit

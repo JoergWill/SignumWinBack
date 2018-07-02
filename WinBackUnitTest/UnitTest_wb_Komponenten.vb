@@ -111,6 +111,7 @@ Imports WinBack.wb_Sql_Selects
 
             'Rohstoff-Daten
             Dim nwtDaten As New wb_Komponente
+            nwtDaten.MySQLdbRead(211)
 
             Dim sql As String = setParams(sqlTestktTyp3, "211")
             'Datenbank-Verbindung öffnen - MySQL
@@ -128,16 +129,72 @@ Imports WinBack.wb_Sql_Selects
 
                     'RohstoffParameter schreiben
                     nwtDaten.UpdateDB()
+                End If
+            End If
+        End If
+    End Sub
 
+    <TestMethod()> Public Sub Test_OrgaBackNaehrwerte()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
 
+            'Rohstoff-Daten
+            Dim nwtDaten As New wb_Komponente
+            nwtDaten.MySQLdbRead(3305)
 
+            Dim sql As String = setParams(sqlTestktTyp3, "3305")
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
 
+            'ersten Datensatz aus Tabelle RohParams lesen
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    'den ersten und alle weiteren Daensätze aus der sql-Abfrage lesen
+                    Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
 
+                    'Update der Parameter in OrgaBack
+                    nwtDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
 
                 End If
             End If
         End If
     End Sub
+
+    <TestMethod()> Public Sub Test_Update_Artikel_RezeptschritteMitKomponente()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
+
+            'Rohstoff-Daten
+            Dim nwtDaten As New wb_Komponente
+
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+            'alle Artikel mit Rezeptschritt der Komponente 600 (Weizenmehl) enthält auf Update setzen
+            Dim sql As String = setParams(sqlKompSetMarker, 600, wb_Global.ArtikelMarker.nwtUpdate)
+            'Update Komponente in winback.Komponenten
+            winback.sqlCommand(sql)
+
+            'Datensatz lesen (3518 - Mehrkornbrötchen
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTestktTypX, 3518)
+
+            'ersten Datensatz aus Tabelle Komponenten(3518) lesen
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    Assert.AreEqual(2, winback.iField("KA_Artikel_Typ"))
+                End If
+            End If
+
+            'alle Artikel mit Rezeptschritt der Komponente 600 (Weizenmehl) wieder auf OK setzen
+            sql = setParams(sqlKompSetMarker, 600, wb_Global.ArtikelMarker.nwtUpdate)
+            'Update Komponente in winback.Komponenten
+            winback.sqlCommand(sql)
+
+        End If
+
+    End Sub
+
+
+
 
     <TestMethod()> Public Sub Test_Schreiben_ArtikelLinienGruppe()
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist

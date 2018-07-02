@@ -18,13 +18,19 @@
     'Sql-Statement Artikel
     Public Const mssqlArtikel = "SELECT ArtikelNr,Kurztext,Sortiment FROM [dbo].[Artikel] WHERE Artikelgruppe = [0] ORDER BY ArtikelNr"
 
+    'Sql-Statement Delete ArtikelNaehrwerte
+    Public Const mssqlDeleteNwt = "DELETE FROM [dbo].[ArtikelNaehrwerte] WHERE [ArtikelNr] = '[0]' AND [Einheit] = [1] AND [StuecklistenVariantenNr] = 0 AND [NaehrwertNr] = [2]"
+    'Sql-Statement Insert ArtikelNaehrwerte
+    Public Const mssqlUpdateNwt = "INSERT INTO [dbo].[ArtikelNaehrwerte] (ArtikelNr, Einheit, Farbe, Groesse, StuecklistenVariantenNr, NaehrwertNr, Menge) " &
+                                  "VALUES ([0], [1], 0, 'NULL', 0, [2], [3])"
+
     'Sql-Statement Filiale zugeordnet zu Produktion (Typ=4)
     Public Const mssqlFiliale = "Select Filialnummer, Name1 FROM Filialen WHERE [Typ] = [0]"
     'Sql-Statament Sortiment zugeordnet zu Filiale mit Typ Produktion
     Public Const mssqlSortiment = "Select * FROM FilialeHatSortiment INNER JOIN Filialen On FilialeHatSortiment.Filialnr =  Filialen.Filialnummer " &
                                   "WHERE [Typ] = [0] ORDER BY SortimentsKürzel"
     'Sql-Statement Abfrage dbo.ArtikelMultifunktionsfeld.Bezeichnung (Backorte)
-    Public Const mssqlBackorte = "SELECT * FROM ArtikelMultifunktionsfeld WHERE [GruppenNr] = '[0]'"
+    Public Const mssqlBackorte = "Select * FROM ArtikelMultifunktionsfeld WHERE [GruppenNr] = '[0]'"
 
     'Sql-Statement Abfrage dbo.Settings.Category
     Public Const mssqlSettings = "Select * FROM Settings WHERE [Category] = '[0]'"

@@ -67,8 +67,11 @@ Public Class wb_nwtUpdate
                 If CloudChangeDate > WinBackChangeDate Then
                     'Änderungen der Nährwerte in Komponente(Rohstoff) sichern
                     nwtDaten.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
-                    'TODO Hier Änderungen der Komponenten-Parameter in OrgaBack-DB schreiben
-                    'nwtdaten.MsSQLdbUpdate_Parameter(301) 
+                    'Alle Artikel, welche diese Komponente in Rezepturen verwenden markieren
+                    'die Nährwerte müssen neu berechnet werden. Farbige Markierung in der Artikel-Liste
+                    nwtDaten.MySQLdbSetMarker(wb_Global.ArtikelMarker.nwtUpdate)
+                    'TODO Hier Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
+                    nwtDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
                     'Protokoll der Änderungen speichern in Hinweise
                     nwtDaten.SaveReport()
                     'Protokoll der Änderungen ausgeben

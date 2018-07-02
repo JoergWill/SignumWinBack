@@ -78,6 +78,8 @@
     Public Const sqlKompInRezept = "SELECT COUNT(*) AS Used FROM RezeptSchritte WHERE RS_Ko_nr = [0]"
     'Sql-Statement Verwendung Komponente in Arbeits-Rezeptschritten
     Public Const sqlKompInArbRzp = "SELECT COUNT(*) AS Used FROM BAK_ArbRZSchritte WHERE B_ARS_TW_Nr = 0 AND B_ARS_Ko_nr = [0]"
+    'Sql-Statement Update alle Komponenten mit Rezept-Verknüpfung-Rezeptschritte enthalten Komponente mit Nummer 
+    Public Const sqlKompSetMarker = "UPDATE Komponenten INNER JOIN Rezeptschritte ON KA_RZ_Nr=RS_RZ_Nr SET KA_Artikel_Typ = [1] WHERE RS_Ko_Nr = [0]"
 
     'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)
     Public Const sqlTestktTypX = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "

@@ -209,6 +209,12 @@ Public Class wb_Komponente
         End Get
     End Property
 
+    Public ReadOnly Property Einheit As Integer
+        Get
+            Return wb_Einheiten_Global.getEinheitFromKompType(Type)
+        End Get
+    End Property
+
     Public Property TimeStamp As Date
     Public Property BestellNummer As String
     Public Property ZutatenListe As String
@@ -543,6 +549,22 @@ Public Class wb_Komponente
         'Löschen erlaubt, wenn die Anzahl der Datensätze gleich Null ist
         Return (Count <> 0)
     End Function
+
+    ''' <summary>
+    ''' Markiert alle Rohstoffe(Komponenten), die mit Rezepturen verknüpft sind, welche die Komponente
+    ''' enthalten. (Update Nährwert-Info notwendig oder Nährwertinfo fehlerhaft)
+    ''' </summary>
+    ''' <param name="Marker"></param>
+    Public Sub MySQLdbSetMarker(Marker As wb_Global.ArtikelMarker)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Interne Komponenten-Nummer muss definiert sein
+        If KO_Nr > 0 Then
+            'Update Komponente in winback.Komponenten
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarker, KO_Nr, Marker))
+        End If
+        winback.Close()
+    End Sub
 
     ''' <summary>
     ''' Löscht alle Einträge zur aktuellen Komponenten-Nummer aus der WinBack-Datenbank
@@ -928,6 +950,25 @@ Public Class wb_Komponente
 
     End Function
 
+    ''' <summary>
+    ''' Schreibt alle Parameter zur Komponente in die OrgaBack_Datenbank(Zugriff über KO_Nr_AlNum!)
+    '''     -kt301  dbo.ArtikelNaehrwerte
+    ''' </summary>
+    ''' <param name="ktTyp"></param>
+    ''' <returns></returns>
+    Public Function MsSQLdbUpdate_Parameter(Optional ktTyp As wb_Global.ktParam = wb_Global.ktParam.ktAlle) As Boolean
+        'Datenbank-Verbindung öffnen - MsSQL
+        Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Result vorbelegen
+        MsSQLdbUpdate_Parameter = True
+
+        'Update Parameter-301 (Nährwerte)
+        If ktTyp = wb_Global.ktParam.kt301 Or ktTyp = wb_Global.ktParam.ktAlle Then
+            If Not ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain) Then
+                MsSQLdbUpdate_Parameter = False
+            End If
+        End If
+    End Function
 
     Public Sub print()
         Debug.Print("Nummer      " & KO_Nr_AlNum)

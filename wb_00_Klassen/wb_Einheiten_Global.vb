@@ -56,4 +56,14 @@
             Return wb_Global.obEinheitKilogramm
         End If
     End Function
+
+    Shared Function getEinheitFromKompType(KompType As wb_Global.KomponTypen) As Integer
+        'TODO Einheiten aus Tabelle KomponParams lesen und zu WinBack.Komponenten-Type einheit zurückmelden
+        'ACHTUNG Kneter-Komponenten !
+        If KompType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
+            Return 11
+        Else
+            Return 1
+        End If
+    End Function
 End Class

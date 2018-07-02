@@ -215,6 +215,43 @@ Public Class wb_KomponParam301
         Next
     End Function
 
+    ''' <summary>
+    ''' Update aller geänderten Komponenten-Parameter in Tabelle [dbo].[ArtikelNaehrwerte]
+    '''     [ArtikelNr]
+    '''     [Einheit]
+    '''     [Farbe]                         immer 0
+    '''     [Groesse]                       immer NULL
+    '''     [StuecklistenVariantenNr]
+    '''     [NaehrwertNr]
+    '''     [Menge]
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function MsSQLdbUpdate(KoAlNum As String, Unit As Integer, orgaback As wb_Sql) As Boolean
+        'Update-Statement wird dynamisch erzeugt    
+        Dim sql As String
+        'Result OK
+        MsSQLdbUpdate = True
+
+        'alle Datensätze im Array durchlaufen
+        For i = 0 To maxTyp301
+            If IsValidParameter(i) Then
+                Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+
+                'Update-Statement wird dynamisch erzeugt
+                'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
+
+                'zunächst wird ein evtl. vorhandener Eintrag zur Komponente in der Tabelle ArtikelNaehrwerte gelöscht
+                sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteNwt, KoAlNum, Unit, i))
+                orgaback.sqlCommand(sql)
+                'dann alle neuen Felder wieder eingesetzt
+                sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlUpdateNwt, KoAlNum, Unit, i, Wert(i)))
+                If Not orgaback.sqlCommand(sql) Then
+                    MsSQLdbUpdate = False
+                End If
+            End If
+        Next
+    End Function
+
 
 
 End Class
