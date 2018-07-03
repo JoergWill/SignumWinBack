@@ -62,6 +62,100 @@ Public Class wb_KomponParam301
         End Set
     End Property
 
+    ''' <summary>
+    ''' Kommagetrennte Liste aller Allergene (Volltext) die enthalten sind
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property AllergenListe_C As String
+        Get
+            AllergenListe_C = ""
+            'Druchläuft alle Indizes
+            For i = 1 To maxTyp301
+                'Ist ein Allergen
+                If IsAllergen(i) Then
+                    'Ist enthalten
+                    If Allergen(i) = AllergenInfo.C Then
+                        'Liste nach Kommata getrennt
+                        If AllergenListe_C <> "" Then
+                            AllergenListe_C &= ","
+                        End If
+                        'Allergenbezeichnung hinzufügen
+                        AllergenListe_C &= wb_KomponParam301_Global.kt301Param(i).Bezeichnung
+                    End If
+                End If
+            Next
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Kommagetrennte Liste aller Allergene (Volltext) die in Spuren vorkommen
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property AllergenListe_T As String
+        Get
+            AllergenListe_T = ""
+            'Druchläuft alle Indizes
+            For i = 1 To maxTyp301
+                'Ist ein Allergen
+                If IsAllergen(i) Then
+                    'Ist enthalten
+                    If Allergen(i) = AllergenInfo.T Then
+                        'Liste nach Kommata getrennt
+                        If AllergenListe_T <> "" Then
+                            AllergenListe_T &= ","
+                        Else
+                            AllergenListe_T = "Spuren von "
+                        End If
+                        'Allergenbezeichnung hinzufügen
+                        AllergenListe_T &= wb_KomponParam301_Global.kt301Param(i).KurzBezeichnung
+                    End If
+                End If
+            Next
+        End Get
+    End Property
+
+    Public ReadOnly Property AllergenKurzListe_C As String
+        Get
+            AllergenKurzListe_C = ""
+            'Druchläuft alle Indizes
+            For i = 1 To maxTyp301
+                'Ist ein Allergen
+                If IsAllergen(i) Then
+                    'Ist enthalten
+                    If Allergen(i) = AllergenInfo.C Then
+                        'Liste nach Kommata getrennt
+                        If AllergenKurzListe_C <> "" Then
+                            AllergenKurzListe_C &= ","
+                        End If
+                        'Allergenbezeichnung hinzufügen
+                        AllergenKurzListe_C &= i.ToString
+                    End If
+                End If
+            Next
+        End Get
+    End Property
+
+    Public ReadOnly Property AllergenKurzListe_T As String
+        Get
+            AllergenKurzListe_T = ""
+            'Druchläuft alle Indizes
+            For i = 1 To maxTyp301
+                'Ist ein Allergen
+                If IsAllergen(i) Then
+                    'Ist enthalten
+                    If Allergen(i) = AllergenInfo.T Then
+                        'Liste nach Kommata getrennt
+                        If AllergenKurzListe_T <> "" Then
+                            AllergenKurzListe_T &= ","
+                        End If
+                        'Allergenbezeichnung hinzufügen
+                        AllergenKurzListe_T &= i.ToString
+                    End If
+                End If
+            Next
+        End Get
+    End Property
+
     Public Property Naehrwert(index As Integer) As Double
         Get
             If Not IsAllergen(index) Then
@@ -95,6 +189,22 @@ Public Class wb_KomponParam301
                 NaehrwertInfo(index)._Naehrwert = ChangeLogAdd(LogType.Nrw, index, NaehrwertInfo(index)._Naehrwert, StrToDouble(value))
             End If
         End Set
+    End Property
+
+    Public ReadOnly Property oWert(Index) As String
+        Get
+            If IsAllergen(Index) Then
+                oWert = wb_Functions.AllergenToString(NaehrwertInfo(Index)._Allergen)
+                'OrgaBack kann den Wert ERR nicht verarbeiten
+                If oWert = "ERR" Then
+                    oWert = "N"
+                End If
+                Return oWert
+            Else
+                Return wb_sql_Functions.MsDoubleToString(NaehrwertInfo(Index)._Naehrwert)
+            End If
+
+        End Get
     End Property
 
     Public Property FehlerKompName(index As Integer) As String
@@ -205,18 +315,24 @@ Public Class wb_KomponParam301
         For i = 0 To maxTyp301
             If IsValidParameter(i) Then
                 'Update-Statement wird dynamisch erzeugt
-                'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
-                sql = KoNr & ", 301, " & i.ToString & ", '" & Wert(i) & "', '" & kt301Param(i).Bezeichnung & "'"
-                'Update ausführen
-                If Not winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, sql)) Then
-                    MySQLdbUpdate = False
+                If IsAllergen(i) Then
+                    'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
+                    sql = KoNr & ", 301, " & i.ToString & ", '" & wb_Functions.AllergenToString(Allergen(i)) & "', '" & kt301Param(i).Bezeichnung & "'"
+                Else
+                    'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
+                    sql = KoNr & ", 301, " & i.ToString & ", '" & Wert(i) & "', '" & kt301Param(i).Bezeichnung & "'"
                 End If
+
+                'Update ausführen
+                MySQLdbUpdate = winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, sql))
             End If
         Next
     End Function
 
     ''' <summary>
-    ''' Update aller geänderten Komponenten-Parameter in Tabelle [dbo].[ArtikelNaehrwerte]
+    ''' Update aller geänderten Komponenten-Parameter in Tabelle 
+    ''' 
+    ''' [dbo].[ArtikelNaehrwerte]
     '''     [ArtikelNr]
     '''     [Einheit]
     '''     [Farbe]                         immer 0
@@ -224,6 +340,12 @@ Public Class wb_KomponParam301
     '''     [StuecklistenVariantenNr]
     '''     [NaehrwertNr]
     '''     [Menge]
+    '''     
+    ''' [dbo].[ArtikelAllergene
+    '''     [ArtikelNr]
+    '''     [StuecklistenVariantenNr]
+    '''     [AllergenNr]
+    '''     [Kennzeichnung]
     ''' </summary>
     ''' <returns></returns>
     Public Function MsSQLdbUpdate(KoAlNum As String, Unit As Integer, orgaback As wb_Sql) As Boolean
@@ -232,20 +354,31 @@ Public Class wb_KomponParam301
         'Result OK
         MsSQLdbUpdate = True
 
-        'alle Datensätze im Array durchlaufen
-        For i = 0 To maxTyp301
+        'zunächst werden alle vorhandenen Einträge zur Komponente in der Tabelle ArtikelNaehrwerte und ArtikelAllergene gelöscht
+        'TODO Was ist mit den Varianten für Allergene und Nährwerte
+        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteNwt, KoAlNum, Unit, 0))
+        orgaback.sqlCommand(sql)
+        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteAlg, KoAlNum, 0))
+        orgaback.sqlCommand(sql)
+
+        'dann alle neuen Felder wieder eingesetzt
+        'alle Datensätze im Array durchlaufen (Nährwerte/Allergene beginnen bei Index 1)
+        For i = 1 To maxTyp301
             If IsValidParameter(i) Then
-                Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+
+                'Allergene haben in OrgaBack einen eigene Tabelle
+                If IsAllergen(i) Then
+                    'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
+                    sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqInsertAlg, KoAlNum, i, oWert(i), 0))
+                    Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                Else
+                    'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
+                    sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqInsertNwt, KoAlNum, i, oWert(i), Unit, 0))
+                    Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                End If
 
                 'Update-Statement wird dynamisch erzeugt
-                'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
-
-                'zunächst wird ein evtl. vorhandener Eintrag zur Komponente in der Tabelle ArtikelNaehrwerte gelöscht
-                sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteNwt, KoAlNum, Unit, i))
-                orgaback.sqlCommand(sql)
-                'dann alle neuen Felder wieder eingesetzt
-                sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlUpdateNwt, KoAlNum, Unit, i, Wert(i)))
-                If Not orgaback.sqlCommand(sql) Then
+                If orgaback.sqlCommand(sql) < 0 Then
                     MsSQLdbUpdate = False
                 End If
             End If

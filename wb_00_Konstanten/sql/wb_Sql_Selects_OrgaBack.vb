@@ -18,11 +18,29 @@
     'Sql-Statement Artikel
     Public Const mssqlArtikel = "SELECT ArtikelNr,Kurztext,Sortiment FROM [dbo].[Artikel] WHERE Artikelgruppe = [0] ORDER BY ArtikelNr"
 
+    'Sql-Statement Abfrage dbo.WorkStations.Computername
+    Public Const mssqlSelArtikel = "SELECT * FROM [dbo].[Artikel] WHERE ArtikelNr = '[0]'"
     'Sql-Statement Delete ArtikelNaehrwerte
-    Public Const mssqlDeleteNwt = "DELETE FROM [dbo].[ArtikelNaehrwerte] WHERE [ArtikelNr] = '[0]' AND [Einheit] = [1] AND [StuecklistenVariantenNr] = 0 AND [NaehrwertNr] = [2]"
+    Public Const mssqlDeleteNwt = "DELETE FROM [dbo].[ArtikelNaehrwerte] WHERE [ArtikelNr] = '[0]' AND [Einheit] = [1] AND [StuecklistenVariantenNr] = [2]"
+    'Sql-Statement Delete ArtikelNaehrwerte
+    Public Const mssqlDeleteAlg = "DELETE FROM [dbo].[ArtikelAllergene] WHERE [ArtikelNr] = '[0]' AND [StuecklistenVariantenNr] = [1]"
     'Sql-Statement Insert ArtikelNaehrwerte
-    Public Const mssqlUpdateNwt = "INSERT INTO [dbo].[ArtikelNaehrwerte] (ArtikelNr, Einheit, Farbe, Groesse, StuecklistenVariantenNr, NaehrwertNr, Menge) " &
-                                  "VALUES ([0], [1], 0, 'NULL', 0, [2], [3])"
+    Public Const mssqInsertNwt = "INSERT INTO [dbo].[ArtikelNaehrwerte] (ArtikelNr, Einheit, Farbe, Groesse, StuecklistenVariantenNr, NaehrwertNr, Menge) " &
+                                  "VALUES ('[0]', [3], 0, 'NULL', [4], [1], [2])"
+    'Sql-Statement Insert ArtikelAllergene
+    Public Const mssqInsertAlg = "INSERT INTO [dbo].[ArtikelAllergene] (ArtikelNr, StuecklistenVariantenNr, AllergenNr, Kennzeichnung) " &
+                                  "VALUES ('[0]', [3], [1], '[2]')"
+
+    'Sql-Statement Zutatenliste und Deklarationstexte
+    Public Const sqlReadDeklaration = "SELECT * FROM [dbo].[ArtikelDeklarationsTexte] WHERE ArtikelNr = '[0]' AND StuecklistenVariantenNr = [1] " &
+                                      "AND [LaenderCode] = 'D' AND [SprachenCode] = 'D'"
+    'Sql-Statement Update Zutatenliste und Deklarationstexte
+    Public Const sqlUpdateDeklaration = "UPDATE [dbo].[ArtikelDeklarationsTexte] SET [0] WHERE ArtikelNr = '[1]' AND StuecklistenVariantenNr = [2] " &
+                                      "AND [LaenderCode] = 'D' AND [SprachenCode] = 'D'"
+    'Sql-Statement Insert Zutatenliste und Deklarationstexte
+    Public Const sqlInsertDeklaration = "INSERT INTO [dbo].[ArtikelDeklarationsTexte] (ArtikelNr, StuecklistenVariantenNr, LaenderCode, SprachenCode, " &
+                                        "Zutaten, AllergenDeklarationEnthalten, AllergenDeklarationSpuren, AllergenKurzDeklarationEnthalten, " &
+                                        "AllergenKurzDeklarationSpuren) VALUES ('[1]', [2], 'D', 'D', [0])"
 
     'Sql-Statement Filiale zugeordnet zu Produktion (Typ=4)
     Public Const mssqlFiliale = "Select Filialnummer, Name1 FROM Filialen WHERE [Typ] = [0]"

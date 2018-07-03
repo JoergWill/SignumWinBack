@@ -20,6 +20,7 @@ Public Class Main
     Const cntCheckMysql = 90
     Const cntCheckCloud = 5
     Const cntCheckAktionsTimer = 60
+    Const bUpdateOrgaBack = True
 
     Enum ServerTaskErrors
         OK
@@ -150,7 +151,7 @@ Public Class Main
         If MainTimer_Check("office_nwt") Then
             'Datensatz wurde aus der Cloud aktualisiert
             Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-            If nwtUpdate.UpdateNext(AktKONr) Then
+            If nwtUpdate.UpdateNext(AktKONr, bUpdateOrgaBack) Then
                 'Info-Text ausgeben
                 ScrollTextBox(tbCloud, nwtUpdate.InfoText & vbNewLine)
             End If

@@ -928,6 +928,11 @@ Public Class wb_Komponente
         End If
     End Function
 
+    ''' <summary>
+    ''' Schreibt die  WinBack-Komponenten-Parameter in die WinBack-Datenbank. 
+    ''' </summary>
+    ''' <param name="ktTyp"></param>
+    ''' <returns></returns>
     Public Function MySQLdbUpdate_Parameter(Optional ktTyp As wb_Global.ktParam = wb_Global.ktParam.ktAlle) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
@@ -951,23 +956,134 @@ Public Class wb_Komponente
     End Function
 
     ''' <summary>
-    ''' Schreibt alle Parameter zur Komponente in die OrgaBack_Datenbank(Zugriff über KO_Nr_AlNum!)
+    ''' Schreibt alle Parameter zur Komponente in die OrgaBack-Datenbank(Zugriff über KO_Nr_AlNum!)
     '''     -kt301  dbo.ArtikelNaehrwerte
+    '''     
+    ''' Vor Beginn der INSERT/UPDATES wird geprüft ob der Artikel in OrgaBack existiert.
+    ''' Wenn nicht wird abgebrochen und False zurückgegeben.
+    ''' 
     ''' </summary>
     ''' <param name="ktTyp"></param>
     ''' <returns></returns>
     Public Function MsSQLdbUpdate_Parameter(Optional ktTyp As wb_Global.ktParam = wb_Global.ktParam.ktAlle) As Boolean
         'Datenbank-Verbindung öffnen - MsSQL
         Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-        'Result vorbelegen
-        MsSQLdbUpdate_Parameter = True
 
-        'Update Parameter-301 (Nährwerte)
-        If ktTyp = wb_Global.ktParam.kt301 Or ktTyp = wb_Global.ktParam.ktAlle Then
-            If Not ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain) Then
-                MsSQLdbUpdate_Parameter = False
+        'Prüfen ob der Artikel in OrgaBack existiert
+        OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSelArtikel, KO_Nr_AlNum))
+        If Not OrgasoftMain.Read Then
+            'Artikel nicht gefunden in OrgaSoft
+            OrgasoftMain.CloseRead()
+            Return False
+        Else
+            'Lesen beendet
+            OrgasoftMain.CloseRead()
+
+            'Update Parameter-301 (Nährwerte)
+            If ktTyp = wb_Global.ktParam.kt301 Or ktTyp = wb_Global.ktParam.ktAlle Then
+                ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
             End If
         End If
+
+        'Verbindung zur Datenbank wieder schliessen
+        OrgasoftMain.Close()
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Schreibt die Deklarationstexte in die OrgaBack-Datenbank(Zugriff über KO_Nr_AlNum!)
+    ''' Die Daten werden nur geschrieben, wenn sie nicht fixiert sind. Vor dem Schreiben erfolgt immer
+    ''' ein Lesezugriff.
+    '''
+    ''' [dbo].[ArtikelDeklarationsTexte]
+    '''   ->[ArtikelNr]
+    '''   ->[StuecklistenVariantenNr]
+    '''   D [LaenderCode]
+    '''   D [SprachenCode]
+    '''   ->[AllergenDeklarationEnthalten]
+    '''   ->[AllergenDeklarationSpuren]
+    '''   ->[AllergenKurzDeklarationEnthalten]
+    '''   ->[AllergenKurzDeklarationSpuren]
+    '''   [ZusatzstoffDeklaration]
+    '''   [ZusatzstoffKurzDeklaration]
+    '''   [ZusatzstoffDeklarationUVP]
+    '''   [ZusatzstoffDeklarationErgaenzung]
+    '''   [ZusatzstoffDeklarationENummern]
+    '''   [DeklarationsText]
+    '''   ->[Zutaten]
+    '''   ->[AllergenDeklarationFix]
+    '''   [ZusatzstoffDeklarationFix]
+    '''   ->[ZutatenDeklarationFix]
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function MsSqldbUpdate_Zutatenliste() As Boolean
+        'Default Rückgabewert
+        MsSqldbUpdate_Zutatenliste = False
+        'Update-Statement wird dynamisch erzeugt    
+        Dim sql As String
+        'Zutaten- und Allergenlisten
+        Dim ZutatenListe As String = ""
+        Dim AllergenListeEnthalten As String = ""
+        Dim AllergenListeSpuren As String = ""
+        Dim AllergenKurzListeEnthalten As String = ""
+        Dim AllergenKurzListeSpuren As String = ""
+
+        'Datenbank-Verbindung öffnen - MsSQL
+        Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+
+        'Daten aus dbo.ArtikelDeklarationstexte lesen (Artikelnummer/Variante 0)
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlReadDeklaration, KO_Nr_AlNum, 0)
+        'Daten lesen
+        OrgasoftMain.sqlSelect(sql)
+        Dim DatenSatzVorhanden As Boolean = OrgasoftMain.Read
+
+        'wenn schon ein Datensatz vorhanden ist, Flags einlesen (Fixiert)
+        If DatenSatzVorhanden Then
+            'Flags Zutaten-/Allergenliste ist fixiert
+            Dim ZutatenListeFixiert As Boolean = OrgasoftMain.iField("ZutatenDeklarationFix") > 0
+            Dim AllergenListeFixiert As Boolean = OrgasoftMain.iField("AllergenDeklarationFix") > 0
+            'Datenfelder lesen
+            ZutatenListe = OrgasoftMain.sField("Zutaten")
+            AllergenListeEnthalten = OrgasoftMain.sField("AllergenDeklarationEnthalten")
+            AllergenListeSpuren = OrgasoftMain.sField("AllergenDeklarationSpuren")
+            AllergenKurzListeEnthalten = OrgasoftMain.sField("AllergenKurzDeklarationEnthalten")
+            AllergenKurzListeSpuren = OrgasoftMain.sField("AllergenKurzDeklarationSpuren")
+            'Verbindung Lesen schliessen
+            OrgasoftMain.CloseRead()
+
+            'Zutatenliste aktualisieren
+            If Not ZutatenListeFixiert Then
+                ZutatenListe = Deklaration
+            End If
+
+            'Liste der Allergen aktualisieren
+            If Not AllergenListeFixiert Then
+                AllergenListeEnthalten = ktTyp301.AllergenListe_C
+                AllergenListeSpuren = ktTyp301.AllergenListe_T
+                AllergenKurzListeEnthalten = ktTyp301.AllergenKurzListe_C
+                AllergenKurzListeSpuren = ktTyp301.AllergenKurzListe_T
+            End If
+
+            'Update Datenbank - Update-Statement
+            sql = "[Zutaten] = '" & ZutatenListe & "', " &
+                  "[AllergenDeklarationEnthalten] = '" & AllergenListeEnthalten & "', " &
+                  "[AllergenDeklarationSpuren] = '" & AllergenListeSpuren & "', " &
+                  "[AllergenKurzDeklarationEnthalten] = '" & AllergenKurzListeEnthalten & "', " &
+                  "[AllergenKurzDeklarationSpuren] = '" & AllergenKurzListeSpuren & "'"
+            'Update durchführen
+            MsSqldbUpdate_Zutatenliste = OrgasoftMain.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateDeklaration, sql, KO_Nr_AlNum, 0))
+        Else
+            'Verbindung Lesen schliessen
+            OrgasoftMain.CloseRead()
+            'noch kein Datensatz vorhanden
+            sql = "'" & Deklaration & "', '" & ktTyp301.AllergenListe_C & "', '" & ktTyp301.AllergenListe_T & "', " &
+                  "'" & ktTyp301.AllergenKurzListe_C & "', '" & ktTyp301.AllergenKurzListe_T & "'"
+            'Insert durchführen
+            MsSqldbUpdate_Zutatenliste = OrgasoftMain.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertDeklaration, sql, KO_Nr_AlNum, 0))
+        End If
+
+        'Verbindung zur Datenbank wieder schliessen
+        OrgasoftMain.Close()
     End Function
 
     Public Sub print()

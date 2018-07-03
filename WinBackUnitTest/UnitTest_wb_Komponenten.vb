@@ -153,7 +153,10 @@ Imports WinBack.wb_Sql_Selects
                     Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
 
                     'Update der Parameter in OrgaBack
+                    'Gibt true zurück, wenn der Artikel in OrgaBack existiert
                     nwtDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+                    'Update der Zutatenliste in OrgaBack
+                    nwtDaten.MsSqldbUpdate_Zutatenliste()
 
                 End If
             End If

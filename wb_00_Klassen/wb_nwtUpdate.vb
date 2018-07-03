@@ -30,7 +30,7 @@ Public Class wb_nwtUpdate
     ''' die Daten werden aktualisiert.
     ''' </summary>
     ''' <returns>True wenn der Datensatz aktualisiert wurde</returns>
-    Public Function UpdateNext(KompNr As Integer) As Boolean
+    Public Function UpdateNext(KompNr As Integer, Optional bUpdateOrgaBack As Boolean = False) As Boolean
         'Aktuelle Komponenten-Nummer setzen
         AktKO_Nr = KompNr
         'Datenbank-Verbindung öffnen - MySQL
@@ -64,14 +64,20 @@ Public Class wb_nwtUpdate
                 Dim CloudChangeDate As Date = GetNaehrwerte(nwtDaten.MatchCode, nwtDaten)
 
                 'wenn die Daten in der Cloud aktueller sind - Änderungen ausgeben
-                If CloudChangeDate > WinBackChangeDate Then
+                If (CloudChangeDate > WinBackChangeDate) Or bUpdateOrgaBack Then
                     'Änderungen der Nährwerte in Komponente(Rohstoff) sichern
                     nwtDaten.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
                     'Alle Artikel, welche diese Komponente in Rezepturen verwenden markieren
                     'die Nährwerte müssen neu berechnet werden. Farbige Markierung in der Artikel-Liste
                     nwtDaten.MySQLdbSetMarker(wb_Global.ArtikelMarker.nwtUpdate)
-                    'TODO Hier Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
-                    nwtDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+
+                    'Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
+                    'Gibt true zurück, wenn der Artikel in OrgaBack existiert
+                    If nwtDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
+                        'Zutaten-und Allergenliste in OrgaBack updaten
+                        nwtDaten.MsSqldbUpdate_Zutatenliste()
+                    End If
+
                     'Protokoll der Änderungen speichern in Hinweise
                     nwtDaten.SaveReport()
                     'Protokoll der Änderungen ausgeben
