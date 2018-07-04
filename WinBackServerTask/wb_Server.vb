@@ -30,8 +30,6 @@ Public Class Main
     End Enum
 
     Dim clients As New Hashtable 'new database (hashtable) to hold the clients
-    Dim nwtUpdateKomponenten As New wb_nwtUpdate
-    Dim nwtUpdateArtikel As New wb_nwtUpdateAtikel
     Dim Export As New ob_ChargenProduziert
     Dim ServerTaskState As ServerTaskErrors = ServerTaskErrors.OK
 
@@ -153,6 +151,8 @@ Public Class Main
         If MainTimer_Check("office_nwt") Then
             'Datensatz wurde aus der Cloud aktualisiert
             Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+            Dim nwtUpdateKomponenten As New wb_nwtUpdate
+
             If nwtUpdateKomponenten.UpdateNext(AktKONr, nwtUpdateKomponentenOrgaBack) Then
                 'Info-Text ausgeben
                 ScrollTextBox(tbCloud, nwtUpdateKomponenten.InfoText & vbNewLine)
@@ -161,12 +161,15 @@ Public Class Main
             AktTimerEvent.Str2 = nwtUpdateKomponenten.AktKO_Nr
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
+            nwtUpdateKomponenten.Dispose()
         End If
 
         'Abfrage Update markierte Artikel (Nährwerte und Zutatenliste)
-        If MainTimer_Check("office_artikel") Then
+        If MainTimer_Check("office_artikel") And False Then
             'Datensatz wurde aktualisiert
             Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+            Dim nwtUpdateArtikel As New wb_nwtUpdateAtikel
+
             If nwtUpdateArtikel.UpdateNext(AktKONr, nwtUpdateArtikelOrgaBack) Then
                 'Info-Text ausgeben
                 ScrollTextBox(tbCloud, nwtUpdateArtikel.InfoText & vbNewLine)
@@ -175,6 +178,7 @@ Public Class Main
             AktTimerEvent.Str2 = nwtUpdateArtikel.AktKO_Nr
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
+            nwtUpdateArtikel.Dispose()
         End If
 
         'Abfrage produzierte Chargen und verbrauchte Rohstoffe
@@ -295,6 +299,7 @@ Public Class Main
         End If
 
         winback.Close()
+        winback = Nothing
     End Sub
 
     ''' <summary>

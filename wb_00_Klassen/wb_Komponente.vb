@@ -922,8 +922,10 @@ Public Class wb_Komponente
         'Debug.Print("Komponente.MysqldbUpdate " & sql)
 
         If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then
+            winback.Close()
             Return True
         Else
+            winback.Close()
             Return False
         End If
     End Function
@@ -953,6 +955,17 @@ Public Class wb_Komponente
             End If
         End If
 
+        'Datenbank-Verbindung wieder schliessen
+        winback.Close()
+    End Function
+
+    ''' <summary>
+    ''' Sichert die Zutatenliste in der Datenbank
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function MySqldbUpdate_Zutatenliste() As Boolean
+        'TODO festlegen ob externe oder interne Deklaration
+        Return KO_DeklBezeichnungExtern.Write()
     End Function
 
     ''' <summary>
@@ -1060,7 +1073,7 @@ Public Class wb_Komponente
 
             'Zutatenliste aktualisieren
             If Not ZutatenListeFixiert Then
-                ZutatenListe = Deklaration
+                ZutatenListe = wb_sql_Functions.removeSonderZeichen(Deklaration)
             End If
 
             'Liste der Allergen aktualisieren

@@ -6,14 +6,12 @@
 ''' Mit der Verwendung der Rezepte in Artikeln werden alle verknüpften Artikel(Komponenten) aktualisiert
 ''' </summary>
 Public Class wb_nwtUpdateAtikel
-
-    Public ListeRezeptNr As New List(Of Integer)
-
-    Public kt301 As wb_KomponParam301                   'Public für Unit-Test
-    Public ztListe As String                            'Public für Unit-Test
+    Implements IDisposable
+    Protected disposed As Boolean = False
 
     Private _InfoText As String = ""
     Private _AktKO_Nr As Integer = 0
+    Private _AktRZ_Nr As Integer = 0
 
     Public ReadOnly Property InfoText As String
         Get
@@ -44,42 +42,79 @@ Public Class wb_nwtUpdateAtikel
         AktKO_Nr = KompNr
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-        'Komponenten-Objekt nimmt die aktuellen Daten auf
-        Dim nwtArtikelDaten As New wb_Komponente
         UpdateNext = False
 
         'nächsten Datensatz aus Tabelle Komponenten lesen
-        If winback.sqlSelect(setParams(sqlUpdateArtikelNWT, AktKO_Nr.ToString)) Then
+        If winback.sqlSelect(setParams(sqlUpdateArtikelNWT, AktKO_Nr.ToString, wb_Global.ArtikelMarker.nwtUpdate)) Then
             'Lesen KO-Nr
             If winback.Read Then
+                'Komponenten-Objekt nimmt die aktuellen Daten auf
+                Dim nwtArtikelDaten As New wb_Komponente
+
                 'nächste KO_Nr aus DB in Object nwtDaten einlesen
                 nwtArtikelDaten.MySQLdbRead(winback.MySqlRead)
                 winback.CloseRead()
-                AktKO_Nr = nwtArtikelDaten.Nr
+                'aktuelle Komponenten-Nummer
+                _AktKO_Nr = nwtArtikelDaten.Nr
 
-                'Stammdaten und Nährwerte aus DB in (Object)nwtDaten einlesen
-                If winback.sqlSelect(setParams(sqlgetNWT, AktKO_Nr.ToString, wb_Global.ArtikelMarker.nwtUpdate)) Then
-                    'Lesen KO-Nr
-                    If winback.Read Then
-                        nwtArtikelDaten.MySQLdbRead(winback.MySqlRead)
-                    End If
-                End If
+                'verknüpfte Rezeptnummer zum Artikel/Rohstoff
+                _AktRZ_Nr = nwtArtikelDaten.RzNr
+                'Rezept mit allen Rezeptschritten lesen
+                Dim Rzpt As New wb_Rezept(_AktRZ_Nr, Nothing)
 
                 'Änderungs-Log löschen
                 nwtArtikelDaten.ClearReport()
 
+                'Nährwert-Information berechnen
+                nwtArtikelDaten.ktTyp301 = Rzpt.RootRezeptSchritt.ktTyp301
+                Debug.Print("reCalcRezept (" & _AktRZ_Nr & ") " & Rzpt.RezeptNummer & " " & Rzpt.RezeptBezeichnung & " kt301(Kilokalorien) " & nwtArtikelDaten.ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien))
+                'Zutatenliste erzeugen
+                nwtArtikelDaten.Deklaration = wb_sql_Functions.removeSonderZeichen(Rzpt.ZutatenListe(wb_Global.ZutatenListeMode.Show_ENummer))
+                Debug.Print("Zutatenliste " & nwtArtikelDaten.Deklaration)
 
+                'Änderungen der Nährwerte in Komponente(Rohstoff) sichern
+                nwtArtikelDaten.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+                'Änderungen der Zutatenliste in Komponente(Rohstoff) sichern
+                nwtArtikelDaten.MySqldbUpdate_Zutatenliste()
 
+                'Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
+                'Gibt true zurück, wenn der Artikel in OrgaBack existiert
+                If nwtArtikelDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
+                    'Zutaten-und Allergenliste in OrgaBack updaten
+                    nwtArtikelDaten.MsSqldbUpdate_Zutatenliste()
+                End If
 
-                ''Änderungen der Nährwerte in Komponente(Rohstoff) sichern
-                'nwtArtikelDaten.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+                'Liste aller Artikel, die dieses Rezept verwenden
+                Dim ArtikelListe As List(Of Integer) = Rzpt.ArtikelVerwendung()
+                'wenn noch weitere Artikel dieses Rezept verwenden werden diese auch gleich verarbeitet
+                If ArtikelListe.Count > 1 Then
+                    For Each ArtikelNr As Integer In ArtikelListe
+                        'der aktuelle Artikel ist schon bearbeitet
+                        If ArtikelNr <> _AktKO_Nr Then
+                            'Komponenten-Objekt
+                            Dim nwtArtikel As New wb_Komponente
+                            'Daten aus Winback-Db lesen
+                            nwtArtikel.MySQLdbRead(ArtikelNr)
 
-                ''Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
-                ''Gibt true zurück, wenn der Artikel in OrgaBack existiert
-                'If nwtArtikelDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
-                '    'Zutaten-und Allergenliste in OrgaBack updaten
-                '    nwtArtikelDaten.MsSqldbUpdate_Zutatenliste()
-                'End If
+                            'Nährwerte und Allergene aktualisieren
+                            nwtArtikel.ktTyp301 = nwtArtikelDaten.ktTyp301
+                            'ZutatenListe aktualisieren
+                            nwtArtikelDaten.Deklaration = nwtArtikelDaten.Deklaration
+
+                            'Daten sichern in Mysql
+                            nwtArtikel.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+                            'Änderungen der Zutatenliste in Komponente(Rohstoff) sichern
+                            nwtArtikelDaten.MySqldbUpdate_Zutatenliste()
+
+                            'Daten sichern in MsSQL
+                            'Gibt true zurück, wenn der Artikel in OrgaBack existiert
+                            If nwtArtikelDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
+                                'Zutaten-und Allergenliste in OrgaBack updaten
+                                nwtArtikelDaten.MsSqldbUpdate_Zutatenliste()
+                            End If
+                        End If
+                    Next
+                End If
 
                 'Protokoll der Änderungen speichern in Hinweise
                 nwtArtikelDaten.SaveReport()
@@ -87,7 +122,7 @@ Public Class wb_nwtUpdateAtikel
                 Debug.Print(nwtArtikelDaten.GetReport)
 
                 'Ausgabe-Text
-                _InfoText = "(" & nwtArtikelDaten.Nr.ToString("00000") & ") " & nwtArtikelDaten.Bezeichnung
+                _InfoText = "<" & nwtArtikelDaten.Nr.ToString("00000") & "> " & nwtArtikelDaten.Bezeichnung
                 UpdateNext = True
             Else
                 'EOF() - ReStart bei KO_Nr = 0
@@ -100,72 +135,25 @@ Public Class wb_nwtUpdateAtikel
         Return UpdateNext
     End Function
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    Public Function getRezepteZumRohstoff(KoNr As Integer) As Integer
-        'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-        Dim RzNr As Integer
-        ListeRezeptNr.Clear()
-
-        'alle Datensätze aus Tabelle Rezeptschritte lesen
-        If winback.sqlSelect(setParams(sqlKompInRZSchritte, KoNr.ToString)) Then
-            While winback.MySqlRead.Read
-                RzNr = wb_Functions.StrToInt(winback.MySqlRead.GetValue(0).ToString)
-                If RzNr > 0 Then
-                    ListeRezeptNr.Add(RzNr)
-                End If
-            End While
-        End If
-        'Anzahl der Datensätze
-        Return ListeRezeptNr.Count
-    End Function
-
-    'TODO als Funktion schreiben und Nährwertinfo unt ZTListe in Struktur zurückgeben !!
-    Public Sub reCalcRezeptListe()
-        'Liste aller Artikel mit Verweis auf diese Artikelnummer
-        Dim ListeArtikelNr As New List(Of Integer)
-
-        For Each RzNr In ListeRezeptNr
-            ListeArtikelNr = reCalcRezept(RzNr)
-            'alle Artikel mit Verweis auf dieses Rezept erhalten diese gerade berechneten Nährwerte und Zutatenliste
-            If ListeArtikelNr.Count > 0 Then
-                For Each ArtNr In ListeArtikelNr
-                    ReCalcArtikel(ArtNr)
-                Next
+    Protected Overridable Overloads Sub Dispose(ByVal disposing As Boolean)
+        If Not Me.disposed Then
+            If disposing Then
+                ' Insert Code to free managed resource
             End If
-        Next
+        End If
+        Me.disposed = True
     End Sub
 
-    'TODO als Funktion schreiben und Nährwertinfo unt ZTListe in Struktur zurückgeben !!
-    Public Function reCalcRezept(RzNr As Integer) As IList
-        'Rezept mit allen Rezeptschritten lesen
-        Dim Rzpt As New wb_Rezept(RzNr, Nothing)
-
-        'Nährwert-Information berechnen
-        kt301 = Rzpt.RootRezeptSchritt.ktTyp301
-        Debug.Print("reCalcRezept (" & RzNr & ") " & Rzpt.RezeptNummer & " " & Rzpt.RezeptBezeichnung & " kt301(Kilokalorien) " & kt301.Naehrwert(wb_Global.T301_Kilokalorien))
-        'Zutatenliste erzeugen
-        ztListe = Rzpt.ZutatenListe(wb_Global.ZutatenListeMode.Show_ENummer)
-        Debug.Print("Zutatenliste " & ztListe)
-
-        'Liste aller Artikel, die dieses Rezept verwenden
-        Return Rzpt.ArtikelVerwendung()
-    End Function
-
-    Public Sub ReCalcArtikel(KoNr As Integer)
-        Debug.Print("ReCalc Artikel " & KoNr)
+#Region " IDisposable Support "
+    ' Do not change or add Overridable to these methods.
+    ' Put cleanup code in Dispose(ByVal disposing As Boolean).
+    Public Overloads Sub Dispose() Implements IDisposable.Dispose
+        Dispose(True)
+        GC.SuppressFinalize(Me)
     End Sub
+    Protected Overrides Sub Finalize()
+        Dispose(False)
+        MyBase.Finalize()
+    End Sub
+#End Region
 End Class

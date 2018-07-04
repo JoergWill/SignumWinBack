@@ -85,6 +85,7 @@ Public Class wb_Language
             TexteTabelle.Add("@[" & winback.sField("T_Typ") & "," & winback.sField("T_TextIndex") & "]", winback.sField("T_Text"))
         End While
         winback.Close()
+        winback = Nothing
     End Sub
 
     ''' <summary>

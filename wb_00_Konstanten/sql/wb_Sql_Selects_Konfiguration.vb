@@ -19,7 +19,7 @@
     Public Const sqlWinBackTxte = "SELECT T_TextIndex, T_Typ, T_Text FROM Texte WHERE T_Sprache = [0]"
 
     'Sql-Statement AktionsTimer
-    Public Const sqlAktionsTimer = "Select * FROM AktionsTimer WHERE AT_Quelle_Typ = 'TW' OR AT_Quelle_Typ LIKE 'winback%' OR AT_Quelle_Typ LIKE 'office%'"
+    Public Const sqlAktionsTimer = "Select * FROM AktionsTimer WHERE AT_Ziel_Aktion = 1 AND (AT_Quelle_Typ = 'TW' OR AT_Quelle_Typ LIKE 'winback%' OR AT_Quelle_Typ LIKE 'office%')"
     Public Const sqlUpdtAktionsTimer = "UPDATE AktionsTimer SET [0] WHERE AT_idx = '[1]'"
 
 End Class
