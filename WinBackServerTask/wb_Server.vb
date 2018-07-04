@@ -33,6 +33,9 @@ Public Class Main
     Dim Export As New ob_ChargenProduziert
     Dim ServerTaskState As ServerTaskErrors = ServerTaskErrors.OK
 
+    Dim nwtUpdateKomponenten As New wb_nwtUpdate
+    Dim nwtUpdateArtikel As New wb_nwtUpdateAtikel
+
     Private cntCounter As Integer
     Private cntMySql As Integer = 0
     Private maxCloudTxtLines As Integer = 10
@@ -149,10 +152,10 @@ Public Class Main
 
         'Abfrage Update Nährwert-Cloud
         If MainTimer_Check("office_nwt") Then
-            'Datensatz wurde aus der Cloud aktualisiert
+            'letzte Komponenten-Nummer aus Aktions-Timer-Tabelle
             Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-            Dim nwtUpdateKomponenten As New wb_nwtUpdate
 
+            'Datensatz wurde aus der Cloud aktualisiert
             If nwtUpdateKomponenten.UpdateNext(AktKONr, nwtUpdateKomponentenOrgaBack) Then
                 'Info-Text ausgeben
                 ScrollTextBox(tbCloud, nwtUpdateKomponenten.InfoText & vbNewLine)
@@ -161,15 +164,14 @@ Public Class Main
             AktTimerEvent.Str2 = nwtUpdateKomponenten.AktKO_Nr
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
-            nwtUpdateKomponenten.Dispose()
         End If
 
         'Abfrage Update markierte Artikel (Nährwerte und Zutatenliste)
-        If MainTimer_Check("office_artikel") And False Then
-            'Datensatz wurde aktualisiert
+        If MainTimer_Check("office_artikel") Then
+            'letzte Komponenten-Nummer aus Aktions-Timer-Tabelle
             Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-            Dim nwtUpdateArtikel As New wb_nwtUpdateAtikel
 
+            'Datensatz wurde aktualisiert
             If nwtUpdateArtikel.UpdateNext(AktKONr, nwtUpdateArtikelOrgaBack) Then
                 'Info-Text ausgeben
                 ScrollTextBox(tbCloud, nwtUpdateArtikel.InfoText & vbNewLine)
@@ -178,7 +180,6 @@ Public Class Main
             AktTimerEvent.Str2 = nwtUpdateArtikel.AktKO_Nr
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
-            nwtUpdateArtikel.Dispose()
         End If
 
         'Abfrage produzierte Chargen und verbrauchte Rohstoffe

@@ -1046,6 +1046,9 @@ Public Class wb_Rezeptschritt
                 Loop While winback.MySqlRead.Read
             End If
         End If
+
+        'Datenbankverbindung wieder schliessen
+        winback.Close()
         Return True
     End Function
 

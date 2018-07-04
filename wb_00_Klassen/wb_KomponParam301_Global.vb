@@ -36,6 +36,7 @@ Public Class wb_KomponParam301_Global
             End Try
         End While
         winback.Close()
+        winback = Nothing
     End Sub
 
     ''' <summary>
