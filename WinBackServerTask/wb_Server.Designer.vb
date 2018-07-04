@@ -46,6 +46,7 @@ Partial Class Main
         Me.Label2 = New System.Windows.Forms.Label()
         Me.tbMessages = New System.Windows.Forms.TextBox()
         Me.TabPageAdmin = New System.Windows.Forms.TabPage()
+        Me.lblServerInfo = New System.Windows.Forms.Label()
         Me.lblBackupRestoreStatus = New System.Windows.Forms.Label()
         Me.lblBackupRestore = New System.Windows.Forms.Label()
         Me.BtnRestore = New System.Windows.Forms.Button()
@@ -239,7 +240,6 @@ Partial Class Main
         Me.Wb_TabControl.Controls.Add(Me.TabPageCloud)
         Me.Wb_TabControl.Controls.Add(Me.TabPageTimer)
         Me.Wb_TabControl.Location = New System.Drawing.Point(12, 81)
-        Me.Wb_TabControl.Multiline = True
         Me.Wb_TabControl.Name = "Wb_TabControl"
         Me.Wb_TabControl.SelectedIndex = 0
         Me.Wb_TabControl.Size = New System.Drawing.Size(342, 453)
@@ -326,6 +326,7 @@ Partial Class Main
         'TabPageAdmin
         '
         Me.TabPageAdmin.BackColor = System.Drawing.Color.Black
+        Me.TabPageAdmin.Controls.Add(Me.lblServerInfo)
         Me.TabPageAdmin.Controls.Add(Me.lblBackupRestoreStatus)
         Me.TabPageAdmin.Controls.Add(Me.lblBackupRestore)
         Me.TabPageAdmin.Controls.Add(Me.BtnRestore)
@@ -337,6 +338,17 @@ Partial Class Main
         Me.TabPageAdmin.Size = New System.Drawing.Size(334, 426)
         Me.TabPageAdmin.TabIndex = 2
         Me.TabPageAdmin.Text = "Admin"
+        '
+        'lblServerInfo
+        '
+        Me.lblServerInfo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblServerInfo.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblServerInfo.Location = New System.Drawing.Point(3, 382)
+        Me.lblServerInfo.Name = "lblServerInfo"
+        Me.lblServerInfo.Size = New System.Drawing.Size(328, 41)
+        Me.lblServerInfo.TabIndex = 12
+        Me.lblServerInfo.Text = "WinBack-Server 10.0.0.1"
         '
         'lblBackupRestoreStatus
         '
@@ -540,4 +552,5 @@ Partial Class Main
     Friend WithEvents TabPageTimer As TabPage
     Friend WithEvents Label3 As Label
     Friend WithEvents tbAktionsTimer As Panel
+    Friend WithEvents lblServerInfo As Label
 End Class

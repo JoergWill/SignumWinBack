@@ -49,8 +49,11 @@
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0]) ORDER BY RP_Typ_Nr, RP_ParamNr"
 
     'Sql-Statement Suche nächsten Rohstoffdatensatz nach KO_Nr (Update Nährwerte)
-    Public Const sqlUpdateNWT = "SELECT * FROM Komponenten WHERE KA_Matchcode <> '' AND KO_Nr > [0] " &
+    Public Const sqlUpdateNWT = "SELECT * FROM Komponenten WHERE KA_Matchcode <> '' AND KO_Nr > [0] AND KA_aktiv = 1" &
                                  "ORDER BY Komponenten.KO_Nr LIMIT 1"
+    'Sql-Statement Suche nächsten Artikel/Komponente nach KO_Nr (Update Nährwerte-Artikel)
+    Public Const sqlUpdateArtikelNWT = "SELECT * FROM Komponenten WHERE KA_RZ_Nr > 0 AND KO_Nr > [0] AND KA_aktiv = 1" &
+                                       "AND KA_Artikel_Typ > [1] ORDER BY Komponenten.KO_Nr LIMIT 1"
     'Sql-Statement kompletten Rohstoffdatensatz nach KO_Nr (Update Nährwerte)
     Public Const sqlgetNWT = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"

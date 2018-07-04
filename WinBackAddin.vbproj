@@ -896,9 +896,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="DBUpdate\2.30_AktionsTimer.sql" />
+    <Content Include="DBUpdate\2.30_AktSysKonfig.sql" />
+    <Content Include="DBUpdate\2.30_ArbRezeptSchritte.sql" />
+    <Content Include="DBUpdate\2.30_Einheiten.sql" />
     <Content Include="DBUpdate\2.30_ENummern_A.sql" />
     <Content Include="DBUpdate\2.30_ENummern_B.sql" />
     <Content Include="DBUpdate\2.30_KomponTypen.sql" />
+    <Content Include="DBUpdate\2.30_Linien.sql" />
     <Content Include="DBUpdate\2.30_LinienGruppen.sql" />
     <None Include="Dokumentation\OrgaBack.docx" />
     <None Include="My Project\Application.myapp">
@@ -1003,6 +1008,7 @@
     <None Include="Resources\MainLinien_32x32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DBUpdate\UPD_RohstoffNummer_R.sql" />
     <Content Include="ListLabel\Produktion\Backzettel.lst" />
     <Content Include="ListLabel\Produktion\Teigzettel.lst" />
     <Content Include="ListLabel\wbStandard.lst" />

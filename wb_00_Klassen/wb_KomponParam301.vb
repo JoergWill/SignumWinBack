@@ -370,11 +370,11 @@ Public Class wb_KomponParam301
                 If IsAllergen(i) Then
                     'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
                     sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqInsertAlg, KoAlNum, i, oWert(i), 0))
-                    Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                    'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
                 Else
                     'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
                     sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqInsertNwt, KoAlNum, i, oWert(i), Unit, 0))
-                    Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                    'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
                 End If
 
                 'Update-Statement wird dynamisch erzeugt

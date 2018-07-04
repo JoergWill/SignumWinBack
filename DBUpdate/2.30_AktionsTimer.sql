@@ -19,6 +19,7 @@ UPDATE AktionsTimer SET AT_Str1='WB Test' WHERE AT_Quelle_Typ='winback_cron_test
 UPDATE AktionsTimer SET AT_Str1='WB Liefer' WHERE AT_Quelle_Typ='winback_cron_liefer';
 
 INSERT IGNORE INTO `AktionsTimer` (`AT_idx`, `AT_Quelle_Art`, `AT_Quelle_Nr`, `AT_Quelle_Typ`, `AT_Ziel_Art`, `AT_Ziel_Nr`, `AT_Ziel_Aktion`, `AT_Ziel_Verzoegerung`, `AT_TimingArt`, `AT_Periode`, `AT_Str1`, `AT_Kommentar`) VALUES(81, 0, 0, 'office_chargen', 0, 0, 0, 0, 0, 3600, 'OB Chargen', 'Auswertung produzierte Chargen und Verbräuche');
-INSERT IGNORE INTO `AktionsTimer` (`AT_idx`, `AT_Quelle_Art`, `AT_Quelle_Nr`, `AT_Quelle_Typ`, `AT_Ziel_Art`, `AT_Ziel_Nr`, `AT_Ziel_Aktion`, `AT_Ziel_Verzoegerung`, `AT_TimingArt`, `AT_Periode`, `AT_Str1`, `AT_Kommentar`) VALUES(82, 0, 0, 'office_nwt', 0, 0, 0, 0, 0, 3600, 'OB Nährwerte', 'Aktualisierung der Nährwerte und Allergene aus der Cloud');
+INSERT IGNORE INTO `AktionsTimer` (`AT_idx`, `AT_Quelle_Art`, `AT_Quelle_Nr`, `AT_Quelle_Typ`, `AT_Ziel_Art`, `AT_Ziel_Nr`, `AT_Ziel_Aktion`, `AT_Ziel_Verzoegerung`, `AT_TimingArt`, `AT_Periode`, `AT_Str1`, `AT_Kommentar`) VALUES(82, 0, 0, 'office_nwt', 0, 0, 0, 0, 0, 120, 'OB Nährwerte', 'Aktualisierung der Nährwerte und Allergene aus der Cloud');
+INSERT IGNORE INTO `AktionsTimer` (`AT_idx`, `AT_Quelle_Art`, `AT_Quelle_Nr`, `AT_Quelle_Typ`, `AT_Ziel_Art`, `AT_Ziel_Nr`, `AT_Ziel_Aktion`, `AT_Ziel_Verzoegerung`, `AT_TimingArt`, `AT_Periode`, `AT_Str1`, `AT_Kommentar`) VALUES(83, 0, 0, 'office_artikel', 0, 0, 0, 0, 0, 240, 'OB Artikel', 'Aktualisierung der Artikel-Nährwertberechnung');
 
 

@@ -20,7 +20,8 @@ Public Class Main
     Const cntCheckMysql = 90
     Const cntCheckCloud = 5
     Const cntCheckAktionsTimer = 60
-    Const bUpdateOrgaBack = True
+    Const nwtUpdateKomponentenOrgaBack = True
+    Const nwtUpdateArtikelOrgaBack = True
 
     Enum ServerTaskErrors
         OK
@@ -29,7 +30,8 @@ Public Class Main
     End Enum
 
     Dim clients As New Hashtable 'new database (hashtable) to hold the clients
-    Dim nwtUpdate As New wb_nwtUpdate
+    Dim nwtUpdateKomponenten As New wb_nwtUpdate
+    Dim nwtUpdateArtikel As New wb_nwtUpdateAtikel
     Dim Export As New ob_ChargenProduziert
     Dim ServerTaskState As ServerTaskErrors = ServerTaskErrors.OK
 
@@ -151,12 +153,26 @@ Public Class Main
         If MainTimer_Check("office_nwt") Then
             'Datensatz wurde aus der Cloud aktualisiert
             Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-            If nwtUpdate.UpdateNext(AktKONr, bUpdateOrgaBack) Then
+            If nwtUpdateKomponenten.UpdateNext(AktKONr, nwtUpdateKomponentenOrgaBack) Then
                 'Info-Text ausgeben
-                ScrollTextBox(tbCloud, nwtUpdate.InfoText & vbNewLine)
+                ScrollTextBox(tbCloud, nwtUpdateKomponenten.InfoText & vbNewLine)
             End If
             'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
-            AktTimerEvent.Str2 = nwtUpdate.AktKO_Nr
+            AktTimerEvent.Str2 = nwtUpdateKomponenten.AktKO_Nr
+            AktTimerEvent.Endezeit = Now
+            AktTimerEvent.MySQLdbUpdate_Fields()
+        End If
+
+        'Abfrage Update markierte Artikel (Nährwerte und Zutatenliste)
+        If MainTimer_Check("office_artikel") Then
+            'Datensatz wurde aktualisiert
+            Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+            If nwtUpdateArtikel.UpdateNext(AktKONr, nwtUpdateArtikelOrgaBack) Then
+                'Info-Text ausgeben
+                ScrollTextBox(tbCloud, nwtUpdateArtikel.InfoText & vbNewLine)
+            End If
+            'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
+            AktTimerEvent.Str2 = nwtUpdateArtikel.AktKO_Nr
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
         End If
@@ -340,6 +356,9 @@ Public Class Main
         Me.Left = DesktopSize.Width - fBreite + 7
         'Anzahl der Zeichen in der Textbox (Ausgabe Nährwert-Cloud)
         maxCloudTxtLines = (DesktopSize.Height - 260) / tbCloud.Font.Height
+
+        'Anzeige Server-IP und Mandanten-Info
+        lblServerInfo.Text = "MySQL " & wb_GlobalSettings.MySQLServerIP & vbCr & wb_GlobalSettings.MsSQLMain
     End Sub
 
     ''' <summary>

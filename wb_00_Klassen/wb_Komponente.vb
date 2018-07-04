@@ -741,7 +741,7 @@ Public Class wb_Komponente
         End If
 
         'Feldname aus der Datenbank
-        Debug.Print("ReadStammdaten " & Name & "/" & Value)
+        'Debug.Print("ReadStammdaten " & Name & "/" & Value)
         Try
             Select Case Name
 
@@ -976,12 +976,19 @@ Public Class wb_Komponente
             OrgasoftMain.CloseRead()
             Return False
         Else
-            'Lesen beendet
-            OrgasoftMain.CloseRead()
-
-            'Update Parameter-301 (Nährwerte)
-            If ktTyp = wb_Global.ktParam.kt301 Or ktTyp = wb_Global.ktParam.ktAlle Then
-                ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
+            'Standard-Einheit aus Artikelstamm OrgaBack
+            Dim StdEinheit As Integer = OrgasoftMain.iField("StdEinheit")
+            'wenn beide Einheiten identisch sind, können die Parameter geschreiben werden
+            If StdEinheit = wb_Einheiten_Global.GetobEinheitNr(Einheit) Then
+                'Lesen beendet
+                OrgasoftMain.CloseRead()
+                'Update Parameter-301 (Nährwerte)
+                If ktTyp = wb_Global.ktParam.kt301 Or ktTyp = wb_Global.ktParam.ktAlle Then
+                    ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
+                End If
+            Else
+                Debug.Print("Einheitenkonflikt Artikel beim Schreiben der Parameter in OrgaBack " & KO_Nr_AlNum & " " & KO_Bezeichnung)
+                Return False
             End If
         End If
 

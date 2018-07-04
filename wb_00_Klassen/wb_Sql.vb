@@ -154,7 +154,12 @@ Public Class wb_Sql
                         End If
             'Verbindung über msSql
                     Case dbType.msSql
-                        Return Int(msRead(FieldName).ToString)
+                        Dim s = msRead(FieldName).ToString
+                        If s IsNot Nothing And s <> "" Then
+                            Return Int(s)
+                        Else
+                            Return i
+                        End If
                     Case Else
                         Return i
                 End Select
