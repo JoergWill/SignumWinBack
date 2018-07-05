@@ -73,14 +73,18 @@ Public Class wb_nwtUpdateAtikel
                 Debug.Print("Zutatenliste " & nwtArtikelDaten.Deklaration)
 
                 'Änderungen der Nährwerte in Komponente(Rohstoff) sichern
+                Debug.Print("Update (Artikel)Nährwerte in WinBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
                 nwtArtikelDaten.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
                 'Änderungen der Zutatenliste in Komponente(Rohstoff) sichern
+                Debug.Print("Update (Artikel)Zutaten in WinBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
                 nwtArtikelDaten.MySqldbUpdate_Zutatenliste()
 
                 'Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
                 'Gibt true zurück, wenn der Artikel in OrgaBack existiert
+                Debug.Print("Update (Artikel)Nährwerte in OrgaBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
                 If nwtArtikelDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
                     'Zutaten-und Allergenliste in OrgaBack updaten
+                    Debug.Print("Update (Artikel)Zutaten in OrgaBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
                     nwtArtikelDaten.MsSqldbUpdate_Zutatenliste()
                 End If
 
@@ -102,14 +106,18 @@ Public Class wb_nwtUpdateAtikel
                             nwtArtikelDaten.Deklaration = nwtArtikelDaten.Deklaration
 
                             'Daten sichern in Mysql
+                            Debug.Print("Update (weitere Artikel)Nährwerte in WinBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
                             nwtArtikel.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
                             'Änderungen der Zutatenliste in Komponente(Rohstoff) sichern
+                            Debug.Print("Update (weitere Artikel)Zutaten in WinBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
                             nwtArtikelDaten.MySqldbUpdate_Zutatenliste()
 
                             'Daten sichern in MsSQL
                             'Gibt true zurück, wenn der Artikel in OrgaBack existiert
+                            Debug.Print("Update (weitere rtikel)Nährwerte in OrgaBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
                             If nwtArtikelDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
                                 'Zutaten-und Allergenliste in OrgaBack updaten
+                                Debug.Print("Update (weitere Artikel)Zutaten in OrgaBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
                                 nwtArtikelDaten.MsSqldbUpdate_Zutatenliste()
                             End If
                         End If
@@ -119,7 +127,7 @@ Public Class wb_nwtUpdateAtikel
                 'Protokoll der Änderungen speichern in Hinweise
                 nwtArtikelDaten.SaveReport()
                 'Protokoll der Änderungen ausgeben
-                Debug.Print(nwtArtikelDaten.GetReport)
+                Debug.Print("Report " & nwtArtikelDaten.GetReport)
 
                 'Ausgabe-Text
                 _InfoText = "<" & nwtArtikelDaten.Nr.ToString("00000") & "> " & nwtArtikelDaten.Bezeichnung

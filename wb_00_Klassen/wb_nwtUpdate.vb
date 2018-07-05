@@ -66,8 +66,10 @@ Public Class wb_nwtUpdate
                 'wenn die Daten in der Cloud aktueller sind - Änderungen ausgeben
                 If (CloudChangeDate > WinBackChangeDate) Or bUpdateOrgaBack Then
                     'Änderungen der Nährwerte in Komponente(Rohstoff) sichern
+                    Debug.Print("Update (Komp)Nährwerte in WinBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
                     nwtDaten.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
                     'Änderungen der Zutatenliste in Komponente(Rohstoff) sichern
+                    Debug.Print("Update (Komp)Zutatenliste in WinBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
                     nwtDaten.MySqldbUpdate_Zutatenliste()
                     'Alle Artikel, welche diese Komponente in Rezepturen verwenden markieren
                     'die Nährwerte müssen neu berechnet werden. Farbige Markierung in der Artikel-Liste
@@ -75,8 +77,10 @@ Public Class wb_nwtUpdate
 
                     'Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
                     'Gibt true zurück, wenn der Artikel in OrgaBack existiert
+                    Debug.Print("Update (Komp)Nährwerte in OrgaBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
                     If nwtDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
                         'Zutaten-und Allergenliste in OrgaBack updaten
+                        Debug.Print("Update (Komp)Zutatenliste in OrgaBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
                         nwtDaten.MsSqldbUpdate_Zutatenliste()
                     End If
 

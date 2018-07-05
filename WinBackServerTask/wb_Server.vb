@@ -20,8 +20,7 @@ Public Class Main
     Const cntCheckMysql = 90
     Const cntCheckCloud = 5
     Const cntCheckAktionsTimer = 60
-    Const nwtUpdateKomponentenOrgaBack = True
-    Const nwtUpdateArtikelOrgaBack = True
+
 
     Enum ServerTaskErrors
         OK
@@ -36,6 +35,9 @@ Public Class Main
     Dim nwtUpdateKomponenten As New wb_nwtUpdate
     Dim nwtUpdateArtikel As New wb_nwtUpdateAtikel
 
+    Private nwtUpdateKomponentenOrgaBack = True
+    Private nwtUpdateArtikelOrgaBack = True
+
     Private cntCounter As Integer
     Private cntMySql As Integer = 0
     Private maxCloudTxtLines As Integer = 10
@@ -43,6 +45,8 @@ Public Class Main
     Private WithEvents AktionsTimerGrid As wb_TimerGridView
     Private tArray As New ArrayList
     Private AktTimerEvent As wb_TimerEvent
+
+    Private xLogger As New wb_TraceListener
 
     Public Delegate Sub addListBoxDelegate(name As String)
     Public Delegate Sub remListBoxDelegate(name As String)
@@ -152,6 +156,9 @@ Public Class Main
 
         'Abfrage Update Nährwert-Cloud
         If MainTimer_Check("office_nwt") Then
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+
             'letzte Komponenten-Nummer aus Aktions-Timer-Tabelle
             Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
 
@@ -164,10 +171,15 @@ Public Class Main
             AktTimerEvent.Str2 = nwtUpdateKomponenten.AktKO_Nr
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
         End If
 
         'Abfrage Update markierte Artikel (Nährwerte und Zutatenliste)
         If MainTimer_Check("office_artikel") Then
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+
             'letzte Komponenten-Nummer aus Aktions-Timer-Tabelle
             Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
 
@@ -180,16 +192,23 @@ Public Class Main
             AktTimerEvent.Str2 = nwtUpdateArtikel.AktKO_Nr
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
         End If
 
         'Abfrage produzierte Chargen und verbrauchte Rohstoffe
         If MainTimer_Check("office_chargen") Then
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+
             'Export Chargen ab TW-Nr.x
             Dim TWNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
             AktTimerEvent.Str2 = Export.ExportChargen(TWNr)
             'Nach Ende Export neue Startzeit setzen
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
         End If
 
         'Uhrzeit/Fehler anzeigen - Main-Timer OK
@@ -261,7 +280,15 @@ Public Class Main
         AktionsTimerGrid.BackgroundColor = Me.BackColor
         AktionsTimerGrid.GridLocation(tbAktionsTimer)
         AktionsTimerGrid.PerformLayout()
-        AktionsTimerGrid.Refresh()
+    End Sub
+
+    Private Sub RefreshAktionsTimer()
+        'Refresh Tabelle nur wenn die entsprechende Seite sichtbar ist
+        If TabPageTimer.Visible Then
+            AktionsTimerGrid.FillGrid()
+            'Zeit zum Zeichnen
+            System.Threading.Thread.Sleep(100)
+        End If
     End Sub
 
     Private Sub AktionsTimerDrawCell(ByVal sender As Object, ByVal e As DataGridViewCellPaintingEventArgs) Handles AktionsTimerGrid.CellPainting
@@ -316,6 +343,9 @@ Public Class Main
         'Programm und Datei-Pfade einstellen
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.ServerTask
 
+        'Debug/Trace-Listener initialisieren
+        AddTraceListener()
+
         'Initialisierung Texte-Tabelle
         wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
 
@@ -365,6 +395,8 @@ Public Class Main
 
         'Anzeige Server-IP und Mandanten-Info
         lblServerInfo.Text = "MySQL " & wb_GlobalSettings.MySQLServerIP & vbCr & wb_GlobalSettings.MsSQLMain
+        'Status-Anzeige im Admin-Fenster verschieben
+        lblServerInfo.Top = Me.Height - 300
     End Sub
 
     ''' <summary>
@@ -428,6 +460,7 @@ Public Class Main
         Wb_TabControl.Show()
 
         ShowAktionsTimer()
+        RefreshAktionsTimer()
     End Sub
 
     ''' <summary>
@@ -604,4 +637,26 @@ Public Class Main
         DetailAnsicht.ShowDialog()
     End Sub
 
+    ''' <summary>
+    ''' alle Trace/Debug-Ausgaben werden auch in der Klasse wb_Admin_Shared in einer Text-Liste gespeichert.
+    ''' Nach x Zeilen werden die Einträge in ein Text-File gespeichert.
+    ''' Die Klasse xLogger (wb_Trace_Listener) leitet die Meldungen weiter.
+    ''' </summary>
+    Sub AddTraceListener()
+        AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
+        Trace.Listeners.Add(xLogger)
+    End Sub
+
+    ''' <summary>
+    ''' Anzeigefenster mit Ausgabe der Log-Daten
+    ''' Es wird das gleiche Fenster wie auch beim WinBack-AddIn verwendet.
+    ''' 
+    ''' Anzeige der Programm-Ausgaben Debug.Print und Trace.Writeln
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnLogFile_Click(sender As Object, e As EventArgs) Handles BtnLogFile.Click
+        Dim Admin_Log As New wb_Admin_Log
+        Admin_Log.Show()
+    End Sub
 End Class

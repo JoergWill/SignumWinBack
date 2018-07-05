@@ -722,6 +722,7 @@ Public Class wb_Komponente
                 Try
                     MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
                 Catch ex As Exception
+                    Debug.Print("Exception MySQLdbRead " & sqlReader.GetName(i))
                 End Try
             Next
         Loop While sqlReader.Read
@@ -986,6 +987,7 @@ Public Class wb_Komponente
         OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSelArtikel, KO_Nr_AlNum))
         If Not OrgasoftMain.Read Then
             'Artikel nicht gefunden in OrgaSoft
+            Debug.Print("Artikel " & Nummer & " nicht in OrgaBack gefunden")
             OrgasoftMain.CloseRead()
             Return False
         Else
@@ -1018,7 +1020,7 @@ Public Class wb_Komponente
     ''' [dbo].[ArtikelDeklarationsTexte]
     '''   ->[ArtikelNr]
     '''   ->[StuecklistenVariantenNr]
-    '''   D [LaenderCode]
+    '''   D [LaenderCode] !!!!
     '''   D [SprachenCode]
     '''   ->[AllergenDeklarationEnthalten]
     '''   ->[AllergenDeklarationSpuren]

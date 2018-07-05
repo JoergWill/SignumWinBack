@@ -46,6 +46,8 @@ Partial Class Main
         Me.Label2 = New System.Windows.Forms.Label()
         Me.tbMessages = New System.Windows.Forms.TextBox()
         Me.TabPageAdmin = New System.Windows.Forms.TabPage()
+        Me.BtnLogFile = New System.Windows.Forms.Button()
+        Me.SwSyncArtikelOrgaBack = New MetroFramework.Controls.MetroToggle()
         Me.lblServerInfo = New System.Windows.Forms.Label()
         Me.lblBackupRestoreStatus = New System.Windows.Forms.Label()
         Me.lblBackupRestore = New System.Windows.Forms.Label()
@@ -97,7 +99,7 @@ Partial Class Main
         Me.BtnClients.ForeColor = System.Drawing.Color.White
         Me.BtnClients.Image = Global.WinBackServerTask.My.Resources.Resources.Users
         Me.BtnClients.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.BtnClients.Location = New System.Drawing.Point(12, 611)
+        Me.BtnClients.Location = New System.Drawing.Point(12, 778)
         Me.BtnClients.Name = "BtnClients"
         Me.BtnClients.Size = New System.Drawing.Size(110, 65)
         Me.BtnClients.TabIndex = 2
@@ -114,7 +116,7 @@ Partial Class Main
         Me.btnMessages.ForeColor = System.Drawing.Color.White
         Me.btnMessages.Image = Global.WinBackServerTask.My.Resources.Resources.SpeechBubble
         Me.btnMessages.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.btnMessages.Location = New System.Drawing.Point(128, 611)
+        Me.btnMessages.Location = New System.Drawing.Point(128, 778)
         Me.btnMessages.Name = "btnMessages"
         Me.btnMessages.Size = New System.Drawing.Size(110, 65)
         Me.btnMessages.TabIndex = 3
@@ -131,7 +133,7 @@ Partial Class Main
         Me.BtnHide.ForeColor = System.Drawing.Color.White
         Me.BtnHide.Image = Global.WinBackServerTask.My.Resources.Resources.Cancel
         Me.BtnHide.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.BtnHide.Location = New System.Drawing.Point(244, 611)
+        Me.BtnHide.Location = New System.Drawing.Point(244, 778)
         Me.BtnHide.Name = "BtnHide"
         Me.BtnHide.Size = New System.Drawing.Size(110, 65)
         Me.BtnHide.TabIndex = 4
@@ -164,7 +166,7 @@ Partial Class Main
         Me.BtnAdmin.ForeColor = System.Drawing.Color.White
         Me.BtnAdmin.Image = Global.WinBackServerTask.My.Resources.Resources.Admin
         Me.BtnAdmin.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.BtnAdmin.Location = New System.Drawing.Point(244, 540)
+        Me.BtnAdmin.Location = New System.Drawing.Point(244, 707)
         Me.BtnAdmin.Name = "BtnAdmin"
         Me.BtnAdmin.Size = New System.Drawing.Size(110, 65)
         Me.BtnAdmin.TabIndex = 7
@@ -191,7 +193,7 @@ Partial Class Main
         Me.btnCloud.ForeColor = System.Drawing.Color.White
         Me.btnCloud.Image = Global.WinBackServerTask.My.Resources.Resources.Cloud
         Me.btnCloud.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.btnCloud.Location = New System.Drawing.Point(12, 540)
+        Me.btnCloud.Location = New System.Drawing.Point(12, 707)
         Me.btnCloud.Name = "btnCloud"
         Me.btnCloud.Size = New System.Drawing.Size(110, 65)
         Me.btnCloud.TabIndex = 8
@@ -208,7 +210,7 @@ Partial Class Main
         Me.BtnTimer.ForeColor = System.Drawing.Color.White
         Me.BtnTimer.Image = Global.WinBackServerTask.My.Resources.Resources.Clock
         Me.BtnTimer.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.BtnTimer.Location = New System.Drawing.Point(128, 540)
+        Me.BtnTimer.Location = New System.Drawing.Point(128, 707)
         Me.BtnTimer.Name = "BtnTimer"
         Me.BtnTimer.Size = New System.Drawing.Size(110, 65)
         Me.BtnTimer.TabIndex = 9
@@ -242,7 +244,7 @@ Partial Class Main
         Me.Wb_TabControl.Location = New System.Drawing.Point(12, 81)
         Me.Wb_TabControl.Name = "Wb_TabControl"
         Me.Wb_TabControl.SelectedIndex = 0
-        Me.Wb_TabControl.Size = New System.Drawing.Size(342, 453)
+        Me.Wb_TabControl.Size = New System.Drawing.Size(342, 620)
         Me.Wb_TabControl.TabIndex = 6
         '
         'TabPageClients
@@ -254,7 +256,7 @@ Partial Class Main
         Me.TabPageClients.Location = New System.Drawing.Point(4, 23)
         Me.TabPageClients.Name = "TabPageClients"
         Me.TabPageClients.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageClients.Size = New System.Drawing.Size(334, 426)
+        Me.TabPageClients.Size = New System.Drawing.Size(334, 593)
         Me.TabPageClients.TabIndex = 0
         Me.TabPageClients.Text = "Clients"
         '
@@ -281,7 +283,7 @@ Partial Class Main
         Me.lbClientList.ItemHeight = 15
         Me.lbClientList.Location = New System.Drawing.Point(-4, 29)
         Me.lbClientList.Name = "lbClientList"
-        Me.lbClientList.Size = New System.Drawing.Size(342, 390)
+        Me.lbClientList.Size = New System.Drawing.Size(342, 555)
         Me.lbClientList.TabIndex = 0
         '
         'TabPageMessages
@@ -293,7 +295,7 @@ Partial Class Main
         Me.TabPageMessages.Location = New System.Drawing.Point(4, 23)
         Me.TabPageMessages.Name = "TabPageMessages"
         Me.TabPageMessages.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageMessages.Size = New System.Drawing.Size(334, 426)
+        Me.TabPageMessages.Size = New System.Drawing.Size(334, 593)
         Me.TabPageMessages.TabIndex = 1
         Me.TabPageMessages.Text = "Messages"
         '
@@ -319,13 +321,15 @@ Partial Class Main
         Me.tbMessages.Location = New System.Drawing.Point(0, 25)
         Me.tbMessages.Multiline = True
         Me.tbMessages.Name = "tbMessages"
-        Me.tbMessages.Size = New System.Drawing.Size(334, 398)
+        Me.tbMessages.Size = New System.Drawing.Size(334, 565)
         Me.tbMessages.TabIndex = 0
         Me.tbMessages.TabStop = False
         '
         'TabPageAdmin
         '
         Me.TabPageAdmin.BackColor = System.Drawing.Color.Black
+        Me.TabPageAdmin.Controls.Add(Me.BtnLogFile)
+        Me.TabPageAdmin.Controls.Add(Me.SwSyncArtikelOrgaBack)
         Me.TabPageAdmin.Controls.Add(Me.lblServerInfo)
         Me.TabPageAdmin.Controls.Add(Me.lblBackupRestoreStatus)
         Me.TabPageAdmin.Controls.Add(Me.lblBackupRestore)
@@ -335,19 +339,50 @@ Partial Class Main
         Me.TabPageAdmin.Location = New System.Drawing.Point(4, 23)
         Me.TabPageAdmin.Name = "TabPageAdmin"
         Me.TabPageAdmin.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageAdmin.Size = New System.Drawing.Size(334, 426)
+        Me.TabPageAdmin.Size = New System.Drawing.Size(334, 593)
         Me.TabPageAdmin.TabIndex = 2
         Me.TabPageAdmin.Text = "Admin"
+        '
+        'BtnLogFile
+        '
+        Me.BtnLogFile.BackColor = System.Drawing.Color.Gray
+        Me.BtnLogFile.FlatAppearance.BorderColor = System.Drawing.Color.Gray
+        Me.BtnLogFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnLogFile.ForeColor = System.Drawing.Color.White
+        Me.BtnLogFile.Image = Global.WinBackServerTask.My.Resources.Resources.LogFile
+        Me.BtnLogFile.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.BtnLogFile.Location = New System.Drawing.Point(-1, 176)
+        Me.BtnLogFile.Name = "BtnLogFile"
+        Me.BtnLogFile.Size = New System.Drawing.Size(110, 65)
+        Me.BtnLogFile.TabIndex = 23
+        Me.BtnLogFile.Text = "Log/Messages"
+        Me.BtnLogFile.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnLogFile.UseVisualStyleBackColor = False
+        '
+        'SwSyncArtikelOrgaBack
+        '
+        Me.SwSyncArtikelOrgaBack.AutoSize = True
+        Me.SwSyncArtikelOrgaBack.DisplayStatus = False
+        Me.SwSyncArtikelOrgaBack.FontSize = MetroFramework.MetroLinkSize.Medium
+        Me.SwSyncArtikelOrgaBack.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.SwSyncArtikelOrgaBack.Location = New System.Drawing.Point(6, 132)
+        Me.SwSyncArtikelOrgaBack.Name = "SwSyncArtikelOrgaBack"
+        Me.SwSyncArtikelOrgaBack.Size = New System.Drawing.Size(50, 17)
+        Me.SwSyncArtikelOrgaBack.Style = MetroFramework.MetroColorStyle.Green
+        Me.SwSyncArtikelOrgaBack.TabIndex = 22
+        Me.SwSyncArtikelOrgaBack.Text = "Aus"
+        Me.SwSyncArtikelOrgaBack.UseStyleColors = True
+        Me.SwSyncArtikelOrgaBack.UseVisualStyleBackColor = True
         '
         'lblServerInfo
         '
         Me.lblServerInfo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblServerInfo.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblServerInfo.Location = New System.Drawing.Point(3, 382)
+        Me.lblServerInfo.Location = New System.Drawing.Point(1, 553)
         Me.lblServerInfo.Name = "lblServerInfo"
-        Me.lblServerInfo.Size = New System.Drawing.Size(328, 41)
-        Me.lblServerInfo.TabIndex = 12
+        Me.lblServerInfo.Size = New System.Drawing.Size(333, 40)
+        Me.lblServerInfo.TabIndex = 16
         Me.lblServerInfo.Text = "WinBack-Server 10.0.0.1"
         '
         'lblBackupRestoreStatus
@@ -356,10 +391,10 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblBackupRestoreStatus.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblBackupRestoreStatus.ForeColor = System.Drawing.Color.Chartreuse
-        Me.lblBackupRestoreStatus.Location = New System.Drawing.Point(-4, 93)
+        Me.lblBackupRestoreStatus.Location = New System.Drawing.Point(0, 94)
         Me.lblBackupRestoreStatus.Name = "lblBackupRestoreStatus"
-        Me.lblBackupRestoreStatus.Size = New System.Drawing.Size(342, 18)
-        Me.lblBackupRestoreStatus.TabIndex = 11
+        Me.lblBackupRestoreStatus.Size = New System.Drawing.Size(338, 18)
+        Me.lblBackupRestoreStatus.TabIndex = 14
         Me.lblBackupRestoreStatus.Text = "Daten Backup/Restore"
         '
         'lblBackupRestore
@@ -413,7 +448,7 @@ Partial Class Main
         Me.TabPageCloud.Location = New System.Drawing.Point(4, 23)
         Me.TabPageCloud.Name = "TabPageCloud"
         Me.TabPageCloud.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageCloud.Size = New System.Drawing.Size(334, 426)
+        Me.TabPageCloud.Size = New System.Drawing.Size(334, 593)
         Me.TabPageCloud.TabIndex = 3
         Me.TabPageCloud.Text = "Cloud"
         '
@@ -430,7 +465,7 @@ Partial Class Main
         Me.tbCloud.Multiline = True
         Me.tbCloud.Name = "tbCloud"
         Me.tbCloud.ReadOnly = True
-        Me.tbCloud.Size = New System.Drawing.Size(334, 398)
+        Me.tbCloud.Size = New System.Drawing.Size(334, 565)
         Me.tbCloud.TabIndex = 2
         Me.tbCloud.TabStop = False
         Me.tbCloud.WordWrap = False
@@ -454,7 +489,7 @@ Partial Class Main
         Me.TabPageTimer.Location = New System.Drawing.Point(4, 23)
         Me.TabPageTimer.Name = "TabPageTimer"
         Me.TabPageTimer.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageTimer.Size = New System.Drawing.Size(334, 426)
+        Me.TabPageTimer.Size = New System.Drawing.Size(334, 593)
         Me.TabPageTimer.TabIndex = 4
         Me.TabPageTimer.Text = "Timer"
         '
@@ -467,7 +502,7 @@ Partial Class Main
         Me.tbAktionsTimer.ForeColor = System.Drawing.SystemColors.InfoText
         Me.tbAktionsTimer.Location = New System.Drawing.Point(-4, 35)
         Me.tbAktionsTimer.Name = "tbAktionsTimer"
-        Me.tbAktionsTimer.Size = New System.Drawing.Size(342, 391)
+        Me.tbAktionsTimer.Size = New System.Drawing.Size(342, 558)
         Me.tbAktionsTimer.TabIndex = 12
         '
         'Label3
@@ -484,17 +519,17 @@ Partial Class Main
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Black
-        Me.ClientSize = New System.Drawing.Size(366, 688)
+        Me.ClientSize = New System.Drawing.Size(366, 855)
         Me.ControlBox = False
+        Me.Controls.Add(Me.BtnHide)
+        Me.Controls.Add(Me.btnMessages)
+        Me.Controls.Add(Me.BtnClients)
         Me.Controls.Add(Me.lblServerStatus)
         Me.Controls.Add(Me.BtnTimer)
         Me.Controls.Add(Me.btnCloud)
         Me.Controls.Add(Me.BtnAdmin)
         Me.Controls.Add(Me.Wb_TabControl)
         Me.Controls.Add(Me.BtnExit)
-        Me.Controls.Add(Me.BtnHide)
-        Me.Controls.Add(Me.btnMessages)
-        Me.Controls.Add(Me.BtnClients)
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -537,7 +572,6 @@ Partial Class Main
     Friend WithEvents OpenFileDialog As OpenFileDialog
     Friend WithEvents SaveFileDialog As SaveFileDialog
     Friend WithEvents lblBackupRestore As Label
-    Friend WithEvents lblBackupRestoreStatus As Label
     Friend WithEvents lbClientList As ListBox
     Friend WithEvents tbMessages As TextBox
     Friend WithEvents lblClients As Label
@@ -552,5 +586,8 @@ Partial Class Main
     Friend WithEvents TabPageTimer As TabPage
     Friend WithEvents Label3 As Label
     Friend WithEvents tbAktionsTimer As Panel
+    Friend WithEvents lblBackupRestoreStatus As Label
     Friend WithEvents lblServerInfo As Label
+    Friend WithEvents SwSyncArtikelOrgaBack As MetroFramework.Controls.MetroToggle
+    Friend WithEvents BtnLogFile As Button
 End Class

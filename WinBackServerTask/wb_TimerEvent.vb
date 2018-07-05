@@ -84,7 +84,7 @@ Public Class wb_TimerEvent
 
     Public ReadOnly Property sStartzeit As String
         Get
-            Return Startzeit.ToString("dd-MM-yy hh:MM")
+            Return Startzeit.ToString("dd-MM-yy HH:mm")
         End Get
     End Property
 
