@@ -45,8 +45,10 @@ Public Class wb_GlobalSettings
     Private Shared _MsSQLUserId As String = Nothing
     Private Shared _MsSQLPasswd As String = Nothing
 
-    Private Shared _osGrpRohstoffe As String = Nothing  'Warengruppe Rohstoffe in OrgaBack
-    Private Shared _osGrpBackwaren As String = Nothing  'Warengruppe Verkaufsartikel(Backwaren) in OrgaBack
+    Private Shared _osGrpRohstoffe As String = Nothing                        'Warengruppe Rohstoffe in OrgaBack
+    Private Shared _osGrpBackwaren As String = Nothing                        'Warengruppe Verkaufsartikel(Backwaren) in OrgaBack
+    Private Shared _osLaendercode As String = Nothing                         'Ländercode in OrgaBack (Update der Artikel/Komponenten-Nährwerte, Allergene und Deklaration
+    Private Shared _osSprachCode As String = Nothing                        'Sprachencode in OrgaBack (Update der Artikel/Komponenten-Nährwerte, Allergene und Deklaration
 
     Private Shared _WinBackDBType As wb_Sql.dbType = wb_Sql.dbType.undef
     Private Shared _MySQLServerIP As String = Nothing
@@ -545,6 +547,30 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property osLaendercode As String
+        Get
+            If _osLaendercode Is Nothing Then
+                getWinBackIni("OrgaBack")
+            End If
+            Return _osLaendercode
+        End Get
+        Set(value As String)
+            _osLaendercode = value
+        End Set
+    End Property
+
+    Public Shared Property osSprachcode As String
+        Get
+            If _osSprachCode Is Nothing Then
+                getWinBackIni("OrgaBack")
+            End If
+            Return _osSprachCode
+        End Get
+        Set(value As String)
+            _osSprachCode = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Setzt/gibt den Pfad zur winback.ini zurück.
     ''' 
@@ -784,6 +810,7 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+
     Private Shared Sub GetOrgaBackMandant()
         'xml-File OrgaBack.ini aus DatenPfad einlesen
         Dim XMLReader As Xml.XmlReader = New Xml.XmlTextReader(pDatenPath & "OrgaSoft.ini")
@@ -890,6 +917,8 @@ Public Class wb_GlobalSettings
             Case "OrgaBack"
                 _osGrpBackwaren = IniFile.ReadString("orgaback", "GruppeBackwaren", "0")
                 _osGrpRohstoffe = IniFile.ReadString("orgaback", "GruppeRohstoffe", "40")
+                _osLaendercode = IniFile.ReadString("orgaback", "LaenderCode", "DE")
+                _osSprachCode = IniFile.ReadString("orgaback", "SprachCode", "D")
 
                 'wenn eine Mandanten-Nummer angegeben ist, wird versucht entsprechend der Mandanten-Nummer die Daten aus der Ini-Datei zu lesen
                 If MandantNr <> UNDEFINED Then

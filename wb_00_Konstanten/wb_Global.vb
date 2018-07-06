@@ -444,6 +444,8 @@
         Alg   'Allergen
         Nrw   'Nährwert
         Dkl   'Deklaration'
+        Err   'Fehler
+        Msg   'Message
     End Enum
 
     Public Structure wb_ChangeLogEintrag

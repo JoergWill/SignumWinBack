@@ -33,14 +33,14 @@
 
     'Sql-Statement Zutatenliste und Deklarationstexte
     Public Const sqlReadDeklaration = "SELECT * FROM [dbo].[ArtikelDeklarationsTexte] WHERE ArtikelNr = '[0]' AND StuecklistenVariantenNr = [1] " &
-                                      "AND [LaenderCode] = 'D' AND [SprachenCode] = 'D'"
+                                      "AND [LaenderCode] = '[2]' AND [SprachenCode] = '[3]'"
     'Sql-Statement Update Zutatenliste und Deklarationstexte
     Public Const sqlUpdateDeklaration = "UPDATE [dbo].[ArtikelDeklarationsTexte] SET [0] WHERE ArtikelNr = '[1]' AND StuecklistenVariantenNr = [2] " &
-                                      "AND [LaenderCode] = 'D' AND [SprachenCode] = 'D'"
+                                      "AND [LaenderCode] = '[3]' AND [SprachenCode] = '[4]'"
     'Sql-Statement Insert Zutatenliste und Deklarationstexte
     Public Const sqlInsertDeklaration = "INSERT INTO [dbo].[ArtikelDeklarationsTexte] (ArtikelNr, StuecklistenVariantenNr, LaenderCode, SprachenCode, " &
                                         "Zutaten, AllergenDeklarationEnthalten, AllergenDeklarationSpuren, AllergenKurzDeklarationEnthalten, " &
-                                        "AllergenKurzDeklarationSpuren) VALUES ('[1]', [2], 'D', 'D', [0])"
+                                        "AllergenKurzDeklarationSpuren) VALUES ('[1]', [2], '[3]', '[4]', [0])"
 
     'Sql-Statement Filiale zugeordnet zu Produktion (Typ=4)
     Public Const mssqlFiliale = "Select Filialnummer, Name1 FROM Filialen WHERE [Typ] = [0]"

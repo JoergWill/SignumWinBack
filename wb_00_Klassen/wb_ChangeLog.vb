@@ -136,8 +136,14 @@ Public Class wb_ChangeLog
                         Case Parameter.Tx_Lieferant
                             s += vbNewLine & "Lieferant [alt] " & x.OldValue
                             s += vbNewLine & "Lieferant [neu] " & x.NewValue & vbNewLine
-
                     End Select
+
+                'Fehler
+                Case wb_Global.LogType.Err
+                    s += vbNewLine & "Fehler " & x.NewValue
+                'Hinweis
+                Case wb_Global.LogType.Msg
+                    s += vbNewLine & "Hinweis " & x.NewValue
 
                 Case Else
                     If ReportAll Then

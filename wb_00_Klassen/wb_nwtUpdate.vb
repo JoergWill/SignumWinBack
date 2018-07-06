@@ -87,7 +87,7 @@ Public Class wb_nwtUpdate
                     'Protokoll der Änderungen speichern in Hinweise
                     nwtDaten.SaveReport()
                     'Protokoll der Änderungen ausgeben
-                    Debug.Print(nwtDaten.GetReport)
+                    'Debug.Print("Report " & nwtDaten.GetReport)
 
                     'Ausgabe-Text
                     _InfoText = "(" & nwtDaten.Nr.ToString("00000") & ") " & nwtDaten.Bezeichnung

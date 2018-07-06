@@ -21,7 +21,6 @@ Public Class Main
     Const cntCheckCloud = 5
     Const cntCheckAktionsTimer = 60
 
-
     Enum ServerTaskErrors
         OK
         NO_PING_TO_MYSQL
@@ -45,6 +44,7 @@ Public Class Main
     Private WithEvents AktionsTimerGrid As wb_TimerGridView
     Private tArray As New ArrayList
     Private AktTimerEvent As wb_TimerEvent
+    Private AktUpdateNummer As String = ""
 
     Private xLogger As New wb_TraceListener
 
@@ -168,9 +168,10 @@ Public Class Main
                 ScrollTextBox(tbCloud, nwtUpdateKomponenten.InfoText & vbNewLine)
             End If
             'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
-            AktTimerEvent.Str2 = nwtUpdateKomponenten.AktKO_Nr
+            AktTimerEvent.Str2 = nwtUpdateKomponenten.AktKO_Nr.ToString
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
+            AktUpdateNummer = " (" & AktTimerEvent.Str2 & ")"
             'Daten im Grid aktualisieren
             RefreshAktionsTimer()
         End If
@@ -189,9 +190,10 @@ Public Class Main
                 ScrollTextBox(tbCloud, nwtUpdateArtikel.InfoText & vbNewLine)
             End If
             'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
-            AktTimerEvent.Str2 = nwtUpdateArtikel.AktKO_Nr
+            AktTimerEvent.Str2 = nwtUpdateArtikel.AktKO_Nr.ToString
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
+            AktUpdateNummer = " <" & AktTimerEvent.Str2 & ">"
             'Daten im Grid aktualisieren
             RefreshAktionsTimer()
         End If
@@ -219,6 +221,10 @@ Public Class Main
 
             Case Else
                 lblServerStatus.Text = DateTime.Now.ToLongTimeString
+                'wenn die Anzeige der Nährwert-Cloud geöffnet ist, wird die aktuell bearbeitete Komponenten-Nummer angezeigt
+                If tbCloud.Visible Then
+                    lblServerStatus.Text &= " " & AktUpdateNummer
+                End If
                 lblServerStatus.ForeColor = Color.LimeGreen
         End Select
 
@@ -631,7 +637,7 @@ Public Class Main
 
         'Fenster mit Detail-Informationen modal einblenden
         Dim DetailAnsicht As New wb_ServerDetails
-        DetailAnsicht.Text = "Detail-Bericht Update Rohstoff-Nährwerte und Allergene"
+        DetailAnsicht.Text = "Detail-Bericht Update Artikel/Rohstoff-Nährwerte und Allergene"
         DetailAnsicht.tbDetails.Text = h.Memo
         DetailAnsicht.tbDetails.Select(0, 0)
         DetailAnsicht.ShowDialog()
@@ -658,5 +664,15 @@ Public Class Main
     Private Sub BtnLogFile_Click(sender As Object, e As EventArgs) Handles BtnLogFile.Click
         Dim Admin_Log As New wb_Admin_Log
         Admin_Log.Show()
+    End Sub
+
+    ''' <summary>
+    ''' Anzeigefenster mit Editor winback.ini
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnEditKonfig_Click(sender As Object, e As EventArgs) Handles BtnEditKonfig.Click
+        Dim Admin_EditIni As New wb_Admin_EditIni
+        Admin_EditIni.ShowDialog()
     End Sub
 End Class

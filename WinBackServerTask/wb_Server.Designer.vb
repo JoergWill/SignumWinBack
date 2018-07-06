@@ -59,6 +59,7 @@ Partial Class Main
         Me.TabPageTimer = New System.Windows.Forms.TabPage()
         Me.tbAktionsTimer = New System.Windows.Forms.Panel()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.BtnEditKonfig = New System.Windows.Forms.Button()
         Me.Wb_TabControl.SuspendLayout()
         Me.TabPageClients.SuspendLayout()
         Me.TabPageMessages.SuspendLayout()
@@ -328,6 +329,7 @@ Partial Class Main
         'TabPageAdmin
         '
         Me.TabPageAdmin.BackColor = System.Drawing.Color.Black
+        Me.TabPageAdmin.Controls.Add(Me.BtnEditKonfig)
         Me.TabPageAdmin.Controls.Add(Me.BtnLogFile)
         Me.TabPageAdmin.Controls.Add(Me.SwSyncArtikelOrgaBack)
         Me.TabPageAdmin.Controls.Add(Me.lblServerInfo)
@@ -515,6 +517,22 @@ Partial Class Main
         Me.Label3.TabIndex = 11
         Me.Label3.Text = "Task/Timer-Einstellungen"
         '
+        'BtnEditKonfig
+        '
+        Me.BtnEditKonfig.BackColor = System.Drawing.Color.Gray
+        Me.BtnEditKonfig.FlatAppearance.BorderColor = System.Drawing.Color.Gray
+        Me.BtnEditKonfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnEditKonfig.ForeColor = System.Drawing.Color.White
+        Me.BtnEditKonfig.Image = Global.WinBackServerTask.My.Resources.Resources.LogFile
+        Me.BtnEditKonfig.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.BtnEditKonfig.Location = New System.Drawing.Point(228, 25)
+        Me.BtnEditKonfig.Name = "BtnEditKonfig"
+        Me.BtnEditKonfig.Size = New System.Drawing.Size(110, 65)
+        Me.BtnEditKonfig.TabIndex = 24
+        Me.BtnEditKonfig.Text = "Edit Konfig"
+        Me.BtnEditKonfig.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnEditKonfig.UseVisualStyleBackColor = False
+        '
         'Main
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -590,4 +608,5 @@ Partial Class Main
     Friend WithEvents lblServerInfo As Label
     Friend WithEvents SwSyncArtikelOrgaBack As MetroFramework.Controls.MetroToggle
     Friend WithEvents BtnLogFile As Button
+    Friend WithEvents BtnEditKonfig As Button
 End Class

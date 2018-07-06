@@ -114,7 +114,7 @@ Public Class wb_nwtUpdateAtikel
 
                             'Daten sichern in MsSQL
                             'Gibt true zurück, wenn der Artikel in OrgaBack existiert
-                            Debug.Print("Update (weitere rtikel)Nährwerte in OrgaBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
+                            Debug.Print("Update (weitere Artikel)Nährwerte in OrgaBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
                             If nwtArtikelDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
                                 'Zutaten-und Allergenliste in OrgaBack updaten
                                 Debug.Print("Update (weitere Artikel)Zutaten in OrgaBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
@@ -127,7 +127,7 @@ Public Class wb_nwtUpdateAtikel
                 'Protokoll der Änderungen speichern in Hinweise
                 nwtArtikelDaten.SaveReport()
                 'Protokoll der Änderungen ausgeben
-                Debug.Print("Report " & nwtArtikelDaten.GetReport)
+                'Debug.Print("Report " & nwtArtikelDaten.GetReport)
 
                 'Ausgabe-Text
                 _InfoText = "<" & nwtArtikelDaten.Nr.ToString("00000") & "> " & nwtArtikelDaten.Bezeichnung
