@@ -32,10 +32,10 @@ Public Class Main
     Dim ServerTaskState As ServerTaskErrors = ServerTaskErrors.OK
 
     Dim nwtUpdateKomponenten As New wb_nwtUpdate
-    Dim nwtUpdateArtikel As New wb_nwtUpdateAtikel
+    Dim nwtUpdateArtikel As New wb_nwtUpdateArtikel
 
-    Private nwtUpdateKomponentenOrgaBack = True
-    Private nwtUpdateArtikelOrgaBack = True
+    Private nwtUpdateKomponentenOrgaBack = False
+    Private nwtUpdateArtikelOrgaBack = False
 
     Private cntCounter As Integer
     Private cntMySql As Integer = 0
@@ -44,6 +44,7 @@ Public Class Main
     Private WithEvents AktionsTimerGrid As wb_TimerGridView
     Private tArray As New ArrayList
     Private AktTimerEvent As wb_TimerEvent
+    Private WithEvents EditTimer As wb_TimerEdit
     Private AktUpdateNummer As String = ""
 
     Private xLogger As New wb_TraceListener
@@ -162,6 +163,12 @@ Public Class Main
             'letzte Komponenten-Nummer aus Aktions-Timer-Tabelle
             Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
 
+            'Sonderfunktion alle Rohrstoffe in OrgaBack aktualisieren
+            If AktKONr = wb_Global.obUpdateAll Then
+                AktKONr = 0
+                nwtUpdateKomponentenOrgaBack = True
+            End If
+
             'Datensatz wurde aus der Cloud aktualisiert
             If nwtUpdateKomponenten.UpdateNext(AktKONr, nwtUpdateKomponentenOrgaBack) Then
                 'Info-Text ausgeben
@@ -183,6 +190,12 @@ Public Class Main
 
             'letzte Komponenten-Nummer aus Aktions-Timer-Tabelle
             Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+
+            'Sonderfunktion alle Rohrstoffe in OrgaBack aktualisieren
+            If AktKONr = wb_Global.obUpdateAll Then
+                AktKONr = 0
+                nwtUpdateArtikelOrgaBack = True
+            End If
 
             'Datensatz wurde aktualisiert
             If nwtUpdateArtikel.UpdateNext(AktKONr, nwtUpdateArtikelOrgaBack) Then
@@ -319,6 +332,54 @@ Public Class Main
     End Sub
 
     ''' <summary>
+    ''' Doppelclick auf Aktions-Timer-Tabelle.
+    ''' Edit-Fenster Start-Zeit, Zyklus und Sonderfunktionen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub AktionsTimerDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles AktionsTimerGrid.CellMouseDoubleClick
+        Dim Grid = DirectCast(sender, DataGridView)
+        If e.ColumnIndex = wb_TimerGridView.COLSTRT And (e.RowIndex >= 0) Then
+            Debug.Print(e.RowIndex)
+            Debug.Print(Grid.CurrentCell.Value)
+
+            'wenn das Fenster noch nicht vorhanden ist - erzeugen
+            If EditTimer Is Nothing Then
+                EditTimer = New wb_TimerEdit
+            End If
+
+            'Daten aus dem Timer-Grid (aktuelle Zeile)
+            Dim Task As String = Grid(wb_TimerGridView.COLTASK, e.RowIndex).Value
+            Dim TimerStart As DateTime = Grid(wb_TimerGridView.COLSTRT, e.RowIndex).Value
+            Dim TimerZyklus As Integer = wb_Functions.StrToInt(Grid(wb_TimerGridView.COLPRDE, e.RowIndex).Value)
+
+
+            Dim t As New TimeSpan(0, 0, TimerZyklus)
+            Dim d As New DateTime(t.Ticks)
+            d = DateAdd(DateInterval.Year, 2000, d)
+
+
+            'Daten im Eingabe-Fenster
+            EditTimer.lblTimerName.Text = Task
+            EditTimer.dtEventDate.Value = TimerStart
+            EditTimer.dtEventTime.Value = TimerStart
+            EditTimer.dtEventZyklus.Value = d
+            'Eingabe-Form anzeigen
+            EditTimer.Show()
+
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Fenster Edit Timer-Events wird geschlossen
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub EditTimerEventClosing(Sender As Object, e As EventArgs) Handles EditTimer.Closing
+        Debug.Print("EditTimer " & EditTimer.lblTimerName.Text)
+    End Sub
+
+    ''' <summary>
     ''' Läd die Daten aus der Tabelle winback.AktionsTimer in tArray
     ''' </summary>
     Private Sub LoadAktionsTimer()
@@ -361,11 +422,14 @@ Public Class Main
         listener.Start(wb_Global.WinBackServerTaskPort) 'start the listener, with the port specified as 22046
 
         'Liste der Tabellen-Überschriften
+        '   Spalten mit & dienen als Ausgleich der Breite
+        '   Spalten mit # enthalten Datum/Uhrzeit-Angaben
         Dim sColNames As New List(Of String)
-        sColNames.AddRange({"", "&Task", "#Startzeit", "Periode", "Status"})
+        sColNames.AddRange({"", "&Task", "Startzeit", "Periode", "Status"})
         LoadAktionsTimer()
         AktionsTimerGrid = New wb_TimerGridView(tArray, sColNames)
-        AktionsTimerGrid.ReadOnly = False
+        'Tabelle darf editiert werden
+        AktionsTimerGrid.ReadOnly = True
 
         'Status-Anzeige Backup/Restore
         lblBackupRestoreStatus.Text = ""

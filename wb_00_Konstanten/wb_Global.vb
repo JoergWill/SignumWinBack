@@ -13,7 +13,7 @@
     Public Const LinienGruppeSauerteig = 127          'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
     Public Const LinienGruppeStandard = 1             'Liniengruppe für neue Rezepte
     Public Const MaxLinien = 99
-    Public Const RS_Par1_QUID = "-1"                   'Komponente im Rezept ist QUID-Relevant (In RS_Par1)
+    Public Const RS_Par1_QUID = "-1"                  'Komponente im Rezept ist QUID-Relevant (In RS_Par1)
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)
     Public Const NewUserName = "Neu"
@@ -41,6 +41,8 @@
     'WinBack.Einheit aus winback.Einheiten (Unit-Test)
     Public Const wbEinheitKilogramm = 1
     Public Const wbEinheitStk = 11
+    'Einträge AktionTimer-Tabelle
+    Public Const obUpdateAll = -2                     'Eintrag in Aktions-Timer-Tabelle (alle Komponenten updaten)
 
     'OrgaBack.RezeptType (Produktions-Rezept variabel)
     Public Const RecipeTypeNoRecipe As Short = 0

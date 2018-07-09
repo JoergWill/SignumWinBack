@@ -366,20 +366,28 @@ Public Class wb_KomponParam301
         For i = 1 To maxTyp301
             If IsValidParameter(i) Then
 
+                'nur gültige Nährwerte/Allergene in DB schreiben (reduziert die Datenlast)
+                sql = ""
                 'Allergene haben in OrgaBack einen eigene Tabelle
                 If IsAllergen(i) Then
-                    'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
-                    sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqInsertAlg, KoAlNum, i, oWert(i), 0))
-                    'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                    If (NaehrwertInfo(i)._Allergen > wb_Global.AllergenInfo.N) Then
+                        'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
+                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqInsertAlg, KoAlNum, i, oWert(i), 0))
+                        'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                    End If
                 Else
-                    'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
-                    sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqInsertNwt, KoAlNum, i, oWert(i), Unit, 0))
-                    'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                    If (NaehrwertInfo(i)._Naehrwert > 0) Then
+                        'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
+                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqInsertNwt, KoAlNum, i, oWert(i), Unit, 0))
+                        'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                    End If
                 End If
 
-                'Update-Statement wird dynamisch erzeugt
-                If orgaback.sqlCommand(sql) < 0 Then
-                    MsSQLdbUpdate = False
+                'Update-Statement wird dynamisch erzeugt (nur wenn auch Daten vorhanden sind)
+                If sql <> "" Then
+                    If orgaback.sqlCommand(sql) < 0 Then
+                        MsSQLdbUpdate = False
+                    End If
                 End If
             End If
         Next

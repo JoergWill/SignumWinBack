@@ -712,9 +712,17 @@ Public Class wb_Functions
     ''' </summary>
     ''' <param name="s"></param>
     ''' <returns></returns>
-    Public Shared Function XRemoveSonderZeichen(s As String) As String
+    Public Shared Function XRemoveSonderZeichen(s As String, Optional nwtZutaten As Boolean = False) As String
         If s IsNot Nothing Then
-            Return s.Replace("'", "")
+            s = s.Replace("'", "")
+            If Not nwtZutaten Then
+                Return s
+            Else
+                s = s.Replace("{", "")
+                s = s.Replace("}", "")
+                s = s.Replace(">", "")
+                Return s
+            End If
         Else
             Return ""
         End If

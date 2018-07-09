@@ -30,7 +30,7 @@ Public Class wb_nwtUpdate
     ''' die Daten werden aktualisiert.
     ''' </summary>
     ''' <returns>True wenn der Datensatz aktualisiert wurde</returns>
-    Public Function UpdateNext(KompNr As Integer, Optional bUpdateOrgaBack As Boolean = False) As Boolean
+    Public Function UpdateNext(KompNr As Integer, Optional ByRef bUpdateOrgaBack As Boolean = False) As Boolean
         'Aktuelle Komponenten-Nummer setzen
         AktKO_Nr = KompNr
         'Datenbank-Verbindung öffnen - MySQL
@@ -55,6 +55,7 @@ Public Class wb_nwtUpdate
                         nwtDaten.MySQLdbRead(winback.MySqlRead)
                     End If
                 End If
+                winback.CloseRead()
 
                 'Datum der letzen Nährwert-Aktualisierung in der WinBack-Datenbank
                 Dim WinBackChangeDate As Date = nwtDaten.ktTyp301.TimeStamp
@@ -97,6 +98,8 @@ Public Class wb_nwtUpdate
                 'EOF() - ReStart bei KO_Nr = 0
                 AktKO_Nr = 0
                 _InfoText = ""
+                'Reset Flag alle Artikel in OrgaBack updaten
+                bUpdateOrgaBack = False
             End If
         End If
         winback.Close()

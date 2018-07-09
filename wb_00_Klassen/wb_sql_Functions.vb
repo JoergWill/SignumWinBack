@@ -43,20 +43,6 @@ Public Class wb_sql_Functions
     End Function
 
     ''' <summary>
-    ''' Entfernt alle störenden Sonderzeichen aus einem (sql)String
-    ''' </summary>
-    ''' <param name="s">String mit Sonderzeichen</param>
-    ''' <returns>s - String mit umgewandelten Sonderzeichen</returns>
-    Public Shared Function removeSonderZeichen(s As String) As String
-        'wandelt ' in ''
-        Try
-            s = s.Replace("'", "''")
-        Catch
-        End Try
-        Return s
-    End Function
-
-    ''' <summary>
     ''' Wandelt einen Double-Wert in einen String. Dezimal-Komma werden ersatzt durch Dezimal-Punkte
     ''' </summary>
     ''' <param name="d"></param>

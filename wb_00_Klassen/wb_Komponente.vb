@@ -563,11 +563,10 @@ Public Class wb_Komponente
     ''' <param name="Marker"></param>
     Public Sub MySQLdbSetMarker(Marker As wb_Global.ArtikelMarker)
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-
         'Interne Komponenten-Nummer muss definiert sein
         If KO_Nr > 0 Then
             'Update Komponente in winback.Komponenten
-            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarker, KO_Nr, Marker))
+            WinBack.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarker, KO_Nr, Marker))
         End If
         winback.Close()
     End Sub
@@ -716,6 +715,7 @@ Public Class wb_Komponente
             Try
                 MySQLdbRead_StammDaten(sqlReader.GetName(i), sqlReader.GetValue(i))
             Catch ex As Exception
+                Debug.Print("Exception MySQLdbReadStammdaten" & ex.Message)
             End Try
         Next
 
@@ -873,7 +873,9 @@ Public Class wb_Komponente
                         ktTyp301.Wert(ParamNr) = Value.ToString
                 End Select
 
-            'TimeStamp
+                'TimeStamp
+                'TODO WIRD DAS HIER RICHTIG EINGELESEN ??
+                'BREAK
             Case "RP_Timestamp"
                 Select Case ParamTyp
                     Case 301
@@ -1085,7 +1087,7 @@ Public Class wb_Komponente
 
             'Zutatenliste aktualisieren
             If Not ZutatenListeFixiert Then
-                ZutatenListe = wb_sql_Functions.removeSonderZeichen(Deklaration)
+                ZutatenListe = wb_Functions.XRemoveSonderZeichen(Deklaration, True)
                 'Meldungen im Log ausgeben
                 ChangeLogAdd(LogType.Msg, Nr, "", "Update der Zutatenliste in OrgaBack-DB - Nr " & KO_Nr_AlNum)
             End If

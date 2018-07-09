@@ -52,7 +52,7 @@ Public Class wb_Hinweise
             Return H2_Memo
         End Get
         Set(value As String)
-            H2_Memo = wb_sql_Functions.removeSonderZeichen(value)
+            H2_Memo = wb_Functions.XRemoveSonderZeichen(value)
         End Set
     End Property
 

@@ -215,6 +215,12 @@
     <Compile Include="wb_ServerDetails.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_TimerEdit.Designer.vb">
+      <DependentUpon>wb_TimerEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_TimerEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_TimerEvent.vb" />
     <Compile Include="wb_TimerGridView.Designer.vb">
       <DependentUpon>wb_TimerGridView.vb</DependentUpon>
@@ -235,6 +241,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_ServerDetails.resx">
       <DependentUpon>wb_ServerDetails.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_TimerEdit.resx">
+      <DependentUpon>wb_TimerEdit.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

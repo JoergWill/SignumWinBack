@@ -28,6 +28,7 @@ Public Class wb_Rezept
     Private _RezeptTeigTemperatur As Double
     Private _LinienGruppe As Integer
     Private _KneterKennLinie As Integer
+    Private _NoMessage As Boolean
 
     Public TeigChargen As New wb_MinMaxOptCharge
     Private _DataHasChanged As Boolean = False
@@ -354,11 +355,12 @@ Public Class wb_Rezept
     ''' Fehlermeldungen (Rekursiver Aufruf von Rezept-im-Rezept) zur Information mit als Fehlermeldung
     ''' ausgegeben.
     ''' </summary>
-    Public Sub New(RzNr As Integer, Parent As Object, Optional ByRef RzVariante As Integer = 1, Optional KNummer As String = "", Optional KBezeichnung As String = "")
+    Public Sub New(RzNr As Integer, Parent As Object, Optional ByRef RzVariante As Integer = 1, Optional KNummer As String = "", Optional KBezeichnung As String = "", Optional NoMessage As Boolean = False)
         'Zeiger auf die aufrufende Klasse
         _Parent = Parent
         _RezeptNr = RzNr
         _RezeptVariante = RzVariante
+        _NoMessage = NoMessage
         TeigChargen.TeigGewicht = wb_Global.UNDEFINED
 
         'Rekursion begrenzen - Parent ermitteln
@@ -630,10 +632,12 @@ Public Class wb_Rezept
             If _RezeptSchritt.RezeptNr > 0 Then
                 'TODO welche Variante soll hier gelesen werden? (Standart ist Variante Eins)
                 Try
-                    _RezeptSchritt.RezeptImRezept = New wb_Rezept(_RezeptSchritt.RezeptNr, Me, _RezeptVariante, _RezeptSchritt.Nummer, _RezeptSchritt.Bezeichnung)
+                    _RezeptSchritt.RezeptImRezept = New wb_Rezept(_RezeptSchritt.RezeptNr, Me, _RezeptVariante, _RezeptSchritt.Nummer, _RezeptSchritt.Bezeichnung, _NoMessage)
                 Catch ex As Exception
-                    MsgBox(ex.Message)
-                    _RezeptSchritt.RezeptImRezept = Nothing
+                    If Not _NoMessage Then
+                        MsgBox(ex.Message)
+                        _RezeptSchritt.RezeptImRezept = Nothing
+                    End If
                 End Try
             End If
 
