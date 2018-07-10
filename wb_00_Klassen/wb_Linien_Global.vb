@@ -117,6 +117,7 @@
                     Linie.Filiale = winback.iField("L_ProdFiliale", DefaultProdFiliale)
                 Else
                     'Erweiterung Tabelle Linien ist notwendig !
+                    Linie.Filiale = DefaultProdFiliale
                     Trace.WriteLine("Tabelle WinBack.Linien muss erweitert werden! (Filiale)")
                 End If
                 'zum Dictonary hinzufügen

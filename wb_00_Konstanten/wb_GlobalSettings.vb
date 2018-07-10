@@ -48,7 +48,7 @@ Public Class wb_GlobalSettings
     Private Shared _osGrpRohstoffe As String = Nothing                        'Warengruppe Rohstoffe in OrgaBack
     Private Shared _osGrpBackwaren As String = Nothing                        'Warengruppe Verkaufsartikel(Backwaren) in OrgaBack
     Private Shared _osLaendercode As String = Nothing                         'Ländercode in OrgaBack (Update der Artikel/Komponenten-Nährwerte, Allergene und Deklaration
-    Private Shared _osSprachCode As String = Nothing                        'Sprachencode in OrgaBack (Update der Artikel/Komponenten-Nährwerte, Allergene und Deklaration
+    Private Shared _osSprachCode As String = Nothing                          'Sprachencode in OrgaBack (Update der Artikel/Komponenten-Nährwerte, Allergene und Deklaration
 
     Private Shared _WinBackDBType As wb_Sql.dbType = wb_Sql.dbType.undef
     Private Shared _MySQLServerIP As String = Nothing
@@ -592,6 +592,7 @@ Public Class wb_GlobalSettings
                     _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
                 Else
                     'die winback.ini liegt direkt im AddIn-Pfad
+                    '..\OrgaBack\AddIn
                     _pWinBackIniPath = pProgrammPath & "WinBack.ini"
                 End If
             End If
@@ -618,8 +619,9 @@ Public Class wb_GlobalSettings
         Get
             If _pProgrammPath = Nothing Then
                 _pProgrammPath = My.Application.Info.DirectoryPath & "\"
+                Debug.Print("Programm-Pfad " & _pProgrammPath)
             End If
-            Return _pProgrammPath
+                Return _pProgrammPath
         End Get
         Set(value As String)
             _pProgrammPath = value

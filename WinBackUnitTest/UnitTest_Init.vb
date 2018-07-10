@@ -16,10 +16,10 @@ Public Class UnitTest_Init
         Inifile = Nothing
 
         'Einstellungen OrgaBack-DatenBank
-        wb_GlobalSettings.MsSQLAdmn = "UnitTest_vd3"
-        wb_GlobalSettings.MsSQLMain = "UnitTest300"
-        wb_GlobalSettings.MsSQLUserId = ""
-        wb_GlobalSettings.MySQLPass = ""
+        'wb_GlobalSettings.MsSQLAdmn = "UnitTest_vd3"
+        'wb_GlobalSettings.MsSQLMain = "UnitTest300"
+        'wb_GlobalSettings.MsSQLUserId = ""
+        'wb_GlobalSettings.MySQLPass = ""
 
         'Programm-Einstellung OrgaBack
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack

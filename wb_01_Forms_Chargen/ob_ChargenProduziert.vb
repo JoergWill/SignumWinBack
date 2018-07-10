@@ -1,4 +1,5 @@
 ﻿Imports MySql.Data.MySqlClient
+
 ''' <summary>
 ''' Rückmeldung der produzierten Chargen an OrgaBack
 ''' Schreibt alle zum Zeitpunkt x produzierten Artikel in die Tabelle dbo.ProduzierteWare
@@ -10,6 +11,17 @@ Public Class ob_ChargenProduziert
 
     Private opw_Liste As New ArrayList
     Private Const LIMIT = 1000
+    Private ProdDatumGueltig As DateTime
+
+    ''' <summary>
+    ''' Alle Chargen vor dem Stichtag werden als ungültig deklariert und nicht an OrgaBack zurückgemeldet
+    ''' (Hauptsächlich nicht produzierte Chargen)
+    ''' </summary>
+    Public Sub New()
+        ProdDatumGueltig = Convert.ToDateTime("22.11.1964")
+    End Sub
+
+
 
     ''' <summary>
     ''' Exportiert die einzelnen Produktions-Chargen-Daten ab der vorgegebenen 
@@ -110,11 +122,26 @@ Public Class ob_ChargenProduziert
         opw.MySQLdbRead_Chargen(Reader)
 
         'nur Zeilen mit Sollwerten sind für die Verbrauchsdaten relevant
-        If wb_Functions.TypeIstSollMenge(opw.Type, opw.ParamNr) Then
+        '2018-07-10 Datensätze mit Produktions-Datum 00010101 werden ignoriert (nicht gestartete Chargen)
+        If wb_Functions.TypeIstSollMenge(opw.Type, opw.ParamNr) And ProduktionDatumGueltig(opw.ProduktionsDatum) Then
             'zur Liste hinzufügen
             opw_Liste.Add(opw)
         End If
         Return opw
+    End Function
+
+    ''' <summary>
+    ''' Prüft auf gültiges Produktions-Datum
+    ''' (Chargen wurde produziert)
+    ''' </summary>
+    ''' <param name="d"></param>
+    ''' <returns></returns>
+    Private Function ProduktionDatumGueltig(d As DateTime) As Boolean
+        If d < ProdDatumGueltig Then
+            Return False
+        Else
+            Return True
+        End If
     End Function
 
     ''' <summary>
