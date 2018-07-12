@@ -221,6 +221,12 @@ Imports WinBack.wb_Global
         Assert.AreEqual(100, StrToInt("100"))
         Assert.AreEqual(100, StrToInt("100,00"))
     End Sub
+
+    <TestMethod()> Public Sub Test_XRemoveSonder()
+        Assert.AreEqual("Weizenmehl", wb_Functions.XRemoveSonderZeichen("{Weizenmehl}", True))
+        Assert.AreEqual("{Weizenmehl}", wb_Functions.XRemoveSonderZeichen("{Weizenmehl}", False))
+    End Sub
+
     <TestMethod()> Public Sub Test_TypeIstSollwert()
         Assert.IsTrue(TypeIstSollMenge(wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE, 1))
         Assert.IsTrue(TypeIstSollMenge(wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE, 1))

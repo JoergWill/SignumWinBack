@@ -100,16 +100,25 @@ Public Class wb_TimerEvent
 
     Public ReadOnly Property Status As wb_Global.wbAktionsTimerStatus
         Get
+            If _Running Then
+                Return wb_Global.wbAktionsTimerStatus.Running
+            End If
             If _Status > 0 Then
-                If _Running Then
-                    Return wb_Global.wbAktionsTimerStatus.Running
-                Else
-                    Return wb_Global.wbAktionsTimerStatus.Enabled
-                End If
+                Return wb_Global.wbAktionsTimerStatus.Enabled
             Else
                 Return wb_Global.wbAktionsTimerStatus.Disabled
             End If
         End Get
+    End Property
+
+    Public WriteOnly Property Aktiv As Boolean
+        Set
+            If Value Then
+                _Status = 1
+            Else
+                _Status = 0
+            End If
+        End Set
     End Property
 
     Public Property Str2 As String

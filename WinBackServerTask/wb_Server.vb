@@ -339,34 +339,34 @@ Public Class Main
     ''' <param name="e"></param>
     Private Sub AktionsTimerDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles AktionsTimerGrid.CellMouseDoubleClick
         Dim Grid = DirectCast(sender, DataGridView)
-        If e.ColumnIndex = wb_TimerGridView.COLSTRT And (e.RowIndex >= 0) Then
-            Debug.Print(e.RowIndex)
-            Debug.Print(Grid.CurrentCell.Value)
 
+        If (e.RowIndex >= 0) Then
             'wenn das Fenster noch nicht vorhanden ist - erzeugen
             If EditTimer Is Nothing Then
                 EditTimer = New wb_TimerEdit
             End If
 
-            'Daten aus dem Timer-Grid (aktuelle Zeile)
-            Dim Task As String = Grid(wb_TimerGridView.COLTASK, e.RowIndex).Value
-            Dim TimerStart As DateTime = Grid(wb_TimerGridView.COLSTRT, e.RowIndex).Value
-            Dim TimerZyklus As Integer = wb_Functions.StrToInt(Grid(wb_TimerGridView.COLPRDE, e.RowIndex).Value)
+            'Index (Zeiger auf Datensatz im Grid/Array)
+            EditTimer.Index = e.RowIndex
+            'Task-Name
+            EditTimer.TimerName = DirectCast(tArray(e.RowIndex), wb_TimerEvent).Task
+            'Timer Bezeichnung
+            EditTimer.TimerBezeichnung = DirectCast(tArray(e.RowIndex), wb_TimerEvent).Task
+            'Task-Start Datum/Uhrzeit
+            EditTimer.TimerStart = DirectCast(tArray(e.RowIndex), wb_TimerEvent).Startzeit
+            'Task-Zyklus
+            EditTimer.TimerZyklus = DirectCast(tArray(e.RowIndex), wb_TimerEvent).Periode
+            'aktueller Index
+            EditTimer.TimerAktIndex = DirectCast(tArray(e.RowIndex), wb_TimerEvent).Str2
+            'Task aktiv
+            If DirectCast(tArray(e.RowIndex), wb_TimerEvent).Status = wb_Global.wbAktionsTimerStatus.Disabled Then
+                EditTimer.TimerAktiv = False
+            Else
+                EditTimer.TimerAktiv = True
+            End If
 
-
-            Dim t As New TimeSpan(0, 0, TimerZyklus)
-            Dim d As New DateTime(t.Ticks)
-            d = DateAdd(DateInterval.Year, 2000, d)
-
-
-            'Daten im Eingabe-Fenster
-            EditTimer.lblTimerName.Text = Task
-            EditTimer.dtEventDate.Value = TimerStart
-            EditTimer.dtEventTime.Value = TimerStart
-            EditTimer.dtEventZyklus.Value = d
             'Eingabe-Form anzeigen
             EditTimer.Show()
-
         End If
     End Sub
 
@@ -376,7 +376,22 @@ Public Class Main
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub EditTimerEventClosing(Sender As Object, e As EventArgs) Handles EditTimer.Closing
-        Debug.Print("EditTimer " & EditTimer.lblTimerName.Text)
+        'Index (Zeiger auf Datensatz im Grid/Array)
+        Dim i As Integer = EditTimer.Index
+
+        'Daten im Array aktualisieren - Startzeit
+        DirectCast(tArray(i), wb_TimerEvent).Startzeit = EditTimer.TimerStart
+        'Daten im Array aktualisieren - Zyklus
+        DirectCast(tArray(i), wb_TimerEvent).Periode = EditTimer.TimerZyklus
+        'Timer aktiv (Wenn der Timer aktuell läuft, wird er erst nach dem Ende des Task auf inaktiv gesetzt
+        DirectCast(tArray(i), wb_TimerEvent).Aktiv = EditTimer.TimerAktiv
+
+        'Anzeige der Tablle aktualisieren
+        RefreshAktionsTimer()
+        'Daten in MySQl sichern
+        DirectCast(tArray(i), wb_TimerEvent).MySQLdbUpdate_Fields()
+        'Eingabe-Fenster wieder freigeben
+        EditTimer = Nothing
     End Sub
 
     ''' <summary>
@@ -467,6 +482,11 @@ Public Class Main
         lblServerInfo.Text = "MySQL " & wb_GlobalSettings.MySQLServerIP & vbCr & wb_GlobalSettings.MsSQLMain
         'Status-Anzeige im Admin-Fenster verschieben
         lblServerInfo.Top = Me.Height - 300
+
+        'im Debug-Modus Fenster sofort anzeigen
+        If Debugger.IsAttached Then
+            Me.WindowState = FormWindowState.Normal
+        End If
     End Sub
 
     ''' <summary>

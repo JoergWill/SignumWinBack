@@ -185,6 +185,7 @@
     <Compile Include="UnitTest_ob_ProduzierteWare.vb" />
     <Compile Include="UnitTest_ob_Rezept_Ingredients.vb" />
     <Compile Include="UnitTest_InitOK.vb" />
+    <Compile Include="UnitTest_TimerEdit.vb" />
     <Compile Include="UnitTest_wb_Simple3Des.vb" />
     <Compile Include="UnitTest_wb_Charge.vb" />
     <Compile Include="UnitTest_wb_Produktion.vb" />
@@ -244,6 +245,10 @@
     <ProjectReference Include="..\WinBackAddin.vbproj">
       <Project>{aa45fd47-0a9e-40d7-a9a1-5ef03f1f3c67}</Project>
       <Name>WinBackAddin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinBackServerTask\WinBackServerTask.vbproj">
+      <Project>{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}</Project>
+      <Name>WinBackServerTask</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

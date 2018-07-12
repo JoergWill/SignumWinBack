@@ -177,7 +177,7 @@ Imports WinBack.wb_Sql_Selects
             'Update Komponente in winback.Komponenten
             winback.sqlCommand(sql)
 
-            'Datensatz lesen (3518 - Mehrkornbrötchen
+            'Datensatz lesen (3518 - Mehrkornbrötchen)
             sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTestktTypX, 3518)
 
             'ersten Datensatz aus Tabelle Komponenten(3518) lesen
@@ -186,6 +186,8 @@ Imports WinBack.wb_Sql_Selects
                     Assert.AreEqual(2, winback.iField("KA_Artikel_Typ"))
                 End If
             End If
+            'Verbindung Lesen wieder schliessen
+            winback.CloseRead()
 
             'alle Artikel mit Rezeptschritt der Komponente 600 (Weizenmehl) wieder auf OK setzen
             sql = setParams(sqlKompSetMarker, 600, wb_Global.ArtikelMarker.nwtUpdate)
@@ -196,6 +198,49 @@ Imports WinBack.wb_Sql_Selects
 
     End Sub
 
+    ''' <summary>
+    ''' Der Test Update_Artikel_RezeptschritteMitKomponente funktioniert nur wenn das Programm
+    ''' NICHT im Debug-Modus läuft. Ansonsten wird ein Syntax-Error SQL angezeigt !!!
+    ''' Dieser Test läuft auf einer MySQL 3.2 Datenbank (172.16.17.4) und muss angepasst werden 
+    ''' </summary>
+    <TestMethod()> Public Sub Test_Update_Artikel_RezeptschritteMitKomponente_172_16_17_4()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL And False Then
+            'TEST MIT V3.0
+            wb_GlobalSettings.MySQLServerIP = "172.16.17.4"
+
+            'Rohstoff-Daten
+            Dim nwtDaten As New wb_Komponente
+
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+            'alle Artikel mit Rezeptschritt der Komponente 600 (Weizenmehl) enthält auf Update setzen
+            'Komponenten-Nummer muss an Datenbank angepasst werden !!
+            'TODO eigene Test-DB Version 3.2 aufsetzen (VM)
+            Dim sql As String = setParams(sqlKompSetMarker, 3510, wb_Global.ArtikelMarker.nwtUpdate)
+            'Update Komponente in winback.Komponenten
+            winback.sqlCommand(sql)
+
+            'Datensatz lesen (Artikel-KO-Nummer muss angepasst werden !!)
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTestktTypX, 4312)
+
+            'ersten Datensatz aus Tabelle Komponenten(3518) lesen
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    Assert.AreEqual(2, winback.iField("KA_Artikel_Typ"))
+                End If
+            End If
+            'Verbindung Lesen wieder schliessen
+            winback.CloseRead()
+
+            'alle Artikel mit Rezeptschritt der Komponente 600 (Weizenmehl) wieder auf OK setzen
+            sql = setParams(sqlKompSetMarker, 3510, wb_Global.ArtikelMarker.nwtUpdate)
+            'Update Komponente in winback.Komponenten
+            winback.sqlCommand(sql)
+
+        End If
+
+    End Sub
 
 
 

@@ -81,12 +81,16 @@
     Public Const sqlKompInRezept = "SELECT COUNT(*) AS Used FROM RezeptSchritte WHERE RS_Ko_nr = [0]"
     'Sql-Statement Verwendung Komponente in Arbeits-Rezeptschritten
     Public Const sqlKompInArbRzp = "SELECT COUNT(*) AS Used FROM BAK_ArbRZSchritte WHERE B_ARS_TW_Nr = 0 AND B_ARS_Ko_nr = [0]"
+
+    'TODO Syntax-Error in SQL-Statement (nur bei MySQL V3.22)
     'Sql-Statement Update alle Komponenten mit Rezept-Verknüpfung-Rezeptschritte enthalten Komponente mit Nummer 
-    Public Const sqlKompSetMarker = "UPDATE Komponenten INNER JOIN Rezeptschritte ON KA_RZ_Nr=RS_RZ_Nr SET KA_Artikel_Typ = [1] WHERE RS_Ko_Nr = [0]"
+    Public Const sqlKompSetMarker = "UPDATE Komponenten INNER JOIN RezeptSchritte On Komponenten.KA_RZ_Nr = RezeptSchritte.RS_RZ_Nr " &
+                                    "Set Komponenten.KA_Artikel_Typ = [1] WHERE (((RezeptSchritte.RS_Ko_Nr)=[0]))"
+
 
     'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)
     Public Const sqlTestktTypX = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "
-    Public Const sqlTestktTyp3 = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
+    Public Const sqlTestktTyp3 = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) And " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"
 
     'Sql-Statement Update Bezeichnung Artikel/Rohstoff (Sync OrgaBack-WinBack)
