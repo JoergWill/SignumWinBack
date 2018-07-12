@@ -841,7 +841,7 @@
             Next
 
             'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
-            AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler, True)
+            AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler, True, BestellDaten.AuftragsNummer, BestellDaten.Bestellmenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText)
         End While
         orgaback.Close()
     End Function

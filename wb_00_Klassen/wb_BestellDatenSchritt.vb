@@ -4,12 +4,17 @@ Public Class wb_BestellDatenSchritt
 
     Private _TourNr As Integer
     Private _ArtikelNummer As String
+    Private _Einheit As Integer
     Private _Produktionsmenge As Double
     Private _ChargenTeiler As wb_Global.ModusChargenTeiler = wb_Global.ModusChargenTeiler.OptimalUndRest
+    Private _AnzahlVorschlag As Integer
+    Private _AuftragsNummer As String = ""
+    Private _BestellMenge As Double = wb_Global.UNDEFINED
+    Private _SonderText As String = ""
     Private _AnzahlLose As Integer
     Private _Losgroesse As Double
-    Private _AnzahlVorschlag As Integer
-
+    Private _Losart As String
+    Private _SollwertTeilungText As String = ""
 
     Public Property TourNr As Integer
         Get
@@ -47,8 +52,92 @@ Public Class wb_BestellDatenSchritt
         End Set
     End Property
 
+    Public Property AuftragsNummer As String
+        Get
+            Return _AuftragsNummer
+        End Get
+        Set(value As String)
+            _AuftragsNummer = value
+        End Set
+    End Property
+
+    Public Property BestellMenge As Double
+        Get
+            Return _BestellMenge
+        End Get
+        Set(value As Double)
+            _BestellMenge = value
+        End Set
+    End Property
+
+    Public Property SonderText As String
+        Get
+            Return _SonderText
+        End Get
+        Set(value As String)
+            _SonderText = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Der Sollwert-Teilung-Text setzt sich zusammen aus Anzahl der Lose, LosArt und Losgröße
+    ''' Der String wird aus 3 Werten zusammengesetzt und formatiert.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property SollwertTeilungText As String
+        Get
+            'Anzahl der Lose
+            _SollwertTeilungText = _AnzahlLose.ToString & " "
+
+            'LosArt (später als Text !!) aus Tabelle [dbo].LosArt
+            Select Case _Losart
+                Case "0"
+                    _Losart = "kg"
+                Case "1"
+                    _Losart = "Blech"
+                Case "2"
+                    _Losart = "Stikken"
+            End Select
+
+            'Losgröße
+            _SollwertTeilungText &= _Losart & " à " & Int(_Losgroesse).ToString & " "
+            'Einheit (Default 'Stück')
+            'TODO aus Tabelle Einheiten übersetzen (OB -> TEXT)
+            _SollwertTeilungText &= "Stk"
+
+            'Formatierter String
+            Return _SollwertTeilungText
+        End Get
+        Set(value As String)
+            _SollwertTeilungText = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
+    ''' 
+    ''' [dbo].[pq_ProduktionsPlanung]
+    '''   FilialNr                  / 1
+    '''   LieferDatum               / 20180713
+    '''   TourNr                    / 0
+    '''   ArtikelNr                 / 267
+    '''   Einheit                   / 0
+    '''   Farbe                     / 0
+    '''   Groesse                   / NULL
+    '''   BedarfMenge               / 4000,0000
+    '''   Bezeichnung               / Mehrkornbrötchen
+    '''   FrosterBestand            / 0,0000
+    '''   FrosterMeldeBestand       / 0,0000
+    '''   FrosterMaxBestand         / 0,0000
+    '''   Produktionsmenge          / 4000,0000
+    '''   AnzahlVorschlag           / 4000,0000
+    '''   AnzahlLoseVorschlag       / 4000,0000
+    '''   Losgroesse                / 1,0000 (Stück)
+    '''   LosArt                    / 1 (Blech)
+    '''   FrosterEntnahme           / 0,0000
+    '''   FrosterEinlagerung        / 0,0000
+    '''   PlanungsStatus            / 0
+    '''   
     ''' </summary>
     ''' <param name="Name">String - Spalten-Name aus Datenbank</param>
     ''' <param name="Value">Object - Wert aus Datenbank</param>
@@ -61,7 +150,7 @@ Public Class wb_BestellDatenSchritt
 
         'Feldname aus der Datenbank
         Try
-            Debug.Print("StoredProcedure Produktionsplanung Fieldname " & Name & " / " & Value)
+            Debug.Print("StoredProcedure Produktionsplanung  " & Name & " / " & Value)
         Catch ex As Exception
         End Try
 
@@ -76,7 +165,8 @@ Public Class wb_BestellDatenSchritt
                 'Soll-Produktionsmenge in Stück
                 Case "Produktionsmenge"
                     _Produktionsmenge = wb_Functions.StrToDouble(Value)
-
+                Case "Einheit"
+                    _Einheit = wb_Functions.StrToInt(Value)
 
                 'Anzahl der Lose
                 Case "AnzahlLoseVorschlag"
@@ -84,6 +174,9 @@ Public Class wb_BestellDatenSchritt
                 'Losgröße
                 Case "Losgroesse"
                     _Losgroesse = wb_Functions.StrToDouble(Value)
+                Case "LosArt"
+                    _Losart = Value
+
                 'Anzahl Lose Vorschlag
                 Case "AnzahlVorschlag"
                     _AnzahlVorschlag = wb_Functions.StrToInt(Value)
