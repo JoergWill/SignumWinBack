@@ -2,7 +2,7 @@
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports WinBackServerTask
 
-<TestClass()> Public Class UnitTest_TimerEdit
+<TestClass()> Public Class UnitTest_wb_TimerEdit
 
     <TestMethod()> Public Sub Test_TimerEditSet()
 
