@@ -834,10 +834,18 @@ Public Class wb_Rezeptschritt
                         'Debug.Print("Komponente " & Bezeichnung)
                     End If
 
+                    'Umechnungs-Faktor Nährwerte 
+                    Dim Faktor As Double = wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht
+                    'Wenn der Parent-Rezeptschritt eine Produktions-Stufe oder ein Kessel ist, wird der Faktor
+                    'gleich Eins gesetzt. (Die Gewichtung erfolgt über das Rezept-Gesamtgewicht
+                    If Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
+                        Faktor = 1
+                    End If
+
                     'alle Unter-Rezept-Schritte berechnen
                     For Each x As wb_Rezeptschritt In ChildSteps
                         If _BruttoRezGewicht > 0 Then
-                            x.ktTyp301.AddNwt(_ktTyp301, wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht)
+                            x.ktTyp301.AddNwt(_ktTyp301, Faktor)
                         End If
                     Next
 
