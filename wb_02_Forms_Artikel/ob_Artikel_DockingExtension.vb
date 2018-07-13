@@ -142,7 +142,15 @@ Public Class ob_Artikel_DockingExtension
     End Sub
 
     ''' <summary>
-    ''' Das Objekt wurde geändert und soll gespeichert werden
+    ''' Das Objekt wurde geändert und soll gespeichert werden. 
+    ''' Vor dem Speichern wird gepürft, ob die Einheit in OrgaBack richtig ausgewählt worden ist:
+    '''     
+    '''     - Artikel in Stück
+    '''     - Rohstoffe in kg
+    '''     - Rohstoffe(Erweiterung) in Meter(Folie) oder Stk (Verpackung) 
+    '''
+    '''     .Cancel = True    Speichern nicht erlaubt
+    '''     .Cancel = False   Speichern erlaubt
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -153,10 +161,20 @@ Public Class ob_Artikel_DockingExtension
             bSortimentIstProduktion = GetKomponentenDaten()
         End If
         If bSortimentIstProduktion Then
-            'Daten aus Unterfenster sichern
-            Extendee_ExecuteCommand("wbSAVE", Komponente)
-            'Komponentendaten nach OrgaBack schreiben (MFF..)
-            SetKomponentenDaten()
+            'Prüfen ob die Einheit aus OrgaBack gültig ist
+            Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
+            Dim obEinheit As String = _Extendee.GetPropertyValue("BestellEinheit").ToString
+            If CheckEinheit(obKType, obEinheit) Then
+                'Daten aus Unterfenster sichern
+                Extendee_ExecuteCommand("wbSAVE", Komponente)
+                'Komponentendaten nach OrgaBack schreiben (MFF..)
+                SetKomponentenDaten()
+                'Speichern erlaubt
+                DirectCast(e, CancelEventArgs).Cancel = False
+            Else
+                'Speichern nicht erlaubt
+                DirectCast(e, CancelEventArgs).Cancel = True
+            End If
         End If
     End Sub
 
@@ -493,9 +511,10 @@ Public Class ob_Artikel_DockingExtension
         Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
 
         'Update aller in OrgaBack geänderten Daten
+        Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString     'Artikel-Nummer (Ändern über Shift-F9)
         Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
-        Komponente.ZutatenListe = MFFValue(oFil, wb_Global.MFF_Zutatenliste) 'MFF209 - Zutatenliste
-        Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)       'MFF225 - Kommentar
+        Komponente.ZutatenListe = MFFValue(oFil, wb_Global.MFF_Zutatenliste)     'MFF209 - Zutatenliste
+        Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)           'MFF225 - Kommentar
 
         'Testausgabe
         Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
@@ -518,4 +537,34 @@ Public Class ob_Artikel_DockingExtension
         MFFValue(oFil, wb_Global.MFF_ProduktionsLinie) = Komponente.sArtikeLinienGruppe
     End Sub
 
+    ''' <summary>
+    ''' Prüft ob in OrgaBack die richtige Einheit zur Type verwendet wird
+    ''' Der FehlerText wird als Komponente.LastError zurückgegeben.
+    '''     
+    ''' </summary>
+    ''' <param name="obKType"></param>
+    ''' <param name="obEinheit"></param>
+    ''' <returns></returns>
+    Private Function CheckEinheit(obKType As String, obEinheit As String) As Boolean
+        'prüft die Einheit abhängig von der Komponenten-Type
+        Select Case obKType
+            'Artikel
+            Case wb_GlobalSettings.OsGrpBackwaren
+                If wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitStk) Then
+                    Return True
+                Else
+                    MsgBox("Speichern nicht möglich." & vbCrLf & "Ein WinBack-Artikel kann nur in der Einheit 'Stk' angelegt werden !")
+                    Return False
+                End If
+            Case wb_GlobalSettings.OsGrpRohstoffe
+                If wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitKilogramm) Then
+                    Return True
+                Else
+                    MsgBox("Speichern nicht möglich." & vbCrLf & "Ein WinBack-Rohstoff kann nur in der Einheit 'kg' angelegt werden !")
+                    Return False
+                End If
+            Case Else
+                Return True
+        End Select
+    End Function
 End Class
