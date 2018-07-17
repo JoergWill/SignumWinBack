@@ -10,11 +10,11 @@ my $log_level = 1;
 my $DB_NEU = 2;
 
    # ---- Konstanten: ----
-my $ART_TYP_ARTIKEL = 2;     # Typ 'Artikel' für Feld 'ARZ_Typ'
-my $EINHEIT_STUECK = 11;     # Einheit 'Stück' für Feld 'ARZ_Art_Einheit' bei Import Artikelbezogen
+my $ART_TYP_ARTIKEL = 2;     # Typ 'Artikel' fï¿½r Feld 'ARZ_Typ'
+my $EINHEIT_STUECK = 11;     # Einheit 'Stï¿½ck' fï¿½r Feld 'ARZ_Art_Einheit' bei Import Artikelbezogen
 
-my $ART_TYP_REZEPT = 1;      # Typ 'Artikel' für Feld 'ARZ_Typ'
-my $EINHEIT_KG = 1;     	 # Einheit 'kg' für Feld 'ARZ_Art_Einheit' bei Import Rezeptbezogen
+my $ART_TYP_REZEPT = 1;      # Typ 'Artikel' fï¿½r Feld 'ARZ_Typ'
+my $EINHEIT_KG = 1;     	 # Einheit 'kg' fï¿½r Feld 'ARZ_Art_Einheit' bei Import Rezeptbezogen
 #TODO diese Konstante in Output-String einpflegen
 
    # ---- Datenbank-Variablen: ----
@@ -26,7 +26,7 @@ my $art_fld_names;
 my @art_rows;
 my $art_anz_rows;
 my $art_nr_alnum;
-my $art_nr_alnum_alt = "";   # Für Erkennung eines neuen Artikels
+my $art_nr_alnum_alt = "";   # Fï¿½r Erkennung eines neuen Artikels
 my $art_rz_nr;
 my $art_stueck_gewicht = 0;
 my $Artikel_Bez = "",
@@ -35,11 +35,12 @@ my $Artikel_Einheit;
 my $art_charge_opt = 0;
 my $stueck_charge = 0;
 my $prozent_charge= 0;
+my $art_linie_nr= "";
 
    # ---- Aktuelles Rezept: ----
 my $rz_nr_alnum;
 my $rz_variante_nr;
-my $rz_variante_nr_alt = "";   # Für Erkennung eines neuen Artikels!! (@V3.1)
+my $rz_variante_nr_alt = "";   # Fï¿½r Erkennung eines neuen Artikels!! (@V3.1)
 my $rz_num_fields;
 my $rz_fld_names;
 my @rz_rows;
@@ -62,30 +63,30 @@ my $idx__RS_Par1;
 my $idx__RS_Par2;
 my $idx__RS_Par3;
 
-   # 18.04.2006: Indizes für die weiteren Zusatzfelder bei Flat-Produktion:
-my $idx__KO_Nr_AlNum;      # für 'ARS_KO_Nr_AlNum'
-my $idx__KO_Bezeichnung;   # für 'ARS_KO_Bezeichnung'
-my $idx__KO_Temp_Korr;     # für 'ARS_KO_Temp_Korr'
-my $idx__KP_Wert;          # für 'ARS_KP_Wert'
-# my $idx__KT_Typ_Nr;        # für 'ARS_KT_Typ_Nr'
-my $idx__KT_Rezept;        # für 'ARS_KT_Rezept'
-my $idx__KT_Bezeichnung;   # für 'ARS_KT_Bezeichnung'
-my $idx__KT_KurzBez;       # für 'ARS_KT_KurzBez'
-my $idx__KT_EinheitIndex;  # für 'ARS_KT_EinheitIndex'
-my $idx__KT_Format;        # für 'ARS_KT_Format'
-my $idx__KT_Laenge;        # für 'ARS_KT_Laenge'
-my $idx__KT_UnterGW;       # für 'ARS_KT_UnterGW'
-my $idx__KT_OberGW;        # für 'ARS_KT_OberGW'
-my $idx__E_Einheit;        # für 'ARS_E_Einheit'
-# my $idx__RS_Wert;          # für 'ARS_RS_Wert'
+   # 18.04.2006: Indizes fï¿½r die weiteren Zusatzfelder bei Flat-Produktion:
+my $idx__KO_Nr_AlNum;      # fï¿½r 'ARS_KO_Nr_AlNum'
+my $idx__KO_Bezeichnung;   # fï¿½r 'ARS_KO_Bezeichnung'
+my $idx__KO_Temp_Korr;     # fï¿½r 'ARS_KO_Temp_Korr'
+my $idx__KP_Wert;          # fï¿½r 'ARS_KP_Wert'
+# my $idx__KT_Typ_Nr;        # fï¿½r 'ARS_KT_Typ_Nr'
+my $idx__KT_Rezept;        # fï¿½r 'ARS_KT_Rezept'
+my $idx__KT_Bezeichnung;   # fï¿½r 'ARS_KT_Bezeichnung'
+my $idx__KT_KurzBez;       # fï¿½r 'ARS_KT_KurzBez'
+my $idx__KT_EinheitIndex;  # fï¿½r 'ARS_KT_EinheitIndex'
+my $idx__KT_Format;        # fï¿½r 'ARS_KT_Format'
+my $idx__KT_Laenge;        # fï¿½r 'ARS_KT_Laenge'
+my $idx__KT_UnterGW;       # fï¿½r 'ARS_KT_UnterGW'
+my $idx__KT_OberGW;        # fï¿½r 'ARS_KT_OberGW'
+my $idx__E_Einheit;        # fï¿½r 'ARS_E_Einheit'
+# my $idx__RS_Wert;          # fï¿½r 'ARS_RS_Wert'
 
-   # ---- Zusatz-Array für die ARS-Daten: ----
+   # ---- Zusatz-Array fï¿½r die ARS-Daten: ----
 my @ars_rows;
 my $ars_anz_rows;
 my $idx__ARS_Wert2 = 0;
 my $ars_num_fields = 1;
 
-   # ---- Daten für Aufbau ARZ/ARS: ----
+   # ---- Daten fï¿½r Aufbau ARZ/ARS: ----
 my $rz_liniengruppe;
 my $prod_linie;
 my $seg_idx;
@@ -122,7 +123,7 @@ sub  Artikel_und_Rezept_laden
 
    my $neuer_Artikel = 0;
    
-   # ----- (@V3.1) Flag neuer Artikel auch bei Änderung der Rezeptvariante
+   # ----- (@V3.1) Flag neuer Artikel auch bei ï¿½nderung der Rezeptvariante
    if (( $art_nr_alnum_  ne  $art_nr_alnum_alt ) or ( $rz_variante_nr_ ne $rz_variante_nr_alt))
    {  $neuer_Artikel = 1;
    }
@@ -134,7 +135,7 @@ sub  Artikel_und_Rezept_laden
    {  print "Artikel '$art_nr_alnum_' laden ...\n";
    }
    
-   # Wenn in der Produktionsliste keine Artikelnummer übergeben wird, muss ein Dummy-Artikel angelegt werden
+   # Wenn in der Produktionsliste keine Artikelnummer ï¿½bergeben wird, muss ein Dummy-Artikel angelegt werden
    if ( $art_nr_alnum_ eq 'K') 
    {
 		# Dummy Artikel anlegen
@@ -164,7 +165,7 @@ sub  Artikel_laden
    my ( $db_ret ) = 0;
    my $art_felder = "KO_Nr_AlNum, KO_Bezeichnung";
 
-      # ---- Übergebene Parameter abholen: ----
+      # ---- ï¿½bergebene Parameter abholen: ----
    my ( $art_nr_alnum_ ) = @_;
       # ---- Lokale Variablen: ----
    my $sql_artikel_laden;
@@ -189,7 +190,7 @@ sub  Artikel_laden
    $art_num_fields = $sth->{'NUM_OF_FIELDS'};
    $art_fld_names  = $sth->{'NAME'};
 
-      # ---- Artikelvariablen zurücksetzen: ----
+      # ---- Artikelvariablen zurï¿½cksetzen: ----
    $art_anz_rows = 0;
    $art_rz_nr = 0;
 
@@ -220,7 +221,7 @@ sub  Artikel_laden
       {  $art_rz_nr = $art_rows[$idx];
    		print ("In Artikel_laden '$art_rz_nr'\n");
       }
-         # ---- Stückgewicht laden und umrechnen in kg: ----
+         # ---- Stï¿½ckgewicht laden und umrechnen in kg: ----
       if ( $feld_name eq 'KA_Stueckgewicht' )
       {  $art_stueck_gewicht = to_float ( $art_rows[$idx] ) / 1000.0;
       }
@@ -228,7 +229,7 @@ sub  Artikel_laden
       if ( $feld_name eq 'KO_Bezeichnung' )
       {  $Artikel_Bez = $art_rows[$idx];
       }
-         # ---- Optimal-Chargengrösse des Artikels laden: ----
+         # ---- Optimal-Chargengrï¿½sse des Artikels laden: ----
       if ( $feld_name eq 'KA_Charge_Opt' )
       {  $art_charge_opt = to_float ( $art_rows[$idx] );
       }
@@ -254,7 +255,7 @@ sub  Dummy_Artikel_laden
    my ( $db_ret ) = 0;
    my $art_felder = "KO_Nr_AlNum, KO_Bezeichnung";
 
-      # ---- Übergebene Parameter abholen: ----
+      # ---- ï¿½bergebene Parameter abholen: ----
    my ( $art_nr_alnum_ ) = @_;
       # ---- Lokale Variablen: ----
    my $sql_rezeptnr_finden;
@@ -279,7 +280,7 @@ sub  Dummy_Artikel_laden
    $art_num_fields = $sth->{'NUM_OF_FIELDS'};
    $art_fld_names  = $sth->{'NAME'};
 
-      # ---- Artikelvariablen zurücksetzen: ----
+      # ---- Artikelvariablen zurï¿½cksetzen: ----
    $art_anz_rows = 0;
    $art_rz_nr = 0;
 
@@ -309,7 +310,7 @@ sub  Dummy_Artikel_laden
       if ( $feld_name eq 'RZ_Nr' )
       {  $art_rz_nr = $art_rows[$idx];
       }
-         # ---- Stückgewicht laden und umrechnen in kg: ----
+         # ---- Stï¿½ckgewicht laden und umrechnen in kg: ----
       if ( $feld_name eq 'RZ_Gewicht' )
       {  $art_stueck_gewicht = to_float (1);
       }
@@ -317,7 +318,7 @@ sub  Dummy_Artikel_laden
       if ( $feld_name eq 'RZ_Bezeichnung' )
       {  $Artikel_Bez = $art_rows[$idx];
       }
-         # ---- Optimal-Chargengrösse des Artikels laden: ----
+         # ---- Optimal-Chargengrï¿½sse des Artikels laden: ----
       if ( $feld_name eq 'RZ_Gewicht' )
       {  $art_charge_opt = to_float ( $art_rows[$idx] );
       }
@@ -344,7 +345,7 @@ sub  Rezept_laden
    my $rz_felder = "RZ_Nr, RZ_Variante_Nr, RZ_Nr_AlNum, RZ_Bezeichnung,
                     RS_Schritt_Nr, RS_Ko_Nr, RS_ParamNr, RS_Wert";
 
-      # ---- Übergebene Parameter abholen: ----
+      # ---- ï¿½bergebene Parameter abholen: ----
    my ( $rz_variante_nr_ ) = @_;
       # ---- Lokale Variablen: ----
    my $sql_rezept_laden;
@@ -400,9 +401,9 @@ sub  Rezept_laden
    $rz_num_fields = $sth->{'NUM_OF_FIELDS'};
    $rz_fld_names  = $sth->{'NAME'};
 
-      # ---- Rezeptvariablen zurücksetzen: ----
+      # ---- Rezeptvariablen zurï¿½cksetzen: ----
    $rz_anz_rows = 0;
-      # ---- Zusatzarray-Variablen zurücksetzen: ----
+      # ---- Zusatzarray-Variablen zurï¿½cksetzen: ----
    $ars_anz_rows = 0;
 
       # ---- Rezept laden: ----
@@ -465,7 +466,7 @@ sub  Rezept_laden
          print "RZ_Bezeichnung = $Rezept_Bez\n";
       }
 
-      # ---- Öfter benötigte Indizes zu den Rezeptfeldern setzen: ----
+      # ---- ï¿½fter benï¿½tigte Indizes zu den Rezeptfeldern setzen: ----
 
       if ( $feld_name eq 'KT_Typ_Nr' )   { $idx__KT_Typ_Nr  = $idx; }
 
@@ -526,7 +527,7 @@ sub  Indizes_berechnen
 {
    my $db_ret = 0;
 
-# ----- (@V3.1) Flag neuer Artikel auch bei Änderung der Rezeptvariante   
+# ----- (@V3.1) Flag neuer Artikel auch bei ï¿½nderung der Rezeptvariante   
    if (( $art_nr_alnum  eq  $art_nr_alnum_alt ) and ($rz_variante_nr eq $rz_variante_nr_alt))
    {
       # ---- Gleicher Artikel ----
@@ -641,7 +642,7 @@ sub  get_next_ARZ_Index
    }
    $sth->finish();
 
-      # ---- Nächsthöheren Wert verwenden: ----
+      # ---- Nï¿½chsthï¿½heren Wert verwenden: ----
    if ( $next_ARZ_Index <= 0 )
    {  $next_ARZ_Index = 100000 * $prod_linie + 1;
    }
@@ -672,7 +673,7 @@ sub  get_next_ARZ_Charge_Nr
    }
    $sth->finish();
 
-      # ---- Nächsthöheren Wert verwenden: ----
+      # ---- Nï¿½chsthï¿½heren Wert verwenden: ----
    if ( $next_ARZ_Charge_Nr <= 0 )
    {  $next_ARZ_Charge_Nr = 1000 * $prod_linie + 1;
    }
@@ -705,7 +706,7 @@ sub  get_next_ARS_RunIdx
    }
    $sth->finish();
 
-      # ---- Nächsthöheren Wert verwenden: ----
+      # ---- Nï¿½chsthï¿½heren Wert verwenden: ----
    if ( $next_ARS_RunIdx <= 0 )
    {  $next_ARS_RunIdx = 1;
    }
@@ -717,7 +718,7 @@ sub  get_next_ARS_RunIdx
 
 
 #
-#  'RunIdx' auf nächsten 1000er-Bereich erhöhen:
+#  'RunIdx' auf nï¿½chsten 1000er-Bereich erhï¿½hen:
 #
 
 sub  start_next_ARS_RunIdx_Bereich
@@ -734,7 +735,7 @@ sub  start_next_ARS_RunIdx_Bereich
 
 
 #
-#  Nächsten 'Art_Index' besorgen:
+#  Nï¿½chsten 'Art_Index' besorgen:
 #
 
 sub  get_next_Art_Index
@@ -755,7 +756,7 @@ sub  get_next_Art_Index
    }
    $sth->finish();
 
-      # ---- Nächsthöheren Wert verwenden: ----
+      # ---- Nï¿½chsthï¿½heren Wert verwenden: ----
    if ( $next_ARZ_Art_Index == 0 )
    {  $next_ARZ_Art_Index = 100000 * $prod_linie + 1;
    }
@@ -775,7 +776,7 @@ sub  Rezeptmengen_fuer_Charge_umrechnen
    {  print "Rezeptmengen_fuer_Charge_umrechnen() ...\n";
    }
 
-      # ---- Mengenvariablen zurücksetzen: ----
+      # ---- Mengenvariablen zurï¿½cksetzen: ----
    $rezept_menge       = 0.0;
    $mengen_faktor_real = 0.0;
    $menge_charge       = 0.0;
@@ -789,7 +790,7 @@ sub  Rezeptmengen_fuer_Charge_umrechnen
       goto  ende;
    }
 
-      # ---- Umrechnungsfaktor für die Mengen in den Rezeptschritten: ----
+      # ---- Umrechnungsfaktor fï¿½r die Mengen in den Rezeptschritten: ----
    $mengen_faktor_real = $sollmenge_charge / $rezept_menge;
 
    print "RZ_Liniengruppe/RZ_Nr_AlNum/RZ_Bezeichnung:  ";
@@ -806,9 +807,9 @@ sub  Rezeptmengen_fuer_Charge_umrechnen
    {  printf ( "   Chargenmenge = %.3f (Kontrollwert)\n", $menge_charge );
    }
 
-      # ---- Stückzahl der Charge: ----
+      # ---- Stï¿½ckzahl der Charge: ----
    if ( $art_stueck_gewicht < 0.001 )
-   {  print "*** Rezeptmengen_fuer_Charge_umrechnen(): Stückgewicht = 0 ! ***\n";
+   {  print "*** Rezeptmengen_fuer_Charge_umrechnen(): Stï¿½ckgewicht = 0 ! ***\n";
       $stueck_charge = 1;
       #$db_ret = -1;
       #goto  ende;
@@ -883,7 +884,7 @@ sub  Rezeptmenge_berechnen__rs_mengen_umrechnen
          $idx = $zeile * $rz_num_fields + $idx__RS_Wert;
          $rs_menge = to_float ( $rz_rows[$idx] );
 
-            # ---- Zur Rezeptmenge hinzufügen: ----
+            # ---- Zur Rezeptmenge hinzufï¿½gen: ----
          $rezept_menge += $rs_menge;
 
             # ---- Menge des Schrittes umrechnen: ----
@@ -899,11 +900,11 @@ sub  Rezeptmenge_berechnen__rs_mengen_umrechnen
          {  printf ( " Menge Rezept/Charge: %.3f/%.3f\n", $rs_menge, $rs_menge_neu );
          }
 
-            # ---- Umgerechnete Menge zur Chargenmenge hinzufügen (Kontrolle): ----
+            # ---- Umgerechnete Menge zur Chargenmenge hinzufï¿½gen (Kontrolle): ----
          $menge_charge += $rs_menge_neu;
       }
 
-#	  # Teigzettel drucken - Sollwert bleibt unverändert
+#	  # Teigzettel drucken - Sollwert bleibt unverï¿½ndert
 #      if ( ($kt_nr == 119) && ($par_nr == 1) )
 #     {
 #         $rs_menge_neu = $rs_menge;
@@ -940,10 +941,21 @@ sub  Charge_und_Schritte_speichern
    my $db_ret = 0;
 
    # (@V1.5) Bestellnummer eingefuegt
-   ( $bestell_nr ) = @_;
+   # (@V3.3) Artikel-Linien-Nummer eingefuegt
+   ( $bestell_nr, $art_linie_nr ) = @_;
    
+   # (@V3.3) Wenn eine Artikel-Linien-Nummer angegeben ist - wird die Rezept-Linien-Nummer Ã¼berschrieben
+   if ( $art_linie_nr > 100 )
+   {
+         $Beh_Nr = $art_linie_nr;
+   }  
+
+
    $db_ret = Charge_in_ArbRezepte_speichern();
    if ( $db_ret < 0 )  { goto  ende; }
+   
+   # (@V3.3) wenn eine Artikel-Linien-Nummer angegeben ist wird nur die Kopfzeile gelesen
+   if ( $art_linie_nr > 100 ) { goto ende; }
 
    $db_ret = Schritte_in_ArbRZSchritte_speichern();
    if ( $db_ret < 0 )  { goto  ende; }
@@ -963,7 +975,7 @@ sub  Charge_in_ArbRezepte_speichern
    {  print "Charge_in_ArbRezepte_speichern() ...\n";
    }
 
-      # ---- Floats in String umwandeln und Dezimal-Separator ändern: ----
+      # ---- Floats in String umwandeln und Dezimal-Separator ï¿½ndern: ----
    my $menge_charge_str   = float_to_string ( $menge_charge, 1 );
    my $stueck_charge_str  = float_to_string ( $stueck_charge, 0 );
    my $prozent_charge_str = float_to_string ( $prozent_charge, 3 );
@@ -1009,27 +1021,27 @@ if ( $DB_NEU > 1 )
 {
    $sth_arz_insert->execute
    (
-      0,                    # ARZ_TW_Nr             Bei neuen Sätzen immer 0
+      0,                    # ARZ_TW_Nr             Bei neuen Sï¿½tzen immer 0
       $Beh_Nr,              # ARZ_LiBeh_Nr          Linien-Nr + 100
       $next_ARZ_Index,
       $art_nr_alnum,        # ARZ_KA_NrAlNum        Alphanumerische Artikel-Nr
       $next_ARZ_Art_Index,  # ARZ_Art_Index
       $next_ARZ_Charge_Nr,  # ARZ_Charge_Nr         Charge-Nr
-      $bestell_nr,	   		# ARZ_Best_Nr	    	Bestellnummer (@V1.5)
+      $bestell_nr,	    # ARZ_Best_Nr	    	Bestellnummer (@V1.5)
       local_Now(),          # ARZ_Erststart         Zeitpunkt des Anlegens des Satzes
       $art_rz_nr,           # ARZ_Nr                interne Rezept-Nr.
       $rz_variante_nr,      # ARZ_RZ_Typ            Rezept-Variante-Nr.
       $Artikel_Bez,         # ARZ_Bezeichnung       Bezeichnung Artikel
       $Artikel_Typ,         # ARZ_Typ               Unterscheidung Artikel/Rezept
-      $Artikel_Einheit,     # ARZ_Art_Einheit       Artikel: Stück oder kg, Rezept: kg
+      $Artikel_Einheit,     # ARZ_Art_Einheit       Artikel: Stï¿½ck oder kg, Rezept: kg
       $Rezept_Nr_AlNum,     # ARZ_RZ_Nr_AlNum       Alphanumerische Rezept-Nr
       $Rezept_Bez,          # ARZ_RZ_Bezeichnung    Bezeichnung Rezept
       $menge_charge_str,    # ARZ_Sollmenge_kg      Menge Charge
-      $stueck_charge_str,   # ARZ_Sollmenge_stueck  Stückzahl Charge
+      $stueck_charge_str,   # ARZ_Sollmenge_stueck  Stï¿½ckzahl Charge
       $prozent_charge_str,  # ARZ_Anstellgut_kg     Prozent Charge
       $seg_idx,             # ARZ_Seg_idx           Produktionssegment-Index
       0,                    # ARZ_Tag_offs          Tag_offs = 0: heute
-      0,                    # ARZ_geloescht         geloescht = 0: nicht gelöscht
+      0,                    # ARZ_geloescht         geloescht = 0: nicht gelï¿½scht
       $Rezept_Gewicht       # ARZ_RZ_Gewicht
    );
 }
@@ -1037,7 +1049,7 @@ else
 {
    $sth_arz_insert->execute
    (
-      0,                 # ARZ_TW_Nr     Bei neuen Sätzen immer 0
+      0,                 # ARZ_TW_Nr     Bei neuen Sï¿½tzen immer 0
       $Beh_Nr,           # ARZ_LiBeh_Nr  Linien-Nr + 100
       $next_ARZ_Index,
       $art_nr_alnum,        # ARZ_KA_NrAlNum     Alphanumerische Artikel-Nr
@@ -1048,15 +1060,15 @@ else
       $rz_variante_nr,   # ARZ_RZ_Typ        Rezept-Variante-Nr.
       $Artikel_Bez,      # ARZ_Bezeichnung   Bezeichnung Artikel
       $Artikel_Typ,      # ARZ_Typ           Unterscheidung Artikel/Rezept
-      $Artikel_Einheit,  # ARZ_Art_Einheit   Artikel: Stück oder kg, Rezept: kg
+      $Artikel_Einheit,  # ARZ_Art_Einheit   Artikel: Stï¿½ck oder kg, Rezept: kg
       $Rezept_Nr_AlNum,  # ARZ_RZ_Nr_AlNum       Alphanumerische Rezept-Nr
       $Rezept_Bez,       # ARZ_RZ_Bezeichnung    Bezeichnung Rezept
       $menge_charge_str, # ARZ_Sollmenge_kg      Menge Charge
-      $stueck_charge_str,# ARZ_Sollmenge_stueck  Stückzahl Charge
+      $stueck_charge_str,# ARZ_Sollmenge_stueck  Stï¿½ckzahl Charge
       $prozent_charge_str, # ARZ_Anstellgut_kg     Prozent Charge
       $seg_idx,          # ARZ_Seg_idx        Produktionssegment-Index
       0,                 # ARZ_Tag_offs    Tag_offs = 0: heute
-      0                  # ARZ_geloescht   geloescht = 0: nicht gelöscht
+      0                  # ARZ_geloescht   geloescht = 0: nicht gelï¿½scht
    );
 }
 
@@ -1090,7 +1102,7 @@ sub  Schritte_in_ArbRZSchritte_speichern
    my $ars_ins_values;
 
    if ( $log_level >= 1 )
-   {  print "Schritte_in_ArbRezepte_speichern() ...\n";
+   {  print "Schritte_in_ArbRZSchritte_speichern() ...\n";
    }
 
 if ( $DB_NEU > 1 )
@@ -1110,7 +1122,7 @@ if ( $DB_NEU > 1 )
 
    #     // 23.11.2015: Feld ARS_ARZ_Index eingebaut
    #
-   #     // 19.04.2006: Fehlende Felder für Flat-Produktion eingebaut:
+   #     // 19.04.2006: Fehlende Felder fï¿½r Flat-Produktion eingebaut:
    #  ARS_KO_Nr_AlNum, ARS_KO_Bezeichnung, ARS_KO_Temp_Korr,
    #  ARS_KP_Wert,
    #  ARS_KT_Typ_Nr, ARS_KT_Rezept, ARS_KT_Bezeichnung,
@@ -1165,7 +1177,7 @@ else
          # ---- RS_ParamNr --> ARS_ParamNr: ----
       $idx = $zeile * $rz_num_fields + $idx__RS_ParamNr;
       $ars_paramnr = $rz_rows[$idx];
-         # ---- KT-Nr besorgen (um Textkomponente erkennen zu können): ----
+         # ---- KT-Nr besorgen (um Textkomponente erkennen zu kï¿½nnen): ----
       $idx = $zeile * $rz_num_fields + $idx__KT_Typ_Nr;
       $rs_kt_nr = $rz_rows[$idx];
 
@@ -1273,10 +1285,10 @@ else
 
       # goto  next_schritt;
 
-         # ---- Floats in String umwandeln und Dezimal-Separator ändern: ----
+         # ---- Floats in String umwandeln und Dezimal-Separator ï¿½ndern: ----
 # print "****** vor float_to_string(): ars_wert = $ars_wert *******\n";
 # 19.12.2004: Nur bei Parameter-Nr. 1 in String umwandeln,
-#             sonst direkt übernehmen (z.B. bei Wassertemperatur):
+#             sonst direkt ï¿½bernehmen (z.B. bei Wassertemperatur):
 #             Ausnahme auch hier: Nicht umwandeln bei Textkomponente KT121
 # 24.10.2008: Erweiterung Kneterschritte
 # 24.10.2008: Erweiterung Produktions-Stufen/Kessel
@@ -1294,7 +1306,7 @@ if ( $DB_NEU > 1 )
 {
       $sth_ars_insert->execute
       (
-         0,                  # ARS_TW_Nr     Bei neuen Sätzen immer 0
+         0,                  # ARS_TW_Nr     Bei neuen Sï¿½tzen immer 0
          $next_ARZ_Index,	 # ARS_ARZ_Index auf Tabelle ArbRezepte
          $Beh_Nr,            # ARZ_Beh_Nr    Linien-Nr + 100
          $next_ARS_RunIdx,   # ARS_RunIdx
@@ -1310,7 +1322,7 @@ if ( $DB_NEU > 1 )
          $ars_rs_par1,      # ARS_RS_Par1
          $ars_rs_par2,      # ARS_RS_Par2
          $ars_rs_par3,      # ARS_RS_Par3
-            # ---- 19.04.2006: Felder für Flat-Produktion: ----
+            # ---- 19.04.2006: Felder fï¿½r Flat-Produktion: ----
          $ars_ko_nr_alnum,     # ARS_KO_Nr_AlNum
          $ars_ko_bezeichnung,  # ARS_KO_Bezeichnung
          $ars_ko_temp_korr,    # ARS_KO_Temp_Korr
@@ -1332,7 +1344,7 @@ else
 {
       $sth_ars_insert->execute
       (
-         0,                  # ARS_TW_Nr     Bei neuen Sätzen immer 0
+         0,                  # ARS_TW_Nr     Bei neuen Sï¿½tzen immer 0
          $Beh_Nr,            # ARZ_Beh_Nr    Linien-Nr + 100
          $next_ARS_RunIdx,   # ARS_RunIdx
          $next_ARZ_Art_Index,  # ARZ_Art_Index   Art_Index

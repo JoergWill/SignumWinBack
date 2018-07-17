@@ -306,6 +306,8 @@ Public Class wb_Planung_Liste
                     ExpStr = ExpStr + "ARZ_RZ_Typ" + SepStr
                 Case 28 ' [28] Rezeptnummer (nur Info)
                     ExpStr = ExpStr + "ARZ_RZ_Nr_AlNum" + SepStr
+                Case 40 ' [40] Produktionsblock (Artikel-Linien-Nummer !!!)
+                    ExpStr = ExpStr + "ARZ_LiBeh_Nr" + SepStr
                 Case 44  ' [44] Produktionsmenge in [kg]
                     ExpStr = ExpStr + "ARZ_Sollmenge_kg" + SepStr
                 Case Else
@@ -335,7 +337,7 @@ Public Class wb_Planung_Liste
                     ExpStr = ExpStr + x.RezeptNummer + SepStr
                 Case 40 ' [40] Artikel-Liniengruppe
                     If bArtikelLiniengruppe Then
-                        ExpStr = ExpStr + x.ArtikelLinienGruppe.ToString + SepStr
+                        ExpStr = ExpStr + (x.ArtikelLinienGruppe + wb_Global.OffsetBackorte).ToString + SepStr
                     Else
                         ExpStr = ExpStr + SepStr
                     End If

@@ -1,7 +1,10 @@
 #!/usr/bin/perl -w
 
 #
-# ------ Import Produktionsdaten, Version 3.2 --------
+# ------ Import Produktionsdaten, Version 3.3 --------
+#
+# Aenderung gegenueber Version 3.2:
+# Feld Produktionsblock (entspricht Artikel.ProduktionsLinie) neu eingefuegt
 #
 # Aenderung gegenueber Version 3.1:
 # Feld ARS_ARZ_Index neu hinzugef�gt in Tabelle ArbRZSchritte
@@ -94,7 +97,7 @@ use strict;
 use DBI;
 
 require ( "prodimport-sub.pm" );
-my $version = "3.2";
+my $version = "3.3";
 
 print "\n";
 print "************* Produktionsdaten-Import, Version $version **************\n";
@@ -199,7 +202,7 @@ db_disconnect();
 close ( FILE1 );
 
 # REMEMBER ME - TESTVERSION
-# unlink ( $ko_file );
+unlink ( $ko_file );
 
 exit;
 
@@ -273,6 +276,7 @@ sub  werte_zeile_importieren
    my ( $rz_variante_nr ) = 1;
    my ( $sollmenge_charge ) = 0.0;
    my ( $bestell_nr ) = "";
+   my ( $art_linie_nr ) = "";
 
 
    $tok_idx = 0;
@@ -311,6 +315,10 @@ sub  werte_zeile_importieren
          {  $bestell_nr = $wert;
             $anz_imp_felder += 1;
          };
+         if ( $name eq 'ARZ_LiBeh_Nr' )      # Produktionsblock entspricht Artikel-Linien-Nummer
+         {  $art_linie_nr = $wert;
+            $anz_imp_felder += 1;
+         };
       }
       else
       {  # print "Zeile $zeilen, Feld[$tok_idx]: Kein Feldname und/oder Feldwert vorhanden\n";
@@ -319,9 +327,8 @@ sub  werte_zeile_importieren
       $tok_idx += 1;
    }
 
-
-   if ( $anz_imp_felder == 5 )
-   {
+   if ( $anz_imp_felder >= 5 )
+   {      
       my $db_ret = 0;
 
       $db_ret = Artikel_und_Rezept_laden ( $art_nr_alnum, $rz_variante_nr, $rz_nr_alnum );
@@ -333,13 +340,13 @@ sub  werte_zeile_importieren
       $db_ret = Rezeptmengen_fuer_Charge_umrechnen ( $sollmenge_charge );
       if ( $db_ret < 0 )   { goto  ende; }
 
-      $db_ret = Charge_und_Schritte_speichern( $bestell_nr );	# (@V1.5) Bestell-Nummer eingefuegt
+      $db_ret = Charge_und_Schritte_speichern( $bestell_nr , $art_linie_nr );	# (@V1.5) Bestell-Nummer eingefuegt (@V3.2) Artikel-Linien-Nummer eingefuegt
       if ( $db_ret < 0 )   { goto  ende; }
 
    }
    else
    {
-      print "Zeile $zeilen: Anzahl Import-Felder: Soll = 5  Ist = $anz_imp_felder\n";
+      print "Zeile $zeilen: Anzahl Import-Felder: Soll = 6  Ist = $anz_imp_felder\n";
    }
 
 ende:
