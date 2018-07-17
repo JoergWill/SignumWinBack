@@ -135,6 +135,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Batch", "Batch", "{84FB1C84
 		Batch\WinBackAddin.unittest.release.bat = Batch\WinBackAddin.unittest.release.bat
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{266549E8-65C8-49BF-95F7-4F16D7E2CC6B}"
+	ProjectSection(SolutionItems) = preProject
+		Perl\prodimport-sub.pm = Perl\prodimport-sub.pm
+		Perl\prodimport.pl = Perl\prodimport.pl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		DB_Brotmacher|Any CPU = DB_Brotmacher|Any CPU
@@ -342,7 +348,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_AutoCreateNewLanguageFiles = False
 		RESX_NeutralResourcesLanguage = de-DE
+		RESX_AutoCreateNewLanguageFiles = False
 	EndGlobalSection
 EndGlobal

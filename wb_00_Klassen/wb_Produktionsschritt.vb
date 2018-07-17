@@ -14,6 +14,7 @@ Public Class wb_Produktionsschritt
     Private _Optimiert As Boolean = False
     Private _Linie As Integer = wb_Global.UNDEFINED
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
+    Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
     Private _Typ As String
     Private _Tour As String
     Private _ChargenNummer As String
@@ -75,6 +76,7 @@ Public Class wb_Produktionsschritt
             RezeptVar = 1
             RezeptBezeichnung = .RezeptName
             LinienGruppe = .LinienGruppe
+            ArtikelLinienGruppe = .iArtikelLinienGruppe
             OptChargekg = .ArtikelChargen.OptCharge.fMengeInkg
             MaxChargekg = .ArtikelChargen.MaxCharge.fMengeInkg
             MinChargekg = .ArtikelChargen.MinCharge.fMengeInkg
@@ -227,6 +229,13 @@ Public Class wb_Produktionsschritt
             End If
         End Get
     End Property
+
+    Public ReadOnly Property VirtTreeArtikelLinienGruppe As String
+        Get
+            'TODO Hier entscheiden ob Liniengruppe oder Artikel-Liniengruppe angezeigt werden soll
+        End Get
+    End Property
+
     Public ReadOnly Property VirtTreeTour As String
         Get
             Return _Tour
@@ -496,6 +505,15 @@ Public Class wb_Produktionsschritt
         End Get
     End Property
 
+    Public Property ArtikelLinienGruppe As Integer
+        Get
+            Return _ArtikelLinienGruppe
+        End Get
+        Set(value As Integer)
+            _ArtikelLinienGruppe = value
+        End Set
+    End Property
+
     Public Property Linie As Integer
         Get
             If _Linie = wb_Global.UNDEFINED Then
@@ -667,4 +685,5 @@ Public Class wb_Produktionsschritt
             _MaxChargekg = value
         End Set
     End Property
+
 End Class

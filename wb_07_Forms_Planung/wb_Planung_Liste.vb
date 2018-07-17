@@ -216,6 +216,18 @@ Public Class wb_Planung_Liste
                         End If
                     Next
                 Next
+
+                'Artikelzeilen Aufarbeitung (Artikel mit LiniengruppeArtikel > 100)
+                For Each a As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
+                    'ChargenZeilen
+                    For Each r As wb_Produktionsschritt In a.ChildSteps
+                        If Not a.Optimiert And a.ArtikelLinienGruppe <> wb_Global.UNDEFINED Then
+                            sw.WriteLine(ProdDatenSatz(r, True))
+                        End If
+                    Next
+                Next
+
+                'Daten schreiben (Puffer leeren)
                 sw.Flush()
             End Using
         End Using
@@ -251,7 +263,7 @@ Public Class wb_Planung_Liste
                     ExpStr = ExpStr + "Variante" + SepStr
                 Case 28     ' [28] Rezeptnummer (nur Info)
                     ExpStr = ExpStr + "Rezepturnummer" + SepStr
-                Case 40     ' [40] Produktionsblock
+                Case 40     ' [40] Produktionsblock (Artikel-Linien-Nummer !!!)
                     ExpStr = ExpStr + "Produktionsblock" + SepStr
                 Case 41     ' [41] Sollchargengröße in %
                     ExpStr = ExpStr + "ChargeRestProzent" + SepStr
@@ -303,7 +315,7 @@ Public Class wb_Planung_Liste
         Return ExpStr
     End Function
 
-    Private Function ProdDatenSatz(x As wb_Produktionsschritt) As String
+    Private Function ProdDatenSatz(x As wb_Produktionsschritt, Optional bArtikelLiniengruppe As Boolean = False) As String
         Dim ExpStr As String = ""
         Dim SepStr As String = ","
 
@@ -321,6 +333,12 @@ Public Class wb_Planung_Liste
                     ExpStr = ExpStr + x.RezeptVar.ToString + SepStr
                 Case 28 ' [28] Rezeptnummer (nur Info)
                     ExpStr = ExpStr + x.RezeptNummer + SepStr
+                Case 40 ' [40] Artikel-Liniengruppe
+                    If bArtikelLiniengruppe Then
+                        ExpStr = ExpStr + x.ArtikelLinienGruppe.ToString + SepStr
+                    Else
+                        ExpStr = ExpStr + SepStr
+                    End If
                 Case 44  ' [44] Produktionsmenge in [kg]
                     ExpStr = ExpStr + wb_Functions.DoubleToXString(x.Sollwert_kg) + SepStr
                 Case Else
