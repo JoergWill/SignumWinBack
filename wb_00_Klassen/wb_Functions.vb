@@ -514,8 +514,8 @@ Public Class wb_Functions
     ''' <summary>
     ''' Wandelt die Artikelgruppe aus OrgaBack in die WinBack-Komponenten-Type um.
     ''' Die Artikelgruppen in OrgaBack sind frei definiert. Die Zuordnung von Artikelgruppe zu Komponenten-Type wird in winback.ini festgelegt
-    ''' 
-    '''     [OrgaBack].
+    ''' (Stammdaten-Gruppen-Artikelgruppen)
+    '''     [OrgaBack].[dbo].[Artikelgruppe]
     ''' </summary>
     ''' <param name="obKType"></param>
     ''' <returns></returns>

@@ -9,7 +9,7 @@ Imports System.Reflection
 ''' </summary>
 <Export(GetType(IExtension))>
 <ExportMetadata("Description", "Erweitert das Ribbon um ein neues Tab(WinBack)")>
-Public Class wb_Main_Menu
+Public Class ob_Main_Menu
     Implements IExtension
 
     Public Property InfoContainer As Common.IInfoContainer Implements Extensibility.IExtension.InfoContainer
@@ -54,7 +54,7 @@ Public Class wb_Main_Menu
     ''' <returns></returns>
     Private Shared Function MyResolveEventHandler(sender As Object, args As ResolveEventArgs) As Assembly
         Console.WriteLine("Resolving...")
-        Return GetType(wb_Main_Menu).Assembly
+        Return GetType(ob_Main_Menu).Assembly
     End Function
 
     ''' <summary>

@@ -424,6 +424,9 @@ Public Class Main
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Programm und Datei-Pfade einstellen
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.ServerTask
+        'WinBack-Mandant aus Kommandozeile
+        'TODO Im Echtbetrieb prüfen !!!
+        Main_CommandLineAuswerten()
 
         'Debug/Trace-Listener initialisieren
         AddTraceListener()
@@ -453,6 +456,25 @@ Public Class Main
         MainTimer.Enabled = True
         'Starte zyklischen Mysql-Ping
         cntMySql = cntCounter + cntCheckMysql + cntStartAfterOneSecond
+    End Sub
+
+    ''' <summary>
+    ''' Kommandozeile auswerten (Programm-Start)
+    ''' </summary>
+    Private Sub Main_CommandLineAuswerten()
+        For Each s As String In My.Application.CommandLineArgs
+            'die ersten 3 Zeichen entsprechen der Funktion
+            Select Case s.Substring(0, 3)
+                Case "/M:"
+                    Dim MandantNr As String = s.Substring(3)
+                    wb_GlobalSettings.MandantNr = wb_Functions.StrToInt(MandantNr)
+                Case "/I:"
+                    Dim WinbackIni As String = s.Substring(3)
+                    wb_GlobalSettings.pWinBackIniPath = WinbackIni & "\WinBack.ini"
+                Case Else
+                    Trace.WriteLine("Fehler in Command_line-Argument " & s)
+            End Select
+        Next
     End Sub
 
     ''' <summary>

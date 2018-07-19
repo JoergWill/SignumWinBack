@@ -593,9 +593,11 @@ Public Class wb_GlobalSettings
                 Else
                     'die winback.ini liegt direkt im AddIn-Pfad
                     '..\OrgaBack\AddIn
-                    _pWinBackIniPath = pProgrammPath & "WinBack.ini"
+                    Dim directoryInfo As System.IO.DirectoryInfo = Directory.GetParent(pAddInPath)
+                    _pWinBackIniPath = directoryInfo.Parent.FullName & "\WinBack.ini"
                 End If
             End If
+            MsgBox("Pfad zu winback.ini " & _pWinBackIniPath)
             Return _pWinBackIniPath
         End Get
         Set(value As String)
@@ -897,12 +899,6 @@ Public Class wb_GlobalSettings
                 _MsSQLUserId = IniFile.ReadString("winback", "MsSQLServer_UserId", "sa")
                 _MsSQLPasswd = IniFile.ReadEncryptedString("winback", "MsSQLServer_Passwd", "OrgaBack.NET")
 
-                Debug.Print("_MsSQLMainDB " & _MsSQLMainDB)
-                Debug.Print("_MsSQLAdmnDB " & _MsSQLAdmnDB)
-                Debug.Print("_MsSQLServer " & _MsSQLServer)
-                Debug.Print("_MsSQLUserId " & _MsSQLUserId)
-                Debug.Print("_MsSQLPasswd " & _MsSQLPasswd)
-
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
 
                 'wenn eine Mandanten-Nummer angegeben ist, wird versucht entsprechend der Mandanten-Nummer die Daten aus der Ini-Datei zu lesen
@@ -910,7 +906,19 @@ Public Class wb_GlobalSettings
                     _MySQLServerIP = IniFile.ReadString(IniWinBack_Mandant, "eMySQLServerIP", _MySQLServerIP)
                     _MySQLWinBack = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabase", _MySQLWinBack)
                     _MySQLWbDaten = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabaseDaten", _MySQLWbDaten)
+
+                    _MsSQLMainDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_MainDB", _MsSQLMainDB)
+                    _MsSQLAdmnDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_AdmnDB", _MsSQLAdmnDB)
+                    _MsSQLServer = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_Source", _MsSQLServer)
+                    _MsSQLUserId = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_UserId", _MsSQLUserId)
+                    _MsSQLPasswd = IniFile.ReadEncryptedString(IniWinBack_Mandant, "MsSQLServer_Passwd", _MsSQLPasswd)
                 End If
+
+                Debug.Print("_MsSQLMainDB " & _MsSQLMainDB)
+                Debug.Print("_MsSQLAdmnDB " & _MsSQLAdmnDB)
+                Debug.Print("_MsSQLServer " & _MsSQLServer)
+                Debug.Print("_MsSQLUserId " & _MsSQLUserId)
+                Debug.Print("_MsSQLPasswd " & _MsSQLPasswd)
 
             Case "Logger"
                 _LogToTextFile = IniFile.ReadInt("winback", "LogToTextFile", wbFALSE)
