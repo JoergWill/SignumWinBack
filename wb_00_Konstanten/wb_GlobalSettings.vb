@@ -579,7 +579,10 @@ Public Class wb_GlobalSettings
     ''' 
     ''' Das Hintergrund-Programm WinBack-Server-Task startet im Verzeichnis OrgaSoft/AddIn, der Verweis
     ''' auf die winback.ini liegt damit eine Ebene tiefer.
+    ''' Für den Debugger wird der Pfad zur winback.ini als Parameter übergeben, da sonst der Programm-Pfad
+    ''' verwendet werden muss.
     '''
+    ''' als winback.exe im Standalone-Betrieb liegt die winback.ini im Programm-Verzeichnis
     ''' </summary>
     ''' <returns></returns>
     Public Shared Property pWinBackIniPath As String
@@ -597,7 +600,6 @@ Public Class wb_GlobalSettings
                     _pWinBackIniPath = directoryInfo.Parent.FullName & "\WinBack.ini"
                 End If
             End If
-            MsgBox("Pfad zu winback.ini " & _pWinBackIniPath)
             Return _pWinBackIniPath
         End Get
         Set(value As String)

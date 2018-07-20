@@ -23,7 +23,7 @@ Public Class wb_TimerEvent
     ''' <param name="sTask"></param>
     ''' <returns></returns>
     Public Function Check(sTask As String) As Boolean
-        If (sTask = _Task) And _Startzeit < Now Then
+        If (sTask = _Task) And _Startzeit < Now And Status = wb_Global.wbAktionsTimerStatus.Enabled Then
             'Startzeit neu berechnen
             Startzeit = _Startzeit.AddSeconds(_Periode)
             'wenn die neue Startzeit in der Vergangenheit liegt wird neu berechnet
@@ -213,6 +213,7 @@ Public Class wb_TimerEvent
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         'sql-Kommando UPDATE bilden
         Dim sqlData As String = "AT_Startzeit = '" & wb_sql_Functions.MySQLdatetime(_Startzeit) &
+                                "', AT_Ziel_Aktion = '" & _Status &
                                 "', AT_Endezeit = '" & wb_sql_Functions.MySQLdatetime(Endezeit) &
                                 "', AT_Periode = " & _Periode & ", AT_Str2 = '" & _Str2 & "'"
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdtAktionsTimer, sqlData, Sort)

@@ -271,7 +271,9 @@ Public Class Main
     ''' <returns></returns>
     Private Function MainTimer_Check(s As String) As Boolean
         For Each AktTimerEvent In tArray
-            If AktTimerEvent.check(s) Then
+            If AktTimerEvent.Check(s) Then
+                'Anzeige der Tabelle aktualisieren
+                RefreshAktionsTimer()
                 Return True
             End If
         Next
@@ -383,10 +385,12 @@ Public Class Main
         DirectCast(tArray(i), wb_TimerEvent).Startzeit = EditTimer.TimerStart
         'Daten im Array aktualisieren - Zyklus
         DirectCast(tArray(i), wb_TimerEvent).Periode = EditTimer.TimerZyklus
+        'Daten im Array aktualisieren - aktueller Index
+        DirectCast(tArray(i), wb_TimerEvent).Str2 = EditTimer.TimerAktIndex
         'Timer aktiv (Wenn der Timer aktuell läuft, wird er erst nach dem Ende des Task auf inaktiv gesetzt
         DirectCast(tArray(i), wb_TimerEvent).Aktiv = EditTimer.TimerAktiv
 
-        'Anzeige der Tablle aktualisieren
+        'Anzeige der Tabelle aktualisieren
         RefreshAktionsTimer()
         'Daten in MySQl sichern
         DirectCast(tArray(i), wb_TimerEvent).MySQLdbUpdate_Fields()
@@ -460,6 +464,8 @@ Public Class Main
 
     ''' <summary>
     ''' Kommandozeile auswerten (Programm-Start)
+    '''     /M: Mandant
+    '''     /I: Pfad zur winback.ini
     ''' </summary>
     Private Sub Main_CommandLineAuswerten()
         For Each s As String In My.Application.CommandLineArgs

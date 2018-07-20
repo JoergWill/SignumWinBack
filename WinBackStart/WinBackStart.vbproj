@@ -358,7 +358,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="winback.ini" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WinBackAddin.vbproj">

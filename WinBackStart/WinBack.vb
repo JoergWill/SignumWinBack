@@ -158,6 +158,7 @@ Public Class WinBack
     '''     -uXXX   Anmeldung mit User-Nummer(XXX)
     '''     -w      Anmeldung als Master-User
     '''     -m      Mandant
+    '''     -i      Pfad zur winback.ini
     '''     
     ''' </summary>
     Private Sub ProcessParameter()
@@ -185,6 +186,16 @@ Public Class WinBack
                         Else
                             wb_AktUser.SuperUser = True
                         End If
+
+                    'Mandant
+                    Case "-m"
+                        Dim MandantNr As String = Strings.Mid(Parameter(i), 3)
+                        wb_GlobalSettings.MandantNr = wb_Functions.StrToInt(MandantNr)
+
+                    'Pfad zur winback.ini
+                    Case "-i"
+                        Dim WinBackIni As String = Strings.Mid(Parameter(i), 3)
+                        wb_GlobalSettings.pWinBackIniPath = WinBackIni & "\WinBack.ini"
 
                         'Falscher Parameter angegeben
                     Case Else
