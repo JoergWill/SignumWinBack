@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Codepage="1252" Culture="en-US" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <!-- Supported language and codepage codes can be found here: https://www.science.co.il/language/Locale-codes.php -->
+  <String Id="Language">1033</String>
+  
+  <String Id="ProductDescription">WinBack AddIn for OrgaBack</String>
+  <String Id="Comments">Setup-Routine WinBack-AddIn</String>
+  <String Id="ManufacturerFullName">WinBack GmbH Rudersberg</String>
+
+  <String Id="ErrorAdminRights">Die Installation von [ProductName] erfordert administrative Privilegien.</String>
+  <String Id="ErrorFramework">Microsoft .NET Framework wurde nicht gefunden. [ProductName] benötigt das .NET Framework 4.0.</String>
+</WixLocalization>

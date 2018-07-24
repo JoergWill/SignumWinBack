@@ -136,9 +136,9 @@
     ''' <returns></returns>
     Shared Function GetBezeichnung(LinienGruppe As Integer) As String
         If LGruppen.ContainsKey(LinienGruppe) Then
-            Return LGruppen(LinienGruppe).Bezeichnung
+            Return LGruppen(LinienGruppe).Bezeichnung & " - " & LinienGruppe.ToString
         Else
-            Return ""
+            Return "- " & LinienGruppe.ToString & " -"
         End If
 
     End Function

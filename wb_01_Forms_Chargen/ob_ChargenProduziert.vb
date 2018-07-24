@@ -36,7 +36,7 @@ Public Class ob_ChargenProduziert
         Dim sql As String
         Dim wbdaten As wb_Sql
         Dim ChargenNummer As String = ""
-        Dim TageswechselNr As Long = wb_Global.UNDEFINED
+        Dim TageswechselNr As Long = TWNr
         Dim opw_Zeile As New ob_ProduzierteWare(ChargenNummer)
 
         'Liste löschen

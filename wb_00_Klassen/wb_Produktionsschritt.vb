@@ -514,6 +514,12 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public ReadOnly Property ArtikelLinienGruppeText As String
+        Get
+            Return wb_Linien_Global.GetBezeichnung(_ArtikelLinienGruppe)
+        End Get
+    End Property
+
     Public Property Linie As Integer
         Get
             If _Linie = wb_Global.UNDEFINED Then

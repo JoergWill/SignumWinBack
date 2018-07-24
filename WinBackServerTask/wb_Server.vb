@@ -272,8 +272,6 @@ Public Class Main
     Private Function MainTimer_Check(s As String) As Boolean
         For Each AktTimerEvent In tArray
             If AktTimerEvent.Check(s) Then
-                'Anzeige der Tabelle aktualisieren
-                RefreshAktionsTimer()
                 Return True
             End If
         Next

@@ -1,4 +1,5 @@
-﻿Imports System
+﻿Imports System.Resources
+Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -8,12 +9,12 @@ Imports System.Runtime.InteropServices
 
 ' Werte der Assemblyattribute überprüfen
 
-<Assembly: AssemblyTitle("WinBackServerTask")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("WinBackServerTask")>
-<Assembly: AssemblyCopyright("Copyright ©  2017")>
-<Assembly: AssemblyTrademark("")>
+<Assembly: AssemblyTitle("WinBackAddIn")>
+<Assembly: AssemblyDescription("WinBack AddIn für OrgaBack")>
+<Assembly: AssemblyCompany("WinBack")>
+<Assembly: AssemblyProduct("WinBack Background Task OrgaBack-AddIn")>
+<Assembly: AssemblyCopyright("Copyright ©  2018")>
+<Assembly: AssemblyTrademark("WinBack")>
 
 <Assembly: ComVisible(False)>
 
@@ -31,5 +32,6 @@ Imports System.Runtime.InteropServices
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.1.1.0")>
-<Assembly: AssemblyFileVersion("1.1.1.0")>
+<Assembly: AssemblyVersion("1.1.2.0")>
+<Assembly: AssemblyFileVersion("1.1.2.0")>
+<Assembly: NeutralResourcesLanguage("de")>
