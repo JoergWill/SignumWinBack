@@ -1009,9 +1009,18 @@ Public Class wb_Rezeptschritt
                 'Bis alle Datensätze eingelesen sind
                 Do
                     'Parameter - Anzahl der Felder im DataSet
-                    For i = 0 To winback.MySqlRead.FieldCount - 1
-                        Name = winback.MySqlRead.GetName(i)
-                        Value = winback.MySqlRead.GetValue(i)
+                    'TimeStamp wird nicht gelesen (wegen Fehler bei Konvertierung)
+                    For i = 0 To winback.MySqlRead.FieldCount - 2
+                        Try
+                            Name = winback.MySqlRead.GetName(i)
+                            Value = winback.MySqlRead.GetValue(i)
+                        Catch ex As Exception
+                            Name = wb_Global.UNDEFINED
+                            Value = ""
+                            If Debugger.IsAttached Then
+                                Debug.Print(ex.Message)
+                            End If
+                        End Try
 
                         'Feldname aus der Datenbank
                         Select Case Name

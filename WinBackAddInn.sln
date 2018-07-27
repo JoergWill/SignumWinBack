@@ -483,6 +483,7 @@ Global
 		{A5D09341-D791-43D3-9562-5333F6445F1D}.DB_Weber|x86.ActiveCfg = Debug|x86
 		{A5D09341-D791-43D3-9562-5333F6445F1D}.DB_Weber|x86.Build.0 = Debug|x86
 		{A5D09341-D791-43D3-9562-5333F6445F1D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A5D09341-D791-43D3-9562-5333F6445F1D}.Debug|Any CPU.Build.0 = Debug|x86
 		{A5D09341-D791-43D3-9562-5333F6445F1D}.Debug|x64.ActiveCfg = Debug|x86
 		{A5D09341-D791-43D3-9562-5333F6445F1D}.Debug|x86.ActiveCfg = Debug|x86
 		{A5D09341-D791-43D3-9562-5333F6445F1D}.Debug|x86.Build.0 = Debug|x86
@@ -521,8 +522,8 @@ Global
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_OrgaBack|x64.Build.0 = Release|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_OrgaBack|x86.ActiveCfg = Debug|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_OrgaBack|x86.Build.0 = Debug|x86
-		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|Any CPU.ActiveCfg = Release|x86
-		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|Any CPU.Build.0 = Release|x86
+		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|Any CPU.Build.0 = Debug|Any CPU
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|x64.ActiveCfg = Release|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|x64.Build.0 = Release|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|x86.ActiveCfg = Debug|x86
@@ -534,10 +535,12 @@ Global
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_Weber|x86.ActiveCfg = Debug|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_Weber|x86.Build.0 = Debug|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Debug|Any CPU.Build.0 = Debug|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Debug|x64.ActiveCfg = Debug|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Debug|x86.ActiveCfg = Debug|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Debug|x86.Build.0 = Debug|x86
-		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Release|Any CPU.ActiveCfg = Release|x86
+		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Release|x64.ActiveCfg = Release|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Release|x86.ActiveCfg = Release|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.Release|x86.Build.0 = Release|x86
@@ -552,7 +555,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = de-DE
 		RESX_AutoCreateNewLanguageFiles = False
+		RESX_NeutralResourcesLanguage = de-DE
 	EndGlobalSection
 EndGlobal

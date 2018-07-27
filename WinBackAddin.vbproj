@@ -1156,6 +1156,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).*" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
+xcopy "$(TargetDir)$(TargetName).*" "$(SolutionDir)dll\WinBackAddIn" /E /C /R /Y
 xcopy "$(TargetDir)*.dll" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
 xcopy "$(TargetDir)*.bat" "C:\ProgramData\OrgaSoft\AddIn" /E /C /R /Y
 

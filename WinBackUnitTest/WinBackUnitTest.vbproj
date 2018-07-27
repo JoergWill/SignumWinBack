@@ -122,6 +122,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\SharpSSH\DiffieHellman.dll</HintPath>
     </Reference>
+    <Reference Include="ManagedSetupHelperDll, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\WinBackSetupCA\ManagedSetupHelperDll.dll</HintPath>
+    </Reference>
     <Reference Include="MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\MetroFramework 1.2.0.3\MetroFramework.dll</HintPath>
@@ -181,6 +185,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTest_wb_SetupCustomAction.vb" />
     <Compile Include="UnitTest_Init.vb" />
     <Compile Include="UnitTest_ob_ProduzierteWare.vb" />
     <Compile Include="UnitTest_ob_Rezept_Ingredients.vb" />

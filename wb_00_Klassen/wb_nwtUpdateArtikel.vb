@@ -44,8 +44,14 @@ Public Class wb_nwtUpdateArtikel
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         UpdateNext = False
 
+        'Filter setzen (nur markierte Artikel oder alle)
+        Dim Filter As String = wb_Global.ArtikelMarker.nwtUpdate
+        If bUpdateOrgaBack Then
+            Filter = "0"
+        End If
+
         'nächsten Datensatz aus Tabelle Komponenten lesen
-        If winback.sqlSelect(setParams(sqlUpdateArtikelNWT, AktKO_Nr.ToString, wb_Global.ArtikelMarker.nwtUpdate)) Then
+        If winback.sqlSelect(setParams(sqlUpdateArtikelNWT, AktKO_Nr.ToString, Filter)) Then
             'Lesen KO-Nr
             If winback.Read Then
                 'Komponenten-Objekt nimmt die aktuellen Daten auf

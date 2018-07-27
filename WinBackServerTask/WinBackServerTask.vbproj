@@ -48,8 +48,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Resources\orgaback-logo-header.jpg.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -58,7 +57,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug-M1\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackServerTask.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -70,7 +69,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug-M2\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackServerTask.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -82,7 +81,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug-M3\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackServerTask.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -94,7 +93,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug-M4\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackServerTask.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -106,7 +105,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug-M5\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackServerTask.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -266,6 +265,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\WeifenLuo Docking V2.13.0\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
+    <Reference Include="WinBackAddin, Version=1.1.2.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\WinBackAddIn\WinBackAddin.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -368,12 +371,6 @@
     <None Include="Resources\Users.png" />
     <None Include="Resources\SpeechBubble.png" />
     <None Include="Resources\Cancel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WinBackAddin.vbproj">
-      <Project>{AA45FD47-0A9E-40D7-A9A1-5EF03F1F3C67}</Project>
-      <Name>WinBackAddin</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\LogFile.png" />
