@@ -62,7 +62,6 @@
     <Compile Include="Product.wxs" />
     <Compile Include="UI_LicenceAgreement.wxs" />
     <Compile Include="UI_Main.wxs" />
-    <Compile Include="UI_Server.wxs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WinBackServerTask\WinBackServerTask.vbproj">

@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncUserGruppen.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="tbSyncResult.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -169,7 +169,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tbSyncResult.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="btnSyncUser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -196,7 +196,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncUser.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="btnSyncStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -226,7 +226,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncStart.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="btnExportPrint.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -253,7 +253,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnExportPrint.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="lvSyncResult.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -310,36 +310,6 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lvSyncResult.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="btnSyncArtikelGruppen.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="btnSyncArtikelGruppen.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnSyncArtikelGruppen.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 140</value>
-  </data>
-  <data name="btnSyncArtikelGruppen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 43</value>
-  </data>
-  <data name="btnSyncArtikelGruppen.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="btnSyncArtikelGruppen.Text" xml:space="preserve">
-    <value>Artikel-Gruppen</value>
-  </data>
-  <data name="&gt;&gt;btnSyncArtikelGruppen.Name" xml:space="preserve">
-    <value>btnSyncArtikelGruppen</value>
-  </data>
-  <data name="&gt;&gt;btnSyncArtikelGruppen.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSyncArtikelGruppen.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnSyncArtikelGruppen.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="btnSyncArtikel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">

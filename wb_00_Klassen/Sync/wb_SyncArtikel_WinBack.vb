@@ -26,20 +26,24 @@
 
     Friend Overrides Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
         'Throw New NotImplementedException()
+        Return False
     End Function
 
     Friend Overrides Function DBUpdate(Nr As String, Text As String, Gruppe As String) As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateSyncKomp, Nr, Text)
         'Update ausführen
-        Return (winback.sqlCommand(sql) > 0)
+        DBUpdate = (winback.sqlCommand(sql) > 0)
+        winback.Close()
     End Function
 
     Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateSyncKompAlNr, Nr_Alt, Nr_Neu)
         'Update ausführen
-        Return (winback.sqlCommand(sql) > 0)
+        DBNumber = (winback.sqlCommand(sql) > 0)
+        Debug.Print("Update WinBack Artikel " & sql)
+        winback.Close()
     End Function
 End Class
 

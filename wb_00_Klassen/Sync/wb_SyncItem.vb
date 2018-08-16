@@ -4,14 +4,14 @@ Public Class wb_SyncItem
     Implements IComparable
 
     Private _sort As String
-    Private _syncOK As wb_Global.SyncState    'Synchronisations-Status
-    Private _toolTipText As String            'Hilfe-Anzeige bei Fehlern in der Synchronistion
-    Private _wb_Nummer As String              'Nummer in WinBack
-    Private _wb_Bezeichnung As String         'Bezeichnung in WinBack
-    Private _wb_Gruppe As String              'Gruppe in WinBack
-    Private _os_Nummer As String              'Nummer in OrgaSoft
-    Private _os_Bezeichnung As String         'Bezeichnung in OrgaSoft
-    Private _os_Gruppe As String              'Gruppe in OrgaSoft
+    Private _syncOK As wb_Global.SyncState = wb_Global.SyncState.NOK    'Synchronisations-Status
+    Private _toolTipText As String                                      'Hilfe-Anzeige bei Fehlern in der Synchronistion
+    Private _wb_Nummer As String                                        'Nummer in WinBack
+    Private _wb_Bezeichnung As String                                   'Bezeichnung in WinBack
+    Private _wb_Gruppe As String                                        'Gruppe in WinBack
+    Private _os_Nummer As String                                        'Nummer in OrgaSoft
+    Private _os_Bezeichnung As String                                   'Bezeichnung in OrgaSoft
+    Private _os_Gruppe As String                                        'Gruppe in OrgaSoft
 
     Public Property Os_Nummer As String
         Get

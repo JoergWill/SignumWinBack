@@ -320,6 +320,8 @@
     Public Const T301_Broteinheiten = 201
     Public Const T301_Vegetarisch = 210
     Public Const T301_Vegan = 211
+    Public Const T301_Koscher = 212
+    Public Const T301_Halal = 213
 
 
     ''' <summary>
@@ -330,19 +332,40 @@
     '''Public Const MFF_Verkaufstage = 104
     '''Public Const MFF_VerarbeitungsHinweisArtikel = 208
     '''Public Const MFF_MatchCode = 227
-    '''Public Const MFF_RezeptName = 229
 
     Public Const MFF_ProduktionsLinie = 107
 
-    Public Const MFF_Zutatenliste = 209
+    '''Public Const MFF_Zutatenliste = 209
     Public Const MFF_MehlZusammensetzung = 210
-    Public Const MFF_Gebäckcharakeristik = 211
-    Public Const MFF_Verzehrtipps = 212
-    Public Const MFF_Wissenswertes = 213
+    'Public Const MFF_Gebäckcharakeristik = 211
+    'Public Const MFF_Verzehrtipps = 212
+    'Public Const MFF_Wissenswertes = 213
 
     Public Const MFF_Kommentar = 225
     Public Const MFF_KO_Nr = 226
     Public Const MFF_RezeptNummer = 228
+
+
+    ''' <summary>
+    ''' NEU - Erst nach Update !!!
+    ''' Konstanten für MultifunktionsFelder Artikel
+    ''' </summary>
+    Public Const MFF_Version = "geändert TELKO 14.08.2018"
+    'Public Const MFF_ProduktionsLinie = 200
+    'Public Const MFF_KO_Nr = 201
+
+    'Public Const MFF_Gebäckcharakeristik = 152
+    'Public Const MFF_Verzehrtipps = 153
+    'Public Const MFF_Wissenswertes = 154
+    'Public Const MFF_MehlZusammensetzung = 155
+
+    'Public Const MFF_Kommentar = 156
+    'Public Const MFF_RezeptNummer = 202
+    'Public Const MFF_RezeptName = 203
+
+
+
+
 
     ''' <summary>
     ''' Konstanten für die Berechnung der Teigausbeute
@@ -415,6 +438,7 @@
     Enum SyncState
         NOK                     'Datensatz ist noch nicht geprüft
         OK                      'Datensatz ist in  beiden Datenbanken vorhanden und identisch
+        DBL                     'Datenfehler - Datensatz mehrfach vorhanden (Feld Bezeichnung identisch)
         OrgaBackWrite           'Datensatz ist nur in WinBack vorhanden und muss in OrgaBack geschrieben werden
         OrgaBackUpdate          'Datensatz ist in beiden Datenbanken vorhanden und muss in OrgaBack aktualisiert werden
         OrgaBackMiss            'Datensatz ist nur in WinBack vorhanden - Fehlt in OrgaBack, KEIN Update

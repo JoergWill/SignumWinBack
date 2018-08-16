@@ -386,37 +386,37 @@ Public Class ob_Artikel_DockingExtension
     '''     Ist der Artikel einem Sortiment zugeordnet, das eine Filiale vom Typ Produktion besitzt, werden die Daten
     '''     ausgewertet und es wird True zurückgegeben.
     ''' 
-    '''     WinBack         Bezeichung                  OrgaBack
-    '''     =======         ==========                  ========
-    '''     KO_Nr_AlNum     Artikel-Nummer              dbo.Artikel.ArtikelNr
-    '''     KO_Bezeichnung  Artikel-Bezeichnung         dbo.Artikel.KurzText
-    '''     KO_Type           0 - Artikel               .Artikelgruppe =  0 (Gruppe Backwaren aus winback.ini)
-    '''                     102 - Rohstoff              .Artikelgruppe = 40 (Gruppe Rohstoffe aus winback.ini)
-    '''     KO_Nr           Index Rohstoff/Artikel      MFF226
-    '''     KO_Kommentar    Artikel-Kommentar           MFF225
-    '''     KA_Matchcode    ID für Nährwerte            MFF227
-    '''     Rezeptnummer zum Artikel                    MFF228 (WinBack schreibt)
+    '''     WinBack         Bezeichung                      OrgaBack
+    '''     =======         ==========                      ========
+    '''     KO_Nr_AlNum     Artikel-Nummer                  dbo.Artikel.ArtikelNr
+    '''     KO_Bezeichnung  Artikel-Bezeichnung             dbo.Artikel.KurzText
+    '''     KO_Type           0 - Artikel                   .Artikelgruppe =  0 (Gruppe Backwaren aus winback.ini)
+    '''                     102 - Rohstoff                  .Artikelgruppe = 40 (Gruppe Rohstoffe aus winback.ini)
+    '''     KO_Kommentar    Artikel-Kommentar               MFF156
+    '''     
+    '''     KA_Matchcode    ID für Nährwerte            
+    '''     Aufarbeitung(Backort)                           MFF200 (OrgaBack Readonly)
+    '''     KO_Nr           Index Rohstoff/Artikel          MFF201
+    '''     KA_RZ_Nr        Rezeptnummer zum Artikel        MFF202 (WinBack schreibt)
+    '''     RZ_Bezeichnung  Rezeptbezeichnung zum Artikel   MFF203 (WinBack schreibt)
     ''' 
-    '''     Hinweise2(03/0) Hinweise Artikel            nur WinBack
-    '''     Hinweise2(09/1) Zutatenliste Artikel        MFF209 (WinBack schreibt)
-    '''     Hinweise2(09/2) Mehlzusammensetzung         MFF210 (WinBack schreibt)
+    '''     Hinweise2(03/0) Hinweise Artikel                nur WinBack
+    '''     Hinweise2(09/1) Zutatenliste Artikel            dbo.ArtikelDeklarationsTexte.Zutaten (WinBack schreibt)
+    '''     Hinweise2(09/2) Mehlzusammensetzung             MFF210 (WinBack schreibt)
     ''' 
     '''     In WinBack nicht verwendet
     '''     ==========================
-    '''     200.2           Dateiname Bild              .ArtikelBildDateiname
-    '''     200.3           Kurztext                    .Kurztext
-    '''     200.7           Haltbarkeit                 MFF102
-    '''     200.8           Lagerung                    MFF103
-    '''     200.9           Verkaufstage                MFF104
+    '''     200.2           Dateiname Bild                  .ArtikelBildDateiname
+    '''     200.3           Kurztext                        .Kurztext
+    '''     200.7           Haltbarkeit                 
+    '''     200.8           Lagerung                        MFF151 nur OrgaBack - keine Synchr.
+    '''     200.9           Verkaufstage                    MFF150 nur OrgaBack - keine Synchr.
     '''     200.17          Warengruppe
     '''     200.20          Stk/Karton                  
     '''     
-    '''     Hinweise2(10/1) Gebäck-Charakteristik       MFF211
-    '''     Hinweise2(10/2) Verzehr-Tipps               MFF212
-    '''     Hinweise2(10/3) Wissenswertes               MFF213
-    '''     Rezeptname zum Artikel (WinBack schreibt)   MFF229
-    '''     
-    '''     KA_Kurzname     Kurztext                    MFF224 ENTFÄLLT !!
+    '''     Hinweise2(10/1) Gebäck-Charakteristik           MFF152 nur OrgaBack - keine Synchr.
+    '''     Hinweise2(10/2) Verzehr-Tipps                   MFF153 nur OrgaBack - keine Synchr.
+    '''     Hinweise2(10/3) Wissenswertes                   MFF154 nur OrgaBack - keine Synchr.
     '''     
     ''' </summary>
     Private Function GetKomponentenDaten() As Boolean
@@ -431,7 +431,7 @@ Public Class ob_Artikel_DockingExtension
             Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
             'Komponenten-Nummer aus OrgaBack ermitteln
             If Komponente Is Nothing Then Komponente = New wb_Komponente
-            Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF226 - Index auf interne Komponenten-Nummer
+            Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF201 - Index auf interne Komponenten-Nummer
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString         'Artikel/Komponenten-Nummer alphanumerisch
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
@@ -513,8 +513,7 @@ Public Class ob_Artikel_DockingExtension
         'Update aller in OrgaBack geänderten Daten
         Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString     'Artikel-Nummer (Ändern über Shift-F9)
         Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
-        Komponente.ZutatenListe = MFFValue(oFil, wb_Global.MFF_Zutatenliste)     'MFF209 - Zutatenliste
-        Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)           'MFF225 - Kommentar
+        Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)           'Artikel/Komponenten-Kommentar
 
         'Testausgabe
         Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
@@ -532,7 +531,6 @@ Public Class ob_Artikel_DockingExtension
 
         'Update aller in WinBack geänderten Daten
         MFFValue(oFil, wb_Global.MFF_RezeptNummer) = Komponente.RezeptNummer
-        MFFValue(oFil, wb_Global.MFF_Zutatenliste) = Komponente.ZutatenListe
         MFFValue(oFil, wb_Global.MFF_MehlZusammensetzung) = Komponente.Mehlzusammensetzung
         MFFValue(oFil, wb_Global.MFF_ProduktionsLinie) = Komponente.sArtikeLinienGruppe
     End Sub

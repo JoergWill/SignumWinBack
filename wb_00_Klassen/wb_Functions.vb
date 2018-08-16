@@ -938,7 +938,26 @@ Public Class wb_Functions
     Public Shared Sub DoBatch(Directory As String, BatchFile As String, Argument As String, WaitUntilReady As Boolean)
         Dim cmd As String = Chr(34) + wb_GlobalOrgaBack.OrgaBackAddinPath + "\" + BatchFile + Chr(34)
         Dim arg As String = Chr(34) + Directory + Chr(34) + " " + Chr(34) + Argument + Chr(34)
+        'Batch-File ausführen
+        ExeBatch(Directory, cmd, arg, WaitUntilReady)
+    End Sub
 
+    ''' <summary>
+    ''' Für ein Batch-File im Verzeichnis MySQLBatch aus. Arg1/Arg2 werden als %2 und %3 an das Batch-File übergeben
+    ''' </summary>
+    ''' <param name="Directory"></param>
+    ''' <param name="BatchFile"></param>
+    ''' <param name="Arg1"></param>
+    ''' <param name="Arg2"></param>
+    ''' <param name="WaitUntilReady"></param>
+    Public Shared Sub DoBatch(Directory As String, BatchFile As String, Arg1 As String, Arg2 As String, WaitUntilReady As Boolean)
+        Dim cmd As String = Chr(34) + wb_GlobalOrgaBack.OrgaBackAddinPath + "\" + BatchFile + Chr(34)
+        Dim arg As String = Chr(34) + Directory + Chr(34) + " " + Chr(34) + Arg1 + Chr(34) + " " + Chr(34) + Arg2 + Chr(34)
+        'Batch-File ausführen
+        ExeBatch(Directory, cmd, arg, WaitUntilReady)
+    End Sub
+
+    Private Shared Sub ExeBatch(Directory As String, cmd As String, arg As String, WaitUntilReady As Boolean)
         Dim p As New Process()
         p.StartInfo = New ProcessStartInfo(cmd, arg)
         p.StartInfo.CreateNoWindow = True
@@ -948,7 +967,6 @@ Public Class wb_Functions
         p.StartInfo.WorkingDirectory = Directory
         p.Start()
         p.WaitForExit()
-
     End Sub
 
     ''' <summary>

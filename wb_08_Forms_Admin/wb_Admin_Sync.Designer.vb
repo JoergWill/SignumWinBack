@@ -38,7 +38,6 @@ Partial Class wb_Admin_Sync
         Me.clHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.btnSyncArtikelGruppen = New System.Windows.Forms.Button()
         Me.btnSyncArtikel = New System.Windows.Forms.Button()
         Me.btnSyncRohstoffe = New System.Windows.Forms.Button()
         Me.btnTryToMatch = New System.Windows.Forms.Button()
@@ -107,12 +106,6 @@ Partial Class wb_Admin_Sync
         '
         resources.ApplyResources(Me.clHeader5, "clHeader5")
         '
-        'btnSyncArtikelGruppen
-        '
-        resources.ApplyResources(Me.btnSyncArtikelGruppen, "btnSyncArtikelGruppen")
-        Me.btnSyncArtikelGruppen.Name = "btnSyncArtikelGruppen"
-        Me.btnSyncArtikelGruppen.UseVisualStyleBackColor = True
-        '
         'btnSyncArtikel
         '
         resources.ApplyResources(Me.btnSyncArtikel, "btnSyncArtikel")
@@ -138,7 +131,6 @@ Partial Class wb_Admin_Sync
         Me.Controls.Add(Me.btnTryToMatch)
         Me.Controls.Add(Me.btnSyncRohstoffe)
         Me.Controls.Add(Me.btnSyncArtikel)
-        Me.Controls.Add(Me.btnSyncArtikelGruppen)
         Me.Controls.Add(Me.lvSyncResult)
         Me.Controls.Add(Me.btnExportPrint)
         Me.Controls.Add(Me.btnSyncStart)
@@ -162,7 +154,6 @@ Partial Class wb_Admin_Sync
     Friend WithEvents clHeader3 As Windows.Forms.ColumnHeader
     Friend WithEvents clHeader4 As Windows.Forms.ColumnHeader
     Friend WithEvents clHeader5 As Windows.Forms.ColumnHeader
-    Friend WithEvents btnSyncArtikelGruppen As Windows.Forms.Button
     Friend WithEvents btnSyncArtikel As Windows.Forms.Button
     Friend WithEvents btnSyncRohstoffe As Windows.Forms.Button
     Friend WithEvents btnTryToMatch As Windows.Forms.Button

@@ -172,16 +172,38 @@ Public MustInherit Class wb_Sync
     Public Sub CheckSync(SyncData As ArrayList)
         'beide Arrays aneinanderhängen
         _Data.AddRange(SyncData)
-        PrintSync()
+        'PrintSync()
         'nach Nummer(Sortiertkriterium) sortieren
         _Data.Sort()
-        PrintSync()
+        'PrintSync()
         'doppelte Einträge zusammenfassen
         DelDubletten()
-        PrintSync()
+        'PrintSync()
         'Prüfen ob beide Einträge im Array identisch sind
         CheckSyncResult()
     End Sub
+
+    Public Sub CheckDbl()
+        'Check auf doppelte Einträge (Name)
+        Dim idx As Integer = 1
+        For Each x As wb_SyncItem In _Data
+            idx += 1
+            If x.SyncOK = wb_Global.SyncState.NOK And x.Wb_Bezeichnung <> "" Then
+                For i = idx To _Data.Count - 1
+                    If _Data(i).Wb_Bezeichnung = x.Wb_Bezeichnung Then
+                        'Beide Datensätze werden markiert
+                        'wenn einer der Datensätze später synchronisiert werden kann, bleibt der fehlerhafte übrig
+                        x.SyncOK = wb_Global.SyncState.DBL
+                        x.ToolTipText = "Datensatz doppelt vorhanden ->" & _Data(i).wb_Nummer
+
+                        _Data(i).SyncOK = wb_Global.SyncState.DBL
+                        _Data(i).ToolTipText = "Datensatz doppelt vorhanden ->" & x.Wb_Nummer
+                    End If
+                Next
+            End If
+        Next
+    End Sub
+
 
     Private Sub DelDubletten()
         Dim _DataCount As Integer = _Data.Count
@@ -212,21 +234,23 @@ Public MustInherit Class wb_Sync
         ClearSyncCounter()
 
         For Each x As wb_SyncItem In _Data
-            If x.SyncOK = wb_Global.SyncState.NOK Then
+            If x.SyncOK = wb_Global.SyncState.NOK Or x.SyncOK = wb_Global.SyncState.DBL Then
                 x.SyncOK = GetSyncResult(x)
-                x.ToolTipText = GetSyncToolTipText(x.SyncOK)
-                'Zähler aktualisiere
+                x.ToolTipText = GetSyncToolTipText(x.SyncOK, x.ToolTipText)
+                'Zähler aktualisieren
                 addSyncCounter(x.SyncOK)
             End If
         Next
     End Sub
 
-    Friend Overridable Function GetSyncToolTipText(x As wb_Global.SyncState) As String
+    Friend Overridable Function GetSyncToolTipText(x As wb_Global.SyncState, ToolTip As String) As String
         Select Case x
             Case wb_Global.SyncState.NOK
                 Return "Datensatz wurde noch nicht ausgewertet"
             Case wb_Global.SyncState.OK
                 Return "Beide Datensätze sind in beiden Datenbanken identisch"
+            Case wb_Global.SyncState.DBL
+                Return ToolTip
 
             Case wb_Global.SyncState.OrgaBackWrite
                 Return "Datensätze wird in OrgaBack angelegt"
@@ -249,6 +273,11 @@ Public MustInherit Class wb_Sync
 
     Friend Overridable Function GetSyncResult(ByVal x As wb_SyncItem) As wb_Global.SyncState
 
+        'Check
+        'If x.SyncOK = wb_Global.SyncState.DBL Then
+        '    Debug.Print("Doublette wb/ob (" & x.Wb_Nummer & ")" & x.Wb_Bezeichnung & "/(" & x.Os_Nummer & ")" & x.Os_Bezeichnung)
+        'End If
+
         'Beide Nummern sind identisch
         If x.Wb_Nummer = x.Os_Nummer Then
             If x.Wb_Bezeichnung = x.Os_Bezeichnung Then
@@ -266,7 +295,13 @@ Public MustInherit Class wb_Sync
             Return _Case_01
         ElseIf x.Os_Bezeichnung = "" Then
             'OrgaBack-Bezeichnung ist leer
-            Return _Case_10
+            If x.SyncOK = wb_Global.SyncState.DBL Then
+                'Datensatz ist doppelt vorhanden - Fehler bleibt
+                Return wb_Global.SyncState.DBL
+            Else
+                'Fehlerstatus - OrgaBackMiss
+                Return _Case_10
+            End If
         End If
 
         Return wb_Global.SyncState.NOK

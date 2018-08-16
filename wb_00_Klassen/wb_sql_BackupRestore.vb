@@ -6,6 +6,14 @@ Public Class wb_sql_BackupRestore
     Public Function datensicherung(Filename As String) As Boolean
         Dim SaveFileExtension As String
         Dim DumpFileName As String
+        Dim DBName As String
+
+        'Datenbank-Name winback oder wbdaten - abhängig vom aktuell eingestellten Mandanten
+        If Filename.Contains("Chargen") Then
+            DBName = wb_GlobalSettings.MySQLWbDaten
+        Else
+            DBName = wb_GlobalSettings.MySQLWinBack
+        End If
 
         'Cursor umschalten
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
@@ -17,7 +25,7 @@ Public Class wb_sql_BackupRestore
 
             'Datensicherung starten
             Trace.WriteLine("Start Datensicherung WinBack")
-            wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Dump.bat", DumpFileName, True)
+            wb_Functions.DoBatch(wb_GlobalSettings.MySQLPath, "MySQL_Dump.bat", DumpFileName, DBName, True)
 
             'File komprimieren
             Trace.WriteLine("Datei komprimieren WinBack")
@@ -48,11 +56,11 @@ Public Class wb_sql_BackupRestore
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
         OpenFileExtension = IO.Path.GetExtension(FileName)
 
-        'Datenbank-Name winback oder wbdaten
+        'Datenbank-Name winback oder wbdaten - abhängig vom Mandanten
         If FileName.Contains("Chargen") Then
-            DBName = "wbdaten"
+            DBName = wb_GlobalSettings.MySQLWbDaten
         Else
-            DBName = "winback"
+            DBName = wb_GlobalSettings.MySQLWinBack
         End If
 
         'Datenrücksicherung muss vorher dekomprimiert werden

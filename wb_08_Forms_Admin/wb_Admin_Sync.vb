@@ -91,7 +91,7 @@ Public Class wb_Admin_Sync
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSyncArtikelGruppen_Click(sender As Object, e As EventArgs) Handles btnSyncArtikelGruppen.Click
+    Private Sub btnSyncArtikelGruppen_Click(sender As Object, e As EventArgs)
 
     End Sub
 
@@ -106,9 +106,11 @@ Public Class wb_Admin_Sync
 
         'Cursor umschalten
         Me.Cursor = Cursors.WaitCursor
-        'Benutzer aus WinBack in Array einlesen
+        'Artikel aus WinBack in Array einlesen
         wbArtikel.DBRead()
-        'Benutzer aus OrgaSoft in Array einlesen
+        'doppelte Einträge (Bezeichnung) in WinBack ermitteln markieren
+        wbArtikel.CheckDbl()
+        'Artikel aus OrgaSoft in Array einlesen
         osArtikel.DBRead()
 
         'Daten/Synchronisation prüfen und Ergebnis berechnen
@@ -179,6 +181,8 @@ Public Class wb_Admin_Sync
                     wb.DBInsert(x.Os_Nummer, x.Os_Bezeichnung, x.Os_Gruppe)
                 Case wb_Global.SyncState.WinBackUpdate
                     wb.DBUpdate(x.Os_Nummer, x.Os_Bezeichnung, x.Os_Gruppe)
+                Case wb_Global.SyncState.TryMatchWinBackUpdate
+                    wb.DBNumber(x.Wb_Nummer, x.Os_Nummer, x.Os_Gruppe)
             End Select
         Next
         'Synchronisation in OrgaBack-DB
@@ -188,8 +192,6 @@ Public Class wb_Admin_Sync
                     os.DBInsert(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
                 Case wb_Global.SyncState.OrgaBackUpdate
                     os.DBUpdate(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
-
-                'TODO TESTEN OB WINBACK ODER ORGABACK
                 Case wb_Global.SyncState.TryMatchWinBackUpdate
                     wb.DBNumber(x.Wb_Nummer, x.Os_Nummer, x.Os_Gruppe)
             End Select
@@ -247,6 +249,7 @@ Public Class wb_Admin_Sync
                         If w.Os_Bezeichnung = o.Wb_Bezeichnung Then
                             w.Merge(o)
                             CalculateResultSummary(w.SyncOK)
+                            'Artikel/Rohstoff-Nummer nur in WinBack anpassen
                             w.SyncOK = wb_Global.SyncState.TryMatchWinBackUpdate
                             o.SyncOK = wb_Global.SyncState.TryMatchDel
                             Exit For
@@ -257,7 +260,8 @@ Public Class wb_Admin_Sync
                         If w.Wb_Bezeichnung = o.Os_Bezeichnung Then
                             w.Merge(o)
                             CalculateResultSummary(w.SyncOK)
-                            w.SyncOK = wb_Global.SyncState.TryMatchOrgaBackUpdate
+                            'Artikel/Rohstoff-Nummer nur in WinBack anpassen
+                            w.SyncOK = wb_Global.SyncState.TryMatchWinBackUpdate
                             o.SyncOK = wb_Global.SyncState.TryMatchDel
                             Exit For
                         End If

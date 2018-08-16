@@ -463,6 +463,7 @@
     <Compile Include="wb_00_Klassen\wb_AktUser.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtUpdateArtikel.vb" />
     <Compile Include="wb_00_Klassen\wb_Simple3Des.vb" />
+    <Compile Include="wb_00_Klassen\wb_Sql_FindServerIP.vb" />
     <Compile Include="wb_00_Klassen\wb_VorProduktionsSchritt.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Chargen.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Konfiguration.vb" />
