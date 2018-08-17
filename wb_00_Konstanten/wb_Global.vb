@@ -327,45 +327,36 @@
     ''' <summary>
     ''' Konstanten für MultifunktionsFelder Artikel
     ''' </summary>
+    '''not USED:
+    '''
     '''Public Const MFF_Haltbarkeit = 102
     '''Public Const MFF_Lagerung = 103
     '''Public Const MFF_Verkaufstage = 104
     '''Public Const MFF_VerarbeitungsHinweisArtikel = 208
     '''Public Const MFF_MatchCode = 227
-
-    Public Const MFF_ProduktionsLinie = 107
-
     '''Public Const MFF_Zutatenliste = 209
-    Public Const MFF_MehlZusammensetzung = 210
-    'Public Const MFF_Gebäckcharakeristik = 211
-    'Public Const MFF_Verzehrtipps = 212
-    'Public Const MFF_Wissenswertes = 213
-
-    Public Const MFF_Kommentar = 225
-    Public Const MFF_KO_Nr = 226
-    Public Const MFF_RezeptNummer = 228
-
-
-    ''' <summary>
-    ''' NEU - Erst nach Update !!!
-    ''' Konstanten für MultifunktionsFelder Artikel
-    ''' </summary>
+    '''Public Const MFF_Gebäckcharakeristik = 211
+    '''Public Const MFF_Verzehrtipps = 212
+    '''Public Const MFF_Wissenswertes = 213
+    '''
     Public Const MFF_Version = "geändert TELKO 14.08.2018"
-    'Public Const MFF_ProduktionsLinie = 200
-    'Public Const MFF_KO_Nr = 201
-
-    'Public Const MFF_Gebäckcharakeristik = 152
-    'Public Const MFF_Verzehrtipps = 153
-    'Public Const MFF_Wissenswertes = 154
-    'Public Const MFF_MehlZusammensetzung = 155
-
-    'Public Const MFF_Kommentar = 156
-    'Public Const MFF_RezeptNummer = 202
-    'Public Const MFF_RezeptName = 203
-
-
-
-
+#Const MFFnew = False
+    'TODO Update Test-Databases
+    'MFF-Definition nach der Telko vom 14.08.2018
+#If MFFnew Then
+    Public Const MFF_ProduktionsLinie = 200
+    Public Const MFF_KO_Nr = 201
+    Public Const MFF_MehlZusammensetzung = 155
+    Public Const MFF_Kommentar = 156
+    Public Const MFF_RezeptNummer = 202
+    Public Const MFF_RezeptName = 203
+#Else
+    Public Const MFF_ProduktionsLinie = 107
+    Public Const MFF_KO_Nr = 226
+    Public Const MFF_MehlZusammensetzung = 210
+    Public Const MFF_Kommentar = 225
+    Public Const MFF_RezeptNummer = 228
+#End If
 
     ''' <summary>
     ''' Konstanten für die Berechnung der Teigausbeute

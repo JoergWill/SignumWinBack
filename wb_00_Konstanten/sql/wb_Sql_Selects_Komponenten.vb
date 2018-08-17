@@ -97,5 +97,7 @@
     Public Const sqlUpdateSyncKomp = "UPDATE Komponenten SET KO_Bezeichnung = '[1]' WHERE KO_Nr_AlNum = '[0]'"
     'Sql-Statement Update AlNummer Artikel/Rohstoff (Sync OrgaBack-WinBack)
     Public Const sqlUpdateSyncKompAlNr = "UPDATE Komponenten SET KO_Nr_AlNum = '[1]' WHERE KO_Nr_AlNum = '[0]'"
+    'Sql-Statement Update AlNummer Artikel/Rohstoff (Sync OrgaBack-WinBack)
+    Public Const sqlDelSyncKoNr = "DELETE FROM Komponenten WHERE KO_Nr = [0]"
 
 End Class

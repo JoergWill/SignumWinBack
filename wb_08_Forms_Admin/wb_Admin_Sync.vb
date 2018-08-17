@@ -91,10 +91,6 @@ Public Class wb_Admin_Sync
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSyncArtikelGruppen_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
     Private Sub btnSyncArtikel_Click(sender As Object, e As EventArgs) Handles btnSyncArtikel.Click
         'Liste der Tabellen-Überschriften
         sColNames.Clear()
@@ -163,9 +159,9 @@ Public Class wb_Admin_Sync
             Case wb_Global.SyncType.Benutzer
                 ExcecuteSync(wbUser, osUser)
             Case wb_Global.SyncType.Artikel
-                ExcecuteSync(wbArtikel, osUser)
+                ExcecuteSync(wbArtikel, Nothing)
             Case wb_Global.SyncType.Rohstoffe
-                ExcecuteSync(wbRohstoffe, osUser)
+                ExcecuteSync(wbRohstoffe, Nothing)
         End Select
 
         'Cursor wieder umschalten
@@ -183,18 +179,56 @@ Public Class wb_Admin_Sync
                     wb.DBUpdate(x.Os_Nummer, x.Os_Bezeichnung, x.Os_Gruppe)
                 Case wb_Global.SyncState.TryMatchWinBackUpdate
                     wb.DBNumber(x.Wb_Nummer, x.Os_Nummer, x.Os_Gruppe)
+                Case wb_Global.SyncState.TryMatchDel
+                    wb.DBDelete(x.Wb_Index)
             End Select
         Next
-        'Synchronisation in OrgaBack-DB
-        For Each x As wb_SyncItem In os.Data
-            Select Case x.SyncOK
-                Case wb_Global.SyncState.OrgaBackWrite
-                    os.DBInsert(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
-                Case wb_Global.SyncState.OrgaBackUpdate
-                    os.DBUpdate(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
-                Case wb_Global.SyncState.TryMatchWinBackUpdate
-                    wb.DBNumber(x.Wb_Nummer, x.Os_Nummer, x.Os_Gruppe)
-            End Select
+
+        If Not IsNothing(os) Then
+            'Synchronisation in OrgaBack-DB
+            For Each x As wb_SyncItem In os.Data
+                Select Case x.SyncOK
+                    Case wb_Global.SyncState.OrgaBackWrite
+                        os.DBInsert(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
+                    Case wb_Global.SyncState.OrgaBackUpdate
+                        os.DBUpdate(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
+                    Case wb_Global.SyncState.TryMatchWinBackUpdate
+                        wb.DBNumber(x.Wb_Nummer, x.Os_Nummer, x.Os_Gruppe)
+                End Select
+            Next
+        End If
+    End Sub
+
+    Private Sub btnRemoveDBL_Click(sender As Object, e As EventArgs) Handles btnRemoveDBL.Click
+        'Cursor umschalten
+        Me.Cursor = Cursors.WaitCursor
+
+        Select Case SyncType
+            Case wb_Global.SyncType.Artikel
+                'Doppelte Einträge nur in WinBack möglich !
+                ExecuteDelDBL(wbArtikel)
+                'Ergebnis im Grid anzeigen
+                DisplayResultGrid(wbArtikel.Data, sColNames)
+                DisplayResultSummary(wbArtikel, osArtikel)
+        End Select
+
+        'Cursor wieder umschalten
+        Me.Cursor = Cursors.Default
+        MsgBox("Löschen der doppelten Einträge erfolgreich abgeschlossen", MsgBoxStyle.Information, "Löschen")
+    End Sub
+
+    Private Sub ExecuteDelDBL(ByRef wb As wb_Sync)
+        Dim idx As Integer = 1
+        For Each x As wb_SyncItem In wb.Data
+            idx += 1
+            If x.SyncOK = wb_Global.SyncState.DBL Then
+                For i = idx To wb.Data.Count - 1
+                    If wb.Data(i).Wb_Bezeichnung = x.Wb_Bezeichnung And wb.Data(i).SyncOK = wb_Global.SyncState.OK Then
+                        'Datensatz löschen
+                        x.SyncOK = wb_Global.SyncState.TryMatchDel
+                    End If
+                Next
+            End If
         Next
     End Sub
 
@@ -246,7 +280,7 @@ Public Class wb_Admin_Sync
             Select Case w.SyncOK
                 Case wb_Global.SyncState.WinBackMiss, wb_Global.SyncState.WinBackWrite
                     For Each o As wb_SyncItem In wb.Data
-                        If w.Os_Bezeichnung = o.Wb_Bezeichnung Then
+                        If w.Os_Bezeichnung = o.Wb_Bezeichnung And o.SyncOK <> wb_Global.SyncState.OK Then
                             w.Merge(o)
                             CalculateResultSummary(w.SyncOK)
                             'Artikel/Rohstoff-Nummer nur in WinBack anpassen
@@ -257,7 +291,7 @@ Public Class wb_Admin_Sync
                     Next
                 Case wb_Global.SyncState.OrgaBackMiss, wb_Global.SyncState.OrgaBackWrite
                     For Each o As wb_SyncItem In wb.Data
-                        If w.Wb_Bezeichnung = o.Os_Bezeichnung Then
+                        If w.Wb_Bezeichnung = o.Os_Bezeichnung And o.SyncOK <> wb_Global.SyncState.OK Then
                             w.Merge(o)
                             CalculateResultSummary(w.SyncOK)
                             'Artikel/Rohstoff-Nummer nur in WinBack anpassen
@@ -346,6 +380,7 @@ Public Class wb_Admin_Sync
         lvSyncResult.Items(1).SubItems.Add(wb.CntSync_wbWrite + os.CntSync_wbWrite - cntSync_wbWriteMatch)
         lvSyncResult.Items(1).SubItems.Add(wb.CntSync_wbUpdate + os.CntSync_wbUpdate)
         lvSyncResult.Items(1).SubItems.Add(wb.CntSync_wbMiss + os.CntSync_wbMiss - cntSync_wbMissMatch)
+        lvSyncResult.Items(1).SubItems.Add(wb.CntSyncDBL + os.CntSyncDBL)
     End Sub
 
     Private Sub HideResult()

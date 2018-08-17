@@ -41,6 +41,8 @@ Partial Class wb_Admin_Sync
         Me.btnSyncArtikel = New System.Windows.Forms.Button()
         Me.btnSyncRohstoffe = New System.Windows.Forms.Button()
         Me.btnTryToMatch = New System.Windows.Forms.Button()
+        Me.clHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.btnRemoveDBL = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnSyncUserGruppen
@@ -77,7 +79,7 @@ Partial Class wb_Admin_Sync
         'lvSyncResult
         '
         resources.ApplyResources(Me.lvSyncResult, "lvSyncResult")
-        Me.lvSyncResult.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.clHeader0, Me.clHeader1, Me.clHeader2, Me.clHeader3, Me.clHeader4, Me.clHeader5})
+        Me.lvSyncResult.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.clHeader0, Me.clHeader1, Me.clHeader2, Me.clHeader3, Me.clHeader4, Me.clHeader5, Me.clHeader6})
         Me.lvSyncResult.Name = "lvSyncResult"
         Me.lvSyncResult.UseCompatibleStateImageBehavior = False
         Me.lvSyncResult.View = System.Windows.Forms.View.Details
@@ -124,10 +126,21 @@ Partial Class wb_Admin_Sync
         Me.btnTryToMatch.Name = "btnTryToMatch"
         Me.btnTryToMatch.UseVisualStyleBackColor = True
         '
+        'clHeader6
+        '
+        resources.ApplyResources(Me.clHeader6, "clHeader6")
+        '
+        'btnRemoveDBL
+        '
+        resources.ApplyResources(Me.btnRemoveDBL, "btnRemoveDBL")
+        Me.btnRemoveDBL.Name = "btnRemoveDBL"
+        Me.btnRemoveDBL.UseVisualStyleBackColor = True
+        '
         'wb_Admin_Sync
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.btnRemoveDBL)
         Me.Controls.Add(Me.btnTryToMatch)
         Me.Controls.Add(Me.btnSyncRohstoffe)
         Me.Controls.Add(Me.btnSyncArtikel)
@@ -157,4 +170,6 @@ Partial Class wb_Admin_Sync
     Friend WithEvents btnSyncArtikel As Windows.Forms.Button
     Friend WithEvents btnSyncRohstoffe As Windows.Forms.Button
     Friend WithEvents btnTryToMatch As Windows.Forms.Button
+    Friend WithEvents clHeader6 As Windows.Forms.ColumnHeader
+    Friend WithEvents btnRemoveDBL As Windows.Forms.Button
 End Class

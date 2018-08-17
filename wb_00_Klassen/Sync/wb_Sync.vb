@@ -12,6 +12,7 @@ Public MustInherit Class wb_Sync
     'Zähler für Statistik
     Private _iSyncNOK As Integer
     Private _iSyncOK As Integer
+    Private _iSyncDBL As Integer
     Private _iSync_Count As Integer
 
     Private _iSync_osErr As Integer
@@ -30,6 +31,7 @@ Public MustInherit Class wb_Sync
     Friend MustOverride Function DBUpdate(Nr As String, Text As String, Gruppe As String) As Boolean
     Friend MustOverride Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
     Friend MustOverride Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean
+    Friend MustOverride Function DBDelete(Index As Integer) As Boolean
 
     ''' <summary>
     ''' Die WinBack.Bezeichnung ist leer.
@@ -88,6 +90,12 @@ Public MustInherit Class wb_Sync
         End Get
     End Property
 
+    Public ReadOnly Property CntSyncDBL As Integer
+        Get
+            Return _iSyncDBL
+        End Get
+    End Property
+
     Public ReadOnly Property CntSync_osErr As Integer
         Get
             Return _iSync_osErr
@@ -136,6 +144,27 @@ Public MustInherit Class wb_Sync
         End Get
     End Property
 
+    Public Sub CheckDbl()
+        'Check auf doppelte Einträge (Name)
+        Dim idx As Integer = 1
+        For Each x As wb_SyncItem In _Data
+            idx += 1
+            If x.SyncOK = wb_Global.SyncState.NOK And x.Wb_Bezeichnung <> "" Then
+                For i = idx To _Data.Count - 1
+                    If _Data(i).Wb_Bezeichnung = x.Wb_Bezeichnung Then
+                        'Beide Datensätze werden markiert
+                        'wenn einer der Datensätze später synchronisiert werden kann, bleibt der fehlerhafte übrig
+                        x.SyncOK = wb_Global.SyncState.DBL
+                        x.ToolTipText = "Datensatz doppelt vorhanden ->" & _Data(i).wb_Nummer
+
+                        _Data(i).SyncOK = wb_Global.SyncState.DBL
+                        _Data(i).ToolTipText = "Datensatz doppelt vorhanden ->" & x.Wb_Nummer
+                    End If
+                Next
+            End If
+        Next
+    End Sub
+
     Friend Overridable Sub CheckData(_CheckDataErrFlag As wb_Global.SyncState)
         Dim LastNummer As String = "x"
         _iSync_Count = _Data.Count
@@ -172,38 +201,13 @@ Public MustInherit Class wb_Sync
     Public Sub CheckSync(SyncData As ArrayList)
         'beide Arrays aneinanderhängen
         _Data.AddRange(SyncData)
-        'PrintSync()
         'nach Nummer(Sortiertkriterium) sortieren
         _Data.Sort()
-        'PrintSync()
         'doppelte Einträge zusammenfassen
         DelDubletten()
-        'PrintSync()
         'Prüfen ob beide Einträge im Array identisch sind
         CheckSyncResult()
     End Sub
-
-    Public Sub CheckDbl()
-        'Check auf doppelte Einträge (Name)
-        Dim idx As Integer = 1
-        For Each x As wb_SyncItem In _Data
-            idx += 1
-            If x.SyncOK = wb_Global.SyncState.NOK And x.Wb_Bezeichnung <> "" Then
-                For i = idx To _Data.Count - 1
-                    If _Data(i).Wb_Bezeichnung = x.Wb_Bezeichnung Then
-                        'Beide Datensätze werden markiert
-                        'wenn einer der Datensätze später synchronisiert werden kann, bleibt der fehlerhafte übrig
-                        x.SyncOK = wb_Global.SyncState.DBL
-                        x.ToolTipText = "Datensatz doppelt vorhanden ->" & _Data(i).wb_Nummer
-
-                        _Data(i).SyncOK = wb_Global.SyncState.DBL
-                        _Data(i).ToolTipText = "Datensatz doppelt vorhanden ->" & x.Wb_Nummer
-                    End If
-                Next
-            End If
-        Next
-    End Sub
-
 
     Private Sub DelDubletten()
         Dim _DataCount As Integer = _Data.Count
@@ -310,6 +314,7 @@ Public MustInherit Class wb_Sync
     Private Sub ClearSyncCounter()
         _iSyncNOK = 0
         _iSyncOK = 0
+        _iSyncDBL = 0
         _iSync_osWrite = 0
         _iSync_osUpdate = 0
         _iSync_osMiss = 0
@@ -324,6 +329,8 @@ Public MustInherit Class wb_Sync
                 _iSyncNOK += 1
             Case wb_Global.SyncState.OK
                 _iSyncOK += 1
+            Case wb_Global.SyncState.DBL
+                _iSyncDBL += 1
 
             Case wb_Global.SyncState.OrgaBackWrite
                 _iSync_osWrite += 1

@@ -7,6 +7,7 @@ Public Class wb_SyncItem
     Private _syncOK As wb_Global.SyncState = wb_Global.SyncState.NOK    'Synchronisations-Status
     Private _toolTipText As String                                      'Hilfe-Anzeige bei Fehlern in der Synchronistion
     Private _wb_Nummer As String                                        'Nummer in WinBack
+    Private _wb_Index As Integer = wb_Global.UNDEFINED                  'Interne Nummer in WinBack(Index)
     Private _wb_Bezeichnung As String                                   'Bezeichnung in WinBack
     Private _wb_Gruppe As String                                        'Gruppe in WinBack
     Private _os_Nummer As String                                        'Nummer in OrgaSoft
@@ -91,6 +92,15 @@ Public Class wb_SyncItem
         End Get
         Set(value As String)
             _os_Gruppe = value
+        End Set
+    End Property
+
+    Public Property Wb_Index As Integer
+        Get
+            Return _wb_Index
+        End Get
+        Set(value As Integer)
+            _wb_Index = value
         End Set
     End Property
 

@@ -4398,24 +4398,22 @@ Text aus Datenbank lesen - Übersetzung
  Nährwerte
  </summary>
 </member>
-<member name="F:WinBack.wb_Global.MFF_ProduktionsLinie">
+<member name="F:WinBack.wb_Global.MFF_Version">
  <summary>
  Konstanten für MultifunktionsFelder Artikel
  </summary>
+not USED:
+
 Public Const MFF_Haltbarkeit = 102
 Public Const MFF_Lagerung = 103
 Public Const MFF_Verkaufstage = 104
 Public Const MFF_VerarbeitungsHinweisArtikel = 208
 Public Const MFF_MatchCode = 227
-</member>
-<member name="F:WinBack.wb_Global.MFF_MehlZusammensetzung">
 Public Const MFF_Zutatenliste = 209
-</member>
-<member name="F:WinBack.wb_Global.MFF_Version">
- <summary>
- NEU - Erst nach Update !!!
- Konstanten für MultifunktionsFelder Artikel
- </summary>
+Public Const MFF_Gebäckcharakeristik = 211
+Public Const MFF_Verzehrtipps = 212
+Public Const MFF_Wissenswertes = 213
+
 </member>
 <member name="F:WinBack.wb_Global.TA_Undefined">
  <summary>

@@ -16,6 +16,7 @@
         If winback.sqlSelect(sql) Then
             While winback.Read
                 _Item = New wb_SyncItem
+                _Item.Wb_Index = winback.iField("KO_Nr")
                 _Item.Wb_Nummer = winback.sField("KO_Nr_AlNum")
                 _Item.Wb_Bezeichnung = wb_Language.TextFilter(winback.sField("KO_Bezeichnung"))
                 _Item.SyncOK = wb_Global.SyncState.NOK
@@ -37,15 +38,26 @@
 
     Friend Overrides Function DBUpdate(Nr As String, Text As String, Gruppe As String) As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateSyncKomp, Nr, Text)
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateSyncKomp, Nr, wb_Functions.XRemoveSonderZeichen(Text))
         'Update ausführen
-        Return (winback.sqlCommand(sql) > 0)
+        DBUpdate = (winback.sqlCommand(sql) > 0)
+        winback.Close()
     End Function
 
     Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateSyncKompAlNr, Nr_Alt, Nr_Neu)
         'Update ausführen
-        Return (winback.sqlCommand(sql) > 0)
+        DBNumber = (winback.sqlCommand(sql) > 0)
+        winback.Close()
+    End Function
+
+    Friend Overrides Function DBDelete(Index As Integer) As Boolean
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelSyncKoNr, Index)
+        'Update ausführen
+        DBDelete = (winback.sqlCommand(sql) > 0)
+        'Debug.Print("Delete WinBack Rohstoff Nummer" & sql)
+        winback.Close()
     End Function
 End Class
