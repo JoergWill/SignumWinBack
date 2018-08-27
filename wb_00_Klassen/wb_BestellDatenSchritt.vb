@@ -102,8 +102,7 @@ Public Class wb_BestellDatenSchritt
             'Losgröße
             _SollwertTeilungText &= _Losart & " à " & Int(_Losgroesse).ToString & " "
             'Einheit (Default 'Stück')
-            'TODO aus Tabelle Einheiten übersetzen (OB -> TEXT)
-            _SollwertTeilungText &= "Stk"
+            _SollwertTeilungText &= wb_Einheiten_Global.getobEinheitFromNr(wb_Global.obEinheitStk)
 
             'Formatierter String
             Return _SollwertTeilungText

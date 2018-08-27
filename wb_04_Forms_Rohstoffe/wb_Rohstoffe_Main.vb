@@ -14,6 +14,7 @@ Public Class wb_Rohstoffe_Main
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
     Public RohstoffParameter As wb_Rohstoffe_Parameter
+    Public RohstoffNwt As wb_Rohstoffe_Nwt
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
@@ -55,7 +56,8 @@ Public Class wb_Rohstoffe_Main
                 Dim oGrp = oNewTab.AddGroup("GrpRohstoffe", "WinBack Rohstoffe")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrp.AddButton("BtnRohstoffDetails", "Details", "weitere Rohstoff-Daten", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnRohstoffDetails)
-                oGrp.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter und Nährwert-Angaben", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffParameter)
+                oGrp.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffParameter)
+                oGrp.AddButton("BtnRohstoffNwt", "Nährwerte", "Rohstoffe Allergene und Nährwert-Angaben", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffNwt)
                 oGrp.AddButton("BtnRohstoffVerwendung", "Verwendung", "Verwendung des Rohstoffes in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf BtnRohstoffVerwendung)
                 _ContextTabs.Add(oNewTab)
             End If
@@ -71,6 +73,10 @@ Public Class wb_Rohstoffe_Main
     Private Sub BtnRohstoffParameter()
         RohstoffParameter = New wb_Rohstoffe_Parameter
         RohstoffParameter.Show(DockPanel, DockState.Document)
+    End Sub
+    Private Sub BtnRohstoffNwt()
+        RohstoffNwt = New wb_Rohstoffe_Nwt
+        RohstoffNwt.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRohstoffVerwendung()
@@ -100,6 +106,11 @@ Public Class wb_Rohstoffe_Main
                 RohstoffParameter = New wb_Rohstoffe_Parameter
                 _DockPanelList.Add(RohstoffParameter)
                 Return RohstoffParameter
+
+            Case "WinBack.wb_Rohstoffe_Nwt"
+                RohstoffNwt = New wb_Rohstoffe_Nwt
+                _DockPanelList.Add(RohstoffNwt)
+                Return RohstoffNwt
             Case Else
                 Return Nothing
         End Select

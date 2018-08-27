@@ -52,7 +52,6 @@ Public Class wb_Artikel_Liste
         'Zeile im Grid
         Dim eRow As Integer = e.RowIndex
         'Die RezeptNummer steht in Spalte 1
-        'TODO als Konstante definieren in wb_sql_Selects
         Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(RzpIdxColumn, eRow).Value)
         'Wenn die Rezeptnummer gültig ist
         If RezeptNr > 0 Then

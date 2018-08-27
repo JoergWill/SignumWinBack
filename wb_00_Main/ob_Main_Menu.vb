@@ -270,7 +270,6 @@ Public Class ob_Main_Menu
 
         ' aktuelle angemeldeter Mitarbeiter
         Dim sEmployee As String = TryCast(oSetting.GetSetting("Anmeldung.Mitarbeiter"), String)
-        'TODO Dim sMandant As String = TryCast(oSetting.GetSetting("Anmeldung.Mandant"), String)
         If Not String.IsNullOrEmpty(sEmployee) Then
 
             Dim oData As IData = oFactory.GetData

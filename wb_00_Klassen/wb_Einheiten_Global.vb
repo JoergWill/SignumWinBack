@@ -1,4 +1,5 @@
 ﻿Public Class wb_Einheiten_Global
+    Private Shared obEinheiten As New Dictionary(Of String, wb_Global.wb_Einheiten)
     Private Shared Einheiten As New Dictionary(Of String, wb_Global.wb_Einheiten)
     Private Shared EinhText As New Dictionary(Of String, wb_Global.wb_Einheiten)
 
@@ -12,17 +13,21 @@
         While winback.Read
             'Einheit Index in WinBack
             E.Nr = winback.iField("E_LfdNr")
-            'entsprechende Einheit in OrgaBack - wenn das Datenfeld vorhanden ist
-            If winback.FieldCount > 6 Then
-                E.obNr = winback.iField("E_obNr")
-            Else
-                E.obNr = wb_Global.obEinheitKilogramm
-                Trace.WriteLine("Tabelle WinBack.Einheiten muss erweitert werden! (OrgaBack Einheiten)")
-            End If
             'Einheit
             E.Einheit = winback.sField("E_Einheit")
             'Bezeichnung
             E.Bezeichnung = winback.sField("E_Bezeichnung")
+
+            'entsprechende Einheit in OrgaBack - wenn das Datenfeld vorhanden ist
+            If winback.FieldCount > 6 Then
+                E.obNr = winback.iField("E_obNr")
+                If Not obEinheiten.ContainsKey(E.obNr) Then
+                    obEinheiten.Add(E.obNr, E)
+                End If
+            Else
+                E.obNr = wb_Global.obEinheitKilogramm
+                Trace.WriteLine("Tabelle WinBack.Einheiten muss erweitert werden! (OrgaBack Einheiten)")
+            End If
 
             'zur Liste hinzufügen
             Einheiten.Add(E.Nr, E)
@@ -54,6 +59,18 @@
             Return EinhText(eBez).obNr
         Else
             Return wb_Global.obEinheitKilogramm
+        End If
+    End Function
+
+    Shared Function getobEinheitFromNr(oNr As String, Optional DefaultEinheit As Integer = wb_Global.obEinheitKilogramm) As String
+        If obEinheiten.ContainsKey(oNr) Then
+            Return obEinheiten(oNr).Einheit
+        Else
+            If obEinheiten.ContainsKey(DefaultEinheit) Then
+                Return obEinheiten(DefaultEinheit).Einheit
+            Else
+                Return wb_Global.wbEinheitKilogramm
+        End If
         End If
     End Function
 

@@ -75,12 +75,11 @@ Public MustInherit Class DockPanel_Main
     '''     Diese Einstellungen werden in wb_Main_Menu gelesen und verarbeitet
     ''' </summary>
     Private Sub SaveDockBarConfig()
+        'Fehler bei Win64 - Ohne TryCatch wird das Programm nicht geschlossen !!
         Try
             DockPanel.SaveAsXml(DkPnlConfigFileName)
         Catch ex As Exception
             MsgBox("Fehler beim Sichern der Konfiguration: " & ex.Message.ToString)
-            'TODO diese Konstruktion bei allen DockPanel.SaveAsXml einbauen
-            'Fehler bei Win64 - Ohne TryCatch wird das Programm nicht geschlossen !!
         End Try
     End Sub
 

@@ -1497,6 +1497,19 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="p">Interger Parameter-Nummer</param>
  <returns>ktTyp301Param</returns>
 </member>
+<member name="M:WinBack.wb_nwtCloud.#ctor(System.String,System.String)">
+ <summary>
+ Erzeugt das Connection-Objekt zur Abfrage der Nährwerte aus der WinBack-Cloud
+ Passwort und URL müssen mit übergeben werden.
+ </summary>
+ <param name="Pass"></param>
+ <param name="Url"></param>
+</member>
+<member name="P:WinBack.wb_nwtCloud.Pass">
+ <summary>
+ 
+ </summary>
+</member>
 <member name="P:WinBack.wb_nwtCloud.ErrorCode">
  <summary>
  WinBack-Cloud-Connector::GetErrorCode(Array) 

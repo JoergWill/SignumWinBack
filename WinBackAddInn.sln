@@ -9,11 +9,11 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WinBackAddin", "WinBackAddi
 	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WinBackUnitTest", "WinBackUnitTest\WinBackUnitTest.vbproj", "{480334EB-F2AD-4F86-9C08-42E6B18D3D19}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8} = {6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WinBackStart", "WinBackStart\WinBackStart.vbproj", "{2F6C260C-7F04-4223-B775-48309A1946EB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B9549613-9C0C-4BC3-82A5-21D834813A25} = {B9549613-9C0C-4BC3-82A5-21D834813A25}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinBackOffice", "WinBackOffice", "{4BC71439-CE73-49E8-8801-D06CBD50904E}"
 	ProjectSection(SolutionItems) = preProject
@@ -124,6 +124,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinBackOffice", "WinBackOff
 	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WinBackServerTask", "WinBackServerTask\WinBackServerTask.vbproj", "{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AA45FD47-0A9E-40D7-A9A1-5EF03F1F3C67} = {AA45FD47-0A9E-40D7-A9A1-5EF03F1F3C67}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EnhancedEdit", "EnhancedEdit\EnhancedEdit.vbproj", "{B9549613-9C0C-4BC3-82A5-21D834813A25}"
 EndProject
@@ -363,6 +366,7 @@ Global
 		{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}.DB_OrgaBack|x86.Build.0 = Debug-M2|Any CPU
 		{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}.DB_UnitTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}.DB_UnitTest|Any CPU.Build.0 = Debug|Any CPU
+		{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}.DB_UnitTest|Any CPU.Deploy.0 = Debug|Any CPU
 		{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}.DB_UnitTest|x64.ActiveCfg = Debug-M4|Any CPU
 		{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}.DB_UnitTest|x64.Build.0 = Debug-M4|Any CPU
 		{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}.DB_UnitTest|x86.ActiveCfg = Debug-M3|Any CPU
@@ -521,6 +525,7 @@ Global
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_OrgaBack|x86.Build.0 = Debug|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|Any CPU.Build.0 = Debug|Any CPU
+		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|Any CPU.Deploy.0 = Debug|Any CPU
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|x64.ActiveCfg = Release|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|x64.Build.0 = Release|x86
 		{CFC108AB-E371-4106-918B-5BD941E7CB68}.DB_UnitTest|x86.ActiveCfg = Debug|x86
@@ -552,7 +557,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = de-DE
 		RESX_AutoCreateNewLanguageFiles = False
+		RESX_NeutralResourcesLanguage = de-DE
 	EndGlobalSection
 EndGlobal
