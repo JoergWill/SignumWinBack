@@ -9,7 +9,9 @@
     ''' Array Linien aufbauen
     ''' </summary>
     Shared Sub New()
-        GetOrgaBackOrte()
+        If wb_GlobalSettings.pVariante <> wb_Global.ProgVariante.WinBack Then
+            GetOrgaBackOrte()
+        End If
         InitLinienGruppen()
         InitLinien()
     End Sub

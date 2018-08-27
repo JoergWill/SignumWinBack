@@ -230,7 +230,7 @@ Public Class wb_Rezept_Rezeptur
     ''' Die Berechnung der Nährwerte startet über ktTyp301(Get) im RootRezeptschritt (Rekursiv) über alle unterlagerten Rezeptschritte.
     ''' </summary>
     Private Sub NwtGrid()
-        'Array aufbauen über alle Nähwerte - Grid aus KomponParam301_global, Werte aus Rezept.ktTyp301.Wert(_RootRezeptschritt)
+        'Array aufbauen über alle Nährwerte - Grid aus KomponParam301_global, Werte aus Rezept.ktTyp301.Wert(_RootRezeptschritt)
         For i = 1 To wb_Global.maxTyp301
             NwtTabelle(i).Visible = wb_KomponParam301_Global.kt301Param(i).Used
             NwtTabelle(i).Nr = i
@@ -239,11 +239,11 @@ Public Class wb_Rezept_Rezeptur
             NwtTabelle(i).Einheit = wb_KomponParam301_Global.kt301Param(i).Einheit
             NwtTabelle(i).Header = wb_Functions.kt301GruppeToString(wb_KomponParam301_Global.kt301Param(i).Gruppe)
             NwtTabelle(i).FehlerText = Rezept.KtTyp301.FehlerKompName(i)
-            Debug.Print("FEHLER :" & Rezept.KtTyp301.FehlerKompName(i))
 
-            If NwtTabelle(i).Visible Then
-                Debug.Print(NwtTabelle(i).Header & " " & NwtTabelle(i).Text & " " & NwtTabelle(i).Wert & " " & NwtTabelle(i).Einheit)
-            End If
+            'Debug.Print("FEHLER :" & Rezept.KtTyp301.FehlerKompName(i))
+            'If NwtTabelle(i).Visible Then
+            '    Debug.Print(NwtTabelle(i).Header & " " & NwtTabelle(i).Text & " " & NwtTabelle(i).Wert & " " & NwtTabelle(i).Einheit)
+            'End If
         Next
 
         'Daten im Grid anzeigen
@@ -399,6 +399,7 @@ Public Class wb_Rezept_Rezeptur
     Private Sub VirtualTree_SelectionChanging(sender As Object, e As SelectionChangingEventArgs) Handles VirtualTree.SelectionChanging
         e.Cancel = True
     End Sub
+
     Private Sub VirtualTree_SetCellValue(sender As Object, e As SetCellValueEventArgs) Handles VirtualTree.SetCellValue
         Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
 
@@ -413,6 +414,7 @@ Public Class wb_Rezept_Rezeptur
         _RzChanged = True
         ToolStripRezeptChange.Visible = True
     End Sub
+
     Private Sub VirtualTree_GetCellData(sender As Object, e As GetCellDataEventArgs) Handles VirtualTree.GetCellData
         'get the default binding for the given row And use it to populate the cell data
         Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)

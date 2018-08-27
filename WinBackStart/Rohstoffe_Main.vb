@@ -14,6 +14,7 @@ Public Class Rohstoffe_Main
     Public RohstoffDetails As wb_Rohstoffe_Details
     Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
     Public RohstoffParameter As wb_Rohstoffe_Parameter
+    Public RohstoffNwt As wb_Rohstoffe_Nwt
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -41,6 +42,10 @@ Public Class Rohstoffe_Main
             Case "OPENPARAMETER"
                 RohstoffParameter = New wb_Rohstoffe_Parameter
                 RohstoffParameter.Show(DockPanel, DockState.DockLeft)
+                Return True
+            Case "CLOUD"
+                RohstoffNwt = New wb_Rohstoffe_Nwt
+                RohstoffNwt.Show(DockPanel, DockState.DockLeft)
                 Return True
 
             Case "NEW"
@@ -98,8 +103,7 @@ Public Class Rohstoffe_Main
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Public Overrides Sub FormOpen(Sender As Object, e As EventArgs)
-        'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_Rohstoffe_Shared.Load_RohstoffTables()
+
     End Sub
 
     ''' <summary>

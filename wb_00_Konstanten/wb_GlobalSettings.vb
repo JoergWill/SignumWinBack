@@ -588,17 +588,23 @@ Public Class wb_GlobalSettings
     Public Shared Property pWinBackIniPath As String
         Get
             If _pWinBackIniPath = Nothing Then
-                'Server-Task
-                If _pVariante = wb_Global.ProgVariante.ServerTask Then
-                    'die Server-Task startet im AddIn-Verzeichnis, der Pfad zur winback.ini liegt eine Ebene davor
-                    _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
-                    _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
-                Else
-                    'die winback.ini liegt direkt im AddIn-Pfad
-                    '..\OrgaBack\AddIn
-                    Dim directoryInfo As System.IO.DirectoryInfo = Directory.GetParent(pAddInPath)
-                    _pWinBackIniPath = directoryInfo.Parent.FullName & "\WinBack.ini"
-                End If
+                Select Case _pVariante
+                    Case wb_Global.ProgVariante.ServerTask
+                        'die Server-Task startet im AddIn-Verzeichnis, der Pfad zur winback.ini liegt eine Ebene davor
+                        _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
+                        _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
+                    Case wb_Global.ProgVariante.OrgaBack
+                        'die winback.ini liegt direkt im AddIn-Pfad
+                        '..\OrgaBack\AddIn
+                        Dim directoryInfo As System.IO.DirectoryInfo = Directory.GetParent(pAddInPath)
+                        _pWinBackIniPath = directoryInfo.Parent.FullName & "\WinBack.ini"
+                    Case wb_Global.ProgVariante.WinBack
+                        'die winback.ini liegt im Programm-Verzeichnis
+                        'TODO User-Verzeichnis
+                        _pWinBackIniPath = pProgrammPath & "\WinBack.ini"
+                    Case Else
+                        _pWinBackIniPath = pProgrammPath & "\WinBack.ini"
+                End Select
             End If
             Return _pWinBackIniPath
         End Get

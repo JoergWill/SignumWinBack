@@ -1251,6 +1251,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_Komponente.Changed">
+ <summary>
+ Eine der Komponenten-Eigenschaften wurde geändert
+ </summary>
+ <returns>
+ True  - Eingenschaften sind geändert worden, der Datensatz muss gespeichert werden
+ False - keine Änderung, kein Speichern notwendig
+     </returns>
+</member>
 <member name="P:WinBack.wb_Komponente.Nummer">
  <summary>
  Rohstoff/Artikel-Nummer (alpha-numerisch)
@@ -4287,15 +4296,6 @@ Text aus Datenbank lesen - Übersetzung
  True - Passwort ist schon vergeben
  False - Passwort ist nicht verwendet
  </returns>
-</member>
-<member name="P:WinBack.wb_Rohstoff.Changed">
- <summary>
- Eine der Rohstoff-Eigenschaften wurde geändert
- </summary>
- <returns>
- True  - Eingenschaften sind geändert worden, der Datensatz muss gespeichert werden
- False - keine Änderung, kein Speichern notwendig
-     </returns>
 </member>
 <member name="T:WinBack.wb_sql_Functions">
  <summary>

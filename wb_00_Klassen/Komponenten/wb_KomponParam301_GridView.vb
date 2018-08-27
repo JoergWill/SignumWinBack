@@ -11,8 +11,8 @@ Public Class wb_KomponParam301_GridView
         arr = x
         MyBase._ShowTooltips = ShowTooltips
         InitGrid()
-        'Daten anzeigen 
-        InitData()
+        'Daten anzeigen - Editieren erlaubt. Das Readonly-Flag wird in FillGrid für die einzelnen Spalten gesetzt.
+        InitData(False)
     End Sub
 
     Public Overrides Sub FillGrid()
@@ -46,6 +46,8 @@ Public Class wb_KomponParam301_GridView
                     Header = arr(i).Header
                     MyBase.Columns.Add(CStr(ColCount) & "_Text", Header)
                     MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                    'Editieren in dieser Spalte nicht möglich
+                    MyBase.Columns(MyBase.ColumnCount - 1).ReadOnly = True
 
                     'Nährwerte/Allergene
                     If wb_KomponParam301_Global.IsAllergen(i) Then
@@ -57,6 +59,8 @@ Public Class wb_KomponParam301_GridView
                         MyBase.Columns.Add(CStr(ColCount) & "_Wert", "pro 100g")
                         MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                     End If
+                    'Editieren in dieser Spalte zulassen
+                    MyBase.Columns(MyBase.ColumnCount - 1).ReadOnly = False
 
                     'Spalte Einheiten
                     If wb_KomponParam301_Global.IsAllergen(i) Then
@@ -68,6 +72,8 @@ Public Class wb_KomponParam301_GridView
                         MyBase.Columns.Add(CStr(ColCount) & "_Einh", "")
                         MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                     End If
+                    'Editieren in dieser Spalte nicht möglich
+                    MyBase.Columns(MyBase.ColumnCount - 1).ReadOnly = True
                 End If
 
                 'Index-Array für Daten erstellen

@@ -18,6 +18,10 @@ Public Class wb_Komponente
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
+    Private KA_Preis As String
+    Private KA_Grp1 As Integer
+    Private KA_Grp2 As Integer
+    Private _DataHasChanged As Boolean = False
     Private _LastErrorText As String
     Private _RezeptNummer As String = Nothing
     Private _RezeptName As String = Nothing
@@ -43,6 +47,18 @@ Public Class wb_Komponente
     Private Shared _Kessel As wb_Komponente
     Private Shared _TextKomponente As wb_Komponente
 
+    ''' <summary>
+    ''' Eine der Komponenten-Eigenschaften wurde geändert
+    ''' </summary>
+    ''' <returns>
+    ''' True  - Eingenschaften sind geändert worden, der Datensatz muss gespeichert werden
+    ''' False - keine Änderung, kein Speichern notwendig
+    '''     </returns>
+    Public ReadOnly Property Changed As Boolean
+        Get
+            Return _DataHasChanged
+        End Get
+    End Property
 
     Public Sub Invalid()
         KO_Nr = wb_Global.UNDEFINED
@@ -65,6 +81,7 @@ Public Class wb_Komponente
             KO_Nr = value
             'Komponenten-Nummer an Hinweise.NaehrwertUpdate weitergeben
             NwtUpdate.KompNr = value
+            _DataHasChanged = True
         End Set
         Get
             Return KO_Nr
@@ -85,6 +102,7 @@ Public Class wb_Komponente
         Set(value As String)
             'Änderungen loggen
             KO_Nr_AlNum = ChangeLogAdd(LogType.Prm, Parameter.Tx_AlNum, KO_Nr_AlNum, value)
+            _DataHasChanged = True
         End Set
         Get
             Return KO_Nr_AlNum
@@ -95,6 +113,7 @@ Public Class wb_Komponente
         Set(value As String)
             'Änderungen loggen
             KO_Bezeichnung = ChangeLogAdd(LogType.Prm, Parameter.Tx_Bezeichnung, KO_Bezeichnung, wb_Functions.XRemoveSonderZeichen(value))
+            _DataHasChanged = True
         End Set
         Get
             Return KO_Bezeichnung
@@ -105,6 +124,7 @@ Public Class wb_Komponente
         Set(value As String)
             'Änderungen loggen
             KO_Kommentar = ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KO_Kommentar, wb_Functions.XRemoveSonderZeichen(value))
+            _DataHasChanged = True
         End Set
         Get
             Return KO_Kommentar
@@ -120,6 +140,52 @@ Public Class wb_Komponente
             Return KA_Kurzname
         End Get
     End Property
+    Public Property Preis As String
+        Set(value As String)
+            KA_Preis = value
+            _DataHasChanged = True
+        End Set
+        Get
+            'Zahlenwerte aus der Datenbank immer inm Format de-DE
+            Return FormatStr(KA_Preis, 3, 4, "de-DE")
+        End Get
+    End Property
+
+    Public ReadOnly Property Gruppe1 As Integer
+        Get
+            Return KA_Grp1
+        End Get
+    End Property
+
+    Public ReadOnly Property Gruppe2 As Integer
+        Get
+            Return KA_Grp2
+        End Get
+    End Property
+
+    Friend Sub LoadData(dataGridView As wb_DataGridView)
+        KO_Nr = CInt(dataGridView.Field("KO_Nr"))
+        KO_Type = wb_Functions.IntToKomponType(dataGridView.Field("KO_Type"))
+        KO_Nr_AlNum = dataGridView.Field("KO_Nr_AlNum")
+        KO_Bezeichnung = dataGridView.Field("KO_Bezeichnung")
+        KO_Kommentar = dataGridView.Field("KO_Kommentar")
+        KA_Preis = dataGridView.Field("KA_Preis")
+        KA_Grp1 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp1"))
+        KA_Grp2 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp2"))
+    End Sub
+
+    Friend Function SaveData(dataGridView As wb_DataGridView) As Boolean
+        If _DataHasChanged Then
+            dataGridView.Field("KO_Nr_AlNum") = KO_Nr_AlNum
+            dataGridView.Field("KO_Bezeichnung") = KO_Bezeichnung
+            dataGridView.Field("KO_Kommentar") = KO_Kommentar
+            dataGridView.Field("KA_Preis") = KA_Preis
+            _DataHasChanged = False
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
     Public Property RzNr As Integer
         Get
@@ -335,6 +401,19 @@ Public Class wb_Komponente
         End Get
         Set(value As String)
             KO_DeklBezeichnungExtern.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_DeklarationExtern, DeklBezeichungExtern, value)
+        End Set
+    End Property
+
+    Public Property DeklBezeichungIntern As String
+        Get
+            'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
+            If Not KO_DeklBezeichnungIntern.ReadOK Then
+                KO_DeklBezeichnungIntern.Read(KO_Nr)
+            End If
+            Return KO_DeklBezeichnungIntern.Memo
+        End Get
+        Set(value As String)
+            KO_DeklBezeichnungIntern.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_DeklarationIntern, DeklBezeichungIntern, value)
         End Set
     End Property
 

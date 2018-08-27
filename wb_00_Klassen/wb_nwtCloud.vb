@@ -1,12 +1,9 @@
-﻿Imports System.Collections
-Imports System.IO
+﻿Imports System.IO
 Imports System.Net
-Imports System.Text
 
-'Paket muss installiert werden
+'Paket muss installiert werden:
 ' can be installed from package manager console like this:
 ' install-package Newtonsoft.json
-Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
 Public Class wb_nwtCloud
@@ -15,6 +12,12 @@ Public Class wb_nwtCloud
     Private _errorCode As HttpStatusCode
     Private data As List(Of JToken)
 
+    ''' <summary>
+    ''' Erzeugt das Connection-Objekt zur Abfrage der Nährwerte aus der WinBack-Cloud
+    ''' Passwort und URL müssen mit übergeben werden.
+    ''' </summary>
+    ''' <param name="Pass"></param>
+    ''' <param name="Url"></param>
     Sub New(Pass As String, Url As String)
         'Passwort
         _pass = Pass
@@ -22,6 +25,9 @@ Public Class wb_nwtCloud
         _url = Url
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
     Public WriteOnly Property Pass As String
         Set(value As String)
             _pass = value

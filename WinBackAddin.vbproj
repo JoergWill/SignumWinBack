@@ -570,6 +570,12 @@
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Nwt.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.Designer.vb">
       <DependentUpon>wb_Rohstoff_AuswahlListe.vb</DependentUpon>
     </Compile>
@@ -579,7 +585,6 @@
     <Compile Include="wb_05_Forms_User\ob_User_DockingExtension.vb" />
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_Gruppe.vb" />
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_Functions.vb" />
     <Compile Include="wb_00_Konstanten\wb_Global.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects.vb" />
@@ -868,6 +873,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.ru.resx">
       <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.resx">
+      <DependentUpon>wb_Rohstoffe_Nwt.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.resx">
       <DependentUpon>wb_Rohstoff_AuswahlListe.vb</DependentUpon>
