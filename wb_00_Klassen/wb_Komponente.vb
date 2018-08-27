@@ -557,8 +557,7 @@ Public Class wb_Komponente
     End Function
 
     ''' <summary>
-    ''' Markiert alle Rohstoffe(Komponenten), die mit Rezepturen verknüpft sind, welche die Komponente
-    ''' enthalten. (Update Nährwert-Info notwendig oder Nährwertinfo fehlerhaft)
+    ''' Markiert die aktuelle Komponente (Update Nährwert-Info notwendig oder Nährwertinfo fehlerhaft)
     ''' </summary>
     ''' <param name="Marker"></param>
     Public Sub MySQLdbSetMarker(Marker As wb_Global.ArtikelMarker)
@@ -566,7 +565,40 @@ Public Class wb_Komponente
         'Interne Komponenten-Nummer muss definiert sein
         If KO_Nr > 0 Then
             'Update Komponente in winback.Komponenten
-            WinBack.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarker, KO_Nr, Marker))
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarker, KO_Nr, Marker))
+        End If
+        winback.Close()
+    End Sub
+
+    ''' <summary>
+    ''' Markiert alle Rohstoffe(Komponenten), die mit Rezepturen verknüpft sind, welche die Komponente
+    ''' enthalten. (Update Nährwert-Info notwendig oder Nährwertinfo fehlerhaft)
+    ''' 
+    ''' Die einfache Variante UPDATE mit INNER JOIN funktioniert mit MySQL 3.2 nicht !!
+    ''' deshalb muss zunächst eine Liste aller Rezepturen erzeugt werden, welche die aktuelle Komponente enthalten
+    ''' Anhand dieser Liste werden dann alle Artikel markiert, die ein Rezept aus der Liste referenzieren.
+    ''' 
+    ''' </summary>
+    Public Sub MySQLdbSetMarkerRzptListe(Marker As wb_Global.ArtikelMarker)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'Interne Komponenten-Nummer muss definiert sein
+        If KO_Nr > 0 Then
+            'Select über alle Rezeptschritte die KO_nr enthalten (Liste aller Rezepturen)
+            Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarkerRzListe, KO_Nr)
+            Dim RezeptListe As New ArrayList
+            If winback.sqlSelect(sql) Then
+                While winback.Read
+                    RezeptListe.Add(winback.iField("RS_RZ_Nr"))
+                End While
+            End If
+            'Datenbank wieder schliessen
+            winback.CloseRead()
+
+            'alle Einträge in der Liste abarbeiten (Markieren Komponenten-Datensatz)
+            For Each RzNr As Integer In RezeptListe
+                winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarkerRzNr, RzNr, Marker))
+            Next
+
         End If
         winback.Close()
     End Sub

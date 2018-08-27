@@ -74,7 +74,7 @@ Public Class wb_nwtUpdate
                     nwtDaten.MySqldbUpdate_Zutatenliste()
                     'Alle Artikel, welche diese Komponente in Rezepturen verwenden markieren
                     'die Nährwerte müssen neu berechnet werden. Farbige Markierung in der Artikel-Liste
-                    nwtDaten.MySQLdbSetMarker(wb_Global.ArtikelMarker.nwtUpdate)
+                    nwtDaten.MySQLdbSetMarkerRzptListe(wb_Global.ArtikelMarker.nwtUpdate)
 
                     'Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
                     'Gibt true zurück, wenn der Artikel in OrgaBack existiert

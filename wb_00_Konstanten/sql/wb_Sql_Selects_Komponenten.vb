@@ -82,10 +82,12 @@
     'Sql-Statement Verwendung Komponente in Arbeits-Rezeptschritten
     Public Const sqlKompInArbRzp = "SELECT COUNT(*) AS Used FROM BAK_ArbRZSchritte WHERE B_ARS_TW_Nr = 0 AND B_ARS_Ko_nr = [0]"
 
-    'TODO Syntax-Error in SQL-Statement (nur bei MySQL V3.22)
-    'Sql-Statement Update alle Komponenten mit Rezept-Verknüpfung-Rezeptschritte enthalten Komponente mit Nummer 
-    Public Const sqlKompSetMarker = "UPDATE Komponenten INNER JOIN RezeptSchritte On Komponenten.KA_RZ_Nr = RezeptSchritte.RS_RZ_Nr " &
-                                    "Set Komponenten.KA_Artikel_Typ = [1] WHERE (((RezeptSchritte.RS_Ko_Nr)=[0]))"
+    'Sql-Statement Update aktuelle Komponente (Marker setzen - Update Nährwert-Info notwendig 
+    Public Const sqlKompSetMarker = "UPDATE Komponenten SET Komponenten.KA_Artikel_Typ = [1] WHERE KO_Nr = [0]"
+    ''Sql-Statement Liste aler Rezeptnummern mit Rezeptschritte enthalten Komponente mit Nummer 
+    Public Const sqlKompSetMarkerRzListe = "SELECT RS_RZ_Nr FROM RezeptSchritte WHERE RS_Ko_Nr = [0]"
+    'Sql-Statement Update alle Komponenten mit Rezept-Nummer (aus Liste sqlKompSetMarkerRzListe) 
+    Public Const sqlKompSetMarkerRzNr = "UPDATE Komponenten Set Komponenten.KA_Artikel_Typ = [1] WHERE KA_RZ_Nr = [0]"
 
 
     'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)

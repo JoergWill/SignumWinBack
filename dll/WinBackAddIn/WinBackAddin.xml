@@ -1315,10 +1315,20 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 </member>
 <member name="M:WinBack.wb_Komponente.MySQLdbSetMarker(WinBack.wb_Global.ArtikelMarker)">
  <summary>
- Markiert alle Rohstoffe(Komponenten), die mit Rezepturen verknüpft sind, welche die Komponente
- enthalten. (Update Nährwert-Info notwendig oder Nährwertinfo fehlerhaft)
+ Markiert die aktuelle Komponente (Update Nährwert-Info notwendig oder Nährwertinfo fehlerhaft)
  </summary>
  <param name="Marker"></param>
+</member>
+<member name="M:WinBack.wb_Komponente.MySQLdbSetMarkerRzptListe(WinBack.wb_Global.ArtikelMarker)">
+ <summary>
+ Markiert alle Rohstoffe(Komponenten), die mit Rezepturen verknüpft sind, welche die Komponente
+ enthalten. (Update Nährwert-Info notwendig oder Nährwertinfo fehlerhaft)
+ 
+ Die einfache Variante UPDATE mit INNER JOIN funktioniert mit MySQL 3.2 nicht !!
+ deshalb muss zunächst eine Liste aller Rezepturen erzeugt werden, welche die aktuelle Komponente enthalten
+ Anhand dieser Liste werden dann alle Artikel markiert, die ein Rezept aus der Liste referenzieren.
+ 
+ </summary>
 </member>
 <member name="M:WinBack.wb_Komponente.MySQLdbDelete">
  <summary>
