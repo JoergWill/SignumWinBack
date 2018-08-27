@@ -16,7 +16,7 @@ Public Class wb_Rohstoffe_Details
 
     Public Sub DetailInfo()
         tRohstoffNummer.Text = RohStoff.Nummer
-        tRohstoffName.Text = RohStoff.Bezeichung
+        tRohstoffName.Text = RohStoff.Bezeichnung
         tRohstoffKommentar.Text = RohStoff.Kommentar
         tRohstoffPreis.Text = RohStoff.Preis
 
@@ -25,7 +25,7 @@ Public Class wb_Rohstoffe_Details
     End Sub
 
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tRohstoffPreis.Leave
-        RohStoff.Bezeichung = tRohstoffName.Text
+        RohStoff.Bezeichnung = tRohstoffName.Text
         RohStoff.Kommentar = tRohstoffKommentar.Text
         RohStoff.Nummer = tRohstoffNummer.Text
         Edit_Leave(sender)

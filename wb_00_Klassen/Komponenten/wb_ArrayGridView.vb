@@ -81,7 +81,9 @@ Public MustInherit Class wb_ArrayGridView
                 .ValueType = GetType(String)
 
                 ' nur Anzeige der Daten, kein Editieren zulassen
-                .ReadOnly = ReadOnlyGrid
+                If ReadOnlyGrid Then
+                    .ReadOnly = True
+                End If
             End With
         Next c
     End Sub

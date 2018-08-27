@@ -838,6 +838,7 @@ Partial Class WinBack
         Me.rbRohstoffeImportCloud.Name = "rbRohstoffeImportCloud"
         Me.rbRohstoffeImportCloud.SmallImage = CType(resources.GetObject("rbRohstoffeImportCloud.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRohstoffeImportCloud, "rbRohstoffeImportCloud")
+        Me.rbRohstoffeImportCloud.Value = "CLOUD"
         '
         'rbRohstoffeDrucken
         '

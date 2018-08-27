@@ -5,7 +5,7 @@ Public Class wb_Rohstoffe_Shared
 
     Public Shared RohGruppe As New SortedList
     Public Shared RohAktiv As New Hashtable
-    Public Shared RohStoff As New wb_Rohstoff
+    Public Shared RohStoff As New wb_Komponente 'Klasse wb_Rohstoffe wird durch wb_Komponente ersetzt
 
     Enum AnzeigeFilter
         Undefined   ' nicht definiert
@@ -19,13 +19,17 @@ Public Class wb_Rohstoffe_Shared
         OhneKneter  ' alle aktiven Komponenten für die Rezeptverwaltung ohne 118/128
         NurKneter   ' alle aktiven Komponenten 118
     End Enum
-    'TODO evtl bei NEW Load_RohstoffTables()
 
-    Public Shared Sub Load_RohstoffTables()
+    Shared Sub New()
+        'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
+        Load_RohstoffTables()
+    End Sub
+
+    Private Shared Sub Load_RohstoffTables()
         'HashTable mit der Übersetzung der Rohstoffgruppen-Nummer in die Rohstoffgruppen-Bezeichnung laden
         'wenn die Rohstoffgruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen
-        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
 
         'SortedList Rohstoff-Gruppen
         winback.sqlSelect(wb_Sql_Selects.sqlRohstoffGrp)
