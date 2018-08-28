@@ -243,6 +243,10 @@ Public Class wb_Komponente
             If _ArtikelLinienGruppe = wb_Global.UNDEFINED Then
                 GetProduktionsDaten()
             End If
+            'prüfen ob die Artikelgruppe gültig ist
+            If _ArtikelLinienGruppe < wb_Global.OffsetBackorte Then
+                _ArtikelLinienGruppe = wb_Global.OffsetBackorte
+            End If
             Return _ArtikelLinienGruppe
         End Get
         Set(value As Integer)
@@ -254,7 +258,7 @@ Public Class wb_Komponente
 
     Public Property sArtikeLinienGruppe As String
         Get
-            Dim sValue As String = "0000" & _ArtikelLinienGruppe.ToString - wb_Global.OffsetBackorte
+            Dim sValue As String = "0000" & iArtikelLinienGruppe.ToString - wb_Global.OffsetBackorte
             Return Right(sValue, 4)
         End Get
         Set(value As String)
