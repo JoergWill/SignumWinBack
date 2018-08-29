@@ -120,12 +120,12 @@ Public Class wb_PrinterDialog
     Private Sub btnExportExcel_Click(sender As Object, e As EventArgs) Handles btnExportExcel.Click
         LL.ExportOptions.Clear()
         LL.ExportOptions.Add(LlExportOption.ExportTarget, "XLS")
-        'LL.ExportOptions.Add(LlExportOption.ExportFile, "Excel.xls")
+        'LL.ExportOptions.Add(LlExportOption.ExportFile, "C:\Temp\Excel.xls")
         'LL.ExportOptions.Add(LlExportOption.ExportPath, _ListSubDirectory)
-        LL.ExportOptions.Add(LlExportOption.ExportShowResult, "1")
-        LL.ExportOptions.Add(LlExportOption.XlsIgnoreGroupLines, "TRUE")
-        LL.ExportOptions.Add(LlExportOption.XlsIgnoreHeaderFooterLines, "TRUE")
-        LL.ExportOptions.Add(LlExportOption.XlsIgnoreLineWrapForDataOnlyExport, "TRUE")
+        'LL.ExportOptions.Add(LlExportOption.ExportShowResult, "0")
+        'LL.ExportOptions.Add(LlExportOption.XlsIgnoreGroupLines, "TRUE")
+        'LL.ExportOptions.Add(LlExportOption.XlsIgnoreHeaderFooterLines, "TRUE")
+        'LL.ExportOptions.Add(LlExportOption.XlsIgnoreLineWrapForDataOnlyExport, "TRUE")
         Try
             LL.Print()
         Catch LLException As Exception
@@ -190,7 +190,7 @@ Public Class wb_PrinterDialog
         End If
 
         'Vorschau (Miniatur) anzeigen
-        ShowPreview()
+        'ShowPreview()
     End Sub
 
     ''' <summary>

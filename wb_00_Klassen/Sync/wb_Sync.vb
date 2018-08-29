@@ -32,6 +32,7 @@ Public MustInherit Class wb_Sync
     Friend MustOverride Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
     Friend MustOverride Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean
     Friend MustOverride Function DBDelete(Index As Integer) As Boolean
+    Friend MustOverride Function DBCheckData() As Boolean
 
     ''' <summary>
     ''' Die WinBack.Bezeichnung ist leer.
@@ -149,9 +150,11 @@ Public MustInherit Class wb_Sync
         Dim idx As Integer = 1
         For Each x As wb_SyncItem In _Data
             idx += 1
-            If x.SyncOK = wb_Global.SyncState.NOK And x.Wb_Bezeichnung <> "" Then
+            If x.SyncOK = wb_Global.SyncState.NOK And x.Wb_Bezeichnung <> "" And x.Wb_Type <> wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE _
+                And x.Wb_Type <> wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE And x.Wb_Type <> wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Then
                 For i = idx To _Data.Count - 1
-                    If _Data(i).Wb_Bezeichnung = x.Wb_Bezeichnung Then
+                    If _Data(i).Wb_Bezeichnung = x.Wb_Bezeichnung And _Data(i).Wb_Type <> wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE _
+                        And x.Wb_Type <> wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE And x.Wb_Type <> wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Then
                         'Beide Datensätze werden markiert
                         'wenn einer der Datensätze später synchronisiert werden kann, bleibt der fehlerhafte übrig
                         x.SyncOK = wb_Global.SyncState.DBL

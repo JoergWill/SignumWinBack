@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncUserGruppen.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="tbSyncResult.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -154,7 +154,7 @@
     <value>153, 12</value>
   </data>
   <data name="tbSyncResult.Size" type="System.Drawing.Size, System.Drawing">
-    <value>855, 512</value>
+    <value>1020, 508</value>
   </data>
   <data name="tbSyncResult.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -169,7 +169,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tbSyncResult.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="btnSyncUser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -196,7 +196,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncUser.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="btnSyncStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -205,10 +205,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnSyncStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>873, 536</value>
+    <value>1058, 532</value>
   </data>
   <data name="btnSyncStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 43</value>
+    <value>115, 43</value>
   </data>
   <data name="btnSyncStart.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -226,13 +226,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncStart.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="btnExportPrint.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
   <data name="btnExportPrint.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 536</value>
+    <value>12, 532</value>
   </data>
   <data name="btnExportPrint.Size" type="System.Drawing.Size, System.Drawing">
     <value>135, 43</value>
@@ -253,10 +253,31 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnExportPrint.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="lvSyncResult.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
+  </data>
+  <data name="lvSyncResult.Location" type="System.Drawing.Point, System.Drawing">
+    <value>153, 526</value>
+  </data>
+  <data name="lvSyncResult.Size" type="System.Drawing.Size, System.Drawing">
+    <value>432, 66</value>
+  </data>
+  <data name="lvSyncResult.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.Name" xml:space="preserve">
+    <value>lvSyncResult</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lvSyncResult.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="clHeader0.Text" xml:space="preserve">
     <value />
@@ -297,27 +318,6 @@
   <data name="clHeader6.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Center</value>
   </data>
-  <data name="lvSyncResult.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 530</value>
-  </data>
-  <data name="lvSyncResult.Size" type="System.Drawing.Size, System.Drawing">
-    <value>432, 66</value>
-  </data>
-  <data name="lvSyncResult.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;lvSyncResult.Name" xml:space="preserve">
-    <value>lvSyncResult</value>
-  </data>
-  <data name="&gt;&gt;lvSyncResult.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lvSyncResult.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lvSyncResult.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="btnSyncArtikel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -343,7 +343,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncArtikel.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="btnSyncRohstoffe.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -370,7 +370,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSyncRohstoffe.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="btnTryToMatch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -379,10 +379,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnTryToMatch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>591, 536</value>
+    <value>664, 532</value>
   </data>
   <data name="btnTryToMatch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 43</value>
+    <value>115, 43</value>
   </data>
   <data name="btnTryToMatch.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -400,7 +400,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnTryToMatch.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btnRemoveDBL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -409,10 +409,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnRemoveDBL.Location" type="System.Drawing.Point, System.Drawing">
-    <value>732, 536</value>
+    <value>785, 532</value>
   </data>
   <data name="btnRemoveDBL.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 43</value>
+    <value>115, 43</value>
   </data>
   <data name="btnRemoveDBL.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -430,6 +430,36 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnRemoveDBL.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnRemoveNotUsed.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="btnRemoveNotUsed.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnRemoveNotUsed.Location" type="System.Drawing.Point, System.Drawing">
+    <value>906, 532</value>
+  </data>
+  <data name="btnRemoveNotUsed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 43</value>
+  </data>
+  <data name="btnRemoveNotUsed.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="btnRemoveNotUsed.Text" xml:space="preserve">
+    <value>Unbenutzte Einträge löschen</value>
+  </data>
+  <data name="&gt;&gt;btnRemoveNotUsed.Name" xml:space="preserve">
+    <value>btnRemoveNotUsed</value>
+  </data>
+  <data name="&gt;&gt;btnRemoveNotUsed.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnRemoveNotUsed.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnRemoveNotUsed.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -439,7 +469,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1020, 604</value>
+    <value>1185, 600</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>

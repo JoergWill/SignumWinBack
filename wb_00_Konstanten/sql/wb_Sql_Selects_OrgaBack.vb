@@ -15,8 +15,8 @@
     'Sql-Statement Insert Mitarbeiter-Gruppe [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"
     Public Const mssqlInsertMitarbeiterGruppen = "INSERT INTO [dbo].[MitarbeiterMultiFunktionsFeld] (GruppenNr, Hierarchie, Bezeichnung) VALUES ('[2]','[0]','[1]')"
 
-    'Sql-Statement Artikel
-    Public Const mssqlArtikel = "SELECT ArtikelNr,Kurztext,Sortiment FROM [dbo].[Artikel] WHERE Artikelgruppe = [0] ORDER BY ArtikelNr"
+    'Sql-Statement Artikel mit Sortiment und Einheit
+    Public Const mssqlArtikel = "SELECT ArtikelNr,Kurztext,Sortiment, StdEinheit FROM [dbo].[Artikel] WHERE Artikelgruppe = [0] ORDER BY ArtikelNr"
 
     'Sql-Statement Abfrage dbo.WorkStations.Computername
     Public Const mssqlSelArtikel = "SELECT * FROM [dbo].[Artikel] WHERE ArtikelNr = '[0]'"

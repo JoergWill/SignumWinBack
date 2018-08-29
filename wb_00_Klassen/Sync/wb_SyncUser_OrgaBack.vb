@@ -88,4 +88,8 @@
     Friend Overrides Function DBDelete(Index As Integer) As Boolean
         Throw New NotImplementedException()
     End Function
+
+    Friend Overrides Function DBCheckData() As Boolean
+        Throw New NotImplementedException()
+    End Function
 End Class

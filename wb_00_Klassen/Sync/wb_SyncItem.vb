@@ -9,10 +9,11 @@ Public Class wb_SyncItem
     Private _wb_Nummer As String                                        'Nummer in WinBack
     Private _wb_Index As Integer = wb_Global.UNDEFINED                  'Interne Nummer in WinBack(Index)
     Private _wb_Bezeichnung As String                                   'Bezeichnung in WinBack
-    Private _wb_Gruppe As String                                        'Gruppe in WinBack
+    Private _wb_Gruppe As String                                        'Gruppe in WinBack (Einheit für Artikel/Rohstoffe)
+    Private _wb_Type As Integer                                         'Type in WinBack (Komponententype für Rohstoffe)
     Private _os_Nummer As String                                        'Nummer in OrgaSoft
     Private _os_Bezeichnung As String                                   'Bezeichnung in OrgaSoft
-    Private _os_Gruppe As String                                        'Gruppe in OrgaSoft
+    Private _os_Gruppe As String                                        'Gruppe in OrgaSoft (Einheit für Artikel/Rohstoffe)
 
     Public Property Os_Nummer As String
         Get
@@ -101,6 +102,15 @@ Public Class wb_SyncItem
         End Get
         Set(value As Integer)
             _wb_Index = value
+        End Set
+    End Property
+
+    Public Property Wb_Type As Integer
+        Get
+            Return _wb_Type
+        End Get
+        Set(value As Integer)
+            _wb_Type = value
         End Set
     End Property
 

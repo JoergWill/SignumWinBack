@@ -134,12 +134,16 @@ Public Class wb_Admin_Sync
         Me.Cursor = Cursors.WaitCursor
         'Rohstoffe aus WinBack in Array einlesen
         wbRohstoffe.DBRead()
+        'doppelte Einträge (Bezeichnung) in WinBack ermitteln markieren
+        wbRohstoffe.CheckDbl()
         'Rohstoffe aus OrgaSoft in Array einlesen
         osRohstoffe.DBRead()
 
         'Daten/Synchronisation prüfen und Ergebnis berechnen
         wbRohstoffe.Case_10 = wb_Global.SyncState.OrgaBackMiss   'falls ein Eintrag in OrgaBack fehlt, wird der Konflikt nicht repariert !
         wbRohstoffe.CheckSync(osRohstoffe.Data)
+        'unbenutze Rohstoffe in WinBack markieren
+        wbRohstoffe.DBCheckData()
 
         'Ergebnis im Grid anzeigen
         DisplayResultGrid(wbRohstoffe.Data, sColNames)
@@ -200,37 +204,87 @@ Public Class wb_Admin_Sync
     End Sub
 
     Private Sub btnRemoveDBL_Click(sender As Object, e As EventArgs) Handles btnRemoveDBL.Click
+        'Anzahl der zu löschenden Datensätze
+        Dim iResult As Integer = 0
         'Cursor umschalten
         Me.Cursor = Cursors.WaitCursor
 
         Select Case SyncType
             Case wb_Global.SyncType.Artikel
                 'Doppelte Einträge nur in WinBack möglich !
-                ExecuteDelDBL(wbArtikel)
+                iResult = ExecuteDelDBL(wbArtikel)
                 'Ergebnis im Grid anzeigen
                 DisplayResultGrid(wbArtikel.Data, sColNames)
-                DisplayResultSummary(wbArtikel, osArtikel)
+                DisplayResultSummary(wbArtikel, osRohstoffe)
+            Case wb_Global.SyncType.Rohstoffe
+                'Doppelte Einträge nur in WinBack möglich !
+                iResult = ExecuteDelDBL(wbRohstoffe)
+                'Ergebnis im Grid anzeigen
+                DisplayResultGrid(wbRohstoffe.Data, sColNames)
+                DisplayResultSummary(wbRohstoffe, osRohstoffe)
         End Select
 
         'Cursor wieder umschalten
         Me.Cursor = Cursors.Default
-        MsgBox("Löschen der doppelten Einträge erfolgreich abgeschlossen", MsgBoxStyle.Information, "Löschen")
+        'Ergebnis anzeigen
+        If iResult > 0 Then
+            MsgBox("Insgesamt " & iResult & " doppelte Einträge sind zum Löschen markiert", MsgBoxStyle.Information, "Unbenutzte Einträge")
+        Else
+            MsgBox("Keine doppelten Einträge gefunden", MsgBoxStyle.Information, "Unbenutzte Einträge")
+        End If
     End Sub
 
-    Private Sub ExecuteDelDBL(ByRef wb As wb_Sync)
+    Private Sub btnRemoveNotUsed_Click(sender As Object, e As EventArgs) Handles btnRemoveNotUsed.Click
+        'Anzahl der zu löschenden Datensätze
+        Dim iResult As Integer = 0
+        'Cursor umschalten
+        Me.Cursor = Cursors.WaitCursor
+
+        Select Case SyncType
+            Case wb_Global.SyncType.Rohstoffe
+                'Unbenutzte Einträge nur in WinBack möglich !
+                iResult = ExecuteDelNotUsed(wbRohstoffe)
+                'Ergebnis im Grid anzeigen
+                DisplayResultGrid(wbRohstoffe.Data, sColNames)
+                DisplayResultSummary(wbRohstoffe, osArtikel)
+        End Select
+
+        'Cursor wieder umschalten
+        Me.Cursor = Cursors.Default
+        'Ergebnis anzeigen
+        If iResult > 0 Then
+            MsgBox("Insgesamt " & iResult & " unbenutzte Einträge sind zum Löschen markiert", MsgBoxStyle.Information, "Unbenutzte Einträge")
+        Else
+            MsgBox("Keine unbenutzten Einträge gefunden", MsgBoxStyle.Information, "Unbenutzte Einträge")
+        End If
+    End Sub
+
+    Private Function ExecuteDelDBL(ByRef wb As wb_Sync) As Integer
+        ExecuteDelDBL = 0
         Dim idx As Integer = 1
         For Each x As wb_SyncItem In wb.Data
             idx += 1
             If x.SyncOK = wb_Global.SyncState.DBL Then
                 For i = idx To wb.Data.Count - 1
-                    If wb.Data(i).Wb_Bezeichnung = x.Wb_Bezeichnung And wb.Data(i).SyncOK = wb_Global.SyncState.OK Then
-                        'Datensatz löschen
+                    If wb.Data(i).Wb_Bezeichnung = x.Wb_Bezeichnung And (wb.Data(i).SyncOK = wb_Global.SyncState.OK Or wb.Data(i).SyncOK = wb_Global.SyncState.DBL) Then
+                        'Datensatz zum Löschen markieren
+                        ExecuteDelDBL += 1
                         x.SyncOK = wb_Global.SyncState.TryMatchDel
                     End If
                 Next
             End If
         Next
-    End Sub
+    End Function
+
+    Private Function ExecuteDelNotUsed(ByRef wb As wb_Sync) As Integer
+        ExecuteDelNotUsed = 0
+        For Each x As wb_SyncItem In wb.Data
+            If x.SyncOK = wb_Global.SyncState.WinBackNotUsed Then
+                ExecuteDelNotUsed += 1
+                x.SyncOK = wb_Global.SyncState.TryMatchDel
+            End If
+        Next
+    End Function
 
     Private Sub btnTryToMatch_Click(sender As Object, e As EventArgs) Handles btnTryToMatch.Click
         Select Case SyncType
@@ -387,6 +441,8 @@ Public Class wb_Admin_Sync
         btnExportPrint.Enabled = False
         btnSyncStart.Enabled = False
         btnTryToMatch.Enabled = False
+        btnRemoveDBL.Enabled = False
+        btnRemoveNotUsed.Enabled = False
         lvSyncResult.Items.Clear()
         lvSyncResult.Enabled = False
     End Sub
@@ -395,6 +451,8 @@ Public Class wb_Admin_Sync
         btnExportPrint.Enabled = True
         btnSyncStart.Enabled = True
         btnTryToMatch.Enabled = True
+        btnRemoveDBL.Enabled = True
+        btnRemoveNotUsed.Enabled = (SyncType = wb_Global.SyncType.Rohstoffe)
         lvSyncResult.Enabled = True
     End Sub
 

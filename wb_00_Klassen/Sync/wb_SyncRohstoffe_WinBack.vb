@@ -7,18 +7,25 @@
 
         Dim sql As String = wb_Sql_Selects.sqlRohstoffLst
         If Not wb_GlobalSettings.SauerteigAnlage Then
-            sql = sql + " AND KO_Type > 100 AND KO_Type < 109 AND KA_Aktiv = 1"
+            sql = sql + " AND (KO_Type > 100 AND KO_Type < 109) AND KA_Aktiv = 1"
         Else
-            sql = sql + " AND KO_Type < 109 AND KA_Aktiv = 1"
+            sql = sql + " AND ((KO_Type > 100 AND KO_Type < 109) OR " &
+                        "      (KO_Type >= 1 AND KO_Type <= 3)) AND KA_Aktiv = 1"
         End If
 
         'Select KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type = 0
         If winback.sqlSelect(sql) Then
             While winback.Read
                 _Item = New wb_SyncItem
+                'Index (interne Komponenten-Nummer)
                 _Item.Wb_Index = winback.iField("KO_Nr")
+                'Komponenten-Nummer (alphanumerisch)
                 _Item.Wb_Nummer = winback.sField("KO_Nr_AlNum")
+                'Komponenten-Bezeichnung
                 _Item.Wb_Bezeichnung = wb_Language.TextFilter(winback.sField("KO_Bezeichnung"))
+                'Komponenten-Type
+                _Item.Wb_Type = wb_Functions.IntToKomponType(winback.iField("KO_Type"))
+
                 _Item.SyncOK = wb_Global.SyncState.NOK
                 _Item.Sort = _Item.Wb_Nummer
                 _Data.Add(_Item)
@@ -32,8 +39,42 @@
         Return False
     End Function
 
+    ''' <summary>
+    ''' Markiert alle Rohstoffe, die in keiner Rezeptur verwendet werden.
+    ''' Berücksichtigt werden nur Handkomponenten (Type=102)
+    ''' 
+    ''' Der entsprechende Datensatz wird als WinBackNotUsed markiert wenn in OrgaBack kein entsprechender Datensatz angelegt ist.
+    ''' </summary>
+    ''' <returns></returns>
+    Friend Overrides Function DBCheckData() As Boolean
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim KompNr As Integer
+
+        If winback.sqlSelect(wb_Sql_Selects.sqlKompNotUsed) Then
+            While winback.Read
+                'Komponenten-Nummer (Index)
+                KompNr = winback.iField("KO_Nr")
+                'Komponenten-Nummer in Array-List suchen
+                For Each x As wb_SyncItem In _Data
+                    'Komponenten-Nummer (Index) gefunden
+                    If x.Wb_Index = KompNr Then
+                        'Nur Datensätze die nicht auch in OrgaBack verwendet werden
+                        If x.SyncOK = wb_Global.SyncState.OrgaBackMiss Then
+                            x.SyncOK = wb_Global.SyncState.WinBackNotUsed
+                            Exit For
+                        End If
+                    End If
+                Next
+            End While
+        End If
+
+        winback.Close()
+        Return False
+    End Function
+
     Friend Overrides Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
         'Throw New NotImplementedException()
+        Return False
     End Function
 
     Friend Overrides Function DBUpdate(Nr As String, Text As String, Gruppe As String) As Boolean

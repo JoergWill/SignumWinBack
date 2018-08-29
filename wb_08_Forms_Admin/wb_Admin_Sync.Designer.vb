@@ -38,11 +38,12 @@ Partial Class wb_Admin_Sync
         Me.clHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.clHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnSyncArtikel = New System.Windows.Forms.Button()
         Me.btnSyncRohstoffe = New System.Windows.Forms.Button()
         Me.btnTryToMatch = New System.Windows.Forms.Button()
-        Me.clHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnRemoveDBL = New System.Windows.Forms.Button()
+        Me.btnRemoveNotUsed = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnSyncUserGruppen
@@ -67,8 +68,9 @@ Partial Class wb_Admin_Sync
         'btnSyncStart
         '
         resources.ApplyResources(Me.btnSyncStart, "btnSyncStart")
+        Me.btnSyncStart.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.btnSyncStart.Name = "btnSyncStart"
-        Me.btnSyncStart.UseVisualStyleBackColor = True
+        Me.btnSyncStart.UseVisualStyleBackColor = False
         '
         'btnExportPrint
         '
@@ -108,6 +110,10 @@ Partial Class wb_Admin_Sync
         '
         resources.ApplyResources(Me.clHeader5, "clHeader5")
         '
+        'clHeader6
+        '
+        resources.ApplyResources(Me.clHeader6, "clHeader6")
+        '
         'btnSyncArtikel
         '
         resources.ApplyResources(Me.btnSyncArtikel, "btnSyncArtikel")
@@ -126,20 +132,23 @@ Partial Class wb_Admin_Sync
         Me.btnTryToMatch.Name = "btnTryToMatch"
         Me.btnTryToMatch.UseVisualStyleBackColor = True
         '
-        'clHeader6
-        '
-        resources.ApplyResources(Me.clHeader6, "clHeader6")
-        '
         'btnRemoveDBL
         '
         resources.ApplyResources(Me.btnRemoveDBL, "btnRemoveDBL")
         Me.btnRemoveDBL.Name = "btnRemoveDBL"
         Me.btnRemoveDBL.UseVisualStyleBackColor = True
         '
+        'btnRemoveNotUsed
+        '
+        resources.ApplyResources(Me.btnRemoveNotUsed, "btnRemoveNotUsed")
+        Me.btnRemoveNotUsed.Name = "btnRemoveNotUsed"
+        Me.btnRemoveNotUsed.UseVisualStyleBackColor = True
+        '
         'wb_Admin_Sync
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.btnRemoveNotUsed)
         Me.Controls.Add(Me.btnRemoveDBL)
         Me.Controls.Add(Me.btnTryToMatch)
         Me.Controls.Add(Me.btnSyncRohstoffe)
@@ -172,4 +181,5 @@ Partial Class wb_Admin_Sync
     Friend WithEvents btnTryToMatch As Windows.Forms.Button
     Friend WithEvents clHeader6 As Windows.Forms.ColumnHeader
     Friend WithEvents btnRemoveDBL As Windows.Forms.Button
+    Friend WithEvents btnRemoveNotUsed As Windows.Forms.Button
 End Class

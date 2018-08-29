@@ -403,6 +403,15 @@ WinBackAddin
  vor der Zuweisung von Array-Daten
  </summary>
 </member>
+<member name="M:WinBack.wb_SyncRohstoffe_WinBack.DBCheckData">
+ <summary>
+ Markiert alle Rohstoffe, die in keiner Rezeptur verwendet werden.
+ Berücksichtigt werden nur Handkomponenten (Type=102)
+ 
+ Der entsprechende Datensatz wird als WinBackNotUsed markiert wenn in OrgaBack kein entsprechender Datensatz angelegt ist.
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_SyncUser_OrgaBack.MitarbeiterHatProduktionsFiliale(System.String)">
  <summary>
  Zerlegt das Datenbankfeld 'Filialzuordnung' aus der Tabelle dbo.Mitarbeiten in einzelne Strings mit der

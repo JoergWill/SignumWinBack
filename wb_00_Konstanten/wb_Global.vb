@@ -438,6 +438,7 @@
         WinBackUpdate           'Datensatz ist in beiden Datenbanken vorhanden und muss in WinBack aktualisiert werden
         WinBackMiss             'Datensatz ist nur in OrgaBack vorhanden - Fehlt in WinBack, KEIN Update
         WinBackErr              'Datenfehler in WinBack - Datenintegrität, doppelte Einträge o.ä.
+        WinBackNotUsed          'Datensatz wird in WinBack nicht verwendet (kann gelöscht werden)
 
         TryMatchWinBackUpdate   'Datensatz wurde nach TryMatch zugeordnet - Update in WinBack
         TryMatchOrgaBackUpdate  'Datensatz wurde nach TryMatch zugeordnet - Update in OrgaBack(?)

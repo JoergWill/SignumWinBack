@@ -508,7 +508,6 @@
     </Compile>
     <Compile Include="wb_00_Klassen\wb_Sql_BackupRestore.vb" />
     <Compile Include="wb_00_Klassen\wb_Hinweise.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncUser_X.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_ComboBox.Designer.vb">
       <DependentUpon>wb_ComboBox.vb</DependentUpon>
     </Compile>

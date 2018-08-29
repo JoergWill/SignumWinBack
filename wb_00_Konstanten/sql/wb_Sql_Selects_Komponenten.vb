@@ -92,7 +92,7 @@
 
     'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)
     Public Const sqlTestktTypX = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "
-    Public Const sqlTestktTyp3 = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) And " &
+    Public Const sqlTestktTyp3 = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"
 
     'Sql-Statement Update Bezeichnung Artikel/Rohstoff (Sync OrgaBack-WinBack)
@@ -101,5 +101,11 @@
     Public Const sqlUpdateSyncKompAlNr = "UPDATE Komponenten SET KO_Nr_AlNum = '[1]' WHERE KO_Nr_AlNum = '[0]'"
     'Sql-Statement Update AlNummer Artikel/Rohstoff (Sync OrgaBack-WinBack)
     Public Const sqlDelSyncKoNr = "DELETE FROM Komponenten WHERE KO_Nr = [0]"
+    'Sql-Statement Alle Rohstoffe (KomponType = 102) die nicht in Rezepturen verwendet werden
+    Public Const sqlKompNotUsed = "SELECT Komponenten.KO_Nr, Komponenten.KO_Type, Komponenten.KO_Nr_AlNum, " &
+                                  "Komponenten.KA_aktiv, RezeptSchritte.RS_Ko_Nr " &
+                                  "FROM Komponenten LEFT JOIN RezeptSchritte ON Komponenten.KO_Nr = RezeptSchritte.RS_Ko_Nr " &
+                                  "WHERE (((Komponenten.KO_Type) = 102) AND ((Komponenten.KA_aktiv) = 1) " &
+                                  "AND ((RezeptSchritte.RS_Ko_Nr) Is Null)) ORDER BY Komponenten.KO_Nr"
 
 End Class

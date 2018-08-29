@@ -5,13 +5,17 @@
         Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
         _Data.Clear()
 
-        'SELECT ArtikelNr,Kurztext,Sortiment FROM [dbo].[Artikel] ORDER BY ArtikelNr
+        'SELECT ArtikelNr,Kurztext,Sortiment,StdEinheit FROM [dbo].[Artikel] ORDER BY ArtikelNr
         If orgaback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikel, wb_GlobalSettings.OsGrpBackwaren)) Then
             While orgaback.Read
                 _Item = New wb_SyncItem
+                'Artikelnummer
                 _Item.Os_Nummer = orgaback.sField("ArtikelNr")
+                'Bezeichnungstext
                 _Item.Os_Bezeichnung = orgaback.sField("Kurztext")
-                _Item.Os_Gruppe = ""
+                'Standard-Einheit aus OrgaBack
+                _Item.Os_Gruppe = orgaback.sField("StdEinheit")
+
                 _Item.SyncOK = wb_Global.SyncState.NOK
                 _Item.Sort = _Item.Os_Nummer
                 'Nur Artikel aus dem Sortiment(Produktions-Filiale) übernehmen
@@ -41,6 +45,10 @@
     End Function
 
     Friend Overrides Function DBDelete(Index As Integer) As Boolean
+        Throw New NotImplementedException()
+    End Function
+
+    Friend Overrides Function DBCheckData() As Boolean
         Throw New NotImplementedException()
     End Function
 End Class

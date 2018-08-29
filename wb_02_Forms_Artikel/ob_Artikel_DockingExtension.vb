@@ -161,9 +161,9 @@ Public Class ob_Artikel_DockingExtension
             bSortimentIstProduktion = GetKomponentenDaten()
         End If
         If bSortimentIstProduktion Then
-            'Prüfen ob die Einheit aus OrgaBack gültig ist
+            'Prüfen ob die Einheit aus OrgaBack gültig ist. (28.08.18/JW Geändert in StdEinheit)
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
-            Dim obEinheit As String = _Extendee.GetPropertyValue("BestellEinheit").ToString
+            Dim obEinheit As String = _Extendee.GetPropertyValue("StdEinheit").ToString
             If CheckEinheit(obKType, obEinheit) Then
                 'Daten aus Unterfenster sichern
                 Extendee_ExecuteCommand("wbSAVE", Komponente)
