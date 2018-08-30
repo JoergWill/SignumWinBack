@@ -340,7 +340,7 @@
     '''Public Const MFF_Wissenswertes = 213
     '''
     Public Const MFF_Version = "geändert TELKO 14.08.2018"
-#Const MFFnew = False
+#Const MFFnew = True
     'TODO Update Test-Databases
     'MFF-Definition nach der Telko vom 14.08.2018
 #If MFFnew Then

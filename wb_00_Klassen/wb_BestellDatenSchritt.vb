@@ -14,6 +14,8 @@ Public Class wb_BestellDatenSchritt
     Private _AnzahlLose As Integer
     Private _Losgroesse As Double
     Private _Losart As String
+    Private _Losgroesse2 As Double
+    Private _Losart2 As String
     Private _SollwertTeilungText As String = ""
 
     Public Property TourNr As Integer
@@ -112,8 +114,27 @@ Public Class wb_BestellDatenSchritt
         End Set
     End Property
 
+    Public Property Losgroesse2 As Double
+        Get
+            Return _Losgroesse2
+        End Get
+        Set(value As Double)
+            _Losgroesse2 = value
+        End Set
+    End Property
+
+    Public Property Losart2 As String
+        Get
+            Return _Losart2
+        End Get
+        Set(value As String)
+            _Losart2 = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
+    ''' Update pq_Prouktionsauftrag (30.08.2018/JE)
     ''' 
     ''' [dbo].[pq_ProduktionsPlanung]
     '''   FilialNr                  / 1
@@ -125,6 +146,7 @@ Public Class wb_BestellDatenSchritt
     '''   Groesse                   / NULL
     '''   BedarfMenge               / 4000,0000
     '''   Bezeichnung               / Mehrkornbrötchen
+    '''   Zusatztexte               / Lorem ipsum
     '''   FrosterBestand            / 0,0000
     '''   FrosterMeldeBestand       / 0,0000
     '''   FrosterMaxBestand         / 0,0000
@@ -133,6 +155,8 @@ Public Class wb_BestellDatenSchritt
     '''   AnzahlLoseVorschlag       / 4000,0000
     '''   Losgroesse                / 1,0000 (Stück)
     '''   LosArt                    / 1 (Blech)
+    '''   Losgroesse2               / 10,0000 (Stück)
+    '''   LosArt2                   / 7 (Stikken)
     '''   FrosterEntnahme           / 0,0000
     '''   FrosterEinlagerung        / 0,0000
     '''   PlanungsStatus            / 0
@@ -161,6 +185,9 @@ Public Class wb_BestellDatenSchritt
                'Artikelnummer(alpha)
                 Case "ArtikelNr"
                     _ArtikelNummer = Value
+               'Zusatztexte(alpha getrennt durch CRLF)
+                Case "Zusatztexte"
+                    _SonderText = Value
                 'Soll-Produktionsmenge in Stück
                 Case "Produktionsmenge"
                     _Produktionsmenge = wb_Functions.StrToDouble(Value)
@@ -176,13 +203,15 @@ Public Class wb_BestellDatenSchritt
                 Case "LosArt"
                     _Losart = Value
 
-                'Anzahl Lose Vorschlag
+                'Losgröße
+                Case "Losgroesse2"
+                    Losgroesse2 = wb_Functions.StrToDouble(Value)
+                Case "LosArt2"
+                    Losart2 = Value
+
+                    'Anzahl Lose Vorschlag
                 Case "AnzahlVorschlag"
                     _AnzahlVorschlag = wb_Functions.StrToInt(Value)
-
-                    'Einheit Losgröße (TODO)
-                    'Case "Produktionsmenge"
-                    '    _Produktionsmenge = wb_Functions.StrToDouble(Value)
 
             End Select
         Catch ex As Exception
