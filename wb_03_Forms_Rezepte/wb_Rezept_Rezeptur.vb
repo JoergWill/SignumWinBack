@@ -247,7 +247,7 @@ Public Class wb_Rezept_Rezeptur
         Next
 
         'Daten im Grid anzeigen
-        Dim nwtGrid As New wb_KomponParam301_GridView(NwtTabelle)
+        Dim nwtGrid As New wb_ArrayGridViewKomponParam301(NwtTabelle)
         nwtGrid.BackgroundColor = Me.BackColor
         nwtGrid.GridLocation(tb_Naehrwerte)
         nwtGrid.PerformLayout()

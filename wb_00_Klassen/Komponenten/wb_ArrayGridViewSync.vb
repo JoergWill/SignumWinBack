@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.Windows.Forms
 
-Public Class wb_SyncGridView
+Public Class wb_ArrayGridViewSync
     Inherits wb_ArrayGridView
     Public GridArray As Array
 

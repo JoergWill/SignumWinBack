@@ -3,7 +3,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Rohstoffe_Nwt
     Inherits DockContent
-    Dim nwtGrid As wb_KomponParam301_GridView
+    Dim nwtGrid As wb_ArrayGridViewKomponParam301
     Dim NwtTabelle(wb_Global.maxTyp301) As wb_Global.Nwt
 
     Private Sub wb_Rohstoffe_Nwt_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -42,7 +42,7 @@ Public Class wb_Rohstoffe_Nwt
         If nwtGrid IsNot Nothing Then
             nwtGrid.Dispose()
         End If
-        nwtGrid = New wb_KomponParam301_GridView(NwtTabelle)
+        nwtGrid = New wb_ArrayGridViewKomponParam301(NwtTabelle)
         nwtGrid.BackgroundColor = Me.BackColor
         nwtGrid.GridLocation(pnl_Nwt)
         nwtGrid.PerformLayout()

@@ -89,6 +89,7 @@ Partial Class WinBack
         Me.rbRohstoffeDetails = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeVerwendung = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeLieferungen = New System.Windows.Forms.RibbonButton()
+        Me.rbRohstoffNwt = New System.Windows.Forms.RibbonButton()
         Me.rsRohstoffeSep = New System.Windows.Forms.RibbonSeparator()
         Me.rbRohstoffeAnsicht = New System.Windows.Forms.RibbonButton()
         Me.rlRohstoffe = New System.Windows.Forms.RibbonLabel()
@@ -711,6 +712,7 @@ Partial Class WinBack
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeDetails)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeVerwendung)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeLieferungen)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffNwt)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rsRohstoffeSep)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeAnsicht)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rlRohstoffe)
@@ -755,6 +757,16 @@ Partial Class WinBack
         Me.rbRohstoffeLieferungen.Name = "rbRohstoffeLieferungen"
         Me.rbRohstoffeLieferungen.SmallImage = CType(resources.GetObject("rbRohstoffeLieferungen.SmallImage"), System.Drawing.Image)
         resources.ApplyResources(Me.rbRohstoffeLieferungen, "rbRohstoffeLieferungen")
+        '
+        'rbRohstoffNwt
+        '
+        Me.rbRohstoffNwt.Image = Global.WinBack.My.Resources.Resources.RohstoffeNwt_32x32
+        Me.rbRohstoffNwt.LargeImage = Global.WinBack.My.Resources.Resources.RohstoffeNwt_32x32
+        Me.rbRohstoffNwt.MinimumSize = New System.Drawing.Size(70, 0)
+        Me.rbRohstoffNwt.Name = "rbRohstoffNwt"
+        Me.rbRohstoffNwt.SmallImage = CType(resources.GetObject("rbRohstoffNwt.SmallImage"), System.Drawing.Image)
+        resources.ApplyResources(Me.rbRohstoffNwt, "rbRohstoffNwt")
+        Me.rbRohstoffNwt.Value = "NWT"
         '
         'rsRohstoffeSep
         '
@@ -1609,4 +1621,5 @@ Partial Class WinBack
     Friend WithEvents rbLogin As RibbonButton
     Friend WithEvents rbClose As RibbonButton
     Friend WithEvents rbVersionInfo As RibbonButton
+    Friend WithEvents rbRohstoffNwt As RibbonButton
 End Class

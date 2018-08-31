@@ -400,6 +400,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.Designer.vb">
+      <DependentUpon>wb_ArrayGridViewNwt.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_GridCalendarColumn.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_VirtualTreeEditor.vb" />
     <Compile Include="wb_00_Klassen\wb_AktRechte.vb" />
@@ -425,10 +431,10 @@
     <Compile Include="wb_00_Klassen\Sync\wb_SyncRohstoffe_WinBack.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_SyncArtikel_OrgaBack.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_SyncArtikel_WinBack.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncGridView.Designer.vb">
-      <DependentUpon>wb_SyncGridView.vb</DependentUpon>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSync.Designer.vb">
+      <DependentUpon>wb_ArrayGridViewSync.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncGridView.vb">
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSync.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\Sync\wb_SyncItem.vb" />
@@ -487,10 +493,10 @@
     <Compile Include="wb_00_Klassen\wb_KomponParam301.vb" />
     <Compile Include="wb_00_Klassen\wb_Komponente.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam301_Global.vb" />
-    <Compile Include="wb_00_Klassen\Komponenten\wb_KomponParam301_GridView.Designer.vb">
-      <DependentUpon>wb_KomponParam301_GridView.vb</DependentUpon>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewKomponParam301.Designer.vb">
+      <DependentUpon>wb_ArrayGridViewKomponParam301.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_KomponParam301_GridView.vb">
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewKomponParam301.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\wb_nwtCloud.vb" />
@@ -567,6 +573,12 @@
       <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Cloud.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.Designer.vb">
@@ -870,6 +882,9 @@
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.ru.resx">
       <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.resx">
+      <DependentUpon>wb_Rohstoffe_Cloud.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.ru.resx">
       <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
     </EmbeddedResource>
@@ -1107,6 +1122,7 @@
     <Content Include="ListLabel\Produktion\Backzettel.lst" />
     <Content Include="ListLabel\Produktion\Teigzettel.lst" />
     <Content Include="ListLabel\wbStandard.lst" />
+    <None Include="Resources\datenlink_logo.png" />
     <Content Include="Resources\DatenRueckSicherung_16x16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1135,6 +1151,10 @@
     <None Include="Resources\RezeptHinweise_32x32.png" />
     <None Include="Resources\RezeptHistorie_32x32.png" />
     <None Include="Resources\RezeptListe_32x32.png" />
+    <None Include="Resources\RohstoffeCloud_32x32.png" />
+    <None Include="Resources\RohstoffeDatenlink_124x32.png" />
+    <None Include="Resources\RohstoffeDatenLink_93x24.png.png" />
+    <None Include="Resources\RohstoffeDatenLink_93x24.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -610,7 +610,7 @@ Public Class WinBack
     ''' <param name="e"></param>
     Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click, rbLinienDel.Click, rbLinienDrucken.Click, rbLinienAuto.Click,
                                                                           rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click,
-                                                                          rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeVerwendung.Click, rbRohstoffeImportCloud.Click,
+                                                                          rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeVerwendung.Click, rbRohstoffNwt.Click, rbRohstoffeImportCloud.Click,
                                                                           rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click
         Dim Cmd As String = DirectCast(sender, RibbonButton).Value
         If Cmd <> "" Then
@@ -648,4 +648,5 @@ Public Class WinBack
         Dim content As String = ct.WriteThemeIniFile()
         System.IO.File.WriteAllText(wb_GlobalSettings.pColorThemePath, content)
     End Sub
+
 End Class

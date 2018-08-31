@@ -13,7 +13,7 @@ Public Class wb_Admin_Sync
     Dim wbRohstoffe As New wb_SyncRohstoffe_WinBack
     Dim osRohstoffe As New wb_SyncRohstoffe_OrgaBack
 
-    Dim SyncResultGrid As wb_SyncGridView
+    Dim SyncResultGrid As wb_ArrayGridViewSync
     Dim sColNames As New List(Of String)
     Dim SyncType As wb_Global.SyncType = wb_Global.SyncType.Undefined
 
@@ -391,7 +391,7 @@ Public Class wb_Admin_Sync
         End If
 
         'Daten im Grid anzeigen
-        SyncResultGrid = New wb_SyncGridView(xArray, sColNames)
+        SyncResultGrid = New wb_ArrayGridViewSync(xArray, sColNames)
         SyncResultGrid.ScrollBars = ScrollBars.Vertical
         SyncResultGrid.BackgroundColor = Me.BackColor
         SyncResultGrid.GridLocation(tbSyncResult)

@@ -292,6 +292,16 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.RohstoffeCloud_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.RohstoffeDatenLink_93x24">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.RohstoffeDetails_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -431,6 +441,7 @@ WinBackAddin
 <member name="M:WinBack.wb_BestellDatenSchritt.MsSQLdbRead_Fields(System.String,System.Object)">
  <summary>
  Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
+ Update pq_Prouktionsauftrag (30.08.2018/JE)
  
  [dbo].[pq_ProduktionsPlanung]
    FilialNr                  / 1
@@ -442,6 +453,7 @@ WinBackAddin
    Groesse                   / NULL
    BedarfMenge               / 4000,0000
    Bezeichnung               / Mehrkornbrötchen
+   Zusatztexte               / Lorem ipsum
    FrosterBestand            / 0,0000
    FrosterMeldeBestand       / 0,0000
    FrosterMaxBestand         / 0,0000
@@ -450,6 +462,8 @@ WinBackAddin
    AnzahlLoseVorschlag       / 4000,0000
    Losgroesse                / 1,0000 (Stück)
    LosArt                    / 1 (Blech)
+   Losgroesse2               / 10,0000 (Stück)
+   LosArt2                   / 7 (Stikken)
    FrosterEntnahme           / 0,0000
    FrosterEinlagerung        / 0,0000
    PlanungsStatus            / 0
@@ -1617,6 +1631,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="iD"></param>
  <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
+</member>
+<member name="M:WinBack.wb_nwtCloud.getProducList">
+ <summary>
+ liefert die Liste aller gefundenen Produkte und Lieferanten nach Suchen in der Cloud.
+ Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
+ </summary>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_nwtCloud.DebugResultSet(System.Int32)">
  <summary>
@@ -5533,11 +5554,6 @@ Datenbank-Verbindung schliessen
  Die DockPanel-Konfiguration wird gespeichert unter wbXXXXYYYY.xml, dabei ist XXXX der FormName und YYYY der Layout-Name.
  </summary>
  <returns></returns>
-</member>
-<member name="M:WinBack.wb_Planung_Main.GetOrderData">
- <summary>
- Ermittelt die Bestelldaten aus dem OrgaBack Backzettel
- </summary>
 </member>
 <member name="P:WinBack.wb_Admin_Main.FormText">
  <summary>

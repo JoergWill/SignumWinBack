@@ -475,6 +475,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\WinBackLogo_945x514.png" />
+    <None Include="Resources\RohstoffeNwt_32x32.png" />
     <Content Include="WinBack Icon.ico" />
   </ItemGroup>
   <ItemGroup>

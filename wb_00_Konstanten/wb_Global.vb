@@ -119,6 +119,13 @@
         Public FehlerText As String
     End Structure
 
+    Public Structure NwtCloud
+        Public id As String
+        Public name As String
+        Public lieferant As String
+        Public deklarationsname As String
+    End Structure
+
     Enum MySqlCodepage
         iso8859_15                  'Code-Wandlung von iso-8859-15 nach utf8 (Deutschland) - Keine Umwandlung
         iso8859_5                   'Code-Wandlung von iso-8859-5  nach utf8 (Russland)

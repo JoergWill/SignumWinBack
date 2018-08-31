@@ -2,7 +2,7 @@
 Imports System.Windows.Forms
 Imports WinBack
 
-Public Class wb_KomponParam301_GridView
+Public Class wb_ArrayGridViewKomponParam301
     Inherits wb_ArrayGridView
     Public arr() As wb_Global.Nwt
 

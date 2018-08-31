@@ -241,6 +241,32 @@ Public Class wb_nwtCloud
         End If
     End Function
 
+    ''' <summary>
+    ''' liefert die Liste aller gefundenen Produkte und Lieferanten nach Suchen in der Cloud.
+    ''' Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function getProducList() As ArrayList
+        Dim a As New ArrayList
+        Dim n As wb_Global.NwtCloud
+
+        'alle Ergebnisse aus der Liste
+        For Each d As JToken In data
+            'Rohstoff-ID aus der Cloud
+            n.id = d("rid").ToString
+            'Rohstoff-Bezeichnung
+            n.name = GetJData(d, "name")
+            'Rohstoff Lieferant
+            n.lieferant = GetJData(d, "lieferant")
+            'Rohstoff Deklarationsbezeichnung
+            n.deklarationsname = GetJData(d, "deklarationsname")
+            'zum Array hinzufügen
+            a.Add(n)
+        Next
+
+        Return a
+    End Function
+
     Private Function GetJData(JData As JObject, JFieldName As String) As String
         Try
             Dim JName As JToken = JData.GetValue(JFieldName)

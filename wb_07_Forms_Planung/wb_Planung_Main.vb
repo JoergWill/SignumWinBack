@@ -82,38 +82,14 @@ Public Class wb_Planung_Main
     Public Overrides Function Init() As Boolean Implements IBasicFormUserControl.Init
         'Init aus der Basis-Klasse aufrufen (zuerst)
         Init = MyBase.Init()
-        'Bestelldaten aus Stored-Procedure lesen
-        'GetOrderData()
-
     End Function
 
     Private Sub BtnProdListeExport()
+        'TODO in Planung Liste denExport anstossen
     End Sub
 
     Private Sub BtnPlanungTeiler()
         PlanungTeiler = New wb_Planung_Teiler
         PlanungTeiler.Show(DockPanel, DockState.DockTop)
-    End Sub
-
-    ''' <summary>
-    ''' Ermittelt die Bestelldaten aus dem OrgaBack Backzettel
-    ''' </summary>
-    Private Sub GetOrderData()
-        Dim oFactory As IFactoryService = TryCast(_ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
-        Dim oSetting As ISettingService = TryCast(_ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
-        Dim oData As IData = oFactory.GetData
-
-        Using oTable = oData.OpenQuery(Database.Main, "pq_Produktionsauftrag", LockType.ReadOnly, (1), (-1), ("FB"), ("KB"), ("20170830"))
-            Debug.Print("Anzahl der Spalten " & oTable.Columns.Count)
-            Debug.Print("Anzahl der Zeilen  " & oTable.Rows.Count)
-
-            For Each cRow As DataRow In oTable.Rows
-                For Each cCol As DataColumn In oTable.Columns
-                    Debug.Print("Produktions-Auftrag " & cCol.ColumnName & " = " & cRow(cCol.Ordinal))
-                Next
-            Next
-        End Using
-
-
     End Sub
 End Class

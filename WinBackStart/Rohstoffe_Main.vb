@@ -15,6 +15,7 @@ Public Class Rohstoffe_Main
     Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
     Public RohstoffParameter As wb_Rohstoffe_Parameter
     Public RohstoffNwt As wb_Rohstoffe_Nwt
+    Public RohstoffCloud As wb_Rohstoffe_Cloud
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -43,9 +44,13 @@ Public Class Rohstoffe_Main
                 RohstoffParameter = New wb_Rohstoffe_Parameter
                 RohstoffParameter.Show(DockPanel, DockState.DockLeft)
                 Return True
-            Case "CLOUD"
+            Case "NWT"
                 RohstoffNwt = New wb_Rohstoffe_Nwt
                 RohstoffNwt.Show(DockPanel, DockState.DockLeft)
+                Return True
+            Case "CLOUD"
+                RohstoffCloud = New wb_Rohstoffe_Cloud
+                RohstoffCloud.Show(DockPanel, DockState.DockLeft)
                 Return True
 
             Case "NEW"
@@ -92,6 +97,14 @@ Public Class Rohstoffe_Main
                 RohstoffParameter = New wb_Rohstoffe_Parameter
                 _DockPanelList.Add(RohstoffParameter)
                 Return RohstoffParameter
+            Case "WinBack.wb_Rohstoffe_Nwt"
+                RohstoffNwt = New wb_Rohstoffe_Nwt
+                _DockPanelList.Add(RohstoffNwt)
+                Return RohstoffNwt
+            Case "WinBack.wb_Rohstoffe_Cloud"
+                RohstoffCloud = New wb_Rohstoffe_Cloud
+                _DockPanelList.Add(RohstoffCloud)
+                Return RohstoffCloud
             Case Else
                 Return Nothing
         End Select
