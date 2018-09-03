@@ -61,5 +61,12 @@ Public Class wb_Rohstoffe_Cloud
         'Nährwertdaten in Objekt schreiben
         nwt.GetProductData(rid, wb_Rohstoffe_Shared.RohStoff)
 
+        'TODO Hier gehts weiter
+        'CloudNwtGrid = New wb_ArrayGridViewN
+
+
+        'weiter zur Anzeige
+        Wb_TabControl.SelectedTab = tpCloudAnzeige
+
     End Sub
 End Class

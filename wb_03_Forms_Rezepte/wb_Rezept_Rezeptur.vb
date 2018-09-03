@@ -6,7 +6,6 @@ Public Class wb_Rezept_Rezeptur
 
     Dim Rezept As wb_Rezept
     Dim RezeptHinweise As New wb_Hinweise(wb_Global.Hinweise.RezeptHinweise)
-    Dim NwtTabelle(wb_Global.maxTyp301) As wb_Global.Nwt
 
     Private _RzNummer As Integer
     Private _RzVariante As Integer
@@ -230,24 +229,8 @@ Public Class wb_Rezept_Rezeptur
     ''' Die Berechnung der Nährwerte startet über ktTyp301(Get) im RootRezeptschritt (Rekursiv) über alle unterlagerten Rezeptschritte.
     ''' </summary>
     Private Sub NwtGrid()
-        'Array aufbauen über alle Nährwerte - Grid aus KomponParam301_global, Werte aus Rezept.ktTyp301.Wert(_RootRezeptschritt)
-        For i = 1 To wb_Global.maxTyp301
-            NwtTabelle(i).Visible = wb_KomponParam301_Global.kt301Param(i).Used
-            NwtTabelle(i).Nr = i
-            NwtTabelle(i).Text = wb_KomponParam301_Global.kt301Param(i).Bezeichnung
-            NwtTabelle(i).Wert = Rezept.KtTyp301.Wert(i)
-            NwtTabelle(i).Einheit = wb_KomponParam301_Global.kt301Param(i).Einheit
-            NwtTabelle(i).Header = wb_Functions.kt301GruppeToString(wb_KomponParam301_Global.kt301Param(i).Gruppe)
-            NwtTabelle(i).FehlerText = Rezept.KtTyp301.FehlerKompName(i)
-
-            'Debug.Print("FEHLER :" & Rezept.KtTyp301.FehlerKompName(i))
-            'If NwtTabelle(i).Visible Then
-            '    Debug.Print(NwtTabelle(i).Header & " " & NwtTabelle(i).Text & " " & NwtTabelle(i).Wert & " " & NwtTabelle(i).Einheit)
-            'End If
-        Next
-
         'Daten im Grid anzeigen
-        Dim nwtGrid As New wb_ArrayGridViewKomponParam301(NwtTabelle)
+        Dim nwtGrid As New wb_ArrayGridViewKomponParam301(Rezept.KtTyp301.NwtTabelle)
         nwtGrid.BackgroundColor = Me.BackColor
         nwtGrid.GridLocation(tb_Naehrwerte)
         nwtGrid.PerformLayout()

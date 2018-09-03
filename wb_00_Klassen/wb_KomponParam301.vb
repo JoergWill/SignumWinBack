@@ -15,6 +15,7 @@ Public Class wb_KomponParam301
     Private NaehrwertInfo(maxTyp301) As Typ301
     Private _TimeStamp
     Private _IsCalculated
+    Private _NwtTabelle(wb_Global.maxTyp301) As Nwt
 
     ''' <summary>
     ''' Nach der Initialisierung sind die Nährwerte nicht berechnet
@@ -22,6 +23,26 @@ Public Class wb_KomponParam301
     Public Sub New()
         _IsCalculated = False
     End Sub
+
+    Public ReadOnly Property NwtTabelle As Array
+        Get
+            For i = 1 To wb_Global.maxTyp301
+                _NwtTabelle(i).Visible = wb_KomponParam301_Global.kt301Param(i).Used
+                _NwtTabelle(i).Nr = i
+                _NwtTabelle(i).Text = wb_KomponParam301_Global.kt301Param(i).Bezeichnung
+                _NwtTabelle(i).Wert = Wert(i)
+                _NwtTabelle(i).Einheit = wb_KomponParam301_Global.kt301Param(i).Einheit
+                _NwtTabelle(i).Header = wb_Functions.kt301GruppeToString(wb_KomponParam301_Global.kt301Param(i).Gruppe)
+                _NwtTabelle(i).FehlerText = FehlerKompName(i)
+
+                'Debug.Print("FEHLER :" & Rezept.KtTyp301.FehlerKompName(i))
+                'If NwtTabelle(i).Visible Then
+                '    Debug.Print(NwtTabelle(i).Header & " " & NwtTabelle(i).Text & " " & NwtTabelle(i).Wert & " " & NwtTabelle(i).Einheit)
+                'End If
+            Next
+            Return _NwtTabelle
+        End Get
+    End Property
 
     ''' <summary>
     ''' Gibt False zurück, wenn das Array leer bzw. noch nicht berechnet ist (Lesen aus DB erforderlich)
