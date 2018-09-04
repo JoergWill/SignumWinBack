@@ -33,14 +33,14 @@ Partial Class Test_Main
         Dim ObjectCellBinding6 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Me.ColNr = New Infralution.Controls.VirtualTree.Column()
         Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
+        Me.CellEditor1 = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.EnhEdit2 = New EnhEdit.EnhEdit(Me.components)
         Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
         Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
-        Me.CellEditor1 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.EnhEdit2 = New EnhEdit.EnhEdit(Me.components)
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -55,6 +55,24 @@ Partial Class Test_Main
         Me.ColBezeichnung.Caption = Nothing
         Me.ColBezeichnung.CellEditor = Me.CellEditor1
         Me.ColBezeichnung.Name = "ColBezeichnung"
+        '
+        'CellEditor1
+        '
+        Me.CellEditor1.CellAlignment = System.Drawing.ContentAlignment.MiddleRight
+        Me.CellEditor1.Control = Me.EnhEdit2
+        '
+        'EnhEdit2
+        '
+        Me.EnhEdit2.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.EnhEdit2.eBackcolor = System.Drawing.Color.Empty
+        Me.EnhEdit2.eBorderColor = System.Drawing.Color.Empty
+        Me.EnhEdit2.eFont = Nothing
+        Me.EnhEdit2.Location = New System.Drawing.Point(0, 0)
+        Me.EnhEdit2.Name = "EnhEdit2"
+        Me.EnhEdit2.Size = New System.Drawing.Size(100, 13)
+        Me.EnhEdit2.TabIndex = 0
+        Me.EnhEdit2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.EnhEdit2.Visible = False
         '
         'ColPreis
         '
@@ -100,27 +118,9 @@ Partial Class Test_Main
         Me.VirtualTree.Name = "VirtualTree"
         Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
         Me.VirtualTree.ShowRootRow = False
-        Me.VirtualTree.Size = New System.Drawing.Size(988, 518)
+        Me.VirtualTree.Size = New System.Drawing.Size(329, 285)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 2
-        '
-        'CellEditor1
-        '
-        Me.CellEditor1.CellAlignment = System.Drawing.ContentAlignment.MiddleRight
-        Me.CellEditor1.Control = Me.EnhEdit2
-        '
-        'EnhEdit2
-        '
-        Me.EnhEdit2.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit2.eBackcolor = System.Drawing.Color.Empty
-        Me.EnhEdit2.eBorderColor = System.Drawing.Color.Empty
-        Me.EnhEdit2.eFont = Nothing
-        Me.EnhEdit2.Location = New System.Drawing.Point(0, 0)
-        Me.EnhEdit2.Name = "EnhEdit2"
-        Me.EnhEdit2.Size = New System.Drawing.Size(100, 13)
-        Me.EnhEdit2.TabIndex = 0
-        Me.EnhEdit2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.EnhEdit2.Visible = False
         '
         'ObjectRowBinding1
         '

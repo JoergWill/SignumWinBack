@@ -391,6 +391,96 @@ WinBackAddin
  </summary> 
  <remarks></remarks> 
 </member>
+<member name="M:WinBack.wb_KompRzChargen.wb_KompRzChargen_Load(System.Object,System.EventArgs)">
+ <summary>
+ Komponente wird geladen.
+ ComboBox Liniengruppe Rezepte(Teig) und Artikel füllen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.GetDataFromKomp(WinBack.wb_Komponente@)">
+ <summary>
+ Daten aus dem Komponenten-Objekt lesen
+ 
+ Die Komponenten- und Rezeptnummer werden in der Komponenten-Klasse mit übergeben.
+ Die Komponentendaten werden mit MySQLdbRead() aus der Datenbank gelesen
+ </summary>
+ <param name="Komp"></param>
+</member>
+<member name="P:WinBack.wb_KompRzChargen.DataValid">
+ <summary>
+ Adaten sind gültig. Anzeigefelder freigeben/anzeigen
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_KompRzChargen.RzNr">
+ <summary>
+ Rezeptnummer intern (Index)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_KompRzChargen.RezeptNummer">
+ <summary>
+ Rezeptnummer
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_KompRzChargen.RezeptName">
+ <summary>
+ Rezeptbezeichnung
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_KompRzChargen.ArtikelLiniengruppe">
+ <summary>
+ Artikel-Liniengruppe. Enthält den Aufarbeitungsplatz(Backort)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_KompRzChargen.LinienGruppe">
+ <summary>
+ Rezept-Liniengruppe
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.BtnRzpShow_Click(System.Object,System.EventArgs)">
+ <summary>
+ Rezeptur anzeigen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.BtnRzpt_Click(System.Object,System.EventArgs)">
+ <summary>
+ Auswahl Rezeptur. Öffnet ein Auswahlfenster mit der Rezeptliste
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.EnableKomponenten(System.Boolean)">
+ <summary>
+ Enable/Disable der einzelnen Formular-Steuerelemente
+ </summary>
+ <param name="Enable"></param>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.MinMaxOptArtikelShowValues">
+ <summary>
+ Anzeigen der Artikel-Chargengrößen. Alle Zahlenwerte aus wb_ChargenMinMax in die entsprechenden Textfelder kopieren.
+ </summary>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.MinMaxRezeptShowValues">
+ <summary>
+ Anzeigen der Rezept-Chargengrößen. Alle Zahlenwerte aus wb_ChargenMinMax in die entsprechenden Textfelder kopieren.
+ </summary>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.DataIsInvalid">
+ <summary>
+ Die Daten im Fenster haben sich durch Benutzer-Eingabe geändert.
+ Flag setzen (DataHasChanged). Über den Event DataInvalidated wird dem Haupt-Fenster mitgeteilt, dass die Daten vor dem Schliessen
+ oder Löschen des Fensters gesichert werden müssen.
+ </summary>
+</member>
 <member name="M:WinBack.wb_AktSysKonfig.#cctor">
  <summary>
  Liest die freigegebenen Module aus der Tabelle ItemParameter.
@@ -1048,6 +1138,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns>True wenn der Datensatz aktualisiert wurde</returns>
 </member>
+<member name="P:WinBack.wb_nwtCL.cnt">
+ <summary>
+ Anzahl der gefundenen Datensätze
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Sql_FindServerIP.GetWinBackIP">
  <summary>
  Scannt alle IP-Adressen im Netzwerk nach MySQL-Ports
@@ -1520,7 +1616,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="p">Interger Parameter-Nummer</param>
  <returns>ktTyp301Param</returns>
 </member>
-<member name="M:WinBack.wb_nwtCloud.#ctor(System.String,System.String)">
+<member name="M:WinBack.wb_nwtCl_WinBack.#ctor(System.String,System.String)">
  <summary>
  Erzeugt das Connection-Objekt zur Abfrage der Nährwerte aus der WinBack-Cloud
  Passwort und URL müssen mit übergeben werden.
@@ -1528,19 +1624,19 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Pass"></param>
  <param name="Url"></param>
 </member>
-<member name="P:WinBack.wb_nwtCloud.Pass">
+<member name="P:WinBack.wb_nwtCl_WinBack.Pass">
  <summary>
  
  </summary>
 </member>
-<member name="P:WinBack.wb_nwtCloud.ErrorCode">
+<member name="P:WinBack.wb_nwtCl_WinBack.ErrorCode">
  <summary>
  WinBack-Cloud-Connector::GetErrorCode(Array) 
  
  Gibt den Fehler-Code der Abfrage zurück
  </summary>
 </member>
-<member name="M:WinBack.wb_nwtCloud.GetResult(System.Int32)">
+<member name="M:WinBack.wb_nwtCl_WinBack.GetResult(System.Int32)">
  <summary>
  WinBack-Cloud-Connector::GetResult(Array) 
  
@@ -1550,7 +1646,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </remarks>
  <param name="Index"> Integer Index des Result-JSON-Objekts</param>
 </member>
-<member name="M:WinBack.wb_nwtCloud.httpString(System.String,System.String)">
+<member name="M:WinBack.wb_nwtCl_WinBack.httpString(System.String,System.String)">
  <summary>
  WinBack-Cloud-Connector::http-Kommando zusammensetzen
  
@@ -1560,7 +1656,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="cmd"> String Kommando</param>
  <param name="param"> String Kommando-Parameter</param>
 </member>
-<member name="M:WinBack.wb_nwtCloud.lookupProductName(System.String)">
+<member name="M:WinBack.wb_nwtCl_WinBack.lookupProductName(System.String)">
  <summary>
  WinBack-Cloud-Connector::lookupProduct by article_description
  
@@ -1569,7 +1665,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="ds"> String Suchbegriff Rohstoff-Bezeichnung</param>
 </member>
-<member name="M:WinBack.wb_nwtCloud.lookupProduct(System.String,System.String)">
+<member name="M:WinBack.wb_nwtCl_WinBack.lookupProduct(System.String,System.String)">
  <summary>
  WinBack-Cloud-Connector::lookupProduct by by article And supplier
  
@@ -1579,7 +1675,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="ds"> String Suchbegriff Rohstoff-Bezeichnung</param>
  <param name="lf"> String Suchbegriff Lieferant</param>
 </member>
-<member name="M:WinBack.wb_nwtCloud.GetProductData(System.String)">
+<member name="M:WinBack.wb_nwtCl_WinBack.GetProductData(System.String)">
  <summary>
  WinBack-Cloud-Connector::getProductData
  
@@ -1588,7 +1684,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="id"> String Rohstoff-ID</param>
 </member>
-<member name="M:WinBack.wb_nwtCloud.GetProductData(System.String,WinBack.wb_Komponente@)">
+<member name="M:WinBack.wb_nwtCl_WinBack.GetProductData(System.String,WinBack.wb_Komponente@)">
  <summary>
  Abfrage der Daten aus der WinBack Cloud (Hetzner-Server)
  Das Ergebnis ist ein verschachteltes JSON-Objekt
@@ -1632,14 +1728,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="iD"></param>
  <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
 </member>
-<member name="M:WinBack.wb_nwtCloud.getProducList">
+<member name="M:WinBack.wb_nwtCl_WinBack.getProducList">
  <summary>
  liefert die Liste aller gefundenen Produkte und Lieferanten nach Suchen in der Cloud.
  Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_nwtCloud.DebugResultSet(System.Int32)">
+<member name="M:WinBack.wb_nwtCl_WinBack.DebugResultSet(System.Int32)">
  <summary>
  WinBack-Cloud-Connector::DebugResultSet
  
@@ -1647,14 +1743,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="Index"> Integer Anzahl der Datensätze</param>
 </member>
-<member name="P:WinBack.wb_nwtDatenLink.ErrorCode">
+<member name="P:WinBack.wb_nwtCl_DatenLink.ErrorCode">
  <summary>
  Datnlink-Connector::GetErrorCode(Array) 
  
  Gibt den Fehler-Code der Abfrage zurück
  </summary>
 </member>
-<member name="M:WinBack.wb_nwtDatenLink.GetResult(System.Int32)">
+<member name="M:WinBack.wb_nwtCl_DatenLink.GetResult(System.Int32)">
  <summary>
  Datenlink-Connector::GetResult(Array) 
  
@@ -1664,7 +1760,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </remarks>
  <param name="Index"> Integer Index des Result-JSON-Objekts</param>
 </member>
-<member name="M:WinBack.wb_nwtDatenLink.GetXMLResult">
+<member name="M:WinBack.wb_nwtCl_DatenLink.GetXMLResult">
  <summary>
  Datenlink-Connector::GetXMLResult(Array) 
  
@@ -1673,7 +1769,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <remarks>
  </remarks>
 </member>
-<member name="M:WinBack.wb_nwtDatenLink.httpString(System.String,System.String,System.String)">
+<member name="M:WinBack.wb_nwtCl_DatenLink.httpString(System.String,System.String,System.String)">
  <summary>
  Datenlink-Connector::http-Kommando zusammensetzen
  
@@ -1684,7 +1780,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="param"> String Kommando-Parameter</param>
  <param name="service"> String</param>
 </member>
-<member name="M:WinBack.wb_nwtDatenLink.lookupProductName(System.String)">
+<member name="M:WinBack.wb_nwtCl_DatenLink.lookupProductName(System.String)">
  <summary>
  Datenlink-Connector::lookupProduct by article_description
  
@@ -1693,7 +1789,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="ds"> String Suchbegriff Rohstoff-Bezeichnung</param>
 </member>
-<member name="M:WinBack.wb_nwtDatenLink.GetProductData(System.String)">
+<member name="M:WinBack.wb_nwtCl_DatenLink.GetProductData(System.String)">
  <summary>
  Datenlink-Connector::getProductData
  
@@ -1702,7 +1798,36 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="id"> String Rohstoff-ID</param>
 </member>
-<member name="M:WinBack.wb_nwtDatenLink.GetProductData(System.String,WinBack.wb_Komponente@)">
+<member name="M:WinBack.wb_nwtCl_DatenLink.getProducList">
+ <summary>
+ liefert die Liste aller gefundenen Produkte und Lieferanten nach Suchen in der Cloud.
+ Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
+ 
+ 	 "product_version":[
+       {
+         "published" "2018-08-07T19:33:02",
+         "product_id": "b8kgweu5i5",        
+         "productnumber": "111257",        
+         "product_version_identifier": 
+	        {
+	            "datenlink_id" "DL-D05-7FB",          
+	            "gtin": "04012367111257",          
+	            "productname": "Ährenwort Weizenmehl T405 25 KG",          
+	            "labeling_method": "Gültig ab Datum",          
+	            "labeling_value": "14.09.2007",          
+	            "valid_from": "2007-09-14"
+	        },        
+         "product_is_subscribed": "NO",
+         "company": 
+	        {
+	            "name" "Georg Plange, ZN der PMG Premium Mühlen Gruppe GmbH &amp; Co. KG",          
+	            "id": "39b977b4-ce2c-11e4-bbac-002421e58a5c"
+	        }
+     }
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_nwtCl_DatenLink.GetProductData(System.String,WinBack.wb_Komponente@)">
  <summary>
  Abfrage der Daten aus DatenLink
  Das Ergebnis ist ein verschachteltes XML-Objekt
@@ -1798,7 +1923,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="iD"></param>
  <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
 </member>
-<member name="M:WinBack.wb_nwtDatenLink.GetDatenLinkLieferant(System.String)">
+<member name="M:WinBack.wb_nwtCl_DatenLink.GetDatenLinkLieferant(System.String)">
  <summary>
  Auswerten der Lieferanten-Daten (JSON)
  {
@@ -1831,7 +1956,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="JString"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_nwtDatenLink.getDistributorData(System.String)">
+<member name="M:WinBack.wb_nwtCl_DatenLink.getDistributorData(System.String)">
  <summary>
  Datenlink-Connector::getDistributorData
  
@@ -1840,13 +1965,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="id"> String Rohstoff-ID</param>
 </member>
-<member name="M:WinBack.wb_nwtDatenLink.validateCompanyToken">
+<member name="M:WinBack.wb_nwtCl_DatenLink.validateCompanyToken">
  <summary>
  Datenlink-Connector::validateCompanyToken
  
  </summary>
 </member>
-<member name="M:WinBack.wb_nwtDatenLink.DebugResultSet(System.Int32)">
+<member name="M:WinBack.wb_nwtCl_DatenLink.DebugResultSet(System.Int32)">
  <summary>
  Datenlink-Connector::DebugResultSet
  
@@ -4182,6 +4307,34 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.DetailInfo">
+ <summary>
+ Zeigt Rohstoffnummer und Rohstoffname an. 
+ Wenn schon eine Cloud-ID vorhanden ist, wird auf die Tab-Page Löschen/Aktualisieren umgeschaltet
+ Ist eine Rezeptur mit dem Rohstoff verknüpft, werden die Chargen-Größen und Rezeptnummer und Bezeichnung angezeigt.
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.ChangeTab(System.Windows.Forms.TabPage,System.Object)">
+ <summary>
+ Anzeige der Tab-Page wechseln. Vor dem Einblenden der Seite werden die Datenfelder aktualisiert.
+ Enthält die Ablauf-Logik (Regeln zum Wechsel der Pages)
+ </summary>
+ <param name="NewTab"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.btnCloud_Click(System.Object,System.EventArgs)">
+ <summary>
+ Suchen Rohstoff/Lieferant in der WinBack-Cloud
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.btnDatenLink_Click(System.Object,System.EventArgs)">
+ <summary>
+ Suchen Rohstoff/Lieferant bei Datenlink
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="P:WinBack.ob_User_DockingExtension.ContextTabs">
  <summary>
  Falls die Extension ein eigenes Context-Ribbon zum bestehenden Ribbon hinzufügen möchte, kann sie dieses hier zurückliefern
@@ -4730,6 +4883,14 @@ Start Timer nach Änderung Datensatz-Zeiger
  in DateTime um
  </summary>
  <param name="DataLinkTimeString"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.IsDatenLinkID(System.String)">
+ <summary>
+ Gibt True zurück, wenn die übergebene ID eine Datenlink-ID ist,
+ sonst False
+ </summary>
+ <param name="Id"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Functions.StringtoAllergen(System.String)">

@@ -10,7 +10,9 @@ Imports System.Xml
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
-Public Class wb_nwtDatenLink
+Public Class wb_nwtCl_DatenLink
+    Inherits wb_nwtCL
+
     Private _pat As String
     Private _cat As String
     Private _url As String
@@ -152,9 +154,13 @@ Public Class wb_nwtDatenLink
                         'Validate erfolgreich
                         Case "validateCompanyToken"
                             Return -(ser.SelectToken("status") = "SUCCESS")
+
                         'Anzahl der Datensätze in JSON data.meta_data.result_data.products_total_count 
                         Case "lookupProduct"
+                            JSONdata.Clear()
+                            JSONdata.AddRange(ser.SelectToken("data.product_version"))
                             Return ser.SelectToken("data.meta_data.result_data.products_total_count")
+
                         'Daten werden als Base64-kodiertes XML-Files zurückgegeben
                         Case "getProductVersionData"
                             'Daten dekodieren
@@ -168,6 +174,7 @@ Public Class wb_nwtDatenLink
                             Else
                                 Return -1
                             End If
+
                         'Daten als JSON
                         Case "getDistributorData"
                             If (ser.SelectToken("status") = "SUCCESS") Then
@@ -201,7 +208,8 @@ Public Class wb_nwtDatenLink
         ' Kommando lookupProduct
         Dim nCmd = "lookupProduct"
         Dim nPrm = "identifier=PRODUCTNAME&value=" + ds + "&results_per_page=50"
-        Return httpString(nCmd, nPrm, "company")
+        _cnt = httpString(nCmd, nPrm, "company")
+        Return _cnt
     End Function
 
     ''' <summary>
@@ -211,11 +219,60 @@ Public Class wb_nwtDatenLink
     ''' Die Datensätze können über GetResult abgefragt werden. 
     ''' </summary>
     ''' <param name="id"> String Rohstoff-ID</param>
-    Public Function GetProductData(id As String) As Integer
+    Public Overrides Function GetProductData(id As String) As Integer
         ' Kommando getProductData
         Dim nCmd = "getProductVersionData"
         Dim nPrm = "datenlink_id=" & id
         Return httpString(nCmd, nPrm, "company")
+    End Function
+
+    ''' <summary>
+    ''' liefert die Liste aller gefundenen Produkte und Lieferanten nach Suchen in der Cloud.
+    ''' Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
+    ''' 
+    ''' 	 "product_version":[
+    '''       {
+    '''         "published" "2018-08-07T19:33:02",
+    '''         "product_id": "b8kgweu5i5",        
+    '''         "productnumber": "111257",        
+    '''         "product_version_identifier": 
+    '''	        {
+    '''	            "datenlink_id" "DL-D05-7FB",          
+    '''	            "gtin": "04012367111257",          
+    '''	            "productname": "Ährenwort Weizenmehl T405 25 KG",          
+    '''	            "labeling_method": "Gültig ab Datum",          
+    '''	            "labeling_value": "14.09.2007",          
+    '''	            "valid_from": "2007-09-14"
+    '''	        },        
+    '''         "product_is_subscribed": "NO",
+    '''         "company": 
+    '''	        {
+    '''	            "name" "Georg Plange, ZN der PMG Premium Mühlen Gruppe GmbH &amp; Co. KG",          
+    '''	            "id": "39b977b4-ce2c-11e4-bbac-002421e58a5c"
+    '''	        }
+    '''     }
+    ''' </summary>
+    ''' <returns></returns>
+    Public Overrides Function getProducList() As ArrayList
+        Dim a As New ArrayList
+        Dim n As wb_Global.NwtCloud
+        Dim t As JObject
+
+        'Schleife über alle Einträge 
+        For Each jt As JToken In JSONdata
+            t = jt("product_version_identifier")
+            'Datenlink-ID
+            n.id = t("datenlink_id")
+            'Rohstoff-Bezeichnung (aus Datenlink)
+            n.name = t("productname")
+            n.deklarationsname = ""
+            'Lieferant (aus Datenlink)
+            t = jt("company")
+            n.lieferant = t("name")
+            'Datensatz zur Liste hinzufügen
+            a.Add(n)
+        Next
+        Return a
     End Function
 
     ''' <summary>
@@ -313,7 +370,7 @@ Public Class wb_nwtDatenLink
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
 
-    Public Function GetProductData(id As String, ByRef nwtDaten As wb_Komponente) As Integer
+    Public Overrides Function GetProductData(id As String, ByRef nwtDaten As wb_Komponente) As Integer
         'Produktdaten von Datenlink lesen
         If Me.GetProductData(id) > 0 Then
             'Auswertung XML-Info

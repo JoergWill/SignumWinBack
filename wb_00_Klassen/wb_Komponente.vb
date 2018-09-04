@@ -170,6 +170,8 @@ Public Class wb_Komponente
         KO_Bezeichnung = dataGridView.Field("KO_Bezeichnung")
         KO_Kommentar = dataGridView.Field("KO_Kommentar")
         KA_Preis = dataGridView.Field("KA_Preis")
+        KO_IdxCloud = dataGridView.Field("KA_Matchcode")
+        KA_Rz_Nr = dataGridView.Field("KA_Rz_Nr")
         KA_Grp1 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp1"))
         KA_Grp2 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp2"))
     End Sub
@@ -180,6 +182,8 @@ Public Class wb_Komponente
             dataGridView.Field("KO_Bezeichnung") = KO_Bezeichnung
             dataGridView.Field("KO_Kommentar") = KO_Kommentar
             dataGridView.Field("KA_Preis") = KA_Preis
+            dataGridView.Field("KA_Matchcode") = KO_IdxCloud
+            dataGridView.Field("KA_Rz_Nr") = KA_Rz_Nr
             _DataHasChanged = False
             Return True
         Else
@@ -900,9 +904,9 @@ Public Class wb_Komponente
 
                 'Stückgewicht in Gramm
                 Case "KA_Stueckgewicht"
-                    If Type = KomponTypen.KO_TYPE_ARTIKEL Then
-                        ArtikelChargen.StkGewicht = Value
-                    End If
+                    'If Type = KomponTypen.KO_TYPE_ARTIKEL Then
+                    ArtikelChargen.StkGewicht = Value
+                    'End If
             End Select
 
             'Artikel - Chargengrößen in Stück

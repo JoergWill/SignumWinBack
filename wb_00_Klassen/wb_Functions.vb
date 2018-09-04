@@ -82,6 +82,20 @@ Public Class wb_Functions
         End Try
     End Function
 
+    ''' <summary>
+    ''' Gibt True zurück, wenn die übergebene ID eine Datenlink-ID ist,
+    ''' sonst False
+    ''' </summary>
+    ''' <param name="Id"></param>
+    ''' <returns></returns>
+    Public Shared Function IsDatenLinkID(Id As String) As Boolean
+        If Strings.Left(Id, 3) = "DL-" Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
     Public Shared Function ConvertUSDateStringToDate(us As String) As Date
         Try
             Return DateTime.ParseExact(us, "yyyyMMdd", Nothing)

@@ -5,7 +5,7 @@
     <TestMethod()> Public Sub Test_CloudLookup()
 
         'Create new instance of nwtCloud
-        Dim nwt As New wb_nwtCloud(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
+        Dim nwt As New wb_nwtCl_WinBack(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
 
         'Lookup Product Name
         Assert.AreEqual(nwt.lookupProductName("XYZABCDEFG"), 0)

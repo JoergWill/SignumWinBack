@@ -7,7 +7,7 @@ Imports WinBack
 
     <TestMethod()> Public Sub Test_DatenLinkLookup()
         'Create new instance of nwtCloud
-        Dim dl As New wb_nwtDatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
+        Dim dl As New wb_nwtCl_DatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
         'Validate Company Token
         Assert.AreEqual(dl.validateCompanyToken(), 1)
 

@@ -407,6 +407,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_GridCalendarColumn.vb" />
+    <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.Designer.vb">
+      <DependentUpon>wb_KompRzChargen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_VirtualTreeEditor.vb" />
     <Compile Include="wb_00_Klassen\wb_AktRechte.vb" />
     <Compile Include="wb_00_Klassen\wb_AktSysKonfig.vb" />
@@ -468,6 +474,7 @@
     <Compile Include="wb_00_Klassen\wb_MinMaxOptCharge.vb" />
     <Compile Include="wb_00_Klassen\wb_AktUser.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtUpdateArtikel.vb" />
+    <Compile Include="wb_00_Klassen\wb_nwtCL.vb" />
     <Compile Include="wb_00_Klassen\wb_Simple3Des.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_FindServerIP.vb" />
     <Compile Include="wb_00_Klassen\wb_VorProduktionsSchritt.vb" />
@@ -499,8 +506,8 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewKomponParam301.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_nwtCloud.vb" />
-    <Compile Include="wb_00_Klassen\wb_nwtDatenLink.vb" />
+    <Compile Include="wb_00_Klassen\wb_nwtCl_WinBack.vb" />
+    <Compile Include="wb_00_Klassen\wb_nwtCl_DatenLink.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtUpdate.vb" />
     <Compile Include="wb_00_Klassen\wb_Produktion.vb" />
     <Compile Include="wb_00_Klassen\wb_Produktionsschritt.vb" />
@@ -830,6 +837,9 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.resx">
+      <DependentUpon>wb_KompRzChargen.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\WinBack_DockMain.resx">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>

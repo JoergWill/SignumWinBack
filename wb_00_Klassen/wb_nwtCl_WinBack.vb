@@ -5,8 +5,11 @@ Imports System.Net
 ' can be installed from package manager console like this:
 ' install-package Newtonsoft.json
 Imports Newtonsoft.Json.Linq
+Imports WinBack
 
-Public Class wb_nwtCloud
+Public Class wb_nwtCl_WinBack
+    Inherits wb_nwtCL
+
     Private _pass As String
     Private _url As String
     Private _errorCode As HttpStatusCode
@@ -134,7 +137,8 @@ Public Class wb_nwtCloud
         ' Kommando lookupProduct
         Dim nCmd = "rohstoffe"
         Dim nPrm = "?name=" & ds
-        Return httpString(nCmd, nPrm)
+        _cnt = httpString(nCmd, nPrm)
+        Return _cnt
     End Function
 
     ''' <summary>
@@ -149,7 +153,8 @@ Public Class wb_nwtCloud
         ' Kommando lookupProduct + supplier
         Dim nCmd = "rohstoffe"
         Dim nPrm = "?name=" + ds + "&lieferant=" + lf
-        Return httpString(nCmd, nPrm)
+        _cnt = httpString(nCmd, nPrm)
+        Return _cnt
     End Function
 
     ''' <summary>
@@ -159,7 +164,7 @@ Public Class wb_nwtCloud
     ''' Die Datensätze können über GetResult abgefragt werden. 
     ''' </summary>
     ''' <param name="id"> String Rohstoff-ID</param>
-    Public Function GetProductData(id As String) As Integer
+    Public Overrides Function GetProductData(id As String) As Integer
         ' Kommando getProductData
         Dim nCmd = "rohstoffe"
         Dim nPrm = "/" & id
@@ -208,7 +213,7 @@ Public Class wb_nwtCloud
     ''' </summary>
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
-    Public Function GetProductData(id As String, ByRef nwtDaten As wb_Komponente) As Integer
+    Public Overrides Function GetProductData(id As String, ByRef nwtDaten As wb_Komponente) As Integer
         'Produktdaten aus WinBack-Cloud lesen
         If Me.GetProductData(id) > 0 Then
             'Ergebnis ist ein verschachteltes JSON-Objekt
@@ -246,7 +251,7 @@ Public Class wb_nwtCloud
     ''' Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
     ''' </summary>
     ''' <returns></returns>
-    Public Function getProducList() As ArrayList
+    Public Overrides Function getProducList() As ArrayList
         Dim a As New ArrayList
         Dim n As wb_Global.NwtCloud
 

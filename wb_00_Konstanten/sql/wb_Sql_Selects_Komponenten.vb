@@ -2,7 +2,7 @@
 
     'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
     Public Const sqlRohstoffSimpleLst = "SELECT KO_Type, KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KA_aktiv, " &
-                                  "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2 FROM Komponenten"
+                                  "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2, KA_Matchcode FROM Komponenten"
     'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
     Public Const sqlRohstoffLst = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KO_Type, KA_aktiv, " &
                                   "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2, E_Einheit FROM Komponenten " &
@@ -109,3 +109,41 @@
                                   "AND ((RezeptSchritte.RS_Ko_Nr) Is Null)) ORDER BY Komponenten.KO_Nr"
 
 End Class
+
+'Tabelle winback.Komponenten
+'
+'KO_Nr
+'KO_Type
+'KO_Bezeichnung
+'KO_Kommentar
+'KO_Nr_AlNum
+'KO_Temp_Korr
+'KA_Nr
+'KA_Kurzname
+'KA_Matchcode
+'KA_Art
+'KA_Artikel_Typ
+'KA_RZ_Nr
+'KA_Lagerort
+'KA_Prod_Linie
+'KA_Stueckgewicht
+'KA_Charge_Opt
+'KA_Charge_Min
+'KA_Charge_Max
+'KA_Charge_Opt_kg
+'KA_Charge_Min_kg
+'KA_Charge_Max_kg
+'KA_RS_veraenderbar
+'KA_RS_abh_von_RZ_Menge
+'KA_RS_aendert_WasMenge
+'KA_zaehlt_zu_RZ_Gesamtmenge
+'KA_spez_WKap
+'KA_alternativ_RS
+'KA_Verarbeitungshinweise
+'KA_aktiv
+'KA_Preis
+'KA_PreisEinheit
+'KA_Grp1
+'KA_Grp2
+'KA_Timestammp
+
