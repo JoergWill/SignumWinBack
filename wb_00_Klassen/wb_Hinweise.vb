@@ -186,6 +186,15 @@ Public Class wb_Hinweise
     End Function
 
     ''' <summary>
+    ''' Setzt alle Variablen wieder auf Null,Nothing oder Undefined.
+    ''' Wird aufgerufen, wenn eine neue(andere) Komponente geladen werden soll
+    ''' </summary>
+    Public Sub Invalid()
+        H2_ReadOK = False
+        H2_Memo = ""
+    End Sub
+
+    ''' <summary>
     ''' Zuordnung von Hinweis.Datentyp zu H2_Typ,H2_Typ2 in der Datenbank winback.Hinweise2
     ''' 
     '''         Datentyp              H2_Typ  H2_Typ2   H2_Id2

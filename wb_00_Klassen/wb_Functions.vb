@@ -409,6 +409,27 @@ Public Class wb_Functions
         End If
     End Function
 
+
+    ''' <summary>
+    ''' Ermittelt ob Rohstoffe/Artikel mit dieser Komponenten-Type Nährwert-Informationen haben können
+    ''' </summary>
+    ''' <param name="Type"></param>
+    ''' <returns></returns>
+    Public Shared Function TypeHatNwt(Type As wb_Global.KomponTypen) As Boolean
+        If Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Or
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE Or
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
     ''' <summary>
     ''' Ermittelt ob Type und Parameter-Nummer einen Text als Sollwert enthalten.
     ''' </summary>
@@ -678,6 +699,34 @@ Public Class wb_Functions
         End Select
     End Function
 
+    ''' <summary>
+    ''' Ersetzt die Platzhalter [0]..[4] im String durch die Parameter Param0..Param4
+    ''' </summary>
+    ''' <param name="Text"></param>
+    ''' <param name="Param0"></param>
+    ''' <param name="Param1"></param>
+    ''' <param name="Param2"></param>
+    ''' <param name="Param3"></param>
+    ''' <param name="Param4"></param>
+    ''' <returns></returns>
+    Public Shared Function SetParams(Text As String, Param0 As String, Optional Param1 As String = "-",
+                                     Optional Param2 As String = "-", Optional Param3 As String = "-",
+                                     Optional Param4 As String = "-") As String
+        Text = Replace(Text, "[0]", Param0)
+        If Param1 <> "-" Then
+            Text = Replace(Text, "[1]", Param1)
+        End If
+        If Param2 <> "-" Then
+            Text = Replace(Text, "[2]", Param2)
+        End If
+        If Param3 <> "-" Then
+            Text = Replace(Text, "[3]", Param3)
+        End If
+        If Param4 <> "-" Then
+            Text = Replace(Text, "[4]", Param4)
+        End If
+        Return Text
+    End Function
     ''' <summary>
     ''' Formatiert einen String mit der angegebenen Vorkomma und Nachkomma-Stelle
     ''' </summary>
@@ -1108,4 +1157,96 @@ Public Class wb_Functions
         Return True
     End Function
 
+    ''' <summary>
+    ''' Extrahiert aus Environment.StackTrace die Programm-Zeile(n) der aufrufenden Routine:
+    ''' (Beispiel)
+    ''' 
+    '''     bei System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+    '''     bei System.Environment.get_StackTrace()
+    '''     bei WinBack.wb_TraceListener.WriteLine(String message) In C:\Users\will.WINBACK\Source\Repos\Signum_WinBack\wb_00_Klassen\wb_TraceListener.vb:Zeile 36.
+    '''     bei System.Diagnostics.TraceInternal.WriteLine(String message)
+    '''     bei System.Diagnostics.Trace.WriteLine(String message)
+    '''     bei WinBackUnitTest.UnitTest_wb_TraceLogger.TestTraceWriteLn() In C:\Users\will.WINBACK\Source\Repos\Signum_WinBack\WinBackUnitTest\UnitTest_wb_TraceLogger.vb:Zeile 39.
+    '''         =======
+    '''     bei System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+    '''     bei System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+    '''     bei System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    '''     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.DefaultTestMethodInvoke(Object[] args)
+    '''     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.RunTestMethod()
+    '''     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.ExecuteTest()
+    '''     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.ExecuteInternal()
+    '''     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.Execute()
+    '''     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.UnitTestRunner.RunInternal(TestMethod testMethod, Boolean isDataDriven, Dictionary`2 runParameters)
+    '''     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.UnitTestRunner.RunSingleTest(String name, String fullClassName, Boolean isAsync, Dictionary`2 runParameters)
+    '''     
+    ''' Ist OnlyOneLine True, wird nur der erste Aufruf mit dem Inhalt WinBack zurückgegeben. 
+    ''' Der Ergebnis-String enthält Komma-getrennt, die aufrufende Routine und die Zeilen-Nummer
+    ''' </summary>
+    ''' <param name="Stack"></param>
+    ''' <returns></returns>
+    Public Shared Function GetLocalStackTrace(Stack As String, OnlyOneLinie As Boolean) As ArrayList
+        Dim subStack As String = ""
+        Dim i As Integer = 0
+        Dim j As Integer = 0
+        Dim ResultStack As New ArrayList
+
+        'Ergebnis-Liste löschen
+        ResultStack.Clear()
+        Do
+            'Aufteilen nach CRLF
+            i = Stack.IndexOf(vbCrLf, j)
+            If (i < 0) Then
+                i = Len(Stack)
+            End If
+            'eine Zeile aus Stacktrace
+            subStack = Stack.Substring(j, i - j)
+            If subStack.Contains("WinBack") And Not subStack.Contains("TraceListener") And Not _
+               subStack.Contains("MyApplication.Main") And Not subStack.Contains("Lambda$") Then
+
+                'beim ersten Auftreten des passenden Musters wird der String zerlegt und die Schleife verlassen
+                'TODO was passiert bei einem englischen VisualStudio?
+                Dim x1 As Integer = subStack.IndexOf(" bei ")
+                Dim x2 As Integer = subStack.IndexOf(" in ")
+                Dim x3 As Integer = subStack.IndexOf(":Zeile")
+
+                If (x1 > 0) And (x2 > 0) And (x3 > 0) And (x2 - x1) > 5 And (x3 - x2) > 4 Then
+                    'Stack-Trace in Einzelteile zerlegen
+                    Dim s1 As String = subStack.Substring(x1 + 5, x2 - x1 - 5)
+                    Dim s2 As String = subStack.Substring(x2 + 4, x3 - x2 - 4)
+                    Dim s3 As Integer = Val(subStack.Substring(x3 + 7))
+
+                    'Ergebniszeile zusammenbauen
+                    ResultStack.Add("Z" & s3.ToString("D5") & vbTab & s1)
+
+                    'nur die erste Aufrufzeile ausgeben - dann Exit
+                    If OnlyOneLinie Then
+                        Return ResultStack
+                        Exit Do
+                    End If
+                End If
+            End If
+            'nächste Zeile
+            j = i + 2
+        Loop Until (i < 0) Or (i = Len(Stack))
+
+        ResultStack.Add("---")
+        Return ResultStack
+    End Function
+
+    ''' <summary>
+    ''' Gibt den kompletten Aufrufbaum aller WinBack-Routinen zurück.
+    ''' Der Ergebnis-String enthält Komma-getrennt, die aufrufende Routine und die Zeilen-Nummer
+    ''' </summary>
+    ''' <param name="Stack"></param>
+    ''' <returns></returns>
+    Public Shared Function GetStackTraceTree(Stack As String) As String
+        'Aufruf-Baum aus Environment.Stack_Trace(Array)
+        Dim x = wb_Functions.GetLocalStackTrace(Stack, False)
+        'Ergebnis-String aus Array zusammensetzen (CRLF als Zeilentrenner)
+        Dim s As String = vbCrLf
+        For Each t As String In x
+            s &= vbTab & t & vbCrLf
+        Next
+        Return s
+    End Function
 End Class

@@ -6,7 +6,7 @@ Partial Class wb_Rohstoffe_Cloud
     'Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -23,9 +23,8 @@ Partial Class wb_Rohstoffe_Cloud
     'Hinweis: Die folgende Prozedur ist für den Windows Form-Designer erforderlich.
     'Das Bearbeiten ist mit dem Windows Form-Designer möglich.  
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rohstoffe_Cloud))
         Dim Wb_MinMaxOptCharge1 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
         Dim Wb_Charge1 As WinBack.wb_Charge = New WinBack.wb_Charge()
         Dim Wb_Charge2 As WinBack.wb_Charge = New WinBack.wb_Charge()
@@ -42,6 +41,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tpCloudSuchen = New System.Windows.Forms.TabPage()
+        Me.btnMail = New System.Windows.Forms.Button()
         Me.lblHilfeText = New System.Windows.Forms.Label()
         Me.tSuchtextLieferant = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -59,17 +59,24 @@ Partial Class wb_Rohstoffe_Cloud
         Me.btnShow_Vor = New System.Windows.Forms.Button()
         Me.pnlNwt = New System.Windows.Forms.Panel()
         Me.tpCloudResult = New System.Windows.Forms.TabPage()
+        Me.lblDeklIntern = New System.Windows.Forms.Label()
+        Me.lblDeklExtern = New System.Windows.Forms.Label()
+        Me.tbDeklarationIntern = New System.Windows.Forms.TextBox()
+        Me.tbDeklarationExtern = New System.Windows.Forms.TextBox()
+        Me.btnResult_OK = New System.Windows.Forms.Button()
         Me.btnResult_Akt = New System.Windows.Forms.Button()
         Me.btnDisconnect = New System.Windows.Forms.Button()
         Me.tpRezept = New System.Windows.Forms.TabPage()
         Me.KompRzChargen = New WinBack.wb_KompRzChargen()
-        Me.btnResult_OK = New System.Windows.Forms.Button()
+        Me.tpKompType = New System.Windows.Forms.TabPage()
+        Me.lblKeineNwt = New System.Windows.Forms.Label()
         Me.Wb_TabControl.SuspendLayout()
         Me.tpCloudSuchen.SuspendLayout()
         Me.tpCloudGefunden.SuspendLayout()
         Me.tpCloudAnzeige.SuspendLayout()
         Me.tpCloudResult.SuspendLayout()
         Me.tpRezept.SuspendLayout()
+        Me.tpKompType.SuspendLayout()
         Me.SuspendLayout()
         '
         'tRohstoffNummer
@@ -138,6 +145,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.Wb_TabControl.Controls.Add(Me.tpCloudAnzeige)
         Me.Wb_TabControl.Controls.Add(Me.tpCloudResult)
         Me.Wb_TabControl.Controls.Add(Me.tpRezept)
+        Me.Wb_TabControl.Controls.Add(Me.tpKompType)
         Me.Wb_TabControl.Location = New System.Drawing.Point(1, 92)
         Me.Wb_TabControl.Multiline = True
         Me.Wb_TabControl.Name = "Wb_TabControl"
@@ -148,6 +156,7 @@ Partial Class wb_Rohstoffe_Cloud
         'tpCloudSuchen
         '
         Me.tpCloudSuchen.BackColor = System.Drawing.SystemColors.Control
+        Me.tpCloudSuchen.Controls.Add(Me.btnMail)
         Me.tpCloudSuchen.Controls.Add(Me.lblHilfeText)
         Me.tpCloudSuchen.Controls.Add(Me.tSuchtextLieferant)
         Me.tpCloudSuchen.Controls.Add(Me.Label1)
@@ -162,11 +171,25 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tpCloudSuchen.TabIndex = 0
         Me.tpCloudSuchen.Text = "CloudSearch"
         '
+        'btnMail
+        '
+        Me.btnMail.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnMail.Image = Global.WinBack.My.Resources.Resources.RohstoffeMail_32x32
+        Me.btnMail.Location = New System.Drawing.Point(541, 188)
+        Me.btnMail.Name = "btnMail"
+        Me.btnMail.Size = New System.Drawing.Size(138, 62)
+        Me.btnMail.TabIndex = 52
+        Me.btnMail.Text = "Anforderung (Mail)"
+        Me.btnMail.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnMail.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.btnMail.UseVisualStyleBackColor = True
+        '
         'lblHilfeText
         '
         Me.lblHilfeText.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblHilfeText.ForeColor = System.Drawing.Color.Black
         Me.lblHilfeText.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.lblHilfeText.Location = New System.Drawing.Point(11, 128)
         Me.lblHilfeText.Name = "lblHilfeText"
@@ -215,7 +238,7 @@ Partial Class wb_Rohstoffe_Cloud
         'btnDatenLink
         '
         Me.btnDatenLink.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnDatenLink.Image = CType(resources.GetObject("btnDatenLink.Image"), System.Drawing.Image)
+        Me.btnDatenLink.Image = Global.WinBack.My.Resources.Resources.RohstoffeDatenLink_93x24
         Me.btnDatenLink.Location = New System.Drawing.Point(541, 97)
         Me.btnDatenLink.Name = "btnDatenLink"
         Me.btnDatenLink.Size = New System.Drawing.Size(138, 62)
@@ -338,6 +361,10 @@ Partial Class wb_Rohstoffe_Cloud
         'tpCloudResult
         '
         Me.tpCloudResult.BackColor = System.Drawing.SystemColors.Control
+        Me.tpCloudResult.Controls.Add(Me.lblDeklIntern)
+        Me.tpCloudResult.Controls.Add(Me.lblDeklExtern)
+        Me.tpCloudResult.Controls.Add(Me.tbDeklarationIntern)
+        Me.tpCloudResult.Controls.Add(Me.tbDeklarationExtern)
         Me.tpCloudResult.Controls.Add(Me.btnResult_OK)
         Me.tpCloudResult.Controls.Add(Me.btnResult_Akt)
         Me.tpCloudResult.Controls.Add(Me.btnDisconnect)
@@ -346,6 +373,53 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tpCloudResult.Size = New System.Drawing.Size(724, 352)
         Me.tpCloudResult.TabIndex = 3
         Me.tpCloudResult.Text = "CloudResult"
+        '
+        'lblDeklIntern
+        '
+        Me.lblDeklIntern.AutoSize = True
+        Me.lblDeklIntern.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblDeklIntern.Location = New System.Drawing.Point(17, 74)
+        Me.lblDeklIntern.Name = "lblDeklIntern"
+        Me.lblDeklIntern.Size = New System.Drawing.Size(90, 13)
+        Me.lblDeklIntern.TabIndex = 50
+        Me.lblDeklIntern.Text = "Deklaration intern"
+        '
+        'lblDeklExtern
+        '
+        Me.lblDeklExtern.AutoSize = True
+        Me.lblDeklExtern.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblDeklExtern.Location = New System.Drawing.Point(17, 3)
+        Me.lblDeklExtern.Name = "lblDeklExtern"
+        Me.lblDeklExtern.Size = New System.Drawing.Size(61, 13)
+        Me.lblDeklExtern.TabIndex = 49
+        Me.lblDeklExtern.Text = "Deklaration"
+        '
+        'tbDeklarationIntern
+        '
+        Me.tbDeklarationIntern.Location = New System.Drawing.Point(15, 89)
+        Me.tbDeklarationIntern.Multiline = True
+        Me.tbDeklarationIntern.Name = "tbDeklarationIntern"
+        Me.tbDeklarationIntern.Size = New System.Drawing.Size(319, 52)
+        Me.tbDeklarationIntern.TabIndex = 45
+        '
+        'tbDeklarationExtern
+        '
+        Me.tbDeklarationExtern.Location = New System.Drawing.Point(15, 19)
+        Me.tbDeklarationExtern.Multiline = True
+        Me.tbDeklarationExtern.Name = "tbDeklarationExtern"
+        Me.tbDeklarationExtern.Size = New System.Drawing.Size(319, 52)
+        Me.tbDeklarationExtern.TabIndex = 44
+        '
+        'btnResult_OK
+        '
+        Me.btnResult_OK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnResult_OK.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.btnResult_OK.Location = New System.Drawing.Point(541, 312)
+        Me.btnResult_OK.Name = "btnResult_OK"
+        Me.btnResult_OK.Size = New System.Drawing.Size(138, 32)
+        Me.btnResult_OK.TabIndex = 1
+        Me.btnResult_OK.Text = "OK"
+        Me.btnResult_OK.UseVisualStyleBackColor = True
         '
         'btnResult_Akt
         '
@@ -402,18 +476,16 @@ Partial Class wb_Rohstoffe_Cloud
         Wb_Charge3.StkGewicht = "1000"
         Wb_Charge3.TeigGewicht = "0,000"
         Wb_MinMaxOptCharge1.OptCharge = Wb_Charge3
-        Wb_MinMaxOptCharge1.StkGewicht = "0"
+        Wb_MinMaxOptCharge1.StkGewicht = "1000"
         Wb_MinMaxOptCharge1.TeigGewicht = "0"
         Me.KompRzChargen.ArtikelChargen = Wb_MinMaxOptCharge1
-        Me.KompRzChargen.ArtikelLiniengruppe = 0
         Me.KompRzChargen.DataValid = False
-        Me.KompRzChargen.LinienGruppe = 0
-        Me.KompRzChargen.Location = New System.Drawing.Point(7, 0)
+        Me.KompRzChargen.Location = New System.Drawing.Point(7, 2)
         Me.KompRzChargen.Name = "KompRzChargen"
         Me.KompRzChargen.RezeptName = ""
         Me.KompRzChargen.RezeptNummer = ""
         Me.KompRzChargen.RzNr = -1
-        Me.KompRzChargen.Size = New System.Drawing.Size(400, 315)
+        Me.KompRzChargen.Size = New System.Drawing.Size(400, 288)
         Me.KompRzChargen.TabIndex = 0
         Wb_MinMaxOptCharge2.HasChanged = False
         Wb_Charge4.MengeInkg = "0,000"
@@ -434,20 +506,32 @@ Partial Class wb_Rohstoffe_Cloud
         Wb_Charge6.StkGewicht = "1000"
         Wb_Charge6.TeigGewicht = "0,000"
         Wb_MinMaxOptCharge2.OptCharge = Wb_Charge6
-        Wb_MinMaxOptCharge2.StkGewicht = "0"
+        Wb_MinMaxOptCharge2.StkGewicht = "1000"
         Wb_MinMaxOptCharge2.TeigGewicht = "0"
         Me.KompRzChargen.TeigChargen = Wb_MinMaxOptCharge2
         '
-        'btnResult_OK
+        'tpKompType
         '
-        Me.btnResult_OK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnResult_OK.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.btnResult_OK.Location = New System.Drawing.Point(541, 312)
-        Me.btnResult_OK.Name = "btnResult_OK"
-        Me.btnResult_OK.Size = New System.Drawing.Size(138, 32)
-        Me.btnResult_OK.TabIndex = 1
-        Me.btnResult_OK.Text = "OK"
-        Me.btnResult_OK.UseVisualStyleBackColor = True
+        Me.tpKompType.BackColor = System.Drawing.SystemColors.Control
+        Me.tpKompType.Controls.Add(Me.lblKeineNwt)
+        Me.tpKompType.Location = New System.Drawing.Point(4, 23)
+        Me.tpKompType.Name = "tpKompType"
+        Me.tpKompType.Size = New System.Drawing.Size(724, 352)
+        Me.tpKompType.TabIndex = 5
+        Me.tpKompType.Text = "KompType"
+        '
+        'lblKeineNwt
+        '
+        Me.lblKeineNwt.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblKeineNwt.ForeColor = System.Drawing.Color.Black
+        Me.lblKeineNwt.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblKeineNwt.Location = New System.Drawing.Point(11, 128)
+        Me.lblKeineNwt.Name = "lblKeineNwt"
+        Me.lblKeineNwt.Size = New System.Drawing.Size(477, 219)
+        Me.lblKeineNwt.TabIndex = 52
+        Me.lblKeineNwt.Text = "Kein Rohstoff"
         '
         'wb_Rohstoffe_Cloud
         '
@@ -469,7 +553,9 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tpCloudGefunden.ResumeLayout(False)
         Me.tpCloudAnzeige.ResumeLayout(False)
         Me.tpCloudResult.ResumeLayout(False)
+        Me.tpCloudResult.PerformLayout()
         Me.tpRezept.ResumeLayout(False)
+        Me.tpKompType.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -503,6 +589,13 @@ Partial Class wb_Rohstoffe_Cloud
     Friend WithEvents tCloudID As Windows.Forms.TextBox
     Friend WithEvents Label2 As Windows.Forms.Label
     Friend WithEvents tpRezept As Windows.Forms.TabPage
-    Friend WithEvents KompRzChargen As wb_KompRzChargen
     Friend WithEvents btnResult_OK As Windows.Forms.Button
+    Friend WithEvents btnMail As Windows.Forms.Button
+    Friend WithEvents KompRzChargen As wb_KompRzChargen
+    Friend WithEvents lblDeklIntern As Windows.Forms.Label
+    Friend WithEvents lblDeklExtern As Windows.Forms.Label
+    Friend WithEvents tbDeklarationIntern As Windows.Forms.TextBox
+    Friend WithEvents tbDeklarationExtern As Windows.Forms.TextBox
+    Friend WithEvents tpKompType As Windows.Forms.TabPage
+    Friend WithEvents lblKeineNwt As Windows.Forms.Label
 End Class

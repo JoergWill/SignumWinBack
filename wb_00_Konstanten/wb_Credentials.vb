@@ -3,6 +3,7 @@
 
     Public Const WinBackCloud_Url = "http://nwt.winback.de:8080/nwt"
     Public Const WinBackCloud_Pass = "bnd0OldpTmJBY0s="
+    Public Const WinBackCloud_MailAdr = "nwt.winback.de"
 
     ' Datenlink 2.0
     ' User: jw@winback.de

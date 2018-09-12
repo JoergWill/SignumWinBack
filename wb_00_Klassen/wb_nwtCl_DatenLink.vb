@@ -21,6 +21,12 @@ Public Class wb_nwtCl_DatenLink
     Dim XMLdata As New List(Of String)
     Dim JSONdata As New List(Of JToken)
 
+    Public Overrides ReadOnly Property CloudType As wb_CloudType
+        Get
+            Return wb_nwtCL.wb_CloudType.DatenLink
+        End Get
+    End Property
+
     Sub New(PAT As String, CAT As String, Url As String)
         'PAT - Application Token
         _pat = PAT

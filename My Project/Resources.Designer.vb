@@ -633,6 +633,16 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Public ReadOnly Property RohstoffeMail_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("RohstoffeMail_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Public ReadOnly Property RohstoffeParameter_32x32() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("RohstoffeParameter_32x32", resourceCulture)
@@ -666,6 +676,83 @@ Namespace My.Resources
         Public ReadOnly Property This() As String
             Get
                 Return ResourceManager.GetString("This", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Genau einen Rohstoff in der Cloud gefunden ! ähnelt.
+        '''</summary>
+        Public ReadOnly Property tpCloudEinenRohstoffGefunden() As String
+            Get
+                Return ResourceManager.GetString("tpCloudEinenRohstoffGefunden", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Spezielle Rohstoffe, wie z.B. Textkomponenten, Kneter, Teigruhe... haben keine Nährwerte ähnelt.
+        '''</summary>
+        Public ReadOnly Property tpCloudKompType() As String
+            Get
+                Return ResourceManager.GetString("tpCloudKompType", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anfrage der Nährwerte und Inhaltsstoffe für  ähnelt.
+        '''</summary>
+        Public ReadOnly Property tpCloudMailSubject() As String
+            Get
+                Return ResourceManager.GetString("tpCloudMailSubject", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sehr geehrte Damen und Herren,
+        '''bitte ermitteln Sie die Inhalts-Stoffe des folgendes Rohstoffes:
+        '''
+        '''Bezeichnung laut Hersteller: [0]
+        '''Hersteller:
+        '''Artikelnummer des Herstellers:
+        '''Lieferant: [1]
+        '''
+        '''Wir bitten UNBEDINGT um KOMPLETTE Angaben, wenn möglich mit Spezifikations-Datenblatt, dann sind die Daten schnell und korrekt in der Cloud... ähnelt.
+        '''</summary>
+        Public ReadOnly Property tpCloudMailText() As String
+            Get
+                Return ResourceManager.GetString("tpCloudMailText", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die [0] Rohstoffe in der Cloud gefunden. 
+        '''Bitte wählen Sie den passenden Rohstoff aus der Liste aus. ähnelt.
+        '''</summary>
+        Public ReadOnly Property tpCloudRohstoffeGefunden() As String
+            Get
+                Return ResourceManager.GetString("tpCloudRohstoffeGefunden", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Keine passenden Rohstoffe gefunden.
+        '''Bitte ändern Sie den Suchtext oder fordern Sie die Nährwerte bei WinBack per Mail an ähnelt.
+        '''</summary>
+        Public ReadOnly Property tpCloudSuchenMail() As String
+            Get
+                Return ResourceManager.GetString("tpCloudSuchenMail", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Suchen über WinBack oder Datenlink verknüpft den Rohstoff mit dem entsprechenden Eintrag in der Cloud.
+        '''
+        '''Die Nährwertdaten und Allergen-Info werden automatisch importiert und anschliessend regelmäßig im Hintergrund aktualisiert. Für beide Dienste sind Anmeldeinformationen erforderlich
+        '''
+        '''Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant kann frei gelassen werden ähnelt.
+        '''</summary>
+        Public ReadOnly Property tpCloudSuchenTxt() As String
+            Get
+                Return ResourceManager.GetString("tpCloudSuchenTxt", resourceCulture)
             End Get
         End Property
         

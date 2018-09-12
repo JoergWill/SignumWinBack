@@ -78,6 +78,10 @@ Public Class wb_GlobalSettings
     Private Shared _ProdPlanfiliale As String = Nothing
     Private Shared _ProdPlanReadOnOpen As Boolean = False
 
+    Private Shared _mHost = Nothing
+    Private Shared _mSenderAddr = Nothing
+    Private Shared _mSenderPass = Nothing
+
 
     Public Shared Property pVariante As wb_Global.ProgVariante
         Get
@@ -822,6 +826,44 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    Public Shared Property mHost As String
+        Get
+            If _mHost = Nothing Then
+                getWinBackIni("Mail")
+            End If
+            Return _mHost
+        End Get
+        Set(value As String)
+            _mHost = value
+            setWinBackIni("smtp", "smtpHost", value)
+        End Set
+    End Property
+
+    Public Shared Property mSenderAddr As String
+        Get
+            If _mSenderAddr = Nothing Then
+                getWinBackIni("Mail")
+            End If
+            Return _mSenderAddr
+        End Get
+        Set(value As String)
+            _mSenderAddr = value
+            setWinBackIni("smtp", "smtpUser", value)
+        End Set
+    End Property
+
+    Public Shared Property mSenderPass As String
+        Get
+            If _mSenderPass = Nothing Then
+                getWinBackIni("Mail")
+            End If
+            Return _mSenderPass
+        End Get
+        Set(value As String)
+            _mSenderPass = value
+            setWinBackIni("smtp", "smtpPass", value)
+        End Set
+    End Property
 
     Private Shared Sub GetOrgaBackMandant()
         'xml-File OrgaBack.ini aus DatenPfad einlesen
@@ -880,6 +922,19 @@ Public Class wb_GlobalSettings
         Inifile = Nothing
     End Sub
 
+    ''' <summary>
+    ''' [smtp]
+    ''' smtpUser=server@winback.de
+    ''' smtpPass=de2la6de2
+    ''' smtpHost=smtp.1und1.de
+    ''' smtpPort=25
+    ''' smtpAuth=atLOGIN
+    ''' smtpFrom=server@winback.de
+    ''' smtpMailAdr=service@winback.de
+    ''' smtpSubject=Chargenauswertung WinBack
+    ''' smtpPrio=mpNormal
+    ''' </summary>
+    ''' <param name="Key"></param>
     Private Shared Sub getWinBackIni(Key As String)
         Dim IniFile As New wb_IniFile
 
@@ -947,6 +1002,11 @@ Public Class wb_GlobalSettings
             Case "Produktion"
                 _ChargenTeiler = IniFile.ReadString("Produktion", "ChargenTeiler", wb_Global.ModusChargenTeiler.OptimalUndRest)
                 _TeigOptimierung = IniFile.ReadString("Produktion", "TeigOptimierung", wb_Global.ModusTeigOptimierung.AlleTeige)
+
+            Case "Mail"
+                mHost = IniFile.ReadString("smpt", "smtpHost")
+                mHost = IniFile.ReadString("smpt", "smtpUser")
+                mHost = IniFile.ReadEncryptedString("smpt", "smtpPass")
 
         End Select
     End Sub

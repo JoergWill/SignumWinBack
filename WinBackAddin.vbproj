@@ -357,6 +357,7 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.Ribbon">
       <HintPath>dll\OfficeRibbon 4.0\System.Windows.Forms.Ribbon.dll</HintPath>
@@ -392,6 +393,7 @@
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
+    <Import Include="System.Web" />
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
@@ -412,6 +414,12 @@
     </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_TimerGridView.Designer.vb">
+      <DependentUpon>wb_TimerGridView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_TimerGridView.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_VirtualTreeEditor.vb" />
     <Compile Include="wb_00_Klassen\wb_AktRechte.vb" />
@@ -471,10 +479,11 @@
     <Compile Include="wb_00_Klassen\wb_KomponParam300.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam300_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Linien_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_Mail.vb" />
     <Compile Include="wb_00_Klassen\wb_MinMaxOptCharge.vb" />
     <Compile Include="wb_00_Klassen\wb_AktUser.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtUpdateArtikel.vb" />
-    <Compile Include="wb_00_Klassen\wb_nwtCL.vb" />
+    <Compile Include="wb_00_Klassen\wb_nwtCl.vb" />
     <Compile Include="wb_00_Klassen\wb_Simple3Des.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_FindServerIP.vb" />
     <Compile Include="wb_00_Klassen\wb_VorProduktionsSchritt.vb" />
@@ -1025,6 +1034,7 @@
     <Content Include="DBUpdate\2.30_KomponTypen.sql" />
     <Content Include="DBUpdate\2.30_Linien.sql" />
     <Content Include="DBUpdate\2.30_LinienGruppen.sql" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Dokumentation\OrgaBack.docx" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -1165,6 +1175,7 @@
     <None Include="Resources\RohstoffeDatenlink_124x32.png" />
     <None Include="Resources\RohstoffeDatenLink_93x24.png.png" />
     <None Include="Resources\RohstoffeDatenLink_93x24.png" />
+    <None Include="Resources\RohstoffeMail_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

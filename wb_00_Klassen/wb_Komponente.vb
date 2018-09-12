@@ -60,6 +60,10 @@ Public Class wb_Komponente
         End Get
     End Property
 
+    ''' <summary>
+    ''' Setzt alle Variablen wieder auf Null,Nothing oder Undefined.
+    ''' Wird aufgerufen, wenn eine neue(andere) Komponente geladen werden soll
+    ''' </summary>
     Public Sub Invalid()
         KO_Nr = wb_Global.UNDEFINED
         KO_Type = wb_Global.KomponTypen.KO_TYPE_UNDEFINED
@@ -74,6 +78,11 @@ Public Class wb_Komponente
         _RezeptName = Nothing
         _LinienGruppe = wb_Global.UNDEFINED
         _ArtikelLinienGruppe = wb_Global.UNDEFINED
+
+        KO_DeklBezeichnungExtern.Invalid()
+        KO_DeklBezeichnungIntern.Invalid()
+
+        ktTyp301.IsCalculated = False
     End Sub
 
     Public Property Nr As Integer
@@ -164,6 +173,10 @@ Public Class wb_Komponente
     End Property
 
     Friend Sub LoadData(dataGridView As wb_DataGridView)
+        'eventuell vorhandene Daten löschen
+        Invalid()
+        _DataHasChanged = False
+        'Daten aus DataGridView laden
         KO_Nr = CInt(dataGridView.Field("KO_Nr"))
         KO_Type = wb_Functions.IntToKomponType(dataGridView.Field("KO_Type"))
         KO_Nr_AlNum = dataGridView.Field("KO_Nr_AlNum")

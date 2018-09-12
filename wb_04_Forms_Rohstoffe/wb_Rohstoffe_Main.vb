@@ -15,6 +15,7 @@ Public Class wb_Rohstoffe_Main
     Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
     Public RohstoffParameter As wb_Rohstoffe_Parameter
     Public RohstoffNwt As wb_Rohstoffe_Nwt
+    Public RohstoffCloud As wb_Rohstoffe_Cloud
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
@@ -58,6 +59,7 @@ Public Class wb_Rohstoffe_Main
                 oGrp.AddButton("BtnRohstoffDetails", "Details", "weitere Rohstoff-Daten", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnRohstoffDetails)
                 oGrp.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffParameter)
                 oGrp.AddButton("BtnRohstoffNwt", "Nährwerte", "Rohstoffe Allergene und Nährwert-Angaben", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffNwt)
+                oGrp.AddButton("BtnRohstoffCloud", "Cloud", "Rohstoffe Verknüpfung zur Cloud", My.Resources.RohstoffeCloud_32x32, My.Resources.RohstoffeCloud_32x32, AddressOf BtnRohstoffCloud)
                 oGrp.AddButton("BtnRohstoffVerwendung", "Verwendung", "Verwendung des Rohstoffes in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf BtnRohstoffVerwendung)
                 _ContextTabs.Add(oNewTab)
             End If
@@ -77,6 +79,11 @@ Public Class wb_Rohstoffe_Main
     Private Sub BtnRohstoffNwt()
         RohstoffNwt = New wb_Rohstoffe_Nwt
         RohstoffNwt.Show(DockPanel, DockState.Document)
+    End Sub
+
+    Private Sub BtnRohstoffCloud()
+        RohstoffCloud = New wb_Rohstoffe_Cloud
+        RohstoffCloud.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRohstoffVerwendung()
@@ -111,6 +118,11 @@ Public Class wb_Rohstoffe_Main
                 RohstoffNwt = New wb_Rohstoffe_Nwt
                 _DockPanelList.Add(RohstoffNwt)
                 Return RohstoffNwt
+
+            Case "WinBack.wb_Rohstoffe_Cloud"
+                RohstoffCloud = New wb_Rohstoffe_Cloud
+                _DockPanelList.Add(RohstoffCloud)
+                Return RohstoffCloud
             Case Else
                 Return Nothing
         End Select

@@ -307,6 +307,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.RohstoffeMail_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.RohstoffeParameter_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -325,6 +330,55 @@ WinBackAddin
 <member name="P:WinBack.My.Resources.Resources.This">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die $this ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.tpCloudEinenRohstoffGefunden">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die Genau einen Rohstoff in der Cloud gefunden ! ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.tpCloudKompType">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die Spezielle Rohstoffe, wie z.B. Textkomponenten, Kneter, Teigruhe... haben keine Nährwerte ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.tpCloudMailSubject">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die Anfrage der Nährwerte und Inhaltsstoffe für  ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.tpCloudMailText">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die Sehr geehrte Damen und Herren,
+bitte ermitteln Sie die Inhalts-Stoffe des folgendes Rohstoffes:
+
+Bezeichnung laut Hersteller: [0]
+Hersteller:
+Artikelnummer des Herstellers:
+Lieferant: [1]
+
+Wir bitten UNBEDINGT um KOMPLETTE Angaben, wenn möglich mit Spezifikations-Datenblatt, dann sind die Daten schnell und korrekt in der Cloud... ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.tpCloudRohstoffeGefunden">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die [0] Rohstoffe in der Cloud gefunden. 
+Bitte wählen Sie den passenden Rohstoff aus der Liste aus. ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.tpCloudSuchenMail">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die Keine passenden Rohstoffe gefunden.
+Bitte ändern Sie den Suchtext oder fordern Sie die Nährwerte bei WinBack per Mail an ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.tpCloudSuchenTxt">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die Suchen über WinBack oder Datenlink verknüpft den Rohstoff mit dem entsprechenden Eintrag in der Cloud.
+
+Die Nährwertdaten und Allergen-Info werden automatisch importiert und anschliessend regelmäßig im Hintergrund aktualisiert. Für beide Dienste sind Anmeldeinformationen erforderlich
+
+Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant kann frei gelassen werden ähnelt.
 </summary>
 </member>
 <member name="P:WinBack.My.Resources.Resources.UpdateDataBase_16x16">
@@ -394,7 +448,12 @@ WinBackAddin
 <member name="M:WinBack.wb_KompRzChargen.wb_KompRzChargen_Load(System.Object,System.EventArgs)">
  <summary>
  Komponente wird geladen.
- ComboBox Liniengruppe Rezepte(Teig) und Artikel füllen
+ ComboBox Liniengruppe Rezepte(Teig) und Artikel füllen.
+ 
+ Wird nur im RunTime-Mode ausgeführt. Wenn "InitLiniengruppe" im Design-Mode ausgeführt wird (Programmieren/Speichern/Laden) wird
+ versucht über wb_LinienGlobal die winback.ini zu laden.
+ https://stackoverflow.com/questions/73515/how-to-tell-if-net-code-is-being-run-by-visual-studio-designer
+ 
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -1052,6 +1111,78 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Linie"></param>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_Mail.mHost">
+ <summary>
+ smtp-Host für Mail-Client
+ z.B. smtp.web.de
+ 
+ Ist der Mail-Host nicht definiert, wird der Eintrag aus winback.ini verwendet
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Mail.mSenderAddr">
+ <summary>
+ Benutzername Mail-Host.
+ (Absender-Adresse z.B. xxx@web.de)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Mail.mSenderPass">
+ <summary>
+ Passwort Mail-Host.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Mail.mError">
+ <summary>
+ Falls ein Fehler beim Senden aufgetreten ist, wird hier die Fehlermeldung (Exception)
+ zurückgegeben
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Mail.SendMail(System.String,System.String,System.String,System.Boolean)">
+ <summary>
+ Mail senden. Wenn das Versenden der eMail fehlschlägt, wird False zurückgegeben. 
+ Der Fehlertext steht dann in mError.
+ </summary>
+ <param name="mRecipient"></param>Mail-Adresse Empfänger
+ <param name="mSubject"></param>Mail Betreff
+ <param name="mBody"></param>Mail Inhalt
+ <param name="mSsl"></param>ssl-Verschlüsselung aktivieren
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Mail.StartMail(System.String,System.String,System.String)">
+ <summary>
+ Startet das Standard-Mail-Programm (outlook) und übergibt als Parameter
+ </summary>
+ <param name="mRecipient"></param>   Empfängeradresse
+ <param name="mSubject"></param>     Betreff
+ <param name="mBody"></param>        Nachricht
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Mail.StartMail_CloudAnforderung(System.String,System.String)">
+ <summary>
+ Startet über Startmail das Standard eMail-Programm und über gibt den Anforderungstext und die 
+ Abfrage-Mail-Adresse.
+ </summary>
+ <param name="Rohstoff"></param>
+ <param name="Lieferant"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Mail.PrepareMailText(System.String,System.String,System.String,System.String,System.String,System.String)">
+ <summary>
+ Ersetzt die Platzhalter [0]..[4] im String durch die Parameter Param0..Param4
+ Die Kodierung wird nach UTF8 gewandelt.
+ Leerzeichen werden durch %20 ersetzt
+ </summary>
+ <param name="Text"></param>
+ <param name="Param0"></param>
+ <param name="Param1"></param>
+ <param name="Param2"></param>
+ <param name="Param3"></param>
+ <param name="Param4"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_MinMaxOptCharge.Invalidate">
  <summary>
  Alle Werte mit Null initialisieren
@@ -1378,6 +1509,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  True  - Eingenschaften sind geändert worden, der Datensatz muss gespeichert werden
  False - keine Änderung, kein Speichern notwendig
      </returns>
+</member>
+<member name="M:WinBack.wb_Komponente.Invalid">
+ <summary>
+ Setzt alle Variablen wieder auf Null,Nothing oder Undefined.
+ Wird aufgerufen, wenn eine neue(andere) Komponente geladen werden soll
+ </summary>
 </member>
 <member name="P:WinBack.wb_Komponente.Nummer">
  <summary>
@@ -3031,6 +3168,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Hinweise.Invalid">
+ <summary>
+ Setzt alle Variablen wieder auf Null,Nothing oder Undefined.
+ Wird aufgerufen, wenn eine neue(andere) Komponente geladen werden soll
+ </summary>
+</member>
 <member name="M:WinBack.wb_Hinweise.GetTyp(WinBack.wb_Global.Hinweise,System.Int32@,System.Int32@)">
  <summary>
  Zuordnung von Hinweis.Datentyp zu H2_Typ,H2_Typ2 in der Datenbank winback.Hinweise2
@@ -3172,25 +3315,6 @@ Text aus Datenbank lesen - Übersetzung
 <member name="M:WinBack.wb_TraceListener.GetLocalStackTrace(System.String)">
  <summary>
  Extrahiert aus Environment.StackTrace die Programm-Zeile der aufrufenden Routine:
- (Beispiel)
- 
-     bei System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
-     bei System.Environment.get_StackTrace()
-     bei WinBack.wb_TraceListener.WriteLine(String message) In C:\Users\will.WINBACK\Source\Repos\Signum_WinBack\wb_00_Klassen\wb_TraceListener.vb:Zeile 36.
-     bei System.Diagnostics.TraceInternal.WriteLine(String message)
-     bei System.Diagnostics.Trace.WriteLine(String message)
-     bei WinBackUnitTest.UnitTest_wb_TraceLogger.TestTraceWriteLn() In C:\Users\will.WINBACK\Source\Repos\Signum_WinBack\WinBackUnitTest\UnitTest_wb_TraceLogger.vb:Zeile 39.
-         =======
-     bei System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
-     bei System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
-     bei System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.DefaultTestMethodInvoke(Object[] args)
-     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.RunTestMethod()
-     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.ExecuteTest()
-     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.ExecuteInternal()
-     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.Execute()
-     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.UnitTestRunner.RunInternal(TestMethod testMethod, Boolean isDataDriven, Dictionary`2 runParameters)
-     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.UnitTestRunner.RunSingleTest(String name, String fullClassName, Boolean isAsync, Dictionary`2 runParameters)
  </summary>
  <param name="Stack"></param>
  <returns></returns>
@@ -3298,6 +3422,21 @@ Text aus Datenbank lesen - Übersetzung
  in der WinBack Konfiguration ist.
  </summary>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_GlobalSettings.getWinBackIni(System.String)">
+ <summary>
+ [smtp]
+ smtpUser=server@winback.de
+ smtpPass=de2la6de2
+ smtpHost=smtp.1und1.de
+ smtpPort=25
+ smtpAuth=atLOGIN
+ smtpFrom=server@winback.de
+ smtpMailAdr=service@winback.de
+ smtpSubject=Chargenauswertung WinBack
+ smtpPrio=mpNormal
+ </summary>
+ <param name="Key"></param>
 </member>
 <member name="T:WinBack.wb_PrinterDialog">
  <summary>
@@ -4321,6 +4460,22 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <param name="NewTab"></param>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.ShowResultGrid(WinBack.wb_nwtCL)">
+ <summary>
+ Zeigt die Liste aller gefundenen Rohstoffe aus der Cloud an.
+ Datenlink liefert die Bezeichnung und Lieferanten, aus der WinBack-Cloud werden
+ Bezeichnung, Lieferant und Deklarationsbezeichnung angezeigt.
+ </summary>
+ <param name="Cloud"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.ShowNwtGrid(System.String)">
+ <summary>
+ Zeigt die Tabelle aller Allergene und Nährwerte aus der Cloud für den
+ ausgewählten Rohstoff an. Das Grid zeigt nur Allergene und Nährwerte an,
+ die als verwendet gekennzeichnet werden.
+ </summary>
+ <param name="rid"></param>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Cloud.btnCloud_Click(System.Object,System.EventArgs)">
  <summary>
  Suchen Rohstoff/Lieferant in der WinBack-Cloud
@@ -4331,6 +4486,16 @@ Text aus Datenbank lesen - Übersetzung
 <member name="M:WinBack.wb_Rohstoffe_Cloud.btnDatenLink_Click(System.Object,System.EventArgs)">
  <summary>
  Suchen Rohstoff/Lieferant bei Datenlink
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.btnMail_Click(System.Object,System.EventArgs)">
+ <summary>
+ Anforderungsmail an nwt.winback.de verschicken.
+ Rohstoff-Bezeichnung und Lieferant werden automatisch in den Mailtext eingefügt.
+ 
+ Der Mail-Versandt erfolgt über das Windows-Standard-Mail-Programm.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -4942,6 +5107,13 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="Param"></param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Functions.TypeHatNwt(WinBack.wb_Global.KomponTypen)">
+ <summary>
+ Ermittelt ob Rohstoffe/Artikel mit dieser Komponenten-Type Nährwert-Informationen haben können
+ </summary>
+ <param name="Type"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Functions.TypeIstText(WinBack.wb_Global.KomponTypen)">
  <summary>
  Ermittelt ob Type und Parameter-Nummer einen Text als Sollwert enthalten.
@@ -5003,6 +5175,18 @@ Start Timer nach Änderung Datensatz-Zeiger
  Minimal/Optimal/Maximal-Charge zurück
  </summary>
  <param name="ErrCode"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.SetParams(System.String,System.String,System.String,System.String,System.String,System.String)">
+ <summary>
+ Ersetzt die Platzhalter [0]..[4] im String durch die Parameter Param0..Param4
+ </summary>
+ <param name="Text"></param>
+ <param name="Param0"></param>
+ <param name="Param1"></param>
+ <param name="Param2"></param>
+ <param name="Param3"></param>
+ <param name="Param4"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Functions.FormatStr(System.String,System.Int32,System.Int32,System.String)">
@@ -5186,6 +5370,43 @@ Start Timer nach Änderung Datensatz-Zeiger
  True - Dekomprimieren war erfolgreich
  False - Fehler beim Lesen/Schreiben/Dekomprimieren
  </returns>
+</member>
+<member name="M:WinBack.wb_Functions.GetLocalStackTrace(System.String,System.Boolean)">
+ <summary>
+ Extrahiert aus Environment.StackTrace die Programm-Zeile(n) der aufrufenden Routine:
+ (Beispiel)
+ 
+     bei System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+     bei System.Environment.get_StackTrace()
+     bei WinBack.wb_TraceListener.WriteLine(String message) In C:\Users\will.WINBACK\Source\Repos\Signum_WinBack\wb_00_Klassen\wb_TraceListener.vb:Zeile 36.
+     bei System.Diagnostics.TraceInternal.WriteLine(String message)
+     bei System.Diagnostics.Trace.WriteLine(String message)
+     bei WinBackUnitTest.UnitTest_wb_TraceLogger.TestTraceWriteLn() In C:\Users\will.WINBACK\Source\Repos\Signum_WinBack\WinBackUnitTest\UnitTest_wb_TraceLogger.vb:Zeile 39.
+         =======
+     bei System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+     bei System.Reflection.RuntimeMethodInfo.UnsafeInvokeInternal(Object obj, Object[] parameters, Object[] arguments)
+     bei System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.DefaultTestMethodInvoke(Object[] args)
+     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.RunTestMethod()
+     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.ExecuteTest()
+     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.ExecuteInternal()
+     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.TestMethodRunner.Execute()
+     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.UnitTestRunner.RunInternal(TestMethod testMethod, Boolean isDataDriven, Dictionary`2 runParameters)
+     bei Microsoft.VisualStudio.TestPlatform.MSTestFramework.UnitTestRunner.RunSingleTest(String name, String fullClassName, Boolean isAsync, Dictionary`2 runParameters)
+     
+ Ist OnlyOneLine True, wird nur der erste Aufruf mit dem Inhalt WinBack zurückgegeben. 
+ Der Ergebnis-String enthält Komma-getrennt, die aufrufende Routine und die Zeilen-Nummer
+ </summary>
+ <param name="Stack"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.GetStackTraceTree(System.String)">
+ <summary>
+ Gibt den kompletten Aufrufbaum aller WinBack-Routinen zurück.
+ Der Ergebnis-String enthält Komma-getrennt, die aufrufende Routine und die Zeilen-Nummer
+ </summary>
+ <param name="Stack"></param>
+ <returns></returns>
 </member>
 <member name="T:WinBack.wb_Sql">
  <summary>

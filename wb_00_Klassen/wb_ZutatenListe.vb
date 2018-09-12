@@ -145,7 +145,7 @@ Public Class wb_ZutatenListe
                     'Steuerzeichen vorne und hinten entfernen
                     z.Zutaten = z.Zutaten.Trim("{")
                     z.Zutaten = z.Zutaten.Trim("}")
-                    'Teilstring in Lise einfügen
+                    'Teilstring in Liste einfügen
                     Liste.Insert(i + j, z)
 
                 Next j

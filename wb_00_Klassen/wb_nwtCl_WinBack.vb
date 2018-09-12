@@ -15,6 +15,12 @@ Public Class wb_nwtCl_WinBack
     Private _errorCode As HttpStatusCode
     Private data As List(Of JToken)
 
+    Public Overrides ReadOnly Property CloudType As wb_CloudType
+        Get
+            Return wb_nwtCL.wb_CloudType.WinBackCloud
+        End Get
+    End Property
+
     ''' <summary>
     ''' Erzeugt das Connection-Objekt zur Abfrage der Nährwerte aus der WinBack-Cloud
     ''' Passwort und URL müssen mit übergeben werden.

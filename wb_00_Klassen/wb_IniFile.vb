@@ -119,7 +119,7 @@ Public Class wb_IniFile
             If Not _SilentMode Then MsgBox("Die angegebene INI-Datei exstiert auf diesem Rechner nicht. Deshalb ist das " _
                         & "Auslesen des Wertes nicht möglich." & vbCrLf & vbCrLf & "INI-Datei: " & Pfad _
                         & vbCrLf & "Angeforderte Sektion: " & Sektion & vbCrLf & "Angeforderter Schlüssel: " _
-                        & Schlüssel, MsgBoxStyle.Exclamation, "Pfad zur INI-Datei fehlt")
+                        & Schlüssel & vbCrLf & "Mode " & System.ComponentModel.LicenseManager.UsageMode.ToString & vbCrLf & "Stacktrace: " & Environment.StackTrace, MsgBoxStyle.Exclamation, "Pfad zur INI-Datei fehlt")
             Return False
         Else
             Return True

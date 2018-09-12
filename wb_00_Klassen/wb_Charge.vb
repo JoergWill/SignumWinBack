@@ -185,6 +185,7 @@
     ''' Event - die Werte der Chargengrößen haben sich geändert.
     ''' </summary>
     Private Sub ValuesChanged()
+        Debug.Print("wb_Charge-ValuesChanged-RaiseEvent OnChange " & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
         RaiseEvent OnChange(Me)
     End Sub
 End Class

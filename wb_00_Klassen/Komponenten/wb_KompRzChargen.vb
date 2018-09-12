@@ -1,26 +1,34 @@
-﻿Imports System.Windows.Forms
+﻿
+Imports System.ComponentModel
+Imports System.Windows.Forms
 
 Public Class wb_KompRzChargen
 
     Public WithEvents ArtikelChargen As New wb_MinMaxOptCharge
     Public WithEvents TeigChargen As New wb_MinMaxOptCharge
     Public Event DataInvalidated()
-    Private OnErrorSetFocus As Object
+    Private OnErrorSetFocus As Object = Nothing
 
     Private _DataValid As Boolean
     Private _RzNr As Integer = wb_Global.UNDEFINED
 
     ''' <summary>
     ''' Komponente wird geladen.
-    ''' ComboBox Liniengruppe Rezepte(Teig) und Artikel füllen
+    ''' ComboBox Liniengruppe Rezepte(Teig) und Artikel füllen.
+    ''' 
+    ''' Wird nur im RunTime-Mode ausgeführt. Wenn "InitLiniengruppe" im Design-Mode ausgeführt wird (Programmieren/Speichern/Laden) wird
+    ''' versucht über wb_LinienGlobal die winback.ini zu laden.
+    ''' https://stackoverflow.com/questions/73515/how-to-tell-if-net-code-is-being-run-by-visual-studio-designer
+    ''' 
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub wb_KompRzChargen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'ComboBox Liniengruppe Rezepte(Teig) füllen
-        'cbLiniengruppe.Fill(wb_Linien_Global.LinienGruppen)
-        'ComboBox Liniengruppe Artikel füllen
-        'cbArtikelLinienGruppe.Fill(wb_Linien_Global.LinienGruppen)
+        'Soll nicht ausgeführt werden wenn der Designer läuft.
+        If (System.ComponentModel.LicenseManager.UsageMode <> System.ComponentModel.LicenseUsageMode.Designtime) And Not Me.DesignMode Then
+            'Liniengruppen-Auswahlfelder initialisieren
+            InitLinienGruppen()
+        End If
     End Sub
 
     ''' <summary>
@@ -31,6 +39,9 @@ Public Class wb_KompRzChargen
     ''' </summary>
     ''' <param name="Komp"></param>
     Public Sub GetDataFromKomp(ByRef Komp As wb_Komponente)
+        'Berechnung/Prüfung der Chargengrößen abschalten
+        ArtikelChargen.ErrorCheck = False
+        TeigChargen.ErrorCheck = False
         'Rezeptnummer aus Rohstoffdaten
         RzNr = Komp.RzNr
         'Komponentendaten aus Datenbank lesen
@@ -44,6 +55,13 @@ Public Class wb_KompRzChargen
         'Chargendaten aus Komponentendaten
         ArtikelChargen = Komp.ArtikelChargen
         TeigChargen = Komp.TeigChargen
+    End Sub
+
+    Private Sub InitLinienGruppen()
+        'ComboBox Liniengruppe Rezepte(Teig) füllen
+        cbLiniengruppe.Fill(wb_Linien_Global.LinienGruppen)
+        'ComboBox Liniengruppe Artikel füllen
+        cbArtikelLinienGruppe.Fill(wb_Linien_Global.LinienGruppen)
     End Sub
 
     ''' <summary>
@@ -103,12 +121,19 @@ Public Class wb_KompRzChargen
     ''' Artikel-Liniengruppe. Enthält den Aufarbeitungsplatz(Backort)
     ''' </summary>
     ''' <returns></returns>
+    <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property ArtikelLiniengruppe As Integer
         Get
-            Return cbArtikelLinienGruppe.GetKeyFromSelection
+            If cbArtikelLinienGruppe IsNot Nothing Then
+                Return cbArtikelLinienGruppe.GetKeyFromSelection
+            Else
+                Return wb_Global.UNDEFINED
+            End If
         End Get
         Set(value As Integer)
-            cbArtikelLinienGruppe.SetTextFromKey(value)
+            If cbArtikelLinienGruppe IsNot Nothing Then
+                cbArtikelLinienGruppe.SetTextFromKey(value)
+            End If
         End Set
     End Property
 
@@ -116,12 +141,19 @@ Public Class wb_KompRzChargen
     ''' Rezept-Liniengruppe
     ''' </summary>
     ''' <returns></returns>
+    <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property LinienGruppe As Integer
         Get
-            Return cbLiniengruppe.GetKeyFromSelection
+            If cbLiniengruppe IsNot Nothing Then
+                Return cbLiniengruppe.GetKeyFromSelection
+            Else
+                Return wb_Global.UNDEFINED
+            End If
         End Get
         Set(value As Integer)
-            cbLiniengruppe.SetTextFromKey(value)
+            If cbLiniengruppe IsNot Nothing Then
+                cbLiniengruppe.SetTextFromKey(value)
+            End If
         End Set
     End Property
 
@@ -269,10 +301,13 @@ Public Class wb_KompRzChargen
     Private Sub OnErrorMinMaxOptArtikel(sender As Object) Handles ArtikelChargen.OnError
         If ArtikelChargen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
             'Eingabe-Focus auf das auslösende Objekt setzen
-            OnErrorSetFocus.Focus()
+            If OnErrorSetFocus IsNot Nothing Then
+                OnErrorSetFocus.Focus()
+            End If
             'Fehlermeldung entsprechend der Eingabe-Felder ausgeben
             MsgBox(wb_Functions.MinMaxOptChargeToString(ArtikelChargen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Artikel-Chargengrößen")
         End If
+
         'Felder neu zeichnen
         MinMaxOptArtikelShowValues()
         'Flag setzen - Daten wurden geändert, speichern notwendig
@@ -282,10 +317,13 @@ Public Class wb_KompRzChargen
 
     Private Sub OnErrorMinMaxOptTeig(Sender As Object) Handles TeigChargen.OnError
         If TeigChargen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
-            OnErrorSetFocus.focus()
+            If OnErrorSetFocus IsNot Nothing Then
+                OnErrorSetFocus.Focus()
+            End If
             'Fehlermeldung entsprechend der Eingabe-Felder ausgeben
             MsgBox(wb_Functions.MinMaxOptChargeToString(TeigChargen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Rezept-Chargengrößen")
         End If
+
         'Felder neu zeichnen
         MinMaxRezeptShowValues()
         'Flag setzen - Daten wurden geändert, speichern notwendig
@@ -307,7 +345,9 @@ Public Class wb_KompRzChargen
         cbArtikelLinienGruppe.Enabled = Enable
         'Panel Artikel/Teigchargen
         pArtikelChargen.Enabled = Enable
+        ArtikelChargen.ErrorCheck = Enable
         pTeigChargen.Enabled = Enable
+        TeigChargen.ErrorCheck = Enable
 
         'alte Zahlenwerte in den Felder löschen
         If Not Enable Then

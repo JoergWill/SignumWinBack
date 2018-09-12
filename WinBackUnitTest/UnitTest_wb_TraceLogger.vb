@@ -18,24 +18,22 @@
         Dim TestString As String
         Dim ResultString As String
 
-        TestString = "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "WinBack Test"
-        Assert.AreEqual("WinBack Test", Logger.TestLocalStackTrace(TestString))
-        TestString = "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "WinBack Test" & vbCrLf
-        Assert.AreEqual("WinBack Test", Logger.TestLocalStackTrace(TestString))
-        TestString = vbCrLf & "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "WinBack Test" & vbCrLf
-        Assert.AreEqual("WinBack Test", Logger.TestLocalStackTrace(TestString))
-        TestString = vbCrLf & "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "WinBack Test"
-        Assert.AreEqual("WinBack Test", Logger.TestLocalStackTrace(TestString))
+        TestString = "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "WinBack Test bei in :Zeile 10"
+        Assert.AreEqual("---", Logger.TestLocalStackTrace(TestString))
+        TestString = "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "XXX bei WinBack Test in UnitTest :Zeile 10" & vbCrLf
+        Assert.AreEqual("Z00010" & vbTab & "WinBack Test", Logger.TestLocalStackTrace(TestString))
+        TestString = vbCrLf & "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "XXX bei WinBack Test in :Zeile 10" & vbCrLf
+        Assert.AreEqual("---", Logger.TestLocalStackTrace(TestString))
+        TestString = vbCrLf & "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "XXX bei WinBack Test lin :Zeile 10"
+        Assert.AreEqual("---", Logger.TestLocalStackTrace(TestString))
 
-        TestString = vbCrLf & "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "WinBack TraceListener"
-        Assert.AreEqual("", Logger.TestLocalStackTrace(TestString))
-
-
+        TestString = vbCrLf & "Zeile 1" + vbCrLf + "Test2" + vbCrLf + "XXX bei WinBack TraceListener Test in :Zeile 10"
+        Assert.AreEqual("---", Logger.TestLocalStackTrace(TestString))
 
 
         TestString = "   bei WinBack.wb_TraceListener.WriteLine(String message) In C:\Users\will.WINBACK\Source\Repos\Signum_WinBack\wb_00_Klassen\wb_TraceListener.vb:Zeile 36."
-        ResultString = "WinBack.wb_TraceListener.WriteLine(String message)" & vbTab & "36"
-        Assert.AreEqual("", Logger.TestLocalStackTrace(TestString))
+        ResultString = vbTab & "Z00026 WinBack.wb_TraceListener.WriteLine(String message)"
+        Assert.AreEqual("---", Logger.TestLocalStackTrace(TestString))
 
     End Sub
 

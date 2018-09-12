@@ -417,6 +417,7 @@
         Show_ENummer
         Optimize
     End Enum
+
     Public Structure ENummern
         Public Nr As Integer            'E-Nummer als Integer
         Public Bezeichnung As String    'Bezeichnungstext

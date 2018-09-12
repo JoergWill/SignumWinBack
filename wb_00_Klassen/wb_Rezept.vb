@@ -203,6 +203,7 @@ Public Class wb_Rezept
     ''' </summary>
     Public WriteOnly Property Recalculate As Boolean
         Set(value As Boolean)
+            TeigChargen.ErrorCheck = False
             TeigChargen.TeigGewicht = wb_Global.UNDEFINED
             _BruttoRezeptGewicht = wb_Global.UNDEFINED
             _RezeptPreis = wb_Global.UNDEFINED
@@ -361,6 +362,7 @@ Public Class wb_Rezept
         _RezeptNr = RzNr
         _RezeptVariante = RzVariante
         _NoMessage = NoMessage
+        TeigChargen.ErrorCheck = False
         TeigChargen.TeigGewicht = wb_Global.UNDEFINED
 
         'Rekursion begrenzen - Parent ermitteln

@@ -21,13 +21,10 @@ Public Class wb_Rohstoffe_Cloud
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        'Tabs ausblenden
         Wb_TabControl.HideTabs = True
-        'Hilfetexte
-        lblHilfeText.Text = "Suchen über WinBack oder Datenlink verknüpft den Rohstoff mit dem entsprechenden Eintrag in der Cloud." & vbCrLf & vbCrLf &
-                            "Die Nährwertdaten und Allergen-Info werden automatisch importiert und anschliessend regelmäßig im Hintergrund aktualisiert." &
-                            "Für beide Dienste sind Anmeldeinformationen erforderlich" & vbCrLf & vbCrLf &
-                            "Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant kann frei gelassen werden"
+        'Start auf Seite(1)-Suchen
+        ChangeTab(tpCloudSuchen)
     End Sub
 
     ''' <summary>
@@ -52,9 +49,12 @@ Public Class wb_Rohstoffe_Cloud
             'Rohstoff ist mit einer Rezeptur verknüpft
             ChangeTab(tpRezept)
 
-        Else
+        ElseIf wb_Functions.TypeHatNwt(RohStoff.Type) Then
             'Suchen Rohstoff in der Cloud
             ChangeTab(tpCloudSuchen)
+        Else
+            'Kein Rohstoff der Nährwerte hat
+            ChangeTab(tpKompType)
         End If
     End Sub
 
@@ -67,8 +67,13 @@ Public Class wb_Rohstoffe_Cloud
         Select Case NewTab.Name
 
             Case tpCloudSuchen.Name
+                'HilfeText
+                lblHilfeText.Text = My.Resources.tpCloudSuchenTxt
+                lblHilfeText.ForeColor = System.Drawing.Color.Black
                 'Suchtext
                 tSuchtextBezeichnung.Text = tRohstoffName.Text
+                'Schaltfläche Mail unsichtbar
+                btnMail.Visible = False
                 'Suche Rohstoff-Bezeichnung in Cloud (WinBack/Datenlink)
                 Wb_TabControl.SelectedTab = tpCloudSuchen
 
@@ -77,35 +82,37 @@ Public Class wb_Rohstoffe_Cloud
                 Dim cnt As Integer = DirectCast(Parameter, wb_nwtCL).cnt
                 Select Case cnt
                     Case 0
-                        lblErgebnisText.Text = "Keinen passenden Rohstoff in der Cloud gefunden !"
+                        'Keinen Rohstoff gefunden
+                        lblHilfeText.Text = My.Resources.tpCloudSuchenMail
+                        lblHilfeText.ForeColor = System.Drawing.Color.Red
+                        'Schaltfläche Mail sichtbar
+                        btnMail.Visible = True
+
                     Case 1
-                        lblErgebnisText.Text = "Genau einen Rohstoff in der Cloud gefunden !"
+                        'genau einen Rohstoff gefunden
+                        lblErgebnisText.Text = My.Resources.tpCloudEinenRohstoffGefunden
+                        'Anzeige Liste aller gefundenen Rohstoffe
+                        ShowResultGrid(Parameter)
+                        Wb_TabControl.SelectedTab = tpCloudGefunden
+
                     Case Else
-                        lblErgebnisText.Text = cnt & " Rohstoffe in der Cloud gefunden !"
+                        'mehrere Rohstoffe gefunden
+                        lblErgebnisText.Text = wb_Functions.SetParams(My.Resources.tpCloudRohstoffeGefunden, cnt)
+                        'Anzeige Liste aller gefundenen Rohstoffe
+                        ShowResultGrid(Parameter)
+                        Wb_TabControl.SelectedTab = tpCloudGefunden
                 End Select
 
-                'Anzeige der Ergebnisse
-                If cnt > 0 Then
-                    'Tabelle-Überschriften
-                    sColNames.Clear()
-                    sColNames.AddRange({"", "Bezeichnung", "Lieferant", "&Deklarationsbezeichnung"})
-                    'Daten im Grid anzeigen
-                    CloudResultGrid = New wb_ArrayGridViewNwt(DirectCast(Parameter, wb_nwtCL).getProducList, sColNames)
-                    CloudResultGrid.ScrollBars = ScrollBars.Vertical
-                    CloudResultGrid.BackgroundColor = Me.BackColor
-                    CloudResultGrid.GridLocation(pnlNwtGrid)
-                    CloudResultGrid.PerformLayout()
-                    CloudResultGrid.Refresh()
-                    'Anzeige Liste aller gefundenen Rohstoffe
-                    Wb_TabControl.SelectedTab = tpCloudGefunden
-                End If
-
             Case tpCloudAnzeige.Name
+                'Nährwertdaten in Objekt schreiben und anzeigen
+                ShowNwtGrid(DirectCast(Parameter, String))
                 'Anzeige Nährwerte des ausgewählten Rohstoffes
                 Wb_TabControl.SelectedTab = tpCloudAnzeige
 
             Case tpCloudResult.Name
-                'Anzeige Zutatenliste und Bezeichnung 
+                'Anzeige Zutatenliste und Bezeichnung
+                tbDeklarationIntern.Text = RohStoff.DeklBezeichungIntern
+                tbDeklarationExtern.Text = RohStoff.DeklBezeichungExtern
                 'Löschen und Aktualisieren aus der Cloud
                 Wb_TabControl.SelectedTab = tpCloudResult
 
@@ -117,7 +124,67 @@ Public Class wb_Rohstoffe_Cloud
                 'Rohstoff ist mit Rezeptur verknüpft
                 Wb_TabControl.SelectedTab = tpRezept
 
+            Case Else
+                'Rohstoff-Type hat keine Nährwerte
+                lblKeineNwt.Text = My.Resources.tpCloudKompType
+                Wb_TabControl.SelectedTab = tpKompType
         End Select
+    End Sub
+
+    ''' <summary>
+    ''' Zeigt die Liste aller gefundenen Rohstoffe aus der Cloud an.
+    ''' Datenlink liefert die Bezeichnung und Lieferanten, aus der WinBack-Cloud werden
+    ''' Bezeichnung, Lieferant und Deklarationsbezeichnung angezeigt.
+    ''' </summary>
+    ''' <param name="Cloud"></param>
+    Private Sub ShowResultGrid(Cloud As wb_nwtCL)
+        'Tabelle-Überschriften
+        sColNames.Clear()
+        If Cloud.CloudType = wb_nwtCL.wb_CloudType.DatenLink Then
+            sColNames.AddRange({"", "Bezeichnung", "&Lieferant", ""})
+        Else
+            sColNames.AddRange({"", "Bezeichnung", "Lieferant", "&Deklarationsbezeichnung"})
+        End If
+
+        'Daten im Grid anzeigen
+        If CloudResultGrid IsNot Nothing Then
+            CloudResultGrid.Dispose()
+        End If
+        CloudResultGrid = New wb_ArrayGridViewNwt(Cloud.getProducList, sColNames)
+        CloudResultGrid.ScrollBars = ScrollBars.Vertical
+        CloudResultGrid.BackgroundColor = Me.BackColor
+        CloudResultGrid.GridLocation(pnlNwtGrid)
+        CloudResultGrid.PerformLayout()
+    End Sub
+
+    ''' <summary>
+    ''' Zeigt die Tabelle aller Allergene und Nährwerte aus der Cloud für den
+    ''' ausgewählten Rohstoff an. Das Grid zeigt nur Allergene und Nährwerte an,
+    ''' die als verwendet gekennzeichnet werden.
+    ''' </summary>
+    ''' <param name="rid"></param>
+    Private Sub ShowNwtGrid(rid As String)
+        'Nährwertdaten in Komponenten-Objekt schreiben
+        If wb_Functions.IsDatenLinkID(rid) Then
+            'Datenlink
+            dl.GetProductData(rid, wb_Rohstoffe_Shared.RohStoff)
+        Else
+            'WinBack-Cloud
+            nwt.GetProductData(rid, wb_Rohstoffe_Shared.RohStoff)
+        End If
+
+        'ID aus der Cloud
+        tCloudID.Text = rid
+        wb_Rohstoffe_Shared.RohStoff.MatchCode = rid
+
+        'Daten im Grid anzeigen
+        If nwtGrid IsNot Nothing Then
+            nwtGrid.Dispose()
+        End If
+        nwtGrid = New wb_ArrayGridViewKomponParam301(RohStoff.ktTyp301.NwtTabelle)
+        nwtGrid.BackgroundColor = Me.BackColor
+        nwtGrid.GridLocation(pnlNwt)
+        nwtGrid.PerformLayout()
     End Sub
 
     ''' <summary>
@@ -126,25 +193,12 @@ Public Class wb_Rohstoffe_Cloud
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnCloud_Click(sender As Object, e As EventArgs) Handles btnCloud.Click
-        'Anzahl der gefundenen Datensätze
-        Dim cnt As Integer
         'Suche nach Rohstoff oder Rohstoff/Lieferant
         If tSuchtextLieferant.Text = "" Then
-            cnt = nwt.lookupProductName(tSuchtextBezeichnung.Text)
+            nwt.lookupProductName(tSuchtextBezeichnung.Text)
         Else
-            cnt = nwt.lookupProduct(tSuchtextBezeichnung.Text, tSuchtextLieferant.Text)
+            nwt.lookupProduct(tSuchtextBezeichnung.Text, tSuchtextLieferant.Text)
         End If
-
-        'Tabelle-Überschriften
-        sColNames.Clear()
-        sColNames.AddRange({"", "Bezeichnung", "Lieferant", "&Deklarationsbezeichnung"})
-        'Daten im Grid anzeigen
-        CloudResultGrid = New wb_ArrayGridViewNwt(nwt.getProducList, sColNames)
-        CloudResultGrid.ScrollBars = ScrollBars.Vertical
-        CloudResultGrid.BackgroundColor = Me.BackColor
-        CloudResultGrid.GridLocation(pnlNwtGrid)
-        CloudResultGrid.PerformLayout()
-        CloudResultGrid.Refresh()
 
         'Ergebnis der Cloud-Suche anzeigen
         ChangeTab(tpCloudGefunden, nwt)
@@ -156,8 +210,6 @@ Public Class wb_Rohstoffe_Cloud
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnDatenLink_Click(sender As Object, e As EventArgs) Handles btnDatenLink.Click
-        'Anzahl der gefundenen Datensätze
-        Dim cnt As Integer
         'Suche nach Rohstoff
         dl.lookupProductName(tSuchtextBezeichnung.Text)
 
@@ -166,33 +218,31 @@ Public Class wb_Rohstoffe_Cloud
     End Sub
 
     Private Sub CloudResultGrid_DoubleClick(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles CloudResultGrid.CellMouseDoubleClick
-        Dim idx As Integer = e.RowIndex
-        Dim rid As String = DirectCast(sender, wb_ArrayGridViewNwt).Rows(idx).Cells(0).Value
+        'ID in der Cloud aus Spalte(0) im Grid
+        Dim rid As String = DirectCast(sender, wb_ArrayGridViewNwt).Rows(e.RowIndex).Cells(0).Value
 
-        'Nährwertdaten in Objekt schreiben
-        If wb_Functions.IsDatenLinkID(rid) Then
-            'Datenlink
-            dl.GetProductData(rid, wb_Rohstoffe_Shared.RohStoff)
-        Else
-            'WinBack-Cloud
-            nwt.GetProductData(rid, wb_Rohstoffe_Shared.RohStoff)
-        End If
-
-        'Daten im Grid anzeigen
-        If nwtGrid IsNot Nothing Then
-            nwtGrid.Dispose()
-        End If
-        nwtGrid = New wb_ArrayGridViewKomponParam301(RohStoff.ktTyp301.NwtTabelle)
-        nwtGrid.BackgroundColor = Me.BackColor
-        nwtGrid.GridLocation(pnlNwt)
-        nwtGrid.PerformLayout()
-
-        'weiter zur Anzeige
-        Wb_TabControl.SelectedTab = tpCloudAnzeige
+        'Anzeige der Nährwert-Informationen
+        ChangeTab(tpCloudAnzeige, rid)
     End Sub
 
     Private Sub btnDisconnect_Click(sender As Object, e As EventArgs) Handles btnDisconnect.Click
 
     End Sub
 
+    ''' <summary>
+    ''' Anforderungsmail an nwt.winback.de verschicken.
+    ''' Rohstoff-Bezeichnung und Lieferant werden automatisch in den Mailtext eingefügt.
+    ''' 
+    ''' Der Mail-Versandt erfolgt über das Windows-Standard-Mail-Programm.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub btnMail_Click(sender As Object, e As EventArgs) Handles btnMail.Click
+        Dim Mail As New wb_Mail
+        If Not Mail.StartMail_CloudAnforderung(tRohstoffName.Text, tSuchtextLieferant.Text) Then
+            MsgBox("Fehler beim Aufruf des Mail-Programmes. Bitte kontaktieren Sie Ihren Administrator ", MsgBoxStyle.Critical, "Fehler beim E-Mail-Versand")
+        Else
+            lblHilfeText.Text = ""
+        End If
+    End Sub
 End Class
