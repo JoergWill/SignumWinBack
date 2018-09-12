@@ -82,6 +82,9 @@ Public Class wb_Komponente
         KO_DeklBezeichnungExtern.Invalid()
         KO_DeklBezeichnungIntern.Invalid()
 
+        ArtikelChargen.Invalidate()
+        TeigChargen.Invalidate()
+
         ktTyp301.IsCalculated = False
     End Sub
 
@@ -880,7 +883,7 @@ Public Class wb_Komponente
         End If
 
         'Feldname aus der Datenbank
-        'Debug.Print("ReadStammdaten " & Name & "/" & Value)
+        Debug.Print("ReadStammdaten " & Name & "/" & Value)
         Try
             Select Case Name
 

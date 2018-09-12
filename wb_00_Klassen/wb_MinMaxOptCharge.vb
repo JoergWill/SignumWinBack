@@ -70,12 +70,12 @@ Public Class wb_MinMaxOptCharge
     ''' Alle Werte mit Null initialisieren
     ''' </summary>
     Public Sub Invalidate()
+        ErrorCheck = False
         MinCharge.MengeInkg = 0
         OptCharge.MengeInkg = 0
         MaxCharge.MengeInkg = 0
         TeigGewicht = 0
         StkGewicht = 0
-        ErrorCheck = False
     End Sub
 
     ''' <summary>
@@ -143,6 +143,8 @@ Public Class wb_MinMaxOptCharge
 
     Private Sub RaiseError(ErrCode As wb_Global.MinMaxOptChargenError)
         _ErrorCode = ErrCode
+        'TODO nur für Test-sehr langsam !!
+        'Debug.Print("wb_MinMaxOptCharge-RaiseError " & ErrorCode & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
         RaiseEvent OnError(Me)
     End Sub
 

@@ -304,6 +304,8 @@ Public Class wb_KompRzChargen
             If OnErrorSetFocus IsNot Nothing Then
                 OnErrorSetFocus.Focus()
             End If
+            'TODO nur für Test-sehr langsam !!
+            Debug.Print("wb_KompRzChargen.OnErrorMinMaxOptArtikel " & ArtikelChargen.ErrorCode & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
             'Fehlermeldung entsprechend der Eingabe-Felder ausgeben
             MsgBox(wb_Functions.MinMaxOptChargeToString(ArtikelChargen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Artikel-Chargengrößen")
         End If
@@ -320,6 +322,8 @@ Public Class wb_KompRzChargen
             If OnErrorSetFocus IsNot Nothing Then
                 OnErrorSetFocus.Focus()
             End If
+            'TODO nur für Test-sehr langsam !!
+            Debug.Print("wb_KompRzChargen.OnErrorMinMaxOptTeig " & TeigChargen.ErrorCode & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
             'Fehlermeldung entsprechend der Eingabe-Felder ausgeben
             MsgBox(wb_Functions.MinMaxOptChargeToString(TeigChargen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Rezept-Chargengrößen")
         End If

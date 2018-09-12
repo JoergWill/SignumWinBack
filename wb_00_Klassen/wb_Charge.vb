@@ -60,6 +60,9 @@
             _MengeInStk = CalcMengeInStk()
             'Chargengröße in [%] neu berechnen
             _MengeInProzent = CalcMengeInProzent()
+            'TODO AKTUELLE FEHLERSUCHE
+            Debug.Print("wb_Charge.MengeInkg Stk/kg/Prz/Stkgewicht " & _MengeInStk & "/" & _MengeInkg & "/" & MengeInProzent & "/" & _StkGewicht)
+            Debug.Print("wb_Charge.MengeInkg " & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
             'Event - Werte haben sich geändert
             ValuesChanged()
         End Set
@@ -133,6 +136,8 @@
             _MengeInkg = CalcMengeInkg()
             'Chargengröße in [%] neu berechen
             _MengeInProzent = CalcMengeInProzent()
+            'TODO DEBUG TEST
+            Debug.Print("wb_Charge.MengeInStk Stk/kg/Prz/Stkgewicht " & _MengeInStk & "/" & _MengeInkg & "/" & MengeInProzent & "/" & _StkGewicht)
             'Event - Werte haben sich geändert
             ValuesChanged()
         End Set
@@ -185,7 +190,8 @@
     ''' Event - die Werte der Chargengrößen haben sich geändert.
     ''' </summary>
     Private Sub ValuesChanged()
-        Debug.Print("wb_Charge-ValuesChanged-RaiseEvent OnChange " & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
+        'TODO nur für Test-sehr langsam !!
+        'Debug.Print("wb_Charge-ValuesChanged-RaiseEvent OnChange " & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
         RaiseEvent OnChange(Me)
     End Sub
 End Class
