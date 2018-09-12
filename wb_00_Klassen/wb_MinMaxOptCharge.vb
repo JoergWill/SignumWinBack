@@ -9,6 +9,7 @@ Public Class wb_MinMaxOptCharge
     Private _StkGewicht As Double
     Private _TeigGewicht As Double
     Private _ErrorCheck As Boolean = False
+    Private _NoErrorCheck As Boolean = True
     Private _HasChanged As Boolean = False
     Private _ErrorCode As wb_Global.MinMaxOptChargenError
 
@@ -17,10 +18,18 @@ Public Class wb_MinMaxOptCharge
             Return _TeigGewicht
         End Get
         Set(value As String)
+            'TODO nur für Test-sehr langsam !!
+            Debug.Print("wb_MinMaxOptCharge.Teiggewicht.SET " & value & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
             _TeigGewicht = wb_Functions.StrToDouble(value)
+
             MinCharge.TeigGewicht = _TeigGewicht
             MaxCharge.TeigGewicht = _TeigGewicht
             OptCharge.TeigGewicht = _TeigGewicht
+
+            'Werte aktualisieren
+            If _NoErrorCheck Then
+                RaiseError(wb_Global.MinMaxOptChargenError.NoError)
+            End If
         End Set
     End Property
 
@@ -37,8 +46,11 @@ Public Class wb_MinMaxOptCharge
             MinCharge.StkGewicht = _StkGewicht
             MaxCharge.StkGewicht = _StkGewicht
             OptCharge.StkGewicht = _StkGewicht
+
             'Werte aktualisieren
-            RaiseError(wb_Global.MinMaxOptChargenError.NoError)
+            If _NoErrorCheck Then
+                RaiseError(wb_Global.MinMaxOptChargenError.NoError)
+            End If
         End Set
     End Property
 
@@ -70,14 +82,29 @@ Public Class wb_MinMaxOptCharge
     ''' Alle Werte mit Null initialisieren
     ''' </summary>
     Public Sub Invalidate()
-        ErrorCheck = False
+        'Event(Fehler Validierung Daten) sperren
+        _ErrorCheck = False
+        'Event(Aktualisierung) sperren
+        _NoErrorCheck = False
         MinCharge.MengeInkg = 0
         OptCharge.MengeInkg = 0
         MaxCharge.MengeInkg = 0
         TeigGewicht = 0
         StkGewicht = 0
+        'Event(Aktualisierung) wieder freigeben
+        _NoErrorCheck = True
     End Sub
 
+    ''' <summary>
+    ''' Kopiert alle Porperties der übergebenen Klasse OHNE(!) Events auszulösen 
+    ''' </summary>
+    ''' <param name="Chrg"></param>
+    Public Sub CopyFrom(Chrg As wb_MinMaxOptCharge)
+        MinCharge.CopyFrom(Chrg.MinCharge)
+        OptCharge.CopyFrom(Chrg.OptCharge)
+        MaxCharge.CopyFrom(Chrg.MaxCharge)
+        _TeigGewicht = Chrg._TeigGewicht
+    End Sub
     ''' <summary>
     ''' Der Wert für die Minimal-Charge hat sich geändert: 
     '''     - Prüfen ob die Minimal-Charge kleiner als Optimal und/oder Maximal-Charge ist
@@ -96,7 +123,9 @@ Public Class wb_MinMaxOptCharge
             Exit Sub
         End If
         'Min-Charge wurde geändert - kein Fehler
-        RaiseError(wb_Global.MinMaxOptChargenError.NoError)
+        If _NoErrorCheck Then
+            RaiseError(wb_Global.MinMaxOptChargenError.NoError)
+        End If
     End Sub
 
     ''' <summary>
@@ -117,7 +146,9 @@ Public Class wb_MinMaxOptCharge
             Exit Sub
         End If
         'Opt-Charge wurde geändert - kein Fehler
-        RaiseError(wb_Global.MinMaxOptChargenError.NoError)
+        If _NoErrorCheck Then
+            RaiseError(wb_Global.MinMaxOptChargenError.NoError)
+        End If
     End Sub
 
     ''' <summary>
@@ -138,7 +169,9 @@ Public Class wb_MinMaxOptCharge
             Exit Sub
         End If
         'Max-Charge wurde geändert - kein Fehler
-        RaiseError(wb_Global.MinMaxOptChargenError.NoError)
+        If _NoErrorCheck Then
+            RaiseError(wb_Global.MinMaxOptChargenError.NoError)
+        End If
     End Sub
 
     Private Sub RaiseError(ErrCode As wb_Global.MinMaxOptChargenError)

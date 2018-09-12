@@ -46,15 +46,16 @@ Public Class wb_KompRzChargen
         RzNr = Komp.RzNr
         'Komponentendaten aus Datenbank lesen
         Komp.MySQLdbRead(Komp.Nr)
-        'Rezeptnummer und Name
+
+        'Rezeptnummer und Name (Ruft wb_Komponente.GetProduktionsDaten() auf und 
         RezeptNummer = Komp.RezeptNummer
         RezeptName = Komp.RezeptName
         'Liniengruppen
         LinienGruppe = Komp.LinienGruppe
         ArtikelLiniengruppe = Komp.iArtikelLinienGruppe
         'Chargendaten aus Komponentendaten
-        ArtikelChargen = Komp.ArtikelChargen
-        TeigChargen = Komp.TeigChargen
+        ArtikelChargen.CopyFrom(Komp.ArtikelChargen)
+        TeigChargen.CopyFrom(Komp.TeigChargen)
     End Sub
 
     Private Sub InitLinienGruppen()
@@ -70,8 +71,15 @@ Public Class wb_KompRzChargen
     ''' <returns></returns>
     Public Property DataValid As Boolean
         Set(value As Boolean)
-            _DataValid = value
+            'Anzeigefelder ein/ausblenden
             EnableKomponenten(value)
+            'Wenn die Felder nach Deaktivierung wieder sichtbar sind - Anzeige aktualisieren
+            If value Then
+                MinMaxOptArtikelShowValues()
+                MinMaxOptRezeptShowValues()
+            End If
+            'Wert speichern
+            _DataValid = value
         End Set
         Get
             Return _DataValid
@@ -329,7 +337,7 @@ Public Class wb_KompRzChargen
         End If
 
         'Felder neu zeichnen
-        MinMaxRezeptShowValues()
+        MinMaxOptRezeptShowValues()
         'Flag setzen - Daten wurden geändert, speichern notwendig
         TeigChargen.HasChanged = True
         DataIsInvalid()
@@ -393,6 +401,8 @@ Public Class wb_KompRzChargen
     ''' Anzeigen der Artikel-Chargengrößen. Alle Zahlenwerte aus wb_ChargenMinMax in die entsprechenden Textfelder kopieren.
     ''' </summary>
     Private Sub MinMaxOptArtikelShowValues()
+        'TODO nur für Test-sehr langsam !!
+        'Debug.Print("wb_KompRzChargen.MinMaxOptArtikelShowValues ArtikelChargen.Stkgewicht[gr]" & ArtikelChargen.StkGewicht & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
         tStkGewicht.Text = ArtikelChargen.StkGewicht & " gr"
         'Chargengrößen in kg
         tChrgMinkg.Text = ArtikelChargen.MinCharge.MengeInkg & " kg"
@@ -411,8 +421,10 @@ Public Class wb_KompRzChargen
     ''' <summary>
     ''' Anzeigen der Rezept-Chargengrößen. Alle Zahlenwerte aus wb_ChargenMinMax in die entsprechenden Textfelder kopieren.
     ''' </summary>
-    Private Sub MinMaxRezeptShowValues()
-        tRezGesamt.Text = TeigChargen.TeigGewicht & " kg"
+    Private Sub MinMaxOptRezeptShowValues()
+        'TODO nur für Test-sehr langsam !!
+        'Debug.Print("wb_KompRzChargen.MinMaxRezeptShowValues TeigChargen.Teiggewicht[kg]" & TeigChargen.TeigGewicht & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
+        tRezGesamt.Text = ArtikelChargen.TeigGewicht & " kg"
         'Chargengrößen in kg
         tRezMinkg.Text = TeigChargen.MinCharge.MengeInkg & " kg"
         tRezOptkg.Text = TeigChargen.OptCharge.MengeInkg & " kg"

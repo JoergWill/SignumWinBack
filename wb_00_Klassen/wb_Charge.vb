@@ -7,6 +7,19 @@
 
     Public Event OnChange(ByVal sender As Object)
 
+
+    ''' <summary>
+    ''' Kopiert alle Porperties der übergebenen Klasse OHNE(!) Events auszulösen 
+    ''' </summary>
+    ''' <param name="Chrg"></param>
+    Public Sub CopyFrom(Chrg As wb_Charge)
+        _TeigGewicht = Chrg.TeigGewicht
+        _StkGewicht = Chrg.StkGewicht
+        _MengeInkg = Chrg.MengeInkg
+        _MengeInProzent = Chrg.MengeInProzent
+        _MengeInStk = Chrg.MengeInStk
+    End Sub
+
     ''' <summary>
     ''' Teiggewicht (Rezept-Gesamtgewicht) in kg
     ''' </summary>
@@ -61,8 +74,8 @@
             'Chargengröße in [%] neu berechnen
             _MengeInProzent = CalcMengeInProzent()
             'TODO AKTUELLE FEHLERSUCHE
-            Debug.Print("wb_Charge.MengeInkg Stk/kg/Prz/Stkgewicht " & _MengeInStk & "/" & _MengeInkg & "/" & MengeInProzent & "/" & _StkGewicht)
-            Debug.Print("wb_Charge.MengeInkg " & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
+            'Debug.Print("wb_Charge.MengeInkg Stk/kg/Prz/Stkgewicht " & _MengeInStk & "/" & _MengeInkg & "/" & MengeInProzent & "/" & _StkGewicht)
+            'Debug.Print("wb_Charge.MengeInkg " & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
             'Event - Werte haben sich geändert
             ValuesChanged()
         End Set
@@ -137,7 +150,7 @@
             'Chargengröße in [%] neu berechen
             _MengeInProzent = CalcMengeInProzent()
             'TODO DEBUG TEST
-            Debug.Print("wb_Charge.MengeInStk Stk/kg/Prz/Stkgewicht " & _MengeInStk & "/" & _MengeInkg & "/" & MengeInProzent & "/" & _StkGewicht)
+            'Debug.Print("wb_Charge.MengeInStk Stk/kg/Prz/Stkgewicht " & _MengeInStk & "/" & _MengeInkg & "/" & MengeInProzent & "/" & _StkGewicht & "/" & _TeigGewicht)
             'Event - Werte haben sich geändert
             ValuesChanged()
         End Set

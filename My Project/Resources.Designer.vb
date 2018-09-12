@@ -757,6 +757,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nährwerte-Cloud ähnelt.
+        '''</summary>
+        Public ReadOnly Property tpCloudTitelCloud() As String
+            Get
+                Return ResourceManager.GetString("tpCloudTitelCloud", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Rohstoff-Rezept ähnelt.
+        '''</summary>
+        Public ReadOnly Property tpCloudTitelRezept() As String
+            Get
+                Return ResourceManager.GetString("tpCloudTitelRezept", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
         Public ReadOnly Property UpdateDataBase_16x16() As System.Drawing.Bitmap

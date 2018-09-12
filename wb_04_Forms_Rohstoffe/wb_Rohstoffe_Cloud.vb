@@ -67,6 +67,11 @@ Public Class wb_Rohstoffe_Cloud
         Select Case NewTab.Name
 
             Case tpCloudSuchen.Name
+                'Fenster-Titel
+                Me.Text = My.Resources.tpCloudTitelCloud
+                lblCloudID.Visible = False
+                tCloudID.Visible = False
+
                 'HilfeText
                 lblHilfeText.Text = My.Resources.tpCloudSuchenTxt
                 lblHilfeText.ForeColor = System.Drawing.Color.Black
@@ -78,6 +83,11 @@ Public Class wb_Rohstoffe_Cloud
                 Wb_TabControl.SelectedTab = tpCloudSuchen
 
             Case tpCloudGefunden.Name
+                'Fenster-Titel
+                Me.Text = My.Resources.tpCloudTitelCloud
+                lblCloudID.Visible = False
+                tCloudID.Visible = False
+
                 'Ausgabe Ergebnis
                 Dim cnt As Integer = DirectCast(Parameter, wb_nwtCL).cnt
                 Select Case cnt
@@ -104,12 +114,22 @@ Public Class wb_Rohstoffe_Cloud
                 End Select
 
             Case tpCloudAnzeige.Name
+                'Fenster-Titel
+                Me.Text = My.Resources.tpCloudTitelCloud
+                lblCloudID.Visible = True
+                tCloudID.Visible = True
+
                 'Nährwertdaten in Objekt schreiben und anzeigen
                 ShowNwtGrid(DirectCast(Parameter, String))
                 'Anzeige Nährwerte des ausgewählten Rohstoffes
                 Wb_TabControl.SelectedTab = tpCloudAnzeige
 
             Case tpCloudResult.Name
+                'Fenster-Titel
+                Me.Text = My.Resources.tpCloudTitelCloud
+                lblCloudID.Visible = True
+                tCloudID.Visible = True
+
                 'Anzeige Zutatenliste und Bezeichnung
                 tbDeklarationIntern.Text = RohStoff.DeklBezeichungIntern
                 tbDeklarationExtern.Text = RohStoff.DeklBezeichungExtern
@@ -117,6 +137,10 @@ Public Class wb_Rohstoffe_Cloud
                 Wb_TabControl.SelectedTab = tpCloudResult
 
             Case tpRezept.Name
+                'Fenster-Titel
+                Me.Text = My.Resources.tpCloudTitelRezept
+                lblCloudID.Visible = False
+                tCloudID.Visible = False
                 'Daten aus der Komponenten-Klasse lesen
                 KompRzChargen.GetDataFromKomp(RohStoff)
                 'Anzeigen der Werte
@@ -125,6 +149,11 @@ Public Class wb_Rohstoffe_Cloud
                 Wb_TabControl.SelectedTab = tpRezept
 
             Case Else
+                'Fenster-Titel
+                Me.Text = My.Resources.tpCloudTitelCloud
+                lblCloudID.Visible = False
+                tCloudID.Visible = False
+
                 'Rohstoff-Type hat keine Nährwerte
                 lblKeineNwt.Text = My.Resources.tpCloudKompType
                 Wb_TabControl.SelectedTab = tpKompType

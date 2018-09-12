@@ -381,6 +381,16 @@ Die Nährwertdaten und Allergen-Info werden automatisch importiert und anschlies
 Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant kann frei gelassen werden ähnelt.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.tpCloudTitelCloud">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die Nährwerte-Cloud ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.tpCloudTitelRezept">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die Rohstoff-Rezept ähnelt.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.UpdateDataBase_16x16">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -528,7 +538,7 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
  Anzeigen der Artikel-Chargengrößen. Alle Zahlenwerte aus wb_ChargenMinMax in die entsprechenden Textfelder kopieren.
  </summary>
 </member>
-<member name="M:WinBack.wb_KompRzChargen.MinMaxRezeptShowValues">
+<member name="M:WinBack.wb_KompRzChargen.MinMaxOptRezeptShowValues">
  <summary>
  Anzeigen der Rezept-Chargengrößen. Alle Zahlenwerte aus wb_ChargenMinMax in die entsprechenden Textfelder kopieren.
  </summary>
@@ -687,6 +697,12 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
 Ableitung der Klasse wb_DataGridView.
 Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
+</member>
+<member name="M:WinBack.wb_Charge.CopyFrom(WinBack.wb_Charge)">
+ <summary>
+ Kopiert alle Porperties der übergebenen Klasse OHNE(!) Events auszulösen 
+ </summary>
+ <param name="Chrg"></param>
 </member>
 <member name="P:WinBack.wb_Charge.TeigGewicht">
  <summary>
@@ -1187,6 +1203,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <summary>
  Alle Werte mit Null initialisieren
  </summary>
+</member>
+<member name="M:WinBack.wb_MinMaxOptCharge.CopyFrom(WinBack.wb_MinMaxOptCharge)">
+ <summary>
+ Kopiert alle Porperties der übergebenen Klasse OHNE(!) Events auszulösen 
+ </summary>
+ <param name="Chrg"></param>
 </member>
 <member name="M:WinBack.wb_MinMaxOptCharge.CheckMinCharge">
  <summary>

@@ -38,7 +38,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tRohstoffName = New System.Windows.Forms.TextBox()
         Me.lblBezeichnung = New System.Windows.Forms.Label()
         Me.tCloudID = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblCloudID = New System.Windows.Forms.Label()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tpCloudSuchen = New System.Windows.Forms.TabPage()
         Me.btnMail = New System.Windows.Forms.Button()
@@ -125,15 +125,15 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tCloudID.Size = New System.Drawing.Size(136, 20)
         Me.tCloudID.TabIndex = 52
         '
-        'Label2
+        'lblCloudID
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label2.Location = New System.Drawing.Point(21, 50)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(48, 13)
-        Me.Label2.TabIndex = 53
-        Me.Label2.Text = "Cloud-ID"
+        Me.lblCloudID.AutoSize = True
+        Me.lblCloudID.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblCloudID.Location = New System.Drawing.Point(21, 50)
+        Me.lblCloudID.Name = "lblCloudID"
+        Me.lblCloudID.Size = New System.Drawing.Size(48, 13)
+        Me.lblCloudID.TabIndex = 53
+        Me.lblCloudID.Text = "Cloud-ID"
         '
         'Wb_TabControl
         '
@@ -457,6 +457,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         'KompRzChargen
         '
+        Wb_MinMaxOptCharge1.ErrorCheck = False
         Wb_MinMaxOptCharge1.HasChanged = False
         Wb_Charge1.MengeInkg = "0,000"
         Wb_Charge1.MengeInProzent = "0"
@@ -487,6 +488,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.KompRzChargen.RzNr = -1
         Me.KompRzChargen.Size = New System.Drawing.Size(400, 288)
         Me.KompRzChargen.TabIndex = 0
+        Wb_MinMaxOptCharge2.ErrorCheck = False
         Wb_MinMaxOptCharge2.HasChanged = False
         Wb_Charge4.MengeInkg = "0,000"
         Wb_Charge4.MengeInProzent = "0"
@@ -539,7 +541,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(733, 471)
         Me.Controls.Add(Me.tCloudID)
-        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.lblCloudID)
         Me.Controls.Add(Me.tRohstoffNummer)
         Me.Controls.Add(Me.lblNummer)
         Me.Controls.Add(Me.tRohstoffName)
@@ -587,7 +589,7 @@ Partial Class wb_Rohstoffe_Cloud
     Friend WithEvents btnResult_Akt As Windows.Forms.Button
     Friend WithEvents btnDisconnect As Windows.Forms.Button
     Friend WithEvents tCloudID As Windows.Forms.TextBox
-    Friend WithEvents Label2 As Windows.Forms.Label
+    Friend WithEvents lblCloudID As Windows.Forms.Label
     Friend WithEvents tpRezept As Windows.Forms.TabPage
     Friend WithEvents btnResult_OK As Windows.Forms.Button
     Friend WithEvents btnMail As Windows.Forms.Button
