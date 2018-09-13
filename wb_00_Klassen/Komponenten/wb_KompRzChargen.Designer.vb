@@ -57,6 +57,10 @@ Partial Class wb_KompRzChargen
         Me.lblRzeptBezeichnung = New System.Windows.Forms.Label()
         Me.tRezeptNr = New System.Windows.Forms.TextBox()
         Me.lblRezeptNr = New System.Windows.Forms.Label()
+        Me.tBackverlust = New System.Windows.Forms.TextBox()
+        Me.lblBackverlust = New System.Windows.Forms.Label()
+        Me.lblProdVorlauf = New System.Windows.Forms.Label()
+        Me.tProdVorlauf = New System.Windows.Forms.TextBox()
         Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
         Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.pTeigChargen.SuspendLayout()
@@ -67,7 +71,7 @@ Partial Class wb_KompRzChargen
         '
         Me.lblTeigChargen.AutoSize = True
         Me.lblTeigChargen.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblTeigChargen.Location = New System.Drawing.Point(18, 151)
+        Me.lblTeigChargen.Location = New System.Drawing.Point(18, 149)
         Me.lblTeigChargen.Name = "lblTeigChargen"
         Me.lblTeigChargen.Size = New System.Drawing.Size(71, 13)
         Me.lblTeigChargen.TabIndex = 65
@@ -85,7 +89,8 @@ Partial Class wb_KompRzChargen
         Me.pTeigChargen.Controls.Add(Me.tRezMinPrz)
         Me.pTeigChargen.Controls.Add(Me.lblTeigGesamt)
         Me.pTeigChargen.Controls.Add(Me.tRezGesamt)
-        Me.pTeigChargen.Location = New System.Drawing.Point(8, 156)
+        Me.pTeigChargen.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.pTeigChargen.Location = New System.Drawing.Point(8, 141)
         Me.pTeigChargen.Name = "pTeigChargen"
         Me.pTeigChargen.Size = New System.Drawing.Size(151, 122)
         Me.pTeigChargen.TabIndex = 64
@@ -181,7 +186,7 @@ Partial Class wb_KompRzChargen
         'lblOpt
         '
         Me.lblOpt.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblOpt.Location = New System.Drawing.Point(162, 254)
+        Me.lblOpt.Location = New System.Drawing.Point(162, 239)
         Me.lblOpt.Name = "lblOpt"
         Me.lblOpt.Size = New System.Drawing.Size(51, 13)
         Me.lblOpt.TabIndex = 63
@@ -191,7 +196,7 @@ Partial Class wb_KompRzChargen
         'lblMax
         '
         Me.lblMax.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblMax.Location = New System.Drawing.Point(162, 228)
+        Me.lblMax.Location = New System.Drawing.Point(162, 213)
         Me.lblMax.Name = "lblMax"
         Me.lblMax.Size = New System.Drawing.Size(51, 13)
         Me.lblMax.TabIndex = 62
@@ -201,7 +206,7 @@ Partial Class wb_KompRzChargen
         'lblGewicht
         '
         Me.lblGewicht.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblGewicht.Location = New System.Drawing.Point(161, 176)
+        Me.lblGewicht.Location = New System.Drawing.Point(161, 161)
         Me.lblGewicht.Name = "lblGewicht"
         Me.lblGewicht.Size = New System.Drawing.Size(52, 13)
         Me.lblGewicht.TabIndex = 61
@@ -233,7 +238,7 @@ Partial Class wb_KompRzChargen
         Me.pArtikelChargen.Controls.Add(Me.tChrgMinPrz)
         Me.pArtikelChargen.Controls.Add(Me.lblProStk)
         Me.pArtikelChargen.Controls.Add(Me.tStkGewicht)
-        Me.pArtikelChargen.Location = New System.Drawing.Point(215, 156)
+        Me.pArtikelChargen.Location = New System.Drawing.Point(215, 141)
         Me.pArtikelChargen.Name = "pArtikelChargen"
         Me.pArtikelChargen.Size = New System.Drawing.Size(176, 122)
         Me.pArtikelChargen.TabIndex = 59
@@ -341,7 +346,7 @@ Partial Class wb_KompRzChargen
         '
         Me.lblProStk.AutoSize = True
         Me.lblProStk.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblProStk.Location = New System.Drawing.Point(9, 18)
+        Me.lblProStk.Location = New System.Drawing.Point(9, 17)
         Me.lblProStk.Name = "lblProStk"
         Me.lblProStk.Size = New System.Drawing.Size(84, 13)
         Me.lblProStk.TabIndex = 35
@@ -361,7 +366,7 @@ Partial Class wb_KompRzChargen
         'lblMin
         '
         Me.lblMin.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblMin.Location = New System.Drawing.Point(161, 202)
+        Me.lblMin.Location = New System.Drawing.Point(161, 187)
         Me.lblMin.Name = "lblMin"
         Me.lblMin.Size = New System.Drawing.Size(52, 13)
         Me.lblMin.TabIndex = 58
@@ -374,9 +379,9 @@ Partial Class wb_KompRzChargen
         Me.lblLinieArtikel.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.lblLinieArtikel.Location = New System.Drawing.Point(222, 91)
         Me.lblLinieArtikel.Name = "lblLinieArtikel"
-        Me.lblLinieArtikel.Size = New System.Drawing.Size(137, 13)
+        Me.lblLinieArtikel.Size = New System.Drawing.Size(131, 13)
         Me.lblLinieArtikel.TabIndex = 57
-        Me.lblLinieArtikel.Text = "Liniengruppe Artikel-Rezept"
+        Me.lblLinieArtikel.Text = "Liniengruppe Aufarbeitung"
         '
         'lblLinienGruppe
         '
@@ -384,9 +389,9 @@ Partial Class wb_KompRzChargen
         Me.lblLinienGruppe.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.lblLinienGruppe.Location = New System.Drawing.Point(7, 91)
         Me.lblLinienGruppe.Name = "lblLinienGruppe"
-        Me.lblLinienGruppe.Size = New System.Drawing.Size(129, 13)
+        Me.lblLinienGruppe.Size = New System.Drawing.Size(92, 13)
         Me.lblLinienGruppe.TabIndex = 55
-        Me.lblLinienGruppe.Text = "Liniengruppe Teig-Rezept"
+        Me.lblLinienGruppe.Text = "Liniengruppe Teig"
         '
         'BtnRzpShow
         '
@@ -444,6 +449,48 @@ Partial Class wb_KompRzChargen
         Me.lblRezeptNr.TabIndex = 49
         Me.lblRezeptNr.Text = "Rezept-Nr."
         '
+        'tBackverlust
+        '
+        Me.tBackverlust.Location = New System.Drawing.Point(219, 279)
+        Me.tBackverlust.Name = "tBackverlust"
+        Me.tBackverlust.Size = New System.Drawing.Size(66, 20)
+        Me.tBackverlust.TabIndex = 66
+        Me.tBackverlust.TabStop = False
+        Me.tBackverlust.Text = "99.999 %"
+        Me.tBackverlust.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.tBackverlust.WordWrap = False
+        '
+        'lblBackverlust
+        '
+        Me.lblBackverlust.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblBackverlust.Location = New System.Drawing.Point(153, 279)
+        Me.lblBackverlust.Name = "lblBackverlust"
+        Me.lblBackverlust.Size = New System.Drawing.Size(64, 19)
+        Me.lblBackverlust.TabIndex = 67
+        Me.lblBackverlust.Text = "Backverlust"
+        Me.lblBackverlust.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblProdVorlauf
+        '
+        Me.lblProdVorlauf.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblProdVorlauf.Location = New System.Drawing.Point(5, 275)
+        Me.lblProdVorlauf.Name = "lblProdVorlauf"
+        Me.lblProdVorlauf.Size = New System.Drawing.Size(75, 27)
+        Me.lblProdVorlauf.TabIndex = 68
+        Me.lblProdVorlauf.Text = "Vorlauf Produktion"
+        Me.lblProdVorlauf.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'tProdVorlauf
+        '
+        Me.tProdVorlauf.Location = New System.Drawing.Point(86, 279)
+        Me.tProdVorlauf.Name = "tProdVorlauf"
+        Me.tProdVorlauf.Size = New System.Drawing.Size(50, 20)
+        Me.tProdVorlauf.TabIndex = 69
+        Me.tProdVorlauf.TabStop = False
+        Me.tProdVorlauf.Text = "999 h"
+        Me.tProdVorlauf.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.tProdVorlauf.WordWrap = False
+        '
         'cbArtikelLinienGruppe
         '
         Me.cbArtikelLinienGruppe.FormattingEnabled = True
@@ -466,6 +513,10 @@ Partial Class wb_KompRzChargen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.tProdVorlauf)
+        Me.Controls.Add(Me.lblProdVorlauf)
+        Me.Controls.Add(Me.lblBackverlust)
+        Me.Controls.Add(Me.tBackverlust)
         Me.Controls.Add(Me.lblTeigChargen)
         Me.Controls.Add(Me.pTeigChargen)
         Me.Controls.Add(Me.lblOpt)
@@ -485,7 +536,7 @@ Partial Class wb_KompRzChargen
         Me.Controls.Add(Me.tRezeptNr)
         Me.Controls.Add(Me.lblRezeptNr)
         Me.Name = "wb_KompRzChargen"
-        Me.Size = New System.Drawing.Size(400, 288)
+        Me.Size = New System.Drawing.Size(400, 313)
         Me.pTeigChargen.ResumeLayout(False)
         Me.pTeigChargen.PerformLayout()
         Me.pArtikelChargen.ResumeLayout(False)
@@ -532,4 +583,8 @@ Partial Class wb_KompRzChargen
     Friend WithEvents lblRzeptBezeichnung As Windows.Forms.Label
     Friend WithEvents tRezeptNr As Windows.Forms.TextBox
     Friend WithEvents lblRezeptNr As Windows.Forms.Label
+    Friend WithEvents tBackverlust As Windows.Forms.TextBox
+    Friend WithEvents lblBackverlust As Windows.Forms.Label
+    Friend WithEvents lblProdVorlauf As Windows.Forms.Label
+    Friend WithEvents tProdVorlauf As Windows.Forms.TextBox
 End Class

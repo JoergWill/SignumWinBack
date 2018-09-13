@@ -1,8 +1,30 @@
 ﻿Public Class wb_Linien_Global
-    Private Shared LGruppen As New Dictionary(Of String, wb_Global.wb_LinienGruppe)
-    Private Shared Linien As New Dictionary(Of String, wb_Global.wb_Linien)
-    Public Shared LinienGruppen As New SortedList
+    Private Shared _LGruppen As New Dictionary(Of String, wb_Global.wb_LinienGruppe)
+    Private Shared _Linien As New Dictionary(Of String, wb_Global.wb_Linien)
+    Private Shared _LinienGruppen As New SortedList
+    Private Shared _ArtikelLinienGruppen As New SortedList
+    Private Shared _RezeptLinienGruppen As New SortedList
     Public Shared DefaultProdFiliale As Integer = wb_Global.UNDEFINED
+
+    ''' <summary>
+    ''' Alle Liniengruppen mit Index größer oder gleich 100 [wb_global.OffsetBackorte]. Entspricht allen Liniengruppen für die Aufarbeitung
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property ArtikelLinienGruppen As SortedList
+        Get
+            Return _ArtikelLinienGruppen
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Alle Liniengruppen mit Index kleiner 100 [wb_global.OffsetBackorte]. Entspricht allen Liniengruppen für die Teigherstellung
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property RezeptLinienGruppen As SortedList
+        Get
+            Return _RezeptLinienGruppen
+        End Get
+    End Property
 
     ''' <summary>
     ''' Array Liniengruppen aufbauen
@@ -57,8 +79,14 @@
 
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlLinienGruppen)
-        LGruppen.Clear()
-        LinienGruppen.Clear()
+        _LGruppen.Clear()
+
+        'alle Linien-Gruppen
+        _LinienGruppen.Clear()
+        'Rezept - Liniengruppen mit Index < 100 (Teigmacherei)
+        _RezeptLinienGruppen.Clear()
+        'Artikel - Liniengruppen mit Index >= 100 (Produktion/Aufarbeitung)
+        _ArtikelLinienGruppen.Clear()
 
         While winback.Read
             Try
@@ -85,9 +113,16 @@
                 End If
 
                 'zum Dictonary hinzufügen
-                LGruppen.Add(L.LinienGruppe, L)
+                _LGruppen.Add(L.LinienGruppe, L)
                 'SortedList
-                LinienGruppen.Add(L.LinienGruppe, L.Bezeichnung)
+                _LinienGruppen.Add(L.LinienGruppe, L.Bezeichnung)
+
+                'SortedList für Teigmacherei/Produktion-Aufarbeitung
+                If L.LinienGruppe >= wb_Global.OffsetBackorte Then
+                    _ArtikelLinienGruppen.Add(L.LinienGruppe, L.Bezeichnung)
+                Else
+                    _RezeptLinienGruppen.Add(L.LinienGruppe, L.Bezeichnung)
+                End If
             Catch
             End Try
         End While
@@ -105,7 +140,7 @@
 
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlLinien)
-        Linien.Clear()
+        _Linien.Clear()
 
         While winback.Read
             Try
@@ -123,7 +158,7 @@
                     Trace.WriteLine("Tabelle WinBack.Linien muss erweitert werden! (Filiale)")
                 End If
                 'zum Dictonary hinzufügen
-                Linien.Add(Linie.Linie, Linie)
+                _Linien.Add(Linie.Linie, Linie)
             Catch
             End Try
         End While
@@ -137,8 +172,8 @@
     ''' <param name="LinienGruppe"></param>
     ''' <returns></returns>
     Shared Function GetBezeichnung(LinienGruppe As Integer) As String
-        If LGruppen.ContainsKey(LinienGruppe) Then
-            Return LGruppen(LinienGruppe).Bezeichnung & " - " & LinienGruppe.ToString
+        If _LGruppen.ContainsKey(LinienGruppe) Then
+            Return _LGruppen(LinienGruppe).Bezeichnung & " - " & LinienGruppe.ToString
         Else
             Return "- " & LinienGruppe.ToString & " -"
         End If
@@ -151,8 +186,8 @@
     ''' <param name="LinienGruppe"></param>
     ''' <returns></returns>
     Shared Function GetLinieFromLinienGruppe(LinienGruppe As Integer) As Integer
-        If LGruppen.ContainsKey(LinienGruppe) Then
-            Return wb_Functions.StrToInt(LGruppen(LinienGruppe).Linien(0))
+        If _LGruppen.ContainsKey(LinienGruppe) Then
+            Return wb_Functions.StrToInt(_LGruppen(LinienGruppe).Linien(0))
         Else
             Return wb_Global.UNDEFINED
         End If
@@ -165,7 +200,7 @@
     ''' <param name="Linie"></param>
     ''' <returns></returns>
     Friend Shared Function GetLinienGruppeFromLinie(Linie As Integer) As Integer
-        For Each lg In LGruppen
+        For Each lg In _LGruppen
             For Each l As Integer In lg.Value.Linien
                 If l = Linie Then
                     Return lg.Value.LinienGruppe
@@ -181,8 +216,8 @@
     ''' <param name="Linie"></param>
     ''' <returns></returns>
     Shared Function GetFiliale(Linie As Integer) As Integer
-        If Linien.ContainsKey(Linie) Then
-            Return Linien(Linie).Filiale
+        If _Linien.ContainsKey(Linie) Then
+            Return _Linien(Linie).Filiale
         Else
             Return wb_Global.UNDEFINED
         End If

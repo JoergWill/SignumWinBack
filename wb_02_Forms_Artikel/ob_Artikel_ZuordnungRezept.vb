@@ -100,9 +100,9 @@ Public Class ob_Artikel_ZuordnungRezept
         Me.Show()
 
         'ComboBox Liniengruppe Rezepte(Teig) füllen
-        cbLiniengruppe.Fill(wb_Linien_Global.LinienGruppen)
+        cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen)
         'ComboBox Liniengruppe Artikel füllen
-        cbArtikelLinienGruppe.Fill(wb_Linien_Global.LinienGruppen)
+        cbArtikelLinienGruppe.Fill(wb_Linien_Global.ArtikelLinienGruppen)
 
         Return True
     End Function

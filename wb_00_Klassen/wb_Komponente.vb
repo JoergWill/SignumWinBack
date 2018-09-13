@@ -15,6 +15,7 @@ Public Class wb_Komponente
     Private KA_Kurzname As String
     Private LF_Lieferant As String
     Private KO_Backverlust As Double
+    Private KA_ProdVorlauf As Integer
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
@@ -152,6 +153,7 @@ Public Class wb_Komponente
             Return KA_Kurzname
         End Get
     End Property
+
     Public Property Preis As String
         Set(value As String)
             KA_Preis = value
@@ -333,7 +335,7 @@ Public Class wb_Komponente
             _RezeptName = Rezept.RezeptBezeichnung
             _LinienGruppe = Rezept.LinienGruppe
             'Chargengrößen aus Rezept
-            TeigChargen = Rezept.TeigChargen
+            TeigChargen.CopyFrom(Rezept.TeigChargen)
             ArtikelChargen.TeigGewicht = Rezept.RezeptGewicht
             Rezept.Dispose()
             Rezept = Nothing
@@ -371,7 +373,7 @@ Public Class wb_Komponente
             'Teig-Rezeptur
             Dim Rezept As New wb_Rezept(RzNr)
             'geänderte Teigchargen aus Komponenten.Teigchargen sichern (in winback.Rezepte)
-            Rezept.TeigChargen = TeigChargen
+            Rezept.TeigChargen.CopyFrom(TeigChargen)
             Rezept.LinienGruppe = LinienGruppe
             'Rezeptkopfdaten sichern
             Rezept.MySQLdbWrite_Rezept(True)
@@ -492,6 +494,37 @@ Public Class wb_Komponente
             End If
             Return _TextKomponente
         End Get
+    End Property
+
+    ''' <summary>
+    ''' Backverlust in %
+    ''' Der Backverlust wird in der Datenbank im Feld (winback.Komponenten.KO_Temp_Korr) mit Faktor 100 als Integer gespeichern.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Backverlust As Double
+        Get
+            Return KO_Backverlust / 100
+        End Get
+        Set(value As Double)
+            KO_Backverlust = value * 100
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Produktions-Vorlauf in [h].
+    ''' Wird für die Produktionsplanung für Rohstoffe mit anhängender Rezeptur verwendet. Der Produktionsvorlauf
+    ''' definiert, wie weit im Voraus die Produktion für den Rohstoff gestartet werden muss. (Reifezeiten....)
+    ''' 
+    ''' Datenfeld winback.Komponenten.KA_Prod_Linie (Unsigned TinyInt)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property ProdVorlauf As Integer
+        Get
+            Return KA_ProdVorlauf
+        End Get
+        Set(value As Integer)
+            KA_ProdVorlauf = value
+        End Set
     End Property
 
     ''' <summary>
@@ -908,6 +941,9 @@ Public Class wb_Komponente
                 'Backverlust(Rezept im Rezept)
                 Case "KO_Temp_Korr"
                     KO_Backverlust = Value
+                'Produktions-Vorlauf in [h]
+                Case "KA_Prod_Linie"
+                    KA_ProdVorlauf = Value
                 'Index WinBack-Cloud
                 Case "KA_Matchcode"
                     KO_IdxCloud = Value
@@ -1035,6 +1071,7 @@ Public Class wb_Komponente
               "KO_Bezeichnung = '" & Bezeichnung & "'," &
               "KO_Kommentar = '" & Kommentar & "'," &
               "KO_Temp_Korr = '" & KO_Backverlust & "'," &
+              "KA_Prod_Linie = '" & KA_ProdVorlauf & "'," &
               "KA_Matchcode = '" & KO_IdxCloud & "'," &
               "KA_Lagerort = '" & KA_Lagerort & "'," &
               "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &

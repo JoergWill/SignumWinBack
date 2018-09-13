@@ -1084,6 +1084,18 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="p">Interger Parameter-Nummer</param>
  <returns>ktTyp300Param</returns>
 </member>
+<member name="P:WinBack.wb_Linien_Global.ArtikelLinienGruppen">
+ <summary>
+ Alle Liniengruppen mit Index größer oder gleich 100 [wb_global.OffsetBackorte]. Entspricht allen Liniengruppen für die Aufarbeitung
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Linien_Global.RezeptLinienGruppen">
+ <summary>
+ Alle Liniengruppen mit Index kleiner 100 [wb_global.OffsetBackorte]. Entspricht allen Liniengruppen für die Teigherstellung
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Linien_Global.#cctor">
  <summary>
  Array Liniengruppen aufbauen
@@ -1557,6 +1569,23 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Standard-Komponente für Produktions-Stufen.
  Es wird versucht, die erste Komponente mit der passenden Komponenten-Type aus dem Komponenten-Stamm zu lesen. Wenn keine
  passende Komponente gefunden wurde, wird ein Dummy neu angelegt.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Komponente.Backverlust">
+ <summary>
+ Backverlust in %
+ Der Backverlust wird in der Datenbank im Feld (winback.Komponenten.KO_Temp_Korr) mit Faktor 100 als Integer gespeichern.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Komponente.ProdVorlauf">
+ <summary>
+ Produktions-Vorlauf in [h].
+ Wird für die Produktionsplanung für Rohstoffe mit anhängender Rezeptur verwendet. Der Produktionsvorlauf
+ definiert, wie weit im Voraus die Produktion für den Rohstoff gestartet werden muss. (Reifezeiten....)
+ 
+ Datenfeld winback.Komponenten.KA_Prod_Linie (Unsigned TinyInt)
  </summary>
  <returns></returns>
 </member>

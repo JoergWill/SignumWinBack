@@ -486,7 +486,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.KompRzChargen.RezeptName = ""
         Me.KompRzChargen.RezeptNummer = ""
         Me.KompRzChargen.RzNr = -1
-        Me.KompRzChargen.Size = New System.Drawing.Size(400, 288)
+        Me.KompRzChargen.Size = New System.Drawing.Size(400, 342)
         Me.KompRzChargen.TabIndex = 0
         Wb_MinMaxOptCharge2.ErrorCheck = False
         Wb_MinMaxOptCharge2.HasChanged = False

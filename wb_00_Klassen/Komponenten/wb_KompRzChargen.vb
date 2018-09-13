@@ -24,11 +24,7 @@ Public Class wb_KompRzChargen
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub wb_KompRzChargen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Soll nicht ausgeführt werden wenn der Designer läuft.
-        If (System.ComponentModel.LicenseManager.UsageMode <> System.ComponentModel.LicenseUsageMode.Designtime) And Not Me.DesignMode Then
-            'Liniengruppen-Auswahlfelder initialisieren
-            InitLinienGruppen()
-        End If
+
     End Sub
 
     ''' <summary>
@@ -39,9 +35,6 @@ Public Class wb_KompRzChargen
     ''' </summary>
     ''' <param name="Komp"></param>
     Public Sub GetDataFromKomp(ByRef Komp As wb_Komponente)
-        'Berechnung/Prüfung der Chargengrößen abschalten
-        ArtikelChargen.ErrorCheck = False
-        TeigChargen.ErrorCheck = False
         'Rezeptnummer aus Rohstoffdaten
         RzNr = Komp.RzNr
         'Komponentendaten aus Datenbank lesen
@@ -51,8 +44,14 @@ Public Class wb_KompRzChargen
         RezeptNummer = Komp.RezeptNummer
         RezeptName = Komp.RezeptName
         'Liniengruppen
+        InitLinienGruppen()
         LinienGruppe = Komp.LinienGruppe
         ArtikelLiniengruppe = Komp.iArtikelLinienGruppe
+        'Backverlust
+        Backverlust = Komp.Backverlust
+        'Produktions-Vorlauf
+        ProdVorlauf = Komp.ProdVorlauf
+
         'Chargendaten aus Komponentendaten
         ArtikelChargen.CopyFrom(Komp.ArtikelChargen)
         TeigChargen.CopyFrom(Komp.TeigChargen)
@@ -60,9 +59,9 @@ Public Class wb_KompRzChargen
 
     Private Sub InitLinienGruppen()
         'ComboBox Liniengruppe Rezepte(Teig) füllen
-        cbLiniengruppe.Fill(wb_Linien_Global.LinienGruppen)
+        cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen)
         'ComboBox Liniengruppe Artikel füllen
-        cbArtikelLinienGruppe.Fill(wb_Linien_Global.LinienGruppen)
+        cbArtikelLinienGruppe.Fill(wb_Linien_Global.ArtikelLinienGruppen)
     End Sub
 
     ''' <summary>
@@ -139,6 +138,10 @@ Public Class wb_KompRzChargen
             End If
         End Get
         Set(value As Integer)
+            'Initialisierung der Lniengruppen-Dropdown-Einträge
+            If cbArtikelLinienGruppe.Items.Count = 0 Then
+                InitLinienGruppen()
+            End If
             If cbArtikelLinienGruppe IsNot Nothing Then
                 cbArtikelLinienGruppe.SetTextFromKey(value)
             End If
@@ -159,9 +162,39 @@ Public Class wb_KompRzChargen
             End If
         End Get
         Set(value As Integer)
+            'Initialisierung der Lniengruppen-Dropdown-Einträge
+            If cbLiniengruppe.Items.Count = 0 Then
+                InitLinienGruppen()
+            End If
             If cbLiniengruppe IsNot Nothing Then
                 cbLiniengruppe.SetTextFromKey(value)
             End If
+        End Set
+    End Property
+
+    <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Public Property Backverlust As Double
+        Get
+            Return wb_Functions.StrToDouble(tBackverlust.Text)
+        End Get
+        Set(value As Double)
+            If Backverlust > 100 Then
+                value = 100
+            End If
+            tBackverlust.Text = wb_Functions.FormatStr(value.ToString, 3, 2) & " %"
+        End Set
+    End Property
+
+    <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Public Property ProdVorlauf As Integer
+        Get
+            Return wb_Functions.StrToInt(tProdVorlauf.Text)
+        End Get
+        Set(value As Integer)
+            If ProdVorlauf > 127 Then
+                value = 127
+            End If
+            tProdVorlauf.Text = value.ToString("###") & " h"
         End Set
     End Property
 
@@ -365,6 +398,10 @@ Public Class wb_KompRzChargen
         If Not Enable Then
             'Stückgewicht Artikel
             tStkGewicht.Text = ""
+            'Backverlust
+            tBackverlust.Text = ""
+            'Produktions-Vorlauf
+            tProdVorlauf.Text = ""
             'Rezeptnummer (Index)
             RzNr = wb_Global.UNDEFINED
             'Chargengrößen in kg
@@ -403,7 +440,9 @@ Public Class wb_KompRzChargen
     Private Sub MinMaxOptArtikelShowValues()
         'TODO nur für Test-sehr langsam !!
         'Debug.Print("wb_KompRzChargen.MinMaxOptArtikelShowValues ArtikelChargen.Stkgewicht[gr]" & ArtikelChargen.StkGewicht & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
+        'Stückgewicht
         tStkGewicht.Text = ArtikelChargen.StkGewicht & " gr"
+        'Backverlust
         'Chargengrößen in kg
         tChrgMinkg.Text = ArtikelChargen.MinCharge.MengeInkg & " kg"
         tChrgOptkg.Text = ArtikelChargen.OptCharge.MengeInkg & " kg"
