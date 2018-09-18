@@ -120,4 +120,31 @@
   <data name="This" xml:space="preserve">
     <value>Ти</value>
   </data>
+  <data name="tpCloudSuchenTxt" xml:space="preserve">
+    <value>Поиск через WinBack или Datalink связывает исходный материал с соответствующей записью в облаке. Данные о питании и информация о аллергене автоматически импортируются, а затем регулярно обновляются в фоновом режиме. Для обеих служб требуются учетные данные для входа. Поиск выполняется по имени и производителю / поставщику. Полевой поставщик может быть оставлен пустым!</value>
+  </data>
+  <data name="tpCloudSuchenMail" xml:space="preserve">
+    <value>Не найдено соответствующего сырья. Пожалуйста, измените текст поиска или запросите питательные ценности в WinBack по почте!</value>
+  </data>
+  <data name="tpCloudMailSubject" xml:space="preserve">
+    <value>Запросите питательные ценности и ингредиенты!</value>
+  </data>
+  <data name="tpCloudMailText" xml:space="preserve">
+    <value>Дамы и Господа, пожалуйста, найти ингредиенты следующих сырьевых материалов: обозначение согласно данным производителя: [0] Производитель: номер детали у производителя: поставщик: [1] мы просим обязательно для получения подробной информации, если это возможно с спецификации данных листа , а затем данные быстро и правильно в облаке...!</value>
+  </data>
+  <data name="tpCloudEinenRohstoffGefunden" xml:space="preserve">
+    <value>Точно один ресурс, найденный в облаке!</value>
+  </data>
+  <data name="tpCloudRohstoffeGefunden" xml:space="preserve">
+    <value>[0] Найденное сырье в облаке. Выберите подходящее сырье из списка!</value>
+  </data>
+  <data name="tpCloudKompType" xml:space="preserve">
+    <value>Специальное сырье, такое как текстовые компоненты, месильные машины, тесто для отдыха ... не имеет питательной ценности!</value>
+  </data>
+  <data name="tpCloudTitelCloud" xml:space="preserve">
+    <value>Питание факты облако!</value>
+  </data>
+  <data name="tpCloudTitelRezept" xml:space="preserve">
+    <value>Сырье рецепт!</value>
+  </data>
 </root>
