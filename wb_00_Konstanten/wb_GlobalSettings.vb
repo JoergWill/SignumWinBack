@@ -560,6 +560,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _osLaendercode = value
+            setWinBackIni("OrgaBack", "LaenderCode", value)
         End Set
     End Property
 
@@ -572,6 +573,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _osSprachCode = value
+            setWinBackIni("OrgaBack", "SprachCode", value)
         End Set
     End Property
 
