@@ -3,7 +3,112 @@
     Private Shared Einheiten As New Dictionary(Of String, wb_Global.wb_Einheiten)
     Private Shared EinhText As New Dictionary(Of String, wb_Global.wb_Einheiten)
 
+    Private Shared LosArtIdx As New Dictionary(Of Integer, String)
+    Private Shared LosArtText As New Dictionary(Of String, Integer)
+
     Shared Sub New()
+        'Dictionary Einheiten aus winback.Einheiten
+        ReadWinBackEinheiten()
+        'Dictionary LosArt aus dbo.LosArten
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            ReadOrgaBackLosArt()
+        End If
+    End Sub
+
+    Shared Function GetobEinheitNr(eNr As Integer) As Integer
+        If Einheiten.ContainsKey(eNr) Then
+            Return Einheiten(eNr).obNr
+        Else
+            Return wb_Global.obEinheitKilogramm
+        End If
+    End Function
+
+    Shared Function getEinheitFromText(eBez As String) As Integer
+        If EinhText.ContainsKey(eBez) Then
+            Return EinhText(eBez).Einheit
+        Else
+            Return wb_Global.UNDEFINED
+        End If
+    End Function
+
+    Shared Function getobEinheitFromText(eBez As String) As Integer
+        If EinhText.ContainsKey(eBez) Then
+            Return EinhText(eBez).obNr
+        Else
+            Return wb_Global.obEinheitKilogramm
+        End If
+    End Function
+
+    Shared Function getobEinheitFromNr(oNr As Integer, Optional DefaultEinheit As Integer = wb_Global.obEinheitKilogramm) As String
+        If obEinheiten.ContainsKey(oNr) Then
+            Return obEinheiten(oNr).Einheit
+        Else
+            If obEinheiten.ContainsKey(DefaultEinheit) Then
+                Return obEinheiten(DefaultEinheit).Einheit
+            Else
+                Return wb_Global.wbEinheitKilogramm
+            End If
+        End If
+    End Function
+
+    Shared Function getEinheitFromKompType(KompType As wb_Global.KomponTypen) As Integer
+        'TODO Einheiten aus Tabelle KomponParams lesen und zu WinBack.Komponenten-Type einheit zurückmelden
+        'ACHTUNG Kneter-Komponenten !
+        If KompType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
+            Return wb_Global.wbEinheitStk
+        Else
+            Return wb_Global.wbEinheitKilogramm
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Gibt den Text der LosArt zurück. Wenn als Such-Text schon die LosArt als Text übergeben wird,
+    ''' liefert die Funktion den SuchText zurück.
+    ''' Ist die LosArt gleich "Stück" (oder entsprechend der Fremdsprache) oder liefert der Index Null
+    ''' zurück wird als Ergebnis False zurückgegeben, ist die LosArt ungleich "Stück" wird True zurückgegeben.
+    ''' 
+    ''' Wenn die LosArt nicht im Dictionary enthalten ist, wird False zurückgegeben. Die LosArt wird
+    ''' dann nicht geändert.
+    ''' </summary>
+    ''' <param name="LosArt"></param>
+    ''' <returns></returns>
+    Shared Function getLosArtText(ByRef LosArt As String) As String
+        'wenn LosArt ein numerischer Wert ist, wird der Index ermittelt
+        Dim idx = wb_Functions.StrToInt(LosArt)
+
+        'Prüfen ob die LosArt gleich "0" ist. Exit mit False
+        If LosArt = "0" Then
+            LosArt = GetLosArtFromIdx(idx)
+            Return False
+        End If
+
+        'Wenn LosArt ein numerischer Wert ist, wird der entsprechende String ermittelt
+        If idx > 0 Then
+            LosArt = GetLosArtFromIdx(idx)
+            Return True
+        End If
+
+        'LosArt wurde schon als Text übergeben - Prüfen ob der Text gültig ist
+        If LosArtText.ContainsKey(LosArt) Then
+            If LosArtText(LosArt) = 0 Then
+                Return False
+            Else
+                Return True
+            End If
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetLosArtFromIdx(Idx As Integer) As String
+        If LosArtIdx.ContainsKey(Idx) Then
+            Return LosArtIdx(Idx)
+        Else
+            Return ""
+        End If
+    End Function
+
+    Private Shared Sub ReadWinBackEinheiten()
         Dim E As wb_Global.wb_Einheiten = Nothing
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlEinheiten)
@@ -35,52 +140,26 @@
                 EinhText.Add(E.Einheit, E)
             End If
         End While
-
     End Sub
 
-    Shared Function GetobEinheitNr(eNr As Integer) As Integer
-        If Einheiten.ContainsKey(eNr) Then
-            Return Einheiten(eNr).obNr
-        Else
-            Return wb_Global.obEinheitKilogramm
-        End If
-    End Function
+    Private Shared Sub ReadOrgaBackLosArt()
+        Dim LosIdx As Integer
+        Dim LosText As String
 
-    Shared Function getEinheitFromText(eBez As String) As Integer
-        If EinhText.ContainsKey(eBez) Then
-            Return EinhText(eBez).Einheit
-        Else
-            Return wb_Global.UNDEFINED
+        'Datenbank-Verbindung öffnen - MsSQL
+        Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Lese alle Datensätz aus dbo.LosArten
+        If OrgasoftMain.sqlSelect(wb_Sql_Selects.mssqlLosArt) Then
+            While OrgasoftMain.Read
+                LosIdx = OrgasoftMain.iField("LosArt")
+                LosText = OrgasoftMain.sField("Bezeichnung")
+                'Dictionary aufbauen
+                LosArtIdx.Add(LosIdx, LosText)
+                LosArtText.Add(LosText, LosIdx)
+            End While
         End If
-    End Function
+        'Datenbank-Verbindung wieder schliessen
+        OrgasoftMain.Close()
+    End Sub
 
-    Shared Function getobEinheitFromText(eBez As String) As Integer
-        If EinhText.ContainsKey(eBez) Then
-            Return EinhText(eBez).obNr
-        Else
-            Return wb_Global.obEinheitKilogramm
-        End If
-    End Function
-
-    Shared Function getobEinheitFromNr(oNr As String, Optional DefaultEinheit As Integer = wb_Global.obEinheitKilogramm) As String
-        If obEinheiten.ContainsKey(oNr) Then
-            Return obEinheiten(oNr).Einheit
-        Else
-            If obEinheiten.ContainsKey(DefaultEinheit) Then
-                Return obEinheiten(DefaultEinheit).Einheit
-            Else
-                Return wb_Global.wbEinheitKilogramm
-        End If
-        End If
-    End Function
-
-    Shared Function getEinheitFromKompType(KompType As wb_Global.KomponTypen) As Integer
-        'TODO Einheiten aus Tabelle KomponParams lesen und zu WinBack.Komponenten-Type einheit zurückmelden
-        'ACHTUNG Kneter-Komponenten !
-        If KompType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
-            Return wb_Global.wbEinheitStk
-        Else
-            Return wb_Global.wbEinheitKilogramm
-        End If
-    End Function
 End Class

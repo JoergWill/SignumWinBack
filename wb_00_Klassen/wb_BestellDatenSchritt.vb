@@ -84,28 +84,27 @@ Public Class wb_BestellDatenSchritt
     ''' <summary>
     ''' Der Sollwert-Teilung-Text setzt sich zusammen aus Anzahl der Lose, LosArt und Losgröße
     ''' Der String wird aus 3 Werten zusammengesetzt und formatiert.
+    ''' 
+    ''' Ist die LostArt (aus StoredProcedure Produktionsplanung) gleich "Stück" oder der Index der
+    ''' LosArt (aus Tabelle dbo.LosArt) gleich Null (Default-Wert) wird ein Leerstring
+    ''' zurückgeben. 
+    ''' Die LosArt "Stück" macht keinen Sinn !!
     ''' </summary>
     ''' <returns></returns>
     Public Property SollwertTeilungText As String
         Get
-            'Anzahl der Lose
-            _SollwertTeilungText = _AnzahlLose.ToString & " "
-
-            'LosArt (später als Text !!) aus Tabelle [dbo].LosArt
-            Select Case _Losart
-                Case "0"
-                    _Losart = "kg"
-                Case "1"
-                    _Losart = "Blech"
-                Case "2"
-                    _Losart = "Stikken"
-            End Select
-
-            'Losgröße
-            _SollwertTeilungText &= _Losart & " à " & Int(_Losgroesse).ToString & " "
-            'Einheit (Default 'Stück')
-            _SollwertTeilungText &= wb_Einheiten_Global.getobEinheitFromNr(wb_Global.obEinheitStk)
-
+            'LosArt-Text ermitteln (False bei LosArt=Stück)
+            If wb_Einheiten_Global.getLosArtText(_Losart) Then
+                'Anzahl der Lose
+                _SollwertTeilungText = _AnzahlLose.ToString & " "
+                'Losgröße
+                _SollwertTeilungText &= _Losart & " à " & Int(_Losgroesse).ToString & " "
+                'Einheit (Default 'Stück')
+                _SollwertTeilungText &= wb_Einheiten_Global.getobEinheitFromNr(wb_Global.obEinheitStk)
+            Else
+                'LosArt "Stück" macht keinen Sinn
+                _SollwertTeilungText = ""
+            End If
             'Formatierter String
             Return _SollwertTeilungText
         End Get
@@ -165,7 +164,7 @@ Public Class wb_BestellDatenSchritt
     ''' <param name="Name">String - Spalten-Name aus Datenbank</param>
     ''' <param name="Value">Object - Wert aus Datenbank</param>
     ''' <returns></returns>
-    Public Function MsSQLdbRead_Fields(Name As String, Value As Object)
+    Public Function MsSQLdbRead_Fields(Name As String, Value As Object) As Boolean
         'DB-Null aus der Datenbank
         If IsDBNull(Value) Then
             Value = ""
@@ -173,7 +172,7 @@ Public Class wb_BestellDatenSchritt
 
         'Feldname aus der Datenbank
         Try
-            Debug.Print("StoredProcedure Produktionsplanung  " & Name & " / " & Value)
+            'Debug.Print("StoredProcedure Produktionsplanung  " & Name & " / " & Value)
         Catch ex As Exception
         End Try
 
@@ -216,6 +215,20 @@ Public Class wb_BestellDatenSchritt
             End Select
         Catch ex As Exception
         End Try
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Setzen der Variablen für UnitTest
+    ''' </summary>
+    ''' <param name="AnzahlLose"></param>
+    ''' <param name="LosArt"></param>
+    ''' <param name="Losgroesse"></param>
+    ''' <returns></returns>
+    Public Function MsSQLdbRead_Fields(AnzahlLose As Integer, LosArt As String, Losgroesse As Double) As Boolean
+        _AnzahlLose = AnzahlLose
+        _Losart = LosArt
+        _Losgroesse = Losgroesse
         Return True
     End Function
 

@@ -22,14 +22,11 @@ Public Class wb_Admin_Sync
     Dim cntSync_osMissMatch As Integer
     Dim cntSync_osWriteMatch As Integer
     Dim cntSync_SumMatch As Integer
-
-    Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
+    Private _ListFileName As String
 
     Private Sub wb_Admin_Sync_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         'Ausgabe des Ergebnis-Blocks ausblenden
         HideResult()
-        'List und Label-Verzeichnis für die Listen
-        pDialog.ListSubDirectory = "AdminSync"
     End Sub
 
     Private Sub btnSyncUserGruppen_Click(sender As Object, e As EventArgs) Handles btnSyncUserGruppen.Click
@@ -39,7 +36,7 @@ Public Class wb_Admin_Sync
 
         Text = "Synchronisation Datenbank - Benutzergruppen"
         SyncType = wb_Global.SyncType.BenutzerGruppen
-        pDialog.ListFileName = "SyncReport_MitarbeiterGrupppen.lst"
+        _ListFileName = "SyncReport_MitarbeiterGrupppen.lst"
         HideResult()
 
         'Cursor umschalten
@@ -69,7 +66,7 @@ Public Class wb_Admin_Sync
 
         Text = "Synchronisation Datenbank - Mitarbeiter"
         SyncType = wb_Global.SyncType.Benutzer
-        pDialog.ListFileName = "SyncReport_Mitarbeiter.lst"
+        _ListFileName = "SyncReport_Mitarbeiter.lst"
         HideResult()
 
         'Cursor umschalten
@@ -97,7 +94,7 @@ Public Class wb_Admin_Sync
         sColNames.AddRange({"", "Nr", "&WinBack-Artikel", "", "Nr", "&OrgaBack-Artikel", "", "Status"})
         Text = "Synchronisation Datenbank - Artikel"
         SyncType = wb_Global.SyncType.Artikel
-        pDialog.ListFileName = "SyncReport_Artikel.lst"
+        _ListFileName = "SyncReport_Artikel.lst"
         HideResult()
 
         'Cursor umschalten
@@ -127,7 +124,7 @@ Public Class wb_Admin_Sync
         sColNames.AddRange({"", "Nr", "&WinBack-Rohstoff", "", "Nr", "&OrgaBack-Rohstoff", "", "Status"})
         Text = "Synchronisation Datenbank - Rohstoffe"
         SyncType = wb_Global.SyncType.Rohstoffe
-        pDialog.ListFileName = "SyncReport_Rohstoffe.lst"
+        _ListFileName = "SyncReport_Rohstoffe.lst"
         HideResult()
 
         'Cursor umschalten
@@ -457,6 +454,12 @@ Public Class wb_Admin_Sync
     End Sub
 
     Private Sub btnExportPrint_Click(sender As Object, e As EventArgs) Handles btnExportPrint.Click
+        'Drucker-Dialog
+        Dim pDialog As New wb_PrinterDialog(True) 'Drucker-Dialog
+        'List und Label-Verzeichnis für die Listen
+        pDialog.ListSubDirectory = "AdminSync"
+        'Report-File für List&Label-Vorlage
+        pDialog.ListFileName = _ListFileName
         'Erstelle eine generische Liste aus dem Result-Grid
         Dim SyncList As New List(Of wb_SyncItem)
         For Each SyncResultItem As wb_SyncItem In SyncResultGrid.GridArray
@@ -466,6 +469,8 @@ Public Class wb_Admin_Sync
         'An die generische Liste binden
         pDialog.LL.SetDataBinding(SyncList, String.Empty)
         pDialog.ShowDialog()
+        'wieder freigeben
+        pDialog.Close()
     End Sub
 
 End Class

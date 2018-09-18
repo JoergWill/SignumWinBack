@@ -455,25 +455,19 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
  </summary> 
  <remarks></remarks> 
 </member>
-<member name="M:WinBack.wb_KompRzChargen.wb_KompRzChargen_Load(System.Object,System.EventArgs)">
- <summary>
- Komponente wird geladen.
- ComboBox Liniengruppe Rezepte(Teig) und Artikel füllen.
- 
- Wird nur im RunTime-Mode ausgeführt. Wenn "InitLiniengruppe" im Design-Mode ausgeführt wird (Programmieren/Speichern/Laden) wird
- versucht über wb_LinienGlobal die winback.ini zu laden.
- https://stackoverflow.com/questions/73515/how-to-tell-if-net-code-is-being-run-by-visual-studio-designer
- 
- </summary>
- <param name="sender"></param>
- <param name="e"></param>
-</member>
 <member name="M:WinBack.wb_KompRzChargen.GetDataFromKomp(WinBack.wb_Komponente@)">
  <summary>
  Daten aus dem Komponenten-Objekt lesen
  
  Die Komponenten- und Rezeptnummer werden in der Komponenten-Klasse mit übergeben.
  Die Komponentendaten werden mit MySQLdbRead() aus der Datenbank gelesen
+ </summary>
+ <param name="Komp"></param>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.SaveData(WinBack.wb_Komponente@)">
+ <summary>
+ (geänderte) Daten wieder in das Komponenten-Objekt schreiben.
+ Die Werte für Rezeptnummer, Mehlzusammensetzung und Artikel-Liniengruppe werden in OrgaBack-MFF zurückgeschrieben
  </summary>
  <param name="Komp"></param>
 </member>
@@ -523,6 +517,20 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
 <member name="M:WinBack.wb_KompRzChargen.BtnRzpt_Click(System.Object,System.EventArgs)">
  <summary>
  Auswahl Rezeptur. Öffnet ein Auswahlfenster mit der Rezeptliste
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.cbLiniengruppe_SelectionChangeCommitted(System.Object,System.EventArgs)">
+ <summary>
+ Das Auswahlfeld Liniengruppe (DropDown) wurde geändert. Flag setzen-Daten müssen gespeichert werden.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.cbArtikelLinienGruppe_SelectionChangeCommitted(System.Object,System.EventArgs)">
+ <summary>
+ Das Auswahlfeld ArtikelLiniengruppe (DropDown) wurde geändert. Flag setzen-Daten müssen gespeichert werden.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -594,6 +602,11 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
  <summary>
  Der Sollwert-Teilung-Text setzt sich zusammen aus Anzahl der Lose, LosArt und Losgröße
  Der String wird aus 3 Werten zusammengesetzt und formatiert.
+ 
+ Ist die LostArt (aus StoredProcedure Produktionsplanung) gleich "Stück" oder der Index der
+ LosArt (aus Tabelle dbo.LosArt) gleich Null (Default-Wert) wird ein Leerstring
+ zurückgeben. 
+ Die LosArt "Stück" macht keinen Sinn !!
  </summary>
  <returns></returns>
 </member>
@@ -630,6 +643,15 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
  </summary>
  <param name="Name">String - Spalten-Name aus Datenbank</param>
  <param name="Value">Object - Wert aus Datenbank</param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_BestellDatenSchritt.MsSQLdbRead_Fields(System.Int32,System.String,System.Double)">
+ <summary>
+ Setzen der Variablen für UnitTest
+ </summary>
+ <param name="AnzahlLose"></param>
+ <param name="LosArt"></param>
+ <param name="Losgroesse"></param>
  <returns></returns>
 </member>
 <member name="T:WinBack.wb_ChangeLog">
@@ -819,6 +841,19 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
      - wb_Global.SysncState.OrgaBackUpdate   - Datensatz ist in beiden Datenbanken vorhanden und muss in OrgaBack aktualisiert werden
      - wb_Global.SysncState.WinBackUpdate    - Datensatz ist in beiden Datenbanken vorhanden und muss in WinBack aktualisiert werden
  </summary>
+</member>
+<member name="M:WinBack.wb_Einheiten_Global.getLosArtText(System.String@)">
+ <summary>
+ Gibt den Text der LosArt zurück. Wenn als Such-Text schon die LosArt als Text übergeben wird,
+ liefert die Funktion den SuchText zurück.
+ Ist die LosArt gleich "Stück" (oder entsprechend der Fremdsprache) oder liefert der Index Null
+ zurück wird als Ergebnis False zurückgegeben, ist die LosArt ungleich "Stück" wird True zurückgegeben.
+ 
+ Wenn die LosArt nicht im Dictionary enthalten ist, wird False zurückgegeben. Die LosArt wird
+ dann nicht geändert.
+ </summary>
+ <param name="LosArt"></param>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_KomponParam200.MySQLdbUpdate(System.Int32,WinBack.wb_Sql@)">
  <summary>
@@ -1121,6 +1156,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 <member name="M:WinBack.wb_Linien_Global.GetLinieFromLinienGruppe(System.Int32)">
  <summary>
  Gibt die erste Produktions-Linie der Liniengruppe zurück.
+ </summary>
+ <param name="LinienGruppe"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Linien_Global.GetKurzNameFromLinienGruppe(System.Int32)">
+ <summary>
+ Gibt den Kurznamen der Liniengruppe zurück.
  </summary>
  <param name="LinienGruppe"></param>
  <returns></returns>
@@ -2487,6 +2529,22 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_Produktionsschritt.Tour">
+ <summary>
+ Gibt die Tour-Nummer aus der Produktions-Planung zurück. Ist als Tour-Nummer 0 eingetragen, wird 
+ ein Leer-String zurückgegeben
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Produktionsschritt.setSortKriterium">
+ <summary>
+ Setzt die Variablen SortKriteriumBackPlan und SortKriteriumProPlan sobald sich eine der Eingangs-Properties ändert. Über _SortOrder wird dann die 
+ entsprechende Variable zur Sortierung ausgewählt.
+ 
+     BackPlan - Sortierung nach ArtikelLinienGruppe, Rezeptnummer, Artikelnummer
+     ProdPlan - Sortierung nach Rezeptnummer, Chargenteiler, Tour, Artikelnummer
+ </summary>
+</member>
 <member name="P:WinBack.wb_Produktionsschritt.SortKriterium">
  <summary>
  Datenfeld für Sortierung der Liste
@@ -3763,13 +3821,11 @@ Text aus Datenbank lesen - Übersetzung
  </returns>
  <remarks></remarks>
 </member>
-<member name="M:WinBack.ob_Artikel_ZuordnungRezept.DataIsInvalid">
+<member name="M:WinBack.ob_Artikel_ZuordnungRezept.KomRzChargen_DataInvalidated">
  <summary>
- Die Daten im Fenster haben sich durch Benutzer-Eingabe geändert.
- Flag setzen (DataHasChanged). Über den Event DataInvalidated wird dem Haupt-Fenster mitgeteilt, dass die Daten vor dem Schliessen
- oder Löschen des Fensters gesichert werden müssen.
- 
- setzt das Flag _Extendee.Changed in ob_Artikel_DockingExtension
+ Event Daten wurden geändert von wb_KompRZChargen wird weitergegen an ob_Artikel_DockingExtension.
+ Setzt dort das Flag _Extendee.Changed. Damit wird beim Schliessen des Artikelfensters die Abfrage
+ "Daten wurden geändert Speichern Ja/Nein/Abbrechen" ausgelöst.
  </summary>
 </member>
 <member name="P:WinBack.ob_Artikel_DockingExtension.ContextTabs">
@@ -6046,6 +6102,16 @@ Datenbank-Verbindung schliessen
  <param name="LogName">Name of Log (System, Application; Security is read-only) If you specify a non-existent log, the log will be created</param>
  <returns></returns>
  <remarks></remarks>
+</member>
+<member name="M:WinBack.wb_Admin_UpdateDatabase.UpdateSqlMandant(System.String)">
+ <summary>
+ Tausch im sql-Kommando die Datenbank-Bezeichnungen
+     "use winback" 
+     "use wbdaten"
+ gegen die entsprechende Datenbank aus
+ </summary>
+ <param name="sql"></param>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_Admin_Sync.FindMatches(WinBack.wb_Sync@)">
  <summary>

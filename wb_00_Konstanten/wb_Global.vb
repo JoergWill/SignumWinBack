@@ -497,6 +497,7 @@
     Public Structure wb_LinienGruppe
         Public LinienGruppe As Integer
         Public Bezeichnung As String
+        Public KurzName As String
         Public Linien As Array
         Public Abteilung As String
         Public BackZettelDrucken As String

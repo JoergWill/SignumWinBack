@@ -136,7 +136,7 @@ Public Class wb_Planung_Liste
         Produktion.RootProduktionsSchritt.SortBackZettel()
 
         'Druck-Daten
-        Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
+        Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
         pDialog.LL_KopfZeile_1 = "für " & dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
         pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
 
@@ -152,7 +152,7 @@ Public Class wb_Planung_Liste
         Produktion.RootProduktionsSchritt.SortBackZettel()
 
         'Druck-Daten
-        Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
+        Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
         pDialog.LL_KopfZeile_1 = "für " & dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
         pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
 

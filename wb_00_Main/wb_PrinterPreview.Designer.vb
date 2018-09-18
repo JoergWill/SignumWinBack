@@ -27,7 +27,6 @@ Partial Class wb_PrinterPreview
         Me.components = New System.ComponentModel.Container()
         Me.LLPreview = New combit.ListLabel22.ListLabelPreviewControl(Me.components)
         Me.BtnPrint = New System.Windows.Forms.Button()
-        Me.BtnPrintSelect = New System.Windows.Forms.Button()
         Me.BtnAbbruch = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
@@ -77,27 +76,17 @@ Partial Class wb_PrinterPreview
         'BtnPrint
         '
         Me.BtnPrint.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnPrint.Location = New System.Drawing.Point(610, 509)
+        Me.BtnPrint.Location = New System.Drawing.Point(711, 509)
         Me.BtnPrint.Name = "BtnPrint"
         Me.BtnPrint.Size = New System.Drawing.Size(96, 38)
         Me.BtnPrint.TabIndex = 6
         Me.BtnPrint.Text = "Drucken"
         Me.BtnPrint.UseVisualStyleBackColor = True
         '
-        'BtnPrintSelect
-        '
-        Me.BtnPrintSelect.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnPrintSelect.Location = New System.Drawing.Point(712, 509)
-        Me.BtnPrintSelect.Name = "BtnPrintSelect"
-        Me.BtnPrintSelect.Size = New System.Drawing.Size(96, 38)
-        Me.BtnPrintSelect.TabIndex = 7
-        Me.BtnPrintSelect.Text = "Drucken..."
-        Me.BtnPrintSelect.UseVisualStyleBackColor = True
-        '
         'BtnAbbruch
         '
         Me.BtnAbbruch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnAbbruch.Location = New System.Drawing.Point(814, 509)
+        Me.BtnAbbruch.Location = New System.Drawing.Point(813, 509)
         Me.BtnAbbruch.Name = "BtnAbbruch"
         Me.BtnAbbruch.Size = New System.Drawing.Size(96, 38)
         Me.BtnAbbruch.TabIndex = 8
@@ -110,7 +99,6 @@ Partial Class wb_PrinterPreview
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(922, 559)
         Me.Controls.Add(Me.BtnAbbruch)
-        Me.Controls.Add(Me.BtnPrintSelect)
         Me.Controls.Add(Me.BtnPrint)
         Me.Controls.Add(Me.LLPreview)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -122,6 +110,5 @@ Partial Class wb_PrinterPreview
 
     Public WithEvents LLPreview As combit.ListLabel22.ListLabelPreviewControl
     Friend WithEvents BtnPrint As Windows.Forms.Button
-    Friend WithEvents BtnPrintSelect As Windows.Forms.Button
     Friend WithEvents BtnAbbruch As Windows.Forms.Button
 End Class

@@ -11,11 +11,21 @@ Imports combit.ListLabel22
 Public Class wb_PrinterDialog
     Private _ListSubDirectory As String
     Private _ListFileName As String
+    Private _ExcelExport As Boolean = False
 
     Private _LL_KopfZeile_1 As String = ""
     Private _LL_KopfZeile_2 As String = ""
 
     Public WithEvents LL As New ListLabel()
+
+    Public Sub New(ExcelExport As Boolean)
+
+        ' Dieser Aufruf ist für den Designer erforderlich.
+        InitializeComponent()
+
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        _ExcelExport = ExcelExport
+    End Sub
 
     ''' <summary>
     ''' Name des Unter-Verzeichnis für die ListUndLabel-Report-Files
@@ -190,7 +200,14 @@ Public Class wb_PrinterDialog
         End If
 
         'Vorschau (Miniatur) anzeigen
-        'ShowPreview()
+        If Not _ExcelExport Then
+            ShowPreview()
+            btnExportExcel.Enabled = False
+            gbVorschau.Visible = True
+        Else
+            btnExportExcel.Enabled = True
+            gbVorschau.Visible = False
+        End If
     End Sub
 
     ''' <summary>
@@ -198,7 +215,6 @@ Public Class wb_PrinterDialog
     ''' geschlossen und eine Fehlermeldung ausgegeben.
     ''' </summary>
     Private Sub ShowPreview()
-
         'Preview anzeigen
         LL.PreviewControl = LLPreview
         LL.AutoDestination = LlPrintMode.PreviewControl

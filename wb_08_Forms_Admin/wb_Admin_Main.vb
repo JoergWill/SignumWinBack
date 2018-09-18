@@ -116,13 +116,13 @@ Public Class wb_Admin_Main
     End Sub
 
     Private Sub btnListUndLabelDesigner()
-        Dim pDialog As New wb_PrinterDialog 'Drucker-Dialog
+        Dim pDialog As New wb_PrinterDialog(True) 'Drucker-Dialog
         Dim gList As New List(Of Object)
         pDialog.LL.DataSource = gList
         pDialog.ListSubDirectory = ""
         pDialog.ListFileName = "wbStandard.lst"
         pDialog.LL.AutoDialogTitle = "Vorlage"
-        pDialog.LL.Design()
+        pDialog.ShowDialog()
     End Sub
 
     Private Sub btnEditKonfig()

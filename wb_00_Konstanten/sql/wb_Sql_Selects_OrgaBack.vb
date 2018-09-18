@@ -61,4 +61,7 @@
     Public Const mssqlInsertProduktionsDaten = "INSERT INTO [dbo].[ProduzierteWare] (FilialNr, ProduktionsDatum, SatzTyp, ArtikelNr, " &
                                                "Einheit, Farbe, Groesse, Menge, ChargenNr, HaltbarkeitsDatum) VALUES ([0])"
 
+    'Sql-Statement Abfrage dbo.LosArt
+    Public Const mssqlLosArt = "Select * FROM [dbo].[LosArten]"
+
 End Class

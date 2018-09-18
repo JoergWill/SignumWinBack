@@ -13,21 +13,6 @@ Public Class wb_KompRzChargen
     Private _RzNr As Integer = wb_Global.UNDEFINED
 
     ''' <summary>
-    ''' Komponente wird geladen.
-    ''' ComboBox Liniengruppe Rezepte(Teig) und Artikel füllen.
-    ''' 
-    ''' Wird nur im RunTime-Mode ausgeführt. Wenn "InitLiniengruppe" im Design-Mode ausgeführt wird (Programmieren/Speichern/Laden) wird
-    ''' versucht über wb_LinienGlobal die winback.ini zu laden.
-    ''' https://stackoverflow.com/questions/73515/how-to-tell-if-net-code-is-being-run-by-visual-studio-designer
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub wb_KompRzChargen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
-    ''' <summary>
     ''' Daten aus dem Komponenten-Objekt lesen
     ''' 
     ''' Die Komponenten- und Rezeptnummer werden in der Komponenten-Klasse mit übergeben.
@@ -40,7 +25,7 @@ Public Class wb_KompRzChargen
         'Komponentendaten aus Datenbank lesen
         Komp.MySQLdbRead(Komp.Nr)
 
-        'Rezeptnummer und Name (Ruft wb_Komponente.GetProduktionsDaten() auf und 
+        'Rezeptnummer und Name (Ruft wb_Komponente.GetProduktionsDaten() auf
         RezeptNummer = Komp.RezeptNummer
         RezeptName = Komp.RezeptName
         'Liniengruppen
@@ -55,6 +40,26 @@ Public Class wb_KompRzChargen
         'Chargendaten aus Komponentendaten
         ArtikelChargen.CopyFrom(Komp.ArtikelChargen)
         TeigChargen.CopyFrom(Komp.TeigChargen)
+    End Sub
+
+    ''' <summary>
+    ''' (geänderte) Daten wieder in das Komponenten-Objekt schreiben.
+    ''' Die Werte für Rezeptnummer, Mehlzusammensetzung und Artikel-Liniengruppe werden in OrgaBack-MFF zurückgeschrieben
+    ''' </summary>
+    ''' <param name="Komp"></param>
+    Public Sub SaveData(ByRef Komp As wb_Komponente)
+        'Backort/Aufarbeitung in MFF200
+        Komp.iArtikelLinienGruppe = ArtikelLiniengruppe
+        'Rezept-Nr in MFF 201
+        Komp.RzNr = RzNr
+        'Rezeptnummer(alpha) in MFF202
+        Komp.RezeptNummer = RezeptNummer
+        'Rezeptbezeichnung in MFF203
+        Komp.RezeptName = RezeptName
+
+        'Chargengrößen (werden mit wb_Komponente.UpdateDB() gesichert)
+        Komp.TeigChargen.CopyFrom(TeigChargen)
+        Komp.ArtikelChargen.CopyFrom(ArtikelChargen)
     End Sub
 
     Private Sub InitLinienGruppen()
@@ -227,6 +232,27 @@ Public Class wb_KompRzChargen
         End If
     End Sub
 
+    ''' <summary>
+    ''' Das Auswahlfeld Liniengruppe (DropDown) wurde geändert. Flag setzen-Daten müssen gespeichert werden.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cbLiniengruppe_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbLiniengruppe.SelectionChangeCommitted
+        'Flag setzen - Daten wurden geändert, speichern notwendig
+        DataIsInvalid()
+    End Sub
+
+    ''' <summary>
+    ''' Das Auswahlfeld ArtikelLiniengruppe (DropDown) wurde geändert. Flag setzen-Daten müssen gespeichert werden.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cbArtikelLinienGruppe_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbArtikelLinienGruppe.SelectionChangeCommitted
+        'Flag setzen - Daten wurden geändert, speichern notwendig
+        DataIsInvalid()
+    End Sub
+
+
 #Region "Änderung Chargen"
     Private Sub tStkGewicht_Leave(sender As Object, e As EventArgs) Handles tStkGewicht.Leave
         'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
@@ -345,8 +371,6 @@ Public Class wb_KompRzChargen
             If OnErrorSetFocus IsNot Nothing Then
                 OnErrorSetFocus.Focus()
             End If
-            'TODO nur für Test-sehr langsam !!
-            Debug.Print("wb_KompRzChargen.OnErrorMinMaxOptArtikel " & ArtikelChargen.ErrorCode & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
             'Fehlermeldung entsprechend der Eingabe-Felder ausgeben
             MsgBox(wb_Functions.MinMaxOptChargeToString(ArtikelChargen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Artikel-Chargengrößen")
         End If
@@ -363,8 +387,6 @@ Public Class wb_KompRzChargen
             If OnErrorSetFocus IsNot Nothing Then
                 OnErrorSetFocus.Focus()
             End If
-            'TODO nur für Test-sehr langsam !!
-            Debug.Print("wb_KompRzChargen.OnErrorMinMaxOptTeig " & TeigChargen.ErrorCode & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
             'Fehlermeldung entsprechend der Eingabe-Felder ausgeben
             MsgBox(wb_Functions.MinMaxOptChargeToString(TeigChargen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Rezept-Chargengrößen")
         End If
@@ -381,7 +403,7 @@ Public Class wb_KompRzChargen
     ''' Enable/Disable der einzelnen Formular-Steuerelemente
     ''' </summary>
     ''' <param name="Enable"></param>
-    Private Sub EnableKomponenten(Enable As Boolean)
+    Public Sub EnableKomponenten(Enable As Boolean)
         'Button Rezept öffnen/auswählen
         BtnRzpShow.Enabled = Enable
         BtnRzpt.Enabled = Enable
@@ -438,8 +460,6 @@ Public Class wb_KompRzChargen
     ''' Anzeigen der Artikel-Chargengrößen. Alle Zahlenwerte aus wb_ChargenMinMax in die entsprechenden Textfelder kopieren.
     ''' </summary>
     Private Sub MinMaxOptArtikelShowValues()
-        'TODO nur für Test-sehr langsam !!
-        'Debug.Print("wb_KompRzChargen.MinMaxOptArtikelShowValues ArtikelChargen.Stkgewicht[gr]" & ArtikelChargen.StkGewicht & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
         'Stückgewicht
         tStkGewicht.Text = ArtikelChargen.StkGewicht & " gr"
         'Backverlust
@@ -461,8 +481,6 @@ Public Class wb_KompRzChargen
     ''' Anzeigen der Rezept-Chargengrößen. Alle Zahlenwerte aus wb_ChargenMinMax in die entsprechenden Textfelder kopieren.
     ''' </summary>
     Private Sub MinMaxOptRezeptShowValues()
-        'TODO nur für Test-sehr langsam !!
-        'Debug.Print("wb_KompRzChargen.MinMaxRezeptShowValues TeigChargen.Teiggewicht[kg]" & TeigChargen.TeigGewicht & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
         tRezGesamt.Text = ArtikelChargen.TeigGewicht & " kg"
         'Chargengrößen in kg
         tRezMinkg.Text = TeigChargen.MinCharge.MengeInkg & " kg"
@@ -482,5 +500,4 @@ Public Class wb_KompRzChargen
     Private Sub DataIsInvalid()
         RaiseEvent DataInvalidated()
     End Sub
-
 End Class

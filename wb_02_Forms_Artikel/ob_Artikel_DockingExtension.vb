@@ -133,7 +133,6 @@ Public Class ob_Artikel_DockingExtension
         'Artikel-Informationen in Klasse Komponenten einlesen
         bSortimentIstProduktion = GetKomponentenDaten()
         'Sub-Fenster WinBack aktualisieren
-        Debug.Print("Article_DockingExtension Found")
         If bSortimentIstProduktion Then
             Debug.Print("Article_DockingExtension Found - Sortiment ist Produktion")
             Extendee_ExecuteCommand("wbFOUND", Komponente)
@@ -196,7 +195,9 @@ Public Class ob_Artikel_DockingExtension
         Debug.Print("Article_DockingExtension Committed")
 
         If bSortimentIstProduktion Then
-            Debug.Print("WinBack Artikel")
+            'Daten aus Unterfenster sichern
+            Extendee_ExecuteCommand("wbSAVE", Komponente)
+            'Update der OrgaBack-Daten (Artikelnummer/Name/Kommentar)
             UpdateKomponentenDaten()
             'Komponentendaten in Datenbank sichern
             Komponente.UpdateDB()
@@ -530,7 +531,9 @@ Public Class ob_Artikel_DockingExtension
         Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
 
         'Update aller in WinBack geänderten Daten
+        MFFValue(oFil, wb_Global.MFF_KO_Nr) = Komponente.Nr
         MFFValue(oFil, wb_Global.MFF_RezeptNummer) = Komponente.RezeptNummer
+        MFFValue(oFil, wb_Global.MFF_RezeptName) = Komponente.RezeptName
         MFFValue(oFil, wb_Global.MFF_MehlZusammensetzung) = Komponente.Mehlzusammensetzung
         MFFValue(oFil, wb_Global.MFF_ProduktionsLinie) = Komponente.sArtikeLinienGruppe
     End Sub

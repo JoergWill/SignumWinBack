@@ -71,7 +71,7 @@ Partial Class wb_KompRzChargen
         '
         Me.lblTeigChargen.AutoSize = True
         Me.lblTeigChargen.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblTeigChargen.Location = New System.Drawing.Point(18, 149)
+        Me.lblTeigChargen.Location = New System.Drawing.Point(18, 142)
         Me.lblTeigChargen.Name = "lblTeigChargen"
         Me.lblTeigChargen.Size = New System.Drawing.Size(71, 13)
         Me.lblTeigChargen.TabIndex = 65
@@ -217,7 +217,7 @@ Partial Class wb_KompRzChargen
         '
         Me.lblArtikelChargen.AutoSize = True
         Me.lblArtikelChargen.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblArtikelChargen.Location = New System.Drawing.Point(225, 150)
+        Me.lblArtikelChargen.Location = New System.Drawing.Point(225, 143)
         Me.lblArtikelChargen.Name = "lblArtikelChargen"
         Me.lblArtikelChargen.Size = New System.Drawing.Size(79, 13)
         Me.lblArtikelChargen.TabIndex = 60

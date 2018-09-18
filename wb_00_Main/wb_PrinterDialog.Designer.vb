@@ -29,14 +29,14 @@ Partial Class wb_PrinterDialog
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.cbPrinterAuswahl = New System.Windows.Forms.ComboBox()
         Me.BtnPrinterDialog = New System.Windows.Forms.Button()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.gbVorschau = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.LLPreview = New combit.ListLabel22.ListLabelPreviewControl(Me.components)
         Me.BtnVorschau = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
+        Me.gbVorschau.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -99,16 +99,16 @@ Partial Class wb_PrinterDialog
         Me.BtnPrinterDialog.Text = "Drucken..."
         Me.BtnPrinterDialog.UseVisualStyleBackColor = True
         '
-        'GroupBox2
+        'gbVorschau
         '
-        Me.GroupBox2.Controls.Add(Me.TableLayoutPanel1)
-        Me.GroupBox2.Controls.Add(Me.LLPreview)
-        Me.GroupBox2.Location = New System.Drawing.Point(191, 115)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(229, 287)
-        Me.GroupBox2.TabIndex = 7
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Vorschau"
+        Me.gbVorschau.Controls.Add(Me.TableLayoutPanel1)
+        Me.gbVorschau.Controls.Add(Me.LLPreview)
+        Me.gbVorschau.Location = New System.Drawing.Point(191, 115)
+        Me.gbVorschau.Name = "gbVorschau"
+        Me.gbVorschau.Size = New System.Drawing.Size(229, 287)
+        Me.gbVorschau.TabIndex = 7
+        Me.gbVorschau.TabStop = False
+        Me.gbVorschau.Text = "Vorschau"
         '
         'TableLayoutPanel1
         '
@@ -204,7 +204,7 @@ Partial Class wb_PrinterDialog
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(435, 414)
         Me.Controls.Add(Me.BtnVorschau)
-        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.gbVorschau)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.btnExportExcel)
         Me.Controls.Add(Me.btnEditVorlage)
@@ -216,7 +216,7 @@ Partial Class wb_PrinterDialog
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Drucken/Exportieren"
         Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox2.ResumeLayout(False)
+        Me.gbVorschau.ResumeLayout(False)
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -227,7 +227,7 @@ Partial Class wb_PrinterDialog
     Friend WithEvents GroupBox1 As Windows.Forms.GroupBox
     Friend WithEvents cbPrinterAuswahl As Windows.Forms.ComboBox
     Friend WithEvents BtnPrinterDialog As Windows.Forms.Button
-    Friend WithEvents GroupBox2 As Windows.Forms.GroupBox
+    Friend WithEvents gbVorschau As Windows.Forms.GroupBox
     Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
     Friend WithEvents Cancel_Button As Windows.Forms.Button
     Friend WithEvents OK_Button As Windows.Forms.Button

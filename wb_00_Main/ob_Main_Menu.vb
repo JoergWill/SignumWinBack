@@ -306,6 +306,11 @@ Public Class ob_Main_Menu
         wb_GlobalSettings.MsSQLMain = TryCast(oSetting.GetSetting("Datenbank.Hauptdatenbank"), String)
         'Signum.OrgaSoft.Common.Settings.Datenbank.VerwaltungsDatenbank
         wb_GlobalSettings.MsSQLAdmn = TryCast(oSetting.GetSetting("Datenbank.VerwaltungsDatenbank"), String)
+
+        'Signum Default-Land
+        'Signum Default-Sprache
+
+
         'Programm-Version OrgaBack
         Dim PVersion = Assembly.GetEntryAssembly().GetName().Version
 

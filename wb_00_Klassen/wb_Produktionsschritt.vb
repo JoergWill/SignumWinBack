@@ -223,7 +223,7 @@ Public Class wb_Produktionsschritt
             If _LinienGruppe = wb_Global.LinienGruppeSauerteig Then
                 Return "ST"
             ElseIf _LinienGruppe > 0 Then
-                Return _LinienGruppe
+                Return wb_Linien_Global.GetKurzNameFromLinienGruppe(_LinienGruppe)
             Else
                 Return ""
             End If
@@ -238,7 +238,11 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeTour As String
         Get
-            Return _Tour
+            If _Tour = "0" Then
+                Return "-"
+            Else
+                Return _Tour
+            End If
         End Get
     End Property
 
@@ -495,7 +499,7 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As Integer)
             _LinienGruppe = value
-            setSortKriterium()
+            'setSortKriterium()
         End Set
     End Property
 
@@ -511,6 +515,7 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As Integer)
             _ArtikelLinienGruppe = value
+            setSortKriterium()
         End Set
     End Property
 
@@ -535,9 +540,18 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Gibt die Tour-Nummer aus der Produktions-Planung zurück. Ist als Tour-Nummer 0 eingetragen, wird 
+    ''' ein Leer-String zurückgegeben
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Tour As String
         Get
-            Return _Tour
+            If _Tour = "0" Then
+                Return ""
+            Else
+                Return _Tour
+            End If
         End Get
         Set(value As String)
             _Tour = value
@@ -545,10 +559,17 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Setzt die Variablen SortKriteriumBackPlan und SortKriteriumProPlan sobald sich eine der Eingangs-Properties ändert. Über _SortOrder wird dann die 
+    ''' entsprechende Variable zur Sortierung ausgewählt.
+    ''' 
+    '''     BackPlan - Sortierung nach ArtikelLinienGruppe, Rezeptnummer, Artikelnummer
+    '''     ProdPlan - Sortierung nach Rezeptnummer, Chargenteiler, Tour, Artikelnummer
+    ''' </summary>
     Private Sub setSortKriterium()
         'Sortieren Backplan
         If RezeptNummer IsNot Nothing And ArtikelNummer IsNot Nothing And Tour IsNot Nothing Then
-            _SortKriteriumBackPlan = LinienGruppe.ToString.PadLeft(3, "0"c) & RezeptNummer.PadLeft(10, "0"c) & ArtikelNummer.PadLeft(16, "0"c) & Tour.PadLeft(3, "0"c)
+            _SortKriteriumBackPlan = ArtikelLinienGruppe.ToString.PadLeft(3, "0"c) & RezeptNummer.PadLeft(10, "0"c) & ArtikelNummer.PadLeft(16, "0"c) & Tour.PadLeft(3, "0"c)
         Else
             _SortKriteriumBackPlan = Nothing
         End If

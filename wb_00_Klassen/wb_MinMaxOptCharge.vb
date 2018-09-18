@@ -18,10 +18,7 @@ Public Class wb_MinMaxOptCharge
             Return _TeigGewicht
         End Get
         Set(value As String)
-            'TODO nur für Test-sehr langsam !!
-            Debug.Print("wb_MinMaxOptCharge.Teiggewicht.SET " & value & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
             _TeigGewicht = wb_Functions.StrToDouble(value)
-
             MinCharge.TeigGewicht = _TeigGewicht
             MaxCharge.TeigGewicht = _TeigGewicht
             OptCharge.TeigGewicht = _TeigGewicht
@@ -104,6 +101,7 @@ Public Class wb_MinMaxOptCharge
         OptCharge.CopyFrom(Chrg.OptCharge)
         MaxCharge.CopyFrom(Chrg.MaxCharge)
         _TeigGewicht = Chrg._TeigGewicht
+        _StkGewicht = Chrg._StkGewicht
     End Sub
     ''' <summary>
     ''' Der Wert für die Minimal-Charge hat sich geändert: 
@@ -176,8 +174,6 @@ Public Class wb_MinMaxOptCharge
 
     Private Sub RaiseError(ErrCode As wb_Global.MinMaxOptChargenError)
         _ErrorCode = ErrCode
-        'TODO nur für Test-sehr langsam !!
-        'Debug.Print("wb_MinMaxOptCharge-RaiseError " & ErrorCode & wb_Functions.GetStackTraceTree(Environment.StackTrace.ToString))
         RaiseEvent OnError(Me)
     End Sub
 

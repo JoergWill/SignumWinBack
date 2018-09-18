@@ -101,13 +101,16 @@
 
                 'Formularsteuerung
                 If winback.FieldCount > 5 Then
-
+                    'Liniengruppe KurzName
+                    L.KurzName = winback.sField("LG_KurzName")
                     L.BackZettelDrucken = winback.sField("LG_BZ_Drucken")
                     L.TeigZettelDrucken = winback.sField("LG_TZ_Drucken")
                     L.TeigRezeptDrucken = winback.sField("LG_TR_Drucken")
                     L.BackZettelSenden = winback.sField("LG_BZ_Senden")
                     L.TeigZettelSenden = winback.sField("LG_TZ_Senden")
                 Else
+                    'Kurzname wird aus Linien gebildet
+                    L.KurzName = Linien
                     'Erweiterung Tabelle Liniengruppen ist notwendig !
                     Trace.WriteLine("Tabelle WinBack.Liniengruppen muss erweitert werden! (Formular-Steuerung)")
                 End If
@@ -173,7 +176,7 @@
     ''' <returns></returns>
     Shared Function GetBezeichnung(LinienGruppe As Integer) As String
         If _LGruppen.ContainsKey(LinienGruppe) Then
-            Return _LGruppen(LinienGruppe).Bezeichnung & " - " & LinienGruppe.ToString
+            Return _LGruppen(LinienGruppe).Bezeichnung
         Else
             Return "- " & LinienGruppe.ToString & " -"
         End If
@@ -191,7 +194,19 @@
         Else
             Return wb_Global.UNDEFINED
         End If
+    End Function
 
+    ''' <summary>
+    ''' Gibt den Kurznamen der Liniengruppe zurück.
+    ''' </summary>
+    ''' <param name="LinienGruppe"></param>
+    ''' <returns></returns>
+    Shared Function GetKurzNameFromLinienGruppe(LinienGruppe As Integer) As String
+        If _LGruppen.ContainsKey(LinienGruppe) Then
+            Return _LGruppen(LinienGruppe).KurzName
+        Else
+            Return "-"
+        End If
     End Function
 
     ''' <summary>

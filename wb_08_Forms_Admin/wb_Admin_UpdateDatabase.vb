@@ -57,7 +57,7 @@ Public Class wb_Admin_UpdateDatabase
 
             For Each sql As String In UpdateSql
                 pbData.PerformStep()
-                If winback.sqlCommand(sql) < 0 Then
+                If winback.sqlCommand(UpdateSqlMandant(sql)) < 0 Then
                     Me.Cursor = Cursors.Default
                     MsgBox("Datenbank Update fehlgeschlagen ! " & vbCrLf & "Update : " & Update, MsgBoxStyle.Critical, "Update WinBack-Datenbank")
                     Me.Cursor = Cursors.Default
@@ -77,6 +77,22 @@ Public Class wb_Admin_UpdateDatabase
         ShowHideUpdate(0)
         Me.Cursor = Cursors.Default
     End Sub
+
+    ''' <summary>
+    ''' Tausch im sql-Kommando die Datenbank-Bezeichnungen
+    '''     "use winback" 
+    '''     "use wbdaten"
+    ''' gegen die entsprechende Datenbank aus
+    ''' </summary>
+    ''' <param name="sql"></param>
+    ''' <returns></returns>
+    Private Function UpdateSqlMandant(sql As String) As String
+        If sql.Substring(0, 3).ToUpper = "USE" Then
+            sql = sql.Replace("winback", wb_GlobalSettings.MySQLWinBack)
+            sql = sql.Replace("wbdaten", wb_GlobalSettings.MySQLWbDaten)
+        End If
+        Return sql
+    End Function
 
     Private Sub ShowHideUpdate(c As Integer)
         If c > 0 Then

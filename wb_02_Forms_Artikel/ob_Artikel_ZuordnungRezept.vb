@@ -4,13 +4,6 @@ Imports Signum.OrgaSoft.GUI
 
 Public Class ob_Artikel_ZuordnungRezept
     Implements IBasicFormUserControl
-    Private RzNr As Integer = 0
-    Private RzNummer As String = ""
-    Private RzName As String = ""
-
-    Private WithEvents ArtikelChargen As New wb_MinMaxOptCharge
-    Private WithEvents TeigChargen As New wb_MinMaxOptCharge
-    Private OnErrorSetFocus As Object
 
     'setzt das Flag _Extendee.Changed in ob_Artikel_DockingExtension
     Public Event DataInvalidated()
@@ -85,7 +78,7 @@ Public Class ob_Artikel_ZuordnungRezept
     ''' </returns>
     ''' <remarks></remarks>
     Public Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        'Fenster kann geschlossen werden (nach Speichern Datensatz)
+        'Fenster kann geschlossen werden (nach Speichern Datensatz)        'Fenster kann geschlossen werden (nach Speichern Datensatz)
         Return False
     End Function
 
@@ -94,16 +87,10 @@ Public Class ob_Artikel_ZuordnungRezept
 #End Region
 
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
+        'Fenstertext
         MyBase.Text = "WinBack Artikel Produktions-Parameter"
-
         'Form anzeigen
         Me.Show()
-
-        'ComboBox Liniengruppe Rezepte(Teig) füllen
-        cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen)
-        'ComboBox Liniengruppe Artikel füllen
-        cbArtikelLinienGruppe.Fill(wb_Linien_Global.ArtikelLinienGruppen)
-
         Return True
     End Function
 
@@ -113,299 +100,31 @@ Public Class ob_Artikel_ZuordnungRezept
 
         Select Case CommandId
             Case "INVALID"
-
                 'alle Steuerelemente sperren
-                EnableKomponenten(False)
-
-                RzNr = wb_Global.UNDEFINED
-                tRezeptNr.Text = ""
-                tRezeptName.Text = ""
+                KompRzChargen.EnableKomponenten(False)
 
             Case "VALID"
 
             Case "wbFOUND"
-                Debug.Print("Artikel_ZuordnungRezept: wbFOUND")
-
-                '(interne) Rezeptnummer
-                RzNr = DirectCast(k, wb_Komponente).RzNr
-                RzNummer = DirectCast(k, wb_Komponente).RezeptNummer
-                RzName = DirectCast(k, wb_Komponente).RezeptName
-                tRezeptNr.Text = RzNummer
-                tRezeptName.Text = RzName
-
-                'Chargengrößen Artikel(Objekt)
-                ArtikelChargen = DirectCast(Parameter, wb_Komponente).ArtikelChargen
-                'Chargengrößen Rezept(Objekt)
-                TeigChargen = DirectCast(Parameter, wb_Komponente).TeigChargen
-                'Chargengrößen Artikel anzeigen
-                MinMaxOptArtikelShowValues()
-                'Chargengrößen Rezept(Teig) anzeigen
-                MinMaxRezeptShowValues()
-                'Liniengruppe Artikel
-                cbArtikelLinienGruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponente).iArtikelLinienGruppe)
-                'Liniengruppe Rezept(Teig)
-                cbLiniengruppe.SetTextFromKey(DirectCast(Parameter, wb_Komponente).LinienGruppe)
-
-                'alle Steuerelemente aktivieren
-                EnableKomponenten(True)
+                'Daten aus der Komponenten-Klasse lesen
+                KompRzChargen.GetDataFromKomp(DirectCast(k, wb_Komponente))
+                'Anzeigen der Werte
+                KompRzChargen.DataValid = True
 
             Case "wbSAVE"
-                DirectCast(Parameter, wb_Komponente).ArtikelChargen = ArtikelChargen
-                DirectCast(Parameter, wb_Komponente).TeigChargen = TeigChargen
-                DirectCast(Parameter, wb_Komponente).LinienGruppe = cbLiniengruppe.GetKeyFromSelection
-                DirectCast(Parameter, wb_Komponente).iArtikelLinienGruppe = cbArtikelLinienGruppe.GetKeyFromSelection
-                DirectCast(Parameter, wb_Komponente).RzNr = RzNr
+                'Daten in der Komponenten-Klasse sichern
+                KompRzChargen.SaveData(DirectCast(k, wb_Komponente))
 
         End Select
         Return Nothing
     End Function
 
-    Private Sub BtnRzpShow_Click(sender As Object, e As EventArgs) Handles BtnRzpShow.Click
-        Me.Cursor = Cursors.WaitCursor
-        Dim Rezeptur As New wb_Rezept_Rezeptur(RzNr, 1)
-        'MDI-Fenster anzeigen
-        Rezeptur.Show()
-        Me.Cursor = Cursors.Default
-    End Sub
-
-    Private Sub BtnRzptChange_Click(sender As Object, e As EventArgs) Handles BtnRzptChange.Click
-        Dim RezeptAuswahl As New wb_Rezept_AuswahlListe
-        If RezeptAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            RzNr = RezeptAuswahl.RezeptNr
-            tRezeptNr.Text = RezeptAuswahl.RezeptNummer
-            tRezeptName.Text = RezeptAuswahl.RezeptName
-            'Flag setzen - Daten wurden geändert, speichern notwendig
-            DataIsInvalid()
-        End If
-    End Sub
-
-#Region "Änderung Chargen"
-    Private Sub tStkGewicht_Leave(sender As Object, e As EventArgs) Handles tStkGewicht.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus
-        ArtikelChargen.StkGewicht = tStkGewicht.Text
-    End Sub
-
-    Private Sub tChrgMinkg_Leave(sender As Object, e As EventArgs) Handles tChrgMinkg.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        ArtikelChargen.MinCharge.MengeInkg = tChrgMinkg.Text
-    End Sub
-
-    Private Sub tChrgMinPrz_Leave(sender As Object, e As EventArgs) Handles tChrgMinPrz.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        ArtikelChargen.MinCharge.MengeInProzent = tChrgMinPrz.Text
-    End Sub
-
-    Private Sub tChrgMinStk_Leave(sender As Object, e As EventArgs) Handles tChrgMinStk.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        ArtikelChargen.MinCharge.MengeInStk = tChrgMinStk.Text
-    End Sub
-
-    Private Sub tChrgMaxkg_Leave(sender As Object, e As EventArgs) Handles tChrgMaxkg.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        ArtikelChargen.MaxCharge.MengeInkg = tChrgMaxkg.Text
-    End Sub
-
-    Private Sub tChrgMaxPrz_Leave(sender As Object, e As EventArgs) Handles tChrgMaxPrz.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        ArtikelChargen.MaxCharge.MengeInProzent = tChrgMaxPrz.Text
-    End Sub
-
-    Private Sub tChrgMaxStk_Leave(sender As Object, e As EventArgs) Handles tChrgMaxStk.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        ArtikelChargen.MaxCharge.MengeInStk = tChrgMaxStk.Text
-    End Sub
-
-    Private Sub tChrgOptkg_Leave(sender As Object, e As EventArgs) Handles tChrgOptkg.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        ArtikelChargen.OptCharge.MengeInkg = tChrgOptkg.Text
-    End Sub
-
-    Private Sub tChrgOptPrz_Leave(sender As Object, e As EventArgs) Handles tChrgOptPrz.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        ArtikelChargen.OptCharge.MengeInProzent = tChrgOptPrz.Text
-    End Sub
-    Private Sub tChrgOptStk_Leave(sender As Object, e As EventArgs) Handles tChrgOptStk.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        ArtikelChargen.OptCharge.MengeInStk = tChrgOptStk.Text
-    End Sub
-
-    Private Sub tRezMinkg_Leave(sender As Object, e As EventArgs) Handles tRezMinkg.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        TeigChargen.MinCharge.MengeInkg = tRezMinkg.Text
-    End Sub
-
-    Private Sub tRezMinPrz_Leave(sender As Object, e As EventArgs) Handles tRezMinPrz.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        TeigChargen.MinCharge.MengeInProzent = tRezMinPrz.Text
-    End Sub
-
-    Private Sub tRezOptkg_Leave(sender As Object, e As EventArgs) Handles tRezOptkg.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        TeigChargen.OptCharge.MengeInkg = tRezOptkg.Text
-    End Sub
-
-    Private Sub tRezOptPrz_Leave(sender As Object, e As EventArgs) Handles tRezOptPrz.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        TeigChargen.OptCharge.MengeInProzent = tRezOptPrz.Text
-    End Sub
-
-    Private Sub tRezMaxkg_Leave(sender As Object, e As EventArgs) Handles tRezMaxkg.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        TeigChargen.MaxCharge.MengeInkg = tRezMaxkg.Text
-    End Sub
-
-    Private Sub tRezMaxPrz_Leave(sender As Object, e As EventArgs) Handles tRezMaxPrz.Leave
-        'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
-        OnErrorSetFocus = sender
-        'geänderten Wert eintragen - löst OnChange-Ereignis aus, im Fehlerfall wird OnError ausgelöst
-        TeigChargen.MaxCharge.MengeInProzent = tRezMaxPrz.Text
-    End Sub
-
-    Private Sub OnErrorMinMaxOptArtikel(sender As Object) Handles ArtikelChargen.OnError
-        If ArtikelChargen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
-            'Eingabe-Focus auf das auslösende Objekt setzen
-            OnErrorSetFocus.Focus()
-            'Fehlermeldung entsprechend der Eingabe-Felder ausgeben
-            MsgBox(wb_Functions.MinMaxOptChargeToString(ArtikelChargen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Artikel-Chargengrößen")
-        End If
-        'Felder neu zeichnen
-        MinMaxOptArtikelShowValues()
-        'Flag setzen - Daten wurden geändert, speichern notwendig
-        ArtikelChargen.HasChanged = True
-        DataIsInvalid()
-    End Sub
-
-    Private Sub OnErrorMinMaxOptTeig(Sender As Object) Handles TeigChargen.OnError
-        If TeigChargen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
-            OnErrorSetFocus.focus()
-            'Fehlermeldung entsprechend der Eingabe-Felder ausgeben
-            MsgBox(wb_Functions.MinMaxOptChargeToString(TeigChargen.ErrorCode), MsgBoxStyle.Exclamation, "Fehler bei der Eingabe der Rezept-Chargengrößen")
-        End If
-        'Felder neu zeichnen
-        MinMaxRezeptShowValues()
-        'Flag setzen - Daten wurden geändert, speichern notwendig
-        TeigChargen.HasChanged = True
-        DataIsInvalid()
-    End Sub
-#End Region
-    Private Sub MinMaxOptArtikelShowValues()
-        tStkGewicht.Text = ArtikelChargen.StkGewicht & " gr"
-
-        tChrgMinkg.Text = ArtikelChargen.MinCharge.MengeInkg & " kg"
-        tChrgOptkg.Text = ArtikelChargen.OptCharge.MengeInkg & " kg"
-        tChrgMaxkg.Text = ArtikelChargen.MaxCharge.MengeInkg & " kg"
-
-        tChrgMinPrz.Text = ArtikelChargen.MinCharge.MengeInProzent & "%"
-        tChrgOptPrz.Text = ArtikelChargen.OptCharge.MengeInProzent & "%"
-        tChrgMaxPrz.Text = ArtikelChargen.MaxCharge.MengeInProzent & "%"
-
-        tChrgMinStk.Text = ArtikelChargen.MinCharge.MengeInStk & " Stk"
-        tChrgOptStk.Text = ArtikelChargen.OptCharge.MengeInStk & " Stk"
-        tChrgMaxStk.Text = ArtikelChargen.MaxCharge.MengeInStk & " Stk"
-    End Sub
-
-    Private Sub MinMaxRezeptShowValues()
-        tRezGesamt.Text = TeigChargen.TeigGewicht & " kg"
-
-        tRezMinkg.Text = TeigChargen.MinCharge.MengeInkg & " kg"
-        tRezOptkg.Text = TeigChargen.OptCharge.MengeInkg & " kg"
-        tRezMaxkg.Text = TeigChargen.MaxCharge.MengeInkg & " kg"
-
-        tRezMinPrz.Text = TeigChargen.MinCharge.MengeInProzent & "%"
-        tRezOptPrz.Text = TeigChargen.OptCharge.MengeInProzent & "%"
-        tRezMaxPrz.Text = TeigChargen.MaxCharge.MengeInProzent & "%"
-    End Sub
-
-    Private Sub EnableKomponenten(Enable As Boolean)
-        BtnRzpShow.Enabled = Enable
-        BtnRzptChange.Enabled = Enable
-
-        cbLiniengruppe.Enabled = Enable
-        cbArtikelLinienGruppe.Enabled = Enable
-
-        pArtikelChargen.Enabled = Enable
-        pTeigChargen.Enabled = Enable
-
-        'alte Zahlenwerte in den Felder löschen
-        If Not Enable Then
-            tStkGewicht.Text = ""
-
-            tChrgMinkg.Text = ""
-            tChrgOptkg.Text = ""
-            tChrgMaxkg.Text = ""
-
-            tChrgMinPrz.Text = ""
-            tChrgOptPrz.Text = ""
-            tChrgMaxPrz.Text = ""
-
-            tChrgMinStk.Text = ""
-            tChrgOptStk.Text = ""
-            tChrgMaxStk.Text = ""
-
-            tRezGesamt.Text = ""
-            cbArtikelLinienGruppe.Text = ""
-            cbLiniengruppe.Text = ""
-
-            tRezMinkg.Text = ""
-            tRezOptkg.Text = ""
-            tRezMaxkg.Text = ""
-
-            tRezMinPrz.Text = ""
-            tRezOptPrz.Text = ""
-            tRezMaxPrz.Text = ""
-        End If
-
-    End Sub
-
-    Private Sub cbArtikelLinienGruppe_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbArtikelLinienGruppe.SelectionChangeCommitted
-        'Flag setzen - Daten wurden geändert, speichern notwendig
-        DataIsInvalid()
-    End Sub
-
-    Private Sub cbLiniengruppe_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbLiniengruppe.SelectionChangeCommitted
-        'Flag setzen - Daten wurden geändert, speichern notwendig
-        DataIsInvalid()
-        TeigChargen.HasChanged = True
-    End Sub
-
     ''' <summary>
-    ''' Die Daten im Fenster haben sich durch Benutzer-Eingabe geändert.
-    ''' Flag setzen (DataHasChanged). Über den Event DataInvalidated wird dem Haupt-Fenster mitgeteilt, dass die Daten vor dem Schliessen
-    ''' oder Löschen des Fensters gesichert werden müssen.
-    ''' 
-    ''' setzt das Flag _Extendee.Changed in ob_Artikel_DockingExtension
+    ''' Event Daten wurden geändert von wb_KompRZChargen wird weitergegen an ob_Artikel_DockingExtension.
+    ''' Setzt dort das Flag _Extendee.Changed. Damit wird beim Schliessen des Artikelfensters die Abfrage
+    ''' "Daten wurden geändert Speichern Ja/Nein/Abbrechen" ausgelöst.
     ''' </summary>
-    Private Sub DataIsInvalid()
+    Public Sub KomRzChargen_DataInvalidated() Handles KompRzChargen.DataInvalidated
         RaiseEvent DataInvalidated()
     End Sub
 
