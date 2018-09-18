@@ -20,11 +20,11 @@ Public Class wb_KompRzChargen
     ''' </summary>
     ''' <param name="Komp"></param>
     Public Sub GetDataFromKomp(ByRef Komp As wb_Komponente)
-        'Rezeptnummer aus Rohstoffdaten
-        RzNr = Komp.RzNr
         'Komponentendaten aus Datenbank lesen
         Komp.MySQLdbRead(Komp.Nr)
 
+        'Rezeptnummer aus Rohstoffdaten
+        RzNr = Komp.RzNr
         'Rezeptnummer und Name (Ruft wb_Komponente.GetProduktionsDaten() auf
         RezeptNummer = Komp.RezeptNummer
         RezeptName = Komp.RezeptName

@@ -118,30 +118,34 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="tpCloudSuchenTxt" xml:space="preserve">
-    <value>Поиск через WinBack или Datalink связывает исходный материал с соответствующей записью в облаке. Данные о питании и информация о аллергене автоматически импортируются, а затем регулярно обновляются в фоновом режиме. Для обеих служб требуются учетные данные для входа. Поиск выполняется по имени и производителю / поставщику. Полевой поставщик может быть оставлен пустым!</value>
+    <value>Search of WinBack or data link linked the raw material with the corresponding entry in the cloud.
+
+The nutritional information and allergen info will be automatically imported and then updated in the background. For both services credentials are according to required the search name and manufacturer/supplier. The field supplier can be released!</value>
   </data>
   <data name="tpCloudSuchenMail" xml:space="preserve">
-    <value>Не найдено соответствующего сырья. Пожалуйста, измените текст поиска или запросите питательные ценности в WinBack по почте!</value>
+    <value>Found no suitable raw material.
+Please change the search text or requesting the nutritional values for WinBack by mail!</value>
   </data>
   <data name="tpCloudMailSubject" xml:space="preserve">
-    <value>Запросите питательные ценности и ингредиенты!</value>
+    <value>Request the nutrition facts and ingredients for!</value>
   </data>
   <data name="tpCloudMailText" xml:space="preserve">
-    <value>Дамы и Господа, пожалуйста, найти ингредиенты следующих сырьевых материалов: обозначение согласно данным производителя: [0] Производитель: номер детали у производителя: поставщик: [1] мы просим обязательно для получения подробной информации, если это возможно с спецификации данных листа , а затем данные быстро и правильно в облаке...!</value>
+    <value>Ladies and gentlemen, please locate the ingredients of the following raw material: designation according to the manufacturer: [0] manufacturer: manufacturer part number: supplier: [1] we ask necessarily for complete details, if possible with specification data sheet , then the data is fast and correct in the cloud...!</value>
   </data>
   <data name="tpCloudEinenRohstoffGefunden" xml:space="preserve">
-    <value>Точно один ресурс, найденный в облаке!</value>
+    <value>Found just a raw material in the cloud!</value>
   </data>
   <data name="tpCloudRohstoffeGefunden" xml:space="preserve">
-    <value>[0] Найденное сырье в облаке. Выберите подходящее сырье из списка!</value>
+    <value>Found [0] raw materials in the cloud. 
+Please select the appropriate raw material from the list.!</value>
   </data>
   <data name="tpCloudKompType" xml:space="preserve">
-    <value>Специальное сырье, такое как текстовые компоненты, месильные машины, тесто для отдыха ... не имеет питательной ценности!</value>
+    <value>Special raw materials, such as text components, mixer, dough resting... have no nutritional value!</value>
   </data>
   <data name="tpCloudTitelCloud" xml:space="preserve">
-    <value>Питание факты облако!</value>
+    <value>Nutrition facts-cloud!</value>
   </data>
   <data name="tpCloudTitelRezept" xml:space="preserve">
-    <value>Сырье рецепт!</value>
+    <value>Raw material recipe!</value>
   </data>
 </root>

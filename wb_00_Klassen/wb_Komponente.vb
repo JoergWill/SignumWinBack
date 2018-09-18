@@ -841,6 +841,15 @@ Public Class wb_Komponente
                 End If
                 winback.Close()
                 Return True
+            Else
+                'Sonderfall - Es wurde eine interne Komponenten-Nummer angegeben die nicht gefunden wurde
+                'Rohstoff/Artikel wurde gelöscht (in WinBack)
+                If (InterneKomponentenNummer > 0) And (KomponentenNummer <> "") Then
+                    'bestehende Verbindung schliessen
+                    winback.Close()
+                    'Suche nach alphanumrischer Nummer
+                    Return MySQLdbRead(0, KomponentenNummer)
+                End If
             End If
         End If
         winback.Close()

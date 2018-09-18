@@ -671,15 +671,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die $this ähnelt.
-        '''</summary>
-        Public ReadOnly Property This() As String
-            Get
-                Return ResourceManager.GetString("This", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Genau einen Rohstoff in der Cloud gefunden ! ähnelt.
         '''</summary>
         Public ReadOnly Property tpCloudEinenRohstoffGefunden() As String

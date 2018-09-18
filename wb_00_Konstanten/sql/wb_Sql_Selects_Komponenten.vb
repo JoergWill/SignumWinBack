@@ -69,7 +69,8 @@
 
     'Sql-Statement Lesen Komponenten nach KO_Nr (Select KO_Nr=x)
     Public Const sqlSelectKomp_KO_Nr = "Select * FROM Komponenten WHERE KO_Nr = [0] "
-    Public Const sqlSelectKomp_AlNum = "Select * FROM Komponenten WHERE KO_Nr_AlNum = '[0]' "
+    'Sql-Statement Lesen Komponenten nach KO_Nr_AlNum (Select KO_Nr=x) aufsteigend nach Komponenten-Type (Artikel, Automatik, Hand-Komponente)
+    Public Const sqlSelectKomp_AlNum = "Select * FROM Komponenten WHERE KO_Nr_AlNum = '[0]' ORDER BY KO_Type"
     Public Const sqlSelectKomp_KO_Type = "SELECT * FROM Komponenten WHERE KO_Type = [0] "
     'Sql-Statement Update Komponenten nach KO_Nr (Select KO_Nr=x)
     Public Const sqlUpdateKomp_KO_Nr = "UPDATE Komponenten SET [1] WHERE KO_Nr = [0] "

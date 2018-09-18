@@ -327,11 +327,6 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
-<member name="P:WinBack.My.Resources.Resources.This">
-<summary>
-  Sucht eine lokalisierte Zeichenfolge, die $this ähnelt.
-</summary>
-</member>
 <member name="P:WinBack.My.Resources.Resources.tpCloudEinenRohstoffGefunden">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die Genau einen Rohstoff in der Cloud gefunden ! ähnelt.
