@@ -73,6 +73,9 @@ Public Class wb_Planung_Liste
     End Sub
 
     Private Sub ReadBestellungenOrgaBack()
+        'Cursor umschalten
+        Me.Cursor = Cursors.WaitCursor
+
         'Bestellungen einlesen für Produktions-Datum
         Dim ProduktionsDatum As String = dtBestellungen.Value.ToString("yyyyMMdd")
         Dim ProduktionsFilialeNummer As String = cbProduktionsFiliale.GetKeyFromSelection()
@@ -89,7 +92,6 @@ Public Class wb_Planung_Liste
         End If
 
         'Daten aus der Stored-Procedure in OrgaBack einlesen
-        Me.Cursor = Cursors.WaitCursor
         If Not Produktion.MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum, ProduktionsFilialeNummer) Then
             'Default-Cursor
             Me.Cursor = Cursors.Default
@@ -127,10 +129,20 @@ Public Class wb_Planung_Liste
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
     End Sub
 
+    ''' <summary>
+    ''' Vorproduktion berechnen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtVorproduktion_Click(sender As Object, e As EventArgs) Handles BtVorproduktion.Click
         Produktion.CalcVorproduktion(Produktion.RootProduktionsSchritt)
     End Sub
 
+    ''' <summary>
+    ''' Backzettel drucken
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub BtnBackZettelDrucken_Click(sender As Object, e As EventArgs) Handles BtnBackZettelDrucken.Click
         'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
         Produktion.RootProduktionsSchritt.SortBackZettel()

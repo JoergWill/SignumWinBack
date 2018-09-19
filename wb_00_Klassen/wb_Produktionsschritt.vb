@@ -484,6 +484,12 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public ReadOnly Property Differenz_Stk As Double
+        Get
+            Return Bestellt_Stk - Sollmenge_Stk
+        End Get
+    End Property
+
     Public Property Bestellt_SonderText As String
         Get
             Return _Bestellt_SonderText

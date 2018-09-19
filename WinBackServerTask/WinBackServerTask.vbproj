@@ -239,6 +239,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\Infralution VirtualTree V4.8.9\Infralution.Controls.VirtualTree.dll</HintPath>
     </Reference>
+    <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\MetroFramework 1.2.0.3\MetroFramework.dll</HintPath>
