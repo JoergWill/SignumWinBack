@@ -1,5 +1,4 @@
 ﻿Imports WinBack.wb_Rohstoffe_Shared
-Imports WinBack.wb_Functions
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Rohstoffe_Details
@@ -14,7 +13,7 @@ Public Class wb_Rohstoffe_Details
         AddHandler eListe_Click, AddressOf DetailInfo
     End Sub
 
-    Public Sub DetailInfo()
+    Private Sub DetailInfo()
         tRohstoffNummer.Text = RohStoff.Nummer
         tRohstoffName.Text = RohStoff.Bezeichnung
         tRohstoffKommentar.Text = RohStoff.Kommentar

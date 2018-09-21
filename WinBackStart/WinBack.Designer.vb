@@ -88,7 +88,7 @@ Partial Class WinBack
         Me.rbRohstoffeListe = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeDetails = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeVerwendung = New System.Windows.Forms.RibbonButton()
-        Me.rbRohstoffeLieferungen = New System.Windows.Forms.RibbonButton()
+        Me.rbRohstoffeParameter = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffNwt = New System.Windows.Forms.RibbonButton()
         Me.rsRohstoffeSep = New System.Windows.Forms.RibbonSeparator()
         Me.rbRohstoffeAnsicht = New System.Windows.Forms.RibbonButton()
@@ -711,7 +711,7 @@ Partial Class WinBack
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeListe)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeDetails)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeVerwendung)
-        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeLieferungen)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeParameter)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffNwt)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rsRohstoffeSep)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeAnsicht)
@@ -749,14 +749,16 @@ Partial Class WinBack
         resources.ApplyResources(Me.rbRohstoffeVerwendung, "rbRohstoffeVerwendung")
         Me.rbRohstoffeVerwendung.Value = "OPENVERWENDUNG"
         '
-        'rbRohstoffeLieferungen
+        'rbRohstoffeParameter
         '
-        Me.rbRohstoffeLieferungen.Image = Global.WinBack.My.Resources.Resources.RohstoffeLieferung_32x32
-        Me.rbRohstoffeLieferungen.LargeImage = Global.WinBack.My.Resources.Resources.RohstoffeLieferung_32x32
-        Me.rbRohstoffeLieferungen.MinimumSize = New System.Drawing.Size(70, 0)
-        Me.rbRohstoffeLieferungen.Name = "rbRohstoffeLieferungen"
-        Me.rbRohstoffeLieferungen.SmallImage = CType(resources.GetObject("rbRohstoffeLieferungen.SmallImage"), System.Drawing.Image)
-        resources.ApplyResources(Me.rbRohstoffeLieferungen, "rbRohstoffeLieferungen")
+        Me.rbRohstoffeParameter.Image = Global.WinBack.My.Resources.Resources.RohstoffeParameter_32x32
+        Me.rbRohstoffeParameter.LargeImage = Global.WinBack.My.Resources.Resources.RohstoffeParameter_32x32
+        Me.rbRohstoffeParameter.MinimumSize = New System.Drawing.Size(70, 0)
+        Me.rbRohstoffeParameter.Name = "rbRohstoffeParameter"
+        Me.rbRohstoffeParameter.SmallImage = CType(resources.GetObject("rbRohstoffeParameter.SmallImage"), System.Drawing.Image)
+        Me.rbRohstoffeParameter.Tag = ""
+        resources.ApplyResources(Me.rbRohstoffeParameter, "rbRohstoffeParameter")
+        Me.rbRohstoffeParameter.Value = "OPENPARAMETER"
         '
         'rbRohstoffNwt
         '
@@ -1581,7 +1583,7 @@ Partial Class WinBack
     Friend WithEvents rbRohstoffeListe As RibbonButton
     Friend WithEvents rbRohstoffeDetails As RibbonButton
     Friend WithEvents rbRohstoffeVerwendung As RibbonButton
-    Friend WithEvents rbRohstoffeLieferungen As RibbonButton
+    Friend WithEvents rbRohstoffeParameter As RibbonButton
     Friend WithEvents rbRohstoffeAnsicht As RibbonButton
     Friend WithEvents rbRohstoffeImportText As RibbonButton
     Friend WithEvents rbRohstoffeImportCloud As RibbonButton

@@ -84,6 +84,14 @@
         kt301
     End Enum
 
+    Public Structure ktTypXXXParam
+        Public Type As Integer
+        Public ParamNr As Integer
+        Public Bezeichnung As String
+        Public Einheit As String
+        Public Used As Boolean
+    End Structure
+
     Public Structure ktTyp200Param
         Public ParamNr As Integer
         Public Bezeichnung As String

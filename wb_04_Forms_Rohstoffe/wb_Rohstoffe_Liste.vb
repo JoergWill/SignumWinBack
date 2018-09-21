@@ -78,7 +78,10 @@ Public Class wb_Rohstoffe_Liste
     End Sub
 
     Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
+        'Daten laden aus winback.Komponenten in GridView
         RohStoff.LoadData(DataGridView)
+        'Detail-Daten aus winback.Komponenten laden in Objekt wb_Rostoffe_Shared.Rohstoff
+        RohStoff.MySQLdbRead(RohStoff.Nr)
         'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
         Liste_Click(Nothing)
     End Sub

@@ -22,6 +22,9 @@ Public Class wb_Komponente
     Private KA_Preis As String
     Private KA_Grp1 As Integer
     Private KA_Grp2 As Integer
+    Private KO_DeklBezeichnungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
+    Private KO_DeklBezeichnungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
+
     Private _DataHasChanged As Boolean = False
     Private _LastErrorText As String
     Private _RezeptNummer As String = Nothing
@@ -29,10 +32,9 @@ Public Class wb_Komponente
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
 
-    Private KO_DeklBezeichnungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
-    Private KO_DeklBezeichnungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
+    Private _RootParameter As New wb_KomponParam(Nothing, 0, 0, "")
+    Private _Parameter As wb_KomponParam
 
-    Public NwtUpdate As New wb_Hinweise(Hinweise.NaehrwertUpdate)
     Public ktTyp200 As New wb_KomponParam200
     Public ktTyp201 As New wb_KomponParam201
     Public ktTyp202 As New wb_KomponParam202
@@ -41,6 +43,7 @@ Public Class wb_Komponente
     Public ktTyp300 As New wb_KomponParam300
     Public ktTyp301 As New wb_KomponParam301
 
+    Public NwtUpdate As New wb_Hinweise(Hinweise.NaehrwertUpdate)
     Public ArtikelChargen As New wb_MinMaxOptCharge
     Public TeigChargen As New wb_MinMaxOptCharge
 
@@ -176,6 +179,56 @@ Public Class wb_Komponente
             Return KA_Grp2
         End Get
     End Property
+
+    ''' <summary>
+    ''' Erster (unsichtbarer) Parameter-Knoten (Root-Node)
+    ''' Die Child-Nodes enthalten eine Liste aller Parameter sortiert nach Type und Parameter-Nummer
+    ''' 
+    '''     Tabelle KomponParams
+    '''     KomponType  -   Verwiege-Parameter(Produktion) 
+    '''     
+    '''     Tabelle RohParams
+    '''     Type 200    -  Produktinformation
+    '''     Type 201    -  Verarbeitungshinweise
+    '''     Type 202    -  Kalkulation
+    '''     Type 210    -  Froster
+    '''     Type 220    -  Gare
+    '''     Type 300    -  Produktion
+    '''     Type 301    -  Nährwerte und Allergene bezogen aus 100gr
+    '''     Type 401    -  Nährwerte bezogen auf Stk
+    ''' </summary>
+    ''' <returns>wb_KomponParam - Root-Parameter der Komponente</returns>
+    Public ReadOnly Property RootParameter As wb_KomponParam
+        Get
+            'Parameter-Liste aufbauen
+            BuildParameterArray()
+            Return _RootParameter
+        End Get
+    End Property
+
+    Private Sub BuildParameterArray()
+        'Root-Knoten neu initialisieren
+        _RootParameter = New wb_KomponParam(Nothing, 0, 0, "")
+        'Komponenten-Type WinBack
+        Dim t As Integer = wb_Functions.KomponTypeToInt(KO_Type)
+
+        'abhängig von der Komponenten-Type werden die einzelnen Parameter durchlaufen
+        For p = 0 To wb_KomponParam_Global.MaxParam(t)
+            If wb_KomponParam_Global.IsValidParameter(t, p) Then
+                'neuen Parameter-Datensatz anlegen
+                _Parameter = New wb_KomponParam(_RootParameter, t, p, wb_KomponParam_Global.ktXXXParam(t, p).Bezeichnung)
+            End If
+        Next
+
+        'Parameter Artikel
+        For p = 0 To wb_KomponParam_Global.MaxParam(0)
+            If wb_KomponParam_Global.IsValidParameter(0, p) Then
+                'neuen Parameter-Datensatz anlegen
+                _Parameter = New wb_KomponParam(_RootParameter, 0, p, wb_KomponParam_Global.ktXXXParam(0, p).Bezeichnung)
+            End If
+        Next
+
+    End Sub
 
     Friend Sub LoadData(dataGridView As wb_DataGridView)
         'eventuell vorhandene Daten löschen
@@ -1041,7 +1094,7 @@ Public Class wb_Komponente
                         'Verarbeitungs-Hinweise
                     Case 202
                         'Kalkulation/Preise
-                    Case 201
+                    Case 210
                         'Froster
                     Case 220
                         'Teig-Gare

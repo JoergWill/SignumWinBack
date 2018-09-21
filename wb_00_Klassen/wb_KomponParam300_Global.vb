@@ -18,7 +18,7 @@ Public Class wb_KomponParam300_Global
     Shared Sub New()
         Dim k As ktTyp300Param
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
-        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompTypXXX, "300"))
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompTypXXX, "=300"))
         ktTyp300Params.Clear()
         While winback.Read
 

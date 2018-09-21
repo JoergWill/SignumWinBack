@@ -470,6 +470,7 @@
     <Compile Include="wb_00_Klassen\wb_DockBarPanelShared.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_Sync.vb" />
     <Compile Include="wb_00_Klassen\wb_Einheiten_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam200.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam200_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam201.vb" />
@@ -482,6 +483,7 @@
     <Compile Include="wb_00_Klassen\wb_KomponParam220_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam300.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam300_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParam_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Linien_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Mail.vb" />
     <Compile Include="wb_00_Klassen\wb_MinMaxOptCharge.vb" />
@@ -1175,6 +1177,7 @@
     <None Include="Resources\RohstoffeDatenLink_93x24.png.png" />
     <None Include="Resources\RohstoffeDatenLink_93x24.png" />
     <None Include="Resources\RohstoffeMail_32x32.png" />
+    <None Include="Resources\RohstoffeNwt_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

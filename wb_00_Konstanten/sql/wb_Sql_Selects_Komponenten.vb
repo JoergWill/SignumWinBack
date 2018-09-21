@@ -40,10 +40,10 @@
     'Löschen Rohstoff/Artikel in Lieferungen
     Public Const sqlDelLieferungen = "DELETE FROM Lieferungen WHERE LF_LG_Ort = '[0]'"
 
-    'Sql-Statement Liste aller Komponenten-Parameter Typ301
+    'Sql-Statement Liste aller Komponenten-Parameter Typ(=200,=201..=301,<200)
     Public Const sqlKompTypXXX = "SELECT KomponTypen.*, Einheiten.E_Einheit " &
                                  "FROM KomponTypen INNER JOIN Einheiten ON KomponTypen.KT_EinheitIndex = (Einheiten.E_LfdNr) " &
-                                 "WHERE (((KomponTypen.KT_Typ_Nr)=[0])) ORDER BY KomponTypen.KT_ParamNr"
+                                 "WHERE (((KomponTypen.KT_Typ_Nr)[0])) ORDER BY KomponTypen.KT_Typ_Nr, KomponTypen.KT_ParamNr"
     'Sql-Statmente Liste aller Komponenten-Parameter
     Public Const sqlKompParamsXXX = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0]) ORDER BY RP_Typ_Nr, RP_ParamNr"

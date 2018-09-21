@@ -15,7 +15,8 @@ Public Class wb_Rohstoffe_Nwt
     End Sub
 
     Public Sub NaehrwertInfo()
-        RohStoff.MySQLdbRead(RohStoff.Nr)
+        'TODO Prüfen - verlagert in wb_Rohstoffe_Liste (nur 1x laden)
+        'RohStoff.MySQLdbRead(RohStoff.Nr)
 
         'Deklarationsfelder
         tbDeklarationExtern.Text = RohStoff.DeklBezeichungExtern

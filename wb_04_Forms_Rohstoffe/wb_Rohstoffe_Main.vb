@@ -58,7 +58,7 @@ Public Class wb_Rohstoffe_Main
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrp.AddButton("BtnRohstoffDetails", "Details", "weitere Rohstoff-Daten", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnRohstoffDetails)
                 oGrp.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffParameter)
-                oGrp.AddButton("BtnRohstoffNwt", "Nährwerte", "Rohstoffe Allergene und Nährwert-Angaben", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffNwt)
+                oGrp.AddButton("BtnRohstoffNwt", "Nährwerte", "Rohstoffe Allergene und Nährwert-Angaben", My.Resources.RohstoffeNwt_32x32, My.Resources.RohstoffeNwt_32x32, AddressOf BtnRohstoffNwt)
                 oGrp.AddButton("BtnRohstoffCloud", "Cloud", "Rohstoffe Verknüpfung zur Cloud", My.Resources.RohstoffeCloud_32x32, My.Resources.RohstoffeCloud_32x32, AddressOf BtnRohstoffCloud)
                 oGrp.AddButton("BtnRohstoffVerwendung", "Verwendung", "Verwendung des Rohstoffes in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf BtnRohstoffVerwendung)
                 _ContextTabs.Add(oNewTab)

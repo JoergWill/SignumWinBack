@@ -312,6 +312,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.RohstoffeNwt_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.RohstoffeParameter_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -1114,6 +1119,40 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="p">Interger Parameter-Nummer</param>
  <returns>ktTyp300Param</returns>
 </member>
+<member name="T:WinBack.wb_KomponParam_Global">
+ <summary>
+ Ermittlung der Parameter für die Produktion
+ Gibt zu einem spezifischen Parameter p die entsprechenden statischen Werte zurück.
+ Vor dem ersten Aufruf wird die Hash-Table aus der Datenbank gelesen und aufgebaut.
+ </summary>
+</member>
+<member name="M:WinBack.wb_KomponParam_Global.#cctor">
+ <summary>
+ Vor dem ersten Aufruf der Funktionen in dieser Klasse wird der Shared-Konstruktor aufgerufen
+ Initialisierung und Aufbau der Hash-Table aus der Datenbank (Tabelle KomponTypen und Einheiten)
+ </summary>
+</member>
+<member name="M:WinBack.wb_KomponParam_Global.ExtendedParameter(System.Int32,System.Int32@)">
+ <summary>
+ Fügt, abhängig vom Konfiguration und Komponenten(Parameter)-Type zusätzliche
+ Parameter ein.
+ 
+     Type 101 - Lagerort/Silo
+     
+ </summary>
+ <param name="t"></param>
+</member>
+<member name="M:WinBack.wb_KomponParam_Global.ktXXXParam(System.Int32,System.Int32)">
+ <summary>
+ Gibt die statischen Werte für den Parameter p zurück
+ Aus der Datenbank KomponTypen (KT_Typ_Nr = 300, KT_ParamNr = p)
+  - Bezeichnung      Parameter-Bezeichnung (Produktions-Steuerung)
+  - Einheit          Einheit
+  - Used             Verwendet/Nicht verwendet (Kunden-Spezifisch)
+ </summary>
+ <param name="p">Interger Parameter-Nummer</param>
+ <returns>ktTyp300Param</returns>
+</member>
 <member name="P:WinBack.wb_Linien_Global.ArtikelLinienGruppen">
  <summary>
  Alle Liniengruppen mit Index größer oder gleich 100 [wb_global.OffsetBackorte]. Entspricht allen Liniengruppen für die Aufarbeitung
@@ -1592,6 +1631,26 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Rohstoff/Artikel-Nummer (alpha-numerisch)
  </summary>
  <returns></returns>
+</member>
+<member name="P:WinBack.wb_Komponente.RootParameter">
+ <summary>
+ Erster (unsichtbarer) Parameter-Knoten (Root-Node)
+ Die Child-Nodes enthalten eine Liste aller Parameter sortiert nach Type und Parameter-Nummer
+ 
+     Tabelle KomponParams
+     KomponType  -   Verwiege-Parameter(Produktion) 
+     
+     Tabelle RohParams
+     Type 200    -  Produktinformation
+     Type 201    -  Verarbeitungshinweise
+     Type 202    -  Kalkulation
+     Type 210    -  Froster
+     Type 220    -  Gare
+     Type 300    -  Produktion
+     Type 301    -  Nährwerte und Allergene bezogen aus 100gr
+     Type 401    -  Nährwerte bezogen auf Stk
+ </summary>
+ <returns>wb_KomponParam - Root-Parameter der Komponente</returns>
 </member>
 <member name="M:WinBack.wb_Komponente.GetProduktionsDaten">
  <summary>

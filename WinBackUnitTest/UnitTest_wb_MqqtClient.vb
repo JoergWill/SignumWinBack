@@ -4,7 +4,7 @@ Imports uPLibrary.Networking.M2Mqtt
 Imports uPLibrary.Networking.M2Mqtt.Messages
 
 <TestClass()> Public Class UnitTest_wb_MqqtClient
-    Public WithEvents client As New MqttClient("mqtt.winback.de")
+    Public WithEvents client As New MqttClient("5.9.48.175")
 
     <TestMethod()> Public Sub TestMethod1()
         AddHandler client.MqttMsgPublishReceived, AddressOf client_MqttMsgPublishReceived
@@ -12,7 +12,7 @@ Imports uPLibrary.Networking.M2Mqtt.Messages
         AddHandler client.MqttMsgSubscribed, AddressOf client_MqttMsgSubscribed
 
         'Verbindung aufbauen
-        client.Connect(Guid.NewGuid().ToString())
+        client.Connect(Guid.NewGuid().ToString(), "herbst", "herbst")
 
         'Daten abbonieren
         client.Subscribe({"/Test1Topic"}, {MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE})
