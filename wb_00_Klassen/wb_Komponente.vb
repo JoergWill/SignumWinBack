@@ -213,21 +213,48 @@ Public Class wb_Komponente
         Dim t As Integer = wb_Functions.KomponTypeToInt(KO_Type)
 
         'abhängig von der Komponenten-Type werden die einzelnen Parameter durchlaufen
-        For p = 0 To wb_KomponParam_Global.MaxParam(t)
+        BuildArray("Produktion", t)
+
+        'abhängig von der Komponenten-Type werden weitere Parameter angezeigt
+        Select Case KO_Type
+            Case wb_Global.KomponTypen.KO_TYPE_ARTIKEL
+                'Parameter Verarbeitungshinweise
+                BuildArray("", 201)
+                'Parameter Kalkulation (nicht OrgaBack)
+                If wb_GlobalSettings.pVariante <> wb_Global.ProgVariante.OrgaBack Then
+                    BuildArray("", 202)
+                End If
+                'Parameter Nährwerte
+                BuildArray("", 301)
+
+            Case KomponTypen.KO_TYPE_AUTOKOMPONENTE, KomponTypen.KO_TYPE_EISKOMPONENTE, KomponTypen.KO_TYPE_HANDKOMPONENTE,
+                 KomponTypen.KO_TYPE_SAUER_MEHL, KomponTypen.KO_TYPE_SAUER_WASSER
+                'Parameter Nährwerte
+                BuildArray("", 301)
+
+        End Select
+    End Sub
+
+    Private Sub BuildArray(RootName As String, t As Integer)
+        'Sub-Knoten - Überschrift
+        If wb_KomponParam_Global.IsValidParameter(t, 0) Then
+            RootName = wb_KomponParam_Global.ktXXXParam(t, 0).Bezeichnung
+        End If
+        'Sub-Knoten für alle folgenden Parameter-Schritte
+        Dim Root As New wb_KomponParam(_RootParameter, t, 0, RootName)
+
+        'Liste aller Parameter zum Sub-Knoten
+        For p = 1 To wb_KomponParam_Global.MaxParam(t)
             If wb_KomponParam_Global.IsValidParameter(t, p) Then
                 'neuen Parameter-Datensatz anlegen
-                _Parameter = New wb_KomponParam(_RootParameter, t, p, wb_KomponParam_Global.ktXXXParam(t, p).Bezeichnung)
+                _Parameter = New wb_KomponParam(Root, t, p, wb_KomponParam_Global.ktXXXParam(t, p).Bezeichnung)
+                'Daten aus den Komponenten-Parametern
+                Select Case t
+                    Case wb_Global.ktParam.kt301
+                        _Parameter.Wert = ktTyp301.Wert(p)
+                End Select
             End If
         Next
-
-        'Parameter Artikel
-        For p = 0 To wb_KomponParam_Global.MaxParam(0)
-            If wb_KomponParam_Global.IsValidParameter(0, p) Then
-                'neuen Parameter-Datensatz anlegen
-                _Parameter = New wb_KomponParam(_RootParameter, 0, p, wb_KomponParam_Global.ktXXXParam(0, p).Bezeichnung)
-            End If
-        Next
-
     End Sub
 
     Friend Sub LoadData(dataGridView As wb_DataGridView)

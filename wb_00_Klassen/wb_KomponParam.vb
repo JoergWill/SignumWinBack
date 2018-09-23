@@ -25,6 +25,10 @@ Public Class wb_KomponParam
         _ParamNr = ParamNr
         'Parameter-Bezeichnung
         _Bezeichnung = Bezeichnung
+        'Einheit
+        _Einheit = wb_KomponParam_Global.ktXXXParam(TypNr, ParamNr).Einheit
+        'TODO Ober und Untergrenze Eingabefeld noch einfügen (Edit-Funktion)
+
         If Not (_parentStep Is Nothing) Then
             parent._childSteps.Add(Me)
         End If
@@ -89,6 +93,7 @@ Public Class wb_KomponParam
             _Einheit = value
         End Set
     End Property
+
 
     Public Property Used As Boolean
         Get

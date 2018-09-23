@@ -197,15 +197,17 @@ Public Class wb_KomponParam301
         Get
             If IsAllergen(index) Then
                 Return NaehrwertInfo(index)._Allergen
-            Else
+            ElseIf index < wb_Global.maxTyp301 Then
                 Return NaehrwertInfo(index)._Naehrwert
+            Else
+                Return ""
             End If
         End Get
         Set(value As String)
             If IsAllergen(index) Then
                 'Änderungen loggen
                 NaehrwertInfo(index)._Allergen = ChangeLogAdd(LogType.Alg, index, NaehrwertInfo(index)._Allergen, StringtoAllergen(value))
-            Else
+            ElseIf index < wb_Global.maxTyp301 Then
                 'Änderungen loggen
                 NaehrwertInfo(index)._Naehrwert = ChangeLogAdd(LogType.Nrw, index, NaehrwertInfo(index)._Naehrwert, StrToDouble(value))
             End If

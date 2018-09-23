@@ -74,14 +74,14 @@
     End Structure
 
     Public Enum ktParam
-        ktAlle
-        kt200
-        kt201
-        kt202
-        kt210
-        kt220
-        kt300
-        kt301
+        ktAlle = 0
+        kt200 = 200
+        kt201 = 201
+        kt202 = 202
+        kt210 = 210
+        kt220 = 220
+        kt300 = 300
+        kt301 = 301
     End Enum
 
     Public Structure ktTypXXXParam

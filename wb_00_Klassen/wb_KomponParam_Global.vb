@@ -81,7 +81,7 @@ Public Class wb_KomponParam_Global
                 k.Used = True
                 ktTypXXXParams.Add(BuildKey(k.Type, k.ParamNr), k)
 
-                'Parameter-Nummer korrigieren
+                'maximale Parameter-Nummer korrigieren
                 p = Math.Max(p, k.ParamNr)
 
         End Select

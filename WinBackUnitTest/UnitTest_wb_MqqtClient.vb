@@ -4,7 +4,7 @@ Imports uPLibrary.Networking.M2Mqtt
 Imports uPLibrary.Networking.M2Mqtt.Messages
 
 <TestClass()> Public Class UnitTest_wb_MqqtClient
-    Public WithEvents client As New MqttClient("5.9.48.175")
+    Public WithEvents client As New MqttClient("nwt.winback.de", 8883, True, New Security.Cryptography.X509Certificates.X509Certificate, New Security.Cryptography.X509Certificates.X509Certificate, MqttSslProtocols.SSLv3)
 
     <TestMethod()> Public Sub TestMethod1()
         AddHandler client.MqttMsgPublishReceived, AddressOf client_MqttMsgPublishReceived

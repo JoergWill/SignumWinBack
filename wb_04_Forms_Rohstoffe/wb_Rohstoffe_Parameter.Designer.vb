@@ -31,69 +31,18 @@ Partial Class wb_Rohstoffe_Parameter
         Dim ObjectCellBinding3 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding4 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding5 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
-        Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.CellEditor1 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.EnhEdit1 = New EnhEdit.EnhEdit(Me.components)
         Me.ColType = New Infralution.Controls.VirtualTree.Column()
         Me.ColNr = New Infralution.Controls.VirtualTree.Column()
         Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
         Me.ColWert = New Infralution.Controls.VirtualTree.Column()
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
+        Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
+        Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.CellEditor1 = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.EnhEdit1 = New EnhEdit.EnhEdit(Me.components)
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'VirtualTree
-        '
-        Me.VirtualTree.AllowMultiSelect = False
-        Me.VirtualTree.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.VirtualTree.AutoFitColumns = True
-        Me.VirtualTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.VirtualTree.Columns.Add(Me.ColType)
-        Me.VirtualTree.Columns.Add(Me.ColNr)
-        Me.VirtualTree.Columns.Add(Me.ColBezeichnung)
-        Me.VirtualTree.Columns.Add(Me.ColWert)
-        Me.VirtualTree.Columns.Add(Me.ColEinheit)
-        Me.VirtualTree.EditOnKeyPress = True
-        Me.VirtualTree.Editors.Add(Me.CellEditor2)
-        Me.VirtualTree.Editors.Add(Me.CellEditor1)
-        Me.VirtualTree.HeaderHeight = 24
-        Me.VirtualTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 12.0!)
-        Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.None
-        Me.VirtualTree.Location = New System.Drawing.Point(24, 23)
-        Me.VirtualTree.Name = "VirtualTree"
-        Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
-        Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.PowderBlue
-        Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
-        Me.VirtualTree.ShowRootRow = False
-        Me.VirtualTree.Size = New System.Drawing.Size(781, 399)
-        Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
-        Me.VirtualTree.TabIndex = 9
-        '
-        'CellEditor1
-        '
-        Me.CellEditor1.CellAlignment = System.Drawing.ContentAlignment.MiddleCenter
-        Me.CellEditor1.Control = Me.EnhEdit1
-        Me.CellEditor1.UseCellPadding = True
-        '
-        'EnhEdit1
-        '
-        Me.EnhEdit1.AcceptsReturn = True
-        Me.EnhEdit1.AcceptsTab = True
-        Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.EnhEdit1.eBackcolor = System.Drawing.Color.Empty
-        Me.EnhEdit1.eBorderColor = System.Drawing.Color.Empty
-        Me.EnhEdit1.eFont = Nothing
-        Me.EnhEdit1.Location = New System.Drawing.Point(-40, -1)
-        Me.EnhEdit1.Name = "EnhEdit1"
-        Me.EnhEdit1.Size = New System.Drawing.Size(10, 13)
-        Me.EnhEdit1.TabIndex = 8
-        Me.EnhEdit1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.EnhEdit1.Visible = False
         '
         'ColType
         '
@@ -124,6 +73,61 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColEinheit.Caption = "Einh"
         Me.ColEinheit.Name = "ColEinheit"
         Me.ColEinheit.Width = 155
+        '
+        'VirtualTree
+        '
+        Me.VirtualTree.AllowMultiSelect = False
+        Me.VirtualTree.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.VirtualTree.AutoFitColumns = True
+        Me.VirtualTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.VirtualTree.Columns.Add(Me.ColType)
+        Me.VirtualTree.Columns.Add(Me.ColNr)
+        Me.VirtualTree.Columns.Add(Me.ColBezeichnung)
+        Me.VirtualTree.Columns.Add(Me.ColWert)
+        Me.VirtualTree.Columns.Add(Me.ColEinheit)
+        Me.VirtualTree.EditOnKeyPress = True
+        Me.VirtualTree.Editors.Add(Me.CellEditor2)
+        Me.VirtualTree.Editors.Add(Me.CellEditor1)
+        Me.VirtualTree.HeaderHeight = 24
+        Me.VirtualTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 12.0!)
+        Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.None
+        Me.VirtualTree.Location = New System.Drawing.Point(24, 23)
+        Me.VirtualTree.Name = "VirtualTree"
+        Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
+        Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.PowderBlue
+        Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
+        Me.VirtualTree.ShowRootRow = False
+        Me.VirtualTree.Size = New System.Drawing.Size(781, 399)
+        Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
+        Me.VirtualTree.TabIndex = 9
+        '
+        'CellEditor2
+        '
+        Me.CellEditor2.Control = Nothing
+        '
+        'CellEditor1
+        '
+        Me.CellEditor1.CellAlignment = System.Drawing.ContentAlignment.MiddleCenter
+        Me.CellEditor1.Control = Me.EnhEdit1
+        Me.CellEditor1.UseCellPadding = True
+        '
+        'EnhEdit1
+        '
+        Me.EnhEdit1.AcceptsReturn = True
+        Me.EnhEdit1.AcceptsTab = True
+        Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.EnhEdit1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.EnhEdit1.eBackcolor = System.Drawing.Color.Empty
+        Me.EnhEdit1.eBorderColor = System.Drawing.Color.Empty
+        Me.EnhEdit1.eFont = Nothing
+        Me.EnhEdit1.Location = New System.Drawing.Point(-40, -1)
+        Me.EnhEdit1.Name = "EnhEdit1"
+        Me.EnhEdit1.Size = New System.Drawing.Size(10, 13)
+        Me.EnhEdit1.TabIndex = 8
+        Me.EnhEdit1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.EnhEdit1.Visible = False
         '
         'ObjectRowBinding1
         '
