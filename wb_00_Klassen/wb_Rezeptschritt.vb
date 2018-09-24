@@ -389,8 +389,6 @@ Public Class wb_Rezeptschritt
             Select Case _Type
                 Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
                     Return ""
-                    'Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
-                    '    Return wb_Functions.FormatStr(_Sollwert, 3)
                 Case Else
                     If wb_Functions.TypeIstSollMenge(_Type, 1) Then
                         Return wb_Functions.FormatStr(_Sollwert, 3)

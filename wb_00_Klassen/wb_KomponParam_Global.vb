@@ -43,6 +43,12 @@ Public Class wb_KomponParam_Global
             k.Bezeichnung = wb_Language.TextFilter(winback.sField("KT_Bezeichnung"))
             'Parameter-Einheit
             k.Einheit = winback.sField("E_Einheit")
+            'Parameter-Format
+            k.Format = winback.iField("KT_Format")
+            'Parameter-Eingabe unterer Grenzwert
+            k.GwUnten = winback.sField("KT_UnterGW")
+            'Parameter-Eingabe oberer Grenzwert
+            k.GwOben = winback.sField("KT_OberGW")
             'Parameter aktiv (Nährwerte und Allergene
             k.Used = (winback.sField("KT_Rezept") = "")
 
@@ -76,7 +82,7 @@ Public Class wb_KomponParam_Global
                 'zusätzlicher Parameter Lagerort/Silo
                 k.Type = t
                 k.ParamNr = 90
-                k.Bezeichnung = "LagerOrt/Silo"
+                k.Bezeichnung = "Lagerort/Silo"
                 k.Einheit = 0
                 k.Used = True
                 ktTypXXXParams.Add(BuildKey(k.Type, k.ParamNr), k)

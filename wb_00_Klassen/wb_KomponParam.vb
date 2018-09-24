@@ -9,14 +9,13 @@ Public Class wb_KomponParam
     Private _ParamNr As Integer
     Private _Bezeichnung As String
     Private _Wert As String
-    Private _Einheit As String
     Private _Used As Boolean
 
     '' <summary>
     '' Create a new step with the given parent
     '' </summary>
-    '' <param name="parent">The parent step</param>
-    '' <param name="name">The name of this step</param>
+    '' <param parent="parent">The parent step</param>
+    '' <param Bezeichnung="name">The name of this step</param>
     Public Sub New(parent As wb_KomponParam, TypNr As Integer, ParamNr As Integer, Bezeichnung As String)
         _parentStep = parent
         'Parameter-Type (200,210...401)
@@ -25,10 +24,7 @@ Public Class wb_KomponParam
         _ParamNr = ParamNr
         'Parameter-Bezeichnung
         _Bezeichnung = Bezeichnung
-        'Einheit
-        _Einheit = wb_KomponParam_Global.ktXXXParam(TypNr, ParamNr).Einheit
-        'TODO Ober und Untergrenze Eingabefeld noch einfügen (Edit-Funktion)
-
+        'Knoten in die Struktur einfügen
         If Not (_parentStep Is Nothing) Then
             parent._childSteps.Add(Me)
         End If
@@ -84,23 +80,86 @@ Public Class wb_KomponParam
             _Wert = value
         End Set
     End Property
-
-    Public Property Einheit As String
+    ''' <summary>
+    ''' Parameter-Wert abhängig von Komponenten-Type/Parameter-Type ausgeben
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property VirtualTree_Wert As String
         Get
-            Return _Einheit
+            'Parameter-Nummer 0 ist die Überschrift
+            If _ParamNr > 0 Then
+                'abhängig vom Paramter/Komponenten-Tyo
+                Select Case _TypNr
+
+                    'Komponenten-Type
+                    Case < ktParam.kt200
+                        Return wb_Functions.FormatStr(_Wert, 3)
+
+                    'Parameter-Type
+                    Case ktParam.kt301
+                        If wb_KomponParam301_Global.IsAllergen(_ParamNr) Then
+                            Return wb_Functions.AllergenToString(_Wert)
+                        Else
+                            Return wb_Functions.FormatStr(_Wert, 3)
+                        End If
+
+                        'alle anderen Parameter
+                    Case Else
+                        Return _Wert
+                End Select
+            Else
+                Return ""
+            End If
         End Get
+
         Set(value As String)
-            _Einheit = value
+            _Wert = value
         End Set
     End Property
 
-
-    Public Property Used As Boolean
+    Public ReadOnly Property VirtualTree_TypNr As String
         Get
-            Return _Used
+            Return ""
         End Get
-        Set(value As Boolean)
-            _Used = value
-        End Set
+    End Property
+
+    Public ReadOnly Property VirtualTree_ParamNr As String
+        Get
+            If ParamNr = 0 Then
+                Return ""
+            Else
+                Return ParamNr.ToString
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property Einheit As String
+        Get
+            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).Einheit
+        End Get
+    End Property
+
+    Public ReadOnly Property GwUnten As String
+        Get
+            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).GwUnten
+        End Get
+    End Property
+
+    Public ReadOnly Property GwOben As String
+        Get
+            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).GwOben
+        End Get
+    End Property
+
+    Public ReadOnly Property Format As String
+        Get
+            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).Format
+        End Get
+    End Property
+
+    Public ReadOnly Property Used As Boolean
+        Get
+            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).Used
+        End Get
     End Property
 End Class

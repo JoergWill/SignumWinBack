@@ -85,11 +85,14 @@
     End Enum
 
     Public Structure ktTypXXXParam
-        Public Type As Integer
-        Public ParamNr As Integer
-        Public Bezeichnung As String
-        Public Einheit As String
-        Public Used As Boolean
+        Public Type As Integer          'KomponentenType und/oder Parameter-Type
+        Public ParamNr As Integer       'Parameter-Nummer
+        Public Bezeichnung As String    'Bezeichnungs-Text
+        Public Einheit As String        'Einheit aus winback.KomponTypen-winback.Einheiten
+        Public Format As Integer        'Eingabe-Format (winback.Formate)
+        Public GwUnten As String        'Eingabe-Grenzwert unten
+        Public GwOben As String         'Eingabe-Grenzwert oben
+        Public Used As Boolean          'Parameter aktiv
     End Structure
 
     Public Structure ktTyp200Param

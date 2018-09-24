@@ -461,7 +461,7 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     ''' <param name="ColumnStyle"></param>
     Private Sub VirtualTree_SetFontStyle(ByRef ColumnStyle As Infralution.Controls.Style)
-        _HisSollwertDeltaStyle.Font = New Drawing.Font(ColumnStyle.Font, 3)
+        _HisSollwertDeltaStyle.Font = New Drawing.Font(ColumnStyle.Font, Drawing.FontStyle.Bold + Drawing.FontStyle.Italic)
         _HisSollwertChangedStyle = New Infralution.Controls.Style(ColumnStyle, _HisSollwertDeltaStyle)
         ColumnStyle = _HisSollwertChangedStyle
     End Sub

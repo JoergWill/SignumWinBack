@@ -1,12 +1,27 @@
 ﻿Imports WinBack.wb_Rohstoffe_Shared
 Imports WeifenLuo.WinFormsUI.Docking
+Imports Infralution.Controls.VirtualTree
 
 Public Class wb_Rohstoffe_Parameter
     Inherits DockContent
 
+    Private _ParamHeadingDeltaStyle As New Infralution.Controls.StyleDelta
+    Private _ParamAllergenDeltaStyle As New Infralution.Controls.StyleDelta
+    Private _ParamHeadingChangedStyle As Infralution.Controls.Style
+    Private _KomponParam As wb_KomponParam
+
     Private Sub wb_Rohstoffe_Parameter_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
+
+        'Virtual-Tree Styles initialisieren - Fettdruck Überschrift Parameter-Sektionen
+        _ParamHeadingDeltaStyle.Font = New Drawing.Font(VirtualTree.Columns(0).CellEvenStyle.Font, Drawing.FontStyle.Bold)
+        _ParamHeadingDeltaStyle.HorzAlignment = Drawing.StringAlignment.Near
+
+        'Virtual-Tree Styles initialisieren - Fettdruck Überschrift Parameter-Sektionen
+        _ParamAllergenDeltaStyle.Font = New Drawing.Font(VirtualTree.Columns(0).CellEvenStyle.Font, Drawing.FontStyle.Regular)
+        _ParamAllergenDeltaStyle.HorzAlignment = Drawing.StringAlignment.Center
+
         'Daten vom aktuellen Rohstoff anzeigen
         If RohStoff.Nr > 0 Then
             DetailInfo()
@@ -19,5 +34,52 @@ Public Class wb_Rohstoffe_Parameter
         'alle Zeilen aufklappen
         VirtualTree.RootRow.ExpandChildren(True)
     End Sub
+
+    ''' <summary>
+    ''' Ausgabe VirtualTree formatieren. 
+    ''' Überschriften (Parameter-Nummer gleich Null) werden fett formatiert
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VirtualTree_GetCellData(sender As Object, e As Infralution.Controls.VirtualTree.GetCellDataEventArgs) Handles VirtualTree.GetCellData
+        'get the default binding for the given row And use it to populate the cell data
+        Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
+        Binding.GetCellData(e.Row, e.Column, e.CellData)
+
+        'Datensatz aus der Zeile
+        _KomponParam = DirectCast(e.Row.Item, wb_KomponParam)
+
+        'Font einstellen
+        If _KomponParam.ParamNr = 0 Then
+            VirtualTree_SetFontStyle(e.CellData.EvenStyle)
+            VirtualTree_SetFontStyle(e.CellData.OddStyle)
+        End If
+
+        'Soll/Istwert 
+        If e.Column.Name = "ColWert" Then
+            If _KomponParam.TypNr = wb_Global.ktParam.kt301 And wb_KomponParam301_Global.IsAllergen(_KomponParam.ParamNr) Then
+                'Allergen-Informationen zentriert
+                VirtualTree_SetFontAlignment(e.CellData.EvenStyle)
+                VirtualTree_SetFontAlignment(e.CellData.OddStyle)
+            End If
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Setzt den Font.Style für die angegebene Zelle auf Fettdruck
+    ''' Anzeige der Überschriften für die einzelen Parameter-Sektionen
+    ''' </summary>
+    ''' <param name="ColumnStyle"></param>
+    Private Sub VirtualTree_SetFontStyle(ByRef ColumnStyle As Infralution.Controls.Style)
+        'Überschriften der einzelnen Sektionen - Fettdruck ein
+        _ParamHeadingChangedStyle = New Infralution.Controls.Style(ColumnStyle, _ParamHeadingDeltaStyle)
+        ColumnStyle = _ParamHeadingChangedStyle
+    End Sub
+
+    Private Sub VirtualTree_SetFontAlignment(ByRef ColumnStyle As Infralution.Controls.Style)
+        _ParamHeadingChangedStyle = New Infralution.Controls.Style(ColumnStyle, _ParamAllergenDeltaStyle)
+        ColumnStyle = _ParamHeadingChangedStyle
+    End Sub
+
 
 End Class

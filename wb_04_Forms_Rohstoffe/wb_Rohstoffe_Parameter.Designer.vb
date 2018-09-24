@@ -37,49 +37,71 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColWert = New Infralution.Controls.VirtualTree.Column()
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
-        Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.CellEditor1 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.EnhEdit1 = New EnhEdit.EnhEdit(Me.components)
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ColType
         '
-        Me.ColType.Caption = "Type"
+        Me.ColType.AutoFitWeight = 0!
+        Me.ColType.AutoSizePolicy = Infralution.Controls.VirtualTree.ColumnAutoSizePolicy.AutoIncrease
+        Me.ColType.Caption = ""
+        Me.ColType.CellEvenStyle.BackColor = System.Drawing.Color.White
+        Me.ColType.MaxAutoSizeWidth = 30
         Me.ColType.Name = "ColType"
-        Me.ColType.Width = 155
+        Me.ColType.Width = 30
         '
         'ColNr
         '
-        Me.ColNr.Caption = "Nr"
+        Me.ColNr.AutoFitWeight = 0!
+        Me.ColNr.AutoSizePolicy = Infralution.Controls.VirtualTree.ColumnAutoSizePolicy.AutoIncrease
+        Me.ColNr.Caption = ""
+        Me.ColNr.CellEvenStyle.BackColor = System.Drawing.Color.White
+        Me.ColNr.MaxAutoSizeWidth = 50
+        Me.ColNr.MinWidth = 50
         Me.ColNr.Name = "ColNr"
-        Me.ColNr.Width = 155
+        Me.ColNr.Resizable = False
+        Me.ColNr.Sortable = False
+        Me.ColNr.Width = 50
         '
         'ColBezeichnung
         '
+        Me.ColBezeichnung.AutoSizePolicy = Infralution.Controls.VirtualTree.ColumnAutoSizePolicy.AutoIncrease
         Me.ColBezeichnung.Caption = "Parameter"
+        Me.ColBezeichnung.CellEvenStyle.BackColor = System.Drawing.Color.White
+        Me.ColBezeichnung.MinWidth = 150
         Me.ColBezeichnung.Name = "ColBezeichnung"
-        Me.ColBezeichnung.Width = 155
+        Me.ColBezeichnung.Width = 293
         '
         'ColWert
         '
+        Me.ColWert.AutoFitWeight = 0!
+        Me.ColWert.AutoSizePolicy = Infralution.Controls.VirtualTree.ColumnAutoSizePolicy.AutoIncrease
         Me.ColWert.Caption = "Wert"
+        Me.ColWert.CellEvenStyle.BackColor = System.Drawing.Color.White
+        Me.ColWert.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
+        Me.ColWert.MaxAutoSizeWidth = 70
+        Me.ColWert.MinWidth = 70
         Me.ColWert.Name = "ColWert"
-        Me.ColWert.Width = 155
+        Me.ColWert.Sortable = False
+        Me.ColWert.Width = 70
         '
         'ColEinheit
         '
+        Me.ColEinheit.AutoFitWeight = 0!
+        Me.ColEinheit.AutoSizePolicy = Infralution.Controls.VirtualTree.ColumnAutoSizePolicy.AutoIncrease
         Me.ColEinheit.Caption = "Einh"
+        Me.ColEinheit.CellEvenStyle.BackColor = System.Drawing.Color.White
+        Me.ColEinheit.MaxAutoSizeWidth = 50
+        Me.ColEinheit.MinWidth = 50
         Me.ColEinheit.Name = "ColEinheit"
-        Me.ColEinheit.Width = 155
+        Me.ColEinheit.Width = 50
         '
         'VirtualTree
         '
         Me.VirtualTree.AllowMultiSelect = False
-        Me.VirtualTree.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.VirtualTree.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.VirtualTree.AutoFitColumns = True
         Me.VirtualTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.VirtualTree.Columns.Add(Me.ColType)
@@ -88,46 +110,19 @@ Partial Class wb_Rohstoffe_Parameter
         Me.VirtualTree.Columns.Add(Me.ColWert)
         Me.VirtualTree.Columns.Add(Me.ColEinheit)
         Me.VirtualTree.EditOnKeyPress = True
-        Me.VirtualTree.Editors.Add(Me.CellEditor2)
-        Me.VirtualTree.Editors.Add(Me.CellEditor1)
         Me.VirtualTree.HeaderHeight = 24
         Me.VirtualTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 12.0!)
         Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.None
-        Me.VirtualTree.Location = New System.Drawing.Point(24, 23)
+        Me.VirtualTree.Location = New System.Drawing.Point(-1, -1)
+        Me.VirtualTree.MainColumn = Me.ColType
         Me.VirtualTree.Name = "VirtualTree"
         Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
         Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.PowderBlue
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.ShowRootRow = False
-        Me.VirtualTree.Size = New System.Drawing.Size(781, 399)
+        Me.VirtualTree.Size = New System.Drawing.Size(495, 463)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 9
-        '
-        'CellEditor2
-        '
-        Me.CellEditor2.Control = Nothing
-        '
-        'CellEditor1
-        '
-        Me.CellEditor1.CellAlignment = System.Drawing.ContentAlignment.MiddleCenter
-        Me.CellEditor1.Control = Me.EnhEdit1
-        Me.CellEditor1.UseCellPadding = True
-        '
-        'EnhEdit1
-        '
-        Me.EnhEdit1.AcceptsReturn = True
-        Me.EnhEdit1.AcceptsTab = True
-        Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.EnhEdit1.eBackcolor = System.Drawing.Color.Empty
-        Me.EnhEdit1.eBorderColor = System.Drawing.Color.Empty
-        Me.EnhEdit1.eFont = Nothing
-        Me.EnhEdit1.Location = New System.Drawing.Point(-40, -1)
-        Me.EnhEdit1.Name = "EnhEdit1"
-        Me.EnhEdit1.Size = New System.Drawing.Size(10, 13)
-        Me.EnhEdit1.TabIndex = 8
-        Me.EnhEdit1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.EnhEdit1.Visible = False
         '
         'ObjectRowBinding1
         '
@@ -135,13 +130,14 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ObjectRowBinding1.AllowDropAboveRow = True
         Me.ObjectRowBinding1.AllowDropBelowRow = True
         ObjectCellBinding1.Column = Me.ColType
-        ObjectCellBinding1.Field = "TypNr"
+        ObjectCellBinding1.Field = "VirtualTree_TypNr"
         ObjectCellBinding2.Column = Me.ColNr
-        ObjectCellBinding2.Field = "ParamNr"
+        ObjectCellBinding2.Field = "VirtualTree_ParamNr"
+        ObjectCellBinding2.Style.HorzAlignment = System.Drawing.StringAlignment.Center
         ObjectCellBinding3.Column = Me.ColBezeichnung
         ObjectCellBinding3.Field = "Bezeichnung"
         ObjectCellBinding4.Column = Me.ColWert
-        ObjectCellBinding4.Field = "Wert"
+        ObjectCellBinding4.Field = "VirtualTree_Wert"
         ObjectCellBinding5.Column = Me.ColEinheit
         ObjectCellBinding5.Field = "Einheit"
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
@@ -162,7 +158,6 @@ Partial Class wb_Rohstoffe_Parameter
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(860, 460)
         Me.Controls.Add(Me.VirtualTree)
-        Me.Controls.Add(Me.EnhEdit1)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "wb_Rohstoffe_Parameter"
         Me.Text = "Rohstoff Parameter"
@@ -173,9 +168,6 @@ Partial Class wb_Rohstoffe_Parameter
     End Sub
 
     Friend WithEvents VirtualTree As Infralution.Controls.VirtualTree.VirtualTree
-    Friend WithEvents CellEditor2 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents CellEditor1 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents EnhEdit1 As EnhEdit.EnhEdit
     Friend WithEvents ObjectRowBinding1 As Infralution.Controls.VirtualTree.ObjectRowBinding
     Friend WithEvents ColType As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColNr As Infralution.Controls.VirtualTree.Column

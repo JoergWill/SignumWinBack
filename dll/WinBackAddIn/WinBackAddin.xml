@@ -855,6 +855,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="LosArt"></param>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_KomponParam.VirtualTree_Wert">
+ <summary>
+ Parameter-Wert abhängig von Komponenten-Type/Parameter-Type ausgeben
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_KomponParam200.MySQLdbUpdate(System.Int32,WinBack.wb_Sql@)">
  <summary>
  Update aller geänderten Komponenten-Parameter in Tabelle winback.RohParams
@@ -4972,6 +4978,21 @@ Public Const MFF_Wissenswertes = 213
  Die DockPanel-Konfiguration wird gespeichert unter wbXXXXYYYY.xml, dabei ist XXXX der FormName und YYYY der Layout-Name.
  </summary>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Parameter.VirtualTree_GetCellData(System.Object,Infralution.Controls.VirtualTree.GetCellDataEventArgs)">
+ <summary>
+ Ausgabe VirtualTree formatieren. 
+ Überschriften (Parameter-Nummer gleich Null) werden fett formatiert
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Parameter.VirtualTree_SetFontStyle(Infralution.Controls.Style@)">
+ <summary>
+ Setzt den Font.Style für die angegebene Zelle auf Fettdruck
+ Anzeige der Überschriften für die einzelen Parameter-Sektionen
+ </summary>
+ <param name="ColumnStyle"></param>
 </member>
 <member name="P:WinBack.wb_Rohstoffe_Main.FormText">
  <summary>
