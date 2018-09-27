@@ -421,6 +421,16 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.VirtTreeCollapse_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.VirtTreeExpand_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.Zoom_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -1125,6 +1135,21 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="p">Interger Parameter-Nummer</param>
  <returns>ktTyp300Param</returns>
 </member>
+<member name="M:WinBack.wb_KomponParamXXX.MySQLdbUpdate(System.Int32,WinBack.wb_Sql@)">
+ <summary>
+ Update aller geänderten Komponenten-Parameter in Tabelle winback.KomponParams
+     RP_Ko_Nr
+     RP_Typ_Nr
+     RP_ParamNr
+     RP_Wert
+     RP_Kommentar
+     RP_Timestamp
+     
+ SQL_Anweisung REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
+ 
+ </summary>
+ <returns></returns>
+</member>
 <member name="T:WinBack.wb_KomponParam_Global">
  <summary>
  Ermittlung der Parameter für die Produktion
@@ -1138,12 +1163,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Initialisierung und Aufbau der Hash-Table aus der Datenbank (Tabelle KomponTypen und Einheiten)
  </summary>
 </member>
-<member name="M:WinBack.wb_KomponParam_Global.ExtendedParameter(System.Int32,System.Int32@)">
+<member name="M:WinBack.wb_KomponParam_Global.ExtendedParameter(System.Int32@,System.Int32@)">
  <summary>
  Fügt, abhängig vom Konfiguration und Komponenten(Parameter)-Type zusätzliche
  Parameter ein.
  
      Type 101 - Lagerort/Silo
+     Type 129 - (Dummy)Paramtersatz Temperatur-Erfassung
      
  </summary>
  <param name="t"></param>
@@ -1643,8 +1669,8 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Erster (unsichtbarer) Parameter-Knoten (Root-Node)
  Die Child-Nodes enthalten eine Liste aller Parameter sortiert nach Type und Parameter-Nummer
  
-     Tabelle KomponParams
-     KomponType  -   Verwiege-Parameter(Produktion) 
+     Tabelle KomponTypen
+     Type XXX    -  Verwiege-Parameter(Produktion) 
      
      Tabelle RohParams
      Type 200    -  Produktinformation
@@ -1657,6 +1683,27 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
      Type 401    -  Nährwerte bezogen auf Stk
  </summary>
  <returns>wb_KomponParam - Root-Parameter der Komponente</returns>
+</member>
+<member name="M:WinBack.wb_Komponente.BuildParameterArray">
+ <summary>
+ Parameter-Array für die Anzeige der Rohstoff/Artikel-Parameter im VirtualTree aufbauen
+ Ausgehend vom Root-Parameter (unsichtbar) wird ein Parameter-Baum abhängig von der Komponenten-Type 
+ aufgebaut.
+ 
+ Die Daten stehen im Array ktxxx aus winback.KomponParams
+ Die erweiterten Daten kommen aus den einzelnen Parameter-Arrays. (kt200..kt301) aus winback.RohParams
+ 
+ Die Datenhülle wird in wb_KomponParam..._Global aus winback.KomponTypen einmalig beim ersten Aufruf
+ gebildet und als Array gespeichert.
+ </summary>
+</member>
+<member name="M:WinBack.wb_Komponente.AddParamNodes(System.String,System.Int32)">
+ <summary>
+ Fügt eine neue Gruppe von Parameter-Knoten an den Root-Parameter an. Der erste Child-Knoten bildet die Überschrift über die 
+ folgenden Parameter-Gruppen.
+ </summary>
+ <param name="RootName"></param>
+ <param name="t"></param>
 </member>
 <member name="M:WinBack.wb_Komponente.GetProduktionsDaten">
  <summary>
@@ -4899,6 +4946,11 @@ Text aus Datenbank lesen - Übersetzung
  Markierung der Artikel/Komponentendaten (KA_Artikel_Typ)
      -   Nährwertinfo fehlerhaft/nicht vollständig
      -   Nährwertinfo muss neu berechnet werden (Update Nährwerte Cloud)
+ </summary>
+</member>
+<member name="F:WinBack.wb_Global.maxTypXXX">
+ <summary>
+ Produktions-Parameter
  </summary>
 </member>
 <member name="F:WinBack.wb_Global.maxTyp200">

@@ -187,6 +187,7 @@
         KO_TYPE_KNETER              '118
         KO_TYPE_TEIGZETTEL          '119
         KO_TYPE_KNETERREZEPT        '128
+        KO_TYPE_KNETER_TEIGRUHE     '129 (Dummy)
 
         KO_TYPE_TEXTKOMPONENTE      '121
         KO_TYPE_PRODUKTIONSSTUFE    '122
@@ -245,6 +246,13 @@
         nwtFehlerhaft = 1
         nwtUpdate = 2
     End Enum
+
+    ''' <summary>
+    ''' Produktions-Parameter
+    ''' </summary>
+    Public Const maxTypXXX = 91
+    Public Const T101_LagerOrt = 90
+    Public Const T118_KneterParamNr = 2
 
     ''' <summary>
     ''' Produkt-Information
@@ -374,6 +382,7 @@
     Public Const MFF_MehlZusammensetzung = 210
     Public Const MFF_Kommentar = 225
     Public Const MFF_RezeptNummer = 228
+    Public Const MFF_RezeptName = 228
 #End If
 
     ''' <summary>

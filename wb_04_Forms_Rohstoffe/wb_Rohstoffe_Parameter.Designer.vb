@@ -35,6 +35,8 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColNr = New Infralution.Controls.VirtualTree.Column()
         Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
         Me.ColWert = New Infralution.Controls.VirtualTree.Column()
+        Me.EnhEdit = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.EnhEdit_RohParams = New EnhEdit.EnhEdit(Me.components)
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
@@ -44,12 +46,14 @@ Partial Class wb_Rohstoffe_Parameter
         'ColType
         '
         Me.ColType.AutoFitWeight = 0!
-        Me.ColType.AutoSizePolicy = Infralution.Controls.VirtualTree.ColumnAutoSizePolicy.AutoIncrease
         Me.ColType.Caption = ""
         Me.ColType.CellEvenStyle.BackColor = System.Drawing.Color.White
-        Me.ColType.MaxAutoSizeWidth = 30
+        Me.ColType.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Center
+        Me.ColType.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ColType.MaxAutoSizeWidth = 20
+        Me.ColType.MinWidth = 20
         Me.ColType.Name = "ColType"
-        Me.ColType.Width = 30
+        Me.ColType.Width = 20
         '
         'ColNr
         '
@@ -57,6 +61,7 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColNr.AutoSizePolicy = Infralution.Controls.VirtualTree.ColumnAutoSizePolicy.AutoIncrease
         Me.ColNr.Caption = ""
         Me.ColNr.CellEvenStyle.BackColor = System.Drawing.Color.White
+        Me.ColNr.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ColNr.MaxAutoSizeWidth = 50
         Me.ColNr.MinWidth = 50
         Me.ColNr.Name = "ColNr"
@@ -69,22 +74,42 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColBezeichnung.AutoSizePolicy = Infralution.Controls.VirtualTree.ColumnAutoSizePolicy.AutoIncrease
         Me.ColBezeichnung.Caption = "Parameter"
         Me.ColBezeichnung.CellEvenStyle.BackColor = System.Drawing.Color.White
+        Me.ColBezeichnung.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ColBezeichnung.MinWidth = 150
         Me.ColBezeichnung.Name = "ColBezeichnung"
-        Me.ColBezeichnung.Width = 293
+        Me.ColBezeichnung.Width = 297
         '
         'ColWert
         '
         Me.ColWert.AutoFitWeight = 0!
         Me.ColWert.AutoSizePolicy = Infralution.Controls.VirtualTree.ColumnAutoSizePolicy.AutoIncrease
         Me.ColWert.Caption = "Wert"
+        Me.ColWert.CellEditor = Me.EnhEdit
         Me.ColWert.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.ColWert.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
+        Me.ColWert.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ColWert.MaxAutoSizeWidth = 70
         Me.ColWert.MinWidth = 70
         Me.ColWert.Name = "ColWert"
         Me.ColWert.Sortable = False
         Me.ColWert.Width = 70
+        '
+        'EnhEdit
+        '
+        Me.EnhEdit.Control = Me.EnhEdit_RohParams
+        '
+        'EnhEdit_RohParams
+        '
+        Me.EnhEdit_RohParams.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.EnhEdit_RohParams.eBackcolor = System.Drawing.Color.Empty
+        Me.EnhEdit_RohParams.eBorderColor = System.Drawing.Color.Empty
+        Me.EnhEdit_RohParams.eFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EnhEdit_RohParams.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EnhEdit_RohParams.Location = New System.Drawing.Point(0, 0)
+        Me.EnhEdit_RohParams.Name = "EnhEdit_RohParams"
+        Me.EnhEdit_RohParams.Size = New System.Drawing.Size(100, 18)
+        Me.EnhEdit_RohParams.TabIndex = 0
+        Me.EnhEdit_RohParams.Visible = False
         '
         'ColEinheit
         '
@@ -92,10 +117,11 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColEinheit.AutoSizePolicy = Infralution.Controls.VirtualTree.ColumnAutoSizePolicy.AutoIncrease
         Me.ColEinheit.Caption = "Einh"
         Me.ColEinheit.CellEvenStyle.BackColor = System.Drawing.Color.White
-        Me.ColEinheit.MaxAutoSizeWidth = 50
-        Me.ColEinheit.MinWidth = 50
+        Me.ColEinheit.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ColEinheit.MaxAutoSizeWidth = 80
+        Me.ColEinheit.MinWidth = 80
         Me.ColEinheit.Name = "ColEinheit"
-        Me.ColEinheit.Width = 50
+        Me.ColEinheit.Width = 80
         '
         'VirtualTree
         '
@@ -104,25 +130,30 @@ Partial Class wb_Rohstoffe_Parameter
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.VirtualTree.AutoFitColumns = True
         Me.VirtualTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.VirtualTree.CollapseImage = Global.WinBack.My.Resources.Resources.VirtTreeCollapse_16x16
         Me.VirtualTree.Columns.Add(Me.ColType)
         Me.VirtualTree.Columns.Add(Me.ColNr)
         Me.VirtualTree.Columns.Add(Me.ColBezeichnung)
         Me.VirtualTree.Columns.Add(Me.ColWert)
         Me.VirtualTree.Columns.Add(Me.ColEinheit)
         Me.VirtualTree.EditOnKeyPress = True
+        Me.VirtualTree.Editors.Add(Me.EnhEdit)
+        Me.VirtualTree.ExpandImage = Global.WinBack.My.Resources.Resources.VirtTreeExpand_16x16
+        Me.VirtualTree.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.VirtualTree.HeaderHeight = 24
         Me.VirtualTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 12.0!)
         Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.None
-        Me.VirtualTree.Location = New System.Drawing.Point(-1, -1)
+        Me.VirtualTree.Location = New System.Drawing.Point(17, 12)
         Me.VirtualTree.MainColumn = Me.ColType
         Me.VirtualTree.Name = "VirtualTree"
         Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
         Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.PowderBlue
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.ShowRootRow = False
-        Me.VirtualTree.Size = New System.Drawing.Size(495, 463)
+        Me.VirtualTree.Size = New System.Drawing.Size(519, 436)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 9
+        Me.VirtualTree.TabStop = False
         '
         'ObjectRowBinding1
         '
@@ -131,6 +162,7 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ObjectRowBinding1.AllowDropBelowRow = True
         ObjectCellBinding1.Column = Me.ColType
         ObjectCellBinding1.Field = "VirtualTree_TypNr"
+        ObjectCellBinding1.Style.HorzAlignment = System.Drawing.StringAlignment.Center
         ObjectCellBinding2.Column = Me.ColNr
         ObjectCellBinding2.Field = "VirtualTree_ParamNr"
         ObjectCellBinding2.Style.HorzAlignment = System.Drawing.StringAlignment.Center
@@ -156,14 +188,13 @@ Partial Class wb_Rohstoffe_Parameter
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(860, 460)
+        Me.ClientSize = New System.Drawing.Size(594, 460)
         Me.Controls.Add(Me.VirtualTree)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "wb_Rohstoffe_Parameter"
         Me.Text = "Rohstoff Parameter"
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -174,4 +205,6 @@ Partial Class wb_Rohstoffe_Parameter
     Friend WithEvents ColBezeichnung As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColWert As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColEinheit As Infralution.Controls.VirtualTree.Column
+    Friend WithEvents EnhEdit As Infralution.Controls.VirtualTree.CellEditor
+    Friend WithEvents EnhEdit_RohParams As EnhEdit.EnhEdit
 End Class

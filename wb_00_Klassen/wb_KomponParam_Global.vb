@@ -24,7 +24,7 @@ Public Class wb_KomponParam_Global
         ktTypXXXParams.Clear()
         While winback.Read
 
-            'Parameter-Datensatz
+            'Parameter-Datensatz (WinBack-Komponenten-Type/Parameter)
             k.Type = winback.iField("KT_Typ_Nr")
 
             'Die Komponenten(Parameter-)Type hat sich geändert
@@ -49,30 +49,124 @@ Public Class wb_KomponParam_Global
             k.GwUnten = winback.sField("KT_UnterGW")
             'Parameter-Eingabe oberer Grenzwert
             k.GwOben = winback.sField("KT_OberGW")
-            'Parameter aktiv (Nährwerte und Allergene
-            k.Used = (winback.sField("KT_Rezept") = "")
+
+            'Parameter aktiv
+            If k.Type = ktParam.kt301 Then
+                'Parameter aktiv (Nährwerte und Allergene
+                k.Used = (winback.sField("KT_Rezept") = "X")
+            Else
+                'Anzeige des Parameter-Wertes abhängig von Parameter-Type und Parameter-Nummer
+                k.Used = SetParameterUsed(k.Type, k.ParamNr)
+            End If
 
             'Parameter-Datensatz speichern
-            Try
-                ktTypXXXParams.Add(BuildKey(k.Type, k.ParamNr), k)
-            Catch
-            End Try
+            If k.Used Then
+                Try
+                    ktTypXXXParams.Add(BuildKey(k.Type, k.ParamNr), k)
+                Catch
+                End Try
+            End If
 
         End While
         winback.Close()
     End Sub
+
+    Private Shared Function SetParameterUsed(t As Integer, p As Integer) As Boolean
+        'Komponenten-Typen (Parameter-Nummer kleiner 200)
+        If t < wb_Global.ktParam.kt200 Then
+            'Anzeige der Parameter abhängig von der Komponenten-Type
+            Select Case wb_Functions.IntToKomponType(t)
+
+                Case KomponTypen.KO_TYPE_AUTOKOMPONENTE
+                    'Parameter
+                    Select Case p
+                        Case 4, 5, 7, 8, 9, wb_Global.T101_LagerOrt
+                            Return True
+                        Case Else
+                            Return False
+                    End Select
+
+                Case KomponTypen.KO_TYPE_HANDKOMPONENTE
+                    'Parameter
+                    Select Case p
+                        Case 3, 4, 7, 6, 5
+                            Return True
+                        Case Else
+                            Return False
+                    End Select
+
+                Case KomponTypen.KO_TYPE_WASSERKOMPONENTE
+                    'Parameter
+                    Select Case p
+                        Case 4, 5, 6, 7, 8, 9
+                            Return True
+                        Case Else
+                            Return False
+                    End Select
+
+                Case KomponTypen.KO_TYPE_EISKOMPONENTE
+                    'Parameter
+                    Select Case p
+                        Case 3, 4, 6, 7, 8, 9, 10
+                            Return True
+                        Case Else
+                            Return False
+                    End Select
+
+                Case KomponTypen.KO_TYPE_STUECK
+                    'Parameter
+                    Select Case p
+                        Case 3, 4, 6
+                            Return True
+                        Case Else
+                            Return False
+                    End Select
+
+                Case KomponTypen.KO_TYPE_METER
+                    'Parameter
+                    Select Case p
+                        Case 3, 4
+                            Return True
+                        Case Else
+                            Return False
+                    End Select
+
+                Case KomponTypen.KO_TYPE_KNETER, KomponTypen.KO_TYPE_KNETERREZEPT
+                    'Kneter-Komponenten haben keine Parameter
+                    'Teigruhe im Kneter-Rezept wird in ExtendedParameter angelegt
+                    Return False
+
+                Case Else
+                    Return False
+            End Select
+        Else
+            'TODO erst mal alles ausgeben
+            'abhängig von Parameter-Type
+            Select Case t
+
+                Case wb_Global.ktParam.kt200
+                    Return True
+
+                ' Nährwerte werden im Datenbank-Feld winback.KomponParams.KT_Rezept freigeschaltet
+                Case wb_Global.ktParam.kt301
+                    Return True
+
+                Case Else
+                    Return True
+            End Select
+        End If
+    End Function
 
     ''' <summary>
     ''' Fügt, abhängig vom Konfiguration und Komponenten(Parameter)-Type zusätzliche
     ''' Parameter ein.
     ''' 
     '''     Type 101 - Lagerort/Silo
+    '''     Type 129 - (Dummy)Paramtersatz Temperatur-Erfassung
     '''     
     ''' </summary>
     ''' <param name="t"></param>
-    Private Shared Sub ExtendedParameter(t As Integer, ByRef p As Integer)
-        'neuer Parameter
-        Dim k As ktTypXXXParam
+    Private Shared Sub ExtendedParameter(ByRef t As Integer, ByRef p As Integer)
 
         'abhängig von der Komponenten-Type
         Select Case wb_Functions.IntToKomponType(t)
@@ -80,17 +174,37 @@ Public Class wb_KomponParam_Global
             'Automatik-Rohstoffe
             Case wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE
                 'zusätzlicher Parameter Lagerort/Silo
-                k.Type = t
-                k.ParamNr = 90
-                k.Bezeichnung = "Lagerort/Silo"
-                k.Einheit = 0
-                k.Used = True
-                ktTypXXXParams.Add(BuildKey(k.Type, k.ParamNr), k)
+                AddParameter(t, p, wb_Global.T101_LagerOrt, "Lagerort/Silo", 0, "", "")
 
-                'maximale Parameter-Nummer korrigieren
-                p = Math.Max(p, k.ParamNr)
-
+            'nach Kneter-Komponente wird ein neuer Parameter-Satz KO_TYPE_KNETER_TEIGRUHE angelegt
+            Case wb_Global.KomponTypen.KO_TYPE_KNETER
+                'Dummy-Parameter für Teigruhe
+                t = wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_KNETER_TEIGRUHE)
+                'zusätzlicher Parametersatz Teigruhe (Dummy-Kompontype)
+                AddParameter(t, p, 0, "Teigruhe", "", "", "")
+                AddParameter(t, p, 6, "Teigruhesatz löschen nach [hh:mm:ss]", "hh:mm:ss", "00:00:00", "99:59:59")
+                AddParameter(t, p, 8, "Korrektur[Sek/°C]", 0, "Sek/°C", "9999")
+                AddParameter(t, p, 10, "Untergrenze Teigruhezeit", "%", "0", "999", False)
+                AddParameter(t, p, 11, "Obergrenze Teigruhezeit", "%", "0", "999", False)
+                AddParameter(t, p, 12, "Toleranz nach Ende Teigruhe(gelb) [hh:mm:ss]", "hh:mm:ss", "00:00:00", "99:59:59")
+                AddParameter(t, p, 13, "Toleranz vor Ablauf Teigruhe(gelb) [hh:mm:ss]", "hh:mm:ss", "00:00:00", "99:59:59")
         End Select
+    End Sub
+
+    Private Shared Sub AddParameter(ByRef Typ As Integer, ByRef MaxParamNr As Integer, ParamNr As Integer, Bezeichnung As String, Einheit As String, GWOben As String, GWUnten As String, Optional Used As Boolean = True)
+        'neuer Parameter
+        Dim k As ktTypXXXParam
+        k.Type = Typ
+        k.ParamNr = ParamNr
+        k.Bezeichnung = Bezeichnung
+        k.Einheit = Einheit
+        k.Used = Used
+        k.GwOben = GWOben
+        k.GwUnten = GWUnten
+        'zur Liste hinzufügen
+        ktTypXXXParams.Add(BuildKey(k.Type, k.ParamNr), k)
+        'maximale Parameter-Nummer korrigieren
+        MaxParamNr = Math.Max(MaxParamNr, ParamNr)
     End Sub
 
     ''' <summary>

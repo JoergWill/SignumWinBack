@@ -71,7 +71,7 @@ Partial Class Test_Main
         Me.EnhEdit2.Name = "EnhEdit2"
         Me.EnhEdit2.Size = New System.Drawing.Size(100, 13)
         Me.EnhEdit2.TabIndex = 0
-        Me.EnhEdit2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        'Me.EnhEdit2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.EnhEdit2.Visible = False
         '
         'ColPreis

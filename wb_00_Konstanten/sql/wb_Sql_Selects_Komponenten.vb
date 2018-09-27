@@ -44,8 +44,10 @@
     Public Const sqlKompTypXXX = "SELECT KomponTypen.*, Einheiten.E_Einheit " &
                                  "FROM KomponTypen INNER JOIN Einheiten ON KomponTypen.KT_EinheitIndex = (Einheiten.E_LfdNr) " &
                                  "WHERE (((KomponTypen.KT_Typ_Nr)[0])) ORDER BY KomponTypen.KT_Typ_Nr, KomponTypen.KT_ParamNr"
-    'Sql-Statmente Liste aller Komponenten-Parameter
-    Public Const sqlKompParamsXXX = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
+    'Sql-Statmente Liste aller Komponenten-Parameter zur Komponenten-Type(Produktion)
+    Public Const sqlKomponParamsXXX = "SELECT * FROM KomponParams WHERE KP_Ko_Nr = [0] ORDER BY KP_ParamNr"
+    'Sql-Statmente Liste aller Komponenten-Parameter (erweiterte Parameter/Nährwerte)
+    Public Const sqlRohParamsXXX = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0]) ORDER BY RP_Typ_Nr, RP_ParamNr"
 
     'Sql-Statement Suche nächsten Rohstoffdatensatz nach KO_Nr (Update Nährwerte)
@@ -59,6 +61,7 @@
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"
     'Sql-Statement Update(Replace) RohParams nach RP_Ko_Nr und RP_Typ_Nr und RP_ParamNr
     Public Const sqlUpdateRohParams = "REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES ([0])"
+    'TODO Update KomponParams
 
     'Sql-Statement Komponenten-Parameter zum Komponenten-Nummer und Parameter-Nummer 
     Public Const sqlKompParams = "Select KP_Wert FROM KomponParams WHERE KP_KO_Nr = [0] And KP_ParamNr = [1]"

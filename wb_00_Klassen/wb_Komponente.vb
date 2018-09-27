@@ -35,6 +35,7 @@ Public Class wb_Komponente
     Private _RootParameter As New wb_KomponParam(Nothing, 0, 0, "")
     Private _Parameter As wb_KomponParam
 
+    Public ktTypXXX As New wb_KomponParamXXX
     Public ktTyp200 As New wb_KomponParam200
     Public ktTyp201 As New wb_KomponParam201
     Public ktTyp202 As New wb_KomponParam202
@@ -184,8 +185,8 @@ Public Class wb_Komponente
     ''' Erster (unsichtbarer) Parameter-Knoten (Root-Node)
     ''' Die Child-Nodes enthalten eine Liste aller Parameter sortiert nach Type und Parameter-Nummer
     ''' 
-    '''     Tabelle KomponParams
-    '''     KomponType  -   Verwiege-Parameter(Produktion) 
+    '''     Tabelle KomponTypen
+    '''     Type XXX    -  Verwiege-Parameter(Produktion) 
     '''     
     '''     Tabelle RohParams
     '''     Type 200    -  Produktinformation
@@ -206,36 +207,67 @@ Public Class wb_Komponente
         End Get
     End Property
 
+    ''' <summary>
+    ''' Parameter-Array für die Anzeige der Rohstoff/Artikel-Parameter im VirtualTree aufbauen
+    ''' Ausgehend vom Root-Parameter (unsichtbar) wird ein Parameter-Baum abhängig von der Komponenten-Type 
+    ''' aufgebaut.
+    ''' 
+    ''' Die Daten stehen im Array ktxxx aus winback.KomponParams
+    ''' Die erweiterten Daten kommen aus den einzelnen Parameter-Arrays. (kt200..kt301) aus winback.RohParams
+    ''' 
+    ''' Die Datenhülle wird in wb_KomponParam..._Global aus winback.KomponTypen einmalig beim ersten Aufruf
+    ''' gebildet und als Array gespeichert.
+    ''' </summary>
     Private Sub BuildParameterArray()
         'Root-Knoten neu initialisieren
         _RootParameter = New wb_KomponParam(Nothing, 0, 0, "")
         'Komponenten-Type WinBack
         Dim t As Integer = wb_Functions.KomponTypeToInt(KO_Type)
 
-        'abhängig von der Komponenten-Type werden die einzelnen Parameter durchlaufen
-        BuildArray("Produktion", t)
-
         'abhängig von der Komponenten-Type werden weitere Parameter angezeigt
         Select Case KO_Type
             Case wb_Global.KomponTypen.KO_TYPE_ARTIKEL
+                'abhängig von der Komponenten-Type werden die einzelnen Parameter durchlaufen
+                AddParamNodes("Artikel", t)
                 'Parameter Verarbeitungshinweise
-                BuildArray("", 201)
+                AddParamNodes("", wb_Global.ktParam.kt201)
                 'Parameter Kalkulation (nicht OrgaBack)
                 If wb_GlobalSettings.pVariante <> wb_Global.ProgVariante.OrgaBack Then
-                    BuildArray("", 202)
+                    AddParamNodes("", wb_Global.ktParam.kt202)
                 End If
                 'Parameter Nährwerte
-                BuildArray("", 301)
+                AddParamNodes("", wb_Global.ktParam.kt301)
 
-            Case KomponTypen.KO_TYPE_AUTOKOMPONENTE, KomponTypen.KO_TYPE_EISKOMPONENTE, KomponTypen.KO_TYPE_HANDKOMPONENTE,
-                 KomponTypen.KO_TYPE_SAUER_MEHL, KomponTypen.KO_TYPE_SAUER_WASSER
+            Case KomponTypen.KO_TYPE_AUTOKOMPONENTE, KomponTypen.KO_TYPE_EISKOMPONENTE, KomponTypen.KO_TYPE_HANDKOMPONENTE
+                'abhängig von der Komponenten-Type werden die einzelnen Parameter durchlaufen
+                AddParamNodes("Produktion", t)
+                'Parameter Nährwerte (nur wenn kein Rezept verknüpft)
+                'TODO Nährwerte des unterlagerten Rezeptes anzeigen(muss vorher berechnet werden)
+                If RzNr <= 0 Then
+                    AddParamNodes("", wb_Global.ktParam.kt301)
+                End If
+
+            Case KomponTypen.KO_TYPE_SAUER_MEHL, KomponTypen.KO_TYPE_SAUER_WASSER
+                'abhängig von der Komponenten-Type werden die einzelnen Parameter durchlaufen
+                AddParamNodes("Sauerteig", t)
                 'Parameter Nährwerte
-                BuildArray("", 301)
+                AddParamNodes("", wb_Global.ktParam.kt301)
 
+            Case KomponTypen.KO_TYPE_KNETER
+                If ktTypXXX.Wert(T118_KneterParamNr) = "6" Then
+                    'Sonderfall Parameter Teigruhe(Kneter)
+                    AddParamNodes("Teigruhe", wb_Functions.KomponTypeToInt(KomponTypen.KO_TYPE_KNETER_TEIGRUHE))
+                End If
         End Select
     End Sub
 
-    Private Sub BuildArray(RootName As String, t As Integer)
+    ''' <summary>
+    ''' Fügt eine neue Gruppe von Parameter-Knoten an den Root-Parameter an. Der erste Child-Knoten bildet die Überschrift über die 
+    ''' folgenden Parameter-Gruppen.
+    ''' </summary>
+    ''' <param name="RootName"></param>
+    ''' <param name="t"></param>
+    Private Sub AddParamNodes(RootName As String, t As Integer)
         'Sub-Knoten - Überschrift
         If wb_KomponParam_Global.IsValidParameter(t, 0) Then
             RootName = wb_KomponParam_Global.ktXXXParam(t, 0).Bezeichnung
@@ -248,8 +280,11 @@ Public Class wb_Komponente
             If wb_KomponParam_Global.IsValidParameter(t, p) Then
                 'neuen Parameter-Datensatz anlegen
                 _Parameter = New wb_KomponParam(Root, t, p, wb_KomponParam_Global.ktXXXParam(t, p).Bezeichnung)
-                'Daten aus den Komponenten-Parametern
+
+                'Sollwert-Daten aus den Komponenten-Parametern
                 Select Case t
+                    Case < wb_Global.ktParam.kt200
+                        _Parameter.Wert = ktTypXXX.Wert(p)
                     Case wb_Global.ktParam.kt301
                         _Parameter.Wert = ktTyp301.Wert(p)
                 End Select
@@ -912,8 +947,18 @@ Public Class wb_Komponente
             If winback.Read Then
                 MySQLdbRead(winback.MySqlRead)
                 winback.CloseRead()
-                'weitere Parameter einlesen
-                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompParamsXXX, Nr)
+
+                'weitere Parameter einlesen - Tabelle KomponParams(Parameter Produktion)
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKomponParamsXXX, Nr)
+                If winback.sqlSelect(sql) Then
+                    If winback.Read Then
+                        MySQLdbRead(winback.MySqlRead)
+                    End If
+                End If
+                winback.CloseRead()
+
+                'weitere Parameter einlesen - Tabelle RohParams(erweiterte Parameter/Nährwerte)
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohParamsXXX, Nr)
                 If winback.sqlSelect(sql) Then
                     If winback.Read Then
                         MySQLdbRead(winback.MySqlRead)
@@ -921,6 +966,7 @@ Public Class wb_Komponente
                 End If
                 winback.Close()
                 Return True
+
             Else
                 'Sonderfall - Es wurde eine interne Komponenten-Nummer angegeben die nicht gefunden wurde
                 'Rohstoff/Artikel wurde gelöscht (in WinBack)
@@ -1042,6 +1088,7 @@ Public Class wb_Komponente
                 'Lagerort
                 Case "KA_Lagerort"
                     KA_Lagerort = Value
+                    ktTypXXX.Wert(T101_LagerOrt) = Value
 
                 'Stückgewicht in Gramm
                 Case "KA_Stueckgewicht"
@@ -1105,14 +1152,14 @@ Public Class wb_Komponente
         Select Case Name
 
             'Parameter-Nummer
-            Case "RP_ParamNr"
+            Case "RP_ParamNr", "KP_ParamNr"
                 ParamNr = CInt(Value)
 
             'Parameter-Typ
             Case "RP_Typ_Nr"
                 ParamTyp = CInt(Value)
 
-            'Parameter-Wert
+            'Parameter-Wert(RohParams)
             Case "RP_Wert"
                 Select Case ParamTyp
                     Case 200
@@ -1132,6 +1179,10 @@ Public Class wb_Komponente
                         'Nährwert-Informationen
                         ktTyp301.Wert(ParamNr) = Value.ToString
                 End Select
+
+            'Parameter-Wert(KomponParams)
+            Case "KP_Wert"
+                ktTypXXX.Wert(ParamNr) = Value.ToString
 
                 'TimeStamp
                 'TODO WIRD DAS HIER RICHTIG EINGELESEN ??

@@ -5,6 +5,8 @@ Public Class EnhEdit
     Private _eFont As Font
     Private _eBackColor As Color
     Private _eBorderColor As Color
+    Private _Value As String = ""
+    Private _TextBoxSize As New Size
 
     <System.Diagnostics.DebuggerNonUserCode()>
     Public Sub New()
@@ -12,10 +14,29 @@ Public Class EnhEdit
 
         'Dieser Aufruf ist für den Komponenten-Designer erforderlich.
         InitializeComponent()
-        SetStyle(ControlStyles.UserPaint, True)
+        'SetStyle(ControlStyles.UserPaint, True)
         Me.BorderStyle = BorderStyle.None
     End Sub
 
+    ''' <summary>
+    ''' EnhEdit (abgeleitet von UniversalEditBox) verwendet zur Anzeige eine unterlagerte Textbox.
+    ''' Die Anordnung der Textbox wird bestimmt durch die Werte aus ClientSize.
+    ''' 
+    ''' Die passende Größe(Verschiebung) wird hier eingestellt.
+    ''' </summary>
+    ''' <param name="e"></param>
+    Protected Overrides Sub OnGotFocus(e As EventArgs)
+        'Ausrichtung und Format der unterlagerten Textbox
+        Me.TextBox.TextAlign = HorizontalAlignment.Right
+        Me.TextBox.BorderStyle = BorderStyle.None
+        Me.TextBox.Font = _eFont
+
+        'Größe der Textbox vorgeben
+        _TextBoxSize.Width = ClientSize.Width - 2
+        _TextBoxSize.Height = ClientSize.Height
+
+        MyBase.OnGotFocus(e)
+    End Sub
     Public Property eFont As Font
         Get
             Return _eFont
@@ -43,19 +64,41 @@ Public Class EnhEdit
         End Set
     End Property
 
-
-    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
-        Dim Rect As New Rectangle(-1, +2, ClientSize.Width - 1, ClientSize.Height - 1)
-        Dim Format As New StringFormat
-        Format.Alignment = StringAlignment.Near
-        Dim B As New SolidBrush(Me.BackColor)
-
-        Using p As Pen = New Pen(_eBorderColor, 1)
-            e.Graphics.FillRectangle(B, Rect)
-            'e.Graphics.DrawRectangle(p, Rect)
-            e.Graphics.DrawString(Me.Text, Me.Font, New SolidBrush(Me.ForeColor), Rect)
-        End Using
+    ''' <summary>
+    ''' Wird aufgerufen, wenn sich der Wert des Edit-Feldes (Value) ändert.
+    ''' Beim ersten Aufruf der Edit-Routine.
+    ''' </summary>
+    Protected Overrides Sub OnValueChanged()
+        Debug.Print("Enhanced Edit OnValueChanged " & Me.Value & " " & ClientSize.Width & "/" & ClientSize.Height)
+        'Me.Value = ""
+        'MyBase.OnValueChanged()
     End Sub
 
+    ''' <summary>
+    ''' Wird nicht aufgerufen/verwendet
+    ''' </summary>
+    ''' <param name="e"></param>
+    Protected Overrides Sub OnKeyPress(e As KeyPressEventArgs)
+        Debug.Print("Enhanced Edit OnKeyPress " & Me.Value & " " & ClientSize.Width & "/" & ClientSize.Height)
+        'MyBase.OnKeyPress(e)
+    End Sub
+
+    Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
+        Debug.Print("Enhanced Edit OnKeyDown " & e.KeyData)
+        'TODO Hier wird je nach Eingabe-Taste und Format entschieden, wie der Wert (_Value) gesetzt werden soll
+        '     siehe Edit in Delphi (abhängig von KomponType ...)
+        _Value = _Value & Chr(e.KeyValue)
+
+        'weitere Eingabe unterdrücken
+        e.SuppressKeyPress = True
+
+        'da der rechte Rand des unterlagerten Steuerelementes verschoben ist, muss ein Offset eingebaut werden
+        Me.ClientSize = _TextBoxSize
+        'Anzeigewert
+        Me.TextBox.Text = _Value
+
+        'weitere Funktionen werden nicht aufgerufen
+        ' MyBase.OnKeyDown(e)
+    End Sub
 End Class
 

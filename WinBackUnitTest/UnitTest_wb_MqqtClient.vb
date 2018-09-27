@@ -4,7 +4,7 @@ Imports uPLibrary.Networking.M2Mqtt
 Imports uPLibrary.Networking.M2Mqtt.Messages
 
 <TestClass()> Public Class UnitTest_wb_MqqtClient
-    Public WithEvents client As New MqttClient("nwt.winback.de", 8883, True, New Security.Cryptography.X509Certificates.X509Certificate, New Security.Cryptography.X509Certificates.X509Certificate, MqttSslProtocols.SSLv3)
+    Public WithEvents client As New MqttClient("mqtt.winback.de", 8883, True, Nothing, Nothing, MqttSslProtocols.SSLv3)
 
     <TestMethod()> Public Sub TestMethod1()
         AddHandler client.MqttMsgPublishReceived, AddressOf client_MqttMsgPublishReceived
@@ -12,10 +12,15 @@ Imports uPLibrary.Networking.M2Mqtt.Messages
         AddHandler client.MqttMsgSubscribed, AddressOf client_MqttMsgSubscribed
 
         'Verbindung aufbauen
-        client.Connect(Guid.NewGuid().ToString(), "herbst", "herbst")
+        Try
+            client.ProtocolVersion = MqttProtocolVersion.Version_3_1
+            client.Connect(Guid.NewGuid().ToString(), "W1nB8ck", "kmdqx?s1PuN5")
+        Catch e As Exception
+            MsgBox("Fehler bei Connect " & e.Message)
+        End Try
 
         'Daten abbonieren
-        client.Subscribe({"/Test1Topic"}, {MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE})
+        client.Subscribe({"Test"}, {MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE})
 
         System.Console.ReadLine()
     End Sub

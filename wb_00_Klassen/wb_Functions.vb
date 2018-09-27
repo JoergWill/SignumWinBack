@@ -241,6 +241,8 @@ Public Class wb_Functions
                 Return wb_Global.KomponTypen.KO_TYPE_TEIGZETTEL
             Case 128
                 Return wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
+            Case 129
+                Return wb_Global.KomponTypen.KO_TYPE_KNETER_TEIGRUHE
 
             Case 121
                 Return wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
@@ -313,6 +315,8 @@ Public Class wb_Functions
                 Return 119
             Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
                 Return 128
+            Case wb_Global.KomponTypen.KO_TYPE_KNETER_TEIGRUHE
+                Return 129
 
             Case wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
                 Return 121

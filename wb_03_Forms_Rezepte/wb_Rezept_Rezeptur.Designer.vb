@@ -599,8 +599,8 @@ Partial Class wb_Rezept_Rezeptur
         '
         'EnhEdit1
         '
-        Me.EnhEdit1.AcceptsReturn = True
-        Me.EnhEdit1.AcceptsTab = True
+        'Me.EnhEdit1.AcceptsReturn = True
+        'Me.EnhEdit1.AcceptsTab = True
         Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
         resources.ApplyResources(Me.EnhEdit1, "EnhEdit1")
         Me.EnhEdit1.eBackcolor = System.Drawing.Color.Empty

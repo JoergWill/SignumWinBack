@@ -7,7 +7,7 @@ Public Class wb_Rohstoffe_Parameter
 
     Private _ParamHeadingDeltaStyle As New Infralution.Controls.StyleDelta
     Private _ParamAllergenDeltaStyle As New Infralution.Controls.StyleDelta
-    Private _ParamHeadingChangedStyle As Infralution.Controls.Style
+    Private _ParamChangedStyle As Infralution.Controls.Style
     Private _KomponParam As wb_KomponParam
 
     Private Sub wb_Rohstoffe_Parameter_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -62,7 +62,10 @@ Public Class wb_Rohstoffe_Parameter
                 VirtualTree_SetFontAlignment(e.CellData.EvenStyle)
                 VirtualTree_SetFontAlignment(e.CellData.OddStyle)
             End If
+            Exit Sub
         End If
+        'Edit nicht erlaubt
+        e.CellData.Editor = Nothing
     End Sub
 
     ''' <summary>
@@ -72,14 +75,13 @@ Public Class wb_Rohstoffe_Parameter
     ''' <param name="ColumnStyle"></param>
     Private Sub VirtualTree_SetFontStyle(ByRef ColumnStyle As Infralution.Controls.Style)
         'Überschriften der einzelnen Sektionen - Fettdruck ein
-        _ParamHeadingChangedStyle = New Infralution.Controls.Style(ColumnStyle, _ParamHeadingDeltaStyle)
-        ColumnStyle = _ParamHeadingChangedStyle
+        _ParamChangedStyle = New Infralution.Controls.Style(ColumnStyle, _ParamHeadingDeltaStyle)
+        ColumnStyle = _ParamChangedStyle
     End Sub
 
     Private Sub VirtualTree_SetFontAlignment(ByRef ColumnStyle As Infralution.Controls.Style)
-        _ParamHeadingChangedStyle = New Infralution.Controls.Style(ColumnStyle, _ParamAllergenDeltaStyle)
-        ColumnStyle = _ParamHeadingChangedStyle
+        _ParamChangedStyle = New Infralution.Controls.Style(ColumnStyle, _ParamAllergenDeltaStyle)
+        ColumnStyle = _ParamChangedStyle
     End Sub
-
 
 End Class

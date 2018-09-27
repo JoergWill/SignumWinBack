@@ -93,7 +93,16 @@ Public Class wb_KomponParam
 
                     'Komponenten-Type
                     Case < ktParam.kt200
-                        Return wb_Functions.FormatStr(_Wert, 3)
+                        Select Case Format
+                            'String/Time/Boolean
+                            Case 1, 4, 5
+                                Return _Wert
+                            'Integer/Real
+                            Case 2, 3
+                                Return wb_Functions.FormatStr(_Wert, 3)
+                            Case Else
+                                Return _Wert
+                        End Select
 
                     'Parameter-Type
                     Case ktParam.kt301
@@ -135,7 +144,7 @@ Public Class wb_KomponParam
 
     Public ReadOnly Property Einheit As String
         Get
-            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).Einheit
+            Return " " & wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).Einheit
         End Get
     End Property
 

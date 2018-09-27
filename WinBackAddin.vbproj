@@ -483,6 +483,7 @@
     <Compile Include="wb_00_Klassen\wb_KomponParam220_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam300.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam300_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_KomponParamXXX.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Linien_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Mail.vb" />
@@ -1178,6 +1179,8 @@
     <None Include="Resources\RohstoffeDatenLink_93x24.png" />
     <None Include="Resources\RohstoffeMail_32x32.png" />
     <None Include="Resources\RohstoffeNwt_32x32.png" />
+    <None Include="Resources\VirtTreeCollapse_16x16.png" />
+    <None Include="Resources\VirtTreeExpand_16x16.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

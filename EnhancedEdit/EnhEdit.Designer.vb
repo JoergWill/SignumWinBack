@@ -1,7 +1,9 @@
 ﻿Imports System.Windows.Forms
+Imports Infralution.Controls
 
 Partial Class EnhEdit
-    Inherits TextBox
+    Inherits UniversalEditBox
+    'Inherits TextBox
 
     <System.Diagnostics.DebuggerNonUserCode()>
     Public Sub New(ByVal container As System.ComponentModel.IContainer)

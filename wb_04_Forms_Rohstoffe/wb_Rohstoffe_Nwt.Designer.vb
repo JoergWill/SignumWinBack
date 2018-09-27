@@ -93,7 +93,7 @@ Partial Class wb_Rohstoffe_Nwt
         Me.Controls.Add(Me.tbDeklarationExtern)
         Me.Controls.Add(Me.pnl_Nwt)
         Me.Name = "wb_Rohstoffe_Nwt"
-        Me.Text = "wb_Rohstoffe_Nwt"
+        Me.Text = "Rohstoffe Nährwerte"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
