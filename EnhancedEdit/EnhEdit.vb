@@ -1,4 +1,5 @@
-﻿Imports System.Drawing
+﻿Imports System.ComponentModel
+Imports System.Drawing
 Imports System.Windows.Forms
 
 Public Class EnhEdit
@@ -26,6 +27,9 @@ Public Class EnhEdit
     ''' </summary>
     ''' <param name="e"></param>
     Protected Overrides Sub OnGotFocus(e As EventArgs)
+        'Anzeigewert zurücksetzen
+        _Value = ""
+
         'Ausrichtung und Format der unterlagerten Textbox
         Me.TextBox.TextAlign = HorizontalAlignment.Right
         Me.TextBox.BorderStyle = BorderStyle.None
@@ -33,7 +37,7 @@ Public Class EnhEdit
 
         'Größe der Textbox vorgeben
         _TextBoxSize.Width = ClientSize.Width - 2
-        _TextBoxSize.Height = ClientSize.Height
+        _TextBoxSize.Height = ClientSize.Height + 2
 
         MyBase.OnGotFocus(e)
     End Sub
@@ -70,7 +74,7 @@ Public Class EnhEdit
     ''' </summary>
     Protected Overrides Sub OnValueChanged()
         Debug.Print("Enhanced Edit OnValueChanged " & Me.Value & " " & ClientSize.Width & "/" & ClientSize.Height)
-        'Me.Value = ""
+        Me.Value = ""
         'MyBase.OnValueChanged()
     End Sub
 
@@ -94,11 +98,17 @@ Public Class EnhEdit
 
         'da der rechte Rand des unterlagerten Steuerelementes verschoben ist, muss ein Offset eingebaut werden
         Me.ClientSize = _TextBoxSize
+        'Me.SetBounds(_Left, _Top, _TextBoxSize.Width, _TextBoxSize.Height)
+
         'Anzeigewert
         Me.TextBox.Text = _Value
 
         'weitere Funktionen werden nicht aufgerufen
         ' MyBase.OnKeyDown(e)
+    End Sub
+
+    Protected Overrides Sub OnValidating(e As CancelEventArgs)
+        Debug.Print("Enhanced Edit OnValidating ")
     End Sub
 End Class
 

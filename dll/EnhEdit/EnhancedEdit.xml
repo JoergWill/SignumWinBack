@@ -22,5 +22,26 @@ EnhancedEdit
   Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
 </summary>
 </member>
+<member name="M:EnhEdit.EnhEdit.OnGotFocus(System.EventArgs)">
+ <summary>
+ EnhEdit (abgeleitet von UniversalEditBox) verwendet zur Anzeige eine unterlagerte Textbox.
+ Die Anordnung der Textbox wird bestimmt durch die Werte aus ClientSize.
+ 
+ Die passende Größe(Verschiebung) wird hier eingestellt.
+ </summary>
+ <param name="e"></param>
+</member>
+<member name="M:EnhEdit.EnhEdit.OnValueChanged">
+ <summary>
+ Wird aufgerufen, wenn sich der Wert des Edit-Feldes (Value) ändert.
+ Beim ersten Aufruf der Edit-Routine.
+ </summary>
+</member>
+<member name="M:EnhEdit.EnhEdit.OnKeyPress(System.Windows.Forms.KeyPressEventArgs)">
+ <summary>
+ Wird nicht aufgerufen/verwendet
+ </summary>
+ <param name="e"></param>
+</member>
 </members>
 </doc>

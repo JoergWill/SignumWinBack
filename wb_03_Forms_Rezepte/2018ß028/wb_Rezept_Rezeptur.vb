@@ -34,7 +34,6 @@ Public Class wb_Rezept_Rezeptur
 
         'Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
-        'Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
         'Rezeptnummer und Rezept-Variante merken
         _RzNummer = RzNummer
@@ -325,7 +324,7 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub VirtualTree_CellDoubleClick(sender As Object, e As EventArgs) Handles VirtualTree.CellDoubleClick
+    Private Sub VirtualTree_CellDoubleClick(sender As Object, e As EventArgs)
         'Doppel-Click auf VirtualTree-Cell
         Dim sCellWidget As CellWidget = sender
         'interne Rezeptnummer zum Rezeptschritt ermitteln
@@ -379,11 +378,11 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub VirtualTree_SelectionChanging(sender As Object, e As SelectionChangingEventArgs) Handles VirtualTree.SelectionChanging
+    Private Sub VirtualTree_SelectionChanging(sender As Object, e As SelectionChangingEventArgs)
         e.Cancel = True
     End Sub
 
-    Private Sub VirtualTree_SetCellValue(sender As Object, e As SetCellValueEventArgs) Handles VirtualTree.SetCellValue
+    Private Sub VirtualTree_SetCellValue(sender As Object, e As SetCellValueEventArgs)
         Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
 
         'aktuell ausgewählten Rezeptschritt
@@ -398,7 +397,7 @@ Public Class wb_Rezept_Rezeptur
         ToolStripRezeptChange.Visible = True
     End Sub
 
-    Private Sub VirtualTree_GetCellData(sender As Object, e As GetCellDataEventArgs) Handles VirtualTree.GetCellData
+    Private Sub VirtualTree_GetCellData(sender As Object, e As GetCellDataEventArgs)
         'get the default binding for the given row And use it to populate the cell data
         Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
         Binding.GetCellData(e.Row, e.Column, e.CellData)
@@ -413,6 +412,7 @@ Public Class wb_Rezept_Rezeptur
                 VirtualTree_SetFontStyle(e.CellData.EvenStyle)
                 VirtualTree_SetFontStyle(e.CellData.OddStyle)
             End If
+            'Enable Edit
             Exit Sub
         End If
 
@@ -423,10 +423,7 @@ Public Class wb_Rezept_Rezeptur
                 VirtualTree_SetFontStyle(e.CellData.EvenStyle)
                 VirtualTree_SetFontStyle(e.CellData.OddStyle)
             End If
-            'Einstellungen Editor
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFont = e.CellData.EvenStyle.Font
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eBackcolor = VirtualTree.RowSelectedStyle.GradientColor
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eBorderColor = VirtualTree.RowSelectedStyle.BorderColor
+            'Enable Edit
             Exit Sub
         End If
 
@@ -443,7 +440,7 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub VirtualTree_GetContextMenuStrip(sender As Object, e As GetContextMenuStripEventArgs) Handles VirtualTree.GetContextMenuStrip
+    Private Sub VirtualTree_GetContextMenuStrip(sender As Object, e As GetContextMenuStripEventArgs)
         'aktuell ausgewählten Rezeptschritt merken (Popup)
         _RezeptSchritt = DirectCast(e.Row.Item, wb_Rezeptschritt)
         'Click auf Rezept-Zeile mit Parameter ungleich 1
@@ -461,7 +458,7 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     ''' <param name="ColumnStyle"></param>
     Private Sub VirtualTree_SetFontStyle(ByRef ColumnStyle As Infralution.Controls.Style)
-        _HisSollwertDeltaStyle.Font = New Drawing.Font(ColumnStyle.Font, 3)
+        _HisSollwertDeltaStyle.Font = New Drawing.Font(ColumnStyle.Font, Drawing.FontStyle.Bold + Drawing.FontStyle.Italic)
         _HisSollwertChangedStyle = New Infralution.Controls.Style(ColumnStyle, _HisSollwertDeltaStyle)
         ColumnStyle = _HisSollwertChangedStyle
     End Sub
@@ -988,7 +985,7 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub VirtualTree_CellClick(sender As Object, e As EventArgs) Handles VirtualTree.CellClick
+    Private Sub VirtualTree_CellClick(sender As Object, e As EventArgs)
         'aktuell ausgewählten Rezeptschritt merken
         _RezeptSchritt = DirectCast(sender.Row.Item, wb_Rezeptschritt)
     End Sub
@@ -999,7 +996,7 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub VirtualTree_KeyUp(sender As Object, e As KeyEventArgs) Handles VirtualTree.KeyUp
+    Private Sub VirtualTree_KeyUp(sender As Object, e As KeyEventArgs)
 
         Select Case e.KeyCode
             Case Keys.Insert

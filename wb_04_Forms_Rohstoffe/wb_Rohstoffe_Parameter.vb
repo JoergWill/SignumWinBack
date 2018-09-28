@@ -62,6 +62,7 @@ Public Class wb_Rohstoffe_Parameter
                 VirtualTree_SetFontAlignment(e.CellData.EvenStyle)
                 VirtualTree_SetFontAlignment(e.CellData.OddStyle)
             End If
+            'Editieren erlaubt
             Exit Sub
         End If
         'Edit nicht erlaubt

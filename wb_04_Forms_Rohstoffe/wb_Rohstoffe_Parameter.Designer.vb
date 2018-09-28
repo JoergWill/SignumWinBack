@@ -139,6 +139,7 @@ Partial Class wb_Rohstoffe_Parameter
         Me.VirtualTree.EditOnKeyPress = True
         Me.VirtualTree.Editors.Add(Me.EnhEdit)
         Me.VirtualTree.ExpandImage = Global.WinBack.My.Resources.Resources.VirtTreeExpand_16x16
+        Me.VirtualTree.FocusImage = Global.WinBack.My.Resources.Resources.Admin_16x16
         Me.VirtualTree.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.VirtualTree.HeaderHeight = 24
         Me.VirtualTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 12.0!)
@@ -148,7 +149,11 @@ Partial Class wb_Rohstoffe_Parameter
         Me.VirtualTree.Name = "VirtualTree"
         Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
         Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.PowderBlue
+        Me.VirtualTree.RowHeaderWidth = 18
+        Me.VirtualTree.RowSelectedStyle.BorderColor = System.Drawing.Color.Transparent
+        Me.VirtualTree.RowSelectedStyle.GradientColor = System.Drawing.Color.White
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
+        Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.MainCellText
         Me.VirtualTree.ShowRootRow = False
         Me.VirtualTree.Size = New System.Drawing.Size(519, 436)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
