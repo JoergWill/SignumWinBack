@@ -37,11 +37,33 @@ EnhancedEdit
  Beim ersten Aufruf der Edit-Routine.
  </summary>
 </member>
-<member name="M:EnhEdit.EnhEdit.OnKeyPress(System.Windows.Forms.KeyPressEventArgs)">
+<member name="M:EnhEdit.EnhEdit.OnValidating(System.ComponentModel.CancelEventArgs)">
  <summary>
- Wird nicht aufgerufen/verwendet
+ Enter-Taste nach Eingabe
  </summary>
  <param name="e"></param>
+</member>
+<member name="T:EnhEdit.EnhEdit_Global.wb_Format">
+ <summary>
+ Format-Information aus winback.Format
+ FM_Index	FM_Bezeichnung
+    1            String
+    2            Integer
+    3            Real
+    4            Time
+    5            Boolean
+ </summary>
+</member>
+<member name="M:EnhEdit.EnhEdit_Global.GetKey(System.Windows.Forms.Keys,System.String@,EnhEdit.EnhEdit_Global.wb_Format,System.Double,System.Double)">
+ <summary>
+ Auswertung der Key-Codes. Abhängig vom Format wird der entsprechende Wert in Value eingetragen
+ </summary>
+ <param name="cKey"></param>
+ <param name="Value"></param>
+ <param name="Format"></param>
+ <param name="ug"></param>
+ <param name="og"></param>
+ <returns></returns>
 </member>
 </members>
 </doc>

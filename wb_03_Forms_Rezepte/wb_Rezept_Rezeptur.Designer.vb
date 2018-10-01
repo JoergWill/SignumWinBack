@@ -586,8 +586,6 @@ Partial Class wb_Rezept_Rezeptur
         '
         resources.ApplyResources(Me.EnhEdit_Rezept, "EnhEdit_Rezept")
         Me.EnhEdit_Rezept.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit_Rezept.eBackcolor = System.Drawing.Color.Empty
-        Me.EnhEdit_Rezept.eBorderColor = System.Drawing.Color.Empty
         Me.EnhEdit_Rezept.eFont = Nothing
         Me.EnhEdit_Rezept.Name = "EnhEdit_Rezept"
         '

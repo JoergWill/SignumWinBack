@@ -5031,6 +5031,13 @@ Public Const MFF_Wissenswertes = 213
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Parameter.wb_Rohstoffe_Parameter_Load(System.Object,System.EventArgs)">
+ <summary>
+ Initialisierung - Laden der Form
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Parameter.VirtualTree_GetCellData(System.Object,Infralution.Controls.VirtualTree.GetCellDataEventArgs)">
  <summary>
  Ausgabe VirtualTree formatieren. 

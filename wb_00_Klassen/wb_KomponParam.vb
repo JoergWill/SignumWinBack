@@ -93,7 +93,7 @@ Public Class wb_KomponParam
 
                     'Komponenten-Type
                     Case < ktParam.kt200
-                        Select Case Format
+                        Select Case eFormat
                             'String/Time/Boolean
                             Case 1, 4, 5
                                 Return _Wert
@@ -148,21 +148,21 @@ Public Class wb_KomponParam
         End Get
     End Property
 
-    Public ReadOnly Property GwUnten As String
+    Public ReadOnly Property eUG As String
         Get
-            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).GwUnten
+            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).eUG
         End Get
     End Property
 
-    Public ReadOnly Property GwOben As String
+    Public ReadOnly Property eOG As String
         Get
-            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).GwOben
+            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).eOG
         End Get
     End Property
 
-    Public ReadOnly Property Format As String
+    Public ReadOnly Property eFormat As String
         Get
-            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).Format
+            Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).eFormat
         End Get
     End Property
 

@@ -89,9 +89,9 @@
         Public ParamNr As Integer       'Parameter-Nummer
         Public Bezeichnung As String    'Bezeichnungs-Text
         Public Einheit As String        'Einheit aus winback.KomponTypen-winback.Einheiten
-        Public Format As Integer        'Eingabe-Format (winback.Formate)
-        Public GwUnten As String        'Eingabe-Grenzwert unten
-        Public GwOben As String         'Eingabe-Grenzwert oben
+        Public eFormat As Integer       'Eingabe-Format (winback.Formate)
+        Public eUG As String            'Eingabe-Grenzwert unten
+        Public eOG As String            'Eingabe-Grenzwert oben
         Public Used As Boolean          'Parameter aktiv
     End Structure
 

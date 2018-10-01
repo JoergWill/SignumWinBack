@@ -44,11 +44,11 @@ Public Class wb_KomponParam_Global
             'Parameter-Einheit
             k.Einheit = winback.sField("E_Einheit")
             'Parameter-Format
-            k.Format = winback.iField("KT_Format")
+            k.eFormat = winback.iField("KT_Format")
             'Parameter-Eingabe unterer Grenzwert
-            k.GwUnten = winback.sField("KT_UnterGW")
+            k.eUG = winback.sField("KT_UnterGW")
             'Parameter-Eingabe oberer Grenzwert
-            k.GwOben = winback.sField("KT_OberGW")
+            k.eOG = winback.sField("KT_OberGW")
 
             'Parameter aktiv
             If k.Type = ktParam.kt301 Then
@@ -199,8 +199,8 @@ Public Class wb_KomponParam_Global
         k.Bezeichnung = Bezeichnung
         k.Einheit = Einheit
         k.Used = Used
-        k.GwOben = GWOben
-        k.GwUnten = GWUnten
+        k.eOG = GWOben
+        k.eUG = GWUnten
         'zur Liste hinzufügen
         ktTypXXXParams.Add(BuildKey(k.Type, k.ParamNr), k)
         'maximale Parameter-Nummer korrigieren

@@ -52,8 +52,6 @@ Public Class Test_Main
         If e.Column.Name = "ColSollwert" And (wb_Functions.TypeIstSollMenge(_RezeptSchritt.Type, 1) Or wb_Functions.TypeIstSollWert(_RezeptSchritt.Type, 3)) Then
             ''Einstellungen Editor
             DirectCast(CellEditor1.Control, EnhEdit.EnhEdit).eFont = e.CellData.EvenStyle.Font
-            DirectCast(CellEditor1.Control, EnhEdit.EnhEdit).eBackcolor = VirtualTree.RowSelectedStyle.GradientColor
-            DirectCast(CellEditor1.Control, EnhEdit.EnhEdit).eBorderColor = VirtualTree.RowSelectedStyle.BorderColor
             Exit Sub
         End If
 

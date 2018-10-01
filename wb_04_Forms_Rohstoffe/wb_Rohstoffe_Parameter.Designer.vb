@@ -101,9 +101,10 @@ Partial Class wb_Rohstoffe_Parameter
         'EnhEdit_RohParams
         '
         Me.EnhEdit_RohParams.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit_RohParams.eBackcolor = System.Drawing.Color.Empty
-        Me.EnhEdit_RohParams.eBorderColor = System.Drawing.Color.Empty
         Me.EnhEdit_RohParams.eFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EnhEdit_RohParams.eFormat = 0
+        Me.EnhEdit_RohParams.eOG = "0"
+        Me.EnhEdit_RohParams.eUG = "0"
         Me.EnhEdit_RohParams.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.EnhEdit_RohParams.Location = New System.Drawing.Point(0, 0)
         Me.EnhEdit_RohParams.Name = "EnhEdit_RohParams"
@@ -150,8 +151,12 @@ Partial Class wb_Rohstoffe_Parameter
         Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
         Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.PowderBlue
         Me.VirtualTree.RowHeaderWidth = 18
-        Me.VirtualTree.RowSelectedStyle.BorderColor = System.Drawing.Color.Transparent
+        Me.VirtualTree.RowSelectedStyle.BorderColor = System.Drawing.Color.LightGray
+        Me.VirtualTree.RowSelectedStyle.BorderRadius = 0
+        Me.VirtualTree.RowSelectedStyle.BorderStyle = System.Windows.Forms.Border3DStyle.Adjust
         Me.VirtualTree.RowSelectedStyle.GradientColor = System.Drawing.Color.White
+        Me.VirtualTree.RowSelectedUnfocusedStyle.BorderColor = System.Drawing.Color.LightGray
+        Me.VirtualTree.RowSelectedUnfocusedStyle.GradientColor = System.Drawing.Color.White
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.MainCellText
         Me.VirtualTree.ShowRootRow = False

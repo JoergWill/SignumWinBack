@@ -425,8 +425,6 @@ Public Class wb_Rezept_Rezeptur
             End If
             'Einstellungen Editor
             DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFont = e.CellData.EvenStyle.Font
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eBackcolor = VirtualTree.RowSelectedStyle.GradientColor
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eBorderColor = VirtualTree.RowSelectedStyle.BorderColor
             Exit Sub
         End If
 

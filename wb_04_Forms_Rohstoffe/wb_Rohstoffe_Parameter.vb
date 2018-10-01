@@ -10,6 +10,11 @@ Public Class wb_Rohstoffe_Parameter
     Private _ParamChangedStyle As Infralution.Controls.Style
     Private _KomponParam As wb_KomponParam
 
+    ''' <summary>
+    ''' Initialisierung - Laden der Form
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub wb_Rohstoffe_Parameter_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
@@ -49,7 +54,7 @@ Public Class wb_Rohstoffe_Parameter
         'Datensatz aus der Zeile
         _KomponParam = DirectCast(e.Row.Item, wb_KomponParam)
 
-        'Font einstellen
+        'Font einstellen - Überschrift
         If _KomponParam.ParamNr = 0 Then
             VirtualTree_SetFontStyle(e.CellData.EvenStyle)
             VirtualTree_SetFontStyle(e.CellData.OddStyle)
@@ -62,6 +67,11 @@ Public Class wb_Rohstoffe_Parameter
                 VirtualTree_SetFontAlignment(e.CellData.EvenStyle)
                 VirtualTree_SetFontAlignment(e.CellData.OddStyle)
             End If
+            'Parameter Editor
+            'TODO kann auch als KtXXXFormat angegeben werden (Rezept ?)
+            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _KomponParam.eFormat
+            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _KomponParam.eOG
+            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _KomponParam.eUG
             'Editieren erlaubt
             Exit Sub
         End If
