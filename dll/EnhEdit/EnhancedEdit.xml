@@ -31,6 +31,12 @@ EnhancedEdit
  </summary>
  <param name="e"></param>
 </member>
+<member name="P:EnhEdit.EnhEdit.eValue">
+ <summary>
+ Gibt, abhängig vom Format den Wert formatiert zurück
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:EnhEdit.EnhEdit.OnValueChanged">
  <summary>
  Wird aufgerufen, wenn sich der Wert des Edit-Feldes (Value) ändert.

@@ -147,6 +147,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\EnhEdit\EnhancedEdit.dll</HintPath>
     </Reference>
+    <Reference Include="FluentFTP">
+      <HintPath>..\dll\FluentFTP.19.2.2\FluentFTP.dll</HintPath>
+    </Reference>
     <Reference Include="Infralution.Common, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\Infralution VirtualTree V4.8.9\Infralution.Common.dll</HintPath>
@@ -178,6 +181,7 @@
     <Reference Include="System.Runtime.InteropServices.APIs">
       <HintPath>..\dll\TreeListView\System.Runtime.InteropServices.APIs.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.Ribbon, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

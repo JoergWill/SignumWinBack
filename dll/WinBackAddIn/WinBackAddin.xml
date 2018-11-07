@@ -436,6 +436,145 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.wb_Kocher.Nummer">
+ <summary>
+ Laufende Nummer des Kochers.
+ Identifiziert den Kocher in der Liste
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Kocher.IP_Adresse">
+ <summary>
+ Gibt die komplette IP_Adresse des Kochers zurück. Gesetzt wird nur das letzte Byte der IP-Adresse (BC9000Liste.BC9_IpAdresse)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Kocher.VerbindungsStatus">
+ <summary>
+ Aktueller Verbindungs-Status des Kochers
+     OK      - Kocher ist im Netzwerk erreichbar. Nicht verbunden
+     CONNECT - Kocher ist verbunden(aktiv)
+     ERR     - Kocher nicht im Netzwerk erreichbar (ausgeschaltet/ausgesteckt)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Kocher.GetRezeptListe">
+ <summary>
+ Prüft die Verbindung zum Kocher und liest das Verzeichnis aller Rezepte inklusive Timestamp ein.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Kocher.SyncToMaster(WinBack.wb_Kocher)">
+ <summary>
+ Vergleicht die Rezeptliste mit dem Master-Rezept(Server)
+ 
+ Ausgehend von der eigenen Liste wird gegen das Verzeichnis auf dem Server(Master) geprüft.
+ Der entsprechende Status wird im Rezept eingetragen und die Aktion ausgelöst.
+ 
+  - Rezept auf Master nicht vorhanden        - Status.CopyNewFileToMaster
+     
+  - Zeitstempel identisch                    - Status.Ok
+  - Zeitstempel Master älter als Kocher      - Status.CopyFileToMaster
+  - Zeitstempel Master neuer als Kocher      - Status.CopyFileFromMaster
+ 
+ </summary>
+ <param name="cmpMaster"></param>
+</member>
+<member name="M:WinBack.wb_Kocher.SyncFTP(WinBack.wb_Kocher_Rezept@)">
+ <summary>
+ Kopiert die Rezept-Files per FTP vom Server zum Kocher oder vom Kocher zum Server. Wenn der Kopier-Vorgang
+ erfolgreich war, wird der Status auf OK gesetzt.
+ 
+ Da bei Win-CE der MFMT-Befehl zum Manipulieren des Timestamp nicht funktioniert, kann es bei mehreren Kochern
+ Probleme mit der Synchronisation geben: Der Timestamp auf dem Kocher ist immer der aktuelle Zeitpunkt des 
+ Schreibens auf das Panel, sicherheitshalber wird dann der Timestamp auf dem Server auch manipuliert, so dass
+ in der Folge alle Kocher aktualisiert werden.
+ Ist einer der Kocher zum Sync-Zeitpunkt nicht am Netz, werden die Änderungen erst später auf diesen Kocher 
+ übertragen. Änderungen, die offline auf diesem Kocher genmacht wurden, werden überschrieben.
+ </summary>
+ <param name="Rzpt"></param>
+</member>
+<member name="M:WinBack.wb_Kocher.SynctoDB">
+ <summary>
+ Alle neuen oder geänderten Rezepte auf dem Master(Server) müssen mit der WinBack-Datenbank
+ synchronisiert werden.
+ Die einzelnen Schritte werden in festgelegte Komponenten-Schemata eingetragen.
+ </summary>
+</member>
+<member name="T:WinBack.wb_Kocher_Rezept">
+ <summary>
+ Rezeptur für Kocher/Röster
+  - Änderungsdatum
+  - Rezept in Textfile schreiben
+  - Rezept aus Textfile lesen
+  - Master-Rezept (Schritte/Komponenten)
+  - Status
+     - Aktuell
+     - Schreiben
+     - Lesen
+     - Neu
+     - ...
+ </summary>
+</member>
+<member name="M:WinBack.wb_Kocher_Rezept.TxtReadRezept">
+ <summary>
+ Liest die Rezeptur aus der Kocher-Rezeptdatei
+ </summary>
+</member>
+<member name="M:WinBack.wb_Kocher_Rezept.TxtWriteRezept">
+ <summary>
+ Schreibt die Rezeptur in die Kocher-Rezeptdatei
+ </summary>
+</member>
+<member name="M:WinBack.wb_Kocher_Rezept.DBUpdateRezept(System.Boolean)">
+ <summary>
+ Update der Kocher-Rezeptur in der WinBack-Datenbank. Wenn das Rezept in WinBack noch
+ nicht vorhanden ist, wird die Hülle aus einem Archiv-Muster-Rezept kopiert und anschliessend
+ die entsprechenden Parameter eingefügt.
+ 
+ Bei bestehenden Rezepten werden die WinBack-spezifischen Parameter (Handzugabe...) beibehalten
+ und mit entsprechenden Sollwerten verknüpft.
+ Die Rezepte sind mit Liniengruppe 98(Kocher) und Linie 98 verknüpft.
+ 
+ </summary>
+ <param name="Create"></param>
+</member>
+<member name="T:WinBack.wb_Kocher_Global">
+ <summary>
+ Statische Daten zur Verwaltung der Kocher/Rezepte
+  - Anzahl der Kocher/IP-Adressen
+  - Verweise auf die Master-Rezepte
+ </summary>
+</member>
+<member name="M:WinBack.wb_Kocher_Global.IdxToSchritt(System.Int32)">
+ <summary>
+ Berechnet den Rezeptschritt aus dem Index in der Rezept-Text-Datei
+ </summary>
+ <param name="Idx"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Kocher_Global.IdxToParam(System.Int32,System.Int32)">
+ <summary>
+ Berechnet die Parameter-Nummer aus Index und Rezeptschritt in der Rezept-Text-Datei
+ </summary>
+ <param name="Idx"></param>
+ <param name="Schritt"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Kocher_Global.ParamToIdx(System.Int32,System.Int32)">
+ <summary>
+ Berechnet den Index aus Parameter-Nummer Rezeptschritt in der Rezept-Text-Datei
+ </summary>
+ <param name="Prm"></param>
+ <param name="Schritt"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Kocher_Global.Init_BC9000_Kocher">
+ <summary>
+ Liest die Anzahl der Kocher/Röster aus der BC9000-Liste ein.
+  - BC9_BC_Typ=3
+ </summary>
+</member>
 <member name="T:WinBack.wb_GridCalendarColumn">
  <summary> 
  Provides a DataGridView column which presents date fields in a drop down 
@@ -863,6 +1002,21 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  dann nicht geändert.
  </summary>
  <param name="LosArt"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Kocher_Sync.CheckKocher(System.Object)">
+ <summary>
+ Liest zur übergebenen Kocher-Nummer das FTP-Verzeichnis des CX ein und prüft ob neue Rezepte vorhanden sind.
+ Anschliessend wird ein Sync durchgeführt.
+ Wird von Server-Task zyklisch aufgerufen.
+ </summary>
+ <param name="KNr"></param>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Kocher_RezeptSchritt.Index">
+ <summary>
+ Berechnet (Set) Schritt-Nummer und Parameter aus dem Index (Zeilen-Nummer im Kocher-Rezept)
+ </summary>
  <returns></returns>
 </member>
 <member name="P:WinBack.wb_KomponParam.VirtualTree_Wert">

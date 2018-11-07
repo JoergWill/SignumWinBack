@@ -23,4 +23,7 @@
     Public Const sqlAktionsTimer = "Select * FROM AktionsTimer WHERE (AT_Quelle_Typ = 'TW' OR AT_Quelle_Typ LIKE 'winback%' OR AT_Quelle_Typ LIKE 'office%')"
     Public Const sqlUpdtAktionsTimer = "UPDATE AktionsTimer SET [0] WHERE AT_idx = '[1]'"
 
+    'Sql-Statement Kocher
+    Public Const sqlKocherBC9 = "SELECT * FROM BC9000Liste WHERE BC9_BC_Typ = 3 ORDER BY BC9_Nr"
+
 End Class

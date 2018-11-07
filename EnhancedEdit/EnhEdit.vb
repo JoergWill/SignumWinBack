@@ -9,7 +9,7 @@ Public Class EnhEdit
     Private _eUg As Double
     Private _eOG As Double
 
-    Private _Value As String = ""
+    Private _eValue As String = ""
     Private _Init As Boolean = True
     Private _TextBoxSize As New Size
 
@@ -33,7 +33,7 @@ Public Class EnhEdit
     Protected Overrides Sub OnGotFocus(e As EventArgs)
         Debug.Print("Enhanced Edit OnGotFocus " & Me.Value)
         'Anzeigewert zurücksetzen
-        _Value = ""
+        _eValue = ""
 
         'Ausrichtung und Format der unterlagerten Textbox
         Me.TextBox.TextAlign = HorizontalAlignment.Right
@@ -93,6 +93,19 @@ Public Class EnhEdit
     End Property
 
     ''' <summary>
+    ''' Gibt, abhängig vom Format den Wert formatiert zurück
+    ''' </summary>
+    ''' <returns></returns>
+    Private ReadOnly Property eValue As String
+        Get
+            Select Case _eFormat
+                Case wb_Format.fReal
+
+            End Select
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Wird aufgerufen, wenn sich der Wert des Edit-Feldes (Value) ändert.
     ''' Beim ersten Aufruf der Edit-Routine.
     ''' </summary>
@@ -103,7 +116,7 @@ Public Class EnhEdit
             Me.TextBox.Text = Value
             Me.TextBox.SelectAll()
         Else
-            Me.Value = _Value
+            Me.Value = _eValue
         End If
         'MyBase.OnValueChanged()
     End Sub
@@ -111,7 +124,7 @@ Public Class EnhEdit
     Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
 
         'abhängig von Eingabeformat und Tasten-Code
-        Select Case EnhEdit_Global.GetKey(e.KeyData, _Value, _eFormat, _eUg, _eOG)
+        Select Case EnhEdit_Global.GetKey(e.KeyData, _eValue, _eFormat, _eUg, _eOG)
 
             Case wb_Result.ValueErrMax
                 If _eFormat = wb_Format.fString Then
@@ -130,7 +143,7 @@ Public Class EnhEdit
 
             Case wb_Result.KeyReturn
                 'Eingabewert übernehmen
-                Value = _Value
+                Value = _eValue
 
         End Select
 
@@ -140,7 +153,7 @@ Public Class EnhEdit
         'da der rechte Rand des unterlagerten Steuerelementes verschoben ist, muss ein Offset eingebaut werden
         Me.ClientSize = _TextBoxSize
         'Anzeigewert
-        Me.TextBox.Text = _Value
+        Me.TextBox.Text = _eValue
         Me.TextBox.SelectAll()
 
         'weitere Funktionen werden nicht aufgerufen
@@ -152,8 +165,9 @@ Public Class EnhEdit
     ''' </summary>
     ''' <param name="e"></param>
     Protected Overrides Sub OnValidating(e As CancelEventArgs)
-        Value = _Value
+        Value = _eValue
         Debug.Print("Enhanced Edit OnValidating " & Value)
     End Sub
+
 End Class
 

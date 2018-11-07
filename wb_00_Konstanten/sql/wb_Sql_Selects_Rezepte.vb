@@ -146,4 +146,13 @@
     Public Const sqlInsertH2 = "INSERT INTO Hinweise2 (H2_Typ, H2_Typ2, H2_Id1, [3]) VALUES ([0],[1],[2],[4])"
     Public Const sqlDeleteH2 = "DELETE FROM Hinweise2 WHERE H2_Typ = [0] AND H2_Typ2 = [1] AND H2_Id1= [2]"
 
+
+    'Sql-Statement Rezeptliste Kocher aus winback.Rezepte
+    Public Const sqlKocherRzptListe = "SELECT RZ_Nr, RZ_Bezeichnung, RZ_Aenderung_Nr, RZ_Aenderung_Datum, " &
+                                      "RZ_Aenderung_Name, RZ_Liniengruppe, FROM Rezepte WHERE RZ_Variante_Nr = 1 " &
+                                      "RZ_Liniengruppe = [0] And RZ_Nr_AlNum = '[1]'"
+
+    'Sql-Statement Rezeptliste Kocher aus winback.Rezepte
+    Public Const sqlKocherDeleteRzpt = "DELETE FROM Rezepte WHERE RZ_Liniengruppe = [0] And RZ_Nr_AlNum = '[1]'"
+
 End Class

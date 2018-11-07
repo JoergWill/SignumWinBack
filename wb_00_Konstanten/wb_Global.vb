@@ -494,6 +494,37 @@
         Msg   'Message
     End Enum
 
+    'Kocher-Nummer Master(Server)
+    Public Const KocherMaster As Integer = 0
+    'Toleranz Zeitstempel bei Sync Kocher (in Minuten)
+    Public Const KocherSyncToleranz As Integer = 15
+    'WinBack RezeptNummer Prefix
+    Public Const KocherPreFix As String = "KCHR"
+    'WinBack Liniengruppe Kocher/Röster
+    Public Const KocherLinienGruppe As String = "98"
+    'Kocher maximale Anzahl Rezeptschitte
+    Public Const KocherMaxSchritte = 5
+    'Kocher Anzahl der Parameter pro RezeptSchritt (Rezept-Textfile)
+    Public Const Kocher_IdxTeiler = 10
+    'Kocher Offset Parameter (Rezept-Textfile)
+    Public Const Kocher_IdxOffset = 7
+
+
+    Enum Kocher_VerbindungsStatus
+        UNDEF
+        OK
+        ERR
+        CONNECT
+    End Enum
+
+    Enum Kocher_SyncStatus
+        Ok
+        CopyToMaster
+        CopyNewFileToMaster
+        CopyFromMaster
+        CopyNewFileFromMaster
+    End Enum
+
     Public Structure wb_ChangeLogEintrag
         Public Type As LogType
         Public ParamNr As Integer

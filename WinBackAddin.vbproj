@@ -318,6 +318,9 @@
     <Reference Include="EnhancedEdit">
       <HintPath>dll\EnhEdit\EnhancedEdit.dll</HintPath>
     </Reference>
+    <Reference Include="FluentFTP">
+      <HintPath>dll\FluentFTP.19.2.2\FluentFTP.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>dll\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -406,6 +409,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="wb_00_Klassen\Kocher\wb_Kocher.vb" />
+    <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_Rezept.vb" />
+    <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_Global.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.Designer.vb">
       <DependentUpon>wb_ArrayGridViewNwt.vb</DependentUpon>
     </Compile>
@@ -470,6 +476,8 @@
     <Compile Include="wb_00_Klassen\wb_DockBarPanelShared.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_Sync.vb" />
     <Compile Include="wb_00_Klassen\wb_Einheiten_Global.vb" />
+    <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_Sync.vb" />
+    <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_RezeptSchritt.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam200.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam200_Global.vb" />

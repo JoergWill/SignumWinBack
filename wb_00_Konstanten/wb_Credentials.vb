@@ -18,4 +18,7 @@
     'Passwort Verschlüsselung
     Public Const Passwd3Des = "de2!a6DE2"
 
+    'FTP-Zugang anonym
+    Public Const FTPUserAnonymous = "anonymous"
+    Public Const FTPPassAnonymous = "1234"
 End Class

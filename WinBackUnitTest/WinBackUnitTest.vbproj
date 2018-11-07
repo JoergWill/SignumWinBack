@@ -17,6 +17,8 @@
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -122,6 +124,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\SharpSSH\DiffieHellman.dll</HintPath>
     </Reference>
+    <Reference Include="FluentFTP">
+      <HintPath>..\dll\FluentFTP.19.2.2\FluentFTP.dll</HintPath>
+    </Reference>
     <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
       <Private>True</Private>
@@ -149,6 +154,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -190,6 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnitTest_wb_BestellDatenSchritt.vb" />
+    <Compile Include="UnitTest_wb_Kocher.vb" />
     <Compile Include="UnitTest_wb_Mail.vb" />
     <Compile Include="UnitTest_wb_MqqtClient.vb" />
     <Compile Include="UnitTest_wb_SetupCustomAction.vb" />
@@ -287,6 +294,13 @@
   <PropertyGroup>
     <PostBuildEvent>REM xcopy "$(ProjectDir)winback.ini" "$(TargetDir)" /C /R /Y</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\WinSCP.5.13.4\build\WinSCP.targets" Condition="Exists('..\packages\WinSCP.5.13.4\build\WinSCP.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\WinSCP.5.13.4\build\WinSCP.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WinSCP.5.13.4\build\WinSCP.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

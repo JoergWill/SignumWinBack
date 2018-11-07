@@ -34,6 +34,8 @@ Public Class Main
     Dim nwtUpdateKomponenten As New wb_nwtUpdate
     Dim nwtUpdateArtikel As New wb_nwtUpdateArtikel
 
+    Dim Kocher As New wb_Kocher_Sync
+
     Private nwtUpdateKomponentenOrgaBack = False
     Private nwtUpdateArtikelOrgaBack = False
 
@@ -131,6 +133,8 @@ Public Class Main
     '''  - Ping MySQL
     '''  - Update Nährwerte
     '''  - Anzeige Uhrzeit
+    '''  - Update Rezepte Kocher/Röster
+    '''  
     ''' CntCounter wird mit jedem Aufruf um Eins erhöht. Die entsprechende Task stoppt
     ''' den Timer und setzt seinen Aufruf nach Erledigung der Aufgabe wieder neu.
     ''' Danach wird der Timer wieder gestartet.
@@ -220,6 +224,21 @@ Public Class Main
             Dim TWNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
             AktTimerEvent.Str2 = Export.ExportChargen(TWNr)
             'Nach Ende Export neue Startzeit setzen
+            AktTimerEvent.Endezeit = Now
+            AktTimerEvent.MySQLdbUpdate_Fields()
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+        End If
+
+        'Abfrage FTP-Verzeichnis/Verbindung Kocher/Röster
+        If MainTimer_Check("kocher_check") Then
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+
+            'Check Kocher-Nr
+            Dim KNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+            AktTimerEvent.Str2 = Kocher.CheckKocher(KNr)
+            'Nach Ende Check neue Startzeit setzen
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
             'Daten im Grid aktualisieren

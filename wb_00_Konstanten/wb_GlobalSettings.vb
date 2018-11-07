@@ -71,6 +71,7 @@ Public Class wb_GlobalSettings
 
     Private Shared _SauerteigAnlage As Boolean = Nothing
     Private Shared _SauerteigAnzBeh As Integer = wb_Global.UNDEFINED
+    Private Shared _IPBasisAdresse As String = Nothing
 
     Private Shared _ChargenTeiler As wb_Global.ModusChargenTeiler
     Private Shared _TeigOptimierung As wb_Global.ModusTeigOptimierung
@@ -491,9 +492,15 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Public Shared ReadOnly Property pDBUpdatePath
+    Public Shared ReadOnly Property pDBUpdatePath As String
         Get
             Return _pAddInPath & "DBUpdate\"
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property pKocherPath As String
+        Get
+            Return _pAddInPath & "Temp\"
         End Get
     End Property
 
@@ -679,6 +686,18 @@ Public Class wb_GlobalSettings
             End If
             Return _SauerteigAnzBeh
         End Get
+    End Property
+
+    Public Shared Property IPBasisAdresse As String
+        Get
+            If _IPBasisAdresse = Nothing Then
+                getWinBackKonfiguration()
+            End If
+            Return _IPBasisAdresse
+        End Get
+        Set(value As String)
+            _IPBasisAdresse = value
+        End Set
     End Property
 
     Public Shared Property pExportPath As String
@@ -1032,6 +1051,8 @@ Public Class wb_GlobalSettings
                         _WinBackLanguage2 = wb_Functions.StrToInt(winback.sField("KF_Wert"))
                     Case "SprachenVariante"
                         _WinBackLanguageVariante = wb_Functions.StrToInt(winback.sField("KF_Wert"))
+                    Case "IpBasisAdresse"
+                        _IPBasisAdresse = winback.sField("KF_Wert")
                 End Select
             End While
         End If
