@@ -247,4 +247,13 @@
             _TA = value
         End Set
     End Property
+
+    Public Property RzptBezeichnung As String
+        Get
+            Return _RzptBezeichnung
+        End Get
+        Set(value As String)
+            _RzptBezeichnung = value
+        End Set
+    End Property
 End Class

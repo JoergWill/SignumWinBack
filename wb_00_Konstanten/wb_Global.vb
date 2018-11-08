@@ -501,13 +501,18 @@
     'WinBack RezeptNummer Prefix
     Public Const KocherPreFix As String = "KCHR"
     'WinBack Liniengruppe Kocher/Röster
-    Public Const KocherLinienGruppe As String = "98"
+    Public Const KocherLinienGruppe As Integer = 98
     'Kocher maximale Anzahl Rezeptschitte
     Public Const KocherMaxSchritte = 5
     'Kocher Anzahl der Parameter pro RezeptSchritt (Rezept-Textfile)
     Public Const Kocher_IdxTeiler = 10
     'Kocher Offset Parameter (Rezept-Textfile)
     Public Const Kocher_IdxOffset = 7
+
+    'Kocher Rezept-Hülle Nummer in HisRezepte/HisRezeptSchritte
+    Public Const Kocher_HisRzNr As Integer = -98
+    Public Const Kocher_HisVrnt As Integer = 1
+    Public Const Kocher_HisAend As Integer = 0
 
 
     Enum Kocher_VerbindungsStatus

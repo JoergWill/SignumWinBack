@@ -10,6 +10,7 @@ Public Class EnhEdit
     Private _eOG As Double
 
     Private _eValue As String = ""
+    Private _oValue As String = ""
     Private _Init As Boolean = True
     Private _TextBoxSize As New Size
 
@@ -39,6 +40,7 @@ Public Class EnhEdit
         Me.TextBox.TextAlign = HorizontalAlignment.Right
         Me.TextBox.BorderStyle = BorderStyle.None
         Me.TextBox.Font = _eFont
+        Me.TextBox.AcceptsReturn = True
         'Cursor ausblenden
         'Me.TextBox.Enabled = False
 
@@ -99,7 +101,26 @@ Public Class EnhEdit
     Private ReadOnly Property eValue As String
         Get
             Select Case _eFormat
-                Case wb_Format.fReal
+
+                'Gleitkomma-Zahlen mit 3 Nachkommastellen
+                Case wb_Format.fReal, wb_Format.fInteger
+                    Try
+                        If _eValue <> "" Then
+                            Return Convert.ToDouble(_eValue).ToString("F3")
+                        Else
+                            Return 0.ToString("F3")
+                        End If
+                    Catch ex As Exception
+                        Return 0.ToString("F3")
+                    End Try
+
+                'String/Zeit
+                Case wb_Format.fString, wb_Format.fTime
+                    Return _eValue
+
+                    'nicht definiert
+                Case Else
+                    Return ""
 
             End Select
         End Get
@@ -113,13 +134,37 @@ Public Class EnhEdit
         Debug.Print("Enhanced Edit OnValueChanged " & Me.Value)
         If _Init Then
             _Init = False
+            _oValue = Value
             Me.TextBox.Text = Value
             Me.TextBox.SelectAll()
         Else
-            Me.Value = _eValue
+            Me.Value = eValue
         End If
         'MyBase.OnValueChanged()
     End Sub
+
+    ''' <summary>
+    ''' Wird vor onKeyDown() aufgerufen. Im Gegensatz zu OnKeyDown() werden hier auch die Events von Return und Escape
+    ''' verarbeitet.
+    '''
+    ''' </summary>
+    ''' <param name="msg"></param>
+    ''' <param name="keyData"></param>
+    ''' <returns></returns>
+    Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
+        Debug.Print("ProcessCmdKey " & keyData.ToString)
+
+        'TODO Pfeil nach oben/Pfeil nach unten noch verarbeiten
+        If keyData = Keys.Escape Then
+            _eValue = _oValue
+            'keyData = Keys.Return
+
+            'entspricht der Return-Taste
+            Me.ValidateText()
+        End If
+
+        Return MyBase.ProcessCmdKey(msg, keyData)
+    End Function
 
     Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
 
@@ -143,7 +188,11 @@ Public Class EnhEdit
 
             Case wb_Result.KeyReturn
                 'Eingabewert übernehmen
-                Value = _eValue
+                Value = eValue
+
+            Case wb_Result.KeyEscape
+                'ursprünglichen Eingabewert wieder eintragen
+                Value = _oValue
 
         End Select
 
@@ -165,7 +214,8 @@ Public Class EnhEdit
     ''' </summary>
     ''' <param name="e"></param>
     Protected Overrides Sub OnValidating(e As CancelEventArgs)
-        Value = _eValue
+        Value = eValue
+        _oValue = Value
         Debug.Print("Enhanced Edit OnValidating " & Value)
     End Sub
 

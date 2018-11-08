@@ -2945,6 +2945,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  ausgegeben.
  </summary>
 </member>
+<member name="M:WinBack.wb_Rezept.#ctor(System.String,System.Int32)">
+ <summary>
+ Einlesen Rezeptkopf und Rezeptur anhand der alphanumerischen Rezeptnummer. 
+ Optional wird die Liniengruppe mit übergeben (Kocher). Wenn das Rezept nicht vorhanden ist,
+ wird eine leere Hülle erzeugt.
+ </summary>
+ <param name="RzNummer"></param>
+ <param name="RzLinienGruppe"></param>
+</member>
 <member name="M:WinBack.wb_Rezept.#ctor(System.Int32,System.Object,System.Int32,System.Int32)">
  <summary>
  Einlesen Rezeptkopf und Rezeptur aus der Historie
@@ -2959,7 +2968,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Rezept.MySQLdbNew(System.Int32)">
+<member name="M:WinBack.wb_Rezept.MySQLdbNew(System.Int32,System.Int32)">
  <summary>
  Rezeptkopf-Datensatz neu anlegen
  Es wird nur die Rezept-Nummer (intern) angelegt.

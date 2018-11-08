@@ -403,6 +403,17 @@ Public Class wb_Rezept
     End Sub
 
     ''' <summary>
+    ''' Einlesen Rezeptkopf und Rezeptur anhand der alphanumerischen Rezeptnummer. 
+    ''' Optional wird die Liniengruppe mit übergeben (Kocher). Wenn das Rezept nicht vorhanden ist,
+    ''' wird eine leere Hülle erzeugt.
+    ''' </summary>
+    ''' <param name="RzNummer"></param>
+    ''' <param name="RzLinienGruppe"></param>
+    Public Sub New(RzNummer As String, Optional RzLinienGruppe As Integer = wb_Global.LinienGruppeStandard)
+
+    End Sub
+
+    ''' <summary>
     ''' Einlesen Rezeptkopf und Rezeptur aus der Historie
     ''' </summary>
     ''' <param name="RzNr"></param>
@@ -493,17 +504,17 @@ Public Class wb_Rezept
     ''' Alle weiteren Rezept-Daten werden mit MySQLdbUpdate eingetragen.
     ''' </summary>
     ''' <returns>Integer - neu anglegte (interne) Rezept-Nummer</returns>
-    Public Function MySQLdbNew(Variante As Integer) As Integer
+    Public Function MySQLdbNew(Variante As Integer, Optional LinienGruppe As Integer = wb_Global.LinienGruppeStandard) As Integer
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'interne Rezept-Nummer ermitteln aus max(RZ_NR)
         _RezeptNr = wb_sql_Functions.getNewRezeptNummer()
+        'Bezeichnung
         _RezeptBezeichnung = "Neu angelegt " & Date.Now
-
         'Variante
         _RezeptVariante = Variante
         'Liniengruppe
-        _LinienGruppe = wb_Global.LinienGruppeStandard
+        _LinienGruppe = LinienGruppe
 
         'Änderungsdatum ist das aktuelle Datum
         AenderungDatum = Date.Now
@@ -572,7 +583,7 @@ Public Class wb_Rezept
     ''' 
     ''' Gibt True zurück, wenn der Datensatz gefunden wurde.
     ''' </summary>
-    Private Function MySQLdbSelect_RzSchritt(RezeptNummer As Integer, Variante As Integer, Optional AendIndex As Integer = wb_Global.UNDEFINED) As Boolean
+    Public Function MySQLdbSelect_RzSchritt(RezeptNummer As Integer, Variante As Integer, Optional AendIndex As Integer = wb_Global.UNDEFINED) As Boolean
         Dim sql As String
         Dim winback As wb_Sql
 

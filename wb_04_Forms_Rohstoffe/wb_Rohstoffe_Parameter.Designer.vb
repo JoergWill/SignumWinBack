@@ -35,11 +35,11 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColNr = New Infralution.Controls.VirtualTree.Column()
         Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
         Me.ColWert = New Infralution.Controls.VirtualTree.Column()
-        Me.EnhEdit = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.EnhEdit_RohParams = New EnhEdit.EnhEdit(Me.components)
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
+        Me.EnhEdit = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.EnhEdit_RohParams = New EnhEdit.EnhEdit(Me.components)
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -93,24 +93,6 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColWert.Name = "ColWert"
         Me.ColWert.Sortable = False
         Me.ColWert.Width = 70
-        '
-        'EnhEdit
-        '
-        Me.EnhEdit.Control = Me.EnhEdit_RohParams
-        '
-        'EnhEdit_RohParams
-        '
-        Me.EnhEdit_RohParams.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit_RohParams.eFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.EnhEdit_RohParams.eFormat = 0
-        Me.EnhEdit_RohParams.eOG = "0"
-        Me.EnhEdit_RohParams.eUG = "0"
-        Me.EnhEdit_RohParams.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.EnhEdit_RohParams.Location = New System.Drawing.Point(0, 0)
-        Me.EnhEdit_RohParams.Name = "EnhEdit_RohParams"
-        Me.EnhEdit_RohParams.Size = New System.Drawing.Size(100, 18)
-        Me.EnhEdit_RohParams.TabIndex = 0
-        Me.EnhEdit_RohParams.Visible = False
         '
         'ColEinheit
         '
@@ -193,6 +175,24 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ObjectRowBinding1.ParentProperty = "ParentStep"
         Me.ObjectRowBinding1.Style.Font = New System.Drawing.Font("Arial", 12.0!)
         Me.ObjectRowBinding1.TypeName = "WinBack.wb_KomponParam"
+        '
+        'EnhEdit
+        '
+        Me.EnhEdit.Control = Me.EnhEdit_RohParams
+        '
+        'EnhEdit_RohParams
+        '
+        Me.EnhEdit_RohParams.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.EnhEdit_RohParams.eFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EnhEdit_RohParams.eFormat = 0
+        Me.EnhEdit_RohParams.eOG = "0"
+        Me.EnhEdit_RohParams.eUG = "0"
+        Me.EnhEdit_RohParams.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EnhEdit_RohParams.Location = New System.Drawing.Point(0, 0)
+        Me.EnhEdit_RohParams.Name = "EnhEdit_RohParams"
+        Me.EnhEdit_RohParams.Size = New System.Drawing.Size(100, 18)
+        Me.EnhEdit_RohParams.TabIndex = 0
+        Me.EnhEdit_RohParams.Visible = False
         '
         'wb_Rohstoffe_Parameter
         '

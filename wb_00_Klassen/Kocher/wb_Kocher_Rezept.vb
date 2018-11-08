@@ -171,55 +171,30 @@ Public Class wb_Kocher_Rezept
     ''' </summary>
     ''' <param name="Create"></param>
     Public Sub DBUpdateRezept(Create As Boolean)
+        'Rezeptur lesen/erzeugen
+        Dim Rzpt As New wb_Rezept(WinBackRzNummer, wb_Global.KocherLinienGruppe)
 
-        'WinBack Datenbank
-        Dim sql As String
-        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-
-        'Prüfen ob das Rezept in WinBack vorhanden ist
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKocherRzptListe, wb_Global.KocherLinienGruppe, WinBackRzNummer)
-
-        'Datensätze aus Tabelle Rezeptschritte lesen
-        If winback.sqlSelect(sql) Then
-            If winback.Read Then
-                'Rezeptkopf in WinBack-Datenbak gefunden - Interne Nummer und Bezeichnung einlesen
-                _WinBackRzNr = winback.iField("RZ_Nr")
-                _WinBackRzName = winback.iField("RZ_Bezeichnung")
-            Else
-                'Rezeptkopf nicht gefunden - Rezept muss neu angelegt werden
-                Create = True
-            End If
-        End If
-
-        'Rezeptkopf neu anlegen
+        'Rezept muss neu angelegt werden - wenn schon ein Rezept vorhanden ist löschen
         If Create Then
-            'eventuell vorhandenes Rezept löschen
-            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKocherDeleteRzpt, wb_Global.KocherLinienGruppe, WinBackRzNummer)
-            winback.sqlCommand(sql)
-
-            'wenn Rezeptschritte vorhanden sind - auch löschen
-            If _WinBackRzNr <> wb_Global.UNDEFINED Then
-                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRzptSchr, _WinBackRzNr, "1")
-                winback.sqlCommand(sql)
-            End If
-
-            'Rezeptkopf neu anlegen
-
-            'Rezeptschritte aus His-Rezepte(Master-Vorlage) kopieren
-
-
-
-
-
-
-
+            Rzpt.MySQLdbDelete_HisRezept()
+            Rzpt.MySQLdbDelete_HisRezeptSchritte()
+            Rzpt.MySQLdbDelete_RezeptSchritte()
         End If
 
+        'Wenn keine Rezeptschritte vorhanden sind, Rezepthülle von HisRezepte kopieren
+        If Rzpt.RootRezeptSchritt.ChildSteps.Count = 0 Then
+            'Liest alle Rezeptschritte aus HisRezepte(Nr -98/Variante 1/ÄnderungsIndex 0)
+            Rzpt.MySQLdbSelect_RzSchritt(wb_Global.Kocher_HisRzNr, wb_Global.Kocher_HisVrnt, wb_Global.Kocher_HisAend)
+        End If
+
+        'Rezept-Bezeichung (aus Schritt 0)
+        Rzpt.RezeptBezeichnung = _Rezeptur(0).RzptBezeichnung
+
+        'Update Rezeptschritte - Abgleich der Rezeptschritte mit der Rezepthülle
 
 
 
 
-        'Update Rezeptschritte
 
 
 
@@ -227,10 +202,6 @@ Public Class wb_Kocher_Rezept
 
 
 
-
-
-
-        winback.Close()
 
 
 

@@ -26,6 +26,7 @@ Public Class EnhEdit_Global
         ValueErrFormat
 
         KeyReturn
+        KeyEscape
         KeyArrowUp
         KeyArrowDown
 
@@ -42,40 +43,24 @@ Public Class EnhEdit_Global
     ''' <param name="og"></param>
     ''' <returns></returns>
     Public Shared Function GetKey(cKey As Keys, ByRef Value As String, Format As wb_Format, ug As Double, og As Double) As wb_Result
-        Dim dValue As Double
+        Dim oValue As String = Value
+        Debug.Print("EnhEdit_Global.GetKey " & cKey.ToString)
+
         Select Case cKey
 
             'Numerische Eingabe
-            Case Keys.D0 To Keys.D9, Keys.NumPad0 To Keys.NumPad9
-                If Format = wb_Format.fInteger Or Format = wb_Format.fReal Or Format = wb_Format.fString Then
-                    Value = Value & Chr(cKey)
+            Case Keys.D0 To Keys.D9
+                Value = Value & Chr(cKey)
+                Return CheckBounds(Value, oValue, Format, ug, og)
 
-                    'In Zahl umwandeln
-                    Try
-                        dValue = Convert.ToDouble(Value)
-                    Catch
-                        Return wb_Result.ValueErrFormat
-                    End Try
-
-                    'Grenzen prüfen
-                    Select Case dValue
-                        Case < ug
-                            Return wb_Result.ValueErrMin
-                        Case > og
-                            Return wb_Result.ValueErrMin
-                        Case Else
-                            Return wb_Result.ValueOK
-                    End Select
-
-                    If Int(Value) < ug Then
-                        Return wb_Result.ValueErrMin
-                    End If
-                End If
+            Case Keys.NumPad0 To Keys.NumPad9
+                Value = Value & Chr(cKey - 48)
+                Return CheckBounds(Value, oValue, Format, ug, og)
 
             'Dezimal-Trennzeichen (Komma/Punkt)
-            Case Keys.Decimal
+            Case Keys.Decimal, Keys.Oemcomma, Keys.OemPeriod
                 If Format = wb_Format.fReal Then
-                    Value = Value & Chr(cKey)
+                    Value = Value & Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator
                 End If
 
             'Alpha-Numerische Eingabe
@@ -84,14 +69,70 @@ Public Class EnhEdit_Global
                     Value = Value & Chr(cKey)
                 End If
 
-           'Return/Enter
+            'Backspace/Delete
+            Case Keys.Back, Keys.Delete
+                If Value <> "" Then
+                    Value = Left(Value, Len(Value) - 1)
+                End If
+
+            'Escape (Edit abbrechen)
+            Case Keys.Escape, Keys.F1
+                Return wb_Result.KeyEscape
+
+            'Return/Enter
             Case Keys.Enter, Keys.Return
                 Return wb_Result.KeyReturn
 
         End Select
 
-
         Return wb_Result.Undefined
+    End Function
+
+    Private Shared Function CheckBounds(ByRef Value As String, oValue As String, Format As wb_Format, ug As Double, og As Double) As wb_Result
+
+        'Abhängig vom Eingabeformat
+        Select Case Format
+
+            Case wb_Format.fReal
+                Try
+                    'Grenzen prüfen
+                    Select Case Convert.ToDouble(Value)
+                        Case < ug
+                            Value = oValue
+                            Return wb_Result.ValueErrMin
+                        Case > og
+                            Value = oValue
+                            Return wb_Result.ValueErrMax
+                        Case Else
+                            Return wb_Result.ValueOK
+                    End Select
+                Catch
+                    Value = oValue
+                    Return wb_Result.ValueErrFormat
+                End Try
+
+            Case wb_Format.fInteger
+                Try
+                    'Grenzen prüfen
+                    Select Case Convert.ToInt32(Value)
+                        Case < ug
+                            Value = oValue
+                            Return wb_Result.ValueErrMin
+                        Case > og
+                            Value = oValue
+                            Return wb_Result.ValueErrMax
+                        Case Else
+                            Return wb_Result.ValueOK
+                    End Select
+                Catch ex As Exception
+                    Value = oValue
+                    Return wb_Result.ValueErrFormat
+                End Try
+
+            Case Else
+                Return wb_Result.Undefined
+
+        End Select
     End Function
 
 End Class
