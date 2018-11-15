@@ -407,9 +407,17 @@ Public Class wb_Rezept
     ''' Optional wird die Liniengruppe mit übergeben (Kocher). Wenn das Rezept nicht vorhanden ist,
     ''' wird eine leere Hülle erzeugt.
     ''' </summary>
-    ''' <param name="RzNummer"></param>
+    ''' <param name="Rezeptnummer"></param>
     ''' <param name="RzLinienGruppe"></param>
-    Public Sub New(RzNummer As String, Optional RzLinienGruppe As Integer = wb_Global.LinienGruppeStandard)
+    Public Sub New(Rezeptnummer As String, Optional RzLinienGruppe As Integer = wb_Global.LinienGruppeStandard, Optional RzVariante As Integer = 1)
+        'Rezeptkopf aus Datenbank lesen
+        If MySQLdbSelect_RzKopf(Rezeptnummer, RzVariante) Then
+            'wenn ein Rezept vorhanden ist, Rezeptschritte einlesen
+            MySQLdbSelect_RzSchritt(RezeptNr, RzVariante)
+        Else
+            'Wenn kein Rezept gefunden wurde, wird ein neues leeres Rezept angelegt (neue Rezeptnummer)
+            MySQLdbNew(RzVariante, RzLinienGruppe)
+        End If
 
     End Sub
 
@@ -542,12 +550,47 @@ Public Class wb_Rezept
     ''' Liest die Rezeptkopfdaten der RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht
     ''' existiert, wird die Variante 1 gelesen (Standard-Variante). Wenn Variante 1 nicht exisitiert (Sauerteig-Rezept) wird Variante 0
     ''' gelesen. Die entsprechende Variante wird (byRef) korrigiert.
-    ''' Wenn kein Rezeptkopf existiert, wird False zurückgegeben
+    ''' Wenn kein Rezeptkopf existiert, wird False zurückgegeben.
     ''' </summary>
     ''' <param name="RezeptNummer"></param>
     ''' <param name="Variante"></param>
     ''' <returns></returns>
-    Private Function MySQLdbSelect_RzKopf(RezeptNummer As Integer, ByRef Variante As Integer, Optional AendIndex As Integer = wb_Global.UNDEFINED) As Boolean
+    Private Function MySQLdbSelect_RzKopf(RezeptNummer As String, ByRef Variante As Integer) As Boolean
+        Dim sql As String
+        Dim winback As wb_Sql
+
+        'Lesen Rezeptdaten
+        'Datenbank-Verbindung öffnen - MySQL-winback
+        winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'Suche nach Rz_Nr
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptNummer, RezeptNummer, Variante)
+
+        'Datensätze aus Tabelle Rezepte lesen
+        If winback.sqlSelect(sql) Then
+            If winback.Read Then
+                For i = 0 To winback.MySqlRead.FieldCount - 1
+                    MySQLdbRead_Fields(winback.MySqlRead.GetName(i), winback.MySqlRead.GetValue(i))
+                Next
+                winback.Close()
+                Return True
+            End If
+        End If
+        winback.Close()
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' Liest die Rezeptkopfdaten der alphanumerischen RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht
+    ''' existiert, wird die Variante 1 gelesen (Standard-Variante). Wenn Variante 1 nicht exisitiert (Sauerteig-Rezept) wird Variante 0
+    ''' gelesen. Die entsprechende Variante wird (byRef) korrigiert.
+    ''' Wenn kein Rezeptkopf existiert, wird False zurückgegeben.
+    ''' Ist ein Änderungsindex angegeben wird das Rezept aus wbdaten.HisRezepte (Rezepthistorie) gelesen.
+    ''' </summary>
+    ''' <param name="RezeptNr"></param>
+    ''' <param name="Variante"></param>
+    ''' <param name="AendIndex"></param>
+    ''' <returns></returns>
+    Private Function MySQLdbSelect_RzKopf(RezeptNr As Integer, ByRef Variante As Integer, Optional AendIndex As Integer = wb_Global.UNDEFINED) As Boolean
         Dim sql As String
         Dim winback As wb_Sql
 
@@ -556,12 +599,12 @@ Public Class wb_Rezept
             'Datenbank-Verbindung öffnen - MySQL-winback
             winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
             'Suche nach Rz_Nr
-            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptKopf, RezeptNummer, Variante)
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptKopf, RezeptNr, Variante)
         Else
             'Datenbank-Verbindung öffnen - MySQL-wbdaten
             winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
             'Suche nach Rz_Nr in His_Rezepte
-            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlHisRezeptKopf, RezeptNummer, Variante, AendIndex)
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlHisRezeptKopf, RezeptNr, Variante, AendIndex)
         End If
 
         'Datensätze aus Tabelle Rezepte lesen
@@ -583,7 +626,7 @@ Public Class wb_Rezept
     ''' 
     ''' Gibt True zurück, wenn der Datensatz gefunden wurde.
     ''' </summary>
-    Public Function MySQLdbSelect_RzSchritt(RezeptNummer As Integer, Variante As Integer, Optional AendIndex As Integer = wb_Global.UNDEFINED) As Boolean
+    Public Function MySQLdbSelect_RzSchritt(RezeptNr As Integer, Variante As Integer, Optional AendIndex As Integer = wb_Global.UNDEFINED) As Boolean
         Dim sql As String
         Dim winback As wb_Sql
 
@@ -592,12 +635,12 @@ Public Class wb_Rezept
             'Datenbank-Verbindung öffnen - MySQL
             winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
             'Suche nach Rz_Nr
-            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptur, RezeptNummer, Variante)
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptur, RezeptNr, Variante)
         Else
             'Datenbank-Verbindung öffnen - MySQL-wbdaten (Rezept-Historie)
             winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
             'Suche nach Rz_Nr in His_Rezeptschritte
-            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlHisRezeptur, RezeptNummer, Variante, AendIndex)
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlHisRezeptur, RezeptNr, Variante, AendIndex)
         End If
 
         'Datensätze aus Tabelle Rezeptschritte lesen

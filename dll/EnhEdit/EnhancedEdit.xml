@@ -43,6 +43,17 @@ EnhancedEdit
  Beim ersten Aufruf der Edit-Routine.
  </summary>
 </member>
+<member name="M:EnhEdit.EnhEdit.ProcessCmdKey(System.Windows.Forms.Message@,System.Windows.Forms.Keys)">
+ <summary>
+ Wird vor onKeyDown() aufgerufen. Im Gegensatz zu OnKeyDown() werden hier auch die Events von Return und Escape
+ verarbeitet.
+ Siehe auch: https://social.msdn.microsoft.com/Forums/windows/en-US/575ea120-036a-4e68-877a-f22a68de9689/detecting-esc-key-stroke-in-toolstriptextbox?forum=winforms
+ 
+ </summary>
+ <param name="msg"></param>
+ <param name="keyData"></param>
+ <returns></returns>
+</member>
 <member name="M:EnhEdit.EnhEdit.OnValidating(System.ComponentModel.CancelEventArgs)">
  <summary>
  Enter-Taste nach Eingabe

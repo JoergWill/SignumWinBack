@@ -2945,13 +2945,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  ausgegeben.
  </summary>
 </member>
-<member name="M:WinBack.wb_Rezept.#ctor(System.String,System.Int32)">
+<member name="M:WinBack.wb_Rezept.#ctor(System.String,System.Int32,System.Int32)">
  <summary>
  Einlesen Rezeptkopf und Rezeptur anhand der alphanumerischen Rezeptnummer. 
  Optional wird die Liniengruppe mit übergeben (Kocher). Wenn das Rezept nicht vorhanden ist,
  wird eine leere Hülle erzeugt.
  </summary>
- <param name="RzNummer"></param>
+ <param name="Rezeptnummer"></param>
  <param name="RzLinienGruppe"></param>
 </member>
 <member name="M:WinBack.wb_Rezept.#ctor(System.Int32,System.Object,System.Int32,System.Int32)">
@@ -2978,15 +2978,28 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns>Integer - neu anglegte (interne) Rezept-Nummer</returns>
 </member>
-<member name="M:WinBack.wb_Rezept.MySQLdbSelect_RzKopf(System.Int32,System.Int32@,System.Int32)">
+<member name="M:WinBack.wb_Rezept.MySQLdbSelect_RzKopf(System.String,System.Int32@)">
  <summary>
  Liest die Rezeptkopfdaten der RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht
  existiert, wird die Variante 1 gelesen (Standard-Variante). Wenn Variante 1 nicht exisitiert (Sauerteig-Rezept) wird Variante 0
  gelesen. Die entsprechende Variante wird (byRef) korrigiert.
- Wenn kein Rezeptkopf existiert, wird False zurückgegeben
+ Wenn kein Rezeptkopf existiert, wird False zurückgegeben.
  </summary>
  <param name="RezeptNummer"></param>
  <param name="Variante"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Rezept.MySQLdbSelect_RzKopf(System.Int32,System.Int32@,System.Int32)">
+ <summary>
+ Liest die Rezeptkopfdaten der alphanumerischen RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht
+ existiert, wird die Variante 1 gelesen (Standard-Variante). Wenn Variante 1 nicht exisitiert (Sauerteig-Rezept) wird Variante 0
+ gelesen. Die entsprechende Variante wird (byRef) korrigiert.
+ Wenn kein Rezeptkopf existiert, wird False zurückgegeben.
+ Ist ein Änderungsindex angegeben wird das Rezept aus wbdaten.HisRezepte (Rezepthistorie) gelesen.
+ </summary>
+ <param name="RezeptNr"></param>
+ <param name="Variante"></param>
+ <param name="AendIndex"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Rezept.MySQLdbSelect_RzSchritt(System.Int32,System.Int32,System.Int32)">

@@ -182,16 +182,22 @@ Public Class wb_Kocher_Rezept
         End If
 
         'Wenn keine Rezeptschritte vorhanden sind, Rezepthülle von HisRezepte kopieren
+        'die RezeptNr wurde schon von von New wb_Rezept erzeugt
         If Rzpt.RootRezeptSchritt.ChildSteps.Count = 0 Then
             'Liest alle Rezeptschritte aus HisRezepte(Nr -98/Variante 1/ÄnderungsIndex 0)
             Rzpt.MySQLdbSelect_RzSchritt(wb_Global.Kocher_HisRzNr, wb_Global.Kocher_HisVrnt, wb_Global.Kocher_HisAend)
         End If
+
 
         'Rezept-Bezeichung (aus Schritt 0)
         Rzpt.RezeptBezeichnung = _Rezeptur(0).RzptBezeichnung
 
         'Update Rezeptschritte - Abgleich der Rezeptschritte mit der Rezepthülle
 
+        'Rezeptur in Datenbank speichern
+        Rzpt.MySQLdbWrite_RzSchritt(Rzpt.RezeptNr, Rzpt.Variante)
+        'Rezept in Datenbank speichern
+        Rzpt.MySQLdbWrite_Rezept(Not Create)
 
 
 

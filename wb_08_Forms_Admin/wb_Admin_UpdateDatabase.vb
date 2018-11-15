@@ -87,9 +87,11 @@ Public Class wb_Admin_UpdateDatabase
     ''' <param name="sql"></param>
     ''' <returns></returns>
     Private Function UpdateSqlMandant(sql As String) As String
-        If sql.Substring(0, 3).ToUpper = "USE" Then
-            sql = sql.Replace("winback", wb_GlobalSettings.MySQLWinBack)
-            sql = sql.Replace("wbdaten", wb_GlobalSettings.MySQLWbDaten)
+        If sql.Length > 3 Then
+            If sql.Substring(0, 3).ToUpper = "USE" Then
+                sql = sql.Replace("winback", wb_GlobalSettings.MySQLWinBack)
+                sql = sql.Replace("wbdaten", wb_GlobalSettings.MySQLWbDaten)
+            End If
         End If
         Return sql
     End Function

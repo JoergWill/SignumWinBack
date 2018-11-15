@@ -100,5 +100,12 @@ Imports WinBack
         k.TxtWriteRezept()
     End Sub
 
+    <TestMethod()> Public Sub Test_DBUpdateRezept()
+        Dim k As New wb_Kocher_Rezept
 
+        k.Nummer = 2
+        k.TxtReadRezept()
+        k.Filename = "R20.0.rzp"
+        k.DBUpdateRezept(False)
+    End Sub
 End Class

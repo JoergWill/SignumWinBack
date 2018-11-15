@@ -106,7 +106,7 @@ Public Class ob_RecipeInfo
             Else
                 'Rezeptur einlesen
                 'TODO Sauerteig-Rezepte (Variante 0) und kein Rezept abfangen !!
-                Dim Rz As New wb_Rezept(RzNr, Nothing, Variante)
+                Dim Rz As New wb_Rezept(RzNr, Nothing, Variante, "", "", False)
 
                 'Liste aller Child-Rezeptschritte aus dem Root-Rezeptschritt berechnet auf das Stückgewicht(Nass)
                 _Ingredients = Rz.RootRezeptSchritt.CalcIngredients(StkGewicht, Variante)
