@@ -14,6 +14,9 @@ Public Class wb_Rezeptschritt
     Private _Kommentar As String
     Private _Sollwert As String
     Private _Einheit As String
+    Private _Format As EnhEdit.EnhEdit_Global.wb_Format
+    Private _OberGW As Double
+    Private _UnterGW As Double
     Private _PreisProKg As Double = 0
     Private _RezeptNr As Integer = -1
     Private _TA As Integer = wb_Global.TA_Undefined
@@ -478,6 +481,33 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    Public Property Format As EnhEdit.EnhEdit_Global.wb_Format
+        Get
+            Return _Format
+        End Get
+        Set(value As EnhEdit.EnhEdit_Global.wb_Format)
+            _Format = value
+        End Set
+    End Property
+
+    Public Property OberGW As Double
+        Get
+            Return _OberGW
+        End Get
+        Set(value As Double)
+            _OberGW = value
+        End Set
+    End Property
+
+    Public Property UnterGW As Double
+        Get
+            Return _UnterGW
+        End Get
+        Set(value As Double)
+            _UnterGW = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Komponenten-Type der Komponente in der Rezept-Zeile
     ''' </summary>
@@ -511,10 +541,13 @@ Public Class wb_Rezeptschritt
     ''' </summary>
     Public Sub SetType118()
         If _Type = wb_Global.KomponTypen.KO_TYPE_KNETER Then
+            'TODO Konstanten in wb_Global definieren (4,1,9,10,11)
             Dim EinheitenIndex As String = wb_sql_Functions.getKomponParam(RohNr, 4)
             _Einheit = wb_Language.TextFilter(wb_sql_Functions.Lookup("Einheiten", "E_Einheit", "E_LfdNr = " & EinheitenIndex))
             _Sollwert = wb_sql_Functions.getKomponParam(RohNr, 1)
-            '_Format =  wb_sql_Functions.getKomponParam(RohNr, 9)
+            _Format = wb_Functions.StrToFormat(wb_sql_Functions.getKomponParam(RohNr, 9))
+            _UnterGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, 10))
+            _OberGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, 11))
         End If
     End Sub
 

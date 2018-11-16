@@ -12,6 +12,7 @@ Public Class EnhEdit_Global
     '''    5            Boolean
     ''' </summary>
     Public Enum wb_Format
+        FUndefined = 0
         fString = 1
         fInteger = 2
         fReal = 3
@@ -129,10 +130,20 @@ Public Class EnhEdit_Global
                     Return wb_Result.ValueErrFormat
                 End Try
 
+            Case wb_Format.fTime
+                Select Case Value.Length
+                    Case 1, 4, 7, 8
+                        Return wb_Result.ValueOK
+                    Case 2, 5
+                        Value = Value & ":"
+                        Return wb_Result.ValueOK
+                End Select
+
             Case Else
                 Return wb_Result.Undefined
 
         End Select
     End Function
+
 
 End Class

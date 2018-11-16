@@ -4673,6 +4673,8 @@ Text aus Datenbank lesen - Übersetzung
  <summary>
  Verhindert, dass einzelne Zellen markiert werden 
  (Infralution Support): handle the SelectionChanging event and set Cancel to true. This prevents any selection occurring
+ 
+ Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -5214,10 +5216,27 @@ Public Const MFF_Wissenswertes = 213
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Parameter.VirtualTree_SelectionChanging(System.Object,Infralution.Controls.VirtualTree.SelectionChangingEventArgs)">
+ <summary>
+ Verhindert, dass einzelne Zellen markiert werden 
+ (Infralution Support): handle the SelectionChanging event and set Cancel to true. This prevents any selection occurring
+ 
+ Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Parameter.VirtualTree_GetCellData(System.Object,Infralution.Controls.VirtualTree.GetCellDataEventArgs)">
  <summary>
  Ausgabe VirtualTree formatieren. 
  Überschriften (Parameter-Nummer gleich Null) werden fett formatiert
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Parameter.VirtualTree_SetCellValue(System.Object,Infralution.Controls.VirtualTree.SetCellValueEventArgs)">
+ <summary>
+ Wird aufgerufen, wenn der Wert geändert wurde (Edit)
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

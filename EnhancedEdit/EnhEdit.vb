@@ -50,6 +50,7 @@ Public Class EnhEdit
 
         MyBase.OnGotFocus(e)
     End Sub
+
     Public Property eFont As Font
         Get
             Return _eFont
@@ -59,11 +60,11 @@ Public Class EnhEdit
         End Set
     End Property
 
-    Public Property eFormat As Integer
+    Public Property eFormat As wb_Format
         Get
             Return _eFormat
         End Get
-        Set(value As Integer)
+        Set(value As wb_Format)
             _eFormat = value
         End Set
     End Property

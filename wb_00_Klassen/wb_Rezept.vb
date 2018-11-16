@@ -695,6 +695,10 @@ Public Class wb_Rezept
                         _RezeptSchritt.RezeptImRezept = Nothing
                     End If
                 End Try
+                'Sonderfall Kneterschritte
+            ElseIf _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KNETER Then
+                'Eingabeformat und Grenzwerte stehen in winback.KomponParams
+                _RezeptSchritt.SetType118()
             End If
 
         Loop While sqlReader.Read
@@ -863,6 +867,15 @@ Public Class wb_Rezept
                 'Einheit
                 Case "E_Einheit", "H_E_Einheit"
                     _SQLRezeptSchritt.Einheit = wb_Language.TextFilter(wb_Functions.MySqlToUtf8(Value))
+                'Eingabeformat
+                Case "KT_Format"
+                    _SQLRezeptSchritt.Format = wb_Functions.StrToFormat(Value)
+                'Eingabe oberer Grenzwert
+                Case "KT_OberGW"
+                    _SQLRezeptSchritt.OberGW = wb_Functions.StrToDouble(Value)
+                'Eingabe unterer Grenzwert
+                Case "KT_UnterGW"
+                    _SQLRezeptSchritt.UnterGW = wb_Functions.StrToDouble(Value)
                 'zählt NICHT zum Rezeptgesamtgewicht
                 Case "KA_zaehlt_zu_RZ_Gesamtmenge", "H_KA_zaehlt_zu_RZ_Gesamtmenge"
                     _SQLRezeptSchritt.ZaehltNichtZumRezeptGewicht = wb_sql_Functions.MySQLBoolean(Value)

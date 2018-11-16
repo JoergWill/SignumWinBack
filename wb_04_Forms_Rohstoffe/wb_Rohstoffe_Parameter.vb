@@ -9,6 +9,7 @@ Public Class wb_Rohstoffe_Parameter
     Private _ParamAllergenDeltaStyle As New Infralution.Controls.StyleDelta
     Private _ParamChangedStyle As Infralution.Controls.Style
     Private _KomponParam As wb_KomponParam
+    Private _ParamChanged
 
     ''' <summary>
     ''' Initialisierung - Laden der Form
@@ -41,6 +42,28 @@ Public Class wb_Rohstoffe_Parameter
     End Sub
 
     ''' <summary>
+    ''' Verhindert, dass einzelne Zellen markiert werden 
+    ''' (Infralution Support): handle the SelectionChanging event and set Cancel to true. This prevents any selection occurring
+    ''' 
+    ''' Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VirtualTree_SelectionChanging(sender As Object, e As SelectionChangingEventArgs) Handles VirtualTree.SelectionChanging
+        'Daten aus dem aktuell ausgewählten Rezeptschritt
+        _KomponParam = DirectCast(e.StartRow.Item, wb_KomponParam)
+
+        'Einstellungen Editor
+        Debug.Print("VirtualTree_SelectionChanging " & _KomponParam.Bezeichnung & " UG/OG/Format " & _KomponParam.eUG & "/" & _KomponParam.eOG & "/" & _KomponParam.eFormat)
+        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _KomponParam.eFormat
+        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _KomponParam.eOG
+        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _KomponParam.eUG
+
+        'Verhindert dass einzelne Zellen markiert werden
+        e.Cancel = True
+    End Sub
+
+    ''' <summary>
     ''' Ausgabe VirtualTree formatieren. 
     ''' Überschriften (Parameter-Nummer gleich Null) werden fett formatiert
     ''' </summary>
@@ -67,16 +90,30 @@ Public Class wb_Rohstoffe_Parameter
                 VirtualTree_SetFontAlignment(e.CellData.EvenStyle)
                 VirtualTree_SetFontAlignment(e.CellData.OddStyle)
             End If
-            'Parameter Editor
-            'TODO kann auch als KtXXXFormat angegeben werden (Rezept ?)
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _KomponParam.eFormat
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _KomponParam.eOG
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _KomponParam.eUG
-            'Editieren erlaubt
+
+            'Sollwert - Editieren erlaubt
             Exit Sub
         End If
-        'Edit nicht erlaubt
+
+        'Alle anderen Spalten - Edit nicht erlaubt
         e.CellData.Editor = Nothing
+    End Sub
+
+    ''' <summary>
+    ''' Wird aufgerufen, wenn der Wert geändert wurde (Edit)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VirtualTree_SetCellValue(sender As Object, e As SetCellValueEventArgs) Handles VirtualTree.SetCellValue
+        Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
+
+        'aktuell ausgewählten Rezeptschritt
+        _KomponParam = DirectCast(e.Row.Item, wb_KomponParam)
+        'geänderten Wert eintragen (nach Edit)
+        Binding.SetCellValue(e.Row, e.Column, e.OldValue, e.NewValue)
+
+        'Parameter wurde geändert
+        _ParamChanged = True
     End Sub
 
     ''' <summary>

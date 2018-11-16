@@ -376,10 +376,22 @@ Public Class wb_Rezept_Rezeptur
     ''' <summary>
     ''' Verhindert, dass einzelne Zellen markiert werden 
     ''' (Infralution Support): handle the SelectionChanging event and set Cancel to true. This prevents any selection occurring
+    ''' 
+    ''' Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub VirtualTree_SelectionChanging(sender As Object, e As SelectionChangingEventArgs) Handles VirtualTree.SelectionChanging
+        'Daten aus dem aktuell ausgewählten Rezeptschritt
+        _RezeptSchritt = DirectCast(e.StartRow.Item, wb_Rezeptschritt)
+
+        'Einstellungen Editor
+        Debug.Print("VirtualTree_SelectionChanging " & _RezeptSchritt.Bezeichnung & " UG/OG/Format " & _RezeptSchritt.UnterGW & "/" & _RezeptSchritt.OberGW & "/" & _RezeptSchritt.Format)
+        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _RezeptSchritt.Format
+        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _RezeptSchritt.OberGW
+        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _RezeptSchritt.UnterGW
+
+        'Verhindert dass einzelne Zellen markiert werden
         e.Cancel = True
     End Sub
 
@@ -413,6 +425,7 @@ Public Class wb_Rezept_Rezeptur
                 VirtualTree_SetFontStyle(e.CellData.EvenStyle)
                 VirtualTree_SetFontStyle(e.CellData.OddStyle)
             End If
+            'Editor aktiv - Bezeichnungstext
             Exit Sub
         End If
 
@@ -423,14 +436,14 @@ Public Class wb_Rezept_Rezeptur
                 VirtualTree_SetFontStyle(e.CellData.EvenStyle)
                 VirtualTree_SetFontStyle(e.CellData.OddStyle)
             End If
-            'Einstellungen Editor
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFont = e.CellData.EvenStyle.Font
+            'Editor aktiv - Sollwert
             Exit Sub
         End If
 
-        'Edit nicht erlaubt
+        'Alle Anderen - Edit nicht erlaubt
         e.CellData.Editor = Nothing
     End Sub
+
     ''' <summary>
     ''' Rechte-Maus-Click auf eine Zeile im VirtualTree.
     ''' 

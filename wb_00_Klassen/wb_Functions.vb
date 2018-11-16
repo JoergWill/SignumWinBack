@@ -2,6 +2,7 @@
 Imports System.IO
 Imports System.Net
 Imports System.Text
+Imports EnhEdit.EnhEdit_Global
 Imports ICSharpCode.SharpZipLib.BZip2
 Imports Tamir.SharpSsh
 Imports WinBack
@@ -356,6 +357,23 @@ Public Class wb_Functions
                 Return -99
             Case Else
                 Return -99
+        End Select
+    End Function
+
+    Public Shared Function StrToFormat(value As String) As wb_Format
+        Select Case value
+            Case "1"
+                Return wb_Format.fString
+            Case "2"
+                Return wb_Format.fInteger
+            Case "3"
+                Return wb_Format.fReal
+            Case "4"
+                Return wb_Format.fTime
+            Case "5"
+                Return wb_Format.fBoolean
+            Case Else
+                Return wb_Format.FUndefined
         End Select
     End Function
 
