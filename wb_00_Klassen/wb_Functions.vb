@@ -104,6 +104,7 @@ Public Class wb_Functions
             Return #11/22/1964 00:00:00#
         End Try
     End Function
+
     ''' <summary>
     ''' Wandelt einen String in AllergenInfo um. Wenn der String umgültig ist wird ERR zurückgegeben
     ''' </summary>
@@ -789,6 +790,26 @@ Public Class wb_Functions
         Catch
             Return "-"
         End Try
+    End Function
+
+    ''' <summary>
+    ''' Formatiert einen String im Muster 00:00:00
+    ''' </summary>
+    ''' <param name="Value"></param>
+    ''' <returns></returns>
+    Public Shared Function FormatTimeStr(Value As String) As String
+        Dim ts As String() = Value.Split(":")
+
+        Select Case ts.Length
+            Case 0
+                Return "00:00:00"
+            Case 1
+                Return Left(ts(0) & "00", 2) & ":00:00"
+            Case 2
+                Return Left(ts(0) & "00", 2) & ":" & Left(ts(1) & "00", 2) & ":00"
+            Case Else
+                Return Left(ts(0) & "00", 2) & ":" & Left(ts(1) & "00", 2) & ":" & Left(ts(2) & "00", 2)
+        End Select
     End Function
 
     ''' <summary>

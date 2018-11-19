@@ -42,10 +42,11 @@ Public Class wb_Rohstoffe_Parameter
     End Sub
 
     ''' <summary>
+    ''' Eingabe-Feld wurde selektiert. (Mausklick oder Tastatur-Navigation)
+    ''' Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
+    ''' 
     ''' Verhindert, dass einzelne Zellen markiert werden 
     ''' (Infralution Support): handle the SelectionChanging event and set Cancel to true. This prevents any selection occurring
-    ''' 
-    ''' Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>

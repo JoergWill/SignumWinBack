@@ -102,8 +102,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tb_Rezeptur = New System.Windows.Forms.TabPage()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
-        Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.UniversalEditBox2 = New Infralution.Controls.UniversalEditBox()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.tb_Naehrwerte = New System.Windows.Forms.TabPage()
         Me.tb_Zutaten = New System.Windows.Forms.TabPage()
@@ -611,12 +609,10 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.Columns.Add(Me.ColProzent)
         Me.VirtualTree.ContextMenuStrip = Me.VTPopUpMenu
         Me.VirtualTree.EditOnKeyPress = True
-        Me.VirtualTree.Editors.Add(Me.CellEditor2)
         Me.VirtualTree.Editors.Add(Me.EnhEdit)
         Me.VirtualTree.HeaderContextMenu = Me.headerContextMenu
         Me.VirtualTree.HeaderStyle.Font = CType(resources.GetObject("resource.Font"), System.Drawing.Font)
         Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.None
-        Me.VirtualTree.MainColumn = Me.ColNr
         Me.VirtualTree.Name = "VirtualTree"
         Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
         Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.PowderBlue
@@ -625,19 +621,9 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.RowSelectedStyle.GradientColor = System.Drawing.Color.White
         Me.VirtualTree.RowSelectedStyle.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
-        Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.MainCellText
+        Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.Cell
         Me.VirtualTree.ShowRootRow = False
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
-        '
-        'CellEditor2
-        '
-        Me.CellEditor2.Control = Me.UniversalEditBox2
-        '
-        'UniversalEditBox2
-        '
-        Me.UniversalEditBox2.BorderStyle = System.Windows.Forms.BorderStyle.None
-        resources.ApplyResources(Me.UniversalEditBox2, "UniversalEditBox2")
-        Me.UniversalEditBox2.Name = "UniversalEditBox2"
         '
         'ObjectRowBinding1
         '
@@ -893,8 +879,6 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents separator3MenuItem As Windows.Forms.ToolStripSeparator
     Friend WithEvents showColumnsMenuItem As Windows.Forms.ToolStripMenuItem
     Friend WithEvents customizeMenuItem As Windows.Forms.ToolStripMenuItem
-    Friend WithEvents CellEditor2 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents UniversalEditBox2 As Infralution.Controls.UniversalEditBox
     Friend WithEvents VTPopUpMenu As Windows.Forms.ContextMenuStrip
     Friend WithEvents EnhEdit As Infralution.Controls.VirtualTree.CellEditor
     Friend WithEvents EnhEdit_Rezept As EnhEdit.EnhEdit

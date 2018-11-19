@@ -4320,6 +4320,16 @@ Text aus Datenbank lesen - Übersetzung
  Bei Werten > 0 werden evtl. vorhandene filialspezifische Varianten berücksichtigt</param>
  <returns></returns>
 </member>
+<member name="M:WinBack.Services.IRecipeProvider.GetArticleUsage(System.String,System.Int16,System.Int16,System.String)">
+ <summary>
+ Liefert alle Rezepturen zurück, in denen der übergebene Artikel enthalten ist
+ </summary>
+ <param name="ArticleNo">Nummer des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
+ <param name="Unit">Einheit des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
+ <param name="Color">Farbe des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
+ <param name="Size">Grösse des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
+ <returns></returns>
+</member>
 <member name="T:WinBack.Services.IRecipeInfo">
  <summary>
  Interface, das eine Rezeptur bzw. Stückliste mit ihren Bestandteilen beschreibt
@@ -4392,6 +4402,11 @@ Text aus Datenbank lesen - Übersetzung
  <summary>
  Liste der Bestandteile dieses Artikels (als IList(of IRecipeIngredient)), 
  sofern dieser Artikel wiederum eine Rezeptur ist, andernfalls Nothing oder eine leere IList
+ </summary>
+</member>
+<member name="T:WinBack.Services.IArticle">
+ <summary>
+ Interface, das einen Handelsartikel beschreibt
  </summary>
 </member>
 <member name="T:WinBack.ob_RecipeProvider">
@@ -4671,10 +4686,11 @@ Text aus Datenbank lesen - Übersetzung
 </member>
 <member name="M:WinBack.wb_Rezept_Rezeptur.VirtualTree_SelectionChanging(System.Object,Infralution.Controls.VirtualTree.SelectionChangingEventArgs)">
  <summary>
+ Eingabe-Feld wurde selektiert. (Mausklick oder Tastatur-Navigation)
+ Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
+ 
  Verhindert, dass einzelne Zellen markiert werden 
  (Infralution Support): handle the SelectionChanging event and set Cancel to true. This prevents any selection occurring
- 
- Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -5218,10 +5234,11 @@ Public Const MFF_Wissenswertes = 213
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Parameter.VirtualTree_SelectionChanging(System.Object,Infralution.Controls.VirtualTree.SelectionChangingEventArgs)">
  <summary>
+ Eingabe-Feld wurde selektiert. (Mausklick oder Tastatur-Navigation)
+ Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
+ 
  Verhindert, dass einzelne Zellen markiert werden 
  (Infralution Support): handle the SelectionChanging event and set Cancel to true. This prevents any selection occurring
- 
- Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -5633,6 +5650,13 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="VorKomma">Anzahl der Vorkomma-Stellen</param>
  <param name="NachKomma">Anzahl der Nachkomma-Stellen</param>
  <param name="Culture">Ländereinstellung (Default de-DE)</param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.FormatTimeStr(System.String)">
+ <summary>
+ Formatiert einen String im Muster 00:00:00
+ </summary>
+ <param name="Value"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Functions.XRemoveSonderZeichen(System.String,System.Boolean)">

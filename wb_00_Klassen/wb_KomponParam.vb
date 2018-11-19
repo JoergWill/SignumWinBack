@@ -88,7 +88,7 @@ Public Class wb_KomponParam
         Get
             'Parameter-Nummer 0 ist die Überschrift
             If _ParamNr > 0 Then
-                'abhängig vom Paramter/Komponenten-Tyo
+                'abhängig vom Paramter/Komponenten-Typ
                 Select Case _TypNr
 
                     'Komponenten-Type
@@ -122,7 +122,13 @@ Public Class wb_KomponParam
         End Get
 
         Set(value As String)
-            _Wert = value
+            'abhängig vom Paramter/Komponenten-Typ
+            Select Case _TypNr
+                Case ktParam.kt301
+                    _Wert = wb_Functions.StringtoAllergen(value)
+                Case Else
+                    _Wert = value
+            End Select
         End Set
     End Property
 

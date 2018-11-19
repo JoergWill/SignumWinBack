@@ -54,9 +54,13 @@ Public Class wb_KomponParam_Global
             If k.Type = ktParam.kt301 Then
                 'Parameter aktiv (Nährwerte und Allergene
                 k.Used = (winback.sField("KT_Rezept") = "X")
+                'Fehler in der Datenbank - Format-Eintrag für Allergene
+                If wb_KomponParam301_Global.IsAllergen(k.ParamNr) Then
+                    k.eFormat = EnhEdit.EnhEdit_Global.wb_Format.fAllergen
+                End If
             Else
-                'Anzeige des Parameter-Wertes abhängig von Parameter-Type und Parameter-Nummer
-                k.Used = SetParameterUsed(k.Type, k.ParamNr)
+                    'Anzeige des Parameter-Wertes abhängig von Parameter-Type und Parameter-Nummer
+                    k.Used = SetParameterUsed(k.Type, k.ParamNr)
             End If
 
             'Parameter-Datensatz speichern

@@ -56,7 +56,7 @@ EnhancedEdit
 </member>
 <member name="M:EnhEdit.EnhEdit.OnValidating(System.ComponentModel.CancelEventArgs)">
  <summary>
- Enter-Taste nach Eingabe
+ Eingabe beendet. Ergebnis wird in Value übertragen.
  </summary>
  <param name="e"></param>
 </member>

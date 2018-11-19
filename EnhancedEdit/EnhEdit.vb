@@ -2,15 +2,16 @@
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EnhEdit.EnhEdit_Global
+Imports Winback
 
 Public Class EnhEdit
     Private _eFont As Font
-    Private _eFormat As wb_Format
+    Private _eFormat As wb_Format = 0
     Private _eUg As Double
     Private _eOG As Double
 
     Private _eValue As String = ""
-    Private _oValue As String = ""
+    Private _oValue As Object = Nothing
     Private _Init As Boolean = True
     Private _TextBoxSize As New Size
 
@@ -99,7 +100,7 @@ Public Class EnhEdit
     ''' Gibt, abhängig vom Format den Wert formatiert zurück
     ''' </summary>
     ''' <returns></returns>
-    Private ReadOnly Property eValue As String
+    Private ReadOnly Property eValue As Object
         Get
             Select Case _eFormat
 
@@ -117,6 +118,10 @@ Public Class EnhEdit
 
                 'String/Zeit
                 Case wb_Format.fString, wb_Format.fTime
+                    Return _eValue
+
+                'Allergen
+                Case wb_Format.fAllergen
                     Return _eValue
 
                     'nicht definiert
@@ -158,7 +163,7 @@ Public Class EnhEdit
 
         'TODO Pfeil nach oben/Pfeil nach unten noch verarbeiten
         If keyData = Keys.Escape Then
-            _eValue = _oValue
+            '_eValue = _oValue
             'keyData = Keys.Return
 
             'entspricht der Return-Taste
@@ -170,7 +175,7 @@ Public Class EnhEdit
 
     Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
 
-        'abhängig von Eingabeformat und Tasten-Code
+        'Fehlermeldung ausgeben - wenn notwendig
         Select Case EnhEdit_Global.GetKey(e.KeyData, _eValue, _eFormat, _eUg, _eOG)
 
             Case wb_Result.ValueErrMax
@@ -188,6 +193,15 @@ Public Class EnhEdit
                     MsgBox("Eingabewert ist zu klein", MsgBoxStyle.Critical, "Fehler bei der Eingabe")
                 End If
 
+            Case wb_Result.ValueErrFormat
+                If _eFormat = wb_Format.fTime Then
+                    'Eingabestring ist zu lang
+                    MsgBox("Eingabewert ist zu lang", MsgBoxStyle.Critical, "Fehler bei der Eingabe")
+                Else
+                    'Falsches Format
+                    MsgBox("Eingabewert nicht zulässig", MsgBoxStyle.Critical, "Fehler bei der Eingabe")
+                End If
+
             Case wb_Result.KeyReturn
                 'Eingabewert übernehmen
                 Value = eValue
@@ -198,21 +212,38 @@ Public Class EnhEdit
 
         End Select
 
+        'da der rechte Rand des unterlagerten Steuerelementes verschoben ist, muss ein Offset eingebaut werden
+        Me.ClientSize = _TextBoxSize
+
+        'Anzeige formatieren
+        Select Case _eFormat
+
+            Case wb_Format.fReal
+                'Formatieren auf 3-Nachkommastellen
+                TextBox.Text = wb_Functions.FormatStr(_eValue, 3)
+                TextBox.Select(_eValue.Length, 0)
+
+            Case wb_Format.fTime
+                'Formatieren auf 3-Nachkommastellen
+                TextBox.Text = wb_Functions.FormatTimeStr(_eValue)
+                TextBox.Select(_eValue.Length, 0)
+
+            Case Else
+                'alle anderen Formate
+                TextBox.Text = _eValue
+                TextBox.Select(_eValue.Length, 0)
+        End Select
+
         'weitere Eingabe unterdrücken
         e.SuppressKeyPress = True
 
-        'da der rechte Rand des unterlagerten Steuerelementes verschoben ist, muss ein Offset eingebaut werden
-        Me.ClientSize = _TextBoxSize
-        'Anzeigewert
-        Me.TextBox.Text = _eValue
-        Me.TextBox.SelectAll()
 
         'weitere Funktionen werden nicht aufgerufen
         ' MyBase.OnKeyDown(e)
     End Sub
 
     ''' <summary>
-    ''' Enter-Taste nach Eingabe
+    ''' Eingabe beendet. Ergebnis wird in Value übertragen.
     ''' </summary>
     ''' <param name="e"></param>
     Protected Overrides Sub OnValidating(e As CancelEventArgs)

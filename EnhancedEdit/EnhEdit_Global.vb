@@ -1,6 +1,13 @@
 ﻿Imports System.Windows.Forms
 
 Public Class EnhEdit_Global
+    Const KOMMA = 2
+    Const NACHKOMMA = 1
+
+    Const HH = 0
+    Const MM = 1
+    Const SEK = 2
+    Const MAXMINSEK = 59
 
     ''' <summary>
     ''' Format-Information aus winback.Format
@@ -18,6 +25,7 @@ Public Class EnhEdit_Global
         fReal = 3
         fTime = 4
         fBoolean = 5
+        fAllergen = 6
     End Enum
 
     Public Enum wb_Result
@@ -64,6 +72,14 @@ Public Class EnhEdit_Global
                     Value = Value & Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator
                 End If
 
+            'Alpha-Numerisch (Allergene)
+            Case Keys.C, Keys.K, Keys.N, Keys.T, Keys.X
+                If Format = wb_Format.fAllergen Then
+                    Value = Chr(cKey)
+                End If
+                If Format = wb_Format.fString Then
+                    Value = Value & Chr(cKey)
+                End If
             'Alpha-Numerische Eingabe
             Case Keys.A To Keys.Z
                 If Format = wb_Format.fString Then
@@ -96,6 +112,17 @@ Public Class EnhEdit_Global
 
             Case wb_Format.fReal
                 Try
+                    'Eingabe auf maximale Länge (3 Nachkommastellen) prüfen
+                    Dim DezimalZahl As String() = Value.Split(Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                    'Eingabewert enthält ein Dezimaltrennzeichen
+                    If DezimalZahl.Length = KOMMA Then
+                        'mehr als 3 Nachkomma-Stellen sind nicht erlaubt
+                        If DezimalZahl(NACHKOMMA).Length > 3 Then
+                            Value = oValue
+                            Return wb_Result.ValueErrFormat
+                        End If
+                    End If
+
                     'Grenzen prüfen
                     Select Case Convert.ToDouble(Value)
                         Case < ug
@@ -131,18 +158,47 @@ Public Class EnhEdit_Global
                 End Try
 
             Case wb_Format.fTime
+                'Eingabewert in einzelne Teilstrings zerlegen
+                Dim ZeitWert As String() = Value.Split(Globalization.CultureInfo.CurrentCulture.DateTimeFormat.TimeSeparator)
+
+                'Länge prüfen
                 Select Case Value.Length
-                    Case 1, 4, 7, 8
+                    Case 1, 4, 7
                         Return wb_Result.ValueOK
-                    Case 2, 5
-                        Value = Value & ":"
-                        Return wb_Result.ValueOK
+                    Case 2
+                        If (ZeitWert(HH) > og) And (og > 0) Then
+                            Value = oValue
+                            Return wb_Result.ValueErrMax
+                        Else
+                            Value = Value & Globalization.CultureInfo.CurrentCulture.DateTimeFormat.TimeSeparator
+                            Return wb_Result.ValueOK
+                        End If
+                    Case 5
+                        If ZeitWert(MM) > MAXMINSEK Then
+                            Value = oValue
+                            Return wb_Result.ValueErrMax
+                        Else
+                            Value = Value & Globalization.CultureInfo.CurrentCulture.DateTimeFormat.TimeSeparator
+                            Return wb_Result.ValueOK
+                        End If
+                    Case 8
+                        If ZeitWert(SEK) > MAXMINSEK Then
+                            Value = oValue
+                            Return wb_Result.ValueErrMax
+                        Else
+                            Return wb_Result.ValueOK
+                        End If
+
+                    Case Else
+                        Value = oValue
+                        Return wb_Result.ValueErrFormat
                 End Select
 
             Case Else
                 Return wb_Result.Undefined
 
         End Select
+        Return wb_Result.Undefined
     End Function
 
 

@@ -26,20 +26,20 @@ Partial Class wb_Rohstoffe_Parameter
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ObjectCellBinding1 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding2 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding3 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding4 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding5 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding11 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding12 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding13 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding14 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding15 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Me.ColType = New Infralution.Controls.VirtualTree.Column()
         Me.ColNr = New Infralution.Controls.VirtualTree.Column()
         Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
         Me.ColWert = New Infralution.Controls.VirtualTree.Column()
+        Me.EnhEdit = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.EnhEdit_RohParams = New EnhEdit.EnhEdit(Me.components)
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
-        Me.EnhEdit = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.EnhEdit_RohParams = New EnhEdit.EnhEdit(Me.components)
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -94,6 +94,24 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColWert.Sortable = False
         Me.ColWert.Width = 70
         '
+        'EnhEdit
+        '
+        Me.EnhEdit.Control = Me.EnhEdit_RohParams
+        '
+        'EnhEdit_RohParams
+        '
+        Me.EnhEdit_RohParams.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.EnhEdit_RohParams.eFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EnhEdit_RohParams.eFormat = 0
+        Me.EnhEdit_RohParams.eOG = "0"
+        Me.EnhEdit_RohParams.eUG = "0"
+        Me.EnhEdit_RohParams.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EnhEdit_RohParams.Location = New System.Drawing.Point(0, 0)
+        Me.EnhEdit_RohParams.Name = "EnhEdit_RohParams"
+        Me.EnhEdit_RohParams.Size = New System.Drawing.Size(100, 18)
+        Me.EnhEdit_RohParams.TabIndex = 0
+        Me.EnhEdit_RohParams.Visible = False
+        '
         'ColEinheit
         '
         Me.ColEinheit.AutoFitWeight = 0!
@@ -128,7 +146,6 @@ Partial Class wb_Rohstoffe_Parameter
         Me.VirtualTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 12.0!)
         Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.None
         Me.VirtualTree.Location = New System.Drawing.Point(17, 12)
-        Me.VirtualTree.MainColumn = Me.ColType
         Me.VirtualTree.Name = "VirtualTree"
         Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
         Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.PowderBlue
@@ -140,7 +157,7 @@ Partial Class wb_Rohstoffe_Parameter
         Me.VirtualTree.RowSelectedUnfocusedStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.RowSelectedUnfocusedStyle.GradientColor = System.Drawing.Color.White
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
-        Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.MainCellText
+        Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.Cell
         Me.VirtualTree.ShowRootRow = False
         Me.VirtualTree.Size = New System.Drawing.Size(519, 436)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
@@ -152,47 +169,29 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ObjectRowBinding1.AllowDrag = True
         Me.ObjectRowBinding1.AllowDropAboveRow = True
         Me.ObjectRowBinding1.AllowDropBelowRow = True
-        ObjectCellBinding1.Column = Me.ColType
-        ObjectCellBinding1.Field = "VirtualTree_TypNr"
-        ObjectCellBinding1.Style.HorzAlignment = System.Drawing.StringAlignment.Center
-        ObjectCellBinding2.Column = Me.ColNr
-        ObjectCellBinding2.Field = "VirtualTree_ParamNr"
-        ObjectCellBinding2.Style.HorzAlignment = System.Drawing.StringAlignment.Center
-        ObjectCellBinding3.Column = Me.ColBezeichnung
-        ObjectCellBinding3.Field = "Bezeichnung"
-        ObjectCellBinding4.Column = Me.ColWert
-        ObjectCellBinding4.Field = "VirtualTree_Wert"
-        ObjectCellBinding5.Column = Me.ColEinheit
-        ObjectCellBinding5.Field = "Einheit"
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding4)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding5)
+        ObjectCellBinding11.Column = Me.ColType
+        ObjectCellBinding11.Field = "VirtualTree_TypNr"
+        ObjectCellBinding11.Style.HorzAlignment = System.Drawing.StringAlignment.Center
+        ObjectCellBinding12.Column = Me.ColNr
+        ObjectCellBinding12.Field = "VirtualTree_ParamNr"
+        ObjectCellBinding12.Style.HorzAlignment = System.Drawing.StringAlignment.Center
+        ObjectCellBinding13.Column = Me.ColBezeichnung
+        ObjectCellBinding13.Field = "Bezeichnung"
+        ObjectCellBinding14.Column = Me.ColWert
+        ObjectCellBinding14.Field = "VirtualTree_Wert"
+        ObjectCellBinding15.Column = Me.ColEinheit
+        ObjectCellBinding15.Field = "Einheit"
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding11)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding12)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding13)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding14)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding15)
         Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
         Me.ObjectRowBinding1.Height = 24
         Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
         Me.ObjectRowBinding1.ParentProperty = "ParentStep"
         Me.ObjectRowBinding1.Style.Font = New System.Drawing.Font("Arial", 12.0!)
         Me.ObjectRowBinding1.TypeName = "WinBack.wb_KomponParam"
-        '
-        'EnhEdit
-        '
-        Me.EnhEdit.Control = Me.EnhEdit_RohParams
-        '
-        'EnhEdit_RohParams
-        '
-        Me.EnhEdit_RohParams.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit_RohParams.eFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.EnhEdit_RohParams.eFormat = 0
-        Me.EnhEdit_RohParams.eOG = "0"
-        Me.EnhEdit_RohParams.eUG = "0"
-        Me.EnhEdit_RohParams.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.EnhEdit_RohParams.Location = New System.Drawing.Point(0, 0)
-        Me.EnhEdit_RohParams.Name = "EnhEdit_RohParams"
-        Me.EnhEdit_RohParams.Size = New System.Drawing.Size(100, 18)
-        Me.EnhEdit_RohParams.TabIndex = 0
-        Me.EnhEdit_RohParams.Visible = False
         '
         'wb_Rohstoffe_Parameter
         '

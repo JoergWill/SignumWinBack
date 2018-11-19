@@ -514,7 +514,6 @@
     Public Const Kocher_HisVrnt As Integer = 1
     Public Const Kocher_HisAend As Integer = 0
 
-
     Enum Kocher_VerbindungsStatus
         UNDEF
         OK

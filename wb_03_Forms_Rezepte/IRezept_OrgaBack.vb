@@ -24,6 +24,16 @@ Namespace Services
         ''' <returns></returns>
         Function GetRecipe(ArticleNo As String, Unit As Short, Color As Short, Size As String, Version As Short, Branch As Short) As IRecipeInfo
 
+        ''' <summary>
+        ''' Liefert alle Rezepturen zurück, in denen der übergebene Artikel enthalten ist
+        ''' </summary>
+        ''' <param name="ArticleNo">Nummer des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
+        ''' <param name="Unit">Einheit des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
+        ''' <param name="Color">Farbe des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
+        ''' <param name="Size">Grösse des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
+        ''' <returns></returns>
+        Function GetArticleUsage(ArticleNo As String, Unit As Short, Color As Short, Size As String) As IArticle()
+
     End Interface
 
 
@@ -116,6 +126,18 @@ Namespace Services
         ''' </summary>
         Property Ingredients As IList
 
+    End Interface
+
+    ''' <summary>
+    ''' Interface, das einen Handelsartikel beschreibt
+    ''' </summary>
+    <ComImport()>
+    <Guid("DDE6FAD9-E240-415B-A8A9-4189440C7120")>
+    Public Interface IArticle
+        Property ArticleNo As String
+        Property Unit As Short
+        Property Color As Short
+        Property Size As String
     End Interface
 
 End Namespace
