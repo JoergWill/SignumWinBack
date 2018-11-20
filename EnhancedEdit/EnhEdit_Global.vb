@@ -45,25 +45,25 @@ Public Class EnhEdit_Global
     ''' <summary>
     ''' Auswertung der Key-Codes. Abhängig vom Format wird der entsprechende Wert in Value eingetragen
     ''' </summary>
-    ''' <param name="cKey"></param>
+    ''' <param name="e"></param>
     ''' <param name="Value"></param>
     ''' <param name="Format"></param>
     ''' <param name="ug"></param>
     ''' <param name="og"></param>
     ''' <returns></returns>
-    Public Shared Function GetKey(cKey As Keys, ByRef Value As String, Format As wb_Format, ug As Double, og As Double) As wb_Result
+    Public Shared Function GetKey(e As KeyEventArgs, ByRef Value As String, Format As wb_Format, ug As Double, og As Double) As wb_Result
         Dim oValue As String = Value
-        Debug.Print("EnhEdit_Global.GetKey " & cKey.ToString)
+        Debug.Print("EnhEdit_Global.GetKey " & e.KeyCode & "/" & e.KeyData)
 
-        Select Case cKey
+        Select Case e.KeyCode
 
             'Numerische Eingabe
             Case Keys.D0 To Keys.D9
-                Value = Value & Chr(cKey)
+                Value = AddStr(Value, e)
                 Return CheckBounds(Value, oValue, Format, ug, og)
 
             Case Keys.NumPad0 To Keys.NumPad9
-                Value = Value & Chr(cKey - 48)
+                Value = AddStr("", e, True)
                 Return CheckBounds(Value, oValue, Format, ug, og)
 
             'Dezimal-Trennzeichen (Komma/Punkt)
@@ -75,15 +75,16 @@ Public Class EnhEdit_Global
             'Alpha-Numerisch (Allergene)
             Case Keys.C, Keys.K, Keys.N, Keys.T, Keys.X
                 If Format = wb_Format.fAllergen Then
-                    Value = Chr(cKey)
+                    Value = AddStr("", e)
                 End If
                 If Format = wb_Format.fString Then
-                    Value = Value & Chr(cKey)
+                    Value = AddStr(Value, e)
                 End If
+
             'Alpha-Numerische Eingabe
-            Case Keys.A To Keys.Z
+            Case Keys.A To Keys.Z, Keys.Space
                 If Format = wb_Format.fString Then
-                    Value = Value & Chr(cKey)
+                    Value = AddStr(Value, e)
                 End If
 
             'Backspace/Delete
@@ -103,6 +104,18 @@ Public Class EnhEdit_Global
         End Select
 
         Return wb_Result.Undefined
+    End Function
+
+    Private Shared Function AddStr(Value As String, e As KeyEventArgs, Optional NumPad As Boolean = False) As String
+        Dim ckey = e.KeyCode
+        If Not e.Shift Then
+            Value = Value & Chr(ckey).ToString.ToLower
+        ElseIf NumPad Then
+            Value = Value & Chr(ckey - 48)
+        Else
+            Value = Value & Chr(ckey)
+        End If
+        Return Value
     End Function
 
     Private Shared Function CheckBounds(ByRef Value As String, oValue As String, Format As wb_Format, ug As Double, og As Double) As wb_Result

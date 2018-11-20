@@ -71,11 +71,11 @@ EnhancedEdit
     5            Boolean
  </summary>
 </member>
-<member name="M:EnhEdit.EnhEdit_Global.GetKey(System.Windows.Forms.Keys,System.String@,EnhEdit.EnhEdit_Global.wb_Format,System.Double,System.Double)">
+<member name="M:EnhEdit.EnhEdit_Global.GetKey(System.Windows.Forms.KeyEventArgs,System.String@,EnhEdit.EnhEdit_Global.wb_Format,System.Double,System.Double)">
  <summary>
  Auswertung der Key-Codes. Abhängig vom Format wird der entsprechende Wert in Value eingetragen
  </summary>
- <param name="cKey"></param>
+ <param name="e"></param>
  <param name="Value"></param>
  <param name="Format"></param>
  <param name="ug"></param>

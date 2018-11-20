@@ -38,12 +38,15 @@ Public Class EnhEdit
         _eValue = ""
 
         'Ausrichtung und Format der unterlagerten Textbox
-        Me.TextBox.TextAlign = HorizontalAlignment.Right
+        If _eFormat = wb_Format.fString Then
+            Me.TextBox.TextAlign = HorizontalAlignment.Left
+        Else
+            Me.TextBox.TextAlign = HorizontalAlignment.Right
+        End If
+
         Me.TextBox.BorderStyle = BorderStyle.None
         Me.TextBox.Font = _eFont
         Me.TextBox.AcceptsReturn = True
-        'Cursor ausblenden
-        'Me.TextBox.Enabled = False
 
         'Größe der Textbox vorgeben
         _TextBoxSize.Width = ClientSize.Width - 2
@@ -176,7 +179,7 @@ Public Class EnhEdit
     Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
 
         'Fehlermeldung ausgeben - wenn notwendig
-        Select Case EnhEdit_Global.GetKey(e.KeyData, _eValue, _eFormat, _eUg, _eOG)
+        Select Case EnhEdit_Global.GetKey(e, _eValue, _eFormat, _eUg, _eOG)
 
             Case wb_Result.ValueErrMax
                 If _eFormat = wb_Format.fString Then
@@ -214,6 +217,11 @@ Public Class EnhEdit
 
         'da der rechte Rand des unterlagerten Steuerelementes verschoben ist, muss ein Offset eingebaut werden
         Me.ClientSize = _TextBoxSize
+        Me.BackColor = Color.White
+        TextBox.BackColor = Color.White
+        Me.BorderStyle = BorderStyle.None
+        TextBox.BorderStyle = BorderStyle.None
+
 
         'Anzeige formatieren
         Select Case _eFormat
