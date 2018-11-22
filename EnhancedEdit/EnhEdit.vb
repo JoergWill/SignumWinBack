@@ -5,7 +5,6 @@ Imports EnhEdit.EnhEdit_Global
 Imports Winback
 
 Public Class EnhEdit
-    Private _eFont As Font
     Private _eFormat As wb_Format = 0
     Private _eUg As Double
     Private _eOG As Double
@@ -45,7 +44,6 @@ Public Class EnhEdit
         End If
 
         Me.TextBox.BorderStyle = BorderStyle.None
-        Me.TextBox.Font = _eFont
         Me.TextBox.AcceptsReturn = True
 
         'Größe der Textbox vorgeben
@@ -54,15 +52,6 @@ Public Class EnhEdit
 
         MyBase.OnGotFocus(e)
     End Sub
-
-    Public Property eFont As Font
-        Get
-            Return _eFont
-        End Get
-        Set(value As Font)
-            _eFont = value
-        End Set
-    End Property
 
     Public Property eFormat As wb_Format
         Get

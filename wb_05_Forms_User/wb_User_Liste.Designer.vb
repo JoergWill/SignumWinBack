@@ -24,24 +24,31 @@ Partial Class wb_User_Liste
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_User_Liste))
         Me.DataGridView = New WinBack.wb_DataGridView()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'DataGridView
         '
-        resources.ApplyResources(Me.DataGridView, "DataGridView")
+        Me.DataGridView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView.Location = New System.Drawing.Point(12, 12)
         Me.DataGridView.Name = "DataGridView"
+        Me.DataGridView.Size = New System.Drawing.Size(892, 609)
+        Me.DataGridView.TabIndex = 0
         Me.DataGridView.x8859_5_FieldName = ""
         '
         'wb_User_Liste
         '
-        resources.ApplyResources(Me, "$this")
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(916, 633)
         Me.Controls.Add(Me.DataGridView)
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.Name = "wb_User_Liste"
+        Me.Text = "Mitarbeiter-Liste"
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 

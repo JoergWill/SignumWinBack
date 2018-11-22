@@ -215,7 +215,6 @@ Partial Class wb_Rezept_Details
         'EnhEdit1
         '
         Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit1.eFont = Nothing
         resources.ApplyResources(Me.EnhEdit1, "EnhEdit1")
         Me.EnhEdit1.Name = "EnhEdit1"
         '

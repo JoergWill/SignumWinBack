@@ -625,6 +625,7 @@ Public Class WinBack
         About.ShowDialog()
     End Sub
 
+    <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "BC40000", MessageId:="System.Guid")>
     Private Sub LoadColorTable(FileName As String) Handles About.Ab_LoadColorTable
 
         If RibbonTheme.IsDefined(GetType(RibbonTheme), FileName) Then

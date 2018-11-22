@@ -25,7 +25,6 @@ Partial Class wb_Admin_Datensicherung
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Admin_Datensicherung))
         Me.Btn_DatenSicherung = New System.Windows.Forms.Button()
         Me.BackupFileName = New System.Windows.Forms.TextBox()
         Me.Btn_DatenRueckSicherung = New System.Windows.Forms.Button()
@@ -41,69 +40,116 @@ Partial Class wb_Admin_Datensicherung
         'Btn_DatenSicherung
         '
         Me.Btn_DatenSicherung.Image = Global.WinBack.My.Resources.Resources.DatenSicherung_32x32
-        resources.ApplyResources(Me.Btn_DatenSicherung, "Btn_DatenSicherung")
+        Me.Btn_DatenSicherung.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Btn_DatenSicherung.Location = New System.Drawing.Point(12, 16)
         Me.Btn_DatenSicherung.Name = "Btn_DatenSicherung"
+        Me.Btn_DatenSicherung.Size = New System.Drawing.Size(114, 47)
+        Me.Btn_DatenSicherung.TabIndex = 0
+        Me.Btn_DatenSicherung.Text = "Backup"
+        Me.Btn_DatenSicherung.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Btn_DatenSicherung.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage
         Me.Btn_DatenSicherung.UseVisualStyleBackColor = True
         '
         'BackupFileName
         '
-        resources.ApplyResources(Me.BackupFileName, "BackupFileName")
+        Me.BackupFileName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BackupFileName.BackColor = System.Drawing.SystemColors.Control
+        Me.BackupFileName.Location = New System.Drawing.Point(267, 21)
         Me.BackupFileName.Name = "BackupFileName"
+        Me.BackupFileName.Size = New System.Drawing.Size(329, 20)
+        Me.BackupFileName.TabIndex = 1
         '
         'Btn_DatenRueckSicherung
         '
         Me.Btn_DatenRueckSicherung.Image = Global.WinBack.My.Resources.Resources.DatenRueckSicherung_32x32
-        resources.ApplyResources(Me.Btn_DatenRueckSicherung, "Btn_DatenRueckSicherung")
+        Me.Btn_DatenRueckSicherung.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Btn_DatenRueckSicherung.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Btn_DatenRueckSicherung.Location = New System.Drawing.Point(12, 83)
         Me.Btn_DatenRueckSicherung.Name = "Btn_DatenRueckSicherung"
+        Me.Btn_DatenRueckSicherung.Size = New System.Drawing.Size(114, 47)
+        Me.Btn_DatenRueckSicherung.TabIndex = 3
+        Me.Btn_DatenRueckSicherung.Text = "Restore"
+        Me.Btn_DatenRueckSicherung.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Btn_DatenRueckSicherung.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage
         Me.Btn_DatenRueckSicherung.UseVisualStyleBackColor = True
         '
         'lblBackupFileName
         '
-        resources.ApplyResources(Me.lblBackupFileName, "lblBackupFileName")
+        Me.lblBackupFileName.AutoSize = True
+        Me.lblBackupFileName.Location = New System.Drawing.Point(144, 24)
         Me.lblBackupFileName.Name = "lblBackupFileName"
+        Me.lblBackupFileName.Size = New System.Drawing.Size(117, 13)
+        Me.lblBackupFileName.TabIndex = 5
+        Me.lblBackupFileName.Text = "Letzte Datensicherung:"
         '
         'lblBackupTimeStamp
         '
-        resources.ApplyResources(Me.lblBackupTimeStamp, "lblBackupTimeStamp")
+        Me.lblBackupTimeStamp.AutoSize = True
+        Me.lblBackupTimeStamp.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblBackupTimeStamp.Location = New System.Drawing.Point(144, 42)
         Me.lblBackupTimeStamp.Name = "lblBackupTimeStamp"
+        Me.lblBackupTimeStamp.Size = New System.Drawing.Size(24, 13)
+        Me.lblBackupTimeStamp.TabIndex = 7
+        Me.lblBackupTimeStamp.Text = "am:"
         '
         'BackupTimeStamp
         '
         Me.BackupTimeStamp.BackColor = System.Drawing.SystemColors.Control
         Me.BackupTimeStamp.BorderStyle = System.Windows.Forms.BorderStyle.None
-        resources.ApplyResources(Me.BackupTimeStamp, "BackupTimeStamp")
+        Me.BackupTimeStamp.Location = New System.Drawing.Point(178, 42)
         Me.BackupTimeStamp.Name = "BackupTimeStamp"
+        Me.BackupTimeStamp.Size = New System.Drawing.Size(87, 13)
+        Me.BackupTimeStamp.TabIndex = 6
         Me.BackupTimeStamp.TabStop = False
+        Me.BackupTimeStamp.Text = "dd.mm.yyyy"
         '
         'lblRestoreTimeStamp
         '
-        resources.ApplyResources(Me.lblRestoreTimeStamp, "lblRestoreTimeStamp")
+        Me.lblRestoreTimeStamp.AutoSize = True
+        Me.lblRestoreTimeStamp.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblRestoreTimeStamp.Location = New System.Drawing.Point(144, 110)
         Me.lblRestoreTimeStamp.Name = "lblRestoreTimeStamp"
+        Me.lblRestoreTimeStamp.Size = New System.Drawing.Size(24, 13)
+        Me.lblRestoreTimeStamp.TabIndex = 11
+        Me.lblRestoreTimeStamp.Text = "am:"
         '
         'RestoreTimeStamp
         '
         Me.RestoreTimeStamp.BackColor = System.Drawing.SystemColors.Control
         Me.RestoreTimeStamp.BorderStyle = System.Windows.Forms.BorderStyle.None
-        resources.ApplyResources(Me.RestoreTimeStamp, "RestoreTimeStamp")
+        Me.RestoreTimeStamp.Location = New System.Drawing.Point(178, 110)
         Me.RestoreTimeStamp.Name = "RestoreTimeStamp"
+        Me.RestoreTimeStamp.Size = New System.Drawing.Size(87, 13)
+        Me.RestoreTimeStamp.TabIndex = 10
         Me.RestoreTimeStamp.TabStop = False
+        Me.RestoreTimeStamp.Text = "dd.mm.yyyy"
         '
         'lblRestoreFileName
         '
-        resources.ApplyResources(Me.lblRestoreFileName, "lblRestoreFileName")
+        Me.lblRestoreFileName.AutoSize = True
+        Me.lblRestoreFileName.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblRestoreFileName.Location = New System.Drawing.Point(144, 92)
         Me.lblRestoreFileName.Name = "lblRestoreFileName"
+        Me.lblRestoreFileName.Size = New System.Drawing.Size(114, 13)
+        Me.lblRestoreFileName.TabIndex = 9
+        Me.lblRestoreFileName.Text = "Letzte Rücksicherung:"
         '
         'RestoreFileName
         '
-        resources.ApplyResources(Me.RestoreFileName, "RestoreFileName")
+        Me.RestoreFileName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.RestoreFileName.BackColor = System.Drawing.SystemColors.Control
+        Me.RestoreFileName.Location = New System.Drawing.Point(267, 89)
         Me.RestoreFileName.Name = "RestoreFileName"
+        Me.RestoreFileName.Size = New System.Drawing.Size(329, 20)
+        Me.RestoreFileName.TabIndex = 8
         '
         'wb_Admin_Datensicherung
         '
-        resources.ApplyResources(Me, "$this")
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(608, 149)
         Me.Controls.Add(Me.lblRestoreTimeStamp)
         Me.Controls.Add(Me.RestoreTimeStamp)
         Me.Controls.Add(Me.lblRestoreFileName)
@@ -114,7 +160,10 @@ Partial Class wb_Admin_Datensicherung
         Me.Controls.Add(Me.Btn_DatenRueckSicherung)
         Me.Controls.Add(Me.BackupFileName)
         Me.Controls.Add(Me.Btn_DatenSicherung)
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        Me.MinimumSize = New System.Drawing.Size(624, 188)
         Me.Name = "wb_Admin_Datensicherung"
+        Me.Text = "WinBack Daten sichern/rücksichern"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

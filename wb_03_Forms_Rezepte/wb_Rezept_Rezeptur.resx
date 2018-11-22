@@ -196,7 +196,7 @@
     <value>100</value>
   </data>
   <data name="ColSollwert.ToolTip" xml:space="preserve">
-    <value />
+    <value>Sollwert</value>
   </data>
   <data name="ColSollwert.Width" type="System.Int32, mscorlib">
     <value>126</value>

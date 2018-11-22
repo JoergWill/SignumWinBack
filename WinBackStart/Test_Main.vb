@@ -34,7 +34,6 @@ Public Class Test_Main
     End Sub
 
 
-
     Private Sub VirtualTree_GetCellData(sender As Object, e As GetCellDataEventArgs) Handles VirtualTree.GetCellData
         'get the default binding for the given row And use it to populate the cell data
         Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
@@ -50,8 +49,6 @@ Public Class Test_Main
 
         'Edit Sollwert
         If e.Column.Name = "ColSollwert" And (wb_Functions.TypeIstSollMenge(_RezeptSchritt.Type, 1) Or wb_Functions.TypeIstSollWert(_RezeptSchritt.Type, 3)) Then
-            ''Einstellungen Editor
-            DirectCast(CellEditor1.Control, EnhEdit.EnhEdit).eFont = e.CellData.EvenStyle.Font
             Exit Sub
         End If
 

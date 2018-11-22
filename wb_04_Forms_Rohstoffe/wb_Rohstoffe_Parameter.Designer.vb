@@ -101,7 +101,6 @@ Partial Class wb_Rohstoffe_Parameter
         'EnhEdit_RohParams
         '
         Me.EnhEdit_RohParams.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit_RohParams.eFont = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.EnhEdit_RohParams.eFormat = 0
         Me.EnhEdit_RohParams.eOG = "0"
         Me.EnhEdit_RohParams.eUG = "0"

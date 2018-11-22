@@ -64,7 +64,6 @@ Partial Class Test_Main
         'EnhEdit2
         '
         Me.EnhEdit2.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit2.eFont = Nothing
         Me.EnhEdit2.Location = New System.Drawing.Point(0, 0)
         Me.EnhEdit2.Name = "EnhEdit2"
         Me.EnhEdit2.Size = New System.Drawing.Size(100, 13)

@@ -22,7 +22,6 @@ Partial Class wb_Rezept_AuswahlListe
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rezept_AuswahlListe))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BtnCancel = New System.Windows.Forms.Button()
@@ -32,14 +31,20 @@ Partial Class wb_Rezept_AuswahlListe
         '
         'BtnCancel
         '
-        resources.ApplyResources(Me.BtnCancel, "BtnCancel")
+        Me.BtnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.BtnCancel.Location = New System.Drawing.Point(538, 488)
         Me.BtnCancel.Name = "BtnCancel"
+        Me.BtnCancel.Size = New System.Drawing.Size(129, 45)
+        Me.BtnCancel.TabIndex = 0
+        Me.BtnCancel.Text = "Cancel"
         Me.BtnCancel.UseVisualStyleBackColor = True
         '
         'DataGridView
         '
-        resources.ApplyResources(Me.DataGridView, "DataGridView")
+        Me.DataGridView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
@@ -58,18 +63,23 @@ Partial Class wb_Rezept_AuswahlListe
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.DataGridView.DefaultCellStyle = DataGridViewCellStyle2
+        Me.DataGridView.Location = New System.Drawing.Point(8, 8)
         Me.DataGridView.Name = "DataGridView"
+        Me.DataGridView.Size = New System.Drawing.Size(659, 474)
+        Me.DataGridView.TabIndex = 2
         Me.DataGridView.x8859_5_FieldName = ""
         '
         'wb_Rezept_AuswahlListe
         '
-        resources.ApplyResources(Me, "$this")
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(679, 545)
         Me.ControlBox = False
         Me.Controls.Add(Me.DataGridView)
         Me.Controls.Add(Me.BtnCancel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "wb_Rezept_AuswahlListe"
+        Me.Text = "Auswahl Rezeptur"
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 

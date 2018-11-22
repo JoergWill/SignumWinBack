@@ -59,7 +59,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -74,7 +74,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
@@ -103,7 +103,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug-M1\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -125,7 +125,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug-M2\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -147,7 +147,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug-M3\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -169,7 +169,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug-M4\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -191,29 +191,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug-M5\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Messe|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Messe|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Messe\</OutputPath>
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -290,17 +268,6 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug-M5\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Messe|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x64\Messe\</OutputPath>
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -856,14 +823,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\licenses.licx" />
-    <EmbeddedResource Include="My Project\Resources.en-US.resx" />
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="My Project\Resources.ru.resx" />
     <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.resx">
       <DependentUpon>wb_KompRzChargen.vb</DependentUpon>
     </EmbeddedResource>
@@ -897,17 +862,11 @@
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_AuswahlListe.resx">
       <DependentUpon>wb_Rezept_AuswahlListe.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Details.ru.resx">
-      <DependentUpon>wb_Rezept_Details.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Historie.resx">
       <DependentUpon>wb_Rezept_Historie.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Hinweise.resx">
       <DependentUpon>wb_Rezept_Hinweise.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.ru.resx">
-      <DependentUpon>wb_Rezept_Liste.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Main.resx">
       <DependentUpon>wb_Rezept_Main.vb</DependentUpon>
@@ -915,14 +874,8 @@
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.resx">
       <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.ru.resx">
-      <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.resx">
       <DependentUpon>wb_Rohstoffe_Cloud.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.ru.resx">
-      <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.resx">
       <DependentUpon>wb_Rohstoffe_Nwt.vb</DependentUpon>
@@ -936,9 +889,6 @@
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.resx">
       <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.ru.resx">
-      <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.resx">
       <DependentUpon>wb_Rohstoffe_Main.vb</DependentUpon>
     </EmbeddedResource>
@@ -948,29 +898,11 @@
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.resx">
       <DependentUpon>wb_Rohstoffe_Verwendung.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Details.ru.resx">
-      <DependentUpon>wb_User_Details.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Liste.en.resx">
-      <DependentUpon>wb_User_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Liste.ru.resx">
-      <DependentUpon>wb_User_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.en.resx">
-      <DependentUpon>wb_Linien_Details.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.resx">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Liste.en.resx">
-      <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Liste.resx">
-      <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Liste.ru.resx">
       <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Main.resx">
@@ -984,9 +916,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.resx">
       <DependentUpon>wb_Rezept_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Details.en.resx">
-      <DependentUpon>wb_User_Details.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_05_Forms_User\wb_User_Details.resx">
       <DependentUpon>wb_User_Details.vb</DependentUpon>
@@ -1021,9 +950,6 @@
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Main.resx">
       <DependentUpon>wb_Admin_Main.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.en.resx">
-      <DependentUpon>wb_Admin_Datensicherung.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.resx">
       <DependentUpon>wb_Admin_Datensicherung.vb</DependentUpon>
     </EmbeddedResource>
@@ -1032,9 +958,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Service_Liste.resx">
       <DependentUpon>wb_Service_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Sync.en.resx">
-      <DependentUpon>wb_Admin_Sync.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Sync.resx">
       <DependentUpon>wb_Admin_Sync.vb</DependentUpon>
