@@ -13,6 +13,10 @@ Public Class wb_Rohstoffe_Details
         AddHandler eListe_Click, AddressOf DetailInfo
     End Sub
 
+    ''' <summary>
+    ''' Anzeige der Rohstoff-Details.
+    ''' Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
+    ''' </summary>
     Private Sub DetailInfo()
         tRohstoffNummer.Text = RohStoff.Nummer
         tRohstoffName.Text = RohStoff.Bezeichnung
@@ -23,6 +27,13 @@ Public Class wb_Rohstoffe_Details
         cbRohstoffGrp2.SetTextFromKey(RohStoff.Gruppe2)
     End Sub
 
+    ''' <summary>
+    ''' Die Daten in den Eingabe-Feldern (Nummer/Text/Kommentar) haben sich geändert)
+    ''' Wird aufgerufen durch [Textfeld].Leave(). Aktualisiert die Datenfelder in wb_Rohstoff_Global und löst
+    ''' dann den Event Edit_Leave() aus.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tRohstoffPreis.Leave
         RohStoff.Bezeichnung = tRohstoffName.Text
         RohStoff.Kommentar = tRohstoffKommentar.Text

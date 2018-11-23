@@ -185,6 +185,7 @@ Global
 		{2F6C260C-7F04-4223-B775-48309A1946EB}.DB_UnitTest|x86.Build.0 = Debug-M3|x86
 		{2F6C260C-7F04-4223-B775-48309A1946EB}.DB_Weber|x86.ActiveCfg = Debug-M4|x86
 		{2F6C260C-7F04-4223-B775-48309A1946EB}.Debug|x86.ActiveCfg = Debug|x86
+		{2F6C260C-7F04-4223-B775-48309A1946EB}.Debug|x86.Build.0 = Debug|x86
 		{2F6C260C-7F04-4223-B775-48309A1946EB}.Release|x86.ActiveCfg = Release|x86
 		{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}.DB_Brotmacher|x86.ActiveCfg = Debug-M1|x86
 		{6F2FB1A3-C432-4DE9-9BAC-E52243CB58B8}.DB_Brotmacher|x86.Build.0 = Debug-M1|x86
@@ -235,7 +236,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = de-DE
 		RESX_AutoCreateNewLanguageFiles = False
+		RESX_NeutralResourcesLanguage = de-DE
 	EndGlobalSection
 EndGlobal

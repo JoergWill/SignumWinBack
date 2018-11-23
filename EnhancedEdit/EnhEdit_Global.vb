@@ -63,7 +63,7 @@ Public Class EnhEdit_Global
                 Return CheckBounds(Value, oValue, Format, ug, og)
 
             Case Keys.NumPad0 To Keys.NumPad9
-                Value = AddStr("", e, True)
+                Value = AddStr(Value, e, True)
                 Return CheckBounds(Value, oValue, Format, ug, og)
 
             'Dezimal-Trennzeichen (Komma/Punkt)
@@ -108,12 +108,14 @@ Public Class EnhEdit_Global
 
     Private Shared Function AddStr(Value As String, e As KeyEventArgs, Optional NumPad As Boolean = False) As String
         Dim ckey = e.KeyCode
-        If Not e.Shift Then
-            Value = Value & Chr(ckey).ToString.ToLower
-        ElseIf NumPad Then
+        If NumPad Then
             Value = Value & Chr(ckey - 48)
         Else
-            Value = Value & Chr(ckey)
+            If e.Shift Then
+                Value = Value & Chr(ckey)
+            Else
+                Value = Value & Chr(ckey).ToString.ToLower
+            End If
         End If
         Return Value
     End Function

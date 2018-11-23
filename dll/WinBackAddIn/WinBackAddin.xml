@@ -1776,6 +1776,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_KomponParam301.MySQLdbUpdate(System.Int32,System.Int32,WinBack.wb_Sql@)">
+ <summary>
+ Update eines Komponenten-Parameters mit ParamNr in Tabelle winback.RohParams
+ </summary>
+ <param name="KoNr"></param>
+ <param name="ParamNr"></param>
+ <param name="winback"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_KomponParam301.MsSQLdbUpdate(System.String,System.Int32,WinBack.wb_Sql)">
  <summary>
  Update aller geänderten Komponenten-Parameter in Tabelle 
@@ -1858,6 +1867,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="RootName"></param>
  <param name="t"></param>
+</member>
+<member name="M:WinBack.wb_Komponente.SaveParameterArray">
+ <summary>
+ Sichert alle geänderten Parameter ausgehen vom RootParameter.
+ Abhängig vom KomponParam-Typ wird die entsprechende Funktion zum Sichern der Daten in
+ der Klasse ausgerufen.
+ Die Parameter-Werte werden vorher von VirtualTree-Knoten in die KomponParam...-Daten übertragen
+ </summary>
 </member>
 <member name="M:WinBack.wb_Komponente.GetProduktionsDaten">
  <summary>
@@ -5264,6 +5281,34 @@ Public Const MFF_Wissenswertes = 213
  Anzeige der Überschriften für die einzelen Parameter-Sektionen
  </summary>
  <param name="ColumnStyle"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Liste.SaveData">
+ <summary>
+ Datensatz in Datenbank sichern. Wird über Event eEdit_Leave() aufgerufen
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Liste.DataGridView_HasChanged(System.Object,System.EventArgs)">
+ <summary>
+ Die Selektion im DataGridView hat sich geändert. Wenn Daten in den Detail-Fenstern geändert wurden, wird
+ diese Änderung vor dem Laden der neuen Daten in der Datenbank gesichert.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Details.DetailInfo">
+ <summary>
+ Anzeige der Rohstoff-Details.
+ Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Details.DataHasChanged(System.Object,System.EventArgs)">
+ <summary>
+ Die Daten in den Eingabe-Feldern (Nummer/Text/Kommentar) haben sich geändert)
+ Wird aufgerufen durch [Textfeld].Leave(). Aktualisiert die Datenfelder in wb_Rohstoff_Global und löst
+ dann den Event Edit_Leave() aus.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="P:WinBack.wb_Rohstoffe_Main.FormText">
  <summary>

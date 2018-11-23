@@ -5,11 +5,12 @@ Public Class wb_KomponParam
     Private _parentStep As wb_KomponParam
     Private _childSteps As New ArrayList()
 
-    Private _TypNr As Integer
+    Private _TypNr As wb_Global.ktParam
     Private _ParamNr As Integer
     Private _Bezeichnung As String
     Private _Wert As String
     Private _Used As Boolean
+    Private _Changed As Boolean
 
     '' <summary>
     '' Create a new step with the given parent
@@ -51,7 +52,7 @@ Public Class wb_KomponParam
         End Get
     End Property
 
-    Public ReadOnly Property TypNr As Integer
+    Public ReadOnly Property TypNr As wb_Global.ktParam
         Get
             Return _TypNr
         End Get
@@ -125,7 +126,12 @@ Public Class wb_KomponParam
             'abhängig vom Paramter/Komponenten-Typ
             Select Case _TypNr
                 Case ktParam.kt301
-                    _Wert = wb_Functions.StringtoAllergen(value)
+                    If wb_KomponParam301_Global.IsAllergen(_ParamNr) Then
+                        _Wert = wb_Functions.StringtoAllergen(value)
+                    Else
+                        _Wert = value
+                    End If
+
                 Case Else
                     _Wert = value
             End Select
@@ -176,5 +182,14 @@ Public Class wb_KomponParam
         Get
             Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).Used
         End Get
+    End Property
+
+    Public Property Changed As Boolean
+        Get
+            Return _Changed
+        End Get
+        Set(value As Boolean)
+            _Changed = value
+        End Set
     End Property
 End Class

@@ -5,7 +5,7 @@
 ''' Abgeleitet von DockPanel_Main
 '''     In DockPanelMain werden alle Funktionen für die Verwaltung der Layouts abgewickelt
 '''     Default-Layout, Laden, Sichern, Löschen der Layouts
-'''     Die Layouts werden, im Unetrschied zu OrgaBack nicht vom jeweiligen Fenster sondern
+'''     Die Layouts werden, im Unterschied zu OrgaBack nicht vom jeweiligen Fenster sondern
 '''     von der WinBack-Main-Form verwaltet.
 ''' </summary>
 Public Class Rohstoffe_Main

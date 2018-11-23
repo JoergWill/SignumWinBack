@@ -3,6 +3,7 @@
 Public Class wb_Rohstoffe_Shared
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
+    Public Shared Event eParam_Changed(Sender As Object)
 
     Public Shared RohGruppe As New SortedList
     Public Shared RohAktiv As New Hashtable
@@ -57,5 +58,9 @@ Public Class wb_Rohstoffe_Shared
 
     Public Shared Sub Edit_Leave(sender As Object)
         RaiseEvent eEdit_Leave(sender)
+    End Sub
+
+    Public Shared Sub Param_Changed(sender As Object)
+        RaiseEvent eParam_Changed(sender)
     End Sub
 End Class

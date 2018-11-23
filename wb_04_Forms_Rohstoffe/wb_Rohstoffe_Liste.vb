@@ -69,7 +69,9 @@ Public Class wb_Rohstoffe_Liste
         DataGridView.SaveToDisk("RohstoffListe")
     End Sub
 
-    'Datensatz in Datenbank sichern
+    ''' <summary>
+    ''' Datensatz in Datenbank sichern. Wird über Event eEdit_Leave() aufgerufen
+    ''' </summary>
     Private Sub SaveData()
         'Daten in Datenbank sichern
         If RohStoff.SaveData(DataGridView) Then
@@ -77,7 +79,14 @@ Public Class wb_Rohstoffe_Liste
         End If
     End Sub
 
+    ''' <summary>
+    ''' Die Selektion im DataGridView hat sich geändert. Wenn Daten in den Detail-Fenstern geändert wurden, wird
+    ''' diese Änderung vor dem Laden der neuen Daten in der Datenbank gesichert.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
+        Debug.Print("Rohstoffe DataGridView has Changed: Bezeichnung alt" & RohStoff.Bezeichnung)
         'Daten laden aus winback.Komponenten in GridView
         RohStoff.LoadData(DataGridView)
         'Detail-Daten aus winback.Komponenten laden in Objekt wb_Rostoffe_Shared.Rohstoff

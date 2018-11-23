@@ -9,7 +9,6 @@ Public Class wb_Rohstoffe_Parameter
     Private _ParamAllergenDeltaStyle As New Infralution.Controls.StyleDelta
     Private _ParamChangedStyle As Infralution.Controls.Style
     Private _KomponParam As wb_KomponParam
-    Private _ParamChanged
 
     ''' <summary>
     ''' Initialisierung - Laden der Form
@@ -17,9 +16,6 @@ Public Class wb_Rohstoffe_Parameter
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub wb_Rohstoffe_Parameter_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
-        AddHandler eListe_Click, AddressOf DetailInfo
-
         'Virtual-Tree Styles initialisieren - Fettdruck Überschrift Parameter-Sektionen
         _ParamHeadingDeltaStyle.Font = New Drawing.Font(VirtualTree.Columns(0).CellEvenStyle.Font, Drawing.FontStyle.Bold)
         _ParamHeadingDeltaStyle.HorzAlignment = Drawing.StringAlignment.Near
@@ -27,6 +23,9 @@ Public Class wb_Rohstoffe_Parameter
         'Virtual-Tree Styles initialisieren - Fettdruck Überschrift Parameter-Sektionen
         _ParamAllergenDeltaStyle.Font = New Drawing.Font(VirtualTree.Columns(0).CellEvenStyle.Font, Drawing.FontStyle.Regular)
         _ParamAllergenDeltaStyle.HorzAlignment = Drawing.StringAlignment.Center
+
+        'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
+        AddHandler eListe_Click, AddressOf DetailInfo
 
         'Daten vom aktuellen Rohstoff anzeigen
         If RohStoff.Nr > 0 Then
@@ -114,7 +113,9 @@ Public Class wb_Rohstoffe_Parameter
         Binding.SetCellValue(e.Row, e.Column, e.OldValue, e.NewValue)
 
         'Parameter wurde geändert
-        _ParamChanged = True
+        _KomponParam.Changed = True
+        'Event auslösen - Daten werden in Datenbank gesichert
+        wb_Rohstoffe_Shared.Param_Changed(Nothing)
     End Sub
 
     ''' <summary>

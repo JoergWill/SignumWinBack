@@ -329,28 +329,41 @@ Public Class wb_KomponParam301
     ''' </summary>
     ''' <returns></returns>
     Public Function MySQLdbUpdate(KoNr As Integer, ByRef winback As wb_Sql) As Boolean
-        'Update-Statement wird dynamisch erzeugt    
-        Dim sql As String
         'Result OK
         MySQLdbUpdate = True
 
         'alle Datensätze im Array durchlaufen
         For i = 0 To maxTyp301
             If IsValidParameter(i) Then
-                'Update-Statement wird dynamisch erzeugt
-                If IsAllergen(i) Then
-                    'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
-                    sql = KoNr & ", 301, " & i.ToString & ", '" & wb_Functions.AllergenToString(Allergen(i)) & "', '" & kt301Param(i).Bezeichnung & "'"
-                Else
-                    'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
-                    sql = KoNr & ", 301, " & i.ToString & ", '" & Wert(i) & "', '" & kt301Param(i).Bezeichnung & "'"
-                End If
-
-                'Update ausführen
-                MySQLdbUpdate = winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, sql))
+                MySQLdbUpdate = MySQLdbUpdate(KoNr, i, winback)
             End If
         Next
     End Function
+
+    ''' <summary>
+    ''' Update eines Komponenten-Parameters mit ParamNr in Tabelle winback.RohParams
+    ''' </summary>
+    ''' <param name="KoNr"></param>
+    ''' <param name="ParamNr"></param>
+    ''' <param name="winback"></param>
+    ''' <returns></returns>
+    Public Function MySQLdbUpdate(KoNr As Integer, ParamNr As Integer, ByRef winback As wb_Sql) As Boolean
+        'Update-Statement wird dynamisch erzeugt    
+        Dim sql As String
+
+        'Update-Statement wird dynamisch erzeugt
+        If IsAllergen(ParamNr) Then
+            'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
+            sql = KoNr & ", 301, " & ParamNr.ToString & ", '" & wb_Functions.AllergenToString(Allergen(ParamNr)) & "', '" & kt301Param(ParamNr).Bezeichnung & "'"
+        Else
+            'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
+            sql = KoNr & ", 301, " & ParamNr.ToString & ", '" & Wert(ParamNr) & "', '" & kt301Param(ParamNr).Bezeichnung & "'"
+        End If
+
+        'Update ausführen
+        Return winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, sql))
+    End Function
+
 
     ''' <summary>
     ''' Update aller geänderten Komponenten-Parameter in Tabelle 

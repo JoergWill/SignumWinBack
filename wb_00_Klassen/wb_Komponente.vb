@@ -65,6 +65,10 @@ Public Class wb_Komponente
         End Get
     End Property
 
+    Public Sub New()
+        AddHandler wb_Rohstoffe_Shared.eParam_Changed, AddressOf SaveParameterArray
+    End Sub
+
     ''' <summary>
     ''' Setzt alle Variablen wieder auf Null,Nothing oder Undefined.
     ''' Wird aufgerufen, wenn eine neue(andere) Komponente geladen werden soll
@@ -292,6 +296,58 @@ Public Class wb_Komponente
         Next
     End Sub
 
+    ''' <summary>
+    ''' Sichert alle geänderten Parameter ausgehen vom RootParameter.
+    ''' Abhängig vom KomponParam-Typ wird die entsprechende Funktion zum Sichern der Daten in
+    ''' der Klasse ausgerufen.
+    ''' Die Parameter-Werte werden vorher von VirtualTree-Knoten in die KomponParam...-Daten übertragen
+    ''' </summary>
+    Friend Sub SaveParameterArray()
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Ausgehend vom Root-Knoten werden alle Child-Knoten durchlaufen
+        For Each p As wb_KomponParam In _RootParameter.ChildSteps
+            'alle ChildKonoten
+            For Each x As wb_KomponParam In p.ChildSteps
+                'Parameter wurde geändert
+                If x.Changed Then
+                    'abhängig vom KomponentenParameter-Typ
+                    Select Case p.TypNr
+
+                        'Allgemeine Parameter
+                        Case < wb_Global.ktParam.kt200
+                            'TODO ktTYpXXX mysqldbsave !
+                            Debug.Print("SaveParameterArray xxx " & x.Bezeichnung & " ParamNr " & x.ParamNr)
+
+                        'Allergene und Nährwerte
+                        Case wb_Global.ktParam.kt301
+                            'Update einzelner Datensatz in winback-Datenbank
+                            ktTyp301.MySQLdbUpdate(Nr, x.ParamNr, winback)
+                            'Update Parametersatz in OrgaBack
+                            If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
+                                'Datenbank-Verbindung öffnen - MsSQL
+                                Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+                                'TODO - Im Moment werden noch alle Parameter auf einmal geschrieben
+                                ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
+                                'Datenbank-Verbindung wieder schliessen
+                                OrgasoftMain.Close()
+                            End If
+                            'Flag zurücksetzen
+                            x.Changed = False
+
+                        Case Else
+                            'Fehler - Parameter-Type nicht im Programm vorgesehen
+                            Debug.Print("SaveParameterArray UNDEF " & x.TypNr & "/" & x.Bezeichnung)
+
+                    End Select
+                End If
+            Next
+        Next
+        'Datenbank-Verbindung wieder schliessen
+        winback.Close()
+    End Sub
+
     Friend Sub LoadData(dataGridView As wb_DataGridView)
         'eventuell vorhandene Daten löschen
         Invalid()
@@ -310,6 +366,7 @@ Public Class wb_Komponente
     End Sub
 
     Friend Function SaveData(dataGridView As wb_DataGridView) As Boolean
+        'Rohstoff-Detaildaten wurden geändert
         If _DataHasChanged Then
             dataGridView.Field("KO_Nr_AlNum") = KO_Nr_AlNum
             dataGridView.Field("KO_Bezeichnung") = KO_Bezeichnung
