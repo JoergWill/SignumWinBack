@@ -94,6 +94,15 @@ Public Class wb_Komponente
         ArtikelChargen.Invalidate()
         TeigChargen.Invalidate()
 
+        ktTypXXX = New wb_KomponParamXXX
+        ktTyp200 = New wb_KomponParam200
+        ktTyp201 = New wb_KomponParam201
+        ktTyp202 = New wb_KomponParam202
+        ktTyp210 = New wb_KomponParam210
+        ktTyp220 = New wb_KomponParam220
+        ktTyp300 = New wb_KomponParam300
+        ktTyp301 = New wb_KomponParam301
+
         ktTyp301.IsCalculated = False
     End Sub
 
@@ -242,7 +251,7 @@ Public Class wb_Komponente
                 'Parameter Nährwerte
                 AddParamNodes("", wb_Global.ktParam.kt301)
 
-            Case KomponTypen.KO_TYPE_AUTOKOMPONENTE, KomponTypen.KO_TYPE_EISKOMPONENTE, KomponTypen.KO_TYPE_HANDKOMPONENTE
+            Case KomponTypen.KO_TYPE_AUTOKOMPONENTE, KomponTypen.KO_TYPE_EISKOMPONENTE, KomponTypen.KO_TYPE_HANDKOMPONENTE, KomponTypen.KO_TYPE_WASSERKOMPONENTE
                 'abhängig von der Komponenten-Type werden die einzelnen Parameter durchlaufen
                 AddParamNodes("Produktion", t)
                 'Parameter Nährwerte (nur wenn kein Rezept verknüpft)
@@ -302,9 +311,15 @@ Public Class wb_Komponente
     ''' der Klasse ausgerufen.
     ''' Die Parameter-Werte werden vorher von VirtualTree-Knoten in die KomponParam...-Daten übertragen
     ''' </summary>
-    Friend Sub SaveParameterArray()
+    Public Sub SaveParameterArray()
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'Datenbank-Verbindung öffnen - MsSQL
+        Dim OrgasoftMain As wb_Sql = Nothing
+        If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
+            'Datenbank-Verbindung öffnen - MsSQL
+            OrgasoftMain = New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        End If
 
         'Ausgehend vom Root-Knoten werden alle Child-Knoten durchlaufen
         For Each p As wb_KomponParam In _RootParameter.ChildSteps
@@ -322,16 +337,13 @@ Public Class wb_Komponente
 
                         'Allergene und Nährwerte
                         Case wb_Global.ktParam.kt301
+                            'Wert in kt301-Array übertragen
+                            ktTyp301.Wert(x.ParamNr) = x.Wert
                             'Update einzelner Datensatz in winback-Datenbank
                             ktTyp301.MySQLdbUpdate(Nr, x.ParamNr, winback)
                             'Update Parametersatz in OrgaBack
                             If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
-                                'Datenbank-Verbindung öffnen - MsSQL
-                                Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-                                'TODO - Im Moment werden noch alle Parameter auf einmal geschrieben
-                                ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
-                                'Datenbank-Verbindung wieder schliessen
-                                OrgasoftMain.Close()
+                                ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, x.ParamNr, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
                             End If
                             'Flag zurücksetzen
                             x.Changed = False
@@ -346,6 +358,8 @@ Public Class wb_Komponente
         Next
         'Datenbank-Verbindung wieder schliessen
         winback.Close()
+        'Datenbank-Verbindung wieder schliessen
+        OrgasoftMain.Close()
     End Sub
 
     Friend Sub LoadData(dataGridView As wb_DataGridView)
@@ -988,6 +1002,9 @@ Public Class wb_Komponente
     ''' TODO Die interne Nummer an OrgaBack zurückschreiben
     ''' </summary>
     Public Function MySQLdbRead(InterneKomponentenNummer As Integer, Optional KomponentenNummer As String = "") As Boolean
+        'Alle (eventuell noch) bestehenden Daten löschen
+        Me.Invalid()
+
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
@@ -1204,8 +1221,12 @@ Public Class wb_Komponente
     Private Function MySQLdbRead_Parameter(Name As String, Value As Object) As Boolean
         Static ParamNr, ParamTyp As Integer
 
+        'Try
+        '    Debug.Print("ReadParameter/Value " & Name & "/" & Value)
+        'Catch
+        'End Try
+
         'Feldname aus der Datenbank
-        'Debug.Print("ReadParameter " & Name)
         Select Case Name
 
             'Parameter-Nummer

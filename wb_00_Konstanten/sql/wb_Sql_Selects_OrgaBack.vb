@@ -22,13 +22,23 @@
     Public Const mssqlSelArtikel = "SELECT * FROM [dbo].[Artikel] WHERE ArtikelNr = '[0]'"
     'Sql-Statement Delete ArtikelNaehrwerte
     Public Const mssqlDeleteNwt = "DELETE FROM [dbo].[ArtikelNaehrwerte] WHERE [ArtikelNr] = '[0]' AND [Einheit] = [1] AND [StuecklistenVariantenNr] = [2]"
-    'Sql-Statement Delete ArtikelNaehrwerte
+    'Sql-Statement Delete ArtikelAllergene
     Public Const mssqlDeleteAlg = "DELETE FROM [dbo].[ArtikelAllergene] WHERE [ArtikelNr] = '[0]' AND [StuecklistenVariantenNr] = [1]"
+    'Sql-Statement Delete ArtikelNaehrwerte
+    Public Const mssqlDeleteParamNwt = "DELETE FROM [dbo].[ArtikelNaehrwerte] WHERE [ArtikelNr] = '[0]' AND [NaehrwertNr] = [1] AND [Einheit] = [2] AND [StuecklistenVariantenNr] = [3]"
+    'Sql-Statement Delete ArtikelAllergene
+    Public Const mssqlDeleteParamAlg = "DELETE FROM [dbo].[ArtikelAllergene] WHERE [ArtikelNr] = '[0]' AND [AllergenNr] = [1] AND [StuecklistenVariantenNr] = [2]"
+    ''Sql-Statement Update ArtikelNaehrwerte
+    'Public Const mssqUpdateNwt = "UPDATE [dbo].[ArtikelNaehrwerte] SET ArtikelNr = '[0]', Einheit = [3], Farbe = 0, Groesse = 'NULL', " &
+    '                             "StuecklistenVariantenNr = [4] , NaehrwertNr = [1], Menge = [2]"
+    ''Sql-Statement Update ArtikelAllergene
+    'Public Const mssqUpdateAlg = "UPDATE [dbo].[ArtikelAllergene] SET ArtikelNr = '[0]', StuecklistenVariantenNr = [3], " &
+    '                             "AllergenNr = [1], Kennzeichnung = '[2]' "
     'Sql-Statement Insert ArtikelNaehrwerte
-    Public Const mssqInsertNwt = "INSERT INTO [dbo].[ArtikelNaehrwerte] (ArtikelNr, Einheit, Farbe, Groesse, StuecklistenVariantenNr, NaehrwertNr, Menge) " &
+    Public Const mssqlInsertNwt = "INSERT INTO [dbo].[ArtikelNaehrwerte] (ArtikelNr, Einheit, Farbe, Groesse, StuecklistenVariantenNr, NaehrwertNr, Menge) " &
                                   "VALUES ('[0]', [3], 0, 'NULL', [4], [1], [2])"
     'Sql-Statement Insert ArtikelAllergene
-    Public Const mssqInsertAlg = "INSERT INTO [dbo].[ArtikelAllergene] (ArtikelNr, StuecklistenVariantenNr, AllergenNr, Kennzeichnung) " &
+    Public Const mssqlInsertAlg = "INSERT INTO [dbo].[ArtikelAllergene] (ArtikelNr, StuecklistenVariantenNr, AllergenNr, Kennzeichnung) " &
                                   "VALUES ('[0]', [3], [1], '[2]')"
 
     'Sql-Statement Zutatenliste und Deklarationstexte

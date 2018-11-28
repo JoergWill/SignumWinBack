@@ -1806,6 +1806,29 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_KomponParam301.MsSQLdbUpdate(System.String,System.Int32,System.Int32,WinBack.wb_Sql)">
+ <summary>
+ Update EINES geänderte Komponenten-Parameter in Tabelle.
+ Da REPLACE be msSQL nicht funktioniert wird zuerst versucht, per UPDATE den Datensatz zu aktualisieren. Wenn 
+ das UPDATE nicht funktioniert (Datensatz nicht vorhanden) wird per INSERT der Datensatz neu angelegt
+ 
+ [dbo].[ArtikelNaehrwerte]
+     [ArtikelNr]
+     [Einheit]
+     [Farbe]                         immer 0
+     [Groesse]                       immer NULL
+     [StuecklistenVariantenNr]
+     [NaehrwertNr]
+     [Menge]
+     
+ [dbo].[ArtikelAllergene
+     [ArtikelNr]
+     [StuecklistenVariantenNr]
+     [AllergenNr]
+     [Kennzeichnung]
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Komponente.Changed">
  <summary>
  Eine der Komponenten-Eigenschaften wurde geändert
@@ -2496,6 +2519,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  die Daten werden aktualisiert.
  </summary>
  <returns>True wenn der Datensatz aktualisiert wurde</returns>
+</member>
+<member name="M:WinBack.wb_nwtUpdate.DbUpdateNaehrwerte(WinBack.wb_Komponente,System.Boolean)">
+ <summary>
+ Schreibt die Nährwertinfo (nach Update) in die WinBack und OrgaBack-Datenbank
+ Wenn Artikel von der Nährwert-Änderung betroffen sind, wird der entsprechende 
+ Artikel-Datensatz markiert.
+ </summary>
+ <param name="UpdateOrgaBack"></param>
 </member>
 <member name="M:WinBack.wb_nwtUpdate.GetNaehrwerte(System.String,WinBack.wb_Komponente)">
  <summary>
@@ -4921,6 +4952,13 @@ Text aus Datenbank lesen - Übersetzung
  Rohstoff-Bezeichnung und Lieferant werden automatisch in den Mailtext eingefügt.
  
  Der Mail-Versandt erfolgt über das Windows-Standard-Mail-Programm.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.btnResult_Akt_Click(System.Object,System.EventArgs)">
+ <summary>
+ Daten aus der Cloud (manuell) aktualisieren
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

@@ -133,6 +133,9 @@ Public Class Rohstoffe_Main
         If RohstoffListe IsNot Nothing Then
             RohstoffListe.Close()
         End If
+        If RohstoffParameter IsNot Nothing Then
+            RohstoffParameter.Close()
+        End If
     End Sub
 
     Public Sub RohstoffNeuAnlegen()

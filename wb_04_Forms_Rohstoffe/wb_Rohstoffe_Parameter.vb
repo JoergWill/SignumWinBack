@@ -29,11 +29,20 @@ Public Class wb_Rohstoffe_Parameter
 
         'Daten vom aktuellen Rohstoff anzeigen
         If RohStoff.Nr > 0 Then
-            DetailInfo()
+            DetailInfo(sender)
         End If
     End Sub
 
-    Private Sub DetailInfo()
+    ''' <summary>
+    ''' Form wird geschlossen. Alle Ereignis-Handler wieder löschen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub wb_Rohstoffe_Parameter_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        RemoveHandler wb_Rohstoffe_Shared.eListe_Click, AddressOf DetailInfo
+    End Sub
+
+    Private Sub DetailInfo(Sender)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = RohStoff.RootParameter
         'alle Zeilen aufklappen

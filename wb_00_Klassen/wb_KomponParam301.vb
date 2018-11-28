@@ -364,7 +364,6 @@ Public Class wb_KomponParam301
         Return winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, sql))
     End Function
 
-
     ''' <summary>
     ''' Update aller geänderten Komponenten-Parameter in Tabelle 
     ''' 
@@ -408,13 +407,13 @@ Public Class wb_KomponParam301
                 If IsAllergen(i) Then
                     If (NaehrwertInfo(i)._Allergen > wb_Global.AllergenInfo.N) Then
                         'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
-                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqInsertAlg, KoAlNum, i, oWert(i), 0))
+                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, i, oWert(i), 0))
                         'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
                     End If
                 Else
                     If (NaehrwertInfo(i)._Naehrwert > 0) Then
                         'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
-                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqInsertNwt, KoAlNum, i, oWert(i), Unit, 0))
+                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertNwt, KoAlNum, i, oWert(i), Unit, 0))
                         'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
                     End If
                 End If
@@ -429,6 +428,65 @@ Public Class wb_KomponParam301
         Next
     End Function
 
+    ''' <summary>
+    ''' Update EINES geänderte Komponenten-Parameter in Tabelle.
+    ''' Da REPLACE be msSQL nicht funktioniert wird zuerst versucht, per UPDATE den Datensatz zu aktualisieren. Wenn 
+    ''' das UPDATE nicht funktioniert (Datensatz nicht vorhanden) wird per INSERT der Datensatz neu angelegt
+    ''' 
+    ''' [dbo].[ArtikelNaehrwerte]
+    '''     [ArtikelNr]
+    '''     [Einheit]
+    '''     [Farbe]                         immer 0
+    '''     [Groesse]                       immer NULL
+    '''     [StuecklistenVariantenNr]
+    '''     [NaehrwertNr]
+    '''     [Menge]
+    '''     
+    ''' [dbo].[ArtikelAllergene
+    '''     [ArtikelNr]
+    '''     [StuecklistenVariantenNr]
+    '''     [AllergenNr]
+    '''     [Kennzeichnung]
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function MsSQLdbUpdate(KoAlNum As String, ParamNr As Integer, Unit As Integer, orgaback As wb_Sql) As Boolean
+        'Update-Statement wird dynamisch erzeugt    
+        Dim sql_Delete As String
+        Dim sql_Insert As String
+
+        'Parameter-Nummer ist gültig
+        If IsValidParameter(ParamNr) Then
+
+            'Allergene haben in OrgaBack einen eigene Tabelle
+            If IsAllergen(ParamNr) Then
+                sql_Delete = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteParamAlg, KoAlNum, ParamNr, 0))
+                sql_Insert = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, ParamNr, oWert(ParamNr), 0))
+                'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+            Else
+                sql_Delete = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteParamNwt, KoAlNum, ParamNr, Unit, 0))
+                sql_Insert = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertNwt, KoAlNum, ParamNr, oWert(ParamNr), Unit, 0))
+                'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+            End If
+
+            'Update-Statement wird versucht
+            Select Case orgaback.sqlCommand(sql_Delete)
+                Case < 0
+                    'Fehler bei Zugriff auf die Datenbank
+                    Return False
+                Case 0, 1
+                    'Delete war erfolgreich - Insert Datensatz versuchen
+                    If orgaback.sqlCommand(sql_Insert) < 0 Then
+                        'Insert fehlgeschlagen - Fehler
+                        Return False
+                    End If
+                Case Else
+                    'Unbekannter Fehler 
+                    Return False
+            End Select
+        End If
+        'Keine Änderung der Daten notwendig
+        Return True
+    End Function
 
 
 End Class

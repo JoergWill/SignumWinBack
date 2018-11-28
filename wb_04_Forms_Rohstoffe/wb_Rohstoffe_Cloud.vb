@@ -278,4 +278,20 @@ Public Class wb_Rohstoffe_Cloud
             lblHilfeText.Text = ""
         End If
     End Sub
+
+    ''' <summary>
+    ''' Daten aus der Cloud (manuell) aktualisieren
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub btnResult_Akt_Click(sender As Object, e As EventArgs) Handles btnResult_Akt.Click
+        Dim nwtUpdateKomponenten As New wb_nwtUpdate
+        'Update der Daten aus der Cloud
+        nwtUpdateKomponenten.GetNaehrwerte(wb_Rohstoffe_Shared.RohStoff.MatchCode, wb_Rohstoffe_Shared.RohStoff)
+        'Updates in Datenbank(en) sichern
+        nwtUpdateKomponenten.DbUpdateNaehrwerte(wb_Rohstoffe_Shared.RohStoff, (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack))
+
+        'Updates anzeigen - in allen aktiven Fenstern
+        wb_Rohstoffe_Shared.Liste_Click(sender)
+    End Sub
 End Class

@@ -104,7 +104,6 @@ Imports WinBack.wb_Sql_Selects
         End If
     End Sub
 
-
     <TestMethod()> Public Sub Test_SchreibenRohstoff_Parameter()
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
         If My.Settings.TestMySQL Then
@@ -127,10 +126,99 @@ Imports WinBack.wb_Sql_Selects
                     'Nährwert-Info - keine Allergene
                     Assert.AreEqual(wb_Global.AllergenInfo.K, nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten))
 
+                    'RohstoffParameter ändern
+                    nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser) = 10
+                    'Nährwert-Info - Wasser-Anteil
+                    Assert.AreEqual(10.0, nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser))
                     'RohstoffParameter schreiben
                     nwtDaten.UpdateDB()
                 End If
             End If
+
+            'Datensatz schliessen
+            winback.CloseRead()
+            'ersten (geänderten) Datensatz aus Tabelle RohParams lesen
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    'den ersten und alle weiteren Daensätze aus der sql-Abfrage lesen
+                    Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
+                    'Nährwert-Info - Wasser-Anteil
+                    Assert.AreEqual(10.0, nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser))
+
+                    'RohstoffParameter ändern - wieder auf den Ursprungswert
+                    nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser) = 99.0
+                    'RohstoffParameter schreiben
+                    nwtDaten.UpdateDB()
+                End If
+            End If
+
+        End If
+    End Sub
+
+    <TestMethod()> Public Sub Test_SchreibenRohstoff_Parameter_Einzeln()
+        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
+        If My.Settings.TestMySQL Then
+
+            'Rohstoff-Daten
+            Dim nwtDaten As New wb_Komponente
+            nwtDaten.MySQLdbRead(211)
+
+            Dim sql As String = setParams(sqlTestktTyp3, "211")
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+            'ersten Datensatz aus Tabelle RohParams lesen
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    'den ersten und alle weiteren Daensätze aus der sql-Abfrage lesen
+                    Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
+                    'Nährwert-Info - Wasser-Anteil
+                    'Assert.IsTrue(nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser) > 90.0)
+                    'Nährwert-Info - keine Allergene
+                    Assert.AreEqual(wb_Global.AllergenInfo.K, nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten))
+
+                    'RohstoffParameter ändern
+                    nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser) = 10
+                    'Nährwert-Info - Wasser-Anteil
+                    Assert.AreEqual(10.0, nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser))
+
+                    'Parameter-Array aufbauen
+                    For Each c1 As wb_KomponParam In nwtDaten.RootParameter.ChildSteps
+                        For Each c2 As wb_KomponParam In c1.ChildSteps
+                            Select Case c2.TypNr
+                                Case wb_Global.ktParam.kt301
+                                    Select Case c2.ParamNr
+                                        Case wb_Global.T301_Wasser
+                                            c2.Wert = 20.0
+                                            c2.Changed = True
+                                    End Select
+                            End Select
+                        Next
+                    Next
+
+                    'geänderten Datensatz schreiben
+                    nwtDaten.SaveParameterArray()
+
+                End If
+            End If
+
+            'Datensatz schliessen
+            winback.CloseRead()
+            'ersten (geänderten) Datensatz aus Tabelle RohParams lesen
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    'den ersten und alle weiteren Daensätze aus der sql-Abfrage lesen
+                    Assert.IsTrue(nwtDaten.MySQLdbRead(winback.MySqlRead))
+                    'Nährwert-Info - Wasser-Anteil
+                    Assert.AreEqual(20.0, nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser))
+
+                    'RohstoffParameter ändern - wieder auf den Ursprungswert
+                    nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_Wasser) = 99.0
+                    'RohstoffParameter schreiben
+                    nwtDaten.UpdateDB()
+                End If
+            End If
+
         End If
     End Sub
 

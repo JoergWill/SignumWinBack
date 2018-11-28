@@ -26,11 +26,11 @@ Partial Class wb_Rohstoffe_Parameter
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ObjectCellBinding11 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding12 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding13 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding14 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding15 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding6 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding7 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding8 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding9 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding10 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Me.ColType = New Infralution.Controls.VirtualTree.Column()
         Me.ColNr = New Infralution.Controls.VirtualTree.Column()
         Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
@@ -101,7 +101,7 @@ Partial Class wb_Rohstoffe_Parameter
         'EnhEdit_RohParams
         '
         Me.EnhEdit_RohParams.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit_RohParams.eFormat = 0
+        'Me.EnhEdit_RohParams.eFormat = EnhEdit.EnhEdit_Global.wb_Format.FUndefined
         Me.EnhEdit_RohParams.eOG = "0"
         Me.EnhEdit_RohParams.eUG = "0"
         Me.EnhEdit_RohParams.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -168,23 +168,23 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ObjectRowBinding1.AllowDrag = True
         Me.ObjectRowBinding1.AllowDropAboveRow = True
         Me.ObjectRowBinding1.AllowDropBelowRow = True
-        ObjectCellBinding11.Column = Me.ColType
-        ObjectCellBinding11.Field = "VirtualTree_TypNr"
-        ObjectCellBinding11.Style.HorzAlignment = System.Drawing.StringAlignment.Center
-        ObjectCellBinding12.Column = Me.ColNr
-        ObjectCellBinding12.Field = "VirtualTree_ParamNr"
-        ObjectCellBinding12.Style.HorzAlignment = System.Drawing.StringAlignment.Center
-        ObjectCellBinding13.Column = Me.ColBezeichnung
-        ObjectCellBinding13.Field = "Bezeichnung"
-        ObjectCellBinding14.Column = Me.ColWert
-        ObjectCellBinding14.Field = "VirtualTree_Wert"
-        ObjectCellBinding15.Column = Me.ColEinheit
-        ObjectCellBinding15.Field = "Einheit"
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding11)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding12)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding13)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding14)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding15)
+        ObjectCellBinding6.Column = Me.ColType
+        ObjectCellBinding6.Field = "VirtualTree_TypNr"
+        ObjectCellBinding6.Style.HorzAlignment = System.Drawing.StringAlignment.Center
+        ObjectCellBinding7.Column = Me.ColNr
+        ObjectCellBinding7.Field = "VirtualTree_ParamNr"
+        ObjectCellBinding7.Style.HorzAlignment = System.Drawing.StringAlignment.Center
+        ObjectCellBinding8.Column = Me.ColBezeichnung
+        ObjectCellBinding8.Field = "Bezeichnung"
+        ObjectCellBinding9.Column = Me.ColWert
+        ObjectCellBinding9.Field = "VirtualTree_Wert"
+        ObjectCellBinding10.Column = Me.ColEinheit
+        ObjectCellBinding10.Field = "Einheit"
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding7)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding8)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding9)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding10)
         Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
         Me.ObjectRowBinding1.Height = 24
         Me.ObjectRowBinding1.Name = "ObjectRowBinding1"

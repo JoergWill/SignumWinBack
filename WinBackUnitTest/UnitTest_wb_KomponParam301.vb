@@ -48,4 +48,6 @@
         Assert.AreEqual("Kilojoule", wb_KomponParam301_Global.kt301Param(wb_Global.T301_KiloJoule).Bezeichnung)
         Assert.AreEqual("kJ", wb_KomponParam301_Global.kt301Param(wb_Global.T301_KiloJoule).Einheit)
     End Sub
+
+
 End Class
