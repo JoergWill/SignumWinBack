@@ -86,7 +86,7 @@ Public Class wb_Rohstoffe_Liste
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
-        Debug.Print("Rohstoffe DataGridView has Changed: Bezeichnung alt" & RohStoff.Bezeichnung)
+        'Debug.Print("Rohstoffe DataGridView has Changed: Bezeichnung alt " & RohStoff.Bezeichnung)
         'Daten laden aus winback.Komponenten in GridView
         RohStoff.LoadData(DataGridView)
         'Detail-Daten aus winback.Komponenten laden in Objekt wb_Rostoffe_Shared.Rohstoff

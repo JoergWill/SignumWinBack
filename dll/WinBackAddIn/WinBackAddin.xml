@@ -815,6 +815,13 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
  </summary>
  <returns>Logging aktiv</returns>
 </member>
+<member name="P:WinBack.wb_ChangeLog.ChangeLogChanged">
+ <summary>
+ Der letzte Aufruf von ChangeLog hat eine Differenz zwischen altem und neuem Wert ergeben.
+ Der alte Wert wurde überschrieben (es hat eine Änderung stattgefunden - Update DB erforderlich.
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_ChangeLog.ChangeLogClear">
  <summary>
  ChangeLog löschen. Mit dem Löschen wird das Logging aktiviert
@@ -2071,7 +2078,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 </member>
 <member name="M:WinBack.wb_Komponente.MySqldbUpdate_Zutatenliste">
  <summary>
- Sichert die Zutatenliste in der Datenbank
+ Sichert die Zutatenliste in der Datenbank. Gesichert wird die externe und die interne Deklarations-Bezeichnung
  </summary>
  <returns></returns>
 </member>
@@ -2088,6 +2095,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Komponente.MsSqldbUpdate_Zutatenliste">
+ <summary>
+ Schreibt die Deklarationstexte in die OrgaBack-Datenbank(Zugriff über KO_Nr_AlNum!)
+ Die Daten werden nur geschrieben, wenn sie nicht fixiert sind. Vor dem Schreiben erfolgt immer
+ ein Lesezugriff.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Komponente.MsSqldbUpdate_Zutatenliste(WinBack.wb_Sql)">
  <summary>
  Schreibt die Deklarationstexte in die OrgaBack-Datenbank(Zugriff über KO_Nr_AlNum!)
  Die Daten werden nur geschrieben, wenn sie nicht fixiert sind. Vor dem Schreiben erfolgt immer
@@ -2113,6 +2128,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
    [ZusatzstoffDeklarationFix]
    ->[ZutatenDeklarationFix]
  </summary>
+ <param name="OrgasoftMain"></param>
  <returns></returns>
 </member>
 <member name="T:WinBack.wb_KomponParam301_Global">
@@ -4946,6 +4962,13 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.btnDisconnect_Click(System.Object,System.EventArgs)">
+ <summary>
+ Verbindung zur Cloud löschen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Cloud.btnMail_Click(System.Object,System.EventArgs)">
  <summary>
  Anforderungsmail an nwt.winback.de verschicken.
@@ -4959,6 +4982,36 @@ Text aus Datenbank lesen - Übersetzung
 <member name="M:WinBack.wb_Rohstoffe_Cloud.btnResult_Akt_Click(System.Object,System.EventArgs)">
  <summary>
  Daten aus der Cloud (manuell) aktualisieren
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.Btn_Weiter_Click(System.Object,System.EventArgs)">
+ <summary>
+ Klick auf Button "Weiter". Abhängig vom aktuellen Tab wird die nächste Aktion eingeleitet
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.Btn_Zurueck_Click(System.Object,System.EventArgs)">
+ <summary>
+ Klick auf Button "Zurück". ab hängig vom aktuellen Tab wird zurückgeschaltet auf die vorherige Aktion
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Nwt.tbDeklarationExtern_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Das Eingabefeld "externe Deklaration" wurde verlassen. Der Inhalt wird in die
+ Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Nwt.tbDeklarationIntern_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Das Eingabefeld "interne Deklaration" wurde verlassen. Der Inhalt wird in die
+ Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -5280,12 +5333,36 @@ Public Const MFF_Wissenswertes = 213
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Rezept_Main.FormClosing(System.Int16)">
+ <summary>
+ Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+ </summary>
+ <param name="Reason"></param>
+ <returns>
+ False, wenn das Fenster geschlossen werden darf
+ True, wenn das Fenster geöffnet bleiben muss
+ </returns>
+ <remarks></remarks>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Parameter.wb_Rohstoffe_Parameter_Load(System.Object,System.EventArgs)">
  <summary>
  Initialisierung - Laden der Form
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Parameter.wb_Rohstoffe_Parameter_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+ <summary>
+ Form wird geschlossen. Alle Ereignis-Handler wieder löschen.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Parameter.DetailInfo(System.Object)">
+ <summary>
+ Rohstoff-Parameter des (aktuellen) Rohstoffes anzeigen
+ </summary>
+ <param name="Sender"></param>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Parameter.VirtualTree_SelectionChanging(System.Object,Infralution.Controls.VirtualTree.SelectionChangingEventArgs)">
  <summary>
@@ -5360,6 +5437,17 @@ Public Const MFF_Wissenswertes = 213
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Main.FormClosing(System.Int16)">
+ <summary>
+ Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+ </summary>
+ <param name="Reason"></param>
+ <returns>
+ False, wenn das Fenster geschlossen werden darf
+ True, wenn das Fenster geöffnet bleiben muss
+ </returns>
+ <remarks></remarks>
+</member>
 <member name="M:WinBack.wb_User_Liste.SelectData(System.Int32,System.String)">
  <summary>
  Einen Datensatz in der Mitarbeiter-Liste suchen. Wenn der Datensatz gefunden wurde, wird True zurückgegeben.
@@ -5381,6 +5469,17 @@ Public Const MFF_Wissenswertes = 213
  Eindeutiger Name für die Basis-Form. 
  </summary>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_Artikel_Main.FormClosing(System.Int16)">
+ <summary>
+ Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+ </summary>
+ <param name="Reason"></param>
+ <returns>
+ False, wenn das Fenster geschlossen werden darf
+ True, wenn das Fenster geöffnet bleiben muss
+ </returns>
+ <remarks></remarks>
 </member>
 <member name="P:WinBack.wb_User_Main.FormText">
  <summary>

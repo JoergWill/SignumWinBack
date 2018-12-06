@@ -59,8 +59,8 @@ Public Class wb_ArrayGridViewKomponParam301
                         MyBase.Columns.Add(CStr(ColCount) & "_Wert", "pro 100g")
                         MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                     End If
-                    'Editieren in dieser Spalte zulassen
-                    MyBase.Columns(MyBase.ColumnCount - 1).ReadOnly = False
+                    'Editieren in dieser Spalte NICHT zulassen
+                    MyBase.Columns(MyBase.ColumnCount - 1).ReadOnly = True
 
                     'Spalte Einheiten
                     If wb_KomponParam301_Global.IsAllergen(i) Then

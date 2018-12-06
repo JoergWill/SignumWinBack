@@ -59,6 +59,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.btnShow_Vor = New System.Windows.Forms.Button()
         Me.pnlNwt = New System.Windows.Forms.Panel()
         Me.tpCloudResult = New System.Windows.Forms.TabPage()
+        Me.Btn_Result_Back = New System.Windows.Forms.Button()
         Me.lblDeklIntern = New System.Windows.Forms.Label()
         Me.lblDeklExtern = New System.Windows.Forms.Label()
         Me.tbDeklarationIntern = New System.Windows.Forms.TextBox()
@@ -70,6 +71,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.KompRzChargen = New WinBack.wb_KompRzChargen()
         Me.tpKompType = New System.Windows.Forms.TabPage()
         Me.lblKeineNwt = New System.Windows.Forms.Label()
+        Me.BtnRezept = New System.Windows.Forms.Button()
         Me.Wb_TabControl.SuspendLayout()
         Me.tpCloudSuchen.SuspendLayout()
         Me.tpCloudGefunden.SuspendLayout()
@@ -156,6 +158,7 @@ Partial Class wb_Rohstoffe_Cloud
         'tpCloudSuchen
         '
         Me.tpCloudSuchen.BackColor = System.Drawing.SystemColors.Control
+        Me.tpCloudSuchen.Controls.Add(Me.BtnRezept)
         Me.tpCloudSuchen.Controls.Add(Me.btnMail)
         Me.tpCloudSuchen.Controls.Add(Me.lblHilfeText)
         Me.tpCloudSuchen.Controls.Add(Me.tSuchtextLieferant)
@@ -361,6 +364,7 @@ Partial Class wb_Rohstoffe_Cloud
         'tpCloudResult
         '
         Me.tpCloudResult.BackColor = System.Drawing.SystemColors.Control
+        Me.tpCloudResult.Controls.Add(Me.Btn_Result_Back)
         Me.tpCloudResult.Controls.Add(Me.lblDeklIntern)
         Me.tpCloudResult.Controls.Add(Me.lblDeklExtern)
         Me.tpCloudResult.Controls.Add(Me.tbDeklarationIntern)
@@ -373,6 +377,16 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tpCloudResult.Size = New System.Drawing.Size(724, 352)
         Me.tpCloudResult.TabIndex = 3
         Me.tpCloudResult.Text = "CloudResult"
+        '
+        'Btn_Result_Back
+        '
+        Me.Btn_Result_Back.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Btn_Result_Back.Location = New System.Drawing.Point(397, 312)
+        Me.Btn_Result_Back.Name = "Btn_Result_Back"
+        Me.Btn_Result_Back.Size = New System.Drawing.Size(138, 32)
+        Me.Btn_Result_Back.TabIndex = 59
+        Me.Btn_Result_Back.Text = "Zurück"
+        Me.Btn_Result_Back.UseVisualStyleBackColor = True
         '
         'lblDeklIntern
         '
@@ -418,7 +432,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.btnResult_OK.Name = "btnResult_OK"
         Me.btnResult_OK.Size = New System.Drawing.Size(138, 32)
         Me.btnResult_OK.TabIndex = 1
-        Me.btnResult_OK.Text = "OK"
+        Me.btnResult_OK.Text = "Speichern"
         Me.btnResult_OK.UseVisualStyleBackColor = True
         '
         'btnResult_Akt
@@ -535,6 +549,19 @@ Partial Class wb_Rohstoffe_Cloud
         Me.lblKeineNwt.TabIndex = 52
         Me.lblKeineNwt.Text = "Kein Rohstoff"
         '
+        'BtnRezept
+        '
+        Me.BtnRezept.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnRezept.Image = Global.WinBack.My.Resources.Resources.RezeptListe_32x32
+        Me.BtnRezept.Location = New System.Drawing.Point(541, 282)
+        Me.BtnRezept.Name = "BtnRezept"
+        Me.BtnRezept.Size = New System.Drawing.Size(138, 62)
+        Me.BtnRezept.TabIndex = 53
+        Me.BtnRezept.Text = "mit Rezept verknüpfen"
+        Me.BtnRezept.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnRezept.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.BtnRezept.UseVisualStyleBackColor = True
+        '
         'wb_Rohstoffe_Cloud
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -600,4 +627,6 @@ Partial Class wb_Rohstoffe_Cloud
     Friend WithEvents tbDeklarationExtern As Windows.Forms.TextBox
     Friend WithEvents tpKompType As Windows.Forms.TabPage
     Friend WithEvents lblKeineNwt As Windows.Forms.Label
+    Friend WithEvents Btn_Result_Back As Windows.Forms.Button
+    Friend WithEvents BtnRezept As Windows.Forms.Button
 End Class

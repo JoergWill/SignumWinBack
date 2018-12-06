@@ -522,7 +522,7 @@ Public Class ob_Artikel_DockingExtension
         Debug.Print("Artikel-Kurzname       " & Komponente.Kurzname)
         Debug.Print("Index                  " & Komponente.Nr)
         Debug.Print("Komponenten-Type       " & wb_Functions.KomponTypeToInt(Komponente.Type).ToString)
-        Debug.Print("ZutatenListe           " & Komponente.ZutatenListe)
+        Debug.Print("ZutatenListe           " & Komponente.Deklaration)
         Debug.Print("MatchCode              " & Komponente.MatchCode)
     End Sub
 

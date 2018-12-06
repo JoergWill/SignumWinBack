@@ -26,11 +26,6 @@ Public Class wb_Rohstoffe_Parameter
 
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
-
-        'Daten vom aktuellen Rohstoff anzeigen
-        If RohStoff.Nr > 0 Then
-            DetailInfo(sender)
-        End If
     End Sub
 
     ''' <summary>
@@ -42,6 +37,10 @@ Public Class wb_Rohstoffe_Parameter
         RemoveHandler wb_Rohstoffe_Shared.eListe_Click, AddressOf DetailInfo
     End Sub
 
+    ''' <summary>
+    ''' Rohstoff-Parameter des (aktuellen) Rohstoffes anzeigen
+    ''' </summary>
+    ''' <param name="Sender"></param>
     Private Sub DetailInfo(Sender)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = RohStoff.RootParameter

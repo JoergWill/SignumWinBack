@@ -48,6 +48,24 @@ Public Class wb_Rezept_Main
         RezeptListe.CloseButtonVisible = False
     End Sub
 
+    ''' <summary>
+    ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+    ''' </summary>
+    ''' <param name="Reason"></param>
+    ''' <returns>
+    ''' False, wenn das Fenster geschlossen werden darf
+    ''' True, wenn das Fenster geöffnet bleiben muss
+    ''' </returns>
+    ''' <remarks></remarks>
+    Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
+        'Rohstoff-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        If RezeptListe IsNot Nothing Then
+            RezeptListe.Close()
+        End If
+        'Fenster darf geschlossen werden
+        Return False
+    End Function
+
     Public Shadows ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
         Get
             If _ContextTabs Is Nothing Then

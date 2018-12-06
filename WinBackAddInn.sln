@@ -183,6 +183,7 @@ Global
 		{480334EB-F2AD-4F86-9C08-42E6B18D3D19}.Debug|x86.ActiveCfg = Debug|x86
 		{480334EB-F2AD-4F86-9C08-42E6B18D3D19}.Release|x86.ActiveCfg = Release|x86
 		{2F6C260C-7F04-4223-B775-48309A1946EB}.DB_Brotmacher|x86.ActiveCfg = Debug-M1|x86
+		{2F6C260C-7F04-4223-B775-48309A1946EB}.DB_Brotmacher|x86.Build.0 = Debug-M1|x86
 		{2F6C260C-7F04-4223-B775-48309A1946EB}.DB_Fonk|x86.ActiveCfg = Debug-M5|x86
 		{2F6C260C-7F04-4223-B775-48309A1946EB}.DB_OrgaBack|x86.ActiveCfg = Debug-M2|x86
 		{2F6C260C-7F04-4223-B775-48309A1946EB}.DB_UnitTest|x86.ActiveCfg = Debug-M3|x86
@@ -240,7 +241,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = de-DE
 		RESX_AutoCreateNewLanguageFiles = False
+		RESX_NeutralResourcesLanguage = de-DE
 	EndGlobalSection
 EndGlobal

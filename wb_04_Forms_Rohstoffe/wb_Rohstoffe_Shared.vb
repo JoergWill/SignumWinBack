@@ -61,6 +61,9 @@ Public Class wb_Rohstoffe_Shared
     End Sub
 
     Public Shared Sub Param_Changed(sender As Object)
+        'alle geänderten Rohstoff-Parameter in Datenbank schreiben (WinBack und OrgaBack)
+        RohStoff.SaveParameterArray()
+        'Parameter-Fenster neu aufbauen (Anzeige)
         RaiseEvent eParam_Changed(sender)
     End Sub
 End Class

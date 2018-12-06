@@ -34,10 +34,13 @@ Public Class wb_Rohstoffe_Details
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tRohstoffPreis.Leave
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tRohstoffPreis.Leave, cbRohstoffGrp2.Leave, cbRohstoffGrp1.Leave
         RohStoff.Bezeichnung = tRohstoffName.Text
         RohStoff.Kommentar = tRohstoffKommentar.Text
         RohStoff.Nummer = tRohstoffNummer.Text
+
+        RohStoff.Gruppe1 = cbRohstoffGrp1.GetKeyFromSelection
+        RohStoff.Gruppe2 = cbRohstoffGrp2.GetKeyFromSelection
         Edit_Leave(sender)
     End Sub
 

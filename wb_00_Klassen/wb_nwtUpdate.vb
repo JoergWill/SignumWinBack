@@ -100,8 +100,8 @@ Public Class wb_nwtUpdate
         Debug.Print("Update (Komp)Nährwerte in WinBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
         nwtDaten.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
         'Änderungen der Zutatenliste in Komponente(Rohstoff) sichern
-        Debug.Print("Update (Komp)Zutatenliste in WinBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
-        nwtDaten.MySqldbUpdate_Zutatenliste()
+        'Debug.Print("Update (Komp)Zutatenliste in WinBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
+        'nwtDaten.MySqldbUpdate_Zutatenliste()
         'Alle Artikel, welche diese Komponente in Rezepturen verwenden markieren
         'die Nährwerte müssen neu berechnet werden. Farbige Markierung in der Artikel-Liste
         nwtDaten.MySQLdbSetMarkerRzptListe(wb_Global.ArtikelMarker.nwtUpdate)

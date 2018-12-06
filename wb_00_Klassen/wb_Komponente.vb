@@ -66,7 +66,8 @@ Public Class wb_Komponente
     End Property
 
     Public Sub New()
-        AddHandler wb_Rohstoffe_Shared.eParam_Changed, AddressOf SaveParameterArray
+        'TODO das hier ist völliger Quatsch !!
+        'AddHandler wb_Rohstoffe_Shared.eParam_Changed, AddressOf SaveParameterArray
     End Sub
 
     ''' <summary>
@@ -182,13 +183,19 @@ Public Class wb_Komponente
         End Get
     End Property
 
-    Public ReadOnly Property Gruppe1 As Integer
+    Public Property Gruppe1 As Integer
+        Set(value As Integer)
+            KA_Grp1 = value
+        End Set
         Get
             Return KA_Grp1
         End Get
     End Property
 
-    Public ReadOnly Property Gruppe2 As Integer
+    Public Property Gruppe2 As Integer
+        Set(value As Integer)
+            KA_Grp2 = value
+        End Set
         Get
             Return KA_Grp2
         End Get
@@ -312,6 +319,8 @@ Public Class wb_Komponente
     ''' Die Parameter-Werte werden vorher von VirtualTree-Knoten in die KomponParam...-Daten übertragen
     ''' </summary>
     Public Sub SaveParameterArray()
+        'Flag Allergen-Info wurde geändert
+        Dim OrgaBackUpdateAllergene As Boolean = False
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Datenbank-Verbindung öffnen - MsSQL
@@ -341,9 +350,11 @@ Public Class wb_Komponente
                             ktTyp301.Wert(x.ParamNr) = x.Wert
                             'Update einzelner Datensatz in winback-Datenbank
                             ktTyp301.MySQLdbUpdate(Nr, x.ParamNr, winback)
-                            'Update Parametersatz in OrgaBack
+                            'Update einzelner Parametersatz in OrgaBack
                             If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
                                 ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, x.ParamNr, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
+                                'Flag setzen - Update AllergenListe in OrgaBack notwendig
+                                OrgaBackUpdateAllergene = True
                             End If
                             'Flag zurücksetzen
                             x.Changed = False
@@ -356,10 +367,19 @@ Public Class wb_Komponente
                 End If
             Next
         Next
+
         'Datenbank-Verbindung wieder schliessen
         winback.Close()
-        'Datenbank-Verbindung wieder schliessen
-        OrgasoftMain.Close()
+
+        'Programmvariante OrgaBack
+        If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
+            'wenn sich die Allergen-Info geändert hat - OrgaBack Allergen-Texte updaten
+            If OrgaBackUpdateAllergene Then
+                MsSqldbUpdate_Zutatenliste(OrgasoftMain)
+            End If
+            'Datenbank-Verbindung wieder schliessen
+            OrgasoftMain.Close()
+        End If
     End Sub
 
     Friend Sub LoadData(dataGridView As wb_DataGridView)
@@ -388,6 +408,8 @@ Public Class wb_Komponente
             dataGridView.Field("KA_Preis") = KA_Preis
             dataGridView.Field("KA_Matchcode") = KO_IdxCloud
             dataGridView.Field("KA_Rz_Nr") = KA_Rz_Nr
+            dataGridView.Field("KA_Grp1") = KA_Grp1
+            dataGridView.Field("KA_Grp2") = KA_Grp2
             _DataHasChanged = False
             Return True
         Else
@@ -495,7 +517,6 @@ Public Class wb_Komponente
 
     Public Property TimeStamp As Date
     Public Property BestellNummer As String
-    Public Property ZutatenListe As String
     Public Property Mehlzusammensetzung As String
 
     Public Property MatchCode As String
@@ -613,6 +634,12 @@ Public Class wb_Komponente
         End Get
         Set(value As String)
             KO_DeklBezeichnungExtern.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_DeklarationExtern, DeklBezeichungExtern, value)
+            'Datenänderung in Datenbank sichern
+            KO_DeklBezeichnungExtern.Write()
+            'Deklarations-Bezeichnung in OrgaBack DB schreiben
+            If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
+                MsSqldbUpdate_Zutatenliste()
+            End If
         End Set
     End Property
 
@@ -626,6 +653,15 @@ Public Class wb_Komponente
         End Get
         Set(value As String)
             KO_DeklBezeichnungIntern.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_DeklarationIntern, DeklBezeichungIntern, value)
+            'wenn Daten geändert worden sind - wird von ChangeLogAdd ausgewertet
+            If ChangeLogChanged Then
+                'Datenänderung in Datenbank sichern
+                KO_DeklBezeichnungIntern.Write()
+                'Deklarations-Bezeichnung in OrgaBack DB schreiben
+                If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
+                    MsSqldbUpdate_Zutatenliste()
+                End If
+            End If
         End Set
     End Property
 
@@ -1359,12 +1395,11 @@ Public Class wb_Komponente
     End Function
 
     ''' <summary>
-    ''' Sichert die Zutatenliste in der Datenbank
+    ''' Sichert die Zutatenliste in der Datenbank. Gesichert wird die externe und die interne Deklarations-Bezeichnung
     ''' </summary>
     ''' <returns></returns>
     Public Function MySqldbUpdate_Zutatenliste() As Boolean
-        'TODO festlegen ob externe oder interne Deklaration
-        Return KO_DeklBezeichnungExtern.Write()
+        Return KO_DeklBezeichnungExtern.Write() And KO_DeklBezeichnungIntern.Write()
     End Function
 
     ''' <summary>
@@ -1417,6 +1452,21 @@ Public Class wb_Komponente
     ''' Schreibt die Deklarationstexte in die OrgaBack-Datenbank(Zugriff über KO_Nr_AlNum!)
     ''' Die Daten werden nur geschrieben, wenn sie nicht fixiert sind. Vor dem Schreiben erfolgt immer
     ''' ein Lesezugriff.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function MsSqldbUpdate_Zutatenliste() As Boolean
+        'Datenbank-Verbindung öffnen - MsSQL
+        Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Update Zutatenliste
+        Return MsSqldbUpdate_Zutatenliste(OrgasoftMain)
+        'Verbindung zur Datenbank wieder schliessen
+        OrgasoftMain.Close()
+    End Function
+
+    ''' <summary>
+    ''' Schreibt die Deklarationstexte in die OrgaBack-Datenbank(Zugriff über KO_Nr_AlNum!)
+    ''' Die Daten werden nur geschrieben, wenn sie nicht fixiert sind. Vor dem Schreiben erfolgt immer
+    ''' ein Lesezugriff.
     '''
     ''' [dbo].[ArtikelDeklarationsTexte]
     '''   ->[ArtikelNr]
@@ -1438,8 +1488,9 @@ Public Class wb_Komponente
     '''   [ZusatzstoffDeklarationFix]
     '''   ->[ZutatenDeklarationFix]
     ''' </summary>
+    ''' <param name="OrgasoftMain"></param>
     ''' <returns></returns>
-    Public Function MsSqldbUpdate_Zutatenliste() As Boolean
+    Public Function MsSqldbUpdate_Zutatenliste(OrgasoftMain As wb_Sql) As Boolean
         'Default Rückgabewert
         MsSqldbUpdate_Zutatenliste = False
         'Update-Statement wird dynamisch erzeugt    
@@ -1451,17 +1502,11 @@ Public Class wb_Komponente
         Dim AllergenKurzListeEnthalten As String = ""
         Dim AllergenKurzListeSpuren As String = ""
 
-        'Datenbank-Verbindung öffnen - MsSQL
-        Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-
         'Daten aus dbo.ArtikelDeklarationstexte lesen (Artikelnummer/Variante 0)
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlReadDeklaration, KO_Nr_AlNum, 0, wb_GlobalSettings.osLaendercode, wb_GlobalSettings.osSprachcode)
-        'Daten lesen
         OrgasoftMain.sqlSelect(sql)
-        Dim DatenSatzVorhanden As Boolean = OrgasoftMain.Read
-
         'wenn schon ein Datensatz vorhanden ist, Flags einlesen (Fixiert)
-        If DatenSatzVorhanden Then
+        If OrgasoftMain.Read Then
             'Flags Zutaten-/Allergenliste ist fixiert
             Dim ZutatenListeFixiert As Boolean = OrgasoftMain.iField("ZutatenDeklarationFix") > 0
             Dim AllergenListeFixiert As Boolean = OrgasoftMain.iField("AllergenDeklarationFix") > 0
@@ -1511,9 +1556,6 @@ Public Class wb_Komponente
             'Meldungen im Log ausgeben
             ChangeLogAdd(LogType.Msg, Nr, "", "Neu Anlegen der Zutaten und Allergenliste in OrgaBack-DB - Nr " & KO_Nr_AlNum)
         End If
-
-        'Verbindung zur Datenbank wieder schliessen
-        OrgasoftMain.Close()
     End Function
 
 End Class

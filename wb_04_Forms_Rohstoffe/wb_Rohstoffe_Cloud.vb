@@ -8,6 +8,7 @@ Public Class wb_Rohstoffe_Cloud
     Dim sColNames As New List(Of String)
     Dim nwt As New wb_nwtCl_WinBack(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
     Dim dl As New wb_nwtCl_DatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
+    Dim cnt As Integer = wb_Global.UNDEFINED
 
     Dim WithEvents CloudResultGrid As wb_ArrayGridViewNwt
     Dim WithEvents nwtGrid As wb_ArrayGridViewKomponParam301
@@ -43,6 +44,8 @@ Public Class wb_Rohstoffe_Cloud
         tRohstoffName.Text = wb_Rohstoffe_Shared.RohStoff.Bezeichnung
         'ID in der Cloud
         tCloudID.Text = wb_Rohstoffe_Shared.RohStoff.MatchCode
+        'Anzahl der gefundenen Datensätze
+        cnt = wb_Global.UNDEFINED
 
         'wenn schon eine Verknüpfung vorhanden ist wird Tab-Page Verknüpfung löschen angezeigt
         If tCloudID.Text <> "" Then
@@ -51,7 +54,7 @@ Public Class wb_Rohstoffe_Cloud
 
         ElseIf wb_Rohstoffe_Shared.RohStoff.RzNr > 0 Then
             'Rohstoff ist mit einer Rezeptur verknüpft
-            ChangeTab(tpRezept)
+            ChangeTab(tpRezept, wb_Rohstoffe_Shared.RohStoff.Nr)
 
         ElseIf wb_Functions.TypeHatNwt(RohStoff.Type) Then
             'Suchen Rohstoff in der Cloud
@@ -93,7 +96,9 @@ Public Class wb_Rohstoffe_Cloud
                 tCloudID.Visible = False
 
                 'Ausgabe Ergebnis
-                Dim cnt As Integer = DirectCast(Parameter, wb_nwtCL).cnt
+                If Parameter IsNot Nothing Then
+                    cnt = DirectCast(Parameter, wb_nwtCL).cnt
+                End If
                 Select Case cnt
                     Case 0
                         'Keinen Rohstoff gefunden
@@ -106,14 +111,18 @@ Public Class wb_Rohstoffe_Cloud
                         'genau einen Rohstoff gefunden
                         lblErgebnisText.Text = My.Resources.tpCloudEinenRohstoffGefunden
                         'Anzeige Liste aller gefundenen Rohstoffe
-                        ShowResultGrid(Parameter)
+                        If Parameter IsNot Nothing Then
+                            ShowResultGrid(Parameter)
+                        End If
                         Wb_TabControl.SelectedTab = tpCloudGefunden
 
                     Case Else
                         'mehrere Rohstoffe gefunden
                         lblErgebnisText.Text = wb_Functions.SetParams(My.Resources.tpCloudRohstoffeGefunden, cnt)
                         'Anzeige Liste aller gefundenen Rohstoffe
-                        ShowResultGrid(Parameter)
+                        If Parameter IsNot Nothing Then
+                            ShowResultGrid(Parameter)
+                        End If
                         Wb_TabControl.SelectedTab = tpCloudGefunden
                 End Select
 
@@ -124,7 +133,9 @@ Public Class wb_Rohstoffe_Cloud
                 tCloudID.Visible = True
 
                 'Nährwertdaten in Objekt schreiben und anzeigen
-                ShowNwtGrid(DirectCast(Parameter, String))
+                If Parameter IsNot Nothing Then
+                    ShowNwtGrid(DirectCast(Parameter, String))
+                End If
                 'Anzeige Nährwerte des ausgewählten Rohstoffes
                 Wb_TabControl.SelectedTab = tpCloudAnzeige
 
@@ -145,10 +156,13 @@ Public Class wb_Rohstoffe_Cloud
                 Me.Text = My.Resources.tpCloudTitelRezept
                 lblCloudID.Visible = False
                 tCloudID.Visible = False
-                'Daten aus der Komponenten-Klasse lesen
-                KompRzChargen.GetDataFromKomp(RohStoff)
-                'Anzeigen der Werte
-                KompRzChargen.DataValid = True
+                'Rezeptnummer ist definiert
+                If Parameter <> wb_Global.UNDEFINED Then
+                    'Daten aus der Komponenten-Klasse lesen
+                    KompRzChargen.GetDataFromKomp(RohStoff)
+                    'Anzeigen der Werte
+                    KompRzChargen.DataValid = True
+                End If
                 'Rohstoff ist mit Rezeptur verknüpft
                 Wb_TabControl.SelectedTab = tpRezept
 
@@ -188,6 +202,7 @@ Public Class wb_Rohstoffe_Cloud
         CloudResultGrid.BackgroundColor = Me.BackColor
         CloudResultGrid.GridLocation(pnlNwtGrid)
         CloudResultGrid.PerformLayout()
+        CloudResultGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect
     End Sub
 
     ''' <summary>
@@ -258,8 +273,23 @@ Public Class wb_Rohstoffe_Cloud
         ChangeTab(tpCloudAnzeige, rid)
     End Sub
 
+    ''' <summary>
+    ''' Verbindung zur Cloud löschen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub btnDisconnect_Click(sender As Object, e As EventArgs) Handles btnDisconnect.Click
+        'Verknüpfung zur Cloud löschen (MatchCode) - die Nährwert-Informationen bleiben erhalten
+        tCloudID.Text = ""
+        wb_Rohstoffe_Shared.RohStoff.MatchCode = wb_Global.UNDEFINED
+        'Änderung in Datenbank schreiben
+        wb_Rohstoffe_Shared.Edit_Leave(sender)
 
+        'Meldung ausgeben
+        MsgBox("Die Verknüpfung zur Cloud wurde gelöscht" & vbCrLf & "Die Nährwerte und Allergen-Informationen bleiben erhalten", MsgBoxStyle.OkOnly, "WinBack-Cloud")
+
+        'Tab umschalten Suchen Rohstoff in der Cloud
+        ChangeTab(tpCloudSuchen)
     End Sub
 
     ''' <summary>
@@ -279,12 +309,23 @@ Public Class wb_Rohstoffe_Cloud
         End If
     End Sub
 
+    Private Sub BtnRezept_Click(sender As Object, e As EventArgs) Handles BtnRezept.Click
+        'Anzeige Verknüpfung Rezeptur
+        ChangeTab(tpRezept)
+        'Fenster Rezeptliste öffnen
+        KompRzChargen.BtnRzpt_Click(sender, e)
+    End Sub
+
     ''' <summary>
     ''' Daten aus der Cloud (manuell) aktualisieren
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnResult_Akt_Click(sender As Object, e As EventArgs) Handles btnResult_Akt.Click
+        'Buttons deaktivieren
+        btnResult_Akt.Enabled = False
+        btnDisconnect.Enabled = False
+
         Dim nwtUpdateKomponenten As New wb_nwtUpdate
         'Update der Daten aus der Cloud
         nwtUpdateKomponenten.GetNaehrwerte(wb_Rohstoffe_Shared.RohStoff.MatchCode, wb_Rohstoffe_Shared.RohStoff)
@@ -293,5 +334,72 @@ Public Class wb_Rohstoffe_Cloud
 
         'Updates anzeigen - in allen aktiven Fenstern
         wb_Rohstoffe_Shared.Liste_Click(sender)
+
+        'Rückmeldung - Daten wurden aktualisiert
+        MsgBox("Die Nährwert-Informationen wurden aktualisiert", MsgBoxStyle.OkOnly, "WinBack-Cloud")
+        'Buttons wieder aktivieren
+        btnResult_Akt.Enabled = True
+        btnDisconnect.Enabled = True
     End Sub
+
+    ''' <summary>
+    ''' Klick auf Button "Weiter". Abhängig vom aktuellen Tab wird die nächste Aktion eingeleitet
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub Btn_Weiter_Click(sender As Object, e As EventArgs) Handles btnFound_Vor.Click, btnShow_Vor.Click, btnResult_OK.Click
+        Select Case Wb_TabControl.SelectedTab.Name
+
+            'Anzeige der Such-Ergebnisse
+            Case tpCloudGefunden.Name
+                'ID in der Cloud aus Spalte(0) im Grid
+                Dim rid As String = CloudResultGrid.SelectedRows(0).Cells(0).Value
+                'Anzeige der Nährwert-Informationen
+                ChangeTab(tpCloudAnzeige, rid)
+
+            'Anzeige der Nährwerte und Allergene
+            Case tpCloudAnzeige.Name
+                'Anzeige Nährwerte/Allergen OK. Weiter mit Anzeige Deklarations-Bezeichnung
+                ChangeTab(tpCloudResult)
+
+            'Anzeige der Deklarations-Bezeichnung (intern/extern)
+            Case tpCloudResult.Name
+                'Verknüpfung zur Cloud speichern
+                wb_Rohstoffe_Shared.Edit_Leave(sender)
+                'Nährwerte/Allergene speichern
+                wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+                wb_Rohstoffe_Shared.RohStoff.MySqldbUpdate_Zutatenliste()
+                If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                    wb_Rohstoffe_Shared.RohStoff.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+                    wb_Rohstoffe_Shared.RohStoff.MsSqldbUpdate_Zutatenliste()
+                End If
+        End Select
+    End Sub
+
+    ''' <summary>
+    ''' Klick auf Button "Zurück". ab hängig vom aktuellen Tab wird zurückgeschaltet auf die vorherige Aktion
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub Btn_Zurueck_Click(sender As Object, e As EventArgs) Handles btnFound_Back.Click, btnShow_Back.Click, Btn_Result_Back.Click
+        Select Case Wb_TabControl.SelectedTab.Name
+
+            'Anzeige der Such-Ergebnisse
+            Case tpCloudGefunden.Name
+                'Zurück zur Eingabe der Suchkriterien
+                ChangeTab(tpCloudSuchen)
+
+            'Anzeige der Nährwerte und Allergene
+            Case tpCloudAnzeige.Name
+                'Ergebnis der Cloud-Suche anzeigen(Die Anzahl der Datensätze ist in cnt gespeichert)
+                ChangeTab(tpCloudGefunden, Nothing)
+
+            'Anzeige Deklarationsbezeichnung extern/intern
+            Case tpCloudResult.Name
+                'Anzeige der Nährwerte und Allergene
+                ChangeTab(tpCloudAnzeige, Nothing)
+
+        End Select
+    End Sub
+
 End Class

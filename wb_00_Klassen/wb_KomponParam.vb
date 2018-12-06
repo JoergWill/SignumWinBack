@@ -75,7 +75,11 @@ Public Class wb_KomponParam
 
     Public Property Wert As String
         Get
-            Return _Wert
+            If wb_KomponParam301_Global.IsAllergen(_ParamNr) Then
+                Return wb_Functions.AllergenToString(_Wert)
+            Else
+                Return wb_Functions.FormatStr(_Wert, 3)
+            End If
         End Get
         Set(value As String)
             _Wert = value

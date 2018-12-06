@@ -6,6 +6,7 @@
 Public Class wb_ChangeLog
     Private Changes As New System.Collections.Generic.List(Of wb_ChangeLogEintrag)
     Private _ChangeLogAktiv As Boolean = False
+    Private _ChangeLogChanged As Boolean = False
 
     ''' <summary>
     ''' Logging aktiv ja/nein
@@ -17,6 +18,20 @@ Public Class wb_ChangeLog
         End Get
         Set(value As Boolean)
             _ChangeLogAktiv = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Der letzte Aufruf von ChangeLog hat eine Differenz zwischen altem und neuem Wert ergeben.
+    ''' Der alte Wert wurde überschrieben (es hat eine Änderung stattgefunden - Update DB erforderlich.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property ChangeLogChanged As Boolean
+        Get
+            Return _ChangeLogChanged
+        End Get
+        Set(value As Boolean)
+            _ChangeLogChanged = value
         End Set
     End Property
 
@@ -46,6 +61,9 @@ Public Class wb_ChangeLog
             X.OldValue = OldValue
             X.NewValue = NewValue
             Changes.Add(X)
+            _ChangeLogChanged = True
+        Else
+            _ChangeLogChanged = False
         End If
         Return NewValue
     End Function

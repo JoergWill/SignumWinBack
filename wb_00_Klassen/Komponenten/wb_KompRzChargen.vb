@@ -221,7 +221,7 @@ Public Class wb_KompRzChargen
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub BtnRzpt_Click(sender As Object, e As EventArgs) Handles BtnRzpt.Click
+    Public Sub BtnRzpt_Click(sender As Object, e As EventArgs) Handles BtnRzpt.Click
         Dim RezeptAuswahl As New wb_Rezept_AuswahlListe
         If RezeptAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
             RzNr = RezeptAuswahl.RezeptNr
