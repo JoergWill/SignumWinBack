@@ -36,8 +36,16 @@ Partial Class wb_Rohstoffe_Details
         Me.Label4 = New System.Windows.Forms.Label()
         Me.tRohstoffPreis = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.tbGebindeGroesse = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.lblDeklIntern = New System.Windows.Forms.Label()
+        Me.lblDeklExtern = New System.Windows.Forms.Label()
+        Me.tbDeklarationIntern = New System.Windows.Forms.TextBox()
+        Me.tbDeklarationExtern = New System.Windows.Forms.TextBox()
+        Me.cbKeineDeklaration = New System.Windows.Forms.CheckBox()
         Me.cbRohstoffGrp2 = New WinBack.wb_ComboBox()
         Me.cbRohstoffGrp1 = New WinBack.wb_ComboBox()
+        Me.cbRezeptGewicht = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'Label14
@@ -90,6 +98,42 @@ Partial Class wb_Rohstoffe_Details
         resources.ApplyResources(Me.Label5, "Label5")
         Me.Label5.Name = "Label5"
         '
+        'tbGebindeGroesse
+        '
+        resources.ApplyResources(Me.tbGebindeGroesse, "tbGebindeGroesse")
+        Me.tbGebindeGroesse.Name = "tbGebindeGroesse"
+        '
+        'Label6
+        '
+        resources.ApplyResources(Me.Label6, "Label6")
+        Me.Label6.Name = "Label6"
+        '
+        'lblDeklIntern
+        '
+        resources.ApplyResources(Me.lblDeklIntern, "lblDeklIntern")
+        Me.lblDeklIntern.Name = "lblDeklIntern"
+        '
+        'lblDeklExtern
+        '
+        resources.ApplyResources(Me.lblDeklExtern, "lblDeklExtern")
+        Me.lblDeklExtern.Name = "lblDeklExtern"
+        '
+        'tbDeklarationIntern
+        '
+        resources.ApplyResources(Me.tbDeklarationIntern, "tbDeklarationIntern")
+        Me.tbDeklarationIntern.Name = "tbDeklarationIntern"
+        '
+        'tbDeklarationExtern
+        '
+        resources.ApplyResources(Me.tbDeklarationExtern, "tbDeklarationExtern")
+        Me.tbDeklarationExtern.Name = "tbDeklarationExtern"
+        '
+        'cbKeineDeklaration
+        '
+        resources.ApplyResources(Me.cbKeineDeklaration, "cbKeineDeklaration")
+        Me.cbKeineDeklaration.Name = "cbKeineDeklaration"
+        Me.cbKeineDeklaration.UseVisualStyleBackColor = True
+        '
         'cbRohstoffGrp2
         '
         Me.cbRohstoffGrp2.FormattingEnabled = True
@@ -102,10 +146,24 @@ Partial Class wb_Rohstoffe_Details
         resources.ApplyResources(Me.cbRohstoffGrp1, "cbRohstoffGrp1")
         Me.cbRohstoffGrp1.Name = "cbRohstoffGrp1"
         '
+        'cbRezeptGewicht
+        '
+        resources.ApplyResources(Me.cbRezeptGewicht, "cbRezeptGewicht")
+        Me.cbRezeptGewicht.Name = "cbRezeptGewicht"
+        Me.cbRezeptGewicht.UseVisualStyleBackColor = True
+        '
         'wb_Rohstoffe_Details
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.cbRezeptGewicht)
+        Me.Controls.Add(Me.cbKeineDeklaration)
+        Me.Controls.Add(Me.lblDeklIntern)
+        Me.Controls.Add(Me.lblDeklExtern)
+        Me.Controls.Add(Me.tbDeklarationIntern)
+        Me.Controls.Add(Me.tbDeklarationExtern)
+        Me.Controls.Add(Me.tbGebindeGroesse)
+        Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.tRohstoffPreis)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.tRohstoffKommentar)
@@ -136,4 +194,12 @@ Partial Class wb_Rohstoffe_Details
     Friend WithEvents Label4 As Windows.Forms.Label
     Friend WithEvents tRohstoffPreis As Windows.Forms.TextBox
     Friend WithEvents Label5 As Windows.Forms.Label
+    Friend WithEvents tbGebindeGroesse As Windows.Forms.TextBox
+    Friend WithEvents Label6 As Windows.Forms.Label
+    Friend WithEvents lblDeklIntern As Windows.Forms.Label
+    Friend WithEvents lblDeklExtern As Windows.Forms.Label
+    Friend WithEvents tbDeklarationIntern As Windows.Forms.TextBox
+    Friend WithEvents tbDeklarationExtern As Windows.Forms.TextBox
+    Friend WithEvents cbKeineDeklaration As Windows.Forms.CheckBox
+    Friend WithEvents cbRezeptGewicht As Windows.Forms.CheckBox
 End Class

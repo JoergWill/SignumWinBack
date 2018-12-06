@@ -127,7 +127,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="Label14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 128</value>
+    <value>9, 187</value>
   </data>
   <data name="Label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 13</value>
@@ -148,7 +148,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label14.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>18</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -157,7 +157,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 166</value>
+    <value>9, 227</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 13</value>
@@ -178,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>16</value>
   </data>
   <data name="tRohstoffName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -202,7 +202,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tRohstoffName.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>14</value>
   </data>
   <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -232,7 +232,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>15</value>
   </data>
   <data name="tRohstoffNummer.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 24</value>
@@ -253,7 +253,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tRohstoffNummer.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>12</value>
   </data>
   <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -283,7 +283,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>13</value>
   </data>
   <data name="tRohstoffKommentar.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -307,7 +307,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tRohstoffKommentar.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>10</value>
   </data>
   <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -337,10 +337,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label4.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>11</value>
   </data>
   <data name="tRohstoffPreis.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 94</value>
+    <value>12, 106</value>
   </data>
   <data name="tRohstoffPreis.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 20</value>
@@ -358,7 +358,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tRohstoffPreis.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>8</value>
   </data>
   <data name="Label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -367,7 +367,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 78</value>
+    <value>9, 90</value>
   </data>
   <data name="Label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -388,10 +388,205 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label5.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="tbGebindeGroesse.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 145</value>
+  </data>
+  <data name="tbGebindeGroesse.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 20</value>
+  </data>
+  <data name="tbGebindeGroesse.TabIndex" type="System.Int32, mscorlib">
+    <value>40</value>
+  </data>
+  <data name="&gt;&gt;tbGebindeGroesse.Name" xml:space="preserve">
+    <value>tbGebindeGroesse</value>
+  </data>
+  <data name="&gt;&gt;tbGebindeGroesse.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbGebindeGroesse.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tbGebindeGroesse.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="Label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 129</value>
+  </data>
+  <data name="Label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 13</value>
+  </data>
+  <data name="Label6.TabIndex" type="System.Int32, mscorlib">
+    <value>41</value>
+  </data>
+  <data name="Label6.Text" xml:space="preserve">
+    <value>Gebindegröße</value>
+  </data>
+  <data name="&gt;&gt;Label6.Name" xml:space="preserve">
+    <value>Label6</value>
+  </data>
+  <data name="&gt;&gt;Label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label6.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Label6.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="lblDeklIntern.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDeklIntern.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDeklIntern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>334, 187</value>
+  </data>
+  <data name="lblDeklIntern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 13</value>
+  </data>
+  <data name="lblDeklIntern.TabIndex" type="System.Int32, mscorlib">
+    <value>54</value>
+  </data>
+  <data name="lblDeklIntern.Text" xml:space="preserve">
+    <value>Deklaration intern</value>
+  </data>
+  <data name="&gt;&gt;lblDeklIntern.Name" xml:space="preserve">
+    <value>lblDeklIntern</value>
+  </data>
+  <data name="&gt;&gt;lblDeklIntern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDeklIntern.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblDeklIntern.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblDeklExtern.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDeklExtern.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDeklExtern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>334, 90</value>
+  </data>
+  <data name="lblDeklExtern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 13</value>
+  </data>
+  <data name="lblDeklExtern.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
+  </data>
+  <data name="lblDeklExtern.Text" xml:space="preserve">
+    <value>Deklaration</value>
+  </data>
+  <data name="&gt;&gt;lblDeklExtern.Name" xml:space="preserve">
+    <value>lblDeklExtern</value>
+  </data>
+  <data name="&gt;&gt;lblDeklExtern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDeklExtern.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblDeklExtern.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tbDeklarationIntern.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbDeklarationIntern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>332, 203</value>
+  </data>
+  <data name="tbDeklarationIntern.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tbDeklarationIntern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>319, 61</value>
+  </data>
+  <data name="tbDeklarationIntern.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.Name" xml:space="preserve">
+    <value>tbDeklarationIntern</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tbDeklarationExtern.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbDeklarationExtern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>332, 106</value>
+  </data>
+  <data name="tbDeklarationExtern.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tbDeklarationExtern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>319, 59</value>
+  </data>
+  <data name="tbDeklarationExtern.TabIndex" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationExtern.Name" xml:space="preserve">
+    <value>tbDeklarationExtern</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationExtern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationExtern.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationExtern.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="cbKeineDeklaration.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbKeineDeklaration.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbKeineDeklaration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>165, 106</value>
+  </data>
+  <data name="cbKeineDeklaration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>160, 17</value>
+  </data>
+  <data name="cbKeineDeklaration.TabIndex" type="System.Int32, mscorlib">
+    <value>55</value>
+  </data>
+  <data name="cbKeineDeklaration.Text" xml:space="preserve">
+    <value>Rohstoff wird nicht deklariert</value>
+  </data>
+  <data name="&gt;&gt;cbKeineDeklaration.Name" xml:space="preserve">
+    <value>cbKeineDeklaration</value>
+  </data>
+  <data name="&gt;&gt;cbKeineDeklaration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbKeineDeklaration.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cbKeineDeklaration.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="cbRohstoffGrp2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 182</value>
+    <value>12, 243</value>
   </data>
   <data name="cbRohstoffGrp2.Size" type="System.Drawing.Size, System.Drawing">
     <value>310, 21</value>
@@ -409,10 +604,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbRohstoffGrp2.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>17</value>
   </data>
   <data name="cbRohstoffGrp1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 144</value>
+    <value>12, 203</value>
   </data>
   <data name="cbRohstoffGrp1.Size" type="System.Drawing.Size, System.Drawing">
     <value>310, 21</value>
@@ -430,7 +625,34 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbRohstoffGrp1.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>19</value>
+  </data>
+  <data name="cbRezeptGewicht.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbRezeptGewicht.Location" type="System.Drawing.Point, System.Drawing">
+    <value>165, 125</value>
+  </data>
+  <data name="cbRezeptGewicht.Size" type="System.Drawing.Size, System.Drawing">
+    <value>160, 40</value>
+  </data>
+  <data name="cbRezeptGewicht.TabIndex" type="System.Int32, mscorlib">
+    <value>56</value>
+  </data>
+  <data name="cbRezeptGewicht.Text" xml:space="preserve">
+    <value>zählt nicht zur Rezept- Gesamtmenge</value>
+  </data>
+  <data name="&gt;&gt;cbRezeptGewicht.Name" xml:space="preserve">
+    <value>cbRezeptGewicht</value>
+  </data>
+  <data name="&gt;&gt;cbRezeptGewicht.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbRezeptGewicht.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cbRezeptGewicht.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

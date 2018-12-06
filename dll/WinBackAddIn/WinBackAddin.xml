@@ -5416,11 +5416,33 @@ Public Const MFF_Wissenswertes = 213
  Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
  </summary>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Details.ShowDeklaration">
+ <summary>
+ Anzeige der Deklarations-Felder. Wenn der Haken bei "Rohstoff wird nicht deklariert" gesetzt ist,
+ werden die Felder ausgeblendet
+ </summary>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Details.DataHasChanged(System.Object,System.EventArgs)">
  <summary>
  Die Daten in den Eingabe-Feldern (Nummer/Text/Kommentar) haben sich geändert)
  Wird aufgerufen durch [Textfeld].Leave(). Aktualisiert die Datenfelder in wb_Rohstoff_Global und löst
  dann den Event Edit_Leave() aus.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Details.tbDeklarationExtern_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Das Eingabefeld "externe Deklaration" wurde verlassen. Der Inhalt wird in die
+ Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Details.tbDeklarationIntern_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Das Eingabefeld "interne Deklaration" wurde verlassen. Der Inhalt wird in die
+ Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

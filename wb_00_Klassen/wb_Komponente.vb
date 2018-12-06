@@ -22,6 +22,9 @@ Public Class wb_Komponente
     Private KA_Preis As String
     Private KA_Grp1 As Integer
     Private KA_Grp2 As Integer
+    Private KA_Charge_Opt_kg As String
+    Private KA_zaehlt_zu_RZ_Gesamtmenge As String
+
     Private KO_DeklBezeichnungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichnungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
 
@@ -82,6 +85,8 @@ Public Class wb_Komponente
         KO_Bezeichnung = ""
         KO_Kommentar = ""
         KA_Kurzname = ""
+        KA_Charge_Opt_kg = ""
+        KA_zaehlt_zu_RZ_Gesamtmenge = Nothing
 
         KA_Rz_Nr = wb_Global.UNDEFINED
         _RezeptNummer = Nothing
@@ -144,7 +149,10 @@ Public Class wb_Komponente
         Set(value As String)
             'Änderungen loggen
             KO_Bezeichnung = ChangeLogAdd(LogType.Prm, Parameter.Tx_Bezeichnung, KO_Bezeichnung, wb_Functions.XRemoveSonderZeichen(value))
-            _DataHasChanged = True
+            'Flag setzen wenn sich die Daten geändert haben
+            If ChangeLogChanged Then
+                _DataHasChanged = True
+            End If
         End Set
         Get
             Return KO_Bezeichnung
@@ -155,7 +163,10 @@ Public Class wb_Komponente
         Set(value As String)
             'Änderungen loggen
             KO_Kommentar = ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KO_Kommentar, wb_Functions.XRemoveSonderZeichen(value))
-            _DataHasChanged = True
+            'Flag setzen wenn sich die Daten geändert haben
+            If ChangeLogChanged Then
+                _DataHasChanged = True
+            End If
         End Set
         Get
             Return KO_Kommentar
@@ -166,6 +177,10 @@ Public Class wb_Komponente
         Set(value As String)
             'Änderungen loggen
             KA_Kurzname = ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KA_Kurzname, wb_Functions.XRemoveSonderZeichen(value))
+            'Flag setzen wenn sich die Daten geändert haben
+            If ChangeLogChanged Then
+                _DataHasChanged = True
+            End If
         End Set
         Get
             Return KA_Kurzname
@@ -186,6 +201,7 @@ Public Class wb_Komponente
     Public Property Gruppe1 As Integer
         Set(value As Integer)
             KA_Grp1 = value
+            _DataHasChanged = True
         End Set
         Get
             Return KA_Grp1
@@ -195,9 +211,37 @@ Public Class wb_Komponente
     Public Property Gruppe2 As Integer
         Set(value As Integer)
             KA_Grp2 = value
+            _DataHasChanged = True
         End Set
         Get
             Return KA_Grp2
+        End Get
+    End Property
+
+    Public Property GebindeGroesse As String
+        Set(value As String)
+            KA_Charge_Opt_kg = value
+            _DataHasChanged = True
+        End Set
+        Get
+            Return wb_Functions.FormatStr(KA_Charge_Opt_kg, 3)
+        End Get
+    End Property
+
+    Public Property ZaehltNichtZumRezeptGewicht As Boolean
+        Set(value As Boolean)
+            If value Then
+                KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht
+            Else
+                KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltZumRezeptGewicht
+            End If
+        End Set
+        Get
+            If KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht Then
+                Return True
+            Else
+                Return False
+            End If
         End Get
     End Property
 
@@ -397,6 +441,9 @@ Public Class wb_Komponente
         KA_Rz_Nr = dataGridView.Field("KA_Rz_Nr")
         KA_Grp1 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp1"))
         KA_Grp2 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp2"))
+        KA_Charge_Opt_kg = dataGridView.Field("KA_Charge_Opt_kg")
+        KA_zaehlt_zu_RZ_Gesamtmenge = dataGridView.Field("KA_zaehlt_zu_RZ_Gesamtmenge")
+
     End Sub
 
     Friend Function SaveData(dataGridView As wb_DataGridView) As Boolean
@@ -410,6 +457,9 @@ Public Class wb_Komponente
             dataGridView.Field("KA_Rz_Nr") = KA_Rz_Nr
             dataGridView.Field("KA_Grp1") = KA_Grp1
             dataGridView.Field("KA_Grp2") = KA_Grp2
+            dataGridView.Field("KA_Charge_Opt_kg") = KA_Charge_Opt_kg
+            dataGridView.Field("KA_zaehlt_zu_RZ_Gesamtmenge") = KA_zaehlt_zu_RZ_Gesamtmenge
+
             _DataHasChanged = False
             Return True
         Else
@@ -1205,6 +1255,11 @@ Public Class wb_Komponente
                     'If Type = KomponTypen.KO_TYPE_ARTIKEL Then
                     ArtikelChargen.StkGewicht = Value
                     'End If
+
+                'Flag zählt zum Rezeptgewicht
+                Case "KA_zaehlt_zu_RZ_Gesamtmenge"
+                    KA_zaehlt_zu_RZ_Gesamtmenge = Value
+
             End Select
 
             'Artikel - Chargengrößen in Stück
@@ -1223,7 +1278,7 @@ Public Class wb_Komponente
                 End Select
             End If
 
-            'Rohstoffe - Chargengrößen in kg
+            'Rohstoffe - Chargengrößen in kg (wenn mit Rezept verknüpft)
             If Type = KomponTypen.KO_TYPE_HANDKOMPONENTE Or Type = KomponTypen.KO_TYPE_AUTOKOMPONENTE Then
 
                 Select Case Name
@@ -1236,6 +1291,7 @@ Public Class wb_Komponente
                 'Optimal-Charge
                     Case "KA_Charge_Opt_kg"
                         ArtikelChargen.OptCharge.MengeInkg = Value
+                        KA_Charge_Opt_kg = Value
                 End Select
             End If
 

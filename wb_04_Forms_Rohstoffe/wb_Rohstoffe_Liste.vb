@@ -93,6 +93,8 @@ Public Class wb_Rohstoffe_Liste
         RohStoff.MySQLdbRead(RohStoff.Nr)
         'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
         Liste_Click(Nothing)
+        'Nach dem Update der Detailfenster wird der Focus wieder zurückgesetzt (Eingabe Suchmaske)
+        DataGridView.Focus()
     End Sub
 
     'Anstelle des Feldes KO_Nr wird das Feld LG_aktiv ausgegeben
