@@ -23,7 +23,7 @@
     'Symbol Rezept-im-Rezept
     Public Const RezeptImRezept = "®"
     'Text Rohstoff wird nicht deklariert
-    Public Const FlagKeineDeklaration = "NODEKL"
+    Public Const FlagKeineDeklaration = "NO DECLARATION"
     'Flag Rohstoff zählt nicht zum Rezeptgewicht
     Public Const ZaehltNichtZumRezeptGewicht = "0"
     Public Const ZaehltZumRezeptGewicht = "1"

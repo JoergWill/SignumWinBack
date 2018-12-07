@@ -35,8 +35,6 @@
     Public Const sqlDelKompHinweise = "DELETE FROM Hinweise2 WHERE H2_Id1= [0]"
     'Löschen Rohstoff/Artikel in RohParams
     Public Const sqlDelRohParams = "DELETE FROM RohParams WHERE RP_Ko_NR = [0]"
-    'Löschen Rohstoff/Artikel in Lagerorte
-    Public Const sqlDelLagerOrte = "DELETE FROM Lagerorte WHERE LG_Ort = '[0]'"
     'Löschen Rohstoff/Artikel in Lieferungen
     Public Const sqlDelLieferungen = "DELETE FROM Lieferungen WHERE LF_LG_Ort = '[0]'"
 

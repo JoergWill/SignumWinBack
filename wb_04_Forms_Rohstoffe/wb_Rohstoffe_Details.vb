@@ -24,17 +24,38 @@ Public Class wb_Rohstoffe_Details
         tRohstoffNummer.Text = RohStoff.Nummer
         tRohstoffName.Text = RohStoff.Bezeichnung
         tRohstoffKommentar.Text = RohStoff.Kommentar
-        tRohstoffPreis.Text = RohStoff.Preis
-        tbGebindeGroesse.Text = RohStoff.GebindeGroesse
 
-        'Anzeige Zutatenliste und Bezeichnung
-        ShowDeklaration()
-        'Flag zählt nicht zum Rezeptgewicht
-        cbRezeptGewicht.Checked = RohStoff.ZaehltNichtZumRezeptGewicht
+        If wb_Functions.TypeIstSollMenge(RohStoff.Type, 1) Then
+            'Panel Detail-Daten sichtbar
+            pnlDetails.Visible = True
 
-        'Auswahlfelder Rohstoff-Gruppen
-        cbRohstoffGrp1.SetTextFromKey(RohStoff.Gruppe1)
-        cbRohstoffGrp2.SetTextFromKey(RohStoff.Gruppe2)
+            'Preis und Gebindegröße
+            tRohstoffPreis.Text = RohStoff.Preis
+            tbGebindeGroesse.Text = RohStoff.GebindeGroesse
+
+            'Lagerbestand und Mindestmenge
+            tbBilanzmenge.Text = RohStoff.Bilanzmenge
+            tbMindestMenge.Text = RohStoff.MindestMenge
+            'wenn die Mindestmenge unterschritten ist, rot markieren
+            If RohStoff.MindestmengeUnterschritten Then
+                tbBilanzmenge.BackColor = Drawing.Color.Red
+            Else
+                tbBilanzmenge.BackColor = Drawing.Color.LightGray
+            End If
+
+            'Anzeige Zutatenliste und Bezeichnung
+            ShowDeklaration()
+            'Flag zählt nicht zum Rezeptgewicht
+            cbRezeptGewicht.Checked = RohStoff.ZaehltNichtZumRezeptGewicht
+
+            'Auswahlfelder Rohstoff-Gruppen
+            cbRohstoffGrp1.SetTextFromKey(RohStoff.Gruppe1)
+            cbRohstoffGrp2.SetTextFromKey(RohStoff.Gruppe2)
+        Else
+            'Panel Detail-Daten ausblenden
+            pnlDetails.Visible = False
+        End If
+
     End Sub
 
     ''' <summary>
@@ -66,7 +87,7 @@ Public Class wb_Rohstoffe_Details
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tRohstoffPreis.Leave, cbRohstoffGrp2.Leave, cbRohstoffGrp1.Leave, tbGebindeGroesse.Leave, cbRezeptGewicht.Click
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave
         'Bezeichnungstexte
         RohStoff.Bezeichnung = tRohstoffName.Text
         RohStoff.Kommentar = tRohstoffKommentar.Text
@@ -84,12 +105,22 @@ Public Class wb_Rohstoffe_Details
     End Sub
 
     ''' <summary>
+    ''' Das Eingabefeld "Mindestmenge" wurde verlassen. Der Inhalt wird in die
+    ''' Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub tbMindestMenge_Leave(sender As Object, e As EventArgs)
+        wb_Rohstoffe_Shared.RohStoff.MindestMenge = tbMindestMenge.Text
+    End Sub
+
+    ''' <summary>
     ''' Das Eingabefeld "externe Deklaration" wurde verlassen. Der Inhalt wird in die
     ''' Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub tbDeklarationExtern_Leave(sender As Object, e As EventArgs) Handles tbDeklarationExtern.Leave
+    Private Sub tbDeklarationExtern_Leave(sender As Object, e As EventArgs)
         wb_Rohstoffe_Shared.RohStoff.DeklBezeichungExtern = tbDeklarationExtern.Text
     End Sub
 
@@ -99,11 +130,11 @@ Public Class wb_Rohstoffe_Details
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub tbDeklarationIntern_Leave(sender As Object, e As EventArgs) Handles tbDeklarationIntern.Leave
+    Private Sub tbDeklarationIntern_Leave(sender As Object, e As EventArgs)
         wb_Rohstoffe_Shared.RohStoff.DeklBezeichungIntern = tbDeklarationIntern.Text
     End Sub
 
-    Private Sub cbKeineDeklaration_Click(sender As Object, e As EventArgs) Handles cbKeineDeklaration.Click
+    Private Sub cbKeineDeklaration_Click(sender As Object, e As EventArgs)
         If cbKeineDeklaration.Checked Then
             'alten DeklarationsText merken(sicherheitshalber)
             If tbDeklarationExtern.Text <> wb_Global.FlagKeineDeklaration Then
@@ -123,4 +154,5 @@ Public Class wb_Rohstoffe_Details
             ShowDeklaration()
         End If
     End Sub
+
 End Class

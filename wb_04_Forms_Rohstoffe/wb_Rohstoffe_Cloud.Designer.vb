@@ -41,6 +41,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.lblCloudID = New System.Windows.Forms.Label()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tpCloudSuchen = New System.Windows.Forms.TabPage()
+        Me.BtnRezept = New System.Windows.Forms.Button()
         Me.btnMail = New System.Windows.Forms.Button()
         Me.lblHilfeText = New System.Windows.Forms.Label()
         Me.tSuchtextLieferant = New System.Windows.Forms.TextBox()
@@ -71,7 +72,6 @@ Partial Class wb_Rohstoffe_Cloud
         Me.KompRzChargen = New WinBack.wb_KompRzChargen()
         Me.tpKompType = New System.Windows.Forms.TabPage()
         Me.lblKeineNwt = New System.Windows.Forms.Label()
-        Me.BtnRezept = New System.Windows.Forms.Button()
         Me.Wb_TabControl.SuspendLayout()
         Me.tpCloudSuchen.SuspendLayout()
         Me.tpCloudGefunden.SuspendLayout()
@@ -83,7 +83,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         'tRohstoffNummer
         '
-        Me.tRohstoffNummer.Location = New System.Drawing.Point(20, 27)
+        Me.tRohstoffNummer.Location = New System.Drawing.Point(12, 24)
         Me.tRohstoffNummer.Name = "tRohstoffNummer"
         Me.tRohstoffNummer.ReadOnly = True
         Me.tRohstoffNummer.Size = New System.Drawing.Size(136, 20)
@@ -93,7 +93,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         Me.lblNummer.AutoSize = True
         Me.lblNummer.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblNummer.Location = New System.Drawing.Point(22, 11)
+        Me.lblNummer.Location = New System.Drawing.Point(15, 8)
         Me.lblNummer.Name = "lblNummer"
         Me.lblNummer.Size = New System.Drawing.Size(46, 13)
         Me.lblNummer.TabIndex = 48
@@ -103,17 +103,17 @@ Partial Class wb_Rohstoffe_Cloud
         '
         Me.tRohstoffName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tRohstoffName.Location = New System.Drawing.Point(164, 27)
+        Me.tRohstoffName.Location = New System.Drawing.Point(165, 24)
         Me.tRohstoffName.Name = "tRohstoffName"
         Me.tRohstoffName.ReadOnly = True
-        Me.tRohstoffName.Size = New System.Drawing.Size(525, 20)
+        Me.tRohstoffName.Size = New System.Drawing.Size(556, 20)
         Me.tRohstoffName.TabIndex = 1
         '
         'lblBezeichnung
         '
         Me.lblBezeichnung.AutoSize = True
         Me.lblBezeichnung.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblBezeichnung.Location = New System.Drawing.Point(166, 11)
+        Me.lblBezeichnung.Location = New System.Drawing.Point(165, 8)
         Me.lblBezeichnung.Name = "lblBezeichnung"
         Me.lblBezeichnung.Size = New System.Drawing.Size(112, 13)
         Me.lblBezeichnung.TabIndex = 46
@@ -121,7 +121,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         'tCloudID
         '
-        Me.tCloudID.Location = New System.Drawing.Point(20, 66)
+        Me.tCloudID.Location = New System.Drawing.Point(12, 63)
         Me.tCloudID.Name = "tCloudID"
         Me.tCloudID.ReadOnly = True
         Me.tCloudID.Size = New System.Drawing.Size(136, 20)
@@ -131,7 +131,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         Me.lblCloudID.AutoSize = True
         Me.lblCloudID.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblCloudID.Location = New System.Drawing.Point(21, 50)
+        Me.lblCloudID.Location = New System.Drawing.Point(14, 47)
         Me.lblCloudID.Name = "lblCloudID"
         Me.lblCloudID.Size = New System.Drawing.Size(48, 13)
         Me.lblCloudID.TabIndex = 53
@@ -173,6 +173,19 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tpCloudSuchen.Size = New System.Drawing.Size(724, 352)
         Me.tpCloudSuchen.TabIndex = 0
         Me.tpCloudSuchen.Text = "CloudSearch"
+        '
+        'BtnRezept
+        '
+        Me.BtnRezept.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnRezept.Image = Global.WinBack.My.Resources.Resources.RezeptListe_32x32
+        Me.BtnRezept.Location = New System.Drawing.Point(541, 282)
+        Me.BtnRezept.Name = "BtnRezept"
+        Me.BtnRezept.Size = New System.Drawing.Size(138, 62)
+        Me.BtnRezept.TabIndex = 53
+        Me.BtnRezept.Text = "mit Rezept verknüpfen"
+        Me.BtnRezept.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnRezept.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.BtnRezept.UseVisualStyleBackColor = True
         '
         'btnMail
         '
@@ -392,7 +405,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         Me.lblDeklIntern.AutoSize = True
         Me.lblDeklIntern.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblDeklIntern.Location = New System.Drawing.Point(17, 74)
+        Me.lblDeklIntern.Location = New System.Drawing.Point(17, 129)
         Me.lblDeklIntern.Name = "lblDeklIntern"
         Me.lblDeklIntern.Size = New System.Drawing.Size(90, 13)
         Me.lblDeklIntern.TabIndex = 50
@@ -402,7 +415,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         Me.lblDeklExtern.AutoSize = True
         Me.lblDeklExtern.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblDeklExtern.Location = New System.Drawing.Point(17, 3)
+        Me.lblDeklExtern.Location = New System.Drawing.Point(17, 13)
         Me.lblDeklExtern.Name = "lblDeklExtern"
         Me.lblDeklExtern.Size = New System.Drawing.Size(61, 13)
         Me.lblDeklExtern.TabIndex = 49
@@ -410,18 +423,22 @@ Partial Class wb_Rohstoffe_Cloud
         '
         'tbDeklarationIntern
         '
-        Me.tbDeklarationIntern.Location = New System.Drawing.Point(15, 89)
+        Me.tbDeklarationIntern.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tbDeklarationIntern.Location = New System.Drawing.Point(15, 144)
         Me.tbDeklarationIntern.Multiline = True
         Me.tbDeklarationIntern.Name = "tbDeklarationIntern"
-        Me.tbDeklarationIntern.Size = New System.Drawing.Size(319, 52)
+        Me.tbDeklarationIntern.Size = New System.Drawing.Size(467, 75)
         Me.tbDeklarationIntern.TabIndex = 45
         '
         'tbDeklarationExtern
         '
-        Me.tbDeklarationExtern.Location = New System.Drawing.Point(15, 19)
+        Me.tbDeklarationExtern.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tbDeklarationExtern.Location = New System.Drawing.Point(15, 29)
         Me.tbDeklarationExtern.Multiline = True
         Me.tbDeklarationExtern.Name = "tbDeklarationExtern"
-        Me.tbDeklarationExtern.Size = New System.Drawing.Size(319, 52)
+        Me.tbDeklarationExtern.Size = New System.Drawing.Size(467, 75)
         Me.tbDeklarationExtern.TabIndex = 44
         '
         'btnResult_OK
@@ -439,7 +456,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         Me.btnResult_Akt.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnResult_Akt.Image = Global.WinBack.My.Resources.Resources.HakenGrn_16x16
-        Me.btnResult_Akt.Location = New System.Drawing.Point(541, 6)
+        Me.btnResult_Akt.Location = New System.Drawing.Point(541, 29)
         Me.btnResult_Akt.Name = "btnResult_Akt"
         Me.btnResult_Akt.Size = New System.Drawing.Size(138, 62)
         Me.btnResult_Akt.TabIndex = 5
@@ -451,7 +468,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         Me.btnDisconnect.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnDisconnect.Image = Global.WinBack.My.Resources.Resources.IconDelete_24x24
-        Me.btnDisconnect.Location = New System.Drawing.Point(541, 97)
+        Me.btnDisconnect.Location = New System.Drawing.Point(541, 122)
         Me.btnDisconnect.Name = "btnDisconnect"
         Me.btnDisconnect.Size = New System.Drawing.Size(138, 62)
         Me.btnDisconnect.TabIndex = 4
@@ -548,19 +565,6 @@ Partial Class wb_Rohstoffe_Cloud
         Me.lblKeineNwt.Size = New System.Drawing.Size(477, 219)
         Me.lblKeineNwt.TabIndex = 52
         Me.lblKeineNwt.Text = "Kein Rohstoff"
-        '
-        'BtnRezept
-        '
-        Me.BtnRezept.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnRezept.Image = Global.WinBack.My.Resources.Resources.RezeptListe_32x32
-        Me.BtnRezept.Location = New System.Drawing.Point(541, 282)
-        Me.BtnRezept.Name = "BtnRezept"
-        Me.BtnRezept.Size = New System.Drawing.Size(138, 62)
-        Me.BtnRezept.TabIndex = 53
-        Me.BtnRezept.Text = "mit Rezept verknüpfen"
-        Me.BtnRezept.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.BtnRezept.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.BtnRezept.UseVisualStyleBackColor = True
         '
         'wb_Rohstoffe_Cloud
         '

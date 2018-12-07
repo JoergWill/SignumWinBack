@@ -26,37 +26,37 @@ Partial Class wb_Rohstoffe_Details
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rohstoffe_Details))
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.tRohstoffName = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.tRohstoffNummer = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.tRohstoffKommentar = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.tRohstoffPreis = New System.Windows.Forms.TextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.tbGebindeGroesse = New System.Windows.Forms.TextBox()
-        Me.Label6 = New System.Windows.Forms.Label()
+        Me.pnlDetails = New System.Windows.Forms.Panel()
+        Me.eMindestmenge = New System.Windows.Forms.Label()
+        Me.eBilanzmenge = New System.Windows.Forms.Label()
+        Me.eGebindegroesse = New System.Windows.Forms.Label()
+        Me.ePreis = New System.Windows.Forms.Label()
+        Me.tbMindestMenge = New System.Windows.Forms.TextBox()
+        Me.lbMindestMenge = New System.Windows.Forms.Label()
+        Me.tbBilanzmenge = New System.Windows.Forms.TextBox()
+        Me.lbBilanzMenge = New System.Windows.Forms.Label()
+        Me.cbRezeptGewicht = New System.Windows.Forms.CheckBox()
+        Me.cbKeineDeklaration = New System.Windows.Forms.CheckBox()
         Me.lblDeklIntern = New System.Windows.Forms.Label()
         Me.lblDeklExtern = New System.Windows.Forms.Label()
         Me.tbDeklarationIntern = New System.Windows.Forms.TextBox()
         Me.tbDeklarationExtern = New System.Windows.Forms.TextBox()
-        Me.cbKeineDeklaration = New System.Windows.Forms.CheckBox()
+        Me.tbGebindeGroesse = New System.Windows.Forms.TextBox()
+        Me.lblGebindegroesse = New System.Windows.Forms.Label()
+        Me.tRohstoffPreis = New System.Windows.Forms.TextBox()
+        Me.lblPreis = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label14 = New System.Windows.Forms.Label()
         Me.cbRohstoffGrp2 = New WinBack.wb_ComboBox()
         Me.cbRohstoffGrp1 = New WinBack.wb_ComboBox()
-        Me.cbRezeptGewicht = New System.Windows.Forms.CheckBox()
+        Me.pnlDetails.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'Label14
-        '
-        resources.ApplyResources(Me.Label14, "Label14")
-        Me.Label14.Name = "Label14"
-        '
-        'Label1
-        '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
         '
         'tRohstoffName
         '
@@ -72,6 +72,8 @@ Partial Class wb_Rohstoffe_Details
         '
         resources.ApplyResources(Me.tRohstoffNummer, "tRohstoffNummer")
         Me.tRohstoffNummer.Name = "tRohstoffNummer"
+        Me.tRohstoffNummer.ReadOnly = True
+        Me.tRohstoffNummer.TabStop = False
         '
         'Label3
         '
@@ -88,25 +90,88 @@ Partial Class wb_Rohstoffe_Details
         resources.ApplyResources(Me.Label4, "Label4")
         Me.Label4.Name = "Label4"
         '
-        'tRohstoffPreis
+        'pnlDetails
         '
-        resources.ApplyResources(Me.tRohstoffPreis, "tRohstoffPreis")
-        Me.tRohstoffPreis.Name = "tRohstoffPreis"
+        resources.ApplyResources(Me.pnlDetails, "pnlDetails")
+        Me.pnlDetails.Controls.Add(Me.eMindestmenge)
+        Me.pnlDetails.Controls.Add(Me.eBilanzmenge)
+        Me.pnlDetails.Controls.Add(Me.eGebindegroesse)
+        Me.pnlDetails.Controls.Add(Me.ePreis)
+        Me.pnlDetails.Controls.Add(Me.tbMindestMenge)
+        Me.pnlDetails.Controls.Add(Me.lbMindestMenge)
+        Me.pnlDetails.Controls.Add(Me.tbBilanzmenge)
+        Me.pnlDetails.Controls.Add(Me.lbBilanzMenge)
+        Me.pnlDetails.Controls.Add(Me.cbRezeptGewicht)
+        Me.pnlDetails.Controls.Add(Me.cbKeineDeklaration)
+        Me.pnlDetails.Controls.Add(Me.lblDeklIntern)
+        Me.pnlDetails.Controls.Add(Me.lblDeklExtern)
+        Me.pnlDetails.Controls.Add(Me.tbDeklarationIntern)
+        Me.pnlDetails.Controls.Add(Me.tbDeklarationExtern)
+        Me.pnlDetails.Controls.Add(Me.tbGebindeGroesse)
+        Me.pnlDetails.Controls.Add(Me.lblGebindegroesse)
+        Me.pnlDetails.Controls.Add(Me.tRohstoffPreis)
+        Me.pnlDetails.Controls.Add(Me.lblPreis)
+        Me.pnlDetails.Controls.Add(Me.Label1)
+        Me.pnlDetails.Controls.Add(Me.cbRohstoffGrp2)
+        Me.pnlDetails.Controls.Add(Me.Label14)
+        Me.pnlDetails.Controls.Add(Me.cbRohstoffGrp1)
+        Me.pnlDetails.Name = "pnlDetails"
         '
-        'Label5
+        'eMindestmenge
         '
-        resources.ApplyResources(Me.Label5, "Label5")
-        Me.Label5.Name = "Label5"
+        resources.ApplyResources(Me.eMindestmenge, "eMindestmenge")
+        Me.eMindestmenge.Name = "eMindestmenge"
         '
-        'tbGebindeGroesse
+        'eBilanzmenge
         '
-        resources.ApplyResources(Me.tbGebindeGroesse, "tbGebindeGroesse")
-        Me.tbGebindeGroesse.Name = "tbGebindeGroesse"
+        resources.ApplyResources(Me.eBilanzmenge, "eBilanzmenge")
+        Me.eBilanzmenge.Name = "eBilanzmenge"
         '
-        'Label6
+        'eGebindegroesse
         '
-        resources.ApplyResources(Me.Label6, "Label6")
-        Me.Label6.Name = "Label6"
+        resources.ApplyResources(Me.eGebindegroesse, "eGebindegroesse")
+        Me.eGebindegroesse.Name = "eGebindegroesse"
+        '
+        'ePreis
+        '
+        resources.ApplyResources(Me.ePreis, "ePreis")
+        Me.ePreis.Name = "ePreis"
+        '
+        'tbMindestMenge
+        '
+        resources.ApplyResources(Me.tbMindestMenge, "tbMindestMenge")
+        Me.tbMindestMenge.Name = "tbMindestMenge"
+        '
+        'lbMindestMenge
+        '
+        resources.ApplyResources(Me.lbMindestMenge, "lbMindestMenge")
+        Me.lbMindestMenge.Name = "lbMindestMenge"
+        '
+        'tbBilanzmenge
+        '
+        resources.ApplyResources(Me.tbBilanzmenge, "tbBilanzmenge")
+        Me.tbBilanzmenge.Name = "tbBilanzmenge"
+        Me.tbBilanzmenge.ReadOnly = True
+        Me.tbBilanzmenge.TabStop = False
+        '
+        'lbBilanzMenge
+        '
+        resources.ApplyResources(Me.lbBilanzMenge, "lbBilanzMenge")
+        Me.lbBilanzMenge.Name = "lbBilanzMenge"
+        '
+        'cbRezeptGewicht
+        '
+        resources.ApplyResources(Me.cbRezeptGewicht, "cbRezeptGewicht")
+        Me.cbRezeptGewicht.Name = "cbRezeptGewicht"
+        Me.cbRezeptGewicht.TabStop = False
+        Me.cbRezeptGewicht.UseVisualStyleBackColor = True
+        '
+        'cbKeineDeklaration
+        '
+        resources.ApplyResources(Me.cbKeineDeklaration, "cbKeineDeklaration")
+        Me.cbKeineDeklaration.Name = "cbKeineDeklaration"
+        Me.cbKeineDeklaration.TabStop = False
+        Me.cbKeineDeklaration.UseVisualStyleBackColor = True
         '
         'lblDeklIntern
         '
@@ -128,11 +193,35 @@ Partial Class wb_Rohstoffe_Details
         resources.ApplyResources(Me.tbDeklarationExtern, "tbDeklarationExtern")
         Me.tbDeklarationExtern.Name = "tbDeklarationExtern"
         '
-        'cbKeineDeklaration
+        'tbGebindeGroesse
         '
-        resources.ApplyResources(Me.cbKeineDeklaration, "cbKeineDeklaration")
-        Me.cbKeineDeklaration.Name = "cbKeineDeklaration"
-        Me.cbKeineDeklaration.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.tbGebindeGroesse, "tbGebindeGroesse")
+        Me.tbGebindeGroesse.Name = "tbGebindeGroesse"
+        '
+        'lblGebindegroesse
+        '
+        resources.ApplyResources(Me.lblGebindegroesse, "lblGebindegroesse")
+        Me.lblGebindegroesse.Name = "lblGebindegroesse"
+        '
+        'tRohstoffPreis
+        '
+        resources.ApplyResources(Me.tRohstoffPreis, "tRohstoffPreis")
+        Me.tRohstoffPreis.Name = "tRohstoffPreis"
+        '
+        'lblPreis
+        '
+        resources.ApplyResources(Me.lblPreis, "lblPreis")
+        Me.lblPreis.Name = "lblPreis"
+        '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
+        'Label14
+        '
+        resources.ApplyResources(Me.Label14, "Label14")
+        Me.Label14.Name = "Label14"
         '
         'cbRohstoffGrp2
         '
@@ -146,60 +235,51 @@ Partial Class wb_Rohstoffe_Details
         resources.ApplyResources(Me.cbRohstoffGrp1, "cbRohstoffGrp1")
         Me.cbRohstoffGrp1.Name = "cbRohstoffGrp1"
         '
-        'cbRezeptGewicht
-        '
-        resources.ApplyResources(Me.cbRezeptGewicht, "cbRezeptGewicht")
-        Me.cbRezeptGewicht.Name = "cbRezeptGewicht"
-        Me.cbRezeptGewicht.UseVisualStyleBackColor = True
-        '
         'wb_Rohstoffe_Details
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.cbRezeptGewicht)
-        Me.Controls.Add(Me.cbKeineDeklaration)
-        Me.Controls.Add(Me.lblDeklIntern)
-        Me.Controls.Add(Me.lblDeklExtern)
-        Me.Controls.Add(Me.tbDeklarationIntern)
-        Me.Controls.Add(Me.tbDeklarationExtern)
-        Me.Controls.Add(Me.tbGebindeGroesse)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.tRohstoffPreis)
-        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.pnlDetails)
         Me.Controls.Add(Me.tRohstoffKommentar)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.tRohstoffNummer)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.tRohstoffName)
         Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.cbRohstoffGrp2)
-        Me.Controls.Add(Me.Label14)
-        Me.Controls.Add(Me.cbRohstoffGrp1)
         Me.Name = "wb_Rohstoffe_Details"
+        Me.pnlDetails.ResumeLayout(False)
+        Me.pnlDetails.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents Label14 As Windows.Forms.Label
-    Friend WithEvents cbRohstoffGrp1 As wb_ComboBox
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents cbRohstoffGrp2 As wb_ComboBox
     Friend WithEvents tRohstoffName As Windows.Forms.TextBox
     Friend WithEvents Label2 As Windows.Forms.Label
     Friend WithEvents tRohstoffNummer As Windows.Forms.TextBox
     Friend WithEvents Label3 As Windows.Forms.Label
     Friend WithEvents tRohstoffKommentar As Windows.Forms.TextBox
     Friend WithEvents Label4 As Windows.Forms.Label
-    Friend WithEvents tRohstoffPreis As Windows.Forms.TextBox
-    Friend WithEvents Label5 As Windows.Forms.Label
-    Friend WithEvents tbGebindeGroesse As Windows.Forms.TextBox
-    Friend WithEvents Label6 As Windows.Forms.Label
+    Friend WithEvents pnlDetails As Windows.Forms.Panel
+    Friend WithEvents eMindestmenge As Windows.Forms.Label
+    Friend WithEvents eBilanzmenge As Windows.Forms.Label
+    Friend WithEvents eGebindegroesse As Windows.Forms.Label
+    Friend WithEvents ePreis As Windows.Forms.Label
+    Friend WithEvents tbMindestMenge As Windows.Forms.TextBox
+    Friend WithEvents lbMindestMenge As Windows.Forms.Label
+    Friend WithEvents tbBilanzmenge As Windows.Forms.TextBox
+    Friend WithEvents lbBilanzMenge As Windows.Forms.Label
+    Friend WithEvents cbRezeptGewicht As Windows.Forms.CheckBox
+    Friend WithEvents cbKeineDeklaration As Windows.Forms.CheckBox
     Friend WithEvents lblDeklIntern As Windows.Forms.Label
     Friend WithEvents lblDeklExtern As Windows.Forms.Label
     Friend WithEvents tbDeklarationIntern As Windows.Forms.TextBox
     Friend WithEvents tbDeklarationExtern As Windows.Forms.TextBox
-    Friend WithEvents cbKeineDeklaration As Windows.Forms.CheckBox
-    Friend WithEvents cbRezeptGewicht As Windows.Forms.CheckBox
+    Friend WithEvents tbGebindeGroesse As Windows.Forms.TextBox
+    Friend WithEvents lblGebindegroesse As Windows.Forms.Label
+    Friend WithEvents tRohstoffPreis As Windows.Forms.TextBox
+    Friend WithEvents lblPreis As Windows.Forms.Label
+    Friend WithEvents Label1 As Windows.Forms.Label
+    Friend WithEvents cbRohstoffGrp2 As wb_ComboBox
+    Friend WithEvents Label14 As Windows.Forms.Label
+    Friend WithEvents cbRohstoffGrp1 As wb_ComboBox
 End Class

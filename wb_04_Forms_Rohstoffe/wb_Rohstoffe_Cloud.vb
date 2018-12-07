@@ -49,6 +49,8 @@ Public Class wb_Rohstoffe_Cloud
 
         'wenn schon eine Verknüpfung vorhanden ist wird Tab-Page Verknüpfung löschen angezeigt
         If tCloudID.Text <> "" Then
+            'Button 'Zurück' hat keine Funktion
+            Btn_Result_Back.Enabled = False
             'Verknüpfung zur Cloud löschen/aktualisieren
             ChangeTab(tpCloudResult)
 
@@ -359,11 +361,16 @@ Public Class wb_Rohstoffe_Cloud
 
             'Anzeige der Nährwerte und Allergene
             Case tpCloudAnzeige.Name
+                'Button 'Zurück'und 'Speichern' einblenden
+                Btn_Result_Back.Enabled = True
+                btnResult_OK.Enabled = True
                 'Anzeige Nährwerte/Allergen OK. Weiter mit Anzeige Deklarations-Bezeichnung
                 ChangeTab(tpCloudResult)
 
             'Anzeige der Deklarations-Bezeichnung (intern/extern)
             Case tpCloudResult.Name
+                'Button 'Speichern' deaktivieren
+                btnResult_OK.Enabled = False
                 'Verknüpfung zur Cloud speichern
                 wb_Rohstoffe_Shared.Edit_Leave(sender)
                 'Nährwerte/Allergene speichern
@@ -373,6 +380,10 @@ Public Class wb_Rohstoffe_Cloud
                     wb_Rohstoffe_Shared.RohStoff.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
                     wb_Rohstoffe_Shared.RohStoff.MsSqldbUpdate_Zutatenliste()
                 End If
+                'Meldung ausgeben
+                MsgBox("Nährwerte/Allergene und die Verknüpfung zur Cloud wurden gespeichert !", MsgBoxStyle.OkOnly, "Nährwerte und Allergene")
+                'alle Fenster aktualisieren
+                wb_Rohstoffe_Shared.Liste_Click(sender)
         End Select
     End Sub
 

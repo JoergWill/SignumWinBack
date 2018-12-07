@@ -238,6 +238,7 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_Lager.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_TimerGridView.Designer.vb">
       <DependentUpon>wb_TimerGridView.vb</DependentUpon>
     </Compile>
@@ -317,6 +318,7 @@
     <Compile Include="wb_00_Klassen\wb_VorProduktionsSchritt.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Chargen.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Konfiguration.vb" />
+    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Lagerorte.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_OrgaBack.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Rezepte.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Komponenten.vb" />

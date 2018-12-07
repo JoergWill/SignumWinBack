@@ -37,6 +37,7 @@ Public Class wb_Komponente
 
     Private _RootParameter As New wb_KomponParam(Nothing, 0, 0, "")
     Private _Parameter As wb_KomponParam
+    Private _Lager As wb_LagerOrt
 
     Public ktTypXXX As New wb_KomponParamXXX
     Public ktTyp200 As New wb_KomponParam200
@@ -93,9 +94,11 @@ Public Class wb_Komponente
         _RezeptName = Nothing
         _LinienGruppe = wb_Global.UNDEFINED
         _ArtikelLinienGruppe = wb_Global.UNDEFINED
+        _Lager = Nothing
 
         KO_DeklBezeichnungExtern.Invalid()
         KO_DeklBezeichnungIntern.Invalid()
+
 
         ArtikelChargen.Invalidate()
         TeigChargen.Invalidate()
@@ -797,6 +800,36 @@ Public Class wb_Komponente
         Set(value As Integer)
             KA_ProdVorlauf = value
         End Set
+    End Property
+
+    Public Property Bilanzmenge As String
+        Get
+            If _Lager Is Nothing Then
+                _Lager = New wb_LagerOrt(KA_Lagerort)
+            End If
+            Return _Lager.Bilanzmenge
+        End Get
+        Set(value As String)
+            _Lager.Bilanzmenge = value
+        End Set
+    End Property
+
+    Public Property MindestMenge As String
+        Get
+            If _Lager Is Nothing Then
+                _Lager = New wb_LagerOrt(KA_Lagerort)
+            End If
+            Return _Lager.Mindestmenge
+        End Get
+        Set(value As String)
+            _Lager.Mindestmenge = value
+        End Set
+    End Property
+
+    Public ReadOnly Property MindestmengeUnterschritten As Boolean
+        Get
+            Return _Lager.MindestmengeUnterschritten
+        End Get
     End Property
 
     ''' <summary>

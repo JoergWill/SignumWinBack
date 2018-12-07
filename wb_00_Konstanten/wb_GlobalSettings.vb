@@ -619,6 +619,12 @@ Public Class wb_GlobalSettings
                         _pWinBackIniPath = pProgrammPath & "\WinBack.ini"
                 End Select
             End If
+
+            'Fehlermeldung ausgeben, wenn winback.ini nicht vorhanden ist
+            If Not System.IO.File.Exists(_pWinBackIniPath) Then
+                MsgBox("Die Konfiguration 'winback.ini' kann nicht gefunden werden " & vbCrLf & "Such-Pfad :" & _pWinBackIniPath, MsgBoxStyle.Critical)
+            End If
+
             Return _pWinBackIniPath
         End Get
         Set(value As String)
