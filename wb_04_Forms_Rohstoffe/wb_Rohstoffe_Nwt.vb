@@ -7,16 +7,16 @@ Public Class wb_Rohstoffe_Nwt
 
     Private Sub wb_Rohstoffe_Nwt_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
-        AddHandler eListe_Click, AddressOf NaehrwertInfo
-        AddHandler eParam_Changed, AddressOf NaehrwertInfo
+        AddHandler eListe_Click, AddressOf DetailInfo
+        AddHandler eParam_Changed, AddressOf DetailInfo
 
-        'Daten vom aktuellen Rohstoff anzeigen
-        If RohStoff.Nr > 0 Then
-            NaehrwertInfo()
+        'Beim ersten Aufruf wird der aktuelle Rohstoff angezeigt
+        If RohStoff IsNot Nothing Then
+            DetailInfo()
         End If
     End Sub
 
-    Public Sub NaehrwertInfo()
+    Public Sub DetailInfo()
         'Deklarationsfelder
         tbDeklarationExtern.Text = RohStoff.DeklBezeichungExtern
         tbDeklarationIntern.Text = RohStoff.DeklBezeichungIntern

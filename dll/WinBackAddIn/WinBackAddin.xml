@@ -5414,7 +5414,6 @@ Public Const MFF_Wissenswertes = 213
  <summary>
  Rohstoff-Parameter des (aktuellen) Rohstoffes anzeigen
  </summary>
- <param name="Sender"></param>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Parameter.VirtualTree_SelectionChanging(System.Object,Infralution.Controls.VirtualTree.SelectionChangingEventArgs)">
  <summary>
@@ -5449,7 +5448,7 @@ Public Const MFF_Wissenswertes = 213
  </summary>
  <param name="ColumnStyle"></param>
 </member>
-<member name="M:WinBack.wb_Rohstoffe_Liste.SaveData">
+<member name="M:WinBack.wb_Rohstoffe_Liste.SaveData(System.Object)">
  <summary>
  Datensatz in Datenbank sichern. Wird über Event eEdit_Leave() aufgerufen
  </summary>
@@ -5462,7 +5461,7 @@ Public Const MFF_Wissenswertes = 213
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Rohstoffe_Details.DetailInfo">
+<member name="M:WinBack.wb_Rohstoffe_Details.DetailInfo(System.Object)">
  <summary>
  Anzeige der Rohstoff-Details.
  Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)

@@ -16,8 +16,9 @@ Public Class wb_Rohstoffe_Cloud
     Private Sub wb_Rohstoffe_Cloud_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
-        'Daten vom aktuellen Rohstoff anzeigen
-        If RohStoff.Nr > 0 Then
+
+        'Beim ersten Aufruf wird der aktuelle Rohstoff angezeigt
+        If RohStoff IsNot Nothing Then
             DetailInfo()
         End If
     End Sub

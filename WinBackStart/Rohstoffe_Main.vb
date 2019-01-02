@@ -34,23 +34,23 @@ Public Class Rohstoffe_Main
                 Return True
             Case "OPENDETAILS"
                 RohstoffDetails = New wb_Rohstoffe_Details
-                RohstoffDetails.Show(DockPanel, DockState.DockLeft)
+                RohstoffDetails.Show(DockPanel, DockState.Document)
                 Return True
             Case "OPENVERWENDUNG"
                 RohstoffVerwendung = New wb_Rohstoffe_Verwendung
-                RohstoffVerwendung.Show(DockPanel, DockState.DockLeft)
+                RohstoffVerwendung.Show(DockPanel, DockState.Document)
                 Return True
             Case "OPENPARAMETER"
                 RohstoffParameter = New wb_Rohstoffe_Parameter
-                RohstoffParameter.Show(DockPanel, DockState.DockLeft)
+                RohstoffParameter.Show(DockPanel, DockState.Document)
                 Return True
             Case "NWT"
                 RohstoffNwt = New wb_Rohstoffe_Nwt
-                RohstoffNwt.Show(DockPanel, DockState.DockLeft)
+                RohstoffNwt.Show(DockPanel, DockState.Document)
                 Return True
             Case "CLOUD"
                 RohstoffCloud = New wb_Rohstoffe_Cloud
-                RohstoffCloud.Show(DockPanel, DockState.DockLeft)
+                RohstoffCloud.Show(DockPanel, DockState.Document)
                 Return True
 
             Case "NEW"

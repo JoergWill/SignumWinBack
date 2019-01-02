@@ -67,12 +67,14 @@ Public Class wb_Rohstoffe_Liste
         DataGridView.UpdateDataBase()
         'Layout sichern
         DataGridView.SaveToDisk("RohstoffListe")
+        'Event wieder freigeben
+        RemoveHandler wb_Rohstoffe_Shared.eEdit_Leave, AddressOf SaveData
     End Sub
 
     ''' <summary>
     ''' Datensatz in Datenbank sichern. Wird über Event eEdit_Leave() aufgerufen
     ''' </summary>
-    Private Sub SaveData()
+    Private Sub SaveData(sender)
         'Daten in Datenbank sichern
         If RohStoff.SaveData(DataGridView) Then
             DataGridView.UpdateDataBase()

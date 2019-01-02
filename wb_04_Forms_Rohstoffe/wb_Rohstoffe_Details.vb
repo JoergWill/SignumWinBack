@@ -19,13 +19,23 @@ Public Class wb_Rohstoffe_Details
 
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
+
+        'Beim ersten Aufruf wird der aktuelle Rohstoff angezeigt. Sonst wird beim Öffnen des Detail-Info-Fensters
+        'der Inhalt der Textfelder gelöscht !!
+        If RohStoff IsNot Nothing Then
+            DetailInfo(sender)
+        End If
+    End Sub
+
+    Private Sub wb_Rohstoffe_Details_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        RemoveHandler wb_Rohstoffe_Shared.eListe_Click, AddressOf DetailInfo
     End Sub
 
     ''' <summary>
     ''' Anzeige der Rohstoff-Details.
     ''' Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
     ''' </summary>
-    Private Sub DetailInfo()
+    Private Sub DetailInfo(sender)
         'Textfelder
         tRohstoffNummer.Text = RohStoff.Nummer
         tRohstoffName.Text = RohStoff.Bezeichnung

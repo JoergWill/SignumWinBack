@@ -53,8 +53,8 @@ Partial Class wb_Rohstoffe_Details
         Me.tbRohstoffPreis = New System.Windows.Forms.TextBox()
         Me.lblPreis = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label14 = New System.Windows.Forms.Label()
         Me.cbRohstoffGrp2 = New WinBack.wb_ComboBox()
+        Me.Label14 = New System.Windows.Forms.Label()
         Me.cbRohstoffGrp1 = New WinBack.wb_ComboBox()
         Me.pnlDetails.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -226,16 +226,16 @@ Partial Class wb_Rohstoffe_Details
         resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
         '
-        'Label14
-        '
-        resources.ApplyResources(Me.Label14, "Label14")
-        Me.Label14.Name = "Label14"
-        '
         'cbRohstoffGrp2
         '
         Me.cbRohstoffGrp2.FormattingEnabled = True
         resources.ApplyResources(Me.cbRohstoffGrp2, "cbRohstoffGrp2")
         Me.cbRohstoffGrp2.Name = "cbRohstoffGrp2"
+        '
+        'Label14
+        '
+        resources.ApplyResources(Me.Label14, "Label14")
+        Me.Label14.Name = "Label14"
         '
         'cbRohstoffGrp1
         '
