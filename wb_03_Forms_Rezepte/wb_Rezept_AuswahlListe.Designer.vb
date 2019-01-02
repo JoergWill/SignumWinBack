@@ -26,6 +26,8 @@ Partial Class wb_Rezept_AuswahlListe
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BtnCancel = New System.Windows.Forms.Button()
         Me.DataGridView = New WinBack.wb_DataGridView()
+        Me.BtnNew = New System.Windows.Forms.Button()
+        Me.BtnClear = New System.Windows.Forms.Button()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -37,7 +39,7 @@ Partial Class wb_Rezept_AuswahlListe
         Me.BtnCancel.Name = "BtnCancel"
         Me.BtnCancel.Size = New System.Drawing.Size(129, 45)
         Me.BtnCancel.TabIndex = 0
-        Me.BtnCancel.Text = "Cancel"
+        Me.BtnCancel.Text = "Zurück"
         Me.BtnCancel.UseVisualStyleBackColor = True
         '
         'DataGridView
@@ -69,12 +71,38 @@ Partial Class wb_Rezept_AuswahlListe
         Me.DataGridView.TabIndex = 2
         Me.DataGridView.x8859_5_FieldName = ""
         '
+        'BtnNew
+        '
+        Me.BtnNew.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnNew.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.BtnNew.Enabled = False
+        Me.BtnNew.Location = New System.Drawing.Point(8, 488)
+        Me.BtnNew.Name = "BtnNew"
+        Me.BtnNew.Size = New System.Drawing.Size(129, 45)
+        Me.BtnNew.TabIndex = 3
+        Me.BtnNew.Text = "Neu"
+        Me.BtnNew.UseVisualStyleBackColor = True
+        '
+        'BtnClear
+        '
+        Me.BtnClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnClear.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.BtnClear.Enabled = False
+        Me.BtnClear.Location = New System.Drawing.Point(143, 488)
+        Me.BtnClear.Name = "BtnClear"
+        Me.BtnClear.Size = New System.Drawing.Size(129, 45)
+        Me.BtnClear.TabIndex = 4
+        Me.BtnClear.Text = "Zuordnung löschen"
+        Me.BtnClear.UseVisualStyleBackColor = True
+        '
         'wb_Rezept_AuswahlListe
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(679, 545)
         Me.ControlBox = False
+        Me.Controls.Add(Me.BtnClear)
+        Me.Controls.Add(Me.BtnNew)
         Me.Controls.Add(Me.DataGridView)
         Me.Controls.Add(Me.BtnCancel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -87,4 +115,6 @@ Partial Class wb_Rezept_AuswahlListe
 
     Friend WithEvents BtnCancel As Windows.Forms.Button
     Friend WithEvents DataGridView As wb_DataGridView
+    Friend WithEvents BtnNew As Windows.Forms.Button
+    Friend WithEvents BtnClear As Windows.Forms.Button
 End Class

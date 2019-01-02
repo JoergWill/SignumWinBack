@@ -12,6 +12,7 @@ Public Class wb_Filiale
     Private Shared pFiliale As ArrayList = Nothing
     Private Shared pSortiment As ArrayList = Nothing
     Private Shared hFiliale As New SortedList
+    Public Shared aSortiment As ArrayList = Nothing
 
     ''' <summary>
     ''' Wird automatisch beim Aufruf einer der shared Functions aufgerufen (Shared Object)
@@ -22,11 +23,13 @@ Public Class wb_Filiale
         If (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack) Or (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest) Then
             pFiliale = New ArrayList()
             pSortiment = New ArrayList()
+            aSortiment = New ArrayList()
 
             'Datenbank-Verbindung öffnen - MsSQL
             Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
             Dim FNr As String
             Dim FName As String
+            Dim Sortiment As wb_Global.OrgaBackSortiment
             Dim Srt As String
 
             'Daten aus Tabelle Filialen lesen
@@ -47,6 +50,11 @@ Public Class wb_Filiale
                 While OrgasoftMain.Read
                     Srt = (OrgasoftMain.sField("SortimentsKürzel"))
                     pSortiment.Add(Srt)
+
+                    Sortiment.Srt = Srt
+                    Sortiment.SName = (OrgasoftMain.sField("Bezeichnung"))
+                    Sortiment.FName = (OrgasoftMain.sField("Name1"))
+                    aSortiment.Add(Sortiment)
                 End While
             End If
         Else

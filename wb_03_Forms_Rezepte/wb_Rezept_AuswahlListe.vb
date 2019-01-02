@@ -37,8 +37,17 @@
         DataGridView.LoadData(wb_Sql_Selects.sqlRezeptListe, "RezeptListe")
     End Sub
 
+    Private Sub BtnClear_Click(sender As Object, e As EventArgs) Handles BtnClear.Click
+        _RezeptNr = 0
+        _RezeptNummer = ""
+        _RezeptName = ""
+        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
+
     Private Sub BtnCancel_Click(sender As Object, e As EventArgs) Handles BtnCancel.Click
         Me.Close()
+        Me.DialogResult = Windows.Forms.DialogResult.Abort
     End Sub
 
     Private Sub DataGridView_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView.DoubleClick

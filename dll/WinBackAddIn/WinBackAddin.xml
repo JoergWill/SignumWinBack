@@ -267,6 +267,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.OrgaBackSortiment_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.RezeptDetails_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -622,7 +627,7 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
 </member>
 <member name="P:WinBack.wb_KompRzChargen.DataValid">
  <summary>
- Adaten sind gültig. Anzeigefelder freigeben/anzeigen
+ Daten sind gültig. Anzeigefelder freigeben/anzeigen
  </summary>
  <returns></returns>
 </member>
@@ -665,7 +670,9 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
 </member>
 <member name="M:WinBack.wb_KompRzChargen.BtnRzpt_Click(System.Object,System.EventArgs)">
  <summary>
- Auswahl Rezeptur. Öffnet ein Auswahlfenster mit der Rezeptliste
+ Auswahl Rezeptur. Öffnet ein Auswahlfenster mit der Rezeptliste.
+ Innerhalb der Rezeptliste kann über den Button Clear die Zuordung zwischen Artikel
+ und Rezeptur gelöscht werden.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -4213,9 +4220,11 @@ Text aus Datenbank lesen - Übersetzung
 </member>
 <member name="M:WinBack.ob_Artikel_ZuordnungRezept.KomRzChargen_DataInvalidated">
  <summary>
- Event Daten wurden geändert von wb_KompRZChargen wird weitergegen an ob_Artikel_DockingExtension.
+ Event Daten wurden geändert von wb_KompRZChargen wird weitergegeben an ob_Artikel_DockingExtension.
  Setzt dort das Flag _Extendee.Changed. Damit wird beim Schliessen des Artikelfensters die Abfrage
  "Daten wurden geändert Speichern Ja/Nein/Abbrechen" ausgelöst.
+ 
+ Achtung: auch wenn bei Verweise '0' eingetragen ist, wird diese Routine aufgerufen !!
  </summary>
 </member>
 <member name="P:WinBack.ob_Artikel_DockingExtension.ContextTabs">

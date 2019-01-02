@@ -102,6 +102,7 @@ Public Class wb_MinMaxOptCharge
         MaxCharge.CopyFrom(Chrg.MaxCharge)
         _TeigGewicht = Chrg._TeigGewicht
         _StkGewicht = Chrg._StkGewicht
+        _HasChanged = Chrg._HasChanged
     End Sub
     ''' <summary>
     ''' Der Wert für die Minimal-Charge hat sich geändert: 

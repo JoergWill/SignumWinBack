@@ -404,9 +404,9 @@ Partial Class wb_KompRzChargen
         '
         'BtnRzpt
         '
-        Me.BtnRzpt.Location = New System.Drawing.Point(185, 14)
+        Me.BtnRzpt.Location = New System.Drawing.Point(165, 14)
         Me.BtnRzpt.Name = "BtnRzpt"
-        Me.BtnRzpt.Size = New System.Drawing.Size(100, 40)
+        Me.BtnRzpt.Size = New System.Drawing.Size(120, 40)
         Me.BtnRzpt.TabIndex = 52
         Me.BtnRzpt.Text = "Auswählen"
         Me.BtnRzpt.UseVisualStyleBackColor = True

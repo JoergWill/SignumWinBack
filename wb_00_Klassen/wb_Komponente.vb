@@ -379,7 +379,7 @@ Public Class wb_Komponente
 
         'Ausgehend vom Root-Knoten werden alle Child-Knoten durchlaufen
         For Each p As wb_KomponParam In _RootParameter.ChildSteps
-            'alle ChildKonoten
+            'alle Child-Knoten
             For Each x As wb_KomponParam In p.ChildSteps
                 'Parameter wurde geändert
                 If x.Changed Then
@@ -433,6 +433,7 @@ Public Class wb_Komponente
         'eventuell vorhandene Daten löschen
         Invalid()
         _DataHasChanged = False
+
         'Daten aus DataGridView laden
         KO_Nr = CInt(dataGridView.Field("KO_Nr"))
         KO_Type = wb_Functions.IntToKomponType(dataGridView.Field("KO_Type"))

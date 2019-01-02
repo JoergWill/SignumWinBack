@@ -41,6 +41,10 @@
     Public Const mssqlInsertAlg = "INSERT INTO [dbo].[ArtikelAllergene] (ArtikelNr, StuecklistenVariantenNr, AllergenNr, Kennzeichnung) " &
                                   "VALUES ('[0]', [3], [1], '[2]')"
 
+    'Sql-Statement Abfrage dbo.[Artikelgruppe]
+    Public Const mssqlSelArtikelGruppe = "SELECT * FROM [dbo].[Artikelgruppe]"
+
+
     'Sql-Statement Zutatenliste und Deklarationstexte
     Public Const sqlReadDeklaration = "SELECT * FROM [dbo].[ArtikelDeklarationsTexte] WHERE ArtikelNr = '[0]' AND StuecklistenVariantenNr = [1] " &
                                       "AND [LaenderCode] = '[2]' AND [SprachenCode] = '[3]'"
@@ -56,7 +60,8 @@
     Public Const mssqlFiliale = "Select Filialnummer, Name1 FROM Filialen WHERE [Typ] = [0]"
     'Sql-Statament Sortiment zugeordnet zu Filiale mit Typ Produktion
     Public Const mssqlSortiment = "Select * FROM FilialeHatSortiment INNER JOIN Filialen On FilialeHatSortiment.Filialnr =  Filialen.Filialnummer " &
-                                  "WHERE [Typ] = [0] ORDER BY SortimentsKürzel"
+                                  "INNER JOIN Sortiment ON FilialeHatSortiment.SortimentsKürzel = Sortiment.SortimentsKürzel WHERE [Typ] = [0] " &
+                                  "ORDER BY FilialeHatSortiment.SortimentsKürzel"
     'Sql-Statement Abfrage dbo.ArtikelMultifunktionsfeld.Bezeichnung (Backorte)
     Public Const mssqlBackorte = "Select * FROM ArtikelMultifunktionsfeld WHERE [GruppenNr] = '[0]'"
 

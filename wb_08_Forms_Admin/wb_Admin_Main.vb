@@ -10,6 +10,7 @@ Public Class wb_Admin_Main
     Public AdminLog As New wb_Admin_Log
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public AdminSync As wb_Admin_Sync
+    Public OrgaBackParams As wb_Admin_OrgaBackParams
     Public AdminUpdate As wb_Admin_UpdateDatabase
     Public AdminDatensicherung As wb_Admin_Datensicherung
     Public AdminEditIni As wb_Admin_EditIni
@@ -56,6 +57,7 @@ Public Class wb_Admin_Main
                 Dim oGrp = oNewTab.AddGroup("GrpAdmin", "WinBack Administration")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrp.AddButton("btnSync", "Synchronisation Datenbanken WinBack-OrgaBack", "", My.Resources.MainSync_16x16, My.Resources.MainSync_32x32, AddressOf BtnAdminSyncForm)
+                oGrp.AddButton("btnOrgaBack", "Einstellungen OrgaBack", "", My.Resources.OrgaBackSortiment_32x32, My.Resources.OrgaBackSortiment_32x32, AddressOf BtnOrgaBack)
                 oGrp.AddButton("btnDatensicherung", "Sicherung/Rücksicherung Datenbanken WinBack", "", My.Resources.DatenSicherung_16x16, My.Resources.DatenSicherung_32x32, AddressOf BtnAdminDatensicherung)
                 oGrp.AddButton("btnUpdate", "Update/Versionsinformation WinBack", "", My.Resources.UpdateDataBase_16x16, My.Resources.UpdateDataBase_32x32, AddressOf BtnAdminUpdate)
                 oGrp.AddButton("btnListLabel", "List&Label Designer", "", My.Resources.ListUndLabel_16x16, My.Resources.ListUndLabel_32x32, AddressOf btnListUndLabelDesigner)
@@ -78,6 +80,11 @@ Public Class wb_Admin_Main
                 AdminSync = New wb_Admin_Sync
                 _DockPanelList.Add(AdminSync)
                 Return AdminSync
+
+            Case "WinBack.wb_Admin_OrgaBackParams"
+                OrgaBackParams = New wb_Admin_OrgaBackParams
+                _DockPanelList.Add(OrgaBackParams)
+                Return OrgaBackParams
 
             Case "WinBack.wb_Admin_UpdateDatabase"
                 AdminUpdate = New wb_Admin_UpdateDatabase
@@ -103,6 +110,11 @@ Public Class wb_Admin_Main
         AdminSync = New wb_Admin_Sync
         AdminSync.Show(DockPanel, DockState.DockTop)
         Trace.WriteLine("AdminSyncForm aufgerufen")
+    End Sub
+    Private Sub BtnOrgaBack()
+        OrgaBackParams = New wb_Admin_OrgaBackParams
+        OrgaBackParams.Show(DockPanel, DockState.DockTop)
+        Trace.WriteLine("AdminOrgaBackParams aufgerufen")
     End Sub
 
     Private Sub BtnAdminDatensicherung()

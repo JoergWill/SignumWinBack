@@ -11,6 +11,12 @@ Public Class wb_Rohstoffe_Details
         cbRohstoffGrp1.Fill(RohGruppe)
         cbRohstoffGrp2.Fill(RohGruppe)
 
+        'Feld Rohstoff-Preis ist in Variante OrgaBack readonly
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            tbRohstoffPreis.ReadOnly = False
+            tbRohstoffPreis.BackColor = tRohstoffNummer.BackColor
+        End If
+
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
     End Sub
@@ -30,7 +36,7 @@ Public Class wb_Rohstoffe_Details
             pnlDetails.Visible = True
 
             'Preis und Gebindegröße
-            tRohstoffPreis.Text = RohStoff.Preis
+            tbRohstoffPreis.Text = RohStoff.Preis
             tbGebindeGroesse.Text = RohStoff.GebindeGroesse
 
             'Lagerbestand und Mindestmenge
@@ -87,7 +93,7 @@ Public Class wb_Rohstoffe_Details
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tbRohstoffPreis.Leave, tbGebindeGroesse.Leave, cbRohstoffGrp2.Leave, cbRohstoffGrp1.Leave, cbRezeptGewicht.Click
         'Bezeichnungstexte
         RohStoff.Bezeichnung = tRohstoffName.Text
         RohStoff.Kommentar = tRohstoffKommentar.Text
@@ -100,6 +106,11 @@ Public Class wb_Rohstoffe_Details
         'Rohstoff zählt nicht zum Rezeptgewicht
         RohStoff.ZaehltNichtZumRezeptGewicht = cbRezeptGewicht.Checked
 
+        'RohStoff-Preis (nur Prog-Version WinBack)
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
+            RohStoff.Preis = tbRohstoffPreis.Text
+        End If
+
         'Daten wurden geändert - Datensatz speichern
         Edit_Leave(sender)
     End Sub
@@ -110,7 +121,7 @@ Public Class wb_Rohstoffe_Details
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub tbMindestMenge_Leave(sender As Object, e As EventArgs)
+    Private Sub tbMindestMenge_Leave(sender As Object, e As EventArgs) Handles tbMindestMenge.Leave
         wb_Rohstoffe_Shared.RohStoff.MindestMenge = tbMindestMenge.Text
     End Sub
 
@@ -120,7 +131,7 @@ Public Class wb_Rohstoffe_Details
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub tbDeklarationExtern_Leave(sender As Object, e As EventArgs)
+    Private Sub tbDeklarationExtern_Leave(sender As Object, e As EventArgs) Handles tbDeklarationExtern.Leave
         wb_Rohstoffe_Shared.RohStoff.DeklBezeichungExtern = tbDeklarationExtern.Text
     End Sub
 
@@ -130,11 +141,11 @@ Public Class wb_Rohstoffe_Details
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub tbDeklarationIntern_Leave(sender As Object, e As EventArgs)
+    Private Sub tbDeklarationIntern_Leave(sender As Object, e As EventArgs) Handles tbDeklarationIntern.Leave
         wb_Rohstoffe_Shared.RohStoff.DeklBezeichungIntern = tbDeklarationIntern.Text
     End Sub
 
-    Private Sub cbKeineDeklaration_Click(sender As Object, e As EventArgs)
+    Private Sub cbKeineDeklaration_Click(sender As Object, e As EventArgs) Handles cbKeineDeklaration.Leave
         If cbKeineDeklaration.Checked Then
             'alten DeklarationsText merken(sicherheitshalber)
             If tbDeklarationExtern.Text <> wb_Global.FlagKeineDeklaration Then

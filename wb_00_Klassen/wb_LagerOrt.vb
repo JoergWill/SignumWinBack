@@ -27,8 +27,13 @@ Public Class wb_LagerOrt
 
     Public ReadOnly Property MindestmengeUnterschritten As Boolean
         Get
-            'simpler String-Vergleich
-            Return (Bilanzmenge < Mindestmenge)
+            'Umwandeln in Double
+            'TODO für weitere Berechnungen (Produktionsplanung) als Property zur Verfügung stellen
+            Dim dBilanzmenge As Double = wb_Functions.StrToDouble(Bilanzmenge)
+            Dim dMindestmenge As Double = wb_Functions.StrToDouble(Mindestmenge)
+
+            'simpler Vergleich
+            Return (dBilanzmenge < dMindestmenge)
         End Get
     End Property
 

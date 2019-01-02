@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Drawing
+Imports System.Windows.Forms
 Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.GUI
 
@@ -78,7 +79,9 @@ Public Class ob_Artikel_ZuordnungRezept
     ''' </returns>
     ''' <remarks></remarks>
     Public Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        'Fenster kann geschlossen werden (nach Speichern Datensatz)        'Fenster kann geschlossen werden (nach Speichern Datensatz)
+        'Focus wb_KompRzChargen ändern (Löst Event Leave aus)
+        KompRzChargen.BtnRzpt.Focus()
+        'Fenster kann geschlossen werden (nach Speichern Datensatz)
         Return False
     End Function
 
@@ -89,6 +92,10 @@ Public Class ob_Artikel_ZuordnungRezept
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
         'Fenstertext
         MyBase.Text = "WinBack Artikel Produktions-Parameter"
+        'Panel verschieben
+        pnlNoProduction.Left = 0
+        lblProduktion.Text = ""
+        lblProduktion.Dock = DockStyle.Fill
         'Form anzeigen
         Me.Show()
         Return True
@@ -101,7 +108,9 @@ Public Class ob_Artikel_ZuordnungRezept
         Select Case CommandId
             Case "INVALID"
                 'alle Steuerelemente sperren
-                KompRzChargen.EnableKomponenten(False)
+                KompRzChargen.DataValid = False
+                KompRzChargen.Visible = False
+                pnlNoProduction.Visible = False
 
             Case "VALID"
 
@@ -110,6 +119,11 @@ Public Class ob_Artikel_ZuordnungRezept
                 KompRzChargen.GetDataFromKomp(DirectCast(k, wb_Komponente))
                 'Anzeigen der Werte
                 KompRzChargen.DataValid = True
+                KompRzChargen.Visible = True
+
+            Case "wbNOPRODUCTION"
+                KompRzChargen.Visible = False
+                pnlNoProduction.Visible = True
 
             Case "wbSAVE"
                 'Daten in der Komponenten-Klasse sichern
@@ -120,12 +134,21 @@ Public Class ob_Artikel_ZuordnungRezept
     End Function
 
     ''' <summary>
-    ''' Event Daten wurden geändert von wb_KompRZChargen wird weitergegen an ob_Artikel_DockingExtension.
+    ''' Event Daten wurden geändert von wb_KompRZChargen wird weitergegeben an ob_Artikel_DockingExtension.
     ''' Setzt dort das Flag _Extendee.Changed. Damit wird beim Schliessen des Artikelfensters die Abfrage
     ''' "Daten wurden geändert Speichern Ja/Nein/Abbrechen" ausgelöst.
+    ''' 
+    ''' Achtung: auch wenn bei Verweise '0' eingetragen ist, wird diese Routine aufgerufen !!
     ''' </summary>
     Public Sub KomRzChargen_DataInvalidated() Handles KompRzChargen.DataInvalidated
         RaiseEvent DataInvalidated()
+    End Sub
+
+    Private Sub lblProduktion_Paint(sender As Object, e As PaintEventArgs) Handles lblProduktion.Paint
+        e.Graphics.TranslateTransform(CSng(lblProduktion.Width / 2), CSng(lblProduktion.Height / 2))
+        e.Graphics.RotateTransform(335)
+        e.Graphics.DrawString("Kein WinBack" & vbCrLf & "Artikel", lblProduktion.Font, Brushes.IndianRed, New Point(-150, -80))
+        e.Graphics.ResetTransform()
     End Sub
 
 End Class

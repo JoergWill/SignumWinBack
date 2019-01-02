@@ -60,11 +60,12 @@ Partial Class wb_Rohstoffe_Cloud
         Me.btnShow_Vor = New System.Windows.Forms.Button()
         Me.pnlNwt = New System.Windows.Forms.Panel()
         Me.tpCloudResult = New System.Windows.Forms.TabPage()
-        Me.Btn_Result_Back = New System.Windows.Forms.Button()
-        Me.lblDeklIntern = New System.Windows.Forms.Label()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.lblDeklExtern = New System.Windows.Forms.Label()
-        Me.tbDeklarationIntern = New System.Windows.Forms.TextBox()
+        Me.lblDeklIntern = New System.Windows.Forms.Label()
         Me.tbDeklarationExtern = New System.Windows.Forms.TextBox()
+        Me.tbDeklarationIntern = New System.Windows.Forms.TextBox()
+        Me.Btn_Result_Back = New System.Windows.Forms.Button()
         Me.btnResult_OK = New System.Windows.Forms.Button()
         Me.btnResult_Akt = New System.Windows.Forms.Button()
         Me.btnDisconnect = New System.Windows.Forms.Button()
@@ -77,6 +78,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tpCloudGefunden.SuspendLayout()
         Me.tpCloudAnzeige.SuspendLayout()
         Me.tpCloudResult.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
         Me.tpRezept.SuspendLayout()
         Me.tpKompType.SuspendLayout()
         Me.SuspendLayout()
@@ -377,11 +379,8 @@ Partial Class wb_Rohstoffe_Cloud
         'tpCloudResult
         '
         Me.tpCloudResult.BackColor = System.Drawing.SystemColors.Control
+        Me.tpCloudResult.Controls.Add(Me.TableLayoutPanel1)
         Me.tpCloudResult.Controls.Add(Me.Btn_Result_Back)
-        Me.tpCloudResult.Controls.Add(Me.lblDeklIntern)
-        Me.tpCloudResult.Controls.Add(Me.lblDeklExtern)
-        Me.tpCloudResult.Controls.Add(Me.tbDeklarationIntern)
-        Me.tpCloudResult.Controls.Add(Me.tbDeklarationExtern)
         Me.tpCloudResult.Controls.Add(Me.btnResult_OK)
         Me.tpCloudResult.Controls.Add(Me.btnResult_Akt)
         Me.tpCloudResult.Controls.Add(Me.btnDisconnect)
@@ -390,6 +389,64 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tpCloudResult.Size = New System.Drawing.Size(724, 352)
         Me.tpCloudResult.TabIndex = 3
         Me.tpCloudResult.Text = "CloudResult"
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.lblDeklExtern, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.lblDeklIntern, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.tbDeklarationExtern, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.tbDeklarationIntern, 0, 3)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(7, 6)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 4
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(528, 300)
+        Me.TableLayoutPanel1.TabIndex = 60
+        '
+        'lblDeklExtern
+        '
+        Me.lblDeklExtern.AutoSize = True
+        Me.lblDeklExtern.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblDeklExtern.Location = New System.Drawing.Point(3, 0)
+        Me.lblDeklExtern.Name = "lblDeklExtern"
+        Me.lblDeklExtern.Size = New System.Drawing.Size(61, 13)
+        Me.lblDeklExtern.TabIndex = 56
+        Me.lblDeklExtern.Text = "Deklaration"
+        '
+        'lblDeklIntern
+        '
+        Me.lblDeklIntern.AutoSize = True
+        Me.lblDeklIntern.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblDeklIntern.Location = New System.Drawing.Point(3, 150)
+        Me.lblDeklIntern.Name = "lblDeklIntern"
+        Me.lblDeklIntern.Size = New System.Drawing.Size(90, 13)
+        Me.lblDeklIntern.TabIndex = 53
+        Me.lblDeklIntern.Text = "Deklaration intern"
+        '
+        'tbDeklarationExtern
+        '
+        Me.tbDeklarationExtern.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tbDeklarationExtern.Location = New System.Drawing.Point(3, 25)
+        Me.tbDeklarationExtern.Multiline = True
+        Me.tbDeklarationExtern.Name = "tbDeklarationExtern"
+        Me.tbDeklarationExtern.Size = New System.Drawing.Size(522, 122)
+        Me.tbDeklarationExtern.TabIndex = 54
+        '
+        'tbDeklarationIntern
+        '
+        Me.tbDeklarationIntern.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tbDeklarationIntern.Location = New System.Drawing.Point(3, 175)
+        Me.tbDeklarationIntern.Multiline = True
+        Me.tbDeklarationIntern.Name = "tbDeklarationIntern"
+        Me.tbDeklarationIntern.Size = New System.Drawing.Size(522, 122)
+        Me.tbDeklarationIntern.TabIndex = 52
         '
         'Btn_Result_Back
         '
@@ -400,46 +457,6 @@ Partial Class wb_Rohstoffe_Cloud
         Me.Btn_Result_Back.TabIndex = 59
         Me.Btn_Result_Back.Text = "Zurück"
         Me.Btn_Result_Back.UseVisualStyleBackColor = True
-        '
-        'lblDeklIntern
-        '
-        Me.lblDeklIntern.AutoSize = True
-        Me.lblDeklIntern.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblDeklIntern.Location = New System.Drawing.Point(17, 129)
-        Me.lblDeklIntern.Name = "lblDeklIntern"
-        Me.lblDeklIntern.Size = New System.Drawing.Size(90, 13)
-        Me.lblDeklIntern.TabIndex = 50
-        Me.lblDeklIntern.Text = "Deklaration intern"
-        '
-        'lblDeklExtern
-        '
-        Me.lblDeklExtern.AutoSize = True
-        Me.lblDeklExtern.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblDeklExtern.Location = New System.Drawing.Point(17, 13)
-        Me.lblDeklExtern.Name = "lblDeklExtern"
-        Me.lblDeklExtern.Size = New System.Drawing.Size(61, 13)
-        Me.lblDeklExtern.TabIndex = 49
-        Me.lblDeklExtern.Text = "Deklaration"
-        '
-        'tbDeklarationIntern
-        '
-        Me.tbDeklarationIntern.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tbDeklarationIntern.Location = New System.Drawing.Point(15, 144)
-        Me.tbDeklarationIntern.Multiline = True
-        Me.tbDeklarationIntern.Name = "tbDeklarationIntern"
-        Me.tbDeklarationIntern.Size = New System.Drawing.Size(467, 75)
-        Me.tbDeklarationIntern.TabIndex = 45
-        '
-        'tbDeklarationExtern
-        '
-        Me.tbDeklarationExtern.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tbDeklarationExtern.Location = New System.Drawing.Point(15, 29)
-        Me.tbDeklarationExtern.Multiline = True
-        Me.tbDeklarationExtern.Name = "tbDeklarationExtern"
-        Me.tbDeklarationExtern.Size = New System.Drawing.Size(467, 75)
-        Me.tbDeklarationExtern.TabIndex = 44
         '
         'btnResult_OK
         '
@@ -586,7 +603,8 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tpCloudGefunden.ResumeLayout(False)
         Me.tpCloudAnzeige.ResumeLayout(False)
         Me.tpCloudResult.ResumeLayout(False)
-        Me.tpCloudResult.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel1.PerformLayout()
         Me.tpRezept.ResumeLayout(False)
         Me.tpKompType.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -625,12 +643,13 @@ Partial Class wb_Rohstoffe_Cloud
     Friend WithEvents btnResult_OK As Windows.Forms.Button
     Friend WithEvents btnMail As Windows.Forms.Button
     Friend WithEvents KompRzChargen As wb_KompRzChargen
-    Friend WithEvents lblDeklIntern As Windows.Forms.Label
-    Friend WithEvents lblDeklExtern As Windows.Forms.Label
-    Friend WithEvents tbDeklarationIntern As Windows.Forms.TextBox
-    Friend WithEvents tbDeklarationExtern As Windows.Forms.TextBox
     Friend WithEvents tpKompType As Windows.Forms.TabPage
     Friend WithEvents lblKeineNwt As Windows.Forms.Label
     Friend WithEvents Btn_Result_Back As Windows.Forms.Button
     Friend WithEvents BtnRezept As Windows.Forms.Button
+    Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblDeklExtern As Windows.Forms.Label
+    Friend WithEvents lblDeklIntern As Windows.Forms.Label
+    Friend WithEvents tbDeklarationExtern As Windows.Forms.TextBox
+    Friend WithEvents tbDeklarationIntern As Windows.Forms.TextBox
 End Class

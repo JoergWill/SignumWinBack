@@ -68,7 +68,6 @@ Public Class ob_Artikel_DockingExtension
             ' Deleted:
             ' Committed:
 
-            'TEST BROTMACHER-FEHLER
             If _Extendee IsNot Nothing AndAlso TypeOf _Extendee Is INavigationClass Then
                 With DirectCast(_Extendee, INavigationClass)
                     AddHandler .Invalidated, AddressOf Extendee_Invalid
@@ -136,6 +135,8 @@ Public Class ob_Artikel_DockingExtension
         If bSortimentIstProduktion Then
             Debug.Print("Article_DockingExtension Found - Sortiment ist Produktion")
             Extendee_ExecuteCommand("wbFOUND", Komponente)
+        Else
+            Extendee_ExecuteCommand("wbNOPRODUCTION", Komponente)
         End If
 
     End Sub
@@ -164,8 +165,8 @@ Public Class ob_Artikel_DockingExtension
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
             Dim obEinheit As String = _Extendee.GetPropertyValue("StdEinheit").ToString
             If CheckEinheit(obKType, obEinheit) Then
-                'Daten aus Unterfenster sichern
-                Extendee_ExecuteCommand("wbSAVE", Komponente)
+                'Daten aus Unterfenster sichern TEST 20181211 !!!
+                'Extendee_ExecuteCommand("wbSAVE", Komponente)
                 'Komponentendaten nach OrgaBack schreiben (MFF..)
                 SetKomponentenDaten()
                 'Speichern erlaubt

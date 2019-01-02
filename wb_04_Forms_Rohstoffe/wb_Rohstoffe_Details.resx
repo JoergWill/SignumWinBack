@@ -280,7 +280,154 @@
     <value>2</value>
   </data>
   <data name="pnlDetails.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="TableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="lblDeklExtern.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDeklExtern.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDeklExtern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="lblDeklExtern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 13</value>
+  </data>
+  <data name="lblDeklExtern.TabIndex" type="System.Int32, mscorlib">
+    <value>76</value>
+  </data>
+  <data name="lblDeklExtern.Text" xml:space="preserve">
+    <value>Deklaration</value>
+  </data>
+  <data name="&gt;&gt;lblDeklExtern.Name" xml:space="preserve">
+    <value>lblDeklExtern</value>
+  </data>
+  <data name="&gt;&gt;lblDeklExtern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDeklExtern.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;lblDeklExtern.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tbDeklarationExtern.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tbDeklarationExtern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 26</value>
+  </data>
+  <data name="tbDeklarationExtern.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tbDeklarationExtern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>324, 82</value>
+  </data>
+  <data name="tbDeklarationExtern.TabIndex" type="System.Int32, mscorlib">
+    <value>68</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationExtern.Name" xml:space="preserve">
+    <value>tbDeklarationExtern</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationExtern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationExtern.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationExtern.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lblDeklIntern.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDeklIntern.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDeklIntern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 111</value>
+  </data>
+  <data name="lblDeklIntern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 13</value>
+  </data>
+  <data name="lblDeklIntern.TabIndex" type="System.Int32, mscorlib">
+    <value>77</value>
+  </data>
+  <data name="lblDeklIntern.Text" xml:space="preserve">
+    <value>Deklaration intern</value>
+  </data>
+  <data name="&gt;&gt;lblDeklIntern.Name" xml:space="preserve">
+    <value>lblDeklIntern</value>
+  </data>
+  <data name="&gt;&gt;lblDeklIntern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDeklIntern.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;lblDeklIntern.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tbDeklarationIntern.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tbDeklarationIntern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 137</value>
+  </data>
+  <data name="tbDeklarationIntern.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tbDeklarationIntern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>324, 82</value>
+  </data>
+  <data name="tbDeklarationIntern.TabIndex" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.Name" xml:space="preserve">
+    <value>tbDeklarationIntern</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 3</value>
+  </data>
+  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 222</value>
+  </data>
+  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>66</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
+    <value>pnlDetails</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lblDeklExtern" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tbDeklarationExtern" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblDeklIntern" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tbDeklarationIntern" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,23,Percent,50,Absolute,23,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="eMindestmenge.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -310,7 +457,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;eMindestmenge.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="eBilanzmenge.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -340,7 +487,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;eBilanzmenge.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="eGebindegroesse.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -370,7 +517,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;eGebindegroesse.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="ePreis.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -400,7 +547,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;ePreis.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="tbMindestMenge.Location" type="System.Drawing.Point, System.Drawing">
     <value>165, 97</value>
@@ -424,7 +571,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;tbMindestMenge.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="lbMindestMenge.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -454,7 +601,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;lbMindestMenge.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="tbBilanzmenge.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 97</value>
@@ -478,7 +625,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;tbBilanzmenge.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="lbBilanzMenge.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -508,7 +655,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;lbBilanzMenge.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="cbRezeptGewicht.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -535,7 +682,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;cbRezeptGewicht.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="cbKeineDeklaration.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -565,121 +712,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;cbKeineDeklaration.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="lblDeklIntern.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblDeklIntern.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblDeklIntern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>334, 118</value>
-  </data>
-  <data name="lblDeklIntern.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 13</value>
-  </data>
-  <data name="lblDeklIntern.TabIndex" type="System.Int32, mscorlib">
-    <value>77</value>
-  </data>
-  <data name="lblDeklIntern.Text" xml:space="preserve">
-    <value>Deklaration intern</value>
-  </data>
-  <data name="&gt;&gt;lblDeklIntern.Name" xml:space="preserve">
-    <value>lblDeklIntern</value>
-  </data>
-  <data name="&gt;&gt;lblDeklIntern.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblDeklIntern.Parent" xml:space="preserve">
-    <value>pnlDetails</value>
-  </data>
-  <data name="&gt;&gt;lblDeklIntern.ZOrder" xml:space="preserve">
     <value>10</value>
-  </data>
-  <data name="lblDeklExtern.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblDeklExtern.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblDeklExtern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>334, 3</value>
-  </data>
-  <data name="lblDeklExtern.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 13</value>
-  </data>
-  <data name="lblDeklExtern.TabIndex" type="System.Int32, mscorlib">
-    <value>76</value>
-  </data>
-  <data name="lblDeklExtern.Text" xml:space="preserve">
-    <value>Deklaration</value>
-  </data>
-  <data name="&gt;&gt;lblDeklExtern.Name" xml:space="preserve">
-    <value>lblDeklExtern</value>
-  </data>
-  <data name="&gt;&gt;lblDeklExtern.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblDeklExtern.Parent" xml:space="preserve">
-    <value>pnlDetails</value>
-  </data>
-  <data name="&gt;&gt;lblDeklExtern.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="tbDeklarationIntern.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="tbDeklarationIntern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 134</value>
-  </data>
-  <data name="tbDeklarationIntern.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="tbDeklarationIntern.Size" type="System.Drawing.Size, System.Drawing">
-    <value>319, 75</value>
-  </data>
-  <data name="tbDeklarationIntern.TabIndex" type="System.Int32, mscorlib">
-    <value>69</value>
-  </data>
-  <data name="&gt;&gt;tbDeklarationIntern.Name" xml:space="preserve">
-    <value>tbDeklarationIntern</value>
-  </data>
-  <data name="&gt;&gt;tbDeklarationIntern.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbDeklarationIntern.Parent" xml:space="preserve">
-    <value>pnlDetails</value>
-  </data>
-  <data name="&gt;&gt;tbDeklarationIntern.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="tbDeklarationExtern.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="tbDeklarationExtern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 19</value>
-  </data>
-  <data name="tbDeklarationExtern.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="tbDeklarationExtern.Size" type="System.Drawing.Size, System.Drawing">
-    <value>319, 75</value>
-  </data>
-  <data name="tbDeklarationExtern.TabIndex" type="System.Int32, mscorlib">
-    <value>68</value>
-  </data>
-  <data name="&gt;&gt;tbDeklarationExtern.Name" xml:space="preserve">
-    <value>tbDeklarationExtern</value>
-  </data>
-  <data name="&gt;&gt;tbDeklarationExtern.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbDeklarationExtern.Parent" xml:space="preserve">
-    <value>pnlDetails</value>
-  </data>
-  <data name="&gt;&gt;tbDeklarationExtern.ZOrder" xml:space="preserve">
-    <value>13</value>
   </data>
   <data name="tbGebindeGroesse.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 58</value>
@@ -703,7 +736,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;tbGebindeGroesse.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>11</value>
   </data>
   <data name="lblGebindegroesse.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -733,31 +766,31 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;lblGebindegroesse.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>12</value>
   </data>
-  <data name="tRohstoffPreis.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="tbRohstoffPreis.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 19</value>
   </data>
-  <data name="tRohstoffPreis.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tbRohstoffPreis.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 20</value>
   </data>
-  <data name="tRohstoffPreis.TabIndex" type="System.Int32, mscorlib">
+  <data name="tbRohstoffPreis.TabIndex" type="System.Int32, mscorlib">
     <value>65</value>
   </data>
-  <data name="tRohstoffPreis.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+  <data name="tbRohstoffPreis.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
   </data>
-  <data name="&gt;&gt;tRohstoffPreis.Name" xml:space="preserve">
-    <value>tRohstoffPreis</value>
+  <data name="&gt;&gt;tbRohstoffPreis.Name" xml:space="preserve">
+    <value>tbRohstoffPreis</value>
   </data>
-  <data name="&gt;&gt;tRohstoffPreis.Type" xml:space="preserve">
+  <data name="&gt;&gt;tbRohstoffPreis.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tRohstoffPreis.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tbRohstoffPreis.Parent" xml:space="preserve">
     <value>pnlDetails</value>
   </data>
-  <data name="&gt;&gt;tRohstoffPreis.ZOrder" xml:space="preserve">
-    <value>16</value>
+  <data name="&gt;&gt;tbRohstoffPreis.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
   <data name="lblPreis.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -787,7 +820,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;lblPreis.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>14</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -817,7 +850,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>15</value>
   </data>
   <data name="cbRohstoffGrp2.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 188</value>
@@ -838,7 +871,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;cbRohstoffGrp2.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>16</value>
   </data>
   <data name="Label14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -868,7 +901,7 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;Label14.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>17</value>
   </data>
   <data name="cbRohstoffGrp1.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 148</value>
@@ -889,13 +922,13 @@
     <value>pnlDetails</value>
   </data>
   <data name="&gt;&gt;cbRohstoffGrp1.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>18</value>
   </data>
   <data name="pnlDetails.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 102</value>
   </data>
   <data name="pnlDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>664, 212</value>
+    <value>664, 225</value>
   </data>
   <data name="pnlDetails.TabIndex" type="System.Int32, mscorlib">
     <value>65</value>
@@ -919,7 +952,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>663, 655</value>
+    <value>663, 339</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>

@@ -25,6 +25,7 @@ Public Class wb_KompRzChargen
 
         'Rezeptnummer aus Rohstoffdaten
         RzNr = Komp.RzNr
+
         'Rezeptnummer und Name (Ruft wb_Komponente.GetProduktionsDaten() auf
         RezeptNummer = Komp.RezeptNummer
         RezeptName = Komp.RezeptName
@@ -57,6 +58,11 @@ Public Class wb_KompRzChargen
         'Rezeptbezeichnung in MFF203
         Komp.RezeptName = RezeptName
 
+        'Backverlust
+        Komp.Backverlust = Backverlust
+        'Vorlauf Produktion
+        Komp.ProdVorlauf = ProdVorlauf
+
         'Chargengrößen (werden mit wb_Komponente.UpdateDB() gesichert)
         Komp.TeigChargen.CopyFrom(TeigChargen)
         Komp.ArtikelChargen.CopyFrom(ArtikelChargen)
@@ -70,17 +76,20 @@ Public Class wb_KompRzChargen
     End Sub
 
     ''' <summary>
-    ''' Adaten sind gültig. Anzeigefelder freigeben/anzeigen
+    ''' Daten sind gültig. Anzeigefelder freigeben/anzeigen
     ''' </summary>
     ''' <returns></returns>
     Public Property DataValid As Boolean
         Set(value As Boolean)
-            'Anzeigefelder ein/ausblenden
-            EnableKomponenten(value)
             'Wenn die Felder nach Deaktivierung wieder sichtbar sind - Anzeige aktualisieren
             If value Then
+                'Anzeigefelder einblenden
+                EnableKomponenten(True)
                 MinMaxOptArtikelShowValues()
                 MinMaxOptRezeptShowValues()
+            Else
+                'Rezeptnummer (Index)
+                RzNr = wb_Global.UNDEFINED
             End If
             'Wert speichern
             _DataValid = value
@@ -100,6 +109,20 @@ Public Class wb_KompRzChargen
         End Get
         Set(value As Integer)
             _RzNr = value
+            'Text Button "Auswählen/Ändern"
+            If _RzNr > 0 Then
+                BtnRzpt.Text = "Ändern/Löschen"
+                BtnRzpShow.Enabled = True
+                'Anzeigefelder ein/ausblenden
+                EnableKomponenten(True)
+                MinMaxOptArtikelShowValues()
+                MinMaxOptRezeptShowValues()
+            Else
+                BtnRzpt.Text = "Auswählen"
+                BtnRzpShow.Enabled = False
+                'Anzeigefelder ein/ausblenden
+                EnableKomponenten(False)
+            End If
         End Set
     End Property
 
@@ -217,12 +240,16 @@ Public Class wb_KompRzChargen
     End Sub
 
     ''' <summary>
-    ''' Auswahl Rezeptur. Öffnet ein Auswahlfenster mit der Rezeptliste
+    ''' Auswahl Rezeptur. Öffnet ein Auswahlfenster mit der Rezeptliste.
+    ''' Innerhalb der Rezeptliste kann über den Button Clear die Zuordung zwischen Artikel
+    ''' und Rezeptur gelöscht werden.
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Public Sub BtnRzpt_Click(sender As Object, e As EventArgs) Handles BtnRzpt.Click
         Dim RezeptAuswahl As New wb_Rezept_AuswahlListe
+        RezeptAuswahl.BtnClear.Enabled = True
+
         If RezeptAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
             RzNr = RezeptAuswahl.RezeptNr
             tRezeptNr.Text = RezeptAuswahl.RezeptNummer
@@ -251,7 +278,6 @@ Public Class wb_KompRzChargen
         'Flag setzen - Daten wurden geändert, speichern notwendig
         DataIsInvalid()
     End Sub
-
 
 #Region "Änderung Chargen"
     Private Sub tStkGewicht_Leave(sender As Object, e As EventArgs) Handles tStkGewicht.Leave
@@ -397,16 +423,27 @@ Public Class wb_KompRzChargen
         TeigChargen.HasChanged = True
         DataIsInvalid()
     End Sub
+
+    Private Sub tProdVorlauf_Leave(sender As Object, e As EventArgs) Handles tProdVorlauf.Leave
+        'Flag setzen - Daten wurden geändert, speichern notwendig
+        DataIsInvalid()
+    End Sub
+
+    Private Sub tBackverlust_Leave(sender As Object, e As EventArgs) Handles tBackverlust.Leave
+        'Flag setzen - Daten wurden geändert, speichern notwendig
+        DataIsInvalid()
+    End Sub
+
 #End Region
 
     ''' <summary>
     ''' Enable/Disable der einzelnen Formular-Steuerelemente
     ''' </summary>
     ''' <param name="Enable"></param>
-    Public Sub EnableKomponenten(Enable As Boolean)
+    Private Sub EnableKomponenten(Enable As Boolean)
         'Button Rezept öffnen/auswählen
-        BtnRzpShow.Enabled = Enable
-        BtnRzpt.Enabled = Enable
+        'BtnRzpShow.Enabled = Enable
+        'BtnRzpt.Enabled = Enable
         'ComboBox Liniengruppen
         cbLiniengruppe.Enabled = Enable
         cbArtikelLinienGruppe.Enabled = Enable
@@ -424,8 +461,6 @@ Public Class wb_KompRzChargen
             tBackverlust.Text = ""
             'Produktions-Vorlauf
             tProdVorlauf.Text = ""
-            'Rezeptnummer (Index)
-            RzNr = wb_Global.UNDEFINED
             'Chargengrößen in kg
             tChrgMinkg.Text = ""
             tChrgOptkg.Text = ""
@@ -500,4 +535,5 @@ Public Class wb_KompRzChargen
     Private Sub DataIsInvalid()
         RaiseEvent DataInvalidated()
     End Sub
+
 End Class

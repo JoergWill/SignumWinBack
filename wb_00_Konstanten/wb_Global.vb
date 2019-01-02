@@ -453,6 +453,12 @@
         Public CleanLabel As Char       'Kann entfallen (J/N)
     End Structure
 
+    Public Structure OrgaBackSortiment
+        Public Srt As String
+        Public SName As String
+        Public FName As String
+    End Structure
+
     Enum EditState
         Invalid
         AddNew

@@ -231,6 +231,12 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSortimente.Designer.vb">
+      <DependentUpon>wb_ArrayGridViewSortimente.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSortimente.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_GridCalendarColumn.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.Designer.vb">
       <DependentUpon>wb_KompRzChargen.vb</DependentUpon>
@@ -238,7 +244,7 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_Lager.vb" />
+    <Compile Include="wb_00_Klassen\wb_LagerOrt.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_TimerGridView.Designer.vb">
       <DependentUpon>wb_TimerGridView.vb</DependentUpon>
     </Compile>
@@ -649,6 +655,12 @@
     <Compile Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_OrgaBackParams.designer.vb">
+      <DependentUpon>wb_Admin_OrgaBackParams.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_OrgaBackParams.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_08_Forms_Admin\wb_Admin_Shared.vb" />
     <Compile Include="wb_08_Forms_Admin\wb_Admin_UpdateDatabase.Designer.vb">
       <DependentUpon>wb_Admin_UpdateDatabase.vb</DependentUpon>
@@ -656,16 +668,16 @@
     <Compile Include="wb_08_Forms_Admin\wb_Admin_UpdateDatabase.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Service_Liste.Designer.vb">
-      <DependentUpon>wb_Service_Liste.vb</DependentUpon>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Service_Liste.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="wb_08_Forms_Admin\wb_Admin_Sync.Designer.vb">
       <DependentUpon>wb_Admin_Sync.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_08_Forms_Admin\wb_Admin_Sync.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Service_Liste.Designer.vb">
+      <DependentUpon>wb_Service_Liste.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Service_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -801,14 +813,17 @@
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.resx">
       <DependentUpon>wb_Admin_Datensicherung.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_OrgaBackParams.resx">
+      <DependentUpon>wb_Admin_OrgaBackParams.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_UpdateDatabase.resx">
       <DependentUpon>wb_Admin_UpdateDatabase.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Service_Liste.resx">
-      <DependentUpon>wb_Service_Liste.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Sync.resx">
       <DependentUpon>wb_Admin_Sync.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Service_Liste.resx">
+      <DependentUpon>wb_Service_Liste.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -957,6 +972,7 @@
     <None Include="Resources\RohstoffeNwt_32x32.png" />
     <None Include="Resources\VirtTreeCollapse_16x16.png" />
     <None Include="Resources\VirtTreeExpand_16x16.png" />
+    <None Include="Resources\OrgaBackSortiment_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />
