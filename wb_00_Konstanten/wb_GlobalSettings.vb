@@ -233,6 +233,12 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    Public Shared ReadOnly Property AktUserGruppe As Integer
+        Get
+            Return wb_AktUser.UserGruppe
+        End Get
+    End Property
+
     Public Shared ReadOnly Property DataGridAlternateRowColor As Color
         Get
             Return System.Drawing.Color.LightGray

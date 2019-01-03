@@ -17,6 +17,21 @@ Public Class wb_Rohstoffe_Details
             tbRohstoffPreis.BackColor = tRohstoffNummer.BackColor
         End If
 
+        'Rohstoff-ID und Rohstoff-Type sind nur für Admin-User sichtbar
+        If wb_GlobalSettings.AktUserGruppe = wb_Global.AdminUserGrpe Then
+            tID.Visible = True
+            tType.Visible = True
+            lblID.Visible = True
+            lblType.Visible = True
+            cbAktiv.Enabled = True
+        Else
+            tID.Visible = False
+            tType.Visible = False
+            lblID.Visible = False
+            lblType.Visible = False
+            cbAktiv.Enabled = False
+        End If
+
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
 
@@ -40,6 +55,13 @@ Public Class wb_Rohstoffe_Details
         tRohstoffNummer.Text = RohStoff.Nummer
         tRohstoffName.Text = RohStoff.Bezeichnung
         tRohstoffKommentar.Text = RohStoff.Kommentar
+        cbAktiv.Checked = RohStoff.Aktiv
+
+        'ID und Komponententype sind nur für Gruppe Admin sichtbar
+        If wb_GlobalSettings.AktUserGruppe = wb_Global.AdminUserGrpe Then
+            tID.Text = RohStoff.Nr
+            tType.Text = wb_Functions.KomponTypeToInt(RohStoff.Type)
+        End If
 
         If wb_Functions.TypeIstSollMenge(RohStoff.Type, 1) Then
             'Panel Detail-Daten sichtbar
@@ -103,7 +125,7 @@ Public Class wb_Rohstoffe_Details
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tbRohstoffPreis.Leave, tbGebindeGroesse.Leave, cbRohstoffGrp2.Leave, cbRohstoffGrp1.Leave, cbRezeptGewicht.Click
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tbRohstoffPreis.Leave, tbGebindeGroesse.Leave, cbRohstoffGrp2.Leave, cbRohstoffGrp1.Leave, cbRezeptGewicht.Click, cbAktiv.Click
         'Bezeichnungstexte
         RohStoff.Bezeichnung = tRohstoffName.Text
         RohStoff.Kommentar = tRohstoffKommentar.Text
@@ -115,6 +137,8 @@ Public Class wb_Rohstoffe_Details
         RohStoff.Gruppe2 = cbRohstoffGrp2.GetKeyFromSelection
         'Rohstoff zählt nicht zum Rezeptgewicht
         RohStoff.ZaehltNichtZumRezeptGewicht = cbRezeptGewicht.Checked
+        'Rohstoff ist aktiv
+        RohStoff.Aktiv = cbAktiv.Checked
 
         'RohStoff-Preis (nur Prog-Version WinBack)
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then

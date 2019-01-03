@@ -1,19 +1,47 @@
-﻿Public Class wb_Artikel_Shared
+﻿Imports WinBack.wb_Language
+
+Public Class wb_Artikel_Shared
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
 
+    Public Shared Artikel As New wb_Komponente
     Public Shared Rzpt As New Hashtable
+    Public Shared ArtGruppe As New SortedList
 
     Public Shared aktArtikelName As String
 
+    Shared Sub New()
+        'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
+        LoadRzptNamen()
+        'HashTable mit den Artikelgruppen laden
+        Load_ArtikelTables()
+    End Sub
+
     Public Shared Sub LoadRzptNamen()
         'HashTable mit der Übersetzung der Rezept-Nummer(Idx) in die Rezept-Bezeichnung laden
-        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlRezeptNrName)
         Rzpt.Clear()
         While winback.Read
             Rzpt.Add(winback.iField("RZ_Nr"), winback.sField("RZ_Bezeichnung"))
             'Debug.Print("Artikel-Shared Rezeptnummer-Name Umsetzliste " & winback.iField("RZ_Nr") & "/" & winback.sField("RZ_Bezeichnung"))
+        End While
+        winback.Close()
+    End Sub
+
+    Private Shared Sub Load_ArtikelTables()
+        'HashTable mit der Übersetzung der Rohstoffgruppen-Nummer in die Rohstoffgruppen-Bezeichnung laden
+        'wenn die Rohstoffgruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
+        'entsprechende Übersetzung aus winback.Texte geladen
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+
+        'SortedList Rohstoff-Gruppen
+        winback.sqlSelect(wb_Sql_Selects.sqlArtikelGrp)
+        ArtGruppe.Clear()
+        While winback.Read
+            If Not ArtGruppe.ContainsKey((winback.iField("IP_Wert1int"))) Then
+                ArtGruppe.Add(winback.iField("IP_Wert1int"), TextFilter(winback.sField("IP_Wert4str")))
+            End If
         End While
         winback.Close()
     End Sub

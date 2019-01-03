@@ -27,11 +27,11 @@ Partial Class wb_Rohstoffe_Details
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rohstoffe_Details))
         Me.tRohstoffName = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblBezeichnung = New System.Windows.Forms.Label()
         Me.tRohstoffNummer = New System.Windows.Forms.TextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
+        Me.lblNummer = New System.Windows.Forms.Label()
         Me.tRohstoffKommentar = New System.Windows.Forms.TextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.lblKommentar = New System.Windows.Forms.Label()
         Me.pnlDetails = New System.Windows.Forms.Panel()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.lblDeklExtern = New System.Windows.Forms.Label()
@@ -56,6 +56,12 @@ Partial Class wb_Rohstoffe_Details
         Me.cbRohstoffGrp2 = New WinBack.wb_ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.cbRohstoffGrp1 = New WinBack.wb_ComboBox()
+        Me.tID = New System.Windows.Forms.TextBox()
+        Me.tType = New System.Windows.Forms.TextBox()
+        Me.cbAktiv = New System.Windows.Forms.CheckBox()
+        Me.lblID = New System.Windows.Forms.Label()
+        Me.lblType = New System.Windows.Forms.Label()
+        Me.lblAktiv = New System.Windows.Forms.Label()
         Me.pnlDetails.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -65,10 +71,10 @@ Partial Class wb_Rohstoffe_Details
         resources.ApplyResources(Me.tRohstoffName, "tRohstoffName")
         Me.tRohstoffName.Name = "tRohstoffName"
         '
-        'Label2
+        'lblBezeichnung
         '
-        resources.ApplyResources(Me.Label2, "Label2")
-        Me.Label2.Name = "Label2"
+        resources.ApplyResources(Me.lblBezeichnung, "lblBezeichnung")
+        Me.lblBezeichnung.Name = "lblBezeichnung"
         '
         'tRohstoffNummer
         '
@@ -77,20 +83,20 @@ Partial Class wb_Rohstoffe_Details
         Me.tRohstoffNummer.ReadOnly = True
         Me.tRohstoffNummer.TabStop = False
         '
-        'Label3
+        'lblNummer
         '
-        resources.ApplyResources(Me.Label3, "Label3")
-        Me.Label3.Name = "Label3"
+        resources.ApplyResources(Me.lblNummer, "lblNummer")
+        Me.lblNummer.Name = "lblNummer"
         '
         'tRohstoffKommentar
         '
         resources.ApplyResources(Me.tRohstoffKommentar, "tRohstoffKommentar")
         Me.tRohstoffKommentar.Name = "tRohstoffKommentar"
         '
-        'Label4
+        'lblKommentar
         '
-        resources.ApplyResources(Me.Label4, "Label4")
-        Me.Label4.Name = "Label4"
+        resources.ApplyResources(Me.lblKommentar, "lblKommentar")
+        Me.lblKommentar.Name = "lblKommentar"
         '
         'pnlDetails
         '
@@ -243,17 +249,59 @@ Partial Class wb_Rohstoffe_Details
         resources.ApplyResources(Me.cbRohstoffGrp1, "cbRohstoffGrp1")
         Me.cbRohstoffGrp1.Name = "cbRohstoffGrp1"
         '
+        'tID
+        '
+        resources.ApplyResources(Me.tID, "tID")
+        Me.tID.Name = "tID"
+        Me.tID.ReadOnly = True
+        Me.tID.TabStop = False
+        '
+        'tType
+        '
+        resources.ApplyResources(Me.tType, "tType")
+        Me.tType.Name = "tType"
+        Me.tType.ReadOnly = True
+        Me.tType.TabStop = False
+        '
+        'cbAktiv
+        '
+        resources.ApplyResources(Me.cbAktiv, "cbAktiv")
+        Me.cbAktiv.Name = "cbAktiv"
+        Me.cbAktiv.TabStop = False
+        Me.cbAktiv.UseVisualStyleBackColor = True
+        '
+        'lblID
+        '
+        resources.ApplyResources(Me.lblID, "lblID")
+        Me.lblID.Name = "lblID"
+        '
+        'lblType
+        '
+        resources.ApplyResources(Me.lblType, "lblType")
+        Me.lblType.Name = "lblType"
+        '
+        'lblAktiv
+        '
+        resources.ApplyResources(Me.lblAktiv, "lblAktiv")
+        Me.lblAktiv.Name = "lblAktiv"
+        '
         'wb_Rohstoffe_Details
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.lblAktiv)
+        Me.Controls.Add(Me.lblType)
+        Me.Controls.Add(Me.lblID)
+        Me.Controls.Add(Me.cbAktiv)
+        Me.Controls.Add(Me.tType)
+        Me.Controls.Add(Me.tID)
         Me.Controls.Add(Me.pnlDetails)
         Me.Controls.Add(Me.tRohstoffKommentar)
-        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.lblKommentar)
         Me.Controls.Add(Me.tRohstoffNummer)
-        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.lblNummer)
         Me.Controls.Add(Me.tRohstoffName)
-        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.lblBezeichnung)
         Me.Name = "wb_Rohstoffe_Details"
         Me.pnlDetails.ResumeLayout(False)
         Me.pnlDetails.PerformLayout()
@@ -264,11 +312,11 @@ Partial Class wb_Rohstoffe_Details
 
     End Sub
     Friend WithEvents tRohstoffName As Windows.Forms.TextBox
-    Friend WithEvents Label2 As Windows.Forms.Label
+    Friend WithEvents lblBezeichnung As Windows.Forms.Label
     Friend WithEvents tRohstoffNummer As Windows.Forms.TextBox
-    Friend WithEvents Label3 As Windows.Forms.Label
+    Friend WithEvents lblNummer As Windows.Forms.Label
     Friend WithEvents tRohstoffKommentar As Windows.Forms.TextBox
-    Friend WithEvents Label4 As Windows.Forms.Label
+    Friend WithEvents lblKommentar As Windows.Forms.Label
     Friend WithEvents pnlDetails As Windows.Forms.Panel
     Friend WithEvents eMindestmenge As Windows.Forms.Label
     Friend WithEvents eBilanzmenge As Windows.Forms.Label
@@ -293,4 +341,10 @@ Partial Class wb_Rohstoffe_Details
     Friend WithEvents Label14 As Windows.Forms.Label
     Friend WithEvents cbRohstoffGrp1 As wb_ComboBox
     Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
+    Friend WithEvents tID As Windows.Forms.TextBox
+    Friend WithEvents tType As Windows.Forms.TextBox
+    Friend WithEvents cbAktiv As Windows.Forms.CheckBox
+    Friend WithEvents lblID As Windows.Forms.Label
+    Friend WithEvents lblType As Windows.Forms.Label
+    Friend WithEvents lblAktiv As Windows.Forms.Label
 End Class

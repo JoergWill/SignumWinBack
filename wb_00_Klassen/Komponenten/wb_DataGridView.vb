@@ -507,6 +507,23 @@ Public Class wb_DataGridView
     End Sub
 
     ''' <summary>
+    ''' Sortier-Kriterium zurücksetzen.
+    ''' </summary>
+    Public Sub ResetFilter()
+        'alten Header wieder restaurieren
+        If iSort > 0 Then
+            Dim sHeaderName As String
+            Try : sHeaderName = ColNames(iSort) : Catch : sHeaderName = "" : End Try
+            Columns(iSort).HeaderText = sHeaderName + Chr(10)
+        End If
+        'Reset Filter
+        sFilter = ""
+        iSort = -1
+        DtaView.RowFilter = _Filter
+    End Sub
+
+
+    ''' <summary>
     ''' Ausgabe des Datenbank-Feldes.
     ''' Es wird anhand des Feldnamens geprüft, ob das Datenbank-Feld aus der MySQL-Datenbank von iso-8859-5 nach utf-8 konvertiert werden muss.
     ''' </summary>

@@ -38,16 +38,37 @@ Public MustInherit Class DockPanel_Main
                 Return ExtendedCmd(Cmd, Prm)
         End Select
     End Function
+
+
     ''' <summary>
     ''' Extendet-Execute-Command von Winback-Main-Form.
     ''' Routine wird von Winback-Main aufgerufen um verschiedene Funktionen in der MDI-Form auszuführen.
-    '''     
-    '''     OPENDETAILS         -   Detail-Fenster wird geöffnet und angezeigt.
     '''     
     ''' </summary>
     ''' <param name="Cmd"></param>
     ''' <param name="Prm"></param>
     Public MustOverride Function ExtendedCmd(Cmd As String, Prm As String) As Boolean
+
+    ''' <summary>
+    ''' Prüft ob ein (Unter)Fenster im Dock-Panel schon vorhanden und/oder sichtbar ist. 
+    ''' Wenn das Fenster vorhanden ist, wird geprüft ob dieses Fenster unsichtbar ist (DockState.Unknown)
+    ''' Unsichtbare Fenster werden aus der Liste gelöscht (DockHandler.Dispose) und können dann neu angelegt werden.
+    ''' </summary>
+    ''' <param name="Name"></param>
+    ''' <returns>True - Fenster existiert und ist sichtbar</returns>
+    Public Function DockIsVisible(Name As String) As Boolean
+        For Each x As DockContent In DockPanel.Contents
+            If x.Name = Name Then
+                If x.DockState = DockState.Unknown Then
+                    x.DockHandler.Dispose()
+                    Return False
+                Else
+                    Return True
+                End If
+            End If
+        Next
+        Return False
+    End Function
 
     ''' <summary>
     ''' Default-Layout anzeigen.

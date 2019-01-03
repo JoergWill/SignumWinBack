@@ -24,6 +24,7 @@ Public Class wb_Komponente
     Private KA_Grp2 As Integer
     Private KA_Charge_Opt_kg As String
     Private KA_zaehlt_zu_RZ_Gesamtmenge As String
+    Private KA_aktiv As Integer
 
     Private KO_DeklBezeichnungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichnungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
@@ -248,6 +249,23 @@ Public Class wb_Komponente
         End Get
     End Property
 
+    Public Property Aktiv As Boolean
+        Get
+            If KA_aktiv > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+        End Get
+        Set(value As Boolean)
+            If value Then
+                KA_aktiv = 1
+            Else
+                KA_aktiv = 0
+            End If
+        End Set
+    End Property
+
     ''' <summary>
     ''' Erster (unsichtbarer) Parameter-Knoten (Root-Node)
     ''' Die Child-Nodes enthalten eine Liste aller Parameter sortiert nach Type und Parameter-Nummer
@@ -447,6 +465,7 @@ Public Class wb_Komponente
         KA_Grp2 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp2"))
         KA_Charge_Opt_kg = dataGridView.Field("KA_Charge_Opt_kg")
         KA_zaehlt_zu_RZ_Gesamtmenge = dataGridView.Field("KA_zaehlt_zu_RZ_Gesamtmenge")
+        KA_aktiv = dataGridView.Field("KA_aktiv")
 
     End Sub
 
@@ -463,6 +482,7 @@ Public Class wb_Komponente
             dataGridView.Field("KA_Grp2") = KA_Grp2
             dataGridView.Field("KA_Charge_Opt_kg") = KA_Charge_Opt_kg
             dataGridView.Field("KA_zaehlt_zu_RZ_Gesamtmenge") = KA_zaehlt_zu_RZ_Gesamtmenge
+            dataGridView.Field("KA_aktiv") = KA_aktiv
 
             _DataHasChanged = False
             Return True

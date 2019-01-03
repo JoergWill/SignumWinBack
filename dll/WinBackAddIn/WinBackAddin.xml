@@ -4418,6 +4418,51 @@ Text aus Datenbank lesen - Übersetzung
  <param name="obEinheit"></param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Artikel_Details.DetailInfo(System.Object)">
+ <summary>
+ Anzeige der Artikel-Details.
+ Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
+ </summary>
+</member>
+<member name="M:WinBack.wb_Artikel_Details.ShowDeklaration">
+ <summary>
+ Anzeige der Deklarations-Felder. Wenn der Haken bei "Artikel wird nicht deklariert" gesetzt ist,
+ werden die Felder ausgeblendet
+ </summary>
+</member>
+<member name="M:WinBack.wb_Artikel_Details.DataHasChanged(System.Object,System.EventArgs)">
+ <summary>
+ Die Daten in den Eingabe-Feldern (Nummer/Text/Kommentar) haben sich geändert)
+ Wird aufgerufen durch [Textfeld].Leave(). Aktualisiert die Datenfelder in wb_Artikel_Global und löst
+ dann den Event Edit_Leave() aus.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Artikel_Details.tbMindestMenge_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Das Eingabefeld "Mindestmenge" wurde verlassen. Der Inhalt wird in die
+ Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Artikel_Details.tbDeklarationExtern_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Das Eingabefeld "externe Deklaration" wurde verlassen. Der Inhalt wird in die
+ Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Artikel_Details.tbDeklarationIntern_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Das Eingabefeld "interne Deklaration" wurde verlassen. Der Inhalt wird in die
+ Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="T:WinBack.Services.IRecipeProvider">
  <summary>
  Interface zum Auflösen von Rezepturen bzw. Stücklisten
@@ -5710,6 +5755,11 @@ Start Timer nach Änderung Datensatz-Zeiger
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_DataGridView.ResetFilter">
+ <summary>
+ Sortier-Kriterium zurücksetzen.
+ </summary>
 </member>
 <member name="M:WinBack.wb_DataGridView.DataGridView_CellFormating(System.Object,System.Windows.Forms.DataGridViewCellFormattingEventArgs)">
  <summary>

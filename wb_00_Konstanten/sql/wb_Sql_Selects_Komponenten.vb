@@ -27,6 +27,9 @@
                                   "INNER JOIN Lagerorte On Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
                                   "WHERE KO_TYPE = 101 Or KO_TYPE = 103 Or KO_TYPE = 104"
 
+    'Sql-Statement ArtikelGruppen aus winback.ItemParameter
+    Public Const sqlartikelGrp = "SELECT IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
+                                  "IP_ItemTyp = 700 And IP_Wert3int = 0 ORDER BY IP_Lfd_Nr DESC"
     'Löschen Rohstoff/Artikel in Komponenten
     Public Const sqlDelKomponenten = "DELETE FROM Komponenten WHERE KO_NR = [0]"
     'Löschen Rohstoff/Artikel in KomponParams

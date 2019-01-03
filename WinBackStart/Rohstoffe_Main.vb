@@ -22,6 +22,10 @@ Public Class Rohstoffe_Main
     ''' Routine wird von Winback-Main aufgerufen um verschiedene Funktionen in der MDI-Form auszuführen.
     ''' 
     '''     OPENDETAILS         -   Detail-Fenster wird geöffnet und angezeigt.
+    '''     OPENVERWENDUNG      -   Fenster Verwendung in Rezepten wird geöffnet und angezeigt.
+    '''     OPENPARAMETER       -   Parameter-Fenster wird geöffnet und angezeigt.
+    '''     NWT                 -   Anzeige der Nährwerte wird geöffnet und angezeigt.
+    '''     CLOUD               -   Verknüpfung zur WinBack-Cloud
     '''     
     ''' </summary>
     ''' <param name="Cmd"></param>
@@ -33,32 +37,45 @@ Public Class Rohstoffe_Main
                 RohstoffListe.Show(DockPanel, DockState.DockLeft)
                 Return True
             Case "OPENDETAILS"
-                RohstoffDetails = New wb_Rohstoffe_Details
-                RohstoffDetails.Show(DockPanel, DockState.Document)
+                If Not DockIsVisible("wb_Rohstoffe_Details") Then
+                    RohstoffDetails = New wb_Rohstoffe_Details
+                    RohstoffDetails.Show(DockPanel, DockState.Document)
+                End If
                 Return True
             Case "OPENVERWENDUNG"
-                RohstoffVerwendung = New wb_Rohstoffe_Verwendung
-                RohstoffVerwendung.Show(DockPanel, DockState.Document)
+                If Not DockIsVisible("wb_Rohstoffe_Verwendung") Then
+                    RohstoffVerwendung = New wb_Rohstoffe_Verwendung
+                    RohstoffVerwendung.Show(DockPanel, DockState.Document)
+                End If
                 Return True
             Case "OPENPARAMETER"
-                RohstoffParameter = New wb_Rohstoffe_Parameter
-                RohstoffParameter.Show(DockPanel, DockState.Document)
+                If Not DockIsVisible("wb_Rohstoffe_Parameter") Then
+                    RohstoffParameter = New wb_Rohstoffe_Parameter
+                    RohstoffParameter.Show(DockPanel, DockState.Document)
+                End If
                 Return True
             Case "NWT"
-                RohstoffNwt = New wb_Rohstoffe_Nwt
-                RohstoffNwt.Show(DockPanel, DockState.Document)
+                If Not DockIsVisible("wb_Rohstoffe_Nwt") Then
+                    RohstoffNwt = New wb_Rohstoffe_Nwt
+                    RohstoffNwt.Show(DockPanel, DockState.Document)
+                End If
                 Return True
             Case "CLOUD"
-                RohstoffCloud = New wb_Rohstoffe_Cloud
-                RohstoffCloud.Show(DockPanel, DockState.Document)
+                If Not DockIsVisible("wb_Rohstoffe_Cloud") Then
+                    RohstoffCloud = New wb_Rohstoffe_Cloud
+                    RohstoffCloud.Show(DockPanel, DockState.Document)
+                End If
                 Return True
-
             Case "NEW"
                 RohstoffNeuAnlegen()
                 Return True
             Case "DELETE"
                 RohstoffLöschen()
                 Return True
+            Case "SETFILTER"
+                If RohstoffListe IsNot Nothing Then
+                    RohstoffListe.Anzeige = CType(Prm, wb_Rohstoffe_Shared.AnzeigeFilter)
+                End If
             Case Else
                 Return False
         End Select
@@ -141,6 +158,7 @@ Public Class Rohstoffe_Main
     Public Sub RohstoffNeuAnlegen()
         Dim Komponente As New wb_Komponente
         Dim KompNrNeu As Integer = Komponente.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE)
+        RohstoffListe.ResetFilter()
         RohstoffListe.RefreshData(KompNrNeu)
         Komponente = Nothing
     End Sub

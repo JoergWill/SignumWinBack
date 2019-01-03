@@ -19,6 +19,7 @@
     Public Const NewUserName = "Neu"
     Public Const NewUserPass = "-1"
     Public Const NewUserGrpe = "1"
+    Public Const AdminUserGrpe = 99
 
     'Symbol Rezept-im-Rezept
     Public Const RezeptImRezept = "®"

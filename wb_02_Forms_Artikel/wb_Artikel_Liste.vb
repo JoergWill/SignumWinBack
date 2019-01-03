@@ -1,4 +1,5 @@
-﻿Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports WinBack.wb_Artikel_Shared
+Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Artikel_Liste
     Inherits DockContent
@@ -11,9 +12,6 @@ Public Class wb_Artikel_Liste
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
-
-        'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        wb_Artikel_Shared.LoadRzptNamen()
 
         'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
         DataGridView.x8859_5_FieldName = "KO_Bezeichnung"
@@ -61,6 +59,18 @@ Public Class wb_Artikel_Liste
             Rezeptur.Show()
             Me.Cursor = Windows.Forms.Cursors.Default
         End If
+    End Sub
+
+    Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
+        'Debug.Print("Rohstoffe DataGridView has Changed: Bezeichnung alt " & RohStoff.Bezeichnung)
+        'Daten laden aus winback.Komponenten in GridView
+        Artikel.LoadData(DataGridView)
+        'Detail-Daten aus winback.Komponenten laden in Objekt wb_Rostoffe_Shared.Rohstoff
+        Artikel.MySQLdbRead(Artikel.Nr)
+        'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
+        Liste_Click(Nothing)
+        'Nach dem Update der Detailfenster wird der Focus wieder zurückgesetzt (Eingabe Suchmaske)
+        DataGridView.Focus()
     End Sub
 End Class
 

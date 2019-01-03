@@ -413,6 +413,12 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_DockingExtension.vb" />
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Details.Designer.vb">
+      <DependentUpon>wb_Artikel_Details.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_03_Forms_Rezepte\IRezept_OrgaBack.vb" />
     <Compile Include="wb_03_Forms_Rezepte\ob_Rezept_Ingredients.vb" />
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_AuswahlListe.Designer.vb">
@@ -526,12 +532,6 @@
       <DependentUpon>wb_User_Liste.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_05_Forms_User\wb_User_Liste.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Details.Designer.vb">
-      <DependentUpon>wb_Artikel_Details.vb</DependentUpon>
-    </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Details.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Liste.Designer.vb">
@@ -712,6 +712,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.resx">
       <DependentUpon>ob_Artikel_ZuordnungRezept.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Details.resx">
+      <DependentUpon>wb_Artikel_Details.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Liste.resx">
       <DependentUpon>wb_Artikel_Liste.vb</DependentUpon>

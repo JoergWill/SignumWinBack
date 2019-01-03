@@ -15,11 +15,11 @@ Public Class wb_Rohstoffe_Liste
                 Case AnzeigeFilter.Hand        ' alle aktiven Rohstoffe Typ 102
                     DataGridView.Filter = "(KO_Type = 102) AND KA_aktiv = 1"
                 Case AnzeigeFilter.Auto        ' alle aktiven Rohstoffe Typ 101,103,104
-                    DataGridView.Filter = "(KO_Type = 101) OR KO_Type = 103 or KO_Type = 104) AND KA_aktiv = 1"
+                    DataGridView.Filter = "((KO_Type = 101) OR (KO_Type = 103) or (KO_Type = 104)) AND KA_aktiv = 1"
                 Case AnzeigeFilter.Sauerteig   ' alle aktiven Rohstoffe Sauerteig
                     DataGridView.Filter = "(KO_Type < 100) AND KA_aktiv = 1"
-                Case AnzeigeFilter.Install     ' alle inaktiven Rohstoffe
-                    DataGridView.Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+                Case AnzeigeFilter.Install     ' alle aktiven und inaktiven Rohstoffe
+                    DataGridView.Filter = "(KO_Type > 100)"
                 Case AnzeigeFilter.Sonstige    ' alle Rohstoffe Typ 105,106
                     DataGridView.Filter = "(KO_Type > 100) AND KA_aktiv = 1"
                 Case Else
@@ -62,6 +62,10 @@ Public Class wb_Rohstoffe_Liste
         Liste_Click(Nothing)
     End Sub
 
+    Public Sub ResetFilter()
+        DataGridView.ResetFilter()
+    End Sub
+
     Private Sub wb_Rohstoffe_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern
         DataGridView.UpdateDataBase()
@@ -91,7 +95,7 @@ Public Class wb_Rohstoffe_Liste
         'Debug.Print("Rohstoffe DataGridView has Changed: Bezeichnung alt " & RohStoff.Bezeichnung)
         'Daten laden aus winback.Komponenten in GridView
         RohStoff.LoadData(DataGridView)
-        'Detail-Daten aus winback.Komponenten laden in Objekt wb_Rostoffe_Shared.Rohstoff
+        'Detail-Daten aus winback.Komponenten laden in Objekt wb_Rohstoffe_Shared.Rohstoff
         RohStoff.MySQLdbRead(RohStoff.Nr)
         'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
         Liste_Click(Nothing)

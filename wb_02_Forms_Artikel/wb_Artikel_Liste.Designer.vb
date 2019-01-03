@@ -27,7 +27,7 @@ Partial Class wb_Artikel_Liste
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.DataGridView = New Global.WinBack.wb_DataGridView()
+        Me.DataGridView = New WinBack.wb_DataGridView()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -56,6 +56,7 @@ Partial Class wb_Artikel_Liste
         Me.DataGridView.Name = "DataGridView"
         Me.DataGridView.Size = New System.Drawing.Size(706, 447)
         Me.DataGridView.TabIndex = 3
+        Me.DataGridView.x8859_5_FieldName = ""
         '
         'wb_Artikel_Liste
         '

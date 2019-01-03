@@ -33,7 +33,7 @@ Public Class wb_LagerOrt
             Dim dMindestmenge As Double = wb_Functions.StrToDouble(Mindestmenge)
 
             'simpler Vergleich
-            Return (dBilanzmenge < dMindestmenge)
+            Return (dBilanzmenge < dMindestmenge) And (dMindestmenge > 0)
         End Get
     End Property
 

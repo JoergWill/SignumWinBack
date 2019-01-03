@@ -117,167 +117,161 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tRohstoffName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tRohstoffName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>165, 24</value>
+  <data name="tArtikelName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>161, 24</value>
   </data>
-  <data name="tRohstoffName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>493, 20</value>
+  <data name="tArtikelName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>497, 20</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tRohstoffName.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="tArtikelName.TabIndex" type="System.Int32, mscorlib">
+    <value>68</value>
   </data>
-  <data name="&gt;&gt;tRohstoffName.Name" xml:space="preserve">
-    <value>tRohstoffName</value>
+  <data name="&gt;&gt;tArtikelName.Name" xml:space="preserve">
+    <value>tArtikelName</value>
   </data>
-  <data name="&gt;&gt;tRohstoffName.Type" xml:space="preserve">
+  <data name="&gt;&gt;tArtikelName.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tRohstoffName.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tArtikelName.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;tRohstoffName.ZOrder" xml:space="preserve">
-    <value>11</value>
+  <data name="&gt;&gt;tArtikelName.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
-  <data name="lblBezeichnung.AutoSize" type="System.Boolean, mscorlib">
+  <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblBezeichnung.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblBezeichnung.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>162, 8</value>
   </data>
-  <data name="lblBezeichnung.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>112, 13</value>
   </data>
-  <data name="lblBezeichnung.TabIndex" type="System.Int32, mscorlib">
+  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
     <value>33</value>
   </data>
-  <data name="lblBezeichnung.Text" xml:space="preserve">
+  <data name="Label2.Text" xml:space="preserve">
     <value>Rohstoff-Bezeichnung</value>
   </data>
-  <data name="&gt;&gt;lblBezeichnung.Name" xml:space="preserve">
-    <value>lblBezeichnung</value>
+  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
+    <value>Label2</value>
   </data>
-  <data name="&gt;&gt;lblBezeichnung.Type" xml:space="preserve">
+  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblBezeichnung.Parent" xml:space="preserve">
+  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblBezeichnung.ZOrder" xml:space="preserve">
-    <value>12</value>
+  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
-  <data name="tRohstoffNummer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 24</value>
+  <data name="tArtikelNummer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 24</value>
   </data>
-  <data name="tRohstoffNummer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 20</value>
+  <data name="tArtikelNummer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 20</value>
   </data>
-  <data name="tRohstoffNummer.TabIndex" type="System.Int32, mscorlib">
-    <value>34</value>
+  <data name="tArtikelNummer.TabIndex" type="System.Int32, mscorlib">
+    <value>67</value>
   </data>
-  <data name="&gt;&gt;tRohstoffNummer.Name" xml:space="preserve">
-    <value>tRohstoffNummer</value>
+  <data name="&gt;&gt;tArtikelNummer.Name" xml:space="preserve">
+    <value>tArtikelNummer</value>
   </data>
-  <data name="&gt;&gt;tRohstoffNummer.Type" xml:space="preserve">
+  <data name="&gt;&gt;tArtikelNummer.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tRohstoffNummer.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tArtikelNummer.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;tRohstoffNummer.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="&gt;&gt;tArtikelNummer.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="lblNummer.AutoSize" type="System.Boolean, mscorlib">
+  <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblNummer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="Label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblNummer.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 8</value>
   </data>
-  <data name="lblNummer.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>46, 13</value>
   </data>
-  <data name="lblNummer.TabIndex" type="System.Int32, mscorlib">
+  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
   </data>
-  <data name="lblNummer.Text" xml:space="preserve">
+  <data name="Label3.Text" xml:space="preserve">
     <value>Nummer</value>
   </data>
-  <data name="&gt;&gt;lblNummer.Name" xml:space="preserve">
-    <value>lblNummer</value>
+  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
+    <value>Label3</value>
   </data>
-  <data name="&gt;&gt;lblNummer.Type" xml:space="preserve">
+  <data name="&gt;&gt;Label3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblNummer.Parent" xml:space="preserve">
+  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblNummer.ZOrder" xml:space="preserve">
-    <value>10</value>
+  <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
-  <data name="tRohstoffKommentar.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="tArtikelKommentar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>161, 63</value>
   </data>
-  <data name="tRohstoffKommentar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>165, 63</value>
+  <data name="tArtikelKommentar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>497, 20</value>
   </data>
-  <data name="tRohstoffKommentar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>493, 20</value>
+  <data name="tArtikelKommentar.TabIndex" type="System.Int32, mscorlib">
+    <value>66</value>
   </data>
-  <data name="tRohstoffKommentar.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;tArtikelKommentar.Name" xml:space="preserve">
+    <value>tArtikelKommentar</value>
   </data>
-  <data name="&gt;&gt;tRohstoffKommentar.Name" xml:space="preserve">
-    <value>tRohstoffKommentar</value>
-  </data>
-  <data name="&gt;&gt;tRohstoffKommentar.Type" xml:space="preserve">
+  <data name="&gt;&gt;tArtikelKommentar.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tRohstoffKommentar.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tArtikelKommentar.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;tRohstoffKommentar.ZOrder" xml:space="preserve">
-    <value>7</value>
+  <data name="&gt;&gt;tArtikelKommentar.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="lblKommentar.AutoSize" type="System.Boolean, mscorlib">
+  <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblKommentar.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="Label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblKommentar.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="Label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>162, 47</value>
   </data>
-  <data name="lblKommentar.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 13</value>
   </data>
-  <data name="lblKommentar.TabIndex" type="System.Int32, mscorlib">
+  <data name="Label4.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
   </data>
-  <data name="lblKommentar.Text" xml:space="preserve">
+  <data name="Label4.Text" xml:space="preserve">
     <value>Kommentar</value>
   </data>
-  <data name="&gt;&gt;lblKommentar.Name" xml:space="preserve">
-    <value>lblKommentar</value>
+  <data name="&gt;&gt;Label4.Name" xml:space="preserve">
+    <value>Label4</value>
   </data>
-  <data name="&gt;&gt;lblKommentar.Type" xml:space="preserve">
+  <data name="&gt;&gt;Label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblKommentar.Parent" xml:space="preserve">
+  <data name="&gt;&gt;Label4.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblKommentar.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="&gt;&gt;Label4.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="pnlDetails.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -287,24 +281,6 @@
   </data>
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="lblDeklExtern.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblDeklExtern.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblDeklExtern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
-  </data>
-  <data name="lblDeklExtern.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 13</value>
-  </data>
-  <data name="lblDeklExtern.TabIndex" type="System.Int32, mscorlib">
-    <value>76</value>
-  </data>
-  <data name="lblDeklExtern.Text" xml:space="preserve">
-    <value>Deklaration</value>
   </data>
   <data name="&gt;&gt;lblDeklExtern.Name" xml:space="preserve">
     <value>lblDeklExtern</value>
@@ -318,21 +294,6 @@
   <data name="&gt;&gt;lblDeklExtern.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tbDeklarationExtern.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tbDeklarationExtern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 26</value>
-  </data>
-  <data name="tbDeklarationExtern.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="tbDeklarationExtern.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 82</value>
-  </data>
-  <data name="tbDeklarationExtern.TabIndex" type="System.Int32, mscorlib">
-    <value>68</value>
-  </data>
   <data name="&gt;&gt;tbDeklarationExtern.Name" xml:space="preserve">
     <value>tbDeklarationExtern</value>
   </data>
@@ -345,24 +306,6 @@
   <data name="&gt;&gt;tbDeklarationExtern.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="lblDeklIntern.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblDeklIntern.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblDeklIntern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 111</value>
-  </data>
-  <data name="lblDeklIntern.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 13</value>
-  </data>
-  <data name="lblDeklIntern.TabIndex" type="System.Int32, mscorlib">
-    <value>77</value>
-  </data>
-  <data name="lblDeklIntern.Text" xml:space="preserve">
-    <value>Deklaration intern</value>
-  </data>
   <data name="&gt;&gt;lblDeklIntern.Name" xml:space="preserve">
     <value>lblDeklIntern</value>
   </data>
@@ -374,21 +317,6 @@
   </data>
   <data name="&gt;&gt;lblDeklIntern.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="tbDeklarationIntern.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tbDeklarationIntern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 137</value>
-  </data>
-  <data name="tbDeklarationIntern.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="tbDeklarationIntern.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 82</value>
-  </data>
-  <data name="tbDeklarationIntern.TabIndex" type="System.Int32, mscorlib">
-    <value>69</value>
   </data>
   <data name="&gt;&gt;tbDeklarationIntern.Name" xml:space="preserve">
     <value>tbDeklarationIntern</value>
@@ -661,7 +589,7 @@
     <value>NoControl</value>
   </data>
   <data name="cbRezeptGewicht.Location" type="System.Drawing.Point, System.Drawing">
-    <value>165, 33</value>
+    <value>165, 38</value>
   </data>
   <data name="cbRezeptGewicht.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 40</value>
@@ -768,28 +696,25 @@
   <data name="&gt;&gt;lblGebindegroesse.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="tbRohstoffPreis.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 19</value>
+  <data name="tbArtikelPreis.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 19</value>
   </data>
-  <data name="tbRohstoffPreis.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 20</value>
+  <data name="tbArtikelPreis.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 20</value>
   </data>
-  <data name="tbRohstoffPreis.TabIndex" type="System.Int32, mscorlib">
-    <value>65</value>
+  <data name="tbArtikelPreis.TabIndex" type="System.Int32, mscorlib">
+    <value>87</value>
   </data>
-  <data name="tbRohstoffPreis.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Right</value>
+  <data name="&gt;&gt;tbArtikelPreis.Name" xml:space="preserve">
+    <value>tbArtikelPreis</value>
   </data>
-  <data name="&gt;&gt;tbRohstoffPreis.Name" xml:space="preserve">
-    <value>tbRohstoffPreis</value>
-  </data>
-  <data name="&gt;&gt;tbRohstoffPreis.Type" xml:space="preserve">
+  <data name="&gt;&gt;tbArtikelPreis.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbRohstoffPreis.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tbArtikelPreis.Parent" xml:space="preserve">
     <value>pnlDetails</value>
   </data>
-  <data name="&gt;&gt;tbRohstoffPreis.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tbArtikelPreis.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
   <data name="lblPreis.AutoSize" type="System.Boolean, mscorlib">
@@ -852,25 +777,25 @@
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="cbRohstoffGrp2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbArtikelGrp2.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 188</value>
   </data>
-  <data name="cbRohstoffGrp2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>290, 21</value>
+  <data name="cbArtikelGrp2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 21</value>
   </data>
-  <data name="cbRohstoffGrp2.TabIndex" type="System.Int32, mscorlib">
-    <value>72</value>
+  <data name="cbArtikelGrp2.TabIndex" type="System.Int32, mscorlib">
+    <value>88</value>
   </data>
-  <data name="&gt;&gt;cbRohstoffGrp2.Name" xml:space="preserve">
-    <value>cbRohstoffGrp2</value>
+  <data name="&gt;&gt;cbArtikelGrp2.Name" xml:space="preserve">
+    <value>cbArtikelGrp2</value>
   </data>
-  <data name="&gt;&gt;cbRohstoffGrp2.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbArtikelGrp2.Type" xml:space="preserve">
     <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.3.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;cbRohstoffGrp2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbArtikelGrp2.Parent" xml:space="preserve">
     <value>pnlDetails</value>
   </data>
-  <data name="&gt;&gt;cbRohstoffGrp2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbArtikelGrp2.ZOrder" xml:space="preserve">
     <value>16</value>
   </data>
   <data name="Label14.AutoSize" type="System.Boolean, mscorlib">
@@ -903,25 +828,25 @@
   <data name="&gt;&gt;Label14.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="cbRohstoffGrp1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 148</value>
+  <data name="cbArtikelGrp1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 145</value>
   </data>
-  <data name="cbRohstoffGrp1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>290, 21</value>
+  <data name="cbArtikelGrp1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 21</value>
   </data>
-  <data name="cbRohstoffGrp1.TabIndex" type="System.Int32, mscorlib">
-    <value>70</value>
+  <data name="cbArtikelGrp1.TabIndex" type="System.Int32, mscorlib">
+    <value>89</value>
   </data>
-  <data name="&gt;&gt;cbRohstoffGrp1.Name" xml:space="preserve">
-    <value>cbRohstoffGrp1</value>
+  <data name="&gt;&gt;cbArtikelGrp1.Name" xml:space="preserve">
+    <value>cbArtikelGrp1</value>
   </data>
-  <data name="&gt;&gt;cbRohstoffGrp1.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbArtikelGrp1.Type" xml:space="preserve">
     <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.3.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;cbRohstoffGrp1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbArtikelGrp1.Parent" xml:space="preserve">
     <value>pnlDetails</value>
   </data>
-  <data name="&gt;&gt;cbRohstoffGrp1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbArtikelGrp1.ZOrder" xml:space="preserve">
     <value>18</value>
   </data>
   <data name="pnlDetails.Location" type="System.Drawing.Point, System.Drawing">
@@ -943,166 +868,121 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;pnlDetails.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>0</value>
   </data>
-  <data name="tID.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 63</value>
-  </data>
-  <data name="tID.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 20</value>
-  </data>
-  <data name="tID.TabIndex" type="System.Int32, mscorlib">
-    <value>66</value>
-  </data>
-  <data name="&gt;&gt;tID.Name" xml:space="preserve">
-    <value>tID</value>
-  </data>
-  <data name="&gt;&gt;tID.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tID.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tID.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="tType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>66, 63</value>
-  </data>
-  <data name="tType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 20</value>
-  </data>
-  <data name="tType.TabIndex" type="System.Int32, mscorlib">
-    <value>67</value>
-  </data>
-  <data name="&gt;&gt;tType.Name" xml:space="preserve">
-    <value>tType</value>
-  </data>
-  <data name="&gt;&gt;tType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tType.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tType.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="cbAktiv.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblDeklExtern.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbAktiv.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="lblDeklExtern.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbAktiv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 66</value>
+  <data name="lblDeklExtern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
   </data>
-  <data name="cbAktiv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>15, 14</value>
+  <data name="lblDeklExtern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 13</value>
   </data>
-  <data name="cbAktiv.TabIndex" type="System.Int32, mscorlib">
-    <value>79</value>
+  <data name="lblDeklExtern.TabIndex" type="System.Int32, mscorlib">
+    <value>76</value>
   </data>
-  <data name="&gt;&gt;cbAktiv.Name" xml:space="preserve">
-    <value>cbAktiv</value>
+  <data name="lblDeklExtern.Text" xml:space="preserve">
+    <value>Deklaration</value>
   </data>
-  <data name="&gt;&gt;cbAktiv.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lblDeklExtern.Name" xml:space="preserve">
+    <value>lblDeklExtern</value>
   </data>
-  <data name="&gt;&gt;cbAktiv.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;cbAktiv.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="lblID.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblID.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblID.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 47</value>
-  </data>
-  <data name="lblID.Size" type="System.Drawing.Size, System.Drawing">
-    <value>18, 13</value>
-  </data>
-  <data name="lblID.TabIndex" type="System.Int32, mscorlib">
-    <value>80</value>
-  </data>
-  <data name="lblID.Text" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="&gt;&gt;lblID.Name" xml:space="preserve">
-    <value>lblID</value>
-  </data>
-  <data name="&gt;&gt;lblID.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblDeklExtern.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblID.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;lblDeklExtern.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;lblID.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;lblDeklExtern.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="lblType.AutoSize" type="System.Boolean, mscorlib">
+  <data name="tbDeklarationExtern.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tbDeklarationExtern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 26</value>
+  </data>
+  <data name="tbDeklarationExtern.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblType.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="tbDeklarationExtern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>324, 82</value>
   </data>
-  <data name="lblType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>65, 47</value>
+  <data name="tbDeklarationExtern.TabIndex" type="System.Int32, mscorlib">
+    <value>68</value>
   </data>
-  <data name="lblType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 13</value>
+  <data name="&gt;&gt;tbDeklarationExtern.Name" xml:space="preserve">
+    <value>tbDeklarationExtern</value>
   </data>
-  <data name="lblType.TabIndex" type="System.Int32, mscorlib">
-    <value>81</value>
+  <data name="&gt;&gt;tbDeklarationExtern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="lblType.Text" xml:space="preserve">
-    <value>Type</value>
+  <data name="&gt;&gt;tbDeklarationExtern.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;lblType.Name" xml:space="preserve">
-    <value>lblType</value>
-  </data>
-  <data name="&gt;&gt;lblType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblType.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblType.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tbDeklarationExtern.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="lblAktiv.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblDeklIntern.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblAktiv.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="lblDeklIntern.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblAktiv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>125, 47</value>
+  <data name="lblDeklIntern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 111</value>
   </data>
-  <data name="lblAktiv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 13</value>
+  <data name="lblDeklIntern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 13</value>
   </data>
-  <data name="lblAktiv.TabIndex" type="System.Int32, mscorlib">
-    <value>82</value>
+  <data name="lblDeklIntern.TabIndex" type="System.Int32, mscorlib">
+    <value>77</value>
   </data>
-  <data name="lblAktiv.Text" xml:space="preserve">
-    <value>Aktiv</value>
+  <data name="lblDeklIntern.Text" xml:space="preserve">
+    <value>Deklaration intern</value>
   </data>
-  <data name="&gt;&gt;lblAktiv.Name" xml:space="preserve">
-    <value>lblAktiv</value>
+  <data name="&gt;&gt;lblDeklIntern.Name" xml:space="preserve">
+    <value>lblDeklIntern</value>
   </data>
-  <data name="&gt;&gt;lblAktiv.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblDeklIntern.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblAktiv.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;lblDeklIntern.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;lblAktiv.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;lblDeklIntern.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tbDeklarationIntern.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tbDeklarationIntern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 137</value>
+  </data>
+  <data name="tbDeklarationIntern.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tbDeklarationIntern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>324, 82</value>
+  </data>
+  <data name="tbDeklarationIntern.TabIndex" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.Name" xml:space="preserve">
+    <value>tbDeklarationIntern</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tbDeklarationIntern.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1117,10 +997,10 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Rohstoff Details</value>
+    <value>Artikel Details</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>wb_Rohstoffe_Details</value>
+    <value>wb_Artikel_Details</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.13.0.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab</value>

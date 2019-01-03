@@ -211,6 +211,10 @@ Public Class WinBack
 
     ''' <summary>
     ''' Fenster ist angezeigt - Wenn noch kein Benutzer angemeldet ist (Start-Parameter) wird das Login-Fenster angezeigt.
+    ''' Je nach Benutzer-Rechten und Programm-Konfiguration werden die entsprechenden Tabs eingeblendet.
+    ''' 
+    ''' Die Benutzer-Rechte stehen in der Tabelle winback.ItemParameter(GruppenNummer)
+    ''' Die Programm-Konfiguration in der Tabelle winback.ItemParameter(GruppenNummer = -1)
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -619,6 +623,16 @@ Public Class WinBack
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")
         End If
+    End Sub
+
+    ''' <summary>
+    ''' DropDown Auswahl-Liste(Filter)
+    ''' Sendet das Kommando SETFILTER an die aktuelle MDI-Form. Die aktuelle Auswahl(Index) wird als Parameter übergeben.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub rbDropDownItem_Click(sender As Object, e As RibbonItemEventArgs) Handles cbRohstoffeAnsicht.DropDownItemClicked
+        AktFormSendCommand("SETFILTER", e.Item.Value)
     End Sub
 
     Private Sub rbVersionInfo_Click(sender As Object, e As EventArgs) Handles rbVersionInfo.Click

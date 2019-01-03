@@ -31,7 +31,7 @@ Public Class Artikel_Main
                 Return True
             Case "OPENDETAILS"
                 ArtikelDetails = New wb_Artikel_Details
-                ArtikelDetails.Show(DockPanel, DockState.DockLeft)
+                ArtikelDetails.Show(DockPanel, DockState.Document)
                 Return True
             Case Else
                 Return False

@@ -7,7 +7,7 @@ Public Class wb_Rohstoffe_Shared
 
     Public Shared RohGruppe As New SortedList
     Public Shared RohAktiv As New Hashtable
-    Public Shared RohStoff As New wb_Komponente 'Klasse wb_Rohstoffe wird durch wb_Komponente ersetzt
+    Public Shared RohStoff As New wb_Komponente
 
     Enum AnzeigeFilter
         Undefined   ' nicht definiert
