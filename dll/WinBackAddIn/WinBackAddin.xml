@@ -714,6 +714,13 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
  oder Löschen des Fensters gesichert werden müssen.
  </summary>
 </member>
+<member name="P:WinBack.wb_LagerOrt.Aktiv">
+ <summary>
+ Flag Rohstoff Aktiv/Hand/Deaktiviert
+ Bei Silo-Umschaltung ist nur ein Rohstoff aktiv, der/die anderen sind deaktiviert
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_LagerOrt.MysqldbRead(MySql.Data.MySqlClient.MySqlDataReader@)">
  <summary>
  Liest alle Datenfelder aus dem aktuellen Datensatz in das Komponenten-Objekt
@@ -5506,6 +5513,14 @@ Public Const MFF_Wissenswertes = 213
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Liste.DataGridView_PopupClick(System.Object,System.EventArgs)">
+ <summary>
+ PopUp-Menu Click.
+ Rohstoff Aktiv/Hand/Deaktiviert (Silo-Umschaltung)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Details.DetailInfo(System.Object)">
  <summary>
  Anzeige der Rohstoff-Details.
@@ -5668,6 +5683,30 @@ in das DataView und in das Pop-Up-Menu eingetragen
  zusätzliche Filter-Bedingung (SQL)
  </summary>
 </member>
+<member name="P:WinBack.wb_DataGridView.HoverRow">
+ <summary>
+ Zeilen-Nummer unter der Maus (Hover). Zeilen-Index bei Maus-Click rechts
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_DataGridView.PopupItemAdd(System.String,System.String,System.Drawing.Image,System.EventHandler,System.Boolean)">
+ <summary>
+ Popup-Menu - Item anfügen. Der Eventhandler wird in der aufrufenden Routine festgelegt.
+ </summary>
+ <param name="Text"></param>
+ <param name="Tag"></param>
+ <param name="Image"></param>
+ <param name="OnClick"></param>
+ <param name="Separator"></param>
+</member>
+<member name="M:WinBack.wb_DataGridView.DataGridView_CellMouseenter(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
+ <summary>
+ Bestimmt die aktuelle Zeile unter dem Maus-Zeiger. Die Zelle muss dazu nicht selektiert sein.
+ Dient zur Bestimmung der Zeile bei Maus-Click rechts.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_DataGridView.UpdateDataBase">
  <summary>
  Update Datenbank nach Änderung eines Datenfeldes.
@@ -5680,6 +5719,14 @@ in das DataView und in das Pop-Up-Menu eingetragen
  Datenbank-Feld lesen/ändern
  </summary>
  <param name="FieldName">String Feldname in Datenbank</param>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_DataGridView.Field(System.String,System.Int32)">
+ <summary>
+ Datenbankfeld aus einer definierten Zeile (nicht selektiert) lesen
+ </summary>
+ <param name="FieldName"></param>
+ <param name="iRow"></param>
  <returns></returns>
 </member>
 <member name="P:WinBack.wb_DataGridView.iField(System.String)">

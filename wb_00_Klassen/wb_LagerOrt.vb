@@ -4,6 +4,7 @@ Public Class wb_LagerOrt
     Private _Bilanzmenge As String = Nothing
     Private _Mindestmenge As String = Nothing
     Private _Lagerort As String = Nothing
+    Private _Aktiv As String = "A"
 
     Public Property Bilanzmenge As String
         Get
@@ -35,6 +36,22 @@ Public Class wb_LagerOrt
             'simpler Vergleich
             Return (dBilanzmenge < dMindestmenge) And (dMindestmenge > 0)
         End Get
+    End Property
+
+    ''' <summary>
+    ''' Flag Rohstoff Aktiv/Hand/Deaktiviert
+    ''' Bei Silo-Umschaltung ist nur ein Rohstoff aktiv, der/die anderen sind deaktiviert
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Aktiv As String
+        Get
+            Return _Aktiv
+        End Get
+        Set(value As String)
+            _Aktiv = value
+            'Änderung Flag Aktiv/Hand/Aus in MySql-Datenbank schreiben
+            MySQLdbUpdate()
+        End Set
     End Property
 
     Public Sub New(Lagerort As String)
@@ -132,6 +149,9 @@ Public Class wb_LagerOrt
                'Type
                 Case "LG_Mindestmenge"
                     _Mindestmenge = Value
+               'Aktiv/Hand
+                Case "LG_aktiv"
+                    _Aktiv = Value
             End Select
 
         Catch ex As Exception
@@ -151,7 +171,7 @@ Public Class wb_LagerOrt
             Dim sql As String
 
             'Update-Statement wird dynamisch erzeugt    
-            sql = "LG_Mindestmenge = '" & Mindestmenge & "'"
+            sql = "LG_Mindestmenge = '" & Mindestmenge & "', LG_Aktiv = '" & Aktiv & "'"
 
             'Update ausführen
             'Debug.Print("Lagerorte.MysqldbUpdate " & sql)

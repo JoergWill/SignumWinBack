@@ -42,6 +42,7 @@ Public Class wb_DataGridView
     Private _tDataChangedTime = 500
     Private _Filter As String = ""
     Private _8859_5_FieldName As String = ""
+    Private _HoverRow As Integer
 
     Public ColNames As New List(Of String)
     Dim sFilter As String = ""
@@ -239,6 +240,46 @@ Public Class wb_DataGridView
     End Property
 
     ''' <summary>
+    ''' Zeilen-Nummer unter der Maus (Hover). Zeilen-Index bei Maus-Click rechts
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property HoverRow As Integer
+        Get
+            Return _HoverRow
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Popup-Menu - Item anfügen. Der Eventhandler wird in der aufrufenden Routine festgelegt.
+    ''' </summary>
+    ''' <param name="Text"></param>
+    ''' <param name="Tag"></param>
+    ''' <param name="Image"></param>
+    ''' <param name="OnClick"></param>
+    ''' <param name="Separator"></param>
+    Public Sub PopupItemAdd(Text As String, Tag As String, Image As Drawing.Image, OnClick As EventHandler, Optional Separator As Boolean = False)
+        'Menu-Item anfügen
+        Dim mMenuItem As New Windows.Forms.ToolStripMenuItem(Text, Image, OnClick)
+        mMenuItem.Tag = Tag
+        mContextMenu.Items.Add(TryCast(mMenuItem, ToolStripMenuItem))
+
+        'Wenn notwendig, Separator anfügen
+        If Separator Then
+            mContextMenu.Items.Add(New ToolStripSeparator)
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Bestimmt die aktuelle Zeile unter dem Maus-Zeiger. Die Zelle muss dazu nicht selektiert sein.
+    ''' Dient zur Bestimmung der Zeile bei Maus-Click rechts.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub DataGridView_CellMouseenter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles MyBase.CellMouseEnter
+        _HoverRow = e.RowIndex
+    End Sub
+
+    ''' <summary>
     ''' Update Datenbank nach Änderung eines Datenfeldes.
     ''' Der DataHasChanged-Event muss unterdrückt werden, sonst treten beim Schliessen der Forms Fehler auf, da dann
     ''' mit x Sekunden Zeitverzögerung der Change-Event auftritt und ins Leere läuft.
@@ -293,6 +334,26 @@ Public Class wb_DataGridView
                     Return wb_Functions.MySqlToUtf8(CurrentRow.Cells(FieldName).Value.ToString())
                 Else
                     Return CurrentRow.Cells(FieldName).Value.ToString
+                End If
+            Catch
+                Return Nothing
+            End Try
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Datenbankfeld aus einer definierten Zeile (nicht selektiert) lesen
+    ''' </summary>
+    ''' <param name="FieldName"></param>
+    ''' <param name="iRow"></param>
+    ''' <returns></returns>
+    ReadOnly Property Field(FieldName As String, iRow As Integer) As String
+        Get
+            Try
+                If FieldName = _8859_5_FieldName Then
+                    Return wb_Functions.MySqlToUtf8(Rows(iRow).Cells(FieldName).Value.ToString)
+                Else
+                    Return Rows(iRow).Cells(FieldName).Value.ToString
                 End If
             Catch
                 Return Nothing

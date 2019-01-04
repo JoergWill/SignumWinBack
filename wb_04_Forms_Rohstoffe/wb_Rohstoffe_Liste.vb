@@ -40,6 +40,12 @@ Public Class wb_Rohstoffe_Liste
         'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
         DataGridView.x8859_5_FieldName = "KO_Bezeichnung"
 
+        'DataGrid Popup-Menu (Aktiv/Hand)
+        Dim evH As New EventHandler(AddressOf DataGridView_PopupClick)
+        DataGridView.PopupItemAdd("Aktivieren", "A", Nothing, evH)
+        DataGridView.PopupItemAdd("Hand", "H", Nothing, evH)
+        DataGridView.PopupItemAdd("Deaktivieren", "D", Nothing, evH, True)
+
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffSimpleLst, "RohstoffListe")
         'DataGrid Initialisierung Anzeige ohne Sauerteig, nur aktive Rohstoffe
@@ -129,6 +135,78 @@ Public Class wb_Rohstoffe_Liste
             Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
             Rezeptur.Show()
             Me.Cursor = Windows.Forms.Cursors.Default
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' PopUp-Menu Click.
+    ''' Rohstoff Aktiv/Hand/Deaktiviert (Silo-Umschaltung)
+    ''' 
+    ''' Bei der Siloumschaltung werden alle anderen Rohstoffe mit identischer Rohstoff-Nummer deaktiviert
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub DataGridView_PopupClick(ByVal sender As Object, ByVal e As EventArgs)
+        'Flag setzen (aus PopUp)
+        Dim Flag As String = CType(sender, Windows.Forms.ToolStripMenuItem).Tag
+        'Zeile im DataGridView (aus MouseOver)
+        Dim iRow As Integer = DataGridView.HoverRow
+        'Rohstoff-Nummer (alphanumerisch)
+        Dim RohNummer As String = DataGridView.Field("KO_Nr_AlNum", iRow)
+        'Rohstoff-Nummer (index)
+        Dim RohNr As Integer = DataGridView.Field("KO_Nr", iRow)
+        'Lagerort zum Rohstoff
+        Dim LagerOrt As String = DataGridView.Field("KA_Lagerort", iRow)
+
+        'Flag Aktiv/Hand/Deaktiviert
+        Select Case CType(sender, Windows.Forms.ToolStripMenuItem).Tag
+            Case "A"
+                'Schleife über alle Rohstoffe mit der gleichen Nummer
+                For i = 0 To DataGridView.RowCount - 1
+                    If DataGridView.Field("KO_Nr_AlNum", i) = RohNummer Then
+                        If DataGridView.Field("KA_Lagerort", i) = LagerOrt Then
+                            UpdateRohAktiv("A", LagerOrt, RohNr)
+                        Else
+                            UpdateRohAktiv("", DataGridView.Field("KA_Lagerort", i), DataGridView.Field("KO_Nr", i))
+                        End If
+                    End If
+                Next
+                'Daten neu einlesen
+                DataGridView.RefreshData()
+
+            Case "H"
+                'Rohstoff auf Hand setzen
+                UpdateRohAktiv("H", LagerOrt, RohNr)
+                'Daten neu einlesen
+                DataGridView.RefreshData()
+
+            Case "D"
+                'Rohstoff deaktivieren
+                UpdateRohAktiv("", LagerOrt, RohNr)
+                'Daten neu einlesen
+                DataGridView.RefreshData()
+
+        End Select
+    End Sub
+
+    ''' <summary>
+    ''' Erzeugt eine neue Klasse LagerOrt. Das entsprechende Flag wird in der Datenbank gesetzt.
+    ''' Anschliessend wird die Hash-Table in wb_Rohstoffe_global korrigiert.
+    ''' </summary>
+    ''' <param name="Flag"></param>
+    ''' <param name="LagerOrt"></param>
+    ''' <param name="RohNr"></param>
+    Private Sub UpdateRohAktiv(Flag As String, LagerOrt As String, RohNr As Integer)
+        'Daten aus Tabelle Lagerort
+        Dim LgOrt As New wb_LagerOrt(LagerOrt)
+        LgOrt.Aktiv = Flag
+
+        'Hash-Table aktualisieren
+        If RohAktiv.ContainsKey(RohNr) Then
+            'Flag in Rohstoff(Tabell LG_Aktiv) eintragen
+            RohStoff.LagerOrtAktiv = Flag
+            'Flag in HashTable updaten
+            RohAktiv(RohNr) = Flag
         End If
     End Sub
 End Class

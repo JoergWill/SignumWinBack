@@ -853,6 +853,18 @@ Public Class wb_Komponente
         End Get
     End Property
 
+    Public Property LagerOrtAktiv As String
+        Get
+            If _Lager Is Nothing Then
+                _Lager = New wb_LagerOrt(KA_Lagerort)
+            End If
+            Return _Lager.Aktiv
+        End Get
+        Set(value As String)
+            _Lager.Aktiv = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Objekt ist ungültig. Vor der nächsten Verwendung muss wieder neu eingelesen werden.
     ''' </summary>
