@@ -73,6 +73,7 @@ Public Class wb_sql_Functions
     ''' Wandelt einen SQL-Datenfeld in Boolean um
     '''     1   -   True
     '''     0   -   False
+    '''   NULL  -   False
     ''' </summary>
     ''' <param name="s">String - Wert</param>
     ''' <returns>Boolean - Result</returns>

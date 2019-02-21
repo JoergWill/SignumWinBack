@@ -191,16 +191,48 @@ Public Class wb_Komponente
         End Get
     End Property
 
+    ''' <summary>
+    ''' Preis für diese Komponente. Der Preis kann auf verschiedene Arten ermittelt werden:
+    ''' 
+    '''     -   Prog-Variante OrgaBack
+    '''         Preis-Information aus Interface
+    '''         
+    '''     -   Prog-Variante WinBack
+    '''         - einfacher Rohstoff:   Preis aus Datenbank-Feld KA_Preis
+    '''         - verknüpfter Rohstoff: Preis aus der Berechnung _RootRezeptschritt.Preis
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Preis As String
         Set(value As String)
             KA_Preis = value
             _DataHasChanged = True
         End Set
         Get
+            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                KA_Preis = 0        'TODO   Preis aus Interface OrgaBack abfragen
+            Else
+                If RzNr > 0 Then
+                    'TODO - Rechenzeit ?
+                    KA_Preis = CalculatePreis()
+                End If
+            End If
+
             'Zahlenwerte aus der Datenbank immer inm Format de-DE
             Return FormatStr(KA_Preis, 3, 4, "de-DE")
         End Get
     End Property
+
+    Public Function CalculatePreis() As Double
+        If RzNr > 0 Then
+            'Teig-Rezeptur komplett einlesen
+            'TODO evtl zusammenlegen mit GetProduktiosnDaten ?? (Rechenzeit gegen einfaches einlesen der Kopfdaten
+            'Lösung: Kalkulation gezielt anstossen
+            Dim Rezept As New wb_Rezept(RzNr, Nothing)
+            Return Rezept.RootRezeptSchritt.Preis
+        Else
+            Return 0
+        End If
+    End Function
 
     Public Property Gruppe1 As Integer
         Set(value As Integer)
@@ -232,6 +264,13 @@ Public Class wb_Komponente
         End Get
     End Property
 
+    ''' <summary>
+    ''' Datenbankfeld
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu RezGewicht -> True
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu RezGewicht -> False
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu RezGewicht -> False
+    ''' </summary>
+    ''' <returns></returns>
     Public Property ZaehltNichtZumRezeptGewicht As Boolean
         Set(value As Boolean)
             If value Then
@@ -615,6 +654,7 @@ Public Class wb_Komponente
             _RezeptNummer = Rezept.RezeptNummer
             _RezeptName = Rezept.RezeptBezeichnung
             _LinienGruppe = Rezept.LinienGruppe
+
             'Chargengrößen aus Rezept
             TeigChargen.CopyFrom(Rezept.TeigChargen)
             ArtikelChargen.TeigGewicht = Rezept.RezeptGewicht
@@ -634,6 +674,8 @@ Public Class wb_Komponente
             KA_Art = 0
         End If
 
+        'Default-Wert für Artikel-Liniengruppe (sonst wird immer wieder die Routine GetProduktionsDaten() aufgerufen
+        _ArtikelLinienGruppe = 0
         'Aufarbeitung Artikel (Artikel-Liniengruppe) aus RohParams.Parameter.5
         'wenn ein Artikel-Rezept in RohParams.Parameter.6 angegeben ist wird die Artikel-Liniengruppe aus der Artikel-Rezeptur bestimmt
         If ktTyp300.Liniengruppe > 0 Then

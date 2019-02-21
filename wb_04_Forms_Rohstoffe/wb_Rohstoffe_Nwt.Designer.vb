@@ -30,34 +30,36 @@ Partial Class wb_Rohstoffe_Nwt
         Me.tbDeklarationIntern = New System.Windows.Forms.TextBox()
         Me.lblDeklIntern = New System.Windows.Forms.Label()
         Me.lblDeklExtern = New System.Windows.Forms.Label()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnl_Nwt
         '
-        Me.pnl_Nwt.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pnl_Nwt.Location = New System.Drawing.Point(12, 12)
+        Me.TableLayoutPanel1.SetColumnSpan(Me.pnl_Nwt, 2)
+        Me.pnl_Nwt.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnl_Nwt.Location = New System.Drawing.Point(3, 3)
+        Me.pnl_Nwt.MinimumSize = New System.Drawing.Size(100, 100)
         Me.pnl_Nwt.Name = "pnl_Nwt"
-        Me.pnl_Nwt.Size = New System.Drawing.Size(821, 345)
+        Me.pnl_Nwt.Size = New System.Drawing.Size(839, 394)
         Me.pnl_Nwt.TabIndex = 0
         '
         'tbDeklarationExtern
         '
-        Me.tbDeklarationExtern.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.tbDeklarationExtern.Location = New System.Drawing.Point(12, 383)
+        Me.tbDeklarationExtern.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tbDeklarationExtern.Location = New System.Drawing.Point(3, 423)
         Me.tbDeklarationExtern.Multiline = True
         Me.tbDeklarationExtern.Name = "tbDeklarationExtern"
-        Me.tbDeklarationExtern.Size = New System.Drawing.Size(319, 52)
+        Me.tbDeklarationExtern.Size = New System.Drawing.Size(416, 52)
         Me.tbDeklarationExtern.TabIndex = 42
         '
         'tbDeklarationIntern
         '
-        Me.tbDeklarationIntern.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.tbDeklarationIntern.Location = New System.Drawing.Point(337, 383)
+        Me.tbDeklarationIntern.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tbDeklarationIntern.Location = New System.Drawing.Point(425, 423)
         Me.tbDeklarationIntern.Multiline = True
         Me.tbDeklarationIntern.Name = "tbDeklarationIntern"
-        Me.tbDeklarationIntern.Size = New System.Drawing.Size(319, 52)
+        Me.tbDeklarationIntern.Size = New System.Drawing.Size(417, 52)
         Me.tbDeklarationIntern.TabIndex = 43
         '
         'lblDeklIntern
@@ -65,7 +67,7 @@ Partial Class wb_Rohstoffe_Nwt
         Me.lblDeklIntern.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblDeklIntern.AutoSize = True
         Me.lblDeklIntern.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblDeklIntern.Location = New System.Drawing.Point(337, 367)
+        Me.lblDeklIntern.Location = New System.Drawing.Point(425, 407)
         Me.lblDeklIntern.Name = "lblDeklIntern"
         Me.lblDeklIntern.Size = New System.Drawing.Size(90, 13)
         Me.lblDeklIntern.TabIndex = 52
@@ -76,26 +78,43 @@ Partial Class wb_Rohstoffe_Nwt
         Me.lblDeklExtern.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblDeklExtern.AutoSize = True
         Me.lblDeklExtern.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblDeklExtern.Location = New System.Drawing.Point(13, 367)
+        Me.lblDeklExtern.Location = New System.Drawing.Point(3, 407)
         Me.lblDeklExtern.Name = "lblDeklExtern"
         Me.lblDeklExtern.Size = New System.Drawing.Size(61, 13)
         Me.lblDeklExtern.TabIndex = 51
         Me.lblDeklExtern.Text = "Deklaration"
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 2
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.pnl_Nwt, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.lblDeklIntern, 1, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.lblDeklExtern, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.tbDeklarationExtern, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.tbDeklarationIntern, 1, 2)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 3
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 400.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(845, 440)
+        Me.TableLayoutPanel1.TabIndex = 53
         '
         'wb_Rohstoffe_Nwt
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(845, 440)
-        Me.Controls.Add(Me.lblDeklIntern)
-        Me.Controls.Add(Me.lblDeklExtern)
-        Me.Controls.Add(Me.tbDeklarationIntern)
-        Me.Controls.Add(Me.tbDeklarationExtern)
-        Me.Controls.Add(Me.pnl_Nwt)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Name = "wb_Rohstoffe_Nwt"
         Me.Text = "Rohstoffe Nährwerte"
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -104,4 +123,5 @@ Partial Class wb_Rohstoffe_Nwt
     Friend WithEvents tbDeklarationIntern As Windows.Forms.TextBox
     Friend WithEvents lblDeklIntern As Windows.Forms.Label
     Friend WithEvents lblDeklExtern As Windows.Forms.Label
+    Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
 End Class

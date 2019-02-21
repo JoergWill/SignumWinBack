@@ -877,6 +877,9 @@ Public Class wb_Rezept
                 Case "KT_UnterGW"
                     _SQLRezeptSchritt.UnterGW = wb_Functions.StrToDouble(Value)
                 'zählt NICHT zum Rezeptgesamtgewicht
+                'KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu RezGewicht -> True
+                'KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu RezGewicht -> False
+                'KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu RezGewicht -> False
                 Case "KA_zaehlt_zu_RZ_Gesamtmenge", "H_KA_zaehlt_zu_RZ_Gesamtmenge"
                     _SQLRezeptSchritt.ZaehltNichtZumRezeptGewicht = wb_sql_Functions.MySQLBoolean(Value)
                     'Preis

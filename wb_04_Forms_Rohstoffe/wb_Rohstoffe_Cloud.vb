@@ -414,4 +414,14 @@ Public Class wb_Rohstoffe_Cloud
         End Select
     End Sub
 
+    ''' <summary>
+    ''' Event Daten wurden geändert von wb_KompRZChargen wird weitergegeben an wb_Rohstoffe_Shared
+    ''' 
+    ''' Achtung: auch wenn bei Verweise '0' eingetragen ist, wird diese Routine aufgerufen !!
+    ''' </summary>
+    Public Sub KomRzChargen_DataInvalidated() Handles KompRzChargen.DataInvalidated
+        KompRzChargen.SaveData(RohStoff)
+        wb_Rohstoffe_Shared.RezChrg_Changed(Nothing)
+    End Sub
+
 End Class

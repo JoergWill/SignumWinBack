@@ -66,4 +66,9 @@ Public Class wb_Rohstoffe_Shared
         'Parameter-Fenster neu aufbauen (Anzeige)
         RaiseEvent eParam_Changed(sender)
     End Sub
+
+    Public Shared Sub RezChrg_Changed(Sender As Object)
+        'Daten in der Komponenten-Klasse sichern
+        RohStoff.UpdateDB()
+    End Sub
 End Class

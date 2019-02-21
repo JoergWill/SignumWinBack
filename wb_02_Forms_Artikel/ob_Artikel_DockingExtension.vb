@@ -441,6 +441,14 @@ Public Class ob_Artikel_DockingExtension
             'Artikel/Komponente aus WinBack-Db einlesen
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
 
+
+            'TODO   FONK !!!!
+            'TODO   Wenn eine falsche Artikelgruppe verwendet worden ist (wurde in OrgaBack geändet) muss dies in WinBack
+            '       nachgezogen werden. Rohstoff wird zu Artikel und umgekehrt. In diesem Fall MFF_KO_Nr ignorieren !
+            '       Fehlermeldung ausgeben -  Rohstoff/Artikel in WinBack löschen !
+
+
+
             If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer) Then
                 Debug.Print("DockingExtension-GetKomponentenDaten Komponente in WinBack nicht vorhanden " & Komponente.Bezeichnung)
                 'Datensatz ist in Winback nicht vorhanden - Komponententype (Artikel/Handkomponente) ermitteln

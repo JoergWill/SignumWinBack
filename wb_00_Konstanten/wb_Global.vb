@@ -26,8 +26,8 @@
     'Text Rohstoff wird nicht deklariert
     Public Const FlagKeineDeklaration = "NO DECLARATION"
     'Flag Rohstoff zählt nicht zum Rezeptgewicht
-    Public Const ZaehltNichtZumRezeptGewicht = "0"
-    Public Const ZaehltZumRezeptGewicht = "1"
+    Public Const ZaehltNichtZumRezeptGewicht = "1"
+    Public Const ZaehltZumRezeptGewicht = "0"
 
     'Filiale.Typ ist Produktions-Filiale
     Public Const ProduktionsFiliale = 4

@@ -16,12 +16,14 @@ Partial Class wb_ComboBox
     ''' <returns>Integer Key</returns>
     Function GetKeyFromSelection() As Integer
         Dim i As Integer = 0
-        For Each item As DictionaryEntry In ht
-            If item.Value = Me.Text Then
-                i = item.Key
-                Exit For
-            End If
-        Next
+        If ht IsNot Nothing Then
+            For Each item As DictionaryEntry In ht
+                If item.Value = Me.Text Then
+                    i = item.Key
+                    Exit For
+                End If
+            Next
+        End If
         Return i
     End Function
 

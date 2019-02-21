@@ -1914,6 +1914,28 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_Komponente.Preis">
+ <summary>
+ Preis für diese Komponente. Der Preis kann auf verschiedene Arten ermittelt werden:
+ 
+     -   Prog-Variante OrgaBack
+         Preis-Information aus Interface
+         
+     -   Prog-Variante WinBack
+         - einfacher Rohstoff:   Preis aus Datenbank-Feld KA_Preis
+         - verknüpfter Rohstoff: Preis aus der Berechnung _RootRezeptschritt.Preis
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Komponente.ZaehltNichtZumRezeptGewicht">
+ <summary>
+ Datenbankfeld
+     KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu RezGewicht -> True
+     KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu RezGewicht -> False
+     KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu RezGewicht -> False
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Komponente.RootParameter">
  <summary>
  Erster (unsichtbarer) Parameter-Knoten (Root-Node)
@@ -5104,6 +5126,13 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Cloud.KomRzChargen_DataInvalidated">
+ <summary>
+ Event Daten wurden geändert von wb_KompRZChargen wird weitergegeben an wb_Rohstoffe_Shared
+ 
+ Achtung: auch wenn bei Verweise '0' eingetragen ist, wird diese Routine aufgerufen !!
+ </summary>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Nwt.tbDeklarationExtern_Leave(System.Object,System.EventArgs)">
  <summary>
  Das Eingabefeld "externe Deklaration" wurde verlassen. Der Inhalt wird in die
@@ -5317,6 +5346,7 @@ Text aus Datenbank lesen - Übersetzung
  Wandelt einen SQL-Datenfeld in Boolean um
      1   -   True
      0   -   False
+   NULL  -   False
  </summary>
  <param name="s">String - Wert</param>
  <returns>Boolean - Result</returns>
@@ -5517,9 +5547,20 @@ Public Const MFF_Wissenswertes = 213
  <summary>
  PopUp-Menu Click.
  Rohstoff Aktiv/Hand/Deaktiviert (Silo-Umschaltung)
+ 
+ Bei der Siloumschaltung werden alle anderen Rohstoffe mit identischer Rohstoff-Nummer deaktiviert
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Liste.UpdateRohAktiv(System.String,System.String,System.Int32)">
+ <summary>
+ Erzeugt eine neue Klasse LagerOrt. Das entsprechende Flag wird in der Datenbank gesetzt.
+ Anschliessend wird die Hash-Table in wb_Rohstoffe_global korrigiert.
+ </summary>
+ <param name="Flag"></param>
+ <param name="LagerOrt"></param>
+ <param name="RohNr"></param>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Details.DetailInfo(System.Object)">
  <summary>
