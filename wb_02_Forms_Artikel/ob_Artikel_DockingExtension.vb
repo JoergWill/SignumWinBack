@@ -438,24 +438,23 @@ Public Class ob_Artikel_DockingExtension
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString         'Artikel/Komponenten-Nummer alphanumerisch
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
             Komponente.sArtikeLinienGruppe = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)
-            'Artikel/Komponente aus WinBack-Db einlesen
+
+            'Komponenten-Type aus der Zuordnung zur Artikelgruppe
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
+            Dim KType As wb_Global.KomponTypen = wb_Functions.obKtypeToKType(obKType)
 
-
-            'TODO   FONK !!!!
-            'TODO   Wenn eine falsche Artikelgruppe verwendet worden ist (wurde in OrgaBack geändet) muss dies in WinBack
-            '       nachgezogen werden. Rohstoff wird zu Artikel und umgekehrt. In diesem Fall MFF_KO_Nr ignorieren !
-            '       Fehlermeldung ausgeben -  Rohstoff/Artikel in WinBack löschen !
-
-
-
+            'Artikel/Komponente aus WinBack-Db einlesen
             If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer) Then
                 Debug.Print("DockingExtension-GetKomponentenDaten Komponente in WinBack nicht vorhanden " & Komponente.Bezeichnung)
                 'Datensatz ist in Winback nicht vorhanden - Komponententype (Artikel/Handkomponente) ermitteln
-                Dim KType As wb_Global.KomponTypen = wb_Functions.obKtypeToKType(obKType)
-                'Datensatz in WinBack neu anlegen
                 Komponente.MySQLdbNew(KType)
             End If
+
+            'Falls notwendig wird die Komponenten-Type aktualisiert (Artikel/Rohstoff). OrgaBack ist das führende System
+            If Komponente.SetKType(KType) Then
+                Debug.Print("Komponenten-Type geändert")
+            End If
+
             Debug.Print("DockingExtension-GetKomponentenDaten Komponente in WinBack (jetzt) vorhanden " & Komponente.Bezeichnung)
             Return True
         Else
@@ -524,6 +523,7 @@ Public Class ob_Artikel_DockingExtension
         Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString     'Artikel-Nummer (Ändern über Shift-F9)
         Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
         Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)           'Artikel/Komponenten-Kommentar
+        Komponente.SetKType(wb_Functions.obKtypeToKType(_Extendee.GetPropertyValue("ArtikelGruppe").ToString))  'KomponentenType
 
         'Testausgabe
         Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)

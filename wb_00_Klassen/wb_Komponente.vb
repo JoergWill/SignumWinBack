@@ -135,6 +135,22 @@ Public Class wb_Komponente
     End Property
 
     ''' <summary>
+    ''' Komponenten-Type ändern. 
+    ''' Ändert die (Readonly) Komponenten-Type falls in OrgaBack die Artikelgruppe geändert wird. (Artikel/Rohstoff)
+    ''' Gibt true zurück wenn eine Änderung stattgefunden hat.
+    ''' </summary>
+    ''' <param name="KType"></param>
+    ''' <returns></returns>
+    Public Function SetKType(KType As KomponTypen) As Boolean
+        If KType <> Type Then
+            KO_Type = KType
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    ''' <summary>
     ''' Rohstoff/Artikel-Nummer (alpha-numerisch)
     ''' </summary>
     ''' <returns></returns>
@@ -1486,6 +1502,7 @@ Public Class wb_Komponente
 
         'Update-Statement wird dynamisch erzeugt    
         sql = "KO_Nr_AlNum = '" & Nummer & "'," &
+              "KO_Type = '" & wb_Functions.KomponTypeToInt(Type) & "'," &
               "KO_Bezeichnung = '" & Bezeichnung & "'," &
               "KO_Kommentar = '" & Kommentar & "'," &
               "KO_Temp_Korr = '" & KO_Backverlust & "'," &

@@ -1908,6 +1908,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Wird aufgerufen, wenn eine neue(andere) Komponente geladen werden soll
  </summary>
 </member>
+<member name="M:WinBack.wb_Komponente.SetKType(WinBack.wb_Global.KomponTypen)">
+ <summary>
+ Komponenten-Type ändern. 
+ Ändert die (Readonly) Komponenten-Type falls in OrgaBack die Artikelgruppe geändert wird. (Artikel/Rohstoff)
+ Gibt true zurück wenn eine Änderung stattgefunden hat.
+ </summary>
+ <param name="KType"></param>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Komponente.Nummer">
  <summary>
  Rohstoff/Artikel-Nummer (alpha-numerisch)
