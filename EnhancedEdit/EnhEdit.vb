@@ -155,11 +155,20 @@ Public Class EnhEdit
 
         'TODO Pfeil nach oben/Pfeil nach unten noch verarbeiten
         If keyData = Keys.Escape Then
-            '_eValue = _oValue
-            'keyData = Keys.Return
-
+            'Orginalwert wieder eintragen
+            _eValue = _oValue
             'entspricht der Return-Taste
             Me.ValidateText()
+        End If
+        'Pfeil nach unten - Simuliert TAB
+        If keyData = Keys.Down Then
+            Me.ValidateText()
+            keyData = Keys.Tab
+        End If
+        'Pfeil nach oben - Simuliert Shift-TAB
+        If keyData = Keys.Up Then
+            Me.ValidateText()
+            keyData = Keys.ShiftKey
         End If
 
         Return MyBase.ProcessCmdKey(msg, keyData)
