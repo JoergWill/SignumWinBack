@@ -393,6 +393,7 @@
     <Compile Include="wb_00_Klassen\wb_Mail.vb" />
     <Compile Include="wb_00_Klassen\wb_MinMaxOptCharge.vb" />
     <Compile Include="wb_00_Klassen\wb_AktUser.vb" />
+    <Compile Include="wb_00_Klassen\wb_nwtPistor.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtUpdateArtikel.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtCl.vb" />
     <Compile Include="wb_00_Klassen\wb_Simple3Des.vb" />

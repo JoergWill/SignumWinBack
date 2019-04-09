@@ -267,6 +267,7 @@
     <Compile Include="UnitTest_wb_Kocher.vb" />
     <Compile Include="UnitTest_wb_Mail.vb" />
     <Compile Include="UnitTest_wb_MqqtClient.vb" />
+    <Compile Include="UnitTest_wb_nwtPistor.vb" />
     <Compile Include="UnitTest_wb_SetupCustomAction.vb" />
     <Compile Include="UnitTest_Init.vb" />
     <Compile Include="UnitTest_ob_ProduzierteWare.vb" />

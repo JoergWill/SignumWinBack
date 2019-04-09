@@ -45,6 +45,8 @@ Partial Class wb_User_Liste
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(916, 633)
+        Me.CloseButton = False
+        Me.CloseButtonVisible = False
         Me.Controls.Add(Me.DataGridView)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.Name = "wb_User_Liste"

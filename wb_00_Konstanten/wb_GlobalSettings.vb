@@ -83,6 +83,8 @@ Public Class wb_GlobalSettings
     Private Shared _mSenderAddr = Nothing
     Private Shared _mSenderPass = Nothing
 
+    Private Shared _ImportPathPistor = Nothing
+
 
     Public Shared Property pVariante As wb_Global.ProgVariante
         Get
@@ -611,7 +613,13 @@ Public Class wb_GlobalSettings
                     Case wb_Global.ProgVariante.ServerTask
                         'die Server-Task startet im AddIn-Verzeichnis, der Pfad zur winback.ini liegt eine Ebene davor
                         _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
+#If DEBUG Then
+                        _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\"))
+                        _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\"))
                         _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
+#Else
+                        _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
+#End If
                     Case wb_Global.ProgVariante.OrgaBack
                         'die winback.ini liegt direkt im AddIn-Pfad
                         '..\OrgaBack\AddIn
@@ -898,6 +906,19 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property ImportPathPistor As Object
+        Get
+            If _ImportPathPistor = Nothing Then
+                getWinBackIni("Path")
+            End If
+            Return _ImportPathPistor
+        End Get
+        Set(value As Object)
+            _ImportPathPistor = value
+            setWinBackIni("Path", "Pistor", value)
+        End Set
+    End Property
+
     Private Shared Sub GetOrgaBackMandant()
         'xml-File OrgaBack.ini aus DatenPfad einlesen
         Dim XMLReader As Xml.XmlReader = New Xml.XmlTextReader(pDatenPath & "OrgaSoft.ini")
@@ -1040,6 +1061,9 @@ Public Class wb_GlobalSettings
                 mHost = IniFile.ReadString("smpt", "smtpHost")
                 mHost = IniFile.ReadString("smpt", "smtpUser")
                 mHost = IniFile.ReadEncryptedString("smpt", "smtpPass")
+
+            Case "Path"
+                _ImportPathPistor = IniFile.ReadString("Path", "Pistor", "")
 
         End Select
     End Sub

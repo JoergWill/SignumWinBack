@@ -80,10 +80,17 @@ Public Class wb_TimerEdit
             Return dtEventDate.Value.AddSeconds(seconds)
         End Get
         Set(value As DateTime)
-            'Task-Start Datum
-            dtEventDate.Value = value.Date
-            'Task-Start Uhrzeit
-            dtEventTime.Value = value
+            Try
+                'Task-Start Datum
+                dtEventDate.Value = value.Date
+                'Task-Start Uhrzeit
+                dtEventTime.Value = value
+            Catch
+                'Task-Start Datum
+                dtEventDate.Value = Now.Date
+                'Task-Start Uhrzeit
+                dtEventTime.Value = Now
+            End Try
         End Set
     End Property
 

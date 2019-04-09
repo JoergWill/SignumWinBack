@@ -55,7 +55,7 @@ Public Class wb_User_Main
                 Dim oGrp = oNewTab.AddGroup("GrpUser", "WinBack Mitarbeiter")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrp.AddButton("BtnUserPasswd", "Passwort ändern", "Neues Mitarbeiter-Passwort vergeben", My.Resources.UserPasswd_32x32, My.Resources.UserPasswd_32x32, AddressOf BtnUserPasswd)
-                oGrp.AddButton("BtnUserPrintList", "Mitarbeiter-Liste", "Liste aller Mitarbeiter drucken", My.Resources.UserListe_32x32, My.Resources.UserListe_32x32, AddressOf btnUserPrint)
+                oGrp.AddButton("BtnUserPrintList", "Drucken Mitarbeiter-Liste", "Liste aller Mitarbeiter drucken", My.Resources.UserListe_32x32, My.Resources.UserListe_32x32, AddressOf btnUserPrint)
                 oGrp.AddButton("BtnUserGroup", "Mitarbeiter-Gruppen", "Gruppen und Gruppen-Rechte verwalten", My.Resources.UserGruppen_32x32, My.Resources.UserGruppen_32x32, AddressOf BtnUserGroup)
                 _ContextTabs.Add(oNewTab)
             End If

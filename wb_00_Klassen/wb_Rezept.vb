@@ -507,7 +507,7 @@ Public Class wb_Rezept
     ''' <summary>
     ''' Rezeptkopf-Datensatz neu anlegen
     ''' Es wird nur die Rezept-Nummer (intern) angelegt.
-    ''' Die Komponenten-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit
+    ''' Die Rezept-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit
     ''' 
     ''' Alle weiteren Rezept-Daten werden mit MySQLdbUpdate eingetragen.
     ''' </summary>
@@ -518,7 +518,7 @@ Public Class wb_Rezept
         'interne Rezept-Nummer ermitteln aus max(RZ_NR)
         _RezeptNr = wb_sql_Functions.getNewRezeptNummer()
         'Bezeichnung
-        _RezeptBezeichnung = "Neu angelegt " & Date.Now
+        _RezeptBezeichnung = "Rezept neu angelegt " & Date.Now
         'Variante
         _RezeptVariante = Variante
         'Liniengruppe

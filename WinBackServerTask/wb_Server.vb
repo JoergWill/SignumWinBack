@@ -84,6 +84,7 @@ Public Class Main
             tbx.Text = str.Substring(str.IndexOf(vbCrLf) + 2)
         End If
         tbx.Text &= s
+        Application.DoEvents()
     End Sub
 
     ''' <summary>
@@ -187,6 +188,7 @@ Public Class Main
             RefreshAktionsTimer()
         End If
 
+
         'Abfrage Update markierte Artikel (Nährwerte und Zutatenliste)
         If MainTimer_Check("office_artikel") Then
             'Daten im Grid aktualisieren
@@ -214,6 +216,29 @@ Public Class Main
             'Daten im Grid aktualisieren
             RefreshAktionsTimer()
         End If
+
+        'Abfrage Import Pistor-Liste (
+        If MainTimer_Check("office_pistor") Then
+            'Import csv-File Format Pistor
+            Dim nwtPistor As New wb_nwtPistor
+
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+
+            'Datensätze einlesen 
+            While nwtPistor.ReadNext()
+                'Info-Text ausgeben
+                ScrollTextBox(tbCloud, nwtPistor.InfoText & vbNewLine)
+            End While
+            'Nach Ende Update Nährwerte neue Startzeit setzen
+            AktTimerEvent.Endezeit = Now
+            AktTimerEvent.MySQLdbUpdate_Fields()
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+            'Speicher wieder freigaben
+            nwtPistor = Nothing
+        End If
+
 
         'Abfrage produzierte Chargen und verbrauchte Rohstoffe
         If MainTimer_Check("office_chargen") Then

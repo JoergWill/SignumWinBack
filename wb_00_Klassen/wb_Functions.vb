@@ -682,6 +682,73 @@ Public Class wb_Functions
         End Select
     End Function
 
+    ''' <summary>
+    ''' Wandelt die Pistor-Nährwert und Allergen-Bezeichnungen/Nummern in 
+    ''' WinBack-Index-Nummern um.
+    ''' Die Pistor-Tabelle beginnt bei Index 1(!) Die Daten liegen im Array ab Index 0(!)
+    ''' </summary>
+    ''' <param name="PistorNr"></param>
+    ''' <returns>index (Integer)</returns>
+    Public Shared Function PistorToIndex(PistorNr As Integer) As Integer
+        Select Case PistorNr
+
+            'Nährwerte
+            Case 34     'Energie in kcal
+                Return 1
+            Case 32     'Energie in kJ
+                Return 2
+            Case 36     'Eiweiss
+                Return 3
+            Case 38     'Kohlenhydrate
+                Return 4
+            Case 40     'Fett
+                Return 5
+            Case 52     'Balststoffe (Nahrungsfasern)
+                Return 13
+            Case 56     'Salz
+                Return 202
+            Case 58     '(davon) Zucker
+                Return 11
+            Case 60     'davon gesättigte Fettsäuren
+                Return 12
+
+            Case 63     'Gluten
+                Return 141
+            Case 64     'Milch(laktose)
+                Return 147
+            Case 66     'Eier
+                Return 143
+            Case 67     'Fische
+                Return 144
+            Case 68     'Krebstiere
+                Return 142
+            Case 69     'Sojabohnen
+                Return 146
+            Case 70     'Erdnüsse
+                Return 145
+            Case 71     'Hartschalenobst
+                Return 148
+            Case 72     'Sesamsamen
+                Return 151
+            Case 73     'Sellerie
+                Return 149
+            Case 74     'Senf
+                Return 150
+            Case 75     'Sulfite
+                Return 152
+            Case 76     'Lupinen
+                Return 153
+            Case 77     'Weichtiere
+                Return 154
+
+
+            Case Else
+                Return -1
+        End Select
+    End Function
+
+
+
     Public Shared Function StringToDBType(Value As String) As wb_Sql.dbType
         Select Case Value.ToLower
             'winback läuft unter MySQL 

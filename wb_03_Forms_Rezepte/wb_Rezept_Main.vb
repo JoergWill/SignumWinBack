@@ -116,14 +116,19 @@ Public Class wb_Rezept_Main
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
             Case "WinBack.wb_Rezept_Liste"
+                RezeptListe.CloseButtonVisible = False
+                _DockPanelList.Add(RezeptListe)
                 Return RezeptListe
             Case "WinBack.wb_Rezept_Details"
+                _DockPanelList.Add(RezeptListe)
                 Return RezeptDetails
             Case "WinBack.wb_Rezept_Hinweise"
                 RezeptHinweise = New wb_Rezept_Hinweise
+                _DockPanelList.Add(RezeptHinweise)
                 Return RezeptHinweise
             Case "WinBack.wb_Rezept_Historie"
                 RezeptHistorie = New wb_Rezept_Historie
+                _DockPanelList.Add(RezeptHistorie)
                 Return RezeptHistorie
             Case Else
                 Return Nothing

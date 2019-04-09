@@ -230,7 +230,7 @@ Public Class EnhEdit
                 TextBox.Select(_eValue.Length, 0)
 
             Case wb_Format.fTime
-                'Formatieren auf 3-Nachkommastellen
+                'Formatieren TimeString
                 TextBox.Text = wb_Functions.FormatTimeStr(_eValue)
                 TextBox.Select(_eValue.Length, 0)
 

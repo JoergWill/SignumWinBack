@@ -3124,7 +3124,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <summary>
  Rezeptkopf-Datensatz neu anlegen
  Es wird nur die Rezept-Nummer (intern) angelegt.
- Die Komponenten-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit
+ Die Rezept-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit
  
  Alle weiteren Rezept-Daten werden mit MySQLdbUpdate eingetragen.
  </summary>
