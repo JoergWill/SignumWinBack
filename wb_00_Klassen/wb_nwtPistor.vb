@@ -4,6 +4,7 @@ Imports WinBack.wb_Sql_Selects
 Public Class wb_nwtPistor
 
     Private _InfoText As String = ""
+    Private _Filename As String = wb_GlobalSettings.ImportPathPistor
     Private MyReader As Microsoft.VisualBasic.FileIO.TextFieldParser
 
     Public ReadOnly Property InfoText As String
@@ -12,11 +13,18 @@ Public Class wb_nwtPistor
         End Get
     End Property
 
+    Public Property Filename As String
+        Get
+            Return _Filename
+        End Get
+        Set(value As String)
+            _Filename = value
+        End Set
+    End Property
+
     Public Sub New()
-        'Pfad zum Import-File
-        Dim Filename As String = wb_GlobalSettings.ImportPathPistor
-        If Filename <> "" Then
-            If File.Exists(Filename) Then
+        If _Filename <> "" Then
+            If File.Exists(_Filename) Then
                 'Import Text-File öffnen
                 MyReader = New FileIO.TextFieldParser(Filename)
                 MyReader.TextFieldType = FileIO.FieldType.Delimited
@@ -31,23 +39,38 @@ Public Class wb_nwtPistor
     End Sub
 
     Public Function ReadNext() As Boolean
+        'cvs-Datei zeilenweise einlesen
         Dim currentRow As String()
+
+        'Import-File ist vorhanden
         If MyReader IsNot Nothing Then
+            'Lesen bis Datei-Ende
             If Not MyReader.EndOfData Then
                 Try
                     'Zeilenweise auslesen
                     currentRow = MyReader.ReadFields()
-
                     'Update Komponenten-Daten in WinBack und OrgaBack
-                    UpdateKomponente(currentRow(0), currentRow, False)
+                    UpdateKomponente(currentRow(wb_Functions.PistorToText("Nummer")), currentRow)
                     Return True
 
                 Catch ex As FileIO.MalformedLineException
                     _InfoText = "Line " & ex.Message & " is not valid and will be skipped."
                     Return True
+
                 End Try
             End If
-            _InfoText = "Keine (neuen) Daten zum Import vorhanden"
+
+            'alle Datensätze eingelesen und verarbeitet
+            _InfoText = "Alle Daten importiert"
+            MyReader.Close()
+
+            'Nach dem letzten Datensatz wird die Import-Datei umbenannt
+            If File.Exists(_Filename & ".bak") Then
+                File.Delete(_Filename & ".bak")
+            End If
+            File.Move(_Filename, _Filename & ".bak")
+
+            Return False
         End If
         Return False
     End Function
@@ -59,15 +82,15 @@ Public Class wb_nwtPistor
     ''' die Daten werden aktualisiert.
     ''' </summary>
     ''' <returns>True wenn der Datensatz gefunden und aktualisiert wurde</returns>
-    Public Function UpdateKomponente(Nummer As String, Data As String(), Optional ByRef bUpdateOrgaBack As Boolean = False) As Boolean
+    Public Function UpdateKomponente(Nummer As String, Data As String()) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Komponenten-Objekt nimmt die aktuellen Daten auf
         Dim nwtDaten As New wb_Komponente
         UpdateKomponente = False
 
-        'Datensatz aus Tabelle Komponenten lesen
-        If winback.sqlSelect(setParams(sqlSelectKomp_AlNum, Nummer)) Then
+        'Datensatz aus Tabelle Komponenten lesen (nur Rohstoffe). Liest auch Rohstoffe mit führendem 'R'
+        If winback.sqlSelect(setParams(sqlSelectRoh_AlNum, Nummer, "R" & Nummer)) Then
             If winback.Read Then
                 'Komponentendaten aus DB in Object nwtDaten einlesen
                 nwtDaten.MySQLdbRead(winback.MySqlRead)
@@ -82,12 +105,12 @@ Public Class wb_nwtPistor
                 End If
                 winback.CloseRead()
 
-                'Datum der letzen Nährwert-Aktualisierung in der WinBack-Datenbank
-                Dim WinBackChangeDate As Date = nwtDaten.ktTyp301.TimeStamp
                 'Änderungs-Log löschen
                 nwtDaten.ClearReport()
-                'Nährwert-Info aus dem Array in nwtDaten eintragen
+                'Nährwert-Info aus dem String-Array in nwtDaten eintragen
                 GetNaehrwerte(Data, nwtDaten)
+                'Zutatenliste und sonstige Angaben in nwtDaten eintragen
+                GetTexte(Data, nwtDaten)
 
                 'Änderungen in Datenbank schreiben (WinBack und OrgaBack)
                 DbUpdateNaehrwerte(nwtDaten, True)
@@ -97,14 +120,12 @@ Public Class wb_nwtPistor
                 'Debug.Print("Report " & nwtDaten.GetReport)
 
                 'Ausgabe-Text
-                _InfoText = "(" & nwtDaten.Nr.ToString("00000") & ") " & nwtDaten.Bezeichnung
-                    UpdateKomponente = True
-                End If
+                _InfoText = "(" & nwtDaten.Nr.ToString("000000") & ") " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung
+                UpdateKomponente = True
             Else
-                _InfoText = "Komponente " & Nummer & " nicht gefunden"
-                'Reset Flag alle Artikel in OrgaBack updaten
-                bUpdateOrgaBack = False
+                _InfoText = "(Pistor) R" & Nummer & " nicht gefunden"
             End If
+        End If
 
         winback.Close()
         Return UpdateKomponente
@@ -121,8 +142,8 @@ Public Class wb_nwtPistor
         Debug.Print("Update (Komp)Nährwerte in WinBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
         nwtDaten.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
         'Änderungen der Zutatenliste in Komponente(Rohstoff) sichern
-        'Debug.Print("Update (Komp)Zutatenliste in WinBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
-        'nwtDaten.MySqldbUpdate_Zutatenliste()
+        Debug.Print("Update (Komp)Zutatenliste in WinBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
+        nwtDaten.MySqldbUpdate_Zutatenliste()
         'Alle Artikel, welche diese Komponente in Rezepturen verwenden markieren
         'die Nährwerte müssen neu berechnet werden. Farbige Markierung in der Artikel-Liste
         nwtDaten.MySQLdbSetMarkerRzptListe(wb_Global.ArtikelMarker.nwtUpdate)
@@ -145,19 +166,17 @@ Public Class wb_nwtPistor
     ''' <param name="Data"></param>
     ''' <param name="nwtdaten"></param>
     Public Sub GetNaehrwerte(Data As String(), nwtdaten As wb_Komponente)
-        'WinBack Index
-        Dim idx As Integer
-
         'Schleife über alle Elemente im Array
-        For i = 1 To Data.Count
-            'WinBack-Index aus Tabelle ermitteln (Array-Index plus 1 !!)
-            idx = wb_Functions.PistorToIndex(i)
-            If idx > 0 Then
-                nwtdaten.ktTyp301.Wert(idx) = Data(i - 1)
-            End If
+        For i = 0 To Data.Count - 1
+            nwtdaten.ktTyp301.PistorWert(i) = Data(i)
         Next
-
     End Sub
 
+    Public Sub GetTexte(Data As String(), nwtdaten As wb_Komponente)
+        'ZutatenListe - Deklaration extern
+        nwtdaten.DeklBezeichungExtern = Data(wb_Functions.PistorToText("Deklaration"))
+        'ZutatenListe - Deklaration intern
+        nwtdaten.DeklBezeichungIntern = Data(wb_Functions.PistorToText("Zutatenliste"))
+    End Sub
 
 End Class

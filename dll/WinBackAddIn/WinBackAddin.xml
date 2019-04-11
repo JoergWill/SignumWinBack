@@ -1611,6 +1611,32 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="m_Control"></param>
 </member>
+<member name="M:WinBack.wb_nwtPistor.UpdateKomponente(System.String,System.String[])">
+ <summary>
+ Sucht die Komponente mit der angegebenen Nummer aus der Datenbank
+ Einlesen der Komponenten-Daten in ein Komponenten-Objekt
+ Übertragen der Nährwert-Daten in die WinBack-Datenbank. Es wird ein Report generiert und
+ die Daten werden aktualisiert.
+ </summary>
+ <returns>True wenn der Datensatz gefunden und aktualisiert wurde</returns>
+</member>
+<member name="M:WinBack.wb_nwtPistor.DbUpdateNaehrwerte(WinBack.wb_Komponente,System.Boolean)">
+ <summary>
+ Schreibt die Nährwertinfo (nach Update) in die WinBack und OrgaBack-Datenbank
+ Wenn Artikel von der Nährwert-Änderung betroffen sind, wird der entsprechende 
+ Artikel-Datensatz markiert.
+ </summary>
+ <param name="UpdateOrgaBack"></param>
+</member>
+<member name="M:WinBack.wb_nwtPistor.GetNaehrwerte(System.String[],WinBack.wb_Komponente)">
+ <summary>
+ Übertragen der Nährwerte aus dem Array in das Komponenten-Objekt
+ Die Daten werden in nwtDaten eingtragen
+ 
+ </summary>
+ <param name="Data"></param>
+ <param name="nwtdaten"></param>
+</member>
 <member name="T:WinBack.wb_nwtUpdateArtikel">
  <summary>
  Erzeugt eine Liste aller Rezepturen die eine Komponente X enthalten (Verwendung Komponente)
@@ -6030,6 +6056,14 @@ Start Timer nach Änderung Datensatz-Zeiger
  WinBack-Index-Nummern um
  </summary>
  <param name="name"></param>
+ <returns>index (Integer)</returns>
+</member>
+<member name="M:WinBack.wb_Functions.PistorToIndex(System.Int32)">
+ <summary>
+ Wandelt die Pistor-Nährwert und Allergen-Bezeichnungen/Nummern in 
+ WinBack-Index-Nummern um.
+ </summary>
+ <param name="PistorNr"></param>
  <returns>index (Integer)</returns>
 </member>
 <member name="M:WinBack.wb_Functions.MinMaxOptChargeToString(WinBack.wb_Global.MinMaxOptChargenError)">

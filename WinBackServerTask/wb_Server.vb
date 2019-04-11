@@ -230,6 +230,8 @@ Public Class Main
                 'Info-Text ausgeben
                 ScrollTextBox(tbCloud, nwtPistor.InfoText & vbNewLine)
             End While
+
+
             'Nach Ende Update Nährwerte neue Startzeit setzen
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()

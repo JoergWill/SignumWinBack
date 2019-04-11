@@ -272,6 +272,42 @@ Public Class wb_KomponParam301
         End Set
     End Property
 
+    Public WriteOnly Property PistorWert(index As String) As String
+        Set(value As String)
+            Dim idx As Integer = PistorToIndex(index)
+            If idx > 0 Then
+                If IsAllergen(idx) Then
+                    PistorAllergen(idx) = value
+                Else
+                    PistorNaehrWert(idx) = value
+                End If
+            Else
+                Trace.WriteLine("Fehler bei Pistor - Index " & Index & " nicht definiert")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property PistorNaehrWert(Index As Integer) As String
+        Set(value As String)
+            Naehrwert(Index) = wb_Functions.StrToDouble(value)
+        End Set
+    End Property
+
+    Public WriteOnly Property PistorAllergen(Index As Integer) As String
+        Set(value As String)
+            Select Case value
+                Case "0"
+                    Allergen(Index) = AllergenInfo.N
+                Case "1"
+                    Allergen(Index) = AllergenInfo.C
+                Case "2"
+                    Allergen(Index) = AllergenInfo.T
+                Case Else
+                    Allergen(Index) = AllergenInfo.ERR
+            End Select
+        End Set
+    End Property
+
     Public Sub ClearReport()
         ChangeLogClear()
     End Sub

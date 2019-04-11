@@ -140,7 +140,7 @@ Public Class wb_nwtUpdateArtikel
                 'Debug.Print("Report " & nwtArtikelDaten.GetReport)
 
                 'Ausgabe-Text
-                _InfoText = "<" & nwtArtikelDaten.Nr.ToString("00000") & "> " & nwtArtikelDaten.Bezeichnung
+                _InfoText = "<" & nwtArtikelDaten.Nr.ToString("000000") & "> " & nwtArtikelDaten.Bezeichnung
                 UpdateNext = True
             Else
                 'EOF() - ReStart bei KO_Nr = 0

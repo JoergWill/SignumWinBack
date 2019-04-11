@@ -685,12 +685,12 @@ Public Class wb_Functions
     ''' <summary>
     ''' Wandelt die Pistor-Nährwert und Allergen-Bezeichnungen/Nummern in 
     ''' WinBack-Index-Nummern um.
-    ''' Die Pistor-Tabelle beginnt bei Index 1(!) Die Daten liegen im Array ab Index 0(!)
     ''' </summary>
     ''' <param name="PistorNr"></param>
     ''' <returns>index (Integer)</returns>
     Public Shared Function PistorToIndex(PistorNr As Integer) As Integer
-        Select Case PistorNr
+        'Die Pistor-Tabelle beginnt bei Index 1(!)
+        Select Case PistorNr + 1
 
             'Nährwerte
             Case 34     'Energie in kcal
@@ -703,7 +703,7 @@ Public Class wb_Functions
                 Return 4
             Case 40     'Fett
                 Return 5
-            Case 52     'Balststoffe (Nahrungsfasern)
+            Case 52     'Ballaststoffe (Nahrungsfasern)
                 Return 13
             Case 56     'Salz
                 Return 202
@@ -747,6 +747,26 @@ Public Class wb_Functions
         End Select
     End Function
 
+    Public Shared Function PistorToText(Idx As String) As Integer
+        Select Case Idx
+
+            'Rohstoff
+            Case "Nummer"           'Rohstoff-Nummer
+                Return 0
+
+            'Texte
+            Case "Bezeichnung"      'Rohstoff-Bezeichnung
+                Return 3
+            Case "Zutatenliste"     'Zutatenliste
+                Return 26
+            Case "Deklaration"      'Deklarationstext
+                Return 27
+
+            Case Else
+                Return -1
+        End Select
+
+    End Function
 
 
     Public Shared Function StringToDBType(Value As String) As wb_Sql.dbType

@@ -66,16 +66,17 @@
     'TODO Update KomponParams
 
     'Sql-Statement Komponenten-Parameter zum Komponenten-Nummer und Parameter-Nummer 
-    Public Const sqlKompParams = "Select KP_Wert FROM KomponParams WHERE KP_KO_Nr = [0] And KP_ParamNr = [1]"
+    Public Const sqlKompParams = "SELECT KP_Wert FROM KomponParams WHERE KP_KO_Nr = [0] And KP_ParamNr = [1]"
 
     'Sql-Statement Artikelliste aus winback.Komponenten
-    Public Const sqlArtikelLst = "Select KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, " &
+    Public Const sqlArtikelLst = "SELECT KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, " &
                                   "KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type = 0"
 
     'Sql-Statement Lesen Komponenten nach KO_Nr (Select KO_Nr=x)
-    Public Const sqlSelectKomp_KO_Nr = "Select * FROM Komponenten WHERE KO_Nr = [0] "
+    Public Const sqlSelectKomp_KO_Nr = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "
     'Sql-Statement Lesen Komponenten nach KO_Nr_AlNum (Select KO_Nr=x) aufsteigend nach Komponenten-Type (Artikel, Automatik, Hand-Komponente)
-    Public Const sqlSelectKomp_AlNum = "Select * FROM Komponenten WHERE KO_Nr_AlNum = '[0]' ORDER BY KO_Type"
+    Public Const sqlSelectKomp_AlNum = "SELECT * FROM Komponenten WHERE KO_Nr_AlNum = '[0]' ORDER BY KO_Type"
+    Public Const sqlSelectRoh_AlNum = "SELECT * FROM Komponenten WHERE (KO_Nr_AlNum = '[0]' OR KO_Nr_AlNum = '[1]') AND KO_Type > 0"
     Public Const sqlSelectKomp_KO_Type = "SELECT * FROM Komponenten WHERE KO_Type = [0] "
     'Sql-Statement Update Komponenten nach KO_Nr (Select KO_Nr=x)
     Public Const sqlUpdateKomp_KO_Nr = "UPDATE Komponenten SET [1] WHERE KO_Nr = [0] "
