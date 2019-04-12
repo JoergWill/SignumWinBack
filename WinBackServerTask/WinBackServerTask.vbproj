@@ -11,7 +11,7 @@
     <AssemblyName>WinBackServerTask</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -242,9 +242,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.Contracts, Version=3.0.6635.31719, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\OrgaSoft V3.0.6733\Signum.OrgaSoft.Contracts.dll</HintPath>
+    <Reference Include="Signum.OrgaSoft.Contracts">
+      <HintPath>..\dll\OrgaSoft V3.1.6971\Signum.OrgaSoft.Contracts.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -262,12 +261,11 @@
     <Reference Include="Tamir.SharpSSH">
       <HintPath>..\dll\SharpSSH\Tamir.SharpSSH.dll</HintPath>
     </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.8.0.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\WeifenLuo Docking V2.13.0\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>..\dll\WeifenLuo Docking V3.0.4\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015">
-      <HintPath>..\dll\WeifenLuo Docking V2.13.0\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
+      <HintPath>..\dll\WeifenLuo Docking V3.0.4\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
     </Reference>
     <Reference Include="WinBackAddin, Version=1.1.2.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>

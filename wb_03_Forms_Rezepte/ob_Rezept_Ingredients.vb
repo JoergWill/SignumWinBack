@@ -13,8 +13,7 @@ Public Class ob_RecipeProvider
     Implements IRecipeProvider
 
     Dim RecipeInfo As ob_RecipeInfo
-    'TODO Muss noch implementiert werden !!
-    'Dim ArticleUsage As ob_ArticleUsage
+    Dim ArticleUsage() As ob_ArticleUsage
 
     Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
     Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
@@ -49,8 +48,6 @@ Public Class ob_RecipeProvider
         Return RecipeInfo
     End Function
 
-
-    'TODO Muss noch implementiert werden, sobald das Interface von OrgaSoft geändert wurde (Mail J.E. vom 14.11)
     '''' <summary>
     '''' Liefert alle Rezepturen zurück, in denen der übergebene Artikel enthalten ist
     '''' </summary>
@@ -59,10 +56,10 @@ Public Class ob_RecipeProvider
     '''' <param name="Color">Farbe des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
     '''' <param name="Size">Grösse des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
     '''' <returns></returns>
-    'Public Function GetArticleUsage(ArticleNo As String, Unit As Short, Color As Short, Size As String) As IArticle() Implements IRecipeProvider.GetArticleUsage
-    '    ArticleUsage = New ob_ArticleUsage(ArticleNo, Unit, Color, Size)
-    '    Return ArticleUsage
-    'End Function
+    Public Function GetArticleUsage(ArticleNo As String, Unit As Short, Color As Short, Size As String) As IArticle() Implements IRecipeProvider.GetArticleUsage
+        'ArticleUsage = New ob_ArticleUsage(ArticleNo, Unit, Color, Size)
+        Return ArticleUsage
+    End Function
 
 End Class
 #End Region
@@ -285,71 +282,60 @@ Public Class ob_RecipeInfo
     End Property
 End Class
 #End Region
-'#Region "ob_ArticleUsage"
-'''' <summary>
-'''' Klasse, die eine Rezeptur mit ihren Bestandteilen beschreibt
-'''' </summary>
-'Public Class ob_ArticleUsage
-'    Implements IRecipeInfo
+#Region "ob_ArticleUsage"
+''' <summary>
+''' Klasse, die eine Rezeptur mit ihren Bestandteilen beschreibt
+''' </summary>
+Public Class ob_ArticleUsage
+    Implements IArticle
 
-'    Private _ArticleNo As String
-'    Private _Unit As Short = wb_Global.obEinheitStk
-'    Private _Color As Short
-'    Private _Size As String = "NULL"
+    Private _ArticleNo As String
+    Private _Unit As Short = wb_Global.obEinheitStk
+    Private _Color As Short
+    Private _Size As String = "NULL"
 
-'    Public Sub New(ArticleNo As String, Unit As Short, Color As Short, Size As String)
-'        Me.ArticleNo = ArticleNo
-'        Me.Unit = Unit
-'        Me.Size = Size
-'    End Sub
+    Public Sub New(ArticleNo As String, Unit As Short, Color As Short, Size As String)
+        Me.ArticleNo = ArticleNo
+        Me.Unit = Unit
+        Me.Size = Size
+    End Sub
 
-'    Public Property ArticleNo As String Implements IRecipeInfo.ArticleNo
-'        Get
-'            Throw New NotImplementedException()
-'        End Get
-'        Set(value As String)
-'            Throw New NotImplementedException()
-'        End Set
-'    End Property
+    Public Property ArticleNo As String Implements IArticle.ArticleNo
+        Get
+            Throw New NotImplementedException()
+        End Get
+        Set(value As String)
+            Throw New NotImplementedException()
+        End Set
+    End Property
 
-'    Public Property Branch As Short Implements IRecipeInfo.Branch
-'        Get
-'            Throw New NotImplementedException()
-'        End Get
-'        Set(value As Short)
-'            Throw New NotImplementedException()
-'        End Set
-'    End Property
+    Public Property Unit As Short Implements IArticle.Unit
+        Get
+            Throw New NotImplementedException()
+        End Get
+        Set(value As Short)
+            Throw New NotImplementedException()
+        End Set
+    End Property
+    Public Property Color As Short Implements IArticle.Color
+        Get
+            Throw New NotImplementedException()
+        End Get
+        Set(value As Short)
+            Throw New NotImplementedException()
+        End Set
+    End Property
 
-
-'    Public Property Size As String Implements IRecipeInfo.Size
-'        Get
-'            Throw New NotImplementedException()
-'        End Get
-'        Set(value As String)
-'            Throw New NotImplementedException()
-'        End Set
-'    End Property
-
-'    Public Property Unit As Short Implements IRecipeInfo.Unit
-'        Get
-'            Throw New NotImplementedException()
-'        End Get
-'        Set(value As Short)
-'            Throw New NotImplementedException()
-'        End Set
-'    End Property
-
-'    Public Property Version As Short Implements IRecipeInfo.Version
-'        Get
-'            Throw New NotImplementedException()
-'        End Get
-'        Set(value As Short)
-'            Throw New NotImplementedException()
-'        End Set
-'    End Property
-'End Class
-'#End Region
+    Public Property Size As String Implements IArticle.Size
+        Get
+            Throw New NotImplementedException()
+        End Get
+        Set(value As String)
+            Throw New NotImplementedException()
+        End Set
+    End Property
+End Class
+#End Region
 #Region "IRecipeIngredient"
 ''' <summary>
 ''' Klasse, die einen Rezeptur-Bestandteil beschreibt

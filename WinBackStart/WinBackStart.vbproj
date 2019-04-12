@@ -11,7 +11,7 @@
     <AssemblyName>WinBackOffice</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -269,10 +269,12 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>..\dll\WeifenLuo Docking V2.13.0\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>..\dll\WeifenLuo Docking V3.0.4\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015">
-      <HintPath>..\dll\WeifenLuo Docking V2.13.0\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
+      <HintPath>..\dll\WeifenLuo Docking V3.0.4\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
   <ItemGroup>

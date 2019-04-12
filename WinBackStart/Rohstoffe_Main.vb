@@ -76,6 +76,7 @@ Public Class Rohstoffe_Main
                 If RohstoffListe IsNot Nothing Then
                     RohstoffListe.Anzeige = CType(Prm, wb_Rohstoffe_Shared.AnzeigeFilter)
                 End If
+                Return True
             Case Else
                 Return False
         End Select
