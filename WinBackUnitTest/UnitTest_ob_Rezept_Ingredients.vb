@@ -220,4 +220,14 @@ Imports WinBack
         End If
     End Sub
 
+    <TestMethod()> Public Sub TestArticleUsage()
+        Dim Ri As New ob_RecipeProvider
+        Dim ra() As Signum.OrgaSoft.Services.IArticle
+
+        'Liste aller Artikel die den Rohstoff mit der Nummer "9899" enthalten
+        ra = Ri.GetArticleUsage("9899", wb_Global.obEinheitStk, 0, "NULL")
+        'Result - 2 Artikel (4 Treffer, wenn die Dubletten nicht gefiltert werden)
+        Assert.AreEqual(2, ra.Length)
+        Debug.Print(ra.Length)
+    End Sub
 End Class

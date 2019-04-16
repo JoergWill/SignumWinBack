@@ -4736,11 +4736,6 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <returns></returns>
 </member>
-<member name="T:WinBack.ob_ArticleUsage">
- <summary>
- Klasse, die eine Rezeptur mit ihren Bestandteilen beschreibt
- </summary>
-</member>
 <member name="T:WinBack.ob_RecipeIngredient">
  <summary>
  Klasse, die einen Rezeptur-Bestandteil beschreibt
@@ -4822,6 +4817,11 @@ Text aus Datenbank lesen - Übersetzung
  Rezept-Type variabel
  </summary>
  <returns></returns>
+</member>
+<member name="T:WinBack.ob_ArticleUsage">
+ <summary>
+ Klasse, die eine Rezeptur mit ihren Bestandteilen beschreibt
+ </summary>
 </member>
 <member name="M:WinBack.wb_Rezept_Rezeptur.#ctor(System.Int32,System.Int32,System.Int32)">
  <summary>

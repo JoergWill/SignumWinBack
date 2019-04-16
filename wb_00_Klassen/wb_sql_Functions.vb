@@ -149,6 +149,29 @@ Public Class wb_sql_Functions
         winback.Close()
     End Function
 
+    Public Shared Function getKONrFromAlNum(AlNum As String) As Integer
+        'Interne Komponenten-Nummer
+        Dim KO_Nr As Integer = wb_Global.UNDEFINED
+        'Datenbank Verbindung
+        Dim winBack As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'Sql-Statement Abfrage KONr
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_AlNum, AlNum)
+        'Select-Statement ausführen
+        Try
+            WinBack.sqlSelect(sql)
+            If WinBack.Read Then
+                KO_Nr = WinBack.iField("KO_Nr")
+            End If
+        Catch ex As Exception
+        End Try
+        'Datenbank-Verbindung wieder freigeben
+        winBack.Close()
+
+        'Wenn ein gültiger Datensatz gefunden wurde - KO_Nr zurückgeben (unabhängig von KO_Type)
+        Return KO_Nr
+    End Function
+
+
     Public Shared Function Lookup(Tabelle As String, Feldname As String, Bedingung As String) As String
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)

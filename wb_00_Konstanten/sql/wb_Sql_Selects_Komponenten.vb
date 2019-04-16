@@ -23,13 +23,20 @@
     Public Const sqlRohstoffUse = "SELECT Rezepte.RZ_Nr, Rezepte.RZ_Nr_AlNum, Rezepte.RZ_Bezeichnung FROM RezeptSchritte INNER JOIN " &
                                   "Rezepte On (RezeptSchritte.RS_RZ_Variante_Nr = Rezepte.RZ_Variante_Nr) And (RezeptSchritte.RS_RZ_Nr = Rezepte.RZ_Nr) " &
                                   "WHERE RezeptSchritte.RS_Ko_Nr= [0] And RezeptSchritte.RS_ParamNr = 1"
+    'Sql-Statement Artikel/Rohstoff-Verwendung aus winback.Rezeptschritte
+    Public Const sqlArtikelUse = "SELECT Komponenten.KO_Nr, Komponenten.KO_Nr_AlNum, Komponenten.KO_Type " &
+                                 "FROM RezeptSchritte INNER JOIN Komponenten On RezeptSchritte.RS_RZ_Nr = Komponenten.KA_RZ_Nr " &
+                                 "WHERE RezeptSchritte.RS_KO_Nr = [0] AND RezeptSchritte.RS_RZ_Variante_Nr = 1 And RezeptSchritte.RS_ParamNr = 1"
+
+
+
     'Sql-Statement Automatik-Rohstoffe aus winback.Lagerorte
-    Public Const sqlRohstoffAut = "SELECT Komponenten.KO_Nr, Lagerorte.LG_aktiv FROM Komponenten " &
+    Public Const sqlRohstoffAut = "Select Komponenten.KO_Nr, Lagerorte.LG_aktiv FROM Komponenten " &
                                   "INNER JOIN Lagerorte On Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
                                   "WHERE KO_TYPE = 101 Or KO_TYPE = 103 Or KO_TYPE = 104"
 
     'Sql-Statement ArtikelGruppen aus winback.ItemParameter
-    Public Const sqlartikelGrp = "SELECT IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
+    Public Const sqlartikelGrp = "Select IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
                                   "IP_ItemTyp = 700 And IP_Wert3int = 0 ORDER BY IP_Lfd_Nr DESC"
     'Löschen Rohstoff/Artikel in Komponenten
     Public Const sqlDelKomponenten = "DELETE FROM Komponenten WHERE KO_NR = [0]"

@@ -1,6 +1,7 @@
 ﻿Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.Services
+Imports WinBack
 
 ''' <summary>
 ''' Klasse zum Auflösen von Rezepturen bzw. Stücklisten
@@ -13,7 +14,6 @@ Public Class ob_RecipeProvider
     Implements IRecipeProvider
 
     Dim RecipeInfo As ob_RecipeInfo
-    Dim ArticleUsage() As ob_ArticleUsage
 
     Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
     Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
@@ -49,7 +49,7 @@ Public Class ob_RecipeProvider
     End Function
 
     '''' <summary>
-    '''' Liefert alle Rezepturen zurück, in denen der übergebene Artikel enthalten ist
+    '''' Liefert alle Artikel(mit Verweisen auf Rezepturen) zurück, in denen der übergebene Artikel enthalten ist
     '''' </summary>
     '''' <param name="ArticleNo">Nummer des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
     '''' <param name="Unit">Einheit des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
@@ -57,9 +57,58 @@ Public Class ob_RecipeProvider
     '''' <param name="Size">Grösse des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
     '''' <returns></returns>
     Public Function GetArticleUsage(ArticleNo As String, Unit As Short, Color As Short, Size As String) As IArticle() Implements IRecipeProvider.GetArticleUsage
-        'ArticleUsage = New ob_ArticleUsage(ArticleNo, Unit, Color, Size)
-        Return ArticleUsage
+        'ArrayList initialisieren
+        Dim ArticleUsage As New List(Of ob_ArticleUsage)
+
+        'Interne Komponenten-Nummer ermitteln (nur Rohstoff)
+        Dim KO_Nr As Integer = wb_sql_Functions.getKONrFromAlNum(ArticleNo)
+
+        'Prüfen ob ein Artikel zu dieser Nummer existiert - Sonst wird ein leeres Array zurückgeben
+        If KO_Nr <> wb_Global.UNDEFINED Then
+            'Ermittelt alle Artikel/Rohstoff-Nummern aus Rezepturen zum angegeben Rohstoff
+            ReadArticleUsage(KO_Nr, ArticleUsage)
+        End If
+
+        'Liste nach Artikelnummer sortieren
+        ArticleUsage.Sort()
+        'Doppelte Einträge entfernen
+        Return ArticleUsage.Distinct.ToArray()
     End Function
+
+    Private Sub ReadArticleUsage(KO_Nr, ByRef ArticleUsage)
+        'bei rekursiven Aufrufen wird geprüft, ob der Rohstoff schon in der Liste steht
+        For Each x As ob_ArticleUsage In ArticleUsage
+            If x.KO_Nr = KO_Nr Then
+                Exit Sub
+            End If
+        Next
+
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'Abfrage aller Artikel/Rohstoffe mit Rezeptur, die diese Komponente enthalten
+        Dim Sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlArtikelUse, KO_Nr.ToString)
+        If winback.sqlSelect(Sql) Then
+            'Alle Datensätze aus dem Result-Set durchlaufen
+            While winback.Read
+                'Dieser Artikel/Rohstoff(Rezept-im-Rezept) enthält den Rohstoff in seiner Rezeptur
+                Dim Article As New ob_ArticleUsage
+                Article.ArticleNo = winback.sField("KO_Nr_AlNum")
+                Article.KO_Nr = winback.iField("KO_Nr")
+                Article.KO_Type = wb_Functions.IntToKomponType(winback.iField("KO_Type"))
+
+                'Ist der resultierende Artikel wieder ein Rohstoff (Rezept-Im-Rezept) wird die Unter-Rezeptur aufgelöst
+                If Article.KO_Type <> wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
+                    'rekursiver Aufruf
+                    ReadArticleUsage(Article.KO_Nr, ArticleUsage)
+                End If
+
+                'zum Array hinzufügen
+                ArticleUsage.Add(Article)
+            End While
+        End If
+        'Datenbank-Verbindung wieder freigeben
+        winback.Close()
+    End Sub
 
 End Class
 #End Region
@@ -282,60 +331,6 @@ Public Class ob_RecipeInfo
     End Property
 End Class
 #End Region
-#Region "ob_ArticleUsage"
-''' <summary>
-''' Klasse, die eine Rezeptur mit ihren Bestandteilen beschreibt
-''' </summary>
-Public Class ob_ArticleUsage
-    Implements IArticle
-
-    Private _ArticleNo As String
-    Private _Unit As Short = wb_Global.obEinheitStk
-    Private _Color As Short
-    Private _Size As String = "NULL"
-
-    Public Sub New(ArticleNo As String, Unit As Short, Color As Short, Size As String)
-        Me.ArticleNo = ArticleNo
-        Me.Unit = Unit
-        Me.Size = Size
-    End Sub
-
-    Public Property ArticleNo As String Implements IArticle.ArticleNo
-        Get
-            Throw New NotImplementedException()
-        End Get
-        Set(value As String)
-            Throw New NotImplementedException()
-        End Set
-    End Property
-
-    Public Property Unit As Short Implements IArticle.Unit
-        Get
-            Throw New NotImplementedException()
-        End Get
-        Set(value As Short)
-            Throw New NotImplementedException()
-        End Set
-    End Property
-    Public Property Color As Short Implements IArticle.Color
-        Get
-            Throw New NotImplementedException()
-        End Get
-        Set(value As Short)
-            Throw New NotImplementedException()
-        End Set
-    End Property
-
-    Public Property Size As String Implements IArticle.Size
-        Get
-            Throw New NotImplementedException()
-        End Get
-        Set(value As String)
-            Throw New NotImplementedException()
-        End Set
-    End Property
-End Class
-#End Region
 #Region "IRecipeIngredient"
 ''' <summary>
 ''' Klasse, die einen Rezeptur-Bestandteil beschreibt
@@ -519,6 +514,89 @@ Public Class ob_RecipeIngredient
         End Get
         Set(value As Boolean)
             _Variable = value
+        End Set
+    End Property
+End Class
+#End Region
+#Region "ob_ArticleUsage"
+''' <summary>
+''' Klasse, die eine Rezeptur mit ihren Bestandteilen beschreibt
+''' </summary>
+Public Class ob_ArticleUsage
+    Implements IArticle
+    Implements IComparable
+
+    Private _ArticleNo As String
+    Private _Unit As Short = wb_Global.obEinheitStk
+    Private _Color As Short = 0
+    Private _Size As String = "NULL"
+    Private _KO_Nr As Integer
+    Private _KO_Type As wb_Global.KomponTypen
+
+    Public Sub New()
+        Me.ArticleNo = wb_Global.UNDEFINED
+    End Sub
+
+    Public Sub New(ArticleNo As String, Unit As Short, Color As Short, Size As String)
+        Me.ArticleNo = ArticleNo
+        Me.Unit = Unit
+        Me.Size = Size
+    End Sub
+
+    Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
+        Return String.Compare(ArticleNo, DirectCast(obj, ob_ArticleUsage).ArticleNo)
+    End Function
+
+    Public Property ArticleNo As String Implements IArticle.ArticleNo
+        Get
+            Return _ArticleNo
+        End Get
+        Set(value As String)
+            _ArticleNo = value
+        End Set
+    End Property
+
+    Public Property Unit As Short Implements IArticle.Unit
+        Get
+            Return _Unit
+        End Get
+        Set(value As Short)
+            _Unit = value
+        End Set
+    End Property
+    Public Property Color As Short Implements IArticle.Color
+        Get
+            Return _Color
+        End Get
+        Set(value As Short)
+            value = _Color
+        End Set
+    End Property
+
+    Public Property Size As String Implements IArticle.Size
+        Get
+            Return _Size
+        End Get
+        Set(value As String)
+            _Size = value
+        End Set
+    End Property
+
+    Public Property KO_Nr As Integer
+        Get
+            Return _KO_Nr
+        End Get
+        Set(value As Integer)
+            _KO_Nr = value
+        End Set
+    End Property
+
+    Public Property KO_Type As wb_Global.KomponTypen
+        Get
+            Return _KO_Type
+        End Get
+        Set(value As wb_Global.KomponTypen)
+            _KO_Type = value
         End Set
     End Property
 End Class
