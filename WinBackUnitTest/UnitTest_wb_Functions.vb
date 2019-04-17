@@ -301,4 +301,23 @@ Imports WinBack.wb_Global
         winback.CloseRead()
     End Sub
 
+    <TestMethod()> Public Sub Test_CompareVersion()
+        'Vompare Version liefert True zurück, wenn die alte Version (Parameter 1) älter ist, als die neue Version (Parameter 2)
+        'also ein Update möglich ist...
+        Assert.AreEqual(True, wb_Functions.CompareVersion("1.0.0", "2.0.0"))
+        Assert.AreEqual(True, wb_Functions.CompareVersion("1.1.0", "2.0.0"))
+        Assert.AreEqual(True, wb_Functions.CompareVersion("1.0.1", "2.0.0"))
+        Assert.AreEqual(True, wb_Functions.CompareVersion("1.0.xxx", "2.0.0"))
+        Assert.AreEqual(True, wb_Functions.CompareVersion("1.xxx.0", "2.0.0"))
+        Assert.AreEqual(False, wb_Functions.CompareVersion("102", "2.0.0"))
+        Assert.AreEqual(False, wb_Functions.CompareVersion("xxx.1.02", "2.0.0"))
+
+        Assert.AreEqual(False, wb_Functions.CompareVersion("1.0.0", "1.0.0"))
+        Assert.AreEqual(False, wb_Functions.CompareVersion("1.0.1", "1.0.0"))
+        Assert.AreEqual(True, wb_Functions.CompareVersion("1.0.0", "1.0.1"))
+
+        Assert.AreEqual(True, wb_Functions.CompareVersion("1.2.0", "1.2.1"))
+        Assert.AreEqual(True, wb_Functions.CompareVersion("1.1.0", "1.2.0"))
+    End Sub
+
 End Class

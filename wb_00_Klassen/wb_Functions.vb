@@ -1072,6 +1072,42 @@ Public Class wb_Functions
         End Select
     End Function
 
+    ''' <summary>
+    ''' Vergleicht zwei Versions-Strings miteinander. Format V.V.V
+    '''     
+    ''' Rückgabe-Wert:
+    '''     VersionIst ist älter als VersionNeu     -   True
+    '''     VersionIst ist gleich    VersionNeu     -   False 
+    '''     VersionIst ist neuer als VersionNeu     -   False
+    ''' </summary>
+    ''' <param name="VersionIst"></param>
+    ''' <param name="VersionNeu"></param>
+    ''' <returns></returns>
+    Public Shared Function CompareVersion(VersionIst As String, VersionNeu As String) As Boolean
+        Try
+            'Aufteilen in die einzelnen Versions-Nummern
+            Dim Vi() As String = Split(VersionIst, ".")
+            Dim Vn() As String = Split(VersionNeu, ".")
+
+            'Vergleich Hauptversion
+            If Convert.ToInt16(Vi(0)) < Convert.ToInt16(Vn(0)) Then
+                Return True
+            End If
+            'Vergleich Nebenversion
+            If Convert.ToInt16(Vi(1)) < Convert.ToInt16(Vn(1)) Then
+                Return True
+            End If
+            'Vergleich Releaseversion
+            If Convert.ToInt16(Vi(2)) < Convert.ToInt16(Vn(2)) Then
+                Return True
+            End If
+        Catch
+        End Try
+        Return False
+    End Function
+
+
+
     Public Shared Function SaveDiv(Divident As Double, Divisor As Double) As Double
         If Divisor <> 0 Then
             Return Divident / Divisor

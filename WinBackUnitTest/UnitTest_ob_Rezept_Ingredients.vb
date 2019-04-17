@@ -228,6 +228,10 @@ Imports WinBack
         ra = Ri.GetArticleUsage("9899", wb_Global.obEinheitStk, 0, "NULL")
         'Result - 2 Artikel (4 Treffer, wenn die Dubletten nicht gefiltert werden)
         Assert.AreEqual(2, ra.Length)
-        Debug.Print(ra.Length)
+
+        'Liste aller Artikel die den Rohstoff mit der Nummer "WSR" enthalten
+        ra = Ri.GetArticleUsage("WSR", wb_Global.obEinheitStk, 0, "NULL")
+        'Result - 2 Artikel (4 Treffer, wenn die Dubletten nicht gefiltert werden)
+        Assert.AreEqual(28, ra.Length)
     End Sub
 End Class

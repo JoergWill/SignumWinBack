@@ -406,6 +406,11 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.UpdateWinBack_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.UserGruppen_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -5412,6 +5417,17 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <returns>Integer - nächste freie Rezept-Nummer</returns>
 </member>
+<member name="M:WinBack.wb_sql_Functions.getKONrFromAlNum(System.String)">
+ <summary>
+ Gibt eine Liste von (internen) Komponenten-Nummern zu einer Artikel/Rohstoff-Nummer zurück.
+ Einer alphanumerischen Rohstoff-Nummer können mehrere (interne) Komponenten-Nummern zugeordnet sein:
+     - Sauerteig/Produktion
+     - Mehl in mehreren Silo's
+     - Hand/Sackmehl zu Silo-Mehl
+ </summary>
+ <param name="AlNum"></param>
+ <returns>List of Integer</returns>
+</member>
 <member name="F:WinBack.wb_Global.UNDEFINED">
  <summary>
  Wert ist undefiniert
@@ -6167,6 +6183,19 @@ Start Timer nach Änderung Datensatz-Zeiger
  Abhängig vom Ländercode wird die Übersetzung aus der entsprechenden Code-Page vorgenommen
  </summary>
  <param name="Value"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.CompareVersion(System.String,System.String)">
+ <summary>
+ Vergleicht zwei Versions-Strings miteinander. Format V.V.V
+     
+ Rückgabe-Wert:
+     VersionIst ist älter als VersionNeu     -   True
+     VersionIst ist gleich    VersionNeu     -   False 
+     VersionIst ist neuer als VersionNeu     -   False
+ </summary>
+ <param name="VersionIst"></param>
+ <param name="VersionNeu"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Functions.DoBatch(System.String,System.String,System.String,System.Boolean)">
@@ -6940,6 +6969,48 @@ Datenbank-Verbindung schliessen
  Die Prüfung erfolgt über die Bezeichnungs-Spalte. Die Nummern sind schon über Excute Sync geprüft worden)
  </summary>
  <param name="wb"></param>
+</member>
+<member name="P:WinBack.wb_Admin_UpdateWinBack.WinBackUpdateVersion">
+ <summary>
+ Version der im Internet (www.winback.de/software) bereitsgestellten Version von WinBack-AddIn
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Admin_UpdateWinBack.SignumUpdateVersion">
+ <summary>
+ Notwendige Version von Signum.OrgaSoft.Contracts.dll für ein Update des WinBack-AddIn
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Admin_UpdateWinBack.CheckUpdateVersion">
+ <summary>
+ Prüft ob eine neuere Version im Internet zum Download verfügbar ist.
+ Die Versions-Nummer wird aus der Datei OrgaBack.txt ermittelt.
+ 
+ Bei Programm-Variante OrgaBack.
+     Ob diese Version installiert werden kann ist abhängig von der Version der Signum.OrgaSoft.Contracts.dll
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Admin_UpdateWinBack.CheckOrgaBackVersion">
+ <summary>
+ Prüft ob die (neuere) Version im Internet unter der aktuellen OrgaBack-Version lauffähig ist.
+ Voraussetzung ist, dass die Version von Signum.OrgaBack.Contracts kompatibel zur erforderlichen Version
+ des Downloads von WinBack-AddIn ist.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Admin_UpdateWinBack.GetUpdateVersion">
+ <summary>
+ Prüft ob eine beliebige Version im Internet zum Download verfügbar ist.
+ Die Versions-Nummer wird aus der Datei OrgaBack.txt ermittelt.
+ 
+ Bei Programm-Variante OrgaBack.
+     Ob diese Version installiert werden kann ist abhängig von der Version der Signum.OrgaSoft.Contracts.dll
+
+ Gibt True zurück, wenn eine gültige Version im Internet verfügbar ist.
+ </summary>
+ <returns></returns>
 </member>
 </members>
 </doc>

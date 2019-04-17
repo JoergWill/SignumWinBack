@@ -61,18 +61,26 @@ Public Class ob_RecipeProvider
         Dim ArticleUsage As New List(Of ob_ArticleUsage)
 
         'Interne Komponenten-Nummer ermitteln (nur Rohstoff)
-        Dim KO_Nr As Integer = wb_sql_Functions.getKONrFromAlNum(ArticleNo)
+        Dim KO_Numbers As List(Of Integer) = wb_sql_Functions.getKONrFromAlNum(ArticleNo)
 
         'Prüfen ob ein Artikel zu dieser Nummer existiert - Sonst wird ein leeres Array zurückgeben
-        If KO_Nr <> wb_Global.UNDEFINED Then
+        For Each KO_Nr In KO_Numbers
             'Ermittelt alle Artikel/Rohstoff-Nummern aus Rezepturen zum angegeben Rohstoff
             ReadArticleUsage(KO_Nr, ArticleUsage)
-        End If
+        Next
 
         'Liste nach Artikelnummer sortieren
         ArticleUsage.Sort()
         'Doppelte Einträge entfernen
-        Return ArticleUsage.Distinct.ToArray()
+        Dim i As Integer = ArticleUsage.Count - 1
+        While i > 0
+            If ArticleUsage(i).ArticleNo = ArticleUsage(i - 1).ArticleNo Then
+                ArticleUsage.RemoveAt(i)
+            End If
+            i -= 1
+        End While
+        'Als array zurückgeben
+        Return ArticleUsage.ToArray()
     End Function
 
     Private Sub ReadArticleUsage(KO_Nr, ByRef ArticleUsage)

@@ -134,6 +134,7 @@ Partial Class WinBack
         Me.rbAdminWinBackIni = New System.Windows.Forms.RibbonButton()
         Me.rsAdmin = New System.Windows.Forms.RibbonSeparator()
         Me.rbAdminUpdate = New System.Windows.Forms.RibbonButton()
+        Me.rbAdminWinBack = New System.Windows.Forms.RibbonButton()
         Me.LanguageFlags = New System.Windows.Forms.ImageList(Me.components)
         Me.rTab = New System.Windows.Forms.Ribbon()
         Me.rbAbmelden = New System.Windows.Forms.RibbonButton()
@@ -1089,6 +1090,7 @@ Partial Class WinBack
         Me.rbAdminAnsicht.Items.Add(Me.rbAdminWinBackIni)
         Me.rbAdminAnsicht.Items.Add(Me.rsAdmin)
         Me.rbAdminAnsicht.Items.Add(Me.rbAdminUpdate)
+        Me.rbAdminAnsicht.Items.Add(Me.rbAdminWinBack)
         Me.rbAdminAnsicht.Name = "rbAdminAnsicht"
         Me.rbAdminAnsicht.Text = "Ansicht"
         '
@@ -1121,7 +1123,17 @@ Partial Class WinBack
         Me.rbAdminUpdate.MinimumSize = New System.Drawing.Size(90, 0)
         Me.rbAdminUpdate.Name = "rbAdminUpdate"
         Me.rbAdminUpdate.SmallImage = CType(resources.GetObject("rbAdminUpdate.SmallImage"), System.Drawing.Image)
-        Me.rbAdminUpdate.Text = "Auf Updates Prüfen"
+        Me.rbAdminUpdate.Text = "Update Datenbank"
+        Me.rbAdminUpdate.Value = "CHECKDATABASEUPDATE"
+        '
+        'rbAdminWinBack
+        '
+        Me.rbAdminWinBack.Image = CType(resources.GetObject("rbAdminWinBack.Image"), System.Drawing.Image)
+        Me.rbAdminWinBack.LargeImage = CType(resources.GetObject("rbAdminWinBack.LargeImage"), System.Drawing.Image)
+        Me.rbAdminWinBack.Name = "rbAdminWinBack"
+        Me.rbAdminWinBack.SmallImage = CType(resources.GetObject("rbAdminWinBack.SmallImage"), System.Drawing.Image)
+        Me.rbAdminWinBack.Text = "Update Programm"
+        Me.rbAdminWinBack.Value = "CHECKWINBACKUPDATE"
         '
         'LanguageFlags
         '
@@ -1681,4 +1693,5 @@ Partial Class WinBack
     Friend WithEvents rbClose As RibbonButton
     Friend WithEvents rbVersionInfo As RibbonButton
     Friend WithEvents rbRohstoffNwt As RibbonButton
+    Friend WithEvents rbAdminWinBack As RibbonButton
 End Class

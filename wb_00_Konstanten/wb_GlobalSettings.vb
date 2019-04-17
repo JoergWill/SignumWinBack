@@ -467,6 +467,16 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    Public Shared ReadOnly Property SignumContractsVersion As String
+        Get
+            If _pVariante = ProgVariante.OrgaBack Then
+                Return FileVersionInfo.GetVersionInfo(wb_GlobalSettings.pProgrammPath & "Signum.OrgaSoft.Contracts.dll").FileVersion
+            Else
+                Return "V0.0.0"
+            End If
+        End Get
+    End Property
+
     Public Shared ReadOnly Property WinBackVersion As String
         Get
             If _pVariante = wb_Global.ProgVariante.OrgaBack Then

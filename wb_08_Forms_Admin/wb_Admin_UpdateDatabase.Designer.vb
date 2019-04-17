@@ -179,7 +179,7 @@ Partial Class wb_Admin_UpdateDatabase
         '
         Me.tbMsSQLMain.BackColor = System.Drawing.SystemColors.Control
         Me.tbMsSQLMain.ForeColor = System.Drawing.Color.DarkGray
-        Me.tbMsSQLMain.Location = New System.Drawing.Point(294, 83)
+        Me.tbMsSQLMain.Location = New System.Drawing.Point(294, 84)
         Me.tbMsSQLMain.Name = "tbMsSQLMain"
         Me.tbMsSQLMain.Size = New System.Drawing.Size(123, 20)
         Me.tbMsSQLMain.TabIndex = 14

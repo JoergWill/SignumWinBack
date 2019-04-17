@@ -11,7 +11,8 @@
 Public Class Admin_Main
 
     Public AdminDatensicherung As New wb_Admin_Datensicherung     'Default-Fenster    (wird beim Öffnen immer angezeigt)
-    Public AdminUpdatDataBase As wb_Admin_UpdateDatabase     'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
+    Public AdminUpdateDataBase As wb_Admin_UpdateDatabase         'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
+    Public AdminUpdateWinBAck As wb_Admin_UpdateWinBack           'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -29,9 +30,13 @@ Public Class Admin_Main
             Case "OPENLISTE"
                 AdminDatensicherung.Show(DockPanel, DockState.DockLeft)
                 Return True
-            Case "OPENDETAILS"
-                AdminUpdatDataBase = New wb_Admin_UpdateDatabase
-                AdminUpdatDataBase.Show(DockPanel, DockState.DockLeft)
+            Case "CHECKDATABASEUPDATE"
+                AdminUpdateDataBase = New wb_Admin_UpdateDatabase
+                AdminUpdateDataBase.Show(DockPanel)
+                Return True
+            Case "CHECKWINBACKUPDATE"
+                AdminUpdateWinBAck = New wb_Admin_UpdateWinBack
+                AdminUpdateWinBAck.Show(DockPanel)
                 Return True
             Case Else
                 Return False
@@ -62,9 +67,9 @@ Public Class Admin_Main
                 Return AdminDatensicherung
 
             Case "WinBack.wb_Admin_UpdateDataBase"
-                AdminUpdatDataBase = New wb_Admin_UpdateDatabase
-                _DockPanelList.Add(AdminUpdatDataBase)
-                Return AdminUpdatDataBase
+                AdminUpdateDataBase = New wb_Admin_UpdateDatabase
+                _DockPanelList.Add(AdminUpdateDataBase)
+                Return AdminUpdateDataBase
 
             Case Else
                 Return Nothing

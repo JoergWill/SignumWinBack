@@ -551,6 +551,8 @@
     <None Include="Resources\WinBackLogo_945x514.png" />
     <None Include="Resources\RohstoffeNwt_32x32.png" />
     <None Include="Resources\RohstoffeParameter_32x32.png" />
+    <None Include="Resources\AdminUpdateWinBack_32x32.png" />
+    <None Include="Resources\AdminUpdateDataBase_32x321.png" />
     <Content Include="WinBack Icon.ico" />
   </ItemGroup>
   <ItemGroup>

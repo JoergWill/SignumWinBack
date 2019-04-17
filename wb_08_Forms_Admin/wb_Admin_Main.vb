@@ -12,6 +12,7 @@ Public Class wb_Admin_Main
     Public AdminSync As wb_Admin_Sync
     Public OrgaBackParams As wb_Admin_OrgaBackParams
     Public AdminUpdate As wb_Admin_UpdateDatabase
+    Public AdminUpdateWinBack As wb_Admin_UpdateWinBack
     Public AdminDatensicherung As wb_Admin_Datensicherung
     Public AdminEditIni As wb_Admin_EditIni
 
@@ -60,6 +61,7 @@ Public Class wb_Admin_Main
                 oGrp.AddButton("btnOrgaBack", "Einstellungen OrgaBack", "", My.Resources.OrgaBackSortiment_32x32, My.Resources.OrgaBackSortiment_32x32, AddressOf BtnOrgaBack)
                 oGrp.AddButton("btnDatensicherung", "Sicherung/Rücksicherung Datenbanken WinBack", "", My.Resources.DatenSicherung_16x16, My.Resources.DatenSicherung_32x32, AddressOf BtnAdminDatensicherung)
                 oGrp.AddButton("btnUpdate", "Update/Versionsinformation WinBack", "", My.Resources.UpdateDataBase_16x16, My.Resources.UpdateDataBase_32x32, AddressOf BtnAdminUpdate)
+                oGrp.AddButton("btnUpdateWinBack", "Update WinBack-AddIn", "", My.Resources.UpdateWinBack_32x32, My.Resources.UpdateWinBack_32x32, AddressOf btnAdminUpdateWinBack)
                 oGrp.AddButton("btnListLabel", "List&Label Designer", "", My.Resources.ListUndLabel_16x16, My.Resources.ListUndLabel_32x32, AddressOf btnListUndLabelDesigner)
                 oGrp.AddButton("btnEditWinBackIni", "Edit Konfiguration", "", My.Resources.EditKonfig_16x16, My.Resources.EditKonfig_32x32, AddressOf btnEditKonfig)
                 _ContextTabs.Add(oNewTab)
@@ -90,6 +92,11 @@ Public Class wb_Admin_Main
                 AdminUpdate = New wb_Admin_UpdateDatabase
                 _DockPanelList.Add(AdminUpdate)
                 Return AdminUpdate
+
+            Case "WinBack.wb_Admin_UpdateWinBack"
+                AdminUpdateWinBack = New wb_Admin_UpdateWinBack
+                _DockPanelList.Add(AdminUpdateWinBack)
+                Return AdminUpdateWinBack
 
             Case "WinBack.wb_Admin_Datensicherung"
                 AdminDatensicherung = New wb_Admin_Datensicherung
@@ -125,6 +132,11 @@ Public Class wb_Admin_Main
     Private Sub btnAdminUpdate()
         AdminUpdate = New wb_Admin_UpdateDatabase
         AdminUpdate.Show(DockPanel, DockState.DockRight)
+    End Sub
+
+    Private Sub btnAdminUpdateWinBack()
+        AdminUpdateWinBack = New wb_Admin_UpdateWinBack
+        AdminUpdateWinBack.Show(DockPanel, DockState.DockRight)
     End Sub
 
     Private Sub btnListUndLabelDesigner()

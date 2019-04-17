@@ -149,25 +149,34 @@ Public Class wb_sql_Functions
         winback.Close()
     End Function
 
-    Public Shared Function getKONrFromAlNum(AlNum As String) As Integer
+    ''' <summary>
+    ''' Gibt eine Liste von (internen) Komponenten-Nummern zu einer Artikel/Rohstoff-Nummer zurück.
+    ''' Einer alphanumerischen Rohstoff-Nummer können mehrere (interne) Komponenten-Nummern zugeordnet sein:
+    '''     - Sauerteig/Produktion
+    '''     - Mehl in mehreren Silo's
+    '''     - Hand/Sackmehl zu Silo-Mehl
+    ''' </summary>
+    ''' <param name="AlNum"></param>
+    ''' <returns>List of Integer</returns>
+    Public Shared Function getKONrFromAlNum(AlNum As String) As List(Of Integer)
         'Interne Komponenten-Nummer
-        Dim KO_Nr As Integer = wb_Global.UNDEFINED
+        Dim KO_Nr As New List(Of Integer)
         'Datenbank Verbindung
         Dim winBack As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Sql-Statement Abfrage KONr
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_AlNum, AlNum)
         'Select-Statement ausführen
         Try
-            WinBack.sqlSelect(sql)
-            If WinBack.Read Then
-                KO_Nr = WinBack.iField("KO_Nr")
-            End If
+            winBack.sqlSelect(sql)
+            While winBack.Read
+                KO_Nr.Add(winBack.iField("KO_Nr"))
+            End While
         Catch ex As Exception
         End Try
         'Datenbank-Verbindung wieder freigeben
         winBack.Close()
 
-        'Wenn ein gültiger Datensatz gefunden wurde - KO_Nr zurückgeben (unabhängig von KO_Type)
+        'Wenn ein/mehrere gültiger Datensatz gefunden wurde - KO_Nr zurückgeben (unabhängig von KO_Type)
         Return KO_Nr
     End Function
 

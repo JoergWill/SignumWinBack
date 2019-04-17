@@ -272,6 +272,21 @@ Public Class Main
             RefreshAktionsTimer()
         End If
 
+        'Check Update WinBack-AddIn/Server-Task
+        If MainTimer_Check("office_update") Then
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+
+            'Prüfen ob eine neue Version zum Download verfügbar ist (OrgaBack.txt)
+
+
+            'Nach Ende Export neue Startzeit setzen
+            AktTimerEvent.Endezeit = Now
+            AktTimerEvent.MySQLdbUpdate_Fields()
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+        End If
+
         'Uhrzeit/Fehler anzeigen - Main-Timer OK
         Select Case ServerTaskState
             Case ServerTaskErrors.NO_PING_TO_MYSQL
