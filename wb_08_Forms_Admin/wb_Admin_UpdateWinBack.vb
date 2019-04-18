@@ -4,8 +4,6 @@
     Private _SignumUpdateVersion As String = "0.0.0"
     Private _ErrorMessage As String = ""
 
-    Public ReadOnly Property Sign
-
     ''' <summary>
     ''' Version der im Internet (www.winback.de/software) bereitsgestellten Version von WinBack-AddIn
     ''' </summary>
@@ -46,8 +44,42 @@
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+
+        'Update-Button ausblenden
+        'Button2.Enabled = False
+
+        'Aktuelle Version
         tbWinBack.Text = wb_GlobalSettings.WinBackVersion
-        tbOrgaBack.Text = wb_GlobalSettings.OrgaBackVersion
+
+        'Windows-Version
+        tbWindowsVersion.Text = wb_GlobalSettings.GetOSVersion
+
+        'Windows-Version 32/64Bit
+        If Environment.Is64BitOperatingSystem Then
+            tbOSBit.Text = "32Bit"
+        Else
+            tbOSBit.Text = "64Bit"
+        End If
+
+        'WinBack-AddIn 32/64Bit
+        If Environment.Is64BitProcess Then
+            tbWinBackBit.Text = "32Bit"
+        Else
+            tbWinBackBit.Text = "64Bit"
+        End If
+
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            tbOrgaBack.Visible = True
+            lblOrgaBack.Visible = True
+            tbOrgaBackBit.Visible = True
+            tbOrgaBackUpdate.Visible = True
+            tbOrgaBack.Text = wb_GlobalSettings.OrgaBackVersion
+        Else
+            tbOrgaBack.Visible = False
+            lblOrgaBack.Visible = False
+            tbOrgaBackBit.Visible = False
+            tbOrgaBackUpdate.Visible = False
+        End If
     End Sub
 
 
@@ -126,14 +158,44 @@
         Return True
     End Function
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    ''' <summary>
+    ''' Download des WinBack-Setup-Files(WinBackSetup.msi) von www.winback.de in das Update Verzeichnis (..OrgaBack/AddIn/Update)
+    ''' Wenn der Download erfolgreich war, wird das Setup mit Parameter /update gestartet.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function ExecuteUpdateVersion()
+        'Download WinBackSetup.msi 
+        Try
+            'Download File - no credentials - ShowUI - Timeout - Overwrite
+            My.Computer.Network.DownloadFile(wb_Global.WinBackUpdateHttp & wb_GlobalSettings.WinBackUpdateSetupExe,
+                                             wb_GlobalSettings.pWinBackUpdatePath & wb_GlobalSettings.WinBackUpdateSetupExe, "", "", True, 2000, True)
+        Catch ex As Exception
+            MsgBox("Fehler beim Download " & vbCrLf & ex.Message)
+            Return False
+        End Try
+
+        'WinBackSetup.msi ausführen - Parameter /update
+        Dim SetupStartInfo As New ProcessStartInfo
+        SetupStartInfo.FileName = wb_GlobalSettings.pWinBackUpdatePath & wb_GlobalSettings.WinBackUpdateSetupExe
+        'SetupStartInfo.Arguments = "-update"
+        Process.Start(SetupStartInfo)
+
+        Return True
+    End Function
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles BtnCheckUpdate.Click
+        'Update-Version prüfen
         If GetUpdateVersion() Then
+            'WinBack ist nicht aktuell
             If CheckUpdateVersion() Then
                 If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
                     MsgBox("Es ist eine neue Version von WinBack-Office verfügbar", MsgBoxStyle.Information, "Update-Check")
+                    BtnUpdate.Enabled = True
                 Else
-                    If CheckOrgaBackVersion() Then
+                    'OrgaBack muss aktuell oder neuer sein, sonst ist kein WinBack-Update möglich
+                    If Not CheckOrgaBackVersion() Then
                         MsgBox("Es ist eine neue Version der WinBack-AddIn verfügbar", MsgBoxStyle.Information, "Update-Check")
+                        BtnUpdate.Enabled = True
                     Else
                         MsgBox("Es ist eine neue Version der WinBack-AddIn verfügbar" & vbCrLf &
                                "Vor dem Update muss OrgaBack ebenfalls aktualisiert werden! ", MsgBoxStyle.Exclamation, "Update-Check")
@@ -144,4 +206,9 @@
             MsgBox(ErrorMessage, MsgBoxStyle.Critical, "Fehler bei Update-Prüfung")
         End If
     End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles BtnUpdate.Click
+        ExecuteUpdateVersion()
+    End Sub
+
 End Class

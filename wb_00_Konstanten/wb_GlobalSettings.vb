@@ -85,16 +85,6 @@ Public Class wb_GlobalSettings
 
     Private Shared _ImportPathPistor = Nothing
 
-
-    Public Shared Property pVariante As wb_Global.ProgVariante
-        Get
-            Return _pVariante
-        End Get
-        Set(value As wb_Global.ProgVariante)
-            _pVariante = value
-        End Set
-    End Property
-
     Public Shared Property MsSQLMain As String
         Get
             If _MsSQLMainDB Is Nothing Then
@@ -513,6 +503,12 @@ Public Class wb_GlobalSettings
     Public Shared ReadOnly Property pDBUpdatePath As String
         Get
             Return _pAddInPath & "DBUpdate\"
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property pWinBackUpdatePath As String
+        Get
+            Return _pAddInPath & "Update\"
         End Get
     End Property
 
@@ -1103,4 +1099,101 @@ Public Class wb_GlobalSettings
             End While
         End If
     End Sub
+
+    ''' <summary>
+    ''' Gibt das aktuelle Betriebssystem zurück.
+    ''' </summary>
+    ''' <returns>Das aktuelle Betriebssystem</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetOSVersion() As String
+        Select Case Environment.OSVersion.Platform
+            Case PlatformID.Win32S
+                Return "Windows 3.1"
+            Case PlatformID.Win32Windows
+                Select Case Environment.OSVersion.Version.Minor
+                    Case 0
+                        Return "Windows 95" 'Windows 95 unterstützt .Net nicht
+                    Case 10
+                        If Environment.OSVersion.Version.Revision.ToString() = "2222A" Then
+                            Return "Windows 98 - Second Edition"
+                        Else
+                            Return "Windows 98"
+                        End If
+                    Case 90
+                        Return "Windows ME"
+                    Case Else
+                        Return "Unbekannt"
+                End Select
+            Case PlatformID.Win32NT
+                Select Case Environment.OSVersion.Version.Major
+                    Case 3
+                        Select Case Environment.OSVersion.Version.Minor
+                            Case 0
+                                Return "Windows NT 3" 'Windows NT 3 unterstützt .Net nicht
+                            Case 1
+                                Return "Windows NT 3.1" 'Windows NT 3.1 unterstützt .Net nicht
+                            Case 5
+                                Return "Windows NT 3.5" 'Windows NT 3.5 unterstützt .Net nicht
+                            Case 51
+                                Return "Windows NT 3.51" 'Windows NT 3.51 unterstützt .Net nicht
+                            Case Else
+                                Return "Unbekannt"
+                        End Select
+                    Case 4
+                        Return "Windows NT 4.0"
+                    Case 5
+                        Select Case Environment.OSVersion.Version.Minor
+                            Case 0
+                                Return "Windows 2000"
+                            Case 1
+                                Return "Windows XP"
+                            Case 2
+                                Return "Windows 2003"
+                            Case Else
+                                Return "Unbekannt"
+                        End Select
+                    Case 6
+                        Select Case Environment.OSVersion.Version.Minor
+                            Case 0
+                                Return "Windows Vista/Windows 2008 Server"
+                            Case 1
+                                Return "Windows 7"
+                            Case Else
+                                Return "Win8/Win10"
+                        End Select
+                    Case Else
+                        Return "Unbekannt"
+                End Select
+            Case PlatformID.WinCE
+                Return "Windows CE"
+            Case PlatformID.Xbox
+                Return "XBox"
+            Case PlatformID.MacOSX
+                Return "Mac OS X"
+            Case PlatformID.Unix
+                Return "Unix"
+            Case Else
+                Return "Unbekannt"
+        End Select
+    End Function
+
+    Public Shared ReadOnly Property WinBackUpdateSetupExe
+        Get
+            If Environment.Is64BitProcess Then
+                Return wb_Global.WinBackUpdateSetupExe_64Bit
+            Else
+                Return wb_Global.WinBackUpdateSetupExe_32Bit
+            End If
+        End Get
+    End Property
+
+    Public Shared Property pVariante As wb_Global.ProgVariante
+        Get
+            Return _pVariante
+        End Get
+        Set(value As wb_Global.ProgVariante)
+            _pVariante = value
+        End Set
+    End Property
+
 End Class

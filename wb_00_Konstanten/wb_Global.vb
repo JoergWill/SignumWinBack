@@ -61,9 +61,10 @@
     Public Const WinBackServerProdDirectory = "/bakelink/1101_Produktion.csv"
 
     'WinBack-Update-Verzeichnis
-    Public Const WinBackUpdateHttp = "https://www.winback.de/software/"
+    Public Const WinBackUpdateHttp = "https://winback.de/software/"
     Public Const WinBackUpdateVersionFile = "OrgaBack.txt"
-    Public Const WinBackUpdateSetupExe = "WinBackSetup.msi"
+    Public Const WinBackUpdateSetupExe_32Bit = "WinBackSetup_x86.msi"
+    Public Const WinBackUpdateSetupExe_64Bit = "WinBackSetup_x64.msi"
 
     Public Enum ktTyp301Gruppen
         xxx

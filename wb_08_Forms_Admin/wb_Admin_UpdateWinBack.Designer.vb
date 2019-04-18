@@ -25,29 +25,35 @@ Partial Class wb_Admin_UpdateWinBack
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.BtnCheckUpdate = New System.Windows.Forms.Button()
         Me.tbOrgaBackUpdate = New System.Windows.Forms.TextBox()
         Me.tbWinbackUpdate = New System.Windows.Forms.TextBox()
         Me.tbOrgaBack = New System.Windows.Forms.TextBox()
         Me.tbWinBack = New System.Windows.Forms.TextBox()
         Me.lblOrgaBack = New System.Windows.Forms.Label()
         Me.lblWinBack = New System.Windows.Forms.Label()
+        Me.BtnUpdate = New System.Windows.Forms.Button()
+        Me.tbWinBackBit = New System.Windows.Forms.TextBox()
+        Me.tbOSBit = New System.Windows.Forms.TextBox()
+        Me.lblOs = New System.Windows.Forms.Label()
+        Me.tbOrgaBackBit = New System.Windows.Forms.TextBox()
+        Me.tbWindowsVersion = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
-        'Button1
+        'BtnCheckUpdate
         '
-        Me.Button1.Location = New System.Drawing.Point(326, 107)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(90, 21)
-        Me.Button1.TabIndex = 0
-        Me.Button1.Text = "CheckMe"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.BtnCheckUpdate.Location = New System.Drawing.Point(212, 117)
+        Me.BtnCheckUpdate.Name = "BtnCheckUpdate"
+        Me.BtnCheckUpdate.Size = New System.Drawing.Size(123, 33)
+        Me.BtnCheckUpdate.TabIndex = 0
+        Me.BtnCheckUpdate.Text = "Update prüfen"
+        Me.BtnCheckUpdate.UseVisualStyleBackColor = True
         '
         'tbOrgaBackUpdate
         '
         Me.tbOrgaBackUpdate.BackColor = System.Drawing.SystemColors.Control
         Me.tbOrgaBackUpdate.ForeColor = System.Drawing.Color.DarkGray
-        Me.tbOrgaBackUpdate.Location = New System.Drawing.Point(293, 44)
+        Me.tbOrgaBackUpdate.Location = New System.Drawing.Point(341, 63)
         Me.tbOrgaBackUpdate.Name = "tbOrgaBackUpdate"
         Me.tbOrgaBackUpdate.Size = New System.Drawing.Size(123, 20)
         Me.tbOrgaBackUpdate.TabIndex = 20
@@ -57,7 +63,7 @@ Partial Class wb_Admin_UpdateWinBack
         '
         Me.tbWinbackUpdate.BackColor = System.Drawing.SystemColors.Control
         Me.tbWinbackUpdate.ForeColor = System.Drawing.Color.DarkGray
-        Me.tbWinbackUpdate.Location = New System.Drawing.Point(293, 18)
+        Me.tbWinbackUpdate.Location = New System.Drawing.Point(341, 37)
         Me.tbWinbackUpdate.Name = "tbWinbackUpdate"
         Me.tbWinbackUpdate.Size = New System.Drawing.Size(123, 20)
         Me.tbWinbackUpdate.TabIndex = 19
@@ -67,7 +73,7 @@ Partial Class wb_Admin_UpdateWinBack
         '
         Me.tbOrgaBack.BackColor = System.Drawing.SystemColors.Control
         Me.tbOrgaBack.ForeColor = System.Drawing.Color.DarkGray
-        Me.tbOrgaBack.Location = New System.Drawing.Point(164, 44)
+        Me.tbOrgaBack.Location = New System.Drawing.Point(212, 63)
         Me.tbOrgaBack.Name = "tbOrgaBack"
         Me.tbOrgaBack.Size = New System.Drawing.Size(123, 20)
         Me.tbOrgaBack.TabIndex = 18
@@ -77,7 +83,7 @@ Partial Class wb_Admin_UpdateWinBack
         '
         Me.tbWinBack.BackColor = System.Drawing.SystemColors.Control
         Me.tbWinBack.ForeColor = System.Drawing.Color.DarkGray
-        Me.tbWinBack.Location = New System.Drawing.Point(164, 18)
+        Me.tbWinBack.Location = New System.Drawing.Point(212, 37)
         Me.tbWinBack.Name = "tbWinBack"
         Me.tbWinBack.Size = New System.Drawing.Size(123, 20)
         Me.tbWinBack.TabIndex = 17
@@ -86,7 +92,7 @@ Partial Class wb_Admin_UpdateWinBack
         'lblOrgaBack
         '
         Me.lblOrgaBack.AutoSize = True
-        Me.lblOrgaBack.Location = New System.Drawing.Point(11, 46)
+        Me.lblOrgaBack.Location = New System.Drawing.Point(12, 66)
         Me.lblOrgaBack.Name = "lblOrgaBack"
         Me.lblOrgaBack.Size = New System.Drawing.Size(151, 13)
         Me.lblOrgaBack.TabIndex = 16
@@ -95,24 +101,88 @@ Partial Class wb_Admin_UpdateWinBack
         'lblWinBack
         '
         Me.lblWinBack.AutoSize = True
-        Me.lblWinBack.Location = New System.Drawing.Point(11, 21)
+        Me.lblWinBack.Location = New System.Drawing.Point(12, 40)
         Me.lblWinBack.Name = "lblWinBack"
         Me.lblWinBack.Size = New System.Drawing.Size(134, 13)
         Me.lblWinBack.TabIndex = 15
         Me.lblWinBack.Text = "Version WinBack (Internet)"
         '
+        'BtnUpdate
+        '
+        Me.BtnUpdate.Location = New System.Drawing.Point(341, 117)
+        Me.BtnUpdate.Name = "BtnUpdate"
+        Me.BtnUpdate.Size = New System.Drawing.Size(123, 33)
+        Me.BtnUpdate.TabIndex = 21
+        Me.BtnUpdate.Text = "Update"
+        Me.BtnUpdate.UseVisualStyleBackColor = True
+        '
+        'tbWinBackBit
+        '
+        Me.tbWinBackBit.BackColor = System.Drawing.SystemColors.Control
+        Me.tbWinBackBit.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbWinBackBit.Location = New System.Drawing.Point(167, 11)
+        Me.tbWinBackBit.Name = "tbWinBackBit"
+        Me.tbWinBackBit.Size = New System.Drawing.Size(39, 20)
+        Me.tbWinBackBit.TabIndex = 22
+        Me.tbWinBackBit.TabStop = False
+        '
+        'tbOSBit
+        '
+        Me.tbOSBit.BackColor = System.Drawing.SystemColors.Control
+        Me.tbOSBit.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbOSBit.Location = New System.Drawing.Point(167, 37)
+        Me.tbOSBit.Name = "tbOSBit"
+        Me.tbOSBit.Size = New System.Drawing.Size(39, 20)
+        Me.tbOSBit.TabIndex = 24
+        Me.tbOSBit.TabStop = False
+        '
+        'lblOs
+        '
+        Me.lblOs.AutoSize = True
+        Me.lblOs.Location = New System.Drawing.Point(12, 14)
+        Me.lblOs.Name = "lblOs"
+        Me.lblOs.Size = New System.Drawing.Size(82, 13)
+        Me.lblOs.TabIndex = 23
+        Me.lblOs.Text = "Betriebs-System"
+        '
+        'tbOrgaBackBit
+        '
+        Me.tbOrgaBackBit.BackColor = System.Drawing.SystemColors.Control
+        Me.tbOrgaBackBit.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbOrgaBackBit.Location = New System.Drawing.Point(167, 63)
+        Me.tbOrgaBackBit.Name = "tbOrgaBackBit"
+        Me.tbOrgaBackBit.Size = New System.Drawing.Size(39, 20)
+        Me.tbOrgaBackBit.TabIndex = 25
+        Me.tbOrgaBackBit.TabStop = False
+        '
+        'tbWindowsVersion
+        '
+        Me.tbWindowsVersion.BackColor = System.Drawing.SystemColors.Control
+        Me.tbWindowsVersion.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbWindowsVersion.Location = New System.Drawing.Point(212, 11)
+        Me.tbWindowsVersion.Name = "tbWindowsVersion"
+        Me.tbWindowsVersion.Size = New System.Drawing.Size(252, 20)
+        Me.tbWindowsVersion.TabIndex = 26
+        Me.tbWindowsVersion.TabStop = False
+        '
         'wb_Admin_UpdateWinBack
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(457, 162)
+        Me.ClientSize = New System.Drawing.Size(535, 162)
+        Me.Controls.Add(Me.tbWindowsVersion)
+        Me.Controls.Add(Me.tbOrgaBackBit)
+        Me.Controls.Add(Me.tbOSBit)
+        Me.Controls.Add(Me.lblOs)
+        Me.Controls.Add(Me.tbWinBackBit)
+        Me.Controls.Add(Me.BtnUpdate)
         Me.Controls.Add(Me.tbOrgaBackUpdate)
         Me.Controls.Add(Me.tbWinbackUpdate)
         Me.Controls.Add(Me.tbOrgaBack)
         Me.Controls.Add(Me.tbWinBack)
         Me.Controls.Add(Me.lblOrgaBack)
         Me.Controls.Add(Me.lblWinBack)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.BtnCheckUpdate)
         Me.Name = "wb_Admin_UpdateWinBack"
         Me.Text = "Update WinBack"
         Me.ResumeLayout(False)
@@ -120,11 +190,17 @@ Partial Class wb_Admin_UpdateWinBack
 
     End Sub
 
-    Friend WithEvents Button1 As Windows.Forms.Button
+    Friend WithEvents BtnCheckUpdate As Windows.Forms.Button
     Friend WithEvents tbOrgaBackUpdate As Windows.Forms.TextBox
     Friend WithEvents tbWinbackUpdate As Windows.Forms.TextBox
     Friend WithEvents tbOrgaBack As Windows.Forms.TextBox
     Friend WithEvents tbWinBack As Windows.Forms.TextBox
     Friend WithEvents lblOrgaBack As Windows.Forms.Label
     Friend WithEvents lblWinBack As Windows.Forms.Label
+    Friend WithEvents BtnUpdate As Windows.Forms.Button
+    Friend WithEvents tbWinBackBit As Windows.Forms.TextBox
+    Friend WithEvents tbOSBit As Windows.Forms.TextBox
+    Friend WithEvents lblOs As Windows.Forms.Label
+    Friend WithEvents tbOrgaBackBit As Windows.Forms.TextBox
+    Friend WithEvents tbWindowsVersion As Windows.Forms.TextBox
 End Class

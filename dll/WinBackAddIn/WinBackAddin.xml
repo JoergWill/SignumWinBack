@@ -4013,6 +4013,13 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <param name="Key"></param>
 </member>
+<member name="M:WinBack.wb_GlobalSettings.GetOSVersion">
+ <summary>
+ Gibt das aktuelle Betriebssystem zurück.
+ </summary>
+ <returns>Das aktuelle Betriebssystem</returns>
+ <remarks></remarks>
+</member>
 <member name="T:WinBack.wb_PrinterDialog">
  <summary>
  KLasse zum Drucken von Reports über ListUndLabel
@@ -7009,6 +7016,13 @@ Datenbank-Verbindung schliessen
      Ob diese Version installiert werden kann ist abhängig von der Version der Signum.OrgaSoft.Contracts.dll
 
  Gibt True zurück, wenn eine gültige Version im Internet verfügbar ist.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Admin_UpdateWinBack.ExecuteUpdateVersion">
+ <summary>
+ Download des WinBack-Setup-Files(WinBackSetup.msi) von www.winback.de in das Update Verzeichnis (..OrgaBack/AddIn/Update)
+ Wenn der Download erfolgreich war, wird das Setup mit Parameter /update gestartet.
  </summary>
  <returns></returns>
 </member>
