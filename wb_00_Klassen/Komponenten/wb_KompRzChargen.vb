@@ -166,10 +166,6 @@ Public Class wb_KompRzChargen
             End If
         End Get
         Set(value As Integer)
-            'Initialisierung der Lniengruppen-Dropdown-Einträge
-            If cbArtikelLinienGruppe.Items.Count = 0 Then
-                InitLinienGruppen()
-            End If
             If cbArtikelLinienGruppe IsNot Nothing Then
                 cbArtikelLinienGruppe.SetTextFromKey(value)
             End If
@@ -190,10 +186,6 @@ Public Class wb_KompRzChargen
             End If
         End Get
         Set(value As Integer)
-            'Initialisierung der Lniengruppen-Dropdown-Einträge
-            If cbLiniengruppe.Items.Count = 0 Then
-                InitLinienGruppen()
-            End If
             If cbLiniengruppe IsNot Nothing Then
                 cbLiniengruppe.SetTextFromKey(value)
             End If

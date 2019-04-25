@@ -102,7 +102,10 @@
                 'Formularsteuerung
                 If winback.FieldCount > 5 Then
                     'Liniengruppe KurzName
-                    L.KurzName = winback.sField("LG_KurzName")
+                    Try
+                        L.KurzName = winback.sField("LG_KurzName")
+                    Catch
+                    End Try
                     L.BackZettelDrucken = winback.sField("LG_BZ_Drucken")
                     L.TeigZettelDrucken = winback.sField("LG_TZ_Drucken")
                     L.TeigRezeptDrucken = winback.sField("LG_TR_Drucken")
@@ -127,6 +130,7 @@
                     _RezeptLinienGruppen.Add(L.LinienGruppe, L.Bezeichnung)
                 End If
             Catch
+                Trace.WriteLine("Fehler beim Lesen der Tabelle WinBack.Liniengruppen ")
             End Try
         End While
 

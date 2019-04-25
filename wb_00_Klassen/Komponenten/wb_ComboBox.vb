@@ -36,7 +36,7 @@ Partial Class wb_ComboBox
         For i = 0 To Items.Count - 1
             If ht(Key) = Items(i).ToString Then
                 SelectedIndex = i
-                Text = ht(Key)
+                Me.Text = ht(Key)
                 Exit Sub
             End If
         Next

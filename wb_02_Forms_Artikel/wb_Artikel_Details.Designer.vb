@@ -26,38 +26,21 @@ Partial Class wb_Artikel_Details
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Artikel_Details))
+        Dim Wb_MinMaxOptCharge1 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
+        Dim Wb_Charge1 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge2 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge3 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_MinMaxOptCharge2 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
+        Dim Wb_Charge4 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge5 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge6 As WinBack.wb_Charge = New WinBack.wb_Charge()
         Me.tArtikelName = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.tArtikelNummer = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.tArtikelKommentar = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.pnlDetails = New System.Windows.Forms.Panel()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblDeklExtern = New System.Windows.Forms.Label()
-        Me.tbDeklarationExtern = New System.Windows.Forms.TextBox()
-        Me.lblDeklIntern = New System.Windows.Forms.Label()
-        Me.tbDeklarationIntern = New System.Windows.Forms.TextBox()
-        Me.eMindestmenge = New System.Windows.Forms.Label()
-        Me.eBilanzmenge = New System.Windows.Forms.Label()
-        Me.eGebindegroesse = New System.Windows.Forms.Label()
-        Me.ePreis = New System.Windows.Forms.Label()
-        Me.tbMindestMenge = New System.Windows.Forms.TextBox()
-        Me.lbMindestMenge = New System.Windows.Forms.Label()
-        Me.tbBilanzmenge = New System.Windows.Forms.TextBox()
-        Me.lbBilanzMenge = New System.Windows.Forms.Label()
-        Me.cbRezeptGewicht = New System.Windows.Forms.CheckBox()
-        Me.cbKeineDeklaration = New System.Windows.Forms.CheckBox()
-        Me.tbGebindeGroesse = New System.Windows.Forms.TextBox()
-        Me.lblGebindegroesse = New System.Windows.Forms.Label()
-        Me.tbArtikelPreis = New System.Windows.Forms.TextBox()
-        Me.lblPreis = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.cbArtikelGrp2 = New WinBack.wb_ComboBox()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.cbArtikelGrp1 = New WinBack.wb_ComboBox()
-        Me.pnlDetails.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.KompRzChargen = New WinBack.wb_KompRzChargen()
         Me.SuspendLayout()
         '
         'tArtikelName
@@ -92,162 +75,66 @@ Partial Class wb_Artikel_Details
         resources.ApplyResources(Me.Label4, "Label4")
         Me.Label4.Name = "Label4"
         '
-        'pnlDetails
+        'KompRzChargen
         '
-        resources.ApplyResources(Me.pnlDetails, "pnlDetails")
-        Me.pnlDetails.Controls.Add(Me.TableLayoutPanel1)
-        Me.pnlDetails.Controls.Add(Me.eMindestmenge)
-        Me.pnlDetails.Controls.Add(Me.eBilanzmenge)
-        Me.pnlDetails.Controls.Add(Me.eGebindegroesse)
-        Me.pnlDetails.Controls.Add(Me.ePreis)
-        Me.pnlDetails.Controls.Add(Me.tbMindestMenge)
-        Me.pnlDetails.Controls.Add(Me.lbMindestMenge)
-        Me.pnlDetails.Controls.Add(Me.tbBilanzmenge)
-        Me.pnlDetails.Controls.Add(Me.lbBilanzMenge)
-        Me.pnlDetails.Controls.Add(Me.cbRezeptGewicht)
-        Me.pnlDetails.Controls.Add(Me.cbKeineDeklaration)
-        Me.pnlDetails.Controls.Add(Me.tbGebindeGroesse)
-        Me.pnlDetails.Controls.Add(Me.lblGebindegroesse)
-        Me.pnlDetails.Controls.Add(Me.tbArtikelPreis)
-        Me.pnlDetails.Controls.Add(Me.lblPreis)
-        Me.pnlDetails.Controls.Add(Me.Label1)
-        Me.pnlDetails.Controls.Add(Me.cbArtikelGrp2)
-        Me.pnlDetails.Controls.Add(Me.Label14)
-        Me.pnlDetails.Controls.Add(Me.cbArtikelGrp1)
-        Me.pnlDetails.Name = "pnlDetails"
-        '
-        'TableLayoutPanel1
-        '
-        resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-        Me.TableLayoutPanel1.Controls.Add(Me.lblDeklExtern, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.tbDeklarationExtern, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.lblDeklIntern, 0, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.tbDeklarationIntern, 0, 3)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        '
-        'lblDeklExtern
-        '
-        resources.ApplyResources(Me.lblDeklExtern, "lblDeklExtern")
-        Me.lblDeklExtern.Name = "lblDeklExtern"
-        '
-        'tbDeklarationExtern
-        '
-        resources.ApplyResources(Me.tbDeklarationExtern, "tbDeklarationExtern")
-        Me.tbDeklarationExtern.Name = "tbDeklarationExtern"
-        '
-        'lblDeklIntern
-        '
-        resources.ApplyResources(Me.lblDeklIntern, "lblDeklIntern")
-        Me.lblDeklIntern.Name = "lblDeklIntern"
-        '
-        'tbDeklarationIntern
-        '
-        resources.ApplyResources(Me.tbDeklarationIntern, "tbDeklarationIntern")
-        Me.tbDeklarationIntern.Name = "tbDeklarationIntern"
-        '
-        'eMindestmenge
-        '
-        resources.ApplyResources(Me.eMindestmenge, "eMindestmenge")
-        Me.eMindestmenge.Name = "eMindestmenge"
-        '
-        'eBilanzmenge
-        '
-        resources.ApplyResources(Me.eBilanzmenge, "eBilanzmenge")
-        Me.eBilanzmenge.Name = "eBilanzmenge"
-        '
-        'eGebindegroesse
-        '
-        resources.ApplyResources(Me.eGebindegroesse, "eGebindegroesse")
-        Me.eGebindegroesse.Name = "eGebindegroesse"
-        '
-        'ePreis
-        '
-        resources.ApplyResources(Me.ePreis, "ePreis")
-        Me.ePreis.Name = "ePreis"
-        '
-        'tbMindestMenge
-        '
-        resources.ApplyResources(Me.tbMindestMenge, "tbMindestMenge")
-        Me.tbMindestMenge.Name = "tbMindestMenge"
-        '
-        'lbMindestMenge
-        '
-        resources.ApplyResources(Me.lbMindestMenge, "lbMindestMenge")
-        Me.lbMindestMenge.Name = "lbMindestMenge"
-        '
-        'tbBilanzmenge
-        '
-        resources.ApplyResources(Me.tbBilanzmenge, "tbBilanzmenge")
-        Me.tbBilanzmenge.Name = "tbBilanzmenge"
-        Me.tbBilanzmenge.ReadOnly = True
-        Me.tbBilanzmenge.TabStop = False
-        '
-        'lbBilanzMenge
-        '
-        resources.ApplyResources(Me.lbBilanzMenge, "lbBilanzMenge")
-        Me.lbBilanzMenge.Name = "lbBilanzMenge"
-        '
-        'cbRezeptGewicht
-        '
-        resources.ApplyResources(Me.cbRezeptGewicht, "cbRezeptGewicht")
-        Me.cbRezeptGewicht.Name = "cbRezeptGewicht"
-        Me.cbRezeptGewicht.TabStop = False
-        Me.cbRezeptGewicht.UseVisualStyleBackColor = True
-        '
-        'cbKeineDeklaration
-        '
-        resources.ApplyResources(Me.cbKeineDeklaration, "cbKeineDeklaration")
-        Me.cbKeineDeklaration.Name = "cbKeineDeklaration"
-        Me.cbKeineDeklaration.TabStop = False
-        Me.cbKeineDeklaration.UseVisualStyleBackColor = True
-        '
-        'tbGebindeGroesse
-        '
-        resources.ApplyResources(Me.tbGebindeGroesse, "tbGebindeGroesse")
-        Me.tbGebindeGroesse.Name = "tbGebindeGroesse"
-        '
-        'lblGebindegroesse
-        '
-        resources.ApplyResources(Me.lblGebindegroesse, "lblGebindegroesse")
-        Me.lblGebindegroesse.Name = "lblGebindegroesse"
-        '
-        'tbArtikelPreis
-        '
-        resources.ApplyResources(Me.tbArtikelPreis, "tbArtikelPreis")
-        Me.tbArtikelPreis.Name = "tbArtikelPreis"
-        '
-        'lblPreis
-        '
-        resources.ApplyResources(Me.lblPreis, "lblPreis")
-        Me.lblPreis.Name = "lblPreis"
-        '
-        'Label1
-        '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
-        '
-        'cbArtikelGrp2
-        '
-        Me.cbArtikelGrp2.FormattingEnabled = True
-        resources.ApplyResources(Me.cbArtikelGrp2, "cbArtikelGrp2")
-        Me.cbArtikelGrp2.Name = "cbArtikelGrp2"
-        '
-        'Label14
-        '
-        resources.ApplyResources(Me.Label14, "Label14")
-        Me.Label14.Name = "Label14"
-        '
-        'cbArtikelGrp1
-        '
-        Me.cbArtikelGrp1.FormattingEnabled = True
-        resources.ApplyResources(Me.cbArtikelGrp1, "cbArtikelGrp1")
-        Me.cbArtikelGrp1.Name = "cbArtikelGrp1"
+        Wb_MinMaxOptCharge1.ErrorCheck = False
+        Wb_MinMaxOptCharge1.HasChanged = False
+        Wb_Charge1.MengeInkg = "0,000"
+        Wb_Charge1.MengeInProzent = "0"
+        Wb_Charge1.MengeInStk = "0"
+        Wb_Charge1.StkGewicht = "1000"
+        Wb_Charge1.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge1.MaxCharge = Wb_Charge1
+        Wb_Charge2.MengeInkg = "0,000"
+        Wb_Charge2.MengeInProzent = "0"
+        Wb_Charge2.MengeInStk = "0"
+        Wb_Charge2.StkGewicht = "1000"
+        Wb_Charge2.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge1.MinCharge = Wb_Charge2
+        Wb_Charge3.MengeInkg = "0,000"
+        Wb_Charge3.MengeInProzent = "0"
+        Wb_Charge3.MengeInStk = "0"
+        Wb_Charge3.StkGewicht = "1000"
+        Wb_Charge3.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge1.OptCharge = Wb_Charge3
+        Wb_MinMaxOptCharge1.StkGewicht = "1000"
+        Wb_MinMaxOptCharge1.TeigGewicht = "0"
+        Me.KompRzChargen.ArtikelChargen = Wb_MinMaxOptCharge1
+        Me.KompRzChargen.DataValid = False
+        resources.ApplyResources(Me.KompRzChargen, "KompRzChargen")
+        Me.KompRzChargen.Name = "KompRzChargen"
+        Me.KompRzChargen.RezeptName = ""
+        Me.KompRzChargen.RezeptNummer = ""
+        Me.KompRzChargen.RzNr = -1
+        Wb_MinMaxOptCharge2.ErrorCheck = False
+        Wb_MinMaxOptCharge2.HasChanged = False
+        Wb_Charge4.MengeInkg = "0,000"
+        Wb_Charge4.MengeInProzent = "0"
+        Wb_Charge4.MengeInStk = "0"
+        Wb_Charge4.StkGewicht = "1000"
+        Wb_Charge4.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge2.MaxCharge = Wb_Charge4
+        Wb_Charge5.MengeInkg = "0,000"
+        Wb_Charge5.MengeInProzent = "0"
+        Wb_Charge5.MengeInStk = "0"
+        Wb_Charge5.StkGewicht = "1000"
+        Wb_Charge5.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge2.MinCharge = Wb_Charge5
+        Wb_Charge6.MengeInkg = "0,000"
+        Wb_Charge6.MengeInProzent = "0"
+        Wb_Charge6.MengeInStk = "0"
+        Wb_Charge6.StkGewicht = "1000"
+        Wb_Charge6.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge2.OptCharge = Wb_Charge6
+        Wb_MinMaxOptCharge2.StkGewicht = "1000"
+        Wb_MinMaxOptCharge2.TeigGewicht = "0"
+        Me.KompRzChargen.TeigChargen = Wb_MinMaxOptCharge2
         '
         'wb_Artikel_Details
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.pnlDetails)
+        Me.Controls.Add(Me.KompRzChargen)
         Me.Controls.Add(Me.tArtikelKommentar)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.tArtikelNummer)
@@ -255,10 +142,6 @@ Partial Class wb_Artikel_Details
         Me.Controls.Add(Me.tArtikelName)
         Me.Controls.Add(Me.Label2)
         Me.Name = "wb_Artikel_Details"
-        Me.pnlDetails.ResumeLayout(False)
-        Me.pnlDetails.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -269,28 +152,5 @@ Partial Class wb_Artikel_Details
     Friend WithEvents Label3 As Windows.Forms.Label
     Friend WithEvents tArtikelKommentar As Windows.Forms.TextBox
     Friend WithEvents Label4 As Windows.Forms.Label
-    Friend WithEvents pnlDetails As Windows.Forms.Panel
-    Friend WithEvents eMindestmenge As Windows.Forms.Label
-    Friend WithEvents eBilanzmenge As Windows.Forms.Label
-    Friend WithEvents eGebindegroesse As Windows.Forms.Label
-    Friend WithEvents ePreis As Windows.Forms.Label
-    Friend WithEvents tbMindestMenge As Windows.Forms.TextBox
-    Friend WithEvents lbMindestMenge As Windows.Forms.Label
-    Friend WithEvents tbBilanzmenge As Windows.Forms.TextBox
-    Friend WithEvents lbBilanzMenge As Windows.Forms.Label
-    Friend WithEvents cbRezeptGewicht As Windows.Forms.CheckBox
-    Friend WithEvents cbKeineDeklaration As Windows.Forms.CheckBox
-    Friend WithEvents lblDeklIntern As Windows.Forms.Label
-    Friend WithEvents lblDeklExtern As Windows.Forms.Label
-    Friend WithEvents tbDeklarationIntern As Windows.Forms.TextBox
-    Friend WithEvents tbDeklarationExtern As Windows.Forms.TextBox
-    Friend WithEvents tbGebindeGroesse As Windows.Forms.TextBox
-    Friend WithEvents lblGebindegroesse As Windows.Forms.Label
-    Friend WithEvents tbArtikelPreis As Windows.Forms.TextBox
-    Friend WithEvents lblPreis As Windows.Forms.Label
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents cbArtikelGrp2 As wb_ComboBox
-    Friend WithEvents Label14 As Windows.Forms.Label
-    Friend WithEvents cbArtikelGrp1 As wb_ComboBox
-    Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
+    Friend WithEvents KompRzChargen As wb_KompRzChargen
 End Class

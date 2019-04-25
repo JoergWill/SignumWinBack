@@ -508,6 +508,7 @@ Partial Class wb_KompRzChargen
         Me.cbLiniengruppe.Size = New System.Drawing.Size(176, 21)
         Me.cbLiniengruppe.TabIndex = 54
         Me.cbLiniengruppe.TabStop = False
+        Me.cbLiniengruppe.Text = "LG"
         '
         'wb_KompRzChargen
         '
