@@ -127,14 +127,17 @@ Public Class wb_Rohstoffe_Liste
     Private Sub DataGridView_CellDoubleClick(sender As Object, e As Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
         'Zeile im Grid
         Dim eRow As Integer = e.RowIndex
-        Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(ColumnRzpIdx, eRow).Value)
-        'Wenn die Rezeptnummer gültig ist
-        If RezeptNr > 0 Then
-            Me.Cursor = Windows.Forms.Cursors.WaitCursor
-            'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
-            Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
-            Rezeptur.Show()
-            Me.Cursor = Windows.Forms.Cursors.Default
+        'Kein Doppelclick auf die Überschriftenzeile
+        If eRow > 0 Then
+            Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(ColumnRzpIdx, eRow).Value)
+            'Wenn die Rezeptnummer gültig ist
+            If RezeptNr > 0 Then
+                Me.Cursor = Windows.Forms.Cursors.WaitCursor
+                'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
+                Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
+                Rezeptur.Show()
+                Me.Cursor = Windows.Forms.Cursors.Default
+            End If
         End If
     End Sub
 

@@ -5673,6 +5673,11 @@ Public Const MFF_Wissenswertes = 213
  True - Wert gefunden
  False - Wert nicht gefunden</returns>
 </member>
+<member name="M:WinBack.wb_Artikel_Liste.SaveData(System.Object)">
+ <summary>
+ Datensatz in Datenbank sichern. Wird über Event eEdit_Leave() aufgerufen
+ </summary>
+</member>
 <member name="P:WinBack.wb_Artikel_Main.FormText">
  <summary>
  Fenster-Name (Caption). Wird von Init() aufgerufen

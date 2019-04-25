@@ -51,6 +51,8 @@ Public Class wb_KompRzChargen
     Public Sub SaveData(ByRef Komp As wb_Komponente)
         'Backort/Aufarbeitung in MFF200
         Komp.iArtikelLinienGruppe = ArtikelLiniengruppe
+        Komp.LinienGruppe = LinienGruppe
+
         'Rezept-Nr in MFF 201
         Komp.RzNr = RzNr
         'Rezeptnummer(alpha) in MFF202

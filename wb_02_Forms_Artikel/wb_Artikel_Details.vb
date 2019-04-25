@@ -7,15 +7,16 @@ Public Class wb_Artikel_Details
     Private _DeklBezeichungExtern As String = Nothing
 
     Private Sub wb_Artikel_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Combo-Box(Artikel-Gruppe) mit Werten füllen
-        'cbArtikelGrp1.Fill(ArtGruppe)
-        'cbArtikelGrp2.Fill(ArtGruppe)
+        'Combo-Box(Rohstoff-Gruppe) mit Werten füllen
+        cbArtikelGrp1.Fill(ArtGruppe)
+        cbArtikelGrp2.Fill(ArtGruppe)
 
-        ''Feld Artikel-Preis ist in Variante OrgaBack readonly
-        'If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
-        '    tbArtikelPreis.ReadOnly = False
-        '    tbArtikelPreis.BackColor = tArtikelNummer.BackColor
-        'End If
+        'Feld Artikel-Preis ist in Variante OrgaBack nicht sichtbar
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            tbArtikelPreis.Visible = False
+            lblPreis.Visible = False
+            ePreis.Visible = False
+        End If
 
         'Event-Handler (Klick auf Artikel-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
@@ -40,17 +41,16 @@ Public Class wb_Artikel_Details
         tArtikelNummer.Text = Artikel.Nummer
         tArtikelName.Text = Artikel.Bezeichnung
         tArtikelKommentar.Text = Artikel.Kommentar
+        tbArtikelPreis.Text = Artikel.Preis
 
-        ''Preis und Gebindegröße
-        'tbArtikelPreis.Text = Artikel.Preis
-        'tbGebindeGroesse.Text = Artikel.GebindeGroesse
-
-        ''Auswahlfelder Artikel-Gruppen
-        'cbArtikelGrp1.SetTextFromKey(Artikel.Gruppe1)
-        'cbArtikelGrp2.SetTextFromKey(Artikel.Gruppe2)
+        'Auswahlfelder Artikel-Gruppen
+        cbArtikelGrp1.SetTextFromKey(Artikel.Gruppe1)
+        cbArtikelGrp2.SetTextFromKey(Artikel.Gruppe2)
 
         'Rezeptzuordnung - Chargengrößen
         KompRzChargen.GetDataFromKomp(Artikel)
+        'Anzeigen der Werte
+        KompRzChargen.DataValid = True
     End Sub
 
     ''' <summary>
@@ -60,23 +60,29 @@ Public Class wb_Artikel_Details
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tArtikelName.Leave, tArtikelNummer.Leave, tArtikelKommentar.Leave
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tArtikelName.Leave, tArtikelNummer.Leave, tArtikelKommentar.Leave, cbArtikelGrp1.Leave, cbArtikelGrp2.Leave
         'Bezeichnungstexte
         Artikel.Bezeichnung = tArtikelName.Text
         Artikel.Kommentar = tArtikelKommentar.Text
         Artikel.Nummer = tArtikelNummer.Text
 
         ''Artikel-Gruppe
-        'Artikel.Gruppe1 = cbArtikelGrp1.GetKeyFromSelection
-        'Artikel.Gruppe2 = cbArtikelGrp2.GetKeyFromSelection
+        Artikel.Gruppe1 = cbArtikelGrp1.GetKeyFromSelection
+        Artikel.Gruppe2 = cbArtikelGrp2.GetKeyFromSelection
 
-        ''Artikel-Preis (nur Prog-Version WinBack)
-        'If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
-        '    Artikel.Preis = tbArtikelPreis.Text
-        'End If
+        'Artikel-Preis (nur Prog-Version WinBack)
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
+            Artikel.Preis = tbArtikelPreis.Text
+        End If
 
         'Daten wurden geändert - Datensatz speichern
         Edit_Leave(sender)
+    End Sub
+
+    Private Sub DataInvaldated() Handles KompRzChargen.DataInvalidated
+        'Daten wurden geändert - Datensatz speichern
+        KompRzChargen.SaveData(Artikel)
+        Edit_Leave(Me)
     End Sub
 
 End Class

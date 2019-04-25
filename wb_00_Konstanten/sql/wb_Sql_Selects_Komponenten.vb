@@ -37,7 +37,7 @@
 
     'Sql-Statement ArtikelGruppen aus winback.ItemParameter
     Public Const sqlartikelGrp = "Select IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
-                                  "IP_ItemTyp = 700 And IP_Wert3int = 0 ORDER BY IP_Lfd_Nr DESC"
+                                  "IP_ItemTyp = 600 And IP_Wert3int = 1 ORDER BY IP_Lfd_Nr DESC"
     'Löschen Rohstoff/Artikel in Komponenten
     Public Const sqlDelKomponenten = "DELETE FROM Komponenten WHERE KO_NR = [0]"
     'Löschen Rohstoff/Artikel in KomponParams
@@ -76,8 +76,9 @@
     Public Const sqlKompParams = "SELECT KP_Wert FROM KomponParams WHERE KP_KO_Nr = [0] And KP_ParamNr = [1]"
 
     'Sql-Statement Artikelliste aus winback.Komponenten
-    Public Const sqlArtikelLst = "SELECT KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, " &
-                                  "KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type = 0"
+    Public Const sqlArtikelLst = "SELECT KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KA_aktiv, KO_Type, " &
+                                  "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2, KA_Charge_Opt_kg, " &
+                                  "KA_Lagerort, KA_zaehlt_zu_RZ_Gesamtmenge FROM Komponenten WHERE KO_Type = 0"
 
     'Sql-Statement Lesen Komponenten nach KO_Nr (Select KO_Nr=x)
     Public Const sqlSelectKomp_KO_Nr = "SELECT * FROM Komponenten WHERE KO_Nr = [0] "

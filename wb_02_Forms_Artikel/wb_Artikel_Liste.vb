@@ -18,6 +18,7 @@ Public Class wb_Artikel_Liste
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlArtikelLst, "ArtikelListe")
 
+        AddHandler eEdit_Leave, AddressOf SaveData
     End Sub
 
     Public Sub RefreshData()
@@ -49,15 +50,18 @@ Public Class wb_Artikel_Liste
     Private Sub DataGridView_CellDoubleClick(sender As Object, e As Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
         'Zeile im Grid
         Dim eRow As Integer = e.RowIndex
-        'Die RezeptNummer steht in Spalte 1
-        Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(RzpIdxColumn, eRow).Value)
-        'Wenn die Rezeptnummer gültig ist
-        If RezeptNr > 0 Then
-            Me.Cursor = Windows.Forms.Cursors.WaitCursor
-            'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
-            Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
-            Rezeptur.Show()
-            Me.Cursor = Windows.Forms.Cursors.Default
+        'Kein Doppelclick auf die Überschriftenzeile
+        If eRow > 0 Then
+            'Die RezeptNummer steht in Spalte 1
+            Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(RzpIdxColumn, eRow).Value)
+            'Wenn die Rezeptnummer gültig ist
+            If RezeptNr > 0 Then
+                Me.Cursor = Windows.Forms.Cursors.WaitCursor
+                'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
+                Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
+                Rezeptur.Show()
+                Me.Cursor = Windows.Forms.Cursors.Default
+            End If
         End If
     End Sub
 
@@ -72,6 +76,26 @@ Public Class wb_Artikel_Liste
         'Nach dem Update der Detailfenster wird der Focus wieder zurückgesetzt (Eingabe Suchmaske)
         DataGridView.Focus()
     End Sub
+
+    Private Sub wb_Artikel_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        'Daten in Datenbank sichern
+        DataGridView.UpdateDataBase()
+        'Layout sichern
+        DataGridView.SaveToDisk("ArtikelListe")
+        'Event wieder freigeben
+        RemoveHandler wb_Artikel_Shared.eEdit_Leave, AddressOf SaveData
+    End Sub
+
+    ''' <summary>
+    ''' Datensatz in Datenbank sichern. Wird über Event eEdit_Leave() aufgerufen
+    ''' </summary>
+    Private Sub SaveData(sender)
+        'Daten in Datenbank sichern
+        If Artikel.SaveData(DataGridView) Then
+            DataGridView.UpdateDataBase()
+        End If
+    End Sub
+
 End Class
 
 'CREATE TABLE winback.Komponenten (

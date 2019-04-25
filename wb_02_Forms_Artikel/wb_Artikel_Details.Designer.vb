@@ -41,6 +41,13 @@ Partial Class wb_Artikel_Details
         Me.tArtikelKommentar = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.KompRzChargen = New WinBack.wb_KompRzChargen()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.cbArtikelGrp2 = New WinBack.wb_ComboBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.cbArtikelGrp1 = New WinBack.wb_ComboBox()
+        Me.ePreis = New System.Windows.Forms.Label()
+        Me.tbArtikelPreis = New System.Windows.Forms.TextBox()
+        Me.lblPreis = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'tArtikelName
@@ -130,10 +137,56 @@ Partial Class wb_Artikel_Details
         Wb_MinMaxOptCharge2.TeigGewicht = "0"
         Me.KompRzChargen.TeigChargen = Wb_MinMaxOptCharge2
         '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
+        'cbArtikelGrp2
+        '
+        resources.ApplyResources(Me.cbArtikelGrp2, "cbArtikelGrp2")
+        Me.cbArtikelGrp2.FormattingEnabled = True
+        Me.cbArtikelGrp2.Name = "cbArtikelGrp2"
+        '
+        'Label14
+        '
+        resources.ApplyResources(Me.Label14, "Label14")
+        Me.Label14.Name = "Label14"
+        '
+        'cbArtikelGrp1
+        '
+        resources.ApplyResources(Me.cbArtikelGrp1, "cbArtikelGrp1")
+        Me.cbArtikelGrp1.FormattingEnabled = True
+        Me.cbArtikelGrp1.Name = "cbArtikelGrp1"
+        '
+        'ePreis
+        '
+        resources.ApplyResources(Me.ePreis, "ePreis")
+        Me.ePreis.Name = "ePreis"
+        '
+        'tbArtikelPreis
+        '
+        Me.tbArtikelPreis.BackColor = System.Drawing.SystemColors.Control
+        resources.ApplyResources(Me.tbArtikelPreis, "tbArtikelPreis")
+        Me.tbArtikelPreis.Name = "tbArtikelPreis"
+        Me.tbArtikelPreis.ReadOnly = True
+        '
+        'lblPreis
+        '
+        resources.ApplyResources(Me.lblPreis, "lblPreis")
+        Me.lblPreis.Name = "lblPreis"
+        '
         'wb_Artikel_Details
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.ePreis)
+        Me.Controls.Add(Me.tbArtikelPreis)
+        Me.Controls.Add(Me.lblPreis)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.cbArtikelGrp2)
+        Me.Controls.Add(Me.Label14)
+        Me.Controls.Add(Me.cbArtikelGrp1)
         Me.Controls.Add(Me.KompRzChargen)
         Me.Controls.Add(Me.tArtikelKommentar)
         Me.Controls.Add(Me.Label4)
@@ -153,4 +206,11 @@ Partial Class wb_Artikel_Details
     Friend WithEvents tArtikelKommentar As Windows.Forms.TextBox
     Friend WithEvents Label4 As Windows.Forms.Label
     Friend WithEvents KompRzChargen As wb_KompRzChargen
+    Friend WithEvents Label1 As Windows.Forms.Label
+    Friend WithEvents cbArtikelGrp2 As wb_ComboBox
+    Friend WithEvents Label14 As Windows.Forms.Label
+    Friend WithEvents cbArtikelGrp1 As wb_ComboBox
+    Friend WithEvents ePreis As Windows.Forms.Label
+    Friend WithEvents tbArtikelPreis As Windows.Forms.TextBox
+    Friend WithEvents lblPreis As Windows.Forms.Label
 End Class

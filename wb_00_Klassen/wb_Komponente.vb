@@ -229,7 +229,8 @@ Public Class wb_Komponente
             Else
                 If RzNr > 0 Then
                     'TODO - Rechenzeit ?
-                    KA_Preis = CalculatePreis()
+                    ' KA_Preis = CalculatePreis()
+
                 End If
             End If
 
@@ -241,7 +242,7 @@ Public Class wb_Komponente
     Public Function CalculatePreis() As Double
         If RzNr > 0 Then
             'Teig-Rezeptur komplett einlesen
-            'TODO evtl zusammenlegen mit GetProduktiosnDaten ?? (Rechenzeit gegen einfaches einlesen der Kopfdaten
+            'TODO evtl zusammenlegen mit GetProduktionsDaten ?? (Rechenzeit gegen einfaches einlesen der Kopfdaten)
             'Lösung: Kalkulation gezielt anstossen
             Dim Rezept As New wb_Rezept(RzNr, Nothing)
             Return Rezept.RootRezeptSchritt.Preis
