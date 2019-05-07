@@ -486,7 +486,12 @@ Public Class Main
     ''' <param name="e"></param>
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Programm und Datei-Pfade einstellen
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.ServerTask
+        If wb_Functions.OrgaBackIsInstalled Then
+            wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OBServerTask
+        Else
+            wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WBServerTask
+        End If
+
         'WinBack-Mandant aus Kommandozeile
         'TODO Im Echtbetrieb prüfen !!!
         Main_CommandLineAuswerten()

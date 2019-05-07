@@ -243,8 +243,7 @@
       <HintPath>..\dll\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>..\dll\OrgaSoft V3.1.6971\Signum.OrgaSoft.Contracts.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\dll\OrgaSoft V3.1.7039\Signum.OrgaSoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

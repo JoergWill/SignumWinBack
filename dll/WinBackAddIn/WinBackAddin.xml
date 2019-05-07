@@ -6328,6 +6328,31 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="Stack"></param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Functions.GetOrgaBackProcess">
+ <summary>
+ Ermittelt die Liste aller aktiven Prozesse. 
+ Gibt True zurück, wenn OrgaBack läuft !
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.OrgaBackIsInstalled">
+ <summary>
+ Prüft ob OrgaBack auf dem Server installiert ist.
+ Ausgelesen wird der Registry-Key "Software\Signum GmbH Darmstadt\OrgaSoft.NET\CompaniesHeight"
+ 
+ Wenn der Key vorhanden ist, wird True zurückgegeben.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.RegKeyNameExists(Microsoft.Win32.RegistryHive,System.String,System.String)">
+ <summary>
+ Prüfen ob ein Registry-Pfad existiert
+ </summary>
+ <param name="hive"></param>
+ <param name="path"></param>
+ <param name="keyName"></param>
+ <returns></returns>
+</member>
 <member name="T:WinBack.wb_Sql">
  <summary>
  Kapselt die Zugriffe auf die Datenbank

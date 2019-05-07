@@ -4,6 +4,7 @@ Imports System.Net
 Imports System.Text
 Imports EnhEdit.EnhEdit_Global
 Imports ICSharpCode.SharpZipLib.BZip2
+Imports Microsoft.Win32
 Imports Tamir.SharpSsh
 Imports WinBack
 
@@ -1414,5 +1415,61 @@ Public Class wb_Functions
             s &= vbTab & t & vbCrLf
         Next
         Return s
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt die Liste aller aktiven Prozesse. 
+    ''' Gibt True zurück, wenn OrgaBack läuft !
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Function GetOrgaBackProcess() As Boolean
+        'Alle Prozesse durchlaufen
+        For Each oProcess As Process In Process.GetProcesses
+            ' Prozess-Infos ermitteln
+            Debug.Print("ID/ProzessName " & oProcess.Id.ToString & " " & oProcess.ProcessName)
+        Next
+        'TODO Ermitteln, ob OrgaBack läuft
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' Prüft ob OrgaBack auf dem Server installiert ist.
+    ''' Ausgelesen wird der Registry-Key "Software\Signum GmbH Darmstadt\OrgaSoft.NET\CompaniesHeight"
+    ''' 
+    ''' Wenn der Key vorhanden ist, wird True zurückgegeben.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Function OrgaBackIsInstalled() As Boolean
+        Return RegKeyNameExists(Microsoft.Win32.RegistryHive.CurrentUser, "Software\Signum GmbH Darmstadt\OrgaSoft.NET", "CompaniesHeight")
+    End Function
+
+    ''' <summary>
+    ''' Prüfen ob ein Registry-Pfad existiert
+    ''' </summary>
+    ''' <param name="hive"></param>
+    ''' <param name="path"></param>
+    ''' <param name="keyName"></param>
+    ''' <returns></returns>
+    Public Shared Function RegKeyNameExists(ByVal hive As RegistryHive, ByVal path As String, ByVal keyName As String) As Boolean
+        Dim regKey As RegistryKey
+        Select Case hive
+            Case RegistryHive.CurrentUser
+                regKey = Registry.CurrentUser.OpenSubKey(path)  ' CurrentUser
+            Case RegistryHive.LocalMachine
+                regKey = Registry.LocalMachine.OpenSubKey(path) ' LocalMachine
+            Case Else
+                ' Throw New ArgumentException("Nur HKLM und HKCU sind erlaubt")
+                Return False
+        End Select
+
+        'Schlüssel nicht vorhanden
+        If regKey Is Nothing Then Return False
+        'Schlüssel suchen
+        For Each regKeyName As String In regKey.GetValueNames()
+            'Gefunden
+            If regKeyName.Trim.ToUpper = keyName.Trim.ToUpper Then Return True
+        Next
+        'Nicht gefunden
+        Return False
     End Function
 End Class

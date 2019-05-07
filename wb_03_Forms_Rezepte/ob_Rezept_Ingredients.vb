@@ -25,7 +25,6 @@ Public Class ob_RecipeProvider
     End Property
 
     Public Sub Initialize() Implements IExtension.Initialize
-
         ' Diese Klasse als (benannten) Service registrieren
         ServiceProvider.AddService(GetType(IRecipeProvider), Me.ServiceName, Me)
         ' Den ServiceProvider so konfigurieren, dass er für diesen Service auf diese Implementierung zurückgreifen soll

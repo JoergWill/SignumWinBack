@@ -6,6 +6,7 @@
 ''' Die Verbindung zur Admin-Datenbank wird über den Admin-Connection-String hergestellt.
 ''' </summary>
 Public Class wb_GlobalOrgaBack
+
     Private Shared _OrgaBackDockPanelPath As String = Nothing
     Private Shared _OrgaBackAddinPath As String = Nothing
     Private Shared _OrgaBackWorkStationNumber As String = Nothing
@@ -54,6 +55,7 @@ Public Class wb_GlobalOrgaBack
         End Get
     End Property
 
+    'TODO steht in wb_globalsettings
     Public Shared Property OrgaBackAddinPath As String
         Get
             If _OrgaBackAddinPath Is Nothing Then

@@ -665,6 +665,7 @@ Public Class wb_Rezept
     ''' <returns></returns>
     Private Function MySQLdbRead_RzSchritt(ByRef sqlReader As MySqlDataReader) As Boolean
         Dim Root As wb_Rezeptschritt = _RootRezeptSchritt
+        Dim Preis As Double
 
         'Schleife über alle Rezeptschritt-Datensätze
         'bis alle Datensätze eingelesen sind
@@ -673,6 +674,13 @@ Public Class wb_Rezept
             For i = 0 To sqlReader.FieldCount - 1
                 MySQLdbRead_Fields(sqlReader.GetName(i), sqlReader.GetValue(i))
             Next
+            'aktuellen Preis aus OrgaBack abfragen
+            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                Preis = ob_Artikel_Services.GetArtikelPreis(_SQLRezeptSchritt.Nummer, _SQLRezeptSchritt.Type)
+                If Preis > 0 Then
+                    _SQLRezeptSchritt.PreisProKg = Preis.ToString
+                End If
+            End If
 
             'Root-Knoten bestimmen abhängig vom aktuellen und vom vorhergehenden Typ
             If _RezeptSchritt IsNot Nothing And _SQLRezeptSchritt IsNot Nothing Then

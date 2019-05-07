@@ -157,7 +157,8 @@
 
     Enum ProgVariante
         OrgaBack                    'Programm läuft als Addin unter OrgaBack
-        ServerTask                  'Programm läuft als Hintergrund-Task auf dem OrgaBack-Server
+        OBServerTask                'Programm läuft als Hintergrund-Task auf dem OrgaBack-Server
+        WBServerTask                'Programm läuft als Hintergrund-Task auf dem WinBack-Server
         WinBack                     'Programm läuft als Standalone
         UnitTest                    'Programm läuft im Test-Modus (UnitTest)
         Undef                       'nicht definiert

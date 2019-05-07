@@ -245,9 +245,7 @@
       <HintPath>dll\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>dll\OrgaSoft V3.1.6971\Signum.OrgaSoft.Contracts.dll</HintPath>
-      <Private>False</Private>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>dll\OrgaSoft V3.1.7039\Signum.OrgaSoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -478,6 +476,7 @@
     <Compile Include="wb_00_Main\wb_Printer_Shared.vb" />
     <Compile Include="wb_01_Forms_Chargen\ob_ChargenProduziert.vb" />
     <Compile Include="wb_01_Forms_Chargen\ob_ProduzierteWare.vb" />
+    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_Services.vb" />
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.Designer.vb">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
     </Compile>

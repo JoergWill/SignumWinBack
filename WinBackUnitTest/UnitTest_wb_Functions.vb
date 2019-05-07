@@ -320,4 +320,12 @@ Imports WinBack.wb_Global
         Assert.AreEqual(True, wb_Functions.CompareVersion("1.1.0", "1.2.0"))
     End Sub
 
+    <TestMethod()> Public Sub Test_GetProcessList()
+        Assert.AreEqual(False, wb_Functions.GetOrgaBackProcess())
+    End Sub
+
+    <TestMethod()> Public Sub Test_RegKeyNameExists()
+        Assert.AreEqual(True, wb_Functions.RegKeyNameExists(Microsoft.Win32.RegistryHive.CurrentUser, "Software\Signum GmbH Darmstadt\OrgaSoft.NET", "CompaniesHeight"))
+    End Sub
+
 End Class

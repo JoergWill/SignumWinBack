@@ -1,6 +1,7 @@
 ﻿Imports WinBack.wb_Language
 
 Public Class wb_Artikel_Shared
+
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
 
@@ -36,7 +37,7 @@ Public Class wb_Artikel_Shared
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
 
         'SortedList Rohstoff-Gruppen
-        winback.sqlSelect(wb_Sql_Selects.sqlArtikelGrp)
+        winback.sqlSelect(wb_Sql_Selects.sqlartikelGrp)
         ArtGruppe.Clear()
         While winback.Read
             If Not ArtGruppe.ContainsKey((winback.iField("IP_Wert1int"))) Then
@@ -53,6 +54,7 @@ Public Class wb_Artikel_Shared
     Public Shared Sub Edit_Leave(sender As Object)
         RaiseEvent eEdit_Leave(sender)
     End Sub
+
 End Class
 
 'CREATE TABLE winback.Rezepte (

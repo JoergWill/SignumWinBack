@@ -107,12 +107,14 @@ Public Class wb_nwtUpdate
         nwtDaten.MySQLdbSetMarkerRzptListe(wb_Global.ArtikelMarker.nwtUpdate)
 
         'Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
-        'Gibt true zurück, wenn der Artikel in OrgaBack existiert
-        Debug.Print("Update (Komp)Nährwerte in OrgaBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
-        If nwtDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
-            'Zutaten-und Allergenliste in OrgaBack updaten
-            Debug.Print("Update (Komp)Zutatenliste in OrgaBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
-            nwtDaten.MsSqldbUpdate_Zutatenliste()
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OBServerTask Then
+            'Gibt true zurück, wenn der Artikel in OrgaBack existiert
+            Debug.Print("Update (Komp)Nährwerte in OrgaBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
+            If nwtDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
+                'Zutaten-und Allergenliste in OrgaBack updaten
+                Debug.Print("Update (Komp)Zutatenliste in OrgaBack " & nwtDaten.Nummer & " " & nwtDaten.Bezeichnung)
+                nwtDaten.MsSqldbUpdate_Zutatenliste()
+            End If
         End If
     End Sub
 

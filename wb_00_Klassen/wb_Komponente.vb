@@ -225,7 +225,7 @@ Public Class wb_Komponente
         End Set
         Get
             If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
-                KA_Preis = 0        'TODO   Preis aus Interface OrgaBack abfragen
+                KA_Preis = ob_Artikel_Services.GetArtikelPreis(Nummer, Type)
             Else
                 If RzNr > 0 Then
                     'TODO - Rechenzeit ?

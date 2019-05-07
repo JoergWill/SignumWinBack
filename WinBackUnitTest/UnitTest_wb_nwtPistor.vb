@@ -45,7 +45,7 @@ Public Class UnitTest_wb_nwtPistor
     <TestMethod()>
     Public Sub TestImportPistor()
         'Programmvariante ServerTask
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.ServerTask
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OBServerTask
 
         'Import csv-File Format Pistor
         Dim nwtPistor As New wb_nwtPistor

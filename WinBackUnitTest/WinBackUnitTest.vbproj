@@ -212,8 +212,7 @@
       <HintPath>..\dll\MySql V1.0.10.1\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>..\dll\OrgaSoft V3.1.6971\Signum.OrgaSoft.Contracts.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\dll\OrgaSoft V3.1.7039\Signum.OrgaSoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

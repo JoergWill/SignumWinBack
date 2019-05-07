@@ -616,7 +616,7 @@ Public Class wb_GlobalSettings
         Get
             If _pWinBackIniPath = Nothing Then
                 Select Case _pVariante
-                    Case wb_Global.ProgVariante.ServerTask
+                    Case wb_Global.ProgVariante.OBServerTask
                         'die Server-Task startet im AddIn-Verzeichnis, der Pfad zur winback.ini liegt eine Ebene davor
                         _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
 #If DEBUG Then
@@ -626,9 +626,11 @@ Public Class wb_GlobalSettings
 #Else
                         _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
 #End If
+                    Case wb_Global.ProgVariante.WBServerTask
+                        _pWinBackIniPath = _pWinBackIniPath & "\WinBack.ini"
+
                     Case wb_Global.ProgVariante.OrgaBack
-                        'die winback.ini liegt direkt im AddIn-Pfad
-                        '..\OrgaBack\AddIn
+                        'die winback.ini liegt direkt über dem AddIn-Pfad '..\OrgaBack\AddIn
                         Dim directoryInfo As System.IO.DirectoryInfo = Directory.GetParent(pAddInPath)
                         _pWinBackIniPath = directoryInfo.Parent.FullName & "\WinBack.ini"
                     Case wb_Global.ProgVariante.WinBack
@@ -636,7 +638,9 @@ Public Class wb_GlobalSettings
                         'TODO User-Verzeichnis
                         _pWinBackIniPath = pProgrammPath & "\WinBack.ini"
                     Case Else
-                        _pWinBackIniPath = pProgrammPath & "\WinBack.ini"
+                        'die winback.ini liegt direkt über dem AddIn-Pfad '..\OrgaBack\AddIn
+                        Dim directoryInfo As System.IO.DirectoryInfo = Directory.GetParent(pAddInPath)
+                        _pWinBackIniPath = directoryInfo.Parent.FullName & "\WinBack.ini"
                 End Select
             End If
 
