@@ -1,0 +1,26 @@
+Hallo Herr Will,
+
+ich habe noch folgende Anpassung an der Tabelle ProduzierteWare vorgenommen:
+
+Feld-Bezeichnung	Datentyp	Bemerkung
+LfdNr			Int		Identity Increment
+FilialNr		smallint	Filialnummer der Produktionsfiliale
+ProduktionsDatum	varchar(8)	Datum an dem die Ware produziert wurde
+SatzTyp			varchar(1)	P – Produzierter Artikel
+					V – Unterartikel (Rohstoff)
+ArtikelNr		varchar(20)	Produzierter Artikel oder Rohstoff
+Einheit			smallint	
+Farbe			smallint	
+Groesse			varchar(4)	
+Menge			money		SatzTyp P: Menge des produzierten Artikels
+					SatzTyp V: Rohstoffmenge
+ChargenNr		varchar(15)	
+HaltbarkeitsDatum	varchar(8)	Datum bis zu dem der Artikel noch haltbar ist
+
+Ich glaube damit ist man deutlich flexibler und auf der sicheren Seite.
+
+Viele Grüße
+
+
+Alex Sefrin
+

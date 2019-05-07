@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ColNr.Caption" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="ColBezeichung.Caption" xml:space="preserve">
+    <value>Наименование</value>
+  </data>
+  <data name="ColPreis.Caption" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ToolStripRezeptChange.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="ToolStripRezeptChange.Text" xml:space="preserve">
+    <value>Пароль изменен</value>
+  </data>
+  <data name="lblEinhPreis.Size" type="System.Drawing.Size, System.Drawing">
+    <value>21, 17</value>
+  </data>
+  <data name="lblEinhPreis.Text" xml:space="preserve">
+    <value>€!</value>
+  </data>
+  <data name="lblEinhMehlmenge.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 17</value>
+  </data>
+  <data name="lblEinhMehlmenge.Text" xml:space="preserve">
+    <value>кг</value>
+  </data>
+  <data name="lblRzLinienGruppe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 17</value>
+  </data>
+  <data name="lblRzLinienGruppe.Text" xml:space="preserve">
+    <value>Группа линии:!</value>
+  </data>
+  <data name="lblRzAendDatum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 17</value>
+  </data>
+  <data name="lblRzAendDatum.Text" xml:space="preserve">
+    <value>от</value>
+  </data>
+  <data name="lblRzAendNr.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 17</value>
+  </data>
+  <data name="lblRzAendNr.Text" xml:space="preserve">
+    <value>Изменение</value>
+  </data>
+  <data name="lblRzTA.Size" type="System.Drawing.Size, System.Drawing">
+    <value>25, 17</value>
+  </data>
+  <data name="lblRzTA.Text" xml:space="preserve">
+    <value>TA</value>
+  </data>
+  <data name="lblEinhTeigTemp.Text" xml:space="preserve">
+    <value>°С</value>
+  </data>
+  <data name="lblEinhRzGewicht.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 17</value>
+  </data>
+  <data name="lblEinhRzGewicht.Text" xml:space="preserve">
+    <value>кг</value>
+  </data>
+  <data name="lblRzVariante.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 17</value>
+  </data>
+  <data name="lblRzVariante.Text" xml:space="preserve">
+    <value>Вариант</value>
+  </data>
+  <data name="lblRzKommentar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 17</value>
+  </data>
+  <data name="lblRzKommentar.Text" xml:space="preserve">
+    <value>Комментарий</value>
+  </data>
+  <data name="lblRzName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 17</value>
+  </data>
+  <data name="lblRzName.Text" xml:space="preserve">
+    <value>рецепт</value>
+  </data>
+  <data name="lblRzNummer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 17</value>
+  </data>
+  <data name="lblRzNummer.Text" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="lblRzPreis.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 17</value>
+  </data>
+  <data name="lblRzPreis.Text" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="BtnClose.Text" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="BtnNwt.Text" xml:space="preserve">
+    <value>Пищевая ценность!</value>
+  </data>
+  <data name="BtnVerwendung.Text" xml:space="preserve">
+    <value>Порядок эксплуатации</value>
+  </data>
+  <data name="BtnLoeschen.Text" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="BtnKopieren.Text" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="BtnDrucken.Text" xml:space="preserve">
+    <value>Печать</value>
+  </data>
+  <data name="sortAscendingMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EwAACxMBAJqcGAAAAAd0SU1FB9oJCQIjNeT33z4AAACWSURBVDhPtZDRDYAgDET5YBm++WIQVmAnpq1C
+        2yjaQzHxkoYSuHcF94OIpIHy3tt3SmlmIl6xIIDTtbAeALzOpjAB4/gfAPexlwDXVN4jyOQP3skE1D3e
+        KjkeBAHSuhp3c4xrAFVPBuacM7VqAO3liMXmNno0E9SsBQC2WZVS6uYQgm0+j46ecUtXc+kAKenlyqDD
+        7NwGjvmaTmNvpXIAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="sortAscendingMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>237, 22</value>
+  </data>
+  <data name="sortAscendingMenuItem.Text" xml:space="preserve">
+    <value>Сортировать по возрастанию</value>
+  </data>
+  <data name="sortDescendingMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EwAACxMBAJqcGAAAAAd0SU1FB9oJCQIkGgBndKAAAACmSURBVDhPnZDBDcQgDAR5uBnevCiEFugp1fow
+        9p4IOAnJSBaOYAeT8AYiWurPUSt7ZdudIciuwNpwpBZO6Z0A9JudsPAo0LCMnpawsCnww8KtwBt9fsal
+        AOHaBVbW6wnlUrDLpoC//QOhvaSFmXVdeRTo7aiVUgpLiQC9bQEE/SkQRp0E5/F9gYycc+7hGKOsttOZ
+        A75gfMIgmG/V71Eih1EIE1H4ARXznNZ1vRhFAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="sortDescendingMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>237, 22</value>
+  </data>
+  <data name="sortDescendingMenuItem.Text" xml:space="preserve">
+    <value>Сортировка по убыванию!</value>
+  </data>
+  <data name="separator1MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 6</value>
+  </data>
+  <data name="bestFitMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EwAACxMBAJqcGAAAAAd0SU1FB9oJCQIkDPSzwfEAAABxSURBVDhP3Y7BDcAgDAN5eCN2Yqf8eHQC5mAn
+        qqgF0VAUUrWfnuSP7RgcgKZH/GCgklIqVp2nB0S55LymGLfifbgOsMnh3Uu9uENE4wD/gINV+SAG3sC6
+        OPSroQ1Ne2xI9Wh5M4ZAMO1phxJr/wMAuB15dbKwmWbU7AAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="bestFitMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>237, 22</value>
+  </data>
+  <data name="bestFitMenuItem.Text" xml:space="preserve">
+    <value>Лучший Fit!</value>
+  </data>
+  <data name="bestFitAllMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EwAACxMBAJqcGAAAAAd0SU1FB9oJCQIjGdYvs90AAACUSURBVDhPrY7LDcAgDEN7YCN2YqfcOHQCJmAA
+        7oxDMW0Qn6gqbZGewI5jsSmlPiGaK4jmCqK5Qn0459IqXQFRSCGE5L0vQMcYyxs+NM+s3ZPWpi+AiSC3
+        twsAGj5yRDQXIIDBU7QZCt7SitLI5HOrM9MPOHAOroXx5jnfvMxGBQsjYybz/w+qbhZEnZkKXiGaz1Hb
+        AWC7xlJqXPoqAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="bestFitAllMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>237, 22</value>
+  </data>
+  <data name="autoFitMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EwAACxMBAJqcGAAAAAd0SU1FB9oJCQIjJmBJnuAAAACOSURBVDhPpdDBDcQgDARAPyicFz24DSqgACqh
+        CZ82kgkm5u6sPEYJq7WDQimlV9wwwg0j3DDCDSOolCJvXAtaa0I5yxjjUms1NFfoYmYuQLAuYO7S+20d
+        Bu0fb4AFzDxpLkSTucE/MOSd3T+7Q9k742mKJ+uC/d0UT9Yv7rkpfuMN42lKv2BIafYoxST6AJPZBYC+
+        VnSeAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="autoFitMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>237, 22</value>
+  </data>
+  <data name="autoFitMenuItem.Text" xml:space="preserve">
+    <value>Автоподбор</value>
+  </data>
+  <data name="separator2MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 6</value>
+  </data>
+  <data name="pinnedMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EwAACxMBAJqcGAAAAAd0SU1FB9oJCQIjDLvyVzYAAABBSURBVDhPYxgF2MH/mWn/WVhY4JiBwfj/zDNn
+        gDSRAGRA2kxkDSPLgDMzjVECEBkboxhKBMB0CYlg4A0YCoCBAQA/10/qA3vlRwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="pinnedMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>237, 22</value>
+  </data>
+  <data name="separator3MenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 6</value>
+  </data>
+  <data name="showColumnsMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>237, 22</value>
+  </data>
+  <data name="showColumnsMenuItem.Text" xml:space="preserve">
+    <value>Показать Column / скрыть!</value>
+  </data>
+  <data name="customizeMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EwAACxMBAJqcGAAAAAd0SU1FB9oJCQIkJbYBWZ0AAACGSURBVDhPpZGxDcAgDAQpvBE7sZM7ikzABAzA
+        TkRGIQLzQjgpTgr38DjCEdEvoLQApQUoLbwfKaVqZSpgLrWUM2K8qvdhLhApIbppRPYw81ogE0hwig+q
+        4CtItuZTkGz/CTxkXMghzS5vftzgcs4t7M+lJxl9z6aCh+XgDiifSWCmgfIccjdHpdciGVRptgAAAABJ
+        RU5ErkJggg==
+</value>
+  </data>
+  <data name="customizeMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>237, 22</value>
+  </data>
+  <data name="customizeMenuItem.Text" xml:space="preserve">
+    <value>Выбор столбцов!</value>
+  </data>
+  <data name="headerContextMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>238, 198</value>
+  </data>
+  <data name="tb_Rezeptur.Text" xml:space="preserve">
+    <value>Рецептура:</value>
+  </data>
+  <data name="tb_Naehrwerte.Text" xml:space="preserve">
+    <value>Пищевая ценность!</value>
+  </data>
+  <data name="lblListeOptimieren.Size" type="System.Drawing.Size, System.Drawing">
+    <value>105, 17</value>
+  </data>
+  <data name="lblListeOptimieren.Text" xml:space="preserve">
+    <value>оптимизируют</value>
+  </data>
+  <data name="lblENummern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>307, 17</value>
+  </data>
+  <data name="lblENummern.Text" xml:space="preserve">
+    <value>Показывать номера в &amp; заголовках столбцов</value>
+  </data>
+  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>173, 18</value>
+  </data>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>Список ингредиентов!</value>
+  </data>
+  <data name="tb_Zutaten.Text" xml:space="preserve">
+    <value>список ингредиентов</value>
+  </data>
+  <data name="tb_Verwendung.Text" xml:space="preserve">
+    <value>Порядок эксплуатации</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Рецептура:</value>
+  </data>
+</root>
