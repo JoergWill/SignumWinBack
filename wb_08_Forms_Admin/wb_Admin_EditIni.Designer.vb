@@ -41,6 +41,7 @@ Partial Class wb_Admin_EditIni
         Me.tbIniFile.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.tbIniFile.Size = New System.Drawing.Size(778, 375)
         Me.tbIniFile.TabIndex = 0
+        Me.tbIniFile.TabStop = False
         Me.tbIniFile.WordWrap = False
         '
         'btnSave
@@ -51,7 +52,7 @@ Partial Class wb_Admin_EditIni
         Me.btnSave.Location = New System.Drawing.Point(560, 393)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(112, 46)
-        Me.btnSave.TabIndex = 1
+        Me.btnSave.TabIndex = 0
         Me.btnSave.Text = "Speichern"
         Me.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText

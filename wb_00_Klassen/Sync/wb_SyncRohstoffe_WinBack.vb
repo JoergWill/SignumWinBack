@@ -3,17 +3,18 @@
 
     Friend Overrides Function DBRead() As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim Wb_NummerOld As String = wb_Global.UNDEFINED
         _Data.Clear()
 
         Dim sql As String = wb_Sql_Selects.sqlRohstoffLst
         If Not wb_GlobalSettings.SauerteigAnlage Then
-            sql = sql + " AND (KO_Type > 100 AND KO_Type < 109) AND KA_Aktiv = 1"
+            sql = sql + " AND (KO_Type > 100 AND KO_Type < 109) AND KA_Aktiv = 1 ORDER BY KO_Nr_AlNum, KO_Type, KO_Nr"
         Else
             sql = sql + " AND ((KO_Type > 100 AND KO_Type < 109) OR " &
-                        "      (KO_Type >= 1 AND KO_Type <= 3)) AND KA_Aktiv = 1"
+                        "      (KO_Type >= 1 AND KO_Type <= 3)) AND KA_Aktiv = 1 ORDER KO_Nr_AlNum, BY KO_Type, KO_Nr"
         End If
 
-        'Select KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type = 0
+        'Select KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KO_Type, KA_Kurzname, KA_Matchcode, KA_Grp1, KA_Grp2 FROM Komponenten WHERE KO_Type <> 0
         If winback.sqlSelect(sql) Then
             While winback.Read
                 _Item = New wb_SyncItem
@@ -28,7 +29,12 @@
 
                 _Item.SyncOK = wb_Global.SyncState.NOK
                 _Item.Sort = _Item.Wb_Nummer
-                _Data.Add(_Item)
+
+                'doppelte Einträge werden nicht in die Liste der Rohstoffe(WinBack) übernommen
+                If _Item.Wb_Nummer <> Wb_NummerOld Then
+                    _Data.Add(_Item)
+                    Wb_NummerOld = _Item.Wb_Nummer
+                End If
             End While
             winback.Close()
 

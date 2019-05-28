@@ -8,6 +8,8 @@ Public Class ob_Artikel_ZuordnungRezept
 
     'setzt das Flag _Extendee.Changed in ob_Artikel_DockingExtension
     Public Event DataInvalidated()
+    Public RohstoffCloud As wb_Rohstoffe_Cloud
+    Private Nr As Integer = wb_Global.UNDEFINED
 
 #Region "Signum"
     Private _DockingExtension As IDockingExtension
@@ -111,12 +113,14 @@ Public Class ob_Artikel_ZuordnungRezept
                 KompRzChargen.DataValid = False
                 KompRzChargen.Visible = False
                 pnlNoProduction.Visible = False
+                Nr = wb_Global.UNDEFINED
 
             Case "VALID"
 
             Case "wbFOUND"
                 'Daten aus der Komponenten-Klasse lesen
                 KompRzChargen.GetDataFromKomp(DirectCast(k, wb_Komponente))
+                Nr = DirectCast(k, wb_Komponente).Nr
                 'Anzeigen der Werte
                 KompRzChargen.DataValid = True
                 KompRzChargen.Visible = True
@@ -151,4 +155,21 @@ Public Class ob_Artikel_ZuordnungRezept
         e.Graphics.ResetTransform()
     End Sub
 
+    ''' <summary>
+    ''' Anzeige/Änderung der Cloud-Zuordnung (in OrgaBack)
+    ''' Die Komponenten-Daten werden in wb_Rohstoffe_Shared nochmals geladen, weil daS Fenster der Cloud-Zuordnung über wb_Rohstoffe_Shared arbeitet.
+    ''' Das Fenster wird modal(!) angezeigt und speichert beim Schliessen die geänderten Zuordnungsdaten und Nährwertinformationen ab.
+    ''' 
+    ''' Werden hier Daten geändert, muss der Rohstoff in OrgaBack neu geladen werden um die Anzeige zu aktualisieren.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Public Sub Cloud_Click(sender As Object, e As EventArgs) Handles KompRzChargen.Cloud_Click
+        'Daten in Rohstoff(Shared) laden
+        wb_Rohstoffe_Shared.RohStoff.MySQLdbRead(Nr)
+        'Fenster Cloud-Zuordnung modal anzeigen
+        RohstoffCloud = New wb_Rohstoffe_Cloud
+        RohstoffCloud.ShowDialog()
+        RohstoffCloud = Nothing
+    End Sub
 End Class

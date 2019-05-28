@@ -120,6 +120,7 @@ Public Class wb_Rezept_Main
                 _DockPanelList.Add(RezeptListe)
                 Return RezeptListe
             Case "WinBack.wb_Rezept_Details"
+                RezeptDetails.CloseButtonVisible = True
                 _DockPanelList.Add(RezeptListe)
                 Return RezeptDetails
             Case "WinBack.wb_Rezept_Hinweise"

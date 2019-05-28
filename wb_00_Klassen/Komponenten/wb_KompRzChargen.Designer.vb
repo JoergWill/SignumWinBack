@@ -61,6 +61,7 @@ Partial Class wb_KompRzChargen
         Me.lblBackverlust = New System.Windows.Forms.Label()
         Me.lblProdVorlauf = New System.Windows.Forms.Label()
         Me.tProdVorlauf = New System.Windows.Forms.TextBox()
+        Me.BtnCloud = New System.Windows.Forms.Button()
         Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
         Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.pTeigChargen.SuspendLayout()
@@ -395,19 +396,20 @@ Partial Class wb_KompRzChargen
         '
         'BtnRzpShow
         '
-        Me.BtnRzpShow.Location = New System.Drawing.Point(291, 14)
+        Me.BtnRzpShow.Location = New System.Drawing.Point(221, 14)
         Me.BtnRzpShow.Name = "BtnRzpShow"
-        Me.BtnRzpShow.Size = New System.Drawing.Size(100, 40)
-        Me.BtnRzpShow.TabIndex = 53
+        Me.BtnRzpShow.Size = New System.Drawing.Size(78, 40)
+        Me.BtnRzpShow.TabIndex = 2
         Me.BtnRzpShow.Text = "Öffnen"
         Me.BtnRzpShow.UseVisualStyleBackColor = True
         '
         'BtnRzpt
         '
-        Me.BtnRzpt.Location = New System.Drawing.Point(165, 14)
+        Me.BtnRzpt.Location = New System.Drawing.Point(113, 14)
         Me.BtnRzpt.Name = "BtnRzpt"
-        Me.BtnRzpt.Size = New System.Drawing.Size(120, 40)
-        Me.BtnRzpt.TabIndex = 52
+        Me.BtnRzpt.Size = New System.Drawing.Size(104, 40)
+        Me.BtnRzpt.TabIndex = 1
+        Me.BtnRzpt.TabStop = False
         Me.BtnRzpt.Text = "Auswählen"
         Me.BtnRzpt.UseVisualStyleBackColor = True
         '
@@ -417,7 +419,7 @@ Partial Class wb_KompRzChargen
         Me.tRezeptName.Name = "tRezeptName"
         Me.tRezeptName.ReadOnly = True
         Me.tRezeptName.Size = New System.Drawing.Size(384, 20)
-        Me.tRezeptName.TabIndex = 48
+        Me.tRezeptName.TabIndex = 4
         Me.tRezeptName.TabStop = False
         '
         'lblRzeptBezeichnung
@@ -491,13 +493,22 @@ Partial Class wb_KompRzChargen
         Me.tProdVorlauf.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.tProdVorlauf.WordWrap = False
         '
+        'BtnCloud
+        '
+        Me.BtnCloud.Location = New System.Drawing.Point(313, 14)
+        Me.BtnCloud.Name = "BtnCloud"
+        Me.BtnCloud.Size = New System.Drawing.Size(78, 40)
+        Me.BtnCloud.TabIndex = 3
+        Me.BtnCloud.Text = "Cloud"
+        Me.BtnCloud.UseVisualStyleBackColor = True
+        '
         'cbArtikelLinienGruppe
         '
         Me.cbArtikelLinienGruppe.FormattingEnabled = True
         Me.cbArtikelLinienGruppe.Location = New System.Drawing.Point(219, 107)
         Me.cbArtikelLinienGruppe.Name = "cbArtikelLinienGruppe"
         Me.cbArtikelLinienGruppe.Size = New System.Drawing.Size(172, 21)
-        Me.cbArtikelLinienGruppe.TabIndex = 56
+        Me.cbArtikelLinienGruppe.TabIndex = 6
         Me.cbArtikelLinienGruppe.TabStop = False
         '
         'cbLiniengruppe
@@ -506,7 +517,7 @@ Partial Class wb_KompRzChargen
         Me.cbLiniengruppe.Location = New System.Drawing.Point(7, 107)
         Me.cbLiniengruppe.Name = "cbLiniengruppe"
         Me.cbLiniengruppe.Size = New System.Drawing.Size(176, 21)
-        Me.cbLiniengruppe.TabIndex = 54
+        Me.cbLiniengruppe.TabIndex = 5
         Me.cbLiniengruppe.TabStop = False
         Me.cbLiniengruppe.Text = "LG"
         '
@@ -514,6 +525,7 @@ Partial Class wb_KompRzChargen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.BtnCloud)
         Me.Controls.Add(Me.tProdVorlauf)
         Me.Controls.Add(Me.lblProdVorlauf)
         Me.Controls.Add(Me.lblBackverlust)
@@ -588,4 +600,5 @@ Partial Class wb_KompRzChargen
     Friend WithEvents lblBackverlust As Windows.Forms.Label
     Friend WithEvents lblProdVorlauf As Windows.Forms.Label
     Friend WithEvents tProdVorlauf As Windows.Forms.TextBox
+    Friend WithEvents BtnCloud As Windows.Forms.Button
 End Class

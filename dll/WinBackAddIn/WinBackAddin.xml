@@ -705,6 +705,7 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
 <member name="M:WinBack.wb_KompRzChargen.MinMaxOptArtikelShowValues">
  <summary>
  Anzeigen der Artikel-Chargengrößen. Alle Zahlenwerte aus wb_ChargenMinMax in die entsprechenden Textfelder kopieren.
+ Backverlust und Vorlauf Produktion werden in den Properties formatiert und angezeigt
  </summary>
 </member>
 <member name="M:WinBack.wb_KompRzChargen.MinMaxOptRezeptShowValues">
@@ -3607,6 +3608,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  über SaveToXml gesichert.
  </summary>
 </member>
+<member name="M:WinBack.wb_DockBarPanelMain.ShowDefaultLayout">
+ <summary>
+ Zeigt alle Fenster in der Default-Konfiguration an.
+ Die gespeicherte Konfiguration wird verworfen.
+ </summary>
+</member>
 <member name="M:WinBack.wb_DockBarPanelMain.GetLayoutFileNames">
  <summary>
  Füllt die ListBox cbLayouts mit den Layout-Bezeichnungen. Die Bezeichnungen werden aus den FormNamen
@@ -4302,6 +4309,17 @@ Text aus Datenbank lesen - Übersetzung
  
  Achtung: auch wenn bei Verweise '0' eingetragen ist, wird diese Routine aufgerufen !!
  </summary>
+</member>
+<member name="M:WinBack.ob_Artikel_ZuordnungRezept.Cloud_Click(System.Object,System.EventArgs)">
+ <summary>
+ Anzeige/Änderung der Cloud-Zuordnung (in OrgaBack)
+ Die Komponenten-Daten werden in wb_Rohstoffe_Shared nochmals geladen, weil daS Fenster der Cloud-Zuordnung über wb_Rohstoffe_Shared arbeitet.
+ Das Fenster wird modal(!) angezeigt und speichert beim Schliessen die geänderten Zuordnungsdaten und Nährwertinformationen ab.
+ 
+ Werden hier Daten geändert, muss der Rohstoff in OrgaBack neu geladen werden um die Anzeige zu aktualisieren.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="P:WinBack.ob_Artikel_DockingExtension.ContextTabs">
  <summary>

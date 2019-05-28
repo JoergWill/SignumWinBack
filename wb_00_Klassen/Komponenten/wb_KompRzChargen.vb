@@ -7,10 +7,13 @@ Public Class wb_KompRzChargen
     Public WithEvents ArtikelChargen As New wb_MinMaxOptCharge
     Public WithEvents TeigChargen As New wb_MinMaxOptCharge
     Public Event DataInvalidated()
-    Private OnErrorSetFocus As Object = Nothing
+    Public Event Cloud_Click(sender As Object, e As EventArgs)
 
+    Private OnErrorSetFocus As Object = Nothing
     Private _DataValid As Boolean
     Private _RzNr As Integer = wb_Global.UNDEFINED
+    Private _KompType As wb_Global.KomponTypen = wb_Global.KomponTypen.KO_TYPE_UNDEFINED
+    Private _ID As String = wb_Global.UNDEFINED
 
     ''' <summary>
     ''' Daten aus dem Komponenten-Objekt lesen
@@ -23,8 +26,13 @@ Public Class wb_KompRzChargen
         'Komponentendaten aus Datenbank lesen
         Komp.MySQLdbRead(Komp.Nr)
 
+        'Komponententype
+        _KompType = Komp.Type
+        'Verknüpfung zur Cloud
+        _ID = Komp.MatchCode
         'Rezeptnummer aus Rohstoffdaten
         RzNr = Komp.RzNr
+
 
         'Rezeptnummer und Name (Ruft wb_Komponente.GetProduktionsDaten() auf
         RezeptNummer = Komp.RezeptNummer
@@ -85,13 +93,20 @@ Public Class wb_KompRzChargen
         Set(value As Boolean)
             'Wenn die Felder nach Deaktivierung wieder sichtbar sind - Anzeige aktualisieren
             If value Then
-                'Anzeigefelder einblenden
-                EnableKomponenten(True)
-                MinMaxOptArtikelShowValues()
-                MinMaxOptRezeptShowValues()
+                If _RzNr > 0 Then
+                    'Anzeigefelder einblenden
+                    EnableKomponenten(True)
+                    MinMaxOptArtikelShowValues()
+                    MinMaxOptRezeptShowValues()
+                Else
+                    'Anzeigefelder ein/ausblenden
+                    EnableKomponenten(False)
+                End If
             Else
                 'Rezeptnummer (Index)
                 RzNr = wb_Global.UNDEFINED
+                'Anzeigefelder ein/ausblenden
+                EnableKomponenten(False)
             End If
             'Wert speichern
             _DataValid = value
@@ -114,18 +129,40 @@ Public Class wb_KompRzChargen
             'Text Button "Auswählen/Ändern"
             If _RzNr > 0 Then
                 BtnRzpt.Text = "Ändern/Löschen"
+                BtnRzpt.Enabled = True
                 BtnRzpShow.Enabled = True
-                'Anzeigefelder ein/ausblenden
-                EnableKomponenten(True)
-                MinMaxOptArtikelShowValues()
-                MinMaxOptRezeptShowValues()
+                'keine Verknüpfung zur Cloud möglich
+                BtnCloud.Enabled = False
             Else
                 BtnRzpt.Text = "Auswählen"
                 BtnRzpShow.Enabled = False
-                'Anzeigefelder ein/ausblenden
-                EnableKomponenten(False)
+
+                'Für Rohstoffe kann eine Verknüpfung zur Cloud hergestellt werden
+                If KompType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
+                    BtnCloud.Enabled = False
+                Else
+                    BtnCloud.Enabled = True
+                    'wenn schon eine Verknüpfung zur Cloud vorhanden ist kann keine Rezeptur zugewiesen werden
+                    If ID <> "" Then
+                        BtnRzpt.Enabled = False
+                    Else
+                        BtnRzpt.Enabled = True
+                    End If
+                End If
             End If
         End Set
+    End Property
+
+    Public ReadOnly Property KompType As wb_Global.KomponTypen
+        Get
+            Return _KompType
+        End Get
+    End Property
+
+    Public ReadOnly Property ID As String
+        Get
+            Return _ID
+        End Get
     End Property
 
     ''' <summary>
@@ -259,6 +296,8 @@ Public Class wb_KompRzChargen
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub cbLiniengruppe_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbLiniengruppe.SelectionChangeCommitted
+        'Flag setzen - TeigChargen wurden geändert - Speichert die Rezeptur-Parameter!
+        TeigChargen.HasChanged = True
         'Flag setzen - Daten wurden geändert, speichern notwendig
         DataIsInvalid()
     End Sub
@@ -435,9 +474,6 @@ Public Class wb_KompRzChargen
     ''' </summary>
     ''' <param name="Enable"></param>
     Private Sub EnableKomponenten(Enable As Boolean)
-        'Button Rezept öffnen/auswählen
-        'BtnRzpShow.Enabled = Enable
-        'BtnRzpt.Enabled = Enable
         'ComboBox Liniengruppen
         cbLiniengruppe.Enabled = Enable
         cbArtikelLinienGruppe.Enabled = Enable
@@ -446,6 +482,8 @@ Public Class wb_KompRzChargen
         ArtikelChargen.ErrorCheck = Enable
         pTeigChargen.Enabled = Enable
         TeigChargen.ErrorCheck = Enable
+        tProdVorlauf.Enabled = Enable
+        tBackverlust.Enabled = Enable
 
         'alte Zahlenwerte in den Felder löschen
         If Not Enable Then
@@ -487,11 +525,11 @@ Public Class wb_KompRzChargen
 
     ''' <summary>
     ''' Anzeigen der Artikel-Chargengrößen. Alle Zahlenwerte aus wb_ChargenMinMax in die entsprechenden Textfelder kopieren.
+    ''' Backverlust und Vorlauf Produktion werden in den Properties formatiert und angezeigt
     ''' </summary>
     Private Sub MinMaxOptArtikelShowValues()
         'Stückgewicht
         tStkGewicht.Text = ArtikelChargen.StkGewicht & " gr"
-        'Backverlust
         'Chargengrößen in kg
         tChrgMinkg.Text = ArtikelChargen.MinCharge.MengeInkg & " kg"
         tChrgOptkg.Text = ArtikelChargen.OptCharge.MengeInkg & " kg"
@@ -530,4 +568,7 @@ Public Class wb_KompRzChargen
         RaiseEvent DataInvalidated()
     End Sub
 
+    Private Sub BtnCloud_Click(sender As Object, e As EventArgs) Handles BtnCloud.Click
+        RaiseEvent Cloud_Click(sender, e)
+    End Sub
 End Class

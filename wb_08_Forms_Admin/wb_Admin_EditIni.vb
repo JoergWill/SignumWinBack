@@ -7,7 +7,7 @@ Public Class wb_Admin_EditIni
 
     Private Sub wb_Admin_EditIni_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         tbIniFile.Text = File.ReadAllText(wb_GlobalSettings.PWinBackIniPath)
-        lblPathToWinBackIni.Text = wb_GlobalSettings.PWinBackIniPath
+        lblPathToWinBackIni.Text = wb_GlobalSettings.pWinBackIniPath
         btnSave.Enabled = False
     End Sub
     Private Sub wb_Admin_EditIni_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
@@ -24,12 +24,14 @@ Public Class wb_Admin_EditIni
 
     Private Sub SaveToFile()
         If btnSave.Enabled Then
+            Dim s As String = wb_GlobalSettings.pWinBackIniPath
+            Dim f As String = s & "." & Date.Now.ToString("yyyyMMddHHmmss")
             Try
-                Dim f As String = wb_GlobalSettings.PWinBackIniPath & "." & Date.Now.ToString("yyyyMMddHHmmss")
-                File.Move(wb_GlobalSettings.PWinBackIniPath, f)
-                File.WriteAllText(wb_GlobalSettings.PWinBackIniPath, tbIniFile.Text)
+                File.Move(s, f)
+                File.WriteAllText(s, tbIniFile.Text)
             Catch e As Exception
                 MsgBox("WinBack.ini konnte nicht geschrieben werden !" & vbCr & e.Message, MsgBoxStyle.Critical, "Speichern Konfiguration")
+                File.Move(f, s)
             End Try
             btnSave.Enabled = False
         End If
@@ -37,5 +39,7 @@ Public Class wb_Admin_EditIni
 
     Private Sub tbIniFile_Enter(sender As Object, e As EventArgs) Handles tbIniFile.Enter
         btnSave.Enabled = True
+        tbIniFile.SelectionStart = tbIniFile.Text.Length
+        tbIniFile.DeselectAll()
     End Sub
 End Class

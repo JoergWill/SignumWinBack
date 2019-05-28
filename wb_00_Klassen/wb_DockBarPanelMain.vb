@@ -253,23 +253,37 @@ Public Class wb_DockBarPanelMain
             _DockPanelList.Clear()
 
             'Laden der Konfiguration
-            DockPanel.LoadFromXml(DkPnlConfigFileName, AddressOf wbBuildDocContent)
-            'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
-            For Each x In _DockPanelList
-                'Wenn ein Fenster beim Speichern Im State Float war, wird es anschliessend nicht mehr angezeigt
-                If x.DockState = DockState.Float Then
-                    x.DockState = DockState.Document
-                End If
-                x.Show(DockPanel, x.DockState)
-                Debug.Print("DockState " & x.DockState.ToString)
-            Next
+            Try
+                DockPanel.LoadFromXml(DkPnlConfigFileName, AddressOf wbBuildDocContent)
+                'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
+                For Each x In _DockPanelList
+                    'Wenn ein Fenster beim Speichern Im State Float war, wird es anschliessend nicht mehr angezeigt
+                    If x.DockState = DockState.Float Or x.DockState = DockState.Hidden Or x.DockState = DockState.Unknown Then
+                        x.DockState = DockState.Document
+                    End If
+                    x.Show(DockPanel, x.DockState)
+                    'Debug.Print("DockState " & x.DockState.ToString)
+                Next
+            Catch ex As Exception
+                'Default Fenster-Konfiguration (wenn alles schief geht)
+                ShowDefaultLayout()
+            End Try
         Else
             'Default Fenster-Konfiguration (wenn alles schief geht)
-            SetDefaultLayout()
-            _LayoutFilename = "Default"
-            cbLayouts.Text = _LayoutFilename
-            _SaveAtClose = True
+            ShowDefaultLayout()
         End If
+    End Sub
+
+    ''' <summary>
+    ''' Zeigt alle Fenster in der Default-Konfiguration an.
+    ''' Die gespeicherte Konfiguration wird verworfen.
+    ''' </summary>
+    Private Sub ShowDefaultLayout()
+        'Default Fenster-Konfiguration (wenn alles schief geht)
+        SetDefaultLayout()
+        _LayoutFilename = "Default"
+        cbLayouts.Text = _LayoutFilename
+        _SaveAtClose = True
     End Sub
 
     ''' <summary>
