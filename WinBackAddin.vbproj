@@ -708,6 +708,7 @@
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Vorlage.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_08_Forms_Admin\ob_Admin_OrgaBackSettings.vb" />
     <Compile Include="wb_08_Forms_Admin\wb_Admin_EditIni.Designer.vb">
       <DependentUpon>wb_Admin_EditIni.vb</DependentUpon>
     </Compile>

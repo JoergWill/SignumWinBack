@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.IO
 Imports System.Reflection
+Imports WeifenLuo.WinFormsUI.Docking
 Imports WinBack
 Imports WinBack.wb_Global
 ''' <summary>
@@ -31,10 +32,12 @@ Public Class wb_GlobalSettings
 
     Private Shared _pAddInPath As String = Nothing
     Private Shared _pListenPath As String
+    Private Shared _pTempPath As String
     Private Shared _pWinBackIniPath As String = Nothing
     Private Shared _pProgrammPath As String = ""
     Private Shared _pDatenPath As String = ""
     Private Shared _pExportPath As String = Nothing
+    Private Shared _OrgaBackTheme As Integer = -1
 
     Private Shared _OrgaBackDBVersion As String = Nothing
     Private Shared _WinBackDBVersion As String = Nothing
@@ -45,8 +48,8 @@ Public Class wb_GlobalSettings
     Private Shared _MsSQLUserId As String = Nothing
     Private Shared _MsSQLPasswd As String = Nothing
 
-    Private Shared _osGrpRohstoffe As String = Nothing                        'Warengruppe Rohstoffe in OrgaBack
-    Private Shared _osGrpBackwaren As String = Nothing                        'Warengruppe Verkaufsartikel(Backwaren) in OrgaBack
+    Private Shared _osGrpRohstoffe As String = Nothing                        'Warengruppe Rohstoffe in OrgaBack                        - Default 20
+    Private Shared _osGrpBackwaren As String = Nothing                        'Warengruppe Verkaufsartikel(Backwaren) in OrgaBack       - Default 10
     Private Shared _osLaendercode As String = Nothing                         'Ländercode in OrgaBack (Update der Artikel/Komponenten-Nährwerte, Allergene und Deklaration
     Private Shared _osSprachCode As String = Nothing                          'Sprachencode in OrgaBack (Update der Artikel/Komponenten-Nährwerte, Allergene und Deklaration
 
@@ -107,6 +110,10 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _MsSQLAdmnDB = value
+            'wenn der Winback-Mandant noch nicht definiert wurde - jetzt setzen (OrgaBack-Mandant-Nummer)
+            If _MandantNr = wb_Global.UNDEFINED Then
+                _MandantNr = OrgaBackMandantNr
+            End If
             setWinBackIni("winback", "MsSQLServer_AdmnDB", value)
         End Set
     End Property
@@ -132,6 +139,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _MsSQLUserId = value
+            setWinBackIni("winback", "MsSQLServer_UserId", value)
         End Set
     End Property
 
@@ -144,6 +152,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _MsSQLPasswd = value
+            setWinBackIni("winback", "MsSQLServer_Passwd", value)
         End Set
     End Property
 
@@ -167,19 +176,22 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
-    Public Shared ReadOnly Property DockPanelPath(Optional DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath = wb_Global.OrgaBackDockPanelLayoutPath.UserLokal)
+    Public Shared ReadOnly Property DockPanelPath(Optional DefaultPath As OrgaBackDockPanelLayoutPath = OrgaBackDockPanelLayoutPath.UserLokal)
         Get
-            Dim WindowsTempPfad As String = System.IO.Path.GetTempPath
+            Dim WindowsTempPfad As String = pWindowsTempPath
             Select Case _pVariante
-                Case wb_Global.ProgVariante.OrgaBack
-
-                    Dim OrgaBackTempPfad As String = wb_GlobalOrgaBack.OrgaBackDockPanelPath
-                    Select Case DefaultPath
-                        Case wb_Global.OrgaBackDockPanelLayoutPath.UserLokal
-                            OrgaBackTempPfad &= wb_GlobalOrgaBack.OrgaBackWorkStationNumber & "\"
-                        Case wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal
-                            OrgaBackTempPfad &= "00\"
-                    End Select
+                Case ProgVariante.OrgaBack
+                    Dim OrgaBackTempPfad As String = ""
+                    If DefaultPath = OrgaBackDockPanelLayoutPath.ProgrammGlobal Then
+                        Dim sArr() As String = pTempPath.Split("\")
+                        'Temp-Pfad global
+                        For i = 0 To sArr.Count - 2
+                            OrgaBackTempPfad &= sArr(i) & "\"
+                        Next
+                    Else
+                        'Temp-Pfad User-lokal
+                        OrgaBackTempPfad = pTempPath
+                    End If
 
                     If System.IO.Directory.Exists(OrgaBackTempPfad) Then
                         Return OrgaBackTempPfad
@@ -187,12 +199,47 @@ Public Class wb_GlobalSettings
                         Return WindowsTempPfad & "\"
                     End If
 
-                Case wb_Global.ProgVariante.WinBack
+                Case ProgVariante.WinBack
                     Return WindowsTempPfad & "\"
                 Case Else
                     Throw New NotImplementedException
             End Select
         End Get
+    End Property
+
+    ''' <summary>
+    ''' Farbschema für Fenster-Docking. In der Programm-Variante OrgaBack wird immer VS2015BlueTheme zurückgegeben
+    ''' </summary>
+    ''' <returns>Theme - ThemeBase</returns>
+    Public Shared ReadOnly Property Theme As ThemeBase
+        Get
+            'Einstellung aus Desktop.DockingTheme auslesen
+            If _OrgaBackTheme < 0 And wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                'DbReadSetting("Desktop")
+            Else
+                _OrgaBackTheme = wb_Global.OrgaBackThemes.Blau
+            End If
+
+            'Rückgabe-Wert abhängig von der Einstellung in OrgaBack
+            Select Case _OrgaBackTheme
+                Case wb_Global.OrgaBackThemes.Standard
+                    Return New VS2005Theme
+                Case wb_Global.OrgaBackThemes.Blau
+                    Return New VS2015BlueTheme
+                Case wb_Global.OrgaBackThemes.Grau
+                    Return New VS2015LightTheme
+                Case wb_Global.OrgaBackThemes.Anthrazit
+                    Return New VS2015DarkTheme
+                Case Else
+                    Return New VS2015BlueTheme
+            End Select
+        End Get
+    End Property
+
+    Public Shared WriteOnly Property OrgaBackTheme As Integer
+        Set(value As Integer)
+            _OrgaBackTheme = value
+        End Set
     End Property
 
     Public Shared Function AktUserLogin(Nummer As Integer)
@@ -247,9 +294,7 @@ Public Class wb_GlobalSettings
         Set(value As Boolean)
             If Convert.ToInt16(value) <> _LogToTextFile Then
                 _LogToTextFile = Convert.ToInt16(value)
-
-                Dim IniFile As New wb_IniFile
-                IniFile.WriteInt("winback", "LogToTextFile", _LogToTextFile)
+                setWinBackIni("winback", "LogToTextFile", _LogToTextFile)
             End If
         End Set
     End Property
@@ -264,9 +309,7 @@ Public Class wb_GlobalSettings
         Set(value As Boolean)
             If Convert.ToInt16(value) <> _LogToDataBase Then
                 _LogToDataBase = Convert.ToInt16(value)
-
-                Dim IniFile As New wb_IniFile
-                IniFile.WriteInt("winback", "LogToDataBase", _LogToDataBase)
+                setWinBackIni("winback", "LogToDataBase", _LogToDataBase)
             End If
         End Set
     End Property
@@ -344,6 +387,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _MySQLServerIP = value
+            setWinBackIni("winback", "eMySQLServerIP", _MySQLServerIP)
         End Set
     End Property
 
@@ -356,6 +400,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _MySQLWinBack = value
+            setWinBackIni("winback", "eMySQLDatabase", _MySQLWinBack)
         End Set
     End Property
 
@@ -368,6 +413,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _MySQLWbDaten = value
+            setWinBackIni("winback", "eMySQLDatabaseDaten", _MySQLWbDaten)
         End Set
     End Property
 
@@ -380,6 +426,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _MySQLUser = value
+            setWinBackIni("winback", "eMySQLUser", _MySQLUser)
         End Set
     End Property
 
@@ -392,6 +439,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _MySQLPass = value
+            setWinBackIni("winback", "eMySQLPasswordDatabase", _MySQLPass)
         End Set
     End Property
 
@@ -548,6 +596,15 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property pTempPath As String
+        Get
+            Return _pTempPath
+        End Get
+        Set(value As String)
+            _pTempPath = value
+        End Set
+    End Property
+
     Public Shared Property OsGrpRohstoffe As String
         Get
             If _osGrpRohstoffe Is Nothing Then
@@ -557,6 +614,9 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _osGrpRohstoffe = value
+            Dim IniFile As New wb_IniFile
+            IniFile.WriteString("orgaback", "GruppeRohstoffe", _osGrpRohstoffe)
+            IniFile = Nothing
         End Set
     End Property
 
@@ -569,6 +629,9 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _osGrpBackwaren = value
+            Dim IniFile As New wb_IniFile
+            IniFile.WriteString("orgaback", "GruppeBackwaren", _osGrpBackwaren)
+            IniFile = Nothing
         End Set
     End Property
 
@@ -672,9 +735,8 @@ Public Class wb_GlobalSettings
         Get
             If _pProgrammPath = Nothing Then
                 _pProgrammPath = My.Application.Info.DirectoryPath & "\"
-                Debug.Print("Programm-Pfad " & _pProgrammPath)
             End If
-                Return _pProgrammPath
+            Return _pProgrammPath
         End Get
         Set(value As String)
             _pProgrammPath = value
@@ -690,7 +752,7 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Public Shared ReadOnly Property pTempPath As String
+    Public Shared ReadOnly Property pWindowsTempPath As String
         Get
             Try
                 Return IO.Path.GetTempPath()
@@ -981,6 +1043,15 @@ Public Class wb_GlobalSettings
     End Function
 
     Private Shared Sub setWinBackIni(Section As String, Key As String, value As String)
+        'Abhängig vom Mandanten
+        If Section = "winback" Then
+            Section = IniMandantSection("winback")
+        End If
+        'Abhängig vom Mandanten
+        If Section = "orgaback" Then
+            Section = IniMandantSection("orgaback")
+        End If
+
         Dim Inifile As New wb_IniFile
         Inifile.WriteString(Section, Key, value)
         Inifile = Nothing
@@ -1003,15 +1074,16 @@ Public Class wb_GlobalSettings
         Dim IniFile As New wb_IniFile
 
         'Keys aufgeteilt nach Mandant-Nummer
-        Dim IniWinBack_Mandant As String = "winback-m" & MandantNr.ToString
-        Dim IniOrgaBack_Mandant As String = "orgaback-m" & MandantNr.ToString
+        Dim IniWinBack_Mandant As String = IniMandantSection("winback")
+        Dim IniOrgaBack_Mandant As String = IniMandantSection("orgaback")
 
         Select Case Key
             Case "SQL"
                 _WinBackDBType = wb_Functions.StringToDBType(IniFile.ReadString("winback", "DBType", "MySQL"))
-                _MySQLServerIP = IniFile.ReadString("winback", "eMySQLServerIP", Environment.MachineName)
-                _MySQLWinBack = IniFile.ReadString("winback", "eMySQLDatabase", "winback")
-                _MySQLWbDaten = IniFile.ReadString("winback", "eMySQLDatabaseDaten", "wbdaten")
+                _MySQLServerIP = IniFile.ReadString(IniWinBack_Mandant, "eMySQLServerIP", _MySQLServerIP)
+                _MySQLWinBack = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabase", _MySQLWinBack)
+                _MySQLWbDaten = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabaseDaten", _MySQLWbDaten)
+
                 _MySQLUser = IniFile.ReadString("winback", "eMySQLUser", "herbst")
                 _MySQLPass = IniFile.ReadString("winback", "eMySQLPasswordDatabase", "herbst")
 
@@ -1020,48 +1092,29 @@ Public Class wb_GlobalSettings
                 _MsSQLWinBack = IniFile.ReadString("winback", "eMsSQLDatabase", "winback")
                 _MsSQLWbDaten = IniFile.ReadString("winback", "eMsSQLDatabaseDaten", "wbdaten")
 
-                _MsSQLMainDB = IniFile.ReadString("winback", "MsSQLServer_MainDB", "DemoOrgaBack_Main3")
-                _MsSQLAdmnDB = IniFile.ReadString("winback", "MsSQLServer_AdmnDB", "DemoOrgaBack_Admin3")
-                _MsSQLServer = IniFile.ReadString("winback", "MsSQLServer_Source", "WILL-WIN10\ORGA")
-                _MsSQLUserId = IniFile.ReadString("winback", "MsSQLServer_UserId", "sa")
-                _MsSQLPasswd = IniFile.ReadEncryptedString("winback", "MsSQLServer_Passwd", "OrgaBack.NET")
+                _MsSQLMainDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_MainDB", _MsSQLMainDB)
+                _MsSQLAdmnDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_AdmnDB", _MsSQLAdmnDB)
+                _MsSQLServer = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_Source", _MsSQLServer)
+                _MsSQLUserId = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_UserId", _MsSQLUserId)
+                _MsSQLPasswd = IniFile.ReadEncryptedString(IniWinBack_Mandant, "MsSQLServer_Passwd", _MsSQLPasswd)
 
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
 
-                'wenn eine Mandanten-Nummer angegeben ist, wird versucht entsprechend der Mandanten-Nummer die Daten aus der Ini-Datei zu lesen
-                If MandantNr <> UNDEFINED Then
-                    _MySQLServerIP = IniFile.ReadString(IniWinBack_Mandant, "eMySQLServerIP", _MySQLServerIP)
-                    _MySQLWinBack = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabase", _MySQLWinBack)
-                    _MySQLWbDaten = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabaseDaten", _MySQLWbDaten)
-
-                    _MsSQLMainDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_MainDB", _MsSQLMainDB)
-                    _MsSQLAdmnDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_AdmnDB", _MsSQLAdmnDB)
-                    _MsSQLServer = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_Source", _MsSQLServer)
-                    _MsSQLUserId = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_UserId", _MsSQLUserId)
-                    _MsSQLPasswd = IniFile.ReadEncryptedString(IniWinBack_Mandant, "MsSQLServer_Passwd", _MsSQLPasswd)
-                End If
-
-                Debug.Print("_MsSQLMainDB " & _MsSQLMainDB)
-                Debug.Print("_MsSQLAdmnDB " & _MsSQLAdmnDB)
-                Debug.Print("_MsSQLServer " & _MsSQLServer)
-                Debug.Print("_MsSQLUserId " & _MsSQLUserId)
-                Debug.Print("_MsSQLPasswd " & _MsSQLPasswd)
+                Trace.WriteLine("_MsSQLMainDB " & _MsSQLMainDB)
+                Trace.WriteLine("_MsSQLAdmnDB " & _MsSQLAdmnDB)
+                Trace.WriteLine("_MsSQLServer " & _MsSQLServer)
+                Trace.WriteLine("_MsSQLUserId " & _MsSQLUserId)
+                Trace.WriteLine("_MsSQLPasswd " & _MsSQLPasswd)
 
             Case "Logger"
                 _LogToTextFile = IniFile.ReadInt("winback", "LogToTextFile", wbFALSE)
                 _LogToDataBase = IniFile.ReadInt("winback", "LogToDataBase", wbFALSE)
 
             Case "OrgaBack"
-                _osGrpBackwaren = IniFile.ReadString("orgaback", "GruppeBackwaren", "0")
-                _osGrpRohstoffe = IniFile.ReadString("orgaback", "GruppeRohstoffe", "40")
+                _osGrpBackwaren = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeBackwaren", _osGrpBackwaren)
+                _osGrpRohstoffe = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeRohstoffe", _osGrpRohstoffe)
                 _osLaendercode = IniFile.ReadString("orgaback", "LaenderCode", "DE")
                 _osSprachCode = IniFile.ReadString("orgaback", "SprachCode", "D")
-
-                'wenn eine Mandanten-Nummer angegeben ist, wird versucht entsprechend der Mandanten-Nummer die Daten aus der Ini-Datei zu lesen
-                If MandantNr <> UNDEFINED Then
-                    _osGrpBackwaren = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeBackwaren", _osGrpBackwaren)
-                    _osGrpRohstoffe = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeRohstoffe", _osGrpRohstoffe)
-                End If
 
             Case "Produktion"
                 _ChargenTeiler = IniFile.ReadString("Produktion", "ChargenTeiler", wb_Global.ModusChargenTeiler.OptimalUndRest)
@@ -1077,6 +1130,14 @@ Public Class wb_GlobalSettings
 
         End Select
     End Sub
+
+    Private Shared Function IniMandantSection(Section As String) As String
+        If MandantNr <> UNDEFINED Then
+            Return Section & "-m" & MandantNr.ToString
+        Else
+            Return Section
+        End If
+    End Function
 
     Private Shared Sub getWinBackKonfiguration(Optional Key As String = "%")
         'Datenbank-Verbindung öffnen - MySQL

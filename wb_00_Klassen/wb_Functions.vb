@@ -1166,7 +1166,7 @@ Public Class wb_Functions
     ''' <param name="Argument"></param>
     ''' <param name="WaitUntilReady"></param>
     Public Shared Sub DoBatch(Directory As String, BatchFile As String, Argument As String, WaitUntilReady As Boolean)
-        Dim cmd As String = Chr(34) + wb_GlobalOrgaBack.OrgaBackAddinPath + "\" + BatchFile + Chr(34)
+        Dim cmd As String = Chr(34) + wb_GlobalSettings.pAddInPath + "\" + BatchFile + Chr(34)
         Dim arg As String = Chr(34) + Directory + Chr(34) + " " + Chr(34) + Argument + Chr(34)
         'Batch-File ausführen
         ExeBatch(Directory, cmd, arg, WaitUntilReady)
@@ -1181,7 +1181,7 @@ Public Class wb_Functions
     ''' <param name="Arg2"></param>
     ''' <param name="WaitUntilReady"></param>
     Public Shared Sub DoBatch(Directory As String, BatchFile As String, Arg1 As String, Arg2 As String, WaitUntilReady As Boolean)
-        Dim cmd As String = Chr(34) + wb_GlobalOrgaBack.OrgaBackAddinPath + "\" + BatchFile + Chr(34)
+        Dim cmd As String = Chr(34) + wb_GlobalSettings.pAddInPath + "\" + BatchFile + Chr(34)
         Dim arg As String = Chr(34) + Directory + Chr(34) + " " + Chr(34) + Arg1 + Chr(34) + " " + Chr(34) + Arg2 + Chr(34)
         'Batch-File ausführen
         ExeBatch(Directory, cmd, arg, WaitUntilReady)

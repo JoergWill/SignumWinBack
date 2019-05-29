@@ -290,7 +290,10 @@ Public Class ob_Main_Menu
 
     End Sub
 
-    'globale System-Konfiguration aus winback.ini einlesen und verfügbar machen
+    ''' <summary>
+    ''' Globale Systemkonfiguration aus dem oSetting-Objekt auslesen und in winback.ini schreiben.
+    ''' Damit können auch andere Tasks die Einstellungen lesen (Server-Task...)
+    ''' </summary>
     Private Sub ReadSystemKonfig()
         'Programm-Einstellung OrgaBack
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
@@ -298,25 +301,54 @@ Public Class ob_Main_Menu
         wb_GlobalSettings.pAddInPath = TryCast(oSetting.GetSetting("Verzeichnisse.AddInPfad"), String)
         'Signum.OrgaSoft.Common.Settings.Verzeichnisse.ListenPfad
         wb_GlobalSettings.pListenPath = TryCast(oSetting.GetSetting("Verzeichnisse.ListenPfad"), String)
+        'Signum.OrgaSoft.Common.Settings.Verzeichnisse.TempPath
+        wb_GlobalSettings.pTempPath = TryCast(oSetting.GetSetting("Verzeichnisse.TempPfad"), String)
         'Signum.OrgaSoft.Common.Settings.Verzeichnisse.ProgrammPfad
         wb_GlobalSettings.pProgrammPath = TryCast(oSetting.GetSetting("Verzeichnisse.ProgrammPfad"), String)
         'Signum.OrgaSoft.Common.Settings.Verzeichnisse.DatenPfad
         wb_GlobalSettings.pDatenPath = TryCast(oSetting.GetSetting("Verzeichnisse.DatenPfad"), String)
-        'Signum.OrgaSoft.Common.Settings.Datenbank.Hauptdatenbank
-        wb_GlobalSettings.MsSQLMain = TryCast(oSetting.GetSetting("Datenbank.Hauptdatenbank"), String)
+
         'Signum.OrgaSoft.Common.Settings.Datenbank.VerwaltungsDatenbank
         wb_GlobalSettings.MsSQLAdmn = TryCast(oSetting.GetSetting("Datenbank.VerwaltungsDatenbank"), String)
+        'Signum.OrgaSoft.Common.Settings.Datenbank.Hauptdatenbank
+        wb_GlobalSettings.MsSQLMain = TryCast(oSetting.GetSetting("Datenbank.Hauptdatenbank"), String)
+        'WinBack-Mandant entspricht der Mandant-Nummer in OrgaBack (kann erst ermittelt werden, wenn die Admin-Datenbank definiert ist !)
+        wb_GlobalSettings.MandantNr = wb_GlobalSettings.OrgaBackMandantNr
+
+        'Wenn das MsSQL-DB-Passwort in den Einstellungen gesetzt wurde, wird der Eintrag beim nächsten Start gelöscht !
+        Dim MsSQLPasswd = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MSSQL_Passwd", ""), String)
+        If MsSQLPasswd <> "" Then
+            wb_GlobalSettings.MsSQLPasswd = MsSQLPasswd
+            oSetting.WriteSetting("AddIn", "WinBack", "MSSQL_Passwd", "")
+        End If
+        'MsSQL-DB-User 
+        wb_GlobalSettings.MsSQLUserId = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MSSQL_UserID", "sa"), String)
+
+        'MySQL-Server-IP 
+        wb_GlobalSettings.MySQLServerIP = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLServerIP", "127.0.0.1"), String)
+        'MySQL-Main-DB
+        wb_GlobalSettings.MySQLWinBack = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabase", "winback"), String)
+        'MySQL-Archiv-DB
+        wb_GlobalSettings.MySQLWbDaten = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabaseDaten", "wbdaten"), String)
+
+        'Artikel-Gruppe Backwaren (Default 10)
+        wb_GlobalSettings.OsGrpBackwaren = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeBackwaren", "10"), String)
+        'Artikel-Gruppe Rohstoffe (Default 20)
+        wb_GlobalSettings.OsGrpRohstoffe = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeBackwaren", "20"), String)
 
         'Signum Default-Land
         wb_GlobalSettings.osLaendercode = TryCast(oSetting.GetSetting("Festwerte.DefaultLand"), String)
         'Signum Default-Sprache
         wb_GlobalSettings.osSprachcode = TryCast(oSetting.GetSetting("Festwerte.DefaultSprache"), String)
+        'Signum Docking-Theme
+        Try
+            wb_GlobalSettings.OrgaBackTheme = oSetting.GetSetting("Desktop.DockingTheme")
+        Catch
+            wb_GlobalSettings.OrgaBackTheme = wb_Global.UNDEFINED
+        End Try
 
         'Programm-Version OrgaBack
         Dim PVersion = Assembly.GetEntryAssembly().GetName().Version
-
-        'WinBack-Mandant entspricht der Mandant-Nummer in OrgaBack
-        wb_GlobalSettings.MandantNr = wb_GlobalSettings.OrgaBackMandantNr
 
         Dim asm As Assembly = Assembly.GetExecutingAssembly()
         Dim location As String = asm.Location

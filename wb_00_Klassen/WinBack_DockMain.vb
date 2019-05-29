@@ -106,7 +106,7 @@ Public Class WinBack_DockMain
     ''' </summary>
     Private Sub LoadDockBarConfig()
         'Farb-Schema einstellen
-        wbDockPanel.Theme = wb_GlobalOrgaBack.Theme
+        wbDockPanel.Theme = wb_GlobalSettings.Theme
         'Das Default-Layout kann nicht gelöscht werden
         BtnDelete.Enabled = Not (_LayoutFilename = "Default")
 

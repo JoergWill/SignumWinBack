@@ -3915,19 +3915,6 @@ Text aus Datenbank lesen - Übersetzung
  Die Verbindung zur Admin-Datenbank wird über den Admin-Connection-String hergestellt.
  </summary>
 </member>
-<member name="P:WinBack.wb_GlobalOrgaBack.Theme">
- <summary>
- Farbschema für Fenster-Docking. In der Programm-Variante OrgaBack wird immer VS2015BlueTheme zurückgegeben
- </summary>
- <returns>Theme - ThemeBase</returns>
-</member>
-<member name="P:WinBack.wb_GlobalOrgaBack.OrgaBackDockPanelPath">
- <summary>
- Gibt den Speicherort der Fenster-Definitionen zurück. Die Daten werden aus der OrgaBack-DB
- gelesen. (OrgaBack.Admin.dbo.Settings)
- </summary>
- <returns></returns>
-</member>
 <member name="P:WinBack.wb_GlobalOrgaBack.OrgaBackWorkStationNumber">
  <summary>
  Ermittelt die (OrgaBack)Arbeitsplatz-Nummer aus dem MicroSoft Workstation-Namen.
@@ -3935,11 +3922,6 @@ Text aus Datenbank lesen - Übersetzung
  Wenn die Arbeitsplatz-Nummer nicht gefunden wird, wird "00" zurückgegeben.
  </summary>
  <returns></returns>
-</member>
-<member name="M:WinBack.wb_GlobalOrgaBack.DbReadSetting(System.String)">
- <summary>
- Liest alle benötigten Einträge aus der OrgaBack.Admin-Tabelle dbo.Settings
- </summary>
 </member>
 <member name="P:WinBack.wb_GlobalOrgaBack.WorkStationName">
  <summary>
@@ -3964,6 +3946,12 @@ Text aus Datenbank lesen - Übersetzung
  nicht im AddIn-Verzeichnis. Der Pfad des AddIn-Verzeichisses kann erst nach Initialisierung der Datenbank ausgelesen werden.
  
  </summary>
+</member>
+<member name="P:WinBack.wb_GlobalSettings.Theme">
+ <summary>
+ Farbschema für Fenster-Docking. In der Programm-Variante OrgaBack wird immer VS2015BlueTheme zurückgegeben
+ </summary>
+ <returns>Theme - ThemeBase</returns>
 </member>
 <member name="P:WinBack.wb_GlobalSettings.SqlConWinBack">
  <summary>
@@ -6817,6 +6805,12 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.ob_Main_Menu.ReadSystemKonfig">
+ <summary>
+ Globale Systemkonfiguration aus dem oSetting-Objekt auslesen und in winback.ini schreiben.
+ Damit können auch andere Tasks die Einstellungen lesen (Server-Task...)
+ </summary>
+</member>
 <member name="P:WinBack.ob_Planung_DockingExtension.ContextTabs">
  <summary>
  Falls die Extension ein eigenes Context-Ribbon zum bestehenden Ribbon hinzufügen möchte, kann sie dieses hier zurückliefern
@@ -6911,6 +6905,18 @@ Datenbank-Verbindung schliessen
  Unter diesem Namen werden die Einstellungen in der winback.ini gespeichert.
  
  Die DockPanel-Konfiguration wird gespeichert unter wbXXXXYYYY.xml, dabei ist XXXX der FormName und YYYY der Layout-Name.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.ob_Admin_OrgaBackSettings.Initialize">
+ <summary>
+Einstellungen für Admin-DB-Name, Main-DB-Name und Pfade werden beim Programm-Start in wb_Main_Menu
+eingelesen
+ </summary>
+</member>
+<member name="M:WinBack.ob_Admin_OrgaBackSettings.Settings">
+ <summary>
+ Einstellungen für das WinBack-AddIn in OrgaBack Festwerten
  </summary>
  <returns></returns>
 </member>

@@ -236,8 +236,6 @@ Public Class wb_DockBarPanelMain
     ''' über SaveToXml gesichert.
     ''' </summary>
     Private Sub LoadDockBarConfig()
-        'Farb-Schema einstellen
-        DockPanel.Theme = wb_GlobalOrgaBack.Theme
         'Das Default-Layout kann nicht gelöscht werden
         BtnDelete.Enabled = Not (_LayoutFilename = "Default")
 
@@ -252,8 +250,10 @@ Public Class wb_DockBarPanelMain
             'Liste aller Dock-Panels
             _DockPanelList.Clear()
 
-            'Laden der Konfiguration
             Try
+                'Farb-Schema einstellen
+                DockPanel.Theme = wb_GlobalSettings.Theme
+                'Laden der Konfiguration
                 DockPanel.LoadFromXml(DkPnlConfigFileName, AddressOf wbBuildDocContent)
                 'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
                 For Each x In _DockPanelList

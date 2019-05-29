@@ -221,7 +221,7 @@ Public Class wb_PrinterDialog
         LL.AutoShowPrintOptions = False
         LL.ExportOptions.Clear()
         'spezielles File für die Preview - sonst kolldiert der Print-Befehl mit der offenen Preview-Datei
-        LL.Core.LlSetOptionString(LlOptionString.PreviewFileName, wb_GlobalSettings.pTempPath & "LLPreview.ll")
+        LL.Core.LlSetOptionString(LlOptionString.PreviewFileName, wb_GlobalSettings.pWindowsTempPath & "LLPreview.ll")
         LL.ExportOptions.Add(LlExportOption.ExportShowResult, "0")
         If File.Exists(LL.AutoProjectFile) Then
             Try

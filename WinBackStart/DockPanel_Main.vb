@@ -110,7 +110,7 @@ Public MustInherit Class DockPanel_Main
     ''' </summary>
     Private Sub LoadDockBarConfig()
         'Farb-Schema einstellen
-        DockPanel.Theme = wb_GlobalOrgaBack.Theme
+        DockPanel.Theme = wb_GlobalSettings.Theme
         'Prüfen ob ein Dock-Panel-Konfigurations-File vorhanden ist
         If My.Computer.FileSystem.FileExists(DkPnlConfigFileName) Then
 
