@@ -108,10 +108,14 @@ Public Class wb_Mail
     ''' <param name="mSubject"></param>     Betreff
     ''' <param name="mBody"></param>        Nachricht
     ''' <returns></returns>
-    Public Function StartMail(mRecipient As String, mSubject As String, mBody As String) As Boolean
+    Public Function StartMail(mRecipient As String, mSubject As String, mBody As String, Optional mAttachment As String = "") As Boolean
         Try
             _mError = ""
-            Process.Start("mailto:" & mRecipient & "?subject=" & mSubject & "&body=" & mBody)
+            If mAttachment = "" Then
+                Process.Start("mailto:" & mRecipient & "?subject=" & mSubject & "&body=" & mBody)
+            Else
+                Process.Start("mailto:" & mRecipient & "?subject=" & mSubject & "&body=" & mBody & "&Attach=" & mAttachment)
+            End If
             Return True
         Catch ex As Exception
             _mError = ex.Message
@@ -120,19 +124,37 @@ Public Class wb_Mail
     End Function
 
     ''' <summary>
-    ''' Startet über Startmail das Standard eMail-Programm und über gibt den Anforderungstext und die 
+    ''' Startet über Startmail das Standard eMail-Programm und übergibt den Anforderungstext und die 
     ''' Abfrage-Mail-Adresse.
     ''' </summary>
     ''' <param name="Rohstoff"></param>
     ''' <param name="Lieferant"></param>
     ''' <returns></returns>
     Public Function StartMail_CloudAnforderung(Rohstoff As String, Lieferant As String) As Boolean
-        'Empfänger-Adresse (nwt.winback.de)
+        'Empfänger-Adresse (nwt@winback.de)
         Dim Recipient As String = wb_Credentials.WinBackCloud_MailAdr
         'Anforderung Dateneingabe in die Cloud (Betreffzeile)
         Dim Subject As String = My.Resources.tpCloudMailSubject
         'Anforderung Dateneingabe in die Cloud (Text)
         Dim Body As String = PrepareMailText(My.Resources.tpCloudMailText, Rohstoff, Lieferant)
+
+        'Mail-Programm aufrufen
+        Return StartMail(Recipient, Subject, Body)
+    End Function
+
+    ''' <summary>
+    ''' Startet über Startmail das Standard eMail-Programm und übergibt den Fehlertext und die Stacktrace-Information
+    ''' </summary>
+    ''' <param name="StackTrace"></param>
+    ''' <param name="Message"></param>
+    ''' <returns></returns>
+    Public Function StartMail_Exception(StackTrace As String, Message As String) As Boolean
+        'Empfänger-Adresse (software@winback.de)
+        Dim Recipient As String = wb_Credentials.WinBackSoftware_MailAdr
+        'Fehlermeldung von WinBack-AddIn (Betreffzeile)
+        Dim Subject As String = My.Resources.tpExceptionMailSubject
+        'Mail-Text 
+        Dim Body As String = PrepareMailText(My.Resources.tpExceptionMailText, Message)
 
         'Mail-Programm aufrufen
         Return StartMail(Recipient, Subject, Body)

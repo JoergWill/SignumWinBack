@@ -3,6 +3,7 @@ Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.Common
 Imports System.Windows.Forms
 Imports System.Reflection
+Imports System.Threading
 
 ''' <summary>
 ''' Erweitert das Ribon um ein neues Tab WinBack und baut die Menu-Struktur auf.
@@ -25,14 +26,68 @@ Public Class ob_Main_Menu
     Private oRecipeProvider As New ob_RecipeProvider
 
     ''' <summary>
+    ''' Zentraler Excception-Handler für das AddIn.
+    ''' Alle nicht behandelten Exceptions werden hier abgefangen. Die Exception und der Stack-Trace werden in das Log geschrieben.
+    ''' 
+    ''' Im Debug-Modus(Visual-Studio) werden die Exceptions als "unhandledException" abgefangen, zur Laufzeit (in OrgaBack) treten
+    ''' die Exceptions als "ThreadException" auf
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Sub MyThreadExceptionHandler(ByVal sender As Object, ByVal e As ThreadExceptionEventArgs)
+        'Stacktrace und Fehlermeldung ermitteln
+        Dim StackTrace As String = DirectCast(e.Exception, System.Exception).StackTrace
+        Dim Message As String = DirectCast(e.Exception, System.Exception).Message
+        'Dialog-Fenster mit Fehlermeldung anzeigen
+        ExceptionHandler(StackTrace, Message, False)
+    End Sub
+    Sub MyUnhandledExceptionHandler(ByVal sender As Object, ByVal e As UnhandledExceptionEventArgs)
+        'Stacktrace und Fehlermeldung ermitteln
+        Dim StackTrace As String = DirectCast(e.ExceptionObject, System.Exception).StackTrace
+        Dim Message As String = DirectCast(e.ExceptionObject, System.Exception).Message
+        'Dialog-Fenster mit Fehlermeldung anzeigen
+        ExceptionHandler(StackTrace, Message, False)
+    End Sub
+
+    ''' <summary>
+    ''' Zeigt ein modales Dialog-Fenster mit der Fehlermeldung an.
+    ''' Auswahl Abbrechen, neu starten, fortsetzen.
+    ''' Die Fehlermeldung, Stacktrace und Log-File können per Mail an software@winback.de gesendet werden.
+    ''' </summary>
+    ''' <param name="StackTrace"></param>
+    ''' <param name="Message"></param>
+    ''' <param name="UnhadledException"></param>
+    Private Sub ExceptionHandler(StackTrace As String, Message As String, UnhadledException As Boolean)
+        'Dialog-Fenster mit Fehlermeldung anzeigen 
+        Dim MainException As New wb_Main_Exception(StackTrace, Message)
+
+        'abhängig vom Dialog-Result 
+        Select Case MainException.ShowDialog()
+            Case DialogResult.Abort
+                'WinBack-AddIn beenden
+                Application.Exit()
+            Case DialogResult.Retry
+                'WinBack-AddIn restart
+                Application.Restart()
+            Case DialogResult.Ignore
+                'WinBack-AddIn fortsetzen
+            Case Else
+                Throw New System.Exception("Fehler in Exception-Handler")
+        End Select
+    End Sub
+
+    ''' <summary>
     ''' Initialisierung Klasse
     ''' </summary>
     Public Sub Initialize() Implements IExtension.Initialize
+
+        AddHandler System.Windows.Forms.Application.ThreadException, AddressOf MyThreadExceptionHandler
+        AddHandler System.AppDomain.CurrentDomain.UnhandledException, AddressOf MyUnhandledExceptionHandler
+
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
         '
         'Dim currentDomain As AppDomain = AppDomain.CurrentDomain
         'AddHandler currentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
-
         oViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
         oMenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         oSetting = TryCast(ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
@@ -44,6 +99,7 @@ Public Class ob_Main_Menu
         AddLogIn()
         'Main-Menu erweitern
         AddMenu()
+
     End Sub
 
     ''' <summary>

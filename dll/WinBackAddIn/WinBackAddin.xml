@@ -72,6 +72,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.Exception">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.HakenGlb_16x16">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -93,6 +98,31 @@ WinBackAddin
 </summary>
 </member>
 <member name="P:WinBack.My.Resources.Resources.IconDelete_24x24">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.IconDlgCancel_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.IconDlgLog_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.IconDlgOk_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.IconDlgRestart_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.IconEMail_16x16">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
@@ -394,6 +424,19 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
 <member name="P:WinBack.My.Resources.Resources.tpCloudTitelRezept">
 <summary>
   Sucht eine lokalisierte Zeichenfolge, die Rohstoff-Rezept ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.tpExceptionMailSubject">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die Fehler-Bericht WinBackAddIn(OrgaBack) ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.tpExceptionMailText">
+<summary>
+  Sucht eine lokalisierte Zeichenfolge, die In WinBack-AddIn ist eine Exception [0] aufgetreten.
+
+Der Fehler ist unter folgenden Bedingungen aufgetreten:
+(Bitte möglichst genau beschreiben) ähnelt.
 </summary>
 </member>
 <member name="P:WinBack.My.Resources.Resources.UpdateDataBase_16x16">
@@ -1511,7 +1554,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="mSsl"></param>ssl-Verschlüsselung aktivieren
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Mail.StartMail(System.String,System.String,System.String)">
+<member name="M:WinBack.wb_Mail.StartMail(System.String,System.String,System.String,System.String)">
  <summary>
  Startet das Standard-Mail-Programm (outlook) und übergibt als Parameter
  </summary>
@@ -1522,11 +1565,19 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 </member>
 <member name="M:WinBack.wb_Mail.StartMail_CloudAnforderung(System.String,System.String)">
  <summary>
- Startet über Startmail das Standard eMail-Programm und über gibt den Anforderungstext und die 
+ Startet über Startmail das Standard eMail-Programm und übergibt den Anforderungstext und die 
  Abfrage-Mail-Adresse.
  </summary>
  <param name="Rohstoff"></param>
  <param name="Lieferant"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Mail.StartMail_Exception(System.String,System.String)">
+ <summary>
+ Startet über Startmail das Standard eMail-Programm und übergibt den Fehlertext und die Stacktrace-Information
+ </summary>
+ <param name="StackTrace"></param>
+ <param name="Message"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Mail.PrepareMailText(System.String,System.String,System.String,System.String,System.String,System.String)">
@@ -3891,14 +3942,26 @@ Text aus Datenbank lesen - Übersetzung
  <summary>
  Sub Write (overrides)
  Verschickt den Debug/Trace-Text mit Datum/Uhrzeit und Zeilen-Vorschub als Event an alle angemeldeten Listener
+ 
+ In StackTrace steht die aufrufende Routine im Format ZeilenNummer  WinBack.Name.Funktion(Argumente)
+ Diese Informationen werden aufgeschlüsselt in:
+     Zeilenummer im Source-Code
+     Programm-Name
+     Sub-Routine (mit Argumenten)
  </summary>
- <param name="message"> String Debug/Trace-Text</param>
+ <param name="Message"> String Debug/Trace-Text</param>
 </member>
 <member name="M:WinBack.wb_TraceListener.GetLocalStackTrace(System.String)">
  <summary>
  Extrahiert aus Environment.StackTrace die Programm-Zeile der aufrufenden Routine:
  </summary>
  <param name="Stack"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_TraceListener.GetDebug(System.String)">
+ <summary>
+ Ermittelt aus dem Stack ob der Aufruf über Debug.Print() oder Trace.Write() erfolgt
+ </summary>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_ZutatenListe_Global.#cctor">
@@ -4014,6 +4077,30 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <returns>Das aktuelle Betriebssystem</returns>
  <remarks></remarks>
+</member>
+<member name="M:WinBack.wb_Main_Exception.#ctor(System.String,System.String)">
+ <summary>
+ Beim Initialisieren werden gleich die notwendigen Parameter für
+ Stacktrace und Message übergeben
+ </summary>
+ <param name="StackTrace"></param>
+ <param name="Message"></param>
+</member>
+<member name="M:WinBack.wb_Main_Exception.wb_Main_Exception_Load(System.Object,System.EventArgs)">
+ <summary>
+ Dialog-Fenster wird geladen.
+ Texte der Exit-Buttons anpassen an die Programm-Variante
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Main_Exception.BtnMail_Click(System.Object,System.EventArgs)">
+ <summary>
+ Sende den Fehlerbericht mit Stacktrace und Fehlermeldung an software@winback.de
+ Das Versenden der Mail erfolgt über das Windows-Standard-eMail-Programm
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="T:WinBack.wb_PrinterDialog">
  <summary>
@@ -6679,6 +6766,27 @@ Datenbank-Verbindung schliessen
  Erweitert das Ribon um ein neues Tab WinBack und baut die Menu-Struktur auf.
  </summary>
 </member>
+<member name="M:WinBack.ob_Main_Menu.MyThreadExceptionHandler(System.Object,System.Threading.ThreadExceptionEventArgs)">
+ <summary>
+ Zentraler Excception-Handler für das AddIn.
+ Alle nicht behandelten Exceptions werden hier abgefangen. Die Exception und der Stack-Trace werden in das Log geschrieben.
+ 
+ Im Debug-Modus(Visual-Studio) werden die Exceptions als "unhandledException" abgefangen, zur Laufzeit (in OrgaBack) treten
+ die Exceptions als "ThreadException" auf
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.ob_Main_Menu.ExceptionHandler(System.String,System.String,System.Boolean)">
+ <summary>
+ Zeigt ein modales Dialog-Fenster mit der Fehlermeldung an.
+ Auswahl Abbrechen, neu starten, fortsetzen.
+ Die Fehlermeldung, Stacktrace und Log-File können per Mail an software@winback.de gesendet werden.
+ </summary>
+ <param name="StackTrace"></param>
+ <param name="Message"></param>
+ <param name="UnhadledException"></param>
+</member>
 <member name="M:WinBack.ob_Main_Menu.Initialize">
  <summary>
  Initialisierung Klasse
@@ -6953,7 +7061,11 @@ eingelesen
 </member>
 <member name="M:WinBack.wb_Admin_Shared.#cctor">
  <summary>
- Beim Starten der Applikation wird das alte Log-File gelöscht.
+ Initialisierung Apache-log4net. Die Konfiguration steht in winback.log4net und wird dynamisch gelesen.
+ Änderungen im Konfigurations-File sind während der Laufzeit möglich!
+ 
+ Bei Programmvariante OrgaBack liegt die Konfiguration im AddIn-Verzeichnis, bei Variante WinBack
+ im Programm-Verzeichnis.
  </summary>
 </member>
 <member name="P:WinBack.wb_Admin_Shared.LogEvents">
@@ -6962,22 +7074,37 @@ eingelesen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Admin_Shared.GetTraceListenerText(System.String)">
+<member name="M:WinBack.wb_Admin_Shared.GetTraceListenerText(System.String,System.String,System.String,System.String,System.String,System.String)">
  <summary>
  Hier landen alle Trace/Debug-Events
+ Aufruf bzw. Umleitung in ob_Main_Menu: AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
+ 
+ Die Log-Level sind hierarchisch aufgebaut
+ 
+     Level.Verbose        10 000         Trace.Writeln("@V_xxxxxx")
+     Level.Trace          20 000         Trace.Writeln("@T_xxxxxx") oder Trace.Writeln
+     Level.Debug          30 000         Trace.Writeln("@D_xxxxxx") oder Debug.Print
+     Level.Info           40 000         Trace.Writeln("@I_xxxxxx")
+     Level.Notice         50 000         Trace.Writeln("@N_xxxxxx")
+
+     Level.Warn           60 000         Trace.Writeln("@W_xxxxxx")
+     Level.Error          70 000         Trace.Writeln("@E_xxxxxx")
+     Level.Severe         80 000         Trace.Writeln("@S_xxxxxx")
+     Level.Critical       90 000         Trace.Writeln("@C_xxxxxx")
+     Level.Alert         100 000         Trace.Writeln("@A_xxxxxx")
+     Level.Fatal         110 000         Trace.Writeln("@F_xxxxxx")
+     Level.Emergency     120 000         Trace.Writeln("@X_xxxxxx")
+     
+ 
  </summary>
  <param name="Txt"></param>
 </member>
-<member name="M:WinBack.wb_Admin_Shared.WriteToEventLog(System.String,System.Diagnostics.EventLogEntryType,System.String)">
+<member name="M:WinBack.wb_Admin_Shared.AddLogToList(System.String)">
  <summary>
- Write Entry to Event Log using VB.NET
- NOTE: EventSources are tightly tied to their log. So don't use the same source name for different logs, and vice versa.
+ Log-Meldungen in Liste(wb_Global.LogFileEntries) anhängen. Wenn die Liste zu lang wird,
+ werden die obersten Einträge gelöscht.
  </summary>
- <param name="Entry">Value to Write</param>
- <param name="EventType">Entry Type, from EventLogEntryType Structure e.g., EventLogEntryType.Warning, EventLogEntryType.Error</param>
- <param name="LogName">Name of Log (System, Application; Security is read-only) If you specify a non-existent log, the log will be created</param>
- <returns></returns>
- <remarks></remarks>
+ <param name="Txt"></param>
 </member>
 <member name="M:WinBack.wb_Admin_UpdateDatabase.UpdateSqlMandant(System.String)">
  <summary>

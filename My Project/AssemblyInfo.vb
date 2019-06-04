@@ -35,3 +35,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyVersion("1.4.2.0")>
 <Assembly: AssemblyFileVersion("1.4.2.0")>
 <Assembly: NeutralResourcesLanguage("de-DE")>
+
+'Konfiguration log4net
+'wird dynamisch geladen (bei Konfig-Änderungen)
+'<Assembly: log4net.Config.XmlConfigurator(ConfigFile:="winback.log4net", Watch:=True)>

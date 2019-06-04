@@ -96,9 +96,10 @@ Public Class wb_AktUser
         Else
             'Verbindung wieder schliessen
             winback.Close()
+            'Benutzer ist OrgaBack Benutzername
+            _UserName = UserName
             Return False
         End If
-
     End Function
 
     Private Shared Sub UpdateUserLanguage(Lang As String)

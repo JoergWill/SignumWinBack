@@ -10,9 +10,5 @@ Public Class wb_Finalizer_Shared
         MyBase.Finalize()
         'Letzter Eintrag im Log-File
         Trace.WriteLine("Log-File geschlossen")
-        'Event-Logger wieder entsorgen
-
-        'Die letzten offenen Einträge ins Log.File schreiben und schliessen
-        wb_Admin_Shared.WriteToEventFile()
     End Sub
 End Class

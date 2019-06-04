@@ -7,8 +7,8 @@
     Public Const wbFALSE = 0
     Public Const wbTRUE = 1
 
-    Public Const LogFileName = "\OrgaBack.log"        'Datei-Name des Log-Files
-    Public Const LogFileEntries = 20                  'Anzahl der Einträge im Puffer
+    Public Const LogFileEntries = 20                    'Anzahl der Einträge im Puffer
+    Public Const Log4NetConfigFile = "WinBack.log4net"  'Datei-Name des Log-Files
 
     Public Const LinienGruppeSauerteig = 127          'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
     Public Const LinienGruppeStandard = 1             'Liniengruppe für neue Rezepte

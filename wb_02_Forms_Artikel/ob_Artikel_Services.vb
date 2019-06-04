@@ -21,18 +21,16 @@ Public Class ob_Artikel_Services
 
         If oArticle IsNot Nothing Then
             Select Case KomponType
-                'Artikel-Preis aus OrgaBack
                 Case wb_Global.KomponTypen.KO_TYPE_ARTIKEL
+                    'Artikel-Preis aus OrgaBack
                     Preis = oArticle.GetArticleCostPrice(Nummer, wb_Global.obEinheitStk, _Color, _Size)
-                'Rohstoff-Preis Wasser aus OrgaBack
                 Case wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE
+                    'Rohstoff-Preis Wasser aus OrgaBack
                     Preis = oArticle.GetArticleCostPrice(Nummer, wb_Global.obEinheitLiter, _Color, _Size)
-                    'Rohstoff-Preis aus OrgaBack
                 Case Else
+                    'Rohstoff-Preis aus OrgaBack
                     Preis = oArticle.GetArticleCostPrice(Nummer, wb_Global.obEinheitKilogramm, _Color, _Size)
             End Select
-
-            Debug.Print("GetArtikelPreis (Nummer/Preis) " & Nummer & " " & Preis)
             Return Preis
         Else
             Return 0.0
