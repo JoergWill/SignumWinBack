@@ -166,6 +166,7 @@ Partial Class WinBack
         Me.BtnDelete = New System.Windows.Forms.Button()
         Me.BtnSaveAs = New System.Windows.Forms.Button()
         Me.BtnSave = New System.Windows.Forms.Button()
+        Me.rbLog = New System.Windows.Forms.RibbonButton()
         Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -1086,6 +1087,7 @@ Partial Class WinBack
         'rbAdminAnsicht
         '
         Me.rbAdminAnsicht.ButtonMoreVisible = False
+        Me.rbAdminAnsicht.Items.Add(Me.rbLog)
         Me.rbAdminAnsicht.Items.Add(Me.rbDatensicherung)
         Me.rbAdminAnsicht.Items.Add(Me.rbAdminWinBackIni)
         Me.rbAdminAnsicht.Items.Add(Me.rsAdmin)
@@ -1111,6 +1113,7 @@ Partial Class WinBack
         Me.rbAdminWinBackIni.Name = "rbAdminWinBackIni"
         Me.rbAdminWinBackIni.SmallImage = CType(resources.GetObject("rbAdminWinBackIni.SmallImage"), System.Drawing.Image)
         Me.rbAdminWinBackIni.Text = "Edit Konfiguration"
+        Me.rbAdminWinBackIni.Value = "EDITKONFIG"
         '
         'rsAdmin
         '
@@ -1522,6 +1525,15 @@ Partial Class WinBack
         Me.BtnSave.TabStop = False
         Me.BtnSave.UseVisualStyleBackColor = True
         '
+        'rbLog
+        '
+        Me.rbLog.Image = Global.WinBack.My.Resources.Resources.AdminLog_32x32
+        Me.rbLog.LargeImage = Global.WinBack.My.Resources.Resources.AdminLog_32x32
+        Me.rbLog.Name = "rbLog"
+        Me.rbLog.SmallImage = CType(resources.GetObject("rbLog.SmallImage"), System.Drawing.Image)
+        Me.rbLog.Text = "Log-/Fehler Ausgaben"
+        Me.rbLog.Value = "LOGGER"
+        '
         'WinBack
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1694,4 +1706,5 @@ Partial Class WinBack
     Friend WithEvents rbVersionInfo As RibbonButton
     Friend WithEvents rbRohstoffNwt As RibbonButton
     Friend WithEvents rbAdminWinBack As RibbonButton
+    Friend WithEvents rbLog As RibbonButton
 End Class

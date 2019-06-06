@@ -10,7 +10,7 @@ Public Class wb_Admin_EditIni
         lblPathToWinBackIni.Text = wb_GlobalSettings.pWinBackIniPath
         btnSave.Enabled = False
         'TODO Remove after Test !!!
-        Throw New System.Exception("Exceptions TEST")
+        'Throw New System.Exception("----- TEST -----")
     End Sub
     Private Sub wb_Admin_EditIni_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         SaveToFile()

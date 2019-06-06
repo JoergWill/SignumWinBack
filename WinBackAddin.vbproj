@@ -1094,6 +1094,7 @@
     <None Include="Resources\VirtTreeExpand_16x16.png" />
     <None Include="Resources\OrgaBackSortiment_32x32.png" />
     <None Include="Resources\UpdateWinBack_32x32.png" />
+    <None Include="Resources\Log4View_16x16.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

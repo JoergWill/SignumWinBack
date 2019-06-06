@@ -436,7 +436,10 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
   Sucht eine lokalisierte Zeichenfolge, die In WinBack-AddIn ist eine Exception [0] aufgetreten.
 
 Der Fehler ist unter folgenden Bedingungen aufgetreten:
-(Bitte möglichst genau beschreiben) ähnelt.
+(Bitte möglichst genau beschreiben)
+
+Stacktrace:
+[1] ähnelt.
 </summary>
 </member>
 <member name="P:WinBack.My.Resources.Resources.UpdateDataBase_16x16">

@@ -6,9 +6,10 @@ Public Class wb_Admin_Log
     Inherits DockContent
 
     Private Sub wb_Admin_Log_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Set CheckBox-Eintrag
-        cbLogTextFile.Checked = wb_GlobalSettings.LogToTextFile
-        cbLogDataBase.Checked = wb_GlobalSettings.logToDataBase
+        'CheckBox AutoStart
+        cbLogAutoStart.Checked = wb_GlobalSettings.Log4netAutoStart
+        'CheckBox Aktiv
+        cbLogAktiv.Checked = wb_Admin_Shared.LoggerAktiv
 
         'alle aktuellen Einträge aus TraceListener anzeigen
         loadLoggerFromStringArray()
@@ -19,22 +20,6 @@ Public Class wb_Admin_Log
 
     Private Sub wb_Admin_LogEvent(txt As String)
         tbLogger.Text = tbLogger.Text + txt & vbCr
-    End Sub
-
-
-    Private Sub wb_Admin_Log_FormClosed(sender As Object, e As Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        'Logger wieder freigeben
-
-    End Sub
-
-    Private Sub cbLogTextFile_CheckedChanged(sender As Object, e As EventArgs) Handles cbLogTextFile.CheckedChanged
-        wb_GlobalSettings.LogToTextFile = cbLogTextFile.Checked
-        'Button Anzeige Textfile wird nur dann aktiv wenn auch ein Textfile existiert oder erzeugt wird
-        'BtnLoadTextFile.Enabled = cbLogTextFile.Checked Or File.Exists(myDocPathLogFile)
-    End Sub
-
-    Private Sub cbLogDataBase_CheckedChanged(sender As Object, e As EventArgs) Handles cbLogDataBase.CheckedChanged
-        wb_GlobalSettings.logToDataBase = cbLogDataBase.Checked
     End Sub
 
     Private Sub BtnLoadTextFile_Click(sender As Object, e As EventArgs) Handles BtnLoadTextFile.Click

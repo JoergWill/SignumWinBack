@@ -26,12 +26,14 @@ Partial Class wb_Admin_Log
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.tbLogger = New System.Windows.Forms.TextBox()
-        Me.cbLogTextFile = New MetroFramework.Controls.MetroToggle()
-        Me.lblLogTxtFile = New System.Windows.Forms.Label()
-        Me.MetroToolTip = New MetroFramework.Components.MetroToolTip()
         Me.BtnLoadTextFile = New System.Windows.Forms.Button()
-        Me.cbLogDataBase = New MetroFramework.Controls.MetroToggle()
-        Me.lblLogDataBase = New System.Windows.Forms.Label()
+        Me.BtnLoadKonfig = New System.Windows.Forms.Button()
+        Me.BtnLog4Viewer = New System.Windows.Forms.Button()
+        Me.BtnEditKonfig = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.lblAktLogger = New System.Windows.Forms.Label()
+        Me.cbLogAktiv = New System.Windows.Forms.CheckBox()
+        Me.cbLogAutoStart = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'tbLogger
@@ -48,75 +50,101 @@ Partial Class wb_Admin_Log
         Me.tbLogger.TabIndex = 0
         Me.tbLogger.WordWrap = False
         '
-        'cbLogTextFile
-        '
-        Me.cbLogTextFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cbLogTextFile.AutoSize = True
-        Me.cbLogTextFile.DisplayStatus = False
-        Me.cbLogTextFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.cbLogTextFile.Location = New System.Drawing.Point(897, 281)
-        Me.cbLogTextFile.Name = "cbLogTextFile"
-        Me.cbLogTextFile.Size = New System.Drawing.Size(50, 17)
-        Me.cbLogTextFile.TabIndex = 2
-        Me.cbLogTextFile.TabStop = False
-        Me.cbLogTextFile.Text = "Aus"
-        Me.MetroToolTip.SetToolTip(Me.cbLogTextFile, "alle Meldungen auch in eine Textdatei schreiben")
-        Me.cbLogTextFile.UseVisualStyleBackColor = True
-        '
-        'lblLogTxtFile
-        '
-        Me.lblLogTxtFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblLogTxtFile.Location = New System.Drawing.Point(953, 275)
-        Me.lblLogTxtFile.Name = "lblLogTxtFile"
-        Me.lblLogTxtFile.Size = New System.Drawing.Size(79, 29)
-        Me.lblLogTxtFile.TabIndex = 3
-        Me.lblLogTxtFile.Text = "Meldungen in Textdatei"
-        '
         'BtnLoadTextFile
         '
         Me.BtnLoadTextFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnLoadTextFile.Image = Global.WinBack.My.Resources.Resources.IconDlgLog_16x16
         Me.BtnLoadTextFile.Location = New System.Drawing.Point(897, 314)
         Me.BtnLoadTextFile.Name = "BtnLoadTextFile"
         Me.BtnLoadTextFile.Size = New System.Drawing.Size(135, 39)
         Me.BtnLoadTextFile.TabIndex = 4
-        Me.BtnLoadTextFile.Text = "Textfile laden"
-        Me.MetroToolTip.SetToolTip(Me.BtnLoadTextFile, "Textfile aller Log-Daten laden (kann evtlentuell einige Zeit beanspruchen)")
+        Me.BtnLoadTextFile.Text = "Logger Textfile laden"
+        Me.BtnLoadTextFile.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.BtnLoadTextFile.UseVisualStyleBackColor = True
         '
-        'cbLogDataBase
+        'BtnLoadKonfig
         '
-        Me.cbLogDataBase.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cbLogDataBase.AutoSize = True
-        Me.cbLogDataBase.DisplayStatus = False
-        Me.cbLogDataBase.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.cbLogDataBase.Location = New System.Drawing.Point(897, 244)
-        Me.cbLogDataBase.Name = "cbLogDataBase"
-        Me.cbLogDataBase.Size = New System.Drawing.Size(50, 17)
-        Me.cbLogDataBase.TabIndex = 5
-        Me.cbLogDataBase.TabStop = False
-        Me.cbLogDataBase.Text = "Aus"
-        Me.MetroToolTip.SetToolTip(Me.cbLogDataBase, "alle Meldungen auch in der Datenbank sichern")
-        Me.cbLogDataBase.UseVisualStyleBackColor = True
+        Me.BtnLoadKonfig.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnLoadKonfig.Image = Global.WinBack.My.Resources.Resources.IconSave_24x24
+        Me.BtnLoadKonfig.Location = New System.Drawing.Point(897, 139)
+        Me.BtnLoadKonfig.Name = "BtnLoadKonfig"
+        Me.BtnLoadKonfig.Size = New System.Drawing.Size(135, 39)
+        Me.BtnLoadKonfig.TabIndex = 5
+        Me.BtnLoadKonfig.Text = "Logger Konfig laden"
+        Me.BtnLoadKonfig.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.BtnLoadKonfig.UseVisualStyleBackColor = True
         '
-        'lblLogDataBase
+        'BtnLog4Viewer
         '
-        Me.lblLogDataBase.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblLogDataBase.Location = New System.Drawing.Point(953, 238)
-        Me.lblLogDataBase.Name = "lblLogDataBase"
-        Me.lblLogDataBase.Size = New System.Drawing.Size(79, 29)
-        Me.lblLogDataBase.TabIndex = 6
-        Me.lblLogDataBase.Text = "Meldungen in Datenbank"
+        Me.BtnLog4Viewer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnLog4Viewer.Image = Global.WinBack.My.Resources.Resources.Log4View_16x16
+        Me.BtnLog4Viewer.Location = New System.Drawing.Point(897, 269)
+        Me.BtnLog4Viewer.Name = "BtnLog4Viewer"
+        Me.BtnLog4Viewer.Size = New System.Drawing.Size(135, 39)
+        Me.BtnLog4Viewer.TabIndex = 6
+        Me.BtnLog4Viewer.Text = "Log4View starten"
+        Me.BtnLog4Viewer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.BtnLog4Viewer.UseVisualStyleBackColor = True
+        '
+        'BtnEditKonfig
+        '
+        Me.BtnEditKonfig.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnEditKonfig.Image = Global.WinBack.My.Resources.Resources.EditKonfig_16x16
+        Me.BtnEditKonfig.Location = New System.Drawing.Point(897, 184)
+        Me.BtnEditKonfig.Name = "BtnEditKonfig"
+        Me.BtnEditKonfig.Size = New System.Drawing.Size(135, 39)
+        Me.BtnEditKonfig.TabIndex = 7
+        Me.BtnEditKonfig.Text = "Edit Logger Konfig"
+        Me.BtnEditKonfig.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.BtnEditKonfig.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(897, 28)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(135, 20)
+        Me.TextBox1.TabIndex = 8
+        '
+        'lblAktLogger
+        '
+        Me.lblAktLogger.AutoSize = True
+        Me.lblAktLogger.Location = New System.Drawing.Point(897, 12)
+        Me.lblAktLogger.Name = "lblAktLogger"
+        Me.lblAktLogger.Size = New System.Drawing.Size(84, 13)
+        Me.lblAktLogger.TabIndex = 9
+        Me.lblAktLogger.Text = "Aktueller Logger"
+        '
+        'cbLogAktiv
+        '
+        Me.cbLogAktiv.Location = New System.Drawing.Point(911, 54)
+        Me.cbLogAktiv.Name = "cbLogAktiv"
+        Me.cbLogAktiv.Size = New System.Drawing.Size(121, 22)
+        Me.cbLogAktiv.TabIndex = 10
+        Me.cbLogAktiv.Text = "Aktiv"
+        Me.cbLogAktiv.UseVisualStyleBackColor = True
+        '
+        'cbLogAutoStart
+        '
+        Me.cbLogAutoStart.Location = New System.Drawing.Point(911, 73)
+        Me.cbLogAutoStart.Name = "cbLogAutoStart"
+        Me.cbLogAutoStart.Size = New System.Drawing.Size(121, 22)
+        Me.cbLogAutoStart.TabIndex = 11
+        Me.cbLogAutoStart.Text = "Autostart"
+        Me.cbLogAutoStart.UseVisualStyleBackColor = True
         '
         'wb_Admin_Log
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1044, 365)
-        Me.Controls.Add(Me.lblLogDataBase)
-        Me.Controls.Add(Me.cbLogDataBase)
+        Me.Controls.Add(Me.cbLogAutoStart)
+        Me.Controls.Add(Me.cbLogAktiv)
+        Me.Controls.Add(Me.lblAktLogger)
+        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.BtnEditKonfig)
+        Me.Controls.Add(Me.BtnLog4Viewer)
+        Me.Controls.Add(Me.BtnLoadKonfig)
         Me.Controls.Add(Me.BtnLoadTextFile)
-        Me.Controls.Add(Me.lblLogTxtFile)
-        Me.Controls.Add(Me.cbLogTextFile)
         Me.Controls.Add(Me.tbLogger)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "wb_Admin_Log"
@@ -127,10 +155,12 @@ Partial Class wb_Admin_Log
     End Sub
 
     Friend WithEvents tbLogger As Windows.Forms.TextBox
-    Friend WithEvents cbLogTextFile As MetroFramework.Controls.MetroToggle
-    Friend WithEvents MetroToolTip As MetroFramework.Components.MetroToolTip
-    Friend WithEvents lblLogTxtFile As Windows.Forms.Label
     Friend WithEvents BtnLoadTextFile As Windows.Forms.Button
-    Friend WithEvents lblLogDataBase As Windows.Forms.Label
-    Friend WithEvents cbLogDataBase As MetroFramework.Controls.MetroToggle
+    Friend WithEvents BtnLoadKonfig As Windows.Forms.Button
+    Friend WithEvents BtnLog4Viewer As Windows.Forms.Button
+    Friend WithEvents BtnEditKonfig As Windows.Forms.Button
+    Friend WithEvents TextBox1 As Windows.Forms.TextBox
+    Friend WithEvents lblAktLogger As Windows.Forms.Label
+    Friend WithEvents cbLogAktiv As Windows.Forms.CheckBox
+    Friend WithEvents cbLogAutoStart As Windows.Forms.CheckBox
 End Class

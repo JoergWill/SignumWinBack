@@ -154,7 +154,7 @@ Public Class wb_Mail
         'Fehlermeldung von WinBack-AddIn (Betreffzeile)
         Dim Subject As String = My.Resources.tpExceptionMailSubject
         'Mail-Text 
-        Dim Body As String = PrepareMailText(My.Resources.tpExceptionMailText, Message)
+        Dim Body As String = PrepareMailText(My.Resources.tpExceptionMailText, Message, StackTrace)
 
         'Mail-Programm aufrufen
         Return StartMail(Recipient, Subject, Body)

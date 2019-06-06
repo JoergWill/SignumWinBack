@@ -65,19 +65,19 @@ Public Class wb_GlobalSettings
     Private Shared _MsSQLWinBack As String = Nothing
     Private Shared _MsSQLWbDaten As String = Nothing
 
-    Private Shared _LogToTextFile As Integer = wb_Global.UNDEFINED
-    Private Shared _LogToDataBase As Integer = wb_Global.UNDEFINED
+    Private Shared _Log4netKonfigFile As String = ""
+    Private Shared _Log4netAutoStart As Integer = UNDEFINED
 
     Private Shared _AktUserName As String = ""
-    Private Shared _AktUserNr As Integer = wb_Global.UNDEFINED
+    Private Shared _AktUserNr As Integer = UNDEFINED
     Private Shared _AktUserGruppe As Integer = -1
 
     Private Shared _SauerteigAnlage As Boolean = Nothing
-    Private Shared _SauerteigAnzBeh As Integer = wb_Global.UNDEFINED
+    Private Shared _SauerteigAnzBeh As Integer = UNDEFINED
     Private Shared _IPBasisAdresse As String = Nothing
 
-    Private Shared _ChargenTeiler As wb_Global.ModusChargenTeiler
-    Private Shared _TeigOptimierung As wb_Global.ModusTeigOptimierung
+    Private Shared _ChargenTeiler As ModusChargenTeiler
+    Private Shared _TeigOptimierung As ModusTeigOptimierung
     Private Shared _ProdPlanDatum As Date = Nothing
     Private Shared _ProdPlanfiliale As String = Nothing
     Private Shared _ProdPlanReadOnOpen As Boolean = False
@@ -284,33 +284,28 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
-    Public Shared Property LogToTextFile As Boolean
+    Public Shared Property Log4netKonfigFile As String
         Get
-            If _LogToTextFile = wb_Global.UNDEFINED Then
+            If _Log4netKonfigFile = "" Then
                 getWinBackIni("Logger")
             End If
-            Return (_LogToTextFile = wbTRUE)
+            Return _Log4netKonfigFile
         End Get
-        Set(value As Boolean)
-            If Convert.ToInt16(value) <> _LogToTextFile Then
-                _LogToTextFile = Convert.ToInt16(value)
-                setWinBackIni("winback", "LogToTextFile", _LogToTextFile)
-            End If
+        Set(value As String)
+            _Log4netKonfigFile = value
+            setWinBackIni("winback", "Log4netKonfigFile", _Log4netKonfigFile)
         End Set
     End Property
 
-    Public Shared Property logToDataBase As Boolean
+    Public Shared Property Log4netAutoStart As Boolean
         Get
-            If _LogToDataBase = wb_Global.UNDEFINED Then
+            If _Log4netAutoStart = UNDEFINED Then
                 getWinBackIni("Logger")
             End If
-            Return (_LogToDataBase = wbTRUE)
+            Return _Log4netAutoStart
         End Get
         Set(value As Boolean)
-            If Convert.ToInt16(value) <> _LogToDataBase Then
-                _LogToDataBase = Convert.ToInt16(value)
-                setWinBackIni("winback", "LogToDataBase", _LogToDataBase)
-            End If
+            _Log4netAutoStart = value
         End Set
     End Property
 
@@ -1107,8 +1102,8 @@ Public Class wb_GlobalSettings
                 Trace.WriteLine("_MsSQLPasswd " & _MsSQLPasswd)
 
             Case "Logger"
-                _LogToTextFile = IniFile.ReadInt("winback", "LogToTextFile", wbFALSE)
-                _LogToDataBase = IniFile.ReadInt("winback", "LogToDataBase", wbFALSE)
+                _Log4netKonfigFile = IniFile.ReadString("winback", "Log4netKonfigFile", "")
+                _Log4netAutoStart = IniFile.ReadBool("winback", "Log4netAutoStart", "")
 
             Case "OrgaBack"
                 _osGrpBackwaren = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeBackwaren", _osGrpBackwaren)

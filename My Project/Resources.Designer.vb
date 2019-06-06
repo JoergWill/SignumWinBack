@@ -373,6 +373,16 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Public ReadOnly Property Log4View_16x16() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Log4View_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Public ReadOnly Property MainArtikel_16x16() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("MainArtikel_16x16", resourceCulture)
@@ -858,7 +868,10 @@ Namespace My.Resources
         '''  Sucht eine lokalisierte Zeichenfolge, die In WinBack-AddIn ist eine Exception [0] aufgetreten.
         '''
         '''Der Fehler ist unter folgenden Bedingungen aufgetreten:
-        '''(Bitte möglichst genau beschreiben) ähnelt.
+        '''(Bitte möglichst genau beschreiben)
+        '''
+        '''Stacktrace:
+        '''[1] ähnelt.
         '''</summary>
         Public ReadOnly Property tpExceptionMailText() As String
             Get

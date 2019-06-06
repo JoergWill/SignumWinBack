@@ -5,6 +5,7 @@ Public Class wb_Admin_Shared
     Shared _LogEvents As New List(Of String)
     Shared _Logger4net As log4net.ILog
     Shared _LoggerKonfigOK As Boolean = False
+    Shared _LoggerAktiv As Boolean = False
 
     'wird vor dem Ende der Applikation aufgerufen
     Private Shared Finalizer As New wb_Finalizer_Shared()
@@ -18,6 +19,9 @@ Public Class wb_Admin_Shared
     ''' im Programm-Verzeichnis.
     ''' </summary>
     Shared Sub New()
+        'Setze Flag LoggerAktiv - bei Programmstart
+        _LoggerAktiv = wb_GlobalSettings.Log4netAutoStart
+
         'Pfad zum log4net-Konfigurations-File
         Dim Log4NetKonfigFileInfo As FileInfo
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
@@ -61,6 +65,19 @@ Public Class wb_Admin_Shared
         Get
             Return _LoggerKonfigOK
         End Get
+    End Property
+
+    Public Shared Property LoggerAktiv As Boolean
+        Get
+            Return _LoggerAktiv
+        End Get
+        Set(value As Boolean)
+            If value And LoggerKonfigOK Then
+                _LoggerAktiv = True
+            Else
+                _LoggerAktiv = False
+            End If
+        End Set
     End Property
 
     ''' <summary>

@@ -8,8 +8,10 @@ Public Class WinBack
     Private _LayoutFilename As String = Nothing
     Private _Controls As New Dictionary(Of String, wb_Global.controlSizeandLocation)
     Private _WinBackWindowState As FormWindowState
-
+    Private xLogger As New wb_TraceListener
+    Private WithEvents About As New About_WinBack
     Private AktForm As Object
+
     Dim MdiChargen As Chargen_Main
     Dim MdiArtikel As Artikel_Main
     Dim MdiRezepte As Rezepte_Main
@@ -19,7 +21,6 @@ Public Class WinBack
     Dim MdiPlanung As Planung_Main
     Dim MdiAdmin As Admin_Main
     Dim MdiTEst As Test_Main
-    Private WithEvents About As New About_WinBack
 
 #Region "MainMenu"
     ''' <summary>
@@ -143,6 +144,12 @@ Public Class WinBack
         'Programm und Datei-Pfade einstellen
         wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack
 
+        'alle Trace / Debug - Ausgaben werden auch in der Klasse wb_Admin_Shared in einer Text-Liste gespeichert.
+        ' Nach x Zeilen werden die Einträge in ein Text-File gespeichert.
+        ' Die Klasse xLogger (wb_Trace_Listener) leitet die Meldungen weiter.
+        AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
+        Trace.Listeners.Add(xLogger)
+
         'Programm-Parameter auslesen
         ProcessParameter()
         'Sprache und Versions-Nummer in Status-Bar anzeigen
@@ -150,7 +157,6 @@ Public Class WinBack
 
         'Programm-Fenster maximieren
         Me.WindowState = FormWindowState.Maximized
-
     End Sub
 
     ''' <summary>
@@ -618,7 +624,7 @@ Public Class WinBack
     Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click, rbLinienDel.Click, rbLinienDrucken.Click, rbLinienAuto.Click,
                                                                           rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click,
                                                                           rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeParameter.Click, rbRohstoffeVerwendung.Click, rbRohstoffNwt.Click, rbRohstoffeImportCloud.Click,
-                                                                          rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click, rbAdminWinBack.Click, rbAdminUpdate.Click
+                                                                          rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click, rbAdminWinBack.Click, rbAdminUpdate.Click, rbAdminWinBackIni.Click, rbLog.Click
         Dim Cmd As String = DirectCast(sender, RibbonButton).Value
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")

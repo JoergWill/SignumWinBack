@@ -11,8 +11,10 @@
 Public Class Admin_Main
 
     Public AdminDatensicherung As New wb_Admin_Datensicherung     'Default-Fenster    (wird beim Öffnen immer angezeigt)
+    Public AdminLog As wb_Admin_Log                               'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
+    Public AdminEditIni As wb_Admin_EditIni                       'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
     Public AdminUpdateDataBase As wb_Admin_UpdateDatabase         'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
-    Public AdminUpdateWinBAck As wb_Admin_UpdateWinBack           'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
+    Public AdminUpdateWinBack As wb_Admin_UpdateWinBack           'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -30,13 +32,21 @@ Public Class Admin_Main
             Case "OPENLISTE"
                 AdminDatensicherung.Show(DockPanel, DockState.DockLeft)
                 Return True
+            Case "LOGGER"
+                AdminLog = New wb_Admin_Log
+                AdminLog.Show(DockPanel)
+                Return True
+            Case "EDITKONFIG"
+                AdminEditIni = New wb_Admin_EditIni
+                AdminEditIni.Show(DockPanel)
+                Return True
             Case "CHECKDATABASEUPDATE"
                 AdminUpdateDataBase = New wb_Admin_UpdateDatabase
                 AdminUpdateDataBase.Show(DockPanel)
                 Return True
             Case "CHECKWINBACKUPDATE"
-                AdminUpdateWinBAck = New wb_Admin_UpdateWinBack
-                AdminUpdateWinBAck.Show(DockPanel)
+                AdminUpdateWinBack = New wb_Admin_UpdateWinBack
+                AdminUpdateWinBack.Show(DockPanel)
                 Return True
             Case Else
                 Return False
@@ -66,10 +76,25 @@ Public Class Admin_Main
                 _DockPanelList.Add(AdminDatensicherung)
                 Return AdminDatensicherung
 
+            Case "WinBack.wb_Admin_Log"
+                AdminLog = New wb_Admin_Log
+                _DockPanelList.Add(AdminLog)
+                Return AdminLog
+
+            Case "WinBack.wb_Admin_EditIni"
+                AdminEditIni = New wb_Admin_EditIni
+                _DockPanelList.Add(AdminEditIni)
+                Return AdminEditIni
+
             Case "WinBack.wb_Admin_UpdateDataBase"
                 AdminUpdateDataBase = New wb_Admin_UpdateDatabase
                 _DockPanelList.Add(AdminUpdateDataBase)
                 Return AdminUpdateDataBase
+
+            Case "WinBack.wb_Admin_UpdateWinBack"
+                AdminUpdateWinBack = New wb_Admin_UpdateWinBack
+                _DockPanelList.Add(AdminUpdateWinBack)
+                Return AdminUpdateWinBack
 
             Case Else
                 Return Nothing
