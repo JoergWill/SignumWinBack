@@ -149,6 +149,8 @@ Public Class WinBack
         ' Die Klasse xLogger (wb_Trace_Listener) leitet die Meldungen weiter.
         AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
         Trace.Listeners.Add(xLogger)
+        'Meldung Programm-Start (initialisiert wb_Admin_Shared)
+        Trace.WriteLine("Programmstart WinBack-Office")
 
         'Programm-Parameter auslesen
         ProcessParameter()

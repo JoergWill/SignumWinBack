@@ -106,15 +106,25 @@ Public Class ob_ProduzierteWare
     End Property
 
     ''' <summary>
-    ''' Chargen-Nummer begrenzt auf maximal 15 Zeichen
+    ''' Chargen-Nummer begrenzt auf maximal 15 Zeichen.
+    ''' Ist der Satztyp ein Produktions-Artikel wird die Chargen-Nummer erweitert:
+    '''     - Produktions-Datum
+    '''     - TW-Nummer (5-stellig)
     ''' </summary>
     ''' <returns></returns>
     Public Property ChargenNummer As String
         Get
-            If _ChargenNummer.Length > 15 Then
-                Return Left(_ChargenNummer, 15)
+            'wenn der Satztyp ein produzierter Artikel ist 
+            If SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
+                'Chargen-Nummer erweitern
+                Return _ChargenNummer & TWNr.ToString("D5")
             Else
-                Return _ChargenNummer
+                'Länge begrenzen (Rohstoff-Chargen-Nummer)
+                If _ChargenNummer.Length > 15 Then
+                    Return Left(_ChargenNummer, 15)
+                Else
+                    Return _ChargenNummer
+                End If
             End If
         End Get
         Set(value As String)
@@ -217,6 +227,7 @@ Public Class ob_ProduzierteWare
         For i = 0 To sqlReader.FieldCount - 1
             MySQLdbRead_Fields(sqlReader.GetName(i), sqlReader.GetValue(i))
         Next
+
         'wenn in der Produktion eine Rezeptur aufgerufen wurde, wird ein Dummy-Artikel angelegt
         If ((SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel) And (Typ = wb_Global.wbSatzTyp.Rezept)) Then
             ArtikelNr = wb_Global.ProduktionDummyArtikel

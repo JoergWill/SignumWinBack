@@ -30,7 +30,7 @@ Partial Class wb_Admin_Log
         Me.BtnLoadKonfig = New System.Windows.Forms.Button()
         Me.BtnLog4Viewer = New System.Windows.Forms.Button()
         Me.BtnEditKonfig = New System.Windows.Forms.Button()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.tbAktLogger = New System.Windows.Forms.TextBox()
         Me.lblAktLogger = New System.Windows.Forms.Label()
         Me.cbLogAktiv = New System.Windows.Forms.CheckBox()
         Me.cbLogAutoStart = New System.Windows.Forms.CheckBox()
@@ -98,15 +98,17 @@ Partial Class wb_Admin_Log
         Me.BtnEditKonfig.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.BtnEditKonfig.UseVisualStyleBackColor = True
         '
-        'TextBox1
+        'tbAktLogger
         '
-        Me.TextBox1.Location = New System.Drawing.Point(897, 28)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(135, 20)
-        Me.TextBox1.TabIndex = 8
+        Me.tbAktLogger.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tbAktLogger.Location = New System.Drawing.Point(897, 28)
+        Me.tbAktLogger.Name = "tbAktLogger"
+        Me.tbAktLogger.Size = New System.Drawing.Size(135, 20)
+        Me.tbAktLogger.TabIndex = 8
         '
         'lblAktLogger
         '
+        Me.lblAktLogger.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblAktLogger.AutoSize = True
         Me.lblAktLogger.Location = New System.Drawing.Point(897, 12)
         Me.lblAktLogger.Name = "lblAktLogger"
@@ -116,6 +118,7 @@ Partial Class wb_Admin_Log
         '
         'cbLogAktiv
         '
+        Me.cbLogAktiv.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbLogAktiv.Location = New System.Drawing.Point(911, 54)
         Me.cbLogAktiv.Name = "cbLogAktiv"
         Me.cbLogAktiv.Size = New System.Drawing.Size(121, 22)
@@ -125,6 +128,7 @@ Partial Class wb_Admin_Log
         '
         'cbLogAutoStart
         '
+        Me.cbLogAutoStart.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbLogAutoStart.Location = New System.Drawing.Point(911, 73)
         Me.cbLogAutoStart.Name = "cbLogAutoStart"
         Me.cbLogAutoStart.Size = New System.Drawing.Size(121, 22)
@@ -140,7 +144,7 @@ Partial Class wb_Admin_Log
         Me.Controls.Add(Me.cbLogAutoStart)
         Me.Controls.Add(Me.cbLogAktiv)
         Me.Controls.Add(Me.lblAktLogger)
-        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.tbAktLogger)
         Me.Controls.Add(Me.BtnEditKonfig)
         Me.Controls.Add(Me.BtnLog4Viewer)
         Me.Controls.Add(Me.BtnLoadKonfig)
@@ -159,7 +163,7 @@ Partial Class wb_Admin_Log
     Friend WithEvents BtnLoadKonfig As Windows.Forms.Button
     Friend WithEvents BtnLog4Viewer As Windows.Forms.Button
     Friend WithEvents BtnEditKonfig As Windows.Forms.Button
-    Friend WithEvents TextBox1 As Windows.Forms.TextBox
+    Friend WithEvents tbAktLogger As Windows.Forms.TextBox
     Friend WithEvents lblAktLogger As Windows.Forms.Label
     Friend WithEvents cbLogAktiv As Windows.Forms.CheckBox
     Friend WithEvents cbLogAutoStart As Windows.Forms.CheckBox

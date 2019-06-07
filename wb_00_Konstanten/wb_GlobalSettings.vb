@@ -302,10 +302,15 @@ Public Class wb_GlobalSettings
             If _Log4netAutoStart = UNDEFINED Then
                 getWinBackIni("Logger")
             End If
-            Return _Log4netAutoStart
+            Return (_Log4netAutoStart = 1)
         End Get
         Set(value As Boolean)
-            _Log4netAutoStart = value
+            If value Then
+                _Log4netAutoStart = 1
+            Else
+                _Log4netAutoStart = 0
+            End If
+            setWinBackIni("winback", "Log4netAutoStart", _Log4netAutoStart)
         End Set
     End Property
 
@@ -543,6 +548,12 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared ReadOnly Property pLog4netPath As String
+        Get
+            Return _pAddInPath & "Log\"
+        End Get
+    End Property
+
     Public Shared ReadOnly Property pDBUpdatePath As String
         Get
             Return _pAddInPath & "DBUpdate\"
@@ -598,6 +609,23 @@ Public Class wb_GlobalSettings
         Set(value As String)
             _pTempPath = value
         End Set
+    End Property
+
+    ''' <summary>
+    ''' Windows-Umgebungsvariable TMP. System-Temp-Path (C:\Temp).
+    ''' Sollte diese Umgebungsvariable nicht existieren, erfolgt ein Eintrag im System-Log und es wird stattdessen der OrgaBack-tmp-Pfad
+    ''' zurückgegeben
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property pTmpPath As String
+        Get
+            Try
+                Return Environment.GetEnvironmentVariable("TMP")
+            Catch
+                Trace.Write("&E_Envrionment-Variable TMP existiert nicht")
+                Return pTempPath
+            End Try
+        End Get
     End Property
 
     Public Shared Property OsGrpRohstoffe As String
@@ -1102,8 +1130,8 @@ Public Class wb_GlobalSettings
                 Trace.WriteLine("_MsSQLPasswd " & _MsSQLPasswd)
 
             Case "Logger"
-                _Log4netKonfigFile = IniFile.ReadString("winback", "Log4netKonfigFile", "")
-                _Log4netAutoStart = IniFile.ReadBool("winback", "Log4netAutoStart", "")
+                _Log4netKonfigFile = IniFile.ReadString(IniWinBack_Mandant, "Log4netKonfigFile", "")
+                _Log4netAutoStart = IniFile.ReadInt(IniWinBack_Mandant, "Log4netAutoStart", UNDEFINED)
 
             Case "OrgaBack"
                 _osGrpBackwaren = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeBackwaren", _osGrpBackwaren)

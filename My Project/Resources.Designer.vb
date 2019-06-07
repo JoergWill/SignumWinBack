@@ -865,7 +865,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die In WinBack-AddIn ist eine Exception [0] aufgetreten.
+        '''  Sucht eine lokalisierte Zeichenfolge, die In WinBack-AddIn ist eine Exception &quot;[0]&quot; aufgetreten.
         '''
         '''Der Fehler ist unter folgenden Bedingungen aufgetreten:
         '''(Bitte möglichst genau beschreiben)

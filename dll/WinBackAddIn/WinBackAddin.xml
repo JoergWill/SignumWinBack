@@ -177,6 +177,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.Log4View_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.MainArtikel_16x16">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -433,7 +438,7 @@ Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant 
 </member>
 <member name="P:WinBack.My.Resources.Resources.tpExceptionMailText">
 <summary>
-  Sucht eine lokalisierte Zeichenfolge, die In WinBack-AddIn ist eine Exception [0] aufgetreten.
+  Sucht eine lokalisierte Zeichenfolge, die In WinBack-AddIn ist eine Exception &quot;[0]&quot; aufgetreten.
 
 Der Fehler ist unter folgenden Bedingungen aufgetreten:
 (Bitte möglichst genau beschreiben)
@@ -4034,6 +4039,14 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_GlobalSettings.pTmpPath">
+ <summary>
+ Windows-Umgebungsvariable TMP. System-Temp-Path (C:\Temp).
+ Sollte diese Umgebungsvariable nicht existieren, erfolgt ein Eintrag im System-Log und es wird stattdessen der OrgaBack-tmp-Pfad
+ zurückgegeben
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_GlobalSettings.pWinBackIniPath">
  <summary>
  Setzt/gibt den Pfad zur winback.ini zurück.
@@ -4278,7 +4291,10 @@ Text aus Datenbank lesen - Übersetzung
 </member>
 <member name="P:WinBack.ob_ProduzierteWare.ChargenNummer">
  <summary>
- Chargen-Nummer begrenzt auf maximal 15 Zeichen
+ Chargen-Nummer begrenzt auf maximal 15 Zeichen.
+ Ist der Satztyp ein Produktions-Artikel wird die Chargen-Nummer erweitert:
+     - Produktions-Datum
+     - TW-Nummer (5-stellig)
  </summary>
  <returns></returns>
 </member>
