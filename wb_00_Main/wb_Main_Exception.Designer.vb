@@ -30,6 +30,8 @@ Partial Class wb_Main_Exception
         Me.lblText = New System.Windows.Forms.Label()
         Me.BtnMail = New System.Windows.Forms.Button()
         Me.BtnShow = New System.Windows.Forms.Button()
+        Me.tbException = New System.Windows.Forms.TextBox()
+        Me.PnlPicture.SuspendLayout()
         Me.SuspendLayout()
         '
         'BtnExit
@@ -61,6 +63,7 @@ Partial Class wb_Main_Exception
         Me.PnlPicture.BackColor = System.Drawing.Color.Transparent
         Me.PnlPicture.BackgroundImage = Global.WinBack.My.Resources.Resources.Exception
         resources.ApplyResources(Me.PnlPicture, "PnlPicture")
+        Me.PnlPicture.Controls.Add(Me.tbException)
         Me.PnlPicture.Name = "PnlPicture"
         '
         'lblText
@@ -82,6 +85,13 @@ Partial Class wb_Main_Exception
         Me.BtnShow.Name = "BtnShow"
         Me.BtnShow.UseVisualStyleBackColor = True
         '
+        'tbException
+        '
+        resources.ApplyResources(Me.tbException, "tbException")
+        Me.tbException.Name = "tbException"
+        Me.tbException.ReadOnly = True
+        Me.tbException.TabStop = False
+        '
         'wb_Main_Exception
         '
         resources.ApplyResources(Me, "$this")
@@ -99,6 +109,8 @@ Partial Class wb_Main_Exception
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "wb_Main_Exception"
+        Me.PnlPicture.ResumeLayout(False)
+        Me.PnlPicture.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -111,4 +123,5 @@ Partial Class wb_Main_Exception
     Friend WithEvents lblText As Windows.Forms.Label
     Friend WithEvents BtnMail As Windows.Forms.Button
     Friend WithEvents BtnShow As Windows.Forms.Button
+    Friend WithEvents tbException As Windows.Forms.TextBox
 End Class

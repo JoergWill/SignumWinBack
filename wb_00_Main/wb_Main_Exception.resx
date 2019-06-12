@@ -219,11 +219,41 @@
   <data name="PnlPicture.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Center</value>
   </data>
+  <data name="tbException.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 318</value>
+  </data>
+  <data name="tbException.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tbException.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Both</value>
+  </data>
+  <data name="tbException.Size" type="System.Drawing.Size, System.Drawing">
+    <value>412, 52</value>
+  </data>
+  <data name="tbException.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="tbException.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;tbException.Name" xml:space="preserve">
+    <value>tbException</value>
+  </data>
+  <data name="&gt;&gt;tbException.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbException.Parent" xml:space="preserve">
+    <value>PnlPicture</value>
+  </data>
+  <data name="&gt;&gt;tbException.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="PnlPicture.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 24</value>
+    <value>12, 10</value>
   </data>
   <data name="PnlPicture.Size" type="System.Drawing.Size, System.Drawing">
-    <value>484, 358</value>
+    <value>484, 370</value>
   </data>
   <data name="PnlPicture.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -347,6 +377,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>563, 440</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Fehler in WinBack AddIn</value>

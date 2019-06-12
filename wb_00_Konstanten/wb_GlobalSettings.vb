@@ -35,6 +35,8 @@ Public Class wb_GlobalSettings
     Private Shared _pTempPath As String
     Private Shared _pWinBackIniPath As String = Nothing
     Private Shared _pProgrammPath As String = ""
+    Private Shared _Log4ViewExe As String = ""
+    Private Shared _NotePadPlusExe As String = ""
     Private Shared _pDatenPath As String = ""
     Private Shared _pExportPath As String = Nothing
     Private Shared _OrgaBackTheme As Integer = -1
@@ -1132,6 +1134,8 @@ Public Class wb_GlobalSettings
             Case "Logger"
                 _Log4netKonfigFile = IniFile.ReadString(IniWinBack_Mandant, "Log4netKonfigFile", "")
                 _Log4netAutoStart = IniFile.ReadInt(IniWinBack_Mandant, "Log4netAutoStart", UNDEFINED)
+                _Log4ViewExe = IniFile.ReadString("winback", "Log4View_Path", "C:\Program Files (x86)\Log4View V2\Log4View.exe")
+                _NotePadPlusExe = IniFile.ReadString("winback", "NotePadPlusPath", "C:\Program Files (x86)\Notepad++\Notepad++.exe")
 
             Case "OrgaBack"
                 _osGrpBackwaren = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeBackwaren", _osGrpBackwaren)
@@ -1281,6 +1285,32 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As wb_Global.ProgVariante)
             _pVariante = value
+        End Set
+    End Property
+
+    Public Shared Property Log4ViewExe As String
+        Get
+            If _Log4ViewExe = "" Then
+                getWinBackIni("Logger")
+            End If
+            Return _Log4ViewExe
+        End Get
+        Set(value As String)
+            _Log4ViewExe = value
+            setWinBackIni("Logger", "Log4ViewExe", value)
+        End Set
+    End Property
+
+    Public Shared Property NotePadPlusExe As String
+        Get
+            If _NotePadPlusExe = "" Then
+                getWinBackIni("Logger")
+            End If
+            Return _NotePadPlusExe
+        End Get
+        Set(value As String)
+            _NotePadPlusExe = value
+            setWinBackIni("Logger", "NotePadPlusExe", value)
         End Set
     End Property
 

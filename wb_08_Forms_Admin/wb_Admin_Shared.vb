@@ -84,6 +84,13 @@ Public Class wb_Admin_Shared
     ''' Hier landen alle Trace/Debug-Events
     ''' Aufruf bzw. Umleitung in ob_Main_Menu: AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
     ''' 
+    '''     Debug.Print/Trace.Write/Trace.Writeln - Ausgaben werden über Trace.AddListener() auf wb_TraceListener umgeleitet.
+    '''     
+    '''     wb_TraceListener.Write(String)                  \
+    '''     wb_TraceListener.Writeln(String)                 +-- leiten die Message über den Event WriteText an wb_AdminShared.GetTraceListenerText() weiter
+    '''     wb_TraceListener.Writeln(Exception-Object)      /
+    '''     
+    ''' 
     ''' Die Log-Level sind hierarchisch aufgebaut
     ''' 
     '''     Level.Verbose        10 000         Trace.Writeln("@V_xxxxxx")
@@ -100,49 +107,46 @@ Public Class wb_Admin_Shared
     '''     Level.Fatal         110 000         Trace.Writeln("@F_xxxxxx")
     '''     Level.Emergency     120 000         Trace.Writeln("@X_xxxxxx")
     '''     
-    ''' 
     ''' </summary>
-    ''' <param name="Txt"></param>
-    Public Shared Sub GetTraceListenerText(trDate As String, trBenutzer As String, trZeile As String, trModul As String, trSubRoutine As String, Txt As String)
+    ''' <param name="trTxt"></param>
+    Public Shared Sub GetTraceListenerText(trDate As String, trBenutzer As String, trTxt As String, Optional trException As Exception = Nothing, Optional trZeile As String = "", Optional trModul As String = "", Optional trSubRoutine As String = "")
         'Message dekodieren
-        Dim LogLevel As String = Left(Txt, 3)
+        Dim LogLevel As String = Left(trTxt, 3)
         If LogLevel(0) = "@" And LogLevel(2) = "_" Then
-            Txt = Mid(Txt, 3)
+            trTxt = Mid(trTxt, 4)
         End If
 
         'Log-Events an Liste anhängen
         If trZeile <> "" Then
-            AddLogToList(trDate & vbTab & trZeile & " " & trModul & vbTab & Txt & vbCrLf)
+            AddLogToList(trDate & vbTab & trZeile & " " & trModul & vbTab & trTxt & vbCrLf)
         Else
-            AddLogToList(trDate & vbTab & Txt & vbCrLf)
+            AddLogToList(trDate & vbTab & trTxt & vbCrLf)
         End If
 
         'Apache log4net
-        If _LoggerKonfigOK Then
-            If trZeile <> "" Then
-                Using log4net.ThreadContext.Stacks("Benutzer").Push(trBenutzer)
-                    Using log4net.ThreadContext.Stacks("Zeile").Push(trZeile)
-                        Using log4net.ThreadContext.Stacks("Modul").Push(trModul)
-                            Using log4net.ThreadContext.Stacks("Funktion").Push(trSubRoutine)
-                                Select Case LogLevel
-                                    Case "@V_", "@T_", "@D_"
-                                        _Logger4net.Debug(Txt)
-                                    Case "@I_", "@N_"
-                                        _Logger4net.Info(Txt)
-                                    Case "@W_"
-                                        _Logger4net.Warn(Txt)
-                                    Case "@E_", "@C_"
-                                        _Logger4net.Error(Txt)
-                                    Case "@A_", "@F_", "@E_"
-                                        _Logger4net.Fatal(Txt)
-                                    Case Else
-                                        _Logger4net.Debug(Txt)
-                                End Select
-                            End Using
+        If _LoggerKonfigOK And LoggerAktiv Then
+            Using log4net.ThreadContext.Stacks("Benutzer").Push(trBenutzer)
+                Using log4net.ThreadContext.Stacks("Zeile").Push(trZeile)
+                    Using log4net.ThreadContext.Stacks("Modul").Push(trModul)
+                        Using log4net.ThreadContext.Stacks("Funktion").Push(trSubRoutine)
+                            Select Case LogLevel
+                                Case "@V_", "@T_", "@D_"
+                                    _Logger4net.Debug(trTxt, trException)
+                                Case "@I_", "@N_"
+                                    _Logger4net.Info(trTxt, trException)
+                                Case "@W_"
+                                    _Logger4net.Warn(trTxt, trException)
+                                Case "@E_", "@C_"
+                                    _Logger4net.Error(trTxt, trException)
+                                Case "@A_", "@F_"
+                                    _Logger4net.Fatal(trTxt, trException)
+                                Case Else
+                                    _Logger4net.Debug(trTxt, trException)
+                            End Select
                         End Using
                     End Using
                 End Using
-            End If
+            End Using
         End If
     End Sub
 

@@ -43,4 +43,15 @@
         Dim Mail As New wb_Mail
         Mail.StartMail_Exception(_StackTrace, _Message)
     End Sub
+
+    Private Sub BtnShow_Click(sender As Object, e As EventArgs) Handles BtnShow.Click
+        'Textbox positionieren
+        PnlPicture.Width = tbException.Width
+        tbException.Dock = Windows.Forms.DockStyle.Fill
+        lblText.Visible = False
+        'Exception-Text einfügen
+        tbException.Text = _Message & vbCrLf & vbCrLf & _StackTrace
+        'und anzeigen
+        tbException.Visible = True
+    End Sub
 End Class

@@ -38,6 +38,8 @@ Public Class ob_Main_Menu
         'Stacktrace und Fehlermeldung ermitteln
         Dim StackTrace As String = DirectCast(e.Exception, System.Exception).StackTrace
         Dim Message As String = DirectCast(e.Exception, System.Exception).Message
+        'Fehlermeldung im Log ausgeben
+        Trace.WriteLine(e.Exception)
         'Dialog-Fenster mit Fehlermeldung anzeigen
         ExceptionHandler(StackTrace, Message, False)
     End Sub
@@ -45,6 +47,8 @@ Public Class ob_Main_Menu
         'Stacktrace und Fehlermeldung ermitteln
         Dim StackTrace As String = DirectCast(e.ExceptionObject, System.Exception).StackTrace
         Dim Message As String = DirectCast(e.ExceptionObject, System.Exception).Message
+        'Fehlermeldung im Log ausgeben
+        Trace.WriteLine(e.ExceptionObject)
         'Dialog-Fenster mit Fehlermeldung anzeigen
         ExceptionHandler(StackTrace, Message, True)
     End Sub
@@ -65,18 +69,18 @@ Public Class ob_Main_Menu
         Select Case MainException.ShowDialog()
             Case DialogResult.Abort
                 'WinBack-AddIn beenden
-                Trace.WriteLine("&I_DialogResult.Abort - WinBack/OrgaBack beenden")
+                Trace.WriteLine("@I_DialogResult.Abort - WinBack/OrgaBack beenden")
                 Application.Exit()
             Case DialogResult.Retry
                 'WinBack-AddIn restart
-                Trace.WriteLine("&I_DialogResult.Retry - WinBack/OrgaBack neu starten")
+                Trace.WriteLine("@I_DialogResult.Retry - WinBack/OrgaBack neu starten")
                 Application.Restart()
             Case DialogResult.Ignore
                 'WinBack-AddIn fortsetzen
-                Trace.WriteLine("&I_DialogResult.Ignore - WinBack-AddIn fortsetzen")
+                Trace.WriteLine("@I_DialogResult.Ignore - WinBack-AddIn fortsetzen")
             Case Else
                 'WinBack-AddIn fortsetzen
-                Trace.WriteLine("&I_DialogResult.xxx - WinBack-AddIn fortsetzen")
+                Trace.WriteLine("@I_DialogResult.xxx - WinBack-AddIn fortsetzen")
 
         End Select
     End Sub

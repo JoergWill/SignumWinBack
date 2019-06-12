@@ -1422,13 +1422,15 @@ Public Class wb_Functions
     ''' Gibt True zurück, wenn OrgaBack läuft !
     ''' </summary>
     ''' <returns></returns>
-    Public Shared Function GetOrgaBackProcess() As Boolean
+    Public Shared Function GetProcessRunning(ProcessName As String) As Boolean
         'Alle Prozesse durchlaufen
         For Each oProcess As Process In Process.GetProcesses
             ' Prozess-Infos ermitteln
             Debug.Print("ID/ProzessName " & oProcess.Id.ToString & " " & oProcess.ProcessName)
+            If oProcess.ProcessName = ProcessName Then
+                Return True
+            End If
         Next
-        'TODO Ermitteln, ob OrgaBack läuft
         Return False
     End Function
 
@@ -1472,4 +1474,22 @@ Public Class wb_Functions
         'Nicht gefunden
         Return False
     End Function
+
+    Public Shared Function CheckProgramInstalled(ProgName As String) As Boolean
+        Dim appkey As RegistryKey
+        appkey = Registry.LocalMachine.OpenSubKey("Software")
+        For Each app In appkey.GetSubKeyNames
+            If app = ProgName Then
+                Return True
+            End If
+        Next
+        appkey = Registry.CurrentUser.OpenSubKey("Software")
+        For Each app In appkey.GetSubKeyNames
+            If app = ProgName Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
+
 End Class

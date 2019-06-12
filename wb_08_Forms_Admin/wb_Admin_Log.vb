@@ -6,7 +6,7 @@ Public Class wb_Admin_Log
     Inherits DockContent
 
     Private Sub wb_Admin_Log_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Logger - Konfiguration
+        'Logger-Konfiguration (Konfig-Datei kopieren)
         If wb_GlobalSettings.Log4netKonfigFile <> "" Then
             LoadLoggerKonfigFile()
         End If
@@ -29,7 +29,8 @@ Public Class wb_Admin_Log
         tbLogger.Enabled = Enable
         BtnEditKonfig.Enabled = Enable
         BtnLoadKonfig.Enabled = Enable
-        BtnLog4Viewer.Enabled = Enable
+        'Button "Start Log4View" einblenden
+        BtnLog4Viewer.Enabled = wb_Functions.CheckProgramInstalled("PROSA") And Enable
     End Sub
 
     Private Sub LoadLoggerKonfigFile()
@@ -58,33 +59,12 @@ Public Class wb_Admin_Log
 
         'Auswahl Konfigurations-File
         If dlg.ShowDialog = System.Windows.Forms.DialogResult.OK Then
-            Process.Start("notepad.exe", dlg.FileName)
+            If File.Exists(wb_GlobalSettings.NotePadPlusExe) Then
+                Process.Start(wb_GlobalSettings.NotePadPlusExe, dlg.FileName)
+            Else
+                Process.Start("notepad.exe", dlg.FileName)
+            End If
         End If
-    End Sub
-
-    Private Sub LoadLoggerFromTextFile()
-        ''wenn schon eine Textdatei existiert
-        'If cbLogTextFile.Checked And File.Exists(myDocPathLogFile) Then
-
-        '    'alle Einträge aus dem Textfile laden
-        '    Dim objStreamReader As StreamReader
-        '    Dim strLine As String
-
-        '    'Pass the file path and the file name to the StreamReader constructor.
-        '    objStreamReader = New StreamReader(myDocPathLogFile)
-
-        '    'Read the first line of text.
-        '    strLine = objStreamReader.ReadLine
-
-        '    'Continue to read until you reach the end of the file.
-        '    Do While Not strLine Is Nothing
-        '        tbLogger.Text = tbLogger.Text + strLine + vbCrLf
-        '        'Read the next line.
-        '        strLine = objStreamReader.ReadLine
-        '    Loop
-        '    'Close the file.
-        '    objStreamReader.Close()
-        'End If
     End Sub
 
     Private Sub loadLoggerFromStringArray()
@@ -118,6 +98,34 @@ Public Class wb_Admin_Log
         If dlg.ShowDialog = System.Windows.Forms.DialogResult.OK Then
             wb_GlobalSettings.Log4netKonfigFile = dlg.SafeFileName
             LoadLoggerKonfigFile()
+        End If
+    End Sub
+
+    Private Sub BtnLog4Viewer_Click(sender As Object, e As EventArgs) Handles BtnLog4Viewer.Click
+        If Not wb_Functions.GetProcessRunning("Log4View") Then
+            Process.Start(wb_GlobalSettings.Log4ViewExe)
+        Else
+            MsgBox("Log4View läuft schon", MsgBoxStyle.Exclamation, "Log4View")
+        End If
+    End Sub
+
+    Private Sub BtnEditKonfig_Click(sender As Object, e As EventArgs) Handles BtnEditKonfig.Click
+        ' Configure open file dialog box 
+        Dim dlg As New OpenFileDialog()
+        dlg.Title = "Logger-Konfiguration laden (Log4net)"
+        dlg.RestoreDirectory = False
+        dlg.InitialDirectory = wb_GlobalSettings.pLog4netPath
+        dlg.FileName = "*.log4net" ' Default file name
+        dlg.DefaultExt = ".log4net" ' Default file extension
+        dlg.Filter = "Log4net-Files |*.log4net" ' Filter files by extension
+
+        'Auswahl Konfigurations-File
+        If dlg.ShowDialog = System.Windows.Forms.DialogResult.OK Then
+            If File.Exists(wb_GlobalSettings.NotePadPlusExe) Then
+                Process.Start(wb_GlobalSettings.NotePadPlusExe, dlg.FileName)
+            Else
+                Process.Start("notepad.exe", dlg.FileName)
+            End If
         End If
     End Sub
 End Class
