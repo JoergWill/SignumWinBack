@@ -21,8 +21,6 @@ Public Class ob_ChargenProduziert
         ProdDatumGueltig = Convert.ToDateTime("22.11.1964")
     End Sub
 
-
-
     ''' <summary>
     ''' Exportiert die einzelnen Produktions-Chargen-Daten ab der vorgegebenen 
     ''' Tageswechselnummer in dbo.ProduzierteWare. Zurückgegeben wird 

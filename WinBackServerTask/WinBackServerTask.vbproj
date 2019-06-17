@@ -223,6 +223,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\Infralution VirtualTree V4.8.9\Infralution.Controls.VirtualTree.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\dll\Log4net V2.0.8\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
       <Private>True</Private>

@@ -771,6 +771,14 @@ Stacktrace:
  oder Löschen des Fensters gesichert werden müssen.
  </summary>
 </member>
+<member name="M:WinBack.wb_LagerKarte.MsSQLdbRead_Daten(System.String,System.Object)">
+ <summary>
+ Schreibt den Wert aus Value in die entprechende Property der Klasse. Der Feldname bestimmt das Ziel
+ </summary>
+ <param name="Name">String - Bezeichnung Datenbankfeld</param>
+ <param name="Value">Object - Wert Datenbankfeld(Inhalt)</param>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_LagerOrt.Aktiv">
  <summary>
  Flag Rohstoff Aktiv/Hand/Deaktiviert
@@ -1459,6 +1467,76 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="p">Interger Parameter-Nummer</param>
  <returns>ktTyp300Param</returns>
+</member>
+<member name="P:WinBack.wb_Lieferungen.Nummer">
+ <summary>
+ Rohstoff/Artikel-Nummer (alpha-numerisch)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Lieferungen.Verbuchen(WinBack.wb_Sql,WinBack.wb_LagerKarte)">
+ <summary>
+ Abhängig vom Vorfallkürzel wird der aktuelle Datensatz aus dbo.ArtikelLagerkarte in winback.Lieferungen verbucht:
+     
+     WE  -   Wareneingang
+     WBA -   WinBack Produktion automatische Abbuchung
+     
+ </summary>
+ <param name="winback"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.Verbuchen_WE(WinBack.wb_Sql,WinBack.wb_LagerKarte,System.Boolean)">
+ <summary>
+ Fügt einen neuen Datensatz (Wareneingang) an die Tabelle Lieferungen an. 
+ 
+     LF_LG_Ort           winback.Komponenten.LG_Ort
+     LF_Nr               dbo.ArtikelLagerkarte.Lfd
+     LF_Datum            dbo.ArtikelLagerkarte.Datum + dbo.ArtikelLagerkarte.Uhrzeit  
+     LF_Menge            dbo.ArtikelLagerkarte.Menge
+     LF_Lieferant
+     LF_gebucht          1 (neue Lieferung)
+     LF_Bemerkung        dbo.ArtikelLagerkarte.VorfallKürzel + dbo.ArtikelLagerkarte.Modul 
+     LF_Lager            0 (Produktion)
+     LF_BF_Charge        dbo.ArtikelLagerkarte.ChargenNummer
+     LF_Liniengruppe     NULL
+     LF_BF_Frist         NULL
+     LF_Verbrauch        0
+     LF_User_Nr          dbo.ArtikelLagerkarte.Mitarbeiter
+     LF_Preis            dbo.ArtikelLagerkarte.Preis
+     LF_PreisEinheit     0
+     LF_Timestamp
+     TODO Chargenerfassungs-Variante beachten !!
+ 
+ </summary>
+ <param name="winback"></param>
+ <param name="LagerKarte"></param>
+ <param name="Chargenerfassung"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.UpdateLagerorteLfd(WinBack.wb_Sql,System.Int32)">
+ <summary>
+ Setzt die laufende Nummer (Lagerorte.LG_LF_Nr) auf den letzten verarbeiteten Eintrag aus OrgaBack.
+ Bei der nächsten Abfrage werden dann nur neue, nicht verarbeitete Einträge aus OrgaBack gelesen.
+ </summary>
+ <param name="winback"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.MySQLdbRead(MySql.Data.MySqlClient.MySqlDataReader@)">
+ <summary>
+ Liest alle Datenfelder aus dem aktuellen Datensatz in das Lieferungen-Objekt
+ Die Daten werden anhand der Feldbezeichnung in die einzelnen Properties eingetragen.
+ 
+ Das letzte Datenfeld ist der TimeStamp und wird NICHT eingelesen, da es Probleme mit
+ der Konvertierung von MySQLDateTime in DateTime gibt
+ (https://bugs.mysql.com/bug.php?id=87120)
+ </summary>
+ <param name="sqlReader"></param>
+ <returns>True wenn kein Fehler aufgetreten ist</returns>
+</member>
+<member name="M:WinBack.wb_Lieferungen.MySQLdbRead_Daten(System.String,System.Object)">
+ <summary>
+ Schreibt den Wert aus Value in die entprechende Property der Klasse. Der Feldname bestimmt das Ziel
+ </summary>
+ <param name="Name">String - Bezeichnung Datenbankfeld</param>
+ <param name="Value">Object - Wert Datenbankfeld(Inhalt)</param>
+ <returns></returns>
 </member>
 <member name="P:WinBack.wb_Linien_Global.ArtikelLinienGruppen">
  <summary>
@@ -4121,6 +4199,35 @@ Text aus Datenbank lesen - Übersetzung
  <returns>Das aktuelle Betriebssystem</returns>
  <remarks></remarks>
 </member>
+<member name="P:WinBack.wb_GlobalSettings.RohChargen_ErfassungAktiv">
+ <summary>
+ Liest die Einstellung aus winback.Konfiguration
+ KonfigChargenErfEin       - Chargenerfassung aktiv
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_GlobalSettings.RohChargen_GebindeGrsTol">
+ <summary>
+ Liest die Einstellung aus winback.Konfiguration
+ KonfigGebindeGroessenTol  - Toleranzwert bis zur Erkennung
+                             Gebinde leer.
+                             (Bis unter diese Grenze darf ausdosiert werden)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_GlobalSettings.RohChargen_ErfassungVariante">
+ <summary>
+ Liest die Einstellung aus winback.Konfiguration
+ KonfigChargenErfVariante  - Verfahren nach Ablauf Gebinde
+
+     1 - darf weiter verwiegen, auch wenn Gebinde theoretisch
+         leer.
+     2 - darf nicht weiter verwiegen, wenn Verbrauch größer als
+         Gebindegröße +  KonfigGebindeGroessenTol.
+         
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Main_Exception.#ctor(System.String,System.String)">
  <summary>
  Beim Initialisieren werden gleich die notwendigen Parameter für
@@ -5204,6 +5311,39 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.ob_ChargenBestand.ImportChargenBestand(System.Int32)">
+ <summary>
+ Liest aus der Tabelle dbo.ArtikelLagerkarte alle Datensätze
+     mit ArtikelNr = 
+     mit FilialeNr = ProduktionsFilialeNr
+     Type Rohstoff (Einheit in kg(OrgaBack))
+     Bestand größer Null
+     
+ Die Einträge werden in der Tabelle Lieferungen in Winback verarbeitet.
+ Kennungen im Feld LF_gebucht
+     V - Bestellvorschlag automatisch
+     N - Bestellung (noch nicht gedruckt)
+     B - Bestellt (gedruckt/gefaxt)
+     G - Geliefert (Bestellung erledigt)
+     L - Lieferant zugeordnet zu dieser Komponente
+     X - Lieferant gelöscht (für diese Komponente)
+     
+     1 - Lieferung (Neue Lieferungen werden immer mit '1' als gebucht vermerkt)
+     2 - Charge aktiv (WinBack produziert aktuell mit den Daten aus dieser Lieferung)
+     3 - Geliefert, Charge komplett verbraucht (auch Inventurbuchung)
+     
+ Der aktuelle Bestand in WinBack steht in der Tabelle Lagerorte.LG_Bilanzmenge und muss nach dem Import der Lieferungen 
+ angepasst werden.
+ Da in der Tabelle Lieferungen von Winback auch die Halbfertigprodukte aufgelistet werden, wird winback.Komponenten-Lagerorte-Lieferungen sortiert nach
+ Artikelnummer einzeln durchlaufen. Die aktuelle Artikelnummer(intern) wird als Result zurückgegeben.
+ Nach Verbuchung der Lieferungen und Korrektur der Daten werden in der Tabelle Lieferungen alle "erledigten" Einträge gelöscht.
+ 
+ In Spalte winback.Lieferungen.LG_LF_Nr wird die Nummer der letzten verbuchten Wareneingänge aus OrgaBack dbo.ArtikelLagerKarte.Lfd eingetragen. Damit
+ werden Doppelbuchungen vermieden und der Resultset aus der Abfrage in OrgaBack wird kleiner.
+ </summary>
+ <param name="KompNr"></param>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Cloud.DetailInfo">
  <summary>

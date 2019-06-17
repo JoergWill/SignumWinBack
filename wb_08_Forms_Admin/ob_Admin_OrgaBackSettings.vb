@@ -46,7 +46,7 @@ Public Class ob_Admin_OrgaBackSettings
             oSetting.SubCategory = "WinBack"
             oSetting.Description = "WinBack MySQL-Server IP-Adresse"
             oSetting.DisplayEntry = "MySQLServerIP"
-            oSetting.Entry = "127.0.0.1"
+            'oSetting.Entry = "127.0.0.1"
             oSetting.RestartNeeded = 1
             oSetting.FormatString = "s"
             oSettings.Add(oSetting)
@@ -57,7 +57,7 @@ Public Class ob_Admin_OrgaBackSettings
             oSetting.SubCategory = "WinBack"
             oSetting.Description = "WinBack MySQL-Daten"
             oSetting.DisplayEntry = "MySQLDatabase"
-            oSetting.Entry = "winback"
+            'oSetting.Entry = "winback"
             oSetting.RestartNeeded = 1
             oSetting.FormatString = "s"
             oSettings.Add(oSetting)
@@ -68,7 +68,7 @@ Public Class ob_Admin_OrgaBackSettings
             oSetting.SubCategory = "WinBack"
             oSetting.Description = "WinBack MySQL-Archiv"
             oSetting.DisplayEntry = "MySQLDatabaseDaten"
-            oSetting.Entry = "wbdaten"
+            'oSetting.Entry = "wbdaten"
             oSetting.RestartNeeded = 1
             oSetting.FormatString = "s"
             oSettings.Add(oSetting)
@@ -79,7 +79,7 @@ Public Class ob_Admin_OrgaBackSettings
             oSetting.SubCategory = "WinBack"
             oSetting.Description = "OrgaBack Artikelgruppe Backwaren"
             oSetting.DisplayEntry = "GruppeBackwaren"
-            oSetting.Entry = "10"
+            'oSetting.Entry = "10"
             oSetting.RestartNeeded = 1
             oSetting.FormatString = "n"
             oSettings.Add(oSetting)
@@ -90,7 +90,7 @@ Public Class ob_Admin_OrgaBackSettings
             oSetting.SubCategory = "WinBack"
             oSetting.Description = "OrgaBack Artikelgruppe Rohstoffe"
             oSetting.DisplayEntry = "GruppeRohstoffe"
-            oSetting.Entry = "20"
+            'oSetting.Entry = "20"
             oSetting.RestartNeeded = 1
             oSetting.FormatString = "n"
             oSettings.Add(oSetting)
@@ -101,7 +101,7 @@ Public Class ob_Admin_OrgaBackSettings
             oSetting.SubCategory = "WinBack"
             oSetting.Description = "MsSQL USer ID"
             oSetting.DisplayEntry = "MSSQL_UserID"
-            oSetting.Entry = "sa"
+            'oSetting.Entry = "sa"
             oSetting.RestartNeeded = 1
             oSetting.FormatString = "s"
             oSettings.Add(oSetting)

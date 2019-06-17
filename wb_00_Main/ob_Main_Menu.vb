@@ -392,9 +392,9 @@ Public Class ob_Main_Menu
         'MySQL-Server-IP 
         wb_GlobalSettings.MySQLServerIP = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLServerIP", "127.0.0.1"), String)
         'MySQL-Main-DB
-        wb_GlobalSettings.MySQLWinBack = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabase", "winback"), String)
+        'wb_GlobalSettings.MySQLWinBack = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabase", "winback"), String)
         'MySQL-Archiv-DB
-        wb_GlobalSettings.MySQLWbDaten = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabaseDaten", "wbdaten"), String)
+        'wb_GlobalSettings.MySQLWbDaten = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabaseDaten", "wbdaten"), String)
 
         'Artikel-Gruppe Backwaren (Default 10)
         wb_GlobalSettings.OsGrpBackwaren = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeBackwaren", "10"), String)

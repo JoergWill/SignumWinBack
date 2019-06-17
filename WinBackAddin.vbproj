@@ -322,6 +322,7 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_LagerKarte.vb" />
     <Compile Include="wb_00_Klassen\wb_LagerOrt.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_TimerGridView.Designer.vb">
       <DependentUpon>wb_TimerGridView.vb</DependentUpon>
@@ -391,6 +392,7 @@
     <Compile Include="wb_00_Klassen\wb_KomponParam300_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParamXXX.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_Lieferungen.vb" />
     <Compile Include="wb_00_Klassen\wb_Linien_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Mail.vb" />
     <Compile Include="wb_00_Klassen\wb_MinMaxOptCharge.vb" />
@@ -404,6 +406,7 @@
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Chargen.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Konfiguration.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Lagerorte.vb" />
+    <Compile Include="wb_00_Konstanten\sql\wb_sql_Selects_Lieferungen.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_OrgaBack.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Rezepte.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Komponenten.vb" />
@@ -519,6 +522,7 @@
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\ob_ChargenBestand.vb" />
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Cloud.vb</DependentUpon>
     </Compile>
@@ -948,6 +952,7 @@
     <Content Include="DBUpdate\2.30_KocherRezepte.sql" />
     <Content Include="DBUpdate\2.30_KocherRezepteSchritte.sql" />
     <Content Include="DBUpdate\2.30_KomponTypen.sql" />
+    <Content Include="DBUpdate\2.30_Lagerorte.sql" />
     <Content Include="DBUpdate\2.30_Linien.sql" />
     <None Include="Dokumentation\OrgaBack.docx" />
     <None Include="My Project\Application.myapp">

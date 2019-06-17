@@ -84,6 +84,10 @@ Public Class wb_GlobalSettings
     Private Shared _ProdPlanfiliale As String = Nothing
     Private Shared _ProdPlanReadOnOpen As Boolean = False
 
+    Private Shared _RohChargen_ErfassungAktiv As String = Nothing
+    Private Shared _RohChargen_GebindeGrsTol As String = Nothing
+    Private Shared _RohChargen_ErfassungVariante As String = Nothing
+
     Private Shared _mHost = Nothing
     Private Shared _mSenderAddr = Nothing
     Private Shared _mSenderPass = Nothing
@@ -1187,6 +1191,13 @@ Public Class wb_GlobalSettings
                         _WinBackLanguageVariante = wb_Functions.StrToInt(winback.sField("KF_Wert"))
                     Case "IpBasisAdresse"
                         _IPBasisAdresse = winback.sField("KF_Wert")
+
+                    Case "KonfigChargenErfEin"
+                        _RohChargen_ErfassungAktiv = winback.sField("KF_Wert")
+                    Case "KonfigGebindeGroessenTol"
+                        _RohChargen_GebindeGrsTol = winback.sField("KF_Wert")
+                    Case "KonfigChargenErfVariante"
+                        _RohChargen_ErfassungVariante = winback.sField("KF_Wert")
                 End Select
             End While
         End If
@@ -1314,4 +1325,65 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    ''' <summary>
+    ''' Liest die Einstellung aus winback.Konfiguration
+    ''' KonfigChargenErfEin       - Chargenerfassung aktiv
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property RohChargen_ErfassungAktiv As String
+        Get
+            If _RohChargen_ErfassungAktiv Is Nothing Then
+                _RohChargen_ErfassungAktiv = "0"
+                getWinBackKonfiguration()
+            End If
+            Return _RohChargen_ErfassungAktiv
+        End Get
+        Set(value As String)
+            _RohChargen_ErfassungAktiv = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Liest die Einstellung aus winback.Konfiguration
+    ''' KonfigGebindeGroessenTol  - Toleranzwert bis zur Erkennung
+    '''                             Gebinde leer.
+    '''                             (Bis unter diese Grenze darf ausdosiert werden)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property RohChargen_GebindeGrsTol As String
+        Get
+            If _RohChargen_GebindeGrsTol Is Nothing Then
+                _RohChargen_GebindeGrsTol = "0"
+                getWinBackKonfiguration()
+            End If
+            Return _RohChargen_GebindeGrsTol
+        End Get
+        Set(value As String)
+            _RohChargen_GebindeGrsTol = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Liest die Einstellung aus winback.Konfiguration
+    ''' KonfigChargenErfVariante  - Verfahren nach Ablauf Gebinde
+    '''
+    '''     1 - darf weiter verwiegen, auch wenn Gebinde theoretisch
+    '''         leer.
+    '''     2 - darf nicht weiter verwiegen, wenn Verbrauch größer als
+    '''         Gebindegröße +  KonfigGebindeGroessenTol.
+    '''         
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property RohChargen_ErfassungVariante As String
+        Get
+            If _RohChargen_ErfassungVariante Is Nothing Then
+                _RohChargen_ErfassungVariante = "0"
+                getWinBackKonfiguration()
+            End If
+            Return _RohChargen_ErfassungVariante
+        End Get
+        Set(value As String)
+            _RohChargen_ErfassungVariante = value
+        End Set
+    End Property
 End Class

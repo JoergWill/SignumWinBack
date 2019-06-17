@@ -1,0 +1,2 @@
+﻿USE winback;
+ALTER TABLE Lagerortet MODIFY LG_LF_Nr INTEGER;

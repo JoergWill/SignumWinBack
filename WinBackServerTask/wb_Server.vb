@@ -29,6 +29,7 @@ Public Class Main
 
     Dim clients As New Hashtable 'new database (hashtable) to hold the clients
     Dim Export As New ob_ChargenProduziert
+    Dim Import As New ob_ChargenBestand
     Dim ServerTaskState As ServerTaskErrors = ServerTaskErrors.OK
 
     Dim nwtUpdateKomponenten As New wb_nwtUpdate
@@ -131,10 +132,15 @@ Public Class Main
 
     ''' <summary>
     ''' Main-Timer. Ruft alle zeitgesteuerten Funktionen auf.
-    '''  - Ping MySQL
-    '''  - Update Nährwerte
     '''  - Anzeige Uhrzeit
-    '''  - Update Rezepte Kocher/Röster
+    '''  - Ping MySQL
+    '''  - Update Nährwerte aus der Cloud       office_nwt
+    '''  - Update markierte Artikel(Nährwerte)  office_artikel
+    '''  - Import Rohstoffe Pistor-Liste        office_pistor
+    '''  - Produzierte Ware und Verbräuche      office_chargen
+    '''  - Lieferungen Rohstoffe                office_bestand
+    '''  - Update Rezepte Kocher/Röster         kocher_check
+    '''  - Check Update                         office_update
     '''  
     ''' CntCounter wird mit jedem Aufruf um Eins erhöht. Die entsprechende Task stoppt
     ''' den Timer und setzt seinen Aufruf nach Erledigung der Aufgabe wieder neu.
@@ -241,7 +247,6 @@ Public Class Main
             nwtPistor = Nothing
         End If
 
-
         'Abfrage produzierte Chargen und verbrauchte Rohstoffe
         If MainTimer_Check("office_chargen") Then
             'Daten im Grid aktualisieren
@@ -250,6 +255,21 @@ Public Class Main
             'Export Chargen ab TW-Nr.x
             Dim TWNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
             AktTimerEvent.Str2 = Export.ExportChargen(TWNr)
+            'Nach Ende Export neue Startzeit setzen
+            AktTimerEvent.Endezeit = Now
+            AktTimerEvent.MySQLdbUpdate_Fields()
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+        End If
+
+        'Abfrage Rohstoffe Bestand und Chargen-Nummern
+        If MainTimer_Check("office_bestand") Then
+            'Daten im Grid aktualisieren
+            RefreshAktionsTimer()
+
+            'Import aus Tabelle dbo.ChargenBestand
+            Dim KompNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+            AktTimerEvent.Str2 = Import.ImportChargenBestand(KompNr)
             'Nach Ende Export neue Startzeit setzen
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
@@ -557,6 +577,7 @@ Public Class Main
         ' TabControl - HideTabs
         Wb_TabControl.HideTabs = True
         Wb_TabControl.Hide()
+
         ' Breite Fenster
         Const fBreite = 366
         ' Bildschirmmauflösung ermitteln
@@ -827,6 +848,9 @@ Public Class Main
     Sub AddTraceListener()
         AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
         Trace.Listeners.Add(xLogger)
+
+        'Meldung Programm-Start (initialisiert wb_Admin_Shared)
+        Trace.WriteLine("Programmstart WinBackServer-Task")
     End Sub
 
     ''' <summary>
