@@ -8,21 +8,15 @@ Public Class UnitTest_Init
     '''     - Daten/Programmpfade aus dbo.Settings.Verzeichnisse
     '''     
     ''' </summary>
-    Public Shared Sub Init_WinBackIni()
+    Public Shared Sub Init_WinBackIni(Optional Mandant As Integer = 3)
 
         'Einstellungen WinBack-Datenbank läuft auf Localhost (127.0.0.1)
         Dim Inifile As New wb_IniFile
         Inifile.WriteString("winback", "eMYSQLServerIP", "127.0.0.1")
         Inifile = Nothing
 
-        'Einstellungen OrgaBack-DatenBank
-        wb_GlobalSettings.MsSQLAdmn = "UnitTest_vd3"
-        wb_GlobalSettings.MsSQLMain = "UnitTest300"
-        wb_GlobalSettings.MsSQLUserId = ""
-        wb_GlobalSettings.MySQLPass = ""
-
-        'Programm-Einstellung OrgaBack
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
+        'Mandant setzen
+        wb_GlobalSettings.MandantNr = Mandant
 
         'alle weiteren Einstellungen werden aus dbo.Settings gelesen
         Dim OrgasoftAdmin As New wb_Sql(wb_GlobalSettings.OrgaBackAdminConString, wb_Sql.dbType.msSql)

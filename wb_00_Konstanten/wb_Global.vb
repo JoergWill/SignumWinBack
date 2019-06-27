@@ -467,6 +467,16 @@
         Public FName As String
     End Structure
 
+    Public Structure WinBackBestand
+        Public ArtikelNr As String
+        Public Bezeichnung As String
+        Public Lfd As String
+        Public Datum As String
+        Public Bestand As String
+        Public ChargenNr As String
+        Public Vorfall As String
+    End Structure
+
     Enum EditState
         Invalid
         AddNew

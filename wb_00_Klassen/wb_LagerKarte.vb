@@ -5,19 +5,15 @@ Imports System.Data.SqlClient
 Public Class wb_LagerKarte
 
     Private _Lfd As Integer
-    Private _Vorfall As String
+    Private _Vorfall As String = ""
     Private _Modul As String
     Private _Datum As String
     Private _Uhrzeit As String
     Private _Menge As String
-    Private _ChargenNummer As String
+    Private _BestandVorher As String
+    Private _ChargenNummer As String = ""
     Private _Mitarbeiter As String
     Private _Preis As String
-
-
-    Public Sub New(KompNr As Integer)
-
-    End Sub
 
     Public ReadOnly Property Lfd As String
         Get
@@ -27,7 +23,16 @@ Public Class wb_LagerKarte
 
     Public ReadOnly Property Vorfall As String
         Get
-            Return _Vorfall
+            If _Vorfall = "" Then
+                Select Case _Modul
+                    Case "Inventur-Bestandskorrektur"
+                        Return "IV"
+                    Case Else
+                        Return "--"
+                End Select
+            Else
+                Return _Vorfall
+            End If
         End Get
     End Property
 
@@ -37,21 +42,37 @@ Public Class wb_LagerKarte
         End Get
     End Property
 
+    ''' <summary>
+    ''' Gibt das Datenfeld dbo.Lagerkarte.Datum im Format YYYY-MM-DD aus
+    ''' Ist in der Datenbank im Format YYYYMMDD gespeichert. (Als String unabhängig von der Ländereinstellung)
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Datum As String
         Get
-            Return _Datum
+            Return Left(_Datum, 4) & "-" & Mid(_Datum, 5, 2) & "-" & Right(_Datum, 2)
         End Get
     End Property
 
+    ''' <summary>
+    ''' Gibt das Datenfeld dbo.Lagerkarte.Uhrzeit im Format hh:mm:ss aus
+    ''' Ist in der Datenbank im Format HH:MM gespeichert
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Uhrzeit As String
         Get
-            Return _Uhrzeit
+            Return wb_Functions.FormatTimeStr(_Uhrzeit)
         End Get
     End Property
 
-    Public ReadOnly Property Menge As String
+    Public ReadOnly Property Menge As Double
         Get
-            Return _Menge
+            Return wb_Functions.StrToDouble(_Menge)
+        End Get
+    End Property
+
+    Public ReadOnly Property BestandVorher As Double
+        Get
+            Return wb_Functions.StrToDouble(_BestandVorher)
         End Get
     End Property
 
@@ -72,6 +93,28 @@ Public Class wb_LagerKarte
             Return _Preis
         End Get
     End Property
+
+    Public ReadOnly Property Gebucht As String
+        Get
+            If (Menge > 0) Then
+                Return "1"
+            Else
+                Return "3"
+            End If
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Berechnet den aktuellen Lager-Bestand aus Menge und BestandVorher. Der Wert wird im
+    ''' Datenfeld Menge abgespeichert.
+    ''' Die Vorfallart wird zu WB geändert !
+    ''' </summary>
+    Public Sub InitBestand()
+        If Vorfall <> "WB" Then
+            _Menge = wb_Functions.FormatStr((Menge + BestandVorher).ToString, 2)
+            _Vorfall = "WB"
+        End If
+    End Sub
 
     Public Function msSQLdbRead(ByRef sqlReader As SqlDataReader) As Boolean
         'Parameter - Anzahl der Felder im DataSet
@@ -98,7 +141,7 @@ Public Class wb_LagerKarte
         End If
 
         'Feldname aus der Datenbank
-        Debug.Print("Read OrgaBack ArtikelLaufkarte " & Name & "/" & Value)
+        'Debug.Print("Read OrgaBack ArtikelLaufkarte " & Name & "/" & Value)
         Try
             Select Case Name
                 'laufende Nummer
@@ -114,6 +157,8 @@ Public Class wb_LagerKarte
                     _Uhrzeit = Value
                 Case "Menge"
                     _Menge = Value
+                Case "BestandVorher"
+                    _BestandVorher = Value
                 Case "ChargenNr"
                     _ChargenNummer = Value
                 Case "Mitarbeiter"

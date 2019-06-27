@@ -43,6 +43,7 @@ Partial Class wb_Admin_Sync
         Me.btnTryToMatch = New System.Windows.Forms.Button()
         Me.btnRemoveDBL = New System.Windows.Forms.Button()
         Me.btnRemoveNotUsed = New System.Windows.Forms.Button()
+        Me.btnInitLieferungen = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnSyncUserGruppen
@@ -197,11 +198,22 @@ Partial Class wb_Admin_Sync
         Me.btnRemoveNotUsed.Text = "Unbenutzte Einträge löschen"
         Me.btnRemoveNotUsed.UseVisualStyleBackColor = True
         '
+        'BtnInitLieferungen
+        '
+        Me.btnInitLieferungen.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.btnInitLieferungen.Location = New System.Drawing.Point(12, 287)
+        Me.btnInitLieferungen.Name = "BtnInitLieferungen"
+        Me.btnInitLieferungen.Size = New System.Drawing.Size(135, 43)
+        Me.btnInitLieferungen.TabIndex = 18
+        Me.btnInitLieferungen.Text = "Initialisierung Bestand/Liefermengen "
+        Me.btnInitLieferungen.UseVisualStyleBackColor = True
+        '
         'wb_Admin_Sync
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1185, 600)
+        Me.Controls.Add(Me.btnInitLieferungen)
         Me.Controls.Add(Me.btnRemoveNotUsed)
         Me.Controls.Add(Me.btnRemoveDBL)
         Me.Controls.Add(Me.btnTryToMatch)
@@ -238,4 +250,5 @@ Partial Class wb_Admin_Sync
     Friend WithEvents clHeader6 As Windows.Forms.ColumnHeader
     Friend WithEvents btnRemoveDBL As Windows.Forms.Button
     Friend WithEvents btnRemoveNotUsed As Windows.Forms.Button
+    Friend WithEvents btnInitLieferungen As Windows.Forms.Button
 End Class

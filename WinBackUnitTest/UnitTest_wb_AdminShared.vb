@@ -6,7 +6,7 @@ Imports WinBack
 
     <TestMethod()> Public Sub TestCreateEventLog()
         'Beim ersten Aufruf irgendeiner Routine wird Shared New() aufgerufen
-        Assert.AreEqual(True, wb_Admin_Shared.WriteToEventLog("TEST"))
+        Assert.AreEqual(False, wb_Admin_Shared.LoggerAktiv)
     End Sub
 
 End Class

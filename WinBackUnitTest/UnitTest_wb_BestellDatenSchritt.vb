@@ -4,9 +4,19 @@ Imports WinBack
 
 <TestClass()> Public Class UnitTest_wb_BestellDatenSchritt
 
+    ''' <summary>
+    ''' Initialisiert die Datenbank-Einstellungen.
+    ''' Falls notwendig werden die Datensicherungen aus ... in die DB eingespielt
+    ''' </summary>
+    ''' <param name="testContext"></param>
+    <ClassInitialize()> Public Shared Sub InitDBTests(ByVal testContext As TestContext)
+        'Programm-Variante Unit-Test
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen (OrgaBackDemo)
+        UnitTest_Init.Init_WinBackIni(False)
+    End Sub
+
     <TestMethod()> Public Sub Test_SollwertTeilungText()
-        'Programm-Variante einstellen
-        UnitTest_Init.Init_WinBackIni()
         'Bestelldaten aus OrgaBack (Stored Procedure)
         Dim BestellDatenSchritt As New wb_BestellDatenSchritt
 

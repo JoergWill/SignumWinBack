@@ -264,6 +264,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTest_wb_Lieferungen.vb" />
     <Compile Include="UnitTest_wb_BestellDatenSchritt.vb" />
     <Compile Include="UnitTest_wb_Kocher.vb" />
     <Compile Include="UnitTest_wb_Mail.vb" />

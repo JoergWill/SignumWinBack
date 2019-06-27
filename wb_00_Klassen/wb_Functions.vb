@@ -941,23 +941,27 @@ Public Class wb_Functions
     ''' <param name="value"></param>
     ''' <returns>Kovertierten String im Format Double</returns>
     Public Shared Function StrToDouble(value As String) As Double
-        Dim d As Double
-        Try
-            value = value.Replace(".", ",")
-            If Double.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d) Then
-                Return d
-            Else
-                'mögliche Strings oder Sonderzeichen entfernen
-                value = New System.Text.RegularExpressions.Regex("[a-zA-ZüöäÜÖÄß%°\\s\\n]").Replace(value, String.Empty)
+        If value IsNot Nothing Then
+            Dim d As Double
+            Try
+                value = value.Replace(".", ",")
                 If Double.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d) Then
                     Return d
                 Else
-                    Return 0.0F
+                    'mögliche Strings oder Sonderzeichen entfernen
+                    value = New System.Text.RegularExpressions.Regex("[a-zA-ZüöäÜÖÄß%°\\s\\n]").Replace(value, String.Empty)
+                    If Double.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d) Then
+                        Return d
+                    Else
+                        Return 0.0F
+                    End If
                 End If
-            End If
-        Catch ex As Exception
+            Catch ex As Exception
+                Return 0.0F
+            End Try
+        Else
             Return 0.0F
-        End Try
+        End If
     End Function
 
     ''' <summary>

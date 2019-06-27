@@ -771,6 +771,27 @@ Stacktrace:
  oder Löschen des Fensters gesichert werden müssen.
  </summary>
 </member>
+<member name="P:WinBack.wb_LagerKarte.Datum">
+ <summary>
+ Gibt das Datenfeld dbo.Lagerkarte.Datum im Format YYYY-MM-DD aus
+ Ist in der Datenbank im Format YYYYMMDD gespeichert. (Als String unabhängig von der Ländereinstellung)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_LagerKarte.Uhrzeit">
+ <summary>
+ Gibt das Datenfeld dbo.Lagerkarte.Uhrzeit im Format hh:mm:ss aus
+ Ist in der Datenbank im Format HH:MM gespeichert
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_LagerKarte.InitBestand">
+ <summary>
+ Berechnet den aktuellen Lager-Bestand aus Menge und BestandVorher. Der Wert wird im
+ Datenfeld Menge abgespeichert.
+ Die Vorfallart wird zu WB geändert !
+ </summary>
+</member>
 <member name="M:WinBack.wb_LagerKarte.MsSQLdbRead_Daten(System.String,System.Object)">
  <summary>
  Schreibt den Wert aus Value in die entprechende Property der Klasse. Der Feldname bestimmt das Ziel
@@ -1477,14 +1498,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 <member name="M:WinBack.wb_Lieferungen.Verbuchen(WinBack.wb_Sql,WinBack.wb_LagerKarte)">
  <summary>
  Abhängig vom Vorfallkürzel wird der aktuelle Datensatz aus dbo.ArtikelLagerkarte in winback.Lieferungen verbucht:
-     
+ 
+     BR  -   Bruch/Schwund
      WE  -   Wareneingang
      WBA -   WinBack Produktion automatische Abbuchung
      
  </summary>
  <param name="winback"></param>
 </member>
-<member name="M:WinBack.wb_Lieferungen.Verbuchen_WE(WinBack.wb_Sql,WinBack.wb_LagerKarte,System.Boolean)">
+<member name="M:WinBack.wb_Lieferungen.Verbuchen_Zugang(WinBack.wb_Sql,WinBack.wb_LagerKarte,System.Boolean)">
  <summary>
  Fügt einen neuen Datensatz (Wareneingang) an die Tabelle Lieferungen an. 
  
@@ -1504,12 +1526,40 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
      LF_Preis            dbo.ArtikelLagerkarte.Preis
      LF_PreisEinheit     0
      LF_Timestamp
-     TODO Chargenerfassungs-Variante beachten !!
  
  </summary>
  <param name="winback"></param>
  <param name="LagerKarte"></param>
  <param name="Chargenerfassung"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.Verbuchen_Abgang(WinBack.wb_Sql,WinBack.wb_LagerKarte,System.Boolean)">
+ <summary>
+ Verbucht Bruch und/oder Schwund in winback.Lieferungen. Wenn eine Chargen-Nummer angegeben ist, wird versucht, 
+ den oder die Datensätze mit dieser Nummer zu finden. 
+ Sind mehrere Datensätze vorhanden, werden solange die Liefermengen auf Null gesetzt, bis die Korrekturmenge erreicht ist.
+ 
+ Wenn der Datensatz nicht gefunden werden kann oder keine Chargen-Nummer angegeben ist, wird eine neue Zeile 
+ angefügt und der Bestand korrigiert.
+ 
+ </summary>
+ <param name="winback"></param>
+ <param name="LagerKarte"></param>
+ <param name="Chargenerfassung"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.InsertLieferung(WinBack.wb_Sql,WinBack.wb_LagerKarte,System.Double)">
+ <summary>
+ Fügt einen neuen Datensatz an die Tabelle winback.Lieferungen an. Die Daten werden aus dem LagerKarten-Objekt ermittelt.
+ </summary>
+ <param name="winback"></param>
+ <param name="LagerKarte"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.UpdateLieferung(WinBack.wb_Sql,System.Int32,System.Double)">
+ <summary>
+ Ändert einen Datensatz in der Tabelle winback.Lieferungen. Anpassung der Liefermenge
+ </summary>
+ <param name="winback"></param>
+ <param name="lfd"></param>
+ <param name="lfMenge"></param>
 </member>
 <member name="M:WinBack.wb_Lieferungen.UpdateLagerorteLfd(WinBack.wb_Sql,System.Int32)">
  <summary>
@@ -5312,7 +5362,7 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.ob_ChargenBestand.ImportChargenBestand(System.Int32)">
+<member name="M:WinBack.ob_ChargenBestand.ImportChargenBestand(System.Int32,System.Boolean)">
  <summary>
  Liest aus der Tabelle dbo.ArtikelLagerkarte alle Datensätze
      mit ArtikelNr = 
@@ -5322,13 +5372,7 @@ Text aus Datenbank lesen - Übersetzung
      
  Die Einträge werden in der Tabelle Lieferungen in Winback verarbeitet.
  Kennungen im Feld LF_gebucht
-     V - Bestellvorschlag automatisch
-     N - Bestellung (noch nicht gedruckt)
-     B - Bestellt (gedruckt/gefaxt)
-     G - Geliefert (Bestellung erledigt)
-     L - Lieferant zugeordnet zu dieser Komponente
-     X - Lieferant gelöscht (für diese Komponente)
-     
+ 
      1 - Lieferung (Neue Lieferungen werden immer mit '1' als gebucht vermerkt)
      2 - Charge aktiv (WinBack produziert aktuell mit den Daten aus dieser Lieferung)
      3 - Geliefert, Charge komplett verbraucht (auch Inventurbuchung)

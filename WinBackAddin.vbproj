@@ -303,6 +303,12 @@
     <Compile Include="wb_00_Klassen\Kocher\wb_Kocher.vb" />
     <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_Rezept.vb" />
     <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_Global.vb" />
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewBestand.Designer.vb">
+      <DependentUpon>wb_ArrayGridViewBestand.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewBestand.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.Designer.vb">
       <DependentUpon>wb_ArrayGridViewNwt.vb</DependentUpon>
     </Compile>

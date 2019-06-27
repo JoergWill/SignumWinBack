@@ -321,7 +321,7 @@ Imports WinBack.wb_Global
     End Sub
 
     <TestMethod()> Public Sub Test_GetProcessList()
-        Assert.AreEqual(False, wb_Functions.GetOrgaBackProcess())
+        Assert.AreEqual(False, wb_Functions.GetProcessRunning("XXX"))
     End Sub
 
     <TestMethod()> Public Sub Test_RegKeyNameExists()

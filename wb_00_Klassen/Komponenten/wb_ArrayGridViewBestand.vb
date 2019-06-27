@@ -1,13 +1,17 @@
 ﻿Imports System.Windows.Forms
 
-Public Class wb_ArrayGridViewSortimente
+Public Class wb_ArrayGridViewBestand
     Inherits wb_ArrayGridView
     Public GridArray As Array
-    Dim Sortiment As wb_Global.OrgaBackSortiment
+    Dim Bestand As wb_Global.WinBackBestand
 
     Const COLSORTNR = 0
     Const COLSORTNAM = 1
-    Const COLSORTFIL = 2
+    Const COLSORTLFD = 2
+    Const COLSORTDAT = 3
+    Const COLSORTBST = 4
+    Const COLSORTCRG = 5
+    Const COLSORTVRF = 6
 
     Public Sub New(ByVal xArray As ArrayList, ByVal sColNames As List(Of String), Optional ShowTooltips As Boolean = True)
         'Spalten-Überschriften
@@ -34,7 +38,11 @@ Public Class wb_ArrayGridViewSortimente
         'Spalten formatieren
         MyBase.Columns(COLSORTNR).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         MyBase.Columns(COLSORTNAM).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        MyBase.Columns(COLSORTFIL).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        MyBase.Columns(COLSORTLFD).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        MyBase.Columns(COLSORTDAT).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        MyBase.Columns(COLSORTBST).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        MyBase.Columns(COLSORTCRG).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        MyBase.Columns(COLSORTVRF).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
         ' Daten Löschen
         MyBase.Rows.Clear()
@@ -50,12 +58,17 @@ Public Class wb_ArrayGridViewSortimente
                 .MinimumHeight = 20
                 ' Strich zwischen den Zeilen  
                 .DividerHeight = 0
-                'OrgaBack-Sortimente aus dem Quell-Array
-                Sortiment = GridArray(r)
-                .Cells(COLSORTNR).Value = Sortiment.Srt
-                .Cells(COLSORTNAM).Value = Sortiment.SName
-                .Cells(COLSORTFIL).Value = Sortiment.FName
+                'WinBack-Bestand aus dem Quell-Array
+                Bestand = GridArray(r)
+                .Cells(COLSORTNR).Value = Bestand.ArtikelNr
+                .Cells(COLSORTNAM).Value = Bestand.Bezeichnung
+                .Cells(COLSORTLFD).Value = Bestand.Lfd
+                .Cells(COLSORTDAT).Value = Bestand.Datum
+                .Cells(COLSORTBST).Value = Bestand.Bestand
+                .Cells(COLSORTCRG).Value = Bestand.ChargenNr
+                .Cells(COLSORTVRF).Value = Bestand.Vorfall
             End With
         Next
     End Sub
+
 End Class

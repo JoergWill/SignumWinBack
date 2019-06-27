@@ -233,6 +233,7 @@ Public Class wb_Produktionsschritt
     Public ReadOnly Property VirtTreeArtikelLinienGruppe As String
         Get
             'TODO Hier entscheiden ob Liniengruppe oder Artikel-Liniengruppe angezeigt werden soll
+            Return ""
         End Get
     End Property
 

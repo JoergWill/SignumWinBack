@@ -18,7 +18,9 @@
   <?if $(var.WinBackServerTask.Configuration) = Release ?>
   <?define Configuration = "Release" ?>
   <?else ?>
+  <?ifndef Configuration ?>
   <?define Configuration = "Debug" ?>
+  <?endif?>
   <?endif ?>
 
   <!-- 32-bit / 64-bit variables $(var.Platform) -->

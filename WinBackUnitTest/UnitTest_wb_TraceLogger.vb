@@ -10,7 +10,7 @@
 
     <TestInitialize>
     Sub TestInitialize()
-        AddHandler Logger.WriteText, AddressOf GetTrace
+        AddHandler Logger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
         Trace.Listeners.Add(Logger)
     End Sub
 

@@ -13,8 +13,9 @@ Public Class wb_Admin_Sync
     Dim wbRohstoffe As New wb_SyncRohstoffe_WinBack
     Dim osRohstoffe As New wb_SyncRohstoffe_OrgaBack
 
-    Dim SyncResultGrid As wb_ArrayGridViewSync
     Dim sColNames As New List(Of String)
+    Dim ResultGrid As wb_ArrayGridViewBestand
+    Dim SyncResultGrid As wb_ArrayGridViewSync
     Dim SyncType As wb_Global.SyncType = wb_Global.SyncType.Undefined
 
     Dim cntSync_wbMissMatch As Integer
@@ -376,6 +377,19 @@ Public Class wb_Admin_Sync
     End Sub
 
     Private Sub DisplayResultGrid(ByVal xArray As ArrayList, Optional sColNames As List(Of String) = Nothing)
+        'Wenn alte Daten vorhanden sind vorher löschen
+        Dim ColNames As List(Of String) = DisposeResultGrid(sColNames)
+
+        'Daten im Grid anzeigen
+        SyncResultGrid = New wb_ArrayGridViewSync(xArray, sColNames)
+        SyncResultGrid.ScrollBars = ScrollBars.Vertical
+        SyncResultGrid.BackgroundColor = Me.BackColor
+        SyncResultGrid.GridLocation(tbSyncResult)
+        SyncResultGrid.PerformLayout()
+        SyncResultGrid.Refresh()
+    End Sub
+
+    Private Function DisposeResultGrid(sColNames As List(Of String)) As List(Of String)
         Dim ColNames As List(Of String) = sColNames
 
         'Wenn alte Daten vorhanden sind vorher löschen
@@ -386,15 +400,12 @@ Public Class wb_Admin_Sync
             SyncResultGrid.Dispose()
             SyncResultGrid = Nothing
         End If
-
-        'Daten im Grid anzeigen
-        SyncResultGrid = New wb_ArrayGridViewSync(xArray, sColNames)
-        SyncResultGrid.ScrollBars = ScrollBars.Vertical
-        SyncResultGrid.BackgroundColor = Me.BackColor
-        SyncResultGrid.GridLocation(tbSyncResult)
-        SyncResultGrid.PerformLayout()
-        SyncResultGrid.Refresh()
-    End Sub
+        If ResultGrid IsNot Nothing Then
+            ResultGrid.Dispose()
+            ResultGrid = Nothing
+        End If
+        Return ColNames
+    End Function
 
     Private Sub CalculateResultSummary(State As wb_Global.SyncState)
         Select Case State
@@ -450,6 +461,7 @@ Public Class wb_Admin_Sync
         btnTryToMatch.Enabled = True
         btnRemoveDBL.Enabled = True
         btnRemoveNotUsed.Enabled = (SyncType = wb_Global.SyncType.Rohstoffe)
+        lvSyncResult.Visible = True
         lvSyncResult.Enabled = True
     End Sub
 
@@ -473,4 +485,54 @@ Public Class wb_Admin_Sync
         pDialog.Close()
     End Sub
 
+    Private Sub btnInitLieferungen_Click(sender As Object, e As EventArgs) Handles btnInitLieferungen.Click
+        Dim WinBackBestand As New ob_ChargenBestand
+        Dim KompNr As Integer = wb_Global.UNDEFINED
+        Dim BestandsListe As New ArrayList
+        Dim Bestand As New wb_Global.WinBackBestand
+
+        'Sicherheits-Abfrage
+        If MsgBox("Diese Funktion löscht alle Einträge in WinBack.Lieferungen" & vbCrLf &
+                  "Die aktuelle Bestands-Zahlen werden aus OrgaBack übernommen", MsgBoxStyle.OkCancel + MsgBoxStyle.Critical, "Synchronisation Rohwaren-Bestand") = MsgBoxResult.Ok Then
+
+            'Liste der Tabellen-Überschriften
+            sColNames.Clear()
+            sColNames.AddRange({"Nr", "&Bezeichnung", "Lfd.Nr.", "Datum", "Bestand", "ChargenNummer", "Status"})
+
+            Text = "Initialisierung Lagerbestand WinBack"
+            HideResult()
+            lvSyncResult.Visible = False
+            'Cursor umschalten
+            Me.Cursor = Cursors.WaitCursor
+
+            'Schleife über alle Rohstoffe
+            Do
+                'Lagerbestand aus dbo.ArtikelLagerkarte übernehmen
+                KompNr = WinBackBestand.ImportChargenBestand(KompNr, True)
+                'Daten im Array speichern
+                Bestand.ArtikelNr = WinBackBestand.Nummer
+                Bestand.Bezeichnung = WinBackBestand.Bezeichnung
+                Bestand.Lfd = WinBackBestand.Lfd
+                Bestand.Datum = WinBackBestand.Datum
+                Bestand.Bestand = WinBackBestand.Bestand
+                Bestand.ChargenNr = WinBackBestand.ChargenNr
+                Bestand.Vorfall = WinBackBestand.Vorfall
+
+                BestandsListe.Add(Bestand)
+            Loop Until (KompNr = 0)
+
+            'falls schon Daten vorhanden sind, löschen
+            DisposeResultGrid(Nothing)
+            'Daten im Grid anzeigen
+            ResultGrid = New wb_ArrayGridViewBestand(BestandsListe, sColNames)
+            ResultGrid.ScrollBars = ScrollBars.Vertical
+            ResultGrid.BackgroundColor = Me.BackColor
+            ResultGrid.GridLocation(tbSyncResult)
+            ResultGrid.PerformLayout()
+            ResultGrid.Refresh()
+            'Cursor wieder umschalten
+            Me.Cursor = Cursors.Default
+        End If
+
+    End Sub
 End Class

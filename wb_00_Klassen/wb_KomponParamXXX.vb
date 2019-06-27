@@ -45,7 +45,7 @@
     ''' <returns></returns>
     Public Function MySQLdbUpdate(KoNr As Integer, ByRef winback As wb_Sql) As Boolean
         'Update-Statement wird dynamisch erzeugt    
-        Dim sql As String
+        'Dim sql As String
         'Result OK
         MySQLdbUpdate = True
 
