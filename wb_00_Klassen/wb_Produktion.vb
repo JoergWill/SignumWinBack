@@ -23,7 +23,7 @@
 
     Private _VorProduktion As New ArrayList
 
-    Private ReadOnly Property GetNewChargenNummer(Linie As Integer) As String
+    Public ReadOnly Property GetNewChargenNummer(Linie As Integer) As String
         Get
             If CheckLinie(Linie) Then
                 If _ChargenNummer(Linie) = 0 Then
@@ -38,7 +38,7 @@
         End Get
     End Property
 
-    Private ReadOnly Property GetChargenNummer(Linie As Integer) As String
+    Public ReadOnly Property GetChargenNummer(Linie As Integer) As String
         Get
             If CheckLinie(Linie) Then
                 Return _ChargenNummer(Linie).ToString
@@ -48,7 +48,7 @@
         End Get
     End Property
 
-    Private ReadOnly Property GetNextChargenNummer(Linie As Integer) As String
+    Public ReadOnly Property GetNextChargenNummer(Linie As Integer) As String
         Get
             If CheckLinie(Linie) Then
                 Return (_ChargenNummer(Linie) + 1).ToString
@@ -58,12 +58,12 @@
         End Get
     End Property
 
-    Private Function CheckLinie(Linie) As Boolean
+    Public Function CheckLinie(Linie As Integer) As Boolean
         If (Linie > 0) And (Linie < wb_Global.MaxLinien) Then
             If _ChargenNummer Is Nothing Then
                 ReDim _ChargenNummer(Linie + 1)
             End If
-            If _ChargenNummer.Length < Linie Then
+            If _ChargenNummer.Length <= Linie Then
                 ReDim _ChargenNummer(Linie + 1)
             End If
             Return True
@@ -289,6 +289,8 @@
         Artikel.Bezeichnung = Rezept.RezeptBezeichnung
         Artikel.Nummer = "K"
         Artikel.RzNr = RzNr
+        'Preisberechnung abschalten - Rechenzeit
+        Artikel.ReadCalcPreis = False
 
         'Artikelzeilen hängen immer am ersten (Dummy)Schritt
         Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt

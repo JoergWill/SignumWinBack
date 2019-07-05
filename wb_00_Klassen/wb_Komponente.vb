@@ -35,6 +35,7 @@ Public Class wb_Komponente
     Private _RezeptName As String = Nothing
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
+    Private _ReadCalcPreis As Boolean = True
 
     Private _RootParameter As New wb_KomponParam(Nothing, 0, 0, "")
     Private _Parameter As wb_KomponParam
@@ -224,13 +225,17 @@ Public Class wb_Komponente
             _DataHasChanged = True
         End Set
         Get
-            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
-                KA_Preis = ob_Artikel_Services.GetArtikelPreis(Nummer, Type)
-            Else
-                If RzNr > 0 Then
-                    'TODO - Rechenzeit ?
-                    ' KA_Preis = CalculatePreis()
+            'Wenn das Flag ReadCalcPreis gesetzt ist (Rechenzeit z.B. Prodplanung)
+            'sonst wird der letzte gespeicherte Wert aus KA_Preis zurückgegeben
+            If _ReadCalcPreis Then
+                If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                    KA_Preis = ob_Artikel_Services.GetArtikelPreis(Nummer, Type)
+                Else
+                    If RzNr > 0 Then
+                        'TODO - Rechenzeit ?
+                        ' KA_Preis = CalculatePreis()
 
+                    End If
                 End If
             End If
 
@@ -346,6 +351,22 @@ Public Class wb_Komponente
             BuildParameterArray()
             Return _RootParameter
         End Get
+    End Property
+
+    ''' <summary>
+    ''' Flag bestimmt, ob bei der Abfrage des Preises, die Berechnung neu
+    ''' angestossen wird (Bei OrgaBack Abfrage der Preis-Information aus dem Arikel-Objekt)
+    ''' 
+    ''' Wird z.B. bei der Produktionsplanung abgeschaltet um Rechenzeit zu sparen !
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property ReadCalcPreis As Boolean
+        Get
+            Return _ReadCalcPreis
+        End Get
+        Set(value As Boolean)
+            _ReadCalcPreis = value
+        End Set
     End Property
 
     ''' <summary>

@@ -306,7 +306,11 @@ Public Class wb_GlobalSettings
     Public Shared Property Log4netAutoStart As Boolean
         Get
             If _Log4netAutoStart = UNDEFINED Then
-                getWinBackIni("Logger")
+                If pVariante = ProgVariante.Setup Then
+                    _Log4netAutoStart = 1
+                Else
+                    getWinBackIni("Logger")
+                End If
             End If
             Return (_Log4netAutoStart = 1)
         End Get

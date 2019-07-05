@@ -29,6 +29,7 @@ Public Class wb_Rezept
     Private _LinienGruppe As Integer
     Private _KneterKennLinie As Integer
     Private _NoMessage As Boolean
+    Private _ReadCalcPreis As Boolean = True
 
     Public TeigChargen As New wb_MinMaxOptCharge
     Private _DataHasChanged As Boolean = False
@@ -344,6 +345,22 @@ Public Class wb_Rezept
         End Get
         Set(value As Integer)
             _KneterKennLinie = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Flag bestimmt, ob bei der Abfrage des Preises, die Berechnung neu
+    ''' angestossen wird (Bei OrgaBack Abfrage der Preis-Information aus dem Arikel-Objekt)
+    ''' 
+    ''' Wird z.B. bei der Produktionsplanung abgeschaltet um Rechenzeit zu sparen !
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property ReadCalcPreis As Boolean
+        Get
+            Return _ReadCalcPreis
+        End Get
+        Set(value As Boolean)
+            _ReadCalcPreis = value
         End Set
     End Property
 
@@ -674,8 +691,8 @@ Public Class wb_Rezept
             For i = 0 To sqlReader.FieldCount - 1
                 MySQLdbRead_Fields(sqlReader.GetName(i), sqlReader.GetValue(i))
             Next
-            'aktuellen Preis aus OrgaBack abfragen
-            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            'aktuellen Preis aus OrgaBack abfragen - Nicht bei Produktionsplanung !
+            If (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack) And Not _ReadCalcPreis Then
                 Preis = ob_Artikel_Services.GetArtikelPreis(_SQLRezeptSchritt.Nummer, _SQLRezeptSchritt.Type)
                 If Preis > 0 Then
                     _SQLRezeptSchritt.PreisProKg = Preis.ToString

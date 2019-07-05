@@ -32,7 +32,9 @@
     ''' </summary>
     Shared Sub New()
         If wb_GlobalSettings.pVariante <> wb_Global.ProgVariante.WinBack Then
-            GetOrgaBackOrte()
+            '05.07.2019/Fonk - MFF200 ist kein Auswahlfeld mehr (nur noch Text)
+            '                  Daten aus dbo.ArtikelMultifunktionsfeld werden nicht mehr berücksichtigt
+            'GetOrgaBackOrte()
         End If
         InitLinienGruppen()
         InitLinien()
@@ -44,6 +46,9 @@
     ''' 
     ''' Die Auswahlfeld-Inhalte stehen in der Tabelle dbo.ArtikelMultifunktionsfeld mit Gruppen-Nr=3
     ''' Zur Linien-Nummer wird in WinBack ein Offset(100) dazu addiert)
+    ''' 
+    '''     05.07.2019/Fonk
+    '''     Daten aus dbo.ArtikelMultifunktionsfeld werden nicht mehr berücksichtigt
     ''' </summary>
     Private Shared Sub GetOrgaBackOrte()
         Dim LinieNummer As Integer

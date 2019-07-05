@@ -161,6 +161,7 @@
         WBServerTask                'Programm läuft als Hintergrund-Task auf dem WinBack-Server
         WinBack                     'Programm läuft als Standalone
         UnitTest                    'Programm läuft im Test-Modus (UnitTest)
+        Setup                       'Setup-Routine OrgaBackAddIn
         Undef                       'nicht definiert
     End Enum
 

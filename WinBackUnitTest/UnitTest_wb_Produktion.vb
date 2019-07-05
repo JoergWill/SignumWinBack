@@ -246,4 +246,33 @@ Imports WinBack
 
     End Sub
 
+    <TestMethod()> Public Sub Test_wb_Produktion_GetNewChargenNummer()
+        Dim Produktion As New wb_Produktion
+        Dim ChrgNr As String
+        ChrgNr = Produktion.GetNewChargenNummer(1)
+        Assert.AreEqual(ChrgNr, "1000")
+        ChrgNr = Produktion.GetNewChargenNummer(1)
+        Assert.AreEqual(ChrgNr, "1001")
+        ChrgNr = Produktion.GetNewChargenNummer(1)
+        Assert.AreEqual(ChrgNr, "1002")
+        ChrgNr = Produktion.GetNewChargenNummer(1)
+        Assert.AreEqual(ChrgNr, "1003")
+        ChrgNr = Produktion.GetNewChargenNummer(1)
+        Assert.AreEqual(ChrgNr, "1004")
+
+        Assert.AreEqual(Produktion.GetNewChargenNummer(1), "1005")
+        Assert.AreEqual(Produktion.GetNewChargenNummer(1), "1006")
+        Assert.AreEqual(Produktion.GetNewChargenNummer(1), "1007")
+        Assert.AreEqual(Produktion.GetNewChargenNummer(1), "1008")
+        Assert.AreEqual(Produktion.GetNewChargenNummer(1), "1009")
+        Assert.AreEqual(Produktion.GetNewChargenNummer(1), "1010")
+        Assert.AreEqual(Produktion.GetNewChargenNummer(2), "2000")
+        Assert.AreEqual(Produktion.GetNewChargenNummer(2), "2001")
+        Assert.AreEqual(Produktion.GetNewChargenNummer(3), "3000")
+        Assert.AreEqual(Produktion.GetNewChargenNummer(3), "3001")
+        Assert.AreEqual(Produktion.GetNewChargenNummer(99), "")
+    End Sub
+
+
+
 End Class

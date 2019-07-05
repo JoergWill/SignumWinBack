@@ -1613,6 +1613,9 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  
  Die Auswahlfeld-Inhalte stehen in der Tabelle dbo.ArtikelMultifunktionsfeld mit Gruppen-Nr=3
  Zur Linien-Nummer wird in WinBack ein Offset(100) dazu addiert)
+ 
+     05.07.2019/Fonk
+     Daten aus dbo.ArtikelMultifunktionsfeld werden nicht mehr berücksichtigt
  </summary>
 </member>
 <member name="M:WinBack.wb_Linien_Global.GetBezeichnung(System.Int32)">
@@ -2183,6 +2186,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
      Type 401    -  Nährwerte bezogen auf Stk
  </summary>
  <returns>wb_KomponParam - Root-Parameter der Komponente</returns>
+</member>
+<member name="P:WinBack.wb_Komponente.ReadCalcPreis">
+ <summary>
+ Flag bestimmt, ob bei der Abfrage des Preises, die Berechnung neu
+ angestossen wird (Bei OrgaBack Abfrage der Preis-Information aus dem Arikel-Objekt)
+ 
+ Wird z.B. bei der Produktionsplanung abgeschaltet um Rechenzeit zu sparen !
+ </summary>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_Komponente.BuildParameterArray">
  <summary>
@@ -3302,6 +3314,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <summary>
  Gibt die Liniengruppe der Rezeptur zurück. 
  Wenn die Rezeptvariante gleich 0 ist (Sauerteig) , wird als Liniengruppe 999 zurückgegeben
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Rezept.ReadCalcPreis">
+ <summary>
+ Flag bestimmt, ob bei der Abfrage des Preises, die Berechnung neu
+ angestossen wird (Bei OrgaBack Abfrage der Preis-Information aus dem Arikel-Objekt)
+ 
+ Wird z.B. bei der Produktionsplanung abgeschaltet um Rechenzeit zu sparen !
  </summary>
  <returns></returns>
 </member>

@@ -71,10 +71,13 @@ Public Class wb_KomponParam300
             If IsValidParameter(i) Then
                 'Update-Statement wird dynamisch erzeugt
                 'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
-                sql = KoNr & ", 300, " & i.ToString & ", '" & Wert(i) & "', '" & kt300Param(i).Bezeichnung & "'"
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, KoNr & ", 300, " & i.ToString & ", '" & Wert(i) & "', '" & kt300Param(i).Bezeichnung & "'")
                 'Update ausführen
-                If Not winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, sql)) Then
+                If winback.sqlCommand(sql) < 0 Then
+                    Trace.WriteLine("@E_Fehler bei Update kt300 " & sql)
                     MySQLdbUpdate = False
+                Else
+                    Debug.Print("@I_Update kt300 " & sql)
                 End If
             End If
         Next

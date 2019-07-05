@@ -3,11 +3,10 @@
   <!-- Supported language and codepage codes can be found here: https://www.science.co.il/language/Locale-codes.php -->
   <String Id="Language">1031</String>
 
-  <String Id="LicenseRtf" Overridable="yes">EULA_en-us.rtf</String>
+  <String Id="LicenseRtf" Overridable="yes">EULA_de-de.rtf</String>
 
   <String Id="ProductDescription">WinBack AddIn for OrgaBack</String>
   <String Id="Comments">Setup-Routine WinBack-AddIn</String>
-  <String Id="ApplicationName">WinBack-AddIn</String>
   <String Id="ManufacturerName">WinBack</String>
   <String Id="ManufacturerFullName">WinBack GmbH Rudersberg</String>
 
@@ -18,11 +17,16 @@
   <String Id="OS2Old">This product requires at least Windows Vista / Server 2008.</String>
   <String Id="NewerInstalled">The same or a newer version of this product is already installed.</String>
 
-  <String Id="FeatureCompleteDescription">The complete package.</String>
-  <String Id="FeatureMainProgramDescription">The main version including all dependencies.</String>
-  <String Id="FeatureMainProgramTitle">Main program</String>
+  <String Id="ApplicationName">WinBack-AddIn</String>
+  <String Id="FeatureCompleteDescription">WinBack-AddIn und Background-Task für OrgaBack. Optional MySQL-Server und Log-Viewer </String>
 
-  <String Id="ServerDlgTitle">{\WixUI_Font_Title}Receiver Configuration</String>
-  <String Id="ServerDlgDescription">Target servers for uberAgent's data</String>
-  <String Id="ServerDlgServerLabel">Specify to which Splunk Indexers or Forwarders uberAgent should send its data.&#13;&#10;If multiple targets are specified, uberAgent load-balances between them.&#13;&#10;&#13;&#10;Format:&#13;&#10;    server1:port1, server2:port2, ...&#13;&#10;Default:&#13;&#10;    localhost:19500&#13;&#10;    (requires locally installed Universal Forwarder)</String>
+  <String Id="FeatureServerTaskDescription">WinBack-Hintergrund-Task. Aktualisierung der Nährwerte aus der Cloud.</String>
+  <String Id="FeatureServerTaskTitle">Hintergrund-Programm</String>
+
+  <String Id="FeatureMySQLDescription">MySQL-Datenbank für die OrgaBack-Standalone-Lösung ohne Produktions-Steuerung</String>
+  <String Id="FeatureMySQLTitle">MySQL-Server</String>
+
+  <String Id="FeatureLog4ViewDescription">Add-On zum Anzeigen und Beobachten der Log-Files</String>
+  <String Id="FeatureLog4ViewTitle">Log4View</String>
+  
 </WixLocalization>

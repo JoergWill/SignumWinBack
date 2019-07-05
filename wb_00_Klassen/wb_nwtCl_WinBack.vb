@@ -100,6 +100,9 @@ Public Class wb_nwtCl_WinBack
             request.Headers.Add("Authorization: Basic " & _pass)
             request.ContentType = "application/x-www-form-urlencoded"
 
+            'Request ins Log-File schreiben
+            Trace.WriteLine("@I_WebRequest " & _url & "/" & cmd & param)
+
             ' Antwort (OK)
             Dim response As WebResponse = request.GetResponse()
             _errorCode = CType(response, HttpWebResponse).StatusCode
@@ -109,7 +112,7 @@ Public Class wb_nwtCl_WinBack
                 Dim dataStream As Stream = response.GetResponseStream()
                 Dim reader As New StreamReader(dataStream)
                 Dim responseFromServer As String = reader.ReadToEnd()
-                'Debug.Print("Response from Server :" & responseFromServer)
+                Trace.WriteLine("@I_Response from Server :" & responseFromServer)
 
                 'wenn das erste Zeichen ein "[" ist handelt es sich um eine JSON-Array
                 If Left(responseFromServer, 1) = "[" Then

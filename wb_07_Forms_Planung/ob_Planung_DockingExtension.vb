@@ -108,6 +108,9 @@ Public Class ob_Planung_DockingExtension
     End Sub
 
     Private Sub Produktion()
+        'Produktions-Liste in OrgaBack speichern (eventuelle Änderungen werden in pq_Produktionsauftrag übernommen
+        TryCast(_Extendee, INavigationClass).Update()
+
         'Lieferdatum merken
         wb_GlobalSettings.ProdPlanDatum = Extendee.PropertyValueCollection(1).Value
         'Produktions-Filiale merken

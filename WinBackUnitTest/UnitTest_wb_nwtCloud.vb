@@ -2,6 +2,15 @@
 
 <TestClass()> Public Class UnitTest_wb_nwtCloud
 
+    ''' <summary>
+    ''' Initialisiert die globalen Einstellungen.
+    ''' </summary>
+    ''' <param name="testContext"></param>
+    <ClassInitialize()> Public Shared Sub Init_CloudTests(ByVal testContext As TestContext)
+        'Programm-Variante Unit-Test
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
+    End Sub
+
     <TestMethod()> Public Sub Test_CloudLookup()
 
         'Create new instance of nwtCloud
@@ -34,7 +43,7 @@
         Dim LastChange As Date = nwtUpdate.GetNaehrwerte("1", nwtDaten)
 
         'Ergebnis aus Cloud(JSON) auswerten
-        Assert.AreEqual(nwtDaten.ktTyp301.TimeStamp, #12/16/2014 09:22:59#)
+        Assert.AreEqual(nwtDaten.ktTyp301.TimeStamp, #06/28/2018 09:27:45#)
         Assert.AreEqual(nwtDaten.Lieferant, "LINDEMANN")
         Assert.AreEqual(nwtDaten.Bezeichnung, "Westfalia Kornkruste Kornfit")
         Debug.Print(nwtDaten.GetReport)

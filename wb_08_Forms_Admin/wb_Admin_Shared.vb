@@ -24,11 +24,16 @@ Public Class wb_Admin_Shared
 
         'Pfad zum log4net-Konfigurations-File
         Dim Log4NetKonfigFileInfo As FileInfo
-        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
-            Log4NetKonfigFileInfo = New FileInfo(wb_GlobalSettings.pProgrammPath & wb_Global.Log4NetConfigFile)
-        Else
-            Log4NetKonfigFileInfo = New FileInfo(wb_GlobalSettings.pAddInPath & wb_Global.Log4NetConfigFile)
-        End If
+        'abhängig von der Programm-Variante
+        Select Case wb_GlobalSettings.pVariante
+            Case wb_Global.ProgVariante.WinBack
+                Log4NetKonfigFileInfo = New FileInfo(wb_GlobalSettings.pProgrammPath & wb_Global.Log4NetConfigFile)
+            Case wb_Global.ProgVariante.Setup
+                CreateSimpleLog4NetConfigFile(wb_GlobalSettings.pProgrammPath & wb_Global.Log4NetConfigFile)
+                Log4NetKonfigFileInfo = New FileInfo(wb_GlobalSettings.pProgrammPath & wb_Global.Log4NetConfigFile)
+            Case Else
+                Log4NetKonfigFileInfo = New FileInfo(wb_GlobalSettings.pAddInPath & wb_Global.Log4NetConfigFile)
+        End Select
 
         'Prüfen ob der Pfad zum log4net-Konfigurations-File existiert
         If Log4NetKonfigFileInfo.Exists Then
@@ -47,7 +52,11 @@ Public Class wb_Admin_Shared
             End Try
         Else
             'Log-Meldung ausgeben
-            AddLogToList("Log4net - Konfigurations-Datei wurde nicht gefunden !!")
+            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.Setup Then
+                MsgBox("Log4net - Konfigurations-Datei wurde nicht gefunden !! " & vbCrLf & Log4NetKonfigFileInfo.FullName, MsgBoxStyle.Exclamation, "Log4Net-Konfiguration")
+            Else
+                AddLogToList("Log4net - Konfigurations-Datei wurde nicht gefunden !!")
+            End If
         End If
     End Sub
 
@@ -168,4 +177,37 @@ Public Class wb_Admin_Shared
         End If
     End Sub
 
+    Private Shared Sub CreateSimpleLog4NetConfigFile(FName As String)
+        'Pass the file path and the file name to the StreamWriter constructor.
+        Dim objStreamWriter As New StreamWriter(FName)
+
+        'Write a line(s) of text.
+        objStreamWriter.WriteLine("<?xml version=" & quot("1.0") & " encoding=" & quot("utf-8") & "?>")
+        objStreamWriter.WriteLine("<configuration>")
+        objStreamWriter.WriteLine("<log4net>")
+        objStreamWriter.WriteLine("<appender name = " & quot("RollingLogFileAppender") & " type=" & quot("log4net.Appender.RollingFileAppender") & ">")
+        objStreamWriter.WriteLine("<file value = " & quot("${TMP}\WinBack.log") & " />")
+        objStreamWriter.WriteLine("<appendToFile value=" & quot("False") & " />")
+        objStreamWriter.WriteLine("<rollingStyle value = " & quot("Size") & " />")
+        objStreamWriter.WriteLine("<maxSizeRollBackups value=" & quot("3") & " />")
+        objStreamWriter.WriteLine("<maximumFileSize value =" & quot("100KB") & " />")
+        objStreamWriter.WriteLine("<staticLogFileName value=" & quot("True") & " />")
+        objStreamWriter.WriteLine("<layout type=" & quot("log4net.Layout.PatternLayout") & " >")
+        objStreamWriter.WriteLine("<conversionPattern value=" & quot("%Date %level %Property{Benutzer} [%Property{Zeile} %Property{Modul}.%Property{Funktion}] %message%newline") & " />")
+        objStreamWriter.WriteLine("</layout>")
+        objStreamWriter.WriteLine("</appender>")
+        objStreamWriter.WriteLine("<logger name = " & quot("Log4NetWinBackAddIn") & " >")
+        objStreamWriter.WriteLine("<level value=" & quot("ALL") & "/>")
+        objStreamWriter.WriteLine("<appender-ref ref= " & quot("RollingLogFileAppender") & " />")
+        objStreamWriter.WriteLine("</logger>")
+        objStreamWriter.WriteLine("</log4net>")
+        objStreamWriter.WriteLine("</configuration>")
+
+        'Close the file
+        objStreamWriter.Close()
+    End Sub
+
+    Private Shared Function quot(s As String) As String
+        Return Chr(34) & s & Chr(34)
+    End Function
 End Class

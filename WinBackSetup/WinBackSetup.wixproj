@@ -68,6 +68,14 @@
     <Compile Include="UI_Main.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EnhancedEdit\EnhancedEdit.vbproj">
+      <Name>EnhancedEdit</Name>
+      <Project>{b9549613-9c0c-4bc3-82a5-21d834813a25}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\WinBackServerTask\WinBackServerTask.vbproj">
       <Name>WinBackServerTask</Name>
       <Project>{6f2fb1a3-c432-4de9-9bac-e52243cb58b8}</Project>
@@ -79,6 +87,14 @@
     <ProjectReference Include="..\WinBackSetup_CA\ManagedSetupHelperDll\WinBackSetup_CA.vbproj">
       <Name>WinBackSetup_CA</Name>
       <Project>{cfc108ab-e371-4106-918b-5bd941e7cb68}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\WinBackStart\WinBackStart.vbproj">
+      <Name>WinBackStart</Name>
+      <Project>{2f6c260c-7f04-4223-b775-48309a1946eb}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -100,24 +116,17 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="WinBackSetup.wax" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
   <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
     <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
   </Target>
-  <Import Project="..\packages\WinSCP.5.13.4\build\WinSCP.targets" Condition="Exists('..\packages\WinSCP.5.13.4\build\WinSCP.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\WinSCP.5.13.4\build\WinSCP.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WinSCP.5.13.4\build\WinSCP.targets'))" />
-  </Target>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetDir)de-DE\$(TargetName).msi" "$(SolutionDir)WinBackSetup\bin" /E /C /R /Y
 cd "$(SolutionDir)WinBackSetup\bin"
-REM $(TargetName).msi
+$(TargetName).msi
 SET ERRORLEVEL=0</PostBuildEvent>
   </PropertyGroup>
   <!--

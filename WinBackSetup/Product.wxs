@@ -49,13 +49,14 @@
     <Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine"  Description="!(loc.ProductDescription)" Comments="!(loc.Comments) $(var.VersionNumber)" />
 
     <!-- Requirements -->
+    
     <PropertyRef Id="NETFRAMEWORK40FULL" />
     <Condition Message="!(loc.ErrorFramework)">NETFRAMEWORK40FULL</Condition>
     <Condition Message="!(loc.ErrorAdminRights)">Privileged</Condition>
 
     <!-- License agreement text: dummy. Real text is set in WXS file -->
-    <WixVariable Id="WixUILicenseRtf" Value="dummy" />
-
+    <WixVariable Id="WixUILicenseRtf" Value="Resources\EULA_de-de.rtf" /> 
+    
     <!-- UI customization -->
     <!-- Size 493x58 Top-Banner -->
     <WixVariable Id="WixUIBannerBmp" Value="Resources\WixUIBanner.bmp" />
@@ -76,12 +77,6 @@
     <!-- AllowSameVersionUpgrades causes ICE61 which must be ignored -->
     <MajorUpgrade DowngradeErrorMessage="!(loc.NewerInstalled)" AllowSameVersionUpgrades="yes" />
 
-    <!-- This is the main installer sequence run when the product is actually installed -->
-    <InstallExecuteSequence>
-      <!-- Determine the install location after the install path has been validated by the installer -->
-      <Custom Action="SetARPINSTALLLOCATION" After="InstallValidate"></Custom>
-    </InstallExecuteSequence>
-
     <!-- ==================================================================================== -->
     <!-- Custom Actions -->
     <!-- ==================================================================================== -->
@@ -94,18 +89,26 @@
     <Property Id="ORGABACKUSER" Value="sa" Secure="yes" />
     <Property Id="ORGABACKPASS" Value="YK2tvndD+Bx1pZgUMSsMMIqHAvAi5WQaXKaf2SYZnII=" Secure="yes" />
 
-    <!-- Custom Action - Determine OrgaBack Installation-Path from Registry -->
+    <!-- Custom Actions  -->
     <Binary Id="VbCa" SourceFile="$(var.WinBackSetup_CA.TargetDir)\ManagedSetupHelperDll.CA.DLL"/>
 
-    <!-- Set up ARPINSTALLLOCATION property (http://blogs.technet.com/b/alexshev/archive/2008/02/09/from-msi-to-wix-part-2.aspx) -->
-    <CustomAction Id="SetARPINSTALLLOCATION" Property="ARPINSTALLLOCATION" Value="[INSTALLDIR]" />
     <!-- Custom Action - Determine OrgaBack Installation-Path from Registry -->
-    <CustomAction Id="VBCa" BinaryKey="VbCa" DllEntry="VBCustomAction" />
+    <CustomAction Id="VBCa" BinaryKey="VbCa" DllEntry="VBCustomAction_InstallPath" />
+    <!-- Custom Action - Install MySQL -->
+    <CustomAction Id="VBCa_MySQL" BinaryKey="VbCa" DllEntry="VBCustomAction_InstallMySQL" />
+    <!-- Custom Action - Install Log4View -->
+    <CustomAction Id="VBCa_Log4View" BinaryKey="VbCa" DllEntry="VBCustomAction_InstallLog4View" />
 
     <InstallUISequence>
       <Custom Action="VBCa" After="CostFinalize" />
+      <Custom Action="VBCa_MySQL" After="CostFinalize" />
+      <Custom Action="VBCa_Log4View" After="CostFinalize" />
     </InstallUISequence>
-    
+    <InstallExecuteSequence>
+    </InstallExecuteSequence>
+
+
+
     <!-- ==================================================================================== -->
     <!-- Launch conditions -->
     <!-- ==================================================================================== -->
@@ -129,14 +132,54 @@
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ADDIN" Name="AddIn"/>
 		</Directory>
-	
-    <!-- Add all Installation Files(exe/dll/..) at this list -->
-		<DirectoryRef Id="ADDIN" FileSource="$(var.WinBackExeSourcePath)">
-      <Component Id="SHAREDCOMPONENTS" Guid="9f9cb55d-d6f5-4ead-853e-352ee0155c1f" >
 
-        <!-- Winback AddIn -->
+    <!-- ==================================================================================== -->
+    <DirectoryRef Id="ADDIN" FileSource="$(var.WinBackExeSourcePath)">
+      <!-- Winback AddIn -->
+      <Component Id="WINBACKEXE" Guid="0B01C426-7562-4073-833B-265EE4A31FCD">
         <File Id="AddInDll" Name="WinBackAddIn.dll" />
         <File Id="AddInPdb" Name="WinBackAddIn.pdb" />
+      </Component>
+
+      <!-- Winback Hintergrund-ServerTask -->
+      <Component Id="SERVERTASK" Guid="2F77C4CA-B6D8-46B7-849E-D8126C2A4DB3" Win64="$(var.Win64)">
+        <File Id="WinBackExe" Name="WinbackServerTask.exe" />
+        <File Id="WinBackPdb" Name="WinbackServerTask.pdb" />
+      </Component>
+
+      <!-- MySQL-Server (OrgaBack-Standalone) -->
+      <Component Id="MYSQLSERVER" Guid="C481566D-4CA8-4b10-B08D-EF29ACDC10B5">
+        <File Id="Subfeature2.txt" Name="t2.txt" />
+      </Component>
+
+      <!-- Log4View -->
+      <Component Id="LOG4VIEW" Guid="44E233A0-CDA2-4adf-B2AF-935A0174325B">
+        <File Id="Subfeature3.txt" Name="t3.txt" />
+      </Component>
+    </DirectoryRef>
+
+    <!-- ==================================================================================== -->
+    <DirectoryRef Id="TARGETDIR" >
+      <!-- winback.ini wird neu aufgebaut. Vorhandene Einträge werden nicht überschrieben ! -->
+      <Component Id="WINBACKINI" Guid="c5df0fde-cec7-4847-ac70-6fba42b462ca" Win64="$(var.Win64)">
+        <!-- [winback]-->
+        <IniFile Id="WinBack_IpAdresse" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="eMYSQLServerIP" Value="[WINBACKIPADR]" />
+        <IniFile Id="WinBack_DBwinback" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="eMySQLDatabase" Value="winback" />
+        <IniFile Id="WinBack_DBwbdaten" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="eMySQLDatabaseDaten" Value="wbdaten" />
+        <IniFile Id="WinBack_DBuser" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="eMYSQLUser" Value="herbst" />
+        <IniFile Id="WinBack_DBpass" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="eMySQLPasswordDatabase" Value="herbst" />
+        <!-- [orgaback]-->
+        <IniFile Id="OrgaBack_MainDB" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="MsSQLServer_MainDB" Value="[ORGABACKMAIN]" />
+        <IniFile Id="OrgaBack_AdmnDB" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="MsSQLServer_AdmnDB" Value="[ORGABACKADMN]" />
+        <IniFile Id="OrgaBack_UserId" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="MsSQLServer_UserId" Value="[ORGABACKUSER]" />
+        <IniFile Id="OrgaBack_Passwd" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="MsSQLServer_Passwd" Value="[ORGABACKPASS]" />
+      </Component>
+    </DirectoryRef>
+    <!-- ==================================================================================== -->
+
+    <!-- Add all Installation Files(exe/dll/..) at this list -->
+    <DirectoryRef Id="ADDIN" FileSource="$(var.WinBackExeSourcePath)">
+      <Component Id="SHAREDCOMPONENTS" Guid="9f9cb55d-d6f5-4ead-853e-352ee0155c1f" >
 
         <!-- Editor-Komponente für Rezeptverwaltung -->
         <File Id="EnhEditDll" Name="EnhancedEdit.dll" />
@@ -169,36 +212,12 @@
 
         <!-- Ssh(Sharp) -->
         <File Id="SharpSshDll" Name="Tamir.SharpSSH.dll" />
-      
-      </Component>
-    </DirectoryRef>
+
+        <!-- log4net -->
+        <File Id="Log4Net" Name="log4net.dll" />
+        <File Id="Log4NetConf" Name="WinBack.log4net" />
 
 
-    <DirectoryRef Id="ADDIN" FileSource="$(var.WinBackExeSourcePath)">
-        <Component Id="WINBACKEXE" Guid="2F77C4CA-B6D8-46B7-849E-D8126C2A4DB3" Win64="$(var.Win64)">
-        
-        <!-- Winback Hintergrund-ServerTask -->
-        <File Id="WinBackExe" Name="WinbackServerTask.exe" />
-        <File Id="WinBackPdb" Name="WinbackServerTask.pdb" />
-
-      </Component>
-		</DirectoryRef>
-
-    <DirectoryRef Id="TARGETDIR" >
-      <Component Id="WINBACKINI" Guid="c5df0fde-cec7-4847-ac70-6fba42b462ca" Win64="$(var.Win64)">
-
-        <!-- winback.ini wird neu aufgebaut. Vorhandene Einträge werden nicht überschrieben ! -->
-        <!-- [winback]-->
-        <IniFile Id="WinBack_IpAdresse" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="eMYSQLServerIP" Value="[WINBACKIPADR]" />
-        <IniFile Id="WinBack_DBwinback" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="eMySQLDatabase" Value="winback" />
-        <IniFile Id="WinBack_DBwbdaten" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="eMySQLDatabaseDaten" Value="wbdaten" />
-        <IniFile Id="WinBack_DBuser" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="eMYSQLUser" Value="herbst" />
-        <IniFile Id="WinBack_DBpass" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="eMySQLPasswordDatabase" Value="herbst" />
-
-        <IniFile Id="OrgaBack_MainDB" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="MsSQLServer_MainDB" Value="[ORGABACKMAIN]" />
-        <IniFile Id="OrgaBack_AdmnDB" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="MsSQLServer_AdmnDB" Value="[ORGABACKADMN]" />
-        <IniFile Id="OrgaBack_UserId" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="MsSQLServer_UserId" Value="[ORGABACKUSER]" />
-        <IniFile Id="OrgaBack_Passwd" Action="createLine" Directory="TARGETDIR" Section="WinBack" Name="WinBack.ini" Key="MsSQLServer_Passwd" Value="[ORGABACKPASS]" />
 
       </Component>
     </DirectoryRef>
@@ -213,11 +232,19 @@
     <!-- ==================================================================================== -->
 
     <Feature Id="Complete" Title="!(loc.ApplicationName)" Description="!(loc.FeatureCompleteDescription)" Display="expand" Level="1" ConfigurableDirectory="TARGETDIR">
-      <!-- A feature block for the main (GUI) program and all its dependencies -->
-      <Feature Id="MainProgram" Title="!(loc.FeatureMainProgramTitle)" Description="!(loc.FeatureMainProgramDescription)" Level="1">
+      <ComponentRef Id="WINBACKEXE" />
+      <ComponentRef Id="WINBACKINI" />
+      <ComponentRef Id="SHAREDCOMPONENTS" />
+
+      <Feature Id="ServerTask" Title="!(loc.FeatureServerTaskTitle)" Description="!(loc.FeatureServerTaskDescription)" Level="1" >
+        <ComponentRef Id="SERVERTASK"/>
         <ComponentRef Id="SHAREDCOMPONENTS" />
-        <ComponentRef Id="WINBACKEXE" />
-        <ComponentRef Id="WINBACKINI" />
+      </Feature>
+      <Feature Id="MySQLServer" Title="!(loc.FeatureMySQLTitle)" Description="!(loc.FeatureMySQLDescription)" Level="1" >
+        <ComponentRef Id="MYSQLSERVER"/>
+      </Feature>
+      <Feature Id="Log4View" Title="!(loc.FeatureLog4ViewTitle)" Description="!(loc.FeatureLog4ViewDescription)" Level="1" >
+        <ComponentRef Id="LOG4VIEW"/>
       </Feature>
     </Feature>
 
@@ -225,7 +252,7 @@
       <!-- Define the installer UI -->
       <!-- To add Right click on your project in Solution Explorer and select Add Reference... -->
       <!-- Select the WixUIExtension.dll assembly from the list and click Add -->
-      <UIRef Id="UI_Main" />
+      <UIRef Id="WixUI_FeatureTree" />
     </UI>
 
     <Property Id="WIXUI_INSTALLDIR" Value="TARGETDIR" />
