@@ -161,6 +161,8 @@ Public Class ob_Artikel_DockingExtension
             bSortimentIstProduktion = GetKomponentenDaten()
         End If
         If bSortimentIstProduktion Then
+            'Neue Komponenten werden nur einmal angelegt (05.07.19/JW Fehler bei Fonk)
+            bAddNew = False
             'Prüfen ob die Einheit aus OrgaBack gültig ist. (28.08.18/JW Geändert in StdEinheit)
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
             Dim obEinheit As String = _Extendee.GetPropertyValue("StdEinheit").ToString
