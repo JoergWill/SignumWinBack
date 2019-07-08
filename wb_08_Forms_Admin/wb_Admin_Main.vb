@@ -114,28 +114,38 @@ Public Class wb_Admin_Main
     End Function
 
     Private Sub BtnAdminSyncForm()
-        AdminSync = New wb_Admin_Sync
+        If IsNothingOrDisposed(AdminSync) Then
+            AdminSync = New wb_Admin_Sync
+        End If
         AdminSync.Show(DockPanel, DockState.DockTop)
         Trace.WriteLine("AdminSyncForm aufgerufen")
     End Sub
     Private Sub BtnOrgaBack()
-        OrgaBackParams = New wb_Admin_OrgaBackParams
+        If IsNothingOrDisposed(OrgaBackParams) Then
+            OrgaBackParams = New wb_Admin_OrgaBackParams
+        End If
         OrgaBackParams.Show(DockPanel, DockState.DockTop)
         Trace.WriteLine("AdminOrgaBackParams aufgerufen")
     End Sub
 
     Private Sub BtnAdminDatensicherung()
-        AdminDatensicherung = New wb_Admin_Datensicherung
+        If IsNothingOrDisposed(AdminDatensicherung) Then
+            AdminDatensicherung = New wb_Admin_Datensicherung
+        End If
         AdminDatensicherung.Show(DockPanel, DockState.DockTop)
     End Sub
 
     Private Sub btnAdminUpdate()
-        AdminUpdate = New wb_Admin_UpdateDatabase
+        If IsNothingOrDisposed(AdminUpdate) Then
+            AdminUpdate = New wb_Admin_UpdateDatabase
+        End If
         AdminUpdate.Show(DockPanel, DockState.DockRight)
     End Sub
 
     Private Sub btnAdminUpdateWinBack()
-        AdminUpdateWinBack = New wb_Admin_UpdateWinBack
+        If IsNothingOrDisposed(AdminUpdateWinBack) Then
+            AdminUpdateWinBack = New wb_Admin_UpdateWinBack
+        End If
         AdminUpdateWinBack.Show(DockPanel, DockState.DockRight)
     End Sub
 
@@ -150,7 +160,9 @@ Public Class wb_Admin_Main
     End Sub
 
     Private Sub btnEditKonfig()
-        AdminEditIni = New wb_Admin_EditIni
+        If IsNothingOrDisposed(AdminEditIni) Then
+            AdminEditIni = New wb_Admin_EditIni
+        End If
         AdminEditIni.Show(DockPanel, DockState.DockRight)
     End Sub
 End Class

@@ -91,26 +91,36 @@ Public Class wb_Rohstoffe_Main
     End Property
 
     Private Sub BtnRohstoffDetails()
-        RohstoffDetails = New wb_Rohstoffe_Details
+        If IsNothingOrDisposed(RohstoffDetails) Then
+            RohstoffDetails = New wb_Rohstoffe_Details
+        End If
         RohstoffDetails.Show(DockPanel, DockState.DockTop)
     End Sub
 
     Private Sub BtnRohstoffParameter()
+        If IsNothingOrDisposed(RohstoffParameter) Then
+            RohstoffParameter.Show(DockPanel, DockState.Document)
+        End If
         RohstoffParameter = New wb_Rohstoffe_Parameter
-        RohstoffParameter.Show(DockPanel, DockState.Document)
     End Sub
     Private Sub BtnRohstoffNwt()
+        If IsNothingOrDisposed(RohstoffNwt) Then
+            RohstoffNwt.Show(DockPanel, DockState.Document)
+        End If
         RohstoffNwt = New wb_Rohstoffe_Nwt
-        RohstoffNwt.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRohstoffCloud()
-        RohstoffCloud = New wb_Rohstoffe_Cloud
+        If IsNothingOrDisposed(RohstoffCloud) Then
+            RohstoffCloud = New wb_Rohstoffe_Cloud
+        End If
         RohstoffCloud.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRohstoffVerwendung()
-        RohstoffVerwendung = New wb_Rohstoffe_Verwendung
+        If IsNothingOrDisposed(RohstoffVerwendung) Then
+            RohstoffVerwendung = New wb_Rohstoffe_Verwendung
+        End If
         RohstoffVerwendung.Show(DockPanel, DockState.Document)
     End Sub
 

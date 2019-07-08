@@ -144,6 +144,35 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtnLoeschen_Click(sender As Object, e As EventArgs) Handles BtnLoeschen.Click
+        'Rezeptkopf und Rezeptur löschen
+        RzptLoeschen()
+    End Sub
+
+    ''' <summary>
+    ''' Anzeige der berechneten Nährwerte der Rezeptur.
+    ''' Berechnung über ktTyp301(Get) im Root-Rezeptschritt. Aufbau und Anzeige des DatenGrid in Subroutine nwtGrid()
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnNwt_Click(sender As Object, e As EventArgs) Handles BtnNwt.Click
+        If tb_Rezeptur.Visible Then
+            BtnNwt.Text = "Rezeptur"
+            BtnHinweise.Text = "Zutatenliste"
+            Wb_TabControl.SelectedTab = tb_Naehrwerte
+            ToolStripAllergenLegende.Visible = True
+            'Nährwerte-Grid aufbauen und anzeigen
+            NwtGrid()
+        Else
+            BtnNwt.Text = "Nährwerte"
+            BtnHinweise.Text = "Hinweise"
+            Wb_TabControl.SelectedTab = tb_Rezeptur
+            ToolStripAllergenLegende.Visible = False
+        End If
+
+    End Sub
+
+    Public Sub RzptLoeschen()
+
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptInKomp, Rezept.RezeptNr)
         Dim Count As Integer = -1
@@ -192,31 +221,9 @@ Public Class wb_Rezept_Rezeptur
             _RzKopfChanged = False
 
             'Fenster schliessen
+            wb_Rezept_Shared.Liste_Refresh(Nothing)
             Me.Close()
         End If
-    End Sub
-
-    ''' <summary>
-    ''' Anzeige der berechneten Nährwerte der Rezeptur.
-    ''' Berechnung über ktTyp301(Get) im Root-Rezeptschritt. Aufbau und Anzeige des DatenGrid in Subroutine nwtGrid()
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub BtnNwt_Click(sender As Object, e As EventArgs) Handles BtnNwt.Click
-        If tb_Rezeptur.Visible Then
-            BtnNwt.Text = "Rezeptur"
-            BtnHinweise.Text = "Zutatenliste"
-            Wb_TabControl.SelectedTab = tb_Naehrwerte
-            ToolStripAllergenLegende.Visible = True
-            'Nährwerte-Grid aufbauen und anzeigen
-            NwtGrid()
-        Else
-            BtnNwt.Text = "Nährwerte"
-            BtnHinweise.Text = "Hinweise"
-            Wb_TabControl.SelectedTab = tb_Rezeptur
-            ToolStripAllergenLegende.Visible = False
-        End If
-
     End Sub
 
     ''' <summary>

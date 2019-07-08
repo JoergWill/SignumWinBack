@@ -275,6 +275,24 @@ Public Class wb_DockBarPanelMain
     End Sub
 
     ''' <summary>
+    ''' Prüft ob die übergebene Form existiert(Nothing) und/oder gelöscht(disposed) ist.
+    ''' Wenn die Form nicht mehr existiert wird True zurückgegeben, dann wird
+    ''' sie im Hauptprogramm neu initialisiert. (New)
+    ''' </summary>
+    ''' <param name="f"></param>
+    ''' <returns></returns>
+    Public Function IsNothingOrDisposed(ByRef f As Form) As Boolean
+        If f Is Nothing Then
+            Return True
+        Else
+            If f.IsDisposed Then
+                Return True
+            End If
+        End If
+        Return False
+    End Function
+
+    ''' <summary>
     ''' Zeigt alle Fenster in der Default-Konfiguration an.
     ''' Die gespeicherte Konfiguration wird verworfen.
     ''' </summary>

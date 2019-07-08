@@ -62,6 +62,7 @@ Partial Class wb_Planung_Liste
         Me.BtnTeigListeDrucken = New System.Windows.Forms.Button()
         Me.dtBestellungen = New System.Windows.Forms.DateTimePicker()
         Me.cbProduktionsFiliale = New WinBack.wb_ComboBox()
+        Me.ProgressCircle = New Utezduyar.Windows.Forms.ProgressCircle()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -373,11 +374,21 @@ Partial Class wb_Planung_Liste
         Me.cbProduktionsFiliale.Size = New System.Drawing.Size(178, 21)
         Me.cbProduktionsFiliale.TabIndex = 15
         '
+        'ProgressCircle
+        '
+        Me.ProgressCircle.ForeColor = System.Drawing.Color.Blue
+        Me.ProgressCircle.Location = New System.Drawing.Point(468, 12)
+        Me.ProgressCircle.Name = "ProgressCircle"
+        Me.ProgressCircle.RingColor = System.Drawing.Color.White
+        Me.ProgressCircle.Size = New System.Drawing.Size(59, 59)
+        Me.ProgressCircle.TabIndex = 16
+        '
         'wb_Planung_Liste
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1104, 663)
+        Me.Controls.Add(Me.ProgressCircle)
         Me.Controls.Add(Me.cbProduktionsFiliale)
         Me.Controls.Add(Me.dtBestellungen)
         Me.Controls.Add(Me.BtnTeigListeDrucken)
@@ -429,4 +440,5 @@ Partial Class wb_Planung_Liste
     Friend WithEvents BtnTeigListeDrucken As Windows.Forms.Button
     Friend WithEvents dtBestellungen As Windows.Forms.DateTimePicker
     Friend WithEvents cbProduktionsFiliale As wb_ComboBox
+    Friend WithEvents ProgressCircle As Utezduyar.Windows.Forms.ProgressCircle
 End Class

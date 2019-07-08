@@ -210,6 +210,9 @@ Public Class wb_DataGridView
         End Select
 
         'zurück zur aktuellen Zeile
+        If AktRow >= Me.RowCount Then
+            AktRow = Me.RowCount - 1
+        End If
         If SaveRow <> wb_Global.UNDEFINED And AktRow <> wb_Global.UNDEFINED And xcol <> wb_Global.UNDEFINED And SaveRow < Me.RowCount Then
             Me.FirstDisplayedScrollingRowIndex = SaveRow
             Me.Rows(AktRow).Selected = True

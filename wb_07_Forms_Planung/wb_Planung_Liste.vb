@@ -39,6 +39,8 @@ Public Class wb_Planung_Liste
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub wb_Planung_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Verarbeitungsanzeige
+        ProgressCircle.Rotate = True
         'Liste mit Produktions-Filialen
         cbProduktionsFiliale.Fill(wb_Filiale.ProduktionsFilialen)
 
@@ -66,6 +68,8 @@ Public Class wb_Planung_Liste
             'Datum heute plus einen Tag
             dtBestellungen.Value = DateTime.Today.AddDays(1) 'TODO Tage im vorraus in WinBack-ini festhalten
         End If
+        'Verarbeitungsanzeige
+        'ProgressCircle.Rotate = False
     End Sub
 
     Private Sub BtnBestellungen_Click(sender As Object, e As EventArgs) Handles BtnBestellungen.Click

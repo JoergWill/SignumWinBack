@@ -332,6 +332,21 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.RezeptLoeschen_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.RezeptNeu_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.RezeptVerwendung_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.RohstoffeCloud_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -3815,6 +3830,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Läd die Dock-Panel-Konfiguration aus der Konfiguration-Datei (*.xml). Die Konfiguration wird 
  über SaveToXml gesichert.
  </summary>
+</member>
+<member name="M:WinBack.wb_DockBarPanelMain.IsNothingOrDisposed(System.Windows.Forms.Form@)">
+ <summary>
+ Prüft ob die übergebene Form existiert(Nothing) und/oder gelöscht(disposed) ist.
+ Wenn die Form nicht mehr existiert wird True zurückgegeben, dann wird
+ sie im Hauptprogramm neu initialisiert. (New)
+ </summary>
+ <param name="f"></param>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_DockBarPanelMain.ShowDefaultLayout">
  <summary>

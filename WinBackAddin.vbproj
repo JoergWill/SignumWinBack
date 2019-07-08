@@ -247,6 +247,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="ProgressCircle">
+      <HintPath>dll\ProgressCircle\ProgressCircle.dll</HintPath>
+    </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
       <HintPath>dll\OrgaSoft V3.1.7039\Signum.OrgaSoft.Contracts.dll</HintPath>
     </Reference>
@@ -526,6 +529,12 @@
       <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Verwendung.Designer.vb">
+      <DependentUpon>wb_Rezept_Verwendung.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Verwendung.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_04_Forms_Rohstoffe\ob_ChargenBestand.vb" />
@@ -843,6 +852,9 @@
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.resx">
       <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Verwendung.resx">
+      <DependentUpon>wb_Rezept_Verwendung.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.resx">
       <DependentUpon>wb_Rohstoffe_Cloud.vb</DependentUpon>
     </EmbeddedResource>
@@ -1106,6 +1118,9 @@
     <None Include="Resources\OrgaBackSortiment_32x32.png" />
     <None Include="Resources\UpdateWinBack_32x32.png" />
     <None Include="Resources\Log4View_16x16.png" />
+    <None Include="Resources\RezeptNeu_32x32.png" />
+    <None Include="Resources\RezeptLoeschen_32x32.png" />
+    <None Include="Resources\RezeptVerwendung_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />
