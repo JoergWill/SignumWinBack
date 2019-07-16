@@ -40,7 +40,12 @@ Public Class wb_Produktionsschritt
     Private _Einheit As String
     Private _TeigChargen As wb_Global.ChargenMengen
     Private _Bestellt_Stk As Double
+
     Private _Bestellt_SonderText As String
+    Private _Bestellt_KundeNr As String
+    Private _Bestellt_Kunde As String
+    Private _Bestellt_Menge_Stk As String
+    Private _Bestellt_Text As String
 
     ''' <summary>
     ''' Kopiert alle Properties dieser Klasse auf die Properties der übergebenen Klasse.
@@ -491,13 +496,90 @@ Public Class wb_Produktionsschritt
         End Get
     End Property
 
+    ''' <summary>
+    ''' Enthält, getrennt durch CRLF alle Sondertexte bzw. Kundenbestellungen für diese Tour.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Bestellt_SonderText As String
         Get
             Return _Bestellt_SonderText
         End Get
         Set(value As String)
+            'Sondertext auf pq_Produktionsauftrag
             _Bestellt_SonderText = value
+            'Aufteilen in die einzelnen Sondertexte
+            Dim SonderText() As String = Split(_Bestellt_SonderText, vbCrLf)
+            Dim i As Integer = 0
+            For Each s As String In SonderText
+                'Schleifenzähler (Aufteilung der einzlnen Positionen)
+                i += 1
+                Select Case i
+                    Case 1
+                        'erster Eintrag Kunde-Nummer und Kunde-Name (getrennt durch Space)
+                        SplitSpace(s, _Bestellt_KundeNr, _Bestellt_Kunde)
+                    Case 2
+                        'erster Eintrag Stückzahl und Bemerkung-Text (getrennt durch Space)
+                        SplitSpace(s, _Bestellt_Menge_Stk, _Bestellt_Text)
+                    Case 3
+                        'nachfolgender Eintrag Kunde-Nummer und Kunde-Name (CRLF einfügen)
+                        SplitSpace(s, _Bestellt_KundeNr, _Bestellt_Kunde, True)
+                    Case 4
+                        'nachfolgender Eintrag Stückzahl und Bemerkung-Text (CRLF einfügen)
+                        SplitSpace(s, _Bestellt_Menge_Stk, _Bestellt_Text, True)
+                        'Schleife wieder auf Anfang
+                        i = -2
+                End Select
+            Next
         End Set
+    End Property
+    Private Sub SplitSpace(s As String, ByRef s1 As String, ByRef s2 As String, Optional crlf As Boolean = False)
+        Dim x() As String = {"", ""}
+        If s <> "" Then
+            x = Split(s, " ", 2)
+        End If
+
+        If crlf Then
+            s1 = s1 & vbCrLf & x(0)
+            s2 = s2 & vbCrLf & x(1)
+        Else
+            s1 = x(0)
+            s2 = x(1)
+        End If
+    End Sub
+
+    Public ReadOnly Property Bestellt_Kunde As String
+        Get
+            Return _Bestellt_Kunde
+        End Get
+    End Property
+
+    Public ReadOnly Property Bestellt_KundeNr As String
+        Get
+            Return _Bestellt_KundeNr
+        End Get
+    End Property
+
+    Public ReadOnly Property Bestellt_Menge_Stk As String
+        Get
+            If _Bestellt_Menge_Stk <> "" Then
+                'Einträge formatieren
+                Dim i As Integer = 0
+                Dim x() As String = Split(_Bestellt_Menge_Stk, vbCrLf)
+                Dim b As String = ""
+                For Each s As String In x
+                    i = wb_Functions.StrToInt(s)
+                    b += i.ToString("0,0.") + vbCrLf
+                Next
+                Return b
+            End If
+            Return _Bestellt_Menge_Stk
+        End Get
+    End Property
+
+    Public ReadOnly Property Bestellt_Text As String
+        Get
+            Return _Bestellt_Text
+        End Get
     End Property
 
     Public Property LinienGruppe As Integer

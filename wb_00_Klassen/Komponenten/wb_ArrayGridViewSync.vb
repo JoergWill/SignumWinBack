@@ -50,27 +50,29 @@ Public Class wb_ArrayGridViewSync
         MyBase.RowCount = 0
 
         ' Die erforderliche Anzahl Zeilen in einem Rutsch erstellen:
-        MyBase.Rows.Add(MaxRowCount + 1)
+        If MaxRowCount > 0 Then
+            MyBase.Rows.Add(MaxRowCount + 1)
 
-        ' Daten ins DatagridView eintragen
-        For r = 0 To MaxRowCount
-            With rows(r)
-                ' Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
-                .MinimumHeight = 20
-                ' Strich zwischen den Zeilen  
-                .DividerHeight = 0
+            ' Daten ins DatagridView eintragen
+            For r = 0 To MaxRowCount
+                With rows(r)
+                    ' Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
+                    .MinimumHeight = 20
+                    ' Strich zwischen den Zeilen  
+                    .DividerHeight = 0
 
-                .Cells(COLSORT).Value = GridArray(r).Sort
-                .Cells(COLWBNR).Value = GridArray(r).wb_Nummer
-                .Cells(COLWBBZ).Value = GridArray(r).wb_Bezeichnung
-                .Cells(COLWBGP).Value = GridArray(r).wb_Gruppe
-                .Cells(COLOSNR).Value = GridArray(r).os_Nummer
-                .Cells(COLOSBZ).Value = GridArray(r).os_Bezeichnung
-                .Cells(COLOSGP).Value = GridArray(r).os_Gruppe
-                .Cells(COLSTAT).Value = GridArray(r).SyncOK
-                .Cells(COLSTAT).ToolTipText = GridArray(r).ToolTipText
-            End With
-        Next
+                    .Cells(COLSORT).Value = GridArray(r).Sort
+                    .Cells(COLWBNR).Value = GridArray(r).wb_Nummer
+                    .Cells(COLWBBZ).Value = GridArray(r).wb_Bezeichnung
+                    .Cells(COLWBGP).Value = GridArray(r).wb_Gruppe
+                    .Cells(COLOSNR).Value = GridArray(r).os_Nummer
+                    .Cells(COLOSBZ).Value = GridArray(r).os_Bezeichnung
+                    .Cells(COLOSGP).Value = GridArray(r).os_Gruppe
+                    .Cells(COLSTAT).Value = GridArray(r).SyncOK
+                    .Cells(COLSTAT).ToolTipText = GridArray(r).ToolTipText
+                End With
+            Next
+        End If
     End Sub
 
     Private Sub SyncCellFormatting(ByVal sender As Object, ByVal e As DataGridViewCellFormattingEventArgs) Handles MyBase.CellFormatting

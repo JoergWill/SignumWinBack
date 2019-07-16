@@ -7,6 +7,7 @@ Imports WinBack.wb_Sql_Selects
 <TestClass()> Public Class UnitTest_wb_Komponenten
     <TestInitialize>
     Sub TestInitialize()
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
         If My.Settings.TestMySQL Then
             'Datenbank Verbindung Einstellungen setzen
@@ -442,7 +443,7 @@ Imports WinBack.wb_Sql_Selects
             'wieder aufräumen
             Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
             winback.sqlCommand("DELETE FROM Komponenten WHERE KO_Nr_AlNum = '1111TEST'")
-            winback.sqlCommand("DELETE FROM Komponenten WHERE KO_Nr_AlNum = '1111TEST'")
+            winback.sqlCommand("DELETE FROM Komponenten WHERE KO_Nr_AlNum = '1112TEST'")
             winback.Close()
         End If
     End Sub

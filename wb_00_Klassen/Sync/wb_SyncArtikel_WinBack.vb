@@ -39,8 +39,20 @@
     End Function
 
     Friend Overrides Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
-        'Throw New NotImplementedException()
-        Return False
+        'Artikel in WinBack neu anlegen
+        Dim Komponente As New wb_Komponente
+        'Artikel neu anlegen 
+        Dim KompNrNeu As Integer = Komponente.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_ARTIKEL)
+        'Daten aus OrgaBack
+        Komponente.Bezeichnung = Text
+        Komponente.Nummer = Nr
+        'Datensatz schreiben
+        DBInsert = Komponente.MySQLdbUpdate()
+        Trace.WriteLine("@I_Insert into WinBack Artikel Nummer" & Nr)
+        'Speicher wieder freigeben
+        Komponente = Nothing
+        'Anlegen erfolgreich
+        Return DBInsert
     End Function
 
     Friend Overrides Function DBUpdate(Nr As String, Text As String, Gruppe As String) As Boolean
@@ -48,7 +60,7 @@
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateSyncKomp, Nr, wb_Functions.XRemoveSonderZeichen(Text))
         'Update ausführen
         DBUpdate = (winback.sqlCommand(sql) > 0)
-        'Debug.Print("Update WinBack Artikel Bezeichnung" & sql)
+        Trace.WriteLine("@I_Update WinBack Artikel Bezeichnung" & sql)
         winback.Close()
     End Function
 
@@ -57,7 +69,7 @@
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateSyncKompAlNr, Nr_Alt, Nr_Neu)
         'Update ausführen
         DBNumber = (winback.sqlCommand(sql) > 0)
-        'Debug.Print("Update WinBack Artikel Nummer" & sql)
+        Trace.WriteLine("@I_Update WinBack Artikel Nummer" & sql)
         winback.Close()
     End Function
 
@@ -66,7 +78,7 @@
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelSyncKoNr, Index)
         'Update ausführen
         DBDelete = (winback.sqlCommand(sql) > 0)
-        'Debug.Print("Delete WinBack Artikel Nummer" & sql)
+        Trace.WriteLine("@I_Delete WinBack Artikel Nummer" & sql)
         winback.Close()
     End Function
 End Class

@@ -144,8 +144,10 @@ Public Class wb_GlobalSettings
             Return _MsSQLUserId
         End Get
         Set(value As String)
-            _MsSQLUserId = value
-            setWinBackIni("winback", "MsSQLServer_UserId", value)
+            If value <> "" Then
+                _MsSQLUserId = value
+                setWinBackIni("winback", "MsSQLServer_UserId", value)
+            End If
         End Set
     End Property
 
@@ -157,8 +159,10 @@ Public Class wb_GlobalSettings
             Return _MsSQLPasswd
         End Get
         Set(value As String)
-            _MsSQLPasswd = value
-            setWinBackIni("winback", "MsSQLServer_Passwd", value)
+            If value <> "" Then
+                _MsSQLPasswd = value
+                setWinBackIni("winback", "MsSQLServer_Passwd", value)
+            End If
         End Set
     End Property
 
@@ -396,8 +400,10 @@ Public Class wb_GlobalSettings
             Return _MySQLServerIP
         End Get
         Set(value As String)
-            _MySQLServerIP = value
-            setWinBackIni("winback", "eMySQLServerIP", _MySQLServerIP)
+            If value <> "" Then
+                _MySQLServerIP = value
+                setWinBackIni("winback", "eMySQLServerIP", _MySQLServerIP)
+            End If
         End Set
     End Property
 
@@ -409,8 +415,10 @@ Public Class wb_GlobalSettings
             Return _MySQLWinBack
         End Get
         Set(value As String)
-            _MySQLWinBack = value
-            setWinBackIni("winback", "eMySQLDatabase", _MySQLWinBack)
+            If value <> "" Then
+                _MySQLWinBack = value
+                setWinBackIni("winback", "eMySQLDatabase", _MySQLWinBack)
+            End If
         End Set
     End Property
 
@@ -422,8 +430,10 @@ Public Class wb_GlobalSettings
             Return _MySQLWbDaten
         End Get
         Set(value As String)
-            _MySQLWbDaten = value
-            setWinBackIni("winback", "eMySQLDatabaseDaten", _MySQLWbDaten)
+            If value <> "" Then
+                _MySQLWbDaten = value
+                setWinBackIni("winback", "eMySQLDatabaseDaten", _MySQLWbDaten)
+            End If
         End Set
     End Property
 
@@ -646,10 +656,12 @@ Public Class wb_GlobalSettings
             Return _osGrpRohstoffe
         End Get
         Set(value As String)
-            _osGrpRohstoffe = value
-            Dim IniFile As New wb_IniFile
-            IniFile.WriteString("orgaback", "GruppeRohstoffe", _osGrpRohstoffe)
-            IniFile = Nothing
+            If value <> "" Then
+                _osGrpRohstoffe = value
+                Dim IniFile As New wb_IniFile
+                IniFile.WriteString("orgaback", "GruppeRohstoffe", _osGrpRohstoffe)
+                IniFile = Nothing
+            End If
         End Set
     End Property
 
@@ -661,10 +673,12 @@ Public Class wb_GlobalSettings
             Return _osGrpBackwaren
         End Get
         Set(value As String)
-            _osGrpBackwaren = value
-            Dim IniFile As New wb_IniFile
-            IniFile.WriteString("orgaback", "GruppeBackwaren", _osGrpBackwaren)
-            IniFile = Nothing
+            If value <> "" Then
+                _osGrpBackwaren = value
+                Dim IniFile As New wb_IniFile
+                IniFile.WriteString("orgaback", "GruppeBackwaren", _osGrpBackwaren)
+                IniFile = Nothing
+            End If
         End Set
     End Property
 

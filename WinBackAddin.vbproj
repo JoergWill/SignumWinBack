@@ -482,6 +482,13 @@
     <Compile Include="wb_00_Main\wb_Main_Exception.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_00_Main\wb_Main_Progress.Designer.vb">
+      <DependentUpon>wb_Main_Progress.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Main\wb_Main_Progress.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_00_Main\wb_Main_Progress_Shared.vb" />
     <Compile Include="wb_00_Main\wb_PrinterDialog.Designer.vb">
       <DependentUpon>wb_PrinterDialog.vb</DependentUpon>
     </Compile>
@@ -816,6 +823,9 @@
     <EmbeddedResource Include="wb_00_Main\wb_Main_Exception.resx">
       <DependentUpon>wb_Main_Exception.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Main\wb_Main_Progress.resx">
+      <DependentUpon>wb_Main_Progress.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Main\wb_PrinterDialog.resx">
       <DependentUpon>wb_PrinterDialog.vb</DependentUpon>
     </EmbeddedResource>
@@ -1073,6 +1083,8 @@
   <ItemGroup>
     <Content Include="DBUpdate\2.30_LinienGruppen_A.sql" />
     <Content Include="DBUpdate\2.30_LinienGruppen_B.sql" />
+    <Content Include="DBUpdate\DEL_ArtikelRohstoffe.sql" />
+    <Content Include="DBUpdate\DEL_RezepteRezeptschritte.sql" />
     <Content Include="DBUpdate\UPD_RohstoffNummer_R.sql" />
     <Content Include="ListLabel\Produktion\Backzettel.lst" />
     <Content Include="ListLabel\Produktion\Teigzettel.lst" />

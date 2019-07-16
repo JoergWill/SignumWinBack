@@ -119,6 +119,12 @@ Public Class wb_Rohstoffe_Cloud
                         End If
                         Wb_TabControl.SelectedTab = tpCloudGefunden
 
+                    Case < 0
+                        'Fehler bei Abfrage der Rohstoffe
+                        lblHilfeText.Text = "Fehler bei der Abfrage aus der Cloud"
+                        lblHilfeText.ForeColor = System.Drawing.Color.Red
+                        Wb_TabControl.SelectedTab = tpCloudSuchen
+
                     Case Else
                         'mehrere Rohstoffe gefunden
                         lblErgebnisText.Text = wb_Functions.SetParams(My.Resources.tpCloudRohstoffeGefunden, cnt)

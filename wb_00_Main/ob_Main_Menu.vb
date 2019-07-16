@@ -62,27 +62,31 @@ Public Class ob_Main_Menu
     ''' <param name="Message"></param>
     ''' <param name="UnhadledException"></param>
     Private Sub ExceptionHandler(StackTrace As String, Message As String, UnhadledException As Boolean)
-        'Dialog-Fenster mit Fehlermeldung anzeigen 
-        Dim MainException As New wb_Main_Exception(StackTrace, Message)
+        'Prüfen ob die Exception von WinBack oder von OrgaBack kommt
+        If StackTrace.Contains("WinBack") Then
 
-        'abhängig vom Dialog-Result 
-        Select Case MainException.ShowDialog()
-            Case DialogResult.Abort
-                'WinBack-AddIn beenden
-                Trace.WriteLine("@I_DialogResult.Abort - WinBack/OrgaBack beenden")
-                Application.Exit()
-            Case DialogResult.Retry
-                'WinBack-AddIn restart
-                Trace.WriteLine("@I_DialogResult.Retry - WinBack/OrgaBack neu starten")
-                Application.Restart()
-            Case DialogResult.Ignore
-                'WinBack-AddIn fortsetzen
-                Trace.WriteLine("@I_DialogResult.Ignore - WinBack-AddIn fortsetzen")
-            Case Else
-                'WinBack-AddIn fortsetzen
-                Trace.WriteLine("@I_DialogResult.xxx - WinBack-AddIn fortsetzen")
+            'Dialog-Fenster mit Fehlermeldung anzeigen 
+            Dim MainException As New wb_Main_Exception(StackTrace, Message)
 
-        End Select
+            'abhängig vom Dialog-Result 
+            Select Case MainException.ShowDialog()
+                Case DialogResult.Abort
+                    'WinBack-AddIn beenden
+                    Trace.WriteLine("@I_DialogResult.Abort - WinBack/OrgaBack beenden")
+                    Application.Exit()
+                Case DialogResult.Retry
+                    'WinBack-AddIn restart
+                    Trace.WriteLine("@I_DialogResult.Retry - WinBack/OrgaBack neu starten")
+                    Application.Restart()
+                Case DialogResult.Ignore
+                    'WinBack-AddIn fortsetzen
+                    Trace.WriteLine("@I_DialogResult.Ignore - WinBack-AddIn fortsetzen")
+                Case Else
+                    'WinBack-AddIn fortsetzen
+                    Trace.WriteLine("@I_DialogResult.xxx - WinBack-AddIn fortsetzen")
+
+            End Select
+        End If
     End Sub
 
     ''' <summary>
@@ -380,26 +384,24 @@ Public Class ob_Main_Menu
         'WinBack-Mandant entspricht der Mandant-Nummer in OrgaBack (kann erst ermittelt werden, wenn die Admin-Datenbank definiert ist !)
         wb_GlobalSettings.MandantNr = wb_GlobalSettings.OrgaBackMandantNr
 
-        'Wenn das MsSQL-DB-Passwort in den Einstellungen gesetzt wurde, wird der Eintrag beim nächsten Start gelöscht !
-        Dim MsSQLPasswd = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MSSQL_Passwd", ""), String)
-        If MsSQLPasswd <> "" Then
-            wb_GlobalSettings.MsSQLPasswd = MsSQLPasswd
-            oSetting.WriteSetting("AddIn", "WinBack", "MSSQL_Passwd", "")
-        End If
         'MsSQL-DB-User 
-        wb_GlobalSettings.MsSQLUserId = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MSSQL_UserID", "sa"), String)
+        wb_GlobalSettings.MsSQLUserId = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MSSQL_UserID", ""), String)
+        'MsSQL-DB-Passwort
+        wb_GlobalSettings.MsSQLPasswd = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MSSQL_Passwd", ""), String)
+        'Wenn das MsSQL-DB-Passwort in den Einstellungen gesetzt wurde, wird der Eintrag beim nächsten Start gelöscht !
+        oSetting.WriteSetting("AddIn", "WinBack", "MSSQL_Passwd", "")
 
         'MySQL-Server-IP 
-        wb_GlobalSettings.MySQLServerIP = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLServerIP", "127.0.0.1"), String)
+        wb_GlobalSettings.MySQLServerIP = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLServerIP", ""), String)
         'MySQL-Main-DB
-        'wb_GlobalSettings.MySQLWinBack = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabase", "winback"), String)
+        wb_GlobalSettings.MySQLWinBack = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabase", ""), String)
         'MySQL-Archiv-DB
-        'wb_GlobalSettings.MySQLWbDaten = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabaseDaten", "wbdaten"), String)
+        wb_GlobalSettings.MySQLWbDaten = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabaseDaten", ""), String)
 
         'Artikel-Gruppe Backwaren (Default 10)
-        wb_GlobalSettings.OsGrpBackwaren = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeBackwaren", "10"), String)
+        wb_GlobalSettings.OsGrpBackwaren = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeBackwaren", ""), String)
         'Artikel-Gruppe Rohstoffe (Default 20)
-        wb_GlobalSettings.OsGrpRohstoffe = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeBackwaren", "20"), String)
+        wb_GlobalSettings.OsGrpRohstoffe = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeRohstoffe", ""), String)
 
         'Signum Default-Land
         wb_GlobalSettings.osLaendercode = TryCast(oSetting.GetSetting("Festwerte.DefaultLand"), String)

@@ -3188,6 +3188,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_Produktionsschritt.Bestellt_SonderText">
+ <summary>
+ Enthält, getrennt durch CRLF alle Sondertexte bzw. Kundenbestellungen für diese Tour.
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Produktionsschritt.Tour">
  <summary>
  Gibt die Tour-Nummer aus der Produktions-Planung zurück. Ist als Tour-Nummer 0 eingetragen, wird 

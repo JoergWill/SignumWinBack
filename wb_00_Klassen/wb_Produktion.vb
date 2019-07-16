@@ -835,16 +835,23 @@
         'alle Datensätze einlesen
         While orgaback.Read
             DebugCounter += 1
+            'Progressbar einblenden (nur wenn noch nicht sichtbar)
+            wb_Main_Progress_Shared.ShowProgressBar()
+            'Alle Datensätze einlesen
             For i = 0 To orgaback.msRead.FieldCount - 1
                 'Debug.Print("OrgaBack StoredProcedure Read " & orgaback.msRead.GetName(i) & "/" & orgaback.msRead.GetValue(i))
                 MsSQLdbProcedure_Produktionsauftrag = True
                 'Daten aus der view einlesen
                 BestellDaten.MsSQLdbRead_Fields(orgaback.msRead.GetName(i), orgaback.msRead.GetValue(i))
+                'Progressbar Anzeige refresh
+                Windows.Forms.Application.DoEvents()
             Next
-
             'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
             AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler, True, BestellDaten.AuftragsNummer, BestellDaten.Bestellmenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText)
         End While
+        'Progressbar ausblenden
+        wb_Main_Progress_Shared.HideProgressBar()
+        'Datenbankverbindung wieder schliessen
         orgaback.Close()
     End Function
 

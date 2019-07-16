@@ -1213,13 +1213,21 @@ Public Class wb_Komponente
         KO_Type = KType
         'Komponenten-Art (vorab) festlegen
         If KO_Type = KomponTypen.KO_TYPE_ARTIKEL Then
+            'Artikel
             KA_Art = "1"
         Else
+            'Rohstoff
             KA_Art = "0"
         End If
 
         'Datensatz neu anlegen
         winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewKompon, KO_Nr, KO_Nr_AlNum, wb_Functions.KomponTypeToInt(KO_Type), "Neu angelegt " & Date.Now))
+        'Rohstoff-Handkomponente - Lagerort neu anlegen
+        If KType = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Then
+            KA_Lagerort = "KT102_" + KO_Nr.ToString
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertLagerOrte, KA_Lagerort))
+        End If
+
         winback.Close()
         'neuen KompNummer zurückgeben
         Return KO_Nr

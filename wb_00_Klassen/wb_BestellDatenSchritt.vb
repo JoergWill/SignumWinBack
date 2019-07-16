@@ -8,6 +8,9 @@ Public Class wb_BestellDatenSchritt
     Private _Produktionsmenge As Double
     Private _ChargenTeiler As wb_Global.ModusChargenTeiler = wb_Global.ModusChargenTeiler.OptimalUndRest
     Private _AnzahlVorschlag As Integer
+    Private _Bedarfmenge As Integer
+    Private _FrosterEntnahme As Integer
+    Private _FrosterEinlagerung As Integer
     Private _AuftragsNummer As String = ""
     Private _BestellMenge As Double = wb_Global.UNDEFINED
     Private _SonderText As String = ""
@@ -65,10 +68,10 @@ Public Class wb_BestellDatenSchritt
 
     Public Property BestellMenge As Double
         Get
-            Return _BestellMenge
+            Return _Bedarfmenge
         End Get
         Set(value As Double)
-            _BestellMenge = value
+            _Bedarfmenge = value
         End Set
     End Property
 
@@ -131,6 +134,24 @@ Public Class wb_BestellDatenSchritt
         End Set
     End Property
 
+    Public Property FrosterEntnahme As Integer
+        Get
+            Return _FrosterEntnahme
+        End Get
+        Set(value As Integer)
+            _FrosterEntnahme = value
+        End Set
+    End Property
+
+    Public Property FrosterEinlagerung As Integer
+        Get
+            Return _FrosterEinlagerung
+        End Get
+        Set(value As Integer)
+            _FrosterEinlagerung = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
     ''' Update pq_Prouktionsauftrag (30.08.2018/JE)
@@ -190,6 +211,8 @@ Public Class wb_BestellDatenSchritt
                 'Soll-Produktionsmenge in Stück
                 Case "Produktionsmenge"
                     _Produktionsmenge = wb_Functions.StrToDouble(Value)
+                Case "BedarfMenge"
+                    _Bedarfmenge = wb_Functions.StrToDouble(Value)
                 Case "Einheit"
                     _Einheit = wb_Functions.StrToInt(Value)
 
@@ -211,6 +234,13 @@ Public Class wb_BestellDatenSchritt
                     'Anzahl Lose Vorschlag
                 Case "AnzahlVorschlag"
                     _AnzahlVorschlag = wb_Functions.StrToInt(Value)
+
+                    'Anzahl Froster Entnahme
+                Case "FrosterEntnahme"
+                    _FrosterEntnahme = wb_Functions.StrToInt(Value)
+                    'Anzahl Froster Einlagerung
+                Case "FrosterEinlagerung"
+                    _FrosterEinlagerung = wb_Functions.StrToInt(Value)
 
             End Select
         Catch ex As Exception
