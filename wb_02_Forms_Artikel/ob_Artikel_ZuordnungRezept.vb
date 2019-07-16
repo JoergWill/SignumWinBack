@@ -8,6 +8,7 @@ Public Class ob_Artikel_ZuordnungRezept
 
     'setzt das Flag _Extendee.Changed in ob_Artikel_DockingExtension
     Public Event DataInvalidated()
+    Public Event DataUpdate()
     Public RohstoffCloud As wb_Rohstoffe_Cloud
     Private Nr As Integer = wb_Global.UNDEFINED
 
@@ -133,6 +134,16 @@ Public Class ob_Artikel_ZuordnungRezept
                 'Daten in der Komponenten-Klasse sichern
                 KompRzChargen.SaveData(DirectCast(k, wb_Komponente))
 
+            Case "wbUPDATE"
+                'Daten in der Komponenten-Klasse updaten (nur RzNr, Rezeptnummer, Rezeptname)
+                KompRzChargen.UpdateData(DirectCast(k, wb_Komponente))
+                'anschliessed die Daten wieder (mit neueer/geänderter) Rezeptnummer aus der Komponenten-Klasse lesen
+                KompRzChargen.GetDataFromKomp(DirectCast(k, wb_Komponente))
+                Nr = DirectCast(k, wb_Komponente).Nr
+                'Anzeigen der Werte
+                KompRzChargen.DataValid = True
+                KompRzChargen.Visible = True
+
         End Select
         Return Nothing
     End Function
@@ -146,6 +157,10 @@ Public Class ob_Artikel_ZuordnungRezept
     ''' </summary>
     Public Sub KomRzChargen_DataInvalidated() Handles KompRzChargen.DataInvalidated
         RaiseEvent DataInvalidated()
+    End Sub
+
+    Public Sub KompRzChargen_DataUpdate() Handles KompRzChargen.DataUpdate
+        RaiseEvent DataUpdate()
     End Sub
 
     Private Sub lblProduktion_Paint(sender As Object, e As PaintEventArgs) Handles lblProduktion.Paint

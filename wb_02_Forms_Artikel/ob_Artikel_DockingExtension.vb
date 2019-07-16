@@ -333,6 +333,12 @@ Public Class ob_Artikel_DockingExtension
         _Extendee.Changed = True
     End Sub
 
+    Private Sub UpdateImmidiate()
+        Debug.Print("Update Komponentendaten (Rezeptnummer/Name)")
+        'Änderungen Rezeptnummer/Rezeptname in Komponenten-Stammdaten schreiben
+        Extendee_ExecuteCommand("wbUPDATE", Komponente)
+    End Sub
+
     ''' <summary>
     ''' Liefert zu einem FormKey eine Instanz des UserControls zurück
     ''' </summary>
@@ -349,6 +355,7 @@ Public Class ob_Artikel_DockingExtension
                         ' Adresse der Klasse, die die Arbeit macht !!
                         oForm = New ob_Artikel_ZuordnungRezept(Me)
                         AddHandler DirectCast(oForm, ob_Artikel_ZuordnungRezept).DataInvalidated, AddressOf SaveAtClose
+                        AddHandler DirectCast(oForm, ob_Artikel_ZuordnungRezept).DataUpdate, AddressOf UpdateImmidiate
                         _SubForms(FormKey) = oForm
                     End If
                     Return oForm

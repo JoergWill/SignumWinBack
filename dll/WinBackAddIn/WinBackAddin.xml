@@ -696,6 +696,12 @@ Stacktrace:
  </summary>
  <param name="Komp"></param>
 </member>
+<member name="M:WinBack.wb_KompRzChargen.UpdateData(WinBack.wb_Komponente@)">
+ <summary>
+ Schreibt nur die geänderte Rezeptnummer/Name in das Komponenten-Objekt.
+ </summary>
+ <param name="Komp"></param>
+</member>
 <member name="P:WinBack.wb_KompRzChargen.DataValid">
  <summary>
  Daten sind gültig. Anzeigefelder freigeben/anzeigen

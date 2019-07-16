@@ -7,10 +7,12 @@ Public Class wb_KompRzChargen
     Public WithEvents ArtikelChargen As New wb_MinMaxOptCharge
     Public WithEvents TeigChargen As New wb_MinMaxOptCharge
     Public Event DataInvalidated()
+    Public Event DataUpdate()
     Public Event Cloud_Click(sender As Object, e As EventArgs)
 
     Private OnErrorSetFocus As Object = Nothing
     Private _DataValid As Boolean
+    Private _KompNr As Integer = wb_Global.UNDEFINED
     Private _RzNr As Integer = wb_Global.UNDEFINED
     Private _KompType As wb_Global.KomponTypen = wb_Global.KomponTypen.KO_TYPE_UNDEFINED
     Private _ID As String = wb_Global.UNDEFINED
@@ -25,18 +27,19 @@ Public Class wb_KompRzChargen
     Public Sub GetDataFromKomp(ByRef Komp As wb_Komponente)
         'Komponentendaten aus Datenbank lesen
         Komp.MySQLdbRead(Komp.Nr)
+        'Komponenten-Nummer
+        _KompNr = Komp.Nr
 
         'Komponententype
         _KompType = Komp.Type
         'Verknüpfung zur Cloud
         _ID = Komp.MatchCode
-        'Rezeptnummer aus Rohstoffdaten
-        RzNr = Komp.RzNr
-
 
         'Rezeptnummer und Name (Ruft wb_Komponente.GetProduktionsDaten() auf
+        RzNr = Komp.RzNr
         RezeptNummer = Komp.RezeptNummer
         RezeptName = Komp.RezeptName
+
         'Liniengruppen
         InitLinienGruppen()
         LinienGruppe = Komp.LinienGruppe
@@ -77,6 +80,22 @@ Public Class wb_KompRzChargen
         Komp.TeigChargen.CopyFrom(TeigChargen)
         Komp.ArtikelChargen.CopyFrom(ArtikelChargen)
     End Sub
+
+    ''' <summary>
+    ''' Schreibt nur die geänderte Rezeptnummer/Name in das Komponenten-Objekt.
+    ''' </summary>
+    ''' <param name="Komp"></param>
+    Public Sub UpdateData(ByRef Komp As wb_Komponente)
+        'Rezept-Nr in MFF 201
+        Komp.RzNr = RzNr
+        'Rezeptnummer(alpha) in MFF202
+        Komp.RezeptNummer = RezeptNummer
+        'Rezeptbezeichnung in MFF203
+        Komp.RezeptName = RezeptName
+        'geänderte Daten in DB schreiben
+        Komp.UpdateDB()
+    End Sub
+
 
     Private Sub InitLinienGruppen()
         'ComboBox Liniengruppe Rezepte(Teig) füllen
@@ -142,12 +161,13 @@ Public Class wb_KompRzChargen
                     BtnCloud.Enabled = False
                 Else
                     BtnCloud.Enabled = True
-                    'wenn schon eine Verknüpfung zur Cloud vorhanden ist kann keine Rezeptur zugewiesen werden
-                    If ID <> "" Then
-                        BtnRzpt.Enabled = False
-                    Else
-                        BtnRzpt.Enabled = True
-                    End If
+                End If
+
+                'wenn schon eine Verknüpfung zur Cloud vorhanden ist kann keine Rezeptur zugewiesen werden
+                If ID <> "" Then
+                    BtnRzpt.Enabled = False
+                Else
+                    BtnRzpt.Enabled = True
                 End If
             End If
         End Set
@@ -285,8 +305,11 @@ Public Class wb_KompRzChargen
             RzNr = RezeptAuswahl.RezeptNr
             tRezeptNr.Text = RezeptAuswahl.RezeptNummer
             tRezeptName.Text = RezeptAuswahl.RezeptName
+
             'Flag setzen - Daten wurden geändert, speichern notwendig
             DataIsInvalid()
+            'Update Komponenten-Daten
+            RaiseEvent DataUpdate()
         End If
     End Sub
 
