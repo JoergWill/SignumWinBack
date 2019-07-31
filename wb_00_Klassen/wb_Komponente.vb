@@ -25,6 +25,7 @@ Public Class wb_Komponente
     Private KA_Charge_Opt_kg As String
     Private KA_zaehlt_zu_RZ_Gesamtmenge As String
     Private KA_aktiv As Integer
+    Private KA_Artikel_Typ As Integer
 
     Private KO_DeklBezeichnungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichnungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
@@ -324,6 +325,15 @@ Public Class wb_Komponente
             Else
                 KA_aktiv = 0
             End If
+        End Set
+    End Property
+
+    Public Property NwtMarker As wb_Global.ArtikelMarker
+        Get
+            Return KA_Artikel_Typ
+        End Get
+        Set(value As wb_Global.ArtikelMarker)
+            KA_Artikel_Typ = value
         End Set
     End Property
 
@@ -1403,6 +1413,9 @@ Public Class wb_Komponente
                 Case "KA_Lagerort"
                     KA_Lagerort = Value
                     ktTypXXX.Wert(T101_LagerOrt) = Value
+                'Flag Nährwert-Berechnung OK/fehlerhaft/update
+                Case "KA_Artikel_Typ"
+                    KA_Artikel_Typ = Value
 
                 'Stückgewicht in Gramm
                 Case "KA_Stueckgewicht"
@@ -1540,7 +1553,8 @@ Public Class wb_Komponente
               "KA_Matchcode = '" & KO_IdxCloud & "'," &
               "KA_Lagerort = '" & KA_Lagerort & "'," &
               "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
-              "KA_Art = '" & KA_Art & "'"
+              "KA_Art = '" & KA_Art & "'," &
+              "KA_Artikel_Typ = " & KA_Artikel_Typ.ToString
 
         'Rezeptnummer nur updaten wenn gültig
         If KA_Rz_Nr <> wb_Global.UNDEFINED Then
@@ -1713,7 +1727,7 @@ Public Class wb_Komponente
         Dim AllergenKurzListeEnthalten As String = ""
         Dim AllergenKurzListeSpuren As String = ""
 
-        'Daten aus dbo.ArtikelDeklarationstexte lesen (Artikelnummer/Variante 0)
+        'Daten aus dbo.ArtikelDeklarationstexte lesen (Artikelnummer/Variante 0/Ländercode/Sprachencode)
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlReadDeklaration, KO_Nr_AlNum, 0, wb_GlobalSettings.osLaendercode, wb_GlobalSettings.osSprachcode)
         OrgasoftMain.sqlSelect(sql)
         'wenn schon ein Datensatz vorhanden ist, Flags einlesen (Fixiert)

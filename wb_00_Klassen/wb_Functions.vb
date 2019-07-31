@@ -1,6 +1,7 @@
 ﻿Imports System.Globalization
 Imports System.IO
 Imports System.Net
+Imports System.Net.Sockets
 Imports System.Text
 Imports EnhEdit.EnhEdit_Global
 Imports ICSharpCode.SharpZipLib.BZip2
@@ -1496,4 +1497,13 @@ Public Class wb_Functions
         Return False
     End Function
 
+    Shared Function GetCurrentIpV4Address() As IPAddress
+        Dim addresses As IPAddress() = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName).AddressList
+        Return addresses.FirstOrDefault(Function(ip) ip.AddressFamily = AddressFamily.InterNetwork)
+    End Function
+
+    Shared Function GetCurrentIpV4AddressString() As String
+        Dim ip As IPAddress = GetCurrentIpV4Address()
+        Return If(ip, "").ToString()
+    End Function
 End Class

@@ -420,6 +420,12 @@
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Rezepte.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Komponenten.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_User.vb" />
+    <Compile Include="wb_00_Main\wb_Main_Setup.Designer.vb">
+      <DependentUpon>wb_Main_Setup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Main\wb_Main_Setup.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_00_Main\wb_Finalizer_Shared.vb" />
     <Compile Include="wb_00_Klassen\WinBack_DockMain.Designer.vb">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
@@ -825,6 +831,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Main\wb_Main_Progress.resx">
       <DependentUpon>wb_Main_Progress.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Main\wb_Main_Setup.resx">
+      <DependentUpon>wb_Main_Setup.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Main\wb_PrinterDialog.resx">
       <DependentUpon>wb_PrinterDialog.vb</DependentUpon>

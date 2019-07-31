@@ -108,8 +108,14 @@ Public Class ob_Main_Menu
 
         'Debug/Trace-Listener initialisieren
         AddTraceListener()
-        'Event User-Login
+        'Event User-Login - Read System-Konfig
         AddLogIn()
+
+        'erster Start WinBack-AddIn nach Setup - Einstellungen Mandanten
+        'TODO - Hier TEST-AUFRUF
+        'Dim AddInSetup As New wb_Main_Setup
+        'AddInSetup.ShowDialog()
+
         'Main-Menu erweitern
         AddMenu()
 

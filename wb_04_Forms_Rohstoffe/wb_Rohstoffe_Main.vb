@@ -99,15 +99,15 @@ Public Class wb_Rohstoffe_Main
 
     Private Sub BtnRohstoffParameter()
         If IsNothingOrDisposed(RohstoffParameter) Then
-            RohstoffParameter.Show(DockPanel, DockState.Document)
+            RohstoffParameter = New wb_Rohstoffe_Parameter
         End If
-        RohstoffParameter = New wb_Rohstoffe_Parameter
+        RohstoffParameter.Show(DockPanel, DockState.Document)
     End Sub
     Private Sub BtnRohstoffNwt()
         If IsNothingOrDisposed(RohstoffNwt) Then
-            RohstoffNwt.Show(DockPanel, DockState.Document)
+            RohstoffNwt = New wb_Rohstoffe_Nwt
         End If
-        RohstoffNwt = New wb_Rohstoffe_Nwt
+        RohstoffNwt.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRohstoffCloud()

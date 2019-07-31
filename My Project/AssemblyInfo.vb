@@ -32,8 +32,8 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.4.3.0")>
-<Assembly: AssemblyFileVersion("1.4.3.0")>
+<Assembly: AssemblyVersion("1.4.4.1")>
+<Assembly: AssemblyFileVersion("1.4.4.1")>
 <Assembly: NeutralResourcesLanguage("de-DE")>
 
 'Konfiguration log4net

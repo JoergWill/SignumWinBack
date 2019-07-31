@@ -37,8 +37,8 @@ Public Class Main
 
     Dim Kocher As New wb_Kocher_Sync
 
-    Private nwtUpdateKomponentenOrgaBack = False
-    Private nwtUpdateArtikelOrgaBack = False
+    Private nwtUpdateKomponentenOrgaBack As Boolean = False
+    Private nwtUpdateArtikelOrgaBack As Boolean = False
 
     Private cntCounter As Integer
     Private cntMySql As Integer = 0

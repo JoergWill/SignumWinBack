@@ -94,6 +94,8 @@ Public Class wb_GlobalSettings
 
     Private Shared _ImportPathPistor = Nothing
 
+    Private Shared _Mandaten As New List(Of obMandant)
+
     Public Shared Property MsSQLMain As String
         Get
             If _MsSQLMainDB Is Nothing Then
@@ -953,6 +955,15 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    Public Shared ReadOnly Property Mandanten As IList
+        Get
+            If _OrgaBackMandantName = Nothing Then
+                GetOrgaBackMandant()
+            End If
+            Return _Mandaten
+        End Get
+    End Property
+
     Public Shared Property MandantName As String
         Get
             If _MandantName Is Nothing Then
@@ -1079,6 +1090,14 @@ Public Class wb_GlobalSettings
                                         End Select
                                     End While
                                 End If
+
+                                'Mandant und Admin-DB in Liste eintragen
+                                Dim m As New wb_Global.obMandant
+                                m.MandantNr = MandantNr
+                                m.MandantName = MandantName
+                                m.AdminDBName = AdminDBName
+                                _Mandaten.Add(m)
+
                         End Select
 
                         'Wenn die Admin-Datenbank mit der aktuelle Admin-DB übereinstimmt, ist der Mandant gefunden
@@ -1086,6 +1105,7 @@ Public Class wb_GlobalSettings
                             _OrgaBackMandantName = MandantName
                             _OrgaBackMandantNr = MandantNr
                         End If
+
                 End Select
             Loop
             .Close()

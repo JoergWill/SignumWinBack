@@ -137,7 +137,7 @@ Public Class ob_Artikel_ZuordnungRezept
             Case "wbUPDATE"
                 'Daten in der Komponenten-Klasse updaten (nur RzNr, Rezeptnummer, Rezeptname)
                 KompRzChargen.UpdateData(DirectCast(k, wb_Komponente))
-                'anschliessed die Daten wieder (mit neueer/geänderter) Rezeptnummer aus der Komponenten-Klasse lesen
+                'anschliessed die Daten wieder (mit neuer/geänderter) Rezeptnummer aus der Komponenten-Klasse lesen
                 KompRzChargen.GetDataFromKomp(DirectCast(k, wb_Komponente))
                 Nr = DirectCast(k, wb_Komponente).Nr
                 'Anzeigen der Werte
@@ -187,4 +187,5 @@ Public Class ob_Artikel_ZuordnungRezept
         RohstoffCloud.ShowDialog()
         RohstoffCloud = Nothing
     End Sub
+
 End Class

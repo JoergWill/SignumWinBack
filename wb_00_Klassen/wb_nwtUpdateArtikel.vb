@@ -134,6 +134,9 @@ Public Class wb_nwtUpdateArtikel
                     Next
                 End If
 
+                'alle Artikel markieren, die einen Verweis auf dieses Rezept (enthält die geänderte Komponente) enthalten (Rezept-im-Rezept)
+                nwtArtikelDaten.MySQLdbSetMarkerRzptListe(wb_Global.ArtikelMarker.nwtUpdate)
+
                 'Protokoll der Änderungen speichern in Hinweise
                 nwtArtikelDaten.SaveReport()
                 'Protokoll der Änderungen ausgeben

@@ -92,6 +92,8 @@ Public Class wb_KompRzChargen
         Komp.RezeptNummer = RezeptNummer
         'Rezeptbezeichnung in MFF203
         Komp.RezeptName = RezeptName
+        'wenn sich die Zuordnung von Rezeptur zum Artikel geändert hat, muss die Nährwert-Berechnung neu durchgeführt werden
+        Komp.NwtMarker = wb_Global.ArtikelMarker.nwtUpdate
         'geänderte Daten in DB schreiben
         Komp.UpdateDB()
     End Sub

@@ -3387,6 +3387,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Rezept.ArtikelMarkieren">
+ <summary>
+ Die Nährwerte aller mit dieser Rezeptur verknüpften Artikel müssen neu berechnet und an OrgaBack geschrieben werden (Flag setzen)
+ Rezept-im-Rezept Strukturen werden im Hintergrund-Task auf dem Servre aufgelöst: 
+     Komponenten die markiert worden sind ergeben eine Rezeptliste, deren zugehörige 
+     Artikel/Rohstoffe dann markiert werden.
+ </summary>
+</member>
 <member name="M:WinBack.wb_Rezept.MySQLdbNew(System.Int32,System.Int32)">
  <summary>
  Rezeptkopf-Datensatz neu anlegen

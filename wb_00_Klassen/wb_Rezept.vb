@@ -522,6 +522,22 @@ Public Class wb_Rezept
     End Function
 
     ''' <summary>
+    ''' Die Nährwerte aller mit dieser Rezeptur verknüpften Artikel müssen neu berechnet und an OrgaBack geschrieben werden (Flag setzen)
+    ''' Rezept-im-Rezept Strukturen werden im Hintergrund-Task auf dem Servre aufgelöst: 
+    '''     Komponenten die markiert worden sind ergeben eine Rezeptliste, deren zugehörige 
+    '''     Artikel/Rohstoffe dann markiert werden.
+    ''' </summary>
+    Public Sub ArtikelMarkieren()
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'Markiere alle Artikel die diese Rezeptur enthalten
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarkerRzNr, _RezeptNr, wb_Global.ArtikelMarker.nwtUpdate))
+        'Verbindung wieder schliessen
+        winback.Close()
+    End Sub
+
+
+    ''' <summary>
     ''' Rezeptkopf-Datensatz neu anlegen
     ''' Es wird nur die Rezept-Nummer (intern) angelegt.
     ''' Die Rezept-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit

@@ -85,6 +85,12 @@
         Public cLocation As Drawing.Point
     End Structure
 
+    Public Structure obMandant
+        Public MandantNr As Integer
+        Public MandantName As String
+        Public AdminDBName As String
+    End Structure
+
     Public Enum ktParam
         ktAlle = 0
         kt200 = 200

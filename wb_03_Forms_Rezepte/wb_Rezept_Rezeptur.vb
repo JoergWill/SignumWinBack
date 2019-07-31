@@ -305,6 +305,11 @@ Public Class wb_Rezept_Rezeptur
             Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante)
         End If
 
+        'Die Nährwerte aller mit dieser Rezeptur verknüpften Artikel/Rohstoffe müssen neu berechnet und an OrgaBack geschrieben werden (Flag setzen)
+        If _RzChanged Then
+            Rezept.ArtikelMarkieren()
+        End If
+
         'Rezeptkopfdaten schreiben
         If _RzKopfChanged Or _RzChanged Then
             Rezept.MySQLdbWrite_Rezept(_RzChanged)
