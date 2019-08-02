@@ -62,7 +62,7 @@
                                  "ORDER BY Komponenten.KO_Nr LIMIT 1"
     'Sql-Statement Suche nächsten Artikel/Komponente nach KO_Nr (Update Nährwerte-Artikel)
     Public Const sqlUpdateArtikelNWT = "SELECT * FROM Komponenten WHERE KA_RZ_Nr > 0 AND KO_Nr > [0] AND KA_aktiv = 1 " &
-                                       "AND KA_Artikel_Typ >= [1] ORDER BY Komponenten.KO_Nr LIMIT 1"
+                                       "AND KA_PreisEinheit >= [1] ORDER BY Komponenten.KO_Nr LIMIT 1"
     'Sql-Statement kompletten Rohstoffdatensatz nach KO_Nr (Update Nährwerte)
     Public Const sqlgetNWT = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0])"
@@ -96,11 +96,11 @@
     Public Const sqlKompInArbRzp = "SELECT COUNT(*) AS Used FROM BAK_ArbRZSchritte WHERE B_ARS_TW_Nr = 0 AND B_ARS_Ko_nr = [0]"
 
     'Sql-Statement Update aktuelle Komponente (Marker setzen - Update Nährwert-Info notwendig 
-    Public Const sqlKompSetMarker = "UPDATE Komponenten SET Komponenten.KA_Artikel_Typ = [1] WHERE KO_Nr = [0]"
+    Public Const sqlKompSetMarker = "UPDATE Komponenten SET Komponenten.KA_PreisEinheit = [1] WHERE KO_Nr = [0]"
     ''Sql-Statement Liste aler Rezeptnummern mit Rezeptschritte enthalten Komponente mit Nummer 
     Public Const sqlKompSetMarkerRzListe = "SELECT RS_RZ_Nr FROM RezeptSchritte WHERE RS_Ko_Nr = [0]"
     'Sql-Statement Update alle Komponenten mit Rezept-Nummer (aus Liste sqlKompSetMarkerRzListe) 
-    Public Const sqlKompSetMarkerRzNr = "UPDATE Komponenten Set Komponenten.KA_Artikel_Typ = [1] WHERE KA_RZ_Nr = [0]"
+    Public Const sqlKompSetMarkerRzNr = "UPDATE Komponenten Set Komponenten.KA_PreisEinheit = [1] WHERE KA_RZ_Nr = [0]"
 
 
     'Sql-Statement Test wb_ktTypX (Select KO_Nr=x)

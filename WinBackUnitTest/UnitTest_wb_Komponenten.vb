@@ -272,7 +272,7 @@ Imports WinBack.wb_Sql_Selects
             'ersten Datensatz aus Tabelle Komponenten(3518) lesen
             If winback.sqlSelect(sql) Then
                 If winback.Read Then
-                    Assert.AreEqual(2, winback.iField("KA_Artikel_Typ"))
+                    Assert.AreEqual(2, winback.iField("KA_PreisEinheit"))
                 End If
             End If
             'Verbindung Lesen wieder schliessen
@@ -316,7 +316,7 @@ Imports WinBack.wb_Sql_Selects
             'ersten Datensatz aus Tabelle Komponenten(3518) lesen
             If winback.sqlSelect(sql) Then
                 If winback.Read Then
-                    Assert.AreEqual(2, winback.iField("KA_Artikel_Typ"))
+                    Assert.AreEqual(2, winback.iField("KA_PreisEinheit"))
                 End If
             End If
             'Verbindung Lesen wieder schliessen

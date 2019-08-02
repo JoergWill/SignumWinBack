@@ -257,7 +257,7 @@
     End Enum
 
     ''' <summary>
-    ''' Markierung der Artikel/Komponentendaten (KA_Artikel_Typ)
+    ''' Markierung der Artikel/Komponentendaten (KA_PreisEinheit)
     '''     -   Nährwertinfo fehlerhaft/nicht vollständig
     '''     -   Nährwertinfo muss neu berechnet werden (Update Nährwerte Cloud)
     ''' </summary>

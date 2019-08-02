@@ -25,7 +25,7 @@ Public Class wb_Komponente
     Private KA_Charge_Opt_kg As String
     Private KA_zaehlt_zu_RZ_Gesamtmenge As String
     Private KA_aktiv As Integer
-    Private KA_Artikel_Typ As Integer
+    Private KA_PreisEinheit As Integer
 
     Private KO_DeklBezeichnungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichnungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
@@ -71,11 +71,6 @@ Public Class wb_Komponente
             Return _DataHasChanged
         End Get
     End Property
-
-    Public Sub New()
-        'TODO das hier ist völliger Quatsch !!
-        'AddHandler wb_Rohstoffe_Shared.eParam_Changed, AddressOf SaveParameterArray
-    End Sub
 
     ''' <summary>
     ''' Setzt alle Variablen wieder auf Null,Nothing oder Undefined.
@@ -330,10 +325,10 @@ Public Class wb_Komponente
 
     Public Property NwtMarker As wb_Global.ArtikelMarker
         Get
-            Return KA_Artikel_Typ
+            Return KA_PreisEinheit
         End Get
         Set(value As wb_Global.ArtikelMarker)
-            KA_Artikel_Typ = value
+            KA_PreisEinheit = value
         End Set
     End Property
 
@@ -1414,8 +1409,8 @@ Public Class wb_Komponente
                     KA_Lagerort = Value
                     ktTypXXX.Wert(T101_LagerOrt) = Value
                 'Flag Nährwert-Berechnung OK/fehlerhaft/update
-                Case "KA_Artikel_Typ"
-                    KA_Artikel_Typ = Value
+                Case "KA_PreisEinheit"
+                    KA_PreisEinheit = Value
 
                 'Stückgewicht in Gramm
                 Case "KA_Stueckgewicht"
@@ -1554,7 +1549,7 @@ Public Class wb_Komponente
               "KA_Lagerort = '" & KA_Lagerort & "'," &
               "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
               "KA_Art = '" & KA_Art & "'," &
-              "KA_Artikel_Typ = " & KA_Artikel_Typ.ToString
+              "KA_PreisEinheit = " & KA_PreisEinheit.ToString
 
         'Rezeptnummer nur updaten wenn gültig
         If KA_Rz_Nr <> wb_Global.UNDEFINED Then
