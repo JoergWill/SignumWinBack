@@ -16,6 +16,7 @@ Public Class wb_Komponente
     Private LF_Lieferant As String
     Private KO_Backverlust As Double
     Private KA_ProdVorlauf As Integer
+    Private KO_Zuschnitt As Double
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
@@ -37,6 +38,7 @@ Public Class wb_Komponente
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ReadCalcPreis As Boolean = True
+    Private _VerkaufsGewicht As Double = wb_Global.UNDEFINED
 
     Private _RootParameter As New wb_KomponParam(Nothing, 0, 0, "")
     Private _Parameter As wb_KomponParam
@@ -880,14 +882,48 @@ Public Class wb_Komponente
     ''' <summary>
     ''' Backverlust in %
     ''' Der Backverlust wird in der Datenbank im Feld (winback.Komponenten.KO_Temp_Korr) mit Faktor 100 als Integer gespeichern.
+    ''' Muss bei der Nährwert-Berechnung mit berücksichtigt werden !
+    ''' 
+    ''' Bei Artikeln (KO_Type=0) steht der Backverlust in KomponParams 300/1  !!
     ''' </summary>
     ''' <returns></returns>
     Public Property Backverlust As Double
         Get
-            Return KO_Backverlust / 100
+            If Type = KomponTypen.KO_TYPE_ARTIKEL Then
+                Return ktTyp300.Backverlust
+            Else
+                Return KO_Backverlust / 100
+            End If
         End Get
         Set(value As Double)
-            KO_Backverlust = value * 100
+            If Type = KomponTypen.KO_TYPE_ARTIKEL Then
+                ktTyp300.Backverlust = value
+            Else
+                KO_Backverlust = value * 100
+            End If
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Zuschnittverlust in %
+    ''' Der Zuschnittverlust wird in der Datenbank im Feld winback.Komponenten.KA_Artikel_Typ mit Faktor 100 als Integer gespeichert.
+    ''' Im Gegensatz zum Backverlust wird der Zuschnittverlust NICHT bei der Nährwert-Berechnung mit berücksichtigt!
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Zuschnittverlust As Double
+        Get
+            If Type = KomponTypen.KO_TYPE_ARTIKEL Then
+                Return ktTyp300.Zuschnitt
+            Else
+                Return KO_Zuschnitt / 100
+            End If
+        End Get
+        Set(value As Double)
+            If Type = KomponTypen.KO_TYPE_ARTIKEL Then
+                ktTyp300.Zuschnitt = value
+            Else
+                KO_Zuschnitt = value * 100
+            End If
         End Set
     End Property
 
@@ -947,6 +983,21 @@ Public Class wb_Komponente
         End Get
         Set(value As String)
             _Lager.Aktiv = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Verkaufsgewicht aus OrgBack dbo.HandelsArtikel.Gewicht
+    ''' Wird benötigt zur Berechnung des Nassgewichts in WinBack aus 
+    ''' Verkaufsgewicht, Zuschnitt-Verlust, Backverlust
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property VerkaufsGewicht As Double
+        Get
+            Return _VerkaufsGewicht
+        End Get
+        Set(value As Double)
+            _VerkaufsGewicht = value
         End Set
     End Property
 
@@ -1395,6 +1446,9 @@ Public Class wb_Komponente
                 'Backverlust(Rezept im Rezept)
                 Case "KO_Temp_Korr"
                     KO_Backverlust = Value
+                'Zuschnittverlust(Rezept im Rezept)
+                Case "KA_Artikel_Typ"
+                    KO_Zuschnitt = Value
                 'Produktions-Vorlauf in [h]
                 Case "KA_Prod_Linie"
                     KA_ProdVorlauf = Value
@@ -1544,6 +1598,7 @@ Public Class wb_Komponente
               "KO_Bezeichnung = '" & Bezeichnung & "'," &
               "KO_Kommentar = '" & Kommentar & "'," &
               "KO_Temp_Korr = '" & KO_Backverlust & "'," &
+              "KA_Artikel_Typ = " & KO_Zuschnitt & "," &
               "KA_Prod_Linie = '" & KA_ProdVorlauf & "'," &
               "KA_Matchcode = '" & KO_IdxCloud & "'," &
               "KA_Lagerort = '" & KA_Lagerort & "'," &

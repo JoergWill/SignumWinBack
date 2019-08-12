@@ -91,6 +91,14 @@
         Public AdminDBName As String
     End Structure
 
+    Public Enum KomponParams
+        Sollwert = 1
+        EinheitenIndex = 4
+        Format = 9
+        UntererGrenzwert = 10
+        ObererGrenzwert = 11
+    End Enum
+
     Public Enum ktParam
         ktAlle = 0
         kt200 = 200
@@ -304,6 +312,9 @@
     ''' Parameter Produktion
     ''' </summary>
     Public Const maxTyp300 = 14
+    Public Const T300_Backverlust = 1
+    Public Const T300_ProdVorlauf = 2
+    Public Const T300_Zuschnitt = 3
     Public Const T300_LinienGruppe = 5
     Public Const T300_RzNr = 6
     Public Const T300_RezeptNummer = 7

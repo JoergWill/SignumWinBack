@@ -45,8 +45,8 @@ Public Class wb_Rezept_Rezeptur
 
         'Einlesen Rezeptkopf und Rezeptschritte 
         If RzAendIndex = wb_Global.UNDEFINED Then
-            'Rezeptkopf und Rezeptschritte aktuell (winback)
-            Rezept = New wb_Rezept(_RzNummer, Nothing, _RzVariante)
+            'Rezeptkopf und Rezeptschritte aktuell (winback) - Start mit Backverlust 0.0 !! (kein Artikel definiert)
+            Rezept = New wb_Rezept(_RzNummer, Nothing, 0.0, _RzVariante)
             Me.Text = Rezept.RezeptNummer & "/V" & Rezept.Variante & " " & Rezept.RezeptBezeichnung
         Else
             'Rezeptkopf und Rezeptschritte aus der Historie (wbdaten)

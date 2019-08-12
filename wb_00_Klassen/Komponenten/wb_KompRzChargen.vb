@@ -48,6 +48,10 @@ Public Class wb_KompRzChargen
         Backverlust = Komp.Backverlust
         'Produktions-Vorlauf
         ProdVorlauf = Komp.ProdVorlauf
+        'Verkaufs-Gewicht
+        Verkaufsgewicht = Komp.VerkaufsGewicht
+        'Zuschnitt-Verlust
+        Zuschnitt = Komp.Zuschnittverlust
 
         'Chargendaten aus Komponentendaten
         ArtikelChargen.CopyFrom(Komp.ArtikelChargen)
@@ -73,6 +77,8 @@ Public Class wb_KompRzChargen
 
         'Backverlust
         Komp.Backverlust = Backverlust
+        'Zuschnitt
+        Komp.Zuschnittverlust = Zuschnitt
         'Vorlauf Produktion
         Komp.ProdVorlauf = ProdVorlauf
 
@@ -253,6 +259,10 @@ Public Class wb_KompRzChargen
         End Set
     End Property
 
+    ''' <summary>
+    ''' Backverlust in Prozent (max 100%)
+    ''' </summary>
+    ''' <returns></returns>
     <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property Backverlust As Double
         Get
@@ -266,6 +276,23 @@ Public Class wb_KompRzChargen
         End Set
     End Property
 
+    ''' <summary>
+    ''' Zuschnitt-Verlsut in Prozent (max 100%)
+    ''' </summary>
+    ''' <returns></returns>
+    <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Public Property Zuschnitt As Double
+        Get
+            Return wb_Functions.StrToDouble(tZuschnitt.Text)
+        End Get
+        Set(value As Double)
+            If Zuschnitt > 100 Then
+                value = 100
+            End If
+            tZuschnitt.Text = wb_Functions.FormatStr(value.ToString, 3, 2) & " %"
+        End Set
+    End Property
+
     <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property ProdVorlauf As Integer
         Get
@@ -276,6 +303,22 @@ Public Class wb_KompRzChargen
                 value = 127
             End If
             tProdVorlauf.Text = value.ToString("###") & " h"
+        End Set
+    End Property
+
+    <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Public Property Verkaufsgewicht As Double
+        Get
+            Return wb_Functions.StrToDouble(tVkGewicht.Text)
+        End Get
+        Set(value As Double)
+            If value > wb_Global.UNDEFINED Then
+                tVkGewicht.Text = value.ToString("##.###") & " kg"
+                BtnCalcNassGewicht.Visible = True
+            Else
+                tVkGewicht.Text = "- kg"
+                BtnCalcNassGewicht.Visible = False
+            End If
         End Set
     End Property
 
@@ -595,5 +638,20 @@ Public Class wb_KompRzChargen
 
     Private Sub BtnCloud_Click(sender As Object, e As EventArgs) Handles BtnCloud.Click
         RaiseEvent Cloud_Click(sender, e)
+    End Sub
+
+    ''' <summary>
+    ''' Berechnet das Nassgewicht aus Stk-Gewicht(Verkauf), Zuschnitt-Verlust und Backverlust
+    '''     Gewicht Teigling = (StkGewicht/(100-Backverlust))*100
+    '''     Nass-Gewicht     = (TeiglGewicht/(100-Zuschnitt))*100
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnCalcNassGewicht_Click(sender As Object, e As EventArgs) Handles BtnCalcNassGewicht.Click
+        'Gewicht Teigling vor dem Backen
+        Dim tg As Double = ((Verkaufsgewicht * 1000) / (100 - Backverlust)) * 100
+        'Nass-Gewicht
+        Dim ng As Double = (tg / (100 - Zuschnitt)) * 100
+        ArtikelChargen.StkGewicht = ng
     End Sub
 End Class

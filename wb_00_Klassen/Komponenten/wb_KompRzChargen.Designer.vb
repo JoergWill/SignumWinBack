@@ -64,6 +64,11 @@ Partial Class wb_KompRzChargen
         Me.BtnCloud = New System.Windows.Forms.Button()
         Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
         Me.cbLiniengruppe = New WinBack.wb_ComboBox()
+        Me.lblZuschnitt = New System.Windows.Forms.Label()
+        Me.tZuschnitt = New System.Windows.Forms.TextBox()
+        Me.tVkGewicht = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.BtnCalcNassGewicht = New System.Windows.Forms.Button()
         Me.pTeigChargen.SuspendLayout()
         Me.pArtikelChargen.SuspendLayout()
         Me.SuspendLayout()
@@ -475,7 +480,7 @@ Partial Class wb_KompRzChargen
         'lblProdVorlauf
         '
         Me.lblProdVorlauf.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblProdVorlauf.Location = New System.Drawing.Point(5, 275)
+        Me.lblProdVorlauf.Location = New System.Drawing.Point(5, 274)
         Me.lblProdVorlauf.Name = "lblProdVorlauf"
         Me.lblProdVorlauf.Size = New System.Drawing.Size(75, 27)
         Me.lblProdVorlauf.TabIndex = 68
@@ -521,10 +526,67 @@ Partial Class wb_KompRzChargen
         Me.cbLiniengruppe.TabStop = False
         Me.cbLiniengruppe.Text = "LG"
         '
+        'lblZuschnitt
+        '
+        Me.lblZuschnitt.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblZuschnitt.Location = New System.Drawing.Point(153, 305)
+        Me.lblZuschnitt.Name = "lblZuschnitt"
+        Me.lblZuschnitt.Size = New System.Drawing.Size(64, 19)
+        Me.lblZuschnitt.TabIndex = 71
+        Me.lblZuschnitt.Text = "Zuschnitt"
+        Me.lblZuschnitt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'tZuschnitt
+        '
+        Me.tZuschnitt.Location = New System.Drawing.Point(219, 305)
+        Me.tZuschnitt.Name = "tZuschnitt"
+        Me.tZuschnitt.Size = New System.Drawing.Size(66, 20)
+        Me.tZuschnitt.TabIndex = 70
+        Me.tZuschnitt.TabStop = False
+        Me.tZuschnitt.Text = "99.999 %"
+        Me.tZuschnitt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.tZuschnitt.WordWrap = False
+        '
+        'tVkGewicht
+        '
+        Me.tVkGewicht.Location = New System.Drawing.Point(86, 304)
+        Me.tVkGewicht.Name = "tVkGewicht"
+        Me.tVkGewicht.ReadOnly = True
+        Me.tVkGewicht.Size = New System.Drawing.Size(50, 20)
+        Me.tVkGewicht.TabIndex = 72
+        Me.tVkGewicht.TabStop = False
+        Me.tVkGewicht.Text = "240 gr"
+        Me.tVkGewicht.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.tVkGewicht.WordWrap = False
+        '
+        'Label1
+        '
+        Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label1.Location = New System.Drawing.Point(5, 303)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(74, 27)
+        Me.Label1.TabIndex = 73
+        Me.Label1.Text = "Verkaufs- Gewicht"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'BtnCalcNassGewicht
+        '
+        Me.BtnCalcNassGewicht.Location = New System.Drawing.Point(291, 283)
+        Me.BtnCalcNassGewicht.Name = "BtnCalcNassGewicht"
+        Me.BtnCalcNassGewicht.Size = New System.Drawing.Size(100, 40)
+        Me.BtnCalcNassGewicht.TabIndex = 74
+        Me.BtnCalcNassGewicht.Text = "Nass-Gewicht berechnen"
+        Me.BtnCalcNassGewicht.UseVisualStyleBackColor = True
+        '
         'wb_KompRzChargen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.BtnCalcNassGewicht)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.tVkGewicht)
+        Me.Controls.Add(Me.lblZuschnitt)
+        Me.Controls.Add(Me.tZuschnitt)
         Me.Controls.Add(Me.BtnCloud)
         Me.Controls.Add(Me.tProdVorlauf)
         Me.Controls.Add(Me.lblProdVorlauf)
@@ -549,7 +611,7 @@ Partial Class wb_KompRzChargen
         Me.Controls.Add(Me.tRezeptNr)
         Me.Controls.Add(Me.lblRezeptNr)
         Me.Name = "wb_KompRzChargen"
-        Me.Size = New System.Drawing.Size(400, 313)
+        Me.Size = New System.Drawing.Size(400, 336)
         Me.pTeigChargen.ResumeLayout(False)
         Me.pTeigChargen.PerformLayout()
         Me.pArtikelChargen.ResumeLayout(False)
@@ -601,4 +663,9 @@ Partial Class wb_KompRzChargen
     Friend WithEvents lblProdVorlauf As Windows.Forms.Label
     Friend WithEvents tProdVorlauf As Windows.Forms.TextBox
     Friend WithEvents BtnCloud As Windows.Forms.Button
+    Friend WithEvents lblZuschnitt As Windows.Forms.Label
+    Friend WithEvents tZuschnitt As Windows.Forms.TextBox
+    Friend WithEvents tVkGewicht As Windows.Forms.TextBox
+    Friend WithEvents Label1 As Windows.Forms.Label
+    Friend WithEvents BtnCalcNassGewicht As Windows.Forms.Button
 End Class

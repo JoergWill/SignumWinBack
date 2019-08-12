@@ -47,6 +47,32 @@ Public Class wb_KomponParam300
         End Get
     End Property
 
+    Public Property Backverlust As Double
+        Get
+            If Wert(T300_Backverlust) IsNot Nothing Then
+                Return wb_Functions.StrToDouble(Wert(T300_Backverlust))
+            Else
+                Return 0.0
+            End If
+        End Get
+        Set(value As Double)
+            Wert(T300_Backverlust) = value.ToString
+        End Set
+    End Property
+
+    Public Property Zuschnitt As Double
+        Get
+            If Wert(T300_Zuschnitt) IsNot Nothing Then
+                Return wb_Functions.StrToDouble(Wert(T300_Zuschnitt))
+            Else
+                Return 0.0
+            End If
+        End Get
+        Set(value As Double)
+            Wert(T300_Zuschnitt) = value.ToString
+        End Set
+    End Property
+
     ''' <summary>
     ''' Update aller geänderten Komponenten-Parameter in Tabelle winback.RohParams
     '''     RP_Ko_Nr

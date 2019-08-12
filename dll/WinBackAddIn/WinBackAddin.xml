@@ -738,6 +738,18 @@ Stacktrace:
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_KompRzChargen.Backverlust">
+ <summary>
+ Backverlust in Prozent (max 100%)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_KompRzChargen.Zuschnitt">
+ <summary>
+ Zuschnitt-Verlsut in Prozent (max 100%)
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_KompRzChargen.BtnRzpShow_Click(System.Object,System.EventArgs)">
  <summary>
  Rezeptur anzeigen
@@ -791,6 +803,15 @@ Stacktrace:
  Flag setzen (DataHasChanged). Über den Event DataInvalidated wird dem Haupt-Fenster mitgeteilt, dass die Daten vor dem Schliessen
  oder Löschen des Fensters gesichert werden müssen.
  </summary>
+</member>
+<member name="M:WinBack.wb_KompRzChargen.BtnCalcNassGewicht_Click(System.Object,System.EventArgs)">
+ <summary>
+ Berechnet das Nassgewicht aus Stk-Gewicht(Verkauf), Zuschnitt-Verlust und Backverlust
+     Gewicht Teigling = (StkGewicht/(100-Backverlust))*100
+     Nass-Gewicht     = (TeiglGewicht/(100-Zuschnitt))*100
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="P:WinBack.wb_LagerKarte.Datum">
  <summary>
@@ -2266,6 +2287,17 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <summary>
  Backverlust in %
  Der Backverlust wird in der Datenbank im Feld (winback.Komponenten.KO_Temp_Korr) mit Faktor 100 als Integer gespeichern.
+ Muss bei der Nährwert-Berechnung mit berücksichtigt werden !
+ 
+ Bei Artikeln (KO_Type=0) steht der Backverlust in KomponParams 300/1  !!
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Komponente.Zuschnittverlust">
+ <summary>
+ Zuschnittverlust in %
+ Der Zuschnittverlust wird in der Datenbank im Feld winback.Komponenten.KA_Artikel_Typ mit Faktor 100 als Integer gespeichert.
+ Im Gegensatz zum Backverlust wird der Zuschnittverlust NICHT bei der Nährwert-Berechnung mit berücksichtigt!
  </summary>
  <returns></returns>
 </member>
@@ -2276,6 +2308,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  definiert, wie weit im Voraus die Produktion für den Rohstoff gestartet werden muss. (Reifezeiten....)
  
  Datenfeld winback.Komponenten.KA_Prod_Linie (Unsigned TinyInt)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Komponente.VerkaufsGewicht">
+ <summary>
+ Verkaufsgewicht aus OrgBack dbo.HandelsArtikel.Gewicht
+ Wird benötigt zur Berechnung des Nassgewichts in WinBack aus 
+ Verkaufsgewicht, Zuschnitt-Verlust, Backverlust
  </summary>
  <returns></returns>
 </member>
@@ -3353,7 +3393,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Rezept.#ctor(System.Int32,System.Object,System.Int32@,System.String,System.String,System.Boolean)">
+<member name="M:WinBack.wb_Rezept.#ctor(System.Int32,System.Object,System.Double,System.Int32@,System.String,System.String,System.Boolean)">
  <summary>
  Erzeugt ein neues Rezeptur-Objekt.
  Nach dem Einlesen der Rezeptschritte aus der Datenbank wird das Rezept-Gesamtgewicht berechnet.
@@ -5800,7 +5840,7 @@ Text aus Datenbank lesen - Übersetzung
 </member>
 <member name="T:WinBack.wb_Global.ArtikelMarker">
  <summary>
- Markierung der Artikel/Komponentendaten (KA_Artikel_Typ)
+ Markierung der Artikel/Komponentendaten (KA_PreisEinheit)
      -   Nährwertinfo fehlerhaft/nicht vollständig
      -   Nährwertinfo muss neu berechnet werden (Update Nährwerte Cloud)
  </summary>

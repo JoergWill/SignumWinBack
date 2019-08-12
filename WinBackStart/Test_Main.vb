@@ -24,7 +24,8 @@ Public Class Test_Main
     Private Sub Test_Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         'Rezeptkopf und Rezeptschritte aktuell (winback) laden
-        Rezept = New wb_Rezept(2691, Nothing, 1)
+        ' Backverlust 0.0 !
+        Rezept = New wb_Rezept(2691, Nothing, 0.0, 1)
 
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Rezept.RootRezeptSchritt

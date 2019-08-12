@@ -29,6 +29,8 @@ Public Class wb_Rezeptschritt
     Private _ZutatenListe As wb_Global.ZutatenListe
     Private _ZutatenListeExtern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoff)
     Private _ZutatenListeIntern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoffIntern)
+    Private _Backverlust As Double
+    Private _Zuschnitt As Double
 
     Private _parentStep As wb_Rezeptschritt
     Private _childSteps As New ArrayList()
@@ -541,13 +543,12 @@ Public Class wb_Rezeptschritt
     ''' </summary>
     Public Sub SetType118()
         If _Type = wb_Global.KomponTypen.KO_TYPE_KNETER Then
-            'TODO Konstanten in wb_Global definieren (4,1,9,10,11)
-            Dim EinheitenIndex As String = wb_sql_Functions.getKomponParam(RohNr, 4)
+            Dim EinheitenIndex As String = wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.EinheitenIndex)
             _Einheit = wb_Language.TextFilter(wb_sql_Functions.Lookup("Einheiten", "E_Einheit", "E_LfdNr = " & EinheitenIndex))
-            _Sollwert = wb_sql_Functions.getKomponParam(RohNr, 1)
-            _Format = wb_Functions.StrToFormat(wb_sql_Functions.getKomponParam(RohNr, 9))
-            _UnterGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, 10))
-            _OberGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, 11))
+            _Sollwert = wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.Sollwert)
+            _Format = wb_Functions.StrToFormat(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.Format))
+            _UnterGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.UntererGrenzwert))
+            _OberGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.ObererGrenzwert))
         End If
     End Sub
 
@@ -867,6 +868,10 @@ Public Class wb_Rezeptschritt
 
                     'Umechnungs-Faktor Nährwerte 
                     Dim Faktor As Double = wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht
+                    'Wenn eine Backverlust angegeben ist, erhöht sich der Faktor entspechend
+                    'da beim Backen das Endprodukt Gewicht verliert.
+                    Faktor = (Faktor * 100) / (100 - Backverlust)
+
                     'Wenn der Parent-Rezeptschritt eine Produktions-Stufe oder ein Kessel ist, wird der Faktor
                     'gleich Eins gesetzt. (Die Gewichtung erfolgt über das Rezept-Gesamtgewicht
                     If Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
@@ -967,6 +972,24 @@ Public Class wb_Rezeptschritt
                 _Par1 = wb_Global.RS_Par1_QUID
             End If
             _QUIDRelevant = value
+        End Set
+    End Property
+
+    Public Property Backverlust As Double
+        Get
+            Return _Backverlust
+        End Get
+        Set(value As Double)
+            _Backverlust = value
+        End Set
+    End Property
+
+    Public Property Zuschnitt As Double
+        Get
+            Return _Zuschnitt
+        End Get
+        Set(value As Double)
+            _Zuschnitt = value
         End Set
     End Property
 

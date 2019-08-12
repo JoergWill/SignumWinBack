@@ -46,7 +46,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.pnlNoProduction.Controls.Add(Me.lblProduktion)
         Me.pnlNoProduction.Location = New System.Drawing.Point(406, 0)
         Me.pnlNoProduction.Name = "pnlNoProduction"
-        Me.pnlNoProduction.Size = New System.Drawing.Size(400, 314)
+        Me.pnlNoProduction.Size = New System.Drawing.Size(400, 338)
         Me.pnlNoProduction.TabIndex = 50
         '
         'lblProduktion
@@ -92,7 +92,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.KompRzChargen.RezeptName = ""
         Me.KompRzChargen.RezeptNummer = ""
         Me.KompRzChargen.RzNr = -1
-        Me.KompRzChargen.Size = New System.Drawing.Size(400, 314)
+        Me.KompRzChargen.Size = New System.Drawing.Size(400, 338)
         Me.KompRzChargen.TabIndex = 48
         Wb_MinMaxOptCharge2.ErrorCheck = False
         Wb_MinMaxOptCharge2.HasChanged = False
@@ -129,7 +129,7 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.Controls.Add(Me.KompRzChargen)
         Me.MinimumSize = New System.Drawing.Size(190, 268)
         Me.Name = "ob_Artikel_ZuordnungRezept"
-        Me.Size = New System.Drawing.Size(818, 323)
+        Me.Size = New System.Drawing.Size(818, 339)
         Me.pnlNoProduction.ResumeLayout(False)
         Me.ResumeLayout(False)
 

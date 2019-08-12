@@ -373,7 +373,7 @@ Public Class wb_Rezept
     ''' Fehlermeldungen (Rekursiver Aufruf von Rezept-im-Rezept) zur Information mit als Fehlermeldung
     ''' ausgegeben.
     ''' </summary>
-    Public Sub New(RzNr As Integer, Parent As Object, Optional ByRef RzVariante As Integer = 1, Optional KNummer As String = "", Optional KBezeichnung As String = "", Optional NoMessage As Boolean = False)
+    Public Sub New(RzNr As Integer, Parent As Object, Backverlust As Double, Optional ByRef RzVariante As Integer = 1, Optional KNummer As String = "", Optional KBezeichnung As String = "", Optional NoMessage As Boolean = False)
         'Zeiger auf die aufrufende Klasse
         _Parent = Parent
         _RezeptNr = RzNr
@@ -408,6 +408,9 @@ Public Class wb_Rezept
         _RootRezeptSchritt.Sollwert = BruttoRezeptGewicht
         'Root-Rezeptschritt kennzeichnen (war -1 !!!)
         _RootRezeptSchritt.SchrittNr = 0
+
+        'TODO - TEST BACKVERLUST
+        _RootRezeptSchritt.Backverlust = Backverlust
 
     End Sub
 
@@ -729,7 +732,7 @@ Public Class wb_Rezept
             If _RezeptSchritt.RezeptNr > 0 Then
                 'TODO welche Variante soll hier gelesen werden? (Standart ist Variante Eins)
                 Try
-                    _RezeptSchritt.RezeptImRezept = New wb_Rezept(_RezeptSchritt.RezeptNr, Me, _RezeptVariante, _RezeptSchritt.Nummer, _RezeptSchritt.Bezeichnung, _NoMessage)
+                    _RezeptSchritt.RezeptImRezept = New wb_Rezept(_RezeptSchritt.RezeptNr, Me, _RezeptSchritt.Backverlust, _RezeptVariante, _RezeptSchritt.Nummer, _RezeptSchritt.Bezeichnung, _NoMessage)
                 Catch ex As Exception
                     If Not _NoMessage Then
                         MsgBox(ex.Message)
@@ -870,6 +873,12 @@ Public Class wb_Rezept
                 'Nummer(alpha)
                 Case "KO_Nr_AlNum", "H_KO_Nr_AlNum"
                     _SQLRezeptSchritt.Nummer = Value
+                'Backverlust (SmallInt - Prozent * 100)
+                Case "KO_Temp_Korr"
+                    _SQLRezeptSchritt.Backverlust = wb_Functions.StrToDouble(Value) / 100
+                'Zuschnitt-Verlust (SmallInt - Prozent * 100)
+                Case "KA_Artikel_Typ",
+                    _SQLRezeptSchritt.Zuschnitt = wb_Functions.StrToDouble(Value) / 100
                 'Schritt-Nummer
                 Case "RS_Schritt_Nr", "H_RS_Schritt_Nr"
                     _SQLRezeptSchritt.SchrittNr = Value

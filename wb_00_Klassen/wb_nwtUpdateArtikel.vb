@@ -63,10 +63,12 @@ Public Class wb_nwtUpdateArtikel
                 'aktuelle Komponenten-Nummer
                 _AktKO_Nr = nwtArtikelDaten.Nr
 
+                'Artikel-Daten komplett (inkusive Parameter) einlesen
+                nwtArtikelDaten.MySQLdbRead(_AktKO_Nr)
                 'verknüpfte Rezeptnummer zum Artikel/Rohstoff
                 _AktRZ_Nr = nwtArtikelDaten.RzNr
                 'Rezept mit allen Rezeptschritten lesen (NoMessage=True unterdrückt die Meldung "Rezept verweist auf sich selbst")
-                Dim Rzpt As New wb_Rezept(_AktRZ_Nr, Nothing, 1, "", "", True)
+                Dim Rzpt As New wb_Rezept(_AktRZ_Nr, Nothing, nwtArtikelDaten.Backverlust, 1, "", "", True)
 
                 'Änderungs-Log löschen
                 nwtArtikelDaten.ClearReport()

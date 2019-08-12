@@ -440,6 +440,9 @@ Public Class ob_Artikel_DockingExtension
 
             'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
             Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+            'Handelsartikel mit Index(0) ist der Hauptartikel aus Artikel.Handelsartikel()
+            Dim oHdl = DirectCast(_Extendee.GetPropertyValue("HandelsArtikel"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+
             'Komponenten-Nummer aus OrgaBack ermitteln
             If Komponente Is Nothing Then Komponente = New wb_Komponente
             Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF201 - Index auf interne Komponenten-Nummer
@@ -447,6 +450,8 @@ Public Class ob_Artikel_DockingExtension
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString         'Artikel/Komponenten-Nummer alphanumerisch
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
             Komponente.sArtikeLinienGruppe = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)
+            Komponente.VerkaufsGewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("Gewicht").ToString)
+            Debug.Print("_Extendee.Handelsartikel.Gewicht " & Komponente.VerkaufsGewicht)
 
             'Komponenten-Type aus der Zuordnung zur Artikelgruppe
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
@@ -512,15 +517,19 @@ Public Class ob_Artikel_DockingExtension
             Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
             iMFFIdx = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("FeldNr=" & CStr(MFF))
 
-            If iMFFIdx >= 0 Then
-                ' sollte ein MFF mit FeldNr=X gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
-                ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
-                oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
-                If oMFF IsNot Nothing Then
-                    ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
-                    oMFF.SetPropertyValue("Inhalt", Value)
+            'teilweise tritt eine 'Key not found-Exception auf'
+            Try
+                If iMFFIdx >= 0 Then
+                    ' sollte ein MFF mit FeldNr=X gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
+                    ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
+                    oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
+                    If oMFF IsNot Nothing Then
+                        ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
+                        oMFF.SetPropertyValue("Inhalt", Value)
+                    End If
                 End If
-            End If
+            Catch
+            End Try
         End Set
     End Property
 
