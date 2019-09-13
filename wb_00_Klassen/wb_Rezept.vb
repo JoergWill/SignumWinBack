@@ -408,8 +408,7 @@ Public Class wb_Rezept
         _RootRezeptSchritt.Sollwert = BruttoRezeptGewicht
         'Root-Rezeptschritt kennzeichnen (war -1 !!!)
         _RootRezeptSchritt.SchrittNr = 0
-
-        'TODO - TEST BACKVERLUST
+        'Backverlust aus der übergeordneten Komponente 
         _RootRezeptSchritt.Backverlust = Backverlust
 
     End Sub

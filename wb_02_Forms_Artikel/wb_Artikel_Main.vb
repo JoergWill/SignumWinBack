@@ -9,6 +9,7 @@ Public Class wb_Artikel_Main
     'Default-Fenster
     Public ArtikelListe As New wb_Artikel_Liste
     Public ArtikelDetails As New wb_Artikel_Details
+    Public ArtikelParameter As New wb_Artikel_Parameter
 
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -64,11 +65,12 @@ Public Class wb_Artikel_Main
             If _ContextTabs Is Nothing Then
                 _ContextTabs = New List(Of GUI.ITab)
                 ' Fügt dem Ribbon ein neues RibbonTab hinzu
-                Dim oNewTab = _MenuService.AddContextTab("ArtikeLVerwaltung", "WinBack-Artikel", "Verwaltung der WinBack-Artikel")
+                Dim oNewTab = _MenuService.AddContextTab("ArtikelVerwaltung", "WinBack-Artikel", "Verwaltung der WinBack-Artikel")
                 ' Das neue RibbonTab erhält eine Gruppe
                 Dim oGrp = oNewTab.AddGroup("GrpArtikel", "WinBack Artikel")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("BtnArtikelDetails", "Details", "weitere Artikel-Daten", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf BtnArtikelDetails)
+                oGrp.AddButton("BtnArtikelDetails", "Details", "weitere Artikel-Daten", My.Resources.ArtikelDetails_32x32, My.Resources.ArtikelDetails_32x32, AddressOf BtnArtikelDetails)
+                oGrp.AddButton("BtnArtikelParameter", "Parameter", "Artikel Parameter Produktion und Nährwerte", My.Resources.ArtikelParameter_32x32, My.Resources.ArtikelParameter_32x32, AddressOf BtnArtikelParameter)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -78,6 +80,11 @@ Public Class wb_Artikel_Main
     Private Sub BtnArtikelDetails()
         ArtikelDetails = New wb_Artikel_Details
         ArtikelDetails.Show(DockPanel, DockState.DockTop)
+    End Sub
+
+    Private Sub BtnArtikelParameter()
+        ArtikelParameter = New wb_Artikel_Parameter
+        ArtikelParameter.Show(DockPanel, DockState.DockTop)
     End Sub
 
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
@@ -92,6 +99,11 @@ Public Class wb_Artikel_Main
                 ArtikelDetails = New wb_Artikel_Details
                 _DockPanelList.Add(ArtikelDetails)
                 Return ArtikelDetails
+
+            Case "WinBack.wb_Artikel_Parameter"
+                ArtikelParameter = New wb_Artikel_Parameter
+                _DockPanelList.Add(ArtikelParameter)
+                Return ArtikelParameter
 
             Case Else
                 Return Nothing

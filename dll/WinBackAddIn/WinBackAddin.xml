@@ -32,6 +32,31 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.ArtikelDetails_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.ArtikelParameter_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.ChargenDetails_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.ChargenInfo_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.ChargenListe_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.DatenRueckSicherung_16x16">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -143,6 +168,11 @@ WinBackAddin
 </summary>
 </member>
 <member name="P:WinBack.My.Resources.Resources.KreuzRot">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Leer_16x16">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
@@ -382,6 +412,51 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.Status_00_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Status_01_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Status_02_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Status_03_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Status_04_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Status_05_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Status_06_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Status_07_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Status_08_16x16">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.StatusStripBackground">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -460,6 +535,26 @@ Der Fehler ist unter folgenden Bedingungen aufgetreten:
 
 Stacktrace:
 [1] ähnelt.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.TTS_Allgemein">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.TTS_RaumMehl">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.TTS_Sauerteig">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.TTS_TeigTempSteuerung">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
 <member name="P:WinBack.My.Resources.Resources.UpdateDataBase_16x16">
@@ -812,6 +907,73 @@ Stacktrace:
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="T:WinBack.wb_Chargen">
+ <summary>
+ Enthält die komplette Chargenliste als Liste von ChargenSchritten (wb_ChargenSchritt).
+ Jeder Chargenschritt hat Parent und Child. Die Chargenliste beginnt am Knoten(0) ohne Parent.
+ 
+     Schritt 0                                            (Child = Schritt 1, Schritt 2...)
+         +   Schritt 1               (Parent = Schritt 0)
+         +   Schritt 2               (Parent = Schritt 0)
+         +   Schritt 3               (Parent = Schritt 0) (Child = Schritt 3.1, Schritt 3.2)
+                 +   Schritt 3.1     (Parent = Schritt 3)
+                 +   Schritt 3.2     (Parent = Schritt 3)
+         +   Schritt 4               (Parent = Schritt 0)
+         + ...
+         
+ Die Anzeige erfolgt im VirtualTree direkt mit der Angabe des Root-Nodes
+ </summary>
+</member>
+<member name="P:WinBack.wb_Chargen.RootChargenSchritt">
+ <summary>
+ Erster (unsichtbarer) Chargen-Schritt (Root-Node)
+ </summary>
+ <returns>wb_ChargenSchritt - Root-Node des Rezeptes</returns>
+</member>
+<member name="M:WinBack.wb_Chargen.MySQLdbSelect_ChargenSchritte(System.Int32)">
+ <summary>
+ Liest alle Datensätze aus wbdaten zur angegeben Tageswechselnummer sortiert nach Produktionsdatum ein 
+ </summary>
+ <param name="TwNr">Integer Tageswechsel-Nummer</param>
+</member>
+<member name="M:WinBack.wb_Chargen.MySQLdbRead_Fields(System.String,System.Object)">
+ <summary>
+ Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
+ 
+ B_ARS_Status
+   0  -  Nicht bearbeitet
+   1  -  in Bearbeitung
+   2  -  Okay
+   3  -  Warnung
+   4  -  Fehler bei manueller Verwiegung
+   5  -  Fehler bei automatischer Verwiegung
+   6  -  Multistart markiert
+   7  -  Nachtstart
+   8  -  Start gespeichert (Multistart)
+   
+ </summary>
+ <param name="Name">String - Spalten-Name aus Datenbank</param>
+ <param name="Value">Object - Wert aus Datenbank</param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_ChargenSchritt.CopyFrom(WinBack.wb_ChargenSchritt)">
+ <summary>
+ Kopiert alle Properties dieser Klasse auf die Properties der übergebenen Klasse.
+ Geschrieben werden nur die Properties, die nicht als ReadOnly deklariert sind.
+ 
+ aus: https://stackoverflow.com/questions/531384/how-to-loop-through-all-the-properties-of-a-class
+
+ Dient dazu, die Inhalte eines Chargen-Schrittes auf einen anderen zu kopieren.
+ Durch die Schleife über alle Properties ist die Funktion unabhängig von eventuellen Erweiterungen.
+ </summary>
+ <param name="rs">wb_ChargenSchritt nimmt die Werte der Properties der Klasse auf</param>
+</member>
+<member name="P:WinBack.wb_ChargenSchritt.VirtTreeBezeichnung">
+ <summary>
+ Bezeichnung. Anzeige im VirtualTree
+ </summary>
+ <returns>String - Bezeichnung</returns>
 </member>
 <member name="P:WinBack.wb_LagerKarte.Datum">
  <summary>
@@ -2955,7 +3117,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="iD"></param>
  <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
 </member>
-<member name="F:WinBack.wb_Produktion._RootProduktionsSchritt">
+<member name="T:WinBack.wb_Produktion">
  <summary>
  Enthält den komplette Produktionsplan als Liste von Produktionschritten (wb_Produktionsschritt).
  Jeder Produktionschritt hat Parent und Child. Die Produktion beginnt am Knoten(0) ohne Parent.
@@ -3212,6 +3374,16 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  
  </summary>
  <returns>String - Sollwert</returns>
+</member>
+<member name="P:WinBack.wb_Produktionsschritt.VirtTreeBestand">
+ <summary>
+ Lager-Bestand. Anzeige im VirtualTree. Unterscheidung anhand der Type:
+     -   Artikel-Chargen-Zeile   Lagerbestand in Stück
+     -   Rezept-Chargen-Zeile    keine Anzeige
+     -   Rezept-Schritte         Anzeige Lagerbestand als formatierter Zahlenwert in kg
+     
+ </summary>
+ <returns></returns>
 </member>
 <member name="P:WinBack.wb_Produktionsschritt.VirtTreePrintBackZettel">
  <summary>
@@ -4334,16 +4506,6 @@ Text aus Datenbank lesen - Übersetzung
 </member>
 <member name="M:WinBack.wb_GlobalSettings.getWinBackIni(System.String)">
  <summary>
- [smtp]
- smtpUser=server@winback.de
- smtpPass=de2la6de2
- smtpHost=smtp.1und1.de
- smtpPort=25
- smtpAuth=atLOGIN
- smtpFrom=server@winback.de
- smtpMailAdr=service@winback.de
- smtpSubject=Chargenauswertung WinBack
- smtpPrio=mpNormal
  </summary>
  <param name="Key"></param>
 </member>
@@ -4513,7 +4675,7 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="T:WinBack.ob_ChargenProduziert">
+<member name="T:WinBack.ob_Chargen_Produziert">
  <summary>
  Rückmeldung der produzierten Chargen an OrgaBack
  Schreibt alle zum Zeitpunkt x produzierten Artikel in die Tabelle dbo.ProduzierteWare
@@ -4522,13 +4684,13 @@ Text aus Datenbank lesen - Übersetzung
  Nach dem Schreiben der Daten werden die Artikel und Rohstoffe in WinBack mit wbdaten.BAK_ArbRezepte.B_ARZ_Status = Exp gekennzeichnet
  </summary>
 </member>
-<member name="M:WinBack.ob_ChargenProduziert.#ctor">
+<member name="M:WinBack.ob_Chargen_Produziert.#ctor">
  <summary>
  Alle Chargen vor dem Stichtag werden als ungültig deklariert und nicht an OrgaBack zurückgemeldet
  (Hauptsächlich nicht produzierte Chargen)
  </summary>
 </member>
-<member name="M:WinBack.ob_ChargenProduziert.ExportChargen(System.Int32)">
+<member name="M:WinBack.ob_Chargen_Produziert.ExportChargen(System.Int32)">
  <summary>
  Exportiert die einzelnen Produktions-Chargen-Daten ab der vorgegebenen 
  Tageswechselnummer in dbo.ProduzierteWare. Zurückgegeben wird 
@@ -4539,7 +4701,7 @@ Text aus Datenbank lesen - Übersetzung
  <param name="TWNr"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.ob_ChargenProduziert.ProduktionDatumGueltig(System.DateTime)">
+<member name="M:WinBack.ob_Chargen_Produziert.ProduktionDatumGueltig(System.DateTime)">
  <summary>
  Prüft auf gültiges Produktions-Datum
  (Chargen wurde produziert)
@@ -4547,7 +4709,7 @@ Text aus Datenbank lesen - Übersetzung
  <param name="d"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.ob_ChargenProduziert.SqlWriteProdWare(WinBack.wb_Sql,WinBack.ob_ProduzierteWare)">
+<member name="M:WinBack.ob_Chargen_Produziert.SqlWriteProdWare(WinBack.wb_Sql,WinBack.ob_ProduzierteWare)">
  <summary>
  Schreibt einen Datensatz aus ob_ProduzierteWare in die Tabelle dbo.ProduzierteWare
  Die Datenbank-Verbindung muss geöffnet sein.
@@ -4569,7 +4731,7 @@ Text aus Datenbank lesen - Übersetzung
  <param name="o"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.ob_ChargenProduziert.MarkChargenKopf(WinBack.wb_Sql,System.Int32,System.String)">
+<member name="M:WinBack.ob_Chargen_Produziert.MarkChargenKopf(WinBack.wb_Sql,System.Int32,System.String)">
  <summary>
  Markiert alle exportierten Chargendaten als bearbeitet.
  In der Tabelle BAK_ArbRezepte wird das Feld B_ARZ_Status auf EXP gesetzt
@@ -4611,6 +4773,102 @@ Text aus Datenbank lesen - Übersetzung
  <param name="Name">String - Spalten-Name aus Datenbank</param>
  <param name="Value">Object - Wert aus Datenbank</param>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_Chargen_Funktionen.BtnDetails_Click(System.Object,System.EventArgs)">
+ <summary>
+ Anzeige der produzierte Chargen zu diesem Produktionstag (TW-Nummer)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Funktionen.rbArtikel_Click(System.Object,System.EventArgs)">
+ <summary>
+ Sortieren Chargen-Details nach Artikel-Bezeichnung
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Funktionen.rbArtikelNummer_Click(System.Object,System.EventArgs)">
+ <summary>
+ Sortieren Chargen-Details nach Artikel-Nummer
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Funktionen.rbProduktion_Click(System.Object,System.EventArgs)">
+ <summary>
+ Sortieren Chargen-Details nach Produktions-Datum
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Details.VirtualTree_GetCellData(System.Object,Infralution.Controls.VirtualTree.GetCellDataEventArgs)">
+ <summary>
+ Virtual-Tree Zeilen/Zellen mit geändertem Zeichensatz darstellen
+     
+     Artikelzeilen - Fett
+     Rezeptzeilen  - Kursiv
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Details.VirtualTree_SetFontStyle(Infralution.Controls.Style@,Infralution.Controls.StyleDelta)">
+ <summary>
+ Setzt den Font.Style für die angegebene Zelle auf Bold/Italic
+ Anzeige Artikel/Rezept-Zeilen
+ </summary>
+ <param name="ColumnStyle"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Details.VirtualTree_CellDoubleClick(System.Object,System.EventArgs)">
+ <summary>
+ Doppelclick auf Virtual-Tree Zeile
+     Teigtemperatur-Zeile    - Öffnet ein Fenster mit einer Auflistung aller Teige dieser Rezeptur (nur Temp-Mess-Zeile)
+     Wasser-Zeile            - Öffnet ein Fenster mit der Berechnung der Wasser-Soll-Temperatur aus log-File WinBack
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Shared.#cctor">
+ <summary>
+ B_ARS_Status
+   0  -  Nicht bearbeitet
+   1  -  in Bearbeitung
+   2  -  Okay
+   3  -  Warnung
+   4  -  Fehler bei manueller Verwiegung
+   5  -  Fehler bei automatischer Verwiegung
+   6  -  Multistart markiert
+   7  -  Nachtstart
+   8  -  Start gespeichert (Multistart)
+ </summary>
+</member>
+<member name="M:WinBack.wb_Chargen_Shared.ReadKomponDoesNotCount">
+ <summary>
+ Liste aller Komponenten mit Marker 'Zählt nicht zum Rezeptgewicht'
+ </summary>
+</member>
+<member name="M:WinBack.wb_Chargen_Shared.ZaehltNichtZumRezeptgewicht(System.Int32)">
+ <summary>
+ Prüft ob die Komponente mit dieser Nummer NICHT zum Rezept-Gewicht zählt (True)
+ ''' </summary>
+ <param name="KomponNr"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_ChargenWasserTemp.GetTTSBerechnung">
+ <summary>
+ Liest alle TTS-Daten aus /home/herbst/log/0s1-s.dbg
+ 
+ Zuerst wird anhand des Datums versucht die (richtige) Chargen-Nummer zu ermitteln.
+ (Die Chargen-Nummer kann sich nach dem Tageswechsel geändert haben, dann stimmen wb_daten und log-File nicht mehr überein)
+ 
+ Anhand der Chargen-Nummer werden dann alle Einträge mit dem Muster TTS:XXXX aus dem log-File ermittelt.
+ </summary>
+</member>
+<member name="M:WinBack.wb_ChargenWasserTemp.DecodeTTSLog(System.String)">
+ <summary>
+ Ermittelt anhand der Token/SubToken die einzelnen Werte aus der Zeile des WinBack-Log-Files
+ </summary>
+ <param name="s"></param>
 </member>
 <member name="P:WinBack.ob_Artikel_VerwendungRezept.FormKey">
  <summary>
@@ -4909,6 +5167,58 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Artikel_Parameter.wb_Artikel_Parameter_Load(System.Object,System.EventArgs)">
+ <summary>
+ Initialisierung - Laden der Form
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Artikel_Parameter.wb_Artikel_Parameter_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+ <summary>
+ Form wird geschlossen. Alle Ereignis-Handler wieder löschen.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Artikel_Parameter.DetailInfo(System.Object)">
+ <summary>
+ Rohstoff-Parameter des (aktuellen) Rohstoffes anzeigen
+ </summary>
+</member>
+<member name="M:WinBack.wb_Artikel_Parameter.VirtualTree_SelectionChanging(System.Object,Infralution.Controls.VirtualTree.SelectionChangingEventArgs)">
+ <summary>
+ Eingabe-Feld wurde selektiert. (Mausklick oder Tastatur-Navigation)
+ Setzt die Parameter für den Editor: Format, Eingabe: Ober- und Untergrenze
+ 
+ Verhindert, dass einzelne Zellen markiert werden 
+ (Infralution Support): handle the SelectionChanging event and set Cancel to true. This prevents any selection occurring
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Artikel_Parameter.VirtualTree_GetCellData(System.Object,Infralution.Controls.VirtualTree.GetCellDataEventArgs)">
+ <summary>
+ Ausgabe VirtualTree formatieren. 
+ Überschriften (Parameter-Nummer gleich Null) werden fett formatiert
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Artikel_Parameter.VirtualTree_SetCellValue(System.Object,Infralution.Controls.VirtualTree.SetCellValueEventArgs)">
+ <summary>
+ Wird aufgerufen, wenn der Wert geändert wurde (Edit)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Artikel_Parameter.VirtualTree_SetFontStyle(Infralution.Controls.Style@)">
+ <summary>
+ Setzt den Font.Style für die angegebene Zelle auf Fettdruck
+ Anzeige der Überschriften für die einzelen Parameter-Sektionen
+ </summary>
+ <param name="ColumnStyle"></param>
 </member>
 <member name="T:WinBack.Services.IRecipeProvider">
  <summary>
@@ -5320,10 +5630,10 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Rezept_Rezeptur.VirtualTree_SetFontStyle(Infralution.Controls.Style@)">
+<member name="M:WinBack.wb_Rezept_Rezeptur.VirtualTree_SetFontStyle(Infralution.Controls.Style@,Infralution.Controls.StyleDelta)">
  <summary>
- Setzt den Font.Style für die angegebene Zelle auf Bold+Italic
- Anzeige der geänderten Werte in der Rezept-Historie
+ Setzt den Font.Style für die angegebene Zelle auf Bold/Italic
+ Anzeige Artikel/Rezept-Zeilen
  </summary>
  <param name="ColumnStyle"></param>
 </member>
@@ -5791,6 +6101,14 @@ Text aus Datenbank lesen - Übersetzung
  <param name="d">date</param>
  <returns>String - im MySQL-DateTime-Format</returns>
 </member>
+<member name="M:WinBack.wb_sql_Functions.MySQLDateTimeToDate(System.Object)">
+ <summary>
+ Wandelt MySQLDateTime in Microsoft-Date um. Wenn die Konvertierung fehl schlägt, wird
+ 22.11.1964 zurückgegeben.
+ </summary>
+ <param name="Value"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_sql_Functions.MySQLBoolean(System.String)">
  <summary>
  Wandelt einen SQL-Datenfeld in Boolean um
@@ -5837,6 +6155,17 @@ Text aus Datenbank lesen - Übersetzung
  <summary>
  Wert ist undefiniert
  </summary>
+</member>
+<member name="T:WinBack.wb_Global.ChargenStatus">
+   0  -  Nicht bearbeitet
+   1  -  in Bearbeitung
+   2  -  Okay
+   3  -  Warnung
+   4  -  Fehler bei manueller Verwiegung
+   5  -  Fehler bei automatischer Verwiegung
+   6  -  Multistart markiert
+   7  -  Nachtstart
+   8  -  Start gespeichert (Multistart)
 </member>
 <member name="T:WinBack.wb_Global.ArtikelMarker">
  <summary>
@@ -6189,6 +6518,12 @@ in das DataView und in das Pop-Up-Menu eingetragen
  <summary>
  zusätzliche Filter-Bedingung (SQL)
  </summary>
+</member>
+<member name="P:WinBack.wb_DataGridView.SortCol">
+ <summary>
+ Spalte in der gesucht werden soll.(Filter)
+ </summary>
+ <returns></returns>
 </member>
 <member name="P:WinBack.wb_DataGridView.HoverRow">
  <summary>
@@ -6627,9 +6962,11 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="Arg2"></param>
  <param name="WaitUntilReady"></param>
 </member>
-<member name="M:WinBack.wb_Functions.DoShell(System.String,System.String,System.String,System.String)">
+<member name="M:WinBack.wb_Functions.ExecSSH(System.String,System.String,System.String,System.String)">
  <summary>
  Startet eine ssh-Sitzung und führt ein Kommando auf dem Linux-Rechner mit der angegebenen IP-Adresse aus
+ (siehe auch https://www.vb-paradise.de/index.php/Thread/121384-Visual-Basic-Windows-Application-SSH-NET-Verbindung-aufbauen/)
+ Renci.SshNet.dll wird über NuGet verwaltet !!
  </summary>
  <param name="User">String - Username</param>
  <param name="Pass">String - Passwort</param>
@@ -7041,21 +7378,19 @@ Datenbank-Verbindung schliessen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_MainTemplate.#ctor(Signum.OrgaSoft.Common.IOrgasoftServiceProvider)">
+<member name="P:WinBack.wb_Chargen_Main.FormText">
  <summary>
- Konstruktor
- </summary>
- <param name="ServiceProvider">ServiceProvider von OrgaSoft.NET</param>
- <remarks></remarks>
-</member>
-<member name="M:WinBack.wb_MainTemplate.Init">
- <summary>
- Routine wird aufgerufen, wenn das Fenster geladen wurde und angezeigt werden soll
+ Fenster-Name (Caption). Wird von Init() aufgerufen
  </summary>
  <returns></returns>
- <remarks>Die Caption des Fensters muss mit MyBase.Text gesetzt werde</remarks>
 </member>
-<member name="M:WinBack.wb_MainTemplate.FormClosing(System.Int16)">
+<member name="P:WinBack.wb_Chargen_Main.FormName">
+ <summary>
+ Eindeutiger Name für die Basis-Form. 
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Chargen_Main.FormClosing(System.Int16)">
  <summary>
  Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
  </summary>
@@ -7066,35 +7401,15 @@ Datenbank-Verbindung schliessen
  </returns>
  <remarks></remarks>
 </member>
-<member name="P:WinBack.wb_MainTemplate.FormKey">
+<member name="M:WinBack.wb_Chargen_Main.Details_DblClick(System.Object,WinBack.wb_ChargenSchritt)">
  <summary>
- Eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn
+ Doppel-Klick auf eine Chargen-Zeile in der Detail-Ansicht
+     
+     Temperatur-Erfassung    öffnet ein Fenster mit der Temperatur-Statistik über alle Teige mit dieser Rezeptnummer
+     Wasser-Zeile            öffnet ein Fenster mit der Berechnung der Wasser-Soll-Temperatur
  </summary>
-</member>
-<member name="P:WinBack.wb_MainTemplate.MinHeight">
- <summary>
- Minimale Höhe des UserControls
- </summary>
-</member>
-<member name="P:WinBack.wb_MainTemplate.MinWidth">
- <summary>
- Minimale Breite des UserControls
- </summary>
-</member>
-<member name="P:WinBack.wb_MainTemplate.Sizable">
- <summary>
- Gibt an, ob man die Größe dieses UserControls ändern darf
- </summary>
-</member>
-<member name="P:WinBack.wb_MainTemplate.Text">
- <summary>
- Bezeichnung und Caption des UserControls
- </summary>
-</member>
-<member name="P:WinBack.wb_MainTemplate.ContextTabs">
- <summary>
- Erzeugt neue Tabs im Ribbon-Control
- </summary>
+ <param name="Sender"></param>
+ <param name="ChargenZeile"></param>
 </member>
 <member name="T:WinBack.ob_Main_Menu">
  <summary>
@@ -7253,6 +7568,22 @@ Datenbank-Verbindung schliessen
  Globale Systemkonfiguration aus dem oSetting-Objekt auslesen und in winback.ini schreiben.
  Damit können auch andere Tasks die Einstellungen lesen (Server-Task...)
  </summary>
+</member>
+<member name="M:WinBack.wb_Chargen_Liste.wb_Chargen_Liste_Shown(System.Object,System.EventArgs)">
+ <summary>
+ Zur letzten Zeile im Grid scrollen.
+ Entspricht den letzten produzierten Chargen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Liste.DataGridView_HasChanged(System.Object,System.EventArgs)">
+ <summary>
+ Die Selektion im DataGridView hat sich geändert. Wenn Daten in den Detail-Fenstern geändert wurden, wird
+ diese Änderung vor dem Laden der neuen Daten in der Datenbank gesichert.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="P:WinBack.ob_Planung_DockingExtension.ContextTabs">
  <summary>

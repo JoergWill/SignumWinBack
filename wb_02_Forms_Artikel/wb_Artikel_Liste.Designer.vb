@@ -55,6 +55,7 @@ Partial Class wb_Artikel_Liste
         Me.DataGridView.Location = New System.Drawing.Point(0, 0)
         Me.DataGridView.Name = "DataGridView"
         Me.DataGridView.Size = New System.Drawing.Size(706, 447)
+        Me.DataGridView.SortCol = -1
         Me.DataGridView.TabIndex = 3
         Me.DataGridView.x8859_5_FieldName = ""
         '
@@ -63,6 +64,8 @@ Partial Class wb_Artikel_Liste
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(706, 447)
+        Me.CloseButton = False
+        Me.CloseButtonVisible = False
         Me.Controls.Add(Me.DataGridView)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.HideOnClose = True

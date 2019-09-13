@@ -6,6 +6,7 @@
     Public Const UNDEFINED = -1
     Public Const wbFALSE = 0
     Public Const wbTRUE = 1
+    Public Const wbNODATE = #01/01/1900 00:00:00#
 
     Public Const LogFileEntries = 20                    'Anzahl der Einträge im Puffer
     Public Const Log4NetConfigFile = "WinBack.log4net"  'Datei-Name des Log-Files
@@ -59,6 +60,10 @@
 
     'WinBack-Server-Verzeichnis Produktionsdaten
     Public Const WinBackServerProdDirectory = "/bakelink/1101_Produktion.csv"
+
+    'TTS-ChargenAuswertung Kommandozeile (Teil 1 & 2)
+    Public Const TTSLogCmd_0 = "cat /home/herbst/log/0s1-s.dbg.mahl | grep "
+    Public Const TTSLogCmd_1 = " | grep TTS:"
 
     'WinBack-Update-Verzeichnis
     Public Const WinBackUpdateHttp = "https://winback.de/software/"
@@ -191,9 +196,32 @@
         UserLokal                   'Layout-File im Verzeichnis ..\Temp\xx (xx - Arbeitsplatz-Nummer)
     End Enum
 
-    'Public Const wbDatenRezept = 1      'Chargendaten Rezeptzeile
-    'Public Const wbDatenArtikel = 2     'Chargendaten Artikelzeile
-    'Public Const wbDatenKomponente = 3  'Chargendaten KomponentenZeile
+    Enum ChargenTypen
+        CHRG_UNDEF = 0
+        CHRG_REZEPT = 1
+        CHRG_ARTIKEL = 2
+    End Enum
+
+    '''   0  -  Nicht bearbeitet
+    '''   1  -  in Bearbeitung
+    '''   2  -  Okay
+    '''   3  -  Warnung
+    '''   4  -  Fehler bei manueller Verwiegung
+    '''   5  -  Fehler bei automatischer Verwiegung
+    '''   6  -  Multistart markiert
+    '''   7  -  Nachtstart
+    '''   8  -  Start gespeichert (Multistart)
+    Enum ChargenStatus
+        CS_UNBEARBEITET = 0
+        CS_IN_ARBEIT = 1
+        CS_OK = 2
+        CS_WARNUNG = 3
+        CS_ERR_HAND = 4
+        CS_ERR_AUTO = 5
+        CS_MULTISTART = 6
+        CS_NACHTSTART = 7
+        CS_STARTGESPEICHERT = 8
+    End Enum
 
     Enum KomponTypen
         KO_TYPE_UNDEFINED
@@ -671,6 +699,13 @@
         MaxKlMin    'Maximal-Charge kleiner als Minimal-Charge
     End Enum
 
+    Enum ChargenListeSortKriterium
+        Undefined = -1
+        ArtikelNummer = 0
+        ArtikelName = 1
+        Produktion = 2
+    End Enum
+
     Enum TPopupFunctions
         TP_NeueProduktionsStufe
         TP_NeueProduktionsStufe_Davor
@@ -704,4 +739,6 @@
         TP_Naehrwerte_Laden
         TP_QuidDeklaration
     End Enum
+
+
 End Class

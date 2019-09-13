@@ -6,8 +6,6 @@ Imports System.Text
 Imports EnhEdit.EnhEdit_Global
 Imports ICSharpCode.SharpZipLib.BZip2
 Imports Microsoft.Win32
-Imports Tamir.SharpSsh
-Imports WinBack
 
 ''' <summary>
 ''' Beschreibung:
@@ -839,6 +837,7 @@ Public Class wb_Functions
         End If
         Return Text
     End Function
+
     ''' <summary>
     ''' Formatiert einen String mit der angegebenen Vorkomma und Nachkomma-Stelle
     ''' </summary>
@@ -1206,22 +1205,71 @@ Public Class wb_Functions
 
     ''' <summary>
     ''' Startet eine ssh-Sitzung und führt ein Kommando auf dem Linux-Rechner mit der angegebenen IP-Adresse aus
+    ''' (siehe auch https://www.vb-paradise.de/index.php/Thread/121384-Visual-Basic-Windows-Application-SSH-NET-Verbindung-aufbauen/)
+    ''' Renci.SshNet.dll wird über NuGet verwaltet !!
     ''' </summary>
     ''' <param name="User">String - Username</param>
     ''' <param name="Pass">String - Passwort</param>
     ''' <param name="Host">String - IP-Adresse</param>
     ''' <param name="Command">String - Shell-Kommando</param>
     ''' <returns>Ausgabe der Command-Shell</returns>
-    Public Shared Function DoShell(User As String, Pass As String, Host As String, Command As String) As String
-        Dim Output As String
-        Dim Exec As New SshExec(Host, User, Pass)
+    Public Shared Function ExecSSH(User As String, Pass As String, Host As String, Command As String) As String
+        'Create the objects needed to make the connection'
+        Dim connInfo As New Renci.SshNet.PasswordConnectionInfo(Host, User, Pass)
+        'Need to hold the command'
+        Dim sshClient As New Renci.SshNet.SshClient(connInfo)
+        Dim Output As Renci.SshNet.SshCommand
+        Try
+            'connect to the server'
+            sshClient.Connect()
+            'Run the command and put the results into the output object. In this case'
+            Output = sshClient.RunCommand(Command)
 
-        Exec.Connect()
-        Output = Exec.RunCommand(Command)
-        Exec.Close()
+            'Exit-Status
+            If Output.ExitStatus > 0 Then
+                If Output.Error = "" Then
+                    'Kommando war OK, aber nicht erfolgreich (Ergebnis und Fehlercode sind leer)
+                    sshClient.Disconnect()
+                    Return Output.Result
+                Else
+                    'Fehler beim Ausführen des Kommandos
+                    Trace.WriteLine("@E_Fehler bei ssh-Command " & Output.Error)
+                    'Close the connection.'
+                    sshClient.Disconnect()
+                    Return "ERR" & vbLf & Output.Error
+                End If
+            Else
+                'Close the connection.'
+                sshClient.Disconnect()
+                Return Output.Result
+            End If
 
-        Return Output
+        Catch ex As Exception
+            'Close the connection.'
+            sshClient.Disconnect()
+            Return "ERR" & vbLf & "Keine Verbindung zu " & Host
+        End Try
     End Function
+
+    Public Shared Function ExecSSH(User As String, Pass As String, Host As String, Command As List(Of String)) As List(Of String)
+        'Create the objects needed to make the connection'
+        Dim connInfo As New Renci.SshNet.PasswordConnectionInfo(Host, User, Pass)
+        'Need to hold the command'
+        Dim sshClient As New Renci.SshNet.SshClient(connInfo)
+        Dim Output As Renci.SshNet.SshCommand
+        Dim Result As New List(Of String)
+        'connect to the server'
+        sshClient.Connect()
+        'Run the commands and put the results into the output object. In this case'
+        For Each cmd As String In Command
+            Output = sshClient.RunCommand(cmd)
+            Result.Add(Output.Result)
+        Next
+        'Close the connection.'
+        sshClient.Disconnect()
+        Return Result
+    End Function
+
 
     ''' <summary>
     ''' Datei komprimieren in .bz2

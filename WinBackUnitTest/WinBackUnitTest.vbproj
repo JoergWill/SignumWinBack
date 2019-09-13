@@ -219,6 +219,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
       <HintPath>..\dll\OrgaSoft V3.1.7039\Signum.OrgaSoft.Contracts.dll</HintPath>
     </Reference>
@@ -231,10 +235,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Tamir.SharpSSH, Version=1.1.1.13, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\SharpSSH\Tamir.SharpSSH.dll</HintPath>
-    </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\dll\WeifenLuo Docking V3.0.4\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
@@ -273,6 +273,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnitTest_ca_Setup.vb" />
+    <Compile Include="UnitTest_wb_ChargenWasserTemp.vb" />
     <Compile Include="UnitTest_wb_Lieferungen.vb" />
     <Compile Include="UnitTest_wb_BestellDatenSchritt.vb" />
     <Compile Include="UnitTest_wb_Kocher.vb" />

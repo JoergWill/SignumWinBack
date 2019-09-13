@@ -1064,52 +1064,65 @@ Public Class wb_GlobalSettings
         Dim MandantName As String = ""
         Dim AdminDBName As String = ""
 
-        'alle Mandanten durchlaufen bis Admin-DB gefunden
-        With XMLReader
-            Do While .Read
-                Select Case .NodeType
+        'Fehler in xml-File abfangen (Falscher OrgaBack-DB-Eintrag in pDatenPath)
+        Try
+
+            'alle Mandanten durchlaufen bis Admin-DB gefunden
+            With XMLReader
+                Do While .Read
+                    Select Case .NodeType
 
                     'Ein Element 
-                    Case Xml.XmlNodeType.Element
-                        'Name
-                        Select Case .Name
+                        Case Xml.XmlNodeType.Element
+                            'Name
+                            Select Case .Name
                             'Mandant
-                            Case "Mandant"
-                                MandantNr += 1
-                                'mehrere Attribute
-                                If .AttributeCount > 0 Then
-                                    While .MoveToNextAttribute
-                                        'Attribut-Name
-                                        Select Case .Name
+                                Case "Mandant"
+                                    MandantNr += 1
+                                    'mehrere Attribute
+                                    If .AttributeCount > 0 Then
+                                        While .MoveToNextAttribute
+                                            'Attribut-Name
+                                            Select Case .Name
                                             'Mandant-Name
-                                            Case "Mandantname"
-                                                MandantName = .Value
+                                                Case "Mandantname"
+                                                    MandantName = .Value
                                             'Admin-Datenbank
-                                            Case "AdminDatabaseName"
-                                                AdminDBName = .Value
-                                        End Select
-                                    End While
-                                End If
+                                                Case "AdminDatabaseName"
+                                                    AdminDBName = .Value
+                                            End Select
+                                        End While
+                                    End If
 
-                                'Mandant und Admin-DB in Liste eintragen
-                                Dim m As New wb_Global.obMandant
-                                m.MandantNr = MandantNr
-                                m.MandantName = MandantName
-                                m.AdminDBName = AdminDBName
-                                _Mandaten.Add(m)
+                                    'Mandant und Admin-DB in Liste eintragen
+                                    Dim m As New wb_Global.obMandant
+                                    m.MandantNr = MandantNr
+                                    m.MandantName = MandantName
+                                    m.AdminDBName = AdminDBName
+                                    _Mandaten.Add(m)
 
-                        End Select
+                            End Select
 
-                        'Wenn die Admin-Datenbank mit der aktuelle Admin-DB übereinstimmt, ist der Mandant gefunden
-                        If AdminDBName = _MsSQLAdmnDB Then
-                            _OrgaBackMandantName = MandantName
-                            _OrgaBackMandantNr = MandantNr
-                        End If
+                            'Wenn die Admin-Datenbank mit der aktuelle Admin-DB übereinstimmt, ist der Mandant gefunden
+                            If AdminDBName = _MsSQLAdmnDB Then
+                                _OrgaBackMandantName = MandantName
+                                _OrgaBackMandantNr = MandantNr
+                            End If
 
-                End Select
-            Loop
-            .Close()
-        End With
+                    End Select
+                Loop
+                .Close()
+            End With
+        Catch
+            'Fehler beim Lesen der Mandanten-Information aus OrgaBack.ini
+            _Mandaten.Clear()
+            'Mandant und Admin-DB in Liste eintragen
+            Dim m As New wb_Global.obMandant
+            m.MandantNr = 1
+            m.MandantName = "FEHLER BEI ORGABACK.INI"
+            m.AdminDBName = Nothing
+            _Mandaten.Add(m)
+        End Try
     End Sub
 
     Public Shared Function GetFileName(Tabelle As String) As String
@@ -1132,16 +1145,6 @@ Public Class wb_GlobalSettings
     End Sub
 
     ''' <summary>
-    ''' [smtp]
-    ''' smtpUser=server@winback.de
-    ''' smtpPass=de2la6de2
-    ''' smtpHost=smtp.1und1.de
-    ''' smtpPort=25
-    ''' smtpAuth=atLOGIN
-    ''' smtpFrom=server@winback.de
-    ''' smtpMailAdr=service@winback.de
-    ''' smtpSubject=Chargenauswertung WinBack
-    ''' smtpPrio=mpNormal
     ''' </summary>
     ''' <param name="Key"></param>
     Private Shared Sub getWinBackIni(Key As String)
@@ -1154,9 +1157,9 @@ Public Class wb_GlobalSettings
         Select Case Key
             Case "SQL"
                 _WinBackDBType = wb_Functions.StringToDBType(IniFile.ReadString("winback", "DBType", "MySQL"))
-                _MySQLServerIP = IniFile.ReadString(IniWinBack_Mandant, "eMySQLServerIP", _MySQLServerIP)
-                _MySQLWinBack = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabase", _MySQLWinBack)
-                _MySQLWbDaten = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabaseDaten", _MySQLWbDaten)
+                _MySQLServerIP = IniFile.ReadString(IniWinBack_Mandant, "eMySQLServerIP", IniFile.ReadString("winback", "eMySQLServerIP", _MySQLServerIP))
+                _MySQLWinBack = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabase", IniFile.ReadString("winback", "eMySQLDatabase", "winback"))
+                _MySQLWbDaten = IniFile.ReadString(IniWinBack_Mandant, "eMySQLDatabaseDaten", IniFile.ReadString("winback", "eMySQLDatabaseDaten", "wbdaten"))
 
                 _MySQLUser = IniFile.ReadString("winback", "eMySQLUser", "herbst")
                 _MySQLPass = IniFile.ReadString("winback", "eMySQLPasswordDatabase", "herbst")
@@ -1166,10 +1169,10 @@ Public Class wb_GlobalSettings
                 _MsSQLWinBack = IniFile.ReadString("winback", "eMsSQLDatabase", "winback")
                 _MsSQLWbDaten = IniFile.ReadString("winback", "eMsSQLDatabaseDaten", "wbdaten")
 
-                _MsSQLMainDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_MainDB", _MsSQLMainDB)
-                _MsSQLAdmnDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_AdmnDB", _MsSQLAdmnDB)
-                _MsSQLServer = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_Source", _MsSQLServer)
-                _MsSQLUserId = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_UserId", _MsSQLUserId)
+                _MsSQLMainDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_MainDB", IniFile.ReadString("winback", "MsSQLServer_MainDB", _MsSQLMainDB))
+                _MsSQLAdmnDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_AdmnDB", IniFile.ReadString("winback", "MsSQLServer_AdmnDB", _MsSQLAdmnDB))
+                _MsSQLServer = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_Source", IniFile.ReadString("winback", "MsSQLServer_Source", _MsSQLServer))
+                _MsSQLUserId = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_UserId", IniFile.ReadString("winback", "MsSQLServer_UserId", "sa"))
                 _MsSQLPasswd = IniFile.ReadEncryptedString(IniWinBack_Mandant, "MsSQLServer_Passwd", _MsSQLPasswd)
 
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
@@ -1187,8 +1190,8 @@ Public Class wb_GlobalSettings
                 _NotePadPlusExe = IniFile.ReadString("winback", "NotePadPlusPath", "C:\Program Files (x86)\Notepad++\Notepad++.exe")
 
             Case "OrgaBack"
-                _osGrpBackwaren = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeBackwaren", _osGrpBackwaren)
-                _osGrpRohstoffe = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeRohstoffe", _osGrpRohstoffe)
+                _osGrpBackwaren = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeBackwaren", IniFile.ReadString("orgaback", "GruppeBackwaren", _osGrpBackwaren))
+                _osGrpRohstoffe = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeRohstoffe", IniFile.ReadString("orgaback", "GruppeRohstoffe", _osGrpRohstoffe))
                 _osLaendercode = IniFile.ReadString("orgaback", "LaenderCode", "DE")
                 _osSprachCode = IniFile.ReadString("orgaback", "SprachCode", "D")
 
@@ -1208,7 +1211,7 @@ Public Class wb_GlobalSettings
     End Sub
 
     Private Shared Function IniMandantSection(Section As String) As String
-        If MandantNr <> UNDEFINED Then
+        If (MandantNr <> UNDEFINED) Or (MandantNr = 0) Then
             Return Section & "-m" & MandantNr.ToString
         Else
             Return Section

@@ -1,17 +1,14 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class wb_MainTemplate
-    Inherits System.Windows.Forms.UserControl
+Partial Class wb_Chargen_Main
+    Inherits Global.WinBack.wb_DockBarPanelMain
 
-    'UserControl überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
+    'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Try
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(disposing)
-        End Try
+        If disposing AndAlso components IsNot Nothing Then
+            components.Dispose()
+        End If
+        MyBase.Dispose(disposing)
     End Sub
 
     'Wird vom Windows Form-Designer benötigt.
@@ -24,12 +21,10 @@ Partial Class wb_MainTemplate
     Private Sub InitializeComponent()
         Me.SuspendLayout()
         '
-        'wb_MainArtikel
+        'UserControl
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Name = "wb_MainArtikel"
-        Me.Size = New System.Drawing.Size(454, 271)
+        Me.Name = "wb_Chargen_Main"
+        Me.Size = New System.Drawing.Size(978, 583)
         Me.ResumeLayout(False)
 
     End Sub

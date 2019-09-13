@@ -23,4 +23,8 @@
     'FTP-Zugang anonym
     Public Const FTPUserAnonymous = "anonymous"
     Public Const FTPPassAnonymous = "1234"
+
+    'Putty(ssh)-Zugang
+    Public Const SSHUser = "herbst"
+    Public Const SSHPass = "herbst"
 End Class

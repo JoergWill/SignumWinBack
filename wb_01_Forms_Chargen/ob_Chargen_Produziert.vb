@@ -7,7 +7,7 @@
 ''' 
 ''' Nach dem Schreiben der Daten werden die Artikel und Rohstoffe in WinBack mit wbdaten.BAK_ArbRezepte.B_ARZ_Status = Exp gekennzeichnet
 ''' </summary>
-Public Class ob_ChargenProduziert
+Public Class ob_Chargen_Produziert
 
     Private opw_Liste As New ArrayList
     Private Const LIMIT = 1000

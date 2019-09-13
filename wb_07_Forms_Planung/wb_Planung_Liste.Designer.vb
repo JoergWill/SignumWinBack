@@ -35,6 +35,8 @@ Partial Class wb_Planung_Liste
         Dim ObjectCellBinding6 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding7 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding8 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding9 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding10 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Me.ColNummer = New Infralution.Controls.VirtualTree.Column()
         Me.ColCharge = New Infralution.Controls.VirtualTree.Column()
         Me.ColTour = New Infralution.Controls.VirtualTree.Column()
@@ -43,6 +45,8 @@ Partial Class wb_Planung_Liste
         Me.ColLinie = New Infralution.Controls.VirtualTree.Column()
         Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
+        Me.ColBestand = New Infralution.Controls.VirtualTree.Column()
+        Me.ColEinheitBestand = New Infralution.Controls.VirtualTree.Column()
         Me.CellEditor4 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.BtnVorlage = New System.Windows.Forms.Button()
@@ -73,7 +77,7 @@ Partial Class wb_Planung_Liste
         Me.ColNummer.Movable = False
         Me.ColNummer.Name = "ColNummer"
         Me.ColNummer.Sortable = False
-        Me.ColNummer.Width = 151
+        Me.ColNummer.Width = 150
         '
         'ColCharge
         '
@@ -83,7 +87,7 @@ Partial Class wb_Planung_Liste
         Me.ColCharge.Movable = False
         Me.ColCharge.Name = "ColCharge"
         Me.ColCharge.Sortable = False
-        Me.ColCharge.Width = 81
+        Me.ColCharge.Width = 80
         '
         'ColTour
         '
@@ -94,7 +98,7 @@ Partial Class wb_Planung_Liste
         Me.ColTour.MinWidth = 50
         Me.ColTour.Name = "ColTour"
         Me.ColTour.Sortable = False
-        Me.ColTour.Width = 51
+        Me.ColTour.Width = 50
         '
         'ColBezeichnung
         '
@@ -105,7 +109,7 @@ Partial Class wb_Planung_Liste
         Me.ColBezeichnung.Movable = False
         Me.ColBezeichnung.Name = "ColBezeichnung"
         Me.ColBezeichnung.Sortable = False
-        Me.ColBezeichnung.Width = 251
+        Me.ColBezeichnung.Width = 250
         '
         'ColKommentar
         '
@@ -116,7 +120,7 @@ Partial Class wb_Planung_Liste
         Me.ColKommentar.Name = "ColKommentar"
         Me.ColKommentar.Selectable = False
         Me.ColKommentar.Sortable = False
-        Me.ColKommentar.Width = 362
+        Me.ColKommentar.Width = 233
         '
         'ColLinie
         '
@@ -147,6 +151,18 @@ Partial Class wb_Planung_Liste
         Me.ColEinheit.Resizable = False
         Me.ColEinheit.Sortable = False
         Me.ColEinheit.Width = 30
+        '
+        'ColBestand
+        '
+        Me.ColBestand.Caption = Nothing
+        Me.ColBestand.MinWidth = 100
+        Me.ColBestand.Name = "ColBestand"
+        '
+        'ColEinheitBestand
+        '
+        Me.ColEinheitBestand.Caption = Nothing
+        Me.ColEinheitBestand.Name = "ColEinheitBestand"
+        Me.ColEinheitBestand.Width = 30
         '
         'CellEditor4
         '
@@ -190,7 +206,6 @@ Partial Class wb_Planung_Liste
         'BtVorproduktion
         '
         Me.BtVorproduktion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtVorproduktion.Enabled = False
         Me.BtVorproduktion.Location = New System.Drawing.Point(582, 12)
         Me.BtVorproduktion.Name = "BtVorproduktion"
         Me.BtVorproduktion.Size = New System.Drawing.Size(123, 53)
@@ -235,6 +250,8 @@ Partial Class wb_Planung_Liste
         Me.VirtualTree.Columns.Add(Me.ColTour)
         Me.VirtualTree.Columns.Add(Me.ColSollwert)
         Me.VirtualTree.Columns.Add(Me.ColEinheit)
+        Me.VirtualTree.Columns.Add(Me.ColBestand)
+        Me.VirtualTree.Columns.Add(Me.ColEinheitBestand)
         Me.VirtualTree.EditOnKeyPress = True
         Me.VirtualTree.Editors.Add(Me.CellEditor2)
         Me.VirtualTree.Editors.Add(Me.CellEditor1)
@@ -324,6 +341,10 @@ Partial Class wb_Planung_Liste
         ObjectCellBinding7.Field = "VirtTreeSollwert"
         ObjectCellBinding8.Column = Me.ColEinheit
         ObjectCellBinding8.Field = "VirtTreeEinheit"
+        ObjectCellBinding9.Column = Me.ColBestand
+        ObjectCellBinding9.Field = "VirtTreeBestand"
+        ObjectCellBinding10.Column = Me.ColEinheitBestand
+        ObjectCellBinding10.Field = "VirtTreeEinheit"
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
@@ -332,6 +353,8 @@ Partial Class wb_Planung_Liste
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding7)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding8)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding9)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding10)
         Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
         Me.ObjectRowBinding1.ExpandedImage = CType(resources.GetObject("ObjectRowBinding1.ExpandedImage"), System.Drawing.Image)
         Me.ObjectRowBinding1.Image = CType(resources.GetObject("ObjectRowBinding1.Image"), System.Drawing.Image)
@@ -429,4 +452,6 @@ Partial Class wb_Planung_Liste
     Friend WithEvents BtnTeigListeDrucken As Windows.Forms.Button
     Friend WithEvents dtBestellungen As Windows.Forms.DateTimePicker
     Friend WithEvents cbProduktionsFiliale As wb_ComboBox
+    Friend WithEvents ColBestand As Infralution.Controls.VirtualTree.Column
+    Friend WithEvents ColEinheitBestand As Infralution.Controls.VirtualTree.Column
 End Class

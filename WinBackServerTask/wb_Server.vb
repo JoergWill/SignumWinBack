@@ -28,7 +28,7 @@ Public Class Main
     End Enum
 
     Dim clients As New Hashtable 'new database (hashtable) to hold the clients
-    Dim Export As New ob_ChargenProduziert
+    Dim Export As New ob_Chargen_Produziert
     Dim Import As New ob_ChargenBestand
     Dim ServerTaskState As ServerTaskErrors = ServerTaskErrors.OK
 

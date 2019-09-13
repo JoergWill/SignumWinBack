@@ -28,7 +28,7 @@ Imports WinBack
         wbdaten.sqlCommand("Update BAK_ArbRezepte SET B_ARZ_Status = ''")
 
         'Export Chargen ab TW-Nr.2
-        Dim Export As New ob_ChargenProduziert
+        Dim Export As New ob_Chargen_Produziert
         Dim e As Integer = Export.ExportChargen(2)
 
         'Danach müssen in der Tabelle dbo.ProduzierteWare 26 Datensätze stehen

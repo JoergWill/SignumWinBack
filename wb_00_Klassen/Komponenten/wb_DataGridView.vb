@@ -243,6 +243,19 @@ Public Class wb_DataGridView
     End Property
 
     ''' <summary>
+    ''' Spalte in der gesucht werden soll.(Filter)
+    ''' </summary>
+    ''' <returns></returns>
+    Property SortCol As Integer
+        Get
+            Return iSort
+        End Get
+        Set(value As Integer)
+            iSort = value
+        End Set
+    End Property
+
+    ''' <summary>
     ''' Zeilen-Nummer unter der Maus (Hover). Zeilen-Index bei Maus-Click rechts
     ''' </summary>
     ''' <returns></returns>

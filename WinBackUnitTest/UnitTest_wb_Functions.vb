@@ -184,8 +184,8 @@ Imports WinBack.wb_Global
 
     <TestMethod()> Public Sub Test_SshShell()
         Dim Output As String
-        Output = DoShell("herbst", "herbst", "172.16.17.5", "pwd")
-        Assert.AreEqual("/home/herbst", Output)
+        Output = ExecSSH("herbst", "herbst", "172.16.17.4", "pwd")
+        Assert.AreEqual("/home/herbst" & vbLf, Output)
     End Sub
 
     <TestMethod()> Public Sub Test_StrToDouble()

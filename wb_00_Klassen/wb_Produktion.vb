@@ -1,20 +1,19 @@
-﻿Public Class wb_Produktion
-
-    ''' <summary>
-    ''' Enthält den komplette Produktionsplan als Liste von Produktionschritten (wb_Produktionsschritt).
-    ''' Jeder Produktionschritt hat Parent und Child. Die Produktion beginnt am Knoten(0) ohne Parent.
-    ''' 
-    '''     Schritt 0                                            (Child = Schritt 1, Schritt 2...)
-    '''         +   Schritt 1               (Parent = Schritt 0)
-    '''         +   Schritt 2               (Parent = Schritt 0)
-    '''         +   Schritt 3               (Parent = Schritt 0) (Child = Schritt 3.1, Schritt 3.2)
-    '''                 +   Schritt 3.1     (Parent = Schritt 3)
-    '''                 +   Schritt 3.2     (Parent = Schritt 3)
-    '''         +   Schritt 4               (Parent = Schritt 0)
-    '''         + ...
-    '''         
-    ''' Die Anzeige erfolgt im VirtualTree direkt mit der Angabe des Root-Nodes
-    ''' </summary>
+﻿''' <summary>
+''' Enthält den komplette Produktionsplan als Liste von Produktionschritten (wb_Produktionsschritt).
+''' Jeder Produktionschritt hat Parent und Child. Die Produktion beginnt am Knoten(0) ohne Parent.
+''' 
+'''     Schritt 0                                            (Child = Schritt 1, Schritt 2...)
+'''         +   Schritt 1               (Parent = Schritt 0)
+'''         +   Schritt 2               (Parent = Schritt 0)
+'''         +   Schritt 3               (Parent = Schritt 0) (Child = Schritt 3.1, Schritt 3.2)
+'''                 +   Schritt 3.1     (Parent = Schritt 3)
+'''                 +   Schritt 3.2     (Parent = Schritt 3)
+'''         +   Schritt 4               (Parent = Schritt 0)
+'''         + ...
+'''         
+''' Die Anzeige erfolgt im VirtualTree direkt mit der Angabe des Root-Nodes
+''' </summary>
+Public Class wb_Produktion
 
     Private _RootProduktionsSchritt As New wb_Produktionsschritt(Nothing, "")
     Private _SQLProduktionsSchritt As New wb_Produktionsschritt(Nothing, "")
@@ -847,7 +846,7 @@
                 Windows.Forms.Application.DoEvents()
             Next
             'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
-            AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler, True, BestellDaten.AuftragsNummer, BestellDaten.Bestellmenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText)
+            AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler, True, BestellDaten.AuftragsNummer, BestellDaten.BestellMenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText)
         End While
         'Progressbar ausblenden
         wb_Main_Progress_Shared.HideProgressBar()

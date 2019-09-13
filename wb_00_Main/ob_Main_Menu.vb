@@ -254,7 +254,8 @@ Public Class ob_Main_Menu
     ''' <param name="e"></param>
     Private Sub ShowStammDatenForm(sender As Object, e As EventArgs)
         CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainStammdaten_16x16)
+        xForm = oViewProvider.OpenForm(New wb_Chargen_Main(ServiceProvider), My.Resources.MainStammdaten_16x16)
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "Stammdaten")
     End Sub
 
     ''' <summary>
@@ -264,7 +265,8 @@ Public Class ob_Main_Menu
     ''' <param name="e"></param>
     Private Sub ShowStatistikChargenForm(sender As Object, e As EventArgs)
         CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainStatistikChargen_16x16)
+        xForm = oViewProvider.OpenForm(New wb_Chargen_Main(ServiceProvider), My.Resources.MainStatistikChargen_16x16)
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "StatistikChargen")
     End Sub
 
     ''' <summary>
@@ -274,7 +276,8 @@ Public Class ob_Main_Menu
     ''' <param name="e"></param>
     Private Sub ShowStatistikRohstoffForm(sender As Object, e As EventArgs)
         CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainStatistikRohstoffe_16x16)
+        xForm = oViewProvider.OpenForm(New wb_Chargen_Main(ServiceProvider), My.Resources.MainStatistikRohstoffe_16x16)
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "StatistikRohstoffe")
     End Sub
 
     ''' <summary>
@@ -284,7 +287,8 @@ Public Class ob_Main_Menu
     ''' <param name="e"></param>
     Private Sub ShowStatistikRezeptForm(sender As Object, e As EventArgs)
         CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_MainTemplate(ServiceProvider), My.Resources.MainStatistikRezepte_16x16)
+        xForm = oViewProvider.OpenForm(New wb_Chargen_Main(ServiceProvider), My.Resources.MainStatistikRezepte_16x16)
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "StatistikRezepte")
     End Sub
 
     ''' <summary>

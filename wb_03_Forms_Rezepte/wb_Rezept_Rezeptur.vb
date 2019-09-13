@@ -18,7 +18,9 @@ Public Class wb_Rezept_Rezeptur
     Private _RezeptSchrittNeu As wb_Rezeptschritt = Nothing 'neuer Rezeptschritt (Auswahl-Liste)
 
     Private _HisSollwertDeltaStyle As New Infralution.Controls.StyleDelta
-    Private _HisSollwertChangedStyle As Infralution.Controls.Style
+
+    'Private _HisSollwertDeltaStyle As New Infralution.Controls.StyleDelta
+    'Private _HisSollwertChangedStyle As Infralution.Controls.Style
 
     ''' <summary>
     ''' Objekt Rezeptur instanzieren.
@@ -35,6 +37,10 @@ Public Class wb_Rezept_Rezeptur
         'Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
         'Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+
+        'New Style setzen (Delta/Italic+Bold)
+        'TODO hier wird der Zeichensatz noch nicht richtig gesetzt (Arial) ??
+        _HisSollwertDeltaStyle.Font = New Drawing.Font(VirtualTree.Columns(1).CellStyle.Font, System.Drawing.FontStyle.Italic + System.Drawing.FontStyle.Bold)
 
         'Rezeptnummer und Rezept-Variante merken
         _RzNummer = RzNummer
@@ -435,8 +441,8 @@ Public Class wb_Rezept_Rezeptur
         If e.Column.Name = "ColBezeichnung" And wb_Functions.TypeIstText(_RezeptSchritt.Type) Then
             'Bei Anzeige der Rezept-Historie werden die geänderten Werte Fett/Kursiv dargestellt
             If _Historical And _RezeptSchritt.WertProd <> "" Then
-                VirtualTree_SetFontStyle(e.CellData.EvenStyle)
-                VirtualTree_SetFontStyle(e.CellData.OddStyle)
+                VirtualTree_SetFontStyle(e.CellData.EvenStyle, _HisSollwertDeltaStyle)
+                VirtualTree_SetFontStyle(e.CellData.OddStyle, _HisSollwertDeltaStyle)
             End If
             'Editor aktiv - Bezeichnungstext
             Exit Sub
@@ -446,8 +452,8 @@ Public Class wb_Rezept_Rezeptur
         If e.Column.Name = "ColSollwert" And (wb_Functions.TypeIstSollMenge(_RezeptSchritt.Type, 1) Or wb_Functions.TypeIstSollWert(_RezeptSchritt.Type, 3)) Then
             'Bei Anzeige der Rezept-Historie werden die geänderten Werte Fett/Kursiv dargestellt
             If _Historical And _RezeptSchritt.WertProd <> "" Then
-                VirtualTree_SetFontStyle(e.CellData.EvenStyle)
-                VirtualTree_SetFontStyle(e.CellData.OddStyle)
+                VirtualTree_SetFontStyle(e.CellData.EvenStyle, _HisSollwertDeltaStyle)
+                VirtualTree_SetFontStyle(e.CellData.OddStyle, _HisSollwertDeltaStyle)
             End If
             'Editor aktiv - Sollwert
             Exit Sub
@@ -479,15 +485,15 @@ Public Class wb_Rezept_Rezeptur
         VT_MakeTreePopup()
     End Sub
 
+
     ''' <summary>
-    ''' Setzt den Font.Style für die angegebene Zelle auf Bold+Italic
-    ''' Anzeige der geänderten Werte in der Rezept-Historie
+    ''' Setzt den Font.Style für die angegebene Zelle auf Bold/Italic
+    ''' Anzeige Artikel/Rezept-Zeilen
     ''' </summary>
     ''' <param name="ColumnStyle"></param>
-    Private Sub VirtualTree_SetFontStyle(ByRef ColumnStyle As Infralution.Controls.Style)
-        _HisSollwertDeltaStyle.Font = New Drawing.Font(ColumnStyle.Font, 3)
-        _HisSollwertChangedStyle = New Infralution.Controls.Style(ColumnStyle, _HisSollwertDeltaStyle)
-        ColumnStyle = _HisSollwertChangedStyle
+    Private Sub VirtualTree_SetFontStyle(ByRef ColumnStyle As Infralution.Controls.Style, DeltaStyle As Infralution.Controls.StyleDelta)
+        Dim _ChangedStyle = New Infralution.Controls.Style(ColumnStyle, DeltaStyle)
+        ColumnStyle = _ChangedStyle
     End Sub
 
     ''' <summary>
@@ -745,6 +751,9 @@ Public Class wb_Rezept_Rezeptur
             _RezeptSchrittNeu.ParamNr = 1
             _RezeptSchrittNeu.Sollwert = "0,000"
             _RezeptSchrittNeu.Type = RohstoffAuswahl.RohstoffType
+            _RezeptSchrittNeu.Format = RohstoffAuswahl.RohstoffFormat
+            _RezeptSchrittNeu.UnterGW = RohstoffAuswahl.RohstoffUG
+            _RezeptSchrittNeu.OberGW = RohstoffAuswahl.RohstoffOG
             _RezeptSchrittNeu.Einheit = wb_Language.TextFilter(RohstoffAuswahl.RohstoffEinheit)
             'bei Kneterkomponenten müssen die Paramter aus Tabelle KomponParams gesetzt werden
             _RezeptSchrittNeu.SetType118()

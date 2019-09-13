@@ -1,0 +1,487 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ColNummer.AutoFitWeight" type="System.Single, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ColNummer.Caption" xml:space="preserve">
+    <value>Nummer</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ColNummer.CellStyle.HorzAlignment" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Far</value>
+  </data>
+  <data name="ColNummer.MinWidth" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="ColCharge.Caption" xml:space="preserve">
+    <value>Charge</value>
+  </data>
+  <data name="ColCharge.MinWidth" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="ColCharge.Width" type="System.Int32, mscorlib">
+    <value>88</value>
+  </data>
+  <data name="ColBezeichnung.Caption" xml:space="preserve">
+    <value>Bezeichnung</value>
+  </data>
+  <data name="ColBezeichnung.CellStyle.VertAlignment" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Center</value>
+  </data>
+  <data name="ColBezeichnung.MinWidth" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="ColBezeichnung.Width" type="System.Int32, mscorlib">
+    <value>138</value>
+  </data>
+  <data name="ColLinie.AutoFitWeight" type="System.Single, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ColLinie.Caption" xml:space="preserve">
+    <value>Linie</value>
+  </data>
+  <data name="ColLinie.CellStyle.HorzAlignment" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Center</value>
+  </data>
+  <data name="ColLinie.MinWidth" type="System.Int32, mscorlib">
+    <value>40</value>
+  </data>
+  <data name="ColLinie.Width" type="System.Int32, mscorlib">
+    <value>40</value>
+  </data>
+  <data name="ColSollwert.AutoFitWeight" type="System.Single, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ColSollwert.Caption" xml:space="preserve">
+    <value>Sollwert</value>
+  </data>
+  <data name="ColSollwert.CellStyle.HorzAlignment" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Far</value>
+  </data>
+  <data name="ColSollwert.MaxAutoSizeWidth" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
+  <data name="ColSollwert.MinWidth" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
+  <data name="ColSollwert.Width" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ColEinheit.Caption" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="ColEinheit.Width" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="ColIstmenge.AutoFitWeight" type="System.Single, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ColIstmenge.Caption" xml:space="preserve">
+    <value>Istwert</value>
+  </data>
+  <data name="ColIstmenge.CellStyle.HorzAlignment" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Far</value>
+  </data>
+  <data name="ColIstmenge.MaxAutoSizeWidth" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
+  <data name="ColIstmenge.MinWidth" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
+  <data name="ColIstmenge.Width" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
+  <data name="ColEinheitIst.AutoFitWeight" type="System.Single, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ColEinheitIst.Caption" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="ColEinheitIst.Width" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="ColZeit.AutoFitWeight" type="System.Single, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ColZeit.Caption" xml:space="preserve">
+    <value>Zeit</value>
+  </data>
+  <data name="ColZeit.CellStyle.HorzAlignment" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Center</value>
+  </data>
+  <data name="ColZeit.MinWidth" type="System.Int32, mscorlib">
+    <value>110</value>
+  </data>
+  <data name="ColZeit.Width" type="System.Int32, mscorlib">
+    <value>110</value>
+  </data>
+  <data name="ColStatusImage.AutoFitWeight" type="System.Single, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ColStatusImage.Caption" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="ColStatusImage.CellStyle.HorzAlignment" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Center</value>
+  </data>
+  <data name="ColStatusImage.CellStyle.VertAlignment" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Center</value>
+  </data>
+  <data name="ColStatusImage.MaxAutoSizeWidth" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="ColStatusImage.ShowPinIcon" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="ColStatusImage.Width" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="ColUser.Caption" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="ColUser.Width" type="System.Int32, mscorlib">
+    <value>68</value>
+  </data>
+  <data name="ColPreis.Caption" xml:space="preserve">
+    <value>Preis</value>
+  </data>
+  <data name="ColPreis.Width" type="System.Int32, mscorlib">
+    <value>68</value>
+  </data>
+  <data name="ColRohCharge.Caption" xml:space="preserve">
+    <value>Lot</value>
+  </data>
+  <data name="ColRohCharge.MinWidth" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="ColRohCharge.Width" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="ColParams.AutoFitWeight" type="System.Single, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ColParams.Caption" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="ColParams.MaxAutoSizeWidth" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
+  <data name="ColParams.MinWidth" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
+  <data name="ColParams.Width" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
+  <data name="VirtualTree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="VirtualTree.CollapseImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAGxJREFUKFOF0cENgCAMhWF2Yid3YgEHYAzzJiEe7I1b9UFCrIol+ZOGfCkHQilF
+        c86tlDANgAai+6m1jkREuYzFuFg8g9i1Yz7hQYM9+Il58azh63HOA882EhrsQYM9+MJ/cN2OjvkzHLwA
+        6AnqE4ri6Lbu1gAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="VirtualTree.ExpandImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAIJJREFUKFOF0c0NgCAMBWB2Yid3YgEHYAzTOzsQD3LjVnmYYkUbSR4h8KX8uZwz
+        xxh7QiAzRMQOSLda60gphVEM8X55YgumlC6MLWaIBYG0M6/bcWMNUVEwoIkxMecTz5eRqu0ROLRuYA0B
+        Bm7whTXUFU2M58HZJAA6HeNnMPgLEfEJvNB+UvqoOvAAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="VirtualTree.HeaderHeight" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="resource.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 9.75pt</value>
+  </data>
+  <data name="VirtualTree.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="resource.HorzAlignment" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Center</value>
+  </data>
+  <data name="ObjectCellBinding9.PreviewSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="ObjectCellBinding11.AutoFitHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="ObjectCellBinding11.PreviewSize" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="ObjectCellBinding11.ShowPreview" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ObjectCellBinding11.ShowText" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="resource.HorzAlignment1" type="System.Drawing.StringAlignment, System.Drawing">
+    <value>Center</value>
+  </data>
+  <data name="ObjectRowBinding1.ExpandedImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAHRJREFUOE/FjgEKgDAMA/v0Pa0/04W1teuKW0EwECPMO0efprV2xcrRPvg4y5FE
+        YWbuTwo7JFkF93+P8COJEcGQqCCH8zUBXqqFBGuC0yi03AB5u65fQGBMgFQkCqaCHay7CJCKxMGzoNKO
+        zAKJPzjtryG6AYN821Gv3gV7AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="ObjectRowBinding1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAFJJREFUOE9joBpoaGj4j46hUoQBSPGBAwf+///PgEITZQguzciGYMNQ7RADSAVQ
+        AyCGIAzA7gJsNFYDiNUMokddQAsXkIPhBkABTIBUPOCAgQEAB3nmEC2x2cUAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="VirtualTree.Size" type="System.Drawing.Size, System.Drawing">
+    <value>996, 607</value>
+  </data>
+  <data name="VirtualTree.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;VirtualTree.Name" xml:space="preserve">
+    <value>VirtualTree</value>
+  </data>
+  <data name="&gt;&gt;VirtualTree.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.VirtualTree, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;VirtualTree.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;VirtualTree.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>1020, 631</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Chargen Details</value>
+  </data>
+  <data name="&gt;&gt;ColNummer.Name" xml:space="preserve">
+    <value>ColNummer</value>
+  </data>
+  <data name="&gt;&gt;ColNummer.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColCharge.Name" xml:space="preserve">
+    <value>ColCharge</value>
+  </data>
+  <data name="&gt;&gt;ColCharge.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColBezeichnung.Name" xml:space="preserve">
+    <value>ColBezeichnung</value>
+  </data>
+  <data name="&gt;&gt;ColBezeichnung.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColLinie.Name" xml:space="preserve">
+    <value>ColLinie</value>
+  </data>
+  <data name="&gt;&gt;ColLinie.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColSollwert.Name" xml:space="preserve">
+    <value>ColSollwert</value>
+  </data>
+  <data name="&gt;&gt;ColSollwert.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColEinheit.Name" xml:space="preserve">
+    <value>ColEinheit</value>
+  </data>
+  <data name="&gt;&gt;ColEinheit.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColIstmenge.Name" xml:space="preserve">
+    <value>ColIstmenge</value>
+  </data>
+  <data name="&gt;&gt;ColIstmenge.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColEinheitIst.Name" xml:space="preserve">
+    <value>ColEinheitIst</value>
+  </data>
+  <data name="&gt;&gt;ColEinheitIst.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColZeit.Name" xml:space="preserve">
+    <value>ColZeit</value>
+  </data>
+  <data name="&gt;&gt;ColZeit.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColStatusImage.Name" xml:space="preserve">
+    <value>ColStatusImage</value>
+  </data>
+  <data name="&gt;&gt;ColStatusImage.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColUser.Name" xml:space="preserve">
+    <value>ColUser</value>
+  </data>
+  <data name="&gt;&gt;ColUser.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColPreis.Name" xml:space="preserve">
+    <value>ColPreis</value>
+  </data>
+  <data name="&gt;&gt;ColPreis.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColRohCharge.Name" xml:space="preserve">
+    <value>ColRohCharge</value>
+  </data>
+  <data name="&gt;&gt;ColRohCharge.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ColParams.Name" xml:space="preserve">
+    <value>ColParams</value>
+  </data>
+  <data name="&gt;&gt;ColParams.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;ObjectRowBinding1.Name" xml:space="preserve">
+    <value>ObjectRowBinding1</value>
+  </data>
+  <data name="&gt;&gt;ObjectRowBinding1.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.ObjectRowBinding, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>wb_Chargen_Details</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=3.0.4.0, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab</value>
+  </data>
+</root>

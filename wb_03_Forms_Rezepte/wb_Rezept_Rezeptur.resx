@@ -244,7 +244,7 @@
     <value>False</value>
   </data>
   <data name="ToolStripAllergenLegende.Size" type="System.Drawing.Size, System.Drawing">
-    <value>521, 17</value>
+    <value>520, 17</value>
   </data>
   <data name="ToolStripAllergenLegende.Text" xml:space="preserve">
     <value>Allergen-Kennzeichnung   K - keine Angaben / N - nicht enthalten  / T - Spuren von / C -Contains</value>
@@ -943,7 +943,7 @@
     <value>cbLiniengruppe</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.3.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.6.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -964,7 +964,7 @@
     <value>cbVariante</value>
   </data>
   <data name="&gt;&gt;cbVariante.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.3.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.6.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbVariante.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -1960,7 +1960,7 @@
     <value>GridView_RzVerwendung</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Type" xml:space="preserve">
-    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.3.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.4.6.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Parent" xml:space="preserve">
     <value>tb_Verwendung</value>
@@ -2005,7 +2005,7 @@
     <value>Wb_TabControl</value>
   </data>
   <data name="&gt;&gt;Wb_TabControl.Type" xml:space="preserve">
-    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.3.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.4.6.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;Wb_TabControl.Parent" xml:space="preserve">
     <value>$this</value>

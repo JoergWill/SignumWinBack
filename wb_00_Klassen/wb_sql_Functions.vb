@@ -70,6 +70,23 @@ Public Class wb_sql_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt MySQLDateTime in Microsoft-Date um. Wenn die Konvertierung fehl schlägt, wird
+    ''' 22.11.1964 zurückgegeben.
+    ''' </summary>
+    ''' <param name="Value"></param>
+    ''' <returns></returns>
+    Public Shared Function MySQLDateTimeToDate(Value As Object) As DateTime
+        If TryCast(Value, MySql.Data.Types.MySqlDateTime).Year > 0 Then
+            Try
+                Return TryCast(Value, MySql.Data.Types.MySqlDateTime).GetDateTime()
+            Catch
+                Return wb_Global.wbNODATE
+            End Try
+        End If
+        Return wb_Global.wbNODATE
+    End Function
+
+    ''' <summary>
     ''' Wandelt einen SQL-Datenfeld in Boolean um
     '''     1   -   True
     '''     0   -   False

@@ -149,12 +149,12 @@
 
       <!-- MySQL-Server (OrgaBack-Standalone) -->
       <Component Id="MYSQLSERVER" Guid="C481566D-4CA8-4b10-B08D-EF29ACDC10B5">
-        <File Id="Subfeature2.txt" Name="t2.txt" />
+        <File Id="Subfeature2.txt" Name="MySQLServer.txt" />
       </Component>
 
       <!-- Log4View -->
       <Component Id="LOG4VIEW" Guid="44E233A0-CDA2-4adf-B2AF-935A0174325B">
-        <File Id="Subfeature3.txt" Name="t3.txt" />
+        <File Id="Subfeature3.txt" Name="Log4View.txt" />
       </Component>
     </DirectoryRef>
 

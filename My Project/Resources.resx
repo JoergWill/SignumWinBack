@@ -420,4 +420,61 @@ Stacktrace:
   <data name="RezeptVerwendung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RezeptVerwendung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ArtikelDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelParameter_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelParameter_32x32 .png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ChargenDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ChargenDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ChargenInfo_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ChargenInfo_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ChargenListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ChargenListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Leer_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Leer_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_00_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_00_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_01_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_01_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_02_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_02_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_03_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_03_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_04_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_04_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_05_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_05_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_06_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_06_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_07_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_07_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_08_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_08_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TTS_Allgemein" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TTS_Allgemein.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TTS_RaumMehl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TTS_RaumMehl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TTS_Sauerteig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TTS_Sauerteig.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TTS_TeigTempSteuerung" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TTS_TeigTempSteuerung.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

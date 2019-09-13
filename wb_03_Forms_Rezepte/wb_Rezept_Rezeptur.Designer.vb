@@ -154,7 +154,6 @@ Partial Class wb_Rezept_Rezeptur
         '
         resources.ApplyResources(Me.EnhEdit_Rezept, "EnhEdit_Rezept")
         Me.EnhEdit_Rezept.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit_Rezept.eFormat = 0
         Me.EnhEdit_Rezept.eOG = "0"
         Me.EnhEdit_Rezept.eUG = "0"
         Me.EnhEdit_Rezept.Name = "EnhEdit_Rezept"
@@ -768,6 +767,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.GridView_RzVerwendung.MultiSelect = False
         Me.GridView_RzVerwendung.Name = "GridView_RzVerwendung"
         Me.GridView_RzVerwendung.ReadOnly = True
+        Me.GridView_RzVerwendung.SortCol = -1
         Me.GridView_RzVerwendung.x8859_5_FieldName = ""
         '
         'wb_Rezept_Rezeptur

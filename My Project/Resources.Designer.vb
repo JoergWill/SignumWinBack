@@ -83,6 +83,56 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Public ReadOnly Property ArtikelDetails_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ArtikelDetails_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property ArtikelParameter_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ArtikelParameter_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property ChargenDetails_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ChargenDetails_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property ChargenInfo_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ChargenInfo_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property ChargenListe_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ChargenListe_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Public ReadOnly Property DatenRueckSicherung_16x16() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("DatenRueckSicherung_16x16", resourceCulture)
@@ -306,6 +356,16 @@ Namespace My.Resources
         Public ReadOnly Property KreuzRot() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("KreuzRot", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property Leer_16x16() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Leer_16x16", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -781,6 +841,96 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        '''</summary>
+        Public ReadOnly Property Status_00_16x16() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Status_00_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        '''</summary>
+        Public ReadOnly Property Status_01_16x16() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Status_01_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        '''</summary>
+        Public ReadOnly Property Status_02_16x16() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Status_02_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        '''</summary>
+        Public ReadOnly Property Status_03_16x16() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Status_03_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        '''</summary>
+        Public ReadOnly Property Status_04_16x16() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Status_04_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        '''</summary>
+        Public ReadOnly Property Status_05_16x16() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Status_05_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        '''</summary>
+        Public ReadOnly Property Status_06_16x16() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Status_06_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        '''</summary>
+        Public ReadOnly Property Status_07_16x16() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Status_07_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        '''</summary>
+        Public ReadOnly Property Status_08_16x16() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Status_08_16x16", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
         Public ReadOnly Property StatusStripBackground() As System.Drawing.Bitmap
@@ -906,6 +1056,46 @@ Namespace My.Resources
         Public ReadOnly Property tpExceptionMailText() As String
             Get
                 Return ResourceManager.GetString("tpExceptionMailText", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property TTS_Allgemein() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("TTS_Allgemein", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property TTS_RaumMehl() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("TTS_RaumMehl", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property TTS_Sauerteig() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("TTS_Sauerteig", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property TTS_TeigTempSteuerung() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("TTS_TeigTempSteuerung", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

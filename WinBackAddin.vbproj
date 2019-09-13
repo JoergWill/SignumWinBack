@@ -250,6 +250,10 @@
     <Reference Include="ProgressCircle">
       <HintPath>dll\ProgressCircle\ProgressCircle.dll</HintPath>
     </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
       <HintPath>dll\OrgaSoft V3.1.7039\Signum.OrgaSoft.Contracts.dll</HintPath>
     </Reference>
@@ -271,9 +275,6 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Tamir.SharpSSH">
-      <HintPath>dll\SharpSSH\Tamir.SharpSSH.dll</HintPath>
-    </Reference>
     <Reference Include="UIAutomationClient" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>dll\WeifenLuo Docking V3.0.4\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
@@ -331,6 +332,8 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_Chargen.vb" />
+    <Compile Include="wb_00_Klassen\wb_ChargenSchritt.vb" />
     <Compile Include="wb_00_Klassen\wb_LagerKarte.vb" />
     <Compile Include="wb_00_Klassen\wb_LagerOrt.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_TimerGridView.Designer.vb">
@@ -410,6 +413,7 @@
     <Compile Include="wb_00_Klassen\wb_nwtUpdateArtikel.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtCl.vb" />
     <Compile Include="wb_00_Klassen\wb_Simple3Des.vb" />
+    <Compile Include="wb_00_Klassen\wb_SplitTTSLog.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_FindServerIP.vb" />
     <Compile Include="wb_00_Klassen\wb_VorProduktionsSchritt.vb" />
     <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Chargen.vb" />
@@ -508,8 +512,27 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_00_Main\wb_Printer_Shared.vb" />
-    <Compile Include="wb_01_Forms_Chargen\ob_ChargenProduziert.vb" />
+    <Compile Include="wb_01_Forms_Chargen\ob_Chargen_Produziert.vb" />
     <Compile Include="wb_01_Forms_Chargen\ob_ProduzierteWare.vb" />
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Funktionen.Designer.vb">
+      <DependentUpon>wb_Chargen_Funktionen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Funktionen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.Designer.vb">
+      <DependentUpon>wb_Chargen_Details.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Shared.vb" />
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_WasserTemp.Designer.vb">
+      <DependentUpon>wb_Chargen_WasserTemp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_WasserTemp.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_Services.vb" />
     <Compile Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.Designer.vb">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
@@ -528,6 +551,12 @@
       <DependentUpon>wb_Artikel_Details.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Parameter.Designer.vb">
+      <DependentUpon>wb_Artikel_Parameter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Parameter.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_03_Forms_Rezepte\IRezept_OrgaBack.vb" />
@@ -695,10 +724,10 @@
     <Compile Include="wb_06_Forms_Linien\wb_Linien_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_MainTemplate.Designer.vb">
-      <DependentUpon>wb_MainTemplate.vb</DependentUpon>
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Main.Designer.vb">
+      <DependentUpon>wb_Chargen_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_MainTemplate.vb">
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="wb_00_Main\ob_Main_Menu.vb" />
@@ -841,6 +870,15 @@
     <EmbeddedResource Include="wb_00_Main\wb_PrinterPreview.resx">
       <DependentUpon>wb_PrinterPreview.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Funktionen.resx">
+      <DependentUpon>wb_Chargen_Funktionen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Details.resx">
+      <DependentUpon>wb_Chargen_Details.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_WasserTemp.resx">
+      <DependentUpon>wb_Chargen_WasserTemp.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.resx">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
     </EmbeddedResource>
@@ -908,8 +946,8 @@
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Main.resx">
       <DependentUpon>wb_Linien_Main.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_MainTemplate.resx">
-      <DependentUpon>wb_MainTemplate.vb</DependentUpon>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Main.resx">
+      <DependentUpon>wb_Chargen_Main.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Details.resx">
       <DependentUpon>wb_Rezept_Details.vb</DependentUpon>
@@ -1098,6 +1136,11 @@
     <Content Include="ListLabel\Produktion\Backzettel.lst" />
     <Content Include="ListLabel\Produktion\Teigzettel.lst" />
     <Content Include="ListLabel\wbStandard.lst" />
+    <None Include="Resources\ArtikelDetails_32x32.png" />
+    <None Include="Resources\ArtikelParameter_32x32 .png" />
+    <None Include="Resources\ChargenDetails_32x32.png" />
+    <None Include="Resources\ChargenInfo_32x32.png" />
+    <None Include="Resources\ChargenListe_32x32.png" />
     <Content Include="Resources\DatenRueckSicherung_16x16.png" />
     <None Include="Resources\IconSave_24x24.png" />
     <None Include="Resources\IconCancel_24x24.png" />
@@ -1142,6 +1185,23 @@
     <None Include="Resources\RezeptNeu_32x32.png" />
     <None Include="Resources\RezeptLoeschen_32x32.png" />
     <None Include="Resources\RezeptVerwendung_32x32.png" />
+    <None Include="Resources\ProdClsdFold.ICO" />
+    <None Include="Resources\Status_00_16x16.ico" />
+    <None Include="Resources\Status_01_16x16.ico" />
+    <None Include="Resources\Status_02_16x16.ico" />
+    <None Include="Resources\Status_03_16x16.ico" />
+    <None Include="Resources\Status_04_16x16.ico" />
+    <None Include="Resources\Status_05_16x16.ico" />
+    <None Include="Resources\Status_06_16x16.ico" />
+    <None Include="Resources\Status_07_16x16.ico" />
+    <None Include="Resources\Status_08_16x16.ico" />
+    <None Include="Resources\TTS_ALG.png" />
+    <None Include="Resources\TTS_Rmf.png" />
+    <None Include="Resources\TTS_Tts.png" />
+    <None Include="Resources\TTS_Allgemein.png" />
+    <None Include="Resources\TTS_RaumMehl.png" />
+    <None Include="Resources\TTS_Sauerteig.png" />
+    <None Include="Resources\TTS_TeigTempSteuerung.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

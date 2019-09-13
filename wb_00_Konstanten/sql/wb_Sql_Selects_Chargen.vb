@@ -19,4 +19,27 @@
     Public Const sqlMarkChargen = "Update BAK_ArbRezepte SET B_ARZ_Status = 'Exp' WHERE " &
                                   "B_ARZ_TW_Nr = [0] and B_ARZ_Charge_Nr = [1]"
 
+    'Sql-Statement Liste Tageswechsel
+    Public Const sqlListeTW = "SELECT * from Tageswechsel"
+
+    Public Const sqlListeTWFilter = "SELECT * from Tageswechsel WHERE (FORMATDATETIME('yyyymmddhhnnss', TRUNC([0]) " &
+                                   "<= TW_Beginn) AND (TW_Beginn <=  (FORMATDATETIME('yyyymmddhhnnss', TRUNC([1])"
+
+    Public Const sqlChargenDetails = "Select BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie " &
+                                     "FROM BAK_ArbRezepte INNER JOIN BAK_ArbRZSchritte ON " &
+                                     "(BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) AND " &
+                                     "(BAK_ArbRezepte.B_ARZ_LiBeh_Nr = BAK_ArbRZSchritte.B_ARS_Beh_Nr) AND " &
+                                     "(BAK_ArbRezepte.B_ARZ_Art_Index = BAK_ArbRZSchritte.B_ARS_Art_Index) AND " &
+                                     "(BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr) " &
+                                     "WHERE (B_ARZ_LiBeh_Nr > 100) AND B_ARZ_TW_Nr = " & Chr(34) & "[0]" & Chr(34) & " " &
+                                     "ORDER BY [1], B_ARZ_TW_Idx, BAK_ArbRZSchritte.B_ARS_Index"
+
+    '     'Select BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie ' +
+    '     'FROM BAK_ArbRezepte  ' +
+    '     'INNER JOIN BAK_ArbRZSchritte ON ' +
+    '     '(BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) AND ' +
+    '     '(BAK_ArbRezepte.B_ARZ_LiBeh_Nr = BAK_ArbRZSchritte.B_ARS_Beh_Nr) AND ' + { 21-Nov-2003 }
+    '     '(BAK_ArbRezepte.B_ARZ_Art_Index = BAK_ArbRZSchritte.B_ARS_Art_Index) AND ' + { 21-Nov-2003 }
+    '     '(BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr) ';
+
 End Class

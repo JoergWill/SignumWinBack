@@ -1,4 +1,5 @@
-﻿Imports WinBack
+﻿Imports EnhEdit
+Imports WinBack
 Imports WinBack.wb_Rohstoffe_Shared
 
 Public Class wb_Rohstoff_AuswahlListe
@@ -9,6 +10,9 @@ Public Class wb_Rohstoff_AuswahlListe
     Private _RohstoffType As wb_Global.KomponTypen
     Private _RohstoffEinheit As String = ""
     Private _Filter As String = ""
+    Private _RohstoffFormat As EnhEdit_Global.wb_Format
+    Private _RohstoffUG As String
+    Private _RohstoffOG As String
 
     Public WriteOnly Property Anzeige As AnzeigeFilter
         Set(value As AnzeigeFilter)
@@ -96,6 +100,33 @@ Public Class wb_Rohstoff_AuswahlListe
         End Set
     End Property
 
+    Public Property RohstoffFormat As EnhEdit_Global.wb_Format
+        Get
+            Return _RohstoffFormat
+        End Get
+        Set(value As EnhEdit_Global.wb_Format)
+            _RohstoffFormat = value
+        End Set
+    End Property
+
+    Public Property RohstoffUG As String
+        Get
+            Return _RohstoffUG
+        End Get
+        Set(value As String)
+            _RohstoffUG = value
+        End Set
+    End Property
+
+    Public Property RohstoffOG As String
+        Get
+            Return _RohstoffOG
+        End Get
+        Set(value As String)
+            _RohstoffOG = value
+        End Set
+    End Property
+
     Private Sub wb_Rezept_AuswahlListe_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
@@ -111,6 +142,8 @@ Public Class wb_Rohstoff_AuswahlListe
         DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffLst, "RohstoffListe")
         'Filter einschalten
         DataGridView.Filter = _Filter
+        'Focus auf Sortier-Feld
+        DataGridView.SortCol = 0
     End Sub
 
     Private Sub BtnCancel_Click(sender As Object, e As EventArgs) Handles BtnCancel.Click
@@ -124,6 +157,9 @@ Public Class wb_Rohstoff_AuswahlListe
         RohstoffKommentar = DataGridView.Field("KO_Kommentar")
         RohstoffType = wb_Functions.IntToKomponType(DataGridView.iField("KO_Type"))
         RohstoffEinheit = DataGridView.Field("E_Einheit")
+        RohstoffFormat = wb_Functions.StrToFormat(DataGridView.Field("KT_Format"))
+        RohstoffUG = DataGridView.Field("KT_UnterGW")
+        RohstoffOG = DataGridView.Field("KT_OberGW")
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub

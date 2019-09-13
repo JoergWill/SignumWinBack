@@ -283,7 +283,7 @@
     <value>2, 89</value>
   </data>
   <data name="KompRzChargen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>400, 314</value>
+    <value>400, 338</value>
   </data>
   <data name="KompRzChargen.TabIndex" type="System.Int32, mscorlib">
     <value>69</value>
@@ -292,7 +292,7 @@
     <value>KompRzChargen</value>
   </data>
   <data name="&gt;&gt;KompRzChargen.Type" xml:space="preserve">
-    <value>WinBack.wb_KompRzChargen, WinBackAddin, Version=1.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_KompRzChargen, WinBackAddin, Version=1.4.4.1, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;KompRzChargen.Parent" xml:space="preserve">
     <value>$this</value>
@@ -346,7 +346,7 @@
     <value>cbArtikelGrp2</value>
   </data>
   <data name="&gt;&gt;cbArtikelGrp2.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.4.1, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbArtikelGrp2.Parent" xml:space="preserve">
     <value>$this</value>
@@ -400,7 +400,7 @@
     <value>cbArtikelGrp1</value>
   </data>
   <data name="&gt;&gt;cbArtikelGrp1.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.4.1, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbArtikelGrp1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -499,7 +499,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>673, 399</value>
+    <value>673, 421</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>

@@ -40,6 +40,7 @@ Public Class wb_Produktionsschritt
     Private _Einheit As String
     Private _TeigChargen As wb_Global.ChargenMengen
     Private _Bestellt_Stk As Double
+    Private _LagerBestand As String
 
     Private _Bestellt_SonderText As String
     Private _Bestellt_KundeNr As String
@@ -283,6 +284,35 @@ Public Class wb_Produktionsschritt
         Set(value As String)
             '_Sollwert = value
         End Set
+    End Property
+
+    ''' <summary>
+    ''' Lager-Bestand. Anzeige im VirtualTree. Unterscheidung anhand der Type:
+    '''     -   Artikel-Chargen-Zeile   Lagerbestand in Stück
+    '''     -   Rezept-Chargen-Zeile    keine Anzeige
+    '''     -   Rezept-Schritte         Anzeige Lagerbestand als formatierter Zahlenwert in kg
+    '''     
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property VirtTreeBestand As String
+        Get
+            If Typ = KO_ZEILE_ARTIKEL Then
+                Return ""
+
+            ElseIf Typ = KO_ZEILE_REZEPT Then
+                Return ""
+
+            Else
+                Select Case Typ
+                    Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
+                        Return ""
+                    Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
+                        Return wb_Functions.FormatStr(_LagerBestand, 3)
+                    Case Else
+                        Return ""
+                End Select
+            End If
+        End Get
     End Property
 
     ''' <summary>
@@ -802,4 +832,12 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public Property LagerBestand As String
+        Get
+            Return _LagerBestand
+        End Get
+        Set(value As String)
+            _LagerBestand = value
+        End Set
+    End Property
 End Class
