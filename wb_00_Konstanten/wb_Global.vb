@@ -102,6 +102,7 @@
         Format = 9
         UntererGrenzwert = 10
         ObererGrenzwert = 11
+        VerarbeitungsHinweisePfad = 20
     End Enum
 
     Public Enum ktParam

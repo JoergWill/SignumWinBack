@@ -75,17 +75,20 @@ Public Class wb_ChargenWasserTemp
         _ChargenNummer = GetTTSChargenNr(ChargenStartZeit)
         Select Case _ChargenNummer
             Case "ERR"
+                'Maus-Zeiger anpassen
+                Cursor = Windows.Forms.Cursors.Default
                 Return False
             Case ""
                 'Timestamp nicht gefunden - nächster Versuch eine Sekunde später
                 _ChargenNummer = GetTTSChargenNr(ChargenStartZeit(1))
+                'Maus-Zeiger anpassen
+                Cursor = Windows.Forms.Cursors.Default
                 Return GetTTSLines(_ChargenNummer)
             Case Else
+                'Maus-Zeiger anpassen
+                Cursor = Windows.Forms.Cursors.Default
                 Return GetTTSLines(_ChargenNummer)
         End Select
-
-        'Maus-Zeiger anpassen
-        Cursor = Windows.Forms.Cursors.Default
     End Function
 
     Private Function GetTTSChargenNr(StartZeit As String) As String
@@ -238,6 +241,10 @@ Public Class wb_ChargenWasserTemp
                         If t.Values("=").Count = 1 Then
                             ALG_t_rezept.Text = t.Values("=")(0)
                         End If
+                    Case "soll_temperatur"
+                        If t.Values("=").Count = 2 Then
+                            ALG_t_neu_vor_eis.Text = t.Values("=")(1)
+                        End If
                 End Select
 
             'Berechnung Eis-Menge
@@ -247,9 +254,26 @@ Public Class wb_ChargenWasserTemp
                         If t.Values("=").Count = 1 Then
                             ALG_t_delta.Text = t.Values("=")(0)
                         End If
+                    Case "t_w_soll_neu"
+                        If t.Values("=").Count = 1 Then
+                            EIS_t_w_soll_neu.Text = t.Values("=")(0)
+                        End If
+                    Case "m_w_soll_neu"
+                        If t.Values("=").Count = 1 Then
+                            EIS_m_w_soll_neu.Text = t.Values("=")(0)
+                        End If
+                    Case "m_eis_soll_neu"
+                        If t.Values("=").Count = 1 Then
+                            EIS_m_eis_soll_neu.Text = t.Values("=")(0)
+                        End If
                 End Select
 
         End Select
+
+
+        'Zusammenfassung Wasser/Eis-Berechnung
+        ALG_w_soll_neu.Text = EIS_m_w_soll_neu.Text & "L / " & EIS_t_w_soll_neu.Text & "°C"
+        ALG_e_soll_neu.Text = EIS_m_eis_soll_neu.Text & "kg"
 
         'formatierten String für Log-File-Ausgabe zurückgeben
         Return t.LogString

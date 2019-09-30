@@ -119,6 +119,9 @@
                 If v.Count > 1 Then
                     _ResultList.Add(Trim(v(1)))
                 End If
+                If v.Count > 2 Then
+                    _ResultList.Add(Trim(v(2)))
+                End If
             Case "/"
                 v = Split(_Content, ":")
                 If v.Count > 1 Then

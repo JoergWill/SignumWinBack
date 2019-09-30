@@ -2349,6 +2349,23 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_Komponente.VerarbeitungsHinweise">
+ <summary>
+ Dateiname Artikel-Verarbeitungshinweis (pdf/html)
+ Enthält den Dateinamen der Verarbeitungshinweis-Datei für den Artikel ohne(!) Extension.
+ 
+ In WinBack-Produktion wird die entsprechende Datei als html-File im Verzeichnis /home/herbst/hinweise gesucht und 
+ angezeigt.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Komponente.VerarbeitungsHinweisePfad">
+ <summary>
+ Der absolute Pfad zur Quelldatei der Artikel-Verarbeitungshinweise steht in den Komponenten-Parametern(20)
+ Wenn hier kein Pfad eingetragen ist, wird der Pfad aus der winback.ini verwendet.
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Komponente.Preis">
  <summary>
  Preis für diese Komponente. Der Preis kann auf verschiedene Arten ermittelt werden:
@@ -5168,6 +5185,20 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Artikel_Hinweise.wb_Artikel_Hinweise_Load(System.Object,System.EventArgs)">
+ <summary>
+ gsdll32.dll extern einbinden (siehe auch https://github.com/jhabjan/Ghostscript.NET/blob/master/Ghostscript.NET.Samples/Samples/CustomGsdllLocationSample.cs)
+ Momentan funktioniert das nur mit der "alten" dll aus WinBack-Office
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Artikel_Hinweise.DetailInfo(System.Object)">
+ <summary>
+ Anzeige der Artikel-Details.
+ Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
+ </summary>
+</member>
 <member name="M:WinBack.wb_Artikel_Parameter.wb_Artikel_Parameter_Load(System.Object,System.EventArgs)">
  <summary>
  Initialisierung - Laden der Form
@@ -6126,6 +6157,15 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <param name="KomponentenNummer">Integer - Komponenten-Nummer(intern)</param>
  <param name="ParameterNummer">Integer - Parameter-Nummer</param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_sql_Functions.setKomponParam(System.Int32,System.Int32,System.String)">
+ <summary>
+ Update Parameter-Wert in der Tabelle Kompon-Params.
+ </summary>
+ <param name="KomponentenNummer"></param>
+ <param name="ParameterNummer"></param>
+ <param name="Wert"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_sql_Functions.getNewKomponNummer">

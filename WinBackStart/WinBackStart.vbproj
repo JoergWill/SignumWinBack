@@ -224,6 +224,9 @@
     <Reference Include="FluentFTP">
       <HintPath>..\dll\FluentFTP.19.2.2\FluentFTP.dll</HintPath>
     </Reference>
+    <Reference Include="Ghostscript.NET">
+      <HintPath>..\dll\GhostScript V1.2.1\Ghostscript.NET.dll</HintPath>
+    </Reference>
     <Reference Include="Infralution.Common, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\Infralution VirtualTree V4.8.9\Infralution.Common.dll</HintPath>
@@ -562,6 +565,9 @@
     <None Include="Resources\AdminUpdateWinBack_32x32.png" />
     <None Include="Resources\AdminUpdateDataBase_32x321.png" />
     <None Include="Resources\AdminLog_32x32.png" />
+    <Content Include="gsdll32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="WinBack Icon.ico" />
   </ItemGroup>
   <ItemGroup>

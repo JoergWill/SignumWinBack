@@ -131,6 +131,21 @@ Public Class wb_sql_Functions
     End Function
 
     ''' <summary>
+    ''' Update Parameter-Wert in der Tabelle Kompon-Params.
+    ''' </summary>
+    ''' <param name="KomponentenNummer"></param>
+    ''' <param name="ParameterNummer"></param>
+    ''' <param name="Wert"></param>
+    ''' <returns></returns>
+    Public Shared Function setKomponParam(KomponentenNummer As Integer, ParameterNummer As Integer, Wert As String) As Boolean
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        'Update-Statement wird dynamisch erzeugt
+        Dim Count As Integer = winback.sqlCommand(setParams(sqlUpdateKompParams, KomponentenNummer, ParameterNummer, Wert))
+        winback.Close()
+        Return (Count >= 0)
+    End Function
+
+    ''' <summary>
     ''' Ermittelt die nächste freie interne Komponenten-Nummer (KO_Nr) aus der Tabelle Komponenten
     ''' </summary>
     ''' <returns>Integer - nächste freie Komponenten-Nummer</returns>

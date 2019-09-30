@@ -81,11 +81,18 @@ Partial Class wb_ChargenWasserTemp
         Me.tp_MSG = New System.Windows.Forms.TabPage()
         Me.Btn_MSG_Back = New System.Windows.Forms.Button()
         Me.tbLogFile = New System.Windows.Forms.TextBox()
+        Me.ALG_w_soll_neu = New System.Windows.Forms.Label()
+        Me.ALG_e_soll_neu = New System.Windows.Forms.Label()
+        Me.ALG_BerechneteWerte = New System.Windows.Forms.Label()
+        Me.EIS_t_w_soll_neu = New System.Windows.Forms.Label()
+        Me.EIS_m_eis_soll_neu = New System.Windows.Forms.Label()
+        Me.EIS_m_w_soll_neu = New System.Windows.Forms.Label()
         Me.TabControl.SuspendLayout()
         Me.tp_ALG.SuspendLayout()
         Me.tp_RMF.SuspendLayout()
         Me.tp_STF.SuspendLayout()
         Me.tp_TTS.SuspendLayout()
+        Me.tp_EIS.SuspendLayout()
         Me.tp_MSG.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -110,6 +117,9 @@ Partial Class wb_ChargenWasserTemp
         '
         Me.tp_ALG.BackgroundImage = Global.WinBack.My.Resources.Resources.TTS_Allgemein
         Me.tp_ALG.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.tp_ALG.Controls.Add(Me.ALG_BerechneteWerte)
+        Me.tp_ALG.Controls.Add(Me.ALG_e_soll_neu)
+        Me.tp_ALG.Controls.Add(Me.ALG_w_soll_neu)
         Me.tp_ALG.Controls.Add(Me.ALG_t_neu_vor_eis)
         Me.tp_ALG.Controls.Add(Me.ALG_t_rezept)
         Me.tp_ALG.Controls.Add(Me.ALG_t_delta)
@@ -709,6 +719,9 @@ Partial Class wb_ChargenWasserTemp
         '
         'tp_EIS
         '
+        Me.tp_EIS.Controls.Add(Me.EIS_m_w_soll_neu)
+        Me.tp_EIS.Controls.Add(Me.EIS_m_eis_soll_neu)
+        Me.tp_EIS.Controls.Add(Me.EIS_t_w_soll_neu)
         Me.tp_EIS.Location = New System.Drawing.Point(4, 23)
         Me.tp_EIS.Name = "tp_EIS"
         Me.tp_EIS.Size = New System.Drawing.Size(1272, 610)
@@ -751,6 +764,72 @@ Partial Class wb_ChargenWasserTemp
         Me.tbLogFile.Size = New System.Drawing.Size(992, 604)
         Me.tbLogFile.TabIndex = 7
         '
+        'ALG_w_soll_neu
+        '
+        Me.ALG_w_soll_neu.AutoSize = True
+        Me.ALG_w_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ALG_w_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.ALG_w_soll_neu.Location = New System.Drawing.Point(797, 281)
+        Me.ALG_w_soll_neu.Name = "ALG_w_soll_neu"
+        Me.ALG_w_soll_neu.Size = New System.Drawing.Size(87, 18)
+        Me.ALG_w_soll_neu.TabIndex = 12
+        Me.ALG_w_soll_neu.Text = "w_soll_neu"
+        '
+        'ALG_e_soll_neu
+        '
+        Me.ALG_e_soll_neu.AutoSize = True
+        Me.ALG_e_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ALG_e_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.ALG_e_soll_neu.Location = New System.Drawing.Point(797, 307)
+        Me.ALG_e_soll_neu.Name = "ALG_e_soll_neu"
+        Me.ALG_e_soll_neu.Size = New System.Drawing.Size(85, 18)
+        Me.ALG_e_soll_neu.TabIndex = 13
+        Me.ALG_e_soll_neu.Text = "e_soll_neu"
+        '
+        'ALG_BerechneteWerte
+        '
+        Me.ALG_BerechneteWerte.AutoSize = True
+        Me.ALG_BerechneteWerte.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ALG_BerechneteWerte.ForeColor = System.Drawing.Color.Black
+        Me.ALG_BerechneteWerte.Location = New System.Drawing.Point(797, 256)
+        Me.ALG_BerechneteWerte.Name = "ALG_BerechneteWerte"
+        Me.ALG_BerechneteWerte.Size = New System.Drawing.Size(142, 18)
+        Me.ALG_BerechneteWerte.TabIndex = 14
+        Me.ALG_BerechneteWerte.Text = "Berechnete Werte "
+        '
+        'EIS_t_w_soll_neu
+        '
+        Me.EIS_t_w_soll_neu.AutoSize = True
+        Me.EIS_t_w_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EIS_t_w_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.EIS_t_w_soll_neu.Location = New System.Drawing.Point(606, 315)
+        Me.EIS_t_w_soll_neu.Name = "EIS_t_w_soll_neu"
+        Me.EIS_t_w_soll_neu.Size = New System.Drawing.Size(100, 18)
+        Me.EIS_t_w_soll_neu.TabIndex = 13
+        Me.EIS_t_w_soll_neu.Text = "t_w_soll_neu"
+        '
+        'EIS_m_eis_soll_neu
+        '
+        Me.EIS_m_eis_soll_neu.AutoSize = True
+        Me.EIS_m_eis_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EIS_m_eis_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.EIS_m_eis_soll_neu.Location = New System.Drawing.Point(606, 240)
+        Me.EIS_m_eis_soll_neu.Name = "EIS_m_eis_soll_neu"
+        Me.EIS_m_eis_soll_neu.Size = New System.Drawing.Size(117, 18)
+        Me.EIS_m_eis_soll_neu.TabIndex = 14
+        Me.EIS_m_eis_soll_neu.Text = "m_eis_soll_neu"
+        '
+        'EIS_m_w_soll_neu
+        '
+        Me.EIS_m_w_soll_neu.AutoSize = True
+        Me.EIS_m_w_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EIS_m_w_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.EIS_m_w_soll_neu.Location = New System.Drawing.Point(606, 276)
+        Me.EIS_m_w_soll_neu.Name = "EIS_m_w_soll_neu"
+        Me.EIS_m_w_soll_neu.Size = New System.Drawing.Size(107, 18)
+        Me.EIS_m_w_soll_neu.TabIndex = 15
+        Me.EIS_m_w_soll_neu.Text = "m_w_soll_neu"
+        '
         'wb_ChargenWasserTemp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -768,6 +847,8 @@ Partial Class wb_ChargenWasserTemp
         Me.tp_STF.PerformLayout()
         Me.tp_TTS.ResumeLayout(False)
         Me.tp_TTS.PerformLayout()
+        Me.tp_EIS.ResumeLayout(False)
+        Me.tp_EIS.PerformLayout()
         Me.tp_MSG.ResumeLayout(False)
         Me.tp_MSG.PerformLayout()
         Me.ResumeLayout(False)
@@ -830,4 +911,10 @@ Partial Class wb_ChargenWasserTemp
     Friend WithEvents STF_st_0 As Windows.Forms.Label
     Friend WithEvents STF_st As Windows.Forms.Label
     Friend WithEvents tbLogFile As Windows.Forms.TextBox
+    Friend WithEvents ALG_BerechneteWerte As Windows.Forms.Label
+    Friend WithEvents ALG_e_soll_neu As Windows.Forms.Label
+    Friend WithEvents ALG_w_soll_neu As Windows.Forms.Label
+    Friend WithEvents EIS_m_w_soll_neu As Windows.Forms.Label
+    Friend WithEvents EIS_m_eis_soll_neu As Windows.Forms.Label
+    Friend WithEvents EIS_t_w_soll_neu As Windows.Forms.Label
 End Class

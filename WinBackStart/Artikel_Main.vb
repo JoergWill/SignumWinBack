@@ -12,6 +12,7 @@ Public Class Artikel_Main
 
     Public ArtikelListe As New wb_Artikel_Liste     'Default-Fenster    (wird beim Öffnen immer angezeigt)
     Public ArtikelDetails As wb_Artikel_Details     'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
+    Public ArtikelHinweise As wb_Artikel_Hinweise   'Hinweise-Fenster   (wird bei Bedarf erzeugt und angezeigt)
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -32,6 +33,10 @@ Public Class Artikel_Main
             Case "OPENDETAILS"
                 ArtikelDetails = New wb_Artikel_Details
                 ArtikelDetails.Show(DockPanel, DockState.Document)
+                Return True
+            Case "OPENHINWEISE"
+                ArtikelHinweise = New wb_Artikel_Hinweise
+                ArtikelHinweise.Show(DockPanel, DockState.Document)
                 Return True
             Case Else
                 Return False

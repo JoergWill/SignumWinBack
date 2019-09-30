@@ -210,6 +210,9 @@
     <Reference Include="FluentFTP">
       <HintPath>dll\FluentFTP.19.2.2\FluentFTP.dll</HintPath>
     </Reference>
+    <Reference Include="Ghostscript.NET">
+      <HintPath>dll\GhostScript V1.2.1\Ghostscript.NET.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>dll\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -553,6 +556,12 @@
     <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Details.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Hinweise.Designer.vb">
+      <DependentUpon>wb_Artikel_Hinweise.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Hinweise.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Parameter.Designer.vb">
       <DependentUpon>wb_Artikel_Parameter.vb</DependentUpon>
     </Compile>
@@ -888,6 +897,9 @@
     <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Details.resx">
       <DependentUpon>wb_Artikel_Details.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Hinweise.resx">
+      <DependentUpon>wb_Artikel_Hinweise.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Liste.resx">
       <DependentUpon>wb_Artikel_Liste.vb</DependentUpon>
     </EmbeddedResource>
@@ -1133,6 +1145,9 @@
     <Content Include="DBUpdate\DEL_ArtikelRohstoffe.sql" />
     <Content Include="DBUpdate\DEL_RezepteRezeptschritte.sql" />
     <Content Include="DBUpdate\UPD_RohstoffNummer_R.sql" />
+    <Content Include="dll\GhostScript V1.2.1\gsdll32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ListLabel\Produktion\Backzettel.lst" />
     <Content Include="ListLabel\Produktion\Teigzettel.lst" />
     <Content Include="ListLabel\wbStandard.lst" />

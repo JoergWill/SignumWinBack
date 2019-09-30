@@ -17,6 +17,8 @@ Public Class wb_Komponente
     Private KO_Backverlust As Double
     Private KA_ProdVorlauf As Integer
     Private KO_Zuschnitt As Double
+    Private KA_Verarbeitungshinweise As String
+    Private KA_VerarbeitungshinweisePfad As String
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
@@ -204,6 +206,45 @@ Public Class wb_Komponente
         Get
             Return KA_Kurzname
         End Get
+    End Property
+
+    ''' <summary>
+    ''' Dateiname Artikel-Verarbeitungshinweis (pdf/html)
+    ''' Enthält den Dateinamen der Verarbeitungshinweis-Datei für den Artikel ohne(!) Extension.
+    ''' 
+    ''' In WinBack-Produktion wird die entsprechende Datei als html-File im Verzeichnis /home/herbst/hinweise gesucht und 
+    ''' angezeigt.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property VerarbeitungsHinweise As String
+        Get
+            Return KA_Verarbeitungshinweise
+        End Get
+        Set(value As String)
+            KA_Verarbeitungshinweise = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Der absolute Pfad zur Quelldatei der Artikel-Verarbeitungshinweise steht in den Komponenten-Parametern(20)
+    ''' Wenn hier kein Pfad eingetragen ist, wird der Pfad aus der winback.ini verwendet.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property VerarbeitungsHinweisePfad As String
+        Get
+            'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
+            If KA_Verarbeitungshinweise <> "" And KA_VerarbeitungshinweisePfad = "" Then
+                KA_VerarbeitungshinweisePfad = wb_sql_Functions.getKomponParam(Nr, KomponParams.VerarbeitungsHinweisePfad)
+            End If
+            Return KA_VerarbeitungshinweisePfad
+        End Get
+        Set(value As String)
+            'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
+            If value <> "" And KA_Verarbeitungshinweise <> "" Then
+                KA_VerarbeitungshinweisePfad = value
+                wb_sql_Functions.setKomponParam(Nr, KomponParams.VerarbeitungsHinweisePfad, KA_VerarbeitungshinweisePfad)
+            End If
+        End Set
     End Property
 
     ''' <summary>
@@ -1452,6 +1493,9 @@ Public Class wb_Komponente
                 'Produktions-Vorlauf in [h]
                 Case "KA_Prod_Linie"
                     KA_ProdVorlauf = Value
+                'Dateiname Verabeitungshinweis Artikel (pdf/html)
+                Case "KA_Verarbeitungshinweise"
+                    KA_Verarbeitungshinweise = Value
                 'Index WinBack-Cloud
                 Case "KA_Matchcode"
                     KO_IdxCloud = Value
@@ -1604,7 +1648,8 @@ Public Class wb_Komponente
               "KA_Lagerort = '" & KA_Lagerort & "'," &
               "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
               "KA_Art = '" & KA_Art & "'," &
-              "KA_PreisEinheit = " & KA_PreisEinheit.ToString
+              "KA_PreisEinheit = " & KA_PreisEinheit.ToString & "," &
+              "KA_Verarbeitungshinweise = '" & KA_Verarbeitungshinweise & "'"
 
         'Rezeptnummer nur updaten wenn gültig
         If KA_Rz_Nr <> wb_Global.UNDEFINED Then

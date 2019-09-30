@@ -130,6 +130,7 @@ Partial Class WinBack
         Me.rbProduktionPlanung = New System.Windows.Forms.RibbonButton()
         Me.rbExtra = New System.Windows.Forms.RibbonTab()
         Me.rbAdminAnsicht = New System.Windows.Forms.RibbonPanel()
+        Me.rbLog = New System.Windows.Forms.RibbonButton()
         Me.rbDatensicherung = New System.Windows.Forms.RibbonButton()
         Me.rbAdminWinBackIni = New System.Windows.Forms.RibbonButton()
         Me.rsAdmin = New System.Windows.Forms.RibbonSeparator()
@@ -166,7 +167,6 @@ Partial Class WinBack
         Me.BtnDelete = New System.Windows.Forms.Button()
         Me.BtnSaveAs = New System.Windows.Forms.Button()
         Me.BtnSave = New System.Windows.Forms.Button()
-        Me.rbLog = New System.Windows.Forms.RibbonButton()
         Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -406,6 +406,7 @@ Partial Class WinBack
         Me.rbArtikelHinweise.Name = "rbArtikelHinweise"
         Me.rbArtikelHinweise.SmallImage = CType(resources.GetObject("rbArtikelHinweise.SmallImage"), System.Drawing.Image)
         Me.rbArtikelHinweise.Text = "Artikel Hinweise"
+        Me.rbArtikelHinweise.Value = "OPENHINWEISE"
         '
         'rbArtikelDeklaration
         '
@@ -1096,6 +1097,15 @@ Partial Class WinBack
         Me.rbAdminAnsicht.Name = "rbAdminAnsicht"
         Me.rbAdminAnsicht.Text = "Ansicht"
         '
+        'rbLog
+        '
+        Me.rbLog.Image = Global.WinBack.My.Resources.Resources.AdminLog_32x32
+        Me.rbLog.LargeImage = Global.WinBack.My.Resources.Resources.AdminLog_32x32
+        Me.rbLog.Name = "rbLog"
+        Me.rbLog.SmallImage = CType(resources.GetObject("rbLog.SmallImage"), System.Drawing.Image)
+        Me.rbLog.Text = "Log-/Fehler Ausgaben"
+        Me.rbLog.Value = "LOGGER"
+        '
         'rbDatensicherung
         '
         Me.rbDatensicherung.Image = Global.WinBack.My.Resources.Resources.AdminMain_32x32
@@ -1524,15 +1534,6 @@ Partial Class WinBack
         Me.BtnSave.TabIndex = 11
         Me.BtnSave.TabStop = False
         Me.BtnSave.UseVisualStyleBackColor = True
-        '
-        'rbLog
-        '
-        Me.rbLog.Image = Global.WinBack.My.Resources.Resources.AdminLog_32x32
-        Me.rbLog.LargeImage = Global.WinBack.My.Resources.Resources.AdminLog_32x32
-        Me.rbLog.Name = "rbLog"
-        Me.rbLog.SmallImage = CType(resources.GetObject("rbLog.SmallImage"), System.Drawing.Image)
-        Me.rbLog.Text = "Log-/Fehler Ausgaben"
-        Me.rbLog.Value = "LOGGER"
         '
         'WinBack
         '

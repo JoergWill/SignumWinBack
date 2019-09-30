@@ -88,11 +88,12 @@ Public Class wb_GlobalSettings
     Private Shared _RohChargen_GebindeGrsTol As String = Nothing
     Private Shared _RohChargen_ErfassungVariante As String = Nothing
 
-    Private Shared _mHost = Nothing
-    Private Shared _mSenderAddr = Nothing
-    Private Shared _mSenderPass = Nothing
+    Private Shared _mHost As String = Nothing
+    Private Shared _mSenderAddr As String = Nothing
+    Private Shared _mSenderPass As String = Nothing
 
-    Private Shared _ImportPathPistor = Nothing
+    Private Shared _ImportPathPistor As String = Nothing
+    Private Shared _ArtikelVerarbeitungsHinweisPath As String = Nothing
 
     Private Shared _Mandaten As New List(Of obMandant)
 
@@ -1043,16 +1044,29 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Public Shared Property ImportPathPistor As Object
+    Public Shared Property ImportPathPistor As String
         Get
             If _ImportPathPistor = Nothing Then
                 getWinBackIni("Path")
             End If
             Return _ImportPathPistor
         End Get
-        Set(value As Object)
+        Set(value As String)
             _ImportPathPistor = value
             setWinBackIni("Path", "Pistor", value)
+        End Set
+    End Property
+
+    Public Shared Property ArtikelVerarbeitungsHinweisPath As String
+        Get
+            If _ArtikelVerarbeitungsHinweisPath = Nothing Then
+                getWinBackIni("Path")
+            End If
+            Return _ArtikelVerarbeitungsHinweisPath
+        End Get
+        Set(value As String)
+            _ArtikelVerarbeitungsHinweisPath = value
+            setWinBackIni("Artikel", "VerzeichnisArtikelHinweise", value)
         End Set
     End Property
 
@@ -1206,6 +1220,7 @@ Public Class wb_GlobalSettings
 
             Case "Path"
                 _ImportPathPistor = IniFile.ReadString("Path", "Pistor", "")
+                _ArtikelVerarbeitungsHinweisPath = IniFile.ReadString("Artikel", "VerzeichnisArtikelHinweise", "")
 
         End Select
     End Sub
