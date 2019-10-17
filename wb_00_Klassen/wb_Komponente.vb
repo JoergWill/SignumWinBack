@@ -19,6 +19,7 @@ Public Class wb_Komponente
     Private KO_Zuschnitt As Double
     Private KA_Verarbeitungshinweise As String
     Private KA_VerarbeitungshinweisePfad As String
+    Private KA_VerarbeitungshinweiseDPI As String
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
     Private KA_Lagerort As String
@@ -90,6 +91,7 @@ Public Class wb_Komponente
         KA_Kurzname = ""
         KA_Charge_Opt_kg = ""
         KA_zaehlt_zu_RZ_Gesamtmenge = Nothing
+        KA_VerarbeitungshinweisePfad = ""
 
         KA_Rz_Nr = wb_Global.UNDEFINED
         _RezeptNummer = Nothing
@@ -228,13 +230,15 @@ Public Class wb_Komponente
     ''' <summary>
     ''' Der absolute Pfad zur Quelldatei der Artikel-Verarbeitungshinweise steht in den Komponenten-Parametern(20)
     ''' Wenn hier kein Pfad eingetragen ist, wird der Pfad aus der winback.ini verwendet.
+    ''' 
+    ''' Die Sonderzeichen für die Pfadangabe werden vor dem Speichern in der Datenbank umgewandelt in &bcksl
     ''' </summary>
     ''' <returns></returns>
     Public Property VerarbeitungsHinweisePfad As String
         Get
             'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
             If KA_Verarbeitungshinweise <> "" And KA_VerarbeitungshinweisePfad = "" Then
-                KA_VerarbeitungshinweisePfad = wb_sql_Functions.getKomponParam(Nr, KomponParams.VerarbeitungsHinweisePfad)
+                KA_VerarbeitungshinweisePfad = wb_Functions.XRestoreSonderZeichen(wb_sql_Functions.getKomponParam(Nr, KomponParams.VerarbeitungsHinweisePfad))
             End If
             Return KA_VerarbeitungshinweisePfad
         End Get
@@ -242,7 +246,28 @@ Public Class wb_Komponente
             'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
             If value <> "" And KA_Verarbeitungshinweise <> "" Then
                 KA_VerarbeitungshinweisePfad = value
-                wb_sql_Functions.setKomponParam(Nr, KomponParams.VerarbeitungsHinweisePfad, KA_VerarbeitungshinweisePfad)
+                wb_sql_Functions.setKomponParam(Nr, KomponParams.VerarbeitungsHinweisePfad, wb_Functions.XRemoveSonderZeichen(KA_VerarbeitungshinweisePfad))
+            End If
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Die Auflösung der Umwandlung von pdf in png steht in den Komponenten-Parametern(21)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property VerarbeitungsHinweise_DPI As String
+        Get
+            'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
+            If KA_Verarbeitungshinweise <> "" And KA_VerarbeitungshinweisePfad = "" Then
+                KA_VerarbeitungshinweiseDPI = wb_sql_Functions.getKomponParam(Nr, KomponParams.VerarbeitungsHinweiseDPI)
+            End If
+            Return KA_VerarbeitungshinweiseDPI
+        End Get
+        Set(value As String)
+            'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
+            If value <> "" And KA_Verarbeitungshinweise <> "" Then
+                KA_VerarbeitungshinweiseDPI = value
+                wb_sql_Functions.setKomponParam(Nr, KomponParams.VerarbeitungsHinweiseDPI, KA_VerarbeitungshinweiseDPI)
             End If
         End Set
     End Property
@@ -1427,7 +1452,9 @@ Public Class wb_Komponente
         'FieldCount-2 unterdrückt das Feld TimeStamp
         For i = 0 To sqlReader.FieldCount - 2
             Try
-                MySQLdbRead_StammDaten(sqlReader.GetName(i), sqlReader.GetValue(i))
+                If sqlReader.GetDataTypeName(i) <> "TIMESTAMP" Then
+                    MySQLdbRead_StammDaten(sqlReader.GetName(i), sqlReader.GetValue(i))
+                End If
             Catch ex As Exception
                 Debug.Print("Exception MySQLdbReadStammdaten" & ex.Message)
             End Try
@@ -1440,7 +1467,9 @@ Public Class wb_Komponente
             'FieldCount-2 unterdrückt das Feld TimeStamp
             For i = 0 To sqlReader.FieldCount - 2
                 Try
-                    MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
+                    If sqlReader.GetDataTypeName(i) <> "TIMESTAMP" Then
+                        MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
+                    End If
                 Catch ex As Exception
                     Debug.Print("Exception MySQLdbRead " & sqlReader.GetName(i))
                 End Try

@@ -397,6 +397,7 @@ Partial Class WinBack
         Me.rbArtikelParameter.Name = "rbArtikelParameter"
         Me.rbArtikelParameter.SmallImage = CType(resources.GetObject("rbArtikelParameter.SmallImage"), System.Drawing.Image)
         Me.rbArtikelParameter.Text = "Parameter Fenster"
+        Me.rbArtikelParameter.Value = "OPENPARAMETER"
         '
         'rbArtikelHinweise
         '

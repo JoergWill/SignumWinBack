@@ -37,6 +37,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.ArtikelHinweise_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.ArtikelParameter_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -408,6 +413,16 @@ WinBackAddin
 </summary>
 </member>
 <member name="P:WinBack.My.Resources.Resources.RohstoffeVerwendung_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Rotate90L_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.Rotate90R_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
@@ -2359,10 +2374,9 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
-<member name="P:WinBack.wb_Komponente.VerarbeitungsHinweisePfad">
+<member name="P:WinBack.wb_Komponente.VerarbeitungsHinweise_DPI">
  <summary>
- Der absolute Pfad zur Quelldatei der Artikel-Verarbeitungshinweise steht in den Komponenten-Parametern(20)
- Wenn hier kein Pfad eingetragen ist, wird der Pfad aus der winback.ini verwendet.
+ Die Auflösung der Umwandlung von pdf in png steht in den Komponenten-Parametern(21)
  </summary>
  <returns></returns>
 </member>
@@ -6907,14 +6921,6 @@ Start Timer nach Änderung Datensatz-Zeiger
  Formatiert einen String im Muster 00:00:00
  </summary>
  <param name="Value"></param>
- <returns></returns>
-</member>
-<member name="M:WinBack.wb_Functions.XRemoveSonderZeichen(System.String,System.Boolean)">
- <summary>
- Entfernt alle "störenden" Sonderzeichen aus einem String
-     ' - wird ersatzlos gestrichen (verhindert Speichern eines Strings in DB)
- </summary>
- <param name="s"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Functions.DoubleToXString(System.Double)">

@@ -477,4 +477,13 @@ Stacktrace:
   <data name="TTS_TeigTempSteuerung" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TTS_TeigTempSteuerung.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Rotate90L_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Rotate90L_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Rotate90R_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Rotate90R_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelHinweise_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelHinweise_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

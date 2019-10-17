@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Net
 Imports System.Net.Sockets
 Imports System.Text
+Imports System.Windows.Forms
 Imports EnhEdit.EnhEdit_Global
 Imports ICSharpCode.SharpZipLib.BZip2
 Imports Microsoft.Win32
@@ -903,20 +904,32 @@ Public Class wb_Functions
     ''' <summary>
     ''' Entfernt alle "störenden" Sonderzeichen aus einem String
     '''     ' - wird ersatzlos gestrichen (verhindert Speichern eines Strings in DB)
+    '''     \ - wird ersetzt durch &bcksl; (Pfadangaben Windows!)
     ''' </summary>
     ''' <param name="s"></param>
     ''' <returns></returns>
     Public Shared Function XRemoveSonderZeichen(s As String, Optional nwtZutaten As Boolean = False) As String
         If s IsNot Nothing Then
             s = s.Replace("'", "")
+            s = s.Replace("\", "&bcksl;")
             If Not nwtZutaten Then
                 Return s
             Else
                 s = s.Replace("{", "")
                 s = s.Replace("}", "")
                 s = s.Replace(">", "")
+                s = s.Replace("<", "")
                 Return s
             End If
+        Else
+            Return ""
+        End If
+    End Function
+
+    Public Shared Function XRestoreSonderZeichen(s As String) As String
+        If s IsNot Nothing Then
+            s = s.Replace("&bcksl;", "\")
+            Return s
         Else
             Return ""
         End If
@@ -1132,9 +1145,9 @@ Public Class wb_Functions
         End If
     End Sub
 
-    Public Shared Function FTP_Upload_File(ByVal filetoupload As String) As String
+    Public Shared Function FTP_Upload_File(ByVal filetoupload As String, pathtoupload As String) As String
         ', ByVal ftpuri As String, ByVal ftpusername As String, ByVal ftppassword As String) As Long
-        Dim FtpURI As String = "ftp://" & wb_GlobalSettings.MySQLServerIP & wb_Global.WinBackServerProdDirectory
+        Dim FtpURI As String = "ftp://" & wb_GlobalSettings.MySQLServerIP & pathtoupload
         Dim FtpUser As String = wb_GlobalSettings.MySQLUser
         Dim FtpPass As String = wb_GlobalSettings.MySQLPass
 

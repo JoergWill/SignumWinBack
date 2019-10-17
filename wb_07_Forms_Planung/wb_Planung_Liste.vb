@@ -246,7 +246,7 @@ Public Class wb_Planung_Liste
 
         'per FTP zu WinBack übertragen
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
-        Dim Result As String = wb_Functions.FTP_Upload_File(T1001.FullName)
+        Dim Result As String = wb_Functions.FTP_Upload_File(T1001.FullName, wb_Global.WinBackServerProdDirectory)
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
 
         'Ergebnis der Datenübertragung anzeigen

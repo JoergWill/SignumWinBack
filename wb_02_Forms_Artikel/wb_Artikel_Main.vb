@@ -8,8 +8,9 @@ Public Class wb_Artikel_Main
 
     'Default-Fenster
     Public ArtikelListe As New wb_Artikel_Liste
-    Public ArtikelDetails As New wb_Artikel_Details
-    Public ArtikelParameter As New wb_Artikel_Parameter
+    Public ArtikelDetails As wb_Artikel_Details
+    Public ArtikelParameter As wb_Artikel_Parameter
+    Public ArtikelHinweise As wb_Artikel_Hinweise
 
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -39,7 +40,6 @@ Public Class wb_Artikel_Main
 
     Public Overrides Sub SetDefaultLayout()
         ArtikelListe.Show(DockPanel, DockState.DockLeft)
-        ArtikelDetails.Show(DockPanel, DockState.DockTop)
     End Sub
 
     ''' <summary>
@@ -52,10 +52,23 @@ Public Class wb_Artikel_Main
     ''' </returns>
     ''' <remarks></remarks>
     Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        'Rohstoff-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        'Artikel-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
         If ArtikelListe IsNot Nothing Then
             ArtikelListe.Close()
         End If
+        'Artikel-Parameter schliessen
+        If ArtikelParameter IsNot Nothing Then
+            ArtikelParameter.Close()
+        End If
+        'Artikel-Details schliessen
+        If ArtikelDetails IsNot Nothing Then
+            ArtikelDetails.Close()
+        End If
+        'Artikel-Hinweise schliessen
+        If ArtikelHinweise IsNot Nothing Then
+            ArtikelHinweise.Close()
+        End If
+
         'Fenster darf geschlossen werden
         Return False
     End Function
@@ -71,6 +84,7 @@ Public Class wb_Artikel_Main
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrp.AddButton("BtnArtikelDetails", "Details", "weitere Artikel-Daten", My.Resources.ArtikelDetails_32x32, My.Resources.ArtikelDetails_32x32, AddressOf BtnArtikelDetails)
                 oGrp.AddButton("BtnArtikelParameter", "Parameter", "Artikel Parameter Produktion und Nährwerte", My.Resources.ArtikelParameter_32x32, My.Resources.ArtikelParameter_32x32, AddressOf BtnArtikelParameter)
+                oGrp.AddButton("BtnArtikelHinweise", "Hinweise", "Artikel Verarbeitungshinweise", My.Resources.ArtikelHinweise_32x32, My.Resources.ArtikelHinweise_32x32, AddressOf BtnArtikelHinweise)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -85,6 +99,11 @@ Public Class wb_Artikel_Main
     Private Sub BtnArtikelParameter()
         ArtikelParameter = New wb_Artikel_Parameter
         ArtikelParameter.Show(DockPanel, DockState.DockTop)
+    End Sub
+
+    Private Sub BtnArtikelHinweise()
+        ArtikelHinweise = New wb_Artikel_Hinweise
+        ArtikelHinweise.Show(DockPanel, DockState.DockTop)
     End Sub
 
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
@@ -104,6 +123,11 @@ Public Class wb_Artikel_Main
                 ArtikelParameter = New wb_Artikel_Parameter
                 _DockPanelList.Add(ArtikelParameter)
                 Return ArtikelParameter
+
+            Case "WinBack.wb_Artikel_Hinweise"
+                ArtikelHinweise = New wb_Artikel_Hinweise
+                _DockPanelList.Add(ArtikelHinweise)
+                Return ArtikelHinweise
 
             Case Else
                 Return Nothing

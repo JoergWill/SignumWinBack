@@ -60,6 +60,8 @@
 
     'WinBack-Server-Verzeichnis Produktionsdaten
     Public Const WinBackServerProdDirectory = "/bakelink/1101_Produktion.csv"
+    'WinBack-Server-Verzeichnis Hinweise
+    Public Const WinBackServerHinweisDirectory = "/hinweise/"
 
     'TTS-ChargenAuswertung Kommandozeile (Teil 1 & 2)
     Public Const TTSLogCmd_0 = "cat /home/herbst/log/0s1-s.dbg.mahl | grep "
@@ -103,6 +105,7 @@
         UntererGrenzwert = 10
         ObererGrenzwert = 11
         VerarbeitungsHinweisePfad = 20
+        VerarbeitungsHinweiseDPI = 21
     End Enum
 
     Public Enum ktParam

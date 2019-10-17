@@ -268,9 +268,10 @@ Public Class wb_DockBarPanelMain
                 'Default Fenster-Konfiguration (wenn alles schief geht)
                 ShowDefaultLayout()
             End Try
-        Else
-            'Default Fenster-Konfiguration (wenn alles schief geht)
-            ShowDefaultLayout()
+            If _DockPanelList.Count = 0 Then
+                'Default Fenster-Konfiguration (wenn alles schief geht)
+                ShowDefaultLayout()
+            End If
         End If
     End Sub
 
@@ -374,6 +375,7 @@ Public Class wb_DockBarPanelMain
     Private Sub BtnSave_Click(sender As Object, e As EventArgs) Handles BtnSave.Click
         'Layout wird lokal gespeichert
         SaveDockBarConfig()
+        _SaveAtClose = False
         'Meldung ausgeben
         MessageBox.Show("Layout " & LayoutFilename & " gesichert",
                            "Layout sichern", MessageBoxButtons.OK, MessageBoxIcon.Information)

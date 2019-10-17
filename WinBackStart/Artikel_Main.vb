@@ -13,6 +13,7 @@ Public Class Artikel_Main
     Public ArtikelListe As New wb_Artikel_Liste     'Default-Fenster    (wird beim Öffnen immer angezeigt)
     Public ArtikelDetails As wb_Artikel_Details     'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
     Public ArtikelHinweise As wb_Artikel_Hinweise   'Hinweise-Fenster   (wird bei Bedarf erzeugt und angezeigt)
+    Public ArtikelParameter As wb_Artikel_Parameter 'Parameter-Fenster  (wird bei Bedarf erzeugt und angezeigt)
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -37,6 +38,10 @@ Public Class Artikel_Main
             Case "OPENHINWEISE"
                 ArtikelHinweise = New wb_Artikel_Hinweise
                 ArtikelHinweise.Show(DockPanel, DockState.Document)
+                Return True
+            Case "OPENPARAMETER"
+                ArtikelParameter = New wb_Artikel_Parameter
+                ArtikelParameter.Show(DockPanel, DockState.Document)
                 Return True
             Case Else
                 Return False
@@ -71,6 +76,16 @@ Public Class Artikel_Main
                 _DockPanelList.Add(ArtikelDetails)
                 Return ArtikelDetails
 
+            Case "WinBack.wb_Artikel_Hinweise"
+                ArtikelHinweise = New wb_Artikel_Hinweise
+                _DockPanelList.Add(ArtikelHinweise)
+                Return ArtikelHinweise
+
+            Case "WinBack.wb_Artikel_Parameter"
+                ArtikelParameter = New wb_Artikel_Parameter
+                _DockPanelList.Add(ArtikelParameter)
+                Return ArtikelParameter
+
             Case Else
                 Return Nothing
         End Select
@@ -93,7 +108,18 @@ Public Class Artikel_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        'ArtikelDetails.Close()
         ArtikelListe.Close()
+        'Artikel-Details schliessen
+        If ArtikelDetails IsNot Nothing Then
+            ArtikelDetails.Close()
+        End If
+        'Artikel-Hinweise schliessen
+        If ArtikelHinweise IsNot Nothing Then
+            ArtikelHinweise.Close()
+        End If
+        'Artikel-Parameter schliessen
+        If ArtikelParameter IsNot Nothing Then
+            ArtikelParameter.Close()
+        End If
     End Sub
 End Class

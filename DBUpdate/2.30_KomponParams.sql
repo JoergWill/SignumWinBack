@@ -1,0 +1,2 @@
+USE winback;
+ALTER TABLE KomponParams MODIFY COLUMN KP_Wert VARCHAR(200);

@@ -88,7 +88,7 @@ Public Class wb_Rohstoffe_Cloud
                 'Suchtext
                 tSuchtextBezeichnung.Text = tRohstoffName.Text
                 'Schaltfläche Mail unsichtbar
-                btnMail.Visible = False
+                'btnMail.Visible = False
                 'Suche Rohstoff-Bezeichnung in Cloud (WinBack/Datenlink)
                 Wb_TabControl.SelectedTab = tpCloudSuchen
 

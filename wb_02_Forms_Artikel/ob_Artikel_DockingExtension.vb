@@ -462,6 +462,13 @@ Public Class ob_Artikel_DockingExtension
                 Debug.Print("DockingExtension-GetKomponentenDaten Komponente in WinBack nicht vorhanden " & Komponente.Bezeichnung)
                 'Datensatz ist in Winback nicht vorhanden - Komponententype (Artikel/Handkomponente) ermitteln
                 Komponente.MySQLdbNew(KType)
+
+                'Komponenten-Daten für neue Komponente in WinBack aus OrgaBack (Fehler bei Fonk!)
+                Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
+                Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)           'Artikel/Komponenten-Kommentar
+                Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString     'Artikel/Komponenten-Nummer alphanumerisch
+                'Komponenten-Daten sichern (sonst steht in der DAtenbank "neu angelegt..")
+                Komponente.MySQLdbUpdate()
             End If
 
             'Falls notwendig wird die Komponenten-Type aktualisiert (Artikel/Rohstoff). OrgaBack ist das führende System

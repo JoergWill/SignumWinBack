@@ -102,8 +102,8 @@ Public Class wb_KomponParam300
                 If winback.sqlCommand(sql) < 0 Then
                     Trace.WriteLine("@E_Fehler bei Update kt300 " & sql)
                     MySQLdbUpdate = False
-                Else
-                    Debug.Print("@I_Update kt300 " & sql)
+                    'Else
+                    '    Debug.Print("@I_Update kt300 " & sql)
                 End If
             End If
         Next

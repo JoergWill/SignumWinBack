@@ -1156,6 +1156,7 @@
     <None Include="Resources\ChargenDetails_32x32.png" />
     <None Include="Resources\ChargenInfo_32x32.png" />
     <None Include="Resources\ChargenListe_32x32.png" />
+    <None Include="Resources\ArtikelHinweise_32x32.png" />
     <Content Include="Resources\DatenRueckSicherung_16x16.png" />
     <None Include="Resources\IconSave_24x24.png" />
     <None Include="Resources\IconCancel_24x24.png" />
@@ -1217,6 +1218,8 @@
     <None Include="Resources\TTS_RaumMehl.png" />
     <None Include="Resources\TTS_Sauerteig.png" />
     <None Include="Resources\TTS_TeigTempSteuerung.png" />
+    <None Include="Resources\Rotate90L_32x32.png" />
+    <None Include="Resources\Rotate90R_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

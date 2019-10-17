@@ -69,11 +69,12 @@
     'Sql-Statement Update(Replace) RohParams nach RP_Ko_Nr und RP_Typ_Nr und RP_ParamNr
     Public Const sqlUpdateRohParams = "REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES ([0])"
     'TODO Update KomponParams
-
     'Sql-Statement Komponenten-Parameter zum Komponenten-Nummer und Parameter-Nummer 
     Public Const sqlKompParams = "SELECT KP_Wert FROM KomponParams WHERE KP_KO_Nr = [0] And KP_ParamNr = [1]"
+
     'Sql-Statement Komponenten-Parameter zum Komponenten-Nummer und Parameter-Nummer 
-    Public Const sqlUpdateKompParams = "UPDATE KomponParams SET KP_Wert = '[2]' WHERE KP_KO_Nr = [0] And KP_ParamNr = [1]"
+    '    Public Const sqlUpdateKompParams = "UPDATE KomponParams SET KP_Wert = '[2]' WHERE KP_KO_Nr = [0] And KP_ParamNr = [1]"
+    Public Const sqlUpdateKompParams = "REPLACE INTO KomponParams(KP_Ko_Nr, KP_ParamNr, KP_Wert, KP_Kommentar) VALUES([0],[1],'[2]','FilePath ArtikelHinweis')"
 
     'Sql-Statement Artikelliste aus winback.Komponenten
     Public Const sqlArtikelLst = "SELECT KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KA_aktiv, KO_Type, " &
