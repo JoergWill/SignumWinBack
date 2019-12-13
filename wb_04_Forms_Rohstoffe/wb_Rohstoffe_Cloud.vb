@@ -9,6 +9,7 @@ Public Class wb_Rohstoffe_Cloud
     Dim nwt As New wb_nwtCl_WinBack(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
     Dim dl As New wb_nwtCl_DatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
     Dim cnt As Integer = wb_Global.UNDEFINED
+    Dim cntDokumente As Integer = wb_Global.UNDEFINED
 
     Dim WithEvents CloudResultGrid As wb_ArrayGridViewNwt
     Dim WithEvents nwtGrid As wb_ArrayGridViewKomponParam301
@@ -47,6 +48,8 @@ Public Class wb_Rohstoffe_Cloud
         tCloudID.Text = wb_Rohstoffe_Shared.RohStoff.MatchCode
         'Anzahl der gefundenen Datensätze
         cnt = wb_Global.UNDEFINED
+        'Anzahl der Dokumente zum Rohstoff
+        cntDokumente = wb_Global.UNDEFINED
 
         'wenn schon eine Verknüpfung vorhanden ist wird Tab-Page Verknüpfung löschen angezeigt
         If tCloudID.Text <> "" Then
@@ -157,6 +160,19 @@ Public Class wb_Rohstoffe_Cloud
                 'Anzeige Zutatenliste und Bezeichnung
                 tbDeklarationIntern.Text = RohStoff.DeklBezeichungIntern
                 tbDeklarationExtern.Text = RohStoff.DeklBezeichungExtern
+
+                'Prüfen ob Dokumente zum Rohstoff in der Cloud hinterlegt sind
+                cntDokumente = nwt.GetProductSheetCount(RohStoff.MatchCode)
+                If cntDokumente > 0 Then
+                    BtnProduktDatenblatt.Visible = True
+                    If cntDokumente > 1 Then
+                        BtnProduktDatenblatt.Text = cntDokumente.ToString & "Produkt-Datenblätter"
+                    Else
+                        BtnProduktDatenblatt.Text = " 1 Produkt-Datenblatt"
+                    End If
+                Else
+                        BtnProduktDatenblatt.Visible = False
+                End If
                 'Löschen und Aktualisieren aus der Cloud
                 Wb_TabControl.SelectedTab = tpCloudResult
 
@@ -206,7 +222,7 @@ Public Class wb_Rohstoffe_Cloud
         If CloudResultGrid IsNot Nothing Then
             CloudResultGrid.Dispose()
         End If
-        CloudResultGrid = New wb_ArrayGridViewNwt(Cloud.getProducList, sColNames)
+        CloudResultGrid = New wb_ArrayGridViewNwt(Cloud.getProductList, sColNames)
         CloudResultGrid.ScrollBars = ScrollBars.Vertical
         CloudResultGrid.BackgroundColor = Me.BackColor
         CloudResultGrid.GridLocation(pnlNwtGrid)
@@ -430,4 +446,8 @@ Public Class wb_Rohstoffe_Cloud
         wb_Rohstoffe_Shared.RezChrg_Changed(Nothing)
     End Sub
 
+    Private Sub BtnProduktDatenblatt_Click(sender As Object, e As EventArgs) Handles BtnProduktDatenblatt.Click
+        Dim RohstoffDokumente As New wb_Rohstoff_Dokumente(nwt, RohStoff.MatchCode)
+        RohstoffDokumente.ShowDialog()
+    End Sub
 End Class

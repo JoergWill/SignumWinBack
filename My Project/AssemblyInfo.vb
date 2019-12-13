@@ -13,7 +13,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("OrgaBack")>
 <Assembly: AssemblyCompany("WinBack GmbH")>
 <Assembly: AssemblyProduct("WinBackAddin")>
-<Assembly: AssemblyCopyright("Copyright ©  2018")>
+<Assembly: AssemblyCopyright("Copyright ©  2019")>
 <Assembly: AssemblyTrademark("WinBack")>
 
 <Assembly: ComVisible(False)>
@@ -32,8 +32,8 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.4.6.0")>
-<Assembly: AssemblyFileVersion("1.4.6.0")>
+<Assembly: AssemblyVersion("1.4.7.0")>
+<Assembly: AssemblyFileVersion("1.4.7.0")>
 <Assembly: NeutralResourcesLanguage("de-DE")>
 
 'Konfiguration log4net

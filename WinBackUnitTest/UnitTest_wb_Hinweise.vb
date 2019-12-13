@@ -11,6 +11,8 @@ Imports WinBack
             'Datenbank Verbindung Einstellungen setzen
             '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
             wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
+            'Programm-Variante Unit-Test
+            wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
         End If
     End Sub
     <TestMethod()> Public Sub TestDatenTyp()
@@ -129,7 +131,7 @@ Imports WinBack
 
             'Daten wieder lesen
             Assert.IsTrue(h.Read(9999))
-            Assert.AreEqual("TES'T", h.Memo)
+            Assert.AreEqual("TEST", h.Memo)
 
 
         End If

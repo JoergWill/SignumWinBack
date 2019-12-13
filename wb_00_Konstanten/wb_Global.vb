@@ -33,7 +33,7 @@
     'Filiale.Typ ist Produktions-Filiale
     Public Const ProduktionsFiliale = 4
     'OrgaBack Dummy-Artikel für Rezepte ohne Zuordnung (ProduzierteWare)
-    Public Const ProduktionDummyArtikel = "R9999"
+    Public Const ProduktionDummyArtikel = "0R9999"
 
     'Artikelgruppe Backorte (GruppenNr)
     Public Const GruppenNrBackorte = 3

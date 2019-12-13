@@ -231,7 +231,7 @@ Public Class wb_Komponente
     ''' Der absolute Pfad zur Quelldatei der Artikel-Verarbeitungshinweise steht in den Komponenten-Parametern(20)
     ''' Wenn hier kein Pfad eingetragen ist, wird der Pfad aus der winback.ini verwendet.
     ''' 
-    ''' Die Sonderzeichen für die Pfadangabe werden vor dem Speichern in der Datenbank umgewandelt in &bcksl
+    ''' Die Sonderzeichen für die Pfadangabe werden vor dem Speichern in der Datenbank umgewandelt in bcksl
     ''' </summary>
     ''' <returns></returns>
     Public Property VerarbeitungsHinweisePfad As String
@@ -1771,7 +1771,6 @@ Public Class wb_Komponente
             'Artikel nicht gefunden in OrgaSoft
             Debug.Print("Artikel " & Nummer & " nicht in OrgaBack gefunden")
             ChangeLogAdd(LogType.Err, Nr, "", "Artikel/Komponente nicht in OrgaBack gefunden")
-            OrgasoftMain.CloseRead()
             Return False
         Else
             'Standard-Einheit aus Artikelstamm OrgaBack

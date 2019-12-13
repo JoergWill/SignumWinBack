@@ -445,12 +445,12 @@ Public Class ob_Artikel_DockingExtension
 
             'Komponenten-Nummer aus OrgaBack ermitteln
             If Komponente Is Nothing Then Komponente = New wb_Komponente
-            Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))   'MFF201 - Index auf interne Komponenten-Nummer
+            Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))                                                                  'MFF201 - Index auf interne Komponenten-Nummer
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
-            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString         'Artikel/Komponenten-Nummer alphanumerisch
+            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString                                                                        'Artikel/Komponenten-Nummer alphanumerisch
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
-            Komponente.sArtikeLinienGruppe = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)
-            Komponente.VerkaufsGewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("Gewicht").ToString)
+            Komponente.sArtikeLinienGruppe = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)                                                             'MFF200 - Aufarbeitungs-Linie
+            Komponente.VerkaufsGewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("Gewicht").ToString) / 1000    'Verkaufsgewicht (aus OrgaBack in Gramm)
             Debug.Print("_Extendee.Handelsartikel.Gewicht " & Komponente.VerkaufsGewicht)
 
             'Komponenten-Type aus der Zuordnung zur Artikelgruppe

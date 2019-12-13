@@ -129,7 +129,8 @@ Public Class wb_sql_BackupRestore
 
         'Source-File zum Lesen öffnen
         For Each Zeile In System.IO.File.ReadAllLines(FileName, Encoding.GetEncoding("iso-8859-1"))
-            If Strings.Left(Zeile, 2) <> "--" Then
+            'Kommentare und "use winback" entfernen
+            If ((Strings.Left(Zeile, 2) <> "--") And Not (Zeile.Contains("use winback"))) Then
                 sw.WriteLine((Zeile))
             End If
         Next

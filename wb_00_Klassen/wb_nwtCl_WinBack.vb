@@ -13,6 +13,7 @@ Public Class wb_nwtCl_WinBack
     Private _pass As String
     Private _url As String
     Private _errorCode As HttpStatusCode
+    Private _Stream As MemoryStream = Nothing
     Private data As List(Of JToken)
 
     Public Overrides ReadOnly Property CloudType As wb_CloudType
@@ -64,6 +65,12 @@ Public Class wb_nwtCl_WinBack
         End Get
     End Property
 
+    Public ReadOnly Property Stream As MemoryStream
+        Get
+            Return _Stream
+        End Get
+    End Property
+
     ''' <summary>
     ''' WinBack-Cloud-Connector::GetResult(Array) 
     ''' 
@@ -88,29 +95,38 @@ Public Class wb_nwtCl_WinBack
     ''' </summary>
     ''' <param name="cmd"> String Kommando</param>
     ''' <param name="param"> String Kommando-Parameter</param>
-    Private Function httpString(cmd As String, param As String) As Integer
+    Private Function httpString(cmd As String, param As String, Optional getFile As Boolean = False) As Integer
         ' Internet-Connector
         Dim request As WebRequest
-        Try
-            request = WebRequest.Create(_url & "/" & cmd & param)
-            request.Method = "GET"
-            request.Timeout = 10000
-            ' Authorisierung mit Passwort
-            request.Headers.Clear()
-            request.Headers.Add("Authorization: Basic " & _pass)
-            request.ContentType = "application/x-www-form-urlencoded"
+        'Try
+        request = WebRequest.Create(_url & "/" & cmd & param)
+        request.Method = "GET"
+        request.Timeout = 10000
+        ' Authorisierung mit Passwort
+        request.Headers.Clear()
+        request.Headers.Add("Authorization: Basic " & _pass)
+        request.ContentType = "application/x-www-form-urlencoded"
 
-            'Request ins Log-File schreiben
-            Trace.WriteLine("@I_WebRequest " & _url & "/" & cmd & param)
+        'Request ins Log-File schreiben
+        Trace.WriteLine("@I_WebRequest " & _url & "/" & cmd & param)
 
-            ' Antwort (OK)
-            Dim response As WebResponse = request.GetResponse()
-            _errorCode = CType(response, HttpWebResponse).StatusCode
+        ' Antwort (OK)
+        Dim response As WebResponse = request.GetResponse()
+        _errorCode = CType(response, HttpWebResponse).StatusCode
 
-            ' Ergebnis-String
-            If _errorCode = HttpStatusCode.OK Then
+        ' Ergebnis-String
+        If _errorCode = HttpStatusCode.OK Then
+
+            If getFile Then
+                'Get PDF-File/Doc-File aus Stream
+                Dim downloader As New System.Net.WebClient
+                downloader.Headers.Clear()
+                downloader.Headers.Add("Authorization: Basic " & _pass)
+                downloader.DownloadFile(_url & "/" & cmd & param, "C:\Temp\Test.pdf")
+                Return 1
+            Else
                 Dim dataStream As Stream = response.GetResponseStream()
-                Dim reader As New StreamReader(dataStream)
+                Dim reader As New StreamReader(dataStream, Text.Encoding.UTF8)
                 Dim responseFromServer As String = reader.ReadToEnd()
                 Trace.WriteLine("@I_Response from Server :" & responseFromServer)
 
@@ -126,13 +142,14 @@ Public Class wb_nwtCl_WinBack
                     data = ser.Children().ToList
                     Return 1
                 End If
-            Else
-                Return -1
             End If
-        Catch e As Exception
-            _errorCode = HttpStatusCode.Unused
-            Return -9
-        End Try
+        Else
+            Return -1
+        End If
+        'Catch e As Exception
+        '_errorCode = HttpStatusCode.Unused
+        'Return -9
+        'End Try
     End Function
 
     ''' <summary>
@@ -260,7 +277,7 @@ Public Class wb_nwtCl_WinBack
     ''' Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
     ''' </summary>
     ''' <returns></returns>
-    Public Overrides Function getProducList() As ArrayList
+    Public Overrides Function getProductList() As ArrayList
         Dim a As New ArrayList
         Dim n As wb_Global.NwtCloud
 
@@ -279,6 +296,49 @@ Public Class wb_nwtCl_WinBack
         Next
 
         Return a
+    End Function
+
+    ''' <summary>
+    ''' WinBack-Cloud-Connector::getProductSheetList
+    ''' 
+    ''' liefert die Liste aller gefundenen Produkte und Lieferanten nach Suchen in der Cloud.
+    ''' Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
+    ''' </summary>
+    ''' <param name="id"> String Rohstoff-ID</param>
+    Public Function GetProductSheetCount(id As String) As Integer
+        ' Kommando getProductSheetList
+        Dim nCmd = "files/rohstoffe"
+        Dim nPrm = "/" & id
+        Return httpString(nCmd, nPrm)
+    End Function
+
+    ''' <summary>
+    ''' liefert die Liste aller gefundenen Produkt-Datenblätter
+    ''' Aus dem Json-Array werdenDatei-Namen in die Liste geschrieben
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function getProductSheetList() As ArrayList
+        Dim a As New ArrayList
+
+        'alle Ergebnisse aus der Liste
+        For Each d As JObject In data
+            'Dokumenten-File-Name
+            a.Add(d.GetValue("name"))
+        Next
+
+        Return a
+    End Function
+
+    ''' <summary>
+    ''' WinBack-Cloud-Connector::getProductSheet
+    ''' Liest das desuchte pdf-File in Stream als Memory-Stream ein
+    ''' </summary>
+    ''' <param name="id"> String Rohstoff-ID</param>
+    Public Function GetProductSheet(id As String, sheet As String) As Integer
+        ' Kommando getProductSheet
+        Dim nCmd = "files/rohstoffe"
+        Dim nPrm = "/" & id & "/" & sheet
+        Return httpString(nCmd, nPrm, True)
     End Function
 
     Private Function GetJData(JData As JObject, JFieldName As String) As String

@@ -83,55 +83,57 @@ Public Class wb_ArrayGridViewKomponParam301
         Next
 
         ' Die erforderliche Anzahl Zeilen in einem Rutsch erstellen:
-        MyBase.Rows.Add(MaxRowCount)
+        If MaxRowCount > 0 Then
+            MyBase.Rows.Add(MaxRowCount)
 
-        ' Daten ins DatagridView eintragen
-        For r = 0 To MaxRowCount - 1
-            With rows(r)
-                ' Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
-                .MinimumHeight = 20
-                ' Strich zwischen den Zeilen  
-                .DividerHeight = 0
+            ' Daten ins DatagridView eintragen
+            For r = 0 To MaxRowCount - 1
+                With rows(r)
+                    ' Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
+                    .MinimumHeight = 20
+                    ' Strich zwischen den Zeilen  
+                    .DividerHeight = 0
 
-                ' Zeile r mit Werten füllen
-                For c = 1 To ColCount
+                    ' Zeile r mit Werten füllen
+                    For c = 1 To ColCount
 
-                    i = Grid(c, r)
-                    If i > 0 Then
+                        i = Grid(c, r)
+                        If i > 0 Then
 
-                        'Bezeichnung
-                        .Cells(c * 3 - 3).Value = arr(i).Text
-                        .Cells(c * 3 - 3).Style.Alignment = DataGridViewContentAlignment.MiddleLeft
+                            'Bezeichnung
+                            .Cells(c * 3 - 3).Value = arr(i).Text
+                            .Cells(c * 3 - 3).Style.Alignment = DataGridViewContentAlignment.MiddleLeft
 
-                        'Allergene/Nährwerte
-                        If wb_KomponParam301_Global.IsAllergen(i) Then
-                            'Allergen-Kennzeichnung ohne Einheit
-                            .Cells(c * 3 - 2).Value = wb_Functions.AllergenToString(arr(i).Wert)
-                            .Cells(c * 3 - 1).Value = ""
-                        Else
-                            'Nährwert und Einheit
-                            If wb_KomponParam301_Global.kt301Param(i).Gruppe = wb_Global.ktTyp301Gruppen.Gesamtkennzahlen Then
-                                'Gesamtkennzahlen werden mit nur einer Kommastelle ausgegeben
-                                .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 1)
+                            'Allergene/Nährwerte
+                            If wb_KomponParam301_Global.IsAllergen(i) Then
+                                'Allergen-Kennzeichnung ohne Einheit
+                                .Cells(c * 3 - 2).Value = wb_Functions.AllergenToString(arr(i).Wert)
+                                .Cells(c * 3 - 1).Value = ""
                             Else
-                                'alle anderen Werte auf 3 Nachkommastellen formatieren
-                                .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 3)
+                                'Nährwert und Einheit
+                                If wb_KomponParam301_Global.kt301Param(i).Gruppe = wb_Global.ktTyp301Gruppen.Gesamtkennzahlen Then
+                                    'Gesamtkennzahlen werden mit nur einer Kommastelle ausgegeben
+                                    .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 1)
+                                Else
+                                    'alle anderen Werte auf 3 Nachkommastellen formatieren
+                                    .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 3)
+                                End If
+                                .Cells(c * 3 - 1).Value = arr(i).Einheit
                             End If
-                            .Cells(c * 3 - 1).Value = arr(i).Einheit
-                        End If
 
-                        'Tooltip
-                        If arr(i).FehlerText <> "" Then
-                            .Cells(c * 3 - 1).Style.BackColor = Color.Red
-                            .Cells(c * 3 - 2).Style.BackColor = Color.Red
-                            .Cells(c * 3 - 3).Style.BackColor = Color.Red
-                            .Cells(c * 3 - 3).ToolTipText = "Angaben fehlen für: " & arr(i).FehlerText
+                            'Tooltip
+                            If arr(i).FehlerText <> "" Then
+                                .Cells(c * 3 - 1).Style.BackColor = Color.Red
+                                .Cells(c * 3 - 2).Style.BackColor = Color.Red
+                                .Cells(c * 3 - 3).Style.BackColor = Color.Red
+                                .Cells(c * 3 - 3).ToolTipText = "Angaben fehlen für: " & arr(i).FehlerText
 
+                            End If
                         End If
-                    End If
-                Next c
-            End With
-        Next r
+                    Next c
+                End With
+            Next r
+        End If
     End Sub
 
 End Class

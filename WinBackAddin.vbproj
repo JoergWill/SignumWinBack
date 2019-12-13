@@ -196,6 +196,28 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DB_Schaufler|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\DB_Schaufler\</OutputPath>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
+    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DB_Schaufler|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\DB_Schaufler\</OutputPath>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
+    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="combit.ListLabel22, Version=22.2.6290.25045, Culture=neutral, PublicKeyToken=a7a30592cb4a94be, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -607,6 +629,12 @@
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Dokumente.Designer.vb">
+      <DependentUpon>wb_Rohstoff_Dokumente.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Dokumente.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_05_Forms_User\ob_User_DockingExtension.vb" />
     <Compile Include="wb_05_Forms_User\wb_User.vb" />
     <Compile Include="wb_05_Forms_User\wb_User_Gruppe.vb" />
@@ -947,6 +975,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.resx">
       <DependentUpon>wb_Rohstoffe_Verwendung.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Dokumente.resx">
+      <DependentUpon>wb_Rohstoff_Dokumente.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.resx">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>

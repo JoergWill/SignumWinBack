@@ -904,7 +904,7 @@ Public Class wb_Functions
     ''' <summary>
     ''' Entfernt alle "störenden" Sonderzeichen aus einem String
     '''     ' - wird ersatzlos gestrichen (verhindert Speichern eines Strings in DB)
-    '''     \ - wird ersetzt durch &bcksl; (Pfadangaben Windows!)
+    '''     \ - wird ersetzt durch bcksl; (Pfadangaben Windows!)
     ''' </summary>
     ''' <param name="s"></param>
     ''' <returns></returns>
@@ -1206,14 +1206,19 @@ Public Class wb_Functions
 
     Private Shared Sub ExeBatch(Directory As String, cmd As String, arg As String, WaitUntilReady As Boolean)
         Dim p As New Process()
-        p.StartInfo = New ProcessStartInfo(cmd, arg)
-        p.StartInfo.CreateNoWindow = True
-        p.StartInfo.UseShellExecute = False
-        p.StartInfo.RedirectStandardOutput = True
-        p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
-        p.StartInfo.WorkingDirectory = Directory
-        p.Start()
-        p.WaitForExit()
+        Try
+            p.StartInfo = New ProcessStartInfo(cmd, arg)
+            p.StartInfo.CreateNoWindow = True
+            p.StartInfo.UseShellExecute = False
+            p.StartInfo.RedirectStandardOutput = True
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+            p.StartInfo.WorkingDirectory = Directory
+            p.Start()
+            p.WaitForExit()
+        Catch ex As Exception
+            MsgBox("Fehler beim Start von " & cmd & " " & arg, MsgBoxStyle.Critical, "Batch-File")
+        End Try
+
     End Sub
 
     ''' <summary>

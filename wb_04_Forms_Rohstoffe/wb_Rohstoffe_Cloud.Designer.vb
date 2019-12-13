@@ -60,6 +60,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.btnShow_Vor = New System.Windows.Forms.Button()
         Me.pnlNwt = New System.Windows.Forms.Panel()
         Me.tpCloudResult = New System.Windows.Forms.TabPage()
+        Me.BtnProduktDatenblatt = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.lblDeklExtern = New System.Windows.Forms.Label()
         Me.lblDeklIntern = New System.Windows.Forms.Label()
@@ -379,6 +380,7 @@ Partial Class wb_Rohstoffe_Cloud
         'tpCloudResult
         '
         Me.tpCloudResult.BackColor = System.Drawing.SystemColors.Control
+        Me.tpCloudResult.Controls.Add(Me.BtnProduktDatenblatt)
         Me.tpCloudResult.Controls.Add(Me.TableLayoutPanel1)
         Me.tpCloudResult.Controls.Add(Me.Btn_Result_Back)
         Me.tpCloudResult.Controls.Add(Me.btnResult_OK)
@@ -389,6 +391,18 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tpCloudResult.Size = New System.Drawing.Size(724, 352)
         Me.tpCloudResult.TabIndex = 3
         Me.tpCloudResult.Text = "CloudResult"
+        '
+        'BtnProduktDatenblatt
+        '
+        Me.BtnProduktDatenblatt.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnProduktDatenblatt.Image = Global.WinBack.My.Resources.Resources.MainRezept_32x32
+        Me.BtnProduktDatenblatt.Location = New System.Drawing.Point(541, 213)
+        Me.BtnProduktDatenblatt.Name = "BtnProduktDatenblatt"
+        Me.BtnProduktDatenblatt.Size = New System.Drawing.Size(138, 62)
+        Me.BtnProduktDatenblatt.TabIndex = 61
+        Me.BtnProduktDatenblatt.Text = "Produkt-Datenblätter"
+        Me.BtnProduktDatenblatt.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.BtnProduktDatenblatt.UseVisualStyleBackColor = True
         '
         'TableLayoutPanel1
         '
@@ -652,4 +666,5 @@ Partial Class wb_Rohstoffe_Cloud
     Friend WithEvents lblDeklIntern As Windows.Forms.Label
     Friend WithEvents tbDeklarationExtern As Windows.Forms.TextBox
     Friend WithEvents tbDeklarationIntern As Windows.Forms.TextBox
+    Friend WithEvents BtnProduktDatenblatt As Windows.Forms.Button
 End Class

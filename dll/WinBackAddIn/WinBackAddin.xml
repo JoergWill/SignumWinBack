@@ -2374,6 +2374,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_Komponente.VerarbeitungsHinweisePfad">
+ <summary>
+ Der absolute Pfad zur Quelldatei der Artikel-Verarbeitungshinweise steht in den Komponenten-Parametern(20)
+ Wenn hier kein Pfad eingetragen ist, wird der Pfad aus der winback.ini verwendet.
+ 
+ Die Sonderzeichen für die Pfadangabe werden vor dem Speichern in der Datenbank umgewandelt in bcksl
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Komponente.VerarbeitungsHinweise_DPI">
  <summary>
  Die Auflösung der Umwandlung von pdf in png steht in den Komponenten-Parametern(21)
@@ -2766,7 +2775,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </remarks>
  <param name="Index"> Integer Index des Result-JSON-Objekts</param>
 </member>
-<member name="M:WinBack.wb_nwtCl_WinBack.httpString(System.String,System.String)">
+<member name="M:WinBack.wb_nwtCl_WinBack.httpString(System.String,System.String,System.Boolean)">
  <summary>
  WinBack-Cloud-Connector::http-Kommando zusammensetzen
  
@@ -2848,12 +2857,35 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="iD"></param>
  <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
 </member>
-<member name="M:WinBack.wb_nwtCl_WinBack.getProducList">
+<member name="M:WinBack.wb_nwtCl_WinBack.getProductList">
  <summary>
  liefert die Liste aller gefundenen Produkte und Lieferanten nach Suchen in der Cloud.
  Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
  </summary>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_nwtCl_WinBack.GetProductSheetCount(System.String)">
+ <summary>
+ WinBack-Cloud-Connector::getProductSheetList
+ 
+ liefert die Liste aller gefundenen Produkte und Lieferanten nach Suchen in der Cloud.
+ Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
+ </summary>
+ <param name="id"> String Rohstoff-ID</param>
+</member>
+<member name="M:WinBack.wb_nwtCl_WinBack.getProductSheetList">
+ <summary>
+ liefert die Liste aller gefundenen Produkt-Datenblätter
+ Aus dem Json-Array werdenDatei-Namen in die Liste geschrieben
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_nwtCl_WinBack.GetProductSheet(System.String,System.String)">
+ <summary>
+ WinBack-Cloud-Connector::getProductSheet
+ Liest das desuchte pdf-File in Stream als Memory-Stream ein
+ </summary>
+ <param name="id"> String Rohstoff-ID</param>
 </member>
 <member name="M:WinBack.wb_nwtCl_WinBack.DebugResultSet(System.Int32)">
  <summary>
@@ -2918,7 +2950,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="id"> String Rohstoff-ID</param>
 </member>
-<member name="M:WinBack.wb_nwtCl_DatenLink.getProducList">
+<member name="M:WinBack.wb_nwtCl_DatenLink.getProductList">
  <summary>
  liefert die Liste aller gefundenen Produkte und Lieferanten nach Suchen in der Cloud.
  Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
@@ -4732,14 +4764,6 @@ Text aus Datenbank lesen - Übersetzung
  <param name="TWNr"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.ob_Chargen_Produziert.ProduktionDatumGueltig(System.DateTime)">
- <summary>
- Prüft auf gültiges Produktions-Datum
- (Chargen wurde produziert)
- </summary>
- <param name="d"></param>
- <returns></returns>
-</member>
 <member name="M:WinBack.ob_Chargen_Produziert.SqlWriteProdWare(WinBack.wb_Sql,WinBack.ob_ProduzierteWare)">
  <summary>
  Schreibt einen Datensatz aus ob_ProduzierteWare in die Tabelle dbo.ProduzierteWare
@@ -4803,6 +4827,14 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <param name="Name">String - Spalten-Name aus Datenbank</param>
  <param name="Value">Object - Wert aus Datenbank</param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.ob_ProduzierteWare.ProduktionDatumGueltig(System.DateTime)">
+ <summary>
+ Prüft auf gültiges Produktions-Datum
+ (Chargen wurde produziert)
+ </summary>
+ <param name="d"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Chargen_Funktionen.BtnDetails_Click(System.Object,System.EventArgs)">
@@ -6921,6 +6953,15 @@ Start Timer nach Änderung Datensatz-Zeiger
  Formatiert einen String im Muster 00:00:00
  </summary>
  <param name="Value"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.XRemoveSonderZeichen(System.String,System.Boolean)">
+ <summary>
+ Entfernt alle "störenden" Sonderzeichen aus einem String
+     ' - wird ersatzlos gestrichen (verhindert Speichern eines Strings in DB)
+     \ - wird ersetzt durch bcksl; (Pfadangaben Windows!)
+ </summary>
+ <param name="s"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Functions.DoubleToXString(System.Double)">

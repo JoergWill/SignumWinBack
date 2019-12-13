@@ -31,7 +31,7 @@
         Return wb_Global.UNDEFINED
     End Function
 
-    Public Overridable Function getProducList() As ArrayList
+    Public Overridable Function getProductList() As ArrayList
         Return Nothing
     End Function
 

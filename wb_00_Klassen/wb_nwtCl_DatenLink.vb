@@ -259,7 +259,7 @@ Public Class wb_nwtCl_DatenLink
     '''     }
     ''' </summary>
     ''' <returns></returns>
-    Public Overrides Function getProducList() As ArrayList
+    Public Overrides Function getProductList() As ArrayList
         Dim a As New ArrayList
         Dim n As wb_Global.NwtCloud
         Dim t As JObject

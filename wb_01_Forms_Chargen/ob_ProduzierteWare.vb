@@ -19,6 +19,8 @@ Public Class ob_ProduzierteWare
     Private _Menge As Double = 0.0
     Private _ChargenNummer As String = ""
     Private _HaltbarkeitsDatum As DateTime = Now
+    Private _Gestartet As Boolean = False
+    Private _ProdDatumGueltig As DateTime
 
     Public ReadOnly Property sFilialNummer As String
         Get
@@ -33,6 +35,12 @@ Public Class ob_ProduzierteWare
         Set(value As Date)
             _ProduktionsDatum = value
         End Set
+    End Property
+
+    Public ReadOnly Property Gestartet As Boolean
+        Get
+            Return _Gestartet
+        End Get
     End Property
 
     Public ReadOnly Property sProduktionsDatum As String
@@ -132,6 +140,12 @@ Public Class ob_ProduzierteWare
         End Set
     End Property
 
+    Public ReadOnly Property WinBackChargenNummer As String
+        Get
+            Return _ChargenNummer
+        End Get
+    End Property
+
     Public Property HaltbarkeitsDatum As Date
         Get
             Return _HaltbarkeitsDatum
@@ -214,6 +228,8 @@ Public Class ob_ProduzierteWare
     Public Sub New(ChargeNr As String)
         'Chargen-Nummer des letzten Datensatzes
         _ChargeNr = ChargeNr
+        'Produktions-Datum ist gültig ab...
+        _ProdDatumGueltig = Convert.ToDateTime("22.11.1964")
     End Sub
 
     ''' <summary>
@@ -250,7 +266,7 @@ Public Class ob_ProduzierteWare
         End If
 
         'Debug
-        Debug.Print("Feld/Value " & Name & "/" & Value.ToString)
+        'Debug.Print("Feld/Value " & Name & "/" & Value.ToString)
 
         'Feldname aus der Datenbank
         Try
@@ -338,6 +354,9 @@ Public Class ob_ProduzierteWare
                     If SatzTyp = wb_Global.obSatzTyp.Rohstoff Then
                         ProduktionsDatum = Value
                     End If
+                    'Prüfen ob die Charge gestartet wurde
+                    _Gestartet = ProduktionDatumGueltig(Value)
+
 
                 Case Else
                     Debug.Print("Field-Name " & Name & " wird nicht ausgewertet")
@@ -347,5 +366,18 @@ Public Class ob_ProduzierteWare
         Return True
     End Function
 
+    ''' <summary>
+    ''' Prüft auf gültiges Produktions-Datum
+    ''' (Chargen wurde produziert)
+    ''' </summary>
+    ''' <param name="d"></param>
+    ''' <returns></returns>
+    Private Function ProduktionDatumGueltig(d As DateTime) As Boolean
+        If d < _ProdDatumGueltig Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
 
 End Class

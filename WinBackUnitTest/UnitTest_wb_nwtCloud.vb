@@ -48,6 +48,11 @@
         Assert.AreEqual(nwtDaten.Bezeichnung, "Westfalia Kornkruste Kornfit")
         Debug.Print(nwtDaten.GetReport)
 
+        'Komponenten-Nummer (intern) setzen
+        nwtDaten.Nr = 1
+        'Report schreiben (in Tabelle Hinweise2)
+        nwtDaten.SaveReport()
+
         'Nährwert-Info Kalorien(KJoule)
         Assert.AreEqual(nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_KiloJoule), 1998.0)
 
@@ -57,4 +62,23 @@
         Assert.AreEqual(nwtDaten.ktTyp301.Allergen(wb_Global.T301_Eier), wb_Global.AllergenInfo.T)
 
     End Sub
+
+    <TestMethod()> Public Sub Test_GetSheetList()
+        'Create new instance of nwtCloud
+        Dim nwt As New wb_nwtCl_WinBack(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
+
+        'Lookup Product Sheet-Liste
+        Assert.IsTrue(nwt.GetProductSheetList("33") > 0)
+        nwt.DebugResultSet(0)
+
+        'Lookup Product Sheet
+        Assert.IsTrue(nwt.GetProductSheet("33", "MM Dinkelmehl Type 1050.pdf") > 0)
+        nwt.DebugResultSet(0)
+
+
+
+    End Sub
+
+
+
 End Class

@@ -254,7 +254,7 @@ Public Class Main
 
             'Export Chargen ab TW-Nr.x
             Dim TWNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-            AktTimerEvent.Str2 = Export.ExportChargen(TWNr)
+            AktTimerEvent.Str2 = Export.ExportChargen(TWNr).ToString
             'Nach Ende Export neue Startzeit setzen
             AktTimerEvent.Endezeit = Now
             AktTimerEvent.MySQLdbUpdate_Fields()
