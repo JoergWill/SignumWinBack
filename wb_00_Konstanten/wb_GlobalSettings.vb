@@ -563,7 +563,11 @@ Public Class wb_GlobalSettings
 
     Public Shared Property pAddInPath As String
         Get
-            Return _pAddInPath
+            If pVariante = ProgVariante.WinBack Then
+                Return pProgrammPath
+            Else
+                Return _pAddInPath
+            End If
         End Get
         'wird in wb_Main_Menu gesetzt
         Set(value As String)
@@ -573,25 +577,31 @@ Public Class wb_GlobalSettings
 
     Public Shared ReadOnly Property pLog4netPath As String
         Get
-            Return _pAddInPath & "Log\"
+            Return pAddInPath & "Log\"
         End Get
     End Property
 
     Public Shared ReadOnly Property pDBUpdatePath As String
         Get
-            Return _pAddInPath & "DBUpdate\"
+            Return pAddInPath & "DBUpdate\"
         End Get
     End Property
 
     Public Shared ReadOnly Property pWinBackUpdatePath As String
         Get
-            Return _pAddInPath & "Update\"
+            Return pAddInPath & "Update\"
         End Get
     End Property
 
     Public Shared ReadOnly Property pKocherPath As String
         Get
-            Return _pAddInPath & "Temp\"
+            Return pAddInPath & "Temp\"
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property pRohstoffDatenPath As String
+        Get
+            Return pAddInPath & "Temp\"
         End Get
     End Property
 

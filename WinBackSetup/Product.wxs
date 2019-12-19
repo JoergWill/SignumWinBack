@@ -147,15 +147,16 @@
         <File Id="WinBackPdb" Name="WinbackServerTask.pdb" />
       </Component>
 
-      <!-- MySQL-Server (OrgaBack-Standalone) -->
+      <!-- MySQL-Server (OrgaBack-Standalone) 
       <Component Id="MYSQLSERVER" Guid="C481566D-4CA8-4b10-B08D-EF29ACDC10B5">
         <File Id="Subfeature2.txt" Name="MySQLServer.txt" />
       </Component>
-
-      <!-- Log4View -->
+      -->
+      <!-- Log4View 
       <Component Id="LOG4VIEW" Guid="44E233A0-CDA2-4adf-B2AF-935A0174325B">
         <File Id="Subfeature3.txt" Name="Log4View.txt" />
       </Component>
+      -->
     </DirectoryRef>
 
     <!-- ==================================================================================== -->
@@ -240,12 +241,15 @@
         <ComponentRef Id="SERVERTASK"/>
         <ComponentRef Id="SHAREDCOMPONENTS" />
       </Feature>
+
+      <!--
       <Feature Id="MySQLServer" Title="!(loc.FeatureMySQLTitle)" Description="!(loc.FeatureMySQLDescription)" Level="1" >
         <ComponentRef Id="MYSQLSERVER"/>
       </Feature>
       <Feature Id="Log4View" Title="!(loc.FeatureLog4ViewTitle)" Description="!(loc.FeatureLog4ViewDescription)" Level="1" >
         <ComponentRef Id="LOG4VIEW"/>
       </Feature>
+      -->
     </Feature>
 
     <UI>

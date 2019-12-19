@@ -95,7 +95,9 @@ Public Class wb_nwtCl_WinBack
     ''' </summary>
     ''' <param name="cmd"> String Kommando</param>
     ''' <param name="param"> String Kommando-Parameter</param>
-    Private Function httpString(cmd As String, param As String, Optional getFile As Boolean = False) As Integer
+    ''' <param name="getFile"> Boolean Get-Result als File speichern</param>
+    ''' <param name="getFileName"> String Dateiname wenn getResult = True</param>
+    Private Function httpString(cmd As String, param As String, Optional getFile As Boolean = False, Optional getFileName As String = "") As Integer
         ' Internet-Connector
         Dim request As WebRequest
         'Try
@@ -122,7 +124,7 @@ Public Class wb_nwtCl_WinBack
                 Dim downloader As New System.Net.WebClient
                 downloader.Headers.Clear()
                 downloader.Headers.Add("Authorization: Basic " & _pass)
-                downloader.DownloadFile(_url & "/" & cmd & param, "C:\Temp\Test.pdf")
+                downloader.DownloadFile(_url & "/" & cmd & param, getFileName)
                 Return 1
             Else
                 Dim dataStream As Stream = response.GetResponseStream()
@@ -331,14 +333,15 @@ Public Class wb_nwtCl_WinBack
 
     ''' <summary>
     ''' WinBack-Cloud-Connector::getProductSheet
-    ''' Liest das desuchte pdf-File in Stream als Memory-Stream ein
+    ''' Speichert das gesuchte pdf/doc/xxx-File im Verzeichnis pRohstoffDatenPath unter dem Dateinamen aus der Cloud ab
     ''' </summary>
     ''' <param name="id"> String Rohstoff-ID</param>
+    ''' <param name="sheet"> String Rohstoff-Datenblatt-Name</param>
     Public Function GetProductSheet(id As String, sheet As String) As Integer
         ' Kommando getProductSheet
         Dim nCmd = "files/rohstoffe"
         Dim nPrm = "/" & id & "/" & sheet
-        Return httpString(nCmd, nPrm, True)
+        Return httpString(nCmd, nPrm, True, wb_GlobalSettings.pRohstoffDatenPath & sheet)
     End Function
 
     Private Function GetJData(JData As JObject, JFieldName As String) As String

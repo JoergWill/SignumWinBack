@@ -2775,7 +2775,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </remarks>
  <param name="Index"> Integer Index des Result-JSON-Objekts</param>
 </member>
-<member name="M:WinBack.wb_nwtCl_WinBack.httpString(System.String,System.String,System.Boolean)">
+<member name="M:WinBack.wb_nwtCl_WinBack.httpString(System.String,System.String,System.Boolean,System.String)">
  <summary>
  WinBack-Cloud-Connector::http-Kommando zusammensetzen
  
@@ -2784,6 +2784,8 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="cmd"> String Kommando</param>
  <param name="param"> String Kommando-Parameter</param>
+ <param name="getFile"> Boolean Get-Result als File speichern</param>
+ <param name="getFileName"> String Dateiname wenn getResult = True</param>
 </member>
 <member name="M:WinBack.wb_nwtCl_WinBack.lookupProductName(System.String)">
  <summary>
@@ -2883,9 +2885,10 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 <member name="M:WinBack.wb_nwtCl_WinBack.GetProductSheet(System.String,System.String)">
  <summary>
  WinBack-Cloud-Connector::getProductSheet
- Liest das desuchte pdf-File in Stream als Memory-Stream ein
+ Speichert das gesuchte pdf/doc/xxx-File im Verzeichnis pRohstoffDatenPath unter dem Dateinamen aus der Cloud ab
  </summary>
  <param name="id"> String Rohstoff-ID</param>
+ <param name="sheet"> String Rohstoff-Datenblatt-Name</param>
 </member>
 <member name="M:WinBack.wb_nwtCl_WinBack.DebugResultSet(System.Int32)">
  <summary>
@@ -5985,6 +5988,15 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoff_Dokumente.ShowDokument(System.String)">
+ <summary>
+ Rohstoff-Produktdatenblatt aus der Cloud einlesen und im Verzeichnis ablegen.
+ Das Verzeichnis wird in wb_GlobalSettings als pRohstoffDatenPath bestimmt.
+ 
+ Ist die Datei ein pdf-File wird gleich ein Vorschau-Bild angezeigt.
+ </summary>
+ <param name="Name"></param>
 </member>
 <member name="P:WinBack.ob_User_DockingExtension.ContextTabs">
  <summary>

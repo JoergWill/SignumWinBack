@@ -216,11 +216,11 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DB_Schaufler|x86'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M6|x86'">
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\DB_Schaufler\</OutputPath>
+    <OutputPath>bin\x86\Debug-M6\</OutputPath>
     <DocumentationFile>WinBackServerTask.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -228,11 +228,11 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DB_Schaufler|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M6|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\DB_Schaufler\</OutputPath>
+    <OutputPath>bin\Debug-M6\</OutputPath>
     <DocumentationFile>WinBackServerTask.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -241,9 +241,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EnhancedEdit">
-      <HintPath>..\EnhancedEdit\bin\Release\EnhancedEdit.dll</HintPath>
-    </Reference>
     <Reference Include="FluentFTP">
       <HintPath>..\dll\FluentFTP.19.2.2\FluentFTP.dll</HintPath>
     </Reference>
@@ -436,6 +433,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EnhancedEdit\EnhancedEdit.vbproj">
+      <Project>{b9549613-9c0c-4bc3-82a5-21d834813a25}</Project>
+      <Name>EnhancedEdit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
