@@ -1,25 +1,11 @@
 ﻿Imports System.IO
-Imports Ghostscript.NET.Rasterizer
-Imports WinBack
 
 Public Class wb_Rohstoff_Dokumente
     Private nwt As wb_nwtCl_WinBack
     Private id As String
 
-    Private Rasterizer As GhostscriptRasterizer
-    Private localDllInfo As Ghostscript.NET.GhostscriptVersionInfo
-
-    Private Sub wb_Rohstoff_Dokumente_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    End Sub
 
     Public Sub New(nwt As wb_nwtCl_WinBack, id As String)
-        ' gsdll32.dll extern einbinden
-        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
-            localDllInfo = New Ghostscript.NET.GhostscriptVersionInfo(wb_GlobalSettings.pProgrammPath & "gsdll32.dll")
-        Else
-            localDllInfo = New Ghostscript.NET.GhostscriptVersionInfo(wb_GlobalSettings.pAddInPath & "gsdll32.dll")
-        End If
-
         Me.nwt = nwt
         Me.id = id
         'Alle Elemente der Oberfläche erzeugen
@@ -37,9 +23,9 @@ Public Class wb_Rohstoff_Dokumente
         Next
 
         'Wenn nur ein Dokument vorhanden ist, gleich anzeigen
-        'If lbDokumente.Items.Count = 1 Then
-        '    ShowDokument(lbDokumente.Items(0).ToString)
-        'End If
+        If lbDokumente.Items.Count = 1 Then
+            ShowDokument(lbDokumente.Items(0).ToString)
+        End If
     End Sub
 
     ''' <summary>
@@ -55,36 +41,10 @@ Public Class wb_Rohstoff_Dokumente
 
             Select Case Path.GetExtension(Name)
                 Case ".pdf"
-                    ShowPdfDokument(wb_GlobalSettings.pRohstoffDatenPath & Name)
+                    wb_ShowPDF.ShowPdfDokument(wb_GlobalSettings.pRohstoffDatenPath & Name, VorschauPDF)
                 Case Else
                     VorschauPDF.Image = Nothing
             End Select
-        Else
-            VorschauPDF.Image = Nothing
-        End If
-    End Sub
-
-    Private Sub ShowPdfDokument(pdfFile As String, Optional dpi As String = "")
-        'Prüfen ob Datei vorhanden
-        If IO.File.Exists(pdfFile) Then
-            'Hinweis-Datei (pdf) laden
-            Try
-                Rasterizer = New GhostscriptRasterizer
-                If dpi <> "" Then
-                    Rasterizer.CustomSwitches.Add("-r" & dpi)
-                End If
-                'wirft Ghostscript not installed Exception !!!
-                Rasterizer.Open(pdfFile, localDllInfo, True)
-                VorschauPDF.Image = Rasterizer.GetPage(96, 96, 1)
-            Catch ex As Exception
-                If ex.Message.Contains("library") Then
-                    MsgBox("Bitte Ghostscript installieren !" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Artikel-Hinweis")
-                Else
-                    MsgBox("Fehler beim Erstellen des pdf" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Artikel-Hinweis")
-                End If
-            End Try
-            'Speicher wieder freigeben
-            Rasterizer.Dispose()
         Else
             VorschauPDF.Image = Nothing
         End If

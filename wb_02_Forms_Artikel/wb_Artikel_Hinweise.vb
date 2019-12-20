@@ -1,32 +1,18 @@
 ﻿Imports WinBack.wb_Artikel_Shared
 Imports WeifenLuo.WinFormsUI.Docking
-Imports Ghostscript.NET.Rasterizer
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Windows.Forms
 
 Public Class wb_Artikel_Hinweise
     Inherits DockContent
-
-    Private Rasterizer As GhostscriptRasterizer
-    Private localDllInfo As Ghostscript.NET.GhostscriptVersionInfo
     Private dpi As String = ""
 
-    ''' <summary>
-    ''' gsdll32.dll extern einbinden (siehe auch https://github.com/jhabjan/Ghostscript.NET/blob/master/Ghostscript.NET.Samples/Samples/CustomGsdllLocationSample.cs)
-    ''' Momentan funktioniert das nur mit der "alten" dll aus WinBack-Office
-    ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub wb_Artikel_Hinweise_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Event-Handler (Klick auf Artikel-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
-        ' gsdll32.dll extern einbinden
-        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
-            localDllInfo = New Ghostscript.NET.GhostscriptVersionInfo(wb_GlobalSettings.pProgrammPath & "\GhostScript\gsdll32.dll")
-        Else
-            localDllInfo = New Ghostscript.NET.GhostscriptVersionInfo(wb_GlobalSettings.pAddInPath & "\GhostScript\gsdll32.dll")
-        End If
 
         'Beim ersten Aufruf wird der aktuelle Artikel angezeigt. Sonst wird beim Öffnen des Detail-Info-Fensters
         'der Inhalt der Textfelder gelöscht !!
@@ -47,9 +33,6 @@ Public Class wb_Artikel_Hinweise
     ''' Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
     ''' </summary>
     Private Sub DetailInfo(sender)
-        'Artikel-Hinweis pdf-Original-Datei
-        Dim pdfFile As String = ""
-
         'Datei-Name Verarbeitungshinweis (pdf)
         tHinweisName.Text = Artikel.VerarbeitungsHinweise
         'Auflösung (Umwandlung pdf nach png)
@@ -65,30 +48,7 @@ Public Class wb_Artikel_Hinweise
             'Mauszeiger anpassen
             Me.Cursor = Cursors.WaitCursor
             'Dateiname pdf-File
-            pdfFile = Artikel.VerarbeitungsHinweisePfad & "\" & Artikel.VerarbeitungsHinweise & ".pdf"
-            'Prüfen ob Datei vorhanden
-            If IO.File.Exists(pdfFile) Then
-                'Hinweis-Datei (pdf) laden
-                Try
-                    Rasterizer = New GhostscriptRasterizer
-                    If dpi <> "" Then
-                        Rasterizer.CustomSwitches.Add("-r" & dpi)
-                    End If
-                    'wirft Ghostscript not installed Exception !!!
-                    Rasterizer.Open(pdfFile, localDllInfo, True)
-                    VorschauPDF.Image = Rasterizer.GetPage(96, 96, 1)
-                Catch ex As Exception
-                    If ex.Message.Contains("library") Then
-                        MsgBox("Bitte Ghostscript installieren !" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Artikel-Hinweis")
-                    Else
-                        MsgBox("Fehler beim Erstellen des pdf" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Artikel-Hinweis")
-                    End If
-                End Try
-                'Speicher wieder freigeben
-                Rasterizer.Dispose()
-            Else
-                VorschauPDF.Image = Nothing
-            End If
+            wb_ShowPDF.ShowPdfDokument(Artikel.VerarbeitungsHinweisePfad & "\" & Artikel.VerarbeitungsHinweise & ".pdf", VorschauPDF, dpi)
         Else
             VorschauPDF.Image = Nothing
         End If

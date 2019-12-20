@@ -437,6 +437,7 @@
     <Compile Include="wb_00_Klassen\wb_nwtPistor.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtUpdateArtikel.vb" />
     <Compile Include="wb_00_Klassen\wb_nwtCl.vb" />
+    <Compile Include="wb_00_Klassen\wb_ShowPDF.vb" />
     <Compile Include="wb_00_Klassen\wb_Simple3Des.vb" />
     <Compile Include="wb_00_Klassen\wb_SplitTTSLog.vb" />
     <Compile Include="wb_00_Klassen\wb_Sql_FindServerIP.vb" />
