@@ -223,7 +223,7 @@
     <value>50</value>
   </data>
   <metadata name="StatusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>128, 17</value>
   </metadata>
   <data name="StatusStrip.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -943,7 +943,7 @@
     <value>cbLiniengruppe</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.6.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.7.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -964,7 +964,7 @@
     <value>cbVariante</value>
   </data>
   <data name="&gt;&gt;cbVariante.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.6.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.7.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbVariante.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -1411,10 +1411,10 @@
     <value>5</value>
   </data>
   <metadata name="VTPopUpMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>290, 17</value>
+    <value>401, 17</value>
   </metadata>
   <data name="VTPopUpMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 4</value>
+    <value>153, 26</value>
   </data>
   <data name="&gt;&gt;VTPopUpMenu.Name" xml:space="preserve">
     <value>VTPopUpMenu</value>
@@ -1423,7 +1423,7 @@
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="headerContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>127, 17</value>
+    <value>238, 17</value>
   </metadata>
   <data name="sortAscendingMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1960,7 +1960,7 @@
     <value>GridView_RzVerwendung</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Type" xml:space="preserve">
-    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.4.6.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.4.7.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Parent" xml:space="preserve">
     <value>tb_Verwendung</value>
@@ -2005,7 +2005,7 @@
     <value>Wb_TabControl</value>
   </data>
   <data name="&gt;&gt;Wb_TabControl.Type" xml:space="preserve">
-    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.4.6.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.4.7.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;Wb_TabControl.Parent" xml:space="preserve">
     <value>$this</value>

@@ -935,7 +935,7 @@ Public Class wb_Rezept_Rezeptur
         End If
         'Neue Produktions-Stufe davor
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Danach) Then
-            VTPopUpMenu.Items.Add("Neue Produktions-Stufe danach", Nothing, AddressOf VTP_NeueKomponenteDanach)
+            VTPopUpMenu.Items.Add("Neue Produktions-Stufe danach", Nothing, AddressOf VTP_NeueProduktionsStufeDanach)
         End If
 
         'Neuer Kessel nach der Produktions-Stufe
@@ -1065,4 +1065,5 @@ Public Class wb_Rezept_Rezeptur
             Return False
         End If
     End Function
+
 End Class

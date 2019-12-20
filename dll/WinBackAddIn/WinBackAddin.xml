@@ -2076,6 +2076,20 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_ShowPDF.#cctor">
+ <summary>
+ gsdll32.dll extern einbinden (siehe auch https://github.com/jhabjan/Ghostscript.NET/blob/master/Ghostscript.NET.Samples/Samples/CustomGsdllLocationSample.cs)
+ Momentan funktioniert das nur mit der "alten" dll aus WinBack-Office
+ </summary>
+</member>
+<member name="M:WinBack.wb_ShowPDF.ShowPdfDokument(System.String,System.Windows.Forms.PictureBox@,System.String)">
+ <summary>
+ 
+ </summary>
+ <param name="pdfFile"></param>
+ <param name="VorschauPDF"></param>
+ <param name="dpi"></param>
+</member>
 <member name="M:WinBack.wb_Sql_FindServerIP.GetWinBackIP">
  <summary>
  Scannt alle IP-Adressen im Netzwerk nach MySQL-Ports
@@ -5235,10 +5249,6 @@ Text aus Datenbank lesen - Übersetzung
  <param name="e"></param>
 </member>
 <member name="M:WinBack.wb_Artikel_Hinweise.wb_Artikel_Hinweise_Load(System.Object,System.EventArgs)">
- <summary>
- gsdll32.dll extern einbinden (siehe auch https://github.com/jhabjan/Ghostscript.NET/blob/master/Ghostscript.NET.Samples/Samples/CustomGsdllLocationSample.cs)
- Momentan funktioniert das nur mit der "alten" dll aus WinBack-Office
- </summary>
  <param name="sender"></param>
  <param name="e"></param>
 </member>

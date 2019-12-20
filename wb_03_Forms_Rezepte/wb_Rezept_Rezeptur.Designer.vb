@@ -154,6 +154,7 @@ Partial Class wb_Rezept_Rezeptur
         '
         resources.ApplyResources(Me.EnhEdit_Rezept, "EnhEdit_Rezept")
         Me.EnhEdit_Rezept.BorderStyle = System.Windows.Forms.BorderStyle.None
+        'Me.EnhEdit_Rezept.eFormat = Enh_Edit.wb_Format.FUndefined
         Me.EnhEdit_Rezept.eOG = "0"
         Me.EnhEdit_Rezept.eUG = "0"
         Me.EnhEdit_Rezept.Name = "EnhEdit_Rezept"
@@ -801,7 +802,6 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents Wb_TabControl As wb_TabControl
     Friend WithEvents tb_Rezeptur As Windows.Forms.TabPage
     Friend WithEvents tb_Naehrwerte As Windows.Forms.TabPage
-    Friend WithEvents VirtualTree As Infralution.Controls.VirtualTree.VirtualTree
     Friend WithEvents ColNr As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColBezeichnung As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColPreis As Infralution.Controls.VirtualTree.Column
@@ -881,4 +881,5 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents VTPopUpMenu As Windows.Forms.ContextMenuStrip
     Friend WithEvents EnhEdit As Infralution.Controls.VirtualTree.CellEditor
     Friend WithEvents EnhEdit_Rezept As EnhEdit.EnhEdit
+    Private WithEvents VirtualTree As Infralution.Controls.VirtualTree.VirtualTree
 End Class
