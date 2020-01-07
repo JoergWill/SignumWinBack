@@ -244,10 +244,13 @@ Public Class wb_Rezeptschritt
     ''' <returns></returns>
     Public Function ReCalcRzSteps(RsStep As Integer) As Integer
         For Each rs As wb_Rezeptschritt In ChildSteps
+            'Wenn der Rezeptschritt der erste Schritt von mehreren Schritten ist, Schritt-Nummer erhöhen
             If rs.ParamNr <= 1 Then
                 RsStep += 1
-                rs.SchrittNr = RsStep
             End If
+            'alle Rezeptschritte aktualisieren
+            rs.SchrittNr = RsStep
+            'Child-Steps aktualisieren
             If wb_Functions.TypeHasChildSteps(rs.Type) Then
                 RsStep = rs.ReCalcRzSteps(RsStep)
             End If

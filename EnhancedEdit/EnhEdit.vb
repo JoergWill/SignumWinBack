@@ -12,6 +12,7 @@ Public Class EnhEdit
     Private _eValue As String = ""
     Private _oValue As Object = Nothing
     Private _Init As Boolean = True
+    Private _NoKeyPressed As Boolean = True
     Private _TextBoxSize As New Size
 
     <System.Diagnostics.DebuggerNonUserCode()>
@@ -129,14 +130,15 @@ Public Class EnhEdit
     ''' Beim ersten Aufruf der Edit-Routine.
     ''' </summary>
     Protected Overrides Sub OnValueChanged()
-        Debug.Print("Enhanced Edit OnValueChanged " & Me.Value)
         If _Init Then
+            Debug.Print("Enhanced Edit OnValueChanged(Init) " & Me.Value)
             _Init = False
             _oValue = Value
             Me.TextBox.Text = Value
             Me.TextBox.SelectAll()
         Else
             Me.Value = eValue
+            Debug.Print("Enhanced Edit OnValueChanged " & Me.Value)
         End If
         'MyBase.OnValueChanged()
     End Sub
@@ -175,6 +177,8 @@ Public Class EnhEdit
     End Function
 
     Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
+        'Reset Flag NoKeyPressed
+        _NoKeyPressed = False
 
         'Fehlermeldung ausgeben - wenn notwendig
         Select Case EnhEdit_Global.GetKey(e, _eValue, _eFormat, _eUg, _eOG)
@@ -253,9 +257,14 @@ Public Class EnhEdit
     ''' </summary>
     ''' <param name="e"></param>
     Protected Overrides Sub OnValidating(e As CancelEventArgs)
-        Value = eValue
-        _oValue = Value
-        Debug.Print("Enhanced Edit OnValidating " & Value)
+        If _NoKeyPressed Then
+            Value = _oValue
+            Debug.Print("Enhanced Edit OnValidating(NoKeyPressed) " & Value)
+        Else
+            Value = eValue
+            _oValue = Value
+            Debug.Print("Enhanced Edit OnValidating " & Value)
+        End If
     End Sub
 
 End Class

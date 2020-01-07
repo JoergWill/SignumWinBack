@@ -5785,7 +5785,7 @@ Text aus Datenbank lesen - Übersetzung
 </member>
 <member name="M:WinBack.wb_Rezept_Rezeptur.VTP_NeueProduktionsStufeDavor(System.Object,System.EventArgs)">
  <summary>
- Neuer Kessel nach Produktions-Stufe einfügen
+ Neue Produktions-Stufe einfügen
  </summary>
  <param name="Sender"></param>
  <param name="e"></param>

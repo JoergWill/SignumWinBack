@@ -628,7 +628,7 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     ''' <summary>
-    ''' Neuer Kessel nach Produktions-Stufe einfügen
+    ''' Neue Produktions-Stufe einfügen
     ''' </summary>
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
@@ -884,6 +884,10 @@ Public Class wb_Rezept_Rezeptur
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
 
                 Case Else
+                    'Vor dem ersten Rezeptschritt kann eine Produktions-Stufe eingefügt werden
+                    If _RezeptSchritt.SchrittNr = 1 Then
+                        _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Davor) = True
+                    End If
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Davor) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente_Danach) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) = True
@@ -929,11 +933,11 @@ Public Class wb_Rezept_Rezeptur
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe) Then
             VTPopUpMenu.Items.Add("Neue Produktions-Stufe", Nothing, AddressOf VTP_NeueProduktionsStufe)
         End If
-        'Neue Produktions-Stufe danach
+        'Neue Produktions-Stufe davor
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Davor) Then
             VTPopUpMenu.Items.Add("Neue Produktions-Stufe davor", Nothing, AddressOf VTP_NeueProduktionsStufeDavor)
         End If
-        'Neue Produktions-Stufe davor
+        'Neue Produktions-Stufe danach
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe_Danach) Then
             VTPopUpMenu.Items.Add("Neue Produktions-Stufe danach", Nothing, AddressOf VTP_NeueProduktionsStufeDanach)
         End If
@@ -1036,7 +1040,12 @@ Public Class wb_Rezept_Rezeptur
 
         Select Case e.KeyCode
             Case Keys.Insert
-                VTP_NeueKomponenteDanach(sender, e)
+                'Sonderfall - das Rezept ist leer
+                If _RezeptSchritt Is Nothing Then
+                    VTP_NeueKomponente(sender, e)
+                Else
+                    VTP_NeueKomponenteDanach(sender, e)
+                End If
             Case Keys.Delete
                 VTP_Delete(sender, e)
         End Select
