@@ -37,6 +37,7 @@ Partial Class wb_Rohstoff_AuswahlListe
         Me.BtnCancel.Name = "BtnCancel"
         Me.BtnCancel.Size = New System.Drawing.Size(129, 45)
         Me.BtnCancel.TabIndex = 0
+        Me.BtnCancel.TabStop = False
         Me.BtnCancel.Text = "Cancel"
         Me.BtnCancel.UseVisualStyleBackColor = True
         '
@@ -66,6 +67,7 @@ Partial Class wb_Rohstoff_AuswahlListe
         Me.DataGridView.Location = New System.Drawing.Point(8, 8)
         Me.DataGridView.Name = "DataGridView"
         Me.DataGridView.Size = New System.Drawing.Size(659, 474)
+        Me.DataGridView.SortCol = -1
         Me.DataGridView.TabIndex = 2
         Me.DataGridView.x8859_5_FieldName = ""
         '

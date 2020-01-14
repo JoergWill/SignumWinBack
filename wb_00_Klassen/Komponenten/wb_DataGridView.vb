@@ -178,6 +178,15 @@ Public Class wb_DataGridView
     End Sub
 
     ''' <summary>
+    ''' Setzt die Sortierspalte (ohne dass ein Click auf die Titelzeile notwendig ist)
+    ''' </summary>
+    ''' <param name="ColNr"></param>
+    Public Sub SetSortColumn(Optional ColNr As Integer = 1)
+        sFilter = ""
+        iSort = ColNr
+    End Sub
+
+    ''' <summary>
     ''' Daten im Grid neu laden
     ''' </summary>
     Sub RefreshData()
@@ -524,6 +533,23 @@ Public Class wb_DataGridView
             tDataHasChanged.Enabled = True
         End If
     End Sub
+
+    ''' <summary>
+    ''' Return-Taste abfangen. Auswahl übernehmen (entspricht Doppelclick)
+    ''' </summary>
+    ''' <param name="msg"></param>
+    ''' <param name="keyData"></param>
+    ''' <returns></returns>
+    Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
+        'Debug.Print("ProcessCmdKey " & keyData.ToString)
+        'Return-Taste abfangen
+        If keyData = Keys.Return Then
+            'Doppelclick simulieren
+            OnDoubleClick(Nothing)
+            Return True
+        End If
+        Return False
+    End Function
 
     ''' <summary>
     ''' Key-Press im Grid - Filter-Kriterium in Header anzeigen

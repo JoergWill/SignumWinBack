@@ -74,7 +74,9 @@ Public Class WinBack
             If rbAbout.Active Then
                 If Debugger.IsAttached Then
                     'TEST CLOUD ROHSTOFFE
-                    MainFormShow(MdiRohstoffe, GetType(Rohstoffe_Main))
+                    'MainFormShow(MdiRohstoffe, GetType(Rohstoffe_Main))
+                    'TEST REZEPTVERWALTUNG
+                    MainFormShow(MdiRezepte, GetType(Rezepte_Main))
                     'TESTFENSTER
                     'MainFormShow(MdiTEst, GetType(Test_Main))
                 End If

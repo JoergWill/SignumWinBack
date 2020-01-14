@@ -144,6 +144,8 @@ Public Class wb_Rohstoff_AuswahlListe
         DataGridView.Filter = _Filter
         'Focus auf Sortier-Feld
         DataGridView.SortCol = 0
+        'Sortier-Kriterium ist die erste Spalte (Rohstoff-Name)
+        DataGridView.SetSortColumn(1)
     End Sub
 
     Private Sub BtnCancel_Click(sender As Object, e As EventArgs) Handles BtnCancel.Click

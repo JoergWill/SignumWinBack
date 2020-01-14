@@ -509,7 +509,8 @@ Public Class wb_Rezept_Rezeptur
             _RezeptSchritt.CopyFrom(_RezeptSchrittNeu)
             _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count + 1
             VT_AddChildSteps(_RezeptSchritt)
-            VT_Aktualisieren()
+            'Focus auf Eingabe Sollwert
+            VT_Aktualisieren(ColSollwert, False)
         End If
     End Sub
 
@@ -534,7 +535,8 @@ Public Class wb_Rezept_Rezeptur
         If VT_AuswahlRohstoff(AuswahlFilter) Then
             _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
             VT_AddChildSteps(_RezeptSchrittNeu)
-            VT_Aktualisieren()
+            'Focus auf Eingabe Sollwert
+            VT_Aktualisieren(ColSollwert, True)
         End If
     End Sub
 
@@ -567,7 +569,8 @@ Public Class wb_Rezept_Rezeptur
             VT_AddChildSteps(_RezeptSchrittNeu)
             'Der neu eingefügte Rezeptschritt wird der aktuelle Rezeptschritt (Tastatur-Bedienung INSERT)
             _RezeptSchritt = _RezeptSchrittNeu
-            VT_Aktualisieren()
+            'Focus auf Eingabe Sollwert
+            VT_Aktualisieren(ColSollwert, False)
         End If
     End Sub
 
@@ -579,7 +582,8 @@ Public Class wb_Rezept_Rezeptur
     Private Sub VTP_NeueProduktionsStufe(Sender As Object, e As EventArgs)
         _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE)
         _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count
-        VT_Aktualisieren()
+        'Focus auf Eingabe Sollwert
+        VT_Aktualisieren(ColBezeichnung, False)
     End Sub
 
     ''' <summary>
@@ -775,6 +779,25 @@ Public Class wb_Rezept_Rezeptur
         _RzChanged = True
         ToolStripRezeptChange.Visible = True
     End Sub
+
+    ''' <summary>
+    ''' Anzeige im Virtual-Tree aktualisieren. Danach Editor auf Sollwert starten.
+    ''' Über EditColumn wird die entsprechende Spalte (Edit) ausgewählt.
+    ''' </summary>
+    ''' <param name="EditColumn"></param>
+    Private Sub VT_Aktualisieren(EditColumn As Column, Before As Boolean)
+        Dim FocusItem As wb_Rezeptschritt = VirtualTree.FocusItem
+        VT_Aktualisieren()
+        VirtualTree.FocusItem = FocusItem
+        If Before Then
+            VirtualTree.SelectPriorRow()
+        Else
+            VirtualTree.SelectNextRow()
+        End If
+        VirtualTree.SelectedColumn = EditColumn
+        VirtualTree.EditCurrentCellInFocusRow()
+    End Sub
+
 
     ''' <summary>
     ''' Wenn der neu eingefügte Rezeptschritt mehrere Zeilen haben kann werden diese aus der KomponTypen-Tabelle

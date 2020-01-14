@@ -2,9 +2,10 @@
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EnhEdit.EnhEdit_Global
-Imports Winback
+Imports WinBack
 
 Public Class EnhEdit
+
     Private _eFormat As wb_Format = 0
     Private _eUg As Double
     Private _eOG As Double
@@ -34,6 +35,7 @@ Public Class EnhEdit
     ''' <param name="e"></param>
     Protected Overrides Sub OnGotFocus(e As EventArgs)
         Debug.Print("Enhanced Edit OnGotFocus " & Me.Value)
+        Debug.Print("Enhanced Edit eFormat    " & Me._eFormat.ToString)
         'Anzeigewert zurücksetzen
         _eValue = ""
 
@@ -153,7 +155,7 @@ Public Class EnhEdit
     ''' <param name="keyData"></param>
     ''' <returns></returns>
     Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
-        Debug.Print("ProcessCmdKey " & keyData.ToString)
+        'Debug.Print("ProcessCmdKey " & keyData.ToString)
 
         'TODO Pfeil nach oben/Pfeil nach unten noch verarbeiten
         If keyData = Keys.Escape Then
@@ -179,6 +181,7 @@ Public Class EnhEdit
     Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
         'Reset Flag NoKeyPressed
         _NoKeyPressed = False
+        Debug.Print("OnKeyDown " & e.KeyCode & "/" & e.KeyData & "/" & e.KeyValue)
 
         'Fehlermeldung ausgeben - wenn notwendig
         Select Case EnhEdit_Global.GetKey(e, _eValue, _eFormat, _eUg, _eOG)
@@ -247,9 +250,8 @@ Public Class EnhEdit
         'weitere Eingabe unterdrücken
         e.SuppressKeyPress = True
 
-
         'weitere Funktionen werden nicht aufgerufen
-        ' MyBase.OnKeyDown(e)
+        'MyBase.OnKeyDown(e)
     End Sub
 
     ''' <summary>

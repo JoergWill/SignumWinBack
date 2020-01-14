@@ -7,6 +7,7 @@
       <u:Value>2</u:Value>
     </Id>
     <DefaultLog4NetPattern z:Id="3">%d [%t] %p %logger [%x] - %m</DefaultLog4NetPattern>
+    <DefaultNlogJsonPattern i:nil="true" />
     <DefaultNlogPattern z:Id="4">${longdate}|${level}|${logger}|${message}</DefaultNlogPattern>
     <Version>24</Version>
     <_receivers z:Id="5" z:Size="1">
@@ -39,6 +40,11 @@
         <f:LogPattern z:Id="15">%d %level %w [%L %F.%C] %m%n</f:LogPattern>
         <f:ReadFromBeginning>true</f:ReadFromBeginning>
         <f:ReadRolledFiles>true</f:ReadRolledFiles>
+        <f:RolledFilesCount>0</f:RolledFilesCount>
+        <f:RolledFilesLimit>None</f:RolledFilesLimit>
+        <f:RolledFilesTimeFrom>2020-01-13T15:25:39.3016216+01:00</f:RolledFilesTimeFrom>
+        <f:RolledFilesTimeSpan>PT9M4.6541096S</f:RolledFilesTimeSpan>
+        <f:RolledFilesTimeUntil>2020-01-13T15:34:43.9557312+01:00</f:RolledFilesTimeUntil>
       </ReceiverConfig>
     </_receivers>
     <_sources z:Id="16" z:Size="0" />
@@ -60,7 +66,7 @@
     <SaveOnExit>true</SaveOnExit>
     <Version>24</Version>
     <_charts z:Id="22" z:Size="0" />
-    <_columns z:Id="23" z:Size="25">
+    <_columns z:Id="23" z:Size="26">
       <ColumnConfig z:Id="24">
         <Id>
           <u:Value>48</u:Value>
@@ -70,8 +76,8 @@
         <FixedStyle>None</FixedStyle>
         <IsStar>false</IsStar>
         <Name z:Ref="25" i:nil="true" />
-        <Position>-1</Position>
-        <Width>80</Width>
+        <Position>13</Position>
+        <Width>49</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
       <ColumnConfig z:Id="26">
@@ -110,7 +116,7 @@
         <IsStar>false</IsStar>
         <Name z:Ref="31" i:nil="true" />
         <Position>2</Position>
-        <Width>80</Width>
+        <Width>48</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
       <ColumnConfig z:Id="32">
@@ -135,8 +141,8 @@
         <FixedStyle>None</FixedStyle>
         <IsStar>false</IsStar>
         <Name z:Ref="35" i:nil="true" />
-        <Position>-1</Position>
-        <Width>80</Width>
+        <Position>12</Position>
+        <Width>210</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
       <ColumnConfig z:Id="36">
@@ -148,7 +154,7 @@
         <FixedStyle>None</FixedStyle>
         <IsStar>false</IsStar>
         <Name z:Ref="37" i:nil="true" />
-        <Position>4</Position>
+        <Position>-1</Position>
         <Width>100</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
@@ -174,8 +180,8 @@
         <FixedStyle>None</FixedStyle>
         <IsStar>false</IsStar>
         <Name z:Ref="41" i:nil="true" />
-        <Position>-1</Position>
-        <Width>80</Width>
+        <Position>8</Position>
+        <Width>119</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
       <ColumnConfig z:Id="42">
@@ -237,10 +243,10 @@
         <ClipMode>ClipRight</ClipMode>
         <FieldName z:Id="51">Message</FieldName>
         <FixedStyle>None</FixedStyle>
-        <IsStar>true</IsStar>
+        <IsStar>false</IsStar>
         <Name z:Ref="51" i:nil="true" />
-        <Position>6</Position>
-        <Width>1</Width>
+        <Position>14</Position>
+        <Width>420</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
       <ColumnConfig z:Id="52">
@@ -292,7 +298,7 @@
         <IsStar>false</IsStar>
         <Name z:Ref="59" i:nil="true" />
         <Position>3</Position>
-        <Width>100</Width>
+        <Width>67</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
       <ColumnConfig z:Id="60">
@@ -382,211 +388,224 @@
         <FixedStyle>None</FixedStyle>
         <IsStar>true</IsStar>
         <Name z:Ref="73" i:nil="true" />
-        <Position>5</Position>
-        <Width>1</Width>
+        <Position>-1</Position>
+        <Width>1000</Width>
+        <WindowId>47</WindowId>
+      </ColumnConfig>
+      <ColumnConfig z:Id="74">
+        <Id>
+          <u:Value>73</u:Value>
+        </Id>
+        <ClipMode>ClipRight</ClipMode>
+        <FieldName z:Id="75">AdjustedTime</FieldName>
+        <FixedStyle>None</FixedStyle>
+        <IsStar>false</IsStar>
+        <Name i:nil="true" />
+        <Position>6</Position>
+        <Width>76</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
     </_columns>
-    <_filters z:Id="74" z:Size="0" />
-    <_formats z:Id="75" z:Size="13">
-      <LoggerFormatConfig z:Id="76">
+    <_filters z:Id="76" z:Size="0" />
+    <_formats z:Id="77" z:Size="13">
+      <LoggerFormatConfig z:Id="78">
         <Id>
           <u:Value>4</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="77">#00FFFFFF</BackcolorString>
-        <Condition z:Id="78">[Level] &gt;= 0</Condition>
+        <BackcolorString z:Id="79">#00FFFFFF</BackcolorString>
+        <Condition z:Id="80">[Level] &gt;= 0</Condition>
         <Description i:nil="true" />
-        <FontName z:Id="79">Segoe UI</FontName>
+        <FontName z:Id="81">Segoe UI</FontName>
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="80">#FFC8C8C8</ForecolorString>
+        <ForecolorString z:Id="82">#FFC8C8C8</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="81">
+      <LoggerFormatConfig z:Id="83">
         <Id>
           <u:Value>5</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="82">#00FFFFFF</BackcolorString>
-        <Condition z:Id="83">[Level] &gt;= 10000</Condition>
+        <BackcolorString z:Id="84">#00FFFFFF</BackcolorString>
+        <Condition z:Id="85">[Level] &gt;= 10000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="84">#FFB4B4B4</ForecolorString>
+        <ForecolorString z:Id="86">#FFB4B4B4</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="85">
+      <LoggerFormatConfig z:Id="87">
         <Id>
           <u:Value>6</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="86">#00FFFFFF</BackcolorString>
-        <Condition z:Id="87">[Level] &gt;= 20000</Condition>
+        <BackcolorString z:Id="88">#00FFFFFF</BackcolorString>
+        <Condition z:Id="89">[Level] &gt;= 20000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="88">#FFA0A0A0</ForecolorString>
+        <ForecolorString z:Id="90">#FFA0A0A0</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="89">
+      <LoggerFormatConfig z:Id="91">
         <Id>
           <u:Value>7</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="90">#00FFFFFF</BackcolorString>
-        <Condition z:Id="91">[Level] &gt;= 30000</Condition>
+        <BackcolorString z:Id="92">#00FFFFFF</BackcolorString>
+        <Condition z:Id="93">[Level] &gt;= 30000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="92">#FF828282</ForecolorString>
+        <ForecolorString z:Id="94">#FF828282</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="93">
+      <LoggerFormatConfig z:Id="95">
         <Id>
           <u:Value>8</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="94">#00FFFFFF</BackcolorString>
-        <Condition z:Id="95">[Level] &gt;= 40000</Condition>
+        <BackcolorString z:Id="96">#00FFFFFF</BackcolorString>
+        <Condition z:Id="97">[Level] &gt;= 40000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="96">#FF000000</ForecolorString>
+        <ForecolorString z:Id="98">#FF000000</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="97">
+      <LoggerFormatConfig z:Id="99">
         <Id>
           <u:Value>9</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="98">#00FFFFFF</BackcolorString>
-        <Condition z:Id="99">[Level] &gt;= 50000</Condition>
+        <BackcolorString z:Id="100">#00FFFFFF</BackcolorString>
+        <Condition z:Id="101">[Level] &gt;= 50000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="100">#FF397B39</ForecolorString>
+        <ForecolorString z:Id="102">#FF397B39</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="101">
+      <LoggerFormatConfig z:Id="103">
         <Id>
           <u:Value>10</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="102">#00FFFFFF</BackcolorString>
-        <Condition z:Id="103">[Level] &gt;= 60000</Condition>
+        <BackcolorString z:Id="104">#00FFFFFF</BackcolorString>
+        <Condition z:Id="105">[Level] &gt;= 60000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="104">#FFFF7F00</ForecolorString>
+        <ForecolorString z:Id="106">#FFFF7F00</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="105">
+      <LoggerFormatConfig z:Id="107">
         <Id>
           <u:Value>11</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="106">#00FFFFFF</BackcolorString>
-        <Condition z:Id="107">[Level] &gt;= 70000</Condition>
+        <BackcolorString z:Id="108">#00FFFFFF</BackcolorString>
+        <Condition z:Id="109">[Level] &gt;= 70000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="108">#FFFF0000</ForecolorString>
+        <ForecolorString z:Id="110">#FFFF0000</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="109">
+      <LoggerFormatConfig z:Id="111">
         <Id>
           <u:Value>12</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="110">#00FFFFFF</BackcolorString>
-        <Condition z:Id="111">[Level] &gt;= 80000</Condition>
+        <BackcolorString z:Id="112">#00FFFFFF</BackcolorString>
+        <Condition z:Id="113">[Level] &gt;= 80000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="112">#FFE3021F</ForecolorString>
+        <ForecolorString z:Id="114">#FFE3021F</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="113">
+      <LoggerFormatConfig z:Id="115">
         <Id>
           <u:Value>13</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="114">#00FFFFFF</BackcolorString>
-        <Condition z:Id="115">[Level] &gt;= 90000</Condition>
+        <BackcolorString z:Id="116">#00FFFFFF</BackcolorString>
+        <Condition z:Id="117">[Level] &gt;= 90000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="116">#FFAB0E39</ForecolorString>
+        <ForecolorString z:Id="118">#FFAB0E39</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="117">
+      <LoggerFormatConfig z:Id="119">
         <Id>
           <u:Value>14</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="118">#00FFFFFF</BackcolorString>
-        <Condition z:Id="119">[Level] &gt;= 100000</Condition>
+        <BackcolorString z:Id="120">#00FFFFFF</BackcolorString>
+        <Condition z:Id="121">[Level] &gt;= 100000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="120">#FFFF00FF</ForecolorString>
+        <ForecolorString z:Id="122">#FFFF00FF</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="121">
+      <LoggerFormatConfig z:Id="123">
         <Id>
           <u:Value>15</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="122">#00FFFFFF</BackcolorString>
-        <Condition z:Id="123">[Level] &gt;= 110000</Condition>
+        <BackcolorString z:Id="124">#00FFFFFF</BackcolorString>
+        <Condition z:Id="125">[Level] &gt;= 110000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="124">#FF8B2899</ForecolorString>
+        <ForecolorString z:Id="126">#FF8B2899</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
-      <LoggerFormatConfig z:Id="125">
+      <LoggerFormatConfig z:Id="127">
         <Id>
           <u:Value>16</u:Value>
         </Id>
         <Active>true</Active>
-        <BackcolorString z:Id="126">#00FFFFFF</BackcolorString>
-        <Condition z:Id="127">[Level] &gt;= 120000</Condition>
+        <BackcolorString z:Id="128">#00FFFFFF</BackcolorString>
+        <Condition z:Id="129">[Level] &gt;= 120000</Condition>
         <Description i:nil="true" />
-        <FontName z:Ref="79" i:nil="true" />
+        <FontName z:Ref="81" i:nil="true" />
         <FontSize>12</FontSize>
-        <ForecolorString z:Id="128">#FF76237D</ForecolorString>
+        <ForecolorString z:Id="130">#FF76237D</ForecolorString>
         <Italic>false</Italic>
         <OpenTypeWeight>400</OpenTypeWeight>
         <Underline>false</Underline>
       </LoggerFormatConfig>
     </_formats>
-    <_logLevels z:Id="129" z:Size="0" />
-    <_loggers z:Id="130" z:Size="0" />
+    <_logLevels z:Id="131" z:Size="0" />
+    <_loggers z:Id="132" z:Size="0" />
   </Presentation>
   <Version>24</Version>
 </Config>

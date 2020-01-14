@@ -36,7 +36,12 @@ Partial Class EnhEdit
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        components = New System.ComponentModel.Container()
+        Me.SuspendLayout()
+        '
+        'EnhEdit
+        '
+        Me.ResumeLayout(False)
+
     End Sub
 
 End Class

@@ -115,18 +115,27 @@ Public Class wb_Rezeptschritt
                 _Nummer = NewKomp.Nummer
                 _Einheit = "-"
                 _TA = 0
+                _Format = EnhEdit.EnhEdit_Global.wb_Format.fString
+                _OberGW = 250
+                _UnterGW = 0
             Case wb_Global.KomponTypen.KO_TYPE_KESSEL
                 NewKomp = wb_Komponente.Kessel
                 _Sollwert = NewKomp.Bezeichnung
                 _Nummer = NewKomp.Nummer
                 _Einheit = "-"
                 _TA = 0
+                _Format = EnhEdit.EnhEdit_Global.wb_Format.fString
+                _OberGW = 250
+                _UnterGW = 0
             Case wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
                 NewKomp = wb_Komponente.TextKomponente
                 _Sollwert = NewKomp.Bezeichnung
                 _Nummer = NewKomp.Nummer
                 _Einheit = "-"
                 _TA = 0
+                _Format = EnhEdit.EnhEdit_Global.wb_Format.fString
+                _OberGW = 250
+                _UnterGW = 0
             Case Else
                 NewKomp = Nothing
         End Select

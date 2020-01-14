@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Runtime.InteropServices
+Imports System.Windows.Forms
 
 Public Class EnhEdit_Global
     Const KOMMA = 2
@@ -101,23 +102,68 @@ Public Class EnhEdit_Global
             Case Keys.Enter, Keys.Return
                 Return wb_Result.KeyReturn
 
+                'Umlaute und Sonderzeichen
+            Case 186, 192, 222
+                If Format = wb_Format.fString Then
+                    Value = AddStr(Value, e)
+                End If
+
         End Select
 
         Return wb_Result.Undefined
     End Function
 
     Private Shared Function AddStr(Value As String, e As KeyEventArgs, Optional NumPad As Boolean = False) As String
-        Dim ckey = e.KeyCode
+        Dim ckey = GetAscci(e)
+        'Dim ckey = e.KeyCode
         If NumPad Then
-            Value = Value & Chr(ckey - 48)
+            Value = Value & ckey
         Else
             If e.Shift Then
-                Value = Value & Chr(ckey)
+                Value = Value & ckey.ToUpper
             Else
-                Value = Value & Chr(ckey).ToString.ToLower
+                Value = Value & ckey.ToLower
             End If
         End If
         Return Value
+    End Function
+
+    <DllImport("user32.dll", CharSet:=CharSet.Auto, ExactSpelling:=True)>
+    Public Shared Function GetKeyboardLayout(ByVal dwLayout As Integer) As Integer
+    End Function
+
+    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
+    Public Shared Function MapVirtualKeyEx(ByVal uCode As Integer, ByVal nMapType As Integer, ByVal dwhkl As Integer) As Integer
+    End Function
+
+    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
+    Public Shared Function ToUnicodeEx(ByVal wVirtKey As Integer, ByVal wScanCode As Integer, ByVal lpKeyState As Byte(), ByVal pwszBuff As String, ByVal cchBuff As Integer, ByVal wFlags As Integer, ByVal dwhkl As Integer) As Integer
+    End Function
+
+    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
+    Public Shared Function ToAsciiEx(ByVal uVirtKey As Integer, ByVal uScanCode As Integer, ByVal lpKeyState As Byte(), ByVal lpChar As String, ByVal wFlags As Integer, ByVal dwhkl As Integer) As Integer
+    End Function
+
+    Public Shared Function GetAscci(e As KeyEventArgs) As String
+        Const MAPVK_VK_TO_VSC = 0
+
+        Dim keyblayoutID As Integer = GetKeyboardLayout(0)
+        Dim ScanCode As Integer = MapVirtualKeyEx(e.KeyCode, MAPVK_VK_TO_VSC, keyblayoutID)
+
+        Dim keystate(255) As Byte
+        Dim buff As String = New String(ControlChars.NullChar, 256)
+        Dim bufflen As Integer = buff.Length
+
+        Dim ret As Integer = ToAsciiEx(e.KeyCode, ScanCode, keystate, buff, 0, keyblayoutID)
+
+        Select Case ret
+            Case -1 ' diactric
+            Case 0 ' no translation
+            Case Else ' How many characters are written into buffer
+                buff = buff.Substring(0, ret)
+                Debug.Print("GetAscci " & buff)
+        End Select
+        Return buff
     End Function
 
     Private Shared Function CheckBounds(ByRef Value As String, oValue As String, Format As wb_Format, ug As Double, og As Double) As wb_Result

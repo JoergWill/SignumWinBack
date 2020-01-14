@@ -5843,6 +5843,13 @@ Text aus Datenbank lesen - Übersetzung
  Anzeige im Virtual-Tree aktualisieren
  </summary>
 </member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.VT_Aktualisieren(Infralution.Controls.VirtualTree.Column,System.Boolean)">
+ <summary>
+ Anzeige im Virtual-Tree aktualisieren. Danach Editor auf Sollwert starten.
+ Über EditColumn wird die entsprechende Spalte (Edit) ausgewählt.
+ </summary>
+ <param name="EditColumn"></param>
+</member>
 <member name="M:WinBack.wb_Rezept_Rezeptur.VT_AddChildSteps(WinBack.wb_Rezeptschritt@)">
  <summary>
  Wenn der neu eingefügte Rezeptschritt mehrere Zeilen haben kann werden diese aus der KomponTypen-Tabelle
@@ -6611,6 +6618,12 @@ in das DataView und in das Pop-Up-Menu eingetragen
  <param name="sGridName">String DataGrid-Name läd die Spalten-Einstellungen aus winback.ini</param>
  <param name="table">dbTable Datenbank Tabelle winback/wbdaten</param>
 </member>
+<member name="M:WinBack.wb_DataGridView.SetSortColumn(System.Int32)">
+ <summary>
+ Setzt die Sortierspalte (ohne dass ein Click auf die Titelzeile notwendig ist)
+ </summary>
+ <param name="ColNr"></param>
+</member>
 <member name="M:WinBack.wb_DataGridView.RefreshData">
  <summary>
  Daten im Grid neu laden
@@ -6736,6 +6749,14 @@ Start Timer nach Änderung Datensatz-Zeiger
  Der Timer wird nicht gestartet, wenn der Event unterdrückt werden soll (_SuppressChangeEvent), z.B. beim
  Speichern des Datensatzes im Grid (UpdateDataBase)
  </summary>
+</member>
+<member name="M:WinBack.wb_DataGridView.ProcessCmdKey(System.Windows.Forms.Message@,System.Windows.Forms.Keys)">
+ <summary>
+ Return-Taste abfangen. Auswahl übernehmen (entspricht Doppelclick)
+ </summary>
+ <param name="msg"></param>
+ <param name="keyData"></param>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_DataGridView.DataGridView_KeyPress(System.Object,System.Windows.Forms.KeyPressEventArgs)">
  <summary>
