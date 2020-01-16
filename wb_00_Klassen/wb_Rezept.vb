@@ -739,7 +739,7 @@ Public Class wb_Rezept
                     End If
                 End Try
                 'Sonderfall Kneterschritte
-            ElseIf _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KNETER Then
+            ElseIf (_RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KNETER) Or (_RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT) Then
                 'Eingabeformat und Grenzwerte stehen in winback.KomponParams
                 _RezeptSchritt.SetType118()
             End If

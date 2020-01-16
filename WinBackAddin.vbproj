@@ -1065,6 +1065,7 @@
     <Content Include="DBUpdate\2.30_Einheiten.sql" />
     <Content Include="DBUpdate\2.30_ENummern_A.sql" />
     <Content Include="DBUpdate\2.30_ENummern_B.sql" />
+    <Content Include="DBUpdate\2.30_ErweiterungAllergene.sql" />
     <Content Include="DBUpdate\2.30_KocherKomponenten.sql" />
     <Content Include="DBUpdate\2.30_KocherKomponParams.sql" />
     <Content Include="DBUpdate\2.30_KocherLinien_BC9000.sql" />

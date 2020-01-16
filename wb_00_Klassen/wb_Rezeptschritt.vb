@@ -15,8 +15,8 @@ Public Class wb_Rezeptschritt
     Private _Sollwert As String
     Private _Einheit As String
     Private _Format As EnhEdit.EnhEdit_Global.wb_Format
-    Private _OberGW As Double
-    Private _UnterGW As Double
+    Private _OberGW As String
+    Private _UnterGW As String
     Private _PreisProKg As Double = 0
     Private _RezeptNr As Integer = -1
     Private _TA As Integer = wb_Global.TA_Undefined
@@ -116,8 +116,8 @@ Public Class wb_Rezeptschritt
                 _Einheit = "-"
                 _TA = 0
                 _Format = EnhEdit.EnhEdit_Global.wb_Format.fString
-                _OberGW = 250
-                _UnterGW = 0
+                _OberGW = "250"
+                _UnterGW = "0"
             Case wb_Global.KomponTypen.KO_TYPE_KESSEL
                 NewKomp = wb_Komponente.Kessel
                 _Sollwert = NewKomp.Bezeichnung
@@ -125,8 +125,8 @@ Public Class wb_Rezeptschritt
                 _Einheit = "-"
                 _TA = 0
                 _Format = EnhEdit.EnhEdit_Global.wb_Format.fString
-                _OberGW = 250
-                _UnterGW = 0
+                _OberGW = "250"
+                _UnterGW = "0"
             Case wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
                 NewKomp = wb_Komponente.TextKomponente
                 _Sollwert = NewKomp.Bezeichnung
@@ -134,8 +134,8 @@ Public Class wb_Rezeptschritt
                 _Einheit = "-"
                 _TA = 0
                 _Format = EnhEdit.EnhEdit_Global.wb_Format.fString
-                _OberGW = 250
-                _UnterGW = 0
+                _OberGW = "250"
+                _UnterGW = "0"
             Case Else
                 NewKomp = Nothing
         End Select
@@ -366,7 +366,7 @@ Public Class wb_Rezeptschritt
     Public Property VirtTreeBezeichnung() As String
         Get
             Select Case _Type
-                Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
+                Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE, KO_TYPE_KNETERREZEPT
                     Return _Sollwert
                 Case Else
                     'Anzeige Kommentar statt Rezeptbezeichnung
@@ -387,7 +387,7 @@ Public Class wb_Rezeptschritt
         End Get
         Set(value As String)
             Select Case _Type
-                Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
+                Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE, KO_TYPE_KNETERREZEPT
                     _Sollwert = value
                 Case Else
                     'keine Änderung !
@@ -404,7 +404,7 @@ Public Class wb_Rezeptschritt
     Public Property VirtTreeSollwert As String
         Get
             Select Case _Type
-                Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
+                Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE, KO_TYPE_KNETERREZEPT
                     Return ""
                 Case Else
                     If wb_Functions.TypeIstSollMenge(_Type, 1) Then
@@ -504,20 +504,20 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
-    Public Property OberGW As Double
+    Public Property OberGW As String
         Get
             Return _OberGW
         End Get
-        Set(value As Double)
+        Set(value As String)
             _OberGW = value
         End Set
     End Property
 
-    Public Property UnterGW As Double
+    Public Property UnterGW As String
         Get
             Return _UnterGW
         End Get
-        Set(value As Double)
+        Set(value As String)
             _UnterGW = value
         End Set
     End Property
@@ -554,14 +554,22 @@ Public Class wb_Rezeptschritt
     ''' Erzeugen von Kneter-Rezepten aus Komponenten(128)
     ''' </summary>
     Public Sub SetType118()
-        If _Type = wb_Global.KomponTypen.KO_TYPE_KNETER Then
-            Dim EinheitenIndex As String = wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.EinheitenIndex)
-            _Einheit = wb_Language.TextFilter(wb_sql_Functions.Lookup("Einheiten", "E_Einheit", "E_LfdNr = " & EinheitenIndex))
-            _Sollwert = wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.Sollwert)
-            _Format = wb_Functions.StrToFormat(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.Format))
-            _UnterGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.UntererGrenzwert))
-            _OberGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.ObererGrenzwert))
-        End If
+        Select Case _Type
+            Case wb_Global.KomponTypen.KO_TYPE_KNETER
+                Dim EinheitenIndex As String = wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.EinheitenIndex)
+                _Einheit = wb_Language.TextFilter(wb_sql_Functions.Lookup("Einheiten", "E_Einheit", "E_LfdNr = " & EinheitenIndex))
+                _Sollwert = wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.Sollwert)
+                _Format = wb_Functions.StrToFormat(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.Format))
+                _UnterGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.UntererGrenzwert))
+                _OberGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.ObererGrenzwert))
+
+            Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
+                _Einheit = wb_Global.wbEinheitLeer
+                _Format = EnhEdit.EnhEdit_Global.wb_Format.fString
+                _UnterGW = wb_Global.wbRzptParamMin
+                _OberGW = wb_Global.wbRzptParamMax
+
+        End Select
     End Sub
 
     ''' <summary>

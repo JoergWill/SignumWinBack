@@ -374,6 +374,10 @@ Public Class wb_Functions
                 Return wb_Format.fTime
             Case "5"
                 Return wb_Format.fBoolean
+            Case "6"
+                Return wb_Format.fAllergen
+            Case "7"
+                Return wb_Format.fYesNo
             Case Else
                 Return wb_Format.FUndefined
         End Select

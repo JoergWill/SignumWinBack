@@ -10,6 +10,9 @@ Public Class EnhEdit_Global
     Const SEK = 2
     Const MAXMINSEK = 59
 
+    Const MAPVK_VK_TO_VSC = 0
+    Private Shared keyblayoutID As Integer
+
     ''' <summary>
     ''' Format-Information aus winback.Format
     ''' FM_Index	FM_Bezeichnung
@@ -27,6 +30,7 @@ Public Class EnhEdit_Global
         fTime = 4
         fBoolean = 5
         fAllergen = 6
+        fYesNo = 7
     End Enum
 
     Public Enum wb_Result
@@ -42,6 +46,31 @@ Public Class EnhEdit_Global
 
         Undefined
     End Enum
+
+    ''' <summary>
+    ''' Ermittelt beim Start der Routine (Shared) einmalig das Keyboard-Layout
+    ''' Routine aus: http://www.vbforums.com/showthread.php?632922-vb2008-convert-Oem-keys-in-REAL-keyboard-value
+    ''' 
+    ''' </summary>
+    Shared Sub New()
+        keyblayoutID = GetKeyboardLayout(0)
+    End Sub
+
+    <DllImport("user32.dll", CharSet:=CharSet.Auto, ExactSpelling:=True)>
+    Public Shared Function GetKeyboardLayout(ByVal dwLayout As Integer) As Integer
+    End Function
+
+    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
+    Public Shared Function MapVirtualKeyEx(ByVal uCode As Integer, ByVal nMapType As Integer, ByVal dwhkl As Integer) As Integer
+    End Function
+
+    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
+    Public Shared Function ToUnicodeEx(ByVal wVirtKey As Integer, ByVal wScanCode As Integer, ByVal lpKeyState As Byte(), ByVal pwszBuff As String, ByVal cchBuff As Integer, ByVal wFlags As Integer, ByVal dwhkl As Integer) As Integer
+    End Function
+
+    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
+    Public Shared Function ToAsciiEx(ByVal uVirtKey As Integer, ByVal uScanCode As Integer, ByVal lpKeyState As Byte(), ByVal lpChar As String, ByVal wFlags As Integer, ByVal dwhkl As Integer) As Integer
+    End Function
 
     ''' <summary>
     ''' Auswertung der Key-Codes. Abhängig vom Format wird der entsprechende Wert in Value eingetragen
@@ -128,32 +157,16 @@ Public Class EnhEdit_Global
         Return Value
     End Function
 
-    <DllImport("user32.dll", CharSet:=CharSet.Auto, ExactSpelling:=True)>
-    Public Shared Function GetKeyboardLayout(ByVal dwLayout As Integer) As Integer
-    End Function
-
-    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
-    Public Shared Function MapVirtualKeyEx(ByVal uCode As Integer, ByVal nMapType As Integer, ByVal dwhkl As Integer) As Integer
-    End Function
-
-    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
-    Public Shared Function ToUnicodeEx(ByVal wVirtKey As Integer, ByVal wScanCode As Integer, ByVal lpKeyState As Byte(), ByVal pwszBuff As String, ByVal cchBuff As Integer, ByVal wFlags As Integer, ByVal dwhkl As Integer) As Integer
-    End Function
-
-    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
-    Public Shared Function ToAsciiEx(ByVal uVirtKey As Integer, ByVal uScanCode As Integer, ByVal lpKeyState As Byte(), ByVal lpChar As String, ByVal wFlags As Integer, ByVal dwhkl As Integer) As Integer
-    End Function
-
+    ''' <summary>
+    ''' Ermittelt den ASCII-Code zum Key-Code der Tastatur. Abhängig vom Layout der Tastatur.
+    ''' </summary>
+    ''' <param name="e"></param>
+    ''' <returns></returns>
     Public Shared Function GetAscci(e As KeyEventArgs) As String
-        Const MAPVK_VK_TO_VSC = 0
-
-        Dim keyblayoutID As Integer = GetKeyboardLayout(0)
         Dim ScanCode As Integer = MapVirtualKeyEx(e.KeyCode, MAPVK_VK_TO_VSC, keyblayoutID)
-
         Dim keystate(255) As Byte
         Dim buff As String = New String(ControlChars.NullChar, 256)
         Dim bufflen As Integer = buff.Length
-
         Dim ret As Integer = ToAsciiEx(e.KeyCode, ScanCode, keystate, buff, 0, keyblayoutID)
 
         Select Case ret
@@ -161,7 +174,7 @@ Public Class EnhEdit_Global
             Case 0 ' no translation
             Case Else ' How many characters are written into buffer
                 buff = buff.Substring(0, ret)
-                Debug.Print("GetAscci " & buff)
+                'Debug.Print("GetAscci " & buff)
         End Select
         Return buff
     End Function

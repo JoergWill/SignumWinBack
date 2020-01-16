@@ -40,12 +40,17 @@
     'Offset WinBack.Linien zu OrgaBack-Backorte (ArtikelMultifunktionsfeld.Hierarchie)
     Public Const OffsetBackorte = 100
 
+    'WinBack Rezept.Parameter(String)
+    Public Const wbRzptParamMin = 0
+    Public Const wbRzptParamMax = 250
+
     'OrgaBack.Einheit [gr] aus dbo.Einheiten (Unit-Test)
     Public Const obEinheitStk As Short = 0
     Public Const obEinheitKilogramm As Short = 11
     Public Const obEinheitGramm As Short = 12
     Public Const obEinheitLiter As Short = 16
     'WinBack.Einheit aus winback.Einheiten (Unit-Test)
+    Public Const wbEinheitLeer = 0
     Public Const wbEinheitKilogramm = 1
     Public Const wbEinheitStk = 11
     'Einträge AktionTimer-Tabelle

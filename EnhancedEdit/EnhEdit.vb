@@ -34,10 +34,11 @@ Public Class EnhEdit
     ''' </summary>
     ''' <param name="e"></param>
     Protected Overrides Sub OnGotFocus(e As EventArgs)
-        Debug.Print("Enhanced Edit OnGotFocus " & Me.Value)
-        Debug.Print("Enhanced Edit eFormat    " & Me._eFormat.ToString)
+        'Debug.Print("Enhanced Edit OnGotFocus " & Me.Value)
+        'Debug.Print("Enhanced Edit eFormat    " & Me._eFormat.ToString)
         'Anzeigewert zurücksetzen
         _eValue = ""
+        _NoKeyPressed = True
 
         'Ausrichtung und Format der unterlagerten Textbox
         If _eFormat = wb_Format.fString Then
@@ -71,7 +72,7 @@ Public Class EnhEdit
         End Get
         Set(value As String)
             If value IsNot Nothing And value <> "" Then
-                _eUg = Convert.ToDouble(value)
+                _eUg = wb_Functions.StrToDouble(value)
             Else
                 _eUg = 0
             End If
@@ -84,7 +85,7 @@ Public Class EnhEdit
         End Get
         Set(value As String)
             If value IsNot Nothing And value <> "" Then
-                _eOG = Convert.ToDouble(value)
+                _eOG = wb_Functions.StrToDouble(value)
             Else
                 _eOG = 0
             End If
@@ -155,33 +156,35 @@ Public Class EnhEdit
     ''' <param name="keyData"></param>
     ''' <returns></returns>
     Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
-        'Debug.Print("ProcessCmdKey " & keyData.ToString)
+        Debug.Print("ProcessCmdKey " & keyData.ToString)
 
-        'TODO Pfeil nach oben/Pfeil nach unten noch verarbeiten
         If keyData = Keys.Escape Then
             'Orginalwert wieder eintragen
             _eValue = _oValue
             'entspricht der Return-Taste
             Me.ValidateText()
         End If
+
         'Pfeil nach unten - Simuliert TAB
         If keyData = Keys.Down Then
             Me.ValidateText()
             keyData = Keys.Tab
         End If
+
         'Pfeil nach oben - Simuliert Shift-TAB
         If keyData = Keys.Up Then
             Me.ValidateText()
-            keyData = Keys.ShiftKey
+            keyData = Keys.Tab + Keys.Shift
         End If
 
         Return MyBase.ProcessCmdKey(msg, keyData)
     End Function
 
     Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
+        'Debug.Print("OnKeyDown " & e.KeyCode & "/" & e.KeyData & "/" & e.KeyValue)
+
         'Reset Flag NoKeyPressed
         _NoKeyPressed = False
-        Debug.Print("OnKeyDown " & e.KeyCode & "/" & e.KeyData & "/" & e.KeyValue)
 
         'Fehlermeldung ausgeben - wenn notwendig
         Select Case EnhEdit_Global.GetKey(e, _eValue, _eFormat, _eUg, _eOG)
