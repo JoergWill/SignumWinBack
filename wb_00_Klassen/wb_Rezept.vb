@@ -222,6 +222,9 @@ Public Class wb_Rezept
     ''' <returns></returns>
     Public ReadOnly Property KtTyp301 As wb_KomponParam301
         Get
+            'der Root-Knoten hat keine Nährwerte und wird als Vegan,Vegatarisch... deklariert
+            _RootRezeptSchritt.InitKT301Params()
+            'Nährwerte berechnen
             Return _RootRezeptSchritt.ktTyp301
         End Get
     End Property

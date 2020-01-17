@@ -50,7 +50,7 @@ Public Class wb_ArrayGridViewKomponParam301
                     MyBase.Columns(MyBase.ColumnCount - 1).ReadOnly = True
 
                     'Nährwerte/Allergene
-                    If wb_KomponParam301_Global.IsAllergen(i) Then
+                    If wb_KomponParam301_Global.IsAllergen(i) Or wb_KomponParam301_Global.IsErnaehrung(i) Then
                         'Allergene ohne Überschrift
                         MyBase.Columns.Add(CStr(ColCount) & "_Wert", "")
                         MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
@@ -63,7 +63,7 @@ Public Class wb_ArrayGridViewKomponParam301
                     MyBase.Columns(MyBase.ColumnCount - 1).ReadOnly = True
 
                     'Spalte Einheiten
-                    If wb_KomponParam301_Global.IsAllergen(i) Then
+                    If wb_KomponParam301_Global.IsAllergen(i) Or wb_KomponParam301_Global.IsErnaehrung(i) Then
                         'Bei Allergenen wird keine Einheit eingetragen - variable Spaltenbreite
                         MyBase.Columns.Add(CStr(ColCount) & "_X", "")
                         MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -108,6 +108,10 @@ Public Class wb_ArrayGridViewKomponParam301
                             If wb_KomponParam301_Global.IsAllergen(i) Then
                                 'Allergen-Kennzeichnung ohne Einheit
                                 .Cells(c * 3 - 2).Value = wb_Functions.AllergenToString(arr(i).Wert)
+                                .Cells(c * 3 - 1).Value = ""
+                            ElseIf wb_KomponParam301_Global.IsErnaehrung(i) Then
+                                'Kennzeichnung Ernährungsform ohne Einheit
+                                .Cells(c * 3 - 2).Value = wb_Functions.ErnaehrungToString(arr(i).Wert)
                                 .Cells(c * 3 - 1).Value = ""
                             Else
                                 'Nährwert und Einheit

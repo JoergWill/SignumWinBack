@@ -97,7 +97,7 @@ Public Class wb_Rohstoffe_Parameter
 
         'Soll/Istwert 
         If e.Column.Name = "ColWert" Then
-            If _KomponParam.TypNr = wb_Global.ktParam.kt301 And wb_KomponParam301_Global.IsAllergen(_KomponParam.ParamNr) Then
+            If _KomponParam.TypNr = wb_Global.ktParam.kt301 And (wb_KomponParam301_Global.IsAllergen(_KomponParam.ParamNr) Or wb_KomponParam301_Global.IsErnaehrung(_KomponParam.ParamNr)) Then
                 'Allergen-Informationen zentriert
                 VirtualTree_SetFontAlignment(e.CellData.EvenStyle)
                 VirtualTree_SetFontAlignment(e.CellData.OddStyle)

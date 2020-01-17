@@ -11,19 +11,24 @@ Public Class wb_Admin_UpdateDatabase
         'Kunde-Name WinBack
         tbWinbackKundeName.Text = wb_GlobalSettings.MandantName
 
-        'Version OrgaBack
-        tbOrgaBack.Text = wb_GlobalSettings.OrgaBackVersion
-        'Version OrgaBack-Datenbank
-        tbOrgaBackDataBase.Text = wb_GlobalSettings.OrgaBackDBVersion
-        'OrgaBack-Main-DB
-        tbMsSQLMain.Text = wb_GlobalSettings.MsSQLMain
+        'Programmversion WinBack-Office hat keine OrgaBack-Anbindung
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            'Version OrgaBack
+            tbOrgaBack.Text = wb_GlobalSettings.OrgaBackVersion
+            'Version OrgaBack-Datenbank
+            tbOrgaBackDataBase.Text = wb_GlobalSettings.OrgaBackDBVersion
+            'OrgaBack-Main-DB
+            tbMsSQLMain.Text = wb_GlobalSettings.MsSQLMain
 
-        'OrgaBack Datenbank-Server
-        tbOrgaBackDBServer.Text = wb_GlobalSettings.MsSQLServer
-        'OrgaBack Admin-Datenbank
-        tbOrgaBackAdminDB.Text = wb_GlobalSettings.MsSQLAdmn
-        'OrgaBack Main-Datenbank
-        tbOrgaBackMainDB.Text = wb_GlobalSettings.MsSQLMain
+            'OrgaBack Datenbank-Server
+            tbOrgaBackDBServer.Text = wb_GlobalSettings.MsSQLServer
+            'OrgaBack Admin-Datenbank
+            tbOrgaBackAdminDB.Text = wb_GlobalSettings.MsSQLAdmn
+            'OrgaBack Main-Datenbank
+            tbOrgaBackMainDB.Text = wb_GlobalSettings.MsSQLMain
+        Else
+            PnlOrgaBack.Visible = False
+        End If
 
         'Anzahl der verfügbaren WinBack-Datenbank-Updates
         DBUpdateFiles.Clear()

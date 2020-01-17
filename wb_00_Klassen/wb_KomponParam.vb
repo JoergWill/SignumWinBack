@@ -77,6 +77,8 @@ Public Class wb_KomponParam
         Get
             If wb_KomponParam301_Global.IsAllergen(_ParamNr) Then
                 Return wb_Functions.AllergenToString(_Wert)
+            ElseIf wb_KomponParam301_Global.IsErnaehrung(_ParamNr) Then
+                Return wb_Functions.ErnaehrungToString(_Wert)
             Else
                 Return wb_Functions.FormatStr(_Wert, 3)
             End If
@@ -113,6 +115,8 @@ Public Class wb_KomponParam
                     Case ktParam.kt301
                         If wb_KomponParam301_Global.IsAllergen(_ParamNr) Then
                             Return wb_Functions.AllergenToString(_Wert)
+                        ElseIf wb_KomponParam301_Global.IsErnaehrung(_ParamNr) Then
+                            Return wb_Functions.ErnaehrungToString(_Wert)
                         Else
                             Return wb_Functions.FormatStr(_Wert, 3)
                         End If
@@ -132,6 +136,8 @@ Public Class wb_KomponParam
                 Case ktParam.kt301
                     If wb_KomponParam301_Global.IsAllergen(_ParamNr) Then
                         _Wert = wb_Functions.StringtoAllergen(value)
+                    ElseIf wb_KomponParam301_Global.IsErnaehrung(_ParamNr) Then
+                        _Wert = wb_Functions.StringtoErnaehrungsForm(value)
                     Else
                         _Wert = value
                     End If

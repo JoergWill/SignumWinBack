@@ -92,6 +92,7 @@ Public Class wb_Rezeptschritt
         _parentStep = parent
         _Bezeichnung = Bezeichnung
         _TA = wb_Global.TA_Undefined
+        'Es gibt keinen Root-Knoten (erster Knoten in der Reihe)
         If Not (_parentStep Is Nothing) Then
             parent._childSteps.Add(Me)
         End If
@@ -116,8 +117,8 @@ Public Class wb_Rezeptschritt
                 _Einheit = "-"
                 _TA = 0
                 _Format = EnhEdit.EnhEdit_Global.wb_Format.fString
-                _OberGW = "250"
-                _UnterGW = "0"
+                _OberGW = wb_Global.wbRzptParamMax
+                _UnterGW = wb_Global.wbRzptParamMin
             Case wb_Global.KomponTypen.KO_TYPE_KESSEL
                 NewKomp = wb_Komponente.Kessel
                 _Sollwert = NewKomp.Bezeichnung
@@ -125,8 +126,8 @@ Public Class wb_Rezeptschritt
                 _Einheit = "-"
                 _TA = 0
                 _Format = EnhEdit.EnhEdit_Global.wb_Format.fString
-                _OberGW = "250"
-                _UnterGW = "0"
+                _OberGW = wb_Global.wbRzptParamMax
+                _UnterGW = wb_Global.wbRzptParamMin
             Case wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
                 NewKomp = wb_Komponente.TextKomponente
                 _Sollwert = NewKomp.Bezeichnung
@@ -134,8 +135,8 @@ Public Class wb_Rezeptschritt
                 _Einheit = "-"
                 _TA = 0
                 _Format = EnhEdit.EnhEdit_Global.wb_Format.fString
-                _OberGW = "250"
-                _UnterGW = "0"
+                _OberGW = wb_Global.wbRzptParamMax
+                _UnterGW = wb_Global.wbRzptParamMin
             Case Else
                 NewKomp = Nothing
         End Select
@@ -153,6 +154,17 @@ Public Class wb_Rezeptschritt
                 Parent._childSteps.Add(Me)
             End If
         End If
+    End Sub
+
+    ''' <summary>
+    ''' Setzt alle Flags der ErnährungsForm auf True (Root-Rezeptschritt)
+    ''' </summary>
+    Public Sub InitKT301Params()
+        _ktTyp301.ErnaehrungsForm(wb_Global.T301_Vegetarisch) = wb_Functions.StringtoErnaehrungsForm("Y")
+        _ktTyp301.ErnaehrungsForm(wb_Global.T301_Vegan) = wb_Functions.StringtoErnaehrungsForm("Y")
+        _ktTyp301.ErnaehrungsForm(wb_Global.T301_Halal) = wb_Functions.StringtoErnaehrungsForm("Y")
+        _ktTyp301.ErnaehrungsForm(wb_Global.T301_Koscher) = wb_Functions.StringtoErnaehrungsForm("Y")
+        _ktTyp301.IsCalculated = False
     End Sub
 
     ''' <summary>
@@ -1117,6 +1129,12 @@ Public Class wb_Rezeptschritt
                                         If (_ktTyp301.Allergen(ParamNr) = wb_Global.AllergenInfo.N) Or (_ktTyp301.Allergen(ParamNr) = wb_Global.AllergenInfo.ERR) Then
                                             _ktTyp301.FehlerKompName(ParamNr) = _Bezeichnung
                                         End If
+                                    ElseIf wb_KomponParam301_Global.IsErnaehrung(ParamNr) Then
+                                        'TODO if undefined set merker
+                                        _ktTyp301.ErnaehrungsForm(ParamNr) = wb_Functions.StringtoErnaehrungsForm(Value)
+                                        If (_ktTyp301.ErnaehrungsForm(ParamNr) = wb_Global.ErnaehrungsForm.X) Or (_ktTyp301.ErnaehrungsForm(ParamNr) = wb_Global.ErnaehrungsForm.ERR) Then
+                                            _ktTyp301.FehlerKompName(ParamNr) = _Bezeichnung
+                                        End If
                                     Else
                                         If (Value IsNot Nothing) And (Value <> "") Then
                                             If _BruttoRezGewicht > 0 Then
@@ -1127,8 +1145,6 @@ Public Class wb_Rezeptschritt
                                         Else
                                             _ktTyp301.FehlerKompName(ParamNr) = _Bezeichnung
                                         End If
-
-
                                         'TODO if undefined set merker
                                     End If
                                 End If

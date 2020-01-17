@@ -57,6 +57,8 @@ Public Class wb_KomponParam_Global
                 'Fehler in der Datenbank - Format-Eintrag für Allergene
                 If wb_KomponParam301_Global.IsAllergen(k.ParamNr) Then
                     k.eFormat = EnhEdit.EnhEdit_Global.wb_Format.fAllergen
+                ElseIf wb_KomponParam301_Global.IsErnaehrung(k.ParamNr) Then
+                    k.eFormat = EnhEdit.EnhEdit_Global.wb_Format.fYesNo
                 End If
             Else
                     'Anzeige des Parameter-Wertes abhängig von Parameter-Type und Parameter-Nummer

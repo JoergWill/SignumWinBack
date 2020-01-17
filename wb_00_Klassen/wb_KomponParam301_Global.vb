@@ -71,6 +71,14 @@ Public Class wb_KomponParam301_Global
         End If
     End Function
 
+    Public Shared Function IsErnaehrung(index As Integer) As Boolean
+        If index >= minTyp301Ernaehrung And index <= maxTyp301Ernaehrung Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
     Public Shared Function IsValidParameter(index As Integer) As Boolean
         Return ktTyp301Params.ContainsKey(index)
     End Function

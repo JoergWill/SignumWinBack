@@ -12,6 +12,7 @@ Public Class wb_MinMaxOptCharge
     Private _NoErrorCheck As Boolean = True
     Private _HasChanged As Boolean = False
     Private _ErrorCode As wb_Global.MinMaxOptChargenError
+    Private _Toleranz As Double = 0.0
 
     Public Property TeigGewicht As String
         Get
@@ -110,13 +111,13 @@ Public Class wb_MinMaxOptCharge
     ''' </summary>
     Private Sub CheckMinCharge() Handles MinCharge.OnChange
         'Prüfen ob Min-Charge größer als Opt-Charge
-        If MinCharge.cMengeInkg > OptCharge.cMengeInkg And OptCharge.cMengeInkg > 0 And _ErrorCheck Then
+        If MinCharge.cMengeInkg > (OptCharge.cMengeInkg + _Toleranz) And OptCharge.cMengeInkg > 0 And _ErrorCheck Then
             MinCharge.MengeInkg = OptCharge.MengeInkg
             RaiseError(wb_Global.MinMaxOptChargenError.MinGrOpt)
             Exit Sub
         End If
         'Prüfen ob Min-Charge größer als Max-Charge (Opt-Charge ist gleich der Max-Charge)
-        If MinCharge.cMengeInkg > MaxCharge.cMengeInkg And MaxCharge.cMengeInkg > 0 And _ErrorCheck Then
+        If MinCharge.cMengeInkg > (MaxCharge.cMengeInkg + _Toleranz) And MaxCharge.cMengeInkg > 0 And _ErrorCheck Then
             MinCharge.MengeInkg = MaxCharge.MengeInkg
             RaiseError(wb_Global.MinMaxOptChargenError.MinGrMax)
             Exit Sub
@@ -133,13 +134,13 @@ Public Class wb_MinMaxOptCharge
     ''' </summary>
     Private Sub CheckOptCharge() Handles OptCharge.OnChange
         'Prüfen ob Opt-Charge kleiner als Min-Charge
-        If OptCharge.cMengeInkg < MinCharge.cMengeInkg And MinCharge.cMengeInkg > 0 And _ErrorCheck Then
+        If (OptCharge.cMengeInkg + _Toleranz) < MinCharge.cMengeInkg And MinCharge.cMengeInkg > 0 And _ErrorCheck Then
             OptCharge.MengeInkg = MinCharge.MengeInkg
             RaiseError(wb_Global.MinMaxOptChargenError.OptKlMin)
             Exit Sub
         End If
         'Prüfen ob Opt-Charge größer als Max-Charge
-        If OptCharge.cMengeInkg > MaxCharge.cMengeInkg And MaxCharge.cMengeInkg > 0 And _ErrorCheck Then
+        If OptCharge.cMengeInkg > (MaxCharge.cMengeInkg + _Toleranz) And MaxCharge.cMengeInkg > 0 And _ErrorCheck Then
             OptCharge.MengeInkg = MaxCharge.MengeInkg
             RaiseError(wb_Global.MinMaxOptChargenError.OptGrMax)
             Exit Sub
@@ -156,13 +157,13 @@ Public Class wb_MinMaxOptCharge
     ''' </summary>
     Private Sub CheckMaxCharge() Handles MaxCharge.OnChange
         'Prüfen ob Max-Charge kleiner als Opt-Charge
-        If MaxCharge.cMengeInkg < OptCharge.cMengeInkg And OptCharge.cMengeInkg > 0 And _ErrorCheck Then
+        If (MaxCharge.cMengeInkg + _Toleranz) < OptCharge.cMengeInkg And OptCharge.cMengeInkg > 0 And _ErrorCheck Then
             MaxCharge.MengeInkg = OptCharge.MengeInkg
             RaiseError(wb_Global.MinMaxOptChargenError.MaxKlOpt)
             Exit Sub
         End If
         'Prüfen ob Max-Charge kleine als Min-Charge
-        If MaxCharge.cMengeInkg < MinCharge.cMengeInkg And MinCharge.cMengeInkg > 0 And _ErrorCheck Then
+        If (MaxCharge.cMengeInkg + _Toleranz) < MinCharge.cMengeInkg And MinCharge.cMengeInkg > 0 And _ErrorCheck Then
             MaxCharge.MengeInkg = MinCharge.MengeInkg
             RaiseError(wb_Global.MinMaxOptChargenError.MaxKlMin)
             Exit Sub

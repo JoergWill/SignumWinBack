@@ -2283,6 +2283,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Allergen1"></param>
  <param name="Allergen2"></param>
 </member>
+<member name="M:WinBack.wb_KomponParam301.AddNwtErnaehrungsForm(WinBack.wb_Global.ErnaehrungsForm,WinBack.wb_Global.ErnaehrungsForm)">
+ <summary>
+ Addiert die ErnährungsForm-Info. Bei der Addition wird nur dann 'Y' zurückgegeben, wenn beide Attribute 'Y' sind.
+ </summary>
+ <param name="Ernaehrung1"></param>
+ <param name="Ernaehrung2"></param>
+</member>
 <member name="M:WinBack.wb_KomponParam301.MySQLdbUpdate(System.Int32,WinBack.wb_Sql@)">
  <summary>
  Update aller geänderten Komponenten-Parameter in Tabelle winback.RohParams
@@ -3781,6 +3788,11 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="Parent"></param>
  <param name="KomponType"></param>
+</member>
+<member name="M:WinBack.wb_Rezeptschritt.InitKT301Params">
+ <summary>
+ Setzt alle Flags der ErnährungsForm auf True (Root-Rezeptschritt)
+ </summary>
 </member>
 <member name="M:WinBack.wb_Rezeptschritt.Insert(WinBack.wb_Rezeptschritt,System.Boolean)">
  <summary>
@@ -6849,11 +6861,25 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="s"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Functions.AllergenToString(WinBack.wb_Global.AllergenInfo)">
+<member name="M:WinBack.wb_Functions.StringtoErnaehrungsForm(System.String)">
+ <summary>
+ Wandelt einen String in Ernährungsform um. Wenn der String umgültig ist wird ERR zurückgegeben
+ </summary>
+ <param name="s"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.AllergenToString(System.String)">
  <summary>
  Wandelt die AllergenInfo in einen String um.
  </summary>
- <param name="a"></param>
+ <param name="s"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.ErnaehrungToString(System.String)">
+ <summary>
+ Wandelt die Ernährungsform-Information in einen String um.
+ </summary>
+ <param name="s"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Functions.LogTypeToString(WinBack.wb_Global.LogType)">

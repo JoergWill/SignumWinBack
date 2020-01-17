@@ -129,12 +129,30 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt einen String in Ernährungsform um. Wenn der String umgültig ist wird ERR zurückgegeben
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Public Shared Function StringtoErnaehrungsForm(s As String) As wb_Global.ErnaehrungsForm
+        Select Case s.ToUpper
+            Case "N"
+                Return wb_Global.ErnaehrungsForm.N
+            Case "Y", "J"
+                Return wb_Global.ErnaehrungsForm.Y
+            Case "-", ""
+                Return wb_Global.ErnaehrungsForm.X
+            Case Else
+                Return wb_Global.ErnaehrungsForm.ERR
+        End Select
+    End Function
+
+    ''' <summary>
     ''' Wandelt die AllergenInfo in einen String um.
     ''' </summary>
-    ''' <param name="a"></param>
+    ''' <param name="s"></param>
     ''' <returns></returns>
-    Public Shared Function AllergenToString(a As wb_Global.AllergenInfo) As String
-        Select Case a
+    Public Shared Function AllergenToString(s As String) As String
+        Select Case s
             Case wb_Global.AllergenInfo.C
                 Return "C"
             Case wb_Global.AllergenInfo.K
@@ -143,6 +161,24 @@ Public Class wb_Functions
                 Return "T"
             Case wb_Global.AllergenInfo.N, 0
                 Return "N"
+            Case Else
+                Return "ERR"
+        End Select
+    End Function
+
+    ''' <summary>
+    ''' Wandelt die Ernährungsform-Information in einen String um.
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Public Shared Function ErnaehrungToString(s As String) As String
+        Select Case s
+            Case wb_Global.ErnaehrungsForm.Y
+                Return "J"
+            Case wb_Global.ErnaehrungsForm.N
+                Return "N"
+            Case wb_Global.ErnaehrungsForm.X, 0
+                Return "-"
             Case Else
                 Return "ERR"
         End Select
@@ -537,6 +573,8 @@ Public Class wb_Functions
                 Return wb_Global.ktTyp301Gruppen.Schalenfrüchte
             Case "gesamtkennzahlen"
                 Return wb_Global.ktTyp301Gruppen.Gesamtkennzahlen
+            Case "ernährungsformen"
+                Return wb_Global.ktTyp301Gruppen.ErnaehrungsFormen
             Case Else
                 Return wb_Global.ktTyp301Gruppen.xxx
         End Select
@@ -569,6 +607,8 @@ Public Class wb_Functions
                 Return "Schalenfrüchte"
             Case wb_Global.ktTyp301Gruppen.Gesamtkennzahlen
                 Return "Gesamt"
+            Case wb_Global.ktTyp301Gruppen.ErnaehrungsFormen
+                Return "Ernährung"
             Case Else
                 Return "Undefiniert"
         End Select

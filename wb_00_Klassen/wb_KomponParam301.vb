@@ -7,6 +7,7 @@ Public Class wb_KomponParam301
 
     Private Structure Typ301
         Public _Allergen As AllergenInfo
+        Public _ErnaehrungsForm As ErnaehrungsForm
         Public _Naehrwert As Double
         Public _FehlerKompName As String
     End Structure
@@ -64,6 +65,22 @@ Public Class wb_KomponParam301
         End Get
         Set(value As DateTime)
             _TimeStamp = value
+        End Set
+    End Property
+
+    Public Property ErnaehrungsForm(index As Integer) As ErnaehrungsForm
+        Get
+            If IsErnaehrung(index) Then
+                Return NaehrwertInfo(index)._ErnaehrungsForm
+            Else
+                Return ErnaehrungsForm.ERR
+            End If
+        End Get
+        Set(value As ErnaehrungsForm)
+            If IsErnaehrung(index) Then
+                NaehrwertInfo(index)._ErnaehrungsForm = value
+                _IsCalculated = True
+            End If
         End Set
     End Property
 
@@ -179,14 +196,14 @@ Public Class wb_KomponParam301
 
     Public Property Naehrwert(index As Integer) As Double
         Get
-            If Not IsAllergen(index) Then
+            If Not IsAllergen(index) And Not IsErnaehrung(index) Then
                 Return NaehrwertInfo(index)._Naehrwert
             Else
                 Return 0.0
             End If
         End Get
         Set(value As Double)
-            If Not IsAllergen(index) Then
+            If Not IsAllergen(index) And Not IsErnaehrung(index) Then
                 NaehrwertInfo(index)._Naehrwert = value
                 _IsCalculated = True
             End If
@@ -197,7 +214,9 @@ Public Class wb_KomponParam301
         Get
             If IsAllergen(index) Then
                 Return NaehrwertInfo(index)._Allergen
-            ElseIf index < wb_Global.maxTyp301 Then
+            ElseIf IsErnaehrung(index) Then
+                Return NaehrwertInfo(index)._ErnaehrungsForm
+            ElseIf index <= wb_Global.maxTyp301 Then
                 Return NaehrwertInfo(index)._Naehrwert
             Else
                 Return ""
@@ -207,7 +226,10 @@ Public Class wb_KomponParam301
             If IsAllergen(index) Then
                 'Änderungen loggen
                 NaehrwertInfo(index)._Allergen = ChangeLogAdd(LogType.Alg, index, NaehrwertInfo(index)._Allergen, StringtoAllergen(value))
-            ElseIf index < wb_Global.maxTyp301 Then
+            ElseIf IsErnaehrung(index) Then
+                'Änderungen loggen
+                NaehrwertInfo(index)._ErnaehrungsForm = ChangeLogAdd(LogType.Alg, index, NaehrwertInfo(index)._ErnaehrungsForm, StringtoErnaehrungsForm(value))
+            ElseIf index <= wb_Global.maxTyp301 Then
                 'Änderungen loggen
                 NaehrwertInfo(index)._Naehrwert = ChangeLogAdd(LogType.Nrw, index, NaehrwertInfo(index)._Naehrwert, StrToDouble(value))
             End If
@@ -218,6 +240,13 @@ Public Class wb_KomponParam301
         Get
             If IsAllergen(Index) Then
                 oWert = wb_Functions.AllergenToString(NaehrwertInfo(Index)._Allergen)
+                'OrgaBack kann den Wert ERR nicht verarbeiten
+                If oWert = "ERR" Then
+                    oWert = "N"
+                End If
+                Return oWert
+            ElseIf IsErnaehrung(Index) Then
+                oWert = wb_Functions.ErnaehrungToString(NaehrwertInfo(Index)._Allergen)
                 'OrgaBack kann den Wert ERR nicht verarbeiten
                 If oWert = "ERR" Then
                     oWert = "N"
@@ -276,7 +305,7 @@ Public Class wb_KomponParam301
         Set(value As String)
             Dim idx As Integer = PistorToIndex(index)
             If idx > 0 Then
-                If IsAllergen(idx) Then
+                If IsAllergen(index) Then
                     PistorAllergen(idx) = value
                 Else
                     PistorNaehrWert(idx) = value
@@ -325,6 +354,8 @@ Public Class wb_KomponParam301
         For i = 0 To maxTyp301
             If IsAllergen(i) Then
                 _ktTyp301.Allergen(i) = AddNwtAllergen(_ktTyp301.Allergen(i), Allergen(i))
+            ElseIf IsErnaehrung(i) Then
+                _ktTyp301.ErnaehrungsForm(i) = AddNwtErnaehrungsForm(_ktTyp301.ErnaehrungsForm(i), ErnaehrungsForm(i))
             Else
                 _ktTyp301.Naehrwert(i) += Naehrwert(i) * Faktor
             End If
@@ -351,6 +382,21 @@ Public Class wb_KomponParam301
             Return Allergen1
         Else
             Return Allergen2
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Addiert die ErnährungsForm-Info. Bei der Addition wird nur dann 'Y' zurückgegeben, wenn beide Attribute 'Y' sind.
+    ''' </summary>
+    ''' <param name="Ernaehrung1"></param>
+    ''' <param name="Ernaehrung2"></param>
+    Private Function AddNwtErnaehrungsForm(Ernaehrung1 As ErnaehrungsForm, Ernaehrung2 As ErnaehrungsForm) As ErnaehrungsForm
+
+        'Nur wenn beide Parameter 'Y' haben ist das Ergebnis 'Y'
+        If Ernaehrung1 = wb_Global.ErnaehrungsForm.Y And Ernaehrung2 = wb_Global.ErnaehrungsForm.Y Then
+            Return wb_Global.ErnaehrungsForm.Y
+        Else
+            Return wb_Global.ErnaehrungsForm.N
         End If
     End Function
 
@@ -391,6 +437,9 @@ Public Class wb_KomponParam301
         If IsAllergen(ParamNr) Then
             'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
             sql = KoNr & ", 301, " & ParamNr.ToString & ", '" & wb_Functions.AllergenToString(Allergen(ParamNr)) & "', '" & kt301Param(ParamNr).Bezeichnung & "'"
+        ElseIf IsErnaehrung(ParamNr) Then
+            'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
+            sql = KoNr & ", 301, " & ParamNr.ToString & ", '" & wb_Functions.ErnaehrungToString(ErnaehrungsForm(ParamNr)) & "', '" & kt301Param(ParamNr).Bezeichnung & "'"
         Else
             'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
             sql = KoNr & ", 301, " & ParamNr.ToString & ", '" & Wert(ParamNr) & "', '" & kt301Param(ParamNr).Bezeichnung & "'"
@@ -446,6 +495,12 @@ Public Class wb_KomponParam301
                         sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, i, oWert(i), 0))
                         'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
                     End If
+                ElseIf IsErnaehrung(i) Then
+                    If (NaehrwertInfo(i)._ErnaehrungsForm > wb_Global.ErnaehrungsForm.X) Then
+                        'TODO IN WELCHE TABELLE WERDEN DIE WERTE GESCHRIEBEN (VEGAN, HALAL....) Mail vom 16.01.2020
+                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, i, oWert(i), 0))
+                        'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                    End If
                 Else
                     If (NaehrwertInfo(i)._Naehrwert > 0) Then
                         'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
@@ -495,6 +550,11 @@ Public Class wb_KomponParam301
 
             'Allergene haben in OrgaBack einen eigene Tabelle
             If IsAllergen(ParamNr) Then
+                sql_Delete = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteParamAlg, KoAlNum, ParamNr, 0))
+                sql_Insert = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, ParamNr, oWert(ParamNr), 0))
+                'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+            ElseIf IsErnaehrung(ParamNr) Then
+                'TODO WELCHE TABELLE IN ORGABACK
                 sql_Delete = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteParamAlg, KoAlNum, ParamNr, 0))
                 sql_Insert = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, ParamNr, oWert(ParamNr), 0))
                 'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))

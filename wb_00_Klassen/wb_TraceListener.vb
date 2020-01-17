@@ -103,10 +103,19 @@
     ''' <param name="Stack"></param>
     ''' <returns></returns>
     Private Function GetLocalStackTrace(Stack As String) As String
-        'Aufruf-Baum aus Stack-Trace
-        Dim x = wb_Functions.GetLocalStackTrace(Stack, True)
-        'Das erste Element aus Array()
-        Return x(0)
+        Try
+            If Stack IsNot Nothing Then
+                'Aufruf-Baum aus Stack-Trace
+                Dim x = wb_Functions.GetLocalStackTrace(Stack, True)
+                'Das erste Element aus Array()
+                If Len(x) > 0 Then
+                    Return x(0)
+                End If
+            End If
+            Return ""
+        Catch ex As Exception
+            Return ""
+        End Try
     End Function
 
     ''' <summary>

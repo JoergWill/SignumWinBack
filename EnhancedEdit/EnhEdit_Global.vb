@@ -87,36 +87,6 @@ Public Class EnhEdit_Global
 
         Select Case e.KeyCode
 
-            'Numerische Eingabe
-            Case Keys.D0 To Keys.D9
-                Value = AddStr(Value, e)
-                Return CheckBounds(Value, oValue, Format, ug, og)
-
-            Case Keys.NumPad0 To Keys.NumPad9
-                Value = AddStr(Value, e, True)
-                Return CheckBounds(Value, oValue, Format, ug, og)
-
-            'Dezimal-Trennzeichen (Komma/Punkt)
-            Case Keys.Decimal, Keys.Oemcomma, Keys.OemPeriod
-                If Format = wb_Format.fReal Then
-                    Value = Value & Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator
-                End If
-
-            'Alpha-Numerisch (Allergene)
-            Case Keys.C, Keys.K, Keys.N, Keys.T, Keys.X
-                If Format = wb_Format.fAllergen Then
-                    Value = AddStr("", e)
-                End If
-                If Format = wb_Format.fString Then
-                    Value = AddStr(Value, e)
-                End If
-
-            'Alpha-Numerische Eingabe
-            Case Keys.A To Keys.Z, Keys.Space
-                If Format = wb_Format.fString Then
-                    Value = AddStr(Value, e)
-                End If
-
             'Backspace/Delete
             Case Keys.Back, Keys.Delete
                 If Value <> "" Then
@@ -131,12 +101,53 @@ Public Class EnhEdit_Global
             Case Keys.Enter, Keys.Return
                 Return wb_Result.KeyReturn
 
-                'Umlaute und Sonderzeichen
-            Case 186, 192, 222
-                If Format = wb_Format.fString Then
-                    Value = AddStr(Value, e)
-                End If
+            Case Else
+                'alle anderen Zeichen (abhängig vom Format)
+                Select Case Format
 
+                    'Numerische Eingabe
+                    Case wb_Format.fReal, wb_Format.fInteger, wb_Format.fTime
+                        Select Case e.KeyCode
+                            'Numerische Eingabe
+                            Case Keys.D0 To Keys.D9
+                                Value = AddStr(Value, e)
+                                Return CheckBounds(Value, oValue, Format, ug, og)
+                            'Num-Pad
+                            Case Keys.NumPad0 To Keys.NumPad9
+                                Value = AddStr(Value, e, True)
+                                Return CheckBounds(Value, oValue, Format, ug, og)
+                            'Dezimal-Trennzeichen (Komma/Punkt)
+                            Case Keys.Decimal, Keys.Oemcomma, Keys.OemPeriod
+                                If Format = wb_Format.fReal Then
+                                    Value = Value & Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator
+                                End If
+                        End Select
+
+                    'Allergene
+                    Case wb_Format.fAllergen
+                        Select Case e.KeyCode
+                            Case Keys.C, Keys.K, Keys.N, Keys.T, Keys.X
+                                Value = AddStr("", e)
+                        End Select
+
+                    'Ernährung
+                    Case wb_Format.fYesNo
+                        Select Case e.KeyCode
+                            Case Keys.Y, Keys.N, Keys.X
+                                Value = AddStr("", e)
+                        End Select
+
+                    'Strings
+                    Case wb_Format.fString
+                        Select Case e.KeyCode
+                            'Alpha-Numerische Eingabe
+                            Case Keys.A To Keys.Z, Keys.Space
+                                Value = AddStr(Value, e)
+                            'Umlaute und Sonderzeichen
+                            Case 186, 192, 222
+                                Value = AddStr(Value, e)
+                        End Select
+                End Select
         End Select
 
         Return wb_Result.Undefined

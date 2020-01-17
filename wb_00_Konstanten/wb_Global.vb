@@ -90,6 +90,7 @@
         Gluten
         Schalenfrüchte
         Gesamtkennzahlen
+        ErnaehrungsFormen
     End Enum
 
     Public Structure controlSizeandLocation
@@ -273,6 +274,13 @@
         KO_TYPE_SAUER_REPEAT        '31
     End Enum
 
+    Enum ErnaehrungsForm
+        X   'not used
+        Y   'Yes(Ja)
+        N   'No(Nein)
+        ERR 'Fehler bei der Berechnung
+    End Enum
+
     Enum AllergenInfo
         X   'not used
         N   'keine Angabe
@@ -360,9 +368,11 @@
     ''' <summary>
     ''' Nährwerte
     ''' </summary>
-    Public Const maxTyp301 = 211
+    Public Const maxTyp301 = 213
     Public Const minTyp301Allergen = 141
     Public Const maxTyp301Allergen = 189
+    Public Const minTyp301Ernaehrung = 210
+    Public Const maxTyp301Ernaehrung = 213
 
     Public Const T301_Kilokalorien = 1
     Public Const T301_KiloJoule = 2

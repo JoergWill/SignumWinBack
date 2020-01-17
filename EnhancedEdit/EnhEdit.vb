@@ -120,6 +120,10 @@ Public Class EnhEdit
                 Case wb_Format.fAllergen
                     Return _eValue
 
+                'ErnährungsForm
+                Case wb_Format.fYesNo
+                    Return _eValue
+
                     'nicht definiert
                 Case Else
                     Return ""
