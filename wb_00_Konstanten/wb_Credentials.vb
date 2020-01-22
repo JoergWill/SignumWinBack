@@ -1,8 +1,8 @@
 ﻿Public Class wb_Credentials
     ' WinBack-Cloud (Hetzner)
 
-    Public Const WinBackCloud_Url = "http://nwt.winback.de:8080/nwt"
-    'Public Const WinBackCloud_Url = "http://172.16.17.95:8080/nwt"
+    'Public Const WinBackCloud_Url = "http://nwt.winback.de:8080/nwt"
+    Public Const WinBackCloud_Url = "http://172.16.17.95:8080/nwt"
     Public Const WinBackCloud_Pass = "bnd0OldpTmJBY0s="
     Public Const WinBackCloud_MailAdr = "nwt@winback.de"
 

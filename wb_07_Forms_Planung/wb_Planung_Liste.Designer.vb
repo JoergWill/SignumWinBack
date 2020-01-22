@@ -61,11 +61,17 @@ Partial Class wb_Planung_Liste
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CellEditor3 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.UniversalEditBox1 = New Infralution.Controls.UniversalEditBox()
-        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.btnNeueCharge = New System.Windows.Forms.Button()
         Me.BtnTeigListeDrucken = New System.Windows.Forms.Button()
         Me.dtBestellungen = New System.Windows.Forms.DateTimePicker()
+        Me.lblLinieArtikel = New System.Windows.Forms.Label()
+        Me.lblLinienGruppe = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
+        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.cbProduktionsFiliale = New WinBack.wb_ComboBox()
+        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -261,7 +267,7 @@ Partial Class wb_Planung_Liste
         Me.VirtualTree.HeaderHeight = 24
         Me.VirtualTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.Solid
-        Me.VirtualTree.Location = New System.Drawing.Point(12, 100)
+        Me.VirtualTree.Location = New System.Drawing.Point(12, 120)
         Me.VirtualTree.MainColumn = Me.ColNummer
         Me.VirtualTree.Name = "VirtualTree"
         Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
@@ -323,6 +329,104 @@ Partial Class wb_Planung_Liste
         Me.UniversalEditBox1.TabIndex = 9
         Me.UniversalEditBox1.Visible = False
         '
+        'btnNeueCharge
+        '
+        Me.btnNeueCharge.Location = New System.Drawing.Point(270, 12)
+        Me.btnNeueCharge.Name = "btnNeueCharge"
+        Me.btnNeueCharge.Size = New System.Drawing.Size(123, 53)
+        Me.btnNeueCharge.TabIndex = 12
+        Me.btnNeueCharge.Text = "Neu"
+        Me.btnNeueCharge.UseVisualStyleBackColor = True
+        '
+        'BtnTeigListeDrucken
+        '
+        Me.BtnTeigListeDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnTeigListeDrucken.Location = New System.Drawing.Point(840, 12)
+        Me.BtnTeigListeDrucken.Name = "BtnTeigListeDrucken"
+        Me.BtnTeigListeDrucken.Size = New System.Drawing.Size(123, 53)
+        Me.BtnTeigListeDrucken.TabIndex = 13
+        Me.BtnTeigListeDrucken.Text = "Teigliste drucken"
+        Me.BtnTeigListeDrucken.UseVisualStyleBackColor = True
+        '
+        'dtBestellungen
+        '
+        Me.dtBestellungen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtBestellungen.Location = New System.Drawing.Point(196, 89)
+        Me.dtBestellungen.Name = "dtBestellungen"
+        Me.dtBestellungen.Size = New System.Drawing.Size(197, 20)
+        Me.dtBestellungen.TabIndex = 14
+        '
+        'lblLinieArtikel
+        '
+        Me.lblLinieArtikel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblLinieArtikel.AutoSize = True
+        Me.lblLinieArtikel.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblLinieArtikel.Location = New System.Drawing.Point(923, 73)
+        Me.lblLinieArtikel.Name = "lblLinieArtikel"
+        Me.lblLinieArtikel.Size = New System.Drawing.Size(131, 13)
+        Me.lblLinieArtikel.TabIndex = 61
+        Me.lblLinieArtikel.Text = "Liniengruppe Aufarbeitung"
+        '
+        'lblLinienGruppe
+        '
+        Me.lblLinienGruppe.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblLinienGruppe.AutoSize = True
+        Me.lblLinienGruppe.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblLinienGruppe.Location = New System.Drawing.Point(711, 73)
+        Me.lblLinienGruppe.Name = "lblLinienGruppe"
+        Me.lblLinienGruppe.Size = New System.Drawing.Size(92, 13)
+        Me.lblLinienGruppe.TabIndex = 60
+        Me.lblLinienGruppe.Text = "Liniengruppe Teig"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label2.Location = New System.Drawing.Point(17, 74)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(92, 13)
+        Me.Label2.TabIndex = 62
+        Me.Label2.Text = "Produktions-Filiale"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label3.Location = New System.Drawing.Point(199, 73)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(73, 13)
+        Me.Label3.TabIndex = 63
+        Me.Label3.Text = "Produktion für"
+        '
+        'cbArtikelLinienGruppe
+        '
+        Me.cbArtikelLinienGruppe.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cbArtikelLinienGruppe.FormattingEnabled = True
+        Me.cbArtikelLinienGruppe.Location = New System.Drawing.Point(920, 89)
+        Me.cbArtikelLinienGruppe.Name = "cbArtikelLinienGruppe"
+        Me.cbArtikelLinienGruppe.Size = New System.Drawing.Size(172, 21)
+        Me.cbArtikelLinienGruppe.TabIndex = 59
+        Me.cbArtikelLinienGruppe.TabStop = False
+        '
+        'cbLiniengruppe
+        '
+        Me.cbLiniengruppe.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cbLiniengruppe.FormattingEnabled = True
+        Me.cbLiniengruppe.Location = New System.Drawing.Point(711, 89)
+        Me.cbLiniengruppe.Name = "cbLiniengruppe"
+        Me.cbLiniengruppe.Size = New System.Drawing.Size(176, 21)
+        Me.cbLiniengruppe.TabIndex = 58
+        Me.cbLiniengruppe.TabStop = False
+        Me.cbLiniengruppe.Text = "LG"
+        '
+        'cbProduktionsFiliale
+        '
+        Me.cbProduktionsFiliale.FormattingEnabled = True
+        Me.cbProduktionsFiliale.Location = New System.Drawing.Point(12, 89)
+        Me.cbProduktionsFiliale.Name = "cbProduktionsFiliale"
+        Me.cbProduktionsFiliale.Size = New System.Drawing.Size(178, 21)
+        Me.cbProduktionsFiliale.TabIndex = 15
+        '
         'ObjectRowBinding1
         '
         ObjectCellBinding1.Column = Me.ColNummer
@@ -362,45 +466,17 @@ Partial Class wb_Planung_Liste
         Me.ObjectRowBinding1.ParentProperty = "ParentStep"
         Me.ObjectRowBinding1.TypeName = "WinBack.wb_Produktionsschritt"
         '
-        'btnNeueCharge
-        '
-        Me.btnNeueCharge.Location = New System.Drawing.Point(270, 12)
-        Me.btnNeueCharge.Name = "btnNeueCharge"
-        Me.btnNeueCharge.Size = New System.Drawing.Size(123, 53)
-        Me.btnNeueCharge.TabIndex = 12
-        Me.btnNeueCharge.Text = "Neu"
-        Me.btnNeueCharge.UseVisualStyleBackColor = True
-        '
-        'BtnTeigListeDrucken
-        '
-        Me.BtnTeigListeDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnTeigListeDrucken.Location = New System.Drawing.Point(840, 12)
-        Me.BtnTeigListeDrucken.Name = "BtnTeigListeDrucken"
-        Me.BtnTeigListeDrucken.Size = New System.Drawing.Size(123, 53)
-        Me.BtnTeigListeDrucken.TabIndex = 13
-        Me.BtnTeigListeDrucken.Text = "Teigliste drucken"
-        Me.BtnTeigListeDrucken.UseVisualStyleBackColor = True
-        '
-        'dtBestellungen
-        '
-        Me.dtBestellungen.Location = New System.Drawing.Point(196, 71)
-        Me.dtBestellungen.Name = "dtBestellungen"
-        Me.dtBestellungen.Size = New System.Drawing.Size(197, 20)
-        Me.dtBestellungen.TabIndex = 14
-        '
-        'cbProduktionsFiliale
-        '
-        Me.cbProduktionsFiliale.FormattingEnabled = True
-        Me.cbProduktionsFiliale.Location = New System.Drawing.Point(12, 70)
-        Me.cbProduktionsFiliale.Name = "cbProduktionsFiliale"
-        Me.cbProduktionsFiliale.Size = New System.Drawing.Size(178, 21)
-        Me.cbProduktionsFiliale.TabIndex = 15
-        '
         'wb_Planung_Liste
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1104, 663)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.lblLinieArtikel)
+        Me.Controls.Add(Me.cbArtikelLinienGruppe)
+        Me.Controls.Add(Me.lblLinienGruppe)
+        Me.Controls.Add(Me.cbLiniengruppe)
         Me.Controls.Add(Me.cbProduktionsFiliale)
         Me.Controls.Add(Me.dtBestellungen)
         Me.Controls.Add(Me.BtnTeigListeDrucken)
@@ -430,7 +506,6 @@ Partial Class wb_Planung_Liste
     Friend WithEvents BtVorproduktion As Windows.Forms.Button
     Friend WithEvents BtnBackZettelDrucken As Windows.Forms.Button
     Friend WithEvents BtnTeigListeExport As Windows.Forms.Button
-    Friend WithEvents VirtualTree As Infralution.Controls.VirtualTree.VirtualTree
     Friend WithEvents ColNummer As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColCharge As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColTour As Infralution.Controls.VirtualTree.Column
@@ -454,4 +529,11 @@ Partial Class wb_Planung_Liste
     Friend WithEvents cbProduktionsFiliale As wb_ComboBox
     Friend WithEvents ColBestand As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColEinheitBestand As Infralution.Controls.VirtualTree.Column
+    Friend WithEvents lblLinieArtikel As Windows.Forms.Label
+    Friend WithEvents cbArtikelLinienGruppe As wb_ComboBox
+    Friend WithEvents lblLinienGruppe As Windows.Forms.Label
+    Friend WithEvents cbLiniengruppe As wb_ComboBox
+    Private WithEvents VirtualTree As Infralution.Controls.VirtualTree.VirtualTree
+    Friend WithEvents Label2 As Windows.Forms.Label
+    Friend WithEvents Label3 As Windows.Forms.Label
 End Class

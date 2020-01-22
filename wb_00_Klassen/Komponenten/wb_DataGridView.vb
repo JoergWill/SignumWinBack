@@ -108,12 +108,22 @@ Public Class wb_DataGridView
 
         DtaView = DtaTable.DefaultView
         DataSource = DtaView
+        'Readonly wird pro Spalte festgelegt
+        [ReadOnly] = False
 
         'Spalten-Überschriften eintragen
         For i = 0 To ColumnCount - 1
             If i < ColNames.Count Then
+                'Spalten-Namen´, die mit + beginnen sind editierbar
+                If Microsoft.VisualBasic.Left(ColNames(i), 1) = "+" Then
+                    Columns(i).ReadOnly = False
+                    ColNames(i) = ColNames(i).Remove(0, 1)
+                Else
+                    Columns(i).ReadOnly = True
+                End If
+
                 'Spalten-Namen, die mit & beginnen werden als Auto-Size Spalten behandelt
-                If Microsoft.VisualBasic.Left(ColNames(i), 1) = "&" Then
+                If (Microsoft.VisualBasic.Left(ColNames(i), 1) = "&") Then
                     Columns(i).HeaderText = ColNames(i).Remove(0, 1) + Chr(10)
                     Columns(i).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     'Spalten ohne Bezeichnung werden ausgeblendet
@@ -124,7 +134,7 @@ Public Class wb_DataGridView
                     Columns(i).HeaderText = ColNames(i) + Chr(10)
                 End If
             Else
-                Columns(i).HeaderText = ""
+                    Columns(i).HeaderText = ""
                 Columns(i).Visible = False
             End If
         Next
@@ -163,7 +173,6 @@ Public Class wb_DataGridView
         DataGridViewCellStyle.BackColor = wb_GlobalSettings.DataGridAlternateRowColor
         AlternatingRowsDefaultCellStyle = DataGridViewCellStyle
         RowHeadersVisible = False
-        [ReadOnly] = True
         AllowUserToAddRows = False
         AllowUserToDeleteRows = False
         AllowUserToResizeRows = False

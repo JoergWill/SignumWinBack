@@ -152,6 +152,12 @@ Partial Class WinBack
         Me.rbES = New System.Windows.Forms.RibbonOrbRecentItem()
         Me.rbSK = New System.Windows.Forms.RibbonOrbRecentItem()
         Me.rbRO = New System.Windows.Forms.RibbonOrbRecentItem()
+        Me.rbStammdaten = New System.Windows.Forms.RibbonTab()
+        Me.rpStammdaten = New System.Windows.Forms.RibbonPanel()
+        Me.rbLinienGruppen = New System.Windows.Forms.RibbonButton()
+        Me.rbStoffe = New System.Windows.Forms.RibbonButton()
+        Me.rbGruppen = New System.Windows.Forms.RibbonButton()
+        Me.rbVarianten = New System.Windows.Forms.RibbonButton()
         Me.rbAbout = New System.Windows.Forms.RibbonTab()
         Me.rbAnmelden = New System.Windows.Forms.RibbonPanel()
         Me.rbLogin = New System.Windows.Forms.RibbonButton()
@@ -1213,6 +1219,7 @@ Partial Class WinBack
         Me.rTab.Size = New System.Drawing.Size(1024, 163)
         Me.rTab.TabIndex = 6
         Me.rTab.Tabs.Add(Me.rbChargen)
+        Me.rTab.Tabs.Add(Me.rbStammdaten)
         Me.rTab.Tabs.Add(Me.rbArtikel)
         Me.rTab.Tabs.Add(Me.rbRezepte)
         Me.rTab.Tabs.Add(Me.rbRohstoffe)
@@ -1370,6 +1377,63 @@ Partial Class WinBack
         Me.rbRO.ToolTip = "Umschaltung der aktiven Sprache"
         Me.rbRO.ToolTipImage = Global.WinBack.My.Resources.Resources.LangRO
         Me.rbRO.Value = "ro_RO"
+        '
+        'rbStammdaten
+        '
+        Me.rbStammdaten.Name = "rbStammdaten"
+        Me.rbStammdaten.Panels.Add(Me.rpStammdaten)
+        Me.rbStammdaten.Text = "Stammdaten"
+        '
+        'rpStammdaten
+        '
+        Me.rpStammdaten.ButtonMoreEnabled = False
+        Me.rpStammdaten.ButtonMoreVisible = False
+        Me.rpStammdaten.Items.Add(Me.rbLinienGruppen)
+        Me.rpStammdaten.Items.Add(Me.rbStoffe)
+        Me.rpStammdaten.Items.Add(Me.rbGruppen)
+        Me.rpStammdaten.Items.Add(Me.rbVarianten)
+        Me.rpStammdaten.Name = "rpStammdaten"
+        Me.rpStammdaten.Text = "Schlüsseldaten"
+        '
+        'rbLinienGruppen
+        '
+        Me.rbLinienGruppen.Image = Global.WinBack.My.Resources.Resources.LinienBearbeiten_32x32
+        Me.rbLinienGruppen.LargeImage = Global.WinBack.My.Resources.Resources.LinienBearbeiten_32x32
+        Me.rbLinienGruppen.MinimumSize = New System.Drawing.Size(65, 0)
+        Me.rbLinienGruppen.Name = "rbLinienGruppen"
+        Me.rbLinienGruppen.SmallImage = CType(resources.GetObject("rbLinienGruppen.SmallImage"), System.Drawing.Image)
+        Me.rbLinienGruppen.Text = "Linien- Gruppen"
+        Me.rbLinienGruppen.Value = "OPENLINIENGRUPPEN"
+        '
+        'rbStoffe
+        '
+        Me.rbStoffe.Image = Global.WinBack.My.Resources.Resources.RohstoffeNwt_32x32
+        Me.rbStoffe.LargeImage = Global.WinBack.My.Resources.Resources.RohstoffeNwt_32x32
+        Me.rbStoffe.MinimumSize = New System.Drawing.Size(65, 0)
+        Me.rbStoffe.Name = "rbStoffe"
+        Me.rbStoffe.SmallImage = CType(resources.GetObject("rbStoffe.SmallImage"), System.Drawing.Image)
+        Me.rbStoffe.Text = "Zutaten und Allergene"
+        Me.rbStoffe.Value = "OPENALLERGENE"
+        '
+        'rbGruppen
+        '
+        Me.rbGruppen.Image = Global.WinBack.My.Resources.Resources.ArtikelNeu_32x32
+        Me.rbGruppen.LargeImage = Global.WinBack.My.Resources.Resources.ArtikelNeu_32x32
+        Me.rbGruppen.MinimumSize = New System.Drawing.Size(65, 0)
+        Me.rbGruppen.Name = "rbGruppen"
+        Me.rbGruppen.SmallImage = CType(resources.GetObject("rbGruppen.SmallImage"), System.Drawing.Image)
+        Me.rbGruppen.Text = "Rohstoff und Artikelgruppen"
+        Me.rbGruppen.Value = "OPENGRUPPEN"
+        '
+        'rbVarianten
+        '
+        Me.rbVarianten.Image = Global.WinBack.My.Resources.Resources.RezeptDetails_32x32
+        Me.rbVarianten.LargeImage = Global.WinBack.My.Resources.Resources.RezeptDetails_32x32
+        Me.rbVarianten.MinimumSize = New System.Drawing.Size(65, 0)
+        Me.rbVarianten.Name = "rbVarianten"
+        Me.rbVarianten.SmallImage = CType(resources.GetObject("rbVarianten.SmallImage"), System.Drawing.Image)
+        Me.rbVarianten.Text = "Rezept Varianten"
+        Me.rbVarianten.Value = "OPENVARIANTEN"
         '
         'rbAbout
         '
@@ -1709,4 +1773,10 @@ Partial Class WinBack
     Friend WithEvents rbRohstoffNwt As RibbonButton
     Friend WithEvents rbAdminWinBack As RibbonButton
     Friend WithEvents rbLog As RibbonButton
+    Friend WithEvents rbStammdaten As RibbonTab
+    Friend WithEvents rpStammdaten As RibbonPanel
+    Friend WithEvents rbLinienGruppen As RibbonButton
+    Friend WithEvents rbStoffe As RibbonButton
+    Friend WithEvents rbGruppen As RibbonButton
+    Friend WithEvents rbVarianten As RibbonButton
 End Class

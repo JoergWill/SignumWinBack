@@ -247,4 +247,59 @@
         End If
 
     End Function
+
+    ''' <summary>
+    ''' Neue Liniengruppe in WinBack.Liniengruppen anlegen.
+    ''' Wenn keine Liniengruppen-Nummer übergeben wird (-1) dann wird die nächsthöhere LG-Nummer angelegt.
+    ''' </summary>
+    ''' <param name="LG_Nr"></param>
+    ''' <param name="Backort"></param>
+    ''' <returns></returns>
+    Shared Function AddLinienGruppe(Optional Backort As Boolean = False, Optional ByVal LG_Nr As Integer = wb_Global.UNDEFINED) As Boolean
+
+        'Wenn die neue Linie-Gruppen-Nummer nicht vorgegeben ist
+        If LG_Nr = wb_Global.UNDEFINED Then
+            'neue Linie-Gruppen-Nummer ermitteln
+            For Each lg In _LGruppen
+                If (lg.Value.LinienGruppe < wb_Global.OffsetBackorte) Or Backort Then
+                    LG_Nr = Math.Max(lg.Value.LinienGruppe, LG_Nr) + 1
+                End If
+            Next
+            'Prüfen ob die maximale Anzahl der Liniengruppen erreicht ist
+            If Not Backort And (LG_Nr = wb_Global.OffsetBackorte) Then
+                While _LGruppen.ContainsKey(LG_Nr)
+                    LG_Nr -= 1
+                End While
+            End If
+        End If
+
+        'Prüfen ob die Linien-Gruppen-Nummer noch nicht verwendet ist
+        If Not _LGruppen.ContainsKey(LG_Nr) Then
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+            'sql-Kommando INSERT bilden
+            Dim sqlFeld = "LG_Nr"
+            Dim sqlData = LG_Nr.ToString
+
+            'Wenn ein Aufarbeitungsplatz/Backort angefügt wird, ist die Linien-Nummer gleich der Liniengruppen-Nummer
+            If Backort Then
+                sqlFeld = sqlFeld & ", LG_Linien"
+                sqlData = sqlData & "," & LG_Nr.ToString
+            End If
+
+            'Datensatz neu anlegen
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewLinienGruppe, sqlFeld, sqlData))
+            winback.Close()
+
+            'Liste neu aufbauen
+            InitLinienGruppen()
+            'Einfügen erfolgreich
+            Return True
+        Else
+            'Fehler beim Anlegen der neuen Liniengruppe
+            Return False
+        End If
+
+    End Function
 End Class

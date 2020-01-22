@@ -100,58 +100,59 @@ Public Class wb_nwtCl_WinBack
     Private Function httpString(cmd As String, param As String, Optional getFile As Boolean = False, Optional getFileName As String = "") As Integer
         ' Internet-Connector
         Dim request As WebRequest
-        'Try
-        request = WebRequest.Create(_url & "/" & cmd & param)
-        request.Method = "GET"
-        request.Timeout = 10000
-        ' Authorisierung mit Passwort
-        request.Headers.Clear()
-        request.Headers.Add("Authorization: Basic " & _pass)
-        request.ContentType = "application/x-www-form-urlencoded"
+        Try
+            request = WebRequest.Create(_url & "/" & cmd & param)
+            request.Method = "GET"
+            request.Timeout = 10000
+            ' Authorisierung mit Passwort
+            request.Headers.Clear()
+            request.Headers.Add("Authorization: Basic " & _pass)
+            request.ContentType = "application/x-www-form-urlencoded"
 
-        'Request ins Log-File schreiben
-        Trace.WriteLine("@I_WebRequest " & _url & "/" & cmd & param)
+            'Request ins Log-File schreiben
+            Trace.WriteLine("@I_WebRequest " & _url & "/" & cmd & param)
 
-        ' Antwort (OK)
-        Dim response As WebResponse = request.GetResponse()
-        _errorCode = CType(response, HttpWebResponse).StatusCode
+            ' Antwort (OK)
+            Dim response As WebResponse = request.GetResponse()
+            _errorCode = CType(response, HttpWebResponse).StatusCode
 
-        ' Ergebnis-String
-        If _errorCode = HttpStatusCode.OK Then
+            ' Ergebnis-String
+            If _errorCode = HttpStatusCode.OK Then
 
-            If getFile Then
-                'Get PDF-File/Doc-File aus Stream
-                Dim downloader As New System.Net.WebClient
-                downloader.Headers.Clear()
-                downloader.Headers.Add("Authorization: Basic " & _pass)
-                downloader.DownloadFile(_url & "/" & cmd & param, getFileName)
-                Return 1
-            Else
-                Dim dataStream As Stream = response.GetResponseStream()
-                Dim reader As New StreamReader(dataStream, Text.Encoding.UTF8)
-                Dim responseFromServer As String = reader.ReadToEnd()
-                Trace.WriteLine("@I_Response from Server :" & responseFromServer)
-
-                'wenn das erste Zeichen ein "[" ist handelt es sich um eine JSON-Array
-                If Left(responseFromServer, 1) = "[" Then
-                    'Get JSON-Data
-                    Dim ser As JArray = JArray.Parse(responseFromServer)
-                    data = ser.Children().ToList
-                    Return data.Count
-                Else
-                    'wenn nicht, wird ein Array daraus gemacht...
-                    Dim ser As JArray = JArray.Parse("[" & responseFromServer & "]")
-                    data = ser.Children().ToList
+                If getFile Then
+                    'Get PDF-File/Doc-File aus Stream
+                    Dim downloader As New System.Net.WebClient
+                    downloader.Headers.Clear()
+                    downloader.Headers.Add("Authorization: Basic " & _pass)
+                    downloader.DownloadFile(_url & "/" & cmd & param, getFileName)
                     Return 1
+                Else
+                    Dim dataStream As Stream = response.GetResponseStream()
+                    Dim reader As New StreamReader(dataStream, Text.Encoding.UTF8)
+                    Dim responseFromServer As String = reader.ReadToEnd()
+                    Trace.WriteLine("@I_Response from Server :" & responseFromServer)
+
+                    'wenn das erste Zeichen ein "[" ist handelt es sich um eine JSON-Array
+                    If Left(responseFromServer, 1) = "[" Then
+                        'Get JSON-Data
+                        Dim ser As JArray = JArray.Parse(responseFromServer)
+                        data = ser.Children().ToList
+                        Return data.Count
+                    Else
+                        'wenn nicht, wird ein Array daraus gemacht...
+                        Dim ser As JArray = JArray.Parse("[" & responseFromServer & "]")
+                        data = ser.Children().ToList
+                        Return 1
+                    End If
                 End If
+            Else
+                Return -1
             End If
-        Else
-            Return -1
-        End If
-        'Catch e As Exception
-        '_errorCode = HttpStatusCode.Unused
-        'Return -9
-        'End Try
+        Catch e As Exception
+            Trace.WriteLine("@E_WebRequest " & _url & "/" & cmd & param & " Exception " & e.ToString)
+            _errorCode = HttpStatusCode.Unused
+            Return -9
+        End Try
     End Function
 
     ''' <summary>

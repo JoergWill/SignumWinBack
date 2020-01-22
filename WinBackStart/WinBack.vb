@@ -13,6 +13,7 @@ Public Class WinBack
     Private AktForm As Object
 
     Dim MdiChargen As Chargen_Main
+    Dim MdiStammDaten As StammDaten_Main
     Dim MdiArtikel As Artikel_Main
     Dim MdiRezepte As Rezepte_Main
     Dim MdiRohstoffe As Rohstoffe_Main
@@ -40,6 +41,10 @@ Public Class WinBack
             'Chargen/Statistik
             If rbChargen.Active Then
                 MainFormShow(MdiChargen, GetType(Chargen_Main))
+            End If
+            'Verwalten Stammsaten
+            If rbStammdaten.Active Then
+                MainFormShow(MdiStammDaten, GetType(StammDaten_Main))
             End If
             'Artikelverwaltung
             If rbArtikel.Active Then
@@ -629,7 +634,7 @@ Public Class WinBack
                                                                           rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click,
                                                                           rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeParameter.Click, rbRohstoffeVerwendung.Click, rbRohstoffNwt.Click, rbRohstoffeImportCloud.Click,
                                                                           rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click, rbAdminWinBack.Click, rbAdminUpdate.Click, rbAdminWinBackIni.Click, rbLog.Click,
-                                                                          rbArtikelHinweise.Click, rbArtikelParameter.Click
+                                                                          rbArtikelHinweise.Click, rbArtikelParameter.Click, rbVarianten.Click, rbStoffe.Click, rbLinienGruppen.Click, rbGruppen.Click
         Dim Cmd As String = DirectCast(sender, RibbonButton).Value
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")

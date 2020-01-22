@@ -1872,6 +1872,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Linie"></param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Linien_Global.AddLinienGruppe(System.Boolean,System.Int32)">
+ <summary>
+ Neue Liniengruppe in WinBack.Liniengruppen anlegen.
+ Wenn keine Liniengruppen-Nummer übergeben wird (-1) dann wird die nächsthöhere LG-Nummer angelegt.
+ </summary>
+ <param name="LG_Nr"></param>
+ <param name="Backort"></param>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Mail.mHost">
  <summary>
  smtp-Host für Mail-Client

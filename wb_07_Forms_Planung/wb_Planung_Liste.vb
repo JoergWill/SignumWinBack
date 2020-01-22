@@ -41,6 +41,10 @@ Public Class wb_Planung_Liste
     Private Sub wb_Planung_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Liste mit Produktions-Filialen
         cbProduktionsFiliale.Fill(wb_Filiale.ProduktionsFilialen)
+        'ComboBox Liniengruppe Rezepte(Teig) füllen
+        cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen)
+        'ComboBox Liniengruppe Artikel füllen
+        cbArtikelLinienGruppe.Fill(wb_Linien_Global.ArtikelLinienGruppen)
 
         'Font für die Anzeige Artikelzeile im VirtualTree
         oFont = VirtualTree.Font

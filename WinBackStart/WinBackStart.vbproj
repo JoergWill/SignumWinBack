@@ -363,6 +363,12 @@
     <Compile Include="Chargen_Main.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="StammDaten_Main.Designer.vb">
+      <DependentUpon>StammDaten_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="StammDaten_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Test_Main.Designer.vb">
       <DependentUpon>Test_Main.vb</DependentUpon>
     </Compile>

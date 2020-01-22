@@ -4,6 +4,8 @@
 
     'Sql-Statement Liniengruppen
     Public Const sqlLinienGruppen = "SELECT * FROM LinienGruppen ORDER BY LG_Nr"
+    Public Const sqlAddNewLinienGruppe = "INSERT INTO LinienGruppen([0]) VALUES ([1])"
+
     'Sql-Statement Linien
     Public Const sqlLinien = "SELECT * FROM Linien ORDER BY L_Nr"
     'Sql-Statement Update(Replace)Linien

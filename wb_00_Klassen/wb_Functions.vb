@@ -135,9 +135,9 @@ Public Class wb_Functions
     ''' <returns></returns>
     Public Shared Function StringtoErnaehrungsForm(s As String) As wb_Global.ErnaehrungsForm
         Select Case s.ToUpper
-            Case "N"
+            Case "N", "FALSE"
                 Return wb_Global.ErnaehrungsForm.N
-            Case "Y", "J"
+            Case "Y", "J", "TRUE"
                 Return wb_Global.ErnaehrungsForm.Y
             Case "-", ""
                 Return wb_Global.ErnaehrungsForm.X

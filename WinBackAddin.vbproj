@@ -872,6 +872,12 @@
     <Compile Include="wb_08_Forms_Admin\wb_Service_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_LinienGruppen.Designer.vb">
+      <DependentUpon>wb_StammDaten_LinienGruppen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_LinienGruppen.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\licenses.licx" />
@@ -1049,6 +1055,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Service_Liste.resx">
       <DependentUpon>wb_Service_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_LinienGruppen.resx">
+      <DependentUpon>wb_StammDaten_LinienGruppen.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
