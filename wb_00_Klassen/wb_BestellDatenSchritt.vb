@@ -193,7 +193,7 @@ Public Class wb_BestellDatenSchritt
 
         'Feldname aus der Datenbank
         Try
-            'Debug.Print("StoredProcedure Produktionsplanung  " & Name & " / " & Value)
+            Debug.Print("StoredProcedure Produktionsplanung  " & Name & " / " & Value)
         Catch ex As Exception
         End Try
 

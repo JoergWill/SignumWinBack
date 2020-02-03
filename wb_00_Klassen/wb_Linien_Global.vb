@@ -4,6 +4,7 @@
     Private Shared _LinienGruppen As New SortedList
     Private Shared _ArtikelLinienGruppen As New SortedList
     Private Shared _RezeptLinienGruppen As New SortedList
+    Private Shared _ErrorText As String = ""
     Public Shared DefaultProdFiliale As Integer = wb_Global.UNDEFINED
 
     ''' <summary>
@@ -23,6 +24,12 @@
     Public Shared ReadOnly Property RezeptLinienGruppen As SortedList
         Get
             Return _RezeptLinienGruppen
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property ErrorText As String
+        Get
+            Return _ErrorText
         End Get
     End Property
 
@@ -249,6 +256,88 @@
     End Function
 
     ''' <summary>
+    ''' Prüft ob eine Liniengruppe in der Liste schon existiert
+    ''' </summary>
+    ''' <param name="LinienGruppe"></param>
+    ''' <returns></returns>
+    Public Shared Function ExistLinienGruppe(LinienGruppe As Integer) As Boolean
+        Return _LGruppen.ContainsKey(LinienGruppe)
+    End Function
+
+    ''' <summary>
+    ''' Ändert die Liniengruppen-Einträge in winback.Rezepte wenn
+    ''' in der Liniengruppen-Tabelle die Nummer geändert wurde
+    ''' </summary>
+    ''' <param name="LinienGruppeAlt"></param>
+    ''' <param name="LinienGruppeNeu"></param>
+    ''' <returns></returns>
+    Public Shared Function ChangeLinienGruppe(LinienGruppeAlt As String, LinienGruppeNeu As String) As Boolean
+        'Ergebnis vorbelegen
+        _ErrorText = ""
+
+        'Prüfen ob die Linien-Gruppen-Nummer gültig ist
+        If (wb_Functions.StrToInt(LinienGruppeNeu) < wb_Global.OffsetBackorte) And (wb_Functions.StrToInt(LinienGruppeNeu) > 0) Then
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+            'Datensatz neu anlegen - Result True nur wenn kein Fehler auftritt
+            If (winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChangeLinienGruppe, LinienGruppeNeu, LinienGruppeAlt)) >= 0) Then
+                _ErrorText = "Fehler beim Anpassen der Rezeptkopfdaten !" & vbCrLf & "Bitte die Liniengruppen in den Rezepturen überprüfen"
+                ChangeLinienGruppe = False
+            Else
+                'kein Fehler
+                _ErrorText = ""
+                ChangeLinienGruppe = True
+            End If
+
+            'Verbindung wieder schliessen
+            winback.Close()
+            'Liste neu aufbauen
+            InitLinienGruppen()
+            Return ChangeLinienGruppe
+        Else
+            _ErrorText = "Die Liniengruppen-Nummer ist ungültig [1..99]"
+            Return False
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Ändert die Liniengruppen-Einträge in winback.Rezepte wenn
+    ''' in der Liniengruppen-Tabelle die Nummer geändert wurde
+    ''' </summary>
+    ''' <param name="BackortAlt"></param>
+    ''' <param name="BackortNeu"></param>
+    ''' <returns></returns>
+    Public Shared Function ChangeBackort(BackortAlt As String, BackortNeu As String) As Boolean
+        'Ergebnis vorbelegen
+        _ErrorText = ""
+
+        'Prüfen ob der neue Backort gültig ist
+        If (wb_Functions.StrToInt(BackortNeu) >= wb_Global.OffsetBackorte) And (wb_Functions.StrToInt(BackortNeu) < 255) Then
+
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+            'Datensatz neu anlegen - Result True nur wenn kein Fehler auftritt
+            If (winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChangeBackort, BackortNeu, BackortAlt, wb_Global.T300_LinienGruppe)) >= 0) Then
+                _ErrorText = "Fehler beim Anpassen der Artikeldaten !" & vbCrLf & "Bitte die Backorte in den Artikeldaten überprüfen"
+                ChangeBackort = False
+            Else
+                'kein Fehler
+                _ErrorText = ""
+                ChangeBackort = True
+            End If
+
+            'Verbindung wieder schliessen
+            winback.Close()
+            'Liste neu aufbauen
+            InitLinienGruppen()
+            Return ChangeBackort
+        Else
+            _ErrorText = "Der Backort ist ungültig [100..254]"
+            Return False
+        End If
+    End Function
+
+    ''' <summary>
     ''' Neue Liniengruppe in WinBack.Liniengruppen anlegen.
     ''' Wenn keine Liniengruppen-Nummer übergeben wird (-1) dann wird die nächsthöhere LG-Nummer angelegt.
     ''' </summary>
@@ -256,6 +345,8 @@
     ''' <param name="Backort"></param>
     ''' <returns></returns>
     Shared Function AddLinienGruppe(Optional Backort As Boolean = False, Optional ByVal LG_Nr As Integer = wb_Global.UNDEFINED) As Boolean
+        'Default Fehlermeldung
+        _ErrorText = "Fehler beim Anlegen der neuen Liniengruppe"
 
         'Wenn die neue Linie-Gruppen-Nummer nicht vorgegeben ist
         If LG_Nr = wb_Global.UNDEFINED Then
@@ -295,11 +386,48 @@
             'Liste neu aufbauen
             InitLinienGruppen()
             'Einfügen erfolgreich
+            _ErrorText = ""
             Return True
         Else
             'Fehler beim Anlegen der neuen Liniengruppe
+            _ErrorText = "Liniengruppe " & LG_Nr & " ist schon vorhanden !"
             Return False
         End If
 
+    End Function
+
+    Shared Function DeleteLinienGruppe(Lg_Nr As Integer) As Boolean
+        'Default Fehlermeldung
+        _ErrorText = "Fehler beim Löschen der Liniengruppe"
+        'Prüfen ob die Linien-Gruppen-Nummer existiert
+        If _LGruppen.ContainsKey(Lg_Nr) Then
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+            'Prüfen ob die Liniengruppe noch verwendet wird
+            If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptLinienGruppe, Lg_Nr.ToString)) Then
+                If winback.Read Then
+                    If winback.iField("Used") = 0 Then
+                        'Liniengruppe löschen
+                        winback.CloseRead()
+                        If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDeleteLinienGruppe, Lg_Nr.ToString)) Then
+                            _ErrorText = ""
+                            Return True
+                        End If
+                    Else
+                        'Liniengruppe wird noch verwendet
+                        _ErrorText = "Liniengruppe " & Lg_Nr & " wird noch verwendet !"
+                        Return False
+                    End If
+                    Return False
+                End If
+            Else
+                Return False
+            End If
+        Else
+            'Liniengruppe existiert nicht
+            Return False
+        End If
+        Return False
     End Function
 End Class

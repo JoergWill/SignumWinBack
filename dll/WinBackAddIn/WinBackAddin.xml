@@ -1872,6 +1872,31 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Linie"></param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Linien_Global.ExistLinienGruppe(System.Int32)">
+ <summary>
+ Prüft ob eine Liniengruppe in der Liste schon existiert
+ </summary>
+ <param name="LinienGruppe"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Linien_Global.ChangeLinienGruppe(System.String,System.String)">
+ <summary>
+ Ändert die Liniengruppen-Einträge in winback.Rezepte wenn
+ in der Liniengruppen-Tabelle die Nummer geändert wurde
+ </summary>
+ <param name="LinienGruppeAlt"></param>
+ <param name="LinienGruppeNeu"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Linien_Global.ChangeBackort(System.String,System.String)">
+ <summary>
+ Ändert die Liniengruppen-Einträge in winback.Rezepte wenn
+ in der Liniengruppen-Tabelle die Nummer geändert wurde
+ </summary>
+ <param name="BackortAlt"></param>
+ <param name="BackortNeu"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Linien_Global.AddLinienGruppe(System.Boolean,System.Int32)">
  <summary>
  Neue Liniengruppe in WinBack.Liniengruppen anlegen.
@@ -4369,7 +4394,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="Key">Schlüssel</param>
 </member>
-<member name="M:WinBack.wb_ComboBox.Fill(System.Collections.SortedList)">
+<member name="M:WinBack.wb_ComboBox.Fill(System.Collections.SortedList,System.Boolean)">
  <summary>
  ComboBox mit Texten aus HashTable füllen.
  </summary>

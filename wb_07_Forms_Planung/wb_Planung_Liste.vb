@@ -42,9 +42,9 @@ Public Class wb_Planung_Liste
         'Liste mit Produktions-Filialen
         cbProduktionsFiliale.Fill(wb_Filiale.ProduktionsFilialen)
         'ComboBox Liniengruppe Rezepte(Teig) füllen
-        cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen)
+        cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen, True)
         'ComboBox Liniengruppe Artikel füllen
-        cbArtikelLinienGruppe.Fill(wb_Linien_Global.ArtikelLinienGruppen)
+        cbArtikelLinienGruppe.Fill(wb_Linien_Global.ArtikelLinienGruppen, True)
 
         'Font für die Anzeige Artikelzeile im VirtualTree
         oFont = VirtualTree.Font
@@ -353,7 +353,7 @@ Public Class wb_Planung_Liste
                     ExpStr = ExpStr + x.RezeptNummer + SepStr
                 Case 40 ' [40] Artikel-Liniengruppe
                     If bArtikelLiniengruppe Then
-                        ExpStr = ExpStr + (x.ArtikelLinienGruppe + wb_Global.OffsetBackorte).ToString + SepStr
+                        ExpStr = ExpStr + (x.ArtikelLinienGruppe).ToString + SepStr
                     Else
                         ExpStr = ExpStr + SepStr
                     End If

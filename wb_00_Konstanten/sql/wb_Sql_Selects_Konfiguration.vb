@@ -5,6 +5,10 @@
     'Sql-Statement Liniengruppen
     Public Const sqlLinienGruppen = "SELECT * FROM LinienGruppen ORDER BY LG_Nr"
     Public Const sqlAddNewLinienGruppe = "INSERT INTO LinienGruppen([0]) VALUES ([1])"
+    Public Const sqlRezeptLinienGruppe = "SELECT COUNT(*) AS Used FROM Rezepte WHERE RZ_Liniengruppe = [0]"
+    Public Const sqlDeleteLinienGruppe = " DELETE FROM LinienGruppen WHERE LG_Nr = [0]"
+    Public Const sqlChangeLinienGruppe = " UPDATE Rezepte SET RZ_Liniengruppe = [0] WHERE RZ_Liniengruppe = [1]"
+    Public Const sqlChangeBackort = " UPDATE RohParams SET RP_Wert = [0] WHERE RP_Typ_Nr = 300 AND RP_ParamNr = [2] AND RP_Wert = [1]"
 
     'Sql-Statement Linien
     Public Const sqlLinien = "SELECT * FROM Linien ORDER BY L_Nr"

@@ -232,7 +232,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug-M6\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackServerTask.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -442,8 +442,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).*" "C:\OrgaSoft\AddIns" /E /C /R /Y
+</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\WinSCP.5.13.4\build\WinSCP.targets" Condition="Exists('..\packages\WinSCP.5.13.4\build\WinSCP.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

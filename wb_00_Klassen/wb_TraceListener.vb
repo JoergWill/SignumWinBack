@@ -106,9 +106,9 @@
         Try
             If Stack IsNot Nothing Then
                 'Aufruf-Baum aus Stack-Trace
-                Dim x = wb_Functions.GetLocalStackTrace(Stack, True)
+                Dim x As ArrayList = wb_Functions.GetLocalStackTrace(Stack, True)
                 'Das erste Element aus Array()
-                If Len(x) > 0 Then
+                If x.Count > 0 Then
                     Return x(0)
                 End If
             End If

@@ -28,6 +28,7 @@ Partial Class wb_StammDaten_LinienGruppen
         Me.BtnNeueAufarbeitung = New System.Windows.Forms.Button()
         Me.BtnOK = New System.Windows.Forms.Button()
         Me.DataGridView = New WinBack.wb_DataGridView()
+        Me.BtnLoeschen = New System.Windows.Forms.Button()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -75,12 +76,23 @@ Partial Class wb_StammDaten_LinienGruppen
         Me.DataGridView.TabIndex = 0
         Me.DataGridView.x8859_5_FieldName = ""
         '
+        'BtnLoeschen
+        '
+        Me.BtnLoeschen.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtnLoeschen.Location = New System.Drawing.Point(214, 540)
+        Me.BtnLoeschen.Name = "BtnLoeschen"
+        Me.BtnLoeschen.Size = New System.Drawing.Size(95, 49)
+        Me.BtnLoeschen.TabIndex = 3
+        Me.BtnLoeschen.Text = "Löschen"
+        Me.BtnLoeschen.UseVisualStyleBackColor = True
+        '
         'wb_StammDaten_LinienGruppen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(691, 601)
+        Me.Controls.Add(Me.BtnLoeschen)
         Me.Controls.Add(Me.BtnOK)
         Me.Controls.Add(Me.BtnNeueAufarbeitung)
         Me.Controls.Add(Me.BtnLinienGruppeNeu)
@@ -97,4 +109,5 @@ Partial Class wb_StammDaten_LinienGruppen
     Friend WithEvents BtnLinienGruppeNeu As Windows.Forms.Button
     Friend WithEvents BtnNeueAufarbeitung As Windows.Forms.Button
     Friend WithEvents BtnOK As Windows.Forms.Button
+    Friend WithEvents BtnLoeschen As Windows.Forms.Button
 End Class

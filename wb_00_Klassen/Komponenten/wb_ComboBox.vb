@@ -47,10 +47,15 @@ Partial Class wb_ComboBox
     ''' ComboBox mit Texten aus HashTable füllen.
     ''' </summary>
     ''' <param name="HashTable"></param>
-    Public Sub Fill(HashTable As SortedList)
+    Public Sub Fill(HashTable As SortedList, Optional FilterAlle As Boolean = False)
         'alte Einträge löschen
         Items.Clear()
         Text = ""
+        'per Default Filterauswahl Alle
+        If FilterAlle Then
+            Text = "Alle"
+            Items.Add(Text)
+        End If
         'HashTable aus SortedList
         ht = HashTable
         'Combo-Box mit Werten füllen

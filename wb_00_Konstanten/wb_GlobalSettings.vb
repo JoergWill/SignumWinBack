@@ -1196,7 +1196,7 @@ Public Class wb_GlobalSettings
                 _MsSQLMainDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_MainDB", IniFile.ReadString("winback", "MsSQLServer_MainDB", _MsSQLMainDB))
                 _MsSQLAdmnDB = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_AdmnDB", IniFile.ReadString("winback", "MsSQLServer_AdmnDB", _MsSQLAdmnDB))
                 _MsSQLServer = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_Source", IniFile.ReadString("winback", "MsSQLServer_Source", _MsSQLServer))
-                _MsSQLUserId = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_UserId", IniFile.ReadString("winback", "MsSQLServer_UserId", "sa"))
+                _MsSQLUserId = IniFile.ReadString(IniWinBack_Mandant, "MsSQLServer_UserId", IniFile.ReadString("winback", "MsSQLServer_UserId", ""))
                 _MsSQLPasswd = IniFile.ReadEncryptedString(IniWinBack_Mandant, "MsSQLServer_Passwd", _MsSQLPasswd)
 
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")

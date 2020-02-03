@@ -698,10 +698,14 @@ Public Class wb_Komponente
                 GetProduktionsDaten()
             End If
             'prüfen ob die Artikelgruppe gültig ist
-            If _ArtikelLinienGruppe < wb_Global.OffsetBackorte Then
+            If (_ArtikelLinienGruppe < wb_Global.OffsetBackorte) And (_ArtikelLinienGruppe <> 0) Then
                 _ArtikelLinienGruppe = wb_Global.OffsetBackorte
             End If
-            Return _ArtikelLinienGruppe
+            If _ArtikelLinienGruppe <> 0 Then
+                Return _ArtikelLinienGruppe
+            Else
+                Return wb_Global.UNDEFINED
+            End If
         End Get
         Set(value As Integer)
             _ArtikelLinienGruppe = value
