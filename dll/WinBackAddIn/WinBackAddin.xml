@@ -8039,5 +8039,26 @@ eingelesen
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_STammDaten_Main.FormText">
+ <summary>
+ Fenster-Name (Caption). Wird von Init() aufgerufen
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_STammDaten_Main.FormName">
+ <summary>
+ Eindeutiger Name für die Basis-Form. 
+ Unter diesem Namen werden die Einstellungen in der winback.ini gespeichert.
+ 
+ Die DockPanel-Konfiguration wird gespeichert unter wbXXXXYYYY.xml, dabei ist XXXX der FormName und YYYY der Layout-Name.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_STammDaten_Main.BtnLinienGruppen">
+ <summary>
+ Liniengruppen und Aufarbeitungsplätze anlegen und verwalten.
+ Aufarbeitungsplätze werden in der Tabelle Liniengruppen mit Linien-Nummer größer als 100 eingetragen.
+ </summary>
+</member>
 </members>
 </doc>

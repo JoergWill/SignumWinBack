@@ -254,7 +254,7 @@ Public Class ob_Main_Menu
     ''' <param name="e"></param>
     Private Sub ShowStammDatenForm(sender As Object, e As EventArgs)
         CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_Chargen_Main(ServiceProvider), My.Resources.MainStammdaten_16x16)
+        xForm = oViewProvider.OpenForm(New wb_StammDaten_Main(ServiceProvider), My.Resources.MainStammdaten_16x16)
         wb_DockBarPanelShared.SetFormBoundaries(xForm, "Stammdaten")
     End Sub
 

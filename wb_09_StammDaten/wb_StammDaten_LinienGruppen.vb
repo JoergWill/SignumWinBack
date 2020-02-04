@@ -21,7 +21,7 @@ Public Class wb_StammDaten_LinienGruppen
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten, die mit + beginnen sind editierbar
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"+Nr", "+&Bezeichnung", "", "+Linien", "", "", "BZ Drucken", "TZ Drucken", "TR Drucken", "BZ Senden", "TZ Senden"}
+        Dim sColNames As New List(Of String) From {"+Nr", "+&Bezeichnung", "+Kurzname", "+Linien", "", "", "BZ Drucken", "TZ Drucken", "TR Drucken", "BZ Senden", "TZ Senden"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next

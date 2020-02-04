@@ -85,7 +85,7 @@ Public Class wb_Planung_Main
     End Function
 
     Private Sub BtnProdListeExport()
-        'TODO in Planung Liste denExport anstossen
+        'TODO in Planung Liste den Export anstossen
     End Sub
 
     Private Sub BtnPlanungTeiler()

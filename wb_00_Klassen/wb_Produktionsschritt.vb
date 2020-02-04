@@ -86,6 +86,7 @@ Public Class wb_Produktionsschritt
             OptChargekg = .ArtikelChargen.OptCharge.fMengeInkg
             MaxChargekg = .ArtikelChargen.MaxCharge.fMengeInkg
             MinChargekg = .ArtikelChargen.MinCharge.fMengeInkg
+            LagerBestand = .Bilanzmenge
         End With
     End Sub
 
@@ -132,7 +133,7 @@ Public Class wb_Produktionsschritt
     End Sub 'New
 
     '' <summary>
-    '' Parent dieses Rezeptschrittes
+    '' Parent dieses Produktionsschrittes
     '' </summary>
     Public Property ParentStep() As wb_Produktionsschritt
         Get
@@ -144,7 +145,7 @@ Public Class wb_Produktionsschritt
     End Property
 
     '' <summary>
-    '' Liste aller Child-Rezeptschritte
+    '' Liste aller Child-Produktionsschritte
     '' </summary>
     Public ReadOnly Property ChildSteps() As IList
         Get
@@ -236,12 +237,12 @@ Public Class wb_Produktionsschritt
         End Get
     End Property
 
-    Public ReadOnly Property VirtTreeArtikelLinienGruppe As String
-        Get
-            'TODO Hier entscheiden ob Liniengruppe oder Artikel-Liniengruppe angezeigt werden soll
-            Return ""
-        End Get
-    End Property
+    'Public ReadOnly Property VirtTreeArtikelLinienGruppe As String
+    '    Get
+    '        TODO Hier entscheiden ob Liniengruppe oder Artikel-Liniengruppe angezeigt werden soll
+    '        Return "AR"
+    '    End Get
+    'End Property
 
     Public ReadOnly Property VirtTreeTour As String
         Get

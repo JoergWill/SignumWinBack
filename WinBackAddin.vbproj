@@ -872,6 +872,12 @@
     <Compile Include="wb_08_Forms_Admin\wb_Service_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_Main.Designer.vb">
+      <DependentUpon>wb_StammDaten_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_Main.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_09_StammDaten\wb_StammDaten_LinienGruppen.Designer.vb">
       <DependentUpon>wb_StammDaten_LinienGruppen.vb</DependentUpon>
     </Compile>

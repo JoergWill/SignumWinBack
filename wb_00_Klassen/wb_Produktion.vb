@@ -395,7 +395,8 @@ Public Class wb_Produktion
 
     Private Function AddRezeptSchritte(ByRef Rzpt As wb_Produktionsschritt, Menge As Double, Parent As Object) As Integer
         'Rezeptur einlesen
-        Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent)
+        'TODO Muss hier ein Backverlust übertragen werden oder nicht ? PRÜFEN !!!
+        Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent, 0.0)
         Dim Faktor As Double = SaveDiv(Menge, Rezeptur.RezeptGewicht)
         'gibt die Liniengruppe aus dem Rezeptkopf zurück
         AddRezeptSchritte = Rezeptur.LinienGruppe
