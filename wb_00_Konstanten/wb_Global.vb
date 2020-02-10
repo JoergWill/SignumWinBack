@@ -648,6 +648,7 @@
         Public Bezeichnung As String
         Public KurzName As String
         Public Linien As Array
+        Public StartZeit As Date
         Public Abteilung As String
         Public BackZettelDrucken As String
         Public TeigZettelDrucken As String

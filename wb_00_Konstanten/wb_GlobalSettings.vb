@@ -54,6 +54,7 @@ Public Class wb_GlobalSettings
     Private Shared _osGrpBackwaren As String = Nothing                        'Warengruppe Verkaufsartikel(Backwaren) in OrgaBack       - Default 10
     Private Shared _osLaendercode As String = Nothing                         'Ländercode in OrgaBack (Update der Artikel/Komponenten-Nährwerte, Allergene und Deklaration
     Private Shared _osSprachCode As String = Nothing                          'Sprachencode in OrgaBack (Update der Artikel/Komponenten-Nährwerte, Allergene und Deklaration
+    Private Shared _osProdTageVoraus As Integer = UNDEFINED                   'Produktions-Plan x Tage vor Bestell-Datum
 
     Private Shared _WinBackDBType As wb_Sql.dbType = wb_Sql.dbType.undef
     Private Shared _MySQLServerIP As String = Nothing
@@ -721,6 +722,19 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property OsProdTageVoraus As Integer
+        Get
+            If _osProdTageVoraus = UNDEFINED Then
+                getWinBackIni("OrgaBack")
+            End If
+            Return _osProdTageVoraus
+        End Get
+        Set(value As Integer)
+            _osProdTageVoraus = value
+            setWinBackIni("OrgaBack", "ProdPlanTage", value)
+        End Set
+    End Property
+
     ''' <summary>
     ''' Setzt/gibt den Pfad zur winback.ini zurück.
     ''' 
@@ -1218,6 +1232,7 @@ Public Class wb_GlobalSettings
                 _osGrpRohstoffe = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeRohstoffe", IniFile.ReadString("orgaback", "GruppeRohstoffe", _osGrpRohstoffe))
                 _osLaendercode = IniFile.ReadString("orgaback", "LaenderCode", "DE")
                 _osSprachCode = IniFile.ReadString("orgaback", "SprachCode", "D")
+                _osProdTageVoraus = IniFile.ReadString("orgaback", "ProdPlanTage", "1")
 
             Case "Produktion"
                 _ChargenTeiler = IniFile.ReadString("Produktion", "ChargenTeiler", wb_Global.ModusChargenTeiler.OptimalUndRest)
@@ -1459,4 +1474,5 @@ Public Class wb_GlobalSettings
             _RohChargen_ErfassungVariante = value
         End Set
     End Property
+
 End Class

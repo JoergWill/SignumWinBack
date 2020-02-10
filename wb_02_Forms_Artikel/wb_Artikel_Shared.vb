@@ -12,6 +12,7 @@ Public Class wb_Artikel_Shared
     Public Shared ArtGruppe As New SortedList
 
     Public Shared aktArtikelName As String
+    Private Shared _ErrorText As String = ""
 
     Shared Sub New()
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
@@ -19,6 +20,12 @@ Public Class wb_Artikel_Shared
         'HashTable mit den Artikelgruppen laden
         Load_ArtikelTables()
     End Sub
+
+    Public Shared ReadOnly Property ErrorText As String
+        Get
+            Return _ErrorText
+        End Get
+    End Property
 
     Public Shared Sub LoadRzptNamen()
         'HashTable mit der Übersetzung der Rezept-Nummer(Idx) in die Rezept-Bezeichnung laden
@@ -32,13 +39,13 @@ Public Class wb_Artikel_Shared
         winback.Close()
     End Sub
 
-    Private Shared Sub Load_ArtikelTables()
-        'HashTable mit der Übersetzung der Rohstoffgruppen-Nummer in die Rohstoffgruppen-Bezeichnung laden
-        'wenn die Rohstoffgruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
+    Public Shared Sub Load_ArtikelTables()
+        'HashTable mit der Übersetzung der Artikelgruppen-Nummer in die Artikelgruppen-Bezeichnung laden
+        'wenn die Artikelgruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
 
-        'SortedList Rohstoff-Gruppen
+        'SortedList Artikel-Gruppen
         winback.sqlSelect(wb_Sql_Selects.sqlartikelGrp)
         ArtGruppe.Clear()
         While winback.Read
@@ -48,6 +55,61 @@ Public Class wb_Artikel_Shared
         End While
         winback.Close()
     End Sub
+
+    Public Shared Function Add_ArtikelGruppe() As Integer
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+
+        'nächste freie Gruppen-Nummer ermitteln (Artikel UND Rohstoff-Gruppe)
+        Dim ArtGrpNr As Integer = 1
+        Do While ArtGruppe.ContainsKey(ArtGrpNr) Or wb_Rohstoffe_Shared.RohGruppe.ContainsKey(ArtGrpNr)
+            ArtGrpNr += 1
+        Loop
+
+        'Datensatz neu anlegen
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewArtRohGruppe, ArtGrpNr, "1"))
+        winback.Close()
+
+        'Liste neu aufbauen
+        ArtGruppe.Add(ArtGrpNr, "")
+
+        'Neue Artikel-Gruppen-Nummer zurückgegeben
+        Return ArtGrpNr
+    End Function
+
+    Public Shared Function Delete_ArtikelGruppe(Nr As Integer) As Boolean
+        'Default Fehlermeldung
+        _ErrorText = "Fehler beim Löschen der Artikelgruppe"
+        'Prüfen ob die Artikel-Gruppen-Nummer existiert
+        If ArtGruppe.ContainsKey(Nr) Then
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+            'Prüfen ob die Artikelgruppe noch verwendet wird
+            If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUsedRohArtGruppe, Nr.ToString)) Then
+                If winback.Read Then
+                    If winback.iField("Used") = 0 Then
+                        'Artikelgruppe löschen
+                        winback.CloseRead()
+                        If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDeleteRohArtGruppe, Nr.ToString)) Then
+                            _ErrorText = ""
+                            Return True
+                        End If
+                    Else
+                        'Artikelgruppe wird noch verwendet
+                        _ErrorText = "Artikelgruppe " & Nr & " wird noch verwendet !"
+                        Return False
+                    End If
+                    Return False
+                End If
+            Else
+                Return False
+            End If
+        Else
+            'Artikelgruppe existiert nicht
+            Return False
+        End If
+        Return False
+    End Function
 
     Public Shared Sub Liste_Click(sender As Object)
         RaiseEvent eListe_Click(sender)

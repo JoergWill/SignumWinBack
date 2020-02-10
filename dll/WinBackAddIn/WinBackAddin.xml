@@ -3294,7 +3294,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Modus"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Produktion.AddChargenZeile(System.String,System.String,System.Int32,System.Double,WinBack.wb_Global.ModusChargenTeiler,System.Boolean,System.String,System.Double,System.String,System.String)">
+<member name="M:WinBack.wb_Produktion.AddChargenZeile(System.String,System.String,System.Int32,System.Double,System.Double,WinBack.wb_Global.ModusChargenTeiler,System.Boolean,System.String,System.Double,System.String,System.String)">
  <summary>
  Fügt eine (Artikel)Charge an die bestehende Liste an.
  Der Artikel-Datensatz wird aus der Datenbank eingelesen und als Kopfdatensatz eingefügt. Die Rezeptzeilen werden entsprechend der Chargen-Aufteilung angefügt.
@@ -3524,6 +3524,16 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <summary>
  Gibt FÜr Artikelzeilen die Summe aller Sollwerte der Child-Steps zurück
  Zur Anzeige der Teigmenge bzw. Teig-Gesamt-Menge in der Backliste
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Produktionsschritt.ProdVorlauf">
+ <summary>
+ Produktions-Vorlauf in [h].
+ Wird für die Produktionsplanung für Rohstoffe mit anhängender Rezeptur verwendet. Der Produktionsvorlauf
+ definiert, wie weit im Voraus die Produktion für den Rohstoff gestartet werden muss. (Reifezeiten....)
+ 
+ Datenfeld winback.Komponenten.KA_Prod_Linie (Unsigned TinyInt)
  </summary>
  <returns></returns>
 </member>
@@ -7838,7 +7848,6 @@ Datenbank-Verbindung schliessen
 <member name="M:WinBack.wb_Planung_Liste.btnNeueCharge_Click(System.Object,System.EventArgs)">
  <summary>
  Neue Artikel-Zeile (mit Rezeptur anlegen)
- TEST Artikel-Nummer 12
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -8039,6 +8048,30 @@ eingelesen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_StammDaten_Allergene.DataGridView_CellClick(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
+ <summary>
+ Flag setzen/rücksetzen.
+ Wenn die Zeile schon markiert war, wird das Flag getoggelt.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_StammDaten_Allergene.DataGridView_CellFormatting(System.Object,System.Windows.Forms.DataGridViewCellFormattingEventArgs)">
+ <summary>
+ Übersetzung der Bezeichnung in die entsprechende Landessprache
+ Wenn keine Übersetzung in der Texte-Tabelle vorhanden ist, wird der Original-Text ohne Klammern ausgegeben
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_StammDaten_ArtRohGruppen.DataGridView_CellClick(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
+ <summary>
+ Flag setzen/rücksetzen.
+ Wenn die Zeile schon markiert war, wird das Flag getoggelt.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="P:WinBack.wb_STammDaten_Main.FormText">
  <summary>
  Fenster-Name (Caption). Wird von Init() aufgerufen
@@ -8054,11 +8087,30 @@ eingelesen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_STammDaten_Main.FormClosing(System.Int16)">
+ <summary>
+ Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+ </summary>
+ <param name="Reason"></param>
+ <returns>
+ False, wenn das Fenster geschlossen werden darf
+ True, wenn das Fenster geöffnet bleiben muss
+ </returns>
+ <remarks></remarks>
+</member>
 <member name="M:WinBack.wb_STammDaten_Main.BtnLinienGruppen">
  <summary>
  Liniengruppen und Aufarbeitungsplätze anlegen und verwalten.
  Aufarbeitungsplätze werden in der Tabelle Liniengruppen mit Linien-Nummer größer als 100 eingetragen.
  </summary>
+</member>
+<member name="M:WinBack.wb_StammDaten_LinienGruppen.DataGridView_CellClick(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
+ <summary>
+ Flag setzen/rücksetzen.
+ Wenn die Zeile schon markiert war, wird das Flag getoggelt.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 </members>
 </doc>

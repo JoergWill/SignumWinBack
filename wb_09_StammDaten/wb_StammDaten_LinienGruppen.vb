@@ -6,11 +6,12 @@ Public Class wb_StammDaten_LinienGruppen
 
     Const ColLGNr = 0  'Spalte Linien-Gruppennummer
     Const ColxLinien = 3  'Spalte Linien
-    Const ColDruckBZ = 6  'Flag Backzettel für diese Linie drucken
-    Const ColDruckTZ = 7  'Flag Teigzettel für diese Linie drucken
-    Const ColDruckTR = 8  'Flag Backzettel für diese Linie drucken
-    Const ColSendeBZ = 9  'Flag Backzettel für diese Linie an WinBack übertragen
-    Const ColSendeTZ = 10 'Flag Teigzettel für diese Linie an WinBack übertragen
+    Const ColStartZt = 4  'Spalte Startzeit Aufarbeitungs-Platz
+    Const ColDruckBZ = 7  'Flag Backzettel für diese Linie drucken
+    Const ColDruckTZ = 8  'Flag Teigzettel für diese Linie drucken
+    Const ColDruckTR = 9  'Flag Backzettel für diese Linie drucken
+    Const ColSendeBZ = 10 'Flag Backzettel für diese Linie an WinBack übertragen
+    Const ColSendeTZ = 11 'Flag Teigzettel für diese Linie an WinBack übertragen
 
     Private _RowIndex As Integer = wb_Global.UNDEFINED
     Private _OrgWert As String = ""
@@ -21,7 +22,7 @@ Public Class wb_StammDaten_LinienGruppen
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten, die mit + beginnen sind editierbar
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"+Nr", "+&Bezeichnung", "+Kurzname", "+Linien", "", "", "BZ Drucken", "TZ Drucken", "TR Drucken", "BZ Senden", "TZ Senden"}
+        Dim sColNames As New List(Of String) From {"+Nr", "+&Bezeichnung", "+Kurzname", "+Linien", "+Startzeit", "", "", "BZ Drucken", "TZ Drucken", "TR Drucken", "BZ Senden", "TZ Senden"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
@@ -105,16 +106,21 @@ Public Class wb_StammDaten_LinienGruppen
                 DataGridView.CurrentCell.Value = _OrgWert
             End If
         End If
-
     End Sub
 
-    Private Sub DataGridView_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellContentClick
+    Private Sub DataGridView_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
         Debug.Print("CellContent Click " & e.ColumnIndex & "/" & e.RowIndex)
         'Originalwert der Zelle merken (Edit-Modus)
         _OrgWert = DataGridView.CurrentCell.Value.ToString
     End Sub
 
-    Private Sub DataGridView_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellClick
+    ''' <summary>
+    ''' Flag setzen/rücksetzen.
+    ''' Wenn die Zeile schon markiert war, wird das Flag getoggelt.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub DataGridView_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellClick, DataGridView.CellContentClick
         Debug.Print("Cell Click " & e.ColumnIndex & "/" & e.RowIndex)
         'wenn die Zeile schon markiert war
         If (e.RowIndex = _RowIndex) And (e.ColumnIndex >= ColDruckBZ) Then
@@ -186,6 +192,15 @@ Public Class wb_StammDaten_LinienGruppen
             Else
                 'Fehlermeldung ausgeben
                 MsgBox(wb_Linien_Global.ErrorText, MsgBoxStyle.Exclamation, "Liniengruppe löschen")
+            End If
+        End If
+
+    End Sub
+
+    Private Sub DataGridView_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
+        If e.ColumnIndex = ColStartZt Then
+            If e.Value IsNot Nothing And e.Value.ToString <> "" Then
+                e.Value = wb_Functions.FormatTimeStr(e.Value)
             End If
         End If
 

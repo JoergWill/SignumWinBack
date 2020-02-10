@@ -51,6 +51,9 @@
     Public Const sqlKompTypXXX = "SELECT KomponTypen.*, Einheiten.E_Einheit " &
                                  "FROM KomponTypen INNER JOIN Einheiten ON KomponTypen.KT_EinheitIndex = (Einheiten.E_LfdNr) " &
                                  "WHERE (((KomponTypen.KT_Typ_Nr)[0])) ORDER BY KomponTypen.KT_Typ_Nr, KomponTypen.KT_ParamNr"
+    'Sql-Statement Liste aller Komponenten-Parameter Typ(301)
+    Public Const sqlKompTyp301 = "SELECT * FROM KomponTypen WHERE KomponTypen.KT_Typ_Nr=301 ORDER BY KT_ParamNr"
+
     'Sql-Statmente Liste aller Komponenten-Parameter zur Komponenten-Type(Produktion)
     Public Const sqlKomponParamsXXX = "SELECT * FROM KomponParams WHERE KP_Ko_Nr = [0] ORDER BY KP_ParamNr"
     'Sql-Statmente Liste aller Komponenten-Parameter (erweiterte Parameter/Nährwerte)

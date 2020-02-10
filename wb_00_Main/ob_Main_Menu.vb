@@ -4,6 +4,7 @@ Imports Signum.OrgaSoft.Common
 Imports System.Windows.Forms
 Imports System.Reflection
 Imports System.Threading
+Imports Signum.OrgaSoft.GUI
 
 ''' <summary>
 ''' Erweitert das Ribon um ein neues Tab WinBack und baut die Menu-Struktur auf.

@@ -270,8 +270,6 @@ Partial Class wb_Chargen_Details
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents VirtualTree As Infralution.Controls.VirtualTree.VirtualTree
     Friend WithEvents ColCharge As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColNummer As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColBezeichnung As Infralution.Controls.VirtualTree.Column
@@ -287,4 +285,5 @@ Partial Class wb_Chargen_Details
     Friend WithEvents ColRohCharge As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColStatusImage As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColParams As Infralution.Controls.VirtualTree.Column
+    Private WithEvents VirtualTree As Infralution.Controls.VirtualTree.VirtualTree
 End Class

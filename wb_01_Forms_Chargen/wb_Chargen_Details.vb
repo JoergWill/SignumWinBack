@@ -30,14 +30,18 @@ Public Class wb_Chargen_Details
             ChargenProduziert.RootChargenSchritt.ChildSteps.Clear()
             VirtualTree.Invalidate()
             'Tree neu zeichnen(leer)
-            VirtualTree.DataSource = ChargenProduziert.RootChargenSchritt
+            If ChargenProduziert.RootChargenSchritt IsNot Nothing Then
+                VirtualTree.DataSource = ChargenProduziert.RootChargenSchritt
+            End If
         End If
 
         'Daten laden
         ChargenProduziert.MySQLdbSelect_ChargenSchritte(Liste_TagesWechselNummer)
 
         'Virtual Tree anzeigen
-        VirtualTree.DataSource = ChargenProduziert.RootChargenSchritt
+        If ChargenProduziert.RootChargenSchritt IsNot Nothing Then
+            VirtualTree.DataSource = ChargenProduziert.RootChargenSchritt
+        End If
     End Sub
 
     ''' <summary>
@@ -89,5 +93,9 @@ Public Class wb_Chargen_Details
         If ChargenZeile.Type = wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE Then
             Detail_DblClick(sender, ChargenZeile)
         End If
+    End Sub
+
+    Private Sub VirtualTree_Click(sender As Object, e As EventArgs) Handles VirtualTree.Click
+
     End Sub
 End Class

@@ -103,6 +103,8 @@ Public Class wb_Produktion
         'Schleife über alle Vorproduktions-Chargen
         For Each v As wb_VorProduktionsSchritt In _VorProduktion
             Debug.Print("Vorproduktion " & v.ArtikelNr & "/" & v.RezeptNr & "/" & v.Sollwert_kg)
+            'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
+            AddChargenZeile("", "", v.ArtikelNr, 0.0, v.Sollwert_kg, wb_Global.ModusChargenTeiler.OptimalUndRest)
         Next
 
         Return True
@@ -124,6 +126,8 @@ Public Class wb_Produktion
                 vp.ArtikelNr = p.ArtikelNr
                 vp.TeigChargen = p.TeigChargen
                 _VorProduktion.Add(vp)
+                'Charge als erledigt markieren
+                p.ChargenNummer = "VP-OK"
             End If
             'Rekursiver Aufruf für die Child-Nodes
             If p.ChildSteps IsNot Nothing Then
@@ -331,7 +335,7 @@ Public Class wb_Produktion
     ''' <param name="Nr">Integer - interne Artikelnummer</param>
     ''' <param name="Sollmenge_Stk">Double - Sollmenge in Stück</param>
     ''' <returns></returns>
-    Public Function AddChargenZeile(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Modus As wb_Global.ModusChargenTeiler,
+    Public Function AddChargenZeile(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Sollmenge_kg As Double, Modus As wb_Global.ModusChargenTeiler,
                                      Optional Vorproduktion As Boolean = False, Optional AuftragsNummer As String = "", Optional Bestellmenge As Double = wb_Global.UNDEFINED,
                                      Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
 
@@ -355,24 +359,28 @@ Public Class wb_Produktion
             Root.Sollwert_TeilungText = Sollwert_TeilungText
 
             'Teig-Gesamtmenge berechnen
-            TeigMenge = CalcTeigMenge(Sollmenge_Stk, Artikel.ArtikelChargen.StkGewicht / 1000)
+            If Sollmenge_kg <= 0 Then
+                TeigMenge = CalcTeigMenge(Sollmenge_Stk, Artikel.ArtikelChargen.StkGewicht / 1000)
+            Else
+                TeigMenge = Sollmenge_kg
+            End If
 
             'Chargen berechnen - Aufteilung in Optimal- und Restchargen
             Root.TeigChargen = CalcChargenMenge(TeigMenge, Artikel.ArtikelChargen.MinCharge.fMengeInkg, Artikel.ArtikelChargen.MaxCharge.fMengeInkg, Artikel.ArtikelChargen.OptCharge.fMengeInkg, Modus, Vorproduktion)
 
-            'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
-            For i = 1 To Root.TeigChargen.AnzahlOpt
-                AddArtikelRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeOpt, Root.TeigChargen)
-            Next
+                'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
+                For i = 1 To Root.TeigChargen.AnzahlOpt
+                    AddArtikelRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeOpt, Root.TeigChargen)
+                Next
 
-            'Rezept-Kopf-Zeilen anhängen (Rest-Chargen)
-            For i = 1 To Root.TeigChargen.AnzahlRest
-                AddArtikelRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeRest, Root.TeigChargen)
-            Next
+                'Rezept-Kopf-Zeilen anhängen (Rest-Chargen)
+                For i = 1 To Root.TeigChargen.AnzahlRest
+                    AddArtikelRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeRest, Root.TeigChargen)
+                Next
 
-            Return True
-        Else
-            Return False
+                Return True
+            Else
+                Return False
         End If
     End Function
 
@@ -847,7 +855,7 @@ Public Class wb_Produktion
                 Windows.Forms.Application.DoEvents()
             Next
             'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
-            AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.ChargenTeiler, True, BestellDaten.AuftragsNummer, BestellDaten.BestellMenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText)
+            AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, 0.0, BestellDaten.ChargenTeiler, True, BestellDaten.AuftragsNummer, BestellDaten.BestellMenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText)
         End While
         'Progressbar ausblenden
         wb_Main_Progress_Shared.HideProgressBar()

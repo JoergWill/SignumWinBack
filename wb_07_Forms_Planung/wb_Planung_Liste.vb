@@ -67,8 +67,8 @@ Public Class wb_Planung_Liste
             BtnBestellungen.Enabled = False
             'erste Filiale auswählen
             cbProduktionsFiliale.SelectedIndex = 0
-            'Datum heute plus einen Tag
-            dtBestellungen.Value = DateTime.Today.AddDays(1) 'TODO Tage im vorraus in WinBack-ini festhalten
+            'Datum heute plus x Tage
+            dtBestellungen.Value = DateTime.Today.AddDays(wb_GlobalSettings.OsProdTageVoraus)
         End If
     End Sub
 
@@ -113,22 +113,13 @@ Public Class wb_Planung_Liste
 
     ''' <summary>
     ''' Neue Artikel-Zeile (mit Rezeptur anlegen)
-    ''' TEST Artikel-Nummer 12
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
-        'TEST
-        Produktion.AddChargenZeile("1", "230", 0, 240, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("2", "233", 0, 200, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("3", "230", 0, 4, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("4", "233", 0, 2, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("1", "230", 0, 4, wb_GlobalSettings.ChargenTeiler, True, "", 4)
-        Produktion.AddChargenZeile("1", "230", 0, 34, wb_GlobalSettings.ChargenTeiler, True, "", 35, "Filiale Seestrasse 5 Stk geschnitten anliefern")
-        Produktion.AddChargenZeile("2", "233", 0, 6, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("3", "233", 0, 6, wb_GlobalSettings.ChargenTeiler, True)
-        Produktion.AddChargenZeile("4", "233", 0, 2, wb_GlobalSettings.ChargenTeiler, True)
-        'Produktion.AddArtikelCharge("2", "", 7035, 500, wb_Global.ModusChargenTeiler.OptimalUndRest)
+        'TODO neue Charge anlegen
+
+
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
     End Sub

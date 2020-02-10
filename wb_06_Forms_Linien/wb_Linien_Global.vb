@@ -106,6 +106,7 @@
                 L.LinienGruppe = winback.iField("LG_Nr")
                 L.Bezeichnung = winback.sField("LG_Bezeichnung")
                 L.Abteilung = winback.sField("LG_Abteilung")
+                L.StartZeit = wb_sql_Functions.MySQLdatetime(winback.dField("LG_StartZeit"))
 
                 'Linien in der Liniengruppe
                 Linien = winback.sField("LG_Linien")

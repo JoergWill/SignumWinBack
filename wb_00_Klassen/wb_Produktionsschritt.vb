@@ -32,6 +32,7 @@ Public Class wb_Produktionsschritt
     Private _OptChargekg As Double
     Private _MinChargekg As Double
     Private _MaxChargekg As Double
+    Private _ProdVorlauf As Integer
 
     Private _Sollwert As String
     Private _Sollwert_kg As Double
@@ -87,6 +88,7 @@ Public Class wb_Produktionsschritt
             MaxChargekg = .ArtikelChargen.MaxCharge.fMengeInkg
             MinChargekg = .ArtikelChargen.MinCharge.fMengeInkg
             LagerBestand = .Bilanzmenge
+            ProdVorlauf = .ProdVorlauf
         End With
     End Sub
 
@@ -249,7 +251,7 @@ Public Class wb_Produktionsschritt
             If _Tour = "0" Then
                 Return "-"
             Else
-                Return _Tour
+                Return _Tour & "/" & ProdVorlauf.ToString
             End If
         End Get
     End Property
@@ -266,13 +268,17 @@ Public Class wb_Produktionsschritt
     Public Property VirtTreeSollwert As String
         Get
             If Typ = KO_ZEILE_ARTIKEL Then
-                Return wb_Functions.FormatStr(Sollmenge_Stk, 0)
+                If Sollmenge_Stk <> 0 Then
+                    Return wb_Functions.FormatStr(Sollmenge_Stk, 0)
+                Else
+                    Return ""
+                End If
 
             ElseIf Typ = KO_ZEILE_REZEPT Then
-                Return wb_Functions.FormatStr(Sollwert_kg, 3)
+                    Return wb_Functions.FormatStr(Sollwert_kg, 3)
 
-            Else
-                Select Case Typ
+                Else
+                    Select Case Typ
                     Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
                         Return ""
                     Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
@@ -364,7 +370,12 @@ Public Class wb_Produktionsschritt
     Public ReadOnly Property VirtTreeEinheit As String
         Get
             If Typ = KO_ZEILE_ARTIKEL Then
-                Return "Stk"
+                If Sollmenge_Stk <> 0 Then
+                    Return "Stk"
+                Else
+                    Return ""
+                End If
+
             ElseIf Typ = KO_ZEILE_REZEPT Then
                 Return "kg"
             Else
@@ -464,6 +475,23 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As String)
             _RezeptBezeichnung = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Produktions-Vorlauf in [h].
+    ''' Wird für die Produktionsplanung für Rohstoffe mit anhängender Rezeptur verwendet. Der Produktionsvorlauf
+    ''' definiert, wie weit im Voraus die Produktion für den Rohstoff gestartet werden muss. (Reifezeiten....)
+    ''' 
+    ''' Datenfeld winback.Komponenten.KA_Prod_Linie (Unsigned TinyInt)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property ProdVorlauf As Integer
+        Get
+            Return _ProdVorlauf
+        End Get
+        Set(value As Integer)
+            _ProdVorlauf = value
         End Set
     End Property
 

@@ -79,12 +79,16 @@ Public Class wb_Chargen_Main
     End Property
 
     Private Sub BtnChargenFunktionen()
-        ChargenFunktionen = New wb_Chargen_Funktionen
+        If IsNothingOrDisposed(ChargenFunktionen) Then
+            ChargenFunktionen = New wb_Chargen_Funktionen
+        End If
         ChargenFunktionen.Show(DockPanel, DockState.DockTop)
     End Sub
 
     Private Sub BtnChargenDetails()
-        ChargenDetails = New wb_Chargen_Details
+        If IsNothingOrDisposed(ChargenDetails) Then
+            ChargenDetails = New wb_Chargen_Details
+        End If
         ChargenDetails.Show(DockPanel, DockState.DockTop)
     End Sub
 

@@ -9,6 +9,8 @@ Public Class wb_StammDaten_Main
 
     'Fenster
     Dim LinienGruppen As wb_StammDaten_LinienGruppen
+    Dim ArtRohGruppen As wb_StammDaten_ArtRohGruppen
+    Dim Allergene As wb_StammDaten_Allergene
 
 #Region "Signum"
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -42,6 +44,35 @@ Public Class wb_StammDaten_Main
         'PlanungListe.Show(DockPanel, DockState.DockLeft)
     End Sub
 
+    ''' <summary>
+    ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+    ''' </summary>
+    ''' <param name="Reason"></param>
+    ''' <returns>
+    ''' False, wenn das Fenster geschlossen werden darf
+    ''' True, wenn das Fenster geöffnet bleiben muss
+    ''' </returns>
+    ''' <remarks></remarks>
+    Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
+        'LinienGruppen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        If LinienGruppen IsNot Nothing Then
+            LinienGruppen.Close()
+        End If
+
+        'Allergen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        If Allergene IsNot Nothing Then
+            Allergene.Close()
+        End If
+
+        'Rohstoff- und Artikelgruppen (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        If ArtRohGruppen IsNot Nothing Then
+            ArtRohGruppen.Close()
+        End If
+
+        'Fenster darf geschlossen werden
+        Return False
+    End Function
+
     Public Shadows ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
         Get
             If _ContextTabs Is Nothing Then
@@ -53,7 +84,7 @@ Public Class wb_StammDaten_Main
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrp.AddButton("BtnLinienGruppen", "Linien Gruppen", "Liniengruppen und Aufarbeitungsplätze einrichten", My.Resources.MainLinien_32x32, My.Resources.MainLinien_32x32, AddressOf BtnLinienGruppen)
                 oGrp.AddButton("BtnAllergene", "Allergene und Inhaltsstoffe", "Allergene und Inhalts-Stoffe verwalten", My.Resources.RohstoffeNwt_32x32, My.Resources.RohstoffeNwt_32x32, AddressOf BtnAllergene)
-                oGrp.AddButton("BtnRzptArtGruppen", "Rezept und Artikelgruppen", "Rezeptgruppen und Artikelgruppen verwalten", My.Resources.ArtikelParameter_32x32, My.Resources.ArtikelParameter_32x32, AddressOf BtnRzptArtGruppen)
+                oGrp.AddButton("BtnArtRohGruppen", "Rohstoff- und Artikelgruppen", "Rohstoff- und Artikelgruppen verwalten", My.Resources.ArtikelParameter_32x32, My.Resources.ArtikelParameter_32x32, AddressOf BtnArtRohGruppen)
                 oGrp.AddButton("BtnRzptVarianten", "Rezept Varianten", "Rezeptvarianten verwalten", My.Resources.RezeptDetails_32x32, My.Resources.RezeptDetails_32x32, AddressOf BtnRzptVarianten)
                 _ContextTabs.Add(oNewTab)
             End If
@@ -68,6 +99,16 @@ Public Class wb_StammDaten_Main
                 LinienGruppen = New wb_StammDaten_LinienGruppen
                 _DockPanelList.Add(LinienGruppen)
                 Return LinienGruppen
+
+            Case "WinBack.wb_StammDaten_Allergene"
+                Allergene = New wb_StammDaten_Allergene
+                _DockPanelList.Add(Allergene)
+                Return Allergene
+
+            Case "WinBack.wb_StammDaten_ArtRohGruppen"
+                ArtRohGruppen = New wb_StammDaten_ArtRohGruppen
+                _DockPanelList.Add(ArtRohGruppen)
+                Return ArtRohGruppen
 
             Case Else
                 Return Nothing
@@ -90,11 +131,13 @@ Public Class wb_StammDaten_Main
     End Sub
 
     Private Sub BtnAllergene()
-        'TODO Allergene und Zusatzstoffe ein/aus
+        Allergene = New wb_StammDaten_Allergene
+        Allergene.Show(DockPanel, DockState.DockTop)
     End Sub
 
-    Private Sub BtnRzptArtGruppen()
-        'TODO Rezept/Artikel-Gruppen
+    Private Sub BtnArtRohGruppen()
+        ArtRohGruppen = New wb_StammDaten_ArtRohGruppen
+        ArtRohGruppen.Show(DockPanel, DockState.DockTop)
     End Sub
 
     Private Sub BtnRzptVarianten()

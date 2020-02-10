@@ -1,7 +1,7 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 
 ''' <summary>
-''' MDI-Main-Fenster Artikelverwaltung
+''' MDI-Main-Fenster Benutzerverwaltung
 ''' Abgeleitet von DockPanel_Main
 '''     In DockPanelMain werden alle Funktionen für die Verwaltung der Layouts abgewickelt
 '''     Default-Layout, Laden, Sichern, Löschen der Layouts

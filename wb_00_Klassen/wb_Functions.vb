@@ -1169,7 +1169,6 @@ Public Class wb_Functions
     End Function
 
 
-
     Public Shared Function SaveDiv(Divident As Double, Divisor As Double) As Double
         If Divisor <> 0 Then
             Return Divident / Divisor
