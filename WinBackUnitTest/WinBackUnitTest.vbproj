@@ -214,6 +214,18 @@
     <Reference Include="FluentFTP">
       <HintPath>..\dll\FluentFTP.19.2.2\FluentFTP.dll</HintPath>
     </Reference>
+    <Reference Include="Infralution.Common, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\Infralution VirtualTree V4.8.10\Infralution.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Infralution.Controls, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\Infralution VirtualTree V4.8.10\Infralution.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\Infralution VirtualTree V4.8.10\Infralution.Controls.VirtualTree.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\dll\Log4net V2.0.8\log4net.dll</HintPath>
     </Reference>

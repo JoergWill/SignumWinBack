@@ -1,4 +1,5 @@
 ﻿Imports System.Reflection
+Imports EnhEdit
 Imports Signum.OrgaSoft.Services
 Imports WinBack.wb_Global.KomponTypen
 Imports WinBack.wb_Sql_Selects
@@ -14,7 +15,7 @@ Public Class wb_Rezeptschritt
     Private _Kommentar As String
     Private _Sollwert As String
     Private _Einheit As String
-    Private _Format As EnhEdit.EnhEdit_Global.wb_Format
+    Private _Format As EnhEdit_Global.wb_Format
     Private _OberGW As String
     Private _UnterGW As String
     Private _PreisProKg As Double = 0

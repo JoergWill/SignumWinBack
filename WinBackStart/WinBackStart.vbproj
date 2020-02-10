@@ -241,27 +241,23 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\Combit List&amp;Label V22\combit.ListLabel22.dll</HintPath>
     </Reference>
-    <Reference Include="EnhancedEdit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\EnhEdit\EnhancedEdit.dll</HintPath>
-    </Reference>
     <Reference Include="FluentFTP">
       <HintPath>..\dll\FluentFTP.19.2.2\FluentFTP.dll</HintPath>
     </Reference>
     <Reference Include="Ghostscript.NET">
       <HintPath>..\dll\GhostScript V1.2.1\Ghostscript.NET.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Common, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Common, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\Infralution VirtualTree V4.8.9\Infralution.Common.dll</HintPath>
+      <HintPath>..\dll\Infralution VirtualTree V4.8.10\Infralution.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Controls, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Controls, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\Infralution VirtualTree V4.8.9\Infralution.Controls.dll</HintPath>
+      <HintPath>..\dll\Infralution VirtualTree V4.8.10\Infralution.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\Infralution VirtualTree V4.8.9\Infralution.Controls.VirtualTree.dll</HintPath>
+      <HintPath>..\dll\Infralution VirtualTree V4.8.10\Infralution.Controls.VirtualTree.dll</HintPath>
     </Reference>
     <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
@@ -476,6 +472,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EnhancedEdit\EnhancedEdit.vbproj">
+      <Project>{B9549613-9C0C-4BC3-82A5-21D834813A25}</Project>
+      <Name>EnhancedEdit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WinBackAddin.vbproj">
       <Project>{AA45FD47-0A9E-40D7-A9A1-5EF03F1F3C67}</Project>
       <Name>WinBackAddin</Name>

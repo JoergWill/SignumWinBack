@@ -226,9 +226,6 @@
     <Reference Include="DiffieHellman">
       <HintPath>dll\SharpSSH\DiffieHellman.dll</HintPath>
     </Reference>
-    <Reference Include="EnhancedEdit">
-      <HintPath>dll\EnhEdit\EnhancedEdit.dll</HintPath>
-    </Reference>
     <Reference Include="FluentFTP">
       <HintPath>dll\FluentFTP.19.2.2\FluentFTP.dll</HintPath>
     </Reference>
@@ -238,17 +235,17 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>dll\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Common, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Common, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\Infralution VirtualTree V4.8.9\Infralution.Common.dll</HintPath>
+      <HintPath>dll\Infralution VirtualTree V4.8.10\Infralution.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Controls, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Controls, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\Infralution VirtualTree V4.8.9\Infralution.Controls.dll</HintPath>
+      <HintPath>dll\Infralution VirtualTree V4.8.10\Infralution.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
+    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\Infralution VirtualTree V4.8.9\Infralution.Controls.VirtualTree.dll</HintPath>
+      <HintPath>dll\Infralution VirtualTree V4.8.10\Infralution.Controls.VirtualTree.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>dll\Log4net V2.0.8\log4net.dll</HintPath>
@@ -430,6 +427,12 @@
     <Compile Include="wb_00_Klassen\wb_KomponParamXXX.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Lieferungen.vb" />
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.Designer.vb">
+      <DependentUpon>wb_Chargen_Details.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_06_Forms_Linien\wb_Linien_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Mail.vb" />
     <Compile Include="wb_00_Klassen\wb_MinMaxOptCharge.vb" />
@@ -544,12 +547,6 @@
       <DependentUpon>wb_Chargen_Funktionen.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Funktionen.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.Designer.vb">
-      <DependentUpon>wb_Chargen_Details.vb</DependentUpon>
-    </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Shared.vb" />
@@ -932,11 +929,11 @@
     <EmbeddedResource Include="wb_00_Main\wb_PrinterPreview.resx">
       <DependentUpon>wb_PrinterPreview.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Funktionen.resx">
-      <DependentUpon>wb_Chargen_Funktionen.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Details.resx">
       <DependentUpon>wb_Chargen_Details.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Funktionen.resx">
+      <DependentUpon>wb_Chargen_Funktionen.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_WasserTemp.resx">
       <DependentUpon>wb_Chargen_WasserTemp.vb</DependentUpon>
@@ -1309,6 +1306,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wb_99_Sample\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="EnhancedEdit\EnhancedEdit.vbproj">
+      <Project>{B9549613-9C0C-4BC3-82A5-21D834813A25}</Project>
+      <Name>EnhancedEdit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

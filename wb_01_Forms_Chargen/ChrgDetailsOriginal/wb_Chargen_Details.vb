@@ -10,6 +10,10 @@ Public Class wb_Chargen_Details
     Private _DeltaStyleItalic As New Infralution.Controls.StyleDelta
 
     Private Sub wb_Chargen_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Dieser Aufruf ist für den Designer erforderlich.
+        'Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        InitializeComponent()
+
         'New Style setzen (Delta/Italic)
         _DeltaStyleItalic.Font = New Drawing.Font(ChargenTree.Columns(0).CellStyle.Font, System.Drawing.FontStyle.Italic)
         'New Style setzen (Delta/Bold)

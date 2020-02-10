@@ -11,6 +11,7 @@
 Public Class Chargen_Main
 
     Public ChargenListe As New wb_Chargen_Liste     'Default-Fenster    (wird beim Öffnen immer angezeigt)
+    Public ChargenDetails As wb_Chargen_Details     'Detail-Fenster
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -27,6 +28,10 @@ Public Class Chargen_Main
         Select Case Cmd
             Case "OPENLISTE"
                 ChargenListe.Show(DockPanel, DockState.DockLeft)
+                Return True
+            Case "OPENDETAILS"
+                ChargenDetails = New wb_Chargen_Details
+                ChargenDetails.Show(DockPanel)
                 Return True
             Case Else
                 Return False
@@ -55,6 +60,10 @@ Public Class Chargen_Main
                 ChargenListe.CloseButtonVisible = False
                 _DockPanelList.Add(ChargenListe)
                 Return ChargenListe
+            Case "WinBack.wb_Chargen_Details"
+                ChargenDetails = New wb_Chargen_Details
+                _DockPanelList.Add(ChargenDetails)
+                Return ChargenDetails
 
             Case Else
                 Return Nothing
@@ -78,6 +87,7 @@ Public Class Chargen_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        ChargenListe.Close()
+        wb_Functions.CloseAndDisposeSubForm(ChargenDetails)
+        wb_Functions.CloseAndDisposeSubForm(ChargenListe)
     End Sub
 End Class
