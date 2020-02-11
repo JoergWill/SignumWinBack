@@ -923,6 +923,42 @@ Stacktrace:
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_SyncAufarbeitung_OrgaBack.GetGruppenNummer">
+ <summary>
+ Ermittelt die GruppenNummer der Artikel-Zusatzgruppe für das MFF200 (Aufarbeitungsplatz)
+ Ist das MFF200 kein Gruppenfeld oder nicht definiert, wird -1 zurückgegeben
+ </summary>
+</member>
+<member name="M:WinBack.wb_SyncAufarbeitung_OrgaBack.DBRead">
+ <summary>
+ Liest alle Einträge aus der Tabelle dbo.ArtikelMultifunktionsfeld mit der GruppenNr des MFF200 (Aufarbeitungsplatz)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_SyncAufarbeitung_OrgaBack.DBInsert(System.String,System.String,System.String)">
+ <summary>
+ Insert in Tabelle dbo.ArtikelMultifunktionsfeld
+ Enthält die Gruppen-Einträge für MFF200 (Aufarbeitungsplatz) in OrgaBack
+ Es wird Gruppe und Bezeichnungstext geschrieben. Die GruppenNr ist vierstellig mit führenden Nullen und
+ hat gegenüber WinBack einen Offset von 100.
+ </summary>
+ <param name="Nr"></param>
+ <param name="Text"></param>
+ <param name="Gruppe"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_SyncAufarbeitung_OrgaBack.DBUpdate(System.String,System.String,System.String)">
+ <summary>
+ Update Tabelle dbo.ArtikelMultifunktionsfeld
+ Enthält die Gruppen-Einträge für MFF200 (Aufarbeitungsplatz) in OrgaBack
+ Es wird nur entsprechend der Nummer der Bezeichnungstext angepasst. Die Nummern sind vierstellig mit führenden Nullen und
+ haben gegenüber WinBack einen Offset von 100.
+ </summary>
+ <param name="Nr"></param>
+ <param name="Text"></param>
+ <param name="Gruppe"></param>
+ <returns></returns>
+</member>
 <member name="T:WinBack.wb_Chargen">
  <summary>
  Enthält die komplette Chargenliste als Liste von ChargenSchritten (wb_ChargenSchritt).
@@ -8108,6 +8144,14 @@ eingelesen
  <summary>
  Flag setzen/rücksetzen.
  Wenn die Zeile schon markiert war, wird das Flag getoggelt.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_StammDaten_LinienGruppen.BtnSync_Click(System.Object,System.EventArgs)">
+ <summary>
+ Syncronisiert die Einträge aus OrgaBack(ArtikelZusatzgruppen für MFF200-Aufarbeitungsplatz) mit den Einträgen in WinBack(Liniengruppen)
+ 
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

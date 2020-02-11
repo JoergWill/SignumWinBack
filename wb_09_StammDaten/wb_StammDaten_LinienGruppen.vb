@@ -205,6 +205,41 @@ Public Class wb_StammDaten_LinienGruppen
         End If
 
     End Sub
+
+    ''' <summary>
+    ''' Syncronisiert die Einträge aus OrgaBack(ArtikelZusatzgruppen für MFF200-Aufarbeitungsplatz) mit den Einträgen in WinBack(Liniengruppen)
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnSync_Click(sender As Object, e As EventArgs) Handles BtnSync.Click
+        Dim obAufarbeitung As New wb_SyncAufarbeitung_OrgaBack
+        Dim wbAufarbeitung As New wb_SyncAufarbeitung_WinBack
+
+        'Daten OrgaBack(Artikelzusatzfelder) einlesen
+        obAufarbeitung.DBRead()
+        'Daten WinBack(Liniengruppe) einlesen
+        wbAufarbeitung.DBRead()
+
+        'Daten/Synchronisation prüfen und Ergebnis berechnen
+        wbAufarbeitung.Case_01 = wb_Global.SyncState.OrgaBackErr
+        wbAufarbeitung.Case_10 = wb_Global.SyncState.OrgaBackWrite   'falls ein Eintrag in OrgaBack fehlt, wird der Eintrag eingefügt
+        wbAufarbeitung.Case_11 = wb_Global.SyncState.OrgaBackUpdate  'WinBack ist das führende System - Bezeichnung wird in OrgaBack übernommen
+        wbAufarbeitung.CheckSync(obAufarbeitung.Data)
+
+        'Synchronisation in OrgaBack-DB
+        For Each x As wb_SyncItem In wbAufarbeitung.Data
+            Select Case x.SyncOK
+                Case wb_Global.SyncState.OrgaBackWrite
+                    obAufarbeitung.DBInsert(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
+                Case wb_Global.SyncState.OrgaBackUpdate
+                    obAufarbeitung.DBUpdate(x.Wb_Nummer, x.Wb_Bezeichnung, x.Os_Gruppe)
+            End Select
+        Next
+
+        Debug.Print("Sync Aufarbeitungsplätze beendet ")
+
+    End Sub
 End Class
 
 

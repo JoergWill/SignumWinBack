@@ -1,6 +1,6 @@
 ﻿Partial Public Class wb_Sql_Selects
 
-    Public Shared Function setParams(sql As String, Param0 As String, Optional Param1 As String = "-",
+    Public Shared Function setParams(sql As String, Optional Param0 As String = "", Optional Param1 As String = "-",
                                      Optional Param2 As String = "-", Optional Param3 As String = "-",
                                      Optional Param4 As String = "-") As String
         'Platzhalter im Text durch Parameter ersetzen

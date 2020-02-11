@@ -15,11 +15,20 @@
     'Sql-Statement Insert Mitarbeiter-Gruppe [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"
     Public Const mssqlInsertMitarbeiterGruppen = "INSERT INTO [dbo].[MitarbeiterMultiFunktionsFeld] (GruppenNr, Hierarchie, Bezeichnung) VALUES ('[2]','[0]','[1]')"
 
+    'Sql-Statement Abfrage Gruppen-Nr der Artikel-Zusatzgruppe aus MFF200 (Aufarbeitungsplatz)
+    Public Const mssqlArtikelZusGruppenNr = "SELECT GruppenNr FROM [dbo].[Multifunktionsfeld] WHERE Feldnummer = [0]"
+    'Sql-Statement Abfrage Aufarbeitungsplätze in OrgaBack (Einträge im Auswahlfeld MFF200(Gruppe))
+    Public Const mssqlAufarbeitungsPl = "SELECT * FROM [dbo].[ArtikelMultifunktionsfeld] WHERE GruppenNr = [0]"
+    'Sql-Statement Update Artikel-Zusatzgruppe in [OrgaBackMain].[dbo].[ArtikelMultifunktionsfeld]"
+    Public Const mssqlUpdateAufarbeitungsPl = "UPDATE [dbo].[ArtikelMultifunktionsfeld] SET Bezeichnung = '[2]' WHERE Hierarchie = '[1]' AND GruppenNr = '[0]'"
+    'Sql-Statement Update Artikel-Zusatzgruppe in [OrgaBackMain].[dbo].[ArtikelMultifunktionsfeld]"
+    Public Const mssqlInsertAufarbeitungsPl = "INSERT INTO [dbo].[ArtikelMultifunktionsfeld] (GruppenNr, Hierarchie, Bezeichnung) VALUES ('[0]', '[1]', '[2]')"
+
     'Sql-Statement Artikel mit Sortiment und Einheit
-    Public Const mssqlArtikel = "SELECT ArtikelNr,Kurztext,Sortiment, StdEinheit FROM [dbo].[Artikel] WHERE Artikelgruppe = [0] ORDER BY ArtikelNr"
+    Public Const mssqlArtikel = "Select ArtikelNr,Kurztext,Sortiment, StdEinheit FROM [dbo].[Artikel] WHERE Artikelgruppe = [0] ORDER BY ArtikelNr"
 
     'Sql-Statement Abfrage dbo.WorkStations.Computername
-    Public Const mssqlSelArtikel = "SELECT * FROM [dbo].[Artikel] WHERE ArtikelNr = '[0]'"
+    Public Const mssqlSelArtikel = "Select * FROM [dbo].[Artikel] WHERE ArtikelNr = '[0]'"
     'Sql-Statement Delete ArtikelNaehrwerte
     Public Const mssqlDeleteNwt = "DELETE FROM [dbo].[ArtikelNaehrwerte] WHERE [ArtikelNr] = '[0]' AND [Einheit] = [1] AND [StuecklistenVariantenNr] = [2]"
     'Sql-Statement Delete ArtikelAllergene

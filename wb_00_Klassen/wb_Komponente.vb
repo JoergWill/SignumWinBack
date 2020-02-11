@@ -716,8 +716,12 @@ Public Class wb_Komponente
 
     Public Property sArtikeLinienGruppe As String
         Get
-            Dim sValue As String = "0000" & iArtikelLinienGruppe.ToString - wb_Global.OffsetBackorte
-            Return Right(sValue, 4)
+            If iArtikelLinienGruppe > wb_Global.OffsetBackorte Then
+                Dim sValue As String = "0000" & iArtikelLinienGruppe.ToString - wb_Global.OffsetBackorte
+                Return Right(sValue, 4)
+            Else
+                Return ""
+            End If
         End Get
         Set(value As String)
             Dim iValue As Integer = wb_Functions.StrToInt(value) + wb_Global.OffsetBackorte

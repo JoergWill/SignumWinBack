@@ -575,6 +575,7 @@
         ArtikelGruppen
         Rohstoffe
         RohstoffGruppen
+        Aufarbeitung
     End Enum
 
     Enum LogType

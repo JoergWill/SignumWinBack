@@ -42,11 +42,11 @@ Partial Class wb_StammDaten_ArtRohGruppen
         Me.BtnRohstoffGruppeNeu.Text = "Neue Rohstoff Gruppe"
         Me.BtnRohstoffGruppeNeu.UseVisualStyleBackColor = True
         '
-        'BtnArtikelGruppe
+        'BtnArtikelGruppeNeu
         '
         Me.BtnArtikelGruppeNeu.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.BtnArtikelGruppeNeu.Location = New System.Drawing.Point(113, 540)
-        Me.BtnArtikelGruppeNeu.Name = "BtnArtikelGruppe"
+        Me.BtnArtikelGruppeNeu.Name = "BtnArtikelGruppeNeu"
         Me.BtnArtikelGruppeNeu.Size = New System.Drawing.Size(95, 49)
         Me.BtnArtikelGruppeNeu.TabIndex = 2
         Me.BtnArtikelGruppeNeu.Text = "NeueArtikel Gruppe"

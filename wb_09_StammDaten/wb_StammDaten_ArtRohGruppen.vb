@@ -182,6 +182,7 @@ Public Class wb_StammDaten_ArtRohGruppen
             End Try
         End If
     End Sub
+
 End Class
 
 

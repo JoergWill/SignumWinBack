@@ -4,6 +4,7 @@
 
     'Sql-Statement Liniengruppen
     Public Const sqlLinienGruppen = "SELECT * FROM LinienGruppen ORDER BY LG_Nr"
+    Public Const sqlAufarbeitung = "SELECT * FROM LinienGruppen WHERE LG_Nr > [0] ORDER BY LG_Nr"
     Public Const sqlAddNewLinienGruppe = "INSERT INTO LinienGruppen([0]) VALUES ([1])"
     Public Const sqlRezeptLinienGruppe = "SELECT COUNT(*) AS Used FROM Rezepte WHERE RZ_Liniengruppe = [0]"
     Public Const sqlDeleteLinienGruppe = "DELETE FROM LinienGruppen WHERE LG_Nr = [0]"

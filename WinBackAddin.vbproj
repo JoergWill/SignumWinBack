@@ -354,6 +354,8 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_OrgaBack.vb" />
+    <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_WinBack.vb" />
     <Compile Include="wb_00_Klassen\wb_Chargen.vb" />
     <Compile Include="wb_00_Klassen\wb_ChargenSchritt.vb" />
     <Compile Include="wb_00_Klassen\wb_LagerKarte.vb" />
