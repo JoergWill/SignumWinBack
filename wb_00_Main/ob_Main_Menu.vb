@@ -119,6 +119,11 @@ Public Class ob_Main_Menu
 
         'Main-Menu erweitern
         AddMenu()
+        'Check winback-Datenbank
+        Dim AdminCheck As New wb_Admin_CheckDatabase()
+        If Not AdminCheck.CheckDatabase Then
+            MsgBox("Die aktuelle WinBack-Datenbank ist nicht kompatibel mit dieser AddIn-Version." & "Bitte WinBack-Datenbank updaten !!", MsgBoxStyle.Critical, "WinBack-AddIn")
+        End If
 
     End Sub
 

@@ -6,6 +6,10 @@
     Private Shared LosArtIdx As New Dictionary(Of Integer, String)
     Private Shared LosArtText As New Dictionary(Of String, Integer)
 
+    Private Shared _ErrorText As String = ""
+    Private Shared _UpdateDatabaseFile As String = ""
+    Private Shared _OBEinheiten As Boolean = True
+
     Shared Sub New()
         'Dictionary Einheiten aus winback.Einheiten
         ReadWinBackEinheiten()
@@ -14,6 +18,19 @@
             ReadOrgaBackLosArt()
         End If
     End Sub
+
+    Public Shared ReadOnly Property ErrorText As String
+        Get
+            Return _ErrorText
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property UpdateDatabaseFile As String
+        Get
+            Return _UpdateDatabaseFile
+        End Get
+    End Property
+
 
     Shared Function GetobEinheitNr(eNr As Integer) As Integer
         If Einheiten.ContainsKey(eNr) Then
@@ -132,6 +149,7 @@
             Else
                 E.obNr = wb_Global.obEinheitKilogramm
                 Trace.WriteLine("Tabelle WinBack.Einheiten muss erweitert werden! (OrgaBack Einheiten)")
+                _OBEinheiten = False
             End If
 
             'zur Liste hinzufügen
@@ -161,5 +179,26 @@
         'Datenbank-Verbindung wieder schliessen
         OrgasoftMain.Close()
     End Sub
+
+    ''' <summary>
+    ''' Prüft ob die Datenbank alle notwendigen Daten und Einträge enthält.
+    ''' Die Datenbank muss Einträge für die Benutzerrechte(Gruppe -1) enthalten:
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Function CheckDB() As Boolean
+        'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)
+        _UpdateDatabaseFile = "2.30_Einheiten.sql"
+
+        'alle Parameter(Update) prüfen
+        If Not _OBEinheiten Then
+            _ErrorText = "Fehler in Tabelle winback.Einheiten. Spalte Einheiten.E_obNr fehlt !"
+            Trace.WriteLine(_ErrorText)
+            Return False
+        Else
+            _ErrorText = ""
+            Return True
+        End If
+    End Function
 
 End Class

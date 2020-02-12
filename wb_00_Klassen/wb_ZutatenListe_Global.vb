@@ -1,6 +1,8 @@
 ﻿Public Class wb_ZutatenListe_Global
     Private Shared eEListe As New Dictionary(Of String, wb_Global.ENummern)
     Private Shared sEListe As New Dictionary(Of String, String)
+    Private Shared _ErrorText As String = ""
+    Private Shared _UpdateDatabaseFile As String = ""
 
     ''' <summary>
     ''' Vor dem ersten Aufruf der Funktionen in dieser Klasse wird der shared-Konstruktor aufgerufen
@@ -45,6 +47,19 @@
         winback.Close()
     End Sub
 
+    Public Shared ReadOnly Property ErrorText As String
+        Get
+            Return _ErrorText
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property UpdateDatabaseFile As String
+        Get
+            Return _UpdateDatabaseFile
+        End Get
+    End Property
+
+
     Public Shared Function Find_ENummer(ENr As String) As wb_Global.ENummern
         If eEListe.ContainsKey(ENr) Then
             Return eEListe(ENr)
@@ -70,6 +85,28 @@
         EmptyENumber.Bezeichnung = ""
         EmptyENumber.Text = ""
     End Function
+
+    ''' <summary>
+    ''' Prüft ob die Datenbank alle notwendigen Daten und Einträge enthält.
+    ''' Die Datenbank muss Einträge für die Benutzerrechte(Gruppe -1) enthalten:
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Function CheckDB() As Boolean
+        'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)
+        _UpdateDatabaseFile = "2.30_ENummern_*.sql"
+
+        'Prüfen ob die Tabelle ENummern exisitert
+        If Not eEListe.Count <= 0 Then
+            _ErrorText = "Fehler in Tabelle winback.ENummern. Tabelle fehlt !"
+            Trace.WriteLine(_ErrorText)
+            Return False
+        Else
+            _ErrorText = ""
+            Return True
+        End If
+    End Function
+
 End Class
 
 'CREATE TABLE ENummern (

@@ -1105,6 +1105,14 @@ Stacktrace:
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_AktRechte.CheckDB">
+ <summary>
+ Prüft ob die Datenbank alle notwendigen Daten und Einträge enthält.
+ Die Datenbank muss Einträge für die Benutzerrechte(Gruppe -1) enthalten:
+ 
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_AktSysKonfig.#cctor">
  <summary>
  Liest die freigegebenen Module aus der Tabelle ItemParameter.
@@ -1409,6 +1417,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="LosArt"></param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Einheiten_Global.CheckDB">
+ <summary>
+ Prüft ob die Datenbank alle notwendigen Daten und Einträge enthält.
+ Die Datenbank muss Einträge für die Benutzerrechte(Gruppe -1) enthalten:
+ 
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Kocher_Sync.CheckKocher(System.Object)">
  <summary>
  Liest zur übergebenen Kocher-Nummer das FTP-Verzeichnis des CX ein und prüft ob neue Rezepte vorhanden sind.
@@ -1672,7 +1688,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Vor dem ersten Aufruf wird die Hash-Table aus der Datenbank gelesen und aufgebaut.
  </summary>
 </member>
-<member name="F:WinBack.wb_KomponParam300_Global.ktTyp300Params">
+<member name="F:WinBack.wb_KomponParam300_Global._ErrorText">
  <summary>
  Hash-Table mit den statischen Werten für die einzelnen Parameter p
  </summary>
@@ -1693,6 +1709,21 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="p">Interger Parameter-Nummer</param>
  <returns>ktTyp300Param</returns>
+</member>
+<member name="M:WinBack.wb_KomponParam300_Global.CheckDB">
+ <summary>
+ Prüft ob die Datenbank alle notwendigen Daten und Einträge enthält.
+ Die Datenbank muss Einträge für die Parameter Produktion(300) enthalten:
+ 
+ Public Const T300_Backverlust = 1
+ Public Const T300_ProdVorlauf = 2
+ Public Const T300_Zuschnitt = 3
+ Public Const T300_LinienGruppe = 5
+ Public Const T300_RzNr = 6
+ Public Const T300_RezeptNummer = 7
+ Public Const T300_RezeptName = 8
+ </summary>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_KomponParamXXX.MySQLdbUpdate(System.Int32,WinBack.wb_Sql@)">
  <summary>
@@ -2837,7 +2868,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Vor dem ersten Aufruf wird die Hash-Table aus der Datenbank gelesen und aufgebaut.
  </summary>
 </member>
-<member name="F:WinBack.wb_KomponParam301_Global.ktTyp301Params">
+<member name="F:WinBack.wb_KomponParam301_Global._ErrorText">
  <summary>
  Hash-Table mit den statischen Werten für die einzelnen Parameter p
  </summary>
@@ -2861,6 +2892,18 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="p">Interger Parameter-Nummer</param>
  <returns>ktTyp301Param</returns>
+</member>
+<member name="M:WinBack.wb_KomponParam301_Global.CheckDB">
+ <summary>
+ Prüft ob die Datenbank alle notwendigen Daten und Einträge enthält.
+ Die Datenbank muss Einträge für die Parameter Produktion(300) enthalten:
+ 
+ Public Const T301_Vegetarisch = 210
+ Public Const T301_Vegan = 211
+ Public Const T301_Koscher = 212
+ Public Const T301_Halal = 213
+ </summary>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_nwtCl_WinBack.#ctor(System.String,System.String)">
  <summary>
@@ -4607,6 +4650,14 @@ Text aus Datenbank lesen - Übersetzung
  Vor dem ersten Aufruf der Funktionen in dieser Klasse wird der shared-Konstruktor aufgerufen
  Initialisierung und Aufbau der Hash-Table aus der Datenbank (Tabelle ENummern)
  </summary>
+</member>
+<member name="M:WinBack.wb_ZutatenListe_Global.CheckDB">
+ <summary>
+ Prüft ob die Datenbank alle notwendigen Daten und Einträge enthält.
+ Die Datenbank muss Einträge für die Benutzerrechte(Gruppe -1) enthalten:
+ 
+ </summary>
+ <returns></returns>
 </member>
 <member name="T:WinBack.wb_GlobalOrgaBack">
  <summary>
@@ -7926,6 +7977,21 @@ eingelesen
 <member name="M:WinBack.ob_Admin_OrgaBackSettings.Settings">
  <summary>
  Einstellungen für das WinBack-AddIn in OrgaBack Festwerten
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Admin_CheckDatabase.CheckResultText(System.Boolean,System.String)">
+ <summary>
+ Fehlertext formatiert ausgeben
+ </summary>
+ <param name="CheckOK"></param>
+ <param name="CheckText"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Admin_CheckDatabase.CheckDatabase">
+ <summary>
+ Prüft alle WinBack-Datenbank-Tabellen auf Vollständigkeit.
+ Check ob alle Upates in der Datenbank vorhanden und richtig eingespielt sind.
  </summary>
  <returns></returns>
 </member>

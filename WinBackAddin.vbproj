@@ -261,6 +261,7 @@
     <Reference Include="MetroFramework.Design">
       <HintPath>dll\MetroFramework 1.2.0.3\MetroFramework.Design.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="MySql.Data, Version=5.0.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\MySql V1.0.10.1\MySql.Data.dll</HintPath>
@@ -822,6 +823,12 @@
     <Compile Include="wb_08_Forms_Admin\wb_Admin_EditIni.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_CheckDatabase.Designer.vb">
+      <DependentUpon>wb_Admin_CheckDatabase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_CheckDatabase.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_08_Forms_Admin\wb_Admin_Log.Designer.vb">
       <DependentUpon>wb_Admin_Log.vb</DependentUpon>
     </Compile>
@@ -1049,6 +1056,9 @@
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_EditIni.resx">
       <DependentUpon>wb_Admin_EditIni.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_CheckDatabase.resx">
+      <DependentUpon>wb_Admin_CheckDatabase.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Log.resx">
       <DependentUpon>wb_Admin_Log.vb</DependentUpon>
     </EmbeddedResource>
@@ -1103,6 +1113,7 @@
     <Content Include="DBUpdate\2.30_KocherLinien_BC9000.sql" />
     <Content Include="DBUpdate\2.30_KocherRezepte.sql" />
     <Content Include="DBUpdate\2.30_KocherRezepteSchritte.sql" />
+    <Content Include="DBUpdate\2.30_KomponParams.sql" />
     <Content Include="DBUpdate\2.30_KomponTypen.sql" />
     <Content Include="DBUpdate\2.30_Lagerorte.sql" />
     <Content Include="DBUpdate\2.30_Linien.sql" />
@@ -1207,6 +1218,8 @@
   <ItemGroup>
     <Content Include="DBUpdate\2.30_LinienGruppen_A.sql" />
     <Content Include="DBUpdate\2.30_LinienGruppen_B.sql" />
+    <Content Include="DBUpdate\2.30_LinienGruppen_C.sql" />
+    <Content Include="DBUpdate\2.30_ProduktionsPlanung.sql" />
     <Content Include="DBUpdate\DEL_ArtikelRohstoffe.sql" />
     <Content Include="DBUpdate\DEL_RezepteRezeptschritte.sql" />
     <Content Include="DBUpdate\UPD_RohstoffNummer_R.sql" />

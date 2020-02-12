@@ -5,6 +5,8 @@
     Private Shared _ArtikelLinienGruppen As New SortedList
     Private Shared _RezeptLinienGruppen As New SortedList
     Private Shared _ErrorText As String = ""
+    Private Shared _TabelleLinienGruppenOK As Boolean = True
+    Private Shared _NoEntryInItemParameter As Boolean = False
     Public Shared DefaultProdFiliale As Integer = wb_Global.UNDEFINED
 
     ''' <summary>
@@ -33,6 +35,22 @@
         End Get
     End Property
 
+    Public Shared ReadOnly Property UpdateDatabaseFile As String
+        Get
+            Return "2.30_Liniengruppen_*.sql"
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property CheckDB() As Boolean
+        Get
+            If _TabelleLinienGruppenOK Then
+                Return True
+            Else
+                _ErrorText = "Tabelle WinBack.Liniengruppen muss erweitert werden! (Formular-Steuerung)"
+                Return False
+            End If
+        End Get
+    End Property
     ''' <summary>
     ''' Array Liniengruppen aufbauen
     ''' Array Linien aufbauen
@@ -129,6 +147,7 @@
                     L.KurzName = Linien
                     'Erweiterung Tabelle Liniengruppen ist notwendig !
                     Trace.WriteLine("Tabelle WinBack.Liniengruppen muss erweitert werden! (Formular-Steuerung)")
+                    _TabelleLinienGruppenOK = False
                 End If
 
                 'zum Dictonary hinzufügen
@@ -144,6 +163,7 @@
                 End If
             Catch
                 Trace.WriteLine("Fehler beim Lesen der Tabelle WinBack.Liniengruppen ")
+                _TabelleLinienGruppenOK = False
             End Try
         End While
 
