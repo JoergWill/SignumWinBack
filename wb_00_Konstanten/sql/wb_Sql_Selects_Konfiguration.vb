@@ -32,10 +32,11 @@
     Public Const sqlDeleteRohArtGruppe = "DELETE FROM ItemParameter WHERE IP_Lfd_Nr = [0] AND IP_ItemTyp=600"
 
     'Sql-Statement Einheiten
-    Public Const sqlEinheiten = "Select * FROM Einheiten ORDER BY E_LfdNr"
+    Public Const sqlEinheiten = "SELECT * FROM Einheiten ORDER BY E_LfdNr"
 
     'Sql-Statement E-Nummern
-    Public Const sqlENummern = "Select * FROM enummern"
+    Public Const sqlCheckTables = "SHOW TABLES"
+    Public Const sqlENummern = "SELECT * FROM ENummern"
 
     'Sql-Statement alle Texte aus winback.Texte
     Public Const sqlWinBackTxte = "SELECT T_TextIndex, T_Typ, T_Text FROM Texte WHERE T_Sprache = [0]"

@@ -102,6 +102,29 @@ Public Class wb_sql_Functions
         End If
     End Function
 
+    ''' <summary>
+    ''' Prüft ob eine Tabelle in der WinBack-Datenbank existiert.
+    ''' </summary>
+    ''' <param name="TableName"></param>
+    ''' <returns></returns>
+    Public Shared Function MySQLTableExist(TableName As String) As Boolean
+        MySQLTableExist = False
+
+        Dim Table As String
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        'Prüfen ob die Tabelle winback.ENummern existiert
+        If winback.sqlSelect(wb_Sql_Selects.sqlCheckTables) Then
+            While winback.Read
+                Table = winback.Item(0).ToString
+                If Table.ToLower() = TableName.ToLower() Then
+                    MySQLTableExist = True
+                    Exit While
+                End If
+            End While
+        End If
+        winback.Close()
+    End Function
+
     Public Shared Function ReaderItem(ByRef sqlReader As MySqlDataReader, FieldName As String) As String
         If sqlReader.Item(FieldName) = "" Then
             Return sqlReader.Item(FieldName)

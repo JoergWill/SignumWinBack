@@ -5,6 +5,9 @@ Imports WinBack
 <TestClass()> Public Class UnitTest_wb_sql_Functions
     <TestInitialize>
     Sub TestInitialize()
+        'Unittest
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
+
         'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
         If My.Settings.TestMySQL Then
             'Datenbank Verbindung Einstellungen setzen
@@ -36,4 +39,12 @@ Imports WinBack
         Assert.AreEqual(100, i)
 
     End Sub
+
+    <TestMethod()>
+    Public Sub Test_WinBackTableNames()
+        Assert.IsTrue(wb_sql_Functions.MySQLTableExist("Rezepte"))
+        Assert.IsFalse(wb_sql_Functions.MySQLTableExist("XXX"))
+
+    End Sub
+
 End Class

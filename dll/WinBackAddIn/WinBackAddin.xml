@@ -6368,6 +6368,13 @@ Text aus Datenbank lesen - Übersetzung
  <param name="s">String - Wert</param>
  <returns>Boolean - Result</returns>
 </member>
+<member name="M:WinBack.wb_sql_Functions.MySQLTableExist(System.String)">
+ <summary>
+ Prüft ob eine Tabelle in der WinBack-Datenbank existiert.
+ </summary>
+ <param name="TableName"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_sql_Functions.getKomponParam(System.Int32,System.Int32,System.String)">
  <summary>
  Liest der Parameter-Wert aus der Tabelle KomponParams aus.

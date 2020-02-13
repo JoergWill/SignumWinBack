@@ -1,6 +1,4 @@
 ﻿Imports System.Drawing
-Imports System.IO
-Imports System.Windows.Forms
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Admin_CheckDatabase
@@ -86,6 +84,8 @@ Public Class wb_Admin_CheckDatabase
             UpdateDataBaseFiles.Add(wb_KomponParam301_Global.UpdateDatabaseFile)
         End If
 
+        'Klasse initialisieren
+        wb_AktSysKonfig.SysKonfigOK("30")
         'Prüfe Tabelle winback.ItemParameter - User-Rechte(Gruppe -1)
         If Not CheckResultText(wb_AktRechte.CheckDB(), "Check Datenbank winback.ItemParameter(-1) - User-Rechte") Then
             LogEvent(wb_AktRechte.ErrorText, Color.Red, True)

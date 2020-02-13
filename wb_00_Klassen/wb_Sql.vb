@@ -86,6 +86,22 @@ Public Class wb_Sql
         End Get
     End Property
 
+    ReadOnly Property Item(Index As Integer) As Object
+        Get
+            Try
+                Select Case conType
+                    Case dbType.mySql
+                        Return MySqlRead.Item(Index)
+                    Case Else
+                        Return Nothing
+                End Select
+            Catch ex As Exception
+                Trace.WriteLine("ITEM(Index) NOT FOUND " & Index)
+                Throw New System.Exception("ITEM(Index) NOT FOUND " & Index)
+            End Try
+        End Get
+    End Property
+
     ''' <summary>
     ''' Datenbankfeld als String auslesen
     ''' </summary>

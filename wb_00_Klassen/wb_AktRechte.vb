@@ -70,7 +70,8 @@ Public Class wb_AktRechte
             Return False
         End If
 
-        If Not _UserGruppenRechte.ContainsKey(130) Then
+        'User-Rechte Produktion (Tag130) in Tabelle winback.ItemParameter.IP_ItemID
+        If Not _UserGruppenRechte.ContainsKey(30) Then
             _ErrorText = "Fehler in Tabelle ItemParameter - User-Rechte Produktion(Tag130) - Datensätze fehlen !"
             Trace.WriteLine(_ErrorText)
             Return False

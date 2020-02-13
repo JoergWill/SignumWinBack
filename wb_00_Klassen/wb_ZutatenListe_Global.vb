@@ -12,39 +12,44 @@
         Dim E As wb_Global.ENummern
         Dim eName As String = ""
 
-        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
-        winback.sqlSelect(wb_Sql_Selects.sqlENummern)
-        eEListe.Clear()
-        sEListe.Clear()
+        'Prüfen ob die Tabelle winback.ENummern existiert
+        If wb_sql_Functions.MySQLTableExist("Enummern") Then
 
-        While winback.Read
-            E.Nr = winback.iField("EN_Nr")
-            E.Bezeichnung = winback.sField("EN_Bezeichnung")
-            E.Text = winback.sField("EN_Name")
-            E.Beschreibung = winback.sField("EN_Beschreibung")
-            E.Bemerkung = winback.sField("EN_Bemerkung")
-            E.Key = winback.sField("EN_Key")
-            E.CleanLabel = winback.sField("EN_CleanLabel")
+            Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+            'Alle Einträge lesen
+            winback.sqlSelect(wb_Sql_Selects.sqlENummern)
+            eEListe.Clear()
+            sEListe.Clear()
 
-            If eName <> E.Text Then
-                'Neuer Eintrag in sEListe (suche nach E-Nummer)
-                'Debug.Print("E.Bezeichnung " & E.Bezeichnung)
-                If Not eEListe.ContainsKey(E.Text) Then
-                    eEListe.Add(E.Text, E)
+            While winback.Read
+                E.Nr = winback.iField("EN_Nr")
+                E.Bezeichnung = winback.sField("EN_Bezeichnung")
+                E.Text = winback.sField("EN_Name")
+                E.Beschreibung = winback.sField("EN_Beschreibung")
+                E.Bemerkung = winback.sField("EN_Bemerkung")
+                E.Key = winback.sField("EN_Key")
+                E.CleanLabel = winback.sField("EN_CleanLabel")
+
+                If eName <> E.Text Then
+                    'Neuer Eintrag in sEListe (suche nach E-Nummer)
+                    'Debug.Print("E.Bezeichnung " & E.Bezeichnung)
+                    If Not eEListe.ContainsKey(E.Text) Then
+                        eEListe.Add(E.Text, E)
+                        If Not sEListe.ContainsKey(E.Bezeichnung.ToLower) Then
+                            sEListe.Add(E.Bezeichnung.ToLower, E.Text)
+                        End If
+                    End If
+                    eName = E.Text
+                Else
+                    'Neuer Eintrag in sEListe (suche nach String-Bezeichnung)
+                    'Debug.Print("E.Bezeichnung " & E.Bezeichnung)
                     If Not sEListe.ContainsKey(E.Bezeichnung.ToLower) Then
                         sEListe.Add(E.Bezeichnung.ToLower, E.Text)
                     End If
                 End If
-                eName = E.Text
-            Else
-                'Neuer Eintrag in sEListe (suche nach String-Bezeichnung)
-                'Debug.Print("E.Bezeichnung " & E.Bezeichnung)
-                If Not sEListe.ContainsKey(E.Bezeichnung.ToLower) Then
-                    sEListe.Add(E.Bezeichnung.ToLower, E.Text)
-                End If
-            End If
-        End While
-        winback.Close()
+            End While
+            winback.Close()
+        End If
     End Sub
 
     Public Shared ReadOnly Property ErrorText As String
