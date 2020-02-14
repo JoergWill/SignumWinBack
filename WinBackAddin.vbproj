@@ -1220,9 +1220,9 @@
     <Content Include="DBUpdate\2.30_LinienGruppen_B.sql" />
     <Content Include="DBUpdate\2.30_LinienGruppen_C.sql" />
     <Content Include="DBUpdate\2.30_ProduktionsPlanung.sql" />
-    <Content Include="DBUpdate\DEL_ArtikelRohstoffe.sql" />
-    <Content Include="DBUpdate\DEL_RezepteRezeptschritte.sql" />
-    <Content Include="DBUpdate\UPD_RohstoffNummer_R.sql" />
+    <Content Include="DBUtility\DEL_ArtikelRohstoffe.sql" />
+    <Content Include="DBUtility\DEL_RezepteRezeptschritte.sql" />
+    <Content Include="DBUtility\UPD_RohstoffNummer_R.sql" />
     <Content Include="dll\GhostScript V1.2.1\gsdll32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

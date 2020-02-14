@@ -933,6 +933,11 @@ Public Class wb_Functions
     Public Shared Function FormatTimeStr(Value As String) As String
         Dim ts As String() = Value.Split(":")
 
+        'alle Bestandteile in Integer wandeln (sicherheitshalber)
+        For i = 0 To ts.Length - 1
+            ts(i) = StrToInt(ts(i)).ToString
+        Next
+
         Select Case ts.Length
             Case 0
                 Return "00:00:00"

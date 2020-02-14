@@ -1105,7 +1105,7 @@ Stacktrace:
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_AktRechte.CheckDB">
+<member name="M:WinBack.wb_AktRechte.CheckDB_User">
  <summary>
  Prüft ob die Datenbank alle notwendigen Daten und Einträge enthält.
  Die Datenbank muss Einträge für die Benutzerrechte(Gruppe -1) enthalten:
@@ -8002,6 +8002,36 @@ eingelesen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Admin_CheckDatabase.BtnDBUpdates_Click(System.Object,System.EventArgs)">
+ <summary>
+ Prüft im DBUpdate-Verzeichnis, ob die notwendigen Update-Files als .bak File vorliegen
+ Wenn keine passenden Dateien gefunden werden, wird auf www.winbackde/software gesucht
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Admin_CheckDatabase.CheckBakFile(System.String)">
+ <summary>
+ Prüft das DBUPdate-Verzeichnis, ob eine Datei mit Endung .bak vorliegt und
+ bennennt diese wieder in das Original um
+ </summary>
+ <param name="updFile"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Admin_CheckDatabase.CheckGetFile(System.String)">
+ <summary>
+ Versucht von www.winback.de/software ein DBUpdateFile zu laden
+ </summary>
+ <param name="FileName"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Admin_CheckDatabase.BtnDoUpdate_Click(System.Object,System.EventArgs)">
+ <summary>
+ Fenster Update Database modal öffnen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="P:WinBack.wb_Admin_Main.FormText">
  <summary>
  Fenster-Name (Caption). Wird von Init() aufgerufen
@@ -8211,6 +8241,19 @@ eingelesen
  <summary>
  Liniengruppen und Aufarbeitungsplätze anlegen und verwalten.
  Aufarbeitungsplätze werden in der Tabelle Liniengruppen mit Linien-Nummer größer als 100 eingetragen.
+ </summary>
+</member>
+<member name="M:WinBack.wb_StammDaten_LinienGruppen.EndEdit_StartZeit">
+ <summary>
+ Datenfeld Startzeit Liniengruppe wurde geändert
+ Es wird geprüft, ob der geänderte Wert das richtige Format hat und notfalls korrigiert
+ </summary>
+</member>
+<member name="M:WinBack.wb_StammDaten_LinienGruppen.endEdit_LGNummer">
+ <summary>
+ Datenfeld Liniengruppen-Nummer wurde geändert
+ Prüfen ob die neue Liniengruppen-Nummer gültig ist. Bei Änderungen werden die Einträge 
+ in den Rezepturköpfen nachgetragen.
  </summary>
 </member>
 <member name="M:WinBack.wb_StammDaten_LinienGruppen.DataGridView_CellClick(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">

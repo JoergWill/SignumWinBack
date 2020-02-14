@@ -167,8 +167,8 @@ Public Class ob_Artikel_DockingExtension
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
             Dim obEinheit As String = _Extendee.GetPropertyValue("StdEinheit").ToString
             If CheckEinheit(obKType, obEinheit) Then
-                'Daten aus Unterfenster sichern TEST 20181211 !!!
-                'Extendee_ExecuteCommand("wbSAVE", Komponente)
+                'Daten aus Unterfenster sichern
+                Extendee_ExecuteCommand("wbSAVE", Komponente)
                 'Komponentendaten nach OrgaBack schreiben (MFF..)
                 SetKomponentenDaten()
                 'Speichern erlaubt
@@ -449,7 +449,7 @@ Public Class ob_Artikel_DockingExtension
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString                                                                        'Artikel/Komponenten-Nummer alphanumerisch
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
-            Komponente.sArtikeLinienGruppe = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)                                                             'MFF200 - Aufarbeitungs-Linie
+            'Komponente.sArtikeLinienGruppe = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)                                                             'MFF200 - Aufarbeitungs-Linie
             Komponente.VerkaufsGewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("Gewicht").ToString) / 1000    'Verkaufsgewicht (aus OrgaBack in Gramm)
             Debug.Print("_Extendee.Handelsartikel.Gewicht " & Komponente.VerkaufsGewicht)
 

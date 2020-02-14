@@ -28,7 +28,15 @@
     End Function
 
     Friend Overrides Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
-        Throw New NotImplementedException()
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        'sql-Kommando INSERT bilden
+        Dim sqlFeld = "LG_Nr, LG_Bezeichnung, LG_KurzName, LG_Linien"
+        Dim sqlData = Nr.ToString & ",'" & Text & "','','" & Nr.ToString & "'"
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewLinienGruppe, sqlFeld, sqlData)
+        'Update ausführen
+        DBInsert = (winback.sqlCommand(sql) > 0)
+        Trace.WriteLine("@I_Update WinBack Liniengruppen" & sql)
+        winback.Close()
     End Function
 
     Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean

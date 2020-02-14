@@ -59,19 +59,26 @@ Public Class wb_AktRechte
     ''' 
     ''' </summary>
     ''' <returns></returns>
-    Public Shared Function CheckDB() As Boolean
-        'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)
-        _UpdateDatabaseFile = "2.30_AktSysKonfig.sql"
-
+    Public Shared Function CheckDB_User() As Boolean
         'alle Parameter(Update) prüfen
         If _NoEntryInItemParameter Then
+            'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)
+            _UpdateDatabaseFile = "2.30_AktSysKonfig.sql"
             _ErrorText = "Fehler in Tabelle ItemParameter UserGruppe(-1) - Datensätze fehlen !"
             Trace.WriteLine(_ErrorText)
             Return False
         End If
 
+        'Kein Fehler 
+        _ErrorText = ""
+        Return True
+    End Function
+
+    Public Shared Function CheckDB_Prod() As Boolean
         'User-Rechte Produktion (Tag130) in Tabelle winback.ItemParameter.IP_ItemID
         If Not _UserGruppenRechte.ContainsKey(30) Then
+            'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)
+            _UpdateDatabaseFile = "2.30_Produktionsplanung.sql"
             _ErrorText = "Fehler in Tabelle ItemParameter - User-Rechte Produktion(Tag130) - Datensätze fehlen !"
             Trace.WriteLine(_ErrorText)
             Return False

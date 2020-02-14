@@ -27,6 +27,8 @@ Partial Class wb_Admin_CheckDatabase
     Private Sub InitializeComponent()
         Me.BtnStartCheck = New System.Windows.Forms.Button()
         Me.rtLogger = New System.Windows.Forms.RichTextBox()
+        Me.BtnDBUpdates = New System.Windows.Forms.Button()
+        Me.BtnDoUpdate = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'BtnStartCheck
@@ -57,11 +59,39 @@ Partial Class wb_Admin_CheckDatabase
         Me.rtLogger.TabStop = False
         Me.rtLogger.Text = ""
         '
+        'BtnDBUpdates
+        '
+        Me.BtnDBUpdates.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnDBUpdates.Enabled = False
+        Me.BtnDBUpdates.Image = Global.WinBack.My.Resources.Resources.DatenRueckSicherung_16x16
+        Me.BtnDBUpdates.Location = New System.Drawing.Point(897, 269)
+        Me.BtnDBUpdates.Name = "BtnDBUpdates"
+        Me.BtnDBUpdates.Size = New System.Drawing.Size(135, 39)
+        Me.BtnDBUpdates.TabIndex = 6
+        Me.BtnDBUpdates.Text = "Datenbank Updates laden"
+        Me.BtnDBUpdates.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.BtnDBUpdates.UseVisualStyleBackColor = True
+        '
+        'BtnDoUpdate
+        '
+        Me.BtnDoUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnDoUpdate.Enabled = False
+        Me.BtnDoUpdate.Image = Global.WinBack.My.Resources.Resources.UpdateDataBase_16x16
+        Me.BtnDoUpdate.Location = New System.Drawing.Point(897, 314)
+        Me.BtnDoUpdate.Name = "BtnDoUpdate"
+        Me.BtnDoUpdate.Size = New System.Drawing.Size(135, 39)
+        Me.BtnDoUpdate.TabIndex = 7
+        Me.BtnDoUpdate.Text = "Datenbank Updates durchführen"
+        Me.BtnDoUpdate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.BtnDoUpdate.UseVisualStyleBackColor = True
+        '
         'wb_Admin_CheckDatabase
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1044, 365)
+        Me.Controls.Add(Me.BtnDoUpdate)
+        Me.Controls.Add(Me.BtnDBUpdates)
         Me.Controls.Add(Me.rtLogger)
         Me.Controls.Add(Me.BtnStartCheck)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -72,4 +102,6 @@ Partial Class wb_Admin_CheckDatabase
     End Sub
     Friend WithEvents BtnStartCheck As Windows.Forms.Button
     Friend WithEvents rtLogger As Windows.Forms.RichTextBox
+    Friend WithEvents BtnDBUpdates As Windows.Forms.Button
+    Friend WithEvents BtnDoUpdate As Windows.Forms.Button
 End Class

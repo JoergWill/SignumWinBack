@@ -718,10 +718,15 @@ Public Class wb_Komponente
         Get
             If iArtikelLinienGruppe > wb_Global.OffsetBackorte Then
                 Dim sValue As String = "0000" & iArtikelLinienGruppe.ToString - wb_Global.OffsetBackorte
-                Return Right(sValue, 4)
-            Else
-                Return ""
+                sValue = Right(sValue, 4)
+                'Mail vom 04.02.2020 JErhardt
+                If sValue <> "0000 then" Then
+                    Return sValue
+                Else
+                    Return ""
+                End If
             End If
+            Return ""
         End Get
         Set(value As String)
             Dim iValue As Integer = wb_Functions.StrToInt(value) + wb_Global.OffsetBackorte

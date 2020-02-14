@@ -117,6 +117,11 @@
         _RezeptLinienGruppen.Clear()
         'Artikel - Liniengruppen mit Index >= 100 (Produktion/Aufarbeitung)
         _ArtikelLinienGruppen.Clear()
+        'Check Tabelle Liniengruppe ist aktuell
+        If (winback.FieldCount <= 11) And (winback.FieldCount > 5) Then
+            Trace.WriteLine("Tabelle WinBack.Liniengruppen muss erweitert werden! (Startzeit)")
+            _TabelleLinienGruppenOK = False
+        End If
 
         While winback.Read
             Try
@@ -124,7 +129,8 @@
                 L.LinienGruppe = winback.iField("LG_Nr")
                 L.Bezeichnung = winback.sField("LG_Bezeichnung")
                 L.Abteilung = winback.sField("LG_Abteilung")
-                L.StartZeit = wb_sql_Functions.MySQLdatetime(winback.dField("LG_StartZeit"))
+                'Startzeit Aufarbeitungs-Linie
+                L.StartZeit = winback.sField("LG_StartZeit")
 
                 'Linien in der Liniengruppe
                 Linien = winback.sField("LG_Linien")

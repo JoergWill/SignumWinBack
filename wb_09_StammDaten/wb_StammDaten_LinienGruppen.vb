@@ -67,44 +67,68 @@ Public Class wb_StammDaten_LinienGruppen
     End Sub
 
     Private Sub DataGridView_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellEndEdit
-        Debug.Print("End Edit " & e.ColumnIndex & "/" & e.RowIndex)
-
         'neuer Wert der Zelle
         _NewWert = DataGridView.CurrentCell.Value.ToString
-        'Linien-Gruppen-Nummer wurde geändert
-        If (e.ColumnIndex = ColLGNr) And (_OrgWert <> _NewWert) Then
 
-            'prüfen ob der neue Eintrag gültig ist (darf nicht schon belegt sein)
-            Dim LinienGruppe As Integer = wb_Functions.StrToInt(_NewWert)
-            If (LinienGruppe > 0) And (LinienGruppe < 255) Then
+        'Wert der Zelle wurde verändert
+        If (_OrgWert <> _NewWert) Then
+            'Edit Startzeit Liniengruppe
+            If (e.ColumnIndex = ColStartZt) Then
+                'Syntax-Check Zeit-Format
+                EndEdit_StartZeit()
+            End If
+            'Edit Linien-Gruppen-Nummer
+            If (e.ColumnIndex = ColLGNr) Then
+                endEdit_LGNummer()
+            End If
+        End If
+    End Sub
 
-                If wb_Linien_Global.ExistLinienGruppe(LinienGruppe) Then
-                    MsgBox("Diese Liniengruppe existiert schon !", MsgBoxStyle.Exclamation, "Liniengruppe ändern")
-                    DataGridView.CurrentCell.Value = _OrgWert
+    ''' <summary>
+    ''' Datenfeld Startzeit Liniengruppe wurde geändert
+    ''' Es wird geprüft, ob der geänderte Wert das richtige Format hat und notfalls korrigiert
+    ''' </summary>
+    Private Sub EndEdit_StartZeit()
+        DataGridView.CurrentCell.Value = wb_Functions.FormatTimeStr(DataGridView.CurrentCell.Value)
+    End Sub
+
+    ''' <summary>
+    ''' Datenfeld Liniengruppen-Nummer wurde geändert
+    ''' Prüfen ob die neue Liniengruppen-Nummer gültig ist. Bei Änderungen werden die Einträge 
+    ''' in den Rezepturköpfen nachgetragen.
+    ''' </summary>
+    Private Sub endEdit_LGNummer()
+        'prüfen ob der neue Eintrag gültig ist (darf nicht schon belegt sein)
+        Dim LinienGruppe As Integer = wb_Functions.StrToInt(_NewWert)
+        If (LinienGruppe > 0) And (LinienGruppe < 255) Then
+
+            If wb_Linien_Global.ExistLinienGruppe(LinienGruppe) Then
+                MsgBox("Diese Liniengruppe existiert schon !", MsgBoxStyle.Exclamation, "Liniengruppe ändern")
+                DataGridView.CurrentCell.Value = _OrgWert
+            Else
+                'Liniengruppe oder Backort/Aufarbeitungs-Platz
+                If LinienGruppe >= wb_Global.OffsetBackorte Then
+
+                    'bei Aufarbeitungsplätzen ist die Linien-Gruppen-Nummer gleich der Linie
+                    DataGridView.CurrentRow.Cells(ColxLinien).Value = LinienGruppe.ToString
+                    'Aufarbeitungsplätze anpassen - winback.RohParams
+                    If Not wb_Linien_Global.ChangeBackort(_OrgWert, _NewWert) Then
+                        MsgBox(wb_Linien_Global.ErrorText, MsgBoxStyle.Exclamation, "Liniengruppe ändern")
+                    End If
                 Else
-                    'Liniengruppe oder Backort/Aufarbeitungs-Platz
-                    If LinienGruppe >= wb_Global.OffsetBackorte Then
-
-                        'bei Aufarbeitungsplätzen ist die Linien-Gruppen-Nummer gleich der Linie
-                        DataGridView.CurrentRow.Cells(ColxLinien).Value = LinienGruppe.ToString
-                        'Aufarbeitungsplätze anpassen - winback.RohParams
-                        If Not wb_Linien_Global.ChangeBackort(_OrgWert, _NewWert) Then
-                            MsgBox(wb_Linien_Global.ErrorText, MsgBoxStyle.Exclamation, "Liniengruppe ändern")
-                        End If
-                    Else
-                        'Rezepturen anpassen (Liniengruppe ändern) winback.Rezepte
-                        If Not wb_Linien_Global.ChangeLinienGruppe(_OrgWert, _NewWert) Then
-                            MsgBox(wb_Linien_Global.ErrorText, MsgBoxStyle.Exclamation, "Liniengruppe ändern")
-                        End If
+                    'Rezepturen anpassen (Liniengruppe ändern) winback.Rezepte
+                    If Not wb_Linien_Global.ChangeLinienGruppe(_OrgWert, _NewWert) Then
+                        MsgBox(wb_Linien_Global.ErrorText, MsgBoxStyle.Exclamation, "Liniengruppe ändern")
                     End If
                 End If
-
-                'Liste neu aufbauen
-
-            Else
-                MsgBox("Liniengruppe ungültig !", MsgBoxStyle.Exclamation, "Liniengruppe ändern")
-                DataGridView.CurrentCell.Value = _OrgWert
             End If
+
+            'Liste neu aufbauen
+            DataGridView.RefreshData()
+
+        Else
+            MsgBox("Liniengruppe ungültig !", MsgBoxStyle.Exclamation, "Liniengruppe ändern")
+            DataGridView.CurrentCell.Value = _OrgWert
         End If
     End Sub
 
@@ -222,23 +246,43 @@ Public Class wb_StammDaten_LinienGruppen
         wbAufarbeitung.DBRead()
 
         'Daten/Synchronisation prüfen und Ergebnis berechnen
-        wbAufarbeitung.Case_01 = wb_Global.SyncState.OrgaBackErr
+        wbAufarbeitung.Case_01 = wb_Global.SyncState.WinBackWrite    'fehlende Einträge in WinBack werden auf Nachfrage angefügt
         wbAufarbeitung.Case_10 = wb_Global.SyncState.OrgaBackWrite   'falls ein Eintrag in OrgaBack fehlt, wird der Eintrag eingefügt
         wbAufarbeitung.Case_11 = wb_Global.SyncState.OrgaBackUpdate  'WinBack ist das führende System - Bezeichnung wird in OrgaBack übernommen
         wbAufarbeitung.CheckSync(obAufarbeitung.Data)
 
         'Synchronisation in OrgaBack-DB
+        Dim errCnt As Integer = 0
         For Each x As wb_SyncItem In wbAufarbeitung.Data
             Select Case x.SyncOK
                 Case wb_Global.SyncState.OrgaBackWrite
                     obAufarbeitung.DBInsert(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
                 Case wb_Global.SyncState.OrgaBackUpdate
                     obAufarbeitung.DBUpdate(x.Wb_Nummer, x.Wb_Bezeichnung, x.Os_Gruppe)
+                Case wb_Global.SyncState.WinBackWrite
+                    errCnt += 1
             End Select
         Next
 
-        Debug.Print("Sync Aufarbeitungsplätze beendet ")
+        'Wenn in OrgaBack Aufarbeitungsplätze definiert sind, die in WinBack nicht vorhanden sind,
+        'können diese noch in WinBack eingefügt.
+        If errCnt > 0 Then
+            If MsgBox("In OrgaBack sind Aufarbeitungsplätze definiert, die in WinBack" & vbCr & "nicht eingetragen sind" & vbCr & vbCr & "In WinBack übernehmen ?", MsgBoxStyle.YesNo, "WinBack-Liniengruppen") = MsgBoxResult.Yes Then
+                'Aufarbeitungsplätze aus OrgaBack übernehmen
+                For Each x As wb_SyncItem In wbAufarbeitung.Data
+                    If x.SyncOK = wb_Global.SyncState.WinBackWrite Then
+                        wbAufarbeitung.DBInsert(x.Os_Nummer, x.Os_Bezeichnung, x.Os_Gruppe)
+                    End If
+                Next
+            End If
 
+            'Anzeige neu aufbauen
+            DataGridView.RefreshData()
+        Else
+            MsgBox("Synchronisation beendet", MsgBoxStyle.Information, "WinBack-Liniengruppen")
+        End If
+
+        Debug.Print("Sync Aufarbeitungsplätze beendet ")
     End Sub
 End Class
 

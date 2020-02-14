@@ -102,7 +102,7 @@
         _UpdateDatabaseFile = "2.30_ENummern_*.sql"
 
         'Prüfen ob die Tabelle ENummern exisitert
-        If Not eEListe.Count <= 0 Then
+        If eEListe.Count <= 0 Then
             _ErrorText = "Fehler in Tabelle winback.ENummern. Tabelle fehlt !"
             Trace.WriteLine(_ErrorText)
             Return False

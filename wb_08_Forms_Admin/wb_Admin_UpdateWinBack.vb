@@ -183,7 +183,7 @@
         Return True
     End Function
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles BtnCheckUpdate.Click
+    Private Sub BtnCheckUpdate_Click(sender As Object, e As EventArgs) Handles BtnCheckUpdate.Click
         'Update-Version prüfen
         If GetUpdateVersion() Then
             'WinBack ist nicht aktuell
@@ -207,7 +207,7 @@
         End If
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles BtnUpdate.Click
+    Private Sub BtnUpdate_Click(sender As Object, e As EventArgs) Handles BtnUpdate.Click
         ExecuteUpdateVersion()
     End Sub
 

@@ -44,6 +44,7 @@ Public Class wb_Admin_UpdateDatabase
 
     Private Sub BtnUpdateWinBackDataBase_Click(sender As Object, e As EventArgs) Handles BtnUpdateWinBackDataBase.Click
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim UpdProcErr As Boolean = False
 
         'Anzahl der UpdateFiles in Progress-Bar
         pbFiles.Maximum = DBUpdateFiles.Count
@@ -60,25 +61,42 @@ Public Class wb_Admin_UpdateDatabase
             pbData.Value = 0
             pbData.Step = 1
 
+            'Fehler beim Update
+            Dim UpdFileErr As Boolean = False
+            'alle Update-Zeilen nacheinander ausführen
             For Each sql As String In UpdateSql
                 pbData.PerformStep()
                 If winback.sqlCommand(UpdateSqlMandant(sql)) < 0 Then
-                    Me.Cursor = Cursors.Default
-                    MsgBox("Datenbank Update fehlgeschlagen ! " & vbCrLf & "Update : " & Update, MsgBoxStyle.Critical, "Update WinBack-Datenbank")
-                    Me.Cursor = Cursors.Default
-                    Exit For
+                    UpdFileErr = True
                 End If
             Next
 
+            'Fehlermeldung ausgeben(Je Update-File)
+            If UpdFileErr Then
+                Me.Cursor = Cursors.Default
+                MsgBox("Datenbank Update fehlgeschlagen ! " & vbCrLf & "Update : " & Update, MsgBoxStyle.Critical, "Update WinBack-Datenbank")
+                UpdProcErr = True
+                Me.Cursor = Cursors.WaitCursor
+            End If
+
             'Update durchgeführt- Datei wird umbenannt
             Try
+                If My.Computer.FileSystem.FileExists(Update & ".bak") Then
+                    FileSystem.Kill(Update & ".bak")
+                End If
                 FileSystem.Rename(Update, Update & ".bak")
             Catch ex As Exception
             End Try
         Next
 
         'Aktion beendet
-        MsgBox("Datenbank Update erfolgreich beendet", MsgBoxStyle.Information, "Update WinBack-Datenbank")
+        If Not UpdProcErr Then
+            MsgBox("Datenbank Update erfolgreich beendet", MsgBoxStyle.Information, "Update WinBack-Datenbank")
+        Else
+            MsgBox("Datenbank Update mit Fehlern beendet", MsgBoxStyle.Exclamation, "Update WinBack-Datenbank")
+        End If
+
+        'Button Update-Start ausblenden
         ShowHideUpdate(0)
         Me.Cursor = Cursors.Default
     End Sub
