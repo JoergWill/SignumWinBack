@@ -34,6 +34,8 @@
     Public Const ProduktionsFiliale = 4
     'OrgaBack Dummy-Artikel für Rezepte ohne Zuordnung (ProduzierteWare)
     Public Const ProduktionDummyArtikel = "0R9999"
+    'Text Liniengruppen "Alle"
+    Public Const TextAlle = "Alle"
 
     'Artikelgruppe Backorte (GruppenNr)
     Public Const GruppenNrBackorte = 3

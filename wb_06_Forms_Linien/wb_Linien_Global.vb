@@ -239,6 +239,15 @@
         End If
     End Function
 
+    Shared Function GetLinienGruppeFromName(Bezeichnung As String) As Integer
+        For Each L In _LGruppen
+            If L.Value.Bezeichnung = Bezeichnung Then
+                Return L.Value.LinienGruppe
+            End If
+        Next
+        Return wb_Global.UNDEFINED
+    End Function
+
     ''' <summary>
     ''' Gibt den Kurznamen der Liniengruppe zurück.
     ''' </summary>

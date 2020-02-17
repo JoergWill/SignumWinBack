@@ -3648,6 +3648,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Produktionsschritt.Filter(System.Int32,System.Int32)">
+ <summary>
+ Gibt True zurück, wenn die Zeile in der Produktionsplanung angezeigt werden soll.
+ Abhängig von Liniengruppe, Aufarbeitungsplatz und Filter-Einstellungen.
+ </summary>
+ <param name="_FilterAufarbeitung"></param>
+ <param name="_FilterLinienGruppe"></param>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Produktionsschritt.Tour">
  <summary>
  Gibt die Tour-Nummer aus der Produktions-Planung zurück. Ist als Tour-Nummer 0 eingetragen, wird 
@@ -7956,6 +7965,22 @@ Datenbank-Verbindung schliessen
 <member name="M:WinBack.wb_Planung_Liste.BtnBackZettelDrucken_Click(System.Object,System.EventArgs)">
  <summary>
  Backzettel drucken
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Liste.cbLiniengruppe_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ Anzeige-Filter Liniengruppe.
+ Die entsprechende Liniengruppen-Nummer wird in wb_LinienGlobal aus dem Bezeichnungstext ermittelt.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Liste.cbArtikelLinienGruppe_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ Anzeige-Filter Aufarbeitungsplatz.
+ Die entsprechende Aufarbeitungsplatzgruppen-Nummer wird in wb_LinienGlobal aus dem Bezeichnungstext ermittelt.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

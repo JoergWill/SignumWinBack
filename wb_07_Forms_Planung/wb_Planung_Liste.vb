@@ -8,6 +8,10 @@ Public Class wb_Planung_Liste
     Dim oFont As Drawing.Font
     Dim iFont As Drawing.Font
 
+    Private _FilterLinienGruppe As Integer = wb_Global.UNDEFINED
+    Private _FilterAufarbeitung As Integer = wb_Global.UNDEFINED
+
+
     Private Sub BtnVorlage_Click(sender As Object, e As EventArgs) Handles BtnVorlage.Click
         'Fenster Auswahl Vorlage anzeigen
         Dim Vorlage As New wb_Planung_Vorlage
@@ -119,7 +123,6 @@ Public Class wb_Planung_Liste
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'TODO neue Charge anlegen
 
-
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
     End Sub
@@ -142,10 +145,19 @@ Public Class wb_Planung_Liste
         'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
         Produktion.RootProduktionsSchritt.SortBackZettel()
 
+        'Daten filtern (Aufbereitungs-Ort)
+        Dim BackZettel As New ArrayList
+        For Each child In Produktion.RootProduktionsSchritt.ChildSteps
+            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe) Then
+                BackZettel.Add(child)
+            End If
+        Next
+
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
         pDialog.LL_KopfZeile_1 = "für " & dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
-        pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
+        'pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
+        pDialog.LL.DataSource = New ObjectDataProvider(BackZettel)
 
         'List und Label-Verzeichnis für die Listen
         pDialog.ListSubDirectory = "Produktion"
@@ -158,10 +170,19 @@ Public Class wb_Planung_Liste
         'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
         Produktion.RootProduktionsSchritt.SortBackZettel()
 
+        'Daten filtern (Aufbereitungs-Ort)
+        Dim TeigListe As New ArrayList
+        For Each child In Produktion.RootProduktionsSchritt.ChildSteps
+            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe) Then
+                TeigListe.Add(child)
+            End If
+        Next
+
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
         pDialog.LL_KopfZeile_1 = "für " & dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
-        pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
+        'pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
+        pDialog.LL.DataSource = New ObjectDataProvider(TeigListe)
 
         'List und Label-Verzeichnis für die Listen
         pDialog.ListSubDirectory = "Produktion"
@@ -357,6 +378,66 @@ Public Class wb_Planung_Liste
         Return ExpStr
 
     End Function
+
+    ''' <summary>
+    ''' Filtert die Anzeige der Chargen nach Liniengruppe/Aufarbeitungsplatz.
+    ''' Die Methode GetChildren gibt eine Liste aller Child-Knoten zurück, die angezeigt werden sollen.
+    ''' Siehe auch http://www.infralution.com/phpBB2/viewtopic.php?t=1499&highlight=filter+rows
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VirtualTree_GetChildren(sender As Object, e As Infralution.Controls.VirtualTree.GetChildrenEventArgs) Handles VirtualTree.GetChildren
+        'use the default binding to get all the children
+        Dim binding As Infralution.Controls.VirtualTree.RowBinding = VirtualTree.GetRowBinding(e.Row)
+        Dim children As IList = binding.GetChildrenForRow(e.Row)
+
+        'return a list containing only the children you want to be visible
+        Dim visibleChildren As New ArrayList
+        For Each child In children
+            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe) Then
+                visibleChildren.Add(child)
+            End If
+        Next
+
+        e.Children = visibleChildren
+        'e.Children = children
+    End Sub
+
+    ''' <summary>
+    ''' Anzeige-Filter Liniengruppe.
+    ''' Die entsprechende Liniengruppen-Nummer wird in wb_LinienGlobal aus dem Bezeichnungstext ermittelt.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cbLiniengruppe_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLiniengruppe.SelectedIndexChanged
+        If cbLiniengruppe.Text <> wb_Global.TextAlle Then
+            _FilterLinienGruppe = wb_Linien_Global.GetLinienGruppeFromName(cbLiniengruppe.Text)
+        Else
+            _FilterLinienGruppe = wb_Global.UNDEFINED
+        End If
+        VirtualTreeRepaint()
+    End Sub
+
+    ''' <summary>
+    ''' Anzeige-Filter Aufarbeitungsplatz.
+    ''' Die entsprechende Aufarbeitungsplatzgruppen-Nummer wird in wb_LinienGlobal aus dem Bezeichnungstext ermittelt.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cbArtikelLinienGruppe_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbArtikelLinienGruppe.SelectedIndexChanged
+        If cbArtikelLinienGruppe.Text <> wb_Global.TextAlle Then
+            _FilterAufarbeitung = wb_Linien_Global.GetLinienGruppeFromName(cbArtikelLinienGruppe.Text)
+        Else
+            _FilterAufarbeitung = wb_Global.UNDEFINED
+        End If
+        VirtualTreeRepaint()
+    End Sub
+
+    Private Sub VirtualTreeRepaint()
+        'Tree neu zeichnen(leer)
+        VirtualTree.Invalidate()
+        VirtualTree.DataSource = Produktion.RootProduktionsSchritt
+    End Sub
 
     'Private Sub VirtualTree_GetRowData(sender As Object, e As Infralution.Controls.VirtualTree.GetRowDataEventArgs) Handles VirtualTree.GetRowData
     '    'e.Row.Expanded

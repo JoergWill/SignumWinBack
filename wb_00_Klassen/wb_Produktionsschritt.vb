@@ -229,13 +229,29 @@ Public Class wb_Produktionsschritt
 
     Public ReadOnly Property VirtTreeLinie As String
         Get
-            If _LinienGruppe = wb_Global.LinienGruppeSauerteig Then
-                Return "ST"
-            ElseIf _LinienGruppe > 0 Then
-                Return wb_Linien_Global.GetKurzNameFromLinienGruppe(_LinienGruppe)
-            Else
-                Return ""
-            End If
+            Select Case Typ
+                Case KO_TYPE_ARTIKEL, KO_ZEILE_ARTIKEL
+                    If _ArtikelLinienGruppe > 0 Then
+                        Return wb_Linien_Global.GetKurzNameFromLinienGruppe(_ArtikelLinienGruppe)
+                    Else
+                        Return ""
+                    End If
+
+                Case KO_ZEILE_REZEPT
+                    If _LinienGruppe = wb_Global.LinienGruppeSauerteig Then
+                        Return "ST"
+                    ElseIf _LinienGruppe > 0 Then
+                        Return wb_Linien_Global.GetKurzNameFromLinienGruppe(_LinienGruppe)
+                    Else
+                        Return ""
+                    End If
+
+                Case Else
+                    Return ""
+            End Select
+
+            'TEST
+            'Return _ArtikelLinienGruppe.ToString & "/" & _LinienGruppe
         End Get
     End Property
 
@@ -640,6 +656,65 @@ Public Class wb_Produktionsschritt
             Return _Bestellt_Text
         End Get
     End Property
+
+    ''' <summary>
+    ''' Gibt True zurück, wenn die Zeile in der Produktionsplanung angezeigt werden soll.
+    ''' Abhängig von Liniengruppe, Aufarbeitungsplatz und Filter-Einstellungen.
+    ''' </summary>
+    ''' <param name="_FilterAufarbeitung"></param>
+    ''' <param name="_FilterLinienGruppe"></param>
+    ''' <returns></returns>
+    Public Function Filter(_FilterAufarbeitung As Integer, _FilterLinienGruppe As Integer) As Boolean
+
+        'Filter Aufarbeitungsplatz
+        If _FilterAufarbeitung > 0 And _ArtikelLinienGruppe > 0 And _FilterAufarbeitung <> _ArtikelLinienGruppe Then
+            Return False
+        End If
+
+        'Filter Liniengruppe
+        If _FilterLinienGruppe > 0 And _LinienGruppe > 0 And _FilterLinienGruppe <> _LinienGruppe Then
+            Return False
+        End If
+
+        Return True
+
+
+        ''Select Case Typ
+
+        ''    Case KO_TYPE_ARTIKEL, KO_ZEILE_ARTIKEL
+        ''        If _ArtikelLinienGruppe > 0 Then
+        ''            If _FilterAufarbeitung > 0 Then
+        ''                If _FilterAufarbeitung = _ArtikelLinienGruppe Then
+        ''                    Return True
+        ''                Else
+        ''                    Return False
+        ''                End If
+        ''            Else
+        ''                Return True
+        ''            End If
+        ''        Else
+        ''            Return False
+        ''        End If
+
+        ''    Case KO_ZEILE_REZEPT
+        ''        If _LinienGruppe > 0 Then
+        ''            If _FilterLinienGruppe > 0 Then
+        ''                If _FilterLinienGruppe = _LinienGruppe Then
+        ''                    Return True
+        ''                Else
+        ''                    Return False
+        ''                End If
+        ''            Else
+        ''                Return True
+        ''            End If
+        ''        Else
+        ''            Return False
+        ''        End If
+
+        ''    Case Else
+        ''        Return True
+        ''End Select
+    End Function
 
     Public Property LinienGruppe As Integer
         Get

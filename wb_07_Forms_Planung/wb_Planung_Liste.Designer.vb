@@ -61,6 +61,7 @@ Partial Class wb_Planung_Liste
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CellEditor3 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.UniversalEditBox1 = New Infralution.Controls.UniversalEditBox()
+        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.btnNeueCharge = New System.Windows.Forms.Button()
         Me.BtnTeigListeDrucken = New System.Windows.Forms.Button()
         Me.dtBestellungen = New System.Windows.Forms.DateTimePicker()
@@ -71,7 +72,6 @@ Partial Class wb_Planung_Liste
         Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
         Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.cbProduktionsFiliale = New WinBack.wb_ComboBox()
-        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -160,7 +160,8 @@ Partial Class wb_Planung_Liste
         '
         'ColBestand
         '
-        Me.ColBestand.Caption = Nothing
+        Me.ColBestand.Caption = "Bestand"
+        Me.ColBestand.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
         Me.ColBestand.MinWidth = 100
         Me.ColBestand.Name = "ColBestand"
         '
@@ -329,6 +330,45 @@ Partial Class wb_Planung_Liste
         Me.UniversalEditBox1.TabIndex = 9
         Me.UniversalEditBox1.Visible = False
         '
+        'ObjectRowBinding1
+        '
+        ObjectCellBinding1.Column = Me.ColNummer
+        ObjectCellBinding1.Field = "VirtTreeNummer"
+        ObjectCellBinding2.Column = Me.ColCharge
+        ObjectCellBinding2.Field = "VirtTreeCharge"
+        ObjectCellBinding3.Column = Me.ColTour
+        ObjectCellBinding3.Field = "VirtTreeTour"
+        ObjectCellBinding4.Column = Me.ColBezeichnung
+        ObjectCellBinding4.Field = "VirtTreeBezeichnung"
+        ObjectCellBinding5.Column = Me.ColKommentar
+        ObjectCellBinding5.Field = "VirtTreeKommentar"
+        ObjectCellBinding6.Column = Me.ColLinie
+        ObjectCellBinding6.Field = "VirtTreeLinie"
+        ObjectCellBinding7.Column = Me.ColSollwert
+        ObjectCellBinding7.Field = "VirtTreeSollwert"
+        ObjectCellBinding8.Column = Me.ColEinheit
+        ObjectCellBinding8.Field = "VirtTreeEinheit"
+        ObjectCellBinding9.Column = Me.ColBestand
+        ObjectCellBinding9.Field = "VirtTreeBestand"
+        ObjectCellBinding10.Column = Me.ColEinheitBestand
+        ObjectCellBinding10.Field = "VirtTreeEinheit"
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding4)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding5)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding7)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding8)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding9)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding10)
+        Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
+        Me.ObjectRowBinding1.ExpandedImage = CType(resources.GetObject("ObjectRowBinding1.ExpandedImage"), System.Drawing.Image)
+        Me.ObjectRowBinding1.Image = CType(resources.GetObject("ObjectRowBinding1.Image"), System.Drawing.Image)
+        Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
+        Me.ObjectRowBinding1.ParentProperty = "ParentStep"
+        Me.ObjectRowBinding1.TypeName = "WinBack.wb_Produktionsschritt"
+        '
         'btnNeueCharge
         '
         Me.btnNeueCharge.Location = New System.Drawing.Point(270, 12)
@@ -426,45 +466,6 @@ Partial Class wb_Planung_Liste
         Me.cbProduktionsFiliale.Name = "cbProduktionsFiliale"
         Me.cbProduktionsFiliale.Size = New System.Drawing.Size(178, 21)
         Me.cbProduktionsFiliale.TabIndex = 15
-        '
-        'ObjectRowBinding1
-        '
-        ObjectCellBinding1.Column = Me.ColNummer
-        ObjectCellBinding1.Field = "VirtTreeNummer"
-        ObjectCellBinding2.Column = Me.ColCharge
-        ObjectCellBinding2.Field = "VirtTreeCharge"
-        ObjectCellBinding3.Column = Me.ColTour
-        ObjectCellBinding3.Field = "VirtTreeTour"
-        ObjectCellBinding4.Column = Me.ColBezeichnung
-        ObjectCellBinding4.Field = "VirtTreeBezeichnung"
-        ObjectCellBinding5.Column = Me.ColKommentar
-        ObjectCellBinding5.Field = "VirtTreeKommentar"
-        ObjectCellBinding6.Column = Me.ColLinie
-        ObjectCellBinding6.Field = "VirtTreeLinie"
-        ObjectCellBinding7.Column = Me.ColSollwert
-        ObjectCellBinding7.Field = "VirtTreeSollwert"
-        ObjectCellBinding8.Column = Me.ColEinheit
-        ObjectCellBinding8.Field = "VirtTreeEinheit"
-        ObjectCellBinding9.Column = Me.ColBestand
-        ObjectCellBinding9.Field = "VirtTreeBestand"
-        ObjectCellBinding10.Column = Me.ColEinheitBestand
-        ObjectCellBinding10.Field = "VirtTreeEinheit"
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding4)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding5)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding7)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding8)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding9)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding10)
-        Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
-        Me.ObjectRowBinding1.ExpandedImage = CType(resources.GetObject("ObjectRowBinding1.ExpandedImage"), System.Drawing.Image)
-        Me.ObjectRowBinding1.Image = CType(resources.GetObject("ObjectRowBinding1.Image"), System.Drawing.Image)
-        Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
-        Me.ObjectRowBinding1.ParentProperty = "ParentStep"
-        Me.ObjectRowBinding1.TypeName = "WinBack.wb_Produktionsschritt"
         '
         'wb_Planung_Liste
         '

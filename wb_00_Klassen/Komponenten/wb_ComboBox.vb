@@ -53,7 +53,7 @@ Partial Class wb_ComboBox
         Text = ""
         'per Default Filterauswahl Alle
         If FilterAlle Then
-            Text = "Alle"
+            Text = wb_Global.TextAlle
             Items.Add(Text)
         End If
         'HashTable aus SortedList
