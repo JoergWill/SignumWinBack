@@ -55,8 +55,8 @@ Partial Class wb_Chargen_Details
         Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
         Me.ColRohCharge = New Infralution.Controls.VirtualTree.Column()
         Me.ColParams = New Infralution.Controls.VirtualTree.Column()
-        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.ChargenTree = New Infralution.Controls.VirtualTree.VirtualTree()
+        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         CType(Me.ChargenTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -199,6 +199,41 @@ Partial Class wb_Chargen_Details
         Me.ColParams.Name = "ColParams"
         Me.ColParams.Width = 120
         '
+        'ChargenTree
+        '
+        Me.ChargenTree.AllowMultiSelect = False
+        Me.ChargenTree.AutoFitColumns = True
+        Me.ChargenTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ChargenTree.Columns.Add(Me.ColCharge)
+        Me.ChargenTree.Columns.Add(Me.ColStatusImage)
+        Me.ChargenTree.Columns.Add(Me.ColNummer)
+        Me.ChargenTree.Columns.Add(Me.ColBezeichnung)
+        Me.ChargenTree.Columns.Add(Me.ColParams)
+        Me.ChargenTree.Columns.Add(Me.ColLinie)
+        Me.ChargenTree.Columns.Add(Me.ColSollwert)
+        Me.ChargenTree.Columns.Add(Me.ColEinheit)
+        Me.ChargenTree.Columns.Add(Me.ColIstmenge)
+        Me.ChargenTree.Columns.Add(Me.ColEinheitIst)
+        Me.ChargenTree.Columns.Add(Me.ColZeit)
+        Me.ChargenTree.Columns.Add(Me.ColUser)
+        Me.ChargenTree.Columns.Add(Me.ColPreis)
+        Me.ChargenTree.Columns.Add(Me.ColRohCharge)
+        Me.ChargenTree.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ChargenTree.EditOnKeyPress = True
+        Me.ChargenTree.HeaderHeight = 24
+        Me.ChargenTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.ChargenTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.Solid
+        Me.ChargenTree.Location = New System.Drawing.Point(0, 0)
+        Me.ChargenTree.MainColumn = Me.ColNummer
+        Me.ChargenTree.Name = "ChargenTree"
+        Me.ChargenTree.RowBindings.Add(Me.ObjectRowBinding1)
+        Me.ChargenTree.RowEvenStyle.BackColor = System.Drawing.Color.White
+        Me.ChargenTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
+        Me.ChargenTree.ShowRootRow = False
+        Me.ChargenTree.Size = New System.Drawing.Size(952, 540)
+        Me.ChargenTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
+        Me.ChargenTree.TabIndex = 16
+        '
         'ObjectRowBinding1
         '
         ObjectCellBinding1.Column = Me.ColNummer
@@ -261,41 +296,6 @@ Partial Class wb_Chargen_Details
         Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
         Me.ObjectRowBinding1.ParentProperty = "ParentStep"
         Me.ObjectRowBinding1.TypeName = "WinBack.wb_ChargenSchritt"
-        '
-        'ChargenTree
-        '
-        Me.ChargenTree.AllowMultiSelect = False
-        Me.ChargenTree.AutoFitColumns = True
-        Me.ChargenTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.ChargenTree.Columns.Add(Me.ColCharge)
-        Me.ChargenTree.Columns.Add(Me.ColStatusImage)
-        Me.ChargenTree.Columns.Add(Me.ColNummer)
-        Me.ChargenTree.Columns.Add(Me.ColBezeichnung)
-        Me.ChargenTree.Columns.Add(Me.ColParams)
-        Me.ChargenTree.Columns.Add(Me.ColLinie)
-        Me.ChargenTree.Columns.Add(Me.ColSollwert)
-        Me.ChargenTree.Columns.Add(Me.ColEinheit)
-        Me.ChargenTree.Columns.Add(Me.ColIstmenge)
-        Me.ChargenTree.Columns.Add(Me.ColEinheitIst)
-        Me.ChargenTree.Columns.Add(Me.ColZeit)
-        Me.ChargenTree.Columns.Add(Me.ColUser)
-        Me.ChargenTree.Columns.Add(Me.ColPreis)
-        Me.ChargenTree.Columns.Add(Me.ColRohCharge)
-        Me.ChargenTree.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ChargenTree.EditOnKeyPress = True
-        Me.ChargenTree.HeaderHeight = 24
-        Me.ChargenTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.ChargenTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.Solid
-        Me.ChargenTree.Location = New System.Drawing.Point(0, 0)
-        Me.ChargenTree.MainColumn = Me.ColNummer
-        Me.ChargenTree.Name = "ChargenTree"
-        Me.ChargenTree.RowBindings.Add(Me.ObjectRowBinding1)
-        Me.ChargenTree.RowEvenStyle.BackColor = System.Drawing.Color.White
-        Me.ChargenTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
-        Me.ChargenTree.ShowRootRow = False
-        Me.ChargenTree.Size = New System.Drawing.Size(952, 540)
-        Me.ChargenTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
-        Me.ChargenTree.TabIndex = 16
         '
         'wb_Chargen_Details
         '

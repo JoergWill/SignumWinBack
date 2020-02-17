@@ -16,17 +16,17 @@ Public Class wb_Chargen_Details
         _DeltaStyleBold.Font = New Drawing.Font(ChargenTree.Columns(0).CellStyle.Font, System.Drawing.FontStyle.Bold)
 
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
-        AddHandler eListe_Click, AddressOf DetailInfo
+        AddHandler wb_Chargen_Shared.eListe_Click, AddressOf DetailInfo
     End Sub
 
-    Public Sub DetailInfo()
+    Public Sub DetailInfo(sender As Object)
         'wenn schon Daten angezeigt worden sind
         If ChargenProduziert.RootChargenSchritt.ChildSteps.Count > 0 Then
             'Anzeige Virtual-Tree löschen
             ChargenProduziert.RootChargenSchritt.ChildSteps.Clear()
             ChargenTree.Invalidate()
             'Tree neu zeichnen(leer)
-            If ChargenProduziert.RootChargenSchritt IsNot Nothing Then
+            If (ChargenProduziert.RootChargenSchritt IsNot Nothing) Then
                 ChargenTree.DataSource = ChargenProduziert.RootChargenSchritt
             End If
         End If
@@ -91,4 +91,7 @@ Public Class wb_Chargen_Details
         End If
     End Sub
 
+    Private Sub wb_Chargen_Details_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        RemoveHandler wb_Chargen_Shared.eListe_Click, AddressOf DetailInfo
+    End Sub
 End Class

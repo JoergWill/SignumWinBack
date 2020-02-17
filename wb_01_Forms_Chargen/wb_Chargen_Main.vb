@@ -107,6 +107,7 @@ Public Class wb_Chargen_Main
 
             Case "WinBack.wb_Chargen_Details"
                 ChargenDetails = New wb_Chargen_Details
+                ChargenDetails.CloseButtonVisible = False
                 _DockPanelList.Add(ChargenDetails)
                 Return ChargenDetails
 
