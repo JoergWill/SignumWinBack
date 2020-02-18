@@ -189,7 +189,12 @@ Public Class wb_Produktionsschritt
                     Dim ProdStartZeit As DateTime = DateTime.Parse(wb_GlobalSettings.ProdPlanDatum)
                     'gültige Startzeit eingetragen
                     If StartZeit <> wb_Global.wbNODATE Then
-                        Return wb_Functions.AddDateTime(ProdStartZeit, StartZeit, True).ToString("dd.MM.yy hh:mm")
+                        If ProdVorlauf > 0 Then
+                            Dim BerechneteStartZeit As DateTime = wb_Functions.AddDateTime(ProdStartZeit, StartZeit, True).Subtract(TimeSpan.FromHours(ProdVorlauf))
+                            Return BerechneteStartZeit.ToString("dd.MM.yy hh:mm")
+                        Else
+                            Return wb_Functions.AddDateTime(ProdStartZeit, StartZeit, True).ToString("dd.MM.yy hh:mm")
+                        End If
                     Else
                         Return ""
                     End If
@@ -526,6 +531,15 @@ Public Class wb_Produktionsschritt
             _ProdVorlauf = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Berechnet die Startzeit aus Linien-Startzeit (aus Komponentendaten) und Produktions-Vorlauf (in Stunden)
+    ''' </summary>
+    'Public Sub CalcStartZeit()
+    '    If ProdVorlauf > 0 Then
+    '        StartZeit = StartZeit.AddHours(ProdVorlauf)
+    '    End If
+    'End Sub
 
     Public Property Sollwert As String
         Get

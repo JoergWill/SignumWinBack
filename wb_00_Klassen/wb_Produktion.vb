@@ -104,7 +104,7 @@ Public Class wb_Produktion
         For Each v As wb_VorProduktionsSchritt In _VorProduktion
             Debug.Print("Vorproduktion " & v.ArtikelNr & "/" & v.RezeptNr & "/" & v.Sollwert_kg)
             'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
-            AddChargenZeile("", "", v.ArtikelNr, 0.0, v.Sollwert_kg, wb_Global.ModusChargenTeiler.OptimalUndRest)
+            AddChargenZeile("", "", v.ArtikelNr, 0.0, v.Sollwert_kg, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
         Next
 
         Return True
@@ -357,6 +357,8 @@ Public Class wb_Produktion
             Root.Bestellt_Stk = CalcBestellMenge(Bestellmenge, Sollmenge_Stk)
             Root.Bestellt_SonderText = Bestellt_SonderText
             Root.Sollwert_TeilungText = Sollwert_TeilungText
+            'Startzeit berechnen aus Linienstart und Produktions-Vorlauf
+            'Root.CalcStartZeit()
 
             'Teig-Gesamtmenge berechnen
             If Sollmenge_kg <= 0 Then
@@ -397,15 +399,47 @@ Public Class wb_Produktion
 
         'Rezeptur anhängen (Die Linengruppe wird aus der Rezeptur ermittelt)
         Rzpt.LinienGruppe = AddRezeptSchritte(Rzpt, Menge, Nothing)
+        'Rezept-Sollwert Menge korrigieren (Anstellgut Sauerteig wird erst in AddRezeptSchritte berechnet)
+        Rzpt.Sollwert_kg = Menge
+        'Startzeit Vorlauf - Die Berechnung erfolgt erst bei der Ausgabe der Daten 
+        Rzpt.ProdVorlauf = Root.ProdVorlauf
         '(vorläufige Chargen-Nummer)
         Rzpt.ChargenNummer = GetNewChargenNummer(Rzpt.LinienGruppe)
     End Sub
 
-    Private Function AddRezeptSchritte(ByRef Rzpt As wb_Produktionsschritt, Menge As Double, Parent As Object) As Integer
+    ''' <summary>
+    ''' Fügt alle Rezeptschritte als Child-ProduktionsSchritte hinzu.
+    ''' Bei Sauerteig-Rezepten (Liniengruppe 127) wird die Sollmenge um das Anstellgut erhöht (Niehaves)
+    ''' </summary>
+    ''' <param name="Rzpt"></param>
+    ''' <param name="Menge"></param>
+    ''' <param name="Parent"></param>
+    ''' <returns></returns>
+    Private Function AddRezeptSchritte(ByRef Rzpt As wb_Produktionsschritt, ByRef Menge As Double, Parent As Object) As Integer
         'Rezeptur einlesen
         'TODO Muss hier ein Backverlust übertragen werden oder nicht ? PRÜFEN !!!
         Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent, 0.0)
-        Dim Faktor As Double = SaveDiv(Menge, Rezeptur.RezeptGewicht)
+        Dim Anstellgut As Double = 0.0
+
+        'Bei Sauerteig-Rezepturen Anstellgut berechnen
+        If Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig Then
+            'alle Rezeptschritte durchlaufen
+            For Each rs As wb_Rezeptschritt In Rezeptur.LLRezept
+                If rs.Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Then
+                    Anstellgut += rs.Sollwert
+                End If
+            Next
+        End If
+
+        'Umrechnungsfaktor Rezeptmenge
+        Dim Faktor As Double = SaveDiv(Menge, Rezeptur.RezeptGewicht + Anstellgut)
+
+        'die Sollmenge erhöht sich um die Anstellgut-Menge, diese muss für den nächsten Tage wieder zur Verfügung stehen
+        If Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig Then
+            Menge = Menge + Anstellgut * Faktor
+            Rzpt.Bestellt_SonderText = "Anstellgut " & wb_Functions.FormatStr(Anstellgut * Faktor, 3) & " kg"
+        End If
+
         'gibt die Liniengruppe aus dem Rezeptkopf zurück
         AddRezeptSchritte = Rezeptur.LinienGruppe
 
@@ -663,7 +697,7 @@ Public Class wb_Produktion
             Else
                 If VorProduktion Then
                     CalcBatch01.AnzahlRest = 1
-                    'CalcBatch01.MengeRest = ChargeMin
+                    CalcBatch01.MengeRest = ChargeMin
                     If CalcBatch01.AnzahlOpt = 0 Then
                         CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM3
                     Else
@@ -677,7 +711,7 @@ Public Class wb_Produktion
                     CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM1
                 End If
             End If
-            ' (@V3.0.5) Vorproduktion TODO Kommen wir hier hin ???
+            ' (@V3.0.5) Vorproduktion
             If (CalcBatch01.AnzahlOpt = 0) And (CalcBatch01.AnzahlRest = 0) And VorProduktion Then
                 CalcBatch01.AnzahlRest = 1
                 CalcBatch01.MengeRest = ChargeMin

@@ -134,6 +134,8 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub BtVorproduktion_Click(sender As Object, e As EventArgs) Handles BtVorproduktion.Click
         Produktion.CalcVorproduktion(Produktion.RootProduktionsSchritt)
+        'Virtual Tree anzeigen
+        VirtualTree.DataSource = Produktion.RootProduktionsSchritt
     End Sub
 
     ''' <summary>

@@ -3417,6 +3417,16 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Sollmenge_Stk">Double - Sollmenge in Stück</param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Produktion.AddRezeptSchritte(WinBack.wb_Produktionsschritt@,System.Double@,System.Object)">
+ <summary>
+ Fügt alle Rezeptschritte als Child-ProduktionsSchritte hinzu.
+ Bei Sauerteig-Rezepten (Liniengruppe 127) wird die Sollmenge um das Anstellgut erhöht (Niehaves)
+ </summary>
+ <param name="Rzpt"></param>
+ <param name="Menge"></param>
+ <param name="Parent"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Produktion.GetAuftragsNummer(System.String,System.String)">
  <summary>
  Gibt einen Wert für die Auftrags-Nummer zurück. Ist keine Auftrags-Nummer definiert, wird die Tour zurückgegeben.
