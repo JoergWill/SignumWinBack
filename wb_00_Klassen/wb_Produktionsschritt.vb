@@ -42,6 +42,7 @@ Public Class wb_Produktionsschritt
     Private _TeigChargen As wb_Global.ChargenMengen
     Private _Bestellt_Stk As Double
     Private _LagerBestand As String
+    Private _StartZeit As DateTime
 
     Private _Bestellt_SonderText As String
     Private _Bestellt_KundeNr As String
@@ -175,9 +176,27 @@ Public Class wb_Produktionsschritt
         _childSteps.Sort()
     End Sub
 
+    ''' <summary>
+    ''' Startzeit formatiert ausgeben
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property VirtTreeStart As String
         Get
-            Return ""
+            Select Case Typ
+
+                Case KO_TYPE_ARTIKEL, KO_ZEILE_ARTIKEL, KO_ZEILE_REZEPT
+                    'Datum Produktionsplan für den ....
+                    Dim ProdStartZeit As DateTime = DateTime.Parse(wb_GlobalSettings.ProdPlanDatum)
+                    'gültige Startzeit eingetragen
+                    If StartZeit <> wb_Global.wbNODATE Then
+                        Return wb_Functions.AddDateTime(ProdStartZeit, StartZeit, True).ToString("dd.MM.yy hh:mm")
+                    Else
+                        Return ""
+                    End If
+
+                Case Else
+                    Return ""
+            End Select
         End Get
     End Property
 
@@ -255,19 +274,16 @@ Public Class wb_Produktionsschritt
         End Get
     End Property
 
-    'Public ReadOnly Property VirtTreeArtikelLinienGruppe As String
-    '    Get
-    '        TODO Hier entscheiden ob Liniengruppe oder Artikel-Liniengruppe angezeigt werden soll
-    '        Return "AR"
-    '    End Get
-    'End Property
-
     Public ReadOnly Property VirtTreeTour As String
         Get
             If _Tour = "0" Then
                 Return "-"
             Else
-                Return _Tour & "/" & ProdVorlauf.ToString
+                If Typ = KO_ZEILE_ARTIKEL Then
+                    Return Tour
+                Else
+                    Return ""
+                End If
             End If
         End Get
     End Property
@@ -291,10 +307,10 @@ Public Class wb_Produktionsschritt
                 End If
 
             ElseIf Typ = KO_ZEILE_REZEPT Then
-                    Return wb_Functions.FormatStr(Sollwert_kg, 3)
+                Return wb_Functions.FormatStr(Sollwert_kg, 3)
 
-                Else
-                    Select Case Typ
+            Else
+                Select Case Typ
                     Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
                         Return ""
                     Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
@@ -677,43 +693,6 @@ Public Class wb_Produktionsschritt
         End If
 
         Return True
-
-
-        ''Select Case Typ
-
-        ''    Case KO_TYPE_ARTIKEL, KO_ZEILE_ARTIKEL
-        ''        If _ArtikelLinienGruppe > 0 Then
-        ''            If _FilterAufarbeitung > 0 Then
-        ''                If _FilterAufarbeitung = _ArtikelLinienGruppe Then
-        ''                    Return True
-        ''                Else
-        ''                    Return False
-        ''                End If
-        ''            Else
-        ''                Return True
-        ''            End If
-        ''        Else
-        ''            Return False
-        ''        End If
-
-        ''    Case KO_ZEILE_REZEPT
-        ''        If _LinienGruppe > 0 Then
-        ''            If _FilterLinienGruppe > 0 Then
-        ''                If _FilterLinienGruppe = _LinienGruppe Then
-        ''                    Return True
-        ''                Else
-        ''                    Return False
-        ''                End If
-        ''            Else
-        ''                Return True
-        ''            End If
-        ''        Else
-        ''            Return False
-        ''        End If
-
-        ''    Case Else
-        ''        Return True
-        ''End Select
     End Function
 
     Public Property LinienGruppe As Integer
@@ -722,6 +701,9 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As Integer)
             _LinienGruppe = value
+            'Startzeit Liniengruppe aus LinienGruppenTabelle
+            StartZeit = wb_Linien_Global.GetStartzeit(_LinienGruppe)
+            'Sortierkriterium setzen TODO ???
             'setSortKriterium()
         End Set
     End Property
@@ -738,6 +720,9 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As Integer)
             _ArtikelLinienGruppe = value
+            'Startzeit Liniengruppe aus LinienGruppenTabelle
+            StartZeit = wb_Linien_Global.GetStartzeit(_ArtikelLinienGruppe)
+            'Sortierkriterium setzen
             setSortKriterium()
         End Set
     End Property
@@ -779,6 +764,20 @@ Public Class wb_Produktionsschritt
         Set(value As String)
             _Tour = value
             setSortKriterium()
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Startzeit der Charge. 
+    ''' Wird ermittelt aus der Startzeit der Liniengruppe und dem Produktions-Vorlauf aus den Artikelstammdaten
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property StartZeit As DateTime
+        Get
+            Return _StartZeit
+        End Get
+        Set(value As Date)
+            _StartZeit = value
         End Set
     End Property
 
@@ -944,4 +943,5 @@ Public Class wb_Produktionsschritt
             _LagerBestand = value
         End Set
     End Property
+
 End Class

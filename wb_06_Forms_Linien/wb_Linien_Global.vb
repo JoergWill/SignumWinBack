@@ -223,7 +223,25 @@
         Else
             Return "- " & LinienGruppe.ToString & " -"
         End If
+    End Function
 
+    ''' <summary>
+    ''' Gibt die Startzeit der Liniengruppe zurück. 
+    ''' Wenn keine Liniengruppe vorhanden ist, oder keine Startzeit eingetragen wurde, wird ein wbNODATE zurückgegeben.
+    ''' </summary>
+    ''' <param name="LinienGruppe"></param>
+    ''' <returns></returns>
+    Shared Function GetStartzeit(LinienGruppe As Integer) As DateTime
+        If _LGruppen.ContainsKey(LinienGruppe) Then
+            Dim Result As DateTime
+            If DateTime.TryParse(_LGruppen(LinienGruppe).StartZeit, Result) Then
+                Return Result
+            Else
+                Return wb_Global.wbNODATE
+            End If
+        Else
+            Return wb_Global.wbNODATE
+        End If
     End Function
 
     ''' <summary>

@@ -911,6 +911,10 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    ''' <summary>
+    ''' Global verfügbarer Wert Datum Produktionsplan (Produktion für...)
+    ''' </summary>
+    ''' <returns></returns>
     Public Shared Property ProdPlanDatum As String
         Get
             If _ProdPlanDatum = Nothing Then

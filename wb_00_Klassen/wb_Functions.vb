@@ -107,6 +107,26 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Addiert zwei Datum/Zeitwerte und gibt das Ergebnis als DateTime zurück.
+    ''' Ist der zu addierende Wert nur ein Zeitwert (Year=1, Month=1, Day=1) wird
+    ''' nur der Zeitwert addiert.
+    ''' </summary>
+    ''' <param name="d1"></param>
+    ''' <param name="d2"></param>
+    ''' <returns></returns>
+    Public Shared Function AddDateTime(d1 As DateTime, d2 As DateTime, Optional IgnoreDatum As Boolean = False) As DateTime
+        AddDateTime = d1
+        Try
+            AddDateTime = d1.AddSeconds(d2.Second).AddMinutes(d2.Minute).AddHours(d2.Hour)
+            'Wenn die Daten für das Datum gültig sind
+            If ((d2.Year <> 1) And (d2.Month <> 1) And (d2.Day <> 1) And Not IgnoreDatum) Then
+                AddDateTime = AddDateTime.AddDays(d2.Day).AddMonths(d2.Month).AddYears(d2.Year)
+            End If
+        Catch ex As Exception
+        End Try
+    End Function
+
+    ''' <summary>
     ''' Wandelt einen String in AllergenInfo um. Wenn der String umgültig ist wird ERR zurückgegeben
     ''' </summary>
     ''' <param name="s"></param>

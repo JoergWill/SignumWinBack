@@ -6,7 +6,7 @@
     Public Const UNDEFINED = -1
     Public Const wbFALSE = 0
     Public Const wbTRUE = 1
-    Public Const wbNODATE = #01/01/1900 00:00:00#
+    Public Const wbNODATE = #11/22/1964 00:00:00#
 
     Public Const LogFileEntries = 20                    'Anzahl der Einträge im Puffer
     Public Const Log4NetConfigFile = "WinBack.log4net"  'Datei-Name des Log-Files
