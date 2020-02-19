@@ -3421,6 +3421,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <summary>
  Fügt alle Rezeptschritte als Child-ProduktionsSchritte hinzu.
  Bei Sauerteig-Rezepten (Liniengruppe 127) wird die Sollmenge um das Anstellgut erhöht (Niehaves)
+ Voraussetzung, der Haken "Anstellgut für den nächsten Tag aufheben" ist gesetzt
  </summary>
  <param name="Rzpt"></param>
  <param name="Menge"></param>
@@ -3681,6 +3682,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="_FilterLinienGruppe"></param>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_Produktionsschritt.LinienGruppeZusatzText">
+ <summary>
+ Zusatztext für ListLabel-Formular
+ z.B. für die Sauerteig-Linie als Patzhalter für die Start-Zeit
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Produktionsschritt.Tour">
  <summary>
  Gibt die Tour-Nummer aus der Produktions-Planung zurück. Ist als Tour-Nummer 0 eingetragen, wird 
@@ -3829,6 +3837,20 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <summary>
  Gibt die Liniengruppe der Rezeptur zurück. 
  Wenn die Rezeptvariante gleich 0 ist (Sauerteig) , wird als Liniengruppe 999 zurückgegeben
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Rezept.AnstellGutReWork">
+ <summary>
+ Flag AnstellgutRework
+ Bestimmt, ob bei der Berechnung der Produktions-Mengen(Vorproduktion) die Anstellgutmenge als Restmenge für den nächsten Tag
+ übrig bleiben soll.
+ Die Anstellgutmenge wird aus der Sauerteig-Rezeptur ermittelt.
+ 
+ Datenbank-Feld RZ_Type
+     
+     A   -   AnstellgutRewort 
+     T   -   Reset TTS beim nächsten Start in WinBack-Produktion
  </summary>
  <returns></returns>
 </member>

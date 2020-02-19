@@ -1,4 +1,6 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿Imports EnhEdit.EnhEdit_Global
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class wb_Rezept_Rezeptur
     Inherits System.Windows.Forms.Form
 
@@ -154,7 +156,7 @@ Partial Class wb_Rezept_Rezeptur
         '
         resources.ApplyResources(Me.EnhEdit_Rezept, "EnhEdit_Rezept")
         Me.EnhEdit_Rezept.BorderStyle = System.Windows.Forms.BorderStyle.None
-        'Me.EnhEdit_Rezept.eFormat = Enh_Edit.wb_Format.FUndefined
+        Me.EnhEdit_Rezept.eFormat = wb_Format.FUndefined
         Me.EnhEdit_Rezept.eOG = "0"
         Me.EnhEdit_Rezept.eUG = "0"
         Me.EnhEdit_Rezept.Name = "EnhEdit_Rezept"
@@ -597,7 +599,6 @@ Partial Class wb_Rezept_Rezeptur
         'VirtualTree
         '
         Me.VirtualTree.AllowMultiSelect = False
-        resources.ApplyResources(Me.VirtualTree, "VirtualTree")
         Me.VirtualTree.AutoFitColumns = True
         Me.VirtualTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.VirtualTree.Columns.Add(Me.ColNr)
@@ -607,6 +608,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.Columns.Add(Me.ColEinheit)
         Me.VirtualTree.Columns.Add(Me.ColProzent)
         Me.VirtualTree.ContextMenuStrip = Me.VTPopUpMenu
+        resources.ApplyResources(Me.VirtualTree, "VirtualTree")
         Me.VirtualTree.EditOnKeyPress = True
         Me.VirtualTree.Editors.Add(Me.EnhEdit)
         Me.VirtualTree.HeaderContextMenu = Me.headerContextMenu

@@ -160,13 +160,13 @@
     <value>EnhEdit_Rezept</value>
   </data>
   <data name="&gt;&gt;EnhEdit_Rezept.Type" xml:space="preserve">
-    <value>EnhEdit.EnhEdit, EnhancedEdit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EnhEdit.EnhEdit, EnhancedEdit, Version=1.4.9.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="ColBezeichnung.MinWidth" type="System.Int32, mscorlib">
     <value>300</value>
   </data>
   <data name="ColBezeichnung.Width" type="System.Int32, mscorlib">
-    <value>479</value>
+    <value>468</value>
   </data>
   <data name="ColPreis.Caption" xml:space="preserve">
     <value>Preis</value>
@@ -943,7 +943,7 @@
     <value>cbLiniengruppe</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.7.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -964,7 +964,7 @@
     <value>cbVariante</value>
   </data>
   <data name="&gt;&gt;cbVariante.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.4.7.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbVariante.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -1414,7 +1414,7 @@
     <value>401, 17</value>
   </metadata>
   <data name="VTPopUpMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 26</value>
+    <value>61, 4</value>
   </data>
   <data name="&gt;&gt;VTPopUpMenu.Name" xml:space="preserve">
     <value>VTPopUpMenu</value>
@@ -1554,8 +1554,8 @@
   <data name="Wb_TabControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="VirtualTree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="VirtualTree.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="VirtualTree.HeaderHeight" type="System.Int32, mscorlib">
     <value>24</value>
@@ -1564,7 +1564,7 @@
     <value>Arial, 12pt</value>
   </data>
   <data name="VirtualTree.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-4, 0</value>
+    <value>3, 3</value>
   </data>
   <data name="resource.Font1" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 12pt</value>
@@ -1606,7 +1606,7 @@
     <value>Arial, 12pt</value>
   </data>
   <data name="VirtualTree.Size" type="System.Drawing.Size, System.Drawing">
-    <value>948, 463</value>
+    <value>937, 453</value>
   </data>
   <data name="VirtualTree.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1615,7 +1615,7 @@
     <value>VirtualTree</value>
   </data>
   <data name="&gt;&gt;VirtualTree.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.VirtualTree, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.VirtualTree, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;VirtualTree.Parent" xml:space="preserve">
     <value>tb_Rezeptur</value>
@@ -1960,7 +1960,7 @@
     <value>GridView_RzVerwendung</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Type" xml:space="preserve">
-    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.4.7.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Parent" xml:space="preserve">
     <value>tb_Verwendung</value>
@@ -2005,7 +2005,7 @@
     <value>Wb_TabControl</value>
   </data>
   <data name="&gt;&gt;Wb_TabControl.Type" xml:space="preserve">
-    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.4.7.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;Wb_TabControl.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2029,43 +2029,43 @@
     <value>ColNr</value>
   </data>
   <data name="&gt;&gt;ColNr.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColBezeichnung.Name" xml:space="preserve">
     <value>ColBezeichnung</value>
   </data>
   <data name="&gt;&gt;ColBezeichnung.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;EnhEdit.Name" xml:space="preserve">
     <value>EnhEdit</value>
   </data>
   <data name="&gt;&gt;EnhEdit.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.CellEditor, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.CellEditor, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColPreis.Name" xml:space="preserve">
     <value>ColPreis</value>
   </data>
   <data name="&gt;&gt;ColPreis.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColSollwert.Name" xml:space="preserve">
     <value>ColSollwert</value>
   </data>
   <data name="&gt;&gt;ColSollwert.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColEinheit.Name" xml:space="preserve">
     <value>ColEinheit</value>
   </data>
   <data name="&gt;&gt;ColEinheit.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ColProzent.Name" xml:space="preserve">
     <value>ColProzent</value>
   </data>
   <data name="&gt;&gt;ColProzent.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.Column, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;ToolStripLeftMargin.Name" xml:space="preserve">
     <value>ToolStripLeftMargin</value>
@@ -2155,7 +2155,7 @@
     <value>ObjectRowBinding1</value>
   </data>
   <data name="&gt;&gt;ObjectRowBinding1.Type" xml:space="preserve">
-    <value>Infralution.Controls.VirtualTree.ObjectRowBinding, Infralution.Controls.VirtualTree, Version=4.8.9.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+    <value>Infralution.Controls.VirtualTree.ObjectRowBinding, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>wb_Rezept_Rezeptur</value>

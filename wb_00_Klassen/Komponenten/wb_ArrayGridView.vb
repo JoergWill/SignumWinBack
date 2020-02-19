@@ -166,6 +166,7 @@ Public MustInherit Class wb_ArrayGridView
         ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Location = New System.Drawing.Point(Parent.Top, Parent.Left)
         Size = New System.Drawing.Size(Parent.Width, Parent.Height)
+        Dock = DockStyle.Fill
     End Sub
 
     Public Sub GridLocation(ByVal Parent As Windows.Forms.Panel)

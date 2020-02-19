@@ -45,6 +45,8 @@ Public Class wb_Rezept_Details
         cbLiniengruppe.SetTextFromKey(wb_Rezept_Shared.Rezept.LinienGruppe)
         'Eintrag in Combo-Box Rezeptvariante ausfüllen
         cbVariante.SetTextFromKey(wb_Rezept_Shared.Rezept.Variante)
+        'Checkbox Anstellgut
+        cbAnstellgut.Checked = wb_Rezept_Shared.Rezept.AnstellGutReWork
 
     End Sub
 
@@ -111,5 +113,11 @@ Public Class wb_Rezept_Details
         'Event-Handler wieder freigeben
         RemoveHandler wb_Rezept_Shared.eListe_Click, AddressOf DetailInfo
         RemoveHandler wb_Rezept_Shared.Rezept.TeigChargen.OnError, AddressOf OnErrorMinMaxOptTeig
+    End Sub
+
+    Private Sub cbAnstellgut_Click(sender As Object, e As EventArgs) Handles cbAnstellgut.Click
+        wb_Rezept_Shared.Rezept.AnstellGutReWork = cbAnstellgut.Checked
+        wb_Rezept_Shared.Rezept.DataHasChanged = True
+        wb_Rezept_Shared.Edit_Leave(sender)
     End Sub
 End Class

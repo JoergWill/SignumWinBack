@@ -102,7 +102,7 @@ Public Class wb_Produktion
 
         'Schleife über alle Vorproduktions-Chargen
         For Each v As wb_VorProduktionsSchritt In _VorProduktion
-            Debug.Print("Vorproduktion " & v.ArtikelNr & "/" & v.RezeptNr & "/" & v.Sollwert_kg)
+            'Debug.Print("Vorproduktion " & v.ArtikelNr & "/" & v.RezeptNr & "/" & v.Sollwert_kg)
             'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
             AddChargenZeile("", "", v.ArtikelNr, 0.0, v.Sollwert_kg, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
         Next
@@ -115,7 +115,7 @@ Public Class wb_Produktion
 
         'Iteration über alle Produktions-Schritte
         For Each p As wb_Produktionsschritt In ps.ChildSteps
-            Debug.Print("Calc Vorproduktion " & p.ArtikelNummer & "/" & p.ArtikelBezeichnung & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung)
+            'Debug.Print("Calc Vorproduktion " & p.ArtikelNummer & "/" & p.ArtikelBezeichnung & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung)
 
             If p.ChargenNummer = "VP" Then
                 vp.RezeptNr = p.RezeptNr
@@ -186,20 +186,20 @@ Public Class wb_Produktion
                     p1c0.Optimiert = True
                     p1c0.ChargenNummer = GetNextChargenNummer(p1.LinienGruppe)
                     TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p1, Modus, p1c0.ChargenNummer) 'p1.Sollwert_kg
-                    Debug.Print("Optimiere Produktion " & p1c0.Tour & "/" & p1c0.ArtikelNummer & "/" & p1c0.ArtikelBezeichnung & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & p1c0.Sollwert_kg)
+                    'Debug.Print("Optimiere Produktion " & p1c0.Tour & "/" & p1c0.ArtikelNummer & "/" & p1c0.ArtikelBezeichnung & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & p1c0.Sollwert_kg)
                 End If
                 'Teig schon berücksichtigt
                 If Not p2c0.Optimiert Then
                     p2c0.Optimiert = True
                     p2c0.ChargenNummer = GetNextChargenNummer(p2.LinienGruppe)
                     TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p2, Modus, p2c0.ChargenNummer) 'p2.Sollwert_kg
-                    Debug.Print("Optimiere Produktion " & p2c0.Tour & "/" & p2c0.ArtikelNummer & "/" & p2c0.ArtikelBezeichnung & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & p2c0.Sollwert_kg)
+                    'Debug.Print("Optimiere Produktion " & p2c0.Tour & "/" & p2c0.ArtikelNummer & "/" & p2c0.ArtikelBezeichnung & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & p2c0.Sollwert_kg)
                 End If
                 'Letzter Teig
                 If i = ProdChildSteps Then
                     'TODO Chargenteiler auch aus Rezeptur berücksichtigen
                     AddChargenZeile(TourInfo(p2c0.Tour, Modus), p2c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler)
-                    Debug.Print("AddCharge LAST " & p2c0.Tour & "/" & p2c0.RezeptNr & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & TeigMenge)
+                    'Debug.Print("AddCharge LAST " & p2c0.Tour & "/" & p2c0.RezeptNr & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & TeigMenge)
                 End If
             Else
                 'Wenn mehrere Teige zusammengefasst werden sollen
@@ -207,7 +207,7 @@ Public Class wb_Produktion
                     'neuen Produktions - Schritt anhängen
                     'TODO Chargenteiler auch aus Rezeptur berücksichtigen
                     AddChargenZeile(TourInfo(p1c0.Tour, Modus), p1c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler)
-                    Debug.Print("AddCharge NEW " & p1c0.Tour & "/" & p1c0.RezeptNr & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & TeigMenge)
+                    'Debug.Print("AddCharge NEW " & p1c0.Tour & "/" & p1c0.RezeptNr & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & TeigMenge)
                     TeigMenge = 0
                 End If
             End If
@@ -262,14 +262,14 @@ Public Class wb_Produktion
                     ZusammenfassenTeigSumme = ZusammenfassenTeigSumme + c.Sollwert_kg
                     c.Optimiert = True
                     c.ChargenNummer = ChargenNummer
-                    Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & ZusammenfassenTeigSumme)
+                    'Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & ZusammenfassenTeigSumme)
                 Next
                 p.Optimiert = True
 
             Case wb_Global.ModusTeigOptimierung.NurTeigeKleinerMinChargen
                 'optimiere alle Teige mit Restcharge kleiner Minimal-Charge
                 ZusammenfassenTeigSumme = p.Sollwert_kg
-                Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & ZusammenfassenTeigSumme)
+                'Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & ZusammenfassenTeigSumme)
 
             Case Else
                 Return False
@@ -357,8 +357,6 @@ Public Class wb_Produktion
             Root.Bestellt_Stk = CalcBestellMenge(Bestellmenge, Sollmenge_Stk)
             Root.Bestellt_SonderText = Bestellt_SonderText
             Root.Sollwert_TeilungText = Sollwert_TeilungText
-            'Startzeit berechnen aus Linienstart und Produktions-Vorlauf
-            'Root.CalcStartZeit()
 
             'Teig-Gesamtmenge berechnen
             If Sollmenge_kg <= 0 Then
@@ -405,11 +403,17 @@ Public Class wb_Produktion
         Rzpt.ProdVorlauf = Root.ProdVorlauf
         '(vorläufige Chargen-Nummer)
         Rzpt.ChargenNummer = GetNewChargenNummer(Rzpt.LinienGruppe)
+        'Zusatztext auf Teigzettel
+        If Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig Then
+            Rzpt.ParentStep.LinienGruppeZusatzText = "Start spätestens " & Rzpt.VirtTreeStart
+        End If
+
     End Sub
 
     ''' <summary>
     ''' Fügt alle Rezeptschritte als Child-ProduktionsSchritte hinzu.
     ''' Bei Sauerteig-Rezepten (Liniengruppe 127) wird die Sollmenge um das Anstellgut erhöht (Niehaves)
+    ''' Voraussetzung, der Haken "Anstellgut für den nächsten Tag aufheben" ist gesetzt
     ''' </summary>
     ''' <param name="Rzpt"></param>
     ''' <param name="Menge"></param>
@@ -420,9 +424,9 @@ Public Class wb_Produktion
         'TODO Muss hier ein Backverlust übertragen werden oder nicht ? PRÜFEN !!!
         Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent, 0.0)
 
-        'Bei Sauerteig-Rezepturen Anstellgut berechnen
+        'Bei Sauerteig-Rezepturen Anstellgut berechnen (wenn der Haken "Anstellgut" gesetzt ist)
         Dim Anstellgut As Double = 0.0
-        If Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig Then
+        If (Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig) Then
             'alle Rezeptschritte durchlaufen
             For Each rs As wb_Rezeptschritt In Rezeptur.LLRezept
                 If rs.Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Then
@@ -437,7 +441,12 @@ Public Class wb_Produktion
         End If
 
         'Umrechnungsfaktor Rezeptmenge
-        Dim Faktor As Double = SaveDiv(Menge, Rezeptur.RezeptGewicht - Anstellgut)
+        Dim Faktor As Double
+        If (Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig) And Rezeptur.AnstellGutReWork Then
+            Faktor = SaveDiv(Menge, Rezeptur.RezeptGewicht - Anstellgut)
+        Else
+            Faktor = SaveDiv(Menge, Rezeptur.RezeptGewicht)
+        End If
 
         'die Sollmenge erhöht sich um die Anstellgut-Menge, diese muss für den nächsten Tage wieder zur Verfügung stehen
         If Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig Then

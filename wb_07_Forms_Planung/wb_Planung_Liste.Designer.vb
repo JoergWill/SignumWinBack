@@ -48,6 +48,7 @@ Partial Class wb_Planung_Liste
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.ColBestand = New Infralution.Controls.VirtualTree.Column()
         Me.ColEinheitBestand = New Infralution.Controls.VirtualTree.Column()
+        Me.ColStartZeit = New Infralution.Controls.VirtualTree.Column()
         Me.CellEditor4 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.BtnVorlage = New System.Windows.Forms.Button()
@@ -69,7 +70,6 @@ Partial Class wb_Planung_Liste
         Me.lblLinienGruppe = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.ColStartZeit = New Infralution.Controls.VirtualTree.Column()
         Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
         Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.cbProduktionsFiliale = New WinBack.wb_ComboBox()
@@ -172,6 +172,13 @@ Partial Class wb_Planung_Liste
         Me.ColEinheitBestand.Caption = Nothing
         Me.ColEinheitBestand.Name = "ColEinheitBestand"
         Me.ColEinheitBestand.Width = 30
+        '
+        'ColStartZeit
+        '
+        Me.ColStartZeit.Caption = "Start"
+        Me.ColStartZeit.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Center
+        Me.ColStartZeit.MinWidth = 100
+        Me.ColStartZeit.Name = "ColStartZeit"
         '
         'CellEditor4
         '
@@ -401,13 +408,6 @@ Partial Class wb_Planung_Liste
         Me.Label3.Size = New System.Drawing.Size(73, 13)
         Me.Label3.TabIndex = 63
         Me.Label3.Text = "Produktion für"
-        '
-        'ColStartZeit
-        '
-        Me.ColStartZeit.Caption = "Start"
-        Me.ColStartZeit.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Center
-        Me.ColStartZeit.MinWidth = 100
-        Me.ColStartZeit.Name = "ColStartZeit"
         '
         'cbArtikelLinienGruppe
         '

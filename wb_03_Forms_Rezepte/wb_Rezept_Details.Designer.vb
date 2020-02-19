@@ -25,7 +25,6 @@ Partial Class wb_Rezept_Details
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rezept_Details))
         Me.tRezeptNummer = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -50,12 +49,12 @@ Partial Class wb_Rezept_Details
         Me.tChargeOpt = New System.Windows.Forms.TextBox()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
-        Me.cbVariante = New WinBack.wb_ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
-        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.Label16 = New System.Windows.Forms.Label()
-        Me.EnhEdit1 = New EnhEdit.EnhEdit(Me.components)
+        Me.cbAnstellgut = New System.Windows.Forms.CheckBox()
+        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
+        Me.cbVariante = New WinBack.wb_ComboBox()
         Me.SuspendLayout()
         '
         'tRezeptNummer
@@ -182,15 +181,6 @@ Partial Class wb_Rezept_Details
         resources.ApplyResources(Me.Label13, "Label13")
         Me.Label13.Name = "Label13"
         '
-        'cbVariante
-        '
-        resources.ApplyResources(Me.cbVariante, "cbVariante")
-        Me.cbVariante.BackColor = System.Drawing.SystemColors.Window
-        Me.cbVariante.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple
-        Me.cbVariante.FormattingEnabled = True
-        Me.cbVariante.Name = "cbVariante"
-        Me.cbVariante.TabStop = False
-        '
         'Label14
         '
         resources.ApplyResources(Me.Label14, "Label14")
@@ -201,29 +191,38 @@ Partial Class wb_Rezept_Details
         resources.ApplyResources(Me.Label15, "Label15")
         Me.Label15.Name = "Label15"
         '
+        'Label16
+        '
+        resources.ApplyResources(Me.Label16, "Label16")
+        Me.Label16.Name = "Label16"
+        '
+        'cbAnstellgut
+        '
+        resources.ApplyResources(Me.cbAnstellgut, "cbAnstellgut")
+        Me.cbAnstellgut.Name = "cbAnstellgut"
+        Me.cbAnstellgut.UseVisualStyleBackColor = True
+        '
         'cbLiniengruppe
         '
         resources.ApplyResources(Me.cbLiniengruppe, "cbLiniengruppe")
         Me.cbLiniengruppe.FormattingEnabled = True
         Me.cbLiniengruppe.Name = "cbLiniengruppe"
         '
-        'Label16
+        'cbVariante
         '
-        resources.ApplyResources(Me.Label16, "Label16")
-        Me.Label16.Name = "Label16"
-        '
-        'EnhEdit1
-        '
-        Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        resources.ApplyResources(Me.EnhEdit1, "EnhEdit1")
-        Me.EnhEdit1.Name = "EnhEdit1"
+        resources.ApplyResources(Me.cbVariante, "cbVariante")
+        Me.cbVariante.BackColor = System.Drawing.SystemColors.Window
+        Me.cbVariante.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple
+        Me.cbVariante.FormattingEnabled = True
+        Me.cbVariante.Name = "cbVariante"
+        Me.cbVariante.TabStop = False
         '
         'wb_Rezept_Details
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGray
-        Me.Controls.Add(Me.EnhEdit1)
+        Me.Controls.Add(Me.cbAnstellgut)
         Me.Controls.Add(Me.Label16)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.cbLiniengruppe)
@@ -286,5 +285,5 @@ Partial Class wb_Rezept_Details
     Friend WithEvents Label15 As Windows.Forms.Label
     Friend WithEvents cbLiniengruppe As wb_ComboBox
     Friend WithEvents Label16 As Windows.Forms.Label
-    Friend WithEvents EnhEdit1 As EnhEdit.EnhEdit
+    Friend WithEvents cbAnstellgut As Windows.Forms.CheckBox
 End Class

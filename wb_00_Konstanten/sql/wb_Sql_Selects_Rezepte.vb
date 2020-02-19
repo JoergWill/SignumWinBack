@@ -6,19 +6,19 @@
     'Sql-Statement Rezeptliste aus winback.Rezepte
     Public Const sqlRezeptListe = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
                                   "RZ_Aenderung_Nr, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Liniengruppe, " &
-                                  "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt FROM Rezepte WHERE RZ_Variante_Nr <= 1"
+                                  "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt, RZ_Type FROM Rezepte WHERE RZ_Variante_Nr <= 1"
     'Sql-Statement Rezept-Historie aus winback.HisRezepte
     Public Const sqlRezeptHistr = "SELECT H_RZ_Aenderung_Nr, H_RZ_Aenderung_Datum, H_RZ_Aenderung_Name FROM His_Rezepte " &
                                   "WHERE H_RZ_Nr=[0] AND H_RZ_Variante_Nr=[1]"
     'Sql-Statement Rezeptkopf aus winback.Rezepte
     Public Const sqlRezeptKopf = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
                                   "RZ_Aenderung_Nr, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Liniengruppe, RZ_Teigtemperatur, " &
-                                  "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt FROM Rezepte WHERE RZ_Nr=[0] " &
+                                  "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt, RZ_Type FROM Rezepte WHERE RZ_Nr=[0] " &
                                   "AND (RZ_Variante_Nr=[1] Or RZ_Variante_Nr=1 Or RZ_Variante_Nr=0) ORDER BY RZ_Variante_Nr DESC"
     'Sql-Statement Rezeptkopf aus winback.Rezepte
     Public Const sqlRezeptNummer = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
                                    "RZ_Aenderung_Nr, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Liniengruppe, RZ_Teigtemperatur, " &
-                                   "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt FROM Rezepte WHERE RZ_Nr_AlNum = '[0]' " &
+                                   "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt, RZ_Type FROM Rezepte WHERE RZ_Nr_AlNum = '[0]' " &
                                    "AND (RZ_Variante_Nr=[1] Or RZ_Variante_Nr=1 Or RZ_Variante_Nr=0) ORDER BY RZ_Variante_Nr DESC"
     'Sql-Statement Rezept-Verwendung aus winback.Komponenten
     Public Const sqlRezeptVerwendung = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Kommentar, KA_Art, KA_Matchcode, KO_Nr " &

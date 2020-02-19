@@ -27,6 +27,7 @@ Public Class wb_Rezept
     Private _AenderungUserNr As Integer
     Private _RezeptTeigTemperatur As Double
     Private _LinienGruppe As Integer
+    Private _RZ_Type As String
     Private _KneterKennLinie As Integer
     Private _NoMessage As Boolean
     Private _ReadCalcPreis As Boolean = True
@@ -274,6 +275,44 @@ Public Class wb_Rezept
         End Set
     End Property
 
+    ''' <summary>
+    ''' Flag AnstellgutRework
+    ''' Bestimmt, ob bei der Berechnung der Produktions-Mengen(Vorproduktion) die Anstellgutmenge als Restmenge für den nächsten Tag
+    ''' übrig bleiben soll.
+    ''' Die Anstellgutmenge wird aus der Sauerteig-Rezeptur ermittelt.
+    ''' 
+    ''' Datenbank-Feld RZ_Type
+    '''     
+    '''     A   -   AnstellgutRewort 
+    '''     T   -   Reset TTS beim nächsten Start in WinBack-Produktion
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property AnstellGutReWork As Boolean
+        Get
+            Return (_RZ_Type = "A")
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _RZ_Type = "A"
+            Else
+                _RZ_Type = ""
+            End If
+        End Set
+    End Property
+
+    Public Property ResetTTS As Boolean
+        Get
+            Return (_RZ_Type = "T")
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _RZ_Type = "T"
+            Else
+                _RZ_Type = ""
+            End If
+        End Set
+    End Property
+
     Public Property RezeptKommentar As String
         Get
             Return _RezeptKommentar
@@ -476,6 +515,7 @@ Public Class wb_Rezept
         AenderungNummer = dataGridView.iField("RZ_Aenderung_Nr")
         AenderungDatum = dataGridView.Field("RZ_Aenderung_Datum")
         AenderungName = dataGridView.Field("RZ_Aenderung_Name")
+        _RZ_Type = dataGridView.Field("RZ_Type")
 
         'vor dem Einlesen der neuen Werte löschen - sonst Fehler bei der Berechnung
         TeigChargen.Invalidate()
@@ -494,6 +534,7 @@ Public Class wb_Rezept
             dataGridView.Field("RZ_Bezeichnung") = RezeptBezeichnung
             dataGridView.Field("RZ_Kommentar") = RezeptKommentar
             dataGridView.Field("RZ_Liniengruppe") = LinienGruppe
+            dataGridView.Field("RZ_Type") = _RZ_Type
 
             dataGridView.Field("RZ_Charge_Max") = TeigChargen.MaxCharge.MengeInkg
             dataGridView.Field("RZ_Charge_Min") = TeigChargen.MinCharge.MengeInkg
@@ -997,6 +1038,8 @@ Public Class wb_Rezept
                 'Rezeptkopf - Kneterkennlinie
                 Case "RZ_Kneterkennlinie", "H_RZ_Kneterkennlinie"
                     _KneterKennLinie = wb_Functions.StrToInt(Value)
+                Case "RZ_Type"
+                    _RZ_Type = Value
 
             End Select
         Catch ex As Exception
@@ -1077,7 +1120,7 @@ Public Class wb_Rezept
                   "RZ_Charge_Opt = '" & wb_Functions.FormatStr(TeigChargen.OptCharge.MengeInkg, 3) & "', " &
                   "RZ_Charge_Min = '" & wb_Functions.FormatStr(TeigChargen.MinCharge.MengeInkg, 3) & "', " &
                   "RZ_Charge_Max = '" & wb_Functions.FormatStr(TeigChargen.MaxCharge.MengeInkg, 3) & "', " &
-                  "RZ_Liniengruppe = " & LinienGruppe & ", " &
+                  "RZ_Liniengruppe = " & LinienGruppe & ", RZ_TYPE = '" & _RZ_Type & "', " &
                   "RZ_Kommentar = '" & _RezeptKommentar & "', RZ_Aenderung_Datum = '" & wb_sql_Functions.MySQLdatetime(_AenderungDatum) & "', " &
                   "RZ_Aenderung_Name = '" & _AenderungName & "', RZ_Aenderung_User = " & _AenderungUserNr & ", RZ_Aenderung_Nr = " & _AenderungNummer
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptUpdate, _RezeptNr, _RezeptVariante, sqlData)

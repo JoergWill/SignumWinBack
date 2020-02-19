@@ -158,7 +158,6 @@ Public Class wb_Planung_Liste
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
         pDialog.LL_KopfZeile_1 = "für " & dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
-        'pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
         pDialog.LL.DataSource = New ObjectDataProvider(BackZettel)
 
         'List und Label-Verzeichnis für die Listen
@@ -183,7 +182,6 @@ Public Class wb_Planung_Liste
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
         pDialog.LL_KopfZeile_1 = "für " & dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
-        'pDialog.LL.DataSource = New ObjectDataProvider(Produktion.RootProduktionsSchritt.ChildSteps)
         pDialog.LL.DataSource = New ObjectDataProvider(TeigListe)
 
         'List und Label-Verzeichnis für die Listen

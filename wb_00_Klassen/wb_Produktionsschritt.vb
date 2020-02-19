@@ -15,6 +15,7 @@ Public Class wb_Produktionsschritt
     Private _Linie As Integer = wb_Global.UNDEFINED
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
+    Private _LinienGruppeZusatzText As String = ""
     Private _Typ As String
     Private _Tour As String
     Private _ChargenNummer As String
@@ -746,6 +747,20 @@ Public Class wb_Produktionsschritt
         Get
             Return wb_Linien_Global.GetBezeichnung(_LinienGruppe)
         End Get
+    End Property
+
+    ''' <summary>
+    ''' Zusatztext für ListLabel-Formular
+    ''' z.B. für die Sauerteig-Linie als Patzhalter für die Start-Zeit
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property LinienGruppeZusatzText As String
+        Get
+            Return _LinienGruppeZusatzText
+        End Get
+        Set(value As String)
+            _LinienGruppeZusatzText = value
+        End Set
     End Property
 
     Public Property ArtikelLinienGruppe As Integer
