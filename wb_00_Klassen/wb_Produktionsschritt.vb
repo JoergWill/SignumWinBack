@@ -35,9 +35,11 @@ Public Class wb_Produktionsschritt
     Private _ProdVorlauf As Integer
 
     Private _Sollwert As String
+    Private _SollwertProzent As String
     Private _Sollwert_kg As Double
     Private _Sollmenge_Stk As Double
     Private _Sollwert_TeilungText As String
+    Private _ParamNr As Integer
     Private _Einheit As String
     Private _TeigChargen As wb_Global.ChargenMengen
     Private _Bestellt_Stk As Double
@@ -116,9 +118,12 @@ Public Class wb_Produktionsschritt
             If wb_Functions.TypeIstSollMenge(.Type, .ParamNr) Then
                 Sollwert_kg = wb_Functions.StrToDouble(.Sollwert) * Faktor
                 Sollwert = wb_Functions.FormatStr(Sollwert_kg.ToString, 3)
+                SollwertProzent = wb_Functions.FormatStr(.SollwertProzent, 3)
             Else
                 Sollwert = .Sollwert
             End If
+            'Parameter Nummer
+            ParamNr = .ParamNr
         End With
     End Sub
 
@@ -320,6 +325,12 @@ Public Class wb_Produktionsschritt
                         Return ""
                     Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
                         Return wb_Functions.FormatStr(_Sollwert, 3)
+                    Case KO_TYPE_SAUER_ZUGABE
+                        If ParamNr = 1 Then
+                            Return wb_Functions.FormatStr(_Sollwert, 3)
+                        Else
+                            Return wb_Functions.FormatStr(_SollwertProzent, 3)
+                        End If
                     Case Else
                         Return _Sollwert
                 End Select
@@ -532,21 +543,21 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
-    ''' <summary>
-    ''' Berechnet die Startzeit aus Linien-Startzeit (aus Komponentendaten) und Produktions-Vorlauf (in Stunden)
-    ''' </summary>
-    'Public Sub CalcStartZeit()
-    '    If ProdVorlauf > 0 Then
-    '        StartZeit = StartZeit.AddHours(ProdVorlauf)
-    '    End If
-    'End Sub
-
     Public Property Sollwert As String
         Get
             Return _Sollwert
         End Get
         Set(value As String)
             _Sollwert = value
+        End Set
+    End Property
+
+    Public Property SollwertProzent As String
+        Get
+            Return _SollwertProzent
+        End Get
+        Set(value As String)
+            _SollwertProzent = value
         End Set
     End Property
 
@@ -565,6 +576,15 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As Double)
             _Sollmenge_Stk = value
+        End Set
+    End Property
+
+    Public Property ParamNr As Integer
+        Get
+            Return _ParamNr
+        End Get
+        Set(value As Integer)
+            _ParamNr = value
         End Set
     End Property
 

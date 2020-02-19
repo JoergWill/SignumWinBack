@@ -32,8 +32,6 @@ Public Class wb_StammDaten_LinienGruppen
 
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlLinienGruppen, "Liniengruppen")
-        'DataGrid Initialisierung Anzeige ohne Sauerteig, nur aktive Rohstoffe
-        '        Me.Anzeige = AnzeigeFilter.Alle
 
         'Flags Drucken/Senden zentriert darstellen
         DataGridView.Columns(ColLGNr).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
@@ -105,6 +103,8 @@ Public Class wb_StammDaten_LinienGruppen
             If wb_Linien_Global.ExistLinienGruppe(LinienGruppe) Then
                 MsgBox("Diese Liniengruppe existiert schon !", MsgBoxStyle.Exclamation, "Liniengruppe ändern")
                 DataGridView.CurrentCell.Value = _OrgWert
+                'Liste neu aufbauen
+                DataGridView.RefreshData()
             Else
                 'Liniengruppe oder Backort/Aufarbeitungs-Platz
                 If LinienGruppe >= wb_Global.OffsetBackorte Then
@@ -123,16 +123,13 @@ Public Class wb_StammDaten_LinienGruppen
                 End If
             End If
 
-            'Liste neu aufbauen
-            DataGridView.RefreshData()
-
         Else
             MsgBox("Liniengruppe ungültig !", MsgBoxStyle.Exclamation, "Liniengruppe ändern")
             DataGridView.CurrentCell.Value = _OrgWert
         End If
     End Sub
 
-    Private Sub DataGridView_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
+    Private Sub DataGridView_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellContentClick
         Debug.Print("CellContent Click " & e.ColumnIndex & "/" & e.RowIndex)
         'Originalwert der Zelle merken (Edit-Modus)
         _OrgWert = DataGridView.CurrentCell.Value.ToString
@@ -144,7 +141,7 @@ Public Class wb_StammDaten_LinienGruppen
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub DataGridView_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellClick, DataGridView.CellContentClick
+    Private Sub DataGridView_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellClick
         Debug.Print("Cell Click " & e.ColumnIndex & "/" & e.RowIndex)
         'wenn die Zeile schon markiert war
         If (e.RowIndex = _RowIndex) And (e.ColumnIndex >= ColDruckBZ) Then

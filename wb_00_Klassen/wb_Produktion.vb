@@ -419,25 +419,34 @@ Public Class wb_Produktion
         'Rezeptur einlesen
         'TODO Muss hier ein Backverlust übertragen werden oder nicht ? PRÜFEN !!!
         Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent, 0.0)
-        Dim Anstellgut As Double = 0.0
 
         'Bei Sauerteig-Rezepturen Anstellgut berechnen
+        Dim Anstellgut As Double = 0.0
         If Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig Then
             'alle Rezeptschritte durchlaufen
             For Each rs As wb_Rezeptschritt In Rezeptur.LLRezept
                 If rs.Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Then
-                    Anstellgut += rs.Sollwert
+                    Select Case rs.ParamNr
+                        Case 1
+                            Anstellgut += rs.Sollwert
+                        Case 2
+                            Anstellgut += rs.SollwertProzent * Rezeptur.RezeptGewicht / 100
+                    End Select
                 End If
             Next
         End If
 
         'Umrechnungsfaktor Rezeptmenge
-        Dim Faktor As Double = SaveDiv(Menge, Rezeptur.RezeptGewicht + Anstellgut)
+        Dim Faktor As Double = SaveDiv(Menge, Rezeptur.RezeptGewicht - Anstellgut)
 
         'die Sollmenge erhöht sich um die Anstellgut-Menge, diese muss für den nächsten Tage wieder zur Verfügung stehen
         If Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig Then
-            Menge = Menge + Anstellgut * Faktor
-            Rzpt.Bestellt_SonderText = "Anstellgut " & wb_Functions.FormatStr(Anstellgut * Faktor, 3) & " kg"
+            'Anstellgutmenge formatieren auf 1 Nachkommastelle
+            Anstellgut = Int(Anstellgut * Faktor * 10) / 10
+            'Sollmenge korrigieren
+            Menge = Menge + Anstellgut
+            'Anstellgutmenge als Kommentar ausgeben
+            Rzpt.Bestellt_SonderText = "Anstellgut " & wb_Functions.FormatStr(Anstellgut, 1) & " kg"
         End If
 
         'gibt die Liniengruppe aus dem Rezeptkopf zurück

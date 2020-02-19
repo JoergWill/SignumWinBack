@@ -333,14 +333,17 @@
         If (wb_Functions.StrToInt(LinienGruppeNeu) < wb_Global.OffsetBackorte) And (wb_Functions.StrToInt(LinienGruppeNeu) > 0) Then
             'Datenbank-Verbindung öffnen - MySQL
             Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
             'Datensatz neu anlegen - Result True nur wenn kein Fehler auftritt
-            If (winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChangeLinienGruppe, LinienGruppeNeu, LinienGruppeAlt)) >= 0) Then
-                _ErrorText = "Fehler beim Anpassen der Rezeptkopfdaten !" & vbCrLf & "Bitte die Liniengruppen in den Rezepturen überprüfen"
-                ChangeLinienGruppe = False
-            Else
-                'kein Fehler
-                _ErrorText = ""
-                ChangeLinienGruppe = True
+            If LinienGruppeAlt <> "" Then
+                If (winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChangeLinienGruppe, LinienGruppeNeu, LinienGruppeAlt)) < 0) Then
+                    _ErrorText = "Fehler beim Anpassen der Rezeptkopfdaten !" & vbCrLf & "Bitte die Liniengruppen in den Rezepturen überprüfen"
+                    ChangeLinienGruppe = False
+                Else
+                    'kein Fehler
+                    _ErrorText = ""
+                    ChangeLinienGruppe = True
+                End If
             End If
 
             'Verbindung wieder schliessen
@@ -371,13 +374,15 @@
             'Datenbank-Verbindung öffnen - MySQL
             Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
             'Datensatz neu anlegen - Result True nur wenn kein Fehler auftritt
-            If (winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChangeBackort, BackortNeu, BackortAlt, wb_Global.T300_LinienGruppe)) >= 0) Then
-                _ErrorText = "Fehler beim Anpassen der Artikeldaten !" & vbCrLf & "Bitte die Backorte in den Artikeldaten überprüfen"
-                ChangeBackort = False
-            Else
-                'kein Fehler
-                _ErrorText = ""
-                ChangeBackort = True
+            If BackortAlt <> "" Then
+                If (winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChangeBackort, BackortNeu, BackortAlt, wb_Global.T300_LinienGruppe)) < 0) Then
+                    _ErrorText = "Fehler beim Anpassen der Artikeldaten !" & vbCrLf & "Bitte die Backorte in den Artikeldaten überprüfen"
+                    ChangeBackort = False
+                Else
+                    'kein Fehler
+                    _ErrorText = ""
+                    ChangeBackort = True
+                End If
             End If
 
             'Verbindung wieder schliessen

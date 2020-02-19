@@ -898,7 +898,13 @@ Public Class wb_Rezept
                     _SQLRezeptSchritt.Kommentar = Value
                 'Sollwert
                 Case "RS_Wert", "H_RS_Wert"
-                    _SQLRezeptSchritt.Sollwert = Value
+                    'Anstellgut Sauerteig kann auch in Prozent angegeben werden !!
+                    If (_SQLRezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE) And (_SQLRezeptSchritt.ParamNr = 2) Then
+                        _SQLRezeptSchritt.SollwertProzent = Value
+                    Else
+                        _SQLRezeptSchritt.Sollwert = Value
+                    End If
+
                 'Sollwert Produktion (nur Wasser-Temp-Satz - RMF-Basis-Wert) 
                 Case "RS_Wert_Prod"
                     If (_SQLRezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE) And (_SQLRezeptSchritt.ParamNr = 3) Then

@@ -14,6 +14,7 @@ Public Class wb_Rezeptschritt
     Private _Bezeichnung As String
     Private _Kommentar As String
     Private _Sollwert As String
+    Private _SollwertProzent As String
     Private _Einheit As String
     Private _Format As EnhEdit_Global.wb_Format
     Private _OberGW As String
@@ -370,6 +371,15 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    Public Property SollwertProzent As String
+        Get
+            Return _SollwertProzent
+        End Get
+        Set(value As String)
+            _SollwertProzent = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Bezeichnung. Anzeige im VirtualTree (Rezeptur)
     ''' Bei Produktions-Stufen, Kessel und Text-Komponenten wird der Sollwert als Text angezeigt
@@ -422,6 +432,8 @@ Public Class wb_Rezeptschritt
                 Case Else
                     If wb_Functions.TypeIstSollMenge(_Type, 1) Then
                         Return wb_Functions.FormatStr(_Sollwert, 3)
+                    ElseIf wb_Functions.TypeIstSollMenge(_Type, 2) Then
+                        Return wb_Functions.FormatStr(_SollwertProzent, 3)
                     Else
                         Return _Sollwert
                     End If
@@ -430,6 +442,8 @@ Public Class wb_Rezeptschritt
         Set(value As String)
             If wb_Functions.TypeIstSollMenge(_Type, 1) Or wb_Functions.TypeIstSollWert(_Type, 1) Then
                 _Sollwert = value
+            ElseIf wb_Functions.TypeIstSollMenge(_Type, 2) Or wb_Functions.TypeIstSollWert(_Type, 2) Then
+                _SollwertProzent = value
             End If
         End Set
     End Property

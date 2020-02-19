@@ -952,21 +952,47 @@ Public Class wb_Functions
     ''' <returns></returns>
     Public Shared Function FormatTimeStr(Value As String) As String
         Dim ts As String() = Value.Split(":")
+        Dim ti(3) As Integer
 
         'alle Bestandteile in Integer wandeln (sicherheitshalber)
         For i = 0 To ts.Length - 1
-            ts(i) = StrToInt(ts(i)).ToString
+            ti(i) = StrToInt(ts(i))
         Next
+
+
+
+        'Uhrzeit auf sinnvolle Werte begrenzen
+
+        'Sekunden maximal 59
+        If (ts.Length > 2) Then
+            If (ti(2) > 59) Then
+                ti(2) = ti(2) - 60
+                ti(1) = ti(1) + 1
+            End If
+        End If
+
+        'Minuten maximal 59
+        If (ts.Length > 1) Then
+            If (ti(1) > 59) Then
+                ti(1) = ti(1) - 60
+                ti(0) = ti(0) + 1
+            End If
+        End If
+
+        'Stunden maximal 23h
+        If ti(0) > 23 Then
+            ti(0) = 23
+        End If
 
         Select Case ts.Length
             Case 0
                 Return "00:00:00"
             Case 1
-                Return Left(ts(0) & "00", 2) & ":00:00"
+                Return Right("00" & ti(0).ToString, 2) & ":00:00"
             Case 2
-                Return Left(ts(0) & "00", 2) & ":" & Left(ts(1) & "00", 2) & ":00"
+                Return Right("00" & ti(0).ToString, 2) & ":" & Right("00" & ti(1).ToString, 2) & ":00"
             Case Else
-                Return Left(ts(0) & "00", 2) & ":" & Left(ts(1) & "00", 2) & ":" & Left(ts(2) & "00", 2)
+                Return Right("00" & ti(0).ToString, 2) & ":" & Right("00" & ti(1).ToString, 2) & ":" & Right("00" & ti(2).ToString, 2)
         End Select
     End Function
 

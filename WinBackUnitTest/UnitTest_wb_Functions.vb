@@ -328,4 +328,16 @@ Imports WinBack.wb_Global
         Assert.AreEqual(True, wb_Functions.RegKeyNameExists(Microsoft.Win32.RegistryHive.CurrentUser, "Software\Signum GmbH Darmstadt\OrgaSoft.NET", "CompaniesHeight"))
     End Sub
 
+    <TestMethod()> Public Sub Test_FormatTimeStr()
+        Assert.AreEqual("00:00:00", wb_Functions.FormatTimeStr("00:00"))
+        Assert.AreEqual("01:00:00", wb_Functions.FormatTimeStr("01:00"))
+        Assert.AreEqual("10:00:00", wb_Functions.FormatTimeStr("10:00"))
+        Assert.AreEqual("04:00:00", wb_Functions.FormatTimeStr("04:00"))
+
+        Assert.AreEqual("04:00:00", wb_Functions.FormatTimeStr("04:00:00"))
+        Assert.AreEqual("04:00:00", wb_Functions.FormatTimeStr("03:60:00"))
+        Assert.AreEqual("01:00:00", wb_Functions.FormatTimeStr("xx:60:00"))
+
+    End Sub
+
 End Class
