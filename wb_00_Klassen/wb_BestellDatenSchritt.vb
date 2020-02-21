@@ -5,12 +5,17 @@ Public Class wb_BestellDatenSchritt
     Private _TourNr As Integer
     Private _ArtikelNummer As String
     Private _Einheit As Integer
+    Private _DispositionsArt As Integer
     Private _Produktionsmenge As Double
+    Private _MengeInProduktion As Double
     Private _ChargenTeiler As wb_Global.ModusChargenTeiler = wb_Global.ModusChargenTeiler.OptimalUndRest
     Private _AnzahlVorschlag As Integer
     Private _Bedarfmenge As Integer
+    Private _BedarfFroster As Integer
     Private _FrosterEntnahme As Integer
     Private _FrosterEinlagerung As Integer
+    Private _MengeFrosterEntnommen As Integer
+    Private _MengeFrosterEingelagert As Integer
     Private _AuftragsNummer As String = ""
     Private _BestellMenge As Double = wb_Global.UNDEFINED
     Private _SonderText As String = ""
@@ -45,6 +50,15 @@ Public Class wb_BestellDatenSchritt
         End Get
         Set(value As Double)
             _Produktionsmenge = value
+        End Set
+    End Property
+
+    Public Property MengeInProduktion As Double
+        Get
+            Return _MengeInProduktion
+        End Get
+        Set(value As Double)
+            _MengeInProduktion = value
         End Set
     End Property
 
@@ -134,6 +148,15 @@ Public Class wb_BestellDatenSchritt
         End Set
     End Property
 
+    Public Property BedarfFroster As Integer
+        Get
+            Return _BedarfFroster
+        End Get
+        Set(value As Integer)
+            _BedarfFroster = value
+        End Set
+    End Property
+
     Public Property FrosterEntnahme As Integer
         Get
             Return _FrosterEntnahme
@@ -155,6 +178,7 @@ Public Class wb_BestellDatenSchritt
     ''' <summary>
     ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
     ''' Update pq_Prouktionsauftrag (30.08.2018/JE)
+    ''' Update pq_Prouktionsauftrag (20.02.2020/JE) DB-Version 8.0050
     ''' 
     ''' [dbo].[pq_ProduktionsPlanung]
     '''   FilialNr                  / 1
@@ -164,7 +188,9 @@ Public Class wb_BestellDatenSchritt
     '''   Einheit                   / 0
     '''   Farbe                     / 0
     '''   Groesse                   / NULL
+    '''   DispositionsArt           / 2..4                  (20.02.2020/JE)
     '''   BedarfMenge               / 4000,0000
+    '''   MengeInProduktion         / 1000,0000             (20.02.2020/JE)
     '''   Bezeichnung               / Mehrkornbrötchen
     '''   Zusatztexte               / Lorem ipsum
     '''   FrosterBestand            / 0,0000
@@ -177,8 +203,11 @@ Public Class wb_BestellDatenSchritt
     '''   LosArt                    / 1 (Blech)
     '''   Losgroesse2               / 10,0000 (Stück)
     '''   LosArt2                   / 7 (Stikken)
+    '''   BedarfFroster             / 0,0000                (20.02.2020/JE)
     '''   FrosterEntnahme           / 0,0000
-    '''   FrosterEinlagerung        / 0,0000
+    '''   FrosterEinlagerung        / 0,0000        
+    '''   MengeFrosterEntnommen     / 0,0000                (20.02.2020/JE)
+    '''   MengeFrosterEingelagert   / 0,0000                (20.02.2020/JE)
     '''   PlanungsStatus            / 0
     '''   
     ''' </summary>
@@ -205,16 +234,24 @@ Public Class wb_BestellDatenSchritt
                'Artikelnummer(alpha)
                 Case "ArtikelNr"
                     _ArtikelNummer = Value
+                'Einheit
+                Case "Einheit"
+                    _Einheit = wb_Functions.StrToInt(Value)
                'Zusatztexte(alpha getrennt durch CRLF)
                 Case "Zusatztexte"
                     _SonderText = Value
                 'Soll-Produktionsmenge in Stück
                 Case "Produktionsmenge"
                     _Produktionsmenge = wb_Functions.StrToDouble(Value)
+                'Menge in Produktion in Stück
+                Case "MengeInProduktion"
+                    MengeInProduktion = wb_Functions.StrToDouble(Value)
                 Case "BedarfMenge"
                     _Bedarfmenge = wb_Functions.StrToDouble(Value)
                 Case "Einheit"
                     _Einheit = wb_Functions.StrToInt(Value)
+                Case "DispositionsArt"
+                    _DispositionsArt = wb_Functions.StrToInt(Value)
 
                 'Anzahl der Lose
                 Case "AnzahlLoseVorschlag"
@@ -235,12 +272,20 @@ Public Class wb_BestellDatenSchritt
                 Case "AnzahlVorschlag"
                     _AnzahlVorschlag = wb_Functions.StrToInt(Value)
 
-                    'Anzahl Froster Entnahme
+                'Bedarf Froster (in Bedarf Menge enthalten)
+                Case "BedarfFroster"
+                    BedarfFroster = wb_Functions.StrToInt(Value)
+                'Anzahl Froster Entnahme
                 Case "FrosterEntnahme"
                     _FrosterEntnahme = wb_Functions.StrToInt(Value)
-                    'Anzahl Froster Einlagerung
+                'Anzahl Froster Einlagerung
                 Case "FrosterEinlagerung"
                     _FrosterEinlagerung = wb_Functions.StrToInt(Value)
+                Case "MengeFrosterEntnommen"
+                    _MengeFrosterEntnommen = wb_Functions.StrToInt(Value)
+                'Anzahl Froster Einlagerung
+                Case "MengeFrosterEingelagert"
+                    _MengeFrosterEingelagert = wb_Functions.StrToInt(Value)
 
             End Select
         Catch ex As Exception

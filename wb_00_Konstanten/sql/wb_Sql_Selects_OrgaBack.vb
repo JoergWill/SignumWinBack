@@ -85,6 +85,15 @@
     Public Const mssqlInsertProduktionsDaten = "INSERT INTO [dbo].[ProduzierteWare] (FilialNr, ProduktionsDatum, SatzTyp, ArtikelNr, " &
                                                "Einheit, Farbe, Groesse, Menge, ChargenNr, HaltbarkeitsDatum) VALUES ([0])"
 
+    'Sql-Statement Abfrage Datensatz vorhanden in dbo.ProduktionAktuell
+    Public Const mssqlProduktionAktuell = "SELECT * FROM [dbo].[ProduktionAktuell] WHERE [FilialNr] = [0] AND [LieferDatum] = '[1]' AND [TourNr] = [2] AND [ArtikelNr] = '[3]'"
+    'Sql-Statement Insert Datensatz in dbo.ProduktionAktuell
+    Public Const mssqlInsertProduktionAktuell = "INSERT INTO [dbo].[ProduktionAktuell] (FilialNr, LieferDatum, TourNr, ArtikelNr, Einheit, " &
+                                                "Farbe, Groesse ,MengeInProduktion) VALUES ([0])"
+    'Sql-Statement Update Datensatz dbo.ProduktionAktuell
+    Public Const mssqlUpdateProduktionAktuell = "UPDATE [dbo].[ProduktionAktuell] SET MengeInProduktion = [4] WHERE " &
+                                                "[FilialNr] = [0] And [LieferDatum] = '[1]' AND [TourNr] = [2] AND [ArtikelNr] = '[3]'"
+
     'Sql-Statement Abfrage dbo.LosArt
     Public Const mssqlLosArt = "Select * FROM [dbo].[LosArten]"
 

@@ -49,11 +49,14 @@
     End Function
 
     Shared Function getobEinheitFromText(eBez As String) As Integer
-        If EinhText.ContainsKey(eBez) Then
-            Return EinhText(eBez).obNr
-        Else
-            Return wb_Global.obEinheitKilogramm
+        If eBez IsNot Nothing Then
+            If EinhText.ContainsKey(eBez) Then
+                Return EinhText(eBez).obNr
+            Else
+                Return wb_Global.obEinheitKilogramm
+            End If
         End If
+        Return wb_Global.obEinheitKilogramm
     End Function
 
     Shared Function getobEinheitFromNr(oNr As Integer, Optional DefaultEinheit As Integer = wb_Global.obEinheitKilogramm) As String

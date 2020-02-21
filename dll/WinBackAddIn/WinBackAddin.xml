@@ -1169,6 +1169,7 @@ Stacktrace:
  <summary>
  Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
  Update pq_Prouktionsauftrag (30.08.2018/JE)
+ Update pq_Prouktionsauftrag (20.02.2020/JE) DB-Version 8.0050
  
  [dbo].[pq_ProduktionsPlanung]
    FilialNr                  / 1
@@ -1178,7 +1179,9 @@ Stacktrace:
    Einheit                   / 0
    Farbe                     / 0
    Groesse                   / NULL
+   DispositionsArt           / 2..4                  (20.02.2020/JE)
    BedarfMenge               / 4000,0000
+   MengeInProduktion         / 1000,0000             (20.02.2020/JE)
    Bezeichnung               / Mehrkornbrötchen
    Zusatztexte               / Lorem ipsum
    FrosterBestand            / 0,0000
@@ -1191,8 +1194,11 @@ Stacktrace:
    LosArt                    / 1 (Blech)
    Losgroesse2               / 10,0000 (Stück)
    LosArt2                   / 7 (Stikken)
+   BedarfFroster             / 0,0000                (20.02.2020/JE)
    FrosterEntnahme           / 0,0000
-   FrosterEinlagerung        / 0,0000
+   FrosterEinlagerung        / 0,0000        
+   MengeFrosterEntnommen     / 0,0000                (20.02.2020/JE)
+   MengeFrosterEingelagert   / 0,0000                (20.02.2020/JE)
    PlanungsStatus            / 0
    
  </summary>
@@ -3407,7 +3413,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Modus"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Produktion.AddChargenZeile(System.String,System.String,System.Int32,System.Double,System.Double,WinBack.wb_Global.ModusChargenTeiler,System.Boolean,System.String,System.Double,System.String,System.String)">
+<member name="M:WinBack.wb_Produktion.AddChargenZeile(System.String,System.String,System.Int32,System.Double,System.Double,System.Double,WinBack.wb_Global.ModusChargenTeiler,System.Boolean,System.String,System.Double,System.String,System.String)">
  <summary>
  Fügt eine (Artikel)Charge an die bestehende Liste an.
  Der Artikel-Datensatz wird aus der Datenbank eingelesen und als Kopfdatensatz eingefügt. Die Rezeptzeilen werden entsprechend der Chargen-Aufteilung angefügt.
@@ -3601,6 +3607,25 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Die einzelnen Produktions-Schritte werden sortiert nach Teig(Rezeptnummer), Artikelnummer und Tour
  </summary>
  <param name="obj"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Produktionsschritt.ChargeWirdProduziert">
+ <summary>
+ Charge als produziert markieren.
+ Teigzettel/Backzettel gedruckt und/oder Produktionsliste übertragen
+ </summary>
+</member>
+<member name="P:WinBack.wb_Produktionsschritt.IstInProduktion">
+ <summary>
+ Flag Charge ist in Produktion übertragen worden (Teigliste/Backzettel/csv-File)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Produktionsschritt.MengeInProduktion">
+ <summary>
+ Istwert Menge in Produktion aus vorherigen Berechnungen/Produktionsplanungen.
+ Der Wert wird von OrgaBack übernommen.
+ </summary>
  <returns></returns>
 </member>
 <member name="P:WinBack.wb_Produktionsschritt.VirtTreeStart">
@@ -8017,6 +8042,36 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Planung_Liste.FormClosingFromMain">
+ <summary>
+ Form Planung_Main soll geschlossen werden. 
+ Vorher muss geprüft werden, ob die Produktions-Daten in dbo.XXX.MengeInProduktion geschrieben werden sollen.
+ 
+ Gibt False zurück, wenn das Fenster geschlossen werden kann.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Planung_Liste.WriteProduktionOrgaBack">
+ <summary>
+ Übermittelt die Stückzahlen der Artikel, die in die Produktion übertragen worden sind (Teigzettel/Backzettel/cvs-File) als MengeInProduktion an OrgaBack
+ </summary>
+</member>
+<member name="M:WinBack.wb_Planung_Liste.MsSQLdbUpdate_ProduktionAktuell(System.Int32,System.String,System.Int32,System.String,System.Int32,System.Int32,System.String,System.Double,System.Double)">
+ <summary>
+ Schreibt die Stückzahlen "MengeInProduktion" in die Tabelle dbo.ProduktionAktuell.
+ Wenn schon ein Datensatz vorhanden ist, wird dieser überschrieben.
+ 
+ Der Wert MengeInProduktion wird aus dem vorhierigen Wert MengeInProduktion aus der Abfrage dbo.pq_Produktionsauftrag mit der Sollstückzahl addiert.
+ </summary>
+ <param name="FilialeNr"></param>
+ <param name="LieferDatum"></param>
+ <param name="TourNr"></param>
+ <param name="ArtikelNr"></param>
+ <param name="Einheit"></param>
+ <param name="Farbe"></param>
+ <param name="Groesse"></param>
+ <param name="MengeInProduktion"></param>
+</member>
 <member name="M:WinBack.wb_Planung_Liste.btnNeueCharge_Click(System.Object,System.EventArgs)">
  <summary>
  Neue Artikel-Zeile (mit Rezeptur anlegen)
@@ -8030,6 +8085,12 @@ Datenbank-Verbindung schliessen
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Liste.FilterAndMark(System.Collections.ArrayList@)">
+ <summary>
+ Filtert die Produktions-Planungs-Schritte nach Aufarbeitung und Linengruppe
+ </summary>
+ <param name="a"></param>
 </member>
 <member name="M:WinBack.wb_Planung_Liste.BtnBackZettelDrucken_Click(System.Object,System.EventArgs)">
  <summary>
@@ -8068,6 +8129,17 @@ Datenbank-Verbindung schliessen
  Die DockPanel-Konfiguration wird gespeichert unter wbXXXXYYYY.xml, dabei ist XXXX der FormName und YYYY der Layout-Name.
  </summary>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_Planung_Main.FormClosing(System.Int16)">
+ <summary>
+ Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+ </summary>
+ <param name="Reason"></param>
+ <returns>
+ False, wenn das Fenster geschlossen werden darf
+ True, wenn das Fenster geöffnet bleiben muss
+ </returns>
+ <remarks></remarks>
 </member>
 <member name="M:WinBack.ob_Admin_OrgaBackSettings.Initialize">
  <summary>

@@ -10,7 +10,11 @@ Public Class wb_Planung_Liste
 
     Private _FilterLinienGruppe As Integer = wb_Global.UNDEFINED
     Private _FilterAufarbeitung As Integer = wb_Global.UNDEFINED
+    Private _ProdPlanGedruckt As Boolean = False
 
+    'Bestellungen einlesen für Produktions-Datum
+    Private _ProduktionsDatum As String = ""
+    Private _ProduktionsFilialeNummer As String = ""
 
     Private Sub BtnVorlage_Click(sender As Object, e As EventArgs) Handles BtnVorlage.Click
         'Fenster Auswahl Vorlage anzeigen
@@ -76,6 +80,37 @@ Public Class wb_Planung_Liste
         End If
     End Sub
 
+    ''' <summary>
+    ''' Form Planung_Main soll geschlossen werden. 
+    ''' Vorher muss geprüft werden, ob die Produktions-Daten in dbo.XXX.MengeInProduktion geschrieben werden sollen.
+    ''' 
+    ''' Gibt False zurück, wenn das Fenster geschlossen werden kann.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function FormClosingFromMain() As Boolean
+        'wenn Daten für die Produktion generiert worden sind (Teigliste/Backzettel/Produktionsliste)
+        If _ProdPlanGedruckt Then
+            'Nachfragen
+            Select Case MsgBox("Sollen die Daten aus der Planung als 'in Produktion' verbucht werden ?", MsgBoxStyle.Question & MsgBoxStyle.YesNoCancel, "Produktions-Planung")
+
+                Case MsgBoxResult.Yes
+                    'Datensätze in dbo.XXX.MengeInProduktion eintragen
+                    WriteProduktionOrgaBack()
+                    Return False
+
+                Case MsgBoxResult.No
+                    'keine Einträge in dbo.XXX
+                    Return False
+
+                Case Else
+                    'Fenster nicht schliessen
+                    Return True
+
+            End Select
+        End If
+        Return False
+    End Function
+
     Private Sub BtnBestellungen_Click(sender As Object, e As EventArgs) Handles BtnBestellungen.Click
         ReadBestellungenOrgaBack()
     End Sub
@@ -85,8 +120,8 @@ Public Class wb_Planung_Liste
         Me.Cursor = Cursors.WaitCursor
 
         'Bestellungen einlesen für Produktions-Datum
-        Dim ProduktionsDatum As String = dtBestellungen.Value.ToString("yyyyMMdd")
-        Dim ProduktionsFilialeNummer As String = cbProduktionsFiliale.GetKeyFromSelection()
+        _ProduktionsDatum = dtBestellungen.Value.ToString("yyyyMMdd")
+        _ProduktionsFilialeNummer = cbProduktionsFiliale.GetKeyFromSelection()
 
         'Prüfen ob schon Daten vorhanden sind
         If Produktion.RootProduktionsSchritt.ChildSteps.Count > 0 Then
@@ -100,7 +135,7 @@ Public Class wb_Planung_Liste
         End If
 
         'Daten aus der Stored-Procedure in OrgaBack einlesen
-        If Not Produktion.MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum, ProduktionsFilialeNummer) Then
+        If Not Produktion.MsSQLdbProcedure_Produktionsauftrag(_ProduktionsDatum, _ProduktionsFilialeNummer) Then
             'Default-Cursor
             Me.Cursor = Cursors.Default
             'keine Datensätze in der Vorlage
@@ -115,6 +150,72 @@ Public Class wb_Planung_Liste
 
     End Sub
 
+    ''' <summary>
+    ''' Übermittelt die Stückzahlen der Artikel, die in die Produktion übertragen worden sind (Teigzettel/Backzettel/cvs-File) als MengeInProduktion an OrgaBack
+    ''' </summary>
+    Private Sub WriteProduktionOrgaBack()
+        'TODO in wb_global definieren (siehe auch Artikel_Services)
+        Const _Color As Short = 0        'Farbe ist immer 0
+        Const _Size As String = "NULL"   'Größe ist immer Null
+
+        'Alle Produktions-Schritte in der Liste durchlaufen
+        For Each p As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
+            'wenn dieser Produktions-Schritt gedruckt/übertragen wurde
+            If p.IstInProduktion Then
+                'Datensatz in ProduktionAktuell updaten/schreiben
+                MsSQLdbUpdate_ProduktionAktuell(_ProduktionsFilialeNummer, _ProduktionsDatum, p.iTour, p.ArtikelNummer, wb_Global.obEinheitStk, _Color, _Size, p.Sollmenge_Stk, p.MengeInProduktion)
+            End If
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Schreibt die Stückzahlen "MengeInProduktion" in die Tabelle dbo.ProduktionAktuell.
+    ''' Wenn schon ein Datensatz vorhanden ist, wird dieser überschrieben.
+    ''' 
+    ''' Der Wert MengeInProduktion wird aus dem vorhierigen Wert MengeInProduktion aus der Abfrage dbo.pq_Produktionsauftrag mit der Sollstückzahl addiert.
+    ''' </summary>
+    ''' <param name="FilialeNr"></param>
+    ''' <param name="LieferDatum"></param>
+    ''' <param name="TourNr"></param>
+    ''' <param name="ArtikelNr"></param>
+    ''' <param name="Einheit"></param>
+    ''' <param name="Farbe"></param>
+    ''' <param name="Groesse"></param>
+    ''' <param name="MengeInProduktion"></param>
+    Private Sub MsSQLdbUpdate_ProduktionAktuell(FilialeNr As Integer, LieferDatum As String, TourNr As Integer, ArtikelNr As String, Einheit As Integer, Farbe As Integer, Groesse As String, Sollmenge As Double, MengeInProduktion As Double)
+        'Datenbank-Verbindung öffnen - MsSQL
+        Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim sMengeInProduktion As String = (Sollmenge + MengeInProduktion).ToString("#.###")
+
+        'Prüfen ob ein Eintrag für diesen Artikel/Produktionsdatum/Filiale in OrgaBack.dbo.ProduktionAktuell existiert
+        If OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlProduktionAktuell, FilialeNr, LieferDatum, TourNr, ArtikelNr)) Then
+            Trace.WriteLine("@I_Write MengeInProduktion OrgaBack " & ArtikelNr & "/" & Sollmenge & "/" & MengeInProduktion)
+
+            If Not OrgasoftMain.Read Then
+                'Datensatz noch nicht vorhanden in OrgaBack
+                Debug.Print("Tour/Lieferdatum/Artikel " & TourNr & "/" & LieferDatum & "/" & ArtikelNr & "/" & " nicht in OrgaBack gefunden")
+                'Lesen beendet
+                OrgasoftMain.CloseRead()
+                'Datensatz neu anlegen (INSERT)
+                Dim sqlInsert As String = FilialeNr.ToString & ",'" & LieferDatum & "'," & TourNr.ToString & ",'" & ArtikelNr & "'," & Einheit.ToString & "," &
+                                          Farbe.ToString & ",'" & Groesse & "'," & sMengeInProduktion
+                OrgasoftMain.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertProduktionAktuell, sqlInsert))
+
+            Else
+                'Datensatz schon vorhanden in OrgaBack
+                Debug.Print("Tour/Lieferdatum/Artikel " & TourNr & "/" & LieferDatum & "/" & ArtikelNr & "/" & " schon vorhanden")
+                'Lesen beendet
+                OrgasoftMain.CloseRead()
+                'Datensatz ändern (UPDATE)
+                OrgasoftMain.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlUpdateProduktionAktuell, FilialeNr, LieferDatum, TourNr, ArtikelNr, sMengeInProduktion))
+            End If
+        Else
+            Trace.WriteLine("@E_SQL-Fehler Write MengeInProduktion OrgaBack " & ArtikelNr & "/" & Sollmenge & "/" & MengeInProduktion)
+        End If
+
+        'Verbindung zur Datenbank wieder schliessen
+        OrgasoftMain.Close()
+    End Sub
     ''' <summary>
     ''' Neue Artikel-Zeile (mit Rezeptur anlegen)
     ''' </summary>
@@ -139,6 +240,29 @@ Public Class wb_Planung_Liste
     End Sub
 
     ''' <summary>
+    ''' Filtert die Produktions-Planungs-Schritte nach Aufarbeitung und Linengruppe
+    ''' </summary>
+    ''' <param name="a"></param>
+    Private Sub FilterAndMark(ByRef a As ArrayList)
+        'ArrayList leeren
+        a.Clear()
+        'Alle Produktions-Schritte durchlaufen
+        For Each child In Produktion.RootProduktionsSchritt.ChildSteps
+            'Filtern nach Aufarbeitungsplatz und Liniengruppe
+            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe) Then
+                'Liste aufbauen
+                a.Add(child)
+                'Charge als produziert markieren
+                TryCast(child, wb_Produktionsschritt).ChargeWirdProduziert()
+            End If
+        Next
+
+        'Marker setzen Daten wurden an Produktion übertragen setzen
+        _ProdPlanGedruckt = True
+
+    End Sub
+
+    ''' <summary>
     ''' Backzettel drucken
     ''' </summary>
     ''' <param name="sender"></param>
@@ -149,11 +273,7 @@ Public Class wb_Planung_Liste
 
         'Daten filtern (Aufbereitungs-Ort)
         Dim BackZettel As New ArrayList
-        For Each child In Produktion.RootProduktionsSchritt.ChildSteps
-            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe) Then
-                BackZettel.Add(child)
-            End If
-        Next
+        FilterAndMark(BackZettel)
 
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
@@ -173,11 +293,7 @@ Public Class wb_Planung_Liste
 
         'Daten filtern (Aufbereitungs-Ort)
         Dim TeigListe As New ArrayList
-        For Each child In Produktion.RootProduktionsSchritt.ChildSteps
-            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe) Then
-                TeigListe.Add(child)
-            End If
-        Next
+        FilterAndMark(TeigListe)
 
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
@@ -235,8 +351,12 @@ Public Class wb_Planung_Liste
                 sw.WriteLine(ProdDatenKopfZeile_1)
                 sw.WriteLine(ProdDatenKopfZeile_2)
 
+                'Daten filtern (Aufbereitungs-Ort)
+                Dim ProduktionsListe As New ArrayList
+                FilterAndMark(ProduktionsListe)
+
                 'Artikelzeilen
-                For Each a As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
+                For Each a As wb_Produktionsschritt In ProduktionsListe
                     'ChargenZeilen
                     For Each r As wb_Produktionsschritt In a.ChildSteps
                         If Not r.Optimiert Then
@@ -246,7 +366,7 @@ Public Class wb_Planung_Liste
                 Next
 
                 'Artikelzeilen Aufarbeitung (Artikel mit LiniengruppeArtikel > 100)
-                For Each a As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
+                For Each a As wb_Produktionsschritt In ProduktionsListe
                     'ChargenZeilen
                     For Each r As wb_Produktionsschritt In a.ChildSteps
                         If Not a.Optimiert And a.ArtikelLinienGruppe <> wb_Global.UNDEFINED Then

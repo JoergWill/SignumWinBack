@@ -20,6 +20,8 @@ Public Class wb_Produktionsschritt
     Private _Tour As String
     Private _ChargenNummer As String
     Private _AuftragsNummer As String
+    Private _IstInProduktion As Boolean
+    Private _MengeInProduktion As Double
 
     Private _ArtikelNummer As String
     Private _ArtikelBezeichnung As String
@@ -181,6 +183,43 @@ Public Class wb_Produktionsschritt
         _SortOrder = wb_Global.SortOrder.ProdPlan
         _childSteps.Sort()
     End Sub
+
+    ''' <summary>
+    ''' Charge als produziert markieren.
+    ''' Teigzettel/Backzettel gedruckt und/oder Produktionsliste übertragen
+    ''' </summary>
+    Public Sub ChargeWirdProduziert()
+        If Typ = KO_TYPE_ARTIKEL Or Typ = KO_ZEILE_ARTIKEL Then
+            IstInProduktion = True
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Flag Charge ist in Produktion übertragen worden (Teigliste/Backzettel/csv-File)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property IstInProduktion As Boolean
+        Get
+            Return _IstInProduktion
+        End Get
+        Set(value As Boolean)
+            _IstInProduktion = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Istwert Menge in Produktion aus vorherigen Berechnungen/Produktionsplanungen.
+    ''' Der Wert wird von OrgaBack übernommen.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property MengeInProduktion As Double
+        Get
+            Return _MengeInProduktion
+        End Get
+        Set(value As Double)
+            _MengeInProduktion = value
+        End Set
+    End Property
 
     ''' <summary>
     ''' Startzeit formatiert ausgeben
@@ -606,6 +645,11 @@ Public Class wb_Produktionsschritt
             _Einheit = value
         End Set
     End Property
+    Public ReadOnly Property obEinheit As Integer
+        Get
+            Return wb_Einheiten_Global.getobEinheitFromText(_Einheit)
+        End Get
+    End Property
 
     Public Property Bestellt_Stk As Double
         Get
@@ -814,6 +858,11 @@ Public Class wb_Produktionsschritt
             _Tour = value
             setSortKriterium()
         End Set
+    End Property
+    Public ReadOnly Property iTour As Integer
+        Get
+            Return wb_Functions.StrToInt(_Tour)
+        End Get
     End Property
 
     ''' <summary>

@@ -43,6 +43,32 @@ Public Class wb_Planung_Main
         PlanungListe.Show(DockPanel, DockState.DockLeft)
     End Sub
 
+    ''' <summary>
+    ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+    ''' </summary>
+    ''' <param name="Reason"></param>
+    ''' <returns>
+    ''' False, wenn das Fenster geschlossen werden darf
+    ''' True, wenn das Fenster geöffnet bleiben muss
+    ''' </returns>
+    ''' <remarks></remarks>
+    Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
+        'Planung-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        If PlanungListe IsNot Nothing Then
+            If PlanungListe.FormClosingFromMain() Then
+                Return True
+            End If
+            PlanungListe.Close()
+        End If
+        'Planung-Teiler schliessen
+        If PlanungTeiler IsNot Nothing Then
+            PlanungTeiler.Close()
+        End If
+
+        'Fenster darf geschlossen werden
+        Return False
+    End Function
+
     Public Shadows ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
         Get
             If _ContextTabs Is Nothing Then

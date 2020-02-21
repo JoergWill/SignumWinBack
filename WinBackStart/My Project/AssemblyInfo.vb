@@ -13,7 +13,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("WinBack GmbH")>
 <Assembly: AssemblyProduct("WinBack")>
-<Assembly: AssemblyCopyright("Copyright ©  2019")>
+<Assembly: AssemblyCopyright("Copyright ©  2020")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
@@ -32,6 +32,6 @@ Imports System.Runtime.InteropServices
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.4.7.0")>
-<Assembly: AssemblyFileVersion("1.4.7.0")>
+<Assembly: AssemblyVersion("1.6.0.0")>
+<Assembly: AssemblyFileVersion("1.6.0.0")>
 <Assembly: NeutralResourcesLanguage("de-DE")>
