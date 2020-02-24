@@ -158,9 +158,11 @@
         Public Bezeichnung As String
         Public KurzBezeichnung As String
         Public Gruppe As ktTyp301Gruppen
+        Public iEinheit As Integer
         Public Einheit As String
         Public Feld As String
         Public Used As Boolean
+        Public oEinheit As String
     End Structure
 
     Public Structure Nwt

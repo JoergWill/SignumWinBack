@@ -450,8 +450,8 @@ Public Class ob_Artikel_DockingExtension
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString                                                                        'Artikel/Komponenten-Nummer alphanumerisch
             Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
             'Komponente.sArtikeLinienGruppe = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)                                                             'MFF200 - Aufarbeitungs-Linie
-            Komponente.VerkaufsGewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("Gewicht").ToString) / 1000    'Verkaufsgewicht (aus OrgaBack in Gramm)
-            Debug.Print("_Extendee.Handelsartikel.Gewicht " & Komponente.VerkaufsGewicht)
+            Komponente.VerkaufsGewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("NettoInhalt").ToString) / 1000 'Verkaufsgewicht NETTO (aus OrgaBack in Gramm)
+            Debug.Print("_Extendee.Handelsartikel.NettoGewicht " & Komponente.VerkaufsGewicht)
 
             'Komponenten-Type aus der Zuordnung zur Artikelgruppe
             Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString

@@ -188,4 +188,14 @@ Public Class ob_Artikel_ZuordnungRezept
         RohstoffCloud = Nothing
     End Sub
 
+    ''' <summary>
+    ''' Nährwerte des aktuellen Artikels neu berechnen und in OrgaBack-DB schreiben.
+    ''' Damit die Nährwerte richtig angezeigt werden, muss der Artikel in OrgaBack neu eingelesen werden !
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Public Sub UpdateNwt_Click(sender As Object, e As EventArgs) Handles KompRzChargen.UpdateNwt_Click
+        Dim nwtUpdateArtikel As New wb_nwtUpdateArtikel
+        nwtUpdateArtikel.UpdateNext(Nr - 1, True)
+    End Sub
 End Class

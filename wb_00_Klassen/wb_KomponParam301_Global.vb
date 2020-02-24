@@ -30,9 +30,11 @@ Public Class wb_KomponParam301_Global
             k.Bezeichnung = wb_Language.TextFilter(winback.sField("KT_Bezeichnung"))
             k.KurzBezeichnung = winback.sField("KT_KurzBez")
             k.Gruppe = wb_Functions.StringTokt301Gruppe(winback.sField("KT_Wert"))
+            k.iEinheit = winback.sField("KT_EinheitIndex")
             k.Einheit = winback.sField("E_Einheit")
             k.Feld = winback.sField("KT_Kommentar")
             k.Used = (winback.sField("KT_Rezept") = "X")
+            k.oEinheit = ""
             Try
                 ktTyp301Params.Add(k.ParamNr, k)
             Catch
@@ -40,6 +42,22 @@ Public Class wb_KomponParam301_Global
         End While
         winback.Close()
         winback = Nothing
+
+        'Umrechnungs-Faktor Einheiten OrgaBack-Nährwerte/WinBack-Nährwerte
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Or wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WBServerTask Then
+            'Datenbank-Verbindung öffnen - MsSQL
+            Dim i As Integer
+            Dim orgasoft As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+            orgasoft.sqlSelect(wb_Sql_Selects.mssqlSelNaehrwerte)
+            While orgasoft.Read
+                i = orgasoft.iField("NaehrwertNr")
+                If ktTyp301Params.ContainsKey(i) Then
+                    k = ktTyp301Params(i)
+                    k.oEinheit = orgasoft.sField("Einheit")
+                End If
+            End While
+        End If
+
     End Sub
 
     Public Shared ReadOnly Property ErrorText As String
@@ -98,6 +116,56 @@ Public Class wb_KomponParam301_Global
         Return ktTyp301Params.ContainsKey(index)
     End Function
 
+    Public Shared Function IsUsedParameter(Index As Integer) As Boolean
+        Return kt301Param(Index).Used
+    End Function
+
+    ''' <summary>
+    ''' Gibt den Umrechnungs-Faktor OrgaBack/WinBack zurück
+    ''' Der Umrechnungs-Faktor ist abhängig von der Einheit in OrgaBack und in WinBack
+    ''' </summary>
+    ''' <param name="idx"></param>
+    ''' <returns></returns>
+    Public Shared Function oFaktor(idx As Integer) As Double
+        'wenn Daten zum entsprechenden Nährwert-Schlüssel vorhanden sind
+        If ktTyp301Params.ContainsKey(idx) Then
+
+            'Einheiten-Index WinBack - Umrechnung in Gramm
+            Dim iCalc As Double
+
+            Select Case kt301Param(idx).iEinheit
+                Case 1  'Kilogramm
+                    iCalc = 1000
+                Case 15 'Gramm
+                    iCalc = 1
+                Case 16 'Milligramm
+                    iCalc = 0.001
+                Case 17 'Mikrogramm
+                    iCalc = 0.000001
+                Case Else
+                    iCalc = 1
+            End Select
+
+            'Einheit(String) OrgaBack
+            Dim oCalc As Double
+
+            Select Case kt301Param(idx).oEinheit
+                Case "g"    'Gramm
+                    oCalc = 1
+                Case "mg"   'Milligramm
+                    oCalc = 1000
+                Case "µg"   'Mikrogramm
+                    oCalc = 1000000
+                Case Else
+                    oCalc = 1
+            End Select
+
+            'Faktor Umrechnung Nährwert-Information WinBack nach OrgaBack
+            Return iCalc * oCalc
+        Else
+            Return 1
+        End If
+    End Function
 
     ''' <summary>
     ''' Prüft ob die Datenbank alle notwendigen Daten und Einträge enthält.

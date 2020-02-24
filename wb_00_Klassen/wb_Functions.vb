@@ -198,7 +198,9 @@ Public Class wb_Functions
             Case wb_Global.ErnaehrungsForm.N
                 Return "N"
             Case wb_Global.ErnaehrungsForm.X, 0
-                Return "-"
+                'TODO Prüfen !!! "-" ist nicht möglich - Konflikt OrgaBack-DB
+                'Return "-"
+                Return "N"
             Case Else
                 Return "ERR"
         End Select
@@ -238,7 +240,6 @@ Public Class wb_Functions
                 Return ""
         End Select
     End Function
-
 
     ''' <summary>
     ''' Wandelt LogType in String
@@ -884,20 +885,20 @@ Public Class wb_Functions
     ''' <param name="Param3"></param>
     ''' <param name="Param4"></param>
     ''' <returns></returns>
-    Public Shared Function SetParams(Text As String, Param0 As String, Optional Param1 As String = "-",
-                                     Optional Param2 As String = "-", Optional Param3 As String = "-",
-                                     Optional Param4 As String = "-") As String
+    Public Shared Function SetParams(Text As String, Param0 As String, Optional Param1 As String = "\",
+                                     Optional Param2 As String = "\", Optional Param3 As String = "\",
+                                     Optional Param4 As String = "\") As String
         Text = Replace(Text, "[0]", Param0)
-        If Param1 <> "-" Then
+        If Param1 <> "\" Then
             Text = Replace(Text, "[1]", Param1)
         End If
-        If Param2 <> "-" Then
+        If Param2 <> "\" Then
             Text = Replace(Text, "[2]", Param2)
         End If
-        If Param3 <> "-" Then
+        If Param3 <> "\" Then
             Text = Replace(Text, "[3]", Param3)
         End If
-        If Param4 <> "-" Then
+        If Param4 <> "\" Then
             Text = Replace(Text, "[4]", Param4)
         End If
         Return Text

@@ -69,6 +69,7 @@ Partial Class wb_KompRzChargen
         Me.tVkGewicht = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.BtnCalcNassGewicht = New System.Windows.Forms.Button()
+        Me.BtnUpdateNwt = New System.Windows.Forms.Button()
         Me.pTeigChargen.SuspendLayout()
         Me.pArtikelChargen.SuspendLayout()
         Me.SuspendLayout()
@@ -578,10 +579,20 @@ Partial Class wb_KompRzChargen
         Me.BtnCalcNassGewicht.Text = "Nass-Gewicht berechnen"
         Me.BtnCalcNassGewicht.UseVisualStyleBackColor = True
         '
+        'BtnUpdateNwt
+        '
+        Me.BtnUpdateNwt.Location = New System.Drawing.Point(313, 60)
+        Me.BtnUpdateNwt.Name = "BtnUpdateNwt"
+        Me.BtnUpdateNwt.Size = New System.Drawing.Size(78, 40)
+        Me.BtnUpdateNwt.TabIndex = 75
+        Me.BtnUpdateNwt.Text = "Update Nährwerte"
+        Me.BtnUpdateNwt.UseVisualStyleBackColor = True
+        '
         'wb_KompRzChargen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.BtnUpdateNwt)
         Me.Controls.Add(Me.BtnCalcNassGewicht)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.tVkGewicht)
@@ -668,4 +679,5 @@ Partial Class wb_KompRzChargen
     Friend WithEvents tVkGewicht As Windows.Forms.TextBox
     Friend WithEvents Label1 As Windows.Forms.Label
     Friend WithEvents BtnCalcNassGewicht As Windows.Forms.Button
+    Friend WithEvents BtnUpdateNwt As Windows.Forms.Button
 End Class

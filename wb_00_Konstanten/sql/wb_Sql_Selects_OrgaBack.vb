@@ -50,6 +50,9 @@
     Public Const mssqlInsertAlg = "INSERT INTO [dbo].[ArtikelAllergene] (ArtikelNr, StuecklistenVariantenNr, AllergenNr, Kennzeichnung) " &
                                   "VALUES ('[0]', [3], [1], '[2]')"
 
+    'Sql-Statement Abfrage dbo.[Naehrwerte]
+    Public Const mssqlSelNaehrwerte = "SELECT * FROM [dbo].[Naehrwerte]"
+
     'Sql-Statement Abfrage dbo.[Artikelgruppe]
     Public Const mssqlSelArtikelGruppe = "SELECT * FROM [dbo].[Artikelgruppe]"
 

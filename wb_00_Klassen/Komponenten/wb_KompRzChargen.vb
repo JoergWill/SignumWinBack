@@ -9,6 +9,7 @@ Public Class wb_KompRzChargen
     Public Event DataInvalidated()
     Public Event DataUpdate()
     Public Event Cloud_Click(sender As Object, e As EventArgs)
+    Public Event UpdateNwt_Click(sender As Object, e As EventArgs)
 
     Private OnErrorSetFocus As Object = Nothing
     Private _DataValid As Boolean
@@ -16,6 +17,17 @@ Public Class wb_KompRzChargen
     Private _RzNr As Integer = wb_Global.UNDEFINED
     Private _KompType As wb_Global.KomponTypen = wb_Global.KomponTypen.KO_TYPE_UNDEFINED
     Private _ID As String = wb_Global.UNDEFINED
+
+    ''' <summary>
+    ''' Laden der Form
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub wb_KompRzChargen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Button Update Nährwerte Artikel verschieben
+        BtnUpdateNwt.Top = BtnCloud.Top
+        BtnUpdateNwt.Visible = False
+    End Sub
 
     ''' <summary>
     ''' Daten aus dem Komponenten-Objekt lesen
@@ -160,8 +172,12 @@ Public Class wb_KompRzChargen
                 BtnRzpShow.Enabled = True
                 'keine Verknüpfung zur Cloud möglich
                 BtnCloud.Enabled = False
+                'Für Artikel Button "Update Nährwerte" einblenden
+                If KompType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
+                    BtnUpdateNwt.Visible = True
+                End If
             Else
-                BtnRzpt.Text = "Auswählen"
+                    BtnRzpt.Text = "Auswählen"
                 BtnRzpShow.Enabled = False
 
                 'Für Rohstoffe kann eine Verknüpfung zur Cloud hergestellt werden
@@ -313,7 +329,7 @@ Public Class wb_KompRzChargen
         End Get
         Set(value As Double)
             If value > wb_Global.UNDEFINED Then
-                tVkGewicht.Text = value.ToString("##.###") & " kg"
+                tVkGewicht.Text = wb_Functions.FormatStr(value.ToString, 3) & " kg"
                 BtnCalcNassGewicht.Visible = True
             Else
                 tVkGewicht.Text = "- kg"
@@ -640,6 +656,10 @@ Public Class wb_KompRzChargen
         RaiseEvent Cloud_Click(sender, e)
     End Sub
 
+    Private Sub BtnUpdateNwt_Click(sender As Object, e As EventArgs) Handles BtnUpdateNwt.Click
+        RaiseEvent UpdateNwt_Click(sender, e)
+    End Sub
+
     ''' <summary>
     ''' Berechnet das Nassgewicht aus Stk-Gewicht(Verkauf), Zuschnitt-Verlust und Backverlust
     '''     Gewicht Teigling = (StkGewicht/(100-Backverlust))*100
@@ -650,8 +670,10 @@ Public Class wb_KompRzChargen
     Private Sub BtnCalcNassGewicht_Click(sender As Object, e As EventArgs) Handles BtnCalcNassGewicht.Click
         'Gewicht Teigling vor dem Backen
         Dim tg As Double = ((Verkaufsgewicht * 1000) / (100 - Backverlust)) * 100
-        'Nass-Gewicht
+        'Nass-Gewicht in Gramm
         Dim ng As Double = (tg / (100 - Zuschnitt)) * 100
-        ArtikelChargen.StkGewicht = ng
+        'auf ganze Zahl runden
+        ArtikelChargen.StkGewicht = wb_Functions.FormatStr(ng.ToString, 0)
     End Sub
+
 End Class

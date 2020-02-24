@@ -1073,7 +1073,18 @@ Public Class wb_Komponente
     ''' <returns></returns>
     Public Property VerkaufsGewicht As Double
         Get
-            Return _VerkaufsGewicht
+            If _VerkaufsGewicht = wb_Global.UNDEFINED Then
+                'Verkaufsgewicht berechnet sich aus Nassgewicht und Backverlust
+                'TODO Zuschnitt berücksichtigen
+                If Backverlust > 0 And Backverlust <= 100 Then
+                    Return ArtikelChargen.StkGewicht * (1 - (100 / Backverlust))
+                Else
+                    Return ArtikelChargen.StkGewicht
+                End If
+            Else
+                'Verkaufsgewicht aus OrgaBack 
+                Return _VerkaufsGewicht
+            End If
         End Get
         Set(value As Double)
             _VerkaufsGewicht = value
@@ -1818,6 +1829,8 @@ Public Class wb_Komponente
     Public Function MsSqldbUpdate_Zutatenliste() As Boolean
         'Datenbank-Verbindung öffnen - MsSQL
         Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Umrechnungs-Faktor Nährwerte (Netto-Gewicht Artikel)
+        ktTyp301.FaktorStkGewicht = Me.VerkaufsGewicht
         'Update Zutatenliste
         Return MsSqldbUpdate_Zutatenliste(OrgasoftMain)
         'Verbindung zur Datenbank wieder schliessen

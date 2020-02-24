@@ -790,6 +790,13 @@ Stacktrace:
  </summary> 
  <remarks></remarks> 
 </member>
+<member name="M:WinBack.wb_KompRzChargen.wb_KompRzChargen_Load(System.Object,System.EventArgs)">
+ <summary>
+ Laden der Form
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_KompRzChargen.GetDataFromKomp(WinBack.wb_Komponente@)">
  <summary>
  Daten aus dem Komponenten-Objekt lesen
@@ -2409,6 +2416,25 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_KomponParam301.FaktorStkGewicht">
+ <summary>
+ Umrechnungs-Faktor Nährwerte
+ Bei OrgaBack werden die Nährwerte in der Tabelle dbo.ArtikelNaehrwerte bezogen auf das Netto-Stückgewicht angegeben.
+ 
+ Der Umrechnungs-Faktor berechnet sich aus dem Artikel-Nassgewicht und dem Backverlust (ergibt OrgaBack-Netto-Gewicht)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_KomponParam301.CalculateOrgaBackNaehrwert(System.Double,System.Int32)">
+ <summary>
+ Berechnet den Nährwert für OrgaBack (Tabelle dbo.ArtikelNaehrwerte) aus den WinBack-Nährwert-Angaben (bezogen auf 100gr)
+ bezogen auf das Netto-Artikelgewicht.
+ Zusätzlich werden die verschiedenen Umrechnungsfaktoren für die unterschiedlichen Einheiten berücksichtigt (gr,mg,ug)
+ Die Umrechnungs-Faktoren kommen aus der Tabelle dbo.Naehwerte
+ </summary>
+ <param name="n"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_KomponParam301.AddNwt(WinBack.wb_KomponParam301@,System.Double)">
  <summary>
  Addiert alle Nährwerte und Allergene zum übergebenen KomponentenParameter-Array
@@ -2906,6 +2932,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="p">Interger Parameter-Nummer</param>
  <returns>ktTyp301Param</returns>
+</member>
+<member name="M:WinBack.wb_KomponParam301_Global.oFaktor(System.Int32)">
+ <summary>
+ Gibt den Umrechnungs-Faktor OrgaBack/WinBack zurück
+ Der Umrechnungs-Faktor ist abhängig von der Einheit in OrgaBack und in WinBack
+ </summary>
+ <param name="idx"></param>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_KomponParam301_Global.CheckDB">
  <summary>
@@ -5274,6 +5308,14 @@ Text aus Datenbank lesen - Übersetzung
  Das Fenster wird modal(!) angezeigt und speichert beim Schliessen die geänderten Zuordnungsdaten und Nährwertinformationen ab.
  
  Werden hier Daten geändert, muss der Rohstoff in OrgaBack neu geladen werden um die Anzeige zu aktualisieren.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.ob_Artikel_ZuordnungRezept.UpdateNwt_Click(System.Object,System.EventArgs)">
+ <summary>
+ Nährwerte des aktuellen Artikels neu berechnen und in OrgaBack-DB schreiben.
+ Damit die Nährwerte richtig angezeigt werden, muss der Artikel in OrgaBack neu eingelesen werden !
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

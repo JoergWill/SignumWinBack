@@ -74,7 +74,7 @@ Public Class wb_nwtUpdateArtikel
                 nwtArtikelDaten.ClearReport()
 
                 'Nährwert-Information berechnen
-                nwtArtikelDaten.ktTyp301 = Rzpt.RootRezeptSchritt.ktTyp301
+                nwtArtikelDaten.ktTyp301 = Rzpt.KtTyp301
                 Debug.Print("reCalcRezept (" & _AktRZ_Nr & ") " & Rzpt.RezeptNummer & " " & Rzpt.RezeptBezeichnung & " kt301(Kilokalorien) " & nwtArtikelDaten.ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien))
                 'Zutatenliste erzeugen
                 nwtArtikelDaten.Deklaration = wb_Functions.XRemoveSonderZeichen(Rzpt.ZutatenListe(wb_Global.ZutatenListeMode.Show_ENummer), True)

@@ -15,14 +15,16 @@ Public Class wb_KomponParam301
     'Array aller Nährwerte/Allergene
     Private NaehrwertInfo(maxTyp301) As Typ301
     Private _TimeStamp
-    Private _IsCalculated
+    Private _IsCalculated As Boolean = False
     Private _NwtTabelle(wb_Global.maxTyp301) As Nwt
+    Private _FaktorStkGewicht As Double = wb_Global.UNDEFINED
 
     ''' <summary>
     ''' Nach der Initialisierung sind die Nährwerte nicht berechnet
     ''' </summary>
     Public Sub New()
         _IsCalculated = False
+        FaktorStkGewicht = 1
     End Sub
 
     Public ReadOnly Property NwtTabelle As Array
@@ -253,11 +255,45 @@ Public Class wb_KomponParam301
                 End If
                 Return oWert
             Else
-                Return wb_sql_Functions.MsDoubleToString(NaehrwertInfo(Index)._Naehrwert)
+                'berechneter Wert für OrgaBack (Tabelle dbo.ArtikelNaehrwerte)
+                Return CalculateOrgaBackNaehrwert(NaehrwertInfo(Index)._Naehrwert, Index)
             End If
 
         End Get
     End Property
+
+    ''' <summary>
+    ''' Umrechnungs-Faktor Nährwerte
+    ''' Bei OrgaBack werden die Nährwerte in der Tabelle dbo.ArtikelNaehrwerte bezogen auf das Netto-Stückgewicht angegeben.
+    ''' 
+    ''' Der Umrechnungs-Faktor berechnet sich aus dem Artikel-Nassgewicht und dem Backverlust (ergibt OrgaBack-Netto-Gewicht)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property FaktorStkGewicht As Double
+        Get
+            If _FaktorStkGewicht = wb_Global.UNDEFINED Then
+                Return 1
+            Else
+                Return _FaktorStkGewicht
+            End If
+        End Get
+        Set(value As Double)
+            _FaktorStkGewicht = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Berechnet den Nährwert für OrgaBack (Tabelle dbo.ArtikelNaehrwerte) aus den WinBack-Nährwert-Angaben (bezogen auf 100gr)
+    ''' bezogen auf das Netto-Artikelgewicht.
+    ''' Zusätzlich werden die verschiedenen Umrechnungsfaktoren für die unterschiedlichen Einheiten berücksichtigt (gr,mg,ug)
+    ''' Die Umrechnungs-Faktoren kommen aus der Tabelle dbo.Naehwerte
+    ''' </summary>
+    ''' <param name="n"></param>
+    ''' <returns></returns>
+    Private Function CalculateOrgaBackNaehrwert(n As Double, idx As Integer) As String
+        Dim f As Double = wb_KomponParam301_Global.oFaktor(idx) * FaktorStkGewicht / 100
+        Return wb_sql_Functions.MsDoubleToString(n * f)
+    End Function
 
     Public Property FehlerKompName(index As Integer) As String
         Get
@@ -311,7 +347,7 @@ Public Class wb_KomponParam301
                     PistorNaehrWert(idx) = value
                 End If
             Else
-                Trace.WriteLine("Fehler bei Pistor - Index " & Index & " nicht definiert")
+                Trace.WriteLine("Fehler bei Pistor - Index " & index & " nicht definiert")
             End If
         End Set
     End Property
@@ -484,7 +520,7 @@ Public Class wb_KomponParam301
         'dann alle neuen Felder wieder eingesetzt
         'alle Datensätze im Array durchlaufen (Nährwerte/Allergene beginnen bei Index 1)
         For i = 1 To maxTyp301
-            If IsValidParameter(i) Then
+            If IsUsedParameter(i) Then
 
                 'nur gültige Nährwerte/Allergene in DB schreiben (reduziert die Datenlast)
                 sql = ""
@@ -492,19 +528,19 @@ Public Class wb_KomponParam301
                 If IsAllergen(i) Then
                     If (NaehrwertInfo(i)._Allergen > wb_Global.AllergenInfo.N) Then
                         'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
-                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, i, oWert(i), 0))
+                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, i, oWert(i), "0"))
                         'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
                     End If
                 ElseIf IsErnaehrung(i) Then
                     If (NaehrwertInfo(i)._ErnaehrungsForm > wb_Global.ErnaehrungsForm.X) Then
                         'TODO IN WELCHE TABELLE WERDEN DIE WERTE GESCHRIEBEN (VEGAN, HALAL....) Mail vom 16.01.2020
-                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, i, oWert(i), 0))
+                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, i, oWert(i), "0"))
                         'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
                     End If
                 Else
                     If (NaehrwertInfo(i)._Naehrwert > 0) Then
                         'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
-                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertNwt, KoAlNum, i, oWert(i), Unit, 0))
+                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertNwt, KoAlNum, i, oWert(i), Unit, "0"))
                         'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
                     End If
                 End If
