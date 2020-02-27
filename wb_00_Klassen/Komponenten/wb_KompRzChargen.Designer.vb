@@ -62,14 +62,14 @@ Partial Class wb_KompRzChargen
         Me.lblProdVorlauf = New System.Windows.Forms.Label()
         Me.tProdVorlauf = New System.Windows.Forms.TextBox()
         Me.BtnCloud = New System.Windows.Forms.Button()
-        Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
-        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.lblZuschnitt = New System.Windows.Forms.Label()
         Me.tZuschnitt = New System.Windows.Forms.TextBox()
         Me.tVkGewicht = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.BtnCalcNassGewicht = New System.Windows.Forms.Button()
         Me.BtnUpdateNwt = New System.Windows.Forms.Button()
+        Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
+        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.pTeigChargen.SuspendLayout()
         Me.pArtikelChargen.SuspendLayout()
         Me.SuspendLayout()
@@ -402,18 +402,18 @@ Partial Class wb_KompRzChargen
         '
         'BtnRzpShow
         '
-        Me.BtnRzpShow.Location = New System.Drawing.Point(221, 14)
+        Me.BtnRzpShow.Location = New System.Drawing.Point(198, 14)
         Me.BtnRzpShow.Name = "BtnRzpShow"
-        Me.BtnRzpShow.Size = New System.Drawing.Size(78, 40)
+        Me.BtnRzpShow.Size = New System.Drawing.Size(85, 40)
         Me.BtnRzpShow.TabIndex = 2
         Me.BtnRzpShow.Text = "Öffnen"
         Me.BtnRzpShow.UseVisualStyleBackColor = True
         '
         'BtnRzpt
         '
-        Me.BtnRzpt.Location = New System.Drawing.Point(113, 14)
+        Me.BtnRzpt.Location = New System.Drawing.Point(107, 14)
         Me.BtnRzpt.Name = "BtnRzpt"
-        Me.BtnRzpt.Size = New System.Drawing.Size(104, 40)
+        Me.BtnRzpt.Size = New System.Drawing.Size(85, 40)
         Me.BtnRzpt.TabIndex = 1
         Me.BtnRzpt.TabStop = False
         Me.BtnRzpt.Text = "Auswählen"
@@ -508,25 +508,6 @@ Partial Class wb_KompRzChargen
         Me.BtnCloud.Text = "Cloud"
         Me.BtnCloud.UseVisualStyleBackColor = True
         '
-        'cbArtikelLinienGruppe
-        '
-        Me.cbArtikelLinienGruppe.FormattingEnabled = True
-        Me.cbArtikelLinienGruppe.Location = New System.Drawing.Point(219, 107)
-        Me.cbArtikelLinienGruppe.Name = "cbArtikelLinienGruppe"
-        Me.cbArtikelLinienGruppe.Size = New System.Drawing.Size(172, 21)
-        Me.cbArtikelLinienGruppe.TabIndex = 6
-        Me.cbArtikelLinienGruppe.TabStop = False
-        '
-        'cbLiniengruppe
-        '
-        Me.cbLiniengruppe.FormattingEnabled = True
-        Me.cbLiniengruppe.Location = New System.Drawing.Point(7, 107)
-        Me.cbLiniengruppe.Name = "cbLiniengruppe"
-        Me.cbLiniengruppe.Size = New System.Drawing.Size(176, 21)
-        Me.cbLiniengruppe.TabIndex = 5
-        Me.cbLiniengruppe.TabStop = False
-        Me.cbLiniengruppe.Text = "LG"
-        '
         'lblZuschnitt
         '
         Me.lblZuschnitt.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -581,12 +562,31 @@ Partial Class wb_KompRzChargen
         '
         'BtnUpdateNwt
         '
-        Me.BtnUpdateNwt.Location = New System.Drawing.Point(313, 60)
+        Me.BtnUpdateNwt.Location = New System.Drawing.Point(313, 38)
         Me.BtnUpdateNwt.Name = "BtnUpdateNwt"
         Me.BtnUpdateNwt.Size = New System.Drawing.Size(78, 40)
         Me.BtnUpdateNwt.TabIndex = 75
         Me.BtnUpdateNwt.Text = "Update Nährwerte"
         Me.BtnUpdateNwt.UseVisualStyleBackColor = True
+        '
+        'cbArtikelLinienGruppe
+        '
+        Me.cbArtikelLinienGruppe.FormattingEnabled = True
+        Me.cbArtikelLinienGruppe.Location = New System.Drawing.Point(219, 107)
+        Me.cbArtikelLinienGruppe.Name = "cbArtikelLinienGruppe"
+        Me.cbArtikelLinienGruppe.Size = New System.Drawing.Size(172, 21)
+        Me.cbArtikelLinienGruppe.TabIndex = 6
+        Me.cbArtikelLinienGruppe.TabStop = False
+        '
+        'cbLiniengruppe
+        '
+        Me.cbLiniengruppe.FormattingEnabled = True
+        Me.cbLiniengruppe.Location = New System.Drawing.Point(7, 107)
+        Me.cbLiniengruppe.Name = "cbLiniengruppe"
+        Me.cbLiniengruppe.Size = New System.Drawing.Size(176, 21)
+        Me.cbLiniengruppe.TabIndex = 5
+        Me.cbLiniengruppe.TabStop = False
+        Me.cbLiniengruppe.Text = "LG"
         '
         'wb_KompRzChargen
         '

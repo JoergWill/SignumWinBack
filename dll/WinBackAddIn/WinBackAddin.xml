@@ -761,6 +761,21 @@ Stacktrace:
   - BC9_BC_Typ=3
  </summary>
 </member>
+<member name="P:WinBack.wb_ArrayGridViewUserGruppen.Changed">
+ <summary>
+ Flag Daten wurden geändert.
+ Beim Schliessen des Formulars muss gespeichert werden.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_ArrayGridViewUserGruppen.UserGruppen_CellClick(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
+ <summary>
+ Flag setzen/rücksetzen.
+ Wenn die Zeile schon markiert war, wird das Flag getoggelt.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="T:WinBack.wb_GridCalendarColumn">
  <summary> 
  Provides a DataGridView column which presents date fields in a drop down 
@@ -1912,6 +1927,44 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_User_GruppenRechte.wb_User_GruppenRechte_Load(System.Object,System.EventArgs)">
+ <summary>
+ Grid der Gruppen-Rechte laden und anzeigen.
+ Die Verarbeitung von Anzeige und Edit erfolgt in der Klasse wb_ArrayGridViewUserGruppen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_User_GruppenRechte.wb_User_GruppenRechte_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+ <summary>
+ Speichern die Änderungen der Gruppenrechte in der WinBack Datenbank.
+ die Gruppenrechte stehen in der Tabelle winback.ItemParameter mit IP_ItemTyp gleich 1, 2, 200
+ 
+ Die Daten werden komplett gelöscht und anhand des Array wieder neu aufgebaut.
+ </summary>
+</member>
+<member name="P:WinBack.wb_User_Rechte_Shared.Text(System.Int32,System.Int32)">
+ <summary>
+ Gibt zur Rechts-Type (401..406) und dem entsprechenden Wert den passenden Text aus.
+ </summary>
+ <param name="iRechteTyp"></param>
+ <param name="iWert"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_User_Rechte_Shared.Click(System.Int32,System.Int32)">
+ <summary>
+ Click auf das entsprechende Feld in der Rechte-Matrix. Der Wert wird, abhängig vom Rechte-Typ 
+ getoggelt bzw. erhöht.
+ </summary>
+ <param name="iRechteTyp"></param>
+ <param name="iWert"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_User_Rechte_Shared.Load_UserGruppenRechteItems">
+ <summary>
+ Array aller Rechte-Gruppe Attribute (403..405) mit den entsprechenden möglichen Werten erstellen
+ </summary>
 </member>
 <member name="P:WinBack.wb_Linien_Global.ArtikelLinienGruppen">
  <summary>

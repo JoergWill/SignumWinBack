@@ -350,6 +350,12 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSortimente.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewUserGruppen.Designer.vb">
+      <DependentUpon>wb_ArrayGridViewUserGruppen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewUserGruppen.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_GridCalendarColumn.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.Designer.vb">
       <DependentUpon>wb_KompRzChargen.vb</DependentUpon>
@@ -438,6 +444,13 @@
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_05_Forms_User\wb_User_GruppenRechte.Designer.vb">
+      <DependentUpon>wb_User_GruppenRechte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_05_Forms_User\wb_User_GruppenRechte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_05_Forms_User\wb_User_Rechte_Shared.vb" />
     <Compile Include="wb_06_Forms_Linien\wb_Linien_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Mail.vb" />
     <Compile Include="wb_00_Klassen\wb_MinMaxOptCharge.vb" />
@@ -1011,6 +1024,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Dokumente.resx">
       <DependentUpon>wb_Rohstoff_Dokumente.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_05_Forms_User\wb_User_GruppenRechte.resx">
+      <DependentUpon>wb_User_GruppenRechte.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.resx">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>

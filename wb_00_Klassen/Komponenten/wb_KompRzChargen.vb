@@ -26,7 +26,7 @@ Public Class wb_KompRzChargen
     Private Sub wb_KompRzChargen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Button Update Nährwerte Artikel verschieben
         BtnUpdateNwt.Top = BtnCloud.Top
-        BtnUpdateNwt.Visible = False
+        'BtnUpdateNwt.Visible = False
     End Sub
 
     ''' <summary>
@@ -175,10 +175,13 @@ Public Class wb_KompRzChargen
                 'Für Artikel Button "Update Nährwerte" einblenden
                 If KompType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
                     BtnUpdateNwt.Visible = True
+                Else
+                    BtnUpdateNwt.Visible = False
                 End If
             Else
-                    BtnRzpt.Text = "Auswählen"
+                BtnRzpt.Text = "Auswählen"
                 BtnRzpShow.Enabled = False
+                BtnUpdateNwt.Visible = False
 
                 'Für Rohstoffe kann eine Verknüpfung zur Cloud hergestellt werden
                 If KompType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then

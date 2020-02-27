@@ -163,6 +163,7 @@
         Public Feld As String
         Public Used As Boolean
         Public oEinheit As String
+        Public oUsed As Boolean
     End Structure
 
     Public Structure Nwt
@@ -640,12 +641,21 @@
         Public Bezeichnung As String  'II_Kommentar
         Public sAttribut As String    'T_Text
         Public iAttribut As Integer   'AT_Wert2int
+        Public iAttrGrp As Integer    'AT_Attr_Nr
+        Public iTyp As Integer        'IP_ItemTyp
+        Public iID As Integer         'IP_ItemID
     End Structure
 
     Public Structure wb_Gruppe
         Public Nummer As Integer      'II_ItemID    -   Hierarchie
         Public Bezeichnung As String  'II_Kommentar -   Bezeichnung
         Public SyncOK As SyncState    'Synchronisations-Status
+    End Structure
+
+    Public Structure wb_GrpAttr
+        Public Attr As Integer
+        Public Text As String
+        Public Wert As Integer
     End Structure
 
     Public Structure wb_LinienGruppe

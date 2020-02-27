@@ -81,7 +81,9 @@ Public Class WinBack
                     'TEST CLOUD ROHSTOFFE
                     'MainFormShow(MdiRohstoffe, GetType(Rohstoffe_Main))
                     'TEST REZEPTVERWALTUNG
-                    MainFormShow(MdiRezepte, GetType(Rezepte_Main))
+                    'MainFormShow(MdiRezepte, GetType(Rezepte_Main))
+                    'TEST USERVERWALTUNG
+                    MainFormShow(MdiUser, GetType(User_Main))
                     'TESTFENSTER
                     'MainFormShow(MdiTEst, GetType(Test_Main))
                 End If
@@ -631,7 +633,7 @@ Public Class WinBack
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click, rbLinienDel.Click, rbLinienDrucken.Click, rbLinienAuto.Click,
-                                                                          rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click,
+                                                                          rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click, rbUserGruppenRechte.Click,
                                                                           rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeParameter.Click, rbRohstoffeVerwendung.Click, rbRohstoffNwt.Click, rbRohstoffeImportCloud.Click,
                                                                           rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click, rbAdminWinBack.Click, rbAdminUpdate.Click, rbAdminWinBackIni.Click, rbLog.Click,
                                                                           rbArtikelHinweise.Click, rbArtikelParameter.Click, rbVarianten.Click, rbStoffe.Click, rbLinienGruppen.Click, rbGruppen.Click

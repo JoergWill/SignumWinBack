@@ -33,5 +33,8 @@ Public Class wb_User_Rechte
                 newNode.Nodes.Add(subNode)
             End If
         Next
+
+        'alle Einträge anzeigen
+        TreeView.ExpandAll()
     End Sub
 End Class

@@ -520,7 +520,7 @@ Public Class wb_KomponParam301
         'dann alle neuen Felder wieder eingesetzt
         'alle Datensätze im Array durchlaufen (Nährwerte/Allergene beginnen bei Index 1)
         For i = 1 To maxTyp301
-            If IsUsedParameter(i) Then
+            If IsUsedParameter(i) And IsOrgaBackParameter(i) Then
 
                 'nur gültige Nährwerte/Allergene in DB schreiben (reduziert die Datenlast)
                 sql = ""
@@ -582,7 +582,7 @@ Public Class wb_KomponParam301
         Dim sql_Insert As String
 
         'Parameter-Nummer ist gültig
-        If IsValidParameter(ParamNr) Then
+        If IsValidParameter(ParamNr) And IsOrgaBackParameter(ParamNr) Then
 
             'Allergene haben in OrgaBack einen eigene Tabelle
             If IsAllergen(ParamNr) Then

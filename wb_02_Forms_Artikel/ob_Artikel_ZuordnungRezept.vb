@@ -195,7 +195,12 @@ Public Class ob_Artikel_ZuordnungRezept
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Public Sub UpdateNwt_Click(sender As Object, e As EventArgs) Handles KompRzChargen.UpdateNwt_Click
+        'Artikel Nährwerte update
         Dim nwtUpdateArtikel As New wb_nwtUpdateArtikel
+        'Start bei Artikelnummer x - 1
         nwtUpdateArtikel.UpdateNext(Nr - 1, True)
+        nwtUpdateArtikel = Nothing
+        'Die Daten sind in OrgaBack erst nach Laden des Artikels sichtbar
+        MsgBox("Die aktualisierten Nährwerte und Allergen" & vbCrLf & "sind erst nach erneutem Aufruf des Artikels in OrgaBack sichtbar", MsgBoxStyle.OkOnly, "WinBack-AddIn")
     End Sub
 End Class

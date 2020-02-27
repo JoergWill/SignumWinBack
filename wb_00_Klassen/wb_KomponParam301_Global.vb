@@ -35,6 +35,7 @@ Public Class wb_KomponParam301_Global
             k.Feld = winback.sField("KT_Kommentar")
             k.Used = (winback.sField("KT_Rezept") = "X")
             k.oEinheit = ""
+            k.oUsed = False
             Try
                 ktTyp301Params.Add(k.ParamNr, k)
             Catch
@@ -54,6 +55,8 @@ Public Class wb_KomponParam301_Global
                 If ktTyp301Params.ContainsKey(i) Then
                     k = ktTyp301Params(i)
                     k.oEinheit = orgasoft.sField("Einheit")
+                    k.oUsed = True
+                    ktTyp301Params(i) = k
                 End If
             End While
         End If
@@ -114,6 +117,14 @@ Public Class wb_KomponParam301_Global
 
     Public Shared Function IsValidParameter(index As Integer) As Boolean
         Return ktTyp301Params.ContainsKey(index)
+    End Function
+
+    Public Shared Function IsOrgaBackParameter(index As Integer) As Boolean
+        If ktTyp301Params.ContainsKey(index) Then
+            Return ktTyp301Params(index).oUsed
+        Else
+            Return False
+        End If
     End Function
 
     Public Shared Function IsUsedParameter(Index As Integer) As Boolean

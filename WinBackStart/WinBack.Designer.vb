@@ -980,6 +980,7 @@ Partial Class WinBack
         Me.rbUserGruppenRechte.Name = "rbUserGruppenRechte"
         Me.rbUserGruppenRechte.SmallImage = CType(resources.GetObject("rbUserGruppenRechte.SmallImage"), System.Drawing.Image)
         Me.rbUserGruppenRechte.Text = "Gruppen Rechte"
+        Me.rbUserGruppenRechte.Value = "OPENGRPLIST"
         '
         'rpDrucken
         '

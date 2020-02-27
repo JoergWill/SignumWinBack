@@ -11,8 +11,9 @@
 Public Class User_Main
 
     Public UserListe As New wb_User_Liste
-    Public UserDetails As New wb_User_Details
-    Private UserRechte As New wb_User_Rechte
+    Public UserDetails As wb_User_Details
+    Private UserRechte As wb_User_Rechte
+    Private UserGruppenRechte As wb_User_GruppenRechte
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -36,6 +37,10 @@ Public Class User_Main
             Case "OPENPARAMETER"
                 UserRechte = New wb_User_Rechte
                 UserRechte.Show(DockPanel, DockState.DockLeft)
+                Return True
+            Case "OPENGRPLIST"
+                UserGruppenRechte = New wb_User_GruppenRechte
+                UserGruppenRechte.Show(DockPanel, DockState.DockLeft)
                 Return True
 
             Case "NEW"
@@ -104,6 +109,9 @@ Public Class User_Main
             Case "WinBack.wb_User_Rechte"
                 _DockPanelList.Add(UserRechte)
                 Return UserRechte
+            Case "WinBack.wb_User_GruppenRechte"
+                _DockPanelList.Add(UserGruppenRechte)
+                Return UserGruppenRechte
             Case Else
                 Return Nothing
         End Select
@@ -126,8 +134,17 @@ Public Class User_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        UserDetails.Close()
-        UserListe.Close()
-        UserRechte.Close()
+        If UserDetails IsNot Nothing Then
+            UserDetails.Close()
+        End If
+        If UserListe IsNot Nothing Then
+            UserListe.Close()
+        End If
+        If UserRechte IsNot Nothing Then
+            UserRechte.Close()
+        End If
+        If UserGruppenRechte IsNot Nothing Then
+            UserGruppenRechte.Close()
+        End If
     End Sub
 End Class
