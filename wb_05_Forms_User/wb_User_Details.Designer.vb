@@ -29,9 +29,10 @@ Partial Class wb_User_Details
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel = New System.Windows.Forms.Panel()
-        Me.cbUserGrp = New Global.WinBack.wb_ComboBox()
+        Me.cbUserGrp = New WinBack.wb_ComboBox()
         Me.tUserPass = New System.Windows.Forms.TextBox()
         Me.tUserName = New System.Windows.Forms.TextBox()
+        Me.tPersonalNr = New System.Windows.Forms.TextBox()
         Me.Panel.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -50,6 +51,7 @@ Partial Class wb_User_Details
         resources.ApplyResources(Me.Panel, "Panel")
         Me.Panel.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
         Me.Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel.Controls.Add(Me.tPersonalNr)
         Me.Panel.Controls.Add(Me.cbUserGrp)
         Me.Panel.Controls.Add(Me.tUserPass)
         Me.Panel.Controls.Add(Me.tUserName)
@@ -74,6 +76,11 @@ Partial Class wb_User_Details
         resources.ApplyResources(Me.tUserName, "tUserName")
         Me.tUserName.Name = "tUserName"
         '
+        'tbPersonalNr
+        '
+        resources.ApplyResources(Me.tPersonalNr, "tbPersonalNr")
+        Me.tPersonalNr.Name = "tbPersonalNr"
+        '
         'wb_User_Details
         '
         resources.ApplyResources(Me, "$this")
@@ -92,4 +99,5 @@ Partial Class wb_User_Details
     Friend WithEvents tUserName As Windows.Forms.TextBox
     Friend WithEvents tUserPass As Windows.Forms.TextBox
     Friend WithEvents cbUserGrp As wb_ComboBox
+    Friend WithEvents tPersonalNr As Windows.Forms.TextBox
 End Class

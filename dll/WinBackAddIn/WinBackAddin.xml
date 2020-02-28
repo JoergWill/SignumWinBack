@@ -768,6 +768,13 @@ Stacktrace:
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_ArrayGridViewUserGruppen.HeaderChanged">
+ <summary>
+ Flag Gruppen-Bezeichnungen wurden geändert.
+ Beim Schliessen des Formulars muss gespeichert werden.
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_ArrayGridViewUserGruppen.UserGruppen_CellClick(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
  <summary>
  Flag setzen/rücksetzen.
@@ -1943,6 +1950,22 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  
  Die Daten werden komplett gelöscht und anhand des Array wieder neu aufgebaut.
  </summary>
+</member>
+<member name="M:WinBack.wb_User_GruppenRechte.GrpNr(System.Int32)">
+ <summary>
+ Berechnet die Gruppen-Nummer aus der Spalte im Grid.
+ Die letzte Spalte enthält die Rechte für die Admin-Gruppe (99)
+ </summary>
+ <param name="Col"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_User_GruppenRechte.GrpIdx(System.Int32)">
+ <summary>
+ Berechnet den Gruppen-Index aus der Spalte im Grid.
+ Die letzte Spalte enthält die Rechte für die Admin-Gruppe (99)
+ </summary>
+ <param name="Col"></param>
+ <returns></returns>
 </member>
 <member name="P:WinBack.wb_User_Rechte_Shared.Text(System.Int32,System.Int32)">
  <summary>
@@ -6414,6 +6437,13 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_User.PersonalNr">
+ <summary>
+ Mitarbeiter-Personalnummer. String max 250 Zeichen
+ Tabelle winback.ItemParameter.IP_Wert5Str
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_User.iGruppe">
  <summary>
  Mitarbeiter-Gruppe. Numerisch maximal 10 Stellen
@@ -8190,6 +8220,14 @@ Datenbank-Verbindung schliessen
 <member name="M:WinBack.wb_Planung_Liste.BtnBackZettelDrucken_Click(System.Object,System.EventArgs)">
  <summary>
  Backzettel drucken
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Liste.VirtualTree_GetChildren(System.Object,Infralution.Controls.VirtualTree.GetChildrenEventArgs)">
+ <summary>
+ Filtert die Anzeige der Chargen nach Liniengruppe/Aufarbeitungsplatz.
+ Die Methode GetChildren gibt eine Liste aller Child-Knoten zurück, die angezeigt werden sollen.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

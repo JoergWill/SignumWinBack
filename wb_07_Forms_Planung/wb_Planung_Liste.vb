@@ -502,11 +502,11 @@ Public Class wb_Planung_Liste
     ''' <summary>
     ''' Filtert die Anzeige der Chargen nach Liniengruppe/Aufarbeitungsplatz.
     ''' Die Methode GetChildren gibt eine Liste aller Child-Knoten zurück, die angezeigt werden sollen.
-    ''' Siehe auch http://www.infralution.com/phpBB2/viewtopic.php?t=1499&highlight=filter+rows
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub VirtualTree_GetChildren(sender As Object, e As Infralution.Controls.VirtualTree.GetChildrenEventArgs) Handles VirtualTree.GetChildren
+        '<see cref = "http://www.infralution.com/phpBB2/viewtopic.php?t=1499&highlight=filter+rows" />
         'use the default binding to get all the children
         Dim binding As Infralution.Controls.VirtualTree.RowBinding = VirtualTree.GetRowBinding(e.Row)
         Dim children As IList = binding.GetChildrenForRow(e.Row)

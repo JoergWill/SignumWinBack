@@ -1,6 +1,6 @@
 ﻿Partial Public Class wb_Sql_Selects
     'Sql-Statement Userliste aus winback.ItemParameter
-    Public Const sqlUsersListe = "Select IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int FROM ItemParameter " &
+    Public Const sqlUsersListe = "Select IP_ItemTyp, IP_Lfd_Nr, IP_Wert4str, IP_ItemID, IP_Wert1int, IP_Wert5str FROM ItemParameter " &
                                   "WHERE IP_ItemTyp = 500 And IP_ItemAttr = 501 And IP_Wert1int <> " & wb_Credentials.WinBackMasterUser
     'Sql-Statement User Datensatz neu anlegen   [0]-Name [1]-Password [2]-Gruppe
     Public Const sqlUserInsert = "INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert4str) " &
@@ -32,14 +32,22 @@
     'Sql-Statement UserGruppenRechte einfügen
     Public Const sqlUserGrpInsert = "INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int) VALUES ([0])"
 
+    'Sql-Statement Texte UserGruppen löschen
+    Public Const sqlUserGrpTexteRemove = "DELETE FROM Texte WHERE T_Typ = 500 AND T_Sprache = [0]"
+    'Sql-Statement Texte UserGruppen einfügen
+    Public Const sqlUserGrpTexteInsert = "INSERT INTO Texte (T_TextIndex, T_Typ, T_Sprache, T_Text, T_Flags) VALUES ([1], 500, [0], '[2]', 100)"
+
+
     'Sql-Statement User Datensatz lesen
-    Public Const sqlUserLogin = "SELECT * FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int = [0]"
+    Public Const sqlUserLogin = "Select * FROM ItemParameter WHERE IP_ItemTyp = 500 And IP_ItemAttr = 501 And IP_Wert1int = [0]"
     'Sql-Statement User Datensatz lesen
-    Public Const sqlUserName = "SELECT * FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert4str = '[0]'"
+    Public Const sqlUserName = "Select * FROM ItemParameter WHERE IP_ItemTyp = 500 And IP_ItemAttr = 501 And IP_Wert4str = '[0]'"
 
     'Sql-Statement Liste aller Usergruppen
-    Public Const sqlUserGrpListe = "SELECT * FROM IAListe INNER JOIN Texte ON IAL_ItemID = T_TextIndex AND IAL_ItemTyp = T_Typ " &
+    Public Const sqlUserGrpListeA = "SELECT * FROM IAListe INNER JOIN Texte ON IAL_ItemID = T_TextIndex AND IAL_ItemTyp = T_Typ " &
                                    "WHERE IAL_ItemTyp = 500 AND T_SPRACHE = [0] ORDER BY IAL_ItemID"
+    Public Const sqlUserGrpListeB = "SELECT * FROM IAListe WHERE IAL_ItemTyp = 500 ORDER BY IAL_ItemID"
+
     'Sql-Statement Liste Rechte-Parameter mit Texten
     Public Const sqlUserRechteParam = "SELECT * FROM IAttrParams INNER JOIN Texte ON AT_Wert1int = T_Typ AND AT_Wert2int = T_TextIndex " &
                                       "WHERE T_SPRACHE = [0] ORDER BY AT_Wert1int, AT_Wert2int"

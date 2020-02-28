@@ -10,8 +10,9 @@ Public Class wb_User_Details
         AddHandler eListe_Click, AddressOf DetailInfo
     End Sub
 
-    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tUserPass.Leave, tUserName.Leave, cbUserGrp.Leave
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tUserPass.Leave, tUserName.Leave, cbUserGrp.Leave, tPersonalNr.Leave
         User.Name = tUserName.Text
+        User.PersonalNr = tPersonalNr.Text
         User.Passwort = tUserPass.Text
         User.iGruppe = cbUserGrp.GetKeyFromSelection()
         Debug.Print("Changed")
@@ -21,6 +22,8 @@ Public Class wb_User_Details
     Public Sub DetailInfo()
         'User Name
         tUserName.Text = User.Name
+        'User Personalnummer
+        tPersonalNr.Text = User.PersonalNr
         'User Passwort
         tUserPass.Text = User.Passwort
         'Eintrag in Combo-Box ausfüllen

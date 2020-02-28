@@ -7,7 +7,7 @@ Public Class wb_User_Liste
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"", "", "&Name", "Gruppe"}
+        Dim sColNames As New List(Of String) From {"", "", "&Name", "Gruppe", ""}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next

@@ -1,5 +1,6 @@
 ﻿Public Class wb_User
     Private IP_Wert4Str As String
+    Private IP_Wert5Str As String
     Private IP_ItemID As Integer
     Private IP_Wert1int As String
     Private DataHasChanged As Boolean
@@ -33,6 +34,25 @@
             Return IP_Wert4Str
         End Get
     End Property
+
+    ''' <summary>
+    ''' Mitarbeiter-Personalnummer. String max 250 Zeichen
+    ''' Tabelle winback.ItemParameter.IP_Wert5Str
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property PersonalNr As String
+        Set(value As String)
+            'TODO max.Länge Name prüfen ggf. Fehlermeldung ausgeben
+            If value <> IP_Wert5Str And value <> "" Then
+                DataHasChanged = True
+            End If
+            IP_Wert5Str = wb_Functions.XRemoveSonderZeichen(value)
+        End Set
+        Get
+            Return IP_Wert5Str
+        End Get
+    End Property
+
     ''' <summary>
     ''' Mitarbeiter-Gruppe. Numerisch maximal 10 Stellen
     ''' Tabelle winback.ItemParameter.IP_ItemID
@@ -81,6 +101,8 @@
     Friend Sub LoadData(dataGridView As wb_DataGridView)
         'Benutzer-Name
         IP_Wert4Str = dataGridView.Field("IP_Wert4str")
+        'Benutzer-Personalnummer
+        IP_Wert5Str = dataGridView.Field("IP_Wert5str")
         'Benutzer-Gruppe
         IP_ItemID = CInt(dataGridView.Field("IP_ItemID"))
         'Passwort
@@ -100,6 +122,7 @@
     Friend Function SaveData(dataGridView As wb_DataGridView) As Boolean
         If DataHasChanged Then
             dataGridView.Field("IP_Wert4str") = IP_Wert4Str
+            dataGridView.Field("IP_Wert5str") = IP_Wert5Str
             dataGridView.Field("IP_ItemID") = IP_ItemID
             dataGridView.Field("IP_Wert1int") = IP_Wert1int
             dataGridView.Field("IP_lfd_Nr") = IP_Wert1int
