@@ -173,6 +173,7 @@ Partial Class WinBack
         Me.BtnDelete = New System.Windows.Forms.Button()
         Me.BtnSaveAs = New System.Windows.Forms.Button()
         Me.BtnSave = New System.Windows.Forms.Button()
+        Me.rbRohstoffeLieferungen = New System.Windows.Forms.RibbonButton()
         Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -723,6 +724,7 @@ Partial Class WinBack
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeDetails)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeVerwendung)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeParameter)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeLieferungen)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffNwt)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rsRohstoffeSep)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeAnsicht)
@@ -1601,6 +1603,15 @@ Partial Class WinBack
         Me.BtnSave.TabStop = False
         Me.BtnSave.UseVisualStyleBackColor = True
         '
+        'rbRohstoffeLieferungen
+        '
+        Me.rbRohstoffeLieferungen.Image = Global.WinBack.My.Resources.Resources.RohstoffeLieferung_32x32
+        Me.rbRohstoffeLieferungen.LargeImage = Global.WinBack.My.Resources.Resources.RohstoffeLieferung_32x32
+        Me.rbRohstoffeLieferungen.Name = "rbRohstoffeLieferungen"
+        Me.rbRohstoffeLieferungen.SmallImage = CType(resources.GetObject("rbRohstoffeLieferungen.SmallImage"), System.Drawing.Image)
+        Me.rbRohstoffeLieferungen.Text = "Rohstoff Lager"
+        Me.rbRohstoffeLieferungen.Value = "OPENLIEFERUNGEN"
+        '
         'WinBack
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1780,4 +1791,5 @@ Partial Class WinBack
     Friend WithEvents rbStoffe As RibbonButton
     Friend WithEvents rbGruppen As RibbonButton
     Friend WithEvents rbVarianten As RibbonButton
+    Friend WithEvents rbRohstoffeLieferungen As RibbonButton
 End Class

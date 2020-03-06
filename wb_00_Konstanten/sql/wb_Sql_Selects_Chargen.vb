@@ -34,6 +34,18 @@
                                      "WHERE (B_ARZ_LiBeh_Nr > 100) AND B_ARZ_TW_Nr = " & Chr(34) & "[0]" & Chr(34) & " " &
                                      "ORDER BY [1], B_ARZ_TW_Idx, BAK_ArbRZSchritte.B_ARS_Index"
 
+    Public Const sqlChargenTTS = "Select BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie " &
+                                 "FROM BAK_ArbRezepte INNER JOIN BAK_ArbRZSchritte ON " &
+                                 "(BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) AND " &
+                                 "(BAK_ArbRezepte.B_ARZ_LiBeh_Nr = BAK_ArbRZSchritte.B_ARS_Beh_Nr) AND " &
+                                 "(BAK_ArbRezepte.B_ARZ_Art_Index = BAK_ArbRZSchritte.B_ARS_Art_Index) AND " &
+                                 "(BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr) " &
+                                 "WHERE (B_ARZ_LiBeh_Nr > 100) AND [0] AND B_ARZ_Nr = [1] AND B_ARZ_RZ_Variante_NR = [2] " &
+                                 "ORDER BY B_ARZ_TW_Idx, BAK_ArbRZSchritte.B_ARS_Index"
+
+
+
+
     '     'Select BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie ' +
     '     'FROM BAK_ArbRezepte  ' +
     '     'INNER JOIN BAK_ArbRZSchritte ON ' +

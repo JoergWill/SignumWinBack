@@ -1091,6 +1091,12 @@ Public Class wb_Komponente
         End Set
     End Property
 
+    Public ReadOnly Property Lagerort As String
+        Get
+            Return KA_Lagerort
+        End Get
+    End Property
+
     ''' <summary>
     ''' Objekt ist ungültig. Vor der nächsten Verwendung muss wieder neu eingelesen werden.
     ''' </summary>

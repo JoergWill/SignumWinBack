@@ -27,6 +27,9 @@ Partial Class wb_ChargenWasserTemp
     Private Sub InitializeComponent()
         Me.TabControl = New WinBack.wb_TabControl()
         Me.tp_ALG = New System.Windows.Forms.TabPage()
+        Me.ALG_BerechneteWerte = New System.Windows.Forms.Label()
+        Me.ALG_e_soll_neu = New System.Windows.Forms.Label()
+        Me.ALG_w_soll_neu = New System.Windows.Forms.Label()
         Me.ALG_t_neu_vor_eis = New System.Windows.Forms.Label()
         Me.ALG_t_rezept = New System.Windows.Forms.Label()
         Me.ALG_t_delta = New System.Windows.Forms.Label()
@@ -78,15 +81,12 @@ Partial Class wb_ChargenWasserTemp
         Me.TTS_rs_par1 = New System.Windows.Forms.Label()
         Me.Btn_TTS_Back = New System.Windows.Forms.Button()
         Me.tp_EIS = New System.Windows.Forms.TabPage()
+        Me.EIS_m_w_soll_neu = New System.Windows.Forms.Label()
+        Me.EIS_m_eis_soll_neu = New System.Windows.Forms.Label()
+        Me.EIS_t_w_soll_neu = New System.Windows.Forms.Label()
         Me.tp_MSG = New System.Windows.Forms.TabPage()
         Me.Btn_MSG_Back = New System.Windows.Forms.Button()
         Me.tbLogFile = New System.Windows.Forms.TextBox()
-        Me.ALG_w_soll_neu = New System.Windows.Forms.Label()
-        Me.ALG_e_soll_neu = New System.Windows.Forms.Label()
-        Me.ALG_BerechneteWerte = New System.Windows.Forms.Label()
-        Me.EIS_t_w_soll_neu = New System.Windows.Forms.Label()
-        Me.EIS_m_eis_soll_neu = New System.Windows.Forms.Label()
-        Me.EIS_m_w_soll_neu = New System.Windows.Forms.Label()
         Me.TabControl.SuspendLayout()
         Me.tp_ALG.SuspendLayout()
         Me.tp_RMF.SuspendLayout()
@@ -137,6 +137,39 @@ Partial Class wb_ChargenWasserTemp
         Me.tp_ALG.TabIndex = 0
         Me.tp_ALG.Text = "Calc_ALG"
         Me.tp_ALG.UseVisualStyleBackColor = True
+        '
+        'ALG_BerechneteWerte
+        '
+        Me.ALG_BerechneteWerte.AutoSize = True
+        Me.ALG_BerechneteWerte.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ALG_BerechneteWerte.ForeColor = System.Drawing.Color.Black
+        Me.ALG_BerechneteWerte.Location = New System.Drawing.Point(797, 256)
+        Me.ALG_BerechneteWerte.Name = "ALG_BerechneteWerte"
+        Me.ALG_BerechneteWerte.Size = New System.Drawing.Size(142, 18)
+        Me.ALG_BerechneteWerte.TabIndex = 14
+        Me.ALG_BerechneteWerte.Text = "Berechnete Werte "
+        '
+        'ALG_e_soll_neu
+        '
+        Me.ALG_e_soll_neu.AutoSize = True
+        Me.ALG_e_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ALG_e_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.ALG_e_soll_neu.Location = New System.Drawing.Point(797, 307)
+        Me.ALG_e_soll_neu.Name = "ALG_e_soll_neu"
+        Me.ALG_e_soll_neu.Size = New System.Drawing.Size(85, 18)
+        Me.ALG_e_soll_neu.TabIndex = 13
+        Me.ALG_e_soll_neu.Text = "e_soll_neu"
+        '
+        'ALG_w_soll_neu
+        '
+        Me.ALG_w_soll_neu.AutoSize = True
+        Me.ALG_w_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ALG_w_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.ALG_w_soll_neu.Location = New System.Drawing.Point(797, 281)
+        Me.ALG_w_soll_neu.Name = "ALG_w_soll_neu"
+        Me.ALG_w_soll_neu.Size = New System.Drawing.Size(87, 18)
+        Me.ALG_w_soll_neu.TabIndex = 12
+        Me.ALG_w_soll_neu.Text = "w_soll_neu"
         '
         'ALG_t_neu_vor_eis
         '
@@ -729,6 +762,39 @@ Partial Class wb_ChargenWasserTemp
         Me.tp_EIS.Text = "Calc_EIS"
         Me.tp_EIS.UseVisualStyleBackColor = True
         '
+        'EIS_m_w_soll_neu
+        '
+        Me.EIS_m_w_soll_neu.AutoSize = True
+        Me.EIS_m_w_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EIS_m_w_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.EIS_m_w_soll_neu.Location = New System.Drawing.Point(606, 276)
+        Me.EIS_m_w_soll_neu.Name = "EIS_m_w_soll_neu"
+        Me.EIS_m_w_soll_neu.Size = New System.Drawing.Size(107, 18)
+        Me.EIS_m_w_soll_neu.TabIndex = 15
+        Me.EIS_m_w_soll_neu.Text = "m_w_soll_neu"
+        '
+        'EIS_m_eis_soll_neu
+        '
+        Me.EIS_m_eis_soll_neu.AutoSize = True
+        Me.EIS_m_eis_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EIS_m_eis_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.EIS_m_eis_soll_neu.Location = New System.Drawing.Point(606, 240)
+        Me.EIS_m_eis_soll_neu.Name = "EIS_m_eis_soll_neu"
+        Me.EIS_m_eis_soll_neu.Size = New System.Drawing.Size(117, 18)
+        Me.EIS_m_eis_soll_neu.TabIndex = 14
+        Me.EIS_m_eis_soll_neu.Text = "m_eis_soll_neu"
+        '
+        'EIS_t_w_soll_neu
+        '
+        Me.EIS_t_w_soll_neu.AutoSize = True
+        Me.EIS_t_w_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EIS_t_w_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.EIS_t_w_soll_neu.Location = New System.Drawing.Point(606, 315)
+        Me.EIS_t_w_soll_neu.Name = "EIS_t_w_soll_neu"
+        Me.EIS_t_w_soll_neu.Size = New System.Drawing.Size(100, 18)
+        Me.EIS_t_w_soll_neu.TabIndex = 13
+        Me.EIS_t_w_soll_neu.Text = "t_w_soll_neu"
+        '
         'tp_MSG
         '
         Me.tp_MSG.Controls.Add(Me.Btn_MSG_Back)
@@ -763,72 +829,6 @@ Partial Class wb_ChargenWasserTemp
         Me.tbLogFile.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.tbLogFile.Size = New System.Drawing.Size(992, 604)
         Me.tbLogFile.TabIndex = 7
-        '
-        'ALG_w_soll_neu
-        '
-        Me.ALG_w_soll_neu.AutoSize = True
-        Me.ALG_w_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ALG_w_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.ALG_w_soll_neu.Location = New System.Drawing.Point(797, 281)
-        Me.ALG_w_soll_neu.Name = "ALG_w_soll_neu"
-        Me.ALG_w_soll_neu.Size = New System.Drawing.Size(87, 18)
-        Me.ALG_w_soll_neu.TabIndex = 12
-        Me.ALG_w_soll_neu.Text = "w_soll_neu"
-        '
-        'ALG_e_soll_neu
-        '
-        Me.ALG_e_soll_neu.AutoSize = True
-        Me.ALG_e_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ALG_e_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.ALG_e_soll_neu.Location = New System.Drawing.Point(797, 307)
-        Me.ALG_e_soll_neu.Name = "ALG_e_soll_neu"
-        Me.ALG_e_soll_neu.Size = New System.Drawing.Size(85, 18)
-        Me.ALG_e_soll_neu.TabIndex = 13
-        Me.ALG_e_soll_neu.Text = "e_soll_neu"
-        '
-        'ALG_BerechneteWerte
-        '
-        Me.ALG_BerechneteWerte.AutoSize = True
-        Me.ALG_BerechneteWerte.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ALG_BerechneteWerte.ForeColor = System.Drawing.Color.Black
-        Me.ALG_BerechneteWerte.Location = New System.Drawing.Point(797, 256)
-        Me.ALG_BerechneteWerte.Name = "ALG_BerechneteWerte"
-        Me.ALG_BerechneteWerte.Size = New System.Drawing.Size(142, 18)
-        Me.ALG_BerechneteWerte.TabIndex = 14
-        Me.ALG_BerechneteWerte.Text = "Berechnete Werte "
-        '
-        'EIS_t_w_soll_neu
-        '
-        Me.EIS_t_w_soll_neu.AutoSize = True
-        Me.EIS_t_w_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.EIS_t_w_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.EIS_t_w_soll_neu.Location = New System.Drawing.Point(606, 315)
-        Me.EIS_t_w_soll_neu.Name = "EIS_t_w_soll_neu"
-        Me.EIS_t_w_soll_neu.Size = New System.Drawing.Size(100, 18)
-        Me.EIS_t_w_soll_neu.TabIndex = 13
-        Me.EIS_t_w_soll_neu.Text = "t_w_soll_neu"
-        '
-        'EIS_m_eis_soll_neu
-        '
-        Me.EIS_m_eis_soll_neu.AutoSize = True
-        Me.EIS_m_eis_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.EIS_m_eis_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.EIS_m_eis_soll_neu.Location = New System.Drawing.Point(606, 240)
-        Me.EIS_m_eis_soll_neu.Name = "EIS_m_eis_soll_neu"
-        Me.EIS_m_eis_soll_neu.Size = New System.Drawing.Size(117, 18)
-        Me.EIS_m_eis_soll_neu.TabIndex = 14
-        Me.EIS_m_eis_soll_neu.Text = "m_eis_soll_neu"
-        '
-        'EIS_m_w_soll_neu
-        '
-        Me.EIS_m_w_soll_neu.AutoSize = True
-        Me.EIS_m_w_soll_neu.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.EIS_m_w_soll_neu.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.EIS_m_w_soll_neu.Location = New System.Drawing.Point(606, 276)
-        Me.EIS_m_w_soll_neu.Name = "EIS_m_w_soll_neu"
-        Me.EIS_m_w_soll_neu.Size = New System.Drawing.Size(107, 18)
-        Me.EIS_m_w_soll_neu.TabIndex = 15
-        Me.EIS_m_w_soll_neu.Text = "m_w_soll_neu"
         '
         'wb_ChargenWasserTemp
         '

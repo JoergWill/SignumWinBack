@@ -11,6 +11,7 @@ Public Class wb_Chargen_Main
     Public ChargenFunktionen As wb_Chargen_Funktionen
     Public ChargenDetails As wb_Chargen_Details
     Public ChargenWasserTemp As wb_ChargenWasserTemp
+    Public ChargenChartTemp As wb_Chargen_ChartTTS
 
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -129,6 +130,8 @@ Public Class wb_Chargen_Main
         Select Case ChargenZeile.KomponentenType
 
             Case wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE
+
+                'Anzeige TTS-Auswertung
                 If IsNothingOrDisposed(ChargenWasserTemp) Then
                     ChargenWasserTemp = New wb_ChargenWasserTemp
                 End If
@@ -148,6 +151,16 @@ Public Class wb_Chargen_Main
                 End If
 
             Case wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG
+
+                'Anzeige Chargenfolge graphisch
+                If IsNothingOrDisposed(ChargenChartTemp) Then
+                    ChargenChartTemp = New wb_Chargen_ChartTTS
+                End If
+                'ausgewählte Zeile aus Chargen-Details
+                ChargenChartTemp.ChargenZeile = ChargenZeile
+                'Übersicht anzeigen
+                ChargenChartTemp.Show(DockPanel, ChargenDetails.DockState)
+
 
             Case wb_Global.KomponTypen.KO_TYPE_KNETER
         End Select

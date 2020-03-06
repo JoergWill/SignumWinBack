@@ -71,7 +71,7 @@
     Public Const WinBackServerHinweisDirectory = "/hinweise/"
 
     'TTS-ChargenAuswertung Kommandozeile (Teil 1 & 2)
-    Public Const TTSLogCmd_0 = "cat /home/herbst/log/0s1-s.dbg.mahl | grep "
+    Public Const TTSLogCmd_0 = "cat /home/herbst/log/0s1-s.dbg | grep "
     Public Const TTSLogCmd_1 = " | grep TTS:"
 
     'WinBack-Update-Verzeichnis

@@ -16,6 +16,13 @@
                                   "INNER JOIN Einheiten On KomponTypen.KT_EinheitIndex = Einheiten.E_LfdNr " &
                                   "WHERE KO_Nr = [0] And KT_Rezept = 'R' AND KT_ParamNr > 1"
 
+    'Sql-Statement Rohstoff Lieferungen
+    Public Const sqlRohstoffLager = "SELECT LF_Nr, LF_Datum, LF_Lieferant, LF_Bemerkung, LF_Menge, LF_Verbrauch, " &
+                                    "LF_BF_Charge, LF_gebucht, LF_Liniengruppe, LF_BF_Frist " &
+                                    "FROM Lieferungen WHERE LF_LG_Ort = '[0]' ORDER BY LF_Datum DESC, LF_Nr DESC, LF_Lager"
+
+    'Nr", "Datum", "Lieferant", "&Bemerkung", "Menge", "Verbraucht", "Charge", "Status"}
+
     'Sql-Statement RohstoffGruppen aus winback.ItemParameter
     Public Const sqlRohstoffGrp = "SELECT IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
                                   "IP_ItemTyp = 600 And IP_Wert3int = 0 ORDER BY IP_Lfd_Nr DESC"

@@ -28,14 +28,14 @@ Public Class wb_ChargenWasserTemp
     Public ReadOnly Property ChargenStartZeit As String
         Get
             '_ChargenZeile.StartZeit = #09-07-2019 04:36:46#
-            Return _ChargenZeile.StartZeit.ToString("yyyy-MM-dd hh:mm:ss")
+            Return _ChargenZeile.StartZeit.ToString("yyyy-MM-dd HH:mm:ss")
         End Get
     End Property
 
     Public ReadOnly Property ChargenStartZeit(PlusSekunden) As String
         Get
             '_ChargenZeile.StartZeit = #09-07-2019 04:36:46#
-            Return (_ChargenZeile.StartZeit.AddSeconds(PlusSekunden)).ToString("yyyy-MM-dd hh:mm:ss")
+            Return (_ChargenZeile.StartZeit.AddSeconds(PlusSekunden)).ToString("yyyy-MM-dd HH:mm:ss")
         End Get
     End Property
 
@@ -126,13 +126,17 @@ Public Class wb_ChargenWasserTemp
             If TTSLines(0) = "ERR" Then
                 Return False
             Else
-                'Log-File zeilenweise durchlaufen
-                For Each s As String In TTSLines
-                    'zeilenweise in Ausgabe-Fenster Log-File schreiben
-                    tbLogFile.Text += DecodeTTSLog(s) + vbCrLf
-                Next
+                If TTSLines.Count > 1 Then
+                    'Log-File zeilenweise durchlaufen
+                    For Each s As String In TTSLines
+                        'zeilenweise in Ausgabe-Fenster Log-File schreiben
+                        tbLogFile.Text += DecodeTTSLog(s) + vbCrLf
+                    Next
+                    Return True
+                Else
+                    Return False
+                End If
             End If
-            Return True
         Else
             Return False
         End If
@@ -309,5 +313,14 @@ Public Class wb_ChargenWasserTemp
 
     Private Sub Btn_MSG_Back_Click(sender As Object, e As EventArgs) Handles Btn_MSG_Back.Click
         TabControl.SelectTab(tp_ALG)
+    End Sub
+
+    ''' <summary>
+    ''' Fenster wieder schliessen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub Btn_ALG_Back_Click(sender As Object, e As EventArgs) Handles Btn_ALG_Back.Click
+        Close()
     End Sub
 End Class

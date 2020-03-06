@@ -589,7 +589,11 @@ Public Class wb_ChargenSchritt
             If (Status = wb_Global.ChargenStatus.CS_UNBEARBEITET) Or (_StartZeit = wb_Global.wbNODATE) Then
                 Return ""
             Else
-                Return _StartZeit.ToString("dd.MM.yyyy HH:mm:ss")
+                If KomponentenType = wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG Then
+                    Return _EndeZeit.ToString("dd.MM.yyyy HH:mm:ss")
+                Else
+                    Return _StartZeit.ToString("dd.MM.yyyy HH:mm:ss")
+                End If
             End If
         End Get
     End Property

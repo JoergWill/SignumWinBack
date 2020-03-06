@@ -397,6 +397,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.RohstoffeLieferung_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.RohstoffeMail_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -1054,6 +1059,12 @@ Stacktrace:
  Bezeichnung. Anzeige im VirtualTree
  </summary>
  <returns>String - Bezeichnung</returns>
+</member>
+<member name="M:WinBack.wb_ChargenTTS.ProcessData">
+ <summary>
+ Alle gesammelten Daten aus der Datenbank-Abfrage abhängig von KomponentenType und Parameter-Nummer in die einzelnen Felder 
+ einsortieren
+ </summary>
 </member>
 <member name="P:WinBack.wb_LagerKarte.Datum">
  <summary>
@@ -1909,6 +1920,20 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Value">Object - Wert Datenbankfeld(Inhalt)</param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Chargen_ChartTTS.MySqlLoadWbDaten(System.Int32,System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Lade alle Chargen-Daten zu dieser Rezeptnummer/RezeptVariante
+ Es werden nur die Datensätze geladen, die folgende Komponenten haben:
+     - Wasserdosierung
+     - Eis
+     - Teigtemperaturmessung
+     
+ </summary>
+ <param name="TWNr"></param>
+ <param name="RzNr"></param>
+ <param name="RzVr"></param>
+ <param name="Limit"></param>
+</member>
 <member name="M:WinBack.wb_Chargen_Details.VirtualTree_GetCellData(System.Object,Infralution.Controls.VirtualTree.GetCellDataEventArgs)">
  <summary>
  Virtual-Tree Zeilen/Zellen mit geändertem Zeichensatz darstellen
@@ -1934,6 +1959,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Lieferung.DetailInfo(System.Object)">
+ <summary>
+ Anzeige der Rohstoff-Details.
+ Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Liste der Lieferungen
+ und die Textfelder (Bilanzmenge, Gebindegröße...)
+ </summary>
 </member>
 <member name="M:WinBack.wb_User_GruppenRechte.wb_User_GruppenRechte_Load(System.Object,System.EventArgs)">
  <summary>
@@ -5295,6 +5327,13 @@ Text aus Datenbank lesen - Übersetzung
  Ermittelt anhand der Token/SubToken die einzelnen Werte aus der Zeile des WinBack-Log-Files
  </summary>
  <param name="s"></param>
+</member>
+<member name="M:WinBack.wb_ChargenWasserTemp.Btn_ALG_Back_Click(System.Object,System.EventArgs)">
+ <summary>
+ Fenster wieder schliessen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="P:WinBack.ob_Artikel_VerwendungRezept.FormKey">
  <summary>

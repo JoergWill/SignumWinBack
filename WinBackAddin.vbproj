@@ -288,6 +288,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Windows.Forms.Ribbon">
       <HintPath>dll\OfficeRibbon 4.0\System.Windows.Forms.Ribbon.dll</HintPath>
     </Reference>
@@ -367,6 +368,7 @@
     <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_WinBack.vb" />
     <Compile Include="wb_00_Klassen\wb_Chargen.vb" />
     <Compile Include="wb_00_Klassen\wb_ChargenSchritt.vb" />
+    <Compile Include="wb_00_Klassen\wb_ChargenTTS.vb" />
     <Compile Include="wb_00_Klassen\wb_LagerKarte.vb" />
     <Compile Include="wb_00_Klassen\wb_LagerOrt.vb" />
     <Compile Include="wb_00_Klassen\Komponenten\wb_TimerGridView.Designer.vb">
@@ -438,10 +440,22 @@
     <Compile Include="wb_00_Klassen\wb_KomponParamXXX.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Lieferungen.vb" />
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.Designer.vb">
+      <DependentUpon>wb_Chargen_ChartTTS.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.Designer.vb">
       <DependentUpon>wb_Chargen_Details.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Lieferungen.Designer.vb">
+      <DependentUpon>wb_Rohstoff_Lieferungen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Lieferungen.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_05_Forms_User\wb_User_GruppenRechte.Designer.vb">
@@ -953,6 +967,9 @@
     <EmbeddedResource Include="wb_00_Main\wb_PrinterPreview.resx">
       <DependentUpon>wb_PrinterPreview.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.resx">
+      <DependentUpon>wb_Chargen_ChartTTS.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Details.resx">
       <DependentUpon>wb_Chargen_Details.vb</DependentUpon>
     </EmbeddedResource>
@@ -1024,6 +1041,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Dokumente.resx">
       <DependentUpon>wb_Rohstoff_Dokumente.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Lieferungen.resx">
+      <DependentUpon>wb_Rohstoff_Lieferungen.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_05_Forms_User\wb_User_GruppenRechte.resx">
       <DependentUpon>wb_User_GruppenRechte.vb</DependentUpon>
@@ -1316,6 +1336,7 @@
     <None Include="Resources\TTS_TeigTempSteuerung.png" />
     <None Include="Resources\Rotate90L_32x32.png" />
     <None Include="Resources\Rotate90R_32x32.png" />
+    <None Include="Resources\RohstoffeLieferung_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

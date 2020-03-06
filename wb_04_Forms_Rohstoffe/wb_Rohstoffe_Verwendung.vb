@@ -20,6 +20,6 @@ Public Class wb_Rohstoffe_Verwendung
 
     Public Sub DetailInfo(sender)
         'DataGrid füllen
-        HisDataGridView.LoadVerwendung(RohStoff.Nr)
+        VerwDataGridView.LoadVerwendung(RohStoff.Nr)
     End Sub
 End Class
