@@ -34,6 +34,7 @@ Public Class wb_ChargenSchritt
     Private _Sollwert As String
     Private _Sollmenge_kg As Double
     Private _Sollmenge_Stk As Double
+    Private _Sollmenge_Stk_gesamt As Double
     Private _Istwert As String
     Private _Istmenge_kg As Double = wb_Global.UNDEFINED
     Private _Istmenge_Stk As Double = wb_Global.UNDEFINED
@@ -283,10 +284,19 @@ Public Class wb_ChargenSchritt
 
     Public Property Sollmenge_Stk As Double
         Get
-            Return _Sollmenge_Stk
+            Return CInt(_Sollmenge_Stk)
         End Get
         Set(value As Double)
             _Sollmenge_Stk = value
+        End Set
+    End Property
+
+    Public Property Sollmenge_Stk_gesamt As Double
+        Get
+            Return CInt(_Sollmenge_Stk_gesamt)
+        End Get
+        Set(value As Double)
+            _Sollmenge_Stk_gesamt = value
         End Set
     End Property
 
@@ -339,12 +349,12 @@ Public Class wb_ChargenSchritt
             If _Istmenge_Stk = wb_Global.UNDEFINED Then
                 If Type = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL Then
                     'Stückgewicht ermitteln (aus Sollmenge und Sollgewicht)
-                    Dim StkGewicht As Double = wb_Functions.SaveDiv(Sollmenge_Stk, _Sollmenge_kg)
+                    Dim StkGewicht As Double = wb_Functions.SaveDiv(_Sollmenge_kg, _Sollmenge_Stk)
                     'Istmenge ist Stk aus Istwert in kg und StkGewicht
                     _Istmenge_Stk = wb_Functions.SaveDiv(Istmenge_kg, StkGewicht)
                 End If
             End If
-            Return _Istmenge_Stk
+            Return CInt(_Istmenge_Stk)
         End Get
         'Set(value As Double)
         '    _Istmenge_Stk = value
@@ -529,7 +539,7 @@ Public Class wb_ChargenSchritt
                 Case wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
                     Return ""
                 Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
-                    Return _Sollmenge_Stk
+                    Return _Sollmenge_Stk_gesamt
                 Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
                     Return wb_Functions.FormatStr(_Sollmenge_kg, 3)
                 Case Else

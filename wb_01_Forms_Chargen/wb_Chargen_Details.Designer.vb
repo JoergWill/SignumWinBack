@@ -304,7 +304,7 @@ Partial Class wb_Chargen_Details
         Me.ClientSize = New System.Drawing.Size(952, 540)
         Me.Controls.Add(Me.ChargenTree)
         Me.Name = "wb_Chargen_Details"
-        Me.Text = "wb_Chargen_Details"
+        Me.Text = "Chargen"
         CType(Me.ChargenTree, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 

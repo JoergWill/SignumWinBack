@@ -43,6 +43,8 @@ Public Class wb_Chargen
         'Istwerte Chargen/Rezeptzeile
         Dim GesamtStueck As Double = 0.0
         Dim GesamtMenge As Double = 0.0
+        'Sollwerte Chargezeile
+        Dim Sollmenge_Stk As Double = 0.0
 
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
@@ -97,6 +99,8 @@ Public Class wb_Chargen
                         'Rezeptnummer merken
                         RezeptNr = _SQLChargenSchritt.RezeptNr
                         RezeptIdx = wb_Global.UNDEFINED
+                        'Sollmenge in Stück gesamt
+                        Sollmenge_Stk = 0
                     End If
 
                     'Zeile Rezeptkopf anfügen
@@ -104,6 +108,9 @@ Public Class wb_Chargen
                         _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_REZEPT
                         'Rezeptzeilen hängen immer an der Artikelzeile
                         RezeptKopfZeile = New wb_ChargenSchritt(ArtikelKopfZeile)
+                        'Soll-Stückzahl in ArtikelKopfZeile
+                        Sollmenge_Stk += _SQLChargenSchritt.Sollmenge_Stk
+                        ArtikelKopfZeile.Sollmenge_Stk_gesamt = Sollmenge_Stk
                         'Daten aus MySQL in Produktionsschritt kopieren
                         RezeptKopfZeile.CopyFrom(_SQLChargenSchritt)
                         RezeptKopfZeile.Status = wb_Global.UNDEFINED

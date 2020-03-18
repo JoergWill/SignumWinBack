@@ -85,4 +85,19 @@ Public Class wb_Rohstoffe_Lieferung
 
         End Select
     End Sub
+
+    Private Sub LagerDataGridView_SizeChanged(sender As Object, e As EventArgs) Handles LagerDataGridView.SizeChanged
+        If LagerDataGridView IsNot Nothing Then
+            If LagerDataGridView.ColumnCount > 5 Then
+
+                Dim x As Integer = LagerDataGridView.Left
+                For i = 0 To 4
+                    x += LagerDataGridView.Columns(i).Width
+                Next
+
+                tbBilanzmenge.Left = x
+            End If
+        End If
+
+    End Sub
 End Class
