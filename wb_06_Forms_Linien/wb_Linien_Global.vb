@@ -1,6 +1,7 @@
 ﻿Public Class wb_Linien_Global
     Private Shared _LGruppen As New Dictionary(Of String, wb_Global.wb_LinienGruppe)
     Private Shared _Linien As New Dictionary(Of String, wb_Global.wb_Linien)
+    Private Shared _LinienListe As New ArrayList
     Private Shared _LinienGruppen As New SortedList
     Private Shared _ArtikelLinienGruppen As New SortedList
     Private Shared _RezeptLinienGruppen As New SortedList
@@ -49,6 +50,12 @@
                 _ErrorText = "Tabelle WinBack.Liniengruppen muss erweitert werden! (Formular-Steuerung)"
                 Return False
             End If
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property Linien As ArrayList
+        Get
+            Return _LinienListe
         End Get
     End Property
     ''' <summary>
@@ -187,6 +194,7 @@
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         winback.sqlSelect(wb_Sql_Selects.sqlLinien)
         _Linien.Clear()
+        _LinienListe.Clear()
 
         While winback.Read
             Try
@@ -205,6 +213,8 @@
                 End If
                 'zum Dictonary hinzufügen
                 _Linien.Add(Linie.Linie, Linie)
+                'zur Liste aller Linien hinzufügen
+                _LinienListe.Add(Linie)
             Catch
             End Try
         End While

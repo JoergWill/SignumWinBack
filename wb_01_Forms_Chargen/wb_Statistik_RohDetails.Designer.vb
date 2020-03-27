@@ -1,12 +1,12 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class wb_Chargen_Funktionen
+Partial Class wb_Statistik_RohDetails
     Inherits DockContent
     'Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
-    <System.Diagnostics.DebuggerNonUserCode()>
+    <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -23,17 +23,17 @@ Partial Class wb_Chargen_Funktionen
     'Hinweis: Die folgende Prozedur ist für den Windows Form-Designer erforderlich.
     'Das Bearbeiten ist mit dem Windows Form-Designer möglich.  
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
-    <System.Diagnostics.DebuggerStepThrough()>
+    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Chargen_Funktionen))
         Me.SuspendLayout()
         '
-        'wb_Chargen_Funktionen
+        'wb_Statistik_RohDetails
         '
-        resources.ApplyResources(Me, "$this")
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.LightGray
-        Me.Name = "wb_Chargen_Funktionen"
+        Me.ClientSize = New System.Drawing.Size(478, 388)
+        Me.Name = "wb_Statistik_RohDetails"
+        Me.Text = "wb_Statistik_RohDetails"
         Me.ResumeLayout(False)
 
     End Sub

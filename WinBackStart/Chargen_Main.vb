@@ -10,10 +10,15 @@
 ''' </summary>
 Public Class Chargen_Main
 
-    Public ChargenListe As New wb_Chargen_Liste     'Default-Fenster    (wird beim Öffnen immer angezeigt)
-    Public ChargenDetails As wb_Chargen_Details     'Detail-Fenster
+    Public ChargenListe As New wb_Chargen_Liste         'Default-Fenster    (wird beim Öffnen immer angezeigt)
+    Public ChargenDetails As wb_Chargen_Details         'Detail-Fenster
+    Public ChargenFunktionen As wb_Chargen_Funktionen   'Filter und Funktionen
     Public ChargenWasserTemp As wb_ChargenWasserTemp
     Public ChargenChartTemp As wb_Chargen_ChartTTS
+
+    Public StatistikRohVerbrauch As wb_Statistik_RohVerbrauch
+    Public StatistikRohDetails As wb_Statistik_RohDetails
+    Public StatistikRezepte As wb_Statistik_Rezepte
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -35,6 +40,30 @@ Public Class Chargen_Main
                 If Not DockIsVisible("wb_Chargen_Details") Then
                     ChargenDetails = New wb_Chargen_Details
                     ChargenDetails.Show(DockPanel)
+                End If
+                Return True
+            Case "FUNKTIONEN"
+                If Not DockIsVisible("wb_Chargen_Funktionen") Then
+                    ChargenFunktionen = New wb_Chargen_Funktionen
+                    ChargenFunktionen.Show(DockPanel)
+                End If
+                Return True
+            Case "STATROHVERBR"
+                If Not DockIsVisible("wb_Statistik_RohVerbrauch") Then
+                    StatistikRohVerbrauch = New wb_Statistik_RohVerbrauch
+                    StatistikRohVerbrauch.Show(DockPanel)
+                End If
+                Return True
+            Case "STATROHDETAIL"
+                If Not DockIsVisible("wb_Statistik_RohDetails") Then
+                    StatistikRohDetails = New wb_Statistik_RohDetails
+                    StatistikRohDetails.Show(DockPanel)
+                End If
+                Return True
+            Case "STATREZEPT"
+                If Not DockIsVisible("wb_Statistik_Rezepte") Then
+                    StatistikRezepte = New wb_Statistik_Rezepte
+                    StatistikRezepte.Show(DockPanel)
                 End If
                 Return True
             Case Else
@@ -68,6 +97,22 @@ Public Class Chargen_Main
                 ChargenDetails = New wb_Chargen_Details
                 _DockPanelList.Add(ChargenDetails)
                 Return ChargenDetails
+            Case "WinBack.wb_Chargen_Funktionen"
+                ChargenFunktionen = New wb_Chargen_Funktionen
+                _DockPanelList.Add(ChargenFunktionen)
+                Return ChargenFunktionen
+            Case "WinBack.wb_Statistik_RohVerbrauch"
+                StatistikRohVerbrauch = New wb_Statistik_RohVerbrauch
+                _DockPanelList.Add(StatistikRohVerbrauch)
+                Return StatistikRohVerbrauch
+            Case "WinBack.wb_Statistik_RohDetails"
+                StatistikRohDetails = New wb_Statistik_RohDetails
+                _DockPanelList.Add(StatistikRohDetails)
+                Return StatistikRohDetails
+            Case "WinBack.wb_Statistik_Rezepte"
+                StatistikRezepte = New wb_Statistik_Rezepte
+                _DockPanelList.Add(StatistikRezepte)
+                Return StatistikRezepte
 
             Case Else
                 Return Nothing

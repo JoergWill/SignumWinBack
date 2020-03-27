@@ -13,6 +13,15 @@ Public Class wb_Chargen_Liste
             DataGridView.ColNames.Add(sName)
         Next
 
+        'Default-Einstellungen Filter
+        cbFilter.Checked = False
+        'Default-Einstellungen Filtern bis (aktuelles Datum)
+        dtFilterBis.Value = Now
+        'Default-Einstellungen Filtern von (Anzeige aktuelles Jahr)
+        dtFilterVon.Value = DateAdd(DateInterval.Year, -1, Now)
+        'Sortieren nach Artikel-Nummer (Default)
+        rbArtikel.PerformClick()
+
         'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
         DataGridView.x8859_5_FieldName = ""
         'DataGrid füllen
@@ -35,7 +44,9 @@ Public Class wb_Chargen_Liste
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub wb_Chargen_Liste_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
-        DataGridView.FirstDisplayedScrollingRowIndex = DataGridView.RowCount - 1
+        If DataGridView.RowCount > 1 Then
+            DataGridView.FirstDisplayedScrollingRowIndex = DataGridView.RowCount - 1
+        End If
     End Sub
 
     ''' <summary>
@@ -48,7 +59,7 @@ Public Class wb_Chargen_Liste
         'akutell ausgewählte Tageswechsel-Nummer
         Liste_TagesWechselNummer = DataGridView.iField("TW_Nr")
         'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
-        Liste_Click(Nothing)
+        Liste_Click(Nothing, wb_Global.StatistikType.ChargenAuswertung)
         'Nach dem Update der Detailfenster wird der Focus wieder zurückgesetzt (Eingabe Suchmaske)
         DataGridView.Focus()
     End Sub
@@ -56,6 +67,58 @@ Public Class wb_Chargen_Liste
     Private Sub wb_Chargen_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Layout sichern
         DataGridView.SaveToDisk("StatistikChargenListe")
+    End Sub
+
+    Private Sub cbFilter_CheckedChanged(sender As Object, e As EventArgs)
+        wb_Chargen_Shared.Filter = cbFilter.Checked
+        Filter_Click(sender)
+    End Sub
+
+    Private Sub dtFilterVon_ValueChanged(sender As Object, e As EventArgs)
+        wb_Chargen_Shared.FilterVon = dtFilterVon.Value
+        If cbFilter.Checked Then
+            Filter_Click(sender)
+        End If
+    End Sub
+
+    Private Sub dtFilterBis_ValueChanged(sender As Object, e As EventArgs)
+        wb_Chargen_Shared.FilterBis = dtFilterBis.Value
+        If cbFilter.Checked Then
+            Filter_Click(sender)
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Sortieren Chargen-Details nach Artikel-Bezeichnung
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub rbArtikel_Click(sender As Object, e As EventArgs)
+        wb_Chargen_Shared.SortKriterium = wb_Global.ChargenListeSortKriterium.ArtikelName
+        'Chargen-Details neu aufbauen
+        Liste_Click(sender, wb_Global.StatistikType.DontChange)
+    End Sub
+
+    ''' <summary>
+    ''' Sortieren Chargen-Details nach Artikel-Nummer
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub rbArtikelNummer_Click(sender As Object, e As EventArgs)
+        wb_Chargen_Shared.SortKriterium = wb_Global.ChargenListeSortKriterium.ArtikelNummer
+        'Chargen-Details neu aufbauen
+        Liste_Click(sender, wb_Global.StatistikType.DontChange)
+    End Sub
+
+    ''' <summary>
+    ''' Sortieren Chargen-Details nach Produktions-Datum
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub rbProduktion_Click(sender As Object, e As EventArgs)
+        wb_Chargen_Shared.SortKriterium = wb_Global.ChargenListeSortKriterium.Produktion
+        'Chargen-Details neu aufbauen
+        Liste_Click(sender, wb_Global.StatistikType.DontChange)
     End Sub
 
 End Class

@@ -364,6 +364,18 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewStatistik.Designer.vb">
+      <DependentUpon>wb_ArrayGridViewStatistik.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewStatistik.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ListeStatistik.Designer.vb">
+      <DependentUpon>wb_ListeStatistik.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ListeStatistik.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_OrgaBack.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_WinBack.vb" />
     <Compile Include="wb_00_Klassen\wb_Chargen.vb" />
@@ -440,6 +452,7 @@
     <Compile Include="wb_00_Klassen\wb_KomponParamXXX.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Lieferungen.vb" />
+    <Compile Include="wb_00_Klassen\wb_StatistikListe.vb" />
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.Designer.vb">
       <DependentUpon>wb_Chargen_ChartTTS.vb</DependentUpon>
     </Compile>
@@ -450,6 +463,24 @@
       <DependentUpon>wb_Chargen_Details.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_Rezepte.Designer.vb">
+      <DependentUpon>wb_Statistik_Rezepte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_Rezepte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_RohDetails.Designer.vb">
+      <DependentUpon>wb_Statistik_RohDetails.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_RohDetails.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_RohVerbrauch.Designer.vb">
+      <DependentUpon>wb_Statistik_RohVerbrauch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_RohVerbrauch.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Lieferungen.Designer.vb">
@@ -943,6 +974,9 @@
     <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.resx">
       <DependentUpon>wb_KompRzChargen.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_ListeStatistik.resx">
+      <DependentUpon>wb_ListeStatistik.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\WinBack_DockMain.resx">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
     </EmbeddedResource>
@@ -978,6 +1012,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_WasserTemp.resx">
       <DependentUpon>wb_Chargen_WasserTemp.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Statistik_Rezepte.resx">
+      <DependentUpon>wb_Statistik_Rezepte.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.resx">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
@@ -1132,6 +1169,21 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ListLabel\AdminSync\SyncReport_Artikel.lsp" />
+    <None Include="ListLabel\AdminSync\SyncReport_Artikel.lsv" />
+    <None Include="ListLabel\AdminSync\SyncReport_Artikel.~lst" />
+    <None Include="ListLabel\AdminSync\SyncReport_Mitarbeiter.lsp" />
+    <None Include="ListLabel\AdminSync\SyncReport_Mitarbeiter.lsv" />
+    <None Include="ListLabel\AdminSync\SyncReport_Mitarbeiter.~lst" />
+    <None Include="ListLabel\AdminSync\SyncReport_MitarbeiterGrupppen.lsp" />
+    <None Include="ListLabel\AdminSync\SyncReport_MitarbeiterGrupppen.lsv" />
+    <None Include="ListLabel\AdminSync\SyncReport_MitarbeiterGrupppen.~lst" />
+    <None Include="ListLabel\AdminSync\SyncReport_Rohstoffe.lsp" />
+    <None Include="ListLabel\AdminSync\SyncReport_Rohstoffe.lsv" />
+    <None Include="ListLabel\AdminSync\SyncReport_Rohstoffe.~lst" />
+    <None Include="ListLabel\Chargen\StatistikRezepte.lsp" />
+    <None Include="ListLabel\Chargen\StatistikRezepte.lsv" />
+    <None Include="ListLabel\Chargen\StatistikRezepte.~lst" />
     <None Include="Log\RollingFile.log4net" />
     <None Include="Log\Udp.log4net" />
     <None Include="WinBack.log4net">
@@ -1264,6 +1316,12 @@
     <Content Include="dll\GhostScript V1.2.1\gsdll32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="ListLabel\AdminSync\SyncReport_Artikel.lst" />
+    <Content Include="ListLabel\AdminSync\SyncReport_Mitarbeiter.lst" />
+    <Content Include="ListLabel\AdminSync\SyncReport_MitarbeiterGrupppen.lst" />
+    <Content Include="ListLabel\AdminSync\SyncReport_Rohstoffe.lst" />
+    <Content Include="ListLabel\Chargen\StatistikRezepte.lst" />
+    <Content Include="ListLabel\Chargen\StatistikRohVerbrauch.lst" />
     <Content Include="ListLabel\Produktion\Backzettel.lst" />
     <Content Include="ListLabel\Produktion\Teigzettel.lst" />
     <Content Include="ListLabel\wbStandard.lst" />

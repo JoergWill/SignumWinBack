@@ -80,6 +80,14 @@
     Public Const WinBackUpdateSetupExe_32Bit = "WinBackSetup_x86.msi"
     Public Const WinBackUpdateSetupExe_64Bit = "WinBackSetup_x64.msi"
 
+    Public Enum StatistikType
+        ChargenAuswertung
+        StatistikRohstoffeVerbrauch
+        StatistikRohstoffeDetails
+        StatistikRezepte
+        DontChange
+    End Enum
+
     Public Enum ktTyp301Gruppen
         xxx
         Big4

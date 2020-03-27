@@ -33,8 +33,8 @@ Public Class wb_Chargen
     ''' <summary>
     ''' Liest alle Datensätze aus wbdaten zur angegeben Tageswechselnummer sortiert nach Produktionsdatum ein 
     ''' </summary>
-    ''' <param name="TwNr">Integer Tageswechsel-Nummer</param>
-    Public Function MySQLdbSelect_ChargenSchritte(TwNr As Integer)
+    ''' <param name="StatistikType">Integer Tageswechsel-Nummer</param>
+    Public Function MySQLdbSelect_ChargenSchritte(StatistikType As wb_Global.StatistikType)
         Dim ArtikelKopfZeile As wb_ChargenSchritt = _RootChargenSchritt
         Dim RezeptKopfZeile As wb_ChargenSchritt = Nothing
         Dim RezeptNr As Integer = wb_Global.UNDEFINED
@@ -49,7 +49,7 @@ Public Class wb_Chargen
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
         Dim Value As Object
-        Dim sql As String
+        Dim sql As String = ""
 
         'Sortier-Kriterium
         Dim TwSort As String
@@ -64,8 +64,22 @@ Public Class wb_Chargen
                 TwSort = "B_ARZ_Timestamp"
         End Select
 
-        'Abfrage nach Tageswechsel-Nummer
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChargenDetails, TwNr, TwSort)
+        'Abfrage aus wbdaten abhängig vom Statistik-Typ
+        Select Case StatistikType
+            Case wb_Global.StatistikType.ChargenAuswertung
+                'Abfrage nach Tageswechsel-Nummer
+                Dim TwNr As Integer = wb_Chargen_Shared.Liste_TagesWechselNummer
+                sql = SqlStatistikChargen(TwNr, TwSort)
+            Case wb_Global.StatistikType.StatistikRezepte
+                'Abfrage nach Rezeptnummern aus Liste
+                Dim TwStrt As Integer = MySQLdbStrtTWNr(wb_Chargen_Shared.FilterVon, wb_Chargen_Shared.UhrzeitVon)
+                Dim twEnde As Integer = MySQLdbEndeTWNr(wb_Chargen_Shared.FilterBis, wb_Chargen_Shared.UhrzeitBis)
+                sql = SqlStatistikRezepte(TwStrt, TwEnde, TwSort)
+
+            Case Else
+                'Abfrage nach Tageswechsel-Nummer (-1)
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChargenDetails, -1, TwSort)
+        End Select
 
         'Datensätze aus Tabelle Rezeptschritte lesen
         If winback.sqlSelect(sql) Then
@@ -266,4 +280,119 @@ Public Class wb_Chargen
 
     End Function
 
+    ''' <summary>
+    ''' SQL-Statement erstellen für Statistik Chargen
+    ''' </summary>
+    ''' <param name="TwNr"></param>
+    ''' <param name="TwSort"></param>
+    ''' <returns></returns>
+    Private Function SqlStatistikChargen(TwNr As Integer, TwSort As String) As String
+        'TODO ANFANG ENDE TW-NUMMER
+        Return wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChargenDetails, TwNr, TwSort)
+    End Function
+
+    ''' <summary>
+    ''' SQL-Statement erstellen für Statistik Rezepte
+    ''' </summary>
+    ''' <param name="TwStrt"></param>
+    ''' <param name="TwEnde"></param>
+    ''' <param name="TwSort"></param>
+    ''' <returns></returns>
+    Private Function SqlStatistikRezepte(TwStrt As Integer, TwEnde As Integer, TwSort As String) As String
+
+        'sql-Anweisung - Liste aller Rezepte aus der Liste (Idx)
+        Dim sqlRezepte As String = ""
+        For Each rzNr In wb_Chargen_Shared.NrListe
+            If sqlRezepte <> "" Then
+                sqlRezepte += " OR "
+            End If
+            sqlRezepte += "BAK_ArbRezepte.B_ARZ_Nr=" & rzNr.ToString
+        Next
+
+        'sql-Anweisung - Liste aller Linien aus der Liste (Idx)
+        Dim sqlLinien As String = ""
+        For Each LNr In wb_Chargen_Shared.NrLinien
+            If sqlLinien <> "" Then
+                sqlLinien += " OR "
+            End If
+            sqlLinien += "BAK_ArbRezepte.B_ARZ_LiBeh_Nr =" & LNr.ToString
+        Next
+
+        'sql-Abfrage abhängig von den Filter-Kriterien erstellen
+        Dim sql As String = wb_Sql_Selects.sqlStatRezepte
+
+        'Wassertemperatur mit anzeigen
+        If wb_Chargen_Shared.WasserTempAusblenden Then
+            sql += " WHERE (BAK_ArbRZSchritte.B_ARS_ParamNr = 1)"
+        Else
+            sql += " WHERE ((BAK_ArbRZSchritte.B_ARS_ParamNr = 1) OR BAK_ArbRZSchritte.B_ARS_ParamNr = 3)"
+        End If
+
+        'Istwert = Null unterdrücken
+        If wb_Chargen_Shared.IstwertNullAusblenden Then
+            sql += " AND (BAK_ArbRZSchritte.B_ARS_Gestartet > 0)"
+        End If
+
+        'Datum/Uhrzeit einschränken
+        'FormatDateTime('yyyymmddhhnnss', eDatumVon.date + dtStartTime.Time)
+        If wb_Chargen_Shared.UhrzeitVon <> wb_Global.wbNODATE Then
+            sql += " AND B_ARS_Gestartet >= '" & wb_Chargen_Shared.FilterVon.ToString("yyyy-MM-dd") & " " & wb_Chargen_Shared.UhrzeitVon.ToString("HH:mm:ss") & "'"
+        End If
+        If wb_Chargen_Shared.UhrzeitBis <> wb_Global.wbNODATE Then
+            sql += " AND B_ARS_Gestartet <= '" & wb_Chargen_Shared.FilterBis.ToString("yyyy-MM-dd") & " " & wb_Chargen_Shared.UhrzeitBis.ToString("HH:mm:ss") & "'"
+        End If
+
+        'Nach Linien filtern
+        If Not wb_Chargen_Shared.AlleLinien Then
+            sql += " AND (" & sqlLinien & ")"
+        End If
+
+        'Nach Rezepten filtern
+        If sqlRezepte <> "" Then
+            sql += " AND (" & sqlRezepte & ")"
+        End If
+
+        'Tageswechsel-Nummern
+        sql += " AND (Tageswechsel.TW_Nr >= " & TwStrt.ToString & " AND Tageswechsel.TW_Nr <= " & TwEnde.ToString & ") "
+
+        'Sortierkriterium
+        sql += "ORDER BY B_ARZ_Bezeichnung, B_ARZ_TW_Nr, B_ARZ_TW_Idx, B_ARS_TW_Idx, B_ARZ_Charge_Nr"
+
+        Return sql
+    End Function
+
+    Private Function MySQLdbStrtTWNr(FilterVon As Date, UhrzeitVon As Date) As String
+        'SQL-Abfrage startet einen Tag früher wenn die Startzeit angegeben wurde
+        If UhrzeitVon <> wb_Global.wbNODATE Then
+            FilterVon = FilterVon.AddDays(-1)
+        End If
+        'sql-Abfrage Tageswechsel-Nummer 
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTWNrStrt, FilterVon.ToString("yyyy-MM-dd"))
+        Return MySQLdbGetTWNr(sql)
+    End Function
+
+    Private Function MySQLdbEndeTWNr(FilterBis As Date, UhrzeitBis As Date) As String
+        'SQL-Abfrage endet einen Tag später wenn die Endezeit angegeben wurde
+        If UhrzeitBis <> wb_Global.wbNODATE Then
+            FilterBis = FilterBis.AddDays(1)
+        End If
+        'sql-Abfrage Tageswechsel-Nummer 
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTWNrEnde, FilterBis.ToString("yyyy-MM-dd"))
+        Return MySQLdbGetTWNr(sql)
+    End Function
+
+    Private Function MySQLdbGetTWNr(sql) As String
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim wbdaten = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
+
+        'Datensätze aus Tabelle Tageswechsel lesen
+        If wbdaten.sqlSelect(sql) Then
+            If wbdaten.Read Then
+                Return wbdaten.iField("TW_Nr").ToString
+            End If
+        End If
+
+        'Fehler bei der Abfrage der Daten oder keine Daten vorhanden
+        Return "-1"
+    End Function
 End Class

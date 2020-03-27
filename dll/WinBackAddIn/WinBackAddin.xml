@@ -957,6 +957,66 @@ Stacktrace:
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_ListeStatistik.InitAuswahlListen(WinBack.wb_Global.StatistikType)">
+ <summary>
+ Alle Listen initialisieren.
+ 
+ </summary>
+</member>
+<member name="M:WinBack.wb_ListeStatistik.AddElement(WinBack.wb_StatistikListenElement)">
+ <summary>
+ Element e zur Liste hinzufügen. (Auswahl über Rohstoff/Rezeptliste)
+ </summary>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_ListeStatistik.GetElements(System.Collections.Generic.List{System.Int32})">
+ <summary>
+ Alle Index-Nummern aus der Liste in ein eindimensionales Array schreiben
+ </summary>
+ <param name="x"></param>
+</member>
+<member name="M:WinBack.wb_ListeStatistik.GetLinien(System.Collections.Generic.List{System.Int32})">
+ <summary>
+ Liste aller Linien aus der CheckedListBox
+ </summary>
+ <param name="x"></param>
+</member>
+<member name="M:WinBack.wb_ListeStatistik.BtnListeAdd_Click(System.Object,System.EventArgs)">
+ <summary>
+ Auswahl-Fenster Rezepte/Rohstoffe aufrufen. Element zur Liste hinzufügen und anzeigen.
+ Der Aufruf des Auswahlfensters erfolgt eventgesteuert aus der jeweiligen Applikation (Rezept/Rohstoff)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_ListeStatistik.BtnListeRemove_Click(System.Object,System.EventArgs)">
+ <summary>
+ Markierte Zeile aus Liste entfernen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_ListeStatistik.BtnListeLeeren_Click(System.Object,System.EventArgs)">
+ <summary>
+ Alle Elemente aus der Liste entfernen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_ListeStatistik.BtnListeLaden_Click(System.Object,System.EventArgs)">
+ <summary>
+ Alle Elemente der Liste aus einer Text-Datei laden. Vorher wird die Liste gelöscht.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_ListeStatistik.BtnListeSpeichern_Click(System.Object,System.EventArgs)">
+ <summary>
+ Alle Elemente der Liste in eine Text-Datei speichern
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_SyncAufarbeitung_OrgaBack.GetGruppenNummer">
  <summary>
  Ermittelt die GruppenNummer der Artikel-Zusatzgruppe für das MFF200 (Aufarbeitungsplatz)
@@ -1016,11 +1076,11 @@ Stacktrace:
  </summary>
  <returns>wb_ChargenSchritt - Root-Node des Rezeptes</returns>
 </member>
-<member name="M:WinBack.wb_Chargen.MySQLdbSelect_ChargenSchritte(System.Int32)">
+<member name="M:WinBack.wb_Chargen.MySQLdbSelect_ChargenSchritte(WinBack.wb_Global.StatistikType)">
  <summary>
  Liest alle Datensätze aus wbdaten zur angegeben Tageswechselnummer sortiert nach Produktionsdatum ein 
  </summary>
- <param name="TwNr">Integer Tageswechsel-Nummer</param>
+ <param name="StatistikType">Integer Tageswechsel-Nummer</param>
 </member>
 <member name="M:WinBack.wb_Chargen.MySQLdbRead_Fields(System.String,System.Object)">
  <summary>
@@ -1040,6 +1100,23 @@ Stacktrace:
  </summary>
  <param name="Name">String - Spalten-Name aus Datenbank</param>
  <param name="Value">Object - Wert aus Datenbank</param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Chargen.SqlStatistikChargen(System.Int32,System.String)">
+ <summary>
+ SQL-Statement erstellen für Statistik Chargen
+ </summary>
+ <param name="TwNr"></param>
+ <param name="TwSort"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Chargen.SqlStatistikRezepte(System.Int32,System.Int32,System.String)">
+ <summary>
+ SQL-Statement erstellen für Statistik Rezepte
+ </summary>
+ <param name="TwStrt"></param>
+ <param name="TwEnde"></param>
+ <param name="TwSort"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_ChargenSchritt.CopyFrom(WinBack.wb_ChargenSchritt)">
@@ -1934,6 +2011,22 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="RzVr"></param>
  <param name="Limit"></param>
 </member>
+<member name="M:WinBack.wb_Chargen_Details.DetailInfo(System.Object,WinBack.wb_Global.StatistikType)">
+ <summary>
+ Berechnen der Chargen.
+ Abhängig vom Statistik-Typ wird die entsprechende Abfrage in der Klasse wb_Chargen ausgeführt.
+ </summary>
+ <param name="sender"></param>
+ <param name="StatistikType"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Details.DetailPrint(System.Object,WinBack.wb_Global.StatistikType)">
+ <summary>
+ Chargen-Details drucken.
+ Ruft den Drucker-Dialog mit dem entsprechenden Formular, abhängig vom Statistik-Typ auf
+ </summary>
+ <param name="sender"></param>
+ <param name="StatistikType"></param>
+</member>
 <member name="M:WinBack.wb_Chargen_Details.VirtualTree_GetCellData(System.Object,Infralution.Controls.VirtualTree.GetCellDataEventArgs)">
  <summary>
  Virtual-Tree Zeilen/Zellen mit geändertem Zeichensatz darstellen
@@ -1956,6 +2049,36 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Doppelclick auf Virtual-Tree Zeile
      Teigtemperatur-Zeile    - Öffnet ein Fenster mit einer Auflistung aller Teige dieser Rezeptur (nur Temp-Mess-Zeile)
      Wasser-Zeile            - Öffnet ein Fenster mit der Berechnung der Wasser-Soll-Temperatur aus log-File WinBack
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_Rezepte.wb_Statistik_Rezepte_Load(System.Object,System.EventArgs)">
+ <summary>
+ Listen-Auswahl initialisieren
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_Rezepte.ListeAdd(System.Object,System.EventArgs)">
+ <summary>
+ Auswahlfenster Rezepte öffnen und Rezept aus Liste auswählen.
+ Das ausgewählte Rezept wird zur Liste hinzugefügt.
+ </summary>
+ <param name="Sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_Rezepte.BtnBerechnen_Click(System.Object,System.EventArgs)">
+ <summary>
+ Auswertung starten.
+ Die Berechnung und Anzeige erfolgt im Fenster Chargen_Details. Abhängig vom Statistik-Typ wird die entsprechende Abfrage in wbdaten ausgeführt
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_Rezepte.wb_Statistik_Rezepte_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+ <summary>
+ Filter-Einstellungen in winback.ini speichern
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -5258,34 +5381,6 @@ Text aus Datenbank lesen - Übersetzung
  <param name="d"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Chargen_Funktionen.BtnDetails_Click(System.Object,System.EventArgs)">
- <summary>
- Anzeige der produzierte Chargen zu diesem Produktionstag (TW-Nummer)
- </summary>
- <param name="sender"></param>
- <param name="e"></param>
-</member>
-<member name="M:WinBack.wb_Chargen_Funktionen.rbArtikel_Click(System.Object,System.EventArgs)">
- <summary>
- Sortieren Chargen-Details nach Artikel-Bezeichnung
- </summary>
- <param name="sender"></param>
- <param name="e"></param>
-</member>
-<member name="M:WinBack.wb_Chargen_Funktionen.rbArtikelNummer_Click(System.Object,System.EventArgs)">
- <summary>
- Sortieren Chargen-Details nach Artikel-Nummer
- </summary>
- <param name="sender"></param>
- <param name="e"></param>
-</member>
-<member name="M:WinBack.wb_Chargen_Funktionen.rbProduktion_Click(System.Object,System.EventArgs)">
- <summary>
- Sortieren Chargen-Details nach Produktions-Datum
- </summary>
- <param name="sender"></param>
- <param name="e"></param>
-</member>
 <member name="M:WinBack.wb_Chargen_Shared.#cctor">
  <summary>
  B_ARS_Status
@@ -7535,6 +7630,20 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="Command">String - Shell-Kommando</param>
  <returns>Ausgabe der Command-Shell</returns>
 </member>
+<member name="M:WinBack.wb_Functions.ArraySave(System.String,System.Object)">
+ <summary>
+ Speichert das angegebene Array binär in die angegebene Datei.
+ </summary>
+ <param name="Filename">Dateiname</param>
+ <param name="arr">Array, das gespeichert werden soll</param>
+</member>
+<member name="M:WinBack.wb_Functions.ArrayRead(System.String,System.Object@)">
+ <summary>
+ Liest ein zuvor gespeichertes Array aus der angegebenen Datei aus.
+ </summary>
+ <param name="Filename">Dateiname</param>
+ <param name="arr">Array, das die Daten enthalten soll.</param>
+</member>
 <member name="M:WinBack.wb_Functions.bz2CompressFile(System.String,System.String)">
  <summary>
  Datei komprimieren in .bz2
@@ -8142,6 +8251,27 @@ Datenbank-Verbindung schliessen
  <summary>
  Die Selektion im DataGridView hat sich geändert. Wenn Daten in den Detail-Fenstern geändert wurden, wird
  diese Änderung vor dem Laden der neuen Daten in der Datenbank gesichert.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Liste.rbArtikel_Click(System.Object,System.EventArgs)">
+ <summary>
+ Sortieren Chargen-Details nach Artikel-Bezeichnung
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Liste.rbArtikelNummer_Click(System.Object,System.EventArgs)">
+ <summary>
+ Sortieren Chargen-Details nach Artikel-Nummer
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Chargen_Liste.rbProduktion_Click(System.Object,System.EventArgs)">
+ <summary>
+ Sortieren Chargen-Details nach Produktions-Datum
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

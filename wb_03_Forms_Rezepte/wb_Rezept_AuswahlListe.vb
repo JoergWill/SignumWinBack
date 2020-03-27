@@ -52,7 +52,7 @@
 
     Private Sub DataGridView_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView.DoubleClick
         _RezeptNr = DataGridView.iField("RZ_Nr")
-        _RezeptNummer = DataGridView.iField("RZ_Nr_AlNum")
+        _RezeptNummer = DataGridView.Field("RZ_Nr_AlNum")
         _RezeptName = DataGridView.Field("RZ_Bezeichnung")
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()

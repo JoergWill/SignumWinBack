@@ -2,6 +2,7 @@
 Imports System.IO
 Imports System.Net
 Imports System.Net.Sockets
+Imports System.Runtime.Serialization.Formatters.Binary
 Imports System.Text
 Imports System.Windows.Forms
 Imports EnhEdit.EnhEdit_Global
@@ -1382,6 +1383,66 @@ Public Class wb_Functions
         sshClient.Disconnect()
         Return Result
     End Function
+
+    ''' <summary>
+    ''' Speichert das angegebene Array binär in die angegebene Datei.
+    ''' </summary>
+    ''' <param name="Filename">Dateiname</param>
+    ''' <param name="arr">Array, das gespeichert werden soll</param>
+    Public Shared Function ArraySave(ByVal Filename As String, ByVal arr As Object) As Boolean
+
+        Dim fs As FileStream = Nothing
+        Dim Success As Boolean = False
+
+        Try
+            ' Datei zum Schreiben öffnen
+            fs = New FileStream(Filename, FileMode.Create, FileAccess.Write)
+
+            ' Array serialisieren und speichern
+            Dim formatter As New BinaryFormatter()
+            formatter.Serialize(fs, arr)
+            Success = True
+
+        Catch ex As Exception
+        Finally
+            ' Datei schließen
+            If Not IsNothing(fs) Then fs.Close()
+        End Try
+
+        Return (Success)
+    End Function
+
+    ''' <summary>
+    ''' Liest ein zuvor gespeichertes Array aus der angegebenen Datei aus.
+    ''' </summary>
+    ''' <param name="Filename">Dateiname</param>
+    ''' <param name="arr">Array, das die Daten enthalten soll.</param>
+    Public Shared Function ArrayRead(ByVal Filename As String, ByRef arr As Object) As Boolean
+
+        Dim Success As Boolean = False
+
+        ' Prüfen, ob Datei existiert
+        If IO.File.Exists(Filename) Then
+            Dim fs As FileStream = Nothing
+            Try
+                ' Datei zum Lesen öffnen
+                fs = New FileStream(Filename, FileMode.Open, FileAccess.Read)
+
+                ' Daten deserialiseren und dem Array zuweisen
+                Dim formatter As New BinaryFormatter()
+                arr = formatter.Deserialize(fs)
+                Success = True
+
+            Catch ex As Exception
+            Finally
+                ' Datei schließen
+                If Not IsNothing(fs) Then fs.Close()
+            End Try
+        End If
+
+        Return (Success)
+    End Function
+
 
 
     ''' <summary>

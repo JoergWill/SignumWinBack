@@ -4,6 +4,7 @@ Imports System.Reflection
 Imports WeifenLuo.WinFormsUI.Docking
 Imports WinBack
 Imports WinBack.wb_Global
+
 ''' <summary>
 ''' Shared Objekt. Hält alle globalen Programm-Einstellungen zentral in einem Objekt.
 ''' Ersetzt die projektabhängigen Settings.

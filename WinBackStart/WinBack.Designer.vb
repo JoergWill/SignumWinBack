@@ -30,6 +30,7 @@ Partial Class WinBack
         Me.rpChargen = New System.Windows.Forms.RibbonPanel()
         Me.rbChargenListe = New System.Windows.Forms.RibbonButton()
         Me.rbChargenDetails = New System.Windows.Forms.RibbonButton()
+        Me.rbChargenFilter = New System.Windows.Forms.RibbonButton()
         Me.rpChargenExport = New System.Windows.Forms.RibbonPanel()
         Me.rbChargenExcelSumme = New System.Windows.Forms.RibbonButton()
         Me.rbChargenExcelEinzel = New System.Windows.Forms.RibbonButton()
@@ -89,6 +90,7 @@ Partial Class WinBack
         Me.rbRohstoffeDetails = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeVerwendung = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeParameter = New System.Windows.Forms.RibbonButton()
+        Me.rbRohstoffeLieferungen = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffNwt = New System.Windows.Forms.RibbonButton()
         Me.rsRohstoffeSep = New System.Windows.Forms.RibbonSeparator()
         Me.rbRohstoffeAnsicht = New System.Windows.Forms.RibbonButton()
@@ -173,7 +175,6 @@ Partial Class WinBack
         Me.BtnDelete = New System.Windows.Forms.Button()
         Me.BtnSaveAs = New System.Windows.Forms.Button()
         Me.BtnSave = New System.Windows.Forms.Button()
-        Me.rbRohstoffeLieferungen = New System.Windows.Forms.RibbonButton()
         Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -198,6 +199,7 @@ Partial Class WinBack
         Me.rpChargen.ButtonMoreVisible = False
         Me.rpChargen.Items.Add(Me.rbChargenListe)
         Me.rpChargen.Items.Add(Me.rbChargenDetails)
+        Me.rpChargen.Items.Add(Me.rbChargenFilter)
         Me.rpChargen.Name = "rpChargen"
         Me.rpChargen.Text = "Chargen"
         '
@@ -218,6 +220,15 @@ Partial Class WinBack
         Me.rbChargenDetails.Name = "rbChargenDetails"
         Me.rbChargenDetails.SmallImage = CType(resources.GetObject("rbChargenDetails.SmallImage"), System.Drawing.Image)
         Me.rbChargenDetails.Text = "Chargen Details"
+        '
+        'rbChargenFilter
+        '
+        Me.rbChargenFilter.Image = CType(resources.GetObject("rbChargenFilter.Image"), System.Drawing.Image)
+        Me.rbChargenFilter.LargeImage = CType(resources.GetObject("rbChargenFilter.LargeImage"), System.Drawing.Image)
+        Me.rbChargenFilter.Name = "rbChargenFilter"
+        Me.rbChargenFilter.SmallImage = CType(resources.GetObject("rbChargenFilter.SmallImage"), System.Drawing.Image)
+        Me.rbChargenFilter.Text = "Filter Chargenliste"
+        Me.rbChargenFilter.Value = "FUNKTIONEN"
         '
         'rpChargenExport
         '
@@ -276,6 +287,7 @@ Partial Class WinBack
         Me.rbStatRohstoffe.SmallImage = CType(resources.GetObject("rbStatRohstoffe.SmallImage"), System.Drawing.Image)
         Me.rbStatRohstoffe.Tag = "122"
         Me.rbStatRohstoffe.Text = "Auswertung schnell"
+        Me.rbStatRohstoffe.Value = "STATROHVERBR"
         '
         'rbStatRohstoffeDetail
         '
@@ -286,6 +298,7 @@ Partial Class WinBack
         Me.rbStatRohstoffeDetail.SmallImage = CType(resources.GetObject("rbStatRohstoffeDetail.SmallImage"), System.Drawing.Image)
         Me.rbStatRohstoffeDetail.Tag = "122"
         Me.rbStatRohstoffeDetail.Text = "Auswertung Detail"
+        Me.rbStatRohstoffeDetail.Value = "STATROHDETAIL"
         '
         'rpStatRezepte
         '
@@ -303,6 +316,7 @@ Partial Class WinBack
         Me.rbStatRezepte.SmallImage = CType(resources.GetObject("rbStatRezepte.SmallImage"), System.Drawing.Image)
         Me.rbStatRezepte.Tag = "122"
         Me.rbStatRezepte.Text = "Auswertung Rezepte"
+        Me.rbStatRezepte.Value = "STATREZEPT"
         '
         'rbArtikel
         '
@@ -772,6 +786,15 @@ Partial Class WinBack
         Me.rbRohstoffeParameter.Tag = ""
         Me.rbRohstoffeParameter.Text = "Rohstoff Parameter"
         Me.rbRohstoffeParameter.Value = "OPENPARAMETER"
+        '
+        'rbRohstoffeLieferungen
+        '
+        Me.rbRohstoffeLieferungen.Image = Global.WinBack.My.Resources.Resources.RohstoffeLieferung_32x32
+        Me.rbRohstoffeLieferungen.LargeImage = Global.WinBack.My.Resources.Resources.RohstoffeLieferung_32x32
+        Me.rbRohstoffeLieferungen.Name = "rbRohstoffeLieferungen"
+        Me.rbRohstoffeLieferungen.SmallImage = CType(resources.GetObject("rbRohstoffeLieferungen.SmallImage"), System.Drawing.Image)
+        Me.rbRohstoffeLieferungen.Text = "Rohstoff Lager"
+        Me.rbRohstoffeLieferungen.Value = "OPENLIEFERUNGEN"
         '
         'rbRohstoffNwt
         '
@@ -1603,15 +1626,6 @@ Partial Class WinBack
         Me.BtnSave.TabStop = False
         Me.BtnSave.UseVisualStyleBackColor = True
         '
-        'rbRohstoffeLieferungen
-        '
-        Me.rbRohstoffeLieferungen.Image = Global.WinBack.My.Resources.Resources.RohstoffeLieferung_32x32
-        Me.rbRohstoffeLieferungen.LargeImage = Global.WinBack.My.Resources.Resources.RohstoffeLieferung_32x32
-        Me.rbRohstoffeLieferungen.Name = "rbRohstoffeLieferungen"
-        Me.rbRohstoffeLieferungen.SmallImage = CType(resources.GetObject("rbRohstoffeLieferungen.SmallImage"), System.Drawing.Image)
-        Me.rbRohstoffeLieferungen.Text = "Rohstoff Lager"
-        Me.rbRohstoffeLieferungen.Value = "OPENLIEFERUNGEN"
-        '
         'WinBack
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1792,4 +1806,5 @@ Partial Class WinBack
     Friend WithEvents rbGruppen As RibbonButton
     Friend WithEvents rbVarianten As RibbonButton
     Friend WithEvents rbRohstoffeLieferungen As RibbonButton
+    Friend WithEvents rbChargenFilter As RibbonButton
 End Class

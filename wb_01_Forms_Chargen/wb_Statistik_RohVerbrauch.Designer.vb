@@ -1,7 +1,8 @@
-﻿Imports WeifenLuo.WinFormsUI.Docking
+﻿
+Imports WeifenLuo.WinFormsUI.Docking
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class wb_Chargen_Funktionen
+Partial Class wb_Statistik_RohVerbrauch
     Inherits DockContent
     'Inherits System.Windows.Forms.Form
 
@@ -25,15 +26,15 @@ Partial Class wb_Chargen_Funktionen
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Chargen_Funktionen))
         Me.SuspendLayout()
         '
-        'wb_Chargen_Funktionen
+        'wb_Statistik_RohVerbrauch
         '
-        resources.ApplyResources(Me, "$this")
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.LightGray
-        Me.Name = "wb_Chargen_Funktionen"
+        Me.ClientSize = New System.Drawing.Size(284, 261)
+        Me.Name = "wb_Statistik_RohVerbrauch"
+        Me.Text = "Statistik Rohstoffe Verbrauch"
         Me.ResumeLayout(False)
 
     End Sub

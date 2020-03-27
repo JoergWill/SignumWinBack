@@ -1,15 +1,23 @@
 ﻿Imports WinBack
 
 Public Class wb_Chargen_Shared
-    Public Shared Event eListe_Click(sender As Object)
+    Public Shared Event eListe_Click(sender As Object, StatistikType As wb_Global.StatistikType)
+    Public Shared Event eListe_Print(sender As Object, StatistikType As wb_Global.StatistikType)
     Public Shared Event eFilter_Click(sender As Object)
     Public Shared Event eDetail_DblClick(sender As Object, ChargenZeile As wb_ChargenSchritt)
+    Public Shared NrListe As New List(Of Integer)
+    Public Shared NrLinien As New List(Of Integer)
 
     Private Shared _SortKriterium As wb_Global.ChargenListeSortKriterium
     Private Shared _Filter As Boolean
     Private Shared _FilterVon As Date
     Private Shared _FilterBis As Date
-    Private Shared _AlleLinien As Boolean
+    Private Shared _UhrzeitVon As Date = wb_Global.wbNODATE
+    Private Shared _UhrzeitBis As Date = wb_Global.wbNODATE
+    Private Shared _AlleLinien As Boolean = True
+    Private Shared _WasserTempAusblenden As Boolean = False
+    Private Shared _IstwertNullAusblenden As Boolean = True
+
     Private Shared _Liste_TagesWechselNummer As Integer
     Private Shared _Liste_KomponDoesNotCount As New Dictionary(Of Integer, Boolean)
 
@@ -84,8 +92,48 @@ Public Class wb_Chargen_Shared
         End Set
     End Property
 
-    Public Shared Sub Liste_Click(sender As Object)
-        RaiseEvent eListe_Click(sender)
+    Public Shared Property UhrzeitVon As Date
+        Get
+            Return _UhrzeitVon
+        End Get
+        Set(value As Date)
+            _UhrzeitVon = value
+        End Set
+    End Property
+
+    Public Shared Property UhrzeitBis As Date
+        Get
+            Return _UhrzeitBis
+        End Get
+        Set(value As Date)
+            _UhrzeitBis = value
+        End Set
+    End Property
+
+    Public Shared Property WasserTempAusblenden As Boolean
+        Get
+            Return _WasserTempAusblenden
+        End Get
+        Set(value As Boolean)
+            _WasserTempAusblenden = value
+        End Set
+    End Property
+
+    Public Shared Property IstwertNullAusblenden As Boolean
+        Get
+            Return _IstwertNullAusblenden
+        End Get
+        Set(value As Boolean)
+            _IstwertNullAusblenden = value
+        End Set
+    End Property
+
+    Public Shared Sub Liste_Click(sender As Object, StatistikType As wb_Global.StatistikType)
+        RaiseEvent eListe_Click(sender, StatistikType)
+    End Sub
+
+    Public Shared Sub Liste_Print(sender As Object, StatistikType As wb_Global.StatistikType)
+        RaiseEvent eListe_Print(sender, StatistikType)
     End Sub
 
     Public Shared Sub Filter_Click(sender As Object)

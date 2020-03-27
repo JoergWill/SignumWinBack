@@ -633,10 +633,11 @@ Public Class WinBack
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click, rbLinienDel.Click, rbLinienDrucken.Click, rbLinienAuto.Click,
-                                                                          rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click, rbUserGruppenRechte.Click,
-                                                                          rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeParameter.Click, rbRohstoffeVerwendung.Click, rbRohstoffeLieferungen.Click, rbRohstoffNwt.Click, rbRohstoffeImportCloud.Click,
-                                                                          rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click, rbAdminWinBack.Click, rbAdminUpdate.Click, rbAdminWinBackIni.Click, rbLog.Click,
-                                                                          rbArtikelHinweise.Click, rbArtikelParameter.Click, rbVarianten.Click, rbStoffe.Click, rbLinienGruppen.Click, rbGruppen.Click
+        rbChargenFilter.Click, rbStatRohstoffe.Click, rbStatRohstoffeDetail.Click, rbStatRezepte.Click,
+        rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click, rbUserGruppenRechte.Click,
+        rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeParameter.Click, rbRohstoffeVerwendung.Click, rbRohstoffeLieferungen.Click, rbRohstoffNwt.Click, rbRohstoffeImportCloud.Click,
+        rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click, rbAdminWinBack.Click, rbAdminUpdate.Click, rbAdminWinBackIni.Click, rbLog.Click,
+        rbArtikelHinweise.Click, rbArtikelParameter.Click, rbVarianten.Click, rbStoffe.Click, rbLinienGruppen.Click, rbGruppen.Click
         Dim Cmd As String = DirectCast(sender, RibbonButton).Value
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")

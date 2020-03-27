@@ -1,4 +1,5 @@
-﻿Imports Infralution.Controls.VirtualTree
+﻿Imports combit.ListLabel22.DataProviders
+Imports Infralution.Controls.VirtualTree
 Imports WeifenLuo.WinFormsUI.Docking
 Imports WinBack.wb_Chargen_Shared
 
@@ -8,6 +9,7 @@ Public Class wb_Chargen_Details
 
     Private _DeltaStyleBold As New Infralution.Controls.StyleDelta
     Private _DeltaStyleItalic As New Infralution.Controls.StyleDelta
+    Private _StatistikType As wb_Global.StatistikType
 
     Private Sub wb_Chargen_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'New Style setzen (Delta/Italic)
@@ -17,9 +19,22 @@ Public Class wb_Chargen_Details
 
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
         AddHandler wb_Chargen_Shared.eListe_Click, AddressOf DetailInfo
+        'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
+        AddHandler wb_Chargen_Shared.eListe_Print, AddressOf DetailPrint
     End Sub
 
-    Public Sub DetailInfo(sender As Object)
+    ''' <summary>
+    ''' Berechnen der Chargen.
+    ''' Abhängig vom Statistik-Typ wird die entsprechende Abfrage in der Klasse wb_Chargen ausgeführt.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="StatistikType"></param>
+    Public Sub DetailInfo(sender As Object, StatistikType As wb_Global.StatistikType)
+
+        If StatistikType <> wb_Global.StatistikType.DontChange Then
+            _StatistikType = StatistikType
+        End If
+
         'wenn schon Daten angezeigt worden sind
         If ChargenProduziert.RootChargenSchritt.ChildSteps.Count > 0 Then
             'Anzeige Virtual-Tree löschen
@@ -32,13 +47,67 @@ Public Class wb_Chargen_Details
         End If
 
         'Daten laden
-        ChargenProduziert.MySQLdbSelect_ChargenSchritte(Liste_TagesWechselNummer)
+        ChargenProduziert.MySQLdbSelect_ChargenSchritte(StatistikType)
 
         'Virtual Tree anzeigen
         If ChargenProduziert.RootChargenSchritt IsNot Nothing Then
             ChargenTree.DataSource = ChargenProduziert.RootChargenSchritt
         End If
+
+        'Detail-Fenster in den Vordergrund bringen
+        Me.BringToFront()
     End Sub
+
+    ''' <summary>
+    ''' Chargen-Details drucken.
+    ''' Ruft den Drucker-Dialog mit dem entsprechenden Formular, abhängig vom Statistik-Typ auf
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="StatistikType"></param>
+    Public Sub DetailPrint(sender As Object, StatistikType As wb_Global.StatistikType)
+        'Druck-Daten
+        Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
+
+        'Daten generieren für List&Label (flache Liste)
+        Dim StatistikDaten As New ArrayList
+        'alle Einträge in der berechneten Chargenliste
+        For Each a As wb_ChargenSchritt In ChargenProduziert.RootChargenSchritt.ChildSteps
+            'Artikel-Zeile
+            a.ChrgType = wb_Global.ChargenTypen.CHRG_ARTIKEL
+            StatistikDaten.Add(a)
+            For Each r As wb_ChargenSchritt In a.ChildSteps
+                'Rezept-Zeilen
+                r.ChrgType = wb_Global.ChargenTypen.CHRG_REZEPT
+                StatistikDaten.Add(r)
+                'For Each k As wb_ChargenSchritt In r.ChildSteps
+                '    'Komponenten (flache Liste)
+                '    k.ChrgType = wb_Global.ChargenTypen.CHRG_UNDEF
+                '    StatistikDaten.Add(k)
+                'Next
+            Next
+        Next
+        'Array zuordnen zu List&Label
+        pDialog.LL.DataSource = New ObjectDataProvider(StatistikDaten)
+
+        'List und Label-Listen-Name abhängig vom Statistik-Typ
+        Select Case StatistikType
+            Case wb_Global.StatistikType.ChargenAuswertung
+                pDialog.ListFileName = "ChargenAuswertung.lst"
+            Case wb_Global.StatistikType.StatistikRezepte
+                pDialog.ListFileName = "StatistikRezepte.lst"
+                pDialog.LL_KopfZeile_1 = "vom " & wb_Chargen_Shared.FilterVon.ToString("dd.MM.yyyy") & " bis " & wb_Chargen_Shared.FilterVon.ToString("dd.MM.yyyy")
+            Case wb_Global.StatistikType.StatistikRohstoffeDetails
+                pDialog.ListFileName = "StatistikRohstDetails.lst"
+            Case wb_Global.StatistikType.StatistikRohstoffeVerbrauch
+                pDialog.ListFileName = "StatistikRohstVerbrauch.lst"
+        End Select
+
+        'List und Label-Verzeichnis für die Listen
+        pDialog.ListSubDirectory = "Chargen"
+        pDialog.ShowDialog()
+        pDialog = Nothing
+    End Sub
+
 
     ''' <summary>
     ''' Virtual-Tree Zeilen/Zellen mit geändertem Zeichensatz darstellen
