@@ -1,4 +1,5 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
+Imports WinBack.wb_Chargen_Shared
 
 Public Class wb_Statistik_Rezepte
     Inherits DockContent
@@ -15,21 +16,30 @@ Public Class wb_Statistik_Rezepte
 
     ''' <summary>
     ''' Auswahlfenster Rezepte öffnen und Rezept aus Liste auswählen.
-    ''' Das ausgewählte Rezept wird zur Liste hinzugefügt.
+    ''' Die ausgewählten Rezepte werden zur Liste hinzugefügt.
     ''' </summary>
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub ListeAdd(Sender As Object, e As EventArgs) Handles ListeStatistik.ListeAdd_Click
         Dim RezeptAuswahl As New wb_Rezept_AuswahlListe
         RezeptAuswahl.BtnClear.Enabled = False
+        RezeptAuswahl.MultiSelect = True
 
         If RezeptAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Dim RezListenElement As New wb_StatistikListenElement
-            RezListenElement.Nr = RezeptAuswahl.RezeptNr
-            RezListenElement.Nummer = RezeptAuswahl.RezeptNummer
-            RezListenElement.Bezeichnung = RezeptAuswahl.RezeptName
-            ListeStatistik.AddElement(RezListenElement)
+            For Each rle In RezeptAuswahl.RezeptListe
+                Dim RezListenElement As New wb_StatistikListenElement
+                RezListenElement = rle
+                ListeStatistik.AddElement(RezListenElement)
+            Next
         End If
+    End Sub
+
+    ''' <summary>
+    ''' Wenn die Liste neu berechnet werden muss - Button Berechnen aktivieren
+    ''' </summary>
+    ''' <param name="sender"></param>
+    Private Sub ListeBerechnetChanged(sender As Object) Handles ListeStatistik.ListeBerechnet_Changed
+        BtnBerechnen.Enabled = Not ListeStatistik.ListeBerechnet
     End Sub
 
     ''' <summary>
@@ -39,39 +49,72 @@ Public Class wb_Statistik_Rezepte
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtnBerechnen_Click(sender As Object, e As EventArgs) Handles BtnBerechnen.Click
+        BerechnungStatistik(sender)
+        BtnBerechnen.Enabled = False
+    End Sub
+
+    ''' <summary>
+    ''' Auswertung Drucken
+    ''' Wenn die Statistik noch nicht berechnet wurde, zuerst Berechnung starten
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
+        'wenn die Statistik noch nicht berechnet wurde
+        If Not ListeStatistik.ListeBerechnet Then
+            'Berechnung starten
+            BerechnungStatistik(sender)
+        End If
+        'Ausdruck starten
+        wb_Chargen_Shared.Liste_Print(sender, wb_Global.StatistikType.StatistikRezepte)
+    End Sub
+
+    ''' <summary>
+    ''' Statistik berechnen. Alle Filter-Einstellungen in wb_Chargen_Shared eintragen
+    ''' Start der Berechnung über Event(Liste_Click)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    Private Sub BerechnungStatistik(sender As Object)
         'Filter Datum übernehmen
         wb_Chargen_Shared.FilterVon = ListeStatistik.dtFilterVon.Value
         wb_Chargen_Shared.FilterBis = ListeStatistik.dtFilterBis.Value
 
+        'Fenster-Titel
+        Dim Titel As String = "Statistik Rezepte vom "
         'Filter Uhrzeit übernehmen
         If ListeStatistik.cbUhrzeitVon.Checked Then
             wb_Chargen_Shared.UhrzeitVon = ListeStatistik.dtUhrzeitVon.Value
+            Titel &= FilterVon.ToString("dd.MM.yyyy") & UhrzeitVon.ToString(" hh:mm")
         Else
             wb_Chargen_Shared.UhrzeitVon = wb_Global.wbNODATE
+            Titel &= FilterVon.ToString("dd.MM.yyyy")
         End If
+
+        'Fenster-Titel
+        Titel &= " bis "
         If ListeStatistik.cbUhrzeitBis.Checked Then
             wb_Chargen_Shared.UhrzeitBis = ListeStatistik.dtUhrzeitBis.Value
+            Titel &= FilterBis.ToString("dd.MM.yyyy") & UhrzeitBis.ToString(" hh:mm ")
         Else
             wb_Chargen_Shared.UhrzeitBis = wb_Global.wbNODATE
+            Titel &= FilterBis.ToString("dd.MM.yyyy")
         End If
 
         'Liste aller Rezept-Nummern
         ListeStatistik.GetElements(wb_Chargen_Shared.NrListe)
         'Liste aller Linien
         ListeStatistik.GetLinien(wb_Chargen_Shared.NrLinien)
+        wb_Chargen_Shared.AlleLinien = ListeStatistik.cbAlleLinien.Checked
 
         'Wassertemperatur ausblenden
         wb_Chargen_Shared.WasserTempAusblenden = ListeStatistik.cbWasserTempAusblenden.Checked
         'Istwert Null unterdrücken
         wb_Chargen_Shared.IstwertNullAusblenden = ListeStatistik.cbIstwertNullAusblenden.Checked
 
+        'Fenstertitel
+        FensterTitel = Titel
         'Auswertung starten
         wb_Chargen_Shared.Liste_Click(sender, wb_Global.StatistikType.StatistikRezepte)
-    End Sub
-
-    Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
-        'Ausdruck starten
-        wb_Chargen_Shared.Liste_Print(sender, wb_Global.StatistikType.StatistikRezepte)
     End Sub
 
     ''' <summary>

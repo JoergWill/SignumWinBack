@@ -79,7 +79,7 @@ Partial Class wb_Chargen_Details
         Me.ColCharge.Movable = False
         Me.ColCharge.Name = "ColCharge"
         Me.ColCharge.Sortable = False
-        Me.ColCharge.Width = 77
+        Me.ColCharge.Width = 57
         '
         'ColBezeichnung
         '
@@ -90,7 +90,7 @@ Partial Class wb_Chargen_Details
         Me.ColBezeichnung.Movable = False
         Me.ColBezeichnung.Name = "ColBezeichnung"
         Me.ColBezeichnung.Sortable = False
-        Me.ColBezeichnung.Width = 127
+        Me.ColBezeichnung.Width = 107
         '
         'ColLinie
         '
@@ -110,12 +110,11 @@ Partial Class wb_Chargen_Details
         Me.ColSollwert.Caption = "Sollwert"
         Me.ColSollwert.CellEvenStyle.BackColor = System.Drawing.Color.White
         Me.ColSollwert.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
-        Me.ColSollwert.MaxAutoSizeWidth = 60
-        Me.ColSollwert.MinWidth = 60
+        Me.ColSollwert.MaxAutoSizeWidth = 120
+        Me.ColSollwert.MinWidth = 100
         Me.ColSollwert.Name = "ColSollwert"
         Me.ColSollwert.Resizable = False
         Me.ColSollwert.Sortable = False
-        Me.ColSollwert.Width = 60
         '
         'ColEinheit
         '
@@ -131,10 +130,9 @@ Partial Class wb_Chargen_Details
         Me.ColIstmenge.AutoFitWeight = 0!
         Me.ColIstmenge.Caption = "Istwert"
         Me.ColIstmenge.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
-        Me.ColIstmenge.MaxAutoSizeWidth = 60
-        Me.ColIstmenge.MinWidth = 60
+        Me.ColIstmenge.MaxAutoSizeWidth = 120
+        Me.ColIstmenge.MinWidth = 100
         Me.ColIstmenge.Name = "ColIstmenge"
-        Me.ColIstmenge.Width = 60
         '
         'ColEinheitIst
         '
@@ -174,13 +172,13 @@ Partial Class wb_Chargen_Details
         '
         Me.ColUser.Caption = "User"
         Me.ColUser.Name = "ColUser"
-        Me.ColUser.Width = 57
+        Me.ColUser.Width = 37
         '
         'ColPreis
         '
         Me.ColPreis.Caption = "Preis"
         Me.ColPreis.Name = "ColPreis"
-        Me.ColPreis.Width = 57
+        Me.ColPreis.Width = 37
         '
         'ColRohCharge
         '

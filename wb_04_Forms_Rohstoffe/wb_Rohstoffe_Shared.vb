@@ -10,6 +10,7 @@ Public Class wb_Rohstoffe_Shared
     Public Shared RohStoff As New wb_Komponente
 
     Private Shared _ErrorText As String = ""
+    Private Shared _RohstoffeInGruppe As New ArrayList
 
     Enum AnzeigeFilter
         Undefined   ' nicht definiert
@@ -32,6 +33,44 @@ Public Class wb_Rohstoffe_Shared
     Public Shared ReadOnly Property ErrorText As String
         Get
             Return _ErrorText
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Liefert eine Liste aller Rohstoffe die zur Rohstoff-Gruppe gehören
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property RohstoffeInGruppe(Grp As Integer, Optional GrpNummer As Integer = 0) As ArrayList
+        Get
+            'Liste leeren
+            _RohstoffeInGruppe.Clear()
+
+            'Array mit allen Rohstoffen aus beiden Gruppe füllen
+            Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+            'Filter nach Gruppe1 und/oder Gruppe2
+            Dim sql As String = ""
+            Select Case GrpNummer
+                Case 0
+                    sql = "KA_Grp1 = " & Grp.ToString & " OR KA_Grp2 = " & Grp.ToString
+                Case 1
+                    sql = "KA_Grp1 = " & Grp.ToString
+                Case 2
+                    sql = "KA_Grp2 = " & Grp.ToString
+            End Select
+
+            'Alle Rohstoffe aus dieser Rohstoff-Gruppe
+            winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohstoffInGrp, sql))
+            While winback.Read
+                Dim x As New wb_StatistikListenElement
+                x.Nr = winback.iField("KO_Nr")
+                x.Nummer = winback.sField("KO_Nr_AlNum")
+                x.Bezeichnung = winback.sField("KO_Bezeichnung")
+                _RohstoffeInGruppe.Add(x)
+            End While
+
+            'Datenbank-Verbindung wieder schliessen
+            winback.Close()
+            Return _RohstoffeInGruppe
         End Get
     End Property
 

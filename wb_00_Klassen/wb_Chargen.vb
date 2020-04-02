@@ -29,16 +29,16 @@ Public Class wb_Chargen
         End Get
     End Property
 
-
     ''' <summary>
     ''' Liest alle Datensätze aus wbdaten zur angegeben Tageswechselnummer sortiert nach Produktionsdatum ein 
     ''' </summary>
     ''' <param name="StatistikType">Integer Tageswechsel-Nummer</param>
-    Public Function MySQLdbSelect_ChargenSchritte(StatistikType As wb_Global.StatistikType)
+    Public Function MySQLdbSelect_ChargenSchritte(StatistikType As wb_Global.StatistikType) As Boolean
         Dim ArtikelKopfZeile As wb_ChargenSchritt = _RootChargenSchritt
         Dim RezeptKopfZeile As wb_ChargenSchritt = Nothing
         Dim RezeptNr As Integer = wb_Global.UNDEFINED
         Dim RezeptIdx As Integer = wb_Global.UNDEFINED
+        Dim RohNr As Integer = wb_Global.UNDEFINED
 
         'Istwerte Chargen/Rezeptzeile
         Dim GesamtStueck As Double = 0.0
@@ -70,84 +70,460 @@ Public Class wb_Chargen
                 'Abfrage nach Tageswechsel-Nummer
                 Dim TwNr As Integer = wb_Chargen_Shared.Liste_TagesWechselNummer
                 sql = SqlStatistikChargen(TwNr, TwSort)
+
             Case wb_Global.StatistikType.StatistikRezepte
                 'Abfrage nach Rezeptnummern aus Liste
                 Dim TwStrt As Integer = MySQLdbStrtTWNr(wb_Chargen_Shared.FilterVon, wb_Chargen_Shared.UhrzeitVon)
-                Dim twEnde As Integer = MySQLdbEndeTWNr(wb_Chargen_Shared.FilterBis, wb_Chargen_Shared.UhrzeitBis)
+                Dim TwEnde As Integer = MySQLdbEndeTWNr(wb_Chargen_Shared.FilterBis, wb_Chargen_Shared.UhrzeitBis)
                 sql = SqlStatistikRezepte(TwStrt, TwEnde, TwSort)
+
+            Case wb_Global.StatistikType.StatistikRohstoffeVerbrauch
+                'Abfrage nach Rohstoffnummern aus Liste
+                Dim TwStrt As Integer = MySQLdbStrtTWNr(wb_Chargen_Shared.FilterVon, wb_Chargen_Shared.UhrzeitVon)
+                Dim TwEnde As Integer = MySQLdbEndeTWNr(wb_Chargen_Shared.FilterBis, wb_Chargen_Shared.UhrzeitBis)
+                sql = SqlStatistikRohVerbrauch(TwStrt, TwEnde, TwSort)
+
+            Case wb_Global.StatistikType.StatistikRohstoffeDetails
+                'Abfrage nach Rohstoffnummern aus Liste
+                Dim TwStrt As Integer = MySQLdbStrtTWNr(wb_Chargen_Shared.FilterVon, wb_Chargen_Shared.UhrzeitVon)
+                Dim TwEnde As Integer = MySQLdbEndeTWNr(wb_Chargen_Shared.FilterBis, wb_Chargen_Shared.UhrzeitBis)
+                sql = SqlStatistikRohDetails(TwStrt, TwEnde, TwSort)
 
             Case Else
                 'Abfrage nach Tageswechsel-Nummer (-1)
                 sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChargenDetails, -1, TwSort)
         End Select
 
-        'Datensätze aus Tabelle Rezeptschritte lesen
-        If winback.sqlSelect(sql) Then
-            If winback.Read Then
-                'Schleife über alle Datensätze
-                Do
-                    For i = 0 To winback.MySqlRead.FieldCount - 1
-                        'Felder mit Typ DateTime müssen speziell eingelesen werden
-                        If winback.MySqlRead.GetFieldType(i).Name = "DateTime" Then
-                            Value = winback.MySqlRead.GetMySqlDateTime(i)
-                        Else
-                            Value = winback.MySqlRead.GetValue(i)
-                        End If
-                        'Felder einlesen
-                        MySQLdbRead_Fields(winback.MySqlRead.GetName(i), Value)
-                    Next
+        'Datensätze aus Tabelle BAK_ArbRezepte/BAK_ArbRZSchritte lesen
+        If sql <> "" Then
+            If winback.sqlSelect(sql) Then
+                If winback.Read Then
+                    'Schleife über alle Datensätze
+                    Do
+                        For i = 0 To winback.MySqlRead.FieldCount - 1
+                            'Felder mit Typ DateTime müssen speziell eingelesen werden
+                            If winback.MySqlRead.GetFieldType(i).Name = "DateTime" Then
+                                Value = winback.MySqlRead.GetMySqlDateTime(i)
+                            Else
+                                Value = winback.MySqlRead.GetValue(i)
+                            End If
+                            'Felder einlesen
+                            MySQLdbRead_Fields(winback.MySqlRead.GetName(i), Value)
+                        Next
 
-                    'Chargen mit gleicher Artikel/Rezeptnummer zusammenfassen
-                    If RezeptNr <> _SQLChargenSchritt.RezeptNr Then
-                        If _SQLChargenSchritt.ChrgType = wb_Global.ChargenTypen.CHRG_ARTIKEL Then
-                            _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
-                        Else
-                            _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
-                        End If
-                        'Artikelzeilen hängen immer am ersten (Dummy)Schritt
-                        ArtikelKopfZeile = New wb_ChargenSchritt(_RootChargenSchritt)
-                        'Daten aus MySQL in Produktionsschritt kopieren
-                        ArtikelKopfZeile.CopyFrom(_SQLChargenSchritt)
-                        ArtikelKopfZeile.Status = wb_Global.UNDEFINED
+                        'Auswertung abhängig von der Statistik-Type
+                        Select Case StatistikType
 
-                        'Rezeptnummer merken
-                        RezeptNr = _SQLChargenSchritt.RezeptNr
-                        RezeptIdx = wb_Global.UNDEFINED
-                        'Sollmenge in Stück gesamt
-                        Sollmenge_Stk = 0
-                    End If
+                            Case wb_Global.StatistikType.StatistikRohstoffeVerbrauch
+                                'Chargen mit gleicher Rohstoff-Nummer zusammenfassen
+                                If RohNr <> _SQLChargenSchritt.KomponentenNr Then
+                                    _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
+                                    _SQLChargenSchritt.ChrgType = wb_Global.ChargenTypen.CHRG_KOMPSUMME
 
-                    'Zeile Rezeptkopf anfügen
-                    If (RezeptIdx >= _SQLChargenSchritt.SchrittIndex) Or (RezeptIdx = wb_Global.UNDEFINED) Then
-                        _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_REZEPT
-                        'Rezeptzeilen hängen immer an der Artikelzeile
-                        RezeptKopfZeile = New wb_ChargenSchritt(ArtikelKopfZeile)
-                        'Soll-Stückzahl in ArtikelKopfZeile
-                        Sollmenge_Stk += _SQLChargenSchritt.Sollmenge_Stk
-                        ArtikelKopfZeile.Sollmenge_Stk_gesamt = Sollmenge_Stk
-                        'Daten aus MySQL in Produktionsschritt kopieren
-                        RezeptKopfZeile.CopyFrom(_SQLChargenSchritt)
-                        RezeptKopfZeile.Status = wb_Global.UNDEFINED
+                                    'Komponenten(Kopf)zeilen hängen immer am ersten (Dummy)Schritt
+                                    ArtikelKopfZeile = New wb_ChargenSchritt(_RootChargenSchritt)
+                                    'Daten aus MySQL in Produktionsschritt kopieren
+                                    ArtikelKopfZeile.CopyFrom(_SQLChargenSchritt)
+                                    ArtikelKopfZeile.Status = wb_Global.ChargenStatus.CS_UNBEARBEITET
+                                    'Kopfzeile Komponenten-Bezeichnung und Nummer
+                                    ArtikelKopfZeile.ArtikelBezeichnung = _SQLChargenSchritt.KomponentenBezeichnung
+                                    ArtikelKopfZeile.ArtikelNummer = _SQLChargenSchritt.KomponentenNummer
+                                    ArtikelKopfZeile.StartZeit = wb_Global.wbNODATE
 
-                        'Rezeptindex merken
-                        RezeptIdx = _SQLChargenSchritt.SchrittIndex
-                    End If
+                                    'Komponentennummer merken
+                                    RohNr = _SQLChargenSchritt.KomponentenNr
+                                End If
 
-                    'Zeile Rezeptschritt anfügen
-                    _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE
-                    _ChargenSchritt = New wb_ChargenSchritt(RezeptKopfZeile)
-                    'Daten aus MySQL in Produktionsschritt kopieren
-                    _ChargenSchritt.CopyFrom(_SQLChargenSchritt)
+                                'Zeile Rezeptschritt(Komponente) anfügen
+                                _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE
+                                _SQLChargenSchritt.ChrgType = wb_Global.ChargenTypen.CHRG_KOMPONENTE
+                                _ChargenSchritt = New wb_ChargenSchritt(ArtikelKopfZeile)
+                                'Daten aus MySQL in Produktionsschritt kopieren
+                                _ChargenSchritt.CopyFrom(_SQLChargenSchritt)
 
-                Loop While winback.MySqlRead.Read
+                            Case wb_Global.StatistikType.StatistikRohstoffeDetails
+                                'Chargen mit gleicher Rohstoff-Nummer zusammenfassen
+                                If RohNr <> _SQLChargenSchritt.KomponentenNr Then
+                                    _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
+                                    _SQLChargenSchritt.ChrgType = wb_Global.ChargenTypen.CHRG_KOMPSUMME
 
-                'alle Datensätze eingelesen
-                winback.Close()
-                Return True
+                                    'Komponenten(Kopf)zeilen hängen immer am ersten (Dummy)Schritt
+                                    ArtikelKopfZeile = New wb_ChargenSchritt(_RootChargenSchritt)
+                                    'Daten aus MySQL in Produktionsschritt kopieren
+                                    ArtikelKopfZeile.CopyFrom(_SQLChargenSchritt)
+                                    ArtikelKopfZeile.Status = wb_Global.ChargenStatus.CS_UNBEARBEITET
+                                    'Kopfzeile Komponenten-Bezeichnung und Nummer
+                                    ArtikelKopfZeile.ArtikelBezeichnung = _SQLChargenSchritt.KomponentenBezeichnung
+                                    ArtikelKopfZeile.ArtikelNummer = _SQLChargenSchritt.KomponentenNummer
+                                    ArtikelKopfZeile.StartZeit = wb_Global.wbNODATE
+
+                                    'Komponentennummer merken
+                                    RohNr = _SQLChargenSchritt.KomponentenNr
+                                End If
+
+                                'Zeile Rezeptkopf anfügen
+                                If (RezeptIdx >= _SQLChargenSchritt.SchrittIndex) Or (RezeptIdx = wb_Global.UNDEFINED) Then
+                                    _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_REZEPT
+                                    'Rezeptzeilen hängen immer an der Artikelzeile
+                                    RezeptKopfZeile = New wb_ChargenSchritt(ArtikelKopfZeile)
+                                    'Soll-Stückzahl in ArtikelKopfZeile
+                                    Sollmenge_Stk += _SQLChargenSchritt.Sollmenge_Stk
+                                    ArtikelKopfZeile.Sollmenge_Stk_gesamt = Sollmenge_Stk
+                                    'Daten aus MySQL in Produktionsschritt kopieren
+                                    RezeptKopfZeile.CopyFrom(_SQLChargenSchritt)
+                                    RezeptKopfZeile.Status = wb_Global.UNDEFINED
+
+                                    'Rezeptindex merken
+                                    RezeptIdx = _SQLChargenSchritt.SchrittIndex
+                                End If
+
+                                'Zeile Rezeptschritt anfügen
+                                _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE
+                                _ChargenSchritt = New wb_ChargenSchritt(RezeptKopfZeile)
+                                'Daten aus MySQL in Produktionsschritt kopieren
+                                _ChargenSchritt.CopyFrom(_SQLChargenSchritt)
+
+
+                            Case Else
+                                'Chargen mit gleicher Artikel/Rezeptnummer zusammenfassen
+                                If RezeptNr <> _SQLChargenSchritt.RezeptNr Then
+                                    If _SQLChargenSchritt.ChrgType = wb_Global.ChargenTypen.CHRG_ARTIKEL Then
+                                        _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
+                                    Else
+                                        _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
+                                    End If
+                                    'Artikelzeilen hängen immer am ersten (Dummy)Schritt
+                                    ArtikelKopfZeile = New wb_ChargenSchritt(_RootChargenSchritt)
+                                    'Daten aus MySQL in Produktionsschritt kopieren
+                                    ArtikelKopfZeile.CopyFrom(_SQLChargenSchritt)
+                                    ArtikelKopfZeile.Status = wb_Global.UNDEFINED
+
+                                    'Rezeptnummer merken
+                                    RezeptNr = _SQLChargenSchritt.RezeptNr
+                                    RezeptIdx = wb_Global.UNDEFINED
+                                    'Sollmenge in Stück gesamt
+                                    Sollmenge_Stk = 0
+                                End If
+
+                                'Zeile Rezeptkopf anfügen
+                                If (RezeptIdx >= _SQLChargenSchritt.SchrittIndex) Or (RezeptIdx = wb_Global.UNDEFINED) Then
+                                    _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_REZEPT
+                                    'Rezeptzeilen hängen immer an der Artikelzeile
+                                    RezeptKopfZeile = New wb_ChargenSchritt(ArtikelKopfZeile)
+                                    'Soll-Stückzahl in ArtikelKopfZeile
+                                    Sollmenge_Stk += _SQLChargenSchritt.Sollmenge_Stk
+                                    ArtikelKopfZeile.Sollmenge_Stk_gesamt = Sollmenge_Stk
+                                    'Daten aus MySQL in Produktionsschritt kopieren
+                                    RezeptKopfZeile.CopyFrom(_SQLChargenSchritt)
+                                    RezeptKopfZeile.Status = wb_Global.UNDEFINED
+
+                                    'Rezeptindex merken
+                                    RezeptIdx = _SQLChargenSchritt.SchrittIndex
+                                End If
+
+                                'Zeile Rezeptschritt anfügen
+                                _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE
+                                _ChargenSchritt = New wb_ChargenSchritt(RezeptKopfZeile)
+                                'Daten aus MySQL in Produktionsschritt kopieren
+                                _ChargenSchritt.CopyFrom(_SQLChargenSchritt)
+
+                        End Select
+                    Loop While winback.MySqlRead.Read
+
+                    'alle Datensätze eingelesen
+                    winback.Close()
+                    Return True
+                End If
+            End If
+            winback.Close()
+            Return False
+        End If
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' SQL-Statement erstellen für Statistik Chargen
+    ''' </summary>
+    ''' <param name="TwNr"></param>
+    ''' <param name="TwSort"></param>
+    ''' <returns></returns>
+    Private Function SqlStatistikChargen(TwNr As Integer, TwSort As String) As String
+        'TODO ANFANG ENDE TW-NUMMER
+        Return wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChargenDetails, TwNr, TwSort)
+    End Function
+
+    ''' <summary>
+    ''' SQL-Statement erstellen für Statistik Rezepte
+    ''' </summary>
+    ''' <param name="TwStrt"></param>
+    ''' <param name="TwEnde"></param>
+    ''' <param name="TwSort"></param>
+    ''' <returns></returns>
+    Private Function SqlStatistikRezepte(TwStrt As Integer, TwEnde As Integer, TwSort As String) As String
+        'Tageswechsel-Nummern prüfen
+        If TwStrt > 0 And TwEnde > 0 Then
+
+            'sql-Anweisung - Liste aller Rezepte aus der Liste (Idx)
+            Dim sqlRezepte As String = ""
+            For Each RzNr In wb_Chargen_Shared.NrListe
+                If sqlRezepte <> "" Then
+                    sqlRezepte += " OR "
+                End If
+                sqlRezepte += "BAK_ArbRezepte.B_ARZ_Nr=" & RzNr.ToString
+            Next
+
+            'sql-Anweisung - Liste aller Linien aus der Liste (Idx)
+            Dim sqlLinien As String = ""
+            For Each LNr In wb_Chargen_Shared.NrLinien
+                If sqlLinien <> "" Then
+                    sqlLinien += " OR "
+                End If
+                sqlLinien += "BAK_ArbRezepte.B_ARZ_LiBeh_Nr = " & LNr.ToString + 100
+            Next
+
+            'sql-Abfrage abhängig von den Filter-Kriterien erstellen
+            Dim sql As String = wb_Sql_Selects.sqlStatRezepte
+
+            'Wassertemperatur mit anzeigen
+            If wb_Chargen_Shared.WasserTempAusblenden Then
+                sql += " WHERE (BAK_ArbRZSchritte.B_ARS_ParamNr = 1)"
+            Else
+                sql += " WHERE ((BAK_ArbRZSchritte.B_ARS_ParamNr = 1) OR BAK_ArbRZSchritte.B_ARS_ParamNr = 3)"
+            End If
+
+            'Istwert = Null unterdrücken
+            If wb_Chargen_Shared.IstwertNullAusblenden Then
+                sql += " AND (BAK_ArbRZSchritte.B_ARS_Gestartet > 0)"
+            End If
+
+            'Datum/Uhrzeit einschränken
+            'FormatDateTime('yyyymmddhhnnss', eDatumVon.date + dtStartTime.Time)
+            If wb_Chargen_Shared.UhrzeitVon <> wb_Global.wbNODATE Then
+                sql += " AND B_ARS_Gestartet >= '" & wb_Chargen_Shared.FilterVon.ToString("yyyy-MM-dd") & " " & wb_Chargen_Shared.UhrzeitVon.ToString("HH:mm:ss") & "'"
+            End If
+            If wb_Chargen_Shared.UhrzeitBis <> wb_Global.wbNODATE Then
+                sql += " AND B_ARS_Gestartet <= '" & wb_Chargen_Shared.FilterBis.ToString("yyyy-MM-dd") & " " & wb_Chargen_Shared.UhrzeitBis.ToString("HH:mm:ss") & "'"
+            End If
+
+            'Nach Linien filtern
+            If Not wb_Chargen_Shared.AlleLinien Then
+                sql += " AND (" & sqlLinien & ")"
+            End If
+
+            'Nach Rezepten filtern
+            If sqlRezepte <> "" Then
+                sql += " AND (" & sqlRezepte & ")"
+            End If
+
+            'Tageswechsel-Nummern
+            sql += " AND (Tageswechsel.TW_Nr >= " & TwStrt.ToString & " AND Tageswechsel.TW_Nr <= " & TwEnde.ToString & ") "
+
+            'Sortierkriterium
+            sql += "ORDER BY B_ARZ_Bezeichnung, B_ARZ_TW_Nr, B_ARZ_TW_Idx, B_ARS_TW_Idx, B_ARZ_Charge_Nr"
+
+            'sql-Abfrage
+            Return sql
+        Else
+            'Tageswechsel-Nummern ungültig
+            Return ""
+        End If
+    End Function
+
+    ''' <summary>
+    ''' SQL-Statement erstellen für Statistik Rohstoffe Verbrauch (schnell)
+    ''' </summary>
+    ''' <param name="TwStrt"></param>
+    ''' <param name="TwEnde"></param>
+    ''' <param name="TwSort"></param>
+    ''' <returns></returns>
+    Private Function SqlStatistikRohVerbrauch(TwStrt As Integer, TwEnde As Integer, TwSort As String) As String
+        'Tageswechsel-Nummern prüfen
+        If TwStrt > 0 And TwEnde > 0 Then
+
+            'sql-Anweisung - Liste aller Rohstoffe aus der Liste (Idx)
+            Dim sqlRohstoffe As String = ""
+            For Each RohNr In wb_Chargen_Shared.NrListe
+                If sqlRohstoffe <> "" Then
+                    sqlRohstoffe += " OR "
+                End If
+                sqlRohstoffe += "B_ARS_Ko_Nr=" & RohNr.ToString
+            Next
+
+            'sql-Anweisung - Liste aller Linien aus der Liste (Idx)
+            Dim sqlLinien As String = ""
+            For Each LNr In wb_Chargen_Shared.NrLinien
+                If sqlLinien <> "" Then
+                    sqlLinien += " OR "
+                End If
+                sqlLinien += "B_ARS_Beh_Nr = " & LNr.ToString + 100
+            Next
+
+            'sql-Abfrage abhängig von den Filter-Kriterien erstellen
+            Dim sql As String = wb_Sql_Selects.sqlStatRohVerbrauch
+
+            'Wassertemperatur mit anzeigen
+            If wb_Chargen_Shared.WasserTempAusblenden Then
+                sql += " WHERE (B_ARS_ParamNr = 1)"
+            Else
+                sql += " WHERE ((B_ARS_ParamNr = 1) OR (B_ARS_ParamNr = 3))"
+            End If
+
+            'Istwert = Null unterdrücken
+            If wb_Chargen_Shared.IstwertNullAusblenden Then
+                sql += " AND (B_ARS_Beendet > 0)"
+            End If
+
+            'Datum/Uhrzeit einschränken
+            'FormatDateTime('yyyymmddhhnnss', eDatumVon.date + dtStartTime.Time)
+            If wb_Chargen_Shared.UhrzeitVon <> wb_Global.wbNODATE Then
+                sql += " AND B_ARS_Gestartet >= '" & wb_Chargen_Shared.FilterVon.ToString("yyyy-MM-dd") & " " & wb_Chargen_Shared.UhrzeitVon.ToString("HH:mm:ss") & "'"
+            End If
+            If wb_Chargen_Shared.UhrzeitBis <> wb_Global.wbNODATE Then
+                sql += " AND B_ARS_Gestartet <= '" & wb_Chargen_Shared.FilterBis.ToString("yyyy-MM-dd") & " " & wb_Chargen_Shared.UhrzeitBis.ToString("HH:mm:ss") & "'"
+            End If
+
+            'Nach Linien filtern
+            If Not wb_Chargen_Shared.AlleLinien Then
+                sql += " AND (" & sqlLinien & ")"
+            End If
+
+            'Nach Rezepten filtern
+            If sqlRohstoffe <> "" Then
+                sql += " AND (" & sqlRohstoffe & ")"
+            End If
+
+            'Tageswechsel-Nummern
+            sql += " AND (B_ARS_TW_Nr >= " & TwStrt.ToString & " AND B_ARS_TW_Nr <= " & TwEnde.ToString & ") "
+
+            'Sortierkriterium
+            If wb_Chargen_Shared.WasserTempAusblenden Then
+                sql += "ORDER BY B_ARS_Ko_Nr, B_ARS_TW_Nr, B_ARS_TW_Idx"
+            Else
+                sql += "ORDER BY B_ARS_ParamNr, B_ARS_Ko_Nr, B_ARS_TW_Nr, B_ARS_TW_Idx"
+            End If
+
+            'sql-Abfrage
+            Return sql
+        Else
+            'Tageswechsel-Nummern ungültig
+            Return ""
+        End If
+    End Function
+
+    ''' <summary>
+    ''' SQL-Statement erstellen für Statistik Rohstoffe Details
+    ''' </summary>
+    ''' <param name="TwStrt"></param>
+    ''' <param name="TwEnde"></param>
+    ''' <param name="TwSort"></param>
+    ''' <returns></returns>
+    Private Function SqlStatistikRohDetails(TwStrt As Integer, TwEnde As Integer, TwSort As String) As String
+        'Tageswechsel-Nummern prüfen
+        If TwStrt > 0 And TwEnde > 0 Then
+
+            'sql-Anweisung - Liste aller Rohstoffe aus der Liste (Idx)
+            Dim sqlRohstoffe As String = ""
+            For Each RohNr In wb_Chargen_Shared.NrListe
+                If sqlRohstoffe <> "" Then
+                    sqlRohstoffe += " OR "
+                End If
+                sqlRohstoffe += "B_ARS_Ko_Nr=" & RohNr.ToString
+            Next
+
+            'sql-Anweisung - Liste aller Linien aus der Liste (Idx)
+            Dim sqlLinien As String = ""
+            For Each LNr In wb_Chargen_Shared.NrLinien
+                If sqlLinien <> "" Then
+                    sqlLinien += " OR "
+                End If
+                sqlLinien += "B_ARS_Beh_Nr = " & LNr.ToString + 100
+            Next
+
+            'sql-Abfrage abhängig von den Filter-Kriterien erstellen
+            Dim sql As String = wb_Sql_Selects.sqlStatRohDetails
+
+            'Wassertemperatur mit anzeigen
+            If wb_Chargen_Shared.WasserTempAusblenden Then
+                sql += " WHERE (B_ARS_ParamNr = 1)"
+            Else
+                sql += " WHERE ((B_ARS_ParamNr = 1) OR (B_ARS_ParamNr = 3))"
+            End If
+
+            'Istwert = Null unterdrücken
+            If wb_Chargen_Shared.IstwertNullAusblenden Then
+                sql += " AND (B_ARS_Beendet > 0)"
+            End If
+
+            'Datum/Uhrzeit einschränken
+            'FormatDateTime('yyyymmddhhnnss', eDatumVon.date + dtStartTime.Time)
+            If wb_Chargen_Shared.UhrzeitVon <> wb_Global.wbNODATE Then
+                sql += " AND B_ARS_Gestartet >= '" & wb_Chargen_Shared.FilterVon.ToString("yyyy-MM-dd") & " " & wb_Chargen_Shared.UhrzeitVon.ToString("HH:mm:ss") & "'"
+            End If
+            If wb_Chargen_Shared.UhrzeitBis <> wb_Global.wbNODATE Then
+                sql += " AND B_ARS_Gestartet <= '" & wb_Chargen_Shared.FilterBis.ToString("yyyy-MM-dd") & " " & wb_Chargen_Shared.UhrzeitBis.ToString("HH:mm:ss") & "'"
+            End If
+
+            'Nach Linien filtern
+            If Not wb_Chargen_Shared.AlleLinien Then
+                sql += " AND (" & sqlLinien & ")"
+            End If
+
+            'Nach Rezepten filtern
+            If sqlRohstoffe <> "" Then
+                sql += " AND (" & sqlRohstoffe & ")"
+            End If
+
+            'Tageswechsel-Nummern
+            sql += " AND (B_ARS_TW_Nr >= " & TwStrt.ToString & " AND B_ARS_TW_Nr <= " & TwEnde.ToString & ") "
+
+            'Sortierkriterium
+            If wb_Chargen_Shared.WasserTempAusblenden Then
+                sql += "ORDER BY B_ARS_Ko_Nr, B_ARZ_Nr, B_ARZ_RZ_Variante_NR, B_ARS_TW_Nr, B_ARS_TW_Idx"
+            Else
+                sql += "ORDER BY B_ARS_ParamNr, B_ARS_Ko_Nr, B_ARZ_Nr, B_ARZ_RZ_Variante_NR, B_ARS_TW_Nr, B_ARS_TW_Idx"
+            End If
+
+            'sql-Abfrage
+            Return sql
+        Else
+            'Tageswechsel-Nummern ungültig
+            Return ""
+        End If
+    End Function
+
+    Private Function MySQLdbStrtTWNr(FilterVon As Date, UhrzeitVon As Date) As String
+        'SQL-Abfrage startet einen Tag früher wenn die Startzeit angegeben wurde
+        If UhrzeitVon <> wb_Global.wbNODATE Then
+            FilterVon = FilterVon.AddDays(-1)
+        End If
+        'sql-Abfrage Tageswechsel-Nummer 
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTWNrStrt, FilterVon.ToString("yyyy-MM-dd"))
+        Return MySQLdbGetTWNr(sql)
+    End Function
+
+    Private Function MySQLdbEndeTWNr(FilterBis As Date, UhrzeitBis As Date) As String
+        'SQL-Abfrage endet einen Tag später wenn die Endezeit angegeben wurde
+        If UhrzeitBis <> wb_Global.wbNODATE Then
+            FilterBis = FilterBis.AddDays(1)
+        End If
+        'sql-Abfrage Tageswechsel-Nummer 
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTWNrEnde, FilterBis.ToString("yyyy-MM-dd"))
+        Return MySQLdbGetTWNr(sql)
+    End Function
+
+    Private Function MySQLdbGetTWNr(sql) As String
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim wbdaten = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
+
+        'Datensätze aus Tabelle Tageswechsel lesen
+        If wbdaten.sqlSelect(sql) Then
+            If wbdaten.Read Then
+                Return wbdaten.iField("TW_Nr").ToString
             End If
         End If
-        winback.Close()
-        Return False
+
+        'Fehler bei der Abfrage der Daten oder keine Daten vorhanden
+        Return "-1"
     End Function
 
     ''' <summary>
@@ -185,7 +561,7 @@ Public Class wb_Chargen
                 Case "B_ARZ_Best_Nr"
                     _SQLChargenSchritt.AuftragsNummer = Value
                 'Chargen-Nummer
-                Case "B_ARZ_Charge_Nr"
+                Case "B_ARZ_Charge_Nr", "B_ARS_Charge_Nr"
                     _SQLChargenSchritt.ChargenNummer = Value
                 'Typ (Artikel oder Rezept-Zeile)
                 Case "B_ARZ_Typ"
@@ -220,7 +596,7 @@ Public Class wb_Chargen
                     _SQLChargenSchritt.KomponentenParamNr = wb_Functions.StrToInt(Value)
 
                 'Linie
-                Case "B_ARZ_LiBeh_Nr"
+                Case "B_ARZ_LiBeh_Nr", "B_ARS_Beh_Nr"
                     _SQLChargenSchritt.LinienGruppe = wb_Functions.StrToInt(Value) - 100
 
                 'Rezeptnummer(intern)
@@ -280,119 +656,4 @@ Public Class wb_Chargen
 
     End Function
 
-    ''' <summary>
-    ''' SQL-Statement erstellen für Statistik Chargen
-    ''' </summary>
-    ''' <param name="TwNr"></param>
-    ''' <param name="TwSort"></param>
-    ''' <returns></returns>
-    Private Function SqlStatistikChargen(TwNr As Integer, TwSort As String) As String
-        'TODO ANFANG ENDE TW-NUMMER
-        Return wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChargenDetails, TwNr, TwSort)
-    End Function
-
-    ''' <summary>
-    ''' SQL-Statement erstellen für Statistik Rezepte
-    ''' </summary>
-    ''' <param name="TwStrt"></param>
-    ''' <param name="TwEnde"></param>
-    ''' <param name="TwSort"></param>
-    ''' <returns></returns>
-    Private Function SqlStatistikRezepte(TwStrt As Integer, TwEnde As Integer, TwSort As String) As String
-
-        'sql-Anweisung - Liste aller Rezepte aus der Liste (Idx)
-        Dim sqlRezepte As String = ""
-        For Each rzNr In wb_Chargen_Shared.NrListe
-            If sqlRezepte <> "" Then
-                sqlRezepte += " OR "
-            End If
-            sqlRezepte += "BAK_ArbRezepte.B_ARZ_Nr=" & rzNr.ToString
-        Next
-
-        'sql-Anweisung - Liste aller Linien aus der Liste (Idx)
-        Dim sqlLinien As String = ""
-        For Each LNr In wb_Chargen_Shared.NrLinien
-            If sqlLinien <> "" Then
-                sqlLinien += " OR "
-            End If
-            sqlLinien += "BAK_ArbRezepte.B_ARZ_LiBeh_Nr =" & LNr.ToString
-        Next
-
-        'sql-Abfrage abhängig von den Filter-Kriterien erstellen
-        Dim sql As String = wb_Sql_Selects.sqlStatRezepte
-
-        'Wassertemperatur mit anzeigen
-        If wb_Chargen_Shared.WasserTempAusblenden Then
-            sql += " WHERE (BAK_ArbRZSchritte.B_ARS_ParamNr = 1)"
-        Else
-            sql += " WHERE ((BAK_ArbRZSchritte.B_ARS_ParamNr = 1) OR BAK_ArbRZSchritte.B_ARS_ParamNr = 3)"
-        End If
-
-        'Istwert = Null unterdrücken
-        If wb_Chargen_Shared.IstwertNullAusblenden Then
-            sql += " AND (BAK_ArbRZSchritte.B_ARS_Gestartet > 0)"
-        End If
-
-        'Datum/Uhrzeit einschränken
-        'FormatDateTime('yyyymmddhhnnss', eDatumVon.date + dtStartTime.Time)
-        If wb_Chargen_Shared.UhrzeitVon <> wb_Global.wbNODATE Then
-            sql += " AND B_ARS_Gestartet >= '" & wb_Chargen_Shared.FilterVon.ToString("yyyy-MM-dd") & " " & wb_Chargen_Shared.UhrzeitVon.ToString("HH:mm:ss") & "'"
-        End If
-        If wb_Chargen_Shared.UhrzeitBis <> wb_Global.wbNODATE Then
-            sql += " AND B_ARS_Gestartet <= '" & wb_Chargen_Shared.FilterBis.ToString("yyyy-MM-dd") & " " & wb_Chargen_Shared.UhrzeitBis.ToString("HH:mm:ss") & "'"
-        End If
-
-        'Nach Linien filtern
-        If Not wb_Chargen_Shared.AlleLinien Then
-            sql += " AND (" & sqlLinien & ")"
-        End If
-
-        'Nach Rezepten filtern
-        If sqlRezepte <> "" Then
-            sql += " AND (" & sqlRezepte & ")"
-        End If
-
-        'Tageswechsel-Nummern
-        sql += " AND (Tageswechsel.TW_Nr >= " & TwStrt.ToString & " AND Tageswechsel.TW_Nr <= " & TwEnde.ToString & ") "
-
-        'Sortierkriterium
-        sql += "ORDER BY B_ARZ_Bezeichnung, B_ARZ_TW_Nr, B_ARZ_TW_Idx, B_ARS_TW_Idx, B_ARZ_Charge_Nr"
-
-        Return sql
-    End Function
-
-    Private Function MySQLdbStrtTWNr(FilterVon As Date, UhrzeitVon As Date) As String
-        'SQL-Abfrage startet einen Tag früher wenn die Startzeit angegeben wurde
-        If UhrzeitVon <> wb_Global.wbNODATE Then
-            FilterVon = FilterVon.AddDays(-1)
-        End If
-        'sql-Abfrage Tageswechsel-Nummer 
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTWNrStrt, FilterVon.ToString("yyyy-MM-dd"))
-        Return MySQLdbGetTWNr(sql)
-    End Function
-
-    Private Function MySQLdbEndeTWNr(FilterBis As Date, UhrzeitBis As Date) As String
-        'SQL-Abfrage endet einen Tag später wenn die Endezeit angegeben wurde
-        If UhrzeitBis <> wb_Global.wbNODATE Then
-            FilterBis = FilterBis.AddDays(1)
-        End If
-        'sql-Abfrage Tageswechsel-Nummer 
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlTWNrEnde, FilterBis.ToString("yyyy-MM-dd"))
-        Return MySQLdbGetTWNr(sql)
-    End Function
-
-    Private Function MySQLdbGetTWNr(sql) As String
-        'Datenbank-Verbindung öffnen - MySQL
-        Dim wbdaten = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
-
-        'Datensätze aus Tabelle Tageswechsel lesen
-        If wbdaten.sqlSelect(sql) Then
-            If wbdaten.Read Then
-                Return wbdaten.iField("TW_Nr").ToString
-            End If
-        End If
-
-        'Fehler bei der Abfrage der Daten oder keine Daten vorhanden
-        Return "-1"
-    End Function
 End Class

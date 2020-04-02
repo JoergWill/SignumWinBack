@@ -1017,6 +1017,13 @@ Stacktrace:
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_ListeStatistik.cbRohstoffGrp1_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ Alle Einträge(Rohstoffe) aus der Gruppe zur Liste hinzufügen. Vorher wird die Liste geleert.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_SyncAufarbeitung_OrgaBack.GetGruppenNummer">
  <summary>
  Ermittelt die GruppenNummer der Artikel-Zusatzgruppe für das MFF200 (Aufarbeitungsplatz)
@@ -1082,6 +1089,41 @@ Stacktrace:
  </summary>
  <param name="StatistikType">Integer Tageswechsel-Nummer</param>
 </member>
+<member name="M:WinBack.wb_Chargen.SqlStatistikChargen(System.Int32,System.String)">
+ <summary>
+ SQL-Statement erstellen für Statistik Chargen
+ </summary>
+ <param name="TwNr"></param>
+ <param name="TwSort"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Chargen.SqlStatistikRezepte(System.Int32,System.Int32,System.String)">
+ <summary>
+ SQL-Statement erstellen für Statistik Rezepte
+ </summary>
+ <param name="TwStrt"></param>
+ <param name="TwEnde"></param>
+ <param name="TwSort"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Chargen.SqlStatistikRohVerbrauch(System.Int32,System.Int32,System.String)">
+ <summary>
+ SQL-Statement erstellen für Statistik Rohstoffe Verbrauch (schnell)
+ </summary>
+ <param name="TwStrt"></param>
+ <param name="TwEnde"></param>
+ <param name="TwSort"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Chargen.SqlStatistikRohDetails(System.Int32,System.Int32,System.String)">
+ <summary>
+ SQL-Statement erstellen für Statistik Rohstoffe Details
+ </summary>
+ <param name="TwStrt"></param>
+ <param name="TwEnde"></param>
+ <param name="TwSort"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Chargen.MySQLdbRead_Fields(System.String,System.Object)">
  <summary>
  Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
@@ -1102,23 +1144,6 @@ Stacktrace:
  <param name="Value">Object - Wert aus Datenbank</param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Chargen.SqlStatistikChargen(System.Int32,System.String)">
- <summary>
- SQL-Statement erstellen für Statistik Chargen
- </summary>
- <param name="TwNr"></param>
- <param name="TwSort"></param>
- <returns></returns>
-</member>
-<member name="M:WinBack.wb_Chargen.SqlStatistikRezepte(System.Int32,System.Int32,System.String)">
- <summary>
- SQL-Statement erstellen für Statistik Rezepte
- </summary>
- <param name="TwStrt"></param>
- <param name="TwEnde"></param>
- <param name="TwSort"></param>
- <returns></returns>
-</member>
 <member name="M:WinBack.wb_ChargenSchritt.CopyFrom(WinBack.wb_ChargenSchritt)">
  <summary>
  Kopiert alle Properties dieser Klasse auf die Properties der übergebenen Klasse.
@@ -1130,6 +1155,20 @@ Stacktrace:
  Durch die Schleife über alle Properties ist die Funktion unabhängig von eventuellen Erweiterungen.
  </summary>
  <param name="rs">wb_ChargenSchritt nimmt die Werte der Properties der Klasse auf</param>
+</member>
+<member name="P:WinBack.wb_ChargenSchritt.Sollmenge_kg_gesamt">
+ <summary>
+ Summe aller Sollwerte in den Child-Steps
+ (Statistik Rohstoffe-Verbrauch)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_ChargenSchritt.Istmenge_kg_gesamt">
+ <summary>
+ Summe aller Sollwerte in den Child-Steps
+ (Statistik Rohstoffe-Verbrauch)
+ </summary>
+ <returns></returns>
 </member>
 <member name="P:WinBack.wb_ChargenSchritt.VirtTreeBezeichnung">
  <summary>
@@ -2027,6 +2066,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="sender"></param>
  <param name="StatistikType"></param>
 </member>
+<member name="M:WinBack.wb_Chargen_Details.LLPrepareArray(System.Collections.ArrayList@,System.Int32)">
+ <summary>
+ Flaches Array für List und Label erzeugen. Je nach Auswertung werden unterschiedlich
+ tiefe Auflösungen (Verschachtelungen) in das Array eingetragen
+ </summary>
+ <param name="LLArray"></param>
+ <param name="Ebenen"></param>
+</member>
 <member name="M:WinBack.wb_Chargen_Details.VirtualTree_GetCellData(System.Object,Infralution.Controls.VirtualTree.GetCellDataEventArgs)">
  <summary>
  Virtual-Tree Zeilen/Zellen mit geändertem Zeichensatz darstellen
@@ -2063,10 +2110,16 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 <member name="M:WinBack.wb_Statistik_Rezepte.ListeAdd(System.Object,System.EventArgs)">
  <summary>
  Auswahlfenster Rezepte öffnen und Rezept aus Liste auswählen.
- Das ausgewählte Rezept wird zur Liste hinzugefügt.
+ Die ausgewählten Rezepte werden zur Liste hinzugefügt.
  </summary>
  <param name="Sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_Rezepte.ListeBerechnetChanged(System.Object)">
+ <summary>
+ Wenn die Liste neu berechnet werden muss - Button Berechnen aktivieren
+ </summary>
+ <param name="sender"></param>
 </member>
 <member name="M:WinBack.wb_Statistik_Rezepte.BtnBerechnen_Click(System.Object,System.EventArgs)">
  <summary>
@@ -2076,7 +2129,110 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Statistik_Rezepte.BtnDrucken_Click(System.Object,System.EventArgs)">
+ <summary>
+ Auswertung Drucken
+ Wenn die Statistik noch nicht berechnet wurde, zuerst Berechnung starten
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_Rezepte.BerechnungStatistik(System.Object)">
+ <summary>
+ Statistik berechnen. Alle Filter-Einstellungen in wb_Chargen_Shared eintragen
+ Start der Berechnung über Event(Liste_Click)
+ </summary>
+ <param name="sender"></param>
+</member>
 <member name="M:WinBack.wb_Statistik_Rezepte.wb_Statistik_Rezepte_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+ <summary>
+ Filter-Einstellungen in winback.ini speichern
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohDetails.ListeAdd(System.Object,System.EventArgs)">
+ <summary>
+ Auswahlfenster Rezepte öffnen und Rohstoff(e) aus Liste auswählen.
+ Die ausgewählten Rohstoffe werden zur Liste hinzugefügt.
+ </summary>
+ <param name="Sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohDetails.ListeBerechnetChanged(System.Object)">
+ <summary>
+ Wenn die Liste neu berechnet werden muss - Button Berechnen aktivieren
+ </summary>
+ <param name="sender"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohDetails.BtnBerechnen_Click(System.Object,System.EventArgs)">
+ <summary>
+ Auswertung starten.
+ Die Berechnung und Anzeige erfolgt im Fenster Chargen_Details. Abhängig vom Statistik-Typ wird die entsprechende Abfrage in wbdaten ausgeführt
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohDetails.BtnDrucken_Click(System.Object,System.EventArgs)">
+ <summary>
+ Auswertung Drucken
+ Wenn die Statistik noch nicht berechnet wurde, zuerst Berechnung starten
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohDetails.BerechnungStatistik(System.Object)">
+ <summary>
+ Statistik berechnen. Alle Filter-Einstellungen in wb_Chargen_Shared eintragen
+ Start der Berechnung über Event(Liste_Click)
+ </summary>
+ <param name="sender"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohDetails.wb_Statistik_RohDetails_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+ <summary>
+ Filter-Einstellungen in winback.ini speichern
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohVerbrauch.ListeAdd(System.Object,System.EventArgs)">
+ <summary>
+ Auswahlfenster Rezepte öffnen und Rohstoff(e) aus Liste auswählen.
+ Die ausgewählten Rohstoffe werden zur Liste hinzugefügt.
+ </summary>
+ <param name="Sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohVerbrauch.ListeBerechnetChanged(System.Object)">
+ <summary>
+ Wenn die Liste neu berechnet werden muss - Button Berechnen aktivieren
+ </summary>
+ <param name="sender"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohVerbrauch.BtnBerechnen_Click(System.Object,System.EventArgs)">
+ <summary>
+ Auswertung starten.
+ Die Berechnung und Anzeige erfolgt im Fenster Chargen_Details. Abhängig vom Statistik-Typ wird die entsprechende Abfrage in wbdaten ausgeführt
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohVerbrauch.BtnDrucken_Click(System.Object,System.EventArgs)">
+ <summary>
+ Auswertung Drucken
+ Wenn die Statistik noch nicht berechnet wurde, zuerst Berechnung starten
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohVerbrauch.BerechnungStatistik(System.Object)">
+ <summary>
+ Statistik berechnen. Alle Filter-Einstellungen in wb_Chargen_Shared eintragen
+ Start der Berechnung über Event(Liste_Click)
+ </summary>
+ <param name="sender"></param>
+</member>
+<member name="M:WinBack.wb_Statistik_RohVerbrauch.wb_Statistik_RohVerbrauch_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
  <summary>
  Filter-Einstellungen in winback.ini speichern
  </summary>
@@ -6094,6 +6250,13 @@ Text aus Datenbank lesen - Übersetzung
  Klasse, die eine Rezeptur mit ihren Bestandteilen beschreibt
  </summary>
 </member>
+<member name="M:WinBack.wb_Rezept_AuswahlListe.GetResult">
+ <summary>
+ Ergebnis Auswahl zusammenfassen
+ Wenn nur eine Zeile ausgewählt worden ist, werden Rezeptnummer und Bezeichnung zurückgegeben. Bei 
+ Multiselect nur Rezept-Index als Liste
+ </summary>
+</member>
 <member name="M:WinBack.wb_Rezept_Rezeptur.#ctor(System.Int32,System.Int32,System.Int32)">
  <summary>
  Objekt Rezeptur instanzieren.
@@ -6936,6 +7099,12 @@ Public Const MFF_Wissenswertes = 213
  Anzeige der Überschriften für die einzelen Parameter-Sektionen
  </summary>
  <param name="ColumnStyle"></param>
+</member>
+<member name="P:WinBack.wb_Rohstoffe_Shared.RohstoffeInGruppe(System.Int32,System.Int32)">
+ <summary>
+ Liefert eine Liste aller Rohstoffe die zur Rohstoff-Gruppe gehören
+ </summary>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Liste.SaveData(System.Object)">
  <summary>
@@ -8255,21 +8424,21 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Chargen_Liste.rbArtikel_Click(System.Object,System.EventArgs)">
+<member name="M:WinBack.wb_Chargen_Liste.rbArtikel_CheckedChanged(System.Object,System.EventArgs)">
  <summary>
  Sortieren Chargen-Details nach Artikel-Bezeichnung
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Chargen_Liste.rbArtikelNummer_Click(System.Object,System.EventArgs)">
+<member name="M:WinBack.wb_Chargen_Liste.rbArtikelNummer_CheckedChanged(System.Object,System.EventArgs)">
  <summary>
  Sortieren Chargen-Details nach Artikel-Nummer
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Chargen_Liste.rbProduktion_Click(System.Object,System.EventArgs)">
+<member name="M:WinBack.wb_Chargen_Liste.rbProduktion_CheckedChanged(System.Object,System.EventArgs)">
  <summary>
  Sortieren Chargen-Details nach Produktions-Datum
  </summary>

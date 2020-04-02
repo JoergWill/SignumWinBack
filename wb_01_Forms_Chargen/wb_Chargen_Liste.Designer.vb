@@ -29,16 +29,18 @@ Partial Class wb_Chargen_Liste
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.gbFilter = New System.Windows.Forms.GroupBox()
+        Me.cbAlleLinien = New System.Windows.Forms.CheckBox()
         Me.lblFilterBis = New System.Windows.Forms.Label()
         Me.lblFilterVon = New System.Windows.Forms.Label()
         Me.dtFilterBis = New System.Windows.Forms.DateTimePicker()
         Me.cbFilter = New System.Windows.Forms.CheckBox()
         Me.dtFilterVon = New System.Windows.Forms.DateTimePicker()
-        Me.cbAlleLinien = New System.Windows.Forms.CheckBox()
         Me.GrpBoxSort = New System.Windows.Forms.GroupBox()
         Me.rbProduktion = New System.Windows.Forms.RadioButton()
         Me.rbArtikelNummer = New System.Windows.Forms.RadioButton()
         Me.rbArtikel = New System.Windows.Forms.RadioButton()
+        Me.BtnDrucken = New System.Windows.Forms.Button()
+        Me.BtnBerechnen = New System.Windows.Forms.Button()
         Me.DataGridView = New WinBack.wb_DataGridView()
         Me.gbFilter.SuspendLayout()
         Me.GrpBoxSort.SuspendLayout()
@@ -55,15 +57,26 @@ Partial Class wb_Chargen_Liste
         Me.gbFilter.Controls.Add(Me.dtFilterVon)
         Me.gbFilter.Location = New System.Drawing.Point(373, 0)
         Me.gbFilter.Name = "gbFilter"
-        Me.gbFilter.Size = New System.Drawing.Size(212, 215)
+        Me.gbFilter.Size = New System.Drawing.Size(212, 180)
         Me.gbFilter.TabIndex = 5
         Me.gbFilter.TabStop = False
+        '
+        'cbAlleLinien
+        '
+        Me.cbAlleLinien.AutoSize = True
+        Me.cbAlleLinien.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.cbAlleLinien.Location = New System.Drawing.Point(6, 141)
+        Me.cbAlleLinien.Name = "cbAlleLinien"
+        Me.cbAlleLinien.Size = New System.Drawing.Size(102, 17)
+        Me.cbAlleLinien.TabIndex = 13
+        Me.cbAlleLinien.Text = "alle Linien laden"
+        Me.cbAlleLinien.UseVisualStyleBackColor = True
         '
         'lblFilterBis
         '
         Me.lblFilterBis.AutoSize = True
         Me.lblFilterBis.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblFilterBis.Location = New System.Drawing.Point(6, 83)
+        Me.lblFilterBis.Location = New System.Drawing.Point(6, 86)
         Me.lblFilterBis.Name = "lblFilterBis"
         Me.lblFilterBis.Size = New System.Drawing.Size(55, 13)
         Me.lblFilterBis.TabIndex = 12
@@ -73,7 +86,7 @@ Partial Class wb_Chargen_Liste
         '
         Me.lblFilterVon.AutoSize = True
         Me.lblFilterVon.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblFilterVon.Location = New System.Drawing.Point(6, 37)
+        Me.lblFilterVon.Location = New System.Drawing.Point(6, 40)
         Me.lblFilterVon.Name = "lblFilterVon"
         Me.lblFilterVon.Size = New System.Drawing.Size(60, 13)
         Me.lblFilterVon.TabIndex = 11
@@ -81,7 +94,7 @@ Partial Class wb_Chargen_Liste
         '
         'dtFilterBis
         '
-        Me.dtFilterBis.Location = New System.Drawing.Point(6, 99)
+        Me.dtFilterBis.Location = New System.Drawing.Point(6, 102)
         Me.dtFilterBis.Name = "dtFilterBis"
         Me.dtFilterBis.Size = New System.Drawing.Size(200, 20)
         Me.dtFilterBis.TabIndex = 10
@@ -92,35 +105,24 @@ Partial Class wb_Chargen_Liste
         Me.cbFilter.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.cbFilter.Location = New System.Drawing.Point(6, 11)
         Me.cbFilter.Name = "cbFilter"
-        Me.cbFilter.Size = New System.Drawing.Size(54, 17)
+        Me.cbFilter.Size = New System.Drawing.Size(79, 17)
         Me.cbFilter.TabIndex = 9
-        Me.cbFilter.Text = "Filtern"
+        Me.cbFilter.Text = "Liste Filtern"
         Me.cbFilter.UseVisualStyleBackColor = True
         '
         'dtFilterVon
         '
-        Me.dtFilterVon.Location = New System.Drawing.Point(6, 53)
+        Me.dtFilterVon.Location = New System.Drawing.Point(6, 56)
         Me.dtFilterVon.Name = "dtFilterVon"
         Me.dtFilterVon.Size = New System.Drawing.Size(200, 20)
         Me.dtFilterVon.TabIndex = 8
-        '
-        'cbAlleLinien
-        '
-        Me.cbAlleLinien.AutoSize = True
-        Me.cbAlleLinien.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.cbAlleLinien.Location = New System.Drawing.Point(6, 174)
-        Me.cbAlleLinien.Name = "cbAlleLinien"
-        Me.cbAlleLinien.Size = New System.Drawing.Size(102, 17)
-        Me.cbAlleLinien.TabIndex = 13
-        Me.cbAlleLinien.Text = "alle Linien laden"
-        Me.cbAlleLinien.UseVisualStyleBackColor = True
         '
         'GrpBoxSort
         '
         Me.GrpBoxSort.Controls.Add(Me.rbProduktion)
         Me.GrpBoxSort.Controls.Add(Me.rbArtikelNummer)
         Me.GrpBoxSort.Controls.Add(Me.rbArtikel)
-        Me.GrpBoxSort.Location = New System.Drawing.Point(373, 205)
+        Me.GrpBoxSort.Location = New System.Drawing.Point(373, 176)
         Me.GrpBoxSort.Name = "GrpBoxSort"
         Me.GrpBoxSort.Size = New System.Drawing.Size(212, 92)
         Me.GrpBoxSort.TabIndex = 6
@@ -161,6 +163,26 @@ Partial Class wb_Chargen_Liste
         Me.rbArtikel.TabStop = True
         Me.rbArtikel.Text = "Artikel-Bezeichnung"
         Me.rbArtikel.UseVisualStyleBackColor = True
+        '
+        'BtnDrucken
+        '
+        Me.BtnDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtnDrucken.Location = New System.Drawing.Point(373, 551)
+        Me.BtnDrucken.Name = "BtnDrucken"
+        Me.BtnDrucken.Size = New System.Drawing.Size(212, 43)
+        Me.BtnDrucken.TabIndex = 20
+        Me.BtnDrucken.Text = "Drucken"
+        Me.BtnDrucken.UseVisualStyleBackColor = True
+        '
+        'BtnBerechnen
+        '
+        Me.BtnBerechnen.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtnBerechnen.Location = New System.Drawing.Point(373, 600)
+        Me.BtnBerechnen.Name = "BtnBerechnen"
+        Me.BtnBerechnen.Size = New System.Drawing.Size(212, 43)
+        Me.BtnBerechnen.TabIndex = 19
+        Me.BtnBerechnen.Text = "Berechnen"
+        Me.BtnBerechnen.UseVisualStyleBackColor = True
         '
         'DataGridView
         '
@@ -203,9 +225,11 @@ Partial Class wb_Chargen_Liste
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(631, 655)
+        Me.ClientSize = New System.Drawing.Size(595, 655)
         Me.CloseButton = False
         Me.CloseButtonVisible = False
+        Me.Controls.Add(Me.BtnDrucken)
+        Me.Controls.Add(Me.BtnBerechnen)
         Me.Controls.Add(Me.GrpBoxSort)
         Me.Controls.Add(Me.gbFilter)
         Me.Controls.Add(Me.DataGridView)
@@ -234,4 +258,6 @@ Partial Class wb_Chargen_Liste
     Friend WithEvents rbProduktion As Windows.Forms.RadioButton
     Friend WithEvents rbArtikelNummer As Windows.Forms.RadioButton
     Friend WithEvents rbArtikel As Windows.Forms.RadioButton
+    Friend WithEvents BtnDrucken As Windows.Forms.Button
+    Friend WithEvents BtnBerechnen As Windows.Forms.Button
 End Class

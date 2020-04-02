@@ -33,10 +33,12 @@ Public Class wb_ChargenSchritt
     Private _ChrgType As wb_Global.ChargenTypen
     Private _Sollwert As String
     Private _Sollmenge_kg As Double
+    Private _Sollmenge_kg_gesamt As Double = wb_Global.UNDEFINED
     Private _Sollmenge_Stk As Double
     Private _Sollmenge_Stk_gesamt As Double
     Private _Istwert As String
     Private _Istmenge_kg As Double = wb_Global.UNDEFINED
+    Private _Istmenge_kg_gesamt As Double = wb_Global.UNDEFINED
     Private _Istmenge_Stk As Double = wb_Global.UNDEFINED
     Private _Einheit As String
 
@@ -218,6 +220,7 @@ Public Class wb_ChargenSchritt
             _Linie = value
         End Set
     End Property
+
     Public Property LinienGruppe As Integer
         Get
             'TODO Liniengruppe  nach LINIE
@@ -282,6 +285,29 @@ Public Class wb_ChargenSchritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Summe aller Sollwerte in den Child-Steps
+    ''' (Statistik Rohstoffe-Verbrauch)
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property Sollmenge_kg_gesamt As Double
+        Get
+            If ChrgType = wb_Global.ChargenTypen.CHRG_KOMPSUMME Then
+                If _Sollmenge_kg_gesamt = wb_Global.UNDEFINED Then
+                    _Sollmenge_kg_gesamt = 0
+                    For Each c As wb_ChargenSchritt In ChildSteps
+                        'Komponente hat Sollwert
+                        If wb_Functions.TypeIstSollMenge(c._KomponentenType, c._KomponentenParamNr) Then
+                            _Sollmenge_kg_gesamt += c.Sollwert
+                        End If
+                    Next
+                End If
+            End If
+
+            Return _Sollmenge_kg_gesamt
+        End Get
+    End Property
+
     Public Property Sollmenge_Stk As Double
         Get
             Return CInt(_Sollmenge_Stk)
@@ -342,6 +368,29 @@ Public Class wb_ChargenSchritt
         'Set(value As Double)
         '    _Istmenge_kg = value
         'End Set
+    End Property
+
+    ''' <summary>
+    ''' Summe aller Sollwerte in den Child-Steps
+    ''' (Statistik Rohstoffe-Verbrauch)
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property Istmenge_kg_gesamt As Double
+        Get
+            If ChrgType = wb_Global.ChargenTypen.CHRG_KOMPSUMME Then
+                If _Istmenge_kg_gesamt = wb_Global.UNDEFINED Then
+                    _Istmenge_kg_gesamt = 0
+                    For Each c As wb_ChargenSchritt In ChildSteps
+                        'Komponente hat Sollwert
+                        If wb_Functions.TypeIstSollMenge(c._KomponentenType, c._KomponentenParamNr) Then
+                            _Istmenge_kg_gesamt += c.Istwert
+                        End If
+                    Next
+                End If
+            End If
+
+            Return _Istmenge_kg_gesamt
+        End Get
     End Property
 
     Public ReadOnly Property Istmenge_Stk As Double
@@ -432,7 +481,12 @@ Public Class wb_ChargenSchritt
                 Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
                     Return _ChargenNummer
                 Case Else
-                    Return ""
+                    'Ausgabe der Chargen-Nummer bei Statistik Rohstoffe
+                    If ChrgType = wb_Global.ChargenTypen.CHRG_KOMPONENTE Then
+                        Return _ChargenNummer
+                    Else
+                        Return ""
+                    End If
             End Select
 
         End Get
@@ -535,62 +589,74 @@ Public Class wb_ChargenSchritt
 
     Public ReadOnly Property VirtTreeSollwert As String
         Get
-            Select Case Type
-                Case wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
-                    Return ""
-                Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
-                    Return _Sollmenge_Stk_gesamt
-                Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
-                    Return wb_Functions.FormatStr(_Sollmenge_kg, 3)
-                Case Else
-                    If wb_Functions.TypeIstSollMenge(KomponentenType, 1) Then
-                        Return wb_Functions.FormatStr(_Sollwert, 3)
-                    Else
-                        Return _Sollwert
-                    End If
-            End Select
+            If ChrgType = wb_Global.ChargenTypen.CHRG_KOMPSUMME Then
+                Return wb_Functions.FormatStr(Sollmenge_kg_gesamt, 3)
+            Else
+                Select Case Type
+                    Case wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
+                        Return ""
+                    Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
+                        Return _Sollmenge_Stk_gesamt
+                    Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
+                        Return wb_Functions.FormatStr(_Sollmenge_kg, 3)
+                    Case Else
+                        If wb_Functions.TypeIstSollMenge(KomponentenType, 1) Then
+                            Return wb_Functions.FormatStr(_Sollwert, 3)
+                        Else
+                            Return _Sollwert
+                        End If
+                End Select
+            End If
         End Get
     End Property
 
     Public ReadOnly Property VirtTreeEinheit As String
         Get
-            Select Case Type
-                Case wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
-                    Return ""
-                Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
-                    'TODO Internationalisierung !!
-                    Return "Stk"
-                Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
-                    Return "kg"
-                Case Else
-                    Select Case KomponentenType
-                        Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
-                            Return ""
-                        Case wb_Global.KomponTypen.KO_TYPE_SAUER_TEXT, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
-                            Return ""
-                        Case Else
-                            Return _Einheit
-                    End Select
-            End Select
+            If ChrgType = wb_Global.ChargenTypen.CHRG_KOMPSUMME Then
+                Return _Einheit
+            Else
+                Select Case Type
+                    Case wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
+                        Return ""
+                    Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
+                        'TODO Internationalisierung !!
+                        Return "Stk"
+                    Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
+                        Return "kg"
+                    Case Else
+                        Select Case KomponentenType
+                            Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
+                                Return ""
+                            Case wb_Global.KomponTypen.KO_TYPE_SAUER_TEXT, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
+                                Return ""
+                            Case Else
+                                Return _Einheit
+                        End Select
+                End Select
+            End If
         End Get
     End Property
 
     Public ReadOnly Property VirtTreeIstwert As String
         Get
-            Select Case Type
-                Case wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
-                    Return ""
-                Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
-                    Return Istmenge_Stk
-                Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
-                    Return wb_Functions.FormatStr(Istmenge_kg.ToString, 3)
-                Case Else
-                    If wb_Functions.TypeIstSollMenge(KomponentenType, 1) Then
-                        Return wb_Functions.FormatStr(Istwert, 3)
-                    Else
-                        Return _Istwert
-                    End If
-            End Select
+            If ChrgType = wb_Global.ChargenTypen.CHRG_KOMPSUMME Then
+                Return wb_Functions.FormatStr(Istmenge_kg_gesamt, 3)
+            Else
+                Select Case Type
+                    Case wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
+                        Return ""
+                    Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
+                        Return Istmenge_Stk
+                    Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
+                        Return wb_Functions.FormatStr(Istmenge_kg.ToString, 3)
+                    Case Else
+                        If wb_Functions.TypeIstSollMenge(KomponentenType, 1) Then
+                            Return wb_Functions.FormatStr(Istwert, 3)
+                        Else
+                            Return _Istwert
+                        End If
+                End Select
+            End If
         End Get
     End Property
 
@@ -648,6 +714,26 @@ Public Class wb_ChargenSchritt
     Public ReadOnly Property VirtTreeRohCharge As String
         Get
             Return _RohCharge
+        End Get
+    End Property
+
+    Public ReadOnly Property LL_Istmengekg As Double
+        Get
+            If Type = wb_Global.ChargenTypen.CHRG_ARTIKEL Then
+                Return 0
+            Else
+                Return _Istmenge_kg
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property LL_Sollmengekg As Double
+        Get
+            If Type = wb_Global.ChargenTypen.CHRG_ARTIKEL Then
+                Return 0
+            Else
+                Return Sollmenge_kg
+            End If
         End Get
     End Property
 
@@ -722,6 +808,7 @@ Public Class wb_ChargenSchritt
             _RS_Par3 = value
         End Set
     End Property
+
 End Class
 
 'wbdaten.BAK_ArbRezepte

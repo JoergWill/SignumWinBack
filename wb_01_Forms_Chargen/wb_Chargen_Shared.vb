@@ -3,7 +3,6 @@
 Public Class wb_Chargen_Shared
     Public Shared Event eListe_Click(sender As Object, StatistikType As wb_Global.StatistikType)
     Public Shared Event eListe_Print(sender As Object, StatistikType As wb_Global.StatistikType)
-    Public Shared Event eFilter_Click(sender As Object)
     Public Shared Event eDetail_DblClick(sender As Object, ChargenZeile As wb_ChargenSchritt)
     Public Shared NrListe As New List(Of Integer)
     Public Shared NrLinien As New List(Of Integer)
@@ -17,6 +16,7 @@ Public Class wb_Chargen_Shared
     Private Shared _AlleLinien As Boolean = True
     Private Shared _WasserTempAusblenden As Boolean = False
     Private Shared _IstwertNullAusblenden As Boolean = True
+    Private Shared _FensterTitel As String
 
     Private Shared _Liste_TagesWechselNummer As Integer
     Private Shared _Liste_KomponDoesNotCount As New Dictionary(Of Integer, Boolean)
@@ -128,16 +128,21 @@ Public Class wb_Chargen_Shared
         End Set
     End Property
 
+    Public Shared Property FensterTitel As String
+        Get
+            Return _FensterTitel
+        End Get
+        Set(value As String)
+            _FensterTitel = value
+        End Set
+    End Property
+
     Public Shared Sub Liste_Click(sender As Object, StatistikType As wb_Global.StatistikType)
         RaiseEvent eListe_Click(sender, StatistikType)
     End Sub
 
     Public Shared Sub Liste_Print(sender As Object, StatistikType As wb_Global.StatistikType)
         RaiseEvent eListe_Print(sender, StatistikType)
-    End Sub
-
-    Public Shared Sub Filter_Click(sender As Object)
-        RaiseEvent eFilter_Click(sender)
     End Sub
 
     Public Shared Sub Detail_DblClick(sender As Object, ChargenZeile As wb_ChargenSchritt)

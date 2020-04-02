@@ -130,7 +130,6 @@ Public Class WinBack
             oForm.Show()
         End If
 
-
     End Sub
 
     ''' <summary>
@@ -667,7 +666,9 @@ Public Class WinBack
             SaveColorTable()
         Else
             Dim content As String = System.IO.File.ReadAllText(wb_GlobalSettings.pColorThemePath)
-            Theme.ColorTable.ReadThemeIniFile(content)
+            TryCast(rTab.Renderer, RibbonProfessionalRenderer).ColorTable.ReadThemeIniFile(content)
+            'alte Version - Fehler BC40000 depricated
+            'Theme.ColorTable.ReadThemeIniFile(content)
         End If
 
         'Ribbon Tab - Farben updaten

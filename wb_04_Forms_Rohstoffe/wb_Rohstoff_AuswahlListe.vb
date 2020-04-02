@@ -13,6 +13,21 @@ Public Class wb_Rohstoff_AuswahlListe
     Private _RohstoffFormat As EnhEdit_Global.wb_Format
     Private _RohstoffUG As String
     Private _RohstoffOG As String
+    Private _RohstoffListe As New ArrayList
+    Private _MultiSelect As Boolean = False
+
+    Public WriteOnly Property MultiSelect As Boolean
+        Set(value As Boolean)
+            _MultiSelect = value
+        End Set
+    End Property
+
+    Public ReadOnly Property RohstoffListe As ArrayList
+        Get
+            Return _RohstoffListe
+        End Get
+    End Property
+
 
     Public WriteOnly Property Anzeige As AnzeigeFilter
         Set(value As AnzeigeFilter)
@@ -140,12 +155,15 @@ Public Class wb_Rohstoff_AuswahlListe
 
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffLst, "RohstoffListe")
+
         'Filter einschalten
         DataGridView.Filter = _Filter
         'Focus auf Sortier-Feld
         DataGridView.SortCol = 0
         'Sortier-Kriterium ist die erste Spalte (Rohstoff-Name)
         DataGridView.SetSortColumn(1)
+        'Multiselect (Áuswahl-Liste Statistik)
+        DataGridView.MultiSelect = _MultiSelect
     End Sub
 
     Private Sub BtnCancel_Click(sender As Object, e As EventArgs) Handles BtnCancel.Click
@@ -153,6 +171,18 @@ Public Class wb_Rohstoff_AuswahlListe
     End Sub
 
     Private Sub DataGridView_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView.DoubleClick
+        GetResult()
+    End Sub
+
+    Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
+        GetResult()
+    End Sub
+
+    Private Sub GetResult()
+        'Ergebnis-Liste leeren (immer)
+        _RohstoffListe.Clear()
+
+        'Aktuelle Auswahl (MultiSelect = False)
         RohstoffNr = DataGridView.iField("KO_Nr")
         RohstoffNummer = DataGridView.Field("KO_Nr_AlNum")
         RohstoffName = DataGridView.Field("KO_Bezeichnung")
@@ -162,8 +192,18 @@ Public Class wb_Rohstoff_AuswahlListe
         RohstoffFormat = wb_Functions.StrToFormat(DataGridView.Field("KT_Format"))
         RohstoffUG = DataGridView.Field("KT_UnterGW")
         RohstoffOG = DataGridView.Field("KT_OberGW")
+
+        'MultiSelect
+        For Each dl As Windows.Forms.DataGridViewRow In DataGridView.SelectedRows
+            Dim RohListenElement As New wb_StatistikListenElement
+            RohListenElement.Nr = dl.Cells("KO_Nr").Value
+            RohListenElement.Nummer = dl.Cells("KO_Nr_AlNum").Value
+            RohListenElement.Bezeichnung = dl.Cells("KO_Bezeichnung").Value
+
+            _RohstoffListe.Add(RohListenElement)
+        Next
+
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
-
 End Class

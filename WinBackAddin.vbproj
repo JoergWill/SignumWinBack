@@ -1016,6 +1016,12 @@
     <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Statistik_Rezepte.resx">
       <DependentUpon>wb_Statistik_Rezepte.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Statistik_RohDetails.resx">
+      <DependentUpon>wb_Statistik_RohDetails.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Statistik_RohVerbrauch.resx">
+      <DependentUpon>wb_Statistik_RohVerbrauch.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.resx">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
     </EmbeddedResource>

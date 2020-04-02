@@ -26,6 +26,7 @@ Partial Class wb_Rohstoff_AuswahlListe
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BtnCancel = New System.Windows.Forms.Button()
         Me.DataGridView = New WinBack.wb_DataGridView()
+        Me.BtnOK = New System.Windows.Forms.Button()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -71,12 +72,25 @@ Partial Class wb_Rohstoff_AuswahlListe
         Me.DataGridView.TabIndex = 2
         Me.DataGridView.x8859_5_FieldName = ""
         '
+        'BtnOK
+        '
+        Me.BtnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnOK.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.BtnOK.Location = New System.Drawing.Point(12, 488)
+        Me.BtnOK.Name = "BtnOK"
+        Me.BtnOK.Size = New System.Drawing.Size(129, 45)
+        Me.BtnOK.TabIndex = 3
+        Me.BtnOK.TabStop = False
+        Me.BtnOK.Text = "OK"
+        Me.BtnOK.UseVisualStyleBackColor = True
+        '
         'wb_Rohstoff_AuswahlListe
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(679, 545)
         Me.ControlBox = False
+        Me.Controls.Add(Me.BtnOK)
         Me.Controls.Add(Me.DataGridView)
         Me.Controls.Add(Me.BtnCancel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -89,4 +103,5 @@ Partial Class wb_Rohstoff_AuswahlListe
 
     Friend WithEvents BtnCancel As Windows.Forms.Button
     Friend WithEvents DataGridView As wb_DataGridView
+    Friend WithEvents BtnOK As Windows.Forms.Button
 End Class

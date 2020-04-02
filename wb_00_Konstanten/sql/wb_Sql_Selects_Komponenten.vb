@@ -21,7 +21,6 @@
                                     "LF_BF_Charge, LF_gebucht, LF_Liniengruppe, LF_BF_Frist " &
                                     "FROM Lieferungen WHERE LF_LG_Ort = '[0]' ORDER BY LF_Datum DESC, LF_Nr DESC, LF_Lager"
 
-    'Nr", "Datum", "Lieferant", "&Bemerkung", "Menge", "Verbraucht", "Charge", "Status"}
 
     'Sql-Statement RohstoffGruppen aus winback.ItemParameter
     Public Const sqlRohstoffGrp = "SELECT IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
@@ -34,7 +33,8 @@
     Public Const sqlArtikelUse = "SELECT Komponenten.KO_Nr, Komponenten.KO_Nr_AlNum, Komponenten.KO_Type " &
                                  "FROM RezeptSchritte INNER JOIN Komponenten On RezeptSchritte.RS_RZ_Nr = Komponenten.KA_RZ_Nr " &
                                  "WHERE RezeptSchritte.RS_KO_Nr = [0] AND RezeptSchritte.RS_RZ_Variante_Nr = 1 And RezeptSchritte.RS_ParamNr = 1"
-
+    'Sql-Statement Rohstoffe in Gruppe 1 oder Gruppe 2
+    Public Const sqlRohstoffInGrp = "SELECT KO_Nr, KO_Nr_AlNum, KO_Bezeichnung FROM Komponenten WHERE [0]"
 
 
     'Sql-Statement Automatik-Rohstoffe aus winback.Lagerorte

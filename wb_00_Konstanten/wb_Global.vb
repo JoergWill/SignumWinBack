@@ -223,6 +223,8 @@
         CHRG_UNDEF = 0
         CHRG_REZEPT = 1
         CHRG_ARTIKEL = 2
+        CHRG_KOMPONENTE = 3
+        CHRG_KOMPSUMME = 4
     End Enum
 
     '''   0  -  Nicht bearbeitet

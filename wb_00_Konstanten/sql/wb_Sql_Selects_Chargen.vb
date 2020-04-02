@@ -54,10 +54,19 @@
     '                              "INNER JOIN BAK_ArbRZSchritte ON (BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) " &
     '                              "AND (BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr)"
 
-    Public Const sqlStatRezepte = "Select BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie " &
+    Public Const sqlStatRezepte = "SELECT BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie " &
                                   "FROM (Tageswechsel INNER JOIN BAK_ArbRezepte ON Tageswechsel.TW_Nr = BAK_ArbRezepte.B_ARZ_TW_Nr) " &
                                   "INNER JOIN BAK_ArbRZSchritte ON (BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) " &
                                   "AND (BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr)"
+
+    Public Const sqlStatRohVerbrauch = "SELECT * FROM BAK_ArbRZSchritte"
+
+    Public Const sqlStatRohDetails = "Select BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie " &
+                                     "FROM BAK_ArbRezepte INNER JOIN BAK_ArbRZSchritte ON " &
+                                     "(BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) AND " &
+                                     "(BAK_ArbRezepte.B_ARZ_LiBeh_Nr = BAK_ArbRZSchritte.B_ARS_Beh_Nr) AND " &
+                                     "(BAK_ArbRezepte.B_ARZ_Art_Index = BAK_ArbRZSchritte.B_ARS_Art_Index) AND " &
+                                     "(BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr) "
 
     Public Const sqlTWNrStrt = "SELECT TW_Nr from Tageswechsel WHERE '[0]' <= TW_Beginn " &
                                "ORDER BY TW_Nr ASC LIMIT 1"

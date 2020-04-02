@@ -33,9 +33,9 @@ Partial Class wb_ListeStatistik
         Me.cbWasserTempAusblenden = New System.Windows.Forms.CheckBox()
         Me.cbElementeAusListe = New System.Windows.Forms.CheckBox()
         Me.dtFilterVon = New System.Windows.Forms.DateTimePicker()
-        Me.lblFilterBis = New System.Windows.Forms.Label()
-        Me.lblFilterVon = New System.Windows.Forms.Label()
         Me.dtFilterBis = New System.Windows.Forms.DateTimePicker()
+        Me.lblFilterVon = New System.Windows.Forms.Label()
+        Me.lblFilterBis = New System.Windows.Forms.Label()
         Me.cbLinien = New System.Windows.Forms.CheckedListBox()
         Me.cbAlleLinien = New System.Windows.Forms.CheckBox()
         Me.BtnListeLeeren = New System.Windows.Forms.Button()
@@ -183,15 +183,12 @@ Partial Class wb_ListeStatistik
         Me.dtFilterVon.Size = New System.Drawing.Size(195, 20)
         Me.dtFilterVon.TabIndex = 8
         '
-        'lblFilterBis
+        'dtFilterBis
         '
-        Me.lblFilterBis.AutoSize = True
-        Me.lblFilterBis.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblFilterBis.Location = New System.Drawing.Point(8, 94)
-        Me.lblFilterBis.Name = "lblFilterBis"
-        Me.lblFilterBis.Size = New System.Drawing.Size(55, 13)
-        Me.lblFilterBis.TabIndex = 12
-        Me.lblFilterBis.Text = "Bis Datum"
+        Me.dtFilterBis.Location = New System.Drawing.Point(8, 110)
+        Me.dtFilterBis.Name = "dtFilterBis"
+        Me.dtFilterBis.Size = New System.Drawing.Size(195, 20)
+        Me.dtFilterBis.TabIndex = 10
         '
         'lblFilterVon
         '
@@ -203,12 +200,15 @@ Partial Class wb_ListeStatistik
         Me.lblFilterVon.TabIndex = 11
         Me.lblFilterVon.Text = "Von Datum"
         '
-        'dtFilterBis
+        'lblFilterBis
         '
-        Me.dtFilterBis.Location = New System.Drawing.Point(8, 110)
-        Me.dtFilterBis.Name = "dtFilterBis"
-        Me.dtFilterBis.Size = New System.Drawing.Size(195, 20)
-        Me.dtFilterBis.TabIndex = 10
+        Me.lblFilterBis.AutoSize = True
+        Me.lblFilterBis.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblFilterBis.Location = New System.Drawing.Point(8, 94)
+        Me.lblFilterBis.Name = "lblFilterBis"
+        Me.lblFilterBis.Size = New System.Drawing.Size(55, 13)
+        Me.lblFilterBis.TabIndex = 12
+        Me.lblFilterBis.Text = "Bis Datum"
         '
         'cbLinien
         '

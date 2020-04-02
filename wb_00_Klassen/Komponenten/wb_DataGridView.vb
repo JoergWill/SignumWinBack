@@ -256,7 +256,9 @@ Public Class wb_DataGridView
         Set(value As String)
             _Filter = value
             sFilter = ""
-            DtaView.RowFilter = _Filter
+            If DtaView IsNot Nothing Then
+                DtaView.RowFilter = _Filter
+            End If
         End Set
     End Property
 

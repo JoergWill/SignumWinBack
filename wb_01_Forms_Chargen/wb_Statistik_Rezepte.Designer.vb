@@ -43,6 +43,7 @@ Partial Class wb_Statistik_Rezepte
         'ListeStatistik
         '
         Me.ListeStatistik.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListeStatistik.ListeBerechnet = False
         Me.ListeStatistik.Location = New System.Drawing.Point(0, 0)
         Me.ListeStatistik.Name = "ListeStatistik"
         Me.ListeStatistik.Size = New System.Drawing.Size(577, 678)

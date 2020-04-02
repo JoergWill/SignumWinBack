@@ -68,18 +68,23 @@
         HeaderLinies.Clear()
         ThemeColorList.Clear()
 
-        For Each Zeile As String In System.IO.File.ReadAllLines(wb_GlobalSettings.pColorThemePath)
-            Dim Data() As String = Zeile.Split("=")
+        Try
 
-            If Header Then
-                HeaderLinies.Add(Data(0))
-                If Data(0) = "[ColorTable]" Then
-                    Header = False
+            For Each Zeile As String In System.IO.File.ReadAllLines(wb_GlobalSettings.pColorThemePath)
+                Dim Data() As String = Zeile.Split("=")
+
+                If Header Then
+                    HeaderLinies.Add(Data(0))
+                    If Data(0) = "[ColorTable]" Then
+                        Header = False
+                    End If
+                Else
+                    ThemeColorList.Add(New ThemeColor(Data(0), Data(1)))
                 End If
-            Else
-                ThemeColorList.Add(New ThemeColor(Data(0), Data(1)))
-            End If
-        Next
+            Next
+        Catch ex As Exception
+
+        End Try
 
         'Grid mit Daten füllen
         ThemeColorGridView.DataSource = ThemeColorList
