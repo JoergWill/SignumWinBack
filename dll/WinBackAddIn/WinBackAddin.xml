@@ -957,10 +957,17 @@ Stacktrace:
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_ListeStatistik.InitGruppenListen(WinBack.wb_Global.StatistikType)">
+ <summary>
+ Initialisierung der Drop-Down-Listen
+ Muss unbedingt ausserhalb des Load-Ereignisses erfolgen, sonst kann im Designer
+ kein Statistik-Fenster angezeigt werden
+ </summary>
+ <param name="StatistikType"></param>
+</member>
 <member name="M:WinBack.wb_ListeStatistik.InitAuswahlListen(WinBack.wb_Global.StatistikType)">
  <summary>
  Alle Listen initialisieren.
- 
  </summary>
 </member>
 <member name="M:WinBack.wb_ListeStatistik.AddElement(WinBack.wb_StatistikListenElement)">
@@ -2100,7 +2107,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Statistik_Rezepte.wb_Statistik_Rezepte_Load(System.Object,System.EventArgs)">
+<member name="M:WinBack.wb_Statistik_Rezepte.wb_Statistik_Rezepte_Enter(System.Object,System.EventArgs)">
  <summary>
  Listen-Auswahl initialisieren
  </summary>
@@ -8341,23 +8348,9 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.ob_Main_Menu.ShowStatistikChargenForm(System.Object,System.EventArgs)">
+<member name="M:WinBack.ob_Main_Menu.ShowStatistikForm(System.Object,System.EventArgs)">
  <summary>
- Aufruf WinBack-Fenster Statistik Chargen
- </summary>
- <param name="sender"></param>
- <param name="e"></param>
-</member>
-<member name="M:WinBack.ob_Main_Menu.ShowStatistikRohstoffForm(System.Object,System.EventArgs)">
- <summary>
- Aufruf WinBack-Fenster Statistik Rohstoffe
- </summary>
- <param name="sender"></param>
- <param name="e"></param>
-</member>
-<member name="M:WinBack.ob_Main_Menu.ShowStatistikRezeptForm(System.Object,System.EventArgs)">
- <summary>
- Aufruf WinBack-Fenster Statistik Rezepte
+ Aufruf WinBack-Fenster Statistik
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -8611,6 +8604,27 @@ Datenbank-Verbindung schliessen
  True, wenn das Fenster geöffnet bleiben muss
  </returns>
  <remarks></remarks>
+</member>
+<member name="M:WinBack.wb_Planung_Neu.tArtikelNummer_DoubleClick(System.Object,System.EventArgs)">
+ <summary>
+ Auswahlfenster Artikel
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Neu.tRezeptNummer_DoubleClick(System.Object,System.EventArgs)">
+ <summary>
+ Auswahlfenster Rezeptur
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Neu.tRezeptNummer_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Rezeptnummer suchen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="M:WinBack.ob_Admin_OrgaBackSettings.Initialize">
  <summary>

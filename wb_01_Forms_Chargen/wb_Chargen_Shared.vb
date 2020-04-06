@@ -13,6 +13,8 @@ Public Class wb_Chargen_Shared
     Private Shared _FilterBis As Date
     Private Shared _UhrzeitVon As Date = wb_Global.wbNODATE
     Private Shared _UhrzeitBis As Date = wb_Global.wbNODATE
+    Private Shared _UhrZeitVonChecked As Boolean = False
+    Private Shared _UhrZeitBisChecked As Boolean = False
     Private Shared _AlleLinien As Boolean = True
     Private Shared _WasserTempAusblenden As Boolean = False
     Private Shared _IstwertNullAusblenden As Boolean = True
@@ -20,6 +22,7 @@ Public Class wb_Chargen_Shared
 
     Private Shared _Liste_TagesWechselNummer As Integer
     Private Shared _Liste_KomponDoesNotCount As New Dictionary(Of Integer, Boolean)
+    Private Shared _Liste_KomponDoesNotCountInit As Boolean = False
 
     ''' <summary>
     ''' B_ARS_Status
@@ -35,7 +38,7 @@ Public Class wb_Chargen_Shared
     ''' </summary>
     Shared Sub New()
         'Liste aller Komponenten, die nicht zum Rezeptgewicht zählen
-        ReadKomponDoesNotCount()
+        'ReadKomponDoesNotCount()
     End Sub
 
     Public Shared Property SortKriterium As wb_Global.ChargenListeSortKriterium
@@ -92,6 +95,24 @@ Public Class wb_Chargen_Shared
         End Set
     End Property
 
+    Public Shared Property UhrZeitVonChecked As Boolean
+        Get
+            Return _UhrZeitVonChecked
+        End Get
+        Set(value As Boolean)
+            _UhrZeitVonChecked = value
+        End Set
+    End Property
+
+    Public Shared Property UhrZeitBisChecked As Boolean
+        Get
+            Return _UhrZeitBisChecked
+        End Get
+        Set(value As Boolean)
+            _UhrZeitBisChecked = value
+        End Set
+    End Property
+
     Public Shared Property UhrzeitVon As Date
         Get
             Return _UhrzeitVon
@@ -137,6 +158,70 @@ Public Class wb_Chargen_Shared
         End Set
     End Property
 
+    Public Shared Sub SetFensterTitel(StatistikType As wb_Global.StatistikType, Optional StrtDate As String = "", Optional EndeDate As String = "")
+
+        Select Case StatistikType
+            Case wb_Global.StatistikType.StatistikRezepte
+                _FensterTitel = "Statistik Rezepte vom "
+                'Filter Uhrzeit übernehmen
+                _FensterTitel &= FilterVonBis()
+
+            Case wb_Global.StatistikType.StatistikRohstoffeVerbrauch
+                _FensterTitel = "Statistik Rohstoff-Verbrauch vom "
+                'Filter Uhrzeit übernehmen
+                _FensterTitel &= FilterVonBis()
+
+            Case wb_Global.StatistikType.StatistikRohstoffeDetails
+                _FensterTitel = "Statistik Rohstoffe vom "
+                'Filter Uhrzeit übernehmen
+                _FensterTitel &= FilterVonBis()
+
+            Case wb_Global.StatistikType.ChargenAuswertung
+                _FensterTitel = "Produktion "
+                _FensterTitel &= FilterVonBis(StrtDate, EndeDate)
+
+        End Select
+    End Sub
+
+    Private Shared Function FilterVonBis() As String
+        Dim FilterText As String = ""
+
+        If UhrZeitVonChecked Then
+            FilterText &= FilterVon.ToString("dd.MM.yyyy") & UhrzeitVon.ToString(" hh:mm")
+        Else
+            FilterText &= FilterVon.ToString("dd.MM.yyyy")
+        End If
+
+        'Fenster-Titel
+        _FensterTitel &= " bis "
+        If UhrZeitBisChecked Then
+            FilterText &= FilterBis.ToString("dd.MM.yyyy") & UhrzeitBis.ToString(" hh:mm ")
+        Else
+            FilterText &= FilterBis.ToString("dd.MM.yyyy")
+        End If
+
+        Return FilterText
+    End Function
+
+    Private Shared Function FilterVonBis(StrtDate As String, EndeDate As String) As String
+        Dim FilterText As String = ""
+        Try
+            'Start-Datum
+            If StrtDate <> "" Then
+                FilterText &= " vom "
+                FilterText &= Convert.ToDateTime(StrtDate).ToString("dd.MM.yyyy")
+            End If
+            'Ende-Datum
+            If EndeDate <> "" Then
+                FilterText &= " bis "
+                FilterText &= Convert.ToDateTime(EndeDate).ToString("dd.MM.yyyy")
+            End If
+        Catch
+
+        End Try
+        Return FilterText
+    End Function
+
     Public Shared Sub Liste_Click(sender As Object, StatistikType As wb_Global.StatistikType)
         RaiseEvent eListe_Click(sender, StatistikType)
     End Sub
@@ -176,7 +261,12 @@ Public Class wb_Chargen_Shared
     ''' <param name="KomponNr"></param>
     ''' <returns></returns>
     Public Shared Function ZaehltNichtZumRezeptgewicht(KomponNr As Integer) As Boolean
+        If Not _Liste_KomponDoesNotCountInit Then
+            ReadKomponDoesNotCount()
+            _Liste_KomponDoesNotCountInit = True
+        End If
         Return _Liste_KomponDoesNotCount.ContainsKey(KomponNr)
     End Function
+
 
 End Class

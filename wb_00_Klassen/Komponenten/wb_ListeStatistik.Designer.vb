@@ -43,12 +43,12 @@ Partial Class wb_ListeStatistik
         Me.BtnListeSpeichern = New System.Windows.Forms.Button()
         Me.BtnListeRemove = New System.Windows.Forms.Button()
         Me.BtnListeAdd = New System.Windows.Forms.Button()
-        Me.tpRezeptListe = New System.Windows.Forms.Panel()
+        Me.tpListe = New System.Windows.Forms.Panel()
         Me.gbLinien = New System.Windows.Forms.GroupBox()
         Me.gbRohGruppe = New System.Windows.Forms.GroupBox()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label14 = New System.Windows.Forms.Label()
         Me.cbRohstoffGrp2 = New WinBack.wb_ComboBox()
+        Me.Label14 = New System.Windows.Forms.Label()
         Me.cbRohstoffGrp1 = New WinBack.wb_ComboBox()
         Me.gbFilter.SuspendLayout()
         Me.gbLinien.SuspendLayout()
@@ -287,13 +287,13 @@ Partial Class wb_ListeStatistik
         '
         'tpRezeptListe
         '
-        Me.tpRezeptListe.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.tpListe.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.tpRezeptListe.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tpRezeptListe.Location = New System.Drawing.Point(3, 3)
-        Me.tpRezeptListe.Name = "tpRezeptListe"
-        Me.tpRezeptListe.Size = New System.Drawing.Size(321, 558)
-        Me.tpRezeptListe.TabIndex = 15
+        Me.tpListe.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.tpListe.Location = New System.Drawing.Point(3, 3)
+        Me.tpListe.Name = "tpRezeptListe"
+        Me.tpListe.Size = New System.Drawing.Size(321, 558)
+        Me.tpListe.TabIndex = 15
         '
         'gbLinien
         '
@@ -327,6 +327,14 @@ Partial Class wb_ListeStatistik
         Me.Label3.TabIndex = 77
         Me.Label3.Text = "Rohstoff-Gruppe 2"
         '
+        'cbRohstoffGrp2
+        '
+        Me.cbRohstoffGrp2.FormattingEnabled = True
+        Me.cbRohstoffGrp2.Location = New System.Drawing.Point(8, 77)
+        Me.cbRohstoffGrp2.Name = "cbRohstoffGrp2"
+        Me.cbRohstoffGrp2.Size = New System.Drawing.Size(195, 21)
+        Me.cbRohstoffGrp2.TabIndex = 76
+        '
         'Label14
         '
         Me.Label14.AutoSize = True
@@ -336,14 +344,6 @@ Partial Class wb_ListeStatistik
         Me.Label14.Size = New System.Drawing.Size(94, 13)
         Me.Label14.TabIndex = 75
         Me.Label14.Text = "Rohstoff-Gruppe 1"
-        '
-        'cbRohstoffGrp2
-        '
-        Me.cbRohstoffGrp2.FormattingEnabled = True
-        Me.cbRohstoffGrp2.Location = New System.Drawing.Point(8, 77)
-        Me.cbRohstoffGrp2.Name = "cbRohstoffGrp2"
-        Me.cbRohstoffGrp2.Size = New System.Drawing.Size(195, 21)
-        Me.cbRohstoffGrp2.TabIndex = 76
         '
         'cbRohstoffGrp1
         '
@@ -365,7 +365,7 @@ Partial Class wb_ListeStatistik
         Me.Controls.Add(Me.BtnListeSpeichern)
         Me.Controls.Add(Me.BtnListeRemove)
         Me.Controls.Add(Me.BtnListeAdd)
-        Me.Controls.Add(Me.tpRezeptListe)
+        Me.Controls.Add(Me.tpListe)
         Me.Name = "wb_ListeStatistik"
         Me.Size = New System.Drawing.Size(554, 613)
         Me.gbFilter.ResumeLayout(False)
@@ -391,7 +391,7 @@ Partial Class wb_ListeStatistik
     Friend WithEvents BtnListeSpeichern As Windows.Forms.Button
     Friend WithEvents BtnListeRemove As Windows.Forms.Button
     Friend WithEvents BtnListeAdd As Windows.Forms.Button
-    Friend WithEvents tpRezeptListe As Windows.Forms.Panel
+    Friend WithEvents tpListe As Windows.Forms.Panel
     Friend WithEvents cbLinien As Windows.Forms.CheckedListBox
     Friend WithEvents gbLinien As Windows.Forms.GroupBox
     Friend WithEvents cbUhrzeitBis As Windows.Forms.CheckBox

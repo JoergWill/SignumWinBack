@@ -31,7 +31,7 @@
         StatistikElementeGridView.SelectionMode = Windows.Forms.DataGridViewSelectionMode.FullRowSelect
 
         'Tabelle (Leer) anzeigen
-        StatistikElementeGridView.GridLocation(tpRezeptListe)
+        StatistikElementeGridView.GridLocation(tpListe)
         StatistikElementeGridView.PerformLayout()
 
         'Default-Einstellungen Filtern bis (aktuelles Datum)
@@ -39,31 +39,35 @@
         'Default-Einstellungen Filtern von (Anzeige aktuelles Jahr)
         dtFilterVon.Value = DateAdd(DateInterval.Year, -1, Now)
 
+        'Liste muss neu berechnet werden
+        ListeBerechnet = False
     End Sub
 
     ''' <summary>
-    ''' Alle Listen initialisieren.
-    ''' 
+    ''' Initialisierung der Drop-Down-Listen
+    ''' Muss unbedingt ausserhalb des Load-Ereignisses erfolgen, sonst kann im Designer
+    ''' kein Statistik-Fenster angezeigt werden
     ''' </summary>
-    Public Sub InitAuswahlListen(StatistikType As wb_Global.StatistikType)
+    ''' <param name="StatistikType"></param>
+    Public Sub InitGruppenListen(StatistikType As wb_Global.StatistikType)
         'Liste aller Linien
         cbLinien.Items.Clear()
         For Each Linie As wb_Global.wb_Linien In wb_Linien_Global.Linien
             cbLinien.Items.Add(Linie.Linie.ToString("  #") & " (" & Linie.Bezeichnung & ")")
         Next
 
-        'Liste muss neu berechnet werden
-        ListeBerechnet = False
+        'Combo-Box(Rohstoff-Gruppe) mit Werten füllen
+        cbRohstoffGrp1.Fill(wb_Rohstoffe_Shared.RohGruppe)
+        cbRohstoffGrp2.Fill(wb_Rohstoffe_Shared.RohGruppe)
+    End Sub
 
-        'Auswahl Rohstoffe
-        If (StatistikType = wb_Global.StatistikType.StatistikRohstoffeDetails) Or (StatistikType = wb_Global.StatistikType.StatistikRohstoffeVerbrauch) Then
-            'Combo-Box(Rohstoff-Gruppe) mit Werten füllen
-            cbRohstoffGrp1.Fill(wb_Rohstoffe_Shared.RohGruppe)
-            cbRohstoffGrp2.Fill(wb_Rohstoffe_Shared.RohGruppe)
-        Else
-            'Combo-Box (Gruppe) ausblenden
-            gbRohGruppe.Visible = False
-        End If
+    ''' <summary>
+    ''' Alle Listen initialisieren.
+    ''' </summary>
+    Public Sub InitAuswahlListen(StatistikType As wb_Global.StatistikType)
+
+        'Combo-Box (Gruppe) ein/ausblenden
+        gbRohGruppe.Visible = (StatistikType = wb_Global.StatistikType.StatistikRohstoffeDetails) Or (StatistikType = wb_Global.StatistikType.StatistikRohstoffeVerbrauch)
 
         'Filter Datum vom..bis aus winback.ini laden
         Dim IniFile As New wb_IniFile
@@ -71,7 +75,10 @@
 
         'Daten aus Ini-File lesen
         dtFilterVon.Value = IniFile.ReadString(IniRegn, "FilterVon", DateAdd(DateInterval.Day, -1, Now))
+        wb_Chargen_Shared.FilterVon = dtFilterVon.Value
+
         dtFilterBis.Value = IniFile.ReadString(IniRegn, "FilterBis", Now)
+        wb_Chargen_Shared.FilterBis = dtFilterBis.Value
 
         'IniFile wieder freigeben
         IniFile = Nothing
@@ -247,6 +254,8 @@
     End Sub
 
     Private Sub cbAlleLinien_Click(sender As Object, e As EventArgs) Handles cbAlleLinien.Click
+        'Wert übernehmen
+        wb_Chargen_Shared.AlleLinien = cbAlleLinien.Checked
         'alle Elemente der Liste aktivieren/deaktivieren
         cbLinien.Enabled = Not cbAlleLinien.Checked
         'Statistik muss neu berechnet werden
@@ -254,12 +263,16 @@
     End Sub
 
     Private Sub cbUhrzeitVon_Click(sender As Object, e As EventArgs) Handles cbUhrzeitVon.Click
+        'Wert übernehmen
+        wb_Chargen_Shared.UhrZeitVonChecked = cbUhrzeitVon.Checked
         dtUhrzeitVon.Enabled = cbUhrzeitVon.Checked
         'Statistik muss neu berechnet werden
         ListeBerechnet = False
     End Sub
 
     Private Sub cbUhrzeitBis_Click(sender As Object, e As EventArgs) Handles cbUhrzeitBis.Click
+        'Wert übernehmen
+        wb_Chargen_Shared.UhrZeitBisChecked = cbUhrzeitBis.Checked
         dtUhrzeitBis.Enabled = cbUhrzeitBis.Checked
         'Statistik muss neu berechnet werden
         ListeBerechnet = False
@@ -274,13 +287,27 @@
     End Sub
 
     Private Sub dtFilterVon_ValueChanged(sender As Object, e As EventArgs) Handles dtFilterVon.ValueChanged
+        'Filter Datum übernehmen
+        wb_Chargen_Shared.FilterVon = dtFilterVon.Value
         'Statistik muss neu berechnet werden
         ListeBerechnet = False
     End Sub
 
     Private Sub dtFilterBis_ValueChanged(sender As Object, e As EventArgs) Handles dtFilterBis.ValueChanged
+        'Filter Datum übernehmen
+        wb_Chargen_Shared.FilterBis = dtFilterBis.Value
         'Statistik muss neu berechnet werden
         ListeBerechnet = False
+    End Sub
+
+    Private Sub cbWasserTempAusblenden_CheckedChanged(sender As Object, e As EventArgs) Handles cbWasserTempAusblenden.CheckedChanged
+        'Wassertemperatur ausblenden
+        wb_Chargen_Shared.WasserTempAusblenden = cbWasserTempAusblenden.Checked
+    End Sub
+
+    Private Sub cbIstwertNullAusblenden_CheckedChanged(sender As Object, e As EventArgs) Handles cbIstwertNullAusblenden.CheckedChanged
+        'Istwert Null unterdrücken
+        wb_Chargen_Shared.IstwertNullAusblenden = cbIstwertNullAusblenden.Checked
     End Sub
 
     ''' <summary>
@@ -328,5 +355,4 @@
         cbRohstoffGrp1.SelectedItem = Nothing
         cbRohstoffGrp2.SelectedItem = Nothing
     End Sub
-
 End Class

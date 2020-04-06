@@ -154,16 +154,12 @@ Public Class wb_Planung_Liste
     ''' Übermittelt die Stückzahlen der Artikel, die in die Produktion übertragen worden sind (Teigzettel/Backzettel/cvs-File) als MengeInProduktion an OrgaBack
     ''' </summary>
     Private Sub WriteProduktionOrgaBack()
-        'TODO in wb_global definieren (siehe auch Artikel_Services)
-        Const _Color As Short = 0        'Farbe ist immer 0
-        Const _Size As String = "NULL"   'Größe ist immer Null
-
         'Alle Produktions-Schritte in der Liste durchlaufen
         For Each p As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
             'wenn dieser Produktions-Schritt gedruckt/übertragen wurde
             If p.IstInProduktion Then
                 'Datensatz in ProduktionAktuell updaten/schreiben
-                MsSQLdbUpdate_ProduktionAktuell(_ProduktionsFilialeNummer, _ProduktionsDatum, p.iTour, p.ArtikelNummer, wb_Global.obEinheitStk, _Color, _Size, p.Sollmenge_Stk, p.MengeInProduktion)
+                MsSQLdbUpdate_ProduktionAktuell(_ProduktionsFilialeNummer, _ProduktionsDatum, p.iTour, p.ArtikelNummer, wb_Global.obEinheitStk, wb_Global.obDEFAULTCOLOR, wb_Global.obDEFAULTSIZE, p.Sollmenge_Stk, p.MengeInProduktion)
             End If
         Next
     End Sub
@@ -222,7 +218,9 @@ Public Class wb_Planung_Liste
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
-        'TODO neue Charge anlegen
+        'neue Charge anlegen
+        Dim NeueCharge As New wb_Planung_Neu
+        NeueCharge.ShowDialog()
 
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt

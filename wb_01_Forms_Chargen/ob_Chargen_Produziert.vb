@@ -164,7 +164,7 @@ Public Class ob_Chargen_Produziert
     ''' <returns></returns>
     Private Function SqlWriteProdWare(db As wb_Sql, o As ob_ProduzierteWare) As Boolean
         'Datensatz in dbo.Produzierte Ware schreiben
-        'Debug.Print("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit " & o.SatzTyp & " " & o.ChargenNummer & " " & o.ArtikelNr & " " & o.Menge & " " & o.Unit)
+        Trace.Write("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit " & o.SatzTyp & " " & o.ChargenNummer & " " & o.ArtikelNr & " " & o.Menge & " " & o.Unit)
 
         'Der SQL-INSERT-Befehl wird dynamisch erzeugt
         Dim sql As String = o.sFilialNummer & ", '" & o.sProduktionsDatum & "', '" & o.sSatzTyp & "', '" & o.ArtikelNr & "', " & o.Unit & ", " &
@@ -172,9 +172,11 @@ Public Class ob_Chargen_Produziert
         'Insert ausführen
         If db.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertProduktionsDaten, sql)) < 0 Then
             ' Rückgabewert kleiner Null - Fehler
+            Trace.WriteLine(" FEHLER")
             Return False
         Else
             'Result Insert OK
+            Trace.WriteLine(" OK")
             Return True
         End If
     End Function

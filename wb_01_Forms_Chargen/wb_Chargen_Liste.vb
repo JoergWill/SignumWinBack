@@ -161,10 +161,12 @@ Public Class wb_Chargen_Liste
     Private Sub BerechnungStatistik(sender As Object)
         'akutell ausgewählte Tageswechsel-Nummer
         Liste_TagesWechselNummer = DataGridView.iField("TW_Nr")
+
         'Fenster-Titel Detail-Fenster
-        Dim StrtDate As Date = DataGridView.Field("TW_Beginn")
-        Dim EndeDate As Date = DataGridView.Field("TW_Ende")
-        FensterTitel = "Produktion vom " & StrtDate.ToString("dd.MM.yyyy hh:mm") & " bis " & EndeDate.ToString("dd.MM.yyyy hh:mm")
+        Dim StrtDate As String = DataGridView.Field("TW_Beginn")
+        Dim EndeDate As String = DataGridView.Field("TW_Ende")
+        wb_Chargen_Shared.SetFensterTitel(wb_Global.StatistikType.ChargenAuswertung, StrtDate, EndeDate)
+
         'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
         Liste_Click(sender, wb_Global.StatistikType.ChargenAuswertung)
         'Nach dem Update der Detailfenster wird der Focus wieder zurückgesetzt (Eingabe Suchmaske)

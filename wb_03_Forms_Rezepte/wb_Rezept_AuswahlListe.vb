@@ -2,8 +2,40 @@
     Private _RezeptNr As Integer = wb_Global.UNDEFINED
     Private _RezeptNummer As String = ""
     Private _RezeptName As String = ""
+    Private _RezeptGewicht As Double
+    Private _RezeptChargeMin As Double
+    Private _RezeptChargeMax As Double
+    Private _RezeptChargeOpt As Double
+    Private _RezeptLinienGruppe As Integer
+
     Private _RezeptListe As New ArrayList
     Private _MultiSelect As Boolean = False
+
+    Public Sub New()
+        ' Dieser Aufruf ist für den Designer erforderlich.
+        InitializeComponent()
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        InitDataGrid()
+    End Sub
+
+    Public Sub New(RezeptNummer As String, RezeptName As String)
+        ' Dieser Aufruf ist für den Designer erforderlich.
+        InitializeComponent()
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        InitDataGrid(RezeptNummer, RezeptName)
+    End Sub
+
+    Public WriteOnly Property MultiSelect As Boolean
+        Set(value As Boolean)
+            _MultiSelect = value
+        End Set
+    End Property
+
+    Public ReadOnly Property RowCount
+        Get
+            Return DataGridView.RowCount
+        End Get
+    End Property
 
     Public ReadOnly Property RezeptNummer As String
         Get
@@ -23,22 +55,43 @@
         End Get
     End Property
 
-    Public WriteOnly Property MultiSelect As Boolean
-        Set(value As Boolean)
-            _MultiSelect = value
-        End Set
-    End Property
-
-    Public Property RezeptName As String
+    Public ReadOnly Property RezeptName As String
         Get
             Return _RezeptName
         End Get
-        Set(value As String)
-            _RezeptName = value
-        End Set
     End Property
 
-    Private Sub wb_Rezept_AuswahlListe_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Public ReadOnly Property RezeptGewicht As Double
+        Get
+            Return _RezeptGewicht
+        End Get
+    End Property
+
+    Public ReadOnly Property RezeptChargeMin As Double
+        Get
+            Return _RezeptChargeMin
+        End Get
+    End Property
+
+    Public ReadOnly Property RezeptChargeMax As Double
+        Get
+            Return _RezeptChargeMax
+        End Get
+    End Property
+
+    Public ReadOnly Property RezeptChargeOpt As Double
+        Get
+            Return _RezeptChargeOpt
+        End Get
+    End Property
+
+    Public ReadOnly Property RezeptLinienGruppe As Integer
+        Get
+            Return _RezeptLinienGruppe
+        End Get
+    End Property
+
+    Private Sub InitDataGrid(Optional RezeptNummer As String = "", Optional RezeptName As String = "")
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
@@ -50,6 +103,15 @@
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlRezeptListe, "RezeptListe")
         DataGridView.MultiSelect = _MultiSelect
+
+        'DataGrid filtern nach Rezept-Nummer (alpha)
+        If RezeptNummer <> "" Then
+            DataGridView.Filter = "RZ_Nr_AlNum = '" & RezeptNummer & "'"
+        End If
+        'DataGrid filtern nach Rezept-Bezeichnung (alpha)
+        If RezeptName <> "" Then
+            DataGridView.Filter = "RZ_Bezeichnung LIKE '%" & RezeptName & "%'"
+        End If
     End Sub
 
     Private Sub BtnClear_Click(sender As Object, e As EventArgs) Handles BtnClear.Click
@@ -86,6 +148,11 @@
         _RezeptNr = DataGridView.iField("RZ_Nr")
         _RezeptNummer = DataGridView.Field("RZ_Nr_AlNum")
         _RezeptName = DataGridView.Field("RZ_Bezeichnung")
+        _RezeptGewicht = wb_Functions.StrToDouble(DataGridView.Field("RZ_Gewicht"))
+        _RezeptChargeMin = wb_Functions.StrToDouble(DataGridView.Field("RZ_Charge_Min"))
+        _RezeptChargeOpt = wb_Functions.StrToDouble(DataGridView.Field("RZ_Charge_Opt"))
+        _RezeptChargeMax = wb_Functions.StrToDouble(DataGridView.Field("RZ_Charge_Max"))
+        _RezeptLinienGruppe = DataGridView.iField("RZ_Liniengruppe")
 
         'MultiSelect
         For Each dl As Windows.Forms.DataGridViewRow In DataGridView.SelectedRows

@@ -4,7 +4,9 @@ Imports WinBack.wb_Chargen_Shared
 Public Class wb_Statistik_RohDetails
     Inherits DockContent
 
-    Private Sub wb_Statistik_RohDetails_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub wb_Statistik_RohDetails_Enter(sender As Object, e As EventArgs) Handles MyBase.Enter
+        'Drop-Down-Listen initialisieren
+        ListeStatistik.InitGruppenListen(wb_Global.StatistikType.StatistikRohstoffeDetails)
         'Listen-Fenster initialisieren (Variante Rohstoffe-Details)
         ListeStatistik.InitAuswahlListen(wb_Global.StatistikType.StatistikRohstoffeDetails)
     End Sub
@@ -69,44 +71,13 @@ Public Class wb_Statistik_RohDetails
     ''' </summary>
     ''' <param name="sender"></param>
     Private Sub BerechnungStatistik(sender As Object)
-        'Filter Datum übernehmen
-        wb_Chargen_Shared.FilterVon = ListeStatistik.dtFilterVon.Value
-        wb_Chargen_Shared.FilterBis = ListeStatistik.dtFilterBis.Value
-
-        'Fenster-Titel
-        Dim Titel As String = "Statistik Rohstoffe vom "
-        'Filter Uhrzeit übernehmen
-        If ListeStatistik.cbUhrzeitVon.Checked Then
-            wb_Chargen_Shared.UhrzeitVon = ListeStatistik.dtUhrzeitVon.Value
-            Titel &= FilterVon.ToString("dd.MM.yyyy") & UhrzeitVon.ToString(" hh:mm")
-        Else
-            wb_Chargen_Shared.UhrzeitVon = wb_Global.wbNODATE
-            Titel &= FilterVon.ToString("dd.MM.yyyy")
-        End If
-
-        'Fenster-Titel
-        Titel &= " bis "
-        If ListeStatistik.cbUhrzeitBis.Checked Then
-            wb_Chargen_Shared.UhrzeitBis = ListeStatistik.dtUhrzeitBis.Value
-            Titel &= FilterBis.ToString("dd.MM.yyyy") & UhrzeitBis.ToString(" hh:mm")
-        Else
-            wb_Chargen_Shared.UhrzeitBis = wb_Global.wbNODATE
-            Titel &= FilterBis.ToString("dd.MM.yyyy")
-        End If
-
         'Liste aller Rezept-Nummern
         ListeStatistik.GetElements(wb_Chargen_Shared.NrListe)
         'Liste aller Linien
         ListeStatistik.GetLinien(wb_Chargen_Shared.NrLinien)
-        wb_Chargen_Shared.AlleLinien = ListeStatistik.cbAlleLinien.Checked
-
-        'Wassertemperatur ausblenden
-        wb_Chargen_Shared.WasserTempAusblenden = ListeStatistik.cbWasserTempAusblenden.Checked
-        'Istwert Null unterdrücken
-        wb_Chargen_Shared.IstwertNullAusblenden = ListeStatistik.cbIstwertNullAusblenden.Checked
 
         'Fenstertitel
-        FensterTitel = Titel
+        wb_Chargen_Shared.SetFensterTitel(wb_Global.StatistikType.StatistikRohstoffeDetails)
         'Auswertung starten
         wb_Chargen_Shared.Liste_Click(sender, wb_Global.StatistikType.StatistikRohstoffeDetails)
     End Sub
@@ -119,4 +90,5 @@ Public Class wb_Statistik_RohDetails
     Private Sub wb_Statistik_RohDetails_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         ListeStatistik.SaveAuswahlListen(wb_Global.StatistikType.StatistikRohstoffeDetails)
     End Sub
+
 End Class

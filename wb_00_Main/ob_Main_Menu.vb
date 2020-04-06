@@ -176,9 +176,7 @@ Public Class ob_Main_Menu
         oGrpStammdaten.AddButton("btnKonstanten", "Schlüsseldaten", "Stammdaten WinBack - Rohstoff/Artikelgruppen, Rezeptvarianten, Produktionsstufen...", My.Resources.MainStammdaten_16x16, My.Resources.MainStammdaten_32x32, AddressOf ShowStammDatenForm)
 
         'Gruppe Auswertung
-        oGrpChargen.AddButton("btnStatistikChargen", "Statistik Chargen", "WinBack Auswertung Produktions-Chargen", My.Resources.MainStatistikChargen_16x16, My.Resources.MainStatistikChargen_32x32, AddressOf ShowStatistikChargenForm)
-        oGrpChargen.AddButton("btnStatistikRohstoffe", "Verbrauch Rohstoffe", "WinBack Auswertung Rohstoff Verbrauch", My.Resources.MainStatistikRohstoffe_16x16, My.Resources.MainStatistikRohstoffe_32x32, AddressOf ShowStatistikRohstoffForm)
-        oGrpChargen.AddButton("btnStatistikRezepte", "Statistik Rezepte", "WinBack Statistik - Auswertung der produzierten Teige", My.Resources.MainStatistikRezepte_16x16, My.Resources.MainStatistikRezepte_32x32, AddressOf ShowStatistikRezeptForm)
+        oGrpChargen.AddButton("btnStatistik", "Statistik Produktion", "WinBack Auswertung Produktions-Chargen", My.Resources.MainStatistikChargen_16x16, My.Resources.MainStatistikChargen_32x32, AddressOf ShowStatistikForm)
 
         'Gruppe Linien
         oGrpLinien.AddButton("btnLinien", "Produktions-Linien", "WinBack Produktion Linie 1...", My.Resources.MainLinien_32x32, My.Resources.MainLinien_32x32, AddressOf ShowLinienForm)
@@ -265,36 +263,14 @@ Public Class ob_Main_Menu
     End Sub
 
     ''' <summary>
-    ''' Aufruf WinBack-Fenster Statistik Chargen
+    ''' Aufruf WinBack-Fenster Statistik
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub ShowStatistikChargenForm(sender As Object, e As EventArgs)
+    Private Sub ShowStatistikForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Chargen_Main(ServiceProvider), My.Resources.MainStatistikChargen_16x16)
-        wb_DockBarPanelShared.SetFormBoundaries(xForm, "StatistikChargen")
-    End Sub
-
-    ''' <summary>
-    ''' Aufruf WinBack-Fenster Statistik Rohstoffe
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub ShowStatistikRohstoffForm(sender As Object, e As EventArgs)
-        CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_Chargen_Main(ServiceProvider), My.Resources.MainStatistikRohstoffe_16x16)
-        wb_DockBarPanelShared.SetFormBoundaries(xForm, "StatistikRohstoffe")
-    End Sub
-
-    ''' <summary>
-    ''' Aufruf WinBack-Fenster Statistik Rezepte
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub ShowStatistikRezeptForm(sender As Object, e As EventArgs)
-        CloseAllForms()
-        xForm = oViewProvider.OpenForm(New wb_Chargen_Main(ServiceProvider), My.Resources.MainStatistikRezepte_16x16)
-        wb_DockBarPanelShared.SetFormBoundaries(xForm, "StatistikRezepte")
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "Statistik")
     End Sub
 
     ''' <summary>

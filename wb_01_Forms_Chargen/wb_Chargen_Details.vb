@@ -42,36 +42,43 @@ Public Class wb_Chargen_Details
             Me.Text = wb_Chargen_Shared.FensterTitel
         End If
 
-        'wenn schon Daten angezeigt worden sind
-        If ChargenProduziert.RootChargenSchritt.ChildSteps.Count > 0 Then
-            'Anzeige Virtual-Tree löschen
-            ChargenProduziert.RootChargenSchritt.ChildSteps.Clear()
-            ChargenTree.Invalidate()
-            'Tree neu zeichnen(leer)
-            If (ChargenProduziert.RootChargenSchritt IsNot Nothing) Then
-                ChargenTree.DataSource = ChargenProduziert.RootChargenSchritt
-            End If
-        End If
-
-        'Mauszeiger umschalten
-        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
-        'Daten laden
-        If ChargenProduziert.MySQLdbSelect_ChargenSchritte(_StatistikType) Then
-
-            'Virtual Tree anzeigen
-            If ChargenProduziert.RootChargenSchritt IsNot Nothing Then
-                ChargenTree.DataSource = ChargenProduziert.RootChargenSchritt
+        'sicherheitshalber...
+        Try
+            'wenn schon Daten angezeigt worden sind
+            If ChargenProduziert.RootChargenSchritt.ChildSteps.Count > 0 Then
+                'Anzeige Virtual-Tree löschen
+                ChargenProduziert.RootChargenSchritt.ChildSteps.Clear()
+                ChargenTree.Invalidate()
+                'Tree neu zeichnen(leer)
+                If (ChargenProduziert.RootChargenSchritt IsNot Nothing) Then
+                    ChargenTree.DataSource = ChargenProduziert.RootChargenSchritt
+                End If
             End If
 
-            'Detail-Fenster in den Vordergrund bringen
-            Me.Activate()
             'Mauszeiger umschalten
-            Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
-        Else
+            Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
+            'Daten laden
+            If ChargenProduziert.MySQLdbSelect_ChargenSchritte(_StatistikType) Then
+
+                'Virtual Tree anzeigen
+                If ChargenProduziert.RootChargenSchritt IsNot Nothing Then
+                    ChargenTree.DataSource = ChargenProduziert.RootChargenSchritt
+                End If
+
+                'Detail-Fenster in den Vordergrund bringen
+                Me.Activate()
+                'Mauszeiger umschalten
+                Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
+            Else
+                'Mauszeiger umschalten
+                Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
+                MsgBox("Keine Daten für diesen Zeitraum vorhanden !", MsgBoxStyle.Exclamation, "WinBack")
+            End If
+        Catch ex As Exception
             'Mauszeiger umschalten
             Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
             MsgBox("Keine Daten für diesen Zeitraum vorhanden !", MsgBoxStyle.Exclamation, "WinBack")
-        End If
+        End Try
     End Sub
 
     ''' <summary>

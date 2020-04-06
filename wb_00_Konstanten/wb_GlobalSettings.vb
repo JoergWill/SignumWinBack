@@ -783,6 +783,7 @@ Public Class wb_GlobalSettings
                         _pWinBackIniPath = pProgrammPath & "\WinBack.ini"
 
                     Case Else
+                        Exit Property
                         'die winback.ini liegt direkt über dem AddIn-Pfad '..\OrgaBack\AddIn
                         Dim directoryInfo As System.IO.DirectoryInfo = Directory.GetParent(pAddInPath)
                         _pWinBackIniPath = directoryInfo.Parent.FullName & "\WinBack.ini"

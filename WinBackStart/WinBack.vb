@@ -83,7 +83,9 @@ Public Class WinBack
                     'TEST REZEPTVERWALTUNG
                     'MainFormShow(MdiRezepte, GetType(Rezepte_Main))
                     'TEST USERVERWALTUNG
-                    MainFormShow(MdiUser, GetType(User_Main))
+                    'MainFormShow(MdiUser, GetType(User_Main))
+                    'TEST PRODUKTIONSPLANUNG
+                    MainFormShow(MdiPlanung, GetType(Planung_Main))
                     'TESTFENSTER
                     'MainFormShow(MdiTEst, GetType(Test_Main))
                 End If
@@ -619,8 +621,7 @@ Public Class WinBack
     Private Sub rbDetails_Click(sender As Object, e As EventArgs) Handles rbArtikelDetails.Click, rbArtikelBearbeiten.Click,
                                                                           rbUserDetails.Click, rbUserBearbeiten.Click,
                                                                           rbRohstoffeDetails.Click, rbRohstoffeBearbeiten.Click,
-                                                                          rbUserDetails.Click, rbUserBearbeiten.Click, rbRezeptBearbeiten.Click, rbRezeptDetails.Click,
-                                                                          rbChargenDetails.Click
+                                                                          rbUserDetails.Click, rbUserBearbeiten.Click, rbRezeptBearbeiten.Click, rbRezeptDetails.Click
         AktFormSendCommand("OPENDETAILS", "")
     End Sub
 
@@ -631,8 +632,7 @@ Public Class WinBack
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click, rbLinienDel.Click, rbLinienDrucken.Click, rbLinienAuto.Click,
-        rbChargenFilter.Click, rbStatRohstoffe.Click, rbStatRohstoffeDetail.Click, rbStatRezepte.Click,
+    Private Sub rbCommand_Click(sender As Object, e As EventArgs) Handles rbLinienAdd.Click, rbLinienDel.Click, rbLinienDrucken.Click, rbLinienAuto.Click, rbStatRohstoffe.Click, rbStatRohstoffeDetail.Click, rbStatRezepte.Click,
         rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click, rbUserGruppenRechte.Click,
         rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeParameter.Click, rbRohstoffeVerwendung.Click, rbRohstoffeLieferungen.Click, rbRohstoffNwt.Click, rbRohstoffeImportCloud.Click,
         rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click, rbAdminWinBack.Click, rbAdminUpdate.Click, rbAdminWinBackIni.Click, rbLog.Click,

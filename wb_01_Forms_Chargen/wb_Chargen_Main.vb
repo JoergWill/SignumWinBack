@@ -8,7 +8,10 @@ Public Class wb_Chargen_Main
 
     'Default-Fenster
     Public ChargenListe As New wb_Chargen_Liste
-    Public ChargenFunktionen As wb_Chargen_Funktionen
+    Public StatistikRohVerbrauch As wb_Statistik_RohVerbrauch
+    Public StatistikRohDetails As wb_Statistik_RohDetails
+    Public StatistikRezepte As wb_Statistik_Rezepte
+
     Public ChargenDetails As wb_Chargen_Details
     Public ChargenWasserTemp As wb_ChargenWasserTemp
     Public ChargenChartTemp As wb_Chargen_ChartTTS
@@ -25,7 +28,7 @@ Public Class wb_Chargen_Main
     ''' <returns></returns>
     Public Overrides ReadOnly Property FormText As String
         Get
-            Return "WinBack Chargen-Auswertung"
+            Return "WinBack Statistik-Produktion"
         End Get
     End Property
 
@@ -35,8 +38,8 @@ Public Class wb_Chargen_Main
     ''' <returns></returns>
     Public Overrides ReadOnly Property FormName As String
         Get
-            Me.Tag = "StatistikChargen"
-            Return "StatistikChargen"
+            Me.Tag = "Statistik"
+            Return "Statistik"
         End Get
     End Property
 
@@ -67,30 +70,63 @@ Public Class wb_Chargen_Main
             If _ContextTabs Is Nothing Then
                 _ContextTabs = New List(Of GUI.ITab)
                 ' Fügt dem Ribbon ein neues RibbonTab hinzu
-                Dim oNewTab = _MenuService.AddContextTab("Chargen-Auswertung", "WinBack-Chargen", "Auswertung der produzierten Chargen in WinBack")
+                Dim oNewTab = _MenuService.AddContextTab("Statistik-Auswertung", "WinBack-Statistik", "Auswertung der Produktionsdaten in WinBack")
                 ' Das neue RibbonTab erhält eine Gruppe
-                Dim oGrp = oNewTab.AddGroup("GrpChargen", "WinBack Chargen")
+                Dim oGrp = oNewTab.AddGroup("GrpChargen", "WinBack Statistik")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("BtnChargenInfo", "Funktionen", "Einstellungen Filter, Export-Optionen", My.Resources.ChargenInfo_32x32, My.Resources.ChargenInfo_32x32, AddressOf BtnChargenFunktionen)
-                oGrp.AddButton("BtnChargenDetails", "Details", "Detail-Ansicht aller prodzierten Chargen", My.Resources.ChargenDetails_32x32, My.Resources.ChargenDetails_32x32, AddressOf BtnChargenDetails)
+                oGrp.AddButton("btnStatistikChargen", "Statistik Chargen", "WinBack Auswertung Produktions-Chargen", My.Resources.MainStatistikChargen_16x16, My.Resources.MainStatistikChargen_32x32, AddressOf BtnStatistikChargenForm)
+                oGrp.AddButton("btnStatistikRohstoffe", "Verbrauch Rohstoffe", "WinBack Auswertung Rohstoff Verbrauch", My.Resources.MainStatistikRohstoffe_16x16, My.Resources.MainStatistikRohstoffe_32x32, AddressOf BtnStatistikRohVerbrauchForm)
+                oGrp.AddButton("btnStatistikRezepte", "Statistik Rezepte", "WinBack Statistik - Auswertung der produzierten Teige", My.Resources.MainStatistikRezepte_16x16, My.Resources.MainStatistikRezepte_32x32, AddressOf BtnStatistikRezeptForm)
+                oGrp.AddButton("BtnChargenDetails", "Details", "Detail-Ansicht aller produzierten Chargen", My.Resources.ChargenDetails_32x32, My.Resources.ChargenDetails_32x32, AddressOf BtnChargenDetails)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
         End Get
     End Property
 
-    Private Sub BtnChargenFunktionen()
-        If IsNothingOrDisposed(ChargenFunktionen) Then
-            ChargenFunktionen = New wb_Chargen_Funktionen
+    Private Sub BtnStatistikChargenForm()
+        If IsNothingOrDisposed(ChargenListe) Then
+            ChargenListe = New wb_Chargen_Liste
+            ChargenListe.Show(DockPanel, DockState.DockTop)
+        Else
+            ChargenListe.Show(DockPanel)
         End If
-        ChargenFunktionen.Show(DockPanel, DockState.DockTop)
+    End Sub
+
+    Private Sub BtnStatistikRohVerbrauchForm()
+        If IsNothingOrDisposed(StatistikRohVerbrauch) Then
+            StatistikRohVerbrauch = New wb_Statistik_RohVerbrauch
+            StatistikRohVerbrauch.Show(DockPanel, DockState.DockTop)
+        Else
+            StatistikRohVerbrauch.Show(DockPanel)
+        End If
+    End Sub
+
+    Private Sub BtnStatistikRohDetailsForm()
+        If IsNothingOrDisposed(StatistikRohDetails) Then
+            StatistikRohDetails = New wb_Statistik_RohDetails
+            StatistikRohDetails.Show(DockPanel, DockState.DockTop)
+        Else
+            StatistikRohDetails.Show(DockPanel)
+        End If
+    End Sub
+
+    Private Sub BtnStatistikRezeptForm()
+        If IsNothingOrDisposed(StatistikRezepte) Then
+            StatistikRezepte = New wb_Statistik_Rezepte
+            StatistikRezepte.Show(DockPanel, DockState.DockTop)
+        Else
+            StatistikRezepte.Show(DockPanel)
+        End If
     End Sub
 
     Private Sub BtnChargenDetails()
         If IsNothingOrDisposed(ChargenDetails) Then
             ChargenDetails = New wb_Chargen_Details
+            ChargenDetails.Show(DockPanel, DockState.DockTop)
+        Else
+            ChargenDetails.Show(DockPanel)
         End If
-        ChargenDetails.Show(DockPanel, DockState.DockTop)
     End Sub
 
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
@@ -101,10 +137,20 @@ Public Class wb_Chargen_Main
                 _DockPanelList.Add(ChargenListe)
                 Return ChargenListe
 
-            Case "WinBack.wb_Chargen_Funktionen"
-                ChargenFunktionen = New wb_Chargen_Funktionen
-                _DockPanelList.Add(ChargenFunktionen)
-                Return ChargenFunktionen
+            Case "WinBack.wb_Statistik_RohVerbrauch"
+                StatistikRohVerbrauch = New wb_Statistik_RohVerbrauch
+                _DockPanelList.Add(StatistikRohVerbrauch)
+                Return StatistikRohVerbrauch
+
+            Case "WinBack.wb_Statistik_RohDetails"
+                StatistikRohDetails = New wb_Statistik_RohDetails
+                _DockPanelList.Add(StatistikRohDetails)
+                Return StatistikRohDetails
+
+            Case "WinBack.wb_Statistik_Rezepte"
+                StatistikRezepte = New wb_Statistik_Rezepte
+                _DockPanelList.Add(StatistikRezepte)
+                Return StatistikRezepte
 
             Case "WinBack.wb_Chargen_Details"
                 ChargenDetails = New wb_Chargen_Details

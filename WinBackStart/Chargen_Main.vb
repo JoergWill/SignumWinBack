@@ -12,7 +12,6 @@ Public Class Chargen_Main
 
     Public ChargenListe As New wb_Chargen_Liste         'Default-Fenster    (wird beim Öffnen immer angezeigt)
     Public ChargenDetails As wb_Chargen_Details         'Detail-Fenster
-    Public ChargenFunktionen As wb_Chargen_Funktionen   'Filter und Funktionen
     Public ChargenWasserTemp As wb_ChargenWasserTemp
     Public ChargenChartTemp As wb_Chargen_ChartTTS
 
@@ -40,12 +39,6 @@ Public Class Chargen_Main
                 If Not DockIsVisible("wb_Chargen_Details") Then
                     ChargenDetails = New wb_Chargen_Details
                     ChargenDetails.Show(DockPanel)
-                End If
-                Return True
-            Case "FUNKTIONEN"
-                If Not DockIsVisible("wb_Chargen_Funktionen") Then
-                    ChargenFunktionen = New wb_Chargen_Funktionen
-                    ChargenFunktionen.Show(DockPanel)
                 End If
                 Return True
             Case "STATROHVERBR"
@@ -97,10 +90,6 @@ Public Class Chargen_Main
                 ChargenDetails = New wb_Chargen_Details
                 _DockPanelList.Add(ChargenDetails)
                 Return ChargenDetails
-            Case "WinBack.wb_Chargen_Funktionen"
-                ChargenFunktionen = New wb_Chargen_Funktionen
-                _DockPanelList.Add(ChargenFunktionen)
-                Return ChargenFunktionen
             Case "WinBack.wb_Statistik_RohVerbrauch"
                 StatistikRohVerbrauch = New wb_Statistik_RohVerbrauch
                 _DockPanelList.Add(StatistikRohVerbrauch)

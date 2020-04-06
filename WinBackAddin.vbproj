@@ -864,6 +864,12 @@
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Neu.Designer.vb">
+      <DependentUpon>wb_Planung_Neu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Neu.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Teiler.Designer.vb">
       <DependentUpon>wb_Planung_Teiler.vb</DependentUpon>
     </Compile>
@@ -1127,6 +1133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Neu.resx">
+      <DependentUpon>wb_Planung_Neu.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Teiler.resx">
       <DependentUpon>wb_Planung_Teiler.vb</DependentUpon>

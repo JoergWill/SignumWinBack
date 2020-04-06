@@ -29,12 +29,6 @@ Partial Class WinBack
         Me.rbChargen = New System.Windows.Forms.RibbonTab()
         Me.rpChargen = New System.Windows.Forms.RibbonPanel()
         Me.rbChargenListe = New System.Windows.Forms.RibbonButton()
-        Me.rbChargenDetails = New System.Windows.Forms.RibbonButton()
-        Me.rbChargenFilter = New System.Windows.Forms.RibbonButton()
-        Me.rpChargenExport = New System.Windows.Forms.RibbonPanel()
-        Me.rbChargenExcelSumme = New System.Windows.Forms.RibbonButton()
-        Me.rbChargenExcelEinzel = New System.Windows.Forms.RibbonButton()
-        Me.rbChargenExcelDetails = New System.Windows.Forms.RibbonButton()
         Me.rpStatRohStoffe = New System.Windows.Forms.RibbonPanel()
         Me.rbStatRohstoffe = New System.Windows.Forms.RibbonButton()
         Me.rbStatRohstoffeDetail = New System.Windows.Forms.RibbonButton()
@@ -186,7 +180,6 @@ Partial Class WinBack
         '
         Me.rbChargen.Name = "rbChargen"
         Me.rbChargen.Panels.Add(Me.rpChargen)
-        Me.rbChargen.Panels.Add(Me.rpChargenExport)
         Me.rbChargen.Panels.Add(Me.rpStatRohStoffe)
         Me.rbChargen.Panels.Add(Me.rpStatRezepte)
         Me.rbChargen.Tag = "101"
@@ -198,8 +191,6 @@ Partial Class WinBack
         Me.rpChargen.ButtonMoreEnabled = False
         Me.rpChargen.ButtonMoreVisible = False
         Me.rpChargen.Items.Add(Me.rbChargenListe)
-        Me.rpChargen.Items.Add(Me.rbChargenDetails)
-        Me.rpChargen.Items.Add(Me.rbChargenFilter)
         Me.rpChargen.Name = "rpChargen"
         Me.rpChargen.Text = "Chargen"
         '
@@ -211,63 +202,6 @@ Partial Class WinBack
         Me.rbChargenListe.Name = "rbChargenListe"
         Me.rbChargenListe.SmallImage = CType(resources.GetObject("rbChargenListe.SmallImage"), System.Drawing.Image)
         Me.rbChargenListe.Text = "Produktion Tage"
-        '
-        'rbChargenDetails
-        '
-        Me.rbChargenDetails.Image = CType(resources.GetObject("rbChargenDetails.Image"), System.Drawing.Image)
-        Me.rbChargenDetails.LargeImage = CType(resources.GetObject("rbChargenDetails.LargeImage"), System.Drawing.Image)
-        Me.rbChargenDetails.MinimumSize = New System.Drawing.Size(70, 0)
-        Me.rbChargenDetails.Name = "rbChargenDetails"
-        Me.rbChargenDetails.SmallImage = CType(resources.GetObject("rbChargenDetails.SmallImage"), System.Drawing.Image)
-        Me.rbChargenDetails.Text = "Chargen Details"
-        '
-        'rbChargenFilter
-        '
-        Me.rbChargenFilter.Image = CType(resources.GetObject("rbChargenFilter.Image"), System.Drawing.Image)
-        Me.rbChargenFilter.LargeImage = CType(resources.GetObject("rbChargenFilter.LargeImage"), System.Drawing.Image)
-        Me.rbChargenFilter.Name = "rbChargenFilter"
-        Me.rbChargenFilter.SmallImage = CType(resources.GetObject("rbChargenFilter.SmallImage"), System.Drawing.Image)
-        Me.rbChargenFilter.Text = "Filter Chargenliste"
-        Me.rbChargenFilter.Value = "FUNKTIONEN"
-        '
-        'rpChargenExport
-        '
-        Me.rpChargenExport.ButtonMoreVisible = False
-        Me.rpChargenExport.Items.Add(Me.rbChargenExcelSumme)
-        Me.rpChargenExport.Items.Add(Me.rbChargenExcelEinzel)
-        Me.rpChargenExport.Items.Add(Me.rbChargenExcelDetails)
-        Me.rpChargenExport.Name = "rpChargenExport"
-        Me.rpChargenExport.Text = "Export Chargendaten nach Excel"
-        '
-        'rbChargenExcelSumme
-        '
-        Me.rbChargenExcelSumme.Image = CType(resources.GetObject("rbChargenExcelSumme.Image"), System.Drawing.Image)
-        Me.rbChargenExcelSumme.LargeImage = CType(resources.GetObject("rbChargenExcelSumme.LargeImage"), System.Drawing.Image)
-        Me.rbChargenExcelSumme.MinimumSize = New System.Drawing.Size(60, 0)
-        Me.rbChargenExcelSumme.Name = "rbChargenExcelSumme"
-        Me.rbChargenExcelSumme.SmallImage = CType(resources.GetObject("rbChargenExcelSumme.SmallImage"), System.Drawing.Image)
-        Me.rbChargenExcelSumme.Tag = "125"
-        Me.rbChargenExcelSumme.Text = "Summe Chargen"
-        '
-        'rbChargenExcelEinzel
-        '
-        Me.rbChargenExcelEinzel.Image = CType(resources.GetObject("rbChargenExcelEinzel.Image"), System.Drawing.Image)
-        Me.rbChargenExcelEinzel.LargeImage = CType(resources.GetObject("rbChargenExcelEinzel.LargeImage"), System.Drawing.Image)
-        Me.rbChargenExcelEinzel.MinimumSize = New System.Drawing.Size(60, 0)
-        Me.rbChargenExcelEinzel.Name = "rbChargenExcelEinzel"
-        Me.rbChargenExcelEinzel.SmallImage = CType(resources.GetObject("rbChargenExcelEinzel.SmallImage"), System.Drawing.Image)
-        Me.rbChargenExcelEinzel.Tag = "125"
-        Me.rbChargenExcelEinzel.Text = "Einzel chargen"
-        '
-        'rbChargenExcelDetails
-        '
-        Me.rbChargenExcelDetails.Image = CType(resources.GetObject("rbChargenExcelDetails.Image"), System.Drawing.Image)
-        Me.rbChargenExcelDetails.LargeImage = CType(resources.GetObject("rbChargenExcelDetails.LargeImage"), System.Drawing.Image)
-        Me.rbChargenExcelDetails.MinimumSize = New System.Drawing.Size(60, 0)
-        Me.rbChargenExcelDetails.Name = "rbChargenExcelDetails"
-        Me.rbChargenExcelDetails.SmallImage = CType(resources.GetObject("rbChargenExcelDetails.SmallImage"), System.Drawing.Image)
-        Me.rbChargenExcelDetails.Tag = "125"
-        Me.rbChargenExcelDetails.Text = "Chargen Details"
         '
         'rpStatRohStoffe
         '
@@ -1666,10 +1600,6 @@ Partial Class WinBack
     Friend WithEvents rbRezepte As RibbonTab
     Friend WithEvents rbRohstoffe As RibbonTab
     Friend WithEvents rbChargenListe As RibbonButton
-    Friend WithEvents rbChargenDetails As RibbonButton
-    Friend WithEvents rbChargenExcelSumme As RibbonButton
-    Friend WithEvents rbChargenExcelEinzel As RibbonButton
-    Friend WithEvents rbChargenExcelDetails As RibbonButton
     Friend WithEvents rpArtikelBearbeiten As RibbonPanel
     Friend WithEvents rbArtikelNeu As RibbonButton
     Friend WithEvents rbArtikelCopy As RibbonButton
@@ -1806,5 +1736,4 @@ Partial Class WinBack
     Friend WithEvents rbGruppen As RibbonButton
     Friend WithEvents rbVarianten As RibbonButton
     Friend WithEvents rbRohstoffeLieferungen As RibbonButton
-    Friend WithEvents rbChargenFilter As RibbonButton
 End Class

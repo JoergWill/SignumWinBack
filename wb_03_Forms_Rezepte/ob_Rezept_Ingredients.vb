@@ -131,8 +131,8 @@ Public Class ob_RecipeInfo
     Private _Branch As Short
     Private _Ingredients As IList
 
-    Private _Color As Short = 0                                         'Farbe ist immer 0
-    Private _Size As String = "NULL"                                    'Größe ist immer Null
+    Private _Color As Short = wb_Global.obDEFAULTCOLOR                  'Farbe ist immer 0
+    Private _Size As String = wb_Global.obDEFAULTSIZE                   'Größe ist immer Null
     Private _Unit As Short = wb_Global.obEinheitKilogramm               'Einheit ist immer kg(11)
     Private _RecipeType As Short = wb_Global.RecipeTypeProdVariabel     'Rezept-Type ist immer variable Produktionsrezeptur(5)
     Private _ProductionArticle As Boolean = True                        'Rezept-Type Produktion
@@ -354,8 +354,8 @@ Public Class ob_RecipeIngredient
     Private _Ingredients As IList
 
     Private _Branch As Short = 0
-    Private _Color As Short = 0
-    Private _Size As String = "NULL"
+    Private _Color As Short = wb_Global.obDEFAULTCOLOR
+    Private _Size As String = wb_Global.obDEFAULTSIZE
     Private _RecipeType As Short = wb_Global.RecipeTypeProdVariabel
     Private _ProductionArticle As Boolean = True
     Private _Variable As Boolean = True
@@ -536,8 +536,8 @@ Public Class ob_ArticleUsage
 
     Private _ArticleNo As String
     Private _Unit As Short = wb_Global.obEinheitStk
-    Private _Color As Short = 0
-    Private _Size As String = "NULL"
+    Private _Color As Short = wb_Global.obDEFAULTCOLOR
+    Private _Size As String = wb_Global.obDEFAULTSIZE
     Private _KO_Nr As Integer
     Private _KO_Type As wb_Global.KomponTypen
 
