@@ -2246,6 +2246,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Artikel_AuswahlListe.GetResult">
+ <summary>
+ Ergebnis Auswahl zusammenfassen
+ Wenn nur eine Zeile ausgewählt worden ist, werden Artikelnummer und Bezeichnung zurückgegeben. Bei 
+ Multiselect nur Artikel-Index als Liste
+ </summary>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Lieferung.DetailInfo(System.Object)">
  <summary>
  Anzeige der Rohstoff-Details.
@@ -2936,6 +2943,9 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Komponenten-Type ändern. 
  Ändert die (Readonly) Komponenten-Type falls in OrgaBack die Artikelgruppe geändert wird. (Artikel/Rohstoff)
  Gibt true zurück wenn eine Änderung stattgefunden hat.
+ 
+ Geändert wird nur von Artikel zu Rohstoff und umgekehrt.
+ (Fehler bei Niehaves/Fonk - Automatik-Komponente wird Handkomponente)
  </summary>
  <param name="KType"></param>
  <returns></returns>
@@ -4909,7 +4919,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="FormName"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_sql_BackupRestore.PrepareSQLFile(System.String,System.String)">
+<member name="M:WinBack.wb_sql_BackupRestore.PrepareSQLFile(System.String,System.String,System.Boolean)">
  <summary>
  Datensicherung xxx.sql für mySQL-Import vorbereiten. 
  Fügt 3 Zeilen am Anfang der Datei ein:
@@ -8401,7 +8411,7 @@ Datenbank-Verbindung schliessen
  Damit können auch andere Tasks die Einstellungen lesen (Server-Task...)
  </summary>
 </member>
-<member name="M:WinBack.wb_Chargen_Liste.wb_Chargen_Liste_Shown(System.Object,System.EventArgs)">
+<member name="M:WinBack.wb_Statistik_Chargen.wb_Chargen_Liste_Shown(System.Object,System.EventArgs)">
  <summary>
  Zur letzten Zeile im Grid scrollen.
  Entspricht den letzten produzierten Chargen
@@ -8409,7 +8419,7 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Chargen_Liste.DataGridView_HasChanged(System.Object,System.EventArgs)">
+<member name="M:WinBack.wb_Statistik_Chargen.DataGridView_HasChanged(System.Object,System.EventArgs)">
  <summary>
  Die Selektion im DataGridView hat sich geändert. Wenn Daten in den Detail-Fenstern geändert wurden, wird
  diese Änderung vor dem Laden der neuen Daten in der Datenbank gesichert.
@@ -8417,21 +8427,21 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Chargen_Liste.rbArtikel_CheckedChanged(System.Object,System.EventArgs)">
+<member name="M:WinBack.wb_Statistik_Chargen.rbArtikel_CheckedChanged(System.Object,System.EventArgs)">
  <summary>
  Sortieren Chargen-Details nach Artikel-Bezeichnung
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Chargen_Liste.rbArtikelNummer_CheckedChanged(System.Object,System.EventArgs)">
+<member name="M:WinBack.wb_Statistik_Chargen.rbArtikelNummer_CheckedChanged(System.Object,System.EventArgs)">
  <summary>
  Sortieren Chargen-Details nach Artikel-Nummer
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Chargen_Liste.rbProduktion_CheckedChanged(System.Object,System.EventArgs)">
+<member name="M:WinBack.wb_Statistik_Chargen.rbProduktion_CheckedChanged(System.Object,System.EventArgs)">
  <summary>
  Sortieren Chargen-Details nach Produktions-Datum
  </summary>
@@ -8605,9 +8615,28 @@ Datenbank-Verbindung schliessen
  </returns>
  <remarks></remarks>
 </member>
+<member name="M:WinBack.wb_Planung_Neu.cbChargenTeiler_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ Chargen-Teiler wird geändert
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Neu.CheckChargenTeiler">
+ <summary>
+ Wenn die Chargen über Artikel-Auswahl erzeugt werden, ist der Chargen-Teiler Rezeptgewicht nicht erlaubt
+ </summary>
+</member>
 <member name="M:WinBack.wb_Planung_Neu.tArtikelNummer_DoubleClick(System.Object,System.EventArgs)">
  <summary>
  Auswahlfenster Artikel
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Neu.tArtikelNummer_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Artikelnummer suchen
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -8625,6 +8654,42 @@ Datenbank-Verbindung schliessen
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Neu.tRezeptName_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Rezeptbezeichnung suchen.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Neu.GetRezeptAuswahlDaten(System.Boolean)">
+ <summary>
+ Daten aus der aktuellen DataGridView auswerten. Wenn das Ergebnis nicht eindeutig ist,
+ wird das Auswahlfenster aufgerufen.
+ </summary>
+</member>
+<member name="M:WinBack.wb_Planung_Neu.GetArtikelAuswahlDaten">
+ <summary>
+ Daten aus der aktuellen DataGridView auswerten. Wenn das Ergebnis nicht eindeutig ist,
+ wird das Auswahlfenster aufgerufen.
+ </summary>
+</member>
+<member name="M:WinBack.wb_Planung_Neu.ClearKomponenten">
+ <summary>
+ Werte löschen der einzelnen Formular-Steuerelemente
+ </summary>
+</member>
+<member name="M:WinBack.wb_Planung_Neu.ShowCalcChargenResult">
+ <summary>
+ Anzeigen der berechneten Chargengrößen
+     wb_global.OK                  'Chargenaufteilung in Ordnung
+     wb_global.EM1                 'Nach Aufteilung in Optimalchargen bleibt eine Restmenge offen, die nicht produziert werden kann
+     wb_global.EM2                 'Nach Aufteilung in Optimalchargen wird mehr produziert als gefordert
+     wb_global.EM3                 'Nur eine Restcharge kleiner als die Minimalcharge. Muss zusammengefasst werden.
+     wb_global.EP1                 'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
+     wb_global.EP9                 'Keine Chargengrößen angegeben, Aufteilung nach Rezeptgröße
+     
+ </summary>
 </member>
 <member name="M:WinBack.ob_Admin_OrgaBackSettings.Initialize">
  <summary>
@@ -8862,13 +8927,13 @@ eingelesen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="P:WinBack.wb_STammDaten_Main.FormText">
+<member name="P:WinBack.wb_StammDaten_Main.FormText">
  <summary>
  Fenster-Name (Caption). Wird von Init() aufgerufen
  </summary>
  <returns></returns>
 </member>
-<member name="P:WinBack.wb_STammDaten_Main.FormName">
+<member name="P:WinBack.wb_StammDaten_Main.FormName">
  <summary>
  Eindeutiger Name für die Basis-Form. 
  Unter diesem Namen werden die Einstellungen in der winback.ini gespeichert.
@@ -8877,7 +8942,7 @@ eingelesen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_STammDaten_Main.FormClosing(System.Int16)">
+<member name="M:WinBack.wb_StammDaten_Main.FormClosing(System.Int16)">
  <summary>
  Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
  </summary>
@@ -8888,7 +8953,7 @@ eingelesen
  </returns>
  <remarks></remarks>
 </member>
-<member name="M:WinBack.wb_STammDaten_Main.BtnLinienGruppen">
+<member name="M:WinBack.wb_StammDaten_Main.BtnLinienGruppen">
  <summary>
  Liniengruppen und Aufarbeitungsplätze anlegen und verwalten.
  Aufarbeitungsplätze werden in der Tabelle Liniengruppen mit Linien-Nummer größer als 100 eingetragen.

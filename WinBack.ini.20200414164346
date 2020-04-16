@@ -3,12 +3,9 @@ MySQLServer_Path=C:\OrgaSoft\MySql
 MsSQLServer_Passwd=HQPIQlLy2RE=
 16:09 08.04.2020
 [winback-m1]
-#eMYSQLServerIP=127.0.0.1
-#eMySQLDatabase=niehaves
-#eMySQLDatabaseDaten=wbniehaves
-eMYSQLServerIP=172.16.17.5
-eMySQLDatabase=winback
-eMySQLDatabaseDaten=wbdaten
+eMYSQLServerIP=127.0.0.1
+eMySQLDatabase=niehaves
+eMySQLDatabaseDaten=wbniehaves
 eMYSQLUser=herbst
 eMySQLPasswordDatabase=herbst
 

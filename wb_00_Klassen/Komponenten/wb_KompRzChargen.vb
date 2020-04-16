@@ -167,7 +167,7 @@ Public Class wb_KompRzChargen
             _RzNr = value
             'Text Button "Auswählen/Ändern"
             If _RzNr > 0 Then
-                BtnRzpt.Text = "Ändern/Löschen"
+                BtnRzpt.Text = "Ändern/ Löschen"
                 BtnRzpt.Enabled = True
                 BtnRzpShow.Enabled = True
                 'keine Verknüpfung zur Cloud möglich

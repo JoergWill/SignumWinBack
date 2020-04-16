@@ -632,6 +632,8 @@ Public Class wb_Chargen
                     _SQLChargenSchritt.RS_Par2 = Value
                 Case "B_ARS_RS_Par3"
                     _SQLChargenSchritt.RS_Par3 = Value
+                Case "B_ARZ_Status"
+                    _SQLChargenSchritt.ARZ_Status = Value
 
                     'Einheit
                 Case "B_E_Einheit"

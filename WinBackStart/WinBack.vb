@@ -607,7 +607,7 @@ Public Class WinBack
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbArtikelListe.Click, rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click, rbChargenListe.Click, rbDatensicherung.Click
+    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbArtikelListe.Click, rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click, rbChargenListe.Click, rbDatensicherung.Click, rbProduktionPlanung.Click
         AktFormSendCommand("OPENLISTE", "")
     End Sub
 
@@ -636,7 +636,7 @@ Public Class WinBack
         rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click, rbUserGruppenRechte.Click,
         rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeParameter.Click, rbRohstoffeVerwendung.Click, rbRohstoffeLieferungen.Click, rbRohstoffNwt.Click, rbRohstoffeImportCloud.Click,
         rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click, rbAdminWinBack.Click, rbAdminUpdate.Click, rbAdminWinBackIni.Click, rbLog.Click,
-        rbArtikelHinweise.Click, rbArtikelParameter.Click, rbVarianten.Click, rbStoffe.Click, rbLinienGruppen.Click, rbGruppen.Click
+        rbArtikelHinweise.Click, rbArtikelParameter.Click, rbVarianten.Click, rbStoffe.Click, rbLinienGruppen.Click, rbGruppen.Click, rbKonfigWinBack.Click, rbProduktionTeiler.Click
         Dim Cmd As String = DirectCast(sender, RibbonButton).Value
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")

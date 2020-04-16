@@ -89,6 +89,7 @@
     'Sql-Statement Artikelliste aus winback.Komponenten
     Public Const sqlArtikelLst = "SELECT KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KA_aktiv, KO_Type, " &
                                   "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2, KA_Charge_Opt_kg, " &
+                                  "KA_Charge_Min, KA_Charge_Max, KA_Charge_Opt, KA_Stueckgewicht, " &
                                   "KA_Lagerort, KA_zaehlt_zu_RZ_Gesamtmenge FROM Komponenten WHERE KO_Type = 0"
 
     'Sql-Statement Lesen Komponenten nach KO_Nr (Select KO_Nr=x)

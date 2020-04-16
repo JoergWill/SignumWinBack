@@ -598,6 +598,7 @@
     <Content Include="gsdll32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\PlanungTeiler_32x32.png" />
     <Content Include="WinBack Icon.ico" />
   </ItemGroup>
   <ItemGroup>

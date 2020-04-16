@@ -483,6 +483,12 @@
     <Compile Include="wb_01_Forms_Chargen\wb_Statistik_RohVerbrauch.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_AuswahlListe.Designer.vb">
+      <DependentUpon>wb_Artikel_AuswahlListe.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_AuswahlListe.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Lieferungen.Designer.vb">
       <DependentUpon>wb_Rohstoff_Lieferungen.vb</DependentUpon>
     </Compile>
@@ -845,10 +851,10 @@
     <Compile Include="wb_05_Forms_User\wb_User_Rechte.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Liste.Designer.vb">
-      <DependentUpon>wb_Chargen_Liste.vb</DependentUpon>
+    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_Chargen.Designer.vb">
+      <DependentUpon>wb_Statistik_Chargen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Liste.vb">
+    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_Chargen.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_07_Forms_Planung\ob_Planung_DockingExtension.vb" />
@@ -950,6 +956,12 @@
     <Compile Include="wb_09_StammDaten\wb_StammDaten_Allergene.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_Konfiguration.Designer.vb">
+      <DependentUpon>wb_StammDaten_Konfiguration.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_Konfiguration.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_09_StammDaten\wb_StammDaten_ArtRohGruppen.Designer.vb">
       <DependentUpon>wb_StammDaten_ArtRohGruppen.vb</DependentUpon>
     </Compile>
@@ -1046,6 +1058,9 @@
     <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Main.resx">
       <DependentUpon>wb_Artikel_Main.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_AuswahlListe.resx">
+      <DependentUpon>wb_Artikel_AuswahlListe.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_AuswahlListe.resx">
       <DependentUpon>wb_Rezept_AuswahlListe.vb</DependentUpon>
     </EmbeddedResource>
@@ -1128,8 +1143,8 @@
     <EmbeddedResource Include="wb_05_Forms_User\wb_User_Rechte.resx">
       <DependentUpon>wb_User_Rechte.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Liste.resx">
-      <DependentUpon>wb_Chargen_Liste.vb</DependentUpon>
+    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Statistik_Chargen.resx">
+      <DependentUpon>wb_Statistik_Chargen.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
@@ -1175,6 +1190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_Allergene.resx">
       <DependentUpon>wb_StammDaten_Allergene.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_Konfiguration.resx">
+      <DependentUpon>wb_StammDaten_Konfiguration.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_ArtRohGruppen.resx">
       <DependentUpon>wb_StammDaten_ArtRohGruppen.vb</DependentUpon>

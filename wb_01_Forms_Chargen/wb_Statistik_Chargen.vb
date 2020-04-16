@@ -1,7 +1,7 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 Imports WinBack.wb_Chargen_Shared
 
-Public Class wb_Chargen_Liste
+Public Class wb_Statistik_Chargen
     Inherits DockContent
     Private _ListeBerechnet As Boolean = False
 

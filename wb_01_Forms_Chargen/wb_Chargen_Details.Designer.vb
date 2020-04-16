@@ -40,7 +40,6 @@ Partial Class wb_Chargen_Details
         Dim ObjectCellBinding12 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding13 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding14 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding15 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Me.ColNummer = New Infralution.Controls.VirtualTree.Column()
         Me.ColCharge = New Infralution.Controls.VirtualTree.Column()
         Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
@@ -52,7 +51,6 @@ Partial Class wb_Chargen_Details
         Me.ColZeit = New Infralution.Controls.VirtualTree.Column()
         Me.ColStatusImage = New Infralution.Controls.VirtualTree.Column()
         Me.ColUser = New Infralution.Controls.VirtualTree.Column()
-        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
         Me.ColRohCharge = New Infralution.Controls.VirtualTree.Column()
         Me.ColParams = New Infralution.Controls.VirtualTree.Column()
         Me.ChargenTree = New Infralution.Controls.VirtualTree.VirtualTree()
@@ -79,7 +77,7 @@ Partial Class wb_Chargen_Details
         Me.ColCharge.Movable = False
         Me.ColCharge.Name = "ColCharge"
         Me.ColCharge.Sortable = False
-        Me.ColCharge.Width = 57
+        Me.ColCharge.Width = 70
         '
         'ColBezeichnung
         '
@@ -90,7 +88,7 @@ Partial Class wb_Chargen_Details
         Me.ColBezeichnung.Movable = False
         Me.ColBezeichnung.Name = "ColBezeichnung"
         Me.ColBezeichnung.Sortable = False
-        Me.ColBezeichnung.Width = 107
+        Me.ColBezeichnung.Width = 120
         '
         'ColLinie
         '
@@ -172,13 +170,7 @@ Partial Class wb_Chargen_Details
         '
         Me.ColUser.Caption = "User"
         Me.ColUser.Name = "ColUser"
-        Me.ColUser.Width = 37
-        '
-        'ColPreis
-        '
-        Me.ColPreis.Caption = "Preis"
-        Me.ColPreis.Name = "ColPreis"
-        Me.ColPreis.Width = 37
+        Me.ColUser.Width = 50
         '
         'ColRohCharge
         '
@@ -214,7 +206,6 @@ Partial Class wb_Chargen_Details
         Me.ChargenTree.Columns.Add(Me.ColEinheitIst)
         Me.ChargenTree.Columns.Add(Me.ColZeit)
         Me.ChargenTree.Columns.Add(Me.ColUser)
-        Me.ChargenTree.Columns.Add(Me.ColPreis)
         Me.ChargenTree.Columns.Add(Me.ColRohCharge)
         Me.ChargenTree.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ChargenTree.EditOnKeyPress = True
@@ -269,12 +260,10 @@ Partial Class wb_Chargen_Details
         ObjectCellBinding12.Column = Me.ColUser
         ObjectCellBinding12.Field = "VirtTreeUser"
         ObjectCellBinding12.Style.HorzAlignment = System.Drawing.StringAlignment.Center
-        ObjectCellBinding13.Column = Me.ColPreis
-        ObjectCellBinding13.Field = "VirtTreePreis"
-        ObjectCellBinding14.Column = Me.ColRohCharge
-        ObjectCellBinding14.Field = "VirtTreeRohCharge"
-        ObjectCellBinding15.Column = Me.ColParams
-        ObjectCellBinding15.Field = "VirtTreeParams"
+        ObjectCellBinding13.Column = Me.ColRohCharge
+        ObjectCellBinding13.Field = "VirtTreeRohCharge"
+        ObjectCellBinding14.Column = Me.ColParams
+        ObjectCellBinding14.Field = "VirtTreeParams"
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
@@ -289,7 +278,6 @@ Partial Class wb_Chargen_Details
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding12)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding13)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding14)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding15)
         Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
         Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
         Me.ObjectRowBinding1.ParentProperty = "ParentStep"
@@ -300,6 +288,8 @@ Partial Class wb_Chargen_Details
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(952, 540)
+        Me.CloseButton = False
+        Me.CloseButtonVisible = False
         Me.Controls.Add(Me.ChargenTree)
         Me.Name = "wb_Chargen_Details"
         Me.Text = "Chargen"
@@ -320,7 +310,6 @@ Partial Class wb_Chargen_Details
     Friend WithEvents ObjectRowBinding1 As Infralution.Controls.VirtualTree.ObjectRowBinding
     Friend WithEvents ColZeit As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColUser As Infralution.Controls.VirtualTree.Column
-    Friend WithEvents ColPreis As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColRohCharge As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColStatusImage As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColParams As Infralution.Controls.VirtualTree.Column

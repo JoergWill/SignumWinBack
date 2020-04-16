@@ -7,12 +7,12 @@ Public Class wb_Chargen_Main
     Implements IExternalFormUserControl
 
     'Default-Fenster
-    Public ChargenListe As New wb_Chargen_Liste
+    Public ChargenDetails As New wb_Chargen_Details
+    Public StatistikChargen As wb_Statistik_Chargen
     Public StatistikRohVerbrauch As wb_Statistik_RohVerbrauch
     Public StatistikRohDetails As wb_Statistik_RohDetails
     Public StatistikRezepte As wb_Statistik_Rezepte
 
-    Public ChargenDetails As wb_Chargen_Details
     Public ChargenWasserTemp As wb_ChargenWasserTemp
     Public ChargenChartTemp As wb_Chargen_ChartTTS
 
@@ -44,7 +44,7 @@ Public Class wb_Chargen_Main
     End Property
 
     Public Overrides Sub SetDefaultLayout()
-        ChargenListe.Show(DockPanel, DockState.DockLeft)
+        ChargenDetails.Show(DockPanel, DockState.DockRight)
     End Sub
 
     ''' <summary>
@@ -57,9 +57,25 @@ Public Class wb_Chargen_Main
     ''' </returns>
     ''' <remarks></remarks>
     Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
+        'Chargen-Details (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        If ChargenDetails IsNot Nothing Then
+            ChargenDetails.Close()
+        End If
         'Chargen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If ChargenListe IsNot Nothing Then
-            ChargenListe.Close()
+        If StatistikChargen IsNot Nothing Then
+            StatistikChargen.Close()
+        End If
+        'Chargen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        If StatistikRohVerbrauch IsNot Nothing Then
+            StatistikRohVerbrauch.Close()
+        End If
+        'Chargen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        If StatistikRohDetails IsNot Nothing Then
+            StatistikRohDetails.Close()
+        End If
+        'Chargen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        If StatistikRezepte IsNot Nothing Then
+            StatistikRezepte.Close()
         End If
         'Fenster darf geschlossen werden
         Return False
@@ -85,18 +101,18 @@ Public Class wb_Chargen_Main
     End Property
 
     Private Sub BtnStatistikChargenForm()
-        If IsNothingOrDisposed(ChargenListe) Then
-            ChargenListe = New wb_Chargen_Liste
-            ChargenListe.Show(DockPanel, DockState.DockTop)
+        If IsNothingOrDisposed(StatistikChargen) Then
+            StatistikChargen = New wb_Statistik_Chargen
+            StatistikChargen.Show(DockPanel, DockState.DockLeft)
         Else
-            ChargenListe.Show(DockPanel)
+            StatistikChargen.Show(DockPanel)
         End If
     End Sub
 
     Private Sub BtnStatistikRohVerbrauchForm()
         If IsNothingOrDisposed(StatistikRohVerbrauch) Then
             StatistikRohVerbrauch = New wb_Statistik_RohVerbrauch
-            StatistikRohVerbrauch.Show(DockPanel, DockState.DockTop)
+            StatistikRohVerbrauch.Show(DockPanel, DockState.DockLeft)
         Else
             StatistikRohVerbrauch.Show(DockPanel)
         End If
@@ -105,7 +121,7 @@ Public Class wb_Chargen_Main
     Private Sub BtnStatistikRohDetailsForm()
         If IsNothingOrDisposed(StatistikRohDetails) Then
             StatistikRohDetails = New wb_Statistik_RohDetails
-            StatistikRohDetails.Show(DockPanel, DockState.DockTop)
+            StatistikRohDetails.Show(DockPanel, DockState.DockLeft)
         Else
             StatistikRohDetails.Show(DockPanel)
         End If
@@ -114,7 +130,7 @@ Public Class wb_Chargen_Main
     Private Sub BtnStatistikRezeptForm()
         If IsNothingOrDisposed(StatistikRezepte) Then
             StatistikRezepte = New wb_Statistik_Rezepte
-            StatistikRezepte.Show(DockPanel, DockState.DockTop)
+            StatistikRezepte.Show(DockPanel, DockState.DockLeft)
         Else
             StatistikRezepte.Show(DockPanel)
         End If
@@ -123,7 +139,7 @@ Public Class wb_Chargen_Main
     Private Sub BtnChargenDetails()
         If IsNothingOrDisposed(ChargenDetails) Then
             ChargenDetails = New wb_Chargen_Details
-            ChargenDetails.Show(DockPanel, DockState.DockTop)
+            ChargenDetails.Show(DockPanel, DockState.DockRight)
         Else
             ChargenDetails.Show(DockPanel)
         End If
@@ -132,10 +148,15 @@ Public Class wb_Chargen_Main
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
 
-            Case "WinBack.wb_Chargen_Liste"
-                ChargenListe.CloseButtonVisible = False
-                _DockPanelList.Add(ChargenListe)
-                Return ChargenListe
+            Case "WinBack.wb_Chargen_Details"
+                ChargenDetails.CloseButtonVisible = False
+                _DockPanelList.Add(ChargenDetails)
+                Return ChargenDetails
+
+            Case "WinBack.wb_Statistik_Chargen"
+                StatistikChargen = New wb_Statistik_Chargen
+                _DockPanelList.Add(StatistikChargen)
+                Return StatistikChargen
 
             Case "WinBack.wb_Statistik_RohVerbrauch"
                 StatistikRohVerbrauch = New wb_Statistik_RohVerbrauch
@@ -151,12 +172,6 @@ Public Class wb_Chargen_Main
                 StatistikRezepte = New wb_Statistik_Rezepte
                 _DockPanelList.Add(StatistikRezepte)
                 Return StatistikRezepte
-
-            Case "WinBack.wb_Chargen_Details"
-                ChargenDetails = New wb_Chargen_Details
-                ChargenDetails.CloseButtonVisible = False
-                _DockPanelList.Add(ChargenDetails)
-                Return ChargenDetails
 
             Case Else
                 Return Nothing

@@ -11,6 +11,7 @@
 Public Class StammDaten_Main
 
     Public LinienGruppen As New wb_StammDaten_LinienGruppen
+    Public WinBackKonfig As wb_StammDaten_Konfiguration
 
     ''' <summary>
     ''' Execute-Command von Winback-Main-Form.
@@ -20,6 +21,7 @@ Public Class StammDaten_Main
     '''     OPENALLERGENE       -   Tabelle Inhaltsstoffe und Allergene wird geöffnet und angezeigt.
     '''     OPENGRUPPEN         -   Tabelle Rohstoff- und Artikelgruppen wird geöffnet und angezeigt.
     '''     OPENVARIANTEN       -   Tabelle Rezeptvarianten wird geöffnet und angezeigt.
+    '''     OPENKONFIG          -   Tabelle Konfiguration wird geöffnet und angezeigt.
     '''     
     ''' </summary>
     ''' <param name="Cmd"></param>
@@ -35,6 +37,12 @@ Public Class StammDaten_Main
             Case "OPENGRUPPEN"
                 Return True
             Case "OPENVARIANTEN"
+                Return True
+            Case "OPENKONFIG"
+                If Not DockIsVisible("wb_StammDaten_Konfiguration") Then
+                    WinBackKonfig = New wb_StammDaten_Konfiguration
+                    WinBackKonfig.Show(DockPanel, DockState.DockLeft)
+                End If
                 Return True
             Case Else
                 Return False
@@ -61,6 +69,10 @@ Public Class StammDaten_Main
                 LinienGruppen.CloseButtonVisible = False
                 _DockPanelList.Add(LinienGruppen)
                 Return LinienGruppen
+
+            Case "WinBack.wb_StammDaten_Konfiguration"
+                _DockPanelList.Add(WinBackKonfig)
+                Return WinBackKonfig
 
                 'Case "WinBack.wb_Planung_Details"
                 '    PlanungTeiler = New wb_Planung_Teiler

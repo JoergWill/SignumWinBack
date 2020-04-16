@@ -35,6 +35,7 @@ Partial Class wb_Admin_Datensicherung
         Me.RestoreTimeStamp = New System.Windows.Forms.TextBox()
         Me.lblRestoreFileName = New System.Windows.Forms.Label()
         Me.RestoreFileName = New System.Windows.Forms.TextBox()
+        Me.cbFormatMySQL3_2 = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'Btn_DatenSicherung
@@ -145,11 +146,22 @@ Partial Class wb_Admin_Datensicherung
         Me.RestoreFileName.Size = New System.Drawing.Size(329, 20)
         Me.RestoreFileName.TabIndex = 8
         '
+        'cbFormatMySQL3_2
+        '
+        Me.cbFormatMySQL3_2.AutoSize = True
+        Me.cbFormatMySQL3_2.Location = New System.Drawing.Point(267, 45)
+        Me.cbFormatMySQL3_2.Name = "cbFormatMySQL3_2"
+        Me.cbFormatMySQL3_2.Size = New System.Drawing.Size(114, 17)
+        Me.cbFormatMySQL3_2.TabIndex = 12
+        Me.cbFormatMySQL3_2.Text = "Format MySQL 3.2"
+        Me.cbFormatMySQL3_2.UseVisualStyleBackColor = True
+        '
         'wb_Admin_Datensicherung
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(608, 149)
+        Me.Controls.Add(Me.cbFormatMySQL3_2)
         Me.Controls.Add(Me.lblRestoreTimeStamp)
         Me.Controls.Add(Me.RestoreTimeStamp)
         Me.Controls.Add(Me.lblRestoreFileName)
@@ -179,4 +191,5 @@ Partial Class wb_Admin_Datensicherung
     Friend WithEvents RestoreTimeStamp As Windows.Forms.TextBox
     Friend WithEvents lblRestoreFileName As Windows.Forms.Label
     Friend WithEvents RestoreFileName As Windows.Forms.TextBox
+    Friend WithEvents cbFormatMySQL3_2 As Windows.Forms.CheckBox
 End Class

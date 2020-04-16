@@ -65,25 +65,30 @@ Public Class wb_Rohstoffe_Lieferung
     End Sub
 
     Private Sub LagerDataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles LagerDataGridView.CellFormatting
+        'TODO DBNull abfrangen (Menge Null setzen ...)
+        Try
+            If e.Value IsNot Nothing Then
+                Select Case e.ColumnIndex
 
-        Select Case e.ColumnIndex
+                    Case COLMenge, COLVerbr
+                        e.Value = wb_Functions.FormatStr(e.Value, 3)
 
-            Case COLMenge, COLVerbr
-                e.Value = wb_Functions.FormatStr(e.Value, 3)
+                    Case COLStats
+                        Select Case e.Value
+                            Case "0"
+                                e.Value = "-"
+                            Case "1"
+                                e.Value = "Gebucht"
+                            Case "2"
+                                e.Value = "Aktiv"
+                            Case "3"
+                                e.Value = "Verbraucht"
+                        End Select
 
-            Case COLStats
-                Select Case e.Value
-                    Case "0"
-                        e.Value = "-"
-                    Case "1"
-                        e.Value = "Gebucht"
-                    Case "2"
-                        e.Value = "Aktiv"
-                    Case "3"
-                        e.Value = "Verbraucht"
                 End Select
-
-        End Select
+            End If
+        Catch
+        End Try
     End Sub
 
     Private Sub LagerDataGridView_SizeChanged(sender As Object, e As EventArgs) Handles LagerDataGridView.SizeChanged

@@ -141,16 +141,34 @@ Public Class wb_Komponente
     ''' Komponenten-Type ändern. 
     ''' Ändert die (Readonly) Komponenten-Type falls in OrgaBack die Artikelgruppe geändert wird. (Artikel/Rohstoff)
     ''' Gibt true zurück wenn eine Änderung stattgefunden hat.
+    ''' 
+    ''' Geändert wird nur von Artikel zu Rohstoff und umgekehrt.
+    ''' (Fehler bei Niehaves/Fonk - Automatik-Komponente wird Handkomponente)
     ''' </summary>
     ''' <param name="KType"></param>
     ''' <returns></returns>
     Public Function SetKType(KType As KomponTypen) As Boolean
-        If KType <> Type Then
-            KO_Type = KType
-            Return True
-        Else
-            Return False
-        End If
+        Select Case KType
+            Case KomponTypen.KO_TYPE_ARTIKEL
+                If Type <> KomponTypen.KO_TYPE_ARTIKEL Then
+                    KO_Type = KType
+                    Return True
+                End If
+            Case KomponTypen.KO_TYPE_HANDKOMPONENTE
+                If Type = KomponTypen.KO_TYPE_ARTIKEL Then
+                    KO_Type = KomponTypen.KO_TYPE_HANDKOMPONENTE
+                    Return True
+                End If
+            Case KomponTypen.KO_TYPE_UNDEFINED
+                KO_Type = KomponTypen.KO_TYPE_HANDKOMPONENTE
+                Return True
+            Case Else
+                If KType <> Type Then
+                    KO_Type = KType
+                    Return True
+                End If
+        End Select
+        Return False
     End Function
 
     ''' <summary>
@@ -698,9 +716,10 @@ Public Class wb_Komponente
                 GetProduktionsDaten()
             End If
             'prüfen ob die Artikelgruppe gültig ist
-            If (_ArtikelLinienGruppe < wb_Global.OffsetBackorte) And (_ArtikelLinienGruppe <> 0) Then
-                _ArtikelLinienGruppe = wb_Global.OffsetBackorte
-            End If
+            '09.04.2020/JW Artikel-Liniengruppe(Aufarbeitungsplatz) wird nicht per Default auf 100 gesetzt
+            'If (_ArtikelLinienGruppe < wb_Global.OffsetBackorte) And (_ArtikelLinienGruppe <> 0) Then
+            '    _ArtikelLinienGruppe = wb_Global.OffsetBackorte
+            'End If
             If _ArtikelLinienGruppe <> 0 Then
                 Return _ArtikelLinienGruppe
             Else
@@ -716,15 +735,17 @@ Public Class wb_Komponente
 
     Public Property sArtikeLinienGruppe As String
         Get
-            If iArtikelLinienGruppe > wb_Global.OffsetBackorte Then
+            If iArtikelLinienGruppe >= wb_Global.OffsetBackorte Then
                 Dim sValue As String = "0000" & iArtikelLinienGruppe.ToString - wb_Global.OffsetBackorte
                 sValue = Right(sValue, 4)
                 'Mail vom 04.02.2020 JErhardt
-                If sValue <> "0000 then" Then
-                    Return sValue
-                Else
-                    Return ""
-                End If
+                '09.04.2020/JW Backort(Aufarbeitung) 100 ist zulässig - OrgaBack Aufarbeitung 0000
+                'If sValue <> "0000" Then
+                '   Return sValue
+                'Else
+                '    Return ""
+                'End If
+                Return sValue
             End If
             Return ""
         End Get

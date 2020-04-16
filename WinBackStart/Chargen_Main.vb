@@ -10,11 +10,11 @@
 ''' </summary>
 Public Class Chargen_Main
 
-    Public ChargenListe As New wb_Chargen_Liste         'Default-Fenster    (wird beim Öffnen immer angezeigt)
-    Public ChargenDetails As wb_Chargen_Details         'Detail-Fenster
+    Public ChargenDetails As New wb_Chargen_Details         'Detail-Fenster
     Public ChargenWasserTemp As wb_ChargenWasserTemp
     Public ChargenChartTemp As wb_Chargen_ChartTTS
 
+    Public StatistikChargen As wb_Statistik_Chargen
     Public StatistikRohVerbrauch As wb_Statistik_RohVerbrauch
     Public StatistikRohDetails As wb_Statistik_RohDetails
     Public StatistikRezepte As wb_Statistik_Rezepte
@@ -33,11 +33,13 @@ Public Class Chargen_Main
     Public Overrides Function ExtendedCmd(Cmd As String, Prm As String) As Boolean
         Select Case Cmd
             Case "OPENLISTE"
-                ChargenListe.Show(DockPanel, DockState.DockLeft)
+                If Not DockIsVisible("wb_Statistik_Chargen") Then
+                    StatistikChargen = New wb_Statistik_Chargen
+                    StatistikChargen.Show(DockPanel, DockState.DockLeft)
+                End If
                 Return True
             Case "OPENDETAILS"
                 If Not DockIsVisible("wb_Chargen_Details") Then
-                    ChargenDetails = New wb_Chargen_Details
                     ChargenDetails.Show(DockPanel)
                 End If
                 Return True
@@ -69,8 +71,8 @@ Public Class Chargen_Main
     ''' Falls keine Layout-Definitionen verhanden sind, wird das Haupt-Fenster (Liste) angezeigt.
     ''' </summary>
     Public Overrides Sub setDefaultLayout()
-        ChargenListe.Show(DockPanel, DockState.DockLeft)
-        ChargenListe.CloseButtonVisible = False
+        ChargenDetails.Show(DockPanel, DockState.DockRight)
+        ChargenDetails.CloseButtonVisible = False
         WinBack.LayoutFilename = "Default"
     End Sub
 
@@ -82,14 +84,15 @@ Public Class Chargen_Main
     ''' <returns></returns>
     Public Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
-            Case "WinBack.wb_Chargen_Liste"
-                ChargenListe.CloseButtonVisible = False
-                _DockPanelList.Add(ChargenListe)
-                Return ChargenListe
             Case "WinBack.wb_Chargen_Details"
+                ChargenDetails.CloseButtonVisible = False
                 ChargenDetails = New wb_Chargen_Details
                 _DockPanelList.Add(ChargenDetails)
                 Return ChargenDetails
+            Case "WinBack.wb_Statistik_Chargen"
+                StatistikChargen = New wb_Statistik_Chargen
+                _DockPanelList.Add(StatistikChargen)
+                Return StatistikChargen
             Case "WinBack.wb_Statistik_RohVerbrauch"
                 StatistikRohVerbrauch = New wb_Statistik_RohVerbrauch
                 _DockPanelList.Add(StatistikRohVerbrauch)
@@ -129,7 +132,10 @@ Public Class Chargen_Main
 
         'alle erzeugten Fenster wieder schliessen
         wb_Functions.CloseAndDisposeSubForm(ChargenDetails)
-        wb_Functions.CloseAndDisposeSubForm(ChargenListe)
+        wb_Functions.CloseAndDisposeSubForm(StatistikChargen)
+        wb_Functions.CloseAndDisposeSubForm(StatistikRohVerbrauch)
+        wb_Functions.CloseAndDisposeSubForm(StatistikRohDetails)
+        wb_Functions.CloseAndDisposeSubForm(StatistikRezepte)
     End Sub
 
 

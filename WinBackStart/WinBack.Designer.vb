@@ -124,6 +124,7 @@ Partial Class WinBack
         Me.rbPlanung = New System.Windows.Forms.RibbonTab()
         Me.rpProduktionAnsicht = New System.Windows.Forms.RibbonPanel()
         Me.rbProduktionPlanung = New System.Windows.Forms.RibbonButton()
+        Me.rbProduktionTeiler = New System.Windows.Forms.RibbonButton()
         Me.rbExtra = New System.Windows.Forms.RibbonTab()
         Me.rbAdminAnsicht = New System.Windows.Forms.RibbonPanel()
         Me.rbLog = New System.Windows.Forms.RibbonButton()
@@ -154,6 +155,7 @@ Partial Class WinBack
         Me.rbStoffe = New System.Windows.Forms.RibbonButton()
         Me.rbGruppen = New System.Windows.Forms.RibbonButton()
         Me.rbVarianten = New System.Windows.Forms.RibbonButton()
+        Me.rbKonfigWinBack = New System.Windows.Forms.RibbonButton()
         Me.rbAbout = New System.Windows.Forms.RibbonTab()
         Me.rbAnmelden = New System.Windows.Forms.RibbonPanel()
         Me.rbLogin = New System.Windows.Forms.RibbonButton()
@@ -1034,6 +1036,7 @@ Partial Class WinBack
         '
         Me.rpProduktionAnsicht.ButtonMoreVisible = False
         Me.rpProduktionAnsicht.Items.Add(Me.rbProduktionPlanung)
+        Me.rpProduktionAnsicht.Items.Add(Me.rbProduktionTeiler)
         Me.rpProduktionAnsicht.Name = "rpProduktionAnsicht"
         Me.rpProduktionAnsicht.Text = "Ansicht"
         '
@@ -1044,6 +1047,15 @@ Partial Class WinBack
         Me.rbProduktionPlanung.Name = "rbProduktionPlanung"
         Me.rbProduktionPlanung.SmallImage = CType(resources.GetObject("rbProduktionPlanung.SmallImage"), System.Drawing.Image)
         Me.rbProduktionPlanung.Text = "Herstellung Planung"
+        '
+        'rbProduktionTeiler
+        '
+        Me.rbProduktionTeiler.Image = Global.WinBack.My.Resources.Resources.PlanungTeiler_32x32
+        Me.rbProduktionTeiler.LargeImage = Global.WinBack.My.Resources.Resources.PlanungTeiler_32x32
+        Me.rbProduktionTeiler.Name = "rbProduktionTeiler"
+        Me.rbProduktionTeiler.SmallImage = CType(resources.GetObject("rbProduktionTeiler.SmallImage"), System.Drawing.Image)
+        Me.rbProduktionTeiler.Text = "Teiler Chargen"
+        Me.rbProduktionTeiler.Value = "OPENPARAMETER"
         '
         'rbExtra
         '
@@ -1352,6 +1364,7 @@ Partial Class WinBack
         Me.rpStammdaten.Items.Add(Me.rbStoffe)
         Me.rpStammdaten.Items.Add(Me.rbGruppen)
         Me.rpStammdaten.Items.Add(Me.rbVarianten)
+        Me.rpStammdaten.Items.Add(Me.rbKonfigWinBack)
         Me.rpStammdaten.Name = "rpStammdaten"
         Me.rpStammdaten.Text = "Schlüsseldaten"
         '
@@ -1394,6 +1407,15 @@ Partial Class WinBack
         Me.rbVarianten.SmallImage = CType(resources.GetObject("rbVarianten.SmallImage"), System.Drawing.Image)
         Me.rbVarianten.Text = "Rezept Varianten"
         Me.rbVarianten.Value = "OPENVARIANTEN"
+        '
+        'rbKonfigWinBack
+        '
+        Me.rbKonfigWinBack.Image = Global.WinBack.My.Resources.Resources.AdminEditKonfig_32x32
+        Me.rbKonfigWinBack.LargeImage = Global.WinBack.My.Resources.Resources.AdminEditKonfig_32x32
+        Me.rbKonfigWinBack.Name = "rbKonfigWinBack"
+        Me.rbKonfigWinBack.SmallImage = Global.WinBack.My.Resources.Resources.AdminEditKonfig_32x32
+        Me.rbKonfigWinBack.Text = "WinBack Konfiguration"
+        Me.rbKonfigWinBack.Value = "OPENKONFIG"
         '
         'rbAbout
         '
@@ -1736,4 +1758,6 @@ Partial Class WinBack
     Friend WithEvents rbGruppen As RibbonButton
     Friend WithEvents rbVarianten As RibbonButton
     Friend WithEvents rbRohstoffeLieferungen As RibbonButton
+    Friend WithEvents rbKonfigWinBack As RibbonButton
+    Friend WithEvents rbProduktionTeiler As RibbonButton
 End Class

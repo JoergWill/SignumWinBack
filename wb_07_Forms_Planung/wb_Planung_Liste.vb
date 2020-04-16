@@ -212,6 +212,7 @@ Public Class wb_Planung_Liste
         'Verbindung zur Datenbank wieder schliessen
         OrgasoftMain.Close()
     End Sub
+
     ''' <summary>
     ''' Neue Artikel-Zeile (mit Rezeptur anlegen)
     ''' </summary>
@@ -219,7 +220,7 @@ Public Class wb_Planung_Liste
     ''' <param name="e"></param>
     Private Sub btnNeueCharge_Click(sender As Object, e As EventArgs) Handles btnNeueCharge.Click
         'neue Charge anlegen
-        Dim NeueCharge As New wb_Planung_Neu
+        Dim NeueCharge As New wb_Planung_Neu(Produktion)
         NeueCharge.ShowDialog()
 
         'Virtual Tree anzeigen
@@ -363,15 +364,17 @@ Public Class wb_Planung_Liste
                     Next
                 Next
 
-                'Artikelzeilen Aufarbeitung (Artikel mit LiniengruppeArtikel > 100)
-                For Each a As wb_Produktionsschritt In ProduktionsListe
-                    'ChargenZeilen
-                    For Each r As wb_Produktionsschritt In a.ChildSteps
-                        If Not a.Optimiert And a.ArtikelLinienGruppe <> wb_Global.UNDEFINED Then
-                            sw.WriteLine(ProdDatenSatz(r, True))
-                        End If
-                    Next
-                Next
+                'TODO Aufarbeitungs-Plätze auskommentieren und prodimport anpassen/prüfen
+                'Sonst werden doppelte Arbeitsaufträge erzeugt !!
+                ''Artikelzeilen Aufarbeitung (Artikel mit LiniengruppeArtikel > 100)
+                'For Each a As wb_Produktionsschritt In ProduktionsListe
+                '    'ChargenZeilen
+                '    For Each r As wb_Produktionsschritt In a.ChildSteps
+                '        If Not a.Optimiert And a.ArtikelLinienGruppe <> wb_Global.UNDEFINED Then
+                '            sw.WriteLine(ProdDatenSatz(r, True))
+                '        End If
+                '    Next
+                'Next
 
                 'Daten schreiben (Puffer leeren)
                 sw.Flush()

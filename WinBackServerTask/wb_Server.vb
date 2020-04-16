@@ -555,10 +555,10 @@ Public Class Main
         For Each s As String In My.Application.CommandLineArgs
             'die ersten 3 Zeichen entsprechen der Funktion
             Select Case s.Substring(0, 3)
-                Case "/M:"
+                Case "/M:", "-m "
                     Dim MandantNr As String = s.Substring(3)
                     wb_GlobalSettings.MandantNr = wb_Functions.StrToInt(MandantNr)
-                Case "/I:"
+                Case "/I:", "-i "
                     Dim WinbackIni As String = s.Substring(3)
                     wb_GlobalSettings.pWinBackIniPath = WinbackIni & "\WinBack.ini"
                 Case Else
@@ -708,7 +708,7 @@ Public Class Main
             Dim mysql As New WinBack.wb_sql_BackupRestore
             '            AddHandler mysql.statusChanged, AddressOf Backup_Restore_Status
             'Datensicherung starten
-            mysql.datensicherung(FileName)
+            mysql.DatenSicherung(FileName, False)
             'Status-Text nach 10 Sekunden wieder löschen
             '            RemoveHandler mysql.statusChanged, AddressOf Backup_Restore_Status
             'TODO Handler wieder einbauen !!!

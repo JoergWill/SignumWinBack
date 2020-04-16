@@ -209,7 +209,7 @@ Public Class wb_DataGridView
         End If
 
         'aktuellen Datensatz merken
-        If (Me.Rows.Count > 0) Then
+        If (Me.Rows.Count > 0) And (Me.SelectedRows.Count > 0) Then
             AktRow = Me.SelectedRows(0).Index
             SaveRow = Me.FirstDisplayedCell.RowIndex
         End If

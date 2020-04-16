@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class wb_STammDaten_Main
+Partial Class wb_StammDaten_Main
     Inherits Global.WinBack.wb_DockBarPanelMain
 
     'UserControl überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.

@@ -1,5 +1,4 @@
 ﻿Imports System.Reflection
-Imports WinBack
 
 Public Class wb_ChargenSchritt
 
@@ -18,6 +17,7 @@ Public Class wb_ChargenSchritt
     Private _RezeptBezeichnung As String
     Private _RezeptNr As Integer
     Private _RezeptVar As Integer
+    Private _Export As Boolean = False
 
     Private _KomponentenBezeichnung As String
     Private _KomponentenNummer As String
@@ -558,25 +558,39 @@ Public Class wb_ChargenSchritt
 
     Public ReadOnly Property VirtTreeParams As String
         Get
-            If Type = wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE Then
-                Select Case KomponentenType
-                    Case wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE
-                        'bei Silo-Komponenten Mehl/Raum-Temperatur anzeigen
-                        If (RS_Par1 <> "") And (RS_Par2 <> "") Then
-                            Dim Rt As String = "RT" & wb_Functions.FormatStr(RS_Par1, 1) & "°C"
-                            Dim Mt As String = "MT" & wb_Functions.FormatStr(RS_Par2, 1) & "°C"
-                            Return Rt & " / " & Mt
-                        End If
-                    Case wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE
-                        'bei Wasser die Auslauf-Nummer anzeigen
-                        If (RS_Par1 <> "") And (KomponentenParamNr = 1) Then
-                            Dim ANr As String = "A" & wb_Functions.FormatStr(RS_Par1, 0)
-                            Return ANr
-                        End If
-                    Case Else
+            Select Case Type
+
+                Case wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE
+
+                    Select Case KomponentenType
+                        Case wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE
+                            'bei Silo-Komponenten Mehl/Raum-Temperatur anzeigen
+                            If (RS_Par1 <> "") And (RS_Par2 <> "") Then
+                                Dim Rt As String = "RT" & wb_Functions.FormatStr(RS_Par1, 1) & "°C"
+                                Dim Mt As String = "MT" & wb_Functions.FormatStr(RS_Par2, 1) & "°C"
+                                Return Rt & " / " & Mt
+                            End If
+                        Case wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE
+                            'bei Wasser die Auslauf-Nummer anzeigen
+                            If (RS_Par1 <> "") And (KomponentenParamNr = 1) Then
+                                Dim ANr As String = "A" & wb_Functions.FormatStr(RS_Par1, 0)
+                                Return ANr
+                            End If
+                        Case Else
+                            Return ""
+                    End Select
+
+                Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL, wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL, wb_Global.KomponTypen.KO_ZEILE_REZEPT
+                    If Export And (Status >= wb_Global.ChargenStatus.CS_OK) Then
+                        Return " Exp"
+                    Else
                         Return ""
-                End Select
-            End If
+                    End If
+
+                Case Else
+                    Return ""
+
+            End Select
             Return ""
         End Get
     End Property
@@ -603,7 +617,11 @@ Public Class wb_ChargenSchritt
                         If wb_Functions.TypeIstSollMenge(KomponentenType, 1) Then
                             Return wb_Functions.FormatStr(_Sollwert, 3)
                         Else
-                            Return _Sollwert
+                            If KomponentenType <> wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE Then
+                                Return _Sollwert
+                            Else
+                                Return ""
+                            End If
                         End If
                 End Select
             End If
@@ -809,6 +827,24 @@ Public Class wb_ChargenSchritt
         End Set
     End Property
 
+    Public Property Export As Boolean
+        Get
+            Return _Export
+        End Get
+        Set(value As Boolean)
+            _Export = value
+        End Set
+    End Property
+
+    Public WriteOnly Property ARZ_Status As String
+        Set(value As String)
+            If value.ToLower = "exp" Then
+                Export = True
+            Else
+                Export = False
+            End If
+        End Set
+    End Property
 End Class
 
 'wbdaten.BAK_ArbRezepte
