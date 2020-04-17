@@ -81,11 +81,11 @@ Public Class WinBack
                     'TEST CLOUD ROHSTOFFE
                     'MainFormShow(MdiRohstoffe, GetType(Rohstoffe_Main))
                     'TEST REZEPTVERWALTUNG
-                    'MainFormShow(MdiRezepte, GetType(Rezepte_Main))
+                    MainFormShow(MdiRezepte, GetType(Rezepte_Main))
                     'TEST USERVERWALTUNG
                     'MainFormShow(MdiUser, GetType(User_Main))
                     'TEST PRODUKTIONSPLANUNG
-                    MainFormShow(MdiPlanung, GetType(Planung_Main))
+                    'MainFormShow(MdiPlanung, GetType(Planung_Main))
                     'TESTFENSTER
                     'MainFormShow(MdiTEst, GetType(Test_Main))
                 End If
@@ -160,7 +160,7 @@ Public Class WinBack
         AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
         Trace.Listeners.Add(xLogger)
         'Meldung Programm-Start (initialisiert wb_Admin_Shared)
-        Trace.WriteLine("Programmstart WinBack-Office")
+        'Trace.WriteLine("Programmstart WinBack-Office")
 
         'Programm-Parameter auslesen
         ProcessParameter()
@@ -245,6 +245,8 @@ Public Class WinBack
         End If
         wb_AktUser.SetUserRechte(Me)
 
+        'Meldung Programm-Start (initialisiert wb_Admin_Shared)
+        Trace.WriteLine("Programmstart WinBack-Office")
         'Initialisierung beendet
         isInitialised = True
         rTab.ActiveTab = rbAbout

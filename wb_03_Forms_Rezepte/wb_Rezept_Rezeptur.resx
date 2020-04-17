@@ -228,30 +228,6 @@
   <data name="StatusStrip.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="ToolStripLeftMargin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 17</value>
-  </data>
-  <data name="ToolStripLeftMargin.Text" xml:space="preserve">
-    <value>   </value>
-  </data>
-  <data name="ToolStripRezeptChange.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 17</value>
-  </data>
-  <data name="ToolStripRezeptChange.Text" xml:space="preserve">
-    <value>Rezept wurde geändert</value>
-  </data>
-  <data name="ToolStripRezeptChange.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="ToolStripAllergenLegende.Size" type="System.Drawing.Size, System.Drawing">
-    <value>520, 17</value>
-  </data>
-  <data name="ToolStripAllergenLegende.Text" xml:space="preserve">
-    <value>Allergen-Kennzeichnung   K - keine Angaben / N - nicht enthalten  / T - Spuren von / C -Contains</value>
-  </data>
-  <data name="ToolStripAllergenLegende.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="StatusStrip.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 709</value>
   </data>
@@ -276,8 +252,452 @@
   <data name="&gt;&gt;StatusStrip.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="ToolStripLeftMargin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 17</value>
+  </data>
+  <data name="ToolStripLeftMargin.Text" xml:space="preserve">
+    <value>   </value>
+  </data>
+  <data name="ToolStripRezeptChange.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 17</value>
+  </data>
+  <data name="ToolStripRezeptChange.Text" xml:space="preserve">
+    <value>Rezept wurde geändert</value>
+  </data>
+  <data name="ToolStripRezeptChange.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="ToolStripAllergenLegende.Size" type="System.Drawing.Size, System.Drawing">
+    <value>520, 17</value>
+  </data>
+  <data name="ToolStripAllergenLegende.Text" xml:space="preserve">
+    <value>Allergen-Kennzeichnung   K - keine Angaben / N - nicht enthalten  / T - Spuren von / C -Contains</value>
+  </data>
+  <data name="ToolStripAllergenLegende.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="gbDetail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;tbRzVariante.Name" xml:space="preserve">
+    <value>tbRzVariante</value>
+  </data>
+  <data name="&gt;&gt;tbRzVariante.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzVariante.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzVariante.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tbKnetKennlinie.Name" xml:space="preserve">
+    <value>tbKnetKennlinie</value>
+  </data>
+  <data name="&gt;&gt;tbKnetKennlinie.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbKnetKennlinie.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbKnetKennlinie.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;lblRzKnKennLinie.Name" xml:space="preserve">
+    <value>lblRzKnKennLinie</value>
+  </data>
+  <data name="&gt;&gt;lblRzKnKennLinie.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzKnKennLinie.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzKnKennLinie.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;lblEinhPreis.Name" xml:space="preserve">
+    <value>lblEinhPreis</value>
+  </data>
+  <data name="&gt;&gt;lblEinhPreis.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblEinhPreis.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblEinhPreis.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;lblEinhMehlmenge.Name" xml:space="preserve">
+    <value>lblEinhMehlmenge</value>
+  </data>
+  <data name="&gt;&gt;lblEinhMehlmenge.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblEinhMehlmenge.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblEinhMehlmenge.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;tbRzTA.Name" xml:space="preserve">
+    <value>tbRzTA</value>
+  </data>
+  <data name="&gt;&gt;tbRzTA.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzTA.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzTA.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;tbRzMehlmenge.Name" xml:space="preserve">
+    <value>tbRzMehlmenge</value>
+  </data>
+  <data name="&gt;&gt;tbRzMehlmenge.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzMehlmenge.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzMehlmenge.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;tbRzPreis.Name" xml:space="preserve">
+    <value>tbRzPreis</value>
+  </data>
+  <data name="&gt;&gt;tbRzPreis.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzPreis.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzPreis.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendName.Name" xml:space="preserve">
+    <value>tbRzAendName</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendName.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendName.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;tbRzGewicht.Name" xml:space="preserve">
+    <value>tbRzGewicht</value>
+  </data>
+  <data name="&gt;&gt;tbRzGewicht.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzGewicht.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzGewicht.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;lblRzLinienGruppe.Name" xml:space="preserve">
+    <value>lblRzLinienGruppe</value>
+  </data>
+  <data name="&gt;&gt;lblRzLinienGruppe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzLinienGruppe.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzLinienGruppe.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;tbRzTeigTemp.Name" xml:space="preserve">
+    <value>tbRzTeigTemp</value>
+  </data>
+  <data name="&gt;&gt;tbRzTeigTemp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzTeigTemp.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzTeigTemp.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;lblRzTeigTemp.Name" xml:space="preserve">
+    <value>lblRzTeigTemp</value>
+  </data>
+  <data name="&gt;&gt;lblRzTeigTemp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzTeigTemp.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzTeigTemp.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendDatum.Name" xml:space="preserve">
+    <value>tbRzAendDatum</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendDatum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendDatum.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendDatum.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendDatum.Name" xml:space="preserve">
+    <value>lblRzAendDatum</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendDatum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendDatum.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendDatum.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendNr.Name" xml:space="preserve">
+    <value>tbRzAendNr</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendNr.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendNr.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzAendNr.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendNr.Name" xml:space="preserve">
+    <value>lblRzAendNr</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendNr.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendNr.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendNr.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;lblRzTA.Name" xml:space="preserve">
+    <value>lblRzTA</value>
+  </data>
+  <data name="&gt;&gt;lblRzTA.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzTA.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzTA.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendName.Name" xml:space="preserve">
+    <value>lblRzAendName</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendName.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzAendName.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="&gt;&gt;lblRzGewicht.Name" xml:space="preserve">
+    <value>lblRzGewicht</value>
+  </data>
+  <data name="&gt;&gt;lblRzGewicht.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzGewicht.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzGewicht.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="&gt;&gt;lblEinhTeigTemp.Name" xml:space="preserve">
+    <value>lblEinhTeigTemp</value>
+  </data>
+  <data name="&gt;&gt;lblEinhTeigTemp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblEinhTeigTemp.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblEinhTeigTemp.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;lblEinhRzGewicht.Name" xml:space="preserve">
+    <value>lblEinhRzGewicht</value>
+  </data>
+  <data name="&gt;&gt;lblEinhRzGewicht.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblEinhRzGewicht.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblEinhRzGewicht.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;lblRzMehlMenge.Name" xml:space="preserve">
+    <value>lblRzMehlMenge</value>
+  </data>
+  <data name="&gt;&gt;lblRzMehlMenge.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzMehlMenge.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzMehlMenge.ZOrder" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="&gt;&gt;lblRzVariante.Name" xml:space="preserve">
+    <value>lblRzVariante</value>
+  </data>
+  <data name="&gt;&gt;lblRzVariante.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzVariante.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzVariante.ZOrder" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;cbLiniengruppe.Name" xml:space="preserve">
+    <value>cbLiniengruppe</value>
+  </data>
+  <data name="&gt;&gt;cbLiniengruppe.Type" xml:space="preserve">
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;cbLiniengruppe.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;cbLiniengruppe.ZOrder" xml:space="preserve">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;cbVariante.Name" xml:space="preserve">
+    <value>cbVariante</value>
+  </data>
+  <data name="&gt;&gt;cbVariante.Type" xml:space="preserve">
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;cbVariante.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;cbVariante.ZOrder" xml:space="preserve">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;lblRzKommentar.Name" xml:space="preserve">
+    <value>lblRzKommentar</value>
+  </data>
+  <data name="&gt;&gt;lblRzKommentar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzKommentar.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzKommentar.ZOrder" xml:space="preserve">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;tbRzKommentar.Name" xml:space="preserve">
+    <value>tbRzKommentar</value>
+  </data>
+  <data name="&gt;&gt;tbRzKommentar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzKommentar.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzKommentar.ZOrder" xml:space="preserve">
+    <value>27</value>
+  </data>
+  <data name="&gt;&gt;tbRezeptName.Name" xml:space="preserve">
+    <value>tbRezeptName</value>
+  </data>
+  <data name="&gt;&gt;tbRezeptName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRezeptName.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRezeptName.ZOrder" xml:space="preserve">
+    <value>28</value>
+  </data>
+  <data name="&gt;&gt;lblRzName.Name" xml:space="preserve">
+    <value>lblRzName</value>
+  </data>
+  <data name="&gt;&gt;lblRzName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzName.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzName.ZOrder" xml:space="preserve">
+    <value>29</value>
+  </data>
+  <data name="&gt;&gt;tbRzNummer.Name" xml:space="preserve">
+    <value>tbRzNummer</value>
+  </data>
+  <data name="&gt;&gt;tbRzNummer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRzNummer.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;tbRzNummer.ZOrder" xml:space="preserve">
+    <value>30</value>
+  </data>
+  <data name="&gt;&gt;lblRzNummer.Name" xml:space="preserve">
+    <value>lblRzNummer</value>
+  </data>
+  <data name="&gt;&gt;lblRzNummer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzNummer.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzNummer.ZOrder" xml:space="preserve">
+    <value>31</value>
+  </data>
+  <data name="&gt;&gt;lblRzPreis.Name" xml:space="preserve">
+    <value>lblRzPreis</value>
+  </data>
+  <data name="&gt;&gt;lblRzPreis.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblRzPreis.Parent" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;lblRzPreis.ZOrder" xml:space="preserve">
+    <value>32</value>
+  </data>
+  <data name="gbDetail.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 11.25pt</value>
+  </data>
+  <data name="gbDetail.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 1</value>
+  </data>
+  <data name="gbDetail.Size" type="System.Drawing.Size, System.Drawing">
+    <value>953, 145</value>
+  </data>
+  <data name="gbDetail.TabIndex" type="System.Int32, mscorlib">
+    <value>32</value>
+  </data>
+  <data name="&gt;&gt;gbDetail.Name" xml:space="preserve">
+    <value>gbDetail</value>
+  </data>
+  <data name="&gt;&gt;gbDetail.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gbDetail.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gbDetail.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="tbRzVariante.Location" type="System.Drawing.Point, System.Drawing">
     <value>543, 49</value>
@@ -943,7 +1363,7 @@
     <value>cbLiniengruppe</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -964,7 +1384,7 @@
     <value>cbVariante</value>
   </data>
   <data name="&gt;&gt;cbVariante.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbVariante.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -1155,29 +1575,110 @@
   <data name="&gt;&gt;lblRzPreis.ZOrder" xml:space="preserve">
     <value>32</value>
   </data>
-  <data name="gbDetail.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 11.25pt</value>
+  <data name="&gt;&gt;BtnClose.Name" xml:space="preserve">
+    <value>BtnClose</value>
   </data>
-  <data name="gbDetail.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 1</value>
+  <data name="&gt;&gt;BtnClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="gbDetail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>953, 145</value>
+  <data name="&gt;&gt;BtnClose.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
   </data>
-  <data name="gbDetail.TabIndex" type="System.Int32, mscorlib">
-    <value>32</value>
+  <data name="&gt;&gt;BtnClose.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;gbDetail.Name" xml:space="preserve">
-    <value>gbDetail</value>
+  <data name="&gt;&gt;BtnNwt.Name" xml:space="preserve">
+    <value>BtnNwt</value>
   </data>
-  <data name="&gt;&gt;gbDetail.Type" xml:space="preserve">
+  <data name="&gt;&gt;BtnNwt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnNwt.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnNwt.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;BtnHinweise.Name" xml:space="preserve">
+    <value>BtnHinweise</value>
+  </data>
+  <data name="&gt;&gt;BtnHinweise.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnHinweise.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnHinweise.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;BtnVerwendung.Name" xml:space="preserve">
+    <value>BtnVerwendung</value>
+  </data>
+  <data name="&gt;&gt;BtnVerwendung.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnVerwendung.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnVerwendung.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;BtnLoeschen.Name" xml:space="preserve">
+    <value>BtnLoeschen</value>
+  </data>
+  <data name="&gt;&gt;BtnLoeschen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnLoeschen.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnLoeschen.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;BtnKopieren.Name" xml:space="preserve">
+    <value>BtnKopieren</value>
+  </data>
+  <data name="&gt;&gt;BtnKopieren.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnKopieren.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnKopieren.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;BtnDrucken.Name" xml:space="preserve">
+    <value>BtnDrucken</value>
+  </data>
+  <data name="&gt;&gt;BtnDrucken.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BtnDrucken.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;BtnDrucken.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 138</value>
+  </data>
+  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>953, 75</value>
+  </data>
+  <data name="GroupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;gbDetail.Parent" xml:space="preserve">
+  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;gbDetail.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="BtnClose.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 9.75pt</value>
@@ -1389,27 +1890,6 @@
   <data name="&gt;&gt;BtnDrucken.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 138</value>
-  </data>
-  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>953, 75</value>
-  </data>
-  <data name="GroupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <metadata name="VTPopUpMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>401, 17</value>
   </metadata>
@@ -1425,6 +1905,15 @@
   <metadata name="headerContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>238, 17</value>
   </metadata>
+  <data name="headerContextMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>277, 198</value>
+  </data>
+  <data name="&gt;&gt;headerContextMenu.Name" xml:space="preserve">
+    <value>headerContextMenu</value>
+  </data>
+  <data name="&gt;&gt;headerContextMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="sortAscendingMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
@@ -1542,20 +2031,29 @@
   <data name="customizeMenuItem.Text" xml:space="preserve">
     <value>Spaltenauswähler</value>
   </data>
-  <data name="headerContextMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 198</value>
-  </data>
-  <data name="&gt;&gt;headerContextMenu.Name" xml:space="preserve">
-    <value>headerContextMenu</value>
-  </data>
-  <data name="&gt;&gt;headerContextMenu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="Wb_TabControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="VirtualTree.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="EnhEdit1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="EnhEdit1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 17</value>
+  </data>
+  <data name="EnhEdit1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="EnhEdit1.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;EnhEdit1.Name" xml:space="preserve">
+    <value>EnhEdit1</value>
+  </data>
+  <data name="&gt;&gt;EnhEdit1.Type" xml:space="preserve">
+    <value>EnhEdit.EnhEdit, EnhancedEdit, Version=1.4.9.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="VirtualTree.HeaderHeight" type="System.Int32, mscorlib">
     <value>24</value>
@@ -1575,7 +2073,7 @@
   <data name="resource.Font2" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 12pt</value>
   </data>
-  <data name="ObjectCellBinding3.Format" xml:space="preserve">
+  <data name="ObjectCellBinding9.Format" xml:space="preserve">
     <value>{0:C}</value>
   </data>
   <data name="resource.Font3" type="System.Drawing.Font, System.Drawing">
@@ -1584,7 +2082,7 @@
   <data name="resource.HorzAlignment1" type="System.Drawing.StringAlignment, System.Drawing">
     <value>Far</value>
   </data>
-  <data name="ObjectCellBinding4.Format" xml:space="preserve">
+  <data name="ObjectCellBinding10.Format" xml:space="preserve">
     <value>{0:N3}</value>
   </data>
   <data name="resource.Font4" type="System.Drawing.Font, System.Drawing">
@@ -1676,6 +2174,198 @@
   </data>
   <data name="&gt;&gt;tb_Naehrwerte.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;SwListeOptimieren.Name" xml:space="preserve">
+    <value>SwListeOptimieren</value>
+  </data>
+  <data name="&gt;&gt;SwListeOptimieren.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroToggle, MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;SwListeOptimieren.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;SwListeOptimieren.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lblListeOptimieren.Name" xml:space="preserve">
+    <value>lblListeOptimieren</value>
+  </data>
+  <data name="&gt;&gt;lblListeOptimieren.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblListeOptimieren.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;lblListeOptimieren.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;SwENummern.Name" xml:space="preserve">
+    <value>SwENummern</value>
+  </data>
+  <data name="&gt;&gt;SwENummern.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroToggle, MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;SwENummern.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;SwENummern.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;lblENummern.Name" xml:space="preserve">
+    <value>lblENummern</value>
+  </data>
+  <data name="&gt;&gt;lblENummern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblENummern.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;lblENummern.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;tb_ZutatenListe.Name" xml:space="preserve">
+    <value>tb_ZutatenListe</value>
+  </data>
+  <data name="&gt;&gt;tb_ZutatenListe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_ZutatenListe.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;tb_ZutatenListe.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
+    <value>Label2</value>
+  </data>
+  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tb_Zutaten.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 11.25pt</value>
+  </data>
+  <data name="tb_Zutaten.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 23</value>
+  </data>
+  <data name="tb_Zutaten.Size" type="System.Drawing.Size, System.Drawing">
+    <value>943, 459</value>
+  </data>
+  <data name="tb_Zutaten.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="tb_Zutaten.Text" xml:space="preserve">
+    <value>ZutatenListe</value>
+  </data>
+  <data name="&gt;&gt;tb_Zutaten.Name" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;tb_Zutaten.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_Zutaten.Parent" xml:space="preserve">
+    <value>Wb_TabControl</value>
+  </data>
+  <data name="&gt;&gt;tb_Zutaten.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;TextHinweise.Name" xml:space="preserve">
+    <value>TextHinweise</value>
+  </data>
+  <data name="&gt;&gt;TextHinweise.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TextHinweise.Parent" xml:space="preserve">
+    <value>tb_Hinweise</value>
+  </data>
+  <data name="&gt;&gt;TextHinweise.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tb_Hinweise.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 23</value>
+  </data>
+  <data name="tb_Hinweise.Size" type="System.Drawing.Size, System.Drawing">
+    <value>943, 459</value>
+  </data>
+  <data name="tb_Hinweise.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tb_Hinweise.Text" xml:space="preserve">
+    <value>Hinweise</value>
+  </data>
+  <data name="&gt;&gt;tb_Hinweise.Name" xml:space="preserve">
+    <value>tb_Hinweise</value>
+  </data>
+  <data name="&gt;&gt;tb_Hinweise.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_Hinweise.Parent" xml:space="preserve">
+    <value>Wb_TabControl</value>
+  </data>
+  <data name="&gt;&gt;tb_Hinweise.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;GridView_RzVerwendung.Name" xml:space="preserve">
+    <value>GridView_RzVerwendung</value>
+  </data>
+  <data name="&gt;&gt;GridView_RzVerwendung.Type" xml:space="preserve">
+    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;GridView_RzVerwendung.Parent" xml:space="preserve">
+    <value>tb_Verwendung</value>
+  </data>
+  <data name="&gt;&gt;GridView_RzVerwendung.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tb_Verwendung.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 23</value>
+  </data>
+  <data name="tb_Verwendung.Size" type="System.Drawing.Size, System.Drawing">
+    <value>943, 459</value>
+  </data>
+  <data name="tb_Verwendung.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tb_Verwendung.Text" xml:space="preserve">
+    <value>Verwendung</value>
+  </data>
+  <data name="&gt;&gt;tb_Verwendung.Name" xml:space="preserve">
+    <value>tb_Verwendung</value>
+  </data>
+  <data name="&gt;&gt;tb_Verwendung.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_Verwendung.Parent" xml:space="preserve">
+    <value>Wb_TabControl</value>
+  </data>
+  <data name="&gt;&gt;tb_Verwendung.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="Wb_TabControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 212</value>
+  </data>
+  <data name="Wb_TabControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>951, 486</value>
+  </data>
+  <data name="Wb_TabControl.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;Wb_TabControl.Name" xml:space="preserve">
+    <value>Wb_TabControl</value>
+  </data>
+  <data name="&gt;&gt;Wb_TabControl.Type" xml:space="preserve">
+    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;Wb_TabControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Wb_TabControl.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="SwListeOptimieren.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1863,33 +2553,6 @@
   <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="tb_Zutaten.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 11.25pt</value>
-  </data>
-  <data name="tb_Zutaten.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 23</value>
-  </data>
-  <data name="tb_Zutaten.Size" type="System.Drawing.Size, System.Drawing">
-    <value>943, 459</value>
-  </data>
-  <data name="tb_Zutaten.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="tb_Zutaten.Text" xml:space="preserve">
-    <value>ZutatenListe</value>
-  </data>
-  <data name="&gt;&gt;tb_Zutaten.Name" xml:space="preserve">
-    <value>tb_Zutaten</value>
-  </data>
-  <data name="&gt;&gt;tb_Zutaten.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tb_Zutaten.Parent" xml:space="preserve">
-    <value>Wb_TabControl</value>
-  </data>
-  <data name="&gt;&gt;tb_Zutaten.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="TextHinweise.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1920,30 +2583,6 @@
   <data name="&gt;&gt;TextHinweise.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tb_Hinweise.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 23</value>
-  </data>
-  <data name="tb_Hinweise.Size" type="System.Drawing.Size, System.Drawing">
-    <value>943, 459</value>
-  </data>
-  <data name="tb_Hinweise.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tb_Hinweise.Text" xml:space="preserve">
-    <value>Hinweise</value>
-  </data>
-  <data name="&gt;&gt;tb_Hinweise.Name" xml:space="preserve">
-    <value>tb_Hinweise</value>
-  </data>
-  <data name="&gt;&gt;tb_Hinweise.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tb_Hinweise.Parent" xml:space="preserve">
-    <value>Wb_TabControl</value>
-  </data>
-  <data name="&gt;&gt;tb_Hinweise.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="GridView_RzVerwendung.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1960,58 +2599,13 @@
     <value>GridView_RzVerwendung</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Type" xml:space="preserve">
-    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Parent" xml:space="preserve">
     <value>tb_Verwendung</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="tb_Verwendung.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 23</value>
-  </data>
-  <data name="tb_Verwendung.Size" type="System.Drawing.Size, System.Drawing">
-    <value>943, 459</value>
-  </data>
-  <data name="tb_Verwendung.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="tb_Verwendung.Text" xml:space="preserve">
-    <value>Verwendung</value>
-  </data>
-  <data name="&gt;&gt;tb_Verwendung.Name" xml:space="preserve">
-    <value>tb_Verwendung</value>
-  </data>
-  <data name="&gt;&gt;tb_Verwendung.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tb_Verwendung.Parent" xml:space="preserve">
-    <value>Wb_TabControl</value>
-  </data>
-  <data name="&gt;&gt;tb_Verwendung.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="Wb_TabControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 212</value>
-  </data>
-  <data name="Wb_TabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>951, 486</value>
-  </data>
-  <data name="Wb_TabControl.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="&gt;&gt;Wb_TabControl.Name" xml:space="preserve">
-    <value>Wb_TabControl</value>
-  </data>
-  <data name="&gt;&gt;Wb_TabControl.Type" xml:space="preserve">
-    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;Wb_TabControl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Wb_TabControl.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -2156,6 +2750,12 @@
   </data>
   <data name="&gt;&gt;ObjectRowBinding1.Type" xml:space="preserve">
     <value>Infralution.Controls.VirtualTree.ObjectRowBinding, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
+  </data>
+  <data name="&gt;&gt;EnhEditText.Name" xml:space="preserve">
+    <value>EnhEditText</value>
+  </data>
+  <data name="&gt;&gt;EnhEditText.Type" xml:space="preserve">
+    <value>Infralution.Controls.VirtualTree.CellEditor, Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>wb_Rezept_Rezeptur</value>

@@ -10,6 +10,10 @@ Public Class wb_Admin_UpdateDatabase
         tbWinBackDatabase.Text = wb_GlobalSettings.WinBackDBVersion
         'Kunde-Name WinBack
         tbWinbackKundeName.Text = wb_GlobalSettings.MandantName
+        'winback-Datenbank
+        tbWinBackDB.Text = wb_GlobalSettings.MySQLWinBack
+        'wbdaten-Datenbank
+        tbWBDatenDB.Text = wb_GlobalSettings.MySQLWbDaten
 
         'Programmversion WinBack-Office hat keine OrgaBack-Anbindung
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then

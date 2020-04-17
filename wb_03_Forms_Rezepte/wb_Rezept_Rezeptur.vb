@@ -1,5 +1,6 @@
 ﻿Imports System.Windows.Forms
 Imports combit.ListLabel22.DataProviders
+Imports EnhEdit.EnhEdit_Global
 Imports Infralution.Controls.VirtualTree
 
 Public Class wb_Rezept_Rezeptur
@@ -178,7 +179,6 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     Public Sub RzptLoeschen()
-
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptInKomp, Rezept.RezeptNr)
         Dim Count As Integer = -1
@@ -405,10 +405,20 @@ Public Class wb_Rezept_Rezeptur
         _RezeptSchritt = DirectCast(e.StartRow.Item, wb_Rezeptschritt)
 
         'Einstellungen Editor
-        Debug.Print("VirtualTree_SelectionChanging " & _RezeptSchritt.Bezeichnung & " UG/OG/Format " & _RezeptSchritt.UnterGW & "/" & _RezeptSchritt.OberGW & "/" & _RezeptSchritt.Format)
-        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _RezeptSchritt.Format
-        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _RezeptSchritt.OberGW
-        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _RezeptSchritt.UnterGW
+        'Debug.Print("VirtualTree_SelectionChanging " & _RezeptSchritt.Bezeichnung & " UG/OG/Format " & _RezeptSchritt.UnterGW & "/" & _RezeptSchritt.OberGW & "/" & _RezeptSchritt.Format)
+
+        'Eingabe Text/Sollwert
+        If _RezeptSchritt.Format = wb_Format.fString Then
+            DirectCast(EnhEditText.Control, EnhEdit.EnhEdit).Init = True
+            DirectCast(EnhEditText.Control, EnhEdit.EnhEdit).eFormat = _RezeptSchritt.Format
+            DirectCast(EnhEditText.Control, EnhEdit.EnhEdit).eOG = _RezeptSchritt.OberGW
+            DirectCast(EnhEditText.Control, EnhEdit.EnhEdit).eUG = _RezeptSchritt.UnterGW
+        Else
+            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).Init = True
+            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _RezeptSchritt.Format
+            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _RezeptSchritt.OberGW
+            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _RezeptSchritt.UnterGW
+        End If
 
         'Verhindert dass einzelne Zellen markiert werden
         e.Cancel = True

@@ -46,6 +46,9 @@ Public Class wb_Rohstoffe_Cloud
         tRohstoffName.Text = wb_Rohstoffe_Shared.RohStoff.Bezeichnung
         'ID in der Cloud
         tCloudID.Text = wb_Rohstoffe_Shared.RohStoff.MatchCode
+        'kann vorproduziert werden
+        cbFreigabeProduktion.Checked = wb_Rohstoffe_Shared.RohStoff.FreigabeProduktion
+
         'Anzahl der gefundenen Datensätze
         cnt = wb_Global.UNDEFINED
         'Anzahl der Dokumente zum Rohstoff
@@ -449,5 +452,9 @@ Public Class wb_Rohstoffe_Cloud
     Private Sub BtnProduktDatenblatt_Click(sender As Object, e As EventArgs) Handles BtnProduktDatenblatt.Click
         Dim RohstoffDokumente As New wb_Rohstoff_Dokumente(nwt, RohStoff.MatchCode)
         RohstoffDokumente.ShowDialog()
+    End Sub
+
+    Private Sub cbFreigabeProduktion_Click(sender As Object, e As EventArgs) Handles cbFreigabeProduktion.Click
+        wb_Rohstoffe_Shared.RohStoff.FreigabeProduktion = cbFreigabeProduktion.Checked
     End Sub
 End Class

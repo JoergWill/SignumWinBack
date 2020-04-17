@@ -409,6 +409,19 @@ Public Class wb_Komponente
         End Set
     End Property
 
+    Public Property FreigabeProduktion
+        Get
+            Return (KA_Art = 1)
+        End Get
+        Set(value)
+            If value Then
+                KA_Art = 1
+            Else
+                KA_Art = 0
+            End If
+        End Set
+    End Property
+
     Public Property NwtMarker As wb_Global.ArtikelMarker
         Get
             Return KA_PreisEinheit
@@ -1738,7 +1751,8 @@ Public Class wb_Komponente
         End If
 
         'Artikel - Chargengrößen in Stk
-        If Type = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
+        If (Type = wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Or
+           (FreigabeProduktion And (Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE)) Then
             sql = sql & "," &
                         "KA_Charge_Min = '" & ArtikelChargen.MinCharge.MengeInStk & "'," &
                         "KA_Charge_Max = '" & ArtikelChargen.MaxCharge.MengeInStk & "'," &

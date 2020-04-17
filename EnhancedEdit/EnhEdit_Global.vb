@@ -140,11 +140,17 @@ Public Class EnhEdit_Global
                     'Strings
                     Case wb_Format.fString
                         Select Case e.KeyCode
+                            'Umlaute und Sonderzeichen
+                            Case 186, 192, 222
+                                Value = AddStr(Value, e)
                             'Alpha-Numerische Eingabe
                             Case Keys.A To Keys.Z, Keys.Space
                                 Value = AddStr(Value, e)
-                            'Umlaute und Sonderzeichen
-                            Case 186, 192, 222
+                            'Zahlen NumBlock
+                            Case Keys.NumPad0 To Keys.NumPad9
+                                Value = AddStr(Value, e, True)
+                            'Zahlen 
+                            Case Keys.D0 To Keys.D9, Keys.Decimal, Keys.Oemcomma, Keys.OemPeriod
                                 Value = AddStr(Value, e)
                         End Select
                 End Select

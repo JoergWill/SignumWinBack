@@ -46,6 +46,10 @@ Partial Class wb_Admin_UpdateDatabase
         Me.tbOrgaBack = New System.Windows.Forms.TextBox()
         Me.lblOrgaBackDataBase = New System.Windows.Forms.Label()
         Me.lblOrgaBack = New System.Windows.Forms.Label()
+        Me.tbWBDatenDB = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.tbWinBackDB = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.PnlOrgaBack.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -154,7 +158,7 @@ Partial Class wb_Admin_UpdateDatabase
         Me.PnlOrgaBack.Controls.Add(Me.tbOrgaBack)
         Me.PnlOrgaBack.Controls.Add(Me.lblOrgaBackDataBase)
         Me.PnlOrgaBack.Controls.Add(Me.lblOrgaBack)
-        Me.PnlOrgaBack.Location = New System.Drawing.Point(2, 66)
+        Me.PnlOrgaBack.Location = New System.Drawing.Point(1, 125)
         Me.PnlOrgaBack.Name = "PnlOrgaBack"
         Me.PnlOrgaBack.Size = New System.Drawing.Size(468, 129)
         Me.PnlOrgaBack.TabIndex = 21
@@ -264,11 +268,53 @@ Partial Class wb_Admin_UpdateDatabase
         Me.lblOrgaBack.TabIndex = 21
         Me.lblOrgaBack.Text = "Version OrgaBack"
         '
+        'tbWBDatenDB
+        '
+        Me.tbWBDatenDB.BackColor = System.Drawing.SystemColors.Control
+        Me.tbWBDatenDB.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbWBDatenDB.Location = New System.Drawing.Point(165, 83)
+        Me.tbWBDatenDB.Name = "tbWBDatenDB"
+        Me.tbWBDatenDB.Size = New System.Drawing.Size(123, 20)
+        Me.tbWBDatenDB.TabIndex = 35
+        Me.tbWBDatenDB.TabStop = False
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(12, 86)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(102, 13)
+        Me.Label4.TabIndex = 34
+        Me.Label4.Text = "Archiv-DB WinBack"
+        '
+        'tbWinBackDB
+        '
+        Me.tbWinBackDB.BackColor = System.Drawing.SystemColors.Control
+        Me.tbWinBackDB.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbWinBackDB.Location = New System.Drawing.Point(165, 61)
+        Me.tbWinBackDB.Name = "tbWinBackDB"
+        Me.tbWinBackDB.Size = New System.Drawing.Size(123, 20)
+        Me.tbWinBackDB.TabIndex = 33
+        Me.tbWinBackDB.TabStop = False
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(12, 64)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(101, 13)
+        Me.Label5.TabIndex = 32
+        Me.Label5.Text = "Haupt-DB WinBack"
+        '
         'wb_Admin_UpdateDatabase
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(471, 445)
+        Me.Controls.Add(Me.tbWBDatenDB)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.tbWinBackDB)
+        Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.PnlOrgaBack)
         Me.Controls.Add(Me.tbWinbackKundeName)
         Me.Controls.Add(Me.pbFiles)
@@ -309,4 +355,8 @@ Partial Class wb_Admin_UpdateDatabase
     Friend WithEvents tbOrgaBack As Windows.Forms.TextBox
     Friend WithEvents lblOrgaBackDataBase As Windows.Forms.Label
     Friend WithEvents lblOrgaBack As Windows.Forms.Label
+    Friend WithEvents tbWBDatenDB As Windows.Forms.TextBox
+    Friend WithEvents Label4 As Windows.Forms.Label
+    Friend WithEvents tbWinBackDB As Windows.Forms.TextBox
+    Friend WithEvents Label5 As Windows.Forms.Label
 End Class

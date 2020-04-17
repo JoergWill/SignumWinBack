@@ -105,6 +105,7 @@ Public Class wb_MinMaxOptCharge
         _StkGewicht = Chrg._StkGewicht
         _HasChanged = Chrg._HasChanged
     End Sub
+
     ''' <summary>
     ''' Der Wert für die Minimal-Charge hat sich geändert: 
     '''     - Prüfen ob die Minimal-Charge kleiner als Optimal und/oder Maximal-Charge ist

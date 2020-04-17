@@ -24,6 +24,8 @@ Public Class EnhEdit
         InitializeComponent()
         'SetStyle(ControlStyles.UserPaint, True)
         Me.BorderStyle = BorderStyle.None
+
+        'Debug.Print("Enhanced Edit New() " & Me.Handle.ToString)
     End Sub
 
     ''' <summary>
@@ -132,20 +134,31 @@ Public Class EnhEdit
         End Get
     End Property
 
+    Public Property Init As Boolean
+        Get
+            'Debug.Print("Enhanced Edit GetInit " & _Init.ToString & "/" & Me.Handle.ToString)
+            Return _Init
+        End Get
+        Set(value As Boolean)
+            _Init = value
+            'Debug.Print("Enhanced Edit SetInit " & value.ToString & "/" & Me.Handle.ToString)
+        End Set
+    End Property
+
     ''' <summary>
     ''' Wird aufgerufen, wenn sich der Wert des Edit-Feldes (Value) ändert.
     ''' Beim ersten Aufruf der Edit-Routine.
     ''' </summary>
     Protected Overrides Sub OnValueChanged()
-        If _Init Then
-            Debug.Print("Enhanced Edit OnValueChanged(Init) " & Me.Value)
-            _Init = False
+        If Init Then
+            'Debug.Print("Enhanced Edit OnValueChanged(Init) " & Me.Value & "/" & Me.Handle.ToString)
+            Init = False
             _oValue = Value
             Me.TextBox.Text = Value
             Me.TextBox.SelectAll()
         Else
             Me.Value = eValue
-            Debug.Print("Enhanced Edit OnValueChanged " & Me.Value)
+            'Debug.Print("Enhanced Edit OnValueChanged " & Me.Value & "/" & Me.Handle.ToString)
         End If
         'MyBase.OnValueChanged()
     End Sub
@@ -160,7 +173,7 @@ Public Class EnhEdit
     ''' <param name="keyData"></param>
     ''' <returns></returns>
     Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
-        Debug.Print("ProcessCmdKey " & keyData.ToString)
+        'Debug.Print("ProcessCmdKey " & keyData.ToString)
 
         If keyData = Keys.Escape Then
             'Orginalwert wieder eintragen
@@ -268,11 +281,11 @@ Public Class EnhEdit
     Protected Overrides Sub OnValidating(e As CancelEventArgs)
         If _NoKeyPressed Then
             Value = _oValue
-            Debug.Print("Enhanced Edit OnValidating(NoKeyPressed) " & Value)
+            'Debug.Print("Enhanced Edit OnValidating(NoKeyPressed) " & Value)
         Else
             Value = eValue
             _oValue = Value
-            Debug.Print("Enhanced Edit OnValidating " & Value)
+            'Debug.Print("Enhanced Edit OnValidating " & Value)
         End If
     End Sub
 

@@ -25,14 +25,14 @@ Partial Class wb_Rohstoffe_Cloud
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim Wb_MinMaxOptCharge1 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
-        Dim Wb_Charge1 As WinBack.wb_Charge = New WinBack.wb_Charge()
-        Dim Wb_Charge2 As WinBack.wb_Charge = New WinBack.wb_Charge()
-        Dim Wb_Charge3 As WinBack.wb_Charge = New WinBack.wb_Charge()
-        Dim Wb_MinMaxOptCharge2 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
-        Dim Wb_Charge4 As WinBack.wb_Charge = New WinBack.wb_Charge()
-        Dim Wb_Charge5 As WinBack.wb_Charge = New WinBack.wb_Charge()
-        Dim Wb_Charge6 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_MinMaxOptCharge5 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
+        Dim Wb_Charge13 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge14 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge15 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_MinMaxOptCharge6 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
+        Dim Wb_Charge16 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge17 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge18 As WinBack.wb_Charge = New WinBack.wb_Charge()
         Me.tRohstoffNummer = New System.Windows.Forms.TextBox()
         Me.lblNummer = New System.Windows.Forms.Label()
         Me.tRohstoffName = New System.Windows.Forms.TextBox()
@@ -74,6 +74,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.KompRzChargen = New WinBack.wb_KompRzChargen()
         Me.tpKompType = New System.Windows.Forms.TabPage()
         Me.lblKeineNwt = New System.Windows.Forms.Label()
+        Me.cbFreigabeProduktion = New System.Windows.Forms.CheckBox()
         Me.Wb_TabControl.SuspendLayout()
         Me.tpCloudSuchen.SuspendLayout()
         Me.tpCloudGefunden.SuspendLayout()
@@ -519,29 +520,29 @@ Partial Class wb_Rohstoffe_Cloud
         '
         'KompRzChargen
         '
-        Wb_MinMaxOptCharge1.ErrorCheck = False
-        Wb_MinMaxOptCharge1.HasChanged = False
-        Wb_Charge1.MengeInkg = "0,000"
-        Wb_Charge1.MengeInProzent = "0"
-        Wb_Charge1.MengeInStk = "0"
-        Wb_Charge1.StkGewicht = "1000"
-        Wb_Charge1.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge1.MaxCharge = Wb_Charge1
-        Wb_Charge2.MengeInkg = "0,000"
-        Wb_Charge2.MengeInProzent = "0"
-        Wb_Charge2.MengeInStk = "0"
-        Wb_Charge2.StkGewicht = "1000"
-        Wb_Charge2.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge1.MinCharge = Wb_Charge2
-        Wb_Charge3.MengeInkg = "0,000"
-        Wb_Charge3.MengeInProzent = "0"
-        Wb_Charge3.MengeInStk = "0"
-        Wb_Charge3.StkGewicht = "1000"
-        Wb_Charge3.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge1.OptCharge = Wb_Charge3
-        Wb_MinMaxOptCharge1.StkGewicht = "1000"
-        Wb_MinMaxOptCharge1.TeigGewicht = "0"
-        Me.KompRzChargen.ArtikelChargen = Wb_MinMaxOptCharge1
+        Wb_MinMaxOptCharge5.ErrorCheck = False
+        Wb_MinMaxOptCharge5.HasChanged = False
+        Wb_Charge13.MengeInkg = "0,000"
+        Wb_Charge13.MengeInProzent = "0"
+        Wb_Charge13.MengeInStk = "0"
+        Wb_Charge13.StkGewicht = "1000"
+        Wb_Charge13.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge5.MaxCharge = Wb_Charge13
+        Wb_Charge14.MengeInkg = "0,000"
+        Wb_Charge14.MengeInProzent = "0"
+        Wb_Charge14.MengeInStk = "0"
+        Wb_Charge14.StkGewicht = "1000"
+        Wb_Charge14.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge5.MinCharge = Wb_Charge14
+        Wb_Charge15.MengeInkg = "0,000"
+        Wb_Charge15.MengeInProzent = "0"
+        Wb_Charge15.MengeInStk = "0"
+        Wb_Charge15.StkGewicht = "1000"
+        Wb_Charge15.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge5.OptCharge = Wb_Charge15
+        Wb_MinMaxOptCharge5.StkGewicht = "1000"
+        Wb_MinMaxOptCharge5.TeigGewicht = "0"
+        Me.KompRzChargen.ArtikelChargen = Wb_MinMaxOptCharge5
         Me.KompRzChargen.DataValid = False
         Me.KompRzChargen.Location = New System.Drawing.Point(7, 2)
         Me.KompRzChargen.Name = "KompRzChargen"
@@ -550,29 +551,29 @@ Partial Class wb_Rohstoffe_Cloud
         Me.KompRzChargen.RzNr = -1
         Me.KompRzChargen.Size = New System.Drawing.Size(400, 342)
         Me.KompRzChargen.TabIndex = 0
-        Wb_MinMaxOptCharge2.ErrorCheck = False
-        Wb_MinMaxOptCharge2.HasChanged = False
-        Wb_Charge4.MengeInkg = "0,000"
-        Wb_Charge4.MengeInProzent = "0"
-        Wb_Charge4.MengeInStk = "0"
-        Wb_Charge4.StkGewicht = "1000"
-        Wb_Charge4.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge2.MaxCharge = Wb_Charge4
-        Wb_Charge5.MengeInkg = "0,000"
-        Wb_Charge5.MengeInProzent = "0"
-        Wb_Charge5.MengeInStk = "0"
-        Wb_Charge5.StkGewicht = "1000"
-        Wb_Charge5.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge2.MinCharge = Wb_Charge5
-        Wb_Charge6.MengeInkg = "0,000"
-        Wb_Charge6.MengeInProzent = "0"
-        Wb_Charge6.MengeInStk = "0"
-        Wb_Charge6.StkGewicht = "1000"
-        Wb_Charge6.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge2.OptCharge = Wb_Charge6
-        Wb_MinMaxOptCharge2.StkGewicht = "1000"
-        Wb_MinMaxOptCharge2.TeigGewicht = "0"
-        Me.KompRzChargen.TeigChargen = Wb_MinMaxOptCharge2
+        Wb_MinMaxOptCharge6.ErrorCheck = False
+        Wb_MinMaxOptCharge6.HasChanged = False
+        Wb_Charge16.MengeInkg = "0,000"
+        Wb_Charge16.MengeInProzent = "0"
+        Wb_Charge16.MengeInStk = "0"
+        Wb_Charge16.StkGewicht = "1000"
+        Wb_Charge16.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge6.MaxCharge = Wb_Charge16
+        Wb_Charge17.MengeInkg = "0,000"
+        Wb_Charge17.MengeInProzent = "0"
+        Wb_Charge17.MengeInStk = "0"
+        Wb_Charge17.StkGewicht = "1000"
+        Wb_Charge17.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge6.MinCharge = Wb_Charge17
+        Wb_Charge18.MengeInkg = "0,000"
+        Wb_Charge18.MengeInProzent = "0"
+        Wb_Charge18.MengeInStk = "0"
+        Wb_Charge18.StkGewicht = "1000"
+        Wb_Charge18.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge6.OptCharge = Wb_Charge18
+        Wb_MinMaxOptCharge6.StkGewicht = "1000"
+        Wb_MinMaxOptCharge6.TeigGewicht = "0"
+        Me.KompRzChargen.TeigChargen = Wb_MinMaxOptCharge6
         '
         'tpKompType
         '
@@ -597,11 +598,22 @@ Partial Class wb_Rohstoffe_Cloud
         Me.lblKeineNwt.TabIndex = 52
         Me.lblKeineNwt.Text = "Kein Rohstoff"
         '
+        'cbFreigabeProduktion
+        '
+        Me.cbFreigabeProduktion.AutoSize = True
+        Me.cbFreigabeProduktion.Location = New System.Drawing.Point(168, 50)
+        Me.cbFreigabeProduktion.Name = "cbFreigabeProduktion"
+        Me.cbFreigabeProduktion.Size = New System.Drawing.Size(201, 17)
+        Me.cbFreigabeProduktion.TabIndex = 54
+        Me.cbFreigabeProduktion.Text = "Rohstoff kann (vor)produziert werden"
+        Me.cbFreigabeProduktion.UseVisualStyleBackColor = True
+        '
         'wb_Rohstoffe_Cloud
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(733, 471)
+        Me.Controls.Add(Me.cbFreigabeProduktion)
         Me.Controls.Add(Me.tCloudID)
         Me.Controls.Add(Me.lblCloudID)
         Me.Controls.Add(Me.tRohstoffNummer)
@@ -667,4 +679,5 @@ Partial Class wb_Rohstoffe_Cloud
     Friend WithEvents tbDeklarationExtern As Windows.Forms.TextBox
     Friend WithEvents tbDeklarationIntern As Windows.Forms.TextBox
     Friend WithEvents BtnProduktDatenblatt As Windows.Forms.Button
+    Friend WithEvents cbFreigabeProduktion As Windows.Forms.CheckBox
 End Class
