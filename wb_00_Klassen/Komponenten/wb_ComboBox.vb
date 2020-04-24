@@ -14,17 +14,33 @@ Partial Class wb_ComboBox
     '''´Gibt den Key aus HashTable zurück, der dem selektierten Text entspricht
     ''' </summary>
     ''' <returns>Integer Key</returns>
-    Function GetKeyFromSelection() As Integer
+    Public Function GetKeyFromSelection() As Integer
+        Return GetKeyFromText(Me.Text)
+    End Function
+
+    ''' <summary>
+    '''´Gibt den Key aus HashTable zurück, der dem übergebenen Text entspricht
+    ''' </summary>
+    ''' <returns>Integer Key</returns>
+    Public Function GetKeyFromText(Text As String) As Integer
         Dim i As Integer = 0
         If ht IsNot Nothing Then
             For Each item As DictionaryEntry In ht
-                If item.Value = Me.Text Then
+                If item.Value = Text Then
                     i = item.Key
                     Exit For
                 End If
             Next
         End If
         Return i
+    End Function
+
+    Public Function GetKeyFromIndex(Index As Integer) As Boolean
+        If Index <= Items.Count Then
+            Return GetKeyFromText(Items(Index).ToString)
+        Else
+            Return wb_Global.UNDEFINED
+        End If
     End Function
 
     ''' <summary>

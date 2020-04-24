@@ -53,6 +53,7 @@ Public Class wb_sql_BackupRestore
 
         'Cursor wieder zurücksetzen
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
+        Return DatenSicherung
     End Function
 
     Public Function DatenRuecksicherung(FileName As String) As Boolean
@@ -189,6 +190,7 @@ Public Class wb_sql_BackupRestore
         r = ConvertTableName(r, "BCWegParams")
         r = ConvertTableName(r, "PreisEinheiten")
         r = ConvertTableName(r, "Einheiten")
+        r = ConvertTableName(r, "ENummern")
         r = ConvertTableName(r, "Fehler")
         r = ConvertTableName(r, "Formate")
         r = ConvertTableName(r, "GeraeteParams")

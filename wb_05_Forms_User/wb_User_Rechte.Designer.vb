@@ -47,7 +47,7 @@ Partial Class wb_User_Rechte
         Me.TreeViewImageList.ImageStream = CType(resources.GetObject("TreeViewImageList.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.TreeViewImageList.TransparentColor = System.Drawing.Color.Transparent
         Me.TreeViewImageList.Images.SetKeyName(0, "Leer_16x16.png")
-        Me.TreeViewImageList.Images.SetKeyName(1, "KreuzRot.png")
+        Me.TreeViewImageList.Images.SetKeyName(1, "HakenGrn_16x16.png")
         Me.TreeViewImageList.Images.SetKeyName(2, "HakenGrn_16x16.png")
         Me.TreeViewImageList.Images.SetKeyName(3, "HakenGlb_16x16.png")
         Me.TreeViewImageList.Images.SetKeyName(4, "HakenRot_16x16.png")

@@ -37,7 +37,11 @@ Public Class wb_Admin_Datensicherung
             IniFile = Nothing
 
             'Datensicherung starten
-            mysql.DatenSicherung(BackupFileName.Text, cbFormatMySQL3_2.Checked)
+            If mysql.DatenSicherung(BackupFileName.Text, cbFormatMySQL3_2.Checked) Then
+                MsgBox("Die WinBack-Daten wurden erfolgreich gesichert", MsgBoxStyle.Exclamation)
+            Else
+                MsgBox("Fehler bei der WinBack-Daten-Sicherung", MsgBoxStyle.Exclamation)
+            End If
         End If
     End Sub
 
@@ -72,11 +76,11 @@ Public Class wb_Admin_Datensicherung
                 IniFile = Nothing
 
                 'OrgaBack/WinBack-Office neustarten
-                If MsgBox("Datensicherung wurde erfolgreich geladen" & vbCrLf & vbCrLf & "Programm neu starten ?", MsgBoxStyle.YesNo, "WinBack") Then
+                If MsgBox("Datensicherung WinBack wurde erfolgreich geladen" & vbCrLf & vbCrLf & "Programm neu starten ?", MsgBoxStyle.YesNo, "WinBack") = MsgBoxResult.Ok Then
                     Application.Restart()
                 End If
             Else
-                MsgBox("Fehler bei der Daten-Rücksicherung", MsgBoxStyle.Exclamation)
+                MsgBox("Fehler bei der WinBack-Daten-Rücksicherung", MsgBoxStyle.Exclamation)
             End If
         End If
     End Sub

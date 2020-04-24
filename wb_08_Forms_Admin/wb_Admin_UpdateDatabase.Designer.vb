@@ -50,6 +50,7 @@ Partial Class wb_Admin_UpdateDatabase
         Me.Label4 = New System.Windows.Forms.Label()
         Me.tbWinBackDB = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.tbWinBackIP = New System.Windows.Forms.TextBox()
         Me.PnlOrgaBack.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -306,11 +307,22 @@ Partial Class wb_Admin_UpdateDatabase
         Me.Label5.TabIndex = 32
         Me.Label5.Text = "Haupt-DB WinBack"
         '
+        'tbWinBackIP
+        '
+        Me.tbWinBackIP.BackColor = System.Drawing.SystemColors.Control
+        Me.tbWinBackIP.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbWinBackIP.Location = New System.Drawing.Point(294, 61)
+        Me.tbWinBackIP.Name = "tbWinBackIP"
+        Me.tbWinBackIP.Size = New System.Drawing.Size(123, 20)
+        Me.tbWinBackIP.TabIndex = 36
+        Me.tbWinBackIP.TabStop = False
+        '
         'wb_Admin_UpdateDatabase
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(471, 445)
+        Me.Controls.Add(Me.tbWinBackIP)
         Me.Controls.Add(Me.tbWBDatenDB)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.tbWinBackDB)
@@ -359,4 +371,5 @@ Partial Class wb_Admin_UpdateDatabase
     Friend WithEvents Label4 As Windows.Forms.Label
     Friend WithEvents tbWinBackDB As Windows.Forms.TextBox
     Friend WithEvents Label5 As Windows.Forms.Label
+    Friend WithEvents tbWinBackIP As Windows.Forms.TextBox
 End Class

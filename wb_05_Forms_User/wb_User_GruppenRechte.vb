@@ -120,6 +120,19 @@ Public Class wb_User_GruppenRechte
         End If
     End Sub
 
+    ''' <summary>
+    ''' Wenn das Formular den Focus verliert werden die Änderungen an den Gruppen-Rechten gespeichert
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub wb_User_GruppenRechte_Leave(sender As Object, e As EventArgs) Handles MyBase.Leave
+        If UserGruppenGrid.Changed Then
+            If SaveUserGruppenRechte() Then
+                UserGruppenGrid.Changed = False
+            End If
+        End If
+    End Sub
+
     Private Function SaveUserGruppenRechte() As Boolean
         'Datenbank-Verbindung
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)

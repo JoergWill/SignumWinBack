@@ -313,7 +313,7 @@ Public Class wb_Planung_Liste
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
         'gleiche (Rest-)Teige zusammenfassen
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
-        Produktion.TeigeZusammenfassen(wb_GlobalSettings.TeigOptimierung)
+        'Produktion.TeigeZusammenfassen(wb_GlobalSettings.TeigOptimierung)
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
         'Neu erstellte Chargen anzeigen 
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt

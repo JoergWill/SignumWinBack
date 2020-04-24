@@ -31,6 +31,7 @@ Public Class wb_Rezept
     Private _KneterKennLinie As Integer
     Private _NoMessage As Boolean
     Private _ReadCalcPreis As Boolean = True
+    Private _Varianten As Hashtable = Nothing
 
     Public TeigChargen As New wb_MinMaxOptCharge
     Private _DataHasChanged As Boolean = False
@@ -547,6 +548,47 @@ Public Class wb_Rezept
     End Function
 
     ''' <summary>
+    ''' Prüft ob diese Rezept-Variante exisitiert und gibt ein entsprechenes Ergebnis zurück.
+    ''' Die zu diesem Rezept existierenden Varianten werden in einer Hash-Table gespeichert. Ist die Hash-Table leer (erster Aufruf)
+    ''' wird per SQL-Abfrage ermittelt, welche Varianten existieren
+    ''' </summary>
+    ''' <param name="Variante"></param>
+    ''' <returns></returns>
+    Public Property HasVariante(Variante As Integer) As Boolean
+        Get
+            'prüfen ob Varianten schon geladen sind
+            If _Varianten Is Nothing Then
+                'Hashtable löschen (sicherheitshalber)
+                _Varianten = New Hashtable
+                _Varianten.Clear()
+
+                Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+                Dim RzVariante As Integer
+
+                'Datensätze aus Tabelle Rezepte lesen
+                If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptVarianten, RezeptNr)) Then
+                    While winback.Read
+                        RzVariante = winback.iField("RZ_Variante_Nr")
+                        _Varianten.Add(RzVariante, True)
+                    End While
+                End If
+            End If
+
+            'Variante vorhanden
+            If _Varianten.ContainsKey(Variante) Then
+                Return _Varianten(Variante)
+            Else
+                Return False
+            End If
+        End Get
+        Set(value As Boolean)
+            If Not _Varianten.ContainsKey(Variante) Then
+                _Varianten.Add(Variante, True)
+            End If
+        End Set
+    End Property
+
+    ''' <summary>
     ''' Gibt eine Liste von Artikelnummern zurück, die mit dieser Rezeptur verknüpft sind
     ''' </summary>
     ''' <returns></returns>
@@ -588,14 +630,19 @@ Public Class wb_Rezept
     ''' Es wird nur die Rezept-Nummer (intern) angelegt.
     ''' Die Rezept-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit
     ''' 
+    ''' Wird eine Variante größer als Eins übergeben, wird das aktuelle Rezept auf diese Variante kopiert und der Rezeptkopf neu angelegt!
+    ''' 
     ''' Alle weiteren Rezept-Daten werden mit MySQLdbUpdate eingetragen.
     ''' </summary>
     ''' <returns>Integer - neu anglegte (interne) Rezept-Nummer</returns>
     Public Function MySQLdbNew(Variante As Integer, Optional LinienGruppe As Integer = wb_Global.LinienGruppeStandard) As Integer
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-        'interne Rezept-Nummer ermitteln aus max(RZ_NR)
-        _RezeptNr = wb_sql_Functions.getNewRezeptNummer()
+        'wenn Variante größer Eins wird eine neue Variante angelegt
+        If Variante <= 1 Then
+            'interne Rezept-Nummer ermitteln aus max(RZ_NR)
+            _RezeptNr = wb_sql_Functions.getNewRezeptNummer()
+        End If
         'Bezeichnung
         _RezeptBezeichnung = "Rezept neu angelegt " & Date.Now
         'Variante

@@ -12,6 +12,7 @@ Public Class wb_User_Main
 
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Private UserRechte As wb_User_Rechte
+    Private UserGruppenRechte As wb_User_GruppenRechte
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
@@ -54,6 +55,9 @@ Public Class wb_User_Main
                 ' Das neue RibbonTab erhält eine Gruppe
                 Dim oGrp = oNewTab.AddGroup("GrpUser", "WinBack Mitarbeiter")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
+                oGrp.AddButton("BtnUserListe", "Benutzer Liste", "Liste aller Benutzer", My.Resources.User_32x32, My.Resources.User_32x32, AddressOf BtnUserListe)
+                oGrp.AddButton("BtnUserDetails", "Benutzer Details", "Benutzer-Details", My.Resources.UserDetails_32x32, My.Resources.UserDetails_32x32, AddressOf BtnUserDetails)
+                oGrp.AddButton("BtnUserRechte", "Benutzer Rechte", "Anzeige aller Benutzer-Rechte", My.Resources.UserBerechtigungen_32x32, My.Resources.UserBerechtigungen_32x32, AddressOf BtnUserRechte)
                 oGrp.AddButton("BtnUserPasswd", "Passwort ändern", "Neues Mitarbeiter-Passwort vergeben", My.Resources.UserPasswd_32x32, My.Resources.UserPasswd_32x32, AddressOf BtnUserPasswd)
                 oGrp.AddButton("BtnUserPrintList", "Drucken Mitarbeiter-Liste", "Liste aller Mitarbeiter drucken", My.Resources.UserListe_32x32, My.Resources.UserListe_32x32, AddressOf btnUserPrint)
                 oGrp.AddButton("BtnUserGroup", "Mitarbeiter-Gruppen", "Gruppen und Gruppen-Rechte verwalten", My.Resources.UserGruppen_32x32, My.Resources.UserGruppen_32x32, AddressOf BtnUserGroup)
@@ -81,21 +85,48 @@ Public Class wb_User_Main
                 _DockPanelList.Add(UserRechte)
                 Return UserRechte
 
+            Case "WinBack.wb_User_GruppenRechte"
+                UserGruppenRechte = New wb_User_GruppenRechte
+                _DockPanelList.Add(UserGruppenRechte)
+                Return UserGruppenRechte
+
             Case Else
                 Return Nothing
         End Select
     End Function
 
+    Private Sub BtnUserDetails()
+        If IsNothingOrDisposed(UserDetails) Then
+            UserDetails = New wb_User_Details
+        End If
+        UserDetails.Show(DockPanel, DockState.DockRight)
+    End Sub
+    Private Sub BtnUserListe()
+        If IsNothingOrDisposed(UserListe) Then
+            UserListe = New wb_User_Liste
+        End If
+        UserListe.Show(DockPanel, DockState.DockLeft)
+    End Sub
+    Private Sub BtnUserRechte()
+        If IsNothingOrDisposed(UserRechte) Then
+            UserRechte = New wb_User_Rechte
+        End If
+        UserRechte.Show(DockPanel, DockState.DockLeft)
+    End Sub
+
     Private Sub BtnUserPasswd()
-        Throw New NotImplementedException
+        'Throw New NotImplementedException
     End Sub
 
     Private Sub btnUserPrint()
-        Throw New NotImplementedException
+        'Throw New NotImplementedException
     End Sub
 
     Private Sub BtnUserGroup()
-        Throw New NotImplementedException
+        If IsNothingOrDisposed(UserGruppenRechte) Then
+            UserGruppenRechte = New wb_User_GruppenRechte
+        End If
+        UserGruppenRechte.Show(DockPanel, DockState.DockRight)
     End Sub
 
 End Class

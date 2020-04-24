@@ -1428,6 +1428,9 @@
     <None Include="Resources\Rotate90L_32x32.png" />
     <None Include="Resources\Rotate90R_32x32.png" />
     <None Include="Resources\RohstoffeLieferung_32x32.png" />
+    <None Include="Resources\User_32x32.png" />
+    <None Include="Resources\UserDetails_32x32.png" />
+    <None Include="Resources\UserBerechtigungen_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

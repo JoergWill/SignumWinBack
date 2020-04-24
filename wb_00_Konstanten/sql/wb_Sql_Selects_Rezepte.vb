@@ -2,6 +2,8 @@
 
     'Sql-Statement Rezeptname zu Rezeptnummer (wb_Artikel_Shared)
     Public Const sqlRezeptNrName = "SELECT * FROM Rezepte WHERE RZ_Variante_Nr = 1"
+    'Sql-Statement Varianten zu Rezeptnummer (wb_Rezepte_Shared)
+    Public Const sqlRezeptVarianten = "SELECT RZ_Variante_Nr FROM Rezepte WHERE RZ_Nr = [0]"
 
     'Sql-Statement Rezeptliste aus winback.Rezepte
     Public Const sqlRezeptListe = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
@@ -14,12 +16,12 @@
     Public Const sqlRezeptKopf = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
                                   "RZ_Aenderung_Nr, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Liniengruppe, RZ_Teigtemperatur, " &
                                   "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt, RZ_Type FROM Rezepte WHERE RZ_Nr=[0] " &
-                                  "AND (RZ_Variante_Nr=[1] Or RZ_Variante_Nr=1 Or RZ_Variante_Nr=0) ORDER BY RZ_Variante_Nr DESC"
+                                  "AND (RZ_Variante_Nr=[1] Or RZ_Variante_Nr=1 Or RZ_Variante_Nr=0) ORDER BY RZ_Variante_Nr DESC LIMIT 1"
     'Sql-Statement Rezeptkopf aus winback.Rezepte
     Public Const sqlRezeptNummer = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
                                    "RZ_Aenderung_Nr, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Liniengruppe, RZ_Teigtemperatur, " &
                                    "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt, RZ_Type FROM Rezepte WHERE RZ_Nr_AlNum = '[0]' " &
-                                   "AND (RZ_Variante_Nr=[1] Or RZ_Variante_Nr=1 Or RZ_Variante_Nr=0) ORDER BY RZ_Variante_Nr DESC"
+                                   "AND (RZ_Variante_Nr=[1] Or RZ_Variante_Nr=1 Or RZ_Variante_Nr=0) ORDER BY RZ_Variante_Nr DESC LIMIT 1"
     'Sql-Statement Rezept-Verwendung aus winback.Komponenten
     Public Const sqlRezeptVerwendung = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Kommentar, KA_Art, KA_Matchcode, KO_Nr " &
                                   "FROM Komponenten WHERE KA_RZ_Nr = [0]"

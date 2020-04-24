@@ -592,6 +592,21 @@ Stacktrace:
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.User_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.UserBerechtigungen_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.UserDetails_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.UserGruppen_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -2275,6 +2290,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  
  Die Daten werden komplett gelöscht und anhand des Array wieder neu aufgebaut.
  </summary>
+</member>
+<member name="M:WinBack.wb_User_GruppenRechte.wb_User_GruppenRechte_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Wenn das Formular den Focus verliert werden die Änderungen an den Gruppen-Rechten gespeichert
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="M:WinBack.wb_User_GruppenRechte.GrpNr(System.Int32)">
  <summary>
@@ -4354,6 +4376,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="RzVariante"></param>
  <param name="RzAendIndex"></param>
 </member>
+<member name="P:WinBack.wb_Rezept.HasVariante(System.Int32)">
+ <summary>
+ Prüft ob diese Rezept-Variante exisitiert und gibt ein entsprechenes Ergebnis zurück.
+ Die zu diesem Rezept existierenden Varianten werden in einer Hash-Table gespeichert. Ist die Hash-Table leer (erster Aufruf)
+ wird per SQL-Abfrage ermittelt, welche Varianten existieren
+ </summary>
+ <param name="Variante"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Rezept.ArtikelVerwendung">
  <summary>
  Gibt eine Liste von Artikelnummern zurück, die mit dieser Rezeptur verknüpft sind
@@ -4373,6 +4404,8 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Rezeptkopf-Datensatz neu anlegen
  Es wird nur die Rezept-Nummer (intern) angelegt.
  Die Rezept-Bezeichnung ist "Neu angelegt " mit Datum/Uhrzeit
+ 
+ Wird eine Variante größer als Eins übergeben, wird das aktuelle Rezept auf diese Variante kopiert und der Rezeptkopf neu angelegt!
  
  Alle weiteren Rezept-Daten werden mit MySQLdbUpdate eingetragen.
  </summary>
@@ -5025,6 +5058,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 <member name="M:WinBack.wb_ComboBox.GetKeyFromSelection">
  <summary>
 ´Gibt den Key aus HashTable zurück, der dem selektierten Text entspricht
+ </summary>
+ <returns>Integer Key</returns>
+</member>
+<member name="M:WinBack.wb_ComboBox.GetKeyFromText(System.String)">
+ <summary>
+´Gibt den Key aus HashTable zurück, der dem übergebenen Text entspricht
  </summary>
  <returns>Integer Key</returns>
 </member>
@@ -6538,6 +6577,14 @@ Text aus Datenbank lesen - Übersetzung
  <summary>
  Taste gedrück innerhalb des virtual Tree.
  Anhand des Tasten-Codes wird die entsprechende Sub-Routine ausgeführt (INSERT/DEL)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.cbVariante_DrawItem(System.Object,System.Windows.Forms.DrawItemEventArgs)">
+ <summary>
+ Zeichnet die Texte der Combo-Box Rezept-Varianten. Wenn die Variante für dieses Rezept vorhanden ist, 
+ wird der Text in Schwarz gezeichnet, sonst in grau.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

@@ -14,6 +14,8 @@ Public Class wb_Admin_UpdateDatabase
         tbWinBackDB.Text = wb_GlobalSettings.MySQLWinBack
         'wbdaten-Datenbank
         tbWBDatenDB.Text = wb_GlobalSettings.MySQLWbDaten
+        'IP-Adresse WinBack-Server
+        tbWinBackIP.Text = wb_GlobalSettings.MySQLServerIP
 
         'Programmversion WinBack-Office hat keine OrgaBack-Anbindung
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then

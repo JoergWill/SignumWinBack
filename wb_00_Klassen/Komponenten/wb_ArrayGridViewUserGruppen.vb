@@ -20,10 +20,13 @@ Public Class wb_ArrayGridViewUserGruppen
     ''' Beim Schliessen des Formulars muss gespeichert werden.
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property Changed As Boolean
+    Public Property Changed As Boolean
         Get
             Return _Changed
         End Get
+        Set(value As Boolean)
+            _Changed = value
+        End Set
     End Property
 
     ''' <summary>

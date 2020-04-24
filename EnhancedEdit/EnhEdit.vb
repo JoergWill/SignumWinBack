@@ -247,7 +247,6 @@ Public Class EnhEdit
         Me.BorderStyle = BorderStyle.None
         TextBox.BorderStyle = BorderStyle.None
 
-
         'Anzeige formatieren
         Select Case _eFormat
 

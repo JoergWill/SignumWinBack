@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Drawing
+Imports System.Windows.Forms
 Imports combit.ListLabel22.DataProviders
 Imports EnhEdit.EnhEdit_Global
 Imports Infralution.Controls.VirtualTree
@@ -10,6 +11,7 @@ Public Class wb_Rezept_Rezeptur
 
     Private _RzNummer As Integer
     Private _RzVariante As Integer
+    Private _RzAendIndex As Integer
     Private _RzChanged As Boolean = False
     Private _RzKopfChanged As Boolean = False
     Private _RzHinweiseChanged As Boolean
@@ -46,48 +48,18 @@ Public Class wb_Rezept_Rezeptur
         'Rezeptnummer und Rezept-Variante merken
         _RzNummer = RzNummer
         _RzVariante = RzVariante
+        _RzAendIndex = RzAendIndex
 
         ' TabControl - HideTabs
         Wb_TabControl.HideTabs = True
 
-        'Einlesen Rezeptkopf und Rezeptschritte 
-        If RzAendIndex = wb_Global.UNDEFINED Then
-            'Rezeptkopf und Rezeptschritte aktuell (winback) - Start mit Backverlust 0.0 !! (kein Artikel definiert)
-            Rezept = New wb_Rezept(_RzNummer, Nothing, 0.0, _RzVariante)
-            Me.Text = Rezept.RezeptNummer & "/V" & Rezept.Variante & " " & Rezept.RezeptBezeichnung
-        Else
-            'Rezeptkopf und Rezeptschritte aus der Historie (wbdaten)
-            Rezept = New wb_Rezept(_RzNummer, Nothing, _RzVariante, RzAendIndex)
-            Me.Text = Rezept.RezeptNummer & "/V" & Rezept.Variante & " " & Rezept.RezeptBezeichnung & " Änderung " & RzAendIndex & " vom " & Rezept.AenderungDatum
-        End If
-
-        'Rezeptnummer
-        tbRzNummer.Text = Rezept.RezeptNummer
-        'Rezept-Name
-        tbRezeptName.Text = Rezept.RezeptBezeichnung
-        'Kommentar-Feld
-        tbRzKommentar.Text = Rezept.RezeptKommentar
-        'Teigtemperatur (Rezept)
-        tbRzTeigTemp.Text = wb_Functions.FormatStr(Rezept.RezeptTeigTemperatur, 2)
-
-        'Änderung Nummer
-        tbRzAendNr.Text = Rezept.AenderungNummer
-        'Änderung Datum
-        tbRzAendDatum.Text = Rezept.AenderungDatum
-        'Änderung Name
-        tbRzAendName.Text = Rezept.AenderungName
-
         'Combo-Box(Rezept-Varianten) mit Werten füllen
         cbVariante.Fill(wb_Rezept_Shared.RzVariante)
         'Combo-Box(Rezept-Varianten) mit Werten füllen
-        'cbLiniengruppe.Fill(wb_Rezept_Shared.LinienGruppe)
         cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen)
-        'Eintrag in Combo-Box Liniengruppe ausfüllen
-        cbLiniengruppe.SetTextFromKey(Rezept.LinienGruppe)
-        'Eintrag in Combo-Box Rezeptvariante ausfüllen
-        cbVariante.SetTextFromKey(Rezept.Variante)
-        tbRzVariante.Text = Rezept.Variante
 
+        'Einlesen Rezeptkopf und Rezeptschritte 
+        GetRezeptur(_RzNummer, _RzVariante, _RzAendIndex, _Historical)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
         'alle Zeilen aufklappen
@@ -107,14 +79,102 @@ Public Class wb_Rezept_Rezeptur
             cbLiniengruppe.Enabled = False
 
             VirtualTree.Enabled = False
-        Else
-            'Berechnete Rezepturwerte anzeigen
-            ShowCalculateRezeptDaten(False)
         End If
 
         'Cursor wieder zurücksetzen
         Me.Cursor = Cursors.Default
     End Sub
+
+    Private Sub cbVariante_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbVariante.SelectedIndexChanged
+        'Auswahl über DropDrown
+        If cbVariante.Focus Then
+            'Änderungen im aktuellen Rezept speichern
+            RezeptSpeichern(sender)
+            'Bezeichnung und Kommentar merken
+            Dim Bezeichnung As String = Rezept.RezeptBezeichnung
+            Dim Kommentar As String = Rezept.RezeptKommentar
+
+            'Neue Rezept-Variante
+            _RzVariante = cbVariante.GetKeyFromSelection()
+            'Prüfen ob die gesuchte Rezept-Variante vorhanden ist
+            If Not GetRezeptur(_RzNummer, _RzVariante, _RzAendIndex, _Historical) Then
+                'Frage ob eine neue(leere) Variante erzeugt werden soll
+                If MsgBox("Diese Rezept-Variante existiert nicht!" & vbCrLf & "Soll eine neue Variante dieses Rezeptes erzeugt werden", MsgBoxStyle.OkCancel) = MsgBoxResult.Ok Then
+                    'Leere Hülle mit RezeptNr und Variante erzeugen - Rezeptschritte bleiben erhalten !
+                    Rezept.MySQLdbNew(_RzVariante)
+                    'Rezept-Name und Kommentar vom Stamm-Rezept
+                    Rezept.RezeptBezeichnung = Bezeichnung
+                    Rezept.RezeptKommentar = Kommentar
+                    'Rezept-Schritte UNd Rezeptkopf schreiben bei Schliessen
+                    _RzChanged = True
+                    _RzKopfChanged = True
+                Else
+                    'Eintrag in Combo-Box Liniengruppe korrigieren
+                    cbLiniengruppe.SetTextFromKey(Rezept.LinienGruppe)
+                    'Eintrag in Combo-Box Rezeptvariante korrigieren
+                    cbVariante.SetTextFromKey(Rezept.Variante)
+                    'Rezept-Variante merken
+                    _RzVariante = Rezept.Variante
+                End If
+            End If
+
+            'Virtual Tree anzeigen
+            VirtualTree.DataSource = Rezept.RootRezeptSchritt
+            'alle Zeilen aufklappen
+            VirtualTree.RootRow.ExpandChildren(True)
+            'falls keine Rezeptschritte vorhanden sind muss das Popup-Menu ausserhalb erstellt werden
+            VT_MakeTreePopup()
+        End If
+    End Sub
+
+    Private Function GetRezeptur(RzNr As Integer, RzVariante As Integer, RzAendIndex As Integer, Historical As Boolean) As Boolean
+        'Rezept-Historie
+        If Not Historical Then
+            'Rezeptkopf und Rezeptschritte aktuell (winback) - Start mit Backverlust 0.0 !! (kein Artikel definiert)
+            Rezept = New wb_Rezept(_RzNummer, Nothing, 0.0, _RzVariante)
+            Me.Text = Rezept.RezeptNummer & "/V" & Rezept.Variante & " " & Rezept.RezeptBezeichnung
+        Else
+            'Rezeptkopf und Rezeptschritte aus der Historie (wbdaten)
+            Rezept = New wb_Rezept(_RzNummer, Nothing, _RzVariante, RzAendIndex)
+            Me.Text = Rezept.RezeptNummer & "/V" & Rezept.Variante & " " & Rezept.RezeptBezeichnung & " Änderung " & RzAendIndex & " vom " & Rezept.AenderungDatum
+        End If
+
+        'Prüfen ob die gesuchte Variante existiert
+        If Rezept.Variante = RzVariante Then
+
+            'Berechnete Rezepturwerte anzeigen
+            If Not Historical Then
+                ShowCalculateRezeptDaten(False)
+            End If
+
+            'Rezeptnummer
+            tbRzNummer.Text = Rezept.RezeptNummer
+            'Rezept-Name
+            tbRezeptName.Text = Rezept.RezeptBezeichnung
+            'Kommentar-Feld
+            tbRzKommentar.Text = Rezept.RezeptKommentar
+            'Teigtemperatur (Rezept)
+            tbRzTeigTemp.Text = wb_Functions.FormatStr(Rezept.RezeptTeigTemperatur, 2)
+
+            'Änderung Nummer
+            tbRzAendNr.Text = Rezept.AenderungNummer
+            'Änderung Datum
+            tbRzAendDatum.Text = Rezept.AenderungDatum
+            'Änderung Name
+            tbRzAendName.Text = Rezept.AenderungName
+            'Rzept-Variante
+            tbRzVariante.Text = Rezept.Variante
+
+            'Eintrag in Combo-Box Liniengruppe ausfüllen
+            cbLiniengruppe.SetTextFromKey(Rezept.LinienGruppe)
+            'Eintrag in Combo-Box Rezeptvariante ausfüllen
+            cbVariante.SetTextFromKey(Rezept.Variante)
+
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
     Private Sub ShowCalculateRezeptDaten(Recalculate As Boolean)
         'Neuberechnung erzwingen
@@ -128,7 +188,6 @@ Public Class wb_Rezept_Rezeptur
         tbRzMehlmenge.Text = wb_Functions.FormatStr(Rezept.RezeptGesamtMehlmenge, 2)
         'Rezept TA
         tbRzTA.Text = CInt(Rezept.RezeptTA)
-
     End Sub
 
     ''' <summary>
@@ -299,6 +358,10 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub wb_Rezept_Rezeptur_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        RezeptSpeichern(sender)
+    End Sub
+
+    Private Sub RezeptSpeichern(sender As Object)
         'Flag Rezept-Hinweise sind geändert worden
         If _RzHinweiseChanged Then
             'Rezept-Verarbeitungs-Hinweise speichern
@@ -1049,7 +1112,6 @@ Public Class wb_Rezept_Rezeptur
             VTPopUpMenu.Items.Add("QUID relevant", Nothing, AddressOf VTP_NeueProduktionsStufe)
         End If
 
-
     End Sub
 
     ''' <summary>
@@ -1107,5 +1169,23 @@ Public Class wb_Rezept_Rezeptur
             Return False
         End If
     End Function
+
+    ''' <summary>
+    ''' Zeichnet die Texte der Combo-Box Rezept-Varianten. Wenn die Variante für dieses Rezept vorhanden ist, 
+    ''' wird der Text in Schwarz gezeichnet, sonst in grau.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cbVariante_DrawItem(ByVal sender As Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) Handles cbVariante.DrawItem
+        'Variante-Nr des Eintrags
+        Dim VarianteText As String = cbVariante.Items(e.Index).ToString
+        Dim Variante As Integer = cbVariante.GetKeyFromText(VarianteText)
+        'wenn die Variante für dieses Rezept vorhanden ist, wird der Text in Schwarz gezeichnet, sonst in grau
+        If Rezept.HasVariante(Variante) Then
+            e.Graphics.DrawString(VarianteText, e.Font, New SolidBrush(Color.Black), e.Bounds.X, e.Bounds.Y)
+        Else
+            e.Graphics.DrawString(VarianteText, e.Font, New SolidBrush(Color.LightGray), e.Bounds.X, e.Bounds.Y)
+        End If
+    End Sub
 
 End Class
