@@ -345,9 +345,9 @@ Public Class ob_ProduzierteWare
                         Menge = wb_Functions.StrToDouble(Value)
                     End If
 
-                'Produktions-Datum (ACHTUNG SCHAUFLER)
-'               Case "B_ARZ_Zp_Beendet"
-                Case "B_ARZ_Erststart"
+                'Produktions-Datum (ACHTUNG Schaufler: Zp_Beendet)
+                'Case "B_ARZ_Erststart"
+                Case "B_ARZ_Zp_Beendet"
                     If SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
                         ProduktionsDatum = Value
                     End If

@@ -74,8 +74,10 @@ Public Class wb_User_Main
     End Function
 
     Public Overrides Sub SetDefaultLayout()
-        UserListe.Show(DockPanel, DockState.DockLeft)
-        UserDetails.Show(DockPanel, DockState.DockTop)
+        Try
+            UserListe.Show(DockPanel, DockState.DockLeft)
+        Catch
+        End Try
     End Sub
 
     Public Shadows ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
