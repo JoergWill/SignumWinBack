@@ -30,7 +30,7 @@ Public MustInherit Class wb_Sync
     Friend MustOverride Function DBRead() As Boolean
     Friend MustOverride Function DBUpdate(Nr As String, Text As String, Gruppe As String) As Boolean
     Friend MustOverride Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
-    Friend MustOverride Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean
+    Friend MustOverride Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String, Text As String) As Boolean
     Friend MustOverride Function DBDelete(Index As Integer) As Boolean
     Friend MustOverride Function DBCheckData() As Boolean
 

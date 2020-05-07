@@ -102,6 +102,13 @@ Public Class wb_Admin_CheckDatabase
             CheckDatabase = False
             UpdateDataBaseFiles.Add(wb_AktRechte.UpdateDatabaseFile)
         End If
+        'Prüfe User-Gruppen Tabelle ItemParameter(IP_Wert1Int=99) Gruppe 99 muss alle Rechte mit den richtigen Attributen enthalten
+        Dim UserGruppe As New wb_User_Gruppe
+        If Not CheckResultText(UserGruppe.CheckDB_Grp99(), "Check Datenbank UserGruppenRechte(99)") Then
+            LogEvent(wb_Einheiten_Global.ErrorText, Color.Red, True)
+            CheckDatabase = False
+            UpdateDataBaseFiles.Add(wb_AktRechte.UpdateDatabaseFile)
+        End If
 
         'Prüfe Tabelle winback.Einheiten - Spalte E_obNr
         If Not CheckResultText(wb_Einheiten_Global.CheckDB(), "Check Datenbank winback.Einheiten - Spalte E_obNr") Then

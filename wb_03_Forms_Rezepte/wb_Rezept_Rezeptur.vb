@@ -21,6 +21,7 @@ Public Class wb_Rezept_Rezeptur
     Private _RezeptSchrittNeu As wb_Rezeptschritt = Nothing 'neuer Rezeptschritt (Auswahl-Liste)
 
     Private _HisSollwertDeltaStyle As New Infralution.Controls.StyleDelta
+    Private _ProdStufeDeltaStyle As New Infralution.Controls.StyleDelta
 
     'Private _HisSollwertDeltaStyle As New Infralution.Controls.StyleDelta
     'Private _HisSollwertChangedStyle As Infralution.Controls.Style
@@ -42,8 +43,10 @@ Public Class wb_Rezept_Rezeptur
         'Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
         'New Style setzen (Delta/Italic+Bold)
-        'TODO hier wird der Zeichensatz noch nicht richtig gesetzt (Arial) ??
-        _HisSollwertDeltaStyle.Font = New Drawing.Font(VirtualTree.Columns(1).CellStyle.Font, System.Drawing.FontStyle.Italic + System.Drawing.FontStyle.Bold)
+        Dim FontFamilyArial As New FontFamily("Arial")
+        Dim FontArial As New Font(FontFamilyArial, 16, FontStyle.Regular, GraphicsUnit.Pixel)
+        _HisSollwertDeltaStyle.Font = New Drawing.Font(FontArial, System.Drawing.FontStyle.Italic + System.Drawing.FontStyle.Bold)
+        _ProdStufeDeltaStyle.Font = New Drawing.Font(FontArial, System.Drawing.FontStyle.Bold)
 
         'Rezeptnummer und Rezept-Variante merken
         _RzNummer = RzNummer
@@ -509,6 +512,11 @@ Public Class wb_Rezept_Rezeptur
 
         'aktuell ausgewählten Rezeptschritt merken (Popup)
         _RezeptSchritt = DirectCast(e.Row.Item, wb_Rezeptschritt)
+
+        If _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Then
+            VirtualTree_SetFontStyle(e.CellData.EvenStyle, _ProdStufeDeltaStyle)
+            VirtualTree_SetFontStyle(e.CellData.OddStyle, _ProdStufeDeltaStyle)
+        End If
 
         'Edit Bezeichnungs-Text
         If e.Column.Name = "ColBezeichnung" And wb_Functions.TypeIstText(_RezeptSchritt.Type) Then

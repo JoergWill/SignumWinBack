@@ -1424,10 +1424,13 @@ Public Class wb_Komponente
     ''' (Kleiner oder gleich Null) dann wird versucht, anhand der Artikel-Nummer den Datensatz zu finden.
     ''' 
     ''' Gibt True zurück, wenn der Datensatz gefunden wurde.
+    ''' Wenn das Read-Kommando von der OrgaBack-Artikelverwaltung kommt wird die interne KoNr bei Automatik-Komponenten ignoriert (Silo-Zuordnung!)
+    ''' damit Alternativ-Silos in WinBack verwaltet werden können.
+    ''' 
     ''' TODO Was ist zu tun, wenn mehr als ein Datensatz gefunden wurde
     ''' TODO Die interne Nummer an OrgaBack zurückschreiben
     ''' </summary>
-    Public Function MySQLdbRead(InterneKomponentenNummer As Integer, Optional KomponentenNummer As String = "") As Boolean
+    Public Function MySQLdbRead(InterneKomponentenNummer As Integer, Optional KomponentenNummer As String = "", Optional OrgaBackRead As Boolean = False) As Boolean
         'Alle (eventuell noch) bestehenden Daten löschen
         Me.Invalid()
 
@@ -1446,34 +1449,41 @@ Public Class wb_Komponente
         If winback.sqlSelect(sql) Then
             If winback.Read Then
                 MySQLdbRead(winback.MySqlRead)
-                winback.CloseRead()
+
+                'Sonderfall Automatik-Komponente - INTERNE KOMPONENTEN-NR IGNORIEREN
+                If OrgaBackRead And KO_Type = KomponTypen.KO_TYPE_AUTOKOMPONENTE And (InterneKomponentenNummer > 0) Then
+                    winback.Close()
+                    'Suche nach alphanumerischer Nummer
+                    Return MySQLdbRead(0, KomponentenNummer)
+                End If
 
                 'weitere Parameter einlesen - Tabelle KomponParams(Parameter Produktion)
+                winback.CloseRead()
                 sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKomponParamsXXX, Nr)
                 If winback.sqlSelect(sql) Then
-                    If winback.Read Then
-                        MySQLdbRead(winback.MySqlRead)
+                        If winback.Read Then
+                            MySQLdbRead(winback.MySqlRead)
+                        End If
                     End If
-                End If
-                winback.CloseRead()
+                    winback.CloseRead()
 
-                'weitere Parameter einlesen - Tabelle RohParams(erweiterte Parameter/Nährwerte)
-                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohParamsXXX, Nr)
-                If winback.sqlSelect(sql) Then
-                    If winback.Read Then
-                        MySQLdbRead(winback.MySqlRead)
+                    'weitere Parameter einlesen - Tabelle RohParams(erweiterte Parameter/Nährwerte)
+                    sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohParamsXXX, Nr)
+                    If winback.sqlSelect(sql) Then
+                        If winback.Read Then
+                            MySQLdbRead(winback.MySqlRead)
+                        End If
                     End If
-                End If
-                winback.Close()
-                Return True
+                    winback.Close()
+                    Return True
 
-            Else
-                'Sonderfall - Es wurde eine interne Komponenten-Nummer angegeben die nicht gefunden wurde
-                'Rohstoff/Artikel wurde gelöscht (in WinBack)
-                If (InterneKomponentenNummer > 0) And (KomponentenNummer <> "") Then
+                Else
+                    'Sonderfall - Es wurde eine interne Komponenten-Nummer angegeben die nicht gefunden wurde
+                    'Rohstoff/Artikel wurde gelöscht (in WinBack)
+                    If (InterneKomponentenNummer > 0) And (KomponentenNummer <> "") Then
                     'bestehende Verbindung schliessen
                     winback.Close()
-                    'Suche nach alphanumrischer Nummer
+                    'Suche nach alphanumerischer Nummer
                     Return MySQLdbRead(0, KomponentenNummer)
                 End If
             End If

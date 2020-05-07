@@ -3,14 +3,20 @@
 
     Friend Overrides Function DBRead() As Boolean
         Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim Gruppe As Object
         _Data.Clear()
 
         If orgaback.sqlSelect(wb_Sql_Selects.mssqlMitarbeiterMFF500) Then
             While orgaback.Read
                 _Item = New wb_SyncItem
-                _Item.Os_Nummer = orgaback.iField("KassiererNummer")
+                _Item.Os_Nummer = orgaback.sField("PersonalNr")
                 _Item.Os_Bezeichnung = orgaback.sField("Vorname") & " " & orgaback.sField("Nachname")
-                _Item.Os_Gruppe = FormatNumber(orgaback.sField("Inhalt"), 0, 0,, 0)
+                Gruppe = orgaback.sField("Inhalt")
+                If Gruppe IsNot Nothing Then
+                    If Gruppe <> "" Then
+                        _Item.Os_Gruppe = FormatNumber(Gruppe, 0, 0,, 0)
+                    End If
+                End If
                 _Item.SyncOK = wb_Global.SyncState.NOK
                 _Item.Sort = _Item.Os_Nummer
 
@@ -33,7 +39,7 @@
             If orgaback.sqlSelect(wb_Sql_Selects.mssqlMitarbeiter) Then
                 While orgaback.Read
                     _Item = New wb_SyncItem
-                    _Item.Os_Nummer = orgaback.iField("KassiererNummer")
+                    _Item.Os_Nummer = orgaback.iField("PersonalNr")
                     _Item.Os_Bezeichnung = orgaback.sField("Vorname") & " " & orgaback.sField("Nachname")
                     _Item.Os_Gruppe = "" 'in dieser Abfrage ist die Zuordnung Mitarbeiter zu WinBack-Gruppe nicht enthalten (MFF500)
                     _Item.SyncOK = wb_Global.SyncState.NOK
@@ -81,7 +87,7 @@
         Throw New NotImplementedException()
     End Function
 
-    Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean
+    Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String, Text As String) As Boolean
         Throw New NotImplementedException()
     End Function
 

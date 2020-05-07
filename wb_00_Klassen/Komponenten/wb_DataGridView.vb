@@ -49,6 +49,7 @@ Public Class wb_DataGridView
     Dim iSort As Integer = -1
 
     Dim mContextMenu As New ContextMenuStrip
+    Private bContextMenuInitialized As Boolean = False
     Dim mMenuItem As ToolStripMenuItem
     Dim WithEvents tDataHasChanged As New Timer
 
@@ -134,39 +135,44 @@ Public Class wb_DataGridView
                     Columns(i).HeaderText = ColNames(i) + Chr(10)
                 End If
             Else
-                    Columns(i).HeaderText = ""
+                Columns(i).HeaderText = ""
                 Columns(i).Visible = False
             End If
         Next
 
-        'Spaltenbreiten aus ini-Datei laden
-        LoadFromDisk(sGridName)
 
-        'Popup-Menu - Spalten ein-/ausblenden
-        Dim evH As New EventHandler(AddressOf mContextMenu_Click)
-        mContextMenu.Items.Add("Spalten ein-/ausblenden")
-        mContextMenu.Items.Add(New ToolStripSeparator)
+        If Not bContextMenuInitialized Then
+            'Spaltenbreiten aus ini-Datei laden
+            LoadFromDisk(sGridName)
+            'Flag initialisiert
+            bContextMenuInitialized = True
 
-        For i = 0 To ColNames.Count - 1
-            If i < ColumnCount Then
-                'Spalten ohne Bezeichnung werden ausgeblendet
-                If Columns(i).HeaderText IsNot "" Then
-                    mMenuItem = New ToolStripMenuItem("", Nothing, evH)
-                    mMenuItem.Text = Columns(i).HeaderText.Remove(Columns(i).HeaderText.Length - 1, 1)
-                    mMenuItem.Tag = i
-                    'Menu-Item ist Check
-                    mMenuItem.Checked = True
-                    'sichtbare Spalten markieren
-                    If Columns(i).Visible Then
-                        mMenuItem.CheckState = CheckState.Checked
-                    Else
-                        mMenuItem.CheckState = CheckState.Unchecked
+            'Popup-Menu - Spalten ein-/ausblenden
+            Dim evH As New EventHandler(AddressOf mContextMenu_Click)
+            mContextMenu.Items.Add("Spalten ein-/ausblenden")
+            mContextMenu.Items.Add(New ToolStripSeparator)
+
+            For i = 0 To ColNames.Count - 1
+                If i < ColumnCount Then
+                    'Spalten ohne Bezeichnung werden ausgeblendet
+                    If Columns(i).HeaderText IsNot "" Then
+                        mMenuItem = New ToolStripMenuItem("", Nothing, evH)
+                        mMenuItem.Text = Columns(i).HeaderText.Remove(Columns(i).HeaderText.Length - 1, 1)
+                        mMenuItem.Tag = i
+                        'Menu-Item ist Check
+                        mMenuItem.Checked = True
+                        'sichtbare Spalten markieren
+                        If Columns(i).Visible Then
+                            mMenuItem.CheckState = CheckState.Checked
+                        Else
+                            mMenuItem.CheckState = CheckState.Unchecked
+                        End If
+                        mMenuItem.CheckOnClick = True
+                        mContextMenu.Items.Add(TryCast(mMenuItem, ToolStripMenuItem))
                     End If
-                    mMenuItem.CheckOnClick = True
-                    mContextMenu.Items.Add(TryCast(mMenuItem, ToolStripMenuItem))
                 End If
-            End If
-        Next
+            Next
+        End If
 
         'Design
         Dim DataGridViewCellStyle As DataGridViewCellStyle = New DataGridViewCellStyle()

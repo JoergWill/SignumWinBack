@@ -5,11 +5,11 @@
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         _Data.Clear()
 
-        If winback.sqlSelect(wb_Sql_Selects.sqlUserGrpTxt) Then
+        If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserGrpTxt, wb_Language.GetLanguageNr())) Then
             While winback.Read
                 _Item = New wb_SyncItem
                 _Item.Wb_Nummer = winback.iField("II_ItemID")
-                _Item.Wb_Bezeichnung = wb_Language.TextFilter(winback.sField("II_Kommentar"))
+                _Item.Wb_Bezeichnung = wb_Language.TextFilter(winback.sField("T_Text"))
                 _Item.SyncOK = wb_Global.SyncState.NOK
                 _Item.Sort = _Item.Wb_Nummer
                 _Data.Add(_Item)
@@ -31,7 +31,7 @@
         Throw New NotImplementedException()
     End Function
 
-    Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean
+    Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String, Text As String) As Boolean
         Throw New NotImplementedException()
     End Function
 

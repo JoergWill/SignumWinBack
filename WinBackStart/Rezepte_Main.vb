@@ -120,9 +120,16 @@ Public Class Rezepte_Main
 
     Public Sub RezeptNeuAnlegen()
         Dim Rezept As New wb_Rezept
-        Dim RezeptNrNeu As Integer = Rezept.MySQLdbNew(1)
+        Dim RezeptNrNeu As Integer = Rezept.MySQLdbNew(wb_Global.LinienGruppeStandard)
         RezeptListe.RefreshData(RezeptNrNeu)
         Rezept = Nothing
+
+        'Das neu erzeugte Rezept gleich öffnen
+        Me.Cursor = Cursors.WaitCursor
+        'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen
+        Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNrNeu, wb_Global.RezeptVarianteStandard)
+        Rezeptur.Show()
+        Me.Cursor = Cursors.Default
     End Sub
 
 End Class

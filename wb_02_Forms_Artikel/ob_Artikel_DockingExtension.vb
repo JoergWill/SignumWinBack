@@ -458,7 +458,7 @@ Public Class ob_Artikel_DockingExtension
             Dim KType As wb_Global.KomponTypen = wb_Functions.obKtypeToKType(obKType)
 
             'Artikel/Komponente aus WinBack-Db einlesen
-            If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer) Then
+            If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer, True) Then
                 Debug.Print("DockingExtension-GetKomponentenDaten Komponente in WinBack nicht vorhanden " & Komponente.Bezeichnung)
                 'Datensatz ist in Winback nicht vorhanden - Komponententype (Artikel/Handkomponente) ermitteln
                 Komponente.MySQLdbNew(KType)
@@ -511,7 +511,7 @@ Public Class ob_Artikel_DockingExtension
                 oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
                 If oMFF IsNot Nothing Then
                     ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
-                    Return oMFF.PropertyValueCollection(3).Value
+                    Return oMFF.PropertyValueCollection(wb_Global.MFF_Value).Value
                 End If
             Else
                 Return ""
@@ -565,11 +565,17 @@ Public Class ob_Artikel_DockingExtension
         Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
 
         'Update aller in WinBack geänderten Daten
-        MFFValue(oFil, wb_Global.MFF_KO_Nr) = Komponente.Nr
         MFFValue(oFil, wb_Global.MFF_RezeptNummer) = Komponente.RezeptNummer
         MFFValue(oFil, wb_Global.MFF_RezeptName) = Komponente.RezeptName
         MFFValue(oFil, wb_Global.MFF_MehlZusammensetzung) = Komponente.Mehlzusammensetzung
         MFFValue(oFil, wb_Global.MFF_ProduktionsLinie) = Komponente.sArtikeLinienGruppe
+
+        'Für Automatik-Komponenten wird in OrgaBack KEINE interne Komponenten-Nummer gespeichert (freie Silo-Zuordnung)
+        If Komponente.Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Then
+            MFFValue(oFil, wb_Global.MFF_KO_Nr) = ""
+        Else
+            MFFValue(oFil, wb_Global.MFF_KO_Nr) = Komponente.Nr
+        End If
     End Sub
 
     ''' <summary>

@@ -795,10 +795,25 @@ Stacktrace:
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_ArrayGridViewUserGruppen.FillGrid">
+ <summary>
+ Grid User-Gruppe-Rechte füllen. Die einzelnen Zeilen werden aus Gruppe 99 erzeugt. 
+ Gruppe99 ist die letzte UserGruppe !
+ Wichtig: In Gruppe 99 (alle Rechte) müssen alle notwendigen Datensätze richtig eingetragen sein.
+ </summary>
+</member>
 <member name="M:WinBack.wb_ArrayGridViewUserGruppen.UserGruppen_CellClick(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
  <summary>
  Flag setzen/rücksetzen.
  Wenn die Zeile schon markiert war, wird das Flag getoggelt.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_ArrayGridViewUserGruppen.wb_User_Gruppen_ColumnHeaderDoubleClick(System.Object,System.Windows.Forms.DataGridViewCellMouseEventArgs)">
+ <summary>
+ Gruppen-Bezeichnung editieren.
+ Die Texte zur User-Gruppe stehen in der Tabelle Texte T_Typ=500
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -2275,6 +2290,16 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  und die Textfelder (Bilanzmenge, Gebindegröße...)
  </summary>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Tauschen.TauscheRohstoffeImRezept(System.Int32,System.Int32,WinBack.wb_Sql)">
+ <summary>
+ Ersetzt in allen Rezepten die angegebene alte gegen die neue Rohstoff-Nummer.
+ Wird als neue Rohstoff-Nummer -1 übergeben (Tausch), wird zuerst geprüft ob diese Nummer schon in Rezepturen exisiert.
+ 
+ Gibt die Anzahl der ersetzen Rezept-Zeilen zurück.
+ </summary>
+ <param name="NrAlt"></param>
+ <param name="NrNeu"></param>
+</member>
 <member name="M:WinBack.wb_User_GruppenRechte.wb_User_GruppenRechte_Load(System.Object,System.EventArgs)">
  <summary>
  Grid der Gruppen-Rechte laden und anzeigen.
@@ -3217,12 +3242,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="KType">KomponTypen - Komponenten-Type der anzulegenden Komponente</param>
  <returns>Integer - neu anglegte (interne) Komponenten-Nummer</returns>
 </member>
-<member name="M:WinBack.wb_Komponente.MySQLdbRead(System.Int32,System.String)">
+<member name="M:WinBack.wb_Komponente.MySQLdbRead(System.Int32,System.String,System.Boolean)">
  <summary>
  Liest alle Datenfelder zu der angegebenen Komponenten-Nummer aus der WinBack-Datenbank. Wenn die interne Komponenten-Nummer nicht angegeben ist
  (Kleiner oder gleich Null) dann wird versucht, anhand der Artikel-Nummer den Datensatz zu finden.
  
  Gibt True zurück, wenn der Datensatz gefunden wurde.
+ Wenn das Read-Kommando von der OrgaBack-Artikelverwaltung kommt wird die interne KoNr bei Automatik-Komponenten ignoriert (Silo-Zuordnung!)
+ damit Alternativ-Silos in WinBack verwaltet werden können.
+ 
  TODO Was ist zu tun, wenn mehr als ein Datensatz gefunden wurde
  TODO Die interne Nummer an OrgaBack zurückschreiben
  </summary>
@@ -6763,6 +6791,20 @@ Text aus Datenbank lesen - Übersetzung
  Achtung: Das Hinzufügen darf nur beim ersten Mal passieren, die Context-Tabs werden gecached!
  </summary>
 </member>
+<member name="M:WinBack.ob_User_DockingExtension.ShowUserForm(System.Object,System.EventArgs)">
+ <summary>
+ WinBack-Mitarbeiter-Hauptmenu in separatem Fenster anzeigen.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.ob_User_DockingExtension.ShowUserGroup(System.Object,System.EventArgs)">
+ <summary>
+ WinBack-Fenster Gruppen-Rechte in separatem Fenster anzeigen.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.ob_User_DockingExtension.ProvideInstance(System.String)">
  <summary>
  Liefert zu einem FormKey eine Instanz des UserControls (Mitarbeiter) zurück
@@ -6801,6 +6843,13 @@ Text aus Datenbank lesen - Übersetzung
 <member name="P:WinBack.wb_User.PersonalNr">
  <summary>
  Mitarbeiter-Personalnummer. String max 250 Zeichen
+ Tabelle winback.ItemParameter.IP_Wert2Int
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_User.RFID">
+ <summary>
+ Mitarbeiter-RFID/NFS. String max 250 Zeichen
  Tabelle winback.ItemParameter.IP_Wert5Str
  </summary>
  <returns></returns>
@@ -6848,13 +6897,14 @@ Text aus Datenbank lesen - Übersetzung
  True - Einfügen war erfolgreich
  False - Fehler beim Einfügen</returns>
 </member>
-<member name="M:WinBack.wb_User.AddNew(System.String,System.String,System.String)">
+<member name="M:WinBack.wb_User.AddNew(System.String,System.String,System.String,System.String)">
  <summary>
  Neuen Mitarbeiter anlegen.
  Die Mitarbeiter-Nummer ist Unique-Key. Wenn die Mitarbeiter-Nummer schon vorhanden ist, wird
  False zurückgeliefert.
  </summary>
  <param name="Name"> String Mitarbeiter-Name</param>
+ <param name="PersonalNr"> String Mitarbeiter-PersonalNr numerisch max. 10 Stellen</param>
  <param name="Passwort"> String Mitarbeiter-Passwort numerisch max. 10 Stellen</param>
  <param name="Gruppe">String - User-Gruppe (1..9, 99)</param>
  <returns>
@@ -6865,25 +6915,34 @@ Text aus Datenbank lesen - Übersetzung
 <member name="M:WinBack.wb_User.Update(System.String,System.String,System.String,System.String)">
  <summary>
  Mitarbeiterdaten ändern.
- Die Mitarbeiter-Nummer ist Unique-Key. Wenn die Mitarbeiter-Nummer nicht vorhanden ist, wird
- False zurückgeliefert.
  </summary>
  <param name="Name"> String Mitarbeiter-Name</param>
- <param name="OldPasswort"> String Mitarbeiter-Passwort (alt) numerisch max. 10 Stellen</param>
- <param name="NewPasswort"> String Mitarbeiter-Passwort (neu) numerisch max. 10 Stellen</param>
+ <param name="OldPersonalNr"> String Mitarbeiter-PersonalNr (alt) numerisch max. 10 Stellen</param>
+ <param name="NewPersonalNr"> String Mitarbeiter-PersonalNr (neu) numerisch max. 10 Stellen</param>
  <param name="Gruppe">String - User-Gruppe (1..9, 99)</param>
  <returns>
  True - Ändernn war erfolgreich
  False - Fehler beim Ändernn
  </returns>
 </member>
-<member name="M:WinBack.wb_User.Delete(System.String)">
+<member name="M:WinBack.wb_User.Update(System.String,System.String,System.String)">
+ <summary>
+ Mitarbeiter-PersonalNr ändern. Wenn keine alte Personal-Nr angegeben ist, wird nach dem Namen gesucht.(Sync)
+ </summary>
+ <param name="Name"> String Mitarbeiter-Name</param>
+ <param name="OldPersonalNr"> String Mitarbeiter-PersonalNr (alt) numerisch max. 10 Stellen</param>
+ <param name="NewPersonalNr"> String Mitarbeiter-PersonalNr (neu) numerisch max. 10 Stellen</param>
+ <returns>
+ True - Ändernn war erfolgreich
+ False - Fehler beim Ändernn
+ </returns>
+</member>
+<member name="M:WinBack.wb_User.Delete(System.String,System.String)">
  <summary>
  Eintrag Mitarbeiter löschen. Das Löschen der Mitarbeiter ist in WinBack unkritisch,
  da in allen Verweisen auch der Name im Klartext mitgespeichert wird.
- In Verbindung mit OrgaBack ist ein Löschen der Datensätze nicht vorgesehen.
  </summary>
- <param name="Passwort"> String Mitarbeiter-Passwort numerisch max. 10 Stellen</param>
+ <param name="PersonalNr"> String Mitarbeiter-Passwort numerisch max. 10 Stellen</param>
 </member>
 <member name="M:WinBack.wb_User.Exist(System.String)">
  <summary>
@@ -6894,6 +6953,16 @@ Text aus Datenbank lesen - Übersetzung
  True - Passwort ist schon vergeben
  False - Passwort ist nicht verwendet
  </returns>
+</member>
+<member name="P:WinBack.wb_User_Gruppe.iGruppe">
+ <summary>
+ Aktuell angezeigte/bearbeitet User-Gruppe
+ Wird die Gruppen-Nummer geschrieben und ist der Wert gleich der aktuellen Gruppe, wird die
+ Gruppen-Nummer auf ungültig gesetzt.
+ 
+ Der nächste LoadData-Befehl läde dann die aktualisierten Werte aus der Datenbank
+ </summary>
+ <returns></returns>
 </member>
 <member name="T:WinBack.wb_sql_Functions">
  <summary>
@@ -7058,10 +7127,12 @@ Text aus Datenbank lesen - Übersetzung
  Nährwerte
  </summary>
 </member>
-<member name="F:WinBack.wb_Global.MFF_Version">
+<member name="F:WinBack.wb_Global.MFF_Value">
  <summary>
- Konstanten für MultifunktionsFelder Artikel
+ Konstanten für MultifunktionsFelder Artikel/User
  </summary>
+</member>
+<member name="F:WinBack.wb_Global.MFF_ProduktionsLinie">
 not USED:
 
 Public Const MFF_Haltbarkeit = 102
@@ -7322,6 +7393,17 @@ Public Const MFF_Wissenswertes = 213
  Die DockPanel-Konfiguration wird gespeichert unter wbXXXXYYYY.xml, dabei ist XXXX der FormName und YYYY der Layout-Name.
  </summary>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_User_Main.FormClosing(System.Int16)">
+ <summary>
+ Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+ </summary>
+ <param name="Reason"></param>
+ <returns>
+ False, wenn das Fenster geschlossen werden darf
+ True, wenn das Fenster geöffnet bleiben muss
+ </returns>
+ <remarks></remarks>
 </member>
 <member name="T:WinBack.wb_DataGridView">
  <summary>

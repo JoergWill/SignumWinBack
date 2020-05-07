@@ -6,7 +6,7 @@ Partial Class wb_Rohstoffe_Verwendung
     'Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -23,7 +23,7 @@ Partial Class wb_Rohstoffe_Verwendung
     'Hinweis: Die folgende Prozedur ist für den Windows Form-Designer erforderlich.
     'Das Bearbeiten ist mit dem Windows Form-Designer möglich.  
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -31,7 +31,7 @@ Partial Class wb_Rohstoffe_Verwendung
         CType(Me.VerwDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'HisDataGridView
+        'VerwDataGridView
         '
         Me.VerwDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -53,10 +53,11 @@ Partial Class wb_Rohstoffe_Verwendung
         Me.VerwDataGridView.DefaultCellStyle = DataGridViewCellStyle2
         Me.VerwDataGridView.Dock = System.Windows.Forms.DockStyle.Fill
         Me.VerwDataGridView.Location = New System.Drawing.Point(0, 0)
-        Me.VerwDataGridView.Name = "HisDataGridView"
+        Me.VerwDataGridView.Name = "VerwDataGridView"
         Me.VerwDataGridView.ReadOnly = True
         Me.VerwDataGridView.ShowCellErrors = False
         Me.VerwDataGridView.Size = New System.Drawing.Size(528, 398)
+        Me.VerwDataGridView.SortCol = -1
         Me.VerwDataGridView.TabIndex = 3
         Me.VerwDataGridView.x8859_5_FieldName = ""
         '

@@ -1,12 +1,45 @@
 ﻿Public Class wb_User_Gruppe
     Private _Rechte As New ArrayList
-    Private _iGruppe As Integer = 0
+    Private _iGruppe As Integer = wb_Global.UNDEFINED
     Private _GruppenBezeichnung As String = ""
+    Private _ErrorText As String = ""
+    Private _UpdateDatabaseFile As String = ""
+
+    Public ReadOnly Property ErrorText As String
+        Get
+            Return _ErrorText
+        End Get
+    End Property
+
+    Public ReadOnly Property UpdateDatabaseFile As String
+        Get
+            Return _UpdateDatabaseFile
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Aktuell angezeigte/bearbeitet User-Gruppe
+    ''' Wird die Gruppen-Nummer geschrieben und ist der Wert gleich der aktuellen Gruppe, wird die
+    ''' Gruppen-Nummer auf ungültig gesetzt.
+    ''' 
+    ''' Der nächste LoadData-Befehl läde dann die aktualisierten Werte aus der Datenbank
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property iGruppe As Integer
+        Get
+            Return _iGruppe
+        End Get
+        Set(value As Integer)
+            If value = _iGruppe Then
+                _iGruppe = wb_Global.UNDEFINED
+            End If
+        End Set
+    End Property
 
     Public Sub LoadData(ByVal Gruppe As Integer)
 
-        'Prüfen ob die Daten neu geladen werden müssen (Gruppe hat sich geändert)
-        If Gruppe <> _iGruppe Then
+        'Prüfen ob die Daten neu geladen werden müssen (Gruppe/Parameter der Gruppe haben sich geändert)
+        If (Gruppe <> _iGruppe) Then
             'Laden der Daten aus winback.ItemTypen winback.ItemIDs
             Dim GruppenRechte As wb_Global.wb_GruppenRechte
             _Rechte.Clear()
@@ -19,6 +52,7 @@
                     'Rechtegruppe Bezeichnung
                     GruppenRechte.OberBegriff = winback.sField("IT_Bezeichnung")
                     GruppenRechte.Bezeichnung = wb_Language.TextFilter(winback.sField("II_Kommentar"))
+                    'Debug.Print("GruppenBezeichnung " & GruppenRechte.Bezeichnung)
 
                     'Eingabe-Typ
                     GruppenRechte.iAttrGrp = winback.iField("AT_Attr_Nr")
@@ -46,7 +80,6 @@
 
     Public ReadOnly Property GrpTyp As Integer
 
-
     Public ReadOnly Property Gruppe As Integer
         Get
             Return _iGruppe
@@ -62,7 +95,7 @@
         End Set
     End Property
 
-    Public ReadOnly Property count As Integer
+    Public ReadOnly Property Count As Integer
         Get
             Return _Rechte.Count
         End Get
@@ -70,7 +103,7 @@
 
     Public ReadOnly Property OberBegriff(Index As Integer) As String
         Get
-            If Index >= 0 And Index < count Then
+            If Index >= 0 And Index < Count Then
                 Return _Rechte(Index).Oberbegriff
             Else
                 Return ""
@@ -80,7 +113,7 @@
 
     Public ReadOnly Property Bezeichnung(Index As Integer) As String
         Get
-            If Index >= 0 And Index < count Then
+            If Index >= 0 And Index < Count Then
                 Return _Rechte(Index).Bezeichnung
             Else
                 Return ""
@@ -90,7 +123,7 @@
 
     Public ReadOnly Property sAtttribut(Index As Integer) As String
         Get
-            If Index >= 0 And Index < count Then
+            If Index >= 0 And Index < Count Then
                 Return _Rechte(Index).sAtttribut
             Else
                 Return ""
@@ -119,5 +152,22 @@
             Return wb_Global.UNDEFINED
         End Get
     End Property
+
+    Public Function CheckDB_Grp99() As Boolean
+        'User-Gruppe 99 (alle Rechte) einlesen
+        LoadData(wb_Global.AdminUserGrpe)
+
+        If Not Count >= 44 Then
+            'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)
+            _UpdateDatabaseFile = "2.30_UserAlleRechte.sql"
+            _ErrorText = "Fehler in Tabelle ItemParameter - Usergruppen-Rechte(99) - Datensätze fehlen !"
+            Trace.WriteLine(_ErrorText)
+            Return False
+        End If
+
+        'Kein Fehler 
+        _ErrorText = ""
+        Return True
+    End Function
 
 End Class

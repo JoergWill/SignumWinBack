@@ -13,7 +13,7 @@ Public Class wb_User_Liste
         Next
 
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
-        LoadGrpTexte()
+        'LoadGrpTexte()
         'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
         DataGridView.x8859_5_FieldName = "IP_Wert4str"
         'DataGrid füllen

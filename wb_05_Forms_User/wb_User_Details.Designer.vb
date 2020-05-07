@@ -27,13 +27,13 @@ Partial Class wb_User_Details
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_User_Details))
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Panel = New System.Windows.Forms.Panel()
-        Me.cbUserGrp = New WinBack.wb_ComboBox()
+        Me.lblName = New System.Windows.Forms.Label()
+        Me.tPersonalNr = New System.Windows.Forms.TextBox()
         Me.tUserPass = New System.Windows.Forms.TextBox()
         Me.tUserName = New System.Windows.Forms.TextBox()
-        Me.tPersonalNr = New System.Windows.Forms.TextBox()
-        Me.Panel.SuspendLayout()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.cbUserGrp = New WinBack.wb_ComboBox()
         Me.SuspendLayout()
         '
         'Label2
@@ -41,63 +41,69 @@ Partial Class wb_User_Details
         resources.ApplyResources(Me.Label2, "Label2")
         Me.Label2.Name = "Label2"
         '
-        'Label1
+        'lblName
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.lblName, "lblName")
+        Me.lblName.Name = "lblName"
         '
-        'Panel
+        'tPersonalNr
         '
-        resources.ApplyResources(Me.Panel, "Panel")
-        Me.Panel.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
-        Me.Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel.Controls.Add(Me.tPersonalNr)
-        Me.Panel.Controls.Add(Me.cbUserGrp)
-        Me.Panel.Controls.Add(Me.tUserPass)
-        Me.Panel.Controls.Add(Me.tUserName)
-        Me.Panel.Controls.Add(Me.Label2)
-        Me.Panel.Controls.Add(Me.Label1)
-        Me.Panel.ForeColor = System.Drawing.Color.Black
-        Me.Panel.Name = "Panel"
-        '
-        'cbUserGrp
-        '
-        resources.ApplyResources(Me.cbUserGrp, "cbUserGrp")
-        Me.cbUserGrp.FormattingEnabled = True
-        Me.cbUserGrp.Name = "cbUserGrp"
+        resources.ApplyResources(Me.tPersonalNr, "tPersonalNr")
+        Me.tPersonalNr.Name = "tPersonalNr"
+        Me.tPersonalNr.ReadOnly = True
         '
         'tUserPass
         '
         resources.ApplyResources(Me.tUserPass, "tUserPass")
         Me.tUserPass.Name = "tUserPass"
+        Me.tUserPass.ReadOnly = True
         '
         'tUserName
         '
         resources.ApplyResources(Me.tUserName, "tUserName")
         Me.tUserName.Name = "tUserName"
         '
-        'tbPersonalNr
+        'Label3
         '
-        resources.ApplyResources(Me.tPersonalNr, "tbPersonalNr")
-        Me.tPersonalNr.Name = "tbPersonalNr"
+        resources.ApplyResources(Me.Label3, "Label3")
+        Me.Label3.Name = "Label3"
+        '
+        'Label4
+        '
+        resources.ApplyResources(Me.Label4, "Label4")
+        Me.Label4.Name = "Label4"
+        '
+        'cbUserGrp
+        '
+        Me.cbUserGrp.FormattingEnabled = True
+        resources.ApplyResources(Me.cbUserGrp, "cbUserGrp")
+        Me.cbUserGrp.Name = "cbUserGrp"
+        Me.cbUserGrp.TabStop = False
         '
         'wb_User_Details
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.Panel)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.tPersonalNr)
+        Me.Controls.Add(Me.cbUserGrp)
+        Me.Controls.Add(Me.tUserPass)
+        Me.Controls.Add(Me.lblName)
+        Me.Controls.Add(Me.tUserName)
+        Me.Controls.Add(Me.Label2)
         Me.Name = "wb_User_Details"
-        Me.Panel.ResumeLayout(False)
-        Me.Panel.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents Panel As Windows.Forms.Panel
+    Friend WithEvents lblName As Windows.Forms.Label
     Friend WithEvents tUserName As Windows.Forms.TextBox
     Friend WithEvents tUserPass As Windows.Forms.TextBox
     Friend WithEvents cbUserGrp As wb_ComboBox
     Friend WithEvents tPersonalNr As Windows.Forms.TextBox
+    Friend WithEvents Label3 As Windows.Forms.Label
+    Friend WithEvents Label4 As Windows.Forms.Label
 End Class

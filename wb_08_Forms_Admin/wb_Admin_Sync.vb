@@ -63,7 +63,7 @@ Public Class wb_Admin_Sync
     Private Sub btnSyncUser_Click(sender As Object, e As EventArgs) Handles btnSyncUser.Click
         'Liste der Tabellen-Überschriften
         sColNames.Clear()
-        sColNames.AddRange({"", "Login", "&WinBack-Benutzer", "Grp", "Kassierer-Nr", "&OrgaBack-Benutzer", "Grp", "Status"})
+        sColNames.AddRange({"", "Personal-Nr", "&WinBack-Benutzer", "Grp", "Personal-Nr", "&OrgaBack-Benutzer", "Grp", "Status"})
 
         Text = "Synchronisation Datenbank - Mitarbeiter"
         SyncType = wb_Global.SyncType.Benutzer
@@ -180,9 +180,11 @@ Public Class wb_Admin_Sync
                 Case wb_Global.SyncState.WinBackUpdate
                     wb.DBUpdate(x.Os_Nummer, x.Os_Bezeichnung, x.Os_Gruppe)
                 Case wb_Global.SyncState.TryMatchWinBackUpdate
-                    wb.DBNumber(x.Wb_Nummer, x.Os_Nummer, x.Os_Gruppe)
+                    wb.DBNumber(x.Wb_Nummer, x.Os_Nummer, x.Os_Gruppe, x.Wb_Bezeichnung)
                 Case wb_Global.SyncState.TryMatchDel
                     wb.DBDelete(x.Wb_Index)
+                Case wb_Global.SyncState.OrgaBackUpdate
+                    os.DBUpdate(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
             End Select
         Next
 
@@ -195,7 +197,7 @@ Public Class wb_Admin_Sync
                     Case wb_Global.SyncState.OrgaBackUpdate
                         os.DBUpdate(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
                     Case wb_Global.SyncState.TryMatchWinBackUpdate
-                        wb.DBNumber(x.Wb_Nummer, x.Os_Nummer, x.Os_Gruppe)
+                        wb.DBNumber(x.Wb_Nummer, x.Os_Nummer, x.Os_Gruppe, x.Wb_Bezeichnung)
                 End Select
             Next
         End If

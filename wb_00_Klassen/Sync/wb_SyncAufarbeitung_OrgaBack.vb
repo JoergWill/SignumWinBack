@@ -100,7 +100,7 @@
         orgaback.Close()
     End Function
 
-    Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean
+    Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String, Text As String) As Boolean
         Throw New NotImplementedException()
     End Function
 

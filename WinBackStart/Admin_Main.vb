@@ -13,6 +13,7 @@ Public Class Admin_Main
     Public AdminDatensicherung As New wb_Admin_Datensicherung     'Default-Fenster    (wird beim Öffnen immer angezeigt)
     Public AdminLog As wb_Admin_Log                               'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
     Public AdminEditIni As wb_Admin_EditIni                       'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
+    Public AdminCheckDataBase As wb_Admin_CheckDatabase           'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
     Public AdminUpdateDataBase As wb_Admin_UpdateDatabase         'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
     Public AdminUpdateWinBack As wb_Admin_UpdateWinBack           'Detail-Fenster     (wird bei Bedarf erzeugt und angezeigt)
 
@@ -39,6 +40,11 @@ Public Class Admin_Main
             Case "EDITKONFIG"
                 AdminEditIni = New wb_Admin_EditIni
                 AdminEditIni.Show(DockPanel)
+                Return True
+
+            Case "CHECKDATABASE"
+                AdminCheckDataBase = New wb_Admin_CheckDatabase
+                AdminCheckDataBase.Show(DockPanel)
                 Return True
             Case "CHECKDATABASEUPDATE"
                 AdminUpdateDataBase = New wb_Admin_UpdateDatabase
@@ -85,6 +91,11 @@ Public Class Admin_Main
                 AdminEditIni = New wb_Admin_EditIni
                 _DockPanelList.Add(AdminEditIni)
                 Return AdminEditIni
+
+            Case "WinBack.wb_Admin_UpdateDataBase"
+                AdminCheckDataBase = New wb_Admin_CheckDatabase
+                _DockPanelList.Add(AdminCheckDataBase)
+                Return AdminCheckDataBase
 
             Case "WinBack.wb_Admin_UpdateDataBase"
                 AdminUpdateDataBase = New wb_Admin_UpdateDatabase

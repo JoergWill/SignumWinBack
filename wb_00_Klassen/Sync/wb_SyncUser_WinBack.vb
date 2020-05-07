@@ -8,7 +8,7 @@
         If winback.sqlSelect(wb_Sql_Selects.sqlUsersListe) Then
             While winback.Read
                 _Item = New wb_SyncItem
-                _Item.Wb_Nummer = winback.iField("IP_Wert1int")
+                _Item.Wb_Nummer = winback.iField("IP_Wert2int")
                 _Item.Wb_Bezeichnung = wb_Language.TextFilter(winback.sField("IP_Wert4str"))
                 _Item.Wb_Gruppe = wb_Language.TextFilter(winback.sField("IP_ItemID"))
                 _Item.SyncOK = wb_Global.SyncState.NOK
@@ -31,11 +31,12 @@
 
     Friend Overrides Function DBInsert(Nr As String, Text As String, Gruppe As String) As Boolean
         Dim User As New wb_User
-        Return User.AddNew(Text, Nr, Gruppe)
+        Return User.AddNew(Text, Nr, Nr, Gruppe)
     End Function
 
-    Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean
-        Throw New NotImplementedException()
+    Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String, Text As String) As Boolean
+        Dim User As New wb_User
+        Return User.Update(Nr_Alt, Text, Nr_Neu)
     End Function
 
     Friend Overrides Function DBDelete(Index As Integer) As Boolean

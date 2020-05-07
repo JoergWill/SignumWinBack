@@ -7,16 +7,19 @@
     Public Shared User As New wb_User
     Public Shared Gruppe As New wb_User_Gruppe
 
+    Shared Sub New()
+        LoadGrpTexte()
+    End Sub
+
     Public Shared Sub LoadGrpTexte()
         'HashTable mit der Übersetzung der Gruppen-Nummer in die Gruppen-Bezeichnung laden
         'wenn die Gruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
-        'TODO Hier kommen die Texte mit der Übersetzung aus Texte rein !!!
-        winback.sqlSelect(wb_Sql_Selects.sqlUserGrpTxt)
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserGrpTxt, wb_Language.GetLanguageNr()))
         GrpTexte.Clear()
         While winback.Read
-            GrpTexte.Add(winback.iField("II_ItemId"), wb_Language.TextFilter(winback.sField("II_Kommentar")))
+            GrpTexte.Add(winback.iField("II_ItemId"), wb_Language.TextFilter(winback.sField("T_Text")))
         End While
         winback.Close()
     End Sub

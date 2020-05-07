@@ -127,7 +127,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 48</value>
+    <value>9, 50</value>
   </data>
   <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 13</value>
@@ -145,97 +145,64 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
-    <value>Panel</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="lblName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 22</value>
+  <data name="lblName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 5</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="lblName.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 13</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="lblName.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="lblName.Text" xml:space="preserve">
     <value>Benutzer Name:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;lblName.Name" xml:space="preserve">
+    <value>lblName</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblName.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>Panel</value>
+  <data name="&gt;&gt;lblName.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblName.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="Panel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="tPersonalNr.Location" type="System.Drawing.Point, System.Drawing">
+    <value>290, 67</value>
   </data>
-  <data name="tbPersonalNr.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="tbPersonalNr.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 45</value>
-  </data>
-  <data name="tbPersonalNr.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tPersonalNr.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 20</value>
   </data>
-  <data name="tbPersonalNr.TabIndex" type="System.Int32, mscorlib">
+  <data name="tPersonalNr.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;tbPersonalNr.Name" xml:space="preserve">
-    <value>tbPersonalNr</value>
+  <data name="&gt;&gt;tPersonalNr.Name" xml:space="preserve">
+    <value>tPersonalNr</value>
   </data>
-  <data name="&gt;&gt;tbPersonalNr.Type" xml:space="preserve">
+  <data name="&gt;&gt;tPersonalNr.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbPersonalNr.Parent" xml:space="preserve">
-    <value>Panel</value>
+  <data name="&gt;&gt;tPersonalNr.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="&gt;&gt;tbPersonalNr.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="cbUserGrp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="cbUserGrp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>105, 45</value>
-  </data>
-  <data name="cbUserGrp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>312, 21</value>
-  </data>
-  <data name="cbUserGrp.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;cbUserGrp.Name" xml:space="preserve">
-    <value>cbUserGrp</value>
-  </data>
-  <data name="&gt;&gt;cbUserGrp.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;cbUserGrp.Parent" xml:space="preserve">
-    <value>Panel</value>
-  </data>
-  <data name="&gt;&gt;cbUserGrp.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tUserPass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="&gt;&gt;tPersonalNr.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="tUserPass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>506, 19</value>
+    <value>290, 21</value>
   </data>
   <data name="tUserPass.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 20</value>
@@ -250,19 +217,16 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tUserPass.Parent" xml:space="preserve">
-    <value>Panel</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;tUserPass.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tUserName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>4</value>
   </data>
   <data name="tUserName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>105, 19</value>
+    <value>12, 21</value>
   </data>
   <data name="tUserName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>385, 20</value>
+    <value>272, 20</value>
   </data>
   <data name="tUserName.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -274,34 +238,91 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tUserName.Parent" xml:space="preserve">
-    <value>Panel</value>
-  </data>
-  <data name="&gt;&gt;tUserName.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="Panel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="Panel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
-  </data>
-  <data name="Panel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>617, 134</value>
-  </data>
-  <data name="Panel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;Panel.Name" xml:space="preserve">
-    <value>Panel</value>
-  </data>
-  <data name="&gt;&gt;Panel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Panel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tUserName.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>287, 5</value>
+  </data>
+  <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 13</value>
+  </data>
+  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="Label3.Text" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
+  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
+    <value>Label3</value>
+  </data>
+  <data name="&gt;&gt;Label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>287, 51</value>
+  </data>
+  <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 13</value>
+  </data>
+  <data name="Label4.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="Label4.Text" xml:space="preserve">
+    <value>Personal-Nummer</value>
+  </data>
+  <data name="&gt;&gt;Label4.Name" xml:space="preserve">
+    <value>Label4</value>
+  </data>
+  <data name="&gt;&gt;Label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label4.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Label4.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="cbUserGrp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 66</value>
+  </data>
+  <data name="cbUserGrp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>272, 21</value>
+  </data>
+  <data name="cbUserGrp.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;cbUserGrp.Name" xml:space="preserve">
+    <value>cbUserGrp</value>
+  </data>
+  <data name="&gt;&gt;cbUserGrp.Type" xml:space="preserve">
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;cbUserGrp.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cbUserGrp.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -310,7 +331,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>641, 158</value>
+    <value>533, 117</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>

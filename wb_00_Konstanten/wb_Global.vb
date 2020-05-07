@@ -16,6 +16,7 @@
 
     Public Const LinienGruppeSauerteig = 98           'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
     Public Const LinienGruppeStandard = 1             'Liniengruppe für neue Rezepte
+    Public Const RezeptVarianteStandard = 1           'Rezeptvariante für neue Rezepte
     Public Const MaxLinien = 99
     Public Const RS_Par1_QUID = "-1"                  'Komponente im Rezept ist QUID-Relevant (In RS_Par1)
 
@@ -447,8 +448,12 @@
 
 
     ''' <summary>
-    ''' Konstanten für MultifunktionsFelder Artikel
+    ''' Konstanten für MultifunktionsFelder Artikel/User
     ''' </summary>
+
+    Public Const MFF_Value = 3
+
+
     '''not USED:
     '''
     '''Public Const MFF_Haltbarkeit = 102
@@ -461,25 +466,15 @@
     '''Public Const MFF_Verzehrtipps = 212
     '''Public Const MFF_Wissenswertes = 213
     '''
-    Public Const MFF_Version = "geändert TELKO 14.08.2018"
-#Const MFFnew = True
-    'TODO Update Test-Databases
-    'MFF-Definition nach der Telko vom 14.08.2018
-#If MFFnew Then
     Public Const MFF_ProduktionsLinie = 200
     Public Const MFF_KO_Nr = 201
     Public Const MFF_MehlZusammensetzung = 155
     Public Const MFF_Kommentar = 156
     Public Const MFF_RezeptNummer = 202
     Public Const MFF_RezeptName = 203
-#Else
-    Public Const MFF_ProduktionsLinie = 107
-    Public Const MFF_KO_Nr = 226
-    Public Const MFF_MehlZusammensetzung = 210
-    Public Const MFF_Kommentar = 225
-    Public Const MFF_RezeptNummer = 228
-    Public Const MFF_RezeptName = 228
-#End If
+
+    Public Const MFF_USerGruppe = 500
+
 
     ''' <summary>
     ''' Konstanten für die Berechnung der Teigausbeute

@@ -171,6 +171,7 @@ Partial Class WinBack
         Me.BtnDelete = New System.Windows.Forms.Button()
         Me.BtnSaveAs = New System.Windows.Forms.Button()
         Me.BtnSave = New System.Windows.Forms.Button()
+        Me.rbCheckDataBase = New System.Windows.Forms.RibbonButton()
         Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -1071,6 +1072,7 @@ Partial Class WinBack
         Me.rbAdminAnsicht.Items.Add(Me.rbDatensicherung)
         Me.rbAdminAnsicht.Items.Add(Me.rbAdminWinBackIni)
         Me.rbAdminAnsicht.Items.Add(Me.rsAdmin)
+        Me.rbAdminAnsicht.Items.Add(Me.rbCheckDataBase)
         Me.rbAdminAnsicht.Items.Add(Me.rbAdminUpdate)
         Me.rbAdminAnsicht.Items.Add(Me.rbAdminWinBack)
         Me.rbAdminAnsicht.Name = "rbAdminAnsicht"
@@ -1582,6 +1584,15 @@ Partial Class WinBack
         Me.BtnSave.TabStop = False
         Me.BtnSave.UseVisualStyleBackColor = True
         '
+        'rbCheckDataBase
+        '
+        Me.rbCheckDataBase.Image = Global.WinBack.My.Resources.Resources.ChargenRohstoffeDetail_32x32
+        Me.rbCheckDataBase.LargeImage = Global.WinBack.My.Resources.Resources.ChargenRohstoffeDetail_32x32
+        Me.rbCheckDataBase.Name = "rbCheckDataBase"
+        Me.rbCheckDataBase.SmallImage = CType(resources.GetObject("rbCheckDataBase.SmallImage"), System.Drawing.Image)
+        Me.rbCheckDataBase.Text = "Check Datenbank"
+        Me.rbCheckDataBase.Value = "CHECKDATABASE"
+        '
         'WinBack
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1760,4 +1771,5 @@ Partial Class WinBack
     Friend WithEvents rbRohstoffeLieferungen As RibbonButton
     Friend WithEvents rbKonfigWinBack As RibbonButton
     Friend WithEvents rbProduktionTeiler As RibbonButton
+    Friend WithEvents rbCheckDataBase As RibbonButton
 End Class

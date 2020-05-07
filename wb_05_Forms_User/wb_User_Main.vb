@@ -8,11 +8,12 @@ Public Class wb_User_Main
 
     'Default-Fenster
     Private UserListe As New wb_User_Liste
-    Private UserDetails As New wb_User_Details
 
     'alle anderen Fenster werden zur Laufzeit erzeugt
+    Private UserDetails As wb_User_Details
     Private UserRechte As wb_User_Rechte
     Private UserGruppenRechte As wb_User_GruppenRechte
+    Private UserPasswort As wb_User_Passwort
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
@@ -40,6 +41,37 @@ Public Class wb_User_Main
             Return "User"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+    ''' </summary>
+    ''' <param name="Reason"></param>
+    ''' <returns>
+    ''' False, wenn das Fenster geschlossen werden darf
+    ''' True, wenn das Fenster geöffnet bleiben muss
+    ''' </returns>
+    ''' <remarks></remarks>
+    Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
+        'User-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        If UserListe IsNot Nothing Then
+            UserListe.Close()
+        End If
+        'Anzeige User_Rechte schliessen
+        If UserRechte IsNot Nothing Then
+            UserRechte.Close()
+        End If
+        'User-Details schliessen
+        If UserDetails IsNot Nothing Then
+            UserDetails.Close()
+        End If
+        'Fenster User-Gruppen_rechte schliessen
+        If UserGruppenRechte IsNot Nothing Then
+            UserGruppenRechte.Close()
+        End If
+
+        'Fenster darf geschlossen werden
+        Return False
+    End Function
 
     Public Overrides Sub SetDefaultLayout()
         UserListe.Show(DockPanel, DockState.DockLeft)
@@ -99,34 +131,38 @@ Public Class wb_User_Main
         If IsNothingOrDisposed(UserDetails) Then
             UserDetails = New wb_User_Details
         End If
-        UserDetails.Show(DockPanel, DockState.DockRight)
+        UserDetails.Show(DockPanel)
     End Sub
+
     Private Sub BtnUserListe()
         If IsNothingOrDisposed(UserListe) Then
             UserListe = New wb_User_Liste
         End If
-        UserListe.Show(DockPanel, DockState.DockLeft)
+        UserListe.Show(DockPanel)
     End Sub
+
     Private Sub BtnUserRechte()
         If IsNothingOrDisposed(UserRechte) Then
             UserRechte = New wb_User_Rechte
         End If
-        UserRechte.Show(DockPanel, DockState.DockLeft)
-    End Sub
-
-    Private Sub BtnUserPasswd()
-        'Throw New NotImplementedException
-    End Sub
-
-    Private Sub btnUserPrint()
-        'Throw New NotImplementedException
+        UserRechte.Show(DockPanel)
     End Sub
 
     Private Sub BtnUserGroup()
         If IsNothingOrDisposed(UserGruppenRechte) Then
             UserGruppenRechte = New wb_User_GruppenRechte
         End If
-        UserGruppenRechte.Show(DockPanel, DockState.DockRight)
+        UserGruppenRechte.Show(DockPanel)
+    End Sub
+
+    Private Sub BtnUserPasswd()
+        UserPasswort = New wb_User_Passwort
+        UserPasswort.ShowDialog(DockPanel)
+        UserPasswort = Nothing
+    End Sub
+
+    Private Sub btnUserPrint()
+        'Throw New NotImplementedException
     End Sub
 
 End Class

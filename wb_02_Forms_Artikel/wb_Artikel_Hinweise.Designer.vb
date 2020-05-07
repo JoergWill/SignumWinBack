@@ -31,6 +31,7 @@ Partial Class wb_Artikel_Hinweise
         Me.BtnRotateL = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.BtnTransferPdf = New System.Windows.Forms.Button()
         Me.lblArtikelHinweis = New System.Windows.Forms.Label()
@@ -38,11 +39,10 @@ Partial Class wb_Artikel_Hinweise
         Me.cbAufloesung = New System.Windows.Forms.ComboBox()
         Me.tHinweisName = New System.Windows.Forms.TextBox()
         Me.lblAufloesung = New System.Windows.Forms.Label()
-        Me.Panel1 = New System.Windows.Forms.Panel()
         CType(Me.VorschauPDF, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel1.SuspendLayout()
-        Me.Panel2.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'VorschauPDF
@@ -99,28 +99,37 @@ Partial Class wb_Artikel_Hinweise
         Me.TableLayoutPanel1.ColumnCount = 2
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.Panel1, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.VorschauPDF, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Panel2, 1, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.Panel2, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.Panel1, 1, 1)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 2
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 150.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1010, 554)
         Me.TableLayoutPanel1.TabIndex = 75
         '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.BtnRotateL)
+        Me.Panel1.Controls.Add(Me.BtnRotateR)
+        Me.Panel1.Location = New System.Drawing.Point(813, 153)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(194, 94)
+        Me.Panel1.TabIndex = 83
+        '
         'Panel2
         '
-        Me.Panel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Panel2.Controls.Add(Me.BtnTransferPdf)
         Me.Panel2.Controls.Add(Me.lblArtikelHinweis)
         Me.Panel2.Controls.Add(Me.BtnLoadPdf)
         Me.Panel2.Controls.Add(Me.cbAufloesung)
         Me.Panel2.Controls.Add(Me.tHinweisName)
         Me.Panel2.Controls.Add(Me.lblAufloesung)
-        Me.Panel2.Location = New System.Drawing.Point(813, 436)
+        Me.Panel2.Location = New System.Drawing.Point(813, 3)
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(194, 115)
         Me.Panel2.TabIndex = 83
@@ -190,16 +199,6 @@ Partial Class wb_Artikel_Hinweise
         Me.lblAufloesung.TabIndex = 81
         Me.lblAufloesung.Text = "Auflösung (dpi)"
         '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.Label1)
-        Me.Panel1.Controls.Add(Me.BtnRotateL)
-        Me.Panel1.Controls.Add(Me.BtnRotateR)
-        Me.Panel1.Location = New System.Drawing.Point(813, 3)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(194, 94)
-        Me.Panel1.TabIndex = 83
-        '
         'wb_Artikel_Hinweise
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -210,10 +209,10 @@ Partial Class wb_Artikel_Hinweise
         Me.Text = "Artikel-Verarbeitungshinweise"
         CType(Me.VorschauPDF, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub

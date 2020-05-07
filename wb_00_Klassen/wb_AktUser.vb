@@ -89,17 +89,21 @@ Public Class wb_AktUser
             UserGruppe = winback.iField("IP_ItemID")
             _UserLanguage = winback.sField("IP_Wert5str")
             _SuperUser = False
-
-            'Verbindung wieder schliessen
-            winback.Close()
-            Return True
+            Login = True
         Else
-            'Verbindung wieder schliessen
-            winback.Close()
             'Benutzer ist OrgaBack Benutzername
             _UserName = UserName
-            Return False
+            Login = False
         End If
+
+        'User SYS ist Super-User
+        If UserName = "System Administrator" Or UserName = "KurzSesam" Then
+            SuperUser = True
+        End If
+
+        'Verbindung wieder schliessen
+        winback.Close()
+        Return Login
     End Function
 
     Private Shared Sub UpdateUserLanguage(Lang As String)

@@ -1,4 +1,5 @@
-﻿Imports Signum.OrgaSoft
+﻿Imports System.Windows.Forms
+Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
@@ -97,9 +98,16 @@ Public Class wb_Rezept_Main
 
     Private Sub BtnRezeptNew()
         Dim Rezept As New wb_Rezept
-        Dim RezeptNrNeu As Integer = Rezept.MySQLdbNew(1)
+        Dim RezeptNrNeu As Integer = Rezept.MySQLdbNew(wb_Global.LinienGruppeStandard)
         RezeptListe.RefreshData(RezeptNrNeu)
         Rezept = Nothing
+
+        'Das neu erzeugte Rezept gleich öffnen
+        Me.Cursor = Cursors.WaitCursor
+        'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen
+        Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNrNeu, wb_Global.RezeptVarianteStandard)
+        Rezeptur.Show()
+        Me.Cursor = Cursors.Default
     End Sub
 
     Private Sub BtnRezeptRemove()

@@ -204,15 +204,15 @@ Partial Class wb_Rezept_Details
         '
         'cbLiniengruppe
         '
-        resources.ApplyResources(Me.cbLiniengruppe, "cbLiniengruppe")
         Me.cbLiniengruppe.FormattingEnabled = True
+        resources.ApplyResources(Me.cbLiniengruppe, "cbLiniengruppe")
         Me.cbLiniengruppe.Name = "cbLiniengruppe"
         '
         'cbVariante
         '
-        resources.ApplyResources(Me.cbVariante, "cbVariante")
         Me.cbVariante.BackColor = System.Drawing.SystemColors.Window
         Me.cbVariante.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple
+        resources.ApplyResources(Me.cbVariante, "cbVariante")
         Me.cbVariante.FormattingEnabled = True
         Me.cbVariante.Name = "cbVariante"
         Me.cbVariante.TabStop = False

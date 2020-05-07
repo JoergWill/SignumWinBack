@@ -3,6 +3,7 @@
     Private IP_Wert5Str As String
     Private IP_ItemID As Integer
     Private IP_Wert1int As String
+    Private IP_Wert2int As String
     Private DataHasChanged As Boolean
     ''' <summary>
     ''' Eine der Mitarbeiter-Eigenschaften wurde geändert
@@ -37,10 +38,32 @@
 
     ''' <summary>
     ''' Mitarbeiter-Personalnummer. String max 250 Zeichen
-    ''' Tabelle winback.ItemParameter.IP_Wert5Str
+    ''' Tabelle winback.ItemParameter.IP_Wert2Int
     ''' </summary>
     ''' <returns></returns>
     Public Property PersonalNr As String
+        Set(value As String)
+            'TODO max.Länge Name prüfen ggf. Fehlermeldung ausgeben
+            If value <> IP_Wert2int And value <> "" Then
+                DataHasChanged = True
+            End If
+            IP_Wert2int = wb_Functions.XRemoveSonderZeichen(value)
+        End Set
+        Get
+            If IP_Wert2int = "0" Then
+                Return ""
+            Else
+                Return IP_Wert2int
+            End If
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Mitarbeiter-RFID/NFS. String max 250 Zeichen
+    ''' Tabelle winback.ItemParameter.IP_Wert5Str
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property RFID As String
         Set(value As String)
             'TODO max.Länge Name prüfen ggf. Fehlermeldung ausgeben
             If value <> IP_Wert5Str And value <> "" Then
@@ -83,9 +106,6 @@
                 If Not Me.Exist(value) Then
                     DataHasChanged = True
                     IP_Wert1int = value
-                Else
-                    'TODO Exception abfangen. Fehlermeldung ausgeben
-                    Throw New Exception("Mitarbeiter-Kennwort ist schon vorhanden")
                 End If
             End If
         End Set
@@ -102,11 +122,15 @@
         'Benutzer-Name
         IP_Wert4Str = dataGridView.Field("IP_Wert4str")
         'Benutzer-Personalnummer
-        IP_Wert5Str = dataGridView.Field("IP_Wert5str")
+        IP_Wert5Str = dataGridView.Field("IP_Wert2int")
         'Benutzer-Gruppe
         IP_ItemID = CInt(dataGridView.Field("IP_ItemID"))
         'Passwort
         IP_Wert1int = dataGridView.Field("IP_Wert1int")
+        'Personal-Nummer
+        IP_Wert2int = dataGridView.Field("IP_Wert2int")
+        'Benutzer-RFID
+        IP_Wert5Str = dataGridView.Field("IP_Wert5str")
     End Sub
 
     ''' <summary>
@@ -123,9 +147,10 @@
         If DataHasChanged Then
             dataGridView.Field("IP_Wert4str") = IP_Wert4Str
             dataGridView.Field("IP_Wert5str") = IP_Wert5Str
-            dataGridView.Field("IP_ItemID") = IP_ItemID
-            dataGridView.Field("IP_Wert1int") = IP_Wert1int
-            dataGridView.Field("IP_lfd_Nr") = IP_Wert1int
+            dataGridView.Field("IP_ItemID") = wb_Functions.StrToInt(IP_ItemID)
+            dataGridView.Field("IP_lfd_Nr") = wb_Functions.StrToInt(IP_Wert1int)
+            dataGridView.Field("IP_Wert1int") = wb_Functions.StrToInt(IP_Wert1int)
+            dataGridView.Field("IP_Wert2int") = wb_Functions.StrToInt(IP_Wert2int)
             DataHasChanged = False
             Return True
         Else
@@ -146,7 +171,7 @@
         'Eventuell vorhandenen (Leer-)Datensatz löschen
         Delete(wb_Global.NewUserPass)
         'Dummy-Datensatz anlegen (User:Neu Pass:_1 Gruppe:1)
-        Return AddNew(wb_Global.NewUserName, wb_Global.NewUserPass, wb_Global.NewUserGrpe)
+        Return AddNew(wb_Global.NewUserName, wb_Global.NewUserPass, wb_Global.NewUserPass, wb_Global.NewUserGrpe)
     End Function
 
     ''' <summary>
@@ -155,14 +180,15 @@
     ''' False zurückgeliefert.
     ''' </summary>
     ''' <param name="Name"> String Mitarbeiter-Name</param>
+    ''' <param name="PersonalNr"> String Mitarbeiter-PersonalNr numerisch max. 10 Stellen</param>
     ''' <param name="Passwort"> String Mitarbeiter-Passwort numerisch max. 10 Stellen</param>
     ''' <param name="Gruppe">String - User-Gruppe (1..9, 99)</param>
     ''' <returns>
     ''' True - Einfügen war erfolgreich
     ''' False - Fehler beim Einfügen
     ''' </returns>
-    Function AddNew(Name As String, Passwort As String, Gruppe As String) As Boolean
-        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
+    Function AddNew(Name As String, PersonalNr As String, Passwort As String, Gruppe As String) As Boolean
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         Try
             'Neuen Benutzer in Datenbank einfügen
             winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserInsert, Name, Passwort, Gruppe))
@@ -178,22 +204,46 @@
 
     ''' <summary>
     ''' Mitarbeiterdaten ändern.
-    ''' Die Mitarbeiter-Nummer ist Unique-Key. Wenn die Mitarbeiter-Nummer nicht vorhanden ist, wird
-    ''' False zurückgeliefert.
     ''' </summary>
     ''' <param name="Name"> String Mitarbeiter-Name</param>
-    ''' <param name="OldPasswort"> String Mitarbeiter-Passwort (alt) numerisch max. 10 Stellen</param>
-    ''' <param name="NewPasswort"> String Mitarbeiter-Passwort (neu) numerisch max. 10 Stellen</param>
+    ''' <param name="OldPersonalNr"> String Mitarbeiter-PersonalNr (alt) numerisch max. 10 Stellen</param>
+    ''' <param name="NewPersonalNr"> String Mitarbeiter-PersonalNr (neu) numerisch max. 10 Stellen</param>
     ''' <param name="Gruppe">String - User-Gruppe (1..9, 99)</param>
     ''' <returns>
     ''' True - Ändernn war erfolgreich
     ''' False - Fehler beim Ändernn
     ''' </returns>
-    Function Update(OldPasswort As String, Name As String, NewPasswort As String, Gruppe As String) As Boolean
-        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
+    Function Update(OldPersonalNr As String, Name As String, NewPersonalNr As String, Gruppe As String) As Boolean
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim ret As Integer = 0
         Try
             'Update Benutzer in Datenbank
-            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserUpdate, Name, NewPasswort, Gruppe, OldPasswort))
+            ret = winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserUpdate, Name, NewPersonalNr, Gruppe, OldPersonalNr))
+        Catch
+            'Verbindung wieder schliessen
+            winback.Close()
+            Return False
+        End Try
+        'Verbindung wieder schliessen
+        winback.Close()
+        Return (ret > 0)
+    End Function
+
+    ''' <summary>
+    ''' Mitarbeiter-PersonalNr ändern. Wenn keine alte Personal-Nr angegeben ist, wird nach dem Namen gesucht.(Sync)
+    ''' </summary>
+    ''' <param name="Name"> String Mitarbeiter-Name</param>
+    ''' <param name="OldPersonalNr"> String Mitarbeiter-PersonalNr (alt) numerisch max. 10 Stellen</param>
+    ''' <param name="NewPersonalNr"> String Mitarbeiter-PersonalNr (neu) numerisch max. 10 Stellen</param>
+    ''' <returns>
+    ''' True - Ändernn war erfolgreich
+    ''' False - Fehler beim Ändernn
+    ''' </returns>
+    Function Update(OldPersonalNr As String, Name As String, NewPersonalNr As String) As Boolean
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Try
+            'Update Benutzer in Datenbank
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserPNrUpdate, Name, NewPersonalNr, OldPersonalNr))
         Catch
             'Verbindung wieder schliessen
             winback.Close()
@@ -208,14 +258,18 @@
     ''' <summary>
     ''' Eintrag Mitarbeiter löschen. Das Löschen der Mitarbeiter ist in WinBack unkritisch,
     ''' da in allen Verweisen auch der Name im Klartext mitgespeichert wird.
-    ''' In Verbindung mit OrgaBack ist ein Löschen der Datensätze nicht vorgesehen.
     ''' </summary>
-    ''' <param name="Passwort"> String Mitarbeiter-Passwort numerisch max. 10 Stellen</param>
-    Sub Delete(Passwort As String)
-        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
+    ''' <param name="PersonalNr"> String Mitarbeiter-Passwort numerisch max. 10 Stellen</param>
+    Sub Delete(Password As String, Optional PersonalNr As String = "")
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         Try
-            'Benutzer aus Datenbank löschen
-            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserDelete, Passwort))
+            If PersonalNr <> "" Then
+                'Benutzer aus Datenbank löschen (WinBack - Passwort)
+                winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlWinBackUserDelete, PersonalNr))
+            Else
+                'Benutzer aus Datenbank löschen (OrgaBack - Personalnummer)
+                winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlOrgaBackUserDelete, PersonalNr))
+            End If
         Catch
         Finally
             winback.Close()

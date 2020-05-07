@@ -49,12 +49,18 @@ Public Class wb_ArrayGridViewUserGruppen
         _ShowTooltips = ShowTooltips
         'Grid initialisieren
         InitGrid()
+        'Scrollbar vertikal einblenden
+        Me.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         'Daten anzeigen 
         InitData()
     End Sub
 
+    ''' <summary>
+    ''' Grid User-Gruppe-Rechte füllen. Die einzelnen Zeilen werden aus Gruppe 99 erzeugt. 
+    ''' Gruppe99 ist die letzte UserGruppe !
+    ''' Wichtig: In Gruppe 99 (alle Rechte) müssen alle notwendigen Datensätze richtig eingetragen sein.
+    ''' </summary>
     Public Overrides Sub FillGrid()
-
         'Spalten erstellen
         MyBase.FillColumns()
 
@@ -64,7 +70,7 @@ Public Class wb_ArrayGridViewUserGruppen
         Dim Grp99 As Integer = GridArray.Length - 1
         Dim MaxRowCount As Integer
         If Grp99 > 0 Then
-            MaxRowCount = TryCast(GridArray(Grp99), wb_User_Gruppe).count
+            MaxRowCount = TryCast(GridArray(Grp99), wb_User_Gruppe).Count
         Else
             MaxRowCount = 0
         End If
@@ -114,22 +120,24 @@ Public Class wb_ArrayGridViewUserGruppen
         'Funktions-Type (402..405)
         Dim Tpe As Integer = Rows(Row).Cells(COLInp).Value
         'Value (0,1,2..)
-        Dim Val As Integer = wb_Functions.StrToInt(e.Value.ToString)
+        If e.Value IsNot Nothing Then
+            Dim Val As Integer = wb_Functions.StrToInt(e.Value.ToString)
 
-        'Text farbig und formatiert darstellen
-        If Col > COLInp Then
-            If Val = 0 Then
-                'Hintergrund-Farbe rot
-                e.CellStyle.BackColor = Color.LightSalmon
-                'Kein Text
-                e.Value = ""
-            Else
-                'Hintergrund-Farbe grün
-                e.CellStyle.BackColor = Color.LightGreen
-                'Text aus Tabelle Texte in der richtigen Sprache
-                e.Value = wb_User_Rechte_Shared.Text(Tpe, Val)
-                'Text zentriert darstellen
-                e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            'Text farbig und formatiert darstellen
+            If Col > COLInp Then
+                If Val = 0 Then
+                    'Hintergrund-Farbe rot
+                    e.CellStyle.BackColor = Color.LightSalmon
+                    'Kein Text
+                    e.Value = ""
+                Else
+                    'Hintergrund-Farbe grün
+                    e.CellStyle.BackColor = Color.LightGreen
+                    'Text aus Tabelle Texte in der richtigen Sprache
+                    e.Value = wb_User_Rechte_Shared.Text(Tpe, Val)
+                    'Text zentriert darstellen
+                    e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+                End If
             End If
         End If
     End Sub
@@ -155,9 +163,17 @@ Public Class wb_ArrayGridViewUserGruppen
             CurrentCell.Value = wb_User_Rechte_Shared.Click(Tpe, Val)
             'Flag Daten wurden geändert
             _Changed = True
+            'geänderte Spalte merken
+            Columns(e.ColumnIndex).HeaderCell.Tag = "C"
         End If
     End Sub
 
+    ''' <summary>
+    ''' Gruppen-Bezeichnung editieren.
+    ''' Die Texte zur User-Gruppe stehen in der Tabelle Texte T_Typ=500
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub wb_User_Gruppen_ColumnHeaderDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MyBase.ColumnHeaderMouseDoubleClick
         Dim NewHeaderText As String = InputBox("Neue Gruppen-Bezeichnung", "Gruppen-Bezeichnung ändern")
         If NewHeaderText <> "" Then

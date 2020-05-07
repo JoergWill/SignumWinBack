@@ -2,8 +2,8 @@
 
     'Sql-Statement Abfrage Vorname, Nachname und Nummer aus [OrgaBackMain].[dbo].[Mitarbeiter]"
     Public Const mssqlMitarbeiterMFF500 = "SELECT * FROM [dbo].[Mitarbeiter] LEFT JOIN MitarbeiterHatMultiFeld " &
-                                    "ON Mitarbeiter.MitarbeiterKürzel = MitarbeiterHatMultiFeld.MitarbeiterKürzel " &
-                                    "WHERE MitarbeiterHatMultiFeld.FeldNummer = 500 ORDER BY KassiererNummer"
+                                    "ON Mitarbeiter.MitarbeiterKürzel = MitarbeiterHatMultiFeld.MitarbeiterKürzel ORDER BY PersonalNr"
+    '"WHERE MitarbeiterHatMultiFeld.FeldNummer = 500 ORDER BY KassiererNummer"
     Public Const mssqlMitarbeiter = "SELECT * FROM [dbo].[Mitarbeiter] LEFT JOIN MitarbeiterHatMultiFeld " &
                                     "ON Mitarbeiter.MitarbeiterKürzel = MitarbeiterHatMultiFeld.MitarbeiterKürzel ORDER BY KassiererNummer"
 

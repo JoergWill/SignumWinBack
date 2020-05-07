@@ -171,9 +171,6 @@
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
     <value>28</value>
   </data>
-  <data name="tRezeptName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <data name="tRezeptName.Location" type="System.Drawing.Point, System.Drawing">
     <value>154, 37</value>
   </data>
@@ -224,9 +221,6 @@
   </data>
   <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
     <value>26</value>
-  </data>
-  <data name="tRezeptKommentar.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
   </data>
   <data name="tRezeptKommentar.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 78</value>
@@ -279,9 +273,6 @@
   <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
     <value>24</value>
   </data>
-  <data name="tRezeptGewicht.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="tRezeptGewicht.Location" type="System.Drawing.Point, System.Drawing">
     <value>458, 78</value>
   </data>
@@ -305,9 +296,6 @@
   </data>
   <data name="&gt;&gt;tRezeptGewicht.ZOrder" xml:space="preserve">
     <value>21</value>
-  </data>
-  <data name="Label4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
   </data>
   <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -390,9 +378,6 @@
   <data name="&gt;&gt;Label5.ZOrder" xml:space="preserve">
     <value>20</value>
   </data>
-  <data name="tChangeDatum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <data name="tChangeDatum.Location" type="System.Drawing.Point, System.Drawing">
     <value>75, 204</value>
   </data>
@@ -413,9 +398,6 @@
   </data>
   <data name="&gt;&gt;tChangeDatum.ZOrder" xml:space="preserve">
     <value>18</value>
-  </data>
-  <data name="tChangeName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
   </data>
   <data name="tChangeName.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 246</value>
@@ -468,9 +450,6 @@
   <data name="&gt;&gt;Label6.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="Label7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="Label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -500,9 +479,6 @@
   </data>
   <data name="&gt;&gt;Label7.ZOrder" xml:space="preserve">
     <value>15</value>
-  </data>
-  <data name="Label8.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
   </data>
   <data name="Label8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -534,9 +510,6 @@
   <data name="&gt;&gt;Label8.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="tChargeMin.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="tChargeMin.Location" type="System.Drawing.Point, System.Drawing">
     <value>458, 162</value>
   </data>
@@ -560,9 +533,6 @@
   </data>
   <data name="&gt;&gt;tChargeMin.ZOrder" xml:space="preserve">
     <value>13</value>
-  </data>
-  <data name="Label9.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
   </data>
   <data name="Label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -594,9 +564,6 @@
   <data name="&gt;&gt;Label9.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="tChargeMax.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="tChargeMax.Location" type="System.Drawing.Point, System.Drawing">
     <value>458, 204</value>
   </data>
@@ -620,9 +587,6 @@
   </data>
   <data name="&gt;&gt;tChargeMax.ZOrder" xml:space="preserve">
     <value>10</value>
-  </data>
-  <data name="Label10.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
   </data>
   <data name="Label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -654,9 +618,6 @@
   <data name="&gt;&gt;Label10.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="Label11.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="Label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -684,9 +645,6 @@
   <data name="&gt;&gt;Label11.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="tChargeOpt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="tChargeOpt.Location" type="System.Drawing.Point, System.Drawing">
     <value>458, 246</value>
   </data>
@@ -710,9 +668,6 @@
   </data>
   <data name="&gt;&gt;tChargeOpt.ZOrder" xml:space="preserve">
     <value>8</value>
-  </data>
-  <data name="Label12.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
   </data>
   <data name="Label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -743,9 +698,6 @@
   </data>
   <data name="&gt;&gt;Label12.ZOrder" xml:space="preserve">
     <value>9</value>
-  </data>
-  <data name="Label13.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
   </data>
   <data name="Label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -837,9 +789,6 @@
   <data name="&gt;&gt;Label15.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="Label16.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="Label16.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -897,9 +846,6 @@
   <data name="&gt;&gt;cbAnstellgut.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="cbLiniengruppe.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <data name="cbLiniengruppe.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 162</value>
   </data>
@@ -913,16 +859,13 @@
     <value>cbLiniengruppe</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.ZOrder" xml:space="preserve">
     <value>3</value>
-  </data>
-  <data name="cbVariante.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
   </data>
   <data name="cbVariante.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -940,7 +883,7 @@
     <value>cbVariante</value>
   </data>
   <data name="&gt;&gt;cbVariante.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbVariante.Parent" xml:space="preserve">
     <value>$this</value>

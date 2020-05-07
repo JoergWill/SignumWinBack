@@ -64,7 +64,7 @@
         winback.Close()
     End Function
 
-    Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String) As Boolean
+    Friend Overrides Function DBNumber(Nr_Alt As String, Nr_Neu As String, Gruppe As String, Text As String) As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateSyncKompAlNr, Nr_Alt, Nr_Neu)
         'Update ausführen

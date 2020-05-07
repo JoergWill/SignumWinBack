@@ -54,7 +54,7 @@ Public Class wb_DataGridViewVerwendung
             If RezeptNr > 0 Then
                 Me.Cursor = Windows.Forms.Cursors.WaitCursor
                 'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
-                Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
+                Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, wb_Global.RezeptVarianteStandard)
                 Rezeptur.Show()
                 Me.Cursor = Windows.Forms.Cursors.Default
             End If

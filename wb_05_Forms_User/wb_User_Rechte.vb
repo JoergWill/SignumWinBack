@@ -4,13 +4,17 @@ Imports System.Windows.Forms
 
 Public Class wb_User_Rechte
 
+    Private _Reload As Boolean = False
+
     'Event User aus Liste ausgewählt - Detail-Info anzeigen - User-Rechte
     Private Sub wb_User_Rechte_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         AddHandler eListe_Click, AddressOf GroupInfo
+        AddHandler eEdit_Leave, AddressOf GroupInfo
+        GroupInfo(sender)
     End Sub
 
     'TreeView - Anzeige der aktiven Benutzer-Rechte(Gruppe)
-    Private Sub GroupInfo()
+    Private Sub GroupInfo(sender As Object)
         'aktive Gruppe
         Dim Oberbegriff As String = ""
         Dim newNode As TreeNode = Nothing
@@ -18,6 +22,8 @@ Public Class wb_User_Rechte
 
         'Benutzer-Rechte laden
         Gruppe.LoadData(User.iGruppe)
+        _Reload = False
+        TreeView.BeginUpdate()
         TreeView.Nodes.Clear()
 
         'Rechte-Struktur im TreeView anzeigen
@@ -36,5 +42,11 @@ Public Class wb_User_Rechte
 
         'alle Einträge anzeigen
         TreeView.ExpandAll()
+        TreeView.EndUpdate()
+    End Sub
+
+    Private Sub wb_User_Rechte_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        RemoveHandler wb_User_Shared.eListe_Click, AddressOf GroupInfo
+        RemoveHandler wb_User_Shared.eEdit_Leave, AddressOf GroupInfo
     End Sub
 End Class

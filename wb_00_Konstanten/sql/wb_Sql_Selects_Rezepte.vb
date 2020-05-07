@@ -47,6 +47,8 @@
     'Sql-Statement Tabelle Rezepte Update
     Public Const sqlRezeptUpdate = "UPDATE Rezepte SET [2] WHERE RZ_Nr = [0] AND RZ_Variante_Nr = [1]"
 
+    'Sql-Statement Tabelle Rezepte Rohstoffe tauschen
+    Public Const sqlRezeptRohst = "UPDATE RezeptSchritte SET RS_Ko_Nr = [1] WHERE RS_Ko_Nr = [0]"
 
     'sql-Statement komplette Rezeptur nach RzNr und Variante
     Public Const sqlRezeptur = "SELECT RezeptSchritte.RS_Schritt_Nr, RezeptSchritte.RS_ParamNr, " &

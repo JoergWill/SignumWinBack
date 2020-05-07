@@ -15,7 +15,7 @@ Public Class ob_User_DockingExtension
     Private xForm As Windows.Forms.Form
 
     Private OrgaSoftEditState As wb_Global.EditState
-    Private OldPasswort As String
+    Private OldPersonalNr As String
 
     ''' <summary>
     ''' Falls die Extension ein eigenes Context-Ribbon zum bestehenden Ribbon hinzufügen möchte, kann sie dieses hier zurückliefern
@@ -88,74 +88,52 @@ Public Class ob_User_DockingExtension
 
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
         OrgaSoftEditState = wb_Global.EditState.Invalid
-        OldPasswort = ""
+        OldPersonalNr = ""
         Debug.Print("User_DockingExtension Invalid")
     End Sub
 
     Private Sub Extendee_AddNew(sender As Object, e As EventArgs)
         OrgaSoftEditState = wb_Global.EditState.AddNew
-        OldPasswort = ""
+        OldPersonalNr = ""
         Debug.Print("User_DockingExtension AddNew")
     End Sub
 
     Private Sub Extendee_Found(sender As Object, e As EventArgs)
         OrgaSoftEditState = wb_Global.EditState.Edit
-        OldPasswort = _Extendee.GetPropertyValue("KassiererNummer").ToString
+        OldPersonalNr = _Extendee.GetPropertyValue("PersonalNr").ToString
         Debug.Print("User_DockingExtension Found")
     End Sub
 
     Private Sub Extendee_BeforeUpdate(sender As Object, e As EventArgs)
         Debug.Print("User_DockingExtension BeforeUpdate")
     End Sub
+
     Private Sub Extendee_Updated(sender As Object, e As EventArgs)
         Debug.Print("User_DockingExtension Updated")
     End Sub
+
     Private Sub Extendee_BeforeDelete(sender As Object, e As EventArgs)
         Debug.Print("User_DockingExtension BeforeDelete")
     End Sub
+
     Private Sub Extendee_Deleted(sender As Object, e As EventArgs)
         Debug.Print("User_DockingExtension Deleted")
-        'TODO Filale prüfen
-        Dim Passwort As String = _Extendee.GetPropertyValue("KassiererNummer").ToString
-        wb_User_Shared.User.Delete(Passwort)
+        Dim PersonalNr As String = _Extendee.GetPropertyValue("PersonalNr").ToString
+        wb_User_Shared.User.Delete(wb_Global.UNDEFINED, PersonalNr)
     End Sub
+
     Private Sub Extendee_BeforeCopy(sender As Object, e As EventArgs)
         Debug.Print("User_DockingExtension BeforeCopy")
     End Sub
+
     Private Sub Extendee_Committed(sender As Object, e As EventArgs)
         Debug.Print("User_DockingExtension Committed")
 
         Dim Vorname As String = _Extendee.GetPropertyValue("Vorname").ToString
         Dim Nachname As String = _Extendee.GetPropertyValue("Nachname").ToString
+        Dim PersonalNr As String = _Extendee.GetPropertyValue("PersonalNr").ToString
         Dim Name As String = Vorname & " " & Nachname
-        Dim Passwort As String = _Extendee.GetPropertyValue("KassiererNummer").ToString
-
-        'TODO WinBack-Gruppe aus MFF auslesen
-        Select Case OrgaSoftEditState
-            Case wb_Global.EditState.Edit
-                wb_User_Shared.User.Update(OldPasswort, Name, Passwort, 4)
-                'Anzeige im WinBack-Fenster "live" aktualisieren
-                wb_User_Shared.Reload(sender)
-
-            Case wb_Global.EditState.AddNew
-                wb_User_Shared.User.AddNew(Name, Passwort, 4)
-                'Anzeige im WinBack-Fenster "live" aktualisieren
-                wb_User_Shared.Reload(sender)
-
-        End Select
-
-        Debug.Print("Vorname  " & _Extendee.GetPropertyValue("Vorname").ToString)
-        Debug.Print("Nachname " & _Extendee.GetPropertyValue("Nachname").ToString)
-        Debug.Print("Passwort " & _Extendee.GetPropertyValue("KassiererNummer").ToString)
-        '        Debug.Print("MFF      " & _Extendee.GetPropertyValue("MultiFunktionsFeld(1)").ToString)
-
-
-
-        'Dim i As Integer
-        'For i = 0 To _Extendee.PropertyValueCollection.Count - 1
-        '    Debug.Print("Property " & _Extendee.PropertyValueCollection(i).PropertyName)
-        '   Debug.Print("Value " & _Extendee.PropertyValueCollection(i).Value)
-        'Next
+        Dim GruppeNr As String = "4"
 
         Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
         Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
@@ -163,31 +141,38 @@ Public Class ob_User_DockingExtension
         ' die Multifunktionsfelder sind über das Property "MultiFunktionsFeld" zugänglich, welches eine ICollectionClass ist
         ' via FindInInnerlist kann man mit Kriterien suchen, die ein Element in der Collection erfüllen muss
         ' FeldNr ist ein Property eines MFF, natürlich ist es auch möglich, erstmal durch die Collection zu iterieren um zu schauen, was an MFF überhaupt enthalten ist
-        iMFFIdx = DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("FeldNr=500")
-        For Each x In DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList
-            Debug.Print(x.ToString)
-        Next
+        iMFFIdx = DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("FeldNr=" & CStr(wb_Global.MFF_USerGruppe))
 
+        ' sollte ein MFF mit FeldNr=1 gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
+        ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
         If iMFFIdx >= 0 Then
-            ' sollte ein MFF mit FeldNr=1 gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
-            ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
             oMFF = DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
             If oMFF IsNot Nothing Then
-
-                For i = 0 To oMFF.PropertyValueCollection.Count - 1
-                    Debug.Print("Property " & oMFF.PropertyValueCollection(i).PropertyName)
-                    Debug.Print("Value " & oMFF.PropertyValueCollection(i).Value)
-                Next
+                GruppeNr = oMFF.PropertyValueCollection(wb_Global.MFF_Value).Value
             End If
-            ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr 1
         End If
 
-        'Dim i As Integer
-        'For i = 0 To _Extendee.PropertyValueCollection.Count - 1
-        '    Debug.Print("Property " & _Extendee.PropertyValueCollection(i).PropertyName)
-        '    Debug.Print("Value " & _Extendee.PropertyValueCollection(i).Value)
-        'Next
+        Debug.Print("Vorname    " & Vorname)
+        Debug.Print("Nachname   " & Nachname)
+        Debug.Print("PersonalNr " & PersonalNr)
+        Debug.Print("GruppeNr   " & GruppeNr)
 
+        Select Case OrgaSoftEditState
+            Case wb_Global.EditState.Edit
+                If Not wb_User_Shared.User.Update(OldPersonalNr, Name, PersonalNr, 4) Then
+                    'Beim Neuanlegen ist das Passwort mit der Personal-Nummer identisch
+                    wb_User_Shared.User.AddNew(Name, PersonalNr, PersonalNr, GruppeNr)
+                End If
+                'Anzeige im WinBack-Fenster "live" aktualisieren
+                wb_User_Shared.Reload(sender)
+
+            Case wb_Global.EditState.AddNew
+                'Beim Neuanlegen ist das Passwort mit der Personal-Nummer identisch
+                wb_User_Shared.User.AddNew(Name, PersonalNr, PersonalNr, GruppeNr)
+                'Anzeige im WinBack-Fenster "live" aktualisieren
+                wb_User_Shared.Reload(sender)
+
+        End Select
     End Sub
 
     Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
@@ -230,7 +215,11 @@ Public Class ob_User_DockingExtension
         End If
     End Sub
 
-    'Mitarbeiter
+    ''' <summary>
+    ''' WinBack-Mitarbeiter-Hauptmenu in separatem Fenster anzeigen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowUserForm(sender As Object, e As EventArgs)
         xForm = _ViewProvider.OpenForm(New wb_User_Main(ServiceProvider), My.Resources.MainUser_16x16)
         'Fensterposition aus winback.ini
@@ -238,9 +227,14 @@ Public Class ob_User_DockingExtension
 
     End Sub
 
-    'Gruppen-Rechte
+    ''' <summary>
+    ''' WinBack-Fenster Gruppen-Rechte in separatem Fenster anzeigen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ShowUserGroup(sender As Object, e As EventArgs)
-        Throw New NotImplementedException
+        Dim UserGruppenRechte = New wb_User_GruppenRechte
+        UserGruppenRechte.ShowDialog()
     End Sub
 
     ''' <summary>
