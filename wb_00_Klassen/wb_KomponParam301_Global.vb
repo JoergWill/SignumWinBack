@@ -35,7 +35,7 @@ Public Class wb_KomponParam301_Global
             k.Feld = winback.sField("KT_Kommentar")
             k.Used = (winback.sField("KT_Rezept") = "X")
             k.oEinheit = ""
-            k.oUsed = False
+            k.oUsed = False Or IsAllergen(k.ParamNr)
             Try
                 ktTyp301Params.Add(k.ParamNr, k)
             Catch

@@ -4,7 +4,10 @@
     Private IP_ItemID As Integer
     Private IP_Wert1int As String
     Private IP_Wert2int As String
-    Private DataHasChanged As Boolean
+
+    Private _DataHasChanged As Boolean
+    Private _GruppeHasChanged As Boolean
+
     ''' <summary>
     ''' Eine der Mitarbeiter-Eigenschaften wurde geändert
     ''' </summary>
@@ -14,7 +17,7 @@
     '''     </returns>
     Public ReadOnly Property Changed As Boolean
         Get
-            Return DataHasChanged
+            Return _DataHasChanged
         End Get
     End Property
 
@@ -27,7 +30,7 @@
         Set(value As String)
             'TODO max.Länge Name prüfen ggf. Fehlermeldung ausgeben
             If value <> IP_Wert4Str And value <> "" Then
-                DataHasChanged = True
+                _DataHasChanged = True
             End If
             IP_Wert4Str = wb_Functions.XRemoveSonderZeichen(value)
         End Set
@@ -45,7 +48,7 @@
         Set(value As String)
             'TODO max.Länge Name prüfen ggf. Fehlermeldung ausgeben
             If value <> IP_Wert2int And value <> "" Then
-                DataHasChanged = True
+                _DataHasChanged = True
             End If
             IP_Wert2int = wb_Functions.XRemoveSonderZeichen(value)
         End Set
@@ -67,7 +70,7 @@
         Set(value As String)
             'TODO max.Länge Name prüfen ggf. Fehlermeldung ausgeben
             If value <> IP_Wert5Str And value <> "" Then
-                DataHasChanged = True
+                _DataHasChanged = True
             End If
             IP_Wert5Str = wb_Functions.XRemoveSonderZeichen(value)
         End Set
@@ -85,7 +88,8 @@
         Set(value As Integer)
             'TODO max.Wert Gruppe prüfen ggf. Exception auslösen
             If value <> IP_ItemID And value <> 0 Then
-                DataHasChanged = True
+                _DataHasChanged = True
+                _GruppeHasChanged = True
             End If
             IP_ItemID = value
         End Set
@@ -104,7 +108,7 @@
             'TODO max.Wert Passwort abfragen ggf. Fehlermeldung ausgeben
             If value <> IP_Wert1int And value <> "" Then
                 If Not Me.Exist(value) Then
-                    DataHasChanged = True
+                    _DataHasChanged = True
                     IP_Wert1int = value
                 End If
             End If
@@ -144,18 +148,59 @@
     ''' False - Keine Änderung
     ''' </returns>
     Friend Function SaveData(dataGridView As wb_DataGridView) As Boolean
-        If DataHasChanged Then
+        If _DataHasChanged Then
             dataGridView.Field("IP_Wert4str") = IP_Wert4Str
             dataGridView.Field("IP_Wert5str") = IP_Wert5Str
-            dataGridView.Field("IP_ItemID") = wb_Functions.StrToInt(IP_ItemID)
+            dataGridView.iField("IP_ItemID") = IP_ItemID
             dataGridView.Field("IP_lfd_Nr") = wb_Functions.StrToInt(IP_Wert1int)
             dataGridView.Field("IP_Wert1int") = wb_Functions.StrToInt(IP_Wert1int)
             dataGridView.Field("IP_Wert2int") = wb_Functions.StrToInt(IP_Wert2int)
-            DataHasChanged = False
+
+            'wenn sich die Benutzergruppe geändert hat, muss in OrgaBack das MFF500 geschrieben werden
+            If _GruppeHasChanged Then
+                msSQLUpdate(PersonalNr, iGruppe)
+            End If
+
+            'Reset Flags
+            _DataHasChanged = False
+            _GruppeHasChanged = False
             Return True
         Else
-            Return False
+                Return False
         End If
+    End Function
+
+    ''' <summary>
+    ''' Update Benutzergruppe in OrgaBack 
+    ''' Zunächst muss aus der Tabelle dbo.[Mitarbeiter] anhand der Personal-Nummer das Mitarbeiter-Kürzel ermittelt werden.
+    ''' Anhand des Mitarbeit-Kürzels wird in der Tabelle dbo.[MitarbeiterHatMultifeld] dann das MFF500 mit der Gruppen-Nummer geschrieben
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    Private Function msSQLUpdate(PersNr As String, GruppeNr As Integer) As Boolean
+        'Verbindung zu MsSQL-Datenbank
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Gruppen-Nummer formatieren
+        Dim sGrpNr As String
+        sGrpNr = Strings.Right("0000" + GruppeNr.ToString, 4)
+
+        'Mitarbeiter-Kürzel ermitteln
+        If orgaback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlMitarbeiter, PersNr)) Then
+            If orgaback.Read Then
+                'Mitarbeiter-Kürzel
+                Dim Mitarbeiter As String = orgaback.sField("MitarbeiterKürzel")
+                orgaback.CloseRead()
+                'Gruppe für Mitarbeiter mit diesem Kürzel updaten (wenn das Update fehlschlägt...)
+                Try
+                    orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlUpdateMitarbeiterMFF, Mitarbeiter, sGrpNr))
+                Catch ex As Exception
+                End Try
+            End If
+        End If
+
+        'Datenbank-Verbindung wieder schliessen
+        orgaback.Close()
+        Return True
     End Function
 
     ''' <summary>

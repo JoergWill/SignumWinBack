@@ -148,18 +148,18 @@ Public Class ob_User_DockingExtension
         If iMFFIdx >= 0 Then
             oMFF = DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
             If oMFF IsNot Nothing Then
-                GruppeNr = oMFF.PropertyValueCollection(wb_Global.MFF_Value).Value
+                GruppeNr = oMFF.PropertyValueCollection(2).Value
             End If
         End If
 
-        Debug.Print("Vorname    " & Vorname)
-        Debug.Print("Nachname   " & Nachname)
-        Debug.Print("PersonalNr " & PersonalNr)
-        Debug.Print("GruppeNr   " & GruppeNr)
+        'Debug.Print("Vorname    " & Vorname)
+        'Debug.Print("Nachname   " & Nachname)
+        'Debug.Print("PersonalNr " & PersonalNr)
+        'Debug.Print("GruppeNr   " & GruppeNr)
 
         Select Case OrgaSoftEditState
             Case wb_Global.EditState.Edit
-                If Not wb_User_Shared.User.Update(OldPersonalNr, Name, PersonalNr, 4) Then
+                If Not wb_User_Shared.User.Update(OldPersonalNr, Name, PersonalNr, GruppeNr) Then
                     'Beim Neuanlegen ist das Passwort mit der Personal-Nummer identisch
                     wb_User_Shared.User.AddNew(Name, PersonalNr, PersonalNr, GruppeNr)
                 End If

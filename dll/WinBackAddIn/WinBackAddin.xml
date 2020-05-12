@@ -182,6 +182,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.LinienAuto_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.LinienAutoInstall_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -2073,6 +2078,43 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Value">Object - Wert Datenbankfeld(Inhalt)</param>
  <returns></returns>
 </member>
+<member name="T:WinBack.wb_Produktion_virtuell">
+ <summary>
+ Enthält den komplette Produktionsplan als Liste von Produktionschritten (wb_Produktionsschritt).
+ Jeder Produktionschritt hat Parent und Child. Die Produktion beginnt am Knoten(0) ohne Parent.
+ 
+     Schritt 0                                            (Child = Schritt 1, Schritt 2...)
+         +   Schritt 1               (Parent = Schritt 0)
+         +   Schritt 2               (Parent = Schritt 0)
+         +   Schritt 3               (Parent = Schritt 0) (Child = Schritt 3.1, Schritt 3.2)
+                 +   Schritt 3.1     (Parent = Schritt 3)
+                 +   Schritt 3.2     (Parent = Schritt 3)
+         +   Schritt 4               (Parent = Schritt 0)
+         + ...
+         
+ Die Anzeige erfolgt im VirtualTree direkt mit der Angabe des Root-Nodes
+ </summary>
+</member>
+<member name="P:WinBack.wb_Produktion_virtuell.RootProduktionsSchritt">
+ <summary>
+ Erster (unsichtbarer) Produktions-Schritt (Root-Node)
+ </summary>
+ <returns>wb_Produktionsschritt - Root-Node des Rezeptes</returns>
+</member>
+<member name="M:WinBack.wb_Produktion_virtuell.MySQLdbSelect_ArbRzSchritte(System.Int32,System.Int32)">
+ <summary>
+ Liest alle Datensätze aus wbdaten zur angegeben Tageswechselnummer sortiert nach Produktionsdatum ein 
+ </summary>
+ <param name="LinieNr">Integer Tageswechsel-Nummer</param>
+</member>
+<member name="M:WinBack.wb_Produktion_virtuell.MySQLdbRead_Fields(System.String,System.Object)">
+ <summary>
+ Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
+ </summary>
+ <param name="Name">String - Spalten-Name aus Datenbank</param>
+ <param name="Value">Object - Wert aus Datenbank</param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Chargen_ChartTTS.MySqlLoadWbDaten(System.Int32,System.Int32,System.Int32,System.Int32)">
  <summary>
  Lade alle Chargen-Daten zu dieser Rezeptnummer/RezeptVariante
@@ -2546,6 +2588,18 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Param2"></param>
  <param name="Param3"></param>
  <param name="Param4"></param>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_MinMaxOptCharge.TeigGewicht">
+ <summary>
+ Teigmenge in kg
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_MinMaxOptCharge.StkGewicht">
+ <summary>
+ Stückgewicht in Gramm
+ </summary>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_MinMaxOptCharge.Invalidate">
@@ -3154,7 +3208,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 </member>
 <member name="P:WinBack.wb_Komponente.VerkaufsGewicht">
  <summary>
- Verkaufsgewicht aus OrgBack dbo.HandelsArtikel.Gewicht
+ Verkaufsgewicht in kg(!) aus OrgBack dbo.HandelsArtikel.Gewicht
  Wird benötigt zur Berechnung des Nassgewichts in WinBack aus 
  Verkaufsgewicht, Zuschnitt-Verlust, Backverlust
  </summary>
@@ -5976,6 +6030,14 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Artikel_Details.UpdateNwt_Click(System.Object,System.EventArgs)">
+ <summary>
+ Nährwerte des aktuellen Artikels neu berechnen und in OrgaBack-DB schreiben.
+ Damit die Nährwerte richtig angezeigt werden, muss der Artikel in OrgaBack neu eingelesen werden !
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Artikel_Hinweise.wb_Artikel_Hinweise_Load(System.Object,System.EventArgs)">
  <param name="sender"></param>
  <param name="e"></param>
@@ -6885,6 +6947,15 @@ Text aus Datenbank lesen - Übersetzung
  True  - Eigenschaften des aktuelle User haben sich geändert
  False - Keine Änderung
  </returns>
+</member>
+<member name="M:WinBack.wb_User.msSQLUpdate(System.String,System.Int32)">
+ <summary>
+ Update Benutzergruppe in OrgaBack 
+ Zunächst muss aus der Tabelle dbo.[Mitarbeiter] anhand der Personal-Nummer das Mitarbeiter-Kürzel ermittelt werden.
+ Anhand des Mitarbeit-Kürzels wird in der Tabelle dbo.[MitarbeiterHatMultifeld] dann das MFF500 mit der Gruppen-Nummer geschrieben
+ 
+ </summary>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_User.AddNew">
  <summary>

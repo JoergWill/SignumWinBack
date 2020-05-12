@@ -41,7 +41,6 @@ Public Class wb_Komponente
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ReadCalcPreis As Boolean = True
-    Private _VerkaufsGewicht As Double = wb_Global.UNDEFINED
 
     Private _RootParameter As New wb_KomponParam(Nothing, 0, 0, "")
     Private _Parameter As wb_KomponParam
@@ -1100,28 +1099,29 @@ Public Class wb_Komponente
     End Property
 
     ''' <summary>
-    ''' Verkaufsgewicht aus OrgBack dbo.HandelsArtikel.Gewicht
+    ''' Verkaufsgewicht in kg(!) aus OrgBack dbo.HandelsArtikel.Gewicht
     ''' Wird benötigt zur Berechnung des Nassgewichts in WinBack aus 
     ''' Verkaufsgewicht, Zuschnitt-Verlust, Backverlust
     ''' </summary>
     ''' <returns></returns>
     Public Property VerkaufsGewicht As Double
         Get
-            If _VerkaufsGewicht = wb_Global.UNDEFINED Then
+            'Daten aus den Komponenten-Parametern
+            If ktTyp200.Verkaufsgewicht > wb_Global.UNDEFINED Then
+                Return ktTyp200.Verkaufsgewicht
+            Else
                 'Verkaufsgewicht berechnet sich aus Nassgewicht und Backverlust
                 'TODO Zuschnitt berücksichtigen
                 If Backverlust > 0 And Backverlust <= 100 Then
-                    Return ArtikelChargen.StkGewicht * (1 - (100 / Backverlust))
+                    Return (ArtikelChargen.StkGewicht * (1 - (100 / Backverlust)) / 1000)
                 Else
-                    Return ArtikelChargen.StkGewicht
+                    Return ArtikelChargen.StkGewicht / 1000
                 End If
-            Else
-                'Verkaufsgewicht aus OrgaBack 
-                Return _VerkaufsGewicht
             End If
         End Get
         Set(value As Double)
-            _VerkaufsGewicht = value
+            'In Datenbank speichern
+            ktTyp200.Verkaufsgewicht = value
         End Set
     End Property
 
@@ -1156,10 +1156,8 @@ Public Class wb_Komponente
             TeigChargen.HasChanged = False
         End If
 
-        'TODO geänderte Parameter in WinBack-DB schreiben (KomponParams 200)
-        'TODO geänderte Parameter in WinBack-DB schreiben (KomponParams 300)
+        MySQLdbUpdate_Parameter(wb_Global.ktParam.kt200)
         MySQLdbUpdate_Parameter(wb_Global.ktParam.kt300)
-        'TODO geänderte Parameter in WinBack-DB schreiben (KomponParams 301)
         MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
     End Sub
 
@@ -1697,6 +1695,7 @@ Public Class wb_Komponente
                 Select Case ParamTyp
                     Case 200
                         'Produktinformationen
+                        ktTyp200.Wert(ParamNr) = Value.ToString
                     Case 201
                         'Verarbeitungs-Hinweise
                     Case 202
@@ -1799,6 +1798,13 @@ Public Class wb_Komponente
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Result vorbelegen
         MySQLdbUpdate_Parameter = True
+
+        'Update Parameter-200 (Parameter Verkauf)
+        If ktTyp = wb_Global.ktParam.kt200 Or ktTyp = wb_Global.ktParam.ktAlle Then
+            If Not ktTyp200.MySQLdbUpdate(Nr, winback) Then
+                MySQLdbUpdate_Parameter = False
+            End If
+        End If
 
         'Update Parameter-300 (Parameter Produktion)
         If ktTyp = wb_Global.ktParam.kt300 Or ktTyp = wb_Global.ktParam.ktAlle Then

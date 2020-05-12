@@ -4,9 +4,12 @@
     Public Const mssqlMitarbeiterMFF500 = "SELECT * FROM [dbo].[Mitarbeiter] LEFT JOIN MitarbeiterHatMultiFeld " &
                                     "ON Mitarbeiter.MitarbeiterKürzel = MitarbeiterHatMultiFeld.MitarbeiterKürzel ORDER BY PersonalNr"
     '"WHERE MitarbeiterHatMultiFeld.FeldNummer = 500 ORDER BY KassiererNummer"
-    Public Const mssqlMitarbeiter = "SELECT * FROM [dbo].[Mitarbeiter] LEFT JOIN MitarbeiterHatMultiFeld " &
+    Public Const mssqlMitarbeiterMFF = "SELECT * FROM [dbo].[Mitarbeiter] LEFT JOIN MitarbeiterHatMultiFeld " &
                                     "ON Mitarbeiter.MitarbeiterKürzel = MitarbeiterHatMultiFeld.MitarbeiterKürzel ORDER BY KassiererNummer"
-
+    'Sql-Statement Mitarbeiterkürzel aus Personal-Nummer
+    Public Const mssqlMitarbeiter = "SELECT MitarbeiterKürzel FROM [dbo].[Mitarbeiter] WHERE PersonalNr = '[0]'"
+    'Sql-Statement Update Gruppen-Bezeichnung aus [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"
+    Public Const mssqlUpdateMitarbeiterMFF = "UPDATE [dbo].[MitarbeiterHatMultiFeld] SET Inhalt = '[1]' WHERE MitarbeiterKürzel = '[0]' AND FeldNummer = 500"
 
     'Sql-Statement Abfrage Gruppen-Nr(Hierarchie) und Gruppen-Bezeichnung aus [OrgaBackMain].[dbo].[MitarbeiterMultiFunktionsFeld]"
     Public Const mssqlMitarbeiterGruppen = "SELECT * FROM [dbo].[MitarbeiterMultiFunktionsFeld] WHERE GruppenNr=1 ORDER BY Hierarchie"

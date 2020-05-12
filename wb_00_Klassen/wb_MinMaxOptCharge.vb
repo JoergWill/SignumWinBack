@@ -14,6 +14,10 @@ Public Class wb_MinMaxOptCharge
     Private _ErrorCode As wb_Global.MinMaxOptChargenError
     Private _Toleranz As Double = 0.0
 
+    ''' <summary>
+    ''' Teigmenge in kg
+    ''' </summary>
+    ''' <returns></returns>
     Public Property TeigGewicht As String
         Get
             Return _TeigGewicht
@@ -31,6 +35,10 @@ Public Class wb_MinMaxOptCharge
         End Set
     End Property
 
+    ''' <summary>
+    ''' Stückgewicht in Gramm
+    ''' </summary>
+    ''' <returns></returns>
     Public Property StkGewicht As String
         Get
             Return _StkGewicht

@@ -350,8 +350,8 @@
     ''' Produkt-Information
     ''' </summary>
     Public Const maxTyp200 = 330
+    Public Const T200_Verkaufsgewicht = 4
     Public Const T200_Warengruppe = 17
-
     ''' <summary>
     ''' Verarbeitungshinweise
     ''' </summary>

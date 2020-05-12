@@ -467,7 +467,8 @@ Public Class ob_Artikel_DockingExtension
                 Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
                 Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)           'Artikel/Komponenten-Kommentar
                 Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString     'Artikel/Komponenten-Nummer alphanumerisch
-                'Komponenten-Daten sichern (sonst steht in der DAtenbank "neu angelegt..")
+                Komponente.VerkaufsGewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("NettoInhalt").ToString) / 1000 'Verkaufsgewicht NETTO (aus OrgaBack in Gramm)
+                'Komponenten-Daten sichern (sonst steht in der Datenbank "neu angelegt..")
                 Komponente.MySQLdbUpdate()
             End If
 
@@ -543,12 +544,15 @@ Public Class ob_Artikel_DockingExtension
     Private Sub UpdateKomponentenDaten()
         'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
         Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+        'Handelsartikel mit Index(0) ist der Hauptartikel aus Artikel.Handelsartikel()
+        Dim oHdl = DirectCast(_Extendee.GetPropertyValue("HandelsArtikel"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
 
         'Update aller in OrgaBack geänderten Daten
         Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString     'Artikel-Nummer (Ändern über Shift-F9)
         Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
         Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)           'Artikel/Komponenten-Kommentar
         Komponente.SetKType(wb_Functions.obKtypeToKType(_Extendee.GetPropertyValue("ArtikelGruppe").ToString))  'KomponentenType
+        Komponente.ktTyp200.Verkaufsgewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("NettoInhalt").ToString) / 1000
 
         'Testausgabe
         Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
@@ -563,6 +567,8 @@ Public Class ob_Artikel_DockingExtension
     Private Sub SetKomponentenDaten()
         'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
         Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+        'Handelsartikel mit Index(0) ist der Hauptartikel aus Artikel.Handelsartikel()
+        Dim oHdl = DirectCast(_Extendee.GetPropertyValue("HandelsArtikel"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
 
         'Update aller in WinBack geänderten Daten
         MFFValue(oFil, wb_Global.MFF_RezeptNummer) = Komponente.RezeptNummer

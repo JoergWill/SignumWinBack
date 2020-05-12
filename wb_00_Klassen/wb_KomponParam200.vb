@@ -9,6 +9,7 @@ Public Class wb_KomponParam200
     Private Parameter(wb_Global.maxTyp200) As Typ200
 
     Public Sub New()
+        Wert(T200_Verkaufsgewicht) = wb_Global.UNDEFINED
         Wert(T200_Warengruppe) = wb_Global.UNDEFINED
     End Sub
 
@@ -31,6 +32,19 @@ Public Class wb_KomponParam200
         End Get
         Set(value As Integer)
             Wert(T200_Warengruppe) = value.ToString
+        End Set
+    End Property
+
+    Public Property Verkaufsgewicht As Double
+        Get
+            If Wert(T200_Verkaufsgewicht) IsNot Nothing Then
+                Return wb_Functions.StrToDouble(Wert(T200_Verkaufsgewicht))
+            Else
+                Return wb_Global.UNDEFINED
+            End If
+        End Get
+        Set(value As Double)
+            Wert(T200_Verkaufsgewicht) = value.ToString
         End Set
     End Property
 

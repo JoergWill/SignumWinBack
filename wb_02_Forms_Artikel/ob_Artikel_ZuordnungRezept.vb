@@ -125,6 +125,7 @@ Public Class ob_Artikel_ZuordnungRezept
                 'Anzeigen der Werte
                 KompRzChargen.DataValid = True
                 KompRzChargen.Visible = True
+                pnlNoProduction.Visible = False
 
             Case "wbNOPRODUCTION"
                 KompRzChargen.Visible = False

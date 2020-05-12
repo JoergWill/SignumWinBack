@@ -8,9 +8,9 @@ Public Class wb_User_Rechte
 
     'Event User aus Liste ausgewählt - Detail-Info anzeigen - User-Rechte
     Private Sub wb_User_Rechte_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        GroupInfo(sender)
         AddHandler eListe_Click, AddressOf GroupInfo
         AddHandler eEdit_Leave, AddressOf GroupInfo
-        GroupInfo(sender)
     End Sub
 
     'TreeView - Anzeige der aktiven Benutzer-Rechte(Gruppe)

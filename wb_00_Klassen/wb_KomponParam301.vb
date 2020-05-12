@@ -291,7 +291,8 @@ Public Class wb_KomponParam301
     ''' <param name="n"></param>
     ''' <returns></returns>
     Private Function CalculateOrgaBackNaehrwert(n As Double, idx As Integer) As String
-        Dim f As Double = wb_KomponParam301_Global.oFaktor(idx) * FaktorStkGewicht / 100
+        'Der Faktor berechnet sich aus dem Stückgewicht in kg(!) und dem Wert bezogen auf 100gr
+        Dim f As Double = wb_KomponParam301_Global.oFaktor(idx) * FaktorStkGewicht * 1000 / 100
         Return wb_sql_Functions.MsDoubleToString(n * f)
     End Function
 

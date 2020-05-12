@@ -36,7 +36,7 @@
             MsgBox("Fehler OrgaBack !!" & vbCr & "MFF500 (WinBack-Gruppe) ist nicht definiert", MsgBoxStyle.Critical, "Lesen Mitarbeiter OrgaBack")
 
             orgaback.CloseRead()
-            If orgaback.sqlSelect(wb_Sql_Selects.mssqlMitarbeiter) Then
+            If orgaback.sqlSelect(wb_Sql_Selects.mssqlMitarbeiterMFF) Then
                 While orgaback.Read
                     _Item = New wb_SyncItem
                     _Item.Os_Nummer = orgaback.iField("PersonalNr")

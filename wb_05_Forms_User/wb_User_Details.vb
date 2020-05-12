@@ -9,6 +9,7 @@ Public Class wb_User_Details
     Private Sub wb_User_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Combo-Box mit Werten füllen
         GrpLoad(sender)
+        DetailInfo(sender)
 
         'In OrgaBack können die Benutzer-Namen nicht geändert werden
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
