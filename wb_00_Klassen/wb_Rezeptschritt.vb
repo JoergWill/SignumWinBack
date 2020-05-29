@@ -34,6 +34,9 @@ Public Class wb_Rezeptschritt
     Private _Backverlust As Double
     Private _Zuschnitt As Double
 
+    Private _RohstoffGruppe1 As Integer
+    Private _RohstoffGruppe2 As Integer
+
     Private _parentStep As wb_Rezeptschritt
     Private _childSteps As New ArrayList()
     Public RezeptImRezept As wb_Rezept
@@ -951,9 +954,9 @@ Public Class wb_Rezeptschritt
             'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
             _ZutatenListe.Zutaten = _ZutatenListeExtern.Memo
             _ZutatenListe.SollMenge = wb_Functions.StrToDouble(_Sollwert) * Faktor
-            'TODO Rohstoff-Gruppen auslesen und als Property anlegen
-            _ZutatenListe.Grp1 = 0
-            _ZutatenListe.Grp2 = 0
+            'Rohstoff-Gruppen
+            _ZutatenListe.Grp1 = RohstoffGruppe1
+            _ZutatenListe.Grp2 = RohstoffGruppe2
             'TODO Quid-Angaben aus Rezeptur auslesen und als Property anlegen
             _ZutatenListe.Quid = False
             _ZutatenListe.QuidProzent = 0
@@ -1040,9 +1043,27 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    Public Property RohstoffGruppe1 As Integer
+        Get
+            Return _RohstoffGruppe1
+        End Get
+        Set(value As Integer)
+            _RohstoffGruppe1 = value
+        End Set
+    End Property
+
+    Public Property RohstoffGruppe2 As Integer
+        Get
+            Return _RohstoffGruppe2
+        End Get
+        Set(value As Integer)
+            _RohstoffGruppe2 = value
+        End Set
+    End Property
+
     Public Function CalcIngredients(SollMenge As Double, Variante As Short) As IList
         'Umrechnungs-Faktor berechnen aus Sollmenge und Rezept-Gesamtgewicht
-        Dim Faktor As Double = SollMenge / _RezGewicht
+        Dim Faktor As Double = wb_Functions.SaveDiv(SollMenge, _RezGewicht)
 
         'Liste(IRecipeIngredient) löschen
         oi.Clear()
@@ -1055,8 +1076,15 @@ Public Class wb_Rezeptschritt
                 Dim ri As New ob_RecipeIngredient
                 ri.ArticleNo = c.Nummer
                 ri.Variante = Variante
-                ri.Amount = wb_Functions.StrToDouble(c.Sollwert) * Faktor
                 ri.Unit = wb_Einheiten_Global.getobEinheitFromText(c.Einheit)
+
+                'Fehler bei Niehaves (14-05-2020)
+                'TODO siehe: https://stackoverflow.com/questions/40419003/avoiding-overflowexception-when-converting-from-double-to-decimal
+                Try
+                    ri.Amount = Convert.ToDecimal(wb_Functions.StrToDouble(c.Sollwert) * Faktor)
+                Catch
+                    ri.Amount = 0
+                End Try
 
                 'Rezept im Rezept
                 If (c.RezeptNr > 0) And c.RezeptImRezept IsNot Nothing Then

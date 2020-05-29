@@ -23,7 +23,7 @@
 
 
     'Sql-Statement RohstoffGruppen aus winback.ItemParameter
-    Public Const sqlRohstoffGrp = "SELECT IP_Wert1int, IP_Wert4str FROM ItemParameter WHERE " &
+    Public Const sqlRohstoffGrp = "SELECT IP_Wert1int, IP_Wert2int, IP_Wert4str FROM ItemParameter WHERE " &
                                   "IP_ItemTyp = 600 And IP_Wert3int = 0 ORDER BY IP_Lfd_Nr DESC"
     'Sql-Statement Rohstoff-Verwendung aus winback.Rezeptschritte
     Public Const sqlRohstoffUse = "SELECT Rezepte.RZ_Nr, Rezepte.RZ_Nr_AlNum, Rezepte.RZ_Bezeichnung FROM RezeptSchritte INNER JOIN " &

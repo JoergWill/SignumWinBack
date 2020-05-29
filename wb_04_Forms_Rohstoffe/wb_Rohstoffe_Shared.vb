@@ -6,6 +6,7 @@ Public Class wb_Rohstoffe_Shared
     Public Shared Event eParam_Changed(Sender As Object)
 
     Public Shared RohGruppe As New SortedList
+    Public Shared MehlGruppe As New List(Of wb_MehlGruppe)
     Public Shared RohAktiv As New Hashtable
     Public Shared RohStoff As New wb_Komponente
 
@@ -85,7 +86,15 @@ Public Class wb_Rohstoffe_Shared
         RohGruppe.Clear()
         While winback.Read
             If Not RohGruppe.ContainsKey((winback.iField("IP_Wert1int"))) Then
+                'Rohstoff-Gruppen
                 RohGruppe.Add(winback.iField("IP_Wert1int"), TextFilter(winback.sField("IP_Wert4str")))
+                'Rohstoff-Gruppen mit Flag Deklaration (Mehlzusammensetzung)
+                If winback.iField("IP_Wert2int") = 1 Then
+                    Dim MGrp As New wb_MehlGruppe
+                    MGrp.GruppeNr = winback.iField("IP_Wert1int")
+                    MGrp.Bezeichnung = TextFilter(winback.sField("IP_Wert4str"))
+                    MehlGruppe.Add(MGrp)
+                End If
             End If
         End While
         winback.CloseRead()

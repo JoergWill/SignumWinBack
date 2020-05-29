@@ -5,6 +5,7 @@
     Private Shared _LinienGruppen As New SortedList
     Private Shared _ArtikelLinienGruppen As New SortedList
     Private Shared _RezeptLinienGruppen As New SortedList
+    Private Shared _ProdLinien As New SortedList
     Private Shared _ErrorText As String = ""
     Private Shared _TabelleLinienGruppenOK As Boolean = True
     Private Shared _NoEntryInItemParameter As Boolean = False
@@ -27,6 +28,12 @@
     Public Shared ReadOnly Property RezeptLinienGruppen As SortedList
         Get
             Return _RezeptLinienGruppen
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property ProdLinien As SortedList
+        Get
+            Return _ProdLinien
         End Get
     End Property
 
@@ -53,11 +60,12 @@
         End Get
     End Property
 
-    Public Shared ReadOnly Property Linien As ArrayList
+    Public Shared ReadOnly Property LinienListe As ArrayList
         Get
             Return _LinienListe
         End Get
     End Property
+
     ''' <summary>
     ''' Array Liniengruppen aufbauen
     ''' Array Linien aufbauen
@@ -195,6 +203,7 @@
         winback.sqlSelect(wb_Sql_Selects.sqlLinien)
         _Linien.Clear()
         _LinienListe.Clear()
+        _ProdLinien.Clear()
 
         While winback.Read
             Try
@@ -213,6 +222,8 @@
                 End If
                 'zum Dictonary hinzufügen
                 _Linien.Add(Linie.Linie, Linie)
+                'zur Liste aller Produktions-Linien hinzufügen
+                _ProdLinien.Add(Linie.Linie, Linie.Bezeichnung)
                 'zur Liste aller Linien hinzufügen
                 _LinienListe.Add(Linie)
             Catch

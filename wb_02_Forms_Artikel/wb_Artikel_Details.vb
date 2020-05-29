@@ -97,9 +97,8 @@ Public Class wb_Artikel_Details
         'Start bei Artikelnummer x - 1
         nwtUpdateArtikel.UpdateNext(wb_Artikel_Shared.Artikel.Nr - 1, True)
         nwtUpdateArtikel = Nothing
-        'Die Daten sind in OrgaBack erst nach Laden des Artikels sichtbar
+        'Die Daten sind in WinBack erst nach Laden des Artikels sichtbar
         wb_Artikel_Shared.Liste_Click(sender)
-        'MsgBox("Die aktualisierten Nährwerte und Allergen" & vbCrLf & "sind erst nach erneutem Aufruf des Artikels in OrgaBack sichtbar", MsgBoxStyle.OkOnly, "WinBack-AddIn")
     End Sub
 
 End Class

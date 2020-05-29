@@ -57,9 +57,6 @@ SprachCode=D
 GruppeBackwaren=10
 GruppeRohstoffe=20
 
-[Path]
-Pistor=C:\Dokumente\Projekte\OrgaBack\pistor.csv
-
 [Produktion]
 Top=0
 Left=0

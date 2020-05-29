@@ -58,7 +58,7 @@ GruppeBackwaren=10
 GruppeRohstoffe=20
 
 [Path]
-Pistor=C:\Dokumente\Projekte\OrgaBack\pistor.csv
+Pistor=C:\Dokumente\Projekte\WinBackBüro\Import\_Kunden\Weber Davos\pistor.csv
 
 [Produktion]
 Top=0

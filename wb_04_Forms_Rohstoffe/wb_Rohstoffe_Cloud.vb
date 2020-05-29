@@ -56,6 +56,10 @@ Public Class wb_Rohstoffe_Cloud
 
         'wenn schon eine Verknüpfung vorhanden ist wird Tab-Page Verknüpfung löschen angezeigt
         If tCloudID.Text <> "" Then
+            'kann vorproduziert werden
+            cbFreigabeProduktion.Visible = False
+            cbFreigabeProduktion.Checked = False
+
             'Button 'Zurück' hat keine Funktion
             Btn_Result_Back.Enabled = False
             'Verknüpfung zur Cloud löschen/aktualisieren
@@ -64,13 +68,16 @@ Public Class wb_Rohstoffe_Cloud
         ElseIf wb_Rohstoffe_Shared.RohStoff.RzNr > 0 Then
             'Rohstoff ist mit einer Rezeptur verknüpft
             ChangeTab(tpRezept, wb_Rohstoffe_Shared.RohStoff.Nr)
+            cbFreigabeProduktion.Visible = True
 
         ElseIf wb_Functions.TypeHatNwt(RohStoff.Type) Then
             'Suchen Rohstoff in der Cloud
             ChangeTab(tpCloudSuchen)
+            cbFreigabeProduktion.Visible = False
         Else
             'Kein Rohstoff der Nährwerte hat
             ChangeTab(tpKompType)
+            cbFreigabeProduktion.Visible = False
         End If
     End Sub
 
@@ -169,7 +176,7 @@ Public Class wb_Rohstoffe_Cloud
                 If cntDokumente > 0 Then
                     BtnProduktDatenblatt.Visible = True
                     If cntDokumente > 1 Then
-                        BtnProduktDatenblatt.Text = cntDokumente.ToString & "Produkt-Datenblätter"
+                        BtnProduktDatenblatt.Text = cntDokumente.ToString & " Produkt-Datenblätter"
                     Else
                         BtnProduktDatenblatt.Text = " 1 Produkt-Datenblatt"
                     End If
@@ -190,6 +197,8 @@ Public Class wb_Rohstoffe_Cloud
                     KompRzChargen.GetDataFromKomp(RohStoff)
                     'Anzeigen der Werte
                     KompRzChargen.DataValid = True
+                    'Halbfertig-Produkt (kann vorproduziert werden)
+                    cbFreigabeProduktion.Visible = True
                 End If
                 'Rohstoff ist mit Rezeptur verknüpft
                 Wb_TabControl.SelectedTab = tpRezept
@@ -309,15 +318,24 @@ Public Class wb_Rohstoffe_Cloud
     Private Sub btnDisconnect_Click(sender As Object, e As EventArgs) Handles btnDisconnect.Click
         'Verknüpfung zur Cloud löschen (MatchCode) - die Nährwert-Informationen bleiben erhalten
         tCloudID.Text = ""
-        wb_Rohstoffe_Shared.RohStoff.MatchCode = wb_Global.UNDEFINED
+        'Damit die Verknüpfung zur Cloud eindeutig gelöscht ist MUSS ein Leerstring in der DB stehen!
+        wb_Rohstoffe_Shared.RohStoff.MatchCode = ""
         'Änderung in Datenbank schreiben
         wb_Rohstoffe_Shared.Edit_Leave(sender)
 
         'Meldung ausgeben
         MsgBox("Die Verknüpfung zur Cloud wurde gelöscht" & vbCrLf & "Die Nährwerte und Allergen-Informationen bleiben erhalten", MsgBoxStyle.OkOnly, "WinBack-Cloud")
 
-        'Tab umschalten Suchen Rohstoff in der Cloud
-        ChangeTab(tpCloudSuchen)
+        'in OrgaBack
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            'Verknüpfung zur Cloud in WinBack-DB speichern
+            wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate()
+            'Fenster schliessen
+            Close()
+        Else
+            'Tab umschalten Suchen Rohstoff in der Cloud
+            ChangeTab(tpCloudSuchen)
+        End If
     End Sub
 
     ''' <summary>
@@ -401,9 +419,14 @@ Public Class wb_Rohstoffe_Cloud
                 wb_Rohstoffe_Shared.Edit_Leave(sender)
                 'Nährwerte/Allergene speichern
                 wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+                'Zutatenliste/Deklaration in WinBack-DB speichern
                 wb_Rohstoffe_Shared.RohStoff.MySqldbUpdate_Zutatenliste()
                 If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                    'Verknüpfung zur Cloud in WinBack-DB speichern
+                    wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate()
+                    'Nährwerte in OrgaBack-DB speichern
                     wb_Rohstoffe_Shared.RohStoff.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+                    'Zutatenliste/Deklaration in OrgaBack-DB speichern
                     wb_Rohstoffe_Shared.RohStoff.MsSqldbUpdate_Zutatenliste()
                 End If
                 'Meldung ausgeben

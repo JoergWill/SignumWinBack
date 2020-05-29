@@ -73,6 +73,18 @@
     Public Const sqlTWNrEnde = "SELECT TW_Nr from Tageswechsel WHERE TW_Beginn <= '[0]' " &
                                 "ORDER BY TW_Nr DESC LIMIT 1"
 
+    Public Const sqlMaxTWNummer = "SELECT MAX(TW_Nr) from Tageswechsel"
+    Public Const sqlInsertTWNummer = "INSERT INTO Tageswechsel SET TW_NR = [0], TW_Seg_Nr = [1], TW_Beginn = '[2]', TW_Ende = '[3]'"
+
+    'Löschen Arbeits-Rezepte mit TWNr=0
+    Public Const DelArbRezepte = "DELETE FROM ArbRezepte WHERE ARZ_TW_Nr = 0 AND ARZ_LiBeh_Nr = [0]"
+    'Löschen ArbRZSchritte und AbrRZParams  mit TWNr=0
+    'TODO was ist mit ArpRZPArams (welcher Join?)
+    Public Const DelArbRZSchritte = "DELETE FROM ArbRZSchritte WHERE ARS_TW_Nr = 0 AND ARS_Beh_Nr = [0]"
+
+    Public Const InsertBAKArbRZSchritte = "INSERT INTO  BAK_ArbRZSchritte SET [0]"
+    Public Const InsertBAKArbRezepte = "INSERT INTO  BAK_ArbRezepte SET [0]"
+
 
     '     'Select BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie ' +
     '     'FROM BAK_ArbRezepte  ' +

@@ -452,6 +452,7 @@
     <Compile Include="wb_00_Klassen\wb_KomponParamXXX.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Lieferungen.vb" />
+    <Compile Include="wb_00_Klassen\wb_MehlGruppe.vb" />
     <Compile Include="wb_00_Klassen\wb_Produktion_virtuell.vb" />
     <Compile Include="wb_00_Klassen\wb_StatistikListe.vb" />
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.Designer.vb">

@@ -79,6 +79,8 @@ Public Class wb_nwtUpdateArtikel
                 'Zutatenliste erzeugen
                 nwtArtikelDaten.Deklaration = wb_Functions.XRemoveSonderZeichen(Rzpt.ZutatenListe(wb_Global.ZutatenListeMode.Show_ENummer), True)
                 Debug.Print("Zutatenliste " & nwtArtikelDaten.Deklaration)
+                'Mehlzusammensetzung berechnen
+                nwtArtikelDaten.Mehlzusammensetzung = Rzpt.MehlZusammensetzung(wb_Global.TrennzMehlAnteil)
 
                 'Änderungen der Nährwerte in Komponente(Rohstoff) sichern
                 Debug.Print("Update (Artikel)Nährwerte in WinBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
@@ -114,6 +116,8 @@ Public Class wb_nwtUpdateArtikel
                             nwtArtikel.ktTyp301 = nwtArtikelDaten.ktTyp301
                             'ZutatenListe aktualisieren
                             nwtArtikel.Deklaration = nwtArtikelDaten.Deklaration
+                            'Mehlzusammensetzung aktualisieren
+                            nwtArtikel.Mehlzusammensetzung = nwtArtikelDaten.Mehlzusammensetzung
 
                             'Daten sichern in Mysql
                             Debug.Print("Update (weitere Artikel)Nährwerte in WinBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)

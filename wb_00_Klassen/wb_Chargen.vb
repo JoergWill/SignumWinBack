@@ -101,14 +101,19 @@ Public Class wb_Chargen
                     'Schleife über alle Datensätze
                     Do
                         For i = 0 To winback.MySqlRead.FieldCount - 1
-                            'Felder mit Typ DateTime müssen speziell eingelesen werden
-                            If winback.MySqlRead.GetFieldType(i).Name = "DateTime" Then
-                                Value = winback.MySqlRead.GetMySqlDateTime(i)
-                            Else
-                                Value = winback.MySqlRead.GetValue(i)
-                            End If
-                            'Felder einlesen
-                            MySQLdbRead_Fields(winback.MySqlRead.GetName(i), Value)
+                            Try
+                                'Felder mit Typ DateTime müssen speziell eingelesen werden
+                                If winback.MySqlRead.GetFieldType(i).Name = "DateTime" Then
+                                    Value = winback.MySqlRead.GetMySqlDateTime(i)
+                                Else
+                                    Value = winback.MySqlRead.GetValue(i)
+                                End If
+                                'Felder einlesen
+                                MySQLdbRead_Fields(winback.MySqlRead.GetName(i), Value)
+
+                            Catch ex As Exception
+                                Debug.Print("Fehler beim Lesen aus MySQL " & winback.MySqlRead.GetName(i))
+                            End Try
                         Next
 
                         'Auswertung abhängig von der Statistik-Type

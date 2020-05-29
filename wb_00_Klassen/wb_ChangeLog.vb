@@ -54,16 +54,15 @@ Public Class wb_ChangeLog
     ''' <returns>Gibt den neuen Wert zurück</returns>
     Protected Function ChangeLogAdd(Typ As LogType, Prm As Integer, OldValue As String, NewValue As String) As String
         Dim X As wb_Global.wb_ChangeLogEintrag
+        'prüfen ob neue Daten vorliegen
+        _ChangeLogChanged = (NewValue <> OldValue)
         'nur loggen wenn der alte und der neue Wert sich unterscheiden
-        If _ChangeLogAktiv And (NewValue <> OldValue) Then
+        If _ChangeLogAktiv And _ChangeLogChanged Then
             X.Type = Typ
             X.ParamNr = Prm
             X.OldValue = OldValue
             X.NewValue = NewValue
             Changes.Add(X)
-            _ChangeLogChanged = True
-        Else
-            _ChangeLogChanged = False
         End If
         Return NewValue
     End Function
@@ -139,10 +138,16 @@ Public Class wb_ChangeLog
 
                 'Deklarationsbezeichnung
                 Case wb_Global.LogType.Dkl
-                    s += vbNewLine & "Deklaration [alt]" & vbNewLine
-                    s += x.OldValue + vbNewLine
-                    s += vbNewLine & "Deklaration [neu]" & vbNewLine
-                    s += x.NewValue + vbNewLine
+                    Select Case x.ParamNr
+                        Case Parameter.Tx_DeklarationExtern
+                            s += vbNewLine & "Deklaration [alt]" & vbNewLine
+                            s += x.OldValue + vbNewLine
+                            s += vbNewLine & "Deklaration [neu]" & vbNewLine
+                            s += x.NewValue + vbNewLine
+                        Case Parameter.Tx_Mehlzusammensetzung
+                            s += vbNewLine & "Mehl-Zusammensetzung [alt] " & x.OldValue
+                            s += vbNewLine & "Mehl-Zusammensetzung [neu] " & x.NewValue & vbNewLine
+                    End Select
 
                 'Parameter
                 Case wb_Global.LogType.Prm

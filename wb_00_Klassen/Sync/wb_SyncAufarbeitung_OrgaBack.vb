@@ -24,6 +24,10 @@
             If orgaback.Read Then
                 'GruppenNummer
                 _GruppenNummer = orgaback.sField("GruppenNr")
+                'GruppenNummer Null ist nicht erlaubt !
+                If _GruppenNummer = 0 Then
+                    _GruppenNummer = wb_Global.UNDEFINED
+                End If
             End If
         End If
     End Sub

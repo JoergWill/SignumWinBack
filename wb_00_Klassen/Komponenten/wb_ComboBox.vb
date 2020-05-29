@@ -35,7 +35,7 @@ Partial Class wb_ComboBox
         Return i
     End Function
 
-    Public Function GetKeyFromIndex(Index As Integer) As Boolean
+    Public Function GetKeyFromIndex(Index As Integer) As Integer
         If Index <= Items.Count Then
             Return GetKeyFromText(Items(Index).ToString)
         Else

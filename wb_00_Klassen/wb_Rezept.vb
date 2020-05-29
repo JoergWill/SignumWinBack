@@ -371,9 +371,8 @@ Public Class wb_Rezept
 
     Public ReadOnly Property ZutatenListe(Mode As wb_Global.ZutatenListeMode) As String
         Get
-            If _Zutaten.Liste.Count = 0 Then
-                'Zutatenliste aller Rezeptschritte berechnen
-                RootRezeptSchritt.CalcZutaten(_Zutaten.Liste)
+            'Zutatenliste erstellen, wenn notwendig
+            If CalcZutatenListe() Then
                 'Zutatenliste optimieren
                 _Zutaten.Opt()
             End If
@@ -381,6 +380,23 @@ Public Class wb_Rezept
             Return _Zutaten.Print(Mode)
         End Get
     End Property
+
+    Public ReadOnly Property MehlZusammensetzung(TrennZeichen As String) As String
+        Get
+            CalcZutatenListe()
+            Return _Zutaten.PrintMehlZusammenSetzung(TrennZeichen)
+        End Get
+    End Property
+
+    Private Function CalcZutatenListe() As Boolean
+        If _Zutaten.Liste.Count = 0 Then
+            'Zutatenliste aller Rezeptschritte berechnen
+            RootRezeptSchritt.CalcZutaten(_Zutaten.Liste)
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
     Public Property c As Integer
         Get
@@ -390,6 +406,7 @@ Public Class wb_Rezept
             _KneterKennLinie = value
         End Set
     End Property
+
 
     ''' <summary>
     ''' Flag bestimmt, ob bei der Abfrage des Preises, die Berechnung neu
@@ -1034,6 +1051,13 @@ Public Class wb_Rezept
                 'RezeptNr (Rezept im Rezept)
                 Case "KA_RZ_Nr", "H_KA_RZ_Nr"
                     _SQLRezeptSchritt.RezeptNr = Value
+
+                'Rohstoff-Gruppe 1
+                Case "KA_Grp1"
+                    _SQLRezeptSchritt.RohstoffGruppe1 = Value
+                'Rohstoff-Gruppe 1
+                Case "KA_Grp2"
+                    _SQLRezeptSchritt.RohstoffGruppe2 = Value
 
                 'Rezeptkopf - Rezept-Alphanummer
                 Case "RZ_Nr_AlNum", "H_RZ_Nr_AlNum"

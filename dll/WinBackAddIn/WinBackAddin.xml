@@ -2101,9 +2101,31 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns>wb_Produktionsschritt - Root-Node des Rezeptes</returns>
 </member>
+<member name="M:WinBack.wb_Produktion_virtuell.VirtProduktion(System.Int32,System.Int32,System.Boolean)">
+ <summary>
+ Alle offenen Produktions-Schritte ausgehen von RootProduktionsSchritt
+ virtuell durchführen.
+ Die einzelnen Chargen werden nacheinander als quittiert (Status = 3) markiert und im mit dem Lagerbestand verrechent.
+ In winback.Lieferungen werden die entsprechenden Rohstoff-Chargen als verbraucht eingetragen.
+ 
+ Wenn alle Schritte einer Rezeptur durchlaufen sind, wird die TW-Nummer für diese Charge auf -1 gesetzt und mit dem 
+ nächsten Tageswechsel (WinBack-Produktion) dann in die wbdaten geschrieben.
+ 
+ Ist das Flag Tageswechsel auf True gesetzt, werden die Daten gleich in die wbdaten geschrieben (Tageswechsel)
+ und die Datensätze aus winback.ArbRezepte und winback.ArbRZSchritte gelöscht.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Produktion_virtuell.VirtProduktionDelete(System.Int32,WinBack.wb_Sql)">
+ <summary>
+ Löscht alle Datensätze zu dieser Linie mit TW-Nummer = 0 aus winback.ArbRezepte und winback.ArbRZSchritte
+ </summary>
+ <param name="LinieNr"></param>
+ <param name="winback"></param>
+</member>
 <member name="M:WinBack.wb_Produktion_virtuell.MySQLdbSelect_ArbRzSchritte(System.Int32,System.Int32)">
  <summary>
- Liest alle Datensätze aus wbdaten zur angegeben Tageswechselnummer sortiert nach Produktionsdatum ein 
+ Liest alle Datensätze aus winback.ArbRezepte und winback.ArbRZSchritte mit Tageswechselnummer = 0 sortiert nach Chargen-Nummer ein 
  </summary>
  <param name="LinieNr">Integer Tageswechsel-Nummer</param>
 </member>
@@ -4203,6 +4225,16 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_Produktionsschritt.VirtTreeIstwert">
+ <summary>
+ Lager-Bestand. Anzeige im VirtualTree. Unterscheidung anhand der Type:
+     -   Artikel-Chargen-Zeile   Lagerbestand in Stück
+     -   Rezept-Chargen-Zeile    keine Anzeige
+     -   Rezept-Schritte         Anzeige Lagerbestand als formatierter Zahlenwert in kg
+     
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Produktionsschritt.VirtTreePrintBackZettel">
  <summary>
  Gibt eine boolschen Wert zurück, ob der aktuelle Schritt in ListUndLabel gedruckt werden soll. Bei Dummy-Artikeln
@@ -5289,6 +5321,19 @@ Text aus Datenbank lesen - Übersetzung
  <summary>
  Ermittelt aus dem Stack ob der Aufruf über Debug.Print() oder Trace.Write() erfolgt
  </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_ZutatenListe.PrintMehlZusammenSetzung(System.String)">
+ <summary>
+ Erzeugt aus der Zutatenliste die Mehlzusammensetzung in Prozent als String.
+ 
+ Die (flache) Zutatenliste wird einzeln durchlaufen und alle Sollwerte der Rohstoffe,
+ die zu einer Rohstoff-Gruppe mit Kennung 'Deklarieren' gehören, werden addiert.
+ 
+ Am Ende wird der prozentuale Anteil der Mengen berechnet und sortiert als String
+ ausgegeben.
+ </summary>
+ <param name="TrennZeichen"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_ZutatenListe_Global.#cctor">
@@ -7110,6 +7155,17 @@ Text aus Datenbank lesen - Übersetzung
  <param name="KomponentenNummer"></param>
  <param name="ParameterNummer"></param>
  <param name="Wert"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_sql_Functions.getNewTWNummer(WinBack.wb_Sql,System.Int32,System.DateTime,System.DateTime)">
+ <summary>
+ Ermittelt die nächste frei Tageswechsel-Nummer aus der Tabelle wbdaten.Tageswechsel
+ Legt gleich einen neuen Datensatz mit dieser TagesWechsel-Nummer an. Damit ist die TW-
+ Nummer gesichert und blockiert!
+ 
+ Die Datenverbindung bleibt offen und wird nicht geschlossen.
+ </summary>
+ <param name="wbdaten"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_sql_Functions.getNewKomponNummer">

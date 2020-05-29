@@ -7,6 +7,7 @@
     Public Const wbFALSE = 0
     Public Const wbTRUE = 1
     Public Const wbNODATE = #11/22/1964 00:00:00#
+    Public Const NOSTRING = "X"
 
     Public Const obDEFAULTCOLOR = 0
     Public Const obDEFAULTSIZE = "NULL"
@@ -30,6 +31,8 @@
     Public Const RezeptImRezept = "®"
     'Text Rohstoff wird nicht deklariert
     Public Const FlagKeineDeklaration = "NO DECLARATION"
+    'Trennzeichen in MFF155(Mehlanteile)
+    Public Const TrennzMehlAnteil = " "
     'Flag Rohstoff zählt nicht zum Rezeptgewicht
     Public Const ZaehltNichtZumRezeptGewicht = "1"
     Public Const ZaehltZumRezeptGewicht = "0"
@@ -493,6 +496,7 @@
         Tx_Lieferant           'Lieferant
         Tx_DeklarationIntern
         Tx_DeklarationExtern
+        Tx_Mehlzusammensetzung 'Mehlzusammensetzung
     End Enum
 
     Enum Hinweise

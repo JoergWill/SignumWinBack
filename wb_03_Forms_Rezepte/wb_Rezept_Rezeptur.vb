@@ -455,6 +455,9 @@ Public Class wb_Rezept_Rezeptur
         Else
             tb_ZutatenListe.Text = Rezept.ZutatenListe(wb_Global.ZutatenListeMode.Hide_ENummer)
         End If
+
+        'Mehlzusammensetzung (Berechnet aus der Zutatenliste - getrennt durch Zeilenvorschub)
+        tbMehlZusammenSetzung.Text = Rezept.MehlZusammensetzung(vbCrLf)
     End Sub
 
     ''' <summary>

@@ -19,9 +19,15 @@ Public Class wb_Produktionsschritt
     Private _Typ As String
     Private _Tour As String
     Private _ChargenNummer As String
+    Private _ARS_Index As Integer
+    Private _ARZ_Index As Integer
+    Private _ArtikelIndex As Integer
+    Private _Schritt As Integer
+    Private _RunIndex As Integer
     Private _AuftragsNummer As String
     Private _IstInProduktion As Boolean
     Private _MengeInProduktion As Double
+    Private _Status As Integer
 
     Private _ArtikelNummer As String
     Private _ArtikelBezeichnung As String
@@ -38,6 +44,7 @@ Public Class wb_Produktionsschritt
     Private _ProdVorlauf As Integer
 
     Private _Sollwert As String
+    Private _Istwert As String
     Private _SollwertProzent As String
     Private _Sollwert_kg As Double
     Private _Sollmenge_Stk As Double
@@ -54,6 +61,14 @@ Public Class wb_Produktionsschritt
     Private _Bestellt_Kunde As String
     Private _Bestellt_Menge_Stk As String
     Private _Bestellt_Text As String
+
+    Private _KO_Typ As wb_Global.KomponTypen
+    Private _KO_Nr As Integer
+    Private _KO_Nummer As String
+    Private _KO_Bezeichnung As String
+    Private _KO_Einheit As String
+    Private _KO_Charge As String
+
 
     ''' <summary>
     ''' Kopiert alle Properties dieser Klasse auf die Properties der übergebenen Klasse.
@@ -96,6 +111,17 @@ Public Class wb_Produktionsschritt
             LagerBestand = .Bilanzmenge
             ProdVorlauf = .ProdVorlauf
         End With
+    End Sub
+
+    Public Sub CopyFromRezeptschritt(rs As wb_Produktionsschritt)
+        'alle Properties kopieren
+        CopyFrom(rs)
+        'Komponentenzeile in Artikel-Felder kopieren
+        _ArtikelNummer = _KO_Nummer
+        _ArtikelBezeichnung = _KO_Bezeichnung
+        _ArtikelNr = _KO_Nr
+        _Einheit = _KO_Einheit
+        _Typ = _KO_Typ
     End Sub
 
     Public Sub CopyFromRezeptSchritt(rs As wb_Rezeptschritt, Faktor As Double)
@@ -405,6 +431,46 @@ Public Class wb_Produktionsschritt
                         Return wb_Functions.FormatStr(_LagerBestand, 3)
                     Case Else
                         Return ""
+                End Select
+            End If
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Lager-Bestand. Anzeige im VirtualTree. Unterscheidung anhand der Type:
+    '''     -   Artikel-Chargen-Zeile   Lagerbestand in Stück
+    '''     -   Rezept-Chargen-Zeile    keine Anzeige
+    '''     -   Rezept-Schritte         Anzeige Lagerbestand als formatierter Zahlenwert in kg
+    '''     
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property VirtTreeIstwert As String
+        Get
+            'TODO Hier noch ISTMENGE EINFÜGEN
+            If Typ = KO_ZEILE_ARTIKEL Then
+                If Sollmenge_Stk <> 0 Then
+                    Return wb_Functions.FormatStr(Sollmenge_Stk, 0)
+                Else
+                    Return ""
+                End If
+
+            ElseIf Typ = KO_ZEILE_REZEPT Then
+                Return wb_Functions.FormatStr(Sollwert_kg, 3)
+
+            Else
+                Select Case Typ
+                    Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
+                        Return ""
+                    Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
+                        Return wb_Functions.FormatStr(_Istwert, 3)
+                    Case KO_TYPE_SAUER_ZUGABE
+                        If ParamNr = 1 Then
+                            Return wb_Functions.FormatStr(_Istwert, 3)
+                        Else
+                            Return wb_Functions.FormatStr(_SollwertProzent, 3)
+                        End If
+                    Case Else
+                        Return _Istwert
                 End Select
             End If
         End Get
@@ -1042,4 +1108,120 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public Property KO_Typ As wb_Global.KomponTypen
+        Get
+            Return _KO_Typ
+        End Get
+        Set(value As wb_Global.KomponTypen)
+            _KO_Typ = value
+        End Set
+    End Property
+
+    Public Property KO_Nr As Integer
+        Get
+            Return _KO_Nr
+        End Get
+        Set(value As Integer)
+            _KO_Nr = value
+        End Set
+    End Property
+
+    Public Property KO_Nummer As String
+        Get
+            Return _KO_Nummer
+        End Get
+        Set(value As String)
+            _KO_Nummer = value
+        End Set
+    End Property
+
+    Public Property KO_Bezeichnung As String
+        Get
+            Return _KO_Bezeichnung
+        End Get
+        Set(value As String)
+            _KO_Bezeichnung = value
+        End Set
+    End Property
+
+    Public Property KO_Einheit As String
+        Get
+            Return _KO_Einheit
+        End Get
+        Set(value As String)
+            _KO_Einheit = value
+        End Set
+    End Property
+
+    Public Property Istwert As String
+        Get
+            Return _Istwert
+        End Get
+        Set(value As String)
+            _Istwert = value
+        End Set
+    End Property
+
+    Public Property Status As Integer
+        Get
+            Return _Status
+        End Get
+        Set(value As Integer)
+            _Status = value
+        End Set
+    End Property
+
+    Public Property RunIndex As Integer
+        Get
+            Return _RunIndex
+        End Get
+        Set(value As Integer)
+            _RunIndex = value
+        End Set
+    End Property
+
+    Public Property ARZ_Index As Integer
+        Get
+            Return _ARZ_Index
+        End Get
+        Set(value As Integer)
+            _ARZ_Index = value
+        End Set
+    End Property
+
+    Public Property ARS_Index As Integer
+        Get
+            Return _ARS_Index
+        End Get
+        Set(value As Integer)
+            _ARS_Index = value
+        End Set
+    End Property
+
+    Public Property Schritt As Integer
+        Get
+            Return _Schritt
+        End Get
+        Set(value As Integer)
+            _Schritt = value
+        End Set
+    End Property
+
+    Public Property KO_Charge As String
+        Get
+            Return _KO_Charge
+        End Get
+        Set(value As String)
+            _KO_Charge = value
+        End Set
+    End Property
+
+    Public Property ArtikelIndex As Integer
+        Get
+            Return _ArtikelIndex
+        End Get
+        Set(value As Integer)
+            _ArtikelIndex = value
+        End Set
+    End Property
 End Class

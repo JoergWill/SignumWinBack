@@ -134,6 +134,7 @@ Public Class ob_Artikel_ZuordnungRezept
             Case "wbSAVE"
                 'Daten in der Komponenten-Klasse sichern
                 KompRzChargen.SaveData(DirectCast(k, wb_Komponente))
+                '
 
             Case "wbUPDATE"
                 'Daten in der Komponenten-Klasse updaten (nur RzNr, Rezeptnummer, Rezeptname)
@@ -186,6 +187,8 @@ Public Class ob_Artikel_ZuordnungRezept
         'Fenster Cloud-Zuordnung modal anzeigen
         RohstoffCloud = New wb_Rohstoffe_Cloud
         RohstoffCloud.ShowDialog()
+        'Matchcode in aktuellen Artikel eintragen
+        KompRzChargen.ID = wb_Rohstoffe_Shared.RohStoff.MatchCode
         RohstoffCloud = Nothing
     End Sub
 
@@ -199,9 +202,13 @@ Public Class ob_Artikel_ZuordnungRezept
         'Artikel Nährwerte update
         Dim nwtUpdateArtikel As New wb_nwtUpdateArtikel
         'Start bei Artikelnummer x - 1
-        nwtUpdateArtikel.UpdateNext(Nr - 1, True)
+        If nwtUpdateArtikel.UpdateNext(Nr - 1, True) Then
+            'Die Daten sind in OrgaBack erst nach Laden des Artikels sichtbar
+            MsgBox("Die aktualisierten Nährwerte und Allergen" & vbCrLf & "sind erst nach erneutem Aufruf des Artikels in OrgaBack sichtbar", MsgBoxStyle.OkOnly, "WinBack-AddIn")
+            'Aktualisierung erforderlich
+            RaiseEvent DataInvalidated()
+        End If
+        'Speicher wieder freigeben
         nwtUpdateArtikel = Nothing
-        'Die Daten sind in OrgaBack erst nach Laden des Artikels sichtbar
-        MsgBox("Die aktualisierten Nährwerte und Allergen" & vbCrLf & "sind erst nach erneutem Aufruf des Artikels in OrgaBack sichtbar", MsgBoxStyle.OkOnly, "WinBack-AddIn")
     End Sub
 End Class

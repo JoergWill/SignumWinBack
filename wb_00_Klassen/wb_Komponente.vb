@@ -33,6 +33,7 @@ Public Class wb_Komponente
 
     Private KO_DeklBezeichnungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
     Private KO_DeklBezeichnungIntern As New wb_Hinweise(Hinweise.DeklBezRohstoffIntern)
+    Private KO_MehlZusammenSetzung As New wb_Hinweise(Hinweise.MehlZusammensetzung)
 
     Private _DataHasChanged As Boolean = False
     Private _LastErrorText As String
@@ -40,6 +41,7 @@ Public Class wb_Komponente
     Private _RezeptName As String = Nothing
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
+    Private _MehlZusammensetzung As String = wb_Global.NOSTRING
     Private _ReadCalcPreis As Boolean = True
 
     Private _RootParameter As New wb_KomponParam(Nothing, 0, 0, "")
@@ -101,7 +103,7 @@ Public Class wb_Komponente
 
         KO_DeklBezeichnungExtern.Invalid()
         KO_DeklBezeichnungIntern.Invalid()
-
+        KO_MehlZusammenSetzung.Invalid()
 
         ArtikelChargen.Invalidate()
         TeigChargen.Invalidate()
@@ -187,8 +189,9 @@ Public Class wb_Komponente
 
     Public Property Bezeichnung As String
         Set(value As String)
-            'Änderungen loggen
-            KO_Bezeichnung = ChangeLogAdd(LogType.Prm, Parameter.Tx_Bezeichnung, KO_Bezeichnung, wb_Functions.XRemoveSonderZeichen(value))
+            'Änderungen loggen (geändert 15-05-2020 Weigmann)
+            'KO_Bezeichnung = ChangeLogAdd(LogType.Prm, Parameter.Tx_Bezeichnung, KO_Bezeichnung, wb_Functions.XRemoveSonderZeichen(value))
+            KO_Bezeichnung = value
             'Flag setzen wenn sich die Daten geändert haben
             If ChangeLogChanged Then
                 _DataHasChanged = True
@@ -771,8 +774,9 @@ Public Class wb_Komponente
 
     Public Property Lieferant As String
         Set(value As String)
-            'Änderungen loggen
-            LF_Lieferant = ChangeLogAdd(LogType.Prm, Parameter.Tx_Lieferant, LF_Lieferant, value)
+            'Änderungen loggen (geändert 15-05-2020 Weigmann)
+            'LF_Lieferant = ChangeLogAdd(LogType.Prm, Parameter.Tx_Lieferant, LF_Lieferant, value)
+            LF_Lieferant = value
         End Set
         Get
             Return LF_Lieferant
@@ -787,7 +791,21 @@ Public Class wb_Komponente
 
     Public Property TimeStamp As Date
     Public Property BestellNummer As String
+
     Public Property Mehlzusammensetzung As String
+        Get
+            'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
+            If Not KO_MehlZusammenSetzung.ReadOK Then
+                KO_MehlZusammenSetzung.Read(KO_Nr)
+            End If
+            Return KO_MehlZusammenSetzung.Memo
+        End Get
+        Set(value As String)
+            KO_MehlZusammenSetzung.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_Mehlzusammensetzung, Mehlzusammensetzung, value)
+            'Datenänderung in Datenbank sichern
+            KO_MehlZusammenSetzung.Write()
+        End Set
+    End Property
 
     Public Property MatchCode As String
         Get

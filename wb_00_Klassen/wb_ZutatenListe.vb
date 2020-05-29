@@ -40,6 +40,51 @@ Public Class wb_ZutatenListe
         Return s
     End Function
 
+    ''' <summary>
+    ''' Erzeugt aus der Zutatenliste die Mehlzusammensetzung in Prozent als String.
+    ''' 
+    ''' Die (flache) Zutatenliste wird einzeln durchlaufen und alle Sollwerte der Rohstoffe,
+    ''' die zu einer Rohstoff-Gruppe mit Kennung 'Deklarieren' gehören, werden addiert.
+    ''' 
+    ''' Am Ende wird der prozentuale Anteil der Mengen berechnet und sortiert als String
+    ''' ausgegeben.
+    ''' </summary>
+    ''' <param name="TrennZeichen"></param>
+    ''' <returns></returns>
+    Public Function PrintMehlZusammenSetzung(TrennZeichen As String) As String
+        'Gesamtsummer aller Werte in allen Gruppen
+        Dim Summe As Double = 0
+        'Ergebnis-String Menge pro Rohstoff-Gruppe in Prozent
+        Dim Result As String = ""
+
+        'Schleife über alle Rohstoff-Gruppen mit Flag Deklaration
+        For Each MehlGruppe As wb_MehlGruppe In wb_Rohstoffe_Shared.MehlGruppe
+
+            'Am Anfang der Schleife Menge auf Null setzen
+            MehlGruppe.ClearMenge()
+
+            'Schleife über alle ZutatenListen
+            For Each x As wb_Global.ZutatenListe In Liste
+                'Rohstoff in der Zutatenliste gehört zu dieser Gruppe(Mehlsorte)
+                If x.Grp1 = MehlGruppe.GruppeNr Or x.Grp2 = MehlGruppe.GruppeNr Then
+                    MehlGruppe.Add(x.SollMenge)
+                End If
+            Next
+
+            'Summe aller Gruppen - Notwendig zur Berechnung des prozentualen Anteils
+            Summe += MehlGruppe.MengeGesKg
+        Next
+
+        'Ergebnisliste sortieren nach Mengen-Anteil
+        wb_Rohstoffe_Shared.MehlGruppe.Sort()
+
+        'String aus allen verwendeten Mehlsorten erzeugen, getrennt durch Trennzeichen
+        For Each MehlGruppe As wb_MehlGruppe In wb_Rohstoffe_Shared.MehlGruppe
+            Result = MehlGruppe.GetResultString(Result, TrennZeichen, Summe)
+        Next
+        Return Result
+    End Function
+
     Public Sub Del_Doubletten()
         Dim lc As Integer = Liste.Count - 1
         Dim i As Integer = 0

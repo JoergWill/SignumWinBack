@@ -961,7 +961,7 @@
     <value>cbLiniengruppe</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.4.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -982,7 +982,7 @@
     <value>cbVariante</value>
   </data>
   <data name="&gt;&gt;cbVariante.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.4.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbVariante.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -1695,6 +1695,66 @@
   <data name="&gt;&gt;tb_Naehrwerte.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 11.25pt, style=Bold</value>
+  </data>
+  <data name="Label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>659, 170</value>
+  </data>
+  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 18</value>
+  </data>
+  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Mehl-Zusammensetzung</value>
+  </data>
+  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
+    <value>Label1</value>
+  </data>
+  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tbMehlZusammenSetzung.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 11.25pt</value>
+  </data>
+  <data name="tbMehlZusammenSetzung.Location" type="System.Drawing.Point, System.Drawing">
+    <value>662, 191</value>
+  </data>
+  <data name="tbMehlZusammenSetzung.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tbMehlZusammenSetzung.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 251</value>
+  </data>
+  <data name="tbMehlZusammenSetzung.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="&gt;&gt;tbMehlZusammenSetzung.Name" xml:space="preserve">
+    <value>tbMehlZusammenSetzung</value>
+  </data>
+  <data name="&gt;&gt;tbMehlZusammenSetzung.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbMehlZusammenSetzung.Parent" xml:space="preserve">
+    <value>tb_Zutaten</value>
+  </data>
+  <data name="&gt;&gt;tbMehlZusammenSetzung.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="SwListeOptimieren.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1723,7 +1783,7 @@
     <value>tb_Zutaten</value>
   </data>
   <data name="&gt;&gt;SwListeOptimieren.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="lblListeOptimieren.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1756,7 +1816,7 @@
     <value>tb_Zutaten</value>
   </data>
   <data name="&gt;&gt;lblListeOptimieren.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="SwENummern.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1786,7 +1846,7 @@
     <value>tb_Zutaten</value>
   </data>
   <data name="&gt;&gt;SwENummern.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="lblENummern.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1819,7 +1879,7 @@
     <value>tb_Zutaten</value>
   </data>
   <data name="&gt;&gt;lblENummern.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="tb_ZutatenListe.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 11.25pt</value>
@@ -1846,7 +1906,7 @@
     <value>tb_Zutaten</value>
   </data>
   <data name="&gt;&gt;tb_ZutatenListe.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1879,7 +1939,7 @@
     <value>tb_Zutaten</value>
   </data>
   <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="tb_Zutaten.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 11.25pt</value>
@@ -1978,7 +2038,7 @@
     <value>GridView_RzVerwendung</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Type" xml:space="preserve">
-    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.6.4.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Parent" xml:space="preserve">
     <value>tb_Verwendung</value>
@@ -2023,7 +2083,7 @@
     <value>Wb_TabControl</value>
   </data>
   <data name="&gt;&gt;Wb_TabControl.Type" xml:space="preserve">
-    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.6.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.6.4.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;Wb_TabControl.Parent" xml:space="preserve">
     <value>$this</value>

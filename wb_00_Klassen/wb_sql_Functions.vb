@@ -1,4 +1,5 @@
 ﻿Imports MySql.Data.MySqlClient
+Imports WinBack
 Imports WinBack.wb_Sql_Selects
 
 ''' <summary>
@@ -166,6 +167,29 @@ Public Class wb_sql_Functions
         Dim Count As Integer = winback.sqlCommand(setParams(sqlUpdateKompParams, KomponentenNummer, ParameterNummer, Wert))
         winback.Close()
         Return (Count >= 0)
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt die nächste frei Tageswechsel-Nummer aus der Tabelle wbdaten.Tageswechsel
+    ''' Legt gleich einen neuen Datensatz mit dieser TagesWechsel-Nummer an. Damit ist die TW-
+    ''' Nummer gesichert und blockiert!
+    ''' 
+    ''' Die Datenverbindung bleibt offen und wird nicht geschlossen.
+    ''' </summary>
+    ''' <param name="wbdaten"></param>
+    ''' <returns></returns>
+    Friend Shared Function getNewTWNummer(wbdaten As wb_Sql, Linie As Integer, Start As DateTime, Ende As DateTime) As Integer
+        'Max-Wert KO-Nr aus Tabelle Komponenten ermitteln
+        wbdaten.sqlSelect(sqlMaxTWNummer)
+        If wbdaten.Read Then
+            'TODO was passiert, wenn für diese Linie schon eine offene TW-Nr exisitiert (TW_Begin definiert, TW_Ende = NULL)
+            Dim TWNr As Integer = wbdaten.iField("MAX(TW_Nr)") + 1
+            wbdaten.CloseRead()
+            wbdaten.sqlCommand(setParams(sqlInsertTWNummer, TWNr, Linie, MySQLdatetime(Start), MySQLdatetime(Ende)))
+            Return TWNr
+        Else
+            Return wb_Global.UNDEFINED
+        End If
     End Function
 
     ''' <summary>

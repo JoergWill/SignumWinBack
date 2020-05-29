@@ -52,7 +52,7 @@
     Public Sub InitGruppenListen(StatistikType As wb_Global.StatistikType)
         'Liste aller Linien
         cbLinien.Items.Clear()
-        For Each Linie As wb_Global.wb_Linien In wb_Linien_Global.Linien
+        For Each Linie As wb_Global.wb_Linien In wb_Linien_Global.LinienListe
             cbLinien.Items.Add(Linie.Linie.ToString("  #") & " (" & Linie.Bezeichnung & ")")
         Next
 

@@ -119,6 +119,8 @@ Partial Class wb_Rezept_Rezeptur
         Me.TextHinweise = New System.Windows.Forms.TextBox()
         Me.tb_Verwendung = New System.Windows.Forms.TabPage()
         Me.GridView_RzVerwendung = New WinBack.wb_DataGridView()
+        Me.tbMehlZusammenSetzung = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.StatusStrip.SuspendLayout()
         Me.gbDetail.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -696,6 +698,8 @@ Partial Class wb_Rezept_Rezeptur
         '
         'tb_Zutaten
         '
+        Me.tb_Zutaten.Controls.Add(Me.Label1)
+        Me.tb_Zutaten.Controls.Add(Me.tbMehlZusammenSetzung)
         Me.tb_Zutaten.Controls.Add(Me.SwListeOptimieren)
         Me.tb_Zutaten.Controls.Add(Me.lblListeOptimieren)
         Me.tb_Zutaten.Controls.Add(Me.SwENummern)
@@ -791,6 +795,17 @@ Partial Class wb_Rezept_Rezeptur
         Me.GridView_RzVerwendung.ReadOnly = True
         Me.GridView_RzVerwendung.SortCol = -1
         Me.GridView_RzVerwendung.x8859_5_FieldName = ""
+        '
+        'tbMehlZusammenSetzung
+        '
+        Me.tbMehlZusammenSetzung.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        resources.ApplyResources(Me.tbMehlZusammenSetzung, "tbMehlZusammenSetzung")
+        Me.tbMehlZusammenSetzung.Name = "tbMehlZusammenSetzung"
+        '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
         '
         'wb_Rezept_Rezeptur
         '
@@ -905,4 +920,6 @@ Partial Class wb_Rezept_Rezeptur
     Private WithEvents VirtualTree As Infralution.Controls.VirtualTree.VirtualTree
     Friend WithEvents EnhEditText As Infralution.Controls.VirtualTree.CellEditor
     Friend WithEvents EnhEdit1 As EnhEdit.EnhEdit
+    Friend WithEvents Label1 As Windows.Forms.Label
+    Friend WithEvents tbMehlZusammenSetzung As Windows.Forms.TextBox
 End Class

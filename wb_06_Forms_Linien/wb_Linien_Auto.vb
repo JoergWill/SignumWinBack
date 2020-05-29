@@ -12,7 +12,7 @@ Public Class wb_Linien_Auto
 
     'Produktionsdaten einlesen für Linie
     Private _ProduktionLinie As Integer = wb_Global.UNDEFINED
-    Private _ProduktionVariante As Integer = wb_Global.UNDEFINED
+    Private _ProduktionVariante As Integer = wb_Global.LinienGruppeStandard
 
     Public Sub New()
 
@@ -21,9 +21,8 @@ Public Class wb_Linien_Auto
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-        'Produktionsdaten einlesen für Linie ...
-        _ProduktionLinie = 3
-        _ProduktionVariante = 1
+        'ComboBox Linien füllen
+        cbLinien.Fill(wb_Linien_Global.ProdLinien)
 
     End Sub
 
@@ -33,11 +32,24 @@ Public Class wb_Linien_Auto
         oFont = VirtualTree.Font
         iFont = New Drawing.Font(oFont.Name, oFont.Size, Drawing.FontStyle.Italic)
 
-        ReadProduktionWinBack()
-
+        cbLinien.Text = "Bitte Linie auswählen"
     End Sub
 
-    Private Sub ReadProduktionWinBack()
+    Private Sub BtnAktualisieren_Click(sender As Object, e As EventArgs) Handles BtnAktualisieren.Click
+        ReadProduktionWinBack(_ProduktionLinie, _ProduktionVariante)
+    End Sub
+
+    Private Sub BtnStart_Click(sender As Object, e As EventArgs) Handles BtnStart.Click
+        StartProduktionWinBack()
+    End Sub
+
+    Private Sub cbLinien_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLinien.SelectedIndexChanged
+        _ProduktionLinie = cbLinien.GetKeyFromIndex(cbLinien.SelectedIndex)
+        ReadProduktionWinBack(_ProduktionLinie, _ProduktionVariante)
+        BtnStart.Focus()
+    End Sub
+
+    Private Sub ReadProduktionWinBack(ProdLinie As Integer, ProdVariante As Integer)
         'Cursor umschalten
         Me.Cursor = Cursors.WaitCursor
 
@@ -51,7 +63,7 @@ Public Class wb_Linien_Auto
         End If
 
         'Daten aus WinBack ArbRezepte und ArbRZSchritte einlesen
-        If Not Produktion.MySQLdbSelect_ArbRzSchritte(_ProduktionLinie, _ProduktionVariante) Then
+        If Not Produktion.MySQLdbSelect_ArbRzSchritte(ProdLinie, ProdVariante) Then
             'Default-Cursor
             Me.Cursor = Cursors.Default
             'keine Datensätze in der Vorlage
@@ -66,5 +78,22 @@ Public Class wb_Linien_Auto
 
     End Sub
 
+    Private Sub StartProduktionWinBack()
+        'Daten aus der Produktion werden direkt nach wbdaten geschrieben
+        Dim Tageswechsel As Boolean = True
+
+        'Produktion durchlaufen (virtuelle Linie)
+        Produktion.VirtProduktion(_ProduktionLinie, _ProduktionVariante, Tageswechsel)
+
+        'Anzeige aktualisieren
+        If Tageswechsel Then
+            'alle Einträge löschen
+            Produktion.RootProduktionsSchritt.ChildSteps.Clear()
+            VirtualTree.Invalidate()
+        End If
+
+        'Tree neu zeichnen(leer)
+        VirtualTree.DataSource = Produktion.RootProduktionsSchritt
+    End Sub
 
 End Class

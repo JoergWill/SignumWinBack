@@ -43,6 +43,7 @@ Public Class ob_RecipeProvider
     ''' <param name="Branch">Filiale, für die die Rezeptur aufgelöst werden soll. Bei Werten > 0 werden evtl. vorhandene filialspezifische Varianten berücksichtigt</param>
     ''' <returns></returns>
     Public Function GetRecipe(ArticleNo As String, Unit As Short, Color As Short, Size As String, Version As Short, Branch As Short) As IRecipeInfo Implements IRecipeProvider.GetRecipe
+        Debug.Print("GetRecipe " & ArticleNo)
         RecipeInfo = New ob_RecipeInfo(ArticleNo, Unit, Size, Version, Branch)
         Return RecipeInfo
     End Function
@@ -56,6 +57,7 @@ Public Class ob_RecipeProvider
     '''' <param name="Size">Grösse des Artikels, der Bestandteil zurückgegebener Rezepturen sein muss</param>
     '''' <returns></returns>
     Public Function GetArticleUsage(ArticleNo As String, Unit As Short, Color As Short, Size As String) As IArticle() Implements IRecipeProvider.GetArticleUsage
+        Debug.Print("GetArticleUsage " & ArticleNo)
         'ArrayList initialisieren
         Dim ArticleUsage As New List(Of ob_ArticleUsage)
 
@@ -179,6 +181,7 @@ Public Class ob_RecipeInfo
                 'Rezeptur einlesen (Der Backverlust ist hier eigentlich nicht relevant)
                 'TODO Sauerteig-Rezepte (Variante 0) und kein Rezept abfangen !!
                 Dim Rz As New wb_Rezept(RzNr, Nothing, Komponente.Backverlust, Variante, "", "", False)
+                Debug.Print("Rezeptur " & Rz.RezeptNummer & "/" & Rz.RezeptBezeichnung & " gefunden für Artikel/Komponente " & ArticleNo)
 
                 'Liste aller Child-Rezeptschritte aus dem Root-Rezeptschritt berechnet auf das Stückgewicht(Nass)
                 _Ingredients = Rz.RootRezeptSchritt.CalcIngredients(StkGewicht, Variante)
@@ -288,6 +291,10 @@ Public Class ob_RecipeInfo
     ''' </summary>
     Public Property Ingredients As IList Implements IRecipeInfo.Ingredients
         Get
+            Debug.Print("Ingredients")
+            For Each x As ob_RecipeIngredient In _Ingredients
+                Debug.Print(" Ingredient/Amount " & x.ArticleNo & "/" & x.Amount)
+            Next
             Return _Ingredients
         End Get
         Set(value As IList)

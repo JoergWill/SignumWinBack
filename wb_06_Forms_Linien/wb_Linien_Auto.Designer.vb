@@ -35,20 +35,16 @@ Partial Class wb_Linien_Auto
         Dim ObjectCellBinding7 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding8 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding9 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding10 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Dim ObjectCellBinding11 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
-        Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
-        Me.ColCharge = New Infralution.Controls.VirtualTree.Column()
         Me.ColNummer = New Infralution.Controls.VirtualTree.Column()
+        Me.ColCharge = New Infralution.Controls.VirtualTree.Column()
         Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
-        Me.ColKommentar = New Infralution.Controls.VirtualTree.Column()
         Me.ColLinie = New Infralution.Controls.VirtualTree.Column()
-        Me.ColTour = New Infralution.Controls.VirtualTree.Column()
-        Me.ColStartZeit = New Infralution.Controls.VirtualTree.Column()
         Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
-        Me.ColBestand = New Infralution.Controls.VirtualTree.Column()
-        Me.ColEinheitBestand = New Infralution.Controls.VirtualTree.Column()
+        Me.ColIstwert = New Infralution.Controls.VirtualTree.Column()
+        Me.ColEinheitIstwert = New Infralution.Controls.VirtualTree.Column()
+        Me.ColStartZeit = New Infralution.Controls.VirtualTree.Column()
+        Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
         Me.CellEditor2 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
         Me.CellEditor1 = New Infralution.Controls.VirtualTree.CellEditor()
@@ -57,58 +53,13 @@ Partial Class wb_Linien_Auto
         Me.UniversalEditBox1 = New Infralution.Controls.UniversalEditBox()
         Me.CellEditor4 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.BtnStart = New System.Windows.Forms.Button()
+        Me.lblLinie = New System.Windows.Forms.Label()
+        Me.BtnAktualisieren = New System.Windows.Forms.Button()
+        Me.cbLinien = New WinBack.wb_ComboBox()
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'VirtualTree
-        '
-        Me.VirtualTree.AllowMultiSelect = False
-        Me.VirtualTree.AutoFitColumns = True
-        Me.VirtualTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.VirtualTree.CollapseImage = CType(resources.GetObject("VirtualTree.CollapseImage"), System.Drawing.Image)
-        Me.VirtualTree.Columns.Add(Me.ColCharge)
-        Me.VirtualTree.Columns.Add(Me.ColNummer)
-        Me.VirtualTree.Columns.Add(Me.ColBezeichnung)
-        Me.VirtualTree.Columns.Add(Me.ColKommentar)
-        Me.VirtualTree.Columns.Add(Me.ColLinie)
-        Me.VirtualTree.Columns.Add(Me.ColTour)
-        Me.VirtualTree.Columns.Add(Me.ColStartZeit)
-        Me.VirtualTree.Columns.Add(Me.ColSollwert)
-        Me.VirtualTree.Columns.Add(Me.ColEinheit)
-        Me.VirtualTree.Columns.Add(Me.ColBestand)
-        Me.VirtualTree.Columns.Add(Me.ColEinheitBestand)
-        Me.VirtualTree.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.VirtualTree.EditOnKeyPress = True
-        Me.VirtualTree.Editors.Add(Me.CellEditor2)
-        Me.VirtualTree.Editors.Add(Me.CellEditor1)
-        Me.VirtualTree.Editors.Add(Me.CellEditor3)
-        Me.VirtualTree.Editors.Add(Me.CellEditor4)
-        Me.VirtualTree.ExpandImage = CType(resources.GetObject("VirtualTree.ExpandImage"), System.Drawing.Image)
-        Me.VirtualTree.HeaderHeight = 24
-        Me.VirtualTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.Solid
-        Me.VirtualTree.Location = New System.Drawing.Point(0, 73)
-        Me.VirtualTree.MainColumn = Me.ColNummer
-        Me.VirtualTree.Name = "VirtualTree"
-        Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
-        Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.White
-        Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
-        Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.Cell
-        Me.VirtualTree.ShowRootRow = False
-        Me.VirtualTree.Size = New System.Drawing.Size(1219, 559)
-        Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
-        Me.VirtualTree.TabIndex = 16
-        '
-        'ColCharge
-        '
-        Me.ColCharge.Caption = "Charge"
-        Me.ColCharge.CellEvenStyle.BackColor = System.Drawing.Color.White
-        Me.ColCharge.MinWidth = 80
-        Me.ColCharge.Movable = False
-        Me.ColCharge.Name = "ColCharge"
-        Me.ColCharge.Sortable = False
-        Me.ColCharge.Width = 80
         '
         'ColNummer
         '
@@ -118,7 +69,17 @@ Partial Class wb_Linien_Auto
         Me.ColNummer.Movable = False
         Me.ColNummer.Name = "ColNummer"
         Me.ColNummer.Sortable = False
-        Me.ColNummer.Width = 150
+        Me.ColNummer.Width = 189
+        '
+        'ColCharge
+        '
+        Me.ColCharge.Caption = "Charge"
+        Me.ColCharge.CellEvenStyle.BackColor = System.Drawing.Color.White
+        Me.ColCharge.MinWidth = 80
+        Me.ColCharge.Movable = False
+        Me.ColCharge.Name = "ColCharge"
+        Me.ColCharge.Sortable = False
+        Me.ColCharge.Width = 119
         '
         'ColBezeichnung
         '
@@ -129,18 +90,7 @@ Partial Class wb_Linien_Auto
         Me.ColBezeichnung.Movable = False
         Me.ColBezeichnung.Name = "ColBezeichnung"
         Me.ColBezeichnung.Sortable = False
-        Me.ColBezeichnung.Width = 250
-        '
-        'ColKommentar
-        '
-        Me.ColKommentar.AutoFitWeight = 200.0!
-        Me.ColKommentar.Caption = "Kommentar"
-        Me.ColKommentar.CellEvenStyle.BackColor = System.Drawing.Color.White
-        Me.ColKommentar.MinWidth = 100
-        Me.ColKommentar.Name = "ColKommentar"
-        Me.ColKommentar.Selectable = False
-        Me.ColKommentar.Sortable = False
-        Me.ColKommentar.Width = 271
+        Me.ColBezeichnung.Width = 289
         '
         'ColLinie
         '
@@ -152,24 +102,6 @@ Partial Class wb_Linien_Auto
         Me.ColLinie.Resizable = False
         Me.ColLinie.Sortable = False
         Me.ColLinie.Width = 50
-        '
-        'ColTour
-        '
-        Me.ColTour.Caption = "Tour"
-        Me.ColTour.CellEvenStyle.BackColor = System.Drawing.Color.White
-        Me.ColTour.CellStyle.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.ColTour.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Center
-        Me.ColTour.MinWidth = 50
-        Me.ColTour.Name = "ColTour"
-        Me.ColTour.Sortable = False
-        Me.ColTour.Width = 50
-        '
-        'ColStartZeit
-        '
-        Me.ColStartZeit.Caption = "Start"
-        Me.ColStartZeit.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Center
-        Me.ColStartZeit.MinWidth = 100
-        Me.ColStartZeit.Name = "ColStartZeit"
         '
         'ColSollwert
         '
@@ -190,18 +122,66 @@ Partial Class wb_Linien_Auto
         Me.ColEinheit.Sortable = False
         Me.ColEinheit.Width = 30
         '
-        'ColBestand
+        'ColIstwert
         '
-        Me.ColBestand.Caption = "Bestand"
-        Me.ColBestand.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
-        Me.ColBestand.MinWidth = 100
-        Me.ColBestand.Name = "ColBestand"
+        Me.ColIstwert.Caption = "Istwert"
+        Me.ColIstwert.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
+        Me.ColIstwert.MinWidth = 100
+        Me.ColIstwert.Name = "ColIstwert"
+        Me.ColIstwert.Width = 139
         '
-        'ColEinheitBestand
+        'ColEinheitIstwert
         '
-        Me.ColEinheitBestand.Caption = Nothing
-        Me.ColEinheitBestand.Name = "ColEinheitBestand"
-        Me.ColEinheitBestand.Width = 30
+        Me.ColEinheitIstwert.Caption = Nothing
+        Me.ColEinheitIstwert.Name = "ColEinheitIstwert"
+        Me.ColEinheitIstwert.Width = 69
+        '
+        'ColStartZeit
+        '
+        Me.ColStartZeit.Caption = "Start"
+        Me.ColStartZeit.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Center
+        Me.ColStartZeit.MinWidth = 100
+        Me.ColStartZeit.Name = "ColStartZeit"
+        Me.ColStartZeit.Width = 139
+        '
+        'VirtualTree
+        '
+        Me.VirtualTree.AllowMultiSelect = False
+        Me.VirtualTree.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.VirtualTree.AutoFitColumns = True
+        Me.VirtualTree.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.VirtualTree.CollapseImage = CType(resources.GetObject("VirtualTree.CollapseImage"), System.Drawing.Image)
+        Me.VirtualTree.Columns.Add(Me.ColCharge)
+        Me.VirtualTree.Columns.Add(Me.ColNummer)
+        Me.VirtualTree.Columns.Add(Me.ColBezeichnung)
+        Me.VirtualTree.Columns.Add(Me.ColLinie)
+        Me.VirtualTree.Columns.Add(Me.ColStartZeit)
+        Me.VirtualTree.Columns.Add(Me.ColSollwert)
+        Me.VirtualTree.Columns.Add(Me.ColEinheit)
+        Me.VirtualTree.Columns.Add(Me.ColIstwert)
+        Me.VirtualTree.Columns.Add(Me.ColEinheitIstwert)
+        Me.VirtualTree.EditOnKeyPress = True
+        Me.VirtualTree.Editors.Add(Me.CellEditor2)
+        Me.VirtualTree.Editors.Add(Me.CellEditor1)
+        Me.VirtualTree.Editors.Add(Me.CellEditor3)
+        Me.VirtualTree.Editors.Add(Me.CellEditor4)
+        Me.VirtualTree.ExpandImage = CType(resources.GetObject("VirtualTree.ExpandImage"), System.Drawing.Image)
+        Me.VirtualTree.HeaderHeight = 24
+        Me.VirtualTree.HeaderStyle.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.VirtualTree.LineStyle = Infralution.Controls.VirtualTree.LineStyle.Solid
+        Me.VirtualTree.Location = New System.Drawing.Point(-1, 72)
+        Me.VirtualTree.MainColumn = Me.ColNummer
+        Me.VirtualTree.Name = "VirtualTree"
+        Me.VirtualTree.RowBindings.Add(Me.ObjectRowBinding1)
+        Me.VirtualTree.RowEvenStyle.BackColor = System.Drawing.Color.White
+        Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
+        Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.Cell
+        Me.VirtualTree.ShowRootRow = False
+        Me.VirtualTree.Size = New System.Drawing.Size(1129, 560)
+        Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
+        Me.VirtualTree.TabIndex = 16
         '
         'CellEditor2
         '
@@ -230,6 +210,9 @@ Partial Class wb_Linien_Auto
         '
         'Label1
         '
+        Me.Label1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Label1.Location = New System.Drawing.Point(-132, -105)
         Me.Label1.Name = "Label1"
@@ -273,30 +256,63 @@ Partial Class wb_Linien_Auto
         Me.TextBox1.Visible = False
         Me.TextBox1.WordWrap = False
         '
+        'BtnStart
+        '
+        Me.BtnStart.BackColor = System.Drawing.Color.Lime
+        Me.BtnStart.Location = New System.Drawing.Point(0, 5)
+        Me.BtnStart.Name = "BtnStart"
+        Me.BtnStart.Size = New System.Drawing.Size(122, 61)
+        Me.BtnStart.TabIndex = 1
+        Me.BtnStart.Text = "Start"
+        Me.BtnStart.UseVisualStyleBackColor = False
+        '
+        'lblLinie
+        '
+        Me.lblLinie.AutoSize = True
+        Me.lblLinie.Location = New System.Drawing.Point(128, 28)
+        Me.lblLinie.Name = "lblLinie"
+        Me.lblLinie.Size = New System.Drawing.Size(81, 13)
+        Me.lblLinie.TabIndex = 19
+        Me.lblLinie.Text = "Produktionslinie"
+        '
+        'BtnAktualisieren
+        '
+        Me.BtnAktualisieren.Location = New System.Drawing.Point(216, 5)
+        Me.BtnAktualisieren.Name = "BtnAktualisieren"
+        Me.BtnAktualisieren.Size = New System.Drawing.Size(93, 36)
+        Me.BtnAktualisieren.TabIndex = 20
+        Me.BtnAktualisieren.Text = "Aktualisieren"
+        Me.BtnAktualisieren.UseVisualStyleBackColor = True
+        '
+        'cbLinien
+        '
+        Me.cbLinien.FormattingEnabled = True
+        Me.cbLinien.Location = New System.Drawing.Point(128, 45)
+        Me.cbLinien.Name = "cbLinien"
+        Me.cbLinien.Size = New System.Drawing.Size(181, 21)
+        Me.cbLinien.TabIndex = 18
+        Me.cbLinien.TabStop = False
+        '
         'ObjectRowBinding1
         '
         ObjectCellBinding1.Column = Me.ColNummer
         ObjectCellBinding1.Field = "VirtTreeNummer"
         ObjectCellBinding2.Column = Me.ColCharge
         ObjectCellBinding2.Field = "VirtTreeCharge"
-        ObjectCellBinding3.Column = Me.ColTour
-        ObjectCellBinding3.Field = "VirtTreeTour"
-        ObjectCellBinding4.Column = Me.ColBezeichnung
-        ObjectCellBinding4.Field = "VirtTreeBezeichnung"
-        ObjectCellBinding5.Column = Me.ColKommentar
-        ObjectCellBinding5.Field = "VirtTreeKommentar"
-        ObjectCellBinding6.Column = Me.ColLinie
-        ObjectCellBinding6.Field = "VirtTreeLinie"
-        ObjectCellBinding7.Column = Me.ColSollwert
-        ObjectCellBinding7.Field = "VirtTreeSollwert"
-        ObjectCellBinding8.Column = Me.ColEinheit
+        ObjectCellBinding3.Column = Me.ColBezeichnung
+        ObjectCellBinding3.Field = "VirtTreeBezeichnung"
+        ObjectCellBinding4.Column = Me.ColLinie
+        ObjectCellBinding4.Field = "VirtTreeLinie"
+        ObjectCellBinding5.Column = Me.ColSollwert
+        ObjectCellBinding5.Field = "VirtTreeSollwert"
+        ObjectCellBinding6.Column = Me.ColEinheit
+        ObjectCellBinding6.Field = "VirtTreeEinheit"
+        ObjectCellBinding7.Column = Me.ColIstwert
+        ObjectCellBinding7.Field = "VirtTreeIstwert"
+        ObjectCellBinding8.Column = Me.ColEinheitIstwert
         ObjectCellBinding8.Field = "VirtTreeEinheit"
-        ObjectCellBinding9.Column = Me.ColBestand
-        ObjectCellBinding9.Field = "VirtTreeBestand"
-        ObjectCellBinding10.Column = Me.ColEinheitBestand
-        ObjectCellBinding10.Field = "VirtTreeEinheit"
-        ObjectCellBinding11.Column = Me.ColStartZeit
-        ObjectCellBinding11.Field = "VirtTreeStart"
+        ObjectCellBinding9.Column = Me.ColStartZeit
+        ObjectCellBinding9.Field = "VirtTreeStart"
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
@@ -306,8 +322,6 @@ Partial Class wb_Linien_Auto
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding7)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding8)
         Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding9)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding10)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding11)
         Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
         Me.ObjectRowBinding1.ExpandedImage = CType(resources.GetObject("ObjectRowBinding1.ExpandedImage"), System.Drawing.Image)
         Me.ObjectRowBinding1.Image = CType(resources.GetObject("ObjectRowBinding1.Image"), System.Drawing.Image)
@@ -320,7 +334,11 @@ Partial Class wb_Linien_Auto
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(1219, 632)
+        Me.ClientSize = New System.Drawing.Size(1129, 632)
+        Me.Controls.Add(Me.BtnAktualisieren)
+        Me.Controls.Add(Me.lblLinie)
+        Me.Controls.Add(Me.cbLinien)
+        Me.Controls.Add(Me.BtnStart)
         Me.Controls.Add(Me.VirtualTree)
         Me.Controls.Add(Me.RichTextBox1)
         Me.Controls.Add(Me.TextBox1)
@@ -341,14 +359,12 @@ Partial Class wb_Linien_Auto
     Friend WithEvents ColCharge As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColNummer As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColBezeichnung As Infralution.Controls.VirtualTree.Column
-    Friend WithEvents ColKommentar As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColLinie As Infralution.Controls.VirtualTree.Column
-    Friend WithEvents ColTour As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColStartZeit As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColSollwert As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColEinheit As Infralution.Controls.VirtualTree.Column
-    Friend WithEvents ColBestand As Infralution.Controls.VirtualTree.Column
-    Friend WithEvents ColEinheitBestand As Infralution.Controls.VirtualTree.Column
+    Friend WithEvents ColIstwert As Infralution.Controls.VirtualTree.Column
+    Friend WithEvents ColEinheitIstwert As Infralution.Controls.VirtualTree.Column
     Friend WithEvents CellEditor2 As Infralution.Controls.VirtualTree.CellEditor
     Friend WithEvents RichTextBox1 As Windows.Forms.RichTextBox
     Friend WithEvents CellEditor1 As Infralution.Controls.VirtualTree.CellEditor
@@ -358,4 +374,8 @@ Partial Class wb_Linien_Auto
     Friend WithEvents CellEditor4 As Infralution.Controls.VirtualTree.CellEditor
     Friend WithEvents TextBox1 As Windows.Forms.TextBox
     Friend WithEvents ObjectRowBinding1 As Infralution.Controls.VirtualTree.ObjectRowBinding
+    Friend WithEvents BtnStart As Windows.Forms.Button
+    Friend WithEvents cbLinien As wb_ComboBox
+    Friend WithEvents lblLinie As Windows.Forms.Label
+    Friend WithEvents BtnAktualisieren As Windows.Forms.Button
 End Class

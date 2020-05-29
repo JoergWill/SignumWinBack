@@ -86,6 +86,8 @@ Public Class wb_KompRzChargen
         Komp.RezeptNummer = RezeptNummer
         'Rezeptbezeichnung in MFF203
         Komp.RezeptName = RezeptName
+        'MatchCode
+        Komp.MatchCode = ID
 
         'Backverlust
         Komp.Backverlust = Backverlust
@@ -206,10 +208,13 @@ Public Class wb_KompRzChargen
         End Get
     End Property
 
-    Public ReadOnly Property ID As String
+    Public Property ID As String
         Get
             Return _ID
         End Get
+        Set(value As String)
+            _ID = value
+        End Set
     End Property
 
     ''' <summary>
