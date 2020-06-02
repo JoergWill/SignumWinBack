@@ -5953,6 +5953,7 @@ Text aus Datenbank lesen - Übersetzung
 <member name="M:WinBack.ob_Artikel_DockingExtension.Extendee_BeforeCopy(System.Object,System.EventArgs)">
  <summary>
  Das Objekt soll kopiert werden.
+ Hier MUSS unbedingt das MFF201 (KO_Nr) geschlöscht werden, da sonst der alte Verweis beim Kopieren bestehen bleibt.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

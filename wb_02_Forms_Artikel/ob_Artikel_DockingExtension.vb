@@ -257,10 +257,15 @@ Public Class ob_Artikel_DockingExtension
 
     ''' <summary>
     ''' Das Objekt soll kopiert werden.
+    ''' Hier MUSS unbedingt das MFF201 (KO_Nr) geschlöscht werden, da sonst der alte Verweis beim Kopieren bestehen bleibt.
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_BeforeCopy(sender As Object, e As EventArgs)
+        'Vor Kopieren Artikel in OrgaBack
+        Komponente = New wb_Komponente
+        bAddNew = True
+        Extendee_ExecuteCommand("INVALID", Nothing)
         Debug.Print("Article_DockingExtension BeforeCopy")
     End Sub
 
@@ -555,13 +560,13 @@ Public Class ob_Artikel_DockingExtension
         Komponente.ktTyp200.Verkaufsgewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("NettoInhalt").ToString) / 1000
 
         'Testausgabe
-        Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
-        Debug.Print("Artikel-Bezeichnung    " & Komponente.Bezeichnung)
-        Debug.Print("Artikel-Kurzname       " & Komponente.Kurzname)
-        Debug.Print("Index                  " & Komponente.Nr)
-        Debug.Print("Komponenten-Type       " & wb_Functions.KomponTypeToInt(Komponente.Type).ToString)
-        Debug.Print("ZutatenListe           " & Komponente.Deklaration)
-        Debug.Print("MatchCode              " & Komponente.MatchCode)
+        'Debug.Print("Artikelnummer(alpha)   " & Komponente.Nummer)
+        'Debug.Print("Artikel-Bezeichnung    " & Komponente.Bezeichnung)
+        'Debug.Print("Artikel-Kurzname       " & Komponente.Kurzname)
+        'Debug.Print("Index                  " & Komponente.Nr)
+        'Debug.Print("Komponenten-Type       " & wb_Functions.KomponTypeToInt(Komponente.Type).ToString)
+        'Debug.Print("ZutatenListe           " & Komponente.Deklaration)
+        'Debug.Print("MatchCode              " & Komponente.MatchCode)
     End Sub
 
     Private Sub SetKomponentenDaten()

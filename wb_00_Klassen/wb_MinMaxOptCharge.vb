@@ -12,7 +12,7 @@ Public Class wb_MinMaxOptCharge
     Private _NoErrorCheck As Boolean = True
     Private _HasChanged As Boolean = False
     Private _ErrorCode As wb_Global.MinMaxOptChargenError
-    Private _Toleranz As Double = 0.0
+    Private _Toleranz As Double = 0.1
 
     ''' <summary>
     ''' Teigmenge in kg
@@ -52,6 +52,8 @@ Public Class wb_MinMaxOptCharge
             MinCharge.StkGewicht = _StkGewicht
             MaxCharge.StkGewicht = _StkGewicht
             OptCharge.StkGewicht = _StkGewicht
+            'Toleranz Fehler bei Chargengrößen in kg
+            _Toleranz = _StkGewicht / 1000
 
             'Werte aktualisieren
             If _NoErrorCheck Then
@@ -97,6 +99,9 @@ Public Class wb_MinMaxOptCharge
         MaxCharge.MengeInkg = 0
         TeigGewicht = 0
         StkGewicht = 0
+        'Toleranz Default-Wert
+        _Toleranz = 0.1
+
         'Event(Aktualisierung) wieder freigeben
         _NoErrorCheck = True
     End Sub

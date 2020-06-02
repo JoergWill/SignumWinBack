@@ -134,7 +134,6 @@ Public Class ob_Artikel_ZuordnungRezept
             Case "wbSAVE"
                 'Daten in der Komponenten-Klasse sichern
                 KompRzChargen.SaveData(DirectCast(k, wb_Komponente))
-                '
 
             Case "wbUPDATE"
                 'Daten in der Komponenten-Klasse updaten (nur RzNr, Rezeptnummer, Rezeptname)
