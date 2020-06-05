@@ -116,6 +116,18 @@ Public Class ob_Admin_OrgaBackSettings
             oSetting.RestartNeeded = 1
             oSetting.FormatString = "s"
             oSettings.Add(oSetting)
+
+            'Setting WinBack.InterneDeklaration
+            oSetting = oFactory.GetSetting
+            oSetting.DisplaySubCategory = "WinBack"
+            oSetting.SubCategory = "WinBack"
+            oSetting.Description = "Die Zutatenliste wird aus der internen Deklaration der Rohstoffe erstellt." & vbCrLf & "Ist die interne Deklaration leer, wird das Feld externe Deklaration verwendet"
+            oSetting.DisplayEntry = "InterneDeklaration"
+            oSetting.Entry = "1"
+            oSetting.RestartNeeded = 0
+            oSetting.FormatString = "s"
+            oSettings.Add(oSetting)
+
         End If
 
         Return oSettings

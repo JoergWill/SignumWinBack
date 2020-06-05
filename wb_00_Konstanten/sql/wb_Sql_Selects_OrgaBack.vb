@@ -53,6 +53,10 @@
     Public Const mssqlInsertAlg = "INSERT INTO [dbo].[ArtikelAllergene] (ArtikelNr, StuecklistenVariantenNr, AllergenNr, Kennzeichnung) " &
                                   "VALUES ('[0]', [3], [1], '[2]')"
 
+    'Sql-Statement Update ArtikelHatMultifeld
+    Public Const mssqlUpdateArtikelMFF = "UPDATE [dbo].[ArtikelHatMultiFeld] SET Inhalt = '[3]' WHERE ArtikelNr ='[0]' AND Feldnummer = [1] AND FilialNr = [2]"
+    Public Const mssqlInsertArtikelMFF = "INSERT INTO [dbo].[ArtikelHatMultiFeld] (ArtikelNr, Feldnummer, FilialNr, Inhalt) VALUES ('[0]', [1], [2], '[3]')"
+
     'Sql-Statement Abfrage dbo.[Naehrwerte]
     Public Const mssqlSelNaehrwerte = "SELECT * FROM [dbo].[Naehrwerte]"
 
@@ -107,5 +111,8 @@
     Public Const mssqlArtikelLagerKarte = "SELECT * FROM [dbo].[ArtikelLagerkarte] WHERE [Lfd] > [0] AND ArtikelNr = '[1]' ORDER BY [Lfd]"
     'Sql-Statement Abfrage dbo.ArtikelLagerkarte letzter Datensatz 
     Public Const mssqlArtikelLagerInit = "SELECT TOP 1 * FROM [dbo].[ArtikelLagerkarte] WHERE ArtikelNr = '[0]' ORDER BY [Lfd] DESC"
+
+    'Sql-Statement Abfrage Geschäftsvorfall-Positionen nach Vorfall-Kürzel und Vorfall-Nummer
+    Public Const mssqlVorfallPositionen = "SELECT * FROM [dbo].[GeschäftsvorfallPosition] WHERE VorfallKürzel = '[0]' AND VorfallNr = '[1]'"
 
 End Class

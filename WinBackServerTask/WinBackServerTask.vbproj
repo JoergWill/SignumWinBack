@@ -285,10 +285,8 @@
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.Contracts, Version=3.1.7039.22126, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\OrgaSoft V3.2.7352\Signum.OrgaSoft.Contracts.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Reference Include="Signum.OrgaSoft.Contracts">
+      <HintPath>..\dll\OrgaSoft V3.2.7454\Signum.OrgaSoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

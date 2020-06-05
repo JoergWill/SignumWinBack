@@ -37,6 +37,11 @@ Public Class wb_ZutatenListe
                 s = s & ", " & z
             End If
         Next
+
+        'falls noch fehlerhafte Einträge vorhanden sind, jetzt entfernen
+        s = s.Replace(",,", ",")
+        s = s.Replace(", ,", ",")
+
         Return s
     End Function
 

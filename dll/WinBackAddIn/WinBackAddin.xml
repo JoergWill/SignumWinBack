@@ -4862,6 +4862,9 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 <member name="P:WinBack.wb_Rezeptschritt.ZutatenListe(System.Double)">
  <summary>
  Gibt die Zutatenliste mit Bezeichnung und Mengen-Angabe aller unterlagerten Rezeptschritte zurück
+ 
+ Abhängig vom Flag NwtInterneDeklaration wird aus der internen oder externen Deklaration gelesen.
+ Ist das Feld interne Deklaration leer, wird immer die externe Deklaration verwendet.
  </summary>
  <returns></returns>
 </member>
@@ -5491,6 +5494,36 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_GlobalSettings.NwtInterneDeklaration">
+ <summary>
+ Verwendung der internen Deklaration anstelle der externen Deklaration
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_GlobalSettings.NwtAllergeneNoTrace">
+ <summary>
+ Ausgabe der Allergen ohne "Spuren von"
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_GlobalSettings.NwtAllergeneTxtTrace">
+ <summary>
+ 
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_GlobalSettings.NwtAllergeneGluten">
+ <summary>
+ Unterdrücken Ausgabe "Gluten", wenn die einzelnen Arten(Weizen, Roggen, Gerste ...) angegeben sind
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_GlobalSettings.NwtAllergeneSchalen">
+ <summary>
+ Unterdrücken Ausgabe "Schalenfrüchte", wenn die einzelnen Arten(Mandeln, Haselnüsse ...) angegeben sind
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Main_Exception.#ctor(System.String,System.String)">
  <summary>
  Beim Initialisieren werden gleich die notwendigen Parameter für
@@ -5953,7 +5986,7 @@ Text aus Datenbank lesen - Übersetzung
 <member name="M:WinBack.ob_Artikel_DockingExtension.Extendee_BeforeCopy(System.Object,System.EventArgs)">
  <summary>
  Das Objekt soll kopiert werden.
- Hier MUSS unbedingt das MFF201 (KO_Nr) geschlöscht werden, da sonst der alte Verweis beim Kopieren bestehen bleibt.
+ Hier MUSS unbedingt das MFF201 (KO_Nr) gesöscht werden, da sonst der alte Verweis beim Kopieren bestehen bleibt.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -6035,7 +6068,7 @@ Text aus Datenbank lesen - Übersetzung
      
  </summary>
 </member>
-<member name="P:WinBack.ob_Artikel_DockingExtension.MFFValue(Signum.OrgaSoft.FrameWork.ICollectionSubClass,System.Int32)">
+<member name="P:WinBack.ob_Artikel_DockingExtension.MFFValue(Signum.OrgaSoft.FrameWork.ICollectionSubClass,System.Int32,System.Boolean)">
  <summary>
  Setzt oder gibt den Wert des Multifunktions-Feldes mit der übergebenen Nummer zurück. Der Wert steht als Property-Array an der dritten Stellen
      PropertyValue(0) - ArtikelNummer
@@ -6049,6 +6082,7 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <param name="ofil">ICollectionSubClass - Daten aus der Filiale 0 (Hauptfiliale)</param>
  <param name="MFF">Short - Indes auf MFF-Feld</param>
+ <param name="CheckReadOnly">Boolean - Prüft ob MFF ReadOnly ist</param>
  <returns></returns>
 </member>
 <member name="M:WinBack.ob_Artikel_DockingExtension.CheckEinheit(System.String,System.String)">
@@ -8563,7 +8597,7 @@ Datenbank-Verbindung schliessen
  <param name="args"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.ob_Main_Menu.AddLogIn">
+<member name="M:WinBack.ob_Main_Menu.AddEventBroker">
  <summary>
  Event User-Login
  </summary>
@@ -8643,6 +8677,14 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.ob_Main_Menu.ShowWarenEingangForm(System.String,System.String,System.String)">
+ <summary>
+ Verarbeitung Wareneingang und Aufruf Rohstoffe-Silo-Dialogfenster
+ </summary>
+ <param name="ProcessCode"></param>
+ <param name="ProcessNumber"></param>
+ <param name="ProcessAction"></param>
+</member>
 <member name="M:WinBack.ob_Main_Menu.CloseAllForms">
  <summary>
  alle noch offenen Fenster schliessen
@@ -8655,9 +8697,34 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.ob_Main_Menu.LanguageChange(System.Object,System.EventArgs)">
+<member name="M:WinBack.ob_Main_Menu.LanguageChanged(System.Object,System.EventArgs)">
  <summary>
  Event Änderung der Sprache in OrgaSoft
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.ob_Main_Menu.ProcessChanged(System.Object,Signum.OrgaSoft.ERP.IProcessChangedEventArgs)">
+ <summary>
+ Ermittelt zu den entsprechenden Vorfällen in OrgaBack die Vorfallart(ProcessCode) und die Vorfallnummer(ProcessNumber). Anhand der ProcessAction
+ kann unterschieden werden, wie der Vorfall bearbeitet wird.
+ 
+     ProcessAction
+     None       = 0
+     Booked = 1
+     Voided = 2
+     Saved = 3
+     Created = 4
+     Printed = 5
+     Approval1 = 6
+     Approval2 = 7
+     Approval3 = 8
+     ApprovalRemoved = 9
+     Cancelled = 10
+     
+ Die detaillierten Daten stehen in der Tabelle [dbo].[GeschäftsvorfallPosition]
+ 
+ Wird momentan verwendet für den Vorfall WE(Booked) um bei Silo-Rohstoffen die Verteilung auf die einzelnen Silos abzufragen.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>

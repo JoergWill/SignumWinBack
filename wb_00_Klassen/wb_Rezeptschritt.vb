@@ -943,20 +943,48 @@ Public Class wb_Rezeptschritt
 
     ''' <summary>
     ''' Gibt die Zutatenliste mit Bezeichnung und Mengen-Angabe aller unterlagerten Rezeptschritte zurück
+    ''' 
+    ''' Abhängig vom Flag NwtInterneDeklaration wird aus der internen oder externen Deklaration gelesen.
+    ''' Ist das Feld interne Deklaration leer, wird immer die externe Deklaration verwendet.
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property ZutatenListe(Optional Faktor As Double = 1) As wb_Global.ZutatenListe
         Get
-            'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
-            If Not _ZutatenListeExtern.ReadOK Then
-                _ZutatenListeExtern.Read(Me.RohNr)
+
+            'Lesen aus interner Deklaration der Rohstoffe
+            If wb_GlobalSettings.NwtInterneDeklaration Then
+                'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
+                If Not _ZutatenListeIntern.ReadOK Then
+                    _ZutatenListeIntern.Read(Me.RohNr)
+                End If
+                'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
+                _ZutatenListe.Zutaten = _ZutatenListeIntern.Memo
             End If
-            'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
-            _ZutatenListe.Zutaten = _ZutatenListeExtern.Memo
+
+            'Lesen aus externer Deklaration oder wenn die interne Deklaration leer ist
+            If Not wb_GlobalSettings.NwtInterneDeklaration Or (_ZutatenListe.Zutaten = "") Then
+                'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
+                If Not _ZutatenListeExtern.ReadOK Then
+                    _ZutatenListeExtern.Read(Me.RohNr)
+                End If
+
+                'Flag NODEKLARATION im Rohstoff
+                If _ZutatenListeExtern.Memo = wb_Global.FlagKeineDeklaration Then
+                    'Deklarationsfeld bleint leer
+                    _ZutatenListe.Zutaten = ""
+                Else
+                    'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
+                    _ZutatenListe.Zutaten = _ZutatenListeExtern.Memo
+                End If
+            End If
+
+            'Sollmenge aus Rezeptur
             _ZutatenListe.SollMenge = wb_Functions.StrToDouble(_Sollwert) * Faktor
+
             'Rohstoff-Gruppen
             _ZutatenListe.Grp1 = RohstoffGruppe1
             _ZutatenListe.Grp2 = RohstoffGruppe2
+
             'TODO Quid-Angaben aus Rezeptur auslesen und als Property anlegen
             _ZutatenListe.Quid = False
             _ZutatenListe.QuidProzent = 0

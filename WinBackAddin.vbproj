@@ -277,10 +277,8 @@
       <HintPath>packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.Contracts, Version=3.1.7039.22126, Culture=neutral, PublicKeyToken=ad2184c5c76d11ab, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\OrgaSoft V3.2.7352\Signum.OrgaSoft.Contracts.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Reference Include="Signum.OrgaSoft.Contracts">
+      <HintPath>dll\OrgaSoft V3.2.7454\Signum.OrgaSoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -453,6 +451,9 @@
     <Compile Include="wb_00_Klassen\wb_KomponParam_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_Lieferungen.vb" />
     <Compile Include="wb_00_Klassen\wb_MehlGruppe.vb" />
+    <Compile Include="wb_00_Klassen\wb_OrgaBackProcess.vb" />
+    <Compile Include="wb_00_Klassen\wb_OrgaBackProcessPosition.vb" />
+    <Compile Include="wb_00_Klassen\wb_OrgaBackProcess_WE.vb" />
     <Compile Include="wb_00_Klassen\wb_Produktion_virtuell.vb" />
     <Compile Include="wb_00_Klassen\wb_StatistikListe.vb" />
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.Designer.vb">
@@ -489,6 +490,12 @@
       <DependentUpon>wb_Artikel_AuswahlListe.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_02_Forms_Artikel\wb_Artikel_AuswahlListe.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Silo.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Silo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Silo.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Lieferungen.Designer.vb">
@@ -1104,6 +1111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.resx">
       <DependentUpon>wb_Rohstoffe_Nwt.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Silo.resx">
+      <DependentUpon>wb_Rohstoffe_Silo.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.resx">
       <DependentUpon>wb_Rohstoff_AuswahlListe.vb</DependentUpon>

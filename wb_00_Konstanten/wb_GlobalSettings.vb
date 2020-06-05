@@ -90,6 +90,13 @@ Public Class wb_GlobalSettings
     Private Shared _RohChargen_GebindeGrsTol As String = Nothing
     Private Shared _RohChargen_ErfassungVariante As String = Nothing
 
+    Private Shared _NwtInterneDeklaration As Integer = UNDEFINED
+    Private Shared _NwtAllergeneNoTrace As Integer = UNDEFINED
+    Private Shared _NwtAllergeneTxtTrace As Integer = UNDEFINED
+    Private Shared _NwtAllergeneNoText As Integer = UNDEFINED
+    Private Shared _NwtAllergeneGluten As Integer = UNDEFINED
+    Private Shared _NwtAllergeneSchalen As Integer = UNDEFINED
+
     Private Shared _mHost As String = Nothing
     Private Shared _mSenderAddr As String = Nothing
     Private Shared _mSenderPass As String = Nothing
@@ -1245,6 +1252,14 @@ Public Class wb_GlobalSettings
                 _ChargenTeiler = IniFile.ReadString("Produktion", "ChargenTeiler", wb_Global.ModusChargenTeiler.OptimalUndRest)
                 _TeigOptimierung = IniFile.ReadString("Produktion", "TeigOptimierung", wb_Global.ModusTeigOptimierung.AlleTeige)
 
+            Case "Nährwerte"
+                _NwtInterneDeklaration = IniFile.ReadInt("Artikel", "InterneDeklaration", 1)
+                _NwtAllergeneNoTrace = IniFile.ReadInt("Artikel", "KonfigAllergeneNoTrace", 0)
+                _NwtAllergeneTxtTrace = IniFile.ReadInt("Artikel", "KonfigAllergeneTxtTrace", 0)
+                _NwtAllergeneNoText = IniFile.ReadInt("Artikel", "KeineAllergeneImText", 0)
+                _NwtAllergeneGluten = IniFile.ReadInt("Artikel", "KeineAusgabeGluten", 0)
+                _NwtAllergeneSchalen = IniFile.ReadInt("Artikel", "KeineAusgabeSchalefruechte", 0)
+
             Case "Mail"
                 mHost = IniFile.ReadString("smpt", "smtpHost")
                 mHost = IniFile.ReadString("smpt", "smtpUser")
@@ -1482,4 +1497,125 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    ''' <summary>
+    ''' Verwendung der internen Deklaration anstelle der externen Deklaration
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtInterneDeklaration As Boolean
+        Get
+            If _NwtInterneDeklaration = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtInterneDeklaration = 1)
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _NwtInterneDeklaration = 1
+            Else
+                _NwtInterneDeklaration = 0
+            End If
+            setWinBackIni("Artikel", "InterneDeklaration", _NwtInterneDeklaration)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Ausgabe der Allergen ohne "Spuren von"
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtAllergeneNoTrace As Boolean
+        Get
+            If _NwtAllergeneNoTrace = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtAllergeneNoTrace = 1)
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _NwtAllergeneNoTrace = 1
+            Else
+                _NwtAllergeneNoTrace = 0
+            End If
+            setWinBackIni("Artikel", "KonfigAllergeneNoTrace", _NwtAllergeneNoTrace)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtAllergeneTxtTrace As Boolean
+        Get
+            If _NwtAllergeneTxtTrace = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtAllergeneTxtTrace = 1)
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _NwtAllergeneTxtTrace = 1
+            Else
+                _NwtAllergeneTxtTrace = 0
+            End If
+            setWinBackIni("Artikel", "KonfigAllergeneTxtTrace", _NwtAllergeneTxtTrace)
+        End Set
+    End Property
+
+    Public Shared Property NwtAllergeneNoText As Boolean
+        Get
+            If _NwtAllergeneNoText = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtAllergeneTxtTrace = 1)
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _NwtAllergeneTxtTrace = 1
+            Else
+                _NwtAllergeneTxtTrace = 0
+            End If
+            setWinBackIni("Artikel", "KeineAllergeneImText", _NwtAllergeneTxtTrace)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Unterdrücken Ausgabe "Gluten", wenn die einzelnen Arten(Weizen, Roggen, Gerste ...) angegeben sind
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtAllergeneGluten As Boolean
+        Get
+            If _NwtAllergeneGluten = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtAllergeneTxtTrace = 1)
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _NwtAllergeneTxtTrace = 1
+            Else
+                _NwtAllergeneTxtTrace = 0
+            End If
+            setWinBackIni("Artikel", "KeineAusgabeGluten", _NwtAllergeneTxtTrace)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Unterdrücken Ausgabe "Schalenfrüchte", wenn die einzelnen Arten(Mandeln, Haselnüsse ...) angegeben sind
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtAllergeneSchalen As Boolean
+        Get
+            If _NwtAllergeneTxtTrace = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtAllergeneSchalen = 1)
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _NwtAllergeneTxtTrace = 1
+            Else
+                _NwtAllergeneTxtTrace = 0
+            End If
+            setWinBackIni("Artikel", "KeineAusgabeSchalefruechte", _NwtAllergeneTxtTrace)
+        End Set
+    End Property
 End Class

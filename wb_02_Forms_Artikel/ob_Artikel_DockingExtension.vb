@@ -257,7 +257,7 @@ Public Class ob_Artikel_DockingExtension
 
     ''' <summary>
     ''' Das Objekt soll kopiert werden.
-    ''' Hier MUSS unbedingt das MFF201 (KO_Nr) geschlöscht werden, da sonst der alte Verweis beim Kopieren bestehen bleibt.
+    ''' Hier MUSS unbedingt das MFF201 (KO_Nr) gesöscht werden, da sonst der alte Verweis beim Kopieren bestehen bleibt.
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -266,6 +266,11 @@ Public Class ob_Artikel_DockingExtension
         Komponente = New wb_Komponente
         bAddNew = True
         Extendee_ExecuteCommand("INVALID", Nothing)
+
+        'Verweis auf die WinBack-Nummer löschen
+        Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+        MFFValue(oFil, wb_Global.MFF_KO_Nr, True) = ""
+
         Debug.Print("Article_DockingExtension BeforeCopy")
     End Sub
 
@@ -504,8 +509,9 @@ Public Class ob_Artikel_DockingExtension
     ''' </summary>
     ''' <param name="ofil">ICollectionSubClass - Daten aus der Filiale 0 (Hauptfiliale)</param>
     ''' <param name="MFF">Short - Indes auf MFF-Feld</param>
+    ''' <param name="CheckReadOnly">Boolean - Prüft ob MFF ReadOnly ist</param>
     ''' <returns></returns>
-    Private Property MFFValue(ofil As ICollectionSubClass, MFF As Integer) As String
+    Private Property MFFValue(ofil As ICollectionSubClass, MFF As Integer, Optional CheckReadOnly As Boolean = False) As String
         Get
             Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
             Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
@@ -539,12 +545,33 @@ Public Class ob_Artikel_DockingExtension
                     If oMFF IsNot Nothing Then
                         ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
                         oMFF.SetPropertyValue("Inhalt", Value)
+                        'Prüfen on Schreiben in MFF erfolgreich war, ansonsten ist das MFF auf ReadOnly gesetzt
+                        If CheckReadOnly Then
+                            If oMFF.PropertyValueCollection(wb_Global.MFF_Value).Value <> Value Then
+                                'Schreiben war nicht erfolgreich - direktes Speichern in Datenbank erforderlich
+                                MFFWriteDB(oMFF, Value)
+                            End If
+                        End If
                     End If
                 End If
             Catch
             End Try
         End Set
     End Property
+
+    Private Sub MFFWriteDB(oMFF As ICollectionSubClass, Value As String)
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim ArtikelNr As String = oMFF.GetPropertyValue("ArtikelNr")
+        Dim FeldNr As String = oMFF.GetPropertyValue("FeldNr")
+        Dim FilialNr As String = oMFF.GetPropertyValue("FilialNr")
+
+        'Falls das UPDATE fehlschlägt
+        If orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlUpdateArtikelMFF, ArtikelNr, FeldNr, FilialNr, Value)) < 0 Then
+            'Datensatz mit INSERT schreiben
+            orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertArtikelMFF, ArtikelNr, FeldNr, FilialNr, Value))
+        End If
+        orgaback.Close()
+    End Sub
 
     Private Sub UpdateKomponentenDaten()
         'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
@@ -578,14 +605,14 @@ Public Class ob_Artikel_DockingExtension
         'Update aller in WinBack geänderten Daten
         MFFValue(oFil, wb_Global.MFF_RezeptNummer) = Komponente.RezeptNummer
         MFFValue(oFil, wb_Global.MFF_RezeptName) = Komponente.RezeptName
-        MFFValue(oFil, wb_Global.MFF_MehlZusammensetzung) = Komponente.Mehlzusammensetzung
+        MFFValue(oFil, wb_Global.MFF_MehlZusammensetzung, True) = Komponente.Mehlzusammensetzung
         MFFValue(oFil, wb_Global.MFF_ProduktionsLinie) = Komponente.sArtikeLinienGruppe
 
         'Für Automatik-Komponenten wird in OrgaBack KEINE interne Komponenten-Nummer gespeichert (freie Silo-Zuordnung)
         If Komponente.Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Then
-            MFFValue(oFil, wb_Global.MFF_KO_Nr) = ""
+            MFFValue(oFil, wb_Global.MFF_KO_Nr, True) = ""
         Else
-            MFFValue(oFil, wb_Global.MFF_KO_Nr) = Komponente.Nr
+            MFFValue(oFil, wb_Global.MFF_KO_Nr, True) = Komponente.Nr
         End If
     End Sub
 
@@ -605,14 +632,14 @@ Public Class ob_Artikel_DockingExtension
                 If wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitStk) Then
                     Return True
                 Else
-                    MsgBox("Speichern nicht möglich." & vbCrLf & "Ein WinBack-Artikel kann nur in der Einheit 'Stk' angelegt werden !")
+                    MsgBox("Speichern nicht möglich." & vbCrLf & "Ein WinBack-Artikel kann nur in der Basis-Einheit 'Stk' angelegt werden !")
                     Return False
                 End If
             Case wb_GlobalSettings.OsGrpRohstoffe
                 If wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitKilogramm) Then
                     Return True
                 Else
-                    MsgBox("Speichern nicht möglich." & vbCrLf & "Ein WinBack-Rohstoff kann nur in der Einheit 'kg' angelegt werden !")
+                    MsgBox("Speichern nicht möglich." & vbCrLf & "Ein WinBack-Rohstoff kann nur in der Basis-Einheit 'kg' angelegt werden !")
                     Return False
                 End If
             Case Else

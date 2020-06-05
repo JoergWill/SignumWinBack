@@ -110,7 +110,7 @@ Public Class ob_Main_Menu
         'Debug/Trace-Listener initialisieren
         AddTraceListener()
         'Event User-Login - Read System-Konfig
-        AddLogIn()
+        AddEventBroker()
 
         'erster Start WinBack-AddIn nach Setup - Einstellungen Mandanten
         'TODO - Hier TEST-AUFRUF
@@ -141,11 +141,12 @@ Public Class ob_Main_Menu
     ''' <summary>
     ''' Event User-Login
     ''' </summary>
-    Private Sub AddLogIn()
+    Private Sub AddEventBroker()
         Dim IEB As IEventBroker = TryCast(ServiceProvider.GetService(GetType(IEventBroker)), IEventBroker)
         If IEB IsNot Nothing Then
             AddHandler IEB.LoginChanged, AddressOf UserLogin
-            AddHandler IEB.LanguageChanged, AddressOf LanguageChange
+            AddHandler IEB.LanguageChanged, AddressOf LanguageChanged
+            AddHandler IEB.ProcessChanged, AddressOf ProcessChanged
         End If
 
         'globale System-Einstellungen lesen
@@ -313,6 +314,25 @@ Public Class ob_Main_Menu
     End Sub
 
     ''' <summary>
+    ''' Verarbeitung Wareneingang und Aufruf Rohstoffe-Silo-Dialogfenster
+    ''' </summary>
+    ''' <param name="ProcessCode"></param>
+    ''' <param name="ProcessNumber"></param>
+    ''' <param name="ProcessAction"></param>
+    Private Sub ShowWarenEingangForm(ProcessCode As String, ProcessNumber As String, ProcessAction As String)
+        If ProcessAction = ERP.ProcessChangedAction.Booked Then
+            'Daten aus [dbo].[GeschäftsvorfallPosition]
+            Dim Wareneingang As New wb_OrgaBackProcess_WE(ProcessCode, ProcessNumber)
+            'Wareneingang verbuchen - bei Silo-Rohstoffen wird ein Dialog-Fenster angezeigt. (Silo-Auswahl/Verteilung)
+            If Not Wareneingang.DoAction(ProcessAction) Then
+                'Dialogfenster Silo-Füllstände und Befüllung
+                Dim Rohstoffe_Silo As New wb_Rohstoffe_Silo
+                Rohstoffe_Silo.ShowDialog()
+            End If
+        End If
+    End Sub
+
+    ''' <summary>
     ''' alle noch offenen Fenster schliessen
     ''' </summary>
     Private Sub CloseAllForms()
@@ -347,8 +367,56 @@ Public Class ob_Main_Menu
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub LanguageChange(sender As Object, e As EventArgs)
+    Private Sub LanguageChanged(sender As Object, e As EventArgs)
 
+    End Sub
+
+    ''' <summary>
+    ''' Ermittelt zu den entsprechenden Vorfällen in OrgaBack die Vorfallart(ProcessCode) und die Vorfallnummer(ProcessNumber). Anhand der ProcessAction
+    ''' kann unterschieden werden, wie der Vorfall bearbeitet wird.
+    ''' 
+    '''     ProcessAction
+    '''     None       = 0
+    '''     Booked = 1
+    '''     Voided = 2
+    '''     Saved = 3
+    '''     Created = 4
+    '''     Printed = 5
+    '''     Approval1 = 6
+    '''     Approval2 = 7
+    '''     Approval3 = 8
+    '''     ApprovalRemoved = 9
+    '''     Cancelled = 10
+    '''     
+    ''' Die detaillierten Daten stehen in der Tabelle [dbo].[GeschäftsvorfallPosition]
+    ''' 
+    ''' Wird momentan verwendet für den Vorfall WE(Booked) um bei Silo-Rohstoffen die Verteilung auf die einzelnen Silos abzufragen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub ProcessChanged(sender As Object, e As ERP.IProcessChangedEventArgs)
+        'Vorfall-Kürzel
+        Dim ProcessCode As String = e.ProcessCode
+        'Vorfall-Nummer
+        Dim ProcessNumber As String = e.ProcessNumber
+        'Vorfall-Aktion
+        Dim ProcessAction As ERP.ProcessChangedAction = e.Action
+
+        'TODO 2020-06-04 Hier weitermachen
+
+        'Verteiler OrgaBack-Vorfälle
+        ''Select Case ProcessCode
+
+        ''    'Wareneingang
+        ''    Case "WE"
+        ''        'Vorfall WarenEingang in WinBack verbuchen
+        ''        ShowWarenEingangForm(ProcessCode, ProcessNumber, ProcessAction)
+
+        ''    Case Else
+        ''        'alle anderen Vorfälle
+        ''        Debug.Print("WinBack.ob_Main.ProcessChanged " & ProcessCode & "/" & ProcessNumber & "/" & ProcessAction.ToString)
+
+        ''End Select
     End Sub
 
     ''' <summary>
@@ -394,6 +462,11 @@ Public Class ob_Main_Menu
         wb_GlobalSettings.OsGrpBackwaren = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeBackwaren", ""), String)
         'Artikel-Gruppe Rohstoffe (Default 20)
         wb_GlobalSettings.OsGrpRohstoffe = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeRohstoffe", ""), String)
+
+        'Nährwertberechnung Zutatenliste aus interner Deklaration
+        'TODO Funktioniert nicht - URSACHE?
+        'wb_GlobalSettings.NwtInterneDeklaration = (TryCast(oSetting.ReadSetting("AddIn", "WinBack", "InterneDeklaration", ""), String) = "1")
+
 
         'Signum Default-Land
         wb_GlobalSettings.osLaendercode = TryCast(oSetting.GetSetting("Festwerte.DefaultLand"), String)

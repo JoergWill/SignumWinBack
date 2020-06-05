@@ -908,10 +908,13 @@ Public Class wb_Komponente
         Get
             'TODO Hier muss unterschieden werden, welche Deklaration benutzt werden soll (Intern/Extern) - kundenspezifisch
             Deklaration = DeklBezeichungExtern
+            'Deklaration = DeklBezeichungIntern
+
         End Get
         Set(value As String)
             'TODO Hier muss unterschieden werden, welche Deklaration benutzt werden soll (Intern/Extern) - kundenspezifisch
             DeklBezeichungExtern = value
+            'DeklBezeichungIntern = value
         End Set
     End Property
 
