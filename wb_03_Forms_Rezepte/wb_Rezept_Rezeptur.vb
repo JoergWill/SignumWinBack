@@ -55,6 +55,8 @@ Public Class wb_Rezept_Rezeptur
 
         ' TabControl - HideTabs
         Wb_TabControl.HideTabs = True
+        'Default-Währung (€)
+        lblEinhPreis.Text = wb_GlobalSettings.osDefaultWaehrung
 
         'Combo-Box(Rezept-Varianten) mit Werten füllen
         cbVariante.Fill(wb_Rezept_Shared.RzVariante)

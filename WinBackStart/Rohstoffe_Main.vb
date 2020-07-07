@@ -16,6 +16,7 @@ Public Class Rohstoffe_Main
     Public RohstoffParameter As wb_Rohstoffe_Parameter
     Public RohstoffLieferung As wb_Rohstoffe_Lieferung
     Public RohstoffNwt As wb_Rohstoffe_Nwt
+    Public RohstoffSilo As wb_Rohstoffe_Silo
     Public RohstoffCloud As wb_Rohstoffe_Cloud
 
     ''' <summary>
@@ -65,6 +66,12 @@ Public Class Rohstoffe_Main
                 If Not DockIsVisible("wb_Rohstoffe_Nwt") Then
                     RohstoffNwt = New wb_Rohstoffe_Nwt
                     RohstoffNwt.Show(DockPanel, DockState.Document)
+                End If
+                Return True
+            Case "SILO"
+                If Not DockIsVisible("wb_Rohstoffe_Silo") Then
+                    RohstoffSilo = New wb_Rohstoffe_Silo
+                    RohstoffSilo.Show(DockPanel, DockState.Document)
                 End If
                 Return True
             Case "CLOUD"
@@ -125,6 +132,10 @@ Public Class Rohstoffe_Main
             Case "WinBack.wb_Rohstoffe_Nwt"
                 RohstoffNwt = New wb_Rohstoffe_Nwt
                 _DockPanelList.Add(RohstoffNwt)
+                Return RohstoffNwt
+            Case "WinBack.wb_Rohstoffe_Silo"
+                RohstoffSilo = New wb_Rohstoffe_Silo
+                _DockPanelList.Add(RohstoffSilo)
                 Return RohstoffNwt
             Case "WinBack.wb_Rohstoffe_Lieferung"
                 RohstoffLieferung = New wb_Rohstoffe_Lieferung

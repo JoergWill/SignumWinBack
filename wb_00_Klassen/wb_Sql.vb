@@ -255,7 +255,7 @@ Public Class wb_Sql
     ''' <param name="sql">SQL-Kommando</param>
     ''' <returns>Anzahl der Datensätze
     ''' -1 falls ein Fehler aufgetreten ist</returns>
-    Function sqlCommand(sql As String) As Integer
+    Function sqlCommand(sql As String, Optional ShowException As Boolean = True) As Integer
         If sql <> "" Then
             Try
                 Select Case conType
@@ -272,7 +272,7 @@ Public Class wb_Sql
                         Return -1
                 End Select
             Catch ex As Exception
-                If Debugger.IsAttached Then
+                If Debugger.IsAttached And ShowException Then
                     MsgBox("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
                 Else
                     Trace.WriteLine("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)

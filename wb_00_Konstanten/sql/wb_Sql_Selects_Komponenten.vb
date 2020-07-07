@@ -21,6 +21,12 @@
                                     "LF_BF_Charge, LF_gebucht, LF_Liniengruppe, LF_BF_Frist " &
                                     "FROM Lieferungen WHERE LF_LG_Ort = '[0]' ORDER BY LF_Datum DESC, LF_Nr DESC, LF_Lager"
 
+    'Sql.Statement Sio-Rohstoffe
+    Public Const sqlSiloRohstoffe = "SELECT KO_Nr, KO_Bezeichnung, LG_Ort, KO_Nr_AlNum, LG_Mindestmenge, LG_Kommentar, LG_Silo_Nr " &
+                                    "FROM Komponenten INNER JOIN Lagerorte ON Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
+                                    "WHERE ((KO_Type = 101) AND (KA_aktiv = 1)) " &
+                                    "ORDER BY LG_Ort, KO_Nr_AlNum"
+    '                                    "WHERE ((KO_Type = 101) AND (KA_aktiv = 1) AND ((LG_Ort LIKE 'KK*') OR (LG_Ort LIKE 'BW*') OR (LG_Ort LIKE 'M*'))) " &
 
     'Sql-Statement RohstoffGruppen aus winback.ItemParameter
     Public Const sqlRohstoffGrp = "SELECT IP_Wert1int, IP_Wert2int, IP_Wert4str FROM ItemParameter WHERE " &
@@ -137,7 +143,6 @@
 
     'Sql-Statement Alle Rohstoffe, die nicht zum Rezeptgewicht zählen
     Public Const sqlKompDoNotCount = "SELECT Komponenten.KO_Nr FROM Komponenten WHERE KA_zaehlt_zu_RZ_Gesamtmenge = '1'"
-
 
 End Class
 

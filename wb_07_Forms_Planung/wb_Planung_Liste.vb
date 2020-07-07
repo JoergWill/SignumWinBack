@@ -76,7 +76,7 @@ Public Class wb_Planung_Liste
             'erste Filiale auswählen
             cbProduktionsFiliale.SelectedIndex = 0
             'Datum heute plus x Tage
-            dtBestellungen.Value = DateTime.Today.AddDays(wb_GlobalSettings.OsProdTageVoraus)
+            dtBestellungen.Value = DateTime.Today.AddDays(wb_GlobalSettings.osProdTageVoraus)
         End If
     End Sub
 

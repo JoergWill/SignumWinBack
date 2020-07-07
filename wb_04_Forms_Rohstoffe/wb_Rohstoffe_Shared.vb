@@ -8,7 +8,10 @@ Public Class wb_Rohstoffe_Shared
     Public Shared RohGruppe As New SortedList
     Public Shared MehlGruppe As New List(Of wb_MehlGruppe)
     Public Shared RohAktiv As New Hashtable
+    Public Shared RohSilos_NachNummer As New Hashtable
+    Public Shared RohSilos_NachTyp As New List(Of wb_SiloRohstoff)
     Public Shared RohStoff As New wb_Komponente
+    Public Shared SiloReiheMaxMenge As Integer = wb_Global.UNDEFINED
 
     Private Shared _ErrorText As String = ""
     Private Shared _RohstoffeInGruppe As New ArrayList
@@ -29,6 +32,8 @@ Public Class wb_Rohstoffe_Shared
     Shared Sub New()
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
         Load_RohstoffTables()
+        'HashTable aller Silo-Rohstoffe mit Lagerort BW,MK,M,KKA
+        Load_SiloTables()
     End Sub
 
     Public Shared ReadOnly Property ErrorText As String
@@ -75,10 +80,12 @@ Public Class wb_Rohstoffe_Shared
         End Get
     End Property
 
+    ''' <summary>
+    '''HashTable mit der Übersetzung der Rohstoffgruppen-Nummer in die Rohstoffgruppen-Bezeichnung laden
+    '''wenn die Rohstoffgruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
+    '''entsprechende Übersetzung aus winback.Texte geladen
+    ''' </summary>
     Private Shared Sub Load_RohstoffTables()
-        'HashTable mit der Übersetzung der Rohstoffgruppen-Nummer in die Rohstoffgruppen-Bezeichnung laden
-        'wenn die Rohstoffgruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
-        'entsprechende Übersetzung aus winback.Texte geladen
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
 
         'SortedList Rohstoff-Gruppen
@@ -107,6 +114,60 @@ Public Class wb_Rohstoffe_Shared
         End While
         winback.Close()
     End Sub
+
+    ''' <summary>
+    ''' Liest alle (aktiven) Silo-Rohstoffe aus der WinBack-Datenbank. Die Rohstoffe sind sortiert
+    ''' nach Lagerort und Komponenten-Nummer.
+    ''' Die maximale Füllstand (Silo-Größe) steht in der Tabelle Lagerorte im Feld LG_Kommentar)
+    ''' </summary>
+    Private Shared Sub Load_SiloTables()
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim KompNummer As String
+        Dim KompBezeichnung As String
+        Dim SiloRohstoff As wb_SiloRohstoff
+
+        'Liste aller aktiven Silo-Rohstoffe
+        winback.sqlSelect(wb_Sql_Selects.sqlSiloRohstoffe)
+
+        'Hastable löschen
+        RohSilos_NachNummer.Clear()
+        'alle Datensätze lesen
+        While winback.Read
+
+            'Rohstoff-Nummer
+            KompNummer = winback.sField("KO_Nr_AlNum")
+            KompBezeichnung = winback.sField("KO_Bezeichnung")
+            Debug.Print("Rohstoffe Silos " & KompNummer & "/" & KompBezeichnung)
+
+            'Prüfen ob die Rohstoff-Nummer schon existiert
+            If RohSilos_NachNummer.ContainsKey(KompNummer) Then
+                SiloRohstoff = New wb_SiloRohstoff(RohSilos_NachNummer(KompNummer), KompBezeichnung)
+            Else
+                SiloRohstoff = New wb_SiloRohstoff(Nothing, "")
+            End If
+
+            'Silo-Daten
+            SiloRohstoff.KompNr = winback.iField("KO_Nr")
+            SiloRohstoff.KompNummer = KompNummer
+            SiloRohstoff.KompBezeichnung = KompBezeichnung
+            SiloRohstoff.LagerOrt = winback.sField("LG_Ort")
+            'Silo maximale Füllmenge steht im Kommentar-Feld
+            SiloRohstoff.MaxMenge = wb_Functions.StrToInt(winback.sField("LG_Kommentar"))
+            SiloRohstoff.SiloNr = winback.iField("LG_Silo_Nr")
+
+            'wenn bisher kein anderer Rohstoff mit dieser Nummer exisitiert
+            If SiloRohstoff.ParentStep Is Nothing Then
+                RohSilos_NachNummer.Add(KompNummer, SiloRohstoff)
+            End If
+
+            'Flache Liste aller Silo-Rohstoffe
+            RohSilos_NachTyp.Add(SiloRohstoff)
+
+        End While
+        'Datenbankverbindung wieder schliessen
+        winback.Close()
+    End Sub
+
 
     Public Shared Function Add_RohstoffGruppe() As Integer
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
@@ -182,4 +243,110 @@ Public Class wb_Rohstoffe_Shared
         'Daten in der Komponenten-Klasse sichern
         RohStoff.UpdateDB()
     End Sub
+
+    ''' <summary>
+    ''' Prüft ob zu dieser Komponenten-Nummer mehrere Automatik-Rohstoffe mit dieser Nummer
+    ''' existieren. Wenn eine Silo-Umschaltung möglich ist wird True zurückgegeben.
+    ''' </summary>
+    ''' <param name="KompNummer"></param>
+    ''' <returns></returns>
+    Public Shared Function HatSiloUmschaltung(KompNummer As String) As Boolean
+        Return (AnzahlSilos(KompNummer) > 1)
+    End Function
+
+    ''' <summary>
+    ''' Gibt die Anzahl der Rohstoffe mit dieser Nummer zurück.
+    ''' </summary>
+    ''' <param name="KompNummer"></param>
+    ''' <returns></returns>
+    Public Shared Function AnzahlSilos(KompNummer As String) As Integer
+        If RohStoff.Nummer IsNot Nothing Then
+            If RohSilos_NachNummer.ContainsKey(KompNummer) Then
+                Dim SiloRohstoff As wb_SiloRohstoff = RohSilos_NachNummer(KompNummer)
+                Return SiloRohstoff.ChildSteps.Count + 1
+            End If
+        End If
+        Return -1
+    End Function
+
+    ''' <summary>
+    ''' Gibt eine Liste aller Automatik-(Silo)-Rohstoffe mit dieser Nummer zurück.
+    ''' </summary>
+    ''' <param name="KompNummer"></param>
+    ''' <returns></returns>
+    Public Shared Function GetIdentSilos(KompNummer As String) As IList
+        'Liste löschen
+        Dim SiloListe As New List(Of wb_SiloRohstoff)
+
+        'Prüfen ob eine Rohstoff-Nummer definiert ist
+        If RohStoff.Nummer IsNot Nothing Then
+            'Prüfen ob Silo-Einträge zu dieser Nummer exisitieren
+            If RohSilos_NachNummer.ContainsKey(KompNummer) Then
+                Dim SiloRohstoff As wb_SiloRohstoff = RohSilos_NachNummer(KompNummer)
+                SiloListe.Add(SiloRohstoff)
+                For Each s As wb_SiloRohstoff In SiloRohstoff.ChildSteps
+                    SiloListe.Add(s)
+                Next
+            End If
+        End If
+        'Liste aller Silos zu dieser Rohstoff-Nummer
+        Return SiloListe
+    End Function
+
+    ''' <summary>
+    ''' Gibt eine Liste aller Automatik-(Silo)-Rohstoffe zu dieser Type(Lagerort) zurück
+    '''     - Mehlsilos
+    '''     - Mittelkomponenten
+    '''     - Flüssigverwiegung
+    '''     - Kleinkomponenten
+    '''     
+    ''' Der Silo-Typ wird aus dem Lagerort ermittelt.
+    ''' Zusätzlich zur Liste wird noch der Maximal-Wert der Silo-Füllmenge dieser Gruppe ermittelt
+    ''' </summary>
+    ''' <param name="LagerOrt"></param>
+    ''' <returns></returns>
+    Public Shared Function GetAllSilos(LagerOrt As String) As IList
+        Dim SiloListe As New List(Of wb_SiloRohstoff)
+        Dim RohSiloType As wb_Global.RohSiloTypen = GetRohSiloType(LagerOrt)
+
+        'Reset Maximalgröße Silo dieser Liste
+        SiloReiheMaxMenge = wb_Global.UNDEFINED
+        If RohSiloType <> wb_Global.RohSiloTypen.UNDEF Then
+            'Reset Maximalgröße Silo dieser Liste
+            SiloReiheMaxMenge = 0
+            For Each s As wb_SiloRohstoff In RohSilos_NachTyp
+                If s.RohSiloType = RohSiloType Then
+                    SiloListe.Add(s)
+                    If s.MaxMenge > SiloReiheMaxMenge Then
+                        SiloReiheMaxMenge = s.MaxMenge
+                    End If
+                End If
+            Next
+        End If
+        'Liste aller Silos zu diesem Lagerort 
+        Return SiloListe
+    End Function
+
+    Public Shared Function GetRohSiloType(Lagerort As String) As wb_Global.RohSiloTypen
+        If Len(Lagerort) > 2 Then
+            Select Case Left(Lagerort, 2)
+                Case "BW"
+                    Return wb_Global.RohSiloTypen.BW
+                Case "MK"
+                    Return wb_Global.RohSiloTypen.MK
+                Case "KK"
+                    Return wb_Global.RohSiloTypen.KKA
+                Case "M0"
+                    Return wb_Global.RohSiloTypen.M
+                Case Else
+                    Return wb_Global.RohSiloTypen.UNDEF
+            End Select
+        Else
+            Return wb_Global.RohSiloTypen.UNDEF
+        End If
+    End Function
 End Class
+
+
+
+

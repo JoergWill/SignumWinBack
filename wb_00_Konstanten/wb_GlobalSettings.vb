@@ -26,6 +26,8 @@ Public Class wb_GlobalSettings
     Private Shared _WinBackLanguage1 As Integer = UNDEFINED
     Private Shared _WinBackLanguage2 As Integer = UNDEFINED
     Private Shared _WinBackLanguageVariante As Integer = UNDEFINED
+    Private Shared _osDefaultWaehrung As String = Nothing
+
     Private Shared _MandantName As String = Nothing
     Private Shared _MandantNr As Integer = UNDEFINED
     Private Shared _OrgaBackMandantName As String = Nothing
@@ -717,6 +719,30 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    ''' <summary>
+    ''' Default-Währung.
+    ''' Wird aus OrgaBack-DB-Festwerten gelesen. Ist die Default-Währung nicht definiert, kommt der Wert aus der winback.ini
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property osDefaultWaehrung As String
+        Get
+            If _osDefaultWaehrung Is Nothing Then
+                getWinBackIni("OrgaBack")
+            End If
+            Return _osDefaultWaehrung
+        End Get
+        Set(value As String)
+            Select Case value.ToUpper
+                Case "EUR"
+                    _osDefaultWaehrung = "€"
+                Case "DOLLAR"
+                    _osDefaultWaehrung = "$"
+                Case Else
+                    _osDefaultWaehrung = value
+            End Select
+        End Set
+    End Property
+
     Public Shared Property osSprachcode As String
         Get
             If _osSprachCode Is Nothing Then
@@ -730,7 +756,7 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Public Shared Property OsProdTageVoraus As Integer
+    Public Shared Property osProdTageVoraus As Integer
         Get
             If _osProdTageVoraus = UNDEFINED Then
                 getWinBackIni("OrgaBack")
@@ -1246,6 +1272,7 @@ Public Class wb_GlobalSettings
                 _osGrpRohstoffe = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeRohstoffe", IniFile.ReadString("orgaback", "GruppeRohstoffe", _osGrpRohstoffe))
                 _osLaendercode = IniFile.ReadString("orgaback", "LaenderCode", "DE")
                 _osSprachCode = IniFile.ReadString("orgaback", "SprachCode", "D")
+                _osDefaultWaehrung = IniFile.ReadString("orgaback", "DefaultWaehrung", "€")
                 _osProdTageVoraus = IniFile.ReadString("orgaback", "ProdPlanTage", "1")
 
             Case "Produktion"
@@ -1618,4 +1645,5 @@ Public Class wb_GlobalSettings
             setWinBackIni("Artikel", "KeineAusgabeSchalefruechte", _NwtAllergeneTxtTrace)
         End Set
     End Property
+
 End Class

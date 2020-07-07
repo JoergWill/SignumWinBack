@@ -139,7 +139,8 @@ Public Class ob_Main_Menu
     End Function
 
     ''' <summary>
-    ''' Event User-Login
+    ''' Event User-Login, Änderung der Sprache-Einstellungen
+    ''' Event ProcessChanged, wird von OrgaBack bei Vorfällen aufgerufen.
     ''' </summary>
     Private Sub AddEventBroker()
         Dim IEB As IEventBroker = TryCast(ServiceProvider.GetService(GetType(IEventBroker)), IEventBroker)
@@ -472,6 +473,9 @@ Public Class ob_Main_Menu
         wb_GlobalSettings.osLaendercode = TryCast(oSetting.GetSetting("Festwerte.DefaultLand"), String)
         'Signum Default-Sprache
         wb_GlobalSettings.osSprachcode = TryCast(oSetting.GetSetting("Festwerte.DefaultSprache"), String)
+        'Signum Default-Währung
+        wb_GlobalSettings.osDefaultWaehrung = TryCast(oSetting.GetSetting("Festwerte.DefaultWährung"), String)
+
         'Signum Docking-Theme
         Try
             wb_GlobalSettings.OrgaBackTheme = oSetting.GetSetting("Desktop.DockingTheme")

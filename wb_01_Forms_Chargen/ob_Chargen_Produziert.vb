@@ -169,8 +169,8 @@ Public Class ob_Chargen_Produziert
         'Der SQL-INSERT-Befehl wird dynamisch erzeugt
         Dim sql As String = o.sFilialNummer & ", '" & o.sProduktionsDatum & "', '" & o.sSatzTyp & "', '" & o.ArtikelNr & "', " & o.Unit & ", " &
                             o.Color & ", '" & o.Size & "', '" & o.sMenge & "', '" & o.ChargenNummer & "', '" & o.sHaltbarkeitsDatum & "'"
-        'Insert ausführen
-        If db.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertProduktionsDaten, sql)) < 0 Then
+        'Insert ausführen - bei sql-Fehler wird keine Exception ausgelöst(Debug)
+        If db.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertProduktionsDaten, sql), False) < 0 Then
             ' Rückgabewert kleiner Null - Fehler
             Trace.WriteLine(" FEHLER")
             Return False

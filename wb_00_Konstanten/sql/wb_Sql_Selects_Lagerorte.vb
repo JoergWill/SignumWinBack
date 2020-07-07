@@ -9,6 +9,8 @@
     'Sql-Statement Insert LagerOrte nach LG_Ort
     Public Const sqlInsertLagerOrte = "INSERT IGNORE INTO Lagerorte(LG_Ort, LG_Weg_Nr, LG_TempFuehler_Nr, LG_Bilanzmenge, LG_Aktiv, LG_LF_Nr) VALUES('[0]', 0, 0, 0.0, 'A', -1)"
 
+    'Sql-Statement LagerOrte Silo-Gruppen
+    Public Const sqlSiloGrpLager = "SELECT * FROM Lagerorte WHERE LG_Ort LIKE '[0]'"
 
     'LG_Ort
     'LG_Bezeichnung

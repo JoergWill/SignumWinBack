@@ -16,6 +16,8 @@ Public Class wb_Rohstoffe_Details
             tbRohstoffPreis.ReadOnly = False
             tbRohstoffPreis.BackColor = tRohstoffNummer.BackColor
         End If
+        'Default Währung(€)
+        ePreis.Text = wb_GlobalSettings.osDefaultWaehrung
 
         'Rohstoff-ID und Rohstoff-Type sind nur für Admin-User sichtbar
         If wb_GlobalSettings.AktUserGruppe = wb_Global.AdminUserGrpe Then

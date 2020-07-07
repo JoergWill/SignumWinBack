@@ -312,12 +312,19 @@ Public Class wb_Produktionsschritt
         End Get
     End Property
 
+    ''' <summary>
+    ''' Bei zusammengefassten Chargen wird hier die Information über die neue Charge ausgegeben.
+    ''' 
+    ''' Bei Produktionsdaten aus OrgaBack steht hier der Sondertext der Bestellung.
+    ''' Bei den Sondertexten werden evtl. enthaltene CR und CRLF durch Leerzeichen ersetzt.
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property VirtTreeKommentar As String
         Get
             If _Optimiert Then
                 Return "zusammengefasst in Charge " & _ChargenNummer
             Else
-                Return _Bestellt_SonderText
+                Return _Bestellt_SonderText.Replace(vbCrLf, " ")
             End If
         End Get
     End Property

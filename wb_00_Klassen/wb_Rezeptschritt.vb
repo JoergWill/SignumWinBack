@@ -459,7 +459,7 @@ Public Class wb_Rezeptschritt
     Public ReadOnly Property VirtTreePreis As String
         Get
             If _Preis > 0 Then
-                Return wb_Functions.FormatStr(_Preis, 2) + "€"
+                Return wb_Functions.FormatStr(_Preis, 2) + wb_GlobalSettings.osDefaultWaehrung
             Else
                 Return ""
             End If

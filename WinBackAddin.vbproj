@@ -277,8 +277,10 @@
       <HintPath>packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>dll\OrgaSoft V3.2.7454\Signum.OrgaSoft.Contracts.dll</HintPath>
+    <Reference Include="Signum.OrgaSoft.Contracts, Version=3.2.7464.29145, Culture=neutral, PublicKeyToken=2878ef535661ab5d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>dll\OrgaSoft V3.2.7483\Signum.OrgaSoft.Contracts.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -374,6 +376,12 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_ListeStatistik.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_Silo.Designer.vb">
+      <DependentUpon>wb_Silo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_Silo.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_OrgaBack.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_WinBack.vb" />
     <Compile Include="wb_00_Klassen\wb_Chargen.vb" />
@@ -455,6 +463,7 @@
     <Compile Include="wb_00_Klassen\wb_OrgaBackProcessPosition.vb" />
     <Compile Include="wb_00_Klassen\wb_OrgaBackProcess_WE.vb" />
     <Compile Include="wb_00_Klassen\wb_Produktion_virtuell.vb" />
+    <Compile Include="wb_00_Klassen\wb_SiloRohstoff.vb" />
     <Compile Include="wb_00_Klassen\wb_StatistikListe.vb" />
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.Designer.vb">
       <DependentUpon>wb_Chargen_ChartTTS.vb</DependentUpon>
@@ -1022,6 +1031,9 @@
     <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_ListeStatistik.resx">
       <DependentUpon>wb_ListeStatistik.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_Silo.resx">
+      <DependentUpon>wb_Silo.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\WinBack_DockMain.resx">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
     </EmbeddedResource>
@@ -1075,6 +1087,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Details.resx">
       <DependentUpon>wb_Artikel_Details.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Hinweise.resx">
       <DependentUpon>wb_Artikel_Hinweise.vb</DependentUpon>
@@ -1472,6 +1485,7 @@
     <None Include="Resources\UserDetails_32x32.png" />
     <None Include="Resources\UserBerechtigungen_32x32.png" />
     <None Include="Resources\LinienAuto_32x32.png" />
+    <None Include="Resources\RohstoffSilo_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

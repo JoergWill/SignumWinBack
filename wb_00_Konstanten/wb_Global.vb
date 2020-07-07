@@ -214,6 +214,14 @@
         Undef                       'nicht definiert
     End Enum
 
+    Enum RohSiloTypen
+        M       'Mehlsilo
+        MK      'Mittelkomponenten
+        KKA     'Kleinkomponenten
+        BW      'Bodenwaage/Flüssigverwiegung
+        UNDEF   'nicht definiert
+    End Enum
+
     Enum OrgaBackThemes
         Standard
         Blau

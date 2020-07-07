@@ -16,6 +16,9 @@ Public Class wb_Artikel_Details
             tbArtikelPreis.Visible = False
             lblPreis.Visible = False
             ePreis.Visible = False
+        Else
+            'Default-Währung (€)
+            ePreis.Text = wb_GlobalSettings.osDefaultWaehrung
         End If
 
         'Event-Handler (Klick auf Artikel-Liste -> Anzeige der Detail-Info)

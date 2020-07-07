@@ -14,6 +14,7 @@ Public Class wb_Rohstoffe_Main
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
     Public RohstoffParameter As wb_Rohstoffe_Parameter
+    Public RohstoffSilo As wb_Rohstoffe_Silo
     Public RohstoffLieferung As wb_Rohstoffe_Lieferung
     Public RohstoffNwt As wb_Rohstoffe_Nwt
     Public RohstoffCloud As wb_Rohstoffe_Cloud
@@ -82,6 +83,7 @@ Public Class wb_Rohstoffe_Main
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrp.AddButton("BtnRohstoffDetails", "Details", "weitere Rohstoff-Daten", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnRohstoffDetails)
                 oGrp.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffParameter)
+                oGrp.AddButton("BtnRohstoffSilo", "Silo Füllstand", "Rohstoffe Silo-Füllstände", My.Resources.RohstoffSilo_32x32, My.Resources.RohstoffSilo_32x32, AddressOf BtnRohstoffSilo)
                 oGrp.AddButton("BtnRohstoffLieferung", "Lager Produktion", "Rohstoffe Produktionslager", My.Resources.RohstoffeLieferung_32x32, My.Resources.RohstoffeLieferung_32x32, AddressOf BtnRohstoffLieferung)
                 oGrp.AddButton("BtnRohstoffNwt", "Nährwerte", "Rohstoffe Allergene und Nährwert-Angaben", My.Resources.RohstoffeNwt_32x32, My.Resources.RohstoffeNwt_32x32, AddressOf BtnRohstoffNwt)
                 oGrp.AddButton("BtnRohstoffCloud", "Cloud", "Rohstoffe Verknüpfung zur Cloud", My.Resources.RohstoffeCloud_32x32, My.Resources.RohstoffeCloud_32x32, AddressOf BtnRohstoffCloud)
@@ -111,6 +113,13 @@ Public Class wb_Rohstoffe_Main
             RohstoffNwt = New wb_Rohstoffe_Nwt
         End If
         RohstoffNwt.Show(DockPanel, DockState.Document)
+    End Sub
+
+    Private Sub BtnRohstoffSilo()
+        If IsNothingOrDisposed(RohstoffSilo) Then
+            RohstoffSilo = New wb_Rohstoffe_Silo
+        End If
+        RohstoffSilo.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRohstoffLieferung()
@@ -156,6 +165,11 @@ Public Class wb_Rohstoffe_Main
                 RohstoffParameter = New wb_Rohstoffe_Parameter
                 _DockPanelList.Add(RohstoffParameter)
                 Return RohstoffParameter
+
+            Case "WinBack.wb_Rohstoffe_Silo"
+                RohstoffSilo = New wb_Rohstoffe_Silo
+                _DockPanelList.Add(RohstoffSilo)
+                Return RohstoffSilo
 
             Case "WinBack.wb_Rohstoffe_Nwt"
                 RohstoffNwt = New wb_Rohstoffe_Nwt

@@ -427,6 +427,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.RohstoffSilo_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.Rotate90L_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -2137,6 +2142,70 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Value">Object - Wert aus Datenbank</param>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_SiloRohstoff.KompNr">
+ <summary>
+ Komponenten-Nummer(Inter) zum Silo-Rohstoff
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_SiloRohstoff.KompNummer">
+ <summary>
+ Rohstoff-Nummer(ASCII) zum Silo
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_SiloRohstoff.KompBezeichnung">
+ <summary>
+ Rohstoff-Bezeichnung zum Silo
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_SiloRohstoff.LagerOrt">
+ <summary>
+ Lagerort zum Silo. Anhand der Lagerort-Bezeichnung wird auch die Silo-Type bestimmt
+     - (M)   Mehlsilo
+     - (MK)  Mittelkomponenten
+     - (KKA) Kleinkomponenten
+     - (BW)  Bodenwaage
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_SiloRohstoff.SiloNr">
+ <summary>
+ Silonummer
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_SiloRohstoff.MaxMenge">
+ <summary>
+ Maximale Füllmenge. Entspricht dem Fassungsvermögen des Silos.
+ Steht in der Datenbank im Datenfeld LG_Kommentar
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_SiloRohstoff.IstMenge">
+ <summary>
+ Silo-Füllstand
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_SiloRohstoff.SiloReiheMaxMenge">
+ <summary>
+ Größtes Silo in der Silo-Reihe.
+ Bestimmt den Faktor der Darstellung der Silo-Füllstände
+ </summary>
+</member>
+<member name="P:WinBack.wb_SiloRohstoff.RohSiloType">
+ <summary>
+ Silo-Type. Wird aus dem Lagerort ermittelt
+ 
+     - (M)   Mehlsilo
+     - (MK)  Mittelkomponenten
+     - (KKA) Kleinkomponenten
+     - (BW)  Bodenwaage
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Chargen_ChartTTS.MySqlLoadWbDaten(System.Int32,System.Int32,System.Int32,System.Int32)">
  <summary>
  Lade alle Chargen-Daten zu dieser Rezeptnummer/RezeptVariante
@@ -2345,6 +2414,27 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Ergebnis Auswahl zusammenfassen
  Wenn nur eine Zeile ausgewählt worden ist, werden Artikelnummer und Bezeichnung zurückgegeben. Bei 
  Multiselect nur Artikel-Index als Liste
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.DetailInfo(System.Object)">
+ <summary>
+ Anzeige der Rohstoff-Details.
+ Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.DrawSiloReihe">
+ <summary>
+ Zeichnet die einzelnen Silo-User-Controls in das Panel ein
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.GetSiloFuellstand_DB(System.Object)">
+ <summary>
+ Ermittelt die Füllstände aus der Lagerorte-Tabelle und zeigt diese im User-Control an
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.SetSiloFuellStand">
+ <summary>
+ Füllstand aus HashTable in die Silo-Grafik übertragen
  </summary>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Lieferung.DetailInfo(System.Object)">
@@ -4204,6 +4294,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns>String - Bezeichnung</returns>
 </member>
+<member name="P:WinBack.wb_Produktionsschritt.VirtTreeKommentar">
+ <summary>
+ Bei zusammengefassten Chargen wird hier die Information über die neue Charge ausgegeben.
+ 
+ Bei Produktionsdaten aus OrgaBack steht hier der Sondertext der Bestellung.
+ Bei den Sondertexten werden evtl. enthaltene CR und CRLF durch Leerzeichen ersetzt.
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Produktionsschritt.VirtTreeSollwert">
  <summary>
  Sollwert. Anzeige im VitualTree. Unterscheidung anhand der Type:
@@ -5419,6 +5518,13 @@ Text aus Datenbank lesen - Übersetzung
  Windows-Umgebungsvariable TMP. System-Temp-Path (C:\Temp).
  Sollte diese Umgebungsvariable nicht existieren, erfolgt ein Eintrag im System-Log und es wird stattdessen der OrgaBack-tmp-Pfad
  zurückgegeben
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_GlobalSettings.osDefaultWaehrung">
+ <summary>
+ Default-Währung.
+ Wird aus OrgaBack-DB-Festwerten gelesen. Ist die Default-Währung nicht definiert, kommt der Wert aus der winback.ini
  </summary>
  <returns></returns>
 </member>
@@ -7403,6 +7509,56 @@ Public Const MFF_Wissenswertes = 213
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Shared.Load_RohstoffTables">
+ <summary>
+HashTable mit der Übersetzung der Rohstoffgruppen-Nummer in die Rohstoffgruppen-Bezeichnung laden
+wenn die Rohstoffgruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
+entsprechende Übersetzung aus winback.Texte geladen
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Shared.Load_SiloTables">
+ <summary>
+ Liest alle (aktiven) Silo-Rohstoffe aus der WinBack-Datenbank. Die Rohstoffe sind sortiert
+ nach Lagerort und Komponenten-Nummer.
+ Die maximale Füllstand (Silo-Größe) steht in der Tabelle Lagerorte im Feld LG_Kommentar)
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Shared.HatSiloUmschaltung(System.String)">
+ <summary>
+ Prüft ob zu dieser Komponenten-Nummer mehrere Automatik-Rohstoffe mit dieser Nummer
+ existieren. Wenn eine Silo-Umschaltung möglich ist wird True zurückgegeben.
+ </summary>
+ <param name="KompNummer"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Shared.AnzahlSilos(System.String)">
+ <summary>
+ Gibt die Anzahl der Rohstoffe mit dieser Nummer zurück.
+ </summary>
+ <param name="KompNummer"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Shared.GetIdentSilos(System.String)">
+ <summary>
+ Gibt eine Liste aller Automatik-(Silo)-Rohstoffe mit dieser Nummer zurück.
+ </summary>
+ <param name="KompNummer"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Shared.GetAllSilos(System.String)">
+ <summary>
+ Gibt eine Liste aller Automatik-(Silo)-Rohstoffe zu dieser Type(Lagerort) zurück
+     - Mehlsilos
+     - Mittelkomponenten
+     - Flüssigverwiegung
+     - Kleinkomponenten
+     
+ Der Silo-Typ wird aus dem Lagerort ermittelt.
+ Zusätzlich zur Liste wird noch der Maximal-Wert der Silo-Füllmenge dieser Gruppe ermittelt
+ </summary>
+ <param name="LagerOrt"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Liste.SaveData(System.Object)">
  <summary>
  Datensatz in Datenbank sichern. Wird über Event eEdit_Leave() aufgerufen
@@ -8328,7 +8484,7 @@ SQL-Select-Statement ausführen
  <param name="sql">Select-Statement</param>
  <returns>False im Fehlerfall</returns>
 </member>
-<member name="M:WinBack.wb_Sql.sqlCommand(System.String)">
+<member name="M:WinBack.wb_Sql.sqlCommand(System.String,System.Boolean)">
  <summary>
  SQL-Kommando ausführen
  </summary>
@@ -8599,7 +8755,8 @@ Datenbank-Verbindung schliessen
 </member>
 <member name="M:WinBack.ob_Main_Menu.AddEventBroker">
  <summary>
- Event User-Login
+ Event User-Login, Änderung der Sprache-Einstellungen
+ Event ProcessChanged, wird von OrgaBack bei Vorfällen aufgerufen.
  </summary>
 </member>
 <member name="M:WinBack.ob_Main_Menu.AddMenu">

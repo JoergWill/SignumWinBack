@@ -103,6 +103,7 @@ Public Class ob_ChargenBestand
         'nächsten Datensatz aus Tabelle Komponenten lesen
         If winback.sqlSelect(setParams(sqlRohstoffLagerort, KompNr.ToString)) Then
             'Lesen alle Lieferungen zu dieser Komponente
+            'TODO Was passiert wenn keine Lieferung vorhanden ist ??
             If winback.Read Then
                 Lieferungen.MySQLdbRead(winback.MySqlRead)
 

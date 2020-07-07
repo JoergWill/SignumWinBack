@@ -86,6 +86,7 @@ Partial Class WinBack
         Me.rbRohstoffeParameter = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffeLieferungen = New System.Windows.Forms.RibbonButton()
         Me.rbRohstoffNwt = New System.Windows.Forms.RibbonButton()
+        Me.rbRohstoffSilos = New System.Windows.Forms.RibbonButton()
         Me.rsRohstoffeSep = New System.Windows.Forms.RibbonSeparator()
         Me.rbRohstoffeAnsicht = New System.Windows.Forms.RibbonButton()
         Me.rlRohstoffe = New System.Windows.Forms.RibbonLabel()
@@ -131,6 +132,7 @@ Partial Class WinBack
         Me.rbDatensicherung = New System.Windows.Forms.RibbonButton()
         Me.rbAdminWinBackIni = New System.Windows.Forms.RibbonButton()
         Me.rsAdmin = New System.Windows.Forms.RibbonSeparator()
+        Me.rbCheckDataBase = New System.Windows.Forms.RibbonButton()
         Me.rbAdminUpdate = New System.Windows.Forms.RibbonButton()
         Me.rbAdminWinBack = New System.Windows.Forms.RibbonButton()
         Me.LanguageFlags = New System.Windows.Forms.ImageList(Me.components)
@@ -171,7 +173,6 @@ Partial Class WinBack
         Me.BtnDelete = New System.Windows.Forms.Button()
         Me.BtnSaveAs = New System.Windows.Forms.Button()
         Me.BtnSave = New System.Windows.Forms.Button()
-        Me.rbCheckDataBase = New System.Windows.Forms.RibbonButton()
         Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -677,6 +678,7 @@ Partial Class WinBack
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeParameter)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeLieferungen)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffNwt)
+        Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffSilos)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rsRohstoffeSep)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rbRohstoffeAnsicht)
         Me.rpRohstoffeAnsicht.Items.Add(Me.rlRohstoffe)
@@ -742,6 +744,15 @@ Partial Class WinBack
         Me.rbRohstoffNwt.SmallImage = CType(resources.GetObject("rbRohstoffNwt.SmallImage"), System.Drawing.Image)
         Me.rbRohstoffNwt.Text = "Rohstoff Nährwerte"
         Me.rbRohstoffNwt.Value = "NWT"
+        '
+        'rbRohstoffSilos
+        '
+        Me.rbRohstoffSilos.Image = Global.WinBack.My.Resources.Resources.RohstoffSilo_32x32
+        Me.rbRohstoffSilos.LargeImage = Global.WinBack.My.Resources.Resources.RohstoffSilo_32x32
+        Me.rbRohstoffSilos.Name = "rbRohstoffSilos"
+        Me.rbRohstoffSilos.SmallImage = Global.WinBack.My.Resources.Resources.RohstoffSilo_32x32
+        Me.rbRohstoffSilos.Text = "Rohstoffe Silos"
+        Me.rbRohstoffSilos.Value = "SILO"
         '
         'rsRohstoffeSep
         '
@@ -1109,6 +1120,15 @@ Partial Class WinBack
         'rsAdmin
         '
         Me.rsAdmin.Name = "rsAdmin"
+        '
+        'rbCheckDataBase
+        '
+        Me.rbCheckDataBase.Image = Global.WinBack.My.Resources.Resources.ChargenRohstoffeDetail_32x32
+        Me.rbCheckDataBase.LargeImage = Global.WinBack.My.Resources.Resources.ChargenRohstoffeDetail_32x32
+        Me.rbCheckDataBase.Name = "rbCheckDataBase"
+        Me.rbCheckDataBase.SmallImage = CType(resources.GetObject("rbCheckDataBase.SmallImage"), System.Drawing.Image)
+        Me.rbCheckDataBase.Text = "Check Datenbank"
+        Me.rbCheckDataBase.Value = "CHECKDATABASE"
         '
         'rbAdminUpdate
         '
@@ -1584,15 +1604,6 @@ Partial Class WinBack
         Me.BtnSave.TabStop = False
         Me.BtnSave.UseVisualStyleBackColor = True
         '
-        'rbCheckDataBase
-        '
-        Me.rbCheckDataBase.Image = Global.WinBack.My.Resources.Resources.ChargenRohstoffeDetail_32x32
-        Me.rbCheckDataBase.LargeImage = Global.WinBack.My.Resources.Resources.ChargenRohstoffeDetail_32x32
-        Me.rbCheckDataBase.Name = "rbCheckDataBase"
-        Me.rbCheckDataBase.SmallImage = CType(resources.GetObject("rbCheckDataBase.SmallImage"), System.Drawing.Image)
-        Me.rbCheckDataBase.Text = "Check Datenbank"
-        Me.rbCheckDataBase.Value = "CHECKDATABASE"
-        '
         'WinBack
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1772,4 +1783,5 @@ Partial Class WinBack
     Friend WithEvents rbKonfigWinBack As RibbonButton
     Friend WithEvents rbProduktionTeiler As RibbonButton
     Friend WithEvents rbCheckDataBase As RibbonButton
+    Friend WithEvents rbRohstoffSilos As RibbonButton
 End Class
