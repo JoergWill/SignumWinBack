@@ -56,6 +56,7 @@
     'Sql-Statement Update ArtikelHatMultifeld
     Public Const mssqlUpdateArtikelMFF = "UPDATE [dbo].[ArtikelHatMultiFeld] SET Inhalt = '[3]' WHERE ArtikelNr ='[0]' AND Feldnummer = [1] AND FilialNr = [2]"
     Public Const mssqlInsertArtikelMFF = "INSERT INTO [dbo].[ArtikelHatMultiFeld] (ArtikelNr, Feldnummer, FilialNr, Inhalt) VALUES ('[0]', [1], [2], '[3]')"
+    Public Const mssqlDeleteArtikelMFF = "DELETE FROM [dbo].[ArtikelHatMultiFeld] WHERE ArtikelNr = '[0]' AND Feldnummer = [1]"
 
     'Sql-Statement Abfrage dbo.[Naehrwerte]
     Public Const mssqlSelNaehrwerte = "SELECT * FROM [dbo].[Naehrwerte]"

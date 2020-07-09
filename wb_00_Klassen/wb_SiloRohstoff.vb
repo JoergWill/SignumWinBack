@@ -10,6 +10,7 @@
     Private _SiloReiheMaxMenge As Integer = wb_Global.UNDEFINED
     Private _parentStep As wb_SiloRohstoff
     Private _childSteps As New ArrayList()
+
     Public Silo As New wb_Silo()
 
     '' <summary>
@@ -57,6 +58,7 @@
         End Get
         Set(value As Integer)
             _KompNr = value
+            Silo.KompNr = _KompNr
         End Set
     End Property
 
@@ -70,7 +72,7 @@
         End Get
         Set(value As String)
             _KompNummer = value
-            Silo.lblNummer.Text = "Nr. " & _KompNummer
+            Silo.KompNummer = _KompNummer
         End Set
     End Property
 
@@ -84,7 +86,7 @@
         End Get
         Set(value As String)
             _KompBezeichnung = value
-            Silo.lblRohName.Text = _KompBezeichnung
+            Silo.KompBezeichnung = _KompBezeichnung
         End Set
     End Property
 
@@ -163,7 +165,6 @@
             Silo.SiloReiheMaxMenge = value
         End Set
     End Property
-
 
     ''' <summary>
     ''' Silo-Type. Wird aus dem Lagerort ermittelt

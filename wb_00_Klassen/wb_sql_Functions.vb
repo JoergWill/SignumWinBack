@@ -161,10 +161,10 @@ Public Class wb_sql_Functions
     ''' <param name="ParameterNummer"></param>
     ''' <param name="Wert"></param>
     ''' <returns></returns>
-    Public Shared Function setKomponParam(KomponentenNummer As Integer, ParameterNummer As Integer, Wert As String) As Boolean
+    Public Shared Function setKomponParam(KomponentenNummer As Integer, ParameterNummer As Integer, Wert As String, Kommentar As String) As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         'Update-Statement wird dynamisch erzeugt (REPLACE INTO KomponParams)
-        Dim Count As Integer = winback.sqlCommand(setParams(sqlUpdateKompParams, KomponentenNummer, ParameterNummer, Wert))
+        Dim Count As Integer = winback.sqlCommand(setParams(sqlUpdateKompParams, KomponentenNummer, ParameterNummer, Wert, Kommentar))
         winback.Close()
         Return (Count >= 0)
     End Function

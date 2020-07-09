@@ -16,7 +16,7 @@ Public Class wb_Komponente
     Private LF_Lieferant As String
     Private KO_Backverlust As Double
     Private KA_ProdVorlauf As Integer
-    Private KO_Zuschnitt As Double
+    Private KO_Zuschnitt As Integer
     Private KA_Verarbeitungshinweise As String
     Private KA_VerarbeitungshinweisePfad As String
     Private KA_VerarbeitungshinweiseDPI As String
@@ -266,7 +266,7 @@ Public Class wb_Komponente
             'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
             If value <> "" And KA_Verarbeitungshinweise <> "" Then
                 KA_VerarbeitungshinweisePfad = value
-                wb_sql_Functions.setKomponParam(Nr, KomponParams.VerarbeitungsHinweisePfad, wb_Functions.XRemoveSonderZeichen(KA_VerarbeitungshinweisePfad))
+                wb_sql_Functions.setKomponParam(Nr, KomponParams.VerarbeitungsHinweisePfad, wb_Functions.XRemoveSonderZeichen(KA_VerarbeitungshinweisePfad), "Pfad Verarbeitungshinweise")
             End If
         End Set
     End Property
@@ -287,7 +287,7 @@ Public Class wb_Komponente
             'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
             If value <> "" And KA_Verarbeitungshinweise <> "" Then
                 KA_VerarbeitungshinweiseDPI = value
-                wb_sql_Functions.setKomponParam(Nr, KomponParams.VerarbeitungsHinweiseDPI, KA_VerarbeitungshinweiseDPI)
+                wb_sql_Functions.setKomponParam(Nr, KomponParams.VerarbeitungsHinweiseDPI, KA_VerarbeitungshinweiseDPI, "DPI Verarbeitungshinweise")
             End If
         End Set
     End Property
@@ -580,6 +580,17 @@ Public Class wb_Komponente
 
         'Ausgehend vom Root-Knoten werden alle Child-Knoten durchlaufen
         For Each p As wb_KomponParam In _RootParameter.ChildSteps
+
+            'Parameter Produktion prüfen/reparieren (Fehler bei Niehaves nach Neuanlegen Rohstoff)
+            If (KO_Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE) And (p.TypNr < wb_Global.ktParam.kt200) And (p.ChildSteps.Count < 7) Then
+                'Parameter in winback.KomponParams anlegen
+                ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_SollMenge, winback)
+                ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_SollProzent, winback)
+                ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_TolMinus, winback)
+                ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_TolPlus, winback)
+                ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_TolProzent, winback)
+            End If
+
             'alle Child-Knoten
             For Each x As wb_KomponParam In p.ChildSteps
                 'Parameter wurde geändert
@@ -589,8 +600,12 @@ Public Class wb_Komponente
 
                         'Allgemeine Parameter
                         Case < wb_Global.ktParam.kt200
-                            'TODO ktTYpXXX mysqldbsave !
-                            Debug.Print("SaveParameterArray xxx " & x.Bezeichnung & " ParamNr " & x.ParamNr)
+                            'Wert in kt301-Array übertragen
+                            ktTypXXX.Wert(x.ParamNr) = x.Wert
+                            'Update einzelner Datensatz in winback-Datenbank
+                            ktTypXXX.MySQLdbUpdate(Nr, x.ParamNr, winback)
+                            'Flag zurücksetzen
+                            x.Changed = False
 
                         'Allergene und Nährwerte
                         Case wb_Global.ktParam.kt301
@@ -1048,14 +1063,14 @@ Public Class wb_Komponente
             If Type = KomponTypen.KO_TYPE_ARTIKEL Then
                 Return ktTyp300.Zuschnitt
             Else
-                Return KO_Zuschnitt / 100
+                Return CDbl(KO_Zuschnitt) / 100
             End If
         End Get
         Set(value As Double)
             If Type = KomponTypen.KO_TYPE_ARTIKEL Then
                 ktTyp300.Zuschnitt = value
             Else
-                KO_Zuschnitt = value * 100
+                KO_Zuschnitt = CInt(value * 100)
             End If
         End Set
     End Property
@@ -1296,7 +1311,7 @@ Public Class wb_Komponente
     ''' </summary>
     ''' <param name="InterneKomponentenNummer">Integer - Interne Komponenten-Nummer</param>
     ''' <returns>Boolean - Löschen ist erlaubt</returns>
-    Private Function MySQLIsUsedInRecipe(InterneKomponentenNummer) As Boolean
+    Public Function MySQLIsUsedInRecipe(InterneKomponentenNummer) As Boolean
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompInRezept, InterneKomponentenNummer)
         Dim Count As Integer = -1
@@ -1429,8 +1444,19 @@ Public Class wb_Komponente
         winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewKompon, KO_Nr, KO_Nr_AlNum, wb_Functions.KomponTypeToInt(KO_Type), "Neu angelegt " & Date.Now))
         'Rohstoff-Handkomponente - Lagerort neu anlegen
         If KType = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Then
+
+            'Datensatz in winback.Lagerorte anlegen
             KA_Lagerort = "KT102_" + KO_Nr.ToString
             winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertLagerOrte, KA_Lagerort))
+
+            'Datensatz in winback.KomponParams anlegen
+            ktTypXXX.Wert(T102_TolMinus) = "0,020"
+            ktTypXXX.Wert(T102_TolPlus) = "0,020"
+            ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_SollMenge, winback)
+            ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_SollProzent, winback)
+            ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_TolMinus, winback)
+            ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_TolPlus, winback)
+            ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_TolProzent, winback)
         End If
 
         winback.Close()
@@ -1611,7 +1637,7 @@ Public Class wb_Komponente
                     KO_Backverlust = Value
                 'Zuschnittverlust(Rezept im Rezept)
                 Case "KA_Artikel_Typ"
-                    KO_Zuschnitt = Value
+                    KO_Zuschnitt = wb_Functions.StrToInt(Value)
                 'Produktions-Vorlauf in [h]
                 Case "KA_Prod_Linie"
                     KA_ProdVorlauf = Value
@@ -1766,7 +1792,7 @@ Public Class wb_Komponente
               "KO_Kommentar = '" & Kommentar & "'," &
               "KO_Temp_Korr = '" & KO_Backverlust & "'," &
               "KA_Artikel_Typ = " & KO_Zuschnitt & "," &
-              "KA_Prod_Linie = '" & KA_ProdVorlauf & "'," &
+              "KA_Prod_Linie = " & KA_ProdVorlauf & "," &
               "KA_Matchcode = '" & KO_IdxCloud & "'," &
               "KA_Lagerort = '" & KA_Lagerort & "'," &
               "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &

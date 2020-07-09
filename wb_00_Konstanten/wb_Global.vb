@@ -355,6 +355,13 @@
     ''' </summary>
     Public Const maxTypXXX = 91
     Public Const T101_LagerOrt = 90
+
+    Public Const T102_SollMenge = 1
+    Public Const T102_SollProzent = 2
+    Public Const T102_TolMinus = 3
+    Public Const T102_TolPlus = 4
+    Public Const T102_TolProzent = 5
+
     Public Const T118_KneterParamNr = 2
 
     ''' <summary>

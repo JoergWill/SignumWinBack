@@ -21,6 +21,7 @@ Public Class wb_Rohstoffe_Shared
         Alle        ' alle aktiven Rohstoffe Typ > 100
         Hand        ' alle aktiven Rohstoffe Typ 102
         Auto        ' alle aktiven Rohstoffe Typ 101,103,104
+        HandAuto    ' alle Rohstoffe Type 101,102
         Sauerteig   ' alle aktiven Rohstoffe Sauerteig
         Install     ' alle inaktiven Rohstoffe
         Sonstige    ' alle Rohstoffe Typ 105,106

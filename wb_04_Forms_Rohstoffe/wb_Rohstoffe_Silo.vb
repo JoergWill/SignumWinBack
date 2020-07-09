@@ -36,8 +36,6 @@ Public Class wb_Rohstoffe_Silo
 
             'Silo-Type hat sich geändert
             If (sType <> aType) Then
-                'Silo-Type merken
-                aType = sType
                 'Anzeige ausblenden
                 TableLayoutPanel.Visible = False
                 'Panels für die Silo-Füllstände anzeigen
@@ -46,6 +44,8 @@ Public Class wb_Rohstoffe_Silo
                 TableLayoutPanel.Visible = True
             End If
 
+            'Silo-Type merken
+            aType = sType
             'Füllstände einlesen
             GetSiloFuellstand_DB(sType)
             'Füllstände in Grafik einblenden

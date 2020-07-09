@@ -67,8 +67,9 @@
     'Sql-Statement Liste aller Komponenten-Parameter Typ(301)
     Public Const sqlKompTyp301 = "SELECT * FROM KomponTypen WHERE KomponTypen.KT_Typ_Nr=301 ORDER BY KT_ParamNr"
 
-    'Sql-Statmente Liste aller Komponenten-Parameter zur Komponenten-Type(Produktion)
+    'Sql-Statement Liste aller Komponenten-Parameter zur Komponenten-Type(Produktion)
     Public Const sqlKomponParamsXXX = "SELECT * FROM KomponParams WHERE KP_Ko_Nr = [0] ORDER BY KP_ParamNr"
+
     'Sql-Statmente Liste aller Komponenten-Parameter (erweiterte Parameter/Nährwerte)
     Public Const sqlRohParamsXXX = "SELECT * FROM RohParams INNER JOIN KomponTypen ON (RohParams.RP_ParamNr = KomponTypen.KT_ParamNr) AND " &
                                  "(RohParams.RP_Typ_Nr = KomponTypen.KT_Typ_Nr) WHERE ((RohParams.RP_Ko_Nr)= [0]) ORDER BY RP_Typ_Nr, RP_ParamNr"
@@ -90,7 +91,7 @@
 
     'Sql-Statement Komponenten-Parameter zum Komponenten-Nummer und Parameter-Nummer 
     '    Public Const sqlUpdateKompParams = "UPDATE KomponParams SET KP_Wert = '[2]' WHERE KP_KO_Nr = [0] And KP_ParamNr = [1]"
-    Public Const sqlUpdateKompParams = "REPLACE INTO KomponParams(KP_Ko_Nr, KP_ParamNr, KP_Wert, KP_Kommentar) VALUES([0],[1],'[2]','FilePath ArtikelHinweis')"
+    Public Const sqlUpdateKompParams = "REPLACE INTO KomponParams(KP_Ko_Nr, KP_ParamNr, KP_Wert, KP_Kommentar) VALUES([0],[1],'[2]','[3]')"
 
     'Sql-Statement Artikelliste aus winback.Komponenten
     Public Const sqlArtikelLst = "SELECT KO_Nr, KO_Nr_AlNum, KO_Bezeichnung, KA_RZ_Nr, KO_Kommentar, KA_aktiv, KO_Type, " &
@@ -143,6 +144,10 @@
 
     'Sql-Statement Alle Rohstoffe, die nicht zum Rezeptgewicht zählen
     Public Const sqlKompDoNotCount = "SELECT Komponenten.KO_Nr FROM Komponenten WHERE KA_zaehlt_zu_RZ_Gesamtmenge = '1'"
+
+    'Sql-Statement Update Bezeichnung und Nummer Rohstoff (Silo ändern in WinBack)
+    Public Const sqlUpdateKompName = "UPDATE Komponenten SET KO_Bezeichnung = '[1]', KO_Nr_AlNum = '[2]' WHERE KO_Nr = '[0]'"
+
 
 End Class
 

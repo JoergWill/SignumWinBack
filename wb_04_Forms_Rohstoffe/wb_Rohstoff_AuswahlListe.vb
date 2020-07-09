@@ -36,6 +36,9 @@ Public Class wb_Rohstoff_AuswahlListe
                 Case AnzeigeFilter.Alle        ' alle aktiven Rohstoffe Typ > 100
                     _Filter = "(KO_Type > 100) AND KA_aktiv = 1"
 
+                Case AnzeigeFilter.HandAuto    ' alle aktiven Rohstoffe Typ 101 und 102
+                    _Filter = "((KO_Type = 101) OR (KO_Type = 102)) AND KA_aktiv = 1"
+
                 Case AnzeigeFilter.RezeptKomp   'alle Rohstoffe Rezeptauswahl
                     _Filter = "(KO_Type > 100) AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE) &
                               ") AND (KO_Type <> " & wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) &

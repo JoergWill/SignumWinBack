@@ -32,34 +32,24 @@
 
     ''' <summary>
     ''' Update aller geänderten Komponenten-Parameter in Tabelle winback.KomponParams
-    '''     RP_Ko_Nr
-    '''     RP_Typ_Nr
-    '''     RP_ParamNr
-    '''     RP_Wert
-    '''     RP_Kommentar
-    '''     RP_Timestamp
+    '''     KP_Ko_Nr
+    '''     KP_ParamNr
+    '''     KP_Wert
+    '''     KP_Kommentar
+    '''     KP_Timestamp
     '''     
-    ''' SQL_Anweisung REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
+    ''' SQL_Anweisung REPLACE INTO KomponParams (KP_Ko_Nr, KP_ParamNr, KP_Wert, KP_Kommentar) VALUES (...)
     ''' 
     ''' </summary>
     ''' <returns></returns>
-    Public Function MySQLdbUpdate(KoNr As Integer, ByRef winback As wb_Sql) As Boolean
-        'Update-Statement wird dynamisch erzeugt    
-        'Dim sql As String
-        'Result OK
-        MySQLdbUpdate = True
-
-        ''alle Datensätze im Array durchlaufen
-        'For i = 0 To maxTyp200
-        '    If IsValidParameter(i) Then
-        '        'Update-Statement wird dynamisch erzeugt
-        '        'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
-        '        sql = KoNr & ", 200, " & i.ToString & ", '" & Wert(i) & "', '" & kt200Param(i).Bezeichnung & "'"
-        '        'Update ausführen
-        '        If Not winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, sql)) Then
-        '            MySQLdbUpdate = False
-        '        End If
-        '    End If
-        'Next
+    Public Function MySQLdbUpdate(KoNr As Integer, ParamNr As Integer, ByRef winback As wb_Sql) As Boolean
+        'Update ausführen REPLACE INTO KomponParams (KP_Ko_Nr, KP_ParamNr, KP_Wert, KP_Kommentar) VALUES (...)
+        Return winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKompParams, KoNr.ToString, ParamNr.ToString, Wert(ParamNr)))
     End Function
 End Class
+
+''''alle Datensätze im Array durchlaufen
+''For i = 0 To wb_Global.maxTypXXX
+''If wb_KomponParam_Global.IsValidParameter(t, i) Then
+''End If
+''Next

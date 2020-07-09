@@ -7,7 +7,6 @@
 Public Class wb_KomponParam_Global
 
     Private Shared _ktTypMaxParams As New Hashtable
-
     Public Shared ktTypXXXParams As New Hashtable
 
     ''' <summary>
@@ -61,8 +60,8 @@ Public Class wb_KomponParam_Global
                     k.eFormat = EnhEdit.EnhEdit_Global.wb_Format.fYesNo
                 End If
             Else
-                    'Anzeige des Parameter-Wertes abhängig von Parameter-Type und Parameter-Nummer
-                    k.Used = SetParameterUsed(k.Type, k.ParamNr)
+                'Anzeige des Parameter-Wertes abhängig von Parameter-Type und Parameter-Nummer
+                k.Used = SetParameterUsed(k.Type, k.ParamNr)
             End If
 
             'Parameter-Datensatz speichern

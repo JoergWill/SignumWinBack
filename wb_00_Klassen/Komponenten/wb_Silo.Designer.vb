@@ -22,6 +22,7 @@ Partial Class wb_Silo
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.lbMax = New System.Windows.Forms.Label()
         Me.lbIst = New System.Windows.Forms.Label()
         Me.tbMax = New System.Windows.Forms.TextBox()
@@ -30,7 +31,9 @@ Partial Class wb_Silo
         Me.lblNummer = New System.Windows.Forms.Label()
         Me.lblRohName = New System.Windows.Forms.Label()
         Me.pnlSilo = New System.Windows.Forms.TableLayoutPanel()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.tbSiloFuellstand = New System.Windows.Forms.TextBox()
+        Me.BtnSiloTauschen = New System.Windows.Forms.Button()
+        Me.ToolTipTauschen = New System.Windows.Forms.ToolTip(Me.components)
         Me.pnlSilo.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -38,7 +41,7 @@ Partial Class wb_Silo
         '
         Me.lbMax.AutoSize = True
         Me.lbMax.BackColor = System.Drawing.Color.Transparent
-        Me.lbMax.Location = New System.Drawing.Point(12, 56)
+        Me.lbMax.Location = New System.Drawing.Point(24, 84)
         Me.lbMax.Name = "lbMax"
         Me.lbMax.Size = New System.Drawing.Size(45, 13)
         Me.lbMax.TabIndex = 0
@@ -47,7 +50,7 @@ Partial Class wb_Silo
         'lbIst
         '
         Me.lbIst.AutoSize = True
-        Me.lbIst.Location = New System.Drawing.Point(12, 214)
+        Me.lbIst.Location = New System.Drawing.Point(24, 242)
         Me.lbIst.Name = "lbIst"
         Me.lbIst.Size = New System.Drawing.Size(50, 13)
         Me.lbIst.TabIndex = 1
@@ -55,7 +58,7 @@ Partial Class wb_Silo
         '
         'tbMax
         '
-        Me.tbMax.Location = New System.Drawing.Point(15, 72)
+        Me.tbMax.Location = New System.Drawing.Point(27, 100)
         Me.tbMax.Name = "tbMax"
         Me.tbMax.ReadOnly = True
         Me.tbMax.Size = New System.Drawing.Size(93, 20)
@@ -66,7 +69,7 @@ Partial Class wb_Silo
         '
         'tbIst
         '
-        Me.tbIst.Location = New System.Drawing.Point(15, 230)
+        Me.tbIst.Location = New System.Drawing.Point(27, 258)
         Me.tbIst.Name = "tbIst"
         Me.tbIst.ReadOnly = True
         Me.tbIst.Size = New System.Drawing.Size(93, 20)
@@ -79,7 +82,7 @@ Partial Class wb_Silo
         '
         Me.lblName.AutoSize = True
         Me.lblName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblName.Location = New System.Drawing.Point(12, 275)
+        Me.lblName.Location = New System.Drawing.Point(6, 303)
         Me.lblName.Name = "lblName"
         Me.lblName.Size = New System.Drawing.Size(40, 13)
         Me.lblName.TabIndex = 4
@@ -89,7 +92,7 @@ Partial Class wb_Silo
         '
         Me.lblNummer.AutoSize = True
         Me.lblNummer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblNummer.Location = New System.Drawing.Point(12, 2)
+        Me.lblNummer.Location = New System.Drawing.Point(6, 25)
         Me.lblNummer.Name = "lblNummer"
         Me.lblNummer.Size = New System.Drawing.Size(42, 13)
         Me.lblNummer.TabIndex = 5
@@ -98,43 +101,57 @@ Partial Class wb_Silo
         'lblRohName
         '
         Me.lblRohName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRohName.Location = New System.Drawing.Point(12, 15)
+        Me.lblRohName.Location = New System.Drawing.Point(6, 43)
         Me.lblRohName.Name = "lblRohName"
-        Me.lblRohName.Size = New System.Drawing.Size(131, 36)
+        Me.lblRohName.Size = New System.Drawing.Size(139, 36)
         Me.lblRohName.TabIndex = 6
         Me.lblRohName.Text = "Weizen 550"
         '
         'pnlSilo
         '
-        Me.pnlSilo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pnlSilo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlSilo.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.pnlSilo.ColumnCount = 1
-        Me.pnlSilo.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.pnlSilo.Controls.Add(Me.TextBox1, 0, 1)
-        Me.pnlSilo.Location = New System.Drawing.Point(70, 54)
+        Me.pnlSilo.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.pnlSilo.Controls.Add(Me.tbSiloFuellstand, 0, 1)
+        Me.pnlSilo.Location = New System.Drawing.Point(83, 80)
         Me.pnlSilo.Name = "pnlSilo"
         Me.pnlSilo.RowCount = 2
         Me.pnlSilo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.pnlSilo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.pnlSilo.Size = New System.Drawing.Size(75, 240)
+        Me.pnlSilo.Size = New System.Drawing.Size(62, 240)
         Me.pnlSilo.TabIndex = 7
         '
-        'TextBox1
+        'tbSiloFuellstand
         '
-        Me.TextBox1.BackColor = System.Drawing.Color.Lime
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TextBox1.Location = New System.Drawing.Point(3, 123)
-        Me.TextBox1.Multiline = True
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ReadOnly = True
-        Me.TextBox1.Size = New System.Drawing.Size(69, 114)
-        Me.TextBox1.TabIndex = 0
+        Me.tbSiloFuellstand.BackColor = System.Drawing.Color.Lime
+        Me.tbSiloFuellstand.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.tbSiloFuellstand.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tbSiloFuellstand.Location = New System.Drawing.Point(3, 123)
+        Me.tbSiloFuellstand.Multiline = True
+        Me.tbSiloFuellstand.Name = "tbSiloFuellstand"
+        Me.tbSiloFuellstand.ReadOnly = True
+        Me.tbSiloFuellstand.Size = New System.Drawing.Size(56, 114)
+        Me.tbSiloFuellstand.TabIndex = 0
+        '
+        'BtnSiloTauschen
+        '
+        Me.BtnSiloTauschen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnSiloTauschen.ForeColor = System.Drawing.Color.Black
+        Me.BtnSiloTauschen.Location = New System.Drawing.Point(83, 2)
+        Me.BtnSiloTauschen.Name = "BtnSiloTauschen"
+        Me.BtnSiloTauschen.Size = New System.Drawing.Size(62, 38)
+        Me.BtnSiloTauschen.TabIndex = 8
+        Me.BtnSiloTauschen.Text = "Rohstoff tauschen"
+        Me.ToolTipTauschen.SetToolTip(Me.BtnSiloTauschen, "Ändert den Rohstoff für dieses Silo." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Der bisherige Rohstoff darf in keiner Rezep" &
+        "tur mehr verwendet werden." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
+        Me.BtnSiloTauschen.UseVisualStyleBackColor = True
         '
         'wb_Silo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.BtnSiloTauschen)
         Me.Controls.Add(Me.lblRohName)
         Me.Controls.Add(Me.lblNummer)
         Me.Controls.Add(Me.lblName)
@@ -144,7 +161,7 @@ Partial Class wb_Silo
         Me.Controls.Add(Me.lbMax)
         Me.Controls.Add(Me.pnlSilo)
         Me.Name = "wb_Silo"
-        Me.Size = New System.Drawing.Size(150, 297)
+        Me.Size = New System.Drawing.Size(150, 328)
         Me.pnlSilo.ResumeLayout(False)
         Me.pnlSilo.PerformLayout()
         Me.ResumeLayout(False)
@@ -160,5 +177,7 @@ Partial Class wb_Silo
     Friend WithEvents lblNummer As Windows.Forms.Label
     Friend WithEvents lblRohName As Windows.Forms.Label
     Friend WithEvents pnlSilo As Windows.Forms.TableLayoutPanel
-    Friend WithEvents TextBox1 As Windows.Forms.TextBox
+    Friend WithEvents tbSiloFuellstand As Windows.Forms.TextBox
+    Friend WithEvents BtnSiloTauschen As Windows.Forms.Button
+    Friend WithEvents ToolTipTauschen As Windows.Forms.ToolTip
 End Class

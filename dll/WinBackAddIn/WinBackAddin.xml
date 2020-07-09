@@ -1071,6 +1071,16 @@ Stacktrace:
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Silo.BtnSiloTauschen_Click(System.Object,System.EventArgs)">
+ <summary>
+ Silo-Rohstoff neu definieren:
+     - Prüfen ob der Rohstoff noch in Rezepturen verwendet wird
+     - Verweis auf die winback.Komponente in OrgaBack löschen
+     - Name und Nummer aus der neuen Komponente kopieren
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_SyncAufarbeitung_OrgaBack.GetGruppenNummer">
  <summary>
  Ermittelt die GruppenNummer der Artikel-Zusatzgruppe für das MFF200 (Aufarbeitungsplatz)
@@ -1934,17 +1944,16 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_KomponParamXXX.MySQLdbUpdate(System.Int32,WinBack.wb_Sql@)">
+<member name="M:WinBack.wb_KomponParamXXX.MySQLdbUpdate(System.Int32,System.Int32,WinBack.wb_Sql@)">
  <summary>
  Update aller geänderten Komponenten-Parameter in Tabelle winback.KomponParams
-     RP_Ko_Nr
-     RP_Typ_Nr
-     RP_ParamNr
-     RP_Wert
-     RP_Kommentar
-     RP_Timestamp
+     KP_Ko_Nr
+     KP_ParamNr
+     KP_Wert
+     KP_Kommentar
+     KP_Timestamp
      
- SQL_Anweisung REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
+ SQL_Anweisung REPLACE INTO KomponParams (KP_Ko_Nr, KP_ParamNr, KP_Wert, KP_Kommentar) VALUES (...)
  
  </summary>
  <returns></returns>
@@ -7289,7 +7298,7 @@ Text aus Datenbank lesen - Übersetzung
  <param name="ParameterNummer">Integer - Parameter-Nummer</param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_sql_Functions.setKomponParam(System.Int32,System.Int32,System.String)">
+<member name="M:WinBack.wb_sql_Functions.setKomponParam(System.Int32,System.Int32,System.String,System.String)">
  <summary>
  Update Parameter-Wert in der Tabelle Kompon-Params.
  </summary>
