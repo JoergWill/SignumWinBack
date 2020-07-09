@@ -1183,6 +1183,12 @@ Public Class wb_Rezept_Rezeptur
         End If
     End Function
 
+    Private Sub cbLiniengruppe_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLiniengruppe.SelectedIndexChanged
+        ToolStripRezeptChange.Visible = True
+        _RzKopfChanged = True
+        Rezept.LinienGruppe = cbLiniengruppe.GetKeyFromSelection()
+    End Sub
+
     ''' <summary>
     ''' Zeichnet die Texte der Combo-Box Rezept-Varianten. Wenn die Variante für dieses Rezept vorhanden ist, 
     ''' wird der Text in Schwarz gezeichnet, sonst in grau.

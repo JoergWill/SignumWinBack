@@ -109,6 +109,8 @@ Partial Class wb_Rezept_Rezeptur
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.tb_Naehrwerte = New System.Windows.Forms.TabPage()
         Me.tb_Zutaten = New System.Windows.Forms.TabPage()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.tbMehlZusammenSetzung = New System.Windows.Forms.TextBox()
         Me.SwListeOptimieren = New MetroFramework.Controls.MetroToggle()
         Me.lblListeOptimieren = New System.Windows.Forms.Label()
         Me.SwENummern = New MetroFramework.Controls.MetroToggle()
@@ -119,8 +121,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.TextHinweise = New System.Windows.Forms.TextBox()
         Me.tb_Verwendung = New System.Windows.Forms.TabPage()
         Me.GridView_RzVerwendung = New WinBack.wb_DataGridView()
-        Me.tbMehlZusammenSetzung = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.StatusStrip.SuspendLayout()
         Me.gbDetail.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -160,7 +160,6 @@ Partial Class wb_Rezept_Rezeptur
         '
         resources.ApplyResources(Me.EnhEdit_Rezept, "EnhEdit_Rezept")
         Me.EnhEdit_Rezept.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit_Rezept.eFormat = wb_Format.FUndefined
         Me.EnhEdit_Rezept.eOG = "0"
         Me.EnhEdit_Rezept.eUG = "0"
         Me.EnhEdit_Rezept.Init = True
@@ -173,7 +172,6 @@ Partial Class wb_Rezept_Rezeptur
         'EnhEdit1
         '
         Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit1.eFormat = wb_Format.FUndefined
         Me.EnhEdit1.eOG = "0"
         Me.EnhEdit1.eUG = "0"
         Me.EnhEdit1.Init = True
@@ -710,6 +708,17 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Zutaten.Name = "tb_Zutaten"
         Me.tb_Zutaten.UseVisualStyleBackColor = True
         '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
+        'tbMehlZusammenSetzung
+        '
+        Me.tbMehlZusammenSetzung.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        resources.ApplyResources(Me.tbMehlZusammenSetzung, "tbMehlZusammenSetzung")
+        Me.tbMehlZusammenSetzung.Name = "tbMehlZusammenSetzung"
+        '
         'SwListeOptimieren
         '
         resources.ApplyResources(Me.SwListeOptimieren, "SwListeOptimieren")
@@ -795,17 +804,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.GridView_RzVerwendung.ReadOnly = True
         Me.GridView_RzVerwendung.SortCol = -1
         Me.GridView_RzVerwendung.x8859_5_FieldName = ""
-        '
-        'tbMehlZusammenSetzung
-        '
-        Me.tbMehlZusammenSetzung.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        resources.ApplyResources(Me.tbMehlZusammenSetzung, "tbMehlZusammenSetzung")
-        Me.tbMehlZusammenSetzung.Name = "tbMehlZusammenSetzung"
-        '
-        'Label1
-        '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
         '
         'wb_Rezept_Rezeptur
         '

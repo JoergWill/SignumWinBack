@@ -961,7 +961,7 @@
     <value>cbLiniengruppe</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.4.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.7.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbLiniengruppe.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -982,7 +982,7 @@
     <value>cbVariante</value>
   </data>
   <data name="&gt;&gt;cbVariante.Type" xml:space="preserve">
-    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.6.4.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_ComboBox, WinBackAddin, Version=1.7.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbVariante.Parent" xml:space="preserve">
     <value>gbDetail</value>
@@ -2038,7 +2038,7 @@
     <value>GridView_RzVerwendung</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Type" xml:space="preserve">
-    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.6.4.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_DataGridView, WinBackAddin, Version=1.7.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;GridView_RzVerwendung.Parent" xml:space="preserve">
     <value>tb_Verwendung</value>
@@ -2083,7 +2083,7 @@
     <value>Wb_TabControl</value>
   </data>
   <data name="&gt;&gt;Wb_TabControl.Type" xml:space="preserve">
-    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.6.4.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>WinBack.wb_TabControl, WinBackAddin, Version=1.7.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;Wb_TabControl.Parent" xml:space="preserve">
     <value>$this</value>

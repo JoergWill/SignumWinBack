@@ -818,10 +818,10 @@ Public Class wb_Rezept
                 MySQLdbRead_Fields(sqlReader.GetName(i), sqlReader.GetValue(i))
             Next
             'aktuellen Preis aus OrgaBack abfragen - Nicht bei Produktionsplanung !
-            If (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack) And Not _ReadCalcPreis Then
+            If (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack) And _ReadCalcPreis Then
                 Preis = ob_Artikel_Services.GetArtikelPreis(_SQLRezeptSchritt.Nummer, _SQLRezeptSchritt.Type)
-                If Preis > 0 Then
-                    _SQLRezeptSchritt.PreisProKg = Preis.ToString
+                If Preis > 0.0 Then
+                    _SQLRezeptSchritt.PreisProKg = Preis
                 End If
             End If
 
