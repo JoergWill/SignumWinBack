@@ -1071,6 +1071,92 @@ Stacktrace:
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Silo.BubleSort(WinBack.wb_Silo)">
+ <summary>
+ Innere Funktion des Bubble-Sort-Algorithmus.
+ Führt den Vergleich der Silo-Nummer durch und vertauscht die Parameter falls notwendig
+ Wenn getauscht wurde, wird true zurückgegeben.
+ 
+     Funktion:
+      if A[j] > A[j+1] then {
+         temp := A[j];
+         A[j] := A[j+1];
+         A[j+1] := temp;
+         
+ </summary>
+ <param name="s"></param>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Silo.MaxMenge">
+ <summary>
+ Maximale Füllmenge. Entspricht dem Fassungsvermögen des Silos.
+ Steht in der Datenbank im Datenfeld LG_Kommentar
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Silo.SiloReiheMaxMenge">
+ <summary>
+ Größtes Silo in der Silo-Reihe.
+ Bestimmt den Faktor der Darstellung der Silo-Füllstände
+ </summary>
+</member>
+<member name="P:WinBack.wb_Silo.IstMenge">
+ <summary>
+ Silo-Füllstand
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Silo.KompNr">
+ <summary>
+ Komponenten-Nummer(Inter) zum Silo-Rohstoff
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Silo.KompNummer">
+ <summary>
+ Rohstoff-Nummer(ASCII) zum Silo
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Silo.KompBezeichnung">
+ <summary>
+ Rohstoff-Bezeichnung zum Silo
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Silo.LagerOrt">
+ <summary>
+ Lagerort zum Silo. Anhand der Lagerort-Bezeichnung wird auch die Silo-Type bestimmt
+     - (M)   Mehlsilo
+     - (MK)  Mittelkomponenten
+     - (KKA) Kleinkomponenten
+     - (BW)  Bodenwaage
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Silo.SiloNr">
+ <summary>
+ Silonummer
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Silo.RohSiloType">
+ <summary>
+ Silo-Type. Wird aus dem Lagerort ermittelt
+ 
+     - (M)   Mehlsilo
+     - (MK)  Mittelkomponenten
+     - (KKA) Kleinkomponenten
+     - (BW)  Bodenwaage
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Silo.Aktiv">
+ <summary>
+ Silo Aktiv/Hand/Aus
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Silo.BtnSiloTauschen_Click(System.Object,System.EventArgs)">
  <summary>
  Silo-Rohstoff neu definieren:
@@ -1080,6 +1166,42 @@ Stacktrace:
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Silo.BtnSiloNull_Click(System.Object,System.EventArgs)">
+ <summary>
+ Siloinhalt auf Null setzen.
+ Setzt einen internen Tara-Wert zum Nullen des Silos
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Silo.MsSQLDelete_MFF201(System.String)">
+ <summary>
+ Löscht in der OrgaBack-DB die Verknüpfung zwischen OrgaBack-Artikel(Rohstoff) und WinBack-Komponente.
+ Im MFF201 steht die winback-ID als direkter Verweis auf die interne Komponenten-Nr.
+ </summary>
+ <param name="KompNummer"></param>
+</member>
+<member name="M:WinBack.wb_Silo.MySQLChange_Silo(System.Int32,System.String,System.String)">
+ <summary>
+ Ändert Komponenten-Nummer(ASCII) und Komponenten-Bezeichnung in der WinBack-Datenbank.
+ </summary>
+ <param name="KompNr"></param>
+ <param name="KompNummer_Neu"></param>
+ <param name="KompBezeichnung_Neu"></param>
+</member>
+<member name="M:WinBack.wb_Silo.wb_Silo_DoubleClick(System.Object,System.EventArgs)">
+ <summary>
+ DoppelClick auf Silo-Tab öffnet Parameter-Fenster
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="P:WinBack.wb_SiloBef.KompNummer">
+ <summary>
+ Rohstoff-Nummer(ASCII) zum Silo
+ </summary>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_SyncAufarbeitung_OrgaBack.GetGruppenNummer">
  <summary>
@@ -1993,6 +2115,23 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="p">Interger Parameter-Nummer</param>
  <returns>ktTyp300Param</returns>
 </member>
+<member name="T:WinBack.wb_Lieferungen">
+ <summary>
+ Über die Parameter in der Tabelle Konfiguration wird die
+ Erfassung der Chargennummern gesteuert.
+
+     KonfigChargenErfEin       -Chargenerfassung aktiv
+     KonfigGebindeGroessenTol  -Toleranzwert bis zur Erkennung Gebinde leer.
+                                (Bis unter diese Grenze darf ausdosiert werden)
+                            
+     KonfigChargenErfVariante  -Verfahren nach Ablauf Gebinde
+
+         1 - darf weiter verwiegen, auch wenn Gebinde theoretisch leer.
+         2 - darf nicht weiter verwiegen, wenn Verbrauch größer als Gebindegröße +KonfigGebindeGroessenTol.
+         
+ 
+ </summary>
+</member>
 <member name="P:WinBack.wb_Lieferungen.Nummer">
  <summary>
  Rohstoff/Artikel-Nummer (alpha-numerisch)
@@ -2009,6 +2148,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
      
  </summary>
  <param name="winback"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.Verbuchen(WinBack.wb_Sql,WinBack.wb_LagerSilo)">
+ <summary>
+ Der aktuelle Datensatz aus Silo(wb_silo) wird als Zugang verbucht.
+ Wenn ein Tarawert eingetragen ist, wird zuvor das Silo auf Null gesetzt
+ </summary>
+ <param name="winback"></param>
+ <param name="Silo"></param>
 </member>
 <member name="M:WinBack.wb_Lieferungen.Verbuchen_Zugang(WinBack.wb_Sql,WinBack.wb_LagerKarte,System.Boolean)">
  <summary>
@@ -2036,6 +2183,32 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="LagerKarte"></param>
  <param name="Chargenerfassung"></param>
 </member>
+<member name="M:WinBack.wb_Lieferungen.Verbuchen_Zugang(WinBack.wb_Sql,WinBack.wb_LagerSilo,System.Boolean)">
+ <summary>
+ Fügt einen neuen Datensatz (Wareneingang) an die Tabelle Lieferungen an. 
+ 
+     LF_LG_Ort           wb_LagerSilo.LG_Ort
+     LF_Nr               letzte Nummer aus winback.Lieferungen (Abfrage DB)
+     LF_Datum            aktuelles Datum/Uhrzeit
+     LF_Menge            wb_LagerSilo.BefüllMenge
+     LF_Lieferant
+     LF_gebucht          1 (neue Lieferung)
+     LF_Bemerkung        WE
+     LF_Lager            0 (Produktion)
+     LF_BF_Charge        wb_LagerSilo.ChargenNummer
+     LF_Liniengruppe     NULL
+     LF_BF_Frist         NULL
+     LF_Verbrauch        0
+     LF_User_Nr          User-Nummer aus GlobalSettings
+     LF_Preis            wb_LagerSilo.Preis
+     LF_PreisEinheit     0
+     LF_Timestamp
+ 
+ </summary>
+ <param name="winback"></param>
+ <param name="Silo"></param>
+ <param name="Chargenerfassung"></param>
+</member>
 <member name="M:WinBack.wb_Lieferungen.Verbuchen_Abgang(WinBack.wb_Sql,WinBack.wb_LagerKarte,System.Boolean)">
  <summary>
  Verbucht Bruch und/oder Schwund in winback.Lieferungen. Wenn eine Chargen-Nummer angegeben ist, wird versucht, 
@@ -2050,12 +2223,35 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="LagerKarte"></param>
  <param name="Chargenerfassung"></param>
 </member>
+<member name="M:WinBack.wb_Lieferungen.Verbuchen_Tara(WinBack.wb_Sql,WinBack.wb_LagerSilo,System.Boolean)">
+ <summary>
+ Siloinhalt auf Null setzen.
+ In der Tabelle Lieferungen wird eine entsprechende Zeile eingefügt. Alle vorhegehenden Lieferungen werden auf Status 3(erledigt) gesetzt.
+ </summary>
+ <param name="winback"></param>
+ <param name="Silo"></param>
+ <param name="Chargenerfassung"></param>
+</member>
 <member name="M:WinBack.wb_Lieferungen.InsertLieferung(WinBack.wb_Sql,WinBack.wb_LagerKarte,System.Double)">
  <summary>
  Fügt einen neuen Datensatz an die Tabelle winback.Lieferungen an. Die Daten werden aus dem LagerKarten-Objekt ermittelt.
  </summary>
  <param name="winback"></param>
  <param name="LagerKarte"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.InsertLieferung(WinBack.wb_Sql,WinBack.wb_LagerSilo,System.Double)">
+ <summary>
+ Fügt einen neuen Datensatz an die Tabelle winback.Lieferungen an. Die Daten werden aus dem Silo-Objekt ermittelt.
+ </summary>
+ <param name="winback"></param>
+ <param name="Silo"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.InsertLieferung(WinBack.wb_Sql,System.String,System.DateTime,System.String,System.String,System.String,System.String,System.Double)">
+ <summary>
+ Fügt einen neuen Datensatz an die Tabelle winback.Lieferungen an.
+ Die fortlaufende Nummer(Lfd) muss bekannt sein.
+ </summary>
+ <param name="winback"></param>
 </member>
 <member name="M:WinBack.wb_Lieferungen.UpdateLieferung(WinBack.wb_Sql,System.Int32,System.Double)">
  <summary>
@@ -2090,6 +2286,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="Name">String - Bezeichnung Datenbankfeld</param>
  <param name="Value">Object - Wert Datenbankfeld(Inhalt)</param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_OrgaBackProcess_WE.DoAction(System.Int32,Signum.OrgaSoft.ERP.ProcessChangedAction)">
+ <summary>
+ Der OrgaBack-Vorfall WE wird in WinBack als Lieferung eingebucht.
+ Wenn die Rohstoff-Nummer eindeutig zugeordnet werden kann, wird die Lieferung in WinBack eingetragen und True zurückgegeben
+ Ist die Rohstoff-Nummer nicht eindeutig zuzuordnen, wird False zurückgegeben
+ </summary>
+ <param name="Action"></param>
  <returns></returns>
 </member>
 <member name="T:WinBack.wb_Produktion_virtuell">
@@ -2149,70 +2354,6 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="Name">String - Spalten-Name aus Datenbank</param>
  <param name="Value">Object - Wert aus Datenbank</param>
- <returns></returns>
-</member>
-<member name="P:WinBack.wb_SiloRohstoff.KompNr">
- <summary>
- Komponenten-Nummer(Inter) zum Silo-Rohstoff
- </summary>
- <returns></returns>
-</member>
-<member name="P:WinBack.wb_SiloRohstoff.KompNummer">
- <summary>
- Rohstoff-Nummer(ASCII) zum Silo
- </summary>
- <returns></returns>
-</member>
-<member name="P:WinBack.wb_SiloRohstoff.KompBezeichnung">
- <summary>
- Rohstoff-Bezeichnung zum Silo
- </summary>
- <returns></returns>
-</member>
-<member name="P:WinBack.wb_SiloRohstoff.LagerOrt">
- <summary>
- Lagerort zum Silo. Anhand der Lagerort-Bezeichnung wird auch die Silo-Type bestimmt
-     - (M)   Mehlsilo
-     - (MK)  Mittelkomponenten
-     - (KKA) Kleinkomponenten
-     - (BW)  Bodenwaage
- </summary>
- <returns></returns>
-</member>
-<member name="P:WinBack.wb_SiloRohstoff.SiloNr">
- <summary>
- Silonummer
- </summary>
- <returns></returns>
-</member>
-<member name="P:WinBack.wb_SiloRohstoff.MaxMenge">
- <summary>
- Maximale Füllmenge. Entspricht dem Fassungsvermögen des Silos.
- Steht in der Datenbank im Datenfeld LG_Kommentar
- </summary>
- <returns></returns>
-</member>
-<member name="P:WinBack.wb_SiloRohstoff.IstMenge">
- <summary>
- Silo-Füllstand
- </summary>
- <returns></returns>
-</member>
-<member name="P:WinBack.wb_SiloRohstoff.SiloReiheMaxMenge">
- <summary>
- Größtes Silo in der Silo-Reihe.
- Bestimmt den Faktor der Darstellung der Silo-Füllstände
- </summary>
-</member>
-<member name="P:WinBack.wb_SiloRohstoff.RohSiloType">
- <summary>
- Silo-Type. Wird aus dem Lagerort ermittelt
- 
-     - (M)   Mehlsilo
-     - (MK)  Mittelkomponenten
-     - (KKA) Kleinkomponenten
-     - (BW)  Bodenwaage
- </summary>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Chargen_ChartTTS.MySqlLoadWbDaten(System.Int32,System.Int32,System.Int32,System.Int32)">
@@ -2425,20 +2566,72 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Multiselect nur Artikel-Index als Liste
  </summary>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.ShowBefuellungDialog(WinBack.wb_OrgaBackProcessPosition)">
+ <summary>
+ Zeigt dieses Fenster als Dialog-Fenster an.
+ Wird von ob_Main_Menu aufgerufen, wenn Lieferungen eingebucht werden müssen (Vorfall WE), die auf auf mehrere WinBack-Silos
+ verteilt werden können. (Identische Rohstoff-Nummern)
+ </summary>
+ <param name="SiloBefuellung"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.wb_Rohstoffe_Silo_Load(System.Object,System.EventArgs)">
+ <summary>
+ Fenster wird geladen.
+ Wenn das Fenster nicht als modales Fenster angezeigt wird (kein Befüll-Dialog) werden alle Silos aus dieser Gruppe
+ angezeigt. Wird ein anderer Rohstoff im Listen-Fenster angewählt, wird die Anzeige aktualisiert oder ausgeblendet.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.wb_Rohstoffe_Silo_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+ <summary>
+ Fenster wird geschlossen. Handle wieder entfernen.
+ Aus den einzelnen Controls (Silos) werden die Soll-Daten zur Befüllung in eine Liste(wb_LagerSilo) kopiert
+ Anhand dieser Liste wird dann die Verteilung der Liefermenge in die einzelnen Silos vorgenommen.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Silo.DetailInfo(System.Object)">
  <summary>
- Anzeige der Rohstoff-Details.
+ Anzeige der Rohstoff-Silo-Details.
  Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
  </summary>
 </member>
-<member name="M:WinBack.wb_Rohstoffe_Silo.DrawSiloReihe">
+<member name="M:WinBack.wb_Rohstoffe_Silo.DetailInfo_Silo">
  <summary>
- Zeichnet die einzelnen Silo-User-Controls in das Panel ein
+ Anzeige der Rohstoff-Silo-Details. Wird aufgerufen beim Öffnen des Fenster als modaler Dialog (Befüllung)
  </summary>
 </member>
-<member name="M:WinBack.wb_Rohstoffe_Silo.GetSiloFuellstand_DB(System.Object)">
+<member name="M:WinBack.wb_Rohstoffe_Silo.AddPanel(WinBack.wb_Silo)">
+ <summary>
+ Silo-Grafik in Panel anfügen. Das Silo-Objekt wird neu erzeugt und kopiert notwendigen Daten
+ aus dem übergebenen Objekt.
+ Wenn die angezeigten Objekte nicht neu erzeugt werden, wird beim Schliessen des Fensters auch 
+ das globale Objekt gelöscht (Fehler in vb.net)
+ </summary>
+ <param name="SiloRstf_x"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.AddPanelBef">
+ <summary>
+ Befüll-Grafik in Panel einfügen.
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.SortPanelBef">
+ <summary>
+ Einfacher Bubble-Sort-Algorithmus
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.GetSiloFuellstand_DB(WinBack.wb_Global.RohSiloTypen)">
  <summary>
  Ermittelt die Füllstände aus der Lagerorte-Tabelle und zeigt diese im User-Control an
+ Gibt die Füllständer der Silos zu dieser Rohstoff-Type zurück
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Silo.GetSiloFuellstand_DB(System.String)">
+ <summary>
+ Ermittelt die Füllstände aus der Lagerorte-Tabelle und zeigt diese im User-Control an
+ Gibt die Füllstände aller Silos zu dieser Rohstoff-Nummer zurück
  </summary>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Silo.SetSiloFuellStand">
@@ -3427,7 +3620,6 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  damit Alternativ-Silos in WinBack verwaltet werden können.
  
  TODO Was ist zu tun, wenn mehr als ein Datensatz gefunden wurde
- TODO Die interne Nummer an OrgaBack zurückschreiben
  </summary>
 </member>
 <member name="M:WinBack.wb_Komponente.MySQLdbRead(MySql.Data.MySqlClient.MySqlDataReader@)">
@@ -5580,6 +5772,14 @@ Text aus Datenbank lesen - Übersetzung
  <returns>Das aktuelle Betriebssystem</returns>
  <remarks></remarks>
 </member>
+<member name="P:WinBack.wb_GlobalSettings.pVariante">
+ <summary>
+ Programm-Variante setzen/abfragen.
+ Wenn die Programm-Variante nicht definiert ist, wird versucht anhand des Product-Namens
+ die Programm-Variante zu ermitteln. (Aufruf Stacktrace bevor die Prog-Variante gesetzt ist)
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_GlobalSettings.RohChargen_ErfassungAktiv">
  <summary>
  Liest die Einstellung aus winback.Konfiguration
@@ -7006,7 +7206,7 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Rohstoff_Dokumente.ShowDokument(System.String)">
+<member name="M:WinBack.wb_Rohstoffe_Dokumente.ShowDokument(System.String)">
  <summary>
  Rohstoff-Produktdatenblatt aus der Cloud einlesen und im Verzeichnis ablegen.
  Das Verzeichnis wird in wb_GlobalSettings als pRohstoffDatenPath bestimmt.
@@ -7547,25 +7747,11 @@ entsprechende Übersetzung aus winback.Texte geladen
  <param name="KompNummer"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Rohstoffe_Shared.GetIdentSilos(System.String)">
+<member name="M:WinBack.wb_Rohstoffe_Shared.AnzahlSilos(WinBack.wb_Global.RohSiloTypen)">
  <summary>
- Gibt eine Liste aller Automatik-(Silo)-Rohstoffe mit dieser Nummer zurück.
+ Gibt die Anzahl der Rohstoffe mit dieser Type zurück.
  </summary>
- <param name="KompNummer"></param>
- <returns></returns>
-</member>
-<member name="M:WinBack.wb_Rohstoffe_Shared.GetAllSilos(System.String)">
- <summary>
- Gibt eine Liste aller Automatik-(Silo)-Rohstoffe zu dieser Type(Lagerort) zurück
-     - Mehlsilos
-     - Mittelkomponenten
-     - Flüssigverwiegung
-     - Kleinkomponenten
-     
- Der Silo-Typ wird aus dem Lagerort ermittelt.
- Zusätzlich zur Liste wird noch der Maximal-Wert der Silo-Füllmenge dieser Gruppe ermittelt
- </summary>
- <param name="LagerOrt"></param>
+ <param name="RohSiloType"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Liste.SaveData(System.Object)">
@@ -8843,14 +9029,6 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.ob_Main_Menu.ShowWarenEingangForm(System.String,System.String,System.String)">
- <summary>
- Verarbeitung Wareneingang und Aufruf Rohstoffe-Silo-Dialogfenster
- </summary>
- <param name="ProcessCode"></param>
- <param name="ProcessNumber"></param>
- <param name="ProcessAction"></param>
-</member>
 <member name="M:WinBack.ob_Main_Menu.CloseAllForms">
  <summary>
  alle noch offenen Fenster schliessen
@@ -8894,6 +9072,20 @@ Datenbank-Verbindung schliessen
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.ob_Main_Menu.ShowWarenEingangForm(System.String,System.String,System.String)">
+ <summary>
+ Verarbeitung Wareneingang und Aufruf Rohstoffe-Silo-Dialogfenster
+ 
+ Der Aufruf erfolgt über den EventBroker durch den Event ProcessChanged. Jeder OrgaBack-Vorfall WE wird hier verarbeitet.
+ Wenn der Wareneingang nicht eindeutig verbucht werden kann weil zu einer Rohstoff-Nummer mehrere Silos vorhanden sind, wird
+ ein entsprechendes Dialog-Fenster geöffnet um die Lieferung auf die einzelnen WinBack-Rohstoffe zu verteilen.
+ 
+ Die Funktions-Aufrufe sind verschachtelt, damit die Erzeugung der Dialog-Fenster im Main(AddIn)Prozess bleibt.
+ </summary>
+ <param name="ProcessCode"></param>
+ <param name="ProcessNumber"></param>
+ <param name="ProcessAction"></param>
 </member>
 <member name="M:WinBack.ob_Main_Menu.ReadSystemKonfig">
  <summary>

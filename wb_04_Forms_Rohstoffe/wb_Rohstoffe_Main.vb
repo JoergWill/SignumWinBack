@@ -67,6 +67,10 @@ Public Class wb_Rohstoffe_Main
         If RohstoffParameter IsNot Nothing Then
             RohstoffParameter.Close()
         End If
+        'Rohstoff-Silo (ordentlich) schliessen
+        If RohstoffSilo IsNot Nothing Then
+            RohstoffSilo.Close()
+        End If
 
         'Fenster darf geschlossen werden
         Return False

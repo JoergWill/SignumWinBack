@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("WinBackAddIn")>
 <Assembly: AssemblyDescription("WinBack AddIn für OrgaBack")>
 <Assembly: AssemblyCompany("WinBack")>
-<Assembly: AssemblyProduct("WinBack Background Task OrgaBack-AddIn")>
+<Assembly: AssemblyProduct("WinBack Background Task")>
 <Assembly: AssemblyCopyright("Copyright ©  2020")>
 <Assembly: AssemblyTrademark("WinBack")>
 
@@ -32,6 +32,6 @@ Imports System.Runtime.InteropServices
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.7.0.0")>
-<Assembly: AssemblyFileVersion("1.7.0.0")>
+<Assembly: AssemblyVersion("1.7.2.0")>
+<Assembly: AssemblyFileVersion("1.7.2.0")>
 <Assembly: NeutralResourcesLanguage("de")>

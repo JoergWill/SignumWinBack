@@ -203,7 +203,7 @@ Public Class wb_GlobalSettings
     Public Shared ReadOnly Property DockPanelPath(Optional DefaultPath As OrgaBackDockPanelLayoutPath = OrgaBackDockPanelLayoutPath.UserLokal)
         Get
             Dim WindowsTempPfad As String = pWindowsTempPath
-            Select Case _pVariante
+            Select Case pVariante
                 Case ProgVariante.OrgaBack
                     Dim OrgaBackTempPfad As String = ""
                     If DefaultPath = OrgaBackDockPanelLayoutPath.ProgrammGlobal Then
@@ -515,7 +515,7 @@ Public Class wb_GlobalSettings
 
     Public Shared ReadOnly Property OrgaBackVersion As String
         Get
-            If _pVariante = wb_Global.ProgVariante.OrgaBack Then
+            If pVariante = wb_Global.ProgVariante.OrgaBack Then
                 Return Assembly.GetEntryAssembly().GetName().Version.ToString
             Else
                 Return ""
@@ -541,7 +541,7 @@ Public Class wb_GlobalSettings
 
     Public Shared ReadOnly Property SignumContractsVersion As String
         Get
-            If _pVariante = ProgVariante.OrgaBack Then
+            If pVariante = ProgVariante.OrgaBack Then
                 Return FileVersionInfo.GetVersionInfo(wb_GlobalSettings.pProgrammPath & "Signum.OrgaSoft.Contracts.dll").FileVersion
             Else
                 Return "V0.0.0"
@@ -551,7 +551,7 @@ Public Class wb_GlobalSettings
 
     Public Shared ReadOnly Property WinBackVersion As String
         Get
-            If _pVariante = wb_Global.ProgVariante.OrgaBack Then
+            If pVariante = wb_Global.ProgVariante.OrgaBack Then
                 Return Assembly.GetExecutingAssembly().GetName().Version.ToString
             Else
                 Return My.Application.Info.Version.ToString
@@ -786,15 +786,16 @@ Public Class wb_GlobalSettings
     Public Shared Property pWinBackIniPath As String
         Get
             If _pWinBackIniPath = Nothing Then
-                Select Case _pVariante
+                Select Case pVariante
                     Case wb_Global.ProgVariante.OBServerTask
                         'die Server-Task startet im AddIn-Verzeichnis, der Pfad zur winback.ini liegt eine Ebene davor
-                        _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
 #If DEBUG Then
+                        _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
                         _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\"))
                         _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\"))
                         _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
 #Else
+                        _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
                         _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
 #End If
                     Case wb_Global.ProgVariante.WBServerTask
@@ -1427,8 +1428,37 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    ''' <summary>
+    ''' Programm-Variante setzen/abfragen.
+    ''' Wenn die Programm-Variante nicht definiert ist, wird versucht anhand des Product-Namens
+    ''' die Programm-Variante zu ermitteln. (Aufruf Stacktrace bevor die Prog-Variante gesetzt ist)
+    ''' </summary>
+    ''' <returns></returns>
     Public Shared Property pVariante As wb_Global.ProgVariante
         Get
+            If _pVariante = wb_Global.ProgVariante.Undef Then
+                'Programm-Name
+                Dim ProductName As String = (Windows.Forms.Application.ProductName).ToLower
+
+                'Versuche die Programm-Variante anhand des Programm-Namens zu ermitteln              
+                Select Case ProductName
+                    Case "orgasoft.net"
+                        _pVariante = ProgVariante.OrgaBack
+                    Case "winBack background task"
+                        _pVariante = ProgVariante.OBServerTask
+                    Case "winback"
+                        _pVariante = ProgVariante.WinBack
+                    Case Else
+                        If ProductName.StartsWith("orgasoft") Then
+                            _pVariante = ProgVariante.OrgaBack
+                        ElseIf ProductName.StartsWith("microsoft") Then
+                            _pVariante = ProgVariante.UnitTest
+                        Else
+                            _pVariante = ProgVariante.Undef
+                        End If
+                End Select
+            End If
+
             Return _pVariante
         End Get
         Set(value As wb_Global.ProgVariante)

@@ -23,7 +23,7 @@ Public MustInherit Class wb_OrgaBackProcess
         MsSQLdbReadProcessPositions(ProcessCode, ProcessNumber)
     End Sub
 
-    Public MustOverride Function DoAction(Action As String) As Boolean
+    Public MustOverride Function DoAction(PositionNummer As Integer, Action As Signum.OrgaSoft.ERP.ProcessChangedAction) As Boolean
 
     Private Function MsSQLdbReadProcessPositions(ProcessCode As String, ProcessNumber As String) As Integer
         'Datenbankverbindung öffnen MsSQL

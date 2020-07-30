@@ -1473,7 +1473,6 @@ Public Class wb_Komponente
     ''' damit Alternativ-Silos in WinBack verwaltet werden können.
     ''' 
     ''' TODO Was ist zu tun, wenn mehr als ein Datensatz gefunden wurde
-    ''' TODO Die interne Nummer an OrgaBack zurückschreiben
     ''' </summary>
     Public Function MySQLdbRead(InterneKomponentenNummer As Integer, Optional KomponentenNummer As String = "", Optional OrgaBackRead As Boolean = False) As Boolean
         'Alle (eventuell noch) bestehenden Daten löschen
@@ -1587,6 +1586,10 @@ Public Class wb_Komponente
             For i = 0 To sqlReader.FieldCount - 2
                 Try
                     If sqlReader.GetDataTypeName(i) <> "TIMESTAMP" Then
+                        MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
+                    Else
+                        'Dim n As String = sqlReader.GetName(i)
+                        'Dim d As String = sqlReader.GetMySqlDateTime(i)
                         MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
                     End If
                 Catch ex As Exception

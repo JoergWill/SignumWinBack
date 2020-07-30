@@ -5,6 +5,8 @@
 Public Class wb_DataGridViewVerwendung
     Inherits Global.WinBack.wb_DataGridView
     Private VerwendungRezept As Boolean = False
+    'Die RezeptNummer steht in Spalte 1
+    Const ColRezNr As Integer = 0
 
     Public Sub LoadVerwendung(Nr As Integer)
         'Liste der Tabellen-Überschriften
@@ -48,8 +50,7 @@ Public Class wb_DataGridViewVerwendung
             'Zeile im Grid
             Dim eRow As Integer = e.RowIndex
             'Die RezeptNummer steht in Spalte 1
-            'TODO als Konstante definieren in wb_sql_Selects
-            Dim RezeptNr As Integer = Item(0, eRow).Value
+            Dim RezeptNr As Integer = Item(ColRezNr, eRow).Value
             'Wenn die Rezeptnummer gültig ist
             If RezeptNr > 0 Then
                 Me.Cursor = Windows.Forms.Cursors.WaitCursor

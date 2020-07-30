@@ -315,25 +315,6 @@ Public Class ob_Main_Menu
     End Sub
 
     ''' <summary>
-    ''' Verarbeitung Wareneingang und Aufruf Rohstoffe-Silo-Dialogfenster
-    ''' </summary>
-    ''' <param name="ProcessCode"></param>
-    ''' <param name="ProcessNumber"></param>
-    ''' <param name="ProcessAction"></param>
-    Private Sub ShowWarenEingangForm(ProcessCode As String, ProcessNumber As String, ProcessAction As String)
-        If ProcessAction = ERP.ProcessChangedAction.Booked Then
-            'Daten aus [dbo].[GeschäftsvorfallPosition]
-            Dim Wareneingang As New wb_OrgaBackProcess_WE(ProcessCode, ProcessNumber)
-            'Wareneingang verbuchen - bei Silo-Rohstoffen wird ein Dialog-Fenster angezeigt. (Silo-Auswahl/Verteilung)
-            If Not Wareneingang.DoAction(ProcessAction) Then
-                'Dialogfenster Silo-Füllstände und Befüllung
-                Dim Rohstoffe_Silo As New wb_Rohstoffe_Silo
-                Rohstoffe_Silo.ShowDialog()
-            End If
-        End If
-    End Sub
-
-    ''' <summary>
     ''' alle noch offenen Fenster schliessen
     ''' </summary>
     Private Sub CloseAllForms()
@@ -396,28 +377,65 @@ Public Class ob_Main_Menu
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub ProcessChanged(sender As Object, e As ERP.IProcessChangedEventArgs)
-        'Vorfall-Kürzel
-        Dim ProcessCode As String = e.ProcessCode
-        'Vorfall-Nummer
-        Dim ProcessNumber As String = e.ProcessNumber
-        'Vorfall-Aktion
-        Dim ProcessAction As ERP.ProcessChangedAction = e.Action
+        Try
+            'Vorfall-Kürzel
+            Dim ProcessCode As String = e.ProcessCode
+            'Vorfall-Nummer
+            Dim ProcessNumber As String = e.ProcessNumber
+            'Vorfall-Aktion
+            Dim ProcessAction As ERP.ProcessChangedAction = e.Action
 
-        'TODO 2020-06-04 Hier weitermachen
+            'Verteiler OrgaBack - Vorfälle
+            Select Case ProcessCode
 
-        'Verteiler OrgaBack-Vorfälle
-        ''Select Case ProcessCode
+            'Wareneingang
+                Case "WE"
+                    'Vorfall WarenEingang in WinBack verbuchen
+                    ShowWarenEingangForm(ProcessCode, ProcessNumber, ProcessAction)
 
-        ''    'Wareneingang
-        ''    Case "WE"
-        ''        'Vorfall WarenEingang in WinBack verbuchen
-        ''        ShowWarenEingangForm(ProcessCode, ProcessNumber, ProcessAction)
+                Case Else
+                    'alle anderen Vorfälle
+                    Debug.Print("WinBack.ob_Main.ProcessChanged " & ProcessCode & "/" & ProcessNumber & "/" & ProcessAction.ToString)
 
-        ''    Case Else
-        ''        'alle anderen Vorfälle
-        ''        Debug.Print("WinBack.ob_Main.ProcessChanged " & ProcessCode & "/" & ProcessNumber & "/" & ProcessAction.ToString)
+            End Select
+        Catch ex As Exception
+            Trace.Write("Fehler bei ProcessChanged. OrgaBack-Version kompatibel?")
+        End Try
+    End Sub
 
-        ''End Select
+    ''' <summary>
+    ''' Verarbeitung Wareneingang und Aufruf Rohstoffe-Silo-Dialogfenster
+    ''' 
+    ''' Der Aufruf erfolgt über den EventBroker durch den Event ProcessChanged. Jeder OrgaBack-Vorfall WE wird hier verarbeitet.
+    ''' Wenn der Wareneingang nicht eindeutig verbucht werden kann weil zu einer Rohstoff-Nummer mehrere Silos vorhanden sind, wird
+    ''' ein entsprechendes Dialog-Fenster geöffnet um die Lieferung auf die einzelnen WinBack-Rohstoffe zu verteilen.
+    ''' 
+    ''' Die Funktions-Aufrufe sind verschachtelt, damit die Erzeugung der Dialog-Fenster im Main(AddIn)Prozess bleibt.
+    ''' </summary>
+    ''' <param name="ProcessCode"></param>
+    ''' <param name="ProcessNumber"></param>
+    ''' <param name="ProcessAction"></param>
+    Private Sub ShowWarenEingangForm(ProcessCode As String, ProcessNumber As String, ProcessAction As String)
+        If ProcessAction = ERP.ProcessChangedAction.Booked Then
+            'Daten aus [dbo].[GeschäftsvorfallPosition]
+            Dim Wareneingang As New wb_OrgaBackProcess_WE(ProcessCode, ProcessNumber)
+
+            'Liste der Wareneingänge verbuchen - bei Silo-Rohstoffen wird ein Dialog-Fenster angezeigt. (Silo-Auswahl/Verteilung)
+            For Each ProcPosition As wb_OrgaBackProcessPosition In Wareneingang.ProcPositions
+                'Wareneingang verbuchen. Bei Rohstoffen die nicht eindeutig sind (mehrere Silos) wird False zurückgegeben
+                If Not Wareneingang.DoAction(ProcPosition.PositionNummer, ProcessAction) Then
+                    'Dialogfenster Silo-Füllstände und Befüllung
+                    Dim Rohstoffe_Silo As New wb_Rohstoffe_Silo
+                    'Anzeige Fenster Silo-Befüllung für diese Prozess-Komponente(Befüllgun)
+                    Rohstoffe_Silo.ShowBefuellungDialog(ProcPosition)
+                    'Wareneingang verbuchen. Die Verteilung auf die einzelnen Silos wird in der Liste angegeben
+                    Wareneingang.DoAction(ProcPosition.PositionNummer, ProcessAction, Rohstoffe_Silo.SiloVerteilung)
+                    'Speicher wieder freigaben
+                    Rohstoffe_Silo.Dispose()
+                End If
+            Next
+
+        End If
     End Sub
 
     ''' <summary>

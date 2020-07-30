@@ -561,6 +561,8 @@ Public Class Main
                 Case "/I:", "-i "
                     Dim WinbackIni As String = s.Substring(3)
                     wb_GlobalSettings.pWinBackIniPath = WinbackIni & "\WinBack.ini"
+                Case "/W:", "-w "
+                    wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WBServerTask
                 Case Else
                     Trace.WriteLine("Fehler in Command_line-Argument " & s)
             End Select

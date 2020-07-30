@@ -4,12 +4,13 @@ Public Class wb_Rohstoffe_Shared
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
     Public Shared Event eParam_Changed(Sender As Object)
+    Public Shared Event eBefMenge_Changed(sender As Object)
 
     Public Shared RohGruppe As New SortedList
     Public Shared MehlGruppe As New List(Of wb_MehlGruppe)
     Public Shared RohAktiv As New Hashtable
     Public Shared RohSilos_NachNummer As New Hashtable
-    Public Shared RohSilos_NachTyp As New List(Of wb_SiloRohstoff)
+    Public Shared RohSilos_NachTyp As New List(Of wb_Silo)
     Public Shared RohStoff As New wb_Komponente
     Public Shared SiloReiheMaxMenge As Integer = wb_Global.UNDEFINED
 
@@ -125,7 +126,7 @@ Public Class wb_Rohstoffe_Shared
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         Dim KompNummer As String
         Dim KompBezeichnung As String
-        Dim SiloRohstoff As wb_SiloRohstoff
+        Dim SiloRohstoff As wb_Silo
 
         'Liste aller aktiven Silo-Rohstoffe
         winback.sqlSelect(wb_Sql_Selects.sqlSiloRohstoffe)
@@ -142,9 +143,9 @@ Public Class wb_Rohstoffe_Shared
 
             'Prüfen ob die Rohstoff-Nummer schon existiert
             If RohSilos_NachNummer.ContainsKey(KompNummer) Then
-                SiloRohstoff = New wb_SiloRohstoff(RohSilos_NachNummer(KompNummer), KompBezeichnung)
+                SiloRohstoff = New wb_Silo(RohSilos_NachNummer(KompNummer), KompBezeichnung)
             Else
-                SiloRohstoff = New wb_SiloRohstoff(Nothing, "")
+                SiloRohstoff = New wb_Silo(Nothing, "")
             End If
 
             'Silo-Daten
@@ -155,6 +156,8 @@ Public Class wb_Rohstoffe_Shared
             'Silo maximale Füllmenge steht im Kommentar-Feld
             SiloRohstoff.MaxMenge = wb_Functions.StrToInt(winback.sField("LG_Kommentar"))
             SiloRohstoff.SiloNr = winback.iField("LG_Silo_Nr")
+            'Silo aktiv
+            SiloRohstoff.Aktiv = winback.sField("LG_aktiv")
 
             'wenn bisher kein anderer Rohstoff mit dieser Nummer exisitiert
             If SiloRohstoff.ParentStep Is Nothing Then
@@ -162,7 +165,7 @@ Public Class wb_Rohstoffe_Shared
             End If
 
             'Flache Liste aller Silo-Rohstoffe
-            RohSilos_NachTyp.Add(SiloRohstoff)
+            'RohSilos_NachTyp.Add(SiloRohstoff)
 
         End While
         'Datenbankverbindung wieder schliessen
@@ -233,6 +236,10 @@ Public Class wb_Rohstoffe_Shared
         RaiseEvent eEdit_Leave(sender)
     End Sub
 
+    Public Shared Sub BefMenge_Changed(sender As Object)
+        RaiseEvent eBefMenge_Changed(sender)
+    End Sub
+
     Public Shared Sub Param_Changed(sender As Object)
         'alle geänderten Rohstoff-Parameter in Datenbank schreiben (WinBack und OrgaBack)
         RohStoff.SaveParameterArray()
@@ -261,71 +268,46 @@ Public Class wb_Rohstoffe_Shared
     ''' <param name="KompNummer"></param>
     ''' <returns></returns>
     Public Shared Function AnzahlSilos(KompNummer As String) As Integer
-        If RohStoff.Nummer IsNot Nothing Then
+        If KompNummer IsNot Nothing Then
+            AnzahlSilos = 0
             If RohSilos_NachNummer.ContainsKey(KompNummer) Then
-                Dim SiloRohstoff As wb_SiloRohstoff = RohSilos_NachNummer(KompNummer)
-                Return SiloRohstoff.ChildSteps.Count + 1
+                Dim s As wb_Silo = RohSilos_NachNummer(KompNummer)
+                AnzahlSilos += 1
+                SiloReiheMaxMenge = Math.Max(SiloReiheMaxMenge, s.MaxMenge)
+                For Each c As wb_Silo In s.ChildSteps
+                    AnzahlSilos += 1
+                    SiloReiheMaxMenge = Math.Max(SiloReiheMaxMenge, c.MaxMenge)
+                Next
+                Return AnzahlSilos
+            Else
+                Return -1
             End If
         End If
         Return -1
     End Function
 
     ''' <summary>
-    ''' Gibt eine Liste aller Automatik-(Silo)-Rohstoffe mit dieser Nummer zurück.
+    ''' Gibt die Anzahl der Rohstoffe mit dieser Type zurück.
     ''' </summary>
-    ''' <param name="KompNummer"></param>
+    ''' <param name="RohSiloType"></param>
     ''' <returns></returns>
-    Public Shared Function GetIdentSilos(KompNummer As String) As IList
-        'Liste löschen
-        Dim SiloListe As New List(Of wb_SiloRohstoff)
-
-        'Prüfen ob eine Rohstoff-Nummer definiert ist
-        If RohStoff.Nummer IsNot Nothing Then
-            'Prüfen ob Silo-Einträge zu dieser Nummer exisitieren
-            If RohSilos_NachNummer.ContainsKey(KompNummer) Then
-                Dim SiloRohstoff As wb_SiloRohstoff = RohSilos_NachNummer(KompNummer)
-                SiloListe.Add(SiloRohstoff)
-                For Each s As wb_SiloRohstoff In SiloRohstoff.ChildSteps
-                    SiloListe.Add(s)
-                Next
-            End If
-        End If
-        'Liste aller Silos zu dieser Rohstoff-Nummer
-        Return SiloListe
-    End Function
-
-    ''' <summary>
-    ''' Gibt eine Liste aller Automatik-(Silo)-Rohstoffe zu dieser Type(Lagerort) zurück
-    '''     - Mehlsilos
-    '''     - Mittelkomponenten
-    '''     - Flüssigverwiegung
-    '''     - Kleinkomponenten
-    '''     
-    ''' Der Silo-Typ wird aus dem Lagerort ermittelt.
-    ''' Zusätzlich zur Liste wird noch der Maximal-Wert der Silo-Füllmenge dieser Gruppe ermittelt
-    ''' </summary>
-    ''' <param name="LagerOrt"></param>
-    ''' <returns></returns>
-    Public Shared Function GetAllSilos(LagerOrt As String) As IList
-        Dim SiloListe As New List(Of wb_SiloRohstoff)
-        Dim RohSiloType As wb_Global.RohSiloTypen = GetRohSiloType(LagerOrt)
-
-        'Reset Maximalgröße Silo dieser Liste
-        SiloReiheMaxMenge = wb_Global.UNDEFINED
+    Public Shared Function AnzahlSilos(RohSiloType As wb_Global.RohSiloTypen) As Integer
         If RohSiloType <> wb_Global.RohSiloTypen.UNDEF Then
-            'Reset Maximalgröße Silo dieser Liste
-            SiloReiheMaxMenge = 0
-            For Each s As wb_SiloRohstoff In RohSilos_NachTyp
+            AnzahlSilos = 0
+            For Each d As DictionaryEntry In RohSilos_NachNummer
+                Dim s As wb_Silo = RohSilos_NachNummer(d.Key)
                 If s.RohSiloType = RohSiloType Then
-                    SiloListe.Add(s)
-                    If s.MaxMenge > SiloReiheMaxMenge Then
-                        SiloReiheMaxMenge = s.MaxMenge
-                    End If
+                    AnzahlSilos += 1
+                    SiloReiheMaxMenge = Math.Max(SiloReiheMaxMenge, s.MaxMenge)
+                    For Each c As wb_Silo In s.ChildSteps
+                        AnzahlSilos += 1
+                        SiloReiheMaxMenge = Math.Max(SiloReiheMaxMenge, c.MaxMenge)
+                    Next
                 End If
             Next
+        Else
+            Return -1
         End If
-        'Liste aller Silos zu diesem Lagerort 
-        Return SiloListe
     End Function
 
     Public Shared Function GetRohSiloType(Lagerort As String) As wb_Global.RohSiloTypen
@@ -337,7 +319,7 @@ Public Class wb_Rohstoffe_Shared
                     Return wb_Global.RohSiloTypen.MK
                 Case "KK"
                     Return wb_Global.RohSiloTypen.KKA
-                Case "M0"
+                Case "M0", "M1", "M2", "M3"
                     Return wb_Global.RohSiloTypen.M
                 Case Else
                     Return wb_Global.RohSiloTypen.UNDEF

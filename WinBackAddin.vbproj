@@ -277,9 +277,8 @@
       <HintPath>packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.Contracts, Version=3.2.7464.29145, Culture=neutral, PublicKeyToken=2878ef535661ab5d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\OrgaSoft V3.2.7483\Signum.OrgaSoft.Contracts.dll</HintPath>
+    <Reference Include="Signum.OrgaSoft.Contracts">
+      <HintPath>dll\OrgaSoft V3.2.7496\Signum.OrgaSoft.Contracts.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -382,6 +381,12 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_Silo.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_SiloBef.Designer.vb">
+      <DependentUpon>wb_SiloBef.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_SiloBef.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_OrgaBack.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_WinBack.vb" />
     <Compile Include="wb_00_Klassen\wb_Chargen.vb" />
@@ -457,13 +462,13 @@
     <Compile Include="wb_00_Klassen\wb_KomponParam300_Global.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParamXXX.vb" />
     <Compile Include="wb_00_Klassen\wb_KomponParam_Global.vb" />
+    <Compile Include="wb_00_Klassen\wb_LagerSilo.vb" />
     <Compile Include="wb_00_Klassen\wb_Lieferungen.vb" />
     <Compile Include="wb_00_Klassen\wb_MehlGruppe.vb" />
     <Compile Include="wb_00_Klassen\wb_OrgaBackProcess.vb" />
     <Compile Include="wb_00_Klassen\wb_OrgaBackProcessPosition.vb" />
     <Compile Include="wb_00_Klassen\wb_OrgaBackProcess_WE.vb" />
     <Compile Include="wb_00_Klassen\wb_Produktion_virtuell.vb" />
-    <Compile Include="wb_00_Klassen\wb_SiloRohstoff.vb" />
     <Compile Include="wb_00_Klassen\wb_StatistikListe.vb" />
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.Designer.vb">
       <DependentUpon>wb_Chargen_ChartTTS.vb</DependentUpon>
@@ -507,10 +512,16 @@
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Silo.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Lieferungen.Designer.vb">
-      <DependentUpon>wb_Rohstoff_Lieferungen.vb</DependentUpon>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Lieferungen.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Lieferungen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Lieferungen.vb">
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Lieferungen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloParameter.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_SiloParameter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloParameter.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Tauschen.Designer.vb">
@@ -726,16 +737,16 @@
     <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.Designer.vb">
-      <DependentUpon>wb_Rohstoff_AuswahlListe.vb</DependentUpon>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_AuswahlListe.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_AuswahlListe.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.vb">
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_AuswahlListe.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Dokumente.Designer.vb">
-      <DependentUpon>wb_Rohstoff_Dokumente.vb</DependentUpon>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Dokumente.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Dokumente.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Dokumente.vb">
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Dokumente.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_05_Forms_User\ob_User_DockingExtension.vb" />
@@ -1034,6 +1045,9 @@
     <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_Silo.resx">
       <DependentUpon>wb_Silo.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_SiloBef.resx">
+      <DependentUpon>wb_SiloBef.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\WinBack_DockMain.resx">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
     </EmbeddedResource>
@@ -1128,8 +1142,8 @@
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Silo.resx">
       <DependentUpon>wb_Rohstoffe_Silo.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_AuswahlListe.resx">
-      <DependentUpon>wb_Rohstoff_AuswahlListe.vb</DependentUpon>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_AuswahlListe.resx">
+      <DependentUpon>wb_Rohstoffe_AuswahlListe.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.resx">
       <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
@@ -1143,14 +1157,17 @@
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Parameter.resx">
       <DependentUpon>wb_Rohstoffe_Parameter.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloParameter.resx">
+      <DependentUpon>wb_Rohstoffe_SiloParameter.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.resx">
       <DependentUpon>wb_Rohstoffe_Verwendung.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Dokumente.resx">
-      <DependentUpon>wb_Rohstoff_Dokumente.vb</DependentUpon>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Dokumente.resx">
+      <DependentUpon>wb_Rohstoffe_Dokumente.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoff_Lieferungen.resx">
-      <DependentUpon>wb_Rohstoff_Lieferungen.vb</DependentUpon>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Lieferungen.resx">
+      <DependentUpon>wb_Rohstoffe_Lieferungen.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Tauschen.resx">
       <DependentUpon>wb_Rohstoffe_Tauschen.vb</DependentUpon>

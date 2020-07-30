@@ -45,7 +45,7 @@ Public Class wb_KomponParam301_Global
         winback = Nothing
 
         'Umrechnungs-Faktor Einheiten OrgaBack-Nährwerte/WinBack-Nährwerte
-        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Or wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WBServerTask Then
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Or wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OBServerTask Then
             'Datenbank-Verbindung öffnen - MsSQL
             Dim i As Integer
             Dim orgasoft As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)

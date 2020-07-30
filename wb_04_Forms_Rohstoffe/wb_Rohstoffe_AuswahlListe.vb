@@ -2,7 +2,7 @@
 Imports WinBack
 Imports WinBack.wb_Rohstoffe_Shared
 
-Public Class wb_Rohstoff_AuswahlListe
+Public Class wb_Rohstoffe_AuswahlListe
     Private _RohstoffNr As Integer = wb_Global.UNDEFINED
     Private _RohstoffNummer As String = ""
     Private _RohstoffName As String = ""

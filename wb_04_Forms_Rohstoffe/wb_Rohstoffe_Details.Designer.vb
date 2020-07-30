@@ -25,7 +25,6 @@ Partial Class wb_Rohstoffe_Details
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Rohstoffe_Details))
         Me.tRohstoffName = New System.Windows.Forms.TextBox()
         Me.lblBezeichnung = New System.Windows.Forms.Label()
         Me.tRohstoffNummer = New System.Windows.Forms.TextBox()
@@ -68,39 +67,66 @@ Partial Class wb_Rohstoffe_Details
         '
         'tRohstoffName
         '
-        resources.ApplyResources(Me.tRohstoffName, "tRohstoffName")
+        Me.tRohstoffName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tRohstoffName.Location = New System.Drawing.Point(165, 24)
         Me.tRohstoffName.Name = "tRohstoffName"
+        Me.tRohstoffName.Size = New System.Drawing.Size(493, 20)
+        Me.tRohstoffName.TabIndex = 1
         '
         'lblBezeichnung
         '
-        resources.ApplyResources(Me.lblBezeichnung, "lblBezeichnung")
+        Me.lblBezeichnung.AutoSize = True
+        Me.lblBezeichnung.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblBezeichnung.Location = New System.Drawing.Point(162, 8)
         Me.lblBezeichnung.Name = "lblBezeichnung"
+        Me.lblBezeichnung.Size = New System.Drawing.Size(112, 13)
+        Me.lblBezeichnung.TabIndex = 33
+        Me.lblBezeichnung.Text = "Rohstoff-Bezeichnung"
         '
         'tRohstoffNummer
         '
-        resources.ApplyResources(Me.tRohstoffNummer, "tRohstoffNummer")
+        Me.tRohstoffNummer.Location = New System.Drawing.Point(12, 24)
         Me.tRohstoffNummer.Name = "tRohstoffNummer"
         Me.tRohstoffNummer.ReadOnly = True
+        Me.tRohstoffNummer.Size = New System.Drawing.Size(136, 20)
+        Me.tRohstoffNummer.TabIndex = 34
         Me.tRohstoffNummer.TabStop = False
         '
         'lblNummer
         '
-        resources.ApplyResources(Me.lblNummer, "lblNummer")
+        Me.lblNummer.AutoSize = True
+        Me.lblNummer.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblNummer.Location = New System.Drawing.Point(9, 8)
         Me.lblNummer.Name = "lblNummer"
+        Me.lblNummer.Size = New System.Drawing.Size(46, 13)
+        Me.lblNummer.TabIndex = 35
+        Me.lblNummer.Text = "Nummer"
         '
         'tRohstoffKommentar
         '
-        resources.ApplyResources(Me.tRohstoffKommentar, "tRohstoffKommentar")
+        Me.tRohstoffKommentar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tRohstoffKommentar.Location = New System.Drawing.Point(165, 63)
         Me.tRohstoffKommentar.Name = "tRohstoffKommentar"
+        Me.tRohstoffKommentar.Size = New System.Drawing.Size(493, 20)
+        Me.tRohstoffKommentar.TabIndex = 2
         '
         'lblKommentar
         '
-        resources.ApplyResources(Me.lblKommentar, "lblKommentar")
+        Me.lblKommentar.AutoSize = True
+        Me.lblKommentar.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblKommentar.Location = New System.Drawing.Point(162, 47)
         Me.lblKommentar.Name = "lblKommentar"
+        Me.lblKommentar.Size = New System.Drawing.Size(60, 13)
+        Me.lblKommentar.TabIndex = 37
+        Me.lblKommentar.Text = "Kommentar"
         '
         'pnlDetails
         '
-        resources.ApplyResources(Me.pnlDetails, "pnlDetails")
+        Me.pnlDetails.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlDetails.Controls.Add(Me.TableLayoutPanel1)
         Me.pnlDetails.Controls.Add(Me.eMindestmenge)
         Me.pnlDetails.Controls.Add(Me.eBilanzmenge)
@@ -120,175 +146,307 @@ Partial Class wb_Rohstoffe_Details
         Me.pnlDetails.Controls.Add(Me.cbRohstoffGrp2)
         Me.pnlDetails.Controls.Add(Me.Label14)
         Me.pnlDetails.Controls.Add(Me.cbRohstoffGrp1)
+        Me.pnlDetails.Location = New System.Drawing.Point(0, 102)
         Me.pnlDetails.Name = "pnlDetails"
+        Me.pnlDetails.Size = New System.Drawing.Size(664, 225)
+        Me.pnlDetails.TabIndex = 65
         '
         'TableLayoutPanel1
         '
-        resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+        Me.TableLayoutPanel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.lblDeklExtern, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.tbDeklarationExtern, 0, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.lblDeklIntern, 0, 2)
         Me.TableLayoutPanel1.Controls.Add(Me.tbDeklarationIntern, 0, 3)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(331, 3)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 4
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(330, 222)
+        Me.TableLayoutPanel1.TabIndex = 66
         '
         'lblDeklExtern
         '
-        resources.ApplyResources(Me.lblDeklExtern, "lblDeklExtern")
+        Me.lblDeklExtern.AutoSize = True
+        Me.lblDeklExtern.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblDeklExtern.Location = New System.Drawing.Point(3, 0)
         Me.lblDeklExtern.Name = "lblDeklExtern"
+        Me.lblDeklExtern.Size = New System.Drawing.Size(61, 13)
+        Me.lblDeklExtern.TabIndex = 76
+        Me.lblDeklExtern.Text = "Deklaration"
         '
         'tbDeklarationExtern
         '
-        resources.ApplyResources(Me.tbDeklarationExtern, "tbDeklarationExtern")
+        Me.tbDeklarationExtern.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tbDeklarationExtern.Location = New System.Drawing.Point(3, 26)
+        Me.tbDeklarationExtern.Multiline = True
         Me.tbDeklarationExtern.Name = "tbDeklarationExtern"
+        Me.tbDeklarationExtern.Size = New System.Drawing.Size(324, 82)
+        Me.tbDeklarationExtern.TabIndex = 68
         '
         'lblDeklIntern
         '
-        resources.ApplyResources(Me.lblDeklIntern, "lblDeklIntern")
+        Me.lblDeklIntern.AutoSize = True
+        Me.lblDeklIntern.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblDeklIntern.Location = New System.Drawing.Point(3, 111)
         Me.lblDeklIntern.Name = "lblDeklIntern"
+        Me.lblDeklIntern.Size = New System.Drawing.Size(90, 13)
+        Me.lblDeklIntern.TabIndex = 77
+        Me.lblDeklIntern.Text = "Deklaration intern"
         '
         'tbDeklarationIntern
         '
-        resources.ApplyResources(Me.tbDeklarationIntern, "tbDeklarationIntern")
+        Me.tbDeklarationIntern.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tbDeklarationIntern.Location = New System.Drawing.Point(3, 137)
+        Me.tbDeklarationIntern.Multiline = True
         Me.tbDeklarationIntern.Name = "tbDeklarationIntern"
+        Me.tbDeklarationIntern.Size = New System.Drawing.Size(324, 82)
+        Me.tbDeklarationIntern.TabIndex = 69
         '
         'eMindestmenge
         '
-        resources.ApplyResources(Me.eMindestmenge, "eMindestmenge")
+        Me.eMindestmenge.AutoSize = True
+        Me.eMindestmenge.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.eMindestmenge.Location = New System.Drawing.Point(263, 100)
         Me.eMindestmenge.Name = "eMindestmenge"
+        Me.eMindestmenge.Size = New System.Drawing.Size(19, 13)
+        Me.eMindestmenge.TabIndex = 86
+        Me.eMindestmenge.Text = "kg"
         '
         'eBilanzmenge
         '
-        resources.ApplyResources(Me.eBilanzmenge, "eBilanzmenge")
+        Me.eBilanzmenge.AutoSize = True
+        Me.eBilanzmenge.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.eBilanzmenge.Location = New System.Drawing.Point(110, 100)
         Me.eBilanzmenge.Name = "eBilanzmenge"
+        Me.eBilanzmenge.Size = New System.Drawing.Size(19, 13)
+        Me.eBilanzmenge.TabIndex = 85
+        Me.eBilanzmenge.Text = "kg"
         '
         'eGebindegroesse
         '
-        resources.ApplyResources(Me.eGebindegroesse, "eGebindegroesse")
+        Me.eGebindegroesse.AutoSize = True
+        Me.eGebindegroesse.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.eGebindegroesse.Location = New System.Drawing.Point(110, 61)
         Me.eGebindegroesse.Name = "eGebindegroesse"
+        Me.eGebindegroesse.Size = New System.Drawing.Size(19, 13)
+        Me.eGebindegroesse.TabIndex = 84
+        Me.eGebindegroesse.Text = "kg"
         '
         'ePreis
         '
-        resources.ApplyResources(Me.ePreis, "ePreis")
+        Me.ePreis.AutoSize = True
+        Me.ePreis.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.ePreis.Location = New System.Drawing.Point(110, 23)
         Me.ePreis.Name = "ePreis"
+        Me.ePreis.Size = New System.Drawing.Size(13, 13)
+        Me.ePreis.TabIndex = 83
+        Me.ePreis.Text = "€"
         '
         'tbMindestMenge
         '
-        resources.ApplyResources(Me.tbMindestMenge, "tbMindestMenge")
+        Me.tbMindestMenge.Location = New System.Drawing.Point(165, 97)
         Me.tbMindestMenge.Name = "tbMindestMenge"
+        Me.tbMindestMenge.Size = New System.Drawing.Size(96, 20)
+        Me.tbMindestMenge.TabIndex = 67
+        Me.tbMindestMenge.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lbMindestMenge
         '
-        resources.ApplyResources(Me.lbMindestMenge, "lbMindestMenge")
+        Me.lbMindestMenge.AutoSize = True
+        Me.lbMindestMenge.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lbMindestMenge.Location = New System.Drawing.Point(162, 81)
         Me.lbMindestMenge.Name = "lbMindestMenge"
+        Me.lbMindestMenge.Size = New System.Drawing.Size(76, 13)
+        Me.lbMindestMenge.TabIndex = 82
+        Me.lbMindestMenge.Text = "Mindestmenge"
         '
         'tbBilanzmenge
         '
-        resources.ApplyResources(Me.tbBilanzmenge, "tbBilanzmenge")
+        Me.tbBilanzmenge.Location = New System.Drawing.Point(12, 97)
         Me.tbBilanzmenge.Name = "tbBilanzmenge"
         Me.tbBilanzmenge.ReadOnly = True
+        Me.tbBilanzmenge.Size = New System.Drawing.Size(96, 20)
+        Me.tbBilanzmenge.TabIndex = 80
         Me.tbBilanzmenge.TabStop = False
+        Me.tbBilanzmenge.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lbBilanzMenge
         '
-        resources.ApplyResources(Me.lbBilanzMenge, "lbBilanzMenge")
+        Me.lbBilanzMenge.AutoSize = True
+        Me.lbBilanzMenge.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lbBilanzMenge.Location = New System.Drawing.Point(9, 81)
         Me.lbBilanzMenge.Name = "lbBilanzMenge"
+        Me.lbBilanzMenge.Size = New System.Drawing.Size(72, 13)
+        Me.lbBilanzMenge.TabIndex = 81
+        Me.lbBilanzMenge.Text = "Lagerbestand"
         '
         'cbRezeptGewicht
         '
-        resources.ApplyResources(Me.cbRezeptGewicht, "cbRezeptGewicht")
+        Me.cbRezeptGewicht.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.cbRezeptGewicht.Location = New System.Drawing.Point(165, 33)
         Me.cbRezeptGewicht.Name = "cbRezeptGewicht"
+        Me.cbRezeptGewicht.Size = New System.Drawing.Size(160, 40)
+        Me.cbRezeptGewicht.TabIndex = 79
         Me.cbRezeptGewicht.TabStop = False
+        Me.cbRezeptGewicht.Text = "zählt nicht zur Rezept- Gesamtmenge"
         Me.cbRezeptGewicht.UseVisualStyleBackColor = True
         '
         'cbKeineDeklaration
         '
-        resources.ApplyResources(Me.cbKeineDeklaration, "cbKeineDeklaration")
+        Me.cbKeineDeklaration.AutoSize = True
+        Me.cbKeineDeklaration.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.cbKeineDeklaration.Location = New System.Drawing.Point(165, 19)
         Me.cbKeineDeklaration.Name = "cbKeineDeklaration"
+        Me.cbKeineDeklaration.Size = New System.Drawing.Size(160, 17)
+        Me.cbKeineDeklaration.TabIndex = 78
         Me.cbKeineDeklaration.TabStop = False
+        Me.cbKeineDeklaration.Text = "Rohstoff wird nicht deklariert"
         Me.cbKeineDeklaration.UseVisualStyleBackColor = True
         '
         'tbGebindeGroesse
         '
-        resources.ApplyResources(Me.tbGebindeGroesse, "tbGebindeGroesse")
+        Me.tbGebindeGroesse.Location = New System.Drawing.Point(12, 58)
         Me.tbGebindeGroesse.Name = "tbGebindeGroesse"
+        Me.tbGebindeGroesse.Size = New System.Drawing.Size(96, 20)
+        Me.tbGebindeGroesse.TabIndex = 66
+        Me.tbGebindeGroesse.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblGebindegroesse
         '
-        resources.ApplyResources(Me.lblGebindegroesse, "lblGebindegroesse")
+        Me.lblGebindegroesse.AutoSize = True
+        Me.lblGebindegroesse.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblGebindegroesse.Location = New System.Drawing.Point(9, 42)
         Me.lblGebindegroesse.Name = "lblGebindegroesse"
+        Me.lblGebindegroesse.Size = New System.Drawing.Size(74, 13)
+        Me.lblGebindegroesse.TabIndex = 75
+        Me.lblGebindegroesse.Text = "Gebindegröße"
         '
         'tbRohstoffPreis
         '
-        resources.ApplyResources(Me.tbRohstoffPreis, "tbRohstoffPreis")
+        Me.tbRohstoffPreis.Location = New System.Drawing.Point(12, 19)
         Me.tbRohstoffPreis.Name = "tbRohstoffPreis"
+        Me.tbRohstoffPreis.Size = New System.Drawing.Size(96, 20)
+        Me.tbRohstoffPreis.TabIndex = 65
+        Me.tbRohstoffPreis.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblPreis
         '
-        resources.ApplyResources(Me.lblPreis, "lblPreis")
+        Me.lblPreis.AutoSize = True
+        Me.lblPreis.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblPreis.Location = New System.Drawing.Point(9, 3)
         Me.lblPreis.Name = "lblPreis"
+        Me.lblPreis.Size = New System.Drawing.Size(47, 13)
+        Me.lblPreis.TabIndex = 74
+        Me.lblPreis.Text = "Preis/kg"
         '
         'Label1
         '
-        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.AutoSize = True
+        Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label1.Location = New System.Drawing.Point(9, 172)
         Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(51, 13)
+        Me.Label1.TabIndex = 73
+        Me.Label1.Text = "Gruppe 2"
         '
         'cbRohstoffGrp2
         '
         Me.cbRohstoffGrp2.FormattingEnabled = True
-        resources.ApplyResources(Me.cbRohstoffGrp2, "cbRohstoffGrp2")
+        Me.cbRohstoffGrp2.Location = New System.Drawing.Point(12, 188)
         Me.cbRohstoffGrp2.Name = "cbRohstoffGrp2"
+        Me.cbRohstoffGrp2.Size = New System.Drawing.Size(290, 21)
+        Me.cbRohstoffGrp2.TabIndex = 72
         '
         'Label14
         '
-        resources.ApplyResources(Me.Label14, "Label14")
+        Me.Label14.AutoSize = True
+        Me.Label14.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label14.Location = New System.Drawing.Point(9, 129)
         Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(51, 13)
+        Me.Label14.TabIndex = 71
+        Me.Label14.Text = "Gruppe 1"
         '
         'cbRohstoffGrp1
         '
         Me.cbRohstoffGrp1.FormattingEnabled = True
-        resources.ApplyResources(Me.cbRohstoffGrp1, "cbRohstoffGrp1")
+        Me.cbRohstoffGrp1.Location = New System.Drawing.Point(12, 148)
         Me.cbRohstoffGrp1.Name = "cbRohstoffGrp1"
+        Me.cbRohstoffGrp1.Size = New System.Drawing.Size(290, 21)
+        Me.cbRohstoffGrp1.TabIndex = 70
         '
         'tID
         '
-        resources.ApplyResources(Me.tID, "tID")
+        Me.tID.Location = New System.Drawing.Point(12, 63)
         Me.tID.Name = "tID"
         Me.tID.ReadOnly = True
+        Me.tID.Size = New System.Drawing.Size(48, 20)
+        Me.tID.TabIndex = 66
         Me.tID.TabStop = False
         '
         'tType
         '
-        resources.ApplyResources(Me.tType, "tType")
+        Me.tType.Location = New System.Drawing.Point(66, 63)
         Me.tType.Name = "tType"
         Me.tType.ReadOnly = True
+        Me.tType.Size = New System.Drawing.Size(48, 20)
+        Me.tType.TabIndex = 67
         Me.tType.TabStop = False
         '
         'cbAktiv
         '
-        resources.ApplyResources(Me.cbAktiv, "cbAktiv")
+        Me.cbAktiv.AutoSize = True
+        Me.cbAktiv.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.cbAktiv.Location = New System.Drawing.Point(128, 66)
         Me.cbAktiv.Name = "cbAktiv"
+        Me.cbAktiv.Size = New System.Drawing.Size(15, 14)
+        Me.cbAktiv.TabIndex = 79
         Me.cbAktiv.TabStop = False
         Me.cbAktiv.UseVisualStyleBackColor = True
         '
         'lblID
         '
-        resources.ApplyResources(Me.lblID, "lblID")
+        Me.lblID.AutoSize = True
+        Me.lblID.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblID.Location = New System.Drawing.Point(9, 47)
         Me.lblID.Name = "lblID"
+        Me.lblID.Size = New System.Drawing.Size(18, 13)
+        Me.lblID.TabIndex = 80
+        Me.lblID.Text = "ID"
         '
         'lblType
         '
-        resources.ApplyResources(Me.lblType, "lblType")
+        Me.lblType.AutoSize = True
+        Me.lblType.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblType.Location = New System.Drawing.Point(65, 47)
         Me.lblType.Name = "lblType"
+        Me.lblType.Size = New System.Drawing.Size(31, 13)
+        Me.lblType.TabIndex = 81
+        Me.lblType.Text = "Type"
         '
         'lblAktiv
         '
-        resources.ApplyResources(Me.lblAktiv, "lblAktiv")
+        Me.lblAktiv.AutoSize = True
+        Me.lblAktiv.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblAktiv.Location = New System.Drawing.Point(125, 47)
         Me.lblAktiv.Name = "lblAktiv"
+        Me.lblAktiv.Size = New System.Drawing.Size(31, 13)
+        Me.lblAktiv.TabIndex = 82
+        Me.lblAktiv.Text = "Aktiv"
         '
         'wb_Rohstoffe_Details
         '
-        resources.ApplyResources(Me, "$this")
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(663, 339)
         Me.Controls.Add(Me.lblAktiv)
         Me.Controls.Add(Me.lblType)
         Me.Controls.Add(Me.lblID)
@@ -302,7 +460,9 @@ Partial Class wb_Rohstoffe_Details
         Me.Controls.Add(Me.lblNummer)
         Me.Controls.Add(Me.tRohstoffName)
         Me.Controls.Add(Me.lblBezeichnung)
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.Name = "wb_Rohstoffe_Details"
+        Me.Text = "Rohstoff Details"
         Me.pnlDetails.ResumeLayout(False)
         Me.pnlDetails.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)

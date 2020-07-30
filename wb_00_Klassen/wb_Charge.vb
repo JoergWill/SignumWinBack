@@ -146,7 +146,6 @@
             _MengeInkg = CalcMengeInkg()
             'Chargengröße in [%] neu berechen
             _MengeInProzent = CalcMengeInProzent()
-            'TODO DEBUG TEST
             'Debug.Print("wb_Charge.MengeInStk Stk/kg/Prz/Stkgewicht " & _MengeInStk & "/" & _MengeInkg & "/" & MengeInProzent & "/" & _StkGewicht & "/" & _TeigGewicht)
             'Event - Werte haben sich geändert
             ValuesChanged()

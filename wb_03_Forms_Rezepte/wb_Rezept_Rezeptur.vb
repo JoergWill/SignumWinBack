@@ -819,7 +819,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <returns></returns>
     Private Function VT_AuswahlRohstoff(Optional AnzeigeFilter As wb_Rohstoffe_Shared.AnzeigeFilter = wb_Rohstoffe_Shared.AnzeigeFilter.Undefined) As Boolean
         'Rohstoff-Auswahl-Liste
-        Dim RohstoffAuswahl As New wb_Rohstoff_AuswahlListe
+        Dim RohstoffAuswahl As New wb_Rohstoffe_AuswahlListe
 
         'Rohstoff-Auswahl filtern Sauerteig/Produktion
         If _RzVariante = 0 Then

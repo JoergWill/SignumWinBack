@@ -34,7 +34,7 @@ MsSQLServer_Passwd=YK2tvndD+Bx1pZgUMSsMMIqHAvAi5WQaXKaf2SYZnII=
 
 
 [winback-m6]
-#eMYSQLServerIP=127.0.0.1
+eMYSQLServerIP=127.0.0.1
 #eMySQLDatabase=schaufler
 #eMySQLDatabaseDaten=wbschaufler
 eMYSQLServerIP=172.16.17.4

@@ -33,7 +33,11 @@ Partial Class wb_Silo
         Me.pnlSilo = New System.Windows.Forms.TableLayoutPanel()
         Me.tbSiloFuellstand = New System.Windows.Forms.TextBox()
         Me.BtnSiloTauschen = New System.Windows.Forms.Button()
-        Me.ToolTipTauschen = New System.Windows.Forms.ToolTip(Me.components)
+        Me.ToolTipSiloBef = New System.Windows.Forms.ToolTip(Me.components)
+        Me.BtnSiloNull = New System.Windows.Forms.Button()
+        Me.tbBefMenge = New System.Windows.Forms.TextBox()
+        Me.lbBefMenge = New System.Windows.Forms.Label()
+        Me.lbAktiv = New System.Windows.Forms.Label()
         Me.pnlSilo.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -69,6 +73,7 @@ Partial Class wb_Silo
         '
         'tbIst
         '
+        Me.tbIst.ForeColor = System.Drawing.SystemColors.WindowText
         Me.tbIst.Location = New System.Drawing.Point(27, 258)
         Me.tbIst.Name = "tbIst"
         Me.tbIst.ReadOnly = True
@@ -143,17 +148,67 @@ Partial Class wb_Silo
         Me.BtnSiloTauschen.Size = New System.Drawing.Size(62, 38)
         Me.BtnSiloTauschen.TabIndex = 8
         Me.BtnSiloTauschen.Text = "Rohstoff tauschen"
-        Me.ToolTipTauschen.SetToolTip(Me.BtnSiloTauschen, "Ändert den Rohstoff für dieses Silo." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Der bisherige Rohstoff darf in keiner Rezep" &
+        Me.ToolTipSiloBef.SetToolTip(Me.BtnSiloTauschen, "Ändert den Rohstoff für dieses Silo." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Der bisherige Rohstoff darf in keiner Rezep" &
         "tur mehr verwendet werden." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
         Me.BtnSiloTauschen.UseVisualStyleBackColor = True
+        '
+        'BtnSiloNull
+        '
+        Me.BtnSiloNull.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnSiloNull.ForeColor = System.Drawing.Color.Black
+        Me.BtnSiloNull.Location = New System.Drawing.Point(83, 332)
+        Me.BtnSiloNull.Name = "BtnSiloNull"
+        Me.BtnSiloNull.Size = New System.Drawing.Size(62, 38)
+        Me.BtnSiloNull.TabIndex = 11
+        Me.BtnSiloNull.Text = "Null setzen"
+        Me.ToolTipSiloBef.SetToolTip(Me.BtnSiloNull, "Silo-Füllstand auf Null setzen" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
+        Me.BtnSiloNull.UseVisualStyleBackColor = True
+        '
+        'tbBefMenge
+        '
+        Me.tbBefMenge.Location = New System.Drawing.Point(27, 219)
+        Me.tbBefMenge.Name = "tbBefMenge"
+        Me.tbBefMenge.Size = New System.Drawing.Size(93, 20)
+        Me.tbBefMenge.TabIndex = 10
+        Me.tbBefMenge.TabStop = False
+        Me.tbBefMenge.Text = "kg"
+        Me.tbBefMenge.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ToolTipSiloBef.SetToolTip(Me.tbBefMenge, "Doppelclick übernimmt die gesamte Liefermenge")
+        Me.tbBefMenge.Visible = False
+        '
+        'lbBefMenge
+        '
+        Me.lbBefMenge.AutoSize = True
+        Me.lbBefMenge.BackColor = System.Drawing.Color.Transparent
+        Me.lbBefMenge.Location = New System.Drawing.Point(24, 203)
+        Me.lbBefMenge.Name = "lbBefMenge"
+        Me.lbBefMenge.Size = New System.Drawing.Size(51, 13)
+        Me.lbBefMenge.TabIndex = 9
+        Me.lbBefMenge.Text = "Lieferung"
+        Me.lbBefMenge.Visible = False
+        '
+        'lbAktiv
+        '
+        Me.lbAktiv.AutoSize = True
+        Me.lbAktiv.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lbAktiv.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.lbAktiv.Location = New System.Drawing.Point(9, 332)
+        Me.lbAktiv.Name = "lbAktiv"
+        Me.lbAktiv.Size = New System.Drawing.Size(33, 15)
+        Me.lbAktiv.TabIndex = 12
+        Me.lbAktiv.Text = "Aktiv"
         '
         'wb_Silo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.lbAktiv)
+        Me.Controls.Add(Me.lblNummer)
+        Me.Controls.Add(Me.BtnSiloNull)
+        Me.Controls.Add(Me.tbBefMenge)
+        Me.Controls.Add(Me.lbBefMenge)
         Me.Controls.Add(Me.BtnSiloTauschen)
         Me.Controls.Add(Me.lblRohName)
-        Me.Controls.Add(Me.lblNummer)
         Me.Controls.Add(Me.lblName)
         Me.Controls.Add(Me.tbIst)
         Me.Controls.Add(Me.tbMax)
@@ -161,7 +216,7 @@ Partial Class wb_Silo
         Me.Controls.Add(Me.lbMax)
         Me.Controls.Add(Me.pnlSilo)
         Me.Name = "wb_Silo"
-        Me.Size = New System.Drawing.Size(150, 328)
+        Me.Size = New System.Drawing.Size(150, 375)
         Me.pnlSilo.ResumeLayout(False)
         Me.pnlSilo.PerformLayout()
         Me.ResumeLayout(False)
@@ -179,5 +234,9 @@ Partial Class wb_Silo
     Friend WithEvents pnlSilo As Windows.Forms.TableLayoutPanel
     Friend WithEvents tbSiloFuellstand As Windows.Forms.TextBox
     Friend WithEvents BtnSiloTauschen As Windows.Forms.Button
-    Friend WithEvents ToolTipTauschen As Windows.Forms.ToolTip
+    Friend WithEvents ToolTipSiloBef As Windows.Forms.ToolTip
+    Friend WithEvents tbBefMenge As Windows.Forms.TextBox
+    Friend WithEvents lbBefMenge As Windows.Forms.Label
+    Friend WithEvents BtnSiloNull As Windows.Forms.Button
+    Friend WithEvents lbAktiv As Windows.Forms.Label
 End Class

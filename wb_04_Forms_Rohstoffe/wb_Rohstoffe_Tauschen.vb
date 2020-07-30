@@ -15,7 +15,7 @@ Public Class wb_Rohstoffe_Tauschen
 
     Private Sub tbRohNeu_Click(sender As Object, e As EventArgs) Handles tbRohNrNeu.Click, tbRohNrNeu.DoubleClick, tbRohNameNeu.DoubleClick, tbRohNameNeu.Click
         'Rohstoff-Auswahl-Liste
-        Dim RohstoffAuswahl As New wb_Rohstoff_AuswahlListe
+        Dim RohstoffAuswahl As New wb_Rohstoffe_AuswahlListe
         'Auswahl Sauerteig/Produktion
         If wb_Rohstoffe_Shared.RohStoff.Type < wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Then
             RohstoffAuswahl.Anzeige = wb_Rohstoffe_Shared.AnzeigeFilter.RezeptKomp

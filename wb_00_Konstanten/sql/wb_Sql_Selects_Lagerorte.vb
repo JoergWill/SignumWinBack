@@ -2,6 +2,9 @@
 
     'Sql_statement Select Lagerorte nach LG_Ort
     Public Const sqlLagerOrte = "SELECT * FROM Lagerorte WHERE LG_Ort = '[0]'"
+    'Sql_statement UPDATE Lagerorte.lfd_Nr
+    Public Const sqlUpdateLagerort = "UPDATE Lagerorte SET LG_LF_Nr = [0], LG_Bilanzmenge = '[1]' WHERE LG_Ort = '[2]'"
+
     'Löschen Rohstoff/Artikel in Lagerorte
     Public Const sqlDelLagerOrte = "DELETE FROM Lagerorte WHERE LG_Ort = '[0]'"
     'Sql-Statement Update LagerOrte nach LG_Ort
@@ -11,6 +14,16 @@
 
     'Sql-Statement LagerOrte Silo-Gruppen
     Public Const sqlSiloGrpLager = "SELECT * FROM Lagerorte WHERE LG_Ort LIKE '[0]'"
+    'Sql-Statement LagerOrte Silo-Gruppen nach Komponenten-Nummer
+    Public Const sqlSiloGrpNummer = "SELECT * FROM Komponenten INNER JOIN Lagerorte ON Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
+                                    "WHERE ((KA_aktiv=1) AND (KO_Type=101) AND (KO_Nr_AlNum = '[0]')) ORDER BY Lagerorte.LG_Ort "
+
+    'Sql_statement SELECT nächster Artikel und LG_Ort (LIMIT 1, da mySQL kein SELECT FIRST kennt)
+    Public Const sqlRohstoffLagerort = "SELECT Komponenten.KO_Nr, Komponenten.KO_Nr_AlNum, Komponenten.KO_Bezeichnung, Komponenten.KO_Type, " &
+                                       "Lagerorte.LG_Silo_Nr, Lagerorte.LG_LF_Nr, Lagerorte.LG_Ort, Lagerorte.LG_Bilanzmenge " &
+                                       "FROM (Komponenten INNER JOIN Lagerorte ON Komponenten.KA_Lagerort = Lagerorte.LG_Ort) " &
+                                       "WHERE KO_Type <> 0 AND [0] AND KA_aktiv = 1 ORDER BY KO_Type, KO_Nr LIMIT 1"
+
 
     'LG_Ort
     'LG_Bezeichnung

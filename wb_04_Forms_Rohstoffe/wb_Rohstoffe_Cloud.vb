@@ -473,7 +473,7 @@ Public Class wb_Rohstoffe_Cloud
     End Sub
 
     Private Sub BtnProduktDatenblatt_Click(sender As Object, e As EventArgs) Handles BtnProduktDatenblatt.Click
-        Dim RohstoffDokumente As New wb_Rohstoff_Dokumente(nwt, RohStoff.MatchCode)
+        Dim RohstoffDokumente As New wb_Rohstoffe_Dokumente(nwt, RohStoff.MatchCode)
         RohstoffDokumente.ShowDialog()
     End Sub
 

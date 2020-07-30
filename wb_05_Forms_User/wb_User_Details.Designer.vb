@@ -25,7 +25,6 @@ Partial Class wb_User_Details
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_User_Details))
         Me.Label2 = New System.Windows.Forms.Label()
         Me.lblName = New System.Windows.Forms.Label()
         Me.tPersonalNr = New System.Windows.Forms.TextBox()
@@ -38,52 +37,81 @@ Partial Class wb_User_Details
         '
         'Label2
         '
-        resources.ApplyResources(Me.Label2, "Label2")
+        Me.Label2.AutoSize = True
+        Me.Label2.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label2.Location = New System.Drawing.Point(9, 50)
         Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(45, 13)
+        Me.Label2.TabIndex = 1
+        Me.Label2.Text = "Gruppe:"
         '
         'lblName
         '
-        resources.ApplyResources(Me.lblName, "lblName")
+        Me.lblName.AutoSize = True
+        Me.lblName.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblName.Location = New System.Drawing.Point(9, 5)
         Me.lblName.Name = "lblName"
+        Me.lblName.Size = New System.Drawing.Size(83, 13)
+        Me.lblName.TabIndex = 0
+        Me.lblName.Text = "Benutzer Name:"
         '
         'tPersonalNr
         '
-        resources.ApplyResources(Me.tPersonalNr, "tPersonalNr")
+        Me.tPersonalNr.Location = New System.Drawing.Point(290, 67)
         Me.tPersonalNr.Name = "tPersonalNr"
         Me.tPersonalNr.ReadOnly = True
+        Me.tPersonalNr.Size = New System.Drawing.Size(180, 20)
+        Me.tPersonalNr.TabIndex = 5
         '
         'tUserPass
         '
-        resources.ApplyResources(Me.tUserPass, "tUserPass")
+        Me.tUserPass.Location = New System.Drawing.Point(290, 21)
         Me.tUserPass.Name = "tUserPass"
         Me.tUserPass.ReadOnly = True
+        Me.tUserPass.Size = New System.Drawing.Size(97, 20)
+        Me.tUserPass.TabIndex = 3
         '
         'tUserName
         '
-        resources.ApplyResources(Me.tUserName, "tUserName")
+        Me.tUserName.Location = New System.Drawing.Point(12, 21)
         Me.tUserName.Name = "tUserName"
+        Me.tUserName.Size = New System.Drawing.Size(272, 20)
+        Me.tUserName.TabIndex = 2
         '
         'Label3
         '
-        resources.ApplyResources(Me.Label3, "Label3")
+        Me.Label3.AutoSize = True
+        Me.Label3.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label3.Location = New System.Drawing.Point(287, 5)
         Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(50, 13)
+        Me.Label3.TabIndex = 6
+        Me.Label3.Text = "Passwort"
         '
         'Label4
         '
-        resources.ApplyResources(Me.Label4, "Label4")
+        Me.Label4.AutoSize = True
+        Me.Label4.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label4.Location = New System.Drawing.Point(287, 51)
         Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(90, 13)
+        Me.Label4.TabIndex = 7
+        Me.Label4.Text = "Personal-Nummer"
         '
         'cbUserGrp
         '
         Me.cbUserGrp.FormattingEnabled = True
-        resources.ApplyResources(Me.cbUserGrp, "cbUserGrp")
+        Me.cbUserGrp.Location = New System.Drawing.Point(12, 66)
         Me.cbUserGrp.Name = "cbUserGrp"
+        Me.cbUserGrp.Size = New System.Drawing.Size(272, 21)
+        Me.cbUserGrp.TabIndex = 4
         Me.cbUserGrp.TabStop = False
         '
         'wb_User_Details
         '
-        resources.ApplyResources(Me, "$this")
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(533, 117)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.tPersonalNr)
@@ -92,7 +120,9 @@ Partial Class wb_User_Details
         Me.Controls.Add(Me.lblName)
         Me.Controls.Add(Me.tUserName)
         Me.Controls.Add(Me.Label2)
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.Name = "wb_User_Details"
+        Me.Text = "Mitarbeiter"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

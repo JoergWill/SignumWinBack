@@ -18,7 +18,7 @@ Public Class wb_Statistik_RohDetails
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub ListeAdd(Sender As Object, e As EventArgs) Handles ListeStatistik.ListeAdd_Click
-        Dim RohstoffAuswahl As New wb_Rohstoff_AuswahlListe
+        Dim RohstoffAuswahl As New wb_Rohstoffe_AuswahlListe
         RohstoffAuswahl.MultiSelect = True
 
         If RohstoffAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then

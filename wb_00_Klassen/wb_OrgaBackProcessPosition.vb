@@ -1,9 +1,11 @@
 ﻿Public Class wb_OrgaBackProcessPosition
     Private _PositionNummer As Integer
+    Private _ArtikelNummer As String
     Private _Mitarbeiter As String
     Private _LieferDatum As String
     Private _GelieferteMenge As Double
     Private _SerienNummern As String
+    Private _Preis As Double
 
     Public Property PositionNummer As Integer
         Get
@@ -11,6 +13,15 @@
         End Get
         Set(value As Integer)
             _PositionNummer = value
+        End Set
+    End Property
+
+    Public Property ArtikelNummer As String
+        Get
+            Return _ArtikelNummer
+        End Get
+        Set(value As String)
+            _ArtikelNummer = value
         End Set
     End Property
 
@@ -41,12 +52,21 @@
         End Set
     End Property
 
-    Public Property SerienNummern As String
+    Public Property SerienNummer As String
         Get
             Return _SerienNummern
         End Get
         Set(value As String)
             _SerienNummern = value
+        End Set
+    End Property
+
+    Public Property Preis As Double
+        Get
+            Return _Preis
+        End Get
+        Set(value As Double)
+            _Preis = value
         End Set
     End Property
 
@@ -67,6 +87,9 @@
                 'PositionNummer
                 Case "PositionNummer"
                     _PositionNummer = Value
+                'ArtikelNummer
+                Case "ArtikelNr"
+                    _ArtikelNummer = Value
                 'Mitarbeiter/User
                 Case "MitarbeiterKürzel"
                     _Mitarbeiter = Value
@@ -74,12 +97,13 @@
                 Case "LieferDatum"
                     _LieferDatum = Value
                 'Gelieferte Menge
-                Case "GelieferteMenge"
+                Case "Menge"
                     _GelieferteMenge = Value
                 'Seriennummer
-                Case "SerienNummern"
+                Case "SerienNummer"
                     _SerienNummern = Value
-
+                Case "EinzelpreisNetto"
+                    _Preis = Value
             End Select
         Catch ex As Exception
         End Try

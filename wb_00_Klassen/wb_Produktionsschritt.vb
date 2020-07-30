@@ -324,7 +324,11 @@ Public Class wb_Produktionsschritt
             If _Optimiert Then
                 Return "zusammengefasst in Charge " & _ChargenNummer
             Else
-                Return _Bestellt_SonderText.Replace(vbCrLf, " ")
+                If Bestellt_SonderText IsNot Nothing Then
+                    Return _Bestellt_SonderText.Replace(vbCrLf, " ")
+                Else
+                    Return ""
+                End If
             End If
         End Get
     End Property

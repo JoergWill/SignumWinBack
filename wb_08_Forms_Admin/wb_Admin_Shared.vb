@@ -119,43 +119,46 @@ Public Class wb_Admin_Shared
     ''' </summary>
     ''' <param name="trTxt"></param>
     Public Shared Sub GetTraceListenerText(trDate As String, trBenutzer As String, trTxt As String, Optional trException As Exception = Nothing, Optional trZeile As String = "", Optional trModul As String = "", Optional trSubRoutine As String = "")
-        'Message dekodieren
-        Dim LogLevel As String = Left(trTxt, 3)
-        If LogLevel(0) = "@" And LogLevel(2) = "_" Then
-            trTxt = Mid(trTxt, 4)
-        End If
+        'Prüfen ob ein gültiger Fehler-Text übergeben wurde
+        If Len(trTxt) > 3 Then
+            'Message dekodieren
+            Dim LogLevel As String = Left(trTxt, 3)
+            If LogLevel(0) = "@" And LogLevel(2) = "_" Then
+                trTxt = Mid(trTxt, 4)
+            End If
 
-        'Log-Events an Liste anhängen
-        If trZeile <> "" Then
-            AddLogToList(trDate & vbTab & trZeile & " " & trModul & vbTab & trTxt & vbCrLf)
-        Else
-            AddLogToList(trDate & vbTab & trTxt & vbCrLf)
-        End If
+            'Log-Events an Liste anhängen
+            If trZeile <> "" Then
+                AddLogToList(trDate & vbTab & trZeile & " " & trModul & vbTab & trTxt & vbCrLf)
+            Else
+                AddLogToList(trDate & vbTab & trTxt & vbCrLf)
+            End If
 
-        'Apache log4net
-        If _LoggerKonfigOK And LoggerAktiv Then
-            Using log4net.ThreadContext.Stacks("Benutzer").Push(trBenutzer)
-                Using log4net.ThreadContext.Stacks("Zeile").Push(trZeile)
-                    Using log4net.ThreadContext.Stacks("Modul").Push(trModul)
-                        Using log4net.ThreadContext.Stacks("Funktion").Push(trSubRoutine)
-                            Select Case LogLevel
-                                Case "@V_", "@T_", "@D_"
-                                    _Logger4net.Debug(trTxt, trException)
-                                Case "@I_", "@N_"
-                                    _Logger4net.Info(trTxt, trException)
-                                Case "@W_"
-                                    _Logger4net.Warn(trTxt, trException)
-                                Case "@E_", "@C_"
-                                    _Logger4net.Error(trTxt, trException)
-                                Case "@A_", "@F_"
-                                    _Logger4net.Fatal(trTxt, trException)
-                                Case Else
-                                    _Logger4net.Debug(trTxt, trException)
-                            End Select
+            'Apache log4net
+            If _LoggerKonfigOK And LoggerAktiv Then
+                Using log4net.ThreadContext.Stacks("Benutzer").Push(trBenutzer)
+                    Using log4net.ThreadContext.Stacks("Zeile").Push(trZeile)
+                        Using log4net.ThreadContext.Stacks("Modul").Push(trModul)
+                            Using log4net.ThreadContext.Stacks("Funktion").Push(trSubRoutine)
+                                Select Case LogLevel
+                                    Case "@V_", "@T_", "@D_"
+                                        _Logger4net.Debug(trTxt, trException)
+                                    Case "@I_", "@N_"
+                                        _Logger4net.Info(trTxt, trException)
+                                    Case "@W_"
+                                        _Logger4net.Warn(trTxt, trException)
+                                    Case "@E_", "@C_"
+                                        _Logger4net.Error(trTxt, trException)
+                                    Case "@A_", "@F_"
+                                        _Logger4net.Fatal(trTxt, trException)
+                                    Case Else
+                                        _Logger4net.Debug(trTxt, trException)
+                                End Select
+                            End Using
                         End Using
                     End Using
                 End Using
-            End Using
+            End If
         End If
     End Sub
 

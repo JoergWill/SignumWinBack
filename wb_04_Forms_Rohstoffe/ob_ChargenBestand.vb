@@ -100,10 +100,12 @@ Public Class ob_ChargenBestand
         'Lieferungen-Objekt nimmt die aktuellen Daten auf
         Dim Lieferungen As New wb_Lieferungen
 
+        'Abfrage nächster Datensatz zu dieser Komp-Nr
+        sql = "KO_Nr > " & KompNr.ToString
+
         'nächsten Datensatz aus Tabelle Komponenten lesen
-        If winback.sqlSelect(setParams(sqlRohstoffLagerort, KompNr.ToString)) Then
-            'Lesen alle Lieferungen zu dieser Komponente
-            'TODO Was passiert wenn keine Lieferung vorhanden ist ??
+        If winback.sqlSelect(setParams(sqlRohstoffLagerort, sql)) Then
+            'Lesen Lagerort/Rohstoffdaten zu dieser Komponente
             If winback.Read Then
                 Lieferungen.MySQLdbRead(winback.MySqlRead)
 
@@ -131,7 +133,7 @@ Public Class ob_ChargenBestand
                     sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerInit, Lieferungen.Nummer)
                 Else
                     'alle Datensätze aus dbo.ArtikelLagerkarte
-                    sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerKarte, Lieferungen.OrgaBack_LfdNr.ToString, Lieferungen.Nummer)
+                    sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerKarte, Lieferungen.LfdNr.ToString, Lieferungen.Nummer)
                 End If
                 If orgaback.sqlSelect(sql) Then
                     'wenn neue (noch nicht verbuchte) Einträge vorhanden sind

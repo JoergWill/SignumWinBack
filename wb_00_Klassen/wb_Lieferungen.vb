@@ -1,8 +1,22 @@
-﻿Imports MySql.Data.MySqlClient
-Imports WinBack.wb_Global
+﻿Imports WinBack.wb_Global
 Imports WinBack.wb_Functions
 Imports WinBack
 
+''' <summary>
+''' Über die Parameter in der Tabelle Konfiguration wird die
+''' Erfassung der Chargennummern gesteuert.
+'''
+'''     KonfigChargenErfEin       -Chargenerfassung aktiv
+'''     KonfigGebindeGroessenTol  -Toleranzwert bis zur Erkennung Gebinde leer.
+'''                                (Bis unter diese Grenze darf ausdosiert werden)
+'''                            
+'''     KonfigChargenErfVariante  -Verfahren nach Ablauf Gebinde
+'''
+'''         1 - darf weiter verwiegen, auch wenn Gebinde theoretisch leer.
+'''         2 - darf nicht weiter verwiegen, wenn Verbrauch größer als Gebindegröße +KonfigGebindeGroessenTol.
+'''         
+''' 
+''' </summary>
 Public Class wb_Lieferungen
     Private KO_Nr As Integer
     Private KO_Type As KomponTypen
@@ -60,7 +74,7 @@ Public Class wb_Lieferungen
         End Get
     End Property
 
-    Public Property OrgaBack_LfdNr As Integer
+    Public Property LfdNr As Integer
         Get
             Return LG_LF_Nr
         End Get
@@ -104,9 +118,10 @@ Public Class wb_Lieferungen
         Trace.WriteLine("@I_" & LagerKarte.Vorfall & "-" & LagerKarte.Lfd & "-" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
 
         Select Case LagerKarte.Vorfall
-            Case "WE"
-                'Wareneingang in winback.Lieferungen verbuchen
-                Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
+            'WE wird direkt über den Vorfall verbucht (Version 1.7.3)
+            'Case "WE"
+            '    'Wareneingang in winback.Lieferungen verbuchen
+            '    Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
 
             Case "BR"
                 'Bruch/Schwund in winback.Lieferungen verbuchen
@@ -122,6 +137,27 @@ Public Class wb_Lieferungen
                     Verbuchen_Abgang(winback, LagerKarte, RohChargenErfassung)
                 End If
         End Select
+    End Sub
+
+    ''' <summary>
+    ''' Der aktuelle Datensatz aus Silo(wb_silo) wird als Zugang verbucht.
+    ''' Wenn ein Tarawert eingetragen ist, wird zuvor das Silo auf Null gesetzt
+    ''' </summary>
+    ''' <param name="winback"></param>
+    ''' <param name="Silo"></param>
+    Public Sub Verbuchen(winback As wb_Sql, Silo As wb_LagerSilo)
+        'Test-Ausgabe
+        Debug.Print("Silo/Menge/Tara " & Silo.KompBezeichnung & "/" & Silo.LagerOrt & "/" & Silo.BefMenge & "/" & Silo.TaraWert)
+
+        'Prüfen ob Nullsetzen erforderlich
+        If Silo.TaraWert <> 0 Then
+            Verbuchen_Tara(winback, Silo, RohChargenErfassung)
+        End If
+
+        'Zugang verbuchen, wenn eine Befüllmenge angegeben ist
+        If Silo.BefMenge >= 0 Then
+            Verbuchen_Zugang(winback, Silo, RohChargenErfassung)
+        End If
     End Sub
 
     Public Sub InitBestand(winback As wb_Sql, LagerKarte As wb_LagerKarte)
@@ -167,6 +203,61 @@ Public Class wb_Lieferungen
         InsertLieferung(winback, LagerKarte, LagerKarte.Menge)
         'Bilanzmenge neu berechnen
         Bilanzmenge = Bilanzmenge + LagerKarte.Menge
+    End Sub
+
+    ''' <summary>
+    ''' Fügt einen neuen Datensatz (Wareneingang) an die Tabelle Lieferungen an. 
+    ''' 
+    '''     LF_LG_Ort           wb_LagerSilo.LG_Ort
+    '''     LF_Nr               letzte Nummer aus winback.Lieferungen (Abfrage DB)
+    '''     LF_Datum            aktuelles Datum/Uhrzeit
+    '''     LF_Menge            wb_LagerSilo.BefüllMenge
+    '''     LF_Lieferant
+    '''     LF_gebucht          1 (neue Lieferung)
+    '''     LF_Bemerkung        WE
+    '''     LF_Lager            0 (Produktion)
+    '''     LF_BF_Charge        wb_LagerSilo.ChargenNummer
+    '''     LF_Liniengruppe     NULL
+    '''     LF_BF_Frist         NULL
+    '''     LF_Verbrauch        0
+    '''     LF_User_Nr          User-Nummer aus GlobalSettings
+    '''     LF_Preis            wb_LagerSilo.Preis
+    '''     LF_PreisEinheit     0
+    '''     LF_Timestamp
+    ''' 
+    ''' </summary>
+    ''' <param name="winback"></param>
+    ''' <param name="Silo"></param>
+    ''' <param name="Chargenerfassung"></param>
+    Private Sub Verbuchen_Zugang(winback As wb_Sql, Silo As wb_LagerSilo, Chargenerfassung As Boolean)
+        'letzten Eintrag aus winback.Lieferungen
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferLfd, Silo.LagerOrt))
+
+        'wenn Datensätze vorhanden sind
+        If winback.Read Then
+            'laufende Nummer plus Eins
+            LfdNr = winback.iField("LF_Nr") + 1
+        Else
+            'neuer Eintrag
+            LfdNr = 1
+        End If
+
+        'Verbindung wieder freigeben
+        winback.CloseRead()
+
+        'Silo-Menge Nullsetzen
+        If (Silo.TaraWert <> 0) And (Silo.BefMenge > 0) Then
+            'Datensatz "Nullsetzen" einfügen
+            InsertLieferung(winback, Silo, 0)
+            'lfd.Nummer plus Eins
+            LfdNr += 1
+        End If
+
+        'Lieferung Datensatz anfügen
+        InsertLieferung(winback, Silo, Silo.BefMenge)
+
+        'Bilanzmenge neu berechnen
+        Bilanzmenge = Bilanzmenge + Silo.BefMenge
     End Sub
 
     ''' <summary>
@@ -235,16 +326,59 @@ Public Class wb_Lieferungen
     End Sub
 
     ''' <summary>
+    ''' Siloinhalt auf Null setzen.
+    ''' In der Tabelle Lieferungen wird eine entsprechende Zeile eingefügt. Alle vorhegehenden Lieferungen werden auf Status 3(erledigt) gesetzt.
+    ''' </summary>
+    ''' <param name="winback"></param>
+    ''' <param name="Silo"></param>
+    ''' <param name="Chargenerfassung"></param>
+    Private Sub Verbuchen_Tara(winback As wb_Sql, Silo As wb_LagerSilo, Chargenerfassung As Boolean)
+        'Bilanzmenge auf Null setzen
+        Bilanzmenge = 0
+        'alle Lieferungen zu diesem Rohstoff als erledigt markieren
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSetStatusLieferung, Silo.LagerOrt))
+    End Sub
+
+    ''' <summary>
     ''' Fügt einen neuen Datensatz an die Tabelle winback.Lieferungen an. Die Daten werden aus dem LagerKarten-Objekt ermittelt.
     ''' </summary>
     ''' <param name="winback"></param>
     ''' <param name="LagerKarte"></param>
     Private Sub InsertLieferung(winback As wb_Sql, LagerKarte As wb_LagerKarte, Menge As Double)
+        'INSERT in Tabelle Lieferungen - Daten aus dem Lagerkarten-Objekt
+        Dim Datum As Date = Date.Parse(LagerKarte.Datum & " " & LagerKarte.Uhrzeit)
+        'TODO prüfen ob die Konvertierung (Zeile oben) funktioniert !!!
+        'Background-Task
+        InsertLieferung(winback, LagerKarte.Lfd, Datum, LagerKarte.Gebucht, LagerKarte.Vorfall & "-" & LagerKarte.Modul, LagerKarte.ChargenNummer, LagerKarte.Preis, Menge)
+    End Sub
+
+    ''' <summary>
+    ''' Fügt einen neuen Datensatz an die Tabelle winback.Lieferungen an. Die Daten werden aus dem Silo-Objekt ermittelt.
+    ''' </summary>
+    ''' <param name="winback"></param>
+    ''' <param name="Silo"></param>
+    Private Sub InsertLieferung(winback As wb_Sql, Silo As wb_LagerSilo, Menge As Double)
+        'Lieferung oder Null setzen 
+        If Menge > 0 Then
+            'INSERT in Tabelle Lieferungen - Daten aus dem Silo-Objekt
+            InsertLieferung(winback, LfdNr, Now, "1", "WE", Silo.ChargenNummer, Silo.Preis, Menge)
+        Else
+            'INSERT in Tabelle Lieferungen - Null setzen
+            InsertLieferung(winback, LfdNr, Now, "3", "Null setzen", "", "", 0.0)
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Fügt einen neuen Datensatz an die Tabelle winback.Lieferungen an.
+    ''' Die fortlaufende Nummer(Lfd) muss bekannt sein.
+    ''' </summary>
+    ''' <param name="winback"></param>
+    Private Sub InsertLieferung(winback As wb_Sql, Lfd As String, Datum As Date, Gebucht As String, Bemerkung As String, ChargenNummer As String, Preis As String, Menge As Double)
         'der INSERT-Befehl wird dynamisch erzeugt
-        Dim sql_insert As String = "'" & LG_Ort & "', " & LagerKarte.Lfd & ", '" & LagerKarte.Datum & " " & LagerKarte.Uhrzeit & "', " &
-                                   "'" & wb_Functions.FormatStr(Menge, 2) & "', " & vbNull & ", " & LagerKarte.Gebucht & ", '" & LagerKarte.Vorfall &
-                                   "-" & LagerKarte.Modul & "', " & "0" & ", '" & LagerKarte.ChargenNummer & "', " & vbNull &
-                                   ", " & vbNull & ", " & "0" & ", " & "0" & ", '" & LagerKarte.Preis & "', " & "0"
+        Dim sql_insert As String = "'" & LG_Ort & "', " & Lfd & ", '" & wb_sql_Functions.MySQLdatetime(Datum) & "', " &
+                                   "'" & wb_Functions.FormatStr(Menge, 2) & "', " & vbNull & ", " & Gebucht & ", '" & Bemerkung & "', " &
+                                   "0" & ", '" & ChargenNummer & "', '', " &
+                                   vbNull & ", " & "0" & ", " & wb_GlobalSettings.AktUserNr & ", '" & Preis & "', " & "0"
 
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertWE, sql_insert)
         'INSERT ausführen
@@ -275,6 +409,10 @@ Public Class wb_Lieferungen
         winback.sqlCommand(sql)
     End Sub
 
+    Public Sub UpdateLagerorte(winback As wb_Sql)
+        UpdateLagerorteLfd(winback, wb_Global.UNDEFINED)
+    End Sub
+
     ''' <summary>
     ''' Liest alle Datenfelder aus dem aktuellen Datensatz in das Lieferungen-Objekt
     ''' Die Daten werden anhand der Feldbezeichnung in die einzelnen Properties eingetragen.
@@ -285,7 +423,7 @@ Public Class wb_Lieferungen
     ''' </summary>
     ''' <param name="sqlReader"></param>
     ''' <returns>True wenn kein Fehler aufgetreten ist</returns>
-    Public Function MySQLdbRead(ByRef sqlReader As MySqlDataReader) As Boolean
+    Public Function MySQLdbRead(ByRef sqlReader As MySql.Data.MySqlClient.MySqlDataReader) As Boolean
         'Schleife über alle Datensätze
         Do
             'Parameter - Anzahl der Felder im DataSet

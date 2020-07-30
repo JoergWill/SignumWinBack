@@ -1,6 +1,6 @@
 ﻿Imports System.IO
 
-Public Class wb_Rohstoff_Dokumente
+Public Class wb_Rohstoffe_Dokumente
     Private nwt As wb_nwtCl_WinBack
     Private id As String
 
