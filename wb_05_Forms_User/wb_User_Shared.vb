@@ -11,7 +11,12 @@
         LoadGrpTexte()
     End Sub
 
-    Public Shared Sub LoadGrpTexte()
+    Public Shared Function Reload()
+        LoadGrpTexte()
+        Return True
+    End Function
+
+    Private Shared Sub LoadGrpTexte()
         'HashTable mit der Übersetzung der Gruppen-Nummer in die Gruppen-Bezeichnung laden
         'wenn die Gruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
         'entsprechende Übersetzung aus winback.Texte geladen

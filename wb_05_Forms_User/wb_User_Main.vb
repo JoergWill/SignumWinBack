@@ -13,6 +13,7 @@ Public Class wb_User_Main
     Private UserDetails As wb_User_Details
     Private UserRechte As wb_User_Rechte
     Private UserGruppenRechte As wb_User_GruppenRechte
+    Private UserRezGruppenRechte As wb_User_GruppenRechte
     Private UserPasswort As wb_User_Passwort
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -95,6 +96,7 @@ Public Class wb_User_Main
                 oGrp.AddButton("BtnUserPasswd", "Passwort ändern", "Neues Mitarbeiter-Passwort vergeben", My.Resources.UserPasswd_32x32, My.Resources.UserPasswd_32x32, AddressOf BtnUserPasswd)
                 oGrp.AddButton("BtnUserPrintList", "Drucken Mitarbeiter-Liste", "Liste aller Mitarbeiter drucken", My.Resources.UserListe_32x32, My.Resources.UserListe_32x32, AddressOf btnUserPrint)
                 oGrp.AddButton("BtnUserGroup", "Mitarbeiter-Gruppen", "Gruppen und Gruppen-Rechte verwalten", My.Resources.UserGruppen_32x32, My.Resources.UserGruppen_32x32, AddressOf BtnUserGroup)
+                oGrp.AddButton("BtnUserRezGroup", "Mitarbeiter-Rezeptgruppen", "Rezeptgruppen und Benutzergruppen zuordnen", My.Resources.RezeptGruppen_32x32, My.Resources.RezeptGruppen_32x32, AddressOf BtnUserRezGroup)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -155,6 +157,13 @@ Public Class wb_User_Main
             UserGruppenRechte = New wb_User_GruppenRechte
         End If
         UserGruppenRechte.Show(DockPanel)
+    End Sub
+
+    Private Sub BtnUserRezGroup()
+        If IsNothingOrDisposed(UserRezGruppenRechte) Then
+            UserRezGruppenRechte = New wb_User_GruppenRechte(True)
+        End If
+        UserRezGruppenRechte.Show(DockPanel)
     End Sub
 
     Private Sub BtnUserPasswd()

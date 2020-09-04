@@ -32,6 +32,10 @@ Partial Class wb_User_Details
         Me.tUserName = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.tUserRFID = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.cbxReaderList = New WinBack.wb_ComboBox()
         Me.cbUserGrp = New WinBack.wb_ComboBox()
         Me.SuspendLayout()
         '
@@ -57,7 +61,7 @@ Partial Class wb_User_Details
         '
         'tPersonalNr
         '
-        Me.tPersonalNr.Location = New System.Drawing.Point(290, 67)
+        Me.tPersonalNr.Location = New System.Drawing.Point(290, 21)
         Me.tPersonalNr.Name = "tPersonalNr"
         Me.tPersonalNr.ReadOnly = True
         Me.tPersonalNr.Size = New System.Drawing.Size(180, 20)
@@ -65,10 +69,10 @@ Partial Class wb_User_Details
         '
         'tUserPass
         '
-        Me.tUserPass.Location = New System.Drawing.Point(290, 21)
+        Me.tUserPass.Location = New System.Drawing.Point(290, 66)
         Me.tUserPass.Name = "tUserPass"
         Me.tUserPass.ReadOnly = True
-        Me.tUserPass.Size = New System.Drawing.Size(97, 20)
+        Me.tUserPass.Size = New System.Drawing.Size(103, 20)
         Me.tUserPass.TabIndex = 3
         '
         'tUserName
@@ -82,7 +86,7 @@ Partial Class wb_User_Details
         '
         Me.Label3.AutoSize = True
         Me.Label3.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label3.Location = New System.Drawing.Point(287, 5)
+        Me.Label3.Location = New System.Drawing.Point(287, 50)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(50, 13)
         Me.Label3.TabIndex = 6
@@ -92,11 +96,48 @@ Partial Class wb_User_Details
         '
         Me.Label4.AutoSize = True
         Me.Label4.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label4.Location = New System.Drawing.Point(287, 51)
+        Me.Label4.Location = New System.Drawing.Point(287, 5)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(90, 13)
         Me.Label4.TabIndex = 7
         Me.Label4.Text = "Personal-Nummer"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label1.Location = New System.Drawing.Point(287, 100)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(42, 13)
+        Me.Label1.TabIndex = 9
+        Me.Label1.Text = "Chip-ID"
+        '
+        'tUserRFID
+        '
+        Me.tUserRFID.Location = New System.Drawing.Point(290, 117)
+        Me.tUserRFID.Name = "tUserRFID"
+        Me.tUserRFID.ReadOnly = True
+        Me.tUserRFID.Size = New System.Drawing.Size(103, 20)
+        Me.tUserRFID.TabIndex = 8
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label5.Location = New System.Drawing.Point(9, 101)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(63, 13)
+        Me.Label5.TabIndex = 10
+        Me.Label5.Text = "Kartenleser:"
+        '
+        'cbxReaderList
+        '
+        Me.cbxReaderList.FormattingEnabled = True
+        Me.cbxReaderList.Location = New System.Drawing.Point(12, 117)
+        Me.cbxReaderList.Name = "cbxReaderList"
+        Me.cbxReaderList.Size = New System.Drawing.Size(272, 21)
+        Me.cbxReaderList.TabIndex = 11
+        Me.cbxReaderList.TabStop = False
         '
         'cbUserGrp
         '
@@ -111,7 +152,11 @@ Partial Class wb_User_Details
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(533, 117)
+        Me.ClientSize = New System.Drawing.Size(520, 164)
+        Me.Controls.Add(Me.cbxReaderList)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.tUserRFID)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.tPersonalNr)
@@ -136,4 +181,8 @@ Partial Class wb_User_Details
     Friend WithEvents tPersonalNr As Windows.Forms.TextBox
     Friend WithEvents Label3 As Windows.Forms.Label
     Friend WithEvents Label4 As Windows.Forms.Label
+    Friend WithEvents Label1 As Windows.Forms.Label
+    Friend WithEvents tUserRFID As Windows.Forms.TextBox
+    Friend WithEvents cbxReaderList As wb_ComboBox
+    Friend WithEvents Label5 As Windows.Forms.Label
 End Class

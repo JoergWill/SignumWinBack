@@ -357,6 +357,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.RezeptGruppen_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.RezeptHinweise_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -2246,7 +2251,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="winback"></param>
  <param name="Silo"></param>
 </member>
-<member name="M:WinBack.wb_Lieferungen.InsertLieferung(WinBack.wb_Sql,System.String,System.DateTime,System.String,System.String,System.String,System.String,System.Double)">
+<member name="M:WinBack.wb_Lieferungen.InsertLieferung(WinBack.wb_Sql,System.String,System.DateTime,System.String,System.String,System.String,System.String,System.String,System.Double)">
  <summary>
  Fügt einen neuen Datensatz an die Tabelle winback.Lieferungen an.
  Die fortlaufende Nummer(Lfd) muss bekannt sein.
@@ -7634,6 +7639,12 @@ Public Const MFF_Wissenswertes = 213
  Liste neu laden nach Löschen/Ändern Rezeptur
  </summary>
 </member>
+<member name="M:WinBack.wb_Rezept_Shared.LoadRezeptGruppenTexte">
+ <summary>
+ Erzeugt eine SortedList mit der Zuordnung von Rezeptgruppen-Nummer zum Rezeptgruppen-Text.
+ Wird für die Auswahlfelder Rezeptgruppe verwendet.
+ </summary>
+</member>
 <member name="P:WinBack.wb_Rezept_Main.FormText">
  <summary>
  Fenster-Name (Caption). Wird von Init() aufgerufen
@@ -7853,6 +7864,23 @@ entsprechende Übersetzung aus winback.Texte geladen
  True, wenn das Fenster geöffnet bleiben muss
  </returns>
  <remarks></remarks>
+</member>
+<member name="M:WinBack.wb_User_Details.CardInit(PCSC.Monitoring.SCardMonitor,PCSC.Monitoring.CardStatusEventArgs)">
+ <summary>
+ Event Card-Inserted. Tritt auf, wenn die Karte auf das Lese-Gerät gelegt wird.
+ Ruft die Lese-Routine der SC_Karte auf und liest die Serien-Nummer ein
+ 
+ Der RFID-Code wird threadsicher in die Textbox geschrieben
+ https://riptutorial.com/de/vb-net/example/6235/thread-sichere-aufrufe-mit-control-invoke----durchfuhren
+ </summary>
+ <param name="eventName"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_User_Details.tUserRFIDText(System.String)">
+ <summary>
+ Text threadsicher in Textbox eintragen
+ </summary>
+ <param name="Text"></param>
 </member>
 <member name="M:WinBack.wb_User_Liste.SelectData(System.Int32,System.String)">
  <summary>
@@ -9634,6 +9662,11 @@ eingelesen
  True, wenn das Fenster geöffnet bleiben muss
  </returns>
  <remarks></remarks>
+</member>
+<member name="M:WinBack.wb_StammDaten_Main.BtnWinBackKonfig">
+ <summary>
+ Edit Tabelle winback.Konfiguration
+ </summary>
 </member>
 <member name="M:WinBack.wb_StammDaten_Main.BtnLinienGruppen">
  <summary>

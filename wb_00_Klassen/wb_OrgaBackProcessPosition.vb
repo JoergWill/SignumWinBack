@@ -2,6 +2,7 @@
     Private _PositionNummer As Integer
     Private _ArtikelNummer As String
     Private _Mitarbeiter As String
+    Private _VorfallNr As String
     Private _LieferDatum As String
     Private _GelieferteMenge As Double
     Private _SerienNummern As String
@@ -70,6 +71,15 @@
         End Set
     End Property
 
+    Public Property VorfallNr As String
+        Get
+            Return _VorfallNr
+        End Get
+        Set(value As String)
+            _VorfallNr = value
+        End Set
+    End Property
+
     Public Function MsSQLdbRead_Fields(Name As String, Value As Object) As Boolean
         'DB-Null aus der Datenbank
         If IsDBNull(Value) Then
@@ -93,6 +103,8 @@
                 'Mitarbeiter/User
                 Case "MitarbeiterKürzel"
                     _Mitarbeiter = Value
+                Case "VorfallNr"
+                    _VorfallNr = Value
                 'Lieferdatum
                 Case "LieferDatum"
                     _LieferDatum = Value

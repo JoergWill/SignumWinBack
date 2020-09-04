@@ -80,6 +80,12 @@
         InitLinien()
     End Sub
 
+    Public Shared Function Reload()
+        InitLinienGruppen()
+        InitLinien()
+        Return True
+    End Function
+
     ''' <summary>
     ''' Kopiert alle Backorte aus OrgaBack in die Tabelle winback.Liniengruppen. 
     ''' Der Backort steht in OrgaBack in Artikel-Multifunktionsfeld (Auswahlfeld) zum Artikel

@@ -75,6 +75,8 @@ Public Class wb_OrgaBackProcess_WE
                 winback.CloseRead()
                 'aktuell bearbeitete Nummer
                 s.KompNr = Lieferungen.Nr
+                'Lagerort
+                s.LagerOrt = Lieferungen.LagerOrt
                 'Lieferung verbuchen (berechnet die Bilanzmenge neu)
                 Lieferungen.Verbuchen(winback, s)
                 'Bilanzmenge in winback-DB aktualisieren (lfd-Nummer wird nicht verwendet)

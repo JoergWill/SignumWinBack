@@ -159,6 +159,8 @@ Public Class wb_StammDaten_LinienGruppen
         DataGridView.UpdateDataBase()
         'Layout sichern
         DataGridView.SaveToDisk("Liniengruppen")
+        'Daten aktualisieren
+        wb_Linien_Global.Reload()
     End Sub
 
     Private Sub BtnLinienGruppeNeu_Click(sender As Object, e As EventArgs) Handles BtnLinienGruppeNeu.Click

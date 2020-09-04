@@ -5,6 +5,7 @@
     Private _KompBezeichnung As String
 
     Private _SiloNr As Integer
+    Private _VorfallNr As String
     Private _LagerOrt As String
     Private _Preis As Double
 
@@ -27,6 +28,7 @@
     Public Sub CopyFrom(p As wb_OrgaBackProcessPosition)
         _KompNr = wb_Global.UNDEFINED
         _KompNummer = p.ArtikelNummer
+        _VorfallNr = p.VorfallNr
         _BefMenge = p.GelieferteMenge
         _ChargenNummer = p.SerienNummer
         _Preis = p.Preis
@@ -110,6 +112,15 @@
         End Get
         Set(value As Double)
             _Preis = value
+        End Set
+    End Property
+
+    Public Property VorfallNr As String
+        Get
+            Return _VorfallNr
+        End Get
+        Set(value As String)
+            _VorfallNr = value
         End Set
     End Property
 End Class

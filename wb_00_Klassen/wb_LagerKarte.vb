@@ -6,6 +6,7 @@ Public Class wb_LagerKarte
 
     Private _Lfd As Integer
     Private _Vorfall As String = ""
+    Private _VorfallNr As String = ""
     Private _Modul As String
     Private _Datum As String
     Private _Uhrzeit As String
@@ -104,6 +105,15 @@ Public Class wb_LagerKarte
         End Get
     End Property
 
+    Public Property VorfallNr As String
+        Get
+            Return _VorfallNr
+        End Get
+        Set(value As String)
+            _VorfallNr = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Berechnet den aktuellen Lager-Bestand aus Menge und BestandVorher. Der Wert wird im
     ''' Datenfeld Menge abgespeichert.
@@ -149,6 +159,8 @@ Public Class wb_LagerKarte
                     _Lfd = CInt(Value)
                 Case "VorfallKürzel"
                     _Vorfall = Value
+                Case "VorfallNr"
+                    _VorfallNr = Value
                 Case "Modul"
                     _Modul = Value
                 Case "Datum"

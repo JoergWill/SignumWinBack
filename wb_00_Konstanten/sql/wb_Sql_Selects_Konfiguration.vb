@@ -11,6 +11,12 @@
     Public Const sqlChangeLinienGruppe = "UPDATE Rezepte SET RZ_Liniengruppe = [0] WHERE RZ_Liniengruppe = [1]"
     Public Const sqlChangeBackort = "UPDATE RohParams SET RP_Wert = [0] WHERE RP_Typ_Nr = 300 AND RP_ParamNr = [2] AND RP_Wert = [1]"
 
+    'Sql-Statement RezeptVarianten
+    Public Const sqlRezVarianten = "SELECT * FROM RezeptVarianten ORDER BY RV_Nr"
+
+    'Sql-Statement Rezeptgruppen
+    Public Const sqlRezeptgruppen = "SELECT * FROM ItemIDs WHERE II_ItemTyp =230 ORDER BY II_ItemID"
+
     'Sql-Statement Linien
     Public Const sqlLinien = "SELECT * FROM Linien ORDER BY L_Nr"
     'Sql-Statement Update(Replace)Linien

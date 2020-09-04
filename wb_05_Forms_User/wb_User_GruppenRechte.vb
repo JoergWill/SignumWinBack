@@ -14,6 +14,26 @@ Public Class wb_User_GruppenRechte
     Dim UserGruppenGrid As wb_ArrayGridViewUserGruppen
     Dim UserGruppe As wb_User_Gruppe
 
+    Private _RezeptGruppenRechte As Boolean
+
+    Public Sub New(Optional RezeptGruppenRechte As Boolean = False)
+
+        ' Dieser Aufruf ist für den Designer erforderlich.
+        InitializeComponent()
+
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+
+        'Anzeige der Rezeptgruppen zu User-Gruppen anstatt der Programm-Rechte
+        If RezeptGruppenRechte Then
+            Me.Text = "Rechte-Matrix der Rezept-Gruppen"
+            _RezeptGruppenRechte = True
+        Else
+            Me.Text = "Rechte-Matrix der Benutzer-Gruppen"
+            _RezeptGruppenRechte = False
+        End If
+
+    End Sub
+
     ''' <summary>
     ''' Grid der Gruppen-Rechte laden und anzeigen.
     ''' Die Verarbeitung von Anzeige und Edit erfolgt in der Klasse wb_ArrayGridViewUserGruppen
@@ -59,7 +79,7 @@ Public Class wb_User_GruppenRechte
                 UserGruppe.GruppenBezeichnung = winback.sField("T_Text")
                 sColnames.Add(UserGruppe.GruppenBezeichnung)
                 'Gruppen-Nummer - Alle Rechte für diese Gruppe laden
-                UserGruppe.LoadData(winback.iField("IAL_ItemID"))
+                UserGruppe.LoadData(winback.iField("IAL_ItemID"), _RezeptGruppenRechte)
                 'Rechte-Objekt speichern
                 UserGruppenListe.Add(UserGruppe)
                 LoadUserGruppenTexte = True
@@ -85,7 +105,7 @@ Public Class wb_User_GruppenRechte
                 UserGruppe.GruppenBezeichnung = winback.sField("IAL_Kommentar")
                 sColnames.Add(UserGruppe.GruppenBezeichnung)
                 'Gruppen-Nummer - Alle Rechte für diese Gruppe laden
-                UserGruppe.LoadData(winback.iField("IAL_ItemID"))
+                UserGruppe.LoadData(winback.iField("IAL_ItemID"), _RezeptGruppenRechte)
                 'Rechte-Objekt speichern
                 UserGruppenListe.Add(UserGruppe)
                 LoadUserGruppenKommentar = True
@@ -117,30 +137,36 @@ Public Class wb_User_GruppenRechte
     End Sub
 
     Private Sub SaveData()
+        If UserGruppenGrid IsNot Nothing Then
+            'wenn Daten geändert worden sind, muss gespeichert werden
+            If UserGruppenGrid.Changed Then
+                If _RezeptGruppenRechte Then
+                    If Not SaveUserRezGruppenRechte() Then
+                        MsgBox("Fehler beim Löschen/Speichern der Rezept-Gruppen.", MsgBoxStyle.Exclamation, "WinBack-AddIn")
+                    End If
+                Else
+                    If Not SaveUserGruppenRechte() Then
+                        MsgBox("Fehler beim Löschen/Speichern der Benutzer-Gruppen.", MsgBoxStyle.Exclamation, "WinBack-AddIn")
+                    Else
+                        'Anzeige aktualisieren
+                        'wb_User_Shared.Gruppe.iGruppe =
+                        wb_User_Shared.Liste_Click(Nothing)
+                    End If
+                End If
+            End If
 
-        'wenn Daten geändert worden sind, muss gespeichert werden
-        If UserGruppenGrid.Changed Then
-            If Not SaveUserGruppenRechte() Then
-                MsgBox("Fehler beim Löschen/Speichern der Benutzer-Gruppen.", MsgBoxStyle.Exclamation, "WinBack-AddIn")
-            Else
-                'Anzeige aktualisieren
-                'wb_User_Shared.Gruppe.iGruppe =
-                wb_User_Shared.Liste_Click(Nothing)
+            'Wenn GruppenTexte geändert worden sind
+            If UserGruppenGrid.HeaderChanged Then
+                If Not SaveUserGruppenTexte() Then
+                    MsgBox("Fehler beim Speichern der Gruppen-Bezeichnungen.", MsgBoxStyle.Exclamation, "WinBack-AddIn")
+                Else
+                    'Daten neu laden (Gruppentexte)
+                    wb_User_Shared.Reload()
+                    'Anzeige aktualisieren
+                    wb_User_Shared.Reload(Nothing)
+                End If
             End If
         End If
-
-        'Wenn GruppenTexte geändert worden sind
-        If UserGruppenGrid.HeaderChanged Then
-            If Not SaveUserGruppenTexte() Then
-                MsgBox("Fehler beim Speichern der Gruppen-Bezeichnungen.", MsgBoxStyle.Exclamation, "WinBack-AddIn")
-            Else
-                'Daten neu laden (Gruppentexte)
-                wb_User_Shared.LoadGrpTexte()
-                'Anzeige aktualisieren
-                wb_User_Shared.Reload(Nothing)
-            End If
-        End If
-
     End Sub
 
     Private Function SaveUserGruppenRechte() As Boolean
@@ -163,6 +189,34 @@ Public Class wb_User_GruppenRechte
 
             'Daten löschen
             If winback.sqlCommand(wb_Sql_Selects.sqlUserGrpRemoveAll) Then
+
+                'alle Datensätze aus dem Grid nacheinander in die Datenbank wieder einfügen
+                For i = 0 To .RowCount - 1
+                    For j = COLGrp To .ColumnCount - 1
+                        sqlValues = .Rows(i).Cells(COLTyp).Value & "," & .Rows(i).Cells(COLIDx).Value & "," & .Rows(i).Cells(COLInp).Value & "," &
+                                     GrpIdx(j).ToString & "," & GrpNr(j).ToString & "," & .Rows(i).Cells(j).Value
+                        winback.sqlCommand(wb_Functions.SetParams(wb_Sql_Selects.sqlUserGrpInsert, sqlValues))
+                    Next
+                Next
+            Else
+                winback.Close()
+                Return False
+            End If
+
+        End With
+        winback.Close()
+        Return True
+    End Function
+
+    Private Function SaveUserRezGruppenRechte() As Boolean
+        'Datenbank-Verbindung
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim sqlValues As String = ""
+
+        With UserGruppenGrid
+
+            'Daten löschen
+            If winback.sqlCommand(wb_Sql_Selects.sqlUserRezGrpRemoveAll) Then
 
                 'alle Datensätze aus dem Grid nacheinander in die Datenbank wieder einfügen
                 For i = 0 To .RowCount - 1

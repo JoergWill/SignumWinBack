@@ -266,9 +266,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\MySql V1.0.10.1\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCSC, Version=5.0.0.0, Culture=neutral, PublicKeyToken=13b76e54a2ee80a7, processorArchitecture=MSIL">
+      <HintPath>packages\PCSC.5.0.0\lib\net472\PCSC.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCSC.Iso7816, Version=5.0.0.0, Culture=neutral, PublicKeyToken=13b76e54a2ee80a7, processorArchitecture=MSIL">
+      <HintPath>packages\PCSC.Iso7816.5.0.0\lib\net472\PCSC.Iso7816.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ProgressCircle">
       <HintPath>dll\ProgressCircle\ProgressCircle.dll</HintPath>
@@ -1003,6 +1011,18 @@
     <Compile Include="wb_09_StammDaten\wb_StammDaten_Allergene.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_RezeptVarianten.Designer.vb">
+      <DependentUpon>wb_StammDaten_RezeptVarianten.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_RezeptVarianten.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_Rezeptgruppen.Designer.vb">
+      <DependentUpon>wb_StammDaten_Rezeptgruppen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_Rezeptgruppen.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_09_StammDaten\wb_StammDaten_Konfiguration.Designer.vb">
       <DependentUpon>wb_StammDaten_Konfiguration.vb</DependentUpon>
     </Compile>
@@ -1261,6 +1281,12 @@
     <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_Allergene.resx">
       <DependentUpon>wb_StammDaten_Allergene.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_RezeptVarianten.resx">
+      <DependentUpon>wb_StammDaten_RezeptVarianten.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_Rezeptgruppen.resx">
+      <DependentUpon>wb_StammDaten_Rezeptgruppen.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_Konfiguration.resx">
       <DependentUpon>wb_StammDaten_Konfiguration.vb</DependentUpon>
     </EmbeddedResource>
@@ -1503,6 +1529,7 @@
     <None Include="Resources\UserBerechtigungen_32x32.png" />
     <None Include="Resources\LinienAuto_32x32.png" />
     <None Include="Resources\RohstoffSilo_32x32.png" />
+    <None Include="Resources\RezeptGruppen_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

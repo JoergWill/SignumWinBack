@@ -111,7 +111,7 @@ Public Class WinBack
         If oForm.Visible Then
             'Layout-Name abfragen aus Form
             DkPnlConfigFileName = DirectCast(AktForm, IMainMenu).DkPnlConfigFileName
-            'Auswahl-Box mit Layoutnamen laden (Der letzte Layout-Name wir aus der Ini-Datei geladen)
+            'Auswahl-Box mit Layoutnamen laden (Der letzte Layout-Name wird aus der Ini-Datei geladen)
             GetLayoutFileNames(LayoutFilename)
             'nach vorne holen und anzeigen
             'Mdi-Fenster
@@ -121,7 +121,7 @@ Public Class WinBack
         Else
             'Layout muss neu geladen werden
             _LayoutFilename = Nothing
-            'Auswahl-Box mit Layoutnamen laden (Der letzte Layout-Name wir aus der Ini-Datei geladen)
+            'Auswahl-Box mit Layoutnamen laden (Der letzte Layout-Name wird aus der Ini-Datei geladen)
             GetLayoutFileNames(LayoutFilename)
             'Layout-Filename laden
             AktFormSendCommand("SETDKPNLFILENAME", DkPnlConfigFileName)

@@ -349,7 +349,7 @@ Public Class wb_Lieferungen
         Dim Datum As Date = Date.Parse(LagerKarte.Datum & " " & LagerKarte.Uhrzeit)
         'TODO prüfen ob die Konvertierung (Zeile oben) funktioniert !!!
         'Background-Task
-        InsertLieferung(winback, LagerKarte.Lfd, Datum, LagerKarte.Gebucht, LagerKarte.Vorfall & "-" & LagerKarte.Modul, LagerKarte.ChargenNummer, LagerKarte.Preis, Menge)
+        InsertLieferung(winback, LagerKarte.Lfd, Datum, LagerKarte.Gebucht, LagerKarte.Vorfall & "-" & LagerKarte.Modul, LagerKarte.VorfallNr, LagerKarte.ChargenNummer, LagerKarte.Preis, Menge)
     End Sub
 
     ''' <summary>
@@ -360,11 +360,11 @@ Public Class wb_Lieferungen
     Private Sub InsertLieferung(winback As wb_Sql, Silo As wb_LagerSilo, Menge As Double)
         'Lieferung oder Null setzen 
         If Menge > 0 Then
-            'INSERT in Tabelle Lieferungen - Daten aus dem Silo-Objekt
-            InsertLieferung(winback, LfdNr, Now, "1", "WE", Silo.ChargenNummer, Silo.Preis, Menge)
+            'INSERT in Tabelle Lieferungen - Daten aus dem Silo-Objekt (Lieferant ist gleich der Vorfall-Nummer aus OrgaBack)
+            InsertLieferung(winback, LfdNr, Now, "1", "WE", Silo.VorfallNr, Silo.ChargenNummer, Silo.Preis, Menge)
         Else
             'INSERT in Tabelle Lieferungen - Null setzen
-            InsertLieferung(winback, LfdNr, Now, "3", "Null setzen", "", "", 0.0)
+            InsertLieferung(winback, LfdNr, Now, "3", "Null setzen", "", "", "", 0.0)
         End If
     End Sub
 
@@ -373,12 +373,11 @@ Public Class wb_Lieferungen
     ''' Die fortlaufende Nummer(Lfd) muss bekannt sein.
     ''' </summary>
     ''' <param name="winback"></param>
-    Private Sub InsertLieferung(winback As wb_Sql, Lfd As String, Datum As Date, Gebucht As String, Bemerkung As String, ChargenNummer As String, Preis As String, Menge As Double)
+    Private Sub InsertLieferung(winback As wb_Sql, Lfd As String, Datum As Date, Gebucht As String, Bemerkung As String, Lieferant As String, ChargenNummer As String, Preis As String, Menge As Double)
         'der INSERT-Befehl wird dynamisch erzeugt
         Dim sql_insert As String = "'" & LG_Ort & "', " & Lfd & ", '" & wb_sql_Functions.MySQLdatetime(Datum) & "', " &
-                                   "'" & wb_Functions.FormatStr(Menge, 2) & "', " & vbNull & ", " & Gebucht & ", '" & Bemerkung & "', " &
-                                   "0" & ", '" & ChargenNummer & "', '', " &
-                                   vbNull & ", " & "0" & ", " & wb_GlobalSettings.AktUserNr & ", '" & Preis & "', " & "0"
+                                   "'" & wb_Functions.FormatStr(Menge, 2) & "', '" & Lieferant & "', '" & Gebucht & "', '" & Bemerkung & "', " &
+                                   "0" & ", '" & ChargenNummer & "', NULL, NULL, " & "0" & ", " & wb_GlobalSettings.AktUserNr & ", '" & Preis & "', " & "0"
 
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertWE, sql_insert)
         'INSERT ausführen

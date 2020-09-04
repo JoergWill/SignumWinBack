@@ -48,6 +48,7 @@ Public Class wb_Rezept
     Private _RezeptGesamtWasserMenge As Double = wb_Global.UNDEFINED
     Private _RezeptNr As Integer
     Private _RezeptVariante As Integer
+    Private _Rezeptgruppe As Integer
     Private _ktTyp301 As New wb_KomponParam301
     Private _Zutaten As New wb_ZutatenListe
 
@@ -255,6 +256,16 @@ Public Class wb_Rezept
         Get
             Return _RezeptVariante
         End Get
+    End Property
+
+    Public Property RezeptGruppe As Integer
+        Get
+            Return _Rezeptgruppe
+        End Get
+        Set(value As Integer)
+            _Rezeptgruppe = value
+            _DataHasChanged = True
+        End Set
     End Property
 
     ''' <summary>
@@ -477,6 +488,7 @@ Public Class wb_Rezept
         'Rezeptnr und Variante merken
         _RezeptNr = RzNr
         _RezeptVariante = 1
+        _Rezeptgruppe = 0
         'Rezeptkopf mit Variante x aus der Datenbank einlesen
         MySQLdbSelect_RzKopf(_RezeptNr, _RezeptVariante)
     End Sub
@@ -529,6 +541,7 @@ Public Class wb_Rezept
         RezeptBezeichnung = dataGridView.Field("RZ_Bezeichnung")
         RezeptKommentar = dataGridView.Field("RZ_Kommentar")
         LinienGruppe = dataGridView.iField("RZ_Liniengruppe")
+        RezeptGruppe = dataGridView.iField("RZ_Gruppe")
 
         AenderungNummer = dataGridView.iField("RZ_Aenderung_Nr")
         AenderungDatum = dataGridView.Field("RZ_Aenderung_Datum")
@@ -552,6 +565,7 @@ Public Class wb_Rezept
             dataGridView.Field("RZ_Bezeichnung") = RezeptBezeichnung
             dataGridView.Field("RZ_Kommentar") = RezeptKommentar
             dataGridView.Field("RZ_Liniengruppe") = LinienGruppe
+            dataGridView.Field("RZ_Gruppe") = RezeptGruppe
             dataGridView.Field("RZ_Type") = _RZ_Type
 
             dataGridView.Field("RZ_Charge_Max") = TeigChargen.MaxCharge.MengeInkg
@@ -1089,6 +1103,9 @@ Public Class wb_Rezept
                 'Rezeptkopf - Liniengruppe
                 Case "RZ_Liniengruppe", "H_RZ_Liniengruppe"
                     _LinienGruppe = wb_Functions.ValueToInt(Value)
+                'Rezeptkopf - Rezeptgruppe
+                Case "RZ_Gruppe", "H_RZ_Gruppe"
+                    _Rezeptgruppe = wb_Functions.ValueToInt(Value)
 
                     'Rezeptkopf - MinCharge in kg
                 Case "RZ_Charge_Min"

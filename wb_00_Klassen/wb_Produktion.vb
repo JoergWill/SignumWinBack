@@ -422,7 +422,8 @@ Public Class wb_Produktion
     Private Function AddRezeptSchritte(ByRef Rzpt As wb_Produktionsschritt, ByRef Menge As Double, Parent As Object) As Integer
         'Rezeptur einlesen
         'TODO Muss hier ein Backverlust übertragen werden oder nicht ? PRÜFEN !!!
-        Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent, 0.0)
+        '(NoMessage=True unterdrückt die Meldung "Rezept verweist auf sich selbst")
+        Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent, 0.0, 1, "", "", True)
 
         'Bei Sauerteig-Rezepturen Anstellgut berechnen (wenn der Haken "Anstellgut" gesetzt ist)
         Dim Anstellgut As Double = 0.0

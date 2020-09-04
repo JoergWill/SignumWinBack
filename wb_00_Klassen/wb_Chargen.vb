@@ -656,6 +656,10 @@ Public Class wb_Chargen
                'User-Nummer
                 Case "B_ARS_User_Nr"
                     _SQLChargenSchritt.UserNummer = wb_Functions.StrToInt(Value)
+
+                'Rohstoff-Chargen-Nummer
+                Case "B_ARS_BF_Charge"
+                    _SQLChargenSchritt.RohCharge = Value
             End Select
         Catch ex As Exception
         End Try

@@ -52,6 +52,8 @@ Partial Class wb_Rezept_Details
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.cbAnstellgut = New System.Windows.Forms.CheckBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.cbRezeptGruppe = New WinBack.wb_ComboBox()
         Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.cbVariante = New WinBack.wb_ComboBox()
         Me.SuspendLayout()
@@ -308,6 +310,23 @@ Partial Class wb_Rezept_Details
         Me.cbAnstellgut.Text = "Anstellgut für den nächsten Tag aufheben"
         Me.cbAnstellgut.UseVisualStyleBackColor = True
         '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label17.Location = New System.Drawing.Point(9, 272)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(77, 13)
+        Me.Label17.TabIndex = 46
+        Me.Label17.Text = "Rezeptgruppe:"
+        '
+        'cbRezeptGruppe
+        '
+        Me.cbRezeptGruppe.Location = New System.Drawing.Point(12, 288)
+        Me.cbRezeptGruppe.Name = "cbRezeptGruppe"
+        Me.cbRezeptGruppe.Size = New System.Drawing.Size(245, 21)
+        Me.cbRezeptGruppe.TabIndex = 45
+        '
         'cbLiniengruppe
         '
         Me.cbLiniengruppe.FormattingEnabled = True
@@ -333,7 +352,9 @@ Partial Class wb_Rezept_Details
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGray
-        Me.ClientSize = New System.Drawing.Size(572, 281)
+        Me.ClientSize = New System.Drawing.Size(572, 332)
+        Me.Controls.Add(Me.Label17)
+        Me.Controls.Add(Me.cbRezeptGruppe)
         Me.Controls.Add(Me.cbAnstellgut)
         Me.Controls.Add(Me.Label16)
         Me.Controls.Add(Me.Label15)
@@ -400,4 +421,6 @@ Partial Class wb_Rezept_Details
     Friend WithEvents cbLiniengruppe As wb_ComboBox
     Friend WithEvents Label16 As Windows.Forms.Label
     Friend WithEvents cbAnstellgut As Windows.Forms.CheckBox
+    Friend WithEvents cbRezeptGruppe As wb_ComboBox
+    Friend WithEvents Label17 As Windows.Forms.Label
 End Class

@@ -371,15 +371,20 @@ Public Class wb_DataGridView
             End Try
         End Set
         Get
-            Try
-                If FieldName = _8859_5_FieldName Then
-                    Return wb_Functions.MySqlToUtf8(CurrentRow.Cells(FieldName).Value.ToString())
-                Else
-                    Return CurrentRow.Cells(FieldName).Value.ToString
-                End If
-            Catch
+            'Prüfen ob überhaupt Datensätze vorhanden sind (Filter-Result)
+            If DtaView.Count > 0 Then
+                Try
+                    If FieldName = _8859_5_FieldName Then
+                        Return wb_Functions.MySqlToUtf8(CurrentRow.Cells(FieldName).Value.ToString())
+                    Else
+                        Return CurrentRow.Cells(FieldName).Value.ToString
+                    End If
+                Catch
+                    Return Nothing
+                End Try
+            Else
                 Return Nothing
-            End Try
+            End If
         End Get
     End Property
 

@@ -28,12 +28,26 @@
                                  "INNER JOIN ItemParameter On ItemIDs.II_ItemID = ItemParameter.IP_ItemID And ItemIDs.II_ItemTyp = ItemParameter.IP_ItemTyp " &
                                  "INNER JOIN IAttrParams On ItemParameter.IP_Wert2int = IAttrParams.AT_Wert3str And ItemParameter.IP_ItemAttr = IAttrParams.AT_Attr_Nr " &
                                  "INNER JOIN Texte On IAttrParams.AT_Wert2int = Texte.T_TextIndex And IAttrParams.AT_Attr_Nr = Texte.T_Typ " &
-                                 "WHERE ItemIDs.II_ItemTyp <= 230 And ItemParameter.IP_Wert1int = [0] And  Texte.T_Sprache = [1] " &
+                                 "WHERE ItemIDs.II_ItemTyp < 230 And ItemParameter.IP_Wert1int = [0] And  Texte.T_Sprache = [1] " &
                                  "ORDER BY ItemIDs.II_ItemTyp, ItemIDs.II_ItemID;"
+
+    'Sql-Statement RezeptgruppenRechte aus winback.ItemParameter
+    Public Const sqlRezUserRechte = "Select ItemTypen.IT_Bezeichnung, ItemIDs.II_Kommentar, IP_Wert2int, AT_Wert2int, AT_Attr_Nr, Texte.T_Text, IP_ItemTyp, IP_ItemID FROM ItemIDs " &
+                                 "INNER JOIN ItemTypen On ItemIDs.II_ItemTyp = ItemTypen.IT_ItemTyp " &
+                                 "INNER JOIN ItemParameter On ItemIDs.II_ItemID = ItemParameter.IP_ItemID And ItemIDs.II_ItemTyp = ItemParameter.IP_ItemTyp " &
+                                 "INNER JOIN IAttrParams On ItemParameter.IP_Wert2int = IAttrParams.AT_Wert3str And ItemParameter.IP_ItemAttr = IAttrParams.AT_Attr_Nr " &
+                                 "INNER JOIN Texte On IAttrParams.AT_Wert2int = Texte.T_TextIndex And IAttrParams.AT_Attr_Nr = Texte.T_Typ " &
+                                 "WHERE ItemIDs.II_ItemTyp = 230 And ItemParameter.IP_Wert1int = [0] And  Texte.T_Sprache = [1] " &
+                                 "ORDER BY ItemIDs.II_ItemTyp, ItemIDs.II_ItemID;"
+
+
+
     'Sql-Statement UserGruppenRechte aus winback.ItemParameter (IP_ItemTyp=2 NUR PROGRAMM-RECHTE)
     Public Const sqlUserGrpRechte = "Select * FROM ItemParameter WHERE IP_ItemTyp = 2 And IP_Wert1int = [0] ORDER BY IP_ItemID;"
     'Sql-Statement UserGruppenRechte löschen
     Public Const sqlUserGrpRemoveAll = "DELETE FROM ItemParameter WHERE IP_ItemTyp >= 1 And IP_ItemTyp <= 200 And IP_Wert1int > 0"
+    'Sql-Statement UserRezeptGruppenRechte löschen
+    Public Const sqlUserRezGrpRemoveAll = "DELETE FROM ItemParameter WHERE IP_ItemTyp = 230 And IP_Wert1int > 0"
     'Sql-Statement UserGruppenRechte einfügen
     Public Const sqlUserGrpInsert = "INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int) VALUES ([0])"
 

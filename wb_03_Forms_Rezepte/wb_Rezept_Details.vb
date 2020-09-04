@@ -9,6 +9,8 @@ Public Class wb_Rezept_Details
         cbVariante.Fill(wb_Rezept_Shared.RzVariante)
         'Combo-Box(Liniengruppen) mit Werten füllen
         cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen)
+        'Combo-Box(Rezeptgruppe) mit Werten füllen
+        cbRezeptGruppe.Fill(wb_Rezept_Shared.RzGruppe)
 
         'Event-Handler (Klick auf Rezept-Liste -> Anzeige der Detail-Info)
         AddHandler wb_Rezept_Shared.eListe_Click, AddressOf DetailInfo
@@ -45,6 +47,8 @@ Public Class wb_Rezept_Details
         cbLiniengruppe.SetTextFromKey(wb_Rezept_Shared.Rezept.LinienGruppe)
         'Eintrag in Combo-Box Rezeptvariante ausfüllen
         cbVariante.SetTextFromKey(wb_Rezept_Shared.Rezept.Variante)
+        'Eintrag in Combo-Box Rezeptgruppe ausfüllen
+        cbRezeptGruppe.SetTextFromKey(wb_Rezept_Shared.Rezept.RezeptGruppe)
         'Checkbox Anstellgut
         cbAnstellgut.Checked = wb_Rezept_Shared.Rezept.AnstellGutReWork
 
@@ -59,11 +63,12 @@ Public Class wb_Rezept_Details
         tChargeOpt.Text = wb_Rezept_Shared.Rezept.TeigChargen.OptCharge.MengeInkg
     End Sub
 
-    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRezeptNummer.Leave, tRezeptName.Leave, tRezeptKommentar.Leave
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRezeptNummer.Leave, tRezeptName.Leave, tRezeptKommentar.Leave, cbRezeptGruppe.Leave, cbLiniengruppe.Leave
         wb_Rezept_Shared.Rezept.RezeptBezeichnung = tRezeptName.Text
         wb_Rezept_Shared.Rezept.RezeptKommentar = tRezeptKommentar.Text
         wb_Rezept_Shared.Rezept.RezeptNummer = tRezeptNummer.Text
         wb_Rezept_Shared.Rezept.LinienGruppe = cbLiniengruppe.GetKeyFromSelection()
+        wb_Rezept_Shared.Rezept.RezeptGruppe = cbRezeptGruppe.GetKeyFromSelection()
         'geändete Daten speichern
         wb_Rezept_Shared.Edit_Leave(sender)
     End Sub

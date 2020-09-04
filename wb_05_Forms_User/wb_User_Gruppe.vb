@@ -36,7 +36,7 @@
         End Set
     End Property
 
-    Public Sub LoadData(ByVal Gruppe As Integer)
+    Public Sub LoadData(ByVal Gruppe As Integer, RezeptGruppenRechte As Boolean)
 
         'Prüfen ob die Daten neu geladen werden müssen (Gruppe/Parameter der Gruppe haben sich geändert)
         If (Gruppe <> _iGruppe) Then
@@ -46,7 +46,15 @@
             _iGruppe = Gruppe
 
             Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
-            If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserRechte, Gruppe, wb_Language.GetLanguageNr())) Then
+            Dim sql As String
+
+            'Anzeige Usergruppen-Rechte oder Rezeptgruppen zu Usergruppen
+            If RezeptGruppenRechte Then
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezUserRechte, Gruppe, wb_Language.GetLanguageNr())
+            Else
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserRechte, Gruppe, wb_Language.GetLanguageNr())
+            End If
+            If winback.sqlSelect(sql) Then
                 While winback.Read
 
                     'Rechtegruppe Bezeichnung
@@ -155,7 +163,7 @@
 
     Public Function CheckDB_Grp99() As Boolean
         'User-Gruppe 99 (alle Rechte) einlesen
-        LoadData(wb_Global.AdminUserGrpe)
+        LoadData(wb_Global.AdminUserGrpe, False)
 
         If Not Count >= 44 Then
             'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)

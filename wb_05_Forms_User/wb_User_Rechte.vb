@@ -21,7 +21,7 @@ Public Class wb_User_Rechte
         Dim subNode As TreeNode = Nothing
 
         'Benutzer-Rechte laden
-        Gruppe.LoadData(User.iGruppe)
+        Gruppe.LoadData(User.iGruppe, False)
         _Reload = False
         TreeView.BeginUpdate()
         TreeView.Nodes.Clear()

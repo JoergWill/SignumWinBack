@@ -14,7 +14,7 @@ Public Class wb_ShowPDF
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
             localDllInfo = New Ghostscript.NET.GhostscriptVersionInfo(wb_GlobalSettings.pProgrammPath & "gsdll32.dll")
         Else
-            localDllInfo = New Ghostscript.NET.GhostscriptVersionInfo(wb_GlobalSettings.pAddInPath & "gsdll32.dll")
+            localDllInfo = New Ghostscript.NET.GhostscriptVersionInfo(wb_GlobalSettings.pAddInPath & "dll/gsdll32.dll")
         End If
     End Sub
 

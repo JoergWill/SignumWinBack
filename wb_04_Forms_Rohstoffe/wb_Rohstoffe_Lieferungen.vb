@@ -67,7 +67,7 @@ Public Class wb_Rohstoffe_Lieferung
     Private Sub LagerDataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles LagerDataGridView.CellFormatting
         'TODO DBNull abfrangen (Menge Null setzen ...)
         Try
-            If e.Value IsNot Nothing Then
+            If e.Value IsNot Nothing And Not IsDBNull(e.Value) Then
                 Select Case e.ColumnIndex
 
                     Case COLMenge, COLVerbr
