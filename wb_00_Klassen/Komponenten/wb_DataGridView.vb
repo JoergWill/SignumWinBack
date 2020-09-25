@@ -193,6 +193,17 @@ Public Class wb_DataGridView
     End Sub
 
     ''' <summary>
+    ''' ChangeEvent unterdrücken. (z.B. bei Doppelclick Artikel-Liste)
+    ''' </summary>
+    Friend WriteOnly Property SuppressChangeEvent As Boolean
+        Set(value As Boolean)
+            _SuppressChangeEvent = value
+            'Timer starten (hat keine Auswirkungen). Reset SuppressChangeEvent
+            tDataHasChanged.Enabled = True
+        End Set
+    End Property
+
+    ''' <summary>
     ''' Setzt die Sortierspalte (ohne dass ein Click auf die Titelzeile notwendig ist)
     ''' </summary>
     ''' <param name="ColNr"></param>
@@ -536,7 +547,10 @@ Public Class wb_DataGridView
     Public Event HasChanged As EventHandler
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tDataHasChanged.Tick
         tDataHasChanged.Enabled = False
-        RaiseEvent HasChanged(Me, EventArgs.Empty)
+        If Not _SuppressChangeEvent Then
+            RaiseEvent HasChanged(Me, EventArgs.Empty)
+        End If
+        _SuppressChangeEvent = False
     End Sub
 
     ''' <summary>

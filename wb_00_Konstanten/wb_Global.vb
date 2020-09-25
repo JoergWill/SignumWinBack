@@ -31,6 +31,8 @@
     Public Const RezeptImRezept = "®"
     'Text Rohstoff wird nicht deklariert
     Public Const FlagKeineDeklaration = "NO DECLARATION"
+    'Text Zutatenliste auflösen
+    Public Const FlagAufloesen = ">"
     'Trennzeichen in MFF155(Mehlanteile)
     Public Const TrennzMehlAnteil = " "
     'Flag Rohstoff zählt nicht zum Rezeptgewicht
@@ -529,18 +531,6 @@
         MessageTextUser       '20/1/UsrNr
         NaehrwertUpdate       '21/0/RohNr
     End Enum
-
-    Public Structure ZutatenListe
-        Public Zutaten As String
-        Public eNr As Integer
-        Public FettDruck As Boolean
-        Public SollMenge As Double
-        Public SortMenge As Double
-        Public Grp1 As Integer
-        Public Grp2 As Integer
-        Public Quid As Boolean
-        Public QuidProzent As Double
-    End Structure
 
     Enum ZutatenListeMode
         Hide_ENummer

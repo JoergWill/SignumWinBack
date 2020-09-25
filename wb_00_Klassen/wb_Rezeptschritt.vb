@@ -28,7 +28,7 @@ Public Class wb_Rezeptschritt
     Private _ZaehltNichtZumRezeptGewicht As Boolean
     Private _QUIDRelevant As Boolean = False
     Private _ktTyp301 As New wb_KomponParam301
-    Private _ZutatenListe As wb_Global.ZutatenListe
+    Private _ZutatenListe As New wb_ZutatenElement
     Private _ZutatenListeExtern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoff)
     Private _ZutatenListeIntern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoffIntern)
     Private _Backverlust As Double
@@ -948,7 +948,7 @@ Public Class wb_Rezeptschritt
     ''' Ist das Feld interne Deklaration leer, wird immer die externe Deklaration verwendet.
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property ZutatenListe(Optional Faktor As Double = 1) As wb_Global.ZutatenListe
+    Public ReadOnly Property ZutatenListe(Optional Faktor As Double = 1) As wb_ZutatenElement
         Get
 
             'Lesen aus interner Deklaration der Rohstoffe
@@ -967,14 +967,41 @@ Public Class wb_Rezeptschritt
                 If Not _ZutatenListeExtern.ReadOK Then
                     _ZutatenListeExtern.Read(Me.RohNr)
                 End If
+                'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
+                _ZutatenListe.Zutaten = _ZutatenListeExtern.Memo
+            End If
 
-                'Flag NODEKLARATION im Rohstoff
-                If _ZutatenListeExtern.Memo = wb_Global.FlagKeineDeklaration Then
-                    'Deklarationsfeld bleint leer
-                    _ZutatenListe.Zutaten = ""
+            'Fehler abfangen
+            If _ZutatenListe.Zutaten Is Nothing Then
+                _ZutatenListe.Zutaten = ""
+            End If
+
+            'Flag NODEKLARATION im Rohstoff
+            If _ZutatenListe.Zutaten = wb_Global.FlagKeineDeklaration Then
+                'Flag - Keine Deklaration
+                _ZutatenListe.KeineDeklaration = True
+                'Flag Zutatenliste auflösen
+                _ZutatenListe.Aufloesen = False
+                'Deklarationsfeld bleibt leer
+                _ZutatenListe.Zutaten = ""
+            Else
+                'Flag - Keine Deklaration
+                _ZutatenListe.KeineDeklaration = False
+                'Flag Zutatenliste auflösen
+                If _ZutatenListe.Zutaten.StartsWith(wb_Global.FlagAufloesen) Then
+                    _ZutatenListe.Aufloesen = True
+                    _ZutatenListe.Zutaten = _ZutatenListe.Zutaten.TrimStart(wb_Global.FlagAufloesen)
+                    'wenn der Deklarationstext nicht leer ist, werden die Bestandteile des Unterrezeptes in Klammern einzeln aufgeführt und nicht sortiert !!
+                    If _ZutatenListe.Zutaten <> "" Then
+                        _ZutatenListe.GrpRezNr = RezeptNr
+                    Else
+                        _ZutatenListe.GrpRezNr = wb_Global.UNDEFINED
+                    End If
                 Else
-                    'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
-                    _ZutatenListe.Zutaten = _ZutatenListeExtern.Memo
+                    'wenn der Deklarationstext leer ist - wird der Rohstoff-Name verwendet
+                    If _ZutatenListe.Zutaten = "" Then
+                        _ZutatenListe.Zutaten = Bezeichnung
+                    End If
                 End If
             End If
 
@@ -1132,24 +1159,67 @@ Public Class wb_Rezeptschritt
         Return oi
     End Function
 
-    Public Sub CalcZutaten(ByRef zListe As ArrayList, Optional Faktor As Double = 1)
+    ''' <summary>
+    ''' Fügt die Zutaten(Liste) für den aktuellen Rezeptschritt an die bestehende Liste an.
+    ''' Je nach Inhalt des Deklarations-Feldes werden verschiedene Fälle unterschieden:
+    ''' 
+    '''     Deklarations-Feld 
+    '''     
+    '''         leer      -     Rohstoff-Name wird eingetragen
+    '''         >         -     unterlagertes Rezept wird aufgelöst
+    '''         Text      -     beliebiger Text wird übernommen
+    '''         >Text     -     [Text] und Rezeptauflösung
+    '''     
+    ''' </summary>
+    ''' <param name="zListe"></param>
+    ''' <param name="Faktor"></param>
+    Public Sub CalcZutaten(ByRef zListe As List(Of wb_ZutatenElement), Optional Faktor As Double = 1, Optional GrpRezNr As Integer = wb_Global.UNDEFINED)
         'Angaben zum Rezeptschritt in Liste anhängen
-        If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
-            zListe.Add(ZutatenListe(Faktor))
+        Dim z As New wb_ZutatenElement
+        z.GrpRezNr = GrpRezNr
+        z = ZutatenListe(Faktor)
+
+        'Deklarations-Bezeichnung des Rohstoffes an die Liste anhängen
+        If Not z.KeineDeklaration Then
+            If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
+                zListe.Add(z)
+                Debug.Print("CalcZutaten - nach Step 1 (If TypeIstSollmenge)")
+                DebugPrintZutatenListe(zListe)
+            End If
+            'Aufruf der Routine vom Root-Rezeptschritt aus
+            'unterlagerte Rezeptschritte werden auch im Array angehängt
+            For Each x As wb_Rezeptschritt In ChildSteps
+                x.CalcZutaten(zListe, Faktor, GrpRezNr)
+            Next
+            Debug.Print("CalcZutaten - nach Step 2 (For Each x in ChildSteps)")
+            DebugPrintZutatenListe(zListe)
+
+            'Zutatenliste auflösen
+            If z.Aufloesen Then
+                'Rezept im Rezept
+                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
+                    Dim f As Double = Sollwert / RezeptImRezept.RezeptGewicht
+                    RezeptImRezept.RootRezeptSchritt.CalcZutaten(zListe, f, z.GrpRezNr)
+                    Debug.Print("CalcZutaten - nach Step 3 (If RezeptImRezept)")
+                    DebugPrintZutatenListe(zListe)
+                End If
+            Else
+                'Gruppen-Nr Rezeptnummer mitnehmen
+                _ZutatenListe.GrpRezNr = GrpRezNr
+            End If
         End If
-
-        'unterlagerte Rezeptschritte werden auch im Array angehängt
-        For Each x As wb_Rezeptschritt In ChildSteps
-            x.CalcZutaten(zListe, Faktor)
-        Next
-
-        'Rezept im Rezept
-        If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
-            Dim f As Double = Sollwert / RezeptImRezept.RezeptGewicht
-            RezeptImRezept.RootRezeptSchritt.CalcZutaten(zListe, f)
-        End If
-
     End Sub
+
+    Public Sub DebugPrintZutatenListe(zListe As List(Of wb_ZutatenElement))
+        For Each x In zListe
+            If x.FettDruck Then
+                Debug.Print(x.Zutaten.ToUpper & " " & x.SollMenge & "kg" & "/" & x.GrpRezNr)
+            Else
+                Debug.Print(x.Zutaten & " " & x.SollMenge & "kg" & "/" & x.GrpRezNr)
+            End If
+        Next
+    End Sub
+
 
     Private Function ReadktTyp301() As Boolean
         'Datenbank-Verbindung öffnen - MySQL

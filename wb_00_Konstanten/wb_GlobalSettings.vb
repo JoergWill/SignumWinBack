@@ -2,7 +2,7 @@
 Imports System.IO
 Imports System.Reflection
 Imports WeifenLuo.WinFormsUI.Docking
-Imports WinBack
+Imports Microsoft.Win32
 Imports WinBack.wb_Global
 
 ''' <summary>
@@ -105,6 +105,7 @@ Public Class wb_GlobalSettings
 
     Private Shared _ImportPathPistor As String = Nothing
     Private Shared _ArtikelVerarbeitungsHinweisPath As String = Nothing
+    Private Shared _ExcelInstalled As Integer = wb_Global.UNDEFINED
 
     Private Shared _Mandaten As New List(Of obMandant)
 
@@ -877,6 +878,30 @@ Public Class wb_GlobalSettings
             Catch ex As Exception
                 Return "C:\"
             End Try
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property ExcelInstalled As Boolean
+        Get
+            If _ExcelInstalled = wb_Global.UNDEFINED Then
+                Dim rkVersionKey As RegistryKey = Nothing
+                Try
+                    Const stXL_SUBKEY As String = "\Excel.Application\CurVer"
+                    'Prüfen ob ein Entrag in der Registry vorhanden ist
+                    rkVersionKey = Registry.ClassesRoot.OpenSubKey(stXL_SUBKEY, False)
+                    'Wenn der Key vorhanden ist, ist eine beliebige Excel-Version installiert
+                    If rkVersionKey IsNot Nothing Then
+                        'Excel ist installiert
+                        _ExcelInstalled = 1
+                    Else
+                        'Excel ist nicht installiert
+                        _ExcelInstalled = 0
+                    End If
+                Catch
+                    _ExcelInstalled = 0
+                End Try
+            End If
+            Return (_ExcelInstalled = 1)
         End Get
     End Property
 

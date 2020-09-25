@@ -29,7 +29,7 @@
         _KompNr = wb_Global.UNDEFINED
         _KompNummer = p.ArtikelNummer
         _VorfallNr = p.VorfallNr
-        _BefMenge = p.GelieferteMenge
+        _BefMenge = p.GelieferteMengeInkg
         _ChargenNummer = p.SerienNummer
         _Preis = p.Preis
     End Sub

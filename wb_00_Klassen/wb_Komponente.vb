@@ -921,15 +921,18 @@ Public Class wb_Komponente
 
     Public Property Deklaration As String
         Get
-            'TODO Hier muss unterschieden werden, welche Deklaration benutzt werden soll (Intern/Extern) - kundenspezifisch
-            Deklaration = DeklBezeichungExtern
-            'Deklaration = DeklBezeichungIntern
-
+            If wb_GlobalSettings.NwtInterneDeklaration Then
+                Return DeklBezeichungIntern
+            Else
+                Return DeklBezeichungExtern
+            End If
         End Get
         Set(value As String)
-            'TODO Hier muss unterschieden werden, welche Deklaration benutzt werden soll (Intern/Extern) - kundenspezifisch
-            DeklBezeichungExtern = value
-            'DeklBezeichungIntern = value
+            If wb_GlobalSettings.NwtInterneDeklaration Then
+                DeklBezeichungIntern = value
+            Else
+                DeklBezeichungExtern = value
+            End If
         End Set
     End Property
 

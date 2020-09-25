@@ -250,6 +250,44 @@ Public Class wb_Sql
     End Function
 
     ''' <summary>
+    '''SQL-ExecuteScalar Statement ausführen
+    ''' </summary>
+    ''' <param name="sql">Select-Statement</param>
+    ''' <returns>False im Fehlerfall</returns>
+    Function sqlExecuteScalar(sql As String, Optional Params() As SqlParameter = Nothing) As Object
+        'sql-Select ausführen
+        Try
+            Select Case conType
+                Case dbType.mySql
+                    'sql-Kommando ausführen
+                    MySqlCommand = New MySqlCommand(sql, MySqlCon)
+                    MySqlRead = MySqlCommand.ExecuteReader()
+                    Return True
+                Case dbType.msSql
+                    'sql-Kommando ausführen
+                    msCommand = New SqlCommand(sql, msCon)
+                    'Parameter (falls erforderlich)
+                    If Params IsNot Nothing Then
+                        For i = 0 To Params.Count - 1
+                            msCommand.Parameters.Add(Params(i))
+                        Next
+                    End If
+                    'Kommando ausführen
+                    Return msCommand.ExecuteScalar
+                Case Else
+                    Return False
+            End Select
+        Catch ex As Exception
+            If Debugger.IsAttached Then
+                MsgBox("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
+            Else
+                Trace.WriteLine("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
+            End If
+            Return False
+        End Try
+    End Function
+
+    ''' <summary>
     ''' SQL-Kommando ausführen
     ''' </summary>
     ''' <param name="sql">SQL-Kommando</param>

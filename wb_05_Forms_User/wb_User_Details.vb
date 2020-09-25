@@ -97,7 +97,9 @@ Public Class wb_User_Details
                 Return False
             End If
         Catch ex As Exceptions.PCSCException
-            MsgBox("Fehler beim Suchen des Kartenlesers " & ex.Message & " (" & ex.SCardError.ToString() & ")")
+            'MsgBox("Fehler beim Suchen des Kartenlesers " & ex.Message & " (" & ex.SCardError.ToString() & ")")
+            cbxReaderList.Text = "Kein Kartenleser gefunden"
+            cbxReaderList.Enabled = False
             Return False
         End Try
     End Function

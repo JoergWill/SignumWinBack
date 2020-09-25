@@ -385,6 +385,9 @@ Public Class ob_Main_Menu
             'Vorfall-Aktion
             Dim ProcessAction As ERP.ProcessChangedAction = e.Action
 
+            'TEST Ausgabe
+            Debug.Print("WinBack.ob_Main.ProcessChanged " & ProcessCode & "/" & ProcessNumber & "/" & ProcessAction.ToString)
+
             'Verteiler OrgaBack - Vorfälle
             Select Case ProcessCode
 

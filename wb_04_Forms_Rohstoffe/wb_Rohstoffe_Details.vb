@@ -18,6 +18,8 @@ Public Class wb_Rohstoffe_Details
         End If
         'Default Währung(€)
         ePreis.Text = wb_GlobalSettings.osDefaultWaehrung
+        'interne Deklaration verwenden
+        cbInterneDeklaration.Checked = wb_GlobalSettings.NwtInterneDeklaration
 
         'Rohstoff-ID und Rohstoff-Type sind nur für Admin-User sichtbar
         If wb_GlobalSettings.AktUserGruppe = wb_Global.AdminUserGrpe Then
@@ -87,6 +89,27 @@ Public Class wb_Rohstoffe_Details
             ShowDeklaration()
             'Flag zählt nicht zum Rezeptgewicht
             cbRezeptGewicht.Checked = RohStoff.ZaehltNichtZumRezeptGewicht
+            'Rezeptur verknüpft
+            If RohStoff.RzNr > 0 Then
+                'Flag Zutatenliste auflösen
+                cbAufloesen.Enabled = True
+                cbAufloesen.Checked = CheckZutatenAufloesen()
+                'Rezept-Nummer
+                lbRezNr.Enabled = True
+                tbRezNr.Text = RohStoff.RezeptNummer
+                'Rezept-Name
+                lblRezept.Enabled = True
+                tbRezName.Text = RohStoff.RezeptName
+            Else
+                'Flag Zutatenliste auflösen
+                cbAufloesen.Enabled = False
+                'Rezept-Nummer
+                lbRezNr.Enabled = False
+                tbRezNr.Text = ""
+                'Rezept-Name
+                lblRezept.Enabled = False
+                tbRezName.Text = ""
+            End If
 
             'Auswahlfelder Rohstoff-Gruppen
             cbRohstoffGrp1.SetTextFromKey(RohStoff.Gruppe1)
@@ -169,6 +192,7 @@ Public Class wb_Rohstoffe_Details
     ''' <param name="e"></param>
     Private Sub tbDeklarationExtern_Leave(sender As Object, e As EventArgs) Handles tbDeklarationExtern.Leave
         wb_Rohstoffe_Shared.RohStoff.DeklBezeichungExtern = tbDeklarationExtern.Text
+        cbAufloesen.Checked = CheckZutatenAufloesen()
     End Sub
 
     ''' <summary>
@@ -179,6 +203,7 @@ Public Class wb_Rohstoffe_Details
     ''' <param name="e"></param>
     Private Sub tbDeklarationIntern_Leave(sender As Object, e As EventArgs) Handles tbDeklarationIntern.Leave
         wb_Rohstoffe_Shared.RohStoff.DeklBezeichungIntern = tbDeklarationIntern.Text
+        cbAufloesen.Checked = CheckZutatenAufloesen()
     End Sub
 
     Private Sub cbKeineDeklaration_Click(sender As Object, e As EventArgs) Handles cbKeineDeklaration.Leave
@@ -202,4 +227,38 @@ Public Class wb_Rohstoffe_Details
         End If
     End Sub
 
+    ''' <summary>
+    ''' Globale Einstellung Zutatenliste - interne Deklaration verwenden
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cbInterneDeklaration_Click(sender As Object, e As EventArgs) Handles cbInterneDeklaration.Click
+        wb_GlobalSettings.NwtInterneDeklaration = cbInterneDeklaration.Checked
+        cbAufloesen.Checked = CheckZutatenAufloesen()
+    End Sub
+
+    ''' <summary>
+    ''' Prüft ob das Flag Zutaten-Auflösen gesetzt ist oder nicht
+    ''' </summary>
+    Private Function CheckZutatenAufloesen() As Boolean
+        If cbInterneDeklaration.Checked Then
+            If tbDeklarationIntern.Text.StartsWith(">") Then
+                Return True
+            End If
+        Else
+            If tbDeklarationExtern.Text.StartsWith(">") Then
+                Return True
+            End If
+        End If
+        Return False
+    End Function
+
+    Private Sub cbAufloesen_CheckedChanged(sender As Object, e As EventArgs) Handles cbAufloesen.CheckedChanged
+        If cbAufloesen.Checked Then
+            wb_Rohstoffe_Shared.RohStoff.Deklaration = ">" & wb_Rohstoffe_Shared.RohStoff.Deklaration
+        Else
+            wb_Rohstoffe_Shared.RohStoff.Deklaration = wb_Rohstoffe_Shared.RohStoff.Deklaration.TrimStart(">")
+        End If
+        ShowDeklaration()
+    End Sub
 End Class

@@ -1,7 +1,7 @@
 ﻿Imports System.Text.RegularExpressions
 
 Public Class wb_ZutatenListe
-    Public Liste As New ArrayList
+    Public Liste As New List(Of wb_ZutatenElement)
 
     Public Sub Clear()
         Liste.Clear()
@@ -18,11 +18,12 @@ Public Class wb_ZutatenListe
     Public Function Print(Mode As wb_Global.ZutatenListeMode) As String
         Dim s As String = ""
         Dim z As String
+        Dim GrpRezNr As Integer = 0
 
-        For Each x As wb_Global.ZutatenListe In Liste
+        For Each x As wb_ZutatenElement In Liste
 
             If Mode = wb_Global.ZutatenListeMode.Hide_ENummer And x.eNr > 0 Then
-                z = wb_ZutatenListe_Global.Find_ENummer(x.Zutaten).Text
+                z = wb_ZutatenListe_Global.Find_ENummer(x.Zutaten).Bezeichnung
             Else
                 z = x.Zutaten
             End If
@@ -31,12 +32,29 @@ Public Class wb_ZutatenListe
                 z = z.ToUpper
             End If
 
+            If x.GrpRezNr <> GrpRezNr And GrpRezNr <> 0 Then
+                s = s & ")"
+                GrpRezNr = 0
+            End If
+
+            If x.GrpRezNr > 0 And GrpRezNr = 0 Then
+                z = z & "("
+                GrpRezNr = x.GrpRezNr
+            End If
+
             If s = "" Then
                 s = z
+            ElseIf s.EndsWith("(") Then
+                s = s & z
             Else
                 s = s & ", " & z
             End If
         Next
+
+        'letzter Eintrag einer RezeptGruppe
+        If GrpRezNr > 0 Then
+            s = s & ")"
+        End If
 
         'falls noch fehlerhafte Einträge vorhanden sind, jetzt entfernen
         s = s.Replace(",,", ",")
@@ -69,7 +87,7 @@ Public Class wb_ZutatenListe
             MehlGruppe.ClearMenge()
 
             'Schleife über alle ZutatenListen
-            For Each x As wb_Global.ZutatenListe In Liste
+            For Each x As wb_ZutatenElement In Liste
                 'Rohstoff in der Zutatenliste gehört zu dieser Gruppe(Mehlsorte)
                 If x.Grp1 = MehlGruppe.GruppeNr Or x.Grp2 = MehlGruppe.GruppeNr Then
                     MehlGruppe.Add(x.SollMenge)
@@ -103,14 +121,15 @@ Public Class wb_ZutatenListe
                 If RemoveIfIdentical(Liste(i), Liste(j)) Then
                     Liste.RemoveAt(j)
                     lc = lc - 1
+                Else
+                    j = j + 1
                 End If
-                j = j + 1
             End While
             i = i + 1
         End While
     End Sub
 
-    Private Function RemoveIfIdentical(ByRef L1 As wb_Global.ZutatenListe, ByRef L2 As wb_Global.ZutatenListe) As Boolean
+    Private Function RemoveIfIdentical(ByRef L1 As wb_ZutatenElement, ByRef L2 As wb_ZutatenElement) As Boolean
         'Markierung Fettdruck entfernen und merken
         L1.FettDruck = RemoveFettDruck(L1.Zutaten) Or L1.FettDruck
         L2.FettDruck = RemoveFettDruck(L2.Zutaten) Or L2.FettDruck
@@ -170,41 +189,109 @@ Public Class wb_ZutatenListe
         End While
     End Sub
 
-    Private Function _Split_ingredients(L1 As wb_Global.ZutatenListe, i As Integer) As Integer
+    Private Function _Split_ingredients(ByVal L1 As wb_ZutatenElement, i As Integer) As Integer
         If L1.Zutaten IsNot Nothing And L1.Zutaten <> "" Then
+
+            'Filtert Prozent-Angaben aus der Zutatenliste
+            L1.Zutaten = FilterDezimalProzent(L1.Zutaten)
+
+            'Die Zutatenliste besteht aus mehreren Elementen
             If L1.Zutaten.Contains(",") Then
                 Dim a() As String = L1.Zutaten.Split(",")
-                Dim z As wb_Global.ZutatenListe
                 Dim FettDruckEin As Boolean = False
 
+                'Schleife über alle Elemente der Liste
                 For j = 1 To a.Length
+                    'Ein einzelnes Element der Zutatenliste
+                    Dim z As New wb_ZutatenElement
                     'Leerzeichnen vorne und hinten entfernen
                     z.Zutaten = Trim(a(j - 1))
+                    'Verknüpfung zu Rezept
+                    z.GrpRezNr = L1.GrpRezNr
+                    'Sollmenge
                     z.SollMenge = L1.SollMenge
-                    z.SortMenge = j
+                    'Reihenfolge der Zutaten
+                    z.SortMenge = a.Length - j
 
-                    'Fettdruck
-                    If z.Zutaten.Contains("{") Then
-                        FettDruckEin = True
-                    End If
-                    z.FettDruck = FettDruckEin
-                    If z.Zutaten.Contains("}") Then
-                        FettDruckEin = False
-                    End If
-
-                    'Steuerzeichen vorne und hinten entfernen
-                    z.Zutaten = z.Zutaten.Trim("{")
-                    z.Zutaten = z.Zutaten.Trim("}")
+                    'String optimieren
+                    FettDruckEin = _Opt_Ingredients(z, FettDruckEin)
                     'Teilstring in Liste einfügen
                     Liste.Insert(i + j, z)
 
                 Next j
                 Return a.Length
             Else
+                'Ein einzelnes Element der Zutatenliste
+                Dim z As New wb_ZutatenElement
+                'einziges Element der Zutatenliste
+                z.Zutaten = Trim(L1.Zutaten)
+                z.GrpRezNr = L1.GrpRezNr
+                z.SollMenge = L1.SollMenge
+                z.SortMenge = 1
+                _Opt_Ingredients(z, False)
+                'Teilstring in Liste ersetzen
+                Liste.RemoveAt(i)
+                Liste.Insert(i, z)
                 Return 0
             End If
         Else
             Return 0
+        End If
+    End Function
+
+    Private Function _Opt_Ingredients(ByRef z As wb_ZutatenElement, FettDruckEin As Boolean) As Boolean
+        'Fettdruck
+        If z.Zutaten.Contains("{") Then
+            FettDruckEin = True
+        End If
+        z.FettDruck = FettDruckEin
+        If z.Zutaten.Contains("}") Then
+            FettDruckEin = False
+        End If
+
+        'Steuerzeichen vorne und hinten/im String entfernen
+        z.Zutaten = z.Zutaten.Trim("{")
+        'z.Zutaten = z.Zutaten.Trim("}")
+        z.Zutaten = z.Zutaten.Replace("}", "")
+
+        'Rückgabewert
+        Return FettDruckEin
+    End Function
+
+
+    ''' <summary>
+    ''' Wandelt alle Komma-getrennten Prozent-Angaben im String in Dezimal-Punkte um.
+    ''' Die ist notwendig, da die einzelnen Zutaten Komma-getrennt aufgeführt sind und damit
+    ''' die Prozent-Angaben die Sortierung/Trennung der Zutaten beeinflussen
+    ''' 
+    '''     3,5% Milch      3.5% Milch
+    '''     Ei 99,9 %       Ei 99.9%
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Private Function FilterDezimalProzent(s As String) As String
+        'Falls vor dem %-Zeichen ein Leerzeichen steht
+        s = s.Replace(" %", "%")
+        'Position des %-Zeichens im String
+        Dim i As Integer = s.IndexOf("%")
+
+        'Prüfen ob überhaupt ein Prozent-Zeichen enthalten ist
+        If i > 0 Then
+            'ab diesem Zeichen bis zum String-Anfang
+            For j = i To 0 Step -1
+                'Sonderzeichen und % ausfiltern
+                Select Case s.Substring(j, 1)
+                    Case "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "%"
+                        'Do nothing
+                    Case ","
+                        s = s.Remove(j, 1).Insert(j, ".")
+                    Case Else
+                        Exit For
+                End Select
+            Next
+            Return s
+        Else
+            Return s
         End If
     End Function
 
@@ -214,7 +301,7 @@ Public Class wb_ZutatenListe
         Next
     End Sub
 
-    Private Sub _Convert_ToENr(ByRef L As wb_Global.ZutatenListe)
+    Private Sub _Convert_ToENr(ByRef L As wb_ZutatenElement)
         Dim eNr As String
         Dim e As wb_Global.ENummern = wb_ZutatenListe_Global.EmptyENumber
 
@@ -242,11 +329,18 @@ Public Class wb_ZutatenListe
     End Function
 
     Public Sub Sort()
+        'Leere Einträg entfernen
+        _DelEmpty()
+        'Sortieren nach Sollmenge im Rezept
+        Liste.Sort()
+    End Sub
+
+    Private Sub _DelEmpty()
         'leere Einträge entfernen
         Dim lc As Integer = Liste.Count - 1
         For i = 0 To lc
             If i < Liste.Count Then
-                If DirectCast(Liste(i), wb_Global.ZutatenListe).Zutaten = "" Then
+                If Liste(i).Zutaten = "" Then
                     Liste.RemoveAt(i)
                     lc -= 1
                     If i < lc Then Exit For
@@ -257,14 +351,53 @@ Public Class wb_ZutatenListe
 
     Public Sub DebugPrint()
         For Each x In Liste
-            If DirectCast(x, wb_Global.ZutatenListe).FettDruck Then
-                Debug.Print("ZUTATENLISTE " & DirectCast(x, wb_Global.ZutatenListe).Zutaten.ToUpper & " " & DirectCast(x, wb_Global.ZutatenListe).SollMenge & "kg")
+            If x.FettDruck Then
+                Debug.Print("ZUTATENLISTE " & x.Zutaten.ToUpper & " " & x.SollMenge & "kg" & "/" & x.GrpRezNr)
             Else
-                Debug.Print("Zutatenliste " & DirectCast(x, wb_Global.ZutatenListe).Zutaten & " " & DirectCast(x, wb_Global.ZutatenListe).SollMenge & "kg")
+                Debug.Print("Zutatenliste " & x.Zutaten & " " & x.SollMenge & "kg" & "/" & x.GrpRezNr)
             End If
         Next
     End Sub
 End Class
+
+Public Class wb_ZutatenElement
+    Implements IComparable
+
+    Public Zutaten As String = ""
+    Public eNr As Integer
+    Public FettDruck As Boolean
+    Public KeineDeklaration As Boolean
+    Public Aufloesen As Boolean
+    Public GrpRezNr As Integer
+    Public SollMenge As Double
+    Public SortMenge As Double
+    Public Grp1 As Integer
+    Public Grp2 As Integer
+    Public Quid As Boolean
+    Public QuidProzent As Double
+
+    Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
+        'Vergleich
+        Dim o As wb_ZutatenElement = obj
+
+        'Sollwerte vergleichen
+        If SollMenge < o.SollMenge Then
+            Return 1
+        ElseIf SollMenge > o.SollMenge Then
+            Return -1
+        Else
+            'Sollmengen sind gleich - Sortierfolge nach Reihenfolge der Zutaten
+            If SortMenge < o.SortMenge Then
+                Return 1
+            ElseIf SortMenge > o.SortMenge Then
+                Return -1
+            Else
+                Return 0
+            End If
+        End If
+    End Function
+End Class
+
 
 'CREATE TABLE ENummern (
 '  EN_Nr int(10) Not NULL Default '0',          E-Nummer als Integer

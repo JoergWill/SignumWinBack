@@ -59,6 +59,8 @@ Public Class wb_Artikel_Liste
                 Me.Cursor = Windows.Forms.Cursors.WaitCursor
                 'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
                 Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
+                'verhindert, dass das neue Fenster in den Hintergrund verdrängt wird
+                DataGridView.SuppressChangeEvent = True
                 Rezeptur.Show()
                 Me.Cursor = Windows.Forms.Cursors.Default
             End If

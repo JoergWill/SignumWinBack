@@ -2293,6 +2293,22 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Value">Object - Wert Datenbankfeld(Inhalt)</param>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_OrgaBackProcessPosition.GelieferteMengeInkg">
+ <summary>
+ Die gelieferte Menge in kg.
+ Wenn in der Tabelle dbo.GeschäftsvorfallPosition die Einheit nicht kg ist, wird über die Funktion EinheitenUmrechnung 
+ der Wert in kg umgerechnet und zurückgegeben.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_OrgaBackProcessPosition.MsSQLdbRead_Fields(System.String,System.Object)">
+ <summary>
+ Liest die Datenfelder aus der Tabelle dbo.GeschäftsvorfallPosition
+ </summary>
+ <param name="Name"></param>
+ <param name="Value"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_OrgaBackProcess_WE.DoAction(System.Int32,Signum.OrgaSoft.ERP.ProcessChangedAction)">
  <summary>
  Der OrgaBack-Vorfall WE wird in WinBack als Lieferung eingebucht.
@@ -3051,7 +3067,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Momentan funktioniert das nur mit der "alten" dll aus WinBack-Office
  </summary>
 </member>
-<member name="M:WinBack.wb_ShowPDF.ShowPdfDokument(System.String,System.Windows.Forms.PictureBox@,System.String)">
+<member name="M:WinBack.wb_ShowPDF.ShowPdfDokument(System.String,System.Windows.Forms.PictureBox@,System.Int32,System.String)">
  <summary>
  
  </summary>
@@ -5173,6 +5189,22 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Rezeptschritt.CalcZutaten(System.Collections.Generic.List{WinBack.wb_ZutatenElement}@,System.Double,System.Int32)">
+ <summary>
+ Fügt die Zutaten(Liste) für den aktuellen Rezeptschritt an die bestehende Liste an.
+ Je nach Inhalt des Deklarations-Feldes werden verschiedene Fälle unterschieden:
+ 
+     Deklarations-Feld 
+     
+         leer      -     Rohstoff-Name wird eingetragen
+         >         -     unterlagertes Rezept wird aufgelöst
+         Text      -     beliebiger Text wird übernommen
+         >Text     -     [Text] und Rezeptauflösung
+     
+ </summary>
+ <param name="zListe"></param>
+ <param name="Faktor"></param>
+</member>
 <member name="T:WinBack.wb_DockBarPanelMain">
  <summary>
  Klasse (must Inherit) beeinhaltet alle notwendigen Routinen für die Anzeige der Unterfenster in
@@ -5642,6 +5674,18 @@ Text aus Datenbank lesen - Übersetzung
  ausgegeben.
  </summary>
  <param name="TrennZeichen"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_ZutatenListe.FilterDezimalProzent(System.String)">
+ <summary>
+ Wandelt alle Komma-getrennten Prozent-Angaben im String in Dezimal-Punkte um.
+ Die ist notwendig, da die einzelnen Zutaten Komma-getrennt aufgeführt sind und damit
+ die Prozent-Angaben die Sortierung/Trennung der Zutaten beeinflussen
+ 
+     3,5% Milch      3.5% Milch
+     Ei 99,9 %       Ei 99.9%
+ </summary>
+ <param name="s"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_ZutatenListe_Global.#cctor">
@@ -7079,6 +7123,22 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.BtnExcelNwt_Click(System.Object,System.EventArgs)">
+ <summary>
+ Erstellt Excel-File mit der Berechnung der Nährwerte und Zusammensetzung der Deklaration.
+ Dient zur Kontrolle und Fehler-Ermittlung bei der Zutatenliste
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.BtnExcelNwtDetails_Click(System.Object,System.EventArgs)">
+ <summary>
+ Erstellt Excel-File mit der Berechnung der Nährwerte und Zusammensetzung der Deklaration.
+ Dient zur Kontrolle und Fehler-Ermittlung bei der Zutatenliste
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.ob_ChargenBestand.ImportChargenBestand(System.Int32,System.Boolean)">
  <summary>
  Liest aus der Tabelle dbo.ArtikelLagerkarte alle Datensätze
@@ -7469,6 +7529,17 @@ Text aus Datenbank lesen - Übersetzung
  <param name="d">date</param>
  <returns>String - im MySQL-DateTime-Format</returns>
 </member>
+<member name="M:WinBack.wb_sql_Functions.EinheitenUmrechnung(System.String,System.Int32,System.Int32)">
+ <summary>
+ Umrechnung der OrgaBack-Einheiten bezogen auf die Artikel-Nummer.
+ Liefert den Umrechnungsfaktor von einer Einheit in die andere für eine spezielle Artikelnummer.
+ (z.B. Sack in kg)
+ </summary>
+ <param name="ArtikelNr"></param>
+ <param name="VonEinheit"></param>
+ <param name="InEinheit"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_sql_Functions.MySQLDateTimeToDate(System.Object)">
  <summary>
  Wandelt MySQLDateTime in Microsoft-Date um. Wenn die Konvertierung fehl schlägt, wird
@@ -7842,6 +7913,18 @@ entsprechende Übersetzung aus winback.Texte geladen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Details.cbInterneDeklaration_Click(System.Object,System.EventArgs)">
+ <summary>
+ Globale Einstellung Zutatenliste - interne Deklaration verwenden
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Details.CheckZutatenAufloesen">
+ <summary>
+ Prüft ob das Flag Zutaten-Auflösen gesetzt ist oder nicht
+ </summary>
+</member>
 <member name="P:WinBack.wb_Rohstoffe_Main.FormText">
  <summary>
  Fenster-Name (Caption). Wird von Init() aufgerufen
@@ -7975,6 +8058,11 @@ in das DataView und in das Pop-Up-Menu eingetragen
  <param name="sSql">String SQL-Abfrage der Listen-Elemente</param>
  <param name="sGridName">String DataGrid-Name läd die Spalten-Einstellungen aus winback.ini</param>
  <param name="table">dbTable Datenbank Tabelle winback/wbdaten</param>
+</member>
+<member name="P:WinBack.wb_DataGridView.SuppressChangeEvent">
+ <summary>
+ ChangeEvent unterdrücken. (z.B. bei Doppelclick Artikel-Liste)
+ </summary>
 </member>
 <member name="M:WinBack.wb_DataGridView.SetSortColumn(System.Int32)">
  <summary>
@@ -8224,7 +8312,7 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="s"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Functions.AllergenToString(System.String)">
+<member name="M:WinBack.wb_Functions.AllergenToString(System.String,System.Boolean)">
  <summary>
  Wandelt die AllergenInfo in einen String um.
  </summary>
@@ -8703,6 +8791,13 @@ Start Timer nach Änderung Datensatz-Zeiger
 <member name="M:WinBack.wb_Sql.sqlSelect(System.String)">
  <summary>
 SQL-Select-Statement ausführen
+ </summary>
+ <param name="sql">Select-Statement</param>
+ <returns>False im Fehlerfall</returns>
+</member>
+<member name="M:WinBack.wb_Sql.sqlExecuteScalar(System.String,System.Data.SqlClient.SqlParameter[])">
+ <summary>
+SQL-ExecuteScalar Statement ausführen
  </summary>
  <param name="sql">Select-Statement</param>
  <returns>False im Fehlerfall</returns>

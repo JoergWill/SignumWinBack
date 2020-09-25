@@ -42,7 +42,7 @@
 
     'Sql-Statement E-Nummern
     Public Const sqlCheckTables = "SHOW TABLES"
-    Public Const sqlENummern = "SELECT * FROM ENummern"
+    Public Const sqlENummern = "SELECT * FROM ENummern ORDER BY EN_Nr, EN_Idx"
 
     'Sql-Statement alle Texte aus winback.Texte
     Public Const sqlWinBackTxte = "SELECT T_TextIndex, T_Typ, T_Text FROM Texte WHERE T_Sprache = [0]"

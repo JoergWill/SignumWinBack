@@ -31,7 +31,6 @@ Partial Class wb_Artikel_Hinweise
         Me.BtnRotateL = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.BtnTransferPdf = New System.Windows.Forms.Button()
         Me.lblArtikelHinweis = New System.Windows.Forms.Label()
@@ -39,10 +38,14 @@ Partial Class wb_Artikel_Hinweise
         Me.cbAufloesung = New System.Windows.Forms.ComboBox()
         Me.tHinweisName = New System.Windows.Forms.TextBox()
         Me.lblAufloesung = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.BtnPageMinus = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.BtnPagePlus = New System.Windows.Forms.Button()
         CType(Me.VorschauPDF, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel1.SuspendLayout()
-        Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'VorschauPDF
@@ -110,16 +113,6 @@ Partial Class wb_Artikel_Hinweise
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1010, 554)
         Me.TableLayoutPanel1.TabIndex = 75
-        '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.Label1)
-        Me.Panel1.Controls.Add(Me.BtnRotateL)
-        Me.Panel1.Controls.Add(Me.BtnRotateR)
-        Me.Panel1.Location = New System.Drawing.Point(813, 153)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(194, 94)
-        Me.Panel1.TabIndex = 83
         '
         'Panel2
         '
@@ -199,6 +192,49 @@ Partial Class wb_Artikel_Hinweise
         Me.lblAufloesung.TabIndex = 81
         Me.lblAufloesung.Text = "Auflösung (dpi)"
         '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.BtnPagePlus)
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.BtnPageMinus)
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.BtnRotateL)
+        Me.Panel1.Controls.Add(Me.BtnRotateR)
+        Me.Panel1.Location = New System.Drawing.Point(813, 153)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(194, 152)
+        Me.Panel1.TabIndex = 83
+        '
+        'BtnPageMinus
+        '
+        Me.BtnPageMinus.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnPageMinus.Location = New System.Drawing.Point(6, 93)
+        Me.BtnPageMinus.Name = "BtnPageMinus"
+        Me.BtnPageMinus.Size = New System.Drawing.Size(77, 42)
+        Me.BtnPageMinus.TabIndex = 75
+        Me.BtnPageMinus.Text = "<< zurück"
+        Me.BtnPageMinus.UseVisualStyleBackColor = True
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Label2.Location = New System.Drawing.Point(3, 75)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(31, 13)
+        Me.Label2.TabIndex = 76
+        Me.Label2.Text = "Seite"
+        '
+        'BtnPagePlus
+        '
+        Me.BtnPagePlus.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnPagePlus.Location = New System.Drawing.Point(89, 93)
+        Me.BtnPagePlus.Name = "BtnPagePlus"
+        Me.BtnPagePlus.Size = New System.Drawing.Size(77, 42)
+        Me.BtnPagePlus.TabIndex = 77
+        Me.BtnPagePlus.Text = "vor >>"
+        Me.BtnPagePlus.UseVisualStyleBackColor = True
+        '
         'wb_Artikel_Hinweise
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -209,10 +245,10 @@ Partial Class wb_Artikel_Hinweise
         Me.Text = "Artikel-Verarbeitungshinweise"
         CType(Me.VorschauPDF, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -231,4 +267,7 @@ Partial Class wb_Artikel_Hinweise
     Friend WithEvents tHinweisName As Windows.Forms.TextBox
     Friend WithEvents lblAufloesung As Windows.Forms.Label
     Friend WithEvents Panel1 As Windows.Forms.Panel
+    Friend WithEvents BtnPagePlus As Windows.Forms.Button
+    Friend WithEvents Label2 As Windows.Forms.Label
+    Friend WithEvents BtnPageMinus As Windows.Forms.Button
 End Class

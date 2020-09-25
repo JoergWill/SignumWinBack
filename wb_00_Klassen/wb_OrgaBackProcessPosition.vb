@@ -5,6 +5,7 @@
     Private _VorfallNr As String
     Private _LieferDatum As String
     Private _GelieferteMenge As Double
+    Private _Einheit As Integer
     Private _SerienNummern As String
     Private _Preis As Double
 
@@ -80,6 +81,38 @@
         End Set
     End Property
 
+    Public Property Einheit As Integer
+        Get
+            Return _Einheit
+        End Get
+        Set(value As Integer)
+            _Einheit = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Die gelieferte Menge in kg.
+    ''' Wenn in der Tabelle dbo.GeschäftsvorfallPosition die Einheit nicht kg ist, wird über die Funktion EinheitenUmrechnung 
+    ''' der Wert in kg umgerechnet und zurückgegeben.
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property GelieferteMengeInkg As Double
+        Get
+            If Einheit = wb_Global.obEinheitKilogramm Then
+                Return GelieferteMenge
+            Else
+                Return wb_sql_Functions.EinheitenUmrechnung(ArtikelNummer, Einheit, wb_Global.obEinheitKilogramm)
+            End If
+        End Get
+    End Property
+
+
+    ''' <summary>
+    ''' Liest die Datenfelder aus der Tabelle dbo.GeschäftsvorfallPosition
+    ''' </summary>
+    ''' <param name="Name"></param>
+    ''' <param name="Value"></param>
+    ''' <returns></returns>
     Public Function MsSQLdbRead_Fields(Name As String, Value As Object) As Boolean
         'DB-Null aus der Datenbank
         If IsDBNull(Value) Then
@@ -114,6 +147,10 @@
                 'Seriennummer
                 Case "SerienNummer"
                     _SerienNummern = Value
+                'Einheit (z.B. bei Lieferung)
+                Case "Einheit"
+                    _Einheit = Value
+                'Einzelpreis
                 Case "EinzelpreisNetto"
                     _Preis = Value
             End Select

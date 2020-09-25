@@ -17,10 +17,8 @@ Public Class wb_Rohstoffe_Lieferung
             LagerDataGridView.ColNames.Add(sName)
         Next
 
-
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
-
 
         'Beim ersten Aufruf wird der aktuelle Rohstoff angezeigt. Sonst wird beim Öffnen des Detail-Info-Fensters
         'der Inhalt der Textfelder gelöscht !!
@@ -59,8 +57,6 @@ Public Class wb_Rohstoffe_Lieferung
         LagerDataGridView.Columns(COLMenge).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleRight
         LagerDataGridView.Columns(COLVerbr).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleRight
         LagerDataGridView.Columns(COLStats).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-
-
 
     End Sub
 

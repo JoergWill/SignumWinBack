@@ -172,18 +172,30 @@ Public Class wb_Functions
     ''' </summary>
     ''' <param name="s"></param>
     ''' <returns></returns>
-    Public Shared Function AllergenToString(s As String) As String
+    Public Shared Function AllergenToString(s As String, Optional Nur_CT As Boolean = False) As String
         Select Case s
             Case wb_Global.AllergenInfo.C
                 Return "C"
             Case wb_Global.AllergenInfo.K
-                Return "K"
+                If Nur_CT Then
+                    Return ""
+                Else
+                    Return "K"
+                End If
             Case wb_Global.AllergenInfo.T
                 Return "T"
             Case wb_Global.AllergenInfo.N, 0
-                Return "N"
+                If Nur_CT Then
+                    Return ""
+                Else
+                    Return "N"
+                End If
             Case Else
-                Return "ERR"
+                If Nur_CT Then
+                    Return ""
+                Else
+                    Return "ERR"
+                End If
         End Select
     End Function
 

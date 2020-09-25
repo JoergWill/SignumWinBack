@@ -3,6 +3,7 @@
 Public Class wb_Rohstoffe_Dokumente
     Private nwt As wb_nwtCl_WinBack
     Private id As String
+    Private Page As Integer = 1
 
 
     Public Sub New(nwt As wb_nwtCl_WinBack, id As String)
@@ -41,7 +42,7 @@ Public Class wb_Rohstoffe_Dokumente
 
             Select Case Path.GetExtension(Name)
                 Case ".pdf"
-                    wb_ShowPDF.ShowPdfDokument(wb_GlobalSettings.pRohstoffDatenPath & Name, VorschauPDF)
+                    wb_ShowPDF.ShowPdfDokument(wb_GlobalSettings.pRohstoffDatenPath & Name, VorschauPDF, Page)
                 Case Else
                     VorschauPDF.Image = Nothing
             End Select

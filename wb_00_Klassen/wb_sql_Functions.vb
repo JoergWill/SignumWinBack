@@ -71,6 +71,54 @@ Public Class wb_sql_Functions
     End Function
 
     ''' <summary>
+    ''' Umrechnung der OrgaBack-Einheiten bezogen auf die Artikel-Nummer.
+    ''' Liefert den Umrechnungsfaktor von einer Einheit in die andere für eine spezielle Artikelnummer.
+    ''' (z.B. Sack in kg)
+    ''' </summary>
+    ''' <param name="ArtikelNr"></param>
+    ''' <param name="VonEinheit"></param>
+    ''' <param name="InEinheit"></param>
+    ''' <returns></returns>
+    Public Shared Function EinheitenUmrechnung(ArtikelNr As String, VonEinheit As Integer, InEinheit As Integer) As Double
+        'Datenbankverbindung öffnen MsSQL
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim pl(2) As SqlClient.SqlParameter
+        Dim p As New SqlClient.SqlParameter
+
+        'Artikelnummer
+        pl(0) = New SqlClient.SqlParameter
+        pl(0).ParameterName = "ArtikelNr"
+        pl(0).SqlDbType = SqlDbType.Text
+        pl(0).Value = ArtikelNr
+        'pl.Add(p)
+        'VonEinheit
+        pl(1) = New SqlClient.SqlParameter
+        pl(1).ParameterName = "VonEinheit"
+        pl(1).SqlDbType = SqlDbType.Int
+        pl(1).Value = VonEinheit
+        'pl.Add(p)
+        'InEinheit
+        pl(2) = New SqlClient.SqlParameter
+        pl(2).ParameterName = "InEinheit"
+        pl(2).SqlDbType = SqlDbType.Int
+        pl(2).Value = InEinheit
+        'pl.Add(p)
+        'Stored Procedure ausführen
+        EinheitenUmrechnung = orgaback.sqlExecuteScalar("SELECT [dbo].[EinheitenUmrechnung](@ArtikelNr, @VonEinheit, @InEinheit) AS Faktor", pl)
+
+        ''alle Datensätze einlesen
+        'While orgaback.Read
+        '    'Alle Datensätze einlesen
+        '    For i = 0 To orgaback.msRead.FieldCount - 1
+        '        Debug.Print("OrgaBack StoredProcedure Read " & orgaback.msRead.GetName(i) & "/" & orgaback.msRead.GetValue(i))
+        '    Next
+        'End While
+        'Datenbankverbindung wieder schliessen
+        orgaback.Close()
+    End Function
+
+
+    ''' <summary>
     ''' Wandelt MySQLDateTime in Microsoft-Date um. Wenn die Konvertierung fehl schlägt, wird
     ''' 22.11.1964 zurückgegeben.
     ''' </summary>

@@ -109,6 +109,8 @@ Partial Class wb_Rezept_Rezeptur
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.tb_Naehrwerte = New System.Windows.Forms.TabPage()
         Me.tb_Zutaten = New System.Windows.Forms.TabPage()
+        Me.BtnExcelNwtDetails = New System.Windows.Forms.Button()
+        Me.BtnExcelNwt = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tbMehlZusammenSetzung = New System.Windows.Forms.TextBox()
         Me.SwListeOptimieren = New MetroFramework.Controls.MetroToggle()
@@ -167,6 +169,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.EnhEdit_Rezept.AutoSize = False
         Me.EnhEdit_Rezept.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.EnhEdit_Rezept.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.EnhEdit_Rezept.eFormat = wb_Format.FUndefined
         Me.EnhEdit_Rezept.eOG = "0"
         Me.EnhEdit_Rezept.eUG = "0"
         Me.EnhEdit_Rezept.Init = True
@@ -183,6 +186,7 @@ Partial Class wb_Rezept_Rezeptur
         'EnhEdit1
         '
         Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.EnhEdit1.eFormat = wb_Format.FUndefined
         Me.EnhEdit1.eOG = "0"
         Me.EnhEdit1.eUG = "0"
         Me.EnhEdit1.Init = True
@@ -929,6 +933,8 @@ Partial Class wb_Rezept_Rezeptur
         '
         'tb_Zutaten
         '
+        Me.tb_Zutaten.Controls.Add(Me.BtnExcelNwtDetails)
+        Me.tb_Zutaten.Controls.Add(Me.BtnExcelNwt)
         Me.tb_Zutaten.Controls.Add(Me.Label1)
         Me.tb_Zutaten.Controls.Add(Me.tbMehlZusammenSetzung)
         Me.tb_Zutaten.Controls.Add(Me.SwListeOptimieren)
@@ -945,12 +951,40 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Zutaten.Text = "ZutatenListe"
         Me.tb_Zutaten.UseVisualStyleBackColor = True
         '
+        'BtnExcelNwtDetails
+        '
+        Me.BtnExcelNwtDetails.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.BtnExcelNwtDetails.Image = Global.WinBack.My.Resources.Resources.Excel_32x32
+        Me.BtnExcelNwtDetails.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.BtnExcelNwtDetails.Location = New System.Drawing.Point(671, 216)
+        Me.BtnExcelNwtDetails.Name = "BtnExcelNwtDetails"
+        Me.BtnExcelNwtDetails.Size = New System.Drawing.Size(135, 52)
+        Me.BtnExcelNwtDetails.TabIndex = 25
+        Me.BtnExcelNwtDetails.TabStop = False
+        Me.BtnExcelNwtDetails.Text = "Berechnung Details"
+        Me.BtnExcelNwtDetails.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.BtnExcelNwtDetails.UseVisualStyleBackColor = True
+        '
+        'BtnExcelNwt
+        '
+        Me.BtnExcelNwt.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.BtnExcelNwt.Image = Global.WinBack.My.Resources.Resources.Excel_32x32
+        Me.BtnExcelNwt.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.BtnExcelNwt.Location = New System.Drawing.Point(671, 158)
+        Me.BtnExcelNwt.Name = "BtnExcelNwt"
+        Me.BtnExcelNwt.Size = New System.Drawing.Size(135, 52)
+        Me.BtnExcelNwt.TabIndex = 24
+        Me.BtnExcelNwt.TabStop = False
+        Me.BtnExcelNwt.Text = "Berechnung Nährwerte"
+        Me.BtnExcelNwt.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.BtnExcelNwt.UseVisualStyleBackColor = True
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold)
         Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label1.Location = New System.Drawing.Point(659, 170)
+        Me.Label1.Location = New System.Drawing.Point(6, 361)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(180, 18)
         Me.Label1.TabIndex = 23
@@ -958,12 +992,13 @@ Partial Class wb_Rezept_Rezeptur
         '
         'tbMehlZusammenSetzung
         '
-        Me.tbMehlZusammenSetzung.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.tbMehlZusammenSetzung.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tbMehlZusammenSetzung.Font = New System.Drawing.Font("Arial", 11.25!)
-        Me.tbMehlZusammenSetzung.Location = New System.Drawing.Point(662, 191)
+        Me.tbMehlZusammenSetzung.Location = New System.Drawing.Point(9, 382)
         Me.tbMehlZusammenSetzung.Multiline = True
         Me.tbMehlZusammenSetzung.Name = "tbMehlZusammenSetzung"
-        Me.tbMehlZusammenSetzung.Size = New System.Drawing.Size(204, 251)
+        Me.tbMehlZusammenSetzung.ReadOnly = True
+        Me.tbMehlZusammenSetzung.Size = New System.Drawing.Size(633, 60)
         Me.tbMehlZusammenSetzung.TabIndex = 22
         '
         'SwListeOptimieren
@@ -972,7 +1007,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.SwListeOptimieren.DisplayStatus = False
         Me.SwListeOptimieren.FontSize = MetroFramework.MetroLinkSize.Medium
         Me.SwListeOptimieren.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.SwListeOptimieren.Location = New System.Drawing.Point(816, 92)
+        Me.SwListeOptimieren.Location = New System.Drawing.Point(825, 104)
         Me.SwListeOptimieren.Name = "SwListeOptimieren"
         Me.SwListeOptimieren.Size = New System.Drawing.Size(50, 21)
         Me.SwListeOptimieren.TabIndex = 21
@@ -984,7 +1019,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.lblListeOptimieren.AutoSize = True
         Me.lblListeOptimieren.Font = New System.Drawing.Font("Arial", 11.25!)
         Me.lblListeOptimieren.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblListeOptimieren.Location = New System.Drawing.Point(659, 95)
+        Me.lblListeOptimieren.Location = New System.Drawing.Point(668, 107)
         Me.lblListeOptimieren.Name = "lblListeOptimieren"
         Me.lblListeOptimieren.Size = New System.Drawing.Size(111, 17)
         Me.lblListeOptimieren.TabIndex = 20
@@ -998,7 +1033,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.SwENummern.DisplayStatus = False
         Me.SwENummern.FontSize = MetroFramework.MetroLinkSize.Medium
         Me.SwENummern.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.SwENummern.Location = New System.Drawing.Point(816, 56)
+        Me.SwENummern.Location = New System.Drawing.Point(825, 68)
         Me.SwENummern.Name = "SwENummern"
         Me.SwENummern.Size = New System.Drawing.Size(50, 21)
         Me.SwENummern.TabIndex = 19
@@ -1010,7 +1045,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.lblENummern.AutoSize = True
         Me.lblENummern.Font = New System.Drawing.Font("Arial", 11.25!)
         Me.lblENummern.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblENummern.Location = New System.Drawing.Point(659, 59)
+        Me.lblENummern.Location = New System.Drawing.Point(668, 71)
         Me.lblENummern.Name = "lblENummern"
         Me.lblENummern.Size = New System.Drawing.Size(151, 17)
         Me.lblENummern.TabIndex = 18
@@ -1018,12 +1053,13 @@ Partial Class wb_Rezept_Rezeptur
         '
         'tb_ZutatenListe
         '
-        Me.tb_ZutatenListe.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.tb_ZutatenListe.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.tb_ZutatenListe.Font = New System.Drawing.Font("Arial", 11.25!)
         Me.tb_ZutatenListe.Location = New System.Drawing.Point(9, 55)
         Me.tb_ZutatenListe.Multiline = True
         Me.tb_ZutatenListe.Name = "tb_ZutatenListe"
-        Me.tb_ZutatenListe.Size = New System.Drawing.Size(633, 387)
+        Me.tb_ZutatenListe.ReadOnly = True
+        Me.tb_ZutatenListe.Size = New System.Drawing.Size(633, 303)
         Me.tb_ZutatenListe.TabIndex = 15
         '
         'Label2
@@ -1215,4 +1251,6 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents EnhEdit1 As EnhEdit.EnhEdit
     Friend WithEvents Label1 As Windows.Forms.Label
     Friend WithEvents tbMehlZusammenSetzung As Windows.Forms.TextBox
+    Friend WithEvents BtnExcelNwtDetails As Windows.Forms.Button
+    Friend WithEvents BtnExcelNwt As Windows.Forms.Button
 End Class

@@ -13,38 +13,77 @@ Imports WinBack
 
     <TestMethod()> Public Sub Test_DelDoubletten()
         Dim Zutaten As New wb_ZutatenListe
-        Dim L1 As wb_Global.ZutatenListe
-
         Zutaten.Clear()
+
+        Dim L1 As New wb_ZutatenElement
+        Dim L2 As New wb_ZutatenElement
+        Dim L3 As New wb_ZutatenElement
 
         L1.Zutaten = "{Weizenmehl}"
         L1.SollMenge = 100
         Zutaten.Liste.Add(L1)
 
-        L1.Zutaten = "{Weizenmehl}"
-        L1.SollMenge = 50
-        Zutaten.Liste.Add(L1)
+        L2.Zutaten = "{Weizenmehl}"
+        L2.SollMenge = 50
+        Zutaten.Liste.Add(L2)
+
+        L3.Zutaten = "{Weizen}"
+        L3.SollMenge = 50
+        Zutaten.Liste.Add(L3)
 
         Debug.Print("==========================")
-        Debug.Print("2 Einträge erzeugt")
+        Debug.Print("3 Einträge erzeugt")
+        Zutaten.DebugPrint()
+        Assert.AreEqual(3, Zutaten.Liste.Count)
+
+        Zutaten.Del_Doubletten()
+        Debug.Print("==========================")
+        Debug.Print("nach DelDoubletten")
         Zutaten.DebugPrint()
         Assert.AreEqual(2, Zutaten.Liste.Count)
+        Assert.AreEqual(150.0, Zutaten.Liste(0).SollMenge)
+
+
+    End Sub
+
+    <TestMethod()> Public Sub Test_DelDoublettenMulti()
+        Dim Zutaten As New wb_ZutatenListe
+        Zutaten.Clear()
+
+        Dim L1 As New wb_ZutatenElement
+        Dim L2 As New wb_ZutatenElement
+        Dim L3 As New wb_ZutatenElement
+
+        L1.Zutaten = "{Weizenmehl}"
+        L1.SollMenge = 100
+        Zutaten.Liste.Add(L1)
+
+        L2.Zutaten = "{Weizenmehl}"
+        L2.SollMenge = 50
+        Zutaten.Liste.Add(L2)
+
+        L3.Zutaten = "{Weizenmehl}"
+        L3.SollMenge = 100
+        Zutaten.Liste.Add(L3)
+
+        Debug.Print("==========================")
+        Debug.Print("3 Einträge erzeugt")
+        Zutaten.DebugPrint()
+        Assert.AreEqual(3, Zutaten.Liste.Count)
 
         Zutaten.Del_Doubletten()
         Debug.Print("==========================")
         Debug.Print("nach DelDoubletten")
         Zutaten.DebugPrint()
         Assert.AreEqual(1, Zutaten.Liste.Count)
-        Assert.AreEqual(150.0, DirectCast(Zutaten.Liste(0), wb_Global.ZutatenListe).SollMenge)
-
-
+        Assert.AreEqual(250.0, Zutaten.Liste(0).SollMenge)
     End Sub
 
     <TestMethod()> Public Sub Test_Split()
         Dim Zutaten As New wb_ZutatenListe
-        Dim L1 As wb_Global.ZutatenListe
-
         Zutaten.Clear()
+
+        Dim L1 As New wb_ZutatenElement
         L1.Zutaten = "{Gerstenmalzextrakt getrocknet}, Zucker, Traubenzucker, {Gerstenmalzmehl}, " &
                      "{Roggenmehl}, Emulgator Mono-und Diacetylweinsäureester von Mono- und Diglyceriden von Speisefettsäuren E 472e, " &
                      "Stabilisator: Guarkernmehl(E 412), Säureregulator:(Natriumcarbonate), Calciumsulfat, pflanzliches Öl, Enzyme, " &
@@ -53,35 +92,77 @@ Imports WinBack
         Zutaten.Liste.Add(L1)
         Zutaten.Split_Ingredients()
 
-        Assert.AreEqual("Gerstenmalzextrakt getrocknet", DirectCast(Zutaten.Liste(0), wb_Global.ZutatenListe).Zutaten)
-        Assert.IsTrue(DirectCast(Zutaten.Liste(0), wb_Global.ZutatenListe).FettDruck)
-        Assert.AreEqual("Zucker", DirectCast(Zutaten.Liste(1), wb_Global.ZutatenListe).Zutaten)
-        Assert.IsFalse(DirectCast(Zutaten.Liste(1), wb_Global.ZutatenListe).FettDruck)
-        Assert.AreEqual("Traubenzucker", DirectCast(Zutaten.Liste(2), wb_Global.ZutatenListe).Zutaten)
-        Assert.IsFalse(DirectCast(Zutaten.Liste(2), wb_Global.ZutatenListe).FettDruck)
-        Assert.AreEqual("Gerstenmalzmehl", DirectCast(Zutaten.Liste(3), wb_Global.ZutatenListe).Zutaten)
-        Assert.IsTrue(DirectCast(Zutaten.Liste(3), wb_Global.ZutatenListe).FettDruck)
+        Assert.AreEqual("Gerstenmalzextrakt getrocknet", Zutaten.Liste(0).Zutaten)
+        Assert.IsTrue(Zutaten.Liste(0).FettDruck)
+        Assert.AreEqual("Zucker", Zutaten.Liste(1).Zutaten)
+        Assert.IsFalse(Zutaten.Liste(1).FettDruck)
+        Assert.AreEqual("Traubenzucker", Zutaten.Liste(2).Zutaten)
+        Assert.IsFalse(Zutaten.Liste(2).FettDruck)
+        Assert.AreEqual("Gerstenmalzmehl", Zutaten.Liste(3).Zutaten)
+        Assert.IsTrue(Zutaten.Liste(3).FettDruck)
     End Sub
+
+    <TestMethod()> Public Sub Test_Split_Numbers()
+        Dim Zutaten As New wb_ZutatenListe
+        Dim L1 As New wb_ZutatenElement
+
+        Zutaten.Clear()
+        L1.Zutaten = "{Rohmilch} 3,5%"
+        L1.SollMenge = 2
+        Zutaten.Liste.Add(L1)
+        Zutaten.Split_Ingredients()
+        Assert.AreEqual("Rohmilch 3.5%", Zutaten.Liste(0).Zutaten)
+
+        Zutaten.Clear()
+        L1.Zutaten = "{Rohmilch} 3,5 %, {Reis}, Zucker, Zucker, Zimt, Zimt, Zimt"
+        L1.SollMenge = 2
+        Zutaten.Liste.Add(L1)
+        Zutaten.Split_Ingredients()
+        Assert.AreEqual("Rohmilch 3.5%", Zutaten.Liste(0).Zutaten)
+        Assert.AreEqual("Reis", Zutaten.Liste(1).Zutaten)
+        Assert.AreEqual(7, Zutaten.Liste.Count)
+
+        Zutaten.Del_Doubletten()
+        Assert.AreEqual(4, Zutaten.Liste.Count)
+        Assert.AreEqual("Rohmilch 3.5%", Zutaten.Liste(0).Zutaten)
+        Assert.AreEqual("Reis", Zutaten.Liste(1).Zutaten)
+        Assert.AreEqual("Zucker", Zutaten.Liste(2).Zutaten)
+        Assert.AreEqual("Zimt", Zutaten.Liste(3).Zutaten)
+
+        Zutaten.Sort()
+        Zutaten.DebugPrint()
+
+        Assert.AreEqual(4, Zutaten.Liste.Count)
+        Assert.AreEqual("Zimt", Zutaten.Liste(0).Zutaten)
+        Assert.AreEqual("Zucker", Zutaten.Liste(1).Zutaten)
+        Assert.AreEqual("Rohmilch 3.5%", Zutaten.Liste(2).Zutaten)
+        Assert.AreEqual("Reis", Zutaten.Liste(3).Zutaten)
+
+    End Sub
+
 
     <TestMethod()> Public Sub Test_DelSplitDel()
         Dim Zutaten As New wb_ZutatenListe
-        Dim L1 As wb_Global.ZutatenListe
-
         Zutaten.Clear()
-        L1.Zutaten = "{Weizen}"
-        L1.SollMenge = 100
-        Zutaten.Liste.Add(L1)
+
+        Dim L1 As New wb_ZutatenElement
+        Dim L2 As New wb_ZutatenElement
+        Dim L3 As New wb_ZutatenElement
 
         L1.Zutaten = "{Weizen}"
         L1.SollMenge = 100
         Zutaten.Liste.Add(L1)
 
-        L1.Zutaten = "{Gerstenmalzextrakt getrocknet}, Zucker, Traubenzucker, {Gerstenmalzmehl}, " &
+        L2.Zutaten = "{Weizen}"
+        L2.SollMenge = 100
+        Zutaten.Liste.Add(L2)
+
+        L3.Zutaten = "{Gerstenmalzextrakt getrocknet}, Zucker, Traubenzucker, {Gerstenmalzmehl}, " &
                      "{Roggenmehl}, Emulgator Mono-und Diacetylweinsäureester von Mono- und Diglyceriden von Speisefettsäuren E 472e, " &
                      "Stabilisator: Guarkernmehl(E 412), Säureregulator:(Natriumcarbonate), Calciumsulfat, pflanzliches Öl, Enzyme, " &
                      "Mehlbehandlungsmittel: Ascorbinsäure(E 300), {Weizen, Dinkel}, {Soja,Milch}"
-        L1.SollMenge = 2
-        Zutaten.Liste.Add(L1)
+        L3.SollMenge = 2
+        Zutaten.Liste.Add(L3)
 
         Zutaten.Del_Doubletten()
         Zutaten.Split_Ingredients()
@@ -89,8 +170,8 @@ Imports WinBack
         Zutaten.DebugPrint()
         Assert.AreEqual(16, Zutaten.Liste.Count)
 
-        Assert.AreEqual("Weizen", DirectCast(Zutaten.Liste(0), wb_Global.ZutatenListe).Zutaten)
-        Assert.IsTrue(DirectCast(Zutaten.Liste(0), wb_Global.ZutatenListe).FettDruck)
+        Assert.AreEqual("Weizen", Zutaten.Liste(0).Zutaten)
+        Assert.IsTrue(Zutaten.Liste(0).FettDruck)
 
     End Sub
 
@@ -145,22 +226,24 @@ Imports WinBack
 
     <TestMethod()> Public Sub Test_Convert_ENummer()
         Dim Zutaten As New wb_ZutatenListe
-        Dim L1 As wb_Global.ZutatenListe
+        Zutaten.Clear()
 
-
+        Dim L1 As New wb_ZutatenElement
+        Dim L2 As New wb_ZutatenElement
+        Dim L3 As New wb_ZutatenElement
 
         Zutaten.Clear()
         L1.Zutaten = "Stabilisator: Guarkernmehl(E 412)"
         L1.SollMenge = 100
         Zutaten.Liste.Add(L1)
 
-        L1.Zutaten = "Emulgator Mono-und Diacetylweinsäureester von Mono- und Diglyceriden von Speisefettsäuren E 472e"
-        L1.SollMenge = 100
-        Zutaten.Liste.Add(L1)
+        L2.Zutaten = "Emulgator Mono-und Diacetylweinsäureester von Mono- und Diglyceriden von Speisefettsäuren E 472e"
+        L2.SollMenge = 100
+        Zutaten.Liste.Add(L2)
 
-        L1.Zutaten = "Ascorbinsäure"
-        L1.SollMenge = 100
-        Zutaten.Liste.Add(L1)
+        L3.Zutaten = "Ascorbinsäure"
+        L3.SollMenge = 100
+        Zutaten.Liste.Add(L3)
 
         Zutaten.Convert_ToEnr()
         Zutaten.DebugPrint()
@@ -168,29 +251,32 @@ Imports WinBack
 
     <TestMethod()> Public Sub Test_Opt_ZutatenListe()
         Dim Zutaten As New wb_ZutatenListe
-        Dim L1 As wb_Global.ZutatenListe
-
         Zutaten.Clear()
-        L1.Zutaten = "{Weizen}"
-        L1.SollMenge = 100
-        Zutaten.Liste.Add(L1)
+
+        Dim L1 As New wb_ZutatenElement
+        Dim L2 As New wb_ZutatenElement
+        Dim L3 As New wb_ZutatenElement
 
         L1.Zutaten = "{Weizen}"
         L1.SollMenge = 100
         Zutaten.Liste.Add(L1)
 
-        L1.Zutaten = "{Gerstenmalzextrakt getrocknet}, Zucker, Traubenzucker, {Gerstenmalzmehl}, " &
+        L2.Zutaten = "{Weizen}"
+        L2.SollMenge = 100
+        Zutaten.Liste.Add(L2)
+
+        L3.Zutaten = "{Gerstenmalzextrakt getrocknet}, Zucker, Traubenzucker, {Gerstenmalzmehl}, " &
                      "{Roggenmehl}, Emulgator Mono-und Diacetylweinsäureester von Mono- und Diglyceriden von Speisefettsäuren E 472e, " &
                      "Stabilisator: Guarkernmehl(E 412), Säureregulator:(Natriumcarbonate), Calciumsulfat, pflanzliches Öl, Enzyme, " &
                      "Mehlbehandlungsmittel: Ascorbinsäure(E 300), {Weizen, Dinkel}, {Soja,Milch}"
-        L1.SollMenge = 2
-        Zutaten.Liste.Add(L1)
+        L3.SollMenge = 2
+        Zutaten.Liste.Add(L3)
 
         Zutaten.Opt()
         Zutaten.DebugPrint()
         Assert.AreEqual(16, Zutaten.Liste.Count)
 
-        Assert.AreEqual("Weizen", DirectCast(Zutaten.Liste(0), wb_Global.ZutatenListe).Zutaten)
-        Assert.IsTrue(DirectCast(Zutaten.Liste(0), wb_Global.ZutatenListe).FettDruck)
+        Assert.AreEqual("Weizen", Zutaten.Liste(0).Zutaten)
+        Assert.IsTrue(Zutaten.Liste(0).FettDruck)
     End Sub
 End Class

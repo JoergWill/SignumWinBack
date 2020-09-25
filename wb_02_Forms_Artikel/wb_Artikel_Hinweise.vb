@@ -7,6 +7,8 @@ Imports System.Windows.Forms
 Public Class wb_Artikel_Hinweise
     Inherits DockContent
     Private dpi As String = ""
+    Private Page As Integer = 1
+    Private MaxPages As Integer = 1
 
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -43,14 +45,22 @@ Public Class wb_Artikel_Hinweise
             cbAufloesung.Text = "Default"
         End If
 
+        'PDF-Seite anzeigen
+        Page = 1
+        ShowPDF(Page)
+    End Sub
+
+    Private Sub ShowPDF(Seite As Integer)
         'wenn ein Artikel-Verarbeitungshinweis vorhanden ist
         If Artikel.VerarbeitungsHinweisePfad <> "" Then
             'Mauszeiger anpassen
             Me.Cursor = Cursors.WaitCursor
             'Dateiname pdf-File
-            wb_ShowPDF.ShowPdfDokument(Artikel.VerarbeitungsHinweisePfad & "\" & Artikel.VerarbeitungsHinweise & ".pdf", VorschauPDF, dpi)
+            wb_ShowPDF.ShowPdfDokument(Artikel.VerarbeitungsHinweisePfad & "\" & Artikel.VerarbeitungsHinweise & ".pdf", VorschauPDF, Seite, dpi)
+            MaxPages = wb_ShowPDF.MaxPages
         Else
             VorschauPDF.Image = Nothing
+            MaxPages = 1
         End If
         'Mauszeiger anpassen
         Me.Cursor = Cursors.Default
@@ -61,6 +71,20 @@ Public Class wb_Artikel_Hinweise
             Artikel.VerarbeitungsHinweise = IO.Path.GetFileNameWithoutExtension(OpenPdfFile.SafeFileName)
             Artikel.VerarbeitungsHinweisePfad = IO.Path.GetDirectoryName(OpenPdfFile.FileName)
             DetailInfo(sender)
+
+            'Anzahl der Seiten im pdf
+            Page = 1
+            MaxPages = wb_ShowPDF.MaxPages
+            'wenn mehrere Seiten im pdf vorhanden sind, werden die Buttons angezeigt
+            If MaxPages > 1 Then
+                BtnPageMinus.Visible = True
+                BtnPagePlus.Visible = True
+            Else
+                BtnPageMinus.Visible = False
+                BtnPagePlus.Visible = False
+            End If
+
+            'Verarbeitungshinweis-Filename in DB schreiben
             Artikel.UpdateDB()
         End If
     End Sub
@@ -80,15 +104,31 @@ Public Class wb_Artikel_Hinweise
         Me.Cursor = Cursors.WaitCursor
 
         'ftp-Files werden im Temp-Verzeichnis erzeugt
+        Dim nmePage As String = "01"
         Dim nmeHTML As String = Artikel.VerarbeitungsHinweise & ".html"
-        Dim nmePNG As String = Artikel.VerarbeitungsHinweise & ".png"
+        Dim nmePNG As String = Artikel.VerarbeitungsHinweise & "_" & nmePage & ".png"
 
         Dim ftpHTML As String = wb_GlobalSettings.pTempPath & nmeHTML
         Dim ftpPNG As String = wb_GlobalSettings.pTempPath & nmePNG
         Const C34 As Char = Chr(34)
 
-        'pdf im Format png speichern
-        VorschauPDF.Image.Save(ftpPNG, ImageFormat.Png)
+        'alle Seiten übertragen
+        For i = 1 To MaxPages
+            'Dateiname pdf-File - Seite x
+            wb_ShowPDF.ShowPdfDokument(Artikel.VerarbeitungsHinweisePfad & "\" & Artikel.VerarbeitungsHinweise & ".pdf", VorschauPDF, i, dpi)
+            'Seite als String
+            nmePage = i.ToString("0#")
+            'Filename des umgewandelten Image als png
+            nmePNG = Artikel.VerarbeitungsHinweise & "_" & nmePage & ".png"
+            ftpPNG = wb_GlobalSettings.pTempPath & nmePNG
+            'pdf im Format png speichern
+            If VorschauPDF.Image IsNot Nothing Then
+                VorschauPDF.Image.Save(ftpPNG, ImageFormat.Png)
+            Else
+                MsgBox("Fehler beim Laden/Anzeigen des pdf-Dokumentes " & ftpPNG, MsgBoxStyle.Critical, "Verarbeitungshinweise")
+            End If
+        Next
+
         'HTML-Hülle erzeugen
         Dim HTMLFile As New StreamWriter(ftpHTML)
         HTMLFile.WriteLine("<!DOCTYPE HTML PUBLIC " & C34 & "-// W3C // DTD HTML 4.01 Transitional//EN" & C34 & ">")
@@ -97,7 +137,14 @@ Public Class wb_Artikel_Hinweise
         HTMLFile.WriteLine("<title>WinBack</title>")
         HTMLFile.WriteLine("</head>")
         HTMLFile.WriteLine("<body text=" & C34 & "#000000" & C34 & "bgcolor=" & C34 & "#FFFFFF" & C34 & "link=" & C34 & "#FF0000" & C34 & "alink=" & C34 & "#FF0000" & C34 & "vlink=" & C34 & "#FF0000" & C34 & ">")
-        HTMLFile.WriteLine("<img src=" & C34 & nmePNG & C34 & " width=" & C34 & "889" & C34 & " alt=" & C34 & C34 & " border=" & C34 & "0" & C34 & ">")
+
+        'mehrere Seiten untereinander
+        For i = 1 To MaxPages
+            nmePage = i.ToString("0#")
+            nmePNG = Artikel.VerarbeitungsHinweise & "_" & nmePage & ".png"
+            HTMLFile.WriteLine("<img src=" & C34 & nmePNG & C34 & " width=" & C34 & "889" & C34 & " alt=" & C34 & C34 & " border=" & C34 & "0" & C34 & ">")
+        Next
+
         HTMLFile.WriteLine("</body>")
         HTMLFile.WriteLine("</html>")
         HTMLFile.Close()
@@ -106,7 +153,13 @@ Public Class wb_Artikel_Hinweise
         Dim ftpErr As String
         ftpErr = wb_Functions.FTP_Upload_File(ftpHTML, wb_Global.WinBackServerHinweisDirectory & nmeHTML)
         If ftpErr Is Nothing Then
-            ftpErr = wb_Functions.FTP_Upload_File(ftpPNG, wb_Global.WinBackServerHinweisDirectory & nmePNG)
+            'png-Files für jede Seite einzeln übertragen
+            For i = 1 To MaxPages
+                nmePage = i.ToString("0#")
+                nmePNG = Artikel.VerarbeitungsHinweise & "_" & nmePage & ".png"
+                ftpPNG = wb_GlobalSettings.pTempPath & nmePNG
+                ftpErr = wb_Functions.FTP_Upload_File(ftpPNG, wb_Global.WinBackServerHinweisDirectory & nmePNG)
+            Next
         End If
 
         'Mauszeiger anpassen
@@ -131,4 +184,19 @@ Public Class wb_Artikel_Hinweise
         BtnTransferPdf.Focus()
     End Sub
 
+    Private Sub BtnPageMinus_Click(sender As Object, e As EventArgs) Handles BtnPageMinus.Click
+        If Page > 1 Then
+            Page = Page - 1
+            'pdf-File anzeigen
+            ShowPDF(Page)
+        End If
+    End Sub
+
+    Private Sub BtnPagePlus_Click(sender As Object, e As EventArgs) Handles BtnPagePlus.Click
+        If Page < MaxPages Then
+            Page = Page + 1
+            'pdf-File neu einlesen
+            ShowPDF(Page)
+        End If
+    End Sub
 End Class

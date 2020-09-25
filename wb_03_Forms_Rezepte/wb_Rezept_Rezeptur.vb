@@ -1,8 +1,10 @@
 ﻿Imports System.Drawing
+Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
 Imports combit.ListLabel22.DataProviders
 Imports EnhEdit.EnhEdit_Global
 Imports Infralution.Controls.VirtualTree
+Imports Microsoft.Office.Interop
 
 Public Class wb_Rezept_Rezeptur
 
@@ -85,6 +87,10 @@ Public Class wb_Rezept_Rezeptur
 
             VirtualTree.Enabled = False
         End If
+
+        'Excel-Export Nährwerte nur wenn Excel installiert ist
+        BtnExcelNwt.Enabled = wb_GlobalSettings.ExcelInstalled
+        BtnExcelNwtDetails.Enabled = wb_GlobalSettings.ExcelInstalled
 
         'Cursor wieder zurücksetzen
         Me.Cursor = Cursors.Default
@@ -1207,4 +1213,186 @@ Public Class wb_Rezept_Rezeptur
         End If
     End Sub
 
+    ''' <summary>
+    ''' Erstellt Excel-File mit der Berechnung der Nährwerte und Zusammensetzung der Deklaration.
+    ''' Dient zur Kontrolle und Fehler-Ermittlung bei der Zutatenliste
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnExcelNwt_Click(sender As Object, e As EventArgs) Handles BtnExcelNwt.Click
+        'Erstellt eine flache Liste (ohne Unter-Rezepte)
+        ExcelNwt(False)
+    End Sub
+
+    ''' <summary>
+    ''' Erstellt Excel-File mit der Berechnung der Nährwerte und Zusammensetzung der Deklaration.
+    ''' Dient zur Kontrolle und Fehler-Ermittlung bei der Zutatenliste
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnExcelNwtDetails_Click(sender As Object, e As EventArgs) Handles BtnExcelNwtDetails.Click
+        'Erstellt eine detailierte Liste (mit allen Unter-Rezepten)
+        ExcelNwt(True)
+    End Sub
+
+    Private Sub ExcelNwt(DetailAnsicht As Boolean)
+
+        Const colRohNumr = 0
+        Const colRohName = 1
+        Const colRohDekl = 2
+        Const colSollwrt = 3
+        Const colStrtNwt = 4
+        Const colEndNwt = 12
+
+        Dim xlApp As New Excel.Application
+        Dim xlWorkBooks As Excel.Workbooks = xlApp.Workbooks
+        Dim xlWorkBook As Excel.Workbook = xlWorkBooks.Add()
+        Dim xlWorkSheets As Excel.Sheets = xlWorkBook.Sheets
+        Dim xlWorkSheet As Excel.Worksheet
+
+        'Array Strings
+        Dim xslRange As Excel.Range
+        'Array Double
+        Dim xdlRange As Excel.Range
+        'Array Überschrift
+        Dim xlRange As Excel.Range
+
+        'Erstes Arbeitsblatt
+        xlWorkSheet = xlWorkSheets(1)
+        'Rezept Name
+        xlWorkSheet.Name = Rezept.RezeptBezeichnung
+
+        'Get the range where the starting cell has the address
+        xslRange = xlWorkSheet.Range("A2", Reflection.Missing.Value)
+        xdlRange = xlWorkSheet.Range("D3", Reflection.Missing.Value)
+
+        'Alle Rezeptschritte als flache Liste
+        Dim Steps As New ArrayList
+        Steps = Rezept.RootRezeptSchritt.Steps
+
+        'Aufzählung der Nährwerte und Allergene
+        Dim nwtArray = {1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154}
+        'Array für die Daten (Zeilen,Spalten)
+        Dim xlsArray(Steps.Count + 1, colStrtNwt + nwtArray.Count + 1) As String
+        Dim xldArray(Steps.Count + 1, nwtArray.Count + 1) As Double
+
+        'In der ersten Zeile steht die Rezept-Bezeichnung
+        xlWorkSheet.Range("A1").Value = Rezept.RezeptBezeichnung
+        'In der zweiten Zeile stehen die Spalten-Überschriften
+        xlsArray(0, colRohNumr) = "Nummer"
+        xlsArray(0, colRohName) = "Rohstoff"
+        xlsArray(0, colRohDekl) = "Deklarations-Bezeichnung"
+        xlsArray(0, colSollwrt) = "Sollwert"
+
+        'Spaltenüberschriften Nährwerte und Allergene
+        For j = colStrtNwt To nwtArray.Count + colSollwrt
+            xlsArray(0, j) = wb_KomponParam301_Global.kt301Param(nwtArray(j - colStrtNwt)).Bezeichnung
+        Next
+
+        'String- und Double-Array mit Daten aus Rezeptschritten füllen
+        Dim i As Integer = 0
+        For Each RzSchritt As wb_Rezeptschritt In Steps
+            'nur Sollwerte und Produktions-Stufen
+            If wb_Functions.TypeIstSollMenge(RzSchritt.Type, RzSchritt.ParamNr) Or (RzSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) Then
+                i += 1
+                'Rohstoff-Nummer
+                xlsArray(i, colRohNumr) = RzSchritt.Nummer
+                'Rohstoff-Bezeichnung
+                xlsArray(i, colRohName) = RzSchritt.VirtTreeBezeichnung
+                'Sollwert im Rezept (als Double)
+                xldArray(i - 1, 0) = wb_Functions.StrToDouble(RzSchritt.Sollwert)
+
+                'Produktions-Stufen haben keine Deklaration
+                If RzSchritt.Type <> wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Then
+                    'Rohstoff-Deklaration
+                    xlsArray(i, colRohDekl) = RzSchritt.ZutatenListe.Zutaten
+                Else
+                    'Produktions-Stufe ohne Rohstoff-Nummer
+                    xlsArray(i, colRohNumr) = ""
+                    'Deklarationstext kennzeichnet die Produktions-Stufe
+                    xlsArray(i, colRohDekl) = "-"
+                End If
+
+                'Nährwerte und Allergene
+                For j = 0 To nwtArray.Count - 1
+                    If wb_KomponParam301_Global.IsAllergen(nwtArray(j)) Then
+                        xlsArray(i, j + colStrtNwt) = wb_Functions.AllergenToString(RzSchritt.ktTyp301.Wert(nwtArray(j)), True)
+                    Else
+                        xldArray(i - 1, j + 1) = RzSchritt.ktTyp301.Wert(nwtArray(j))
+                    End If
+                Next
+            End If
+        Next
+
+        'zuerst die Strings ausgeben
+        xslRange = xslRange.Resize(i + 1, nwtArray.Count + colStrtNwt)
+        xslRange.Value = xlsArray
+        'anschliessend die Sollwerte (Numerisch) eintragen
+        xdlRange = xdlRange.Resize(i, colEndNwt)
+        xdlRange.Value = xldArray
+
+        'Überschrift (Rezeptname) in einer Zelle zusammenfassen
+        xlRange = xlWorkSheet.Range("A1", "AC1")
+        xlRange.Merge()
+        xlRange.HorizontalAlignment = Excel.Constants.xlCenter
+        xlRange.Interior.ColorIndex = 6 'Yellow
+        xlRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous
+
+        'Spaltenbreite Rohstoff-Nummer und Bezeichnung
+        xlWorkSheet.Columns("A:B").EntireColumn.AutoFit()
+
+        'Ausrichtung Sollwerte und Deklaration
+        xlWorkSheet.Columns.EntireColumn.VerticalAlignment = Excel.XlVAlign.xlVAlignTop
+
+        'Spaltenüberschriften
+        xlWorkSheet.Range("D2:AC2").Orientation = 90
+        xlWorkSheet.Range("D2:AC2").HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
+        xlWorkSheet.Range("D2:AC2").VerticalAlignment = Excel.XlVAlign.xlVAlignBottom
+        xlWorkSheet.Range("A2:C2").VerticalAlignment = Excel.XlVAlign.xlVAlignCenter
+        xlWorkSheet.Range("A1:AC2").Font.Bold = True
+
+        'Spalte Deklaration
+        xlWorkSheet.Columns("C:C").EntireColumn.ColumnWidth = 40.0
+        xlWorkSheet.Columns("C:C").EntireColumn.WrapText = True
+
+        'Format Decimalzahl für die Sollwerte
+        xlWorkSheet.Columns("D:D").EntireColumn.NumberFormat = "[Black][>0]0.00" + Chr(34) + " kg" + Chr(34) & ";[White][<=0]0.00"
+        'Format Decimalzahl für die Nährwerte
+        xlWorkSheet.Columns("E:O").EntireColumn.NumberFormat = "[Black][>0]0.00;[White][<=0]0.00"
+
+        'Spaltenbreite Allergene
+        xlWorkSheet.Columns("E:AC").EntireColumn.AutoFit()
+        xlWorkSheet.Columns("P:AC").EntireColumn.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
+
+        'Produktions-Stufen formatieren
+        For j = 0 To i
+            If xlsArray(j, 2) = "-" Then
+                xlWorkSheet.Rows.Item(j + 2).Font.Bold = True
+                xlWorkSheet.Rows.Item(j + 2).Font.Italic = True
+            End If
+        Next
+
+        'Display Excel
+        xlApp.Visible = True
+        xlApp.UserControl = True
+
+
+        'If Not xlWorkBook Is Nothing Then
+        '    Marshal.FinalReleaseComObject(xlWorkBook)
+        '    xlWorkBook = Nothing
+        'End If
+
+        'If Not xlWorkBooks Is Nothing Then
+        '    Marshal.FinalReleaseComObject(xlWorkBooks)
+        '    xlWorkBooks = Nothing
+        'End If
+
+
+        'If Not xlApp Is Nothing Then
+        '    xlApp.Quit()
+        '    Marshal.FinalReleaseComObject(xlApp)
+        '    xlApp = Nothing
+        'End If
+
+    End Sub
 End Class

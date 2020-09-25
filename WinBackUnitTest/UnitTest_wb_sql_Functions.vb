@@ -44,7 +44,13 @@ Imports WinBack
     Public Sub Test_WinBackTableNames()
         Assert.IsTrue(wb_sql_Functions.MySQLTableExist("Rezepte"))
         Assert.IsFalse(wb_sql_Functions.MySQLTableExist("XXX"))
-
     End Sub
+
+    <TestMethod()>
+    Public Sub Test_EinheitenUmrechnung()
+        Assert.AreEqual(wb_sql_Functions.EinheitenUmrechnung("150013", 26, 10), 25)
+    End Sub
+
+
 
 End Class
