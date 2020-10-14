@@ -18,7 +18,12 @@ Public Class wb_Chargen_Main
 
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
+        'Initialisierung
         MyBase.New(ServiceProvider)
+        'Default-Layout wenn keine Fenster angezeigt werden (neuer Benutzer...)
+        If _DockPanelList.Count = 0 Then
+            SetDefaultLayout()
+        End If
         AddHandler wb_Chargen_Shared.eDetail_DblClick, AddressOf Details_DblClick
     End Sub
 
@@ -57,26 +62,13 @@ Public Class wb_Chargen_Main
     ''' </returns>
     ''' <remarks></remarks>
     Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        'Chargen-Details (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If ChargenDetails IsNot Nothing Then
-            ChargenDetails.Close()
-        End If
-        'Chargen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If StatistikChargen IsNot Nothing Then
-            StatistikChargen.Close()
-        End If
-        'Chargen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If StatistikRohVerbrauch IsNot Nothing Then
-            StatistikRohVerbrauch.Close()
-        End If
-        'Chargen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If StatistikRohDetails IsNot Nothing Then
-            StatistikRohDetails.Close()
-        End If
-        'Chargen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If StatistikRezepte IsNot Nothing Then
-            StatistikRezepte.Close()
-        End If
+        'Fenster (ordentlich) schliessen - Speichert die Grid-Einstellungen
+        wb_Functions.CloseAndDisposeSubForm(ChargenDetails)
+        wb_Functions.CloseAndDisposeSubForm(StatistikChargen)
+        wb_Functions.CloseAndDisposeSubForm(StatistikRohVerbrauch)
+        wb_Functions.CloseAndDisposeSubForm(StatistikRohDetails)
+        wb_Functions.CloseAndDisposeSubForm(StatistikRezepte)
+
         'Fenster darf geschlossen werden
         Return False
     End Function

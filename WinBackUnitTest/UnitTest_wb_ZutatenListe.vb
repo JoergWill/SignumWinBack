@@ -102,6 +102,30 @@ Imports WinBack
         Assert.IsTrue(Zutaten.Liste(3).FettDruck)
     End Sub
 
+    <TestMethod()> Public Sub Test_Split_ListeInListe()
+        Dim Zutaten As New wb_ZutatenListe
+        Zutaten.Clear()
+
+        Dim L1 As New wb_ZutatenElement
+        L1.Zutaten = "    Pflanzliches Fett :  Palm; Wasser; Emulgator: (Lecithine (E 322), Mono- und Diglyceride von Speisefetts?uren (E 471));" &
+                     "Speisesalz; S?uerungsmittel: Citronens?ure (E 330); Aroma; Farbstoff: Carotin (E 160a)"
+        L1.SollMenge = 2
+        Zutaten.Liste.Add(L1)
+        Zutaten.DebugPrint()
+        Zutaten.Split_Ingredients()
+        Zutaten.DebugPrint()
+
+        Assert.AreEqual("Gerstenmalzextrakt getrocknet", Zutaten.Liste(0).Zutaten)
+        Assert.IsTrue(Zutaten.Liste(0).FettDruck)
+        Assert.AreEqual("Zucker", Zutaten.Liste(1).Zutaten)
+        Assert.IsFalse(Zutaten.Liste(1).FettDruck)
+        Assert.AreEqual("Traubenzucker", Zutaten.Liste(2).Zutaten)
+        Assert.IsFalse(Zutaten.Liste(2).FettDruck)
+        Assert.AreEqual("Gerstenmalzmehl", Zutaten.Liste(3).Zutaten)
+        Assert.IsTrue(Zutaten.Liste(3).FettDruck)
+    End Sub
+
+
     <TestMethod()> Public Sub Test_Split_Numbers()
         Dim Zutaten As New wb_ZutatenListe
         Dim L1 As New wb_ZutatenElement
@@ -279,4 +303,8 @@ Imports WinBack
         Assert.AreEqual("Weizen", Zutaten.Liste(0).Zutaten)
         Assert.IsTrue(Zutaten.Liste(0).FettDruck)
     End Sub
+
+
+
+
 End Class

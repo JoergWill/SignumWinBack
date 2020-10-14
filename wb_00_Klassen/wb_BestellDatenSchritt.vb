@@ -7,6 +7,7 @@ Public Class wb_BestellDatenSchritt
     Private _Einheit As Integer
     Private _DispositionsArt As Integer
     Private _Produktionsmenge As Double
+    Private _AusbackMenge As Double
     Private _MengeInProduktion As Double
     Private _ChargenTeiler As wb_Global.ModusChargenTeiler = wb_Global.ModusChargenTeiler.OptimalUndRest
     Private _AnzahlVorschlag As Integer
@@ -44,15 +45,45 @@ Public Class wb_BestellDatenSchritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Enthält die Soll-Produktionsmenge aus OrgaBack. Die MengeInProduktion ist schon verrechnet.
+    ''' Wenn eine Ausback-Menge (Teiglinge) angegeben ist, wird dieser Wert verwendet. Die darunterliegende Rezeptur wird
+    ''' in der Berechnung der Vorproduktion dann nicht berücksichtigt! (Flag Aufloesen = False)
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Produktionsmenge As Double
         Get
-            Return _Produktionsmenge
+            If Aufloesen Then
+                Return _Produktionsmenge
+            Else
+                Return _AusbackMenge
+            End If
         End Get
         Set(value As Double)
             _Produktionsmenge = value
         End Set
     End Property
 
+    ''' <summary>
+    ''' Flag Rezeptur auflösen.
+    ''' Wenn aus der Produktions-Planung eine Anzahl an Teiglingen übergeben wird (Aufbackmenge) darf die darunterliegende Rezeptur nicht
+    ''' aufgelöst werden. Die Teiglinge werden aus dem Froster entnommen und müssen nicht produziert werden
+    ''' (Die Froster-Filiale bestellt bedarfsorientiert)
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property Aufloesen As Boolean
+        Get
+            Return (_AusbackMenge = 0) And False
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Enthält den Wert der schon in Produktion befindlicher Chargen.
+    ''' Wird verwendet, wenn der Back/Teigzettel mehrmals am Tag ausgedruckt wird.
+    ''' Mit jedem Ausdruck wird die MengeInProduktion an OrgaBack zurückgemeldet und dort mit
+    ''' den Bestelldaten verrechnet.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property MengeInProduktion As Double
         Get
             Return _MengeInProduktion
@@ -179,6 +210,7 @@ Public Class wb_BestellDatenSchritt
     ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
     ''' Update pq_Prouktionsauftrag (30.08.2018/JE)
     ''' Update pq_Prouktionsauftrag (20.02.2020/JE) DB-Version 8.0050
+    ''' Erweiterung pq_Produktionsauftrag (25.09.2020/JW) Aufbackmenge Teigling
     ''' 
     ''' [dbo].[pq_ProduktionsPlanung]
     '''   FilialNr                  / 1
@@ -190,6 +222,7 @@ Public Class wb_BestellDatenSchritt
     '''   Groesse                   / NULL
     '''   DispositionsArt           / 2..4                  (20.02.2020/JE)
     '''   BedarfMenge               / 4000,0000
+    '''   AusbackMenge              /                       (30.09.2020/JE)
     '''   MengeInProduktion         / 1000,0000             (20.02.2020/JE)
     '''   Bezeichnung               / Mehrkornbrötchen
     '''   Zusatztexte               / Lorem ipsum
@@ -243,6 +276,9 @@ Public Class wb_BestellDatenSchritt
                 'Soll-Produktionsmenge in Stück
                 Case "Produktionsmenge"
                     _Produktionsmenge = wb_Functions.StrToDouble(Value)
+                'Soll-Aufbackmenge in Stück (2020-09-25 JE - Teigling aus Froster)
+                Case "AusbackMenge"
+                    _AusbackMenge = wb_Functions.StrToDouble(Value)
                 'Menge in Produktion in Stück
                 Case "MengeInProduktion"
                     MengeInProduktion = wb_Functions.StrToDouble(Value)

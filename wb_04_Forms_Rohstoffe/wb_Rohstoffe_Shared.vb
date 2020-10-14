@@ -31,11 +31,23 @@ Public Class wb_Rohstoffe_Shared
         NurKneter   ' alle aktiven Komponenten 118
     End Enum
 
+    Enum LinkFilter
+        Undefined   ' nicht definiert
+        Alle        ' alle aktiven Rohstoffe 
+        Rzpt        ' alle aktiven Rohstoffe die mit einer Rezeptur verknüpft sind
+        Cloud       ' alle aktiven Rohstoffe die mit der Cloud verknüpft sind
+        NoLink     ' alle aktiven Rohstoffe die nicht verknüpft sind (Rezept oder Cloud)
+    End Enum
+
     Shared Sub New()
         'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
         Load_RohstoffTables()
         'HashTable aller Silo-Rohstoffe mit Lagerort BW,MK,M,KKA
         Load_SiloTables()
+    End Sub
+
+    Public Shared Sub Invalid()
+        RohStoff.Invalid()
     End Sub
 
     Public Shared ReadOnly Property ErrorText As String

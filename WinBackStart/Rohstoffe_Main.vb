@@ -167,15 +167,17 @@ Public Class Rohstoffe_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        If RohstoffDetails IsNot Nothing Then
-            RohstoffDetails.Close()
-        End If
-        If RohstoffListe IsNot Nothing Then
-            RohstoffListe.Close()
-        End If
-        If RohstoffParameter IsNot Nothing Then
-            RohstoffParameter.Close()
-        End If
+        wb_Functions.CloseAndDisposeSubForm(RohstoffDetails)
+        wb_Functions.CloseAndDisposeSubForm(RohstoffListe)
+        wb_Functions.CloseAndDisposeSubForm(RohstoffVerwendung)
+        wb_Functions.CloseAndDisposeSubForm(RohstoffLieferung)
+        wb_Functions.CloseAndDisposeSubForm(RohstoffParameter)
+        wb_Functions.CloseAndDisposeSubForm(RohstoffNwt)
+        wb_Functions.CloseAndDisposeSubForm(RohstoffSilo)
+        wb_Functions.CloseAndDisposeSubForm(RohstoffCloud)
+
+        'alle "alten" Daten löschen
+        wb_Rohstoffe_Shared.Invalid()
     End Sub
 
     Public Sub RohstoffNeuAnlegen()

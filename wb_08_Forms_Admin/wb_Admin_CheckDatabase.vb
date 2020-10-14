@@ -67,63 +67,67 @@ Public Class wb_Admin_CheckDatabase
         'Liste der Update-Files löschen
         UpdateDataBaseFiles.Clear()
 
-        'Prüfe Tabelle winback.Liniengruppen - Formularsteuerung
-        If Not CheckResultText(wb_Linien_Global.CheckDB(), "Check Datenbank winback.Liniengruppen - Formularsteuerung") Then
-            LogEvent(wb_Linien_Global.ErrorText, Color.Red, True)
-            CheckDatabase = False
-            UpdateDataBaseFiles.Add(wb_Linien_Global.UpdateDatabaseFile)
-        End If
+        'Falls die DB-Verbindung zu WinBack nicht funktioniert/falsch initialisiert ist
+        Try
 
-        'Prüfe Tabelle winback.KomponTypen(300) - Parameter Produktion
-        If Not CheckResultText(wb_KomponParam300_Global.CheckDB(), "Check Datenbank winback.KomponTypen(300) - Parameter Produktion") Then
-            LogEvent(wb_KomponParam300_Global.ErrorText, Color.Red)
-            CheckDatabase = False
-            UpdateDataBaseFiles.Add(wb_KomponParam300_Global.UpdateDatabaseFile)
-        End If
+            'Prüfe Tabelle winback.Liniengruppen - Formularsteuerung
+            If Not CheckResultText(wb_Linien_Global.CheckDB(), "Check Datenbank winback.Liniengruppen - Formularsteuerung") Then
+                LogEvent(wb_Linien_Global.ErrorText, Color.Red, True)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_Linien_Global.UpdateDatabaseFile)
+            End If
 
-        'Prüfe Tabelle winback.KomponTypen(301) - Allergene und Nährwerte
-        If Not CheckResultText(wb_KomponParam301_Global.CheckDB(), "Check Datenbank winback.KomponTypen(301) - Allergene und Nährwerte") Then
-            LogEvent(wb_KomponParam301_Global.ErrorText, Color.Red)
-            CheckDatabase = False
-            UpdateDataBaseFiles.Add(wb_KomponParam301_Global.UpdateDatabaseFile)
-        End If
+            'Prüfe Tabelle winback.KomponTypen(300) - Parameter Produktion
+            If Not CheckResultText(wb_KomponParam300_Global.CheckDB(), "Check Datenbank winback.KomponTypen(300) - Parameter Produktion") Then
+                LogEvent(wb_KomponParam300_Global.ErrorText, Color.Red)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_KomponParam300_Global.UpdateDatabaseFile)
+            End If
 
-        'Klasse initialisieren
-        wb_AktSysKonfig.SysKonfigOK("30")
-        'Prüfe Tabelle winback.ItemParameter - User-Rechte(Gruppe -1)
-        If Not CheckResultText(wb_AktRechte.CheckDB_User(), "Check Datenbank winback.ItemParameter(-1) - User-Rechte") Then
-            LogEvent(wb_AktRechte.ErrorText, Color.Red, True)
-            CheckDatabase = False
-            UpdateDataBaseFiles.Add(wb_AktRechte.UpdateDatabaseFile)
-        End If
-        'Prüfe Tabelle winback.ItemParameter - User-Rechte(Gruppe -1)
-        If Not CheckResultText(wb_AktRechte.CheckDB_Prod(), "Check Datenbank winback.ItemParameter(-1) - Produktion") Then
-            LogEvent(wb_AktRechte.ErrorText, Color.Red, True)
-            CheckDatabase = False
-            UpdateDataBaseFiles.Add(wb_AktRechte.UpdateDatabaseFile)
-        End If
-        'Prüfe User-Gruppen Tabelle ItemParameter(IP_Wert1Int=99) Gruppe 99 muss alle Rechte mit den richtigen Attributen enthalten
-        Dim UserGruppe As New wb_User_Gruppe
-        If Not CheckResultText(UserGruppe.CheckDB_Grp99(), "Check Datenbank UserGruppenRechte(99)") Then
-            LogEvent(wb_Einheiten_Global.ErrorText, Color.Red, True)
-            CheckDatabase = False
-            UpdateDataBaseFiles.Add(wb_AktRechte.UpdateDatabaseFile)
-        End If
+            'Prüfe Tabelle winback.KomponTypen(301) - Allergene und Nährwerte
+            If Not CheckResultText(wb_KomponParam301_Global.CheckDB(), "Check Datenbank winback.KomponTypen(301) - Allergene und Nährwerte") Then
+                LogEvent(wb_KomponParam301_Global.ErrorText, Color.Red)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_KomponParam301_Global.UpdateDatabaseFile)
+            End If
 
-        'Prüfe Tabelle winback.Einheiten - Spalte E_obNr
-        If Not CheckResultText(wb_Einheiten_Global.CheckDB(), "Check Datenbank winback.Einheiten - Spalte E_obNr") Then
-            LogEvent(wb_Einheiten_Global.ErrorText, Color.Red, True)
-            CheckDatabase = False
-            UpdateDataBaseFiles.Add(wb_Einheiten_Global.UpdateDatabaseFile)
-        End If
+            'Klasse initialisieren
+            wb_AktSysKonfig.SysKonfigOK("30")
+            'Prüfe Tabelle winback.ItemParameter - User-Rechte(Gruppe -1)
+            If Not CheckResultText(wb_AktRechte.CheckDB_User(), "Check Datenbank winback.ItemParameter(-1) - User-Rechte") Then
+                LogEvent(wb_AktRechte.ErrorText, Color.Red, True)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_AktRechte.UpdateDatabaseFile)
+            End If
+            'Prüfe Tabelle winback.ItemParameter - User-Rechte(Gruppe -1)
+            If Not CheckResultText(wb_AktRechte.CheckDB_Prod(), "Check Datenbank winback.ItemParameter(-1) - Produktion") Then
+                LogEvent(wb_AktRechte.ErrorText, Color.Red, True)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_AktRechte.UpdateDatabaseFile)
+            End If
+            'Prüfe User-Gruppen Tabelle ItemParameter(IP_Wert1Int=99) Gruppe 99 muss alle Rechte mit den richtigen Attributen enthalten
+            Dim UserGruppe As New wb_User_Gruppe
+            If Not CheckResultText(UserGruppe.CheckDB_Grp99(), "Check Datenbank UserGruppenRechte(99)") Then
+                LogEvent(wb_Einheiten_Global.ErrorText, Color.Red, True)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_AktRechte.UpdateDatabaseFile)
+            End If
 
-        'Prüfe Tabelle winback.ENummern vorhanden
-        If Not CheckResultText(wb_ZutatenListe_Global.CheckDB(), "Check Datenbank winback.ENummern") Then
-            LogEvent(wb_Einheiten_Global.ErrorText, Color.Red, True)
-            CheckDatabase = False
-            UpdateDataBaseFiles.Add(wb_Einheiten_Global.UpdateDatabaseFile)
-        End If
+            'Prüfe Tabelle winback.Einheiten - Spalte E_obNr
+            If Not CheckResultText(wb_Einheiten_Global.CheckDB(), "Check Datenbank winback.Einheiten - Spalte E_obNr") Then
+                LogEvent(wb_Einheiten_Global.ErrorText, Color.Red, True)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_Einheiten_Global.UpdateDatabaseFile)
+            End If
 
+            'Prüfe Tabelle winback.ENummern vorhanden
+            If Not CheckResultText(wb_ZutatenListe_Global.CheckDB(), "Check Datenbank winback.ENummern") Then
+                LogEvent(wb_Einheiten_Global.ErrorText, Color.Red, True)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_Einheiten_Global.UpdateDatabaseFile)
+            End If
+        Catch
+        End Try
     End Function
 
     ''' <summary>

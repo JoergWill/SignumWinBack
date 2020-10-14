@@ -81,10 +81,12 @@ Partial Class wb_Planung_Neu
         Me.lblMin = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Label12 = New System.Windows.Forms.Label()
-        Me.lblChargenResult = New System.Windows.Forms.Label()
         Me.cbChargenTeiler = New WinBack.wb_CheckedListBox()
+        Me.lblChargenResult = New System.Windows.Forms.Label()
         Me.cbVariante = New WinBack.wb_ComboBox()
         Me.cbLiniengruppe = New WinBack.wb_ComboBox()
+        Me.cbAufloesen = New System.Windows.Forms.CheckBox()
+        Me.lblAufloesen = New System.Windows.Forms.Label()
         Me.pTeigChargen.SuspendLayout()
         Me.pArtikelChargen.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -97,7 +99,7 @@ Partial Class wb_Planung_Neu
         Me.BtnCancel.Location = New System.Drawing.Point(12, 429)
         Me.BtnCancel.Name = "BtnCancel"
         Me.BtnCancel.Size = New System.Drawing.Size(104, 28)
-        Me.BtnCancel.TabIndex = 3
+        Me.BtnCancel.TabIndex = 99
         Me.BtnCancel.Text = "Abbruch"
         Me.BtnCancel.UseVisualStyleBackColor = True
         '
@@ -108,7 +110,7 @@ Partial Class wb_Planung_Neu
         Me.BtnOK.Location = New System.Drawing.Point(463, 429)
         Me.BtnOK.Name = "BtnOK"
         Me.BtnOK.Size = New System.Drawing.Size(104, 28)
-        Me.BtnOK.TabIndex = 2
+        Me.BtnOK.TabIndex = 4
         Me.BtnOK.Text = "OK"
         Me.BtnOK.UseVisualStyleBackColor = True
         '
@@ -153,7 +155,7 @@ Partial Class wb_Planung_Neu
         Me.tRezeptNummer.Location = New System.Drawing.Point(12, 60)
         Me.tRezeptNummer.Name = "tRezeptNummer"
         Me.tRezeptNummer.Size = New System.Drawing.Size(100, 20)
-        Me.tRezeptNummer.TabIndex = 4
+        Me.tRezeptNummer.TabIndex = 11
         '
         'Label1
         '
@@ -170,7 +172,7 @@ Partial Class wb_Planung_Neu
         Me.tRezeptName.Location = New System.Drawing.Point(118, 60)
         Me.tRezeptName.Name = "tRezeptName"
         Me.tRezeptName.Size = New System.Drawing.Size(293, 20)
-        Me.tRezeptName.TabIndex = 5
+        Me.tRezeptName.TabIndex = 12
         '
         'Label4
         '
@@ -188,7 +190,7 @@ Partial Class wb_Planung_Neu
         Me.tGesMengeKg.Location = New System.Drawing.Point(446, 60)
         Me.tGesMengeKg.Name = "tGesMengeKg"
         Me.tGesMengeKg.Size = New System.Drawing.Size(100, 20)
-        Me.tGesMengeKg.TabIndex = 6
+        Me.tGesMengeKg.TabIndex = 13
         '
         'Label5
         '
@@ -254,7 +256,7 @@ Partial Class wb_Planung_Neu
         Me.tMengeOptimal.Location = New System.Drawing.Point(446, 121)
         Me.tMengeOptimal.Name = "tMengeOptimal"
         Me.tMengeOptimal.Size = New System.Drawing.Size(100, 20)
-        Me.tMengeOptimal.TabIndex = 83
+        Me.tMengeOptimal.TabIndex = 8
         '
         'TextBox6
         '
@@ -262,7 +264,7 @@ Partial Class wb_Planung_Neu
         Me.TextBox6.Location = New System.Drawing.Point(12, 121)
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox6.TabIndex = 81
+        Me.TextBox6.TabIndex = 5
         '
         'Label11
         '
@@ -279,7 +281,7 @@ Partial Class wb_Planung_Neu
         Me.tAnzOptimal.Location = New System.Drawing.Point(337, 121)
         Me.tAnzOptimal.Name = "tAnzOptimal"
         Me.tAnzOptimal.Size = New System.Drawing.Size(74, 20)
-        Me.tAnzOptimal.TabIndex = 82
+        Me.tAnzOptimal.TabIndex = 7
         '
         'Label13
         '
@@ -337,14 +339,14 @@ Partial Class wb_Planung_Neu
         Me.tMengeRest.Location = New System.Drawing.Point(446, 162)
         Me.tMengeRest.Name = "tMengeRest"
         Me.tMengeRest.Size = New System.Drawing.Size(100, 20)
-        Me.tMengeRest.TabIndex = 91
+        Me.tMengeRest.TabIndex = 8
         '
         'tAnzRest
         '
         Me.tAnzRest.Location = New System.Drawing.Point(337, 162)
         Me.tAnzRest.Name = "tAnzRest"
         Me.tAnzRest.Size = New System.Drawing.Size(74, 20)
-        Me.tAnzRest.TabIndex = 90
+        Me.tAnzRest.TabIndex = 7
         '
         'lblLinienGruppe
         '
@@ -709,14 +711,6 @@ Partial Class wb_Planung_Neu
         Me.Label12.TabIndex = 110
         Me.Label12.Text = "wenn möglich aufteilen in:"
         '
-        'lblChargenResult
-        '
-        Me.lblChargenResult.Location = New System.Drawing.Point(13, 359)
-        Me.lblChargenResult.Name = "lblChargenResult"
-        Me.lblChargenResult.Size = New System.Drawing.Size(384, 45)
-        Me.lblChargenResult.TabIndex = 110
-        Me.lblChargenResult.Text = "Ergebnis der Chargen-Aufteilung"
-        '
         'cbChargenTeiler
         '
         Me.cbChargenTeiler.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
@@ -732,13 +726,21 @@ Partial Class wb_Planung_Neu
         Me.cbChargenTeiler.TabIndex = 109
         Me.cbChargenTeiler.TabStop = False
         '
+        'lblChargenResult
+        '
+        Me.lblChargenResult.Location = New System.Drawing.Point(13, 359)
+        Me.lblChargenResult.Name = "lblChargenResult"
+        Me.lblChargenResult.Size = New System.Drawing.Size(384, 45)
+        Me.lblChargenResult.TabIndex = 110
+        Me.lblChargenResult.Text = "Ergebnis der Chargen-Aufteilung"
+        '
         'cbVariante
         '
         Me.cbVariante.FormattingEnabled = True
         Me.cbVariante.Location = New System.Drawing.Point(118, 162)
         Me.cbVariante.Name = "cbVariante"
         Me.cbVariante.Size = New System.Drawing.Size(197, 21)
-        Me.cbVariante.TabIndex = 99
+        Me.cbVariante.TabIndex = 6
         Me.cbVariante.TabStop = False
         Me.cbVariante.Text = "RV"
         '
@@ -748,9 +750,27 @@ Partial Class wb_Planung_Neu
         Me.cbLiniengruppe.Location = New System.Drawing.Point(118, 121)
         Me.cbLiniengruppe.Name = "cbLiniengruppe"
         Me.cbLiniengruppe.Size = New System.Drawing.Size(197, 21)
-        Me.cbLiniengruppe.TabIndex = 96
+        Me.cbLiniengruppe.TabIndex = 6
         Me.cbLiniengruppe.TabStop = False
         Me.cbLiniengruppe.Text = "LG"
+        '
+        'cbAufloesen
+        '
+        Me.cbAufloesen.AutoSize = True
+        Me.cbAufloesen.Location = New System.Drawing.Point(14, 164)
+        Me.cbAufloesen.Name = "cbAufloesen"
+        Me.cbAufloesen.Size = New System.Drawing.Size(15, 14)
+        Me.cbAufloesen.TabIndex = 111
+        Me.cbAufloesen.UseVisualStyleBackColor = True
+        '
+        'lblAufloesen
+        '
+        Me.lblAufloesen.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblAufloesen.Location = New System.Drawing.Point(29, 157)
+        Me.lblAufloesen.Name = "lblAufloesen"
+        Me.lblAufloesen.Size = New System.Drawing.Size(86, 32)
+        Me.lblAufloesen.TabIndex = 10
+        Me.lblAufloesen.Text = "Vorproduktion auflösen"
         '
         'wb_Planung_Neu
         '
@@ -758,6 +778,8 @@ Partial Class wb_Planung_Neu
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(579, 469)
         Me.ControlBox = False
+        Me.Controls.Add(Me.lblAufloesen)
+        Me.Controls.Add(Me.cbAufloesen)
         Me.Controls.Add(Me.lblChargenResult)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pTeigChargen)
@@ -877,4 +899,6 @@ Partial Class wb_Planung_Neu
     Friend WithEvents Label12 As Windows.Forms.Label
     Friend WithEvents cbChargenTeiler As wb_CheckedListBox
     Friend WithEvents lblChargenResult As Windows.Forms.Label
+    Friend WithEvents cbAufloesen As Windows.Forms.CheckBox
+    Friend WithEvents lblAufloesen As Windows.Forms.Label
 End Class

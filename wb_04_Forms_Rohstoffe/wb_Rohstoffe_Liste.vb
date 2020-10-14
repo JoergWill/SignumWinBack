@@ -1,5 +1,6 @@
 ﻿Imports WinBack.wb_Rohstoffe_Shared
 Imports WeifenLuo.WinFormsUI.Docking
+Imports System.Windows.Forms
 
 Public Class wb_Rohstoffe_Liste
     Inherits DockContent
@@ -7,26 +8,91 @@ Public Class wb_Rohstoffe_Liste
     Const ColumnKompNr As Integer = 3
     Const ColumnRzpIdx As Integer = 5
 
+    Private _Anzeige As AnzeigeFilter = AnzeigeFilter.Undefined
+    Private _Link As LinkFilter = LinkFilter.Undefined
+
     Public WriteOnly Property Anzeige As AnzeigeFilter
         Set(value As AnzeigeFilter)
-            Select Case value
-                Case AnzeigeFilter.Alle        ' alle aktiven Rohstoffe Typ > 100
-                    DataGridView.Filter = "(KO_Type > 100) AND KA_aktiv = 1"
-                Case AnzeigeFilter.Hand        ' alle aktiven Rohstoffe Typ 102
-                    DataGridView.Filter = "(KO_Type = 102) AND KA_aktiv = 1"
-                Case AnzeigeFilter.Auto        ' alle aktiven Rohstoffe Typ 101,103,104
-                    DataGridView.Filter = "((KO_Type = 101) OR (KO_Type = 103) or (KO_Type = 104)) AND KA_aktiv = 1"
-                Case AnzeigeFilter.Sauerteig   ' alle aktiven Rohstoffe Sauerteig
-                    DataGridView.Filter = "(KO_Type < 100) AND KA_aktiv = 1"
-                Case AnzeigeFilter.Install     ' alle aktiven und inaktiven Rohstoffe
-                    DataGridView.Filter = "(KO_Type > 100)"
-                Case AnzeigeFilter.Sonstige    ' alle Rohstoffe Typ 105,106
-                    DataGridView.Filter = "(KO_Type > 100) AND KA_aktiv = 1"
-                Case Else
-                    DataGridView.Filter = ""
-            End Select
+            _Anzeige = value
+            SetDataGridViewFilter()
         End Set
     End Property
+
+    Public WriteOnly Property Link As LinkFilter
+        Set(value As LinkFilter)
+            _Link = value
+            SetDataGridViewFilter()
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Textbausteine für die Filterfunktion
+    ''' Anzeige für Fenstertitel und Ausdruck
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property FilterText As String
+        Get
+            Select Case _Anzeige
+                Case AnzeigeFilter.Alle, AnzeigeFilter.Install
+                    FilterText = "Alle WinBack-Rohstoffe"
+                Case AnzeigeFilter.Auto
+                    FilterText = "WinBack-Rohstoffe automatische Dosierung"
+                Case AnzeigeFilter.Hand
+                    FilterText = "WinBack-Rohstoffe Tisch-Bodenwaage"
+                Case AnzeigeFilter.Sauerteig
+                    FilterText = "WinBack-Rohstoffe Sauerteig-Herstellung"
+                Case Else
+                    FilterText = "Alle WinBack-Rohstoffe"
+            End Select
+
+            Select Case _Link
+                Case LinkFilter.Cloud
+                    FilterText = FilterText + " verbunden mit der Cloud"
+                Case LinkFilter.Cloud
+                    FilterText = FilterText + " mit hinterlegter Rezeptur"
+                Case LinkFilter.NoLink
+                    FilterText = FilterText + " ohne Verbindung zu Cloud/Rezeptur"
+            End Select
+        End Get
+    End Property
+
+    Private Sub SetDataGridViewFilter()
+        'Filterstring
+        Dim Filter As String = ""
+
+        'Filter Hand/Auto/Sauer/Installation
+        Select Case _Anzeige
+            Case AnzeigeFilter.Alle        ' alle aktiven Rohstoffe Typ > 100
+                Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+            Case AnzeigeFilter.Hand        ' alle aktiven Rohstoffe Typ 102
+                Filter = "(KO_Type = 102) AND KA_aktiv = 1"
+            Case AnzeigeFilter.Auto        ' alle aktiven Rohstoffe Typ 101,103,104
+                Filter = "((KO_Type = 101) OR (KO_Type = 103) or (KO_Type = 104)) AND KA_aktiv = 1"
+            Case AnzeigeFilter.Sauerteig   ' alle aktiven Rohstoffe Sauerteig
+                Filter = "(KO_Type < 100) AND (KO_Type > 0) AND KA_aktiv = 1"
+            Case AnzeigeFilter.Install     ' alle aktiven und inaktiven Rohstoffe
+                Filter = "(KO_Type > 100)"
+            Case AnzeigeFilter.Sonstige    ' alle Rohstoffe Typ 105,106
+                Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+            Case Else
+                Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+        End Select
+
+        'Filter Rezept/Cloud
+        Select Case _Link
+            Case LinkFilter.Cloud
+                Filter = Filter + " AND KA_Matchcode <> ''"
+            Case LinkFilter.Rzpt
+                Filter = Filter + " AND KA_RZ_NR > 0"
+            Case LinkFilter.NoLink
+                Filter = Filter + " AND KA_RZ_NR = 0 AND NOT KA_Matchcode <> ''"
+        End Select
+
+        'Filter anwenden
+        DataGridView.Filter = Filter
+        'FensterText anzeigen
+        Me.Text = FilterText
+    End Sub
 
     Private Sub wb_Rohstoffe_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Liste der Tabellen-Überschriften
@@ -45,6 +111,19 @@ Public Class wb_Rohstoffe_Liste
         DataGridView.PopupItemAdd("Aktivieren", "A", Nothing, evH)
         DataGridView.PopupItemAdd("Hand", "H", Nothing, evH)
         DataGridView.PopupItemAdd("Deaktivieren", "D", Nothing, evH, True)
+
+        'DataGrid Popup-Menu Filter
+        DataGridView.PopupItemAdd("Filter:", "Flt", Nothing, evH, True, False)
+        DataGridView.PopupItemAdd("nur Hand", "Hand", Nothing, evH, False, True)
+        DataGridView.PopupItemAdd("nur Auto", "Auto", Nothing, evH, False, True)
+        DataGridView.PopupItemAdd("nur Sauerteig", "Sauer", Nothing, evH, False, True)
+        DataGridView.PopupItemAdd("Installation", "Inst", Nothing, evH, True, True)
+
+        'DataGrid Popup-Menu Rezept/Cloud/Alle
+        DataGridView.PopupItemAdd("Verbunden mit:", "Link", Nothing, evH, True, False)
+        DataGridView.PopupItemAdd("Rezept", "Rzpt", Nothing, evH, False, True)
+        DataGridView.PopupItemAdd("Cloud", "Cloud", Nothing, evH, False, True)
+        DataGridView.PopupItemAdd("Ohne", "Ohne", Nothing, evH, True, True)
 
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffSimpleLst, "RohstoffListe")
@@ -188,6 +267,61 @@ Public Class wb_Rohstoffe_Liste
                 UpdateRohAktiv("", LagerOrt, RohNr)
                 'Daten neu einlesen
                 DataGridView.RefreshData()
+
+
+            Case "Flt"
+                'Anzeige alle Rohstoffe (Filter löschen)
+                Me.Anzeige = AnzeigeFilter.Alle
+                Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Sauer", "Inst"}
+                DataGridView.PopupItemsUncheck(UnCheckName)
+            Case "Hand"
+                'Anzeige nur Hand-Komponenten
+                Me.Anzeige = AnzeigeFilter.Hand
+                Dim UnCheckName As New List(Of String) From {"Auto", "Sauer", "Inst"}
+                DataGridView.PopupItemsUncheck(UnCheckName)
+
+            Case "Auto"
+                'Anzeige nur Automatik-Komponenten
+                Me.Anzeige = AnzeigeFilter.Auto
+                Dim UnCheckName As New List(Of String) From {"Hand", "Sauer", "Inst"}
+                DataGridView.PopupItemsUncheck(UnCheckName)
+
+            Case "Sauer"
+                'Anzeige nur Sauerteig-Komponenten
+                Me.Anzeige = AnzeigeFilter.Sauerteig
+                Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Inst"}
+                DataGridView.PopupItemsUncheck(UnCheckName)
+
+            Case "Inst"
+                'Anzeige alle Komponenten (Installation)
+                Me.Anzeige = AnzeigeFilter.Install
+                Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Sauer"}
+                DataGridView.PopupItemsUncheck(UnCheckName)
+
+
+            Case "Link"
+                'Anzeige alle Rohstoffe (Filter löschen)
+                Me.Link = LinkFilter.Alle
+                Dim UnCheckName As New List(Of String) From {"Rzpt", "Cloud", "Ohne"}
+                DataGridView.PopupItemsUncheck(UnCheckName)
+
+            Case "Rzpt"
+                'Anzeige alle Rohstoffe die mit einer Rezeptur verknüpft sind
+                Me.Link = LinkFilter.Rzpt
+                Dim UnCheckName As New List(Of String) From {"Cloud", "Ohne"}
+                DataGridView.PopupItemsUncheck(UnCheckName)
+
+            Case "Cloud"
+                'Anzeige alle Rohstoffe die mit der Cloud verknüpft sind
+                Me.Link = LinkFilter.Cloud
+                Dim UnCheckName As New List(Of String) From {"Rzpt", "Ohne"}
+                DataGridView.PopupItemsUncheck(UnCheckName)
+
+            Case "Ohne"
+                'Anzeige alle Rohstoffe ohne Verknüpfung (Rezept/Cloud)
+                Me.Link = LinkFilter.NoLink
+                Dim UnCheckName As New List(Of String) From {"Rzpt", "Cloud"}
+                DataGridView.PopupItemsUncheck(UnCheckName)
 
         End Select
     End Sub

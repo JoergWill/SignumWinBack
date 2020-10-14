@@ -64,13 +64,15 @@ Public Class wb_Rezept_Details
     End Sub
 
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRezeptNummer.Leave, tRezeptName.Leave, tRezeptKommentar.Leave, cbRezeptGruppe.Leave, cbLiniengruppe.Leave
-        wb_Rezept_Shared.Rezept.RezeptBezeichnung = tRezeptName.Text
-        wb_Rezept_Shared.Rezept.RezeptKommentar = tRezeptKommentar.Text
-        wb_Rezept_Shared.Rezept.RezeptNummer = tRezeptNummer.Text
-        wb_Rezept_Shared.Rezept.LinienGruppe = cbLiniengruppe.GetKeyFromSelection()
-        wb_Rezept_Shared.Rezept.RezeptGruppe = cbRezeptGruppe.GetKeyFromSelection()
-        'geändete Daten speichern
-        wb_Rezept_Shared.Edit_Leave(sender)
+        If wb_Rezept_Shared.Rezept.RezeptNr > 0 Then
+            wb_Rezept_Shared.Rezept.RezeptBezeichnung = tRezeptName.Text
+            wb_Rezept_Shared.Rezept.RezeptKommentar = tRezeptKommentar.Text
+            wb_Rezept_Shared.Rezept.RezeptNummer = tRezeptNummer.Text
+            wb_Rezept_Shared.Rezept.LinienGruppe = cbLiniengruppe.GetKeyFromSelection()
+            wb_Rezept_Shared.Rezept.RezeptGruppe = cbRezeptGruppe.GetKeyFromSelection()
+            'geändete Daten speichern
+            wb_Rezept_Shared.Edit_Leave(sender)
+        End If
     End Sub
 
     Private Sub tChargeMin_Leave(sender As Object, e As EventArgs) Handles tChargeMin.Leave

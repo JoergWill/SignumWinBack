@@ -68,7 +68,7 @@ Public Class wb_nwtUpdateArtikel
                 'verknüpfte Rezeptnummer zum Artikel/Rohstoff
                 _AktRZ_Nr = nwtArtikelDaten.RzNr
                 'Rezept mit allen Rezeptschritten lesen (NoMessage=True unterdrückt die Meldung "Rezept verweist auf sich selbst")
-                Dim Rzpt As New wb_Rezept(_AktRZ_Nr, Nothing, nwtArtikelDaten.Backverlust, 1, "", "", True)
+                Dim Rzpt As New wb_Rezept(_AktRZ_Nr, Nothing, nwtArtikelDaten.Backverlust, 1, "", "", True, False)
 
                 'Änderungs-Log löschen
                 nwtArtikelDaten.ClearReport()
@@ -77,7 +77,7 @@ Public Class wb_nwtUpdateArtikel
                 nwtArtikelDaten.ktTyp301 = Rzpt.KtTyp301
                 Debug.Print("reCalcRezept (" & _AktRZ_Nr & ") " & Rzpt.RezeptNummer & " " & Rzpt.RezeptBezeichnung & " kt301(Kilokalorien) " & nwtArtikelDaten.ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien))
                 'Zutatenliste erzeugen
-                nwtArtikelDaten.Deklaration = wb_Functions.XRemoveSonderZeichen(Rzpt.ZutatenListe(wb_Global.ZutatenListeMode.Show_ENummer), True)
+                nwtArtikelDaten.Deklaration = wb_Functions.XRemoveSonderZeichen(Rzpt.ZutatenListe(True, True, True), True)
                 Debug.Print("Zutatenliste " & nwtArtikelDaten.Deklaration)
                 'Mehlzusammensetzung berechnen
                 nwtArtikelDaten.Mehlzusammensetzung = Rzpt.MehlZusammensetzung(wb_Global.TrennzMehlAnteil)

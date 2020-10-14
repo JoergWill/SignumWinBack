@@ -21,6 +21,17 @@
         End Get
     End Property
 
+    Public Sub Invalid()
+        IP_Wert4Str = ""
+        IP_Wert5Str = ""
+        IP_ItemID = wb_Global.UNDEFINED
+        IP_Wert1int = ""
+        IP_Wert2int = ""
+
+        _DataHasChanged = False
+        _GruppeHasChanged = False
+    End Sub
+
     ''' <summary>
     ''' Mitarbeiter-Name. String max 250 Zeichen
     ''' Tabelle winback.ItemParameter.IP_Wert4Str

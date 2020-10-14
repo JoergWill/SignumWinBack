@@ -101,8 +101,7 @@ Public Class StammDaten_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        If LinienGruppen IsNot Nothing Then
-            LinienGruppen.Close()
-        End If
+        wb_Functions.CloseAndDisposeSubForm(LinienGruppen)
+        wb_Functions.CloseAndDisposeSubForm(WinBackKonfig)
     End Sub
 End Class

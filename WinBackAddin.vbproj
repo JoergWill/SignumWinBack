@@ -651,7 +651,7 @@
     <Compile Include="wb_00_Main\wb_Main_Progress.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="wb_00_Main\wb_Main_Progress_Shared.vb" />
+    <Compile Include="wb_00_Main\wb_Main_Shared.vb" />
     <Compile Include="wb_00_Main\wb_PrinterDialog.Designer.vb">
       <DependentUpon>wb_PrinterDialog.vb</DependentUpon>
     </Compile>
@@ -1530,6 +1530,7 @@
     <None Include="Resources\LinienAuto_32x32.png" />
     <None Include="Resources\RohstoffSilo_32x32.png" />
     <None Include="Resources\RezeptGruppen_32x32.png" />
+    <None Include="Resources\RohstoffeDrucken_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

@@ -82,7 +82,4 @@ Public Class wb_User_Liste
         End Try
     End Sub
 
-    Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
-
-    End Sub
 End Class

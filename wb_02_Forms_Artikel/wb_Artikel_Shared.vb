@@ -21,6 +21,10 @@ Public Class wb_Artikel_Shared
         Load_ArtikelTables()
     End Sub
 
+    Public Shared Sub Invalid()
+        Artikel.Invalid()
+    End Sub
+
     Public Shared ReadOnly Property ErrorText As String
         Get
             Return _ErrorText

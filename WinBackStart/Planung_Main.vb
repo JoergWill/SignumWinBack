@@ -88,7 +88,7 @@ Public Class Planung_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        PlanungTeiler.Close()
-        PlanungListe.Close()
+        wb_Functions.CloseAndDisposeSubForm(PlanungListe)
+        wb_Functions.CloseAndDisposeSubForm(PlanungTeiler)
     End Sub
 End Class

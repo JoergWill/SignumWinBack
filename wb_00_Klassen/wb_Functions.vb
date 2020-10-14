@@ -928,7 +928,7 @@ Public Class wb_Functions
     Public Shared Function FormatStr(value As String, NachKomma As Integer, Optional VorKomma As Integer = -1, Optional ByVal Culture As String = Nothing) As String
         Dim wert As Double
         Try
-            If value IsNot "" Then
+            If value IsNot "" And value IsNot Nothing Then
                 ' Für Datenbank-Felder muss unabhängig von der Ländereinstellung die Umwandlung mit
                 ' der Einstellung de-DE erfolgen
                 If Culture IsNot Nothing Then
@@ -1008,6 +1008,23 @@ Public Class wb_Functions
             Case Else
                 Return Right("00" & ti(0).ToString, 2) & ":" & Right("00" & ti(1).ToString, 2) & ":" & Right("00" & ti(2).ToString, 2)
         End Select
+    End Function
+
+    ''' <summary>
+    ''' Entfernt alle Leerzeichen und Sonderzeichen aus einem String
+    ''' Rezeptname -> Excel-TabSheetBezeichnung
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Public Shared Function XRenameToExcelTabName(s As String) As String
+        s = s.Replace(" ", "")
+        s = s.Replace("\", "")
+        s = XRemoveSonderZeichen(s)
+        'Länge auf 30 Zeichen begrenzen
+        If Len(s) > 30 Then
+            s = s.Substring(0, 30)
+        End If
+        Return s
     End Function
 
     ''' <summary>

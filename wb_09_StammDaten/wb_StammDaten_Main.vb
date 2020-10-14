@@ -58,19 +58,12 @@ Public Class wb_StammDaten_Main
     ''' <remarks></remarks>
     Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
         'LinienGruppen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If LinienGruppen IsNot Nothing Then
-            LinienGruppen.Close()
-        End If
-
-        'Allergen-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If Allergene IsNot Nothing Then
-            Allergene.Close()
-        End If
-
-        'Rohstoff- und Artikelgruppen (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If ArtRohGruppen IsNot Nothing Then
-            ArtRohGruppen.Close()
-        End If
+        wb_Functions.CloseAndDisposeSubForm(LinienGruppen)
+        wb_Functions.CloseAndDisposeSubForm(Allergene)
+        wb_Functions.CloseAndDisposeSubForm(ArtRohGruppen)
+        wb_Functions.CloseAndDisposeSubForm(WinBackKonfig)
+        wb_Functions.CloseAndDisposeSubForm(RezeptVarianten)
+        wb_Functions.CloseAndDisposeSubForm(RezeptGruppen)
 
         'Fenster darf geschlossen werden
         Return False

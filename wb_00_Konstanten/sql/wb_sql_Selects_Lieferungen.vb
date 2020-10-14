@@ -10,7 +10,7 @@
                                   "ORDER BY Lieferungen.LF_Nr DESC"
 
     'Sql_statement UPDATE Lieferungen nach LF_lfd
-    Public Const sqlUpdateLieferung = "UPDATE Lieferungen SET LF_Menge = '[2]' WHERE LF_LG_Ort = '[0]' AND LF_Nr = [1]"
+    Public Const sqlUpdateLieferung = "UPDATE Lieferungen SET LF_Menge = '[2]', LF_Bemerkung = '[3]' WHERE LF_LG_Ort = '[0]' AND LF_Nr = [1]"
 
     'Sql_statement UPDATE Lieferungen nach LG_Ort
     Public Const sqlSetStatusLieferung = "UPDATE Lieferungen SET LF_Gebucht = '3' WHERE LF_LG_Ort = '[0]'"

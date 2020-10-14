@@ -193,10 +193,10 @@ Public Class wb_KompRzChargen
                 End If
 
                 'wenn schon eine Verknüpfung zur Cloud vorhanden ist kann keine Rezeptur zugewiesen werden
-                If ID <> "" Then
-                    BtnRzpt.Enabled = False
-                Else
+                If ID = "" Or ID = "-1" Then
                     BtnRzpt.Enabled = True
+                Else
+                    BtnRzpt.Enabled = False
                 End If
             End If
         End Set

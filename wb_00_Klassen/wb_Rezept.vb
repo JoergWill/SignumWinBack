@@ -51,11 +51,25 @@ Public Class wb_Rezept
     Private _Rezeptgruppe As Integer
     Private _ktTyp301 As New wb_KomponParam301
     Private _Zutaten As New wb_ZutatenListe
-
     Private _LLRezeptur As New ArrayList
     Private _LLBig4 As New ArrayList
 
     Public _Parent As Object
+
+    ''' <summary>
+    ''' Setzt alle Variablen wieder auf Null,Nothing oder Undefined.
+    ''' Wird aufgerufen, wenn eine neue(andere) Komponente geladen werden soll
+    ''' </summary>
+    Public Sub Invalid()
+        _RezeptNr = wb_Global.UNDEFINED
+        _RezeptNummer = ""
+        _RezeptBezeichnung = ""
+        _RezeptKommentar = ""
+        _AenderungNummer = wb_Global.UNDEFINED
+        _LinienGruppe = wb_Global.UNDEFINED
+        _Varianten = Nothing
+        _DataHasChanged = False
+    End Sub
 
     Public WriteOnly Property DataHasChanged As Boolean
         Set(value As Boolean)
@@ -380,15 +394,17 @@ Public Class wb_Rezept
         End Set
     End Property
 
-    Public ReadOnly Property ZutatenListe(Mode As wb_Global.ZutatenListeMode) As String
+    Public ReadOnly Property ZutatenListe(ShowENummern As Boolean, Optimize As Boolean, ReCalc As Boolean) As String
         Get
             'Zutatenliste erstellen, wenn notwendig
-            If CalcZutatenListe() Then
+            If CalcZutatenListe(ReCalc) Then
                 'Zutatenliste optimieren
-                _Zutaten.Opt()
+                If Optimize Then
+                    _Zutaten.Opt()
+                End If
             End If
             'Druckfähige Zutatenliste 
-            Return _Zutaten.Print(Mode)
+            Return _Zutaten.Print(ShowENummern)
         End Get
     End Property
 
@@ -399,10 +415,15 @@ Public Class wb_Rezept
         End Get
     End Property
 
-    Private Function CalcZutatenListe() As Boolean
-        If _Zutaten.Liste.Count = 0 Then
+    Private Function CalcZutatenListe(Optional ReCalc As Boolean = False) As Boolean
+        'Zutatenliste löschen wenn neu berechnet werden soll
+        If ReCalc Then
+            _Zutaten.Clear()
+        End If
+        'Zutatenliste berechnen (wenn notwendig)
+        If (_Zutaten.Liste.Count = 0) Then
             'Zutatenliste aller Rezeptschritte berechnen
-            RootRezeptSchritt.CalcZutaten(_Zutaten.Liste)
+            RootRezeptSchritt.CalcZutaten(_Zutaten.Liste, ReCalc)
             Return True
         Else
             Return False
@@ -444,12 +465,13 @@ Public Class wb_Rezept
     ''' Fehlermeldungen (Rekursiver Aufruf von Rezept-im-Rezept) zur Information mit als Fehlermeldung
     ''' ausgegeben.
     ''' </summary>
-    Public Sub New(RzNr As Integer, Parent As Object, Backverlust As Double, Optional ByRef RzVariante As Integer = 1, Optional KNummer As String = "", Optional KBezeichnung As String = "", Optional NoMessage As Boolean = False)
+    Public Sub New(RzNr As Integer, Parent As Object, Backverlust As Double, Optional ByRef RzVariante As Integer = 1, Optional KNummer As String = "", Optional KBezeichnung As String = "", Optional NoMessage As Boolean = False, Optional ReadCalcPreis As Boolean = True)
         'Zeiger auf die aufrufende Klasse
         _Parent = Parent
         _RezeptNr = RzNr
         _RezeptVariante = RzVariante
         _NoMessage = NoMessage
+        _ReadCalcPreis = ReadCalcPreis
         TeigChargen.ErrorCheck = False
         TeigChargen.TeigGewicht = wb_Global.UNDEFINED
 
@@ -457,7 +479,9 @@ Public Class wb_Rezept
         Dim x As wb_Rezept = Me._Parent
         While x IsNot Nothing
             If x.RezeptNr = RzNr Then
-                Throw New Exception("Rezept verweist auf sich selbst bei Komponente " & KNummer & " " & KBezeichnung)
+                If NoMessage Then
+                    Throw New Exception("Rezept verweist auf sich selbst bei Komponente " & KNummer & " " & KBezeichnung)
+                End If
                 Exit Sub
             End If
             x = x._Parent
@@ -513,7 +537,9 @@ Public Class wb_Rezept
     End Sub
 
     ''' <summary>
-    ''' Einlesen Rezeptkopf und Rezeptur aus der Historie
+    ''' Einlesen Rezeptkopf und Rezeptur aus der Historie.
+    ''' Wenn eine Rezept-Im-Rezept Rekursion auftritt, wird das Einlesen abgebrochen.
+    ''' Eine Rückmeldung erfolgt nicht!
     ''' </summary>
     ''' <param name="RzNr"></param>
     ''' <param name="RzVariante"></param>
@@ -522,6 +548,16 @@ Public Class wb_Rezept
         'Rezeptnr und Variante merken
         _RezeptNr = RzNr
         _RezeptVariante = RzVariante
+
+        'Rekursion begrenzen - Parent ermitteln
+        Dim x As wb_Rezept = Me._Parent
+        While x IsNot Nothing
+            If x.RezeptNr = RzNr Then
+                Exit Sub
+            End If
+            x = x._Parent
+        End While
+
         'Rezeptkopf mit Variante x aus der Datenbank einlesen
         MySQLdbSelect_RzKopf(RzNr, RzVariante, RzAendIndex)
 
@@ -531,6 +567,19 @@ Public Class wb_Rezept
 
     Public Sub New()
         'Erzeugt eine zunächst 'leere' Hülle ohne Daten
+    End Sub
+
+    ''' <summary>
+    ''' Kopiert alle Rezeptschritte vom angegebenen Rezept in die aktuelle Rezeptur und speichert diese anschliessend
+    ''' (Rezept_Main Rezept kopieren)
+    ''' </summary>
+    ''' <param name="CopyFrom_RzNr"></param>
+    ''' <param name="CopyFromRz_Variante"></param>
+    Public Sub Copy(CopyFrom_RzNr As Integer, CopyFromRz_Variante As Integer)
+        'Rezept einlesen (alte Nummer/Variante)
+        MySQLdbSelect_RzSchritt(CopyFrom_RzNr, CopyFromRz_Variante)
+        'Rezept speichern (neue Nummer/Variante)
+        MySQLdbWrite_RzSchritt(_RezeptNr, 1)
     End Sub
 
     Friend Sub LoadData(dataGridView As wb_DataGridView)
@@ -853,10 +902,10 @@ Public Class wb_Rezept
             If _RezeptSchritt.RezeptNr > 0 Then
                 'TODO welche Variante soll hier gelesen werden? (Standart ist Variante Eins)
                 Try
-                    _RezeptSchritt.RezeptImRezept = New wb_Rezept(_RezeptSchritt.RezeptNr, Me, _RezeptSchritt.Backverlust, _RezeptVariante, _RezeptSchritt.Nummer, _RezeptSchritt.Bezeichnung, _NoMessage)
+                    _RezeptSchritt.RezeptImRezept = New wb_Rezept(_RezeptSchritt.RezeptNr, Me, _RezeptSchritt.Backverlust, _RezeptVariante, _RezeptSchritt.Nummer, _RezeptSchritt.Bezeichnung, _NoMessage, _ReadCalcPreis)
                 Catch ex As Exception
                     If Not _NoMessage Then
-                        MsgBox(ex.Message)
+                        'MsgBox(ex.Message)
                         _RezeptSchritt.RezeptImRezept = Nothing
                     End If
                 End Try

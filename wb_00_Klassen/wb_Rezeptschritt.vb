@@ -1,4 +1,5 @@
-﻿Imports System.Reflection
+﻿'Zutatenliste neu berechnen
+Imports System.Reflection
 Imports EnhEdit
 Imports Signum.OrgaSoft.Services
 Imports WinBack.wb_Global.KomponTypen
@@ -6,6 +7,7 @@ Imports WinBack.wb_Sql_Selects
 
 Public Class wb_Rezeptschritt
 
+    Private _Idx As Integer
     Private _SchrittNr As Integer
     Private _ParamNr As Integer
     Private _RohNr As Integer
@@ -154,6 +156,7 @@ Public Class wb_Rezeptschritt
             _RohNr = NewKomp.Nr
             _Type = KomponType
             _ParamNr = 1
+            _Idx = ParentStep.idx
 
             If Not (_parentStep Is Nothing) Then
                 Parent._childSteps.Add(Me)
@@ -250,6 +253,7 @@ Public Class wb_Rezeptschritt
         Get
             Dim _Steps As New ArrayList
             If Me.SchrittNr > 0 Then
+                Me.Idx = 1
                 _Steps.Add(Me)
             End If
 
@@ -283,6 +287,20 @@ Public Class wb_Rezeptschritt
         Next
         Return RsStep
     End Function
+
+    ''' <summary>
+    ''' Index auf Rezeptnummer.
+    ''' Ist für alle Rezeptschritte identisch. Verweis auf die Rezeptnummer (Drucken Rezeptur)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Idx As Integer
+        Get
+            Return _Idx
+        End Get
+        Set(value As Integer)
+            _Idx = value
+        End Set
+    End Property
 
     ''' <summary>
     ''' (Interne) Komponenten-Nummer
@@ -948,13 +966,13 @@ Public Class wb_Rezeptschritt
     ''' Ist das Feld interne Deklaration leer, wird immer die externe Deklaration verwendet.
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property ZutatenListe(Optional Faktor As Double = 1) As wb_ZutatenElement
+    Public ReadOnly Property ZutatenListe(Optional Faktor As Double = 1, Optional ReCalc As Boolean = False) As wb_ZutatenElement
         Get
 
             'Lesen aus interner Deklaration der Rohstoffe
             If wb_GlobalSettings.NwtInterneDeklaration Then
                 'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
-                If Not _ZutatenListeIntern.ReadOK Then
+                If Not _ZutatenListeIntern.ReadOK Or ReCalc Then
                     _ZutatenListeIntern.Read(Me.RohNr)
                 End If
                 'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
@@ -964,7 +982,7 @@ Public Class wb_Rezeptschritt
             'Lesen aus externer Deklaration oder wenn die interne Deklaration leer ist
             If Not wb_GlobalSettings.NwtInterneDeklaration Or (_ZutatenListe.Zutaten = "") Then
                 'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
-                If Not _ZutatenListeExtern.ReadOK Then
+                If Not _ZutatenListeExtern.ReadOK Or ReCalc Then
                     _ZutatenListeExtern.Read(Me.RohNr)
                 End If
                 'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
@@ -1173,11 +1191,11 @@ Public Class wb_Rezeptschritt
     ''' </summary>
     ''' <param name="zListe"></param>
     ''' <param name="Faktor"></param>
-    Public Sub CalcZutaten(ByRef zListe As List(Of wb_ZutatenElement), Optional Faktor As Double = 1, Optional GrpRezNr As Integer = wb_Global.UNDEFINED)
+    Public Sub CalcZutaten(ByRef zListe As List(Of wb_ZutatenElement), Optional ReCalc As Boolean = False, Optional Faktor As Double = 1, Optional GrpRezNr As Integer = wb_Global.UNDEFINED)
         'Angaben zum Rezeptschritt in Liste anhängen
         Dim z As New wb_ZutatenElement
         z.GrpRezNr = GrpRezNr
-        z = ZutatenListe(Faktor)
+        z = ZutatenListe(Faktor, ReCalc)
 
         'Deklarations-Bezeichnung des Rohstoffes an die Liste anhängen
         If Not z.KeineDeklaration Then
@@ -1189,7 +1207,7 @@ Public Class wb_Rezeptschritt
             'Aufruf der Routine vom Root-Rezeptschritt aus
             'unterlagerte Rezeptschritte werden auch im Array angehängt
             For Each x As wb_Rezeptschritt In ChildSteps
-                x.CalcZutaten(zListe, Faktor, GrpRezNr)
+                x.CalcZutaten(zListe, ReCalc, Faktor, GrpRezNr)
             Next
             Debug.Print("CalcZutaten - nach Step 2 (For Each x in ChildSteps)")
             DebugPrintZutatenListe(zListe)
@@ -1199,7 +1217,7 @@ Public Class wb_Rezeptschritt
                 'Rezept im Rezept
                 If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
                     Dim f As Double = Sollwert / RezeptImRezept.RezeptGewicht
-                    RezeptImRezept.RootRezeptSchritt.CalcZutaten(zListe, f, z.GrpRezNr)
+                    RezeptImRezept.RootRezeptSchritt.CalcZutaten(zListe, ReCalc, f, z.GrpRezNr)
                     Debug.Print("CalcZutaten - nach Step 3 (If RezeptImRezept)")
                     DebugPrintZutatenListe(zListe)
                 End If
@@ -1219,7 +1237,6 @@ Public Class wb_Rezeptschritt
             End If
         Next
     End Sub
-
 
     Private Function ReadktTyp301() As Boolean
         'Datenbank-Verbindung öffnen - MySQL

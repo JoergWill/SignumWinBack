@@ -120,7 +120,7 @@ Public Class Linien_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        LinienDetails.Close()
-        LinienListe.Close()
+        wb_Functions.CloseAndDisposeSubForm(LinienListe)
+        wb_Functions.CloseAndDisposeSubForm(LinienDetails)
     End Sub
 End Class

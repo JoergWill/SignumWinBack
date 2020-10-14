@@ -51,7 +51,7 @@ Public Class wb_Artikel_Liste
         'Zeile im Grid
         Dim eRow As Integer = e.RowIndex
         'Kein Doppelclick auf die Überschriftenzeile
-        If eRow > 0 Then
+        If eRow >= 0 Then
             'Die RezeptNummer steht in Spalte 1
             Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(RzpIdxColumn, eRow).Value)
             'Wenn die Rezeptnummer gültig ist

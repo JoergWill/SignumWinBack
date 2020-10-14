@@ -112,10 +112,12 @@ Public Class Rezepte_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
+        wb_Functions.CloseAndDisposeSubForm(RezeptListe)
         wb_Functions.CloseAndDisposeSubForm(RezeptDetails)
         wb_Functions.CloseAndDisposeSubForm(RezeptHinweise)
         wb_Functions.CloseAndDisposeSubForm(RezeptHistorie)
-        wb_Functions.CloseAndDisposeSubForm(RezeptListe)
+        'alle "alten" Daten löschen
+        wb_Rezept_Shared.Invalid()
     End Sub
 
     Public Sub RezeptNeuAnlegen()

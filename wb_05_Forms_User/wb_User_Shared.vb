@@ -11,6 +11,10 @@
         LoadGrpTexte()
     End Sub
 
+    Public Shared Sub Invalid()
+        User.Invalid()
+    End Sub
+
     Public Shared Function Reload()
         LoadGrpTexte()
         Return True

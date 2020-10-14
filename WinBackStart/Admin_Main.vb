@@ -129,6 +129,11 @@ Public Class Admin_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        AdminDatensicherung.Close()
+        wb_Functions.CloseAndDisposeSubForm(AdminDatensicherung)
+        wb_Functions.CloseAndDisposeSubForm(AdminLog)
+        wb_Functions.CloseAndDisposeSubForm(AdminEditIni)
+        wb_Functions.CloseAndDisposeSubForm(AdminCheckDataBase)
+        wb_Functions.CloseAndDisposeSubForm(AdminUpdateDataBase)
+        wb_Functions.CloseAndDisposeSubForm(AdminUpdateWinBack)
     End Sub
 End Class

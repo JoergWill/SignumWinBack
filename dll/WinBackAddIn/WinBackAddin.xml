@@ -407,6 +407,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.RohstoffeDrucken_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.RohstoffeLieferung_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -1493,6 +1498,32 @@ Stacktrace:
  <param name="Filialzuordnung">String - alle Filialen den der Mitarbeiter zugeordnet ist als Kommas-separierter String</param>
  <returns>True wenn dre Mitarbeiter der Produktion zugeordnet ist</returns>
 </member>
+<member name="P:WinBack.wb_BestellDatenSchritt.Produktionsmenge">
+ <summary>
+ Enthält die Soll-Produktionsmenge aus OrgaBack. Die MengeInProduktion ist schon verrechnet.
+ Wenn eine Ausback-Menge (Teiglinge) angegeben ist, wird dieser Wert verwendet. Die darunterliegende Rezeptur wird
+ in der Berechnung der Vorproduktion dann nicht berücksichtigt! (Flag Aufloesen = False)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_BestellDatenSchritt.Aufloesen">
+ <summary>
+ Flag Rezeptur auflösen.
+ Wenn aus der Produktions-Planung eine Anzahl an Teiglingen übergeben wird (Aufbackmenge) darf die darunterliegende Rezeptur nicht
+ aufgelöst werden. Die Teiglinge werden aus dem Froster entnommen und müssen nicht produziert werden
+ (Die Froster-Filiale bestellt bedarfsorientiert)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_BestellDatenSchritt.MengeInProduktion">
+ <summary>
+ Enthält den Wert der schon in Produktion befindlicher Chargen.
+ Wird verwendet, wenn der Back/Teigzettel mehrmals am Tag ausgedruckt wird.
+ Mit jedem Ausdruck wird die MengeInProduktion an OrgaBack zurückgemeldet und dort mit
+ den Bestelldaten verrechnet.
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_BestellDatenSchritt.SollwertTeilungText">
  <summary>
  Der Sollwert-Teilung-Text setzt sich zusammen aus Anzahl der Lose, LosArt und Losgröße
@@ -1510,6 +1541,7 @@ Stacktrace:
  Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
  Update pq_Prouktionsauftrag (30.08.2018/JE)
  Update pq_Prouktionsauftrag (20.02.2020/JE) DB-Version 8.0050
+ Erweiterung pq_Produktionsauftrag (25.09.2020/JW) Aufbackmenge Teigling
  
  [dbo].[pq_ProduktionsPlanung]
    FilialNr                  / 1
@@ -1521,6 +1553,7 @@ Stacktrace:
    Groesse                   / NULL
    DispositionsArt           / 2..4                  (20.02.2020/JE)
    BedarfMenge               / 4000,0000
+   AusbackMenge              /                       (30.09.2020/JE)
    MengeInProduktion         / 1000,0000             (20.02.2020/JE)
    Bezeichnung               / Mehrkornbrötchen
    Zusatztexte               / Lorem ipsum
@@ -2258,7 +2291,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="winback"></param>
 </member>
-<member name="M:WinBack.wb_Lieferungen.UpdateLieferung(WinBack.wb_Sql,System.Int32,System.Double)">
+<member name="M:WinBack.wb_Lieferungen.UpdateLieferung(WinBack.wb_Sql,System.Int32,System.Double,System.String)">
  <summary>
  Ändert einen Datensatz in der Tabelle winback.Lieferungen. Anpassung der Liefermenge
  </summary>
@@ -3675,7 +3708,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Value">Object - Wert Datenbankfeld(Inhalt)</param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Komponente.MySQLdbUpdate">
+<member name="M:WinBack.wb_Komponente.MySQLdbUpdate(System.Boolean)">
  <summary>
  schreibt alle Datenfelder aus dem Komponenten-Objekt mit der angegebenen Komponenten-Nummer in die Datenbank.
  </summary>
@@ -4278,7 +4311,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Modus"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Produktion.AddChargenZeile(System.String,System.Int32,System.Double,WinBack.wb_Global.ModusChargenTeiler)">
+<member name="M:WinBack.wb_Produktion.AddChargenZeile(System.String,System.Int32,System.Double,WinBack.wb_Global.ModusChargenTeiler,System.Boolean)">
  <summary>
  Fügt eine Rezept(Charge) an die bestehende Liste an.
  Der Rezept-Datensatz wird aus der Datenbank eingelesen. Für die Artikelzeile wird ein Dummy-Artikel angelegt.
@@ -4289,7 +4322,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Modus"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Produktion.AddChargenZeile(System.String,System.String,System.Int32,System.Double,System.Double,System.Double,WinBack.wb_Global.ModusChargenTeiler,System.Boolean,System.String,System.Double,System.String,System.String)">
+<member name="M:WinBack.wb_Produktion.AddChargenZeile(System.String,System.String,System.Int32,System.Double,System.Double,System.Double,WinBack.wb_Global.ModusChargenTeiler,System.Boolean,System.Boolean,System.String,System.Double,System.String,System.String)">
  <summary>
  Fügt eine (Artikel)Charge an die bestehende Liste an.
  Der Artikel-Datensatz wird aus der Datenbank eingelesen und als Kopfdatensatz eingefügt. Die Rezeptzeilen werden entsprechend der Chargen-Aufteilung angefügt.
@@ -4687,6 +4720,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Die Anzeige erfolgt im VirtualTree direkt mit der Angabe des Root-Nodes
  </summary>
 </member>
+<member name="M:WinBack.wb_Rezept.Invalid">
+ <summary>
+ Setzt alle Variablen wieder auf Null,Nothing oder Undefined.
+ Wird aufgerufen, wenn eine neue(andere) Komponente geladen werden soll
+ </summary>
+</member>
 <member name="P:WinBack.wb_Rezept.RootRezeptSchritt">
  <summary>
  Erster (unsichtbarer) Rezept-Schritt (Root-Node)
@@ -4783,7 +4822,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Rezept.#ctor(System.Int32,System.Object,System.Double,System.Int32@,System.String,System.String,System.Boolean)">
+<member name="M:WinBack.wb_Rezept.#ctor(System.Int32,System.Object,System.Double,System.Int32@,System.String,System.String,System.Boolean,System.Boolean)">
  <summary>
  Erzeugt ein neues Rezeptur-Objekt.
  Nach dem Einlesen der Rezeptschritte aus der Datenbank wird das Rezept-Gesamtgewicht berechnet.
@@ -4810,6 +4849,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="RzNr"></param>
  <param name="RzVariante"></param>
  <param name="RzAendIndex"></param>
+</member>
+<member name="M:WinBack.wb_Rezept.Copy(System.Int32,System.Int32)">
+ <summary>
+ Kopiert alle Rezeptschritte vom angegebenen Rezept in die aktuelle Rezeptur und speichert diese anschliessend
+ (Rezept_Main Rezept kopieren)
+ </summary>
+ <param name="CopyFrom_RzNr"></param>
+ <param name="CopyFromRz_Variante"></param>
 </member>
 <member name="P:WinBack.wb_Rezept.HasVariante(System.Int32)">
  <summary>
@@ -4969,6 +5016,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Nach Insert/Delete
  </summary>
  <param name="RsStep">Start-Index</param>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Rezeptschritt.Idx">
+ <summary>
+ Index auf Rezeptnummer.
+ Ist für alle Rezeptschritte identisch. Verweis auf die Rezeptnummer (Drucken Rezeptur)
+ </summary>
  <returns></returns>
 </member>
 <member name="P:WinBack.wb_Rezeptschritt.RohNr">
@@ -5180,7 +5234,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
-<member name="P:WinBack.wb_Rezeptschritt.ZutatenListe(System.Double)">
+<member name="P:WinBack.wb_Rezeptschritt.ZutatenListe(System.Double,System.Boolean)">
  <summary>
  Gibt die Zutatenliste mit Bezeichnung und Mengen-Angabe aller unterlagerten Rezeptschritte zurück
  
@@ -5189,7 +5243,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Rezeptschritt.CalcZutaten(System.Collections.Generic.List{WinBack.wb_ZutatenElement}@,System.Double,System.Int32)">
+<member name="M:WinBack.wb_Rezeptschritt.CalcZutaten(System.Collections.Generic.List{WinBack.wb_ZutatenElement}@,System.Boolean,System.Double,System.Int32)">
  <summary>
  Fügt die Zutaten(Liste) für den aktuellen Rezeptschritt an die bestehende Liste an.
  Je nach Inhalt des Deklarations-Feldes werden verschiedene Fälle unterschieden:
@@ -5684,6 +5738,14 @@ Text aus Datenbank lesen - Übersetzung
  
      3,5% Milch      3.5% Milch
      Ei 99,9 %       Ei 99.9%
+ </summary>
+ <param name="s"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_ZutatenListe.FilterKlammer(System.String)">
+ <summary>
+ Filtert Zutatenlisten, die in Klammern gesetzt sind als eigenständiges Zutaten-Element aus. 
+ Die Klammern werden durch Semikolon ersetzt, damit wird dieses Element nicht aufgesplittet.
  </summary>
  <param name="s"></param>
  <returns></returns>
@@ -6865,6 +6927,15 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.BtnKopieren_Click(System.Object,System.EventArgs)">
+ <summary>
+ Rezeptur kopieren.
+ Die bestehende (aktuelle) Rezeptur wird gespeichert. Danach wird ein neues Rezept angelegt und die Daten kopiert.
+ Anschliessend wird das neue Rezept in einem neuen Fenster geöffnet.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Rezept_Rezeptur.BtnLoeschen_Click(System.Object,System.EventArgs)">
  <summary>
  Aktuelle Rezeptur löschen.
@@ -7710,6 +7781,14 @@ Public Const MFF_Wissenswertes = 213
  Liste neu laden nach Löschen/Ändern Rezeptur
  </summary>
 </member>
+<member name="M:WinBack.wb_Rezept_Liste.DataGridView_PopupClick(System.Object,System.EventArgs)">
+ <summary>
+ PopUp-Menu Click.
+ Filter Rezept-Liste Produktion/Sauerteig
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Rezept_Shared.LoadRezeptGruppenTexte">
  <summary>
  Erzeugt eine SortedList mit der Zuordnung von Rezeptgruppen-Nummer zum Rezeptgruppen-Text.
@@ -7741,6 +7820,26 @@ Public Const MFF_Wissenswertes = 213
  True, wenn das Fenster geöffnet bleiben muss
  </returns>
  <remarks></remarks>
+</member>
+<member name="M:WinBack.wb_Rezept_Main.RezeptCopy(System.Object,System.Int32,System.Int32)">
+ <summary>
+ Das Kopieren einer Rezeptur erfolgt über die Funktion Rezept-Neu.
+ Die übergebene Rezept-Nummer wird kopiert.
+ </summary>
+ <param name="Sender"></param>
+ <param name="RzNr"></param>
+</member>
+<member name="M:WinBack.wb_Rezept_Main.RezeptNew(System.Int32,System.Int32)">
+ <summary>
+ Neues Rezept anlegen. Wenn keine Rezeptnummer angegeben ist, wird nur eine leere Hülle erzeugt. Ist eine Rezeptnummer angegeben,
+ wird eine Kopie des aktuellen Rezeptes erzeugt und angezeigt.
+ </summary>
+ <param name="RzNr"></param>
+</member>
+<member name="M:WinBack.wb_Rezept_Main.BtnRezeptNew">
+ <summary>
+ Neues (leeres) Rezept anlegen
+ </summary>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Parameter.wb_Rohstoffe_Parameter_Load(System.Object,System.EventArgs)">
  <summary>
@@ -7834,6 +7933,13 @@ entsprechende Übersetzung aus winback.Texte geladen
  Gibt die Anzahl der Rohstoffe mit dieser Type zurück.
  </summary>
  <param name="RohSiloType"></param>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Rohstoffe_Liste.FilterText">
+ <summary>
+ Textbausteine für die Filterfunktion
+ Anzeige für Fenstertitel und Ausdruck
+ </summary>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Liste.SaveData(System.Object)">
@@ -8049,6 +8155,12 @@ sein, sonst funktioniert die Update-Anweisung (automatisch
 generiert) nicht. 
  </summary>
 </member>
+<member name="P:WinBack.wb_DataGridView.LLData">
+ <summary>
+ GridView-Daten als DataTable publizieren. Für ListUndLabel Druck der Rohstoff-Liste
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_DataGridView.LoadData(System.String,System.String,WinBack.wb_Sql.dbTable)">
  <summary>
 Läd die Daten aus der Datenbank in das DataGridView.
@@ -8098,7 +8210,7 @@ in das DataView und in das Pop-Up-Menu eingetragen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_DataGridView.PopupItemAdd(System.String,System.String,System.Drawing.Image,System.EventHandler,System.Boolean)">
+<member name="M:WinBack.wb_DataGridView.PopupItemAdd(System.String,System.String,System.Drawing.Image,System.EventHandler,System.Boolean,System.Boolean)">
  <summary>
  Popup-Menu - Item anfügen. Der Eventhandler wird in der aufrufenden Routine festgelegt.
  </summary>
@@ -8466,6 +8578,14 @@ Start Timer nach Änderung Datensatz-Zeiger
  Formatiert einen String im Muster 00:00:00
  </summary>
  <param name="Value"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.XRenameToExcelTabName(System.String)">
+ <summary>
+ Entfernt alle Leerzeichen und Sonderzeichen aus einem String
+ Rezeptname -> Excel-TabSheetBezeichnung
+ </summary>
+ <param name="s"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Functions.XRemoveSonderZeichen(System.String,System.Boolean)">
@@ -9567,6 +9687,17 @@ eingelesen
  Die DockPanel-Konfiguration wird gespeichert unter wbXXXXYYYY.xml, dabei ist XXXX der FormName und YYYY der Layout-Name.
  </summary>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_Admin_Main.FormClosing(System.Int16)">
+ <summary>
+ Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+ </summary>
+ <param name="Reason"></param>
+ <returns>
+ False, wenn das Fenster geschlossen werden darf
+ True, wenn das Fenster geöffnet bleiben muss
+ </returns>
+ <remarks></remarks>
 </member>
 <member name="M:WinBack.wb_Admin_Datensicherung.Btn_DatenSicherung_Click(System.Object,System.EventArgs)">
  <summary>

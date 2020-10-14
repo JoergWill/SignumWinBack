@@ -125,14 +125,12 @@ Public Class wb_Admin_Main
             AdminSync = New wb_Admin_Sync
         End If
         AdminSync.Show(DockPanel, DockState.DockTop)
-        Trace.WriteLine("AdminSyncForm aufgerufen")
     End Sub
     Private Sub BtnOrgaBack()
         If IsNothingOrDisposed(OrgaBackParams) Then
             OrgaBackParams = New wb_Admin_OrgaBackParams
         End If
         OrgaBackParams.Show(DockPanel, DockState.DockTop)
-        Trace.WriteLine("AdminOrgaBackParams aufgerufen")
     End Sub
 
     Private Sub BtnAdminDatensicherung()
@@ -179,4 +177,30 @@ Public Class wb_Admin_Main
         End If
         AdminEditIni.Show(DockPanel, DockState.DockRight)
     End Sub
+
+    ''' <summary>
+    ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
+    ''' </summary>
+    ''' <param name="Reason"></param>
+    ''' <returns>
+    ''' False, wenn das Fenster geschlossen werden darf
+    ''' True, wenn das Fenster geöffnet bleiben muss
+    ''' </returns>
+    ''' <remarks></remarks>
+    Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
+        'Fenster ordentlich wieder schliesen
+        wb_Functions.CloseAndDisposeSubForm(AdminLog)
+        wb_Functions.CloseAndDisposeSubForm(AdminSync)
+        wb_Functions.CloseAndDisposeSubForm(OrgaBackParams)
+        wb_Functions.CloseAndDisposeSubForm(AdminCheck)
+        wb_Functions.CloseAndDisposeSubForm(AdminUpdate)
+        wb_Functions.CloseAndDisposeSubForm(AdminUpdateWinBack)
+        wb_Functions.CloseAndDisposeSubForm(AdminDatensicherung)
+        wb_Functions.CloseAndDisposeSubForm(AdminEditIni)
+        wb_Functions.CloseAndDisposeSubForm(AdminSync)
+
+        'Fenster darf geschlossen werden
+        Return False
+    End Function
+
 End Class

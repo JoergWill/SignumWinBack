@@ -123,6 +123,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.TextHinweise = New System.Windows.Forms.TextBox()
         Me.tb_Verwendung = New System.Windows.Forms.TabPage()
         Me.GridView_RzVerwendung = New WinBack.wb_DataGridView()
+        Me.BtnZutatenListeNeu = New System.Windows.Forms.Button()
         Me.StatusStrip.SuspendLayout()
         Me.gbDetail.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -933,6 +934,7 @@ Partial Class wb_Rezept_Rezeptur
         '
         'tb_Zutaten
         '
+        Me.tb_Zutaten.Controls.Add(Me.BtnZutatenListeNeu)
         Me.tb_Zutaten.Controls.Add(Me.BtnExcelNwtDetails)
         Me.tb_Zutaten.Controls.Add(Me.BtnExcelNwt)
         Me.tb_Zutaten.Controls.Add(Me.Label1)
@@ -956,7 +958,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.BtnExcelNwtDetails.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.BtnExcelNwtDetails.Image = Global.WinBack.My.Resources.Resources.Excel_32x32
         Me.BtnExcelNwtDetails.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.BtnExcelNwtDetails.Location = New System.Drawing.Point(671, 216)
+        Me.BtnExcelNwtDetails.Location = New System.Drawing.Point(671, 306)
         Me.BtnExcelNwtDetails.Name = "BtnExcelNwtDetails"
         Me.BtnExcelNwtDetails.Size = New System.Drawing.Size(135, 52)
         Me.BtnExcelNwtDetails.TabIndex = 25
@@ -970,7 +972,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.BtnExcelNwt.Font = New System.Drawing.Font("Arial", 9.75!)
         Me.BtnExcelNwt.Image = Global.WinBack.My.Resources.Resources.Excel_32x32
         Me.BtnExcelNwt.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.BtnExcelNwt.Location = New System.Drawing.Point(671, 158)
+        Me.BtnExcelNwt.Location = New System.Drawing.Point(671, 248)
         Me.BtnExcelNwt.Name = "BtnExcelNwt"
         Me.BtnExcelNwt.Size = New System.Drawing.Size(135, 52)
         Me.BtnExcelNwt.TabIndex = 24
@@ -1134,6 +1136,20 @@ Partial Class wb_Rezept_Rezeptur
         Me.GridView_RzVerwendung.TabIndex = 0
         Me.GridView_RzVerwendung.x8859_5_FieldName = ""
         '
+        'BtnZutatenListeNeu
+        '
+        Me.BtnZutatenListeNeu.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.BtnZutatenListeNeu.Image = Global.WinBack.My.Resources.Resources.UpdateDataBase_32x32
+        Me.BtnZutatenListeNeu.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.BtnZutatenListeNeu.Location = New System.Drawing.Point(671, 161)
+        Me.BtnZutatenListeNeu.Name = "BtnZutatenListeNeu"
+        Me.BtnZutatenListeNeu.Size = New System.Drawing.Size(135, 52)
+        Me.BtnZutatenListeNeu.TabIndex = 26
+        Me.BtnZutatenListeNeu.TabStop = False
+        Me.BtnZutatenListeNeu.Text = "Zutatenliste neu berechnen"
+        Me.BtnZutatenListeNeu.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.BtnZutatenListeNeu.UseVisualStyleBackColor = True
+        '
         'wb_Rezept_Rezeptur
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1253,4 +1269,5 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents tbMehlZusammenSetzung As Windows.Forms.TextBox
     Friend WithEvents BtnExcelNwtDetails As Windows.Forms.Button
     Friend WithEvents BtnExcelNwt As Windows.Forms.Button
+    Friend WithEvents BtnZutatenListeNeu As Windows.Forms.Button
 End Class

@@ -13,9 +13,12 @@ Public Class wb_Artikel_Details
 
         'Feld Artikel-Preis ist in Variante OrgaBack nicht sichtbar
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            'Preis wird in OrgaBack verwaltet
             tbArtikelPreis.Visible = False
             lblPreis.Visible = False
             ePreis.Visible = False
+            'keine Änderung der Bezeichnung
+            tArtikelName.ReadOnly = True
         Else
             'Default-Währung (€)
             ePreis.Text = wb_GlobalSettings.osDefaultWaehrung
@@ -64,27 +67,31 @@ Public Class wb_Artikel_Details
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tArtikelName.Leave, tArtikelNummer.Leave, tArtikelKommentar.Leave, cbArtikelGrp1.Leave, cbArtikelGrp2.Leave
-        'Bezeichnungstexte
-        Artikel.Bezeichnung = tArtikelName.Text
-        Artikel.Kommentar = tArtikelKommentar.Text
-        Artikel.Nummer = tArtikelNummer.Text
+        If Artikel.Type <> wb_Global.KomponTypen.KO_TYPE_UNDEFINED Then
+            'Bezeichnungstexte
+            Artikel.Bezeichnung = tArtikelName.Text
+            Artikel.Kommentar = tArtikelKommentar.Text
+            Artikel.Nummer = tArtikelNummer.Text
 
-        ''Artikel-Gruppe
-        Artikel.Gruppe1 = cbArtikelGrp1.GetKeyFromSelection
-        Artikel.Gruppe2 = cbArtikelGrp2.GetKeyFromSelection
+            ''Artikel-Gruppe
+            Artikel.Gruppe1 = cbArtikelGrp1.GetKeyFromSelection
+            Artikel.Gruppe2 = cbArtikelGrp2.GetKeyFromSelection
 
-        'Artikel-Preis (nur Prog-Version WinBack)
-        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
-            Artikel.Preis = tbArtikelPreis.Text
+            'Artikel-Preis (nur Prog-Version WinBack)
+            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
+                Artikel.Preis = tbArtikelPreis.Text
+            End If
+
+            'Daten wurden geändert - Datensatz speichern
+            Edit_Leave(sender)
         End If
-
-        'Daten wurden geändert - Datensatz speichern
-        Edit_Leave(sender)
     End Sub
 
-    Private Sub DataInvaldated() Handles KompRzChargen.DataInvalidated
+    Private Sub DataInvalidated() Handles KompRzChargen.DataInvalidated
         'Daten wurden geändert - Datensatz speichern
         KompRzChargen.SaveData(Artikel)
+        'Update nur Parameter (NICHT Artikelbezeichnung... diese werden nur in GridUpdate aktualisiert)
+        Artikel.MySQLdbUpdate(False)
         Edit_Leave(Me)
     End Sub
 

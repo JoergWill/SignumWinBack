@@ -9,6 +9,7 @@
     Private _RezeptGroesse As Double
     Private _TeigChargen As wb_Global.ChargenMengen
     Private _LinienGruppe As Integer
+    Private _Aufloesen As Boolean
 
     Public Property ArtikelNr As Integer
         Get
@@ -82,13 +83,22 @@
         End Set
     End Property
 
+    Public Property Aufloesen As Boolean
+        Get
+            Return _Aufloesen
+        End Get
+        Set(value As Boolean)
+            _Aufloesen = value
+        End Set
+    End Property
+
     Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
         'TODO Nach Produktionsdatum sortieren !!
         Return String.Compare(RezeptNr, DirectCast(obj, wb_VorProduktionsSchritt).RezeptNr)
     End Function
 
     '    ArtikelNr: String;                 // (@3.0.5) Rezept im Rezept
-    '    KoNr: Integer;                      // (@3.0.5) interne Komponenten-Nummer (Rückmeldung Produktions-Menge)
+    '    KoNr: Integer;                     // (@3.0.5) interne Komponenten-Nummer (Rückmeldung Produktions-Menge)
     '    StkGewOK: Boolean;                 // (@3.0.5) Stückgewicht für Rohstoff ist angegeben
     '    RezeptNr: Integer;
     '    Sollmenge: Double;

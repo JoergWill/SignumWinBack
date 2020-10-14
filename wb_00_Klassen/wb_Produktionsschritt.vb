@@ -42,6 +42,7 @@ Public Class wb_Produktionsschritt
     Private _MinChargekg As Double
     Private _MaxChargekg As Double
     Private _ProdVorlauf As Integer
+    Private _Aufloesen As Boolean
 
     Private _Sollwert As String
     Private _Istwert As String
@@ -1233,6 +1234,15 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As Integer)
             _ArtikelIndex = value
+        End Set
+    End Property
+
+    Public Property Aufloesen As Boolean
+        Get
+            Return _Aufloesen
+        End Get
+        Set(value As Boolean)
+            _Aufloesen = value
         End Set
     End Property
 End Class

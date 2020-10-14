@@ -1786,30 +1786,38 @@ Public Class wb_Komponente
     ''' schreibt alle Datenfelder aus dem Komponenten-Objekt mit der angegebenen Komponenten-Nummer in die Datenbank.
     ''' </summary>
     ''' <returns></returns>
-    Public Function MySQLdbUpdate() As Boolean
+    Public Function MySQLdbUpdate(Optional UpdateAll As Boolean = True) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
 
-        'Update-Statement wird dynamisch erzeugt    
-        sql = "KO_Nr_AlNum = '" & Nummer & "'," &
-              "KO_Type = '" & wb_Functions.KomponTypeToInt(Type) & "'," &
-              "KO_Bezeichnung = '" & Bezeichnung & "'," &
-              "KO_Kommentar = '" & Kommentar & "'," &
-              "KO_Temp_Korr = '" & KO_Backverlust & "'," &
-              "KA_Artikel_Typ = " & KO_Zuschnitt & "," &
-              "KA_Prod_Linie = " & KA_ProdVorlauf & "," &
-              "KA_Matchcode = '" & KO_IdxCloud & "'," &
-              "KA_Lagerort = '" & KA_Lagerort & "'," &
-              "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
-              "KA_Art = '" & KA_Art & "'," &
-              "KA_PreisEinheit = " & KA_PreisEinheit.ToString & "," &
-              "KA_Verarbeitungshinweise = '" & KA_Verarbeitungshinweise & "'"
+        'Update-Statement wird dynamisch erzeugt 
+
+        If UpdateAll Then
+            sql = "KO_Nr_AlNum = '" & Nummer & "'," &
+                  "KO_Type = '" & wb_Functions.KomponTypeToInt(Type) & "'," &
+                  "KO_Bezeichnung = '" & Bezeichnung & "'," &
+                  "KO_Kommentar = '" & Kommentar & "'," &
+                  "KO_Temp_Korr = '" & KO_Backverlust & "'," &
+                  "KA_Artikel_Typ = " & KO_Zuschnitt & "," &
+                  "KA_Prod_Linie = " & KA_ProdVorlauf & "," &
+                  "KA_Matchcode = '" & KO_IdxCloud & "'," &
+                  "KA_Lagerort = '" & KA_Lagerort & "'," &
+                  "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
+                  "KA_Art = '" & KA_Art & "'," &
+                  "KA_PreisEinheit = " & KA_PreisEinheit.ToString & "," &
+                  "KA_Verarbeitungshinweise = '" & KA_Verarbeitungshinweise & "'"
+        Else
+            sql = "KO_Temp_Korr = '" & KO_Backverlust & "'," &
+                  "KA_Artikel_Typ = " & KO_Zuschnitt & "," &
+                  "KA_Prod_Linie = " & KA_ProdVorlauf & "," &
+                  "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
+                  "KA_Verarbeitungshinweise = '" & KA_Verarbeitungshinweise & "'"
+        End If
 
         'Rezeptnummer nur updaten wenn gültig
         If KA_Rz_Nr <> wb_Global.UNDEFINED Then
-            sql = sql & "," &
-                        "KA_RZ_Nr = " & KA_Rz_Nr.ToString
+            sql = sql & "," & "KA_RZ_Nr = " & KA_Rz_Nr.ToString
         End If
 
         'Artikel - Chargengrößen in Stk
@@ -1833,6 +1841,7 @@ Public Class wb_Komponente
         'Debug.Print("Komponente.MysqldbUpdate " & sql)
 
         If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then
+            _DataHasChanged = False
             winback.Close()
             Return True
         Else
@@ -1898,6 +1907,8 @@ Public Class wb_Komponente
     Public Function MsSQLdbUpdate_Parameter(Optional ktTyp As wb_Global.ktParam = wb_Global.ktParam.ktAlle) As Boolean
         'Datenbank-Verbindung öffnen - MsSQL
         Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Umrechnungs-Faktor Nährwerte (Netto-Gewicht Artikel)
+        ktTyp301.FaktorStkGewicht = Me.VerkaufsGewicht
 
         'Prüfen ob der Artikel in OrgaBack existiert
         OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSelArtikel, KO_Nr_AlNum))
@@ -1939,8 +1950,6 @@ Public Class wb_Komponente
     Public Function MsSqldbUpdate_Zutatenliste() As Boolean
         'Datenbank-Verbindung öffnen - MsSQL
         Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-        'Umrechnungs-Faktor Nährwerte (Netto-Gewicht Artikel)
-        ktTyp301.FaktorStkGewicht = Me.VerkaufsGewicht
         'Update Zutatenliste
         Return MsSqldbUpdate_Zutatenliste(OrgasoftMain)
         'Verbindung zur Datenbank wieder schliessen

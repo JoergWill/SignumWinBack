@@ -168,7 +168,11 @@
     ''' </summary>
     ''' <returns></returns>
     Private Function CalcMengeInkg() As Double
-        Return (MengeInStk * _StkGewicht) / 1000
+        If _StkGewicht > 0 Then
+            Return (MengeInStk * _StkGewicht) / 1000
+        Else
+            Return fMengeInStk
+        End If
     End Function
 
     ''' <summary>

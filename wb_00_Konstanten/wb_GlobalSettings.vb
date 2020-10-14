@@ -98,6 +98,8 @@ Public Class wb_GlobalSettings
     Private Shared _NwtAllergeneNoText As Integer = UNDEFINED
     Private Shared _NwtAllergeneGluten As Integer = UNDEFINED
     Private Shared _NwtAllergeneSchalen As Integer = UNDEFINED
+    Private Shared _NwtShowENummer As Integer = UNDEFINED
+    Private Shared _NwtOptimizeZutatenListe As Integer = UNDEFINED
 
     Private Shared _mHost As String = Nothing
     Private Shared _mSenderAddr As String = Nothing
@@ -1312,6 +1314,8 @@ Public Class wb_GlobalSettings
                 _NwtAllergeneNoText = IniFile.ReadInt("Artikel", "KeineAllergeneImText", 0)
                 _NwtAllergeneGluten = IniFile.ReadInt("Artikel", "KeineAusgabeGluten", 0)
                 _NwtAllergeneSchalen = IniFile.ReadInt("Artikel", "KeineAusgabeSchalefruechte", 0)
+                _NwtShowENummer = IniFile.ReadInt("Artikel", "ENummernAnzeigen", 1)
+                _NwtOptimizeZutatenListe = IniFile.ReadInt("Artikel", "ZutatenListeOptimieren", 1)
 
             Case "Mail"
                 mHost = IniFile.ReadString("smpt", "smtpHost")
@@ -1701,4 +1705,37 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property NwtShowENummer As Boolean
+        Get
+            If _NwtShowENummer = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtShowENummer = 1)
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _NwtShowENummer = 1
+            Else
+                _NwtShowENummer = 0
+            End If
+            setWinBackIni("Artikel", "ENummernAnzeigen", _NwtShowENummer)
+        End Set
+    End Property
+
+    Public Shared Property NwtOptimizeZutatenListe As Integer
+        Get
+            If _NwtOptimizeZutatenListe = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtOptimizeZutatenListe = 1)
+        End Get
+        Set(value As Integer)
+            If value Then
+                _NwtOptimizeZutatenListe = 1
+            Else
+                _NwtOptimizeZutatenListe = 0
+            End If
+            setWinBackIni("Artikel", "ZutatenListeOptimieren", _NwtOptimizeZutatenListe)
+        End Set
+    End Property
 End Class

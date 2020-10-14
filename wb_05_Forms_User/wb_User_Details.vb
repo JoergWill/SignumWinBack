@@ -13,7 +13,7 @@ Public Class wb_User_Details
     Private _Monitor As ISCardMonitor
     Private _ReaderName As String
 
-    Const ReadingMode = 2
+    Const ReadingMode = 1
 
     Private Sub wb_User_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Combo-Box mit Werten füllen
@@ -42,12 +42,14 @@ Public Class wb_User_Details
     End Sub
 
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tUserName.Leave, tUserPass.Leave
-        User.Name = tUserName.Text
-        User.PersonalNr = tPersonalNr.Text
-        User.Passwort = tUserPass.Text
-        User.RFID = tUserRFID.Text
-        User.iGruppe = cbUserGrp.GetKeyFromSelection()
-        Edit_Leave(sender)
+        If User.Passwort > 0 Then
+            User.Name = tUserName.Text
+            User.PersonalNr = tPersonalNr.Text
+            User.Passwort = tUserPass.Text
+            User.RFID = tUserRFID.Text
+            User.iGruppe = cbUserGrp.GetKeyFromSelection()
+            Edit_Leave(sender)
+        End If
     End Sub
 
     Public Sub DetailInfo(sender As Object)

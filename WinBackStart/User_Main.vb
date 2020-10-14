@@ -134,17 +134,12 @@ Public Class User_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        If UserDetails IsNot Nothing Then
-            UserDetails.Close()
-        End If
-        If UserListe IsNot Nothing Then
-            UserListe.Close()
-        End If
-        If UserRechte IsNot Nothing Then
-            UserRechte.Close()
-        End If
-        If UserGruppenRechte IsNot Nothing Then
-            UserGruppenRechte.Close()
-        End If
+        wb_Functions.CloseAndDisposeSubForm(UserListe)
+        wb_Functions.CloseAndDisposeSubForm(UserDetails)
+        wb_Functions.CloseAndDisposeSubForm(UserRechte)
+        wb_Functions.CloseAndDisposeSubForm(UserGruppenRechte)
+
+        'alle "alten" Daten löschen
+        wb_User_Shared.Invalid()
     End Sub
 End Class

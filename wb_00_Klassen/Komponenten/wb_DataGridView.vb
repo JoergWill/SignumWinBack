@@ -36,7 +36,7 @@ Public Class wb_DataGridView
     Dim msCbd As SqlCommandBuilder
 
     Private DtaView As DataView = Nothing
-    Dim DtaTable As New DataTable
+    Private DtaTable As New DataTable
 
     Private _SuppressChangeEvent As Boolean = False
     Private _tDataChangedTime = 500
@@ -52,6 +52,16 @@ Public Class wb_DataGridView
     Private bContextMenuInitialized As Boolean = False
     Dim mMenuItem As ToolStripMenuItem
     Dim WithEvents tDataHasChanged As New Timer
+
+    ''' <summary>
+    ''' GridView-Daten als DataTable publizieren. Für ListUndLabel Druck der Rohstoff-Liste
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property LLData As DataTable
+        Get
+            Return DtaTable
+        End Get
+    End Property
 
     ''' <summary>
     '''Läd die Daten aus der Datenbank in das DataGridView.
@@ -84,6 +94,10 @@ Public Class wb_DataGridView
                 MySqlDta = New MySqlDataAdapter(MySqlCmd)
                 MySqlDta.MissingSchemaAction = MissingSchemaAction.AddWithKey
                 MySqlCbd = New MySqlCommandBuilder(MySqlDta)
+                'Einstellungen Fehler
+                MySqlDta.ContinueUpdateOnError = True
+                MySqlDta.AcceptChangesDuringUpdate = True
+
                 Try
                     MySqlDta.Fill(DtaTable)
                 Catch e As Exception
@@ -310,16 +324,29 @@ Public Class wb_DataGridView
     ''' <param name="Image"></param>
     ''' <param name="OnClick"></param>
     ''' <param name="Separator"></param>
-    Public Sub PopupItemAdd(Text As String, Tag As String, Image As Drawing.Image, OnClick As EventHandler, Optional Separator As Boolean = False)
+    Public Sub PopupItemAdd(Text As String, Tag As String, Image As Drawing.Image, OnClick As EventHandler, Optional Separator As Boolean = False, Optional Checked As Boolean = False)
         'Menu-Item anfügen
         Dim mMenuItem As New Windows.Forms.ToolStripMenuItem(Text, Image, OnClick)
         mMenuItem.Tag = Tag
+        mMenuItem.Checked = Checked
+        mMenuItem.CheckState = CheckState.Unchecked
+        mMenuItem.CheckOnClick = Checked
+
         mContextMenu.Items.Add(TryCast(mMenuItem, ToolStripMenuItem))
 
         'Wenn notwendig, Separator anfügen
         If Separator Then
             mContextMenu.Items.Add(New ToolStripSeparator)
         End If
+    End Sub
+
+    Public Sub PopupItemsUncheck(Items As List(Of String))
+        'alle Popup-Menu-Einträge
+        For Each m In mContextMenu.Items
+            If Items.Contains(m.Tag) Then
+                TryCast(m, ToolStripMenuItem).CheckState = False
+            End If
+        Next
     End Sub
 
     ''' <summary>
@@ -627,6 +654,9 @@ Public Class wb_DataGridView
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Overloads Sub DataGridView_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MyBase.ColumnHeaderMouseClick
+        'alten Filter löschen (entspricht dem Verhalten des alten WinBack-Office)
+        ResetFilter()
+
         If e.ColumnIndex <> iSort Then
             'alten Header wieder restaurieren
             If iSort > 0 Then

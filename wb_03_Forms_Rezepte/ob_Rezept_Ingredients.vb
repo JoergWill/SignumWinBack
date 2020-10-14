@@ -180,7 +180,7 @@ Public Class ob_RecipeInfo
             Else
                 'Rezeptur einlesen (Der Backverlust ist hier eigentlich nicht relevant)
                 'TODO Sauerteig-Rezepte (Variante 0) und kein Rezept abfangen !!
-                Dim Rz As New wb_Rezept(RzNr, Nothing, Komponente.Backverlust, Variante, "", "", True)
+                Dim Rz As New wb_Rezept(RzNr, Nothing, Komponente.Backverlust, Variante, "", "", True, False)
                 Debug.Print("Rezeptur " & Rz.RezeptNummer & "/" & Rz.RezeptBezeichnung & " gefunden für Artikel/Komponente " & ArticleNo)
 
                 'Liste aller Child-Rezeptschritte aus dem Root-Rezeptschritt berechnet auf das Stückgewicht(Nass)

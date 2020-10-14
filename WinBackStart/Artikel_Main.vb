@@ -108,18 +108,12 @@ Public Class Artikel_Main
     ''' <param name="e"></param>
     Public Overrides Sub FormClose(Sender As Object, e As FormClosedEventArgs)
         'alle erzeugten Fenster wieder schliessen
-        ArtikelListe.Close()
-        'Artikel-Details schliessen
-        If ArtikelDetails IsNot Nothing Then
-            ArtikelDetails.Close()
-        End If
-        'Artikel-Hinweise schliessen
-        If ArtikelHinweise IsNot Nothing Then
-            ArtikelHinweise.Close()
-        End If
-        'Artikel-Parameter schliessen
-        If ArtikelParameter IsNot Nothing Then
-            ArtikelParameter.Close()
-        End If
+        wb_Functions.CloseAndDisposeSubForm(ArtikelListe)
+        wb_Functions.CloseAndDisposeSubForm(ArtikelDetails)
+        wb_Functions.CloseAndDisposeSubForm(ArtikelHinweise)
+        wb_Functions.CloseAndDisposeSubForm(ArtikelParameter)
+
+        'alle Spuren in Artikel_Shared löschen
+        wb_Artikel_Shared.Invalid()
     End Sub
 End Class

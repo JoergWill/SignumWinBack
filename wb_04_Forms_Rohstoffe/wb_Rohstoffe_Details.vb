@@ -151,27 +151,30 @@ Public Class wb_Rohstoffe_Details
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tbRohstoffPreis.Leave, tbGebindeGroesse.Leave, cbRohstoffGrp2.Leave, cbRohstoffGrp1.Leave, cbRezeptGewicht.Click, cbAktiv.Click
-        'Bezeichnungstexte
-        RohStoff.Bezeichnung = tRohstoffName.Text
-        RohStoff.Kommentar = tRohstoffKommentar.Text
-        RohStoff.Nummer = tRohstoffNummer.Text
-        RohStoff.GebindeGroesse = tbGebindeGroesse.Text
+        'Wenn die Bearbeitung/Speichern freigegeben ist
+        If RohStoff.Type <> wb_Global.KomponTypen.KO_TYPE_UNDEFINED Then
+            'Bezeichnungstexte
+            RohStoff.Bezeichnung = tRohstoffName.Text
+            RohStoff.Kommentar = tRohstoffKommentar.Text
+            RohStoff.Nummer = tRohstoffNummer.Text
+            RohStoff.GebindeGroesse = tbGebindeGroesse.Text
 
-        'Rohstoff-Gruppe
-        RohStoff.Gruppe1 = cbRohstoffGrp1.GetKeyFromSelection
-        RohStoff.Gruppe2 = cbRohstoffGrp2.GetKeyFromSelection
-        'Rohstoff zählt nicht zum Rezeptgewicht
-        RohStoff.ZaehltNichtZumRezeptGewicht = cbRezeptGewicht.Checked
-        'Rohstoff ist aktiv
-        RohStoff.Aktiv = cbAktiv.Checked
+            'Rohstoff-Gruppe
+            RohStoff.Gruppe1 = cbRohstoffGrp1.GetKeyFromSelection
+            RohStoff.Gruppe2 = cbRohstoffGrp2.GetKeyFromSelection
+            'Rohstoff zählt nicht zum Rezeptgewicht
+            RohStoff.ZaehltNichtZumRezeptGewicht = cbRezeptGewicht.Checked
+            'Rohstoff ist aktiv
+            RohStoff.Aktiv = cbAktiv.Checked
 
-        'RohStoff-Preis (nur Prog-Version WinBack)
-        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
-            RohStoff.Preis = tbRohstoffPreis.Text
+            'RohStoff-Preis (nur Prog-Version WinBack)
+            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
+                RohStoff.Preis = tbRohstoffPreis.Text
+            End If
+
+            'Daten wurden geändert - Datensatz speichern
+            Edit_Leave(sender)
         End If
-
-        'Daten wurden geändert - Datensatz speichern
-        Edit_Leave(sender)
     End Sub
 
     ''' <summary>
@@ -253,7 +256,7 @@ Public Class wb_Rohstoffe_Details
         Return False
     End Function
 
-    Private Sub cbAufloesen_CheckedChanged(sender As Object, e As EventArgs) Handles cbAufloesen.CheckedChanged
+    Private Sub cbAufloesen_Click(sender As Object, e As EventArgs) Handles cbAufloesen.Click
         If cbAufloesen.Checked Then
             wb_Rohstoffe_Shared.RohStoff.Deklaration = ">" & wb_Rohstoffe_Shared.RohStoff.Deklaration
         Else

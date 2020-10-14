@@ -15,12 +15,18 @@ Public Class wb_Linien_Main
     Private LinienAuto As wb_Linien_Auto
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
+        'Initialisierung
         MyBase.New(ServiceProvider)
+        'Default-Layout wenn keine Fenster angezeigt werden (neuer Benutzer...)
+        If _DockPanelList.Count = 0 Then
+            SetDefaultLayout()
+        End If
     End Sub
 
     Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        LinienListe.LinienInfo()
-        LinienListe.SaveItems()
+        wb_Functions.CloseAndDisposeSubForm(LinienListe)
+        wb_Functions.CloseAndDisposeSubForm(LinienDetails)
+        wb_Functions.CloseAndDisposeSubForm(LinienAuto)
         Return False
     End Function
 

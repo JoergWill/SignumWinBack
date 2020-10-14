@@ -532,12 +532,6 @@
         NaehrwertUpdate       '21/0/RohNr
     End Enum
 
-    Enum ZutatenListeMode
-        Hide_ENummer
-        Show_ENummer
-        Optimize
-    End Enum
-
     Public Structure ENummern
         Public Nr As Integer            'E-Nummer als Integer
         Public Bezeichnung As String    'Bezeichnungstext

@@ -98,6 +98,10 @@ Public Class ob_Main_Menu
         AddHandler System.Windows.Forms.Application.ThreadException, AddressOf MyThreadExceptionHandler
         AddHandler System.AppDomain.CurrentDomain.UnhandledException, AddressOf MyUnhandledExceptionHandler
 
+        'Event-Handler Aufruf einer WinBack-Main-Form
+        AddHandler wb_Main_Shared.eOpenForm, AddressOf OpenWinBackForm
+
+
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
         '
         'Dim currentDomain As AppDomain = AppDomain.CurrentDomain
@@ -190,9 +194,9 @@ Public Class ob_Main_Menu
         oGrpAdmin.AddButton("btnAdmin", "WinBack Administration", "", My.Resources.Admin_16x16, My.Resources.Admin_32x32, AddressOf ShowAdminAdministrationForm)
 
         ' Erweitert ein bestehendes RibbonTab um einen Button (Administration/Mitarbeiter)
-        'Dim oTabs = oMenuService.GetTabs
-        'Dim oGrps = oTabs(0).GetGroups
-        'oGrps(3).AddButton("MenuExtensionBtnUser", "WinBack-Mitarbeiter", "Verwaltung der Mitarbeiter-Rechte in WinBack", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
+        Dim oTabs = oMenuService.GetTabs
+        Dim oGrps = oTabs(0).GetGroups
+        oGrps(3).AddButton("MenuExtensionBtnUser", "WinBack-Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
     End Sub
 
     ''' <summary>
@@ -203,6 +207,17 @@ Public Class ob_Main_Menu
     Sub AddTraceListener()
         AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
         Trace.Listeners.Add(xLogger)
+    End Sub
+
+    Public Sub OpenWinBackForm(sender As Object, FormName As String)
+        Select Case FormName
+            Case "Artikel"
+                ShowArtikelForm(sender, Nothing)
+            Case "Rohstoffe"
+                ShowRohstoffForm(sender, Nothing)
+            Case "Rezepte"
+                ShowRezeptForm(sender, Nothing)
+        End Select
     End Sub
 
     ''' <summary>

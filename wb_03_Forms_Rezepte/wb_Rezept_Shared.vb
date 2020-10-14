@@ -4,14 +4,26 @@ Public Class wb_Rezept_Shared
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
     Public Shared Event eListe_Refresh(Sender As Object)
+    Public Shared Event eRezept_Copy(Sender As Object, RzNr As Integer, Variante As Integer)
 
     Public Shared RzVariante As New SortedList
     Public Shared RzGruppe As New SortedList
     Public Shared Rezept As New wb_Rezept
 
+    Enum AnzeigeFilter
+        Undefined   ' nicht definiert
+        Alle        ' alle Rezepte
+        Produktion  ' alle Rezepte Produktion
+        Sauerteig   ' alle Rezepte Sauerteig
+    End Enum
+
     Shared Sub New()
         LoadVariantenTexte()
         LoadRezeptGruppenTexte()
+    End Sub
+
+    Public Shared Sub Invalid()
+        Rezept.Invalid()
     End Sub
 
     Public Shared Function Reload() As Boolean
@@ -61,6 +73,10 @@ Public Class wb_Rezept_Shared
 
     Public Shared Sub Liste_Refresh(sender As Object)
         RaiseEvent eListe_Refresh(sender)
+    End Sub
+
+    Public Shared Sub Rezept_Copy(sender As Object, RzNr As Integer, Variante As Integer)
+        RaiseEvent eRezept_Copy(sender, RzNr, Variante)
     End Sub
 
 End Class

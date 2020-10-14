@@ -25,6 +25,11 @@ Public Class wb_Rezept_Rezeptur
     Private _HisSollwertDeltaStyle As New Infralution.Controls.StyleDelta
     Private _ProdStufeDeltaStyle As New Infralution.Controls.StyleDelta
 
+    Private xlApp As Excel.Application
+    Private xlWorkBooks As Excel.Workbooks
+    Private xlWorkBook As Excel.Workbook
+    Private xlWorkSheets As Excel.Sheets
+
     'Private _HisSollwertDeltaStyle As New Infralution.Controls.StyleDelta
     'Private _HisSollwertChangedStyle As Infralution.Controls.Style
 
@@ -64,6 +69,10 @@ Public Class wb_Rezept_Rezeptur
         cbVariante.Fill(wb_Rezept_Shared.RzVariante)
         'Combo-Box(Rezept-Varianten) mit Werten füllen
         cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen)
+
+        'Nährwerte Zutatenliste Einstellungen
+        SwListeOptimieren.Checked = wb_GlobalSettings.NwtOptimizeZutatenListe
+        SwENummern.Checked = wb_GlobalSettings.NwtShowENummer
 
         'Einlesen Rezeptkopf und Rezeptschritte 
         GetRezeptur(_RzNummer, _RzVariante, _RzAendIndex, _Historical)
@@ -142,7 +151,7 @@ Public Class wb_Rezept_Rezeptur
         'Rezept-Historie
         If Not Historical Then
             'Rezeptkopf und Rezeptschritte aktuell (winback) - Start mit Backverlust 0.0 !! (kein Artikel definiert)
-            Rezept = New wb_Rezept(_RzNummer, Nothing, 0.0, _RzVariante)
+            Rezept = New wb_Rezept(_RzNummer, Nothing, 0.0, _RzVariante, "", "", True, True)
             Me.Text = Rezept.RezeptNummer & "/V" & Rezept.Variante & " " & Rezept.RezeptBezeichnung
         Else
             'Rezeptkopf und Rezeptschritte aus der Historie (wbdaten)
@@ -208,9 +217,39 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
-        'TODO anpassen (siehe Produktionsplanung)
-        wb_Printer_Shared.LL.DataSource = New ObjectDataProvider(Rezept)
-        wb_Printer_Shared.LL.Design()
+        'Druck-Daten
+        Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
+        pDialog.LL_KopfZeile_1 = "Letzte Änderung " & Rezept.AenderungDatum & " durch " & Rezept.AenderungName
+
+        'Die Kopfdaten werden im Root-Rezept-Schritt eingetragen
+        Rezept.RootRezeptSchritt.Nummer = Rezept.RezeptNummer
+        Rezept.RootRezeptSchritt.Bezeichnung = Rezept.RezeptBezeichnung
+        Rezept.RootRezeptSchritt.Kommentar = Rezept.RezeptKommentar
+        'Anzeige der Rezept-Variante im Gruppenkopf
+        Rezept.RootRezeptSchritt.OberGW = Rezept.Variante
+        'Anzeige Einheit Rezept-Gesamtmenge im Gruppenfuß
+        Rezept.RootRezeptSchritt.Einheit = lblEinhRzGewicht.Text
+
+        'RootRezeptSchritt.Steps enthält alle Rezeptschritte als flache Liste 
+        pDialog.LL.DataSource = New ObjectDataProvider(Rezept.RootRezeptSchritt)
+
+        'List und Label-Verzeichnis für die Listen
+        pDialog.ListSubDirectory = "Rezepte"
+        pDialog.ListFileName = "Rezeptur.lst"
+        pDialog.ShowDialog()
+        pDialog = Nothing
+    End Sub
+
+    ''' <summary>
+    ''' Rezeptur kopieren.
+    ''' Die bestehende (aktuelle) Rezeptur wird gespeichert. Danach wird ein neues Rezept angelegt und die Daten kopiert.
+    ''' Anschliessend wird das neue Rezept in einem neuen Fenster geöffnet.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnKopieren_Click(sender As Object, e As EventArgs) Handles BtnKopieren.Click
+        'Rezept kopieren (Die Kopie wird in Rezept_Main erstellt und aufgerufen)
+        wb_Rezept_Shared.Rezept_Copy(sender, Rezept.RezeptNr, Rezept.Variante)
     End Sub
 
     ''' <summary>
@@ -369,7 +408,25 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub wb_Rezept_Rezeptur_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        'Rezept Änderungen sichern
         RezeptSpeichern(sender)
+
+        'Excel aufräumen
+        If Not xlWorkBook Is Nothing Then
+            Marshal.FinalReleaseComObject(xlWorkBook)
+            xlWorkBook = Nothing
+        End If
+
+        If Not xlWorkBooks Is Nothing Then
+            Marshal.FinalReleaseComObject(xlWorkBooks)
+            xlWorkBooks = Nothing
+        End If
+
+        If Not xlApp Is Nothing Then
+            xlApp.Quit()
+            Marshal.FinalReleaseComObject(xlApp)
+            xlApp = Nothing
+        End If
     End Sub
 
     Private Sub RezeptSpeichern(sender As Object)
@@ -454,18 +511,33 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     Private Sub SwENummern_Click(sender As Object, e As EventArgs) Handles SwENummern.Click
+        'Zutatenliste anzeigen, wenn notwendig berechnen
         Show_ZutatenListe()
     End Sub
 
-    Private Sub Show_ZutatenListe()
-        If SwENummern.Checked Then
-            tb_ZutatenListe.Text = Rezept.ZutatenListe(wb_Global.ZutatenListeMode.Show_ENummer)
-        Else
-            tb_ZutatenListe.Text = Rezept.ZutatenListe(wb_Global.ZutatenListeMode.Hide_ENummer)
-        End If
+    Private Sub SwListeOptimieren_Click(sender As Object, e As EventArgs) Handles SwListeOptimieren.Click
+        'Zutatenliste neu berechnen
+        Show_ZutatenListe(True)
+    End Sub
+
+    Private Sub BtnZutatenListeNeu_Click(sender As Object, e As EventArgs) Handles BtnZutatenListeNeu.Click
+        'Zutatenliste neu berechnen
+        Show_ZutatenListe(True)
+    End Sub
+
+    Private Sub Show_ZutatenListe(Optional ReCalc As Boolean = False)
+        'Cursor anzeigen
+        Me.Cursor = Cursors.WaitCursor
+        'anzeigen ...
+        Application.DoEvents()
+
+        'Zutatenliste anzeigen/optimieren/Neu berechnen
+        tb_ZutatenListe.Text = Rezept.ZutatenListe(SwENummern.Checked, SwListeOptimieren.Checked, ReCalc)
 
         'Mehlzusammensetzung (Berechnet aus der Zutatenliste - getrennt durch Zeilenvorschub)
         tbMehlZusammenSetzung.Text = Rezept.MehlZusammensetzung(vbCrLf)
+        'Cursor wieder zurücksetzen
+        Me.Cursor = Cursors.Default
     End Sub
 
     ''' <summary>
@@ -1236,19 +1308,28 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     Private Sub ExcelNwt(DetailAnsicht As Boolean)
+        'Excel OLE-Verknüpfung
+        xlApp = New Excel.Application
+        xlWorkBooks = xlApp.Workbooks
+        xlWorkBook = xlWorkBooks.Add()
+        xlWorkSheets = xlWorkBook.Sheets
 
-        Const colRohNumr = 0
-        Const colRohName = 1
-        Const colRohDekl = 2
-        Const colSollwrt = 3
-        Const colStrtNwt = 4
-        Const colEndNwt = 12
+        'Wurzel-Rezept auf Tab-Seite 1 erzeugen
+        ExcelNwtPage(Rezept, xlWorkSheets, DetailAnsicht)
 
-        Dim xlApp As New Excel.Application
-        Dim xlWorkBooks As Excel.Workbooks = xlApp.Workbooks
-        Dim xlWorkBook As Excel.Workbook = xlWorkBooks.Add()
-        Dim xlWorkSheets As Excel.Sheets = xlWorkBook.Sheets
+        'Display Excel
+        xlApp.Visible = True
+        xlApp.UserControl = True
+    End Sub
+
+    Private Sub ExcelNwtPage(Rezept As wb_Rezept, xlWorkSheets As Excel.Sheets, DetailAnsicht As Boolean)
+
+        'Nächstes(neues) Arbeitsblatt
         Dim xlWorkSheet As Excel.Worksheet
+        xlWorkSheet = xlWorkSheets(1)
+        'Rezept Name
+        Dim RzName As String = wb_Functions.XRenameToExcelTabName(Rezept.RezeptBezeichnung)
+        xlWorkSheet.Name = RzName
 
         'Array Strings
         Dim xslRange As Excel.Range
@@ -1256,11 +1337,13 @@ Public Class wb_Rezept_Rezeptur
         Dim xdlRange As Excel.Range
         'Array Überschrift
         Dim xlRange As Excel.Range
-
-        'Erstes Arbeitsblatt
-        xlWorkSheet = xlWorkSheets(1)
-        'Rezept Name
-        xlWorkSheet.Name = Rezept.RezeptBezeichnung
+        'Konstanten
+        Const colRohNumr = 0
+        Const colRohName = 1
+        Const colRohDekl = 2
+        Const colSollwrt = 3
+        Const colStrtNwt = 4
+        Const colEndNwt = 12
 
         'Get the range where the starting cell has the address
         xslRange = xlWorkSheet.Range("A2", Reflection.Missing.Value)
@@ -1321,6 +1404,13 @@ Public Class wb_Rezept_Rezeptur
                         xldArray(i - 1, j + 1) = RzSchritt.ktTyp301.Wert(nwtArray(j))
                     End If
                 Next
+
+                'Rezept-im-Rezept
+                If RzSchritt.RezeptNr > 0 And DetailAnsicht Then
+                    'neues TabSheet erzeugen (an Stelle 1!)
+                    xlWorkSheets.Add()
+                    ExcelNwtPage(RzSchritt.RezeptImRezept, xlWorkSheets, DetailAnsicht)
+                End If
             End If
         Next
 
@@ -1371,28 +1461,6 @@ Public Class wb_Rezept_Rezeptur
                 xlWorkSheet.Rows.Item(j + 2).Font.Italic = True
             End If
         Next
-
-        'Display Excel
-        xlApp.Visible = True
-        xlApp.UserControl = True
-
-
-        'If Not xlWorkBook Is Nothing Then
-        '    Marshal.FinalReleaseComObject(xlWorkBook)
-        '    xlWorkBook = Nothing
-        'End If
-
-        'If Not xlWorkBooks Is Nothing Then
-        '    Marshal.FinalReleaseComObject(xlWorkBooks)
-        '    xlWorkBooks = Nothing
-        'End If
-
-
-        'If Not xlApp Is Nothing Then
-        '    xlApp.Quit()
-        '    Marshal.FinalReleaseComObject(xlApp)
-        '    xlApp = Nothing
-        'End If
-
     End Sub
+
 End Class

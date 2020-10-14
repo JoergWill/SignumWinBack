@@ -15,14 +15,14 @@ Public Class wb_ZutatenListe
         Sort()
     End Sub
 
-    Public Function Print(Mode As wb_Global.ZutatenListeMode) As String
+    Public Function Print(ShowENummern As Boolean) As String
         Dim s As String = ""
         Dim z As String
         Dim GrpRezNr As Integer = 0
 
         For Each x As wb_ZutatenElement In Liste
 
-            If Mode = wb_Global.ZutatenListeMode.Hide_ENummer And x.eNr > 0 Then
+            If Not ShowENummern And x.eNr > 0 Then
                 z = wb_ZutatenListe_Global.Find_ENummer(x.Zutaten).Bezeichnung
             Else
                 z = x.Zutaten
@@ -135,7 +135,8 @@ Public Class wb_ZutatenListe
         L2.FettDruck = RemoveFettDruck(L2.Zutaten) Or L2.FettDruck
 
         'wenn beide Einträge identisch sind
-        If (L1.Zutaten = L2.Zutaten) And (L1.Grp1 = L2.Grp1) And (L2.Grp2 = L2.Grp2) Then
+        '        If (L1.Zutaten = L2.Zutaten) And (L1.Grp1 = L2.Grp1) And (L2.Grp2 = L2.Grp2) Then  TEST(Gruppen werden nicht geprüft)
+        If (L1.Zutaten = L2.Zutaten) Then
             'Mengen addieren
             'TODO QUID-Mengen addieren
             L1.SollMenge += L2.SollMenge
@@ -146,6 +147,14 @@ Public Class wb_ZutatenListe
             If L1.eNr = 0 Then
                 L1.eNr = L2.eNr
             End If
+            'Gruppen übernehmen wenn vorhanden
+            If L1.Grp1 = 0 Then
+                L2.Grp1 = L2.Grp1
+            End If
+            If L1.Grp2 = 0 Then
+                L2.Grp2 = L2.Grp2
+            End If
+
             'den zweiten Eintrag löschen
             Return True
         Else
@@ -154,7 +163,7 @@ Public Class wb_ZutatenListe
     End Function
 
     Private Function RemoveFettDruck(ByRef s As String) As Boolean
-        If s = Nothing Or s = "" Then
+        If s = Nothing Or s = "" Or (s.IndexOf(",") > 0) Then
             Return False
         End If
         If Left(s, 1) = "*" Then
@@ -194,6 +203,11 @@ Public Class wb_ZutatenListe
 
             'Filtert Prozent-Angaben aus der Zutatenliste
             L1.Zutaten = FilterDezimalProzent(L1.Zutaten)
+            'Semikolon durch Komma ersetzen
+            L1.Zutaten = L1.Zutaten.Replace(";", ",")
+
+            'Filtert eingebettete kommagetrennte Zutatenlisten in Klammern aus
+            L1.Zutaten = FilterKlammer(L1.Zutaten)
 
             'Die Zutatenliste besteht aus mehreren Elementen
             If L1.Zutaten.Contains(",") Then
@@ -204,12 +218,9 @@ Public Class wb_ZutatenListe
                 For j = 1 To a.Length
                     'Ein einzelnes Element der Zutatenliste
                     Dim z As New wb_ZutatenElement
+                    z.CopyFrom(L1)
                     'Leerzeichnen vorne und hinten entfernen
                     z.Zutaten = Trim(a(j - 1))
-                    'Verknüpfung zu Rezept
-                    z.GrpRezNr = L1.GrpRezNr
-                    'Sollmenge
-                    z.SollMenge = L1.SollMenge
                     'Reihenfolge der Zutaten
                     z.SortMenge = a.Length - j
 
@@ -224,9 +235,7 @@ Public Class wb_ZutatenListe
                 'Ein einzelnes Element der Zutatenliste
                 Dim z As New wb_ZutatenElement
                 'einziges Element der Zutatenliste
-                z.Zutaten = Trim(L1.Zutaten)
-                z.GrpRezNr = L1.GrpRezNr
-                z.SollMenge = L1.SollMenge
+                z.CopyFrom(L1)
                 z.SortMenge = 1
                 _Opt_Ingredients(z, False)
                 'Teilstring in Liste ersetzen
@@ -241,23 +250,15 @@ Public Class wb_ZutatenListe
 
     Private Function _Opt_Ingredients(ByRef z As wb_ZutatenElement, FettDruckEin As Boolean) As Boolean
         'Fettdruck
-        If z.Zutaten.Contains("{") Then
-            FettDruckEin = True
-        End If
-        z.FettDruck = FettDruckEin
-        If z.Zutaten.Contains("}") Then
-            FettDruckEin = False
-        End If
+        z.FettDruck = FettDruckEin Or z.Zutaten.Contains("{") Or z.FettDruck
+        'Rückgabewert (Fettdruck bleibt aktiv)
+        _Opt_Ingredients = (FettDruckEin Or z.Zutaten.Contains("{")) And Not z.Zutaten.Contains("}")
 
         'Steuerzeichen vorne und hinten/im String entfernen
         z.Zutaten = z.Zutaten.Trim("{")
         'z.Zutaten = z.Zutaten.Trim("}")
         z.Zutaten = z.Zutaten.Replace("}", "")
-
-        'Rückgabewert
-        Return FettDruckEin
     End Function
-
 
     ''' <summary>
     ''' Wandelt alle Komma-getrennten Prozent-Angaben im String in Dezimal-Punkte um.
@@ -272,13 +273,23 @@ Public Class wb_ZutatenListe
     Private Function FilterDezimalProzent(s As String) As String
         'Falls vor dem %-Zeichen ein Leerzeichen steht
         s = s.Replace(" %", "%")
+        'für alle %-Angaben im String
+        Dim p As Integer = 0
+        Do
+            p = _FilterDezimalProzent(s, p)
+        Loop Until p <= 0
+        'Ergebnis-String mit Dezimalpunkt in den Prozent-Angaben
+        Return s
+    End Function
+
+    Private Function _FilterDezimalProzent(ByRef s As String, k As Integer) As Integer
         'Position des %-Zeichens im String
-        Dim i As Integer = s.IndexOf("%")
+        Dim i As Integer = s.IndexOf("%", k)
 
         'Prüfen ob überhaupt ein Prozent-Zeichen enthalten ist
         If i > 0 Then
             'ab diesem Zeichen bis zum String-Anfang
-            For j = i To 0 Step -1
+            For j = i To k Step -1
                 'Sonderzeichen und % ausfiltern
                 Select Case s.Substring(j, 1)
                     Case "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "%"
@@ -289,15 +300,65 @@ Public Class wb_ZutatenListe
                         Exit For
                 End Select
             Next
-            Return s
-        Else
-            Return s
         End If
+        Return i + 1
+    End Function
+
+    ''' <summary>
+    ''' Filtert Zutatenlisten, die in Klammern gesetzt sind als eigenständiges Zutaten-Element aus. 
+    ''' Die Klammern werden durch Semikolon ersetzt, damit wird dieses Element nicht aufgesplittet.
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Private Function FilterKlammer(s As String) As String
+        'Falls vor dem C-Zeichen ein Leerzeichen steht
+        s = s.Replace(" (", "(")
+        'für alle Zutaten-Elemente im String
+        Dim p As Integer = 0
+        Do
+            p = _FilterKlammer(s, p)
+        Loop Until p <= 0
+        'Ergebnis-String mit Dezimalpunkt in den Prozent-Angaben
+        Return s
+    End Function
+
+    Private Function _FilterKlammer(ByRef s As String, p As Integer) As Integer
+        'Position des %-Zeichens im String
+        Dim i As Integer = s.IndexOf("(", p)
+        Dim j As Integer = 0
+        Dim k As Integer = 0
+
+        'Prüfen ob überhaupt ein Klammer-Zeichen enthalten ist
+        If i > 0 Then
+            'ab diesem Zeichen bis zum String-Ende
+            For j = i To s.Length - 1
+                'Sonderzeichen und % ausfiltern
+                Select Case s.Substring(j, 1)
+                    Case ","
+                        'Komma wird durch Semikolon ersetzt
+                        s = s.Remove(j, 1).Insert(j, "\")
+                    Case ("(")
+                        'verschachtelte Klammern
+                        k += 1
+                    Case ")"
+                        'geschlossene Klammer beendet die Routine
+                        k -= 1
+                        If k = 0 Then
+                            Exit For
+                        End If
+                End Select
+            Next
+        End If
+        Return j
     End Function
 
     Public Sub Convert_ToEnr()
         For i = 0 To Liste.Count - 1
-            _Convert_ToENr(Liste(i))
+            'TODO geklammerte Zutatenlisten in einzelne Bestandteile aufteilen und gruppieren
+            'geklammerte Zutatenlisten werden nicht in E-Nummern aufgeteilt
+            If Not Liste(i).Zutaten.Contains("\") Then
+                _Convert_ToENr(Liste(i))
+            End If
         Next
     End Sub
 
@@ -375,6 +436,22 @@ Public Class wb_ZutatenElement
     Public Grp2 As Integer
     Public Quid As Boolean
     Public QuidProzent As Double
+
+
+    Public Sub CopyFrom(z As wb_ZutatenElement)
+        Zutaten = Trim(z.Zutaten)
+        eNr = z.eNr
+        FettDruck = z.FettDruck
+        KeineDeklaration = z.KeineDeklaration
+        Aufloesen = z.Aufloesen
+        GrpRezNr = z.GrpRezNr
+        SollMenge = z.SollMenge
+        SortMenge = z.SollMenge
+        Grp1 = z.Grp1
+        Grp2 = z.Grp2
+        Quid = z.Quid
+        QuidProzent = z.QuidProzent
+    End Sub
 
     Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
         'Vergleich

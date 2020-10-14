@@ -17,7 +17,12 @@ Public Class wb_User_Main
     Private UserPasswort As wb_User_Passwort
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
+        'Initialisierung
         MyBase.New(ServiceProvider)
+        'Default-Layout wenn keine Fenster angezeigt werden (neuer Benutzer...)
+        If _DockPanelList.Count = 0 Then
+            SetDefaultLayout()
+        End If
     End Sub
 
     ''' <summary>
@@ -54,21 +59,13 @@ Public Class wb_User_Main
     ''' <remarks></remarks>
     Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
         'User-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If UserListe IsNot Nothing Then
-            UserListe.Close()
-        End If
-        'Anzeige User_Rechte schliessen
-        If UserRechte IsNot Nothing Then
-            UserRechte.Close()
-        End If
-        'User-Details schliessen
-        If UserDetails IsNot Nothing Then
-            UserDetails.Close()
-        End If
-        'Fenster User-Gruppen_rechte schliessen
-        If UserGruppenRechte IsNot Nothing Then
-            UserGruppenRechte.Close()
-        End If
+        wb_Functions.CloseAndDisposeSubForm(UserListe)
+        wb_Functions.CloseAndDisposeSubForm(UserRechte)
+        wb_Functions.CloseAndDisposeSubForm(UserDetails)
+        wb_Functions.CloseAndDisposeSubForm(UserGruppenRechte)
+
+        'alle Spuren in USer_Shared löschen
+        wb_User_Shared.Invalid()
 
         'Fenster darf geschlossen werden
         Return False

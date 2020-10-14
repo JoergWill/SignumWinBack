@@ -38,6 +38,8 @@
         ClearKomponenten()
         pTeigChargen.Enabled = False
         pArtikelChargen.Enabled = False
+        'Vorproduktion auflösen ist Default
+        cbAufloesen.Checked = True
 
         'Combo-Box(Rezept-Varianten) mit Werten füllen
         cbVariante.Fill(wb_Rezept_Shared.RzVariante)
@@ -503,9 +505,9 @@
 
     Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
         If pArtikelChargen.Enabled Then
-            ProduktionNeu.AddChargenZeile("", "", _ArtNr, _AnzGesStck, 0, 0, cbChargenTeiler.SelIndex)
+            ProduktionNeu.AddChargenZeile("", "", _ArtNr, _AnzGesStck, 0, 0, cbChargenTeiler.SelIndex, cbAufloesen.Checked, True)
         Else
-            ProduktionNeu.AddChargenZeile("", _RezNr, _TeigGesMenge, cbChargenTeiler.SelIndex)
+            ProduktionNeu.AddChargenZeile("", _RezNr, _TeigGesMenge, cbChargenTeiler.SelIndex, cbAufloesen.Checked)
         End If
     End Sub
 End Class

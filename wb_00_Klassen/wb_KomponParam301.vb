@@ -24,7 +24,7 @@ Public Class wb_KomponParam301
     ''' </summary>
     Public Sub New()
         _IsCalculated = False
-        FaktorStkGewicht = 1
+        _FaktorStkGewicht = 1
     End Sub
 
     Public ReadOnly Property NwtTabelle As Array

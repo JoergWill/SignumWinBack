@@ -307,16 +307,16 @@ Public Class wb_Lieferungen
                     'wenn die Korrekturmenge größer als die Liefermenge ist
                     If BchMenge < 0 Then
                         'letzter Datensatz - Liefermenge wird auf Null gesetzt
-                        UpdateLieferung(winback, Nr, 0)
+                        UpdateLieferung(winback, Nr, 0, "WE-" & LagerKarte.Vorfall)
                         'dann wird noch zusätzlich ein Korrektursatz angefügt
                         InsertLieferung(winback, LagerKarte, BchMenge)
                     Else
                         'letzter (oder nur ein) Datensatz - Liefermenge korrigieren
-                        UpdateLieferung(winback, Nr, BchMenge)
+                        UpdateLieferung(winback, Nr, BchMenge, "WE-" & LagerKarte.Vorfall)
                     End If
                 Else
                     'mehrere Datensätze - Liefermenge wird auf Null gesetzt
-                    UpdateLieferung(winback, Nr, 0)
+                    UpdateLieferung(winback, Nr, 0, "WE-" & LagerKarte.Vorfall)
                 End If
             Next
         End If
@@ -349,7 +349,7 @@ Public Class wb_Lieferungen
         Dim Datum As Date = Date.Parse(LagerKarte.Datum & " " & LagerKarte.Uhrzeit)
         'TODO prüfen ob die Konvertierung (Zeile oben) funktioniert !!!
         'Background-Task
-        InsertLieferung(winback, LagerKarte.Lfd, Datum, LagerKarte.Gebucht, LagerKarte.Vorfall & "-" & LagerKarte.Modul, LagerKarte.VorfallNr, LagerKarte.ChargenNummer, LagerKarte.Preis, Menge)
+        InsertLieferung(winback, LagerKarte.Lfd, Datum, LagerKarte.Gebucht, LagerKarte.Vorfall, LagerKarte.VorfallNr, LagerKarte.ChargenNummer, LagerKarte.Preis, Menge)
     End Sub
 
     ''' <summary>
@@ -390,9 +390,9 @@ Public Class wb_Lieferungen
     ''' <param name="winback"></param>
     ''' <param name="lfd"></param>
     ''' <param name="lfMenge"></param>
-    Private Sub UpdateLieferung(winback As wb_Sql, lfd As Integer, lfMenge As Double)
+    Private Sub UpdateLieferung(winback As wb_Sql, lfd As Integer, lfMenge As Double, lfBemerkung As String)
         'der UPDATE-Befehl wird dynamisch erzeugt
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLieferung, LG_Ort, lfd.ToString, wb_Functions.FormatStr(lfMenge, 2))
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLieferung, LG_Ort, lfd.ToString, wb_Functions.FormatStr(lfMenge, 2), lfBemerkung)
         'INSERT ausführen
         winback.sqlCommand(sql)
     End Sub

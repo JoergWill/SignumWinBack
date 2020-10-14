@@ -13,7 +13,12 @@ Public Class wb_Planung_Main
 
 #Region "Signum"
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
+        'Initialisierung
         MyBase.New(ServiceProvider)
+        'Default-Layout wenn keine Fenster angezeigt werden (neuer Benutzer...)
+        If _DockPanelList.Count = 0 Then
+            SetDefaultLayout()
+        End If
     End Sub
 
     ''' <summary>
@@ -55,15 +60,14 @@ Public Class wb_Planung_Main
     Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
         'Planung-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
         If PlanungListe IsNot Nothing Then
+            'Verbuchte Datensätze in OrgaBack-DB registrieren
             If PlanungListe.FormClosingFromMain() Then
                 Return True
             End If
             PlanungListe.Close()
         End If
         'Planung-Teiler schliessen
-        If PlanungTeiler IsNot Nothing Then
-            PlanungTeiler.Close()
-        End If
+        wb_Functions.CloseAndDisposeSubForm(PlanungTeiler)
 
         'Fenster darf geschlossen werden
         Return False

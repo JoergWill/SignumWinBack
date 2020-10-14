@@ -104,20 +104,20 @@ Public Class wb_Produktion
         For Each v As wb_VorProduktionsSchritt In _VorProduktion
             'Debug.Print("Vorproduktion " & v.ArtikelNr & "/" & v.RezeptNr & "/" & v.Sollwert_kg)
             'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
-            AddChargenZeile("", "", v.ArtikelNr, 0.0, v.Sollwert_kg, 0.0, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
+            AddChargenZeile("", "", v.ArtikelNr, 0.0, v.Sollwert_kg, 0.0, wb_Global.ModusChargenTeiler.OptimalUndRest, ps.Aufloesen, True)
+            'AddChargenZeile("", "", v.ArtikelNr, 0.0, v.Sollwert_kg, 0.0, wb_Global.ModusChargenTeiler.OptimalUndRest, True, False)
         Next
 
         Return True
     End Function
 
     Private Function _VorProduktionListe_Erzeugen(ps As wb_Produktionsschritt)
-        Dim vp As New wb_VorProduktionsSchritt
 
         'Iteration über alle Produktions-Schritte
         For Each p As wb_Produktionsschritt In ps.ChildSteps
             'Debug.Print("Calc Vorproduktion " & p.ArtikelNummer & "/" & p.ArtikelBezeichnung & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung)
-
             If p.ChargenNummer = "VP" Then
+                Dim vp As New wb_VorProduktionsSchritt
                 vp.RezeptNr = p.RezeptNr
                 vp.LinienGruppe = p.LinienGruppe
                 vp.RezeptGroesse = 0
@@ -125,6 +125,7 @@ Public Class wb_Produktion
                 vp.Sollwert_kg = p.Sollwert_kg
                 vp.ArtikelNr = p.ArtikelNr
                 vp.TeigChargen = p.TeigChargen
+                vp.Aufloesen = p.Aufloesen
                 _VorProduktion.Add(vp)
                 'Charge als erledigt markieren
                 p.ChargenNummer = "VP-OK"
@@ -198,7 +199,7 @@ Public Class wb_Produktion
                 'Letzter Teig
                 If i = ProdChildSteps Then
                     'TODO Chargenteiler auch aus Rezeptur berücksichtigen
-                    AddChargenZeile(TourInfo(p2c0.Tour, Modus), p2c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler)
+                    AddChargenZeile(TourInfo(p2c0.Tour, Modus), p2c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p2c0.Aufloesen)
                     'Debug.Print("AddCharge LAST " & p2c0.Tour & "/" & p2c0.RezeptNr & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & TeigMenge)
                 End If
             Else
@@ -206,7 +207,7 @@ Public Class wb_Produktion
                 If TeigMenge > 0 Then
                     'neuen Produktions - Schritt anhängen
                     'TODO Chargenteiler auch aus Rezeptur berücksichtigen
-                    AddChargenZeile(TourInfo(p1c0.Tour, Modus), p1c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler)
+                    AddChargenZeile(TourInfo(p1c0.Tour, Modus), p1c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p1c0.Aufloesen)
                     'Debug.Print("AddCharge NEW " & p1c0.Tour & "/" & p1c0.RezeptNr & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & TeigMenge)
                     TeigMenge = 0
                 End If
@@ -285,7 +286,7 @@ Public Class wb_Produktion
     ''' <param name="TeigMenge"></param>
     ''' <param name="Modus"></param>
     ''' <returns></returns>
-    Function AddChargenZeile(Tour As String, RzNr As Integer, TeigMenge As Double, Modus As wb_Global.ModusChargenTeiler) As Boolean
+    Function AddChargenZeile(Tour As String, RzNr As Integer, TeigMenge As Double, Modus As wb_Global.ModusChargenTeiler, Aufloesen As Boolean) As Boolean
         Dim Artikel As New wb_Komponente
         Dim Rezept As New wb_Rezept(RzNr)
 
@@ -300,6 +301,7 @@ Public Class wb_Produktion
 
         'Neue Zeile  einfügen (ArtikelZeile)
         Root = New wb_Produktionsschritt(Root, Artikel.Bezeichnung)
+        Root.Aufloesen = Aufloesen
 
         'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
         Root.CopyFromKomponenten(Artikel, wb_Global.KomponTypen.KO_ZEILE_ARTIKEL)
@@ -313,6 +315,7 @@ Public Class wb_Produktion
 
         'Chargen berechnen - Aufteilung in Optimal- und Restchargen
         Root.TeigChargen = CalcChargenMenge(TeigMenge, Root.MinChargekg, Root.MaxChargekg, Root.OptChargekg, Modus, True)
+        'Root.Aufloesen = True
 
         'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
         For i = 1 To Root.TeigChargen.AnzahlOpt
@@ -336,7 +339,7 @@ Public Class wb_Produktion
     ''' <param name="Sollmenge_Stk">Double - Sollmenge in Stück</param>
     ''' <returns></returns>
     Public Function AddChargenZeile(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Sollmenge_kg As Double, MengeInProduktion As Double, Modus As wb_Global.ModusChargenTeiler,
-                                     Optional Vorproduktion As Boolean = False, Optional AuftragsNummer As String = "", Optional Bestellmenge As Double = wb_Global.UNDEFINED,
+                                     Aufloesen As Boolean, Optional Vorproduktion As Boolean = False, Optional AuftragsNummer As String = "", Optional Bestellmenge As Double = wb_Global.UNDEFINED,
                                      Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
 
         Dim Artikel As New wb_Komponente
@@ -352,6 +355,7 @@ Public Class wb_Produktion
             'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
             Root.CopyFromKomponenten(Artikel, wb_Global.KomponTypen.KO_ZEILE_ARTIKEL)
             Root.Sollmenge_Stk = Sollmenge_Stk
+            Root.Aufloesen = Aufloesen
             Root.Tour = Tour
             Root.AuftragsNummer = AuftragsNummer
             Root.Bestellt_Stk = CalcBestellMenge(Bestellmenge, Sollmenge_Stk)
@@ -394,6 +398,8 @@ Public Class wb_Produktion
         Rzpt.Tour = Tour
         'Chargenaufteilung wird jedem Schritt mitgegeben
         Rzpt.TeigChargen = TeigChargen
+        'Rezeptur auflösen
+        Rzpt.Aufloesen = Root.Aufloesen
 
         'Rezeptur anhängen (Die Linengruppe wird aus der Rezeptur ermittelt)
         Rzpt.LinienGruppe = AddRezeptSchritte(Rzpt, Menge, Nothing)
@@ -423,7 +429,7 @@ Public Class wb_Produktion
         'Rezeptur einlesen
         'TODO Muss hier ein Backverlust übertragen werden oder nicht ? PRÜFEN !!!
         '(NoMessage=True unterdrückt die Meldung "Rezept verweist auf sich selbst")
-        Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent, 0.0, 1, "", "", True)
+        Dim Rezeptur As New wb_Rezept(Rzpt.RezeptNr, Parent, 0.0, 1, "", "", True, False)
 
         'Bei Sauerteig-Rezepturen Anstellgut berechnen (wenn der Haken "Anstellgut" gesetzt ist)
         Dim Anstellgut As Double = 0.0
@@ -459,7 +465,7 @@ Public Class wb_Produktion
             Rzpt.Bestellt_SonderText = "Anstellgut " & wb_Functions.FormatStr(Anstellgut, 1) & " kg"
         End If
 
-        'gibt die Liniengruppe aus dem Rezeptkopf zurück
+        'Rückgabewert ist die Liniengruppe aus dem Rezeptkopf
         AddRezeptSchritte = Rezeptur.LinienGruppe
 
         'alle Rezeptschritte an Child-Knoten anhängen
@@ -467,9 +473,12 @@ Public Class wb_Produktion
 
             Dim RzSchritt As New wb_Produktionsschritt(Rzpt, rs.Bezeichnung)
             RzSchritt.CopyFromRezeptSchritt(rs, Faktor)
+            '            RzSchritt.Aufloesen = Rzpt.Aufloesen
+            RzSchritt.Aufloesen = False
 
-            'Rezept-im-Rezept-Struktur auflösen
-            If RzSchritt.RezeptNr > 0 Then
+            'Rezept-im-Rezept-Struktur auflösen - Nur wenn kein Teigling (2020-09-25)
+            If (RzSchritt.RezeptNr > 0) And Rzpt.Aufloesen Then
+                'If (RzSchritt.RezeptNr > 0) Then
                 RzSchritt.ChargenNummer = "VP"
                 RzSchritt.LinienGruppe = AddRezeptSchritte(RzSchritt, RzSchritt.Sollwert_kg, Rezeptur)
             End If
@@ -897,7 +906,7 @@ Public Class wb_Produktion
         While orgaback.Read
             DebugCounter += 1
             'Progressbar einblenden (nur wenn noch nicht sichtbar)
-            wb_Main_Progress_Shared.ShowProgressBar()
+            wb_Main_Shared.ShowProgressBar()
             'Alle Datensätze einlesen
             For i = 0 To orgaback.msRead.FieldCount - 1
                 'Debug.Print("OrgaBack StoredProcedure Read " & orgaback.msRead.GetName(i) & "/" & orgaback.msRead.GetValue(i))
@@ -908,10 +917,10 @@ Public Class wb_Produktion
                 Windows.Forms.Application.DoEvents()
             Next
             'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
-            AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, 0.0, BestellDaten.MengeInProduktion, BestellDaten.ChargenTeiler, True, BestellDaten.AuftragsNummer, BestellDaten.BestellMenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText)
+            AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, 0.0, BestellDaten.MengeInProduktion, BestellDaten.ChargenTeiler, BestellDaten.Aufloesen, True, BestellDaten.AuftragsNummer, BestellDaten.BestellMenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText)
         End While
         'Progressbar ausblenden
-        wb_Main_Progress_Shared.HideProgressBar()
+        wb_Main_Shared.HideProgressBar()
         'Datenbankverbindung wieder schliessen
         orgaback.Close()
     End Function

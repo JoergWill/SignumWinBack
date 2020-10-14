@@ -17,7 +17,14 @@ Public Class wb_Rezept_Main
     Public RezeptVerwendung As wb_Rezept_Verwendung
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
+        'Initialisierung
         MyBase.New(ServiceProvider)
+        'Default-Layout wenn keine Fenster angezeigt werden (neuer Benutzer...)
+        If _DockPanelList.Count = 0 Then
+            SetDefaultLayout()
+        End If
+        'Event-Handler (Klick auf Rezept-Kopieren -> Rezept-Neu)
+        AddHandler wb_Rezept_Shared.eRezept_Copy, AddressOf RezeptCopy
     End Sub
 
     ''' <summary>
@@ -60,10 +67,16 @@ Public Class wb_Rezept_Main
     ''' </returns>
     ''' <remarks></remarks>
     Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
-        'Rohstoff-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
-        If RezeptListe IsNot Nothing Then
-            RezeptListe.Close()
-        End If
+        'alle erzeugten Fenster wieder schliessen
+        wb_Functions.CloseAndDisposeSubForm(RezeptListe)
+        wb_Functions.CloseAndDisposeSubForm(RezeptDetails)
+        wb_Functions.CloseAndDisposeSubForm(RezeptHinweise)
+        wb_Functions.CloseAndDisposeSubForm(RezeptHistorie)
+        wb_Functions.CloseAndDisposeSubForm(RezeptVerwendung)
+
+        'alle Spuren in Rezepte_Shared löschen
+        wb_Rezept_Shared.Invalid()
+
         'Fenster darf geschlossen werden
         Return False
     End Function
@@ -74,6 +87,11 @@ Public Class wb_Rezept_Main
                 _ContextTabs = New List(Of GUI.ITab)
                 ' Fügt dem Ribbon ein neues RibbonTab hinzu
                 Dim oNewTab = _MenuService.AddContextTab("RezeptVerwaltung", "WinBack-Rezepte", "Verwaltung der WinBack-Rezepturen")
+                ' Das neue RibbonTab erhält eine Gruppe
+                Dim oGrpStammdaten = oNewTab.AddGroup("GrpWinBack", "WinBack")
+                ' ... und dieser Gruppe wird ein Button hinzugefügt
+                oGrpStammdaten.AddButton("btnArtikelStamm", "Artikel", "WinBack Artikelstammdaten", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf ShowArtikelForm)
+                oGrpStammdaten.AddButton("btnRohstoffStamm", "Rohstoffe", "WinBack Rohstoff-Stammdaten", My.Resources.MainRohstoffe_16x16, My.Resources.MainRohstoffe_32x32, AddressOf ShowRohstoffForm)
                 ' Das neue RibbonTab erhält eine Gruppe
                 Dim oGrpRzpt = oNewTab.AddGroup("Verwaltung", "Rezepte")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
@@ -96,10 +114,41 @@ Public Class wb_Rezept_Main
         End Get
     End Property
 
-    Private Sub BtnRezeptNew()
+    Private Sub ShowArtikelForm()
+        wb_Main_Shared.OpenForm(Me, "Artikel")
+    End Sub
+
+    Private Sub ShowRohstoffForm()
+        wb_Main_Shared.OpenForm(Me, "Rohstoffe")
+    End Sub
+
+    ''' <summary>
+    ''' Das Kopieren einer Rezeptur erfolgt über die Funktion Rezept-Neu.
+    ''' Die übergebene Rezept-Nummer wird kopiert.
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="RzNr"></param>
+    Private Sub RezeptCopy(Sender As Object, RzNr As Integer, Variante As Integer)
+        RezeptNew(RzNr, Variante)
+    End Sub
+
+    ''' <summary>
+    ''' Neues Rezept anlegen. Wenn keine Rezeptnummer angegeben ist, wird nur eine leere Hülle erzeugt. Ist eine Rezeptnummer angegeben,
+    ''' wird eine Kopie des aktuellen Rezeptes erzeugt und angezeigt.
+    ''' </summary>
+    ''' <param name="RzNr"></param>
+    Private Sub RezeptNew(Optional RzNr As Integer = wb_Global.UNDEFINED, Optional RzVariante As Integer = 1)
         Dim Rezept As New wb_Rezept
         Dim RezeptNrNeu As Integer = Rezept.MySQLdbNew(wb_Global.LinienGruppeStandard)
         RezeptListe.RefreshData(RezeptNrNeu)
+
+        'Rezeptur kopieren
+        If RzNr > wb_Global.UNDEFINED Then
+            'Rezeptschritte kopieren
+            Rezept.Copy(RzNr, RzVariante)
+        End If
+
+        'Speicher wieder freigeben
         Rezept = Nothing
 
         'Das neu erzeugte Rezept gleich öffnen
@@ -108,6 +157,13 @@ Public Class wb_Rezept_Main
         Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNrNeu, wb_Global.RezeptVarianteStandard)
         Rezeptur.Show()
         Me.Cursor = Cursors.Default
+    End Sub
+
+    ''' <summary>
+    ''' Neues (leeres) Rezept anlegen
+    ''' </summary>
+    Private Sub BtnRezeptNew()
+        RezeptNew()
     End Sub
 
     Private Sub BtnRezeptRemove()
@@ -120,31 +176,47 @@ Public Class wb_Rezept_Main
     End Sub
 
     Private Sub BtnRezeptDetails()
-        RezeptDetails.Show(DockPanel)
+        RezeptDetails.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRezeptHinweise()
         If IsNothingOrDisposed(RezeptHinweise) Then
             RezeptHinweise = New wb_Rezept_Hinweise
         End If
-        RezeptHinweise.Show(DockPanel)
+        RezeptHinweise.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRezeptHistorie()
         If IsNothingOrDisposed(RezeptHistorie) Then
             RezeptHistorie = New wb_Rezept_Historie
         End If
-        RezeptHistorie.Show(DockPanel)
+        RezeptHistorie.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRezeptVerwendung()
         If IsNothingOrDisposed(RezeptVerwendung) Then
             RezeptVerwendung = New wb_Rezept_Verwendung
         End If
-        RezeptVerwendung.Show(DockPanel)
+        RezeptVerwendung.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRezeptListeDrucken()
+        'sicherheitshalber abfragen
+        If Not IsNothing(RezeptListe) Then
+
+            'Druck-Daten
+            Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
+            pDialog.LL_KopfZeile_1 = RezeptListe.FilterText
+
+            'Liste aller Rohstoffe aus den DataGridView
+            pDialog.LL.DataSource = New combit.ListLabel22.DataProviders.AdoDataProvider(RezeptListe.DataGridView.LLData)
+
+            'List und Label-Verzeichnis für die Listen
+            pDialog.ListSubDirectory = "Rezepte"
+            pDialog.ListFileName = "RezeptListe.lst"
+            pDialog.ShowDialog()
+            pDialog = Nothing
+        End If
     End Sub
 
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent

@@ -1,6 +1,8 @@
-﻿Public Class wb_Main_Progress_Shared
+﻿Public Class wb_Main_Shared
     Private Shared _MainProgress As wb_Main_Progress = Nothing
     Private Shared _MainProgressVisible As Boolean = False
+    Public Shared Event eOpenForm(sender As Object, FormName As String)
+
 
     Public Shared Property MainProgressVisible
         Get
@@ -36,5 +38,9 @@
                 End If
             End If
         End If
+    End Sub
+
+    Public Shared Sub OpenForm(Sender As Object, FormName As String)
+        RaiseEvent eOpenForm(Sender, FormName)
     End Sub
 End Class

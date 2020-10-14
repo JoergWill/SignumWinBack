@@ -61,9 +61,11 @@ Public Class wb_Linien_Liste
             '.Items(.Items.Count - 1).Selected = True
         End With
     End Sub
+
     Public Sub SelectLastItem()
         VNCview.Items(VNCview.Items.Count - 1).Selected = True
     End Sub
+
     Public Sub AddFromDataBase()
         Dim IPLinie, IPAdresse, IPComment As String
 
@@ -142,6 +144,10 @@ Public Class wb_Linien_Liste
         End Try
     End Function
 
+    Private Sub wb_Linien_Liste_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        LinienInfo()
+        SaveItems()
+    End Sub
 End Class
 
 
