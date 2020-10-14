@@ -4844,7 +4844,9 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 </member>
 <member name="M:WinBack.wb_Rezept.#ctor(System.Int32,System.Object,System.Int32,System.Int32)">
  <summary>
- Einlesen Rezeptkopf und Rezeptur aus der Historie
+ Einlesen Rezeptkopf und Rezeptur aus der Historie.
+ Wenn eine Rezept-Im-Rezept Rekursion auftritt, wird das Einlesen abgebrochen.
+ Eine Rückmeldung erfolgt nicht!
  </summary>
  <param name="RzNr"></param>
  <param name="RzVariante"></param>
