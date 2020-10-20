@@ -609,6 +609,8 @@
     </Content>
     <None Include="Resources\PlanungTeiler_32x32.png" />
     <None Include="Resources\RohstoffSilo_32x32.png" />
+    <None Include="Resources\OfficeProLogo_926x220.png" />
+    <None Include="Resources\Rezeptsteuerung.png" />
     <Content Include="WinBack Icon.ico" />
   </ItemGroup>
   <ItemGroup>

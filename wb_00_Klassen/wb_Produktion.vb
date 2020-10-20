@@ -348,6 +348,11 @@ Public Class wb_Produktion
         If Artikel.MySQLdbRead(Nr, Nummer) Then
             'Artikelzeilen hängen immer am ersten (Dummy)Schritt
             Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
+            'Artikel-Stückgewicht in kg
+            Dim StkGewicht As Double = Artikel.ArtikelChargen.StkGewicht / 1000
+            If StkGewicht = 0 Then
+                StkGewicht = 1
+            End If
 
             'Neue Zeile  einfügen (ArtikelZeile)
             Root = New wb_Produktionsschritt(Root, Artikel.Bezeichnung)
@@ -364,9 +369,14 @@ Public Class wb_Produktion
 
             'Teig-Gesamtmenge berechnen
             If Sollmenge_kg <= 0 Then
-                TeigMenge = CalcTeigMenge(Sollmenge_Stk, Artikel.ArtikelChargen.StkGewicht / 1000)
+                TeigMenge = CalcTeigMenge(Sollmenge_Stk, StkGewicht)
             Else
                 TeigMenge = Sollmenge_kg
+            End If
+
+            'Stkzahl in der Artikelzeile berechnen
+            If Root.Sollmenge_Stk = 0 Then
+                Root.Sollmenge_Stk = Sollmenge_kg / StkGewicht
             End If
 
             'Chargen berechnen - Aufteilung in Optimal- und Restchargen
@@ -473,11 +483,12 @@ Public Class wb_Produktion
 
             Dim RzSchritt As New wb_Produktionsschritt(Rzpt, rs.Bezeichnung)
             RzSchritt.CopyFromRezeptSchritt(rs, Faktor)
-            '            RzSchritt.Aufloesen = Rzpt.Aufloesen
-            RzSchritt.Aufloesen = False
+            RzSchritt.Aufloesen = Rzpt.Aufloesen
+            'TODO TEST AUFLOESEN
+            'RzSchritt.Aufloesen = False
 
             'Rezept-im-Rezept-Struktur auflösen - Nur wenn kein Teigling (2020-09-25)
-            If (RzSchritt.RezeptNr > 0) And Rzpt.Aufloesen Then
+            If (RzSchritt.RezeptNr > 0) And RzSchritt.FreigabeProduktion And Rzpt.Aufloesen Then
                 'If (RzSchritt.RezeptNr > 0) Then
                 RzSchritt.ChargenNummer = "VP"
                 RzSchritt.LinienGruppe = AddRezeptSchritte(RzSchritt, RzSchritt.Sollwert_kg, Rezeptur)

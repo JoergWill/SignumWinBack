@@ -138,8 +138,10 @@ Public Class wb_StammDaten_Main
     ''' Edit Tabelle winback.Konfiguration
     ''' </summary>
     Private Sub BtnWinBackKonfig()
-        WinBackKonfig = New wb_StammDaten_Konfiguration
-        WinBackKonfig.Show(DockPanel, DockState.DockTop)
+        If IsNothingOrDisposed(WinBackKonfig) Then
+            WinBackKonfig = New wb_StammDaten_Konfiguration
+        End If
+        WinBackKonfig.Show(DockPanel, DockState.Document)
     End Sub
 
     ''' <summary>
@@ -147,28 +149,37 @@ Public Class wb_StammDaten_Main
     ''' Aufarbeitungsplätze werden in der Tabelle Liniengruppen mit Linien-Nummer größer als 100 eingetragen.
     ''' </summary>
     Private Sub BtnLinienGruppen()
-        LinienGruppen = New wb_StammDaten_LinienGruppen
-        LinienGruppen.Show(DockPanel, DockState.DockTop)
+        If IsNothingOrDisposed(LinienGruppen) Then
+            LinienGruppen = New wb_StammDaten_LinienGruppen
+        End If
+        LinienGruppen.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnAllergene()
-        Allergene = New wb_StammDaten_Allergene
-        Allergene.Show(DockPanel, DockState.DockTop)
+        If IsNothingOrDisposed(Allergene) Then
+            Allergene = New wb_StammDaten_Allergene
+        End If
+        Allergene.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnArtRohGruppen()
-        ArtRohGruppen = New wb_StammDaten_ArtRohGruppen
-        ArtRohGruppen.Show(DockPanel, DockState.DockTop)
+        If IsNothingOrDisposed(ArtRohGruppen) Then
+            ArtRohGruppen = New wb_StammDaten_ArtRohGruppen
+        End If
+        ArtRohGruppen.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRzptVarianten()
-        'TODO Rezeptvarianten
-        RezeptVarianten = New wb_StammDaten_RezeptVarianten
-        RezeptVarianten.Show(DockPanel, DockState.DockTop)
+        If IsNothingOrDisposed(RezeptVarianten) Then
+            RezeptVarianten = New wb_StammDaten_RezeptVarianten
+        End If
+        RezeptVarianten.Show(DockPanel, DockState.Document)
     End Sub
 
     Private Sub BtnRzptGruppen()
-        RezeptGruppen = New wb_StammDaten_Rezeptgruppen
-        RezeptGruppen.Show(DockPanel, DockState.DockTop)
+        If IsNothingOrDisposed(RezeptGruppen) Then
+            RezeptGruppen = New wb_StammDaten_Rezeptgruppen
+        End If
+        RezeptGruppen.Show(DockPanel, DockState.Document)
     End Sub
 End Class

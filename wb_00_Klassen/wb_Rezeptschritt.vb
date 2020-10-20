@@ -35,6 +35,7 @@ Public Class wb_Rezeptschritt
     Private _ZutatenListeIntern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoffIntern)
     Private _Backverlust As Double
     Private _Zuschnitt As Double
+    Private _FreigabeProduktion As Boolean
 
     Private _RohstoffGruppe1 As Integer
     Private _RohstoffGruppe2 As Integer
@@ -1113,6 +1114,15 @@ Public Class wb_Rezeptschritt
         End Get
         Set(value As Double)
             _Zuschnitt = value
+        End Set
+    End Property
+
+    Public Property FreigabeProduktion As Boolean
+        Get
+            Return _FreigabeProduktion
+        End Get
+        Set(value As Boolean)
+            _FreigabeProduktion = value
         End Set
     End Property
 

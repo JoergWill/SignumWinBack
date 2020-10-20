@@ -51,6 +51,13 @@ Public Class wb_Rohstoffe_Lieferung
             tbBilanzmenge.BackColor = Drawing.Color.LightGray
         End If
 
+        'Button Lager nullen nur sichtbar wenn eine Rezept verknüpft ist (Vorproduktion)
+        If wb_Rohstoffe_Shared.RohStoff.RzNr > 0 Then
+            BtnLagerNull.Visible = True
+        Else
+            BtnLagerNull.Visible = False
+        End If
+
         'DataGrid füllen
         LagerDataGridView.LoadData(wb_Functions.SetParams(wb_Sql_Selects.sqlRohstoffLager, RohStoff.Lagerort), "RohstoffLieferungen")
         'Spalten formatieren
@@ -100,5 +107,19 @@ Public Class wb_Rohstoffe_Lieferung
             End If
         End If
 
+    End Sub
+
+    ''' <summary>
+    ''' Lagerbestand auf Null setzen.
+    ''' Löscht alle Einträge in der Tabelle Lieferungen und setzt den aktuellen Lagerbestand auf Null
+    ''' Nur für Halbprodukte, die in WinBack vorproduziert werden.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnLagerNull_Click(sender As Object, e As EventArgs) Handles BtnLagerNull.Click
+        'alle Lieferungen löschen
+        wb_Rohstoffe_Shared.RohStoff.InitLieferungen()
+        'Liste aktualisieren
+        wb_Rohstoffe_Shared.Liste_Click(sender)
     End Sub
 End Class

@@ -696,10 +696,13 @@ Public Class wb_Komponente
         Set(value As Integer)
             KA_Rz_Nr = value
             'KA_Art setzen (Für Artikel immmer gleich Eins)
-            If KA_Rz_Nr > 0 Or KO_Type = KomponTypen.KO_TYPE_ARTIKEL Then
-                KA_Art = "1"
-            Else
-                KA_Art = "0"
+            If (KA_Art = wb_Global.UNDEFINED) Or (KO_Type = KomponTypen.KO_TYPE_ARTIKEL) Then
+                'wenn eine Rezeptnummer definiert ist
+                If KA_Rz_Nr > 0 Then
+                    KA_Art = "1"
+                Else
+                    KA_Art = "0"
+                End If
             End If
         End Set
     End Property
@@ -858,11 +861,11 @@ Public Class wb_Komponente
         End If
 
         'Artikel-Typ = 1 für Auto/Handkomponenten mit anhängender Rezeptur
-        If KO_Type = KomponTypen.KO_TYPE_ARTIKEL Or RzNr > 0 Then
-            KA_Art = 1
-        Else
-            KA_Art = 0
-        End If
+        'If KO_Type = KomponTypen.KO_TYPE_ARTIKEL Or RzNr > 0 Then
+        '    KA_Art = 1
+        'Else
+        '    KA_Art = 0
+        'End If
 
         'Default-Wert für Artikel-Liniengruppe (sonst wird immer wieder die Routine GetProduktionsDaten() aufgerufen
         _ArtikelLinienGruppe = 0
@@ -1198,6 +1201,39 @@ Public Class wb_Komponente
         MySQLdbUpdate_Parameter(wb_Global.ktParam.kt200)
         MySQLdbUpdate_Parameter(wb_Global.ktParam.kt300)
         MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+    End Sub
+
+    ''' <summary>
+    ''' Löscht alle Einträge in der Tabelle Lieferungen. Setzt die Bilanzmenge auf Null.
+    ''' Update Tabelle Lagerorte.
+    ''' Erzeugt den ersten Datensatz in der Tabelle Lieferungen (Null setzen)
+    ''' 
+    ''' ACHTUNG:    Wenn Halbprodukte in WinBack hergestellt werden und die interne Chargen-Nummer weiter verwendet
+    '''             werden soll, muss als erster Datensatz in der Tabelle Lieferungen eine abgeschlossene Zeile (Nullsetzen)
+    '''             stehen. Sonst werden von WinBack-Produktion fehlerhafte Chargen eingebucht !!
+    ''' </summary>
+    Public Sub InitLieferungen()
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+
+        'Bilanzmenge auf Null setzen
+        Bilanzmenge = "0"
+        sql = "LG_Bilanzmenge = '0'"
+        'Tabelle Lagerorte
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLagerOrte, Lagerort, sql))
+        'alle Datensätze in Tabelle Lieferungen löschen
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelLieferungen, Lagerort))
+        'erster Eintrag in Tabelle Lieferungen (notwendig für WinBack-Produktion)
+        sql = "'" & Lagerort & "', 0, '" & wb_sql_Functions.MySQLdatetime(Now) & "', " & "'0', '" & wb_GlobalSettings.AktUserName &
+              "', '3', 'Null setzen', 0, NULL, NULL, NULL, 0, " & wb_GlobalSettings.AktUserNr & ", '0.000', 0"
+
+        'INSERT ausführen
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertWE, sql))
+
+
+        'Datenbank-Verbindung wieder schliessen
+        winback.Close()
     End Sub
 
     ''' <summary>

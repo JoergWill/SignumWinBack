@@ -37,16 +37,16 @@
                         eEListe.Add(E.Text, E)
                         If Not sEListe.ContainsKey(E.Bezeichnung.ToLower) Then
                             sEListe.Add(E.Bezeichnung.ToLower, E.Text)
-                            Debug.Print("sEListe: " & E.Bezeichnung.ToLower & "/" & E.Text)
+                            'Debug.Print("sEListe: " & E.Bezeichnung.ToLower & "/" & E.Text)
                         End If
                     End If
                     eName = E.Text
                 Else
                     'Neuer Eintrag in sEListe (suche nach String-Bezeichnung)
-                    Debug.Print("E.Bezeichnung " & E.Bezeichnung)
+                    'Debug.Print("E.Bezeichnung " & E.Bezeichnung)
                     If Not sEListe.ContainsKey(E.Bezeichnung.ToLower) Then
                         sEListe.Add(E.Bezeichnung.ToLower, E.Text)
-                        Debug.Print("sEListe: " & E.Bezeichnung.ToLower & "/" & E.Text)
+                        'Debug.Print("sEListe: " & E.Bezeichnung.ToLower & "/" & E.Text)
                     End If
                 End If
             End While

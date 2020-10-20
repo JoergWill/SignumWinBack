@@ -29,6 +29,10 @@ Public Class wb_Rohstoffe_Dokumente
         End If
     End Sub
 
+    Private Sub lbDokumente_DoubleClick(sender As Object, e As EventArgs) Handles lbDokumente.DoubleClick
+        ShowDokument(lbDokumente.SelectedItem)
+    End Sub
+
     ''' <summary>
     ''' Rohstoff-Produktdatenblatt aus der Cloud einlesen und im Verzeichnis ablegen.
     ''' Das Verzeichnis wird in wb_GlobalSettings als pRohstoffDatenPath bestimmt.
@@ -51,7 +55,4 @@ Public Class wb_Rohstoffe_Dokumente
         End If
     End Sub
 
-    Private Sub lbDokumente_DoubleClick(sender As Object, e As EventArgs) Handles lbDokumente.DoubleClick
-        ShowDokument(lbDokumente.SelectedItem)
-    End Sub
 End Class

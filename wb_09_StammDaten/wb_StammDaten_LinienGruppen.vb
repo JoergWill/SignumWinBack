@@ -283,6 +283,10 @@ Public Class wb_StammDaten_LinienGruppen
 
         Debug.Print("Sync Aufarbeitungsplätze beendet ")
     End Sub
+
+    Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
+        Me.Close()
+    End Sub
 End Class
 
 

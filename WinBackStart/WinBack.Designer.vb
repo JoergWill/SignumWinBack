@@ -1467,8 +1467,8 @@ Partial Class WinBack
         '
         'rbClose
         '
-        Me.rbClose.Image = CType(resources.GetObject("rbClose.Image"), System.Drawing.Image)
-        Me.rbClose.LargeImage = CType(resources.GetObject("rbClose.LargeImage"), System.Drawing.Image)
+        Me.rbClose.Image = Global.WinBack.My.Resources.Resources.LinienLoeschen_32x32
+        Me.rbClose.LargeImage = Global.WinBack.My.Resources.Resources.LinienLoeschen_32x32
         Me.rbClose.MinimumSize = New System.Drawing.Size(90, 0)
         Me.rbClose.Name = "rbClose"
         Me.rbClose.SmallImage = CType(resources.GetObject("rbClose.SmallImage"), System.Drawing.Image)
@@ -1609,7 +1609,7 @@ Partial Class WinBack
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.BackgroundImage = Global.WinBack.My.Resources.Resources.WinBackLogo_945x514
+        Me.BackgroundImage = Global.WinBack.My.Resources.Resources.OfficeProLogo_926x220
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.ClientSize = New System.Drawing.Size(1024, 768)
         Me.Controls.Add(Me.BtnReload)
@@ -1626,7 +1626,7 @@ Partial Class WinBack
         Me.KeyPreview = True
         Me.MinimumSize = New System.Drawing.Size(800, 600)
         Me.Name = "WinBack"
-        Me.Text = "WinBack-Office"
+        Me.Text = "WinBack-Office-Pro"
         Me.TransparencyKey = System.Drawing.Color.Transparent
         Me.StatusStrip.ResumeLayout(False)
         Me.StatusStrip.PerformLayout()

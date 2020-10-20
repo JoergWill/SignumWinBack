@@ -15,7 +15,7 @@ Partial Class wb_ComboBox
     ''' </summary>
     ''' <returns>Integer Key</returns>
     Public Function GetKeyFromSelection() As Integer
-        Return GetKeyFromText(Me.Text)
+        Return GetKeyFromText(Me.SelectedItem)
     End Function
 
     ''' <summary>

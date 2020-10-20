@@ -1,6 +1,5 @@
 ﻿Imports WinBack.wb_Global
 Imports WinBack.wb_Functions
-Imports WinBack
 
 ''' <summary>
 ''' Über die Parameter in der Tabelle Konfiguration wird die
@@ -15,6 +14,9 @@ Imports WinBack
 '''         1 - darf weiter verwiegen, auch wenn Gebinde theoretisch leer.
 '''         2 - darf nicht weiter verwiegen, wenn Verbrauch größer als Gebindegröße +KonfigGebindeGroessenTol.
 '''         
+''' ACHTUNG:    Wenn Halbprodukte in WinBack hergestellt werden und die interne Chargen-Nummer weiter verwendet
+'''             werden soll, muss als erster Datensatz in der Tabelle Lieferungen eine abgeschlossene Zeile (Nullsetzen)
+'''             stehen. Sonst werden von WinBack-Produktion fehlerhafte Chargen eingebucht !!
 ''' 
 ''' </summary>
 Public Class wb_Lieferungen

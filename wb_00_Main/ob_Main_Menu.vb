@@ -217,6 +217,8 @@ Public Class ob_Main_Menu
                 ShowRohstoffForm(sender, Nothing)
             Case "Rezepte"
                 ShowRezeptForm(sender, Nothing)
+            Case "Linien"
+                ShowLinienForm(sender, Nothing)
         End Select
     End Sub
 

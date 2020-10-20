@@ -242,13 +242,13 @@ Public Class wb_Planung_Liste
     ''' Filtert die Produktions-Planungs-Schritte nach Aufarbeitung und Linengruppe
     ''' </summary>
     ''' <param name="a"></param>
-    Private Sub FilterAndMark(ByRef a As ArrayList)
+    Private Sub FilterAndMark(ByRef a As ArrayList, CheckAufloesen As Boolean)
         'ArrayList leeren
         a.Clear()
         'Alle Produktions-Schritte durchlaufen
         For Each child In Produktion.RootProduktionsSchritt.ChildSteps
             'Filtern nach Aufarbeitungsplatz und Liniengruppe
-            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe) Then
+            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe, CheckAufloesen) Then
                 'Liste aufbauen
                 a.Add(child)
                 'Charge als produziert markieren
@@ -272,7 +272,7 @@ Public Class wb_Planung_Liste
 
         'Daten filtern (Aufbereitungs-Ort)
         Dim BackZettel As New ArrayList
-        FilterAndMark(BackZettel)
+        FilterAndMark(BackZettel, False)
 
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
@@ -292,7 +292,7 @@ Public Class wb_Planung_Liste
 
         'Daten filtern (Aufbereitungs-Ort)
         Dim TeigListe As New ArrayList
-        FilterAndMark(TeigListe)
+        FilterAndMark(TeigListe, True)
 
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
@@ -352,7 +352,7 @@ Public Class wb_Planung_Liste
 
                 'Daten filtern (Aufbereitungs-Ort)
                 Dim ProduktionsListe As New ArrayList
-                FilterAndMark(ProduktionsListe)
+                FilterAndMark(ProduktionsListe, False)
 
                 'Artikelzeilen
                 For Each a As wb_Produktionsschritt In ProduktionsListe
@@ -515,7 +515,7 @@ Public Class wb_Planung_Liste
         'return a list containing only the children you want to be visible
         Dim visibleChildren As New ArrayList
         For Each child In children
-            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe) Then
+            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe, False) Then
                 visibleChildren.Add(child)
             End If
         Next

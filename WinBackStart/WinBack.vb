@@ -77,20 +77,25 @@ Public Class WinBack
 
             'Info/Test
             If rbAbout.Active Then
+                'alle Fenster schliessen
+                If Me.ActiveMdiChild IsNot Nothing Then
+                    Me.ActiveMdiChild.Close()
+                End If
+
                 If Debugger.IsAttached Then
-                    'TEST CLOUD ROHSTOFFE
-                    'MainFormShow(MdiRohstoffe, GetType(Rohstoffe_Main))
-                    'TEST REZEPTVERWALTUNG
-                    MainFormShow(MdiRezepte, GetType(Rezepte_Main))
-                    'TEST USERVERWALTUNG
-                    'MainFormShow(MdiUser, GetType(User_Main))
-                    'TEST PRODUKTIONSPLANUNG
-                    'MainFormShow(MdiPlanung, GetType(Planung_Main))
-                    'TESTFENSTER
-                    'MainFormShow(MdiTEst, GetType(Test_Main))
+                        'TEST CLOUD ROHSTOFFE
+                        'MainFormShow(MdiRohstoffe, GetType(Rohstoffe_Main))
+                        'TEST REZEPTVERWALTUNG
+                        'MainFormShow(MdiRezepte, GetType(Rezepte_Main))
+                        'TEST USERVERWALTUNG
+                        'MainFormShow(MdiUser, GetType(User_Main))
+                        'TEST PRODUKTIONSPLANUNG
+                        'MainFormShow(MdiPlanung, GetType(Planung_Main))
+                        'TESTFENSTER
+                        'MainFormShow(MdiTEst, GetType(Test_Main))
+                    End If
                 End If
             End If
-        End If
     End Sub
 
     ''' <summary>
@@ -676,6 +681,7 @@ Public Class WinBack
         'Ribbon Tab - Farben updaten
         rTab.Refresh()
         Me.Refresh()
+        Me.BackColor = Color.FromArgb(226, 225, 227)
     End Sub
 
     Private Sub SaveColorTable()

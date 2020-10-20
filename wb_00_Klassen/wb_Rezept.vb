@@ -479,7 +479,7 @@ Public Class wb_Rezept
         Dim x As wb_Rezept = Me._Parent
         While x IsNot Nothing
             If x.RezeptNr = RzNr Then
-                If NoMessage Then
+                If Not NoMessage Then
                     Throw New Exception("Rezept verweist auf sich selbst bei Komponente " & KNummer & " " & KBezeichnung)
                 End If
                 Exit Sub
@@ -1047,8 +1047,15 @@ Public Class wb_Rezept
                 Case "KO_Temp_Korr"
                     _SQLRezeptSchritt.Backverlust = wb_Functions.StrToDouble(Value) / 100
                 'Zuschnitt-Verlust (SmallInt - Prozent * 100)
-                Case "KA_Artikel_Typ",
+                Case "KA_Artikel_Typ"
                     _SQLRezeptSchritt.Zuschnitt = wb_Functions.StrToDouble(Value) / 100
+                'Freigabe Produktion
+                Case "KA_Art"
+                    If Value = 1 Then
+                        _SQLRezeptSchritt.FreigabeProduktion = True
+                    Else
+                        _SQLRezeptSchritt.FreigabeProduktion = False
+                    End If
                 'Schritt-Nummer
                 Case "RS_Schritt_Nr", "H_RS_Schritt_Nr"
                     _SQLRezeptSchritt.SchrittNr = Value

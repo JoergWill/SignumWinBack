@@ -59,6 +59,10 @@ Public Class wb_StammDaten_Konfiguration
     Private Sub DataGridView_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs)
 
     End Sub
+
+    Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
+        Me.Close()
+    End Sub
 End Class
 
 

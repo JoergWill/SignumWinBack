@@ -84,6 +84,9 @@ Public Class wb_Planung_Main
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrp.AddButton("BtnExportProdListen", "Export/Drucken", "Backzettel und Teigliste drucken. Produktionsplan an WinBack senden", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnProdListeExport)
                 oGrp.AddButton("BtnProdTeiler", "Einstellungen Optimierung", "Einstellungen zur Optimierung der Teigliste", My.Resources.EditKonfig_16x16, My.Resources.EditKonfig_32x32, AddressOf BtnPlanungTeiler)
+                'Gruppe Linien
+                Dim lGrp = oNewTab.AddGroup("GrpLinien", "WinBack Linien")
+                lGrp.AddButton("btnLinien", "Produktions-Linien", "WinBack Produktion Linie 1...", My.Resources.MainLinien_32x32, My.Resources.MainLinien_32x32, AddressOf ShowLinienForm)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -122,4 +125,9 @@ Public Class wb_Planung_Main
         PlanungTeiler = New wb_Planung_Teiler
         PlanungTeiler.Show(DockPanel, DockState.DockTop)
     End Sub
+
+    Private Sub ShowLinienForm()
+        wb_Main_Shared.OpenForm(Me, "Linien")
+    End Sub
+
 End Class

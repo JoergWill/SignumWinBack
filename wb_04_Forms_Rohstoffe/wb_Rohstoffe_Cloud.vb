@@ -479,5 +479,7 @@ Public Class wb_Rohstoffe_Cloud
 
     Private Sub cbFreigabeProduktion_Click(sender As Object, e As EventArgs) Handles cbFreigabeProduktion.Click
         wb_Rohstoffe_Shared.RohStoff.FreigabeProduktion = cbFreigabeProduktion.Checked
+        'Änderung in WinBack-DB speichern
+        wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate()
     End Sub
 End Class

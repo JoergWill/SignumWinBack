@@ -43,6 +43,7 @@ Public Class wb_Produktionsschritt
     Private _MaxChargekg As Double
     Private _ProdVorlauf As Integer
     Private _Aufloesen As Boolean
+    Private _FreigabeProduktion As Boolean
 
     Private _Sollwert As String
     Private _Istwert As String
@@ -111,6 +112,7 @@ Public Class wb_Produktionsschritt
             MinChargekg = .ArtikelChargen.MinCharge.fMengeInkg
             LagerBestand = .Bilanzmenge
             ProdVorlauf = .ProdVorlauf
+            FreigabeProduktion = .FreigabeProduktion
         End With
     End Sub
 
@@ -137,6 +139,9 @@ Public Class wb_Produktionsschritt
             ArtikelNr = .RohNr
             'Verweis auf Rezeptnummer
             RezeptNr = .RezeptNr
+            'Freigabe Produktion
+            FreigabeProduktion = .FreigabeProduktion
+
             'Einheit
             If wb_Functions.TypeHatEinheit(Typ) Then
                 Einheit = .Einheit
@@ -837,7 +842,7 @@ Public Class wb_Produktionsschritt
     ''' <param name="_FilterAufarbeitung"></param>
     ''' <param name="_FilterLinienGruppe"></param>
     ''' <returns></returns>
-    Public Function Filter(_FilterAufarbeitung As Integer, _FilterLinienGruppe As Integer) As Boolean
+    Public Function Filter(_FilterAufarbeitung As Integer, _FilterLinienGruppe As Integer, CheckAufloesen As Boolean) As Boolean
 
         'Filter Aufarbeitungsplatz
         If _FilterAufarbeitung > 0 And _ArtikelLinienGruppe > 0 And _FilterAufarbeitung <> _ArtikelLinienGruppe Then
@@ -848,6 +853,11 @@ Public Class wb_Produktionsschritt
         If _FilterLinienGruppe > 0 And _LinienGruppe > 0 And _FilterLinienGruppe <> _LinienGruppe Then
             Return False
         End If
+
+        'Filter Aufloesen
+        'If Not Aufloesen And CheckAufloesen Then
+        '    Return False
+        'End If
 
         Return True
     End Function
@@ -1245,4 +1255,14 @@ Public Class wb_Produktionsschritt
             _Aufloesen = value
         End Set
     End Property
+
+    Public Property FreigabeProduktion As Boolean
+        Get
+            Return _FreigabeProduktion
+        End Get
+        Set(value As Boolean)
+            _FreigabeProduktion = value
+        End Set
+    End Property
+
 End Class

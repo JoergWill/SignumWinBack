@@ -523,6 +523,16 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property OfficeProLogo_926x220() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("OfficeProLogo_926x220", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property PlanungMain_32x32() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("PlanungMain_32x32", resourceCulture)
@@ -616,6 +626,16 @@ Namespace My.Resources
         Friend ReadOnly Property RezeptNeu_32x32() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("RezeptNeu_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Rezeptsteuerung() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Rezeptsteuerung", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

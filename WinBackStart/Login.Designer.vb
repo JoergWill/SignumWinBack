@@ -26,11 +26,13 @@ Partial Class Login
         Me.tUserNummer = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.BtnAbbruch = New System.Windows.Forms.Button()
+        Me.pbLogo = New System.Windows.Forms.PictureBox()
+        CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'BtnOK
         '
-        Me.BtnOK.Location = New System.Drawing.Point(171, 55)
+        Me.BtnOK.Location = New System.Drawing.Point(171, 119)
         Me.BtnOK.Name = "BtnOK"
         Me.BtnOK.Size = New System.Drawing.Size(107, 37)
         Me.BtnOK.TabIndex = 1
@@ -61,20 +63,31 @@ Partial Class Login
         'BtnAbbruch
         '
         Me.BtnAbbruch.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.BtnAbbruch.Location = New System.Drawing.Point(20, 55)
+        Me.BtnAbbruch.Location = New System.Drawing.Point(171, 65)
         Me.BtnAbbruch.Name = "BtnAbbruch"
         Me.BtnAbbruch.Size = New System.Drawing.Size(107, 37)
         Me.BtnAbbruch.TabIndex = 4
         Me.BtnAbbruch.Text = "Abbruch"
         Me.BtnAbbruch.UseVisualStyleBackColor = True
         '
+        'pbLogo
+        '
+        Me.pbLogo.Image = Global.WinBack.My.Resources.Resources.Rezeptsteuerung
+        Me.pbLogo.Location = New System.Drawing.Point(20, 50)
+        Me.pbLogo.Name = "pbLogo"
+        Me.pbLogo.Size = New System.Drawing.Size(125, 125)
+        Me.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbLogo.TabIndex = 5
+        Me.pbLogo.TabStop = False
+        '
         'Login
         '
         Me.AcceptButton = Me.BtnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(299, 233)
+        Me.ClientSize = New System.Drawing.Size(299, 188)
         Me.ControlBox = False
+        Me.Controls.Add(Me.pbLogo)
         Me.Controls.Add(Me.BtnAbbruch)
         Me.Controls.Add(Me.tUserNummer)
         Me.Controls.Add(Me.Label1)
@@ -85,6 +98,7 @@ Partial Class Login
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Login"
+        CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -94,4 +108,5 @@ Partial Class Login
     Friend WithEvents tUserNummer As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents BtnAbbruch As Button
+    Friend WithEvents pbLogo As PictureBox
 End Class

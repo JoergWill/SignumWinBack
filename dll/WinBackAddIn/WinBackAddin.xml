@@ -417,6 +417,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.RohstoffeLink_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.RohstoffeMail_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -2167,6 +2172,9 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
          1 - darf weiter verwiegen, auch wenn Gebinde theoretisch leer.
          2 - darf nicht weiter verwiegen, wenn Verbrauch größer als Gebindegröße +KonfigGebindeGroessenTol.
          
+ ACHTUNG:    Wenn Halbprodukte in WinBack hergestellt werden und die interne Chargen-Nummer weiter verwendet
+             werden soll, muss als erster Datensatz in der Tabelle Lieferungen eine abgeschlossene Zeile (Nullsetzen)
+             stehen. Sonst werden von WinBack-Produktion fehlerhafte Chargen eingebucht !!
  
  </summary>
 </member>
@@ -2699,6 +2707,15 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Liste der Lieferungen
  und die Textfelder (Bilanzmenge, Gebindegröße...)
  </summary>
+</member>
+<member name="M:WinBack.wb_Rohstoffe_Lieferung.BtnLagerNull_Click(System.Object,System.EventArgs)">
+ <summary>
+ Lagerbestand auf Null setzen.
+ Löscht alle Einträge in der Tabelle Lieferungen und setzt den aktuellen Lagerbestand auf Null
+ Nur für Halbprodukte, die in WinBack vorproduziert werden.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="M:WinBack.wb_Rohstoffe_Tauschen.TauscheRohstoffeImRezept(System.Int32,System.Int32,WinBack.wb_Sql)">
  <summary>
@@ -3592,6 +3609,17 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Speichert alle geänderten Komponenten-Daten in der Datenbank
      Stammdaten  (Tabelle Komponenten)
      Teigchargen (Tabelle Rezeptur)
+ </summary>
+</member>
+<member name="M:WinBack.wb_Komponente.InitLieferungen">
+ <summary>
+ Löscht alle Einträge in der Tabelle Lieferungen. Setzt die Bilanzmenge auf Null.
+ Update Tabelle Lagerorte.
+ Erzeugt den ersten Datensatz in der Tabelle Lieferungen (Null setzen)
+ 
+ ACHTUNG:    Wenn Halbprodukte in WinBack hergestellt werden und die interne Chargen-Nummer weiter verwendet
+             werden soll, muss als erster Datensatz in der Tabelle Lieferungen eine abgeschlossene Zeile (Nullsetzen)
+             stehen. Sonst werden von WinBack-Produktion fehlerhafte Chargen eingebucht !!
  </summary>
 </member>
 <member name="M:WinBack.wb_Komponente.MySQLdbCanBeDeleted(System.Int32,System.String)">
@@ -4626,7 +4654,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Produktionsschritt.Filter(System.Int32,System.Int32)">
+<member name="M:WinBack.wb_Produktionsschritt.Filter(System.Int32,System.Int32,System.Boolean)">
  <summary>
  Gibt True zurück, wenn die Zeile in der Produktionsplanung angezeigt werden soll.
  Abhängig von Liniengruppe, Aufarbeitungsplatz und Filter-Einstellungen.
@@ -9479,7 +9507,7 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Planung_Liste.FilterAndMark(System.Collections.ArrayList@)">
+<member name="M:WinBack.wb_Planung_Liste.FilterAndMark(System.Collections.ArrayList@,System.Boolean)">
  <summary>
  Filtert die Produktions-Planungs-Schritte nach Aufarbeitung und Linengruppe
  </summary>

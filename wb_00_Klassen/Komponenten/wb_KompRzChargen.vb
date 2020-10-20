@@ -26,7 +26,6 @@ Public Class wb_KompRzChargen
     Private Sub wb_KompRzChargen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Button Update Nährwerte Artikel verschieben
         BtnUpdateNwt.Top = BtnCloud.Top
-        'BtnUpdateNwt.Visible = False
     End Sub
 
     ''' <summary>

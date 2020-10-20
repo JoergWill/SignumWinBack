@@ -100,7 +100,7 @@ Public Class wb_Rohstoffe_Main
                 oGrp.AddButton("BtnRohstoffSilo", "Silo Füllstand", "Rohstoffe Silo-Füllstände", My.Resources.RohstoffSilo_32x32, My.Resources.RohstoffSilo_32x32, AddressOf BtnRohstoffSilo)
                 oGrp.AddButton("BtnRohstoffLieferung", "Lager Produktion", "Rohstoffe Produktionslager", My.Resources.RohstoffeLieferung_32x32, My.Resources.RohstoffeLieferung_32x32, AddressOf BtnRohstoffLieferung)
                 oGrp.AddButton("BtnRohstoffNwt", "Nährwerte", "Rohstoffe Allergene und Nährwert-Angaben", My.Resources.RohstoffeNwt_32x32, My.Resources.RohstoffeNwt_32x32, AddressOf BtnRohstoffNwt)
-                oGrp.AddButton("BtnRohstoffCloud", "Cloud", "Rohstoffe Verknüpfung zur Cloud", My.Resources.RohstoffeCloud_32x32, My.Resources.RohstoffeCloud_32x32, AddressOf BtnRohstoffCloud)
+                oGrp.AddButton("BtnRohstoffCloud", "Cloud/Rezept", "Rohstoffe Verknüpfung zur Cloud/Rezeptur", My.Resources.RohstoffeLink_32x32, My.Resources.RohstoffeLink_32x32, AddressOf BtnRohstoffCloud)
                 oGrp.AddButton("BtnRohstoffVerwendung", "Verwendung", "Verwendung des Rohstoffes in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf BtnRohstoffVerwendung)
                 Dim oGrpPrnt = oNewTab.AddGroup("Printer", "Drucken")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt

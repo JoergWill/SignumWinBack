@@ -53,7 +53,7 @@
     'sql-Statement komplette Rezeptur nach RzNr und Variante
     Public Const sqlRezeptur = "SELECT RezeptSchritte.RS_Schritt_Nr, RezeptSchritte.RS_ParamNr, " &
                                "Komponenten.KO_Nr, Komponenten.KO_Type, Komponenten.KO_Nr_AlNum, Komponenten.KO_Kommentar, Komponenten.KO_Bezeichnung, " &
-                               "Komponenten.KA_Artikel_Typ, Komponenten.KO_Temp_Korr, KomponTypen.KT_KurzBez, KomponTypen.KT_Format, " &
+                               "Komponenten.KA_Artikel_Typ, Komponenten.KA_Art, Komponenten.KO_Temp_Korr, KomponTypen.KT_KurzBez, KomponTypen.KT_Format, " &
                                "KomponTypen.KT_Laenge, RezeptSchritte.RS_Wert, Komponenten.KA_RS_veraenderbar, Einheiten.E_Einheit, " &
                                "RezeptSchritte.RS_Wert_Prod,RezeptSchritte.RS_Par1,RezeptSchritte.RS_Par2,RezeptSchritte.RS_Par3, " &
                                "KomponTypen.KT_Bezeichnung, KomponTypen.KT_OberGW, KomponTypen.KT_UnterGW, KA_Charge_Opt, " &
