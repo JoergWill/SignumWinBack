@@ -780,7 +780,7 @@ Public Class wb_Produktionsschritt
                         'nachfolgender Eintrag Stückzahl und Bemerkung-Text (CRLF einfügen)
                         SplitSpace(s, _Bestellt_Menge_Stk, _Bestellt_Text, True)
                         'Schleife wieder auf Anfang
-                        i = -2
+                        i = i - 2
                 End Select
             Next
         End Set
@@ -821,7 +821,7 @@ Public Class wb_Produktionsschritt
                 Dim b As String = ""
                 For Each s As String In x
                     i = wb_Functions.StrToInt(s)
-                    b += i.ToString("0,0.") + vbCrLf
+                    b += i.ToString("0,0.") + " Stk" & vbCrLf
                 Next
                 Return b
             End If
@@ -954,9 +954,11 @@ Public Class wb_Produktionsschritt
     End Property
     Public ReadOnly Property IsVorProduktion As Boolean
         Get
-            If _Tour.Length > 0 Then
-                If _Tour(0) = "V" Then
-                    Return True
+            If _Tour IsNot Nothing Then
+                If _Tour.Length > 0 Then
+                    If _Tour(0) = "V" Then
+                        Return True
+                    End If
                 End If
             End If
             Return False
