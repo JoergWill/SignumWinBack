@@ -158,153 +158,42 @@ Public Class Main
 
         'Check MySql(Ping)
         If MainTimer_Check(cntMySql) Then
-            If Not wb_sql_Functions.ping Then
-                ServerTaskState = ServerTaskErrors.NO_PING_TO_MYSQL
-            Else
-                ServerTaskState = ServerTaskErrors.OK
-            End If
-            cntMySql = cntCounter + cntCheckMysql
+            MainTimer_MySqlPing()
         End If
 
         'Abfrage Update Nährwert-Cloud
         If MainTimer_Check("office_nwt") Then
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
-
-            'letzte Komponenten-Nummer aus Aktions-Timer-Tabelle
-            Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-
-            'Sonderfunktion alle Rohrstoffe in OrgaBack aktualisieren
-            If AktKONr = wb_Global.obUpdateAll Then
-                AktKONr = 0
-                nwtUpdateKomponentenOrgaBack = True
-            End If
-
-            'Datensatz wurde aus der Cloud aktualisiert
-            If nwtUpdateKomponenten.UpdateNext(AktKONr, nwtUpdateKomponentenOrgaBack) Then
-                'Info-Text ausgeben
-                ScrollTextBox(tbCloud, nwtUpdateKomponenten.InfoText & vbNewLine)
-            End If
-            'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
-            AktTimerEvent.Str2 = nwtUpdateKomponenten.AktKO_Nr.ToString
-            AktTimerEvent.Endezeit = Now
-            AktTimerEvent.MySQLdbUpdate_Fields()
-            AktUpdateNummer = " (" & AktTimerEvent.Str2 & ")"
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
+            MainTimer_OfficeNwt()
         End If
-
 
         'Abfrage Update markierte Artikel (Nährwerte und Zutatenliste)
         If MainTimer_Check("office_artikel") Then
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
-
-            'letzte Komponenten-Nummer aus Aktions-Timer-Tabelle
-            Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-
-            'Sonderfunktion alle Rohrstoffe in OrgaBack aktualisieren
-            If AktKONr = wb_Global.obUpdateAll Then
-                AktKONr = 0
-                nwtUpdateArtikelOrgaBack = True
-            End If
-
-            'Datensatz wurde aktualisiert
-            If nwtUpdateArtikel.UpdateNext(AktKONr, nwtUpdateArtikelOrgaBack) Then
-                'Info-Text ausgeben
-                ScrollTextBox(tbCloud, nwtUpdateArtikel.InfoText & vbNewLine)
-            End If
-            'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
-            AktTimerEvent.Str2 = nwtUpdateArtikel.AktKO_Nr.ToString
-            AktTimerEvent.Endezeit = Now
-            AktTimerEvent.MySQLdbUpdate_Fields()
-            AktUpdateNummer = " <" & AktTimerEvent.Str2 & ">"
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
+            MainTimer_OfficeArtikel()
         End If
 
         'Abfrage Import Pistor-Liste (
         If MainTimer_Check("office_pistor") Then
-            'Import csv-File Format Pistor
-            Dim nwtPistor As New wb_nwtPistor
-
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
-
-            'Datensätze einlesen 
-            While nwtPistor.ReadNext()
-                'Info-Text ausgeben
-                ScrollTextBox(tbCloud, nwtPistor.InfoText & vbNewLine)
-            End While
-
-
-            'Nach Ende Update Nährwerte neue Startzeit setzen
-            AktTimerEvent.Endezeit = Now
-            AktTimerEvent.MySQLdbUpdate_Fields()
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
-            'Speicher wieder freigaben
-            nwtPistor = Nothing
+            MainTimer_Import()
         End If
 
         'Abfrage produzierte Chargen und verbrauchte Rohstoffe
         If MainTimer_Check("office_chargen") Then
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
-
-            'Export Chargen ab TW-Nr.x
-            Dim TWNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-            AktTimerEvent.Str2 = Export.ExportChargen(TWNr).ToString
-            'Nach Ende Export neue Startzeit setzen
-            AktTimerEvent.Endezeit = Now
-            AktTimerEvent.MySQLdbUpdate_Fields()
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
+            Main_Timer_OfficeChargen()
         End If
 
         'Abfrage Rohstoffe Bestand und Chargen-Nummern
         If MainTimer_Check("office_bestand") Then
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
-
-            'Import aus Tabelle dbo.ChargenBestand
-            Dim KompNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-            AktTimerEvent.Str2 = Import.ImportChargenBestand(KompNr)
-            'Nach Ende Export neue Startzeit setzen
-            AktTimerEvent.Endezeit = Now
-            AktTimerEvent.MySQLdbUpdate_Fields()
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
+            Main_Timer_OfficeBestand()
         End If
 
         'Abfrage FTP-Verzeichnis/Verbindung Kocher/Röster
         If MainTimer_Check("kocher_check") Then
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
-
-            'Check Kocher-Nr
-            Dim KNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-            AktTimerEvent.Str2 = Kocher.CheckKocher(KNr)
-            'Nach Ende Check neue Startzeit setzen
-            AktTimerEvent.Endezeit = Now
-            AktTimerEvent.MySQLdbUpdate_Fields()
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
+            MainTimer_KocherCheck()
         End If
 
         'Check Update WinBack-AddIn/Server-Task
         If MainTimer_Check("office_update") Then
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
-
-            'Prüfen ob eine neue Version zum Download verfügbar ist (OrgaBack.txt)
-
-
-            'Nach Ende Export neue Startzeit setzen
-            AktTimerEvent.Endezeit = Now
-            AktTimerEvent.MySQLdbUpdate_Fields()
-            'Daten im Grid aktualisieren
-            RefreshAktionsTimer()
+            MainTimer_CheckUpdate()
         End If
 
         'Uhrzeit/Fehler anzeigen - Main-Timer OK
@@ -326,6 +215,179 @@ Public Class Main
         MainTimer.Enabled = True
         'Beim Schliessen des Detail-Fensters bleiben markierte Textblöcke übrig. Markierung wieder löschen
         tbCloud.Select(0, 0)
+    End Sub
+
+    ''' <summary>
+    ''' Prüft die Verbindung zur MySQL-Datenbank.
+    ''' </summary>
+    Private Sub MainTimer_MySqlPing()
+        If Not wb_sql_Functions.ping Then
+            ServerTaskState = ServerTaskErrors.NO_PING_TO_MYSQL
+        Else
+            ServerTaskState = ServerTaskErrors.OK
+        End If
+        cntMySql = cntCounter + cntCheckMysql
+    End Sub
+
+    ''' <summary>
+    ''' Prüft ob ein Update der Nährwert-Information für die WinBack-Rohstoffe in der Cloud vorliegt.
+    ''' Wenn aktuellere Daten vorhanden sind, werden die Nährstoff-Informationen aktualisiert und ein Report-File
+    ''' mit den Änderungen erzeugt.
+    ''' Rezepturen und Artikel, die diesen Rohstoff enthalten, werden markiert
+    ''' </summary>
+    Private Sub MainTimer_OfficeNwt()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+
+        'letzte Komponenten-Nummer aus Aktions-Timer-Tabelle
+        Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+
+        'Sonderfunktion alle Rohrstoffe in OrgaBack aktualisieren
+        If AktKONr = wb_Global.obUpdateAll Then
+            AktKONr = 0
+            nwtUpdateKomponentenOrgaBack = True
+        End If
+
+        'Datensatz wurde aus der Cloud aktualisiert
+        If nwtUpdateKomponenten.UpdateNext(AktKONr, nwtUpdateKomponentenOrgaBack) Then
+            'Info-Text ausgeben
+            ScrollTextBox(tbCloud, nwtUpdateKomponenten.InfoText & vbNewLine)
+        End If
+        'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
+        AktTimerEvent.Str2 = nwtUpdateKomponenten.AktKO_Nr.ToString
+        AktTimerEvent.Endezeit = Now
+        AktTimerEvent.MySQLdbUpdate_Fields()
+        AktUpdateNummer = " (" & AktTimerEvent.Str2 & ")"
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+    End Sub
+
+    ''' <summary>
+    ''' Update aller markierten Artikel (Nährwerte sind aktualisiert)
+    ''' </summary>
+    Private Sub MainTimer_OfficeArtikel()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+
+        'letzte Komponenten-Nummer aus Aktions-Timer-Tabelle
+        Dim AktKONr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+
+        'Sonderfunktion alle Rohrstoffe in OrgaBack aktualisieren
+        If AktKONr = wb_Global.obUpdateAll Then
+            AktKONr = 0
+            nwtUpdateArtikelOrgaBack = True
+        End If
+
+        'Datensatz wurde aktualisiert
+        If nwtUpdateArtikel.UpdateNext(AktKONr, nwtUpdateArtikelOrgaBack) Then
+            'Info-Text ausgeben
+            ScrollTextBox(tbCloud, nwtUpdateArtikel.InfoText & vbNewLine)
+        End If
+        'Nach Ende Update Nährwerte neue Startzeit setzen und letzte Komponenten-Nummer merken
+        AktTimerEvent.Str2 = nwtUpdateArtikel.AktKO_Nr.ToString
+        AktTimerEvent.Endezeit = Now
+        AktTimerEvent.MySQLdbUpdate_Fields()
+        AktUpdateNummer = " <" & AktTimerEvent.Str2 & ">"
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+    End Sub
+
+    ''' <summary>
+    ''' Import über csv-Schnittstelle
+    '''     momentan nur Pistor-Format (Weber-Davos)
+    ''' </summary>
+    Private Sub MainTimer_Import()
+        'Import csv-File Format Pistor
+        Dim nwtPistor As New wb_nwtPistor
+
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+
+        'Datensätze einlesen 
+        While nwtPistor.ReadNext()
+            'Info-Text ausgeben
+            ScrollTextBox(tbCloud, nwtPistor.InfoText & vbNewLine)
+        End While
+
+        'Nach Ende Update Nährwerte neue Startzeit setzen
+        AktTimerEvent.Endezeit = Now
+        AktTimerEvent.MySQLdbUpdate_Fields()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+        'Speicher wieder freigaben
+        nwtPistor = Nothing
+    End Sub
+
+    ''' <summary>
+    ''' Schreibt alle produzierten Chargen nach OrgaBack. 
+    ''' Die verbrauchten Rohstoffe und produzierten Artikel werden in die Tabelle dbo.ProduzierteWare geschrieben.
+    ''' Ist ein Artikel in OrgaBack nicht vorhanden wird ein Dummy-Artikel geschrieben!
+    ''' </summary>
+    Private Sub Main_Timer_OfficeChargen()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+
+        'Export Chargen ab TW-Nr.x
+        Dim TWNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+        AktTimerEvent.Str2 = Export.ExportChargen(TWNr).ToString
+        'Nach Ende Export neue Startzeit setzen
+        AktTimerEvent.Endezeit = Now
+        AktTimerEvent.MySQLdbUpdate_Fields()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+    End Sub
+
+    ''' <summary>
+    ''' Liest alle offenen Datensätze aus dbo.Artikel-Lagerkarte und schreibt diese in die Tabelle Lieferungen
+    ''' Wareneingänge (WE) werden direkt verbucht und hier nicht mehr berücksichtigt.
+    ''' </summary>
+    Private Sub Main_Timer_OfficeBestand()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+
+        'Import aus Tabelle dbo.ChargenBestand
+        Dim KompNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+        AktTimerEvent.Str2 = Import.ImportChargenBestand(KompNr)
+        'Nach Ende Export neue Startzeit setzen
+        AktTimerEvent.Endezeit = Now
+        AktTimerEvent.MySQLdbUpdate_Fields()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+    End Sub
+
+    ''' <summary>
+    ''' Prüft zyklisch, ob ein Kocher im WinBack-Netz angeschlossen ist (Ping)
+    ''' Wenn ein Kocher erreichbar ist, werden die Rezepturen synchronisiert
+    ''' </summary>
+    Private Sub MainTimer_KocherCheck()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+
+        'Check Kocher-Nr
+        Dim KNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+        AktTimerEvent.Str2 = Kocher.CheckKocher(KNr)
+        'Nach Ende Check neue Startzeit setzen
+        AktTimerEvent.Endezeit = Now
+        AktTimerEvent.MySQLdbUpdate_Fields()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+    End Sub
+
+    ''' <summary>
+    ''' Prüft zyklisch, ob ein Update für WinBack-Office-Pro oder WinBack-AddIn verfügbar ist.
+    ''' </summary>
+    Private Sub MainTimer_CheckUpdate()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
+
+        'Prüfen ob eine neue Version zum Download verfügbar ist (OrgaBack.txt)
+
+
+        'Nach Ende Export neue Startzeit setzen
+        AktTimerEvent.Endezeit = Now
+        AktTimerEvent.MySQLdbUpdate_Fields()
+        'Daten im Grid aktualisieren
+        RefreshAktionsTimer()
     End Sub
 
     ''' <summary>

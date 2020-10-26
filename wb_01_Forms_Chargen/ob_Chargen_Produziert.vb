@@ -11,7 +11,7 @@ Public Class ob_Chargen_Produziert
 
     Private opw_Liste As New ArrayList  'OrgaBack produzierte Ware
     Private wpl_Liste As New ArrayList  'WinBack "leere" Chargen (nicht gestartet)
-    Private Const LIMIT = 1000
+    Private Const LIMIT = 100
 
     ''' <summary>
     ''' Alle Chargen vor dem Stichtag werden als ungültig deklariert und nicht an OrgaBack zurückgemeldet
@@ -26,11 +26,17 @@ Public Class ob_Chargen_Produziert
     ''' die letzte ausgegebene Tageswechsel-Nr.
     ''' 
     ''' Es wird immer zuerst der Chargen-Kopf und danach die verbrauchten Rohstoffe ausgegeben
+    ''' 
+    ''' (@1.7.5)    Wenn der Artikel-Datensatz (Satztyp wb_Global.obSatzTyp.ProduzierterArtikel) nicht geschreiben werden kann,
+    '''             Dann ist vermutlich der Artikel in OrgaBack nicht vorhanden.
+    '''             In diesem Fall wird dann ein Dummy-Artikel geschrieben, damit die Rohstoffe nicht falsch zugeordnet werden.
+    '''             Der Dummy-Artikel hat die Nummer 0R9999 (Public Const ProduktionDummyArtikel)
     ''' </summary>
     ''' <param name="TWNr"></param>
     ''' <returns></returns>
     Public Function ExportChargen(TWNr As Integer) As Integer
         Dim sql As String
+        Dim WriteOK As Boolean = False
         Dim wbdaten As wb_Sql
         Dim WinBackChargenNummer As String = ""
         Dim TageswechselNr As Long = TWNr
@@ -88,9 +94,17 @@ Public Class ob_Chargen_Produziert
                     End If
 
                     'Datensatz in dbo.Produzierte Ware schreiben
-                    If Not SqlWriteProdWare(OrgasoftMain, o) Then
+                    WriteOK = SqlWriteProdWare(OrgasoftMain, o)
+                    'Schreiben ist fehlgeschlagen (Artikel nicht vorhanden)
+                    If Not WriteOK And o.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
+                        'Dummy-Artikel-Nummer
+                        o.ArtikelNr = wb_Global.ProduktionDummyArtikel
+                        'nochmal mit Dummy-Artikel versuchen
+                        WriteOK = SqlWriteProdWare(OrgasoftMain, o)
                         'Insert in dbo.Produzierte Ware war nicht erfolgreich - Fehler-Log
-                        Trace.WriteLine("Fehler beim Schreiben in dbo.ProduzierteWare TW-Nr/Artikel/Charge " & o.TWNr & "/" & o.ArtikelNr & "/" & o.ChargenNummer)
+                        If Not WriteOK Then
+                            Trace.WriteLine("Fehler beim Schreiben in dbo.ProduzierteWare TW-Nr/Artikel/Charge " & o.TWNr & "/" & o.ArtikelNr & "/" & o.ChargenNummer)
+                        End If
                     End If
 
                     'Datensatz in wbdaten als exportiert markieren

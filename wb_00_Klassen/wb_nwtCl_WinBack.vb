@@ -119,6 +119,7 @@ Public Class wb_nwtCl_WinBack
             ' Ergebnis-String
             If _errorCode = HttpStatusCode.OK Then
 
+                'Get PDF-File/Doc-File aus Stream
                 If getFile Then
                     'Get PDF-File/Doc-File aus Stream
                     Dim downloader As New System.Net.WebClient

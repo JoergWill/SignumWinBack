@@ -159,7 +159,7 @@ Public Class wb_Planung_Liste
             'wenn dieser Produktions-Schritt gedruckt/übertragen wurde
             If p.IstInProduktion Then
                 'Datensatz in ProduktionAktuell updaten/schreiben
-                MsSQLdbUpdate_ProduktionAktuell(_ProduktionsFilialeNummer, _ProduktionsDatum, p.iTour, p.ArtikelNummer, wb_Global.obEinheitStk, wb_Global.obDEFAULTCOLOR, wb_Global.obDEFAULTSIZE, p.Sollmenge_Stk, p.MengeInProduktion)
+                MsSQLdbUpdate_ProduktionAktuell(_ProduktionsFilialeNummer, _ProduktionsDatum, p.iTour, p.ArtikelNummer, p.obEinheit, wb_Global.obDEFAULTCOLOR, wb_Global.obDEFAULTSIZE, p.Sollmenge_Stk, p.MengeInProduktion)
             End If
         Next
     End Sub
@@ -233,7 +233,10 @@ Public Class wb_Planung_Liste
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtVorproduktion_Click(sender As Object, e As EventArgs) Handles BtVorproduktion.Click
+        'Vorproduktion Chargen ermitteln
         Produktion.CalcVorproduktion(Produktion.RootProduktionsSchritt)
+        'Vorproduktion Chargenmengen neu berechnen
+        Produktion.ReCalcVorproduktion(Produktion.RootProduktionsSchritt)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
     End Sub

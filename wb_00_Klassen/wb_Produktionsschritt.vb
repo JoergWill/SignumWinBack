@@ -952,6 +952,16 @@ Public Class wb_Produktionsschritt
             Return wb_Functions.StrToInt(_Tour)
         End Get
     End Property
+    Public ReadOnly Property IsVorProduktion As Boolean
+        Get
+            If _Tour.Length > 0 Then
+                If _Tour(0) = "V" Then
+                    Return True
+                End If
+            End If
+            Return False
+        End Get
+    End Property
 
     ''' <summary>
     ''' Startzeit der Charge. 

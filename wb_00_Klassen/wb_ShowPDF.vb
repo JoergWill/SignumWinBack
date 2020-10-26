@@ -41,6 +41,7 @@ Public Class wb_ShowPDF
                     Rasterizer.CustomSwitches.Add("-r" & dpi)
                 End If
                 'wirft Ghostscript not installed Exception !!!
+                'TODO Umlaute prüfen (BÄKO...)
                 Rasterizer.Open(pdfFile, localDllInfo, True)
                 'Anzahl der Seiten
                 _MaxPages = Rasterizer.PageCount

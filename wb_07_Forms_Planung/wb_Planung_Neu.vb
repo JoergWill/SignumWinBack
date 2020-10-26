@@ -505,7 +505,7 @@
 
     Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
         If pArtikelChargen.Enabled Then
-            ProduktionNeu.AddChargenZeile("", "", _ArtNr, _AnzGesStck, 0, 0, cbChargenTeiler.SelIndex, cbAufloesen.Checked, True)
+            ProduktionNeu.AddChargenZeile("", "", _ArtNr, _AnzGesStck, 0, 0, cbChargenTeiler.SelIndex, cbAufloesen.Checked, False)
         Else
             ProduktionNeu.AddChargenZeile("", _RezNr, _TeigGesMenge, cbChargenTeiler.SelIndex, cbAufloesen.Checked)
         End If

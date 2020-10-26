@@ -275,11 +275,9 @@ Public Class wb_BestellDatenSchritt
                     _SonderText = Value
                 'Soll-Produktionsmenge in Stück
                 Case "Produktionsmenge"
-                    '_AusbackMenge = wb_Functions.StrToDouble(Value)
                     _Produktionsmenge = wb_Functions.StrToDouble(Value)
                 'Soll-Aufbackmenge in Stück (2020-09-25 JE - Teigling aus Froster)
                 Case "AusbackMenge"
-                    '_Produktionsmenge = wb_Functions.StrToDouble(Value)
                     _AusbackMenge = wb_Functions.StrToDouble(Value)
                 'Menge in Produktion in Stück
                 Case "MengeInProduktion"

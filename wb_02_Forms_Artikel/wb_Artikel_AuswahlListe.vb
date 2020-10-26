@@ -114,7 +114,7 @@
         Next
 
         'DataGrid füllen
-        DataGridView.LoadData(wb_Sql_Selects.sqlArtikelLst, "ArtikelListe")
+        DataGridView.LoadData(wb_Sql_Selects.sqlArtikelRohLst, "ArtikelListe")
         DataGridView.MultiSelect = _MultiSelect
 
         'DataGrid filtern nach Artikel-Nummer (alpha)

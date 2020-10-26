@@ -42,7 +42,7 @@ Public Class wb_Rohstoffe_Dokumente
     ''' <param name="Name"></param>
     Private Sub ShowDokument(Name As String)
         'Stream aus Cloud
-        If nwt.GetProductSheet(id, Name) Then
+        If nwt.GetProductSheet(id, Name) > 0 Then
 
             Select Case Path.GetExtension(Name)
                 Case ".pdf"
@@ -51,6 +51,7 @@ Public Class wb_Rohstoffe_Dokumente
                     VorschauPDF.Image = Nothing
             End Select
         Else
+            MsgBox("Fehler beim Laden des Dokumentes", MsgBoxStyle.Exclamation, "Rohstoff-Datenblatt")
             VorschauPDF.Image = Nothing
         End If
     End Sub

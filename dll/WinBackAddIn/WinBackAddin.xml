@@ -4325,6 +4325,25 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Produktion._VorProduktionMenge_NeuBerechnen(WinBack.wb_Produktionsschritt)">
+ <summary>
+ Durchläuft alle Produktions-Schritte der Liste bis zum Schritt mit der Markierung "VP-OK"
+     Dieser Schritt wird gespeichert und die Rekursion an dieser Stelle beendet
+     Alle so ermittelten Schritte werden sortiert und zusammengefasst.
+     Die neu berechneten Mengen werden in die vorhandenen Chargen eingetragen !
+     
+ Dieser Schritt ist notwendig, da im ersten Iterations-Schritt nur die Mengen erfasst werden,
+ die aufgrund der Bestellungen benötigt werden.
+ Die tatsächlichen Vorproduktionsmengen können je nach Chargengrößen abweichen.
+ </summary>
+ <param name="ps"></param>
+</member>
+<member name="M:WinBack.wb_Produktion._VorProduktion_MengenKorrektur">
+ <summary>
+ Durchläuft alle als Vorproduktion markierten Schritte in der Liste und korrigiert die Mengen entsprechend der Liste
+ mit den neu berechneten Mengen
+ </summary>
+</member>
 <member name="M:WinBack.wb_Produktion.TeigeZusammenfassen(WinBack.wb_Global.ModusTeigOptimierung)">
  <summary>
  Fasst alle (Rest-)Teige zu einem/mehreren Teigchargen zusammen (Optimierung der Produktions-Liste)
@@ -4360,7 +4379,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Sollmenge_Stk">Double - Sollmenge in Stück</param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Produktion.AddRezeptSchritte(WinBack.wb_Produktionsschritt@,System.Double@,System.Object)">
+<member name="M:WinBack.wb_Produktion.AddRezeptSchritte(WinBack.wb_Produktionsschritt@,System.Double@,System.Object,System.Boolean)">
  <summary>
  Fügt alle Rezeptschritte als Child-ProduktionsSchritte hinzu.
  Bei Sauerteig-Rezepten (Liniengruppe 127) wird die Sollmenge um das Anstellgut erhöht (Niehaves)
@@ -6132,6 +6151,11 @@ Text aus Datenbank lesen - Übersetzung
  die letzte ausgegebene Tageswechsel-Nr.
  
  Es wird immer zuerst der Chargen-Kopf und danach die verbrauchten Rohstoffe ausgegeben
+ 
+ (@1.7.5)    Wenn der Artikel-Datensatz (Satztyp wb_Global.obSatzTyp.ProduzierterArtikel) nicht geschreiben werden kann,
+             Dann ist vermutlich der Artikel in OrgaBack nicht vorhanden.
+             In diesem Fall wird dann ein Dummy-Artikel geschrieben, damit die Rohstoffe nicht falsch zugeordnet werden.
+             Der Dummy-Artikel hat die Nummer 0R9999 (Public Const ProduktionDummyArtikel)
  </summary>
  <param name="TWNr"></param>
  <returns></returns>
