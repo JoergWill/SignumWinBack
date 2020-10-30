@@ -500,9 +500,14 @@ Public Class wb_Produktion
             Root.Bestellt_Stk = Root.Sollmenge_Stk
             Root.Sollmenge_Stk = (Root.TeigChargen.AnzahlOpt * Root.TeigChargen.MengeOpt + Root.TeigChargen.AnzahlRest * Root.TeigChargen.MengeRest) / StkGewicht
 
-            Return True
+            'Aufteilung in Chargen ist ohne Fehler möglich
+            If Root.TeigChargen.Result = wb_Global.ChargenTeilerResult.OK Then
+                Return True
+            Else
+                Return False
+            End If
         Else
-            Return False
+                Return False
         End If
     End Function
 

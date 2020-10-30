@@ -27,6 +27,9 @@ Public Class wb_Lieferungen
     Private KA_Charge_Opt_kg As String
     Private LG_Ort As String
     Private LG_Bilanzmenge As String
+    Private LF_Menge As String
+    Private LF_Verbrauch As String
+    Private LF_BF_Charge As String
     Private LG_LF_Nr As Integer = wb_Global.UNDEFINED
     Private LG_Silo_Nr As Integer = wb_Global.UNDEFINED
 
@@ -328,6 +331,182 @@ Public Class wb_Lieferungen
     End Sub
 
     ''' <summary>
+    ''' Verbrauch verbuchen. Aktualisiert auch die Bilanzmenge im Lagerort.
+    ''' Wenn eine Rohstoff-Chargen-Nummer existiert, wird diese zurückgemeldet und in die Charge eingetragen
+    ''' </summary>
+    ''' <param name="Lagerort"></param>
+    ''' <param name="Istwert"></param>
+    ''' <returns></returns>
+    Public Function ProduktionVerbuchen(Lagerort As String, Istwert As String) As String
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'Rohstoff-Chargen-Nummer
+        Dim ChrgNummer As String = ""
+
+        'suche einen passenden Datensatz in winback.Lieferungen 
+        _ProduktionVerbuchen(winback, Lagerort, wb_Functions.StrToDouble(Istwert), ChrgNummer, "2")
+
+        'Bilanzmenge neu berechnen (Berechnung erfolgt innerhalb des Sql-Statements)
+        'Istwert Dezimalkomma in Punkt umwandeln
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpateBilanzmenge, Istwert.Replace(",", "."), Lagerort))
+
+        'Datenbank-Verbindung wieder schliessen
+        winback.Close()
+
+        'Rohstoff-Chargen-Nummer(n)
+        Return ChrgNummer
+    End Function
+
+    ''' <summary>
+    ''' Verbrauchsdaten aus der (virtuellen) Produktion verbuchen.
+    '''     Erst wird versucht, einen Datensatz zu finden, der als aktiv (LF_gebucht=2) markiert ist. Wird ein Datensatz gefunden,
+    '''     wird versucht die Menge von diesem Datensatz abzubuchen. Wenn die Lagermenge reicht, ist die Routine beendet.
+    '''     
+    '''     Reicht der Bestand im Lager nicht aus, wird der Datensatz auf erledigt gesetzz (LF_gebucht=3) und die Routine startet
+    '''     mit dem Restbestand neu. (Rekursiver Aufruf)
+    '''     
+    '''     Wenn kein passender aktiver Datensatz gefunden wird, wird die Routine erneut aufgerufen, diesmal mit der Suche nach 
+    '''     einem neuen Datensatz (LF_gebucht=1). Wird dieser nicht gefunden, erfolgt ein neuer Aufruf mit der Sucher nach dem 
+    '''     letzten erledigten Datensatz (LF_gebucht=3). Damit läuft der Lagerbestand ins Minus!
+    '''     
+    ''' Die ChargenNummern werden mit dem erfolgreichen Verbuchen des Verbrauchs aktualisiert.
+    ''' </summary>
+    ''' <param name="Lagerort"></param>
+    ''' <param name="Istwert"></param>
+    ''' <param name="ChrgNummer"></param>
+    ''' <param name="FlagGebucht"></param>
+    ''' <returns></returns>
+    Private Function _ProduktionVerbuchen(winback As wb_Sql, Lagerort As String, ByRef Istwert As Double, ByRef ChrgNummer As String, FlagGebucht As String) As Boolean
+        Dim sql As String
+        'FlagGebucht = 3 ändert die Sortierfolge in der Abfrage
+        If FlagGebucht = "3" Then
+            'Abfrage nach dem letzten passenden Eintrag in der Tabelle Lieferungen
+            sql = SetParams(wb_Sql_Selects.sqlLieferungenGebucht, Lagerort, FlagGebucht, "DESC")
+        Else
+            'Abfrage nach dem ersten passenden Eintrag in der Tabelle Lieferungen
+            sql = SetParams(wb_Sql_Selects.sqlLieferungenGebucht, Lagerort, FlagGebucht, "ASC")
+        End If
+
+        'Prüfen ob ein Datensatz vorhanden ist
+        If winback.sqlSelect(sql) Then
+            'es ist ein Datensatz vorhanden - Daten einlesen
+            'Lesen Lagerort/Rohstoffdaten zu dieser Komponente
+            If winback.Read Then
+                MySQLdbRead(winback.MySqlRead)
+                'Verbindung schliesen
+                winback.CloseRead()
+
+                'Abhängig vom Status
+                Select Case FlagGebucht
+                    Case "1"
+                        'es gibt einen Datensatz der noch nicht offen ist - Status auf aktiv setzen (LF_Gebucht=2) und Istmenge abbuchen
+                        If _ProduktionAbbuchen(winback, Lagerort, Istwert, ChrgNummer, "2") Then
+                            'Die Istmenge konnte komplett abgebucht werden - Die Routine wird beendet
+                            Return True
+                        Else
+                            'Die Istmenge konnte nicht komplett abgebucht werden - Restmenge wird in der nächsten Rekursion (neue Lieferung) abgebucht
+                            _ProduktionVerbuchen(winback, Lagerort, Istwert, ChrgNummer, "1")
+                            Return True
+                        End If
+                    Case "2"
+                        'es gibt einen Datensatz der offen ist - versuche die komplette Istmenge abzubuchen
+                        If _ProduktionAbbuchen(winback, Lagerort, Istwert, ChrgNummer, "2") Then
+                            'Die Istmenge konnte komplett abgebucht werden - Die Routine wird beendet
+                            Return True
+                        Else
+                            'Die Istmenge konnte nicht komplett abgebucht werden - Restmenge wird in der nächsten Rekursion (neue Lieferung) abgebucht
+                            _ProduktionVerbuchen(winback, Lagerort, Istwert, ChrgNummer, "1")
+                            Return True
+                        End If
+                    Case "3"
+                        'es gibt einen Datensatz der schon geschlossen ist - Istmenge abbuchen (negative Bilanzmenge)
+                        _ProduktionAbbuchen(winback, Lagerort, Istwert, ChrgNummer, "3")
+                        Return True
+                End Select
+            Else
+                'kein Datensatz gefunden - Verbindung wieder schliessen
+                winback.CloseRead()
+
+                'Abhängig vom Status weitermachen
+                Select Case FlagGebucht
+                    Case "1"
+                        'es gibt keinen Datensatz der offen ist - Versuche einen abgeschlossenen Datensatz zu finden(LF_gebucht=3)
+                        _ProduktionVerbuchen(winback, Lagerort, Istwert, ChrgNummer, "3")
+                        Return True
+                    Case "2"
+                        'es gibt keinen Datensatz (mehr), der aktiv ist - Versuche den nächsten Datensatz mit offenen Lieferungen zu finden(LF_gebucht=1)
+                        _ProduktionVerbuchen(winback, Lagerort, Istwert, ChrgNummer, "1")
+                        Return True
+                    Case "3"
+                        'es gibt keinen Datensatz zu diesem LagerOrt - Die Routine wird beendet
+                        Return True
+                End Select
+
+            End If
+        End If
+        'alle anderen Fälle (sollte nicht vorkommen)
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' Die Istmenge wird von der Bilanzmenge abgebucht
+    ''' </summary>
+    ''' <param name="winback"></param>
+    ''' <param name="Lagerort"></param>
+    ''' <param name="Istwert"></param>
+    ''' <param name="ChrgNummer"></param>
+    ''' <param name="FlagGebucht"></param>
+    ''' <returns></returns>
+    Private Function _ProduktionAbbuchen(winback As wb_Sql, Lagerort As String, ByRef Istwert As Double, ByRef ChrgNummer As String, FlagGebucht As String) As Boolean
+        'Liefermenge aus dem aktuellen Datensatz
+        Dim Liefermenge As Double = wb_Functions.StrToDouble(LF_Menge)
+        'Verbrauchte Menge aus dem aktuellen Datensatz
+        Dim Verbrauchmenge As Double = wb_Functions.StrToDouble(LF_Verbrauch)
+        'Lieferung laufende Nummer
+        Dim lfdNr As Integer = LG_LF_Nr
+
+        'prüfen ob die Istmenge komplett verbucht werden kann
+        If Istwert < (Liefermenge - Verbrauchmenge) Then
+            'neue Verbrauchte Menge berechnen
+            Verbrauchmenge = Verbrauchmenge + Istwert
+            'Istmenge ist Null
+            Istwert = 0
+            'Chargen-Nummern
+            ChrgNummer = wb_Functions.AddCSV(ChrgNummer, LF_BF_Charge)
+            'Datensatz in Tabelle Lieferungen updaten
+            UpdateVerbrauch(winback, Lagerort, lfdNr, Verbrauchmenge, "2")
+            'die Istmenge konnte komplett abgebucht weden
+            Return True
+        Else
+            'Lieferung-Datensatz ist schon abgeschlossen
+            If FlagGebucht = "3" Then
+                'Verbrauchsmenge neu berechnen (Bilanzmenge wird negativ !!)
+                Verbrauchmenge = Verbrauchmenge + Istwert
+                'Istmenge neu berechnen
+                Istwert = 0
+                'Chargen-Nummern
+                ChrgNummer = wb_Functions.AddCSV(ChrgNummer, LF_BF_Charge)
+                'Datensatz in Tabelle Lieferungen updaten
+                UpdateVerbrauch(winback, Lagerort, lfdNr, Verbrauchmenge, "3")
+                'die Istmenge wurde komplett abgebucht. Bilanzmenge ist negativ
+                Return True
+            Else
+                'Istmenge neu berechnen
+                Istwert = Istwert - (Liefermenge - Verbrauchmenge)
+                'Bilanzmenge ist Null
+                Verbrauchmenge = Liefermenge
+                'Chargen-Nummern
+                ChrgNummer = wb_Functions.AddCSV(ChrgNummer, LF_BF_Charge)
+                'Datensatz in Tabelle Lieferungen updaten
+                UpdateVerbrauch(winback, Lagerort, lfdNr, Verbrauchmenge, "3")
+                'die Istmenge konnte nur teilweise abgebucht werden
+                Return False
+            End If
+        End If
+
+    End Function
+
+    ''' <summary>
     ''' Siloinhalt auf Null setzen.
     ''' In der Tabelle Lieferungen wird eine entsprechende Zeile eingefügt. Alle vorhegehenden Lieferungen werden auf Status 3(erledigt) gesetzt.
     ''' </summary>
@@ -395,7 +574,20 @@ Public Class wb_Lieferungen
     Private Sub UpdateLieferung(winback As wb_Sql, lfd As Integer, lfMenge As Double, lfBemerkung As String)
         'der UPDATE-Befehl wird dynamisch erzeugt
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLieferung, LG_Ort, lfd.ToString, wb_Functions.FormatStr(lfMenge, 2), lfBemerkung)
-        'INSERT ausführen
+        'UPDATE ausführen
+        winback.sqlCommand(sql)
+    End Sub
+
+    ''' <summary>
+    ''' Ändert einen Datensatz in der Tabelle winback.Lieferungen. Anpassung der Verbrauchten Menge
+    ''' </summary>
+    ''' <param name="winback"></param>
+    ''' <param name="lfd"></param>
+    ''' <param name="lfgebucht"></param>
+    Private Sub UpdateVerbrauch(winback As wb_Sql, Lagerort As String, lfd As Integer, lfVerbrauch As Double, lfgebucht As String)
+        'der UPDATE-Befehl wird dynamisch erzeugt
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateVerbrauch, Lagerort, lfd.ToString, wb_Functions.FormatStr(lfVerbrauch, 2), lfgebucht)
+        'UPDATE ausführen
         winback.sqlCommand(sql)
     End Sub
 
@@ -475,7 +667,7 @@ Public Class wb_Lieferungen
 
                 'Laufende Nummer entspricht der Lfd in dbo.ArtikelLagerKarte
                 'Achtung(!) muss von SMALLINT auf INT erweitert werden
-                Case "LG_LF_Nr"
+                Case "LG_LF_Nr", "LF_Nr"
                     LG_LF_Nr = CInt(Value)
                 'Lagerort
                 Case "LG_Ort"
@@ -483,9 +675,18 @@ Public Class wb_Lieferungen
                 'Bilanzmenge
                 Case "LG_Bilanzmenge"
                     LG_Bilanzmenge = Value
+                'Liefermenge
+                Case "LF_Menge"
+                    LF_Menge = Value
+                'Verbrauchte Menge
+                Case "LF_Verbrauch"
+                    LF_Verbrauch = Value
                 'Silo-Nummer
                 Case "LG_Silo_Nr"
                     LG_Silo_Nr = CInt(Value)
+                'Chargen-Nummer
+                Case "LF_BF_Charge"
+                    LF_BF_Charge = Value
 
             End Select
 

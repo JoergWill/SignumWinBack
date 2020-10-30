@@ -259,7 +259,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>..\dll\OrgaSoft V3.2.7552\Signum.OrgaSoft.Contracts.dll</HintPath>
+      <HintPath>..\dll\OrgaSoft V3.2.7601\Signum.OrgaSoft.Contracts.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -310,6 +310,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTest_wb_LieferungenDB.vb" />
     <Compile Include="UnitTest_ca_Setup.vb" />
     <Compile Include="UnitTest_wb_ChargenWasserTemp.vb" />
     <Compile Include="UnitTest_wb_Lieferungen.vb" />

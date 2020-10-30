@@ -2269,6 +2269,47 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="LagerKarte"></param>
  <param name="Chargenerfassung"></param>
 </member>
+<member name="M:WinBack.wb_Lieferungen.ProduktionVerbuchen(System.String,System.String)">
+ <summary>
+ Verbrauch verbuchen. Aktualisiert auch die Bilanzmenge im Lagerort.
+ Wenn eine Rohstoff-Chargen-Nummer existiert, wird diese zurückgemeldet und in die Charge eingetragen
+ </summary>
+ <param name="Lagerort"></param>
+ <param name="Istwert"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Lieferungen._ProduktionVerbuchen(WinBack.wb_Sql,System.String,System.Double@,System.String@,System.String)">
+ <summary>
+ Verbrauchsdaten aus der (virtuellen) Produktion verbuchen.
+     Erst wird versucht, einen Datensatz zu finden, der als aktiv (LF_gebucht=2) markiert ist. Wird ein Datensatz gefunden,
+     wird versucht die Menge von diesem Datensatz abzubuchen. Wenn die Lagermenge reicht, ist die Routine beendet.
+     
+     Reicht der Bestand im Lager nicht aus, wird der Datensatz auf erledigt gesetzz (LF_gebucht=3) und die Routine startet
+     mit dem Restbestand neu. (Rekursiver Aufruf)
+     
+     Wenn kein passender aktiver Datensatz gefunden wird, wird die Routine erneut aufgerufen, diesmal mit der Suche nach 
+     einem neuen Datensatz (LF_gebucht=1). Wird dieser nicht gefunden, erfolgt ein neuer Aufruf mit der Sucher nach dem 
+     letzten erledigten Datensatz (LF_gebucht=3). Damit läuft der Lagerbestand ins Minus!
+     
+ Die ChargenNummern werden mit dem erfolgreichen Verbuchen des Verbrauchs aktualisiert.
+ </summary>
+ <param name="Lagerort"></param>
+ <param name="Istwert"></param>
+ <param name="ChrgNummer"></param>
+ <param name="FlagGebucht"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Lieferungen._ProduktionAbbuchen(WinBack.wb_Sql,System.String,System.Double@,System.String@,System.String)">
+ <summary>
+ Die Istmenge wird von der Bilanzmenge abgebucht
+ </summary>
+ <param name="winback"></param>
+ <param name="Lagerort"></param>
+ <param name="Istwert"></param>
+ <param name="ChrgNummer"></param>
+ <param name="FlagGebucht"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Lieferungen.Verbuchen_Tara(WinBack.wb_Sql,WinBack.wb_LagerSilo,System.Boolean)">
  <summary>
  Siloinhalt auf Null setzen.
@@ -2306,6 +2347,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="winback"></param>
  <param name="lfd"></param>
  <param name="lfMenge"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.UpdateVerbrauch(WinBack.wb_Sql,System.String,System.Int32,System.Double,System.String)">
+ <summary>
+ Ändert einen Datensatz in der Tabelle winback.Lieferungen. Anpassung der Verbrauchten Menge
+ </summary>
+ <param name="winback"></param>
+ <param name="lfd"></param>
+ <param name="lfgebucht"></param>
 </member>
 <member name="M:WinBack.wb_Lieferungen.UpdateLagerorteLfd(WinBack.wb_Sql,System.Int32)">
  <summary>
@@ -2401,6 +2450,16 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <summary>
  Löscht alle Datensätze zu dieser Linie mit TW-Nummer = 0 aus winback.ArbRezepte und winback.ArbRZSchritte
  </summary>
+ <param name="LinieNr"></param>
+ <param name="winback"></param>
+</member>
+<member name="M:WinBack.wb_Produktion_virtuell.VirtProduktionStart(WinBack.wb_Produktionsschritt@,System.Int32,WinBack.wb_Sql)">
+ <summary>
+ Setzt Istwert gleich Sollwert und bucht die entsprechende Menge vom Produktions-Lager ab.
+ Die aktuelle Chargen-Nummer wird aus der Tabelle Lieferungen ermittelt und in die wbDaten-Tabellen eingetragen
+ Abschliessend wird die Bilanzmenge in der Tabelle Lagerorte korrigiert.
+ </summary>
+ <param name="Zeile"></param>
  <param name="LinieNr"></param>
  <param name="winback"></param>
 </member>
@@ -8651,6 +8710,17 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="s"></param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Functions.AddCSV(System.String,System.String)">
+ <summary>
+ Fügt einen String kommagetrennt an einen bestehenden Ausdruck an. 
+ Ist der bestehende Ausdruck leer wird nur der String zurückgegeben.
+ 
+ Wenn der anzuhängende String schon enthalten ist, wird der Original-String zurückgegeben
+ </summary>
+ <param name="OldString"></param>
+ <param name="NewString"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Functions.DoubleToXString(System.Double)">
  <summary>
  Wandelt einen Double-Wert in einen String um. Dabei wird das Dezimal-Trennzeichen als Punkt dargestellt !!!!
@@ -9499,6 +9569,7 @@ Datenbank-Verbindung schliessen
 <member name="M:WinBack.wb_Planung_Liste.WriteProduktionOrgaBack">
  <summary>
  Übermittelt die Stückzahlen der Artikel, die in die Produktion übertragen worden sind (Teigzettel/Backzettel/cvs-File) als MengeInProduktion an OrgaBack
+ Wenn keine Einheit angegeben ist. wird als Default Stk übergeben !! (p.obEinheit -> obDefault)
  </summary>
 </member>
 <member name="M:WinBack.wb_Planung_Liste.MsSQLdbUpdate_ProduktionAktuell(System.Int32,System.String,System.Int32,System.String,System.Int32,System.Int32,System.String,System.Double,System.Double)">

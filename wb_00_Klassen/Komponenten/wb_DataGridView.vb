@@ -524,7 +524,7 @@ Public Class wb_DataGridView
         For i = 0 To ColumnCount - 1
             w = IniFile.ReadInt(sGridName, "Column" & i.ToString & "-Width", 0)
             Try
-                If w > 0 And Columns(i).Name IsNot "" And Columns(i).Visible Then
+                If w > 0 And Columns(i).Name IsNot "" And Columns(i).Visible And Columns(i) IsNot Nothing Then
                     Columns(i).Width = w
                     Columns(i).Visible = True
                 ElseIf w = -1 Then

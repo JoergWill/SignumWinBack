@@ -152,6 +152,7 @@ Public Class wb_Planung_Liste
 
     ''' <summary>
     ''' Übermittelt die Stückzahlen der Artikel, die in die Produktion übertragen worden sind (Teigzettel/Backzettel/cvs-File) als MengeInProduktion an OrgaBack
+    ''' Wenn keine Einheit angegeben ist. wird als Default Stk übergeben !! (p.obEinheit -> obDefault)
     ''' </summary>
     Private Sub WriteProduktionOrgaBack()
         'Alle Produktions-Schritte in der Liste durchlaufen

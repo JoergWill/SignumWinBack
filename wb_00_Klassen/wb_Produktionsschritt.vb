@@ -56,6 +56,7 @@ Public Class wb_Produktionsschritt
     Private _TeigChargen As wb_Global.ChargenMengen
     Private _Bestellt_Stk As Double
     Private _LagerBestand As String
+    Private _LagerOrt As String
     Private _StartZeit As DateTime
 
     Private _Bestellt_SonderText As String
@@ -110,7 +111,9 @@ Public Class wb_Produktionsschritt
             OptChargekg = .ArtikelChargen.OptCharge.fMengeInkg
             MaxChargekg = .ArtikelChargen.MaxCharge.fMengeInkg
             MinChargekg = .ArtikelChargen.MinCharge.fMengeInkg
+
             LagerBestand = .Bilanzmenge
+            LagerOrt = .Lagerort
             ProdVorlauf = .ProdVorlauf
             FreigabeProduktion = .FreigabeProduktion
         End With
@@ -730,7 +733,7 @@ Public Class wb_Produktionsschritt
     End Property
     Public ReadOnly Property obEinheit As Integer
         Get
-            Return wb_Einheiten_Global.getobEinheitFromText(_Einheit)
+            Return wb_Einheiten_Global.getobEinheitFromText(_Einheit, wb_Global.obEinheitStk)
         End Get
     End Property
 
@@ -1097,6 +1100,13 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public ReadOnly Property iChargenNummer As Integer
+        Get
+            Return wb_Functions.StrToInt(_ChargenNummer)
+        End Get
+    End Property
+
+
     Public Property Optimiert As Boolean
         Get
             Return _Optimiert
@@ -1277,4 +1287,12 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public Property LagerOrt As String
+        Get
+            Return _LagerOrt
+        End Get
+        Set(value As String)
+            _LagerOrt = value
+        End Set
+    End Property
 End Class

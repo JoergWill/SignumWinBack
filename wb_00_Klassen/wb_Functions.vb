@@ -1062,6 +1062,27 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Fügt einen String kommagetrennt an einen bestehenden Ausdruck an. 
+    ''' Ist der bestehende Ausdruck leer wird nur der String zurückgegeben.
+    ''' 
+    ''' Wenn der anzuhängende String schon enthalten ist, wird der Original-String zurückgegeben
+    ''' </summary>
+    ''' <param name="OldString"></param>
+    ''' <param name="NewString"></param>
+    ''' <returns></returns>
+    Public Shared Function AddCSV(OldString As String, NewString As String) As String
+        If OldString.Contains(NewString) Then
+            Return OldString
+        Else
+            If OldString = "" Then
+                Return NewString
+            Else
+                Return OldString & ", " & NewString
+            End If
+        End If
+    End Function
+
+    ''' <summary>
     ''' Wandelt einen Double-Wert in einen String um. Dabei wird das Dezimal-Trennzeichen als Punkt dargestellt !!!!
     ''' </summary>
     ''' <returns></returns>

@@ -12,6 +12,8 @@ Public Class wb_LagerOrt
         End Get
         Set(value As String)
             _Bilanzmenge = value
+            'Änderung der Bilanzmenge in MySql-Datenbank schreiben
+            MySQLdbUpdate()
         End Set
     End Property
 
@@ -171,7 +173,7 @@ Public Class wb_LagerOrt
             Dim sql As String
 
             'Update-Statement wird dynamisch erzeugt    
-            sql = "LG_Mindestmenge = '" & Mindestmenge & "', LG_Aktiv = '" & Aktiv & "'"
+            sql = "LG_Mindestmenge = '" & Mindestmenge & "', LG_Bilanzmenge = '" & Bilanzmenge & "', LG_Aktiv = '" & Aktiv & "'"
 
             'Update ausführen
             'Debug.Print("Lagerorte.MysqldbUpdate " & sql)

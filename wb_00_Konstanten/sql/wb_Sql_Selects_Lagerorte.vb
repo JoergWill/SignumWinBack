@@ -4,6 +4,10 @@
     Public Const sqlLagerOrte = "SELECT * FROM Lagerorte WHERE LG_Ort = '[0]'"
     'Sql_statement UPDATE Lagerorte.lfd_Nr
     Public Const sqlUpdateLagerort = "UPDATE Lagerorte SET LG_LF_Nr = [0], LG_Bilanzmenge = '[1]' WHERE LG_Ort = '[2]'"
+    'Sql_statement UPDATE Bilanzmenge
+    'die Bilanzmenge wird innerhalb des sql-Statements neu berechnet. Die Verbrauchsmenge muss 
+    'als Dezimalwert mit Dezimalpunkt(!) übergeben werden
+    Public Const sqlUpateBilanzmenge = "UPDATE Lagerorte SET LG_Bilanzmenge = LG_Bilanzmenge + [0] WHERE LG_ORT = '[1]';"
 
     'Löschen Rohstoff/Artikel in Lagerorte
     Public Const sqlDelLagerOrte = "DELETE FROM Lagerorte WHERE LG_Ort = '[0]'"

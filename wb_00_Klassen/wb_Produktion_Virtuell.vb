@@ -80,7 +80,7 @@ Public Class wb_Produktion_virtuell
                     For Each KomponentenZeile As wb_Produktionsschritt In RezeptZeile.ChildSteps
                         'Fortlaufender Index BAK_ArbRZSchritte
                         LfdIdx += 1
-                        'Debug.Print("Produktion Zeile " & KomponentenZeile.ArtikelNummer & vbTab & KomponentenZeile.ArtikelBezeichnung & vbTab & KomponentenZeile.Sollwert)
+                        Debug.Print("Produktion Zeile " & KomponentenZeile.ArtikelNummer & vbTab & KomponentenZeile.ArtikelBezeichnung & vbTab & KomponentenZeile.Sollwert)
                         'Rezept-Schritt wird (virtuell) bearbeitet und als fertig markiert
                         VirtProduktionRezeptSchritt(KomponentenZeile, LinieNr, winback, wbDaten, TWNr, LfdIdx)
                     Next
@@ -114,7 +114,7 @@ Public Class wb_Produktion_virtuell
             'Rezeptschritte gleich in wbdaten.BAK_ArbRZSchritte schreiben
             sql = "B_ARS_TW_Nr = " & TWNr & ", B_ARS_TW_Idx = " & LfdIdx & ", B_ARS_Beh_Nr = " & LinieNr + wb_Global.OffsetBackorte & ", " &
                   "B_ARS_RunIdx = " & Zeile.RunIndex & ", B_ARS_RZ_Nr = " & Zeile.RezeptNr & ", B_ARS_Index = " & Zeile.ARS_Index & ", " &
-                  "B_ARS_Charge_Nr = " & Zeile.ChargenNummer & ", B_ARS_Art_Index = " & Zeile.ArtikelIndex & ", " &
+                  "B_ARS_Charge_Nr = " & Zeile.iChargenNummer & ", B_ARS_Art_Index = " & Zeile.ArtikelIndex & ", " &
                   "B_ARS_Schritt_Nr = " & Zeile.Schritt & ", B_ARS_Schritt_SubNr = 0, B_ARS_Ko_Nr = " & Zeile.KO_Nr & ", " &
                   "B_ARS_ParamNr = " & Zeile.ParamNr & ", B_ARS_Wert = '" & Zeile.Sollwert & "', B_ARS_Wert_org = '0', B_ARS_RS_Wert = '0', " &
                   "B_ARS_RS_Par1 = '', B_ARS_RS_Par2 = '', B_ARS_RS_Par3 = '', B_ARS_Istwert = '" & Zeile.Istwert & "', " &
@@ -196,6 +196,14 @@ Public Class wb_Produktion_virtuell
 
     End Sub
 
+    ''' <summary>
+    ''' Setzt Istwert gleich Sollwert und bucht die entsprechende Menge vom Produktions-Lager ab.
+    ''' Die aktuelle Chargen-Nummer wird aus der Tabelle Lieferungen ermittelt und in die wbDaten-Tabellen eingetragen
+    ''' Abschliessend wird die Bilanzmenge in der Tabelle Lagerorte korrigiert.
+    ''' </summary>
+    ''' <param name="Zeile"></param>
+    ''' <param name="LinieNr"></param>
+    ''' <param name="winback"></param>
     Public Sub VirtProduktionStart(ByRef Zeile As wb_Produktionsschritt, LinieNr As Integer, winback As wb_Sql)
 
         'alle Zeilen mit Sollwert
@@ -204,8 +212,15 @@ Public Class wb_Produktion_virtuell
             'Istwert gleich Sollwert
             Zeile.Istwert = Zeile.Sollwert
 
-            'Komponenten-Nummer
-
+            'alle Zeilen mit Verwiegung
+            If wb_Functions.TypeIstSollMenge(Zeile.KO_Typ, Zeile.ParamNr) Then
+                'Objekt Lieferungen erzeugen und dort den Verbrauch verbuchen. Aktualisiert auch die Bilanzmenge im Lagerort.
+                Dim Lieferungen As New wb_Lieferungen
+                'Wenn eine Rohstoff-Chargen-Nummer existiert, wird diese zurückgemeldet und in die Charge eingetragen
+                Zeile.ChargenNummer = Lieferungen.ProduktionVerbuchen(Zeile.LagerOrt, Zeile.Istwert)
+                'Speicher wieder freigeben
+                Lieferungen = Nothing
+            End If
 
         End If
 
