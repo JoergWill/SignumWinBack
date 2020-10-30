@@ -1,4 +1,5 @@
-﻿Imports Signum.OrgaSoft.Common
+﻿Imports System.Reflection
+Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.Services
 Imports WinBack
@@ -25,11 +26,17 @@ Public Class ob_RecipeProvider
     End Property
 
     Public Sub Initialize() Implements IExtension.Initialize
+        'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
         ' Diese Klasse als (benannten) Service registrieren
         ServiceProvider.AddService(GetType(IRecipeProvider), Me.ServiceName, Me)
         ' Den ServiceProvider so konfigurieren, dass er für diesen Service auf diese Implementierung zurückgreifen soll
         ServiceProvider.ConfigureService(GetType(IRecipeProvider), Me.ServiceName)
     End Sub
+
+    Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
+        Return wb_Main_Shared.MyAssemblyResolve(sender, args)
+    End Function
 
     ''' <summary>
     ''' Ermittelt die Rezeptur und liefert die Bestandteile zurück. Die Rezeptgröße wird dabei immer auf

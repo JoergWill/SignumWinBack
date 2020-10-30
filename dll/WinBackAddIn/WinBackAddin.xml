@@ -6082,6 +6082,17 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Main_Shared.MyAssemblyResolve(System.Object,System.ResolveEventArgs)">
+ <summary>
+ MyAssemblyResolve-Event-Handler
+ Anmerkung: Da ResolveEvents.requestingAssembly nicht funktioniert, wird geprüft, ob die angeforderte dll im 
+            AddIn-dll-Verzeichnis existiert.
+            Ist die dll nicht vorhanden, wird der Default-Wert zurückgegeben.
+ </summary>
+ <param name="sender"></param>
+ <param name="args"></param>
+ <returns></returns>
+</member>
 <member name="T:WinBack.wb_PrinterDialog">
  <summary>
  KLasse zum Drucken von Reports über ListUndLabel
@@ -9306,14 +9317,6 @@ Datenbank-Verbindung schliessen
  <summary>
  Initialisierung Klasse
  </summary>
-</member>
-<member name="M:WinBack.ob_Main_Menu.MyResolveEventHandler(System.Object,System.ResolveEventArgs)">
- <summary>
- MyResolveEventHandler
- </summary>
- <param name="sender"></param>
- <param name="args"></param>
- <returns></returns>
 </member>
 <member name="M:WinBack.ob_Main_Menu.AddEventBroker">
  <summary>

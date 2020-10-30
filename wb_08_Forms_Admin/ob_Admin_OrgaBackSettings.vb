@@ -3,6 +3,7 @@ Option Explicit On
 
 Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.Common
+Imports System.Reflection
 
 <Export(GetType(IExtension))>
 <ExportMetadata("Description", "WinBack Festwerte")>
@@ -22,7 +23,13 @@ Public Class ob_Admin_OrgaBackSettings
     '''eingelesen
     ''' </summary>
     Public Sub Initialize() Implements IExtension.Initialize
+        'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
     End Sub
+
+    Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
+        Return wb_Main_Shared.MyAssemblyResolve(sender, args)
+    End Function
 #End Region
 
 #Region "ISettingProvider"

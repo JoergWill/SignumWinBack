@@ -1565,6 +1565,8 @@
     <ProjectReference Include="EnhancedEdit\EnhancedEdit.vbproj">
       <Project>{B9549613-9C0C-4BC3-82A5-21D834813A25}</Project>
       <Name>EnhancedEdit</Name>
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -1600,7 +1602,7 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).*" "C:\OrgaSoft\AddIns" /E /C /R /Y
 xcopy "$(TargetDir)$(TargetName).*" "$(SolutionDir)dll\WinBackAddIn" /E /C /R /Y
-xcopy "$(TargetDir)*.dll" "C:\OrgaSoft\AddIns" /E /C /R /Y
+xcopy "$(TargetDir)*.dll" "C:\OrgaSoft\AddIns\dll" /E /C /R /Y
 xcopy "$(TargetDir)*.bat" "C:\OrgaSoft\AddIns" /E /C /R /Y
 xcopy "$(TargetDir)*.log4net" "C:\OrgaSoft\AddIns" /E /C /R /Y
 

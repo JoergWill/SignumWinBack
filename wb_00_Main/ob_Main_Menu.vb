@@ -97,15 +97,13 @@ Public Class ob_Main_Menu
 
         AddHandler System.Windows.Forms.Application.ThreadException, AddressOf MyThreadExceptionHandler
         AddHandler System.AppDomain.CurrentDomain.UnhandledException, AddressOf MyUnhandledExceptionHandler
+        'TODO - Versuche die eigenen dll-Files in sep. Verzeichnis zu verlagern
+        'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
 
         'Event-Handler Aufruf einer WinBack-Main-Form
         AddHandler wb_Main_Shared.eOpenForm, AddressOf OpenWinBackForm
 
-
-        'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
-        '
-        'Dim currentDomain As AppDomain = AppDomain.CurrentDomain
-        'AddHandler currentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
         oViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
         oMenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         oSetting = TryCast(ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
@@ -131,15 +129,8 @@ Public Class ob_Main_Menu
 
     End Sub
 
-    ''' <summary>
-    ''' MyResolveEventHandler
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="args"></param>
-    ''' <returns></returns>
-    Private Shared Function MyResolveEventHandler(sender As Object, args As ResolveEventArgs) As Assembly
-        Console.WriteLine("Resolving...")
-        Return GetType(ob_Main_Menu).Assembly
+    Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
+        Return wb_Main_Shared.MyAssemblyResolve(sender, args)
     End Function
 
     ''' <summary>
@@ -527,36 +518,6 @@ Public Class ob_Main_Menu
         Dim asm As Assembly = Assembly.GetExecutingAssembly()
         Dim location As String = asm.Location
         Dim version = asm.GetName.Version
-        'TODO Hier fliegt die Relase-Version auf die Nase
-        'Try
-        '    Dim appName As String = System.IO.Path.GetDirectoryName(location)
-        'Catch
-        'End Try
-
-        'Debug.Print("STOP")
-        'Dim  As String = Signum.OrgaSoft.Common.Settings.Verzeichnisse.AddInPfad
-
-        'Dim sAssemblyName As String = New AssemblyName(args.Name).Name
-        'Dim arrFields As String() = args.Name.Split(","c)
-        'Dim sAssemblyCulture As String = arrFields(2).Substring(arrFields(2).IndexOf("="c) + 1)
-
-        'Dim sAssemblyFileName As String = sAssemblyName + ".dll"
-        'Dim sAssemblyPath As String
-
-        'If sAssemblyName.EndsWith(".resources") Then
-        '    Dim sResourceDirectory As String = Path.Combine(sApplicationDirectory, sAssemblyCulture)
-        '    sAssemblyPath = Path.Combine(sResourceDirectory, sAssemblyFileName)
-        'Else
-        '    sAssemblyPath = Path.Combine(sApplicationDirectory, sAssemblyFileName)
-        'End If
-
-        'If File.Exists(sAssemblyPath) Then
-        '    Return If(Debugger.IsAttached, Reflection.Assembly.LoadFile(sAssemblyPath), Assembly.Load(File.ReadAllBytes(sAssemblyPath)))
-        'Else
-        '    Return Nothing
-        'End If
-
-
     End Sub
 
 End Class

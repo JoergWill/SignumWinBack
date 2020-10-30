@@ -7,6 +7,21 @@
     ' NetworkAvailabilityChanged: Wird beim Herstellen oder Trennen der Netzwerkverbindung ausgelöst.
     Partial Friend Class MyApplication
 
+        ''' <summary>
+        ''' Lade die .ddl-Files aus einem definierten Unterorder /dll
+        '''     ACHTUNG
+        '''     Die dll-Files müssen dann auch in diesem Ordner vorhanden sein!
+        ''' </summary>
+        Private WithEvents MyDomain As AppDomain = AppDomain.CurrentDomain
+        Private Function MyDomain_AssemblyResolve(ByVal sender As Object, ByVal args As System.ResolveEventArgs) As System.Reflection.Assembly Handles MyDomain.AssemblyResolve
+            Dim dll_file As String = System.AppDomain.CurrentDomain.BaseDirectory + "dll\" + args.Name.Split(CChar(","))(0) + ".dll"
+            If System.IO.File.Exists(dll_file) Then
+                Return System.Reflection.Assembly.LoadFile(dll_file)
+            Else
+                Return Nothing
+            End If
+        End Function
+
         Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
             'Stacktrace und Fehlermeldung ermitteln
             'TODO funktioniert nicht bei Einzelanwedung Winback
@@ -23,8 +38,8 @@
         ''' </summary>
         ''' <param name="StackTrace"></param>
         ''' <param name="Message"></param>
-        ''' <param name="UnhadledException"></param>
-        Private Sub ExceptionHandler(StackTrace As String, Message As String, UnhadledException As Boolean)
+        ''' <param name="UnhandledException"></param>
+        Private Sub ExceptionHandler(StackTrace As String, Message As String, UnhandledException As Boolean)
             'Dialog-Fenster mit Fehlermeldung anzeigen 
             Dim MainException As New wb_Main_Exception(StackTrace, Message)
 

@@ -1,4 +1,5 @@
-﻿Imports Signum.OrgaSoft
+﻿Imports System.Reflection
+Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.FrameWork
@@ -61,9 +62,16 @@ Public Class ob_Planung_DockingExtension
     ''' Dieser wird erst erzeugt und gesetzt, wenn das Fenster auch angezeigt werden soll.
     ''' </remarks>
     Public Sub Initialize() Implements IExtension.Initialize
+        'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
     End Sub
+
+    Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
+        Return wb_Main_Shared.MyAssemblyResolve(sender, args)
+    End Function
 
     ''' <summary>
     ''' Liefert zu einem FormKey eine Instanz des UserControls zurück
