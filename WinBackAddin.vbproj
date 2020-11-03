@@ -140,6 +140,7 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\..\..\SharedBinaries\Basic Correctness and Design Guideline.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>AssemblyResolve=True</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M1|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -151,6 +152,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>AssemblyResolve=True</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M2|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -477,6 +479,7 @@
     <Compile Include="wb_00_Klassen\wb_OrgaBackProcess.vb" />
     <Compile Include="wb_00_Klassen\wb_OrgaBackProcessPosition.vb" />
     <Compile Include="wb_00_Klassen\wb_OrgaBackProcess_WE.vb" />
+    <Compile Include="wb_00_Klassen\wb_ProduktionPlanungError.vb" />
     <Compile Include="wb_00_Klassen\wb_Produktion_virtuell.vb" />
     <Compile Include="wb_00_Klassen\wb_StatistikListe.vb" />
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.Designer.vb">
@@ -1317,6 +1320,9 @@
     <None Include="ListLabel\Rezepte\Rezeptur.lsp" />
     <None Include="ListLabel\Rezepte\Rezeptur.lsv" />
     <None Include="ListLabel\Rezepte\Rezeptur.~lst" />
+    <None Include="ListLabel\Rohstoffe\RohstoffListe.lsp" />
+    <None Include="ListLabel\Rohstoffe\RohstoffListe.lsv" />
+    <None Include="ListLabel\Rohstoffe\RohstoffListe.~lst" />
     <None Include="Log\RollingFile.log4net" />
     <None Include="Log\Udp.log4net" />
     <None Include="WinBack.log4net">
@@ -1458,6 +1464,7 @@
     <Content Include="ListLabel\Produktion\Backzettel.lst" />
     <Content Include="ListLabel\Produktion\Teigzettel.lst" />
     <Content Include="ListLabel\Rezepte\Rezeptur.lst" />
+    <Content Include="ListLabel\Rohstoffe\RohstoffListe.lst" />
     <Content Include="ListLabel\wbStandard.lst" />
     <None Include="Resources\ArtikelDetails_32x32.png" />
     <None Include="Resources\ArtikelParameter_32x32 .png" />

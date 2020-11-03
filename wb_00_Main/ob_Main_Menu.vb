@@ -99,7 +99,10 @@ Public Class ob_Main_Menu
         AddHandler System.AppDomain.CurrentDomain.UnhandledException, AddressOf MyUnhandledExceptionHandler
         'TODO - Versuche die eigenen dll-Files in sep. Verzeichnis zu verlagern
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
+#If AssemblyResolve Then
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+#End If
 
         'Event-Handler Aufruf einer WinBack-Main-Form
         AddHandler wb_Main_Shared.eOpenForm, AddressOf OpenWinBackForm
@@ -111,6 +114,7 @@ Public Class ob_Main_Menu
 
         'Debug/Trace-Listener initialisieren
         AddTraceListener()
+
         'Event User-Login - Read System-Konfig
         AddEventBroker()
 
@@ -130,7 +134,7 @@ Public Class ob_Main_Menu
     End Sub
 
     Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
-        Return wb_Main_Shared.MyAssemblyResolve(sender, args)
+        Return wb_Main_Shared.MyAssemblyResolve(sender, args, GetType(ob_Main_Menu).Assembly)
     End Function
 
     ''' <summary>

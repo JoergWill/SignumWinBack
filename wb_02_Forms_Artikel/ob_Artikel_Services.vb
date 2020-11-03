@@ -13,13 +13,15 @@ Public Class ob_Artikel_Services
 
     Public Sub Initialize() Implements IExtension.Initialize
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
+#If AssemblyResolve Then
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-
+#End If
         oArticle = TryCast(ServiceProvider.GetService(GetType(IArticleService)), IArticleService)
     End Sub
 
     Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
-        Return wb_Main_Shared.MyAssemblyResolve(sender, args)
+        Return wb_Main_Shared.MyAssemblyResolve(sender, args, GetType(ob_Artikel_Services).Assembly)
     End Function
 
     Public Shared Function GetArtikelPreis(Nummer As String, KomponType As wb_Global.KomponTypen) As Double

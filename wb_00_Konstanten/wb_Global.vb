@@ -719,6 +719,8 @@
         EP1     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
         EP2     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
         EP9     'Keine Chargengrößen angegeben, Aufteilung nach Rezeptgröße
+        ART     'Artikelnummer nicht gefunden
+        REZ     'Rezeptnummer nicht gefunden
     End Enum
 
     Public Structure ChargenMengen

@@ -2408,6 +2408,21 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Action"></param>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_ProduktionPlanungError.ErrorText">
+ <summary>
+ Ergebnis der Chargen-Aufteilung als Text
+ 
+     OK      'Chargenaufteilung in Ordnung
+     EM1     'Nach Aufteilung in Optimalchargen bleibt eine Restmenge offen, die nicht produziert werden kann
+     EM2     'Nach Aufteilung in Optimalchargen wird mehr produziert als gefordert
+     EM3     'Nur eine Restcharge, Restmenge unterhalb Mindestchargen - Chargen gleicher Teige müssen zusammengefasst werden.
+     EP1     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
+     EP2     'Sollmenge nicht erreicht, Restmenge unterhalb Mindestcharge
+     EP9     'Keine Chargengrößen angegeben, Aufteilung nach Rezeptgröße
+     ART     'Artikelnummer nicht gefunden
+     REZ     'Rezeptnummer nicht gefunden    ''' </summary>
+ <returns></returns>
+</member>
 <member name="T:WinBack.wb_Produktion_virtuell">
  <summary>
  Enthält den komplette Produktionsplan als Liste von Produktionschritten (wb_Produktionsschritt).
@@ -6082,7 +6097,7 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Main_Shared.MyAssemblyResolve(System.Object,System.ResolveEventArgs)">
+<member name="M:WinBack.wb_Main_Shared.MyAssemblyResolve(System.Object,System.ResolveEventArgs,System.Reflection.Assembly)">
  <summary>
  MyAssemblyResolve-Event-Handler
  Anmerkung: Da ResolveEvents.requestingAssembly nicht funktioniert, wird geprüft, ob die angeforderte dll im 
@@ -6092,6 +6107,15 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="args"></param>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_Main_Shared.OpenForm(System.Object,System.String)">
+ <summary>
+ Öffnet die als Name übergebene Form innerhalb des (OrgaBack)WinBack-Main-Formulars. 
+ Dies ist notwendig, wenn von einer anderen Main-Form aus umgeschaltet werden soll. Damit kann von z.B. der Rohstoff-Verwaltung
+ direkt in die Artikel- oder Rezeptverwaltung umgeschaltet werden.
+ </summary>
+ <param name="Sender"></param>
+ <param name="FormName"></param>
 </member>
 <member name="T:WinBack.wb_PrinterDialog">
  <summary>

@@ -51,7 +51,7 @@ Public Class wb_Main_Shared
     ''' <param name="sender"></param>
     ''' <param name="args"></param>
     ''' <returns></returns>
-    Public Shared Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
+    Public Shared Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs, DefaultAssembly As Assembly) As Assembly
         Console.WriteLine("Resolving...")
 
         Dim sApplicationDirectory As String = wb_GlobalSettings.pAddInPath
@@ -64,20 +64,29 @@ Public Class wb_Main_Shared
         Dim sAssemblyPath As String
 
         If sAssemblyName.EndsWith(".resources") Then
-            Dim sResourceDirectory As String = IO.Path.Combine(sApplicationDirectory, sAssemblyCulture)
-            sAssemblyPath = IO.Path.Combine(sResourceDirectory, sAssemblyFileName)
+            'TODO Das WinBack-AddIn fällt hier in Belgien auf die Nase !!
+            Return DefaultAssembly
+
+            'Debug.Print("AssemblyName resources " & sAssemblyName)
+            'Dim sResourceDirectory As String = IO.Path.Combine(sApplicationDirectory, sAssemblyCulture)
+            'sAssemblyPath = IO.Path.Combine(sResourceDirectory, sAssemblyFileName)
         Else
             sAssemblyPath = IO.Path.Combine(sApplicationDirectory & "dll\", sAssemblyFileName)
-        End If
-
-        If IO.File.Exists(sAssemblyPath) Then
-            Return If(Debugger.IsAttached, Reflection.Assembly.LoadFile(sAssemblyPath), Assembly.Load(IO.File.ReadAllBytes(sAssemblyPath)))
-        Else
-            Return GetType(ob_Main_Menu).Assembly
+            If IO.File.Exists(sAssemblyPath) Then
+                Return If(Debugger.IsAttached, Reflection.Assembly.LoadFile(sAssemblyPath), Assembly.Load(IO.File.ReadAllBytes(sAssemblyPath)))
+            Else
+                Return DefaultAssembly
+            End If
         End If
     End Function
 
-
+    ''' <summary>
+    ''' Öffnet die als Name übergebene Form innerhalb des (OrgaBack)WinBack-Main-Formulars. 
+    ''' Dies ist notwendig, wenn von einer anderen Main-Form aus umgeschaltet werden soll. Damit kann von z.B. der Rohstoff-Verwaltung
+    ''' direkt in die Artikel- oder Rezeptverwaltung umgeschaltet werden.
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="FormName"></param>
     Public Shared Sub OpenForm(Sender As Object, FormName As String)
         RaiseEvent eOpenForm(Sender, FormName)
     End Sub

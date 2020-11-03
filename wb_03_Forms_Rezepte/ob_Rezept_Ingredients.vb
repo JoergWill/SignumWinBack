@@ -27,7 +27,10 @@ Public Class ob_RecipeProvider
 
     Public Sub Initialize() Implements IExtension.Initialize
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
+#If AssemblyResolve Then
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+#End If
         ' Diese Klasse als (benannten) Service registrieren
         ServiceProvider.AddService(GetType(IRecipeProvider), Me.ServiceName, Me)
         ' Den ServiceProvider so konfigurieren, dass er für diesen Service auf diese Implementierung zurückgreifen soll
@@ -35,7 +38,7 @@ Public Class ob_RecipeProvider
     End Sub
 
     Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
-        Return wb_Main_Shared.MyAssemblyResolve(sender, args)
+        Return wb_Main_Shared.MyAssemblyResolve(sender, args, GetType(ob_RecipeProvider).Assembly)
     End Function
 
     ''' <summary>

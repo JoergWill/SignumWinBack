@@ -18,6 +18,7 @@ Public Class wb_Produktion
     Private _RootProduktionsSchritt As New wb_Produktionsschritt(Nothing, "")
     Private _SQLProduktionsSchritt As New wb_Produktionsschritt(Nothing, "")
     Private _ProduktionsSchritt As wb_Produktionsschritt
+    Private _ProduktionsPlanungError As wb_ProduktionPlanungError
     Private _ChargenNummer() As Integer
 
     Private _VorProduktion As New ArrayList
@@ -504,10 +505,21 @@ Public Class wb_Produktion
             If Root.TeigChargen.Result = wb_Global.ChargenTeilerResult.OK Then
                 Return True
             Else
+                'Details für Ausgabe Fehlertext
+                _ProduktionsPlanungError = New wb_ProduktionPlanungError
+                _ProduktionsPlanungError.ArtikelNummer = Artikel.Nummer
+                _ProduktionsPlanungError.Artikelbezeichnung = Artikel.Bezeichnung
+                'Fehler Chargen-Teiler
+                _ProduktionsPlanungError.ErrorCode = Root.TeigChargen.Result
                 Return False
             End If
         Else
-                Return False
+            'Details für Ausgabe Fehlertext
+            _ProduktionsPlanungError = New wb_ProduktionPlanungError
+            'Fehler Artikel nicht gefunden
+            _ProduktionsPlanungError.ErrorCode = wb_Global.ChargenTeilerResult.ART
+            _ProduktionsPlanungError.ArtikelNummer = Nummer
+            Return False
         End If
     End Function
 
@@ -1006,7 +1018,7 @@ Public Class wb_Produktion
         Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
         Dim ArtikelNummer As String = ""
         Dim GesamtStueck As Integer = 0
-        Dim ErrorList As New List(Of String)
+        Dim ErrorList As New List(Of wb_ProduktionPlanungError)
         MsSQLdbProcedure_Produktionsauftrag = False
 
         'Datenbankverbindung öffnen MsSQL
@@ -1043,9 +1055,16 @@ Public Class wb_Produktion
                 'Progressbar Anzeige refresh
                 Windows.Forms.Application.DoEvents()
             Next
-            'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
-            If Not AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, 0.0, BestellDaten.MengeInProduktion, BestellDaten.ChargenTeiler, BestellDaten.Aufloesen, False, BestellDaten.AuftragsNummer, BestellDaten.BestellMenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText) Then
-                ErrorList.Add(BestellDaten.ArtikelNummer)
+
+            'Prüfen auf gültige Bestellmengen
+            If BestellDaten.Produktionsmenge > 0 Then
+                'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
+                If Not AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, 0.0, BestellDaten.MengeInProduktion, BestellDaten.ChargenTeiler, BestellDaten.Aufloesen, False, BestellDaten.AuftragsNummer, BestellDaten.BestellMenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText) Then
+                    ErrorList.Add(_ProduktionsPlanungError)
+                End If
+            Else
+                'Bestellmenge ist kleiner/gleich Null
+                Trace.WriteLine("Bestellmenge ist kleiner/gleich Null")
             End If
         End While
         'Progressbar ausblenden
@@ -1057,11 +1076,11 @@ Public Class wb_Produktion
         If ErrorList.Count > 0 Then
             'Fehlermeldung wird dynamisch erzeugt
             Dim ErrorText As String = ""
-            For Each ErrorArtikelNummer In ErrorList
+            For Each ProdPlanError In ErrorList
                 If ErrorText <> "" Then
-                    ErrorText = ErrorText & ", " & ErrorArtikelNummer
+                    ErrorText = ErrorText & vbCrLf & ProdPlanError.FehlerText
                 Else
-                    ErrorText = ErrorArtikelNummer
+                    ErrorText = ProdPlanError.FehlerText
                 End If
             Next
             'Fehler beim Einlesen der Produktionsdaten aus OrgaBack (Artikel in WinBack nicht vorhanden)

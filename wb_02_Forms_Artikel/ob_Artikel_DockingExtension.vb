@@ -284,8 +284,10 @@ Public Class ob_Artikel_DockingExtension
     ''' </remarks>
     Public Sub Initialize() Implements IExtension.Initialize
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
+#If AssemblyResolve Then
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-
+#End If
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
         _SubForms.Add("@ob_ArtikelDocking_ZuordnungRezept", Nothing)
@@ -299,7 +301,7 @@ Public Class ob_Artikel_DockingExtension
     End Sub
 
     Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
-        Return wb_Main_Shared.MyAssemblyResolve(sender, args)
+        Return wb_Main_Shared.MyAssemblyResolve(sender, args, GetType(ob_Artikel_DockingExtension).Assembly)
     End Function
 
     ''' <summary>
