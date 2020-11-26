@@ -25,6 +25,7 @@ Public Class ob_Main_Menu
     Private xForm As Form
     Private xLogger As New wb_TraceListener
     Private oRecipeProvider As New ob_RecipeProvider
+    Private ServerConnect As New wb_Main_ServerConnect
 
     ''' <summary>
     ''' Zentraler Excception-Handler für das AddIn.
@@ -61,8 +62,8 @@ Public Class ob_Main_Menu
     ''' </summary>
     ''' <param name="StackTrace"></param>
     ''' <param name="Message"></param>
-    ''' <param name="UnhadledException"></param>
-    Private Sub ExceptionHandler(StackTrace As String, Message As String, UnhadledException As Boolean)
+    ''' <param name="UnhandledException"></param>
+    Private Sub ExceptionHandler(StackTrace As String, Message As String, UnhandledException As Boolean)
         'Prüfen ob die Exception von WinBack oder von OrgaBack kommt
         If StackTrace.Contains("WinBack") Then
 
@@ -92,6 +93,7 @@ Public Class ob_Main_Menu
 
     ''' <summary>
     ''' Initialisierung Klasse
+    ''' AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
     ''' </summary>
     Public Sub Initialize() Implements IExtension.Initialize
 
@@ -99,13 +101,15 @@ Public Class ob_Main_Menu
         AddHandler System.AppDomain.CurrentDomain.UnhandledException, AddressOf MyUnhandledExceptionHandler
         'TODO - Versuche die eigenen dll-Files in sep. Verzeichnis zu verlagern
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
-        'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
 #If AssemblyResolve Then
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
 #End If
 
         'Event-Handler Aufruf einer WinBack-Main-Form
         AddHandler wb_Main_Shared.eOpenForm, AddressOf OpenWinBackForm
+
+        'Event-Handler SendMessage an WinBack-Background-Task
+        AddHandler wb_Main_Shared.eSendMessage, AddressOf SendMessageToServer
 
         oViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
         oMenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
@@ -125,12 +129,37 @@ Public Class ob_Main_Menu
 
         'Main-Menu erweitern
         AddMenu()
+
+        'Check Server-Background-Task. Das Fenster läuft unsichtbar im Hintergrund
+        ServerConnect.Show()
+        wb_GlobalSettings.WinBackBackgroudTaskConnected = ServerConnect.Connect(wb_GlobalSettings.MsSQLServerIP, wb_Global.WinBackServerTaskPort, False)
+
+        'Wenn der Admin angemeldet ist - wird das System geprüft und im Fehlerfall eine Meldung ausgegeben
+        If wb_GlobalSettings.OrgaBackEmployee = "SYS" Then
+            CheckSystem()
+        End If
+    End Sub
+
+    Private Sub CheckSystem()
         'Check winback-Datenbank
         Dim AdminCheck As New wb_Admin_CheckDatabase()
         If Not AdminCheck.CheckDatabase Then
-            MsgBox("Die aktuelle WinBack-Datenbank ist nicht kompatibel mit dieser AddIn-Version." & "Bitte WinBack-Datenbank updaten !!", MsgBoxStyle.Critical, "WinBack-AddIn")
+            MsgBox("Die aktuelle WinBack-Datenbank ist nicht kompatibel mit dieser AddIn-Version." & vbCrLf & "Bitte WinBack-Datenbank updaten !!", MsgBoxStyle.Critical, "WinBack-AddIn")
         End If
+        'Prüfen ob der WinBack-Backgroud-Task läuft
+        If Not wb_GlobalSettings.WinBackBackgroudTaskConnected Then
+            MsgBox("Der WinBack-Server-Task läuft nicht." & vbCrLf & "Bitte den Prozess auf dem Server " & wb_GlobalSettings.MsSQLServerIP & " starten !!", MsgBoxStyle.Critical, "WinBack-AddIn")
+        End If
+    End Sub
 
+    ''' <summary>
+    ''' Meldung an WinBack-Server-Background-Task senden
+    ''' </summary>
+    ''' <param name="Message"></param>
+    Private Sub SendMessageToServer(sender As Object, Message As String)
+        If wb_GlobalSettings.WinBackBackgroudTaskConnected Then
+            ServerConnect.SendData(Message)
+        End If
     End Sub
 
     Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
@@ -346,6 +375,7 @@ Public Class ob_Main_Menu
         ' aktuelle angemeldeter Mitarbeiter
         Dim sEmployee As String = TryCast(oSetting.GetSetting("Anmeldung.Mitarbeiter"), String)
         If Not String.IsNullOrEmpty(sEmployee) Then
+            wb_GlobalSettings.OrgaBackEmployee = sEmployee
 
             Dim oData As IData = oFactory.GetData
             Using oTable = oData.OpenDataTable(Database.Main, "SELECT Vorname, Nachname FROM Mitarbeiter WHERE MitarbeiterKürzel=@M", LockType.ReadOnly, sEmployee)

@@ -32,6 +32,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.AdminTimer_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.ArtikelDetails_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -343,6 +348,21 @@ WinBackAddin
 </summary>
 </member>
 <member name="P:WinBack.My.Resources.Resources.OrgaBackSortiment_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.ProdExport_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.ProdFehlerListe_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.ProdTeiler_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
@@ -907,6 +927,12 @@ Stacktrace:
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_KompRzChargen.StkGewicht">
+ <summary>
+ Stückgewicht in Gramm
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_KompRzChargen.RzNr">
  <summary>
  Rezeptnummer intern (Index)
@@ -945,7 +971,7 @@ Stacktrace:
 </member>
 <member name="P:WinBack.wb_KompRzChargen.Zuschnitt">
  <summary>
- Zuschnitt-Verlsut in Prozent (max 100%)
+ Zuschnitt-Verlust in Prozent (max 100%)
  </summary>
  <returns></returns>
 </member>
@@ -1215,6 +1241,59 @@ Stacktrace:
 <member name="P:WinBack.wb_SiloBef.KompNummer">
  <summary>
  Rohstoff-Nummer(ASCII) zum Silo
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Main_ServerConnect.Connect(System.String,System.Int32,System.Boolean)">
+ <summary>
+ IP-Connect zum WinBack-Server-Task-Prozess.
+ Versucht eine Verbindung zum WinBack-Server-Task über Port 22046 herzustellen. Die IP-Adresse entspricht der IP-Adresse des msSQL-Servers.
+ </summary>
+ <param name="ip"></param>
+ <param name="port"></param>
+</member>
+<member name="M:WinBack.wb_Main_ServerConnect.MessageRecieved(System.String)">
+ <summary>
+ Wertet die empfangenen Messages vom WinBack-Server-Task aus.
+ 
+     CHAT    - Chat-Funktion Client/Server
+     TIMR    - Änderungen in der Aktions-Timer-Tabelle
+     
+ </summary>
+ <param name="Message"></param>
+</member>
+<member name="M:WinBack.wb_Main_ServerTaskConnect.Connect(System.String,System.Int32,System.Boolean)">
+ <summary>
+ IP-Connect zum WinBack-Server-Task-Prozess.
+ Versucht eine Verbindung zum WinBack-Server-Task über Port 22046 herzustellen. Die IP-Adresse entspricht der IP-Adresse des msSQL-Servers.
+ </summary>
+ <param name="ip"></param>
+ <param name="port"></param>
+</member>
+<member name="M:WinBack.wb_Main_ServerTaskConnect.MessageRecieved(System.String)">
+ <summary>
+ Wertet die empfangenen Messages vom WinBack-Server-Task aus.
+ 
+     CHAT    - Chat-Funktion Client/Server
+     TIMR    - Änderungen in der Aktions-Timer-Tabelle
+     
+ </summary>
+ <param name="Message"></param>
+</member>
+<member name="P:WinBack.wb_Admin_TimerEdit.Index">
+ <summary>
+ Zeiger auf den Datensatz im Grid
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Admin_TimerEdit.TimerName">
+ <summary>
+ Task-Bezeichung aus Datenbank
+ </summary>
+</member>
+<member name="P:WinBack.wb_Admin_TimerEdit.TimerStart">
+ <summary>
+ Task Start
  </summary>
  <returns></returns>
 </member>
@@ -2408,7 +2487,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Action"></param>
  <returns></returns>
 </member>
-<member name="P:WinBack.wb_ProduktionPlanungError.ErrorText">
+<member name="P:WinBack.wb_ProduktionPlanungError.ChrTeilerResultToString">
  <summary>
  Ergebnis der Chargen-Aufteilung als Text
  
@@ -2491,6 +2570,21 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Name">String - Spalten-Name aus Datenbank</param>
  <param name="Value">Object - Wert aus Datenbank</param>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_TimerEvent.Check(System.String)">
+ <summary>
+ Prüft ob der übergebene Task-Name übereinstimmt und ob der Event ausgelöst werden soll
+ Wenn die Startzeit kleiner als die aktuelle Uhrzeit ist wird True zurückgegeben und die
+ Startzeit neu berechnet.
+ </summary>
+ <param name="sTask"></param>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_TimerEvent.SetRunFlag">
+ <summary>
+ Setzt das (interne)Flag _Running. 
+ Dient nur zur Anzeige der Task-Aktivität (Abfrage Status)
+ </summary>
 </member>
 <member name="M:WinBack.wb_Chargen_ChartTTS.MySqlLoadWbDaten(System.Int32,System.Int32,System.Int32,System.Int32)">
  <summary>
@@ -5933,6 +6027,13 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <returns>Theme - ThemeBase</returns>
 </member>
+<member name="P:WinBack.wb_GlobalSettings.OrgaBackEmployee">
+ <summary>
+ OrgaBack Mitarbeiter-Kürzel des aktuell angemeldeten Mitarbeiters
+ Wird geschrieben von OB_Main_Menu.UserLogin
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_GlobalSettings.SqlConWinBack">
  <summary>
  Liefert den Connection-String für die WinBack-Datenbank zurück.
@@ -6219,6 +6320,41 @@ Text aus Datenbank lesen - Übersetzung
  Fügt zwei zusätzliche Variablen in ListUundLabel ein:
      -Kopfzeile1
      -Kopfzeile2
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_PrinterPreview.BtnPrint_Click(System.Object,System.EventArgs)">
+ <summary>
+ Alle Seiten drucken. Ohne Abfrage der Print-Options
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_PrinterPreview.BtnAbbruch_Click(System.Object,System.EventArgs)">
+ <summary>
+ Vorschaufenster wieder schliessen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_PrinterPreview.BtnZoomIn_Click(System.Object,System.EventArgs)">
+ <summary>
+ Zoom - Ansicht vergrößern
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_PrinterPreview.BtnZoomOut_Click(System.Object,System.EventArgs)">
+ <summary>
+ Zoom - Ansicht verkleinern
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_PrinterPreview.BtnZoomFit_Click(System.Object,System.EventArgs)">
+ <summary>
+ Zoom auf Seitengröße
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -9081,7 +9217,7 @@ SQL-ExecuteScalar Statement ausführen
  <param name="sql">Select-Statement</param>
  <returns>False im Fehlerfall</returns>
 </member>
-<member name="M:WinBack.wb_Sql.sqlCommand(System.String,System.Boolean)">
+<member name="M:WinBack.wb_Sql.sqlCommand(System.String,System.Boolean,System.Boolean)">
  <summary>
  SQL-Kommando ausführen
  </summary>
@@ -9335,12 +9471,19 @@ Datenbank-Verbindung schliessen
  </summary>
  <param name="StackTrace"></param>
  <param name="Message"></param>
- <param name="UnhadledException"></param>
+ <param name="UnhandledException"></param>
 </member>
 <member name="M:WinBack.ob_Main_Menu.Initialize">
  <summary>
  Initialisierung Klasse
+ AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
  </summary>
+</member>
+<member name="M:WinBack.ob_Main_Menu.SendMessageToServer(System.Object,System.String)">
+ <summary>
+ Meldung an WinBack-Server-Background-Task senden
+ </summary>
+ <param name="Message"></param>
 </member>
 <member name="M:WinBack.ob_Main_Menu.AddEventBroker">
  <summary>
@@ -9666,6 +9809,18 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="P:WinBack.wb_Planung_ListeFehlerArtikel.ReadOK">
+ <summary>
+ Flag - Lesesn der Artikeldaten war erfolgreich. Artikel vorhanden
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Planung_ListeFehlerArtikel.DetailInfo(System.Object)">
+ <summary>
+ Anzeige der Artikel-Details.
+ Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
+ </summary>
+</member>
 <member name="P:WinBack.wb_Planung_Main.FormText">
  <summary>
  Fenster-Name (Caption). Wird von Init() aufgerufen
@@ -9768,6 +9923,31 @@ Datenbank-Verbindung schliessen
      
  </summary>
 </member>
+<member name="M:WinBack.wb_Planung_ListeFehler.ProdPlanErrorGrid_DoubleClick(System.Object,System.EventArgs)">
+ <summary>
+ Doppelklick auf die Fehlerzeile öffnet den entsprechenden Artikel
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="P:WinBack.wb_Planung_Shared.LongErrorList">
+ <summary>
+ Formatierte Liste aller Fehler als String
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Planung_Shared.ShortErrorList">
+ <summary>
+ Formatierte Liste aller fehlerhaften Artikelnummer als String
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Planung_Shared.Liste_Refresh(System.Object)">
+ <summary>
+ Fehlerliste anzeigen/aktualisieren
+ </summary>
+ <param name="sender"></param>
+</member>
 <member name="M:WinBack.ob_Admin_OrgaBackSettings.Initialize">
  <summary>
 Einstellungen für Admin-DB-Name, Main-DB-Name und Pfade werden beim Programm-Start in wb_Main_Menu
@@ -9779,6 +9959,47 @@ eingelesen
  Einstellungen für das WinBack-AddIn in OrgaBack Festwerten
  </summary>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_Admin_Timer.AktTimerFromServerTask(System.Object,System.String)">
+ <summary>
+ Der WinBack-Server-Task meldet eine Änderung der Aktions-Timer
+ Aktionen abhänging von EventArgs(e) ausführen:
+ 
+     Reload     - Daten neu einlesen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Admin_Timer.SetStatusAktionsTimer(System.String)">
+ <summary>
+ Setzt das (interne)Run-Flag für den angegebenen Task auf True. Alle anderen Tasks werden auf False gesetzt
+ </summary>
+ <param name="Task"></param>
+</member>
+<member name="M:WinBack.wb_Admin_Timer.LoadAktionsTimer">
+ <summary>
+ Läd die Daten aus der Tabelle winback.AktionsTimer in tArray
+ </summary>
+</member>
+<member name="M:WinBack.wb_Admin_Timer.ShowAktionsTimer">
+ <summary>
+ Zeigt das aktualisierte Array der Timer-Einstellungen aus der Tabelle winback.AktionsTimer
+ </summary>
+</member>
+<member name="M:WinBack.wb_Admin_Timer.AktionsTimerDoubleClick(System.Object,System.Windows.Forms.DataGridViewCellMouseEventArgs)">
+ <summary>
+ Doppelclick auf Aktions-Timer-Tabelle.
+ Edit-Fenster Start-Zeit, Zyklus und Sonderfunktionen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Admin_Timer.EditTimerEventClosing(System.Object,System.EventArgs)">
+ <summary>
+ Fenster Edit Timer-Events wird geschlossen
+ </summary>
+ <param name="Sender"></param>
+ <param name="e"></param>
 </member>
 <member name="M:WinBack.wb_Admin_CheckDatabase.CheckResultText(System.Boolean,System.String)">
  <summary>

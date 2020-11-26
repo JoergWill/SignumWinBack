@@ -16,6 +16,7 @@ Public Class wb_Admin_Main
     Public AdminUpdateWinBack As wb_Admin_UpdateWinBack
     Public AdminDatensicherung As wb_Admin_Datensicherung
     Public AdminEditIni As wb_Admin_EditIni
+    Public AdminTimer As wb_Admin_Timer
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         MyBase.New(ServiceProvider)
@@ -66,6 +67,7 @@ Public Class wb_Admin_Main
                 oGrp.AddButton("btnUpdateWinBack", "Update WinBack-AddIn", "", My.Resources.UpdateWinBack_32x32, My.Resources.UpdateWinBack_32x32, AddressOf btnAdminUpdateWinBack)
                 oGrp.AddButton("btnListLabel", "List&Label Designer", "", My.Resources.ListUndLabel_16x16, My.Resources.ListUndLabel_32x32, AddressOf btnListUndLabelDesigner)
                 oGrp.AddButton("btnEditWinBackIni", "Edit Konfiguration", "", My.Resources.EditKonfig_16x16, My.Resources.EditKonfig_32x32, AddressOf btnEditKonfig)
+                oGrp.AddButton("btnEditTimer", "WinBack-Scheduler", "", My.Resources.AdminTimer_32x32, My.Resources.AdminTimer_32x32, AddressOf btnEditTimer)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -114,6 +116,11 @@ Public Class wb_Admin_Main
                 AdminEditIni = New wb_Admin_EditIni
                 _DockPanelList.Add(AdminEditIni)
                 Return AdminEditIni
+
+            Case "WinBack.wb_Admin_Timer"
+                AdminTimer = New wb_Admin_Timer
+                _DockPanelList.Add(AdminTimer)
+                Return AdminTimer
 
             Case Else
                 Return Nothing
@@ -178,6 +185,13 @@ Public Class wb_Admin_Main
         AdminEditIni.Show(DockPanel, DockState.DockRight)
     End Sub
 
+    Private Sub btnEditTimer()
+        If IsNothingOrDisposed(AdminTimer) Then
+            AdminTimer = New wb_Admin_Timer
+        End If
+        AdminTimer.Show(DockPanel, DockState.DockRight)
+    End Sub
+
     ''' <summary>
     ''' Diese Function wird aufgerufen, wenn das Fenster geschlossen werden soll.
     ''' </summary>
@@ -197,6 +211,7 @@ Public Class wb_Admin_Main
         wb_Functions.CloseAndDisposeSubForm(AdminUpdateWinBack)
         wb_Functions.CloseAndDisposeSubForm(AdminDatensicherung)
         wb_Functions.CloseAndDisposeSubForm(AdminEditIni)
+        wb_Functions.CloseAndDisposeSubForm(AdminTimer)
         wb_Functions.CloseAndDisposeSubForm(AdminSync)
 
         'Fenster darf geschlossen werden

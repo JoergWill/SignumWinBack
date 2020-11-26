@@ -34,7 +34,7 @@ Partial Class Main
         Me.BtnAdmin = New System.Windows.Forms.Button()
         Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
-        Me.btnCloud = New System.Windows.Forms.Button()
+        Me.BtnCloud = New System.Windows.Forms.Button()
         Me.BtnTimer = New System.Windows.Forms.Button()
         Me.RemoveTextTimer = New System.Windows.Forms.Timer(Me.components)
         Me.lblServerStatus = New System.Windows.Forms.Label()
@@ -184,22 +184,22 @@ Partial Class Main
         Me.SaveFileDialog.FileName = "*.sql;*.bz2"
         Me.SaveFileDialog.Title = "Datensicherung WinBack"
         '
-        'btnCloud
+        'BtnCloud
         '
-        Me.btnCloud.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnCloud.BackColor = System.Drawing.Color.Gray
-        Me.btnCloud.FlatAppearance.BorderColor = System.Drawing.Color.Gray
-        Me.btnCloud.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnCloud.ForeColor = System.Drawing.Color.White
-        Me.btnCloud.Image = Global.WinBackServerTask.My.Resources.Resources.Cloud
-        Me.btnCloud.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.btnCloud.Location = New System.Drawing.Point(12, 707)
-        Me.btnCloud.Name = "btnCloud"
-        Me.btnCloud.Size = New System.Drawing.Size(110, 65)
-        Me.btnCloud.TabIndex = 8
-        Me.btnCloud.Text = "Nährwerte-Cloud"
-        Me.btnCloud.TextAlign = System.Drawing.ContentAlignment.BottomLeft
-        Me.btnCloud.UseVisualStyleBackColor = False
+        Me.BtnCloud.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtnCloud.BackColor = System.Drawing.Color.Gray
+        Me.BtnCloud.FlatAppearance.BorderColor = System.Drawing.Color.Gray
+        Me.BtnCloud.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnCloud.ForeColor = System.Drawing.Color.White
+        Me.BtnCloud.Image = Global.WinBackServerTask.My.Resources.Resources.Cloud
+        Me.BtnCloud.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.BtnCloud.Location = New System.Drawing.Point(12, 707)
+        Me.BtnCloud.Name = "BtnCloud"
+        Me.BtnCloud.Size = New System.Drawing.Size(110, 65)
+        Me.BtnCloud.TabIndex = 8
+        Me.BtnCloud.Text = "Nährwerte-Cloud"
+        Me.BtnCloud.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnCloud.UseVisualStyleBackColor = False
         '
         'BtnTimer
         '
@@ -321,7 +321,7 @@ Partial Class Main
         Me.tbMessages.Location = New System.Drawing.Point(0, 25)
         Me.tbMessages.Multiline = True
         Me.tbMessages.Name = "tbMessages"
-        Me.tbMessages.Size = New System.Drawing.Size(334, 565)
+        Me.tbMessages.Size = New System.Drawing.Size(334, 534)
         Me.tbMessages.TabIndex = 0
         Me.tbMessages.TabStop = False
         '
@@ -527,7 +527,7 @@ Partial Class Main
         Me.Controls.Add(Me.BtnClients)
         Me.Controls.Add(Me.lblServerStatus)
         Me.Controls.Add(Me.BtnTimer)
-        Me.Controls.Add(Me.btnCloud)
+        Me.Controls.Add(Me.BtnCloud)
         Me.Controls.Add(Me.BtnAdmin)
         Me.Controls.Add(Me.Wb_TabControl)
         Me.Controls.Add(Me.BtnExit)
@@ -577,7 +577,7 @@ Partial Class Main
     Friend WithEvents tbMessages As TextBox
     Friend WithEvents lblClients As Label
     Friend WithEvents Label2 As Label
-    Friend WithEvents btnCloud As Button
+    Friend WithEvents BtnCloud As Button
     Friend WithEvents TabPageCloud As TabPage
     Friend WithEvents lblCloud As Label
     Friend WithEvents BtnTimer As Button

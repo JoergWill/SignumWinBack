@@ -70,10 +70,10 @@ Public Class wb_Linien_Main
                 oGrp.AddButton("BtnLinienAutoInstall", "AutoInstall", "Alle Linien automatisch installieren", My.Resources.LinienAutoInstall_32x32, My.Resources.LinienAutoInstall_32x32, AddressOf btnLinienAutoInstall)
 
                 'TODO in der Produktiv-Version auskommentiert
-                ''Gruppe virtuelle Linien
-                'Dim aGrp = oNewTab.AddGroup("GrpAutoLinien", "Virtuelle Linien")
-                ''Button Start
-                'aGrp.AddButton("BtnLinienAutoStart", "Start", "Virtuelle Linien starten", My.Resources.LinienAuto_32x32, My.Resources.LinienAuto_32x32, AddressOf btnLinienAuto)
+                'Gruppe virtuelle Linien
+                Dim aGrp = oNewTab.AddGroup("GrpAutoLinien", "Virtuelle Linien")
+                'Button Start
+                aGrp.AddButton("BtnLinienAutoStart", "Start", "Virtuelle Linien starten", My.Resources.LinienAuto_32x32, My.Resources.LinienAuto_32x32, AddressOf btnLinienAuto)
 
                 _ContextTabs.Add(oNewTab)
             End If

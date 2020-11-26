@@ -24,37 +24,48 @@ Public Class wb_TimerGridView
         InitData(False)
     End Sub
 
+    Public Sub RefreshGrid(ByVal xArray As ArrayList)
+        'Daten in das lokale Array übertragen
+        GridArray = xArray.ToArray
+        FillGrid()
+    End Sub
+
     Public Overrides Sub FillGrid()
-        'Spalten erstellen
-        MyBase.FillColumns()
+        Try
+            'Spalten erstellen
+            MyBase.FillColumns()
 
-        ' Die Arraydaten werden in das GridView eingetragen
-        Dim rows As DataGridViewRowCollection = MyBase.Rows
-        Dim MaxRowCount As Integer = UBound(GridArray)
+            ' Die Arraydaten werden in das GridView eingetragen
+            Dim rows As DataGridViewRowCollection = MyBase.Rows
+            Dim MaxRowCount As Integer = UBound(GridArray)
 
-        ' Daten Löschen
-        MyBase.Rows.Clear()
-        MyBase.RowCount = 0
+            ' Daten Löschen
+            MyBase.Rows.Clear()
+            MyBase.RowCount = 0
 
-        ' Die erforderliche Anzahl Zeilen in einem Rutsch erstellen:
-        MyBase.Rows.Add(MaxRowCount + 1)
+            ' Daten ins DatagridView eintragen
+            If MaxRowCount >= 0 Then
+                ' Die erforderliche Anzahl Zeilen in einem Rutsch erstellen:
+                MyBase.Rows.Add(MaxRowCount + 1)
 
-        ' Daten ins DatagridView eintragen
-        For r = 0 To MaxRowCount
-            With rows(r)
-                ' Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
-                .MinimumHeight = 20
-                ' Strich zwischen den Zeilen  
-                .DividerHeight = 0
+                ' Daten ins DatagridView eintragen
+                For r = 0 To MaxRowCount
+                    With rows(r)
+                        ' Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
+                        .MinimumHeight = 20
+                        ' Strich zwischen den Zeilen  
+                        .DividerHeight = 0
 
-                .Cells(COLSORT).Value = GridArray(r).Sort
-                .Cells(COLTASK).Value = GridArray(r).Bezeichnung
-                .Cells(COLSTRT).Value = GridArray(r).sStartzeit
-                .Cells(COLPRDE).Value = GridArray(r).Periode
-                .Cells(COLSTAT).Value = GridArray(r).Status
+                        .Cells(COLSORT).Value = GridArray(r).Sort
+                        .Cells(COLTASK).Value = GridArray(r).Bezeichnung
+                        .Cells(COLSTRT).Value = GridArray(r).sStartzeit
+                        .Cells(COLPRDE).Value = GridArray(r).Periode
+                        .Cells(COLSTAT).Value = GridArray(r).Status
 
-            End With
-        Next
-
+                    End With
+                Next
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
 End Class

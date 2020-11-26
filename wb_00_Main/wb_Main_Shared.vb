@@ -1,10 +1,13 @@
-﻿Imports System.Reflection
+﻿
+Imports System.Reflection
 
 Public Class wb_Main_Shared
     Private Shared _MainProgress As wb_Main_Progress = Nothing
     Private Shared _MainProgressVisible As Boolean = False
-    Public Shared Event eOpenForm(sender As Object, FormName As String)
 
+    Public Shared Event eOpenForm(sender As Object, FormName As String)
+    Public Shared Event eTimer(sender As Object, e As String)
+    Public Shared Event eSendMessage(sender As Object, Message As String)
 
     Public Shared Property MainProgressVisible
         Get
@@ -90,4 +93,13 @@ Public Class wb_Main_Shared
     Public Shared Sub OpenForm(Sender As Object, FormName As String)
         RaiseEvent eOpenForm(Sender, FormName)
     End Sub
+
+    Public Shared Sub TimerMsg(Sender As Object, e As String)
+        RaiseEvent eTimer(Sender, e)
+    End Sub
+
+    Public Shared Sub SendMessage(Sender As Object, Message As String)
+        RaiseEvent eSendMessage(Sender, Message)
+    End Sub
+
 End Class

@@ -23,8 +23,8 @@ Public Class wb_TimerEvent
     ''' </summary>
     ''' <param name="sTask"></param>
     ''' <returns></returns>
-    Public Function Check(sTask As String, CheckRunning As Boolean) As Boolean
-        If (sTask = _Task) And _Startzeit < Now And Status = wb_Global.wbAktionsTimerStatus.Enabled And (Not CheckRunning Or Not _Running) Then
+    Public Function Check(sTask As String) As Boolean
+        If (sTask = _Task) And _Startzeit < Now And Status = wb_Global.wbAktionsTimerStatus.Enabled Then
             'Startzeit neu berechnen
             Startzeit = _Startzeit.AddSeconds(_Periode)
             'wenn die neue Startzeit in der Vergangenheit liegt wird neu berechnet
@@ -105,6 +105,21 @@ Public Class wb_TimerEvent
             _Periode = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Setzt das (interne)Flag _Running. 
+    ''' Dient nur zur Anzeige der Task-Aktivität (Abfrage Status)
+    ''' </summary>
+    Public WriteOnly Property SetRunFlag As Boolean
+        Set(value As Boolean)
+            If value Then
+                _Running = True
+            Else
+                _Running = False
+            End If
+        End Set
+    End Property
+
 
     Public ReadOnly Property Status As wb_Global.wbAktionsTimerStatus
         Get

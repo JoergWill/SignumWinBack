@@ -1,6 +1,4 @@
-﻿Imports WinBack
-Public Class wb_TimerEdit
-
+﻿Public Class wb_Admin_TimerEdit
     Const SecondsPerHour = 3600
     Const SecondsPerDay = 86400
     Const SecondsPerYear = 31536000
@@ -107,7 +105,7 @@ Public Class wb_TimerEdit
                 Case TimerEinheit.Jahre
                     Return nmEventZyklus.Value * SecondsPerYear
                 Case Else
-                    Return wb_global.undefined
+                    Return wb_Global.UNDEFINED
 
             End Select
         End Get
@@ -231,4 +229,5 @@ Public Class wb_TimerEdit
     Private Sub BtnRunNow_Click(sender As Object, e As EventArgs) Handles BtnRunNow.Click
         RaiseEvent RunTimer(sender, Index)
     End Sub
+
 End Class

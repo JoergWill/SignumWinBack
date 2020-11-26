@@ -43,6 +43,7 @@ Public Class wb_GlobalSettings
     Private Shared _pDatenPath As String = ""
     Private Shared _pExportPath As String = Nothing
     Private Shared _OrgaBackTheme As Integer = -1
+    Private Shared _OrgaBackEmployee As String
 
     Private Shared _OrgaBackDBVersion As String = Nothing
     Private Shared _WinBackDBVersion As String = Nothing
@@ -108,6 +109,7 @@ Public Class wb_GlobalSettings
     Private Shared _ImportPathPistor As String = Nothing
     Private Shared _ArtikelVerarbeitungsHinweisPath As String = Nothing
     Private Shared _ExcelInstalled As Integer = wb_Global.UNDEFINED
+    Private Shared _WinBackBackgroudTaskConnected As Boolean = False
 
     Private Shared _Mandaten As New List(Of obMandant)
 
@@ -266,6 +268,20 @@ Public Class wb_GlobalSettings
     Public Shared WriteOnly Property OrgaBackTheme As Integer
         Set(value As Integer)
             _OrgaBackTheme = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' OrgaBack Mitarbeiter-Kürzel des aktuell angemeldeten Mitarbeiters
+    ''' Wird geschrieben von OB_Main_Menu.UserLogin
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property OrgaBackEmployee As String
+        Get
+            Return _OrgaBackEmployee
+        End Get
+        Set(value As String)
+            _OrgaBackEmployee = value
         End Set
     End Property
 
@@ -1736,6 +1752,15 @@ Public Class wb_GlobalSettings
                 _NwtOptimizeZutatenListe = 0
             End If
             setWinBackIni("Artikel", "ZutatenListeOptimieren", _NwtOptimizeZutatenListe)
+        End Set
+    End Property
+
+    Public Shared Property WinBackBackgroudTaskConnected As Boolean
+        Get
+            Return _WinBackBackgroudTaskConnected
+        End Get
+        Set(value As Boolean)
+            _WinBackBackgroudTaskConnected = value
         End Set
     End Property
 End Class

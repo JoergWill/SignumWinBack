@@ -28,7 +28,7 @@ Public Class Main
     End Enum
 
     Dim clients As New Hashtable 'new database (hashtable) to hold the clients
-    Dim Export As New ob_Chargen_Produziert
+    'Dim Export As New ob_Chargen_Produziert
     Dim Import As New ob_ChargenBestand
     Dim ServerTaskState As ServerTaskErrors = ServerTaskErrors.OK
 
@@ -42,6 +42,7 @@ Public Class Main
 
     Private cntCounter As Integer
     Private cntMySql As Integer = 0
+    Private cntRefreshAktionsTimerGrid As Integer = 0
     Private maxCloudTxtLines As Integer = 10
 
     Private WithEvents AktionsTimerGrid As wb_TimerGridView
@@ -92,9 +93,47 @@ Public Class Main
     ''' Zeile in TextBox anfügen. Wird in eine separate
     ''' Funktion ausgelagert, damit ein Invoke möglich wird.
     ''' </summary>
-    ''' <param name="text">String</param>
-    Public Sub TextBoxadd(text As String)
-        tbMessages.Text &= text
+    ''' <param name="Text">String</param>
+    Public Sub TextBoxadd(Text As String)
+        'Text anzeigen
+        tbMessages.Text &= Text & vbCrLf
+        'Empfangene Message verarbeiten
+        tbMessage_TextReceived(Text)
+    End Sub
+
+    ''' <summary>
+    ''' Client-Message received. Textbox has Changed.
+    ''' Der Text wird als String aus dem Sub TextBoxAdd übergeben. Die Weiterleitung per Event funktioniert nicht immer zuverlässig !!
+    ''' </summary>
+    Private Sub tbMessage_TextReceived(RecText As String) 'Handles tbLastMessage.TextChanged
+        Dim msg() As String = RecText.Split("|")
+
+        'mögliche Übertragungsfehler abfangen
+        If msg.Length >= 2 Then
+            Try
+                'Message-Type
+                Select Case msg(0) 'process it by the first element in the split array
+
+                    Case "TIMR"
+                        'WinBack-Aktions-Timer-Tabelle. Änderungen/Events
+                        Select Case msg(1)
+
+                            Case "REFRESH"
+                                'Reload Timer
+                                LoadAktionsTimer()
+                                'Refresh Anzeige
+                                AktionsTimerGrid.RefreshGrid(tArray)
+
+                            Case "OFFICECHARGEN"
+                                'Reload Timer-Anzeige
+                                MainTimer_SetResult("office_chargen", msg(2))
+                                'cntRefreshAktionsTimerGrid = 2
+                        End Select
+
+                End Select
+            Catch
+            End Try
+        End If
     End Sub
 
     ''' <summary>
@@ -177,7 +216,7 @@ Public Class Main
         End If
 
         'Abfrage produzierte Chargen und verbrauchte Rohstoffe
-        If MainTimer_Check("office_chargen") Then
+        If MainTimer_Check("office_chargen", True) Then
             Main_Timer_OfficeChargen()
         End If
 
@@ -209,6 +248,16 @@ Public Class Main
                     lblServerStatus.Text &= " " & AktUpdateNummer
                 End If
                 lblServerStatus.ForeColor = Color.LimeGreen
+        End Select
+
+        'Timer-Grid Refresh
+        Select Case cntRefreshAktionsTimerGrid
+            Case > 0
+                cntRefreshAktionsTimerGrid -= 1
+            Case 0
+                'Daten im Grid aktualisieren
+                RefreshAktionsTimer()
+                cntRefreshAktionsTimerGrid = -1
         End Select
 
         'Timer wieder einschalten
@@ -327,14 +376,28 @@ Public Class Main
         'Daten im Grid aktualisieren
         RefreshAktionsTimer()
 
-        'Export Chargen ab TW-Nr.x
-        Dim TWNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
-        AktTimerEvent.Str2 = Export.ExportChargen(TWNr).ToString
-        'Nach Ende Export neue Startzeit setzen
-        AktTimerEvent.Endezeit = Now
-        AktTimerEvent.MySQLdbUpdate_Fields()
+        'Export Chargen Asynchron aufrufen
+        Dim Task = New Task(AddressOf Main_Timer_OfficeChargenAsync)
+        Task.Start()
+        Task.Wait()
+
         'Daten im Grid aktualisieren
         RefreshAktionsTimer()
+    End Sub
+    Async Sub Main_Timer_OfficeChargenAsync()
+        'Export Chargen ab TW-Nr.x
+        Dim TWNr As Integer = wb_Functions.StrToInt(AktTimerEvent.Str2)
+
+        'Export Chargen Asynchron aufrufen
+        Dim Export As New ob_Chargen_Produziert
+        Dim Result = Await Task.Run(Function() Export.ExportChargen(TWNr))
+        'Fertigmeldung aus Task weitermelden an Main-Task
+        tbMessages.Invoke(New addText(AddressOf TextBoxadd), New Object() {"TIMR|OFFICECHARGEN|" & Result})
+
+        'Warten/verarbeiten
+        Application.DoEvents()
+        'Objekt wieder löschen und freigeben
+        Export = Nothing
     End Sub
 
     ''' <summary>
@@ -412,14 +475,31 @@ Public Class Main
     ''' </summary>
     ''' <param name="s"></param>
     ''' <returns></returns>
-    Private Function MainTimer_Check(s As String) As Boolean
+    Private Function MainTimer_Check(s As String, Optional CheckRunning As Boolean = False) As Boolean
+        'Schleife über alle Timer-Events
         For Each AktTimerEvent In tArray
-            If AktTimerEvent.Check(s) Then
+            If AktTimerEvent.Check(s, CheckRunning) Then
                 Return True
             End If
         Next
         Return False
     End Function
+
+    Private Sub MainTimer_SetResult(s As String, Result As String)
+        'Schleife über alle Timer-Events
+        For Each tEvent As wb_TimerEvent In tArray
+            If tEvent.Task = s Then
+                tEvent.Str2 = Result
+                'Neue Startzeit setzen
+                tEvent.Endezeit = Now
+                tEvent.MySQLdbUpdate_Fields()
+                'Ende Schleife
+                Exit For
+            End If
+        Next
+        'Anzeige aktualisieren
+        RefreshAktionsTimer()
+    End Sub
 
     ''' <summary>
     ''' Löscht die Status-Anzeige nach 10 Sekunden. Danach wird wieder die Uhrzeit 
@@ -448,9 +528,34 @@ Public Class Main
         'Refresh Tabelle nur wenn die entsprechende Seite sichtbar ist
         If TabPageTimer.Visible Then
             AktionsTimerGrid.FillGrid()
-            'Zeit zum Zeichnen
-            System.Threading.Thread.Sleep(100)
+            Application.DoEvents()
         End If
+        'Message an alle verbundenen WinBack-AddIn oder WinBack-Office-Pro Clients
+        SendStartAktionsTimer()
+    End Sub
+
+    ''' <summary>
+    ''' Message an alle verbundenen WinBack-AddIn oder WinBack-Office-Pro Clients
+    ''' Diese Meldung wird nur vom Server verschickt.
+    ''' </summary>
+    Private Sub SendStartAktionsTimer()
+        'Durchsuche alle Timer-Einträge
+        For Each AktTimerEvent In tArray
+            'aktiven Task gefunden
+            If AktTimerEvent.Status = wb_Global.wbAktionsTimerStatus.Running Then
+                'Meldung an alle angeschlossenen Clients
+                SendData("TIMR|RUN|" & AktTimerEvent.Task)
+                'Ende der Duchsage
+                Exit Sub
+            End If
+        Next
+        'Meldung an alle angeschlossenen Clients - keine aktiven Tasks
+        SendData("TIMR|RUN|NO")
+    End Sub
+
+    Private Sub SendRefreshAktionsTimer()
+        'Message an alle verbundenen Clients
+        SendData("TIMR|REFRESH")
     End Sub
 
     Private Sub AktionsTimerDrawCell(ByVal sender As Object, ByVal e As DataGridViewCellPaintingEventArgs) Handles AktionsTimerGrid.CellPainting
@@ -481,7 +586,7 @@ Public Class Main
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub AktionsTimerDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles AktionsTimerGrid.CellMouseDoubleClick
-        Dim Grid = DirectCast(sender, DataGridView)
+        'Dim Grid = DirectCast(sender, DataGridView)
 
         If (e.RowIndex >= 0) Then
             'wenn das Fenster noch nicht vorhanden ist - erzeugen
@@ -537,15 +642,30 @@ Public Class Main
         DirectCast(tArray(i), wb_TimerEvent).MySQLdbUpdate_Fields()
         'Eingabe-Fenster wieder freigeben
         EditTimer = Nothing
+        'Anzeige der Tabelle in allen verbundenen Clients (Message)
+        SendRefreshAktionsTimer()
+    End Sub
+
+    ''' <summary>
+    ''' One-SHot. Startet den Task unabhängig vom Eintrag in der Aktions-Timer-Tabelle.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="Index"></param>
+    Private Sub EditTimerEventRunNow(sender As Object, Index As Integer) Handles EditTimer.RunTimer
+        If Index > 0 And Index < tArray.Count Then
+            DirectCast(tArray(Index), wb_TimerEvent).RunNow = True
+        End If
     End Sub
 
     ''' <summary>
     ''' Läd die Daten aus der Tabelle winback.AktionsTimer in tArray
     ''' </summary>
     Private Sub LoadAktionsTimer()
+        'Array löschen
+        tArray.Clear()
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-        If winback.sqlSelect(wb_Sql_Selects.sqlAktionsTimer) Then
+        If winback.sqlSelect(wb_sql_Selects.sqlAktionsTimer) Then
             While winback.Read
                 Dim _Item As New wb_TimerEvent
                 _Item.MySQLdbRead(winback.MySqlRead)
@@ -585,7 +705,7 @@ Public Class Main
         wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
 
         'IP-Server starten
-        Dim listener As New System.Threading.Thread(AddressOf listen) 'initialize a new thread for the listener so our GUI doesn't lag
+        Dim listener As New System.Threading.Thread(AddressOf Listen) 'initialize a new thread for the listener so our GUI doesn't lag
         listener.IsBackground = True
         listener.Start(wb_Global.WinBackServerTaskPort) 'start the listener, with the port specified as 22046
 
@@ -736,7 +856,7 @@ Public Class Main
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub btnCloud_Click(sender As Object, e As EventArgs) Handles btnCloud.Click
+    Private Sub BtnCloud_Click(sender As Object, e As EventArgs) Handles BtnCloud.Click
         Wb_TabControl.SelectedTab = TabPageCloud
         Wb_TabControl.Show()
     End Sub
@@ -753,7 +873,7 @@ Public Class Main
             Dim mysql As New WinBack.wb_sql_BackupRestore
             '            AddHandler mysql.statusChanged, AddressOf Backup_Restore_Status
             'Datenrücksicherung starten
-            mysql.datenruecksicherung(fileName)
+            mysql.DatenRuecksicherung(fileName)
             'Status-Text nach 10 Sekunden wieder löschen
             '            RemoveHandler mysql.statusChanged, AddressOf Backup_Restore_Status
             RemoveTextTimer.Enabled = True
@@ -795,14 +915,14 @@ Public Class Main
     ''' Client wird eine neue IP-Verbindung erzeugt.
     ''' </summary>
     ''' <param name="port"></param>
-    Sub listen(ByVal port As Integer)
+    Sub Listen(ByVal port As Integer)
         Try
             Dim t As New TcpListener(IPAddress.Any, port) 'declare a new tcplistener
             t.Start() 'start the listener
             Do
                 Dim client As New WinBack.wb_TcpIPConnection(t.AcceptTcpClient) 'initialize a new connected client
-                AddHandler client.gotmessage, AddressOf recieved 'add the handler which will raise an event when a message is recieved
-                AddHandler client.disconnected, AddressOf disconnected 'add the handler which will raise an event when the client disconnects
+                AddHandler client.gotmessage, AddressOf Received 'add the handler which will raise an event when a message is recieved
+                AddHandler client.disconnected, AddressOf Disconnected 'add the handler which will raise an event when the client disconnects
             Loop Until False
         Catch
         End Try
@@ -813,16 +933,22 @@ Public Class Main
     ''' </summary>
     ''' <param name="msg">String - Empfangene Nachricht vom CLient</param>
     ''' <param name="client">TcpIPConnection - Client Instanz</param>
-    Sub recieved(ByVal msg As String, ByVal client As wb_TcpIPConnection)
+    Sub Received(ByVal msg As String, ByVal client As wb_TcpIPConnection)
         Dim message() As String = msg.Split("|") 'make an array with elements of the message recieved
         Select Case message(0) 'process by the first element in the array
+
             Case "CHAT" 'if it's CHAT
                 tbMessages.Invoke(New addText(AddressOf TextBoxadd), New Object() {client.name & " says: " & " " & message(1) & vbNewLine})
-                sendallbutone(client.name & " says" & message(1), client.name) 'this will update all clients with the new message
-                '                                       and it will not send the message to the client it recieved it from :)
+                SendAllButOne(client.name & " says" & message(1), client.name) 'this will update all clients with the new message and it will not send the message to the client it recieved it from :)
+
             Case "LOGIN" 'A client has connected
                 clients.Add(client, client.name) 'add the client to our database (a hashtable)
                 lbClientList.Invoke(New addListBoxDelegate(AddressOf ListBoxadd), New Object() {client.name}) 'add the client to the listbox to display the new user
+
+            Case "TIMR" 'A (client)message from wb_Admin_Timer
+                tbMessages.Invoke(New addText(AddressOf TextBoxadd), New Object() {msg})
+                SendAllButOne(message(0), client.name) 'this will update all clients with the new message and it will not send the message to the client it recieved it from :)
+
         End Select
     End Sub
 
@@ -831,7 +957,7 @@ Public Class Main
     ''' Die ListBox wird aktualisiert.
     ''' </summary>
     ''' <param name="client"></param>
-    Sub disconnected(ByVal client As wb_TcpIPConnection) 'if a client is disconnected, this is raised
+    Sub Disconnected(ByVal client As wb_TcpIPConnection) 'if a client is disconnected, this is raised
         clients.Remove(client) 'remove the client from the hashtable
         lbClientList.Invoke(New remListBoxDelegate(AddressOf ListBoxRemove), New Object() {client.name}) 'remove it from our listbox
     End Sub
@@ -840,12 +966,13 @@ Public Class Main
     ''' Sende eine Message an alle verbundenen Clients
     ''' </summary>
     ''' <param name="message">String - Message</param>
-    Sub senddata(ByVal message As String) 'this sends a message to all connected clients
+    Sub SendData(ByVal message As String) 'this sends a message to all connected clients
         Dim entry As DictionaryEntry 'declare a variable of type dictionary entry
         Try
             For Each entry In clients 'for each dictionary entry in the hashtable with all clients (clients)
                 Dim cli As wb_TcpIPConnection = CType(entry.Key, wb_TcpIPConnection) ' cast the hashtable entry to a connection class
                 cli.senddata(message) 'send the message to it
+                Debug.Print("SendData " & cli.name & "/" & message)
             Next  'go to the next client
         Catch
         End Try
@@ -856,7 +983,7 @@ Public Class Main
     ''' </summary>
     ''' <param name="message"></param>
     ''' <param name="exemptclientname"></param>
-    Sub sendallbutone(ByVal message As String, ByVal exemptclientname As String) 'this sends to all clients except the one specified
+    Sub SendAllButOne(ByVal message As String, ByVal exemptclientname As String) 'this sends to all clients except the one specified
         Dim entry As DictionaryEntry 'declare a variable of type dictionary entry
         Try
             For Each entry In clients 'for each dictionary entry in the hashtable with all clients (clients)
@@ -939,4 +1066,5 @@ Public Class Main
         Dim Admin_EditIni As New wb_Admin_EditIni
         Admin_EditIni.ShowDialog()
     End Sub
+
 End Class

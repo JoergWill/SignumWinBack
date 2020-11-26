@@ -36,6 +36,7 @@ Partial Class wb_TimerEdit
         Me.lblIndex = New System.Windows.Forms.Label()
         Me.nmAktIndex = New System.Windows.Forms.NumericUpDown()
         Me.cbAktIndex = New System.Windows.Forms.CheckBox()
+        Me.BtnRunNow = New System.Windows.Forms.Button()
         CType(Me.nmEventZyklus, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nmAktIndex, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -193,11 +194,22 @@ Partial Class wb_TimerEdit
         Me.cbAktIndex.Text = "Update alle Artikel in OrgaSoft"
         Me.cbAktIndex.UseVisualStyleBackColor = True
         '
+        'BtnRunNow
+        '
+        Me.BtnRunNow.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnRunNow.Location = New System.Drawing.Point(640, 12)
+        Me.BtnRunNow.Name = "BtnRunNow"
+        Me.BtnRunNow.Size = New System.Drawing.Size(95, 28)
+        Me.BtnRunNow.TabIndex = 14
+        Me.BtnRunNow.Text = "Run now"
+        Me.BtnRunNow.UseVisualStyleBackColor = True
+        '
         'wb_TimerEdit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(747, 147)
+        Me.Controls.Add(Me.BtnRunNow)
         Me.Controls.Add(Me.cbAktIndex)
         Me.Controls.Add(Me.nmAktIndex)
         Me.Controls.Add(Me.lblIndex)
@@ -235,4 +247,5 @@ Partial Class wb_TimerEdit
     Friend WithEvents lblIndex As Label
     Friend WithEvents nmAktIndex As NumericUpDown
     Friend WithEvents cbAktIndex As CheckBox
+    Friend WithEvents BtnRunNow As Button
 End Class

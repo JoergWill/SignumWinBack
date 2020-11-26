@@ -21,11 +21,12 @@ Public Class wb_Planung_Teiler
 
     End Sub
 
-    Private Sub cbChargenTeiler_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbChargenTeiler.SelectedIndexChanged
+    Private Sub cbChargenTeiler_SelectedIndexChanged(sender As Object, e As EventArgs)
         wb_GlobalSettings.ChargenTeiler = cbChargenTeiler.SelIndex
     End Sub
 
-    Private Sub cbTeigOptimierung_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbTeigOptimierung.SelectedIndexChanged
+    Private Sub cbTeigOptimierung_SelectedIndexChanged(sender As Object, e As EventArgs)
         wb_GlobalSettings.TeigOptimierung = cbTeigOptimierung.SelIndex
     End Sub
+
 End Class

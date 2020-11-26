@@ -25,23 +25,35 @@ Partial Class wb_Planung_Teiler
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.grpChargenTeiler = New System.Windows.Forms.GroupBox()
         Me.cbChargenTeiler = New WinBack.wb_CheckedListBox()
         Me.gbTeigeOptimieren = New System.Windows.Forms.GroupBox()
         Me.cbTeigOptimierung = New WinBack.wb_CheckedListBox()
+        Me.FlowLayoutPanel1.SuspendLayout()
         Me.grpChargenTeiler.SuspendLayout()
         Me.gbTeigeOptimieren.SuspendLayout()
         Me.SuspendLayout()
+        '
+        'FlowLayoutPanel1
+        '
+        Me.FlowLayoutPanel1.Controls.Add(Me.grpChargenTeiler)
+        Me.FlowLayoutPanel1.Controls.Add(Me.gbTeigeOptimieren)
+        Me.FlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(0, 0)
+        Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(236, 349)
+        Me.FlowLayoutPanel1.TabIndex = 2
         '
         'grpChargenTeiler
         '
         Me.grpChargenTeiler.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.grpChargenTeiler.Controls.Add(Me.cbChargenTeiler)
-        Me.grpChargenTeiler.Location = New System.Drawing.Point(12, 12)
+        Me.grpChargenTeiler.Location = New System.Drawing.Point(3, 3)
         Me.grpChargenTeiler.Name = "grpChargenTeiler"
-        Me.grpChargenTeiler.Size = New System.Drawing.Size(260, 188)
-        Me.grpChargenTeiler.TabIndex = 0
+        Me.grpChargenTeiler.Size = New System.Drawing.Size(214, 157)
+        Me.grpChargenTeiler.TabIndex = 1
         Me.grpChargenTeiler.TabStop = False
         Me.grpChargenTeiler.Text = "Chargen-Aufteilung"
         '
@@ -56,7 +68,7 @@ Partial Class wb_Planung_Teiler
         Me.cbChargenTeiler.Location = New System.Drawing.Point(15, 31)
         Me.cbChargenTeiler.Name = "cbChargenTeiler"
         Me.cbChargenTeiler.SelIndex = 0
-        Me.cbChargenTeiler.Size = New System.Drawing.Size(242, 150)
+        Me.cbChargenTeiler.Size = New System.Drawing.Size(190, 120)
         Me.cbChargenTeiler.TabIndex = 3
         Me.cbChargenTeiler.TabStop = False
         '
@@ -65,10 +77,10 @@ Partial Class wb_Planung_Teiler
         Me.gbTeigeOptimieren.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbTeigeOptimieren.Controls.Add(Me.cbTeigOptimierung)
-        Me.gbTeigeOptimieren.Location = New System.Drawing.Point(12, 206)
+        Me.gbTeigeOptimieren.Location = New System.Drawing.Point(3, 166)
         Me.gbTeigeOptimieren.Name = "gbTeigeOptimieren"
-        Me.gbTeigeOptimieren.Size = New System.Drawing.Size(260, 188)
-        Me.gbTeigeOptimieren.TabIndex = 1
+        Me.gbTeigeOptimieren.Size = New System.Drawing.Size(214, 157)
+        Me.gbTeigeOptimieren.TabIndex = 2
         Me.gbTeigeOptimieren.TabStop = False
         Me.gbTeigeOptimieren.Text = "Teige zusammenfassen"
         '
@@ -83,7 +95,7 @@ Partial Class wb_Planung_Teiler
         Me.cbTeigOptimierung.Location = New System.Drawing.Point(15, 31)
         Me.cbTeigOptimierung.Name = "cbTeigOptimierung"
         Me.cbTeigOptimierung.SelIndex = 0
-        Me.cbTeigOptimierung.Size = New System.Drawing.Size(242, 150)
+        Me.cbTeigOptimierung.Size = New System.Drawing.Size(193, 150)
         Me.cbTeigOptimierung.TabIndex = 3
         Me.cbTeigOptimierung.TabStop = False
         '
@@ -91,17 +103,17 @@ Partial Class wb_Planung_Teiler
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 496)
-        Me.Controls.Add(Me.gbTeigeOptimieren)
-        Me.Controls.Add(Me.grpChargenTeiler)
+        Me.ClientSize = New System.Drawing.Size(236, 349)
+        Me.Controls.Add(Me.FlowLayoutPanel1)
         Me.Name = "wb_Planung_Teiler"
         Me.Text = "Einstellungen Optimierung"
+        Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.grpChargenTeiler.ResumeLayout(False)
         Me.gbTeigeOptimieren.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-
+    Friend WithEvents FlowLayoutPanel1 As Windows.Forms.FlowLayoutPanel
     Friend WithEvents grpChargenTeiler As Windows.Forms.GroupBox
     Friend WithEvents cbChargenTeiler As wb_CheckedListBox
     Friend WithEvents gbTeigeOptimieren As Windows.Forms.GroupBox

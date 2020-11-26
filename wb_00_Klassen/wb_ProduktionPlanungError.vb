@@ -1,7 +1,9 @@
 ﻿Public Class wb_ProduktionPlanungError
     Private _ArtikelNummer As String
     Private _Artikelbezeichnung As String
+    Private _Bestellt_Stk As Double
     Private _ErrorCode As wb_Global.ChargenTeilerResult
+    Private _TeigChargen As wb_Global.ChargenMengen
 
     Public Property ArtikelNummer As String
         Get
@@ -30,6 +32,24 @@
         End Set
     End Property
 
+    Public Property Bestellt_Stk As Double
+        Get
+            Return _Bestellt_Stk
+        End Get
+        Set(value As Double)
+            _Bestellt_Stk = value
+        End Set
+    End Property
+
+    Public Property TeigChargen As wb_Global.ChargenMengen
+        Get
+            Return _TeigChargen
+        End Get
+        Set(value As wb_Global.ChargenMengen)
+            _TeigChargen = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Ergebnis der Chargen-Aufteilung als Text
     ''' 
@@ -43,7 +63,7 @@
     '''     ART     'Artikelnummer nicht gefunden
     '''     REZ     'Rezeptnummer nicht gefunden    ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property ErrorText As String
+    Public ReadOnly Property ChrTeilerResultToString As String
         Get
             Select Case ErrorCode
                 Case wb_Global.ChargenTeilerResult.EM1
@@ -68,9 +88,9 @@
         Get
             Try
                 If Artikelbezeichnung IsNot Nothing Then
-                    Return ArtikelNummer.PadLeft(10) & " " & Artikelbezeichnung.PadRight(25) & vbCrLf & ErrorText
+                    Return ArtikelNummer.PadLeft(10) & " " & Artikelbezeichnung.PadRight(25) & vbCrLf & ChrTeilerResultToString
                 Else
-                    Return ArtikelNummer.PadLeft(10) & " " & ErrorText
+                    Return ArtikelNummer.PadLeft(10) & " " & ChrTeilerResultToString
                 End If
             Catch ex As Exception
                 Return ""

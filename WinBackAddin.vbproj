@@ -343,6 +343,12 @@
     <Compile Include="wb_00_Klassen\Kocher\wb_Kocher.vb" />
     <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_Rezept.vb" />
     <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_Global.vb" />
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewErrorList.Designer.vb">
+      <DependentUpon>wb_ArrayGridViewErrorList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewErrorList.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewBestand.Designer.vb">
       <DependentUpon>wb_ArrayGridViewBestand.vb</DependentUpon>
     </Compile>
@@ -397,6 +403,19 @@
     </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_SiloBef.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wb_00_Main\wb_Main_ServerConnect.Designer.vb">
+      <DependentUpon>wb_Main_ServerConnect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Main\wb_Main_ServerConnect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_00_Main\wb_Main_ServerTaskConnect.vb" />
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_TimerEdit.Designer.vb">
+      <DependentUpon>wb_Admin_TimerEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_TimerEdit.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_OrgaBack.vb" />
     <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_WinBack.vb" />
@@ -482,6 +501,7 @@
     <Compile Include="wb_00_Klassen\wb_ProduktionPlanungError.vb" />
     <Compile Include="wb_00_Klassen\wb_Produktion_virtuell.vb" />
     <Compile Include="wb_00_Klassen\wb_StatistikListe.vb" />
+    <Compile Include="wb_00_Klassen\wb_TimerEvent.vb" />
     <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.Designer.vb">
       <DependentUpon>wb_Chargen_ChartTTS.vb</DependentUpon>
     </Compile>
@@ -923,6 +943,12 @@
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_ListeFehlerArtikel.Designer.vb">
+      <DependentUpon>wb_Planung_ListeFehlerArtikel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_ListeFehlerArtikel.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Main.Designer.vb">
       <DependentUpon>wb_Planung_Main.vb</DependentUpon>
     </Compile>
@@ -935,6 +961,13 @@
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Neu.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_ListeFehler.Designer.vb">
+      <DependentUpon>wb_Planung_ListeFehler.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_ListeFehler.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Shared.vb" />
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Teiler.Designer.vb">
       <DependentUpon>wb_Planung_Teiler.vb</DependentUpon>
     </Compile>
@@ -948,6 +981,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_08_Forms_Admin\ob_Admin_OrgaBackSettings.vb" />
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_Timer.Designer.vb">
+      <DependentUpon>wb_Admin_Timer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_08_Forms_Admin\wb_Admin_Timer.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_08_Forms_Admin\wb_Admin_EditIni.Designer.vb">
       <DependentUpon>wb_Admin_EditIni.vb</DependentUpon>
     </Compile>
@@ -1071,6 +1110,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_SiloBef.resx">
       <DependentUpon>wb_SiloBef.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Main\wb_Main_ServerConnect.resx">
+      <DependentUpon>wb_Main_ServerConnect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_TimerEdit.resx">
+      <DependentUpon>wb_Admin_TimerEdit.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Klassen\WinBack_DockMain.resx">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
@@ -1243,14 +1288,23 @@
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_ListeFehlerArtikel.resx">
+      <DependentUpon>wb_Planung_ListeFehlerArtikel.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Neu.resx">
       <DependentUpon>wb_Planung_Neu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_ListeFehler.resx">
+      <DependentUpon>wb_Planung_ListeFehler.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Teiler.resx">
       <DependentUpon>wb_Planung_Teiler.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Vorlage.resx">
       <DependentUpon>wb_Planung_Vorlage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Timer.resx">
+      <DependentUpon>wb_Admin_Timer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_EditIni.resx">
       <DependentUpon>wb_Admin_EditIni.vb</DependentUpon>
@@ -1472,6 +1526,7 @@
     <None Include="Resources\ChargenInfo_32x32.png" />
     <None Include="Resources\ChargenListe_32x32.png" />
     <None Include="Resources\ArtikelHinweise_32x32.png" />
+    <None Include="Resources\AdminTimer_32x32.png" />
     <Content Include="Resources\DatenRueckSicherung_16x16.png" />
     <None Include="Resources\IconSave_24x24.png" />
     <None Include="Resources\IconCancel_24x24.png" />
@@ -1544,6 +1599,9 @@
     <None Include="Resources\RezeptGruppen_32x32.png" />
     <None Include="Resources\RohstoffeDrucken_32x32.png" />
     <None Include="Resources\RohstoffeLink_32x32.png" />
+    <None Include="Resources\ProdFehlerListe_32x32.png" />
+    <None Include="Resources\ProdExport_32x32.png" />
+    <None Include="Resources\ProdTeiler_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

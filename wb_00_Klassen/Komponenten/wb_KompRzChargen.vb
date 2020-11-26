@@ -156,6 +156,22 @@ Public Class wb_KompRzChargen
         End Get
     End Property
 
+    Public Sub HideButtons()
+        'BtnCalcNassGewicht.Enabled = False
+        BtnCloud.Visible = False
+        BtnUpdateNwt.Visible = False
+    End Sub
+
+    ''' <summary>
+    ''' Stückgewicht in Gramm
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property StkGewicht As Double
+        Get
+            Return wb_Functions.StrToDouble(ArtikelChargen.MinCharge.StkGewicht)
+        End Get
+    End Property
+
     ''' <summary>
     ''' Rezeptnummer intern (Index)
     ''' </summary>
@@ -300,7 +316,7 @@ Public Class wb_KompRzChargen
     End Property
 
     ''' <summary>
-    ''' Zuschnitt-Verlsut in Prozent (max 100%)
+    ''' Zuschnitt-Verlust in Prozent (max 100%)
     ''' </summary>
     ''' <returns></returns>
     <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>

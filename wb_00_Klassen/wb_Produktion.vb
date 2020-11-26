@@ -509,8 +509,11 @@ Public Class wb_Produktion
                 _ProduktionsPlanungError = New wb_ProduktionPlanungError
                 _ProduktionsPlanungError.ArtikelNummer = Artikel.Nummer
                 _ProduktionsPlanungError.Artikelbezeichnung = Artikel.Bezeichnung
+                _ProduktionsPlanungError.Bestellt_Stk = Root.Bestellt_Stk
                 'Fehler Chargen-Teiler
                 _ProduktionsPlanungError.ErrorCode = Root.TeigChargen.Result
+                'Berechnete Teig-Chargen (für Fehler-Liste)
+                _ProduktionsPlanungError.TeigChargen = Root.TeigChargen
                 Return False
             End If
         Else
@@ -849,6 +852,9 @@ Public Class wb_Produktion
             CalcBatch01.MengeOpt = 0
         End If
 
+        'erlaubter Rundungsfehler in Prozent der Chargengröße
+        Dim ErlaubterRundungsfehler As Double = ChargeOpt / 10 ' (10% der Chargengröße)
+
         ' Größe der Restcharge berechnen
         CalcBatch01.MengeRest = Sollwert - (CalcBatch01.AnzahlOpt * CalcBatch01.MengeOpt)
         CalcBatch01.AnzahlRest = 1
@@ -856,7 +862,7 @@ Public Class wb_Produktion
         ' Prüfen ob innerhalb der Chargengrenzen
         If (CalcBatch01.MengeRest < ChargeMin) Then
             ' Wenn keine Restmenge vorhanden - keinen Fehler ausgeben
-            If (CalcBatch01.MengeRest = 0) Then
+            If (CalcBatch01.MengeRest < ErlaubterRundungsfehler) And (CalcBatch01.AnzahlOpt > 0) Then
                 CalcBatch01.AnzahlRest = 0
                 CalcBatch01.Result = wb_Global.ChargenTeilerResult.OK
             Else
@@ -1018,7 +1024,6 @@ Public Class wb_Produktion
         Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
         Dim ArtikelNummer As String = ""
         Dim GesamtStueck As Integer = 0
-        Dim ErrorList As New List(Of wb_ProduktionPlanungError)
         MsSQLdbProcedure_Produktionsauftrag = False
 
         'Datenbankverbindung öffnen MsSQL
@@ -1037,7 +1042,7 @@ Public Class wb_Produktion
         'Produktionsdaten aufbauen
         Dim BestellDaten As New wb_BestellDatenSchritt
         Dim DebugCounter As Integer = 0
-        ErrorList.Clear()
+        wb_Planung_Shared.ErrorList.Clear()
         'Chargen-Teiler (Vorgabe aus Einstellungen/Planung-Teiler)
         BestellDaten.ChargenTeiler = wb_GlobalSettings.ChargenTeiler
 
@@ -1060,7 +1065,7 @@ Public Class wb_Produktion
             If BestellDaten.Produktionsmenge > 0 Then
                 'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
                 If Not AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, 0.0, BestellDaten.MengeInProduktion, BestellDaten.ChargenTeiler, BestellDaten.Aufloesen, False, BestellDaten.AuftragsNummer, BestellDaten.BestellMenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText) Then
-                    ErrorList.Add(_ProduktionsPlanungError)
+                    wb_Planung_Shared.ErrorList.Add(_ProduktionsPlanungError)
                 End If
             Else
                 'Bestellmenge ist kleiner/gleich Null
@@ -1073,19 +1078,18 @@ Public Class wb_Produktion
         orgaback.Close()
 
         'Falls Fehler aufgetreten sind, Meldung anzeigen
-        If ErrorList.Count > 0 Then
-            'Fehlermeldung wird dynamisch erzeugt
-            Dim ErrorText As String = ""
-            For Each ProdPlanError In ErrorList
-                If ErrorText <> "" Then
-                    ErrorText = ErrorText & vbCrLf & ProdPlanError.FehlerText
-                Else
-                    ErrorText = ProdPlanError.FehlerText
-                End If
-            Next
+        If wb_Planung_Shared.ErrorList.Count > 0 Then
             'Fehler beim Einlesen der Produktionsdaten aus OrgaBack (Artikel in WinBack nicht vorhanden)
-            ErrorText = "Fehler beim Einlesen der Produktions-Liste " & vbCrLf & ErrorList.Count.ToString & " Artikelnummer(n) konnten nicht verabeitet werden: " & vbCrLf & vbCrLf & ErrorText
-            MsgBox(ErrorText, MsgBoxStyle.Exclamation, "Einlesen der Produktionsdaten")
+            'Dim ErrorText As String = "Fehler beim Einlesen der Produktions-Liste " & vbCrLf & wb_Planung_Shared.ErrorList.Count.ToString &
+            '                          " Artikelnummer(n) konnten nicht verabeitet werden: " & vbCrLf & vbCrLf & wb_Planung_Shared.LongErrorList
+            'MsgBox(ErrorText, MsgBoxStyle.Exclamation, "Einlesen der Produktionsdaten")
+            Dim ErrorText As String = "Fehler beim Einlesen der Produktions-Liste " & vbCrLf & wb_Planung_Shared.ErrorList.Count.ToString &
+                                      " Artikelnummer(n) konnten nicht verabeitet werden: " & vbCrLf & wb_Planung_Shared.ShortErrorList & vbCrLf & vbCrLf &
+                                      " Detaillierte Fehler-Liste anzeigen ?"
+            'Meldung ausgeben
+            If MsgBox(ErrorText, MsgBoxStyle.YesNo, "Einlesen der Produktionsdaten") = MsgBoxResult.Yes Then
+                wb_Planung_Shared.Liste_Refresh(Nothing)
+            End If
         End If
     End Function
 

@@ -157,9 +157,9 @@ Public Class wb_Rezeptschritt
             _RohNr = NewKomp.Nr
             _Type = KomponType
             _ParamNr = 1
-            _Idx = ParentStep.idx
 
             If Not (_parentStep Is Nothing) Then
+                _Idx = ParentStep.Idx
                 Parent._childSteps.Add(Me)
             End If
         End If

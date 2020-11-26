@@ -9,7 +9,9 @@ Public Class wb_Planung_Main
 
     'Default-Fenster
     Public PlanungListe As New wb_Planung_Liste
-    Public PlanungTeiler As New wb_Planung_Teiler
+    'Fenster werden bei Bedarf erzeugt
+    Public PlanungTeiler As wb_Planung_Teiler
+    Public PlanungListeFehler As wb_Planung_ListeFehler
 
 #Region "Signum"
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -19,6 +21,8 @@ Public Class wb_Planung_Main
         If _DockPanelList.Count = 0 Then
             SetDefaultLayout()
         End If
+        'Event-Handler (Fehlerliste aktualisieren/anzeigen)
+        AddHandler wb_Planung_Shared.eListe_Refresh, AddressOf Refresh_Data
     End Sub
 
     ''' <summary>
@@ -58,6 +62,9 @@ Public Class wb_Planung_Main
     ''' </returns>
     ''' <remarks></remarks>
     Public Overrides Function FormClosing(Reason As Short) As Boolean Implements IBasicFormUserControl.FormClosing
+        'Event-Handler wieder freigeben !!
+        RemoveHandler wb_Planung_Shared.eListe_Refresh, AddressOf Refresh_Data
+
         'Planung-Liste (ordentlich) schliessen - Speichert die Grid-Einstellungen
         If PlanungListe IsNot Nothing Then
             'Verbuchte Datensätze in OrgaBack-DB registrieren
@@ -66,8 +73,12 @@ Public Class wb_Planung_Main
             End If
             PlanungListe.Close()
         End If
+
         'Planung-Teiler schliessen
         wb_Functions.CloseAndDisposeSubForm(PlanungTeiler)
+
+        'Fehlerliste schliessen
+        wb_Functions.CloseAndDisposeSubForm(PlanungListeFehler)
 
         'Fenster darf geschlossen werden
         Return False
@@ -82,8 +93,9 @@ Public Class wb_Planung_Main
                 ' Das neue RibbonTab erhält eine Gruppe
                 Dim oGrp = oNewTab.AddGroup("GrpPlanung", "Teigliste/Backzettel")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("BtnExportProdListen", "Export/Drucken", "Backzettel und Teigliste drucken. Produktionsplan an WinBack senden", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnProdListeExport)
-                oGrp.AddButton("BtnProdTeiler", "Einstellungen Optimierung", "Einstellungen zur Optimierung der Teigliste", My.Resources.EditKonfig_16x16, My.Resources.EditKonfig_32x32, AddressOf BtnPlanungTeiler)
+                oGrp.AddButton("BtnFehlerListe", "Fehlerliste", "Fehlerliste nach Import der Produktionsdaten anzeigen", My.Resources.ProdFehlerListe_32x32, My.Resources.ProdFehlerListe_32x32, AddressOf BtnProdPlanungError)
+                oGrp.AddButton("BtnExportProdListen", "Export/Drucken", "Backzettel und Teigliste drucken. Produktionsplan an WinBack senden", My.Resources.ProdExport_32x32, My.Resources.ProdExport_32x32, AddressOf BtnProdListeExport)
+                oGrp.AddButton("BtnProdTeiler", "Einstellungen Optimierung", "Einstellungen zur Optimierung der Teigliste", My.Resources.ProdTeiler_32x32, My.Resources.ProdTeiler_32x32, AddressOf BtnPlanungTeiler)
                 'Gruppe Linien
                 Dim lGrp = oNewTab.AddGroup("GrpLinien", "WinBack Linien")
                 lGrp.AddButton("btnLinien", "Produktions-Linien", "WinBack Produktion Linie 1...", My.Resources.MainLinien_32x32, My.Resources.MainLinien_32x32, AddressOf ShowLinienForm)
@@ -101,6 +113,11 @@ Public Class wb_Planung_Main
                 _DockPanelList.Add(PlanungListe)
                 Return PlanungListe
 
+            Case "WinBack.wb_Planung_ListeFehler"
+                PlanungListeFehler = New wb_Planung_ListeFehler
+                _DockPanelList.Add(PlanungListeFehler)
+                Return PlanungListeFehler
+
             Case "WinBack.wb_Planung_Teiler"
                 PlanungTeiler = New wb_Planung_Teiler
                 _DockPanelList.Add(PlanungTeiler)
@@ -116,6 +133,23 @@ Public Class wb_Planung_Main
         'Init aus der Basis-Klasse aufrufen (zuerst)
         Init = MyBase.Init()
     End Function
+
+    Private Sub Refresh_Data(Sender As Object)
+        If IsNothingOrDisposed(PlanungListeFehler) Then
+            PlanungListeFehler = New wb_Planung_ListeFehler
+            PlanungListeFehler.Show(DockPanel)
+            PlanungListeFehler.RefreshData(Nothing)
+        Else
+            PlanungListeFehler.RefreshData(Nothing)
+        End If
+    End Sub
+
+    Private Sub BtnProdPlanungError()
+        If IsNothingOrDisposed(PlanungListeFehler) Then
+            PlanungListeFehler = New wb_Planung_ListeFehler
+            PlanungListeFehler.Show(DockPanel)
+        End If
+    End Sub
 
     Private Sub BtnProdListeExport()
         'TODO in Planung Liste den Export anstossen
