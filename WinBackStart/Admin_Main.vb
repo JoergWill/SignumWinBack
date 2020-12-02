@@ -34,24 +34,34 @@ Public Class Admin_Main
                 AdminDatensicherung.Show(DockPanel, DockState.DockLeft)
                 Return True
             Case "LOGGER"
-                AdminLog = New wb_Admin_Log
+                If IsNothingOrDisposed(AdminLog) Then
+                    AdminLog = New wb_Admin_Log
+                End If
                 AdminLog.Show(DockPanel)
                 Return True
             Case "EDITKONFIG"
-                AdminEditIni = New wb_Admin_EditIni
+                If IsNothingOrDisposed(AdminEditIni) Then
+                    AdminEditIni = New wb_Admin_EditIni
+                End If
                 AdminEditIni.Show(DockPanel)
                 Return True
 
             Case "CHECKDATABASE"
-                AdminCheckDataBase = New wb_Admin_CheckDatabase
+                If IsNothingOrDisposed(AdminCheckDataBase) Then
+                    AdminCheckDataBase = New wb_Admin_CheckDatabase
+                End If
                 AdminCheckDataBase.Show(DockPanel)
                 Return True
             Case "CHECKDATABASEUPDATE"
-                AdminUpdateDataBase = New wb_Admin_UpdateDatabase
+                If IsNothingOrDisposed(AdminUpdateDataBase) Then
+                    AdminUpdateDataBase = New wb_Admin_UpdateDatabase
+                End If
                 AdminUpdateDataBase.Show(DockPanel)
                 Return True
             Case "CHECKWINBACKUPDATE"
-                AdminUpdateWinBack = New wb_Admin_UpdateWinBack
+                If IsNothingOrDisposed(AdminUpdateWinBack) Then
+                    AdminUpdateWinBack = New wb_Admin_UpdateWinBack
+                End If
                 AdminUpdateWinBack.Show(DockPanel)
                 Return True
             Case Else

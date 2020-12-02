@@ -147,7 +147,7 @@ Public Class ob_Main_Menu
             MsgBox("Die aktuelle WinBack-Datenbank ist nicht kompatibel mit dieser AddIn-Version." & vbCrLf & "Bitte WinBack-Datenbank updaten !!", MsgBoxStyle.Critical, "WinBack-AddIn")
         End If
         'Prüfen ob der WinBack-Backgroud-Task läuft
-        If Not wb_GlobalSettings.WinBackBackgroudTaskConnected Then
+        If Not wb_GlobalSettings.WinBackBackgroudTaskConnected And Not Debugger.IsAttached Then
             MsgBox("Der WinBack-Server-Task läuft nicht." & vbCrLf & "Bitte den Prozess auf dem Server " & wb_GlobalSettings.MsSQLServerIP & " starten !!", MsgBoxStyle.Critical, "WinBack-AddIn")
         End If
     End Sub

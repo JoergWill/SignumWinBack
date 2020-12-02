@@ -94,6 +94,12 @@ Public Class wb_Main_Shared
         RaiseEvent eOpenForm(Sender, FormName)
     End Sub
 
+    ''' <summary>
+    ''' Event Timer-Einstellungen/Parameter/Status hat sich geändert.
+    ''' Anzeige-Grid neu aufbauen
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
     Public Shared Sub TimerMsg(Sender As Object, e As String)
         RaiseEvent eTimer(Sender, e)
     End Sub

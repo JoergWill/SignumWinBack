@@ -1244,6 +1244,20 @@ Stacktrace:
  </summary>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_SchnittstelleFeld.Convert(System.String)">
+ <summary>
+ Wandelt den übergebenen Import-String abhängig vom 
+ </summary>
+ <param name="s"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_SchnittstelleTabelle.TabFelderInit(System.Int32)">
+ <summary>
+ Erstmalig Initialisierung der TabellenFelder wenn keine Definition vorhanden ist
+ Legt x Felder (leer) an
+ </summary>
+ <param name="x"></param>
+</member>
 <member name="M:WinBack.wb_Main_ServerConnect.Connect(System.String,System.Int32,System.Boolean)">
  <summary>
  IP-Connect zum WinBack-Server-Task-Prozess.
@@ -1563,6 +1577,12 @@ Stacktrace:
  Grundeinstellungen des DataGridView
  vor der Zuweisung von Array-Daten
  </summary>
+</member>
+<member name="M:WinBack.wb_CheckedListBox.Fill(System.Collections.SortedList,System.Boolean)">
+ <summary>
+ ComboBox mit Texten aus HashTable füllen.
+ </summary>
+ <param name="HashTable"></param>
 </member>
 <member name="M:WinBack.wb_SyncRohstoffe_WinBack.DBCheckData">
  <summary>
@@ -5110,7 +5130,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns>Integer - neu anglegte (interne) Rezept-Nummer</returns>
 </member>
-<member name="M:WinBack.wb_Rezept.MySQLdbSelect_RzKopf(System.String,System.Int32@)">
+<member name="M:WinBack.wb_Rezept.MySQLdbSelect_RzKopf(System.String,System.Int32@,System.Boolean)">
  <summary>
  Liest die Rezeptkopfdaten der RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht
  existiert, wird die Variante 1 gelesen (Standard-Variante). Wenn Variante 1 nicht exisitiert (Sauerteig-Rezept) wird Variante 0
@@ -5121,6 +5141,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Variante"></param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Rezept.MySQLdbCheck_RzKopf(System.String)">
+ <summary>
+ Prüft ob die übergebene Rezeptnummer schon existiert
+     Wenn die Nummer schon vorhanden ist, wird True zurückgegeben, ist die Nummer frei, False
+ </summary>
+ <param name="RezeptNummer"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Rezept.MySQLdbSelect_RzKopf(System.Int32,System.Int32@,System.Int32)">
  <summary>
  Liest die Rezeptkopfdaten der alphanumerischen RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht
@@ -5128,6 +5156,8 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  gelesen. Die entsprechende Variante wird (byRef) korrigiert.
  Wenn kein Rezeptkopf existiert, wird False zurückgegeben.
  Ist ein Änderungsindex angegeben wird das Rezept aus wbdaten.HisRezepte (Rezepthistorie) gelesen.
+ 
+ Mit dem gesetzten Flag CheckOnly wird nur geprüft, ob eine Rezeptur mit dieser Nummer vorhanden ist, es wird nichts gelesen
  </summary>
  <param name="RezeptNr"></param>
  <param name="Variante"></param>
@@ -6217,6 +6247,14 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <param name="Sender"></param>
  <param name="FormName"></param>
+</member>
+<member name="M:WinBack.wb_Main_Shared.TimerMsg(System.Object,System.String)">
+ <summary>
+ Event Timer-Einstellungen/Parameter/Status hat sich geändert.
+ Anzeige-Grid neu aufbauen
+ </summary>
+ <param name="Sender"></param>
+ <param name="e"></param>
 </member>
 <member name="T:WinBack.wb_PrinterDialog">
  <summary>
@@ -7469,6 +7507,14 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.CheckTextBoxChanged(System.Windows.Forms.TextBox,System.String@)">
+ <summary>
+ Flag Rezeptkopf wurde geändert
+ </summary>
+ <param name="tb"></param>
+ <param name="Value"></param>
+ <returns></returns>
 </member>
 <member name="M:WinBack.wb_Rezept_Rezeptur.cbVariante_DrawItem(System.Object,System.Windows.Forms.DrawItemEventArgs)">
  <summary>
@@ -10301,6 +10347,31 @@ eingelesen
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Schnittstelle_Konfig.BtnImportExplorer_Click(System.Object,System.EventArgs)">
+ <summary>
+ Explorer öffnen. Start im Import-Verzeichnis
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Schnittstelle_Konfig.BtnExportExplorer_Click(System.Object,System.EventArgs)">
+ <summary>
+ Explorer öffnet. Start im Export-Verzeichnis
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Schnittstelle_Konfig.ShowPreview">
+ <summary>
+ Vorschau(Fenster) neu aufbauen
+ </summary>
+</member>
+<member name="P:WinBack.wb_Schnittstelle_Shared.Vorschau_FileName">
+ <summary>
+ Liest alle Zeilen aus FileName in das Array _AllLines
+ </summary>
+ <returns></returns>
 </member>
 </members>
 </doc>

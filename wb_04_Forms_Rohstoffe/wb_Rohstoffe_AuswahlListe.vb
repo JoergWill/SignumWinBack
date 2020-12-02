@@ -157,7 +157,7 @@ Public Class wb_Rohstoffe_AuswahlListe
         DataGridView.x8859_5_FieldName = "KO_Bezeichnung"
 
         'DataGrid füllen
-        DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffLst, "RohstoffListe")
+        DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffLst, "RohstoffAuswahlListe")
 
         'Filter einschalten
         DataGridView.Filter = _Filter
@@ -208,5 +208,10 @@ Public Class wb_Rohstoffe_AuswahlListe
 
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
+    End Sub
+
+    Private Sub wb_Rohstoffe_AuswahlListe_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        'Layout sichern
+        DataGridView.SaveToDisk("RohstoffAuswahlListe")
     End Sub
 End Class

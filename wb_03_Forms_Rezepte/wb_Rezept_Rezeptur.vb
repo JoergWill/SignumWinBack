@@ -90,10 +90,8 @@ Public Class wb_Rezept_Rezeptur
             tbRzKommentar.Enabled = False
             tbRzTeigTemp.Enabled = False
             tbKnetKennlinie.Enabled = False
-
             cbVariante.Enabled = False
             cbLiniengruppe.Enabled = False
-
             VirtualTree.Enabled = False
         End If
 
@@ -103,6 +101,11 @@ Public Class wb_Rezept_Rezeptur
 
         'Cursor wieder zurücksetzen
         Me.Cursor = Cursors.Default
+
+        'Rezept neu anlegen - Nummer eingeben
+        If tbRzNummer.Text = "" Then
+            tbRzNummer.Focus()
+        End If
     End Sub
 
     Private Sub cbVariante_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbVariante.SelectedIndexChanged
@@ -113,6 +116,7 @@ Public Class wb_Rezept_Rezeptur
             'Bezeichnung und Kommentar merken
             Dim Bezeichnung As String = Rezept.RezeptBezeichnung
             Dim Kommentar As String = Rezept.RezeptKommentar
+            Dim Nummer As String = Rezept.RezeptNummer
 
             'Neue Rezept-Variante
             _RzVariante = cbVariante.GetKeyFromSelection()
@@ -125,9 +129,12 @@ Public Class wb_Rezept_Rezeptur
                     'Rezept-Name und Kommentar vom Stamm-Rezept
                     Rezept.RezeptBezeichnung = Bezeichnung
                     Rezept.RezeptKommentar = Kommentar
-                    'Rezept-Schritte UNd Rezeptkopf schreiben bei Schliessen
+                    Rezept.RezeptNummer = Nummer
+                    'Rezept-Schritte und Rezeptkopf schreiben bei Schliessen
                     _RzChanged = True
                     _RzKopfChanged = True
+                    'Rezept-Variante
+                    tbRzVariante.Text = Rezept.Variante
                 Else
                     'Eintrag in Combo-Box Liniengruppe korrigieren
                     cbLiniengruppe.SetTextFromKey(Rezept.LinienGruppe)
@@ -135,6 +142,8 @@ Public Class wb_Rezept_Rezeptur
                     cbVariante.SetTextFromKey(Rezept.Variante)
                     'Rezept-Variante merken
                     _RzVariante = Rezept.Variante
+                    'Rezept-Variante
+                    tbRzVariante.Text = Rezept.Variante
                 End If
             End If
 
@@ -142,6 +151,13 @@ Public Class wb_Rezept_Rezeptur
             VirtualTree.DataSource = Rezept.RootRezeptSchritt
             'alle Zeilen aufklappen
             VirtualTree.RootRow.ExpandChildren(True)
+            'Rezeptnummer kann nur bei Variante 1 geändert werden
+            If Rezept.Variante = 1 Then
+                tbRzNummer.Enabled = True
+            Else
+                tbRzNummer.Enabled = False
+            End If
+
             'falls keine Rezeptschritte vorhanden sind muss das Popup-Menu ausserhalb erstellt werden
             VT_MakeTreePopup()
         End If
@@ -182,7 +198,7 @@ Public Class wb_Rezept_Rezeptur
             tbRzAendDatum.Text = Rezept.AenderungDatum
             'Änderung Name
             tbRzAendName.Text = Rezept.AenderungName
-            'Rzept-Variante
+            'Rezept-Variante
             tbRzVariante.Text = Rezept.Variante
 
             'Eintrag in Combo-Box Liniengruppe ausfüllen
@@ -649,7 +665,6 @@ Public Class wb_Rezept_Rezeptur
         VT_MakeTreePopup()
     End Sub
 
-
     ''' <summary>
     ''' Setzt den Font.Style für die angegebene Zelle auf Bold/Italic
     ''' Anzeige Artikel/Rezept-Zeilen
@@ -883,8 +898,38 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_Delete(Sender As Object, e As EventArgs)
-        _RezeptSchritt.Delete()
-        VT_Aktualisieren()
+        'Text Sicherheits-Abfrage
+        Dim MsgText As String
+
+        If _RezeptSchritt.ChildSteps.Count > 0 Then
+            Select Case _RezeptSchritt.Type
+                Case wb_Global.KomponTypen.KO_TYPE_KESSEL, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
+                    MsgText = "Diese Gruppe (" & _RezeptSchritt.Sollwert & ") und alle zugehörigen Rezeptschritte löschen"
+
+                Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
+                    MsgText = "Dieses Kneter-Rezept und alle zugehörigen Schritte löschen"
+
+                Case wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE, wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER
+                    MsgText = "Diesen Rezeptschritt (" & _RezeptSchritt.Nummer & "/" & _RezeptSchritt.Bezeichnung & ") und alle zugehörigen Parameter löschen"
+
+                Case Else
+                    MsgText = "Diesen Rezeptschritt (" & _RezeptSchritt.Nummer & "/" & _RezeptSchritt.Bezeichnung & ") und alle zugehörigen Rezeptschritte löschen"
+            End Select
+        Else
+            MsgText = "Diesen Rezeptschritt (" & _RezeptSchritt.Nummer & "/" & _RezeptSchritt.Bezeichnung & ") löschen"
+        End If
+
+        'Dialog-Box Abfrage
+        If MsgBox(MsgText, MsgBoxStyle.Question, "Rezeptschritt löschen") = MsgBoxResult.Ok Then
+            _RezeptSchritt.Delete()
+            VT_Aktualisieren()
+            'wenn kein Rezept-Schritt mehr vorhanden ist - Popup-Menu anpassen
+            If Rezept.RootRezeptSchritt.ChildSteps.Count = 0 Then
+                Debug.Print("Leeres Rezept")
+                VT_MakeTreePopup(True)
+            End If
+        End If
+
     End Sub
 
     ''' <summary>
@@ -1005,6 +1050,9 @@ Public Class wb_Rezept_Rezeptur
                     rsc.Type = rs.Type
                     rsc.ParamNr = winback.iField("KT_ParamNr")
                     rsc.Sollwert = "0,000"
+                    rsc.Format = winback.iField("KT_Format")
+                    rsc.OberGW = winback.iField("KT_OberGW")
+                    rsc.UnterGW = winback.iField("KT_UnterGW")
                     rsc.Einheit = wb_Language.TextFilter(winback.sField("E_Einheit"))
                 End If
 
@@ -1013,12 +1061,12 @@ Public Class wb_Rezept_Rezeptur
         End If
     End Sub
 
-    Private Sub VT_MakeTreePopup()
+    Private Sub VT_MakeTreePopup(Optional LeeresRezept As Boolean = False)
         'Größe des Arrays entspricht der Anzahl der Einträge in der Enumeration in wb_global
         Dim _PopupFunctions([Enum].GetValues(GetType(wb_Global.TPopupFunctions)).Length + 1) As Boolean
 
         'Sonderfall - das Rezept ist leer
-        If _RezeptSchritt Is Nothing Then
+        If _RezeptSchritt Is Nothing Or LeeresRezept Then
             _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe) = True
             _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente) = True
             _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente) = True
@@ -1247,9 +1295,28 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     Private Sub tbRzNummer_Leave(sender As Object, e As EventArgs) Handles tbRzNummer.Leave
+        'Rezeptnummer (Alpha) wurde geändert
+        If (tbRzNummer.Text <> Rezept.RezeptNummer) And (tbRzNummer.Text <> "") Then
+            'Prüfen ob die neue Rezeptnummer schon existiert (Neuanlage)
+            If Rezept.MySQLdbCheck_RzKopf(tbRzNummer.Text) Then
+                MsgBox("Diese Rezeptnummer exisitiert schon" & vbCrLf & "Bitte andere Nummer auswählen", MsgBoxStyle.Exclamation, "Rezept neu anlegen")
+                'Originalwert wieder eintragen
+                tbRzNummer.Text = Rezept.RezeptNummer
+                tbRzNummer.Focus()
+                Exit Sub
+            End If
+        End If
+
+        'Rezeptkopf wurde geändert 
         CheckTextBoxChanged(tbRzNummer, Rezept.RezeptNummer)
     End Sub
 
+    ''' <summary>
+    ''' Flag Rezeptkopf wurde geändert
+    ''' </summary>
+    ''' <param name="tb"></param>
+    ''' <param name="Value"></param>
+    ''' <returns></returns>
     Private Function CheckTextBoxChanged(tb As TextBox, ByRef Value As String) As Boolean
         If tb.Text <> Value Then
             _RzKopfChanged = True

@@ -36,6 +36,7 @@ Public Class wb_GlobalSettings
     Private Shared _pAddInPath As String = Nothing
     Private Shared _pListenPath As String
     Private Shared _pTempPath As String
+    Private Shared _pXConfigPath As String = Nothing
     Private Shared _pWinBackIniPath As String = Nothing
     Private Shared _pProgrammPath As String = ""
     Private Shared _Log4ViewExe As String = ""
@@ -105,6 +106,9 @@ Public Class wb_GlobalSettings
     Private Shared _mHost As String = Nothing
     Private Shared _mSenderAddr As String = Nothing
     Private Shared _mSenderPass As String = Nothing
+
+    Private Shared _DefaultImportSchnittstelle As String = Nothing
+    Private Shared _DefaultExportSchnittstelle As String = Nothing
 
     Private Shared _ImportPathPistor As String = Nothing
     Private Shared _ArtikelVerarbeitungsHinweisPath As String = Nothing
@@ -671,6 +675,18 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As String)
             _pTempPath = value
+        End Set
+    End Property
+
+    Public Shared Property pXConfigPath As String
+        Get
+            If _pXConfigPath = Nothing Then
+                _pXConfigPath = _pProgrammPath & "XFace"
+            End If
+            Return _pXConfigPath
+        End Get
+        Set(value As String)
+            _pXConfigPath = value
         End Set
     End Property
 
@@ -1342,6 +1358,9 @@ Public Class wb_GlobalSettings
                 _ImportPathPistor = IniFile.ReadString("Path", "Pistor", "")
                 _ArtikelVerarbeitungsHinweisPath = IniFile.ReadString("Artikel", "VerzeichnisArtikelHinweise", "")
 
+            Case "Bakelink"
+                _DefaultImportSchnittstelle = IniFile.ReadString("Bakelink", "ConnectType", "")
+                _DefaultExportSchnittstelle = IniFile.ReadString("Bakelink", "ConnectTypeExport", "")
         End Select
     End Sub
 
@@ -1761,6 +1780,36 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As Boolean)
             _WinBackBackgroudTaskConnected = value
+        End Set
+    End Property
+
+    Public Shared Property DefaultImportSchnittstelle As String
+        Get
+            If _DefaultImportSchnittstelle Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _DefaultImportSchnittstelle
+        End Get
+        Set(value As String)
+            If value <> "" Then
+                _DefaultImportSchnittstelle = value
+                setWinBackIni("Bakelink", "ConnectType", value)
+            End If
+        End Set
+    End Property
+
+    Public Shared Property DefaultExportSchnittstelle As String
+        Get
+            If _DefaultExportSchnittstelle Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _DefaultExportSchnittstelle
+        End Get
+        Set(value As String)
+            If value <> "" Then
+                _DefaultExportSchnittstelle = value
+                setWinBackIni("Bakelink", "ConnectTypeExport", value)
+            End If
         End Set
     End Property
 End Class

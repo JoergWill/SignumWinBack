@@ -31,15 +31,21 @@ Public Class Rezepte_Main
                 RezeptListe.Show(DockPanel, DockState.DockLeft)
                 Return True
             Case "OPENDETAILS"
-                RezeptDetails = New wb_Rezept_Details
+                If IsNothingOrDisposed(RezeptDetails) Then
+                    RezeptDetails = New wb_Rezept_Details
+                End If
                 RezeptDetails.Show(DockPanel)
                 Return True
             Case "OPENHINWEISE"
-                RezeptHinweise = New wb_Rezept_Hinweise
+                If IsNothingOrDisposed(RezeptHinweise) Then
+                    RezeptHinweise = New wb_Rezept_Hinweise
+                End If
                 RezeptHinweise.Show(DockPanel)
                 Return True
             Case "OPENHISTORIE"
-                RezeptHistorie = New wb_Rezept_Historie
+                If IsNothingOrDisposed(RezeptHistorie) Then
+                    RezeptHistorie = New wb_Rezept_Historie
+                End If
                 RezeptHistorie.Show(DockPanel)
                 Return True
 

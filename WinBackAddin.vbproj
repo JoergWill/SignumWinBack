@@ -361,6 +361,12 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSchnittstelleFelder.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSchnittstelle.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSortimente.Designer.vb">
       <DependentUpon>wb_ArrayGridViewSortimente.vb</DependentUpon>
     </Compile>
@@ -404,6 +410,9 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_SiloBef.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_Schnittstelle.vb" />
+    <Compile Include="wb_00_Klassen\wb_SchnittstelleFeld.vb" />
+    <Compile Include="wb_00_Klassen\wb_SchnittstelleTabelle.vb" />
     <Compile Include="wb_00_Main\wb_Main_ServerConnect.Designer.vb">
       <DependentUpon>wb_Main_ServerConnect.vb</DependentUpon>
     </Compile>
@@ -411,6 +420,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="wb_00_Main\wb_Main_ServerTaskConnect.vb" />
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Drucken.Designer.vb">
+      <DependentUpon>wb_Planung_Drucken.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_07_Forms_Planung\wb_Planung_Drucken.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_08_Forms_Admin\wb_Admin_TimerEdit.Designer.vb">
       <DependentUpon>wb_Admin_TimerEdit.vb</DependentUpon>
     </Compile>
@@ -1090,6 +1105,37 @@
     <Compile Include="wb_09_StammDaten\wb_StammDaten_LinienGruppen.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_KonfigVorschau.Designer.vb">
+      <DependentUpon>wb_Schnittstelle_KonfigVorschau.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_KonfigVorschau.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Konfig.Designer.vb">
+      <DependentUpon>wb_Schnittstelle_Konfig.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Konfig.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Export.Designer.vb">
+      <DependentUpon>wb_Schnittstelle_Export.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Export.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Import.Designer.vb">
+      <DependentUpon>wb_Schnittstelle_Import.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Import.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Log.Designer.vb">
+      <DependentUpon>wb_Schnittstelle_Log.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Log.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Shared.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\licenses.licx" />
@@ -1113,6 +1159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Main\wb_Main_ServerConnect.resx">
       <DependentUpon>wb_Main_ServerConnect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Drucken.resx">
+      <DependentUpon>wb_Planung_Drucken.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_TimerEdit.resx">
       <DependentUpon>wb_Admin_TimerEdit.vb</DependentUpon>
@@ -1353,6 +1402,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_LinienGruppen.resx">
       <DependentUpon>wb_StammDaten_LinienGruppen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_10_SchnittStelle\wb_Schnittstelle_KonfigVorschau.resx">
+      <DependentUpon>wb_Schnittstelle_KonfigVorschau.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_10_SchnittStelle\wb_Schnittstelle_Konfig.resx">
+      <DependentUpon>wb_Schnittstelle_Konfig.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_10_SchnittStelle\wb_Schnittstelle_Export.resx">
+      <DependentUpon>wb_Schnittstelle_Export.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_10_SchnittStelle\wb_Schnittstelle_Import.resx">
+      <DependentUpon>wb_Schnittstelle_Import.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_10_SchnittStelle\wb_Schnittstelle_Log.resx">
+      <DependentUpon>wb_Schnittstelle_Log.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

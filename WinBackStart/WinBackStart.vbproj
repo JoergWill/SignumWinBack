@@ -337,6 +337,12 @@
     <Compile Include="About_WinBack.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Schnittstelle_Main.Designer.vb">
+      <DependentUpon>Schnittstelle_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Schnittstelle_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Admin_ThemeControl.Designer.vb">
       <DependentUpon>Admin_ThemeControl.vb</DependentUpon>
     </Compile>

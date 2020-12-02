@@ -725,6 +725,8 @@ Public Class wb_Rezept
         End If
         'Bezeichnung
         _RezeptBezeichnung = "Rezept neu angelegt " & Date.Now
+        'Rezept-Nummer(alpha)
+        _RezeptNummer = ""
         'Variante
         _RezeptVariante = Variante
         'Liniengruppe
@@ -741,8 +743,8 @@ Public Class wb_Rezept
         TeigChargen.TeigGewicht = 0
 
         'sql-Kommando INSERT bilden
-        Dim sqlFeld = "RZ_Nr, RZ_Variante_Nr, RZ_Bezeichnung, RZ_Liniengruppe, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Aenderung_User, RZ_Aenderung_Nr"
-        Dim sqlData = _RezeptNr & "," & _RezeptVariante & ", '" & _RezeptBezeichnung & "'," & _LinienGruppe & ",'" &
+        Dim sqlFeld = "RZ_Nr, RZ_Variante_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Liniengruppe, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Aenderung_User, RZ_Aenderung_Nr"
+        Dim sqlData = _RezeptNr & "," & _RezeptVariante & ", '" & _RezeptNummer & "', '" & _RezeptBezeichnung & "'," & _LinienGruppe & ",'" &
                       wb_sql_Functions.MySQLdatetime(_AenderungDatum) & "','" & _AenderungName & "'," & _AenderungUserNr & "," & _AenderungNummer
 
         'Datensatz neu anlegen
@@ -761,7 +763,7 @@ Public Class wb_Rezept
     ''' <param name="RezeptNummer"></param>
     ''' <param name="Variante"></param>
     ''' <returns></returns>
-    Private Function MySQLdbSelect_RzKopf(RezeptNummer As String, ByRef Variante As Integer) As Boolean
+    Private Function MySQLdbSelect_RzKopf(RezeptNummer As String, ByRef Variante As Integer, Optional CheckOnly As Boolean = False) As Boolean
         Dim sql As String
         Dim winback As wb_Sql
 
@@ -774,9 +776,11 @@ Public Class wb_Rezept
         'Datensätze aus Tabelle Rezepte lesen
         If winback.sqlSelect(sql) Then
             If winback.Read Then
-                For i = 0 To winback.MySqlRead.FieldCount - 1
-                    MySQLdbRead_Fields(winback.MySqlRead.GetName(i), winback.MySqlRead.GetValue(i))
-                Next
+                If Not CheckOnly Then
+                    For i = 0 To winback.MySqlRead.FieldCount - 1
+                        MySQLdbRead_Fields(winback.MySqlRead.GetName(i), winback.MySqlRead.GetValue(i))
+                    Next
+                End If
                 winback.Close()
                 Return True
             End If
@@ -786,11 +790,24 @@ Public Class wb_Rezept
     End Function
 
     ''' <summary>
+    ''' Prüft ob die übergebene Rezeptnummer schon existiert
+    '''     Wenn die Nummer schon vorhanden ist, wird True zurückgegeben, ist die Nummer frei, False
+    ''' </summary>
+    ''' <param name="RezeptNummer"></param>
+    ''' <returns></returns>
+    Public Function MySQLdbCheck_RzKopf(RezeptNummer As String) As Boolean
+        'prüfen ob Rezeptnummer(Alphanumerisch) in Variante 1 exisitert. (nur prüfen, nicht laden)
+        Return MySQLdbSelect_RzKopf(RezeptNummer, 1, True)
+    End Function
+
+    ''' <summary>
     ''' Liest die Rezeptkopfdaten der alphanumerischen RezeptNummer/Rezeptvariante aus der winback.Rezepte-Tabelle. Wenn die vorgegebene Rezeptvariante nicht
     ''' existiert, wird die Variante 1 gelesen (Standard-Variante). Wenn Variante 1 nicht exisitiert (Sauerteig-Rezept) wird Variante 0
     ''' gelesen. Die entsprechende Variante wird (byRef) korrigiert.
     ''' Wenn kein Rezeptkopf existiert, wird False zurückgegeben.
     ''' Ist ein Änderungsindex angegeben wird das Rezept aus wbdaten.HisRezepte (Rezepthistorie) gelesen.
+    ''' 
+    ''' Mit dem gesetzten Flag CheckOnly wird nur geprüft, ob eine Rezeptur mit dieser Nummer vorhanden ist, es wird nichts gelesen
     ''' </summary>
     ''' <param name="RezeptNr"></param>
     ''' <param name="Variante"></param>
@@ -816,13 +833,14 @@ Public Class wb_Rezept
         'Datensätze aus Tabelle Rezepte lesen
         If winback.sqlSelect(sql) Then
             If winback.Read Then
+                'Flag Checkonly prüft nur ob ein Rezept mit dieser Nummer vorhanden ist.
                 For i = 0 To winback.MySqlRead.FieldCount - 1
                     MySQLdbRead_Fields(winback.MySqlRead.GetName(i), winback.MySqlRead.GetValue(i))
                 Next
+            End If
                 winback.Close()
                 Return True
             End If
-        End If
         winback.Close()
         Return False
     End Function

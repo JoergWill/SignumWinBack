@@ -157,6 +157,7 @@ Public Class wb_Rezept_Main
         Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNrNeu, wb_Global.RezeptVarianteStandard)
         Rezeptur.Show()
         Me.Cursor = Cursors.Default
+        Rezeptur.tbRzNummer.Focus()
     End Sub
 
     ''' <summary>

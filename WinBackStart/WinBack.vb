@@ -21,6 +21,7 @@ Public Class WinBack
     Dim MdiLinien As Linien_Main
     Dim MdiPlanung As Planung_Main
     Dim MdiAdmin As Admin_Main
+    Dim MdiSchnittstelle As Schnittstelle_Main
     Dim MdiTEst As Test_Main
 
 #Region "MainMenu"
@@ -73,6 +74,10 @@ Public Class WinBack
             'Service/Administration
             If rbExtra.Active Then
                 MainFormShow(MdiAdmin, GetType(Admin_Main))
+            End If
+            'Schnittstelle
+            If rbSchnittstelle.Active Then
+                MainFormShow(MdiSchnittstelle, GetType(Schnittstelle_Main))
             End If
 
             'Info/Test
@@ -614,7 +619,7 @@ Public Class WinBack
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbArtikelListe.Click, rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click, rbChargenListe.Click, rbDatensicherung.Click, rbProduktionPlanung.Click
+    Private Sub rbListe_Click(sender As Object, e As EventArgs) Handles rbArtikelListe.Click, rbRohstoffeListe.Click, rbRezeptListe.Click, rbListe.Click, rbChargenListe.Click, rbDatensicherung.Click, rbProduktionPlanung.Click, RibbonButton4.Click
         AktFormSendCommand("OPENLISTE", "")
     End Sub
 
@@ -628,7 +633,7 @@ Public Class WinBack
     Private Sub rbDetails_Click(sender As Object, e As EventArgs) Handles rbArtikelDetails.Click, rbArtikelBearbeiten.Click,
                                                                           rbUserDetails.Click, rbUserBearbeiten.Click,
                                                                           rbRohstoffeDetails.Click, rbRohstoffeBearbeiten.Click,
-                                                                          rbUserDetails.Click, rbUserBearbeiten.Click, rbRezeptBearbeiten.Click, rbRezeptDetails.Click
+                                                                          rbUserDetails.Click, rbUserBearbeiten.Click, rbRezeptBearbeiten.Click, rbRezeptDetails.Click, rbFormat.Click
         AktFormSendCommand("OPENDETAILS", "")
     End Sub
 
@@ -643,7 +648,7 @@ Public Class WinBack
         rbUserNeu.Click, rbUserRemove.Click, rbUserRechte.Click, rbUserChangePass.Click, rbUserDrucken.Click, rbUserGruppenRechte.Click,
         rbRohstoffeNeu.Click, rbRohstoffeLöschen.Click, rbRohstoffeParameter.Click, rbRohstoffeVerwendung.Click, rbRohstoffeLieferungen.Click, rbRohstoffNwt.Click, rbRohstoffSilos.Click, rbRohstoffeImportCloud.Click,
         rbRezeptNeu.Click, rbRezeptHistorie.Click, rbRezeptHinweis.Click, rbAdminWinBack.Click, rbAdminUpdate.Click, rbAdminWinBackIni.Click, rbLog.Click, rbCheckDataBase.Click,
-        rbArtikelHinweise.Click, rbArtikelParameter.Click, rbVarianten.Click, rbStoffe.Click, rbLinienGruppen.Click, rbGruppen.Click, rbKonfigWinBack.Click, rbProduktionTeiler.Click
+        rbArtikelHinweise.Click, rbArtikelParameter.Click, rbVarianten.Click, rbStoffe.Click, rbLinienGruppen.Click, rbGruppen.Click, rbKonfigWinBack.Click, rbProduktionTeiler.Click, rbImport.Click, rbExport.Click, rbVorschau.Click
         Dim Cmd As String = DirectCast(sender, RibbonButton).Value
         If Cmd <> "" Then
             AktFormSendCommand(Cmd, "")

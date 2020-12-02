@@ -12,6 +12,7 @@ Public Class wb_Planung_Main
     'Fenster werden bei Bedarf erzeugt
     Public PlanungTeiler As wb_Planung_Teiler
     Public PlanungListeFehler As wb_Planung_ListeFehler
+    Public PlanungDrucken As wb_Planung_Drucken
 
 #Region "Signum"
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -80,6 +81,9 @@ Public Class wb_Planung_Main
         'Fehlerliste schliessen
         wb_Functions.CloseAndDisposeSubForm(PlanungListeFehler)
 
+        'Drucken schliessen
+        wb_Functions.CloseAndDisposeSubForm(PlanungDrucken)
+
         'Fenster darf geschlossen werden
         Return False
     End Function
@@ -123,6 +127,10 @@ Public Class wb_Planung_Main
                 _DockPanelList.Add(PlanungTeiler)
                 Return PlanungTeiler
 
+            Case "WinBack.wb_Planung_Drucken"
+                PlanungDrucken = New wb_Planung_Drucken
+                _DockPanelList.Add(PlanungDrucken)
+                Return PlanungDrucken
             Case Else
                 Return Nothing
         End Select
@@ -152,7 +160,10 @@ Public Class wb_Planung_Main
     End Sub
 
     Private Sub BtnProdListeExport()
-        'TODO in Planung Liste den Export anstossen
+        If IsNothingOrDisposed(PlanungDrucken) Then
+            PlanungDrucken = New wb_Planung_Drucken
+            PlanungDrucken.Show(DockPanel)
+        End If
     End Sub
 
     Private Sub BtnPlanungTeiler()

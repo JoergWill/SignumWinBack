@@ -30,7 +30,9 @@ Public Class Planung_Main
                 PlanungListe.Show(DockPanel, DockState.DockLeft)
                 Return True
             Case "OPENPARAMETER"
-                PlanungTeiler = New wb_Planung_Teiler
+                If IsNothingOrDisposed(PlanungTeiler) Then
+                    PlanungTeiler = New wb_Planung_Teiler
+                End If
                 PlanungTeiler.Show(DockPanel, DockState.DockLeft)
                 Return True
             Case Else

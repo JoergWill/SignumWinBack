@@ -242,8 +242,11 @@ Public Class EnhEdit
 
         'da der rechte Rand des unterlagerten Steuerelementes verschoben ist, muss ein Offset eingebaut werden
         Me.ClientSize = _TextBoxSize
-        Me.BackColor = Color.White
-        TextBox.BackColor = Color.White
+        'Me.BackColor = Color.White
+        'TextBox.BackColor = Color.White
+        Me.ForeColor = Color.Orange
+        TextBox.ForeColor = Color.Orange
+
         Me.BorderStyle = BorderStyle.None
         TextBox.BorderStyle = BorderStyle.None
 

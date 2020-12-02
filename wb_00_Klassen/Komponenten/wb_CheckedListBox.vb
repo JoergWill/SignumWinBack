@@ -31,6 +31,28 @@
         End If
     End Sub
 
+    ''' <summary>
+    ''' ComboBox mit Texten aus HashTable füllen.
+    ''' </summary>
+    ''' <param name="HashTable"></param>
+    Public Sub Fill(HashTable As SortedList, Optional FilterAlle As Boolean = False)
+        'alte Einträge löschen
+        Items.Clear()
+        Text = ""
+        'per Default Filterauswahl Alle
+        If FilterAlle Then
+            Text = wb_Global.TextAlle
+            Items.Add(Text)
+        End If
+        'HashTable aus SortedList
+        Dim ht As SortedList
+        ht = HashTable
+        'Combo-Box mit Werten füllen
+        For Each item As DictionaryEntry In ht
+            Items.Add(item.Value)
+        Next
+    End Sub
+
     Private Sub SelIndexChanged(sender As Object, e As EventArgs) Handles Me.SelectedIndexChanged
         'Index setzen
         SelIndex = Me.SelectedIndex

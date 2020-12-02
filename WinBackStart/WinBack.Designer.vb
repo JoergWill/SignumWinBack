@@ -158,6 +158,15 @@ Partial Class WinBack
         Me.rbGruppen = New System.Windows.Forms.RibbonButton()
         Me.rbVarianten = New System.Windows.Forms.RibbonButton()
         Me.rbKonfigWinBack = New System.Windows.Forms.RibbonButton()
+        Me.rbSchnittstelle = New System.Windows.Forms.RibbonTab()
+        Me.rpImportExport = New System.Windows.Forms.RibbonPanel()
+        Me.rbImport = New System.Windows.Forms.RibbonButton()
+        Me.rbExport = New System.Windows.Forms.RibbonButton()
+        Me.rbDefinition = New System.Windows.Forms.RibbonPanel()
+        Me.rbFormat = New System.Windows.Forms.RibbonButton()
+        Me.rbVorschau = New System.Windows.Forms.RibbonButton()
+        Me.rbLogFile = New System.Windows.Forms.RibbonPanel()
+        Me.RibbonButton4 = New System.Windows.Forms.RibbonButton()
         Me.rbAbout = New System.Windows.Forms.RibbonTab()
         Me.rbAnmelden = New System.Windows.Forms.RibbonPanel()
         Me.rbLogin = New System.Windows.Forms.RibbonButton()
@@ -1221,6 +1230,7 @@ Partial Class WinBack
         Me.rTab.Tabs.Add(Me.rbLinien)
         Me.rTab.Tabs.Add(Me.rbPlanung)
         Me.rTab.Tabs.Add(Me.rbExtra)
+        Me.rTab.Tabs.Add(Me.rbSchnittstelle)
         Me.rTab.Tabs.Add(Me.rbAbout)
         Me.rTab.TabsMargin = New System.Windows.Forms.Padding(5, 26, 20, 0)
         Me.rTab.TabSpacing = 4
@@ -1438,6 +1448,87 @@ Partial Class WinBack
         Me.rbKonfigWinBack.SmallImage = Global.WinBack.My.Resources.Resources.AdminEditKonfig_32x32
         Me.rbKonfigWinBack.Text = "WinBack Konfiguration"
         Me.rbKonfigWinBack.Value = "OPENKONFIG"
+        '
+        'rbSchnittstelle
+        '
+        Me.rbSchnittstelle.Name = "rbSchnittstelle"
+        Me.rbSchnittstelle.Panels.Add(Me.rpImportExport)
+        Me.rbSchnittstelle.Panels.Add(Me.rbDefinition)
+        Me.rbSchnittstelle.Panels.Add(Me.rbLogFile)
+        Me.rbSchnittstelle.Tag = "126"
+        Me.rbSchnittstelle.Text = "Schnittstelle"
+        Me.rbSchnittstelle.Value = "SCHNITTST_IMPORT"
+        '
+        'rpImportExport
+        '
+        Me.rpImportExport.ButtonMoreEnabled = False
+        Me.rpImportExport.ButtonMoreVisible = False
+        Me.rpImportExport.Items.Add(Me.rbImport)
+        Me.rpImportExport.Items.Add(Me.rbExport)
+        Me.rpImportExport.Name = "rpImportExport"
+        Me.rpImportExport.Text = "Schnittstelle"
+        '
+        'rbImport
+        '
+        Me.rbImport.Image = CType(resources.GetObject("rbImport.Image"), System.Drawing.Image)
+        Me.rbImport.LargeImage = CType(resources.GetObject("rbImport.LargeImage"), System.Drawing.Image)
+        Me.rbImport.Name = "rbImport"
+        Me.rbImport.SmallImage = CType(resources.GetObject("rbImport.SmallImage"), System.Drawing.Image)
+        Me.rbImport.Text = "Import Daten"
+        Me.rbImport.Value = "SCHNITTST_IMPORT"
+        '
+        'rbExport
+        '
+        Me.rbExport.Image = CType(resources.GetObject("rbExport.Image"), System.Drawing.Image)
+        Me.rbExport.LargeImage = CType(resources.GetObject("rbExport.LargeImage"), System.Drawing.Image)
+        Me.rbExport.Name = "rbExport"
+        Me.rbExport.SmallImage = CType(resources.GetObject("rbExport.SmallImage"), System.Drawing.Image)
+        Me.rbExport.Text = "Export Daten"
+        Me.rbExport.Value = "SCHNITTST_EXPORT"
+        '
+        'rbDefinition
+        '
+        Me.rbDefinition.ButtonMoreEnabled = False
+        Me.rbDefinition.ButtonMoreVisible = False
+        Me.rbDefinition.Items.Add(Me.rbFormat)
+        Me.rbDefinition.Items.Add(Me.rbVorschau)
+        Me.rbDefinition.Name = "rbDefinition"
+        Me.rbDefinition.Text = "Definition"
+        '
+        'rbFormat
+        '
+        Me.rbFormat.Image = Global.WinBack.My.Resources.Resources.UserBearbeiten_32x32
+        Me.rbFormat.LargeImage = Global.WinBack.My.Resources.Resources.UserBearbeiten_32x32
+        Me.rbFormat.Name = "rbFormat"
+        Me.rbFormat.SmallImage = CType(resources.GetObject("rbFormat.SmallImage"), System.Drawing.Image)
+        Me.rbFormat.Text = "Format bearbeiten"
+        Me.rbFormat.Value = "SCHNITTST_KONFIG"
+        '
+        'rbVorschau
+        '
+        Me.rbVorschau.Image = CType(resources.GetObject("rbVorschau.Image"), System.Drawing.Image)
+        Me.rbVorschau.LargeImage = CType(resources.GetObject("rbVorschau.LargeImage"), System.Drawing.Image)
+        Me.rbVorschau.Name = "rbVorschau"
+        Me.rbVorschau.SmallImage = CType(resources.GetObject("rbVorschau.SmallImage"), System.Drawing.Image)
+        Me.rbVorschau.Text = "Vorschau"
+        Me.rbVorschau.Value = "SCHNITTST_VORSCHAU"
+        '
+        'rbLogFile
+        '
+        Me.rbLogFile.ButtonMoreEnabled = False
+        Me.rbLogFile.ButtonMoreVisible = False
+        Me.rbLogFile.Items.Add(Me.RibbonButton4)
+        Me.rbLogFile.Name = "rbLogFile"
+        Me.rbLogFile.Text = "Log-File"
+        '
+        'RibbonButton4
+        '
+        Me.RibbonButton4.Image = Global.WinBack.My.Resources.Resources.AdminLog_32x32
+        Me.RibbonButton4.LargeImage = Global.WinBack.My.Resources.Resources.AdminLog_32x32
+        Me.RibbonButton4.Name = "RibbonButton4"
+        Me.RibbonButton4.SmallImage = CType(resources.GetObject("RibbonButton4.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton4.Text = "Log-/Fehler Ausgaben"
+        Me.RibbonButton4.Value = "SCHNITTST_LOG"
         '
         'rbAbout
         '
@@ -1784,4 +1875,13 @@ Partial Class WinBack
     Friend WithEvents rbProduktionTeiler As RibbonButton
     Friend WithEvents rbCheckDataBase As RibbonButton
     Friend WithEvents rbRohstoffSilos As RibbonButton
+    Friend WithEvents rbSchnittstelle As RibbonTab
+    Friend WithEvents rpImportExport As RibbonPanel
+    Friend WithEvents rbImport As RibbonButton
+    Friend WithEvents rbExport As RibbonButton
+    Friend WithEvents rbDefinition As RibbonPanel
+    Friend WithEvents rbFormat As RibbonButton
+    Friend WithEvents rbLogFile As RibbonPanel
+    Friend WithEvents RibbonButton4 As RibbonButton
+    Friend WithEvents rbVorschau As RibbonButton
 End Class

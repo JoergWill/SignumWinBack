@@ -30,7 +30,9 @@ Public Class Linien_Main
                 LinienListe.Show(DockPanel, DockState.DockLeft)
                 Return True
             Case "OPENDETAILS"
-                LinienDetails = New wb_Linien_Details
+                If IsNothingOrDisposed(LinienDetails) Then
+                    LinienDetails = New wb_Linien_Details
+                End If
                 LinienDetails.Show(DockPanel, DockState.DockLeft)
                 Return True
 

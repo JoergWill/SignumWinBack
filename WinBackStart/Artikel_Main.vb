@@ -32,15 +32,21 @@ Public Class Artikel_Main
                 ArtikelListe.Show(DockPanel, DockState.DockLeft)
                 Return True
             Case "OPENDETAILS"
-                ArtikelDetails = New wb_Artikel_Details
+                If IsNothingOrDisposed(ArtikelDetails) Then
+                    ArtikelDetails = New wb_Artikel_Details
+                End If
                 ArtikelDetails.Show(DockPanel, DockState.Document)
                 Return True
             Case "OPENHINWEISE"
-                ArtikelHinweise = New wb_Artikel_Hinweise
+                If IsNothingOrDisposed(ArtikelHinweise) Then
+                    ArtikelHinweise = New wb_Artikel_Hinweise
+                End If
                 ArtikelHinweise.Show(DockPanel, DockState.Document)
                 Return True
-            Case "OPENPARAMETER"
-                ArtikelParameter = New wb_Artikel_Parameter
+                    Case "OPENPARAMETER"
+                If IsNothingOrDisposed(ArtikelParameter) Then
+                    ArtikelParameter = New wb_Artikel_Parameter
+                End If
                 ArtikelParameter.Show(DockPanel, DockState.Document)
                 Return True
             Case Else

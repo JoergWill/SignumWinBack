@@ -31,16 +31,22 @@ Public Class User_Main
                 UserListe.Show(DockPanel, DockState.DockLeft)
                 Return True
             Case "OPENDETAILS"
-                UserDetails = New wb_User_Details
-                UserDetails.Show(DockPanel, DockState.DockLeft)
+                If Not DockIsVisible("wb_User_Details") Then
+                    UserDetails = New wb_User_Details
+                    UserDetails.Show(DockPanel, DockState.DockLeft)
+                End If
                 Return True
             Case "OPENPARAMETER"
-                UserRechte = New wb_User_Rechte
-                UserRechte.Show(DockPanel, DockState.DockLeft)
+                If Not DockIsVisible("wb_User_Rechte") Then
+                    UserRechte = New wb_User_Rechte
+                    UserRechte.Show(DockPanel, DockState.DockLeft)
+                End If
                 Return True
             Case "OPENGRPLIST"
-                UserGruppenRechte = New wb_User_GruppenRechte
-                UserGruppenRechte.Show(DockPanel, DockState.DockLeft)
+                If Not DockIsVisible("wb_User_GruppenRechte") Then
+                    UserGruppenRechte = New wb_User_GruppenRechte
+                    UserGruppenRechte.Show(DockPanel, DockState.DockLeft)
+                End If
                 Return True
 
             Case "NEW"

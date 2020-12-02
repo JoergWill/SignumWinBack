@@ -378,6 +378,7 @@ Public Class wb_Komponente
     ''' </summary>
     ''' <returns></returns>
     Public Property ZaehltNichtZumRezeptGewicht As Boolean
+        'TODO Niehaves zusätzlich zählt nicht zum Rezeptgewicht aber zu den Nährwerten(Gesamtgewicht)
         Set(value As Boolean)
             If value Then
                 KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht

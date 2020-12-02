@@ -30,7 +30,6 @@ Public Class wb_Admin_Timer
         AddHandler wb_Main_Shared.eTimer, AddressOf AktTimerFromServerTask
     End Sub
 
-
     ''' <summary>
     ''' Der WinBack-Server-Task meldet eine Änderung der Aktions-Timer
     ''' Aktionen abhänging von EventArgs(e) ausführen:
@@ -41,23 +40,27 @@ Public Class wb_Admin_Timer
     ''' <param name="e"></param>
     Public Sub AktTimerFromServerTask(sender As Object, e As String)
         'Falls Parameter vorhanden sind
-        Dim m As String = e.Trim("|")
-        Dim Message() As String = m.Split("|")
+        Try
+            'Meldungen und Parameter trennen
+            Dim m As String = e.Trim("|")
+            Dim Message() As String = m.Split("|")
 
-        'Aktion abhängig vom EventArgs
-        Select Case Message(0)
-            Case "REFRESH"
-                'Timer-Einstellungen haben sich geändert - Daten neu laden und anzeigen
-                LoadAktionsTimer()
-                'Array neu initialisieren und anzeigen
-                AktionsTimerGrid.RefreshGrid(tArray)
-            Case "RUN"
-                'Timer-Task wird als Argument mitgeschickt
-                LoadAktionsTimer()
-                SetStatusAktionsTimer(Message(1))
-                'Array neu initialisieren und anzeigen
-                AktionsTimerGrid.RefreshGrid(tArray)
-        End Select
+            'Aktion abhängig vom EventArgs
+            Select Case Message(0)
+                Case "REFRESH"
+                    'Timer-Einstellungen haben sich geändert - Daten neu laden und anzeigen
+                    LoadAktionsTimer()
+                    'Array neu initialisieren und anzeigen
+                    AktionsTimerGrid.RefreshGrid(tArray)
+                Case "RUN"
+                    'Timer-Task wird als Argument mitgeschickt
+                    LoadAktionsTimer()
+                    SetStatusAktionsTimer(Message(1))
+                    'Array neu initialisieren und anzeigen
+                    AktionsTimerGrid.RefreshGrid(tArray)
+            End Select
+        Catch ex As Exception
+        End Try
     End Sub
 
     ''' <summary>

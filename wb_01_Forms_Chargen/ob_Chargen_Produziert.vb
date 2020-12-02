@@ -11,7 +11,7 @@ Public Class ob_Chargen_Produziert
 
     Private opw_Liste As New ArrayList  'OrgaBack produzierte Ware
     Private wpl_Liste As New ArrayList  'WinBack "leere" Chargen (nicht gestartet)
-    Private Const LIMIT = 1000
+    Private Const LIMIT = 5000
 
     ''' <summary>
     ''' Alle Chargen vor dem Stichtag werden als ungültig deklariert und nicht an OrgaBack zurückgemeldet
