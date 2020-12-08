@@ -51,7 +51,14 @@ Public MustInherit Class wb_ArrayGridView
                 c.ReadOnly = False
                 c.HeaderText = ColNames(i).Remove(0, 1) + Chr(10)
                 c.DateFormat = "dd.MM.yy HH:mm"
-
+                Columns.Add(c)
+                Columns(i).Visible = True
+            ElseIf Microsoft.VisualBasic.Left(ColNames(i), 1) = "?" Then
+                'Spalten-Namen, die mit ? beginnen werden als CheckBox-Spalten formatiert
+                Dim c As New DataGridViewCheckBoxColumn
+                c.Name = "B" & i
+                c.ReadOnly = False
+                c.HeaderText = ColNames(i).Remove(0, 1) + Chr(10)
                 Columns.Add(c)
                 Columns(i).Visible = True
             Else
@@ -158,6 +165,26 @@ Public MustInherit Class wb_ArrayGridView
 
         End With
     End Sub
+
+    Private Sub GridCellClick(sender As Object, e As DataGridViewCellEventArgs) Handles MyBase.CellClick
+        Dim Col As Integer = e.ColumnIndex
+        Dim Row As Integer = e.RowIndex
+
+        'Wenn die Zeile gültig ist, wird der entsprechende Wert im Ergebnis-Array getoggelt
+        Try
+            If Col >= 0 And Col < Me.ColumnCount And Row >= 0 And Row < Me.RowCount Then
+                If Me.Columns(Col).Name.First = "B" Then
+                    'Dim c As DataGridViewCheckBoxCell = CType(Me.Rows(Row).Cells(Col), DataGridViewCheckBoxCell)
+                    'CType(Me.Rows(Row).Cells(Col), DataGridViewCheckBoxCell).Value = Not c.FormattedValue
+                    'Toggle
+                    Me.Rows(Row).Cells(Col).Value = Not Me.Rows(Row).Cells(Col).FormattedValue
+                End If
+            End If
+        Catch ex As Exception
+        End Try
+
+    End Sub
+
 
     Public Sub GridLocation(ByVal Parent As Windows.Forms.TabPage)
         MyBase.Parent = Parent

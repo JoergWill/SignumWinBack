@@ -164,6 +164,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>AssemblyResolve=True</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M3|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -359,6 +360,9 @@
       <DependentUpon>wb_ArrayGridViewNwt.vb</DependentUpon>
     </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewDruckAuftrag.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSchnittstelleFelder.vb">

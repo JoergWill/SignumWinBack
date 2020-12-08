@@ -672,8 +672,8 @@ Public Class wb_Komponente
         'Rohstoff-Detaildaten wurden geändert
         If _DataHasChanged Then
             dataGridView.Field("KO_Nr_AlNum") = KO_Nr_AlNum
-            dataGridView.Field("KO_Bezeichnung") = KO_Bezeichnung
-            dataGridView.Field("KO_Kommentar") = KO_Kommentar
+            dataGridView.Field("KO_Bezeichnung") = wb_Functions.Truncate(KO_Bezeichnung, 60)
+            dataGridView.Field("KO_Kommentar") = wb_Functions.Truncate(KO_Kommentar, 50, True)
             dataGridView.Field("KA_Preis") = KA_Preis
             dataGridView.Field("KA_Matchcode") = KO_IdxCloud
             dataGridView.Field("KA_Rz_Nr") = KA_Rz_Nr
@@ -1833,8 +1833,8 @@ Public Class wb_Komponente
         If UpdateAll Then
             sql = "KO_Nr_AlNum = '" & Nummer & "'," &
                   "KO_Type = '" & wb_Functions.KomponTypeToInt(Type) & "'," &
-                  "KO_Bezeichnung = '" & Bezeichnung & "'," &
-                  "KO_Kommentar = '" & Kommentar & "'," &
+                  "KO_Bezeichnung = '" & wb_Functions.Truncate(Bezeichnung, 60) & "'," &
+                  "KO_Kommentar = '" & wb_Functions.Truncate(Kommentar, 50, True) & "'," &
                   "KO_Temp_Korr = '" & KO_Backverlust & "'," &
                   "KA_Artikel_Typ = " & KO_Zuschnitt & "," &
                   "KA_Prod_Linie = " & KA_ProdVorlauf & "," &
@@ -1849,7 +1849,7 @@ Public Class wb_Komponente
                   "KA_Artikel_Typ = " & KO_Zuschnitt & "," &
                   "KA_Prod_Linie = " & KA_ProdVorlauf & "," &
                   "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
-                  "KA_Verarbeitungshinweise = '" & KA_Verarbeitungshinweise & "'"
+                  "KA_Verarbeitungshinweise = '" & wb_Functions.Truncate(KA_Verarbeitungshinweise, 100, True) & "'"
         End If
 
         'Rezeptnummer nur updaten wenn gültig

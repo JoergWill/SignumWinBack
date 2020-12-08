@@ -64,6 +64,7 @@ Public Class wb_Produktionsschritt
     Private _Bestellt_Kunde As String
     Private _Bestellt_Menge_Stk As String
     Private _Bestellt_Text As String
+    Private _Bestellt_Drucken As Boolean
 
     Private _KO_Typ As wb_Global.KomponTypen
     Private _KO_Nr As Integer
@@ -838,6 +839,15 @@ Public Class wb_Produktionsschritt
         End Get
     End Property
 
+    Public Property Bestellt_Drucken As Boolean
+        Get
+            Return _Bestellt_Drucken
+        End Get
+        Set(value As Boolean)
+            _Bestellt_Drucken = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Gibt True zurück, wenn die Zeile in der Produktionsplanung angezeigt werden soll.
     ''' Abhängig von Liniengruppe, Aufarbeitungsplatz und Filter-Einstellungen.
@@ -845,8 +855,7 @@ Public Class wb_Produktionsschritt
     ''' <param name="_FilterAufarbeitung"></param>
     ''' <param name="_FilterLinienGruppe"></param>
     ''' <returns></returns>
-    Public Function Filter(_FilterAufarbeitung As Integer, _FilterLinienGruppe As Integer, CheckAufloesen As Boolean) As Boolean
-
+    Public Function Filter(_FilterAufarbeitung As Integer, _FilterLinienGruppe As Integer, CheckAufloesen As Boolean, SonderTextDrucken As Boolean) As Boolean
         'Filter Aufarbeitungsplatz
         If _FilterAufarbeitung > 0 And _ArtikelLinienGruppe > 0 And _FilterAufarbeitung <> _ArtikelLinienGruppe Then
             Return False
@@ -861,6 +870,9 @@ Public Class wb_Produktionsschritt
         'If Not Aufloesen And CheckAufloesen Then
         '    Return False
         'End If
+
+        'Flag Sondertext drucken Ja/Nein
+        Bestellt_Drucken = SonderTextDrucken
 
         Return True
     End Function
@@ -1295,4 +1307,5 @@ Public Class wb_Produktionsschritt
             _LagerOrt = value
         End Set
     End Property
+
 End Class

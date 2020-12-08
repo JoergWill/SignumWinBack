@@ -34,6 +34,16 @@ Partial Class wb_Rezept_Rezeptur
         Dim ObjectCellBinding6 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Me.ColNr = New Infralution.Controls.VirtualTree.Column()
+        Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
+        Me.EnhEdit = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.EnhEdit_Rezept = New EnhEdit.EnhEdit(Me.components)
+        Me.EnhEditText = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.EnhEdit1 = New EnhEdit.EnhEdit(Me.components)
+        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
+        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
+        Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
+        Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.ToolStripLeftMargin = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripRezeptChange = New System.Windows.Forms.ToolStripStatusLabel()
@@ -63,6 +73,8 @@ Partial Class wb_Rezept_Rezeptur
         Me.lblEinhRzGewicht = New System.Windows.Forms.Label()
         Me.lblRzMehlMenge = New System.Windows.Forms.Label()
         Me.lblRzVariante = New System.Windows.Forms.Label()
+        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
+        Me.cbVariante = New WinBack.wb_ComboBox()
         Me.lblRzKommentar = New System.Windows.Forms.Label()
         Me.tbRzKommentar = New System.Windows.Forms.TextBox()
         Me.tbRezeptName = New System.Windows.Forms.TextBox()
@@ -91,21 +103,9 @@ Partial Class wb_Rezept_Rezeptur
         Me.separator3MenuItem = New System.Windows.Forms.ToolStripSeparator()
         Me.showColumnsMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.customizeMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
-        Me.cbVariante = New WinBack.wb_ComboBox()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tb_Rezeptur = New System.Windows.Forms.TabPage()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
-        Me.ColNr = New Infralution.Controls.VirtualTree.Column()
-        Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
-        Me.EnhEdit = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.EnhEdit_Rezept = New EnhEdit.EnhEdit(Me.components)
-        Me.ColPreis = New Infralution.Controls.VirtualTree.Column()
-        Me.ColSollwert = New Infralution.Controls.VirtualTree.Column()
-        Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
-        Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
-        Me.EnhEditText = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.EnhEdit1 = New EnhEdit.EnhEdit(Me.components)
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.tb_Naehrwerte = New System.Windows.Forms.TabPage()
         Me.tb_Zutaten = New System.Windows.Forms.TabPage()
@@ -136,6 +136,117 @@ Partial Class wb_Rezept_Rezeptur
         Me.tb_Verwendung.SuspendLayout()
         CType(Me.GridView_RzVerwendung, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'ColNr
+        '
+        Me.ColNr.Caption = "Nummer"
+        Me.ColNr.MinWidth = 150
+        Me.ColNr.Movable = False
+        Me.ColNr.Name = "ColNr"
+        Me.ColNr.Sortable = False
+        Me.ColNr.Width = 150
+        '
+        'ColBezeichnung
+        '
+        Me.ColBezeichnung.AutoFitWeight = 200.0!
+        Me.ColBezeichnung.Caption = "Bezeichnung"
+        Me.ColBezeichnung.CellEditor = Me.EnhEdit
+        Me.ColBezeichnung.MinWidth = 300
+        Me.ColBezeichnung.Movable = False
+        Me.ColBezeichnung.Name = "ColBezeichnung"
+        Me.ColBezeichnung.Sortable = False
+        Me.ColBezeichnung.Width = 468
+        '
+        'EnhEdit
+        '
+        Me.EnhEdit.CellAlignment = System.Drawing.ContentAlignment.MiddleCenter
+        Me.EnhEdit.Control = Me.EnhEdit_Rezept
+        Me.EnhEdit.UseCellColors = False
+        Me.EnhEdit.UseCellHeight = False
+        Me.EnhEdit.UseCellPadding = True
+        '
+        'EnhEdit_Rezept
+        '
+        Me.EnhEdit_Rezept.AutoScalePreview = False
+        Me.EnhEdit_Rezept.AutoSize = False
+        Me.EnhEdit_Rezept.BackColor = System.Drawing.Color.Orange
+        Me.EnhEdit_Rezept.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.EnhEdit_Rezept.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.EnhEdit_Rezept.eFormat = wb_Format.FUndefined
+        Me.EnhEdit_Rezept.eOG = "0"
+        Me.EnhEdit_Rezept.eUG = "0"
+        Me.EnhEdit_Rezept.Init = True
+        Me.EnhEdit_Rezept.Location = New System.Drawing.Point(0, 0)
+        Me.EnhEdit_Rezept.Name = "EnhEdit_Rezept"
+        Me.EnhEdit_Rezept.Size = New System.Drawing.Size(100, 17)
+        Me.EnhEdit_Rezept.TabIndex = 0
+        Me.EnhEdit_Rezept.Visible = False
+        '
+        'EnhEditText
+        '
+        Me.EnhEditText.Control = Me.EnhEdit1
+        Me.EnhEditText.UseCellColors = False
+        Me.EnhEditText.UseCellHeight = False
+        '
+        'EnhEdit1
+        '
+        Me.EnhEdit1.BackColor = System.Drawing.Color.Orange
+        Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.EnhEdit1.DropDownBackColor = System.Drawing.SystemColors.Control
+        Me.EnhEdit1.eFormat = wb_Format.FUndefined
+        Me.EnhEdit1.eOG = "0"
+        Me.EnhEdit1.eUG = "0"
+        Me.EnhEdit1.Init = True
+        Me.EnhEdit1.Location = New System.Drawing.Point(0, 0)
+        Me.EnhEdit1.Name = "EnhEdit1"
+        Me.EnhEdit1.Size = New System.Drawing.Size(195, 17)
+        Me.EnhEdit1.TabIndex = 0
+        Me.EnhEdit1.Visible = False
+        '
+        'ColPreis
+        '
+        Me.ColPreis.Caption = "Preis"
+        Me.ColPreis.MinWidth = 100
+        Me.ColPreis.Name = "ColPreis"
+        Me.ColPreis.Resizable = False
+        Me.ColPreis.Sortable = False
+        '
+        'ColSollwert
+        '
+        Me.ColSollwert.Caption = Nothing
+        Me.ColSollwert.CellEditor = Me.EnhEdit
+        Me.ColSollwert.CellEvenStyle.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.ColSollwert.CellEvenStyle.HorzAlignment = System.Drawing.StringAlignment.Center
+        Me.ColSollwert.CellOddStyle.Font = New System.Drawing.Font("Arial", 9.75!)
+        Me.ColSollwert.CellOddStyle.HorzAlignment = System.Drawing.StringAlignment.Center
+        Me.ColSollwert.CellStyle.VertAlignment = System.Drawing.StringAlignment.Center
+        Me.ColSollwert.MinWidth = 100
+        Me.ColSollwert.Movable = False
+        Me.ColSollwert.Name = "ColSollwert"
+        Me.ColSollwert.Resizable = False
+        Me.ColSollwert.Sortable = False
+        Me.ColSollwert.ToolTip = "Sollwert"
+        Me.ColSollwert.Width = 126
+        '
+        'ColEinheit
+        '
+        Me.ColEinheit.Caption = Nothing
+        Me.ColEinheit.MinWidth = 40
+        Me.ColEinheit.Name = "ColEinheit"
+        Me.ColEinheit.Resizable = False
+        Me.ColEinheit.Selectable = False
+        Me.ColEinheit.Sortable = False
+        Me.ColEinheit.Width = 40
+        '
+        'ColProzent
+        '
+        Me.ColProzent.Caption = Nothing
+        Me.ColProzent.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
+        Me.ColProzent.MinWidth = 50
+        Me.ColProzent.Name = "ColProzent"
+        Me.ColProzent.Resizable = False
+        Me.ColProzent.Sortable = False
+        Me.ColProzent.Width = 50
         '
         'StatusStrip
         '
@@ -220,6 +331,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzVariante.ReadOnly = True
         Me.tbRzVariante.Size = New System.Drawing.Size(39, 25)
         Me.tbRzVariante.TabIndex = 69
+        Me.tbRzVariante.TabStop = False
         Me.tbRzVariante.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'tbKnetKennlinie
@@ -227,7 +339,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbKnetKennlinie.Location = New System.Drawing.Point(870, 18)
         Me.tbKnetKennlinie.Name = "tbKnetKennlinie"
         Me.tbKnetKennlinie.Size = New System.Drawing.Size(51, 25)
-        Me.tbKnetKennlinie.TabIndex = 68
+        Me.tbKnetKennlinie.TabIndex = 7
         '
         'lblRzKnKennLinie
         '
@@ -267,6 +379,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzTA.ReadOnly = True
         Me.tbRzTA.Size = New System.Drawing.Size(51, 25)
         Me.tbRzTA.TabIndex = 64
+        Me.tbRzTA.TabStop = False
         Me.tbRzTA.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'tbRzMehlmenge
@@ -277,6 +390,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzMehlmenge.ReadOnly = True
         Me.tbRzMehlmenge.Size = New System.Drawing.Size(51, 25)
         Me.tbRzMehlmenge.TabIndex = 63
+        Me.tbRzMehlmenge.TabStop = False
         Me.tbRzMehlmenge.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'tbRzPreis
@@ -287,6 +401,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzPreis.ReadOnly = True
         Me.tbRzPreis.Size = New System.Drawing.Size(51, 25)
         Me.tbRzPreis.TabIndex = 62
+        Me.tbRzPreis.TabStop = False
         Me.tbRzPreis.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'tbRzAendName
@@ -297,9 +412,11 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzAendName.ReadOnly = True
         Me.tbRzAendName.Size = New System.Drawing.Size(238, 25)
         Me.tbRzAendName.TabIndex = 61
+        Me.tbRzAendName.TabStop = False
         '
         'tbRzGewicht
         '
+        Me.tbRzGewicht.AcceptsReturn = True
         Me.tbRzGewicht.BackColor = System.Drawing.Color.Silver
         Me.tbRzGewicht.Location = New System.Drawing.Point(588, 80)
         Me.tbRzGewicht.Name = "tbRzGewicht"
@@ -322,7 +439,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzTeigTemp.Location = New System.Drawing.Point(348, 18)
         Me.tbRzTeigTemp.Name = "tbRzTeigTemp"
         Me.tbRzTeigTemp.Size = New System.Drawing.Size(86, 25)
-        Me.tbRzTeigTemp.TabIndex = 58
+        Me.tbRzTeigTemp.TabIndex = 4
         Me.tbRzTeigTemp.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblRzTeigTemp
@@ -343,6 +460,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzAendDatum.ReadOnly = True
         Me.tbRzAendDatum.Size = New System.Drawing.Size(160, 25)
         Me.tbRzAendDatum.TabIndex = 56
+        Me.tbRzAendDatum.TabStop = False
         '
         'lblRzAendDatum
         '
@@ -363,6 +481,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzAendNr.ReadOnly = True
         Me.tbRzAendNr.Size = New System.Drawing.Size(51, 25)
         Me.tbRzAendNr.TabIndex = 54
+        Me.tbRzAendNr.TabStop = False
         Me.tbRzAendNr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'lblRzAendNr
@@ -445,6 +564,23 @@ Partial Class wb_Rezept_Rezeptur
         Me.lblRzVariante.TabIndex = 46
         Me.lblRzVariante.Text = "Variante:"
         '
+        'cbLiniengruppe
+        '
+        Me.cbLiniengruppe.FormattingEnabled = True
+        Me.cbLiniengruppe.Location = New System.Drawing.Point(588, 18)
+        Me.cbLiniengruppe.Name = "cbLiniengruppe"
+        Me.cbLiniengruppe.Size = New System.Drawing.Size(207, 25)
+        Me.cbLiniengruppe.TabIndex = 5
+        '
+        'cbVariante
+        '
+        Me.cbVariante.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.cbVariante.FormattingEnabled = True
+        Me.cbVariante.Location = New System.Drawing.Point(588, 49)
+        Me.cbVariante.Name = "cbVariante"
+        Me.cbVariante.Size = New System.Drawing.Size(207, 26)
+        Me.cbVariante.TabIndex = 6
+        '
         'lblRzKommentar
         '
         Me.lblRzKommentar.AutoSize = True
@@ -460,14 +596,14 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzKommentar.Location = New System.Drawing.Point(115, 80)
         Me.tbRzKommentar.Name = "tbRzKommentar"
         Me.tbRzKommentar.Size = New System.Drawing.Size(319, 25)
-        Me.tbRzKommentar.TabIndex = 42
+        Me.tbRzKommentar.TabIndex = 3
         '
         'tbRezeptName
         '
         Me.tbRezeptName.Location = New System.Drawing.Point(115, 49)
         Me.tbRezeptName.Name = "tbRezeptName"
         Me.tbRezeptName.Size = New System.Drawing.Size(319, 25)
-        Me.tbRezeptName.TabIndex = 41
+        Me.tbRezeptName.TabIndex = 2
         '
         'lblRzName
         '
@@ -484,7 +620,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzNummer.Location = New System.Drawing.Point(115, 18)
         Me.tbRzNummer.Name = "tbRzNummer"
         Me.tbRzNummer.Size = New System.Drawing.Size(105, 25)
-        Me.tbRzNummer.TabIndex = 39
+        Me.tbRzNummer.TabIndex = 1
         '
         'lblRzNummer
         '
@@ -694,23 +830,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.customizeMenuItem.Tag = "customizeMenuItem"
         Me.customizeMenuItem.Text = "Spaltenauswähler"
         '
-        'cbLiniengruppe
-        '
-        Me.cbLiniengruppe.FormattingEnabled = True
-        Me.cbLiniengruppe.Location = New System.Drawing.Point(588, 18)
-        Me.cbLiniengruppe.Name = "cbLiniengruppe"
-        Me.cbLiniengruppe.Size = New System.Drawing.Size(207, 25)
-        Me.cbLiniengruppe.TabIndex = 45
-        '
-        'cbVariante
-        '
-        Me.cbVariante.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.cbVariante.FormattingEnabled = True
-        Me.cbVariante.Location = New System.Drawing.Point(588, 49)
-        Me.cbVariante.Name = "cbVariante"
-        Me.cbVariante.Size = New System.Drawing.Size(207, 26)
-        Me.cbVariante.TabIndex = 44
-        '
         'Wb_TabControl
         '
         Me.Wb_TabControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -776,117 +895,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.VirtualTree.Size = New System.Drawing.Size(937, 453)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 6
-        '
-        'ColNr
-        '
-        Me.ColNr.Caption = "Nummer"
-        Me.ColNr.MinWidth = 150
-        Me.ColNr.Movable = False
-        Me.ColNr.Name = "ColNr"
-        Me.ColNr.Sortable = False
-        Me.ColNr.Width = 150
-        '
-        'ColBezeichnung
-        '
-        Me.ColBezeichnung.AutoFitWeight = 200.0!
-        Me.ColBezeichnung.Caption = "Bezeichnung"
-        Me.ColBezeichnung.CellEditor = Me.EnhEdit
-        Me.ColBezeichnung.MinWidth = 300
-        Me.ColBezeichnung.Movable = False
-        Me.ColBezeichnung.Name = "ColBezeichnung"
-        Me.ColBezeichnung.Sortable = False
-        Me.ColBezeichnung.Width = 468
-        '
-        'EnhEdit
-        '
-        Me.EnhEdit.CellAlignment = System.Drawing.ContentAlignment.MiddleCenter
-        Me.EnhEdit.Control = Me.EnhEdit_Rezept
-        Me.EnhEdit.UseCellColors = False
-        Me.EnhEdit.UseCellHeight = False
-        Me.EnhEdit.UseCellPadding = True
-        '
-        'EnhEdit_Rezept
-        '
-        Me.EnhEdit_Rezept.AutoScalePreview = False
-        Me.EnhEdit_Rezept.AutoSize = False
-        Me.EnhEdit_Rezept.BackColor = System.Drawing.Color.Orange
-        Me.EnhEdit_Rezept.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit_Rezept.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.EnhEdit_Rezept.eFormat = wb_Format.FUndefined
-        Me.EnhEdit_Rezept.eOG = "0"
-        Me.EnhEdit_Rezept.eUG = "0"
-        Me.EnhEdit_Rezept.Init = True
-        Me.EnhEdit_Rezept.Location = New System.Drawing.Point(0, 0)
-        Me.EnhEdit_Rezept.Name = "EnhEdit_Rezept"
-        Me.EnhEdit_Rezept.Size = New System.Drawing.Size(100, 17)
-        Me.EnhEdit_Rezept.TabIndex = 0
-        Me.EnhEdit_Rezept.Visible = False
-        '
-        'ColPreis
-        '
-        Me.ColPreis.Caption = "Preis"
-        Me.ColPreis.MinWidth = 100
-        Me.ColPreis.Name = "ColPreis"
-        Me.ColPreis.Resizable = False
-        Me.ColPreis.Sortable = False
-        '
-        'ColSollwert
-        '
-        Me.ColSollwert.Caption = Nothing
-        Me.ColSollwert.CellEditor = Me.EnhEdit
-        Me.ColSollwert.CellEvenStyle.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.ColSollwert.CellEvenStyle.HorzAlignment = System.Drawing.StringAlignment.Center
-        Me.ColSollwert.CellOddStyle.Font = New System.Drawing.Font("Arial", 9.75!)
-        Me.ColSollwert.CellOddStyle.HorzAlignment = System.Drawing.StringAlignment.Center
-        Me.ColSollwert.CellStyle.VertAlignment = System.Drawing.StringAlignment.Center
-        Me.ColSollwert.MinWidth = 100
-        Me.ColSollwert.Movable = False
-        Me.ColSollwert.Name = "ColSollwert"
-        Me.ColSollwert.Resizable = False
-        Me.ColSollwert.Sortable = False
-        Me.ColSollwert.ToolTip = "Sollwert"
-        Me.ColSollwert.Width = 126
-        '
-        'ColEinheit
-        '
-        Me.ColEinheit.Caption = Nothing
-        Me.ColEinheit.MinWidth = 40
-        Me.ColEinheit.Name = "ColEinheit"
-        Me.ColEinheit.Resizable = False
-        Me.ColEinheit.Selectable = False
-        Me.ColEinheit.Sortable = False
-        Me.ColEinheit.Width = 40
-        '
-        'ColProzent
-        '
-        Me.ColProzent.Caption = Nothing
-        Me.ColProzent.CellStyle.HorzAlignment = System.Drawing.StringAlignment.Far
-        Me.ColProzent.MinWidth = 50
-        Me.ColProzent.Name = "ColProzent"
-        Me.ColProzent.Resizable = False
-        Me.ColProzent.Sortable = False
-        Me.ColProzent.Width = 50
-        '
-        'EnhEditText
-        '
-        Me.EnhEditText.Control = Me.EnhEdit1
-        Me.EnhEditText.UseCellColors = False
-        Me.EnhEditText.UseCellHeight = False
-        '
-        'EnhEdit1
-        '
-        Me.EnhEdit1.BackColor = System.Drawing.Color.Orange
-        Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.EnhEdit1.DropDownBackColor = System.Drawing.Color.Orange
-        Me.EnhEdit1.eFormat = wb_Format.FUndefined
-        Me.EnhEdit1.eOG = "0"
-        Me.EnhEdit1.eUG = "0"
-        Me.EnhEdit1.Init = True
-        Me.EnhEdit1.Location = New System.Drawing.Point(0, 0)
-        Me.EnhEdit1.Name = "EnhEdit1"
-        Me.EnhEdit1.Size = New System.Drawing.Size(195, 17)
-        Me.EnhEdit1.TabIndex = 0
-        Me.EnhEdit1.Visible = False
         '
         'ObjectRowBinding1
         '

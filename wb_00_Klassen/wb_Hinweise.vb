@@ -31,19 +31,19 @@ Public Class wb_Hinweise
 
     Public Property KompNr As Integer
         Get
-            Return H2_Id2
+            Return H2_Id1
         End Get
         Set(value As Integer)
-            H2_Id2 = value
+            H2_Id1 = value
         End Set
     End Property
 
     Public Property ArtikelNr As Integer
         Get
-            Return H2_Id2
+            Return H2_Id1
         End Get
         Set(value As Integer)
-            H2_Id2 = value
+            H2_Id1 = value
         End Set
     End Property
 
@@ -100,7 +100,7 @@ Public Class wb_Hinweise
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
 
         'Artikel/Komponenten/Rezeptnummer merken
-        H2_Id2 = idx
+        H2_Id1 = idx
 
         'Daten aus MySQL-Memo in String einlesen
         H2_ReadOK = False
@@ -111,7 +111,7 @@ Public Class wb_Hinweise
             H2_UserNr = winback.iField("H2_Aenderung_User")
             H2_UserName = winback.sField("H2_Aenderung_Name")
             H2_Memo = winback.sField("H2_Memo")
-            H2_Id2 = idx
+            H2_Id1 = idx
             H2_ReadOK = True
         End If
         winback.Close()
@@ -127,14 +127,14 @@ Public Class wb_Hinweise
     ''' False - bei Fehler</returns>
     Public Function Write() As Boolean
         'Index muss gesetzt sein
-        If (H2_Id2 > 0) Then
+        If (H2_Id1 > 0) Then
 
             Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
             Dim s1, s2 As String
 
             'Vor Insert/Update müssen die Daten gelesen werden
             If Not H2_ReadOK Then
-                winback.sqlSelect(setParams(sqlSelectH2, H2_Typ, H2_Typ2, H2_Id2))
+                winback.sqlSelect(setParams(sqlSelectH2, H2_Typ, H2_Typ2, H2_Id1))
                 If winback.Read Then
                     H2_Aenderung_Nr = winback.sField("H2_Aenderung_Nr")
                     H2_ReadOK = True
@@ -156,7 +156,7 @@ Public Class wb_Hinweise
                 s1 = "H2_Aenderung_Nr = " & CStr(H2_Aenderung_Nr) & ", H2_Aenderung_Datum = '" & wb_sql_Functions.MySQLdatetime(H2_Aenderung_Datum) & "'," &
                  "H2_Aenderung_User = " & CStr(H2_UserNr) & ",H2_Aenderung_Name = '" & H2_UserName & "'," &
                  "H2_Memo = " & "'" & H2_Memo & "'"
-                winback.sqlCommand(setParams(sqlUpdateH2, H2_Typ, H2_Typ2, H2_Id2, s1))
+                winback.sqlCommand(setParams(sqlUpdateH2, H2_Typ, H2_Typ2, H2_Id1, s1))
                 winback.Close()
             Else
                 'Änderung-Nummer Eins
@@ -164,7 +164,7 @@ Public Class wb_Hinweise
                 'Daten in Memo-Feld speichern (Insert)
                 s1 = "H2_Aenderung_Nr, H2_Aenderung_Datum, H2_Aenderung_User, H2_Aenderung_Name, H2_Memo"
                 s2 = CStr(H2_Aenderung_Nr) & ",'" & wb_sql_Functions.MySQLdatetime(H2_Aenderung_Datum) & "'," & CStr(H2_UserNr) & ",'" & H2_UserName & "','" & H2_Memo & "'"
-                winback.sqlCommand(setParams(sqlInsertH2, H2_Typ, H2_Typ2, H2_Id2, s1, s2))
+                winback.sqlCommand(setParams(sqlInsertH2, H2_Typ, H2_Typ2, H2_Id1, s1, s2))
                 winback.Close()
             End If
             Return True
@@ -180,7 +180,7 @@ Public Class wb_Hinweise
     Public Function Delete() As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         'alle Datensätze löschen
-        Dim i As Integer = winback.sqlCommand(setParams(sqlDeleteH2, H2_Typ, H2_Typ2, H2_Id2))
+        Dim i As Integer = winback.sqlCommand(setParams(sqlDeleteH2, H2_Typ, H2_Typ2, H2_Id1))
         winback.Close()
         Return (i > 0)
     End Function

@@ -93,6 +93,10 @@ Public Class wb_Rezept_Rezeptur
             cbVariante.Enabled = False
             cbLiniengruppe.Enabled = False
             VirtualTree.Enabled = False
+
+            BtnNwt.Enabled = False
+            BtnLoeschen.Enabled = False
+            TextHinweise.ReadOnly = True
         End If
 
         'Excel-Export Nährwerte nur wenn Excel installiert ist
@@ -227,6 +231,58 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     ''' <summary>
+    ''' Doppelklick auf Rezeptgewicht. Rezeptur auf neues Rezeptgewicht umrechnen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub tbRzGewicht_DoubleClick(sender As Object, e As EventArgs) Handles tbRzGewicht.DoubleClick
+        If MsgBox("Soll die Rezeptur auf ein neues Rezeptgewicht umgerechnet werden ?", MsgBoxStyle.Question, "Rezeptgewicht umrechnen") = MsgBoxResult.Ok Then
+            'Änderung Rezeptgewicht zulassen
+            tbRzGewicht.ReadOnly = False
+            tbRzGewicht.BackColor = Color.White
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Eingabefeld Rezeptgewicht wurde geändert. Rezeptur umrechnen und anzeigen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub tbRzGewicht_Leave(sender As Object, e As EventArgs) Handles tbRzGewicht.Leave
+        'Neues Rezeptgewicht
+        Dim RezeptGesamtMengeNeu As Double = wb_Functions.StrToDouble(tbRzGewicht.Text)
+
+        'Grenzen prüfen
+        If (RezeptGesamtMengeNeu > 0) And (RezeptGesamtMengeNeu < wb_Global.MaxRezeptGroesse) And (RezeptGesamtMengeNeu <> Rezept.RezeptGewicht) Then
+            'Rezeptmengen umrechnen
+            Rezept.RecalcRezeptGewicht(RezeptGesamtMengeNeu)
+            'Anzeige aktualisieren
+            VT_Aktualisieren()
+            'Rezeptur wurde geändert (speichern)
+            _RzChanged = True
+        Else
+            MsgBox("Die Rezeptgröße muss zwischen 0.0 kg und " & wb_Global.MaxRezeptGroesse & " kg liegen", MsgBoxStyle.Exclamation)
+        End If
+
+        'neues(altes) Rezeptgewicht formatiert ausgeben
+        tbRzGewicht.ReadOnly = True
+        tbRzGewicht.BackColor = Color.Silver
+        tbRzGewicht.Text = wb_Functions.FormatStr(Rezept.RezeptGewicht, 3)
+    End Sub
+
+    ''' <summary>
+    ''' Rezeptur kopieren.
+    ''' Die bestehende (aktuelle) Rezeptur wird gespeichert. Danach wird ein neues Rezept angelegt und die Daten kopiert.
+    ''' Anschliessend wird das neue Rezept in einem neuen Fenster geöffnet.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnKopieren_Click(sender As Object, e As EventArgs) Handles BtnKopieren.Click
+        'Rezept kopieren (Die Kopie wird in Rezept_Main erstellt und aufgerufen)
+        wb_Rezept_Shared.Rezept_Copy(sender, Rezept.RezeptNr, Rezept.Variante)
+    End Sub
+
+    ''' <summary>
     ''' Rezeptur drucken.
     ''' Der Ausdruck erfolgt über Printer-Sub-Funktion (List+Label)
     ''' </summary>
@@ -257,18 +313,6 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     ''' <summary>
-    ''' Rezeptur kopieren.
-    ''' Die bestehende (aktuelle) Rezeptur wird gespeichert. Danach wird ein neues Rezept angelegt und die Daten kopiert.
-    ''' Anschliessend wird das neue Rezept in einem neuen Fenster geöffnet.
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub BtnKopieren_Click(sender As Object, e As EventArgs) Handles BtnKopieren.Click
-        'Rezept kopieren (Die Kopie wird in Rezept_Main erstellt und aufgerufen)
-        wb_Rezept_Shared.Rezept_Copy(sender, Rezept.RezeptNr, Rezept.Variante)
-    End Sub
-
-    ''' <summary>
     ''' Aktuelle Rezeptur löschen.
     ''' Löschen ist nur möglich, wenn die Rezeptur nicht mehr verwendet wird und, bei Variante Eins, wenn keine weitere Variante existiert
     ''' Vor dem Löschen erfolgt eine Sicherheits-Abfrage
@@ -278,6 +322,60 @@ Public Class wb_Rezept_Rezeptur
     Private Sub BtnLoeschen_Click(sender As Object, e As EventArgs) Handles BtnLoeschen.Click
         'Rezeptkopf und Rezeptur löschen
         RzptLoeschen()
+    End Sub
+
+    Private Sub BtnVerwendung_Click(sender As Object, e As EventArgs) Handles BtnVerwendung.Click
+        If tb_Verwendung.Visible Then
+            'Rezeptur anzeigen
+            Wb_TabControl.SelectedTab = tb_Rezeptur
+        Else
+            'Verwendung anzeigen
+            'Liste der Tabellen-Überschriften
+            'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
+            'Spalten ohne Bezeichnung werden ausgeblendet
+            Dim sColNames As New List(Of String) From {"Nummer", "&Name", "Kommentar"}
+            For Each sName In sColNames
+                GridView_RzVerwendung.ColNames.Add(sName)
+            Next
+
+            'DataGrid füllen
+            GridView_RzVerwendung.LoadData(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptVerwendung, _RzNummer), "Rezept-Verwendung")
+            Wb_TabControl.SelectedTab = tb_Verwendung
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Anzeige/Eingabe/Änderung des Text-Verarbeitungs-Hinweises für die Rezeptur.
+    ''' Die Verarbeitungshinweise werden in der Tabelle winback.Hinweise2 abgelegt.
+    ''' 'TODO evtl. Unterscheidung in verschiedene Fremdsprachen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnHinweise_Click(sender As Object, e As EventArgs) Handles BtnHinweise.Click
+        If tb_Naehrwerte.Visible Then
+            'Anzeige Zutatenliste
+            Wb_TabControl.SelectedTab = tb_Zutaten
+            tb_ZutatenListe.BorderStyle = Windows.Forms.BorderStyle.None
+            Show_ZutatenListe()
+            BtnHinweise.Text = "Hinweise"
+        Else
+            If tb_Hinweise.Visible Then
+                'Rezeptur anzeigen
+                Wb_TabControl.SelectedTab = tb_Rezeptur
+                BtnNwt.Text = "Nährwerte"
+            Else
+                'Rezept-Hinweise lesen
+                If Not RezeptHinweise.ReadOK Then
+                    'Nur ein Hinweis-Text für alle Varianten
+                    If RezeptHinweise.Read(_RzNummer) Then
+                        TextHinweise.Text = RezeptHinweise.Memo
+                        _RzHinweiseChanged = False
+                    End If
+                End If
+                Wb_TabControl.SelectedTab = tb_Hinweise
+            End If
+        End If
     End Sub
 
     ''' <summary>
@@ -372,37 +470,6 @@ Public Class wb_Rezept_Rezeptur
         nwtGrid.BackgroundColor = Me.BackColor
         nwtGrid.GridLocation(tb_Naehrwerte)
         nwtGrid.PerformLayout()
-    End Sub
-
-    ''' <summary>
-    ''' Anzeige/Eingabe/Änderung des Text-Verarbeitungs-Hinweises für die Rezeptur.
-    ''' Die Verarbeitungshinweise werden in der Tabelle winback.Hinweise2 abgelegt.
-    ''' 'TODO evtl. Unterscheidung in verschiedene Fremdsprachen.
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub BtnHinweise_Click(sender As Object, e As EventArgs) Handles BtnHinweise.Click
-        If tb_Naehrwerte.Visible Then
-            'Anzeige Zutatenliste
-            Wb_TabControl.SelectedTab = tb_Zutaten
-            tb_ZutatenListe.BorderStyle = Windows.Forms.BorderStyle.None
-            Show_ZutatenListe()
-        Else
-            If tb_Hinweise.Visible Then
-                'Rezeptur anzeigen
-                Wb_TabControl.SelectedTab = tb_Rezeptur
-            Else
-                'Rezept-Hinweise lesen
-                If Not RezeptHinweise.ReadOK Then
-                    'TODO Rzeptvariante in Zukunft berücksichtigen
-                    If RezeptHinweise.Read(_RzNummer) Then
-                        TextHinweise.Text = RezeptHinweise.Memo
-                        _RzHinweiseChanged = False
-                    End If
-                End If
-                Wb_TabControl.SelectedTab = tb_Hinweise
-            End If
-        End If
     End Sub
 
     ''' <summary>
@@ -503,27 +570,6 @@ Public Class wb_Rezept_Rezeptur
             'MDI-Fenster anzeigen
             Rezeptur.Show()
         End If
-    End Sub
-
-    Private Sub BtnVerwendung_Click(sender As Object, e As EventArgs) Handles BtnVerwendung.Click
-        If tb_Verwendung.Visible Then
-            'Rezeptur anzeigen
-            Wb_TabControl.SelectedTab = tb_Rezeptur
-        Else
-            'Verwendung anzeigen
-            'Liste der Tabellen-Überschriften
-            'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
-            'Spalten ohne Bezeichnung werden ausgeblendet
-            Dim sColNames As New List(Of String) From {"Nummer", "&Name", "Kommentar"}
-            For Each sName In sColNames
-                GridView_RzVerwendung.ColNames.Add(sName)
-            Next
-
-            'DataGrid füllen
-            GridView_RzVerwendung.LoadData(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptVerwendung, _RzNummer), "Rezept-Verwendung")
-            Wb_TabControl.SelectedTab = tb_Verwendung
-        End If
-
     End Sub
 
     Private Sub SwENummern_Click(sender As Object, e As EventArgs) Handles SwENummern.Click
@@ -1307,8 +1353,19 @@ Public Class wb_Rezept_Rezeptur
             End If
         End If
 
-        'Rezeptkopf wurde geändert 
-        CheckTextBoxChanged(tbRzNummer, Rezept.RezeptNummer)
+        'Rezeptnummer wurde geändert (sonst Exit Sub)
+        Rezept.RezeptNummer = tbRzNummer.Text
+        'alle Varianten bekommen die neue Rezeptnummer 
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptUpdateNummer, Rezept.RezeptNr, Rezept.RezeptNummer)
+        'Alle Rezept-Varianten 
+        Try
+            winback.sqlCommand(sql)
+        Catch ex As Exception
+            MsgBox("Fehler beim Ändern der Rezeptnummer", MsgBoxStyle.Critical)
+        End Try
+        'Datenbankverbindung wieder schliessen
+        winback.Close()
     End Sub
 
     ''' <summary>

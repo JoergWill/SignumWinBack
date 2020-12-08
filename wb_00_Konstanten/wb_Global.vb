@@ -8,6 +8,7 @@
     Public Const wbTRUE = 1
     Public Const wbNODATE = #11/22/1964 00:00:00#
     Public Const NOSTRING = "X"
+    Public Const NOFILTER = 0
 
     Public Const obDEFAULTCOLOR = 0
     Public Const obDEFAULTSIZE = "NULL"
@@ -18,7 +19,8 @@
     Public Const LinienGruppeSauerteig = 98           'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
     Public Const LinienGruppeStandard = 1             'Liniengruppe für neue Rezepte
     Public Const RezeptVarianteStandard = 1           'Rezeptvariante für neue Rezepte
-    Public Const MaxLinien = 99
+    Public Const MaxLinien = 99                       'Kocher-Linie (maximale Anzahl an WinBack-Linien)
+    Public Const MaxRezeptGroesse = 999.9             'Maximale Rezeptgröße
     Public Const RS_Par1_QUID = "-1"                  'Komponente im Rezept ist QUID-Relevant (In RS_Par1)
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)
@@ -681,6 +683,8 @@
         Public TeigRezeptDrucken As String
         Public BackZettelSenden As String
         Public TeigZettelSenden As String
+        Public bDrucken As Boolean
+        Public bKommentar As Boolean
     End Structure
 
     Public Structure wb_Linien

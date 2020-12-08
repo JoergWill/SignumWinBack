@@ -1,16 +1,16 @@
 ﻿Imports System.Windows.Forms
 Imports combit.ListLabel22.DataProviders
 Imports WeifenLuo.WinFormsUI.Docking
+Imports WinBack.wb_Planung_Shared
 
 Public Class wb_Planung_Liste
     Inherits DockContent
-    Dim Produktion As New wb_Produktion
+    '    Dim Produktion As New wb_Produktion
     Dim oFont As Drawing.Font
     Dim iFont As Drawing.Font
 
     Private _FilterLinienGruppe As Integer = wb_Global.UNDEFINED
     Private _FilterAufarbeitung As Integer = wb_Global.UNDEFINED
-    Private _ProdPlanGedruckt As Boolean = False
 
     'Bestellungen einlesen für Produktions-Datum
     Private _ProduktionsDatum As String = ""
@@ -53,6 +53,8 @@ Public Class wb_Planung_Liste
         cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen, True)
         'ComboBox Liniengruppe Artikel füllen
         cbArtikelLinienGruppe.Fill(wb_Linien_Global.ArtikelLinienGruppen, True)
+        'alte Einträge löschen
+        Produktion.RootProduktionsSchritt.ChildSteps.Clear()
 
         'Font für die Anzeige Artikelzeile im VirtualTree
         oFont = VirtualTree.Font
@@ -63,9 +65,13 @@ Public Class wb_Planung_Liste
             'Einlesen der Bestellungen nur wenn auch OrgaBack aktiv ist
             BtnBestellungen.Enabled = True
             'erste Filiale auswählen
-            cbProduktionsFiliale.SelectedIndex = wb_Filiale.IdxProduktionsFiliale(wb_GlobalSettings.ProdPlanfiliale)
+            If wb_GlobalSettings.ProdPlanfiliale IsNot Nothing Then
+                cbProduktionsFiliale.SelectedIndex = wb_Filiale.IdxProduktionsFiliale(wb_GlobalSettings.ProdPlanfiliale)
+            End If
             'Produktions-Datum
-            dtBestellungen.Value = wb_GlobalSettings.ProdPlanDatum
+            If wb_GlobalSettings.ProdPlanDatum <> "" Then
+                dtBestellungen.Value = wb_GlobalSettings.ProdPlanDatum
+            End If
             'Bestellungen automatisch einlesen
             If wb_GlobalSettings.ProdPlanReadOnOpen Then
                 ReadBestellungenOrgaBack()
@@ -89,7 +95,7 @@ Public Class wb_Planung_Liste
     ''' <returns></returns>
     Public Function FormClosingFromMain() As Boolean
         'wenn Daten für die Produktion generiert worden sind (Teigliste/Backzettel/Produktionsliste)
-        If _ProdPlanGedruckt Then
+        If ProdPlanGedruckt Then
             'Nachfragen
             Select Case MsgBox("Sollen die Daten aus der Planung als 'in Produktion' verbucht werden ?", MsgBoxStyle.Question & MsgBoxStyle.YesNoCancel, "Produktions-Planung")
 
@@ -243,29 +249,6 @@ Public Class wb_Planung_Liste
     End Sub
 
     ''' <summary>
-    ''' Filtert die Produktions-Planungs-Schritte nach Aufarbeitung und Linengruppe
-    ''' </summary>
-    ''' <param name="a"></param>
-    Private Sub FilterAndMark(ByRef a As ArrayList, CheckAufloesen As Boolean)
-        'ArrayList leeren
-        a.Clear()
-        'Alle Produktions-Schritte durchlaufen
-        For Each child In Produktion.RootProduktionsSchritt.ChildSteps
-            'Filtern nach Aufarbeitungsplatz und Liniengruppe
-            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe, CheckAufloesen) Then
-                'Liste aufbauen
-                a.Add(child)
-                'Charge als produziert markieren
-                TryCast(child, wb_Produktionsschritt).ChargeWirdProduziert()
-            End If
-        Next
-
-        'Marker setzen Daten wurden an Produktion übertragen setzen
-        _ProdPlanGedruckt = True
-
-    End Sub
-
-    ''' <summary>
     ''' Backzettel drucken
     ''' </summary>
     ''' <param name="sender"></param>
@@ -276,7 +259,7 @@ Public Class wb_Planung_Liste
 
         'Daten filtern (Aufbereitungs-Ort)
         Dim BackZettel As New ArrayList
-        FilterAndMark(BackZettel, False)
+        FilterAndMark(BackZettel, False, _FilterAufarbeitung, wb_Global.NOFILTER)
 
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
@@ -296,7 +279,7 @@ Public Class wb_Planung_Liste
 
         'Daten filtern (Aufbereitungs-Ort)
         Dim TeigListe As New ArrayList
-        FilterAndMark(TeigListe, True)
+        FilterAndMark(TeigListe, True, wb_Global.NOFILTER, _FilterLinienGruppe)
 
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
@@ -356,7 +339,7 @@ Public Class wb_Planung_Liste
 
                 'Daten filtern (Aufbereitungs-Ort)
                 Dim ProduktionsListe As New ArrayList
-                FilterAndMark(ProduktionsListe, False)
+                FilterAndMark(ProduktionsListe, False, wb_Global.NOFILTER, _FilterLinienGruppe)
 
                 'Artikelzeilen
                 For Each a As wb_Produktionsschritt In ProduktionsListe
@@ -519,7 +502,7 @@ Public Class wb_Planung_Liste
         'return a list containing only the children you want to be visible
         Dim visibleChildren As New ArrayList
         For Each child In children
-            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe, False) Then
+            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe, False, True) Then
                 visibleChildren.Add(child)
             End If
         Next
@@ -562,6 +545,16 @@ Public Class wb_Planung_Liste
         'Tree neu zeichnen(leer)
         VirtualTree.Invalidate()
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
+    End Sub
+
+    ''' <summary>
+    ''' Das Produktions-Datum (Bestellung für ...) hat sich geändert.
+    ''' Global bekannt machen.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub dtBestellungen_ValueChanged(sender As Object, e As EventArgs) Handles dtBestellungen.ValueChanged
+        wb_Planung_Shared.ProduktionsDatum = dtBestellungen.Value
     End Sub
 
     'Private Sub VirtualTree_GetRowData(sender As Object, e As Infralution.Controls.VirtualTree.GetRowDataEventArgs) Handles VirtualTree.GetRowData

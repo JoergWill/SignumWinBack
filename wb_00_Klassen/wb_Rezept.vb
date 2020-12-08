@@ -128,6 +128,42 @@ Public Class wb_Rezept
     End Property
 
     ''' <summary>
+    ''' Umrechnung aller Komponenten auf ein neues Rezept-Gesamtgewicht.
+    ''' Der Umrechnungsfaktor wird berechnet aus RezeptgewichtNue/RezeptgewichtAlt
+    ''' </summary>
+    ''' <param name="RzGewichtNeu"></param>
+    Public Sub RecalcRezeptGewicht(RzGewichtNeu As Double)
+        'Dividion durch Null abfangen
+        If RezeptGewicht > 0 Then
+
+            'Umrechnungsfaktor
+            Dim F As Double = RzGewichtNeu / RezeptGewicht
+            'alle Child-Rezeptschritte umrechnen (Rekursiv)
+            RecalcRezeptGewicht(_RootRezeptSchritt, F)
+
+            'Rezept-Gesamtgewicht muss neu berechnet werden
+            TeigChargen.TeigGewicht = wb_Global.UNDEFINED
+            _BruttoRezeptGewicht = wb_Global.UNDEFINED
+        End If
+    End Sub
+
+    Private Sub RecalcRezeptGewicht(ByRef RootRezeptSchritt As wb_Rezeptschritt, F As Double)
+        'alle Rezeptschritt (nur das flache Rezept) umrechnen
+        For Each rs As wb_Rezeptschritt In RootRezeptSchritt.ChildSteps
+
+            'alle Rezept-Zeilen mit Sollwerten umrechnen
+            If wb_Functions.TypeIstSollMenge(rs.Type, rs.ParamNr) Then
+                rs.Sollwert = rs.Sollwert * F
+            Else
+                'Wenn die Rezept-Zeile keinen Sollwert hat, werden alle Child-Steps umgerechnent (Produktions-Stufe...)
+                If rs.ChildSteps.Count > 0 Then
+                    RecalcRezeptGewicht(rs, F)
+                End If
+            End If
+        Next
+    End Sub
+
+    ''' <summary>
     ''' Der Rezept-Gesamtpreis steht als Preis im Root-Node
     ''' Die Berechnung erfolgt über RezeptSchritt.Preis(Get)
     ''' </summary>
@@ -344,7 +380,7 @@ Public Class wb_Rezept
             Return _RezeptKommentar
         End Get
         Set(value As String)
-            _RezeptKommentar = wb_Functions.XRemoveSonderZeichen(value)
+            _RezeptKommentar = wb_Functions.Truncate(wb_Functions.XRemoveSonderZeichen(value), 30, True)
             _DataHasChanged = True
         End Set
     End Property
@@ -612,7 +648,7 @@ Public Class wb_Rezept
         If _DataHasChanged Then
             dataGridView.Field("RZ_Nr_AlNum") = RezeptNummer
             dataGridView.Field("RZ_Bezeichnung") = RezeptBezeichnung
-            dataGridView.Field("RZ_Kommentar") = RezeptKommentar
+            dataGridView.Field("RZ_Kommentar") = wb_Functions.Truncate(RezeptKommentar, 30, True)
             dataGridView.Field("RZ_Liniengruppe") = LinienGruppe
             dataGridView.Field("RZ_Gruppe") = RezeptGruppe
             dataGridView.Field("RZ_Type") = _RZ_Type
@@ -1278,12 +1314,12 @@ Public Class wb_Rezept
         End If
 
         'sql-Kommando UPDATE bilden
-        sqlData = "RZ_Nr_AlNum = '" & _RezeptNummer & "', RZ_Bezeichnung = '" & _RezeptBezeichnung & "', RZ_Gewicht = '" & wb_Functions.FormatStr(RezeptGewicht, 3) & "', " &
+        sqlData = "RZ_Nr_AlNum = '" & _RezeptNummer & "', RZ_Bezeichnung = '" & wb_Functions.Truncate(_RezeptBezeichnung, 30) & "', RZ_Gewicht = '" & wb_Functions.FormatStr(RezeptGewicht, 3) & "', " &
                   "RZ_Charge_Opt = '" & wb_Functions.FormatStr(TeigChargen.OptCharge.MengeInkg, 3) & "', " &
                   "RZ_Charge_Min = '" & wb_Functions.FormatStr(TeigChargen.MinCharge.MengeInkg, 3) & "', " &
                   "RZ_Charge_Max = '" & wb_Functions.FormatStr(TeigChargen.MaxCharge.MengeInkg, 3) & "', " &
                   "RZ_Liniengruppe = " & LinienGruppe & ", RZ_TYPE = '" & _RZ_Type & "', " &
-                  "RZ_Kommentar = '" & _RezeptKommentar & "', RZ_Aenderung_Datum = '" & wb_sql_Functions.MySQLdatetime(_AenderungDatum) & "', " &
+                  "RZ_Kommentar = '" & wb_Functions.Truncate(_RezeptKommentar, 30, True) & "', RZ_Aenderung_Datum = '" & wb_sql_Functions.MySQLdatetime(_AenderungDatum) & "', " &
                   "RZ_Aenderung_Name = '" & _AenderungName & "', RZ_Aenderung_User = " & _AenderungUserNr & ", RZ_Aenderung_Nr = " & _AenderungNummer
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptUpdate, _RezeptNr, _RezeptVariante, sqlData)
         winback.sqlCommand(sql)

@@ -826,6 +826,14 @@ Stacktrace:
   - BC9_BC_Typ=3
  </summary>
 </member>
+<member name="M:WinBack.wb_ArrayGridViewDruckAuftrag.DruckAuftrag_CellClick(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
+ <summary>
+ Flag setzen/rücksetzen.
+ Wenn die Zeile schon markiert war, wird das Flag getoggelt.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="P:WinBack.wb_ArrayGridViewUserGruppen.Changed">
  <summary>
  Flag Daten wurden geändert.
@@ -1293,6 +1301,22 @@ Stacktrace:
      
  </summary>
  <param name="Message"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Drucken.wb_Planung_Drucken_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+ <summary>
+ Speichert alle aktuellen Einstellungen abhängig von der User-Nummer 
+ 
+     ItemParameter.IP_ItemTyp    500
+     ItemParameter.ItemAttr      Liste-Art
+         502 - Drucken Teigliste
+         503 - Drucken Aufarbeitung
+         504 - Drucken Aufarbeitung Kommentare
+     ItemParameter.LfdNr         User-Nummer
+     ItemParameter.IP_Wert4Str   alle Liniengruppen-Nummern getrennt durch ein x
+ 
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="P:WinBack.wb_Admin_TimerEdit.Index">
  <summary>
@@ -4861,7 +4885,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Produktionsschritt.Filter(System.Int32,System.Int32,System.Boolean)">
+<member name="M:WinBack.wb_Produktionsschritt.Filter(System.Int32,System.Int32,System.Boolean,System.Boolean)">
  <summary>
  Gibt True zurück, wenn die Zeile in der Produktionsplanung angezeigt werden soll.
  Abhängig von Liniengruppe, Aufarbeitungsplatz und Filter-Einstellungen.
@@ -4980,6 +5004,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Die Berechnung erfolgt über RezeptSchritt.BruttoGewicht(Get)
  </summary>
  <returns>Double - Rezept-Gesamtgewicht</returns>
+</member>
+<member name="M:WinBack.wb_Rezept.RecalcRezeptGewicht(System.Double)">
+ <summary>
+ Umrechnung aller Komponenten auf ein neues Rezept-Gesamtgewicht.
+ Der Umrechnungsfaktor wird berechnet aus RezeptgewichtNue/RezeptgewichtAlt
+ </summary>
+ <param name="RzGewichtNeu"></param>
 </member>
 <member name="P:WinBack.wb_Rezept.RezeptPreis">
  <summary>
@@ -7241,10 +7272,16 @@ Text aus Datenbank lesen - Übersetzung
  <param name="RzNummer"></param>
  <param name="RzVariante"></param>
 </member>
-<member name="M:WinBack.wb_Rezept_Rezeptur.BtnDrucken_Click(System.Object,System.EventArgs)">
+<member name="M:WinBack.wb_Rezept_Rezeptur.tbRzGewicht_DoubleClick(System.Object,System.EventArgs)">
  <summary>
- Rezeptur drucken.
- Der Ausdruck erfolgt über Printer-Sub-Funktion (List+Label)
+ Doppelklick auf Rezeptgewicht. Rezeptur auf neues Rezeptgewicht umrechnen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.tbRzGewicht_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Eingabefeld Rezeptgewicht wurde geändert. Rezeptur umrechnen und anzeigen
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -7258,11 +7295,28 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.BtnDrucken_Click(System.Object,System.EventArgs)">
+ <summary>
+ Rezeptur drucken.
+ Der Ausdruck erfolgt über Printer-Sub-Funktion (List+Label)
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Rezept_Rezeptur.BtnLoeschen_Click(System.Object,System.EventArgs)">
  <summary>
  Aktuelle Rezeptur löschen.
  Löschen ist nur möglich, wenn die Rezeptur nicht mehr verwendet wird und, bei Variante Eins, wenn keine weitere Variante existiert
  Vor dem Löschen erfolgt eine Sicherheits-Abfrage
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.BtnHinweise_Click(System.Object,System.EventArgs)">
+ <summary>
+ Anzeige/Eingabe/Änderung des Text-Verarbeitungs-Hinweises für die Rezeptur.
+ Die Verarbeitungshinweise werden in der Tabelle winback.Hinweise2 abgelegt.
+ 'TODO evtl. Unterscheidung in verschiedene Fremdsprachen.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -7285,15 +7339,6 @@ Text aus Datenbank lesen - Übersetzung
  Die Nährwert-Info kommt aus dem Array ktTyp301.Wert von Rezept._RootRezeptSchritt. 
  Die Berechnung der Nährwerte startet über ktTyp301(Get) im RootRezeptschritt (Rekursiv) über alle unterlagerten Rezeptschritte.
  </summary>
-</member>
-<member name="M:WinBack.wb_Rezept_Rezeptur.BtnHinweise_Click(System.Object,System.EventArgs)">
- <summary>
- Anzeige/Eingabe/Änderung des Text-Verarbeitungs-Hinweises für die Rezeptur.
- Die Verarbeitungshinweise werden in der Tabelle winback.Hinweise2 abgelegt.
- 'TODO evtl. Unterscheidung in verschiedene Fremdsprachen.
- </summary>
- <param name="sender"></param>
- <param name="e"></param>
 </member>
 <member name="M:WinBack.wb_Rezept_Rezeptur.BtnClose_Click(System.Object,System.EventArgs)">
  <summary>
@@ -8938,6 +8983,16 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="NewString"></param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Functions.Truncate(System.String,System.Int32,System.Boolean)">
+ <summary>
+ Begrenzt einen String in der Länge auf x Zeichen. 
+ Wenn Dots = True ist, werden am Schluss drei Punkte angehängt, als Hinweis, dass gekürzt wurde.
+ </summary>
+ <param name="s"></param>
+ <param name="AnzZeichen"></param>
+ <param name="Dots"></param>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Functions.DoubleToXString(System.Double)">
  <summary>
  Wandelt einen Double-Wert in einen String um. Dabei wird das Dezimal-Trennzeichen als Punkt dargestellt !!!!
@@ -9818,12 +9873,6 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
-<member name="M:WinBack.wb_Planung_Liste.FilterAndMark(System.Collections.ArrayList@,System.Boolean)">
- <summary>
- Filtert die Produktions-Planungs-Schritte nach Aufarbeitung und Linengruppe
- </summary>
- <param name="a"></param>
-</member>
 <member name="M:WinBack.wb_Planung_Liste.BtnBackZettelDrucken_Click(System.Object,System.EventArgs)">
  <summary>
  Backzettel drucken
@@ -9851,6 +9900,14 @@ Datenbank-Verbindung schliessen
  <summary>
  Anzeige-Filter Aufarbeitungsplatz.
  Die entsprechende Aufarbeitungsplatzgruppen-Nummer wird in wb_LinienGlobal aus dem Bezeichnungstext ermittelt.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Liste.dtBestellungen_ValueChanged(System.Object,System.EventArgs)">
+ <summary>
+ Das Produktions-Datum (Bestellung für ...) hat sich geändert.
+ Global bekannt machen.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -9993,6 +10050,12 @@ Datenbank-Verbindung schliessen
  Fehlerliste anzeigen/aktualisieren
  </summary>
  <param name="sender"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Shared.FilterAndMark(System.Collections.ArrayList@,System.Boolean,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+ <summary>
+ Filtert die Produktions-Planungs-Schritte nach Aufarbeitung und Linengruppe
+ </summary>
+ <param name="a"></param>
 </member>
 <member name="M:WinBack.ob_Admin_OrgaBackSettings.Initialize">
  <summary>

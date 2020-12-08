@@ -208,6 +208,10 @@ Public Class wb_PrinterDialog
             btnExportExcel.Enabled = True
             gbVorschau.Visible = False
         End If
+
+        'wieder aufräumen
+        llProjectPrinter = Nothing
+
     End Sub
 
     ''' <summary>

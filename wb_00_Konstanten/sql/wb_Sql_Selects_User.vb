@@ -71,5 +71,11 @@
     Public Const sqlUserRechteParam = "SELECT * FROM IAttrParams INNER JOIN Texte ON AT_Wert1int = T_Typ AND AT_Wert2int = T_TextIndex " &
                                       "WHERE T_SPRACHE = [0] ORDER BY AT_Wert1int, AT_Wert2int"
 
+    'Sql-Statement User Datensatz Drucken Teigliste/Aufarbeitungsliste lesen
+    Public Const sqlPlanungListe = "SELECT *  FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr > 501 AND IP_Lfd_Nr = [0] ORDER BY IP_ItemAttr"
+    'Sql-Statement User Datensatz Drucken Teigliste/Aufarbeitungsliste
+    Public Const sqlPlanungListeDelete = "DELETE FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr > 501 AND IP_Lfd_Nr = [0]"
+    'Sql-Statement User Datensatz Drucken
+    Public Const sqlPlanungListeInsert = "INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert5Str) VALUES (500, 0, [0], [1], '[2]')"
 
 End Class

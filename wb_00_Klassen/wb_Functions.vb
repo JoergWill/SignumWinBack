@@ -1083,6 +1083,29 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Begrenzt einen String in der Länge auf x Zeichen. 
+    ''' Wenn Dots = True ist, werden am Schluss drei Punkte angehängt, als Hinweis, dass gekürzt wurde.
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <param name="AnzZeichen"></param>
+    ''' <param name="Dots"></param>
+    ''' <returns></returns>
+    Public Shared Function Truncate(s As String, AnzZeichen As Integer, Optional Dots As Boolean = False) As String
+        If IsNothing(s) Then
+            Return ""
+        End If
+        If s.Length <= AnzZeichen Then
+            Return s
+        Else
+            If Dots Then
+                Return s.Substring(0, AnzZeichen - 3) & "..."
+            Else
+                Return s.Substring(0, AnzZeichen)
+            End If
+        End If
+    End Function
+
+    ''' <summary>
     ''' Wandelt einen Double-Wert in einen String um. Dabei wird das Dezimal-Trennzeichen als Punkt dargestellt !!!!
     ''' </summary>
     ''' <returns></returns>
