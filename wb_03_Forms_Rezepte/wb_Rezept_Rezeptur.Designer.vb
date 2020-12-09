@@ -373,13 +373,13 @@ Partial Class wb_Rezept_Rezeptur
         '
         'tbRzTA
         '
+        Me.tbRzTA.AcceptsReturn = True
         Me.tbRzTA.BackColor = System.Drawing.Color.Silver
         Me.tbRzTA.Location = New System.Drawing.Point(870, 111)
         Me.tbRzTA.Name = "tbRzTA"
         Me.tbRzTA.ReadOnly = True
         Me.tbRzTA.Size = New System.Drawing.Size(51, 25)
         Me.tbRzTA.TabIndex = 64
-        Me.tbRzTA.TabStop = False
         Me.tbRzTA.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'tbRzMehlmenge

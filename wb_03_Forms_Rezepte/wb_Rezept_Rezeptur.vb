@@ -271,6 +271,55 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     ''' <summary>
+    ''' Doppelklick auf TA-Feld.
+    ''' Umrechnung der Wassermenge auf eine vorgegebene TA
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub tbRzTA_DoubleClick(sender As Object, e As EventArgs) Handles tbRzTA.DoubleClick
+        If MsgBox("Soll die Rezeptur auf eine neue TA umgerechnet werden ?", MsgBoxStyle.YesNo, "Wassermenge berechnen") = MsgBoxResult.Yes Then
+            'Änderung Rezeptgewicht zulassen
+            tbRzTA.ReadOnly = False
+            tbRzTA.BackColor = Color.White
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Eingabefeld TA wurde geändert. Wassermenge im Rezept neu berechnen. Es wird nur die Wassermenge im flachen Rezept angepasst. Rohstoffe mit
+    ''' verknüpfter Rezeptur bleiben unverändert.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub tbRzTA_Leave(sender As Object, e As EventArgs) Handles tbRzTA.Leave
+        'Neue TA
+        Dim RzTANeu As Double = wb_Functions.StrToDouble(tbRzTA.Text)
+        'Änderung der TA
+        If Not tbRzTA.ReadOnly And (RzTANeu <> Rezept.RezeptTA) Then
+            'Grenzen prüfen
+            If (RzTANeu > wb_Global.TA_min) And (RzTANeu < wb_Global.TA_max) Then
+                'Wassermenge neu berechnen
+                If Rezept.RecalcWasserMengeFromTA(RzTANeu) Then
+                    'Anzeige aktualisieren
+                    VT_Aktualisieren()
+                    'Rezeptur wurde geändert (speichern)
+                    _RzChanged = True
+                    'TA ist wieder Readonly
+                    tbRzTA.ReadOnly = True
+                Else
+                    MsgBox("Die Rezeptur enthält keine (Wasser)Komponente, die angepasst werden kann", MsgBoxStyle.Exclamation)
+                    tbRzTA.Text = CInt(Rezept.RezeptTA)
+                    tbRzTA.ReadOnly = True
+                End If
+            Else
+                MsgBox("Die TA muss zwischen " & wb_Global.TA_min & " und " & wb_Global.TA_max & " liegen", MsgBoxStyle.Exclamation)
+                tbRzTA.Text = CInt(Rezept.RezeptTA)
+                tbRzTA.Focus()
+            End If
+        End If
+    End Sub
+
+    ''' <summary>
     ''' Rezeptur kopieren.
     ''' Die bestehende (aktuelle) Rezeptur wird gespeichert. Danach wird ein neues Rezept angelegt und die Daten kopiert.
     ''' Anschliessend wird das neue Rezept in einem neuen Fenster geöffnet.

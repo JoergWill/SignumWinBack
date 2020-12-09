@@ -22,6 +22,8 @@
     Public Const MaxLinien = 99                       'Kocher-Linie (maximale Anzahl an WinBack-Linien)
     Public Const MaxRezeptGroesse = 999.9             'Maximale Rezeptgröße
     Public Const RS_Par1_QUID = "-1"                  'Komponente im Rezept ist QUID-Relevant (In RS_Par1)
+    Public Const TA_min = 0                           'TA Minimal-Wert (Berechnung Wassermenge bei TA-Änderung Rezeptur)
+    Public Const TA_max = 400                         'TA Maximal-Wert (Berechnung Wassermenge bei TA-Änderung Rezeptur)
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)
     Public Const NewUserName = "Neu"

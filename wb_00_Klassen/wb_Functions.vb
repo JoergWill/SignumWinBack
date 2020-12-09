@@ -545,6 +545,22 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Ermittelt ob Type und Parameter-Nummer einen Wasser-Mengen-Sollwert enthalten.
+    ''' </summary>
+    ''' <param name="Type"></param>
+    ''' <returns></returns>
+    Public Shared Function TypeIstWasserSollmenge(Type As wb_Global.KomponTypen, Param As Integer, TA As Integer) As Boolean
+        If (Param = 1) And ((TA = wb_Global.TA_Wasser) Or
+            (Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE) Or
+            (Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE) Or
+            (Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER)) Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    ''' <summary>
     ''' Ermittelt anhand der Komponenten-Type ob eine Einheit(Text) ausgeben werden soll.
     ''' </summary>
     ''' <param name="Type"></param>

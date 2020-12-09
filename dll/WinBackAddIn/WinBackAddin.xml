@@ -5012,6 +5012,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="RzGewichtNeu"></param>
 </member>
+<member name="M:WinBack.wb_Rezept.RecalcWasserMengeFromTA(System.Int32)">
+ <summary>
+ Umrechnung der Wassermenge aller Rezeptschritte auf die neue TA
+ Wird keine Wasserkomponente in der (flachen)Rezeptur gefunden wird false zurückgegeben
+ </summary>
+ <param name="RzTANeu"></param>
+</member>
 <member name="P:WinBack.wb_Rezept.RezeptPreis">
  <summary>
  Der Rezept-Gesamtpreis steht als Preis im Root-Node
@@ -7286,6 +7293,22 @@ Text aus Datenbank lesen - Übersetzung
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.tbRzTA_DoubleClick(System.Object,System.EventArgs)">
+ <summary>
+ Doppelklick auf TA-Feld.
+ Umrechnung der Wassermenge auf eine vorgegebene TA
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Rezept_Rezeptur.tbRzTA_Leave(System.Object,System.EventArgs)">
+ <summary>
+ Eingabefeld TA wurde geändert. Wassermenge im Rezept neu berechnen. Es wird nur die Wassermenge im flachen Rezept angepasst. Rohstoffe mit
+ verknüpfter Rezeptur bleiben unverändert.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Rezept_Rezeptur.BtnKopieren_Click(System.Object,System.EventArgs)">
  <summary>
  Rezeptur kopieren.
@@ -8858,6 +8881,13 @@ Start Timer nach Änderung Datensatz-Zeiger
 <member name="M:WinBack.wb_Functions.TypeIstText(WinBack.wb_Global.KomponTypen)">
  <summary>
  Ermittelt ob Type und Parameter-Nummer einen Text als Sollwert enthalten.
+ </summary>
+ <param name="Type"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.TypeIstWasserSollmenge(WinBack.wb_Global.KomponTypen,System.Int32,System.Int32)">
+ <summary>
+ Ermittelt ob Type und Parameter-Nummer einen Wasser-Mengen-Sollwert enthalten.
  </summary>
  <param name="Type"></param>
  <returns></returns>

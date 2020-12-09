@@ -810,7 +810,7 @@ Public Class wb_Rezeptschritt
                 'Wasseranteil der aktuellen Komponente berechnen
                 _TA_Wassermenge = 0
                 'Wasserkomponente oder Eis oder Sauerteig-Wasser oder Handwasser
-                If (ParamNr = 1) And ((TA = wb_Global.TA_Wasser) Or (_Type = KO_TYPE_WASSERKOMPONENTE) Or (_Type = KO_TYPE_EISKOMPONENTE) Or (_Type = KO_TYPE_SAUER_WASSER)) Then
+                If wb_Functions.TypeIstWasserSollmenge(_Type, ParamNr, TA) Then
                     _TA_Wassermenge = wb_Functions.StrToDouble(_Sollwert)
                 End If
 

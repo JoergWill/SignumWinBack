@@ -164,6 +164,80 @@ Public Class wb_Rezept
     End Sub
 
     ''' <summary>
+    ''' Umrechnung der Wassermenge aller Rezeptschritte auf die neue TA
+    ''' Wird keine Wasserkomponente in der (flachen)Rezeptur gefunden wird false zurückgegeben
+    ''' </summary>
+    ''' <param name="RzTANeu"></param>
+    Public Function RecalcWasserMengeFromTA(RzTANeu As Integer) As Boolean
+        'TA(alt)
+        Dim RzTAalt As Integer = _RootRezeptSchritt.TA
+
+        'Gesamt-Wassermenge (aus der TA-Berechnung)
+        Dim WasserMenge As Double = _RootRezeptSchritt.TA_Wassermenge
+        'Gesamt-Mehlmenge (aus der TA-Berechnung)
+        Dim Mehlmenge As Double = _RootRezeptSchritt.TA_Mehlmenge
+        'Wassermenge neu (Gesamt)
+        Dim WasserMengeNeu As Double = Mehlmenge * (RzTANeu / 100 - 1)
+        'Differenz zur bisherigen Wassermenge
+        Dim WasserMengeDiff As Double = WasserMengeNeu - WasserMenge
+
+        'WasserGesamtmenge im flachen Rezept ermitteln
+        Dim WasserMengeFlach As Double = CalcWasserMenge(_RootRezeptSchritt)
+        Dim WasserMengeRest As Double = WasserMenge - WasserMengeFlach
+
+        'wenn eine Wasser-Komponente im (flachen) Rezept enthalten ist - Umrechnen, sonst Fehlermeldung ausgeben
+        If WasserMengeFlach > 0 Then
+            'Umrechnungsfaktor
+            Dim f As Double = (WasserMengeNeu - WasserMengeRest) / WasserMengeFlach
+            'alle Rezeptschritt mit Wasser-Sollmenge umrechnen
+            CalcWasserMenge(_RootRezeptSchritt, f)
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Private Function CalcWasserMenge(ByRef RootRezeptSchritt As wb_Rezeptschritt) As Double
+        'WasserGesamtmenge im flachen Rezept ermitteln
+        Dim WasserMengeFlach As Double = 0
+        'alle Rezeptschritt (nur das flache Rezept) umrechnen
+        For Each rs As wb_Rezeptschritt In RootRezeptSchritt.ChildSteps
+
+            'alle Rezept-Zeilen mit Sollwerten umrechnen
+            If wb_Functions.TypeIstSollMenge(rs.Type, rs.ParamNr) Then
+                'alle Rezept-Zeilen mit Wasser-Sollmenge
+                If wb_Functions.TypeIstWasserSollmenge(rs.Type, rs.ParamNr, rs.TA) Then
+                    WasserMengeFlach += rs.Sollwert
+                End If
+            Else
+                'Wenn die Rezept-Zeile keinen Sollwert hat, werden alle Child-Steps umgerechnent (Produktions-Stufe...)
+                If rs.ChildSteps.Count > 0 Then
+                    WasserMengeFlach += CalcWasserMenge(rs)
+                End If
+            End If
+        Next
+        Return WasserMengeFlach
+    End Function
+
+    Private Sub CalcWasserMenge(ByRef RootRezeptSchritt As wb_Rezeptschritt, f As Double)
+        'alle Rezeptschritt (nur das flache Rezept) umrechnen
+        For Each rs As wb_Rezeptschritt In RootRezeptSchritt.ChildSteps
+
+            'alle Rezept-Zeilen mit Sollwerten umrechnen
+            If wb_Functions.TypeIstSollMenge(rs.Type, rs.ParamNr) Then
+                'alle Rezept-Zeilen mit Wasser-Sollmenge
+                If wb_Functions.TypeIstWasserSollmenge(rs.Type, rs.ParamNr, rs.TA) Then
+                    rs.Sollwert = rs.Sollwert * f
+                End If
+            Else
+                'Wenn die Rezept-Zeile keinen Sollwert hat, werden alle Child-Steps umgerechnent (Produktions-Stufe...)
+                If rs.ChildSteps.Count > 0 Then
+                    CalcWasserMenge(rs, f)
+                End If
+            End If
+        Next
+    End Sub
+    ''' <summary>
     ''' Der Rezept-Gesamtpreis steht als Preis im Root-Node
     ''' Die Berechnung erfolgt über RezeptSchritt.Preis(Get)
     ''' </summary>
