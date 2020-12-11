@@ -89,6 +89,10 @@ Public Class wb_Rohstoffe_Details
             ShowDeklaration()
             'Flag zählt nicht zum Rezeptgewicht
             cbRezeptGewicht.Checked = RohStoff.ZaehltNichtZumRezeptGewicht
+            'Flag zählt zur Nährwertberechnung
+            cbNwtBerechnung.Checked = RohStoff.ZaehltTrotzdemZumNwtGewicht
+            cbNwtBerechnung.Enabled = cbRezeptGewicht.Checked
+
             'Rezeptur verknüpft
             If RohStoff.RzNr > 0 Then
                 'Flag Zutatenliste auflösen
@@ -132,12 +136,16 @@ Public Class wb_Rohstoffe_Details
             lblDeklExtern.Visible = False
             tbDeklarationExtern.Visible = False
             cbKeineDeklaration.Checked = True
+            cbAufloesen.Visible = False
+            cbInterneDeklaration.Visible = False
         Else
             lblDeklIntern.Visible = True
             tbDeklarationIntern.Visible = True
             lblDeklExtern.Visible = True
             tbDeklarationExtern.Visible = True
             cbKeineDeklaration.Checked = False
+            cbAufloesen.Visible = True
+            cbInterneDeklaration.Visible = True
         End If
         tbDeklarationIntern.Text = RohStoff.DeklBezeichungIntern
         tbDeklarationExtern.Text = RohStoff.DeklBezeichungExtern
@@ -150,7 +158,7 @@ Public Class wb_Rohstoffe_Details
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tbRohstoffPreis.Leave, tbGebindeGroesse.Leave, cbRohstoffGrp2.Leave, cbRohstoffGrp1.Leave, cbRezeptGewicht.Click, cbAktiv.Click
+    Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRohstoffName.Leave, tRohstoffNummer.Leave, tRohstoffKommentar.Leave, tbRohstoffPreis.Leave, tbGebindeGroesse.Leave, cbRohstoffGrp2.Leave, cbRohstoffGrp1.Leave, cbRezeptGewicht.Click, cbAktiv.Click, cbNwtBerechnung.Click
         'Wenn die Bearbeitung/Speichern freigegeben ist
         If RohStoff.Type <> wb_Global.KomponTypen.KO_TYPE_UNDEFINED Then
             'Bezeichnungstexte
@@ -164,6 +172,8 @@ Public Class wb_Rohstoffe_Details
             RohStoff.Gruppe2 = cbRohstoffGrp2.GetKeyFromSelection
             'Rohstoff zählt nicht zum Rezeptgewicht
             RohStoff.ZaehltNichtZumRezeptGewicht = cbRezeptGewicht.Checked
+            RohStoff.ZaehltTrotzdemZumNwtGewicht = cbNwtBerechnung.Checked
+            cbNwtBerechnung.Enabled = cbRezeptGewicht.Checked
             'Rohstoff ist aktiv
             RohStoff.Aktiv = cbAktiv.Checked
 
@@ -209,7 +219,7 @@ Public Class wb_Rohstoffe_Details
         cbAufloesen.Checked = CheckZutatenAufloesen()
     End Sub
 
-    Private Sub cbKeineDeklaration_Click(sender As Object, e As EventArgs) Handles cbKeineDeklaration.Leave
+    Private Sub cbKeineDeklaration_Click(sender As Object, e As EventArgs) Handles cbKeineDeklaration.Click
         If cbKeineDeklaration.Checked Then
             'alten DeklarationsText merken(sicherheitshalber)
             If tbDeklarationExtern.Text <> wb_Global.FlagKeineDeklaration Then

@@ -26,8 +26,10 @@ Public Class wb_Rezeptschritt
     Private _TA As Integer = wb_Global.TA_Undefined
     Private _RezGewicht As Double
     Private _BruttoRezGewicht As Double
+    Private _NwtRezGewicht As Double
     Private _RezPreis As Double
-    Private _ZaehltNichtZumRezeptGewicht As Boolean
+    Private _ZaehltNichtZumRezeptGewicht As Boolean = False
+    Private _ZaehltTrotzdemZumNwtGewicht As Boolean = False
     Private _QUIDRelevant As Boolean = False
     Private _ktTyp301 As New wb_KomponParam301
     Private _ZutatenListe As New wb_ZutatenElement
@@ -689,6 +691,21 @@ Public Class wb_Rezeptschritt
     End Property
 
     ''' <summary>
+    ''' Nwt-Gewichtswert des Rezeptschrittes. Gibt den Sollwert der Rezept-Zeile zurück, abhängig vom Flag
+    ''' 'zählt zum Rezeptgewicht' und 'zählt trotzdem zur Nährwertberechnung'
+    ''' </summary>
+    ''' <returns>Double - Sollwert</returns>
+    Private ReadOnly Property _NwtGewicht As Double
+        Get
+            If Not ZaehltNichtZumRezeptGewicht Or ZaehltTrotzdemZumNwtGewicht Then
+                Return wb_Functions.StrToDouble(_BruttoGewicht)
+            Else
+                Return 0
+            End If
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Gibt das Gewicht der Rezeptzeile zurück. Wenn diese Zeile weitere (Child)Rezeptzeile enthält wird zuerst das Gewicht der 
     ''' unterlagerten Zeilen berechnet und dann die Summe zurückgegeben.
     ''' </summary>
@@ -719,6 +736,21 @@ Public Class wb_Rezeptschritt
     End Property
 
     ''' <summary>
+    ''' Gibt das Nwt-Gewicht der Rezeptzeile zurück. Wenn diese Zeile weitere (Child)Rezeptzeile enthält wird zuerst das Gewicht der 
+    ''' unterlagerten Zeilen berechnet und dann die Summe zurückgegeben.
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property NwtGewicht As Double
+        Get
+            Dim Childgewicht As Double = 0
+            For Each x As wb_Rezeptschritt In ChildSteps
+                Childgewicht = Childgewicht + x.NwtGewicht
+            Next
+            Return _NwtGewicht + Childgewicht
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung/Anzeige des Anteils der Komponente am 
     ''' Rezeptgesamtgewicht auf der Rezeptzeile.
     ''' </summary>
@@ -732,7 +764,7 @@ Public Class wb_Rezeptschritt
     End Property
 
     ''' <summary>
-    ''' Brutto-Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung der Nährwerte
+    ''' Brutto-Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren.
     ''' </summary>
     Public WriteOnly Property BruttoRezGewicht As Double
         Set(value As Double)
@@ -742,6 +774,19 @@ Public Class wb_Rezeptschritt
             _BruttoRezGewicht = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Nwt-Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung der Nährwerte
+    ''' </summary>
+    Public WriteOnly Property NwtRezGewicht As Double
+        Set(value As Double)
+            For Each x As wb_Rezeptschritt In ChildSteps
+                x.NwtRezGewicht = value
+            Next
+            _NwtRezGewicht = value
+        End Set
+    End Property
+
 
     ''' <summary>
     ''' Gibt die Mehlmenge der Komponente dieser Rezeptzeile zurück. 
@@ -899,16 +944,49 @@ Public Class wb_Rezeptschritt
     End Property
 
     ''' <summary>
+    ''' Datenbank-Feld winback.Komponenten.KA_zaehlt_zu_RZ_Gesamtmenge
+    ''' 
+    '''                                     ZähltNichtZumRezeptgewicht  ZaehltTrotzdemZumNwtGewicht
+    '''                                     
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 3         True                         True
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1         True                         False
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 0         False                        True
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = NULL      False                        True
+    '''     
+    ''' </summary>
+    Public WriteOnly Property KA_zaehlt_zu_RZ_Gesamtmenge As String
+        Set(value As String)
+            Select Case value
+                Case wb_Global.ZaehltZumRezeptGewicht
+                    _ZaehltNichtZumRezeptGewicht = False
+                    _ZaehltTrotzdemZumNwtGewicht = True
+                Case wb_Global.ZaehltNichtZumRezeptGewicht
+                    _ZaehltNichtZumRezeptGewicht = True
+                    _ZaehltTrotzdemZumNwtGewicht = False
+                Case wb_Global.ZaehltTroztdemZumNwtGewicht
+                    _ZaehltNichtZumRezeptGewicht = True
+                    _ZaehltTrotzdemZumNwtGewicht = True
+                Case Else
+                    _ZaehltNichtZumRezeptGewicht = False
+                    _ZaehltTrotzdemZumNwtGewicht = True
+            End Select
+        End Set
+    End Property
+
+    ''' <summary>
     ''' Rezeptzeile zählt nicht zum Rezeptgesamtgewicht
     ''' </summary>
     ''' <returns>Boolean - Zählt nicht zum Rezeptgewicht</returns>
-    Public Property ZaehltNichtZumRezeptGewicht As Boolean
+    Public ReadOnly Property ZaehltNichtZumRezeptGewicht As Boolean
         Get
             Return _ZaehltNichtZumRezeptGewicht
         End Get
-        Set(value As Boolean)
-            _ZaehltNichtZumRezeptGewicht = value
-        End Set
+    End Property
+
+    Public ReadOnly Property ZaehltTrotzdemZumNwtGewicht As Boolean
+        Get
+            Return _ZaehltTrotzdemZumNwtGewicht
+        End Get
     End Property
 
     ''' <summary>
@@ -925,8 +1003,8 @@ Public Class wb_Rezeptschritt
             If Not _ktTyp301.IsCalculated Then
 
                 'Rezept im Rezept
-                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing And _BruttoRezGewicht > 0 Then
-                    RezeptImRezept.KtTyp301.AddNwt(_ktTyp301, _Sollwert / _BruttoRezGewicht)
+                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing And _NwtRezGewicht > 0 Then
+                    RezeptImRezept.KtTyp301.AddNwt(_ktTyp301, _Sollwert / _NwtRezGewicht)
                 Else
 
                     'Nährwert-Info aus Datenbank lesen
@@ -936,7 +1014,7 @@ Public Class wb_Rezeptschritt
                     End If
 
                     'Umechnungs-Faktor Nährwerte 
-                    Dim Faktor As Double = wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht
+                    Dim Faktor As Double = wb_Functions.StrToDouble(_Sollwert) / _NwtRezGewicht
                     'Wenn eine Backverlust angegeben ist, erhöht sich der Faktor entspechend
                     'da beim Backen das Endprodukt Gewicht verliert.
                     Faktor = (Faktor * 100) / (100 - Backverlust)
@@ -949,7 +1027,7 @@ Public Class wb_Rezeptschritt
 
                     'alle Unter-Rezept-Schritte berechnen
                     For Each x As wb_Rezeptschritt In ChildSteps
-                        If _BruttoRezGewicht > 0 Then
+                        If _NwtRezGewicht > 0 Then
                             x.ktTyp301.AddNwt(_ktTyp301, Faktor)
                         End If
                     Next
@@ -1305,8 +1383,8 @@ Public Class wb_Rezeptschritt
                                         End If
                                     Else
                                         If (Value IsNot Nothing) And (Value <> "") Then
-                                            If _BruttoRezGewicht > 0 Then
-                                                _ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value) * wb_Functions.StrToDouble(_Sollwert) / _BruttoRezGewicht
+                                            If _NwtRezGewicht > 0 Then
+                                                _ktTyp301.Naehrwert(ParamNr) = wb_Functions.StrToDouble(Value) * wb_Functions.StrToDouble(_Sollwert) / _NwtRezGewicht
                                             Else
                                                 _ktTyp301.Naehrwert(ParamNr) = 0
                                             End If

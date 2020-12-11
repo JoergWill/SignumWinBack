@@ -372,28 +372,61 @@ Public Class wb_Komponente
 
     ''' <summary>
     ''' Datenbankfeld
-    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu RezGewicht -> True
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1/3  - zählt nicht zu RezGewicht -> True
     '''     KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu RezGewicht -> False
     '''     KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu RezGewicht -> False
     ''' </summary>
     ''' <returns></returns>
     Public Property ZaehltNichtZumRezeptGewicht As Boolean
-        'TODO Niehaves zusätzlich zählt nicht zum Rezeptgewicht aber zu den Nährwerten(Gesamtgewicht)
         Set(value As Boolean)
             If value Then
-                KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht
+                If ZaehltTrotzdemZumNwtGewicht Then
+                    KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltTroztdemZumNwtGewicht
+                Else
+                    KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht
+                End If
             Else
                 KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltZumRezeptGewicht
             End If
         End Set
         Get
-            If KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht Then
+            If (KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht) Or (KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltTroztdemZumNwtGewicht) Then
                 Return True
             Else
                 Return False
             End If
         End Get
     End Property
+
+    ''' <summary>
+    ''' Datenbankfeld
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 3    - zählt zu NwtGewicht -> True
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu NwtGewicht -> False
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu NwtGewicht -> True
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu NwtGewicht -> True
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property ZaehltTrotzdemZumNwtGewicht As Boolean
+        Set(value As Boolean)
+            If ZaehltNichtZumRezeptGewicht Then
+                If value Then
+                    KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltTroztdemZumNwtGewicht
+                Else
+                    KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht
+                End If
+            Else
+                KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltZumRezeptGewicht
+            End If
+        End Set
+        Get
+            If KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltTroztdemZumNwtGewicht Then
+                Return True
+            Else
+                Return False
+            End If
+        End Get
+    End Property
+
 
     Public Property Aktiv As Boolean
         Get

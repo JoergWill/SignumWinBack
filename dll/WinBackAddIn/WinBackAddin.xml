@@ -3695,9 +3695,19 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 <member name="P:WinBack.wb_Komponente.ZaehltNichtZumRezeptGewicht">
  <summary>
  Datenbankfeld
-     KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu RezGewicht -> True
+     KA_zaehlt_zu_RZ_Gesamtmenge = 1/3  - zählt nicht zu RezGewicht -> True
      KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu RezGewicht -> False
      KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu RezGewicht -> False
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Komponente.ZaehltTrotzdemZumNwtGewicht">
+ <summary>
+ Datenbankfeld
+     KA_zaehlt_zu_RZ_Gesamtmenge = 3    - zählt zu NwtGewicht -> True
+     KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu NwtGewicht -> False
+     KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu NwtGewicht -> True
+     KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu NwtGewicht -> True
  </summary>
  <returns></returns>
 </member>
@@ -5005,6 +5015,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns>Double - Rezept-Gesamtgewicht</returns>
 </member>
+<member name="P:WinBack.wb_Rezept.NwtRezeptGewicht">
+ <summary>
+ Das Nwt-Rezept-Gesamtgewicht steht als Gewichtswert im Root-Node
+ Die Berechnung erfolgt über RezeptSchritt.NwtGewicht(Get)
+ </summary>
+ <returns>Double - Rezept-Gesamtgewicht</returns>
+</member>
 <member name="M:WinBack.wb_Rezept.RecalcRezeptGewicht(System.Double)">
  <summary>
  Umrechnung aller Komponenten auf ein neues Rezept-Gesamtgewicht.
@@ -5084,6 +5101,17 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
      A   -   AnstellgutRewort 
      T   -   Reset TTS beim nächsten Start in WinBack-Produktion
  </summary>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Rezept.FindeTeigTempKomponente(WinBack.wb_Rezeptschritt,System.Double@)">
+ <summary>
+ Sucht in allen Child-Rezeptschritten nach einer Teigtemperatur-Komponente
+ Wenn eine solche Komponente gefunden wird, dann wird der Sollwert zurückgegeben. Falls keine
+ Komponente gefunden werden kann, wird der übergebene Tempraturwert wieder zurückgegeben.
+ Damit kann der letzte Eintrag in der (flachen) Rezeptur ermittelt werden.
+ </summary>
+ <param name="RootRezeptSchritt"></param>
+ <param name="TeigTemperatur"></param>
  <returns></returns>
 </member>
 <member name="P:WinBack.wb_Rezept.ReadCalcPreis">
@@ -5429,6 +5457,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns>Double - Sollwert</returns>
 </member>
+<member name="P:WinBack.wb_Rezeptschritt._NwtGewicht">
+ <summary>
+ Nwt-Gewichtswert des Rezeptschrittes. Gibt den Sollwert der Rezept-Zeile zurück, abhängig vom Flag
+ 'zählt zum Rezeptgewicht' und 'zählt trotzdem zur Nährwertberechnung'
+ </summary>
+ <returns>Double - Sollwert</returns>
+</member>
 <member name="P:WinBack.wb_Rezeptschritt.Gewicht">
  <summary>
  Gibt das Gewicht der Rezeptzeile zurück. Wenn diese Zeile weitere (Child)Rezeptzeile enthält wird zuerst das Gewicht der 
@@ -5443,6 +5478,13 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_Rezeptschritt.NwtGewicht">
+ <summary>
+ Gibt das Nwt-Gewicht der Rezeptzeile zurück. Wenn diese Zeile weitere (Child)Rezeptzeile enthält wird zuerst das Gewicht der 
+ unterlagerten Zeilen berechnet und dann die Summe zurückgegeben.
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_Rezeptschritt.RezGewicht">
  <summary>
  Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung/Anzeige des Anteils der Komponente am 
@@ -5451,7 +5493,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 </member>
 <member name="P:WinBack.wb_Rezeptschritt.BruttoRezGewicht">
  <summary>
- Brutto-Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung der Nährwerte
+ Brutto-Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren.
+ </summary>
+</member>
+<member name="P:WinBack.wb_Rezeptschritt.NwtRezGewicht">
+ <summary>
+ Nwt-Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung der Nährwerte
  </summary>
 </member>
 <member name="P:WinBack.wb_Rezeptschritt._TA_Mehlmenge">
@@ -5502,6 +5549,19 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  Preis pro kg eines Rohstoffes aus der Datenbank
  </summary>
  <returns></returns>
+</member>
+<member name="P:WinBack.wb_Rezeptschritt.KA_zaehlt_zu_RZ_Gesamtmenge">
+ <summary>
+ Datenbank-Feld winback.Komponenten.KA_zaehlt_zu_RZ_Gesamtmenge
+ 
+                                     ZähltNichtZumRezeptgewicht  ZaehltTrotzdemZumNwtGewicht
+                                     
+     KA_zaehlt_zu_RZ_Gesamtmenge = 3         True                         True
+     KA_zaehlt_zu_RZ_Gesamtmenge = 1         True                         False
+     KA_zaehlt_zu_RZ_Gesamtmenge = 0         False                        True
+     KA_zaehlt_zu_RZ_Gesamtmenge = NULL      False                        True
+     
+ </summary>
 </member>
 <member name="P:WinBack.wb_Rezeptschritt.ZaehltNichtZumRezeptGewicht">
  <summary>
@@ -8311,6 +8371,13 @@ entsprechende Übersetzung aus winback.Texte geladen
  Die maximale Füllstand (Silo-Größe) steht in der Tabelle Lagerorte im Feld LG_Kommentar)
  </summary>
 </member>
+<member name="M:WinBack.wb_Rohstoffe_Shared.Load_TeigTempTables">
+ <summary>
+ Liste aller Rohstoffe zur Teigtemperatur-Erfassung
+ Alle Rohstoffe mit Komponenten-Type 111
+ Alle Rohstoffe mit Komponenten-Type 118 die im Parameter 4(Einheit) den Wert 5(Grad Celsius) haben
+ </summary>
+</member>
 <member name="M:WinBack.wb_Rohstoffe_Shared.HatSiloUmschaltung(System.String)">
  <summary>
  Prüft ob zu dieser Komponenten-Nummer mehrere Automatik-Rohstoffe mit dieser Nummer
@@ -8897,6 +8964,17 @@ Start Timer nach Änderung Datensatz-Zeiger
  Ermittelt anhand der Komponenten-Type ob eine Einheit(Text) ausgeben werden soll.
  </summary>
  <param name="Type"></param>
+ <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.TypeIstTeigTemperaturSollwert(System.Int32)">
+ <summary>
+ Ermittelt anhand der Komponenten-Type und der Komponenten-Nr ob die Komponente
+ einen Teigtemperatur-Sollwert enthält
+ 
+     Teigtemperaturmessung   KT111
+     Kneterkomponente        KT118 - Einheit (ParamNr.4) = 5 (Grad Celsius)
+ </summary>
+ <param name="KompNr"></param>
  <returns></returns>
 </member>
 <member name="M:WinBack.wb_Functions.TypeHasChildSteps(WinBack.wb_Global.KomponTypen)">

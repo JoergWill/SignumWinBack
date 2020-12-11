@@ -58,15 +58,16 @@ Partial Class wb_Rohstoffe_Details
         Me.tbRohstoffPreis = New System.Windows.Forms.TextBox()
         Me.lblPreis = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.cbRohstoffGrp2 = New WinBack.wb_ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
-        Me.cbRohstoffGrp1 = New WinBack.wb_ComboBox()
         Me.tID = New System.Windows.Forms.TextBox()
         Me.tType = New System.Windows.Forms.TextBox()
         Me.cbAktiv = New System.Windows.Forms.CheckBox()
         Me.lblID = New System.Windows.Forms.Label()
         Me.lblType = New System.Windows.Forms.Label()
         Me.lblAktiv = New System.Windows.Forms.Label()
+        Me.cbNwtBerechnung = New System.Windows.Forms.CheckBox()
+        Me.cbRohstoffGrp2 = New WinBack.wb_ComboBox()
+        Me.cbRohstoffGrp1 = New WinBack.wb_ComboBox()
         Me.pnlDetails.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -146,7 +147,6 @@ Partial Class wb_Rohstoffe_Details
         Me.pnlDetails.Controls.Add(Me.lbMindestMenge)
         Me.pnlDetails.Controls.Add(Me.tbBilanzmenge)
         Me.pnlDetails.Controls.Add(Me.lbBilanzMenge)
-        Me.pnlDetails.Controls.Add(Me.cbRezeptGewicht)
         Me.pnlDetails.Controls.Add(Me.cbKeineDeklaration)
         Me.pnlDetails.Controls.Add(Me.tbGebindeGroesse)
         Me.pnlDetails.Controls.Add(Me.lblGebindegroesse)
@@ -156,6 +156,8 @@ Partial Class wb_Rohstoffe_Details
         Me.pnlDetails.Controls.Add(Me.cbRohstoffGrp2)
         Me.pnlDetails.Controls.Add(Me.Label14)
         Me.pnlDetails.Controls.Add(Me.cbRohstoffGrp1)
+        Me.pnlDetails.Controls.Add(Me.cbRezeptGewicht)
+        Me.pnlDetails.Controls.Add(Me.cbNwtBerechnung)
         Me.pnlDetails.Location = New System.Drawing.Point(0, 102)
         Me.pnlDetails.Name = "pnlDetails"
         Me.pnlDetails.Size = New System.Drawing.Size(664, 299)
@@ -163,7 +165,7 @@ Partial Class wb_Rohstoffe_Details
         '
         'tbRezName
         '
-        Me.tbRezName.Location = New System.Drawing.Point(96, 237)
+        Me.tbRezName.Location = New System.Drawing.Point(96, 277)
         Me.tbRezName.Name = "tbRezName"
         Me.tbRezName.ReadOnly = True
         Me.tbRezName.Size = New System.Drawing.Size(206, 20)
@@ -172,7 +174,7 @@ Partial Class wb_Rohstoffe_Details
         '
         'tbRezNr
         '
-        Me.tbRezNr.Location = New System.Drawing.Point(12, 237)
+        Me.tbRezNr.Location = New System.Drawing.Point(12, 277)
         Me.tbRezNr.Name = "tbRezNr"
         Me.tbRezNr.ReadOnly = True
         Me.tbRezNr.Size = New System.Drawing.Size(71, 20)
@@ -183,7 +185,7 @@ Partial Class wb_Rohstoffe_Details
         '
         Me.lblRezept.AutoSize = True
         Me.lblRezept.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblRezept.Location = New System.Drawing.Point(93, 221)
+        Me.lblRezept.Location = New System.Drawing.Point(93, 261)
         Me.lblRezept.Name = "lblRezept"
         Me.lblRezept.Size = New System.Drawing.Size(50, 13)
         Me.lblRezept.TabIndex = 88
@@ -193,7 +195,7 @@ Partial Class wb_Rohstoffe_Details
         '
         Me.lbRezNr.AutoSize = True
         Me.lbRezNr.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lbRezNr.Location = New System.Drawing.Point(12, 221)
+        Me.lbRezNr.Location = New System.Drawing.Point(12, 261)
         Me.lbRezNr.Name = "lbRezNr"
         Me.lbRezNr.Size = New System.Drawing.Size(55, 13)
         Me.lbRezNr.TabIndex = 87
@@ -374,19 +376,19 @@ Partial Class wb_Rohstoffe_Details
         'cbRezeptGewicht
         '
         Me.cbRezeptGewicht.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.cbRezeptGewicht.Location = New System.Drawing.Point(165, 33)
+        Me.cbRezeptGewicht.Location = New System.Drawing.Point(12, 218)
         Me.cbRezeptGewicht.Name = "cbRezeptGewicht"
-        Me.cbRezeptGewicht.Size = New System.Drawing.Size(160, 40)
+        Me.cbRezeptGewicht.Size = New System.Drawing.Size(290, 19)
         Me.cbRezeptGewicht.TabIndex = 79
         Me.cbRezeptGewicht.TabStop = False
-        Me.cbRezeptGewicht.Text = "zählt nicht zur Rezept- Gesamtmenge"
+        Me.cbRezeptGewicht.Text = "zählt nicht zur Rezept-Gesamtmenge (Nassgewicht)"
         Me.cbRezeptGewicht.UseVisualStyleBackColor = True
         '
         'cbKeineDeklaration
         '
         Me.cbKeineDeklaration.AutoSize = True
         Me.cbKeineDeklaration.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.cbKeineDeklaration.Location = New System.Drawing.Point(165, 19)
+        Me.cbKeineDeklaration.Location = New System.Drawing.Point(165, 7)
         Me.cbKeineDeklaration.Name = "cbKeineDeklaration"
         Me.cbKeineDeklaration.Size = New System.Drawing.Size(160, 17)
         Me.cbKeineDeklaration.TabIndex = 78
@@ -440,14 +442,6 @@ Partial Class wb_Rohstoffe_Details
         Me.Label1.TabIndex = 73
         Me.Label1.Text = "Gruppe 2"
         '
-        'cbRohstoffGrp2
-        '
-        Me.cbRohstoffGrp2.FormattingEnabled = True
-        Me.cbRohstoffGrp2.Location = New System.Drawing.Point(12, 188)
-        Me.cbRohstoffGrp2.Name = "cbRohstoffGrp2"
-        Me.cbRohstoffGrp2.Size = New System.Drawing.Size(290, 21)
-        Me.cbRohstoffGrp2.TabIndex = 72
-        '
         'Label14
         '
         Me.Label14.AutoSize = True
@@ -457,14 +451,6 @@ Partial Class wb_Rohstoffe_Details
         Me.Label14.Size = New System.Drawing.Size(51, 13)
         Me.Label14.TabIndex = 71
         Me.Label14.Text = "Gruppe 1"
-        '
-        'cbRohstoffGrp1
-        '
-        Me.cbRohstoffGrp1.FormattingEnabled = True
-        Me.cbRohstoffGrp1.Location = New System.Drawing.Point(12, 148)
-        Me.cbRohstoffGrp1.Name = "cbRohstoffGrp1"
-        Me.cbRohstoffGrp1.Size = New System.Drawing.Size(290, 21)
-        Me.cbRohstoffGrp1.TabIndex = 70
         '
         'tID
         '
@@ -524,6 +510,33 @@ Partial Class wb_Rohstoffe_Details
         Me.lblAktiv.Size = New System.Drawing.Size(31, 13)
         Me.lblAktiv.TabIndex = 82
         Me.lblAktiv.Text = "Aktiv"
+        '
+        'cbNwtBerechnung
+        '
+        Me.cbNwtBerechnung.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.cbNwtBerechnung.Location = New System.Drawing.Point(12, 235)
+        Me.cbNwtBerechnung.Name = "cbNwtBerechnung"
+        Me.cbNwtBerechnung.Size = New System.Drawing.Size(290, 24)
+        Me.cbNwtBerechnung.TabIndex = 91
+        Me.cbNwtBerechnung.TabStop = False
+        Me.cbNwtBerechnung.Text = "Sollmenge in der Nährwertberechnung berücksichtigen"
+        Me.cbNwtBerechnung.UseVisualStyleBackColor = True
+        '
+        'cbRohstoffGrp2
+        '
+        Me.cbRohstoffGrp2.FormattingEnabled = True
+        Me.cbRohstoffGrp2.Location = New System.Drawing.Point(12, 188)
+        Me.cbRohstoffGrp2.Name = "cbRohstoffGrp2"
+        Me.cbRohstoffGrp2.Size = New System.Drawing.Size(290, 21)
+        Me.cbRohstoffGrp2.TabIndex = 72
+        '
+        'cbRohstoffGrp1
+        '
+        Me.cbRohstoffGrp1.FormattingEnabled = True
+        Me.cbRohstoffGrp1.Location = New System.Drawing.Point(12, 148)
+        Me.cbRohstoffGrp1.Name = "cbRohstoffGrp1"
+        Me.cbRohstoffGrp1.Size = New System.Drawing.Size(290, 21)
+        Me.cbRohstoffGrp1.TabIndex = 70
         '
         'wb_Rohstoffe_Details
         '
@@ -596,4 +609,5 @@ Partial Class wb_Rohstoffe_Details
     Friend WithEvents tbRezNr As Windows.Forms.TextBox
     Friend WithEvents lblRezept As Windows.Forms.Label
     Friend WithEvents lbRezNr As Windows.Forms.Label
+    Friend WithEvents cbNwtBerechnung As Windows.Forms.CheckBox
 End Class

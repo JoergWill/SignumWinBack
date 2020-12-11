@@ -340,4 +340,11 @@ Imports WinBack.wb_Global
 
     End Sub
 
+    <TestMethod()> Public Sub Test_TypeIstTeigTempSollwert()
+        'in der Default-DB ist Komponente 111 die TTS-Erfassung und Komponente 1186 die Kneter-Teigtemp-Messung
+        Assert.IsTrue(wb_Functions.TypeIstTeigTemperaturSollwert(111))
+        Assert.IsTrue(wb_Functions.TypeIstTeigTemperaturSollwert(1186))
+        Assert.IsFalse(wb_Functions.TypeIstTeigTemperaturSollwert(204))
+
+    End Sub
 End Class

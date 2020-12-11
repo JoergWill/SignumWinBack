@@ -25,7 +25,7 @@ Public Class wb_Rezept
     Private _AenderungDatum As String
     Private _AenderungName As String
     Private _AenderungUserNr As Integer
-    Private _RezeptTeigTemperatur As Double
+    Private _RezeptTeigTemperatur As Double = wb_Global.UNDEFINED
     Private _LinienGruppe As Integer
     Private _RZ_Type As String
     Private _KneterKennLinie As Integer
@@ -40,9 +40,8 @@ Public Class wb_Rezept
     Private _SQLRezeptSchritt As New wb_Rezeptschritt(Nothing, "")
     Private _RezeptSchritt As wb_Rezeptschritt
 
-    'Private _RZ_Gewicht As Double
-    'Private _RezeptGewicht As Double = wb_Global.UNDEFINED
     Private _BruttoRezeptGewicht As Double = wb_Global.UNDEFINED
+    Private _NwtRezeptGewicht As Double = wb_Global.UNDEFINED
     Private _RezeptPreis As Double = wb_Global.UNDEFINED
     Private _RezeptGesamtMehlmenge As Double = wb_Global.UNDEFINED
     Private _RezeptGesamtWasserMenge As Double = wb_Global.UNDEFINED
@@ -124,6 +123,21 @@ Public Class wb_Rezept
                 _BruttoRezeptGewicht = _RootRezeptSchritt.BruttoGewicht
             End If
             Return _BruttoRezeptGewicht
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Das Nwt-Rezept-Gesamtgewicht steht als Gewichtswert im Root-Node
+    ''' Die Berechnung erfolgt über RezeptSchritt.NwtGewicht(Get)
+    ''' </summary>
+    ''' <returns>Double - Rezept-Gesamtgewicht</returns>
+    Public ReadOnly Property NwtRezeptGewicht As Double
+        Get
+            'wenn der Wert noch nicht berechnet wurde
+            If _NwtRezeptGewicht = wb_Global.UNDEFINED Then
+                _NwtRezeptGewicht = _RootRezeptSchritt.NwtGewicht
+            End If
+            Return _NwtRezeptGewicht
         End Get
     End Property
 
@@ -497,12 +511,42 @@ Public Class wb_Rezept
 
     Public Property RezeptTeigTemperatur As Double
         Get
+            'suche nach Teigtemperatur-Messung-Komponenten in der Rezeptur
+            _RezeptTeigTemperatur = FindeTeigTempKomponente(RootRezeptSchritt, _RezeptTeigTemperatur)
             Return _RezeptTeigTemperatur
         End Get
         Set(value As Double)
             _RezeptTeigTemperatur = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Sucht in allen Child-Rezeptschritten nach einer Teigtemperatur-Komponente
+    ''' Wenn eine solche Komponente gefunden wird, dann wird der Sollwert zurückgegeben. Falls keine
+    ''' Komponente gefunden werden kann, wird der übergebene Tempraturwert wieder zurückgegeben.
+    ''' Damit kann der letzte Eintrag in der (flachen) Rezeptur ermittelt werden.
+    ''' </summary>
+    ''' <param name="RootRezeptSchritt"></param>
+    ''' <param name="TeigTemperatur"></param>
+    ''' <returns></returns>
+    Private Function FindeTeigTempKomponente(RootRezeptSchritt As wb_Rezeptschritt, ByRef TeigTemperatur As Double) As Double
+        'alle Rezeptschritte (nur das flache Rezept) umrechnen
+        For Each rs As wb_Rezeptschritt In RootRezeptSchritt.ChildSteps
+            'alle Rezept-Zeilen ohne Sollwert finden
+            If Not wb_Functions.TypeIstSollMenge(rs.Type, rs.ParamNr) Then
+                'prüfe ob die Rezept-Zeilen eine Teigtemperatur-Komponente enthält
+                If wb_Functions.TypeIstTeigTemperaturSollwert(rs.RohNr) Then
+                    TeigTemperatur = rs.Sollwert
+                Else
+                    'Wenn die Rezept-Zeile keinen Sollwert hat, werden alle Child-Steps umgerechnent (Produktions-Stufe...)
+                    If rs.ChildSteps.Count > 0 Then
+                        TeigTemperatur = FindeTeigTempKomponente(rs, TeigTemperatur)
+                    End If
+                End If
+            End If
+        Next
+        Return TeigTemperatur
+    End Function
 
     Public ReadOnly Property ZutatenListe(ShowENummern As Boolean, Optimize As Boolean, ReCalc As Boolean) As String
         Get
@@ -610,7 +654,8 @@ Public Class wb_Rezept
         'Brutto-Rezeptgesamtgewicht berechnen und an alle Rezeptschritte propagieren
         'wird benötigt zur Berechnung der Nährwerte
         _RootRezeptSchritt.BruttoRezGewicht = BruttoRezeptGewicht
-        _RootRezeptSchritt.Sollwert = BruttoRezeptGewicht
+        _RootRezeptSchritt.NwtRezGewicht = NwtRezeptGewicht
+        _RootRezeptSchritt.Sollwert = NwtRezeptGewicht
         'Root-Rezeptschritt kennzeichnen (war -1 !!!)
         _RootRezeptSchritt.SchrittNr = 0
         'Backverlust aus der übergeordneten Komponente 
@@ -1238,12 +1283,13 @@ Public Class wb_Rezept
                 Case "KT_UnterGW"
                     _SQLRezeptSchritt.UnterGW = wb_Functions.StrToDouble(Value)
                 'zählt NICHT zum Rezeptgesamtgewicht
-                'KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu RezGewicht -> True
+                'KA_zaehlt_zu_RZ_Gesamtmenge = 3    - zählt nicht zu RezGewicht -> True     zählt trotzdem zur Nährwertberechnung -> True
+                'KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu RezGewicht -> True     zählt trotzdem zur Nährwertberechnung -> False
                 'KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu RezGewicht -> False
                 'KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu RezGewicht -> False
                 Case "KA_zaehlt_zu_RZ_Gesamtmenge", "H_KA_zaehlt_zu_RZ_Gesamtmenge"
-                    _SQLRezeptSchritt.ZaehltNichtZumRezeptGewicht = wb_sql_Functions.MySQLBoolean(Value)
-                    'Preis
+                    _SQLRezeptSchritt.KA_zaehlt_zu_RZ_Gesamtmenge = Value
+                'Preis
                 Case "KA_Preis", "H_RS_Preis"
                     _SQLRezeptSchritt.PreisProKg = wb_Functions.StrToDouble(Value)
                 'RezeptNr (Rezept im Rezept)
@@ -1392,7 +1438,7 @@ Public Class wb_Rezept
                   "RZ_Charge_Opt = '" & wb_Functions.FormatStr(TeigChargen.OptCharge.MengeInkg, 3) & "', " &
                   "RZ_Charge_Min = '" & wb_Functions.FormatStr(TeigChargen.MinCharge.MengeInkg, 3) & "', " &
                   "RZ_Charge_Max = '" & wb_Functions.FormatStr(TeigChargen.MaxCharge.MengeInkg, 3) & "', " &
-                  "RZ_Liniengruppe = " & LinienGruppe & ", RZ_TYPE = '" & _RZ_Type & "', " &
+                  "RZ_Liniengruppe = " & LinienGruppe & ", RZ_TYPE = '" & _RZ_Type & "', RZ_Teigtemperatur = '" & _RezeptTeigTemperatur & "', " &
                   "RZ_Kommentar = '" & wb_Functions.Truncate(_RezeptKommentar, 30, True) & "', RZ_Aenderung_Datum = '" & wb_sql_Functions.MySQLdatetime(_AenderungDatum) & "', " &
                   "RZ_Aenderung_Name = '" & _AenderungName & "', RZ_Aenderung_User = " & _AenderungUserNr & ", RZ_Aenderung_Nr = " & _AenderungNummer
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptUpdate, _RezeptNr, _RezeptVariante, sqlData)

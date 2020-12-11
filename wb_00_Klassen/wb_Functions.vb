@@ -577,6 +577,23 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Ermittelt anhand der Komponenten-Type und der Komponenten-Nr ob die Komponente
+    ''' einen Teigtemperatur-Sollwert enthält
+    ''' 
+    '''     Teigtemperaturmessung   KT111
+    '''     Kneterkomponente        KT118 - Einheit (ParamNr.4) = 5 (Grad Celsius)
+    ''' </summary>
+    ''' <param name="KompNr"></param>
+    ''' <returns></returns>
+    Public Shared Function TypeIstTeigTemperaturSollwert(KompNr As Integer) As Boolean
+        If wb_Rohstoffe_Shared.TeigTempRohstoffe.Contains(KompNr) Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    ''' <summary>
     ''' Ermittelt anhand der Komponenten-Type ob Child-Steps vorhanden sind, oder ob beim Einfügen in
     ''' Rezepturen mehrere Zeilen erforderlich sind.
     ''' (Wasser/Eis/Kneter/Produktions-Stufe/Kessel)

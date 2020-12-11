@@ -7,6 +7,7 @@ Public Class wb_Rohstoffe_Shared
     Public Shared Event eBefMenge_Changed(sender As Object)
 
     Public Shared RohGruppe As New SortedList
+    Public Shared TeigTempRohstoffe As New SortedList
     Public Shared MehlGruppe As New List(Of wb_MehlGruppe)
     Public Shared RohAktiv As New Hashtable
     Public Shared RohSilos_NachNummer As New Hashtable
@@ -44,6 +45,8 @@ Public Class wb_Rohstoffe_Shared
         Load_RohstoffTables()
         'HashTable aller Silo-Rohstoffe mit Lagerort BW,MK,M,KKA
         Load_SiloTables()
+        'HashTable aller Rohstoffe zur Teigtemperatur-Erfassung
+        Load_TeigTempTables()
     End Sub
 
     Public Shared Sub Invalid()
@@ -184,6 +187,31 @@ Public Class wb_Rohstoffe_Shared
         winback.Close()
     End Sub
 
+    ''' <summary>
+    ''' Liste aller Rohstoffe zur Teigtemperatur-Erfassung
+    ''' Alle Rohstoffe mit Komponenten-Type 111
+    ''' Alle Rohstoffe mit Komponenten-Type 118 die im Parameter 4(Einheit) den Wert 5(Grad Celsius) haben
+    ''' </summary>
+    Private Shared Sub Load_TeigTempTables()
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim KompNr As Integer
+        Dim KompBezeichnung As String
+        'Liste aller Teigtemperatur-Messung-Rohstoffe
+        winback.sqlSelect(wb_Sql_Selects.sqlTeigTempRohstoffe)
+
+        'Hastable löschen
+        TeigTempRohstoffe.Clear()
+        'alle Datensätze lesen
+        While winback.Read
+            'Rohstoff-Nummer
+            KompNr = winback.sField("KO_Nr")
+            KompBezeichnung = winback.sField("KO_Bezeichnung")
+            TeigTempRohstoffe.Add(KompNr, KompBezeichnung)
+        End While
+
+        'Datenbankverbindung wieder schliessen
+        winback.Close()
+    End Sub
 
     Public Shared Function Add_RohstoffGruppe() As Integer
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)

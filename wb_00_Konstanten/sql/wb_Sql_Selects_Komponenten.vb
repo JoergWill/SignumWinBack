@@ -152,6 +152,9 @@
     'Sql-Statement Update Bezeichnung und Nummer Rohstoff (Silo ändern in WinBack)
     Public Const sqlUpdateKompName = "UPDATE Komponenten SET KO_Bezeichnung = '[1]', KO_Nr_AlNum = '[2]' WHERE KO_Nr = '[0]'"
 
+    'Sql-Statement Liste aller Rohstoffe zur Teigtemperaturmessung
+    Public Const sqlTeigTempRohstoffe = "SELECT KO_Nr, KO_Bezeichnung FROM Komponenten INNER JOIN KomponParams ON Komponenten.KO_Nr = KomponParams.KP_Ko_Nr " &
+                                        "WHERE (KO_Type=111 AND KP_ParamNr=4) OR (KO_Type=118 AND KP_ParamNr=4 AND KP_Wert='5') "
 
 End Class
 

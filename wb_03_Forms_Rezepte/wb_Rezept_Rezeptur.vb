@@ -228,6 +228,8 @@ Public Class wb_Rezept_Rezeptur
         tbRzMehlmenge.Text = wb_Functions.FormatStr(Rezept.RezeptGesamtMehlmenge, 2)
         'Rezept TA
         tbRzTA.Text = CInt(Rezept.RezeptTA)
+        'Rezept Teigtemperatur
+        tbRzTeigTemp.Text = wb_Functions.FormatStr(Rezept.RezeptTeigTemperatur, 2)
     End Sub
 
     ''' <summary>
@@ -277,7 +279,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub tbRzTA_DoubleClick(sender As Object, e As EventArgs) Handles tbRzTA.DoubleClick
-        If MsgBox("Soll die Rezeptur auf eine neue TA umgerechnet werden ?", MsgBoxStyle.YesNo, "Wassermenge berechnen") = MsgBoxResult.Yes Then
+        If MsgBox("Soll die Rezeptur auf eine neue TA umgerechnet werden ?", MsgBoxStyle.YesNo, "Wassermenge anpassen") = MsgBoxResult.Yes Then
             'Änderung Rezeptgewicht zulassen
             tbRzTA.ReadOnly = False
             tbRzTA.BackColor = Color.White
