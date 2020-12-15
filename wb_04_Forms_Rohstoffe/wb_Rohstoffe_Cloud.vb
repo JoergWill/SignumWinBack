@@ -10,6 +10,7 @@ Public Class wb_Rohstoffe_Cloud
     Dim dl As New wb_nwtCl_DatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
     Dim cnt As Integer = wb_Global.UNDEFINED
     Dim cntDokumente As Integer = wb_Global.UNDEFINED
+    Private _DisableEditLeave As Boolean = False
 
     Dim WithEvents CloudResultGrid As wb_ArrayGridViewNwt
     Dim WithEvents nwtGrid As wb_ArrayGridViewKomponParam301
@@ -24,10 +25,12 @@ Public Class wb_Rohstoffe_Cloud
         End If
     End Sub
 
-    Public Sub New()
+    Public Sub New(Optional Disable_EditLeave As Boolean = False)
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        _DisableEditLeave = Disable_EditLeave
         'Tabs ausblenden
         Wb_TabControl.HideTabs = True
         'Start auf Seite(1)-Suchen
@@ -55,7 +58,7 @@ Public Class wb_Rohstoffe_Cloud
         cntDokumente = wb_Global.UNDEFINED
 
         'wenn schon eine Verknüpfung vorhanden ist wird Tab-Page Verknüpfung löschen angezeigt
-        If tCloudID.Text <> "" Then
+        If (tCloudID.Text <> "") And (tCloudID.Text <> "-1") Then
             'kann vorproduziert werden
             cbFreigabeProduktion.Visible = False
             cbFreigabeProduktion.Checked = False
@@ -416,7 +419,9 @@ Public Class wb_Rohstoffe_Cloud
                 'Button 'Speichern' deaktivieren
                 btnResult_OK.Enabled = False
                 'Verknüpfung zur Cloud speichern
-                wb_Rohstoffe_Shared.Edit_Leave(sender)
+                If Not _DisableEditLeave Then
+                    wb_Rohstoffe_Shared.Edit_Leave(sender)
+                End If
                 'Nährwerte/Allergene speichern
                 wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
                 'Zutatenliste/Deklaration in WinBack-DB speichern

@@ -6736,6 +6736,10 @@ Text aus Datenbank lesen - Übersetzung
  Das Fenster wird modal(!) angezeigt und speichert beim Schliessen die geänderten Zuordnungsdaten und Nährwertinformationen ab.
  
  Werden hier Daten geändert, muss der Rohstoff in OrgaBack neu geladen werden um die Anzeige zu aktualisieren.
+ 
+ (@V1.8.1) 14-12-2020/JW Fehler bei Fonk
+ Der Event Edit_Leave wird deaktiviert. Sonst wird beim Speichern der Daten der jeweils aktuelle Rohstoff aus dem Grid in wb_Rohstoff_Liste geändert.
+ Wenn im Hintergrund das Listen-Fenster offen ist, ist diese Liste nicht mehr aktuell !
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -8251,6 +8255,12 @@ Public Const MFF_Wissenswertes = 213
  <summary>
  Erzeugt eine SortedList mit der Zuordnung von Rezeptgruppen-Nummer zum Rezeptgruppen-Text.
  Wird für die Auswahlfelder Rezeptgruppe verwendet.
+ </summary>
+</member>
+<member name="M:WinBack.wb_Rezept_Shared.LoadProduktionsStufenTexte">
+ <summary>
+ Erzeugt ein String-Array mit vorgegebenen Texten für die Rezepteingabe der Produktions-Stufen.
+ Die Texte kommen aus der Tabelle winback.ItemParameter mit IP_Item_Typ=3010
  </summary>
 </member>
 <member name="P:WinBack.wb_Rezept_Main.FormText">

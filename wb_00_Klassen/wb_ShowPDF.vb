@@ -34,6 +34,12 @@ Public Class wb_ShowPDF
     Shared Sub ShowPdfDokument(pdfFile As String, ByRef VorschauPDF As PictureBox, Page As Integer, Optional dpi As String = "")
         'Prüfen ob Datei vorhanden
         If IO.File.Exists(pdfFile) Then
+
+            'Falls der Filename "problematische" Zeichen enthält wird vorsichtshalber die Datei auf einen ungefährlichen Namen in das 
+            'User-Temp-Verzeichnis kopiert
+            Dim pdfCopyPath As String = IO.Path.GetTempPath() + IO.Path.GetRandomFileName() + ".pdf"
+            IO.File.Copy(pdfFile, pdfCopyPath)
+
             'Hinweis-Datei (pdf) laden
             Try
                 Rasterizer = New GhostscriptRasterizer
@@ -41,8 +47,7 @@ Public Class wb_ShowPDF
                     Rasterizer.CustomSwitches.Add("-r" & dpi)
                 End If
                 'wirft Ghostscript not installed Exception !!!
-                'TODO Umlaute prüfen (BÄKO...)
-                Rasterizer.Open(pdfFile, localDllInfo, True)
+                Rasterizer.Open(pdfCopyPath, localDllInfo, True)
                 'Anzahl der Seiten
                 _MaxPages = Rasterizer.PageCount
                 'Vorschau anzeigen (Seite)

@@ -22,7 +22,7 @@ Public Class wb_Rohstoffe_Details
         cbInterneDeklaration.Checked = wb_GlobalSettings.NwtInterneDeklaration
 
         'Rohstoff-ID und Rohstoff-Type sind nur für Admin-User sichtbar
-        If wb_GlobalSettings.AktUserGruppe = wb_Global.AdminUserGrpe Then
+        If (wb_GlobalSettings.AktUserGruppe = wb_Global.AdminUserGrpe) Or Debugger.IsAttached Then
             tID.Visible = True
             tType.Visible = True
             lblID.Visible = True
@@ -62,7 +62,7 @@ Public Class wb_Rohstoffe_Details
         cbAktiv.Checked = RohStoff.Aktiv
 
         'ID und Komponententype sind nur für Gruppe Admin sichtbar
-        If wb_GlobalSettings.AktUserGruppe = wb_Global.AdminUserGrpe Then
+        If (wb_GlobalSettings.AktUserGruppe = wb_Global.AdminUserGrpe) Or Debugger.IsAttached Then
             tID.Text = RohStoff.Nr
             tType.Text = wb_Functions.KomponTypeToInt(RohStoff.Type)
         End If

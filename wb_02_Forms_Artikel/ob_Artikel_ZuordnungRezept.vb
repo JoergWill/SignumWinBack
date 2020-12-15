@@ -177,18 +177,24 @@ Public Class ob_Artikel_ZuordnungRezept
     ''' Das Fenster wird modal(!) angezeigt und speichert beim Schliessen die geänderten Zuordnungsdaten und Nährwertinformationen ab.
     ''' 
     ''' Werden hier Daten geändert, muss der Rohstoff in OrgaBack neu geladen werden um die Anzeige zu aktualisieren.
+    ''' 
+    ''' (@V1.8.1) 14-12-2020/JW Fehler bei Fonk
+    ''' Der Event Edit_Leave wird deaktiviert. Sonst wird beim Speichern der Daten der jeweils aktuelle Rohstoff aus dem Grid in wb_Rohstoff_Liste geändert.
+    ''' Wenn im Hintergrund das Listen-Fenster offen ist, ist diese Liste nicht mehr aktuell !
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Public Sub Cloud_Click(sender As Object, e As EventArgs) Handles KompRzChargen.Cloud_Click
         'Daten in Rohstoff(Shared) laden
         wb_Rohstoffe_Shared.RohStoff.MySQLdbRead(Nr)
-        'Fenster Cloud-Zuordnung modal anzeigen
-        RohstoffCloud = New wb_Rohstoffe_Cloud
+        'Fenster Cloud-Zuordnung modal anzeigen - verhindert den Event Edit_Leave beim Speichern der Daten - Sonst wird evtl. ein falscher Rohstoff geändert
+        RohstoffCloud = New wb_Rohstoffe_Cloud(True)
         RohstoffCloud.ShowDialog()
         'Matchcode in aktuellen Artikel eintragen
         KompRzChargen.ID = wb_Rohstoffe_Shared.RohStoff.MatchCode
         RohstoffCloud = Nothing
+        'Daten in Rohstoff(Shared) wieder löschen
+        wb_Rohstoffe_Shared.RohStoff.Invalid()
     End Sub
 
     ''' <summary>

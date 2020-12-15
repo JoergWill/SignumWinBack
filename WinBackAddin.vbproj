@@ -198,6 +198,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>AssemblyResolve=True</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M6|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -1073,6 +1074,12 @@
     <Compile Include="wb_09_StammDaten\wb_StammDaten_Allergene.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_TexteProduktionsStufe.Designer.vb">
+      <DependentUpon>wb_StammDaten_TexteProduktionsStufe.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_09_StammDaten\wb_StammDaten_TexteProduktionsStufe.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_09_StammDaten\wb_StammDaten_RezeptVarianten.Designer.vb">
       <DependentUpon>wb_StammDaten_RezeptVarianten.vb</DependentUpon>
     </Compile>
@@ -1391,6 +1398,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_Allergene.resx">
       <DependentUpon>wb_StammDaten_Allergene.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_TexteProduktionsStufe.resx">
+      <DependentUpon>wb_StammDaten_TexteProduktionsStufe.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_RezeptVarianten.resx">
       <DependentUpon>wb_StammDaten_RezeptVarianten.vb</DependentUpon>

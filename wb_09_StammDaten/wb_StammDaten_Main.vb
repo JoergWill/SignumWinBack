@@ -10,10 +10,13 @@ Public Class wb_StammDaten_Main
     'Fenster
     Dim WinBackKonfig As wb_StammDaten_Konfiguration
     Dim LinienGruppen As wb_StammDaten_LinienGruppen
+
     Dim ArtRohGruppen As wb_StammDaten_ArtRohGruppen
+    Dim Allergene As wb_StammDaten_Allergene
+
     Dim RezeptVarianten As wb_StammDaten_RezeptVarianten
     Dim RezeptGruppen As wb_StammDaten_Rezeptgruppen
-    Dim Allergene As wb_StammDaten_Allergene
+    Dim TexteProduktionsStufe As wb_StammDaten_TexteProduktionsStufe
 
 #Region "Signum"
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -64,6 +67,7 @@ Public Class wb_StammDaten_Main
         wb_Functions.CloseAndDisposeSubForm(WinBackKonfig)
         wb_Functions.CloseAndDisposeSubForm(RezeptVarianten)
         wb_Functions.CloseAndDisposeSubForm(RezeptGruppen)
+        wb_Functions.CloseAndDisposeSubForm(TexteProduktionsStufe)
 
         'Fenster darf geschlossen werden
         Return False
@@ -84,6 +88,7 @@ Public Class wb_StammDaten_Main
                 oGrp.AddButton("BtnArtRohGruppen", "Rohstoff- und Artikelgruppen", "Rohstoff- und Artikelgruppen verwalten", My.Resources.ArtikelParameter_32x32, My.Resources.ArtikelParameter_32x32, AddressOf BtnArtRohGruppen)
                 oGrp.AddButton("BtnRzptVarianten", "Rezept Varianten", "Rezeptvarianten verwalten", My.Resources.RezeptDetails_32x32, My.Resources.RezeptDetails_32x32, AddressOf BtnRzptVarianten)
                 oGrp.AddButton("BtnRzptGruppen", "Rezept Gruppen", "Rezeptgruppen verwalten", My.Resources.RezeptGruppen_32x32, My.Resources.RezeptGruppen_32x32, AddressOf BtnRzptGruppen)
+                oGrp.AddButton("BtnTxtProdStufen", "Texte Produktions-Stufen", "Vorgabetexte Produktions-Stufen für die Rezeptverwaltung", My.Resources.ArtikelHinweise_32x32, My.Resources.ArtikelHinweise_32x32, AddressOf BtnTexteProdStufen)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -122,6 +127,11 @@ Public Class wb_StammDaten_Main
                 RezeptGruppen = New wb_StammDaten_Rezeptgruppen
                 _DockPanelList.Add(RezeptGruppen)
                 Return RezeptGruppen
+
+            Case "WinBack.wb_StammDaten_TexteProduktionsStufe"
+                TexteProduktionsStufe = New wb_StammDaten_TexteProduktionsStufe
+                _DockPanelList.Add(TexteProduktionsStufe)
+                Return TexteProduktionsStufe
 
             Case Else
                 Return Nothing
@@ -182,4 +192,12 @@ Public Class wb_StammDaten_Main
         End If
         RezeptGruppen.Show(DockPanel, DockState.Document)
     End Sub
+
+    Private Sub BtnTexteProdStufen()
+        If IsNothingOrDisposed(TexteProduktionsStufe) Then
+            TexteProduktionsStufe = New wb_StammDaten_TexteProduktionsStufe
+        End If
+        TexteProduktionsStufe.Show(DockPanel, DockState.Document)
+    End Sub
+
 End Class

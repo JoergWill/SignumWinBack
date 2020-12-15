@@ -380,6 +380,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzTA.ReadOnly = True
         Me.tbRzTA.Size = New System.Drawing.Size(51, 25)
         Me.tbRzTA.TabIndex = 64
+        Me.tbRzTA.TabStop = False
         Me.tbRzTA.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'tbRzMehlmenge
@@ -423,6 +424,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.tbRzGewicht.ReadOnly = True
         Me.tbRzGewicht.Size = New System.Drawing.Size(91, 25)
         Me.tbRzGewicht.TabIndex = 60
+        Me.tbRzGewicht.TabStop = False
         '
         'lblRzLinienGruppe
         '

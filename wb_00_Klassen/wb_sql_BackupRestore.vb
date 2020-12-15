@@ -136,7 +136,7 @@ Public Class wb_sql_BackupRestore
         sw.WriteLine("USE " + DataBase + ";")
 
         'Source-File zum Lesen öffnen
-        If MySql3_2 Or True Then
+        If MySql3_2 Then
             encCharSet = "utf-8"
         Else
             encCharSet = "iso-8859-1"

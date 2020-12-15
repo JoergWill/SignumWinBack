@@ -4,8 +4,6 @@ Public Class wb_Artikel_Shared
 
     Public Shared Event eListe_Click(sender As Object)
     Public Shared Event eEdit_Leave(sender As Object)
-    'TODO Prüfen ob eParamChanged notwendig ist (kopiert von wb_Rohstoffe_Shared aus Rohstoffe Parameter)
-    'Public Shared Event eParam_Changed(Sender As Object)
 
     Public Shared Artikel As New wb_Komponente
     Public Shared Rzpt As New Hashtable
@@ -126,9 +124,6 @@ Public Class wb_Artikel_Shared
     Public Shared Sub Param_Changed(sender As Object)
         'alle geänderten Rohstoff-Parameter in Datenbank schreiben (WinBack und OrgaBack)
         Artikel.SaveParameterArray()
-        'Parameter-Fenster neu aufbauen (Anzeige)
-        'TODO Prüfen ob dieser Event notwendig ist !! (Kopiert von Rohstoffe_Shared)
-        'RaiseEvent eParam_Changed(sender)
     End Sub
 
 End Class

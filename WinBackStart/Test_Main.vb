@@ -35,7 +35,7 @@ Public Class Test_Main
     End Sub
 
 
-    Private Sub VirtualTree_GetCellData(sender As Object, e As GetCellDataEventArgs) Handles VirtualTree.GetCellData
+    Private Sub VirtualTree_GetCellData(sender As Object, e As GetCellDataEventArgs)
         'get the default binding for the given row And use it to populate the cell data
         Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
         Binding.GetCellData(e.Row, e.Column, e.CellData)
@@ -57,4 +57,7 @@ Public Class Test_Main
         e.CellData.Editor = Nothing
     End Sub
 
+    Private Sub ToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem2.Click
+        Debug.Print("test")
+    End Sub
 End Class

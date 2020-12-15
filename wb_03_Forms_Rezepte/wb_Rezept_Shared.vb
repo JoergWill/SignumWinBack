@@ -8,6 +8,7 @@ Public Class wb_Rezept_Shared
 
     Public Shared RzVariante As New SortedList
     Public Shared RzGruppe As New SortedList
+    Public Shared ProdStufeText As New List(Of String)
     Public Shared Rezept As New wb_Rezept
 
     Enum AnzeigeFilter
@@ -20,6 +21,7 @@ Public Class wb_Rezept_Shared
     Shared Sub New()
         LoadVariantenTexte()
         LoadRezeptGruppenTexte()
+        LoadProduktionsStufenTexte()
     End Sub
 
     Public Shared Sub Invalid()
@@ -29,6 +31,7 @@ Public Class wb_Rezept_Shared
     Public Shared Function Reload() As Boolean
         LoadVariantenTexte()
         LoadRezeptGruppenTexte()
+        LoadProduktionsStufenTexte()
         Return True
     End Function
 
@@ -59,6 +62,20 @@ Public Class wb_Rezept_Shared
         RzGruppe.Add(0, "")
         While winback.Read
             RzGruppe.Add(winback.iField("II_ItemID"), winback.sField("II_Kommentar"))
+        End While
+        winback.Close()
+    End Sub
+
+    ''' <summary>
+    ''' Erzeugt ein String-Array mit vorgegebenen Texten für die Rezepteingabe der Produktions-Stufen.
+    ''' Die Texte kommen aus der Tabelle winback.ItemParameter mit IP_Item_Typ=3010
+    ''' </summary>
+    Private Shared Sub LoadProduktionsStufenTexte()
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        winback.sqlSelect(wb_Sql_Selects.sqlTexteProdStufe)
+        ProdStufeText.Clear()
+        While winback.Read
+            ProdStufeText.Add(winback.sField("IP_Wert4str"))
         End While
         winback.Close()
     End Sub

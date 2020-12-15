@@ -196,19 +196,18 @@ Public Class wb_Rohstoffe_Shared
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         Dim KompNr As Integer
         Dim KompBezeichnung As String
-        'Liste aller Teigtemperatur-Messung-Rohstoffe
-        winback.sqlSelect(wb_Sql_Selects.sqlTeigTempRohstoffe)
-
         'Hastable löschen
         TeigTempRohstoffe.Clear()
-        'alle Datensätze lesen
-        While winback.Read
-            'Rohstoff-Nummer
-            KompNr = winback.sField("KO_Nr")
-            KompBezeichnung = winback.sField("KO_Bezeichnung")
-            TeigTempRohstoffe.Add(KompNr, KompBezeichnung)
-        End While
-
+        'Liste aller Teigtemperatur-Messung-Rohstoffe
+        If winback.sqlSelect(wb_Sql_Selects.sqlTeigTempRohstoffe) Then
+            'alle Datensätze lesen
+            While winback.Read
+                'Rohstoff-Nummer
+                KompNr = winback.sField("KO_Nr")
+                KompBezeichnung = winback.sField("KO_Bezeichnung")
+                TeigTempRohstoffe.Add(KompNr, KompBezeichnung)
+            End While
+        End If
         'Datenbankverbindung wieder schliessen
         winback.Close()
     End Sub
