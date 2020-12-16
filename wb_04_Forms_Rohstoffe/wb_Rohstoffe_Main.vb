@@ -92,19 +92,23 @@ Public Class wb_Rohstoffe_Main
                 oGrpStammdaten.AddButton("btnArtikelStamm", "Artikel", "WinBack Artikelstammdaten", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf ShowArtikelForm)
                 oGrpStammdaten.AddButton("btnRezeptStamm", "Rezepte", "WinBack Rezeptverwaltung", My.Resources.MainRezept_16x16, My.Resources.MainRezept_32x32, AddressOf ShowRezeptForm)
                 ' Das neue RibbonTab erhält eine Gruppe
-                Dim oGrp = oNewTab.AddGroup("GrpRohstoffe", "WinBack Rohstoffe")
+                Dim oGrpROH = oNewTab.AddGroup("GrpRohstoffe", "WinBack Rohstoffe")
+                Dim oGrpLGR = oNewTab.AddGroup("GrpRohstoffe", "Silo/Lieferungen")
+                Dim oGrpNWT = oNewTab.AddGroup("GrpRohstoffe", "Nährwerte")
+                Dim oGrpPRN = oNewTab.AddGroup("Printer", "Drucken")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("btnRohstoffListe", "Rohstoffe", "WinBack Rohstoff-Liste", My.Resources.MainRohstoffe_16x16, My.Resources.MainRohstoffe_32x32, AddressOf ShowRohstoffListe)
-                oGrp.AddButton("BtnRohstoffDetails", "Details", "weitere Rohstoff-Daten", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnRohstoffDetails)
-                oGrp.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffParameter)
-                oGrp.AddButton("BtnRohstoffSilo", "Silo Füllstand", "Rohstoffe Silo-Füllstände", My.Resources.RohstoffSilo_32x32, My.Resources.RohstoffSilo_32x32, AddressOf BtnRohstoffSilo)
-                oGrp.AddButton("BtnRohstoffLieferung", "Lager Produktion", "Rohstoffe Produktionslager", My.Resources.RohstoffeLieferung_32x32, My.Resources.RohstoffeLieferung_32x32, AddressOf BtnRohstoffLieferung)
-                oGrp.AddButton("BtnRohstoffNwt", "Nährwerte", "Rohstoffe Allergene und Nährwert-Angaben", My.Resources.RohstoffeNwt_32x32, My.Resources.RohstoffeNwt_32x32, AddressOf BtnRohstoffNwt)
-                oGrp.AddButton("BtnRohstoffCloud", "Cloud/Rezept", "Rohstoffe Verknüpfung zur Cloud/Rezeptur", My.Resources.RohstoffeLink_32x32, My.Resources.RohstoffeLink_32x32, AddressOf BtnRohstoffCloud)
-                oGrp.AddButton("BtnRohstoffVerwendung", "Verwendung", "Verwendung des Rohstoffes in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf BtnRohstoffVerwendung)
-                Dim oGrpPrnt = oNewTab.AddGroup("Printer", "Drucken")
-                ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrpPrnt.AddButton("BtnRohstoffListeDrucken", "Drucke Rohstoffliste", "Liste aller Rohstoffe drucken", My.Resources.RohstoffeDrucken_32x32, My.Resources.RohstoffeDrucken_32x32, AddressOf BtnRohstoffListeDrucken)
+                oGrpROH.AddButton("btnRohstoffListe", "Rohstoffe", "WinBack Rohstoff-Liste", My.Resources.MainRohstoffe_16x16, My.Resources.MainRohstoffe_32x32, AddressOf ShowRohstoffListe)
+                oGrpROH.AddButton("BtnRohstoffDetails", "Details", "weitere Rohstoff-Daten", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnRohstoffDetails)
+                oGrpROH.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffParameter)
+                oGrpROH.AddButton("BtnRohstoffVerwendung", "Verwendung", "Verwendung des Rohstoffes in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf BtnRohstoffVerwendung)
+
+                oGrpLGR.AddButton("BtnRohstoffSilo", "Silo Füllstand", "Rohstoffe Silo-Füllstände", My.Resources.RohstoffSilo_32x32, My.Resources.RohstoffSilo_32x32, AddressOf BtnRohstoffSilo)
+                oGrpLGR.AddButton("BtnRohstoffLieferung", "Lager Produktion", "Rohstoffe Produktionslager", My.Resources.RohstoffeLieferung_32x32, My.Resources.RohstoffeLieferung_32x32, AddressOf BtnRohstoffLieferung)
+
+                oGrpNWT.AddButton("BtnRohstoffNwt", "Nährwerte", "Rohstoffe Allergene und Nährwert-Angaben", My.Resources.RohstoffeNwt_32x32, My.Resources.RohstoffeNwt_32x32, AddressOf BtnRohstoffNwt)
+                oGrpNWT.AddButton("BtnRohstoffCloud", "Cloud/Rezept", "Rohstoffe Verknüpfung zur Cloud/Rezeptur", My.Resources.RohstoffeLink_32x32, My.Resources.RohstoffeLink_32x32, AddressOf BtnRohstoffCloud)
+
+                oGrpPRN.AddButton("BtnRohstoffListeDrucken", "Drucke Rohstoffliste", "Liste aller Rohstoffe drucken", My.Resources.RohstoffeDrucken_32x32, My.Resources.RohstoffeDrucken_32x32, AddressOf BtnRohstoffListeDrucken)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray

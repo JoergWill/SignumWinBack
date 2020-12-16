@@ -140,7 +140,7 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\..\..\SharedBinaries\Basic Correctness and Design Guideline.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>AssemblyResolve=True</DefineConstants>
+    <DefineConstants>AssemblyResolve=False</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M1|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>

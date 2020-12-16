@@ -217,7 +217,7 @@ Public Class wb_Produktion_virtuell
                 'Objekt Lieferungen erzeugen und dort den Verbrauch verbuchen. Aktualisiert auch die Bilanzmenge im Lagerort.
                 Dim Lieferungen As New wb_Lieferungen
                 'Wenn eine Rohstoff-Chargen-Nummer existiert, wird diese zurückgemeldet und in die Charge eingetragen
-                Zeile.ChargenNummer = Lieferungen.ProduktionVerbuchen(Zeile.LagerOrt, Zeile.Istwert)
+                Zeile.KO_Charge = Lieferungen.ProduktionVerbuchen(Zeile.LagerOrt, Zeile.Istwert)
                 'Speicher wieder freigeben
                 Lieferungen = Nothing
             End If
@@ -373,6 +373,9 @@ Public Class wb_Produktion_virtuell
                'KomponentenNr(intern)
                 Case "ARS_Ko_Nr"
                     _SQLProduktionsSchritt.KO_Nr = Value
+                'Lagerort
+                Case "KA_Lagerort"
+                    _SQLProduktionsSchritt.LagerOrt = Value
                 'Rezeptbezeichnung
                 Case "ARZ_RZ_Bezeichnung"
                     _SQLProduktionsSchritt.RezeptBezeichnung = Value

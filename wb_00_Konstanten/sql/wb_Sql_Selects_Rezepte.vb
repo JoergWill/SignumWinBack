@@ -141,8 +141,8 @@
                                  "B_ARZ_TW_Nr = " & Chr(34) & "[0]" & Chr(34) & " ORDER BY B_ARZ_TW_Idx, B_ARZ_Timestamp"
 
     Public Const ArbRezepte = "SELECT * FROM ArbRezepte INNER JOIN ArbRZSchritte ON ((ARZ_TW_Nr = ARS_TW_Nr) AND " &
-                              "(ARZ_LiBeh_Nr = ARS_Beh_Nr) AND (ARZ_Charge_Nr = ARS_Charge_Nr)) WHERE (ARZ_LiBeh_Nr = [0]) AND " &
-                              "(ARZ_TW_Nr = 0) ORDER BY ARZ_Charge_Nr, ARS_Index"
+                              "(ARZ_LiBeh_Nr = ARS_Beh_Nr) AND (ARZ_Charge_Nr = ARS_Charge_Nr)) INNER JOIN Komponenten ON (ARS_Ko_Nr = KO_Nr) " &
+                              "WHERE (ARZ_LiBeh_Nr = [0]) AND (ARZ_TW_Nr = 0) ORDER BY ARZ_Charge_Nr, ARS_Index"
 
     Public Const UpdateArbRZSchritte = "Update ArbRZSchritte SET [3] WHERE ARS_Beh_Nr = [0] AND ARS_Charge_Nr = [1] AND ARS_RunIdx = [2] AND ARS_TW_Nr = 0"
     Public Const UpdateArbRezepte = "Update ArbRezepte SET [2] WHERE ARZ_LiBeh_Nr = [0] AND ARZ_Index = [1] AND ARZ_TW_Nr = 0"

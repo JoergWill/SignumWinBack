@@ -12,7 +12,7 @@ Public Class wb_Linien_Auto
 
     'Produktionsdaten einlesen für Linie
     Private _ProduktionLinie As Integer = wb_Global.UNDEFINED
-    Private _ProduktionVariante As Integer = wb_Global.LinienGruppeStandard
+    Private _ProduktionVariante As Integer = wb_Global.RezeptVarianteStandard
 
     Public Sub New()
 

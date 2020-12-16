@@ -57,17 +57,22 @@ Public Class wb_Admin_Main
                 ' Fügt dem Ribbon ein neues RibbonTab hinzu
                 Dim oNewTab = _MenuService.AddContextTab("Administration", "WinBack-Administration", "Einstellungen im WinBack-Office--System")
                 ' Das neue RibbonTab erhält eine Gruppe
-                Dim oGrp = oNewTab.AddGroup("GrpAdmin", "WinBack Administration")
+                Dim oGrpDATA = oNewTab.AddGroup("GrpAdminDatabase", "Datensicherung/Synchronisation")
+                Dim oGrpUPDT = oNewTab.AddGroup("GrpAdminUpdate", "WinBack Update")
+                Dim oGrpKONF = oNewTab.AddGroup("GrpAdminKonfig", "Konfiguration")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
-                oGrp.AddButton("btnSync", "Synchronisation Datenbanken WinBack-OrgaBack", "", My.Resources.MainSync_16x16, My.Resources.MainSync_32x32, AddressOf BtnAdminSyncForm)
-                oGrp.AddButton("btnOrgaBack", "Einstellungen OrgaBack", "", My.Resources.OrgaBackSortiment_32x32, My.Resources.OrgaBackSortiment_32x32, AddressOf BtnOrgaBack)
-                oGrp.AddButton("btnDatensicherung", "Sicherung/Rücksicherung Datenbanken WinBack", "", My.Resources.DatenSicherung_16x16, My.Resources.DatenSicherung_32x32, AddressOf BtnAdminDatensicherung)
-                oGrp.AddButton("btnCheckDatabase", "Datenbank und Konfiguration prüfen", "", My.Resources.MainStatistikRohstoffe_16x16, My.Resources.MainStatistikRohstoffe_32x32, AddressOf btnAdminCheck)
-                oGrp.AddButton("btnUpdate", "Update/Versionsinformation WinBack", "", My.Resources.UpdateDataBase_16x16, My.Resources.UpdateDataBase_32x32, AddressOf btnAdminUpdate)
-                oGrp.AddButton("btnUpdateWinBack", "Update WinBack-AddIn", "", My.Resources.UpdateWinBack_32x32, My.Resources.UpdateWinBack_32x32, AddressOf btnAdminUpdateWinBack)
-                oGrp.AddButton("btnListLabel", "List&Label Designer", "", My.Resources.ListUndLabel_16x16, My.Resources.ListUndLabel_32x32, AddressOf btnListUndLabelDesigner)
-                oGrp.AddButton("btnEditWinBackIni", "Edit Konfiguration", "", My.Resources.EditKonfig_16x16, My.Resources.EditKonfig_32x32, AddressOf btnEditKonfig)
-                oGrp.AddButton("btnEditTimer", "WinBack-Scheduler", "", My.Resources.AdminTimer_32x32, My.Resources.AdminTimer_32x32, AddressOf btnEditTimer)
+                oGrpDATA.AddButton("btnSync", "Synchronisation Datenbanken WinBack-OrgaBack", "", My.Resources.MainSync_16x16, My.Resources.MainSync_32x32, AddressOf BtnAdminSyncForm)
+                oGrpDATA.AddButton("btnDatensicherung", "Sicherung/Rücksicherung Datenbanken WinBack", "", My.Resources.DatenSicherung_16x16, My.Resources.DatenSicherung_32x32, AddressOf BtnAdminDatensicherung)
+                oGrpDATA.AddButton("btnCheckDatabase", "Datenbank und Konfiguration prüfen", "", My.Resources.MainStatistikRohstoffe_16x16, My.Resources.MainStatistikRohstoffe_32x32, AddressOf btnAdminCheck)
+
+                oGrpUPDT.AddButton("btnUpdate", "Update/Versionsinformation WinBack", "", My.Resources.UpdateDataBase_16x16, My.Resources.UpdateDataBase_32x32, AddressOf btnAdminUpdate)
+                oGrpUPDT.AddButton("btnUpdateWinBack", "Update WinBack-AddIn", "", My.Resources.UpdateWinBack_32x32, My.Resources.UpdateWinBack_32x32, AddressOf btnAdminUpdateWinBack)
+
+                oGrpKONF.AddButton("btnListLabel", "List&Label Designer", "", My.Resources.ListUndLabel_16x16, My.Resources.ListUndLabel_32x32, AddressOf btnListUndLabelDesigner)
+                oGrpKONF.AddButton("btnOrgaBack", "Einstellungen OrgaBack", "", My.Resources.OrgaBackSortiment_32x32, My.Resources.OrgaBackSortiment_32x32, AddressOf BtnOrgaBack)
+                oGrpKONF.AddButton("btnEditWinBackIni", "Edit Konfiguration", "", My.Resources.EditKonfig_16x16, My.Resources.EditKonfig_32x32, AddressOf btnEditKonfig)
+                oGrpKONF.AddButton("btnEditTimer", "WinBack-Scheduler", "", My.Resources.AdminTimer_32x32, My.Resources.AdminTimer_32x32, AddressOf btnEditTimer)
+
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
