@@ -16,6 +16,8 @@ Public Class wb_ArrayGridViewErrorList
         GridArray = xArray.ToArray
         'Grid Grundeinstellungen
         _ShowTooltips = ShowTooltips
+        'Font
+        MyBase.wbFont = New Drawing.Font("Microsoft Sans Serif", 8)
         'Grid initialisieren
         InitGrid()
         'Daten anzeigen 
@@ -41,7 +43,7 @@ Public Class wb_ArrayGridViewErrorList
         MyBase.RowCount = 0
 
         ' Die erforderliche Anzahl Zeilen in einem Rutsch erstellen:
-        If MaxRowCount > 0 Then
+        If MaxRowCount >= 0 Then
             MyBase.Rows.Add(MaxRowCount + 1)
 
             ' Daten ins DatagridView eintragen

@@ -30,6 +30,7 @@ Public Class wb_Rezeptschritt
     Private _RezPreis As Double
     Private _ZaehltNichtZumRezeptGewicht As Boolean = False
     Private _ZaehltTrotzdemZumNwtGewicht As Boolean = False
+    Private _LagerOrt As String
     Private _QUIDRelevant As Boolean = False
     Private _ktTyp301 As New wb_KomponParam301
     Private _ZutatenListe As New wb_ZutatenElement
@@ -1219,6 +1220,15 @@ Public Class wb_Rezeptschritt
         End Get
         Set(value As Integer)
             _RohstoffGruppe2 = value
+        End Set
+    End Property
+
+    Public Property LagerOrt As String
+        Get
+            Return _LagerOrt
+        End Get
+        Set(value As String)
+            _LagerOrt = value
         End Set
     End Property
 

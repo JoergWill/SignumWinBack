@@ -1140,7 +1140,9 @@ Public Class wb_Komponente
             Return _Lager.Bilanzmenge
         End Get
         Set(value As String)
-            _Lager.Bilanzmenge = value
+            If _Lager IsNot Nothing Then
+                _Lager.Bilanzmenge = value
+            End If
         End Set
     End Property
 

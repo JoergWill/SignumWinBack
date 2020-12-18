@@ -24,6 +24,7 @@
     Public Const RS_Par1_QUID = "-1"                  'Komponente im Rezept ist QUID-Relevant (In RS_Par1)
     Public Const TA_min = 0                           'TA Minimal-Wert (Berechnung Wassermenge bei TA-Änderung Rezeptur)
     Public Const TA_max = 400                         'TA Maximal-Wert (Berechnung Wassermenge bei TA-Änderung Rezeptur)
+    Public Const MAXLAGERBESTAND = 99000000           'maximal gültiger Wert Bilanzmenge (winback.Lagerorte) 99t
 
     'Anlegen neuer Dummy-User (Felder vorbelegen)
     Public Const NewUserName = "Neu"

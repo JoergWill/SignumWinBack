@@ -9,6 +9,15 @@ Public MustInherit Class wb_ArrayGridView
     Public ColNames As New List(Of String)
     Private _Font As Drawing.Font = New Drawing.Font("Arial", 12, FontStyle.Regular, GraphicsUnit.Pixel)
 
+    Public Property wbFont As Font
+        Get
+            Return _Font
+        End Get
+        Set(value As Font)
+            _Font = value
+        End Set
+    End Property
+
     Public Sub New()
         'Grid Grundeinstellungen
         InitGrid()

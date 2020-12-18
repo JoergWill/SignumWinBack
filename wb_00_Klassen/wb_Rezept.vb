@@ -1289,6 +1289,9 @@ Public Class wb_Rezept
                 'KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu RezGewicht -> False
                 Case "KA_zaehlt_zu_RZ_Gesamtmenge", "H_KA_zaehlt_zu_RZ_Gesamtmenge"
                     _SQLRezeptSchritt.KA_zaehlt_zu_RZ_Gesamtmenge = Value
+                'Lagerort
+                Case "KA_Lagerort"
+                    _SQLRezeptSchritt.LagerOrt = Value
                 'Preis
                 Case "KA_Preis", "H_RS_Preis"
                     _SQLRezeptSchritt.PreisProKg = wb_Functions.StrToDouble(Value)

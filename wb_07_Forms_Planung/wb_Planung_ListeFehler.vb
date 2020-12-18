@@ -7,10 +7,6 @@ Public Class wb_Planung_ListeFehler
     Dim sColNames As New List(Of String)
 
     Private Sub wb_Planung_ListeFehler_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Spaltenüberschriften
-        sColNames.Clear()
-        sColNames.AddRange({"ArtikelNr", "Bezeichnung", "&Fehler"})
-
         'Liste der Fehler anzeigen
         'RefreshData(Nothing)
     End Sub
@@ -18,6 +14,10 @@ Public Class wb_Planung_ListeFehler
     Public Sub RefreshData(sender As Object)
         'Cursor umschalten
         Me.Cursor = Cursors.WaitCursor
+
+        'Spaltenüberschriften
+        sColNames.Clear()
+        sColNames.AddRange({"ArtikelNr", "Bezeichnung", "&Fehler"})
 
         'falls schon Daten vorhanden sind, löschen
         If ProdPlanErrorGrid IsNot Nothing Then

@@ -38,6 +38,7 @@ Partial Class wb_Planung_Liste
         Dim ObjectCellBinding9 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding10 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Dim ObjectCellBinding11 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
+        Dim ObjectCellBinding12 As Infralution.Controls.VirtualTree.ObjectCellBinding = New Infralution.Controls.VirtualTree.ObjectCellBinding()
         Me.ColNummer = New Infralution.Controls.VirtualTree.Column()
         Me.ColCharge = New Infralution.Controls.VirtualTree.Column()
         Me.ColTour = New Infralution.Controls.VirtualTree.Column()
@@ -49,6 +50,7 @@ Partial Class wb_Planung_Liste
         Me.ColBestand = New Infralution.Controls.VirtualTree.Column()
         Me.ColEinheitBestand = New Infralution.Controls.VirtualTree.Column()
         Me.ColStartZeit = New Infralution.Controls.VirtualTree.Column()
+        Me.ColType = New Infralution.Controls.VirtualTree.Column()
         Me.CellEditor4 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.BtnVorlage = New System.Windows.Forms.Button()
@@ -63,7 +65,6 @@ Partial Class wb_Planung_Liste
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CellEditor3 = New Infralution.Controls.VirtualTree.CellEditor()
         Me.UniversalEditBox1 = New Infralution.Controls.UniversalEditBox()
-        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         Me.btnNeueCharge = New System.Windows.Forms.Button()
         Me.BtnTeigListeDrucken = New System.Windows.Forms.Button()
         Me.dtBestellungen = New System.Windows.Forms.DateTimePicker()
@@ -74,6 +75,8 @@ Partial Class wb_Planung_Liste
         Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
         Me.cbLiniengruppe = New WinBack.wb_ComboBox()
         Me.cbProduktionsFiliale = New WinBack.wb_ComboBox()
+        Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
+        Me.BtnCheckLager = New System.Windows.Forms.Button()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -180,6 +183,13 @@ Partial Class wb_Planung_Liste
         Me.ColStartZeit.MinWidth = 100
         Me.ColStartZeit.Name = "ColStartZeit"
         '
+        'ColType
+        '
+        Me.ColType.Active = False
+        Me.ColType.Caption = Nothing
+        Me.ColType.Name = "ColType"
+        Me.ColType.Width = 30
+        '
         'CellEditor4
         '
         Me.CellEditor4.Control = Me.TextBox1
@@ -269,6 +279,7 @@ Partial Class wb_Planung_Liste
         Me.VirtualTree.Columns.Add(Me.ColEinheit)
         Me.VirtualTree.Columns.Add(Me.ColBestand)
         Me.VirtualTree.Columns.Add(Me.ColEinheitBestand)
+        Me.VirtualTree.Columns.Add(Me.ColType)
         Me.VirtualTree.EditOnKeyPress = True
         Me.VirtualTree.Editors.Add(Me.CellEditor2)
         Me.VirtualTree.Editors.Add(Me.CellEditor1)
@@ -339,48 +350,6 @@ Partial Class wb_Planung_Liste
         Me.UniversalEditBox1.Size = New System.Drawing.Size(195, 19)
         Me.UniversalEditBox1.TabIndex = 9
         Me.UniversalEditBox1.Visible = False
-        '
-        'ObjectRowBinding1
-        '
-        ObjectCellBinding1.Column = Me.ColNummer
-        ObjectCellBinding1.Field = "VirtTreeNummer"
-        ObjectCellBinding2.Column = Me.ColCharge
-        ObjectCellBinding2.Field = "VirtTreeCharge"
-        ObjectCellBinding3.Column = Me.ColTour
-        ObjectCellBinding3.Field = "VirtTreeTour"
-        ObjectCellBinding4.Column = Me.ColBezeichnung
-        ObjectCellBinding4.Field = "VirtTreeBezeichnung"
-        ObjectCellBinding5.Column = Me.ColKommentar
-        ObjectCellBinding5.Field = "VirtTreeKommentar"
-        ObjectCellBinding6.Column = Me.ColLinie
-        ObjectCellBinding6.Field = "VirtTreeLinie"
-        ObjectCellBinding7.Column = Me.ColSollwert
-        ObjectCellBinding7.Field = "VirtTreeSollwert"
-        ObjectCellBinding8.Column = Me.ColEinheit
-        ObjectCellBinding8.Field = "VirtTreeEinheit"
-        ObjectCellBinding9.Column = Me.ColBestand
-        ObjectCellBinding9.Field = "VirtTreeBestand"
-        ObjectCellBinding10.Column = Me.ColEinheitBestand
-        ObjectCellBinding10.Field = "VirtTreeEinheit"
-        ObjectCellBinding11.Column = Me.ColStartZeit
-        ObjectCellBinding11.Field = "VirtTreeStart"
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding4)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding5)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding7)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding8)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding9)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding10)
-        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding11)
-        Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
-        Me.ObjectRowBinding1.ExpandedImage = CType(resources.GetObject("ObjectRowBinding1.ExpandedImage"), System.Drawing.Image)
-        Me.ObjectRowBinding1.Image = CType(resources.GetObject("ObjectRowBinding1.Image"), System.Drawing.Image)
-        Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
-        Me.ObjectRowBinding1.ParentProperty = "ParentStep"
-        Me.ObjectRowBinding1.TypeName = "WinBack.wb_Produktionsschritt"
         '
         'btnNeueCharge
         '
@@ -479,11 +448,67 @@ Partial Class wb_Planung_Liste
         Me.cbProduktionsFiliale.Size = New System.Drawing.Size(178, 21)
         Me.cbProduktionsFiliale.TabIndex = 15
         '
+        'ObjectRowBinding1
+        '
+        ObjectCellBinding1.Column = Me.ColNummer
+        ObjectCellBinding1.Field = "VirtTreeNummer"
+        ObjectCellBinding2.Column = Me.ColCharge
+        ObjectCellBinding2.Field = "VirtTreeCharge"
+        ObjectCellBinding3.Column = Me.ColTour
+        ObjectCellBinding3.Field = "VirtTreeTour"
+        ObjectCellBinding4.Column = Me.ColBezeichnung
+        ObjectCellBinding4.Field = "VirtTreeBezeichnung"
+        ObjectCellBinding5.Column = Me.ColKommentar
+        ObjectCellBinding5.Field = "VirtTreeKommentar"
+        ObjectCellBinding6.Column = Me.ColLinie
+        ObjectCellBinding6.Field = "VirtTreeLinie"
+        ObjectCellBinding7.Column = Me.ColSollwert
+        ObjectCellBinding7.Field = "VirtTreeSollwert"
+        ObjectCellBinding8.Column = Me.ColEinheit
+        ObjectCellBinding8.Field = "VirtTreeEinheit"
+        ObjectCellBinding9.Column = Me.ColBestand
+        ObjectCellBinding9.Field = "VirtTreeBestand"
+        ObjectCellBinding10.Column = Me.ColEinheitBestand
+        ObjectCellBinding10.Field = "VirtTreeEinheitBestand"
+        ObjectCellBinding11.Column = Me.ColStartZeit
+        ObjectCellBinding11.Field = "VirtTreeStart"
+        ObjectCellBinding12.Column = Me.ColType
+        ObjectCellBinding12.Field = "Typ"
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding1)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding2)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding3)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding4)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding5)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding6)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding7)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding8)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding9)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding10)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding11)
+        Me.ObjectRowBinding1.CellBindings.Add(ObjectCellBinding12)
+        Me.ObjectRowBinding1.ChildProperty = "ChildSteps"
+        Me.ObjectRowBinding1.ExpandedImage = CType(resources.GetObject("ObjectRowBinding1.ExpandedImage"), System.Drawing.Image)
+        Me.ObjectRowBinding1.Image = CType(resources.GetObject("ObjectRowBinding1.Image"), System.Drawing.Image)
+        Me.ObjectRowBinding1.Name = "ObjectRowBinding1"
+        Me.ObjectRowBinding1.ParentProperty = "ParentStep"
+        Me.ObjectRowBinding1.TypeName = "WinBack.wb_Produktionsschritt"
+        '
+        'BtnCheckLager
+        '
+        Me.BtnCheckLager.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnCheckLager.Location = New System.Drawing.Point(453, 12)
+        Me.BtnCheckLager.Name = "BtnCheckLager"
+        Me.BtnCheckLager.Size = New System.Drawing.Size(123, 53)
+        Me.BtnCheckLager.TabIndex = 64
+        Me.BtnCheckLager.Text = "Lagerbestand prüfen"
+        Me.BtnCheckLager.UseVisualStyleBackColor = True
+        '
         'wb_Planung_Liste
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1104, 663)
+        Me.Controls.Add(Me.BtnCheckLager)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.lblLinieArtikel)
@@ -550,4 +575,6 @@ Partial Class wb_Planung_Liste
     Friend WithEvents Label2 As Windows.Forms.Label
     Friend WithEvents Label3 As Windows.Forms.Label
     Friend WithEvents ColStartZeit As Infralution.Controls.VirtualTree.Column
+    Friend WithEvents ColType As Infralution.Controls.VirtualTree.Column
+    Friend WithEvents BtnCheckLager As Windows.Forms.Button
 End Class

@@ -18,12 +18,12 @@ Public Class wb_Planung_Main
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         'Initialisierung
         MyBase.New(ServiceProvider)
+        'Event-Handler (Fehlerliste aktualisieren/anzeigen)
+        AddHandler wb_Planung_Shared.eListe_Refresh, AddressOf Refresh_Data
         'Default-Layout wenn keine Fenster angezeigt werden (neuer Benutzer...)
         If _DockPanelList.Count = 0 Then
             SetDefaultLayout()
         End If
-        'Event-Handler (Fehlerliste aktualisieren/anzeigen)
-        AddHandler wb_Planung_Shared.eListe_Refresh, AddressOf Refresh_Data
     End Sub
 
     ''' <summary>
@@ -145,8 +145,9 @@ Public Class wb_Planung_Main
     Private Sub Refresh_Data(Sender As Object)
         If IsNothingOrDisposed(PlanungListeFehler) Then
             PlanungListeFehler = New wb_Planung_ListeFehler
-            PlanungListeFehler.Show(DockPanel)
+            '            PlanungListeFehler.Show(DockPanel, DockState.DockLeft)
             PlanungListeFehler.RefreshData(Nothing)
+            PlanungListeFehler.ShowDialog()
         Else
             PlanungListeFehler.RefreshData(Nothing)
         End If
@@ -155,19 +156,21 @@ Public Class wb_Planung_Main
     Private Sub BtnProdPlanungError()
         If IsNothingOrDisposed(PlanungListeFehler) Then
             PlanungListeFehler = New wb_Planung_ListeFehler
-            PlanungListeFehler.Show(DockPanel)
         End If
+        PlanungListeFehler.Show(DockPanel)
     End Sub
 
     Private Sub BtnProdListeExport()
         If IsNothingOrDisposed(PlanungDrucken) Then
             PlanungDrucken = New wb_Planung_Drucken
-            PlanungDrucken.Show(DockPanel)
         End If
+        PlanungDrucken.Show(DockPanel)
     End Sub
 
     Private Sub BtnPlanungTeiler()
-        PlanungTeiler = New wb_Planung_Teiler
+        If IsNothingOrDisposed(PlanungTeiler) Then
+            PlanungTeiler = New wb_Planung_Teiler
+        End If
         PlanungTeiler.Show(DockPanel, DockState.DockTop)
     End Sub
 

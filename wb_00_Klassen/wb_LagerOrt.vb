@@ -8,6 +8,9 @@ Public Class wb_LagerOrt
 
     Public Property Bilanzmenge As String
         Get
+            If _Lagerort = "" Or _Lagerort Is Nothing Then
+                _Bilanzmenge = "0"
+            End If
             Return wb_Functions.FormatStr(_Bilanzmenge, 3)
         End Get
         Set(value As String)
@@ -62,8 +65,10 @@ Public Class wb_LagerOrt
         _Mindestmenge = Nothing
 
         'Daten aus winback.LagerOrte lesen
-        If MysqldbRead(Lagerort) Then
-            _Lagerort = Lagerort
+        If Lagerort <> "" Then
+            If MysqldbRead(Lagerort) Then
+                _Lagerort = Lagerort
+            End If
         End If
     End Sub
 
@@ -167,7 +172,7 @@ Public Class wb_LagerOrt
     ''' </summary>
     ''' <returns></returns>
     Public Function MySQLdbUpdate() As Boolean
-        If _Lagerort IsNot Nothing Then
+        If _Lagerort IsNot Nothing And _Lagerort <> "" Then
             'Datenbank-Verbindung öffnen - MySQL
             Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
             Dim sql As String

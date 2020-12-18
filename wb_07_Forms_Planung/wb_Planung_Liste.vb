@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Drawing
+Imports System.Windows.Forms
 Imports combit.ListLabel22.DataProviders
 Imports WeifenLuo.WinFormsUI.Docking
 Imports WinBack.wb_Planung_Shared
@@ -6,15 +7,17 @@ Imports WinBack.wb_Planung_Shared
 Public Class wb_Planung_Liste
     Inherits DockContent
     '    Dim Produktion As New wb_Produktion
-    Dim oFont As Drawing.Font
-    Dim iFont As Drawing.Font
+    Public oFont As Drawing.Font
+
+    Private _ProdStufeDeltaStyle As New Infralution.Controls.StyleDelta
+    Private _TextKompDeltaStyle As New Infralution.Controls.StyleDelta
 
     Private _FilterLinienGruppe As Integer = wb_Global.UNDEFINED
     Private _FilterAufarbeitung As Integer = wb_Global.UNDEFINED
 
     'Bestellungen einlesen für Produktions-Datum
     Private _ProduktionsDatum As String = ""
-    Private _ProduktionsFilialeNummer As String = ""
+    Private _ProduktionsFilialeNummer As Integer = wb_Global.UNDEFINED
 
     Private Sub BtnVorlage_Click(sender As Object, e As EventArgs) Handles BtnVorlage.Click
         'Fenster Auswahl Vorlage anzeigen
@@ -49,6 +52,11 @@ Public Class wb_Planung_Liste
     Private Sub wb_Planung_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Liste mit Produktions-Filialen
         cbProduktionsFiliale.Fill(wb_Filiale.ProduktionsFilialen)
+        'Default ist der erste Eintrag der Produktions-Filialen
+        If cbProduktionsFiliale.Items.Count Then
+            cbProduktionsFiliale.SelectedIndex = 0
+        End If
+
         'ComboBox Liniengruppe Rezepte(Teig) füllen
         cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen, True)
         'ComboBox Liniengruppe Artikel füllen
@@ -58,7 +66,8 @@ Public Class wb_Planung_Liste
 
         'Font für die Anzeige Artikelzeile im VirtualTree
         oFont = VirtualTree.Font
-        iFont = New Drawing.Font(oFont.Name, oFont.Size, Drawing.FontStyle.Italic)
+        _ProdStufeDeltaStyle.Font = New Drawing.Font(oFont.Name, oFont.Size, System.Drawing.FontStyle.Bold)
+        _TextKompDeltaStyle.Font = New Drawing.Font(oFont.Name, oFont.Size, System.Drawing.FontStyle.Italic)
 
         'OrgaBack aktiv
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
@@ -141,7 +150,7 @@ Public Class wb_Planung_Liste
         End If
 
         'Daten aus der Stored-Procedure in OrgaBack einlesen
-        If Not Produktion.MsSQLdbProcedure_Produktionsauftrag(_ProduktionsDatum, _ProduktionsFilialeNummer) Then
+        If Not Produktion.MsSQLdbProcedure_Produktionsauftrag(_ProduktionsDatum, _ProduktionsFilialeNummer.ToString) Then
             'Default-Cursor
             Me.Cursor = Cursors.Default
             'keine Datensätze in der Vorlage
@@ -164,7 +173,7 @@ Public Class wb_Planung_Liste
         'Alle Produktions-Schritte in der Liste durchlaufen
         For Each p As wb_Produktionsschritt In Produktion.RootProduktionsSchritt.ChildSteps
             'wenn dieser Produktions-Schritt gedruckt/übertragen wurde
-            If p.IstInProduktion Then
+            If p.IstInProduktion And _ProduktionsFilialeNummer > wb_Global.UNDEFINED Then
                 'Datensatz in ProduktionAktuell updaten/schreiben
                 MsSQLdbUpdate_ProduktionAktuell(_ProduktionsFilialeNummer, _ProduktionsDatum, p.iTour, p.ArtikelNummer, p.obEinheit, wb_Global.obDEFAULTCOLOR, wb_Global.obDEFAULTSIZE, p.Sollmenge_Stk, p.MengeInProduktion)
             End If
@@ -232,6 +241,18 @@ Public Class wb_Planung_Liste
 
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
+    End Sub
+
+    ''' <summary>
+    ''' Lagerbestand gegen die geplante Produktion prüfen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnCheckLager_Click(sender As Object, e As EventArgs) Handles BtnCheckLager.Click
+        Produktion.CheckLager()
+        'Virtual Tree anzeigen
+        VirtualTree.DataSource = Produktion.RootCheckProduktion
+        VirtualTree.Refresh()
     End Sub
 
     ''' <summary>
@@ -562,25 +583,35 @@ Public Class wb_Planung_Liste
     '    'e.RowData.Icon = Icon
     'End Sub
 
-    'Private Sub VirtualTree_GetCellData(sender As Object, e As Infralution.Controls.VirtualTree.GetCellDataEventArgs) Handles VirtualTree.GetCellData
-    '    Static bfont As Boolean
-    '    'Get the binding for the given row and get the cell data
-    '    Dim RowBinding As Infralution.Controls.VirtualTree.RowBinding = VirtualTree.GetRowBinding(e.Row)
-    '    RowBinding.GetCellData(e.Row, e.Column, e.CellData)
+    Private Sub VirtualTree_GetCellData(sender As Object, e As Infralution.Controls.VirtualTree.GetCellDataEventArgs) Handles VirtualTree.GetCellData
+        'get the default binding for the given row And use it to populate the cell data
+        Dim Binding As Infralution.Controls.VirtualTree.RowBinding = VirtualTree.GetRowBinding(e.Row)
+        If Binding IsNot Nothing Then
+            Binding.GetCellData(e.Row, e.Column, e.CellData)
 
+            'aktueller Produktions-Schritt in der Liste
+            Dim ProduktionsSchritt = DirectCast(e.Row.Item, wb_Produktionsschritt)
 
-    '    If e.Column.Name = "ColState" Then
-    '        If e.CellData.Value = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL Then
-    '            bFont = True
-    '        Else
-    '            bfont = False
-    '        End If
-    '    End If
-    '    If bfont Then
-    '        e.Column.CellStyle.Font = iFont
-    '    Else
-    '        e.Column.CellStyle.Font = oFont
-    '    End If
+            'Formatierung abhängig vom Komponenten-Typ
+            Select Case ProduktionsSchritt.Typ
+                Case wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
+                    VirtualTree_SetFontStyle(e.CellData.EvenStyle, _ProdStufeDeltaStyle)
+                    VirtualTree_SetFontStyle(e.CellData.OddStyle, _ProdStufeDeltaStyle)
+                Case wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE, wb_Global.KomponTypen.KO_TYPE_SAUER_TEXT
+                    VirtualTree_SetFontStyle(e.CellData.EvenStyle, _TextKompDeltaStyle)
+                    VirtualTree_SetFontStyle(e.CellData.OddStyle, _TextKompDeltaStyle)
+            End Select
+        End If
+    End Sub
 
-    'End Sub
+    ''' <summary>
+    ''' Setzt den Font.Style für die angegebene Zelle auf Bold/Italic
+    ''' Anzeige Artikel/Rezept-Zeilen
+    ''' </summary>
+    ''' <param name="ColumnStyle"></param>
+    Private Sub VirtualTree_SetFontStyle(ByRef ColumnStyle As Infralution.Controls.Style, DeltaStyle As Infralution.Controls.StyleDelta)
+        Dim _ChangedStyle = New Infralution.Controls.Style(ColumnStyle, DeltaStyle)
+        ColumnStyle = _ChangedStyle
+    End Sub
+
 End Class

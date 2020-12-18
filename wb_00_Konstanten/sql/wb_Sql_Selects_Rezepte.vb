@@ -59,7 +59,7 @@
                                "KomponTypen.KT_Laenge, RezeptSchritte.RS_Wert, Komponenten.KA_RS_veraenderbar, Einheiten.E_Einheit, " &
                                "RezeptSchritte.RS_Wert_Prod,RezeptSchritte.RS_Par1,RezeptSchritte.RS_Par2,RezeptSchritte.RS_Par3, " &
                                "KomponTypen.KT_Bezeichnung, KomponTypen.KT_OberGW, KomponTypen.KT_UnterGW, KA_Charge_Opt, " &
-                               "Komponenten.KA_Preis, Komponenten.KA_zaehlt_zu_RZ_Gesamtmenge, Komponenten.KA_RZ_Nr, " &
+                               "Komponenten.KA_Preis, Komponenten.KA_zaehlt_zu_RZ_Gesamtmenge, Komponenten.KA_RZ_Nr, Komponenten.KA_Lagerort, " &
                                "Komponenten.KA_Verarbeitungshinweise, KA_Grp1, KA_Grp2, Komponenten.KA_Matchcode " & "FROM (((Rezepte INNER JOIN RezeptSchritte ON " &
                                "(Rezepte.RZ_Variante_Nr = RezeptSchritte.RS_RZ_Variante_Nr) AND " &
                                "(Rezepte.RZ_Nr = RezeptSchritte.RS_RZ_Nr)) INNER JOIN Komponenten " &

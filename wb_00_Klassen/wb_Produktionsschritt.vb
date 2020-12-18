@@ -55,8 +55,8 @@ Public Class wb_Produktionsschritt
     Private _Einheit As String
     Private _TeigChargen As wb_Global.ChargenMengen
     Private _Bestellt_Stk As Double
-    Private _LagerBestand As String
-    Private _LagerOrt As String
+    Private _LagerBestand As Double = wb_Global.UNDEFINED
+    Private _LagerOrt As String = ""
     Private _StartZeit As DateTime
 
     Private _Bestellt_SonderText As String
@@ -113,7 +113,7 @@ Public Class wb_Produktionsschritt
             MaxChargekg = .ArtikelChargen.MaxCharge.fMengeInkg
             MinChargekg = .ArtikelChargen.MinCharge.fMengeInkg
 
-            LagerBestand = .Bilanzmenge
+            LagerBestand = wb_Functions.StrToDouble(.Bilanzmenge)
             LagerOrt = .Lagerort
             ProdVorlauf = .ProdVorlauf
             FreigabeProduktion = .FreigabeProduktion
@@ -163,6 +163,8 @@ Public Class wb_Produktionsschritt
             End If
             'Parameter Nummer
             ParamNr = .ParamNr
+            'Lagerort(wird benötigt um den aktuellen Lagerbestand in der Produktionsplanung anzuzeigen)
+            LagerOrt = .LagerOrt
         End With
     End Sub
 
@@ -439,6 +441,8 @@ Public Class wb_Produktionsschritt
     Public ReadOnly Property VirtTreeBestand As String
         Get
             If Typ = KO_ZEILE_ARTIKEL Then
+                'TODO Hier könnte der Froster-Bestand stehen ?? mit Kennzeichen FR? aus OrgaBack abfragen
+                'Return wb_Functions.FormatStr(_LagerBestand, 3)
                 Return ""
 
             ElseIf Typ = KO_ZEILE_REZEPT Then
@@ -448,8 +452,13 @@ Public Class wb_Produktionsschritt
                 Select Case Typ
                     Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
                         Return ""
-                    Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
-                        Return wb_Functions.FormatStr(_LagerBestand, 3)
+                    Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE
+                        'unrealistische und Werte kleiner/gleich Null ausblenden
+                        If LagerBestand > 0 And LagerBestand < wb_Global.MAXLAGERBESTAND Then
+                            Return wb_Functions.FormatStr(LagerBestand, 3)
+                        Else
+                            Return "-"
+                        End If
                     Case Else
                         Return ""
                 End Select
@@ -458,16 +467,16 @@ Public Class wb_Produktionsschritt
     End Property
 
     ''' <summary>
-    ''' Lager-Bestand. Anzeige im VirtualTree. Unterscheidung anhand der Type:
-    '''     -   Artikel-Chargen-Zeile   Lagerbestand in Stück
-    '''     -   Rezept-Chargen-Zeile    keine Anzeige
-    '''     -   Rezept-Schritte         Anzeige Lagerbestand als formatierter Zahlenwert in kg
+    ''' Istwert Anzeige im VirtualTree. Unterscheidung anhand der Type:
+    '''     -   Artikel-Chargen-Zeile   
+    '''     -   Rezept-Chargen-Zeile    
+    '''     -   Rezept-Schritte         
     '''     
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property VirtTreeIstwert As String
+        'TODO wird diese Funktion gebraucht ??? (virtuelle Linie ?) - Kommetar verbessern !!!
         Get
-            'TODO Hier noch ISTMENGE EINFÜGEN
             If Typ = KO_ZEILE_ARTIKEL Then
                 If Sollmenge_Stk <> 0 Then
                     Return wb_Functions.FormatStr(Sollmenge_Stk, 0)
@@ -556,6 +565,23 @@ Public Class wb_Produktionsschritt
             Else
                 Return Einheit
             End If
+        End Get
+    End Property
+
+    Public ReadOnly Property VirtTreeEinheitBestand As String
+        Get
+            Select Case Typ
+                Case KO_ZEILE_ARTIKEL
+                    Return ""
+                Case KO_ZEILE_REZEPT
+                    Return ""
+                Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
+                    Return ""
+                Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE
+                    Return Einheit
+                Case Else
+                    Return ""
+            End Select
         End Get
     End Property
 
@@ -1155,12 +1181,16 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
-    Public Property LagerBestand As String
+    Public Property LagerBestand As Double
         Get
+            If _LagerBestand = wb_Global.UNDEFINED Then
+                Dim Lager As New wb_LagerOrt(LagerOrt)
+                _LagerBestand = wb_Functions.StrToDouble(Lager.Bilanzmenge)
+            End If
             Return _LagerBestand
         End Get
-        Set(value As String)
-            _LagerBestand = value
+        Set(value As Double)
+            _LagerBestand = wb_Functions.StrToDouble(value)
         End Set
     End Property
 

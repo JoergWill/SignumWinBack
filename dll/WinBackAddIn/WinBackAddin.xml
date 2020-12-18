@@ -4539,6 +4539,12 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns>wb_Produktionsschritt - Root-Node des Rezeptes</returns>
 </member>
+<member name="M:WinBack.wb_Produktion.CheckLager">
+ <summary>
+ Prüft die Lagerbestände aller Rohstoffe gegen die Sollwerte der geplanten (echten)Produktion.
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_Produktion.CalcVorproduktion(WinBack.wb_Produktionsschritt)">
  <summary>
  Berechnet alle Vorproduktions-Chargen.
@@ -4850,10 +4856,10 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 </member>
 <member name="P:WinBack.wb_Produktionsschritt.VirtTreeIstwert">
  <summary>
- Lager-Bestand. Anzeige im VirtualTree. Unterscheidung anhand der Type:
-     -   Artikel-Chargen-Zeile   Lagerbestand in Stück
-     -   Rezept-Chargen-Zeile    keine Anzeige
-     -   Rezept-Schritte         Anzeige Lagerbestand als formatierter Zahlenwert in kg
+ Istwert Anzeige im VirtualTree. Unterscheidung anhand der Type:
+     -   Artikel-Chargen-Zeile   
+     -   Rezept-Chargen-Zeile    
+     -   Rezept-Schritte         
      
  </summary>
  <returns></returns>
@@ -9984,6 +9990,13 @@ Datenbank-Verbindung schliessen
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:WinBack.wb_Planung_Liste.BtnCheckLager_Click(System.Object,System.EventArgs)">
+ <summary>
+ Lagerbestand gegen die geplante Produktion prüfen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:WinBack.wb_Planung_Liste.BtVorproduktion_Click(System.Object,System.EventArgs)">
  <summary>
  Vorproduktion berechnen
@@ -10029,6 +10042,13 @@ Datenbank-Verbindung schliessen
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_Planung_Liste.VirtualTree_SetFontStyle(Infralution.Controls.Style@,Infralution.Controls.StyleDelta)">
+ <summary>
+ Setzt den Font.Style für die angegebene Zelle auf Bold/Italic
+ Anzeige Artikel/Rezept-Zeilen
+ </summary>
+ <param name="ColumnStyle"></param>
 </member>
 <member name="P:WinBack.wb_Planung_ListeFehlerArtikel.ReadOK">
  <summary>

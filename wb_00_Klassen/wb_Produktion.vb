@@ -22,6 +22,9 @@ Public Class wb_Produktion
     Private _ChargenNummer() As Integer
 
     Private _VorProduktion As New ArrayList
+    Private _RootCheckProduktion As New wb_Produktionsschritt(Nothing, "")
+    '    Private _CheckProduktion As New Dictionary(Of Integer, wb_Produktionsschritt)
+    Private _CheckProduktion As New Hashtable
 
     Public ReadOnly Property GetNewChargenNummer(Linie As Integer) As String
         Get
@@ -81,6 +84,59 @@ Public Class wb_Produktion
             Return _RootProduktionsSchritt
         End Get
     End Property
+
+    Public ReadOnly Property RootCheckProduktion As wb_Produktionsschritt
+        Get
+            Return _RootCheckProduktion
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Prüft die Lagerbestände aller Rohstoffe gegen die Sollwerte der geplanten (echten)Produktion.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function CheckLager() As Boolean
+        'Dictionary löschen
+        _CheckProduktion.Clear()
+        _RootCheckProduktion.ChildSteps.Clear()
+        'Rekursive Schleife über alle Produktions-Schritte 
+        CheckLager(_RootProduktionsSchritt)
+        Debug.Print("Dictionary completed")
+        Return True
+    End Function
+
+    Private Function CheckLager(Root As wb_Produktionsschritt) As Boolean
+
+        'Schleife über alle Child-Steps
+        For Each ps As wb_Produktionsschritt In Root.ChildSteps
+            'wenn Child-Steps vorhanden sind - werden diese auch bearbeitet
+            If ps.ChildSteps.Count > 0 Then
+                CheckLager(ps)
+            End If
+
+            'Komponenten-Type
+            If ps.Typ = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or
+               ps.Typ = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or
+               ps.Typ = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Or
+               ps.Typ = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Then
+
+                'prüfen ob die Komponenten-Nummer im HashTable schon vorhanden ist
+                If _CheckProduktion.ContainsKey(ps.ArtikelNr) Then
+                    'Komponente ist schon im HashTable vorhanden - Sollmengen addieren
+                    Dim pn As wb_Produktionsschritt = _CheckProduktion(ps.ArtikelNr)
+                    pn.Sollwert_kg += ps.Sollwert_kg
+                    pn.Sollwert = pn.Sollwert_kg
+                    _CheckProduktion(ps.ArtikelNr) = pn
+                Else
+                    'neuen Produktions-Schritt in HashTable einfügen
+                    Dim pn As New wb_Produktionsschritt(_RootCheckProduktion, "")
+                    pn.CopyFrom(ps)
+                    _CheckProduktion.Add(ps.ArtikelNr, pn)
+                End If
+            End If
+        Next
+        Return True
+    End Function
 
     ''' <summary>
     ''' Berechnet alle Vorproduktions-Chargen.
@@ -858,6 +914,10 @@ Public Class wb_Produktion
         ' Größe der Restcharge berechnen
         CalcBatch01.MengeRest = Sollwert - (CalcBatch01.AnzahlOpt * CalcBatch01.MengeOpt)
         CalcBatch01.AnzahlRest = 1
+        'Rundungsfehler abfangen (10% der Min-Charge)
+        If (CalcBatch01.MengeRest < ChargeMin) And (ChargeMin - CalcBatch01.MengeRest < (ChargeMin / 10)) Then
+            CalcBatch01.MengeRest = ChargeMin
+        End If
 
         ' Prüfen ob innerhalb der Chargengrenzen
         If (CalcBatch01.MengeRest < ChargeMin) Then
@@ -866,18 +926,19 @@ Public Class wb_Produktion
                 CalcBatch01.AnzahlRest = 0
                 CalcBatch01.Result = wb_Global.ChargenTeilerResult.OK
             Else
+                'Vorproduktion 
                 If VorProduktion Then
-                    CalcBatch01.AnzahlRest = 1
-                    CalcBatch01.MengeRest = ChargeMin
-                    If CalcBatch01.AnzahlOpt = 0 Then
-                        CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM3
+                        CalcBatch01.AnzahlRest = 1
+                        CalcBatch01.MengeRest = ChargeMin
+                        If CalcBatch01.AnzahlOpt = 0 Then
+                            CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM3
+                        Else
+                            CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM2
+                        End If
                     Else
-                        CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM2
-                    End If
-                Else
-                    ' Sollmenge kann nicht erreicht werden weil die
-                    ' Restcharge kleiner als die Min-Charge ist
-                    CalcBatch01.AnzahlRest = 0
+                        ' Sollmenge kann nicht erreicht werden weil die
+                        ' Restcharge kleiner als die Min-Charge ist
+                        CalcBatch01.AnzahlRest = 0
                     CalcBatch01.MengeRest = 0
                     CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM1
                 End If
@@ -1079,10 +1140,7 @@ Public Class wb_Produktion
 
         'Falls Fehler aufgetreten sind, Meldung anzeigen
         If wb_Planung_Shared.ErrorList.Count > 0 Then
-            'Fehler beim Einlesen der Produktionsdaten aus OrgaBack (Artikel in WinBack nicht vorhanden)
-            'Dim ErrorText As String = "Fehler beim Einlesen der Produktions-Liste " & vbCrLf & wb_Planung_Shared.ErrorList.Count.ToString &
-            '                          " Artikelnummer(n) konnten nicht verabeitet werden: " & vbCrLf & vbCrLf & wb_Planung_Shared.LongErrorList
-            'MsgBox(ErrorText, MsgBoxStyle.Exclamation, "Einlesen der Produktionsdaten")
+            'Fehler beim Einlesen der Produktionsdaten aus OrgaBack 
             Dim ErrorText As String = "Fehler beim Einlesen der Produktions-Liste " & vbCrLf & wb_Planung_Shared.ErrorList.Count.ToString &
                                       " Artikelnummer(n) konnten nicht verabeitet werden: " & vbCrLf & wb_Planung_Shared.ShortErrorList & vbCrLf & vbCrLf &
                                       " Detaillierte Fehler-Liste anzeigen ?"
