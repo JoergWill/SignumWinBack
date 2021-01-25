@@ -118,7 +118,7 @@ Public Class wb_Lieferungen
     '''     
     ''' </summary>
     ''' <param name="winback"></param>
-    Public Sub Verbuchen(winback As wb_Sql, LagerKarte As wb_LagerKarte)
+    Public Sub Verbuchen(winback As wb_Sql, LagerKarte As wb_LagerKarte, ByRef ErsteInventurbuchung As Boolean)
         'Vorgang in Log-File schreiben(INFO)
         Trace.WriteLine("@I_" & LagerKarte.Vorfall & "-" & LagerKarte.Lfd & "-" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
 
@@ -135,12 +135,22 @@ Public Class wb_Lieferungen
             Case "IV"
                 'Inventur
                 If LagerKarte.Menge > 0 Then
-                    'Inventurbuchung - Lager zubuchen
-                    Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
+                    If ErsteInventurbuchung Then
+                        'erste Inventurbuchung - alle vorherigen Datensätze in WinBack.Lieferung auf erledigt(3) setzen
+                        InitInventur(winback, LagerKarte)
+                        ErsteInventurbuchung = False
+                    Else
+                        'Inventurbuchung - Lager zubuchen
+                        Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
+                    End If
                 Else
                     'Inventurbuchung - Lager abbuchen
                     Verbuchen_Abgang(winback, LagerKarte, RohChargenErfassung)
                 End If
+
+            Case Else
+                'nächste Inventurbuchung ist wieder die erste Inventurbuchugn im Block
+                ErsteInventurbuchung = True
         End Select
     End Sub
 
@@ -156,6 +166,7 @@ Public Class wb_Lieferungen
 
         'Prüfen ob Nullsetzen erforderlich
         If Silo.TaraWert <> 0 Then
+            'Bilanzmenge auf Null setzen - Alle voherigen Lieferungen auf erledigt setzen
             Verbuchen_Tara(winback, Silo, RohChargenErfassung)
         End If
 
@@ -165,6 +176,31 @@ Public Class wb_Lieferungen
         End If
     End Sub
 
+    ''' <summary>
+    ''' Setzt den Status aller bisherigen Lieferungen zu diesem Rohstoff auf erledigt(3) und trägt
+    ''' den aktuellen Bestand als neuen Lieferdatensatz ein.
+    ''' </summary>
+    ''' <param name="winback"></param>
+    ''' <param name="LagerKarte"></param>
+    Public Sub InitInventur(winback As wb_Sql, LagerKarte As wb_LagerKarte)
+        'Vorgang in Log-File schreiben
+        Trace.WriteLine("IV-Erste Inventurbuchung-" & LagerKarte.Lfd & "-" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
+
+        'alle Lieferungen auf Status erledigt setzen
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSetStatusLieferung, LagerOrt)
+        winback.sqlCommand(sql)
+        Bilanzmenge = LagerKarte.BestandVorher
+
+        'Der erste IV-Eintrag aus dbo.ArtikelLagerkarte enthält auch den aktuellen Bestand
+        Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
+
+    End Sub
+
+    ''' <summary>
+    ''' Löscht alle bisherigen Lieferungen zu diesem Rohstoff und trägt den aktuellen Bestand als ersten Lieferdatensatz ein.
+    ''' </summary>
+    ''' <param name="winback"></param>
+    ''' <param name="LagerKarte"></param>
     Public Sub InitBestand(winback As wb_Sql, LagerKarte As wb_LagerKarte)
         'Vorgang in Log-File schreiben
         Trace.WriteLine("IB-Erste Bestandsbuchung-" & LagerKarte.Lfd & "-" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
@@ -235,6 +271,20 @@ Public Class wb_Lieferungen
     ''' <param name="Silo"></param>
     ''' <param name="Chargenerfassung"></param>
     Private Sub Verbuchen_Zugang(winback As wb_Sql, Silo As wb_LagerSilo, Chargenerfassung As Boolean)
+        'gibt es einen Datensatz in Lieferungen mit Status aktiv(2) und Verbrauch > Liefermenge
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferungenGebucht, Silo.LagerOrt))
+        If winback.Read Then
+            'Verbrauchte Menge
+            Dim MengeVerbraucht As Double = wb_Functions.StrToDouble(winback.sField("LF_Verbrauch"))
+            'Liefermenge
+            Dim MengeGeliefert As Double = wb_Functions.StrToDouble(winback.sField("LF_Menge"))
+            'Die Diffenz wird bei der neuen Lieferung als neue verbrauchte Menge eingetragen
+            Silo.VerbrauchtMenge = MengeGeliefert - MengeVerbraucht
+            'der alte Datensatz wird mit Status eledigt(3) überschrieben
+
+        End If
+        winback.CloseRead()
+
         'letzten Eintrag aus winback.Lieferungen
         winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferLfd, Silo.LagerOrt))
 
@@ -253,13 +303,13 @@ Public Class wb_Lieferungen
         'Silo-Menge Nullsetzen
         If (Silo.TaraWert <> 0) And (Silo.BefMenge > 0) Then
             'Datensatz "Nullsetzen" einfügen
-            InsertLieferung(winback, Silo, 0)
+            InsertLieferung(winback, Silo, 0, 0)
             'lfd.Nummer plus Eins
             LfdNr += 1
         End If
 
         'Lieferung Datensatz anfügen
-        InsertLieferung(winback, Silo, Silo.BefMenge)
+        InsertLieferung(winback, Silo, Silo.BefMenge, Silo.VerbrauchtMenge)
 
         'Bilanzmenge neu berechnen
         Bilanzmenge = Bilanzmenge + Silo.BefMenge
@@ -530,7 +580,7 @@ Public Class wb_Lieferungen
         Dim Datum As Date = Date.Parse(LagerKarte.Datum & " " & LagerKarte.Uhrzeit)
         'TODO prüfen ob die Konvertierung (Zeile oben) funktioniert !!!
         'Background-Task
-        InsertLieferung(winback, LagerKarte.Lfd, Datum, LagerKarte.Gebucht, LagerKarte.Vorfall, LagerKarte.VorfallNr, LagerKarte.ChargenNummer, LagerKarte.Preis, Menge)
+        InsertLieferung(winback, LagerKarte.Lfd, Datum, LagerKarte.Gebucht, LagerKarte.Vorfall, LagerKarte.VorfallNr, LagerKarte.ChargenNummer, LagerKarte.Preis, Menge, 0)
     End Sub
 
     ''' <summary>
@@ -538,14 +588,14 @@ Public Class wb_Lieferungen
     ''' </summary>
     ''' <param name="winback"></param>
     ''' <param name="Silo"></param>
-    Private Sub InsertLieferung(winback As wb_Sql, Silo As wb_LagerSilo, Menge As Double)
+    Private Sub InsertLieferung(winback As wb_Sql, Silo As wb_LagerSilo, Menge As Double, Verbraucht As Double)
         'Lieferung oder Null setzen 
         If Menge > 0 Then
             'INSERT in Tabelle Lieferungen - Daten aus dem Silo-Objekt (Lieferant ist gleich der Vorfall-Nummer aus OrgaBack)
-            InsertLieferung(winback, LfdNr, Now, "1", "WE", Silo.VorfallNr, Silo.ChargenNummer, Silo.Preis, Menge)
+            InsertLieferung(winback, LfdNr, Now, "1", "WE", Silo.VorfallNr, Silo.ChargenNummer, Silo.Preis, Menge, Verbraucht)
         Else
             'INSERT in Tabelle Lieferungen - Null setzen
-            InsertLieferung(winback, LfdNr, Now, "3", "Null setzen", "", "", "", 0.0)
+            InsertLieferung(winback, LfdNr, Now, "3", "Null setzen", "", "", "", 0.0, 0)
         End If
     End Sub
 
@@ -554,11 +604,11 @@ Public Class wb_Lieferungen
     ''' Die fortlaufende Nummer(Lfd) muss bekannt sein.
     ''' </summary>
     ''' <param name="winback"></param>
-    Private Sub InsertLieferung(winback As wb_Sql, Lfd As String, Datum As Date, Gebucht As String, Bemerkung As String, Lieferant As String, ChargenNummer As String, Preis As String, Menge As Double)
+    Private Sub InsertLieferung(winback As wb_Sql, Lfd As String, Datum As Date, Gebucht As String, Bemerkung As String, Lieferant As String, ChargenNummer As String, Preis As String, Menge As Double, Verbraucht As Double)
         'der INSERT-Befehl wird dynamisch erzeugt
         Dim sql_insert As String = "'" & LG_Ort & "', " & Lfd & ", '" & wb_sql_Functions.MySQLdatetime(Datum) & "', " &
                                    "'" & wb_Functions.FormatStr(Menge, 2) & "', '" & Lieferant & "', '" & Gebucht & "', '" & Bemerkung & "', " &
-                                   "0" & ", '" & ChargenNummer & "', NULL, NULL, " & "0" & ", " & wb_GlobalSettings.AktUserNr & ", '" & Preis & "', " & "0"
+                                   "0" & ", '" & ChargenNummer & "', NULL, NULL, " & wb_Functions.FormatStr(Verbraucht, 2) & ", " & wb_GlobalSettings.AktUserNr & ", '" & Preis & "', " & "0"
 
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertWE, sql_insert)
         'INSERT ausführen

@@ -281,12 +281,16 @@ Public Class wb_Rohstoffe_Cloud
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnCloud_Click(sender As Object, e As EventArgs) Handles btnCloud.Click
+        'Cursor umschalten
+        Cursor = Cursors.WaitCursor
         'Suche nach Rohstoff oder Rohstoff/Lieferant
         If tSuchtextLieferant.Text = "" Then
             nwt.lookupProductName(tSuchtextBezeichnung.Text)
         Else
             nwt.lookupProduct(tSuchtextBezeichnung.Text, tSuchtextLieferant.Text)
         End If
+        'Cursor umschalten
+        Cursor = Cursors.Default
 
         'Ergebnis der Cloud-Suche anzeigen
         ChangeTab(tpCloudGefunden, nwt)
@@ -298,8 +302,12 @@ Public Class wb_Rohstoffe_Cloud
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnDatenLink_Click(sender As Object, e As EventArgs) Handles btnDatenLink.Click
+        'Cursor umschalten
+        Cursor = Cursors.WaitCursor
         'Suche nach Rohstoff
         dl.lookupProductName(tSuchtextBezeichnung.Text)
+        'Cursor umschalten
+        Cursor = Cursors.Default
 
         'Ergebnis der Cloud-Suche anzeigen
         ChangeTab(tpCloudGefunden, dl)

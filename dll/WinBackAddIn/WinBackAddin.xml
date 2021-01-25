@@ -2314,7 +2314,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Lieferungen.Verbuchen(WinBack.wb_Sql,WinBack.wb_LagerKarte)">
+<member name="M:WinBack.wb_Lieferungen.Verbuchen(WinBack.wb_Sql,WinBack.wb_LagerKarte,System.Boolean@)">
  <summary>
  Abhängig vom Vorfallkürzel wird der aktuelle Datensatz aus dbo.ArtikelLagerkarte in winback.Lieferungen verbucht:
  
@@ -2332,6 +2332,21 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  </summary>
  <param name="winback"></param>
  <param name="Silo"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.InitInventur(WinBack.wb_Sql,WinBack.wb_LagerKarte)">
+ <summary>
+ Setzt den Status aller bisherigen Lieferungen zu diesem Rohstoff auf erledigt(3) und trägt
+ den aktuellen Bestand als neuen Lieferdatensatz ein.
+ </summary>
+ <param name="winback"></param>
+ <param name="LagerKarte"></param>
+</member>
+<member name="M:WinBack.wb_Lieferungen.InitBestand(WinBack.wb_Sql,WinBack.wb_LagerKarte)">
+ <summary>
+ Löscht alle bisherigen Lieferungen zu diesem Rohstoff und trägt den aktuellen Bestand als ersten Lieferdatensatz ein.
+ </summary>
+ <param name="winback"></param>
+ <param name="LagerKarte"></param>
 </member>
 <member name="M:WinBack.wb_Lieferungen.Verbuchen_Zugang(WinBack.wb_Sql,WinBack.wb_LagerKarte,System.Boolean)">
  <summary>
@@ -2456,14 +2471,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="winback"></param>
  <param name="LagerKarte"></param>
 </member>
-<member name="M:WinBack.wb_Lieferungen.InsertLieferung(WinBack.wb_Sql,WinBack.wb_LagerSilo,System.Double)">
+<member name="M:WinBack.wb_Lieferungen.InsertLieferung(WinBack.wb_Sql,WinBack.wb_LagerSilo,System.Double,System.Double)">
  <summary>
  Fügt einen neuen Datensatz an die Tabelle winback.Lieferungen an. Die Daten werden aus dem Silo-Objekt ermittelt.
  </summary>
  <param name="winback"></param>
  <param name="Silo"></param>
 </member>
-<member name="M:WinBack.wb_Lieferungen.InsertLieferung(WinBack.wb_Sql,System.String,System.DateTime,System.String,System.String,System.String,System.String,System.String,System.Double)">
+<member name="M:WinBack.wb_Lieferungen.InsertLieferung(WinBack.wb_Sql,System.String,System.DateTime,System.String,System.String,System.String,System.String,System.String,System.Double,System.Double)">
  <summary>
  Fügt einen neuen Datensatz an die Tabelle winback.Lieferungen an.
  Die fortlaufende Nummer(Lfd) muss bekannt sein.

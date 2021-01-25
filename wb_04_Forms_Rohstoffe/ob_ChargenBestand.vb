@@ -130,12 +130,15 @@ Public Class ob_ChargenBestand
                 'auf neue Einträge in der Artikel-Lagerkarte aus OrgaBack prüfen
                 If InitBestand Then
                     'letzten Datensatz aus dbo.ArtikelLagerkarte
+                    'TODO - ist hier nicht ganz richtig: Es kann mehrere Inventurbuchungen geben !!!
                     sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerInit, Lieferungen.Nummer)
                 Else
                     'alle Datensätze aus dbo.ArtikelLagerkarte
                     sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerKarte, Lieferungen.LfdNr.ToString, Lieferungen.Nummer)
                 End If
                 If orgaback.sqlSelect(sql) Then
+                    'die erste Inventurbuchung setzt alle Buchungen in WinBack.Lieferungen auf Status eledigt(3)
+                    Dim FlagErsteInventurBuchung As Boolean = True
                     'wenn neue (noch nicht verbuchte) Einträge vorhanden sind
                     If orgaback.Read Then
                         'Schleife über alle Datensätze
@@ -146,9 +149,10 @@ Public Class ob_ChargenBestand
                             If InitBestand Then
                                 Lieferungen.InitBestand(winback, LagerKarte)
                             Else
-                                Lieferungen.Verbuchen(winback, LagerKarte)
+                                Lieferungen.Verbuchen(winback, LagerKarte, FlagErsteInventurBuchung)
                             End If
                         Loop While orgaback.Read
+
                         'die letzte gültige laufende Nummer aus OrgaBack.lfd wird in winback.Lagerorte eingetragen
                         Lieferungen.UpdateLagerorteLfd(winback, LagerKarte.Lfd)
                         'Daten zur Anzeige im Grid

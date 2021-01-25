@@ -11,6 +11,7 @@
 
     Private _TaraWert As Integer
     Private _BefMenge As Integer
+    Private _VerbrauchtMenge As Double
     Private _ChargenNummer As String
 
     Public Sub CopyFrom(s As wb_Silo)
@@ -21,6 +22,7 @@
         _SiloNr = s.SiloNr
         _TaraWert = s.TaraWert
         _BefMenge = s.BefMenge
+        _VerbrauchtMenge = s.VerbrauchtMenge
         _ChargenNummer = s.ChargenNummer
         _Preis = s.Preis
     End Sub
@@ -121,6 +123,15 @@
         End Get
         Set(value As String)
             _VorfallNr = value
+        End Set
+    End Property
+
+    Public Property VerbrauchtMenge As Double
+        Get
+            Return _VerbrauchtMenge
+        End Get
+        Set(value As Double)
+            _VerbrauchtMenge = value
         End Set
     End Property
 End Class

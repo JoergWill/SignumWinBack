@@ -5,6 +5,7 @@ Public Class wb_Silo
     Private _MaxMenge As Integer
     Private _IstMenge As Integer
     Private _RestMenge As Integer
+    Private _VerbrauchtMenge As Double = 0.0
     Private _TaraWert As Integer
     Private _ChargenNummer As String
     Private _Preis As Double
@@ -402,6 +403,15 @@ Public Class wb_Silo
         End Get
         Set(value As Double)
             _Preis = value
+        End Set
+    End Property
+
+    Public Property VerbrauchtMenge As Double
+        Get
+            Return _VerbrauchtMenge
+        End Get
+        Set(value As Double)
+            _VerbrauchtMenge = value
         End Set
     End Property
 
