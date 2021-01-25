@@ -12,19 +12,30 @@ Public Class wb_PrinterDialog
     Private _ListSubDirectory As String
     Private _ListFileName As String
     Private _ExcelExport As Boolean = False
+    Private _Druckhistorie As Boolean = False
 
     Private _LL_KopfZeile_1 As String = ""
     Private _LL_KopfZeile_2 As String = ""
 
     Public WithEvents LL As New ListLabel()
 
-    Public Sub New(ExcelExport As Boolean)
+    ''' <summary>
+    ''' Erzeugt ein neues Druck-Fenster.
+    ''' Die Druckhistorie wird aus dem ArrayList-Objekt erzeugt und vor dem Drucken gespeichert.
+    ''' Der Dateiname wird erzeugt aus Druckdatum und Name der Vorlage. Gespeichert werden die Druckdaten im Verzeichnis TEMP
+    ''' </summary>
+    ''' <param name="ExcelExport"></param>
+    ''' <param name="Druckhistorie"></param>
+    Public Sub New(ExcelExport As Boolean, Optional Druckhistorie As Boolean = False)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         _ExcelExport = ExcelExport
+        'Druckhistorie speichern vor dem Ausdruck
+        _Druckhistorie = Druckhistorie
+        BtnDruckHistorie.Enabled = Druckhistorie
     End Sub
 
     ''' <summary>
@@ -87,6 +98,19 @@ Public Class wb_PrinterDialog
         Dim Settings As New Drawing.Printing.PrinterSettings()
         Settings.PrinterName = cbPrinterAuswahl.SelectedItem.ToString
         LL.Core.LlSetPrinterInPrinterFile(LlProject.List, LL.AutoProjectFile, LlPrinterIndex.AllPages, Settings)
+
+        'Druckauftrag speichern
+        If _Druckhistorie Then
+            'Alle pdf-Files die älter als 3 Tage sind löschen
+            wb_Functions.DeleteOldFiles(wb_GlobalSettings.pDruckHistoriePath, IO.Path.GetFileNameWithoutExtension(_ListFileName) & "*.pdf", wb_Global.MaxHistDays)
+
+            'Dateiname aus Vorlagen-Name und Datum/Uhrzeit
+            Dim fName As String = wb_GlobalSettings.pDruckHistoriePath & IO.Path.GetFileNameWithoutExtension(_ListFileName) & "_" & Date.Now.ToString("yyyyMMdd_HHmmss") & ".pdf"
+
+            'aktuelle Datei als pdf-File exportieren
+            Dim pdfconfig As New ExportConfiguration(LlExportTarget.Pdf, fName, LL.AutoProjectFile)
+            LL.Export(pdfconfig)
+        End If
 
         'Druckauftrag starten
         Try
@@ -276,6 +300,26 @@ Public Class wb_PrinterDialog
             Catch LLException As Exception
                 MessageBox.Show(LLException.Message & vbCrLf & "Fehler in List&Label", "Drucken/Vorschau", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End Try
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Zeigt eine Liste alle pdf-Dateien mit dem passenden Filename an. 
+    ''' Ein Doppelklick auf den Dateinamen startet den Druck.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnDruckHistorie_Click(sender As Object, e As EventArgs) Handles BtnDruckHistorie.Click
+        'File-Auswahl-Dialog Formular*.pdf
+        Dim fMaske As String = wb_GlobalSettings.pDruckHistoriePath & IO.Path.GetFileNameWithoutExtension(_ListFileName) & "*.pdf"
+        OpenFileDialog.Title = "Druck-Historie Datei auswählen"
+        OpenFileDialog.InitialDirectory = wb_GlobalSettings.pTempPath
+        OpenFileDialog.Filter = "Druckhistorie|" & IO.Path.GetFileNameWithoutExtension(_ListFileName) & "*.pdf"
+        OpenFileDialog.FileName = "*.pdf"
+
+        'Filedialog aufrufen und pdf-File anzeigen
+        If OpenFileDialog.ShowDialog = DialogResult.OK Then
+            wb_Functions.ShowPdf(OpenFileDialog.FileName)
         End If
     End Sub
 

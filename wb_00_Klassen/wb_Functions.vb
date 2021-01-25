@@ -1378,6 +1378,41 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Löscht alle Dateien aus einem Verzeichnis, die älter als xDays sind
+    ''' </summary>
+    ''' <param name="Directory"></param>
+    ''' <param name="FilePattern"></param>
+    ''' <param name="xDays"></param>
+    Public Shared Sub DeleteOldFiles(Directory As String, FilePattern As String, xDays As Integer)
+        Try
+            Dim Dir As New DirectoryInfo(Directory)
+            Dim Heute As DateTime = DateTime.Now
+            For Each fi As FileInfo In Dir.GetFiles(FilePattern, SearchOption.TopDirectoryOnly)
+                If fi.CreationTime.AddDays(xDays) < Heute Then
+                    fi.Delete()
+                End If
+            Next
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Pdf-File mit der Windows-Default-Anwendung anzeigen. (pdf-Viewer)
+    ''' </summary>
+    ''' <param name="Filename"></param>
+    Public Shared Sub ShowPdf(Filename As String)
+        Dim pr As New Process
+        Try
+            pr.StartInfo.FileName = Filename
+            pr.StartInfo.Verb = "Open"
+            pr.Start()
+        Catch ex As Exception
+            MsgBox("Beim Anzeigen der pdf-Datei ist ein Fehler aufgetreten." & vbCrLf & vbCrLf & "Bitte prüfen, ob ein entsprechender pdf-Viewer installiert ist", MsgBoxStyle.Critical, "pdf-File anzeigen")
+        End Try
+        pr = Nothing
+    End Sub
+
+    ''' <summary>
     ''' Für ein Batch-File im Verzeichnis MySQLBatch aus. Über Argument wird %2 an das Batch-File übergeben
     ''' </summary>
     ''' <param name="Directory"></param>

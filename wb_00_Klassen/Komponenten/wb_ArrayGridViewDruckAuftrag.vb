@@ -41,25 +41,27 @@ Public Class wb_ArrayGridViewDruckAuftrag
         MyBase.RowCount = 0
 
         'Die erforderliche Anzahl Zeilen in einem Rutsch erstellen:
-        MyBase.Rows.Add(MaxRowCount + 1)
-        Dim s As wb_Global.wb_LinienGruppe
+        If MaxRowCount > 0 Then
+            MyBase.Rows.Add(MaxRowCount + 1)
+            Dim s As wb_Global.wb_LinienGruppe
 
-        'Daten ins DatagridView eintragen
-        For r = 0 To MaxRowCount
-            With rows(r)
-                'Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
-                .MinimumHeight = 20
-                'Strich zwischen den Zeilen  
-                .DividerHeight = 0
+            'Daten ins DatagridView eintragen
+            For r = 0 To MaxRowCount
+                With rows(r)
+                    'Zeileneigenschaften festlegen: Keine 'verschwindende' Zeile zulassen
+                    .MinimumHeight = 20
+                    'Strich zwischen den Zeilen  
+                    .DividerHeight = 0
 
-                'alle Spalten
-                s = GridArray(r)
-                .Cells(COLIDX).Value = s.LinienGruppe
-                .Cells(COLDRK).Value = s.bDrucken
-                .Cells(COLBEZ).Value = s.Bezeichnung
-                .Cells(COLKOM).Value = s.bKommentar
-            End With
-        Next
+                    'alle Spalten
+                    s = GridArray(r)
+                    .Cells(COLIDX).Value = s.LinienGruppe
+                    .Cells(COLDRK).Value = s.bDrucken
+                    .Cells(COLBEZ).Value = s.Bezeichnung
+                    .Cells(COLKOM).Value = s.bKommentar
+                End With
+            Next
+        End If
     End Sub
 
     ''' <summary>

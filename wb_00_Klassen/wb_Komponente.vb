@@ -202,6 +202,12 @@ Public Class wb_Komponente
         End Get
     End Property
 
+    ''' <summary>
+    ''' Kommentar zum Rohstoff.
+    ''' Wenn sich der Kommentar ändert, wird im zugehörigen Lagerort der entsprechende Kommentar ebenfalls gesetzt.
+    ''' Damit wird auch im WinBack-Material-Fenster (Produktion) der Kommentar zum Rohstoff angezeigt. (Silo-Nummer bei mehreren Rohstoffen)
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Kommentar As String
         Set(value As String)
             'Änderungen loggen
@@ -209,6 +215,10 @@ Public Class wb_Komponente
             'Flag setzen wenn sich die Daten geändert haben
             If ChangeLogChanged Then
                 _DataHasChanged = True
+                'Kommentar wird auch im Lagerort gespeichert
+                If _Lager IsNot Nothing Then
+                    _Lager.Kommentar = KO_Kommentar
+                End If
             End If
         End Set
         Get

@@ -22,9 +22,9 @@
     Public Const sqlSiloGrpNummer = "SELECT * FROM Komponenten INNER JOIN Lagerorte ON Komponenten.KA_Lagerort = Lagerorte.LG_Ort " &
                                     "WHERE ((KA_aktiv=1) AND (KO_Type=101) AND (KO_Nr_AlNum = '[0]')) ORDER BY Lagerorte.LG_Ort "
 
-    'Sql_statement SELECT nächster Artikel und LG_Ort (LIMIT 1, da mySQL kein SELECT FIRST kennt)
+    'Sql_statement SELECT nächster Artikel und LG_Ort (LIMIT 1, da mySQL kein SELECT FIRST kennt) LG_Timestamp ist als Dummy-Feld notwendig
     Public Const sqlRohstoffLagerort = "SELECT Komponenten.KO_Nr, Komponenten.KO_Nr_AlNum, Komponenten.KO_Bezeichnung, Komponenten.KO_Type, " &
-                                       "Lagerorte.LG_Silo_Nr, Lagerorte.LG_LF_Nr, Lagerorte.LG_Ort, Lagerorte.LG_Bilanzmenge " &
+                                       "Lagerorte.LG_Silo_Nr, Lagerorte.LG_LF_Nr, Lagerorte.LG_Ort, Lagerorte.LG_Bilanzmenge, Lagerorte.LG_Timestamp " &
                                        "FROM (Komponenten INNER JOIN Lagerorte ON Komponenten.KA_Lagerort = Lagerorte.LG_Ort) " &
                                        "WHERE KO_Type <> 0 AND [0] AND KA_aktiv = 1 ORDER BY KO_Type, KO_Nr LIMIT 1"
 

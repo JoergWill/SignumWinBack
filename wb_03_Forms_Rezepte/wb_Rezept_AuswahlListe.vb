@@ -144,6 +144,33 @@
         Me.Close()
     End Sub
 
+    ''' <summary>
+    ''' Rezept neu anlegen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnNew_Click(sender As Object, e As EventArgs) Handles BtnNew.Click
+        'neues Rezept anlegen
+        Dim Rezept As New wb_Rezept
+        Dim RezeptNrNeu As Integer = Rezept.MySQLdbNew(wb_Global.LinienGruppeStandard)
+
+        'Speicher wieder freigeben
+        Rezept = Nothing
+
+        'Das neu erzeugte Rezept gleich öffnen
+        Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNrNeu, wb_Global.RezeptVarianteStandard)
+        Rezeptur.tbRzNummer.Focus()
+        Rezeptur.ShowDialog()
+
+        'Rezeptnummer und Name übernehmen
+        _RezeptNr = RezeptNrNeu
+        _RezeptNummer = Rezeptur.tbRzNummer.Text
+        _RezeptName = Rezeptur.tbRezeptName.Text
+
+        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
+
     Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
         GetResult()
         Me.DialogResult = Windows.Forms.DialogResult.OK
@@ -182,4 +209,5 @@
             _RezeptListe.Add(RezListenElement)
         Next
     End Sub
+
 End Class

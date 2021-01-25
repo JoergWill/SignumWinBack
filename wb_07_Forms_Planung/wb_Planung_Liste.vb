@@ -18,6 +18,7 @@ Public Class wb_Planung_Liste
     'Bestellungen einlesen für Produktions-Datum
     Private _ProduktionsDatum As String = ""
     Private _ProduktionsFilialeNummer As Integer = wb_Global.UNDEFINED
+    Private _AktDatumBackZettelTeigListe As String
 
     Private Sub BtnVorlage_Click(sender As Object, e As EventArgs) Handles BtnVorlage.Click
         'Fenster Auswahl Vorlage anzeigen
@@ -128,6 +129,7 @@ Public Class wb_Planung_Liste
 
     Private Sub BtnBestellungen_Click(sender As Object, e As EventArgs) Handles BtnBestellungen.Click
         ReadBestellungenOrgaBack()
+        _AktDatumBackZettelTeigListe = dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
     End Sub
 
     Private Sub ReadBestellungenOrgaBack()
@@ -239,6 +241,11 @@ Public Class wb_Planung_Liste
         Dim NeueCharge As New wb_Planung_Neu(Produktion)
         NeueCharge.ShowDialog()
 
+        'Druckdatum
+        If _AktDatumBackZettelTeigListe = "" Then
+            _AktDatumBackZettelTeigListe = dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
+        End If
+
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
     End Sub
@@ -249,10 +256,24 @@ Public Class wb_Planung_Liste
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtnCheckLager_Click(sender As Object, e As EventArgs) Handles BtnCheckLager.Click
-        Produktion.CheckLager()
-        'Virtual Tree anzeigen
-        VirtualTree.DataSource = Produktion.RootCheckProduktion
-        VirtualTree.Refresh()
+        If BtnCheckLager.Tag = "CheckLager" Then
+            'Virtual Tree anzeigen
+            VirtualTree.DataSource = Produktion.RootProduktionsSchritt
+            VirtualTree.Refresh()
+            'Status merken
+            BtnCheckLager.Tag = "ProduktionsPlan"
+            'Text Button
+            BtnCheckLager.Text = "Lagerbestand prüfen"
+        Else
+            Produktion.CheckLager()
+            'Virtual Tree anzeigen
+            VirtualTree.DataSource = Produktion.RootCheckProduktion
+            VirtualTree.Refresh()
+            'Status merken
+            BtnCheckLager.Tag = "CheckLager"
+            'Text Button
+            BtnCheckLager.Text = "Produktion"
+        End If
     End Sub
 
     ''' <summary>
@@ -283,8 +304,8 @@ Public Class wb_Planung_Liste
         FilterAndMark(BackZettel, False, _FilterAufarbeitung, wb_Global.NOFILTER)
 
         'Druck-Daten
-        Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
-        pDialog.LL_KopfZeile_1 = "für " & dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
+        Dim pDialog As New wb_PrinterDialog(False, True) 'Drucker-Dialog (mit Druckhistorie)
+        pDialog.LL_KopfZeile_1 = "für " & _AktDatumBackZettelTeigListe
         pDialog.LL.DataSource = New ObjectDataProvider(BackZettel)
 
         'List und Label-Verzeichnis für die Listen
@@ -303,8 +324,8 @@ Public Class wb_Planung_Liste
         FilterAndMark(TeigListe, True, wb_Global.NOFILTER, _FilterLinienGruppe)
 
         'Druck-Daten
-        Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
-        pDialog.LL_KopfZeile_1 = "für " & dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
+        Dim pDialog As New wb_PrinterDialog(False, True) 'Drucker-Dialog
+        pDialog.LL_KopfZeile_1 = "für " & _AktDatumBackZettelTeigListe
         pDialog.LL.DataSource = New ObjectDataProvider(TeigListe)
 
         'List und Label-Verzeichnis für die Listen

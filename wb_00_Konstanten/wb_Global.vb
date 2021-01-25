@@ -15,6 +15,7 @@
 
     Public Const LogFileEntries = 20                    'Anzahl der Einträge im Puffer
     Public Const Log4NetConfigFile = "WinBack.log4net"  'Datei-Name des Log-Files
+    Public Const MaxHistDays = 3                        'Druckhistorie nach x Tagen löschen
 
     Public Const LinienGruppeSauerteig = 98           'Liniengruppe Sauerteig-Anlage(Rezeptvariante gleich 0)
     Public Const LinienGruppeStandard = 1             'Liniengruppe für neue Rezepte

@@ -978,16 +978,22 @@ Public Class wb_Rezeptschritt
     ''' Rezeptzeile zählt nicht zum Rezeptgesamtgewicht
     ''' </summary>
     ''' <returns>Boolean - Zählt nicht zum Rezeptgewicht</returns>
-    Public ReadOnly Property ZaehltNichtZumRezeptGewicht As Boolean
+    Public Property ZaehltNichtZumRezeptGewicht As Boolean
         Get
             Return _ZaehltNichtZumRezeptGewicht
         End Get
+        Set(value As Boolean)
+            _ZaehltNichtZumRezeptGewicht = value
+        End Set
     End Property
 
-    Public ReadOnly Property ZaehltTrotzdemZumNwtGewicht As Boolean
+    Public Property ZaehltTrotzdemZumNwtGewicht As Boolean
         Get
             Return _ZaehltTrotzdemZumNwtGewicht
         End Get
+        Set(value As Boolean)
+            _ZaehltTrotzdemZumNwtGewicht = value
+        End Set
     End Property
 
     ''' <summary>

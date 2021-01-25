@@ -221,6 +221,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>AssemblyResolve=True</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="combit.ListLabel22, Version=22.2.6290.25045, Culture=neutral, PublicKeyToken=a7a30592cb4a94be, processorArchitecture=MSIL">
@@ -1580,7 +1581,11 @@
     <Content Include="DBUpdate\2.30_LinienGruppen_A.sql" />
     <Content Include="DBUpdate\2.30_LinienGruppen_B.sql" />
     <Content Include="DBUpdate\2.30_LinienGruppen_C.sql" />
+    <Content Include="DBUpdate\2.30_Messreihen.sql" />
     <Content Include="DBUpdate\2.30_ProduktionsPlanung.sql" />
+    <Content Include="DBUpdate\2.30_RezeptGruppenUserRechte.sql" />
+    <Content Include="DBUpdate\2.30_TexteProdStufe.sql" />
+    <Content Include="DBUpdate\2.30_UserAlleRechte.sql" />
     <Content Include="DBUtility\DEL_ArtikelRohstoffe.sql" />
     <Content Include="DBUtility\DEL_RezepteRezeptschritte.sql" />
     <Content Include="DBUtility\UPD_RohstoffNummer_R.sql" />

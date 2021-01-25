@@ -384,6 +384,7 @@ Public Class wb_KompRzChargen
     Public Sub BtnRzpt_Click(sender As Object, e As EventArgs) Handles BtnRzpt.Click
         Dim RezeptAuswahl As New wb_Rezept_AuswahlListe
         RezeptAuswahl.BtnClear.Enabled = True
+        RezeptAuswahl.BtnNew.Enabled = True
 
         If RezeptAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
             RzNr = RezeptAuswahl.RezeptNr

@@ -4,6 +4,7 @@ Public Class wb_LagerOrt
     Private _Bilanzmenge As String = Nothing
     Private _Mindestmenge As String = Nothing
     Private _Lagerort As String = Nothing
+    Private _Kommentar As String = ""
     Private _Aktiv As String = "A"
 
     Public Property Bilanzmenge As String
@@ -55,6 +56,22 @@ Public Class wb_LagerOrt
         Set(value As String)
             _Aktiv = value
             'Änderung Flag Aktiv/Hand/Aus in MySql-Datenbank schreiben
+            MySQLdbUpdate()
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Kommentarfeld zum Lagerort. Wird in WinBack-Produktion im Materialfenster angezeigt.
+    ''' Enthält den gleichen Wert wie das Kommentarfeld zum Rohstoff.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Kommentar As String
+        Get
+            Return _Kommentar
+        End Get
+        Set(value As String)
+            _Kommentar = value
+            'Änderung Kommentarfeld MySql-Datenbank schreiben
             MySQLdbUpdate()
         End Set
     End Property
@@ -153,10 +170,13 @@ Public Class wb_LagerOrt
                 'Bilanzmenge
                 Case "LG_Bilanzmenge"
                     _Bilanzmenge = Value
-               'Type
+               'Mindestmenge
                 Case "LG_Mindestmenge"
                     _Mindestmenge = Value
-               'Aktiv/Hand
+                'Kommentar
+                Case "LG_Kommentar"
+                    _Kommentar = Value
+                'Aktiv/Hand
                 Case "LG_aktiv"
                     _Aktiv = Value
             End Select
@@ -178,7 +198,7 @@ Public Class wb_LagerOrt
             Dim sql As String
 
             'Update-Statement wird dynamisch erzeugt    
-            sql = "LG_Mindestmenge = '" & Mindestmenge & "', LG_Bilanzmenge = '" & Bilanzmenge & "', LG_Aktiv = '" & Aktiv & "'"
+            sql = "LG_Mindestmenge = '" & Mindestmenge & "', LG_Bilanzmenge = '" & Bilanzmenge & "', LG_Kommentar = '" & Kommentar & "', LG_Aktiv = '" & Aktiv & "'"
 
             'Update ausführen
             'Debug.Print("Lagerorte.MysqldbUpdate " & sql)

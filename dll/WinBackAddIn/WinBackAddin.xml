@@ -1529,6 +1529,13 @@ Stacktrace:
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_LagerOrt.Kommentar">
+ <summary>
+ Kommentarfeld zum Lagerort. Wird in WinBack-Produktion im Materialfenster angezeigt.
+ Enthält den gleichen Wert wie das Kommentarfeld zum Rohstoff.
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:WinBack.wb_LagerOrt.MysqldbRead(MySql.Data.MySqlClient.MySqlDataReader@)">
  <summary>
  Liest alle Datenfelder aus dem aktuellen Datensatz in das Komponenten-Objekt
@@ -3651,6 +3658,14 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
 <member name="P:WinBack.wb_Komponente.Nummer">
  <summary>
  Rohstoff/Artikel-Nummer (alpha-numerisch)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:WinBack.wb_Komponente.Kommentar">
+ <summary>
+ Kommentar zum Rohstoff.
+ Wenn sich der Kommentar ändert, wird im zugehörigen Lagerort der entsprechende Kommentar ebenfalls gesetzt.
+ Damit wird auch im WinBack-Material-Fenster (Produktion) der Kommentar zum Rohstoff angezeigt. (Silo-Nummer bei mehreren Rohstoffen)
  </summary>
  <returns></returns>
 </member>
@@ -6368,6 +6383,15 @@ Text aus Datenbank lesen - Übersetzung
      Kopfzeile_2
  </summary>
 </member>
+<member name="M:WinBack.wb_PrinterDialog.#ctor(System.Boolean,System.Boolean)">
+ <summary>
+ Erzeugt ein neues Druck-Fenster.
+ Die Druckhistorie wird aus dem ArrayList-Objekt erzeugt und vor dem Drucken gespeichert.
+ Der Dateiname wird erzeugt aus Druckdatum und Name der Vorlage. Gespeichert werden die Druckdaten im Verzeichnis TEMP
+ </summary>
+ <param name="ExcelExport"></param>
+ <param name="Druckhistorie"></param>
+</member>
 <member name="P:WinBack.wb_PrinterDialog.ListSubDirectory">
  <summary>
  Name des Unter-Verzeichnis für die ListUndLabel-Report-Files
@@ -6442,6 +6466,14 @@ Text aus Datenbank lesen - Übersetzung
 <member name="M:WinBack.wb_PrinterDialog.BtnVorschau_Click(System.Object,System.EventArgs)">
  <summary>
  Anzeige eines (großen) Vorschau-Fensters. Aus diesem Fenster kann auch gedruckt werden.
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:WinBack.wb_PrinterDialog.BtnDruckHistorie_Click(System.Object,System.EventArgs)">
+ <summary>
+ Zeigt eine Liste alle pdf-Dateien mit dem passenden Filename an. 
+ Ein Doppelklick auf den Dateinamen startet den Druck.
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
@@ -7331,6 +7363,13 @@ Text aus Datenbank lesen - Übersetzung
  <summary>
  Klasse, die eine Rezeptur mit ihren Bestandteilen beschreibt
  </summary>
+</member>
+<member name="M:WinBack.wb_Rezept_AuswahlListe.BtnNew_Click(System.Object,System.EventArgs)">
+ <summary>
+ Rezept neu anlegen
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
 </member>
 <member name="M:WinBack.wb_Rezept_AuswahlListe.GetResult">
  <summary>
@@ -9182,6 +9221,20 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="VersionIst"></param>
  <param name="VersionNeu"></param>
  <returns></returns>
+</member>
+<member name="M:WinBack.wb_Functions.DeleteOldFiles(System.String,System.String,System.Int32)">
+ <summary>
+ Löscht alle Dateien aus einem Verzeichnis, die älter als xDays sind
+ </summary>
+ <param name="Directory"></param>
+ <param name="FilePattern"></param>
+ <param name="xDays"></param>
+</member>
+<member name="M:WinBack.wb_Functions.ShowPdf(System.String)">
+ <summary>
+ Pdf-File mit der Windows-Default-Anwendung anzeigen. (pdf-Viewer)
+ </summary>
+ <param name="Filename"></param>
 </member>
 <member name="M:WinBack.wb_Functions.DoBatch(System.String,System.String,System.String,System.Boolean)">
  <summary>

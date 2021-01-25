@@ -35,6 +35,8 @@ Partial Class wb_PrinterDialog
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.LLPreview = New combit.ListLabel22.ListLabelPreviewControl(Me.components)
         Me.BtnVorschau = New System.Windows.Forms.Button()
+        Me.BtnDruckHistorie = New System.Windows.Forms.Button()
+        Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.GroupBox1.SuspendLayout()
         Me.gbVorschau.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -198,11 +200,28 @@ Partial Class wb_PrinterDialog
         Me.BtnVorschau.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.BtnVorschau.UseVisualStyleBackColor = True
         '
+        'BtnDruckHistorie
+        '
+        Me.BtnDruckHistorie.Image = Global.WinBack.My.Resources.Resources.AdminTimer_32x32
+        Me.BtnDruckHistorie.Location = New System.Drawing.Point(18, 120)
+        Me.BtnDruckHistorie.Name = "BtnDruckHistorie"
+        Me.BtnDruckHistorie.Size = New System.Drawing.Size(110, 43)
+        Me.BtnDruckHistorie.TabIndex = 9
+        Me.BtnDruckHistorie.Text = "Druckhistorie"
+        Me.BtnDruckHistorie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnDruckHistorie.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.BtnDruckHistorie.UseVisualStyleBackColor = True
+        '
+        'OpenFileDialog
+        '
+        Me.OpenFileDialog.FileName = "OpenFileDialog"
+        '
         'wb_PrinterDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(435, 414)
+        Me.Controls.Add(Me.BtnDruckHistorie)
         Me.Controls.Add(Me.BtnVorschau)
         Me.Controls.Add(Me.gbVorschau)
         Me.Controls.Add(Me.GroupBox1)
@@ -233,4 +252,6 @@ Partial Class wb_PrinterDialog
     Friend WithEvents OK_Button As Windows.Forms.Button
     Friend WithEvents LLPreview As combit.ListLabel22.ListLabelPreviewControl
     Friend WithEvents BtnVorschau As Windows.Forms.Button
+    Friend WithEvents BtnDruckHistorie As Windows.Forms.Button
+    Friend WithEvents OpenFileDialog As Windows.Forms.OpenFileDialog
 End Class

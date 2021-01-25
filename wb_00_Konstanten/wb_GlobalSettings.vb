@@ -639,6 +639,12 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    Public Shared ReadOnly Property pDruckHistoriePath As String
+        Get
+            Return pAddInPath & "Temp\"
+        End Get
+    End Property
+
     ''' <summary>
     ''' Pfad für die ListUndLabel-Listen-Files
     ''' Im Debug-Modus wird als Verzeichnis direkt das Repository zurückgegeben, damit werden alle Änderungen automatisch synchronisiert.

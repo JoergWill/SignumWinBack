@@ -301,10 +301,14 @@ Public Class ob_RecipeInfo
     ''' </summary>
     Public Property Ingredients As IList Implements IRecipeInfo.Ingredients
         Get
-            Debug.Print("Ingredients")
-            For Each x As ob_RecipeIngredient In _Ingredients
-                Debug.Print(" Ingredient/Amount " & x.ArticleNo & "/" & x.Amount)
-            Next
+            'If Not IsNothing(_Ingredients) Then
+            '    Debug.Print("Ingredients")
+            '    For Each x As ob_RecipeIngredient In _Ingredients
+            '        Debug.Print(" Ingredient/Amount " & x.ArticleNo & "/" & x.Amount)
+            '    Next
+            'Else
+            '    Debug.Print("Ingredients is Nothing")
+            'End If
             Return _Ingredients
         End Get
         Set(value As IList)
