@@ -277,13 +277,15 @@ Public Class wb_Lieferungen
             'Verbrauchte Menge
             Dim MengeVerbraucht As Double = wb_Functions.StrToDouble(winback.sField("LF_Verbrauch"))
             'Liefermenge
-            Dim MengeGeliefert As Double = wb_Functions.StrToDouble(winback.sField("LF_Menge"))
+            Dim MengeLetzteLieferung As Double = wb_Functions.StrToDouble(winback.sField("LF_Menge"))
             'Die Diffenz wird bei der neuen Lieferung als neue verbrauchte Menge eingetragen
-            Silo.VerbrauchtMenge = MengeGeliefert - MengeVerbraucht
+            Silo.VerbrauchtMenge = MengeVerbraucht - MengeLetzteLieferung
             'der alte Datensatz wird mit Status eledigt(3) überschrieben
-
+            winback.CloseRead()
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateStatusLieferung, Silo.LagerOrt))
+        Else
+            winback.CloseRead()
         End If
-        winback.CloseRead()
 
         'letzten Eintrag aus winback.Lieferungen
         winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferLfd, Silo.LagerOrt))
@@ -608,7 +610,7 @@ Public Class wb_Lieferungen
         'der INSERT-Befehl wird dynamisch erzeugt
         Dim sql_insert As String = "'" & LG_Ort & "', " & Lfd & ", '" & wb_sql_Functions.MySQLdatetime(Datum) & "', " &
                                    "'" & wb_Functions.FormatStr(Menge, 2) & "', '" & Lieferant & "', '" & Gebucht & "', '" & Bemerkung & "', " &
-                                   "0" & ", '" & ChargenNummer & "', NULL, NULL, " & wb_Functions.FormatStr(Verbraucht, 2) & ", " & wb_GlobalSettings.AktUserNr & ", '" & Preis & "', " & "0"
+                                   "0" & ", '" & ChargenNummer & "', NULL, NULL, '" & wb_Functions.FormatStr(Verbraucht, 2) & "', " & wb_GlobalSettings.AktUserNr & ", '" & Preis & "', " & "0"
 
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertWE, sql_insert)
         'INSERT ausführen

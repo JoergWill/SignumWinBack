@@ -21,6 +21,7 @@
 
     'Sql_statement UPDATE Lieferungen nach LG_Ort
     Public Const sqlSetStatusLieferung = "UPDATE Lieferungen SET LF_Gebucht = '3' WHERE LF_LG_Ort = '[0]'"
+    Public Const sqlUpdateStatusLieferung = "UPDATE Lieferungen SET LF_Gebucht = '3' WHERE LF_LG_Ort = '[0]' AND LF_Gebucht = '2'"
 
     'Sql_statement INSERT Lieferungen (Wareneingang)
     Public Const sqlInsertWE = "INSERT INTO Lieferungen(LF_LG_Ort, LF_Nr, LF_Datum, LF_Menge, LF_Lieferant, LF_gebucht, LF_Bemerkung, LF_Lager, " &
