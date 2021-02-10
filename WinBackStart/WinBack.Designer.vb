@@ -292,6 +292,7 @@ Partial Class WinBack
         Me.rbArtikelNeu.Name = "rbArtikelNeu"
         Me.rbArtikelNeu.SmallImage = CType(resources.GetObject("rbArtikelNeu.SmallImage"), System.Drawing.Image)
         Me.rbArtikelNeu.Text = "Artikel Neu"
+        Me.rbArtikelNeu.Value = "NEW"
         '
         'rbArtikelBearbeiten
         '
@@ -304,12 +305,13 @@ Partial Class WinBack
         '
         'rbArtikelRemove
         '
-        Me.rbArtikelRemove.Image = CType(resources.GetObject("rbArtikelRemove.Image"), System.Drawing.Image)
-        Me.rbArtikelRemove.LargeImage = CType(resources.GetObject("rbArtikelRemove.LargeImage"), System.Drawing.Image)
+        Me.rbArtikelRemove.Image = Global.WinBack.My.Resources.Resources.ArtikelLoeschen_32x32
+        Me.rbArtikelRemove.LargeImage = Global.WinBack.My.Resources.Resources.ArtikelLoeschen_32x32
         Me.rbArtikelRemove.MinimumSize = New System.Drawing.Size(60, 0)
         Me.rbArtikelRemove.Name = "rbArtikelRemove"
         Me.rbArtikelRemove.SmallImage = CType(resources.GetObject("rbArtikelRemove.SmallImage"), System.Drawing.Image)
         Me.rbArtikelRemove.Text = "Artikel Löschen"
+        Me.rbArtikelRemove.Value = "DEL"
         '
         'rbArtikelCopy
         '

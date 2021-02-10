@@ -170,7 +170,21 @@ Public Class wb_User_Main
     End Sub
 
     Private Sub btnUserPrint()
-        'Throw New NotImplementedException
+        'sicherheitshalber abfragen
+        If Not IsNothing(UserListe) Then
+
+            'Druck-Daten
+            Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
+
+            'Liste aller Rohstoffe aus den DataGridView
+            pDialog.LL.DataSource = New combit.ListLabel22.DataProviders.AdoDataProvider(UserListe.DataGridView.LLData)
+
+            'List und Label-Verzeichnis für die Listen
+            pDialog.ListSubDirectory = "StammDaten"
+            pDialog.ListFileName = "UserListe.lst"
+            pDialog.ShowDialog()
+            pDialog = Nothing
+        End If
     End Sub
 
 End Class

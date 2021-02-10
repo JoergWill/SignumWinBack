@@ -103,6 +103,12 @@ Public Class wb_GlobalSettings
     Private Shared _NwtShowENummer As Integer = UNDEFINED
     Private Shared _NwtOptimizeZutatenListe As Integer = UNDEFINED
 
+    Private Shared _Datenlink_Url As String = Nothing
+    Private Shared _Datenlink_CAT As String = Nothing
+    Private Shared _Datenlink_PAT As String = Nothing
+    Private Shared _WinBackCloud_Url As String = Nothing
+    Private Shared _WinBackCloud_Pass As String = Nothing
+
     Private Shared _mHost As String = Nothing
     Private Shared _mSenderAddr As String = Nothing
     Private Shared _mSenderPass As String = Nothing
@@ -322,6 +328,20 @@ Public Class wb_GlobalSettings
     Public Shared ReadOnly Property AktUserGruppe As Integer
         Get
             Return wb_AktUser.UserGruppe
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Die Filialzuordnung Gesamtunternehmen beeinhaltet auch die Filiale Produktion
+    ''' 
+    ''' Wenn dieser Switch gesetzt ist, wird jeder Mitarbeiter mit der Filialzuordnung 'Gesamtunternehmen#
+    ''' auch der Filiale Produktion zugeordnet !
+    ''' Achtung: Dann sind alle Mitarbeiter auch in WinBack vorhanden. (Default=False)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property GesamtUnterNehmenHatAuchProduktion As Boolean
+        Get
+            Return False
         End Get
     End Property
 
@@ -1355,6 +1375,12 @@ Public Class wb_GlobalSettings
                 _NwtShowENummer = IniFile.ReadInt("Artikel", "ENummernAnzeigen", 1)
                 _NwtOptimizeZutatenListe = IniFile.ReadInt("Artikel", "ZutatenListeOptimieren", 1)
 
+                _Datenlink_Url = IniFile.ReadString("Datenlink", "URL", wb_Credentials.Datenlink_Url)
+                _Datenlink_CAT = IniFile.ReadString("Datenlink", "CAT", wb_Credentials.Datenlink_CAT)
+                _Datenlink_PAT = IniFile.ReadString("Datenlink", "PAT", wb_Credentials.Datenlink_PAT)
+                _WinBackCloud_Url = IniFile.ReadString("Cloud", "URL", wb_Credentials.WinBackCloud_Url)
+                _WinBackCloud_Pass = IniFile.ReadString("Cloud", "Pass", wb_Credentials.WinBackCloud_Pass)
+
             Case "Mail"
                 mHost = IniFile.ReadString("smpt", "smtpHost")
                 mHost = IniFile.ReadString("smpt", "smtpUser")
@@ -1624,6 +1650,51 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared Property Datenlink_Url As String
+        Get
+            Return _Datenlink_Url
+        End Get
+        Set(value As String)
+            _Datenlink_Url = value
+        End Set
+    End Property
+
+    Public Shared Property Datenlink_CAT As String
+        Get
+            Return _Datenlink_CAT
+        End Get
+        Set(value As String)
+            _Datenlink_CAT = value
+        End Set
+    End Property
+
+    Public Shared Property Datenlink_PAT As String
+        Get
+            Return _Datenlink_PAT
+        End Get
+        Set(value As String)
+            _Datenlink_PAT = value
+        End Set
+    End Property
+
+    Public Shared Property WinBackCloud_Url As String
+        Get
+            Return _WinBackCloud_Url
+        End Get
+        Set(value As String)
+            _WinBackCloud_Url = value
+        End Set
+    End Property
+
+    Public Shared Property WinBackCloud_Pass As String
+        Get
+            Return _WinBackCloud_Pass
+        End Get
+        Set(value As String)
+            _WinBackCloud_Pass = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Verwendung der internen Deklaration anstelle der externen Deklaration
     ''' </summary>
@@ -1818,4 +1889,6 @@ Public Class wb_GlobalSettings
             End If
         End Set
     End Property
+
+
 End Class

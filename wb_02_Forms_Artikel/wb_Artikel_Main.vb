@@ -87,6 +87,10 @@ Public Class wb_Artikel_Main
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrp.AddButton("btnArtikelListe", "Artikel", "WinBack Artikel-Liste", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf BtnArtikelListe)
                 oGrp.AddButton("BtnArtikelDetails", "Details", "weitere Artikel-Daten", My.Resources.ArtikelDetails_32x32, My.Resources.ArtikelDetails_32x32, AddressOf BtnArtikelDetails)
+                'Artikel löschen nur Admin
+                If wb_AktUser.SuperUser Then
+                    oGrp.AddButton("BtnArtikelDelete", "Löschen", "Artikel löschen", My.Resources.ArtikelLoeschen_32x32, My.Resources.ArtikelLoeschen_32x32, AddressOf BtnArtikelLöschen)
+                End If
                 oGrp.AddButton("BtnArtikelParameter", "Parameter", "Artikel Parameter Produktion und Nährwerte", My.Resources.ArtikelParameter_32x32, My.Resources.ArtikelParameter_32x32, AddressOf BtnArtikelParameter)
                 oGrp.AddButton("BtnArtikelHinweise", "Hinweise", "Artikel Verarbeitungshinweise", My.Resources.ArtikelHinweise_32x32, My.Resources.ArtikelHinweise_32x32, AddressOf BtnArtikelHinweise)
                 _ContextTabs.Add(oNewTab)
@@ -126,6 +130,22 @@ Public Class wb_Artikel_Main
             ArtikelHinweise = New wb_Artikel_Hinweise
         End If
         ArtikelHinweise.Show(DockPanel, DockState.Document)
+    End Sub
+
+    Private Sub BtnArtikelLöschen()
+        'Sicherheitsabfrage Artikel löschen
+        If MsgBox("Den Artikel " & wb_Artikel_Shared.Artikel.Nummer & " " & wb_Artikel_Shared.Artikel.Bezeichnung & " löschen?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            Dim Komponente As New wb_Komponente
+            Dim KompNrDel As Integer = wb_Artikel_Shared.Artikel.Nr
+            If Komponente.MySQLdbCanBeDeleted(KompNrDel) Then
+                Komponente.Nr = KompNrDel
+                Komponente.MySQLdbDelete()
+                ArtikelListe.RefreshData()
+            Else
+                MsgBox(Komponente.LastErrorText)
+            End If
+            Komponente = Nothing
+        End If
     End Sub
 
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent

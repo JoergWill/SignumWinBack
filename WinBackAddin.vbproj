@@ -1610,6 +1610,9 @@
     <None Include="Resources\ChargenListe_32x32.png" />
     <None Include="Resources\ArtikelHinweise_32x32.png" />
     <None Include="Resources\AdminTimer_32x32.png" />
+    <None Include="Resources\Admin_32x321.png" />
+    <None Include="Resources\AdminShd_32x32.png" />
+    <None Include="Resources\ArtikelLoeschen_32x32.png" />
     <Content Include="Resources\DatenRueckSicherung_16x16.png" />
     <None Include="Resources\IconSave_24x24.png" />
     <None Include="Resources\IconCancel_24x24.png" />

@@ -3,6 +3,7 @@ Imports WinBack.wb_Chargen_Shared
 
 Public Class wb_Statistik_Rezepte
     Inherits DockContent
+    Private InitOK As Boolean = False
 
     ''' <summary>
     ''' Listen-Auswahl initialisieren
@@ -10,10 +11,14 @@ Public Class wb_Statistik_Rezepte
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub wb_Statistik_Rezepte_Enter(sender As Object, e As EventArgs) Handles MyBase.Enter
-        'Drop-Down-Listen initialisieren
-        ListeStatistik.InitGruppenListen(wb_Global.StatistikType.StatistikRezepte)
-        'Listen-Fenster initialisieren (Variante Rezepte)
-        ListeStatistik.InitAuswahlListen(wb_Global.StatistikType.StatistikRezepte)
+        If Not InitOK Then
+            'Drop-Down-Listen initialisieren
+            ListeStatistik.InitGruppenListen(wb_Global.StatistikType.StatistikRezepte)
+            'Listen-Fenster initialisieren (Variante Rezepte)
+            ListeStatistik.InitAuswahlListen(wb_Global.StatistikType.StatistikRezepte)
+            'Initialisierung nur bei ersten Start
+            InitOK = True
+        End If
     End Sub
 
     ''' <summary>

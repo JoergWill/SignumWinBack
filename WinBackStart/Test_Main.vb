@@ -28,17 +28,17 @@ Public Class Test_Main
         Rezept = New wb_Rezept(2691, Nothing, 0.0, 1)
 
         'Virtual Tree anzeigen
-        VirtualTree.DataSource = Rezept.RootRezeptSchritt
+        'VirtualTree.DataSource = Rezept.RootRezeptSchritt
         'alle Zeilen aufklappen
-        VirtualTree.RootRow.ExpandChildren(True)
+        'VirtualTree.RootRow.ExpandChildren(True)
 
     End Sub
 
 
     Private Sub VirtualTree_GetCellData(sender As Object, e As GetCellDataEventArgs)
         'get the default binding for the given row And use it to populate the cell data
-        Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
-        Binding.GetCellData(e.Row, e.Column, e.CellData)
+        'Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
+        'Binding.GetCellData(e.Row, e.Column, e.CellData)
 
         'aktuell ausgewählten Rezeptschritt merken (Popup)
         _RezeptSchritt = DirectCast(e.Row.Item, wb_Rezeptschritt)

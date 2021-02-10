@@ -83,9 +83,14 @@ Public Class wb_Filiale
 
                 'alle Filialen aus FilialNr
                 For Each sf In sFiliale
+                    'Filiale Gesamtunternehmen(0) liefert True !
+                    If sf = "0" And wb_GlobalSettings.GesamtUnterNehmenHatAuchProduktion Then
+                        Return True
+                        Exit For
+                    End If
                     'alle Filialen aus dbo.Filialen.Typ = wb_Konfig.ProduktionsFiliale
                     For Each pF In pFiliale
-                        If pF = sf Then
+                        If (pF = sf) Then
                             Return True
                             Exit For
                         End If

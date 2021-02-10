@@ -1,13 +1,67 @@
 ﻿
+Imports System.Drawing
 Imports System.Reflection
+Imports Signum.OrgaSoft.GUI
 
 Public Class wb_Main_Shared
     Private Shared _MainProgress As wb_Main_Progress = Nothing
     Private Shared _MainProgressVisible As Boolean = False
+    Private Shared _MenuButtons As New List(Of IButton)
+    Private Shared _ShaddowButtons As New List(Of IButton)
 
     Public Shared Event eOpenForm(sender As Object, FormName As String)
     Public Shared Event eTimer(sender As Object, e As String)
     Public Shared Event eSendMessage(sender As Object, Message As String)
+
+    Public Shared Sub AddMenuButton(Gruppe As IGroup, Name As String, Text As String, ToolTip As String, PictureSmall As Image, PictureLarge As Image, ClickHandler As EventHandler, Tag As Integer)
+        Dim MenuBtn As IButton = Gruppe.AddButton(Tag.ToString("000") & Name, Text, ToolTip, PictureSmall, PictureLarge, ClickHandler)
+        _MenuButtons.Add(MenuBtn)
+    End Sub
+    Public Shared Sub AddShaddowButton(Gruppe As IGroup, Name As String, Text As String, ToolTip As String, PictureSmall As Image, PictureLarge As Image, Tag As Integer)
+        Dim MenuBtn As IButton = Gruppe.AddButton(Tag.ToString("000") & Name, "", ToolTip, PictureSmall, PictureLarge, Nothing)
+        MenuBtn.Visible = False
+        _MenuButtons.Add(MenuBtn)
+    End Sub
+
+    Public Shared Sub CheckMenu()
+        'Login als Superuser
+        Dim SuperUser As Boolean = (wb_GlobalSettings.OrgaBackEmployee = "SYS")
+        Dim GroupVisible As Boolean
+        Dim GroupName As String = ""
+
+        'Alle Signum-Menu-Buttons durchlaufen und einzeln ein/ausschalten
+        For Each Btn In _MenuButtons
+            'Buttons ohne ClickHandler sind Shaddow-Buttons
+            If Btn.Text = "" Then
+                'wenn alle Elemente der Gruppe ausgeblendet sind, wird der Shaddow-Button aktiviert
+                Btn.Visible = Not GroupVisible
+            Else
+                'Neue Gruppe
+                If Btn.Parent.Name <> GroupName Then
+                    GroupName = Btn.Parent.Name
+                    GroupVisible = False
+                End If
+                'Button ein/ausblenden
+                Btn.Visible = wb_AktRechte.RechtOK(Left(Btn.Name, 3), SuperUser)
+                'Wenn ein Button sichtbar ist, bleibt die Gruppe sichtbar
+                If Btn.Visible Then
+                    GroupVisible = True
+                End If
+            End If
+
+            'Damit der Menu-Tab(Gruppe) nicht (fälschlicherweise beim nächsten Login in OrgaBack) gelöscht wird muss ein Dummy-Button aktiviert werden.
+            'ShowShaddowButton(Btn.Name, Btn.Visible)
+        Next
+    End Sub
+    Private Shared Sub ShowShaddowButton(Name As String, Visible As Boolean)
+        Dim Tag As String = Left(Name, 3)
+        For Each ShaddowBtn In _ShaddowButtons
+            If Tag = Left(ShaddowBtn.Name, 3) Then
+                ShaddowBtn.Visible = Not Visible
+                Exit For
+            End If
+        Next
+    End Sub
 
     Public Shared Property MainProgressVisible
         Get

@@ -32,6 +32,11 @@ WinBackAddin
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:WinBack.My.Resources.Resources.AdminShd_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:WinBack.My.Resources.Resources.AdminTimer_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
@@ -43,6 +48,11 @@ WinBackAddin
 </summary>
 </member>
 <member name="P:WinBack.My.Resources.Resources.ArtikelHinweise_32x32">
+<summary>
+  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:WinBack.My.Resources.Resources.ArtikelLoeschen_32x32">
 <summary>
   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
 </summary>
@@ -6198,6 +6208,16 @@ Text aus Datenbank lesen - Übersetzung
  </summary>
  <returns></returns>
 </member>
+<member name="P:WinBack.wb_GlobalSettings.GesamtUnterNehmenHatAuchProduktion">
+ <summary>
+ Die Filialzuordnung Gesamtunternehmen beeinhaltet auch die Filiale Produktion
+ 
+ Wenn dieser Switch gesetzt ist, wird jeder Mitarbeiter mit der Filialzuordnung 'Gesamtunternehmen#
+ auch der Filiale Produktion zugeordnet !
+ Achtung: Dann sind alle Mitarbeiter auch in WinBack vorhanden. (Default=False)
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:WinBack.wb_GlobalSettings.SqlConWinBack">
  <summary>
  Liefert den Connection-String für die WinBack-Datenbank zurück.
@@ -9787,6 +9807,33 @@ Datenbank-Verbindung schliessen
 <member name="M:WinBack.ob_Main_Menu.AddMenu">
  <summary>
  Erzeugen Hauptmenu im Ribbon Orgasoft
+ Abhängig von den Benutzer-Rechten in WinBack
+ 
+      IP_ItemID           Tag
+ --+-------------------+-------+-------------------------
+      0 = Produktion      100
+      1 = Chargen         101
+      2 = Artikel         102
+      3 = Rezepte         103
+      4 = Rohstoffe       104
+      5 = Service         105
+      6 = Installation    106
+      7 = Hilfe           107
+      
+      Module WinBack-Büro
+ --+-------------------+-------+-------------------------
+      20 = Benutzerverw    120
+      21 = Vnc             121
+      22 = Statistik       122
+      23 = Rezepthistorie  123
+      24 = Material Import 124
+      25 = Excel Export    125
+      26 = Bakelink        126
+      27 = Bestellwesen    127
+      28 = Inhalts-Stoffe  128
+      29 = Cloud           129 (ohne Recht 29 Cloud nur mit Einschränkungen)
+      30 = Prod.Planung    130
+     
  </summary>
 </member>
 <member name="M:WinBack.ob_Main_Menu.AddTraceListener">

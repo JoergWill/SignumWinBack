@@ -146,7 +146,7 @@ Public Class wb_nwtUpdate
     ''' <param name="iD"></param>
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
     Private Function GetNaehrwerteHetzner(iD As String, nwtdaten As wb_Komponente) As Date
-        Dim nwt As New wb_nwtCl_WinBack(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
+        Dim nwt As New wb_nwtCl_WinBack(wb_GlobalSettings.WinBackCloud_Pass, wb_GlobalSettings.WinBackCloud_Url)
         If nwt.GetProductData(iD, nwtdaten) > 0 Then
             Return nwtdaten.ktTyp301.TimeStamp
         Else
@@ -163,7 +163,7 @@ Public Class wb_nwtUpdate
     ''' <returns>TimeStamp (DateTime) - Änderungsdatum aus der Cloud</returns>
     Private Function GetNaehrwerteDatenlink(iD As String, nwtdaten As wb_Komponente) As Date
         'Create new instance of nwtCloud
-        Dim dl As New wb_nwtCl_DatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
+        Dim dl As New wb_nwtCl_DatenLink(wb_GlobalSettings.Datenlink_PAT, wb_GlobalSettings.Datenlink_CAT, wb_GlobalSettings.Datenlink_Url)
         If dl.GetProductData(iD, nwtdaten) > 0 Then
             'Datum/Uhrzeit der letzten Änderung
             Return nwtdaten.ktTyp301.TimeStamp

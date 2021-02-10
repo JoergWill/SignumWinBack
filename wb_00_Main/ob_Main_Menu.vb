@@ -186,41 +186,78 @@ Public Class ob_Main_Menu
 
     ''' <summary>
     ''' Erzeugen Hauptmenu im Ribbon Orgasoft
+    ''' Abhängig von den Benutzer-Rechten in WinBack
+    ''' 
+    '''      IP_ItemID           Tag
+    ''' --+-------------------+-------+-------------------------
+    '''      0 = Produktion      100
+    '''      1 = Chargen         101
+    '''      2 = Artikel         102
+    '''      3 = Rezepte         103
+    '''      4 = Rohstoffe       104
+    '''      5 = Service         105
+    '''      6 = Installation    106
+    '''      7 = Hilfe           107
+    '''      
+    '''      Module WinBack-Büro
+    ''' --+-------------------+-------+-------------------------
+    '''      20 = Benutzerverw    120
+    '''      21 = Vnc             121
+    '''      22 = Statistik       122
+    '''      23 = Rezepthistorie  123
+    '''      24 = Material Import 124
+    '''      25 = Excel Export    125
+    '''      26 = Bakelink        126
+    '''      27 = Bestellwesen    127
+    '''      28 = Inhalts-Stoffe  128
+    '''      29 = Cloud           129 (ohne Recht 29 Cloud nur mit Einschränkungen)
+    '''      30 = Prod.Planung    130
+    '''     
     ''' </summary>
     Private Sub AddMenu()
         ' Fügt dem Ribbon ein neues RibbonTab 'WinBack' hinzu
         Dim oNewTab = oMenuService.AddTab("wb_MainMenu", "WinBack", "WinBack in OrgaBack integriert")
-
-        ' Das neue RibbonTab 'WinBack' erhält Haupt-Menu-Gruppen 'Stammdaten' 'Auswertung' 'Linien'
-        Dim oGrpStammdaten = oNewTab.AddGroup("WinBack", "Stammdaten (Produktion)")
-        Dim oGrpChargen = oNewTab.AddGroup("WinBack", "Auswertung (Produktion)")
-        Dim oGrpLinien = oNewTab.AddGroup("WinBack", "Linien")
-        Dim oGrpPlanung = oNewTab.AddGroup("WinBack", "Teig-Herstellung")
-        Dim oGrpAdmin = oNewTab.AddGroup("WinBack", "Administration")
-
-        'Gruppe Stammdaten
-        oGrpStammdaten.AddButton("btnArtikelStamm", "Artikel", "WinBack Artikelstammdaten", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf ShowArtikelForm)
-        oGrpStammdaten.AddButton("btnRohstoffStamm", "Rohstoffe", "WinBack Rohstoff-Stammdaten", My.Resources.MainRohstoffe_16x16, My.Resources.MainRohstoffe_32x32, AddressOf ShowRohstoffForm)
-        oGrpStammdaten.AddButton("btnRezeptStamm", "Rezepte", "WinBack Rezeptverwaltung", My.Resources.MainRezept_16x16, My.Resources.MainRezept_32x32, AddressOf ShowRezeptForm)
-        oGrpStammdaten.AddButton("btnBenutzer", "Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
-        oGrpStammdaten.AddButton("btnKonstanten", "Schlüsseldaten", "Stammdaten WinBack - Rohstoff/Artikelgruppen, Rezeptvarianten, Produktionsstufen...", My.Resources.MainStammdaten_16x16, My.Resources.MainStammdaten_32x32, AddressOf ShowStammDatenForm)
-
-        'Gruppe Auswertung
-        oGrpChargen.AddButton("btnStatistik", "Statistik Produktion", "WinBack Auswertung Produktions-Chargen", My.Resources.MainStatistikChargen_16x16, My.Resources.MainStatistikChargen_32x32, AddressOf ShowStatistikForm)
-
-        'Gruppe Linien
-        oGrpLinien.AddButton("btnLinien", "Produktions-Linien", "WinBack Produktion Linie 1...", My.Resources.MainLinien_32x32, My.Resources.MainLinien_32x32, AddressOf ShowLinienForm)
-
-        'Gruppe Produktions-Planung
-        oGrpPlanung.AddButton("btnProdPlan", "WinBack Teig-Herstellung", "", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf ShowProduktionsPlanungForm)
-
-        'Gruppe Administration
-        oGrpAdmin.AddButton("btnAdmin", "WinBack Administration", "", My.Resources.Admin_16x16, My.Resources.Admin_32x32, AddressOf ShowAdminAdministrationForm)
-
         ' Erweitert ein bestehendes RibbonTab um einen Button (Administration/Mitarbeiter)
         Dim oTabs = oMenuService.GetTabs
         Dim oGrps = oTabs(0).GetGroups
-        oGrps(3).AddButton("MenuExtensionBtnUser", "WinBack-Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
+
+        ' Das neue RibbonTab 'WinBack' erhält Haupt-Menu-Gruppen 'Stammdaten' 'Admin' 'Linien' 'Chargen' und 'Planung'
+        Dim oGrpStammdaten = oNewTab.AddGroup("WinBack", "Stammdaten (Produktion)")
+        Dim oGrpAdmin = oNewTab.AddGroup("WinBack", "Administration")
+        Dim oGrpLinien = oNewTab.AddGroup("WinBack", "Linien")
+        Dim oGrpChargen = oNewTab.AddGroup("WinBack", "Auswertung (Produktion)")
+        Dim oGrpPlanung = oNewTab.AddGroup("WinBack", "Teig-Herstellung")
+
+        'Gruppe Stammdaten Button Artikel (Tag 102-Artikelverwaltung)
+        wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnArtikelStamm", "Artikel", "WinBack Artikelstammdaten", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf ShowArtikelForm, 102)
+        'Gruppe Stammdaten Button Rezepte (Tag 103-Rezeptverwaltung)
+        wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnRezeptStamm", "Rezepte", "WinBack Rezeptverwaltung", My.Resources.MainRezept_16x16, My.Resources.MainRezept_32x32, AddressOf ShowRezeptForm, 103)
+        'Gruppe Stammdaten Button Rohstoffe (Tag 104-Rohstoffverwaltung)
+        wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnRohstoffStamm", "Rohstoffe", "WinBack Rohstoff-Stammdaten", My.Resources.MainRohstoffe_16x16, My.Resources.MainRohstoffe_32x32, AddressOf ShowRohstoffForm, 104)
+        'Gruppe Stammdaten Button Schlüsseldaten (Tag 106-Installation)
+        wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnKonstanten", "Schlüsseldaten", "Stammdaten WinBack - Rohstoff/Artikelgruppen, Rezeptvarianten, Produktionsstufen...", My.Resources.MainStammdaten_16x16, My.Resources.MainStammdaten_32x32, AddressOf ShowStammDatenForm, 106)
+        'Gruppe Stammdaten Button Mitarbeiter (Tag 120-Benutzerverwaltung)
+        wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnBenutzer", "Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm, 120)
+        'Gruppe Stammdaten - Shaddow-Button
+        wb_Main_Shared.AddShaddowButton(oGrpStammdaten, "btnStammDaten", "", "", My.Resources.IconCancel_24x24, My.Resources.IconCancel_24x24, 120)
+
+        'Gruppe OrgaBack-Mitarbeiter Button Mitarbeiter (Tag 120-Benutzerverwaltung)
+        wb_Main_Shared.AddMenuButton(oGrps(3), "MenuExtensionBtnUser", "WinBack-Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm, 120)
+
+        'Gruppe Administration (Tag 106-Installation)
+        wb_Main_Shared.AddMenuButton(oGrpAdmin, "btnAdmin", "WinBack Administration", "", My.Resources.Admin_16x16, My.Resources.Admin_32x32, AddressOf ShowAdminAdministrationForm, 106)
+        wb_Main_Shared.AddShaddowButton(oGrpAdmin, "btnAdminShd", "", "", My.Resources.IconCancel_24x24, My.Resources.IconCancel_24x24, 106)
+
+        'Gruppe Linien (Tag 121-Vnc)
+        wb_Main_Shared.AddMenuButton(oGrpLinien, "btnLinien", "Produktions-Linien", "WinBack Produktion Linie 1...", My.Resources.MainLinien_32x32, My.Resources.MainLinien_32x32, AddressOf ShowLinienForm, 121)
+        wb_Main_Shared.AddShaddowButton(oGrpLinien, "btnLinienShd", "", "", My.Resources.IconCancel_24x24, My.Resources.IconCancel_24x24, 121)
+        'Gruppe Auswertung (Tag 122-Statistik)
+        wb_Main_Shared.AddMenuButton(oGrpChargen, "btnStatistik", "Statistik Produktion", "WinBack Auswertung Produktions-Chargen", My.Resources.MainStatistikChargen_16x16, My.Resources.MainStatistikChargen_32x32, AddressOf ShowStatistikForm, 122)
+        wb_Main_Shared.AddShaddowButton(oGrpChargen, "btnStatistikShd", "", "", My.Resources.IconCancel_24x24, My.Resources.IconCancel_24x24, 122)
+        'Gruppe Produktions-Planung (Tag 130-Produktionsplanung)
+        wb_Main_Shared.AddMenuButton(oGrpPlanung, "btnProdPlan", "WinBack Teig-Herstellung", "", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf ShowProduktionsPlanungForm, 130)
+        wb_Main_Shared.AddShaddowButton(oGrpPlanung, "btnProdPlanShd", "", "", My.Resources.IconCancel_24x24, My.Resources.IconCancel_24x24, 130)
+
     End Sub
 
     ''' <summary>
@@ -383,6 +420,9 @@ Public Class ob_Main_Menu
             End Using
 
             wb_GlobalSettings.AktUserLogin(sName)
+            'Buttons abhängig von den Benutzer-Rechten aus/einblenden
+            'TODO aktivieren
+            'wb_Main_Shared.CheckMenu()
         End If
     End Sub
 

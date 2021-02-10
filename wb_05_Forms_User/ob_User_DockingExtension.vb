@@ -133,6 +133,7 @@ Public Class ob_User_DockingExtension
         Dim Vorname As String = _Extendee.GetPropertyValue("Vorname").ToString
         Dim Nachname As String = _Extendee.GetPropertyValue("Nachname").ToString
         Dim PersonalNr As String = _Extendee.GetPropertyValue("PersonalNr").ToString
+        Dim FilialZuordnung As String = _Extendee.GetPropertyValue("FilialZuordnung").ToString
         Dim Name As String = Vorname & " " & Nachname
         Dim GruppeNr As String = "4"
 
@@ -153,27 +154,30 @@ Public Class ob_User_DockingExtension
             End If
         End If
 
-        'Debug.Print("Vorname    " & Vorname)
-        'Debug.Print("Nachname   " & Nachname)
-        'Debug.Print("PersonalNr " & PersonalNr)
-        'Debug.Print("GruppeNr   " & GruppeNr)
+        'Pürfen ob der User einer Produktionsfiliale zugeordnet ist
+        If wb_Filiale.FilialeIstProduktion(FilialZuordnung) Then
+            'Prüfen ob eine Personal-Nummer angeben ist. Ohne Personal-Nummer kann keine Synchronisation mit WinBack erfolgen
+            If PersonalNr = "" Then
+                MsgBox("Es ist keine Personal-Nummer angegeben !" & vbCrLf & "Damit ist keine Synchronisation mit WinBack möglich", MsgBoxStyle.Critical, "WinBack-Benutzer")
+            Else
+                Select Case OrgaSoftEditState
+                    Case wb_Global.EditState.Edit
+                        If Not wb_User_Shared.User.Update(OldPersonalNr, Name, PersonalNr, GruppeNr) Then
+                            'Beim Neuanlegen ist das Passwort mit der Personal-Nummer identisch
+                            wb_User_Shared.User.AddNew(Name, PersonalNr, PersonalNr, GruppeNr)
+                        End If
+                        'Anzeige im WinBack-Fenster "live" aktualisieren
+                        wb_User_Shared.Reload(sender)
 
-        Select Case OrgaSoftEditState
-            Case wb_Global.EditState.Edit
-                If Not wb_User_Shared.User.Update(OldPersonalNr, Name, PersonalNr, GruppeNr) Then
-                    'Beim Neuanlegen ist das Passwort mit der Personal-Nummer identisch
-                    wb_User_Shared.User.AddNew(Name, PersonalNr, PersonalNr, GruppeNr)
-                End If
-                'Anzeige im WinBack-Fenster "live" aktualisieren
-                wb_User_Shared.Reload(sender)
+                    Case wb_Global.EditState.AddNew
+                        'Beim Neuanlegen ist das Passwort mit der Personal-Nummer identisch
+                        wb_User_Shared.User.AddNew(Name, PersonalNr, PersonalNr, GruppeNr)
+                        'Anzeige im WinBack-Fenster "live" aktualisieren
+                        wb_User_Shared.Reload(sender)
 
-            Case wb_Global.EditState.AddNew
-                'Beim Neuanlegen ist das Passwort mit der Personal-Nummer identisch
-                wb_User_Shared.User.AddNew(Name, PersonalNr, PersonalNr, GruppeNr)
-                'Anzeige im WinBack-Fenster "live" aktualisieren
-                wb_User_Shared.Reload(sender)
-
-        End Select
+                End Select
+            End If
+        End If
     End Sub
 
     Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer

@@ -43,11 +43,17 @@ Public Class Artikel_Main
                 End If
                 ArtikelHinweise.Show(DockPanel, DockState.Document)
                 Return True
-                    Case "OPENPARAMETER"
+            Case "OPENPARAMETER"
                 If IsNothingOrDisposed(ArtikelParameter) Then
                     ArtikelParameter = New wb_Artikel_Parameter
                 End If
                 ArtikelParameter.Show(DockPanel, DockState.Document)
+                Return True
+            Case "NEW"
+                ArtikelNeuAnlegen()
+                Return True
+            Case "DELETE"
+                ArtikelLöschen()
                 Return True
             Case Else
                 Return False
@@ -121,5 +127,28 @@ Public Class Artikel_Main
 
         'alle Spuren in Artikel_Shared löschen
         wb_Artikel_Shared.Invalid()
+    End Sub
+
+    Public Sub ArtikelNeuAnlegen()
+        Dim Komponente As New wb_Komponente
+        Dim KompNrNeu As Integer = Komponente.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_ARTIKEL)
+        ArtikelListe.RefreshData(KompNrNeu)
+        Komponente = Nothing
+    End Sub
+
+    Public Sub ArtikelLöschen()
+        'Sicherheitsabfrage Artikel löschen
+        If MsgBox("Den Artikel " & wb_Artikel_Shared.Artikel.Nummer & " " & wb_Artikel_Shared.Artikel.Bezeichnung & " löschen?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            Dim Komponente As New wb_Komponente
+            Dim KompNrDel As Integer = wb_Rohstoffe_Shared.RohStoff.Nr
+            If Komponente.MySQLdbCanBeDeleted(KompNrDel) Then
+                Komponente.Nr = KompNrDel
+                Komponente.MySQLdbDelete()
+                ArtikelListe.RefreshData()
+            Else
+                MsgBox(Komponente.LastErrorText)
+            End If
+            Komponente = Nothing
+        End If
     End Sub
 End Class

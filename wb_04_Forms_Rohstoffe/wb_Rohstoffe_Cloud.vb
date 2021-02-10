@@ -6,8 +6,8 @@ Public Class wb_Rohstoffe_Cloud
     Inherits DockContent
 
     Dim sColNames As New List(Of String)
-    Dim nwt As New wb_nwtCl_WinBack(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
-    Dim dl As New wb_nwtCl_DatenLink(wb_Credentials.Datenlink_PAT, wb_Credentials.Datenlink_CAT, wb_Credentials.Datenlink_Url)
+    Dim nwt As New wb_nwtCl_WinBack(wb_GlobalSettings.WinBackCloud_Pass, wb_GlobalSettings.WinBackCloud_Url)
+    Dim dl As New wb_nwtCl_DatenLink(wb_GlobalSettings.Datenlink_PAT, wb_GlobalSettings.Datenlink_CAT, wb_GlobalSettings.Datenlink_Url)
     Dim cnt As Integer = wb_Global.UNDEFINED
     Dim cntDokumente As Integer = wb_Global.UNDEFINED
     Private _DisableEditLeave As Boolean = False

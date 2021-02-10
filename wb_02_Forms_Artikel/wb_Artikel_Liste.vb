@@ -4,6 +4,8 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class wb_Artikel_Liste
     Inherits DockContent
 
+    Const ColumnArtikelNr As Integer = 0
+
     Private Sub wb_Artikel_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
@@ -24,6 +26,13 @@ Public Class wb_Artikel_Liste
     Public Sub RefreshData()
         'Daten neu einlesen
         DataGridView.RefreshData()
+    End Sub
+
+    Public Sub RefreshData(KoNr As Integer)
+        DataGridView.RefreshData()
+        DataGridView.SelectData(ColumnArtikelNr, KoNr.ToString)
+        'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
+        Liste_Click(Nothing)
     End Sub
 
     'Anstelle der Rezept-Nummer (Idx) wird die Rezept-Bezeichnung ausgegeben
