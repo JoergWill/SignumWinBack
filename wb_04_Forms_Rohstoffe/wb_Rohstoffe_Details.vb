@@ -92,6 +92,8 @@ Public Class wb_Rohstoffe_Details
             'Flag zählt zur Nährwertberechnung
             cbNwtBerechnung.Checked = RohStoff.ZaehltTrotzdemZumNwtGewicht
             cbNwtBerechnung.Enabled = cbRezeptGewicht.Checked
+            'kann vorproduziert werden
+            cbFreigabeProduktion.Checked = wb_Rohstoffe_Shared.RohStoff.FreigabeProduktion
 
             'Rezeptur verknüpft
             If RohStoff.RzNr > 0 Then
@@ -273,5 +275,11 @@ Public Class wb_Rohstoffe_Details
             wb_Rohstoffe_Shared.RohStoff.Deklaration = wb_Rohstoffe_Shared.RohStoff.Deklaration.TrimStart(">")
         End If
         ShowDeklaration()
+    End Sub
+
+    Private Sub cbFreigabeProduktion_Click(sender As Object, e As EventArgs) Handles cbFreigabeProduktion.Click
+        wb_Rohstoffe_Shared.RohStoff.FreigabeProduktion = cbFreigabeProduktion.Checked
+        'Änderung in WinBack-DB speichern
+        wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate()
     End Sub
 End Class
