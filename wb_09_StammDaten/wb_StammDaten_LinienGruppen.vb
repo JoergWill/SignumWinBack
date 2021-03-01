@@ -62,6 +62,11 @@ Public Class wb_StammDaten_LinienGruppen
         'Multi-Select zulassen (Löschen)
         DataGridView.MultiSelect = True
 
+        'Sync OrgaBack für Winback ausblenden
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
+            BtnSync.Enabled = False
+        End If
+
     End Sub
 
     Private Sub DataGridView_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellEndEdit
@@ -104,7 +109,6 @@ Public Class wb_StammDaten_LinienGruppen
                 MsgBox("Diese Liniengruppe existiert schon !", MsgBoxStyle.Exclamation, "Liniengruppe ändern")
                 DataGridView.CurrentCell.Value = _OrgWert
                 'Liste neu aufbauen
-                DataGridView.RefreshData()
             Else
                 'Liniengruppe oder Backort/Aufarbeitungs-Platz
                 If LinienGruppe >= wb_Global.OffsetBackorte Then
@@ -152,6 +156,9 @@ Public Class wb_StammDaten_LinienGruppen
             End If
         End If
         _RowIndex = e.RowIndex
+
+        'Originalwert der Zelle merken (Edit-Modus)
+        _OrgWert = DataGridView.CurrentCell.Value.ToString
     End Sub
 
     Private Sub wb_StammDaten_LinienGruppen_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -164,6 +171,8 @@ Public Class wb_StammDaten_LinienGruppen
     End Sub
 
     Private Sub BtnLinienGruppeNeu_Click(sender As Object, e As EventArgs) Handles BtnLinienGruppeNeu.Click
+        'Daten in Datenbank sichern
+        DataGridView.UpdateDataBase()
         'Neuen Datensatz anfügen
         wb_Linien_Global.AddLinienGruppe()
         'neuen Datensatz anzeigen
@@ -176,6 +185,8 @@ Public Class wb_StammDaten_LinienGruppen
     End Sub
 
     Private Sub BtnNeueAufarbeitung_Click(sender As Object, e As EventArgs) Handles BtnNeueAufarbeitung.Click
+        'Daten in Datenbank sichern
+        DataGridView.UpdateDataBase()
         'Neuen Datensatz anfügen
         If wb_Linien_Global.AddLinienGruppe(True) Then
             'neuen Datensatz anzeigen
@@ -187,6 +198,8 @@ Public Class wb_StammDaten_LinienGruppen
     End Sub
 
     Private Sub BtnLoeschen_Click(sender As Object, e As EventArgs) Handles BtnLoeschen.Click
+        'Daten in Datenbank sichern
+        DataGridView.UpdateDataBase()
         'wenn mehr als ein Datensatz markiert ist
         If DataGridView.SelectedCells.Count > 1 Then
             'Zähler OK/Err

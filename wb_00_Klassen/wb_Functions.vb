@@ -922,6 +922,18 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Erzeugt einen Debug-Eintrag im Log wenn die Bedingung wahr ist.
+    ''' (Ersetzt Assert.IsTrue). Damit entfällt die Microsoft.VisualStudio.QualityTools.UnitTest.dll
+    ''' </summary>
+    ''' <param name="Condition"></param>
+    ''' <param name="Text"></param>
+    Public Shared Sub AssertTrue(Condition As Boolean, Text As String)
+        If Condition Then
+            Trace.WriteLine(Text)
+        End If
+    End Sub
+
+    ''' <summary>
     ''' Ersetzt die Platzhalter [0]..[4] im String durch die Parameter Param0..Param4
     ''' </summary>
     ''' <param name="Text"></param>
@@ -1459,6 +1471,44 @@ Public Class wb_Functions
         End Try
     End Function
 
+    '   Private Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
+    '   ShellExecute(0&, "open", wb_GlobalSettings.pProgrammPath & "Orgasoft.NET", "", "", 1)
+
+    ''' <summary>
+    ''' Programm neustarten. Wenn das WinBack-AddIn unter OrgaSoft läuft, wird der OrgaSoft-Prozess gekillt und neu gestartet !
+    ''' </summary>
+    Public Shared Sub Restart()
+        'Programm-Variante OrgaBask startet Orgasoft-Instanz neu
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            'Programm-Verzeichnis Signum OrgaSoft
+            Dim SignumDirectory As String = System.AppDomain.CurrentDomain.BaseDirectory
+            'Dateiname Signum OrgaSoft
+            Dim SignumFileName As String = System.AppDomain.CurrentDomain.FriendlyName
+            'Prozess-Info
+            Dim StartInfo As New ProcessStartInfo()
+            StartInfo.FileName = SignumDirectory & SignumFileName
+            'Restart durchführen
+            Process.Start(StartInfo)
+            Process.GetCurrentProcess().Kill()
+        Else
+            'Restart (normal)
+            Application.Restart()
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Beendet das laufende Programm. Wenn das WinBack-AddIn unter OrgaSoft läuft, wird der OrgaSoft-Prozess gekillt !
+    ''' </summary>
+    Public Shared Sub ExitProgram()
+        'Programm-Variante OrgaBask startet Orgasoft-Instanz neu
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            Process.GetCurrentProcess().Kill()
+        Else
+            Application.Exit()
+        End If
+    End Sub
+
+
     ''' <summary>
     ''' Startet eine ssh-Sitzung und führt ein Kommando auf dem Linux-Rechner mit der angegebenen IP-Adresse aus
     ''' (siehe auch https://www.vb-paradise.de/index.php/Thread/121384-Visual-Basic-Windows-Application-SSH-NET-Verbindung-aufbauen/)
@@ -1584,8 +1634,6 @@ Public Class wb_Functions
 
         Return (Success)
     End Function
-
-
 
     ''' <summary>
     ''' Datei komprimieren in .bz2
@@ -1870,4 +1918,6 @@ Public Class wb_Functions
         Dim ip As IPAddress = GetCurrentIpV4Address()
         Return If(ip, "").ToString()
     End Function
+
+
 End Class

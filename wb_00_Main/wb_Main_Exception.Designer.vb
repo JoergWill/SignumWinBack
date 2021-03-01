@@ -27,10 +27,10 @@ Partial Class wb_Main_Exception
         Me.BtnRestart = New System.Windows.Forms.Button()
         Me.BtnContinue = New System.Windows.Forms.Button()
         Me.PnlPicture = New System.Windows.Forms.Panel()
+        Me.tbException = New System.Windows.Forms.TextBox()
         Me.lblText = New System.Windows.Forms.Label()
         Me.BtnMail = New System.Windows.Forms.Button()
         Me.BtnShow = New System.Windows.Forms.Button()
-        Me.tbException = New System.Windows.Forms.TextBox()
         Me.PnlPicture.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -66,6 +66,13 @@ Partial Class wb_Main_Exception
         Me.PnlPicture.Controls.Add(Me.tbException)
         Me.PnlPicture.Name = "PnlPicture"
         '
+        'tbException
+        '
+        resources.ApplyResources(Me.tbException, "tbException")
+        Me.tbException.Name = "tbException"
+        Me.tbException.ReadOnly = True
+        Me.tbException.TabStop = False
+        '
         'lblText
         '
         resources.ApplyResources(Me.lblText, "lblText")
@@ -84,13 +91,6 @@ Partial Class wb_Main_Exception
         Me.BtnShow.Image = Global.WinBack.My.Resources.Resources.IconDlgLog_16x16
         Me.BtnShow.Name = "BtnShow"
         Me.BtnShow.UseVisualStyleBackColor = True
-        '
-        'tbException
-        '
-        resources.ApplyResources(Me.tbException, "tbException")
-        Me.tbException.Name = "tbException"
-        Me.tbException.ReadOnly = True
-        Me.tbException.TabStop = False
         '
         'wb_Main_Exception
         '

@@ -126,6 +126,9 @@ Public Class wb_Planung_Drucken
     End Sub
 
     Private Sub BtnPrintAufarbeitung_Click(sender As Object, e As EventArgs) Handles BtnPrintAufarbeitung.Click
+        'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
+        wb_Planung_Shared.Produktion.RootProduktionsSchritt.SortBackZettel()
+
         'Daten filtern (Aufbereitungs-Ort)
         Dim BackZettel As New ArrayList
         BackZettel.Clear()

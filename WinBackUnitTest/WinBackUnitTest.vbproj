@@ -221,7 +221,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\DB_Goeken\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>WinBackUnitTest.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -281,7 +281,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>..\dll\OrgaSoft V3.2.7601\Signum.OrgaSoft.Contracts.dll</HintPath>
+      <HintPath>..\dll\OrgaSoft V3.3.7706\Signum.OrgaSoft.Contracts.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />

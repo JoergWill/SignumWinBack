@@ -5,6 +5,7 @@ Imports System.Windows.Forms
 Imports System.Reflection
 Imports System.Threading
 Imports Signum.OrgaSoft.GUI
+Imports Signum.OrgaSoft.FrameWork
 
 ''' <summary>
 ''' Erweitert das Ribon um ein neues Tab WinBack und baut die Menu-Struktur auf.
@@ -21,6 +22,9 @@ Public Class ob_Main_Menu
     Private oMenuService As IMenuService
     Private oSetting As ISettingService
     Private oFactory As IFactoryService
+
+    'TODO
+    Private oInventory As New Object
 
     Private xForm As Form
     Private xLogger As New wb_TraceListener
@@ -75,11 +79,11 @@ Public Class ob_Main_Menu
                 Case DialogResult.Abort
                     'WinBack-AddIn beenden
                     Trace.WriteLine("@I_DialogResult.Abort - WinBack/OrgaBack beenden")
-                    Application.Exit()
+                    wb_Functions.ExitProgram()
                 Case DialogResult.Retry
                     'WinBack-AddIn restart
                     Trace.WriteLine("@I_DialogResult.Retry - WinBack/OrgaBack neu starten")
-                    Application.Restart()
+                    wb_Functions.Restart()
                 Case DialogResult.Ignore
                     'WinBack-AddIn fortsetzen
                     Trace.WriteLine("@I_DialogResult.Ignore - WinBack-AddIn fortsetzen")
@@ -101,9 +105,9 @@ Public Class ob_Main_Menu
         AddHandler System.AppDomain.CurrentDomain.UnhandledException, AddressOf MyUnhandledExceptionHandler
         'TODO - Versuche die eigenen dll-Files in sep. Verzeichnis zu verlagern
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
-#If AssemblyResolve Then
+        '#If AssemblyResolve Then
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-#End If
+        '#End If
 
         'Event-Handler Aufruf einer WinBack-Main-Form
         AddHandler wb_Main_Shared.eOpenForm, AddressOf OpenWinBackForm
@@ -115,6 +119,9 @@ Public Class ob_Main_Menu
         oMenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         oSetting = TryCast(ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
         oFactory = TryCast(ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
+
+        'TODO
+        'oInventory = TryCast(ServiceProvider.GetService(GetType(Inve          GetService(GetType(IFactoryService)), IFactoryService)
 
         'Debug/Trace-Listener initialisieren
         AddTraceListener()
@@ -222,11 +229,11 @@ Public Class ob_Main_Menu
         Dim oGrps = oTabs(0).GetGroups
 
         ' Das neue RibbonTab 'WinBack' erhält Haupt-Menu-Gruppen 'Stammdaten' 'Admin' 'Linien' 'Chargen' und 'Planung'
-        Dim oGrpStammdaten = oNewTab.AddGroup("WinBack", "Stammdaten (Produktion)")
-        Dim oGrpAdmin = oNewTab.AddGroup("WinBack", "Administration")
-        Dim oGrpLinien = oNewTab.AddGroup("WinBack", "Linien")
-        Dim oGrpChargen = oNewTab.AddGroup("WinBack", "Auswertung (Produktion)")
-        Dim oGrpPlanung = oNewTab.AddGroup("WinBack", "Teig-Herstellung")
+        Dim oGrpStammdaten = oNewTab.AddGroup("WinBackDaten", "Stammdaten (Produktion)")
+        Dim oGrpAdmin = oNewTab.AddGroup("WinBackAdmin", "Administration")
+        Dim oGrpLinien = oNewTab.AddGroup("WinBackLinien", "Linien")
+        Dim oGrpChargen = oNewTab.AddGroup("WinBackChargen", "Auswertung (Produktion)")
+        Dim oGrpPlanung = oNewTab.AddGroup("WinBackPlanung", "Teig-Herstellung")
 
         'Gruppe Stammdaten Button Artikel (Tag 102-Artikelverwaltung)
         wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnArtikelStamm", "Artikel", "WinBack Artikelstammdaten", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf ShowArtikelForm, 102)
@@ -238,25 +245,19 @@ Public Class ob_Main_Menu
         wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnKonstanten", "Schlüsseldaten", "Stammdaten WinBack - Rohstoff/Artikelgruppen, Rezeptvarianten, Produktionsstufen...", My.Resources.MainStammdaten_16x16, My.Resources.MainStammdaten_32x32, AddressOf ShowStammDatenForm, 106)
         'Gruppe Stammdaten Button Mitarbeiter (Tag 120-Benutzerverwaltung)
         wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnBenutzer", "Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm, 120)
-        'Gruppe Stammdaten - Shaddow-Button
-        wb_Main_Shared.AddShaddowButton(oGrpStammdaten, "btnStammDaten", "", "", My.Resources.IconCancel_24x24, My.Resources.IconCancel_24x24, 120)
 
         'Gruppe OrgaBack-Mitarbeiter Button Mitarbeiter (Tag 120-Benutzerverwaltung)
         wb_Main_Shared.AddMenuButton(oGrps(3), "MenuExtensionBtnUser", "WinBack-Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm, 120)
 
         'Gruppe Administration (Tag 106-Installation)
         wb_Main_Shared.AddMenuButton(oGrpAdmin, "btnAdmin", "WinBack Administration", "", My.Resources.Admin_16x16, My.Resources.Admin_32x32, AddressOf ShowAdminAdministrationForm, 106)
-        wb_Main_Shared.AddShaddowButton(oGrpAdmin, "btnAdminShd", "", "", My.Resources.IconCancel_24x24, My.Resources.IconCancel_24x24, 106)
 
         'Gruppe Linien (Tag 121-Vnc)
         wb_Main_Shared.AddMenuButton(oGrpLinien, "btnLinien", "Produktions-Linien", "WinBack Produktion Linie 1...", My.Resources.MainLinien_32x32, My.Resources.MainLinien_32x32, AddressOf ShowLinienForm, 121)
-        wb_Main_Shared.AddShaddowButton(oGrpLinien, "btnLinienShd", "", "", My.Resources.IconCancel_24x24, My.Resources.IconCancel_24x24, 121)
         'Gruppe Auswertung (Tag 122-Statistik)
         wb_Main_Shared.AddMenuButton(oGrpChargen, "btnStatistik", "Statistik Produktion", "WinBack Auswertung Produktions-Chargen", My.Resources.MainStatistikChargen_16x16, My.Resources.MainStatistikChargen_32x32, AddressOf ShowStatistikForm, 122)
-        wb_Main_Shared.AddShaddowButton(oGrpChargen, "btnStatistikShd", "", "", My.Resources.IconCancel_24x24, My.Resources.IconCancel_24x24, 122)
         'Gruppe Produktions-Planung (Tag 130-Produktionsplanung)
         wb_Main_Shared.AddMenuButton(oGrpPlanung, "btnProdPlan", "WinBack Teig-Herstellung", "", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf ShowProduktionsPlanungForm, 130)
-        wb_Main_Shared.AddShaddowButton(oGrpPlanung, "btnProdPlanShd", "", "", My.Resources.IconCancel_24x24, My.Resources.IconCancel_24x24, 130)
 
     End Sub
 
@@ -421,7 +422,7 @@ Public Class ob_Main_Menu
 
             wb_GlobalSettings.AktUserLogin(sName)
             'Buttons abhängig von den Benutzer-Rechten aus/einblenden
-            'TODO aktivieren
+            'TODO für Niehaves ausgeblendet
             'wb_Main_Shared.CheckMenu()
         End If
     End Sub

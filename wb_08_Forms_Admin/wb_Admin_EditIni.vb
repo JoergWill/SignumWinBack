@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Windows.Forms
+Imports System.IO
 Imports WeifenLuo.WinFormsUI.Docking
 
 
@@ -35,6 +36,11 @@ Public Class wb_Admin_EditIni
                 File.Move(f, s)
             End Try
             btnSave.Enabled = False
+
+            'OrgaBack muss neu gestartet werden nach Änderung in der WinBack.ini
+            If MsgBox("Die WinBack Konfiguration wurde geändert." & vbCrLf & "Programm neu starten?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                wb_Functions.Restart()
+            End If
         End If
     End Sub
 

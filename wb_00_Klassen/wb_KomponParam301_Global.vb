@@ -1,5 +1,4 @@
-﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports WinBack.wb_Global
+﻿Imports WinBack.wb_Global
 
 ''' <summary>
 ''' Ermittlung der Parameter für Allergene und Nährwerte
@@ -196,10 +195,10 @@ Public Class wb_KomponParam301_Global
 
         'alle Parameter(Update) prüfen
         Try
-            Assert.IsTrue(ktTyp301Params.ContainsKey(wb_Global.T301_Vegetarisch), "Parameter(210) Vegetarisch fehlt in winback.KomponTypen")
-            Assert.IsTrue(ktTyp301Params.ContainsKey(wb_Global.T301_Vegan), "Parameter(211) Vegan fehlt in winback.KomponTypen")
-            Assert.IsTrue(ktTyp301Params.ContainsKey(wb_Global.T301_Koscher), "Parameter(212) Koscher fehlt in winback.KomponTypen")
-            Assert.IsTrue(ktTyp301Params.ContainsKey(wb_Global.T301_Halal), "Parameter(213) Halal fehlt in winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp301Params.ContainsKey(wb_Global.T301_Vegetarisch), "Parameter(210) Vegetarisch fehlt in winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp301Params.ContainsKey(wb_Global.T301_Vegan), "Parameter(211) Vegan fehlt in winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp301Params.ContainsKey(wb_Global.T301_Koscher), "Parameter(212) Koscher fehlt in winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp301Params.ContainsKey(wb_Global.T301_Halal), "Parameter(213) Halal fehlt in winback.KomponTypen")
         Catch ex As Exception
             Trace.WriteLine("Fehler in Komponenten-Parameter Typ 301 - Datensätze fehlen !")
             _ErrorText = ex.Message

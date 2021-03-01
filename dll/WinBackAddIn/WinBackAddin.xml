@@ -9124,6 +9124,14 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="ErrCode"></param>
  <returns></returns>
 </member>
+<member name="M:WinBack.wb_Functions.AssertTrue(System.Boolean,System.String)">
+ <summary>
+ Erzeugt einen Debug-Eintrag im Log wenn die Bedingung wahr ist.
+ (Ersetzt Assert.IsTrue). Damit entfällt die Microsoft.VisualStudio.QualityTools.UnitTest.dll
+ </summary>
+ <param name="Condition"></param>
+ <param name="Text"></param>
+</member>
 <member name="M:WinBack.wb_Functions.SetParams(System.String,System.String,System.String,System.String,System.String,System.String)">
  <summary>
  Ersetzt die Platzhalter [0]..[4] im String durch die Parameter Param0..Param4
@@ -9289,6 +9297,16 @@ Start Timer nach Änderung Datensatz-Zeiger
  <param name="Arg1"></param>
  <param name="Arg2"></param>
  <param name="WaitUntilReady"></param>
+</member>
+<member name="M:WinBack.wb_Functions.Restart">
+ <summary>
+ Programm neustarten. Wenn das WinBack-AddIn unter OrgaSoft läuft, wird der OrgaSoft-Prozess gekillt und neu gestartet !
+ </summary>
+</member>
+<member name="M:WinBack.wb_Functions.ExitProgram">
+ <summary>
+ Beendet das laufende Programm. Wenn das WinBack-AddIn unter OrgaSoft läuft, wird der OrgaSoft-Prozess gekillt !
+ </summary>
 </member>
 <member name="M:WinBack.wb_Functions.ExecSSH(System.String,System.String,System.String,System.String)">
  <summary>

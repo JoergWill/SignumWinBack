@@ -72,6 +72,7 @@
                 'Debug.Print("UserGruppenRechte " & AttrText.Attr & "/" & AttrText.Wert & "/" & AttrText.Text)
             End While
         End If
+        winback.Close()
     End Sub
 End Class
 

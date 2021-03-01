@@ -307,7 +307,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>..\dll\OrgaSoft V3.2.7601\Signum.OrgaSoft.Contracts.dll</HintPath>
+      <HintPath>..\dll\OrgaSoft V3.3.7706\Signum.OrgaSoft.Contracts.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />

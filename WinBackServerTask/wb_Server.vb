@@ -695,7 +695,6 @@ Public Class Main
         End If
 
         'WinBack-Mandant aus Kommandozeile
-        'TODO Im Echtbetrieb prüfen !!!
         Main_CommandLineAuswerten()
 
         'Debug/Trace-Listener initialisieren
@@ -732,18 +731,22 @@ Public Class Main
     ''' Kommandozeile auswerten (Programm-Start)
     '''     /M: Mandant
     '''     /I: Pfad zur winback.ini
+    '''     
+    ''' Default ist der Zweig in der winback.ini unter [winback]
+    ''' Wird ein Mandant angegeben werden die entsprechenden Einträge verwendet [winback-m1]...
+    ''' 
     ''' </summary>
     Private Sub Main_CommandLineAuswerten()
         For Each s As String In My.Application.CommandLineArgs
             'die ersten 3 Zeichen entsprechen der Funktion
             Select Case s.Substring(0, 3)
-                Case "/M:", "-m "
+                Case "/M:", "-m"
                     Dim MandantNr As String = s.Substring(3)
                     wb_GlobalSettings.MandantNr = wb_Functions.StrToInt(MandantNr)
-                Case "/I:", "-i "
+                Case "/I:", "-i"
                     Dim WinbackIni As String = s.Substring(3)
                     wb_GlobalSettings.pWinBackIniPath = WinbackIni & "\WinBack.ini"
-                Case "/W:", "-w "
+                Case "/W:", "-w"
                     wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WBServerTask
                 Case Else
                     Trace.WriteLine("Fehler in Command_line-Argument " & s)

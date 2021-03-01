@@ -77,7 +77,7 @@ Public Class wb_Admin_Datensicherung
 
                 'OrgaBack/WinBack-Office neustarten
                 If MsgBox("Datensicherung WinBack wurde erfolgreich geladen" & vbCrLf & vbCrLf & "Programm neu starten ?", MsgBoxStyle.YesNo, "WinBack") = MsgBoxResult.Ok Then
-                    Application.Restart()
+                    wb_Functions.Restart()
                 End If
             Else
                 MsgBox("Fehler bei der WinBack-Daten-Rücksicherung", MsgBoxStyle.Exclamation)

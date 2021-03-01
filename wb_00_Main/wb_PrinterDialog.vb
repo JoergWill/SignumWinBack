@@ -97,7 +97,11 @@ Public Class wb_PrinterDialog
         'Drucker einstellen (im List&Label-Projekt-File)
         Dim Settings As New Drawing.Printing.PrinterSettings()
         Settings.PrinterName = cbPrinterAuswahl.SelectedItem.ToString
-        LL.Core.LlSetPrinterInPrinterFile(LlProject.List, LL.AutoProjectFile, LlPrinterIndex.AllPages, Settings)
+        'Funktioniert teilweise nicht, wenn keine RECHTE vorhanden sind !! (RemoteDesktop Windows-Server)
+        Try
+            LL.Core.LlSetPrinterInPrinterFile(LlProject.List, LL.AutoProjectFile, LlPrinterIndex.AllPages, Settings)
+        Catch
+        End Try
 
         'Druckauftrag speichern
         If _Druckhistorie Then
@@ -114,7 +118,7 @@ Public Class wb_PrinterDialog
 
         'Druckauftrag starten
         Try
-            LL.Print()
+            LL.Print(Settings.PrinterName, LlProject.List, LL.AutoProjectFile)
         Catch LLException As Exception
             MessageBox.Show(LLException.Message & vbCrLf & "Fehler in List&Label", "Drucken/Vorschau", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Try
@@ -249,7 +253,7 @@ Public Class wb_PrinterDialog
         LL.AutoShowPrintOptions = False
         LL.ExportOptions.Clear()
         'spezielles File für die Preview - sonst kolldiert der Print-Befehl mit der offenen Preview-Datei
-        LL.Core.LlSetOptionString(LlOptionString.PreviewFileName, wb_GlobalSettings.pWindowsTempPath & "LLPreview.ll")
+        LL.Core.LlSetOptionString(LlOptionString.PreviewFileName, wb_GlobalSettings.pDruckHistoriePath & "LLPreview.ll")
         LL.ExportOptions.Add(LlExportOption.ExportShowResult, "0")
         If File.Exists(LL.AutoProjectFile) Then
             Try

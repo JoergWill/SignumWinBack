@@ -451,7 +451,7 @@ Public Class wb_GlobalSettings
 
     Public Shared Property MySQLServerIP As String
         Get
-            If _MySQLServerIP = Nothing Then
+            If _MySQLServerIP = Nothing Or _MySQLServerIP = "" Then
                 getWinBackIni("SQL")
             End If
             Return _MySQLServerIP
@@ -675,7 +675,7 @@ Public Class wb_GlobalSettings
             If _pListenPath = Nothing Then
                 If pVariante = wb_Global.ProgVariante.WinBack Then
 #If DEBUG Then
-                    _pListenPath = pProgrammPath
+                    _pListenPath = pProgrammPath & "Listen\"
                     _pListenPath = _pListenPath.Replace("WinBackStart\bin\Messe", "ListLabel")
                     _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M5", "ListLabel")
                     _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M4", "ListLabel")

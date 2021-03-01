@@ -27,11 +27,7 @@ Public Class wb_Admin_CheckDatabase
     End Sub
 
     Private Sub LogEvent(txt As String, TextFarbe As Color, Optional Err As Boolean = False)
-        'Assert.IsTrue aus Fehlermeldung entfernen
-        Dim a As Integer = txt.IndexOf("Assert.IsTrue")
-        If (a > 0) Then
-            txt = vbTab & "Fehler" & vbTab & txt.Remove(0, a + 15) & vbCrLf
-        ElseIf Err Then
+        If Err Then
             txt = vbTab & txt & vbCrLf
         End If
 

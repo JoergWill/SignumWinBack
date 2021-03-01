@@ -210,7 +210,7 @@ Public Class WinBack
                         End If
 
                     'User-Login(Master)
-                    Case "-w"
+                    Case "/W", "-w"
                         Dim LoginMaster As Integer = Int(wb_Credentials.WinBackMasterUser)
                         If Not wb_GlobalSettings.AktUserLogin(LoginMaster) Then
                             MsgBox("Benutzer nicht gefunden. Bitte Parameter prüfen!", MsgBoxStyle.Critical)
@@ -219,12 +219,12 @@ Public Class WinBack
                         End If
 
                     'Mandant
-                    Case "-m"
+                    Case "/M", "-m"
                         Dim MandantNr As String = Strings.Mid(Parameter(i), 3)
                         wb_GlobalSettings.MandantNr = wb_Functions.StrToInt(MandantNr)
 
                     'Pfad zur winback.ini
-                    Case "-i"
+                    Case "/I", "-i"
                         Dim WinBackIni As String = Strings.Mid(Parameter(i), 3)
                         wb_GlobalSettings.pWinBackIniPath = WinBackIni & "\WinBack.ini"
 

@@ -1,5 +1,4 @@
-﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports WinBack.wb_Global
+﻿Imports WinBack.wb_Global
 
 ''' <summary>
 ''' Ermittlung der Parameter für die Produktion
@@ -94,13 +93,13 @@ Public Class wb_KomponParam300_Global
 
         'alle Parameter(Update) prüfen
         Try
-            Assert.IsTrue(ktTyp300Params.ContainsKey(wb_Global.T300_Backverlust), "Parameter(1) Backverlust fehlt in Tabelle winback.KomponTypen")
-            Assert.IsTrue(ktTyp300Params.ContainsKey(wb_Global.T300_ProdVorlauf), "Parameter(2) ProduktionsVorlauf fehlt in Tabelle winback.KomponTypen")
-            Assert.IsTrue(ktTyp300Params.ContainsKey(wb_Global.T300_Zuschnitt), "Parameter(3) Zuschnitt fehlt in Tabelle winback.KomponTypen")
-            Assert.IsTrue(ktTyp300Params.ContainsKey(wb_Global.T300_LinienGruppe), "Parameter(5) ProdLinienGruppe fehlt in Tabelle winback.KomponTypen")
-            Assert.IsTrue(ktTyp300Params.ContainsKey(wb_Global.T300_RzNr), "Parameter(6) RzNr fehlt in Tabelle winback.KomponTypen")
-            Assert.IsTrue(ktTyp300Params.ContainsKey(wb_Global.T300_RezeptNummer), "Parameter(7) RezeptNummer fehlt in Tabelle winback.KomponTypen")
-            Assert.IsTrue(ktTyp300Params.ContainsKey(wb_Global.T300_RezeptName), "Parameter(8) RezeptName fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_Backverlust), "Parameter(1) Backverlust fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_ProdVorlauf), "Parameter(2) ProduktionsVorlauf fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_Zuschnitt), "Parameter(3) Zuschnitt fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_LinienGruppe), "Parameter(5) ProdLinienGruppe fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_RzNr), "Parameter(6) RzNr fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_RezeptNummer), "Parameter(7) RezeptNummer fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_RezeptName), "Parameter(8) RezeptName fehlt in Tabelle winback.KomponTypen")
         Catch ex As Exception
             Trace.WriteLine("Fehler in Komponenten-Parameter Typ 300 - Datensätze fehlen !")
             _ErrorText = ex.Message
