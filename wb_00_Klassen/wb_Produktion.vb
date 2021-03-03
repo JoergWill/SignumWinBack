@@ -322,9 +322,12 @@ Public Class wb_Produktion
     ''' Die Produktions-Liste ist vorher schon nach TeigNr/Tour/Artikelnr sortiert.
     ''' </summary>
     Friend Sub TeigeZusammenfassen(Modus As wb_Global.ModusTeigOptimierung)
-
+        'WARUM WIRD DIESE ROUTINE NICHT MEHR AUFGERUFEN ??
+        'TEIGLISTE MUSS ZUSAMMENGEFASST SEIN
+        'BACKZETTEL NICHT ?
         'Teigmenge Summe
         Dim TeigMenge As Double = 0
+
         'Anzahl der Produktions-Schritte die zu optimieren sind
         Dim ProdChildSteps As Integer = RootProduktionsSchritt.ChildSteps.Count - 1
 
@@ -354,9 +357,9 @@ Public Class wb_Produktion
                     'Debug.Print("Optimiere Produktion " & p2c0.Tour & "/" & p2c0.ArtikelNummer & "/" & p2c0.ArtikelBezeichnung & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & p2c0.Sollwert_kg)
                 End If
                 'Letzter Teig
-                If i = ProdChildSteps Then
+                If i = ProdChildSteps And TeigMenge > 0 Then
                     'TODO Chargenteiler auch aus Rezeptur berücksichtigen
-                    AddChargenZeile(TourInfo(p2c0.Tour, Modus), p2c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p2c0.Aufloesen)
+                    AddChargenZeile(TourInfo(p2c0.Tour, Modus), p2c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p2c0.Aufloesen, p2c0.OptChargekg, p2c0.MinChargekg, p2c0.MaxChargekg)
                     'Debug.Print("AddCharge LAST " & p2c0.Tour & "/" & p2c0.RezeptNr & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & TeigMenge)
                 End If
             Else
@@ -364,7 +367,7 @@ Public Class wb_Produktion
                 If TeigMenge > 0 Then
                     'neuen Produktions - Schritt anhängen
                     'TODO Chargenteiler auch aus Rezeptur berücksichtigen
-                    AddChargenZeile(TourInfo(p1c0.Tour, Modus), p1c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p1c0.Aufloesen)
+                    AddChargenZeile(TourInfo(p1c0.Tour, Modus), p1c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p1c0.Aufloesen, p1c0.OptChargekg, p1c0.MinChargekg, p1c0.MaxChargekg)
                     'Debug.Print("AddCharge NEW " & p1c0.Tour & "/" & p1c0.RezeptNr & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & TeigMenge)
                     TeigMenge = 0
                 End If
@@ -388,24 +391,29 @@ Public Class wb_Produktion
     End Function
 
     Private Function Zusammenfassen(p1c0 As wb_Produktionsschritt, p2c0 As wb_Produktionsschritt, Modus As wb_Global.ModusTeigOptimierung) As Boolean
-        'Modus Teig-Optimierung
-        Select Case Modus
+        'Kopfzeilen werden nicht nochmals zusammengefasst
+        If p1c0.ArtikelNummer = "K" And p2c0.ArtikelNummer = "K" Then
+            Return False
+        Else
+            'Modus Teig-Optimierung
+            Select Case Modus
 
-            Case wb_Global.ModusTeigOptimierung.AlleTeigeAlleTouren
-                'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
-                Return (p1c0.RezeptNr = p2c0.RezeptNr)
+                Case wb_Global.ModusTeigOptimierung.AlleTeigeAlleTouren
+                    'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
+                    Return (p1c0.RezeptNr = p2c0.RezeptNr)
 
-            Case wb_Global.ModusTeigOptimierung.AlleTeige
-                'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
-                Return (p1c0.RezeptNr = p2c0.RezeptNr) And (p1c0.Tour = p2c0.Tour)
+                Case wb_Global.ModusTeigOptimierung.AlleTeige
+                    'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
+                    Return (p1c0.RezeptNr = p2c0.RezeptNr) And (p1c0.Tour = p2c0.Tour)
 
-            Case wb_Global.ModusTeigOptimierung.NurTeigeKleinerMinChargen
-                'optimiere alle Teige mit Restcharge kleiner Minimal-Charge
-                Return (p1c0.RezeptNr = p2c0.RezeptNr And p1c0.Tour = p2c0.Tour And p1c0.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 And p2c0.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3)
+                Case wb_Global.ModusTeigOptimierung.NurTeigeKleinerMinChargen
+                    'optimiere alle Teige mit Restcharge kleiner Minimal-Charge
+                    Return (p1c0.RezeptNr = p2c0.RezeptNr And p1c0.Tour = p2c0.Tour And p1c0.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 And p2c0.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3)
 
-            Case Else
-                Return False
-        End Select
+                Case Else
+                    Return False
+            End Select
+        End If
     End Function
 
     Private Function ZusammenfassenTeigSumme(p As wb_Produktionsschritt, Modus As wb_Global.ModusTeigOptimierung, ChargenNummer As String) As Double
@@ -443,7 +451,8 @@ Public Class wb_Produktion
     ''' <param name="TeigMenge"></param>
     ''' <param name="Modus"></param>
     ''' <returns></returns>
-    Function AddChargenZeile(Tour As String, RzNr As Integer, TeigMenge As Double, Modus As wb_Global.ModusChargenTeiler, Aufloesen As Boolean) As Boolean
+    Function AddChargenZeile(Tour As String, RzNr As Integer, TeigMenge As Double, Modus As wb_Global.ModusChargenTeiler, Aufloesen As Boolean,
+                             Optional ArtikelOptCharge As Double = 0, Optional ArtikelMinCharge As Double = 0, Optional ArtikelMaxCharge As Double = 0) As Boolean
         Dim Artikel As New wb_Komponente
         Dim Rezept As New wb_Rezept(RzNr)
 
@@ -465,10 +474,19 @@ Public Class wb_Produktion
         Root.Sollwert_kg = TeigMenge
         Root.Tour = Tour
         Root.Typ = wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
-        'Chargen-Größen aus Rezept
-        Root.OptChargekg = Rezept.TeigChargen.OptCharge.fMengeInkg
-        Root.MaxChargekg = Rezept.TeigChargen.MaxCharge.fMengeInkg
-        Root.MinChargekg = Rezept.TeigChargen.MinCharge.fMengeInkg
+
+        'Chargen-Größen aus Rezept oder Artikel
+        If Rezept.TeigChargen.OptCharge.fMengeInkg = 0 Then
+            'Rezept-Chargengrößen sind nicht gepflegt - versuche die Chargengrößen aus dem ersten Artikel zu verwenden
+            Root.OptChargekg = ArtikelOptCharge
+            Root.MaxChargekg = ArtikelMaxCharge
+            Root.MinChargekg = ArtikelMinCharge
+        Else
+            'Chargengrößen aus der Rezeptur
+            Root.OptChargekg = Rezept.TeigChargen.OptCharge.fMengeInkg
+            Root.MaxChargekg = Rezept.TeigChargen.MaxCharge.fMengeInkg
+            Root.MinChargekg = Rezept.TeigChargen.MinCharge.fMengeInkg
+        End If
 
         'Chargen berechnen - Aufteilung in Optimal- und Restchargen
         Root.TeigChargen = CalcChargenMenge(TeigMenge, Root.MinChargekg, Root.MaxChargekg, Root.OptChargekg, Modus, True)

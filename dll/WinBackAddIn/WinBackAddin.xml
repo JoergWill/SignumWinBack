@@ -4626,7 +4626,7 @@ Anzeige der Rohstoff-Verwendung in Rezepturen
  <param name="Modus"></param>
  <returns></returns>
 </member>
-<member name="M:WinBack.wb_Produktion.AddChargenZeile(System.String,System.Int32,System.Double,WinBack.wb_Global.ModusChargenTeiler,System.Boolean)">
+<member name="M:WinBack.wb_Produktion.AddChargenZeile(System.String,System.Int32,System.Double,WinBack.wb_Global.ModusChargenTeiler,System.Boolean,System.Double,System.Double,System.Double)">
  <summary>
  Fügt eine Rezept(Charge) an die bestehende Liste an.
  Der Rezept-Datensatz wird aus der Datenbank eingelesen. Für die Artikelzeile wird ein Dummy-Artikel angelegt.

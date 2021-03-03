@@ -317,7 +317,13 @@ Public Class wb_Planung_Liste
 
     Private Sub BtnTeigListeDrucken_Click(sender As Object, e As EventArgs) Handles BtnTeigListeDrucken.Click
         'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
         Produktion.RootProduktionsSchritt.SortBackZettel()
+        'gleiche (Rest-)Teige zusammenfassen
+        'TODO testweise eingefügt
+        Produktion.TeigeZusammenfassen(wb_GlobalSettings.TeigOptimierung)
+        'Neu erstellte Chargen anzeigen 
+        VirtualTree.DataSource = Produktion.RootProduktionsSchritt
 
         'Daten filtern (Aufbereitungs-Ort)
         Dim TeigListe As New ArrayList
@@ -331,6 +337,7 @@ Public Class wb_Planung_Liste
         'List und Label-Verzeichnis für die Listen
         pDialog.ListSubDirectory = "Produktion"
         pDialog.ListFileName = "TeigListe.lst"
+        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
         pDialog.ShowDialog()
         pDialog = Nothing
     End Sub
@@ -339,10 +346,9 @@ Public Class wb_Planung_Liste
         'Sortieren nach Teig(RezeptNummer), Ergebnis ChargenAufteilung, Tour und ArtikelNummer
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
         Produktion.RootProduktionsSchritt.SortProduktionsPlan()
-        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
         'gleiche (Rest-)Teige zusammenfassen
-        Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
-        'Produktion.TeigeZusammenfassen(wb_GlobalSettings.TeigOptimierung)
+        'TODO testweise eingefügt
+        Produktion.TeigeZusammenfassen(wb_GlobalSettings.TeigOptimierung)
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
         'Neu erstellte Chargen anzeigen 
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt

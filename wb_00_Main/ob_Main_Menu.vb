@@ -24,7 +24,7 @@ Public Class ob_Main_Menu
     Private oFactory As IFactoryService
 
     'TODO
-    Private oInventory As New Object
+    Private oInventory As IFactoryService
 
     Private xForm As Form
     Private xLogger As New wb_TraceListener
@@ -103,11 +103,8 @@ Public Class ob_Main_Menu
 
         AddHandler System.Windows.Forms.Application.ThreadException, AddressOf MyThreadExceptionHandler
         AddHandler System.AppDomain.CurrentDomain.UnhandledException, AddressOf MyUnhandledExceptionHandler
-        'TODO - Versuche die eigenen dll-Files in sep. Verzeichnis zu verlagern
-        'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
-        '#If AssemblyResolve Then
+        'Die eigenen dll-Files in sep. Verzeichnis zu verlagern
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-        '#End If
 
         'Event-Handler Aufruf einer WinBack-Main-Form
         AddHandler wb_Main_Shared.eOpenForm, AddressOf OpenWinBackForm
@@ -121,7 +118,7 @@ Public Class ob_Main_Menu
         oFactory = TryCast(ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
 
         'TODO
-        'oInventory = TryCast(ServiceProvider.GetService(GetType(Inve          GetService(GetType(IFactoryService)), IFactoryService)
+        'oInventory = TryCast(ServiceProvider.GetService(GetType(IFactoryService), "Inventur"), IFactoryService)
 
         'Debug/Trace-Listener initialisieren
         AddTraceListener()
@@ -422,8 +419,7 @@ Public Class ob_Main_Menu
 
             wb_GlobalSettings.AktUserLogin(sName)
             'Buttons abhängig von den Benutzer-Rechten aus/einblenden
-            'TODO für Niehaves ausgeblendet
-            'wb_Main_Shared.CheckMenu()
+            wb_Main_Shared.CheckMenu()
         End If
     End Sub
 

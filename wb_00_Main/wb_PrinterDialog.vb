@@ -352,4 +352,7 @@ Public Class wb_PrinterDialog
         LL.Variables.Add("KopfZeile2", _LL_KopfZeile_2)
     End Sub
 
+    Private Sub wb_PrinterDialog_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        LL.Dispose()
+    End Sub
 End Class
