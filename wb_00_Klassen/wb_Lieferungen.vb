@@ -116,17 +116,20 @@ Public Class wb_Lieferungen
     '''     WE  -   Wareneingang
     '''     WBA -   WinBack Produktion automatische Abbuchung
     '''     
+    ''' Wareneingänge (WE) werden nur bei Sync-Funktionen mit verbucht !!
     ''' </summary>
     ''' <param name="winback"></param>
-    Public Sub Verbuchen(winback As wb_Sql, LagerKarte As wb_LagerKarte, ByRef ErsteInventurbuchung As Boolean)
+    Public Sub Verbuchen(winback As wb_Sql, LagerKarte As wb_LagerKarte, ByRef ErsteInventurbuchung As Boolean, WE As Boolean)
         'Vorgang in Log-File schreiben(INFO)
         Trace.WriteLine("@I_" & LagerKarte.Vorfall & "-" & LagerKarte.Lfd & "-" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
 
         Select Case LagerKarte.Vorfall
-            'WE wird direkt über den Vorfall verbucht (Version 1.7.3)
-            'Case "WE"
-            '    'Wareneingang in winback.Lieferungen verbuchen
-            '    Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
+            Case "WE"
+                'Wareneingang in winback.Lieferungen verbuchen
+                If WE Then
+                    'WE wird direkt über den Vorfall verbucht (Version 1.7.3)
+                    Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
+                End If
 
             Case "BR"
                 'Bruch/Schwund in winback.Lieferungen verbuchen
@@ -212,7 +215,7 @@ Public Class wb_Lieferungen
         LagerKarte.InitBestand()
 
         'Der letzte Eintrag aus dbo.ArtikelLagerkarte enthält auch den aktuellen Bestand
-        Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
+        'Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
     End Sub
 
     ''' <summary>
@@ -636,7 +639,7 @@ Public Class wb_Lieferungen
     ''' <param name="winback"></param>
     ''' <param name="lfd"></param>
     ''' <param name="lfgebucht"></param>
-    Private Sub UpdateVerbrauch(winback As wb_Sql, Lagerort As String, lfd As Integer, lfVerbrauch As Double, lfgebucht As String)
+    Public Sub UpdateVerbrauch(winback As wb_Sql, Lagerort As String, lfd As Integer, lfVerbrauch As Double, lfgebucht As String)
         'der UPDATE-Befehl wird dynamisch erzeugt
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateVerbrauch, Lagerort, lfd.ToString, wb_Functions.FormatStr(lfVerbrauch, 2), lfgebucht)
         'UPDATE ausführen

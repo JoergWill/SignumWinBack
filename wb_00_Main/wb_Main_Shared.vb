@@ -106,7 +106,7 @@ Public Class wb_Main_Shared
         Dim sAssemblyPath As String
 
         If sAssemblyName.EndsWith(".resources") Then
-            Debug.Print("AssemblyName resources " & sAssemblyName)
+            Trace.WriteLine("AssemblyName resources " & sAssemblyName)
             'TODO Das WinBack-AddIn fällt hier in Belgien auf die Nase !!
             Return DefaultAssembly
 
@@ -115,10 +115,10 @@ Public Class wb_Main_Shared
         Else
             sAssemblyPath = IO.Path.Combine(sApplicationDirectory & "dll\", sAssemblyFileName)
             If IO.File.Exists(sAssemblyPath) Then
-                Debug.Print("AssemblyName dll " & sAssemblyPath)
+                Trace.WriteLine("AssemblyName dll " & sAssemblyPath)
                 Return If(Debugger.IsAttached, Reflection.Assembly.LoadFile(sAssemblyPath), Assembly.Load(IO.File.ReadAllBytes(sAssemblyPath)))
             Else
-                Debug.Print("AssemblyName resources " & sAssemblyName)
+                Trace.WriteLine("AssemblyName resources " & sAssemblyName)
                 Return DefaultAssembly
             End If
         End If

@@ -62,6 +62,11 @@
             _ProduktionsDatum = value
         End Set
     End Property
+    Public Shared ReadOnly Property ProduktionsDatumStr As String
+        Get
+            Return _ProduktionsDatum.ToString("D")
+        End Get
+    End Property
 
     ''' <summary>
     ''' Fehlerliste anzeigen/aktualisieren

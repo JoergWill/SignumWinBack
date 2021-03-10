@@ -23,11 +23,8 @@ Public Class ob_Admin_OrgaBackSettings
     '''eingelesen
     ''' </summary>
     Public Sub Initialize() Implements IExtension.Initialize
-        'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
-#If AssemblyResolve Then
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-#End If
     End Sub
 
     Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly

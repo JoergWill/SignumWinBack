@@ -334,7 +334,15 @@ Public Class wb_Produktionsschritt
     Public ReadOnly Property VirtTreeKommentar As String
         Get
             If _Optimiert Then
-                Return "zusammengefasst in Charge " & _ChargenNummer
+                If _childSteps.Count > 0 Then
+                    If _ChargenNummer <> "" Then
+                        Return "zusammengefasst in Charge " & _ChargenNummer
+                    Else
+                        Return "zusammengefasst"
+                    End If
+                Else
+                    Return "Fehler"
+                End If
             Else
                 If Bestellt_SonderText IsNot Nothing Then
                     Return _Bestellt_SonderText.Replace(vbCrLf, " ")
@@ -912,7 +920,7 @@ Public Class wb_Produktionsschritt
             'Startzeit Liniengruppe aus LinienGruppenTabelle
             StartZeit = wb_Linien_Global.GetStartzeit(_LinienGruppe)
             'Sortierkriterium setzen TODO ???
-            'setSortKriterium()
+            setSortKriterium()
         End Set
     End Property
 
@@ -1034,14 +1042,21 @@ Public Class wb_Produktionsschritt
         Else
             _SortKriteriumBackPlan = Nothing
         End If
-        'Sortieren Produktions-Liste
-        If RezeptNummer IsNot Nothing And Tour IsNot Nothing And ArtikelNummer IsNot Nothing Then
-            _SortKriteriumProdPlan = RezeptNummer.PadLeft(10, "0"c) & TeigChargenTeilerResult & Tour.PadLeft(3, "0"c) & ArtikelNummer.PadLeft(16, "0"c)
-        Else
-            _SortKriteriumProdPlan = Nothing
-        End If
+        'Sortieren Produktions-Liste (Teigzettel)
+        'If RezeptNummer IsNot Nothing And Tour IsNot Nothing And ArtikelNummer IsNot Nothing Then
+        '    _SortKriteriumProdPlan = Linie.ToString.PadLeft(3, "0"c) & RezeptNummer.PadLeft(10, "0"c) & TeigChargenTeilerResult & Tour.PadLeft(3, "0"c) & ArtikelNummer.PadLeft(16, "0"c)
+        'Else
+        '    _SortKriteriumProdPlan = Nothing
+        'End If
+        _SortKriteriumProdPlan = SortString(Linie.ToString, 3) & SortString(RezeptNummer, 10) & TeigChargenTeilerResult & SortString(Tour, 3) & SortString(ArtikelNummer, 16)
     End Sub
 
+    Private Function SortString(s As String, len As Integer) As String
+        If s Is Nothing Then
+            s = "0"
+        End If
+        Return s.PadLeft(len, "0"c)
+    End Function
 
     ''' <summary>
     ''' Datenfeld für Sortierung der Liste

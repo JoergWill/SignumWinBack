@@ -96,12 +96,10 @@ Public Class ob_ChargenBestand
 
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-        Dim sql As String
         'Lieferungen-Objekt nimmt die aktuellen Daten auf
         Dim Lieferungen As New wb_Lieferungen
-
         'Abfrage nächster Datensatz zu dieser Komp-Nr
-        sql = "KO_Nr > " & KompNr.ToString
+        Dim sql = "KO_Nr > " & KompNr.ToString
 
         'nächsten Datensatz aus Tabelle Komponenten lesen
         If winback.sqlSelect(setParams(sqlRohstoffLagerort, sql)) Then
@@ -122,50 +120,15 @@ Public Class ob_ChargenBestand
 
                 'Verbindung (Lesen) wieder schliessen
                 winback.CloseRead()
-                'Datenbank-Verbindung öffnen OrgaBack-msSQL
-                Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-                'Das Lagerkarten-Objekt nimmt alle Daten aus dbo.ArtikelLagerkarte auf
-                Dim LagerKarte As New wb_LagerKarte
 
                 'auf neue Einträge in der Artikel-Lagerkarte aus OrgaBack prüfen
                 If InitBestand Then
-                    'letzten Datensatz aus dbo.ArtikelLagerkarte
-                    'TODO - ist hier nicht ganz richtig: Es kann mehrere Inventurbuchungen geben !!!
-                    sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerInit, Lieferungen.Nummer)
+                    'letzte Datensätze aus dbo.ArtikelLagerkarte
+                    InventurBestand(winback, Lieferungen)
                 Else
                     'alle Datensätze aus dbo.ArtikelLagerkarte
-                    sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerKarte, Lieferungen.LfdNr.ToString, Lieferungen.Nummer)
+                    ImportBestand(winback, Lieferungen)
                 End If
-                If orgaback.sqlSelect(sql) Then
-                    'die erste Inventurbuchung setzt alle Buchungen in WinBack.Lieferungen auf Status eledigt(3)
-                    Dim FlagErsteInventurBuchung As Boolean = True
-                    'wenn neue (noch nicht verbuchte) Einträge vorhanden sind
-                    If orgaback.Read Then
-                        'Schleife über alle Datensätze
-                        Do
-                            'Datensätze einlesen
-                            LagerKarte.msSQLdbRead(orgaback.msRead)
-                            'und verbuchen
-                            If InitBestand Then
-                                Lieferungen.InitBestand(winback, LagerKarte)
-                            Else
-                                Lieferungen.Verbuchen(winback, LagerKarte, FlagErsteInventurBuchung)
-                            End If
-                        Loop While orgaback.Read
-
-                        'die letzte gültige laufende Nummer aus OrgaBack.lfd wird in winback.Lagerorte eingetragen
-                        Lieferungen.UpdateLagerorteLfd(winback, LagerKarte.Lfd)
-                        'Daten zur Anzeige im Grid
-                        _Lfd = LagerKarte.Lfd
-                        _Datum = LagerKarte.Datum
-                        _Bestand = LagerKarte.Menge
-                        _ChargenNr = LagerKarte.ChargenNummer
-                        _Vorfall = LagerKarte.Vorfall
-                    End If
-                End If
-
-                'Datenbank-Verbindung wieder schliessen
-                orgaback.Close()
             Else
                 'EOF() - ReStart bei KO_Nr = 0
                 Akt_KompNr = 0
@@ -177,4 +140,100 @@ Public Class ob_ChargenBestand
         'Rückgabewert ist die aktuell bearbeitete Komponenten-Nummer
         Return Akt_KompNr
     End Function
+
+    Private Sub ImportBestand(winback As wb_Sql, Lieferungen As wb_Lieferungen)
+        'Datenbank-Verbindung öffnen OrgaBack-msSQL
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Das Lagerkarten-Objekt nimmt alle Daten aus dbo.ArtikelLagerkarte auf
+        Dim LagerKarte As New wb_LagerKarte
+
+        'alle Datensätze aus der Lagerkarte ab Lieferung Nummer x
+        Dim Sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerKarte, Lieferungen.LfdNr.ToString, Lieferungen.Nummer)
+        'wenn Datensätze vorhanden sind
+        If orgaback.sqlSelect(Sql) Then
+            'die erste Inventurbuchung setzt alle Buchungen in WinBack.Lieferungen auf Status eledigt(3)
+            Dim FlagErsteInventurBuchung As Boolean = True
+
+            'wenn neue (noch nicht verbuchte) Einträge vorhanden sind
+            If orgaback.Read Then
+                'Schleife über alle Datensätze
+                Do
+                    LagerKarte.msSQLdbRead(orgaback.msRead)
+                    Lieferungen.Verbuchen(winback, LagerKarte, FlagErsteInventurBuchung, False)
+                Loop While orgaback.Read
+
+                'die letzte gültige laufende Nummer aus OrgaBack.lfd wird in winback.Lagerorte eingetragen
+                Lieferungen.UpdateLagerorteLfd(winback, LagerKarte.Lfd)
+
+                'Daten zur Anzeige im Grid
+                _Lfd = LagerKarte.Lfd
+                _Datum = LagerKarte.Datum
+                _Bestand = LagerKarte.Menge
+                _ChargenNr = LagerKarte.ChargenNummer
+                _Vorfall = LagerKarte.Vorfall
+            End If
+        End If
+
+        'Datenbank-Verbindung wieder schliessen
+        orgaback.Close()
+        'Speicher wieder freigeben
+        LagerKarte = Nothing
+    End Sub
+
+    Private Sub InventurBestand(winback As wb_Sql, Lieferungen As wb_Lieferungen)
+        'Datenbank-Verbindung öffnen OrgaBack-msSQL
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'Das Lagerkarten-Objekt nimmt alle Daten aus dbo.ArtikelLagerkarte auf
+        Dim LagerKarte As New wb_LagerKarte
+
+        'alle Buchungen ausgehend von der letzten Buchung einlesen
+        Dim Sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerInit, Lieferungen.Nummer)
+
+        If orgaback.sqlSelect(Sql) Then
+            'wenn Einträge vorhanden sind
+            If orgaback.Read Then
+                'der letzte Eintrag enthält den aktuellen Lagerbestand
+                LagerKarte.msSQLdbRead(orgaback.msRead)
+
+                Debug.Print("aktueller Datensatz aus OrgaBack Lfd = " & LagerKarte.Lfd)
+
+                'TODO evtl Lieferungen.Bilanzmenge verwenden
+                Dim BestandAktuell As Double = LagerKarte.BestandAktuell
+                Dim LieferMenge As Double = LagerKarte.LieferMenge
+                Lieferungen.InitBestand(winback, LagerKarte)
+
+                'Schleife über alle Datensätze bis die Summe aller Lieferungen die Bestandsmenge erreicht hat
+                Do While orgaback.Read And (BestandAktuell > LieferMenge)
+                    LagerKarte.msSQLdbRead(orgaback.msRead)
+
+                    'negative Inventurbuchungen werden momentan nicht verarbeitet
+                    If LagerKarte.Menge > 0 Then
+                        Debug.Print("Datensatz aus OrgaBack Lfd = " & LagerKarte.Lfd)
+                        Lieferungen.Verbuchen(winback, LagerKarte, False, True)
+
+                        'Liefermenge aufaddieren
+                        LieferMenge += LagerKarte.LieferMenge
+                    End If
+                Loop
+
+                'der letze Datensatz wird angepasst - Verbauchte Menge und Status=aktiv
+                Lieferungen.UpdateVerbrauch(winback, Lieferungen.LagerOrt, LagerKarte.Lfd, LieferMenge - BestandAktuell, "2")
+
+                'die letzte gültige laufende Nummer aus OrgaBack.lfd wird in winback.Lagerorte eingetragen
+                Lieferungen.Bilanzmenge = BestandAktuell
+                Lieferungen.UpdateLagerorteLfd(winback, LagerKarte.Lfd)
+
+                'Daten zur Anzeige im Grid
+                _Lfd = LagerKarte.Lfd
+                _Datum = LagerKarte.Datum
+                _Bestand = BestandAktuell
+                _ChargenNr = LagerKarte.ChargenNummer
+                _Vorfall = LagerKarte.Vorfall
+            End If
+        End If
+
+        'Datenbank-Verbindung wieder schliessen
+        orgaback.Close()
+    End Sub
+
 End Class

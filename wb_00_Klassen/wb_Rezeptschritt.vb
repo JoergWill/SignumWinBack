@@ -1305,16 +1305,16 @@ Public Class wb_Rezeptschritt
         If Not z.KeineDeklaration Then
             If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
                 zListe.Add(z)
-                Debug.Print("CalcZutaten - nach Step 1 (If TypeIstSollmenge)")
-                DebugPrintZutatenListe(zListe)
+                'Debug.Print("CalcZutaten - nach Step 1 (If TypeIstSollmenge)")
+                'DebugPrintZutatenListe(zListe)
             End If
             'Aufruf der Routine vom Root-Rezeptschritt aus
             'unterlagerte Rezeptschritte werden auch im Array angehängt
             For Each x As wb_Rezeptschritt In ChildSteps
                 x.CalcZutaten(zListe, ReCalc, Faktor, GrpRezNr)
             Next
-            Debug.Print("CalcZutaten - nach Step 2 (For Each x in ChildSteps)")
-            DebugPrintZutatenListe(zListe)
+            'Debug.Print("CalcZutaten - nach Step 2 (For Each x in ChildSteps)")
+            'DebugPrintZutatenListe(zListe)
 
             'Zutatenliste auflösen
             If z.Aufloesen Then
@@ -1322,8 +1322,8 @@ Public Class wb_Rezeptschritt
                 If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
                     Dim f As Double = Sollwert / RezeptImRezept.RezeptGewicht
                     RezeptImRezept.RootRezeptSchritt.CalcZutaten(zListe, ReCalc, f, z.GrpRezNr)
-                    Debug.Print("CalcZutaten - nach Step 3 (If RezeptImRezept)")
-                    DebugPrintZutatenListe(zListe)
+                    'Debug.Print("CalcZutaten - nach Step 3 (If RezeptImRezept)")
+                    'DebugPrintZutatenListe(zListe)
                 End If
             Else
                 'Gruppen-Nr Rezeptnummer mitnehmen

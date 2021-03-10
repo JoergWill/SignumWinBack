@@ -330,49 +330,54 @@ Public Class wb_Produktion
 
         'Anzahl der Produktions-Schritte die zu optimieren sind
         Dim ProdChildSteps As Integer = RootProduktionsSchritt.ChildSteps.Count - 1
+        If ProdChildSteps > 1 Then
 
-        For i = 1 To ProdChildSteps
-            '(Erster)Teig der vorhergehenenden Artikelzeile
-            Dim p1 As wb_Produktionsschritt = RootProduktionsSchritt.ChildSteps(i - 1)
-            Dim p1c0 As wb_Produktionsschritt = p1.ChildSteps(0)
-            '(Erster)Teig der folgenden Artikelzeile
-            Dim p2 As wb_Produktionsschritt = RootProduktionsSchritt.ChildSteps(i)
-            Dim p2c0 As wb_Produktionsschritt = p2.ChildSteps(0)
+            For i = 1 To ProdChildSteps
+                '(Erster)Teig der vorhergehenenden Artikelzeile
+                Dim p1 As wb_Produktionsschritt = RootProduktionsSchritt.ChildSteps(i - 1)
+                '(Erster)Teig der folgenden Artikelzeile
+                Dim p2 As wb_Produktionsschritt = RootProduktionsSchritt.ChildSteps(i)
 
-            'Prüfen ob ein Zusammenfassen der Teig möglich ist (wenn die Teige der 2 Artikel identisch sind)
-            'wenn die Artikel-Zeile mehrere Teig-Zeilen hat, werden diese in der Funktion 'Zusammenfassen' je nach Modus addiert
-            If Zusammenfassen(p1c0, p2c0, Modus) Then
-                'Teig schon berücksichtigt
-                If Not p1c0.Optimiert Then
-                    p1c0.Optimiert = True
-                    p1c0.ChargenNummer = GetNextChargenNummer(p1.LinienGruppe)
-                    TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p1, Modus, p1c0.ChargenNummer) 'p1.Sollwert_kg
-                    'Debug.Print("Optimiere Produktion " & p1c0.Tour & "/" & p1c0.ArtikelNummer & "/" & p1c0.ArtikelBezeichnung & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & p1c0.Sollwert_kg)
+                If p1.ChildSteps.Count > 0 And p2.ChildSteps.Count > 0 Then
+                    Dim p1c0 As wb_Produktionsschritt = p1.ChildSteps(0)
+                    Dim p2c0 As wb_Produktionsschritt = p2.ChildSteps(0)
+
+                    'Prüfen ob ein Zusammenfassen der Teig möglich ist (wenn die Teige der 2 Artikel identisch sind)
+                    'wenn die Artikel-Zeile mehrere Teig-Zeilen hat, werden diese in der Funktion 'Zusammenfassen' je nach Modus addiert
+                    If Zusammenfassen(p1c0, p2c0, Modus) Then
+                        'Teig schon berücksichtigt
+                        If Not p1c0.Optimiert Then
+                            p1c0.Optimiert = True
+                            p1c0.ChargenNummer = GetNextChargenNummer(p1.LinienGruppe)
+                            TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p1, Modus, p1c0.ChargenNummer) 'p1.Sollwert_kg
+                            'Debug.Print("Optimiere Produktion " & p1c0.Tour & "/" & p1c0.ArtikelNummer & "/" & p1c0.ArtikelBezeichnung & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & p1c0.Sollwert_kg)
+                        End If
+                        'Teig schon berücksichtigt
+                        If Not p2c0.Optimiert Then
+                            p2c0.Optimiert = True
+                            p2c0.ChargenNummer = GetNextChargenNummer(p2.LinienGruppe)
+                            TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p2, Modus, p2c0.ChargenNummer) 'p2.Sollwert_kg
+                            'Debug.Print("Optimiere Produktion " & p2c0.Tour & "/" & p2c0.ArtikelNummer & "/" & p2c0.ArtikelBezeichnung & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & p2c0.Sollwert_kg)
+                        End If
+                        'Letzter Teig
+                        If i = ProdChildSteps And TeigMenge > 0 Then
+                            'TODO Chargenteiler auch aus Rezeptur berücksichtigen
+                            AddChargenZeile(TourInfo(p2c0.Tour, Modus), p2c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p2c0.Aufloesen, p2c0.OptChargekg, p2c0.MinChargekg, p2c0.MaxChargekg)
+                            'Debug.Print("AddCharge LAST " & p2c0.Tour & "/" & p2c0.RezeptNr & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & TeigMenge)
+                        End If
+                    Else
+                        'Wenn mehrere Teige zusammengefasst werden sollen
+                        If TeigMenge > 0 Then
+                            'neuen Produktions - Schritt anhängen
+                            'TODO Chargenteiler auch aus Rezeptur berücksichtigen
+                            AddChargenZeile(TourInfo(p1c0.Tour, Modus), p1c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p1c0.Aufloesen, p1c0.OptChargekg, p1c0.MinChargekg, p1c0.MaxChargekg)
+                            'Debug.Print("AddCharge NEW " & p1c0.Tour & "/" & p1c0.RezeptNr & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & TeigMenge)
+                            TeigMenge = 0
+                        End If
+                    End If
                 End If
-                'Teig schon berücksichtigt
-                If Not p2c0.Optimiert Then
-                    p2c0.Optimiert = True
-                    p2c0.ChargenNummer = GetNextChargenNummer(p2.LinienGruppe)
-                    TeigMenge = TeigMenge + ZusammenfassenTeigSumme(p2, Modus, p2c0.ChargenNummer) 'p2.Sollwert_kg
-                    'Debug.Print("Optimiere Produktion " & p2c0.Tour & "/" & p2c0.ArtikelNummer & "/" & p2c0.ArtikelBezeichnung & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & p2c0.Sollwert_kg)
-                End If
-                'Letzter Teig
-                If i = ProdChildSteps And TeigMenge > 0 Then
-                    'TODO Chargenteiler auch aus Rezeptur berücksichtigen
-                    AddChargenZeile(TourInfo(p2c0.Tour, Modus), p2c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p2c0.Aufloesen, p2c0.OptChargekg, p2c0.MinChargekg, p2c0.MaxChargekg)
-                    'Debug.Print("AddCharge LAST " & p2c0.Tour & "/" & p2c0.RezeptNr & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & TeigMenge)
-                End If
-            Else
-                'Wenn mehrere Teige zusammengefasst werden sollen
-                If TeigMenge > 0 Then
-                    'neuen Produktions - Schritt anhängen
-                    'TODO Chargenteiler auch aus Rezeptur berücksichtigen
-                    AddChargenZeile(TourInfo(p1c0.Tour, Modus), p1c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p1c0.Aufloesen, p1c0.OptChargekg, p1c0.MinChargekg, p1c0.MaxChargekg)
-                    'Debug.Print("AddCharge NEW " & p1c0.Tour & "/" & p1c0.RezeptNr & "/" & p1c0.RezeptNummer & "/" & p1c0.RezeptBezeichnung & "/" & TeigMenge)
-                    TeigMenge = 0
-                End If
-            End If
-        Next i
+            Next i
+        End If
 
     End Sub
 
@@ -588,6 +593,9 @@ Public Class wb_Produktion
                 _ProduktionsPlanungError.ErrorCode = Root.TeigChargen.Result
                 'Berechnete Teig-Chargen (für Fehler-Liste)
                 _ProduktionsPlanungError.TeigChargen = Root.TeigChargen
+                'Fehlerhafte Zeilen nicht optimieren und NICHT ausdrucken
+                'TODO Richtig ?
+                Root.Optimiert = True
                 Return False
             End If
         Else

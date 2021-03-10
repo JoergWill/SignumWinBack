@@ -20,6 +20,13 @@ Public Class wb_Rohstoffe_Lieferung
         'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
         AddHandler eListe_Click, AddressOf DetailInfo
 
+        'Button Lager synchronisieren nur sichtbar wenn Admin-Rechte und OrgaBack-Verknüpfung
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack And wb_AktUser.SuperUser Then
+            BtnLagerReSync.Visible = True
+        Else
+            BtnLagerReSync.Visible = False
+        End If
+
         'Beim ersten Aufruf wird der aktuelle Rohstoff angezeigt. Sonst wird beim Öffnen des Detail-Info-Fensters
         'der Inhalt der Textfelder gelöscht !!
         If RohStoff IsNot Nothing Then
@@ -103,7 +110,7 @@ Public Class wb_Rohstoffe_Lieferung
                     x += LagerDataGridView.Columns(i).Width
                 Next
 
-                tbBilanzmenge.Left = x
+                'tbBilanzmenge.Left = x
             End If
         End If
 
@@ -121,5 +128,29 @@ Public Class wb_Rohstoffe_Lieferung
         wb_Rohstoffe_Shared.RohStoff.InitLieferungen()
         'Liste aktualisieren
         wb_Rohstoffe_Shared.Liste_Click(sender)
+    End Sub
+
+    ''' <summary>
+    ''' Synchronisiert das Lager neu.
+    ''' Alle alte Einträge werden gelöscht. Danach werden alle relevanten Lieferdaten aus OrgaBack
+    ''' in die Lieferungen-Tabelle eingetragen. (IV und WE)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnLagerReSync_Click(sender As Object, e As EventArgs) Handles BtnLagerReSync.Click
+        Dim WinBackBestand As New ob_ChargenBestand
+        Dim KompNr As Integer = wb_Rohstoffe_Shared.RohStoff.Nr
+
+        'Sicherheits-Abfrage
+        If MsgBox("Diese Funktion löscht alle Einträge in WinBack.Lieferungen" & vbCrLf &
+                  "Die aktuelle Bestands-Zahlen werden aus OrgaBack übernommen", MsgBoxStyle.OkCancel + MsgBoxStyle.Critical, "Synchronisation Rohwaren-Bestand") = MsgBoxResult.Ok Then
+            'Sync starten mit KompNr > x
+            WinBackBestand.ImportChargenBestand(KompNr - 1, True)
+
+            'Anzeige Lieferungen aktualisieren
+            wb_Rohstoffe_Shared.Liste_Click(sender)
+            'Lagerbestand und Mindestmenge
+            tbBilanzmenge.Text = RohStoff.Bilanzmenge
+        End If
     End Sub
 End Class

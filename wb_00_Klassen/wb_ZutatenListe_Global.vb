@@ -29,6 +29,8 @@
                 E.Bemerkung = winback.sField("EN_Bemerkung")
                 E.Key = winback.sField("EN_Key")
                 E.CleanLabel = winback.sField("EN_CleanLabel")
+                'TODO ändern
+                E.MaxAnteilProzent = 0.1
 
                 If eName <> E.Text Then
                     'Neuer Eintrag in sEListe (suche nach E-Nummer)

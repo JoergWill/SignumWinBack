@@ -77,6 +77,27 @@ Public Class wb_LagerKarte
         End Get
     End Property
 
+    Public ReadOnly Property BestandAktuell As Double
+        Get
+            Return BestandVorher + Menge
+        End Get
+    End Property
+
+    Public ReadOnly Property LieferMenge As Double
+        Get
+            If Vorfall = "IV" Or Vorfall = "WE" Then
+                'TODO was passiert bei negativer Inventur-Menge
+                If Menge > 0 Then
+                    Return Menge
+                Else
+                    Return 0.0
+                End If
+            Else
+                Return 0.0
+            End If
+        End Get
+    End Property
+
     Public ReadOnly Property ChargenNummer As String
         Get
             Return _ChargenNummer
@@ -121,7 +142,8 @@ Public Class wb_LagerKarte
     ''' </summary>
     Public Sub InitBestand()
         If Vorfall <> "WB" Then
-            _Menge = wb_Functions.FormatStr((Menge + BestandVorher).ToString, 2)
+            '_Menge = wb_Functions.FormatStr((Menge + BestandVorher).ToString, 2)
+            _Menge = 0
             _Vorfall = "WB"
         End If
     End Sub

@@ -252,8 +252,8 @@ Public Class wb_nwtCl_WinBack
             nwtDaten.Bezeichnung = GetJData(jsonData, "name")
             'Rohstoff-Lieferant(Text)
             nwtDaten.Lieferant = GetJData(jsonData, "lieferant")
-            'Rohstoff-Deklaration
-            nwtDaten.Deklaration = GetJData(jsonData, "deklarationsname")
+            'Rohstoff-Deklaration (aus der Cloud IMMER in die externe Deklaration schreiben)
+            nwtDaten.DeklBezeichungExtern = GetJData(jsonData, "deklarationsname")
 
             'Array Nährwerte/Allergene
             Dim nwtInhalt As JToken = jsonData.GetValue("inhalt")

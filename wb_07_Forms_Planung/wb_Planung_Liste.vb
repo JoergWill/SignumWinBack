@@ -18,7 +18,7 @@ Public Class wb_Planung_Liste
     'Bestellungen einlesen für Produktions-Datum
     Private _ProduktionsDatum As String = ""
     Private _ProduktionsFilialeNummer As Integer = wb_Global.UNDEFINED
-    Private _AktDatumBackZettelTeigListe As String
+    'Private _AktDatumBackZettelTeigListe As String
 
     Private Sub BtnVorlage_Click(sender As Object, e As EventArgs) Handles BtnVorlage.Click
         'Fenster Auswahl Vorlage anzeigen
@@ -85,6 +85,7 @@ Public Class wb_Planung_Liste
             'Bestellungen automatisch einlesen
             If wb_GlobalSettings.ProdPlanReadOnOpen Then
                 ReadBestellungenOrgaBack()
+                wb_Planung_Shared.ProduktionsDatum = dtBestellungen.Value
             End If
         Else
             'Einlesen der Bestellungen nur wenn auch OrgaBack aktiv ist
@@ -129,7 +130,7 @@ Public Class wb_Planung_Liste
 
     Private Sub BtnBestellungen_Click(sender As Object, e As EventArgs) Handles BtnBestellungen.Click
         ReadBestellungenOrgaBack()
-        _AktDatumBackZettelTeigListe = dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
+        wb_Planung_Shared.ProduktionsDatum = dtBestellungen.Value
     End Sub
 
     Private Sub ReadBestellungenOrgaBack()
@@ -242,9 +243,8 @@ Public Class wb_Planung_Liste
         NeueCharge.ShowDialog()
 
         'Druckdatum
-        If _AktDatumBackZettelTeigListe = "" Then
-            _AktDatumBackZettelTeigListe = dtBestellungen.Value.ToString("dddd") & ", den " & dtBestellungen.Value.ToString("dd.MM.yyyy")
-        End If
+        'TODO Datum in ChargenNeu einfügen und dort ändern?
+        wb_Planung_Shared.ProduktionsDatum = dtBestellungen.Value
 
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
@@ -305,7 +305,7 @@ Public Class wb_Planung_Liste
 
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False, True) 'Drucker-Dialog (mit Druckhistorie)
-        pDialog.LL_KopfZeile_1 = "für " & _AktDatumBackZettelTeigListe
+        pDialog.LL_KopfZeile_1 = "für " & wb_Planung_Shared.ProduktionsDatumStr
         pDialog.LL.DataSource = New ObjectDataProvider(BackZettel)
 
         'List und Label-Verzeichnis für die Listen
@@ -318,10 +318,12 @@ Public Class wb_Planung_Liste
     Private Sub BtnTeigListeDrucken_Click(sender As Object, e As EventArgs) Handles BtnTeigListeDrucken.Click
         'Sortieren nach Teig(RezeptNummer), ArtikelNummer und Tour
         Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
-        Produktion.RootProduktionsSchritt.SortBackZettel()
+        Produktion.RootProduktionsSchritt.SortProduktionsPlan()
         'gleiche (Rest-)Teige zusammenfassen
         'TODO testweise eingefügt
         Produktion.TeigeZusammenfassen(wb_GlobalSettings.TeigOptimierung)
+        'Sortieren ist erforderlich
+        Produktion.RootProduktionsSchritt.SortProduktionsPlan()
         'Neu erstellte Chargen anzeigen 
         VirtualTree.DataSource = Produktion.RootProduktionsSchritt
 
@@ -331,7 +333,7 @@ Public Class wb_Planung_Liste
 
         'Druck-Daten
         Dim pDialog As New wb_PrinterDialog(False, True) 'Drucker-Dialog
-        pDialog.LL_KopfZeile_1 = "für " & _AktDatumBackZettelTeigListe
+        pDialog.LL_KopfZeile_1 = "für " & wb_Planung_Shared.ProduktionsDatumStr
         pDialog.LL.DataSource = New ObjectDataProvider(TeigListe)
 
         'List und Label-Verzeichnis für die Listen

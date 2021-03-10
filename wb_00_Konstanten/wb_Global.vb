@@ -540,13 +540,14 @@
     End Enum
 
     Public Structure ENummern
-        Public Nr As Integer            'E-Nummer als Integer
-        Public Bezeichnung As String    'Bezeichnungstext
-        Public Text As String           'E-Nummer als String
-        Public Beschreibung As String   'Wirkung/Herstellung
-        Public Bemerkung As String      'Hinweise/Gefahren
-        Public Key As Char              '
-        Public CleanLabel As Char       'Kann entfallen (J/N)
+        Public Nr As Integer                'E-Nummer als Integer
+        Public Bezeichnung As String        'Bezeichnungstext
+        Public Text As String               'E-Nummer als String
+        Public Beschreibung As String       'Wirkung/Herstellung
+        Public Bemerkung As String          'Hinweise/Gefahren
+        Public Key As Char                  '
+        Public CleanLabel As Char           'Kann entfallen (J/N)
+        Public MaxAnteilProzent As Double   'maximaler Anteil im Rohstoff in Prozent
     End Structure
 
     Public Structure OrgaBackSortiment

@@ -354,10 +354,20 @@ Public Class wb_ZutatenListe
 
     Public Sub Convert_ToEnr()
         For i = 0 To Liste.Count - 1
-            'TODO geklammerte Zutatenlisten in einzelne Bestandteile aufteilen und gruppieren
-            'geklammerte Zutatenlisten werden nicht in E-Nummern aufgeteilt
+            'geklammerte Zutatenlisten werden in mehrere E-Nummern aufgeteilt
             If Not Liste(i).Zutaten.Contains("\") Then
                 _Convert_ToENr(Liste(i))
+            Else
+                'String aufteilen in E-Nummern
+                Dim z() As String = Liste(i).Zutaten.Split("\")
+                Liste(i).Zutaten = z(0)
+                _Convert_ToENr(Liste(i))
+                'alle weiteren Zutaten einfügen
+                For j = 1 To z.Length - 1
+                    Liste.Insert(i, New wb_ZutatenElement(Liste(i)))
+                    Liste(i + 1).Zutaten = z(j)
+                    _Convert_ToENr(Liste(i + 1))
+                Next
             End If
         Next
     End Sub
@@ -376,6 +386,8 @@ Public Class wb_ZutatenListe
         If e.Nr > 0 Then
             L.Zutaten = e.Text
             L.eNr = e.Nr
+            'TODO TEST
+            L.SollMenge = L.SollMenge * e.MaxAnteilProzent
         End If
     End Sub
 
@@ -437,6 +449,12 @@ Public Class wb_ZutatenElement
     Public Quid As Boolean
     Public QuidProzent As Double
 
+    Public Sub New()
+    End Sub
+
+    Public Sub New(zte As wb_ZutatenElement)
+        CopyFrom(zte)
+    End Sub
 
     Public Sub CopyFrom(z As wb_ZutatenElement)
         Zutaten = Trim(z.Zutaten)

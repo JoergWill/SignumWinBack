@@ -31,7 +31,7 @@
                 _Item.Sort = _Item.Wb_Nummer
 
                 'doppelte Einträge werden nicht in die Liste der Rohstoffe(WinBack) übernommen
-                If _Item.Wb_Nummer <> Wb_NummerOld Then
+                If _Item.Wb_Nummer <> Wb_NummerOld Or _Item.Wb_Nummer = "" Then
                     _Data.Add(_Item)
                     Wb_NummerOld = _Item.Wb_Nummer
                 End If

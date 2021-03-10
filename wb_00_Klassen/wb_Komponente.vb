@@ -969,7 +969,13 @@ Public Class wb_Komponente
     Public Property Deklaration As String
         Get
             If wb_GlobalSettings.NwtInterneDeklaration Then
-                Return DeklBezeichungIntern
+                'Wenn die interne Deklarations-Bezeichnung leer ist
+                If DeklBezeichungIntern = "" Then
+                    'verwende die externe Deklarations-Bezeichung
+                    Return DeklBezeichungExtern
+                Else
+                    Return DeklBezeichungIntern
+                End If
             Else
                 Return DeklBezeichungExtern
             End If

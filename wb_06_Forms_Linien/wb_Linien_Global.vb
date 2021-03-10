@@ -248,7 +248,11 @@
         If _LGruppen.ContainsKey(LinienGruppe) Then
             Return _LGruppen(LinienGruppe).Bezeichnung
         Else
-            Return "- " & LinienGruppe.ToString & " -"
+            If LinienGruppe > 0 Then
+                Return "- " & LinienGruppe.ToString & " -"
+            Else
+                Return "nicht zugeordnet"
+            End If
         End If
     End Function
 

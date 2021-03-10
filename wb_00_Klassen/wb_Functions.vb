@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 Imports System.IO
+Imports System.Management
 Imports System.Net
 Imports System.Net.Sockets
 Imports System.Runtime.Serialization.Formatters.Binary
@@ -973,7 +974,7 @@ Public Class wb_Functions
     Public Shared Function FormatStr(value As String, NachKomma As Integer, Optional VorKomma As Integer = -1, Optional ByVal Culture As String = Nothing) As String
         Dim wert As Double
         Try
-            If value IsNot "" And value IsNot Nothing Then
+            If value IsNot "" And value IsNot Nothing And value IsNot "-" Then
                 ' Für Datenbank-Felder muss unabhängig von der Ländereinstellung die Umwandlung mit
                 ' der Einstellung de-DE erfolgen
                 If Culture IsNot Nothing Then
@@ -1919,5 +1920,28 @@ Public Class wb_Functions
         Return If(ip, "").ToString()
     End Function
 
+    Shared Function AddPath(txtNewPath As String) As Boolean
+        Dim objEv As ManagementObjectSearcher = New ManagementObjectSearcher("SELECT * FROM Win32_Environment")
+        For Each objMgmt As ManagementObject In objEv.Get
 
+            Debug.Print("Mgmt-Name " & objMgmt("Name"))
+            Debug.Print("Mgmt-User " & objMgmt("UserName"))
+
+            If objMgmt("Name") = "Path" And objMgmt("UserName") = "<SYSTEM>" Then
+                Dim strPath As String = objMgmt("VariableValue")
+                If strPath.ToLower.IndexOf("cvsnt") >= 0 Then
+                    If objMgmt("VariableValue").ToString.Substring(objMgmt("VariableValue").ToString.Length - 1) = ";" Then
+                        objMgmt("VariableValue") = objMgmt("VariableValue") + Trim(txtNewPath) + ";"
+                    Else
+                        objMgmt("VariableValue") = objMgmt("VariableValue") + ";" + Trim(txtNewPath) + ";"
+                    End If
+                End If
+                'TODO verlangt Admin-Rechte !!
+                objMgmt.Put()
+                MessageBox.Show("Path Added Successfully")
+                Return True
+            End If
+        Next
+        Return False
+    End Function
 End Class

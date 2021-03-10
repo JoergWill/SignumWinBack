@@ -191,11 +191,9 @@ Public Class ob_User_DockingExtension
     ''' Dieser wird erst erzeugt und gesetzt, wenn das Fenster auch angezeigt werden soll.
     ''' </remarks>
     Public Sub Initialize() Implements IExtension.Initialize
-        'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
-#If AssemblyResolve Then
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-#End If
+
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
         _SubForms.Add("@wb_User_DockingControlObjectInfo", Nothing)

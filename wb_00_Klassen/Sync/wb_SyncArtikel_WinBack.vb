@@ -44,7 +44,7 @@
         'Artikel neu anlegen 
         Dim KompNrNeu As Integer = Komponente.MySQLdbNew(wb_Global.KomponTypen.KO_TYPE_ARTIKEL)
         'Daten aus OrgaBack
-        Komponente.Bezeichnung = Text
+        Komponente.Bezeichnung = wb_Functions.XRemoveSonderZeichen(Text)
         Komponente.Nummer = Nr
         'Datensatz schreiben
         DBInsert = Komponente.MySQLdbUpdate()

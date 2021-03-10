@@ -168,7 +168,18 @@ Public Class wb_Admin_Sync
 
         'Cursor wieder umschalten
         Me.Cursor = Cursors.Default
-        MsgBox("Synchronisation erfolgreich abgeschlossen", MsgBoxStyle.Information, "Synchroniation")
+        If MsgBox("Synchronisation erfolgreich abgeschlossen" & vbCrLf & "Daten jetzt neu einlesen ?", MsgBoxStyle.YesNo, "Synchroniation") = MsgBoxResult.Yes Then
+            Select Case SyncType
+                Case wb_Global.SyncType.BenutzerGruppen
+                    btnSyncUserGruppen_Click(sender, Nothing)
+                Case wb_Global.SyncType.Benutzer
+                    btnSyncUser_Click(sender, Nothing)
+                Case wb_Global.SyncType.Artikel
+                    btnSyncArtikel_Click(sender, Nothing)
+                Case wb_Global.SyncType.Rohstoffe
+                    btnSyncRohstoffe_Click(sender, Nothing)
+            End Select
+        End If
     End Sub
 
     Private Sub ExcecuteSync(ByRef wb As wb_Sync, ByRef os As wb_Sync)
@@ -247,6 +258,12 @@ Public Class wb_Admin_Sync
                 'Ergebnis im Grid anzeigen
                 DisplayResultGrid(wbRohstoffe.Data, sColNames)
                 DisplayResultSummary(wbRohstoffe, osArtikel)
+            Case wb_Global.SyncType.Artikel
+                'Unbenutzte Einträge nur in WinBack möglich (Artikel ohne Pendant in OrgaBack oder ohne Nummer) !
+                iResult = ExecuteDelNotUsed(wbArtikel)
+                'Ergebnis im Grid anzeigen
+                DisplayResultGrid(wbArtikel.Data, sColNames)
+                DisplayResultSummary(wbArtikel, osArtikel)
         End Select
 
         'Cursor wieder umschalten
@@ -276,10 +293,18 @@ Public Class wb_Admin_Sync
         Next
     End Function
 
+    ''' <summary>
+    ''' Lösche alle Artikel/Rohstoffe OHNE Rohstoff-Nummer (WinBackErr)
+    ''' Lösche alle Artikel/Rohstoffe die in WinBack NICHT verwendet werden (WinBackNotUsed)
+    ''' Lösche alle Artikel die KEINE Entsprechung in OrgBack haben
+    ''' </summary>
+    ''' <param name="wb"></param>
+    ''' <returns></returns>
     Private Function ExecuteDelNotUsed(ByRef wb As wb_Sync) As Integer
         ExecuteDelNotUsed = 0
         For Each x As wb_SyncItem In wb.Data
-            If x.SyncOK = wb_Global.SyncState.WinBackNotUsed Then
+            If (x.SyncOK = wb_Global.SyncState.WinBackErr Or x.SyncOK = wb_Global.SyncState.WinBackNotUsed) Or
+               (x.SyncOK = wb_Global.SyncState.OrgaBackMiss And SyncType = wb_Global.SyncType.Artikel) Then
                 ExecuteDelNotUsed += 1
                 x.SyncOK = wb_Global.SyncState.TryMatchDel
             End If
@@ -462,7 +487,7 @@ Public Class wb_Admin_Sync
         btnSyncStart.Enabled = True
         btnTryToMatch.Enabled = True
         btnRemoveDBL.Enabled = True
-        btnRemoveNotUsed.Enabled = (SyncType = wb_Global.SyncType.Rohstoffe)
+        btnRemoveNotUsed.Enabled = (SyncType = wb_Global.SyncType.Rohstoffe) Or (SyncType = wb_Global.SyncType.Artikel)
         lvSyncResult.Visible = True
         lvSyncResult.Enabled = True
     End Sub

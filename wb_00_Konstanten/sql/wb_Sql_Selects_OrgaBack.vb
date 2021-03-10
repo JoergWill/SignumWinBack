@@ -111,7 +111,7 @@
     'Sql-Statement Abfrage dbo.ArtikelLagerkarte
     Public Const mssqlArtikelLagerKarte = "SELECT * FROM [dbo].[ArtikelLagerkarte] WHERE [Lfd] > [0] AND ArtikelNr = '[1]' ORDER BY [Lfd]"
     'Sql-Statement Abfrage dbo.ArtikelLagerkarte letzter Datensatz 
-    Public Const mssqlArtikelLagerInit = "SELECT TOP 1 * FROM [dbo].[ArtikelLagerkarte] WHERE ArtikelNr = '[0]' ORDER BY [Lfd] DESC"
+    Public Const mssqlArtikelLagerInit = "SELECT * FROM [dbo].[ArtikelLagerkarte] WHERE ArtikelNr = '[0]' ORDER BY [Lfd] DESC"
 
     'Sql-Statement Abfrage Geschäftsvorfall-Positionen nach Vorfall-Kürzel und Vorfall-Nummer
     Public Const mssqlVorfallPositionen = "SELECT * FROM [dbo].[GeschäftsvorfallPosition] WHERE VorfallKürzel = '[0]' AND VorfallNr = '[1]'"
