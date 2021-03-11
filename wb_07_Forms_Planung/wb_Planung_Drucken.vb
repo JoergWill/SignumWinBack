@@ -25,6 +25,7 @@ Public Class wb_Planung_Drucken
         Dim ItemAttr502 As String = ""
         Dim ItemAttr503 As String = ""
         Dim ItemAttr504 As String = ""
+        Dim ItemAttr505 As String = ""
 
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
@@ -39,6 +40,8 @@ Public Class wb_Planung_Drucken
                     ItemAttr503 = winback.sField("IP_Wert5Str")
                 Case 504
                     ItemAttr504 = winback.sField("IP_Wert5Str")
+                Case 505
+                    ItemAttr505 = winback.sField("IP_Wert5Str")
             End Select
         End While
         'Datenbank-Verbindung wieder schliessen
@@ -46,7 +49,7 @@ Public Class wb_Planung_Drucken
 
         'Spaltenüberschriften
         sColNames.Clear()
-        sColNames.AddRange({"", "? ", "&Drucken", ""})
+        sColNames.AddRange({"", "?D", "&Teigliste", "", ""})
 
         'Teig-Linien
         DruckLinienGruppe.Clear()
@@ -70,7 +73,7 @@ Public Class wb_Planung_Drucken
 
         'Spaltenüberschriften
         sColNames.Clear()
-        sColNames.AddRange({"", "? ", "&Drucken/Kommentar", "? "})
+        sColNames.AddRange({"", "?D", "&Aufarbeitung", "?K", "?S"})
         DruckAufarbeitung.Clear()
 
         'Aufarbeitungs-Plätze
@@ -83,6 +86,8 @@ Public Class wb_Planung_Drucken
             LGruppe.bDrucken = ItemAttr503.Contains("x" & LGruppe.LinienGruppe.ToString & "x")
             'Daten aus der letzten Sitzung wiederherstellen (Tabelle ItemParameter IP_ItemAttr=504)
             LGruppe.bKommentar = ItemAttr504.Contains("x" & LGruppe.LinienGruppe.ToString & "x")
+            'Daten aus der letzten Sitzung wiederherstellen (Tabelle ItemParameter IP_ItemAttr=505)
+            LGruppe.bSonderText = ItemAttr505.Contains("x" & LGruppe.LinienGruppe.ToString & "x")
             DruckAufarbeitung.Add(LGruppe)
         Next
 
@@ -136,7 +141,7 @@ Public Class wb_Planung_Drucken
         For Each s As wb_Global.wb_LinienGruppe In DruckAuftragAufarbeitung.GridArray
             'nur ausgewählte Aufarbeitungsplätze drucken
             If s.bDrucken Then
-                wb_Planung_Shared.FilterAndMark(BackZettel, True, s.LinienGruppe, wb_Global.NOFILTER, True, s.bKommentar)
+                wb_Planung_Shared.FilterAndMark(BackZettel, True, s.LinienGruppe, wb_Global.NOFILTER, True, s.bKommentar, s.bSonderText)
             End If
         Next
         'Wenn nach dem Filtern Einträge vorhanden sind - Drucken
@@ -185,6 +190,9 @@ Public Class wb_Planung_Drucken
         'Aufarbeitung(Bemerkungen drucken)
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlPlanungListeInsert, "504", wb_GlobalSettings.AktUserNr.ToString, GridToString(DruckAuftragAufarbeitung.GridArray, 504))
         winback.sqlCommand(sql)
+        'Aufarbeitung(SonderText drucken)
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlPlanungListeInsert, "505", wb_GlobalSettings.AktUserNr.ToString, GridToString(DruckAuftragAufarbeitung.GridArray, 505))
+        winback.sqlCommand(sql)
 
         'Datenbank-Verbindung wieder schliessen
         winback.Close()
@@ -195,7 +203,7 @@ Public Class wb_Planung_Drucken
         Dim s As String = "x"
         'Schleife über alle Liniengruppen
         For Each Liniengruppe As wb_Global.wb_LinienGruppe In GridArray
-            If (Liniengruppe.bDrucken And ItemAttr <> 504) Or (Liniengruppe.bKommentar And ItemAttr = 504) Then
+            If (Liniengruppe.bDrucken And ItemAttr = 502) Or (Liniengruppe.bDrucken And ItemAttr = 503) Or (Liniengruppe.bKommentar And ItemAttr = 504) Or (Liniengruppe.bSonderText And ItemAttr = 505) Then
                 s &= Liniengruppe.LinienGruppe & "x"
             End If
         Next

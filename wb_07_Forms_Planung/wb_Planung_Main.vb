@@ -50,7 +50,7 @@ Public Class wb_Planung_Main
     End Property
 
     Public Overrides Sub SetDefaultLayout()
-        PlanungListe.Show(DockPanel, DockState.DockLeft)
+        PlanungListe.Show(DockPanel, DockState.DockTop)
     End Sub
 
     ''' <summary>

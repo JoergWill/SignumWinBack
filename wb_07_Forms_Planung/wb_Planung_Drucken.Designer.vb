@@ -26,52 +26,29 @@ Partial Class wb_Planung_Drucken
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Planung_Drucken))
-        Me.lblLinieArtikel = New System.Windows.Forms.Label()
-        Me.lblLinienGruppe = New System.Windows.Forms.Label()
         Me.pnlLinienGruppe = New System.Windows.Forms.Panel()
         Me.pnlAufarbeitung = New System.Windows.Forms.Panel()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.BtnPrintTeigZettel = New System.Windows.Forms.Button()
         Me.BtnPrintAufarbeitung = New System.Windows.Forms.Button()
+        Me.lblLegende = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'lblLinieArtikel
-        '
-        Me.lblLinieArtikel.AutoSize = True
-        Me.lblLinieArtikel.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.lblLinieArtikel.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblLinieArtikel.Location = New System.Drawing.Point(243, 7)
-        Me.lblLinieArtikel.Name = "lblLinieArtikel"
-        Me.lblLinieArtikel.Size = New System.Drawing.Size(253, 13)
-        Me.lblLinieArtikel.TabIndex = 67
-        Me.lblLinieArtikel.Text = "Aufarbeitung"
-        '
-        'lblLinienGruppe
-        '
-        Me.lblLinienGruppe.AutoSize = True
-        Me.lblLinienGruppe.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.lblLinienGruppe.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblLinienGruppe.Location = New System.Drawing.Point(18, 7)
-        Me.lblLinienGruppe.Name = "lblLinienGruppe"
-        Me.lblLinienGruppe.Size = New System.Drawing.Size(205, 13)
-        Me.lblLinienGruppe.TabIndex = 66
-        Me.lblLinienGruppe.Text = "Teigzettel"
         '
         'pnlLinienGruppe
         '
         Me.pnlLinienGruppe.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlLinienGruppe.Location = New System.Drawing.Point(18, 23)
+        Me.pnlLinienGruppe.Location = New System.Drawing.Point(18, 8)
         Me.pnlLinienGruppe.Name = "pnlLinienGruppe"
-        Me.pnlLinienGruppe.Size = New System.Drawing.Size(205, 319)
+        Me.pnlLinienGruppe.Size = New System.Drawing.Size(205, 279)
         Me.pnlLinienGruppe.TabIndex = 68
         '
         'pnlAufarbeitung
         '
         Me.pnlAufarbeitung.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlAufarbeitung.Location = New System.Drawing.Point(243, 23)
+        Me.pnlAufarbeitung.Location = New System.Drawing.Point(243, 8)
         Me.pnlAufarbeitung.Name = "pnlAufarbeitung"
-        Me.pnlAufarbeitung.Size = New System.Drawing.Size(253, 319)
+        Me.pnlAufarbeitung.Size = New System.Drawing.Size(251, 279)
         Me.pnlAufarbeitung.TabIndex = 69
         '
         'TableLayoutPanel1
@@ -81,19 +58,19 @@ Partial Class wb_Planung_Drucken
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 14.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 19.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.BtnPrintTeigZettel, 1, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.lblLinieArtikel, 3, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.lblLinienGruppe, 1, 0)
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 21.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.BtnPrintTeigZettel, 1, 3)
         Me.TableLayoutPanel1.Controls.Add(Me.pnlLinienGruppe, 1, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.pnlAufarbeitung, 3, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.BtnPrintAufarbeitung, 3, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.BtnPrintAufarbeitung, 3, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.lblLegende, 1, 2)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 3
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowCount = 4
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(519, 391)
         Me.TableLayoutPanel1.TabIndex = 71
@@ -110,12 +87,26 @@ Partial Class wb_Planung_Drucken
         '
         'BtnPrintAufarbeitung
         '
+        Me.BtnPrintAufarbeitung.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BtnPrintAufarbeitung.Location = New System.Drawing.Point(243, 348)
         Me.BtnPrintAufarbeitung.Name = "BtnPrintAufarbeitung"
-        Me.BtnPrintAufarbeitung.Size = New System.Drawing.Size(253, 40)
+        Me.BtnPrintAufarbeitung.Size = New System.Drawing.Size(251, 40)
         Me.BtnPrintAufarbeitung.TabIndex = 74
         Me.BtnPrintAufarbeitung.Text = "Drucken Aufarbeitung"
         Me.BtnPrintAufarbeitung.UseVisualStyleBackColor = True
+        '
+        'lblLegende
+        '
+        Me.lblLegende.AutoSize = True
+        Me.TableLayoutPanel1.SetColumnSpan(Me.lblLegende, 3)
+        Me.lblLegende.Location = New System.Drawing.Point(20, 300)
+        Me.lblLegende.Margin = New System.Windows.Forms.Padding(5, 10, 3, 0)
+        Me.lblLegende.Name = "lblLegende"
+        Me.lblLegende.Size = New System.Drawing.Size(222, 39)
+        Me.lblLegende.TabIndex = 75
+        Me.lblLegende.Text = "D - Drucken" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "K - Kundenbestellungen einzeln auflisten" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "S - Nur Kundenbestellungen" &
+    " mit Sondertexten"
         '
         'wb_Planung_Drucken
         '
@@ -136,11 +127,10 @@ Partial Class wb_Planung_Drucken
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents lblLinieArtikel As Windows.Forms.Label
-    Friend WithEvents lblLinienGruppe As Windows.Forms.Label
     Friend WithEvents pnlLinienGruppe As Windows.Forms.Panel
     Friend WithEvents pnlAufarbeitung As Windows.Forms.Panel
     Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
     Friend WithEvents BtnPrintTeigZettel As Windows.Forms.Button
     Friend WithEvents BtnPrintAufarbeitung As Windows.Forms.Button
+    Friend WithEvents lblLegende As Windows.Forms.Label
 End Class

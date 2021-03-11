@@ -552,7 +552,7 @@ Public Class wb_Planung_Liste
         'return a list containing only the children you want to be visible
         Dim visibleChildren As New ArrayList
         For Each child In children
-            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe, False, True) Then
+            If TryCast(child, wb_Produktionsschritt).Filter(_FilterAufarbeitung, _FilterLinienGruppe, False, True, True) Then
                 visibleChildren.Add(child)
             End If
         Next

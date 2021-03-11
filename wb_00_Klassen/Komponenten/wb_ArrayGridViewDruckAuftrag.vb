@@ -8,6 +8,7 @@ Public Class wb_ArrayGridViewDruckAuftrag
     Const COLDRK = 1
     Const COLBEZ = 2
     Const COLKOM = 3
+    Const COLSDT = 4
 
     Public Sub New(ByVal xArray As ArrayList, ByVal sColNames As List(Of String), Optional ShowTooltips As Boolean = True)
         'Spalten-Überschriften
@@ -30,6 +31,7 @@ Public Class wb_ArrayGridViewDruckAuftrag
         'Spaltenbreiten festlegen
         Me.Columns(COLDRK).Width = 10
         Me.Columns(COLKOM).Width = 10
+        Me.Columns(COLSDT).Width = 10
         Me.Columns(COLBEZ).ReadOnly = True
 
         'Die Arraydaten werden in das GridView eingetragen
@@ -59,6 +61,7 @@ Public Class wb_ArrayGridViewDruckAuftrag
                     .Cells(COLDRK).Value = s.bDrucken
                     .Cells(COLBEZ).Value = s.Bezeichnung
                     .Cells(COLKOM).Value = s.bKommentar
+                    .Cells(COLSDT).Value = s.bSonderText
                 End With
             Next
         End If
@@ -83,6 +86,8 @@ Public Class wb_ArrayGridViewDruckAuftrag
                         s.bDrucken = CType(CurrentCell, DataGridViewCheckBoxCell).FormattedValue
                     Case COLKOM
                         s.bKommentar = CType(CurrentCell, DataGridViewCheckBoxCell).FormattedValue
+                    Case COLSDT
+                        s.bSonderText = CType(CurrentCell, DataGridViewCheckBoxCell).FormattedValue
                 End Select
                 GridArray(Row) = s
             End If

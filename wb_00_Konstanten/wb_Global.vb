@@ -691,6 +691,7 @@
         Public TeigZettelSenden As String
         Public bDrucken As Boolean
         Public bKommentar As Boolean
+        Public bSonderText As Boolean
     End Structure
 
     Public Structure wb_Linien

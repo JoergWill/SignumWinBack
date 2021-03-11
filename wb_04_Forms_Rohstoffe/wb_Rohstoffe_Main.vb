@@ -223,6 +223,11 @@ Public Class wb_Rohstoffe_Main
                 _DockPanelList.Add(RohstoffSilo)
                 Return RohstoffSilo
 
+            Case "WinBack.wb_Rohstoffe_Lieferung"
+                RohstoffLieferung = New wb_Rohstoffe_Lieferung
+                _DockPanelList.Add(RohstoffLieferung)
+                Return RohstoffLieferung
+
             Case "WinBack.wb_Rohstoffe_Nwt"
                 RohstoffNwt = New wb_Rohstoffe_Nwt
                 _DockPanelList.Add(RohstoffNwt)

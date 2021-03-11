@@ -65,6 +65,7 @@ Public Class wb_Produktionsschritt
     Private _Bestellt_Menge_Stk As String
     Private _Bestellt_Text As String
     Private _Bestellt_Drucken As Boolean
+    Private _BestelltSonderText_Drucken As Boolean
 
     Private _KO_Typ As wb_Global.KomponTypen
     Private _KO_Nr As Integer
@@ -789,6 +790,7 @@ Public Class wb_Produktionsschritt
 
     ''' <summary>
     ''' Enthält, getrennt durch CRLF alle Sondertexte bzw. Kundenbestellungen für diese Tour.
+    ''' Aus pq_Produktionsauftrag
     ''' </summary>
     ''' <returns></returns>
     Public Property Bestellt_SonderText As String
@@ -796,45 +798,77 @@ Public Class wb_Produktionsschritt
             Return _Bestellt_SonderText
         End Get
         Set(value As String)
-            'Sondertext auf pq_Produktionsauftrag
             _Bestellt_SonderText = value
-            'Aufteilen in die einzelnen Sondertexte
-            Dim SonderText() As String = Split(_Bestellt_SonderText, vbCrLf)
-            Dim i As Integer = 0
-            For Each s As String In SonderText
-                'Schleifenzähler (Aufteilung der einzlnen Positionen)
-                i += 1
-                Select Case i
-                    Case 1
-                        'erster Eintrag Kunde-Nummer und Kunde-Name (getrennt durch Space)
-                        SplitSpace(s, _Bestellt_KundeNr, _Bestellt_Kunde)
-                    Case 2
-                        'erster Eintrag Stückzahl und Bemerkung-Text (getrennt durch Space)
-                        SplitSpace(s, _Bestellt_Menge_Stk, _Bestellt_Text)
-                    Case 3
-                        'nachfolgender Eintrag Kunde-Nummer und Kunde-Name (CRLF einfügen)
-                        SplitSpace(s, _Bestellt_KundeNr, _Bestellt_Kunde, True)
-                    Case 4
-                        'nachfolgender Eintrag Stückzahl und Bemerkung-Text (CRLF einfügen)
-                        SplitSpace(s, _Bestellt_Menge_Stk, _Bestellt_Text, True)
-                        'Schleife wieder auf Anfang
-                        i = i - 2
-                End Select
-            Next
         End Set
     End Property
+
+    Private Sub SplitSonderText(t As String)
+        'Aufteilen in die einzelnen Sondertexte
+        Dim SonderText() As String = Split(t, vbCrLf)
+
+        'Flag KundenBestellung und Sondertexte drucken
+        If _BestelltSonderText_Drucken And Not _Bestellt_Drucken And (SonderText.Length >= 2) Then
+            'Prüfen und Markieren wenn Sondertexte zu den Kunden/Filialbestellungen vorhanden sind
+            For j = 1 To SonderText.Length Step 2
+                'Feld Bemerkungs-Text ist leer
+                If Not SplitSpaceContainsText(SonderText(j)) Then
+                    'alle anderen Text-Felder markieren (nicht drucken)
+                    SonderText(j - 1) = "NoPrint NoPrint"
+                    SonderText(j - 0) = "NoPrint NoPrint"
+                End If
+            Next
+        End If
+
+        Dim i As Integer = 0
+        For Each s As String In SonderText
+            'Schleifenzähler (Aufteilung der einzlnen Positionen)
+            i += 1
+            Select Case i
+                Case 1
+                    'erster Eintrag Kunde-Nummer und Kunde-Name (getrennt durch Space)
+                    SplitSpace(s, _Bestellt_KundeNr, _Bestellt_Kunde)
+                Case 2
+                    'erster Eintrag Stückzahl und Bemerkung-Text (getrennt durch Space)
+                    SplitSpace(s, _Bestellt_Menge_Stk, _Bestellt_Text)
+                Case 3
+                    'nachfolgender Eintrag Kunde-Nummer und Kunde-Name (CRLF einfügen)
+                    SplitSpace(s, _Bestellt_KundeNr, _Bestellt_Kunde, True)
+                Case 4
+                    'nachfolgender Eintrag Stückzahl und Bemerkung-Text (CRLF einfügen)
+                    SplitSpace(s, _Bestellt_Menge_Stk, _Bestellt_Text, True)
+                    'Schleife wieder auf Anfang
+                    i = i - 2
+            End Select
+        Next
+    End Sub
+
+    Private Function SplitSpaceContainsText(s As String) As Boolean
+        Dim x() As String = {"", ""}
+        If s <> "" Then
+            x = Split(s, " ", 2)
+        End If
+        Return (x(1) <> "")
+    End Function
+
     Private Sub SplitSpace(s As String, ByRef s1 As String, ByRef s2 As String, Optional crlf As Boolean = False)
         Dim x() As String = {"", ""}
         If s <> "" Then
             x = Split(s, " ", 2)
         End If
 
-        If crlf Then
-            s1 = s1 & vbCrLf & x(0)
-            s2 = s2 & vbCrLf & x(1)
+        If x(0) <> "NoPrint" And x(1) <> "NoPrint" Then
+            If crlf Then
+                s1 = s1 & vbCrLf & x(0)
+                s2 = s2 & vbCrLf & x(1)
+            Else
+                s1 = x(0)
+                s2 = x(1)
+            End If
         Else
-            s1 = x(0)
-            s2 = x(1)
+            If Not crlf Then
+                s1 = ""
+                s2 = ""
+            End If
         End If
     End Sub
 
@@ -859,7 +893,7 @@ Public Class wb_Produktionsschritt
                 Dim b As String = ""
                 For Each s As String In x
                     i = wb_Functions.StrToInt(s)
-                    b += i.ToString("0,0.") + " Stk" & vbCrLf
+                    b += i.ToString("#,#.") + " Stk" & vbCrLf
                 Next
                 Return b
             End If
@@ -875,10 +909,25 @@ Public Class wb_Produktionsschritt
 
     Public Property Bestellt_Drucken As Boolean
         Get
-            Return _Bestellt_Drucken
+            Return _Bestellt_Drucken Or _BestelltSonderText_Drucken
         End Get
         Set(value As Boolean)
             _Bestellt_Drucken = value
+            If value Then
+                SplitSonderText(Bestellt_SonderText)
+            End If
+        End Set
+    End Property
+
+    Public Property BestelltSonderText_Drucken As Boolean
+        Get
+            Return _BestelltSonderText_Drucken
+        End Get
+        Set(value As Boolean)
+            _BestelltSonderText_Drucken = value
+            If value Then
+                SplitSonderText(Bestellt_SonderText)
+            End If
         End Set
     End Property
 
@@ -889,7 +938,7 @@ Public Class wb_Produktionsschritt
     ''' <param name="_FilterAufarbeitung"></param>
     ''' <param name="_FilterLinienGruppe"></param>
     ''' <returns></returns>
-    Public Function Filter(_FilterAufarbeitung As Integer, _FilterLinienGruppe As Integer, CheckAufloesen As Boolean, SonderTextDrucken As Boolean) As Boolean
+    Public Function Filter(_FilterAufarbeitung As Integer, _FilterLinienGruppe As Integer, CheckAufloesen As Boolean, KundenBestellungTextDrucken As Boolean, SonderTextDrucken As Boolean) As Boolean
         'Filter Aufarbeitungsplatz
         If _FilterAufarbeitung > 0 And _ArtikelLinienGruppe > 0 And _FilterAufarbeitung <> _ArtikelLinienGruppe Then
             Return False
@@ -905,8 +954,10 @@ Public Class wb_Produktionsschritt
         '    Return False
         'End If
 
-        'Flag Sondertext drucken Ja/Nein
-        Bestellt_Drucken = SonderTextDrucken
+        'Flag KundenText drucken Ja/Nein
+        Bestellt_Drucken = KundenBestellungTextDrucken
+        'Flag Sondertext zur Kundenbestellung drucken J/N
+        BestelltSonderText_Drucken = SonderTextDrucken
 
         Return True
     End Function
