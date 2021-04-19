@@ -73,6 +73,18 @@ Public Class wb_KomponParam
         End Set
     End Property
 
+    ''' <summary>
+    ''' Gibt den Parameter-Wert formatiert abhängig von eFormat zurück
+    '''     fUndefined = 0
+    '''     fString = 1
+    '''     fInteger = 2
+    '''     fReal = 3
+    '''     fTime = 4
+    '''     fBoolean = 5
+    '''     fAllergen = 6
+    '''     fYesNo = 7
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Wert As String
         Get
             If wb_KomponParam301_Global.IsAllergen(_ParamNr) Then
@@ -80,7 +92,16 @@ Public Class wb_KomponParam
             ElseIf wb_KomponParam301_Global.IsErnaehrung(_ParamNr) Then
                 Return wb_Functions.ErnaehrungToString(_Wert)
             Else
-                Return wb_Functions.FormatStr(_Wert, 3)
+                Select Case eFormat
+                    Case 0, 1
+                        Return _Wert
+                    Case 2
+                        Return wb_Functions.FormatStr(_Wert, 0)
+                    Case 3
+                        Return wb_Functions.FormatStr(_Wert, 3)
+                    Case Else
+                        Return _Wert
+                End Select
             End If
         End Get
         Set(value As String)
@@ -182,7 +203,7 @@ Public Class wb_KomponParam
         End Get
     End Property
 
-    Public ReadOnly Property eFormat As String
+    Public ReadOnly Property eFormat As Integer
         Get
             Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).eFormat
         End Get

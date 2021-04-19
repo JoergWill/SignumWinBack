@@ -1283,12 +1283,15 @@ Public Class wb_Rezept
                 Case "KT_UnterGW"
                     _SQLRezeptSchritt.UnterGW = wb_Functions.StrToDouble(Value)
                 'zählt NICHT zum Rezeptgesamtgewicht
-                'KA_zaehlt_zu_RZ_Gesamtmenge = 3    - zählt nicht zu RezGewicht -> True     zählt trotzdem zur Nährwertberechnung -> True
                 'KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu RezGewicht -> True     zählt trotzdem zur Nährwertberechnung -> False
                 'KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu RezGewicht -> False
                 'KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu RezGewicht -> False
                 Case "KA_zaehlt_zu_RZ_Gesamtmenge", "H_KA_zaehlt_zu_RZ_Gesamtmenge"
                     _SQLRezeptSchritt.KA_zaehlt_zu_RZ_Gesamtmenge = Value
+                'KA_zaehlt_zu_NWT_Gesamtmenge = 1    - zählt nicht zu RezGewicht -> True     zählt trotzdem zur Nährwertberechnung -> True
+                Case "KA_zaehlt_zu_NWT_Gesamtmenge", "H_KA_zaehlt_zu_NWT_Gesamtmenge"
+                    _SQLRezeptSchritt.KA_zaehlt_zu_NWT_Gesamtmenge = Value
+
                 'Lagerort
                 Case "KA_Lagerort"
                     _SQLRezeptSchritt.LagerOrt = Value

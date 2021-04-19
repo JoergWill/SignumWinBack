@@ -15,6 +15,7 @@ Public Class EnhEdit
     Private _Init As Boolean = True
     Private _NoKeyPressed As Boolean = True
     Private _TextBoxSize As New Size
+    Private _Handle As String
 
     <System.Diagnostics.DebuggerNonUserCode()>
     Public Sub New()
@@ -22,10 +23,13 @@ Public Class EnhEdit
 
         'Dieser Aufruf ist für den Komponenten-Designer erforderlich.
         InitializeComponent()
-        'SetStyle(ControlStyles.UserPaint, True)
+        'Me.SetStyle(ControlStyles.SupportsTransparentBackColor Or ControlStyles.UserPaint, True)
         Me.BorderStyle = BorderStyle.None
+        'Me.BackColor = Color.Transparent
 
-        'Debug.Print("Enhanced Edit New() " & Me.Handle.ToString)
+        'Handle merken (Debug)
+        _Handle = Me.Handle.ToString
+        'Debug.Print("New() Handle " & _Handle)
     End Sub
 
     ''' <summary>
@@ -36,21 +40,28 @@ Public Class EnhEdit
     ''' </summary>
     ''' <param name="e"></param>
     Protected Overrides Sub OnGotFocus(e As EventArgs)
-        'Debug.Print("Enhanced Edit OnGotFocus " & Me.Value)
-        'Debug.Print("Enhanced Edit eFormat    " & Me._eFormat.ToString)
+        'Debug.Print("OnGotFocus " & Me.Value & "/" & Me.Handle.ToString & "/" & Me.eFormat)
         'Anzeigewert zurücksetzen
         _eValue = ""
         _NoKeyPressed = True
 
+        'Grenzwerte und Format aus EnhEdit_Global
+        eFormat = GLeFormat
+        oValue = GLoValue
+        eUG = GLeUG
+        eOG = GLeOG
+
         'Ausrichtung und Format der unterlagerten Textbox
         If _eFormat = wb_Format.fString Then
             Me.TextBox.TextAlign = HorizontalAlignment.Left
+        ElseIf _eFormat = wb_Format.fAllergen Or _eFormat = wb_Format.fYesNo Then
+            Me.TextBox.TextAlign = HorizontalAlignment.Center
         Else
             Me.TextBox.TextAlign = HorizontalAlignment.Right
         End If
 
         Me.TextBox.BorderStyle = BorderStyle.None
-        Me.TextBox.AcceptsReturn = True
+        Me.TextBox.AcceptsReturn = False
 
         'Größe der Textbox vorgeben
         _TextBoxSize.Width = ClientSize.Width - 2
@@ -59,16 +70,30 @@ Public Class EnhEdit
         MyBase.OnGotFocus(e)
     End Sub
 
-    Public Property eFormat As wb_Format
+    Private Property oValue As Object
+        Get
+            Return _oValue
+        End Get
+        Set(value As Object)
+            _oValue = value
+            Init = True
+            Me.TextBox.Text = value
+            Me.TextBox.SelectAll()
+            'Me.TextBox.
+        End Set
+    End Property
+
+    Private Property eFormat As wb_Format
         Get
             Return _eFormat
         End Get
         Set(value As wb_Format)
             _eFormat = value
+            'Debug.Print("Handle " & _Handle & " Format set to " & value.ToString)
         End Set
     End Property
 
-    Public Property eUG As String
+    Private Property eUG As String
         Get
             Return Convert.ToString(_eUg)
         End Get
@@ -81,7 +106,7 @@ Public Class EnhEdit
         End Set
     End Property
 
-    Public Property eOG As String
+    Private Property eOG As String
         Get
             Return Convert.ToString(_eOG)
         End Get
@@ -136,12 +161,12 @@ Public Class EnhEdit
 
     Public Property Init As Boolean
         Get
-            'Debug.Print("Enhanced Edit GetInit " & _Init.ToString & "/" & Me.Handle.ToString)
+            'Debug.Print("GetInit " & _Init.ToString & "/" & Me.Handle.ToString)
             Return _Init
         End Get
         Set(value As Boolean)
             _Init = value
-            'Debug.Print("Enhanced Edit SetInit " & value.ToString & "/" & Me.Handle.ToString)
+            'Debug.Print("SetInit " & value.ToString & "/" & Me.Handle.ToString)
         End Set
     End Property
 
@@ -151,14 +176,14 @@ Public Class EnhEdit
     ''' </summary>
     Protected Overrides Sub OnValueChanged()
         If Init Then
-            'Debug.Print("Enhanced Edit OnValueChanged(Init) " & Me.Value & "/" & Me.Handle.ToString)
+            'Debug.Print("OnValueChanged(Init) " & Me.Value & "/" & Me.Handle.ToString & "/" & Me.eFormat)
             Init = False
-            _oValue = Value
-            Me.TextBox.Text = Value
-            Me.TextBox.SelectAll()
+            '_oValue = Value
+            'Me.TextBox.Text = Value
+            'Me.TextBox.SelectAll()
         Else
             Me.Value = eValue
-            'Debug.Print("Enhanced Edit OnValueChanged " & Me.Value & "/" & Me.Handle.ToString)
+            'Debug.Print("OnValueChanged " & Me.Value & "/" & Me.Handle.ToString & "/" & Me.eFormat)
         End If
         'MyBase.OnValueChanged()
     End Sub
@@ -194,11 +219,19 @@ Public Class EnhEdit
             keyData = Keys.Tab + Keys.Shift
         End If
 
+        'Enter-Taste - Edit nächste Zeile
+        'If keyData = Keys.Return Then
+        '    Return MyBase.ProcessCmdKey(msg, Keys.Tab)
+        'Else
+        '    Return MyBase.ProcessCmdKey(msg, keyData)
+        'End If
+
+        'Enter-Taste - Ende Edit
         Return MyBase.ProcessCmdKey(msg, keyData)
     End Function
 
     Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
-        'Debug.Print("OnKeyDown " & e.KeyCode & "/" & e.KeyData & "/" & e.KeyValue)
+        'Debug.Print("OnKeyDown " & e.KeyCode & "/" & e.KeyData & "/" & e.KeyValue & "/" & Me.Handle.ToString & "/" & Me.eFormat)
 
         'Reset Flag NoKeyPressed
         _NoKeyPressed = False
@@ -278,11 +311,10 @@ Public Class EnhEdit
     Protected Overrides Sub OnValidating(e As CancelEventArgs)
         If _NoKeyPressed Then
             Value = _oValue
-            'Debug.Print("Enhanced Edit OnValidating(NoKeyPressed) " & Value)
+            'Debug.Print("OnValidating(NoKeyPressed) " & Value & "/" & Me.Handle.ToString & "/" & Me.eFormat)
         Else
             Value = eValue
-            _oValue = Value
-            'Debug.Print("Enhanced Edit OnValidating " & Value)
+            'Debug.Print("OnValidating " & Value & "/" & Me.Handle.ToString & "/" & Me.eFormat)
         End If
     End Sub
 

@@ -76,7 +76,7 @@
         <FixedStyle>None</FixedStyle>
         <IsStar>false</IsStar>
         <Name z:Ref="25" i:nil="true" />
-        <Position>9</Position>
+        <Position>5</Position>
         <Width>49</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
@@ -141,7 +141,7 @@
         <FixedStyle>None</FixedStyle>
         <IsStar>false</IsStar>
         <Name z:Ref="35" i:nil="true" />
-        <Position>14</Position>
+        <Position>7</Position>
         <Width>210</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
@@ -180,7 +180,7 @@
         <FixedStyle>None</FixedStyle>
         <IsStar>false</IsStar>
         <Name z:Ref="41" i:nil="true" />
-        <Position>12</Position>
+        <Position>6</Position>
         <Width>119</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
@@ -245,7 +245,7 @@
         <FixedStyle>None</FixedStyle>
         <IsStar>false</IsStar>
         <Name z:Ref="51" i:nil="true" />
-        <Position>16</Position>
+        <Position>8</Position>
         <Width>420</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
@@ -389,7 +389,7 @@
         <IsStar>true</IsStar>
         <Name z:Ref="73" i:nil="true" />
         <Position>-1</Position>
-        <Width>1000000000</Width>
+        <Width>1000000000000</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>
       <ColumnConfig z:Id="74">
@@ -401,7 +401,7 @@
         <FixedStyle>None</FixedStyle>
         <IsStar>false</IsStar>
         <Name i:nil="true" />
-        <Position>8</Position>
+        <Position>4</Position>
         <Width>76</Width>
         <WindowId>47</WindowId>
       </ColumnConfig>

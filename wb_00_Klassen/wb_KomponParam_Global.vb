@@ -6,6 +6,8 @@
 ''' </summary>
 Public Class wb_KomponParam_Global
 
+    Private Shared _ErrorText As String = ""
+    Private Shared _UpdateDatabaseFile As String = ""
     Private Shared _ktTypMaxParams As New Hashtable
     Public Shared ktTypXXXParams As New Hashtable
 
@@ -75,6 +77,18 @@ Public Class wb_KomponParam_Global
         End While
         winback.Close()
     End Sub
+
+    Public Shared ReadOnly Property ErrorText As String
+        Get
+            Return _ErrorText
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property UpdateDatabaseFile As String
+        Get
+            Return _UpdateDatabaseFile
+        End Get
+    End Property
 
     Private Shared Function SetParameterUsed(t As Integer, p As Integer) As Boolean
         'Komponenten-Typen (Parameter-Nummer kleiner 200)
@@ -179,32 +193,33 @@ Public Class wb_KomponParam_Global
             'Automatik-Rohstoffe
             Case wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE
                 'zusätzlicher Parameter Lagerort/Silo
-                AddParameter(t, p, wb_Global.T101_LagerOrt, "Lagerort/Silo", 0, "", "")
+                AddParameter(t, p, wb_Global.T101_LagerOrt, "Lagerort/Silo", "", 1, "", "")
 
             'nach Kneter-Komponente wird ein neuer Parameter-Satz KO_TYPE_KNETER_TEIGRUHE angelegt
             Case wb_Global.KomponTypen.KO_TYPE_KNETER
                 'Dummy-Parameter für Teigruhe
                 t = wb_Functions.KomponTypeToInt(wb_Global.KomponTypen.KO_TYPE_KNETER_TEIGRUHE)
                 'zusätzlicher Parametersatz Teigruhe (Dummy-Kompontype)
-                AddParameter(t, p, 0, "Teigruhe", "", "", "")
-                AddParameter(t, p, 6, "Teigruhesatz löschen nach [hh:mm:ss]", "hh:mm:ss", "00:00:00", "99:59:59")
-                AddParameter(t, p, 8, "Korrektur[Sek/°C]", 0, "Sek/°C", "9999")
-                AddParameter(t, p, 10, "Untergrenze Teigruhezeit", "%", "0", "999", False)
-                AddParameter(t, p, 11, "Obergrenze Teigruhezeit", "%", "0", "999", False)
-                AddParameter(t, p, 12, "Toleranz nach Ende Teigruhe(gelb) [hh:mm:ss]", "hh:mm:ss", "00:00:00", "99:59:59")
-                AddParameter(t, p, 13, "Toleranz vor Ablauf Teigruhe(gelb) [hh:mm:ss]", "hh:mm:ss", "00:00:00", "99:59:59")
+                AddParameter(t, p, 0, "Teigruhe", "", 0, "", "")
+                AddParameter(t, p, 6, "Teigruhesatz löschen nach [hh:mm:ss]", "hh:mm:ss", 4, "00:00:00", "99:59:59")
+                AddParameter(t, p, 8, "Korrektur[Sek/°C]", "Sek/°C", 2, "0", "9999")
+                AddParameter(t, p, 10, "Untergrenze Teigruhezeit", "%", 2, "0", "999", False)
+                AddParameter(t, p, 11, "Obergrenze Teigruhezeit", "%", 2, "0", "999", False)
+                AddParameter(t, p, 12, "Toleranz nach Ende Teigruhe(gelb) [hh:mm:ss]", "hh:mm:ss", 4, "00:00:00", "99:59:59")
+                AddParameter(t, p, 13, "Toleranz vor Ablauf Teigruhe(gelb) [hh:mm:ss]", "hh:mm:ss", 4, "00:00:00", "99:59:59")
         End Select
     End Sub
 
-    Private Shared Sub AddParameter(ByRef Typ As Integer, ByRef MaxParamNr As Integer, ParamNr As Integer, Bezeichnung As String, Einheit As String, GWOben As String, GWUnten As String, Optional Used As Boolean = True)
+    Private Shared Sub AddParameter(ByRef Typ As Integer, ByRef MaxParamNr As Integer, ParamNr As Integer, Bezeichnung As String, Einheit As String, eFormat As Integer, GwOben As String, GWUnten As String, Optional Used As Boolean = True)
         'neuer Parameter
         Dim k As ktTypXXXParam
         k.Type = Typ
         k.ParamNr = ParamNr
         k.Bezeichnung = Bezeichnung
         k.Einheit = Einheit
+        k.eFormat = eFormat
         k.Used = Used
-        k.eOG = GWOben
+        k.eOG = GwOben
         k.eUG = GWUnten
         'zur Liste hinzufügen
         ktTypXXXParams.Add(BuildKey(k.Type, k.ParamNr), k)
@@ -246,5 +261,24 @@ Public Class wb_KomponParam_Global
 
     Private Shared Function BuildKey(t As Integer, p As Integer) As String
         Return t.ToString("000") & p.ToString("000")
+    End Function
+
+    Public Shared Function CheckDB() As Boolean
+        'FehlerText löschen
+        _ErrorText = ""
+        'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)
+        _UpdateDatabaseFile = "2.30_KomponTypen_TA.sql"
+
+        'alle Parameter(Update) prüfen
+        Try
+            wb_Functions.AssertTrue((wb_Functions.StrToDouble(ktXXXParam(101, 7).eUG) = -1), "KT101.Parameter(7) TA - Unterer Grenzwert ist nicht -1.0")
+            wb_Functions.AssertTrue((wb_Functions.StrToDouble(ktXXXParam(102, 7).eUG) = -1), "KT102.Parameter(7) TA - Unterer Grenzwert ist nicht -1.0")
+        Catch ex As Exception
+            Trace.WriteLine("Fehler in Komponenten-Parameter Typ 101/102 - Unterer Grenzwert TA falsch !")
+            _ErrorText = ex.Message
+            Trace.WriteLine(_ErrorText)
+            Return False
+        End Try
+        Return True
     End Function
 End Class

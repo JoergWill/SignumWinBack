@@ -1,36 +1,67 @@
-﻿'Imports System.Reflection
-'Imports Signum.OrgaSoft.Common
-'Imports Signum.OrgaSoft.Extensibility
+﻿Imports Signum.OrgaSoft.Common
+Imports Signum.OrgaSoft.Extensibility
+Imports Signum.OrgaSoft.FrameWork
 
-'Public Class ob_Rohstoffe_SiloInventur
-'    Implements IExtension
+<Export(GetType(IExtension))>
+<ExportMetadata("Description", "Fügt Sätze zu einer Inventur hinzu und führt eine Bestandskorrektur aus.")>
+Public Class ob_Rohstoffe_SiloInventur
+    Implements IExtension
 
-'    Private oFactory As IFactoryService
-'    Private oObject As Signum.OrgaSoft.FrameWork.IFrameWorkClass
+    Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
+    Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
 
-'    Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
-'    Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
+    Private oFactory As IFactoryService
+    Private oSetting As ISettingService
+    Private oViewProvider As IViewProvider
+    Private oMenuService As IMenuService
 
-'    Public Sub Initialize() Implements IExtension.Initialize
-'        'Versuche die eigenen dll-Files in sep. Verzeichnis zu verlagern
-'        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+    Public Sub Initialize() Implements IExtension.Initialize
+        oFactory = TryCast(ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
+        oSetting = TryCast(ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
+    End Sub
 
-'        'Factory-Service
-'        oFactory = TryCast(ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
-'        oObject = oFactory.GetOrgasoftObject(ObjectEnum.InventoryManagement)
-'        Debug.Print(oObject.ToString)
+    ''' <summary>
+    ''' Erzeugt eine Inventur für Artikel mit ArtikelNr, Einheit, Menge und führt anschließend für diesen Artikel eine Bestandskorrektur durch
+    ''' </summary>
+    Private Function Bestandskorrektur(ArtikelNr As String, Einheit As Integer, EingabeMenge As String, iFilialNr As Integer) As Boolean
+        'Objekt vom Type Inventur erstellen lassen (via FactoryService)
+        Dim oInventur = CType(oFactory.GetOrgasoftObject(ObjectEnum.StockTaking), INavigationClass)
+        'Find(FilialNr) ausführen
+        If oInventur.Find(iFilialNr) Then
+            'Bei den Positionen eine Position mit dem Artikel hinzufügen
+            Dim oInvPositionen = CType(oInventur.GetPropertyValue("Positionen"), ICollectionClass)
+            Dim oPos = CType(DirectCast(oInvPositionen, ComponentModel.IBindingListView).AddNew(), IFrameWorkClass)
+            oPos.SetPropertyValue("ArtikelNr", ArtikelNr)
+            oPos.SetPropertyValue("Einheit", Einheit)
+            oPos.SetPropertyValue("EingabeMengeString", EingabeMenge)
+            Dim oMethodInfo As Reflection.MethodInfo = oPos.GetType.GetMethod("EingabeBeenden")
+            oMethodInfo.Invoke(oPos, {})
+            'Update
+            If oInventur.Update() Then
+                'Objekt vom Typ Bestandkorrektur erstellen lassen
+                Dim oBK = oFactory.GetOrgasoftObject(ObjectEnum.StockCorrection)
+                'BestaendeAufNullSetzenJN auf True setzen
+                oBK.SetPropertyValue("BestaendeAufNullSetzenJN", True)
+                oBK.SetPropertyValue("FilialNr", iFilialNr)
+                'Property TransferSelektion via Reflection (wichtig!) holen => Type=Object
+                Dim oPropInfo As Reflection.PropertyInfo = oBK.GetType.GetProperty("TransferSelektion")
+                Dim oSelektion = oPropInfo.GetValue(oBK)
 
-'    End Sub
+                'TODO Folgende Zeile ist ein Workaround für ein internes Problem, ab 19.3.21 nicht mehr nötig
+                oBK.SetPropertyValue("TransferSelektion", oSelektion)
 
-'    Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
-'        Return wb_Main_Shared.MyAssemblyResolve(sender, args, GetType(ob_Main_Menu).Assembly)
-'    End Function
+                Dim oPropInfo2 As Reflection.PropertyInfo = oSelektion.GetType.GetProperty("SelektionsName")
+                oPropInfo2.SetValue(oSelektion, "temp. Selektion")
+                'In diesem Objekt das Property SQLSelektion (wiederum via Reflection) auf einen passenden SQL-String setzen
+                Dim oPropInfo3 As Reflection.PropertyInfo = oSelektion.GetType.GetProperty("SQLSelektion")
+                oPropInfo3.SetValue(oSelektion, "SELECT HandelsArtikel.* FROM HandelsArtikel WHERE ArtikelNr='" & ArtikelNr & "'")
+                'Execute() in der Klasse Bestandskorrektur aufrufen
+                If DirectCast(oBK, IWorkerClassBase).Execute() Then
+                    Return True
+                End If
+            End If
+        End If
+        Return False
+    End Function
 
-'    Public Shared Function SetInventoryAmount(ArtikelNr As String, Menge As Double) As Boolean
-
-
-'        Return True
-
-'    End Function
-
-'End Class
+End Class

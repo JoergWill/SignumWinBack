@@ -46,6 +46,7 @@
         'Update ausführen REPLACE INTO KomponParams (KP_Ko_Nr, KP_ParamNr, KP_Wert, KP_Kommentar) VALUES (...)
         Return winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKompParams, KoNr.ToString, ParamNr.ToString, Wert(ParamNr)))
     End Function
+
 End Class
 
 ''''alle Datensätze im Array durchlaufen

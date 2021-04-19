@@ -73,6 +73,20 @@ Public Class wb_Admin_CheckDatabase
                 UpdateDataBaseFiles.Add(wb_Linien_Global.UpdateDatabaseFile)
             End If
 
+            'Prüfe Tabelle winback.Komponenten - KA_zaehlt_zu_NWT_Gesamtmenge
+            If Not CheckResultText(wb_Rohstoffe_Shared.CheckDB(), "Check Datenbank winback.Komponenten - DB-Feld KA_zaehlt_zu_NWT_Gesamtmenge") Then
+                LogEvent(wb_Rohstoffe_Shared.ErrorText, Color.Red, True)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_Rohstoffe_Shared.UpdateDatabaseFile)
+            End If
+
+            'Prüfe Tabelle winback.KomponTypen(101/102) - Parameter TA Unterer Grenzwert Eingabe (-1.0)
+            If Not CheckResultText(wb_KomponParam_Global.CheckDB(), "Check Datenbank winback.KomponTypen(101/102) - UG Eingabe TA (Parameter 7)") Then
+                LogEvent(wb_KomponParam_Global.ErrorText, Color.Red)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_KomponParam_Global.UpdateDatabaseFile)
+            End If
+
             'Prüfe Tabelle winback.KomponTypen(300) - Parameter Produktion
             If Not CheckResultText(wb_KomponParam300_Global.CheckDB(), "Check Datenbank winback.KomponTypen(300) - Parameter Produktion") Then
                 LogEvent(wb_KomponParam300_Global.ErrorText, Color.Red)

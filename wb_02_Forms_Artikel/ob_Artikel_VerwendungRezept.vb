@@ -3,7 +3,10 @@ Imports Signum.OrgaSoft.GUI
 
 Public Class ob_Artikel_VerwendungRezept
     Implements IBasicFormUserControl
-    Private Nr As Integer = 0
+    Private NrAkt As Integer = 0
+    Private NummerAkt As String = Nothing
+    Private BezeichnungAkt As String = Nothing
+
 #Region "Signum"
     ''' <summary>
     ''' Eindeutiger Schlüssel für das Fenster, ggf. Firmenname.AddIn
@@ -59,16 +62,18 @@ Public Class ob_Artikel_VerwendungRezept
     Public Function ExecuteCommand(CommandId As String, Parameter As Object) As Object Implements IBasicFormUserControl.ExecuteCommand
         Select Case CommandId
             Case "INVALID"
-                Nr = 0
+                NrAkt = 0
                 'Tabelle Verwendung leeren
                 HisDataGridView.ClearVerwendung()
             Case "VALID"
 
             Case "wbFOUND"
                 Debug.Print("Artikel_VerwendungRezept: wbFOUND")
-                Nr = DirectCast(Parameter, wb_Komponente).Nr
+                NrAkt = DirectCast(Parameter, wb_Komponente).Nr
+                NummerAkt = DirectCast(Parameter, wb_Komponente).Nummer
+                BezeichnungAkt = DirectCast(Parameter, wb_Komponente).Nummer
                 'Tabelle Verwendung mit Daten füllen
-                HisDataGridView.LoadVerwendung(Nr)
+                HisDataGridView.LoadVerwendung(NrAkt)
         End Select
         Return Nothing
     End Function
@@ -89,6 +94,9 @@ Public Class ob_Artikel_VerwendungRezept
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
         Trace.WriteLine("Init()")
         MyBase.Text = "Rohstoff Verwendung im Rezept"
+        'Rohstoff-tauschen im Popup-Menu
+        HisDataGridView.PopupItemAdd("Rohstoff in Rezepten ersetzen", "", Nothing, AddressOf RohstoffeTauschen, True)
+        'Formular anzeigen
         Me.Show()
         Return True
     End Function
@@ -104,6 +112,21 @@ Public Class ob_Artikel_VerwendungRezept
         _DockingExtension = DockingExtension
 
         Trace.WriteLine("Sub New(Docking Extension)")
+    End Sub
+
+    Private Sub RohstoffeTauschen()
+        'Dialog-Fenster Rohstoff im Rezept tauschen/ersetzen
+        Dim RohstoffeTauschen As New wb_Rohstoffe_Tauschen(NrAkt, NummerAkt, BezeichnungAkt)
+        ''aktueller Rohstoff (OrgaBack)
+        'RohstoffeTauschen.NummerAkt = NummerAkt
+        'RohstoffeTauschen.BezeichnungAkt = BezeichnungAkt
+        'RohstoffeTauschen.NrAkt = NrAkt
+        'wenn Rezepturen geändert worden sind, wird die Anzeige aktualisiert
+        If RohstoffeTauschen.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            'Liste aktualisieren
+            HisDataGridView.ClearVerwendung()
+            HisDataGridView.LoadVerwendung(NrAkt)
+        End If
     End Sub
 
 End Class

@@ -3,7 +3,7 @@
     'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
     Public Const sqlRohstoffSimpleLst = "SELECT KO_Type, KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KA_aktiv, " &
                                   "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2, KA_Charge_Opt_kg, " &
-                                  "KA_Lagerort, KA_zaehlt_zu_RZ_Gesamtmenge FROM Komponenten"
+                                  "KA_Lagerort, KA_zaehlt_zu_RZ_Gesamtmenge, KA_zaehlt_zu_NWT_Gesamtmenge FROM Komponenten"
     'Sql-Statement Rohstoffliste aus winback.Komponenten (KO_Nr als Platzhalter für LG_aktiv)
     Public Const sqlRohstoffLst = "SELECT KO_Nr_AlNum, KO_Bezeichnung, KO_Nr, KO_Kommentar, KA_RZ_Nr, KO_Type, KA_aktiv, " &
                                   "KA_Kurzname, KA_Matchcode, KA_Preis, KA_Grp1, KA_Grp2, KT_Format, KT_UnterGW, KT_OberGW, E_Einheit FROM Komponenten " &
@@ -155,6 +155,9 @@
     'Sql-Statement Liste aller Rohstoffe zur Teigtemperaturmessung
     Public Const sqlTeigTempRohstoffe = "SELECT KO_Nr, KO_Bezeichnung FROM Komponenten INNER JOIN KomponParams ON Komponenten.KO_Nr = KomponParams.KP_Ko_Nr " &
                                         "WHERE (KO_Type=111 AND KP_ParamNr=4) OR (KO_Type=118 AND KP_ParamNr=4 AND KP_Wert='5') "
+
+    'Prüfen ob Datenbankfeld KA_zaehlt_zu_NWT_Gesamtmenge vorhanden ist
+    Public Const sqlCheckNwtGesamtmenge = "DESCRIBE Komponenten KA_zaehlt_zu_NWT_Gesamtmenge"
 
 End Class
 

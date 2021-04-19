@@ -65,12 +65,6 @@ Public Class wb_Artikel_Parameter
         'Daten aus dem aktuell ausgewählten Rezeptschritt
         _KomponParam = DirectCast(e.StartRow.Item, wb_KomponParam)
 
-        'Einstellungen Editor
-        Debug.Print("VirtualTree_SelectionChanging " & _KomponParam.Bezeichnung & " UG/OG/Format " & _KomponParam.eUG & "/" & _KomponParam.eOG & "/" & _KomponParam.eFormat)
-        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _KomponParam.eFormat
-        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _KomponParam.eOG
-        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _KomponParam.eUG
-
         'Verhindert dass einzelne Zellen markiert werden
         e.Cancel = True
     End Sub

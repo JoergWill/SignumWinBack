@@ -41,8 +41,9 @@
     Public Const FlagAufloesen = ">"
     'Trennzeichen in MFF155(Mehlanteile)
     Public Const TrennzMehlAnteil = " "
-    'Flag Rohstoff zählt nicht zum Rezeptgewicht
-    Public Const ZaehltTroztdemZumNwtGewicht = "3"
+    ''Flag Rohstoff zählt nicht zum Rezeptgewicht
+    Public Const ZaehltNichtZumNwtGewicht = "0"
+    Public Const ZaehltZumNwtGewicht = "1"
     Public Const ZaehltNichtZumRezeptGewicht = "1"
     Public Const ZaehltZumRezeptGewicht = "0"
 

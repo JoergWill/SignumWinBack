@@ -929,8 +929,9 @@ Public Class wb_Functions
     ''' <param name="Condition"></param>
     ''' <param name="Text"></param>
     Public Shared Sub AssertTrue(Condition As Boolean, Text As String)
-        If Condition Then
+        If Not Condition Then
             Trace.WriteLine(Text)
+            Throw New Exception("Text")
         End If
     End Sub
 

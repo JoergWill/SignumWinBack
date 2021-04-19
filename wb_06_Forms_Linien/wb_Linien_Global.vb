@@ -9,6 +9,7 @@
     Private Shared _ErrorText As String = ""
     Private Shared _TabelleLinienGruppenOK As Boolean = True
     Private Shared _NoEntryInItemParameter As Boolean = False
+    Private Shared _MaxSegmente As Integer
     Public Shared DefaultProdFiliale As Integer = wb_Global.UNDEFINED
 
     ''' <summary>
@@ -64,6 +65,15 @@
         Get
             Return _LinienListe
         End Get
+    End Property
+
+    Public Shared Property MaxSegmente As Integer
+        Get
+            Return _MaxSegmente
+        End Get
+        Set(value As Integer)
+            _MaxSegmente = value
+        End Set
     End Property
 
     ''' <summary>
@@ -199,6 +209,8 @@
 
     Private Shared Sub InitLinien()
         Dim Linie As wb_Global.wb_Linien = Nothing
+        'Maximalwert der Segmente
+        _MaxSegmente = 0
 
         'Default OrgaBack-Produktions-Filiale (Nummer)
         If wb_Filiale.ProduktionsFilialen.Count > 0 Then
@@ -217,6 +229,11 @@
                 Linie.Linie = winback.iField("L_Nr")
                 Linie.Bezeichnung = winback.sField("L_Bezeichnung")
                 Linie.SegIdx = winback.sField("L_Seg_Idx")
+
+                'maximale Anzahl der Linien-Segmente
+                If winback.iField("L_aktiv") > 0 And Linie.Linie < wb_Global.MaxLinien Then
+                    _MaxSegmente = Math.Max(Linie.SegIdx, _MaxSegmente)
+                End If
 
                 'Zuordnung Linien - OrgaBack.Filiale
                 If winback.FieldCount > 8 Then

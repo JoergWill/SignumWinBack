@@ -88,17 +88,17 @@ Public Class WinBack
                 End If
 
                 If Debugger.IsAttached Then
-                        'TEST CLOUD ROHSTOFFE
-                        'MainFormShow(MdiRohstoffe, GetType(Rohstoffe_Main))
-                        'TEST REZEPTVERWALTUNG
-                        'MainFormShow(MdiRezepte, GetType(Rezepte_Main))
-                        'TEST USERVERWALTUNG
-                        'MainFormShow(MdiUser, GetType(User_Main))
-                        'TEST PRODUKTIONSPLANUNG
-                        'MainFormShow(MdiPlanung, GetType(Planung_Main))
-                        'TESTFENSTER
-                        'MainFormShow(MdiTEst, GetType(Test_Main))
-                    End If
+                    'TEST CLOUD ROHSTOFFE
+                    'MainFormShow(MdiRohstoffe, GetType(Rohstoffe_Main))
+                    'TEST REZEPTVERWALTUNG
+                    MainFormShow(MdiRezepte, GetType(Rezepte_Main))
+                    'TEST USERVERWALTUNG
+                    'MainFormShow(MdiUser, GetType(User_Main))
+                    'TEST PRODUKTIONSPLANUNG
+                    'MainFormShow(MdiPlanung, GetType(Planung_Main))
+                    'TESTFENSTER
+                    'MainFormShow(MdiTEst, GetType(Test_Main))
+                End If
                 End If
             End If
     End Sub
@@ -191,10 +191,21 @@ Public Class WinBack
     '''     -m      Mandant
     '''     -i      Pfad zur winback.ini
     '''     
+    ''' (@1.8.6)Abarbeitungs-Reihenfolge der Prameter korrigiert.
+    '''         Pfad zur Ini-Datei setzen
+    '''         Mandant festlegen
+    '''         Master/User einloggen
+    '''         
     ''' </summary>
     Private Sub ProcessParameter()
         'Prozess-Parameter aus der Kommandozeile
         Dim Parameter As String() = Environment.GetCommandLineArgs().ToArray
+
+        Dim User As String = Nothing
+        Dim UserNummer As Integer = wb_Global.UNDEFINED
+        Dim LoginMaster As Integer = wb_Global.UNDEFINED
+        Dim MandantNr As String = Nothing
+        Dim WinBackIni As String = Nothing
 
         'wenn Parameter angegeben sind
         If Parameter.Length > 1 Then
@@ -203,30 +214,20 @@ Public Class WinBack
 
                     'User Login
                     Case "-u"
-                        Dim User As String = Strings.Mid(Parameter(i), 3)
-                        Dim UserNummer As Integer = wb_Functions.StrToInt(User)
-                        If Not wb_GlobalSettings.AktUserLogin(UserNummer) Then
-                            MsgBox("Programmstart mit unbekanntem Benutzer. Bitte Parameter prüfen!", MsgBoxStyle.Critical)
-                        End If
+                        User = Strings.Mid(Parameter(i), 3)
+                        UserNummer = wb_Functions.StrToInt(User)
 
                     'User-Login(Master)
                     Case "/W", "-w"
-                        Dim LoginMaster As Integer = Int(wb_Credentials.WinBackMasterUser)
-                        If Not wb_GlobalSettings.AktUserLogin(LoginMaster) Then
-                            MsgBox("Benutzer nicht gefunden. Bitte Parameter prüfen!", MsgBoxStyle.Critical)
-                        Else
-                            wb_AktUser.SuperUser = True
-                        End If
+                        LoginMaster = Int(wb_Credentials.WinBackMasterUser)
 
                     'Mandant
                     Case "/M", "-m"
-                        Dim MandantNr As String = Strings.Mid(Parameter(i), 3)
-                        wb_GlobalSettings.MandantNr = wb_Functions.StrToInt(MandantNr)
+                        MandantNr = Strings.Mid(Parameter(i), 3)
 
                     'Pfad zur winback.ini
                     Case "/I", "-i"
-                        Dim WinBackIni As String = Strings.Mid(Parameter(i), 3)
-                        wb_GlobalSettings.pWinBackIniPath = WinBackIni & "\WinBack.ini"
+                        WinBackIni = Strings.Mid(Parameter(i), 3)
 
                         'Falscher Parameter angegeben
                     Case Else
@@ -234,6 +235,31 @@ Public Class WinBack
 
                 End Select
             Next
+
+            'Parameter - Pfad zur Ini-Datei
+            If WinBackIni IsNot Nothing Then
+                wb_GlobalSettings.pWinBackIniPath = WinBackIni & "\WinBack.ini"
+            End If
+            'Parameter - Mandant
+            If MandantNr <> wb_Global.UNDEFINED Then
+                wb_GlobalSettings.MandantNr = wb_Functions.StrToInt(MandantNr)
+            End If
+            'Parameter - Login Master
+            If LoginMaster <> wb_Global.UNDEFINED Then
+                If Not wb_GlobalSettings.AktUserLogin(LoginMaster) Then
+                    MsgBox("Benutzer nicht gefunden. Bitte Parameter prüfen!", MsgBoxStyle.Critical)
+                Else
+                    wb_AktUser.SuperUser = True
+                End If
+            Else
+                'Parameter - Login User
+                If User <> wb_Global.UNDEFINED Then
+                    If Not wb_GlobalSettings.AktUserLogin(UserNummer) Then
+                        MsgBox("Programmstart mit unbekanntem Benutzer. Bitte Parameter prüfen!", MsgBoxStyle.Critical)
+                    End If
+                End If
+            End If
+
         End If
     End Sub
 

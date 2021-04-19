@@ -439,6 +439,7 @@
     <Compile Include="wb_00_Klassen\Komponenten\wb_SiloBef.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="wb_00_Klassen\wb_RezeptDrucken.vb" />
     <Compile Include="wb_00_Klassen\wb_Schnittstelle.vb" />
     <Compile Include="wb_00_Klassen\wb_SchnittstelleFeld.vb" />
     <Compile Include="wb_00_Klassen\wb_SchnittstelleTabelle.vb" />
@@ -1500,8 +1501,10 @@
     <Content Include="DBUpdate\2.30_ENummern_B.sql" />
     <Content Include="DBUpdate\2.30_ErweiterungAllergene.sql" />
     <Content Include="DBUpdate\2.30_HisRezepte.sql" />
+    <Content Include="DBUpdate\2.30_Komponenten.sql" />
     <Content Include="DBUpdate\2.30_KomponParams.sql" />
     <Content Include="DBUpdate\2.30_KomponTypen.sql" />
+    <Content Include="DBUpdate\2.30_KomponTypen_TA.sql" />
     <Content Include="DBUpdate\2.30_Lagerorte.sql" />
     <Content Include="DBUpdate\2.30_Linien.sql" />
     <None Include="Dokumentation\OrgaBack.docx" />
@@ -1639,6 +1642,7 @@
     <None Include="Resources\Admin_32x321.png" />
     <None Include="Resources\AdminShd_32x32.png" />
     <None Include="Resources\ArtikelLoeschen_32x32.png" />
+    <None Include="Resources\AdminLog_32x32.png" />
     <Content Include="Resources\DatenRueckSicherung_16x16.png" />
     <None Include="Resources\IconSave_24x24.png" />
     <None Include="Resources\IconCancel_24x24.png" />
@@ -1714,6 +1718,7 @@
     <None Include="Resources\ProdFehlerListe_32x32.png" />
     <None Include="Resources\ProdExport_32x32.png" />
     <None Include="Resources\ProdTeiler_32x32.png" />
+    <None Include="Resources\RezeptDrucken_32x32.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />
@@ -1780,8 +1785,9 @@
     <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).*" "C:\OrgaSoft\AddIns" /E /C /R /Y
 REM xcopy "$(TargetDir)$(TargetName).*" "$(SolutionDir)dll\WinBackAddIn" /E /C /R /Y
 xcopy "$(TargetDir)*.dll" "C:\OrgaSoft\AddIns\dll" /C /R /Y
+xcopy "$(TargetDir)EnhancedEdit.*" "C:\OrgaSoft\AddIns" /C /R /Y
 xcopy "$(TargetDir)*.bat" "C:\OrgaSoft\AddIns" /C /R /Y
-xcopy "$(TargetDir)*.log4net" "C:\OrgaSoft\AddIns" /E /C /R /Y
+REM xcopy "$(TargetDir)*.log4net" "C:\OrgaSoft\AddIns" /E /C /R /Y
 
 
 </PostBuildEvent>

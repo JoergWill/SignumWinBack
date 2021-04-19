@@ -383,7 +383,9 @@ Public Class wb_ChargenSchritt
                     For Each c As wb_ChargenSchritt In ChildSteps
                         'Komponente hat Sollwert
                         If wb_Functions.TypeIstSollMenge(c._KomponentenType, c._KomponentenParamNr) Then
-                            _Istmenge_kg_gesamt += c.Istwert
+                            If c.Istwert <> "" Then
+                                _Istmenge_kg_gesamt += c.Istwert
+                            End If
                         End If
                     Next
                 End If

@@ -28,6 +28,7 @@ Public Class wb_Komponente
     Private KA_Grp2 As Integer
     Private KA_Charge_Opt_kg As String
     Private KA_zaehlt_zu_RZ_Gesamtmenge As String
+    Private KA_zaehlt_zu_NWT_Gesamtmenge As String
     Private KA_aktiv As Integer
     Private KA_PreisEinheit As Integer
 
@@ -92,6 +93,7 @@ Public Class wb_Komponente
         KA_Kurzname = ""
         KA_Charge_Opt_kg = ""
         KA_zaehlt_zu_RZ_Gesamtmenge = Nothing
+        KA_zaehlt_zu_NWT_Gesamtmenge = Nothing
         KA_VerarbeitungshinweisePfad = ""
 
         KA_Rz_Nr = wb_Global.UNDEFINED
@@ -382,54 +384,48 @@ Public Class wb_Komponente
 
     ''' <summary>
     ''' Datenbankfeld
-    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1/3  - zählt nicht zu RezGewicht -> True
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu RezGewicht -> True
     '''     KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu RezGewicht -> False
     '''     KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu RezGewicht -> False
+    '''     
+    ''' Wurdebis V1.8.4 auch für ZaehltTrotzdemZumNwtGewicht verwendet, ist aber nicht kompatibel zu WinBack-Produktion
     ''' </summary>
     ''' <returns></returns>
     Public Property ZaehltNichtZumRezeptGewicht As Boolean
         Set(value As Boolean)
             If value Then
-                If ZaehltTrotzdemZumNwtGewicht Then
-                    KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltTroztdemZumNwtGewicht
-                Else
-                    KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht
-                End If
+                KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht
             Else
                 KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltZumRezeptGewicht
             End If
         End Set
         Get
-            If (KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht) Or (KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltTroztdemZumNwtGewicht) Then
-                Return True
-            Else
+            If (KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltZumRezeptGewicht) Then
                 Return False
+            Else
+                Return True
             End If
         End Get
     End Property
 
     ''' <summary>
     ''' Datenbankfeld
-    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 3    - zählt zu NwtGewicht -> True
-    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1    - zählt nicht zu NwtGewicht -> False
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1  KA_zaehlt_zu_NWT_Gesamtmenge = 1   - zählt zu NwtGewicht -> True
+    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1  KA_zaehlt_zu_NWT_Gesamtmenge = 0   - zählt nicht zu NwtGewicht -> False
     '''     KA_zaehlt_zu_RZ_Gesamtmenge = 0    - zählt zu NwtGewicht -> True
     '''     KA_zaehlt_zu_RZ_Gesamtmenge = NULL - zählt zu NwtGewicht -> True
     ''' </summary>
     ''' <returns></returns>
     Public Property ZaehltTrotzdemZumNwtGewicht As Boolean
         Set(value As Boolean)
-            If ZaehltNichtZumRezeptGewicht Then
-                If value Then
-                    KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltTroztdemZumNwtGewicht
-                Else
-                    KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht
-                End If
+            If value Then
+                KA_zaehlt_zu_NWT_Gesamtmenge = wb_Global.ZaehltZumNwtGewicht
             Else
-                KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltZumRezeptGewicht
+                KA_zaehlt_zu_NWT_Gesamtmenge = wb_Global.ZaehltNichtZumNwtGewicht
             End If
         End Set
         Get
-            If KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltTroztdemZumNwtGewicht Then
+            If KA_zaehlt_zu_NWT_Gesamtmenge = wb_Global.ZaehltZumNwtGewicht And ZaehltNichtZumRezeptGewicht Then
                 Return True
             Else
                 Return False
@@ -707,6 +703,7 @@ Public Class wb_Komponente
         KA_Grp2 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp2"))
         KA_Charge_Opt_kg = dataGridView.Field("KA_Charge_Opt_kg")
         KA_zaehlt_zu_RZ_Gesamtmenge = dataGridView.Field("KA_zaehlt_zu_RZ_Gesamtmenge")
+        KA_zaehlt_zu_NWT_Gesamtmenge = dataGridView.Field("KA_zaehlt_zu_NWT_Gesamtmenge")
         KA_aktiv = dataGridView.Field("KA_aktiv")
 
     End Sub
@@ -724,6 +721,7 @@ Public Class wb_Komponente
             dataGridView.Field("KA_Grp2") = KA_Grp2
             dataGridView.Field("KA_Charge_Opt_kg") = KA_Charge_Opt_kg
             dataGridView.Field("KA_zaehlt_zu_RZ_Gesamtmenge") = KA_zaehlt_zu_RZ_Gesamtmenge
+            dataGridView.Field("KA_zaehlt_zu_NWT_Gesamtmenge") = KA_zaehlt_zu_NWT_Gesamtmenge
             dataGridView.Field("KA_aktiv") = KA_aktiv
 
             _DataHasChanged = False
@@ -1761,6 +1759,9 @@ Public Class wb_Komponente
                 'Flag zählt zum Rezeptgewicht
                 Case "KA_zaehlt_zu_RZ_Gesamtmenge"
                     KA_zaehlt_zu_RZ_Gesamtmenge = Value
+                'Flag zählt zum NWT-Gewicht
+                Case "KA_zaehlt_zu_NWT_Gesamtmenge"
+                    KA_zaehlt_zu_NWT_Gesamtmenge = Value
 
             End Select
 

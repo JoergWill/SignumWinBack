@@ -108,6 +108,7 @@ Public Class wb_Rezept_Main
                 Dim oGrpPrnt = oNewTab.AddGroup("Printer", "Drucken")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrpPrnt.AddButton("BtnRezeptListeDrucken", "Drucke Rezeptliste", "Liste aller Rezepte drucken", My.Resources.RezeptDruckenListe_32x32, My.Resources.RezeptDruckenListe_32x32, AddressOf BtnRezeptListeDrucken)
+                oGrpPrnt.AddButton("BtnRezeptDrucken", "Rezept drucken", "Rezept mit allen unterlagerten Rezepten drucken", My.Resources.RezeptDrucken_32x32, My.Resources.RezeptDrucken_32x32, AddressOf BtnRezeptDrucken)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -218,6 +219,19 @@ Public Class wb_Rezept_Main
             pDialog.ShowDialog()
             pDialog = Nothing
         End If
+    End Sub
+
+    ''' <summary>
+    ''' Druck Rezeptur inkusive aller Unter-Rezepturen (Rezept-im-Rezept)
+    ''' Baut eine Liste mit Root-Knoten aller Rezepte auf und starten dann den Druck-Job
+    ''' </summary>
+    Private Sub BtnRezeptDrucken()
+        'Drucke Rezept inklusive aller verknüpften Rezepturen
+        Dim RezeptDrucken As New wb_RezeptDrucken
+        'einzelnes Rezept laden und drucken
+        RezeptDrucken.Print()
+        'Speicher wieder freigeben
+        RezeptDrucken = Nothing
     End Sub
 
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent

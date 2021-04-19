@@ -31,6 +31,8 @@ Partial Class Test_Main
         Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -38,7 +40,7 @@ Partial Class Test_Main
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.ToolStripMenuItem2, Me.ToolStripMenuItem3})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(182, 92)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(182, 70)
         '
         'ToolStripMenuItem1
         '
@@ -71,11 +73,29 @@ Partial Class Test_Main
         Me.ToolStripMenuItem3.Size = New System.Drawing.Size(181, 22)
         Me.ToolStripMenuItem3.Text = "ToolStripMenuItem3"
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(774, 432)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(138, 53)
+        Me.Button1.TabIndex = 1
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Panel1
+        '
+        Me.Panel1.Location = New System.Drawing.Point(112, 79)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(800, 314)
+        Me.Panel1.TabIndex = 2
+        '
         'Test_Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1013, 600)
+        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.Button1)
         Me.Name = "Test_Main"
         Me.Text = "WinBack läuft im Debug-Mode. Start mit Test"
         Me.ContextMenuStrip1.ResumeLayout(False)
@@ -88,4 +108,6 @@ Partial Class Test_Main
     Friend WithEvents ToolStripMenuItem5 As ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem3 As ToolStripMenuItem
+    Friend WithEvents Button1 As Button
+    Friend WithEvents Panel1 As Panel
 End Class

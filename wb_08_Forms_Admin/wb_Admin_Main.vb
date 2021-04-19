@@ -60,6 +60,7 @@ Public Class wb_Admin_Main
                 Dim oGrpDATA = oNewTab.AddGroup("GrpAdminDatabase", "Datensicherung/Synchronisation")
                 Dim oGrpUPDT = oNewTab.AddGroup("GrpAdminUpdate", "WinBack Update")
                 Dim oGrpKONF = oNewTab.AddGroup("GrpAdminKonfig", "Konfiguration")
+                Dim oGrpLOG = oNewTab.AddGroup("GrpAdminLogger", "Logger")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrpDATA.AddButton("btnSync", "Synchronisation Datenbanken WinBack-OrgaBack", "", My.Resources.MainSync_16x16, My.Resources.MainSync_32x32, AddressOf BtnAdminSyncForm)
                 oGrpDATA.AddButton("btnDatensicherung", "Sicherung/Rücksicherung Datenbanken WinBack", "", My.Resources.DatenSicherung_16x16, My.Resources.DatenSicherung_32x32, AddressOf BtnAdminDatensicherung)
@@ -72,6 +73,8 @@ Public Class wb_Admin_Main
                 oGrpKONF.AddButton("btnOrgaBack", "Einstellungen OrgaBack", "", My.Resources.OrgaBackSortiment_32x32, My.Resources.OrgaBackSortiment_32x32, AddressOf BtnOrgaBack)
                 oGrpKONF.AddButton("btnEditWinBackIni", "Edit Konfiguration", "", My.Resources.EditKonfig_16x16, My.Resources.EditKonfig_32x32, AddressOf btnEditKonfig)
                 oGrpKONF.AddButton("btnEditTimer", "WinBack-Scheduler", "", My.Resources.AdminTimer_32x32, My.Resources.AdminTimer_32x32, AddressOf btnEditTimer)
+
+                oGrpLOG.AddButton("btnLogger", "WinBack-Log", "", My.Resources.AdminLog_32x32, My.Resources.AdminLog_32x32, AddressOf BtnAdminLogger)
 
                 _ContextTabs.Add(oNewTab)
             End If
@@ -131,6 +134,13 @@ Public Class wb_Admin_Main
                 Return Nothing
         End Select
     End Function
+
+    Private Sub BtnAdminLogger()
+        If IsNothingOrDisposed(AdminLog) Then
+            AdminLog = New wb_Admin_Log
+        End If
+        AdminLog.Show(DockPanel, DockState.DockTop)
+    End Sub
 
     Private Sub BtnAdminSyncForm()
         If IsNothingOrDisposed(AdminSync) Then

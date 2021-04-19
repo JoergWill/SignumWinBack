@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
+Imports EnhEdit
 
 Public Class EnhEdit_Global
     Const KOMMA = 2
@@ -12,6 +13,47 @@ Public Class EnhEdit_Global
 
     Const MAPVK_VK_TO_VSC = 0
     Private Shared keyblayoutID As Integer
+
+    Private Shared _GLeFormat As wb_Format
+    Private Shared _GLeUG As String
+    Private Shared _GLeOG As String
+    Private Shared _GLoValue As Object
+
+    Public Shared Property GLeFormat As wb_Format
+        Get
+            Return _GLeFormat
+        End Get
+        Set(value As wb_Format)
+            _GLeFormat = value
+        End Set
+    End Property
+
+    Public Shared Property GLeUG As String
+        Get
+            Return _GLeUG
+        End Get
+        Set(value As String)
+            _GLeUG = value
+        End Set
+    End Property
+
+    Public Shared Property GLeOG As String
+        Get
+            Return _GLeOG
+        End Get
+        Set(value As String)
+            _GLeOG = value
+        End Set
+    End Property
+
+    Public Shared Property GLoValue As Object
+        Get
+            Return _GLoValue
+        End Get
+        Set(value As Object)
+            _GLoValue = value
+        End Set
+    End Property
 
     ''' <summary>
     ''' Format-Information aus winback.Format
@@ -83,7 +125,7 @@ Public Class EnhEdit_Global
     ''' <returns></returns>
     Public Shared Function GetKey(e As KeyEventArgs, ByRef Value As String, Format As wb_Format, ug As Double, og As Double) As wb_Result
         Dim oValue As String = Value
-        Debug.Print("EnhEdit_Global.GetKey " & e.KeyCode & "/" & e.KeyData)
+        'Debug.Print("GetKey " & e.KeyCode & "/" & e.KeyData)
 
         Select Case e.KeyCode
 
@@ -99,7 +141,8 @@ Public Class EnhEdit_Global
 
             'Return/Enter
             Case Keys.Enter, Keys.Return
-                Return wb_Result.KeyReturn
+                'Debug.Print("KeyReturn")
+                Return wb_Result.KeyArrowDown
 
             Case Else
                 'alle anderen Zeichen (abhängig vom Format)
@@ -121,6 +164,10 @@ Public Class EnhEdit_Global
                                 If Format = wb_Format.fReal Then
                                     Value = Value & Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator
                                 End If
+                            Case Keys.OemMinus, Keys.Subtract
+                                If Not Value.Contains("-") Then
+                                    Value = "-" & Value
+                                End If
                         End Select
 
                     'Allergene
@@ -133,7 +180,7 @@ Public Class EnhEdit_Global
                     'Ernährung
                     Case wb_Format.fYesNo
                         Select Case e.KeyCode
-                            Case Keys.Y, Keys.N, Keys.X
+                            Case Keys.J, Keys.Y, Keys.N, Keys.X
                                 Value = AddStr("", e)
                         End Select
 
@@ -291,6 +338,5 @@ Public Class EnhEdit_Global
         End Select
         Return wb_Result.Undefined
     End Function
-
 
 End Class

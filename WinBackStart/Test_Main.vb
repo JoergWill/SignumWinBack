@@ -1,10 +1,16 @@
-﻿Imports Infralution.Controls.VirtualTree
+﻿Imports System.Threading
+Imports Infralution.Controls.VirtualTree
 
 Public Class Test_Main
     Implements IMainMenu
     Dim Rezept As wb_Rezept
 
     Private _RezeptSchritt As wb_Rezeptschritt = Nothing    'aktuelle ausgewählter Rezeptschritt (Popup)
+
+    Declare Auto Function SetParent Lib "user32.dll" (ByVal hWndChild As IntPtr, ByVal hWndNewParent As IntPtr) As Integer
+    Declare Auto Function SendMessage Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Integer, ByVal lParam As Integer) As Integer
+    Private Const WM_SYSCOMMAND As Integer = 274
+    Private Const SC_MAXIMIZE As Integer = 61488
 
 #Region "MainForm"
     Public Property DkPnlConfigFileName As String Implements IMainMenu.DkPnlConfigFileName
@@ -59,5 +65,32 @@ Public Class Test_Main
 
     Private Sub ToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem2.Click
         Debug.Print("test")
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
+        Dim p As New Process()
+        p.StartInfo = New ProcessStartInfo("hh.exe", "C:\Users\Will.WINBACK\Source\Repos\Signum_WinBack\WinBackStart\WinBack.chm")
+        p.StartInfo.CreateNoWindow = False
+        p.StartInfo.UseShellExecute = False
+            p.StartInfo.RedirectStandardOutput = True
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+            'p.StartInfo.WorkingDirectory = Directory
+            p.Start()
+        'p.WaitForExit()
+
+
+
+        'Dim proc As New Process
+        'proc = Process.Start("Calc.exe")
+        p.WaitForInputIdle()
+        'Thread.Sleep(1000)
+        SetParent(p.MainWindowHandle, Me.Panel1.Handle)
+        Thread.Sleep(1000)
+        SendMessage(p.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0)
+
+
+
+        'Help.ShowHelp(Panel1, "C:\Users\Will.WINBACK\Source\Repos\Signum_WinBack\WinBackStart\WinBack.chm")
     End Sub
 End Class

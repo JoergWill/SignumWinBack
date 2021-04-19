@@ -17,6 +17,7 @@ Public Class wb_Rohstoffe_Shared
 
     Private Shared _ErrorText As String = ""
     Private Shared _RohstoffeInGruppe As New ArrayList
+    Private Shared _TabelleKomponentenOK As Boolean = False
 
     Enum AnzeigeFilter
         Undefined   ' nicht definiert
@@ -47,6 +48,8 @@ Public Class wb_Rohstoffe_Shared
         Load_SiloTables()
         'HashTable aller Rohstoffe zur Teigtemperatur-Erfassung
         Load_TeigTempTables()
+        'Prüfen ob ein Udpdate der Komponenten-Tabelle erforderlich ist
+        Check_DBFelder()
     End Sub
 
     Public Shared Sub Invalid()
@@ -59,6 +62,22 @@ Public Class wb_Rohstoffe_Shared
         End Get
     End Property
 
+    Public Shared ReadOnly Property UpdateDatabaseFile As String
+        Get
+            Return "2.30_Komponenten.sql"
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property CheckDB() As Boolean
+        Get
+            If _TabelleKomponentenOK Then
+                Return True
+            Else
+                _ErrorText = "Tabelle WinBack.Komponenten muss erweitert werden! (Rezeptgewicht - Zählt zur Nährwertberechnung)"
+                Return False
+            End If
+        End Get
+    End Property
     ''' <summary>
     ''' Liefert eine Liste aller Rohstoffe die zur Rohstoff-Gruppe gehören
     ''' </summary>
@@ -367,6 +386,21 @@ Public Class wb_Rohstoffe_Shared
             Return wb_Global.RohSiloTypen.UNDEF
         End If
     End Function
+
+    ''' <summary>
+    ''' Prüft ob das Datenbankfeld winback.Komponenten.KA_zaehlt_zu_NWT_Gesamtmenge vorhanden ist.
+    ''' Wenn nicht. MUSS die Datenbank per Update-Script erweitert werden!
+    ''' </summary>
+    Private Shared Sub Check_DBFelder()
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        'Prüfen ob Datenbankfeld KA_zaehlt_zu_NWT_Gesamtmenge vorhanden ist
+        If winback.sqlSelect(wb_Sql_Selects.sqlCheckNwtGesamtmenge) Then
+            If winback.Read Then
+                _TabelleKomponentenOK = True
+            End If
+        End If
+        winback.Close()
+    End Sub
 End Class
 
 

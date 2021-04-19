@@ -44,7 +44,7 @@ Public Class wb_sql_Functions
     End Function
 
     ''' <summary>
-    ''' Wandelt einen Double-Wert in einen String. Dezimal-Komma werden ersatzt durch Dezimal-Punkte
+    ''' Wandelt einen Double-Wert in einen String. Dezimal-Komma werden ereatzt durch Dezimal-Punkte
     ''' </summary>
     ''' <param name="d"></param>
     ''' <returns></returns>

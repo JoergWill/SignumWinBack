@@ -628,6 +628,8 @@ Public Class wb_Rezept_Rezeptur
             Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, _RzVariante)
             'MDI-Fenster anzeigen
             Rezeptur.Show()
+            'Cursor wieder zurückschalten
+            Me.Cursor = Cursors.Default
         End If
     End Sub
 
@@ -678,16 +680,21 @@ Public Class wb_Rezept_Rezeptur
         'Debug.Print("VirtualTree_SelectionChanging " & _RezeptSchritt.Bezeichnung & " UG/OG/Format " & _RezeptSchritt.UnterGW & "/" & _RezeptSchritt.OberGW & "/" & _RezeptSchritt.Format)
 
         'Eingabe Text/Sollwert
-        If _RezeptSchritt.Format = wb_Format.fString Then
-            DirectCast(EnhEditText.Control, EnhEdit.EnhEdit).Init = True
-            DirectCast(EnhEditText.Control, EnhEdit.EnhEdit).eFormat = _RezeptSchritt.Format
-            DirectCast(EnhEditText.Control, EnhEdit.EnhEdit).eOG = _RezeptSchritt.OberGW
-            DirectCast(EnhEditText.Control, EnhEdit.EnhEdit).eUG = _RezeptSchritt.UnterGW
-        Else
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).Init = True
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _RezeptSchritt.Format
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _RezeptSchritt.OberGW
-            DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _RezeptSchritt.UnterGW
+        GLeFormat = _RezeptSchritt.Format
+        GLeOG = _RezeptSchritt.OberGW
+        GLeUG = _RezeptSchritt.UnterGW
+        GLoValue = _RezeptSchritt.Sollwert
+        ToolStripFormat.Visible = False
+
+        'Grenzwerte im Toolstrip anzeigen
+        If GLeFormat = wb_Format.fReal Then
+            ToolStripFormat.Text = wb_Functions.FormatStr(GLeUG, 1) & " " & _RezeptSchritt.VirtTreeEinheit & " > NUM > " & wb_Functions.FormatStr(GLeOG, 1) & " " & _RezeptSchritt.VirtTreeEinheit
+            ToolStripFormat.Visible = True
+            GLoValue = wb_Functions.FormatStr(_RezeptSchritt.Sollwert, 3)
+        ElseIf GLeFormat = wb_Format.fString Then
+            ToolStripFormat.Text = "TEXT"
+            ToolStripFormat.Visible = True
+            GLoValue = _RezeptSchritt.Sollwert
         End If
 
         'Verhindert dass einzelne Zellen markiert werden
@@ -709,8 +716,11 @@ Public Class wb_Rezept_Rezeptur
             'Rezeptur wurde geändert
             _RzChanged = True
             ToolStripRezeptChange.Visible = True
+            ToolStripFormat.Visible = False
             'Anzeige Preis und Prozent aktualisieren
             VT_Aktualisieren()
+            '(@V1.8.6)Focus wieder auf die aktuelle Zeile - Sonst wird nach Edit-Ende die zweite Zeile von oben aktiviert !
+            VirtualTree.SelectedRow = e.Row
         End If
     End Sub
 
@@ -722,6 +732,7 @@ Public Class wb_Rezept_Rezeptur
 
             'aktuell ausgewählten Rezeptschritt merken (Popup)
             _RezeptSchritt = DirectCast(e.Row.Item, wb_Rezeptschritt)
+            'Debug.Print("VirtualTree_GetCellData " & _RezeptSchritt.Bezeichnung & " UG/OG/Format " & _RezeptSchritt.UnterGW & "/" & _RezeptSchritt.OberGW & "/" & _RezeptSchritt.Format)
 
             If _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Then
                 VirtualTree_SetFontStyle(e.CellData.EvenStyle, _ProdStufeDeltaStyle)
@@ -736,6 +747,7 @@ Public Class wb_Rezept_Rezeptur
                     VirtualTree_SetFontStyle(e.CellData.OddStyle, _HisSollwertDeltaStyle)
                 End If
                 'Editor aktiv - Bezeichnungstext
+                GLoValue = _RezeptSchritt.Sollwert
                 Exit Sub
             End If
 
@@ -747,6 +759,7 @@ Public Class wb_Rezept_Rezeptur
                     VirtualTree_SetFontStyle(e.CellData.OddStyle, _HisSollwertDeltaStyle)
                 End If
                 'Editor aktiv - Sollwert
+                GLoValue = wb_Functions.FormatStr(_RezeptSchritt.Sollwert, 3)
                 Exit Sub
             End If
         End If
@@ -924,7 +937,8 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     ''' <summary>
-    ''' Neue Produktions-Stufe einfügen
+    ''' Neue Produktions-Stufe einfügen.
+    ''' Ist die neue Produktions-Stufe die erste Produktions-Stufe im Rezept wird das Rezept nach dem Einfügen zunächst gespeichert!
     ''' </summary>
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
@@ -932,6 +946,15 @@ Public Class wb_Rezept_Rezeptur
         _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE)
         _RezeptSchrittNeu.Sollwert = VTP_RezeptSchrittGetText(Sender, "Produktions-Stufe")
         _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
+
+        'Sonderfall neue (erste) Produktions-Stufe in Schritt 1
+        If _RezeptSchritt.SchrittNr = 2 And _RezeptSchritt.Type <> wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Then
+            'Änderungen im aktuellen Rezept speichern
+            VT_Aktualisieren()
+            RezeptSpeichern(Sender)
+            'Prüfen ob die gesuchte Rezept-Variante vorhanden ist
+            GetRezeptur(_RzNummer, _RzVariante, _RzAendIndex, _Historical)
+        End If
         VT_Aktualisieren()
     End Sub
 
@@ -1421,6 +1444,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="e"></param>
     Private Sub VirtualTree_KeyUp(sender As Object, e As KeyEventArgs) Handles VirtualTree.KeyUp
 
+        Debug.Print("KeyUp " & e.KeyCode.ToString)
         Select Case e.KeyCode
             Case Keys.Insert
                 'Sonderfall - das Rezept ist leer
@@ -1431,6 +1455,8 @@ Public Class wb_Rezept_Rezeptur
                 End If
             Case Keys.Delete
                 VTP_Delete(sender, e)
+            Case Keys.Return
+                e = Nothing
         End Select
 
     End Sub

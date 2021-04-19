@@ -1,6 +1,7 @@
 ﻿Imports WinBack.wb_Rohstoffe_Shared
 Imports WeifenLuo.WinFormsUI.Docking
 Imports Infralution.Controls.VirtualTree
+Imports EnhEdit.EnhEdit_Global
 
 Public Class wb_Rohstoffe_Parameter
     Inherits DockContent
@@ -66,10 +67,17 @@ Public Class wb_Rohstoffe_Parameter
         _KomponParam = DirectCast(e.StartRow.Item, wb_KomponParam)
 
         'Einstellungen Editor
-        Debug.Print("VirtualTree_SelectionChanging " & _KomponParam.Bezeichnung & " UG/OG/Format " & _KomponParam.eUG & "/" & _KomponParam.eOG & "/" & _KomponParam.eFormat)
-        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _KomponParam.eFormat
-        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _KomponParam.eOG
-        DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _KomponParam.eUG
+        'Debug.Print("VirtualTree_SelectionChanging " & _KomponParam.Bezeichnung & " UG/OG/Format " & _KomponParam.eUG & "/" & _KomponParam.eOG & "/" & _KomponParam.eFormat)
+        'DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).Init = True
+        'DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _KomponParam.eFormat
+        'DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _KomponParam.eOG
+        'DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _KomponParam.eUG
+
+
+        GLeFormat = _KomponParam.eFormat
+        GLeOG = _KomponParam.eOG
+        GLeUG = _KomponParam.eUG
+        GLoValue = _KomponParam.Wert
 
         'Verhindert dass einzelne Zellen markiert werden
         e.Cancel = True

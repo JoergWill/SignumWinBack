@@ -949,7 +949,7 @@ Public Class wb_Rezeptschritt
     ''' 
     '''                                     ZähltNichtZumRezeptgewicht  ZaehltTrotzdemZumNwtGewicht
     '''                                     
-    '''     KA_zaehlt_zu_RZ_Gesamtmenge = 3         True                         True
+    '''    (KA_zaehlt_zu_RZ_Gesamtmenge = 3         True                         True) ALT !
     '''     KA_zaehlt_zu_RZ_Gesamtmenge = 1         True                         False
     '''     KA_zaehlt_zu_RZ_Gesamtmenge = 0         False                        True
     '''     KA_zaehlt_zu_RZ_Gesamtmenge = NULL      False                        True
@@ -964,12 +964,20 @@ Public Class wb_Rezeptschritt
                 Case wb_Global.ZaehltNichtZumRezeptGewicht
                     _ZaehltNichtZumRezeptGewicht = True
                     _ZaehltTrotzdemZumNwtGewicht = False
-                Case wb_Global.ZaehltTroztdemZumNwtGewicht
+                Case Else
                     _ZaehltNichtZumRezeptGewicht = True
                     _ZaehltTrotzdemZumNwtGewicht = True
-                Case Else
-                    _ZaehltNichtZumRezeptGewicht = False
+            End Select
+        End Set
+    End Property
+
+    Public WriteOnly Property KA_zaehlt_zu_NWT_Gesamtmenge As String
+        Set(value As String)
+            Select Case value
+                Case wb_Global.ZaehltZumNwtGewicht
                     _ZaehltTrotzdemZumNwtGewicht = True
+                Case Else
+                    _ZaehltTrotzdemZumNwtGewicht = False
             End Select
         End Set
     End Property

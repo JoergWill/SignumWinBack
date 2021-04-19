@@ -149,7 +149,7 @@ Public Class wb_Rohstoffe_AuswahlListe
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"Nummer", "&Name"}
+        Dim sColNames As New List(Of String) From {"Nummer", "&Name", "", "Kommentar"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next

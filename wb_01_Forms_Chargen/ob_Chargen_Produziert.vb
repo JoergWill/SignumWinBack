@@ -31,6 +31,11 @@ Public Class ob_Chargen_Produziert
     '''             Dann ist vermutlich der Artikel in OrgaBack nicht vorhanden.
     '''             In diesem Fall wird dann ein Dummy-Artikel geschrieben, damit die Rohstoffe nicht falsch zugeordnet werden.
     '''             Der Dummy-Artikel hat die Nummer 0R9999 (Public Const ProduktionDummyArtikel)
+    '''             
+    ''' (@V1.8.4)   Sicherheitshalber werden die Daten ab der letzten Tageswechsel-Nummer minus der Anzahl der Segmente gelesen
+    '''             Sonst kann es vorkommen, dass neue Daten auf Linie 1 erzeugt werden, während gerade die Tageswechseldaten auf Linie 2
+    '''             verarbeitet werden (anderes Segment). Damit würden nie wieder die neuen Daten von Linie 1 verarbeitet werden.
+    '''             (Fehler bei Fonk 16.03.2021)
     ''' </summary>
     ''' <param name="TWNr"></param>
     ''' <returns></returns>
@@ -41,13 +46,15 @@ Public Class ob_Chargen_Produziert
         Dim WinBackChargenNummer As String = ""
         Dim TageswechselNr As Long = TWNr
         Dim opw_Zeile As New ob_ProduzierteWare(WinBackChargenNummer)
+        Dim MaxLinienSegmente As Integer = wb_Linien_Global.MaxSegmente
 
         'Liste löschen
         opw_Liste.Clear()
 
         'Lesen Chargen-Kopfdaten (Anzahl der Datensätze begrenzt auf LIMIT)
         wbdaten = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlExportChargen, TWNr, LIMIT)
+        'Sicherheitshalber werden die Daten von der letzten Tageswechselnummer minus der Anzahl der Segmente gelesen (Fehler bei Fonk)
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlExportChargen, TWNr - MaxLinienSegmente, LIMIT)
 
         'Datensätze aus Tabelle BAK_ArbRezepte lesen
         If wbdaten.sqlSelect(sql) Then
@@ -101,10 +108,10 @@ Public Class ob_Chargen_Produziert
                         o.ArtikelNr = wb_Global.ProduktionDummyArtikel
                         'nochmal mit Dummy-Artikel versuchen
                         WriteOK = SqlWriteProdWare(OrgasoftMain, o)
-                        'Insert in dbo.Produzierte Ware war nicht erfolgreich - Fehler-Log
-                        If Not WriteOK Then
-                            Trace.WriteLine("Fehler beim Schreiben in dbo.ProduzierteWare TW-Nr/Artikel/Charge " & o.TWNr & "/" & o.ArtikelNr & "/" & o.ChargenNummer)
-                        End If
+                        ''Insert in dbo.Produzierte Ware war nicht erfolgreich - Fehler-Log
+                        'If Not WriteOK Then
+                        '    Trace.WriteLine("Fehler beim Schreiben in dbo.ProduzierteWare TW-Nr/Artikel/Charge " & o.TWNr & "/" & o.ArtikelNr & "/" & o.ChargenNummer)
+                        'End If
                     End If
 
                     'Datensatz in wbdaten als exportiert markieren
@@ -127,8 +134,8 @@ Public Class ob_Chargen_Produziert
 
         'Datenbank-Verbindung sicherheitshalber nochmals schliessen
         wbdaten.Close()
-        'Letzte gültige Tageswechsel-Nummer
-        Return TageswechselNr
+        'Letzte gültige Tageswechsel-Nummer (darf aber nicht kleiner sein als der Aufrufparameter, sonst läuft die Routine rückwärts)
+        Return Math.Max(TageswechselNr, TWNr)
     End Function
 
     Private Function AddtoListe(Reader As MySqlDataReader, ByRef ChargenNummer As String) As ob_ProduzierteWare
@@ -178,19 +185,19 @@ Public Class ob_Chargen_Produziert
     ''' <returns></returns>
     Private Function SqlWriteProdWare(db As wb_Sql, o As ob_ProduzierteWare) As Boolean
         'Datensatz in dbo.Produzierte Ware schreiben
-        Trace.Write("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit " & o.SatzTyp & " " & o.ChargenNummer & " " & o.ArtikelNr & " " & o.Menge & " " & o.Unit)
+        'Trace.Write("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit " & o.SatzTyp & " " & o.ChargenNummer & " " & o.ArtikelNr & " " & o.Menge & " " & o.Unit)
 
         'Der SQL-INSERT-Befehl wird dynamisch erzeugt
         Dim sql As String = o.sFilialNummer & ", '" & o.sProduktionsDatum & "', '" & o.sSatzTyp & "', '" & o.ArtikelNr & "', " & o.Unit & ", " &
                             o.Color & ", '" & o.Size & "', '" & o.sMenge & "', '" & o.ChargenNummer & "', '" & o.sHaltbarkeitsDatum & "'"
         'Insert ausführen - bei sql-Fehler wird keine Exception ausgelöst(Debug)
         If db.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertProduktionsDaten, sql), False, False) < 0 Then
-            ' Rückgabewert kleiner Null - Fehler
-            Trace.WriteLine(" FEHLER")
+            'Rückgabewert kleiner Null - Fehler
+            'Trace.WriteLine(" FEHLER")
             Return False
         Else
             'Result Insert OK
-            Trace.WriteLine(" OK")
+            'Trace.WriteLine(" OK")
             Return True
         End If
     End Function

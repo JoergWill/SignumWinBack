@@ -46,6 +46,7 @@ Partial Class wb_Rezept_Rezeptur
         Me.ColProzent = New Infralution.Controls.VirtualTree.Column()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.ToolStripLeftMargin = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ToolStripFormat = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripRezeptChange = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripAllergenLegende = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gbDetail = New System.Windows.Forms.GroupBox()
@@ -172,9 +173,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.EnhEdit_Rezept.BackColor = System.Drawing.Color.Orange
         Me.EnhEdit_Rezept.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.EnhEdit_Rezept.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.EnhEdit_Rezept.eFormat = wb_Format.FUndefined
-        Me.EnhEdit_Rezept.eOG = "0"
-        Me.EnhEdit_Rezept.eUG = "0"
         Me.EnhEdit_Rezept.Init = True
         Me.EnhEdit_Rezept.Location = New System.Drawing.Point(0, 0)
         Me.EnhEdit_Rezept.Name = "EnhEdit_Rezept"
@@ -193,9 +191,6 @@ Partial Class wb_Rezept_Rezeptur
         Me.EnhEdit1.BackColor = System.Drawing.Color.Orange
         Me.EnhEdit1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.EnhEdit1.DropDownBackColor = System.Drawing.SystemColors.Control
-        Me.EnhEdit1.eFormat = wb_Format.FUndefined
-        Me.EnhEdit1.eOG = "0"
-        Me.EnhEdit1.eUG = "0"
         Me.EnhEdit1.Init = True
         Me.EnhEdit1.Location = New System.Drawing.Point(0, 0)
         Me.EnhEdit1.Name = "EnhEdit1"
@@ -251,7 +246,7 @@ Partial Class wb_Rezept_Rezeptur
         'StatusStrip
         '
         Me.StatusStrip.AutoSize = False
-        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLeftMargin, Me.ToolStripRezeptChange, Me.ToolStripAllergenLegende})
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLeftMargin, Me.ToolStripFormat, Me.ToolStripRezeptChange, Me.ToolStripAllergenLegende})
         Me.StatusStrip.Location = New System.Drawing.Point(0, 709)
         Me.StatusStrip.Name = "StatusStrip"
         Me.StatusStrip.Size = New System.Drawing.Size(976, 22)
@@ -263,6 +258,13 @@ Partial Class wb_Rezept_Rezeptur
         Me.ToolStripLeftMargin.Name = "ToolStripLeftMargin"
         Me.ToolStripLeftMargin.Size = New System.Drawing.Size(16, 17)
         Me.ToolStripLeftMargin.Text = "   "
+        '
+        'ToolStripFormat
+        '
+        Me.ToolStripFormat.Name = "ToolStripFormat"
+        Me.ToolStripFormat.Size = New System.Drawing.Size(34, 17)
+        Me.ToolStripFormat.Text = "Num"
+        Me.ToolStripFormat.Visible = False
         '
         'ToolStripRezeptChange
         '
@@ -1289,4 +1291,5 @@ Partial Class wb_Rezept_Rezeptur
     Friend WithEvents BtnExcelNwtDetails As Windows.Forms.Button
     Friend WithEvents BtnExcelNwt As Windows.Forms.Button
     Friend WithEvents BtnZutatenListeNeu As Windows.Forms.Button
+    Friend WithEvents ToolStripFormat As Windows.Forms.ToolStripStatusLabel
 End Class
