@@ -755,7 +755,10 @@ Public Class wb_Rezeptschritt
     ''' Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung/Anzeige des Anteils der Komponente am 
     ''' Rezeptgesamtgewicht auf der Rezeptzeile.
     ''' </summary>
-    Public WriteOnly Property RezGewicht As Double
+    Public Property RezGewicht As Double
+        Get
+            Return _RezGewicht
+        End Get
         Set(value As Double)
             For Each x As wb_Rezeptschritt In ChildSteps
                 x.RezGewicht = value
@@ -965,7 +968,7 @@ Public Class wb_Rezeptschritt
                     _ZaehltNichtZumRezeptGewicht = True
                     _ZaehltTrotzdemZumNwtGewicht = False
                 Case Else
-                    _ZaehltNichtZumRezeptGewicht = True
+                    _ZaehltNichtZumRezeptGewicht = False
                     _ZaehltTrotzdemZumNwtGewicht = True
             End Select
         End Set

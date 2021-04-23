@@ -400,10 +400,10 @@ Public Class wb_Komponente
             End If
         End Set
         Get
-            If (KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltZumRezeptGewicht) Then
-                Return False
-            Else
+            If (KA_zaehlt_zu_RZ_Gesamtmenge = wb_Global.ZaehltNichtZumRezeptGewicht) Then
                 Return True
+            Else
+                Return False
             End If
         End Get
     End Property

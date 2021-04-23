@@ -16,6 +16,8 @@ Public Class wb_PrinterDialog
 
     Private _LL_KopfZeile_1 As String = ""
     Private _LL_KopfZeile_2 As String = ""
+    Private _LL_Parameter_1 As String = ""
+    Private _LL_Parameter_2 As String = ""
 
     Public WithEvents LL As New ListLabel()
 
@@ -81,6 +83,18 @@ Public Class wb_PrinterDialog
     Public WriteOnly Property LL_KopfZeile_2 As String
         Set(value As String)
             _LL_KopfZeile_2 = value
+        End Set
+    End Property
+
+    Public WriteOnly Property LL_Parameter_1 As String
+        Set(value As String)
+            _LL_Parameter_1 = value
+        End Set
+    End Property
+
+    Public WriteOnly Property LL_Parameter_2 As String
+        Set(value As String)
+            _LL_Parameter_2 = value
         End Set
     End Property
 
@@ -350,6 +364,8 @@ Public Class wb_PrinterDialog
     Private Sub LL_AutoDefineNewPage(sender As Object, e As AutoDefineNewPageEventArgs) Handles LL.AutoDefineNewPage
         LL.Variables.Add("KopfZeile1", _LL_KopfZeile_1)
         LL.Variables.Add("KopfZeile2", _LL_KopfZeile_2)
+        LL.Variables.Add("Parameter1", _LL_Parameter_1)
+        LL.Variables.Add("Parameter2", _LL_Parameter_2)
     End Sub
 
     Private Sub wb_PrinterDialog_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
