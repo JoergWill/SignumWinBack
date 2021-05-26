@@ -175,6 +175,7 @@ Public Class wb_Silo
             lbBefMenge.Visible = value
             BtnSiloNull.Visible = value
             BtnSiloTauschen.Visible = value
+            BtnBestandsKorrektur.Visible = Not value
         End Set
     End Property
 
@@ -532,5 +533,15 @@ Public Class wb_Silo
     Private Sub wb_Silo_DoubleClick(sender As Object, e As EventArgs) Handles MyBase.DoubleClick
         Dim SiloParameter As New wb_Rohstoffe_SiloParameter(Me)
         SiloParameter.ShowDialog()
+    End Sub
+
+    ''' <summary>
+    ''' DoppelClick auf Istwert öffnet Dialog-Fenster zur Bestandskorrektur und/oder Befüllung KKA/Sackschütte
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnBestandsKorrektur_Click(sender As Object, e As EventArgs) Handles BtnBestandsKorrektur.Click, tbIst.DoubleClick
+        Dim SiloKorrektur As New wb_Rohstoffe_SiloKorrektur(Me)
+        SiloKorrektur.ShowDialog()
     End Sub
 End Class

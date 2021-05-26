@@ -63,7 +63,10 @@ Public Class ob_Planung_DockingExtension
     ''' </remarks>
     Public Sub Initialize() Implements IExtension.Initialize
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
+#If AssemblyResolve Then
+        'Die eigenen dll-Files in sep. Verzeichnis verlagern
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+#End If
 
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)

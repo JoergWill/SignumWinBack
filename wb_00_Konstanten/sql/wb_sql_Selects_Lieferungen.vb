@@ -2,6 +2,7 @@
 
     'Sql_statement SELECT Lagerorte nach LG_Ort
     Public Const sqlLieferungen = "SELECT * FROM Lieferungen WHERE LF_LG_Ort = '[0]' ORDER BY Lieferungen.LF_Nr"
+    Public Const sqlLieferungenDesc = "SELECT * FROM Lieferungen WHERE LF_LG_Ort = '[0]' AND LF_Gebucht <> '3' ORDER BY Lieferungen.LF_Nr DESC"
     'Sql_statement SELECT Lagerorte nach LG_Ort und Status
     Public Const sqlLieferungenGebucht = "SELECT * FROM Lieferungen WHERE LF_LG_Ort = '[0]' AND (LF_MENGE + 1) < (LF_Verbrauch + 1) AND LF_gebucht= '2' ORDER BY Lieferungen.LF_Nr"
     'Sql_statement SELECT Lagerorte nach LG_Ort und Status

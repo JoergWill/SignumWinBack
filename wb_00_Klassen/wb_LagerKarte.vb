@@ -98,10 +98,13 @@ Public Class wb_LagerKarte
         End Get
     End Property
 
-    Public ReadOnly Property ChargenNummer As String
+    Public Property ChargenNummer As String
         Get
             Return _ChargenNummer
         End Get
+        Set(value As String)
+            _ChargenNummer = value
+        End Set
     End Property
 
     Public ReadOnly Property Mitarbeiter As String

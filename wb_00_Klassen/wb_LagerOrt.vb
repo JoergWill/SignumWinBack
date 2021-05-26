@@ -6,6 +6,29 @@ Public Class wb_LagerOrt
     Private _Lagerort As String = Nothing
     Private _Kommentar As String = ""
     Private _Aktiv As String = "A"
+    Private Shared _ErrorText As String = ""
+    Private Shared _TabelleLagerorteOK = False
+
+
+    Public Shared ReadOnly Property ErrorText As String
+        Get
+            Return _ErrorText
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property UpdateDatabaseFile As String
+        Get
+            Return "2.30_Lagerorte.sql"
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property CheckDB() As Boolean
+        Get
+            'Prüfen ob ein Udpdate der Lagerorte-Tabelle erforderlich ist
+            Check_DBFelder()
+            Return _TabelleLagerorteOK
+        End Get
+    End Property
 
     Public Property Bilanzmenge As String
         Get
@@ -213,6 +236,27 @@ Public Class wb_LagerOrt
         End If
         Return False
     End Function
+
+    ''' <summary>
+    ''' Prüft ob das Datenbankfeld winback.Komponenten.KA_zaehlt_zu_NWT_Gesamtmenge vorhanden ist.
+    ''' Wenn nicht. MUSS die Datenbank per Update-Script erweitert werden!
+    ''' </summary>
+    Private Shared Sub Check_DBFelder()
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        'Prüfen ob Datenbankfeld LG_LF_Nummer vorhanden ist und die richtige Größe hat
+        If winback.sqlSelect(wb_Sql_Selects.sqlCheck_LG_LF_Nr) Then
+            If winback.Read Then
+                Dim FieldDesc As String = winback.sField("Type")
+                If FieldDesc.Contains("(11)") Then
+                    _TabelleLagerorteOK = True
+                Else
+                    _ErrorText = "Tabelle WinBack.Lagerorte muss erweitert werden! (LG_LF_Nummer muss INTEGER(11) sein!)"
+                    _TabelleLagerorteOK = False
+                End If
+            End If
+        End If
+        winback.Close()
+    End Sub
 
 
 End Class

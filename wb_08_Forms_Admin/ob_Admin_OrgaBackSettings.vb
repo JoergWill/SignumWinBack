@@ -24,7 +24,10 @@ Public Class ob_Admin_OrgaBackSettings
     ''' </summary>
     Public Sub Initialize() Implements IExtension.Initialize
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
+#If AssemblyResolve Then
+        'Die eigenen dll-Files in sep. Verzeichnis verlagern
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+#End If
     End Sub
 
     Private Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly

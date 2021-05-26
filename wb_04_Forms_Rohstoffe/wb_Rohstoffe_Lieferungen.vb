@@ -149,8 +149,8 @@ Public Class wb_Rohstoffe_Lieferung
 
             'Anzeige Lieferungen aktualisieren
             wb_Rohstoffe_Shared.Liste_Click(sender)
-            'Lagerbestand und Mindestmenge
-            tbBilanzmenge.Text = RohStoff.Bilanzmenge
+            'Lagerbestand und Mindestmenge (Neu laden)
+            tbBilanzmenge.Text = RohStoff.Bilanzmenge(True)
         End If
     End Sub
 End Class

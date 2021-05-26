@@ -173,4 +173,8 @@
     'Sql-Statement Rezeptliste Kocher aus winback.Rezepte
     Public Const sqlKocherDeleteRzpt = "DELETE FROM Rezepte WHERE RZ_Liniengruppe = [0] And RZ_Nr_AlNum = '[1]'"
 
+    'Prüfen ob Datenbankfeld wbdaten.HisRezepte.H_RZ_Bezeichnung die richtige Länge hat
+    Public Const sql_Check_H_RZ_Bezeichnung = "DESCRIBE His_Rezepte H_RZ_Bezeichnung"
+
+
 End Class

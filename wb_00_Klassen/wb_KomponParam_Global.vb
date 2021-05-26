@@ -276,7 +276,6 @@ Public Class wb_KomponParam_Global
         Catch ex As Exception
             Trace.WriteLine("Fehler in Komponenten-Parameter Typ 101/102 - Unterer Grenzwert TA falsch !")
             _ErrorText = ex.Message
-            Trace.WriteLine(_ErrorText)
             Return False
         End Try
         Return True

@@ -3,7 +3,7 @@ Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.Extensibility
 
 <Export(GetType(IExtension))>
-<ExportMetadata("Description", "Enthält dir Routinen für IArticleService")>
+<ExportMetadata("Description", "Enthält die Routinen für IArticleService")>
 Public Class ob_Artikel_Services
     Implements IExtension
     Private Shared oArticle As IArticleService
@@ -13,7 +13,12 @@ Public Class ob_Artikel_Services
 
     Public Sub Initialize() Implements IExtension.Initialize
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
+#If AssemblyResolve Then
+        'Die eigenen dll-Files in sep. Verzeichnis verlagern
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+#End If
+
         oArticle = TryCast(ServiceProvider.GetService(GetType(IArticleService)), IArticleService)
     End Sub
 

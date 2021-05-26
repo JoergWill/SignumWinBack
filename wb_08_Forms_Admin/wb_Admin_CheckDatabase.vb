@@ -82,21 +82,21 @@ Public Class wb_Admin_CheckDatabase
 
             'Prüfe Tabelle winback.KomponTypen(101/102) - Parameter TA Unterer Grenzwert Eingabe (-1.0)
             If Not CheckResultText(wb_KomponParam_Global.CheckDB(), "Check Datenbank winback.KomponTypen(101/102) - UG Eingabe TA (Parameter 7)") Then
-                LogEvent(wb_KomponParam_Global.ErrorText, Color.Red)
+                LogEvent(wb_KomponParam_Global.ErrorText, Color.Red, True)
                 CheckDatabase = False
                 UpdateDataBaseFiles.Add(wb_KomponParam_Global.UpdateDatabaseFile)
             End If
 
             'Prüfe Tabelle winback.KomponTypen(300) - Parameter Produktion
             If Not CheckResultText(wb_KomponParam300_Global.CheckDB(), "Check Datenbank winback.KomponTypen(300) - Parameter Produktion") Then
-                LogEvent(wb_KomponParam300_Global.ErrorText, Color.Red)
+                LogEvent(wb_KomponParam300_Global.ErrorText, Color.Red, True)
                 CheckDatabase = False
                 UpdateDataBaseFiles.Add(wb_KomponParam300_Global.UpdateDatabaseFile)
             End If
 
             'Prüfe Tabelle winback.KomponTypen(301) - Allergene und Nährwerte
             If Not CheckResultText(wb_KomponParam301_Global.CheckDB(), "Check Datenbank winback.KomponTypen(301) - Allergene und Nährwerte") Then
-                LogEvent(wb_KomponParam301_Global.ErrorText, Color.Red)
+                LogEvent(wb_KomponParam301_Global.ErrorText, Color.Red, True)
                 CheckDatabase = False
                 UpdateDataBaseFiles.Add(wb_KomponParam301_Global.UpdateDatabaseFile)
             End If
@@ -135,6 +135,20 @@ Public Class wb_Admin_CheckDatabase
                 LogEvent(wb_Einheiten_Global.ErrorText, Color.Red, True)
                 CheckDatabase = False
                 UpdateDataBaseFiles.Add(wb_Einheiten_Global.UpdateDatabaseFile)
+            End If
+
+            'Prüfe Tabelle winback.Lagerorte.LG_LF_Nr hat Datentyp Integer(11)
+            If Not CheckResultText(wb_LagerOrt.CheckDB(), "Check Datenbank winback.Lagerorte") Then
+                LogEvent(wb_LagerOrt.ErrorText, Color.Red, True)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_LagerOrt.UpdateDatabaseFile)
+            End If
+
+            'Prüfe Tabelle wbdaten.HisRezepte.H_RZ_Bezeichnung hat Länge 60
+            If Not CheckResultText(wb_Rezept_Shared.CheckDB(), "Check Datenbank wbdaten.HisRezepte.H_RZ_Bezeichnung") Then
+                LogEvent(wb_Rezept_Shared.ErrorText, Color.Red, True)
+                CheckDatabase = False
+                UpdateDataBaseFiles.Add(wb_Rezept_Shared.UpdateDatabaseFile)
             End If
         Catch
         End Try

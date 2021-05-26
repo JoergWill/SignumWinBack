@@ -23,9 +23,6 @@ Public Class ob_Main_Menu
     Private oSetting As ISettingService
     Private oFactory As IFactoryService
 
-    'TODO
-    Private oInventory As IFactoryService
-
     Private xForm As Form
     Private xLogger As New wb_TraceListener
     Private oRecipeProvider As New ob_RecipeProvider
@@ -103,8 +100,12 @@ Public Class ob_Main_Menu
 
         AddHandler System.Windows.Forms.Application.ThreadException, AddressOf MyThreadExceptionHandler
         AddHandler System.AppDomain.CurrentDomain.UnhandledException, AddressOf MyUnhandledExceptionHandler
-        'Die eigenen dll-Files in sep. Verzeichnis zu verlagern
+
+        'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
+#If AssemblyResolve Then
+        'Die eigenen dll-Files in sep. Verzeichnis verlagern
         AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+#End If
 
         'Event-Handler Aufruf einer WinBack-Main-Form
         AddHandler wb_Main_Shared.eOpenForm, AddressOf OpenWinBackForm
@@ -116,9 +117,6 @@ Public Class ob_Main_Menu
         oMenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         oSetting = TryCast(ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
         oFactory = TryCast(ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
-
-        'TODO
-        'oInventory = TryCast(ServiceProvider.GetService(GetType(IFactoryService), "Inventur"), IFactoryService)
 
         'Debug/Trace-Listener initialisieren
         AddTraceListener()

@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class wb_Silo
+Partial Class wb_SiloSackware
     Inherits System.Windows.Forms.UserControl
 
     'UserControl überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
@@ -23,34 +23,19 @@ Partial Class wb_Silo
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.lbMax = New System.Windows.Forms.Label()
         Me.lbIst = New System.Windows.Forms.Label()
-        Me.tbMax = New System.Windows.Forms.TextBox()
         Me.tbIst = New System.Windows.Forms.TextBox()
         Me.lblName = New System.Windows.Forms.Label()
         Me.lblNummer = New System.Windows.Forms.Label()
         Me.lblRohName = New System.Windows.Forms.Label()
-        Me.pnlSilo = New System.Windows.Forms.TableLayoutPanel()
-        Me.tbSiloFuellstand = New System.Windows.Forms.TextBox()
         Me.BtnSiloTauschen = New System.Windows.Forms.Button()
         Me.ToolTipSiloBef = New System.Windows.Forms.ToolTip(Me.components)
         Me.BtnSiloNull = New System.Windows.Forms.Button()
         Me.tbBefMenge = New System.Windows.Forms.TextBox()
-        Me.BtnBestandsKorrektur = New System.Windows.Forms.Button()
         Me.lbBefMenge = New System.Windows.Forms.Label()
-        Me.lbAktiv = New System.Windows.Forms.Label()
-        Me.pnlSilo.SuspendLayout()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'lbMax
-        '
-        Me.lbMax.AutoSize = True
-        Me.lbMax.BackColor = System.Drawing.Color.Transparent
-        Me.lbMax.Location = New System.Drawing.Point(24, 84)
-        Me.lbMax.Name = "lbMax"
-        Me.lbMax.Size = New System.Drawing.Size(45, 13)
-        Me.lbMax.TabIndex = 0
-        Me.lbMax.Text = "Maximal"
         '
         'lbIst
         '
@@ -60,17 +45,6 @@ Partial Class wb_Silo
         Me.lbIst.Size = New System.Drawing.Size(50, 13)
         Me.lbIst.TabIndex = 1
         Me.lbIst.Text = "Istmenge"
-        '
-        'tbMax
-        '
-        Me.tbMax.Location = New System.Drawing.Point(27, 100)
-        Me.tbMax.Name = "tbMax"
-        Me.tbMax.ReadOnly = True
-        Me.tbMax.Size = New System.Drawing.Size(93, 20)
-        Me.tbMax.TabIndex = 2
-        Me.tbMax.TabStop = False
-        Me.tbMax.Text = "kg"
-        Me.tbMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'tbIst
         '
@@ -88,11 +62,11 @@ Partial Class wb_Silo
         '
         Me.lblName.AutoSize = True
         Me.lblName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblName.Location = New System.Drawing.Point(6, 306)
+        Me.lblName.Location = New System.Drawing.Point(6, 303)
         Me.lblName.Name = "lblName"
-        Me.lblName.Size = New System.Drawing.Size(40, 13)
+        Me.lblName.Size = New System.Drawing.Size(63, 13)
         Me.lblName.TabIndex = 4
-        Me.lblName.Text = "Silo X"
+        Me.lblName.Text = "Sackware"
         '
         'lblNummer
         '
@@ -112,33 +86,6 @@ Partial Class wb_Silo
         Me.lblRohName.Size = New System.Drawing.Size(139, 36)
         Me.lblRohName.TabIndex = 6
         Me.lblRohName.Text = "Weizen 550"
-        '
-        'pnlSilo
-        '
-        Me.pnlSilo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pnlSilo.BackColor = System.Drawing.SystemColors.ControlLightLight
-        Me.pnlSilo.ColumnCount = 1
-        Me.pnlSilo.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.pnlSilo.Controls.Add(Me.tbSiloFuellstand, 0, 1)
-        Me.pnlSilo.Location = New System.Drawing.Point(83, 80)
-        Me.pnlSilo.Name = "pnlSilo"
-        Me.pnlSilo.RowCount = 2
-        Me.pnlSilo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.pnlSilo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.pnlSilo.Size = New System.Drawing.Size(62, 240)
-        Me.pnlSilo.TabIndex = 7
-        '
-        'tbSiloFuellstand
-        '
-        Me.tbSiloFuellstand.BackColor = System.Drawing.Color.Lime
-        Me.tbSiloFuellstand.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.tbSiloFuellstand.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tbSiloFuellstand.Location = New System.Drawing.Point(3, 123)
-        Me.tbSiloFuellstand.Multiline = True
-        Me.tbSiloFuellstand.Name = "tbSiloFuellstand"
-        Me.tbSiloFuellstand.ReadOnly = True
-        Me.tbSiloFuellstand.Size = New System.Drawing.Size(56, 114)
-        Me.tbSiloFuellstand.TabIndex = 0
         '
         'BtnSiloTauschen
         '
@@ -177,19 +124,6 @@ Partial Class wb_Silo
         Me.ToolTipSiloBef.SetToolTip(Me.tbBefMenge, "Doppelclick übernimmt die gesamte Liefermenge")
         Me.tbBefMenge.Visible = False
         '
-        'BtnBestandsKorrektur
-        '
-        Me.BtnBestandsKorrektur.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnBestandsKorrektur.ForeColor = System.Drawing.Color.Black
-        Me.BtnBestandsKorrektur.Location = New System.Drawing.Point(77, 332)
-        Me.BtnBestandsKorrektur.Name = "BtnBestandsKorrektur"
-        Me.BtnBestandsKorrektur.Size = New System.Drawing.Size(68, 38)
-        Me.BtnBestandsKorrektur.TabIndex = 13
-        Me.BtnBestandsKorrektur.Text = "Bestand korrigieren"
-        Me.ToolTipSiloBef.SetToolTip(Me.BtnBestandsKorrektur, "Silo-Füllstand korrigieren und/oder Sackschütte/KKA befüllen")
-        Me.BtnBestandsKorrektur.UseVisualStyleBackColor = True
-        Me.BtnBestandsKorrektur.Visible = False
-        '
         'lbBefMenge
         '
         Me.lbBefMenge.AutoSize = True
@@ -201,23 +135,20 @@ Partial Class wb_Silo
         Me.lbBefMenge.Text = "Lieferung"
         Me.lbBefMenge.Visible = False
         '
-        'lbAktiv
+        'PictureBox1
         '
-        Me.lbAktiv.AutoSize = True
-        Me.lbAktiv.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lbAktiv.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.lbAktiv.Location = New System.Drawing.Point(48, 305)
-        Me.lbAktiv.Name = "lbAktiv"
-        Me.lbAktiv.Size = New System.Drawing.Size(33, 15)
-        Me.lbAktiv.TabIndex = 12
-        Me.lbAktiv.Text = "Aktiv"
+        Me.PictureBox1.Image = Global.WinBack.My.Resources.Resources.Sackware_45x43
+        Me.PictureBox1.Location = New System.Drawing.Point(27, 322)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(50, 50)
+        Me.PictureBox1.TabIndex = 12
+        Me.PictureBox1.TabStop = False
         '
-        'wb_Silo
+        'wb_SiloSackware
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.BtnBestandsKorrektur)
-        Me.Controls.Add(Me.lbAktiv)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.lblNummer)
         Me.Controls.Add(Me.BtnSiloNull)
         Me.Controls.Add(Me.tbBefMenge)
@@ -226,33 +157,23 @@ Partial Class wb_Silo
         Me.Controls.Add(Me.lblRohName)
         Me.Controls.Add(Me.lblName)
         Me.Controls.Add(Me.tbIst)
-        Me.Controls.Add(Me.tbMax)
         Me.Controls.Add(Me.lbIst)
-        Me.Controls.Add(Me.lbMax)
-        Me.Controls.Add(Me.pnlSilo)
-        Me.Name = "wb_Silo"
+        Me.Name = "wb_SiloSackware"
         Me.Size = New System.Drawing.Size(150, 375)
-        Me.pnlSilo.ResumeLayout(False)
-        Me.pnlSilo.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents lbMax As Windows.Forms.Label
     Friend WithEvents lbIst As Windows.Forms.Label
-    Friend WithEvents tbMax As Windows.Forms.TextBox
     Friend WithEvents tbIst As Windows.Forms.TextBox
     Friend WithEvents lblName As Windows.Forms.Label
     Friend WithEvents lblNummer As Windows.Forms.Label
     Friend WithEvents lblRohName As Windows.Forms.Label
-    Friend WithEvents pnlSilo As Windows.Forms.TableLayoutPanel
-    Friend WithEvents tbSiloFuellstand As Windows.Forms.TextBox
     Friend WithEvents BtnSiloTauschen As Windows.Forms.Button
     Friend WithEvents ToolTipSiloBef As Windows.Forms.ToolTip
     Friend WithEvents tbBefMenge As Windows.Forms.TextBox
     Friend WithEvents lbBefMenge As Windows.Forms.Label
     Friend WithEvents BtnSiloNull As Windows.Forms.Button
-    Friend WithEvents lbAktiv As Windows.Forms.Label
-    Friend WithEvents BtnBestandsKorrektur As Windows.Forms.Button
+    Friend WithEvents PictureBox1 As Windows.Forms.PictureBox
 End Class

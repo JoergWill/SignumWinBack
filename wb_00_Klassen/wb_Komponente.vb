@@ -1146,9 +1146,9 @@ Public Class wb_Komponente
         End Set
     End Property
 
-    Public Property Bilanzmenge As String
+    Public Property Bilanzmenge(Optional Reload As Boolean = False) As String
         Get
-            If _Lager Is Nothing Then
+            If _Lager Is Nothing Or Reload Then
                 _Lager = New wb_LagerOrt(KA_Lagerort)
             End If
             Return _Lager.Bilanzmenge

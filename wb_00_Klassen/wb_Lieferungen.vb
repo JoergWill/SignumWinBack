@@ -58,10 +58,13 @@ Public Class wb_Lieferungen
     ''' Rohstoff/Artikel-Nummer (alpha-numerisch)
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property Nummer As String
+    Public Property Nummer As String
         Get
             Return KO_Nr_AlNum
         End Get
+        Set(value As String)
+            KO_Nr_AlNum = value
+        End Set
     End Property
 
     Public Property Bilanzmenge As Double
@@ -662,6 +665,63 @@ Public Class wb_Lieferungen
     End Sub
 
     ''' <summary>
+    ''' Erzeugt eine kommagetrennte Liste von Rohstoff-Chargennummern aus den Lieferungen bis die Menge x erreicht ist
+    ''' oder keine offenen Lieferungen mehr vorhanden sind.
+    ''' Anschliessend wird die Bilanzmenge in der Tabelle winback.Lagerorte mit der Menge x aktualisiert
+    ''' </summary>
+    ''' <param name="Menge"></param>
+    ''' <returns></returns>
+    Public Function GetChargenListe(winback As wb_Sql, Lagerort As String, Menge As Integer) As String
+        'Rohstoff-Chargen-Nummer
+        Dim ChrgNummer As String = ""
+        Dim Liefermenge As Integer = 0
+        'Lagerort merken
+        LG_Ort = Lagerort
+
+        'alle Lieferungen zu diesem Lagerort
+        Dim sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferungenDesc, Lagerort)
+
+        'Prüfen ob ein Datensatz vorhanden ist
+        If winback.sqlSelect(sql) Then
+            If winback.Read Then
+
+                'Datensätze lesen bis Menge erreicht
+                While winback.MySqlRead.Read And (Menge > 0)
+                    'alle relevanten Felder lesen
+                    MySQLdbRead(winback.MySqlRead)
+                    'Liefermenge als Integer
+                    Liefermenge = wb_Functions.StrToInt(LF_Menge)
+                    Debug.Print("---------------------LF_Menge " & LF_Menge & "/" & Liefermenge)
+
+                    'wenn der Silobestand auf Null gesetzt wurde
+                    If Liefermenge > 0 Then
+                        'Liefermenge wird vom neuen Bestand abgezogen - wenn der Bestand kleiner/gleich Null ist, sind alle Chargen ermittelt
+                        Menge = Menge - Liefermenge
+
+                        Debug.Print("---------------------LF_BF_Charge " & LF_BF_Charge & "/" & ChrgNummer)
+
+                        'Liste aller Chargen-Nummern als kommagetrennte Liste
+                        If LF_BF_Charge <> "" Then
+                            If ChrgNummer = "" Then
+                                ChrgNummer = LF_BF_Charge
+                            Else
+                                ChrgNummer = ChrgNummer & "," & LF_BF_Charge
+                            End If
+                        End If
+                    Else
+                        Exit While
+                    End If
+                End While
+            End If
+        End If
+
+        'Datenbank-Verbindung freigegben
+        winback.CloseRead()
+        'Rohstoff-Chargen-Nummer(n)
+        Return ChrgNummer
+    End Function
+
+    ''' <summary>
     ''' Liest alle Datenfelder aus dem aktuellen Datensatz in das Lieferungen-Objekt
     ''' Die Daten werden anhand der Feldbezeichnung in die einzelnen Properties eingetragen.
     ''' 
@@ -673,17 +733,19 @@ Public Class wb_Lieferungen
     ''' <returns>True wenn kein Fehler aufgetreten ist</returns>
     Public Function MySQLdbRead(ByRef sqlReader As MySql.Data.MySqlClient.MySqlDataReader) As Boolean
         'Schleife über alle Datensätze
-        Do
-            'Parameter - Anzahl der Felder im DataSet
-            'FieldCount-2 unterdrückt das Feld TimeStamp
-            For i = 0 To sqlReader.FieldCount - 2
+        'TODO prüfen ob das hier irgendeinen Sinn gemacht hat !!!
+        ' DO LOOP liest ALLE DATENSÄTZE AUF EINMAL
+        'Do
+        'Parameter - Anzahl der Felder im DataSet
+        'FieldCount-2 unterdrückt das Feld TimeStamp
+        For i = 0 To sqlReader.FieldCount - 2
                 Try
                     MySQLdbRead_Daten(sqlReader.GetName(i), sqlReader.GetValue(i))
                 Catch ex As Exception
                     Debug.Print("Exception MySQLdbRead " & sqlReader.GetName(i))
                 End Try
             Next
-        Loop While sqlReader.Read
+        'Loop While sqlReader.Read
         Return True
     End Function
 
@@ -700,7 +762,7 @@ Public Class wb_Lieferungen
         End If
 
         'Feldname aus der Datenbank
-        'Debug.Print("ReadLieferungen " & Name & "/" & Value)
+        Debug.Print("ReadLieferungen " & Name & "/" & Value)
         Try
             Select Case Name
 

@@ -140,7 +140,7 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\..\..\SharedBinaries\Basic Correctness and Design Guideline.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>AssemblyResolve=False</DefineConstants>
+    <DefineConstants>AssemblyResolve=True</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M1|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -443,6 +443,12 @@
     <Compile Include="wb_00_Klassen\wb_Schnittstelle.vb" />
     <Compile Include="wb_00_Klassen\wb_SchnittstelleFeld.vb" />
     <Compile Include="wb_00_Klassen\wb_SchnittstelleTabelle.vb" />
+    <Compile Include="wb_00_Klassen\Komponenten\wb_SiloSackware.Designer.vb">
+      <DependentUpon>wb_SiloSackware.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_00_Klassen\Komponenten\wb_SiloSackware.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="wb_00_Main\wb_Main_ServerConnect.Designer.vb">
       <DependentUpon>wb_Main_ServerConnect.vb</DependentUpon>
     </Compile>
@@ -451,6 +457,12 @@
     </Compile>
     <Compile Include="wb_00_Main\wb_Main_ServerTaskConnect.vb" />
     <Compile Include="wb_04_Forms_Rohstoffe\ob_Rohstoffe_SiloInventur.vb" />
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloKorrektur.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_SiloKorrektur.vb</DependentUpon>
+    </Compile>
+    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloKorrektur.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="wb_07_Forms_Planung\wb_Planung_Drucken.Designer.vb">
       <DependentUpon>wb_Planung_Drucken.vb</DependentUpon>
     </Compile>
@@ -1194,8 +1206,14 @@
     <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_SiloBef.resx">
       <DependentUpon>wb_SiloBef.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_SiloSackware.resx">
+      <DependentUpon>wb_SiloSackware.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wb_00_Main\wb_Main_ServerConnect.resx">
       <DependentUpon>wb_Main_ServerConnect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloKorrektur.resx">
+      <DependentUpon>wb_Rohstoffe_SiloKorrektur.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Drucken.resx">
       <DependentUpon>wb_Planung_Drucken.vb</DependentUpon>
@@ -1719,6 +1737,7 @@
     <None Include="Resources\ProdExport_32x32.png" />
     <None Include="Resources\ProdTeiler_32x32.png" />
     <None Include="Resources\RezeptDrucken_32x32.png" />
+    <None Include="Resources\Silo_Handkomp.png" />
     <Content Include="Resources\Zoom_32x32.png" />
     <None Include="Resources\DatenSicherung_16x16.png" />
     <None Include="Resources\Admin_32x32.png" />

@@ -1,4 +1,6 @@
-﻿Public Class wb_LagerSilo
+﻿Imports System.Windows.Forms
+
+Public Class wb_LagerSilo
 
     Private _KompNr As Integer
     Private _KompNummer As String
@@ -14,7 +16,29 @@
     Private _VerbrauchtMenge As Double
     Private _ChargenNummer As String
 
-    Public Sub CopyFrom(s As wb_Silo)
+    Friend Sub CopyFrom(control As Control)
+        Select Case control.Name
+            Case "wb_Silo"
+                CopyFrom(DirectCast(control, wb_Silo))
+            Case "wb_SiloSackWare"
+                CopyFrom(DirectCast(control, wb_SiloSackware))
+        End Select
+    End Sub
+
+    Private Sub CopyFrom(s As wb_Silo)
+        _KompNr = s.KompNr
+        _KompNummer = s.KompNummer
+        _KompBezeichnung = s.KompBezeichnung
+        _LagerOrt = s.LagerOrt
+        _SiloNr = s.SiloNr
+        _TaraWert = s.TaraWert
+        _BefMenge = s.BefMenge
+        _VerbrauchtMenge = s.VerbrauchtMenge
+        _ChargenNummer = s.ChargenNummer
+        _Preis = s.Preis
+    End Sub
+
+    Private Sub CopyFrom(s As wb_SiloSackware)
         _KompNr = s.KompNr
         _KompNummer = s.KompNummer
         _KompBezeichnung = s.KompBezeichnung
@@ -134,4 +158,5 @@
             _VerbrauchtMenge = value
         End Set
     End Property
+
 End Class

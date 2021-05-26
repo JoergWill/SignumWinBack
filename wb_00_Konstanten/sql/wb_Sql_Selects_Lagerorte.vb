@@ -28,6 +28,10 @@
                                        "FROM (Komponenten INNER JOIN Lagerorte ON Komponenten.KA_Lagerort = Lagerorte.LG_Ort) " &
                                        "WHERE KO_Type <> 0 AND [0] AND KA_aktiv = 1 ORDER BY KO_Type, KO_Nr LIMIT 1"
 
+    'Prüfen ob Datenbankfeld KA_zaehlt_zu_NWT_Gesamtmenge vorhanden ist
+    Public Const sqlCheck_LG_LF_Nr = "DESCRIBE Lagerorte LG_LF_Nr"
+
+
 
     'LG_Ort
     'LG_Bezeichnung

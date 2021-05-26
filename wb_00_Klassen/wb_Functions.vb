@@ -931,7 +931,7 @@ Public Class wb_Functions
     Public Shared Sub AssertTrue(Condition As Boolean, Text As String)
         If Not Condition Then
             Trace.WriteLine(Text)
-            Throw New Exception("Text")
+            Throw New Exception(Text)
         End If
     End Sub
 

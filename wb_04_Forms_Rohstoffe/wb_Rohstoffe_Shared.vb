@@ -317,7 +317,8 @@ Public Class wb_Rohstoffe_Shared
     ''' <param name="KompNummer"></param>
     ''' <returns></returns>
     Public Shared Function HatSiloUmschaltung(KompNummer As String) As Boolean
-        Return (AnzahlSilos(KompNummer) > 1)
+        'TODO hier prüfen ob eine Handkomponente dazu existiert!
+        Return (AnzahlSilos(KompNummer) > 1) Or (AnzahlSilos(KompNummer) = 1)
     End Function
 
     ''' <summary>

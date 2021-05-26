@@ -97,7 +97,7 @@ Public Class wb_AktUser
         End If
 
         'User SYS ist Super-User
-        If UserName = "System Administrator" Or UserName = "KurzSesam" Then
+        If (UserName.Contains("System") And UserName.Contains("Administrator")) Or UserName = "KurzSesam" Then
             SuperUser = True
         End If
 

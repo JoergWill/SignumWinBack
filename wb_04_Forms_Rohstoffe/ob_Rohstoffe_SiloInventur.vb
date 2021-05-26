@@ -10,10 +10,10 @@ Public Class ob_Rohstoffe_SiloInventur
     Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
     Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
 
-    Private oFactory As IFactoryService
-    Private oSetting As ISettingService
-    Private oViewProvider As IViewProvider
-    Private oMenuService As IMenuService
+    Private Shared oFactory As IFactoryService
+    Private Shared oSetting As ISettingService
+    Private Shared oViewProvider As IViewProvider
+    Private Shared oMenuService As IMenuService
 
     Public Sub Initialize() Implements IExtension.Initialize
         oFactory = TryCast(ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
@@ -23,7 +23,7 @@ Public Class ob_Rohstoffe_SiloInventur
     ''' <summary>
     ''' Erzeugt eine Inventur für Artikel mit ArtikelNr, Einheit, Menge und führt anschließend für diesen Artikel eine Bestandskorrektur durch
     ''' </summary>
-    Private Function Bestandskorrektur(ArtikelNr As String, Einheit As Integer, EingabeMenge As String, iFilialNr As Integer) As Boolean
+    Private Shared Function Bestandskorrektur(ArtikelNr As String, Einheit As Integer, EingabeMenge As String, ChargenNr As String, iFilialNr As Integer) As Boolean
         'Objekt vom Type Inventur erstellen lassen (via FactoryService)
         Dim oInventur = CType(oFactory.GetOrgasoftObject(ObjectEnum.StockTaking), INavigationClass)
         'Find(FilialNr) ausführen
@@ -34,6 +34,7 @@ Public Class ob_Rohstoffe_SiloInventur
             oPos.SetPropertyValue("ArtikelNr", ArtikelNr)
             oPos.SetPropertyValue("Einheit", Einheit)
             oPos.SetPropertyValue("EingabeMengeString", EingabeMenge)
+            oPos.SetPropertyValue("ChargenNr", ChargenNr)
             Dim oMethodInfo As Reflection.MethodInfo = oPos.GetType.GetMethod("EingabeBeenden")
             oMethodInfo.Invoke(oPos, {})
             'Update
@@ -62,6 +63,17 @@ Public Class ob_Rohstoffe_SiloInventur
             End If
         End If
         Return False
+    End Function
+
+    Public Shared Function Bestandskorrektur(ArtikelNummer As String, NeueMenge As Integer, ChargenNr As String) As Boolean
+        'Produktions-Filiale (Default)
+        Dim Filiale As Integer = wb_Linien_Global.DefaultProdFiliale
+        'Einheit ist immer kg
+        Dim Einheit As Integer = wb_Global.obEinheitKilogramm
+        'neue Menge(Inventur)
+        Dim Menge As String = wb_Functions.FormatStr(NeueMenge.ToString, 3)
+        'Bestandskorrektur in OrgaBack durchführen
+        Return Bestandskorrektur(ArtikelNummer, Einheit, Menge, ChargenNr, Filiale)
     End Function
 
 End Class

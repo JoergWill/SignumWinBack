@@ -14,6 +14,7 @@ Public Class wb_Rohstoffe_Silo
     Dim sFuellStand As New Hashtable
 
     Dim SiloBef As New wb_SiloBef
+    Dim SiloSackWare As New wb_SiloSackWare
     Dim SiloRstf As wb_Silo
 
     Public ReadOnly Property SiloVerteilung As IList
@@ -171,6 +172,8 @@ Public Class wb_Rohstoffe_Silo
                 'Chargen-Nummer aus Befüllung
                 SiloRstf.ChargenNummer = _SiloBefuellung.SerienNummer
                 SiloRstf.Preis = _SiloBefuellung.Preis
+                'Anzeige Sackware (Handkomponenten mit identischer Rohstoff-Nummer)
+                AddPanelSackWare(SiloRstf)
                 'neues Panel
                 AddPanel(SiloRstf)
                 'alle Silos mit identischer Rohstoff-Nummer 
@@ -202,12 +205,35 @@ Public Class wb_Rohstoffe_Silo
     ''' <param name="SiloRstf_x"></param>
     Private Sub AddPanel(SiloRstf_x As wb_Silo)
         Dim SiloPanel As New wb_Silo
+        SiloPanel.Name = "wb_Silo"
         SiloPanel.CopyFrom(SiloRstf_x)
         SiloPanel.Befuellung = _Befuellung
 
         TableLayoutPanel.Controls.Add(SiloPanel)
         TableLayoutPanel.ColumnCount = TableLayoutPanel.Controls.Count
         SiloReiheMaxMenge = Math.Max(SiloReiheMaxMenge, SiloRstf_x.MaxMenge)
+    End Sub
+
+    ''' <summary>
+    ''' Sackware-Grafik in Panel anfügen. Wenn es eine passende Handkomponente zu dieser Rohstoff-Nummer gibt, wird eine
+    ''' entsprechende Grafik angezeigt.
+    ''' Damit können Wareneingänge (Silo-Rohstoff) auch auf Sackware gebucht werden. 
+    ''' 
+    ''' Wichtig für Kleinkomponenten und Sackschütten. Diese können dann beim Befüllen umgebucht werden auf die Silo-Rohstoffe.
+    ''' </summary>
+    ''' <param name="SiloRstf_x"></param>
+    Private Sub AddPanelSackWare(SiloRstf_x As wb_Silo)
+        'passende Handkomponente dazu suchen
+        Dim SiloSackWarePanel As New wb_SiloSackware
+        SiloSackWare.Name = "wb_SiloSackWare"
+        If SiloSackWare.CopyFrom(SiloRstf_x.KompNummer) Then
+            SiloSackWare.Befuellung = _Befuellung
+            SiloSackWare.ChargenNummer = SiloRstf_x.ChargenNummer
+            SiloSackWarePanel.Preis = SiloRstf_x.Preis
+
+            TableLayoutPanel.Controls.Add(SiloSackWare)
+            TableLayoutPanel.ColumnCount = TableLayoutPanel.Controls.Count
+        End If
     End Sub
 
     ''' <summary>
@@ -219,6 +245,7 @@ Public Class wb_Rohstoffe_Silo
         TableLayoutPanel.Controls.Add(SiloBef)
         TableLayoutPanel.ColumnCount = TableLayoutPanel.Controls.Count
     End Sub
+
 
     ''' <summary>
     ''' Einfacher Bubble-Sort-Algorithmus
@@ -322,12 +349,15 @@ Public Class wb_Rohstoffe_Silo
         For i = 0 To TableLayoutPanel.Controls.Count - 1
             'Berechnung nur für Silos
             If i > 0 Or Not _Befuellung Then
-                SiloRstf = TableLayoutPanel.Controls.Item(i)
-
-                If sFuellStand.ContainsKey(SiloRstf.LagerOrt) Then
-                    SiloRstf.IstMenge = sFuellStand(SiloRstf.LagerOrt)
-                    SiloRstf.SiloReiheMaxMenge = SiloReiheMaxMenge
-                End If
+                'unterscheiden zwischen Silo und Sack(Handkomponente)
+                Select Case TableLayoutPanel.Controls.Item(i).Name
+                    Case "wb_Silo"
+                        SiloRstf = TableLayoutPanel.Controls.Item(i)
+                        If sFuellStand.ContainsKey(SiloRstf.LagerOrt) Then
+                            SiloRstf.IstMenge = sFuellStand(SiloRstf.LagerOrt)
+                            SiloRstf.SiloReiheMaxMenge = SiloReiheMaxMenge
+                        End If
+                End Select
             Else
                 SiloRstf.IstMenge = 0
             End If
@@ -346,8 +376,15 @@ Public Class wb_Rohstoffe_Silo
         For i = 0 To TableLayoutPanel.Controls.Count - 1
             'Berechnung nur für Silos
             If i > 0 Or Not _Befuellung Then
-                SiloRstf = TableLayoutPanel.Controls.Item(i)
-                GesVerteilt += SiloRstf.BefMenge
+                'unterscheiden zwischen Silo und Sack(Handkomponente)
+                Select Case TableLayoutPanel.Controls.Item(i).Name
+                    Case "wb_Silo"
+                        SiloRstf = TableLayoutPanel.Controls.Item(i)
+                        GesVerteilt += SiloRstf.BefMenge
+                    Case "wb_SiloSackWare"
+                        SiloSackWare = TableLayoutPanel.Controls.Item(i)
+                        GesVerteilt += SiloSackWare.BefMenge
+                End Select
             End If
         Next
         'anzeigen
@@ -355,8 +392,15 @@ Public Class wb_Rohstoffe_Silo
         'Restmenge an alle Silos weitergeben
         For i = 0 To TableLayoutPanel.Controls.Count - 1
             If i > 0 Or Not _Befuellung Then
-                SiloRstf = TableLayoutPanel.Controls.Item(i)
-                SiloRstf.RestMenge = SiloBef.RestMenge
+                'unterscheiden zwischen Silo und Sack(Handkomponente)
+                Select Case TableLayoutPanel.Controls.Item(i).Name
+                    Case "wb_Silo"
+                        SiloRstf = TableLayoutPanel.Controls.Item(i)
+                        SiloRstf.RestMenge = SiloBef.RestMenge
+                    Case "wb_SiloSackWare"
+                        SiloSackWare = TableLayoutPanel.Controls.Item(i)
+                        SiloSackWare.RestMenge = SiloBef.RestMenge
+                End Select
             End If
         Next
     End Sub

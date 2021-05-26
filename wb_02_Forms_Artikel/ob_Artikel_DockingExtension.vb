@@ -284,7 +284,8 @@ Public Class ob_Artikel_DockingExtension
     ''' </remarks>
     Public Sub Initialize() Implements IExtension.Initialize
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
-        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+        'TODO FONK
+        'AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
 
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)

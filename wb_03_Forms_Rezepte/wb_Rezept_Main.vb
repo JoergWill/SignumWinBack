@@ -141,7 +141,10 @@ Public Class wb_Rezept_Main
     Private Sub RezeptNew(Optional RzNr As Integer = wb_Global.UNDEFINED, Optional RzVariante As Integer = 1)
         Dim Rezept As New wb_Rezept
         Dim RezeptNrNeu As Integer = Rezept.MySQLdbNew(wb_Global.LinienGruppeStandard)
-        RezeptListe.RefreshData(RezeptNrNeu)
+        'Beim Aufruf aus Artikel/Rohstoffe (verknüpftes Rezept) gibt es keine Rezeptliste
+        If RezeptListe IsNot Nothing Then
+            RezeptListe.RefreshData(RezeptNrNeu)
+        End If
 
         'Rezeptur kopieren
         If RzNr > wb_Global.UNDEFINED Then
