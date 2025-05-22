@@ -1,19 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2F6C260C-7F04-4223-B775-48309A1946EB}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.18362.0</TargetFramework>
+    <ApplicationDefaultFont>Microsoft Sans Serif, 8.25pt</ApplicationDefaultFont>
+	<OutputType>WinExe</OutputType>
     <StartupObject>WinBack.My.MyApplication</StartupObject>
     <RootNamespace>WinBack</RootNamespace>
-    <AssemblyName>WinBackOffice</AssemblyName>
-    <FileAlignment>512</FileAlignment>
+    <AssemblyName>OrgaBackProduktion</AssemblyName>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -25,623 +18,118 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <DocumentationFile>OrgaBackProduktion.xml</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DefineTrace>true</DefineTrace>
+    <DefineConstants>AssemblyResolve=True, DebugLL=False, DebugLog4Net=False</DefineConstants>
+    <GenerateResourceWarnOnBinaryFormatterUse>false</GenerateResourceWarnOnBinaryFormatterUse>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <PropertyGroup>
-    <OptionExplicit>On</OptionExplicit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionCompare>Binary</OptionCompare>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionStrict>Off</OptionStrict>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionInfer>On</OptionInfer>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>WinBack Icon.ico</ApplicationIcon>
+    <ApplicationIcon>OrgaBack Produktion.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M1|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M2|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M3|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M4|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M5|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M1|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M2|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M3|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M4|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M5|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M6|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug-M6\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M6|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-M7|x86' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-M7|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\DB_Goeken\</OutputPath>
-    <DocumentationFile>WinBackOffice.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="combit.ListLabel22, Version=22.2.6290.25045, Culture=neutral, PublicKeyToken=a7a30592cb4a94be, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\Combit List&amp;Label V22\combit.ListLabel22.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentFTP, Version=32.4.7.0, Culture=neutral, PublicKeyToken=f4af092b1d8df44f, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentFTP.32.4.7\lib\net45\FluentFTP.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ghostscript.NET">
-      <HintPath>..\dll\GhostScript V1.2.1\Ghostscript.NET.dll</HintPath>
-    </Reference>
-    <Reference Include="Infralution.Common, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\Infralution VirtualTree V4.8.10\Infralution.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Infralution.Controls, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\Infralution VirtualTree V4.8.10\Infralution.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\Infralution VirtualTree V4.8.10\Infralution.Controls.VirtualTree.dll</HintPath>
-    </Reference>
-    <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MetroFramework">
-      <HintPath>..\dll\MetroFramework 1.2.0.3\MetroFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="MetroFramework.Design">
-      <HintPath>..\dll\MetroFramework 1.2.0.3\MetroFramework.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="PCSC, Version=5.0.0.0, Culture=neutral, PublicKeyToken=13b76e54a2ee80a7, processorArchitecture=MSIL">
-      <HintPath>..\packages\PCSC.5.0.0\lib\net472\PCSC.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PCSC.Iso7816, Version=5.0.0.0, Culture=neutral, PublicKeyToken=13b76e54a2ee80a7, processorArchitecture=MSIL">
-      <HintPath>..\packages\PCSC.Iso7816.5.0.0\lib\net472\PCSC.Iso7816.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
-      <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Runtime.InteropServices.APIs">
-      <HintPath>..\dll\TreeListView\System.Runtime.InteropServices.APIs.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.Ribbon, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\OfficeRibbon 4.6\System.Windows.Forms.Ribbon.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Forms.TreeListView">
-      <HintPath>..\dll\TreeListView\System.Windows.Forms.TreeListView.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <HintPath>..\packages\DockPanelSuite.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <HintPath>..\packages\DockPanelSuite.ThemeVS2015.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Compile Remove="wo_99_Test\**" />
+    <EmbeddedResource Remove="wo_99_Test\**" />
+    <None Remove="wo_99_Test\**" />
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
-    <Import Include="System" />
-    <Import Include="System.Collections" />
-    <Import Include="System.Collections.Generic" />
-    <Import Include="System.Data" />
+    <Compile Remove="wo_00_Main\OrgaBackOffice.Designer.vb" />
+    <Compile Remove="wo_00_Main\OrgaBackOffice.vb" />
+  </ItemGroup>
+  <ItemGroup>
     <Import Include="System.Drawing" />
-    <Import Include="System.Diagnostics" />
     <Import Include="System.Windows.Forms" />
-    <Import Include="System.Linq" />
-    <Import Include="System.Xml.Linq" />
-    <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="About_WinBack.Designer.vb">
-      <DependentUpon>About_WinBack.vb</DependentUpon>
+    <Compile Update="wo_00_Main\SetMySqlIP.Designer.vb">
+      <DependentUpon>SetMySqlIP.vb</DependentUpon>
     </Compile>
-    <Compile Include="About_WinBack.vb">
-      <SubType>Form</SubType>
+    <Compile Update="wo_99_DashBoard\Dashboard_Main.Designer.vb">
+      <DependentUpon>Dashboard_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Schnittstelle_Main.Designer.vb">
+    <Compile Update="wo_10_Schnittstelle\Schnittstelle_Main.Designer.vb">
       <DependentUpon>Schnittstelle_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Schnittstelle_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Admin_ThemeControl.Designer.vb">
-      <DependentUpon>Admin_ThemeControl.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Admin_ThemeControl.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Admin_Main.Designer.vb">
+    <Compile Update="wo_08_Admin\Admin_Main.Designer.vb">
       <DependentUpon>Admin_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Admin_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="Planung_Main.Designer.vb">
+    <Compile Update="wo_07_Planung\Planung_Main.Designer.vb">
       <DependentUpon>Planung_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Planung_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Linien_Main.Designer.vb">
+    <Compile Update="wo_06_Linien\Linien_Main.Designer.vb">
       <DependentUpon>Linien_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Linien_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Chargen_Main.Designer.vb">
+    <Compile Update="wo_01_Chargen\Chargen_Main.Designer.vb">
       <DependentUpon>Chargen_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Chargen_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="StammDaten_Main.Designer.vb">
+    <Compile Update="wo_09_Stammdaten\StammDaten_Main.Designer.vb">
       <DependentUpon>StammDaten_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="StammDaten_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Test_Main.Designer.vb">
-      <DependentUpon>Test_Main.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Test_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="User_Main.Designer.vb">
+    <Compile Update="wo_05_User\User_Main.Designer.vb">
       <DependentUpon>User_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="User_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Rohstoffe_Main.Designer.vb">
+    <Compile Update="wo_04_Rohstoffe\Rohstoffe_Main.Designer.vb">
       <DependentUpon>Rohstoffe_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Rohstoffe_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Rezepte_Main.Designer.vb">
+    <Compile Update="wo_03_Rezepte\Rezepte_Main.Designer.vb">
       <DependentUpon>Rezepte_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Rezepte_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DockPanel_Main.Designer.vb">
+    <Compile Update="wo_00_Main\DockPanel_Main.Designer.vb">
       <DependentUpon>DockPanel_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="DockPanel_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Artikel_Main.Designer.vb">
+    <Compile Update="wo_02_Artikel\Artikel_Main.Designer.vb">
       <DependentUpon>Artikel_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Artikel_Main.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="IMainMenu.vb" />
-    <Compile Include="Login.Designer.vb">
+    <Compile Update="wo_00_Main\Login.Designer.vb">
       <DependentUpon>Login.vb</DependentUpon>
     </Compile>
-    <Compile Include="Login.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinBack.Designer.vb">
-      <DependentUpon>WinBack.vb</DependentUpon>
-    </Compile>
-    <Compile Include="WinBack.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="My Project\Application.Designer.vb">
+    <Compile Update="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="My Project\Resources.Designer.vb">
+    <Compile Update="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="My Project\Settings.Designer.vb">
+    <Compile Update="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="About_WinBack.resx">
-      <DependentUpon>About_WinBack.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Admin_ThemeControl.resx">
-      <DependentUpon>Admin_ThemeControl.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DockPanel_Main.resx">
-      <DependentUpon>DockPanel_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Login.resx">
-      <DependentUpon>Login.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\licenses.licx" />
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Test_Main.resx">
-      <DependentUpon>Test_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinBack.resx">
-      <DependentUpon>WinBack.vb</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="My Project\app.manifest" />
-    <None Include="My Project\Application.myapp">
+    <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
-    <None Include="My Project\DataSources\wb_Rezept.datasource" />
-    <None Include="My Project\Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <CustomToolNamespace>My</CustomToolNamespace>
-      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    <None Update="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
     </None>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EnhancedEdit\EnhancedEdit.vbproj">
-      <Project>{B9549613-9C0C-4BC3-82A5-21D834813A25}</Project>
-      <Name>EnhancedEdit</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WinBackAddin.vbproj">
-      <Project>{AA45FD47-0A9E-40D7-A9A1-5EF03F1F3C67}</Project>
-      <Name>WinBackAddin</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Resources\LinienAutoInstall_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\LinienLoeschen_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\LinienBearbeiten_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\LinienNeu_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\UserNeu_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\UserPasswd_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\UserListe_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\UserGruppen_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\WinBack_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AdminUpdateDataBase_32x32.png" />
-    <None Include="Resources\AdminMain_32x32.png" />
-    <None Include="Resources\AdminEditKonfig_32x32.png" />
-    <None Include="Resources\PlanungMain_32x32.png" />
-    <None Include="Resources\LinienDrucken_32x32.png" />
-    <None Include="Resources\UserBerechtigungen_32x32.png" />
-    <None Include="Resources\UserDetails_32x32.png" />
-    <None Include="Resources\User_32x32.png" />
-    <None Include="Resources\UserBearbeiten_32x32.png" />
-    <None Include="Resources\UserLoeschen_32x32.png" />
-    <None Include="Resources\RohstoffeDrucken_32x32.png" />
-    <None Include="Resources\RohstoffeCloud_32x32.png" />
-    <None Include="Resources\RohstoffeLieferung_32x32.png" />
-    <None Include="Resources\RohstoffeImport_32x32.png" />
-    <None Include="Resources\RohstoffeVerwendung_32x32.png" />
-    <None Include="Resources\RohstoffeListe_32x32.png" />
-    <None Include="Resources\RohstoffeDetails_32x32.png" />
-    <None Include="Resources\RohstoffNeu_32x32.png" />
-    <None Include="Resources\RohstoffLoeschen_32x32.png" />
-    <None Include="Resources\RohstoffBearbeiten_32x32.png" />
-    <None Include="Resources\RezeptDruckenListe_32x32.png" />
-    <None Include="Resources\RezeptDrucken_32x32.png" />
-    <None Include="Resources\RezeptVerwendung_32x32.png" />
-    <None Include="Resources\RezeptHinweise_32x32.png" />
-    <None Include="Resources\RezeptHistorie_32x32.png" />
-    <None Include="Resources\RezeptDetails_32x32.png" />
-    <None Include="Resources\RezeptListe_32x32.png" />
-    <None Include="Resources\RezeptNeu_32x32.png" />
-    <None Include="Resources\RezeptBearbeiten_32x32.png" />
-    <None Include="Resources\ChargenRezepte_32x32.png" />
-    <None Include="Resources\ChargenRohstoffeSchnell_32x32.png" />
-    <None Include="Resources\ChargenRohstoffeDetail_32x32.png" />
-    <None Include="Resources\ChargenStatistikSumme_32x32.png" />
-    <None Include="Resources\ChargenStatistikEinzel_32x32.png" />
-    <None Include="Resources\ChargenStatistikDetails_32x32.png" />
-    <None Include="Resources\ChargenDetails_32x32.png" />
-    <None Include="Resources\ChargenMain_32x32.png" />
-    <None Include="Resources\ArtikelDrucken_32x32.png" />
-    <None Include="Resources\ArtikelProduktInfo_32x32.png" />
-    <None Include="Resources\ArtikelDeklaration_32x32.png" />
-    <None Include="Resources\ArtikelKalkulation_32x32.png" />
-    <None Include="Resources\ArtikelHinweise_32x32.png" />
-    <None Include="Resources\ArtikelParameter_32x32.png" />
-    <None Include="Resources\ArtikelListe_32x32.png" />
-    <None Include="Resources\ArtikelDetails_32x32.png" />
-    <None Include="Resources\ArtikelKopieren_32x32.png" />
-    <None Include="Resources\ArtikelBearbeiten_32x32.png" />
-    <None Include="Resources\ArtikelLoeschen_32x32.png" />
-    <None Include="Resources\ArtikelNeu_32x32.png" />
-    <None Include="Resources\us.gif" />
-    <None Include="Resources\ro.gif" />
-    <None Include="Resources\sk.gif" />
-    <None Include="Resources\es.gif" />
-    <None Include="Resources\fr.gif" />
-    <None Include="Resources\ru.gif" />
-    <None Include="Resources\si.gif" />
-    <None Include="Resources\sl.gif" />
-    <None Include="Resources\pt.gif" />
-    <None Include="Resources\gb.gif" />
-    <None Include="Resources\nl.gif" />
-    <None Include="Resources\hu.gif" />
-    <None Include="Resources\de.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\StatusStripBackground.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconDelete_24x24.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconReload_24x24.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconSave_24x24.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconSaveAs_24x24.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\WinBackLogo_945x514.png" />
-    <None Include="Resources\RohstoffeNwt_32x32.png" />
-    <None Include="Resources\RohstoffeParameter_32x32.png" />
-    <None Include="Resources\AdminUpdateWinBack_32x32.png" />
-    <None Include="Resources\AdminUpdateDataBase_32x321.png" />
-    <None Include="Resources\AdminLog_32x32.png" />
     <Content Include="gsdll32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\PlanungTeiler_32x32.png" />
-    <None Include="Resources\RohstoffSilo_32x32.png" />
-    <None Include="Resources\OfficeProLogo_926x220.png" />
-    <None Include="Resources\Rezeptsteuerung.png" />
-    <Content Include="WinBack Icon.ico" />
+    <Content Include="gsdll64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OrgaBack Produktion.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.2">
@@ -655,16 +143,89 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <ItemGroup>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SystemWebAdapters" Version="1.4.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="wo_00_Main\OrgaBackOffice.resx" />
+    <EmbeddedResource Remove="wo_00_Main\WinBack.en-150.resx" />
+    <EmbeddedResource Remove="wo_00_Main\WinBack.en-US.resx" />
+    <EmbeddedResource Remove="wo_00_Main\WinBack.en.resx" />
+    <EmbeddedResource Remove="wo_00_Main\WinBack.ru.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>9</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>00020813-0000-0000-c000-000000000046</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WinBackAddin.vbproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="combit.ListLabel30">
+      <HintPath>..\dll\ListUndLabel V30\combit.ListLabel30.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.OleDb">
+      <HintPath>..\dll\MicroSoft System Data Ole\System.Data.OleDb.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms.Ribbon">
+      <HintPath>..\dll\OfficeRibbon 4.6\System.Windows.Forms.Ribbon.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Core.Docking">
+      <HintPath>..\dll\WeifenLuo Core Docking V3.0.4\WeifenLuo.WinFormsUI.Core.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Core.Docking.ThemeVS2015">
+      <HintPath>..\dll\WeifenLuo Core Docking V3.0.4\WeifenLuo.WinFormsUI.Core.Docking.ThemeVS2015.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <AssemblyTitle>OrgaBack-Produktion</AssemblyTitle>
+    <Company>WinBack GmbH</Company>
+    <Product>OrgaBack Produktion</Product>
+    <Copyright>Copyright ©  2025</Copyright>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+    <Optimize>False</Optimize>
+    <DefineConstants>NoAssemblyResolve=False, DebugLL=False, DebugLog4Net=False</DefineConstants>
+    <OutputPath></OutputPath>
+    <DefineDebug>True</DefineDebug>
+    <DefineTrace>True</DefineTrace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <Optimize>False</Optimize>
+    <DefineConstants>NoAssemblyResolve=False, DebugLL=False, DebugLog4Net=False</DefineConstants>
+    <OutputPath />
+    <DefineDebug>True</DefineDebug>
+    <DefineTrace>True</DefineTrace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+    <Optimize>True</Optimize>
+    <DefineConstants>NoAssemblyResolve=False, DebugLL=False, DebugLog4Net=False</DefineConstants>
+    <OutputPath></OutputPath>
+    <DefineDebug>False</DefineDebug>
+    <DefineTrace>False</DefineTrace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <Optimize>True</Optimize>
+    <DefineConstants>NoAssemblyResolve=False, DebugLL=False, DebugLog4Net=False</DefineConstants>
+    <OutputPath />
+    <DefineDebug>False</DefineDebug>
+    <DefineTrace>False</DefineTrace>
+  </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="rd /s/q &quot;$(TargetDir)de&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)es&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)fr&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)it&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)ja&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)ko&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)pt-BR&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)ru&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)zh-Hans&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)zh-Hant&quot;&#xD;&#xA;echo ----------------------------------&#xD;&#xA;xcopy &quot;$(TargetDir)\OrgaBackProduktion.deps.json&quot; &quot;C:\OrgaBackOffice&quot; /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)\OrgaBackProduktion.exe&quot; &quot;C:\OrgaBackOffice&quot;  /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)\OrgaBackProduktion.dll&quot; &quot;C:\OrgaBackOffice&quot;  /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)\OrgaBackProduktion.pdb&quot; &quot;C:\OrgaBackOffice&quot;  /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)\OrgaBackProduktion.runtimeconfig.json&quot; &quot;C:\OrgaBackOffice&quot;  /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)\WinBackAddin.dll&quot; &quot;C:\OrgaBackOffice\dll&quot;  /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)\EnhancedEdit.dll&quot; &quot;C:\OrgaBackOffice\dll&quot;  /C /R /Y" />
+	  </Target>
 </Project>

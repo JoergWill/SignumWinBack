@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Update="wo_00_Main\DockPanel_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_00_Main\Login.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_00_Main\OrgaBackProduktion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_00_Main\OrgaBackSplashScreen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_00_Main\SetMySqlIP.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_01_Chargen\Chargen_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_02_Artikel\Artikel_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_03_Rezepte\Rezepte_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_04_Rohstoffe\Rohstoffe_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_05_User\User_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_06_Linien\Linien_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_07_Planung\Planung_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_08_Admin\Admin_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_09_Stammdaten\StammDaten_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_10_Schnittstelle\Schnittstelle_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wo_99_DashBoard\Dashboard_Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
