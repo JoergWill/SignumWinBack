@@ -4,35 +4,50 @@
                                   "WHERE IP_ItemTyp = 500 And IP_ItemAttr = 501 And IP_Wert1int <> " & wb_Credentials.WinBackMasterUser
     'Sql-Statement User Datensatz neu anlegen   [0]-Name [1]-Password [2]-Gruppe
     Public Const sqlUserInsert = "INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert4str) " &
-                                 "VALUES (500, '[2]', 501, [1], [1], [1], '[0]')"
+                                 "VALUES (500, '[2]', 501, [3], [1], [1], '[0]')"
     'Sql-Statement User Datensatz ändern        [0]-Name [1]-NewPersonalNr [2]-OldPersonalNr
     Public Const sqlUserPNrUpdate = "UPDATE ItemParameter SET IP_Wert2int = [1] WHERE ((IP_Wert2Int = [2] AND IP_Wert2Int <> 0) OR IP_Wert4Str = '[0]') AND IP_ItemTyp = 500 AND IP_ItemAttr = 501"
     'Sql-Statement User Datensatz ändern        [0]-Name [1]-NewPersonalNr [2]-Gruppe [3]-OldPersonalNr
-    Public Const sqlUserUpdate = "UPDATE ItemParameter SET IP_ItemID = [2], IP_Wert2int = [1], IP_Wert4str = '[0]' " &
-                                 "WHERE IP_Wert2Int = [3] AND IP_ItemTyp = 500 AND IP_ItemAttr = 501"
+    Public Const sqlUserUpdate = "UPDATE ItemParameter SET IP_Wert2int = [1], IP_Wert4str = '[0]' " &
+                                 "WHERE IP_Wert2Int = [2] AND IP_ItemTyp = 500 AND IP_ItemAttr = 501"
     'Sql-Statement User Datensatz ändern        [0]-Password [1]-Sprache
     Public Const sqlUserUpdateLang = "UPDATE ItemParameter SET IP_Wert5str = '[1]' WHERE IP_Wert1Int = [0] AND IP_ItemTyp = 500 AND IP_ItemAttr = 501"
+    'Sql-Statement User ohne Personalnummer(OrgaBack)
+    Public Const sqlUserOhnePersonalNummer = "SELECT IP_Lfd_Nr FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert2int = 0"
     'Sql-Statement User Datensatz löschen
     Public Const sqlOrgaBackUserDelete = "DELETE FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert2int = [0]"
     'Sql-Statement User Datensatz löschen
     Public Const sqlWinBackUserDelete = "DELETE FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int = [0]"
     'Sql-Statement User mit diesem Passwort existiert
-    Public Const sqlUserExists = "SELECT COUNT(*) as IP_Cnt FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert1int = [0]"
+    Public Const sqlUserExists = "SELECT COUNT(*) as IP_Cnt FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND (IP_Wert1int = [0] OR IP_Lfd_Nr = [0])"
+    'Sql-Statement User mit dieser ID existiert
+    Public Const sqlUserExistsID = "SELECT COUNT(*) as IP_Cnt FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501 AND IP_Wert5Str = '[0]'"
+    'Sql-Statement User Anzahl
+    Public Const sqlUserCount = "SELECT COUNT(*) as Anzahl FROM ItemParameter WHERE IP_ItemTyp = 500 AND IP_ItemAttr = 501"
+    'Sql-Statement Test Einträge RezeptgruppenRechte in ItemParameter
+    Public Const sqlChkRzptGrpRechte = "SELECT COUNT(*) as IP_Cnt FROM ItemParameter WHERE IP_ItemTyp = 230 AND IP_Wert1int = 99"
+
+    'Sql-Statement Test Einträge UserGruppenRechte in ItemParameter
+    Public Const sqlChk99ItemParameter = "SELECT COUNT(*) as IP_Cnt FROM ItemParameter WHERE IP_ItemTyp < 230 AND IP_Wert1int = 99"
+    'Sql-Statement Test Einträge UserGruppenRechte in IAListe
+    Public Const sqlChk99IAListe = "SELECT COUNT(*) as IA_Cnt FROM IAListe WHERE IAL_ItemTyp < 230"
+    'Sql-Statement Test Einträge UserGruppenRechte in ItemIDs
+    Public Const sqlChk99ItemIDs = "SELECT COUNT(*) as ID_Cnt FROM ItemIDs WHERE II_ItemTyp < 230"
 
     'Sql-Statement Gruppen-Nummer und Gruppen-Bezeichnung aus winback.II_ItemID
     Public Const sqlUserGrpTxt = "SELECT * FROM ItemIDs INNER JOIN Texte ON ItemIDs.II_ItemID = Texte.T_TextIndex AND " &
                                  "ItemIDs.II_ItemTyp = Texte.T_Typ WHERE II_ItemTyp = 500 AND Texte.T_Sprache = [0] ORDER BY II_ItemID"
     'Sql-Statement UserRechte aus winback.ItemParameter
-    Public Const sqlUserRechte = "Select ItemTypen.IT_Bezeichnung, ItemIDs.II_Kommentar, IP_Wert2int, AT_Wert2int, AT_Attr_Nr, Texte.T_Text, IP_ItemTyp, IP_ItemID FROM ItemIDs " &
+    Public Const sqlUserRechte = "Select ItemTypen.IT_Bezeichnung, ItemIDs.II_Kommentar, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, AT_Wert2int, AT_Attr_Nr, Texte.T_Text, IP_ItemTyp, IP_ItemID FROM ItemIDs " &
                                  "INNER JOIN ItemTypen On ItemIDs.II_ItemTyp = ItemTypen.IT_ItemTyp " &
                                  "INNER JOIN ItemParameter On ItemIDs.II_ItemID = ItemParameter.IP_ItemID And ItemIDs.II_ItemTyp = ItemParameter.IP_ItemTyp " &
                                  "INNER JOIN IAttrParams On ItemParameter.IP_Wert2int = IAttrParams.AT_Wert3str And ItemParameter.IP_ItemAttr = IAttrParams.AT_Attr_Nr " &
                                  "INNER JOIN Texte On IAttrParams.AT_Wert2int = Texte.T_TextIndex And IAttrParams.AT_Attr_Nr = Texte.T_Typ " &
                                  "WHERE ItemIDs.II_ItemTyp < 230 And ItemParameter.IP_Wert1int = [0] And  Texte.T_Sprache = [1] " &
-                                 "ORDER BY ItemIDs.II_ItemTyp, ItemIDs.II_ItemID;"
+                                 "ORDER BY ItemIDs.II_ItemTyp ASC, ItemIDs.II_ItemID ASC , IP_Lfd_Nr DESC;"
 
     'Sql-Statement RezeptgruppenRechte aus winback.ItemParameter
-    Public Const sqlRezUserRechte = "Select ItemTypen.IT_Bezeichnung, ItemIDs.II_Kommentar, IP_Wert2int, AT_Wert2int, AT_Attr_Nr, Texte.T_Text, IP_ItemTyp, IP_ItemID FROM ItemIDs " &
+    Public Const sqlRezUserRechte = "Select ItemTypen.IT_Bezeichnung, ItemIDs.II_Kommentar, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, AT_Wert2int, AT_Attr_Nr, Texte.T_Text, IP_ItemTyp, IP_ItemID FROM ItemIDs " &
                                  "INNER JOIN ItemTypen On ItemIDs.II_ItemTyp = ItemTypen.IT_ItemTyp " &
                                  "INNER JOIN ItemParameter On ItemIDs.II_ItemID = ItemParameter.IP_ItemID And ItemIDs.II_ItemTyp = ItemParameter.IP_ItemTyp " &
                                  "INNER JOIN IAttrParams On ItemParameter.IP_Wert2int = IAttrParams.AT_Wert3str And ItemParameter.IP_ItemAttr = IAttrParams.AT_Attr_Nr " &

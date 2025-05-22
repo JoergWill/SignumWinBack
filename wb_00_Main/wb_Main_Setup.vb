@@ -54,6 +54,7 @@ Public Class wb_Main_Setup
         Next
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S108:Nested blocks of code should not be left empty", Justification:="<Ausstehend>")>
     Private Sub pingem(p As Object)
         Dim pobj As pingObj = DirectCast(p, pingObj)
         Dim MyPing As New System.Net.NetworkInformation.Ping
@@ -69,7 +70,6 @@ Public Class wb_Main_Setup
                 conn.Close()
                 Me.Invoke(Sub() IPListBox.Items.Add(pobj.Ip))
             Catch ex As Exception
-
             End Try
         End If
     End Sub

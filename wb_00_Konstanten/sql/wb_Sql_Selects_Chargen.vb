@@ -2,7 +2,7 @@
     'Sql-Statement Chargen-Kopf und Detail-Daten
     Public Const sqlExportChargen = "SELECT B_ARZ_Charge_Nr, B_ARZ_Typ, B_ARS_BF_Charge, " &
                                     "B_ARZ_Art_Einheit, B_ARZ_Sollmenge_kg, B_ARZ_Sollmenge_stueck, " &
-                                    "B_ARS_Istwert, B_ARZ_Erststart, B_ARS_Gestartet, B_ARZ_TW_Nr, " &
+                                    "B_ARS_Istwert, B_ARS_Gestartet, B_ARZ_Zp_Beendet, B_ARZ_TW_Nr, " &
                                     "B_ARS_ParamNr, B_KT_Typ_Nr, B_KT_EinheitIndex, " &
                                     "B_ARZ_KA_NrAlNum, B_KO_Nr_AlNum, (B_ARZ_LiBeh_Nr - 100) as Linie " &
                                     "FROM BAK_ArbRezepte INNER JOIN BAK_ArbRZSchritte ON " &
@@ -30,18 +30,19 @@
                                      "(BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) AND " &
                                      "(BAK_ArbRezepte.B_ARZ_LiBeh_Nr = BAK_ArbRZSchritte.B_ARS_Beh_Nr) AND " &
                                      "(BAK_ArbRezepte.B_ARZ_Art_Index = BAK_ArbRZSchritte.B_ARS_Art_Index) AND " &
-                                     "(BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr) " &
-                                     "WHERE (B_ARZ_LiBeh_Nr > 100) AND B_ARZ_TW_Nr = " & Chr(34) & "[0]" & Chr(34) & " " &
-                                     "ORDER BY [1], B_ARZ_TW_Idx, BAK_ArbRZSchritte.B_ARS_Index"
+                                     "(BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr) WHERE ([3]) AND " &
+                                     "B_ARZ_TW_Nr >= " & Chr(34) & "[0]" & Chr(34) & " AND " &
+                                     "B_ARZ_TW_Nr <= " & Chr(34) & "[1]" & Chr(34) & " " &
+                                     "ORDER BY [2], B_ARZ_TW_Idx, BAK_ArbRZSchritte.B_ARS_RunIdx"
 
     Public Const sqlChargenTTS = "Select BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie " &
                                  "FROM BAK_ArbRezepte INNER JOIN BAK_ArbRZSchritte ON " &
-                                 "(BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) AND " &
-                                 "(BAK_ArbRezepte.B_ARZ_LiBeh_Nr = BAK_ArbRZSchritte.B_ARS_Beh_Nr) AND " &
-                                 "(BAK_ArbRezepte.B_ARZ_Art_Index = BAK_ArbRZSchritte.B_ARS_Art_Index) AND " &
+                                 "(BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) And " &
+                                 "(BAK_ArbRezepte.B_ARZ_LiBeh_Nr = BAK_ArbRZSchritte.B_ARS_Beh_Nr) And " &
+                                 "(BAK_ArbRezepte.B_ARZ_Art_Index = BAK_ArbRZSchritte.B_ARS_Art_Index) And " &
                                  "(BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr) " &
-                                 "WHERE (B_ARZ_LiBeh_Nr > 100) AND [0] AND B_ARZ_Nr = [1] AND B_ARZ_RZ_Variante_NR = [2] " &
-                                 "ORDER BY B_ARZ_TW_Idx, BAK_ArbRZSchritte.B_ARS_Index"
+                                 "WHERE (B_ARZ_LiBeh_Nr > 100) And [0] And B_ARZ_Nr = [1] And B_ARZ_RZ_Variante_NR = [2] " &
+                                 "ORDER BY B_ARZ_TW_Idx, BAK_ArbRZSchritte.B_ARS_RunIdx"
 
     'Public Const sqlStatRezepte = "SELECT BAK_ArbRZSchritte.B_ARS_Ko_Nr, BAK_ArbRZSchritte.B_KO_Nr_AlNum, " &
     '                              "BAK_ArbRZSchritte.B_E_Einheit, BAK_ArbRZSchritte.B_KO_Bezeichnung, " &
@@ -52,20 +53,20 @@
     '                              "BAK_ArbRezepte.B_ARZ_Zp_Gestartet, Tageswechsel.TW_Beginn,B_ARS_User_Name " &
     '                              "FROM (Tageswechsel INNER JOIN BAK_ArbRezepte ON Tageswechsel.TW_Nr = BAK_ArbRezepte.B_ARZ_TW_Nr) " &
     '                              "INNER JOIN BAK_ArbRZSchritte ON (BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) " &
-    '                              "AND (BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr)"
+    '                              "And (BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr)"
 
     Public Const sqlStatRezepte = "SELECT BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie " &
                                   "FROM (Tageswechsel INNER JOIN BAK_ArbRezepte ON Tageswechsel.TW_Nr = BAK_ArbRezepte.B_ARZ_TW_Nr) " &
                                   "INNER JOIN BAK_ArbRZSchritte ON (BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) " &
-                                  "AND (BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr)"
+                                  "And (BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr)"
 
     Public Const sqlStatRohVerbrauch = "SELECT * FROM BAK_ArbRZSchritte"
 
     Public Const sqlStatRohDetails = "Select BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie " &
                                      "FROM BAK_ArbRezepte INNER JOIN BAK_ArbRZSchritte ON " &
-                                     "(BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) AND " &
-                                     "(BAK_ArbRezepte.B_ARZ_LiBeh_Nr = BAK_ArbRZSchritte.B_ARS_Beh_Nr) AND " &
-                                     "(BAK_ArbRezepte.B_ARZ_Art_Index = BAK_ArbRZSchritte.B_ARS_Art_Index) AND " &
+                                     "(BAK_ArbRezepte.B_ARZ_TW_Nr = BAK_ArbRZSchritte.B_ARS_TW_Nr) And " &
+                                     "(BAK_ArbRezepte.B_ARZ_LiBeh_Nr = BAK_ArbRZSchritte.B_ARS_Beh_Nr) And " &
+                                     "(BAK_ArbRezepte.B_ARZ_Art_Index = BAK_ArbRZSchritte.B_ARS_Art_Index) And " &
                                      "(BAK_ArbRezepte.B_ARZ_Charge_Nr = BAK_ArbRZSchritte.B_ARS_Charge_Nr) "
 
     Public Const sqlTWNrStrt = "SELECT TW_Nr from Tageswechsel WHERE '[0]' <= TW_Beginn " &
@@ -85,6 +86,8 @@
     Public Const InsertBAKArbRZSchritte = "INSERT INTO  BAK_ArbRZSchritte SET [0]"
     Public Const InsertBAKArbRezepte = "INSERT INTO  BAK_ArbRezepte SET [0]"
 
+    'Temperatur-Messungen Sauerteig
+    Public Const sqlVTSMessungen = "SELECT * FROM Messungen WHERE timestamp > [0] AND timestamp < [1] ORDER BY timestamp"
 
     '     'Select BAK_ArbRezepte.*, BAK_ArbRZSchritte.*, (B_ARZ_LiBeh_Nr - 100) as Linie ' +
     '     'FROM BAK_ArbRezepte  ' +

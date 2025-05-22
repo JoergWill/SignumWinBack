@@ -5,7 +5,7 @@
         wb_Main_Shared.MainProgressVisible = True
     End Sub
 
-    Private Sub wb_Main_Progress_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Main_Progress_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         Me.ProgressCircle.Rotate = False
         Me.ProgressCircle.Dispose()
         wb_Main_Shared.MainProgressVisible = False

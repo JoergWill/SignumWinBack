@@ -31,8 +31,8 @@ Public Class wb_GlobalOrgaBack
                             _OrgaBackWorkStationNumber = "00"
                         End If
                     End If
-                    Trace.WriteLine("OrgaBackAdminConString=    " & wb_GlobalSettings.OrgaBackAdminConString)
-                    Trace.WriteLine("OrgaBackWorkStationNumber= " & _OrgaBackWorkStationNumber)
+                    Trace.WriteLine("@I_OrgaBackAdminConString=    " & wb_GlobalSettings.OrgaBackAdminConString)
+                    Trace.WriteLine("@I_OrgaBackWorkStationNumber= " & _OrgaBackWorkStationNumber)
                 End If
                 Return _OrgaBackWorkStationNumber
             Else

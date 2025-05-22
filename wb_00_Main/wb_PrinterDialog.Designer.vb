@@ -22,236 +22,278 @@ Partial Class wb_PrinterDialog
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
-        Me.btnEditVorlage = New System.Windows.Forms.Button()
-        Me.btnExportExcel = New System.Windows.Forms.Button()
-        Me.PrintDialog = New System.Windows.Forms.PrintDialog()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.cbPrinterAuswahl = New System.Windows.Forms.ComboBox()
-        Me.BtnPrinterDialog = New System.Windows.Forms.Button()
-        Me.gbVorschau = New System.Windows.Forms.GroupBox()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.OK_Button = New System.Windows.Forms.Button()
-        Me.LLPreview = New combit.ListLabel22.ListLabelPreviewControl(Me.components)
-        Me.BtnVorschau = New System.Windows.Forms.Button()
-        Me.BtnDruckHistorie = New System.Windows.Forms.Button()
-        Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
-        Me.GroupBox1.SuspendLayout()
-        Me.gbVorschau.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
-        Me.SuspendLayout()
-        '
-        'btnEditVorlage
-        '
-        Me.btnEditVorlage.Image = Global.WinBack.My.Resources.Resources.ListUndLabel_32x32
-        Me.btnEditVorlage.Location = New System.Drawing.Point(18, 286)
-        Me.btnEditVorlage.Name = "btnEditVorlage"
-        Me.btnEditVorlage.Size = New System.Drawing.Size(110, 43)
-        Me.btnEditVorlage.TabIndex = 1
-        Me.btnEditVorlage.Text = "Designer..."
-        Me.btnEditVorlage.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEditVorlage.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.btnEditVorlage.UseVisualStyleBackColor = True
-        '
-        'btnExportExcel
-        '
-        Me.btnExportExcel.Image = Global.WinBack.My.Resources.Resources.Excel_32x32
-        Me.btnExportExcel.Location = New System.Drawing.Point(18, 237)
-        Me.btnExportExcel.Name = "btnExportExcel"
-        Me.btnExportExcel.Size = New System.Drawing.Size(110, 43)
-        Me.btnExportExcel.TabIndex = 2
-        Me.btnExportExcel.Text = "Excel Export"
-        Me.btnExportExcel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.btnExportExcel.UseVisualStyleBackColor = True
-        '
-        'PrintDialog
-        '
-        Me.PrintDialog.AllowPrintToFile = False
-        Me.PrintDialog.AllowSomePages = True
-        Me.PrintDialog.UseEXDialog = True
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.cbPrinterAuswahl)
-        Me.GroupBox1.Controls.Add(Me.BtnPrinterDialog)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(408, 97)
-        Me.GroupBox1.TabIndex = 6
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Drucker"
-        '
-        'cbPrinterAuswahl
-        '
-        Me.cbPrinterAuswahl.FormattingEnabled = True
-        Me.cbPrinterAuswahl.Location = New System.Drawing.Point(6, 19)
-        Me.cbPrinterAuswahl.Name = "cbPrinterAuswahl"
-        Me.cbPrinterAuswahl.Size = New System.Drawing.Size(396, 21)
-        Me.cbPrinterAuswahl.TabIndex = 7
-        '
-        'BtnPrinterDialog
-        '
-        Me.BtnPrinterDialog.Enabled = False
-        Me.BtnPrinterDialog.Location = New System.Drawing.Point(6, 46)
-        Me.BtnPrinterDialog.Name = "BtnPrinterDialog"
-        Me.BtnPrinterDialog.Size = New System.Drawing.Size(110, 43)
-        Me.BtnPrinterDialog.TabIndex = 6
-        Me.BtnPrinterDialog.Text = "Drucken..."
-        Me.BtnPrinterDialog.UseVisualStyleBackColor = True
-        '
-        'gbVorschau
-        '
-        Me.gbVorschau.Controls.Add(Me.TableLayoutPanel1)
-        Me.gbVorschau.Controls.Add(Me.LLPreview)
-        Me.gbVorschau.Location = New System.Drawing.Point(191, 115)
-        Me.gbVorschau.Name = "gbVorschau"
-        Me.gbVorschau.Size = New System.Drawing.Size(229, 287)
-        Me.gbVorschau.TabIndex = 7
-        Me.gbVorschau.TabStop = False
-        Me.gbVorschau.Text = "Vorschau"
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(8, 235)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(215, 46)
-        Me.TableLayoutPanel1.TabIndex = 5
-        '
-        'Cancel_Button
-        '
-        Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(110, 6)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(102, 34)
-        Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Abbrechen"
-        '
-        'OK_Button
-        '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Location = New System.Drawing.Point(3, 6)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(101, 34)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "Drucken"
-        '
-        'LLPreview
-        '
-        Me.LLPreview.AllowRbuttonUsage = True
-        Me.LLPreview.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LLPreview.BackColor = System.Drawing.SystemColors.Control
-        Me.LLPreview.CurrentPage = 0
-        Me.LLPreview.ForceReadOnly = False
-        Me.LLPreview.Location = New System.Drawing.Point(8, 28)
-        Me.LLPreview.Name = "LLPreview"
-        Me.LLPreview.ShowThumbnails = False
-        Me.LLPreview.ShowToolbar = False
-        Me.LLPreview.ShowUnprintableArea = True
-        Me.LLPreview.Size = New System.Drawing.Size(215, 201)
-        Me.LLPreview.SlideshowMode = False
-        Me.LLPreview.TabIndex = 4
-        Me.LLPreview.Text = "Vorschau"
-        Me.LLPreview.ToolbarButtons.Exit = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.GotoFirst = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.GotoLast = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.GotoNext = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.GotoPrev = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.MouseModeMove = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.MouseModeZoom = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.NextFile = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.PageRange = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.PreviousFile = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.PrintAllPages = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.PrintCurrentPage = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.PrintToFax = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SaveAs = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SearchNext = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SearchOptions = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SearchStart = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SearchText = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SendTo = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.SlideshowMode = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomCombo = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomReset = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomRevert = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomTimes2 = combit.ListLabel22.LlButtonState.[Default]
-        '
-        'BtnVorschau
-        '
-        Me.BtnVorschau.Image = Global.WinBack.My.Resources.Resources.EditKonfig_32x32
-        Me.BtnVorschau.Location = New System.Drawing.Point(18, 347)
-        Me.BtnVorschau.Name = "BtnVorschau"
-        Me.BtnVorschau.Size = New System.Drawing.Size(110, 43)
-        Me.BtnVorschau.TabIndex = 8
-        Me.BtnVorschau.Text = "Vorschau"
-        Me.BtnVorschau.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnVorschau.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.BtnVorschau.UseVisualStyleBackColor = True
-        '
-        'BtnDruckHistorie
-        '
-        Me.BtnDruckHistorie.Image = Global.WinBack.My.Resources.Resources.AdminTimer_32x32
-        Me.BtnDruckHistorie.Location = New System.Drawing.Point(18, 120)
-        Me.BtnDruckHistorie.Name = "BtnDruckHistorie"
-        Me.BtnDruckHistorie.Size = New System.Drawing.Size(110, 43)
-        Me.BtnDruckHistorie.TabIndex = 9
-        Me.BtnDruckHistorie.Text = "Druckhistorie"
-        Me.BtnDruckHistorie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnDruckHistorie.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.BtnDruckHistorie.UseVisualStyleBackColor = True
-        '
-        'OpenFileDialog
-        '
-        Me.OpenFileDialog.FileName = "OpenFileDialog"
-        '
-        'wb_PrinterDialog
-        '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(435, 414)
-        Me.Controls.Add(Me.BtnDruckHistorie)
-        Me.Controls.Add(Me.BtnVorschau)
-        Me.Controls.Add(Me.gbVorschau)
-        Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.btnExportExcel)
-        Me.Controls.Add(Me.btnEditVorlage)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
-        Me.Name = "wb_PrinterDialog"
-        Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Drucken/Exportieren"
-        Me.GroupBox1.ResumeLayout(False)
-        Me.gbVorschau.ResumeLayout(False)
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.ResumeLayout(False)
+        components = New ComponentModel.Container()
+        btnEditVorlage = New System.Windows.Forms.Button()
+        btnExportExcel = New System.Windows.Forms.Button()
+        PrintDialog = New System.Windows.Forms.PrintDialog()
+        GroupBox1 = New System.Windows.Forms.GroupBox()
+        lblVorlage = New System.Windows.Forms.Label()
+        cbVorlageAuswahl = New System.Windows.Forms.ComboBox()
+        cbPrinterAuswahl = New System.Windows.Forms.ComboBox()
+        BtnPrinterDialog = New System.Windows.Forms.Button()
+        gbVorschau = New System.Windows.Forms.GroupBox()
+        LLPreview = New combit.Reporting.ListLabelPreviewControl(components)
+        TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Cancel_Button = New System.Windows.Forms.Button()
+        OK_Button = New System.Windows.Forms.Button()
+        BtnVorschau = New System.Windows.Forms.Button()
+        BtnDruckHistorie = New System.Windows.Forms.Button()
+        OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
+        GroupBox1.SuspendLayout()
+        gbVorschau.SuspendLayout()
+        TableLayoutPanel1.SuspendLayout()
+        SuspendLayout()
+        ' 
+        ' btnEditVorlage
+        ' 
+        btnEditVorlage.Image = Global.WinBack.My.Resources.ListUndLabel_32x32
+        btnEditVorlage.Location = New System.Drawing.Point(21, 330)
+        btnEditVorlage.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        btnEditVorlage.Name = "btnEditVorlage"
+        btnEditVorlage.Size = New System.Drawing.Size(128, 50)
+        btnEditVorlage.TabIndex = 1
+        btnEditVorlage.Text = "Designer..."
+        btnEditVorlage.TextAlign = Drawing.ContentAlignment.MiddleRight
+        btnEditVorlage.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        btnEditVorlage.UseVisualStyleBackColor = True
+        ' 
+        ' btnExportExcel
+        ' 
+        btnExportExcel.Image = Global.WinBack.My.Resources.Excel_32x32
+        btnExportExcel.Location = New System.Drawing.Point(21, 273)
+        btnExportExcel.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        btnExportExcel.Name = "btnExportExcel"
+        btnExportExcel.Size = New System.Drawing.Size(128, 50)
+        btnExportExcel.TabIndex = 2
+        btnExportExcel.Text = "Excel Export"
+        btnExportExcel.TextAlign = Drawing.ContentAlignment.MiddleRight
+        btnExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        btnExportExcel.UseVisualStyleBackColor = True
+        ' 
+        ' PrintDialog
+        ' 
+        PrintDialog.AllowPrintToFile = False
+        PrintDialog.AllowSomePages = True
+        PrintDialog.UseEXDialog = True
+        ' 
+        ' GroupBox1
+        ' 
+        GroupBox1.Controls.Add(lblVorlage)
+        GroupBox1.Controls.Add(cbVorlageAuswahl)
+        GroupBox1.Controls.Add(cbPrinterAuswahl)
+        GroupBox1.Controls.Add(BtnPrinterDialog)
+        GroupBox1.Location = New System.Drawing.Point(14, 14)
+        GroupBox1.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        GroupBox1.Name = "GroupBox1"
+        GroupBox1.Padding = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        GroupBox1.Size = New System.Drawing.Size(476, 112)
+        GroupBox1.TabIndex = 6
+        GroupBox1.TabStop = False
+        GroupBox1.Text = "Drucker"
+        ' 
+        ' lblVorlage
+        ' 
+        lblVorlage.AutoSize = True
+        lblVorlage.Location = New System.Drawing.Point(209, 60)
+        lblVorlage.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        lblVorlage.Name = "lblVorlage"
+        lblVorlage.Size = New System.Drawing.Size(55, 15)
+        lblVorlage.TabIndex = 9
+        lblVorlage.Text = "Formular"
+        lblVorlage.Visible = False
+        ' 
+        ' cbVorlageAuswahl
+        ' 
+        cbVorlageAuswahl.FormattingEnabled = True
+        cbVorlageAuswahl.Location = New System.Drawing.Point(209, 78)
+        cbVorlageAuswahl.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        cbVorlageAuswahl.Name = "cbVorlageAuswahl"
+        cbVorlageAuswahl.Size = New System.Drawing.Size(259, 23)
+        cbVorlageAuswahl.TabIndex = 8
+        cbVorlageAuswahl.Visible = False
+        ' 
+        ' cbPrinterAuswahl
+        ' 
+        cbPrinterAuswahl.FormattingEnabled = True
+        cbPrinterAuswahl.Location = New System.Drawing.Point(7, 22)
+        cbPrinterAuswahl.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        cbPrinterAuswahl.Name = "cbPrinterAuswahl"
+        cbPrinterAuswahl.Size = New System.Drawing.Size(461, 23)
+        cbPrinterAuswahl.TabIndex = 7
+        ' 
+        ' BtnPrinterDialog
+        ' 
+        BtnPrinterDialog.Enabled = False
+        BtnPrinterDialog.Location = New System.Drawing.Point(7, 53)
+        BtnPrinterDialog.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        BtnPrinterDialog.Name = "BtnPrinterDialog"
+        BtnPrinterDialog.Size = New System.Drawing.Size(128, 50)
+        BtnPrinterDialog.TabIndex = 6
+        BtnPrinterDialog.Text = "Drucken..."
+        BtnPrinterDialog.UseVisualStyleBackColor = True
+        ' 
+        ' gbVorschau
+        ' 
+        gbVorschau.Controls.Add(LLPreview)
+        gbVorschau.Controls.Add(TableLayoutPanel1)
+        gbVorschau.Location = New System.Drawing.Point(223, 133)
+        gbVorschau.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        gbVorschau.Name = "gbVorschau"
+        gbVorschau.Padding = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        gbVorschau.Size = New System.Drawing.Size(267, 331)
+        gbVorschau.TabIndex = 7
+        gbVorschau.TabStop = False
+        gbVorschau.Text = "Vorschau"
+        ' 
+        ' LLPreview
+        ' 
+        LLPreview.AllowRbuttonUsage = True
+        LLPreview.BackColor = Drawing.SystemColors.Control
+        LLPreview.CurrentPage = 0
+        LLPreview.ForceReadOnly = False
+        LLPreview.Location = New System.Drawing.Point(9, 22)
+        LLPreview.Name = "LLPreview"
+        LLPreview.PageStyle.ShowPageNumbers = False
+        LLPreview.ShowThumbnails = False
+        LLPreview.ShowToolbar = False
+        LLPreview.Size = New System.Drawing.Size(250, 243)
+        LLPreview.SlideshowMode = False
+        LLPreview.TabIndex = 6
+        LLPreview.Text = "ListLabelPreviewControl1"
+        LLPreview.ToolbarButtons.Exit = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.GotoFirst = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.GotoLast = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.GotoNext = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.GotoPrev = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.MouseModeMove = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.MouseModeSelect = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.MouseModeZoom = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.NextFile = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.PageRange = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.PreviousFile = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.PrintAllPages = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.PrintCurrentPage = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.PrintToFax = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SaveAs = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SearchNext = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SearchOptions = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SearchStart = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SearchText = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SendTo = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SlideshowMode = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.ZoomCombo = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.ZoomReset = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.ZoomRevert = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.ZoomTimes2 = combit.Reporting.LlButtonState.Invisible
+        ' 
+        ' TableLayoutPanel1
+        ' 
+        TableLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right
+        TableLayoutPanel1.ColumnCount = 2
+        TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F))
+        TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F))
+        TableLayoutPanel1.Controls.Add(Cancel_Button, 1, 0)
+        TableLayoutPanel1.Controls.Add(OK_Button, 0, 0)
+        TableLayoutPanel1.Location = New System.Drawing.Point(9, 271)
+        TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        TableLayoutPanel1.Name = "TableLayoutPanel1"
+        TableLayoutPanel1.RowCount = 1
+        TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F))
+        TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F))
+        TableLayoutPanel1.Size = New System.Drawing.Size(251, 53)
+        TableLayoutPanel1.TabIndex = 5
+        ' 
+        ' Cancel_Button
+        ' 
+        Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Cancel_Button.Location = New System.Drawing.Point(129, 7)
+        Cancel_Button.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        Cancel_Button.Name = "Cancel_Button"
+        Cancel_Button.Size = New System.Drawing.Size(118, 39)
+        Cancel_Button.TabIndex = 1
+        Cancel_Button.Text = "Abbrechen"
+        ' 
+        ' OK_Button
+        ' 
+        OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        OK_Button.Location = New System.Drawing.Point(4, 7)
+        OK_Button.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        OK_Button.Name = "OK_Button"
+        OK_Button.Size = New System.Drawing.Size(117, 39)
+        OK_Button.TabIndex = 0
+        OK_Button.Text = "Drucken"
+        ' 
+        ' BtnVorschau
+        ' 
+        BtnVorschau.Image = Global.WinBack.My.Resources.EditKonfig_32x32
+        BtnVorschau.Location = New System.Drawing.Point(21, 400)
+        BtnVorschau.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        BtnVorschau.Name = "BtnVorschau"
+        BtnVorschau.Size = New System.Drawing.Size(128, 50)
+        BtnVorschau.TabIndex = 8
+        BtnVorschau.Text = "Vorschau"
+        BtnVorschau.TextAlign = Drawing.ContentAlignment.MiddleRight
+        BtnVorschau.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        BtnVorschau.UseVisualStyleBackColor = True
+        ' 
+        ' BtnDruckHistorie
+        ' 
+        BtnDruckHistorie.Image = Global.WinBack.My.Resources.AdminTimer_32x32
+        BtnDruckHistorie.Location = New System.Drawing.Point(21, 138)
+        BtnDruckHistorie.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        BtnDruckHistorie.Name = "BtnDruckHistorie"
+        BtnDruckHistorie.Size = New System.Drawing.Size(128, 50)
+        BtnDruckHistorie.TabIndex = 9
+        BtnDruckHistorie.Text = "Druckhistorie"
+        BtnDruckHistorie.TextAlign = Drawing.ContentAlignment.MiddleRight
+        BtnDruckHistorie.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        BtnDruckHistorie.UseVisualStyleBackColor = True
+        ' 
+        ' OpenFileDialog
+        ' 
+        OpenFileDialog.FileName = "OpenFileDialog"
+        ' 
+        ' wb_PrinterDialog
+        ' 
+        AutoScaleDimensions = New System.Drawing.SizeF(7F, 15F)
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        ClientSize = New System.Drawing.Size(507, 478)
+        Controls.Add(BtnDruckHistorie)
+        Controls.Add(BtnVorschau)
+        Controls.Add(gbVorschau)
+        Controls.Add(GroupBox1)
+        Controls.Add(btnExportExcel)
+        Controls.Add(btnEditVorlage)
+        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        MaximizeBox = False
+        MinimizeBox = False
+        Name = "wb_PrinterDialog"
+        ShowInTaskbar = False
+        StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        Text = "Drucken/Exportieren"
+        GroupBox1.ResumeLayout(False)
+        GroupBox1.PerformLayout()
+        gbVorschau.ResumeLayout(False)
+        TableLayoutPanel1.ResumeLayout(False)
+        ResumeLayout(False)
 
     End Sub
-    Friend WithEvents btnEditVorlage As Windows.Forms.Button
-    Friend WithEvents btnExportExcel As Windows.Forms.Button
-    Friend WithEvents PrintDialog As Windows.Forms.PrintDialog
-    Friend WithEvents GroupBox1 As Windows.Forms.GroupBox
-    Friend WithEvents cbPrinterAuswahl As Windows.Forms.ComboBox
-    Friend WithEvents BtnPrinterDialog As Windows.Forms.Button
-    Friend WithEvents gbVorschau As Windows.Forms.GroupBox
-    Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
-    Friend WithEvents Cancel_Button As Windows.Forms.Button
-    Friend WithEvents OK_Button As Windows.Forms.Button
-    Friend WithEvents LLPreview As combit.ListLabel22.ListLabelPreviewControl
-    Friend WithEvents BtnVorschau As Windows.Forms.Button
-    Friend WithEvents BtnDruckHistorie As Windows.Forms.Button
-    Friend WithEvents OpenFileDialog As Windows.Forms.OpenFileDialog
+    Friend WithEvents btnEditVorlage As System.Windows.Forms.Button
+    Friend WithEvents btnExportExcel As System.Windows.Forms.Button
+    Friend WithEvents PrintDialog As System.Windows.Forms.PrintDialog
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents cbPrinterAuswahl As System.Windows.Forms.ComboBox
+    Friend WithEvents BtnPrinterDialog As System.Windows.Forms.Button
+    Friend WithEvents gbVorschau As System.Windows.Forms.GroupBox
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
+    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents BtnVorschau As System.Windows.Forms.Button
+    Friend WithEvents BtnDruckHistorie As System.Windows.Forms.Button
+    Friend WithEvents OpenFileDialog As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents lblVorlage As System.Windows.Forms.Label
+    Friend WithEvents cbVorlageAuswahl As System.Windows.Forms.ComboBox
+    Friend WithEvents LLPreview As combit.Reporting.ListLabelPreviewControl
 End Class

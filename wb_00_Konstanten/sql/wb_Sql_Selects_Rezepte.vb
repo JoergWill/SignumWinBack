@@ -4,21 +4,23 @@
     Public Const sqlRezeptNrName = "SELECT * FROM Rezepte WHERE RZ_Variante_Nr = 1"
     'Sql-Statement Varianten zu Rezeptnummer (wb_Rezepte_Shared)
     Public Const sqlRezeptVarianten = "SELECT RZ_Variante_Nr FROM Rezepte WHERE RZ_Nr = [0]"
+    'Sql-Statement Anzahl der Rezepte
+    Public Const sqlRezAnzahl = "SELECT COUNT(*) AS Anzahl FROM Rezepte WHERE RZ_Variante_Nr [0]"
 
     'Sql-Statement Rezeptliste aus winback.Rezepte
-    Public Const sqlRezeptListe = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
+    Public Const sqlRezeptListe = "SELECT RZ_Nr_AlNum, RZ_Nr, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Kurzname, RZ_Gewicht, " &
                                   "RZ_Aenderung_Nr, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Liniengruppe, RZ_Gruppe, " &
                                   "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt, RZ_Type FROM Rezepte WHERE RZ_Variante_Nr <= 1"
     'Sql-Statement Rezept-Historie aus winback.HisRezepte
     Public Const sqlRezeptHistr = "SELECT H_RZ_Aenderung_Nr, H_RZ_Aenderung_Datum, H_RZ_Aenderung_Name FROM His_Rezepte " &
                                   "WHERE H_RZ_Nr=[0] AND H_RZ_Variante_Nr=[1]"
     'Sql-Statement Rezeptkopf aus winback.Rezepte
-    Public Const sqlRezeptKopf = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
+    Public Const sqlRezeptKopf = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Kurzname, RZ_Gewicht, " &
                                   "RZ_Aenderung_Nr, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Liniengruppe, RZ_Gruppe, RZ_Teigtemperatur, " &
                                   "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt, RZ_Type FROM Rezepte WHERE RZ_Nr=[0] " &
                                   "AND (RZ_Variante_Nr=[1] Or RZ_Variante_Nr=1 Or RZ_Variante_Nr=0) ORDER BY RZ_Variante_Nr DESC LIMIT 1"
     'Sql-Statement Rezeptkopf aus winback.Rezepte
-    Public Const sqlRezeptNummer = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Gewicht, " &
+    Public Const sqlRezeptNummer = "SELECT RZ_Nr, RZ_Nr_AlNum, RZ_Bezeichnung, RZ_Variante_Nr, RZ_Kommentar, RZ_Kurzname, RZ_Gewicht, " &
                                    "RZ_Aenderung_Nr, RZ_Aenderung_Datum, RZ_Aenderung_Name, RZ_Liniengruppe, RZ_Gruppe, RZ_Teigtemperatur, " &
                                    "RZ_Charge_Min, RZ_Charge_Max, RZ_Charge_Opt, RZ_Type FROM Rezepte WHERE RZ_Nr_AlNum = '[0]' " &
                                    "AND (RZ_Variante_Nr=[1] Or RZ_Variante_Nr=1 Or RZ_Variante_Nr=0) ORDER BY RZ_Variante_Nr DESC LIMIT 1"
@@ -29,6 +31,7 @@
 
     Public Const sqlAddNewRezept = "INSERT INTO Rezepte([0]) VALUES ([1])"
     Public Const sqlMaxRzNummer = "SELECT MAX(RZ_Nr) FROM Rezepte"
+    Public Const sqlMaxRzAenderung = "SELECT MAX(RZ_Aenderung_Nr) FROM Rezepte WHERE RZ_Nr = [0]"
 
     'Sql-Statement Verwendung Rezept in Artikeln/Rohstoffen
     Public Const sqlRezeptInKomp = "SELECT COUNT(*) AS Used FROM Komponenten WHERE KA_RZ_Nr = [0]"
@@ -71,11 +74,11 @@
                                "ORDER BY RezeptSchritte.RS_Schritt_Nr, RezeptSchritte.RS_ParamNr"
 
     'Sql-Statement Rezeptkopf in wb_daten.His_Rezepte löschen
-    Public Const sqlDelRezKopfInHisRezepte = "DELETE FROM wbdaten.His_Rezepte " &
+    Public Const sqlDelRezKopfInHisRezepte = "DELETE FROM His_Rezepte " &
                                               "WHERE (H_RZ_Nr = [0]) AND (H_RZ_Variante_Nr = [1]) AND (H_RZ_Aenderung_Nr = [2])"
 
     'Sql-Statement Rezeptkopf nach wb_daten.His_Rezepte kopieren von winback.Rezepte
-    Public Const sqlCopyRezKopfInHisRezepte = "INSERT INTO wbdaten.His_Rezepte(H_RZ_Nr, H_RZ_Variante_Nr, H_RZ_Aenderung_Nr, " &
+    Public Const sqlCopyRezKopfInHisRezepte = "INSERT INTO [2].His_Rezepte(H_RZ_Nr, H_RZ_Variante_Nr, H_RZ_Aenderung_Nr, " &
                                               "H_RZ_Aenderung_Datum, H_RZ_Aenderung_User, H_RZ_Aenderung_Name, H_RZ_Nr_AlNum, " &
                                               "H_RZ_Bezeichnung, H_RZ_Gewicht, H_RZ_Kommentar, H_RZ_Kurzname, H_RZ_Matchcode, " &
                                               "H_RZ_Type, H_RZ_Teigtemperatur, H_RZ_Kneterkennlinie, H_RZ_Verarbeitungshinweise, " &
@@ -88,11 +91,11 @@
                                               "WHERE (Rezepte.RZ_Nr = [0]) And (Rezepte.RZ_Variante_Nr = [1])"
 
     'Sql-Statement Rezeptschritte in wb_daten.His_Rezeptschritte löschen
-    Public Const sqlDelRezSchritteInHisRezepte = "DELETE FROM wbdaten.His_RezeptSchritte " &
+    Public Const sqlDelRezSchritteInHisRezepte = "DELETE FROM His_RezeptSchritte " &
                                                  "WHERE (H_RS_RZ_Nr = [0]) AND (H_RS_RZ_Variante_Nr = [1]) AND (H_RS_Aenderung_Nr = [2])"
 
     'Sql-Statement Rezeptkopf nach wb_daten.His_Rezepte kopieren von winback.Rezepte
-    Public Const sqlCopyRezSchritteInHisRezepte = "INSERT INTO wbdaten.His_RezeptSchritte(H_RS_RZ_Nr, H_RS_RZ_Variante_Nr, " &
+    Public Const sqlCopyRezSchritteInHisRezepte = "INSERT INTO [3].His_RezeptSchritte(H_RS_RZ_Nr, H_RS_RZ_Variante_Nr, " &
                                                   "H_RS_Index, H_RS_Aenderung_Nr, H_RS_Schritt_Nr, H_RS_Ko_Nr, H_RS_ParamNr, " &
                                                   "H_RS_Wert, H_RS_Wert_Prod, H_RS_Par1, H_RS_Par2, H_RS_Par3, H_RS_Preis, H_RS_PreisEinheit, " &
                                                   "H_KO_Nr, H_KO_Type, H_KO_Bezeichnung, H_KO_Kommentar, H_KO_Nr_AlNum, H_KO_Temp_Korr, " &
@@ -104,7 +107,7 @@
                                                   "H_KA_spez_WKap, H_KA_alternativ_RS, H_KA_Verarbeitungshinweise, H_KA_aktiv, " &
                                                   "H_KA_Preis, H_KA_PreisEinheit, H_KA_Grp1, H_KA_Grp2, H_RS_Timestamp) " &
                                                   "SELECT RZ_Nr, RZ_Variante_Nr, " &
-                                                  "RS_Schritt_Nr, [2], RS_Schritt_Nr, RS_Ko_Nr, RS_ParamNr, " &
+                                                  "RS_Index, [2], RS_Schritt_Nr, RS_Ko_Nr, RS_ParamNr, " &
                                                   "RS_Wert, RS_Wert_Prod, RS_Par1, RS_Par2, RS_Par3, KA_Preis, KA_PreisEinheit, " &
                                                   "KO_Nr, KO_Type, KO_Bezeichnung, KO_Kommentar, KO_Nr_AlNum, KO_Temp_Korr, " &
                                                   "KT_Bezeichnung, KT_KurzBez, KT_EinheitIndex, E_Einheit, E_Bezeichnung, " &
@@ -140,8 +143,8 @@
     Public Const bakArbRezepte = "Select * FROM BAK_ArbRezepte WHERE (B_ARZ_LiBeh_Nr>100) And " &
                                  "B_ARZ_TW_Nr = " & Chr(34) & "[0]" & Chr(34) & " ORDER BY B_ARZ_TW_Idx, B_ARZ_Timestamp"
 
-    Public Const ArbRezepte = "SELECT * FROM ArbRezepte INNER JOIN ArbRZSchritte ON ((ARZ_TW_Nr = ARS_TW_Nr) AND " &
-                              "(ARZ_LiBeh_Nr = ARS_Beh_Nr) AND (ARZ_Charge_Nr = ARS_Charge_Nr)) INNER JOIN Komponenten ON (ARS_Ko_Nr = KO_Nr) " &
+    Public Const ArbRezepte = "SELECT * FROM ArbRezepte LEFT JOIN ArbRZSchritte ON ((ARZ_TW_Nr = ARS_TW_Nr) AND " &
+                              "(ARZ_LiBeh_Nr = ARS_Beh_Nr) AND (ARZ_Charge_Nr = ARS_Charge_Nr)) LEFT JOIN Komponenten ON (ARS_Ko_Nr = KO_Nr) " &
                               "WHERE (ARZ_LiBeh_Nr = [0]) AND (ARZ_TW_Nr = 0) ORDER BY ARZ_Charge_Nr, ARS_Index"
 
     Public Const UpdateArbRZSchritte = "Update ArbRZSchritte SET [3] WHERE ARS_Beh_Nr = [0] AND ARS_Charge_Nr = [1] AND ARS_RunIdx = [2] AND ARS_TW_Nr = 0"
@@ -160,6 +163,7 @@
 
     'Sql-Statement H2_Memo(Memo) aus Hinweise2
     Public Const sqlSelectH2 = "SELECT * FROM Hinweise2 WHERE H2_Typ = [0] AND H2_Typ2 = [1] AND H2_Id1= [2]"
+    Public Const sqlSelectH2X = "SELECT * FROM Hinweise2 WHERE H2_Typ = [0] AND H2_Typ2 = [1] AND H2_Id1= [2] AND H2_Id2= [3]"
     Public Const sqlUpdateH2 = "UPDATE Hinweise2 SET [3] WHERE H2_Typ = [0] AND H2_Typ2 = [1] AND H2_Id1= [2]"
     Public Const sqlInsertH2 = "INSERT INTO Hinweise2 (H2_Typ, H2_Typ2, H2_Id1, [3]) VALUES ([0],[1],[2],[4])"
     Public Const sqlDeleteH2 = "DELETE FROM Hinweise2 WHERE H2_Typ = [0] AND H2_Typ2 = [1] AND H2_Id1= [2]"

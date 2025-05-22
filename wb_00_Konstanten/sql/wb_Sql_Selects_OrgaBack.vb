@@ -27,15 +27,15 @@
     'Sql-Statement Update Artikel-Zusatzgruppe in [OrgaBackMain].[dbo].[ArtikelMultifunktionsfeld]"
     Public Const mssqlInsertAufarbeitungsPl = "INSERT INTO [dbo].[ArtikelMultifunktionsfeld] (GruppenNr, Hierarchie, Bezeichnung) VALUES ('[0]', '[1]', '[2]')"
 
-    'Sql-Statement Artikel mit Sortiment und Einheit
-    Public Const mssqlArtikel = "Select ArtikelNr,Kurztext,Sortiment, StdEinheit FROM [dbo].[Artikel] WHERE Artikelgruppe = [0] ORDER BY ArtikelNr"
+    'Sql-Statement Artikel mit Sortiment und Einheit - 2022-05-20/JW Regular-Expression für Artikelgruppe
+    Public Const mssqlArtikel = "Select ArtikelNr,Kurztext,Sortiment, StdEinheit FROM [dbo].[Artikel] WHERE [0] ORDER BY ArtikelNr"
 
     'Sql-Statement Abfrage dbo.WorkStations.Computername
     Public Const mssqlSelArtikel = "Select * FROM [dbo].[Artikel] WHERE ArtikelNr = '[0]'"
-    'Sql-Statement Delete ArtikelNaehrwerte
-    Public Const mssqlDeleteNwt = "DELETE FROM [dbo].[ArtikelNaehrwerte] WHERE [ArtikelNr] = '[0]' AND [Einheit] = [1] AND [StuecklistenVariantenNr] = [2]"
-    'Sql-Statement Delete ArtikelAllergene
-    Public Const mssqlDeleteAlg = "DELETE FROM [dbo].[ArtikelAllergene] WHERE [ArtikelNr] = '[0]' AND [StuecklistenVariantenNr] = [1]"
+    'Sql-Statement Delete ArtikelNaehrwerte für ALLE Stücklistenvarianten
+    Public Const mssqlDeleteNwt = "DELETE FROM [dbo].[ArtikelNaehrwerte] WHERE [ArtikelNr] = '[0]' AND [Einheit] = [1]"
+    'Sql-Statement Delete ArtikelAllergene für ALLE Stücklistenvarianten
+    Public Const mssqlDeleteAlg = "DELETE FROM [dbo].[ArtikelAllergene] WHERE [ArtikelNr] = '[0]'"
     'Sql-Statement Delete ArtikelNaehrwerte
     Public Const mssqlDeleteParamNwt = "DELETE FROM [dbo].[ArtikelNaehrwerte] WHERE [ArtikelNr] = '[0]' AND [NaehrwertNr] = [1] AND [Einheit] = [2] AND [StuecklistenVariantenNr] = [3]"
     'Sql-Statement Delete ArtikelAllergene
@@ -52,6 +52,10 @@
     'Sql-Statement Insert ArtikelAllergene
     Public Const mssqlInsertAlg = "INSERT INTO [dbo].[ArtikelAllergene] (ArtikelNr, StuecklistenVariantenNr, AllergenNr, Kennzeichnung) " &
                                   "VALUES ('[0]', [3], [1], '[2]')"
+    'Sql-Statement Insert ArtikelErnährung
+    'TOD Version 3
+    Public Const mssqlInsertErng = "INSERT INTO [dbo].[ArtikelAllergene] (ArtikelNr, StuecklistenVariantenNr, AllergenNr, Kennzeichnung) " &
+                                   "VALUES ('[0]', [3], [1], '[2]')"
 
     'Sql-Statement Update ArtikelHatMultifeld
     Public Const mssqlUpdateArtikelMFF = "UPDATE [dbo].[ArtikelHatMultiFeld] SET Inhalt = '[3]' WHERE ArtikelNr ='[0]' AND Feldnummer = [1] AND FilialNr = [2]"
@@ -60,6 +64,16 @@
 
     'Sql-Statement Abfrage dbo.[Naehrwerte]
     Public Const mssqlSelNaehrwerte = "SELECT * FROM [dbo].[Naehrwerte]"
+    'Sql-Statement Abfrage dbo.[Allergene]
+    Public Const mssqlSelAllergen = "SELECT * FROM [dbo].[Allergene]"
+    'Sql-Statement Abfrage dbo.[Umrechnung]
+    Public Const mssqlSelUmrechnung = "SELECT * FROM [dbo].[Umrechnung] WHERE ArtikelNr = '[0]' AND VonEinheit = [1]"
+    'Sql-Statement Abfrage dbo.[[StuecklistenVariante] (nur die ersten Werte)
+    Public Const mssqlSelStkListeVariante = "SELECT StuecklistenVariantenNr FROM [dbo].[StuecklistenVariante] WHERE ArtikelNr = '[0]' GROUP BY StuecklistenVariantenNr"
+    'Gewichtswert aus Handelsartikel
+    Public Const mssqlHandelsArtikelGewicht = "SELECT NettoInhalt FROM [dbo].[Handelsartikel] WHERE ArtikelNr = '[0]' and Einheit = [1]"
+    'Gewichtswert aus Stücklisten-Variante
+    Public Const mssqlStkListeGewicht = "SELECT Gewicht FROM [dbo].[StuecklistenVariante] WHERE ArtikelNr = '[0]' and Einheit = [1]"
 
     'Sql-Statement Abfrage dbo.[Artikelgruppe]
     Public Const mssqlSelArtikelGruppe = "SELECT * FROM [dbo].[Artikelgruppe]"
@@ -93,7 +107,8 @@
     Public Const mssqlSystemInfo = "SELECT TOP(1) * FROM SystemInfo ORDER BY lfd DESC"
 
     'Sql-Statement Insert Produktions/Verbrauchsdaten in [OrgaBackMain].[dbo].[ProduzierteWare]"
-    Public Const mssqlInsertProduktionsDaten = "INSERT INTO [dbo].[ProduzierteWare] (FilialNr, ProduktionsDatum, SatzTyp, ArtikelNr, " &
+    '(ab Version 1.10.0.0 wird auch die Uhrzeit mit übergeben)
+    Public Const mssqlInsertProduktionsDaten = "INSERT INTO [dbo].[ProduzierteWare] (FilialNr, ProduktionsDatum, ProduktionsUhrzeit, SatzTyp, ArtikelNr, " &
                                                "Einheit, Farbe, Groesse, Menge, ChargenNr, HaltbarkeitsDatum) VALUES ([0])"
 
     'Sql-Statement Abfrage Datensatz vorhanden in dbo.ProduktionAktuell
@@ -112,6 +127,10 @@
     Public Const mssqlArtikelLagerKarte = "SELECT * FROM [dbo].[ArtikelLagerkarte] WHERE [Lfd] > [0] AND ArtikelNr = '[1]' ORDER BY [Lfd]"
     'Sql-Statement Abfrage dbo.ArtikelLagerkarte letzter Datensatz 
     Public Const mssqlArtikelLagerInit = "SELECT * FROM [dbo].[ArtikelLagerkarte] WHERE ArtikelNr = '[0]' ORDER BY [Lfd] DESC"
+    'Sql-Statement Abfrage dbo.ArtikelLagerkarte letzter Datensatz 
+    Public Const mssqlArtikelLagerLast = "SELECT TOP(1) * FROM [dbo].[ArtikelLagerkarte] WHERE ArtikelNr = '[0]' ORDER BY [Lfd] DESC"
+    'Sql-Statement Abfrage dbo.ChargenBestand sortiert nach AnlageDatum 
+    Public Const mssqlArtikelLagerChargen = "SELECT * FROM [dbo].[ChargenBestand] WHERE ArtikelNr ='[0]' AND FilialNr = 0 AND Einheit =[1] AND Bestand > 0 Order by AnlageDatum DESC"
 
     'Sql-Statement Abfrage Geschäftsvorfall-Positionen nach Vorfall-Kürzel und Vorfall-Nummer
     Public Const mssqlVorfallPositionen = "SELECT * FROM [dbo].[GeschäftsvorfallPosition] WHERE VorfallKürzel = '[0]' AND VorfallNr = '[1]'"

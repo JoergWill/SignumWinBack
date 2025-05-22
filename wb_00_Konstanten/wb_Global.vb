@@ -7,8 +7,10 @@
     Public Const wbFALSE = 0
     Public Const wbTRUE = 1
     Public Const wbNODATE = #11/22/1964 00:00:00#
+    Public Const wbUnixDATE = #01/01/1970 00:00:00#
     Public Const NOSTRING = "X"
     Public Const NOFILTER = 0
+    Public Const ALLFILTER = 99
 
     Public Const obDEFAULTCOLOR = 0
     Public Const obDEFAULTSIZE = "NULL"
@@ -21,22 +23,29 @@
     Public Const LinienGruppeStandard = 1             'Liniengruppe für neue Rezepte
     Public Const RezeptVarianteStandard = 1           'Rezeptvariante für neue Rezepte
     Public Const MaxLinien = 99                       'Kocher-Linie (maximale Anzahl an WinBack-Linien)
+    Public Const MaxWinBackLinien = 12                'Maximale Linien in der Produktion(WinBack)
     Public Const MaxRezeptGroesse = 999.9             'Maximale Rezeptgröße
     Public Const RS_Par1_QUID = "-1"                  'Komponente im Rezept ist QUID-Relevant (In RS_Par1)
+    Public Const RS_Par1_NOQUID = ""                  'Komponente im Rezept ist nicht QUID-Relevant (In RS_Par1)
     Public Const TA_min = 0                           'TA Minimal-Wert (Berechnung Wassermenge bei TA-Änderung Rezeptur)
     Public Const TA_max = 400                         'TA Maximal-Wert (Berechnung Wassermenge bei TA-Änderung Rezeptur)
     Public Const MAXLAGERBESTAND = 99000000           'maximal gültiger Wert Bilanzmenge (winback.Lagerorte) 99t
+    Public Const KomponTypeInt_Undefined = -99        'Integer-Wert für undefinierte KomponentenType
 
+    Public Const MaxUserIDs = 56                      'Anzahl der Einträge in Tabelle IAListe und ItemIDs (BenutzerGruppenRechte)
     'Anlegen neuer Dummy-User (Felder vorbelegen)
     Public Const NewUserName = "Neu"
-    Public Const NewUserPass = "-1"
+    Public Const NewUserPass = "1"
     Public Const NewUserGrpe = "1"
     Public Const AdminUserGrpe = 99
+    Public Const SysKonfigGrpe = -1
 
     'Symbol Rezept-im-Rezept
     Public Const RezeptImRezept = "®"
     'Text Rohstoff wird nicht deklariert
     Public Const FlagKeineDeklaration = "NO DECLARATION"
+    'Text keine Chargen-Nummer(Rohstoff)
+    Public Const FlagKeineChargenNummer = "KEINE"
     'Text Zutatenliste auflösen
     Public Const FlagAufloesen = ">"
     'Trennzeichen in MFF155(Mehlanteile)
@@ -49,10 +58,10 @@
 
     'Filiale.Typ ist Produktions-Filiale
     Public Const ProduktionsFiliale = 4
-    'OrgaBack Dummy-Artikel für Rezepte ohne Zuordnung (ProduzierteWare)
-    Public Const ProduktionDummyArtikel = "0R9999"
     'Text Liniengruppen "Alle"
     Public Const TextAlle = "Alle"
+    'Text Artikel/Rohstoff-Gruppe "keine"
+    Public Const TextKeine = "keine"
 
     'Artikelgruppe Backorte (GruppenNr)
     Public Const GruppenNrBackorte = 3
@@ -68,10 +77,13 @@
     Public Const obEinheitKilogramm As Short = 11
     Public Const obEinheitGramm As Short = 12
     Public Const obEinheitLiter As Short = 16
+    Public Const obEinheitMeter As Short = 20
     'WinBack.Einheit aus winback.Einheiten (Unit-Test)
     Public Const wbEinheitLeer = 0
     Public Const wbEinheitKilogramm = 1
+    Public Const wbEinheitLiter = 4
     Public Const wbEinheitStk = 11
+    Public Const wbEinheitMeter = 30
     'Einträge AktionTimer-Tabelle
     Public Const obUpdateAll = -2                     'Eintrag in Aktions-Timer-Tabelle (alle Komponenten updaten)
 
@@ -90,15 +102,60 @@
     'TTS-ChargenAuswertung Kommandozeile (Teil 1 & 2)
     Public Const TTSLogCmd_0 = "cat /home/herbst/log/0s1-s.dbg | grep "
     Public Const TTSLogCmd_1 = " | grep TTS:"
+    'Datensicherung WinBack
+    Public Const WinBackSaveServer = "winback_save_server"
+    'Datenrücksicherung WinBack
+    Public Const WinBackLoadServerDaten = "winback_load_server_daten"
+    Public Const WinBackLoadServerChargen = "winback_load_server_chargen"
 
-    'WinBack-Update-Verzeichnis
-    Public Const WinBackUpdateHttp = "https://winback.de/software/"
-    Public Const WinBackUpdateVersionFile = "OrgaBack.txt"
-    Public Const WinBackUpdateSetupExe_32Bit = "WinBackSetup_x86.msi"
-    Public Const WinBackUpdateSetupExe_64Bit = "WinBackSetup_x64.msi"
+    'HTML-Hilfe anzeigen
+    Public Const WindowsHelp = "/hh.exe"
+    Public Const OrgaBackHtmlHelp = "WinBack.chm"
+    Public Const OrgaBackProgrammName = "Orgasoft.NET.exe"
+
+    'TeamViewer - Fernwartung
+    Public Const TeamViewerExe = "WinBackTeamViewer.exe"
+    'Putty - Terminalprogramm
+    Public Const PuttyExe = "Putty.exe"
+
+    'Verzeichnisse
+    Public Const SubDir_dbu = "dbu\"            'Datenbank-Updates
+    Public Const SubDir_dll = "dll\"            'dll-Files
+    Public Const SubDir_log = "log\"            'log-Files
+    Public Const SubDir_ll3 = "ls3\"            'List&Label Version30 - Redistributable Files
+    Public Const SubDir_lst = "lst\"            'Vorlagen List&Label
+    Public Const SubDir_pic = "pic\"            'Artikel-Bilder
+    Public Const SubDir_upd = "update\"         'Programm-Updates - ProgrammLaucher (WinBackUpdate)
+    Public Const SubDir_tmp = "tmp\"            'Programm Temp-Verzeichnis 
+    Public Const SubDir_pdf = "tmp\pdf"         'Programm pdf-Verzeichnis 
+    Public Const SubDir_zip = "tmp\zip"         'Programm zip-Verzeichnis zum Erzeugen der Update-Files"
+    Public Const SubDir_xfc = "xfc\"            'Schnittstellendaten
+    Public Const SubDir_xfd = "Schnittstelle\"  'Schnittstellendaten (Debug)
+
+    'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
+#If NoAssemblyResolve Then
+    Public Const AssemblyResolve = False
+#Else
+    Public Const AssemblyResolve = True
+#End If
+
+    Public Enum CompareVersionResult
+        NoUpdate
+        MinorUpdate
+        VersionUpdate
+        Err
+    End Enum
+
+    Public Enum Log4NetType
+        File
+        Udp
+        MySQL
+        Undef
+    End Enum
 
     Public Enum StatistikType
         ChargenAuswertung
+        ChargenAuswertungSauerteig
         StatistikRohstoffeVerbrauch
         StatistikRohstoffeDetails
         StatistikRezepte
@@ -125,11 +182,65 @@
         Public cLocation As Drawing.Point
     End Structure
 
+    Public Enum XNumberType
+        Artikel
+        Rohstoffe
+        Rezepte
+    End Enum
+
     Public Structure obMandant
         Public MandantNr As Integer
         Public MandantName As String
         Public AdminDBName As String
     End Structure
+
+    Public Enum wbMenuType
+        BurgerMenu
+        MainMenu
+        SubMenu
+    End Enum
+    Public Structure wbMenuItem
+        Public Text As String
+        Public MenuType As wbMenuType
+        Public Click As EventHandler
+        Public Tag As String
+        Public Bild As Drawing.Image
+    End Structure
+
+    Public Structure SiloParameter
+        Public LinieNr As Integer           'Linie-Nummer
+        Public LinieAktiv As Boolean        'Linie wird verwendet/aktiv
+        Public ParamSatz As Integer         'Paramsatz aus WegeRouten
+        Public Nachlauf As Double           'Parameter  2 - Nachlauf
+        Public GrobFein As Double           'Parameter  3 - Umschaltpkt Grob/Fein
+        Public Frequenz_Grob As Integer     'Parameter  8 - Frequenz Grobstrom
+        Public Frequenz_Fein As Integer     'Parameter  9 - Frequenz Feinstrom
+        Public Faktor_MengeZeit As Double   'Parameter 20 - Faktor Menge/Zeit
+    End Structure
+
+    Public Structure WaagenParameter
+        Public WaageNr As Integer               'Waage-Nummer
+        Public LinieNr As Integer               'Linie-Nummer
+        Public LinieAktiv As Boolean            'Linie wird verwendet/aktiv
+        Public WaagenGroesse As Double          'Parameter Waagengröße
+        Public FoerderStrom As Integer          'Parameter Förderstromüberwachung
+        Public AustrageFkt As Integer           'Parameter Austragenfunktion
+        Public Anlauf_Transport As Integer      'Parameter Anlauf Transportgebläse
+        Public Nachlauf_Transport As Integer    'Parameter Nachlauf Transportgebläse
+        Public Ruettler_Ein As Integer          'Parameter Rüttler tEin in Sekunden
+        Public Ruettler_Aus As Integer          'Parameter Rüttler tAus in Sekunden
+        Public Duesen_Ein As Integer            'Parameter Düsen tEin in Sekunden
+        Public Duesen_Aus As Integer            'Parameter Düesen tAus in Sekunden
+        Public Filter_Ein As Integer            'Parameter Filter-Reinigung tEin in Sekunden
+        Public Filter_Aus As Integer            'Parameter Filter-Reinigung tAus in Sekunden
+        Public Impuls_Klappe As Integer         'Parameter Impuls Klappe in Sekunden
+        Public Nachkomma As Integer             'Nachkomma-Stellen Istwert-Anzeige
+
+        Public Analog_Kanal As Integer          'Nummer Analog-Kanal
+        Public BC9000 As Integer                'BC9000 Analog-Kanal
+        Public ParameterNr As Integer           'BC9000 Analog-Kanal-ParameterNr
+    End Structure
+
 
     Public Enum KomponParams
         Sollwert = 1
@@ -150,6 +261,7 @@
         kt220 = 220
         kt300 = 300
         kt301 = 301
+        kt303 = 303
     End Enum
 
     Public Structure ktTypXXXParam
@@ -191,6 +303,26 @@
         Public oUsed As Boolean
     End Structure
 
+    Public Structure ktTyp303Param
+        Public ParamNr As Integer
+        Public Bezeichnung As String
+        Public Einheit As String
+        Public Used As Boolean
+    End Structure
+
+    Public Enum KneterParameter
+        MischenRechts = 1
+        MischenLinks = 2
+        KnetenRechts = 3
+        KnetenLinks = 4
+        TeigTemperatur = 5
+        Teigruhe = 6
+        StartDosierung = 7
+        Pause = 8
+        KlappeAuf = 9
+        StartDosOhneMehl = 14
+    End Enum
+
     Public Structure Nwt
         Public Visible As Boolean
         Public Nr As Integer
@@ -199,6 +331,7 @@
         Public Einheit As String
         Public Header As String
         Public FehlerText As String
+        Public ErrIntern As Boolean
     End Structure
 
     Public Structure NwtCloud
@@ -206,9 +339,11 @@
         Public name As String
         Public lieferant As String
         Public deklarationsname As String
+        Public ean As String
     End Structure
 
     Enum MySqlCodepage
+        UNDEFINED
         iso8859_15                  'Code-Wandlung von iso-8859-15 nach utf8 (Deutschland) - Keine Umwandlung
         iso8859_5                   'Code-Wandlung von iso-8859-5  nach utf8 (Russland)
         iso8859_1                   'Code-Wandlung von iso-8859-1  nach utf8 (Ungarisch)
@@ -219,9 +354,34 @@
         OBServerTask                'Programm läuft als Hintergrund-Task auf dem OrgaBack-Server
         WBServerTask                'Programm läuft als Hintergrund-Task auf dem WinBack-Server
         WinBack                     'Programm läuft als Standalone
+        AnyWhere                    'Programm läuft als Standalone auf einem Tablet
         UnitTest                    'Programm läuft im Test-Modus (UnitTest)
         Setup                       'Setup-Routine OrgaBackAddIn
+        Update                      'Update-Routine OrgaBackAddIn/OrgaBackOffice
         Undef                       'nicht definiert
+    End Enum
+
+    Enum ProgFunction
+        Restart
+        Upgrade
+        Update
+        Deploy
+        Undef
+    End Enum
+
+    Enum ProgFunctionVariante
+        OrgaBack
+        OrgaBackOffice
+        BackgroundTask
+        AnyWhere
+        Undef
+    End Enum
+
+    Enum FileUpdateMode
+        UpdateAlways                'existierende Datei immer überschreiben
+        UpdateIfNewer               'existierende Datei nur überschreiben wenn aktuelle
+        UpdateNever                 'existierende Datei niemals überschreiben
+        UpdateBak                   'wenn schon eine .bak-Datei vorhanden ist, nicht kopieren
     End Enum
 
     Enum RohSiloTypen
@@ -273,6 +433,25 @@
         CS_STARTGESPEICHERT = 8
     End Enum
 
+    ''' <summary>
+    ''' Status Silo-Füllstands-Korrektur
+    ''' </summary>
+    Enum KorrekturStatus
+        SILO_NULLEN
+        SILO_PLUS
+        SILO_MINUS
+        SILO_NOP
+    End Enum
+
+    ''' <summary>
+    ''' Status LF_gebucht in Tabelle winback.Lieferungen
+    ''' </summary>
+    Enum LieferStatus
+        LF_UNDEFINED = -1
+        LF_AKTIV = 1
+        LF_FERTIG = 3
+    End Enum
+
     Enum KomponTypen
         KO_TYPE_UNDEFINED
 
@@ -312,6 +491,9 @@
         KO_TYPE_SAUER_AUTO_ZUGABE   '22
         KO_TYPE_SAUER_REZEPT_START  '30
         KO_TYPE_SAUER_REPEAT        '31
+
+        KO_TYPE_LAGERLISTE_HAND     'Handkomponente für Lagerliste
+        KO_TYPE_LAGERLISTE_AUTO     'Autokomponente für Lagerliste
     End Enum
 
     Enum ErnaehrungsForm
@@ -378,7 +560,11 @@
     ''' Produkt-Information
     ''' </summary>
     Public Const maxTyp200 = 330
+    Public Const T200_DateinameBild = 2
     Public Const T200_Verkaufsgewicht = 4
+    Public Const T200_Haltbarkeit = 7
+    Public Const T200_Lagerung = 8
+    Public Const T200_VerkaufsTage = 9
     Public Const T200_Warengruppe = 17
     ''' <summary>
     ''' Verarbeitungshinweise
@@ -403,7 +589,7 @@
     ''' <summary>
     ''' Parameter Produktion
     ''' </summary>
-    Public Const maxTyp300 = 14
+    Public Const maxTyp300 = 15
     Public Const T300_Backverlust = 1
     Public Const T300_ProdVorlauf = 2
     Public Const T300_Zuschnitt = 3
@@ -411,6 +597,13 @@
     Public Const T300_RzNr = 6
     Public Const T300_RezeptNummer = 7
     Public Const T300_RezeptName = 8
+    Public Const T300_StkProBlech = 9
+    Public Const T300_StkProStikken = 10
+    Public Const T300_ZeitTeig = 11
+    Public Const T300_ZeitAufarbeitung = 12
+    Public Const T300_ZeitBacken = 13
+    Public Const T300_ZeitAbkuehlen = 14
+    Public Const T300_Ofengruppe = 15
 
     ''' <summary>
     ''' Nährwerte
@@ -476,6 +669,19 @@
 
 
     ''' <summary>
+    ''' Parameter EU/Bio-Verbände
+    ''' </summary>
+    Public Const maxTyp303 = 11
+    Public Const minTyp303EU = 1
+    Public Const maxTyp303EU = 2
+    Public Const minTyp303BioVerband = 10
+    Public Const maxTyp303BioVerband = 10
+
+    Public Const T303_EU_Butter = 1
+    Public Const T303_EU_Alkohol = 2
+    Public Const T303_BioVerband = 11
+
+    ''' <summary>
     ''' Konstanten für MultifunktionsFelder Artikel/User
     ''' </summary>
 
@@ -517,6 +723,7 @@
         Tx_AlNum               'Rohstoff/Artikelnummer(alphanumerisch)
         Tx_Bezeichnung         'Rohstoff/Artikelbezeichnung
         Tx_Kommentar           'Kommentar-Feld
+        Tx_EANCode             'EAN-Nummer
         Tx_MatchCode           'Index WinBack-Cloud/Datenlink
         Tx_Lieferant           'Lieferant
         Tx_DeklarationIntern
@@ -528,6 +735,7 @@
         RezeptHinweise         '2/0/RzNr
         ArtikelHinweise        '3/0/ArtNr
         UserInfo               '4/0/UsrNr
+        Konfiguration          '5/0/KonfigNr/KonfigGrp'
         ZutatenListe           '9/1/ArtNr
         MehlZusammensetzung    '9/2/ArtNr
         GebCharakteristik     '10/1/ArtNr
@@ -546,7 +754,7 @@
         Public Text As String               'E-Nummer als String
         Public Beschreibung As String       'Wirkung/Herstellung
         Public Bemerkung As String          'Hinweise/Gefahren
-        Public Key As Char                  '
+        Public Key As Char
         Public CleanLabel As Char           'Kann entfallen (J/N)
         Public MaxAnteilProzent As Double   'maximaler Anteil im Rohstoff in Prozent
     End Structure
@@ -664,6 +872,8 @@
         Public iAttrGrp As Integer    'AT_Attr_Nr
         Public iTyp As Integer        'IP_ItemTyp
         Public iID As Integer         'IP_ItemID
+        Public iWert1 As Integer      'IP_Wert1Int
+        Public iLfdNr As Integer      'IP_Lfd_Nr
     End Structure
 
     Public Structure wb_Gruppe
@@ -747,6 +957,9 @@
     Enum SortOrder
         BackZettel
         ProdPlan
+        OfenListe
+        LagerBestand
+        LagerEntnahmeListe
     End Enum
 
     Enum MinMaxOptChargenError

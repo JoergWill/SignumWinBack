@@ -50,6 +50,8 @@ Public Class wb_Main_ServerConnect
         sw.Flush()
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Minor Code Smell", "S3878:Arrays should not be created for ParamArray parameters", Justification:="<Ausstehend>")>
     Private Sub DoRead(ByVal ar As IAsyncResult)
         Try
             Dim sr As New StreamReader(_TcpClient.GetStream) 'declare a new streamreader to read from the network stream
@@ -71,6 +73,7 @@ Public Class wb_Main_ServerConnect
     '''     
     ''' </summary>
     ''' <param name="Message"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S108:Nested blocks of code should not be left empty", Justification:="<Ausstehend>")>
     Private Sub MessageRecieved(ByVal Message As String)
         Dim msg() As String = Message.Split("|") ' if a message is recieved, split it to process it
 
@@ -82,7 +85,7 @@ Public Class wb_Main_ServerConnect
 
                     Case "CHAT"
                         'Server/Client-Chat
-                        tbMessageReceive.Text &= "Server: " & " " & msg(1) & vbNewLine
+                        tbMessageReceive.Text &= "Server: " & " " & msg(1) & vbCrLF
 
                     Case "TIMR"
                         'WinBack-Aktions-Timer-Tabelle. Änderungen/Events

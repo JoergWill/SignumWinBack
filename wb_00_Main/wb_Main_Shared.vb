@@ -1,52 +1,25 @@
 ﻿
-Imports System.Drawing
 Imports System.Reflection
-Imports Signum.OrgaSoft.GUI
+Imports combit.Reporting
 
 Public Class wb_Main_Shared
     Private Shared _MainProgress As wb_Main_Progress = Nothing
     Private Shared _MainProgressVisible As Boolean = False
-    Private Shared _MenuButtons As New List(Of IButton)
-    Private Shared _ShaddowButtons As New List(Of IButton)
+    Private Shared _AddInList As New List(Of String)
+
+    'Eigenen Logger für List&Label definieren
+    Public Shared ILL_Logger As New wb_Printer_Logger
+    'List&Label Debug-Ausgaben aktivieren
+#If DebugLL Then
+    Public shared WithEvents LL As New ListLabel(ILL_Logger)
+#Else
+    Public Shared WithEvents LL As New ListLabel()
+#End If
 
     Public Shared Event eOpenForm(sender As Object, FormName As String)
     Public Shared Event eTimer(sender As Object, e As String)
     Public Shared Event eSendMessage(sender As Object, Message As String)
 
-    Public Shared Sub AddMenuButton(Gruppe As IGroup, Name As String, Text As String, ToolTip As String, PictureSmall As Image, PictureLarge As Image, ClickHandler As EventHandler, Tag As Integer)
-        Dim MenuBtn As IButton = Gruppe.AddButton(Tag.ToString("000") & Name, Text, ToolTip, PictureSmall, PictureLarge, ClickHandler)
-        _MenuButtons.Add(MenuBtn)
-    End Sub
-
-    Public Shared Sub CheckMenu()
-        'pürfen ob schon ein WinBack-Menu existiert
-        If _MenuButtons.Count > 0 Then
-            'Login als Superuser
-            Dim SuperUser As Boolean = (wb_GlobalSettings.OrgaBackEmployee = "SYS")
-            'erste Gruppe
-            Dim Group As IGroup = _MenuButtons.First.Parent
-            setGroupVisible(Group, False)
-
-            'Alle Signum-Menu-Buttons durchlaufen und einzeln ein/ausschalten
-            For Each Btn In _MenuButtons
-                'Neue Gruppe (Gruppe nur ausblenden wenn WinBack-Guppe)
-                If Btn.Parent.Name <> Group.Name Then
-                    Group = Btn.Parent
-                    setGroupVisible(Group, False)
-                End If
-                'Button ein/ausblenden
-                Btn.Visible = wb_AktRechte.RechtOK(Left(Btn.Name, 3), SuperUser)
-                'Wenn ein Button sichtbar ist, bleibt die Gruppe sichtbar
-                setGroupVisible(Group, Btn.Visible Or Group.Visible)
-            Next
-        End If
-    End Sub
-    Private Shared Sub setGroupVisible(ByRef Group As IGroup, visible As Boolean)
-        'Property Visible darf nur bei WinBack-Gruppen geändert werden
-        If Group.Name.StartsWith("WinBack") Then
-            Group.Visible = visible
-        End If
-    End Sub
 
     Public Shared Property MainProgressVisible
         Get
@@ -69,18 +42,14 @@ Public Class wb_Main_Shared
                 _MainProgress.BringToFront()
             End If
 
-            Windows.Forms.Application.DoEvents()
+            System.Windows.Forms.Application.DoEvents()
         End If
     End Sub
 
     Public Shared Sub HideProgressBar()
-        If _MainProgressVisible Then
-            If _MainProgress IsNot Nothing Then
-                If _MainProgressVisible Then
-                    _MainProgress.Close()
-                    _MainProgress = Nothing
-                End If
-            End If
+        If _MainProgressVisible AndAlso _MainProgress IsNot Nothing Then
+            _MainProgress.Close()
+            _MainProgress = Nothing
         End If
     End Sub
 
@@ -102,26 +71,54 @@ Public Class wb_Main_Shared
         Dim arrFields As String() = args.Name.Split(","c)
         Dim sAssemblyCulture As String = arrFields(2).Substring(arrFields(2).IndexOf("="c) + 1)
 
-        Dim sAssemblyFileName As String = sAssemblyName + ".dll"
+        Dim sAssemblyFileName As String = sAssemblyName & ".dll"
         Dim sAssemblyPath As String
 
         If sAssemblyName.EndsWith(".resources") Then
-            Trace.WriteLine("AssemblyName resources " & sAssemblyName)
-            'TODO Das WinBack-AddIn fällt hier in Belgien auf die Nase !!
-            Return DefaultAssembly
-
-            'Dim sResourceDirectory As String = IO.Path.Combine(sApplicationDirectory, sAssemblyCulture)
-            'sAssemblyPath = IO.Path.Combine(sResourceDirectory, sAssemblyFileName)
+            'Trace.WriteLine("@I_AssemblyName resources " & sAssemblyName)
+            Dim sResourceDirectory As String = IO.Path.Combine(sApplicationDirectory, sAssemblyCulture)
+            sAssemblyPath = IO.Path.Combine(sResourceDirectory, sAssemblyFileName)
+            'TODO Das WinBack-AddIn fällt hier bei einem nicht deutschen Windows (Belgien/Fonk) auf die Nase. Besser nichts zurückgeben !
+            'Return DefaultAssembly
+            'Return If(Debugger.IsAttached, Reflection.Assembly.LoadFile(sAssemblyPath), Assembly.Load(IO.File.ReadAllBytes(sAssemblyPath)))
+            Return Nothing
         Else
-            sAssemblyPath = IO.Path.Combine(sApplicationDirectory & "dll\", sAssemblyFileName)
+            sAssemblyPath = IO.Path.Combine(sApplicationDirectory & wb_Global.SubDir_dll, sAssemblyFileName)
             If IO.File.Exists(sAssemblyPath) Then
-                Trace.WriteLine("AssemblyName dll " & sAssemblyPath)
+                If Not sAssemblyPath.ToLower.Contains("log4net.dll") Then
+                    'Trace.WriteLine("@I_AssemblyName dll " & sAssemblyPath)
+                End If
                 Return If(Debugger.IsAttached, Reflection.Assembly.LoadFile(sAssemblyPath), Assembly.Load(IO.File.ReadAllBytes(sAssemblyPath)))
             Else
-                Trace.WriteLine("AssemblyName resources " & sAssemblyName)
+                'Trace.WriteLine("@I_AssemblyName not exists " & sAssemblyName)
                 Return DefaultAssembly
             End If
         End If
+    End Function
+
+    ''' <summary>
+    ''' Hier registrieren sich alle WinBack-AddIns.
+    ''' 
+    ''' Anhand der Liste kann dann in wb_Main geprüft werden, ob alle AddIn-Komponenten in OrgaBack registiert sind.
+    ''' Wenn die User-Berechtigungen in OrgaBack nicht alle WinBack-AddIns zulassen, sind manche Funktionen gesperrt!
+    ''' </summary>
+    ''' <param name="Name"></param>
+    Public Shared Sub RegisterAddIn(Name As String)
+        _AddInList.Add(Name)
+    End Sub
+
+    ''' <summary>
+    ''' Prüft ob ein WinBack.AddIn mit diesem Namen registriert ist
+    ''' </summary>
+    ''' <param name="Name"></param>
+    ''' <returns></returns>
+    Public Shared Function IsRegistered(Name As String) As Boolean
+        For Each s In _AddInList
+            If s = Name Then
+                Return True
+            End If
+        Next
+        Return False
     End Function
 
     ''' <summary>

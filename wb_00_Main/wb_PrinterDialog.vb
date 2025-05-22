@@ -1,6 +1,6 @@
 ﻿Imports System.IO
 Imports System.Windows.Forms
-Imports combit.ListLabel22
+Imports combit.Reporting
 
 ''' <summary>
 ''' KLasse zum Drucken von Reports über ListUndLabel
@@ -18,8 +18,7 @@ Public Class wb_PrinterDialog
     Private _LL_KopfZeile_2 As String = ""
     Private _LL_Parameter_1 As String = ""
     Private _LL_Parameter_2 As String = ""
-
-    Public WithEvents LL As New ListLabel()
+    Public WithEvents ll As combit.Reporting.ListLabel
 
     ''' <summary>
     ''' Erzeugt ein neues Druck-Fenster.
@@ -38,6 +37,7 @@ Public Class wb_PrinterDialog
         'Druckhistorie speichern vor dem Ausdruck
         _Druckhistorie = Druckhistorie
         BtnDruckHistorie.Enabled = Druckhistorie
+        Me.ll = wb_Main_Shared.LL
     End Sub
 
     ''' <summary>
@@ -60,6 +60,8 @@ Public Class wb_PrinterDialog
             _ListFileName = value
             'Den Standard-Projektnamen setzen
             LL.AutoProjectFile = _ListSubDirectory & _ListFileName
+            'Drop-Down-Liste
+            cbVorlageAuswahl.Text = _ListFileName
 
             'wenn die Datei existiert wird kein Auswahl-Dialog bei Start von List&Label angezeigt
             If File.Exists(LL.AutoProjectFile) Then
@@ -67,6 +69,32 @@ Public Class wb_PrinterDialog
             End If
         End Set
     End Property
+
+#Disable Warning BC42304 ' Analysefehler in XML-Dokumentation
+    ''' <summary>
+    ''' Erzeugt eine Liste von List&Label-Projekt-File-Namen.
+    ''' Im Drucker-Dialog kann dann die Vorlage über eine Drop-Down-Liste ausgewählt werden
+    ''' </summary>
+    ''' <param name="FileName"></param>
+    Public Sub AddListFileNames(FileName As String)
+#Enable Warning BC42304 ' Analysefehler in XML-Dokumentation
+        'Vorlagen über Wildcard
+        If FileName.Contains("*") Then
+            For Each Item As String In IO.Directory.GetFiles(_ListSubDirectory, FileName)
+                cbVorlageAuswahl.Items.Add(IO.Path.GetFileName(Item))
+            Next
+        Else
+            'Prüfen ob die Datei existiert..
+            If File.Exists(_ListSubDirectory & FileName) Then
+                cbVorlageAuswahl.Items.Add(FileName)
+            End If
+        End If
+    End Sub
+
+    Private Sub cbVorlageAuswahl_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbVorlageAuswahl.SelectionChangeCommitted
+        ListFileName = cbVorlageAuswahl.SelectedItem
+        ShowPreview()
+    End Sub
 
     ''' <summary>
     ''' Kopfzeile 1 ListUndLabel
@@ -107,10 +135,10 @@ Public Class wb_PrinterDialog
         'Try
         LL.AutoDestination = LlPrintMode.Normal
         LL.AutoShowPrintOptions = False
+        LL.Language = LlLanguage.German
 
         'Drucker einstellen (im List&Label-Projekt-File)
-        Dim Settings As New Drawing.Printing.PrinterSettings()
-        Settings.PrinterName = cbPrinterAuswahl.SelectedItem.ToString
+        Dim Settings As New Drawing.Printing.PrinterSettings With {.PrinterName = cbPrinterAuswahl.SelectedItem.ToString}
         'Funktioniert teilweise nicht, wenn keine RECHTE vorhanden sind !! (RemoteDesktop Windows-Server)
         Try
             LL.Core.LlSetPrinterInPrinterFile(LlProject.List, LL.AutoProjectFile, LlPrinterIndex.AllPages, Settings)
@@ -123,11 +151,14 @@ Public Class wb_PrinterDialog
             wb_Functions.DeleteOldFiles(wb_GlobalSettings.pDruckHistoriePath, IO.Path.GetFileNameWithoutExtension(_ListFileName) & "*.pdf", wb_Global.MaxHistDays)
 
             'Dateiname aus Vorlagen-Name und Datum/Uhrzeit
-            Dim fName As String = wb_GlobalSettings.pDruckHistoriePath & IO.Path.GetFileNameWithoutExtension(_ListFileName) & "_" & Date.Now.ToString("yyyyMMdd_HHmmss") & ".pdf"
+            Dim fName As String = wb_GlobalSettings.pDruckHistoriePath & wb_GlobalSettings.OrgaBackMandantNr.ToString("00") & "_" & IO.Path.GetFileNameWithoutExtension(_ListFileName) & "_" & Date.Now.ToString("yyyyMMdd_HHmmss") & ".pdf"
 
             'aktuelle Datei als pdf-File exportieren
-            Dim pdfconfig As New ExportConfiguration(LlExportTarget.Pdf, fName, LL.AutoProjectFile)
-            LL.Export(pdfconfig)
+            Try
+                Dim pdfconfig As New ExportConfiguration(LlExportTarget.Pdf, fName, LL.AutoProjectFile)
+                LL.Export(pdfconfig)
+            Catch ex As Exception
+            End Try
         End If
 
         'Druckauftrag starten
@@ -199,16 +230,19 @@ Public Class wb_PrinterDialog
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
     Private Sub wb_PrinterDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Lizenz-Information eintragen
-        LL.LicensingInfo = "PcyjD"
+        'Lizenz-Information eintragen-ListUndLabel-Version 22
+        'LL.LicensingInfo = "PcyjD"    
+        'Lizenz-Information eintragen-ListUndLabel-Version 30
+        ll.LicensingInfo = "IApxG"
 
         Dim IdxProjectPrinter As Integer = wb_Global.UNDEFINED
         Dim llProjectPrinter As String = wb_Global.UNDEFINED
 
         'Letzter verwendeter Drucker aus der List&Label-Projektdatei
         Try
-            llProjectPrinter = LL.Core.LlGetPrinterFromPrinterFile(LlProject.List, LL.AutoProjectFile, LlPrinterIndex.AllPages).dmDeviceName
+            llProjectPrinter = ll.Core.LlGetPrinterFromPrinterFile(LlProject.List, ll.AutoProjectFile, LlPrinterIndex.AllPages).dmDeviceName
         Catch ex As Exception
         End Try
 
@@ -231,6 +265,12 @@ Public Class wb_PrinterDialog
                 IdxProjectPrinter = cbPrinterAuswahl.Items.Count - 1
             End If
         Next
+
+        'Auswahlbox List&Label-Vorlagen
+        If cbVorlageAuswahl.Items.Count > 1 Then
+            cbVorlageAuswahl.Visible = True
+            lblVorlage.Visible = True
+        End If
 
         'Default Drucker einstellen. Wenn im Projekt-File kein gültiger Drucker angegeben wurden, wird der Windows-Default-Drucker verwendet
         If IdxProjectPrinter <> wb_Global.UNDEFINED Then
@@ -288,7 +328,7 @@ Public Class wb_PrinterDialog
         'ausgewählter Drucker
         PrintDialog.PrinterSettings.PrinterName = cbPrinterAuswahl.SelectedItem.ToString
         'Drucker-Einstellungen
-        If PrintDialog.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If PrintDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             'falls der Drucker geändert wurde
             cbPrinterAuswahl.SelectedItem = PrintDialog.PrinterSettings.PrinterName
             'Ausdruck starten
@@ -331,7 +371,7 @@ Public Class wb_PrinterDialog
         'File-Auswahl-Dialog Formular*.pdf
         Dim fMaske As String = wb_GlobalSettings.pDruckHistoriePath & IO.Path.GetFileNameWithoutExtension(_ListFileName) & "*.pdf"
         OpenFileDialog.Title = "Druck-Historie Datei auswählen"
-        OpenFileDialog.InitialDirectory = wb_GlobalSettings.pTempPath
+        OpenFileDialog.InitialDirectory = wb_GlobalSettings.pDruckHistoriePath
         OpenFileDialog.Filter = "Druckhistorie|" & IO.Path.GetFileNameWithoutExtension(_ListFileName) & "*.pdf"
         OpenFileDialog.FileName = "*.pdf"
 
@@ -369,6 +409,7 @@ Public Class wb_PrinterDialog
     End Sub
 
     Private Sub wb_PrinterDialog_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        LL.Dispose()
+        'LL.Dispose()
     End Sub
+
 End Class

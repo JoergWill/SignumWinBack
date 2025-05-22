@@ -295,28 +295,28 @@ Partial Class wb_Main_Setup
 
     End Sub
 
-    Friend WithEvents lblAnzahlMandanten As Windows.Forms.Label
-    Friend WithEvents tbMandanten As Windows.Forms.TabControl
-    Friend WithEvents TabPage1 As Windows.Forms.TabPage
-    Friend WithEvents TabPage2 As Windows.Forms.TabPage
-    Friend WithEvents lblUeberschrift As Windows.Forms.Label
-    Friend WithEvents lblMandantName As Windows.Forms.Label
-    Friend WithEvents lblOrgaBackAdmin As Windows.Forms.Label
-    Friend WithEvents tbMandant As Windows.Forms.TextBox
-    Friend WithEvents tbMandantName As Windows.Forms.TextBox
-    Friend WithEvents tbOrgaBackAdmin As Windows.Forms.TextBox
-    Friend WithEvents TextBox1 As Windows.Forms.TextBox
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents TextBox2 As Windows.Forms.TextBox
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents TextBox3 As Windows.Forms.TextBox
-    Friend WithEvents Label3 As Windows.Forms.Label
-    Friend WithEvents TextBox4 As Windows.Forms.TextBox
-    Friend WithEvents Label4 As Windows.Forms.Label
-    Friend WithEvents TextBox5 As Windows.Forms.TextBox
-    Friend WithEvents Label5 As Windows.Forms.Label
-    Friend WithEvents TextBox6 As Windows.Forms.TextBox
-    Friend WithEvents Label6 As Windows.Forms.Label
-    Friend WithEvents BtnScan As Windows.Forms.Button
-    Friend WithEvents IPListBox As Windows.Forms.CheckedListBox
+    Friend WithEvents lblAnzahlMandanten As System.Windows.Forms.Label
+    Friend WithEvents tbMandanten As System.Windows.Forms.TabControl
+    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
+    Friend WithEvents lblUeberschrift As System.Windows.Forms.Label
+    Friend WithEvents lblMandantName As System.Windows.Forms.Label
+    Friend WithEvents lblOrgaBackAdmin As System.Windows.Forms.Label
+    Friend WithEvents tbMandant As System.Windows.Forms.TextBox
+    Friend WithEvents tbMandantName As System.Windows.Forms.TextBox
+    Friend WithEvents tbOrgaBackAdmin As System.Windows.Forms.TextBox
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents BtnScan As System.Windows.Forms.Button
+    Friend WithEvents IPListBox As System.Windows.Forms.CheckedListBox
 End Class

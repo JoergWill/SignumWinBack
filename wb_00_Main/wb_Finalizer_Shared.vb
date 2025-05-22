@@ -9,6 +9,6 @@ Public Class wb_Finalizer_Shared
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
         'Letzter Eintrag im Log-File
-        Trace.WriteLine("Log-File geschlossen")
+        Trace.WriteLine("@I_Log-File geschlossen")
     End Sub
 End Class

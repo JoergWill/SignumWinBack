@@ -32,6 +32,9 @@ Public Class wb_GlobalSettings
     Private Shared _MandantNr As Integer = UNDEFINED
     Private Shared _OrgaBackMandantName As String = Nothing
     Private Shared _OrgaBackMandantNr As Integer = UNDEFINED
+    Private Shared _ProduktionDummyArtikel As String = "0R9999"               'OrgaBack Dummy-Artikel für Rezepte ohne Zuordnung (ProduzierteWare)
+    Private Shared _TeigruheAnzeige As Boolean = False                        'WinBack-AnyWhere Teigruhe und Kneter-Anzeige
+    Private Shared _TeigruheVNC As Integer = UNDEFINED                        'WinBack-AnyWhere VNC-Teigruhe
 
     Private Shared _pAddInPath As String = Nothing
     Private Shared _pListenPath As String
@@ -39,15 +42,18 @@ Public Class wb_GlobalSettings
     Private Shared _pXConfigPath As String = Nothing
     Private Shared _pWinBackIniPath As String = Nothing
     Private Shared _pProgrammPath As String = ""
+    Private Shared _pAppDataPath As String = Nothing
     Private Shared _Log4ViewExe As String = ""
     Private Shared _NotePadPlusExe As String = ""
     Private Shared _pDatenPath As String = ""
     Private Shared _pExportPath As String = Nothing
+    Private Shared _pPicturePath As String = Nothing
     Private Shared _OrgaBackTheme As Integer = -1
     Private Shared _OrgaBackEmployee As String
 
     Private Shared _OrgaBackDBVersion As String = Nothing
     Private Shared _WinBackDBVersion As String = Nothing
+    Private Shared _ShowDashboard As Integer = UNDEFINED
 
     Private Shared _MsSQLMainDB As String = Nothing
     Private Shared _MsSQLAdmnDB As String = Nothing
@@ -68,6 +74,7 @@ Public Class wb_GlobalSettings
     Private Shared _MySQLUser As String = Nothing
     Private Shared _MySQLPass As String = Nothing
     Private Shared _MySQLPath As String = Nothing
+    Private Shared _TempMySQLServerIP As String = Nothing
 
     Private Shared _MsSQLServerIP As String = Nothing
     Private Shared _MsSQLWinBack As String = Nothing
@@ -76,9 +83,28 @@ Public Class wb_GlobalSettings
     Private Shared _Log4netKonfigFile As String = ""
     Private Shared _Log4netAutoStart As Integer = UNDEFINED
 
-    Private Shared _AktUserName As String = ""
-    Private Shared _AktUserNr As Integer = UNDEFINED
-    Private Shared _AktUserGruppe As Integer = -1
+    Private Shared _Log4net_DebugLevel As Boolean
+    Private Shared _Log4net_InfoLevel As Boolean
+    Private Shared _Log4net_WarnLevel As Boolean
+    Private Shared _Log4net_ErrorLevel As Boolean
+
+    Private Shared _Log4net_LL_EnablePrinterInformation As Boolean
+    Private Shared _Log4net_LL_EnableDataProvider As Boolean
+    Private Shared _Log4net_LL_EnableLicensing As Boolean
+    Private Shared _Log4net_LL_EnableDotNetComponent As Boolean
+    Private Shared _Log4net_LL_EnableApiCalls As Boolean
+    Private Shared _Log4net_LL_EnableOther As Boolean
+    Private Shared _Log4net_LL_DebugLevel As Boolean
+    Private Shared _Log4net_LL_InfoLevel As Boolean
+    Private Shared _Log4net_LL_WarnLevel As Boolean
+    Private Shared _Log4net_LL_ErrorLevel As Boolean
+
+    'Private Shared _AktUserName As String = ""
+    'Private Shared _AktUserNr As Integer = UNDEFINED
+    'Private Shared _AktUserGruppe As Integer = -1
+
+    Private Shared _ShowMsg_UpdateOrgaBackNWT As Boolean = True
+    Private Shared _ShowMsg_RohstoffeSTK As Boolean = True
 
     Private Shared _SauerteigAnlage As Boolean = Nothing
     Private Shared _SauerteigAnzBeh As Integer = UNDEFINED
@@ -88,7 +114,8 @@ Public Class wb_GlobalSettings
     Private Shared _TeigOptimierung As ModusTeigOptimierung
     Private Shared _ProdPlanDatum As Date = Nothing
     Private Shared _ProdPlanfiliale As String = Nothing
-    Private Shared _ProdPlanReadOnOpen As Boolean = False
+    Private Shared _ProdPlanReadOnOpen As Boolean = True
+    Private Shared _ProdPlanClearOnRead As Boolean = False
 
     Private Shared _RohChargen_ErfassungAktiv As String = Nothing
     Private Shared _RohChargen_GebindeGrsTol As String = Nothing
@@ -100,8 +127,14 @@ Public Class wb_GlobalSettings
     Private Shared _NwtAllergeneNoText As Integer = UNDEFINED
     Private Shared _NwtAllergeneGluten As Integer = UNDEFINED
     Private Shared _NwtAllergeneSchalen As Integer = UNDEFINED
+    Private Shared _NwtAllergeneNoDefinitionErr As Integer = UNDEFINED
     Private Shared _NwtShowENummer As Integer = UNDEFINED
+
+    Private Shared _NwtShowOptimized As Integer = UNDEFINED
+    Private Shared _NwtENummerZutatenListe As Integer = UNDEFINED
     Private Shared _NwtOptimizeZutatenListe As Integer = UNDEFINED
+    Private Shared _NwtCalcQuid As Integer = UNDEFINED
+    Private Shared _NwtMehlZusammensetzung As Boolean
 
     Private Shared _Datenlink_Url As String = Nothing
     Private Shared _Datenlink_CAT As String = Nothing
@@ -113,13 +146,39 @@ Public Class wb_GlobalSettings
     Private Shared _mSenderAddr As String = Nothing
     Private Shared _mSenderPass As String = Nothing
 
-    Private Shared _DefaultImportSchnittstelle As String = Nothing
-    Private Shared _DefaultExportSchnittstelle As String = Nothing
+    Private Shared _DefaultSchnittstelle As String = Nothing
+    Private Shared _ImportPath As String = Nothing
+    Private Shared _ExportPath As String = Nothing
+    Private Shared _ImportArtikel As Boolean = Nothing
+    Private Shared _ImportRezeptKopf As Boolean = Nothing
+    Private Shared _ImportRezept As Boolean = Nothing
+    Private Shared _ImportLieferungen As Boolean = Nothing
+    Private Shared _ImportBackzettel As Boolean = Nothing
+    Private Shared _ImportRzpVerarbeitungsHinweise As Boolean = Nothing
+    Private Shared _ImportRzptUpdate As Boolean = Nothing
+    Private Shared _ImportRzptWasserSpeichern As Boolean = Nothing
+    Private Shared _ImportProdArtikelRezept As Boolean = Nothing
+    Private Shared _ImportProdFTP As Boolean = Nothing
+
+    Private Shared _ExportArtikel As Boolean = Nothing
+    Private Shared _ExportRohstoffe As Boolean = Nothing
+    Private Shared _ExportRezepte As Boolean = Nothing
+    Private Shared _ExportChargen As Boolean = Nothing
+    Private Shared _ExportChargenTWNr As Integer = wb_Global.UNDEFINED
+
+    Private Shared _ExportArtikel_Nwt As Boolean = Nothing
+    Private Shared _ExportRohstoffe_Nwt As Boolean = Nothing
+    Private Shared _ExportRezepte_Aendrgn As Boolean = Nothing
+    Private Shared _ExportRezepte_Sauertg As Boolean = Nothing
 
     Private Shared _ImportPathPistor As String = Nothing
     Private Shared _ArtikelVerarbeitungsHinweisPath As String = Nothing
     Private Shared _ExcelInstalled As Integer = wb_Global.UNDEFINED
     Private Shared _WinBackBackgroudTaskConnected As Boolean = False
+
+    Private Shared _TwinCatADS As Boolean = Nothing
+    Private Shared _TwinCatADS_IP As String = Nothing
+    Private Shared _TwinCatADS_Port As Integer = 800
 
     Private Shared _Mandaten As New List(Of obMandant)
 
@@ -150,6 +209,15 @@ Public Class wb_GlobalSettings
                 _MandantNr = OrgaBackMandantNr
             End If
             setWinBackIni("winback", "MsSQLServer_AdmnDB", value)
+        End Set
+    End Property
+
+    Public Shared Property ProduktionDummyArtikel As String
+        Get
+            Return _ProduktionDummyArtikel
+        End Get
+        Set(value As String)
+            _ProduktionDummyArtikel = value
         End Set
     End Property
 
@@ -198,7 +266,7 @@ Public Class wb_GlobalSettings
     Public Shared ReadOnly Property OrgaBackMainConString As String
         Get
             If MsSQLUserId <> "xx" Then
-                Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLMain & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd
+                Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLMain & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd & ";TrustServerCertificate=True"
             Else
                 Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLMain & "; Integrated Security=True"
             End If
@@ -208,7 +276,7 @@ Public Class wb_GlobalSettings
     Public Shared ReadOnly Property OrgaBackAdminConString As String
         Get
             If MsSQLUserId <> "xx" Then
-                Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLAdmn & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd
+                Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLAdmn & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd & ";TrustServerCertificate=True"
             Else
                 Return "Data Source=" & MsSQLServer & "; Database=" & MsSQLAdmn & "; Integrated Security=True"
             End If
@@ -224,7 +292,7 @@ Public Class wb_GlobalSettings
                     If DefaultPath = OrgaBackDockPanelLayoutPath.ProgrammGlobal Then
                         Dim sArr() As String = pTempPath.Split("\")
                         'Temp-Pfad global
-                        For i = 0 To sArr.Count - 2
+                        For i = 0 To sArr.Length - 2
                             OrgaBackTempPfad &= sArr(i) & "\"
                         Next
                     Else
@@ -253,7 +321,7 @@ Public Class wb_GlobalSettings
     Public Shared ReadOnly Property Theme As ThemeBase
         Get
             'Einstellung aus Desktop.DockingTheme auslesen
-            If _OrgaBackTheme < 0 And wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+            If _OrgaBackTheme < 0 AndAlso wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
                 'DbReadSetting("Desktop")
             Else
                 _OrgaBackTheme = wb_Global.OrgaBackThemes.Blau
@@ -262,7 +330,7 @@ Public Class wb_GlobalSettings
             'Rückgabe-Wert abhängig von der Einstellung in OrgaBack
             Select Case _OrgaBackTheme
                 Case wb_Global.OrgaBackThemes.Standard
-                    Return New VS2005Theme
+                    Return New VS2015BlueTheme
                 Case wb_Global.OrgaBackThemes.Blau
                     Return New VS2015BlueTheme
                 Case wb_Global.OrgaBackThemes.Grau
@@ -280,6 +348,49 @@ Public Class wb_GlobalSettings
             _OrgaBackTheme = value
         End Set
     End Property
+
+    Public Shared ReadOnly Property MyOwnExeFileName As String
+        Get
+            Return MyExeDirectory & MyExeFileName
+        End Get
+    End Property
+    Public Shared ReadOnly Property MyExeDirectory As String
+        Get
+            'Programm-Verzeichnis Signum OrgaSoft
+            Return System.AppDomain.CurrentDomain.BaseDirectory
+        End Get
+    End Property
+    Public Shared ReadOnly Property MyExeFileName As String
+        Get
+            'Dateiname Signum OrgaSoft
+            Return System.AppDomain.CurrentDomain.FriendlyName
+        End Get
+    End Property
+
+    Public Shared Property ShowDashboard As Boolean
+        Get
+            If pVariante = ProgVariante.AnyWhere Then
+                _ShowDashboard = True
+            Else
+                If _ShowDashboard = UNDEFINED Then
+                    getWinBackIni("DashBoard")
+                End If
+            End If
+            Return (_ShowDashboard = 1)
+
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _ShowDashboard = 1
+            Else
+                _ShowDashboard = 0
+            End If
+
+            'wird in der Sektion winback gespeichert (abhängig vom Mandanten)
+            setWinBackIni("winback", "ShowDashboard", value)
+        End Set
+    End Property
+
 
     ''' <summary>
     ''' OrgaBack Mitarbeiter-Kürzel des aktuell angemeldeten Mitarbeiters
@@ -345,6 +456,23 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    ''' <summary>
+    ''' Das WinBack-AddIn kann auf einer lokalen(Windows)-MySql-Datenbank laufen oder auf
+    ''' einer "echten" Linux-Datenbank mit Produktion.
+    ''' Wenn die MySql-Version mit 3.xxx beginnt kann davon ausgegangen werden, dass es sich
+    ''' um eine Linux-Installation mit "echter" Produktion handelt
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property LocalMySql As Boolean
+        Get
+            If Not wb_sql_Functions.GetMySqlVersion().StartsWith("3.") Then
+                Return True
+            Else
+                Return False
+            End If
+        End Get
+    End Property
+
     Public Shared ReadOnly Property DataGridAlternateRowColor As Color
         Get
             Return System.Drawing.Color.LightGray
@@ -381,7 +509,147 @@ Public Class wb_GlobalSettings
             Else
                 _Log4netAutoStart = 0
             End If
-            setWinBackIni("winback", "Log4netAutoStart", _Log4netAutoStart)
+            setWinBackIni("winback", "Log4netAutoStart", _Log4netAutoStart.ToString)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_DebugLevel As Boolean
+        Get
+            Return _Log4net_DebugLevel
+        End Get
+        Set(value As Boolean)
+            _Log4net_DebugLevel = value
+            setWinBackIni("log4net", "DebugLevel", _Log4net_DebugLevel)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_InfoLevel As Boolean
+        Get
+            Return _Log4net_InfoLevel
+        End Get
+        Set(value As Boolean)
+            _Log4net_InfoLevel = value
+            setWinBackIni("log4net", "InfoLevel", _Log4net_InfoLevel)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_WarnLevel As Boolean
+        Get
+            Return _Log4net_WarnLevel
+        End Get
+        Set(value As Boolean)
+            _Log4net_WarnLevel = value
+            setWinBackIni("log4net", "WarnLevel", _Log4net_WarnLevel)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_ErrorLevel As Boolean
+        Get
+            Return _Log4net_ErrorLevel
+        End Get
+        Set(value As Boolean)
+            _Log4net_ErrorLevel = value
+            setWinBackIni("log4net", "ErrorLevel", _Log4net_ErrorLevel)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_LL_EnablePrinterInformation As Boolean
+        Get
+            Return _Log4net_LL_EnablePrinterInformation
+        End Get
+        Set(value As Boolean)
+            _Log4net_LL_EnablePrinterInformation = value
+            setWinBackIni("log4net", "LL_PrinterInformation", _Log4net_LL_EnablePrinterInformation)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_LL_EnableDataProvider As Boolean
+        Get
+            Return _Log4net_LL_EnableDataProvider
+        End Get
+        Set(value As Boolean)
+            _Log4net_LL_EnableDataProvider = value
+            setWinBackIni("log4net", "LL_DataProvider", _Log4net_LL_EnableDataProvider)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_LL_EnableLicensing As Boolean
+        Get
+            Return _Log4net_LL_EnableLicensing
+        End Get
+        Set(value As Boolean)
+            _Log4net_LL_EnableLicensing = value
+            setWinBackIni("log4net", "LL_Licensing", _Log4net_LL_EnableLicensing)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_LL_EnableDotNetComponent As Boolean
+        Get
+            Return _Log4net_LL_EnableDotNetComponent
+        End Get
+        Set(value As Boolean)
+            _Log4net_LL_EnableDotNetComponent = value
+            setWinBackIni("log4net", "LL_DotNetComponent", _Log4net_LL_EnableDotNetComponent)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_LL_EnableApiCalls As Boolean
+        Get
+            Return _Log4net_LL_EnableApiCalls
+        End Get
+        Set(value As Boolean)
+            _Log4net_LL_EnableApiCalls = value
+            setWinBackIni("log4net", "LL_ApiCalls", _Log4net_LL_EnableApiCalls)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_LL_EnableOther As Boolean
+        Get
+            Return _Log4net_LL_EnableOther
+        End Get
+        Set(value As Boolean)
+            _Log4net_LL_EnableOther = value
+            setWinBackIni("log4net", "LL_Other", _Log4net_LL_EnableOther)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_LL_DebugLevel As Boolean
+        Get
+            Return _Log4net_LL_DebugLevel
+        End Get
+        Set(value As Boolean)
+            _Log4net_LL_DebugLevel = value
+            setWinBackIni("log4net", "LL_DebugLevel", _Log4net_LL_DebugLevel)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_LL_InfoLevel As Boolean
+        Get
+            Return _Log4net_LL_InfoLevel
+        End Get
+        Set(value As Boolean)
+            _Log4net_LL_InfoLevel = value
+            setWinBackIni("log4net", "LL_InfoLevel", _Log4net_LL_InfoLevel)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_LL_WarnLevel As Boolean
+        Get
+            Return _Log4net_LL_WarnLevel
+        End Get
+        Set(value As Boolean)
+            _Log4net_LL_WarnLevel = value
+            setWinBackIni("log4net", "LL_WarnLevel", _Log4net_LL_WarnLevel)
+        End Set
+    End Property
+
+    Public Shared Property Log4net_LL_ErrorLevel As Boolean
+        Get
+            Return _Log4net_LL_ErrorLevel
+        End Get
+        Set(value As Boolean)
+            _Log4net_LL_ErrorLevel = value
+            setWinBackIni("log4net", "LL_ErrorLevel", _Log4net_LL_ErrorLevel)
         End Set
     End Property
 
@@ -398,7 +666,7 @@ Public Class wb_GlobalSettings
                     Return "server=" & MySQLServerIP & ";" & "user id=" & MySQLUser & ";" & "password=" & MySQLPass & ";" & "database=" & MySQLWinBack & ";" & "ConvertZeroDateTime=True,"
                 Case wb_Sql.dbType.msSql
                     If MsSQLUserId <> "xx" Then
-                        Return "Data Source=" & MsSQLServer & "; Database=" & MySQLWinBack & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd
+                        Return "Data Source=" & MsSQLServer & "; Database=" & MySQLWinBack & "; user id=" & MsSQLUserId & "; password=" & MsSQLPasswd & ";TrustServerCertificate=True"
                     Else
                         Return "Data Source=" & MsSQLServer & "; Database=" & MySQLWinBack & "; Integrated Security=True"
                     End If
@@ -449,17 +717,46 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared WriteOnly Property TempMySQLServerIP As String
+        Set(value As String)
+            _TempMySQLServerIP = value
+        End Set
+    End Property
+
     Public Shared Property MySQLServerIP As String
         Get
-            If _MySQLServerIP = Nothing Or _MySQLServerIP = "" Then
+            If _MySQLServerIP = Nothing OrElse _MySQLServerIP = "" Then
                 getWinBackIni("SQL")
             End If
-            Return _MySQLServerIP
+            'MySql-Server-IP-Adresse wurde über Aufruf-Parameter temporär geändert
+            If _TempMySQLServerIP = Nothing OrElse _TempMySQLServerIP = "" Then
+                Return _MySQLServerIP
+            Else
+                Return _TempMySQLServerIP
+            End If
         End Get
         Set(value As String)
             If value <> "" Then
                 _MySQLServerIP = value
                 setWinBackIni("winback", "eMySQLServerIP", _MySQLServerIP)
+            End If
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Schreibt die IP-Adresse in die winback.ini im Programm-Verzeichnis.
+    ''' Notwendig nach Setup/Änderung der IP-Adresse
+    ''' </summary>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
+    Public Shared WriteOnly Property MySQLMasterServerIP As String
+        Set(value As String)
+            If value <> "" Then
+                'IP-Adresse in die winback.ini im Programm-Verzeichnis schreiben
+                Dim Inifile As New wb_IniFile(wb_GlobalSettings.pWinBackMainIniPath)
+                Inifile.WriteString("winback", "eMySQLServerIP", value)
+                Inifile = Nothing
+                'IP-Adresse wird zusätzlich in die locale winback.in im User-Verzeichnis geschrieben
+                MySQLServerIP = value
             End If
         End Set
     End Property
@@ -571,7 +868,7 @@ Public Class wb_GlobalSettings
             If _OrgaBackDBVersion Is Nothing Then
                 _OrgaBackDBVersion = ""
                 Dim Orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-                If Orgaback.sqlSelect(wb_Sql_Selects.mssqlSystemInfo) Then
+                If Orgaback.sqlSelect(wb_sql_Selects.mssqlSystemInfo) Then
                     If Orgaback.Read Then
                         _OrgaBackDBVersion = Orgaback.sField("DBVersion")
                     End If
@@ -585,7 +882,7 @@ Public Class wb_GlobalSettings
     Public Shared ReadOnly Property SignumContractsVersion As String
         Get
             If pVariante = ProgVariante.OrgaBack Then
-                Return FileVersionInfo.GetVersionInfo(wb_GlobalSettings.pProgrammPath & "Signum.OrgaSoft.Contracts.dll").FileVersion
+                Return FileVersionInfo.GetVersionInfo(wb_GlobalSettings.MyExeDirectory & "OrgaSoft.Contracts.dll").FileVersion
             Else
                 Return "V0.0.0"
             End If
@@ -615,6 +912,22 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared ReadOnly Property WinBackMySqlServerVersion As String
+        Get
+            'Version vorbelegen
+            Dim version As String = ""
+            'Datenbank-Verbindung öffnen - MySQL
+            Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+            'DB-Version abfragen
+            If winback.sqlSelect("SELECT version()") AndAlso winback.Read Then
+                version = winback.sField("version()")
+            End If
+            'Datenbank-Verbindung wieder schliessen
+            winback.Close()
+            Return version
+        End Get
+    End Property
+
     Public Shared Property pAddInPath As String
         Get
             If pVariante = ProgVariante.WinBack Then
@@ -631,37 +944,54 @@ Public Class wb_GlobalSettings
 
     Public Shared ReadOnly Property pLog4netPath As String
         Get
-            Return pAddInPath & "Log\"
+            Return pAddInPath & wb_Global.SubDir_log
         End Get
     End Property
 
     Public Shared ReadOnly Property pDBUpdatePath As String
         Get
-            Return pAddInPath & "DBUpdate\"
+            If pVariante = ProgVariante.UnitTest Then
+                Return pProgrammPath & "..\..\..\" & wb_Global.SubDir_dbu
+            Else
+                Return pAddInPath & wb_Global.SubDir_dbu
+            End If
         End Get
     End Property
 
     Public Shared ReadOnly Property pWinBackUpdatePath As String
         Get
-            Return pAddInPath & "Update\"
+            Return pAddInPath & wb_Global.SubDir_upd
         End Get
     End Property
 
     Public Shared ReadOnly Property pKocherPath As String
         Get
-            Return pAddInPath & "Temp\"
+            Return pAddInPath & wb_Global.SubDir_tmp
         End Get
     End Property
 
     Public Shared ReadOnly Property pRohstoffDatenPath As String
         Get
-            Return pAddInPath & "Temp\"
+            Dim _pRohstoffDatenPath As String
+
+            If pVariante = wb_Global.ProgVariante.UnitTest Then
+                _pRohstoffDatenPath = pProgrammPath & "..\..\..\" & wb_Global.SubDir_tmp
+            Else
+                _pRohstoffDatenPath = pAddInPath & wb_Global.SubDir_tmp
+            End If
+
+            'wenn der tmp-Pfad nicht existiert, erzeugen...
+            If System.IO.Directory.Exists(_pRohstoffDatenPath) = False Then
+                System.IO.Directory.CreateDirectory(_pRohstoffDatenPath)
+            End If
+
+            Return _pRohstoffDatenPath
         End Get
     End Property
 
     Public Shared ReadOnly Property pDruckHistoriePath As String
         Get
-            Return pAddInPath & "Temp\"
+            Return pAddInPath & wb_Global.SubDir_pdf
         End Get
     End Property
 
@@ -673,26 +1003,33 @@ Public Class wb_GlobalSettings
     Public Shared Property pListenPath As String
         Get
             If _pListenPath = Nothing Then
-                If pVariante = wb_Global.ProgVariante.WinBack Then
-#If DEBUG Then
-                    _pListenPath = pProgrammPath & "Listen\"
-                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Messe", "ListLabel")
-                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M5", "ListLabel")
-                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M4", "ListLabel")
-                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M3", "ListLabel")
-                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M2", "ListLabel")
-                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug-M1", "ListLabel")
-                    _pListenPath = _pListenPath.Replace("WinBackStart\bin\Debug", "ListLabel")
-#Else
-                    _pListenPath = PProgrammPath & "Listen\"
-#End If
-                End If
+                'If Debugger.IsAttached Then
+                'aus dem Programm-Pfad wird /bin/... durch /lst ersetzt
+                Select Case pVariante
+                        Case ProgVariante.AnyWhere
+                            _pListenPath = Left(pProgrammPath, InStr(pProgrammPath, "\WinBackAnyWhere\")) & "ListLabel30" & wb_Global.SubDir_lst
+                        Case ProgVariante.WinBack
+                            _pListenPath = Left(pProgrammPath, InStr(pProgrammPath, "\WinBackStart\")) & "ListLabel30" & wb_Global.SubDir_lst
+                        Case ProgVariante.OrgaBack
+                            _pListenPath = Left(pProgrammPath, InStr(pProgrammPath, "\bin\")) & "ListLabel30" & wb_Global.SubDir_lst
+                        Case Else
+                            _pListenPath = Left(pProgrammPath, InStr(pProgrammPath, "\bin\")) & "ListLabel30" & wb_Global.SubDir_lst
+                    End Select
+                'Else
+                _pListenPath = pProgrammPath & wb_Global.SubDir_lst
+                'End If
             End If
-            Return _pListenPath
+                Return _pListenPath
         End Get
         Set(value As String)
             _pListenPath = value
         End Set
+    End Property
+
+    Public Shared ReadOnly Property pRedistPath As String
+        Get
+            Return pProgrammPath & wb_Global.SubDir_ll3
+        End Get
     End Property
 
     Public Shared Property pTempPath As String
@@ -706,8 +1043,22 @@ Public Class wb_GlobalSettings
 
     Public Shared Property pXConfigPath As String
         Get
-            If _pXConfigPath = Nothing Then
-                _pXConfigPath = _pProgrammPath & "XFace"
+            If Debugger.IsAttached Then
+                'aus dem Programm-Pfad wird /bin/... durch /lst ersetzt
+                Select Case pVariante
+                    Case ProgVariante.AnyWhere
+                        _pXConfigPath = Left(pProgrammPath, InStr(pProgrammPath, "\WinBackAnyWhere\")) & wb_Global.SubDir_xfd
+                    Case ProgVariante.WinBack
+                        _pXConfigPath = Left(pProgrammPath, InStr(pProgrammPath, "\WinBackStart\")) & wb_Global.SubDir_xfd
+                    Case ProgVariante.OrgaBack
+                        _pXConfigPath = Left(pProgrammPath, InStr(pProgrammPath, "\bin\")) & wb_Global.SubDir_xfd
+                    Case Else
+                        _pXConfigPath = Left(pProgrammPath, InStr(pProgrammPath, "\bin\")) & wb_Global.SubDir_xfd
+                End Select
+            Else
+                If _pXConfigPath = Nothing Then
+                    _pXConfigPath = _pProgrammPath & wb_Global.SubDir_xfc
+                End If
             End If
             Return _pXConfigPath
         End Get
@@ -733,6 +1084,20 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    ''' <summary>
+    ''' Pfad zu den Artikel-Bildern
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property pPicturePath As String
+        Get
+            Return pAddInPath & wb_Global.SubDir_pic
+        End Get
+        Set(value As String)
+            'TODO Pfad variabel mit Edit
+        End Set
+    End Property
+
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
     Public Shared Property OsGrpRohstoffe As String
         Get
             If _osGrpRohstoffe Is Nothing Then
@@ -750,6 +1115,17 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    Public Shared ReadOnly Property OsGrpRohstoffe_MsSql As String
+        Get
+            Dim Grp As String = OsGrpRohstoffe
+            'Sonderzeichen aus dem SQL-String ausfiltern (Für MsSQL)
+            Grp = Grp.Replace("^", "")
+            Grp = Grp.Replace("$", "")
+            Return Grp
+        End Get
+    End Property
+
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
     Public Shared Property OsGrpBackwaren As String
         Get
             If _osGrpBackwaren Is Nothing Then
@@ -765,6 +1141,16 @@ Public Class wb_GlobalSettings
                 IniFile = Nothing
             End If
         End Set
+    End Property
+
+    Public Shared ReadOnly Property OsGrpBackwaren_MsSql As String
+        Get
+            Dim Grp As String = OsGrpBackwaren
+            'Sonderzeichen aus dem SQL-String ausfiltern (Für MsSQL)
+            Grp = Grp.Replace("^", "")
+            Grp = Grp.Replace("$", "")
+            Return Grp
+        End Get
     End Property
 
     Public Shared Property osLaendercode As String
@@ -826,7 +1212,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As Integer)
             _osProdTageVoraus = value
-            setWinBackIni("OrgaBack", "ProdPlanTage", value)
+            setWinBackIni("OrgaBack", "ProdPlanTage", value.ToString)
         End Set
     End Property
 
@@ -835,54 +1221,62 @@ Public Class wb_GlobalSettings
     ''' 
     ''' Läuft das Programm als OrgaBack-AddIn ist der Pfad für die winback.ini im Verzeichnis OrgaSoft
     ''' Das Addin läuft in OrgaSoft/Addin
+    ''' Im Debug-Mode wird die WinBack.ini nach dem Übersetzen automatisch von 
+    '''     ..repos\Signum_WinBack in das \bin\debug\-Verzeichnis kopiert (Build-Ereignisse)
     ''' 
     ''' Das Hintergrund-Programm WinBack-Server-Task startet im Verzeichnis OrgaSoft/AddIn, der Verweis
     ''' auf die winback.ini liegt damit eine Ebene tiefer.
     ''' Für den Debugger wird der Pfad zur winback.ini als Parameter übergeben, da sonst der Programm-Pfad
     ''' verwendet werden muss.
     '''
-    ''' als winback.exe im Standalone-Betrieb liegt die winback.ini im Programm-Verzeichnis
+    ''' als winback.exe im Standalone-Betrieb liegt die winback.ini im User-Verzeichnis (AppData/Roaming/OrgaBack)
+    ''' und im Programm-Verzeichnis. Wenn die Datei im Programm-Verzeichnis neuer ist, wird diese in das User-Verzeichnis kopiert.
     ''' </summary>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Performance", "CA1845:""string.Concat"" auf span-Basis verwenden", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Performance", "CA1866:Char-Überladung verwenden", Justification:="<Ausstehend>")>
     Public Shared Property pWinBackIniPath As String
         Get
             If _pWinBackIniPath = Nothing Then
                 Select Case pVariante
-                    Case wb_Global.ProgVariante.OBServerTask
-                        'die Server-Task startet im AddIn-Verzeichnis, der Pfad zur winback.ini liegt eine Ebene davor
-#If DEBUG Then
-                        _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
-                        _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\"))
-                        _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\"))
-                        _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
-#Else
-                        _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
-                        _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
-#End If
-                    Case wb_Global.ProgVariante.WBServerTask
-                        _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
-                        _pWinBackIniPath = _pWinBackIniPath & "\WinBack.ini"
 
-                    Case wb_Global.ProgVariante.OrgaBack
+                    Case ProgVariante.OBServerTask
+                        If Debugger.IsAttached Then
+                            _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
+                            _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\"))
+                            _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
+                        Else
+                            'die Server-Task startet im AddIn-Verzeichnis, der Pfad zur winback.ini liegt eine Ebene davor
+                            _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath)
+                            _pWinBackIniPath = _pWinBackIniPath.Substring(0, _pWinBackIniPath.LastIndexOf("\")) & "\WinBack.ini"
+                        End If
+
+                    Case ProgVariante.WBServerTask
+                        'die Server-Task startet im Programm-Verzeichnis, der Pfad zur winback.ini ist identisch
+                        _pWinBackIniPath = Path.GetDirectoryName(pProgrammPath) & "\WinBack.ini"
+
+                    Case ProgVariante.OrgaBack
                         'die winback.ini liegt direkt über dem AddIn-Pfad '..\OrgaBack\AddIn
                         Dim directoryInfo As System.IO.DirectoryInfo = Directory.GetParent(pAddInPath)
                         _pWinBackIniPath = directoryInfo.Parent.FullName & "\WinBack.ini"
 
-                    Case wb_Global.ProgVariante.WinBack
-                        'die winback.ini liegt im Programm-Verzeichnis
-                        'TODO User-Verzeichnis
-                        _pWinBackIniPath = pProgrammPath & "\WinBack.ini"
+                    Case ProgVariante.WinBack, ProgVariante.AnyWhere
+                        'die winback.ini liegt im User-Verzeichnis
+                        _pWinBackIniPath = pAppDataPath & "\WinBack.ini"
+                        'prüfen ob die winback.ini im User-Verzeichnis vorhanden und aktueller ist
+                        If Not CheckWinBackIni(pProgrammPath & "\WinBack.ini", _pWinBackIniPath) Then
+                            'aus irgendeinem Grund kann auf den User-Path nicht zugegriffen werden...
+                            _pWinBackIniPath = pProgrammPath & "\WinBack.ini"
+                        End If
 
-                    Case wb_Global.ProgVariante.UnitTest
+                    Case ProgVariante.UnitTest
                         'die winback.ini liegt im Programm-Verzeichnis
                         _pWinBackIniPath = pProgrammPath & "\WinBack.ini"
 
                     Case Else
                         Return ""
                         Exit Property
-                        ''die winback.ini liegt direkt über dem AddIn-Pfad '..\OrgaBack\AddIn
-                        'Dim directoryInfo As System.IO.DirectoryInfo = Directory.GetParent(pAddInPath)
-                        '_pWinBackIniPath = directoryInfo.Parent.FullName & "\WinBack.ini"
+
                 End Select
             End If
 
@@ -897,6 +1291,57 @@ Public Class wb_GlobalSettings
             _pWinBackIniPath = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Gibt den Pfad zur MASTER winback.ini zurück.
+    ''' Einen Master-Pfad gibt nur in der Variante WinBack/AnyWhere (Programm-Verzeichnis)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property pWinBackMainIniPath As String
+        Get
+            Select Case pVariante
+                Case ProgVariante.WinBack, ProgVariante.AnyWhere
+                    'der MASTER-Path liegt im Programm-Verzeichnis
+                    _pWinBackIniPath = pProgrammPath & "\WinBack.ini"
+                Case Else
+                    Return pWinBackIniPath
+            End Select
+            Return pWinBackIniPath
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Prüft ob die winback.ini im User-Verzeichnis vorhanden und aktueller ist als die winback.ini im Programm-Verzeichnis
+    ''' Falls nicht werden die notwendigen Zeilen bzw. die gesamte Datei ins User-Verzeichnis kopiert
+    ''' </summary>
+    ''' <param name="ProgPath"></param>
+    ''' <param name="UserPath"></param>
+    Private Shared Function CheckWinBackIni(ProgPath As String, UserPath As String) As Boolean
+        Try
+
+            'Prüfen ob die winback.ini im User-Pfad vorhanden ist.
+            If Not File.Exists(UserPath) Then
+                'winback.ini ins User-Verzeichnis kopieren
+                File.Copy(ProgPath, UserPath)
+                Trace.WriteLine("@I_WinBack.ini im User-Verzeichnis ist nicht vorhanden - wird aus Programm-Verzeichnis kopiert")
+                Return True
+            End If
+
+            'prüfen ob die winback.ini im Programm-Pfad aktueller als die winback.ini im User-Pfad ist
+            If IO.File.GetLastWriteTime(ProgPath) > IO.File.GetLastWriteTime(UserPath) Then
+                'alle Einträge aus der winback.ini im Programm-Verzeichnis in die winback.ini im User-Verzeichnis mergen
+                Dim UserIniFile As New wb_IniFile(UserPath)
+                UserIniFile.MergeFile(ProgPath)
+                Trace.WriteLine("@I_WinBack.ini im User-Verzeichnis ist nicht aktuell - wird aus Programm-Verzeichnis aktualisiert")
+                Return True
+            End If
+
+        Catch ex As Exception
+            Debug.Print("@E_Fehler beim Prüfen WinBack.ini")
+            Return False
+        End Try
+        Return True
+    End Function
 
     Public Shared ReadOnly Property pVersionTxtPath As String
         Get
@@ -918,7 +1363,9 @@ Public Class wb_GlobalSettings
             Return _pProgrammPath
         End Get
         Set(value As String)
-            _pProgrammPath = value
+            If pVariante <> ProgVariante.UnitTest Then
+                _pProgrammPath = value
+            End If
         End Set
     End Property
 
@@ -941,6 +1388,16 @@ Public Class wb_GlobalSettings
         End Get
     End Property
 
+    Public Shared ReadOnly Property pAppDataPath As String
+        Get
+            If _pAppDataPath = Nothing Then
+                _pAppDataPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) & "\WinBack"
+            End If
+            Return _pAppDataPath
+        End Get
+    End Property
+
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
     Public Shared ReadOnly Property ExcelInstalled As Boolean
         Get
             If _ExcelInstalled = wb_Global.UNDEFINED Then
@@ -1016,7 +1473,7 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As ModusChargenTeiler)
             _ChargenTeiler = value
-            setWinBackIni("Produktion", "ChargenTeiler", value)
+            setWinBackIni("Produktion", "ChargenTeiler", Int(value).ToString)
         End Set
     End Property
 
@@ -1029,9 +1486,11 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As ModusTeigOptimierung)
             _TeigOptimierung = value
-            setWinBackIni("Produktion", "TeigOptimierung", value)
+            setWinBackIni("Produktion", "TeigOptimierung", Int(value).ToString)
         End Set
     End Property
+
+
 
     ''' <summary>
     ''' Global verfügbarer Wert Datum Produktionsplan (Produktion für...)
@@ -1067,6 +1526,31 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
+    ''' <summary>
+    ''' Eventuell bestehenden Produktionsplan vor Einlesen der Produktionsdaten aus OrgaBack ohne Nachfrage löschen.
+    ''' Normalerweise wird ein schon bestehender Produktionplan in WinBack beim Einlesen der Daten von OrgaBack nur
+    ''' auf Nachfrage gelöscht. 
+    ''' 
+    ''' Da bei Niehaves immer wieder Probleme mit doppelten Einträgen in der Aufarbeitungsliste
+    ''' auftreten, kann die bestehende Liste ohne Nachfragen vor Lesen der Daten aus OrgaBack gelöscht werden.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property ProdPlanClearOnRead As Boolean
+        Get
+            getWinBackIni("Produktion")
+            Return _ProdPlanClearOnRead
+        End Get
+        Set(value As Boolean)
+            _ProdPlanClearOnRead = value
+            setWinBackIni("Produktion", "ProdPlanClear", value.ToString)
+        End Set
+    End Property
+
+    Friend Shared Function AufarbeitungZielDrucken() As Boolean
+        'TODO - evtl als globale Einstellung in OrgaBack realisieren
+        Return True
+    End Function
+
     Public Shared Property AktLanguage As String
         Get
             Return _AktLanguage
@@ -1098,7 +1582,7 @@ Public Class wb_GlobalSettings
             If _WinBackLanguage2 = UNDEFINED Then
                 getWinBackKonfiguration()
             End If
-            If _WinBackLanguageVariante = 1 And (_WinBackLanguage2 = wb_Language.GetLanguageNr) Then
+            If _WinBackLanguageVariante = 1 AndAlso (_WinBackLanguage2 = wb_Language.GetLanguageNr) Then
                 Return True
             Else
                 Return False
@@ -1135,6 +1619,16 @@ Public Class wb_GlobalSettings
         Set(value As Integer)
             _MandantNr = value
         End Set
+    End Property
+
+    Public Shared ReadOnly Property WinBackDemoMandant As Boolean
+        Get
+            If MandantName.Contains("Demo") Then
+                Return True
+            Else
+                Return False
+            End If
+        End Get
     End Property
 
     Public Shared ReadOnly Property OrgaBackMandantName As String
@@ -1259,10 +1753,7 @@ Public Class wb_GlobalSettings
                                     End If
 
                                     'Mandant und Admin-DB in Liste eintragen
-                                    Dim m As New wb_Global.obMandant
-                                    m.MandantNr = MandantNr
-                                    m.MandantName = MandantName
-                                    m.AdminDBName = AdminDBName
+                                    Dim m As New wb_Global.obMandant With {.MandantNr = MandantNr, .MandantName = MandantName, .AdminDBName = AdminDBName}
                                     _Mandaten.Add(m)
 
                             End Select
@@ -1281,10 +1772,7 @@ Public Class wb_GlobalSettings
             'Fehler beim Lesen der Mandanten-Information aus OrgaBack.ini
             _Mandaten.Clear()
             'Mandant und Admin-DB in Liste eintragen
-            Dim m As New wb_Global.obMandant
-            m.MandantNr = 1
-            m.MandantName = "FEHLER BEI ORGABACK.INI"
-            m.AdminDBName = Nothing
+            Dim m As New wb_Global.obMandant With {.MandantNr = 1, .MandantName = "FEHLER BEI ORGABACK.INI", .AdminDBName = Nothing}
             _Mandaten.Add(m)
         End Try
     End Sub
@@ -1293,6 +1781,7 @@ Public Class wb_GlobalSettings
         Return pExportPath & Tabelle & "_" & DateTime.Now.ToString("yyMMdd") & "_" & DateTime.Now.ToString("hhmmss") & ".csv"
     End Function
 
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
     Private Shared Sub setWinBackIni(Section As String, Key As String, value As String)
         'Abhängig vom Mandanten
         If Section = "winback" Then
@@ -1305,6 +1794,22 @@ Public Class wb_GlobalSettings
 
         Dim Inifile As New wb_IniFile
         Inifile.WriteString(Section, Key, value)
+        Inifile = Nothing
+    End Sub
+
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
+    Private Shared Sub setWinBackIni(Section As String, Key As String, value As Boolean)
+        'Abhängig vom Mandanten
+        If Section = "winback" Then
+            Section = IniMandantSection("winback")
+        End If
+        'Abhängig vom Mandanten
+        If Section = "orgaback" Then
+            Section = IniMandantSection("orgaback")
+        End If
+
+        Dim Inifile As New wb_IniFile
+        Inifile.WriteBool(Section, Key, value)
         Inifile = Nothing
     End Sub
 
@@ -1341,17 +1846,36 @@ Public Class wb_GlobalSettings
 
                 _MySQLPath = IniFile.ReadString("winback", "MySQLServer_Path", "C:\Program Files\MySQL\MySQL Server 5.0")
 
-                Trace.WriteLine("_MsSQLMainDB " & _MsSQLMainDB)
-                Trace.WriteLine("_MsSQLAdmnDB " & _MsSQLAdmnDB)
-                Trace.WriteLine("_MsSQLServer " & _MsSQLServer)
-                Trace.WriteLine("_MsSQLUserId " & _MsSQLUserId)
-                Trace.WriteLine("_MsSQLPasswd " & _MsSQLPasswd)
+                Trace.WriteLine("@I_MsSQLMainDB " & _MsSQLMainDB)
+                Trace.WriteLine("@I_MsSQLAdmnDB " & _MsSQLAdmnDB)
+                Trace.WriteLine("@I_MsSQLServer " & _MsSQLServer)
+                Trace.WriteLine("@I_MsSQLUserId " & _MsSQLUserId)
+                Trace.WriteLine("@I_MsSQLPasswd " & _MsSQLPasswd)
+
+            Case "DashBoard"
+                _ShowDashboard = IniFile.ReadInt(IniWinBack_Mandant, "ShowDashboard", 0)
 
             Case "Logger"
                 _Log4netKonfigFile = IniFile.ReadString(IniWinBack_Mandant, "Log4netKonfigFile", "")
                 _Log4netAutoStart = IniFile.ReadInt(IniWinBack_Mandant, "Log4netAutoStart", UNDEFINED)
                 _Log4ViewExe = IniFile.ReadString("winback", "Log4View_Path", "C:\Program Files (x86)\Log4View V2\Log4View.exe")
                 _NotePadPlusExe = IniFile.ReadString("winback", "NotePadPlusPath", "C:\Program Files (x86)\Notepad++\Notepad++.exe")
+
+                _Log4net_DebugLevel = IniFile.ReadBool("log4net", "DebugLevel")
+                _Log4net_InfoLevel = IniFile.ReadBool("log4net", "InfoLevel")
+                _Log4net_WarnLevel = IniFile.ReadBool("log4net", "WarnLevel")
+                _Log4net_ErrorLevel = IniFile.ReadBool("log4net", "ErrorLevel", True)
+
+                _Log4net_LL_EnablePrinterInformation = IniFile.ReadBool("log4net", "LL_PrinterInformation")
+                _Log4net_LL_EnableDataProvider = IniFile.ReadBool("log4net", "LL_DataProvider")
+                _Log4net_LL_EnableLicensing = IniFile.ReadBool("log4net", "LL_Licensing")
+                _Log4net_LL_EnableDotNetComponent = IniFile.ReadBool("log4net", "LL_DotNetComponent")
+                _Log4net_LL_EnableApiCalls = IniFile.ReadBool("log4net", "LL_ApiCalls")
+                _Log4net_LL_EnableOther = IniFile.ReadBool("log4net", "LL_Other")
+                _Log4net_LL_DebugLevel = IniFile.ReadBool("log4net", "LL_DebugLevel")
+                _Log4net_LL_InfoLevel = IniFile.ReadBool("log4net", "LL_InfoLevel")
+                _Log4net_LL_WarnLevel = IniFile.ReadBool("log4net", "LL_WarnLevel")
+                _Log4net_LL_ErrorLevel = IniFile.ReadBool("log4net", "LL_ErrorLevel")
 
             Case "OrgaBack"
                 _osGrpBackwaren = IniFile.ReadString(IniOrgaBack_Mandant, "GruppeBackwaren", IniFile.ReadString("orgaback", "GruppeBackwaren", _osGrpBackwaren))
@@ -1362,8 +1886,9 @@ Public Class wb_GlobalSettings
                 _osProdTageVoraus = IniFile.ReadString("orgaback", "ProdPlanTage", "1")
 
             Case "Produktion"
-                _ChargenTeiler = IniFile.ReadString("Produktion", "ChargenTeiler", wb_Global.ModusChargenTeiler.OptimalUndRest)
-                _TeigOptimierung = IniFile.ReadString("Produktion", "TeigOptimierung", wb_Global.ModusTeigOptimierung.AlleTeige)
+                _ChargenTeiler = IniFile.ReadInt("Produktion", "ChargenTeiler", wb_Global.ModusChargenTeiler.OptimalUndRest)
+                _TeigOptimierung = IniFile.ReadInt("Produktion", "TeigOptimierung", wb_Global.ModusTeigOptimierung.AlleTeige)
+                _ProdPlanClearOnRead = IniFile.ReadString("Produktion", "ProdPlanClear", True)
 
             Case "Nährwerte"
                 _NwtInterneDeklaration = IniFile.ReadInt("Artikel", "InterneDeklaration", 1)
@@ -1372,7 +1897,10 @@ Public Class wb_GlobalSettings
                 _NwtAllergeneNoText = IniFile.ReadInt("Artikel", "KeineAllergeneImText", 0)
                 _NwtAllergeneGluten = IniFile.ReadInt("Artikel", "KeineAusgabeGluten", 0)
                 _NwtAllergeneSchalen = IniFile.ReadInt("Artikel", "KeineAusgabeSchalefruechte", 0)
-                _NwtShowENummer = IniFile.ReadInt("Artikel", "ENummernAnzeigen", 1)
+                _NwtAllergeneNoDefinitionErr = IniFile.ReadInt("Artikel", "AllergenKeineAngabeError", 0)
+                _NwtShowENummer = IniFile.ReadInt("Artikel", "ENummernAnzeigen", 0)
+                _NwtShowOptimized = IniFile.ReadInt("Artikel", "ZutatenOptimiertAnzeigen", 1)
+                _NwtENummerZutatenListe = IniFile.ReadInt("Artikel", "ENummernZutatenliste", 0)
                 _NwtOptimizeZutatenListe = IniFile.ReadInt("Artikel", "ZutatenListeOptimieren", 1)
 
                 _Datenlink_Url = IniFile.ReadString("Datenlink", "URL", wb_Credentials.Datenlink_Url)
@@ -1391,50 +1919,115 @@ Public Class wb_GlobalSettings
                 _ArtikelVerarbeitungsHinweisPath = IniFile.ReadString("Artikel", "VerzeichnisArtikelHinweise", "")
 
             Case "Bakelink"
-                _DefaultImportSchnittstelle = IniFile.ReadString("Bakelink", "ConnectType", "")
-                _DefaultExportSchnittstelle = IniFile.ReadString("Bakelink", "ConnectTypeExport", "")
+                _DefaultSchnittstelle = IniFile.ReadString("Bakelink", "ConnectType", "")
+                _ImportPath = IniFile.ReadString("Bakelink", "ImportPfad", "")
+                _ExportPath = IniFile.ReadString("Bakelink", "ExportPfad", "")
+
+                _ImportArtikel = IniFile.ReadBool("Bakelink", "ImportArtikel", False)
+                _ImportRezeptKopf = IniFile.ReadBool("Bakelink", "ImportRezeptKopf", False)
+                _ImportRezept = IniFile.ReadBool("Bakelink", "ImportRezept", False)
+                _ImportLieferungen = IniFile.ReadBool("Bakelink", "ImportLieferungen", False)
+                _ImportBackzettel = IniFile.ReadBool("Bakelink", "ImportBackzettel", False)
+
+                _ImportRzpVerarbeitungsHinweise = IniFile.ReadBool("Bakelink", "Rezeptverarbeitungshinweise", False)
+                _ImportRzptUpdate = IniFile.ReadBool("Bakelink", "RezepturUpdate", False)
+                _ImportRzptWasserSpeichern = IniFile.ReadBool("Bakelink", "WasserTempSpeichern", False)
+                _ImportProdArtikelRezept = IniFile.ReadBool("Bakelink", "ListeArtikelRezept", False)
+                _ImportProdFTP = IniFile.ReadBool("Bakelink", "ProdListeAutoCreate", False)
+
+                _ExportArtikel = IniFile.ReadBool("Bakelink", "ExportArtikel", False)
+                _ExportRohstoffe = IniFile.ReadBool("Bakelink", "ExportRohstoffe", False)
+                _ExportRezepte = IniFile.ReadBool("Bakelink", "ExportRezepte", False)
+                _ExportChargen = IniFile.ReadBool("Bakelink", "ExportChargen", False)
+                ExportChargenTWNr = IniFile.ReadInt("Bakelink", "TWNr", wb_Global.UNDEFINED)
+
+                _ExportArtikel_Nwt = IniFile.ReadBool("Bakelink", "Tabelle1002", False)
+                _ExportRohstoffe_Nwt = IniFile.ReadBool("Bakelink", "Tabelle1002Rohstoffe", False)
+                _ExportRezepte_Aendrgn = IniFile.ReadBool("Bakelink", "RezepturUpdate", False)
+                _ExportRezepte_Sauertg = IniFile.ReadBool("Bakelink", "SauerteigExport", False)
+
+            Case "TwinCat"
+                _TwinCatADS = IniFile.ReadBool("TwinCat", "TwinCatADS", False)
+                _TwinCatADS_IP = IniFile.ReadString("TwinCat", "TwinCatIP", "127.0.0.1")
+                _TwinCatADS_Port = IniFile.ReadInt("TwinCat", "TwinCatPort", 800)
+
         End Select
     End Sub
 
+    ''' <summary>
+    ''' Ändert die Sektions-Bezeichnung winback oder orgaback entsprechend der Mandanten-Nummer ab:
+    ''' Aus winback wird winback-m1..winback-m6. 
+    ''' Die gleiche Logik gilt auch für den Text orgaback.
+    ''' 
+    ''' Ist der Mandant nicht definiert oder gleich 0 wird die Original-Sektion zurückgegeben.
+    ''' </summary>
+    ''' <param name="Section"></param>
+    ''' <returns></returns>
     Private Shared Function IniMandantSection(Section As String) As String
-        If (MandantNr <> UNDEFINED) Or (MandantNr = 0) Then
+        If (MandantNr <> UNDEFINED) AndAlso (MandantNr <> 0) Then
             Return Section & "-m" & MandantNr.ToString
         Else
             Return Section
         End If
     End Function
 
-    Private Shared Sub getWinBackKonfiguration(Optional Key As String = "%")
+    Public Shared KonfigurationTag As String
+    Public Shared KonfigurationWert As String
+    Public Shared Function getWinBackKonfiguration(Optional Key As String = "%") As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim Result As Boolean = False
+
         'Daten aus Tabelle Konfiguration lesen
-        If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKonfiguration, Key)) Then
+        If winback.sqlSelect(wb_sql_Selects.setParams(wb_sql_Selects.sqlKonfiguration, Key)) Then
+
             While winback.Read
-                Select Case winback.sField("KF_Tag")
+                'Daten gelesen
+                Result = True
+
+                'Tabelle winback.Konfiguration Tag
+                KonfigurationTag = winback.sField("KF_Tag")
+                'Tabelle winback.Konfiguration Wert
+                KonfigurationWert = winback.sField("KF_Wert")
+
+                'Globale Konfigurations-Einstellungen 
+                Select Case KonfigurationTag
                     Case "KundenName"
-                        _MandantName = winback.sField("KF_Wert")
+                        _MandantName = KonfigurationWert
                     Case "DatenbankVersion"
-                        _WinBackDBVersion = winback.sField("KF_Wert")
+                        _WinBackDBVersion = KonfigurationWert
                     Case "vts__anzahl_behaelter"
-                        _SauerteigAnzBeh = winback.sField("KF_Wert")
+                        _SauerteigAnzBeh = KonfigurationWert
                     Case "Sprache1"
-                        _WinBackLanguage1 = wb_Functions.StrToInt(winback.sField("KF_Wert"))
+                        _WinBackLanguage1 = wb_Functions.StrToInt(KonfigurationWert)
                     Case "Sprache2"
-                        _WinBackLanguage2 = wb_Functions.StrToInt(winback.sField("KF_Wert"))
+                        _WinBackLanguage2 = wb_Functions.StrToInt(KonfigurationWert)
                     Case "SprachenVariante"
-                        _WinBackLanguageVariante = wb_Functions.StrToInt(winback.sField("KF_Wert"))
+                        _WinBackLanguageVariante = wb_Functions.StrToInt(KonfigurationWert)
                     Case "IpBasisAdresse"
-                        _IPBasisAdresse = winback.sField("KF_Wert")
+                        _IPBasisAdresse = KonfigurationWert
 
                     Case "KonfigChargenErfEin"
-                        _RohChargen_ErfassungAktiv = winback.sField("KF_Wert")
+                        _RohChargen_ErfassungAktiv = KonfigurationWert
                     Case "KonfigGebindeGroessenTol"
-                        _RohChargen_GebindeGrsTol = winback.sField("KF_Wert")
+                        _RohChargen_GebindeGrsTol = KonfigurationWert
                     Case "KonfigChargenErfVariante"
-                        _RohChargen_ErfassungVariante = winback.sField("KF_Wert")
+                        _RohChargen_ErfassungVariante = KonfigurationWert
                 End Select
             End While
         End If
+
+        winback.Close()
+        Return Result
+    End Function
+
+    Public Shared Sub setWinBackKonfiguration(Key As String, value As String)
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Daten in Tabelle Konfiguration schreiben
+        winback.sqlCommand("UPDATE Konfiguration SET KF_WERT = " & value & " WHERE KF_Tag = " & Chr(34) & Key & Chr(34))
+        winback.Close()
     End Sub
 
     ''' <summary>
@@ -1516,11 +2109,17 @@ Public Class wb_GlobalSettings
 
     Public Shared ReadOnly Property WinBackUpdateSetupExe
         Get
-            If Environment.Is64BitProcess Then
-                Return wb_Global.WinBackUpdateSetupExe_64Bit
-            Else
-                Return wb_Global.WinBackUpdateSetupExe_32Bit
-            End If
+            Return wb_Credentials.WinBackUpdateSetupExe_64Bit
+        End Get
+    End Property
+    Public Shared ReadOnly Property WinBackUpgradeExe
+        Get
+            Return wb_Credentials.WinBackUpgradeSetupExe_64Bit
+        End Get
+    End Property
+    Public Shared ReadOnly Property WinBackUpgradeZip
+        Get
+            Return wb_Credentials.WinBackUpgradeZip_64Bit
         End Get
     End Property
 
@@ -1534,7 +2133,7 @@ Public Class wb_GlobalSettings
         Get
             If _pVariante = wb_Global.ProgVariante.Undef Then
                 'Programm-Name
-                Dim ProductName As String = (Windows.Forms.Application.ProductName).ToLower
+                Dim ProductName As String = (System.Windows.Forms.Application.ProductName).ToLower
 
                 'Versuche die Programm-Variante anhand des Programm-Namens zu ermitteln              
                 Select Case ProductName
@@ -1559,6 +2158,34 @@ Public Class wb_GlobalSettings
         End Get
         Set(value As wb_Global.ProgVariante)
             _pVariante = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Nur WinBack-AnyWhere
+    ''' Anzeige Teigruhe und Kneter abwechselnd als FullHD 1920x1080
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property TeigruheAnzeige As Boolean
+        Get
+            Return _TeigruheAnzeige
+        End Get
+        Set(value As Boolean)
+            _TeigruheAnzeige = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' WinBack-AnyWhere
+    ''' VNC-Linie für die Teigruhe-Anzeige (FullHD)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property TeigruheVNC As Integer
+        Get
+            Return _TeigruheVNC
+        End Get
+        Set(value As Integer)
+            _TeigruheVNC = value
         End Set
     End Property
 
@@ -1652,6 +2279,9 @@ Public Class wb_GlobalSettings
 
     Public Shared Property Datenlink_Url As String
         Get
+            If _Datenlink_Url = "" Then
+                getWinBackIni("Nährwerte")
+            End If
             Return _Datenlink_Url
         End Get
         Set(value As String)
@@ -1661,6 +2291,9 @@ Public Class wb_GlobalSettings
 
     Public Shared Property Datenlink_CAT As String
         Get
+            If _Datenlink_CAT = "" Then
+                getWinBackIni("Nährwerte")
+            End If
             Return _Datenlink_CAT
         End Get
         Set(value As String)
@@ -1670,6 +2303,9 @@ Public Class wb_GlobalSettings
 
     Public Shared Property Datenlink_PAT As String
         Get
+            If _Datenlink_PAT = "" Then
+                getWinBackIni("Nährwerte")
+            End If
             Return _Datenlink_PAT
         End Get
         Set(value As String)
@@ -1679,19 +2315,31 @@ Public Class wb_GlobalSettings
 
     Public Shared Property WinBackCloud_Url As String
         Get
+            If _WinBackCloud_Url = "" Then
+                getWinBackIni("Nährwerte")
+            End If
             Return _WinBackCloud_Url
         End Get
         Set(value As String)
             _WinBackCloud_Url = value
+            If _WinBackCloud_Url <> "" Then
+                setWinBackIni("Cloud", "URL", _WinBackCloud_Url)
+            End If
         End Set
     End Property
 
     Public Shared Property WinBackCloud_Pass As String
         Get
+            If _WinBackCloud_Pass = "" Then
+                getWinBackIni("Nährwerte")
+            End If
             Return _WinBackCloud_Pass
         End Get
         Set(value As String)
             _WinBackCloud_Pass = value
+            If _WinBackCloud_Pass <> "" Then
+                setWinBackIni("Cloud", "Pass", _WinBackCloud_Pass)
+            End If
         End Set
     End Property
 
@@ -1712,7 +2360,7 @@ Public Class wb_GlobalSettings
             Else
                 _NwtInterneDeklaration = 0
             End If
-            setWinBackIni("Artikel", "InterneDeklaration", _NwtInterneDeklaration)
+            setWinBackIni("Artikel", "InterneDeklaration", _NwtInterneDeklaration.ToString)
         End Set
     End Property
 
@@ -1733,7 +2381,7 @@ Public Class wb_GlobalSettings
             Else
                 _NwtAllergeneNoTrace = 0
             End If
-            setWinBackIni("Artikel", "KonfigAllergeneNoTrace", _NwtAllergeneNoTrace)
+            setWinBackIni("Artikel", "KonfigAllergeneNoTrace", _NwtAllergeneNoTrace.ToString)
         End Set
     End Property
 
@@ -1754,7 +2402,7 @@ Public Class wb_GlobalSettings
             Else
                 _NwtAllergeneTxtTrace = 0
             End If
-            setWinBackIni("Artikel", "KonfigAllergeneTxtTrace", _NwtAllergeneTxtTrace)
+            setWinBackIni("Artikel", "KonfigAllergeneTxtTrace", _NwtAllergeneTxtTrace.ToString)
         End Set
     End Property
 
@@ -1771,7 +2419,7 @@ Public Class wb_GlobalSettings
             Else
                 _NwtAllergeneTxtTrace = 0
             End If
-            setWinBackIni("Artikel", "KeineAllergeneImText", _NwtAllergeneTxtTrace)
+            setWinBackIni("Artikel", "KeineAllergeneImText", _NwtAllergeneTxtTrace.ToString)
         End Set
     End Property
 
@@ -1792,7 +2440,7 @@ Public Class wb_GlobalSettings
             Else
                 _NwtAllergeneTxtTrace = 0
             End If
-            setWinBackIni("Artikel", "KeineAusgabeGluten", _NwtAllergeneTxtTrace)
+            setWinBackIni("Artikel", "KeineAusgabeGluten", _NwtAllergeneTxtTrace.ToString)
         End Set
     End Property
 
@@ -1813,10 +2461,37 @@ Public Class wb_GlobalSettings
             Else
                 _NwtAllergeneTxtTrace = 0
             End If
-            setWinBackIni("Artikel", "KeineAusgabeSchalefruechte", _NwtAllergeneTxtTrace)
+            setWinBackIni("Artikel", "KeineAusgabeSchalefruechte", _NwtAllergeneTxtTrace.ToString)
         End Set
     End Property
 
+    ''' <summary>
+    ''' Eintrag "keine Angabe" bei Allergene führt zu Fehlerausgabe in Rezeptur
+    ''' (Rote Markierung)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtAllergeneNoDefinitionErr As Boolean
+        Get
+            If _NwtAllergeneNoDefinitionErr = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtAllergeneNoDefinitionErr = 1)
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _NwtAllergeneNoDefinitionErr = 1
+            Else
+                _NwtAllergeneNoDefinitionErr = 0
+            End If
+            setWinBackIni("Artikel", "AllergenKeineAngabeError", _NwtAllergeneNoDefinitionErr.ToString)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' E-Nummern in Zutatenliste anzeigen/verbergen
+    ''' Interne Einstellung für die Anzeige der Zutatenliste im der Rezeptur-Fenster
+    ''' </summary>
+    ''' <returns></returns>
     Public Shared Property NwtShowENummer As Boolean
         Get
             If _NwtShowENummer = UNDEFINED Then
@@ -1830,24 +2505,104 @@ Public Class wb_GlobalSettings
             Else
                 _NwtShowENummer = 0
             End If
-            setWinBackIni("Artikel", "ENummernAnzeigen", _NwtShowENummer)
+            setWinBackIni("Artikel", "ENummernAnzeigen", _NwtShowENummer.ToString)
         End Set
     End Property
 
-    Public Shared Property NwtOptimizeZutatenListe As Integer
+    ''' <summary>
+    ''' E-Nummern in der Zutatenliste anzeigen/verbergen
+    ''' Einstellung für den Export nach OrgaBack und den Ausdruck des Artikelinformations-Blattes
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtENummerZutatenListe As Boolean
+        Get
+            If _NwtENummerZutatenListe = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtENummerZutatenListe = 1)
+        End Get
+        Set(value As Boolean)
+            If value Then
+                _NwtENummerZutatenListe = 1
+            Else
+                _NwtENummerZutatenListe = 0
+            End If
+            setWinBackIni("Artikel", "ENummernZutatenliste", _NwtENummerZutatenListe.ToString)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Zutatenliste optimieren (doppelte Einträge entfernen)
+    ''' Interne Einstellung für die Anzeige der Zutatenliste im der Rezeptur-Fenster
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtShowOptimized As Integer
+        Get
+            If _NwtShowOptimized = UNDEFINED Then
+                getWinBackIni("Nährwerte")
+            End If
+            Return (_NwtShowOptimized = 1)
+        End Get
+        Set(value As Integer)
+            If value Then
+                _NwtShowOptimized = 1
+            Else
+                _NwtShowOptimized = 0
+            End If
+            setWinBackIni("Artikel", "ZutatenOptimiertAnzeigen", _NwtShowOptimized.ToString)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Zutatenliste Quid-Berechnung durchführen und in der Zutatenliste aus Prozentangabe einfügen
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtCalcQuid As Integer
+        Get
+            'TODO in Winback.ini und OrgaBack  Konfig eintragen
+            Return True
+            'Return _NwtCalcQuid
+        End Get
+        Set(value As Integer)
+            _NwtCalcQuid = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Zutatenliste optimieren (doppelte Einträge entfernen)
+    ''' Einstellung für den Export nach OrgaBack und den Ausdruck des Artikelinformations-Blattes
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtOptimizeZutatenListe As Boolean
         Get
             If _NwtOptimizeZutatenListe = UNDEFINED Then
                 getWinBackIni("Nährwerte")
             End If
             Return (_NwtOptimizeZutatenListe = 1)
         End Get
-        Set(value As Integer)
+        Set(value As Boolean)
             If value Then
                 _NwtOptimizeZutatenListe = 1
             Else
                 _NwtOptimizeZutatenListe = 0
             End If
-            setWinBackIni("Artikel", "ZutatenListeOptimieren", _NwtOptimizeZutatenListe)
+            setWinBackIni("Artikel", "ZutatenListeOptimieren", _NwtOptimizeZutatenListe.ToString)
+            _NwtOptimizeZutatenListe = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Globales Flag - Mehlzusammensetzung berechnen.
+    ''' Falls erforderlich kann die Berechnung der Mehlanteile global abgeschaltet werden.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property NwtCalcMehlZusammensetzung As Boolean
+        Get
+            'vorläufig immer True
+            Return True
+        End Get
+        Set(value As Boolean)
+            _NwtMehlZusammensetzung = value
         End Set
     End Property
 
@@ -1860,35 +2615,367 @@ Public Class wb_GlobalSettings
         End Set
     End Property
 
-    Public Shared Property DefaultImportSchnittstelle As String
+    Public Shared Property DefaultSchnittstelle As String
         Get
-            If _DefaultImportSchnittstelle Is Nothing Then
+            If _DefaultSchnittstelle Is Nothing Then
                 getWinBackIni("Bakelink")
             End If
-            Return _DefaultImportSchnittstelle
+            Return _DefaultSchnittstelle
         End Get
         Set(value As String)
             If value <> "" Then
-                _DefaultImportSchnittstelle = value
+                _DefaultSchnittstelle = value
                 setWinBackIni("Bakelink", "ConnectType", value)
             End If
         End Set
     End Property
 
-    Public Shared Property DefaultExportSchnittstelle As String
+    Public Shared Property ImportPath As String
         Get
-            If _DefaultExportSchnittstelle Is Nothing Then
+            If _ImportPath Is Nothing Then
                 getWinBackIni("Bakelink")
             End If
-            Return _DefaultExportSchnittstelle
+            Return _ImportPath
         End Get
         Set(value As String)
             If value <> "" Then
-                _DefaultExportSchnittstelle = value
-                setWinBackIni("Bakelink", "ConnectTypeExport", value)
+                _ImportPath = value
+                setWinBackIni("Bakelink", "ImportPfad", value)
             End If
         End Set
     End Property
 
+    Public Shared Property ExportPath As String
+        Get
+            If _ExportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ExportPath
+        End Get
+        Set(value As String)
+            If value <> "" Then
+                _ExportPath = value
+                setWinBackIni("Bakelink", "ExportPfad", value)
+            End If
+        End Set
+    End Property
+
+    Public Shared Property ImportArtikel As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ImportArtikel
+        End Get
+        Set(value As Boolean)
+            _ImportArtikel = value
+            setWinBackIni("Bakelink", "ImportArtikel", value)
+        End Set
+    End Property
+
+    Public Shared Property ImportRezeptKopf As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ImportRezeptKopf
+        End Get
+        Set(value As Boolean)
+            _ImportRezeptKopf = value
+            setWinBackIni("Bakelink", "ImportRezeptKopf", value)
+        End Set
+    End Property
+
+    Public Shared Property ImportRezept As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ImportRezept
+        End Get
+        Set(value As Boolean)
+            _ImportRezept = value
+            setWinBackIni("Bakelink", "ImportRezept", value)
+        End Set
+    End Property
+
+    Public Shared Property ImportLieferungen As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ImportLieferungen
+        End Get
+        Set(value As Boolean)
+            _ImportLieferungen = value
+            setWinBackIni("Bakelink", "ImportLieferungen", value)
+        End Set
+    End Property
+
+    Public Shared Property ImportBackzettel As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ImportBackzettel
+        End Get
+        Set(value As Boolean)
+            _ImportBackzettel = value
+            setWinBackIni("Bakelink", "ImportBackzettel", value)
+        End Set
+    End Property
+
+    Public Shared Property ImportRzpVerarbeitungsHinweise As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ImportRzpVerarbeitungsHinweise
+        End Get
+        Set(value As Boolean)
+            _ImportRzpVerarbeitungsHinweise = value
+            setWinBackIni("Bakelink", "Rezeptverarbeitungshinweise", value)
+        End Set
+    End Property
+
+    Public Shared Property ImportRzptUpdate As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ImportRzptUpdate
+        End Get
+        Set(value As Boolean)
+            _ImportRzptUpdate = value
+            setWinBackIni("Bakelink", "RezepturUpdate", value)
+        End Set
+    End Property
+
+    Public Shared Property ImportRzptWasserSpeichern As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ImportRzptWasserSpeichern
+        End Get
+        Set(value As Boolean)
+            _ImportRzptWasserSpeichern = value
+            setWinBackIni("Bakelink", "WasserTempSpeichern", value)
+        End Set
+    End Property
+
+    Public Shared Property ImportProdArtikelRezept As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ImportProdArtikelRezept
+        End Get
+        Set(value As Boolean)
+            _ImportProdArtikelRezept = value
+            setWinBackIni("Bakelink", "ListeArtikelRezept", value)
+        End Set
+    End Property
+
+    Public Shared Property ImportProdFTP As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ImportProdFTP
+        End Get
+        Set(value As Boolean)
+            _ImportProdFTP = value
+            setWinBackIni("Bakelink", "ProdListeAutoCreate", value)
+        End Set
+    End Property
+
+    Public Shared Property ExportArtikel As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ExportArtikel
+        End Get
+        Set(value As Boolean)
+            _ExportArtikel = value
+            setWinBackIni("Bakelink", "ExportArtikel", value)
+        End Set
+    End Property
+
+    Public Shared Property ExportRohstoffe As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ExportRohstoffe
+        End Get
+        Set(value As Boolean)
+            _ExportRohstoffe = value
+            setWinBackIni("Bakelink", "ExportRohstoffe", value)
+        End Set
+    End Property
+
+    Public Shared Property ExportRezepte As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ExportRezepte
+        End Get
+        Set(value As Boolean)
+            _ExportRezepte = value
+            setWinBackIni("Bakelink", "ExportRezepte", value)
+        End Set
+    End Property
+
+    Public Shared Property ExportChargen As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ExportChargen
+        End Get
+        Set(value As Boolean)
+            _ExportChargen = value
+            setWinBackIni("Bakelink", "ExportChargen", value)
+        End Set
+    End Property
+
+    Public Shared Property ExportChargenTWNr As Integer
+        Get
+            Return _ExportChargenTWNr
+        End Get
+        Set(value As Integer)
+            _ExportChargenTWNr = value
+            setWinBackIni("Bakelink", "ExportChargenTWNr", value.ToString)
+        End Set
+    End Property
+
+    Public Shared Property ExportArtikel_Nwt As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ExportArtikel_Nwt
+        End Get
+        Set(value As Boolean)
+            _ExportArtikel_Nwt = value
+            setWinBackIni("Bakelink", "Tabelle1002", value)
+        End Set
+    End Property
+
+    Public Shared Property ExportRohstoffe_Nwt As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ExportRohstoffe_Nwt
+        End Get
+        Set(value As Boolean)
+            _ExportRohstoffe_Nwt = value
+            setWinBackIni("Bakelink", "Tabelle1002Rohstoffe", value)
+        End Set
+    End Property
+
+    Public Shared Property ExportRezepte_Aendrgn As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ExportRezepte_Aendrgn
+        End Get
+        Set(value As Boolean)
+            _ExportRezepte_Aendrgn = value
+            setWinBackIni("Bakelink", "RezepturUpdate", value)
+        End Set
+    End Property
+
+    Public Shared Property ExportRezepte_Sauertg As Boolean
+        Get
+            If _ExportPath Is Nothing Or _ImportPath Is Nothing Then
+                getWinBackIni("Bakelink")
+            End If
+            Return _ExportRezepte_Sauertg
+        End Get
+        Set(value As Boolean)
+            _ExportRezepte_Sauertg = value
+            setWinBackIni("Bakelink", "SauerteigExport", value)
+        End Set
+    End Property
+
+    Public Shared Property TwinCatADS As Boolean
+        Get
+            If _TwinCatADS = Nothing Then
+                getWinBackIni("TwinCat")
+            End If
+            Return _TwinCatADS
+        End Get
+        Set(value As Boolean)
+            _TwinCatADS = value
+        End Set
+    End Property
+
+    Public Shared Property TwinCatADS_IP As String
+        Get
+            If _TwinCatADS_IP = Nothing Then
+                getWinBackIni("TwinCat")
+            End If
+            Return _TwinCatADS_IP
+        End Get
+        Set(value As String)
+            _TwinCatADS_IP = value
+        End Set
+    End Property
+
+    Public Shared Property TwinCatADS_Port As Integer
+        Get
+            Return _TwinCatADS_Port
+        End Get
+        Set(value As Integer)
+            _TwinCatADS_Port = value
+        End Set
+    End Property
+
+    Public Shared ReadOnly Property WinBackLanguage1 As Integer
+        Get
+            If _WinBackLanguage1 = wb_Global.UNDEFINED Then
+                getWinBackKonfiguration()
+            End If
+            Return _WinBackLanguage1
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property WinBackLanguage2 As Integer
+        Get
+            If _WinBackLanguage2 = wb_Global.UNDEFINED Then
+                getWinBackKonfiguration()
+            End If
+            Return _WinBackLanguage2
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Unterdrückt die Meldung "Die Nährwerte sind erst nach erneutem Aufrud des Artikels in OrgaBack sichtbar"
+    ''' Wird bei Programm-Start wieder auf True gesetzt
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property ShowMsg_UpdateOrgaBackNWT As Boolean
+        Get
+            Return _ShowMsg_UpdateOrgaBackNWT
+        End Get
+        Set(value As Boolean)
+            _ShowMsg_UpdateOrgaBackNWT = value
+        End Set
+    End Property
+
+    Public Shared Property ShowMsg_RohstoffeSTK As Boolean
+        Get
+            Return _ShowMsg_RohstoffeSTK
+        End Get
+        Set(value As Boolean)
+            _ShowMsg_RohstoffeSTK = value
+        End Set
+    End Property
 
 End Class

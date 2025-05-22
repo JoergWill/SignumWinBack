@@ -50,5 +50,5 @@ Partial Class wb_Main_ServerConnect
 
     End Sub
 
-    Friend WithEvents tbMessageReceive As Windows.Forms.TextBox
+    Friend WithEvents tbMessageReceive As System.Windows.Forms.TextBox
 End Class

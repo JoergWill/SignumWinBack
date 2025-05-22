@@ -4,8 +4,6 @@ Imports Signum.OrgaSoft.Common
 Imports System.Windows.Forms
 Imports System.Reflection
 Imports System.Threading
-Imports Signum.OrgaSoft.GUI
-Imports Signum.OrgaSoft.FrameWork
 
 ''' <summary>
 ''' Erweitert das Ribon um ein neues Tab WinBack und baut die Menu-Struktur auf.
@@ -23,7 +21,9 @@ Public Class ob_Main_Menu
     Private oSetting As ISettingService
     Private oFactory As IFactoryService
 
-    Private xForm As Form
+    'ab VERSION 3.6.1
+    'Private xForm As Form
+    Private xForm As GUI.IForm
     Private xLogger As New wb_TraceListener
     Private oRecipeProvider As New ob_RecipeProvider
     Private ServerConnect As New wb_Main_ServerConnect
@@ -42,7 +42,7 @@ Public Class ob_Main_Menu
         Dim StackTrace As String = DirectCast(e.Exception, System.Exception).StackTrace
         Dim Message As String = DirectCast(e.Exception, System.Exception).Message
         'Fehlermeldung im Log ausgeben
-        Trace.WriteLine(e.Exception)
+        Trace.WriteLine("@E_" & e.Exception.ToString)
         'Dialog-Fenster mit Fehlermeldung anzeigen
         ExceptionHandler(StackTrace, Message, False)
     End Sub
@@ -51,7 +51,7 @@ Public Class ob_Main_Menu
         Dim StackTrace As String = DirectCast(e.ExceptionObject, System.Exception).StackTrace
         Dim Message As String = DirectCast(e.ExceptionObject, System.Exception).Message
         'Fehlermeldung im Log ausgeben
-        Trace.WriteLine(e.ExceptionObject)
+        Trace.WriteLine("@E_" & e.ExceptionObject.ToString)
         'Dialog-Fenster mit Fehlermeldung anzeigen
         ExceptionHandler(StackTrace, Message, True)
     End Sub
@@ -64,6 +64,7 @@ Public Class ob_Main_Menu
     ''' <param name="StackTrace"></param>
     ''' <param name="Message"></param>
     ''' <param name="UnhandledException"></param>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="<Ausstehend>")>
     Private Sub ExceptionHandler(StackTrace As String, Message As String, UnhandledException As Boolean)
         'Prüfen ob die Exception von WinBack oder von OrgaBack kommt
         If StackTrace.Contains("WinBack") Then
@@ -102,10 +103,10 @@ Public Class ob_Main_Menu
         AddHandler System.AppDomain.CurrentDomain.UnhandledException, AddressOf MyUnhandledExceptionHandler
 
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
-#If AssemblyResolve Then
-        'Die eigenen dll-Files in sep. Verzeichnis verlagern
-        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-#End If
+        If wb_Global.AssemblyResolve Then
+            'Die eigenen dll-Files in sep. Verzeichnis verlagern
+            AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+        End If
 
         'Event-Handler Aufruf einer WinBack-Main-Form
         AddHandler wb_Main_Shared.eOpenForm, AddressOf OpenWinBackForm
@@ -125,19 +126,25 @@ Public Class ob_Main_Menu
         AddEventBroker()
 
         'erster Start WinBack-AddIn nach Setup - Einstellungen Mandanten
-        'TODO - Hier TEST-AUFRUF
         'Dim AddInSetup As New wb_Main_Setup
         'AddInSetup.ShowDialog()
 
         'Main-Menu erweitern
         AddMenu()
 
+        'Dashboad anzeigen
+        If wb_GlobalSettings.ShowDashboard Then
+            ShowMainDashboardForm(Nothing, Nothing)
+        End If
+
         'Check Server-Background-Task. Das Fenster läuft unsichtbar im Hintergrund
-        ServerConnect.Show()
-        wb_GlobalSettings.WinBackBackgroudTaskConnected = ServerConnect.Connect(wb_GlobalSettings.MsSQLServerIP, wb_Global.WinBackServerTaskPort, False)
+        If Not Debugger.IsAttached Then
+            ServerConnect.Show()
+            wb_GlobalSettings.WinBackBackgroudTaskConnected = ServerConnect.Connect(wb_GlobalSettings.MsSQLServerIP, wb_Global.WinBackServerTaskPort, False)
+        End If
 
         'Wenn der Admin angemeldet ist - wird das System geprüft und im Fehlerfall eine Meldung ausgegeben
-        If wb_GlobalSettings.OrgaBackEmployee = "SYS" Then
+        If wb_AktUser.SuperUser Then
             CheckSystem()
         End If
     End Sub
@@ -149,7 +156,7 @@ Public Class ob_Main_Menu
             MsgBox("Die aktuelle WinBack-Datenbank ist nicht kompatibel mit dieser AddIn-Version." & vbCrLf & "Bitte WinBack-Datenbank updaten !!", MsgBoxStyle.Critical, "WinBack-AddIn")
         End If
         'Prüfen ob der WinBack-Backgroud-Task läuft
-        If Not wb_GlobalSettings.WinBackBackgroudTaskConnected And Not Debugger.IsAttached Then
+        If Not wb_GlobalSettings.WinBackBackgroudTaskConnected AndAlso Not Debugger.IsAttached Then
             MsgBox("Der WinBack-Server-Task läuft nicht." & vbCrLf & "Bitte den Prozess auf dem Server " & wb_GlobalSettings.MsSQLServerIP & " starten !!", MsgBoxStyle.Critical, "WinBack-AddIn")
         End If
     End Sub
@@ -158,6 +165,7 @@ Public Class ob_Main_Menu
     ''' Meldung an WinBack-Server-Background-Task senden
     ''' </summary>
     ''' <param name="Message"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
     Private Sub SendMessageToServer(sender As Object, Message As String)
         If wb_GlobalSettings.WinBackBackgroudTaskConnected Then
             ServerConnect.SendData(Message)
@@ -178,6 +186,9 @@ Public Class ob_Main_Menu
             AddHandler IEB.LoginChanged, AddressOf UserLogin
             AddHandler IEB.LanguageChanged, AddressOf LanguageChanged
             AddHandler IEB.ProcessChanged, AddressOf ProcessChanged
+            'Mail JE vom 30.09.2021 ab Version 3.4 !!
+            'AddHandler IEB.StockCorrectionExecuted, AddressOf StockCorrectionExecuted
+
         End If
 
         'globale System-Einstellungen lesen
@@ -187,9 +198,11 @@ Public Class ob_Main_Menu
     End Sub
 
     ''' <summary>
-    ''' Erzeugen Hauptmenu im Ribbon Orgasoft
+    ''' Erzeugen Hauptmenu im Ribbon Orgasoft. Wenn ein Demo-Mandant erkannt wird (Text Demo im WinBack-Kunden-Namen) wird an das
+    ''' Hauptmenu der Text (Test) angehängt.
     ''' Abhängig von den Benutzer-Rechten in WinBack
-    ''' 
+    '''     
+    ''' 2022-03-11 Text WinBack-Produktion geändert in Produktion
     '''      IP_ItemID           Tag
     ''' --+-------------------+-------+-------------------------
     '''      0 = Produktion      100
@@ -214,45 +227,55 @@ Public Class ob_Main_Menu
     '''      28 = Inhalts-Stoffe  128
     '''      29 = Cloud           129 (ohne Recht 29 Cloud nur mit Einschränkungen)
     '''      30 = Prod.Planung    130
+    '''      31 = Produktion      131 verbuchen der Backliste
     '''     
     ''' </summary>
     Private Sub AddMenu()
-        ' Fügt dem Ribbon ein neues RibbonTab 'WinBack' hinzu
-        Dim oNewTab = oMenuService.AddTab("wb_MainMenu", "WinBack", "WinBack in OrgaBack integriert")
         ' Erweitert ein bestehendes RibbonTab um einen Button (Administration/Mitarbeiter)
         Dim oTabs = oMenuService.GetTabs
         Dim oGrps = oTabs(0).GetGroups
+        Dim MainMenuTitel As String = "Produktion"
 
-        ' Das neue RibbonTab 'WinBack' erhält Haupt-Menu-Gruppen 'Stammdaten' 'Admin' 'Linien' 'Chargen' und 'Planung'
+        'Kennung WinBack-Demo-Mandant
+        If wb_GlobalSettings.WinBackDemoMandant Then
+            MainMenuTitel &= "(Test)"
+        End If
+        'Fügt dem Ribbon ein neues RibbonTab 'WinBack' hinzu
+        Dim oNewTab = oMenuService.AddTab("wb_MainMenu", MainMenuTitel, "WinBack in OrgaBack integriert")
+
+        'Das neue RibbonTab 'WinBack' erhält Haupt-Menu-Gruppen 'Stammdaten' 'Admin' 'Linien' 'Chargen' und 'Planung'
         Dim oGrpStammdaten = oNewTab.AddGroup("WinBackDaten", "Stammdaten (Produktion)")
         Dim oGrpAdmin = oNewTab.AddGroup("WinBackAdmin", "Administration")
         Dim oGrpLinien = oNewTab.AddGroup("WinBackLinien", "Linien")
         Dim oGrpChargen = oNewTab.AddGroup("WinBackChargen", "Auswertung (Produktion)")
         Dim oGrpPlanung = oNewTab.AddGroup("WinBackPlanung", "Teig-Herstellung")
+        Dim oGrpProgramm = oNewTab.AddGroup("WinBackProgramm", "Programm")
 
         'Gruppe Stammdaten Button Artikel (Tag 102-Artikelverwaltung)
-        wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnArtikelStamm", "Artikel", "WinBack Artikelstammdaten", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf ShowArtikelForm, 102)
+        ob_Main_Shared.AddMenuButton(oGrpStammdaten, "btnArtikelStamm", "Artikel", "WinBack Artikelstammdaten", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf ShowArtikelForm, 102)
         'Gruppe Stammdaten Button Rezepte (Tag 103-Rezeptverwaltung)
-        wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnRezeptStamm", "Rezepte", "WinBack Rezeptverwaltung", My.Resources.MainRezept_16x16, My.Resources.MainRezept_32x32, AddressOf ShowRezeptForm, 103)
+        ob_Main_Shared.AddMenuButton(oGrpStammdaten, "btnRezeptStamm", "Rezepte", "WinBack Rezeptverwaltung", My.Resources.MainRezept_16x16, My.Resources.MainRezept_32x32, AddressOf ShowRezeptForm, 103)
         'Gruppe Stammdaten Button Rohstoffe (Tag 104-Rohstoffverwaltung)
-        wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnRohstoffStamm", "Rohstoffe", "WinBack Rohstoff-Stammdaten", My.Resources.MainRohstoffe_16x16, My.Resources.MainRohstoffe_32x32, AddressOf ShowRohstoffForm, 104)
+        ob_Main_Shared.AddMenuButton(oGrpStammdaten, "btnRohstoffStamm", "Rohstoffe", "WinBack Rohstoff-Stammdaten", My.Resources.MainRohstoffe_16x16, My.Resources.MainRohstoffe_32x32, AddressOf ShowRohstoffForm, 104)
         'Gruppe Stammdaten Button Schlüsseldaten (Tag 106-Installation)
-        wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnKonstanten", "Schlüsseldaten", "Stammdaten WinBack - Rohstoff/Artikelgruppen, Rezeptvarianten, Produktionsstufen...", My.Resources.MainStammdaten_16x16, My.Resources.MainStammdaten_32x32, AddressOf ShowStammDatenForm, 106)
+        ob_Main_Shared.AddMenuButton(oGrpStammdaten, "btnKonstanten", "Schlüsseldaten", "Stammdaten WinBack - Rohstoff/Artikelgruppen, Rezeptvarianten, Produktionsstufen...", My.Resources.MainStammdaten_16x16, My.Resources.MainStammdaten_32x32, AddressOf ShowStammDatenForm, 106)
         'Gruppe Stammdaten Button Mitarbeiter (Tag 120-Benutzerverwaltung)
-        wb_Main_Shared.AddMenuButton(oGrpStammdaten, "btnBenutzer", "Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm, 120)
+        ob_Main_Shared.AddMenuButton(oGrpStammdaten, "btnBenutzer", "Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm, 120)
 
         'Gruppe OrgaBack-Mitarbeiter Button Mitarbeiter (Tag 120-Benutzerverwaltung)
-        wb_Main_Shared.AddMenuButton(oGrps(3), "MenuExtensionBtnUser", "WinBack-Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm, 120)
+        ob_Main_Shared.AddMenuButton(oGrps(3), "MenuExtensionBtnUser", "Produktion-Mitarbeiter", "WinBack Benutzer und Benutzergruppen", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm, 120)
 
         'Gruppe Administration (Tag 106-Installation)
-        wb_Main_Shared.AddMenuButton(oGrpAdmin, "btnAdmin", "WinBack Administration", "", My.Resources.Admin_16x16, My.Resources.Admin_32x32, AddressOf ShowAdminAdministrationForm, 106)
+        ob_Main_Shared.AddMenuButton(oGrpAdmin, "btnAdmin", "WinBack Administration", "", My.Resources.Admin_16x16, My.Resources.Admin_32x32, AddressOf ShowAdminAdministrationForm, 106)
 
         'Gruppe Linien (Tag 121-Vnc)
-        wb_Main_Shared.AddMenuButton(oGrpLinien, "btnLinien", "Produktions-Linien", "WinBack Produktion Linie 1...", My.Resources.MainLinien_32x32, My.Resources.MainLinien_32x32, AddressOf ShowLinienForm, 121)
+        ob_Main_Shared.AddMenuButton(oGrpLinien, "btnLinien", "Produktions-Linien", "WinBack Produktion Linie 1...", My.Resources.MainLinien_32x32, My.Resources.MainLinien_32x32, AddressOf ShowLinienForm, 121)
         'Gruppe Auswertung (Tag 122-Statistik)
-        wb_Main_Shared.AddMenuButton(oGrpChargen, "btnStatistik", "Statistik Produktion", "WinBack Auswertung Produktions-Chargen", My.Resources.MainStatistikChargen_16x16, My.Resources.MainStatistikChargen_32x32, AddressOf ShowStatistikForm, 122)
+        ob_Main_Shared.AddMenuButton(oGrpChargen, "btnStatistik", "Statistik Produktion", "WinBack Auswertung Produktions-Chargen", My.Resources.MainStatistikChargen_16x16, My.Resources.MainStatistikChargen_32x32, AddressOf ShowStatistikForm, 122)
         'Gruppe Produktions-Planung (Tag 130-Produktionsplanung)
-        wb_Main_Shared.AddMenuButton(oGrpPlanung, "btnProdPlan", "WinBack Teig-Herstellung", "", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf ShowProduktionsPlanungForm, 130)
+        ob_Main_Shared.AddMenuButton(oGrpPlanung, "btnProdPlan", "WinBack Teig-Herstellung", "", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf ShowProduktionsPlanungForm, 130)
+        'Gruppe Programm (Tag 140-Programm)
+        ob_Main_Shared.AddMenuButton(oGrpProgramm, "btnDashBoard", "WinBack Dashboard", "", My.Resources.MainDashBoard_32x32, My.Resources.MainDashBoard_32x32, AddressOf ShowDashboardForm, 140)
 
     End Sub
 
@@ -263,7 +286,7 @@ Public Class ob_Main_Menu
     ''' </summary>
     Sub AddTraceListener()
         AddHandler xLogger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
-        Trace.Listeners.Add(xLogger)
+        System.Diagnostics.Trace.Listeners.Add(xLogger)
     End Sub
 
     Public Sub OpenWinBackForm(sender As Object, FormName As String)
@@ -276,7 +299,23 @@ Public Class ob_Main_Menu
                 ShowRezeptForm(sender, Nothing)
             Case "Linien"
                 ShowLinienForm(sender, Nothing)
+            Case "User"
+                ShowUserForm(sender, Nothing)
+            Case "Statistik"
+                ShowStatistikForm(sender, Nothing)
+            Case "Admin"
+                ShowAdminAdministrationForm(sender, Nothing)
         End Select
+    End Sub
+
+    ''' <summary>
+    ''' Aufruf WinBack-Fenster Dashboard
+    ''' </summary>
+    Private Sub ShowMainDashboardForm(sender As Object, e As EventArgs)
+        CloseAllForms()
+        xForm = oViewProvider.OpenForm(New wb_Dashboard_Main(ServiceProvider), My.Resources.MainArtikel_16x16)
+        'Fensterposition aus winback.ini
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "Dashboard")
     End Sub
 
     ''' <summary>
@@ -296,11 +335,23 @@ Public Class ob_Main_Menu
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S108:Nested blocks of code should not be left empty", Justification:="<Ausstehend>")>
     Private Sub ShowRohstoffForm(sender As Object, e As EventArgs)
         CloseAllForms()
         xForm = oViewProvider.OpenForm(New wb_Rohstoffe_Main(ServiceProvider), My.Resources.MainRohstoffe_16x16)
         'Fensterposition aus winback.ini
         wb_DockBarPanelShared.SetFormBoundaries(xForm, "Rohstoffe")
+
+        'Aufruf aus der Rezeptverwaltung (Popup Rohstoff)
+        Try
+            If sender IsNot Nothing AndAlso TryCast(sender, Object).Name = "wb_Rezept_Rezeptur" Then
+                'Komponenten-Nummer des aktuellen Rezeptschrittes in der Rezeptur
+                Dim KoNr As Integer = TryCast(sender, wb_Rezept_Rezeptur).AktRezeptschritt.RohNr
+                'Rohstoff suchen und anzeigen
+                wb_Rohstoffe_Shared.Select_Data(sender, KoNr)
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
 
     ''' <summary>
@@ -378,6 +429,20 @@ Public Class ob_Main_Menu
     End Sub
 
     ''' <summary>
+    ''' Aufruf WinBack-Fenster Dashboard
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub ShowDashboardForm(sender As Object, e As EventArgs)
+
+        CloseAllForms()
+        xForm = oViewProvider.OpenForm(New wb_Dashboard_Main(ServiceProvider), My.Resources.MainDashBoard_32x32)
+        'Fensterposition aus winback.ini
+        wb_DockBarPanelShared.SetFormBoundaries(xForm, "DashBoard")
+    End Sub
+
+
+    ''' <summary>
     ''' Aufruf WinBack-Fenster Admin
     ''' </summary>
     ''' <param name="sender"></param>
@@ -404,30 +469,36 @@ Public Class ob_Main_Menu
     ''' <param name="e"></param>
     Private Sub UserLogin(sender As Object, e As EventArgs)
         Dim sName As String
+        Dim FilialZuordnung As String
 
         ' aktuelle angemeldeter Mitarbeiter
         Dim sEmployee As String = TryCast(oSetting.GetSetting("Anmeldung.Mitarbeiter"), String)
+
         If Not String.IsNullOrEmpty(sEmployee) Then
             wb_GlobalSettings.OrgaBackEmployee = sEmployee
 
             Dim oData As IData = oFactory.GetData
-            Using oTable = oData.OpenDataTable(Database.Main, "SELECT Vorname, Nachname FROM Mitarbeiter WHERE MitarbeiterKürzel=@M", LockType.ReadOnly, sEmployee)
+            Using oTable = oData.OpenDataTable(Database.Main, "SELECT Vorname, Nachname, FilialZuordnung FROM Mitarbeiter WHERE MitarbeiterKürzel=@M", LockType.ReadOnly, sEmployee)
                 sName = CType(oTable.Rows(0)(0), String) & " " & CType(oTable.Rows(0)(1), String)
+                FilialZuordnung = CType(oTable.Rows(0)(2), String)
             End Using
 
             wb_GlobalSettings.AktUserLogin(sName)
+            Dim oTabs = oMenuService.GetTabs
+            Dim bProduktion = wb_Filiale.FilialeIstProduktion(FilialZuordnung)
+
             'Buttons abhängig von den Benutzer-Rechten aus/einblenden
-            wb_Main_Shared.CheckMenu()
+            ob_Main_Shared.CheckMenu(oTabs, bProduktion)
         End If
     End Sub
 
     ''' <summary>
-    ''' Event Änderung der Sprache in OrgaSoft
+    ''' Event Bestandskorrektur in OrgaSoft
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub LanguageChanged(sender As Object, e As EventArgs)
-
+    Private Sub StockCorrectionExecuted(sender As Object, e As IExecutionInfoEventArgs)
+        Debug.Print("StockCorrectionExecuted NOT IMPLEMENTED")
     End Sub
 
     ''' <summary>
@@ -484,6 +555,15 @@ Public Class ob_Main_Menu
     End Sub
 
     ''' <summary>
+    ''' Event Änderung der Sprache in OrgaSoft
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub LanguageChanged(sender As Object, e As EventArgs)
+        Debug.Print("LanguageChanged NOT IMPLEMENTED")
+    End Sub
+
+    ''' <summary>
     ''' Verarbeitung Wareneingang und Aufruf Rohstoffe-Silo-Dialogfenster
     ''' 
     ''' Der Aufruf erfolgt über den EventBroker durch den Event ProcessChanged. Jeder OrgaBack-Vorfall WE wird hier verarbeitet.
@@ -521,6 +601,8 @@ Public Class ob_Main_Menu
     ''' <summary>
     ''' Globale Systemkonfiguration aus dem oSetting-Objekt auslesen und in winback.ini schreiben.
     ''' Damit können auch andere Tasks die Einstellungen lesen (Server-Task...)
+    ''' 
+    ''' Die Einträge in Settings müssen in ob_Admin_OrgaBackSettings definiert werden!
     ''' </summary>
     Private Sub ReadSystemKonfig()
         'Programm-Einstellung OrgaBack
@@ -556,16 +638,34 @@ Public Class ob_Main_Menu
         wb_GlobalSettings.MySQLWinBack = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabase", ""), String)
         'MySQL-Archiv-DB
         wb_GlobalSettings.MySQLWbDaten = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "MySQLDatabaseDaten", ""), String)
+        'Dummy-Artikel 0R9999
+        wb_GlobalSettings.ProduktionDummyArtikel = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "Artikelnummer_SonderArtikel", "0R9999"), String)
 
-        'Artikel-Gruppe Backwaren (Default 10)
+        'Artikel-Gruppe Backwaren (Default 10) - Integer oder RegEx-Ausdruck der einen Artikelgruppen-Bereich beschreibt
         wb_GlobalSettings.OsGrpBackwaren = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeBackwaren", ""), String)
-        'Artikel-Gruppe Rohstoffe (Default 20)
+        'Artikel-Gruppe Rohstoffe (Default 20) - Integer oder RegEx-Ausdruck der einen Artikelgruppen-Bereich beschreibt
         wb_GlobalSettings.OsGrpRohstoffe = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "GruppeRohstoffe", ""), String)
 
         'Nährwertberechnung Zutatenliste aus interner Deklaration
-        'TODO Funktioniert nicht - URSACHE?
-        'wb_GlobalSettings.NwtInterneDeklaration = (TryCast(oSetting.ReadSetting("AddIn", "WinBack", "InterneDeklaration", ""), String) = "1")
+        wb_GlobalSettings.NwtInterneDeklaration = (TryCast(oSetting.ReadSetting("AddIn", "WinBack", "InterneDeklaration", ""), String) = "1")
+        'Nährwertberechnung Zutatenliste mit/ohne E-Nummern
+        wb_GlobalSettings.NwtENummerZutatenListe = (TryCast(oSetting.ReadSetting("AddIn", "WinBack", "ENummernInZutatenListe", ""), String) = "1")
+        'Nährwertberechnung Zutatenliste optimieren (doppelte Einträge entfernen...)
+        wb_GlobalSettings.NwtOptimizeZutatenListe = (TryCast(oSetting.ReadSetting("AddIn", "WinBack", "OptimierenZutatenListe", ""), String) = "1")
+        'Nährwertberechnung "Keine Angabe" bei Allergenen wird ignoriert (Kein Fehler in Rezeptur)
+        wb_GlobalSettings.NwtAllergeneNoDefinitionErr = (TryCast(oSetting.ReadSetting("AddIn", "WinBack", "AllergenKeineAngabeError", ""), String) = "1")
 
+        'Nährwerte Cloud - IP-Adresse
+        wb_GlobalSettings.WinBackCloud_Url = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "WinBackCloudURL", ""), String)
+        'Nährwerte Cloud - Pass
+        wb_GlobalSettings.WinBackCloud_Pass = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "WinBackCloudPass", ""), String)
+        'Wenn dasCloud-Passwort in den Einstellungen gesetzt wurde, wird der Eintrag beim nächsten Start gelöscht !
+        oSetting.WriteSetting("AddIn", "WinBack", "WinBackCloudPass", "")
+
+        'Datenlink Cloud - CAT
+        wb_GlobalSettings.Datenlink_CAT = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "datenlink_CT", ""), String)
+        'Datenlink Cloud - PAT
+        wb_GlobalSettings.Datenlink_PAT = TryCast(oSetting.ReadSetting("AddIn", "WinBack", "datenlink_AT", ""), String)
 
         'Signum Default-Land
         wb_GlobalSettings.osLaendercode = TryCast(oSetting.GetSetting("Festwerte.DefaultLand"), String)

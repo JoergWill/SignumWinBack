@@ -2,10 +2,10 @@
 Partial Class wb_PrinterPreview
     Inherits System.Windows.Forms.Form
 
-    'Public llPreview As combit.ListLabel22.ListLabelPreviewControl
+    'Public llPreview As combit.reporting.ListLabelPreviewControl
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -22,148 +22,155 @@ Partial Class wb_PrinterPreview
     'Hinweis: Die folgende Prozedur ist für den Windows Form-Designer erforderlich.
     'Das Bearbeiten ist mit dem Windows Form-Designer möglich.  
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
-        Me.LLPreview = New combit.ListLabel22.ListLabelPreviewControl(Me.components)
-        Me.BtnPrint = New System.Windows.Forms.Button()
-        Me.BtnAbbruch = New System.Windows.Forms.Button()
-        Me.BtnZoomIn = New System.Windows.Forms.Button()
-        Me.BtnZoomOut = New System.Windows.Forms.Button()
-        Me.BtnZoomFit = New System.Windows.Forms.Button()
-        Me.SuspendLayout()
-        '
-        'LLPreview
-        '
-        Me.LLPreview.AllowRbuttonUsage = True
-        Me.LLPreview.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LLPreview.BackColor = System.Drawing.SystemColors.Control
-        Me.LLPreview.CloseMode = combit.ListLabel22.LlPreviewControlCloseMode.DeleteFile
-        Me.LLPreview.CurrentPage = 0
-        Me.LLPreview.ForceReadOnly = False
-        Me.LLPreview.Location = New System.Drawing.Point(12, 12)
-        Me.LLPreview.Name = "LLPreview"
-        Me.LLPreview.ShowToolbar = False
-        Me.LLPreview.ShowUnprintableArea = True
-        Me.LLPreview.Size = New System.Drawing.Size(898, 491)
-        Me.LLPreview.SlideshowMode = False
-        Me.LLPreview.TabIndex = 5
-        Me.LLPreview.Text = "Vorschau"
-        Me.LLPreview.ToolbarButtons.Exit = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.GotoFirst = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.GotoLast = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.GotoNext = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.GotoPrev = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.MouseModeMove = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.MouseModeZoom = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.NextFile = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.PageRange = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.PreviousFile = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.PrintAllPages = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.PrintCurrentPage = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.PrintToFax = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.SaveAs = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.SearchNext = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.SearchOptions = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.SearchStart = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.SearchText = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.SendTo = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.SlideshowMode = combit.ListLabel22.LlButtonState.Invisible
-        Me.LLPreview.ToolbarButtons.ZoomCombo = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomReset = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomRevert = combit.ListLabel22.LlButtonState.[Default]
-        Me.LLPreview.ToolbarButtons.ZoomTimes2 = combit.ListLabel22.LlButtonState.[Default]
-        '
-        'BtnPrint
-        '
-        Me.BtnPrint.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnPrint.Image = Global.WinBack.My.Resources.Resources.UserListe_32x32
-        Me.BtnPrint.Location = New System.Drawing.Point(711, 509)
-        Me.BtnPrint.Name = "BtnPrint"
-        Me.BtnPrint.Size = New System.Drawing.Size(96, 38)
-        Me.BtnPrint.TabIndex = 6
-        Me.BtnPrint.Text = "Drucken"
-        Me.BtnPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.BtnPrint.UseVisualStyleBackColor = True
-        '
-        'BtnAbbruch
-        '
-        Me.BtnAbbruch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnAbbruch.Image = Global.WinBack.My.Resources.Resources.IconDelete_24x24
-        Me.BtnAbbruch.Location = New System.Drawing.Point(813, 509)
-        Me.BtnAbbruch.Name = "BtnAbbruch"
-        Me.BtnAbbruch.Size = New System.Drawing.Size(96, 38)
-        Me.BtnAbbruch.TabIndex = 8
-        Me.BtnAbbruch.Text = "Abbruch"
-        Me.BtnAbbruch.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.BtnAbbruch.UseVisualStyleBackColor = True
-        '
-        'BtnZoomIn
-        '
-        Me.BtnZoomIn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnZoomIn.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnZoomIn.Image = Global.WinBack.My.Resources.Resources.Zoom_32x32
-        Me.BtnZoomIn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnZoomIn.Location = New System.Drawing.Point(264, 509)
-        Me.BtnZoomIn.Name = "BtnZoomIn"
-        Me.BtnZoomIn.Size = New System.Drawing.Size(49, 38)
-        Me.BtnZoomIn.TabIndex = 9
-        Me.BtnZoomIn.Text = "+"
-        Me.BtnZoomIn.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnZoomIn.UseVisualStyleBackColor = True
-        '
-        'BtnZoomOut
-        '
-        Me.BtnZoomOut.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnZoomOut.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnZoomOut.Image = Global.WinBack.My.Resources.Resources.Zoom_32x32
-        Me.BtnZoomOut.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnZoomOut.Location = New System.Drawing.Point(319, 509)
-        Me.BtnZoomOut.Name = "BtnZoomOut"
-        Me.BtnZoomOut.Size = New System.Drawing.Size(49, 38)
-        Me.BtnZoomOut.TabIndex = 10
-        Me.BtnZoomOut.Text = "-"
-        Me.BtnZoomOut.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnZoomOut.UseVisualStyleBackColor = True
-        '
-        'BtnZoomFit
-        '
-        Me.BtnZoomFit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnZoomFit.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnZoomFit.Image = Global.WinBack.My.Resources.Resources.Zoom_32x32
-        Me.BtnZoomFit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnZoomFit.Location = New System.Drawing.Point(374, 509)
-        Me.BtnZoomFit.Name = "BtnZoomFit"
-        Me.BtnZoomFit.Size = New System.Drawing.Size(49, 38)
-        Me.BtnZoomFit.TabIndex = 11
-        Me.BtnZoomFit.Text = "[ ]"
-        Me.BtnZoomFit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnZoomFit.UseVisualStyleBackColor = True
-        '
-        'wb_PrinterPreview
-        '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(922, 559)
-        Me.Controls.Add(Me.BtnZoomFit)
-        Me.Controls.Add(Me.BtnZoomOut)
-        Me.Controls.Add(Me.BtnZoomIn)
-        Me.Controls.Add(Me.BtnAbbruch)
-        Me.Controls.Add(Me.BtnPrint)
-        Me.Controls.Add(Me.LLPreview)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.Name = "wb_PrinterPreview"
-        Me.Text = "Vorschau"
-        Me.ResumeLayout(False)
+        components = New ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_PrinterPreview))
+        LLPreview = New combit.Reporting.ListLabelPreviewControl(components)
+        BtnPrint = New System.Windows.Forms.Button()
+        BtnAbbruch = New System.Windows.Forms.Button()
+        BtnZoomIn = New System.Windows.Forms.Button()
+        BtnZoomOut = New System.Windows.Forms.Button()
+        BtnZoomFit = New System.Windows.Forms.Button()
+        SuspendLayout()
+        ' 
+        ' LLPreview
+        ' 
+        LLPreview.AllowRbuttonUsage = True
+        LLPreview.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right
+        LLPreview.BackColor = Drawing.SystemColors.Control
+        LLPreview.CloseMode = combit.Reporting.LlPreviewControlCloseMode.DeleteFile
+        LLPreview.CurrentPage = 0
+        LLPreview.ForceReadOnly = False
+        LLPreview.Location = New System.Drawing.Point(14, 14)
+        LLPreview.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        LLPreview.Name = "LLPreview"
+        LLPreview.ShowToolbar = False
+        LLPreview.ShowUnprintableArea = True
+        LLPreview.Size = New System.Drawing.Size(1048, 567)
+        LLPreview.SlideshowMode = False
+        LLPreview.TabIndex = 5
+        LLPreview.Text = "Vorschau"
+        LLPreview.ToolbarButtons.Exit = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.GotoFirst = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.GotoLast = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.GotoNext = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.GotoPrev = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.MouseModeMove = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.MouseModeSelect = combit.Reporting.LlButtonState.Default
+        LLPreview.ToolbarButtons.MouseModeZoom = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.NextFile = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.PageRange = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.PreviousFile = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.PrintAllPages = combit.Reporting.LlButtonState.Default
+        LLPreview.ToolbarButtons.PrintCurrentPage = combit.Reporting.LlButtonState.Default
+        LLPreview.ToolbarButtons.PrintToFax = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SaveAs = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SearchNext = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SearchOptions = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SearchStart = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SearchText = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SendTo = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.SlideshowMode = combit.Reporting.LlButtonState.Invisible
+        LLPreview.ToolbarButtons.ZoomCombo = combit.Reporting.LlButtonState.Default
+        LLPreview.ToolbarButtons.ZoomReset = combit.Reporting.LlButtonState.Default
+        LLPreview.ToolbarButtons.ZoomRevert = combit.Reporting.LlButtonState.Default
+        LLPreview.ToolbarButtons.ZoomTimes2 = combit.Reporting.LlButtonState.Default
+        ' 
+        ' BtnPrint
+        ' 
+        BtnPrint.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right
+        BtnPrint.Image = CType(resources.GetObject("BtnPrint.Image"), Drawing.Image)
+        BtnPrint.Location = New System.Drawing.Point(830, 587)
+        BtnPrint.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        BtnPrint.Name = "BtnPrint"
+        BtnPrint.Size = New System.Drawing.Size(112, 44)
+        BtnPrint.TabIndex = 6
+        BtnPrint.Text = "Drucken"
+        BtnPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        BtnPrint.UseVisualStyleBackColor = True
+        ' 
+        ' BtnAbbruch
+        ' 
+        BtnAbbruch.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right
+        BtnAbbruch.Image = CType(resources.GetObject("BtnAbbruch.Image"), Drawing.Image)
+        BtnAbbruch.Location = New System.Drawing.Point(948, 587)
+        BtnAbbruch.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        BtnAbbruch.Name = "BtnAbbruch"
+        BtnAbbruch.Size = New System.Drawing.Size(112, 44)
+        BtnAbbruch.TabIndex = 8
+        BtnAbbruch.Text = "Abbruch"
+        BtnAbbruch.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        BtnAbbruch.UseVisualStyleBackColor = True
+        ' 
+        ' BtnZoomIn
+        ' 
+        BtnZoomIn.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right
+        BtnZoomIn.Font = New System.Drawing.Font("Microsoft Sans Serif", 12F, Drawing.FontStyle.Regular, Drawing.GraphicsUnit.Point, CByte(0))
+        BtnZoomIn.Image = CType(resources.GetObject("BtnZoomIn.Image"), Drawing.Image)
+        BtnZoomIn.ImageAlign = Drawing.ContentAlignment.MiddleLeft
+        BtnZoomIn.Location = New System.Drawing.Point(308, 587)
+        BtnZoomIn.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        BtnZoomIn.Name = "BtnZoomIn"
+        BtnZoomIn.Size = New System.Drawing.Size(57, 44)
+        BtnZoomIn.TabIndex = 9
+        BtnZoomIn.Text = "+"
+        BtnZoomIn.TextAlign = Drawing.ContentAlignment.MiddleRight
+        BtnZoomIn.UseVisualStyleBackColor = True
+        ' 
+        ' BtnZoomOut
+        ' 
+        BtnZoomOut.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right
+        BtnZoomOut.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.75F, Drawing.FontStyle.Regular, Drawing.GraphicsUnit.Point, CByte(0))
+        BtnZoomOut.Image = CType(resources.GetObject("BtnZoomOut.Image"), Drawing.Image)
+        BtnZoomOut.ImageAlign = Drawing.ContentAlignment.MiddleLeft
+        BtnZoomOut.Location = New System.Drawing.Point(372, 587)
+        BtnZoomOut.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        BtnZoomOut.Name = "BtnZoomOut"
+        BtnZoomOut.Size = New System.Drawing.Size(57, 44)
+        BtnZoomOut.TabIndex = 10
+        BtnZoomOut.Text = "-"
+        BtnZoomOut.TextAlign = Drawing.ContentAlignment.MiddleRight
+        BtnZoomOut.UseVisualStyleBackColor = True
+        ' 
+        ' BtnZoomFit
+        ' 
+        BtnZoomFit.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right
+        BtnZoomFit.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75F, Drawing.FontStyle.Regular, Drawing.GraphicsUnit.Point, CByte(0))
+        BtnZoomFit.Image = CType(resources.GetObject("BtnZoomFit.Image"), Drawing.Image)
+        BtnZoomFit.ImageAlign = Drawing.ContentAlignment.MiddleLeft
+        BtnZoomFit.Location = New System.Drawing.Point(436, 587)
+        BtnZoomFit.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        BtnZoomFit.Name = "BtnZoomFit"
+        BtnZoomFit.Size = New System.Drawing.Size(57, 44)
+        BtnZoomFit.TabIndex = 11
+        BtnZoomFit.Text = "[ ]"
+        BtnZoomFit.TextAlign = Drawing.ContentAlignment.MiddleRight
+        BtnZoomFit.UseVisualStyleBackColor = True
+        ' 
+        ' wb_PrinterPreview
+        ' 
+        AutoScaleDimensions = New System.Drawing.SizeF(7F, 15F)
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        ClientSize = New System.Drawing.Size(1076, 645)
+        Controls.Add(BtnZoomFit)
+        Controls.Add(BtnZoomOut)
+        Controls.Add(BtnZoomIn)
+        Controls.Add(BtnAbbruch)
+        Controls.Add(BtnPrint)
+        Controls.Add(LLPreview)
+        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        Name = "wb_PrinterPreview"
+        Text = "Vorschau"
+        ResumeLayout(False)
 
     End Sub
 
-    Public WithEvents LLPreview As combit.ListLabel22.ListLabelPreviewControl
-    Friend WithEvents BtnPrint As Windows.Forms.Button
-    Friend WithEvents BtnAbbruch As Windows.Forms.Button
-    Friend WithEvents BtnZoomIn As Windows.Forms.Button
-    Friend WithEvents BtnZoomOut As Windows.Forms.Button
-    Friend WithEvents BtnZoomFit As Windows.Forms.Button
+    Public WithEvents LLPreview As combit.Reporting.ListLabelPreviewControl
+    Friend WithEvents BtnPrint As System.Windows.Forms.Button
+    Friend WithEvents BtnAbbruch As System.Windows.Forms.Button
+    Friend WithEvents BtnZoomIn As System.Windows.Forms.Button
+    Friend WithEvents BtnZoomOut As System.Windows.Forms.Button
+    Friend WithEvents BtnZoomFit As System.Windows.Forms.Button
 End Class

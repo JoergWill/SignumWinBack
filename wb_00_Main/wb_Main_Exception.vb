@@ -47,11 +47,19 @@
     Private Sub BtnShow_Click(sender As Object, e As EventArgs) Handles BtnShow.Click
         'Textbox positionieren
         PnlPicture.Width = tbException.Width
-        tbException.Dock = Windows.Forms.DockStyle.Fill
+        tbException.Dock = System.Windows.Forms.DockStyle.Fill
         lblText.Visible = False
         'Exception-Text einfügen
         tbException.Text = _Message & vbCrLf & vbCrLf & _StackTrace
         'und anzeigen
         tbException.Visible = True
+    End Sub
+
+    Private Sub BtnRestart_Click(sender As Object, e As EventArgs) Handles BtnRestart.Click
+        wb_Functions.Restart()
+    End Sub
+
+    Private Sub BtnExit_Click(sender As Object, e As EventArgs) Handles BtnExit.Click
+        wb_Functions.ExitProgram()
     End Sub
 End Class
