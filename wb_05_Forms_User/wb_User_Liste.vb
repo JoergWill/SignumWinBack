@@ -7,7 +7,7 @@ Public Class wb_User_Liste
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"", "", "&Name", "Gruppe", ""}
+        Dim sColNames As New List(Of String) From {"", "", "Name", "Gruppe", "", "&PersonalNr"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
@@ -19,12 +19,14 @@ Public Class wb_User_Liste
         'DataGrid füllen
         DataGridView.LoadData(wb_Sql_Selects.sqlUsersListe, "UserListe")
 
+        'Throw New System.Exception("TEST FEHLER")
+
         'Detail-Daten sind geändert worden - in Datenbank speichern
         AddHandler eEdit_Leave, AddressOf SaveData
         AddHandler eData_Reload, AddressOf RefreshData
     End Sub
 
-    Public Sub RefreshData()
+    Public Sub RefreshData(sender As Object)
         'Daten neu einlesen
         DataGridView.RefreshData()
     End Sub
@@ -43,23 +45,28 @@ Public Class wb_User_Liste
     End Function
 
     'Event Form wird geschlossen
-    Private Sub wb_User_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_User_Liste_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern
-        SaveData()
+        SaveData(sender)
+        'Event-Handler freigeben
+        RemoveHandler eEdit_Leave, AddressOf SaveData
+        RemoveHandler eData_Reload, AddressOf RefreshData
         'Layout sichern
         DataGridView.SaveToDisk("UserListe")
     End Sub
 
     'Datensatz in Datenbank sichern
-    Private Sub SaveData()
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
+    Private Sub SaveData(sender As Object)
         'Daten in Datenbank sichern
         If User.SaveData(DataGridView) Then
+            Debug.Print("DataGridView.UpdateDataBase")
             DataGridView.UpdateDataBase()
         End If
     End Sub
 
     'Datensatz-Zeiger wurde geändert
-    Private Sub DataGridView_HasChanged() Handles DataGridView.HasChanged
+    Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
         'Daten zum aktuell ausgewählten User laden
         User.LoadData(DataGridView)
         'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
@@ -69,7 +76,7 @@ Public Class wb_User_Liste
     'Anstelle der Gruppen-Nummer wird die Gruppen-Bezeichnung ausgegeben
     'die Texte kommen aus eine HashTable
     Const GrpIdxColumn As Integer = 3
-    Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
+    Private Sub DataGridView_CellFormatting(sender As Object, e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
         Try
             If e.ColumnIndex = GrpIdxColumn Then
                 If (CInt(e.Value) > 0) Then
@@ -79,6 +86,7 @@ Public Class wb_User_Liste
                 End If
             End If
         Catch
+            Debug.Print(e.Value)
         End Try
     End Sub
 

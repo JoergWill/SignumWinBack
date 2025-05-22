@@ -181,16 +181,16 @@ Partial Class wb_User_Passwort
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents tUserName As Windows.Forms.TextBox
-    Friend WithEvents tUserPassAlt As Windows.Forms.TextBox
-    Friend WithEvents tPersonalNr As Windows.Forms.TextBox
-    Friend WithEvents Label3 As Windows.Forms.Label
-    Friend WithEvents Label4 As Windows.Forms.Label
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents tbUserPassNeu_B As Windows.Forms.TextBox
-    Friend WithEvents Label5 As Windows.Forms.Label
-    Friend WithEvents tbUserPassNeu_A As Windows.Forms.TextBox
-    Friend WithEvents BtnOK As Windows.Forms.Button
-    Friend WithEvents BtnAbbruch As Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents tUserName As System.Windows.Forms.TextBox
+    Friend WithEvents tUserPassAlt As System.Windows.Forms.TextBox
+    Friend WithEvents tPersonalNr As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents tbUserPassNeu_B As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents tbUserPassNeu_A As System.Windows.Forms.TextBox
+    Friend WithEvents BtnOK As System.Windows.Forms.Button
+    Friend WithEvents BtnAbbruch As System.Windows.Forms.Button
 End Class

@@ -30,7 +30,7 @@ Public Class wb_Rohstoffe_Parameter
 
         'Beim ersten Aufruf wird der aktuelle Rohstoff angezeigt
         If RohStoff IsNot Nothing Then
-            DetailInfo(sender)
+            DetailInfo(sender, False)
         End If
     End Sub
 
@@ -39,14 +39,15 @@ Public Class wb_Rohstoffe_Parameter
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub wb_Rohstoffe_Parameter_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Rohstoffe_Parameter_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         RemoveHandler wb_Rohstoffe_Shared.eListe_Click, AddressOf DetailInfo
     End Sub
 
     ''' <summary>
     ''' Rohstoff-Parameter des (aktuellen) Rohstoffes anzeigen
     ''' </summary>
-    Private Sub DetailInfo(sender)
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
+    Private Sub DetailInfo(sender As Object, Reload As Boolean)
         'Virtual Tree anzeigen
         VirtualTree.DataSource = RohStoff.RootParameter
         'alle Zeilen aufklappen
@@ -65,20 +66,14 @@ Public Class wb_Rohstoffe_Parameter
     Private Sub VirtualTree_SelectionChanging(sender As Object, e As SelectionChangingEventArgs) Handles VirtualTree.SelectionChanging
         'Daten aus dem aktuell ausgewählten Rezeptschritt
         _KomponParam = DirectCast(e.StartRow.Item, wb_KomponParam)
-
-        'Einstellungen Editor
-        'Debug.Print("VirtualTree_SelectionChanging " & _KomponParam.Bezeichnung & " UG/OG/Format " & _KomponParam.eUG & "/" & _KomponParam.eOG & "/" & _KomponParam.eFormat)
-        'DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).Init = True
-        'DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eFormat = _KomponParam.eFormat
-        'DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eOG = _KomponParam.eOG
-        'DirectCast(EnhEdit.Control, EnhEdit.EnhEdit).eUG = _KomponParam.eUG
-
-
+        'Parameter Editor
         GLeFormat = _KomponParam.eFormat
         GLeOG = _KomponParam.eOG
         GLeUG = _KomponParam.eUG
         GLoValue = _KomponParam.Wert
-
+        If GLeFormat = wb_Format.fReal Then
+            GLoValue = wb_Functions.FormatStr(_KomponParam.Wert, 3, -1, "sql")
+        End If
         'Verhindert dass einzelne Zellen markiert werden
         e.Cancel = True
     End Sub
@@ -89,6 +84,7 @@ Public Class wb_Rohstoffe_Parameter
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Private Sub VirtualTree_GetCellData(sender As Object, e As Infralution.Controls.VirtualTree.GetCellDataEventArgs) Handles VirtualTree.GetCellData
         'get the default binding for the given row And use it to populate the cell data
         Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
@@ -105,7 +101,7 @@ Public Class wb_Rohstoffe_Parameter
 
         'Soll/Istwert 
         If e.Column.Name = "ColWert" Then
-            If _KomponParam.TypNr = wb_Global.ktParam.kt301 And (wb_KomponParam301_Global.IsAllergen(_KomponParam.ParamNr) Or wb_KomponParam301_Global.IsErnaehrung(_KomponParam.ParamNr)) Then
+            If _KomponParam.TypNr = wb_Global.ktParam.kt301 AndAlso (wb_KomponParam301_Global.IsAllergen(_KomponParam.ParamNr) OrElse wb_KomponParam301_Global.IsErnaehrung(_KomponParam.ParamNr)) OrElse _KomponParam.TypNr = wb_Global.ktParam.kt303 Then
                 'Allergen-Informationen zentriert
                 VirtualTree_SetFontAlignment(e.CellData.EvenStyle)
                 VirtualTree_SetFontAlignment(e.CellData.OddStyle)

@@ -31,10 +31,11 @@ Partial Class wb_User_Details
         Me.tUserPass = New System.Windows.Forms.TextBox()
         Me.tUserName = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.lblPersonalNummer = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tUserRFID = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.Btn_RemoveID = New System.Windows.Forms.Button()
         Me.cbxReaderList = New WinBack.wb_ComboBox()
         Me.cbUserGrp = New WinBack.wb_ComboBox()
         Me.SuspendLayout()
@@ -71,7 +72,6 @@ Partial Class wb_User_Details
         '
         Me.tUserPass.Location = New System.Drawing.Point(290, 66)
         Me.tUserPass.Name = "tUserPass"
-        Me.tUserPass.ReadOnly = True
         Me.tUserPass.Size = New System.Drawing.Size(103, 20)
         Me.tUserPass.TabIndex = 3
         '
@@ -92,15 +92,15 @@ Partial Class wb_User_Details
         Me.Label3.TabIndex = 6
         Me.Label3.Text = "Passwort"
         '
-        'Label4
+        'lblPersonalNummer
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label4.Location = New System.Drawing.Point(287, 5)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(90, 13)
-        Me.Label4.TabIndex = 7
-        Me.Label4.Text = "Personal-Nummer"
+        Me.lblPersonalNummer.AutoSize = True
+        Me.lblPersonalNummer.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblPersonalNummer.Location = New System.Drawing.Point(287, 5)
+        Me.lblPersonalNummer.Name = "lblPersonalNummer"
+        Me.lblPersonalNummer.Size = New System.Drawing.Size(90, 13)
+        Me.lblPersonalNummer.TabIndex = 7
+        Me.lblPersonalNummer.Text = "Personal-Nummer"
         '
         'Label1
         '
@@ -130,6 +130,15 @@ Partial Class wb_User_Details
         Me.Label5.TabIndex = 10
         Me.Label5.Text = "Kartenleser:"
         '
+        'Btn_RemoveID
+        '
+        Me.Btn_RemoveID.Location = New System.Drawing.Point(399, 114)
+        Me.Btn_RemoveID.Name = "Btn_RemoveID"
+        Me.Btn_RemoveID.Size = New System.Drawing.Size(71, 23)
+        Me.Btn_RemoveID.TabIndex = 12
+        Me.Btn_RemoveID.Text = "Löschen"
+        Me.Btn_RemoveID.UseVisualStyleBackColor = True
+        '
         'cbxReaderList
         '
         Me.cbxReaderList.FormattingEnabled = True
@@ -153,11 +162,12 @@ Partial Class wb_User_Details
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(520, 164)
+        Me.Controls.Add(Me.Btn_RemoveID)
         Me.Controls.Add(Me.cbxReaderList)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.tUserRFID)
-        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.lblPersonalNummer)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.tPersonalNr)
         Me.Controls.Add(Me.cbUserGrp)
@@ -173,16 +183,17 @@ Partial Class wb_User_Details
 
     End Sub
 
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents lblName As Windows.Forms.Label
-    Friend WithEvents tUserName As Windows.Forms.TextBox
-    Friend WithEvents tUserPass As Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lblName As System.Windows.Forms.Label
+    Friend WithEvents tUserName As System.Windows.Forms.TextBox
+    Friend WithEvents tUserPass As System.Windows.Forms.TextBox
     Friend WithEvents cbUserGrp As wb_ComboBox
-    Friend WithEvents tPersonalNr As Windows.Forms.TextBox
-    Friend WithEvents Label3 As Windows.Forms.Label
-    Friend WithEvents Label4 As Windows.Forms.Label
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents tUserRFID As Windows.Forms.TextBox
+    Friend WithEvents tPersonalNr As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents lblPersonalNummer As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents tUserRFID As System.Windows.Forms.TextBox
     Friend WithEvents cbxReaderList As wb_ComboBox
-    Friend WithEvents Label5 As Windows.Forms.Label
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Btn_RemoveID As System.Windows.Forms.Button
 End Class

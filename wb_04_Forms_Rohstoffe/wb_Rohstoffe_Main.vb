@@ -3,6 +3,7 @@ Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
+Imports combit.Reporting.DataProviders
 
 Public Class wb_Rohstoffe_Main
     Implements IExternalFormUserControl
@@ -14,6 +15,8 @@ Public Class wb_Rohstoffe_Main
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public RohstoffVerwendung As wb_Rohstoffe_Verwendung
     Public RohstoffParameter As wb_Rohstoffe_Parameter
+    Public RohstoffHinweise As wb_Rohstoffe_Hinweise
+    Public RohstoffTextHinweise As wb_Rohstoffe_TextHinweise
     Public RohstoffSilo As wb_Rohstoffe_Silo
     Public RohstoffLieferung As wb_Rohstoffe_Lieferung
     Public RohstoffNwt As wb_Rohstoffe_Nwt
@@ -50,6 +53,8 @@ Public Class wb_Rohstoffe_Main
     End Property
 
     Public Overrides Sub SetDefaultLayout()
+        DockPanel.Theme = wb_GlobalSettings.Theme
+
         RohstoffListe.Show(DockPanel, DockState.DockLeft)
         RohstoffDetails.Show(DockPanel, DockState.DockTop)
     End Sub
@@ -72,6 +77,9 @@ Public Class wb_Rohstoffe_Main
         wb_Functions.CloseAndDisposeSubForm(RohstoffCloud)
         wb_Functions.CloseAndDisposeSubForm(RohstoffVerwendung)
         wb_Functions.CloseAndDisposeSubForm(RohstoffSilo)
+        wb_Functions.CloseAndDisposeSubForm(RohstoffDetails)
+        wb_Functions.CloseAndDisposeSubForm(RohstoffHinweise)
+        wb_Functions.CloseAndDisposeSubForm(RohstoffTextHinweise)
 
         'alle Spuren in Rohstoffe_Shared löschen
         wb_Rohstoffe_Shared.Invalid()
@@ -101,6 +109,8 @@ Public Class wb_Rohstoffe_Main
                 oGrpROH.AddButton("BtnRohstoffDetails", "Details", "weitere Rohstoff-Daten", My.Resources.RohstoffeDetails_32x32, My.Resources.RohstoffeDetails_32x32, AddressOf BtnRohstoffDetails)
                 oGrpROH.AddButton("BtnRohstoffParameter", "Parameter", "Rohstoffparameter", My.Resources.RohstoffeParameter_32x32, My.Resources.RohstoffeParameter_32x32, AddressOf BtnRohstoffParameter)
                 oGrpROH.AddButton("BtnRohstoffVerwendung", "Verwendung", "Verwendung des Rohstoffes in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf BtnRohstoffVerwendung)
+                oGrpROH.AddButton("BtnArtikelHinweise", "Hinweise", "Rohstoff Verarbeitungshinweise", My.Resources.ArtikelHinweise_32x32, My.Resources.ArtikelHinweise_32x32, AddressOf BtnRohstoffHinweise)
+                oGrpROH.AddButton("BtnArtikelTextHinweise", "Text-Hinweise", "Rohstoff Verarbeitungshinweise in Textform", My.Resources.RezeptHinweise_32x32, My.Resources.RezeptHinweise_32x32, AddressOf BtnRohstoffTextHinweise)
 
                 oGrpLGR.AddButton("BtnRohstoffSilo", "Silo Füllstand", "Rohstoffe Silo-Füllstände", My.Resources.RohstoffSilo_32x32, My.Resources.RohstoffSilo_32x32, AddressOf BtnRohstoffSilo)
                 oGrpLGR.AddButton("BtnRohstoffLieferung", "Lager Produktion", "Rohstoffe Produktionslager", My.Resources.RohstoffeLieferung_32x32, My.Resources.RohstoffeLieferung_32x32, AddressOf BtnRohstoffLieferung)
@@ -148,6 +158,20 @@ Public Class wb_Rohstoffe_Main
         RohstoffNwt.Show(DockPanel, DockState.Document)
     End Sub
 
+    Private Sub BtnRohstoffHinweise()
+        If IsNothingOrDisposed(RohstoffHinweise) Then
+            RohstoffHinweise = New wb_Rohstoffe_Hinweise
+        End If
+        RohstoffHinweise.Show(DockPanel, DockState.Document)
+    End Sub
+
+    Private Sub BtnRohstoffTextHinweise()
+        If IsNothingOrDisposed(RohstoffTextHinweise) Then
+            RohstoffTextHinweise = New wb_Rohstoffe_TextHinweise
+        End If
+        RohstoffTextHinweise.Show(DockPanel, DockState.Document)
+    End Sub
+
     Private Sub BtnRohstoffSilo()
         If IsNothingOrDisposed(RohstoffSilo) Then
             RohstoffSilo = New wb_Rohstoffe_Silo
@@ -185,7 +209,7 @@ Public Class wb_Rohstoffe_Main
             pDialog.LL_KopfZeile_1 = RohstoffListe.FilterText
 
             'Liste aller Rohstoffe aus den DataGridView
-            pDialog.LL.DataSource = New combit.ListLabel22.DataProviders.AdoDataProvider(RohstoffListe.DataGridView.LLData)
+            pDialog.LL.DataSource = New AdoDataProvider(RohstoffListe.DataGridView.LLData)
 
             'List und Label-Verzeichnis für die Listen
             pDialog.ListSubDirectory = "Rohstoffe"
@@ -217,6 +241,18 @@ Public Class wb_Rohstoffe_Main
                 RohstoffParameter = New wb_Rohstoffe_Parameter
                 _DockPanelList.Add(RohstoffParameter)
                 Return RohstoffParameter
+
+           'Übernommen von Artikelverwaltung
+            Case "WinBack.wb_Artikel_TextHinweise"
+                RohstoffTextHinweise = New wb_Rohstoffe_TextHinweise
+                _DockPanelList.Add(RohstoffTextHinweise)
+                Return RohstoffTextHinweise
+
+           'Übernommen von Artikelverwaltung
+            Case "WinBack.wb_Artikel_Hinweise"
+                RohstoffHinweise = New wb_Rohstoffe_Hinweise
+                _DockPanelList.Add(RohstoffHinweise)
+                Return RohstoffHinweise
 
             Case "WinBack.wb_Rohstoffe_Silo"
                 RohstoffSilo = New wb_Rohstoffe_Silo

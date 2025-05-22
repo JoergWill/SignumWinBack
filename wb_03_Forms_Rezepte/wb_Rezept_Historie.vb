@@ -7,6 +7,8 @@ Public Class wb_Rezept_Historie
     Private Sub wb_Rezept_Historie_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Event-Handler (Klick auf Rezept-Liste -> Anzeige der Detail-Info)
         AddHandler wb_Rezept_Shared.eListe_Click, AddressOf DetailInfo
+        'Nach dem Öffnen wird die Rezepthistorie des aktuellen Rezepts angezeigt
+        DetailInfo()
     End Sub
 
     Public Sub DetailInfo()
@@ -22,7 +24,7 @@ Public Class wb_Rezept_Historie
         HisDataGridView.LoadData(setParams(sqlRezeptHistr, wb_Rezept_Shared.Rezept.RezeptNr, wb_Rezept_Shared.Rezept.Variante.ToString), "RezeptHistorie", wb_Sql.dbTable.wbdaten)
     End Sub
 
-    Private Sub HisDataGridView_CellDoubleClick(sender As Object, e As Windows.Forms.DataGridViewCellEventArgs) Handles HisDataGridView.CellDoubleClick
+    Private Sub HisDataGridView_CellDoubleClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles HisDataGridView.CellDoubleClick
         Me.Cursor = Cursors.WaitCursor
         'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen
         Dim AenderungNummer As Integer = HisDataGridView.iField("H_RZ_Aenderung_Nr")

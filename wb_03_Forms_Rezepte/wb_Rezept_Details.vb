@@ -3,6 +3,7 @@
 Public Class wb_Rezept_Details
     Inherits DockContent
     Private OnErrorSetFocus As Object
+    Private bDataHasChanged As Boolean = False
 
     Private Sub wb_Rezept_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Combo-Box(Rezept-Varianten) mit Werten füllen
@@ -19,6 +20,9 @@ Public Class wb_Rezept_Details
     End Sub
 
     Public Sub DetailInfo(sender As Object)
+        'gelöschte Rezepte (Papierkorb) werden angezeigt, können aber nicht geändert werden
+        EnableDisableTextBox(wb_Rezept_Shared.Rezept.LinienGruppe < 0)
+
         'Rezept-Nummer
         tRezeptNummer.Text = wb_Rezept_Shared.Rezept.RezeptNummer
         'Rezept-Bezeichnung
@@ -52,6 +56,7 @@ Public Class wb_Rezept_Details
         'Checkbox Anstellgut
         cbAnstellgut.Checked = wb_Rezept_Shared.Rezept.AnstellGutReWork
 
+
     End Sub
 
     Private Sub MinMaxRezeptShowValues()
@@ -64,7 +69,8 @@ Public Class wb_Rezept_Details
     End Sub
 
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tRezeptNummer.Leave, tRezeptName.Leave, tRezeptKommentar.Leave, cbRezeptGruppe.Leave, cbLiniengruppe.Leave
-        If wb_Rezept_Shared.Rezept.RezeptNr > 0 Then
+        'Sicherheitsabfrage vor Speichern
+        If wb_Rezept_Shared.Rezept.RezeptNr > 0 And tRezeptName.Text <> "" Then
             wb_Rezept_Shared.Rezept.RezeptBezeichnung = tRezeptName.Text
             wb_Rezept_Shared.Rezept.RezeptKommentar = tRezeptKommentar.Text
             wb_Rezept_Shared.Rezept.RezeptNummer = tRezeptNummer.Text
@@ -72,6 +78,10 @@ Public Class wb_Rezept_Details
             wb_Rezept_Shared.Rezept.RezeptGruppe = cbRezeptGruppe.GetKeyFromSelection()
             'geändete Daten speichern
             wb_Rezept_Shared.Edit_Leave(sender)
+
+            ' Setzt den Eingabe-Focus auf ein Label-Element, damit der ausgewählte Text in der Combo-Box nicht
+            ' mehr markiert ist. (Workarround Schönheits-OP)
+            lblNummer.Select()
         End If
     End Sub
 
@@ -103,7 +113,8 @@ Public Class wb_Rezept_Details
         wb_Rezept_Shared.Edit_Leave(sender)
     End Sub
 
-    Private Sub OnErrorMinMaxOptTeig(Sender As Object)
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
+    Private Sub OnErrorMinMaxOptTeig(sender As Object)
         If wb_Rezept_Shared.Rezept.TeigChargen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
             If OnErrorSetFocus IsNot Nothing Then
                 'Eingabe-Focus auf das auslösende Objekt setzen
@@ -116,7 +127,7 @@ Public Class wb_Rezept_Details
         MinMaxRezeptShowValues()
     End Sub
 
-    Private Sub wb_Rezept_Details_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Rezept_Details_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Event-Handler wieder freigeben
         RemoveHandler wb_Rezept_Shared.eListe_Click, AddressOf DetailInfo
         RemoveHandler wb_Rezept_Shared.Rezept.TeigChargen.OnError, AddressOf OnErrorMinMaxOptTeig
@@ -126,5 +137,41 @@ Public Class wb_Rezept_Details
         wb_Rezept_Shared.Rezept.AnstellGutReWork = cbAnstellgut.Checked
         wb_Rezept_Shared.Rezept.DataHasChanged = True
         wb_Rezept_Shared.Edit_Leave(sender)
+    End Sub
+
+    Private Sub EnableDisableTextBox(RecDeleted As Boolean)
+        'Rezept-Nummer
+        tRezeptNummer.Enabled = Not RecDeleted
+        'Rezept-Bezeichnung
+        tRezeptName.Enabled = Not RecDeleted
+        'Rezept-Kommentar
+        tRezeptKommentar.Enabled = Not RecDeleted
+        'Rezept-Gewicht
+        tRezeptGewicht.Enabled = Not RecDeleted
+
+        'letzte Änderung Nummer
+        tChangeNr.Enabled = Not RecDeleted
+        'Minimal-Charge
+        tChargeMin.Enabled = Not RecDeleted
+        'Maximal-Charge
+        tChargeMax.Enabled = Not RecDeleted
+        'Optimal-Charge
+        tChargeOpt.Enabled = Not RecDeleted
+
+        'Eintrag in Combo-Box Liniengruppe ausfüllen
+        cbLiniengruppe.Enabled = Not RecDeleted
+        'Eintrag in Combo-Box Rezeptvariante ausfüllen
+        cbVariante.Enabled = Not RecDeleted
+        'Eintrag in Combo-Box Rezeptgruppe ausfüllen
+        cbRezeptGruppe.Enabled = Not RecDeleted
+        'Checkbox Anstellgut
+        cbAnstellgut.Enabled = Not RecDeleted
+
+        'Eintrag Rezept gelöscht von
+        If RecDeleted Then
+            lblChangeDate.Text = "Gelöscht"
+        Else
+            lblChangeDate.Text = "Letzte Änderung"
+        End If
     End Sub
 End Class

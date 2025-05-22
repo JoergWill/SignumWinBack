@@ -1,14 +1,16 @@
 ﻿Imports WinBack.wb_Language
 
 Public Class wb_Rohstoffe_Shared
-    Public Shared Event eListe_Click(sender As Object)
+    Public Shared Event eListe_Click(sender As Object, Reload As Boolean)
     Public Shared Event eEdit_Leave(sender As Object)
     Public Shared Event eParam_Changed(Sender As Object)
     Public Shared Event eBefMenge_Changed(sender As Object)
+    Public Shared Event eSelect_Data(sender As Object, KoNr As Integer)
 
     Public Shared RohGruppe As New SortedList
     Public Shared TeigTempRohstoffe As New SortedList
     Public Shared MehlGruppe As New List(Of wb_MehlGruppe)
+    Public Shared NoMehlGruppe As New List(Of wb_MehlGruppe)
     Public Shared RohAktiv As New Hashtable
     Public Shared RohSilos_NachNummer As New Hashtable
     Public Shared RohSilos_NachTyp As New List(Of wb_Silo)
@@ -31,6 +33,7 @@ Public Class wb_Rohstoffe_Shared
         RezeptKomp  ' alle aktiven Komponenten für Rezeptverwaltung (101..104, 118,128)
         OhneKneter  ' alle aktiven Komponenten für die Rezeptverwaltung ohne 118/128
         NurKneter   ' alle aktiven Komponenten 118
+        RohstoffGrp ' alle Rohstoffe mit Rezeptgruppe X
     End Enum
 
     Enum LinkFilter
@@ -56,6 +59,38 @@ Public Class wb_Rohstoffe_Shared
         RohStoff.Invalid()
     End Sub
 
+    ''' <summary>
+    ''' Reload aller oder definierter Listen(Tabellen) aus den Stammdaten nach Änderung der Parameter
+    '''     -   Rohstoffe   (Rohstoff-Gruppen)
+    '''     -   Silo        (Silo-Rohstoffe und Maximal-Mengen)
+    '''     -   TeigTemp    (Rohstoffe mit Type 118)
+    '''     
+    ''' Wird keine Tabelle angegeben, werden alle Listen neu geladen
+    ''' </summary>
+    ''' <param name="Item"></param>
+    Public Shared Sub Reload(Optional Item As String = "")
+        Select Case Item
+
+            Case "Rohstoffe"
+                'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
+                Load_RohstoffTables()
+            Case "Silo"
+                'HashTable aller Silo-Rohstoffe mit Lagerort BW,MK,M,KKA
+                Load_SiloTables()
+            Case "TeigTemp"
+                'HashTable aller Rohstoffe zur Teigtemperatur-Erfassung
+                Load_TeigTempTables()
+
+            Case Else
+                'HashTable mit der Übersetzung der Gruppen-Nummer zu Gruppen-Bezeichnung
+                Load_RohstoffTables()
+                'HashTable aller Silo-Rohstoffe mit Lagerort BW,MK,M,KKA
+                Load_SiloTables()
+                'HashTable aller Rohstoffe zur Teigtemperatur-Erfassung
+                Load_TeigTempTables()
+        End Select
+    End Sub
+
     Public Shared ReadOnly Property ErrorText As String
         Get
             Return _ErrorText
@@ -78,11 +113,14 @@ Public Class wb_Rohstoffe_Shared
             End If
         End Get
     End Property
+
+#Disable Warning S2352 ' Indexed properties with more than one parameter should not be used
     ''' <summary>
     ''' Liefert eine Liste aller Rohstoffe die zur Rohstoff-Gruppe gehören
     ''' </summary>
     ''' <returns></returns>
     Public Shared ReadOnly Property RohstoffeInGruppe(Grp As Integer, Optional GrpNummer As Integer = 0) As ArrayList
+#Enable Warning S2352 ' Indexed properties with more than one parameter should not be used
         Get
             'Liste leeren
             _RohstoffeInGruppe.Clear()
@@ -120,6 +158,14 @@ Public Class wb_Rohstoffe_Shared
     '''HashTable mit der Übersetzung der Rohstoffgruppen-Nummer in die Rohstoffgruppen-Bezeichnung laden
     '''wenn die Rohstoffgruppen-Bezeichnung einen Verweis aus die Texte-Tabelle enthält wird die
     '''entsprechende Übersetzung aus winback.Texte geladen
+    '''
+    '''Erzeugt eine Liste der Mehle aus der Rohstoff-Gruppe-Tabelle. Aus dieser Liste werden die
+    '''Mehlanteile über die Zutatenliste berechnet.
+    '''
+    '''Erzeugt eine Liste der Rohstoff-Gruppen mit der Zuordnung KEINE MEHLZUSAMMENSETZUNG BERECHNEN
+    '''Ist ein Rohstoff mit dieser Gruppe in einer Rezeptur verzeichnet, wird keine Mehlzusammensetzung
+    '''berechnet.
+    '''
     ''' </summary>
     Private Shared Sub Load_RohstoffTables()
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
@@ -137,6 +183,13 @@ Public Class wb_Rohstoffe_Shared
                     MGrp.GruppeNr = winback.iField("IP_Wert1int")
                     MGrp.Bezeichnung = TextFilter(winback.sField("IP_Wert4str"))
                     MehlGruppe.Add(MGrp)
+                End If
+                'Rohstoff-Gruppen mit Flag NoDeklaration (Keine Mehlzusammensetzung für dieses Rezept bestellen)
+                If winback.iField("IP_Wert2int") = 2 Then
+                    Dim MGrp As New wb_MehlGruppe
+                    MGrp.GruppeNr = winback.iField("IP_Wert1int")
+                    MGrp.Bezeichnung = TextFilter(winback.sField("IP_Wert4str"))
+                    NoMehlGruppe.Add(MGrp)
                 End If
             End If
         End While
@@ -156,10 +209,11 @@ Public Class wb_Rohstoffe_Shared
     ''' nach Lagerort und Komponenten-Nummer.
     ''' Die maximale Füllstand (Silo-Größe) steht in der Tabelle Lagerorte im Feld LG_Kommentar)
     ''' </summary>
-    Private Shared Sub Load_SiloTables()
+    Public Shared Sub Load_SiloTables()
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         Dim KompNummer As String
         Dim KompBezeichnung As String
+        Dim KompKommentar As String
         Dim SiloRohstoff As wb_Silo
 
         'Liste aller aktiven Silo-Rohstoffe
@@ -173,18 +227,20 @@ Public Class wb_Rohstoffe_Shared
             'Rohstoff-Nummer
             KompNummer = winback.sField("KO_Nr_AlNum")
             KompBezeichnung = winback.sField("KO_Bezeichnung")
-            Debug.Print("Rohstoffe Silos " & KompNummer & "/" & KompBezeichnung)
+            KompKommentar = winback.sField("KO_Kommentar")
+            'Debug.Print("Rohstoffe Silos " & KompNummer & "/" & KompBezeichnung & "/ " & KompKommentar)
 
             'Prüfen ob die Rohstoff-Nummer schon existiert
             If RohSilos_NachNummer.ContainsKey(KompNummer) Then
-                SiloRohstoff = New wb_Silo(RohSilos_NachNummer(KompNummer), KompBezeichnung)
+                SiloRohstoff = New wb_Silo(RohSilos_NachNummer(KompNummer), KompBezeichnung, KompKommentar)
             Else
-                SiloRohstoff = New wb_Silo(Nothing, "")
+                SiloRohstoff = New wb_Silo(Nothing, "", "")
             End If
 
             'Silo-Daten
             SiloRohstoff.KompNr = winback.iField("KO_Nr")
             SiloRohstoff.KompNummer = KompNummer
+            SiloRohstoff.KompKommentar = KompKommentar
             SiloRohstoff.KompBezeichnung = KompBezeichnung
             SiloRohstoff.LagerOrt = winback.sField("LG_Ort")
             'Silo maximale Füllmenge steht im Kommentar-Feld
@@ -199,7 +255,7 @@ Public Class wb_Rohstoffe_Shared
             End If
 
             'Flache Liste aller Silo-Rohstoffe
-            'RohSilos_NachTyp.Add(SiloRohstoff)
+            RohSilos_NachTyp.Add(SiloRohstoff)
 
         End While
         'Datenbankverbindung wieder schliessen
@@ -236,7 +292,7 @@ Public Class wb_Rohstoffe_Shared
 
         'nächste freie Gruppen-Nummer ermitteln (Artikel UND Rohstoff-Gruppe)
         Dim RohGrpNr As Integer = 1
-        Do While RohGruppe.ContainsKey(RohGrpNr) Or wb_Artikel_Shared.ArtGruppe.ContainsKey(RohGrpNr)
+        Do While RohGruppe.ContainsKey(RohGrpNr) OrElse wb_Artikel_Shared.ArtGruppe.ContainsKey(RohGrpNr)
             RohGrpNr += 1
         Loop
 
@@ -251,6 +307,7 @@ Public Class wb_Rohstoffe_Shared
         Return RohGrpNr
     End Function
 
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Public Shared Function Delete_RohstoffGruppe(Nr As Integer) As Boolean
         'Default Fehlermeldung
         _ErrorText = "Fehler beim Löschen der Rohstoffgruppe"
@@ -286,8 +343,8 @@ Public Class wb_Rohstoffe_Shared
         Return False
     End Function
 
-    Public Shared Sub Liste_Click(sender As Object)
-        RaiseEvent eListe_Click(sender)
+    Public Shared Sub Liste_Click(sender As Object, Optional Reload As Boolean = False)
+        RaiseEvent eListe_Click(sender, Reload)
     End Sub
 
     Public Shared Sub Edit_Leave(sender As Object)
@@ -296,6 +353,10 @@ Public Class wb_Rohstoffe_Shared
 
     Public Shared Sub BefMenge_Changed(sender As Object)
         RaiseEvent eBefMenge_Changed(sender)
+    End Sub
+
+    Public Shared Sub Select_Data(sender As Object, KoNr As Integer)
+        RaiseEvent eSelect_Data(sender, KoNr)
     End Sub
 
     Public Shared Sub Param_Changed(sender As Object)
@@ -318,7 +379,7 @@ Public Class wb_Rohstoffe_Shared
     ''' <returns></returns>
     Public Shared Function HatSiloUmschaltung(KompNummer As String) As Boolean
         'TODO hier prüfen ob eine Handkomponente dazu existiert!
-        Return (AnzahlSilos(KompNummer) > 1) Or (AnzahlSilos(KompNummer) = 1)
+        Return (AnzahlSilos(KompNummer) >= 1)
     End Function
 
     ''' <summary>
@@ -328,16 +389,16 @@ Public Class wb_Rohstoffe_Shared
     ''' <returns></returns>
     Public Shared Function AnzahlSilos(KompNummer As String) As Integer
         If KompNummer IsNot Nothing Then
-            AnzahlSilos = 0
+            Dim Result As Integer = 0
             If RohSilos_NachNummer.ContainsKey(KompNummer) Then
                 Dim s As wb_Silo = RohSilos_NachNummer(KompNummer)
-                AnzahlSilos += 1
+                Result += 1
                 SiloReiheMaxMenge = Math.Max(SiloReiheMaxMenge, s.MaxMenge)
                 For Each c As wb_Silo In s.ChildSteps
-                    AnzahlSilos += 1
+                    Result += 1
                     SiloReiheMaxMenge = Math.Max(SiloReiheMaxMenge, c.MaxMenge)
                 Next
-                Return AnzahlSilos
+                Return Result
             Else
                 Return -1
             End If
@@ -352,18 +413,19 @@ Public Class wb_Rohstoffe_Shared
     ''' <returns></returns>
     Public Shared Function AnzahlSilos(RohSiloType As wb_Global.RohSiloTypen) As Integer
         If RohSiloType <> wb_Global.RohSiloTypen.UNDEF Then
-            AnzahlSilos = 0
+            Dim Result As Integer = 0
             For Each d As DictionaryEntry In RohSilos_NachNummer
                 Dim s As wb_Silo = RohSilos_NachNummer(d.Key)
                 If s.RohSiloType = RohSiloType Then
-                    AnzahlSilos += 1
+                    Result += 1
                     SiloReiheMaxMenge = Math.Max(SiloReiheMaxMenge, s.MaxMenge)
                     For Each c As wb_Silo In s.ChildSteps
-                        AnzahlSilos += 1
+                        Result += 1
                         SiloReiheMaxMenge = Math.Max(SiloReiheMaxMenge, c.MaxMenge)
                     Next
                 End If
             Next
+            Return Result
         Else
             Return -1
         End If
@@ -395,13 +457,41 @@ Public Class wb_Rohstoffe_Shared
     Private Shared Sub Check_DBFelder()
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         'Prüfen ob Datenbankfeld KA_zaehlt_zu_NWT_Gesamtmenge vorhanden ist
-        If winback.sqlSelect(wb_Sql_Selects.sqlCheckNwtGesamtmenge) Then
-            If winback.Read Then
-                _TabelleKomponentenOK = True
-            End If
+        If winback.sqlSelect(wb_Sql_Selects.sqlCheckNwtGesamtmenge) AndAlso winback.Read Then
+            _TabelleKomponentenOK = True
         End If
         winback.Close()
     End Sub
+
+    ''' <summary>
+    ''' Markiert die übergegebene Komponente (Update Nährwert-Info notwendig oder Nährwertinfo fehlerhaft)
+    ''' </summary>
+    ''' <param name="Marker"></param>
+    Public Shared Sub MySQLdbSetMarker(Marker As wb_Global.ArtikelMarker, Optional Ko_Nr As Integer = wb_Global.UNDEFINED)
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        'Interne Komponenten-Nummer muss definiert sein
+        If Ko_Nr < 0 Then
+            Ko_Nr = RohStoff.Nr
+        End If
+
+        'Update Komponente in winback.Komponenten
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarker, Ko_Nr, Marker))
+        winback.Close()
+    End Sub
+
+    Public Shared Function GetRohstoffGruppeFromNr(Nr As Integer) As String
+        'Bezeichnung aus Rohstoff-Gruppe Nr
+        If Nr > 0 Then
+            If RohGruppe.ContainsKey(Nr) Then
+                Return RohGruppe(Nr)
+            Else
+                Return ""
+            End If
+        Else
+            Return ""
+        End If
+    End Function
+
 End Class
 
 

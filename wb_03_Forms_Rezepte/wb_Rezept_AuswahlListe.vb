@@ -11,6 +11,11 @@
     Private _RezeptListe As New ArrayList
     Private _MultiSelect As Boolean = False
 
+    Public Enum SortColumn
+        RezeptNummer = 0
+        RezeptBezeichnung = 2
+    End Enum
+
     Public Sub New()
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -18,11 +23,13 @@
         InitDataGrid()
     End Sub
 
-    Public Sub New(RzNr As Integer)
+    Public Sub New(SortierFeld As SortColumn, Optional RzNr As Integer = wb_Global.UNDEFINED)
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         InitDataGrid(RzNr)
+        'Sortieren
+        SortierenNach = SortierFeld
     End Sub
 
     Public Sub New(RezeptNummer As String, RezeptName As String)
@@ -97,11 +104,18 @@
         End Get
     End Property
 
+    Public WriteOnly Property SortierenNach As Integer
+        Set(value As Integer)
+            'Focus auf Sortier-Feld - TODO funktioniert noch nicht (siehe JIRA)
+            DataGridView.SetSortColumn(value)
+        End Set
+    End Property
+
     Private Sub InitDataGrid(Optional RzNr As Integer = wb_Global.UNDEFINED, Optional RezeptNummer As String = "", Optional RezeptName As String = "")
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
-        'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"", "Nummer", "&Name"}
+        'Spalten ohne Bezeichnung werden ausgeblendet - aus ungeklärten Gründen wird in NET8 die erste Spalte IMMER visible dargestellt !
+        Dim sColNames As New List(Of String) From {"Nummer", "", "&Name"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
@@ -118,10 +132,12 @@
         'DataGrid filtern nach Rezept-Nummer (alpha)
         If RezeptNummer <> "" Then
             DataGridView.Filter = "RZ_Nr_AlNum = '" & RezeptNummer & "'"
+            SortierenNach = SortColumn.RezeptNummer
         End If
         'DataGrid filtern nach Rezept-Bezeichnung (alpha)
         If RezeptName <> "" Then
             DataGridView.Filter = "RZ_Bezeichnung LIKE '%" & RezeptName & "%'"
+            SortierenNach = SortColumn.RezeptBezeichnung
         End If
     End Sub
 
@@ -129,18 +145,18 @@
         _RezeptNr = 0
         _RezeptNummer = ""
         _RezeptName = ""
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
     Private Sub BtnCancel_Click(sender As Object, e As EventArgs) Handles BtnCancel.Click
         Me.Close()
-        Me.DialogResult = Windows.Forms.DialogResult.Abort
+        Me.DialogResult = System.Windows.Forms.DialogResult.Abort
     End Sub
 
     Private Sub DataGridView_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView.DoubleClick
         GetResult()
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
@@ -167,13 +183,13 @@
         _RezeptNummer = Rezeptur.tbRzNummer.Text
         _RezeptName = Rezeptur.tbRezeptName.Text
 
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
     Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
         GetResult()
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
@@ -200,7 +216,7 @@
         _RezeptChargeMax.MengeInkg = DataGridView.Field("RZ_Charge_Max")
 
         'MultiSelect
-        For Each dl As Windows.Forms.DataGridViewRow In DataGridView.SelectedRows
+        For Each dl As System.Windows.Forms.DataGridViewRow In DataGridView.SelectedRows
             Dim RezListenElement As New wb_StatistikListenElement
             RezListenElement.Nr = dl.Cells("RZ_Nr").Value
             RezListenElement.Nummer = dl.Cells("RZ_Nr_AlNum").Value

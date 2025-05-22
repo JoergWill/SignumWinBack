@@ -6,7 +6,7 @@ Partial Class wb_Rezept_Details
     'Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -23,10 +23,10 @@ Partial Class wb_Rezept_Details
     'Hinweis: Die folgende Prozedur ist für den Windows Form-Designer erforderlich.
     'Das Bearbeiten ist mit dem Windows Form-Designer möglich.  
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.tRezeptNummer = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblNummer = New System.Windows.Forms.Label()
         Me.tRezeptName = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.tRezeptKommentar = New System.Windows.Forms.TextBox()
@@ -34,7 +34,7 @@ Partial Class wb_Rezept_Details
         Me.tRezeptGewicht = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.tChangeNr = New System.Windows.Forms.TextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
+        Me.lblChangeDate = New System.Windows.Forms.Label()
         Me.tChangeDatum = New System.Windows.Forms.TextBox()
         Me.tChangeName = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -66,15 +66,15 @@ Partial Class wb_Rezept_Details
         Me.tRezeptNummer.TabIndex = 4
         Me.tRezeptNummer.TabStop = False
         '
-        'Label1
+        'lblNummer
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label1.Location = New System.Drawing.Point(9, 21)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(58, 13)
-        Me.Label1.TabIndex = 3
-        Me.Label1.Text = "Rezept-Nr."
+        Me.lblNummer.AutoSize = True
+        Me.lblNummer.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblNummer.Location = New System.Drawing.Point(9, 21)
+        Me.lblNummer.Name = "lblNummer"
+        Me.lblNummer.Size = New System.Drawing.Size(58, 13)
+        Me.lblNummer.TabIndex = 3
+        Me.lblNummer.Text = "Rezept-Nr."
         '
         'tRezeptName
         '
@@ -139,15 +139,15 @@ Partial Class wb_Rezept_Details
         Me.tChangeNr.TabIndex = 12
         Me.tChangeNr.TabStop = False
         '
-        'Label5
+        'lblChangeDate
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label5.Location = New System.Drawing.Point(9, 188)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(85, 13)
-        Me.Label5.TabIndex = 11
-        Me.Label5.Text = "Letzte Änderung"
+        Me.lblChangeDate.AutoSize = True
+        Me.lblChangeDate.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.lblChangeDate.Location = New System.Drawing.Point(9, 188)
+        Me.lblChangeDate.Name = "lblChangeDate"
+        Me.lblChangeDate.Size = New System.Drawing.Size(85, 13)
+        Me.lblChangeDate.TabIndex = 11
+        Me.lblChangeDate.Text = "Letzte Änderung"
         '
         'tChangeDatum
         '
@@ -326,6 +326,7 @@ Partial Class wb_Rezept_Details
         Me.cbRezeptGruppe.Name = "cbRezeptGruppe"
         Me.cbRezeptGruppe.Size = New System.Drawing.Size(245, 21)
         Me.cbRezeptGruppe.TabIndex = 45
+        Me.cbRezeptGruppe.TabStop = False
         '
         'cbLiniengruppe
         '
@@ -334,6 +335,7 @@ Partial Class wb_Rezept_Details
         Me.cbLiniengruppe.Name = "cbLiniengruppe"
         Me.cbLiniengruppe.Size = New System.Drawing.Size(415, 21)
         Me.cbLiniengruppe.TabIndex = 28
+        Me.cbLiniengruppe.TabStop = False
         '
         'cbVariante
         '
@@ -352,7 +354,7 @@ Partial Class wb_Rezept_Details
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGray
-        Me.ClientSize = New System.Drawing.Size(572, 332)
+        Me.ClientSize = New System.Drawing.Size(572, 334)
         Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.cbRezeptGruppe)
         Me.Controls.Add(Me.cbAnstellgut)
@@ -375,7 +377,7 @@ Partial Class wb_Rezept_Details
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.tChangeDatum)
         Me.Controls.Add(Me.tChangeNr)
-        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.lblChangeDate)
         Me.Controls.Add(Me.tRezeptGewicht)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.tRezeptKommentar)
@@ -383,7 +385,7 @@ Partial Class wb_Rezept_Details
         Me.Controls.Add(Me.tRezeptName)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.tRezeptNummer)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.lblNummer)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.Name = "wb_Rezept_Details"
         Me.Text = "Rezept Details"
@@ -392,35 +394,35 @@ Partial Class wb_Rezept_Details
 
     End Sub
 
-    Friend WithEvents tRezeptNummer As Windows.Forms.TextBox
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents tRezeptName As Windows.Forms.TextBox
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents tRezeptKommentar As Windows.Forms.TextBox
-    Friend WithEvents Label3 As Windows.Forms.Label
-    Friend WithEvents tRezeptGewicht As Windows.Forms.TextBox
-    Friend WithEvents Label4 As Windows.Forms.Label
-    Friend WithEvents tChangeNr As Windows.Forms.TextBox
-    Friend WithEvents Label5 As Windows.Forms.Label
-    Friend WithEvents tChangeDatum As Windows.Forms.TextBox
-    Friend WithEvents tChangeName As Windows.Forms.TextBox
-    Friend WithEvents Label6 As Windows.Forms.Label
-    Friend WithEvents Label7 As Windows.Forms.Label
-    Friend WithEvents Label8 As Windows.Forms.Label
-    Friend WithEvents tChargeMin As Windows.Forms.TextBox
-    Friend WithEvents Label9 As Windows.Forms.Label
-    Friend WithEvents tChargeMax As Windows.Forms.TextBox
-    Friend WithEvents Label10 As Windows.Forms.Label
-    Friend WithEvents Label11 As Windows.Forms.Label
-    Friend WithEvents tChargeOpt As Windows.Forms.TextBox
-    Friend WithEvents Label12 As Windows.Forms.Label
-    Friend WithEvents Label13 As Windows.Forms.Label
+    Friend WithEvents tRezeptNummer As System.Windows.Forms.TextBox
+    Friend WithEvents lblNummer As System.Windows.Forms.Label
+    Friend WithEvents tRezeptName As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents tRezeptKommentar As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents tRezeptGewicht As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents tChangeNr As System.Windows.Forms.TextBox
+    Friend WithEvents lblChangeDate As System.Windows.Forms.Label
+    Friend WithEvents tChangeDatum As System.Windows.Forms.TextBox
+    Friend WithEvents tChangeName As System.Windows.Forms.TextBox
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents tChargeMin As System.Windows.Forms.TextBox
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents tChargeMax As System.Windows.Forms.TextBox
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents tChargeOpt As System.Windows.Forms.TextBox
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents cbVariante As wb_ComboBox
-    Friend WithEvents Label14 As Windows.Forms.Label
-    Friend WithEvents Label15 As Windows.Forms.Label
+    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents cbLiniengruppe As wb_ComboBox
-    Friend WithEvents Label16 As Windows.Forms.Label
-    Friend WithEvents cbAnstellgut As Windows.Forms.CheckBox
+    Friend WithEvents Label16 As System.Windows.Forms.Label
+    Friend WithEvents cbAnstellgut As System.Windows.Forms.CheckBox
     Friend WithEvents cbRezeptGruppe As wb_ComboBox
-    Friend WithEvents Label17 As Windows.Forms.Label
+    Friend WithEvents Label17 As System.Windows.Forms.Label
 End Class

@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
-Imports combit.ListLabel22.DataProviders
+Imports combit.Reporting.DataProviders
 Imports EnhEdit.EnhEdit_Global
 Imports Infralution.Controls.VirtualTree
 Imports Microsoft.Office.Interop
@@ -18,14 +18,16 @@ Public Class wb_Rezept_Rezeptur
     Private _RzKopfChanged As Boolean = False
     Private _RzHinweiseChanged As Boolean
     Private _Historical As Boolean = False
+    Private _Deleted As Boolean = False
 
     Private _RezeptSchritt As wb_Rezeptschritt = Nothing    'aktuelle ausgewählter Rezeptschritt (Popup)
     Private _RezeptSchrittNeu As wb_Rezeptschritt = Nothing 'neuer Rezeptschritt (Auswahl-Liste)
 
     Private _HisSollwertDeltaStyle As New Infralution.Controls.StyleDelta
     Private _ProdStufeDeltaStyle As New Infralution.Controls.StyleDelta
+    Private _TextKompDeltaStyle As New Infralution.Controls.StyleDelta
 
-    Private xlApp As Excel.Application
+    Private xlApp As Microsoft.Office.Interop.Excel.Application
     Private xlWorkBooks As Excel.Workbooks
     Private xlWorkBook As Excel.Workbook
     Private xlWorkSheets As Excel.Sheets
@@ -41,7 +43,7 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     ''' <param name="RzNummer"></param>
     ''' <param name="RzVariante"></param>
-    Public Sub New(RzNummer As Integer, RzVariante As Integer, Optional RzAendIndex As Integer = wb_Global.UNDEFINED)
+    Public Sub New(RzNummer As Integer, RzVariante As Integer, Optional RzAendIndex As Integer = wb_Global.UNDEFINED, Optional EnableRezeptKopieren As Boolean = False)
         'Nur Anzeige bei historischen Rezepten
         _Historical = (RzAendIndex <> wb_Global.UNDEFINED)
 
@@ -54,6 +56,7 @@ Public Class wb_Rezept_Rezeptur
         Dim FontArial As New Font(FontFamilyArial, 16, FontStyle.Regular, GraphicsUnit.Pixel)
         _HisSollwertDeltaStyle.Font = New Drawing.Font(FontArial, System.Drawing.FontStyle.Italic + System.Drawing.FontStyle.Bold)
         _ProdStufeDeltaStyle.Font = New Drawing.Font(FontArial, System.Drawing.FontStyle.Bold)
+        _TextKompDeltaStyle.Font = New Drawing.Font(FontArial, System.Drawing.FontStyle.Italic)
 
         'Rezeptnummer und Rezept-Variante merken
         _RzNummer = RzNummer
@@ -71,11 +74,14 @@ Public Class wb_Rezept_Rezeptur
         cbLiniengruppe.Fill(wb_Linien_Global.RezeptLinienGruppen)
 
         'Nährwerte Zutatenliste Einstellungen
-        SwListeOptimieren.Checked = wb_GlobalSettings.NwtOptimizeZutatenListe
+        SwListeOptimieren.Checked = wb_GlobalSettings.NwtShowOptimized
         SwENummern.Checked = wb_GlobalSettings.NwtShowENummer
 
         'Einlesen Rezeptkopf und Rezeptschritte 
         GetRezeptur(_RzNummer, _RzVariante, _RzAendIndex, _Historical)
+        'Nur Anzeige bei gelöschten Rezepten
+        _Deleted = Rezept.Deleted
+
         'Virtual Tree anzeigen
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
         'alle Zeilen aufklappen
@@ -84,7 +90,7 @@ Public Class wb_Rezept_Rezeptur
         VT_MakeTreePopup()
 
         'Bei der Anzeige von Rezepten aus der Historie sind keine Änderungen zulässig
-        If _Historical Then
+        If _Historical OrElse _Deleted Then
             tbRzNummer.Enabled = False
             tbRezeptName.Enabled = False
             tbRzKommentar.Enabled = False
@@ -95,9 +101,22 @@ Public Class wb_Rezept_Rezeptur
             VirtualTree.Enabled = False
 
             BtnNwt.Enabled = False
-            BtnLoeschen.Enabled = False
             TextHinweise.ReadOnly = True
+
+            'Wiederherstellen der Rezeptur über Btn Kopieren
+            BtnKopieren.Text = "Wiederherstellen"
+
+            'Button "Endgültig löschen"
+            If _Deleted Then
+                BtnLoeschen.Text = "Endgültig löschen"
+            End If
         End If
+
+        'Button RezeptKopieren aktiv
+        BtnKopieren.Enabled = _Historical OrElse EnableRezeptKopieren
+
+        'Button Löschen aktiv
+        BtnLoeschen.Enabled = Not _Historical
 
         'Excel-Export Nährwerte nur wenn Excel installiert ist
         BtnExcelNwt.Enabled = wb_GlobalSettings.ExcelInstalled
@@ -111,6 +130,21 @@ Public Class wb_Rezept_Rezeptur
             tbRzNummer.Focus()
         End If
     End Sub
+
+    Public ReadOnly Property AktRezeptschritt As wb_Rezeptschritt
+        Get
+            Return _RezeptSchritt
+        End Get
+    End Property
+
+    Public Property RezeptBezeichnung As String
+        Get
+            Return tbRezeptName.Text
+        End Get
+        Set(value As String)
+            tbRezeptName.Text = value
+        End Set
+    End Property
 
     Private Sub cbVariante_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbVariante.SelectedIndexChanged
         'Auswahl über DropDrown
@@ -182,10 +216,8 @@ Public Class wb_Rezept_Rezeptur
         'Prüfen ob die gesuchte Variante existiert
         If Rezept.Variante = RzVariante Then
 
-            'Berechnete Rezepturwerte anzeigen
-            If Not Historical Then
-                ShowCalculateRezeptDaten(False)
-            End If
+            'Berechnete Rezepturwerte anzeigen(bei historischen Rezepten wird der Preis nicht berechnet)
+            ShowCalculateRezeptDaten(False, Not Historical)
 
             'Rezeptnummer
             tbRzNummer.Text = Rezept.RezeptNummer
@@ -216,12 +248,14 @@ Public Class wb_Rezept_Rezeptur
         End If
     End Function
 
-    Private Sub ShowCalculateRezeptDaten(Recalculate As Boolean)
+    Private Sub ShowCalculateRezeptDaten(Recalculate As Boolean, CalcPreis As Boolean)
         'Neuberechnung erzwingen
         Rezept.Recalculate = Recalculate
 
         'Gesamt-Rohstoffpreis der Rezeptur (aktuell berechnet)
-        tbRzPreis.Text = wb_Functions.FormatStr(Rezept.RezeptPreis, 2)
+        If CalcPreis Then
+            tbRzPreis.Text = wb_Functions.FormatStr(Rezept.RezeptPreis, 2)
+        End If
         'Rezeptgewicht (aktuell berechnet)
         tbRzGewicht.Text = wb_Functions.FormatStr(Rezept.RezeptGewicht, 3)
         'Mehlgesamt-Menge
@@ -258,7 +292,7 @@ Public Class wb_Rezept_Rezeptur
             Dim RezeptGesamtMengeNeu As Double = wb_Functions.StrToDouble(tbRzGewicht.Text)
 
             'Grenzen prüfen
-            If (RezeptGesamtMengeNeu > 0) And (RezeptGesamtMengeNeu < wb_Global.MaxRezeptGroesse) And (RezeptGesamtMengeNeu <> Rezept.RezeptGewicht) Then
+            If (RezeptGesamtMengeNeu > 0) AndAlso (RezeptGesamtMengeNeu < wb_Global.MaxRezeptGroesse) AndAlso (RezeptGesamtMengeNeu <> Rezept.RezeptGewicht) Then
                 'Rezeptmengen umrechnen
                 Rezept.RecalcRezeptGewicht(RezeptGesamtMengeNeu)
                 'Anzeige aktualisieren
@@ -303,9 +337,9 @@ Public Class wb_Rezept_Rezeptur
         'Neue TA
         Dim RzTANeu As Double = wb_Functions.StrToDouble(tbRzTA.Text)
         'Änderung der TA
-        If Not tbRzTA.ReadOnly And (RzTANeu <> Rezept.RezeptTA) Then
+        If Not tbRzTA.ReadOnly AndAlso (RzTANeu <> Rezept.RezeptTA) Then
             'Grenzen prüfen
-            If (RzTANeu > wb_Global.TA_min) And (RzTANeu < wb_Global.TA_max) Then
+            If (RzTANeu > wb_Global.TA_min) AndAlso (RzTANeu < wb_Global.TA_max) Then
                 'Wassermenge neu berechnen
                 If Rezept.RecalcWasserMengeFromTA(RzTANeu) Then
                     'Anzeige aktualisieren
@@ -330,27 +364,79 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     ''' <summary>
-    ''' Rezeptur kopieren.
+    ''' Rezeptur kopieren/wiederherstellen(historische Rezepte)
     ''' Die bestehende (aktuelle) Rezeptur wird gespeichert. Danach wird ein neues Rezept angelegt und die Daten kopiert.
     ''' Anschliessend wird das neue Rezept in einem neuen Fenster geöffnet.
+    ''' 
+    ''' Bei der Anzeige der Rezepthistorie wird über den Button "Wiederherstellen" das Rezept aus dem gespeicherten
+    ''' historischen Rezept überschrieben.
+    ''' 
+    ''' Bei gelöschen Rezepten wird über den Button "Wiederherstellen" die Liniengruppe korrigiert, damit ist das Rezept 
+    ''' wieder lesbar
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtnKopieren_Click(sender As Object, e As EventArgs) Handles BtnKopieren.Click
-        'Rezept kopieren (Die Kopie wird in Rezept_Main erstellt und aufgerufen)
-        wb_Rezept_Shared.Rezept_Copy(sender, Rezept.RezeptNr, Rezept.Variante)
+        'Mehrfach-Auslösen verhindern
+        BtnKopieren.Enabled = False
+        'Anzeige historische Rezepte - Wiederherstellen
+        If _Historical Then
+            'Restore erst nach Nachfrage
+            If MsgBox("Soll das aktuelle Rezept mit dieser Version überschrieben werden", MsgBoxStyle.YesNo, "Rezeptur wiederherstellen") = MsgBoxResult.Yes Then
+                'Rezept aus der Rezept-Historie wiederherstellen
+                _RzChanged = True
+                _RzKopfChanged = True
+                RezeptSpeichern(sender)
+
+                'wiederhergestelltes Rezept öffnen
+                If MsgBox("Das Rezept wurde wiederhergestellt" & vbCrLf & "Soll das Rezept jetzt zum Bearbeiten geöffnet werden", MsgBoxStyle.YesNo, "Rezeptur wiederherstellen") = MsgBoxResult.Yes Then
+                    Dim RestoreRezeptRezeptur As New wb_Rezept_Rezeptur(_RzNummer, _RzVariante)
+                    RestoreRezeptRezeptur.Show()
+                End If
+                'Fenster schliessen - Änderungen sind im aktuellen Fenster nicht möglich
+                Me.Close()
+            Else
+                'Button wiederherstellen
+                BtnKopieren.Enabled = True
+            End If
+        ElseIf _Deleted Then
+            'Restore erst nach Nachfrage
+            If MsgBox("Soll das gelöschte Rezept wiederhergestellt werden", MsgBoxStyle.YesNo, "Rezeptur wiederherstellen") = MsgBoxResult.Yes Then
+                'Rezept aus Papierkorb wiederherstellen
+                Rezept.MySQLdbUndelete()
+                'Fenster schliessen - Änderungen sind im aktuellen Fenster nicht möglich
+                wb_Rezept_Shared.Liste_Refresh(Nothing)
+                Close()
+            End If
+        Else
+            'Rezept kopieren (Die Kopie wird in Rezept_Main erstellt und aufgerufen)
+            wb_Rezept_Shared.Rezept_Copy(sender, Rezept.RezeptNr, Rezept.Variante)
+        End If
     End Sub
 
     ''' <summary>
     ''' Rezeptur drucken.
     ''' Der Ausdruck erfolgt über Printer-Sub-Funktion (List+Label)
+    ''' 
+    ''' Parameter 1 enthält die aktuelle Einheit für das Rezeptgesamtgewicht (länderspezifisch)
+    ''' Parameter 2 enthält eventuelle Rezepthinweis-Texte
+    ''' 
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
+    Public Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
         'Druck-Daten
-        Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
-        pDialog.LL_KopfZeile_1 = "Letzte Änderung " & Rezept.AenderungDatum & " durch " & Rezept.AenderungName
+        Dim pDialog As New wb_PrinterDialog(False) With {
+            .LL_KopfZeile_1 = "Letzte Änderung " & Rezept.AenderungDatum & " durch " & Rezept.AenderungName,
+            .LL_Parameter_1 = "kg"
+        } 'Drucker-Dialog
+
+        'Rezept-Verarbeitungshinweise in Parameter_2 (Lesen wenn notwendig - aktuell geänderte Hinweistexte werden direkt verarbeitet)
+        If _RzHinweiseChanged Then
+            pDialog.LL_Parameter_2 = TextHinweise.Text
+        Else
+            pDialog.LL_Parameter_2 = RezeptHinweise.Memo(_RzNummer)
+        End If
 
         'Die Kopfdaten werden im Root-Rezept-Schritt eingetragen
         Rezept.RootRezeptSchritt.Nummer = Rezept.RezeptNummer
@@ -368,7 +454,6 @@ Public Class wb_Rezept_Rezeptur
         pDialog.ListSubDirectory = "Rezepte"
         pDialog.ListFileName = "Rezeptur.lst"
         pDialog.ShowDialog()
-        pDialog = Nothing
     End Sub
 
     ''' <summary>
@@ -415,7 +500,7 @@ Public Class wb_Rezept_Rezeptur
         If tb_Naehrwerte.Visible Then
             'Anzeige Zutatenliste
             Wb_TabControl.SelectedTab = tb_Zutaten
-            tb_ZutatenListe.BorderStyle = Windows.Forms.BorderStyle.None
+            tb_ZutatenListe.BorderStyle = System.Windows.Forms.BorderStyle.None
             Show_ZutatenListe()
             BtnHinweise.Text = "Hinweise"
         Else
@@ -455,6 +540,8 @@ Public Class wb_Rezept_Rezeptur
             BtnNwt.Text = "Nährwerte"
             BtnHinweise.Text = "Hinweise"
             Wb_TabControl.SelectedTab = tb_Rezeptur
+            'Rezeptur neu aufbauen(Flag Rezept wurde geändert NICHT setzen)
+            VT_Aktualisieren(False)
             ToolStripAllergenLegende.Visible = False
         End If
 
@@ -462,7 +549,7 @@ Public Class wb_Rezept_Rezeptur
 
     Public Sub RzptLoeschen()
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptInKomp, Rezept.RezeptNr)
+        Dim sql As String = wb_sql_Selects.setParams(wb_sql_Selects.sqlRezeptInKomp, Rezept.RezeptNr)
         Dim Count As Integer = -1
 
         'Suche nach RezeptNr
@@ -489,20 +576,21 @@ Public Class wb_Rezept_Rezeptur
         Else
 
             'Rezept kann gelöscht werden - Sicherheitshalber nochmal nachfragen
-            If MsgBox("Soll dieses Rezept komplett gelöscht werden ?", MsgBoxStyle.YesNo, "Rezeptur löschen") = vbNo Then
-                Exit Sub
+            If _Deleted Then
+                If MsgBox("Soll dieses Rezept gelöscht werden ?", MsgBoxStyle.YesNo, "Rezeptur löschen") = vbNo Then
+                    Exit Sub
+                End If
+                'Rezept löschen (wird endgültig aus der Datenbank gelöscht)
+                Rezept.MySQLdbDelete(False)
+                'Rezept-Verarbeitungshinweise löschen
+                RezeptHinweise.Delete()
+            Else
+                If MsgBox("Soll dieses Rezept komplett gelöscht werden ?", MsgBoxStyle.YesNo, "Rezeptur endgültig löschen") = vbNo Then
+                    Exit Sub
+                End If
+                'Rezept löschen (erst mal nur in den Papierkorb schieben)
+                Rezept.MySQLdbDelete(True)
             End If
-
-            'Rezept-Historie löschen
-            Rezept.MySQLdbDelete_HisRezept()
-            Rezept.MySQLdbDelete_HisRezeptSchritte()
-
-            'Rezept löschen
-            Rezept.MySQLdbDelete_Rezept()
-            Rezept.MySQLdbDelete_RezeptSchritte()
-
-            'Rezept-Verarbeitungshinweise löschen
-            RezeptHinweise.Delete()
 
             'Rezept muss nicht mehr gespeichert werden
             _RzChanged = False
@@ -525,8 +613,7 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     Private Sub NwtGrid()
         'Daten im Grid anzeigen
-        Dim nwtGrid As New wb_ArrayGridViewKomponParam301(Rezept.KtTyp301.NwtTabelle)
-        nwtGrid.BackgroundColor = Me.BackColor
+        Dim nwtGrid As New wb_ArrayGridViewKomponParam301(Rezept.KtTyp301.NwtTabelle) With {.BackgroundColor = Me.BackColor}
         nwtGrid.GridLocation(tb_Naehrwerte)
         nwtGrid.PerformLayout()
     End Sub
@@ -538,7 +625,12 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtnClose_Click(sender As Object, e As EventArgs) Handles BtnClose.Click
-        Me.Close()
+        'Rezept Änderungen sichern ohne Nachfrage (nur wenn keine Rezepthistorie geöffnet)
+        If Not _Historical Then
+            RezeptSpeichern(sender)
+        End If
+        'Fenster schliessen (ohne Nachfrage)
+        Close()
     End Sub
 
     ''' <summary>
@@ -549,29 +641,43 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub wb_Rezept_Rezeptur_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
-        'Rezept Änderungen sichern
-        RezeptSpeichern(sender)
+    Private Sub wb_Rezept_Rezeptur_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+
+        'Rezept Änderungen sichern mit Nachfrage (nur wenn keine Rezepthistorie geöffnet)
+        If Not _Historical AndAlso (_RzHinweiseChanged OrElse _RzChanged OrElse _RzKopfChanged) Then
+            Select Case MsgBox("Das Rezept wurde geändert - Änderungen speichern?", MsgBoxStyle.YesNoCancel, "Rezeptur speichern")
+                Case MsgBoxResult.Cancel
+                    'Fenster nicht schliessen
+                    e.Cancel = True
+                Case MsgBoxResult.Yes
+                    'Rezept speichern
+                    RezeptSpeichern(sender)
+            End Select
+        End If
 
         'Excel aufräumen
-        If Not xlWorkBook Is Nothing Then
+        If xlWorkBook IsNot Nothing Then
             Marshal.FinalReleaseComObject(xlWorkBook)
             xlWorkBook = Nothing
         End If
 
-        If Not xlWorkBooks Is Nothing Then
+        If xlWorkBooks IsNot Nothing Then
             Marshal.FinalReleaseComObject(xlWorkBooks)
             xlWorkBooks = Nothing
         End If
 
-        If Not xlApp Is Nothing Then
-            xlApp.Quit()
-            Marshal.FinalReleaseComObject(xlApp)
-            xlApp = Nothing
-        End If
+        Try
+            If xlApp IsNot Nothing Then
+                xlApp.Quit()
+                Marshal.FinalReleaseComObject(xlApp)
+                xlApp = Nothing
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub RezeptSpeichern(sender As Object)
+
         'Flag Rezept-Hinweise sind geändert worden
         If _RzHinweiseChanged Then
             'Rezept-Verarbeitungs-Hinweise speichern
@@ -581,19 +687,29 @@ Public Class wb_Rezept_Rezeptur
 
         'Rezeptur ist geändert worden
         If _RzChanged Then
-            Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante)
-        End If
-
-        'Die Nährwerte aller mit dieser Rezeptur verknüpften Artikel/Rohstoffe müssen neu berechnet und an OrgaBack geschrieben werden (Flag setzen)
-        If _RzChanged Then
+            'Rezeptur speichern
+            Rezept.MySQLdbWrite_RzSchritt(_RzNummer, _RzVariante, _Historical)
+            'Die Nährwerte aller mit dieser Rezeptur verknüpften Artikel/Rohstoffe müssen neu berechnet und an OrgaBack geschrieben werden (Flag setzen)
             Rezept.ArtikelMarkieren()
         End If
 
-        'Rezeptkopfdaten schreiben
-        If _RzKopfChanged Or _RzChanged Then
+        'Rezeptkopfdaten schreiben (beim Wiederherstellen der historischen Rezepte wird die letzte Änderungsnummer aus der Datenbank ermittelt)
+        If _RzKopfChanged OrElse _RzChanged Then
+
+            If _Historical Then
+                'letzte Änderungs-Nummer aus der Tabelle Rezepte
+                Rezept.RezeptKommentar = "Rezept vom " & Rezept.AenderungDatum & " Nr." & Rezept.AenderungNummer
+                Rezept.AenderungNummer = wb_sql_Functions.getLastAenderungsIndex(_RzNummer)
+            End If
+
             Rezept.MySQLdbWrite_Rezept(_RzChanged)
             wb_Rezept_Shared.Liste_Refresh(sender)
         End If
+
+        'Reset Flags
+        _RzHinweiseChanged = False
+        _RzKopfChanged = False
+        _RzChanged = False
     End Sub
 
     ''' <summary>
@@ -633,6 +749,59 @@ Public Class wb_Rezept_Rezeptur
         End If
     End Sub
 
+    ''' <summary>
+    ''' Click auf das Virtual-Tree-Steuerelement. 
+    ''' Anhand der Koordinaten wird ermittelt, ob der Click innerhalb der Titel-Zeile erfolgt ist.
+    '''     Wenn e.Y innerhalb der Höhe der Titelzeile ist
+    '''     dann gibt e.X die Position der Spalte an
+    '''     
+    ''' Wenn der Click auf die Spalte AnteilInProzent erfolgt, ändert sich der Anzeige-Modus
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VirtualTree_Click(sender As Object, e As EventArgs) Handles VirtualTree.Click
+        'Maus-Koordinaten
+        Dim Y As Integer = DirectCast(e, System.Windows.Forms.MouseEventArgs).Y
+        Dim X As Integer = DirectCast(e, System.Windows.Forms.MouseEventArgs).X
+        'Prüfen ob Click auf die Titelzeile 
+        Dim SpalteNr As Integer = GetHeaderColumn(X, Y)
+
+        'Click auf die Spalte Anteil/Prozent ändert die Funktion der Spalte
+        If SpalteNr = 5 Then
+            Debug.Print("Change Mehl%")
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Prüft ob die Click-Koordinaten innerhalb der Titelzeile liegen. In diesem Fall wird
+    ''' die Spalten-Nummer zurückgegeben.
+    ''' Ansonsten False(-1)
+    '''
+    ''' </summary>
+    ''' <param name="x"></param>
+    ''' <param name="y"></param>
+    ''' <returns></returns>
+    Private Function GetHeaderColumn(x As Integer, y As Integer) As Integer
+        'Ergebnis vorbelegen
+        Dim Result As Integer = -1
+        'alle Spalten(Breite) durchlaufen
+        Dim Colx As Integer = 0
+
+        'Prüfen ob Click auf die Titelzeile
+        If y < VirtualTree.HeaderHeight Then
+            Result = 0
+            'alle Spalten im Grid
+            For Each Col As Infralution.Controls.VirtualTree.Column In VirtualTree.Columns
+                Colx += Col.Width
+                If Colx > x Then
+                    Exit For
+                End If
+                Result += 1
+            Next
+        End If
+        Return Result
+    End Function
+
     Private Sub SwENummern_Click(sender As Object, e As EventArgs) Handles SwENummern.Click
         'Zutatenliste anzeigen, wenn notwendig berechnen
         Show_ZutatenListe()
@@ -654,8 +823,8 @@ Public Class wb_Rezept_Rezeptur
         'anzeigen ...
         Application.DoEvents()
 
-        'Zutatenliste anzeigen/optimieren/Neu berechnen
-        tb_ZutatenListe.Text = Rezept.ZutatenListe(SwENummern.Checked, SwListeOptimieren.Checked, ReCalc)
+        'Zutatenliste anzeigen/optimieren/Neu berechnen 
+        tb_ZutatenListe.Text = Rezept.ZutatenListe(SwENummern.Checked, wb_GlobalSettings.NwtCalcQuid, SwListeOptimieren.Checked, ReCalc)
 
         'Mehlzusammensetzung (Berechnet aus der Zutatenliste - getrennt durch Zeilenvorschub)
         tbMehlZusammenSetzung.Text = Rezept.MehlZusammensetzung(vbCrLf)
@@ -690,7 +859,7 @@ Public Class wb_Rezept_Rezeptur
         If GLeFormat = wb_Format.fReal Then
             ToolStripFormat.Text = wb_Functions.FormatStr(GLeUG, 1) & " " & _RezeptSchritt.VirtTreeEinheit & " > NUM > " & wb_Functions.FormatStr(GLeOG, 1) & " " & _RezeptSchritt.VirtTreeEinheit
             ToolStripFormat.Visible = True
-            GLoValue = wb_Functions.FormatStr(_RezeptSchritt.Sollwert, 3)
+            GLoValue = wb_Functions.FormatStr(_RezeptSchritt.Sollwert, 3, -1, "sql")
         ElseIf GLeFormat = wb_Format.fString Then
             ToolStripFormat.Text = "TEXT"
             ToolStripFormat.Visible = True
@@ -701,6 +870,11 @@ Public Class wb_Rezept_Rezeptur
         e.Cancel = True
     End Sub
 
+    ''' <summary>
+    ''' Edit-Funktion ist beendet. Der Sollwert wird in den Rezeptschritt geschrieben.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub VirtualTree_SetCellValue(sender As Object, e As SetCellValueEventArgs) Handles VirtualTree.SetCellValue
         Dim Binding As RowBinding = _VirtualTree.GetRowBinding(e.Row)
 
@@ -711,8 +885,10 @@ Public Class wb_Rezept_Rezeptur
             'alten Sollwert merken (wird in RS_Wert_HIS gespeichert)
             _RezeptSchritt.SaveSollwert_org()
 
+            'an dieser Stelle wird der Sollwert aus dem Editor in den Rezeptschritt geschrieben
             Binding.SetCellValue(e.Row, e.Column, e.OldValue, e.NewValue)
-            ShowCalculateRezeptDaten(True)
+            'Rezeptdaten neu berechnen (auch die Preis-Information)
+            ShowCalculateRezeptDaten(True, True)
             'Rezeptur wurde geändert
             _RzChanged = True
             ToolStripRezeptChange.Visible = True
@@ -732,17 +908,45 @@ Public Class wb_Rezept_Rezeptur
 
             'aktuell ausgewählten Rezeptschritt merken (Popup)
             _RezeptSchritt = DirectCast(e.Row.Item, wb_Rezeptschritt)
-            'Debug.Print("VirtualTree_GetCellData " & _RezeptSchritt.Bezeichnung & " UG/OG/Format " & _RezeptSchritt.UnterGW & "/" & _RezeptSchritt.OberGW & "/" & _RezeptSchritt.Format)
+            Debug.Print("VirtualTree_GetCellData " & _RezeptSchritt.Bezeichnung & " UG/OG/Format " & _RezeptSchritt.UnterGW & "/" & _RezeptSchritt.OberGW & "/" & _RezeptSchritt.Format & "/" & _RezeptSchritt.Type.ToString)
 
+            'Kein Drag von Wasser-/Kneter-Komponenten
+            If (_RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE AndAlso _RezeptSchritt.ParamNr > 1) OrElse _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KNETER Then
+                RowBAllowDrop(Binding, False)
+            Else
+                RowBAllowDrop(Binding, True)
+            End If
+
+            'Produktions-Stufe Fett drucken
             If _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Then
                 VirtualTree_SetFontStyle(e.CellData.EvenStyle, _ProdStufeDeltaStyle)
                 VirtualTree_SetFontStyle(e.CellData.OddStyle, _ProdStufeDeltaStyle)
             End If
 
+            'Textkomponente Kursiv drucken
+            If _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE Then
+                VirtualTree_SetFontStyle(e.CellData.EvenStyle, _TextKompDeltaStyle)
+                VirtualTree_SetFontStyle(e.CellData.OddStyle, _TextKompDeltaStyle)
+            End If
+
+            'QUID-Relevante Rezeptzeilen in grün anzeigen
+            If _RezeptSchritt.QUIDRelevant Then
+                Dim QuidStyle As New Infralution.Controls.Style(e.CellData.OddStyle) With {.ForeColor = Color.Green}
+                e.CellData.EvenStyle = QuidStyle
+                e.CellData.OddStyle = QuidStyle
+            End If
+
+            'Rezeptzeilen mit fehlenden Nährwertangaben in rot anzeigen
+            If _RezeptSchritt.KtTyp301DatenFehlerhaft Then
+                Dim QuidStyle As New Infralution.Controls.Style(e.CellData.OddStyle) With {.ForeColor = Color.Red}
+                e.CellData.EvenStyle = QuidStyle
+                e.CellData.OddStyle = QuidStyle
+            End If
+
             'Edit Bezeichnungs-Text
-            If e.Column.Name = "ColBezeichnung" And wb_Functions.TypeIstText(_RezeptSchritt.Type) Then
+            If e.Column.Name = "ColBezeichnung" AndAlso wb_Functions.TypeIstText(_RezeptSchritt.Type) Then
                 'Bei Anzeige der Rezept-Historie werden die geänderten Werte Fett/Kursiv dargestellt
-                If _Historical And _RezeptSchritt.WertProd <> "" Then
+                If _Historical AndAlso _RezeptSchritt.WertProd <> "" Then
                     VirtualTree_SetFontStyle(e.CellData.EvenStyle, _HisSollwertDeltaStyle)
                     VirtualTree_SetFontStyle(e.CellData.OddStyle, _HisSollwertDeltaStyle)
                 End If
@@ -752,14 +956,14 @@ Public Class wb_Rezept_Rezeptur
             End If
 
             'Edit Sollwert
-            If e.Column.Name = "ColSollwert" And (wb_Functions.TypeIstSollMenge(_RezeptSchritt.Type, 1) Or wb_Functions.TypeIstSollWert(_RezeptSchritt.Type, 3)) Then
+            If e.Column.Name = "ColSollwert" AndAlso (wb_Functions.TypeIstSollMenge(_RezeptSchritt.Type, 1) OrElse wb_Functions.TypeIstSollWert(_RezeptSchritt.Type, 3)) Then
                 'Bei Anzeige der Rezept-Historie werden die geänderten Werte Fett/Kursiv dargestellt
-                If _Historical And _RezeptSchritt.WertProd <> "" Then
+                If _Historical AndAlso _RezeptSchritt.WertProd <> "" AndAlso _RezeptSchritt.WertProd <> "0" Then
                     VirtualTree_SetFontStyle(e.CellData.EvenStyle, _HisSollwertDeltaStyle)
                     VirtualTree_SetFontStyle(e.CellData.OddStyle, _HisSollwertDeltaStyle)
                 End If
                 'Editor aktiv - Sollwert
-                GLoValue = wb_Functions.FormatStr(_RezeptSchritt.Sollwert, 3)
+                GLoValue = _RezeptSchritt.fSollwert
                 Exit Sub
             End If
         End If
@@ -767,6 +971,11 @@ Public Class wb_Rezept_Rezeptur
         e.CellData.Editor = Nothing
     End Sub
 
+    Private Sub RowBAllowDrop(RowB As RowBinding, YesNo As Boolean)
+        RowB.AllowDropAboveRow = YesNo
+        RowB.AllowDropBelowRow = YesNo
+        RowB.AllowDropOnRow = False
+    End Sub
     ''' <summary>
     ''' Rechte-Maus-Click auf eine Zeile im VirtualTree.
     ''' 
@@ -797,6 +1006,15 @@ Public Class wb_Rezept_Rezeptur
     Private Sub VirtualTree_SetFontStyle(ByRef ColumnStyle As Infralution.Controls.Style, DeltaStyle As Infralution.Controls.StyleDelta)
         Dim _ChangedStyle = New Infralution.Controls.Style(ColumnStyle, DeltaStyle)
         ColumnStyle = _ChangedStyle
+    End Sub
+
+    ''' <summary>
+    ''' Rezeptzeile wurde verschoben. (Drag and Drop)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VirtualTree_DragDrop(sender As Object, e As DragEventArgs) Handles VirtualTree.DragDrop
+        _RzChanged = True
     End Sub
 
     ''' <summary>
@@ -831,7 +1049,7 @@ Public Class wb_Rezept_Rezeptur
             Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
                 AuswahlFilter = wb_Rohstoffe_Shared.AnzeigeFilter.OhneKneter
             Case Else
-                AuswahlFilter = wb_Rohstoffe_Shared.AnzeigeFilter.OhneKneter
+                AuswahlFilter = wb_Rohstoffe_Shared.AnzeigeFilter.Undefined
         End Select
 
         'Auswahlliste Rohstoff
@@ -864,7 +1082,7 @@ Public Class wb_Rezept_Rezeptur
         If VT_AuswahlRohstoff(AuswahlFilter) Then
             'Bei KneterKomponenten
             'Anfügen Rezeptschritt unterhalb Produktions-Stufe oder Kessel
-            If _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
+            If _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE OrElse _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
                 _RezeptSchritt.InsertChild(_RezeptSchrittNeu)
             Else
                 _RezeptSchritt.Insert(_RezeptSchrittNeu, True)
@@ -883,9 +1101,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueProduktionsStufe(Sender As Object, e As EventArgs)
-        _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE)
-        _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count
-        _RezeptSchritt.Sollwert = VTP_RezeptSchrittGetText(Sender, "Produktions-Stufe")
+        _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) With {.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count, .Sollwert = VTP_RezeptSchrittGetText(Sender, "Produktions-Stufe")}
         'Focus auf Eingabe Sollwert
         VT_Aktualisieren(ColBezeichnung, False)
     End Sub
@@ -896,7 +1112,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeuerKesselNachProduktionsStufe(Sender As Object, e As EventArgs)
-        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_KESSEL)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_KESSEL) With {.Sollwert = VTP_RezeptSchrittGetText(Sender, "Kessel")}
         _RezeptSchritt.Insert(_RezeptSchrittNeu, True)
         VT_Aktualisieren()
     End Sub
@@ -907,7 +1123,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeuerKesselDavor(Sender As Object, e As EventArgs)
-        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_KESSEL)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_KESSEL) With {.Sollwert = VTP_RezeptSchrittGetText(Sender, "Kessel")}
         _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
         VT_Aktualisieren()
     End Sub
@@ -918,7 +1134,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeuerKesselDanach(Sender As Object, e As EventArgs)
-        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_KESSEL)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_KESSEL) With {.Sollwert = VTP_RezeptSchrittGetText(Sender, "Kessel")}
         'Anfügen Rezeptschritt unterhalb Kessel
         _RezeptSchritt.Insert(_RezeptSchrittNeu, True)
         VT_Aktualisieren()
@@ -930,8 +1146,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueProduktionsStufeDanach(Sender As Object, e As EventArgs)
-        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE)
-        _RezeptSchrittNeu.Sollwert = VTP_RezeptSchrittGetText(Sender, "Produktions-Stufe")
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) With {.Sollwert = VTP_RezeptSchrittGetText(Sender, "Produktions-Stufe")}
         _RezeptSchritt.Insert(_RezeptSchrittNeu, True)
         VT_Aktualisieren()
     End Sub
@@ -943,12 +1158,11 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueProduktionsStufeDavor(Sender As Object, e As EventArgs)
-        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE)
-        _RezeptSchrittNeu.Sollwert = VTP_RezeptSchrittGetText(Sender, "Produktions-Stufe")
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) With {.Sollwert = VTP_RezeptSchrittGetText(Sender, "Produktions-Stufe")}
         _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
 
         'Sonderfall neue (erste) Produktions-Stufe in Schritt 1
-        If _RezeptSchritt.SchrittNr = 2 And _RezeptSchritt.Type <> wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Then
+        If _RezeptSchritt.SchrittNr = 2 AndAlso _RezeptSchritt.Type <> wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Then
             'Änderungen im aktuellen Rezept speichern
             VT_Aktualisieren()
             RezeptSpeichern(Sender)
@@ -973,8 +1187,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueTextKomponente(Sender As Object, e As EventArgs)
-        _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE)
-        _RezeptSchritt.SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count
+        _RezeptSchritt = New wb_Rezeptschritt(Rezept.RootRezeptSchritt, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE) With {.Sollwert = VTP_RezeptSchrittGetText(Sender, "Kessel"), .SchrittNr = Rezept.RootRezeptSchritt.ChildSteps.Count}
         VT_Aktualisieren()
     End Sub
 
@@ -984,7 +1197,7 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueTextKomponenteDavor(Sender As Object, e As EventArgs)
-        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE) With {.Sollwert = VTP_RezeptSchrittGetText(Sender, "Text")}
         _RezeptSchritt.Insert(_RezeptSchrittNeu, False)
         VT_Aktualisieren()
     End Sub
@@ -995,9 +1208,9 @@ Public Class wb_Rezept_Rezeptur
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub VTP_NeueTextKomponenteDanach(Sender As Object, e As EventArgs)
-        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE)
+        _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE) With {.Sollwert = VTP_RezeptSchrittGetText(Sender, "Text")}
         'Anfügen Rezeptschritt unterhalb Produktions-Stufe oder Kessel
-        If _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
+        If _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE OrElse _RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
             _RezeptSchritt.InsertChild(_RezeptSchrittNeu)
         Else
             _RezeptSchritt.Insert(_RezeptSchrittNeu, True)
@@ -1079,6 +1292,30 @@ Public Class wb_Rezept_Rezeptur
     End Sub
 
     ''' <summary>
+    ''' Aktuelle Rezeptzeile als QUID-Relevant markieren
+    ''' </summary>
+    ''' <param name="Sender"></param>
+    ''' <param name="e"></param>
+    Private Sub VTP_QuidRelevant(Sender As Object, e As EventArgs)
+        Debug.Print("Rezeptzeile " & _RezeptSchritt.Nummer & "als QUID-Relevant kennzeichnen")
+        'Flag QUID-Relevant toggeln
+        _RezeptSchritt.QUIDRelevant = Not _RezeptSchritt.QUIDRelevant
+        'Anzeige aktualisieren
+        VT_Aktualisieren()
+    End Sub
+
+    Private Sub VTP_RohstoffVerwaltung(Sender As Object, e As EventArgs)
+        Debug.Print("Rohstoffverwaltung aufrufen Rohstoff " & _RezeptSchritt.Nummer & "/" & _RezeptSchritt.Bezeichnung)
+        'im Hintergrund wird das Fenster Rohstoff-Verwaltung geöffnet (über Main-Shared)
+        wb_Main_Shared.OpenForm(Me, "Rohstoffe")
+    End Sub
+
+
+    Private Sub VTP_NoFunction(Sender As Object, e As EventArgs)
+        Trace.WriteLine("@E_Popup-Funktion noch nicht programmiert !")
+    End Sub
+
+    ''' <summary>
     ''' Anzeige der Rohstoff-Liste. 
     ''' Auswahl eines Rohstoffes für die Funktionen Einfügen, Anfügen, ..
     ''' 
@@ -1102,17 +1339,18 @@ Public Class wb_Rezept_Rezeptur
         End If
 
         'Anzeige Auswahl-Fenster
-        If RohstoffAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, RohstoffAuswahl.RohstoffName)
-            _RezeptSchrittNeu.RohNr = RohstoffAuswahl.RohstoffNr
-            _RezeptSchrittNeu.Nummer = RohstoffAuswahl.RohstoffNummer
-            _RezeptSchrittNeu.Kommentar = RohstoffAuswahl.RohstoffKommentar
+        If RohstoffAuswahl.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            _RezeptSchrittNeu = New wb_Rezeptschritt(Nothing, RohstoffAuswahl.RohstoffName) With {
+                .RohNr = RohstoffAuswahl.RohstoffNr,
+                .Nummer = RohstoffAuswahl.RohstoffNummer,
+                .Kommentar = RohstoffAuswahl.RohstoffKommentar
+            }
 
             'wenn der neue Rohstoff eine Teigtemperatur-Komponente ist, wird als Sollwert gleich die Solltemperatur aus den Rezeptkopfdaten eingetragen
             If wb_Functions.TypeIstTeigTemperaturSollwert(RohstoffAuswahl.RohstoffNr) Then
-                _RezeptSchrittNeu.Sollwert = wb_Functions.FormatStr(Rezept.RezeptTeigTemperatur, 3)
+                _RezeptSchrittNeu.fSollwert = Rezept.RezeptTeigTemperatur
             Else
-                _RezeptSchrittNeu.Sollwert = "0,000"
+                _RezeptSchrittNeu.fSollwert = 0.0
             End If
 
             _RezeptSchrittNeu.ParamNr = 1
@@ -1122,9 +1360,8 @@ Public Class wb_Rezept_Rezeptur
             _RezeptSchrittNeu.OberGW = RohstoffAuswahl.RohstoffOG
             _RezeptSchrittNeu.Einheit = wb_Language.TextFilter(RohstoffAuswahl.RohstoffEinheit)
 
-            'bei Kneterkomponenten müssen die Paramter aus Tabelle KomponParams gesetzt werden
-            _RezeptSchrittNeu.SetType118()
-
+            'bei Kneterkomponenten müssen die Paramter aus Tabelle KomponParams gesetzt werden. Default-Sollwert 00:10:00
+            _RezeptSchrittNeu.SetType118(True)
 
             Return True
         Else
@@ -1135,13 +1372,13 @@ Public Class wb_Rezept_Rezeptur
     ''' <summary>
     ''' Anzeige im Virtual-Tree aktualisieren
     ''' </summary>
-    Private Sub VT_Aktualisieren()
+    Private Sub VT_Aktualisieren(Optional RezeptChanged As Boolean = True)
         VirtualTree.Invalidate()
         VirtualTree.DataSource = Rezept.RootRezeptSchritt
         'alle Zeilen aufklappen
         VirtualTree.RootRow.ExpandChildren(True)
         'Rezeptur wurde geändert
-        _RzChanged = True
+        _RzChanged = _RzChanged OrElse RezeptChanged
         ToolStripRezeptChange.Visible = True
     End Sub
 
@@ -1165,7 +1402,6 @@ Public Class wb_Rezept_Rezeptur
         VirtualTree.EditCurrentCellInFocusRow()
         'Wieder zurückschalten auf SelectionMode.FullRow, der Optik wegen !
         VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.FullRow
-
     End Sub
 
 
@@ -1178,23 +1414,22 @@ Public Class wb_Rezept_Rezeptur
     Private Sub VT_AddChildSteps(ByRef rs As wb_Rezeptschritt)
         If wb_Functions.TypeHasChildSteps(rs.Type) Then
             Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
-            Dim sql As String = ""
+            Dim sql As String
             Dim SchrittNr As Integer = rs.SchrittNr
 
             If rs.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
                 'Die Kneter-Rezeptur wird aus der Tabelle RohParams gelesen
-                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKneterRezept, rs.RohNr)
+                sql = wb_sql_Selects.setParams(wb_sql_Selects.sqlKneterRezept, rs.RohNr)
             Else
                 'Nachfolgende Rezept-Schritte aus Tabelle KomponParams 
-                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohstoffRez, rs.RohNr)
+                sql = wb_sql_Selects.setParams(wb_sql_Selects.sqlRohstoffRez, rs.RohNr)
             End If
 
             'Datenbank-Verbindung
             winback.sqlSelect(sql)
             While winback.Read
                 Dim Bezeichnung As String = wb_Functions.MySqlToUtf8(winback.sField("KO_Bezeichnung"))
-                Dim rsc As New wb_Rezeptschritt(Nothing, Bezeichnung)
-                rsc.Kommentar = wb_Functions.MySqlToUtf8(winback.sField("KO_Kommentar"))
+                Dim rsc As New wb_Rezeptschritt(Nothing, Bezeichnung) With {.Kommentar = wb_Functions.MySqlToUtf8(winback.sField("KO_Kommentar"))}
 
                 If rs.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
                     SchrittNr += 1
@@ -1203,14 +1438,14 @@ Public Class wb_Rezept_Rezeptur
                     rsc.Nummer = winback.sField("KO_Nr_AlNum")
                     rsc.Type = wb_Functions.IntToKomponType(winback.iField("KT_Typ_Nr"))
                     rsc.ParamNr = 1
-                    rsc.SetType118()
+                    rsc.SetType118(True)
                 Else
                     rsc.SchrittNr = rs.SchrittNr
                     rsc.RohNr = rs.RohNr
                     rsc.Nummer = rs.Nummer
                     rsc.Type = rs.Type
                     rsc.ParamNr = winback.iField("KT_ParamNr")
-                    rsc.Sollwert = "0,000"
+                    rsc.fSollwert = 0.0
                     rsc.Format = winback.iField("KT_Format")
                     rsc.OberGW = winback.iField("KT_OberGW")
                     rsc.UnterGW = winback.iField("KT_UnterGW")
@@ -1227,7 +1462,7 @@ Public Class wb_Rezept_Rezeptur
         Dim _PopupFunctions([Enum].GetValues(GetType(wb_Global.TPopupFunctions)).Length + 1) As Boolean
 
         'Sonderfall - das Rezept ist leer
-        If _RezeptSchritt Is Nothing Or LeeresRezept Then
+        If _RezeptSchritt Is Nothing OrElse LeeresRezept Then
             _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueProduktionsStufe) = True
             _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente) = True
             _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueKomponente) = True
@@ -1289,6 +1524,8 @@ Public Class wb_Rezept_Rezeptur
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Davor) = True
                     _PopupFunctions(wb_Global.TPopupFunctions.TP_Loeschen) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_QuidDeklaration) = True
+                    _PopupFunctions(wb_Global.TPopupFunctions.TP_RohstoffVerwaltung) = True
 
             End Select
 
@@ -1301,7 +1538,6 @@ Public Class wb_Rezept_Rezeptur
             '_PopupFunctions(wb_Global.TPopupFunctions.TP_TeigTemp) = True
             '_PopupFunctions(wb_Global.TPopupFunctions.TP_RohstoffVerwaltung) = True
             '_PopupFunctions(wb_Global.TPopupFunctions.TP_Naehrwerte_Laden) = True
-            '_PopupFunctions(wb_Global.TPopupFunctions.TP_QuidDeklaration) = True
 
         End If
 
@@ -1341,32 +1577,32 @@ Public Class wb_Rezept_Rezeptur
 
         'Neuer Kessel nach der Produktions-Stufe
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Darunter) Then
-            VTPopUpMenu.Items.Add("Neuer Kessel", Nothing, AddressOf VTP_NeuerKesselNachProduktionsStufe)
+            VT_MakeTreeDropDownPopup("Neuer Kessel", wb_Rezept_Shared.KesselStufeText, AddressOf VTP_NeuerKesselNachProduktionsStufe)
         End If
         'Neuer Kessel davor
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Davor) Then
-            VTPopUpMenu.Items.Add("Neuer Kessel davor", Nothing, AddressOf VTP_NeuerKesselDavor)
+            VT_MakeTreeDropDownPopup("Neuer Kessel davor", wb_Rezept_Shared.KesselStufeText, AddressOf VTP_NeuerKesselDavor)
         End If
         'Neuer Kessel danach
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeuerKessel_Danach) Then
-            VTPopUpMenu.Items.Add("Neuer Kessel danach", Nothing, AddressOf VTP_NeuerKesselDanach)
+            VT_MakeTreeDropDownPopup("Neuer Kessel danach", wb_Rezept_Shared.KesselStufeText, AddressOf VTP_NeuerKesselDanach)
         End If
 
         'Neue Textkomponente
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente) Then
-            VTPopUpMenu.Items.Add("Neue Textkomponente", Nothing, AddressOf VTP_NeueTextKomponente)
+            VT_MakeTreeDropDownPopup("Neue Textkomponente", wb_Rezept_Shared.TextKomponenteText, AddressOf VTP_NeueTextKomponente)
         End If
         'Neue Textkomponente am Ende anfügen
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Darunter) Then
-            VTPopUpMenu.Items.Add("Neue Textkomponente anfügen", Nothing, AddressOf VTP_NeueTextKomponente)
+            VT_MakeTreeDropDownPopup("Neue Textkomponente anfügen", wb_Rezept_Shared.TextKomponenteText, AddressOf VTP_NeueTextKomponente)
         End If
         'Neue Textkomponente davor
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Davor) Then
-            VTPopUpMenu.Items.Add("Neue Textkomponente davor", Nothing, AddressOf VTP_NeueTextKomponenteDavor)
+            VT_MakeTreeDropDownPopup("Neue Textkomponente davor", wb_Rezept_Shared.TextKomponenteText, AddressOf VTP_NeueTextKomponenteDavor)
         End If
         'Neue Textkomponente danach
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_NeueTextKomponente_Danach) Then
-            VTPopUpMenu.Items.Add("Neue Textkomponente danach", Nothing, AddressOf VTP_NeueTextKomponenteDanach)
+            VT_MakeTreeDropDownPopup("Neue Textkomponente danach", wb_Rezept_Shared.TextKomponenteText, AddressOf VTP_NeueTextKomponenteDanach)
         End If
 
         'Bearbeiten
@@ -1383,34 +1619,34 @@ Public Class wb_Rezept_Rezeptur
         End If
         'TTS-Parameter löschen
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_TTS_loeschen) Then
-            VTPopUpMenu.Items.Add("Reset TTS-Parameter", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Reset TTS-Parameter", Nothing, AddressOf VTP_NoFunction)
         End If
 
         'Nach oben verschieben
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_Verschieben_Oben) Then
-            VTPopUpMenu.Items.Add("Zeile nach oben verschieben", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Zeile nach oben verschieben", Nothing, AddressOf VTP_NoFunction)
         End If
         'Nach unten verschieben
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_Verschieben_Unten) Then
-            VTPopUpMenu.Items.Add("Zeile nach unten verschieben", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Zeile nach unten verschieben", Nothing, AddressOf VTP_NoFunction)
         End If
 
         'Anzeige Teigtemperatur-Parameter
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_TeigTemp) Then
-            VTPopUpMenu.Items.Add("Anzeige der TTS-Parameter", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Anzeige der TTS-Parameter", Nothing, AddressOf VTP_NoFunction)
         End If
 
         'Rohstoff-Verwaltung
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_RohstoffVerwaltung) Then
-            VTPopUpMenu.Items.Add("Rohstoff-Verwaltung", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Rohstoff-Verwaltung", Nothing, AddressOf VTP_RohstoffVerwaltung)
         End If
         'Nährwerte laden
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_Naehrwerte_Laden) Then
-            VTPopUpMenu.Items.Add("Nährwerte aktualisieren", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("Nährwerte aktualisieren", Nothing, AddressOf VTP_NoFunction)
         End If
         'QUID-Deklaration
         If _PopupFunctions(wb_Global.TPopupFunctions.TP_QuidDeklaration) Then
-            VTPopUpMenu.Items.Add("QUID relevant", Nothing, AddressOf VTP_NeueProduktionsStufe)
+            VTPopUpMenu.Items.Add("QUID relevant", Nothing, AddressOf VTP_QuidRelevant)
         End If
 
     End Sub
@@ -1442,6 +1678,7 @@ Public Class wb_Rezept_Rezeptur
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
     Private Sub VirtualTree_KeyUp(sender As Object, e As KeyEventArgs) Handles VirtualTree.KeyUp
 
         Debug.Print("KeyUp " & e.KeyCode.ToString)
@@ -1469,9 +1706,13 @@ Public Class wb_Rezept_Rezeptur
         CheckTextBoxChanged(tbRzKommentar, Rezept.RezeptKommentar)
     End Sub
 
+    Private Sub tbRzTeigTemp_Leave(sender As Object, e As EventArgs) Handles tbRzTeigTemp.Leave
+        CheckTextBoxChanged(tbRzTeigTemp, Rezept.RezeptTeigTemperatur)
+    End Sub
+
     Private Sub tbRzNummer_Leave(sender As Object, e As EventArgs) Handles tbRzNummer.Leave
         'Rezeptnummer (Alpha) wurde geändert
-        If (tbRzNummer.Text <> Rezept.RezeptNummer) And (tbRzNummer.Text <> "") Then
+        If (tbRzNummer.Text <> Rezept.RezeptNummer) AndAlso (tbRzNummer.Text <> "") Then
             'Prüfen ob die neue Rezeptnummer schon existiert (Neuanlage)
             If Rezept.MySQLdbCheck_RzKopf(tbRzNummer.Text) Then
                 MsgBox("Diese Rezeptnummer exisitiert schon" & vbCrLf & "Bitte andere Nummer auswählen", MsgBoxStyle.Exclamation, "Rezept neu anlegen")
@@ -1486,7 +1727,7 @@ Public Class wb_Rezept_Rezeptur
         Rezept.RezeptNummer = tbRzNummer.Text
         'alle Varianten bekommen die neue Rezeptnummer 
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptUpdateNummer, Rezept.RezeptNr, Rezept.RezeptNummer)
+        Dim sql As String = wb_sql_Selects.setParams(wb_sql_Selects.sqlRezeptUpdateNummer, Rezept.RezeptNr, Rezept.RezeptNummer)
         'Alle Rezept-Varianten 
         Try
             winback.sqlCommand(sql)
@@ -1515,9 +1756,11 @@ Public Class wb_Rezept_Rezeptur
     End Function
 
     Private Sub cbLiniengruppe_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLiniengruppe.SelectedIndexChanged
-        ToolStripRezeptChange.Visible = True
-        _RzKopfChanged = True
-        Rezept.LinienGruppe = cbLiniengruppe.GetKeyFromSelection()
+        If cbLiniengruppe.Focused Then
+            ToolStripRezeptChange.Visible = True
+            _RzKopfChanged = True
+            Rezept.LinienGruppe = cbLiniengruppe.GetKeyFromSelection()
+        End If
     End Sub
 
     ''' <summary>
@@ -1534,7 +1777,7 @@ Public Class wb_Rezept_Rezeptur
         If Rezept.HasVariante(Variante) Then
             e.Graphics.DrawString(VarianteText, e.Font, New SolidBrush(Color.Black), e.Bounds.X, e.Bounds.Y)
         Else
-            e.Graphics.DrawString(VarianteText, e.Font, New SolidBrush(Color.LightGray), e.Bounds.X, e.Bounds.Y)
+            e.Graphics.DrawString(VarianteText, e.Font, New SolidBrush(Color.DarkGray), e.Bounds.X, e.Bounds.Y)
         End If
     End Sub
 
@@ -1567,14 +1810,21 @@ Public Class wb_Rezept_Rezeptur
         xlWorkBook = xlWorkBooks.Add()
         xlWorkSheets = xlWorkBook.Sheets
 
-        'Wurzel-Rezept auf Tab-Seite 1 erzeugen
+        'Wurzel-Rezept auf Tab-Seite 2ff erzeugen
         ExcelNwtPage(Rezept, xlWorkSheets, DetailAnsicht)
+
+        'Zutatenliste auf Tab-Seite 1 erzeugen
+        If DetailAnsicht Then
+            ExcelZutatenPage(Rezept, xlWorkSheets)
+        End If
 
         'Display Excel
         xlApp.Visible = True
         xlApp.UserControl = True
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Performance", "CA1829:Length/Count-Eigenschaft anstelle von Count() verwenden, wenn verfügbar", Justification:="<Ausstehend>")>
     Private Sub ExcelNwtPage(Rezept As wb_Rezept, xlWorkSheets As Excel.Sheets, DetailAnsicht As Boolean)
 
         'Nächstes(neues) Arbeitsblatt
@@ -1582,7 +1832,8 @@ Public Class wb_Rezept_Rezeptur
         xlWorkSheet = xlWorkSheets(1)
         'Rezept Name
         Dim RzName As String = wb_Functions.XRenameToExcelTabName(Rezept.RezeptBezeichnung)
-        xlWorkSheet.Name = RzName
+        'Doppelte Worksheet-Bezeichnungen prüfen
+        xlWorkSheet.Name = wb_Functions.CheckExcelWorkSheetNameExists(RzName, xlWorkSheets)
 
         'Array Strings
         Dim xslRange As Excel.Range
@@ -1594,13 +1845,14 @@ Public Class wb_Rezept_Rezeptur
         Const colRohNumr = 0
         Const colRohName = 1
         Const colRohDekl = 2
-        Const colSollwrt = 3
-        Const colStrtNwt = 4
+        Const colRohGrpe = 3
+        Const colSollwrt = 4
+        Const colStrtNwt = 5
         Const colEndNwt = 12
 
         'Get the range where the starting cell has the address
         xslRange = xlWorkSheet.Range("A2", Reflection.Missing.Value)
-        xdlRange = xlWorkSheet.Range("D3", Reflection.Missing.Value)
+        xdlRange = xlWorkSheet.Range("E3", Reflection.Missing.Value)
 
         'Alle Rezeptschritte als flache Liste
         Dim Steps As New ArrayList
@@ -1618,6 +1870,7 @@ Public Class wb_Rezept_Rezeptur
         xlsArray(0, colRohNumr) = "Nummer"
         xlsArray(0, colRohName) = "Rohstoff"
         xlsArray(0, colRohDekl) = "Deklarations-Bezeichnung"
+        xlsArray(0, colRohGrpe) = "Gruppe"
         xlsArray(0, colSollwrt) = "Sollwert"
 
         'Spaltenüberschriften Nährwerte und Allergene
@@ -1629,14 +1882,16 @@ Public Class wb_Rezept_Rezeptur
         Dim i As Integer = 0
         For Each RzSchritt As wb_Rezeptschritt In Steps
             'nur Sollwerte und Produktions-Stufen
-            If wb_Functions.TypeIstSollMenge(RzSchritt.Type, RzSchritt.ParamNr) Or (RzSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) Then
+            If wb_Functions.TypeIstSollMenge(RzSchritt.Type, RzSchritt.ParamNr) OrElse (RzSchritt.Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) Then
                 i += 1
                 'Rohstoff-Nummer
                 xlsArray(i, colRohNumr) = RzSchritt.Nummer
                 'Rohstoff-Bezeichnung
                 xlsArray(i, colRohName) = RzSchritt.VirtTreeBezeichnung
+                'Rohstoff-Gruppe
+                xlsArray(i, colRohGrpe) = RzSchritt.RohstoffGruppe
                 'Sollwert im Rezept (als Double)
-                xldArray(i - 1, 0) = wb_Functions.StrToDouble(RzSchritt.Sollwert)
+                xldArray(i - 1, 0) = RzSchritt.fSollwert
 
                 'Produktions-Stufen haben keine Deklaration
                 If RzSchritt.Type <> wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Then
@@ -1647,6 +1902,8 @@ Public Class wb_Rezept_Rezeptur
                     xlsArray(i, colRohNumr) = ""
                     'Deklarationstext kennzeichnet die Produktions-Stufe
                     xlsArray(i, colRohDekl) = "-"
+                    'Produktions-Stufe ohne Gruppe
+                    xlsArray(i, colRohGrpe) = ""
                 End If
 
                 'Nährwerte und Allergene
@@ -1659,10 +1916,12 @@ Public Class wb_Rezept_Rezeptur
                 Next
 
                 'Rezept-im-Rezept
-                If RzSchritt.RezeptNr > 0 And DetailAnsicht Then
-                    'neues TabSheet erzeugen (an Stelle 1!)
-                    xlWorkSheets.Add()
-                    ExcelNwtPage(RzSchritt.RezeptImRezept, xlWorkSheets, DetailAnsicht)
+                If RzSchritt.RezeptNr > 0 AndAlso DetailAnsicht Then
+                    If RzSchritt.RezeptImRezept.RezeptBezeichnung IsNot Nothing Then
+                        'neues TabSheet erzeugen (an Stelle 1!)
+                        xlWorkSheets.Add()
+                        ExcelNwtPage(RzSchritt.RezeptImRezept, xlWorkSheets, DetailAnsicht)
+                    End If
                 End If
             End If
         Next
@@ -1671,11 +1930,11 @@ Public Class wb_Rezept_Rezeptur
         xslRange = xslRange.Resize(i + 1, nwtArray.Count + colStrtNwt)
         xslRange.Value = xlsArray
         'anschliessend die Sollwerte (Numerisch) eintragen
-        xdlRange = xdlRange.Resize(i, colEndNwt)
+        xdlRange = xdlRange.Resize(Math.Max(i, 1), colEndNwt)
         xdlRange.Value = xldArray
 
         'Überschrift (Rezeptname) in einer Zelle zusammenfassen
-        xlRange = xlWorkSheet.Range("A1", "AC1")
+        xlRange = xlWorkSheet.Range("A1", "AD1")
         xlRange.Merge()
         xlRange.HorizontalAlignment = Excel.Constants.xlCenter
         xlRange.Interior.ColorIndex = 6 'Yellow
@@ -1688,24 +1947,25 @@ Public Class wb_Rezept_Rezeptur
         xlWorkSheet.Columns.EntireColumn.VerticalAlignment = Excel.XlVAlign.xlVAlignTop
 
         'Spaltenüberschriften
-        xlWorkSheet.Range("D2:AC2").Orientation = 90
-        xlWorkSheet.Range("D2:AC2").HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
-        xlWorkSheet.Range("D2:AC2").VerticalAlignment = Excel.XlVAlign.xlVAlignBottom
-        xlWorkSheet.Range("A2:C2").VerticalAlignment = Excel.XlVAlign.xlVAlignCenter
-        xlWorkSheet.Range("A1:AC2").Font.Bold = True
+        xlWorkSheet.Range("E2:AD2").Orientation = 90
+        xlWorkSheet.Range("E2:AD2").HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
+        xlWorkSheet.Range("E2:AD2").VerticalAlignment = Excel.XlVAlign.xlVAlignBottom
+        xlWorkSheet.Range("A2:D2").VerticalAlignment = Excel.XlVAlign.xlVAlignCenter
+        xlWorkSheet.Range("A1:AD2").Font.Bold = True
 
         'Spalte Deklaration
         xlWorkSheet.Columns("C:C").EntireColumn.ColumnWidth = 40.0
-        xlWorkSheet.Columns("C:C").EntireColumn.WrapText = True
+        xlWorkSheet.Columns("D:D").EntireColumn.ColumnWidth = 20.0
+        xlWorkSheet.Columns("C:D").EntireColumn.WrapText = True
 
         'Format Decimalzahl für die Sollwerte
-        xlWorkSheet.Columns("D:D").EntireColumn.NumberFormat = "[Black][>0]0.00" + Chr(34) + " kg" + Chr(34) & ";[White][<=0]0.00"
+        xlWorkSheet.Columns("E:E").EntireColumn.NumberFormat = "[Black][>0]0.00" & Chr(34) & " kg" & Chr(34) & ";[White][<=0]0.00"
         'Format Decimalzahl für die Nährwerte
-        xlWorkSheet.Columns("E:O").EntireColumn.NumberFormat = "[Black][>0]0.00;[White][<=0]0.00"
+        xlWorkSheet.Columns("F:P").EntireColumn.NumberFormat = "[Black][>0]0.00;[White][<=0]0.00"
 
         'Spaltenbreite Allergene
-        xlWorkSheet.Columns("E:AC").EntireColumn.AutoFit()
-        xlWorkSheet.Columns("P:AC").EntireColumn.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
+        xlWorkSheet.Columns("F:AD").EntireColumn.AutoFit()
+        xlWorkSheet.Columns("P:AD").EntireColumn.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
 
         'Produktions-Stufen formatieren
         For j = 0 To i
@@ -1714,6 +1974,77 @@ Public Class wb_Rezept_Rezeptur
                 xlWorkSheet.Rows.Item(j + 2).Font.Italic = True
             End If
         Next
+    End Sub
+
+    Private Sub ExcelZutatenPage(Rezept As wb_Rezept, xlWorkSheets As Excel.Sheets)
+
+        'Nächstes(neues) Arbeitsblatt
+        Dim xlWorkSheet As Excel.Worksheet
+        xlWorkSheet = xlWorkSheets(1)
+        xlWorkSheet.Cells.Clear()
+
+        'Sheet Name
+        xlWorkSheet.Name = "Zutatenliste"
+
+        'Array Strings
+        Dim xslRange As Excel.Range
+        'Array Double
+        Dim xdlRange As Excel.Range
+        'Array Überschrift
+        Dim xlRange As Excel.Range
+
+        'Get the range where the starting cell has the address
+        xslRange = xlWorkSheet.Range("A3", Reflection.Missing.Value)
+        xdlRange = xlWorkSheet.Range("B3", Reflection.Missing.Value)
+
+        'Zutatenliste als flache(optimierte) Liste
+        Dim xlZutaten As wb_ZutatenListe = Rezept.Zutaten
+
+        'Array für die Daten (Zeilen,Spalten)
+        Dim xlsArray(xlZutaten.Liste.Count + 1, 3) As String
+        Dim xldArray(xlZutaten.Liste.Count + 1, 1) As Double
+        'In der ersten Zeile steht die Rezept-Bezeichnung
+        xlWorkSheet.Range("A1").Value = Rezept.RezeptBezeichnung
+        'In der zweiten Zeile stehen die Spalten-Überschriften
+        xlWorkSheet.Range("A2").Value = "Bezeichnung"
+        xlWorkSheet.Range("B2").Value = "Anteil"
+        xlWorkSheet.Range("C2").Value = "Rohstoff(e)"
+
+        'String- und Double-Array mit Daten aus Rezeptschritten füllen
+        Dim i As Integer = 0
+        For Each z As wb_ZutatenElement In xlZutaten.Liste
+            'Zutaten-Bezeichnung
+            xlsArray(i, 0) = z.Zutaten
+            'Zutaten-Menge
+            xldArray(i, 0) = z.SollMenge
+            'Zutaten-Rohstoff(e)
+            xlsArray(i, 2) = z.Rohstoffe
+            'Index
+            i += 1
+        Next
+
+        'zuerst die Strings ausgeben
+        xslRange = xslRange.Resize(i, 3)
+        xslRange.Value = xlsArray
+        'anschliessend die Sollwerte (Numerisch) eintragen
+        xdlRange = xdlRange.Resize(i, 1)
+        xdlRange.Value = xldArray
+
+        'Überschrift (Rezeptname) in einer Zelle zusammenfassen
+        xlRange = xlWorkSheet.Range("A1", "C1")
+        xlRange.Merge()
+        xlRange.HorizontalAlignment = Excel.Constants.xlCenter
+        xlRange.Interior.ColorIndex = 6 'Yellow
+        xlRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous
+
+        'Spaltenbreite Bezeichnung
+        xlWorkSheet.Columns("A:C").EntireColumn.AutoFit()
+        'Spalten-Überschriften
+        xlWorkSheet.Range("A1:C2").Font.Bold = True
+
+        'Format Decimalzahl für die Sollwerte
+        xlWorkSheet.Columns("B:B").EntireColumn.NumberFormat = "[Black][>0]0.0000" & Chr(34) & " kg" & Chr(34) & ";[White][<=0]0.0000"
+        xlWorkSheet.Columns("B:B").EntireColumn.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
     End Sub
 
 End Class

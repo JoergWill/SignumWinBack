@@ -2,6 +2,7 @@
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
+Imports combit.Reporting.DataProviders
 
 Public Class wb_User_Main
     Implements IExternalFormUserControl
@@ -12,9 +13,9 @@ Public Class wb_User_Main
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Private UserDetails As wb_User_Details
     Private UserRechte As wb_User_Rechte
+    Private UserPasswort As wb_User_Passwort
     Private UserGruppenRechte As wb_User_GruppenRechte
     Private UserRezGruppenRechte As wb_User_GruppenRechte
-    Private UserPasswort As wb_User_Passwort
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
         'Initialisierung
@@ -64,7 +65,7 @@ Public Class wb_User_Main
         wb_Functions.CloseAndDisposeSubForm(UserDetails)
         wb_Functions.CloseAndDisposeSubForm(UserGruppenRechte)
 
-        'alle Spuren in USer_Shared löschen
+        'alle Spuren in User_Shared löschen
         wb_User_Shared.Invalid()
 
         'Fenster darf geschlossen werden
@@ -73,8 +74,10 @@ Public Class wb_User_Main
 
     Public Overrides Sub SetDefaultLayout()
         Try
+            DockPanel.Theme = wb_GlobalSettings.Theme
             UserListe.Show(DockPanel, DockState.DockLeft)
         Catch
+            Debug.Print("@E_Fehler beim Anzeigen der UserListe")
         End Try
     End Sub
 
@@ -177,7 +180,7 @@ Public Class wb_User_Main
             Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
 
             'Liste aller Rohstoffe aus den DataGridView
-            pDialog.LL.DataSource = New combit.ListLabel22.DataProviders.AdoDataProvider(UserListe.DataGridView.LLData)
+            pDialog.LL.DataSource = New AdoDataProvider(UserListe.DataGridView.LLData)
 
             'List und Label-Verzeichnis für die Listen
             pDialog.ListSubDirectory = "StammDaten"

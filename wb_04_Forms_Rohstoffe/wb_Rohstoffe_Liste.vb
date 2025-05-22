@@ -5,12 +5,14 @@ Imports System.Windows.Forms
 Public Class wb_Rohstoffe_Liste
     Inherits DockContent
 
-    Const ColumnKompNr As Integer = 3
-    Const ColumnRzpIdx As Integer = 5
+    Public Const ColumnKompNr As Integer = 3
+    Public Const ColumnRzpIdx As Integer = 5
 
     Private _Anzeige As AnzeigeFilter = AnzeigeFilter.Undefined
     Private _Link As LinkFilter = LinkFilter.Undefined
+    Private _AnzeigeRohstoffGruppe As Integer = wb_Global.UNDEFINED
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
     Public WriteOnly Property Anzeige As AnzeigeFilter
         Set(value As AnzeigeFilter)
             _Anzeige = value
@@ -18,11 +20,24 @@ Public Class wb_Rohstoffe_Liste
         End Set
     End Property
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
     Public WriteOnly Property Link As LinkFilter
         Set(value As LinkFilter)
             _Link = value
             SetDataGridViewFilter()
         End Set
+    End Property
+
+    Public ReadOnly Property MoreThanOneRowSelected As Boolean
+        Get
+            Return (DataGridView.SelectedRows.Count > 1)
+        End Get
+    End Property
+
+    Public ReadOnly Property SelectedRows As DataGridViewSelectedRowCollection
+        Get
+            Return DataGridView.SelectedRows
+        End Get
     End Property
 
     ''' <summary>
@@ -41,17 +56,25 @@ Public Class wb_Rohstoffe_Liste
                     FilterText = "WinBack-Rohstoffe Tisch-Bodenwaage"
                 Case AnzeigeFilter.Sauerteig
                     FilterText = "WinBack-Rohstoffe Sauerteig-Herstellung"
+                Case AnzeigeFilter.Sonstige
+                    FilterText = "WinBack-Rohstoffe mit Einheit Stück oder Meter"
+                Case AnzeigeFilter.RohstoffGrp
+                    If RohGruppe.ContainsKey(_AnzeigeRohstoffGruppe) Then
+                        FilterText = "WinBack-Rohstoffe in Rohstoffgruppe " & RohGruppe.Item(_AnzeigeRohstoffGruppe)
+                    Else
+                        FilterText = "WinBack-Rohstoffe in Rohstoffgruppe"
+                    End If
                 Case Else
                     FilterText = "Alle WinBack-Rohstoffe"
             End Select
 
             Select Case _Link
                 Case LinkFilter.Cloud
-                    FilterText = FilterText + " verbunden mit der Cloud"
+                    FilterText = FilterText & " verbunden mit der Cloud"
                 Case LinkFilter.Cloud
-                    FilterText = FilterText + " mit hinterlegter Rezeptur"
+                    FilterText = FilterText & " mit hinterlegter Rezeptur"
                 Case LinkFilter.NoLink
-                    FilterText = FilterText + " ohne Verbindung zu Cloud/Rezeptur"
+                    FilterText = FilterText & " ohne Verbindung zu Cloud/Rezeptur"
             End Select
         End Get
     End Property
@@ -73,7 +96,9 @@ Public Class wb_Rohstoffe_Liste
             Case AnzeigeFilter.Install     ' alle aktiven und inaktiven Rohstoffe
                 Filter = "(KO_Type > 100)"
             Case AnzeigeFilter.Sonstige    ' alle Rohstoffe Typ 105,106
-                Filter = "(KO_Type > 100) AND KA_aktiv = 1"
+                Filter = "((KO_Type = 105) OR (KO_Type = 106)) AND KA_aktiv = 1"
+            Case AnzeigeFilter.RohstoffGrp
+                Filter = "((KA_Grp1 = " & _AnzeigeRohstoffGruppe.ToString & ") OR (KA_Grp2 = " & _AnzeigeRohstoffGruppe.ToString & "))"
             Case Else
                 Filter = "(KO_Type > 100) AND KA_aktiv = 1"
         End Select
@@ -81,11 +106,11 @@ Public Class wb_Rohstoffe_Liste
         'Filter Rezept/Cloud
         Select Case _Link
             Case LinkFilter.Cloud
-                Filter = Filter + " AND KA_Matchcode <> ''"
+                Filter = Filter & " AND KA_Matchcode <> '' AND KA_Matchcode <> '-1'"
             Case LinkFilter.Rzpt
-                Filter = Filter + " AND KA_RZ_NR > 0"
+                Filter = Filter & " AND KA_RZ_NR > 0"
             Case LinkFilter.NoLink
-                Filter = Filter + " AND KA_RZ_NR = 0 AND NOT KA_Matchcode <> ''"
+                Filter = Filter & " AND KA_RZ_NR = 0 AND NOT KA_Matchcode <> ''"
         End Select
 
         'Filter anwenden
@@ -105,6 +130,7 @@ Public Class wb_Rohstoffe_Liste
 
         'DataGrid-Felder mit (russischen)Inhalten, bei denen der Zeichensatz konvertiert werden muss
         DataGridView.x8859_5_FieldName = "KO_Bezeichnung"
+        Dim DropDownItems() As ToolStripMenuItem
 
         'DataGrid Popup-Menu (Aktiv/Hand)
         Dim evH As New EventHandler(AddressOf DataGridView_PopupClick)
@@ -116,8 +142,19 @@ Public Class wb_Rohstoffe_Liste
         DataGridView.PopupItemAdd("Filter:", "Flt", Nothing, evH, True, False)
         DataGridView.PopupItemAdd("nur Hand", "Hand", Nothing, evH, False, True)
         DataGridView.PopupItemAdd("nur Auto", "Auto", Nothing, evH, False, True)
+        DataGridView.PopupItemAdd("nur Sonstige(Stk/m)", "Sonstige", Nothing, evH, False, True)
         DataGridView.PopupItemAdd("nur Sauerteig", "Sauer", Nothing, evH, False, True)
-        DataGridView.PopupItemAdd("Installation", "Inst", Nothing, evH, True, True)
+        DataGridView.PopupItemAdd("Installation", "Inst", Nothing, evH, False, True)
+        'DataGridView Popup-Menu Filter Rohstoffgruppen SubMenu
+        ReDim DropDownItems(Math.Max(RohGruppe.Count - 1, 1))
+        Dim i As Integer = 0
+        'Schleife über alle Linengruppen
+        For Each RohstoffGrp In RohGruppe
+            DropDownItems(i) = New ToolStripMenuItem(RohstoffGrp.Value, Nothing, evH)
+            DropDownItems(i).Tag = "RGrp#" & RohstoffGrp.Key
+            i += 1
+        Next
+        DataGridView.PopupItemAdd("Rohstoffgruppe...", "RGrp", Nothing, True, DirectCast(DropDownItems, ToolStripItem()))
 
         'DataGrid Popup-Menu Rezept/Cloud/Alle
         DataGridView.PopupItemAdd("Verbunden mit:", "Link", Nothing, evH, True, False)
@@ -129,13 +166,22 @@ Public Class wb_Rohstoffe_Liste
         DataGridView.LoadData(wb_Sql_Selects.sqlRohstoffSimpleLst, "RohstoffListe")
         'DataGrid Initialisierung Anzeige ohne Sauerteig, nur aktive Rohstoffe
         Me.Anzeige = AnzeigeFilter.Alle
+        'MultiSelect erlauben (Löschen Rohstoffe)
+        DataGridView.SetMultiSelect = True
 
         AddHandler eEdit_Leave, AddressOf SaveData
+        AddHandler eSelect_Data, AddressOf SelectData
     End Sub
 
     Public Sub RefreshData()
         'Daten neu einlesen
         DataGridView.RefreshData()
+        'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
+        Liste_Click(Nothing)
+    End Sub
+
+    Public Sub SelectData(sender As Object, KoNr As Integer)
+        DataGridView.SelectData(ColumnKompNr, KoNr.ToString)
         'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
         Liste_Click(Nothing)
     End Sub
@@ -151,19 +197,31 @@ Public Class wb_Rohstoffe_Liste
         DataGridView.ResetFilter()
     End Sub
 
-    Private Sub wb_Rohstoffe_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Rohstoffe_Liste_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern
         DataGridView.UpdateDataBase()
         'Layout sichern
         DataGridView.SaveToDisk("RohstoffListe")
         'Event wieder freigeben
-        RemoveHandler wb_Rohstoffe_Shared.eEdit_Leave, AddressOf SaveData
+        RemoveHandler eEdit_Leave, AddressOf SaveData
+        RemoveHandler eSelect_Data, AddressOf SelectData
     End Sub
 
     ''' <summary>
     ''' Datensatz in Datenbank sichern. Wird über Event eEdit_Leave() aufgerufen
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
     Private Sub SaveData(sender)
+        'DEBUG
+        Debug.Print("Rohstoffe_Liste.SaveData")
+        Debug.Print("KONr                    " & RohStoff.Nr)
+        Debug.Print("Nummer                  " & RohStoff.Nummer)
+        Debug.Print("Bezeichnung             " & RohStoff.Bezeichnung)
+        Debug.Print("Kommentar               " & RohStoff.Kommentar)
+
+
+
+
         'Daten in Datenbank sichern
         If RohStoff.SaveData(DataGridView) Then
             DataGridView.UpdateDataBase()
@@ -181,7 +239,7 @@ Public Class wb_Rohstoffe_Liste
         'Daten laden aus winback.Komponenten in GridView
         RohStoff.LoadData(DataGridView)
         'Detail-Daten aus winback.Komponenten laden in Objekt wb_Rohstoffe_Shared.Rohstoff
-        RohStoff.MySQLdbRead(RohStoff.Nr)
+        RohStoff.xMySQLdbRead(RohStoff.Nr)
         'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
         Liste_Click(Nothing)
         'Nach dem Update der Detailfenster wird der Focus wieder zurückgesetzt (Eingabe Suchmaske)
@@ -190,7 +248,7 @@ Public Class wb_Rohstoffe_Liste
 
     'Anstelle des Feldes KO_Nr wird das Feld LG_aktiv ausgegeben
     'die Daten kommen aus einer HashTable (KO_Nr - LG_aktiv)
-    Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
+    Private Sub DataGridView_CellFormatting(sender As Object, e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
         Try
             If e.ColumnIndex = ColumnKompNr Then
                 If RohAktiv.ContainsKey(CInt(e.Value)) Then
@@ -203,19 +261,19 @@ Public Class wb_Rohstoffe_Liste
         End Try
     End Sub
 
-    Private Sub DataGridView_CellDoubleClick(sender As Object, e As Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
+    Private Sub DataGridView_CellDoubleClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
         'Zeile im Grid
         Dim eRow As Integer = e.RowIndex
         'Kein Doppelclick auf die Überschriftenzeile
-        If eRow > 0 Then
+        If eRow >= 0 Then
             Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(ColumnRzpIdx, eRow).Value)
             'Wenn die Rezeptnummer gültig ist
             If RezeptNr > 0 Then
-                Me.Cursor = Windows.Forms.Cursors.WaitCursor
-                'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
-                Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
+                Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
+                'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1) - Kopieren der Rezeptur ist erlaubt
+                Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1, True)
                 Rezeptur.Show()
-                Me.Cursor = Windows.Forms.Cursors.Default
+                Me.Cursor = System.Windows.Forms.Cursors.Default
             End If
         End If
     End Sub
@@ -230,7 +288,7 @@ Public Class wb_Rohstoffe_Liste
     ''' <param name="e"></param>
     Private Sub DataGridView_PopupClick(ByVal sender As Object, ByVal e As EventArgs)
         'Flag setzen (aus PopUp)
-        Dim Flag As String = CType(sender, Windows.Forms.ToolStripMenuItem).Tag
+        Dim Flag As String = CType(sender, System.Windows.Forms.ToolStripMenuItem).Tag
         'Zeile im DataGridView (aus MouseOver)
         Dim iRow As Integer = DataGridView.HoverRow
         'Rohstoff-Nummer (alphanumerisch)
@@ -241,7 +299,8 @@ Public Class wb_Rohstoffe_Liste
         Dim LagerOrt As String = DataGridView.Field("KA_Lagerort", iRow)
 
         'Flag Aktiv/Hand/Deaktiviert
-        Select Case CType(sender, Windows.Forms.ToolStripMenuItem).Tag
+        Dim Tag() As String = Split(CType(sender, System.Windows.Forms.ToolStripMenuItem).Tag, "#")
+        Select Case Tag(0)
             Case "A"
                 'Schleife über alle Rohstoffe mit der gleichen Nummer
                 For i = 0 To DataGridView.RowCount - 1
@@ -272,31 +331,51 @@ Public Class wb_Rohstoffe_Liste
             Case "Flt"
                 'Anzeige alle Rohstoffe (Filter löschen)
                 Me.Anzeige = AnzeigeFilter.Alle
-                Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Sauer", "Inst"}
+                Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Sauer", "Inst", "RGrp", "Sonstige"}
                 DataGridView.PopupItemsUncheck(UnCheckName)
             Case "Hand"
                 'Anzeige nur Hand-Komponenten
                 Me.Anzeige = AnzeigeFilter.Hand
-                Dim UnCheckName As New List(Of String) From {"Auto", "Sauer", "Inst"}
+                Dim UnCheckName As New List(Of String) From {"Auto", "Sauer", "Inst", "RGrp", "Sonstige"}
+                DataGridView.PopupItemsUncheck(UnCheckName)
+            Case "Sonstige"
+                'Anzeige nur Komponenten mit Einheit Stk/m
+                Me.Anzeige = AnzeigeFilter.Sonstige
+                Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Sauer", "RGrp", "Inst"}
                 DataGridView.PopupItemsUncheck(UnCheckName)
 
             Case "Auto"
                 'Anzeige nur Automatik-Komponenten
                 Me.Anzeige = AnzeigeFilter.Auto
-                Dim UnCheckName As New List(Of String) From {"Hand", "Sauer", "Inst"}
+                Dim UnCheckName As New List(Of String) From {"Hand", "Sauer", "Inst", "RGrp", "Sonstige"}
                 DataGridView.PopupItemsUncheck(UnCheckName)
 
             Case "Sauer"
                 'Anzeige nur Sauerteig-Komponenten
                 Me.Anzeige = AnzeigeFilter.Sauerteig
-                Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Inst"}
+                Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Inst", "RGrp", "Sonstige"}
                 DataGridView.PopupItemsUncheck(UnCheckName)
 
             Case "Inst"
                 'Anzeige alle Komponenten (Installation)
                 Me.Anzeige = AnzeigeFilter.Install
-                Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Sauer"}
+                Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Sauer", "RGrp", "Sonstige"}
                 DataGridView.PopupItemsUncheck(UnCheckName)
+
+            Case "RGrp"
+                'Wenn eine Rohstoffgruppe angegeben ist
+                If Tag.Length > 1 Then
+                    'Anzeige alle Komponenten mit Rohstoffgruppe X
+                    _AnzeigeRohstoffGruppe = Tag(1)
+                    Me.Anzeige = AnzeigeFilter.RohstoffGrp
+                    Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Sauer", "Inst", "Sonstige"}
+                    DataGridView.PopupItemsUncheck(UnCheckName)
+                Else
+                    'Anzeige alle Rohstoffe (Filter löschen)
+                    Me.Anzeige = AnzeigeFilter.Alle
+                    Dim UnCheckName As New List(Of String) From {"Hand", "Auto", "Sauer", "Inst", "RGrp", "Sonstige"}
+                    DataGridView.PopupItemsUncheck(UnCheckName)
+                End If
 
 
             Case "Link"

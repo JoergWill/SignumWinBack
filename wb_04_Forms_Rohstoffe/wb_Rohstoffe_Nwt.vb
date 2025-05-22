@@ -16,6 +16,7 @@ Public Class wb_Rohstoffe_Nwt
         End If
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Style", "IDE0017:Initialisierung von Objekten vereinfachen", Justification:="<Ausstehend>")>
     Public Sub DetailInfo()
         'Deklarationsfelder
         tbDeklarationExtern.Text = RohStoff.DeklBezeichungExtern
@@ -50,4 +51,6 @@ Public Class wb_Rohstoffe_Nwt
     Private Sub tbDeklarationIntern_Leave(sender As Object, e As EventArgs) Handles tbDeklarationIntern.Leave
         wb_Rohstoffe_Shared.RohStoff.DeklBezeichungIntern = tbDeklarationIntern.Text
     End Sub
+
+
 End Class

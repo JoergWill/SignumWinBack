@@ -35,10 +35,11 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColNr = New Infralution.Controls.VirtualTree.Column()
         Me.ColBezeichnung = New Infralution.Controls.VirtualTree.Column()
         Me.ColWert = New Infralution.Controls.VirtualTree.Column()
-        Me.EnhEdit = New Infralution.Controls.VirtualTree.CellEditor()
-        Me.EnhEdit_RohParams = New EnhEdit.EnhEdit(Me.components)
         Me.ColEinheit = New Infralution.Controls.VirtualTree.Column()
         Me.VirtualTree = New Infralution.Controls.VirtualTree.VirtualTree()
+        Me.lblLegende = New System.Windows.Forms.Label()
+        Me.EnhEdit = New Infralution.Controls.VirtualTree.CellEditor()
+        Me.EnhEdit_RohParams = New EnhEdit.EnhEdit(Me.components)
         Me.ObjectRowBinding1 = New Infralution.Controls.VirtualTree.ObjectRowBinding()
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -94,23 +95,6 @@ Partial Class wb_Rohstoffe_Parameter
         Me.ColWert.Sortable = False
         Me.ColWert.Width = 70
         '
-        'EnhEdit
-        '
-        Me.EnhEdit.Control = Me.EnhEdit_RohParams
-        '
-        'EnhEdit_RohParams
-        '
-        Me.EnhEdit_RohParams.BorderStyle = System.Windows.Forms.BorderStyle.None
-        'Me.EnhEdit_RohParams.eOG = "0"
-        'Me.EnhEdit_RohParams.eUG = "0"
-        Me.EnhEdit_RohParams.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.EnhEdit_RohParams.Init = True
-        Me.EnhEdit_RohParams.Location = New System.Drawing.Point(0, 0)
-        Me.EnhEdit_RohParams.Name = "EnhEdit_RohParams"
-        Me.EnhEdit_RohParams.Size = New System.Drawing.Size(100, 18)
-        Me.EnhEdit_RohParams.TabIndex = 0
-        Me.EnhEdit_RohParams.Visible = False
-        '
         'ColEinheit
         '
         Me.ColEinheit.AutoFitWeight = 0!
@@ -158,10 +142,36 @@ Partial Class wb_Rohstoffe_Parameter
         Me.VirtualTree.RowStyle.BorderColor = System.Drawing.Color.LightGray
         Me.VirtualTree.SelectionMode = Infralution.Controls.VirtualTree.SelectionMode.Cell
         Me.VirtualTree.ShowRootRow = False
-        Me.VirtualTree.Size = New System.Drawing.Size(519, 436)
+        Me.VirtualTree.Size = New System.Drawing.Size(519, 430)
         Me.VirtualTree.StyleTemplate = Infralution.Controls.VirtualTree.StyleTemplate.Vista
         Me.VirtualTree.TabIndex = 9
         Me.VirtualTree.TabStop = False
+        '
+        'lblLegende
+        '
+        Me.lblLegende.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblLegende.AutoSize = True
+        Me.lblLegende.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLegende.Location = New System.Drawing.Point(17, 445)
+        Me.lblLegende.Name = "lblLegende"
+        Me.lblLegende.Size = New System.Drawing.Size(252, 12)
+        Me.lblLegende.TabIndex = 10
+        Me.lblLegende.Text = "C - Enthalten   T - Spuren   K - Allergenfrei   N - keine Angaben"
+        '
+        'EnhEdit
+        '
+        Me.EnhEdit.Control = Me.EnhEdit_RohParams
+        '
+        'EnhEdit_RohParams
+        '
+        Me.EnhEdit_RohParams.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.EnhEdit_RohParams.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EnhEdit_RohParams.Init = True
+        Me.EnhEdit_RohParams.Location = New System.Drawing.Point(0, 0)
+        Me.EnhEdit_RohParams.Name = "EnhEdit_RohParams"
+        Me.EnhEdit_RohParams.Size = New System.Drawing.Size(100, 18)
+        Me.EnhEdit_RohParams.TabIndex = 0
+        Me.EnhEdit_RohParams.Visible = False
         '
         'ObjectRowBinding1
         '
@@ -197,12 +207,14 @@ Partial Class wb_Rohstoffe_Parameter
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(594, 460)
+        Me.Controls.Add(Me.lblLegende)
         Me.Controls.Add(Me.VirtualTree)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "wb_Rohstoffe_Parameter"
         Me.Text = "Rohstoff Parameter"
         CType(Me.VirtualTree, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -215,4 +227,5 @@ Partial Class wb_Rohstoffe_Parameter
     Friend WithEvents ColEinheit As Infralution.Controls.VirtualTree.Column
     Friend WithEvents EnhEdit As Infralution.Controls.VirtualTree.CellEditor
     Friend WithEvents EnhEdit_RohParams As EnhEdit.EnhEdit
+    Friend WithEvents lblLegende As System.Windows.Forms.Label
 End Class

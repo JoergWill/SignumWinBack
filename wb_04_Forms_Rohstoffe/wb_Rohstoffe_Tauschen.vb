@@ -93,7 +93,7 @@ Public Class wb_Rohstoffe_Tauschen
             RohstoffAuswahl.Anzeige = AnzeigeFilter.Sauerteig
         End If
         'Auswahldialog Rohstoff
-        If RohstoffAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If RohstoffAuswahl.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             tbRohNameNeu.Text = RohstoffAuswahl.RohstoffName
             tbRohNrNeu.Text = RohstoffAuswahl.RohstoffNummer
             _NrNeu = RohstoffAuswahl.RohstoffNr
@@ -115,6 +115,8 @@ Public Class wb_Rohstoffe_Tauschen
     Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
         'Prüfe ob ein Rohstoff ausgewählt wurde
         If _NrNeu <> wb_Global.UNDEFINED Then
+            'Cursor umschalten
+            Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
 
             'Datenbank-Verbindung öffnen - MySQL
             Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
@@ -127,11 +129,16 @@ Public Class wb_Rohstoffe_Tauschen
                 Dim DummyRohNr As Integer = wb_sql_Functions.getNewKomponNummer()
 
                 'Rohstoff A zunächst durch Dummy ersetzen
-                Dim AnzRez_A As Integer = TauscheRohstoffeImRezept(NrAkt, DummyRohNr, winback)
+                Dim AnzRez_A As Integer = TauscheRohstoffeImRezept(NrAkt, DummyRohNr, winback, False)
                 'Rohstoff B wird ersetzt durch Rohstoff A
-                AnzahlRezeptZeilen = TauscheRohstoffeImRezept(_NrNeu, NrAkt, winback)
+                AnzahlRezeptZeilen = TauscheRohstoffeImRezept(_NrNeu, NrAkt, winback, cbRezAenderungSpeichern.Checked)
                 'Dummy wird Rohstoff B
-                Dim AnzRez_B As Integer = TauscheRohstoffeImRezept(DummyRohNr, _NrNeu, winback)
+                Dim AnzRez_B As Integer = TauscheRohstoffeImRezept(DummyRohNr, _NrNeu, winback, cbRezAenderungSpeichern.Checked)
+
+                'alle Rezepte mit Rohstoff A updaten(Nährwert-Berechnung)
+                wb_Rohstoffe_Shared.MySQLdbSetMarker(wb_Global.ArtikelMarker.nwtOK, NrAkt)
+                'alle Rezepte mit Rohstoff B updaten(Nährwert-Berechnung)
+                wb_Rohstoffe_Shared.MySQLdbSetMarker(wb_Global.ArtikelMarker.nwtOK, _NrNeu)
 
                 'alle zwei Datenbank-Operationen müssen die gleiche Anzahl an Datensätzen zurückliefern
                 If AnzRez_A <> AnzRez_B Then
@@ -141,29 +148,40 @@ Public Class wb_Rohstoffe_Tauschen
                     'Gesamtzahl aller Änderungen
                     AnzahlRezeptZeilen += AnzRez_A
                 End If
+
+                'Ereignis im Log-File festhalten
+                Trace.WriteLine("@I_Rohstoff " & NrAkt & " tauschen mit " & _NrNeu & " Anzahl der Änderungen " & AnzahlRezeptZeilen)
+
             Else
                 'Rohstoff A wird ersetzt durch Rohstoff B
-                AnzahlRezeptZeilen = TauscheRohstoffeImRezept(NrAkt, _NrNeu, winback)
+                AnzahlRezeptZeilen = TauscheRohstoffeImRezept(NrAkt, _NrNeu, winback, cbRezAenderungSpeichern.Checked)
+                'alle Rezepte mit Rohstoff Neu updaten(Nährwert-Berechnung)
+                wb_Rohstoffe_Shared.MySQLdbSetMarker(wb_Global.ArtikelMarker.nwtOK, _NrNeu)
+
+                'Ereignis im Log-File festhalten
+                Trace.WriteLine("@I_Rohstoff " & NrAkt & " ersetzen durch " & _NrNeu & " Anzahl der Änderungen " & AnzahlRezeptZeilen)
             End If
 
             'Datenbank-Verbindung wieder schliessen
             winback.Close()
+            'Cursor wieder auf Default
+            Me.Cursor = System.Windows.Forms.Cursors.Default
 
             'Auswertung Ergebnis
             Select Case AnzahlRezeptZeilen
                 Case -1
                     MsgBox("Fehler beim Ändern der Rezepturen !", MsgBoxStyle.Exclamation)
-                    DialogResult = Windows.Forms.DialogResult.Abort
+                    DialogResult = System.Windows.Forms.DialogResult.Abort
                 Case 0
                     MsgBox("Rohstoff wird in keinen Rezepturen verwendet", MsgBoxStyle.Information)
-                    DialogResult = Windows.Forms.DialogResult.No
+                    DialogResult = System.Windows.Forms.DialogResult.No
                 Case Else
                     MsgBox("Es wurden " & AnzahlRezeptZeilen.ToString & " Rezept-Zeilen geändert", MsgBoxStyle.Information)
-                    DialogResult = Windows.Forms.DialogResult.OK
+                    DialogResult = System.Windows.Forms.DialogResult.OK
             End Select
         Else
             MsgBox("Keine Änderungen durchgeführt", MsgBoxStyle.Information)
-            DialogResult = Windows.Forms.DialogResult.No
+            DialogResult = System.Windows.Forms.DialogResult.No
         End If
 
         'Fenster wieder schliessen
@@ -172,18 +190,43 @@ Public Class wb_Rohstoffe_Tauschen
 
     ''' <summary>
     ''' Ersetzt in allen Rezepten die angegebene alte gegen die neue Rohstoff-Nummer.
-    ''' Wird als neue Rohstoff-Nummer -1 übergeben (Tausch), wird zuerst geprüft ob diese Nummer schon in Rezepturen exisiert.
-    ''' 
     ''' Gibt die Anzahl der ersetzen Rezept-Zeilen zurück.
     ''' </summary>
     ''' <param name="NrAlt"></param>
     ''' <param name="NrNeu"></param>
-    Private Function TauscheRohstoffeImRezept(NrAlt As Integer, NrNeu As Integer, winback As wb_Sql) As Integer
+    Private Function TauscheRohstoffeImRezept(NrAlt As Integer, NrNeu As Integer, winback As wb_Sql, Optional RezeptHistorieSchreiben As Boolean = False) As Integer
         'sql-Kommando Rohstoffe im Rezept tauschen
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRezeptRohst, NrAlt.ToString, NrNeu.ToString)
-
         'Rohstoffe im Rezept tauschen
         TauscheRohstoffeImRezept = winback.sqlCommand(sql)
+
+        'Änderungs-Index und Rezept-Historie schreiben
+        If RezeptHistorieSchreiben Then
+            'Liste aller Rezepte mit dem Rohstoff mit der Nummer (NrAlt)
+            Dim RzNr As Integer = wb_Global.UNDEFINED
+            Dim RzListe As New ArrayList
+            RzListe.Clear()
+
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompInRZSchritte, NrNeu.ToString)
+            winback.sqlSelect(sql)
+            While winback.Read
+                If RzNr <> winback.iField("RS_RZ_Nr") Then
+                    RzNr = winback.iField("RS_RZ_Nr")
+                    RzListe.Add(RzNr)
+                End If
+            End While
+            winback.CloseRead()
+
+            'Liste abarbeiten - Alle Rezepte aufrufen-einlesen und wieder speichern (Änderngsdatum und Rezepthistorie schreiben)
+            For Each RzNr In RzListe
+                'Rezeptkopf einlesen
+                Dim Rzpt As New wb_Rezept(RzNr)
+                'alle Rezeptschritte aus der Datenbank einlesen
+                Rzpt.MySQLdbSelect_RzSchritt(RzNr, Rzpt.Variante)
+                'Rezept wieder speichern (aktuelles Datum und HisRezepte schreiben)
+                Rzpt.MySQLdbWrite_Rezept(True)
+            Next
+        End If
     End Function
 
 End Class

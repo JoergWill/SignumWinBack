@@ -13,7 +13,7 @@ Public Class wb_User_Details
     Private _Monitor As ISCardMonitor
     Private _ReaderName As String
 
-    Const ReadingMode = 1
+    Const ReadingMode = 3   'Lese 7 Bytes aus den Klebe-Tags
 
     Private Sub wb_User_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Combo-Box mit Werten füllen
@@ -30,6 +30,9 @@ Public Class wb_User_Details
         'In OrgaBack können die Benutzer-Namen nicht geändert werden
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
             tUserName.ReadOnly = True
+        Else
+            tPersonalNr.Visible = False
+            lblPersonalNummer.Visible = False
         End If
 
         AddHandler eListe_Click, AddressOf DetailInfo
@@ -42,13 +45,25 @@ Public Class wb_User_Details
     End Sub
 
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tUserName.Leave, tUserPass.Leave
-        If User.Passwort > 0 Then
+        If wb_Functions.StrToInt(User.Passwort) > 0 Then
             User.Name = tUserName.Text
             User.PersonalNr = tPersonalNr.Text
             User.Passwort = tUserPass.Text
             User.RFID = tUserRFID.Text
             User.iGruppe = cbUserGrp.GetKeyFromSelection()
+
+            'DEBUG
+            'Debug.Print("UserDetails.DataHasChanged")
+            'Debug.Print(User.Name)
+            'Debug.Print(User.PersonalNr)
+            'Debug.Print(User.Passwort)
+            'Debug.Print(User.RFID)
+            'Debug.Print(User.iGruppe)
+
+            'Daten schreiben 
             Edit_Leave(sender)
+            'Liste aktualisieren
+            Reload(sender)
         End If
     End Sub
 
@@ -65,22 +80,23 @@ Public Class wb_User_Details
         cbUserGrp.SetTextFromKey(User.iGruppe)
     End Sub
 
-    Private Sub wb_User_Details_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_User_Details_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         RemoveHandler wb_User_Shared.eListe_Click, AddressOf DetailInfo
         RemoveHandler wb_User_Shared.eData_Reload, AddressOf GrpLoad
-        'RemoveHandler _Monitor.CardInserted, AddressOf CardInit
     End Sub
 
-    Private Sub cbUserGrp_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbUserGrp.SelectionChangeCommitted
+    Private Sub cbUserGrp_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbUserGrp.SelectionChangeCommitted, cbxReaderList.SelectionChangeCommitted
         _UserGrpHasChanged = True
         lblName.Focus()
     End Sub
 
-    Private Sub cbUserGrp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbUserGrp.SelectedIndexChanged
+    Private Sub cbUserGrp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbUserGrp.SelectedIndexChanged, cbxReaderList.SelectedIndexChanged
         If _UserGrpHasChanged Then
             _UserGrpHasChanged = False
             DataHasChanged(sender, e)
         End If
+        'Focus auf ein beliebiges Label-Element - Schönheits-OP für DropDown-Element
+        lblName.Select()
     End Sub
 
     Private Function LoadReaderList()
@@ -129,6 +145,8 @@ Public Class wb_User_Details
     ''' </summary>
     ''' <param name="eventName"></param>
     ''' <param name="e"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Major Bug", "S2583:Conditionally executed code should be reachable", Justification:="<Ausstehend>")>
     Sub CardInit(eventName As SCardMonitor, e As CardStatusEventArgs)
         Dim RfID As String = ""
 
@@ -145,20 +163,27 @@ Public Class wb_User_Details
         If tUserRFID.InvokeRequired Then
             tUserRFID.Invoke(Sub() tUserRFIDText(RfID))
         Else
-            tUserRFID.Text = RfID
+            tUserRFIDText(RfID)
         End If
 
     End Sub
 
     ''' <summary>
-    ''' Text threadsicher in Textbox eintragen
+    ''' Text threadsicher in Textbox eintragen.
+    ''' Vorher wird noch geprüft, ob diese ID schon verwendet wird.
     ''' </summary>
     ''' <param name="Text"></param>
     Private Sub tUserRFIDText(Text As String)
-        tUserRFID.Text = Text
-        DataHasChanged(Nothing, Nothing)
+        If wb_User_Shared.User.Exist("*", Text) Then
+            MsgBox("Die ID-Nummer existiert schon!" & vbCrLf & "Dieser Chip wurde schon einem anderen Mitarbeiter zugewiesen", MsgBoxStyle.Critical, "Fehler Chip-ID")
+        Else
+            tUserRFID.Text = Text
+            DataHasChanged(Nothing, Nothing)
+        End If
+
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Major Bug", "S2583:Conditionally executed code should be reachable", Justification:="<Ausstehend>")>
     Private Function SendUID4Byte() As String
         Try
             Using context = _contextFactory.Establish(SCardScope.System)
@@ -193,6 +218,9 @@ Public Class wb_User_Details
 
                             'Chip-ID eintragen
                             Return uid2
+                        Else
+                            'never used
+                            Return False
                         End If
                     End Using
                 End Using
@@ -204,6 +232,7 @@ Public Class wb_User_Details
         Return True
     End Function
 
+    <CodeAnalysis.SuppressMessage("Major Bug", "S2583:Conditionally executed code should be reachable", Justification:="<Ausstehend>")>
     Private Function SendUID7Byte() As String
         Try
             Using context = _contextFactory.Establish(SCardScope.System)
@@ -249,5 +278,7 @@ Public Class wb_User_Details
         Return True
     End Function
 
-
+    Private Sub Btn_RemoveID_Click(sender As Object, e As EventArgs) Handles Btn_RemoveID.Click
+        tUserRFIDText(wb_Global.UNDEFINED.ToString)
+    End Sub
 End Class

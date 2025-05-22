@@ -25,14 +25,14 @@ Partial Class wb_Rohstoffe_Cloud
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim Wb_MinMaxOptCharge5 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
-        Dim Wb_Charge13 As WinBack.wb_Charge = New WinBack.wb_Charge()
-        Dim Wb_Charge14 As WinBack.wb_Charge = New WinBack.wb_Charge()
-        Dim Wb_Charge15 As WinBack.wb_Charge = New WinBack.wb_Charge()
-        Dim Wb_MinMaxOptCharge6 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
-        Dim Wb_Charge16 As WinBack.wb_Charge = New WinBack.wb_Charge()
-        Dim Wb_Charge17 As WinBack.wb_Charge = New WinBack.wb_Charge()
-        Dim Wb_Charge18 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_MinMaxOptCharge1 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
+        Dim Wb_Charge1 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge2 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge3 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_MinMaxOptCharge2 As WinBack.wb_MinMaxOptCharge = New WinBack.wb_MinMaxOptCharge()
+        Dim Wb_Charge4 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge5 As WinBack.wb_Charge = New WinBack.wb_Charge()
+        Dim Wb_Charge6 As WinBack.wb_Charge = New WinBack.wb_Charge()
         Me.tRohstoffNummer = New System.Windows.Forms.TextBox()
         Me.lblNummer = New System.Windows.Forms.Label()
         Me.tRohstoffName = New System.Windows.Forms.TextBox()
@@ -41,6 +41,7 @@ Partial Class wb_Rohstoffe_Cloud
         Me.lblCloudID = New System.Windows.Forms.Label()
         Me.Wb_TabControl = New WinBack.wb_TabControl()
         Me.tpCloudSuchen = New System.Windows.Forms.TabPage()
+        Me.BtnOpenFoodFacts = New System.Windows.Forms.Button()
         Me.BtnRezept = New System.Windows.Forms.Button()
         Me.btnMail = New System.Windows.Forms.Button()
         Me.lblHilfeText = New System.Windows.Forms.Label()
@@ -162,6 +163,7 @@ Partial Class wb_Rohstoffe_Cloud
         'tpCloudSuchen
         '
         Me.tpCloudSuchen.BackColor = System.Drawing.SystemColors.Control
+        Me.tpCloudSuchen.Controls.Add(Me.BtnOpenFoodFacts)
         Me.tpCloudSuchen.Controls.Add(Me.BtnRezept)
         Me.tpCloudSuchen.Controls.Add(Me.btnMail)
         Me.tpCloudSuchen.Controls.Add(Me.lblHilfeText)
@@ -178,11 +180,24 @@ Partial Class wb_Rohstoffe_Cloud
         Me.tpCloudSuchen.TabIndex = 0
         Me.tpCloudSuchen.Text = "CloudSearch"
         '
+        'BtnOpenFoodFacts
+        '
+        Me.BtnOpenFoodFacts.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnOpenFoodFacts.Image = Global.WinBack.My.Resources.Resources.RohstoffeOpenFoodFacts
+        Me.BtnOpenFoodFacts.Location = New System.Drawing.Point(541, 142)
+        Me.BtnOpenFoodFacts.Name = "BtnOpenFoodFacts"
+        Me.BtnOpenFoodFacts.Size = New System.Drawing.Size(138, 62)
+        Me.BtnOpenFoodFacts.TabIndex = 54
+        Me.BtnOpenFoodFacts.Text = "OpenFoodFacts"
+        Me.BtnOpenFoodFacts.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnOpenFoodFacts.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.BtnOpenFoodFacts.UseVisualStyleBackColor = True
+        '
         'BtnRezept
         '
         Me.BtnRezept.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BtnRezept.Image = Global.WinBack.My.Resources.Resources.RezeptListe_32x32
-        Me.BtnRezept.Location = New System.Drawing.Point(541, 282)
+        Me.BtnRezept.Location = New System.Drawing.Point(541, 278)
         Me.BtnRezept.Name = "BtnRezept"
         Me.BtnRezept.Size = New System.Drawing.Size(138, 62)
         Me.BtnRezept.TabIndex = 53
@@ -195,7 +210,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         Me.btnMail.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnMail.Image = Global.WinBack.My.Resources.Resources.RohstoffeMail_32x32
-        Me.btnMail.Location = New System.Drawing.Point(541, 188)
+        Me.btnMail.Location = New System.Drawing.Point(541, 210)
         Me.btnMail.Name = "btnMail"
         Me.btnMail.Size = New System.Drawing.Size(138, 62)
         Me.btnMail.TabIndex = 52
@@ -259,7 +274,7 @@ Partial Class wb_Rohstoffe_Cloud
         '
         Me.btnDatenLink.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnDatenLink.Image = Global.WinBack.My.Resources.Resources.RohstoffeDatenLink_93x24
-        Me.btnDatenLink.Location = New System.Drawing.Point(541, 97)
+        Me.btnDatenLink.Location = New System.Drawing.Point(541, 74)
         Me.btnDatenLink.Name = "btnDatenLink"
         Me.btnDatenLink.Size = New System.Drawing.Size(138, 62)
         Me.btnDatenLink.TabIndex = 4
@@ -520,30 +535,31 @@ Partial Class wb_Rohstoffe_Cloud
         '
         'KompRzChargen
         '
-        Wb_MinMaxOptCharge5.ErrorCheck = False
-        Wb_MinMaxOptCharge5.HasChanged = False
-        Wb_Charge13.MengeInkg = "0,000"
-        Wb_Charge13.MengeInProzent = "0"
-        Wb_Charge13.MengeInStk = "0"
-        Wb_Charge13.StkGewicht = "1000"
-        Wb_Charge13.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge5.MaxCharge = Wb_Charge13
-        Wb_Charge14.MengeInkg = "0,000"
-        Wb_Charge14.MengeInProzent = "0"
-        Wb_Charge14.MengeInStk = "0"
-        Wb_Charge14.StkGewicht = "1000"
-        Wb_Charge14.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge5.MinCharge = Wb_Charge14
-        Wb_Charge15.MengeInkg = "0,000"
-        Wb_Charge15.MengeInProzent = "0"
-        Wb_Charge15.MengeInStk = "0"
-        Wb_Charge15.StkGewicht = "1000"
-        Wb_Charge15.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge5.OptCharge = Wb_Charge15
-        Wb_MinMaxOptCharge5.StkGewicht = "1000"
-        Wb_MinMaxOptCharge5.TeigGewicht = "0"
-        Me.KompRzChargen.ArtikelChargen = Wb_MinMaxOptCharge5
+        Wb_MinMaxOptCharge1.ErrorCheck = False
+        Wb_MinMaxOptCharge1.HasChanged = False
+        Wb_Charge1.MengeInkg = "0,000"
+        Wb_Charge1.MengeInProzent = "0"
+        Wb_Charge1.MengeInStk = "0"
+        Wb_Charge1.StkGewicht = "1000"
+        Wb_Charge1.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge1.MaxCharge = Wb_Charge1
+        Wb_Charge2.MengeInkg = "0,000"
+        Wb_Charge2.MengeInProzent = "0"
+        Wb_Charge2.MengeInStk = "0"
+        Wb_Charge2.StkGewicht = "1000"
+        Wb_Charge2.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge1.MinCharge = Wb_Charge2
+        Wb_Charge3.MengeInkg = "0,000"
+        Wb_Charge3.MengeInProzent = "0"
+        Wb_Charge3.MengeInStk = "0"
+        Wb_Charge3.StkGewicht = "1000"
+        Wb_Charge3.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge1.OptCharge = Wb_Charge3
+        Wb_MinMaxOptCharge1.StkGewicht = "1000"
+        Wb_MinMaxOptCharge1.TeigGewicht = "0"
+        Me.KompRzChargen.ArtikelChargen = Wb_MinMaxOptCharge1
         Me.KompRzChargen.DataValid = False
+        Me.KompRzChargen.ID = "-1"
         Me.KompRzChargen.Location = New System.Drawing.Point(7, 2)
         Me.KompRzChargen.Name = "KompRzChargen"
         Me.KompRzChargen.RezeptName = ""
@@ -551,29 +567,29 @@ Partial Class wb_Rohstoffe_Cloud
         Me.KompRzChargen.RzNr = -1
         Me.KompRzChargen.Size = New System.Drawing.Size(400, 342)
         Me.KompRzChargen.TabIndex = 0
-        Wb_MinMaxOptCharge6.ErrorCheck = False
-        Wb_MinMaxOptCharge6.HasChanged = False
-        Wb_Charge16.MengeInkg = "0,000"
-        Wb_Charge16.MengeInProzent = "0"
-        Wb_Charge16.MengeInStk = "0"
-        Wb_Charge16.StkGewicht = "1000"
-        Wb_Charge16.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge6.MaxCharge = Wb_Charge16
-        Wb_Charge17.MengeInkg = "0,000"
-        Wb_Charge17.MengeInProzent = "0"
-        Wb_Charge17.MengeInStk = "0"
-        Wb_Charge17.StkGewicht = "1000"
-        Wb_Charge17.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge6.MinCharge = Wb_Charge17
-        Wb_Charge18.MengeInkg = "0,000"
-        Wb_Charge18.MengeInProzent = "0"
-        Wb_Charge18.MengeInStk = "0"
-        Wb_Charge18.StkGewicht = "1000"
-        Wb_Charge18.TeigGewicht = "0,000"
-        Wb_MinMaxOptCharge6.OptCharge = Wb_Charge18
-        Wb_MinMaxOptCharge6.StkGewicht = "1000"
-        Wb_MinMaxOptCharge6.TeigGewicht = "0"
-        Me.KompRzChargen.TeigChargen = Wb_MinMaxOptCharge6
+        Wb_MinMaxOptCharge2.ErrorCheck = False
+        Wb_MinMaxOptCharge2.HasChanged = False
+        Wb_Charge4.MengeInkg = "0,000"
+        Wb_Charge4.MengeInProzent = "0"
+        Wb_Charge4.MengeInStk = "0"
+        Wb_Charge4.StkGewicht = "1000"
+        Wb_Charge4.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge2.MaxCharge = Wb_Charge4
+        Wb_Charge5.MengeInkg = "0,000"
+        Wb_Charge5.MengeInProzent = "0"
+        Wb_Charge5.MengeInStk = "0"
+        Wb_Charge5.StkGewicht = "1000"
+        Wb_Charge5.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge2.MinCharge = Wb_Charge5
+        Wb_Charge6.MengeInkg = "0,000"
+        Wb_Charge6.MengeInProzent = "0"
+        Wb_Charge6.MengeInStk = "0"
+        Wb_Charge6.StkGewicht = "1000"
+        Wb_Charge6.TeigGewicht = "0,000"
+        Wb_MinMaxOptCharge2.OptCharge = Wb_Charge6
+        Wb_MinMaxOptCharge2.StkGewicht = "1000"
+        Wb_MinMaxOptCharge2.TeigGewicht = "0"
+        Me.KompRzChargen.TeigChargen = Wb_MinMaxOptCharge2
         '
         'tpKompType
         '
@@ -639,45 +655,46 @@ Partial Class wb_Rohstoffe_Cloud
     End Sub
 
     Friend WithEvents Wb_TabControl As wb_TabControl
-    Friend WithEvents tpCloudSuchen As Windows.Forms.TabPage
-    Friend WithEvents tpCloudGefunden As Windows.Forms.TabPage
-    Friend WithEvents tpCloudAnzeige As Windows.Forms.TabPage
-    Friend WithEvents tpCloudResult As Windows.Forms.TabPage
-    Friend WithEvents btnCloud As Windows.Forms.Button
-    Friend WithEvents btnDatenLink As Windows.Forms.Button
-    Friend WithEvents tSuchtextBezeichnung As Windows.Forms.TextBox
-    Friend WithEvents lblSuchtextBezeichnung As Windows.Forms.Label
-    Friend WithEvents tRohstoffNummer As Windows.Forms.TextBox
-    Friend WithEvents lblNummer As Windows.Forms.Label
-    Friend WithEvents tRohstoffName As Windows.Forms.TextBox
-    Friend WithEvents lblBezeichnung As Windows.Forms.Label
-    Friend WithEvents tSuchtextLieferant As Windows.Forms.TextBox
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents lblHilfeText As Windows.Forms.Label
-    Friend WithEvents pnlNwtGrid As Windows.Forms.Panel
-    Friend WithEvents btnFound_Back As Windows.Forms.Button
-    Friend WithEvents btnFound_Vor As Windows.Forms.Button
-    Friend WithEvents lblErgebnisText As Windows.Forms.Label
-    Friend WithEvents btnShow_Back As Windows.Forms.Button
-    Friend WithEvents btnShow_Vor As Windows.Forms.Button
-    Friend WithEvents pnlNwt As Windows.Forms.Panel
-    Friend WithEvents btnResult_Akt As Windows.Forms.Button
-    Friend WithEvents btnDisconnect As Windows.Forms.Button
-    Friend WithEvents tCloudID As Windows.Forms.TextBox
-    Friend WithEvents lblCloudID As Windows.Forms.Label
-    Friend WithEvents tpRezept As Windows.Forms.TabPage
-    Friend WithEvents btnResult_OK As Windows.Forms.Button
-    Friend WithEvents btnMail As Windows.Forms.Button
+    Friend WithEvents tpCloudSuchen As System.Windows.Forms.TabPage
+    Friend WithEvents tpCloudGefunden As System.Windows.Forms.TabPage
+    Friend WithEvents tpCloudAnzeige As System.Windows.Forms.TabPage
+    Friend WithEvents tpCloudResult As System.Windows.Forms.TabPage
+    Friend WithEvents btnCloud As System.Windows.Forms.Button
+    Friend WithEvents btnDatenLink As System.Windows.Forms.Button
+    Friend WithEvents tSuchtextBezeichnung As System.Windows.Forms.TextBox
+    Friend WithEvents lblSuchtextBezeichnung As System.Windows.Forms.Label
+    Friend WithEvents tRohstoffNummer As System.Windows.Forms.TextBox
+    Friend WithEvents lblNummer As System.Windows.Forms.Label
+    Friend WithEvents tRohstoffName As System.Windows.Forms.TextBox
+    Friend WithEvents lblBezeichnung As System.Windows.Forms.Label
+    Friend WithEvents tSuchtextLieferant As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lblHilfeText As System.Windows.Forms.Label
+    Friend WithEvents pnlNwtGrid As System.Windows.Forms.Panel
+    Friend WithEvents btnFound_Back As System.Windows.Forms.Button
+    Friend WithEvents btnFound_Vor As System.Windows.Forms.Button
+    Friend WithEvents lblErgebnisText As System.Windows.Forms.Label
+    Friend WithEvents btnShow_Back As System.Windows.Forms.Button
+    Friend WithEvents btnShow_Vor As System.Windows.Forms.Button
+    Friend WithEvents pnlNwt As System.Windows.Forms.Panel
+    Friend WithEvents btnResult_Akt As System.Windows.Forms.Button
+    Friend WithEvents btnDisconnect As System.Windows.Forms.Button
+    Friend WithEvents tCloudID As System.Windows.Forms.TextBox
+    Friend WithEvents lblCloudID As System.Windows.Forms.Label
+    Friend WithEvents tpRezept As System.Windows.Forms.TabPage
+    Friend WithEvents btnResult_OK As System.Windows.Forms.Button
+    Friend WithEvents btnMail As System.Windows.Forms.Button
     Friend WithEvents KompRzChargen As wb_KompRzChargen
-    Friend WithEvents tpKompType As Windows.Forms.TabPage
-    Friend WithEvents lblKeineNwt As Windows.Forms.Label
-    Friend WithEvents Btn_Result_Back As Windows.Forms.Button
-    Friend WithEvents BtnRezept As Windows.Forms.Button
-    Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
-    Friend WithEvents lblDeklExtern As Windows.Forms.Label
-    Friend WithEvents lblDeklIntern As Windows.Forms.Label
-    Friend WithEvents tbDeklarationExtern As Windows.Forms.TextBox
-    Friend WithEvents tbDeklarationIntern As Windows.Forms.TextBox
-    Friend WithEvents BtnProduktDatenblatt As Windows.Forms.Button
-    Friend WithEvents cbFreigabeProduktion As Windows.Forms.CheckBox
+    Friend WithEvents tpKompType As System.Windows.Forms.TabPage
+    Friend WithEvents lblKeineNwt As System.Windows.Forms.Label
+    Friend WithEvents Btn_Result_Back As System.Windows.Forms.Button
+    Friend WithEvents BtnRezept As System.Windows.Forms.Button
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblDeklExtern As System.Windows.Forms.Label
+    Friend WithEvents lblDeklIntern As System.Windows.Forms.Label
+    Friend WithEvents tbDeklarationExtern As System.Windows.Forms.TextBox
+    Friend WithEvents tbDeklarationIntern As System.Windows.Forms.TextBox
+    Friend WithEvents BtnProduktDatenblatt As System.Windows.Forms.Button
+    Friend WithEvents cbFreigabeProduktion As System.Windows.Forms.CheckBox
+    Friend WithEvents BtnOpenFoodFacts As System.Windows.Forms.Button
 End Class

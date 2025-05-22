@@ -149,7 +149,7 @@ Public Class wb_Rohstoffe_AuswahlListe
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"Nummer", "&Name", "", "Kommentar"}
+        Dim sColNames As New List(Of String) From {"Nummer", "&Name", "", "Kommentar", "Gruppe", "Gruppe"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
@@ -163,7 +163,7 @@ Public Class wb_Rohstoffe_AuswahlListe
         DataGridView.Filter = _Filter
         'Focus auf Sortier-Feld
         DataGridView.SortCol = 0
-        'Sortier-Kriterium ist die erste Spalte (Rohstoff-Name)
+        'Sortier-Kriterium ist die zweite Spalte (Rohstoff-Name)
         DataGridView.SetSortColumn(1)
         'Multiselect (Áuswahl-Liste Statistik)
         DataGridView.MultiSelect = _MultiSelect
@@ -197,7 +197,7 @@ Public Class wb_Rohstoffe_AuswahlListe
         RohstoffOG = DataGridView.Field("KT_OberGW")
 
         'MultiSelect
-        For Each dl As Windows.Forms.DataGridViewRow In DataGridView.SelectedRows
+        For Each dl As System.Windows.Forms.DataGridViewRow In DataGridView.SelectedRows
             Dim RohListenElement As New wb_StatistikListenElement
             RohListenElement.Nr = dl.Cells("KO_Nr").Value
             RohListenElement.Nummer = dl.Cells("KO_Nr_AlNum").Value
@@ -206,11 +206,11 @@ Public Class wb_Rohstoffe_AuswahlListe
             _RohstoffListe.Add(RohListenElement)
         Next
 
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Private Sub wb_Rohstoffe_AuswahlListe_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Rohstoffe_AuswahlListe_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Layout sichern
         DataGridView.SaveToDisk("RohstoffAuswahlListe")
     End Sub

@@ -1,8 +1,7 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
-Imports WinBack.wb_User_Shared
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class wb_User_GruppenRechte
+Partial Class wb_Rohstoffe_TextHinweise
     Inherits DockContent
     'Inherits System.Windows.Forms.Form
 
@@ -26,28 +25,32 @@ Partial Class wb_User_GruppenRechte
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.pnlUserGruppenRechte = New System.Windows.Forms.Panel()
+        Me.tHinweise = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
-        'pnlUserGruppenRechte
+        'tHinweise
         '
-        Me.pnlUserGruppenRechte.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlUserGruppenRechte.Location = New System.Drawing.Point(0, 0)
-        Me.pnlUserGruppenRechte.Name = "pnlUserGruppenRechte"
-        Me.pnlUserGruppenRechte.Size = New System.Drawing.Size(722, 372)
-        Me.pnlUserGruppenRechte.TabIndex = 0
+        Me.tHinweise.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tHinweise.Location = New System.Drawing.Point(0, 0)
+        Me.tHinweise.Multiline = True
+        Me.tHinweise.Name = "tHinweise"
+        Me.tHinweise.Size = New System.Drawing.Size(572, 281)
+        Me.tHinweise.TabIndex = 0
         '
-        'wb_User_GruppenRechte
+        'wb_Rohstoffe_TextHinweise
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(722, 372)
-        Me.Controls.Add(Me.pnlUserGruppenRechte)
-        Me.Name = "wb_User_GruppenRechte"
-        Me.Text = "Rechte-Matrix der Benutzer-Gruppen"
+        Me.BackColor = System.Drawing.Color.LightGray
+        Me.ClientSize = New System.Drawing.Size(572, 281)
+        Me.Controls.Add(Me.tHinweise)
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Name = "wb_Rohstoffe_TextHinweise"
+        Me.Text = "Rohstoff Verarbeitungshinweise"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
-    Friend WithEvents pnlUserGruppenRechte As System.Windows.Forms.Panel
+    Friend WithEvents tHinweise As System.Windows.Forms.TextBox
 End Class

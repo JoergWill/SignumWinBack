@@ -13,7 +13,9 @@ Public Class ob_User_DockingExtension
     Private _MenuService As Common.IMenuService
     Private _ViewProvider As IViewProvider
     Private _ContextTabs As List(Of GUI.ITab)
-    Private xForm As Windows.Forms.Form
+    'ab VERSION 3.6.1
+    'Private xForm As System.Windows.Forms.Form
+    Private xForm As IForm
 
     Private OrgaSoftEditState As wb_Global.EditState
     Private OldPersonalNr As String
@@ -90,52 +92,53 @@ Public Class ob_User_DockingExtension
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
         OrgaSoftEditState = wb_Global.EditState.Invalid
         OldPersonalNr = ""
-        Debug.Print("User_DockingExtension Invalid")
+        'Debug.Print("User_DockingExtension Invalid")
     End Sub
 
     Private Sub Extendee_AddNew(sender As Object, e As EventArgs)
         OrgaSoftEditState = wb_Global.EditState.AddNew
         OldPersonalNr = ""
-        Debug.Print("User_DockingExtension AddNew")
+        'Debug.Print("User_DockingExtension AddNew")
     End Sub
 
     Private Sub Extendee_Found(sender As Object, e As EventArgs)
         OrgaSoftEditState = wb_Global.EditState.Edit
         OldPersonalNr = _Extendee.GetPropertyValue("PersonalNr").ToString
-        Debug.Print("User_DockingExtension Found")
+        'Debug.Print("User_DockingExtension Found")
     End Sub
 
     Private Sub Extendee_BeforeUpdate(sender As Object, e As EventArgs)
-        Debug.Print("User_DockingExtension BeforeUpdate")
+        'Debug.Print("User_DockingExtension BeforeUpdate")
     End Sub
 
     Private Sub Extendee_Updated(sender As Object, e As EventArgs)
-        Debug.Print("User_DockingExtension Updated")
+        'Debug.Print("User_DockingExtension Updated")
     End Sub
 
     Private Sub Extendee_BeforeDelete(sender As Object, e As EventArgs)
-        Debug.Print("User_DockingExtension BeforeDelete")
+        'Debug.Print("User_DockingExtension BeforeDelete")
     End Sub
 
     Private Sub Extendee_Deleted(sender As Object, e As EventArgs)
-        Debug.Print("User_DockingExtension Deleted")
+        'Debug.Print("User_DockingExtension Deleted")
         Dim PersonalNr As String = _Extendee.GetPropertyValue("PersonalNr").ToString
         wb_User_Shared.User.Delete(wb_Global.UNDEFINED, PersonalNr)
     End Sub
 
     Private Sub Extendee_BeforeCopy(sender As Object, e As EventArgs)
-        Debug.Print("User_DockingExtension BeforeCopy")
+        'Debug.Print("User_DockingExtension BeforeCopy")
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Private Sub Extendee_Committed(sender As Object, e As EventArgs)
-        Debug.Print("User_DockingExtension Committed")
+        'Debug.Print("User_DockingExtension Committed")
 
         Dim Vorname As String = _Extendee.GetPropertyValue("Vorname").ToString
         Dim Nachname As String = _Extendee.GetPropertyValue("Nachname").ToString
         Dim PersonalNr As String = _Extendee.GetPropertyValue("PersonalNr").ToString
         Dim FilialZuordnung As String = _Extendee.GetPropertyValue("FilialZuordnung").ToString
         Dim Name As String = Vorname & " " & Nachname
-        Dim GruppeNr As String = "4"
+        Dim GruppeNr As String = wb_Global.UNDEFINED
 
         Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
         Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
@@ -151,27 +154,31 @@ Public Class ob_User_DockingExtension
             oMFF = DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
             If oMFF IsNot Nothing Then
                 GruppeNr = oMFF.PropertyValueCollection(2).Value
+                If GruppeNr = "" OrElse GruppeNr = "0000" Then
+                    GruppeNr = wb_Global.UNDEFINED
+                End If
             End If
         End If
 
-        'Pürfen ob der User einer Produktionsfiliale zugeordnet ist
+        'Prüfen ob der User einer Produktionsfiliale zugeordnet ist
         If wb_Filiale.FilialeIstProduktion(FilialZuordnung) Then
             'Prüfen ob eine Personal-Nummer angeben ist. Ohne Personal-Nummer kann keine Synchronisation mit WinBack erfolgen
             If PersonalNr = "" Then
-                MsgBox("Es ist keine Personal-Nummer angegeben !" & vbCrLf & "Damit ist keine Synchronisation mit WinBack möglich", MsgBoxStyle.Critical, "WinBack-Benutzer")
+                MsgBox("Es ist keine Personal-Nummer angegeben !" & vbCrLf & "Damit ist keine Synchronisation mit der Produktion möglich", MsgBoxStyle.Critical, "Produktion Benutzer")
             Else
                 Select Case OrgaSoftEditState
+
                     Case wb_Global.EditState.Edit
-                        If Not wb_User_Shared.User.Update(OldPersonalNr, Name, PersonalNr, GruppeNr) Then
+                        If Not wb_User_Shared.User.Update(OldPersonalNr, Name, PersonalNr) Then
                             'Beim Neuanlegen ist das Passwort mit der Personal-Nummer identisch
-                            wb_User_Shared.User.AddNew(Name, PersonalNr, PersonalNr, GruppeNr)
+                            wb_User_Shared.User.AddNew(Name, PersonalNr, GruppeNr)
                         End If
                         'Anzeige im WinBack-Fenster "live" aktualisieren
                         wb_User_Shared.Reload(sender)
 
                     Case wb_Global.EditState.AddNew
                         'Beim Neuanlegen ist das Passwort mit der Personal-Nummer identisch
-                        wb_User_Shared.User.AddNew(Name, PersonalNr, PersonalNr, GruppeNr)
+                        wb_User_Shared.User.AddNew(Name, PersonalNr, wb_Global.NewUserGrpe)
                         'Anzeige im WinBack-Fenster "live" aktualisieren
                         wb_User_Shared.Reload(sender)
 
@@ -191,11 +198,13 @@ Public Class ob_User_DockingExtension
     ''' Dieser wird erst erzeugt und gesetzt, wenn das Fenster auch angezeigt werden soll.
     ''' </remarks>
     Public Sub Initialize() Implements IExtension.Initialize
+        'in wb_Main registrieren
+        wb_Main_Shared.RegisterAddIn("ob_User_DockingExtension")
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
-#If AssemblyResolve Then
-        'Die eigenen dll-Files in sep. Verzeichnis verlagern
-        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-#End If
+        If wb_Global.AssemblyResolve Then
+            'Die eigenen dll-Files in sep. Verzeichnis verlagern
+            AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+        End If
 
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
@@ -224,7 +233,7 @@ Public Class ob_User_DockingExtension
             Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabMitarbeiter" Select oTab
             If oSystemTab IsNot Nothing AndAlso oSystemTab.Count > 0 Then
                 oSystemTab(0).AddGroup("WinBack", "Produktion")
-                oSystemTab(0).GetGroups(2).AddButton("btnBenutzer", "WinBack-Mitarbeiter", "Mtarbeiter-Verwaltung in WinBack", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
+                oSystemTab(0).GetGroups(2).AddButton("btnBenutzer", "Produktion-Mitarbeiter", "Mtarbeiter-Verwaltung für die Produktion", My.Resources.MainUser_16x16, My.Resources.MainUser_32x32, AddressOf ShowUserForm)
                 oSystemTab(0).GetGroups(2).AddButton("BtnUserGroup", "Mitarbeiter-Gruppen", "Gruppen und Gruppen-Rechte verwalten", My.Resources.UserGruppen_32x32, My.Resources.UserGruppen_32x32, AddressOf ShowUserGroup)
             End If
         End If
@@ -239,7 +248,6 @@ Public Class ob_User_DockingExtension
         xForm = _ViewProvider.OpenForm(New wb_User_Main(ServiceProvider), My.Resources.MainUser_16x16)
         'Fensterposition aus winback.ini
         wb_DockBarPanelShared.SetFormBoundaries(xForm, "User")
-
     End Sub
 
     ''' <summary>

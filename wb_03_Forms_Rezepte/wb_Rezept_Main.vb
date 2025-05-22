@@ -3,6 +3,7 @@ Imports Signum.OrgaSoft
 Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.GUI
 Imports WeifenLuo.WinFormsUI.Docking
+Imports combit.Reporting.DataProviders
 
 Public Class wb_Rezept_Main
     Implements IExternalFormUserControl
@@ -51,6 +52,8 @@ Public Class wb_Rezept_Main
     End Property
 
     Public Overrides Sub SetDefaultLayout()
+        DockPanel.Theme = wb_GlobalSettings.Theme
+
         RezeptDetails.Show(DockPanel, DockState.DockTop)
         RezeptDetails.CloseButtonVisible = False
         RezeptListe.Show(DockPanel, DockState.DockLeft)
@@ -77,6 +80,8 @@ Public Class wb_Rezept_Main
         'alle Spuren in Rezepte_Shared löschen
         wb_Rezept_Shared.Invalid()
 
+        'alle Events wieder freigeben
+        RemoveHandler wb_Rezept_Shared.eRezept_Copy, AddressOf RezeptCopy
         'Fenster darf geschlossen werden
         Return False
     End Function
@@ -108,7 +113,8 @@ Public Class wb_Rezept_Main
                 Dim oGrpPrnt = oNewTab.AddGroup("Printer", "Drucken")
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrpPrnt.AddButton("BtnRezeptListeDrucken", "Drucke Rezeptliste", "Liste aller Rezepte drucken", My.Resources.RezeptDruckenListe_32x32, My.Resources.RezeptDruckenListe_32x32, AddressOf BtnRezeptListeDrucken)
-                oGrpPrnt.AddButton("BtnRezeptDrucken", "Rezept drucken", "Rezept mit allen unterlagerten Rezepten drucken", My.Resources.RezeptDrucken_32x32, My.Resources.RezeptDrucken_32x32, AddressOf BtnRezeptDrucken)
+                oGrpPrnt.AddButton("BtnRezeptDrucken", "Struktur drucken", "Rezept mit allen unterlagerten Rezepten drucken", My.Resources.RezeptDrucken_32x32, My.Resources.RezeptDrucken_32x32, AddressOf BtnRezeptDrucken)
+                oGrpPrnt.AddButton("BtnRezeptVerwendungDrucken", "Verwendung drucken", "Liste aller Artikel mit diesem Rezept drucken", My.Resources.RezeptVerwendungDrucken_32x32, My.Resources.RezeptVerwendungDrucken_32x32, AddressOf BtnRezeptVerwendungDrucken)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -138,11 +144,13 @@ Public Class wb_Rezept_Main
     ''' wird eine Kopie des aktuellen Rezeptes erzeugt und angezeigt.
     ''' </summary>
     ''' <param name="RzNr"></param>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
     Private Sub RezeptNew(Optional RzNr As Integer = wb_Global.UNDEFINED, Optional RzVariante As Integer = 1)
         Dim Rezept As New wb_Rezept
         Dim RezeptNrNeu As Integer = Rezept.MySQLdbNew(wb_Global.LinienGruppeStandard)
         'Beim Aufruf aus Artikel/Rohstoffe (verknüpftes Rezept) gibt es keine Rezeptliste
         If RezeptListe IsNot Nothing Then
+            RezeptListe.Anzeige = wb_Rezept_Shared.AnzeigeFilter.Alle
             RezeptListe.RefreshData(RezeptNrNeu)
         End If
 
@@ -159,6 +167,11 @@ Public Class wb_Rezept_Main
         Me.Cursor = Cursors.WaitCursor
         'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen
         Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNrNeu, wb_Global.RezeptVarianteStandard)
+        'Rezept Bezeichnung anpassen wenn kopiert wurde
+        If RzNr > 0 Then
+            Rezeptur.RezeptBezeichnung = "Kopie von " & wb_Rezept_Shared.Rezept.RezeptBezeichnung
+        End If
+
         Rezeptur.Show()
         Me.Cursor = Cursors.Default
         Rezeptur.tbRzNummer.Focus()
@@ -177,10 +190,16 @@ Public Class wb_Rezept_Main
     End Sub
 
     Private Sub BtnRezeptListe()
+        If IsNothingOrDisposed(RezeptListe) Then
+            RezeptListe = New wb_Rezept_Liste
+        End If
         RezeptListe.Show(DockPanel, DockState.DockLeft)
     End Sub
 
     Private Sub BtnRezeptDetails()
+        If IsNothingOrDisposed(RezeptDetails) Then
+            RezeptDetails = New wb_Rezept_Details
+        End If
         RezeptDetails.Show(DockPanel, DockState.Document)
     End Sub
 
@@ -205,6 +224,44 @@ Public Class wb_Rezept_Main
         RezeptVerwendung.Show(DockPanel, DockState.Document)
     End Sub
 
+    ''' <summary>
+    ''' Druckt eine Liste aller Artikel, die mit diesem Rezept verknüpft sind
+    ''' </summary>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0017:Initialisierung von Objekten vereinfachen", Justification:="<Ausstehend>")>
+    Private Sub BtnRezeptVerwendungDrucken()
+        'Objekt Rezeptverwendung muss existieren
+        If IsNothingOrDisposed(RezeptVerwendung) Then
+            RezeptVerwendung = New wb_Rezept_Verwendung
+            RezeptVerwendung.Show(DockPanel, DockState.Document)
+        End If
+
+        'Druck-Daten
+        Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
+        pDialog.LL_KopfZeile_1 = "Rezeptverwendung"
+        pDialog.LL_KopfZeile_2 = "Liste aller Artikel verknüpft mit " & wb_Rezept_Shared.Rezept.RezeptNummer & " " & wb_Rezept_Shared.Rezept.RezeptBezeichnung
+
+        'da List&Label Groß/Kleinschreibung bei den Tabellennamen unterscheidet, muss der Tabellenname korrigiert werden (mysql5.0)
+        Dim TabelleName As String = RezeptVerwendung.HisDataGridView.LLData.TableName
+        TabelleName = TabelleName(0).ToString.ToUpper & TabelleName.Substring(1)
+        RezeptVerwendung.HisDataGridView.LLData.TableName = TabelleName
+
+        'Liste aller Rohstoffe aus den DataGridView
+        pDialog.ll.DataSource = New AdoDataProvider(RezeptVerwendung.HisDataGridView.LLData)
+
+        'List und Label-Verzeichnis für die Listen
+        pDialog.ListSubDirectory = "Rezepte"
+        pDialog.ListFileName = "RezeptVerwendung.lst"
+        pDialog.ShowDialog()
+        pDialog = Nothing
+
+    End Sub
+
+    ''' <summary>
+    ''' Druckt eine Liste aller Rezepte abhängig von Sortierung und Filter in der Anzeige
+    ''' </summary>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0017:Initialisierung von Objekten vereinfachen", Justification:="<Ausstehend>")>
     Private Sub BtnRezeptListeDrucken()
         'sicherheitshalber abfragen
         If Not IsNothing(RezeptListe) Then
@@ -212,9 +269,15 @@ Public Class wb_Rezept_Main
             'Druck-Daten
             Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
             pDialog.LL_KopfZeile_1 = RezeptListe.FilterText
+            pDialog.LL_KopfZeile_2 = RezeptListe.DataGridView.FilterText
+
+            'da List&Label Groß/Kleinschreibung bei den Tabellennamen unterscheidet, muss der Tabellenname korrigiert werden (mysql5.0)
+            Dim TabelleName As String = RezeptListe.DataGridView.LLData.TableName
+            TabelleName = TabelleName(0).ToString.ToUpper & TabelleName.Substring(1)
+            RezeptListe.DataGridView.LLData.TableName = TabelleName
 
             'Liste aller Rohstoffe aus den DataGridView
-            pDialog.LL.DataSource = New combit.ListLabel22.DataProviders.AdoDataProvider(RezeptListe.DataGridView.LLData)
+            pDialog.ll.DataSource = New AdoDataProvider(RezeptListe.DataGridView.LLData)
 
             'List und Label-Verzeichnis für die Listen
             pDialog.ListSubDirectory = "Rezepte"
@@ -228,6 +291,7 @@ Public Class wb_Rezept_Main
     ''' Druck Rezeptur inkusive aller Unter-Rezepturen (Rezept-im-Rezept)
     ''' Baut eine Liste mit Root-Knoten aller Rezepte auf und starten dann den Druck-Job
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnötige Zuweisung eines Werts.", Justification:="<Ausstehend>")>
     Private Sub BtnRezeptDrucken()
         'Drucke Rezept inklusive aller verknüpften Rezepturen
         Dim RezeptDrucken As New wb_RezeptDrucken

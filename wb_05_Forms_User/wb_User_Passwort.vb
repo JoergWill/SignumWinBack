@@ -3,7 +3,7 @@ Imports WinBack.wb_User_Shared
 
 Public Class wb_User_Passwort
     Inherits DockContent
-    Private Sub wb_User_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub wb_User_Passwort_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         DetailInfo()
     End Sub
 
@@ -27,6 +27,7 @@ Public Class wb_User_Passwort
         End If
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of methods should not be too high", Justification:="<Ausstehend>")>
     Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
         'Prüfen ob das alte Passwort richtig ist
         If tUserPassAlt.Text = User.Passwort Then

@@ -1,4 +1,5 @@
-﻿Imports Signum.OrgaSoft.Common
+﻿Imports System.Reflection
+Imports Signum.OrgaSoft.Common
 Imports Signum.OrgaSoft.Extensibility
 Imports Signum.OrgaSoft.FrameWork
 
@@ -11,14 +12,26 @@ Public Class ob_Rohstoffe_SiloInventur
     Public Property ServiceProvider As IOrgasoftServiceProvider Implements IExtension.ServiceProvider
 
     Private Shared oFactory As IFactoryService
-    Private Shared oSetting As ISettingService
-    Private Shared oViewProvider As IViewProvider
-    Private Shared oMenuService As IMenuService
+    'Private Shared oSetting As ISettingService
+    'Private Shared oViewProvider As IViewProvider
 
     Public Sub Initialize() Implements IExtension.Initialize
+        'in wb_Main registrieren
+        wb_Main_Shared.RegisterAddIn("ob_Rohstoffe_SiloInventur")
+
+        'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
+        'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
+        If wb_Global.AssemblyResolve Then
+            'Die eigenen dll-Files in sep. Verzeichnis verlagern
+            AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+        End If
         oFactory = TryCast(ServiceProvider.GetService(GetType(IFactoryService)), IFactoryService)
-        oSetting = TryCast(ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
+        'oSetting = TryCast(ServiceProvider.GetService(GetType(ISettingService)), ISettingService)
     End Sub
+
+    Private Shared Function MyAssemblyResolve(sender As Object, args As ResolveEventArgs) As Assembly
+        Return wb_Main_Shared.MyAssemblyResolve(sender, args, GetType(ob_Artikel_DockingExtension).Assembly)
+    End Function
 
     ''' <summary>
     ''' Erzeugt eine Inventur für Artikel mit ArtikelNr, Einheit, Menge und führt anschließend für diesen Artikel eine Bestandskorrektur durch
@@ -34,6 +47,10 @@ Public Class ob_Rohstoffe_SiloInventur
             oPos.SetPropertyValue("ArtikelNr", ArtikelNr)
             oPos.SetPropertyValue("Einheit", Einheit)
             oPos.SetPropertyValue("EingabeMengeString", EingabeMenge)
+            'Leere Chargen-Nummern abfangen
+            If ChargenNr = "" Then
+                ChargenNr = wb_Global.FlagKeineChargenNummer
+            End If
             oPos.SetPropertyValue("ChargenNr", ChargenNr)
             Dim oMethodInfo As Reflection.MethodInfo = oPos.GetType.GetMethod("EingabeBeenden")
             oMethodInfo.Invoke(oPos, {})
@@ -49,7 +66,7 @@ Public Class ob_Rohstoffe_SiloInventur
                 Dim oSelektion = oPropInfo.GetValue(oBK)
 
                 'TODO Folgende Zeile ist ein Workaround für ein internes Problem, ab 19.3.21 nicht mehr nötig
-                oBK.SetPropertyValue("TransferSelektion", oSelektion)
+                'oBK.SetPropertyValue("TransferSelektion", oSelektion)
 
                 Dim oPropInfo2 As Reflection.PropertyInfo = oSelektion.GetType.GetProperty("SelektionsName")
                 oPropInfo2.SetValue(oSelektion, "temp. Selektion")

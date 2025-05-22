@@ -5,7 +5,7 @@ Public Class wb_Rohstoffe_Silo
     Inherits DockContent
 
     Private _SiloBefuellung As wb_OrgaBackProcessPosition
-    Private _AnzahlSilos As Integer
+    'Private _AnzahlSilos As Integer
     Private _Befuellung As Boolean = False
     Private _SiloVerteilung As New List(Of wb_LagerSilo)
 
@@ -62,7 +62,7 @@ Public Class wb_Rohstoffe_Silo
 
             'Beim ersten Aufruf werden alle Silos passend zum Lagerort des aktuellen Rohstoffes angezeigt.
             If RohStoff IsNot Nothing Then
-                DetailInfo(sender)
+                DetailInfo(sender, False)
             End If
         End If
 
@@ -75,7 +75,7 @@ Public Class wb_Rohstoffe_Silo
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub wb_Rohstoffe_Silo_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Rohstoffe_Silo_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Event-Zeiger wieder freigeben
         RemoveHandler wb_Rohstoffe_Shared.eListe_Click, AddressOf DetailInfo
         RemoveHandler wb_Rohstoffe_Shared.eBefMenge_Changed, AddressOf CalcBefuellMengen
@@ -97,13 +97,13 @@ Public Class wb_Rohstoffe_Silo
     ''' Anzeige der Rohstoff-Silo-Details.
     ''' Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
     ''' </summary>
-    Private Sub DetailInfo(sender)
+    Private Sub DetailInfo(sender As Object, Reload As Boolean)
         'Prüfen ob zu dieser Rohstoff-Nummer ein/mehrere Silo's exisitieren
         sType = wb_Rohstoffe_Shared.GetRohSiloType(RohStoff.Lagerort)
         If (sType <> wb_Global.RohSiloTypen.UNDEF) Then
 
             'Silo-Type hat sich geändert
-            If (sType <> aType) Then
+            If (sType <> aType) Or Reload Then
                 'Anzeige ausblenden
                 TableLayoutPanel.Visible = False
                 TableLayoutPanel.Controls.Clear()
@@ -245,7 +245,6 @@ Public Class wb_Rohstoffe_Silo
         TableLayoutPanel.Controls.Add(SiloBef)
         TableLayoutPanel.ColumnCount = TableLayoutPanel.Controls.Count
     End Sub
-
 
     ''' <summary>
     ''' Einfacher Bubble-Sort-Algorithmus

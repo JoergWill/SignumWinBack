@@ -22,114 +22,113 @@ Partial Class wb_Rezept_AuswahlListe
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.BtnCancel = New System.Windows.Forms.Button()
-        Me.BtnNew = New System.Windows.Forms.Button()
-        Me.BtnClear = New System.Windows.Forms.Button()
-        Me.BtnOK = New System.Windows.Forms.Button()
-        Me.DataGridView = New WinBack.wb_DataGridView()
-        CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
-        '
-        'BtnCancel
-        '
-        Me.BtnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.BtnCancel.Location = New System.Drawing.Point(403, 488)
-        Me.BtnCancel.Name = "BtnCancel"
-        Me.BtnCancel.Size = New System.Drawing.Size(129, 45)
-        Me.BtnCancel.TabIndex = 0
-        Me.BtnCancel.Text = "Zurück"
-        Me.BtnCancel.UseVisualStyleBackColor = True
-        '
-        'BtnNew
-        '
-        Me.BtnNew.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnNew.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.BtnNew.Enabled = False
-        Me.BtnNew.Location = New System.Drawing.Point(8, 488)
-        Me.BtnNew.Name = "BtnNew"
-        Me.BtnNew.Size = New System.Drawing.Size(129, 45)
-        Me.BtnNew.TabIndex = 3
-        Me.BtnNew.Text = "Neu"
-        Me.BtnNew.UseVisualStyleBackColor = True
-        '
-        'BtnClear
-        '
-        Me.BtnClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnClear.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.BtnClear.Enabled = False
-        Me.BtnClear.Location = New System.Drawing.Point(143, 488)
-        Me.BtnClear.Name = "BtnClear"
-        Me.BtnClear.Size = New System.Drawing.Size(129, 45)
-        Me.BtnClear.TabIndex = 4
-        Me.BtnClear.Text = "Zuordnung löschen"
-        Me.BtnClear.UseVisualStyleBackColor = True
-        '
-        'BtnOK
-        '
-        Me.BtnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnOK.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.BtnOK.Location = New System.Drawing.Point(538, 488)
-        Me.BtnOK.Name = "BtnOK"
-        Me.BtnOK.Size = New System.Drawing.Size(129, 45)
-        Me.BtnOK.TabIndex = 5
-        Me.BtnOK.Text = "OK"
-        Me.BtnOK.UseVisualStyleBackColor = True
-        '
-        'DataGridView
-        '
-        Me.DataGridView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridView.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
-        Me.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView.DefaultCellStyle = DataGridViewCellStyle2
-        Me.DataGridView.Location = New System.Drawing.Point(8, 8)
-        Me.DataGridView.Name = "DataGridView"
-        Me.DataGridView.Size = New System.Drawing.Size(659, 474)
-        Me.DataGridView.SortCol = -1
-        Me.DataGridView.TabIndex = 2
-        Me.DataGridView.x8859_5_FieldName = ""
-        '
-        'wb_Rezept_AuswahlListe
-        '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(679, 545)
-        Me.ControlBox = False
-        Me.Controls.Add(Me.BtnOK)
-        Me.Controls.Add(Me.BtnClear)
-        Me.Controls.Add(Me.BtnNew)
-        Me.Controls.Add(Me.DataGridView)
-        Me.Controls.Add(Me.BtnCancel)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Name = "wb_Rezept_AuswahlListe"
-        Me.Text = "Auswahl Rezeptur"
-        CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        BtnCancel = New System.Windows.Forms.Button()
+        BtnNew = New System.Windows.Forms.Button()
+        BtnClear = New System.Windows.Forms.Button()
+        BtnOK = New System.Windows.Forms.Button()
+        DataGridView = New wb_DataGridView()
+        CType(DataGridView, ComponentModel.ISupportInitialize).BeginInit()
+        SuspendLayout()
+        ' 
+        ' BtnCancel
+        ' 
+        BtnCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right
+        BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        BtnCancel.Location = New System.Drawing.Point(382, 542)
+        BtnCancel.Name = "BtnCancel"
+        BtnCancel.Size = New System.Drawing.Size(129, 40)
+        BtnCancel.TabIndex = 0
+        BtnCancel.Text = "Zurück"
+        BtnCancel.UseVisualStyleBackColor = True
+        ' 
+        ' BtnNew
+        ' 
+        BtnNew.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right
+        BtnNew.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        BtnNew.Enabled = False
+        BtnNew.Location = New System.Drawing.Point(8, 542)
+        BtnNew.Name = "BtnNew"
+        BtnNew.Size = New System.Drawing.Size(129, 40)
+        BtnNew.TabIndex = 3
+        BtnNew.Text = "Neu"
+        BtnNew.UseVisualStyleBackColor = True
+        ' 
+        ' BtnClear
+        ' 
+        BtnClear.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right
+        BtnClear.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        BtnClear.Enabled = False
+        BtnClear.Location = New System.Drawing.Point(143, 542)
+        BtnClear.Name = "BtnClear"
+        BtnClear.Size = New System.Drawing.Size(129, 40)
+        BtnClear.TabIndex = 4
+        BtnClear.Text = "Zuordnung löschen"
+        BtnClear.UseVisualStyleBackColor = True
+        ' 
+        ' BtnOK
+        ' 
+        BtnOK.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right
+        BtnOK.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        BtnOK.Location = New System.Drawing.Point(517, 542)
+        BtnOK.Name = "BtnOK"
+        BtnOK.Size = New System.Drawing.Size(129, 40)
+        BtnOK.TabIndex = 5
+        BtnOK.Text = "OK"
+        BtnOK.UseVisualStyleBackColor = True
+        ' 
+        ' DataGridView
+        ' 
+        DataGridView.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right
+        DataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25F, Drawing.FontStyle.Regular, Drawing.GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle3.ForeColor = Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True
+        DataGridView.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = Drawing.SystemColors.Window
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25F, Drawing.FontStyle.Regular, Drawing.GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle4.ForeColor = Drawing.SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False
+        DataGridView.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridView.Location = New System.Drawing.Point(8, 8)
+        DataGridView.Name = "DataGridView"
+        DataGridView.Size = New System.Drawing.Size(651, 528)
+        DataGridView.SortCol = -1
+        DataGridView.TabIndex = 2
+        DataGridView.x8859_5_FieldName = ""
+        ' 
+        ' wb_Rezept_AuswahlListe
+        ' 
+        AutoScaleDimensions = New System.Drawing.SizeF(6F, 13F)
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        ClientSize = New System.Drawing.Size(679, 625)
+        Controls.Add(BtnOK)
+        Controls.Add(BtnClear)
+        Controls.Add(BtnNew)
+        Controls.Add(DataGridView)
+        Controls.Add(BtnCancel)
+        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        MaximizeBox = False
+        MinimizeBox = False
+        Name = "wb_Rezept_AuswahlListe"
+        Text = "Auswahl Rezeptur"
+        CType(DataGridView, ComponentModel.ISupportInitialize).EndInit()
+        ResumeLayout(False)
 
     End Sub
 
-    Friend WithEvents BtnCancel As Windows.Forms.Button
+    Friend WithEvents BtnCancel As System.Windows.Forms.Button
     Friend WithEvents DataGridView As wb_DataGridView
-    Friend WithEvents BtnNew As Windows.Forms.Button
-    Friend WithEvents BtnClear As Windows.Forms.Button
-    Friend WithEvents BtnOK As Windows.Forms.Button
+    Friend WithEvents BtnNew As System.Windows.Forms.Button
+    Friend WithEvents BtnClear As System.Windows.Forms.Button
+    Friend WithEvents BtnOK As System.Windows.Forms.Button
 End Class

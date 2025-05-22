@@ -5,7 +5,9 @@
     Private _KompBezeichnung As String
     Private _LagerOrt As String
     Private _SiloNr As Integer
-    Private _Istmenge As Double
+    Private _Istmenge As Integer
+    Private _MengeNeu As Integer = wb_Global.UNDEFINED
+
 
     Public Sub CopyFrom(Silo As wb_Silo)
         KompNr = Silo.KompNr
@@ -83,11 +85,30 @@
 
     Public Property MengeNeu As Integer
         Get
+            'Kein Wert eingegeben - Istwert wird übernommen
+            If _MengeNeu = wb_Global.UNDEFINED Then
+                tbBestNeu.Text = tbIst.Text
+            End If
             Return wb_Functions.StrToInt(tbBestNeu.Text)
         End Get
         Set(value As Integer)
+            _MengeNeu = value
             tbBestNeu.Text = value.ToString & " kg"
         End Set
+    End Property
+
+    Public ReadOnly Property KorrekturModus As wb_Global.KorrekturStatus
+        Get
+            If MengeNeu = 0 Then
+                Return wb_Global.KorrekturStatus.SILO_NULLEN
+            ElseIf MengeNeu < Istmenge Then
+                Return wb_Global.KorrekturStatus.SILO_MINUS
+            ElseIf MengeNeu > Istmenge Then
+                Return wb_Global.KorrekturStatus.SILO_PLUS
+            Else
+                Return wb_Global.KorrekturStatus.SILO_NOP
+            End If
+        End Get
     End Property
 
     Public Sub New(Silo As wb_Silo)
@@ -98,65 +119,19 @@
         CopyFrom(Silo)
     End Sub
 
+    ''' <summary>
+    ''' Laden des Formulars.
+    ''' Überschrift anpassen
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub wb_Rohstoffe_SiloParameter_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Fenster-Text
         Me.Text = "Bestandskorrektur Silo " & SiloNr.ToString & " - " & KompNummer & " " & KompBezeichnung
     End Sub
 
-    'Private Sub tbBestNeu_TextChanged(sender As Object, e As EventArgs) Handles tbBestNeu.TextChanged
-    '    tbBestNeu.Text = tbBestNeu.Text.ToString & " kg"
-    'End Sub
-
-    Private Sub BtnBestandKorrektur_Click(sender As Object, e As EventArgs) Handles BtnBestandKorrektur.Click
-        'Datenbank-Verbindung öffnen - MySQL
-        Me.Cursor = Windows.Forms.Cursors.WaitCursor
-        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-
-        'TODO alle Lieferungen zu dieser Rohstoff-Nummer erfassen !!
-
-
-        'Lieferungen zu diesem Rohstoff
-        Dim Lieferungen As New wb_Lieferungen
-        'Rohstoff-Chargen im Silo aus der winback.Lagerkarte ermitteln
-        Dim RohstoffChargen As String = Lieferungen.GetChargenListe(winback, LagerOrt, MengeNeu)
-
-        'In OrgaBack verbuchen
-        If ob_Rohstoffe_SiloInventur.Bestandskorrektur(KompNummer, MengeNeu, RohstoffChargen) Then
-            'Bestandskorrektur in OrgaBack war erfolgreich - Bestand in WinBack (Lagerkarte) anpassen
-
-            'Datenbank-Verbindung öffnen OrgaBack-msSQL (notwendig um die letzte LfdNr. aus der Artikel-Lagerkarte zu ermitteln)
-            Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-            'Das Lagerkarten-Objekt nimmt alle Daten aus dbo.ArtikelLagerkarte auf
-            Dim LagerKarte As New wb_LagerKarte
-
-            'alle Buchungen ausgehend von der letzten Buchung einlesen
-            Dim Sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerInit, KompNummer)
-
-            If orgaback.sqlSelect(Sql) Then
-                'wenn Einträge vorhanden sind
-                If orgaback.Read Then
-                    'der letzte Eintrag enthält den aktuellen Lagerbestand
-                    LagerKarte.msSQLdbRead(orgaback.msRead)
-                    'Liste aller Chargen-Nummern
-                    LagerKarte.ChargenNummer = RohstoffChargen
-
-                    Debug.Print("aktueller Datensatz aus OrgaBack Lfd = " & LagerKarte.Lfd)
-                    Lieferungen.InitBestand(winback, LagerKarte)
-                End If
-            End If
-            'Datenbank-Verbindung wieder schliessen
-            Me.Cursor = Windows.Forms.Cursors.Default
-            orgaback.Close()
-
-        Else
-            'Fehlermeldung ausgeben
-            Me.Cursor = Windows.Forms.Cursors.Default
-            MsgBox("Fehler bei der Bestandskorrektur" & vbCrLf & "Die Bestandsdaten konnten nicht in die Lagerkarte übernommen werden", MsgBoxStyle.Critical, "Bestandskorrektur")
-        End If
-
-        'Datenbank-Verbindung wieder schliessen
-        winback.Close()
-
+    Private Sub tbBestNeu_Leave(sender As Object, e As EventArgs) Handles tbBestNeu.Leave
+        MengeNeu = wb_Functions.StrToInt(tbBestNeu.Text)
     End Sub
 
     Private Sub BtnNullSetzen_Click(sender As Object, e As EventArgs) Handles BtnNullSetzen.Click
@@ -165,4 +140,20 @@
         'Bestandskorrektur durchführen
         BtnBestandKorrektur_Click(sender, e)
     End Sub
+
+    ''' <summary>
+    ''' Bestandskorrektur Silo.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnBestandKorrektur_Click(sender As Object, e As EventArgs) Handles BtnBestandKorrektur.Click
+        'Bestandskorrektur durchführen wenn die Mengen korrigiert werden müssen
+        If MengeNeu <> Istmenge Then
+            DialogResult = System.Windows.Forms.DialogResult.OK
+        Else
+            DialogResult = System.Windows.Forms.DialogResult.Cancel
+        End If
+        Close()
+    End Sub
+
 End Class

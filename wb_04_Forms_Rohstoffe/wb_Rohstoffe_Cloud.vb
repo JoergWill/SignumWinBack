@@ -8,6 +8,8 @@ Public Class wb_Rohstoffe_Cloud
     Dim sColNames As New List(Of String)
     Dim nwt As New wb_nwtCl_WinBack(wb_GlobalSettings.WinBackCloud_Pass, wb_GlobalSettings.WinBackCloud_Url)
     Dim dl As New wb_nwtCl_DatenLink(wb_GlobalSettings.Datenlink_PAT, wb_GlobalSettings.Datenlink_CAT, wb_GlobalSettings.Datenlink_Url)
+    Dim ff As New wb_nwtCl_OpenFoodFacts(wb_Credentials.OpenFoodFacts_Url)
+
     Dim cnt As Integer = wb_Global.UNDEFINED
     Dim cntDokumente As Integer = wb_Global.UNDEFINED
     Private _DisableEditLeave As Boolean = False
@@ -44,13 +46,13 @@ Public Class wb_Rohstoffe_Cloud
     ''' </summary>
     Private Sub DetailInfo()
         'Rohstoff-Nummer
-        tRohstoffNummer.Text = wb_Rohstoffe_Shared.RohStoff.Nummer
+        tRohstoffNummer.Text = RohStoff.Nummer
         'Rohstoff-Bezeichnung
-        tRohstoffName.Text = wb_Rohstoffe_Shared.RohStoff.Bezeichnung
+        tRohstoffName.Text = RohStoff.Bezeichnung
         'ID in der Cloud
-        tCloudID.Text = wb_Rohstoffe_Shared.RohStoff.MatchCode
+        tCloudID.Text = RohStoff.MatchCode
         'kann vorproduziert werden
-        cbFreigabeProduktion.Checked = wb_Rohstoffe_Shared.RohStoff.FreigabeProduktion
+        cbFreigabeProduktion.Checked = RohStoff.FreigabeProduktion
 
         'Anzahl der gefundenen Datensätze
         cnt = wb_Global.UNDEFINED
@@ -58,7 +60,7 @@ Public Class wb_Rohstoffe_Cloud
         cntDokumente = wb_Global.UNDEFINED
 
         'wenn schon eine Verknüpfung vorhanden ist wird Tab-Page Verknüpfung löschen angezeigt
-        If (tCloudID.Text <> "") And (tCloudID.Text <> "-1") Then
+        If (tCloudID.Text <> "") AndAlso (tCloudID.Text <> "-1") Then
             'kann vorproduziert werden
             cbFreigabeProduktion.Visible = False
             cbFreigabeProduktion.Checked = False
@@ -68,9 +70,9 @@ Public Class wb_Rohstoffe_Cloud
             'Verknüpfung zur Cloud löschen/aktualisieren
             ChangeTab(tpCloudResult)
 
-        ElseIf wb_Rohstoffe_Shared.RohStoff.RzNr > 0 Then
+        ElseIf RohStoff.RzNr > 0 Then
             'Rohstoff ist mit einer Rezeptur verknüpft
-            ChangeTab(tpRezept, wb_Rohstoffe_Shared.RohStoff.Nr)
+            ChangeTab(tpRezept, RohStoff.Nr)
             cbFreigabeProduktion.Visible = True
 
         ElseIf wb_Functions.TypeHatNwt(RohStoff.Type) Then
@@ -184,7 +186,7 @@ Public Class wb_Rohstoffe_Cloud
                         BtnProduktDatenblatt.Text = " 1 Produkt-Datenblatt"
                     End If
                 Else
-                        BtnProduktDatenblatt.Visible = False
+                    BtnProduktDatenblatt.Visible = False
                 End If
                 'Löschen und Aktualisieren aus der Cloud
                 Wb_TabControl.SelectedTab = tpCloudResult
@@ -227,11 +229,15 @@ Public Class wb_Rohstoffe_Cloud
     Private Sub ShowResultGrid(Cloud As wb_nwtCL)
         'Tabelle-Überschriften
         sColNames.Clear()
-        If Cloud.CloudType = wb_nwtCL.wb_CloudType.DatenLink Then
-            sColNames.AddRange({"", "Bezeichnung", "&Lieferant", ""})
-        Else
-            sColNames.AddRange({"", "Bezeichnung", "Lieferant", "&Deklarationsbezeichnung"})
-        End If
+        'Anzeige abhängig vom Cloud-Typ
+        Select Case Cloud.CloudType
+            Case wb_nwtCL.wb_CloudType.DatenLink
+                sColNames.AddRange({"", "Bezeichnung", "&Lieferant", "", ""})
+            Case wb_nwtCL.wb_CloudType.OpenFoodFacts
+                sColNames.AddRange({"", "Bezeichnung", "&Lieferant", "", "EAN-Code"})
+            Case Else
+                sColNames.AddRange({"", "Bezeichnung", "Lieferant", "&Deklarationsbezeichnung", ""})
+        End Select
 
         'Daten im Grid anzeigen
         If CloudResultGrid IsNot Nothing Then
@@ -255,15 +261,20 @@ Public Class wb_Rohstoffe_Cloud
         'Nährwertdaten in Komponenten-Objekt schreiben
         If wb_Functions.IsDatenLinkID(rid) Then
             'Datenlink
-            dl.GetProductData(rid, wb_Rohstoffe_Shared.RohStoff)
+            dl.GetProductData(rid, RohStoff)
+            tCloudID.Text = rid
+            RohStoff.MatchCode = rid
+        ElseIf wb_Functions.IsOpenFoodFactsID(rid) Then
+            'OpenFoodFacts
+            ff.GetProductData(rid, RohStoff)
+            tCloudID.Text = rid
+            RohStoff.MatchCode = "EAN"
         Else
             'WinBack-Cloud
-            nwt.GetProductData(rid, wb_Rohstoffe_Shared.RohStoff)
+            nwt.GetProductData(rid, RohStoff)
+            tCloudID.Text = rid
+            RohStoff.MatchCode = rid
         End If
-
-        'ID aus der Cloud
-        tCloudID.Text = rid
-        wb_Rohstoffe_Shared.RohStoff.MatchCode = rid
 
         'Daten im Grid anzeigen
         If nwtGrid IsNot Nothing Then
@@ -313,6 +324,25 @@ Public Class wb_Rohstoffe_Cloud
         ChangeTab(tpCloudGefunden, dl)
     End Sub
 
+
+    ''' <summary>
+    ''' Suchen Rohstoff bei OpenFoodFacts
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnOpenFoodFacts_Click(sender As Object, e As EventArgs) Handles BtnOpenFoodFacts.Click
+        'Cursor umschalten
+        Cursor = Cursors.WaitCursor
+        'Suche nach Rohstoff
+        ff.lookupProductName(tSuchtextBezeichnung.Text)
+        'Cursor umschalten
+        Cursor = Cursors.Default
+
+        'Ergebnis der Cloud-Suche anzeigen
+        ChangeTab(tpCloudGefunden, ff)
+
+    End Sub
+
     Private Sub CloudResultGrid_DoubleClick(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles CloudResultGrid.CellMouseDoubleClick
         'ID in der Cloud aus Spalte(0) im Grid
         Dim rid As String = DirectCast(sender, wb_ArrayGridViewNwt).Rows(e.RowIndex).Cells(0).Value
@@ -330,9 +360,9 @@ Public Class wb_Rohstoffe_Cloud
         'Verknüpfung zur Cloud löschen (MatchCode) - die Nährwert-Informationen bleiben erhalten
         tCloudID.Text = ""
         'Damit die Verknüpfung zur Cloud eindeutig gelöscht ist MUSS ein Leerstring in der DB stehen!
-        wb_Rohstoffe_Shared.RohStoff.MatchCode = ""
+        RohStoff.MatchCode = ""
         'Änderung in Datenbank schreiben
-        wb_Rohstoffe_Shared.Edit_Leave(sender)
+        Edit_Leave(sender)
 
         'Meldung ausgeben
         MsgBox("Die Verknüpfung zur Cloud wurde gelöscht" & vbCrLf & "Die Nährwerte und Allergen-Informationen bleiben erhalten", MsgBoxStyle.OkOnly, "WinBack-Cloud")
@@ -340,7 +370,7 @@ Public Class wb_Rohstoffe_Cloud
         'in OrgaBack
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
             'Verknüpfung zur Cloud in WinBack-DB speichern
-            wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate()
+            RohStoff.MySQLdbUpdate()
             'Fenster schliessen
             Close()
         Else
@@ -385,12 +415,12 @@ Public Class wb_Rohstoffe_Cloud
 
         Dim nwtUpdateKomponenten As New wb_nwtUpdate
         'Update der Daten aus der Cloud
-        nwtUpdateKomponenten.GetNaehrwerte(wb_Rohstoffe_Shared.RohStoff.MatchCode, wb_Rohstoffe_Shared.RohStoff)
+        nwtUpdateKomponenten.GetNaehrwerte(RohStoff.MatchCode, RohStoff)
         'Updates in Datenbank(en) sichern
-        nwtUpdateKomponenten.DbUpdateNaehrwerte(wb_Rohstoffe_Shared.RohStoff, (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack))
+        nwtUpdateKomponenten.DbUpdateNaehrwerte(RohStoff, (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack))
 
         'Updates anzeigen - in allen aktiven Fenstern
-        wb_Rohstoffe_Shared.Liste_Click(sender)
+        Liste_Click(sender)
 
         'Rückmeldung - Daten wurden aktualisiert
         MsgBox("Die Nährwert-Informationen wurden aktualisiert", MsgBoxStyle.OkOnly, "WinBack-Cloud")
@@ -428,24 +458,24 @@ Public Class wb_Rohstoffe_Cloud
                 btnResult_OK.Enabled = False
                 'Verknüpfung zur Cloud speichern
                 If Not _DisableEditLeave Then
-                    wb_Rohstoffe_Shared.Edit_Leave(sender)
+                    Edit_Leave(sender)
                 End If
                 'Nährwerte/Allergene speichern
-                wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+                RohStoff.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
                 'Zutatenliste/Deklaration in WinBack-DB speichern
-                wb_Rohstoffe_Shared.RohStoff.MySqldbUpdate_Zutatenliste()
+                RohStoff.MySqldbUpdate_Zutatenliste()
                 If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
                     'Verknüpfung zur Cloud in WinBack-DB speichern
-                    wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate()
+                    RohStoff.MySQLdbUpdate()
                     'Nährwerte in OrgaBack-DB speichern
-                    wb_Rohstoffe_Shared.RohStoff.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+                    RohStoff.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
                     'Zutatenliste/Deklaration in OrgaBack-DB speichern
-                    wb_Rohstoffe_Shared.RohStoff.MsSqldbUpdate_Zutatenliste()
+                    RohStoff.MsSqldbUpdate_Zutatenliste()
                 End If
                 'Meldung ausgeben
                 MsgBox("Nährwerte/Allergene und die Verknüpfung zur Cloud wurden gespeichert !", MsgBoxStyle.OkOnly, "Nährwerte und Allergene")
                 'alle Fenster aktualisieren
-                wb_Rohstoffe_Shared.Liste_Click(sender)
+                Liste_Click(sender)
         End Select
     End Sub
 
@@ -482,7 +512,7 @@ Public Class wb_Rohstoffe_Cloud
     ''' </summary>
     Public Sub KomRzChargen_DataInvalidated() Handles KompRzChargen.DataInvalidated
         KompRzChargen.SaveData(RohStoff)
-        wb_Rohstoffe_Shared.RezChrg_Changed(Nothing)
+        RezChrg_Changed(Nothing)
     End Sub
 
     Private Sub BtnProduktDatenblatt_Click(sender As Object, e As EventArgs) Handles BtnProduktDatenblatt.Click
@@ -491,8 +521,29 @@ Public Class wb_Rohstoffe_Cloud
     End Sub
 
     Private Sub cbFreigabeProduktion_Click(sender As Object, e As EventArgs) Handles cbFreigabeProduktion.Click
-        wb_Rohstoffe_Shared.RohStoff.FreigabeProduktion = cbFreigabeProduktion.Checked
+        RohStoff.FreigabeProduktion = cbFreigabeProduktion.Checked
         'Änderung in WinBack-DB speichern
-        wb_Rohstoffe_Shared.RohStoff.MySQLdbUpdate()
+        RohStoff.MySQLdbUpdate()
     End Sub
+
+    ''' <summary>
+    ''' Das Eingabefeld "externe Deklaration" wurde verlassen. Der Inhalt wird in die
+    ''' Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub tbDeklarationExtern_Leave(sender As Object, e As EventArgs) Handles tbDeklarationExtern.Leave
+        RohStoff.DeklBezeichungExtern = tbDeklarationExtern.Text
+    End Sub
+
+    ''' <summary>
+    ''' Das Eingabefeld "interne Deklaration" wurde verlassen. Der Inhalt wird in die
+    ''' Komponenten-Daten eingetragen und in der Datenbank gesichert. (SET)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub tbDeklarationIntern_Leave(sender As Object, e As EventArgs) Handles tbDeklarationIntern.Leave
+        RohStoff.DeklBezeichungIntern = tbDeklarationIntern.Text
+    End Sub
+
 End Class

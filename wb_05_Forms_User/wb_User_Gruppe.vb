@@ -37,6 +37,7 @@
     End Property
 
     Public Sub LoadData(ByVal Gruppe As Integer, RezeptGruppenRechte As Boolean)
+        Dim LfdNr As Integer = wb_Global.UNDEFINED
 
         'Prüfen ob die Daten neu geladen werden müssen (Gruppe/Parameter der Gruppe haben sich geändert)
         If (Gruppe <> _iGruppe) Then
@@ -60,7 +61,14 @@
                     'Rechtegruppe Bezeichnung
                     GruppenRechte.OberBegriff = winback.sField("IT_Bezeichnung")
                     GruppenRechte.Bezeichnung = wb_Language.TextFilter(winback.sField("II_Kommentar"))
-                    'Debug.Print("GruppenBezeichnung " & GruppenRechte.Bezeichnung)
+                    GruppenRechte.iWert1 = winback.iField("IP_Wert1int")
+                    GruppenRechte.iLfdNr = winback.iField("IP_Lfd_Nr")
+                    'Debug.Print("GruppenBezeichnung / Wert1Int " & GruppenRechte.Bezeichnung & " / " & GruppenRechte.iLfdNr)
+
+                    'Nur den ersten Datensatz mit diesem Passwort einlesen (Falls Fehler in der Datenbank/doppelte Einträge)
+                    If LfdNr = wb_Global.UNDEFINED Then
+                        LfdNr = GruppenRechte.iLfdNr
+                    End If
 
                     'Eingabe-Typ
                     GruppenRechte.iAttrGrp = winback.iField("AT_Attr_Nr")
@@ -73,7 +81,11 @@
                     GruppenRechte.iAttribut = winback.iField("IP_Wert2int")
                     GruppenRechte.sAttribut = winback.sField("T_Text")
 
-                    _Rechte.Add(GruppenRechte)
+                    'Nur den ersten Datensatz mit diesem Passwort einlesen (Falls Fehler in der Datenbank/doppelte Einträge)
+                    If GruppenRechte.iLfdNr = LfdNr Then
+                        _Rechte.Add(GruppenRechte)
+                    End If
+
                 End While
             End If
             winback.Close()
@@ -111,7 +123,7 @@
 
     Public ReadOnly Property OberBegriff(Index As Integer) As String
         Get
-            If Index >= 0 And Index < Count Then
+            If Index >= 0 AndAlso Index < Count Then
                 Return _Rechte(Index).Oberbegriff
             Else
                 Return ""
@@ -121,7 +133,7 @@
 
     Public ReadOnly Property Bezeichnung(Index As Integer) As String
         Get
-            If Index >= 0 And Index < Count Then
+            If Index >= 0 AndAlso Index < Count Then
                 Return _Rechte(Index).Bezeichnung
             Else
                 Return ""
@@ -131,7 +143,7 @@
 
     Public ReadOnly Property sAtttribut(Index As Integer) As String
         Get
-            If Index >= 0 And Index < Count Then
+            If Index >= 0 AndAlso Index < Count Then
                 Return _Rechte(Index).sAtttribut
             Else
                 Return ""
@@ -142,7 +154,7 @@
     Public ReadOnly Property iAtttribut(Hauptgruppe As Integer, Nebengruppe As Integer) As Integer
         Get
             For Each r As wb_Global.wb_GruppenRechte In _Rechte
-                If r.iTyp = Hauptgruppe And r.iID = Nebengruppe Then
+                If r.iTyp = Hauptgruppe AndAlso r.iID = Nebengruppe Then
                     Return r.iAttribut
                 End If
             Next
@@ -153,7 +165,7 @@
     Public ReadOnly Property iAttrGrp(Hauptgruppe As Integer, Nebengruppe As Integer) As Integer
         Get
             For Each r As wb_Global.wb_GruppenRechte In _Rechte
-                If r.iTyp = Hauptgruppe And r.iID = Nebengruppe Then
+                If r.iTyp = Hauptgruppe AndAlso r.iID = Nebengruppe Then
                     Return r.iAttrGrp
                 End If
             Next
@@ -169,7 +181,7 @@
             'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)
             _UpdateDatabaseFile = "2.30_UserAlleRechte.sql"
             _ErrorText = "Fehler in Tabelle ItemParameter - Usergruppen-Rechte(99) - Datensätze fehlen !"
-            Trace.WriteLine(_ErrorText)
+            Trace.WriteLine("@E_" & _ErrorText)
             Return False
         End If
 

@@ -65,6 +65,6 @@ Partial Class wb_User_Rechte
 
     End Sub
 
-    Friend WithEvents TreeView As Windows.Forms.TreeView
-    Friend WithEvents TreeViewImageList As Windows.Forms.ImageList
+    Friend WithEvents TreeView As System.Windows.Forms.TreeView
+    Friend WithEvents TreeViewImageList As System.Windows.Forms.ImageList
 End Class

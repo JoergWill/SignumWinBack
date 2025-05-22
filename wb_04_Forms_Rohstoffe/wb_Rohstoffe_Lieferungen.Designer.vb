@@ -211,16 +211,16 @@ Partial Class wb_Rohstoffe_Lieferung
 
     End Sub
 
-    Friend WithEvents eMindestmenge As Windows.Forms.Label
-    Friend WithEvents eBilanzmenge As Windows.Forms.Label
-    Friend WithEvents eGebindegroesse As Windows.Forms.Label
-    Friend WithEvents tbMindestMenge As Windows.Forms.TextBox
-    Friend WithEvents lbMindestMenge As Windows.Forms.Label
-    Friend WithEvents tbBilanzmenge As Windows.Forms.TextBox
-    Friend WithEvents lbBilanzMenge As Windows.Forms.Label
-    Friend WithEvents tbGebindeGroesse As Windows.Forms.TextBox
-    Friend WithEvents lblGebindegroesse As Windows.Forms.Label
+    Friend WithEvents eMindestmenge As System.Windows.Forms.Label
+    Friend WithEvents eBilanzmenge As System.Windows.Forms.Label
+    Friend WithEvents eGebindegroesse As System.Windows.Forms.Label
+    Friend WithEvents tbMindestMenge As System.Windows.Forms.TextBox
+    Friend WithEvents lbMindestMenge As System.Windows.Forms.Label
+    Friend WithEvents tbBilanzmenge As System.Windows.Forms.TextBox
+    Friend WithEvents lbBilanzMenge As System.Windows.Forms.Label
+    Friend WithEvents tbGebindeGroesse As System.Windows.Forms.TextBox
+    Friend WithEvents lblGebindegroesse As System.Windows.Forms.Label
     Friend WithEvents LagerDataGridView As wb_DataGridView
-    Friend WithEvents BtnLagerNull As Windows.Forms.Button
-    Friend WithEvents BtnLagerReSync As Windows.Forms.Button
+    Friend WithEvents BtnLagerNull As System.Windows.Forms.Button
+    Friend WithEvents BtnLagerReSync As System.Windows.Forms.Button
 End Class

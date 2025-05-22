@@ -14,7 +14,7 @@ Public Class wb_Rezept_Verwendung
         End If
     End Sub
 
-    Private Sub wb_Rohstoffe_Verwendung_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Rohstoffe_Verwendung_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         RemoveHandler wb_Rezept_Shared.eListe_Click, AddressOf DetailInfo
     End Sub
 

@@ -59,5 +59,5 @@ Partial Class wb_Rohstoffe_Silo
 
     End Sub
 
-    Friend WithEvents TableLayoutPanel As Windows.Forms.TableLayoutPanel
+    Friend WithEvents TableLayoutPanel As System.Windows.Forms.TableLayoutPanel
 End Class

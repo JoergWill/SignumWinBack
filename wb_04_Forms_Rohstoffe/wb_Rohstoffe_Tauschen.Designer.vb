@@ -35,6 +35,7 @@ Partial Class wb_Rohstoffe_Tauschen
         Me.BtnAbbruch = New System.Windows.Forms.Button()
         Me.cbTauschen = New System.Windows.Forms.CheckBox()
         Me.lblTauschen = New System.Windows.Forms.Label()
+        Me.cbRezAenderungSpeichern = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'lbRohstoffOrg
@@ -112,7 +113,7 @@ Partial Class wb_Rohstoffe_Tauschen
         'cbTauschen
         '
         Me.cbTauschen.AutoSize = True
-        Me.cbTauschen.Location = New System.Drawing.Point(12, 141)
+        Me.cbTauschen.Location = New System.Drawing.Point(12, 131)
         Me.cbTauschen.Name = "cbTauschen"
         Me.cbTauschen.Size = New System.Drawing.Size(134, 17)
         Me.cbTauschen.TabIndex = 7
@@ -132,14 +133,25 @@ Partial Class wb_Rohstoffe_Tauschen
         Me.lblTauschen.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblTauschen.Visible = False
         '
+        'cbRezAenderungSpeichern
+        '
+        Me.cbRezAenderungSpeichern.AutoSize = True
+        Me.cbRezAenderungSpeichern.Location = New System.Drawing.Point(12, 150)
+        Me.cbRezAenderungSpeichern.Name = "cbRezAenderungSpeichern"
+        Me.cbRezAenderungSpeichern.Size = New System.Drawing.Size(232, 17)
+        Me.cbRezAenderungSpeichern.TabIndex = 9
+        Me.cbRezAenderungSpeichern.Text = "Rezept-Historie/Änderungs-Index speichern"
+        Me.cbRezAenderungSpeichern.UseVisualStyleBackColor = True
+        '
         'wb_Rohstoffe_Tauschen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.BtnAbbruch
-        Me.ClientSize = New System.Drawing.Size(478, 177)
+        Me.ClientSize = New System.Drawing.Size(478, 181)
         Me.CloseButton = False
         Me.CloseButtonVisible = False
+        Me.Controls.Add(Me.cbRezAenderungSpeichern)
         Me.Controls.Add(Me.cbTauschen)
         Me.Controls.Add(Me.BtnAbbruch)
         Me.Controls.Add(Me.BtnOK)
@@ -160,14 +172,15 @@ Partial Class wb_Rohstoffe_Tauschen
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents lbRohstoffOrg As Windows.Forms.Label
-    Friend WithEvents tbRohNrOrg As Windows.Forms.TextBox
-    Friend WithEvents tbRohNrNeu As Windows.Forms.TextBox
-    Friend WithEvents tbRohNameOrg As Windows.Forms.TextBox
-    Friend WithEvents lbRohstoffNeu As Windows.Forms.Label
-    Friend WithEvents tbRohNameNeu As Windows.Forms.TextBox
-    Friend WithEvents BtnOK As Windows.Forms.Button
-    Friend WithEvents BtnAbbruch As Windows.Forms.Button
-    Friend WithEvents cbTauschen As Windows.Forms.CheckBox
-    Friend WithEvents lblTauschen As Windows.Forms.Label
+    Friend WithEvents lbRohstoffOrg As System.Windows.Forms.Label
+    Friend WithEvents tbRohNrOrg As System.Windows.Forms.TextBox
+    Friend WithEvents tbRohNrNeu As System.Windows.Forms.TextBox
+    Friend WithEvents tbRohNameOrg As System.Windows.Forms.TextBox
+    Friend WithEvents lbRohstoffNeu As System.Windows.Forms.Label
+    Friend WithEvents tbRohNameNeu As System.Windows.Forms.TextBox
+    Friend WithEvents BtnOK As System.Windows.Forms.Button
+    Friend WithEvents BtnAbbruch As System.Windows.Forms.Button
+    Friend WithEvents cbTauschen As System.Windows.Forms.CheckBox
+    Friend WithEvents lblTauschen As System.Windows.Forms.Label
+    Friend WithEvents cbRezAenderungSpeichern As System.Windows.Forms.CheckBox
 End Class

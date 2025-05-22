@@ -52,5 +52,5 @@ Partial Class wb_Rezept_Hinweise
 
     End Sub
 
-    Friend WithEvents tHinweise As Windows.Forms.TextBox
+    Friend WithEvents tHinweise As System.Windows.Forms.TextBox
 End Class

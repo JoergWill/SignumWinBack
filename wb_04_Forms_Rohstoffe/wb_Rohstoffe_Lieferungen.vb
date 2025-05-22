@@ -30,12 +30,12 @@ Public Class wb_Rohstoffe_Lieferung
         'Beim ersten Aufruf wird der aktuelle Rohstoff angezeigt. Sonst wird beim Öffnen des Detail-Info-Fensters
         'der Inhalt der Textfelder gelöscht !!
         If RohStoff IsNot Nothing Then
-            DetailInfo(sender)
+            DetailInfo(sender, False)
         End If
 
     End Sub
 
-    Private Sub wb_Rohstoffe_Lieferung_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Rohstoffe_Lieferung_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         RemoveHandler wb_Rohstoffe_Shared.eListe_Click, AddressOf DetailInfo
     End Sub
 
@@ -44,7 +44,7 @@ Public Class wb_Rohstoffe_Lieferung
     ''' Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Liste der Lieferungen
     ''' und die Textfelder (Bilanzmenge, Gebindegröße...)
     ''' </summary>
-    Private Sub DetailInfo(sender)
+    Private Sub DetailInfo(sender As Object, Reload As Boolean)
         'Gebindegröße
         tbGebindeGroesse.Text = RohStoff.GebindeGroesse
 
@@ -68,13 +68,13 @@ Public Class wb_Rohstoffe_Lieferung
         'DataGrid füllen
         LagerDataGridView.LoadData(wb_Functions.SetParams(wb_Sql_Selects.sqlRohstoffLager, RohStoff.Lagerort), "RohstoffLieferungen")
         'Spalten formatieren
-        LagerDataGridView.Columns(COLMenge).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        LagerDataGridView.Columns(COLVerbr).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        LagerDataGridView.Columns(COLStats).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        LagerDataGridView.Columns(COLMenge).DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        LagerDataGridView.Columns(COLVerbr).DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        LagerDataGridView.Columns(COLStats).DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
 
     End Sub
 
-    Private Sub LagerDataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles LagerDataGridView.CellFormatting
+    Private Sub LagerDataGridView_CellFormatting(sender As Object, e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles LagerDataGridView.CellFormatting
         'TODO DBNull abfrangen (Menge Null setzen ...)
         Try
             If e.Value IsNot Nothing And Not IsDBNull(e.Value) Then

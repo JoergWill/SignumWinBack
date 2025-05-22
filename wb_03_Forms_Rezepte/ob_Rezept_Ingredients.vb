@@ -26,12 +26,14 @@ Public Class ob_RecipeProvider
     End Property
 
     Public Sub Initialize() Implements IExtension.Initialize
+        'in wb_Main registrieren
+        wb_Main_Shared.RegisterAddIn("ob_RecipeProvider")
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
-#If AssemblyResolve Then
-        'Die eigenen dll-Files in sep. Verzeichnis verlagern
-        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-#End If
+        If wb_Global.AssemblyResolve Then
+            'Die eigenen dll-Files in sep. Verzeichnis verlagern
+            AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+        End If
 
         ' Diese Klasse als (benannten) Service registrieren
         ServiceProvider.AddService(GetType(IRecipeProvider), Me.ServiceName, Me)
@@ -96,10 +98,12 @@ Public Class ob_RecipeProvider
         Return ArticleUsage.ToArray()
     End Function
 
-    Private Sub ReadArticleUsage(KO_Nr, ByRef ArticleUsage)
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
+    Private Sub ReadArticleUsage(KO_Nr As Integer, ByRef ArticleUsage As List(Of ob_ArticleUsage))
         'bei rekursiven Aufrufen wird geprüft, ob der Rohstoff schon in der Liste steht
         For Each x As ob_ArticleUsage In ArticleUsage
-            If x.KO_Nr = KO_Nr Then
+            ' Prüfe alle Einträge in der Liste mit Ausnahme des letzten Eintrags (hier steht schon der gesuchte Rohstoff drin)
+            If x.KO_Nr = KO_Nr AndAlso x IsNot ArticleUsage.Last() Then
                 Exit Sub
             End If
         Next
@@ -117,14 +121,13 @@ Public Class ob_RecipeProvider
                 Article.KO_Nr = winback.iField("KO_Nr")
                 Article.KO_Type = wb_Functions.IntToKomponType(winback.iField("KO_Type"))
 
+                'zum Array hinzufügen
+                ArticleUsage.Add(Article)
                 'Ist der resultierende Artikel wieder ein Rohstoff (Rezept-Im-Rezept) wird die Unter-Rezeptur aufgelöst
                 If Article.KO_Type <> wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
                     'rekursiver Aufruf
                     ReadArticleUsage(Article.KO_Nr, ArticleUsage)
                 End If
-
-                'zum Array hinzufügen
-                ArticleUsage.Add(Article)
             End While
         End If
         'Datenbank-Verbindung wieder freigeben
@@ -170,7 +173,7 @@ Public Class ob_RecipeInfo
         'Komponenten-Stammdaten    
         Dim Komponente As New wb_Komponente
         'Komponenten-Stammdaten (Alphanumerische Komponenten-Nummer) lesen
-        If Not Komponente.MySQLdbRead(0, ArticleNo) Then
+        If Not Komponente.xMySQLdbRead(0, ArticleNo) Then
             Debug.Print("Komponente in WinBack nicht vorhanden " & ArticleNo)
             'Liste aller Rezeptbestandteile ist leer
             _Ingredients = Nothing

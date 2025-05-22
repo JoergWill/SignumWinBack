@@ -37,6 +37,7 @@ Partial Class wb_User_Liste
         Me.DataGridView.Location = New System.Drawing.Point(12, 12)
         Me.DataGridView.Name = "DataGridView"
         Me.DataGridView.Size = New System.Drawing.Size(892, 609)
+        Me.DataGridView.SortCol = -1
         Me.DataGridView.TabIndex = 0
         Me.DataGridView.x8859_5_FieldName = ""
         '
@@ -55,5 +56,5 @@ Partial Class wb_User_Liste
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents DataGridView As wb_DataGridView
+    Public WithEvents DataGridView As wb_DataGridView
 End Class

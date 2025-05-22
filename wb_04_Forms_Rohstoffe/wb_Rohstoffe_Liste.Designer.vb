@@ -55,5 +55,5 @@ Partial Class wb_Rohstoffe_Liste
 
     End Sub
 
-    Friend WithEvents DataGridView As wb_DataGridView
+    Public WithEvents DataGridView As wb_DataGridView
 End Class

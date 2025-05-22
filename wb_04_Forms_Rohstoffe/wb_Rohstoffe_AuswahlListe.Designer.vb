@@ -101,7 +101,7 @@ Partial Class wb_Rohstoffe_AuswahlListe
 
     End Sub
 
-    Friend WithEvents BtnCancel As Windows.Forms.Button
+    Friend WithEvents BtnCancel As System.Windows.Forms.Button
     Friend WithEvents DataGridView As wb_DataGridView
-    Friend WithEvents BtnOK As Windows.Forms.Button
+    Friend WithEvents BtnOK As System.Windows.Forms.Button
 End Class
