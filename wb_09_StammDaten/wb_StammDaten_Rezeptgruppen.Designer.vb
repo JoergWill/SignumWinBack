@@ -25,7 +25,9 @@ Partial Class wb_StammDaten_Rezeptgruppen
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.BtnOK = New System.Windows.Forms.Button()
+        Me.BtnRezeptGruppeNeu = New System.Windows.Forms.Button()
         Me.DataGridView = New WinBack.wb_DataGridView()
+        Me.BtnRezeptGruppeLoeschen = New System.Windows.Forms.Button()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -40,6 +42,16 @@ Partial Class wb_StammDaten_Rezeptgruppen
         Me.BtnOK.Text = "OK"
         Me.BtnOK.UseVisualStyleBackColor = True
         '
+        'BtnRezeptGruppeNeu
+        '
+        Me.BtnRezeptGruppeNeu.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtnRezeptGruppeNeu.Location = New System.Drawing.Point(12, 540)
+        Me.BtnRezeptGruppeNeu.Name = "BtnRezeptGruppeNeu"
+        Me.BtnRezeptGruppeNeu.Size = New System.Drawing.Size(95, 49)
+        Me.BtnRezeptGruppeNeu.TabIndex = 2
+        Me.BtnRezeptGruppeNeu.Text = "Neue Rezeptgruppe"
+        Me.BtnRezeptGruppeNeu.UseVisualStyleBackColor = True
+        '
         'DataGridView
         '
         Me.DataGridView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -48,17 +60,30 @@ Partial Class wb_StammDaten_Rezeptgruppen
         Me.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView.Location = New System.Drawing.Point(0, 0)
         Me.DataGridView.Name = "DataGridView"
+        Me.DataGridView.RowHeadersWidth = 62
         Me.DataGridView.Size = New System.Drawing.Size(691, 534)
         Me.DataGridView.SortCol = -1
         Me.DataGridView.TabIndex = 0
         Me.DataGridView.x8859_5_FieldName = ""
         '
+        'BtnRezeptGruppeLoeschen
+        '
+        Me.BtnRezeptGruppeLoeschen.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtnRezeptGruppeLoeschen.Location = New System.Drawing.Point(113, 540)
+        Me.BtnRezeptGruppeLoeschen.Name = "BtnRezeptGruppeLoeschen"
+        Me.BtnRezeptGruppeLoeschen.Size = New System.Drawing.Size(95, 49)
+        Me.BtnRezeptGruppeLoeschen.TabIndex = 3
+        Me.BtnRezeptGruppeLoeschen.Text = "Rezeptgruppe löschen"
+        Me.BtnRezeptGruppeLoeschen.UseVisualStyleBackColor = True
+        '
         'wb_StammDaten_Rezeptgruppen
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(10.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(691, 601)
+        Me.Controls.Add(Me.BtnRezeptGruppeLoeschen)
+        Me.Controls.Add(Me.BtnRezeptGruppeNeu)
         Me.Controls.Add(Me.BtnOK)
         Me.Controls.Add(Me.DataGridView)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
@@ -70,5 +95,7 @@ Partial Class wb_StammDaten_Rezeptgruppen
     End Sub
 
     Friend WithEvents DataGridView As wb_DataGridView
-    Friend WithEvents BtnOK As Windows.Forms.Button
+    Friend WithEvents BtnOK As System.Windows.Forms.Button
+    Friend WithEvents BtnRezeptGruppeNeu As System.Windows.Forms.Button
+    Friend WithEvents BtnRezeptGruppeLoeschen As System.Windows.Forms.Button
 End Class

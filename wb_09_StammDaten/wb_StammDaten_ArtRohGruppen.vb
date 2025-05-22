@@ -10,15 +10,13 @@ Public Class wb_StammDaten_ArtRohGruppen
     Const ColArt = 5    'Flag Artikelgruppe
 
     Private _RowIndex As Integer = wb_Global.UNDEFINED
-    Private _OrgWert As String = ""
-    Private _NewWert As String = ""
 
     Private Sub wb_Gruppen_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten, die mit + beginnen sind editierbar
         'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"", "+&Bezeichnung", "", "", "Dekl.", "Artikel"}
+        Dim sColNames As New List(Of String) From {"", "+&Bezeichnung", "+Bio", "", "Dekl.", "Artikel"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
@@ -54,8 +52,6 @@ Public Class wb_StammDaten_ArtRohGruppen
 
     Private Sub DataGridView_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellContentClick
         Debug.Print("CellContent Click " & e.ColumnIndex & "/" & e.RowIndex)
-        'Originalwert der Zelle merken (Edit-Modus)
-        _OrgWert = DataGridView.CurrentCell.Value.ToString
     End Sub
 
     ''' <summary>
@@ -68,11 +64,19 @@ Public Class wb_StammDaten_ArtRohGruppen
         Debug.Print("Cell Click " & e.ColumnIndex & "/" & e.RowIndex)
         'wenn die Zeile schon markiert war
         If (e.RowIndex = _RowIndex) And (e.ColumnIndex >= ColDek) Then
-            If DataGridView.CurrentCell.FormattedValue = "X" Then
-                DataGridView.CurrentCell.Value = "0"
-            Else
-                DataGridView.CurrentCell.Value = "1"
-            End If
+            'Toggle Flag
+            Select Case DataGridView.CurrentCell.FormattedValue
+                Case "X"
+                    If e.ColumnIndex = ColDek Then
+                        DataGridView.CurrentCell.Value = "2"
+                    Else
+                        DataGridView.CurrentCell.Value = "0"
+                    End If
+                Case "N"
+                    DataGridView.CurrentCell.Value = "0"
+                Case Else
+                    DataGridView.CurrentCell.Value = "1"
+            End Select
         End If
         _RowIndex = e.RowIndex
     End Sub
@@ -82,6 +86,10 @@ Public Class wb_StammDaten_ArtRohGruppen
         DataGridView.UpdateDataBase()
         'Layout sichern
         DataGridView.SaveToDisk("ArtRohgruppen")
+        'Listen Rohstoffe neu laden
+        wb_Rohstoffe_Shared.Reload("Rohstoffe")
+        'Liste der Artikel-Gruppen neu laden
+        wb_Artikel_Shared.Reload("Artikel")
     End Sub
 
     Private Sub BtnRohstoffGruppeNeu_Click(sender As Object, e As EventArgs) Handles BtnRohstoffGruppeNeu.Click
@@ -146,7 +154,7 @@ Public Class wb_StammDaten_ArtRohGruppen
                 DataGridView.RefreshData()
             Else
                 'Fehlermeldung ausgeben
-                MsgBox(wb_Linien_Global.ErrorText, MsgBoxStyle.Exclamation, "Artikel-/Rohstoffgruppe löschen")
+                MsgBox(wb_Rohstoffe_Shared.ErrorText, MsgBoxStyle.Exclamation, "Artikel-/Rohstoffgruppe löschen")
             End If
         End If
 
@@ -175,6 +183,8 @@ Public Class wb_StammDaten_ArtRohGruppen
                         e.Value = ""
                     Case "1"
                         e.Value = "X"
+                    Case "2"
+                        e.Value = "N"
                     Case Else
                         e.Value = "-"
                 End Select
@@ -183,6 +193,10 @@ Public Class wb_StammDaten_ArtRohGruppen
         End If
     End Sub
 
+    Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
+        'Fenster schliessen
+        Close()
+    End Sub
 End Class
 
 

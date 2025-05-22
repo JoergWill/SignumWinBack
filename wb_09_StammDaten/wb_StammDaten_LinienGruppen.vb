@@ -268,9 +268,17 @@ Public Class wb_StammDaten_LinienGruppen
         For Each x As wb_SyncItem In wbAufarbeitung.Data
             Select Case x.SyncOK
                 Case wb_Global.SyncState.OrgaBackWrite
-                    obAufarbeitung.DBInsert(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
+                    Try
+                        obAufarbeitung.DBInsert(x.Wb_Nummer, x.Wb_Bezeichnung, x.Wb_Gruppe)
+                    Catch ex As Exception
+                        errCnt += 1
+                    End Try
                 Case wb_Global.SyncState.OrgaBackUpdate
-                    obAufarbeitung.DBUpdate(x.Wb_Nummer, x.Wb_Bezeichnung, x.Os_Gruppe)
+                    Try
+                        obAufarbeitung.DBUpdate(x.Wb_Nummer, x.Wb_Bezeichnung, x.Os_Gruppe)
+                    Catch ex As Exception
+                        errCnt += 1
+                    End Try
                 Case wb_Global.SyncState.WinBackWrite
                     errCnt += 1
             End Select
@@ -283,7 +291,10 @@ Public Class wb_StammDaten_LinienGruppen
                 'Aufarbeitungsplätze aus OrgaBack übernehmen
                 For Each x As wb_SyncItem In wbAufarbeitung.Data
                     If x.SyncOK = wb_Global.SyncState.WinBackWrite Then
-                        wbAufarbeitung.DBInsert(x.Os_Nummer, x.Os_Bezeichnung, x.Os_Gruppe)
+                        Try
+                            wbAufarbeitung.DBInsert(x.Os_Nummer, x.Os_Bezeichnung, x.Os_Gruppe)
+                        Catch ex As Exception
+                        End Try
                     End If
                 Next
             End If
@@ -300,6 +311,7 @@ Public Class wb_StammDaten_LinienGruppen
     Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
         Me.Close()
     End Sub
+
 End Class
 
 

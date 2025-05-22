@@ -1,17 +1,14 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class wb_StammDaten_Main
+Partial Class wb_Dashboard_Main
     Inherits Global.WinBack.wb_DockBarPanelMain
 
-    'UserControl überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
+    'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Try
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(disposing)
-        End Try
+        If disposing AndAlso components IsNot Nothing Then
+            components.Dispose()
+        End If
+        MyBase.Dispose(disposing)
     End Sub
 
     'Wird vom Windows Form-Designer benötigt.
@@ -22,8 +19,13 @@ Partial Class wb_StammDaten_Main
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        components = New System.ComponentModel.Container()
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-    End Sub
+        Me.SuspendLayout()
+        '
+        'UserControl1
+        '
+        Me.Name = "wb_Artikel_Main"
+        Me.Size = New System.Drawing.Size(978, 583)
+        Me.ResumeLayout(False)
 
+    End Sub
 End Class

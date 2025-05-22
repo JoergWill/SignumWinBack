@@ -118,9 +118,9 @@ Partial Class wb_StammDaten_LinienGruppen
     End Sub
 
     Friend WithEvents DataGridView As wb_DataGridView
-    Friend WithEvents BtnLinienGruppeNeu As Windows.Forms.Button
-    Friend WithEvents BtnNeueAufarbeitung As Windows.Forms.Button
-    Friend WithEvents BtnOK As Windows.Forms.Button
-    Friend WithEvents BtnLoeschen As Windows.Forms.Button
-    Friend WithEvents BtnSync As Windows.Forms.Button
+    Friend WithEvents BtnLinienGruppeNeu As System.Windows.Forms.Button
+    Friend WithEvents BtnNeueAufarbeitung As System.Windows.Forms.Button
+    Friend WithEvents BtnOK As System.Windows.Forms.Button
+    Friend WithEvents BtnLoeschen As System.Windows.Forms.Button
+    Friend WithEvents BtnSync As System.Windows.Forms.Button
 End Class

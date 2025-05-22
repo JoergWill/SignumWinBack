@@ -26,6 +26,8 @@ Partial Class wb_StammDaten_RezeptVarianten
     Private Sub InitializeComponent()
         Me.BtnOK = New System.Windows.Forms.Button()
         Me.DataGridView = New WinBack.wb_DataGridView()
+        Me.BtnRezVarianteNeu = New System.Windows.Forms.Button()
+        Me.BtnLoeschen = New System.Windows.Forms.Button()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -53,12 +55,34 @@ Partial Class wb_StammDaten_RezeptVarianten
         Me.DataGridView.TabIndex = 0
         Me.DataGridView.x8859_5_FieldName = ""
         '
+        'BtnRezVarianteNeu
+        '
+        Me.BtnRezVarianteNeu.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtnRezVarianteNeu.Location = New System.Drawing.Point(12, 540)
+        Me.BtnRezVarianteNeu.Name = "BtnRezVarianteNeu"
+        Me.BtnRezVarianteNeu.Size = New System.Drawing.Size(95, 49)
+        Me.BtnRezVarianteNeu.TabIndex = 2
+        Me.BtnRezVarianteNeu.Text = "Neue Rezeptvariante"
+        Me.BtnRezVarianteNeu.UseVisualStyleBackColor = True
+        '
+        'BtnLoeschen
+        '
+        Me.BtnLoeschen.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtnLoeschen.Location = New System.Drawing.Point(113, 540)
+        Me.BtnLoeschen.Name = "BtnLoeschen"
+        Me.BtnLoeschen.Size = New System.Drawing.Size(95, 49)
+        Me.BtnLoeschen.TabIndex = 4
+        Me.BtnLoeschen.Text = "Löschen"
+        Me.BtnLoeschen.UseVisualStyleBackColor = True
+        '
         'wb_StammDaten_RezeptVarianten
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(691, 601)
+        Me.Controls.Add(Me.BtnLoeschen)
+        Me.Controls.Add(Me.BtnRezVarianteNeu)
         Me.Controls.Add(Me.BtnOK)
         Me.Controls.Add(Me.DataGridView)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
@@ -70,5 +94,7 @@ Partial Class wb_StammDaten_RezeptVarianten
     End Sub
 
     Friend WithEvents DataGridView As wb_DataGridView
-    Friend WithEvents BtnOK As Windows.Forms.Button
+    Friend WithEvents BtnOK As System.Windows.Forms.Button
+    Friend WithEvents BtnRezVarianteNeu As System.Windows.Forms.Button
+    Friend WithEvents BtnLoeschen As System.Windows.Forms.Button
 End Class

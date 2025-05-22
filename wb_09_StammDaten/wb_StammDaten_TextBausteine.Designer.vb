@@ -1,6 +1,6 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class wb_StammDaten_ArtRohGruppen
+Partial Class wb_StammDaten_TextBausteine
     Inherits DockContent
     'Inherits System.Windows.Forms.Form
 
@@ -24,33 +24,15 @@ Partial Class wb_StammDaten_ArtRohGruppen
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.BtnRohstoffGruppeNeu = New System.Windows.Forms.Button()
-        Me.BtnArtikelGruppeNeu = New System.Windows.Forms.Button()
         Me.BtnOK = New System.Windows.Forms.Button()
         Me.BtnLoeschen = New System.Windows.Forms.Button()
+        Me.BtnTextBausteinNeu = New System.Windows.Forms.Button()
+        Me.BtnFilterProdStufen = New System.Windows.Forms.Button()
+        Me.BtnFilterKessel = New System.Windows.Forms.Button()
+        Me.BtnFilterTexte = New System.Windows.Forms.Button()
         Me.DataGridView = New WinBack.wb_DataGridView()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'BtnRohstoffGruppeNeu
-        '
-        Me.BtnRohstoffGruppeNeu.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.BtnRohstoffGruppeNeu.Location = New System.Drawing.Point(12, 540)
-        Me.BtnRohstoffGruppeNeu.Name = "BtnRohstoffGruppeNeu"
-        Me.BtnRohstoffGruppeNeu.Size = New System.Drawing.Size(95, 49)
-        Me.BtnRohstoffGruppeNeu.TabIndex = 1
-        Me.BtnRohstoffGruppeNeu.Text = "Neue Rohstoff Gruppe"
-        Me.BtnRohstoffGruppeNeu.UseVisualStyleBackColor = True
-        '
-        'BtnArtikelGruppeNeu
-        '
-        Me.BtnArtikelGruppeNeu.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.BtnArtikelGruppeNeu.Location = New System.Drawing.Point(113, 540)
-        Me.BtnArtikelGruppeNeu.Name = "BtnArtikelGruppeNeu"
-        Me.BtnArtikelGruppeNeu.Size = New System.Drawing.Size(95, 49)
-        Me.BtnArtikelGruppeNeu.TabIndex = 2
-        Me.BtnArtikelGruppeNeu.Text = "NeueArtikel Gruppe"
-        Me.BtnArtikelGruppeNeu.UseVisualStyleBackColor = True
         '
         'BtnOK
         '
@@ -66,12 +48,49 @@ Partial Class wb_StammDaten_ArtRohGruppen
         'BtnLoeschen
         '
         Me.BtnLoeschen.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.BtnLoeschen.Location = New System.Drawing.Point(214, 540)
+        Me.BtnLoeschen.Location = New System.Drawing.Point(113, 540)
         Me.BtnLoeschen.Name = "BtnLoeschen"
         Me.BtnLoeschen.Size = New System.Drawing.Size(95, 49)
-        Me.BtnLoeschen.TabIndex = 3
+        Me.BtnLoeschen.TabIndex = 6
         Me.BtnLoeschen.Text = "Löschen"
         Me.BtnLoeschen.UseVisualStyleBackColor = True
+        '
+        'BtnTextBausteinNeu
+        '
+        Me.BtnTextBausteinNeu.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtnTextBausteinNeu.Location = New System.Drawing.Point(12, 540)
+        Me.BtnTextBausteinNeu.Name = "BtnTextBausteinNeu"
+        Me.BtnTextBausteinNeu.Size = New System.Drawing.Size(95, 49)
+        Me.BtnTextBausteinNeu.TabIndex = 5
+        Me.BtnTextBausteinNeu.Text = "Neuer Textbaustein"
+        Me.BtnTextBausteinNeu.UseVisualStyleBackColor = True
+        '
+        'BtnFilterProdStufen
+        '
+        Me.BtnFilterProdStufen.Location = New System.Drawing.Point(12, 12)
+        Me.BtnFilterProdStufen.Name = "BtnFilterProdStufen"
+        Me.BtnFilterProdStufen.Size = New System.Drawing.Size(108, 24)
+        Me.BtnFilterProdStufen.TabIndex = 7
+        Me.BtnFilterProdStufen.Text = "Produktions-Stufen"
+        Me.BtnFilterProdStufen.UseVisualStyleBackColor = True
+        '
+        'BtnFilterKessel
+        '
+        Me.BtnFilterKessel.Location = New System.Drawing.Point(126, 12)
+        Me.BtnFilterKessel.Name = "BtnFilterKessel"
+        Me.BtnFilterKessel.Size = New System.Drawing.Size(108, 24)
+        Me.BtnFilterKessel.TabIndex = 8
+        Me.BtnFilterKessel.Text = "Kessel"
+        Me.BtnFilterKessel.UseVisualStyleBackColor = True
+        '
+        'BtnFilterTexte
+        '
+        Me.BtnFilterTexte.Location = New System.Drawing.Point(240, 12)
+        Me.BtnFilterTexte.Name = "BtnFilterTexte"
+        Me.BtnFilterTexte.Size = New System.Drawing.Size(108, 24)
+        Me.BtnFilterTexte.TabIndex = 9
+        Me.BtnFilterTexte.Text = "Texte"
+        Me.BtnFilterTexte.UseVisualStyleBackColor = True
         '
         'DataGridView
         '
@@ -79,35 +98,39 @@ Partial Class wb_StammDaten_ArtRohGruppen
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView.Location = New System.Drawing.Point(0, 0)
+        Me.DataGridView.Location = New System.Drawing.Point(0, 51)
         Me.DataGridView.Name = "DataGridView"
-        Me.DataGridView.Size = New System.Drawing.Size(691, 534)
+        Me.DataGridView.Size = New System.Drawing.Size(691, 483)
         Me.DataGridView.SortCol = -1
         Me.DataGridView.TabIndex = 0
         Me.DataGridView.x8859_5_FieldName = ""
         '
-        'wb_StammDaten_ArtRohGruppen
+        'wb_StammDaten_TextBausteine
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(188, Byte), Integer), CType(CType(194, Byte), Integer), CType(CType(202, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(691, 601)
+        Me.Controls.Add(Me.BtnFilterTexte)
+        Me.Controls.Add(Me.BtnFilterKessel)
+        Me.Controls.Add(Me.BtnFilterProdStufen)
         Me.Controls.Add(Me.BtnLoeschen)
+        Me.Controls.Add(Me.BtnTextBausteinNeu)
         Me.Controls.Add(Me.BtnOK)
-        Me.Controls.Add(Me.BtnArtikelGruppeNeu)
-        Me.Controls.Add(Me.BtnRohstoffGruppeNeu)
         Me.Controls.Add(Me.DataGridView)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        Me.Name = "wb_StammDaten_ArtRohGruppen"
-        Me.Text = "WinBack Artikel-/Rohstoffgruppen"
+        Me.Name = "wb_StammDaten_TextBausteine"
+        Me.Text = "Texte Produktions-Stufe"
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
 
     Friend WithEvents DataGridView As wb_DataGridView
-    Friend WithEvents BtnRohstoffGruppeNeu As System.Windows.Forms.Button
-    Friend WithEvents BtnArtikelGruppeNeu As System.Windows.Forms.Button
     Friend WithEvents BtnOK As System.Windows.Forms.Button
     Friend WithEvents BtnLoeschen As System.Windows.Forms.Button
+    Friend WithEvents BtnTextBausteinNeu As System.Windows.Forms.Button
+    Friend WithEvents BtnFilterProdStufen As System.Windows.Forms.Button
+    Friend WithEvents BtnFilterKessel As System.Windows.Forms.Button
+    Friend WithEvents BtnFilterTexte As System.Windows.Forms.Button
 End Class

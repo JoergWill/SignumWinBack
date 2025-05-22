@@ -16,7 +16,7 @@ Public Class wb_StammDaten_Main
 
     Dim RezeptVarianten As wb_StammDaten_RezeptVarianten
     Dim RezeptGruppen As wb_StammDaten_Rezeptgruppen
-    Dim TexteProduktionsStufe As wb_StammDaten_TexteProduktionsStufe
+    Dim TextBausteine As wb_StammDaten_TextBausteine
 
 #Region "Signum"
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -47,7 +47,7 @@ Public Class wb_StammDaten_Main
     End Property
 
     Public Overrides Sub SetDefaultLayout()
-        'PlanungListe.Show(DockPanel, DockState.DockLeft)
+        DockPanel.Theme = wb_GlobalSettings.Theme
     End Sub
 
     ''' <summary>
@@ -67,7 +67,7 @@ Public Class wb_StammDaten_Main
         wb_Functions.CloseAndDisposeSubForm(WinBackKonfig)
         wb_Functions.CloseAndDisposeSubForm(RezeptVarianten)
         wb_Functions.CloseAndDisposeSubForm(RezeptGruppen)
-        wb_Functions.CloseAndDisposeSubForm(TexteProduktionsStufe)
+        wb_Functions.CloseAndDisposeSubForm(TextBausteine)
 
         'Fenster darf geschlossen werden
         Return False
@@ -88,7 +88,7 @@ Public Class wb_StammDaten_Main
                 oGrp.AddButton("BtnArtRohGruppen", "Rohstoff- und Artikelgruppen", "Rohstoff- und Artikelgruppen verwalten", My.Resources.ArtikelParameter_32x32, My.Resources.ArtikelParameter_32x32, AddressOf BtnArtRohGruppen)
                 oGrp.AddButton("BtnRzptVarianten", "Rezept Varianten", "Rezeptvarianten verwalten", My.Resources.RezeptDetails_32x32, My.Resources.RezeptDetails_32x32, AddressOf BtnRzptVarianten)
                 oGrp.AddButton("BtnRzptGruppen", "Rezept Gruppen", "Rezeptgruppen verwalten", My.Resources.RezeptGruppen_32x32, My.Resources.RezeptGruppen_32x32, AddressOf BtnRzptGruppen)
-                oGrp.AddButton("BtnTxtProdStufen", "Texte Produktions-Stufen", "Vorgabetexte Produktions-Stufen für die Rezeptverwaltung", My.Resources.ArtikelHinweise_32x32, My.Resources.ArtikelHinweise_32x32, AddressOf BtnTexteProdStufen)
+                oGrp.AddButton("BtnTxtBausteine", "Text-Bausteine", "Vorgabetexte Produktions-Stufen/Kessel/Textkomponenten für die Rezeptverwaltung", My.Resources.ArtikelHinweise_32x32, My.Resources.ArtikelHinweise_32x32, AddressOf BtnTextBausteine)
                 _ContextTabs.Add(oNewTab)
             End If
             Return _ContextTabs.ToArray
@@ -128,10 +128,10 @@ Public Class wb_StammDaten_Main
                 _DockPanelList.Add(RezeptGruppen)
                 Return RezeptGruppen
 
-            Case "WinBack.wb_StammDaten_TexteProduktionsStufe"
-                TexteProduktionsStufe = New wb_StammDaten_TexteProduktionsStufe
-                _DockPanelList.Add(TexteProduktionsStufe)
-                Return TexteProduktionsStufe
+            Case "WinBack.wb_StammDaten_TextBausteine"
+                TextBausteine = New wb_StammDaten_TextBausteine
+                _DockPanelList.Add(TextBausteine)
+                Return TextBausteine
 
             Case Else
                 Return Nothing
@@ -141,7 +141,7 @@ Public Class wb_StammDaten_Main
 
     Public Overrides Function Init() As Boolean Implements IBasicFormUserControl.Init
         'Init aus der Basis-Klasse aufrufen (zuerst)
-        Init = MyBase.Init()
+        Return MyBase.Init()
     End Function
 
     ''' <summary>
@@ -151,6 +151,7 @@ Public Class wb_StammDaten_Main
         If IsNothingOrDisposed(WinBackKonfig) Then
             WinBackKonfig = New wb_StammDaten_Konfiguration
         End If
+        DockPanel.Theme = wb_GlobalSettings.Theme
         WinBackKonfig.Show(DockPanel, DockState.Document)
     End Sub
 
@@ -162,6 +163,7 @@ Public Class wb_StammDaten_Main
         If IsNothingOrDisposed(LinienGruppen) Then
             LinienGruppen = New wb_StammDaten_LinienGruppen
         End If
+        DockPanel.Theme = wb_GlobalSettings.Theme
         LinienGruppen.Show(DockPanel, DockState.Document)
     End Sub
 
@@ -169,6 +171,7 @@ Public Class wb_StammDaten_Main
         If IsNothingOrDisposed(Allergene) Then
             Allergene = New wb_StammDaten_Allergene
         End If
+        DockPanel.Theme = wb_GlobalSettings.Theme
         Allergene.Show(DockPanel, DockState.Document)
     End Sub
 
@@ -176,13 +179,15 @@ Public Class wb_StammDaten_Main
         If IsNothingOrDisposed(ArtRohGruppen) Then
             ArtRohGruppen = New wb_StammDaten_ArtRohGruppen
         End If
-        ArtRohGruppen.Show(DockPanel, DockState.Document)
+        DockPanel.Theme = wb_GlobalSettings.Theme
+        ArtRohGruppen.Show(DockPanel, DockState.DockLeft)
     End Sub
 
     Private Sub BtnRzptVarianten()
         If IsNothingOrDisposed(RezeptVarianten) Then
             RezeptVarianten = New wb_StammDaten_RezeptVarianten
         End If
+        DockPanel.Theme = wb_GlobalSettings.Theme
         RezeptVarianten.Show(DockPanel, DockState.Document)
     End Sub
 
@@ -190,14 +195,16 @@ Public Class wb_StammDaten_Main
         If IsNothingOrDisposed(RezeptGruppen) Then
             RezeptGruppen = New wb_StammDaten_Rezeptgruppen
         End If
+        DockPanel.Theme = wb_GlobalSettings.Theme
         RezeptGruppen.Show(DockPanel, DockState.Document)
     End Sub
 
-    Private Sub BtnTexteProdStufen()
-        If IsNothingOrDisposed(TexteProduktionsStufe) Then
-            TexteProduktionsStufe = New wb_StammDaten_TexteProduktionsStufe
+    Private Sub BtnTextBausteine()
+        If IsNothingOrDisposed(TextBausteine) Then
+            TextBausteine = New wb_StammDaten_TextBausteine
         End If
-        TexteProduktionsStufe.Show(DockPanel, DockState.Document)
+        DockPanel.Theme = wb_GlobalSettings.Theme
+        TextBausteine.Show(DockPanel, DockState.Document)
     End Sub
 
 End Class

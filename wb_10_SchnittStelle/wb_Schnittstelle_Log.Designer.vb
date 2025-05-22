@@ -25,7 +25,9 @@ Partial Class wb_Schnittstelle_Log
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.tbLogger = New System.Windows.Forms.TextBox()
+        Me.tLogAnzeigen = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
         'tbLogger
@@ -42,6 +44,10 @@ Partial Class wb_Schnittstelle_Log
         Me.tbLogger.TabIndex = 0
         Me.tbLogger.WordWrap = False
         '
+        'tLogAnzeigen
+        '
+        Me.tLogAnzeigen.Interval = 1000
+        '
         'wb_Schnittstelle_Log
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -56,5 +62,6 @@ Partial Class wb_Schnittstelle_Log
 
     End Sub
 
-    Friend WithEvents tbLogger As Windows.Forms.TextBox
+    Friend WithEvents tbLogger As System.Windows.Forms.TextBox
+    Friend WithEvents tLogAnzeigen As System.Windows.Forms.Timer
 End Class
