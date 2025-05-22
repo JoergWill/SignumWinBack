@@ -8,7 +8,7 @@ Public Class wb_VirtualTreeEditor
     Inherits Drawing.Design.UITypeEditor
 
     Public Overloads Sub PaintValue(value As Object, canvas As Graphics, rectangle As Rectangle)
-        Debug.Print("Paint Value")
+        'Debug.Print("Paint Value")
     End Sub
 
     '
@@ -20,6 +20,6 @@ Public Class wb_VirtualTreeEditor
     '     Eine System.Drawing.Design.PaintValueEventArgs-Klasse, die die zu zeichnenden
     '     Werte und den Zeichenbereich angibt.
     Public Overrides Sub PaintValue(e As PaintValueEventArgs)
-        Debug.Print("Paint Value")
+        'Debug.Print("Paint Value")
     End Sub
 End Class

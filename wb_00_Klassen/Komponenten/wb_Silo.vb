@@ -14,6 +14,7 @@ Public Class wb_Silo
     Private _KompNr As Integer
     Private _KompNummer As String
     Private _KompBezeichnung As String
+    Private _KompKommentar As String
     Private _Aktiv As String
 
     Private _pnlSiloHeight As Integer
@@ -33,6 +34,12 @@ Public Class wb_Silo
         'Default-Einstellungen Silo-Grafik (Größe und X-Wert)
         _pnlSiloHeight = pnlSilo.Height
         _pnlSiloTop = pnlSilo.Top
+
+        'Wenn das WinBack.AddIn.ob_Rohstoffe_SiloInventur nicht geladen ist wird der Button ausgeblendet
+        If Not wb_Main_Shared.IsRegistered("ob_Rohstoffe_SiloInventur") Then
+            BtnBestandsKorrektur.Enabled = False
+            BtnSiloNull.Enabled = False
+        End If
     End Sub
 
     '' <summary>
@@ -40,15 +47,12 @@ Public Class wb_Silo
     '' </summary>
     '' <param name="parent">The parent step</param>
     '' <param name="name">The name of this step</param>
-    Public Sub New(parent As wb_Silo, Bezeichnung As String)
-        ' Dieser Aufruf ist für den Designer erforderlich.
-        InitializeComponent()
-        'Default-Einstellungen Silo-Grafik (Größe und X-Wert)
-        _pnlSiloHeight = pnlSilo.Height
-        _pnlSiloTop = pnlSilo.Top
+    Public Sub New(parent As wb_Silo, Bezeichnung As String, Kommentar As String)
+        Me.New()
 
         _parentStep = parent
         _KompBezeichnung = Bezeichnung
+        _KompKommentar = Kommentar
 
         'Es gibt keinen Root-Knoten (erster Knoten in der Reihe)
         If Not (_parentStep Is Nothing) Then
@@ -61,6 +65,7 @@ Public Class wb_Silo
         KompNr = s.KompNr
         KompNummer = s.KompNummer
         KompBezeichnung = s.KompBezeichnung
+        KompKommentar = s.KompKommentar
         ChargenNummer = s.ChargenNummer
         LagerOrt = s.LagerOrt
         SiloNr = s.SiloNr
@@ -89,6 +94,7 @@ Public Class wb_Silo
         Dim TempKompNr As Integer
         Dim TempKompNummer As String
         Dim TempKompBezeichnung As String
+        Dim TempKompKommentar As String
         Dim TempLagerOrt As String
         Dim TempSiloNr As Integer
         Dim TempAktiv As String
@@ -100,6 +106,7 @@ Public Class wb_Silo
             TempKompNr = KompNr
             TempKompNummer = KompNummer
             TempKompBezeichnung = KompBezeichnung
+            TempKompKommentar = KompKommentar
             TempLagerOrt = LagerOrt
             TempSiloNr = SiloNr
             TempAktiv = Aktiv
@@ -110,6 +117,7 @@ Public Class wb_Silo
             s.KompNr = TempKompNr
             s.KompNummer = TempKompNummer
             s.KompBezeichnung = TempKompBezeichnung
+            s.KompKommentar = TempKompKommentar
             s.LagerOrt = TempLagerOrt
             s.SiloNr = TempSiloNr
             s.Aktiv = TempAktiv
@@ -168,6 +176,7 @@ Public Class wb_Silo
         End Get
     End Property
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
     Public WriteOnly Property Befuellung As Boolean
         Set(value As Boolean)
             _Befuellung = value
@@ -265,7 +274,6 @@ Public Class wb_Silo
                 End If
             Else
                 tbIst.Text = _IstMenge & " kg"
-                tbIst.BackColor = tbIst.BackColor
                 tbIst.ForeColor = System.Drawing.Color.Red
                 tbSiloFuellstand.Visible = False
             End If
@@ -416,6 +424,16 @@ Public Class wb_Silo
         End Set
     End Property
 
+    Public Property KompKommentar As String
+        Get
+            Return _KompKommentar
+        End Get
+        Set(value As String)
+            _KompKommentar = value
+            lblKommentar.Text = _KompKommentar
+        End Set
+    End Property
+
     Private Sub CheckBtn()
         If wb_Rohstoffe_Shared.RohStoff.Nr = _KompNr Then
             BtnSiloTauschen.Visible = True
@@ -442,17 +460,21 @@ Public Class wb_Silo
             RohstoffAuswahl.Anzeige = wb_Rohstoffe_Shared.AnzeigeFilter.HandAuto
 
             'Anzeige Auswahl-Fenster
-            If RohstoffAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If RohstoffAuswahl.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                 'Rohstoff-Nummer(alpha) und Bezeichnung ändern
                 wb_Rohstoffe_Shared.RohStoff.Bezeichnung = RohstoffAuswahl.RohstoffName
                 wb_Rohstoffe_Shared.RohStoff.Nummer = RohstoffAuswahl.RohstoffNummer
 
-                'MySQLChange_Silo(KompNr, RohstoffAuswahl.RohstoffNummer, RohstoffAuswahl.RohstoffName)
+                MySQLChange_Silo(KompNr, RohstoffAuswahl.RohstoffNummer, RohstoffAuswahl.RohstoffName)
                 'Zuordnung in OrgaBack löschen
                 If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
                     MsSQLDelete_MFF201(KompNummer)
                 End If
+                'Silo-Tabellen neu laden
+                wb_Rohstoffe_Shared.Load_SiloTables()
                 'Anzeige aktualisieren
+                wb_Rohstoffe_Shared.Liste_Click(sender, True)
+                'Rohstoff-Liste aktualisieren
                 wb_Rohstoffe_Shared.Edit_Leave(sender)
             End If
         Else
@@ -464,25 +486,23 @@ Public Class wb_Silo
 
     ''' <summary>
     ''' Siloinhalt auf Null setzen.
-    ''' Setzt einen internen Tara-Wert zum Nullen des Silos
+    ''' Setzt einen internen Tara-Wert zum Nullen des Silos. Die Verbuchung erfolgt später über den Zugang(WE)
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Private Sub BtnSiloNull_Click(sender As Object, e As EventArgs) Handles BtnSiloNull.Click
         'Wenn die Restmenge größer als 2000 kg ist nachfragen
-        If _IstMenge > 2000 Then
-            If MsgBox("Soll der Silo-Füllstand wirklich auf Null gesetzt werden ?", MsgBoxStyle.Question, "Silo Null setzen") = MsgBoxResult.Ok Then
-                Exit Sub
-            End If
-        Else
-            'Tarawert merken
-            _TaraWert = _IstMenge
-            'Anzeige aktualisieren
-            IstMenge = _IstMenge
+        If (_IstMenge > 2000) AndAlso MsgBox("Soll der Silo-Füllstand wirklich auf Null gesetzt werden ?", MsgBoxStyle.Question, "Silo Null setzen") <> MsgBoxResult.Ok Then
+            Exit Sub
         End If
+        'Tarawert merken
+        _TaraWert = _IstMenge
+        'Anzeige aktualisieren
+        IstMenge = _IstMenge
 
         'Nullsetzen verbuchen - Wird im Moment nicht verwendet !
-        If Not _Befuellung And BtnSiloNull.Visible Then
+        If Not _Befuellung AndAlso BtnSiloNull.Visible And False Then
             'Die Daten werden im Objekt wb_Lagersilo gehalten
             Dim LagerSilo As New wb_LagerSilo
             LagerSilo.CopyFrom(Me)
@@ -491,6 +511,8 @@ Public Class wb_Silo
             'Lieferung (Nullsetzen) verbuchen
             Dim Lieferungen As New wb_Lieferungen
             Lieferungen.Verbuchen(winback, LagerSilo)
+            'Bilanzmenge in winback-DB aktualisieren (lfd-Nummer wird nicht verwendet)
+            Lieferungen.UpdateLagerorte(winback, LagerOrt)
             'Datenbank-Verbindung wieder schliessen
             winback.Close()
         End If
@@ -520,7 +542,7 @@ Public Class wb_Silo
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Rohstoff-Nummer und Bezeichnung ändern. Interne Komponenten-Nummer bleibt (Silo-Rohstoff)
-        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKompName, KompNr, KompNummer_Neu, KompBezeichnung_Neu))
+        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKompName, KompNr, KompBezeichnung_Neu, KompNummer_Neu))
         'Datenbank-Verbindung wieder schliessen
         winback.Close()
     End Sub
@@ -536,12 +558,198 @@ Public Class wb_Silo
     End Sub
 
     ''' <summary>
-    ''' DoppelClick auf Istwert öffnet Dialog-Fenster zur Bestandskorrektur und/oder Befüllung KKA/Sackschütte
+    ''' Öffnet Dialog-Fenster zur Bestandskorrektur und/oder Befüllung KKA/Sackschütte
+    ''' 
+    ''' Zunächst wird der Lagerbestand des aktuell angewählten Silos korrigiert: 
+    '''     Bei einer Plus-Buchung wird ein neuer Waren-Eingang ohne Chargen-Nummer eingebucht.
+    '''     Bei einer Minus-Buchung werden die bestehenden Lieferungen solange abgebucht, bis der neue Bilanzwert erreicht ist.
+    '''     
+    ''' Anschliessen wird in OrgaBack eine Inventurbuchung durchgeführt. Die Inventurbuchung enthält die Summe aller Silo-Füllstände
+    ''' und eine Liste aller Chargen-Nummern aus den Silos mit der entsprechenden Rohstoff-Nummer.
+    ''' Passende Handkomponenten werden ebenfalls im Bestand erfasst.
+    ''' 
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BtnBestandsKorrektur_Click(sender As Object, e As EventArgs) Handles BtnBestandsKorrektur.Click, tbIst.DoubleClick
+
+        'Dialog-Fenster - Neuer Silo-Füllstand
         Dim SiloKorrektur As New wb_Rohstoffe_SiloKorrektur(Me)
-        SiloKorrektur.ShowDialog()
+        If SiloKorrektur.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+
+            'Cursor umschalten
+            Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
+
+            'abhängig von der neuen Istmenge
+            Select Case SiloKorrektur.KorrekturModus
+
+                'Silo Nullsetzen
+                Case wb_Global.KorrekturStatus.SILO_NULLEN
+                    SiloNullen()
+
+                'Silo Füllstand - Abgang buchen
+                Case wb_Global.KorrekturStatus.SILO_MINUS
+                    SiloMinus(SiloKorrektur.MengeNeu, SiloKorrektur.Istmenge)
+
+                'Silo Füllstand - Zugang buchen
+                Case wb_Global.KorrekturStatus.SILO_PLUS
+                    SiloPlus(SiloKorrektur.MengeNeu, SiloKorrektur.Istmenge)
+            End Select
+
+            'Bestandskorrektur in OrgaBack durchführen
+            SiloBestandsKorrektur_OrgaBack()
+
+            'Cursor wieder zurückschalten
+            Me.Cursor = System.Windows.Forms.Cursors.Default
+        End If
     End Sub
+
+    Private Sub SiloNullen()
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Die Daten werden im Objekt wb_Lagersilo gehalten
+        Dim LagerSilo As New wb_LagerSilo
+        LagerSilo.CopyFrom(Me)
+        'Lieferung (Nullsetzen) verbuchen
+        Dim Lieferungen As New wb_Lieferungen
+        Lieferungen.Verbuchen_Tara(winback, LagerSilo, wb_GlobalSettings.RohChargen_ErfassungAktiv)
+        'Bilanzmenge in winback-DB aktualisieren (lfd-Nummer wird nicht verwendet)
+        Lieferungen.UpdateLagerorte(winback, LagerOrt)
+        'Anzeige aktualisieren
+        IstMenge = 0
+
+        'Datenbank-Verbindung wieder schliessen
+        winback.Close()
+    End Sub
+
+    Private Sub SiloMinus(BilanzMengeNeu As Integer, IstMengeVorher As Integer)
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Anzeige aktualisieren
+        IstMenge = BilanzMengeNeu
+        'Lieferung (Abgang) verbuchen
+        Dim Lieferungen As New wb_Lieferungen
+        Lieferungen.ProduktionVerbuchen(LagerOrt, (IstMengeVorher - BilanzMengeNeu).ToString)
+
+        'Datenbank-Verbindung wieder schliessen
+        winback.Close()
+    End Sub
+
+    Private Sub SiloPlus(BilanzMengeNeu As Integer, IstMengeVorher As Integer)
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'Die Daten werden im Objekt wb_Lagersilo gehalten
+        Dim LagerSilo As New wb_LagerSilo
+        LagerSilo.CopyFrom(Me)
+        'Korrektur über Befüllung
+        LagerSilo.BefMenge = BilanzMengeNeu - IstMengeVorher
+        LagerSilo.ChargenNummer = "Korrektur"
+        'Lieferung (Zugang) verbuchen
+        Dim Lieferungen As New wb_Lieferungen
+        Lieferungen.Bilanzmenge = IstMengeVorher
+        Lieferungen.Verbuchen(winback, LagerSilo)
+        'Anzeige aktualisieren
+        IstMenge = Lieferungen.Bilanzmenge
+        'Bilanzmenge in winback-DB aktualisieren (lfd-Nummer wird nicht verwendet)
+        Lieferungen.UpdateLagerorte(winback, LagerOrt)
+
+        'Datenbank-Verbindung wieder schliessen
+        winback.Close()
+    End Sub
+
+    ''' <summary>
+    ''' Bestands-Korrektur in OrgaBack "rückwärts" über Inventur.
+    ''' 
+    ''' Erzeugt eine kommagetrennte Liste von Rohstoff-Chargennummern aus winback.Lieferungen mit dieser Rohstoff-Nummer(alpha) bis die Menge x erreicht ist
+    ''' oder keine offenen Lieferungen mehr vorhanden sind.
+    ''' 
+    ''' Anschliessend wird eine InventurBuchung (mit der Gesamtmenge aller Silos und der Liste aller Chargen-Nummern) in OrgaBack erzeugt.
+    ''' </summary>
+    Private Sub SiloBestandsKorrektur_OrgaBack()
+
+        'Gesamt-Bestand aller Silos und Handkomponenten mit dieser Rohstoff-Nummer
+        Dim Bilanzmenge As Double
+        Dim BilanzSumme As Double = 0.0
+        'da die Chargen-Nummer in OrgaBack auf 15 Zeichen begrenzt ist, wird nur der Text 'Korrektur' als Chargen-Nummer eingetragen
+        Dim ListeRohstoffChargenNummern As String = "Korrektur"
+
+        'die nachfolgende Berechnung dauert länger
+        System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'alle Bilanzmengen zu dieser Rohstoff-Nummer (negative Mengen werden ignoriert)
+        Dim sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSiloGrpBilanz, KompNummer)
+
+        'Prüfen ob ein Datensatz vorhanden ist
+        If winback.sqlSelect(sql) Then
+            'über alle Datensätze
+            While winback.Read
+                'Bilanzmengen aufsummieren
+                Bilanzmenge = wb_Functions.StrToDouble(winback.sField("LG_BilanzMenge"))
+                If Bilanzmenge > 0 Then
+                    BilanzSumme += Bilanzmenge
+                End If
+            End While
+        End If
+        'Verbindung wieder freigeben
+        winback.CloseRead()
+
+        'Kommagetrennte Liste aller Chargen (Not used)
+        'Dim Lieferungen As New wb_Lieferungen
+        'ListeRohstoffChargenNummern = Lieferungen.GetChargenListe(winback, KompNummer, BilanzSumme)
+
+        'Gesamt-Menge als Inventur-Buchung in OrgaBack eintragen
+        If Not ob_Rohstoffe_SiloInventur.Bestandskorrektur(KompNummer, BilanzSumme, ListeRohstoffChargenNummern) Then
+            'Berechnung beendet
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
+            'Fehlermeldung ausgeben
+            Me.Cursor = System.Windows.Forms.Cursors.Default
+            MsgBox("Fehler bei der Bestandskorrektur" & vbCrLf & "Die Bestandsdaten konnten nicht in die Lagerkarte übernommen werden", MsgBoxStyle.Critical, "Bestandskorrektur")
+        Else
+            'ldf.Nummer letzter Eintrag aus der Lagerkarte OrgaBack
+            Dim lfdNr As Integer = OrgaBackLagerkarteLfd()
+            'Tabelle Lieferungen in WinBack aktualisieren (lfd-Nummer)
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLagerOrte, LagerOrt, "LG_LF_Nr = " & lfdNr)
+            winback.sqlCommand(sql)
+
+            'Berechnung beendet
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
+            'Silo-Bestandskorrektur wurde erfoglreich durchgeführt - Meldung ausgeben
+            Me.Cursor = System.Windows.Forms.Cursors.Default
+            MsgBox("Bestandskorrektur für Silo " & SiloNr & " erfolgreich durchgeführt" & vbCrLf & "Menge im Silo " & IstMenge & " kg." & vbCrLf & "Gesamt Lager  " & BilanzSumme & " kg", MsgBoxStyle.Information, "Bestandskorrektur")
+        End If
+
+        'Datenbank-Verbindung wieder schliessen
+        winback.Close()
+    End Sub
+
+    ''' <summary>
+    ''' Gibt die letzte LfdNr. aus der Tabelle [dbo.ArtikelLagerkarte] zum Rohstoff(Silo) zurück
+    ''' Wenn kein Eintrag existiert wird 0 zurückgegeben
+    ''' </summary>
+    ''' <returns></returns>
+    Private Function OrgaBackLagerkarteLfd() As Integer
+        'Datenbank-Verbindung öffnen OrgaBack-msSQL
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        'alle Buchungen ausgehend von der letzten Buchung einlesen
+        Dim Sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlArtikelLagerLast, KompNummer)
+
+        Try
+            If orgaback.sqlSelect(Sql) Then
+                'wenn Einträge vorhanden sind
+                If orgaback.Read Then
+                    Return orgaback.iField("Lfd")
+                End If
+            End If
+        Catch ex As Exception
+        End Try
+
+        'Default - Kein Datensatz gefunden
+        Return 0
+    End Function
+
 End Class

@@ -1,5 +1,6 @@
-﻿''' <summary>
-''' Ableitung der Klasse Windows.Forms.ComboBox
+﻿Imports System.Windows.Forms
+''' <summary>
+''' Ableitung der Klasse System.Windows.Forms.ComboBox
 '''
 ''' wbComboBox.Fill füllt die ComboBox mit Texten
 ''' aus einer Hash-Table. Der entsprechende Keys
@@ -7,7 +8,7 @@
 '''
 ''' </summary>
 Partial Class wb_ComboBox
-    Inherits Windows.Forms.ComboBox
+    Inherits System.Windows.Forms.ComboBox
     Dim ht As SortedList
 
     ''' <summary>
@@ -22,6 +23,7 @@ Partial Class wb_ComboBox
     '''´Gibt den Key aus HashTable zurück, der dem übergebenen Text entspricht
     ''' </summary>
     ''' <returns>Integer Key</returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Public Function GetKeyFromText(Text As String) As Integer
         Dim i As Integer = 0
         If ht IsNot Nothing Then
@@ -44,9 +46,11 @@ Partial Class wb_ComboBox
     End Function
 
     ''' <summary>
-    ''' Setzt den selektierten Text entsprechend dem Key aus HashTable
+    ''' Setzt den selektierten Text entsprechend dem Key aus HashTable.
+    ''' Achtung: Beim Ändern von Index oder Text wird der Focus auf die Combo-Box gesetzt
     ''' </summary>
     ''' <param name="Key">Schlüssel</param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Public Sub SetTextFromKey(Key As Integer)
         Dim i As Integer
         For i = 0 To Items.Count - 1
@@ -56,6 +60,7 @@ Partial Class wb_ComboBox
                 Exit Sub
             End If
         Next
+        Me.Text = ""
         SelectedIndex = -1
     End Sub
 
@@ -63,14 +68,17 @@ Partial Class wb_ComboBox
     ''' ComboBox mit Texten aus HashTable füllen.
     ''' </summary>
     ''' <param name="HashTable"></param>
-    Public Sub Fill(HashTable As SortedList, Optional FilterAlle As Boolean = False)
+    Public Sub Fill(HashTable As SortedList, Optional FilterAlle As Boolean = False, Optional SelectNo As Boolean = False)
         'alte Einträge löschen
         Items.Clear()
         Text = ""
         'per Default Filterauswahl Alle
         If FilterAlle Then
-            Text = wb_Global.TextAlle
-            Items.Add(Text)
+            Items.Add(wb_Global.TextAlle)
+        End If
+        'per Default Filterauswahl keine
+        If SelectNo Then
+            Items.Add(wb_Global.TextKeine)
         End If
         'HashTable aus SortedList
         ht = HashTable

@@ -1,6 +1,7 @@
 ﻿''' <summary>
 '''Ableitung der Klasse wb_DataGridView.
 '''Anzeige der Rohstoff-Verwendung in Rezepturen
+'''Anzeige der Rezept-Verwendung in Artikeln
 ''' </summary>
 Public Class wb_DataGridViewVerwendung
     Inherits Global.WinBack.wb_DataGridView
@@ -13,7 +14,7 @@ Public Class wb_DataGridViewVerwendung
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
         'Spalten ohne Bezeichnung werden ausgeblendet.
         'Die Rezept-Variante wird nicht mit ausgegeben, da sonst eine Exception auftritt
-        Dim sColNames As New List(Of String) From {"", "Nr", "&Bezeichnung"}
+        Dim sColNames As New List(Of String) From {"", "Nr", "", "&Bezeichnung", "", ""}
         For Each sName In sColNames
             ColNames.Add(sName)
         Next
@@ -45,7 +46,7 @@ Public Class wb_DataGridViewVerwendung
         ClearData()
     End Sub
 
-    Private Overloads Sub DataGridView_CellDoubleClick(sender As Object, e As Windows.Forms.DataGridViewCellEventArgs) Handles MyBase.CellDoubleClick
+    Private Overloads Sub DataGridView_CellDoubleClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles MyBase.CellDoubleClick
         If Not VerwendungRezept Then
             'Zeile im Grid
             Dim eRow As Integer = e.RowIndex
@@ -53,11 +54,11 @@ Public Class wb_DataGridViewVerwendung
             Dim RezeptNr As Integer = Item(ColRezNr, eRow).Value
             'Wenn die Rezeptnummer gültig ist
             If RezeptNr > 0 Then
-                Me.Cursor = Windows.Forms.Cursors.WaitCursor
+                Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
                 'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
                 Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, wb_Global.RezeptVarianteStandard)
                 Rezeptur.Show()
-                Me.Cursor = Windows.Forms.Cursors.Default
+                Me.Cursor = System.Windows.Forms.Cursors.Default
             End If
         End If
     End Sub

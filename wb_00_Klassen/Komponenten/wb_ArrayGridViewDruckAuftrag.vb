@@ -70,10 +70,12 @@ Public Class wb_ArrayGridViewDruckAuftrag
     ''' <summary>
     ''' Flag setzen/rücksetzen.
     ''' Wenn die Zeile schon markiert war, wird das Flag getoggelt.
+    ''' 
+    ''' Hier darf nur der Event CellCONTENTClick verarbeitet werden. Sonst werden die Ergebnisse verfälscht(Niehaves)
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub DruckAuftrag_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles MyBase.CellClick
+    Private Sub DruckAuftrag_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles MyBase.CellContentClick
         Dim Col As Integer = e.ColumnIndex
         Dim Row As Integer = e.RowIndex
 
@@ -92,8 +94,8 @@ Public Class wb_ArrayGridViewDruckAuftrag
                 GridArray(Row) = s
             End If
         Catch ex As Exception
+            Debug.Print(ex.Message)
         End Try
-
     End Sub
 
 End Class

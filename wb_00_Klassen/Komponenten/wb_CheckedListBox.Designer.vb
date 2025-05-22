@@ -1,6 +1,6 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class wb_CheckedListBox
-    Inherits Windows.Forms.CheckedListBox
+    Inherits System.Windows.Forms.CheckedListBox
 
     'UserControl überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
     <System.Diagnostics.DebuggerNonUserCode()> _

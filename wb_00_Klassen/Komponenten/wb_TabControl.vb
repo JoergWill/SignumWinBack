@@ -5,7 +5,7 @@
 'Änderungen:
 '---------------------------------------------------------
 'Beschreibung:
-'Ableitung der Klasse Windows.Forms.TabControl'
+'Ableitung der Klasse System.Windows.Forms.TabControl'
 
 'Add a HideTabs property to turn on/off TabItems
 'aus: http://dotnetrix.co.uk/tabcontrol.htm
@@ -14,10 +14,9 @@ Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Windows.Forms
 
-<ToolboxBitmap(GetType(Windows.Forms.TabControl))>
+<ToolboxBitmap(GetType(System.Windows.Forms.TabControl))>
 Public Class wb_TabControl
     Inherits System.Windows.Forms.TabControl
-
     Private m_HideTabs As Boolean
 
     <DefaultValue(False), RefreshProperties(RefreshProperties.All)>

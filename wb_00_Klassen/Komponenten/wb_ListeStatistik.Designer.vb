@@ -377,32 +377,32 @@ Partial Class wb_ListeStatistik
 
     End Sub
 
-    Friend WithEvents gbFilter As Windows.Forms.GroupBox
-    Friend WithEvents cbIstwertNullAusblenden As Windows.Forms.CheckBox
-    Friend WithEvents cbWasserTempAusblenden As Windows.Forms.CheckBox
-    Friend WithEvents cbElementeAusListe As Windows.Forms.CheckBox
-    Friend WithEvents cbAlleLinien As Windows.Forms.CheckBox
-    Friend WithEvents dtFilterVon As Windows.Forms.DateTimePicker
-    Friend WithEvents lblFilterBis As Windows.Forms.Label
-    Friend WithEvents lblFilterVon As Windows.Forms.Label
-    Friend WithEvents dtFilterBis As Windows.Forms.DateTimePicker
-    Friend WithEvents BtnListeLeeren As Windows.Forms.Button
-    Friend WithEvents BtnListeLaden As Windows.Forms.Button
-    Friend WithEvents BtnListeSpeichern As Windows.Forms.Button
-    Friend WithEvents BtnListeRemove As Windows.Forms.Button
-    Friend WithEvents BtnListeAdd As Windows.Forms.Button
-    Friend WithEvents tpListe As Windows.Forms.Panel
-    Friend WithEvents cbLinien As Windows.Forms.CheckedListBox
-    Friend WithEvents gbLinien As Windows.Forms.GroupBox
-    Friend WithEvents cbUhrzeitBis As Windows.Forms.CheckBox
-    Friend WithEvents cbUhrzeitVon As Windows.Forms.CheckBox
-    Friend WithEvents dtUhrzeitBis As Windows.Forms.DateTimePicker
-    Friend WithEvents dtUhrzeitVon As Windows.Forms.DateTimePicker
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents gbRohGruppe As Windows.Forms.GroupBox
-    Friend WithEvents Label3 As Windows.Forms.Label
+    Friend WithEvents gbFilter As System.Windows.Forms.GroupBox
+    Friend WithEvents cbIstwertNullAusblenden As System.Windows.Forms.CheckBox
+    Friend WithEvents cbWasserTempAusblenden As System.Windows.Forms.CheckBox
+    Friend WithEvents cbElementeAusListe As System.Windows.Forms.CheckBox
+    Friend WithEvents cbAlleLinien As System.Windows.Forms.CheckBox
+    Friend WithEvents dtFilterVon As System.Windows.Forms.DateTimePicker
+    Friend WithEvents lblFilterBis As System.Windows.Forms.Label
+    Friend WithEvents lblFilterVon As System.Windows.Forms.Label
+    Friend WithEvents dtFilterBis As System.Windows.Forms.DateTimePicker
+    Friend WithEvents BtnListeLeeren As System.Windows.Forms.Button
+    Friend WithEvents BtnListeLaden As System.Windows.Forms.Button
+    Friend WithEvents BtnListeSpeichern As System.Windows.Forms.Button
+    Friend WithEvents BtnListeRemove As System.Windows.Forms.Button
+    Friend WithEvents BtnListeAdd As System.Windows.Forms.Button
+    Friend WithEvents tpListe As System.Windows.Forms.Panel
+    Friend WithEvents cbLinien As System.Windows.Forms.CheckedListBox
+    Friend WithEvents gbLinien As System.Windows.Forms.GroupBox
+    Friend WithEvents cbUhrzeitBis As System.Windows.Forms.CheckBox
+    Friend WithEvents cbUhrzeitVon As System.Windows.Forms.CheckBox
+    Friend WithEvents dtUhrzeitBis As System.Windows.Forms.DateTimePicker
+    Friend WithEvents dtUhrzeitVon As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents gbRohGruppe As System.Windows.Forms.GroupBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents cbRohstoffGrp2 As wb_ComboBox
-    Friend WithEvents Label14 As Windows.Forms.Label
+    Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents cbRohstoffGrp1 As wb_ComboBox
 End Class

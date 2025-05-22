@@ -158,14 +158,14 @@ Partial Class wb_SiloBef
 
     End Sub
 
-    Friend WithEvents tbLieferMenge As Windows.Forms.TextBox
-    Friend WithEvents lbLiefermenge As Windows.Forms.Label
-    Friend WithEvents tbVerteilt As Windows.Forms.TextBox
-    Friend WithEvents lbVerteilt As Windows.Forms.Label
-    Friend WithEvents tbRest As Windows.Forms.TextBox
-    Friend WithEvents lbRest As Windows.Forms.Label
-    Friend WithEvents BtnLieferungVerbuchen As Windows.Forms.Button
-    Friend WithEvents Abbruch As Windows.Forms.Button
-    Friend WithEvents lblNummer As Windows.Forms.Label
-    Friend WithEvents lblRohCharge As Windows.Forms.Label
+    Friend WithEvents tbLieferMenge As System.Windows.Forms.TextBox
+    Friend WithEvents lbLiefermenge As System.Windows.Forms.Label
+    Friend WithEvents tbVerteilt As System.Windows.Forms.TextBox
+    Friend WithEvents lbVerteilt As System.Windows.Forms.Label
+    Friend WithEvents tbRest As System.Windows.Forms.TextBox
+    Friend WithEvents lbRest As System.Windows.Forms.Label
+    Friend WithEvents BtnLieferungVerbuchen As System.Windows.Forms.Button
+    Friend WithEvents Abbruch As System.Windows.Forms.Button
+    Friend WithEvents lblNummer As System.Windows.Forms.Label
+    Friend WithEvents lblRohCharge As System.Windows.Forms.Label
 End Class

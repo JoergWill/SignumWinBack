@@ -10,7 +10,8 @@ Public Class wb_Kocher
     Private _RezeptListe As New Hashtable
 
     Public Sub New()
-        FtpTrace.LogFunctions = False
+        'TODO Funktioniert nach Update nicht mehr
+        'FtpTrace.LogFunctions = False
     End Sub
 
     ''' <summary>
@@ -175,9 +176,10 @@ Public Class wb_Kocher
     ''' 
     ''' </summary>
     ''' <param name="cmpMaster"></param>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Public Sub SyncToMaster(cmpMaster As wb_Kocher)
         ' der Master-Kocher muss definiert sein
-        If cmpMaster IsNot Nothing And cmpMaster.VerbindungsStatus = wb_Global.Kocher_VerbindungsStatus.OK Then
+        If cmpMaster IsNot Nothing AndAlso cmpMaster.VerbindungsStatus = wb_Global.Kocher_VerbindungsStatus.OK Then
             'alle Rezepte in der eigenen Liste
             For Each Rzpt As wb_Kocher_Rezept In RezeptListe.Values
 

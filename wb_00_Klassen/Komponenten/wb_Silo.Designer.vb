@@ -39,6 +39,7 @@ Partial Class wb_Silo
         Me.BtnBestandsKorrektur = New System.Windows.Forms.Button()
         Me.lbBefMenge = New System.Windows.Forms.Label()
         Me.lbAktiv = New System.Windows.Forms.Label()
+        Me.lblKommentar = New System.Windows.Forms.Label()
         Me.pnlSilo.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -109,7 +110,7 @@ Partial Class wb_Silo
         Me.lblRohName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblRohName.Location = New System.Drawing.Point(6, 43)
         Me.lblRohName.Name = "lblRohName"
-        Me.lblRohName.Size = New System.Drawing.Size(139, 36)
+        Me.lblRohName.Size = New System.Drawing.Size(139, 17)
         Me.lblRohName.TabIndex = 6
         Me.lblRohName.Text = "Weizen 550"
         '
@@ -148,6 +149,7 @@ Partial Class wb_Silo
         Me.BtnSiloTauschen.Name = "BtnSiloTauschen"
         Me.BtnSiloTauschen.Size = New System.Drawing.Size(62, 38)
         Me.BtnSiloTauschen.TabIndex = 8
+        Me.BtnSiloTauschen.TabStop = False
         Me.BtnSiloTauschen.Text = "Rohstoff tauschen"
         Me.ToolTipSiloBef.SetToolTip(Me.BtnSiloTauschen, "Ändert den Rohstoff für dieses Silo." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Der bisherige Rohstoff darf in keiner Rezep" &
         "tur mehr verwendet werden." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
@@ -161,6 +163,7 @@ Partial Class wb_Silo
         Me.BtnSiloNull.Name = "BtnSiloNull"
         Me.BtnSiloNull.Size = New System.Drawing.Size(62, 38)
         Me.BtnSiloNull.TabIndex = 11
+        Me.BtnSiloNull.TabStop = False
         Me.BtnSiloNull.Text = "Null setzen"
         Me.ToolTipSiloBef.SetToolTip(Me.BtnSiloNull, "Silo-Füllstand auf Null setzen" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
         Me.BtnSiloNull.UseVisualStyleBackColor = True
@@ -185,6 +188,7 @@ Partial Class wb_Silo
         Me.BtnBestandsKorrektur.Name = "BtnBestandsKorrektur"
         Me.BtnBestandsKorrektur.Size = New System.Drawing.Size(68, 38)
         Me.BtnBestandsKorrektur.TabIndex = 13
+        Me.BtnBestandsKorrektur.TabStop = False
         Me.BtnBestandsKorrektur.Text = "Bestand korrigieren"
         Me.ToolTipSiloBef.SetToolTip(Me.BtnBestandsKorrektur, "Silo-Füllstand korrigieren und/oder Sackschütte/KKA befüllen")
         Me.BtnBestandsKorrektur.UseVisualStyleBackColor = True
@@ -212,10 +216,20 @@ Partial Class wb_Silo
         Me.lbAktiv.TabIndex = 12
         Me.lbAktiv.Text = "Aktiv"
         '
+        'lblKommentar
+        '
+        Me.lblKommentar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblKommentar.Location = New System.Drawing.Point(6, 61)
+        Me.lblKommentar.Name = "lblKommentar"
+        Me.lblKommentar.Size = New System.Drawing.Size(139, 17)
+        Me.lblKommentar.TabIndex = 14
+        Me.lblKommentar.Text = "Silo 1"
+        '
         'wb_Silo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.lblKommentar)
         Me.Controls.Add(Me.BtnBestandsKorrektur)
         Me.Controls.Add(Me.lbAktiv)
         Me.Controls.Add(Me.lblNummer)
@@ -239,20 +253,21 @@ Partial Class wb_Silo
 
     End Sub
 
-    Friend WithEvents lbMax As Windows.Forms.Label
-    Friend WithEvents lbIst As Windows.Forms.Label
-    Friend WithEvents tbMax As Windows.Forms.TextBox
-    Friend WithEvents tbIst As Windows.Forms.TextBox
-    Friend WithEvents lblName As Windows.Forms.Label
-    Friend WithEvents lblNummer As Windows.Forms.Label
-    Friend WithEvents lblRohName As Windows.Forms.Label
-    Friend WithEvents pnlSilo As Windows.Forms.TableLayoutPanel
-    Friend WithEvents tbSiloFuellstand As Windows.Forms.TextBox
-    Friend WithEvents BtnSiloTauschen As Windows.Forms.Button
-    Friend WithEvents ToolTipSiloBef As Windows.Forms.ToolTip
-    Friend WithEvents tbBefMenge As Windows.Forms.TextBox
-    Friend WithEvents lbBefMenge As Windows.Forms.Label
-    Friend WithEvents BtnSiloNull As Windows.Forms.Button
-    Friend WithEvents lbAktiv As Windows.Forms.Label
-    Friend WithEvents BtnBestandsKorrektur As Windows.Forms.Button
+    Friend WithEvents lbMax As System.Windows.Forms.Label
+    Friend WithEvents lbIst As System.Windows.Forms.Label
+    Friend WithEvents tbMax As System.Windows.Forms.TextBox
+    Friend WithEvents tbIst As System.Windows.Forms.TextBox
+    Friend WithEvents lblName As System.Windows.Forms.Label
+    Friend WithEvents lblNummer As System.Windows.Forms.Label
+    Friend WithEvents lblRohName As System.Windows.Forms.Label
+    Friend WithEvents pnlSilo As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tbSiloFuellstand As System.Windows.Forms.TextBox
+    Friend WithEvents BtnSiloTauschen As System.Windows.Forms.Button
+    Friend WithEvents ToolTipSiloBef As System.Windows.Forms.ToolTip
+    Friend WithEvents tbBefMenge As System.Windows.Forms.TextBox
+    Friend WithEvents lbBefMenge As System.Windows.Forms.Label
+    Friend WithEvents BtnSiloNull As System.Windows.Forms.Button
+    Friend WithEvents lbAktiv As System.Windows.Forms.Label
+    Friend WithEvents BtnBestandsKorrektur As System.Windows.Forms.Button
+    Friend WithEvents lblKommentar As System.Windows.Forms.Label
 End Class

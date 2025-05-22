@@ -1,8 +1,9 @@
 ﻿Imports WinBack.wb_Functions
 Imports System.Windows.Forms
 Imports WinBack.wb_Sql
-Imports System.Data.SqlClient
 Imports MySql.Data.MySqlClient
+Imports System.Data
+Imports Microsoft.Data.SqlClient
 
 ''' <summary>
 '''Ableitung der Klasse DataGridView.
@@ -23,7 +24,7 @@ Imports MySql.Data.MySqlClient
 '''generiert) nicht. 
 ''' </summary>
 Public Class wb_DataGridView
-    Inherits Windows.Forms.DataGridView
+    Inherits System.Windows.Forms.DataGridView
 
     Dim MySqlCon As MySqlConnection
     Dim MySqlCmd As MySqlCommand
@@ -49,18 +50,49 @@ Public Class wb_DataGridView
     Dim iSort As Integer = -1
 
     Dim mContextMenu As New ContextMenuStrip
-    Private bContextMenuInitialized As Boolean = False
     Dim mMenuItem As ToolStripMenuItem
+    Private bContextMenuInitialized As Boolean = False
     Dim WithEvents tDataHasChanged As New Timer
 
+    'Minimale Spaltenbreite (Doppelclick optimiert die Spaltenbreite wieder)
+    Const ColMinWidth = 20
+
     ''' <summary>
-    ''' GridView-Daten als DataTable publizieren. Für ListUndLabel Druck der Rohstoff-Liste
+    ''' GridView-Daten als DataTable publizieren. Für ListUndLabel Druck der Artikel/Rohstoff/Rezept/User-Liste
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property LLData As DataTable
         Get
             Return DtaTable
         End Get
+    End Property
+
+    ''' <summary>
+    ''' Filterbedingung im Klartext.
+    ''' (Überschrift für Druck-Report...)
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property FilterText As String
+        Get
+            FilterText = ""
+
+            'Sortier-Folge
+            If iSort > wb_Global.UNDEFINED AndAlso iSort < ColNames.Count Then
+                FilterText += "Sortiert nach " & ColNames(iSort).ToString.Replace("&", "")
+            End If
+            'Filter
+            If sFilter <> "" Then
+                FilterText += " - Filter (*" & sFilter & "*)"
+            End If
+
+        End Get
+    End Property
+
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
+    Public WriteOnly Property SetMultiSelect As Boolean
+        Set(value As Boolean)
+            MultiSelect = value
+        End Set
     End Property
 
     ''' <summary>
@@ -72,18 +104,20 @@ Public Class wb_DataGridView
     ''' <param name="sGridName">String DataGrid-Name läd die Spalten-Einstellungen aus winback.ini</param>
     ''' <param name="table">dbTable Datenbank Tabelle winback/wbdaten</param>
     <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:SQL-Abfragen auf Sicherheitsrisiken überprüfen")>
-    Friend Sub LoadData(sSql As String, sGridName As String, Optional table As dbTable = dbTable.winback)
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
+    Public Sub LoadData(sSql As String, sGridName As String, Optional table As dbTable = dbTable.winback)
         mContextMenu.SuspendLayout()
         'x mSek nachdem sich der Datensatz geändert hat, wird der aktuelle Datensatz im 
         'Detail-Fenster angezeigt
         tDataHasChanged.Interval = _tDataChangedTime
         tDataHasChanged.Enabled = False
         DtaTable.Clear()
+        'DtaTable.DataSet.EnforceConstraints = False
 
         Select Case wb_GlobalSettings.WinBackDBType
 
             'Verbindung über mySql
-            Case dbType.mySql
+            Case wb_Sql.dbType.mySql
                 'Verbindung zur MySQL-Datenbank
                 If table = wb_Sql.dbTable.winback Then
                     MySqlCon = New MySqlConnection(wb_GlobalSettings.SqlConWinBack)
@@ -101,11 +135,15 @@ Public Class wb_DataGridView
                 Try
                     MySqlDta.Fill(DtaTable)
                 Catch e As Exception
-                    Debug.Print(e.ToString)
+                    'Fehlende Spalten in Datenbank abfangen und Meldung ausgeben
+                    If e.ToString.Contains("Unknown column") Then
+                        MsgBox("Fehler in Datenbank. Update erforderlich!", MsgBoxStyle.Critical, "Fehler Datenbank")
+                    End If
+                    Debug.Print("ssql=" & sSql & vbCrLf & e.ToString)
                 End Try
 
             ' Verbindung über msSQL
-            Case dbType.msSql
+            Case wb_Sql.dbType.msSql
                 'Verbindung zur SQL-Datenbank
                 If table = wb_Sql.dbTable.winback Then
                     msCon = New SqlConnection(wb_GlobalSettings.SqlConWinBack)
@@ -118,6 +156,7 @@ Public Class wb_DataGridView
                 Try
                     msDta.Fill(DtaTable)
                 Catch
+                    Debug.Print("@E_Fehler beim Speichern DataGridView")
                 End Try
         End Select
 
@@ -145,15 +184,19 @@ Public Class wb_DataGridView
                 ElseIf Microsoft.VisualBasic.Left(ColNames(i), 1) = "" Then
                     Columns(i).HeaderText = ""
                     Columns(i).Visible = False
+                    Columns(i).AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet
                 Else
                     Columns(i).HeaderText = ColNames(i) + Chr(10)
+                    Columns(i).AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet
                 End If
             Else
                 Columns(i).HeaderText = ""
                 Columns(i).Visible = False
             End If
-        Next
 
+            'Mindenstbreite
+            Columns(i).MinimumWidth = ColMinWidth
+        Next
 
         If Not bContextMenuInitialized Then
             'Spaltenbreiten aus ini-Datei laden
@@ -222,8 +265,14 @@ Public Class wb_DataGridView
     ''' </summary>
     ''' <param name="ColNr"></param>
     Public Sub SetSortColumn(Optional ColNr As Integer = 1)
-        sFilter = ""
-        iSort = ColNr
+        'Sicherheitshalber prüfen ob die Spalten-Nummer gültig ist
+        If (ColNr >= 0) AndAlso (ColNr < Columns.Count) Then
+            'Sortieren nach Spalte x
+            SortColumn(ColNr)
+            MyBase.Sort(Columns(ColNr), System.ComponentModel.ListSortDirection.Ascending)
+            'Focus auf das DataGridView setzen (KeyPress-Ereignis)
+            MyBase.Select()
+        End If
     End Sub
 
     ''' <summary>
@@ -240,21 +289,22 @@ Public Class wb_DataGridView
         End If
 
         'aktuellen Datensatz merken
-        If (Me.Rows.Count > 0) And (Me.SelectedRows.Count > 0) Then
+        If (Me.Rows.Count > 0) AndAlso (Me.SelectedRows.Count > 0) Then
             AktRow = Me.SelectedRows(0).Index
             SaveRow = Me.FirstDisplayedCell.RowIndex
         End If
 
         Select Case wb_GlobalSettings.WinBackDBType
             ' Verbindung über mySql
-            Case dbType.mySql
+            Case wb_Sql.dbType.mySql
                 Try
                     DtaTable.Clear()
                     MySqlDta.Fill(DtaTable)
                 Catch
+                    Debug.Print("@E_Fehler beim Speichern des DataGridView")
                 End Try
             ' Verbindung über msSQL
-            Case dbType.msSql
+            Case wb_Sql.dbType.msSql
                 Throw New NotImplementedException
         End Select
 
@@ -262,7 +312,7 @@ Public Class wb_DataGridView
         If AktRow >= Me.RowCount Then
             AktRow = Me.RowCount - 1
         End If
-        If SaveRow <> wb_Global.UNDEFINED And AktRow <> wb_Global.UNDEFINED And xcol <> wb_Global.UNDEFINED And SaveRow < Me.RowCount Then
+        If SaveRow <> wb_Global.UNDEFINED AndAlso AktRow <> wb_Global.UNDEFINED AndAlso xcol <> wb_Global.UNDEFINED AndAlso SaveRow < Me.RowCount Then
             Me.FirstDisplayedScrollingRowIndex = SaveRow
             Me.Rows(AktRow).Selected = True
             Me.CurrentCell = Me.Item(xcol, AktRow)
@@ -274,6 +324,7 @@ Public Class wb_DataGridView
     ''' x Sekunden nach Änderung des Datensatz-Zeigers wird der
     ''' Event HasChanged() ausgelöst
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
     WriteOnly Property tDataChangedTime As Integer
         Set(value As Integer)
             _tDataChangedTime = value
@@ -283,12 +334,17 @@ Public Class wb_DataGridView
     ''' <summary>
     ''' zusätzliche Filter-Bedingung (SQL)
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
     WriteOnly Property Filter As String
         Set(value As String)
             _Filter = value
             sFilter = ""
             If DtaView IsNot Nothing Then
-                DtaView.RowFilter = _Filter
+                Try
+                    DtaView.RowFilter = _Filter
+                Catch ex As Exception
+                    _Filter = ""
+                End Try
             End If
         End Set
     End Property
@@ -326,7 +382,7 @@ Public Class wb_DataGridView
     ''' <param name="Separator"></param>
     Public Sub PopupItemAdd(Text As String, Tag As String, Image As Drawing.Image, OnClick As EventHandler, Optional Separator As Boolean = False, Optional Checked As Boolean = False)
         'Menu-Item anfügen
-        Dim mMenuItem As New Windows.Forms.ToolStripMenuItem(Text, Image, OnClick)
+        Dim mMenuItem As New System.Windows.Forms.ToolStripMenuItem(Text, Image, OnClick)
         mMenuItem.Tag = Tag
         mMenuItem.Checked = Checked
         mMenuItem.CheckState = CheckState.Unchecked
@@ -338,6 +394,25 @@ Public Class wb_DataGridView
         If Separator Then
             mContextMenu.Items.Add(New ToolStripSeparator)
         End If
+    End Sub
+
+    Public Sub PopupItemAdd(Text As String, Tag As String, Image As Drawing.Image, Separator As Boolean, ParamArray DropDownItems() As ToolStripItem)
+        'Menu-Item anfügen
+        Try
+            Dim mMenuItem As New System.Windows.Forms.ToolStripMenuItem(Text, Image, DropDownItems)
+            mMenuItem.Tag = Tag
+            'mMenuItem.Checked = False
+            'mMenuItem.CheckState = CheckState.Unchecked
+            'mMenuItem.CheckOnClick = False
+
+            mContextMenu.Items.Add(TryCast(mMenuItem, ToolStripMenuItem))
+
+            'Wenn notwendig, Separator anfügen
+            If Separator Then
+                mContextMenu.Items.Add(New ToolStripSeparator)
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
 
     Public Sub PopupItemsUncheck(Items As List(Of String))
@@ -367,20 +442,37 @@ Public Class wb_DataGridView
     Public Sub UpdateDataBase()
         'DataHasChanged-Event unterdrücken
         _SuppressChangeEvent = True
+
+        ''DEBUG - CurrentCell
+        'Dim cc As Integer = Me.CurrentCell.RowIndex
+        ''DEBUG - Alle Elemente an dieser Stelle im Array
+        'Debug.Print("Vor CurrentCell = Nothing")
+        'For i = 0 To DtaTable.Columns.Count - 1
+        '    Debug.Print(DtaTable.Rows(cc).ItemArray(i).ToString)
+        'Next
+
         'damit die Update-Routine richtig funktioniert 
         'muss vorher die Zeile im DataGrid gewechselt worden sein !!
         Try
             Me.CurrentCell = Nothing
         Catch
+            Debug.Print("@E_Fehler beim Speichern Des DatagridView")
         End Try
+
+        ''DEBUG - Alle Elemente an dieser Stelle im Array
+        'Debug.Print("Nach CurrentCell = Nothing")
+        'For i = 0 To DtaTable.Columns.Count - 1
+        '    Debug.Print(DtaTable.Rows(cc).ItemArray(i).ToString)
+        'Next
+
         Select Case wb_GlobalSettings.WinBackDBType
             ' Verbindung über mySql
-            Case dbType.mySql
+            Case wb_Sql.dbType.mySql
                 If MySqlDta IsNot Nothing Then
                     MySqlDta.Update(DtaTable)
                 End If
                 ' Verbindung über msSQL
-            Case dbType.msSql
+            Case wb_Sql.dbType.msSql
                 If msDta IsNot Nothing Then
                     msDta.Update(DtaTable)
                 End If
@@ -410,7 +502,7 @@ Public Class wb_DataGridView
         End Set
         Get
             'Prüfen ob überhaupt Datensätze vorhanden sind (Filter-Result)
-            If DtaView.Count > 0 Then
+            If DtaView.Count > 0 AndAlso CurrentRow IsNot Nothing Then
                 Try
                     If FieldName = _8859_5_FieldName Then
                         Return wb_Functions.MySqlToUtf8(CurrentRow.Cells(FieldName).Value.ToString())
@@ -432,6 +524,7 @@ Public Class wb_DataGridView
     ''' <param name="FieldName"></param>
     ''' <param name="iRow"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2352:Indexed properties with more than one parameter should not be used", Justification:="<Ausstehend>")>
     ReadOnly Property Field(FieldName As String, iRow As Integer) As String
         Get
             Try
@@ -441,6 +534,7 @@ Public Class wb_DataGridView
                     Return Rows(iRow).Cells(FieldName).Value.ToString
                 End If
             Catch
+                Debug.Print("Exception in DataGridView.Field: FieldName = " & FieldName)
                 Return Nothing
             End Try
         End Get
@@ -456,11 +550,16 @@ Public Class wb_DataGridView
             Try
                 CurrentRow.Cells(FieldName).Value = CStr(value)
             Catch
+                Debug.Print("Fehler beim Ändern DataGridView.iField Name/Wert " & FieldName & "/" & value.ToString)
             End Try
         End Set
         Get
             Try
-                Return wb_Functions.StrToInt(CurrentRow.Cells(FieldName).Value.ToString)
+                If CurrentRow IsNot Nothing Then
+                    Return wb_Functions.StrToInt(CurrentRow.Cells(FieldName).Value.ToString)
+                Else
+                    Return 0
+                End If
             Catch
                 Return 0
             End Try
@@ -490,7 +589,7 @@ Public Class wb_DataGridView
         Dim iColumn As Integer
         iColumn = DirectCast(sender, ToolStripMenuItem).Tag
         'Spalte ein-/ausblenden
-        If iColumn >= 0 And iColumn <= ColumnCount Then
+        If iColumn >= 0 AndAlso iColumn <= ColumnCount Then
             Columns(iColumn).Visible = Not Columns(iColumn).Visible
         End If
     End Sub
@@ -524,11 +623,13 @@ Public Class wb_DataGridView
         For i = 0 To ColumnCount - 1
             w = IniFile.ReadInt(sGridName, "Column" & i.ToString & "-Width", 0)
             Try
-                If w > 0 And Columns(i).Name IsNot "" And Columns(i).Visible And Columns(i) IsNot Nothing Then
-                    Columns(i).Width = w
+                If w > 0 AndAlso Columns(i).Name IsNot "" AndAlso Columns(i).Visible AndAlso Columns(i) IsNot Nothing Then
+                    If Columns(i).AutoSizeMode <> DataGridViewAutoSizeColumnMode.Fill Then
+                        Columns(i).Width = w
+                    End If
                     Columns(i).Visible = True
                 ElseIf w = -1 Then
-                    Columns(i).Visible = False
+                        Columns(i).Visible = False
                 End If
             Catch
             End Try
@@ -544,6 +645,7 @@ Public Class wb_DataGridView
     ''' <returns>
     ''' True - Wert gefunden
     ''' False - Wert nicht gefunden</returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Public Function SelectData(col As Integer, s As String) As Boolean
         'ermittelt die erste sichtbare Spalte im Grid. Ist notwendig,
         'weil Me.CurrentCell keine unsichtbaren Spalten selektieren kann
@@ -625,7 +727,7 @@ Public Class wb_DataGridView
         'Wenn das eingegebene Zeichen einem Suchstring zugeordnet werden kann, wird der Tastendruck nicht mehr weitergegeben
         e.Handled = KeyToString(e.KeyChar, sFilter)
 
-        If iSort > 0 And (e.Handled Or sFilter <> "") Then
+        If iSort >= 0 AndAlso (e.Handled OrElse sFilter <> "") Then
             Dim sHeaderName As String
             Try : sHeaderName = ColNames(iSort) : Catch : sHeaderName = "" : End Try
             If Microsoft.VisualBasic.Left(sHeaderName, 1) = "&" Then
@@ -648,6 +750,17 @@ Public Class wb_DataGridView
     End Sub
 
     ''' <summary>
+    ''' Doppel-Click auf die Header-Zelle setzt die Breite auf Optimalwert.
+    ''' Die Spalten sind mindestens 20px breit.
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Overloads Sub DataGrdiView_ColumnHeadermouseDblClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MyBase.ColumnHeaderMouseDoubleClick
+        Me.AutoResizeColumn(e.ColumnIndex)
+    End Sub
+
+    ''' <summary>
     ''' Maus-Klick auf Header-Zeile 
     ''' Sortierkriterium umschalten
     ''' </summary>
@@ -656,18 +769,25 @@ Public Class wb_DataGridView
     Private Overloads Sub DataGridView_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MyBase.ColumnHeaderMouseClick
         'alten Filter löschen (entspricht dem Verhalten des alten WinBack-Office)
         ResetFilter()
+        'Sortieren nach Spalte x
+        SortColumn(e.ColumnIndex)
+    End Sub
 
-        If e.ColumnIndex <> iSort Then
+    Private Sub SortColumn(e As Integer)
+        If e <> iSort Then
             'alten Header wieder restaurieren
             If iSort > 0 Then
                 Dim sHeaderName As String
                 Try : sHeaderName = ColNames(iSort) : Catch : sHeaderName = "" : End Try
+                If Microsoft.VisualBasic.Left(sHeaderName, 1) = "&" Then
+                    sHeaderName = sHeaderName.Remove(0, 1)
+                End If
                 Columns(iSort).HeaderText = sHeaderName + Chr(10)
             End If
 
-            If Columns(e.ColumnIndex).ValueType = GetType(String) Then
+            If Columns(e).ValueType = GetType(String) Then
                 sFilter = ""
-                iSort = e.ColumnIndex
+                iSort = e
             Else
                 iSort = -1
             End If
@@ -683,6 +803,9 @@ Public Class wb_DataGridView
         If iSort > 0 Then
             Dim sHeaderName As String
             Try : sHeaderName = ColNames(iSort) : Catch : sHeaderName = "" : End Try
+            If Microsoft.VisualBasic.Left(sHeaderName, 1) = "&" Then
+                sHeaderName = sHeaderName.Remove(0, 1)
+            End If
             Columns(iSort).HeaderText = sHeaderName + Chr(10)
         End If
         'Reset Filter
@@ -691,20 +814,25 @@ Public Class wb_DataGridView
         DtaView.RowFilter = _Filter
     End Sub
 
-
     ''' <summary>
     ''' Ausgabe des Datenbank-Feldes.
     ''' Es wird anhand des Feldnamens geprüft, ob das Datenbank-Feld aus der MySQL-Datenbank von iso-8859-5 nach utf-8 konvertiert werden muss.
+    ''' 
+    ''' Die Datenbankfelder KA_Grp1 und KA_Grp2 werden anhand der Tabelle ItemParameter aufgelöst
     ''' </summary>
     ''' <param name="Sender"></param>
     ''' <param name="e"></param>
     Private Sub DataGridView_CellFormating(ByVal Sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles MyBase.CellFormatting
-        If MyBase.Columns(e.ColumnIndex).Name = x8859_5_FieldName Then
-            'Debug.Print("DataGridView FieldName found ")
-            If Not IsDBNull(e.Value) Then
-                e.Value = MySqlToUtf8(e.Value)
-            End If
-        End If
+        'abhängig von Datenbank-Feld-Namen
+        Select Case MyBase.Columns(e.ColumnIndex).Name
+            Case x8859_5_FieldName
+                If Not IsDBNull(e.Value) Then
+                    e.Value = MySqlToUtf8(e.Value)
+                End If
+            Case "KA_Grp1", "KA_Grp2"
+                'Bezeichnung aus Rohstoff-Gruppe
+                e.Value = wb_Rohstoffe_Shared.GetRohstoffGruppeFromNr(wb_Functions.StrToInt(e.Value))
+        End Select
     End Sub
 
     ''' <summary>
@@ -712,7 +840,7 @@ Public Class wb_DataGridView
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Overloads Sub DataGridView_DataError(sender As Object, e As Windows.Forms.DataGridViewDataErrorEventArgs) Handles MyBase.DataError
+    Private Overloads Sub DataGridView_DataError(sender As Object, e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles MyBase.DataError
         'Exception-Text ausgeben
         Debug.Print(e.Exception.ToString)
     End Sub

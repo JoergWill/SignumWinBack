@@ -1,5 +1,4 @@
-﻿
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Imports System.Windows.Forms
 
 Public Class wb_KompRzChargen
@@ -37,7 +36,7 @@ Public Class wb_KompRzChargen
     ''' <param name="Komp"></param>
     Public Sub GetDataFromKomp(ByRef Komp As wb_Komponente)
         'Komponentendaten aus Datenbank lesen
-        Komp.MySQLdbRead(Komp.Nr)
+        Komp.xMySQLdbRead(Komp.Nr)
         'Komponenten-Nummer
         _KompNr = Komp.Nr
 
@@ -94,6 +93,8 @@ Public Class wb_KompRzChargen
         Komp.Zuschnittverlust = Zuschnitt
         'Vorlauf Produktion
         Komp.ProdVorlauf = ProdVorlauf
+        'Verkaufsgewicht
+        Komp.VerkaufsGewicht = Verkaufsgewicht
 
         'Chargengrößen (werden mit wb_Komponente.UpdateDB() gesichert)
         Komp.TeigChargen.CopyFrom(TeigChargen)
@@ -114,9 +115,8 @@ Public Class wb_KompRzChargen
         'wenn sich die Zuordnung von Rezeptur zum Artikel geändert hat, muss die Nährwert-Berechnung neu durchgeführt werden
         Komp.NwtMarker = wb_Global.ArtikelMarker.nwtUpdate
         'geänderte Daten in DB schreiben
-        Komp.UpdateDB()
+        Komp.UpdateDB(False)
     End Sub
-
 
     Private Sub InitLinienGruppen()
         'ComboBox Liniengruppe Rezepte(Teig) füllen
@@ -190,11 +190,7 @@ Public Class wb_KompRzChargen
                 'keine Verknüpfung zur Cloud möglich
                 BtnCloud.Enabled = False
                 'Für Artikel Button "Update Nährwerte" einblenden
-                If KompType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
-                    BtnUpdateNwt.Visible = True
-                Else
-                    BtnUpdateNwt.Visible = False
-                End If
+                BtnUpdateNwt.Visible = True
             Else
                 BtnRzpt.Text = "Auswählen"
                 BtnRzpShow.Enabled = False
@@ -208,7 +204,7 @@ Public Class wb_KompRzChargen
                 End If
 
                 'wenn schon eine Verknüpfung zur Cloud vorhanden ist kann keine Rezeptur zugewiesen werden
-                If ID = "" Or ID = "-1" Then
+                If ID = "" OrElse ID = "-1" Then
                     BtnRzpt.Enabled = True
                 Else
                     BtnRzpt.Enabled = False
@@ -263,6 +259,7 @@ Public Class wb_KompRzChargen
     ''' </summary>
     ''' <returns></returns>
     <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0031:NULL-Weitergabe verwenden", Justification:="<Ausstehend>")>
     Public Property ArtikelLiniengruppe As Integer
         Get
             If cbArtikelLinienGruppe IsNot Nothing Then
@@ -283,6 +280,7 @@ Public Class wb_KompRzChargen
     ''' </summary>
     ''' <returns></returns>
     <Browsable(False), EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0031:NULL-Weitergabe verwenden", Justification:="<Ausstehend>")>
     Public Property LinienGruppe As Integer
         Get
             If cbLiniengruppe IsNot Nothing Then
@@ -325,7 +323,7 @@ Public Class wb_KompRzChargen
             Return wb_Functions.StrToDouble(tZuschnitt.Text)
         End Get
         Set(value As Double)
-            If Zuschnitt > 100 Then
+            If value > 100 Then
                 value = 100
             End If
             tZuschnitt.Text = wb_Functions.FormatStr(value.ToString, 3, 2) & " %"
@@ -382,11 +380,11 @@ Public Class wb_KompRzChargen
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Public Sub BtnRzpt_Click(sender As Object, e As EventArgs) Handles BtnRzpt.Click
-        Dim RezeptAuswahl As New wb_Rezept_AuswahlListe
+        Dim RezeptAuswahl As New wb_Rezept_AuswahlListe(wb_Rezept_AuswahlListe.SortColumn.RezeptNummer)
         RezeptAuswahl.BtnClear.Enabled = True
         RezeptAuswahl.BtnNew.Enabled = True
 
-        If RezeptAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If RezeptAuswahl.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             RzNr = RezeptAuswahl.RezeptNr
             tRezeptNr.Text = RezeptAuswahl.RezeptNummer
             tRezeptName.Text = RezeptAuswahl.RezeptName
@@ -424,8 +422,17 @@ Public Class wb_KompRzChargen
     Private Sub tStkGewicht_Leave(sender As Object, e As EventArgs) Handles tStkGewicht.Leave
         'Objekt merken - Im Fehlerfall (Dialogbox) wird der Focus auf dieses Objekt zurückgesetzt
         OnErrorSetFocus = sender
+
+        'Nassgewicht
+        Dim ng As Double = wb_Functions.StrToDouble(tStkGewicht.Text)
+        'Teiglingsgewicht berechnen
+        Dim tg As Double = (ng * (100 - Zuschnitt)) / 100
+        'Wenn das Stk-Gewicht geändert wurde, muss das Verkaufsgewicht angepasst werden
+        Verkaufsgewicht = (tg * (100 - Backverlust)) / (100 * 1000)
+
         'geänderten Wert eintragen - löst OnChange-Ereignis aus
         ArtikelChargen.StkGewicht = tStkGewicht.Text
+
     End Sub
 
     Private Sub tChrgMinkg_Leave(sender As Object, e As EventArgs) Handles tChrgMinkg.Leave
@@ -532,6 +539,7 @@ Public Class wb_KompRzChargen
         TeigChargen.MaxCharge.MengeInProzent = tRezMaxPrz.Text
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Style", "IDE0031:NULL-Weitergabe verwenden", Justification:="<Ausstehend>")>
     Private Sub OnErrorMinMaxOptArtikel(sender As Object) Handles ArtikelChargen.OnError
         If ArtikelChargen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
             'Eingabe-Focus auf das auslösende Objekt setzen
@@ -549,6 +557,7 @@ Public Class wb_KompRzChargen
         DataIsInvalid()
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Style", "IDE0031:NULL-Weitergabe verwenden", Justification:="<Ausstehend>")>
     Private Sub OnErrorMinMaxOptTeig(Sender As Object) Handles TeigChargen.OnError
         If TeigChargen.ErrorCode <> wb_Global.MinMaxOptChargenError.NoError Then
             If OnErrorSetFocus IsNot Nothing Then
@@ -571,6 +580,13 @@ Public Class wb_KompRzChargen
     End Sub
 
     Private Sub tBackverlust_Leave(sender As Object, e As EventArgs) Handles tBackverlust.Leave
+        'Flag setzen - Daten wurden geändert, speichern notwendig
+        DataIsInvalid()
+        'Nährwerte müssen neu berechnet werden 
+        'TODO HIER
+    End Sub
+
+    Private Sub tZuschnitt_Leave(sender As Object, e As EventArgs) Handles tZuschnitt.Leave
         'Flag setzen - Daten wurden geändert, speichern notwendig
         DataIsInvalid()
     End Sub

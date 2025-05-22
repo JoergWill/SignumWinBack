@@ -165,15 +165,15 @@ Partial Class wb_SiloSackware
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents lbIst As Windows.Forms.Label
-    Friend WithEvents tbIst As Windows.Forms.TextBox
-    Friend WithEvents lblName As Windows.Forms.Label
-    Friend WithEvents lblNummer As Windows.Forms.Label
-    Friend WithEvents lblRohName As Windows.Forms.Label
-    Friend WithEvents BtnSiloTauschen As Windows.Forms.Button
-    Friend WithEvents ToolTipSiloBef As Windows.Forms.ToolTip
-    Friend WithEvents tbBefMenge As Windows.Forms.TextBox
-    Friend WithEvents lbBefMenge As Windows.Forms.Label
-    Friend WithEvents BtnSiloNull As Windows.Forms.Button
-    Friend WithEvents PictureBox1 As Windows.Forms.PictureBox
+    Friend WithEvents lbIst As System.Windows.Forms.Label
+    Friend WithEvents tbIst As System.Windows.Forms.TextBox
+    Friend WithEvents lblName As System.Windows.Forms.Label
+    Friend WithEvents lblNummer As System.Windows.Forms.Label
+    Friend WithEvents lblRohName As System.Windows.Forms.Label
+    Friend WithEvents BtnSiloTauschen As System.Windows.Forms.Button
+    Friend WithEvents ToolTipSiloBef As System.Windows.Forms.ToolTip
+    Friend WithEvents tbBefMenge As System.Windows.Forms.TextBox
+    Friend WithEvents lbBefMenge As System.Windows.Forms.Label
+    Friend WithEvents BtnSiloNull As System.Windows.Forms.Button
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 End Class

@@ -2,12 +2,12 @@
 Imports System.Windows.Forms
 
 Public MustInherit Class wb_ArrayGridView
-    Inherits Windows.Forms.DataGridView
+    Inherits System.Windows.Forms.DataGridView
 
     'Anzeige von Zell-Tooltips?
     Public _ShowTooltips As Boolean
     Public ColNames As New List(Of String)
-    Private _Font As Drawing.Font = New Drawing.Font("Arial", 12, FontStyle.Regular, GraphicsUnit.Pixel)
+    Private _Font As New Drawing.Font("Arial", 12, FontStyle.Regular, GraphicsUnit.Pixel)
 
     Public Property wbFont As Font
         Get
@@ -46,7 +46,7 @@ Public MustInherit Class wb_ArrayGridView
         For i = 0 To ColNames.Count - 1
             If Microsoft.VisualBasic.Left(ColNames(i), 1) = "&" Then
                 'Spalten-Namen, die mit & beginnen werden als Auto-Size Spalten behandelt
-                Columns.Add("C" & i, ColNames(i).Remove(0, 1) + Chr(10))
+                Columns.Add("C" & i, ColNames(i).Remove(0, 1) & Chr(10))
                 Columns(i).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 Columns(i).Visible = True
             ElseIf ColNames(i) = "" Then
@@ -55,24 +55,26 @@ Public MustInherit Class wb_ArrayGridView
                 Columns(i).Visible = False
             ElseIf Microsoft.VisualBasic.Left(ColNames(i), 1) = "#" Then
                 'Spalten-Namen, die mit # beginnen werden als DateTime-Spalten formatiert
-                Dim c As New wb_GridCalendarColumn
-                c.Name = "C" & i
-                c.ReadOnly = False
-                c.HeaderText = ColNames(i).Remove(0, 1) + Chr(10)
-                c.DateFormat = "dd.MM.yy HH:mm"
+                Dim c As New wb_GridCalendarColumn With {
+                    .Name = "C" & i,
+                    .ReadOnly = False,
+                    .HeaderText = ColNames(i).Remove(0, 1) & Chr(10),
+                    .DateFormat = "dd.MM.yy HH:mm"
+                }
                 Columns.Add(c)
                 Columns(i).Visible = True
             ElseIf Microsoft.VisualBasic.Left(ColNames(i), 1) = "?" Then
                 'Spalten-Namen, die mit ? beginnen werden als CheckBox-Spalten formatiert
-                Dim c As New DataGridViewCheckBoxColumn
-                c.Name = "B" & i
-                c.ReadOnly = False
-                c.HeaderText = ColNames(i).Remove(0, 1) + Chr(10)
+                Dim c As New DataGridViewCheckBoxColumn With {
+                    .Name = "B" & i,
+                    .ReadOnly = False,
+                    .HeaderText = ColNames(i).Remove(0, 1) & Chr(10)
+                }
                 Columns.Add(c)
                 Columns(i).Visible = True
             Else
                 'normale Spalten haben feste Breite
-                Columns.Add("C" & i, ColNames(i) + Chr(10))
+                Columns.Add("C" & i, ColNames(i) & Chr(10))
                 Columns(i).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
                 Columns(i).Visible = True
             End If
@@ -127,10 +129,10 @@ Public MustInherit Class wb_ArrayGridView
             .SelectionMode = DataGridViewSelectionMode.CellSelect
             ' Keine Auswahl erlauben, weil Daten nur angezeigt werden
             .MultiSelect = False
-            .BorderStyle = Windows.Forms.BorderStyle.None
+            .BorderStyle = System.Windows.Forms.BorderStyle.None
 
             ' Es werden keine Scrollbars angezeigt
-            .ScrollBars = Windows.Forms.ScrollBars.None
+            .ScrollBars = System.Windows.Forms.ScrollBars.None
 
             ' ColumnHeader-Einstellungen
             .ColumnHeadersVisible = True
@@ -175,27 +177,32 @@ Public MustInherit Class wb_ArrayGridView
         End With
     End Sub
 
-    Private Sub GridCellClick(sender As Object, e As DataGridViewCellEventArgs) Handles MyBase.CellClick
+    ''' <summary>
+    ''' Hier darf nur der Event CellCONTENTClick verarbeitet werden. Sonst werden die Ergebnisse verfälscht(Niehaves)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1066:Mergeable ""if"" statements should be combined", Justification:="<Ausstehend>")>
+    Private Sub GridCellClick(sender As Object, e As DataGridViewCellEventArgs) Handles MyBase.CellContentClick
         Dim Col As Integer = e.ColumnIndex
         Dim Row As Integer = e.RowIndex
 
         'Wenn die Zeile gültig ist, wird der entsprechende Wert im Ergebnis-Array getoggelt
         Try
-            If Col >= 0 And Col < Me.ColumnCount And Row >= 0 And Row < Me.RowCount Then
+            If Col >= 0 AndAlso Col < Me.ColumnCount AndAlso Row >= 0 AndAlso Row < Me.RowCount Then
                 If Me.Columns(Col).Name.First = "B" Then
-                    'Dim c As DataGridViewCheckBoxCell = CType(Me.Rows(Row).Cells(Col), DataGridViewCheckBoxCell)
-                    'CType(Me.Rows(Row).Cells(Col), DataGridViewCheckBoxCell).Value = Not c.FormattedValue
                     'Toggle
                     Me.Rows(Row).Cells(Col).Value = Not Me.Rows(Row).Cells(Col).FormattedValue
                 End If
             End If
         Catch ex As Exception
+            Debug.Print("Fehler bei GridCellClick")
         End Try
 
     End Sub
 
 
-    Public Sub GridLocation(ByVal Parent As Windows.Forms.TabPage)
+    Public Sub GridLocation(ByVal Parent As System.Windows.Forms.TabPage)
         MyBase.Parent = Parent
         MyBase.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -205,14 +212,34 @@ Public MustInherit Class wb_ArrayGridView
         Dock = DockStyle.Fill
     End Sub
 
-    Public Sub GridLocation(ByVal Parent As Windows.Forms.Panel)
+    Public Sub GridLocation(ByVal Parent As System.Windows.Forms.Panel)
         MyBase.Parent = Parent
         MyBase.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         MyBase.Location = New System.Drawing.Point(Parent.Top, Parent.Left)
         MyBase.Size = New System.Drawing.Size(Parent.Width, Parent.Height)
-        MyBase.Dock = Windows.Forms.DockStyle.Fill
+        MyBase.Dock = System.Windows.Forms.DockStyle.Fill
     End Sub
+
+    ''' <summary>
+    ''' Doppelclick auf den Header einer Check-Box-Spalte setzt alle Einträge in dieser Spalte auf False.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub ColumnHeaderDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MyBase.ColumnHeaderMouseDoubleClick
+        'es darf keine Zeile mehr selektiert sein
+        Me.ClearSelection()
+        'Aktuelle Spalte
+        Dim Col As Integer = e.ColumnIndex
+        'Prüfen ob die Spalte eine Check-Box-Spalte ist
+        If Me.Columns(Col).Name.First = "B" Then
+            'alle Einträge in dieser Spalte auf false setzen
+            For Each r As DataGridViewRow In Rows
+                r.Cells(Col).Value = False
+            Next
+        End If
+    End Sub
+
 
 End Class

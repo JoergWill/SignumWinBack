@@ -22,662 +22,662 @@ Partial Class wb_KompRzChargen
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.lblTeigChargen = New System.Windows.Forms.Label()
-        Me.pTeigChargen = New System.Windows.Forms.Panel()
-        Me.tRezOptkg = New System.Windows.Forms.TextBox()
-        Me.tRezOptPrz = New System.Windows.Forms.TextBox()
-        Me.tRezMaxkg = New System.Windows.Forms.TextBox()
-        Me.tRezMaxPrz = New System.Windows.Forms.TextBox()
-        Me.tRezMinkg = New System.Windows.Forms.TextBox()
-        Me.tRezMinPrz = New System.Windows.Forms.TextBox()
-        Me.lblTeigGesamt = New System.Windows.Forms.Label()
-        Me.tRezGesamt = New System.Windows.Forms.TextBox()
-        Me.lblOpt = New System.Windows.Forms.Label()
-        Me.lblMax = New System.Windows.Forms.Label()
-        Me.lblGewicht = New System.Windows.Forms.Label()
-        Me.lblArtikelChargen = New System.Windows.Forms.Label()
-        Me.pArtikelChargen = New System.Windows.Forms.Panel()
-        Me.tChrgOptStk = New System.Windows.Forms.TextBox()
-        Me.tChrgOptkg = New System.Windows.Forms.TextBox()
-        Me.tChrgOptPrz = New System.Windows.Forms.TextBox()
-        Me.tChrgMaxStk = New System.Windows.Forms.TextBox()
-        Me.tChrgMaxkg = New System.Windows.Forms.TextBox()
-        Me.tChrgMaxPrz = New System.Windows.Forms.TextBox()
-        Me.tChrgMinStk = New System.Windows.Forms.TextBox()
-        Me.tChrgMinkg = New System.Windows.Forms.TextBox()
-        Me.tChrgMinPrz = New System.Windows.Forms.TextBox()
-        Me.lblProStk = New System.Windows.Forms.Label()
-        Me.tStkGewicht = New System.Windows.Forms.TextBox()
-        Me.lblMin = New System.Windows.Forms.Label()
-        Me.lblLinieArtikel = New System.Windows.Forms.Label()
-        Me.lblLinienGruppe = New System.Windows.Forms.Label()
-        Me.BtnRzpShow = New System.Windows.Forms.Button()
-        Me.BtnRzpt = New System.Windows.Forms.Button()
-        Me.tRezeptName = New System.Windows.Forms.TextBox()
-        Me.lblRzeptBezeichnung = New System.Windows.Forms.Label()
-        Me.tRezeptNr = New System.Windows.Forms.TextBox()
-        Me.lblRezeptNr = New System.Windows.Forms.Label()
-        Me.tBackverlust = New System.Windows.Forms.TextBox()
-        Me.lblBackverlust = New System.Windows.Forms.Label()
-        Me.lblProdVorlauf = New System.Windows.Forms.Label()
-        Me.tProdVorlauf = New System.Windows.Forms.TextBox()
-        Me.BtnCloud = New System.Windows.Forms.Button()
-        Me.lblZuschnitt = New System.Windows.Forms.Label()
-        Me.tZuschnitt = New System.Windows.Forms.TextBox()
-        Me.tVkGewicht = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.BtnCalcNassGewicht = New System.Windows.Forms.Button()
-        Me.BtnUpdateNwt = New System.Windows.Forms.Button()
-        Me.cbArtikelLinienGruppe = New WinBack.wb_ComboBox()
-        Me.cbLiniengruppe = New WinBack.wb_ComboBox()
-        Me.pTeigChargen.SuspendLayout()
-        Me.pArtikelChargen.SuspendLayout()
-        Me.SuspendLayout()
-        '
-        'lblTeigChargen
-        '
-        Me.lblTeigChargen.AutoSize = True
-        Me.lblTeigChargen.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblTeigChargen.Location = New System.Drawing.Point(18, 142)
-        Me.lblTeigChargen.Name = "lblTeigChargen"
-        Me.lblTeigChargen.Size = New System.Drawing.Size(71, 13)
-        Me.lblTeigChargen.TabIndex = 65
-        Me.lblTeigChargen.Text = "Teig-Chargen"
-        '
-        'pTeigChargen
-        '
-        Me.pTeigChargen.BackColor = System.Drawing.Color.Transparent
-        Me.pTeigChargen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pTeigChargen.Controls.Add(Me.tRezOptkg)
-        Me.pTeigChargen.Controls.Add(Me.tRezOptPrz)
-        Me.pTeigChargen.Controls.Add(Me.tRezMaxkg)
-        Me.pTeigChargen.Controls.Add(Me.tRezMaxPrz)
-        Me.pTeigChargen.Controls.Add(Me.tRezMinkg)
-        Me.pTeigChargen.Controls.Add(Me.tRezMinPrz)
-        Me.pTeigChargen.Controls.Add(Me.lblTeigGesamt)
-        Me.pTeigChargen.Controls.Add(Me.tRezGesamt)
-        Me.pTeigChargen.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.pTeigChargen.Location = New System.Drawing.Point(8, 141)
-        Me.pTeigChargen.Name = "pTeigChargen"
-        Me.pTeigChargen.Size = New System.Drawing.Size(151, 122)
-        Me.pTeigChargen.TabIndex = 64
-        '
-        'tRezOptkg
-        '
-        Me.tRezOptkg.Location = New System.Drawing.Point(3, 93)
-        Me.tRezOptkg.Name = "tRezOptkg"
-        Me.tRezOptkg.Size = New System.Drawing.Size(67, 20)
-        Me.tRezOptkg.TabIndex = 43
-        Me.tRezOptkg.TabStop = False
-        Me.tRezOptkg.Text = "2000,000 kg"
-        Me.tRezOptkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tRezOptkg.WordWrap = False
-        '
-        'tRezOptPrz
-        '
-        Me.tRezOptPrz.Location = New System.Drawing.Point(77, 93)
-        Me.tRezOptPrz.Name = "tRezOptPrz"
-        Me.tRezOptPrz.Size = New System.Drawing.Size(50, 20)
-        Me.tRezOptPrz.TabIndex = 44
-        Me.tRezOptPrz.TabStop = False
-        Me.tRezOptPrz.Text = "999%"
-        Me.tRezOptPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tRezOptPrz.WordWrap = False
-        '
-        'tRezMaxkg
-        '
-        Me.tRezMaxkg.Location = New System.Drawing.Point(3, 67)
-        Me.tRezMaxkg.Name = "tRezMaxkg"
-        Me.tRezMaxkg.Size = New System.Drawing.Size(67, 20)
-        Me.tRezMaxkg.TabIndex = 40
-        Me.tRezMaxkg.TabStop = False
-        Me.tRezMaxkg.Text = "2000,000 kg"
-        Me.tRezMaxkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tRezMaxkg.WordWrap = False
-        '
-        'tRezMaxPrz
-        '
-        Me.tRezMaxPrz.Location = New System.Drawing.Point(77, 67)
-        Me.tRezMaxPrz.Name = "tRezMaxPrz"
-        Me.tRezMaxPrz.Size = New System.Drawing.Size(50, 20)
-        Me.tRezMaxPrz.TabIndex = 41
-        Me.tRezMaxPrz.TabStop = False
-        Me.tRezMaxPrz.Text = "999%"
-        Me.tRezMaxPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tRezMaxPrz.WordWrap = False
-        '
-        'tRezMinkg
-        '
-        Me.tRezMinkg.Location = New System.Drawing.Point(3, 41)
-        Me.tRezMinkg.Name = "tRezMinkg"
-        Me.tRezMinkg.Size = New System.Drawing.Size(67, 20)
-        Me.tRezMinkg.TabIndex = 36
-        Me.tRezMinkg.TabStop = False
-        Me.tRezMinkg.Text = "2000,000 kg"
-        Me.tRezMinkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tRezMinkg.WordWrap = False
-        '
-        'tRezMinPrz
-        '
-        Me.tRezMinPrz.Location = New System.Drawing.Point(77, 41)
-        Me.tRezMinPrz.Name = "tRezMinPrz"
-        Me.tRezMinPrz.Size = New System.Drawing.Size(50, 20)
-        Me.tRezMinPrz.TabIndex = 38
-        Me.tRezMinPrz.TabStop = False
-        Me.tRezMinPrz.Text = "999%"
-        Me.tRezMinPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tRezMinPrz.WordWrap = False
-        '
-        'lblTeigGesamt
-        '
-        Me.lblTeigGesamt.AutoSize = True
-        Me.lblTeigGesamt.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblTeigGesamt.Location = New System.Drawing.Point(71, 18)
-        Me.lblTeigGesamt.Name = "lblTeigGesamt"
-        Me.lblTeigGesamt.Size = New System.Drawing.Size(73, 13)
-        Me.lblTeigGesamt.TabIndex = 35
-        Me.lblTeigGesamt.Text = "Teig (Gesamt)"
-        '
-        'tRezGesamt
-        '
-        Me.tRezGesamt.Location = New System.Drawing.Point(3, 15)
-        Me.tRezGesamt.Name = "tRezGesamt"
-        Me.tRezGesamt.ReadOnly = True
-        Me.tRezGesamt.Size = New System.Drawing.Size(67, 20)
-        Me.tRezGesamt.TabIndex = 34
-        Me.tRezGesamt.TabStop = False
-        Me.tRezGesamt.Text = "245,999 kg"
-        Me.tRezGesamt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tRezGesamt.WordWrap = False
-        '
-        'lblOpt
-        '
-        Me.lblOpt.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblOpt.Location = New System.Drawing.Point(162, 239)
-        Me.lblOpt.Name = "lblOpt"
-        Me.lblOpt.Size = New System.Drawing.Size(51, 13)
-        Me.lblOpt.TabIndex = 63
-        Me.lblOpt.Text = "Optimal"
-        Me.lblOpt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'lblMax
-        '
-        Me.lblMax.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblMax.Location = New System.Drawing.Point(162, 213)
-        Me.lblMax.Name = "lblMax"
-        Me.lblMax.Size = New System.Drawing.Size(51, 13)
-        Me.lblMax.TabIndex = 62
-        Me.lblMax.Text = "Maximal"
-        Me.lblMax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'lblGewicht
-        '
-        Me.lblGewicht.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblGewicht.Location = New System.Drawing.Point(161, 161)
-        Me.lblGewicht.Name = "lblGewicht"
-        Me.lblGewicht.Size = New System.Drawing.Size(52, 13)
-        Me.lblGewicht.TabIndex = 61
-        Me.lblGewicht.Text = "Gewicht"
-        Me.lblGewicht.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'lblArtikelChargen
-        '
-        Me.lblArtikelChargen.AutoSize = True
-        Me.lblArtikelChargen.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblArtikelChargen.Location = New System.Drawing.Point(225, 143)
-        Me.lblArtikelChargen.Name = "lblArtikelChargen"
-        Me.lblArtikelChargen.Size = New System.Drawing.Size(79, 13)
-        Me.lblArtikelChargen.TabIndex = 60
-        Me.lblArtikelChargen.Text = "Artikel-Chargen"
-        '
-        'pArtikelChargen
-        '
-        Me.pArtikelChargen.BackColor = System.Drawing.Color.Transparent
-        Me.pArtikelChargen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pArtikelChargen.Controls.Add(Me.tChrgOptStk)
-        Me.pArtikelChargen.Controls.Add(Me.tChrgOptkg)
-        Me.pArtikelChargen.Controls.Add(Me.tChrgOptPrz)
-        Me.pArtikelChargen.Controls.Add(Me.tChrgMaxStk)
-        Me.pArtikelChargen.Controls.Add(Me.tChrgMaxkg)
-        Me.pArtikelChargen.Controls.Add(Me.tChrgMaxPrz)
-        Me.pArtikelChargen.Controls.Add(Me.tChrgMinStk)
-        Me.pArtikelChargen.Controls.Add(Me.tChrgMinkg)
-        Me.pArtikelChargen.Controls.Add(Me.tChrgMinPrz)
-        Me.pArtikelChargen.Controls.Add(Me.lblProStk)
-        Me.pArtikelChargen.Controls.Add(Me.tStkGewicht)
-        Me.pArtikelChargen.Location = New System.Drawing.Point(215, 141)
-        Me.pArtikelChargen.Name = "pArtikelChargen"
-        Me.pArtikelChargen.Size = New System.Drawing.Size(176, 122)
-        Me.pArtikelChargen.TabIndex = 59
-        '
-        'tChrgOptStk
-        '
-        Me.tChrgOptStk.Location = New System.Drawing.Point(116, 93)
-        Me.tChrgOptStk.Name = "tChrgOptStk"
-        Me.tChrgOptStk.Size = New System.Drawing.Size(54, 20)
-        Me.tChrgOptStk.TabIndex = 45
-        Me.tChrgOptStk.TabStop = False
-        Me.tChrgOptStk.Text = "14000 Stk"
-        Me.tChrgOptStk.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tChrgOptStk.WordWrap = False
-        '
-        'tChrgOptkg
-        '
-        Me.tChrgOptkg.Location = New System.Drawing.Point(3, 93)
-        Me.tChrgOptkg.Name = "tChrgOptkg"
-        Me.tChrgOptkg.Size = New System.Drawing.Size(67, 20)
-        Me.tChrgOptkg.TabIndex = 43
-        Me.tChrgOptkg.TabStop = False
-        Me.tChrgOptkg.Text = "2000,000 kg"
-        Me.tChrgOptkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tChrgOptkg.WordWrap = False
-        '
-        'tChrgOptPrz
-        '
-        Me.tChrgOptPrz.Location = New System.Drawing.Point(73, 93)
-        Me.tChrgOptPrz.Name = "tChrgOptPrz"
-        Me.tChrgOptPrz.Size = New System.Drawing.Size(40, 20)
-        Me.tChrgOptPrz.TabIndex = 44
-        Me.tChrgOptPrz.TabStop = False
-        Me.tChrgOptPrz.Text = "999%"
-        Me.tChrgOptPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tChrgOptPrz.WordWrap = False
-        '
-        'tChrgMaxStk
-        '
-        Me.tChrgMaxStk.Location = New System.Drawing.Point(116, 67)
-        Me.tChrgMaxStk.Name = "tChrgMaxStk"
-        Me.tChrgMaxStk.Size = New System.Drawing.Size(54, 20)
-        Me.tChrgMaxStk.TabIndex = 42
-        Me.tChrgMaxStk.TabStop = False
-        Me.tChrgMaxStk.Text = "14000 Stk"
-        Me.tChrgMaxStk.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tChrgMaxStk.WordWrap = False
-        '
-        'tChrgMaxkg
-        '
-        Me.tChrgMaxkg.Location = New System.Drawing.Point(3, 67)
-        Me.tChrgMaxkg.Name = "tChrgMaxkg"
-        Me.tChrgMaxkg.Size = New System.Drawing.Size(67, 20)
-        Me.tChrgMaxkg.TabIndex = 40
-        Me.tChrgMaxkg.TabStop = False
-        Me.tChrgMaxkg.Text = "2000,000 kg"
-        Me.tChrgMaxkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tChrgMaxkg.WordWrap = False
-        '
-        'tChrgMaxPrz
-        '
-        Me.tChrgMaxPrz.Location = New System.Drawing.Point(73, 67)
-        Me.tChrgMaxPrz.Name = "tChrgMaxPrz"
-        Me.tChrgMaxPrz.Size = New System.Drawing.Size(40, 20)
-        Me.tChrgMaxPrz.TabIndex = 41
-        Me.tChrgMaxPrz.TabStop = False
-        Me.tChrgMaxPrz.Text = "999%"
-        Me.tChrgMaxPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tChrgMaxPrz.WordWrap = False
-        '
-        'tChrgMinStk
-        '
-        Me.tChrgMinStk.Location = New System.Drawing.Point(116, 41)
-        Me.tChrgMinStk.Name = "tChrgMinStk"
-        Me.tChrgMinStk.Size = New System.Drawing.Size(54, 20)
-        Me.tChrgMinStk.TabIndex = 39
-        Me.tChrgMinStk.TabStop = False
-        Me.tChrgMinStk.Text = "14000 Stk"
-        Me.tChrgMinStk.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tChrgMinStk.WordWrap = False
-        '
-        'tChrgMinkg
-        '
-        Me.tChrgMinkg.Location = New System.Drawing.Point(3, 41)
-        Me.tChrgMinkg.Name = "tChrgMinkg"
-        Me.tChrgMinkg.Size = New System.Drawing.Size(67, 20)
-        Me.tChrgMinkg.TabIndex = 36
-        Me.tChrgMinkg.TabStop = False
-        Me.tChrgMinkg.Text = "2000,000 kg"
-        Me.tChrgMinkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tChrgMinkg.WordWrap = False
-        '
-        'tChrgMinPrz
-        '
-        Me.tChrgMinPrz.Location = New System.Drawing.Point(73, 41)
-        Me.tChrgMinPrz.Name = "tChrgMinPrz"
-        Me.tChrgMinPrz.Size = New System.Drawing.Size(40, 20)
-        Me.tChrgMinPrz.TabIndex = 38
-        Me.tChrgMinPrz.TabStop = False
-        Me.tChrgMinPrz.Text = "999%"
-        Me.tChrgMinPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tChrgMinPrz.WordWrap = False
-        '
-        'lblProStk
-        '
-        Me.lblProStk.AutoSize = True
-        Me.lblProStk.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblProStk.Location = New System.Drawing.Point(9, 17)
-        Me.lblProStk.Name = "lblProStk"
-        Me.lblProStk.Size = New System.Drawing.Size(84, 13)
-        Me.lblProStk.TabIndex = 35
-        Me.lblProStk.Text = "pro Stück (nass)"
-        '
-        'tStkGewicht
-        '
-        Me.tStkGewicht.Location = New System.Drawing.Point(116, 15)
-        Me.tStkGewicht.Name = "tStkGewicht"
-        Me.tStkGewicht.Size = New System.Drawing.Size(54, 20)
-        Me.tStkGewicht.TabIndex = 34
-        Me.tStkGewicht.TabStop = False
-        Me.tStkGewicht.Text = "1567 gr "
-        Me.tStkGewicht.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tStkGewicht.WordWrap = False
-        '
-        'lblMin
-        '
-        Me.lblMin.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblMin.Location = New System.Drawing.Point(161, 187)
-        Me.lblMin.Name = "lblMin"
-        Me.lblMin.Size = New System.Drawing.Size(52, 13)
-        Me.lblMin.TabIndex = 58
-        Me.lblMin.Text = "Minimal"
-        Me.lblMin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'lblLinieArtikel
-        '
-        Me.lblLinieArtikel.AutoSize = True
-        Me.lblLinieArtikel.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblLinieArtikel.Location = New System.Drawing.Point(222, 91)
-        Me.lblLinieArtikel.Name = "lblLinieArtikel"
-        Me.lblLinieArtikel.Size = New System.Drawing.Size(131, 13)
-        Me.lblLinieArtikel.TabIndex = 57
-        Me.lblLinieArtikel.Text = "Liniengruppe Aufarbeitung"
-        '
-        'lblLinienGruppe
-        '
-        Me.lblLinienGruppe.AutoSize = True
-        Me.lblLinienGruppe.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblLinienGruppe.Location = New System.Drawing.Point(7, 91)
-        Me.lblLinienGruppe.Name = "lblLinienGruppe"
-        Me.lblLinienGruppe.Size = New System.Drawing.Size(92, 13)
-        Me.lblLinienGruppe.TabIndex = 55
-        Me.lblLinienGruppe.Text = "Liniengruppe Teig"
-        '
-        'BtnRzpShow
-        '
-        Me.BtnRzpShow.Location = New System.Drawing.Point(198, 14)
-        Me.BtnRzpShow.Name = "BtnRzpShow"
-        Me.BtnRzpShow.Size = New System.Drawing.Size(85, 40)
-        Me.BtnRzpShow.TabIndex = 2
-        Me.BtnRzpShow.Text = "Öffnen"
-        Me.BtnRzpShow.UseVisualStyleBackColor = True
-        '
-        'BtnRzpt
-        '
-        Me.BtnRzpt.Location = New System.Drawing.Point(107, 14)
-        Me.BtnRzpt.Name = "BtnRzpt"
-        Me.BtnRzpt.Size = New System.Drawing.Size(85, 40)
-        Me.BtnRzpt.TabIndex = 1
-        Me.BtnRzpt.TabStop = False
-        Me.BtnRzpt.Text = "Auswählen"
-        Me.BtnRzpt.UseVisualStyleBackColor = True
-        '
-        'tRezeptName
-        '
-        Me.tRezeptName.Location = New System.Drawing.Point(7, 68)
-        Me.tRezeptName.Name = "tRezeptName"
-        Me.tRezeptName.ReadOnly = True
-        Me.tRezeptName.Size = New System.Drawing.Size(384, 20)
-        Me.tRezeptName.TabIndex = 4
-        Me.tRezeptName.TabStop = False
-        '
-        'lblRzeptBezeichnung
-        '
-        Me.lblRzeptBezeichnung.AutoSize = True
-        Me.lblRzeptBezeichnung.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblRzeptBezeichnung.Location = New System.Drawing.Point(7, 52)
-        Me.lblRzeptBezeichnung.Name = "lblRzeptBezeichnung"
-        Me.lblRzeptBezeichnung.Size = New System.Drawing.Size(106, 13)
-        Me.lblRzeptBezeichnung.TabIndex = 51
-        Me.lblRzeptBezeichnung.Text = "Rezept-Bezeichnung"
-        '
-        'tRezeptNr
-        '
-        Me.tRezeptNr.Location = New System.Drawing.Point(7, 25)
-        Me.tRezeptNr.Name = "tRezeptNr"
-        Me.tRezeptNr.ReadOnly = True
-        Me.tRezeptNr.Size = New System.Drawing.Size(72, 20)
-        Me.tRezeptNr.TabIndex = 50
-        Me.tRezeptNr.TabStop = False
-        '
-        'lblRezeptNr
-        '
-        Me.lblRezeptNr.AutoSize = True
-        Me.lblRezeptNr.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblRezeptNr.Location = New System.Drawing.Point(7, 9)
-        Me.lblRezeptNr.Name = "lblRezeptNr"
-        Me.lblRezeptNr.Size = New System.Drawing.Size(58, 13)
-        Me.lblRezeptNr.TabIndex = 49
-        Me.lblRezeptNr.Text = "Rezept-Nr."
-        '
-        'tBackverlust
-        '
-        Me.tBackverlust.Location = New System.Drawing.Point(219, 279)
-        Me.tBackverlust.Name = "tBackverlust"
-        Me.tBackverlust.Size = New System.Drawing.Size(66, 20)
-        Me.tBackverlust.TabIndex = 66
-        Me.tBackverlust.TabStop = False
-        Me.tBackverlust.Text = "99.999 %"
-        Me.tBackverlust.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tBackverlust.WordWrap = False
-        '
-        'lblBackverlust
-        '
-        Me.lblBackverlust.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblBackverlust.Location = New System.Drawing.Point(153, 279)
-        Me.lblBackverlust.Name = "lblBackverlust"
-        Me.lblBackverlust.Size = New System.Drawing.Size(64, 19)
-        Me.lblBackverlust.TabIndex = 67
-        Me.lblBackverlust.Text = "Backverlust"
-        Me.lblBackverlust.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lblProdVorlauf
-        '
-        Me.lblProdVorlauf.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblProdVorlauf.Location = New System.Drawing.Point(5, 274)
-        Me.lblProdVorlauf.Name = "lblProdVorlauf"
-        Me.lblProdVorlauf.Size = New System.Drawing.Size(75, 27)
-        Me.lblProdVorlauf.TabIndex = 68
-        Me.lblProdVorlauf.Text = "Vorlauf Produktion"
-        Me.lblProdVorlauf.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'tProdVorlauf
-        '
-        Me.tProdVorlauf.Location = New System.Drawing.Point(86, 279)
-        Me.tProdVorlauf.Name = "tProdVorlauf"
-        Me.tProdVorlauf.Size = New System.Drawing.Size(50, 20)
-        Me.tProdVorlauf.TabIndex = 69
-        Me.tProdVorlauf.TabStop = False
-        Me.tProdVorlauf.Text = "999 h"
-        Me.tProdVorlauf.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tProdVorlauf.WordWrap = False
-        '
-        'BtnCloud
-        '
-        Me.BtnCloud.Location = New System.Drawing.Point(313, 14)
-        Me.BtnCloud.Name = "BtnCloud"
-        Me.BtnCloud.Size = New System.Drawing.Size(78, 40)
-        Me.BtnCloud.TabIndex = 3
-        Me.BtnCloud.Text = "Cloud"
-        Me.BtnCloud.UseVisualStyleBackColor = True
-        '
-        'lblZuschnitt
-        '
-        Me.lblZuschnitt.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblZuschnitt.Location = New System.Drawing.Point(153, 305)
-        Me.lblZuschnitt.Name = "lblZuschnitt"
-        Me.lblZuschnitt.Size = New System.Drawing.Size(64, 19)
-        Me.lblZuschnitt.TabIndex = 71
-        Me.lblZuschnitt.Text = "Zuschnitt"
-        Me.lblZuschnitt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'tZuschnitt
-        '
-        Me.tZuschnitt.Location = New System.Drawing.Point(219, 305)
-        Me.tZuschnitt.Name = "tZuschnitt"
-        Me.tZuschnitt.Size = New System.Drawing.Size(66, 20)
-        Me.tZuschnitt.TabIndex = 70
-        Me.tZuschnitt.TabStop = False
-        Me.tZuschnitt.Text = "99.999 %"
-        Me.tZuschnitt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tZuschnitt.WordWrap = False
-        '
-        'tVkGewicht
-        '
-        Me.tVkGewicht.Location = New System.Drawing.Point(86, 304)
-        Me.tVkGewicht.Name = "tVkGewicht"
-        Me.tVkGewicht.ReadOnly = True
-        Me.tVkGewicht.Size = New System.Drawing.Size(50, 20)
-        Me.tVkGewicht.TabIndex = 72
-        Me.tVkGewicht.TabStop = False
-        Me.tVkGewicht.Text = "240 gr"
-        Me.tVkGewicht.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.tVkGewicht.WordWrap = False
-        '
-        'Label1
-        '
-        Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Label1.Location = New System.Drawing.Point(5, 303)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(74, 27)
-        Me.Label1.TabIndex = 73
-        Me.Label1.Text = "Verkaufs- Gewicht"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'BtnCalcNassGewicht
-        '
-        Me.BtnCalcNassGewicht.Location = New System.Drawing.Point(291, 283)
-        Me.BtnCalcNassGewicht.Name = "BtnCalcNassGewicht"
-        Me.BtnCalcNassGewicht.Size = New System.Drawing.Size(100, 40)
-        Me.BtnCalcNassGewicht.TabIndex = 74
-        Me.BtnCalcNassGewicht.Text = "Nass-Gewicht berechnen"
-        Me.BtnCalcNassGewicht.UseVisualStyleBackColor = True
-        '
-        'BtnUpdateNwt
-        '
-        Me.BtnUpdateNwt.Location = New System.Drawing.Point(313, 38)
-        Me.BtnUpdateNwt.Name = "BtnUpdateNwt"
-        Me.BtnUpdateNwt.Size = New System.Drawing.Size(78, 40)
-        Me.BtnUpdateNwt.TabIndex = 75
-        Me.BtnUpdateNwt.Text = "Update Nährwerte"
-        Me.BtnUpdateNwt.UseVisualStyleBackColor = True
-        '
-        'cbArtikelLinienGruppe
-        '
-        Me.cbArtikelLinienGruppe.FormattingEnabled = True
-        Me.cbArtikelLinienGruppe.Location = New System.Drawing.Point(219, 107)
-        Me.cbArtikelLinienGruppe.Name = "cbArtikelLinienGruppe"
-        Me.cbArtikelLinienGruppe.Size = New System.Drawing.Size(172, 21)
-        Me.cbArtikelLinienGruppe.TabIndex = 6
-        Me.cbArtikelLinienGruppe.TabStop = False
-        '
-        'cbLiniengruppe
-        '
-        Me.cbLiniengruppe.FormattingEnabled = True
-        Me.cbLiniengruppe.Location = New System.Drawing.Point(7, 107)
-        Me.cbLiniengruppe.Name = "cbLiniengruppe"
-        Me.cbLiniengruppe.Size = New System.Drawing.Size(176, 21)
-        Me.cbLiniengruppe.TabIndex = 5
-        Me.cbLiniengruppe.TabStop = False
-        Me.cbLiniengruppe.Text = "LG"
-        '
-        'wb_KompRzChargen
-        '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.BtnUpdateNwt)
-        Me.Controls.Add(Me.BtnCalcNassGewicht)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.tVkGewicht)
-        Me.Controls.Add(Me.lblZuschnitt)
-        Me.Controls.Add(Me.tZuschnitt)
-        Me.Controls.Add(Me.BtnCloud)
-        Me.Controls.Add(Me.tProdVorlauf)
-        Me.Controls.Add(Me.lblProdVorlauf)
-        Me.Controls.Add(Me.lblBackverlust)
-        Me.Controls.Add(Me.tBackverlust)
-        Me.Controls.Add(Me.lblTeigChargen)
-        Me.Controls.Add(Me.pTeigChargen)
-        Me.Controls.Add(Me.lblOpt)
-        Me.Controls.Add(Me.lblMax)
-        Me.Controls.Add(Me.lblGewicht)
-        Me.Controls.Add(Me.lblArtikelChargen)
-        Me.Controls.Add(Me.pArtikelChargen)
-        Me.Controls.Add(Me.lblMin)
-        Me.Controls.Add(Me.lblLinieArtikel)
-        Me.Controls.Add(Me.cbArtikelLinienGruppe)
-        Me.Controls.Add(Me.lblLinienGruppe)
-        Me.Controls.Add(Me.cbLiniengruppe)
-        Me.Controls.Add(Me.BtnRzpShow)
-        Me.Controls.Add(Me.BtnRzpt)
-        Me.Controls.Add(Me.tRezeptName)
-        Me.Controls.Add(Me.lblRzeptBezeichnung)
-        Me.Controls.Add(Me.tRezeptNr)
-        Me.Controls.Add(Me.lblRezeptNr)
-        Me.Name = "wb_KompRzChargen"
-        Me.Size = New System.Drawing.Size(400, 336)
-        Me.pTeigChargen.ResumeLayout(False)
-        Me.pTeigChargen.PerformLayout()
-        Me.pArtikelChargen.ResumeLayout(False)
-        Me.pArtikelChargen.PerformLayout()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        lblTeigChargen = New System.Windows.Forms.Label()
+        pTeigChargen = New System.Windows.Forms.Panel()
+        tRezOptkg = New System.Windows.Forms.TextBox()
+        tRezOptPrz = New System.Windows.Forms.TextBox()
+        tRezMaxkg = New System.Windows.Forms.TextBox()
+        tRezMaxPrz = New System.Windows.Forms.TextBox()
+        tRezMinkg = New System.Windows.Forms.TextBox()
+        tRezMinPrz = New System.Windows.Forms.TextBox()
+        lblTeigGesamt = New System.Windows.Forms.Label()
+        tRezGesamt = New System.Windows.Forms.TextBox()
+        lblOpt = New System.Windows.Forms.Label()
+        lblMax = New System.Windows.Forms.Label()
+        lblGewicht = New System.Windows.Forms.Label()
+        lblArtikelChargen = New System.Windows.Forms.Label()
+        pArtikelChargen = New System.Windows.Forms.Panel()
+        tChrgOptStk = New System.Windows.Forms.TextBox()
+        tChrgOptkg = New System.Windows.Forms.TextBox()
+        tChrgOptPrz = New System.Windows.Forms.TextBox()
+        tChrgMaxStk = New System.Windows.Forms.TextBox()
+        tChrgMaxkg = New System.Windows.Forms.TextBox()
+        tChrgMaxPrz = New System.Windows.Forms.TextBox()
+        tChrgMinStk = New System.Windows.Forms.TextBox()
+        tChrgMinkg = New System.Windows.Forms.TextBox()
+        tChrgMinPrz = New System.Windows.Forms.TextBox()
+        lblProStk = New System.Windows.Forms.Label()
+        tStkGewicht = New System.Windows.Forms.TextBox()
+        lblMin = New System.Windows.Forms.Label()
+        lblLinieArtikel = New System.Windows.Forms.Label()
+        lblLinienGruppe = New System.Windows.Forms.Label()
+        BtnRzpShow = New System.Windows.Forms.Button()
+        BtnRzpt = New System.Windows.Forms.Button()
+        tRezeptName = New System.Windows.Forms.TextBox()
+        lblRzeptBezeichnung = New System.Windows.Forms.Label()
+        tRezeptNr = New System.Windows.Forms.TextBox()
+        lblRezeptNr = New System.Windows.Forms.Label()
+        tBackverlust = New System.Windows.Forms.TextBox()
+        lblBackverlust = New System.Windows.Forms.Label()
+        lblProdVorlauf = New System.Windows.Forms.Label()
+        tProdVorlauf = New System.Windows.Forms.TextBox()
+        BtnCloud = New System.Windows.Forms.Button()
+        lblZuschnitt = New System.Windows.Forms.Label()
+        tZuschnitt = New System.Windows.Forms.TextBox()
+        tVkGewicht = New System.Windows.Forms.TextBox()
+        Label1 = New System.Windows.Forms.Label()
+        BtnCalcNassGewicht = New System.Windows.Forms.Button()
+        BtnUpdateNwt = New System.Windows.Forms.Button()
+        cbArtikelLinienGruppe = New wb_ComboBox()
+        cbLiniengruppe = New wb_ComboBox()
+        pTeigChargen.SuspendLayout()
+        pArtikelChargen.SuspendLayout()
+        SuspendLayout()
+        ' 
+        ' lblTeigChargen
+        ' 
+        lblTeigChargen.AutoSize = True
+        lblTeigChargen.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblTeigChargen.Location = New System.Drawing.Point(14, 142)
+        lblTeigChargen.Name = "lblTeigChargen"
+        lblTeigChargen.Size = New System.Drawing.Size(71, 13)
+        lblTeigChargen.TabIndex = 65
+        lblTeigChargen.Text = "Teig-Chargen"
+        ' 
+        ' pTeigChargen
+        ' 
+        pTeigChargen.BackColor = Drawing.Color.Transparent
+        pTeigChargen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        pTeigChargen.Controls.Add(tRezOptkg)
+        pTeigChargen.Controls.Add(tRezOptPrz)
+        pTeigChargen.Controls.Add(tRezMaxkg)
+        pTeigChargen.Controls.Add(tRezMaxPrz)
+        pTeigChargen.Controls.Add(tRezMinkg)
+        pTeigChargen.Controls.Add(tRezMinPrz)
+        pTeigChargen.Controls.Add(lblTeigGesamt)
+        pTeigChargen.Controls.Add(tRezGesamt)
+        pTeigChargen.ForeColor = Drawing.SystemColors.ControlText
+        pTeigChargen.Location = New System.Drawing.Point(8, 141)
+        pTeigChargen.Name = "pTeigChargen"
+        pTeigChargen.Size = New System.Drawing.Size(151, 122)
+        pTeigChargen.TabIndex = 64
+        ' 
+        ' tRezOptkg
+        ' 
+        tRezOptkg.Location = New System.Drawing.Point(3, 93)
+        tRezOptkg.Name = "tRezOptkg"
+        tRezOptkg.Size = New System.Drawing.Size(67, 20)
+        tRezOptkg.TabIndex = 43
+        tRezOptkg.TabStop = False
+        tRezOptkg.Text = "2000,000 kg"
+        tRezOptkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tRezOptkg.WordWrap = False
+        ' 
+        ' tRezOptPrz
+        ' 
+        tRezOptPrz.Location = New System.Drawing.Point(77, 93)
+        tRezOptPrz.Name = "tRezOptPrz"
+        tRezOptPrz.Size = New System.Drawing.Size(50, 20)
+        tRezOptPrz.TabIndex = 44
+        tRezOptPrz.TabStop = False
+        tRezOptPrz.Text = "999%"
+        tRezOptPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tRezOptPrz.WordWrap = False
+        ' 
+        ' tRezMaxkg
+        ' 
+        tRezMaxkg.Location = New System.Drawing.Point(3, 67)
+        tRezMaxkg.Name = "tRezMaxkg"
+        tRezMaxkg.Size = New System.Drawing.Size(67, 20)
+        tRezMaxkg.TabIndex = 40
+        tRezMaxkg.TabStop = False
+        tRezMaxkg.Text = "2000,000 kg"
+        tRezMaxkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tRezMaxkg.WordWrap = False
+        ' 
+        ' tRezMaxPrz
+        ' 
+        tRezMaxPrz.Location = New System.Drawing.Point(77, 67)
+        tRezMaxPrz.Name = "tRezMaxPrz"
+        tRezMaxPrz.Size = New System.Drawing.Size(50, 20)
+        tRezMaxPrz.TabIndex = 41
+        tRezMaxPrz.TabStop = False
+        tRezMaxPrz.Text = "999%"
+        tRezMaxPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tRezMaxPrz.WordWrap = False
+        ' 
+        ' tRezMinkg
+        ' 
+        tRezMinkg.Location = New System.Drawing.Point(3, 41)
+        tRezMinkg.Name = "tRezMinkg"
+        tRezMinkg.Size = New System.Drawing.Size(67, 20)
+        tRezMinkg.TabIndex = 36
+        tRezMinkg.TabStop = False
+        tRezMinkg.Text = "2000,000 kg"
+        tRezMinkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tRezMinkg.WordWrap = False
+        ' 
+        ' tRezMinPrz
+        ' 
+        tRezMinPrz.Location = New System.Drawing.Point(77, 41)
+        tRezMinPrz.Name = "tRezMinPrz"
+        tRezMinPrz.Size = New System.Drawing.Size(50, 20)
+        tRezMinPrz.TabIndex = 38
+        tRezMinPrz.TabStop = False
+        tRezMinPrz.Text = "999%"
+        tRezMinPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tRezMinPrz.WordWrap = False
+        ' 
+        ' lblTeigGesamt
+        ' 
+        lblTeigGesamt.AutoSize = True
+        lblTeigGesamt.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblTeigGesamt.Location = New System.Drawing.Point(71, 18)
+        lblTeigGesamt.Name = "lblTeigGesamt"
+        lblTeigGesamt.Size = New System.Drawing.Size(73, 13)
+        lblTeigGesamt.TabIndex = 35
+        lblTeigGesamt.Text = "Teig (Gesamt)"
+        ' 
+        ' tRezGesamt
+        ' 
+        tRezGesamt.Location = New System.Drawing.Point(3, 15)
+        tRezGesamt.Name = "tRezGesamt"
+        tRezGesamt.ReadOnly = True
+        tRezGesamt.Size = New System.Drawing.Size(67, 20)
+        tRezGesamt.TabIndex = 34
+        tRezGesamt.TabStop = False
+        tRezGesamt.Text = "245,999 kg"
+        tRezGesamt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tRezGesamt.WordWrap = False
+        ' 
+        ' lblOpt
+        ' 
+        lblOpt.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblOpt.Location = New System.Drawing.Point(162, 239)
+        lblOpt.Name = "lblOpt"
+        lblOpt.Size = New System.Drawing.Size(51, 13)
+        lblOpt.TabIndex = 63
+        lblOpt.Text = "Optimal"
+        lblOpt.TextAlign = Drawing.ContentAlignment.MiddleCenter
+        ' 
+        ' lblMax
+        ' 
+        lblMax.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblMax.Location = New System.Drawing.Point(162, 213)
+        lblMax.Name = "lblMax"
+        lblMax.Size = New System.Drawing.Size(51, 13)
+        lblMax.TabIndex = 62
+        lblMax.Text = "Maximal"
+        lblMax.TextAlign = Drawing.ContentAlignment.MiddleCenter
+        ' 
+        ' lblGewicht
+        ' 
+        lblGewicht.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblGewicht.Location = New System.Drawing.Point(161, 161)
+        lblGewicht.Name = "lblGewicht"
+        lblGewicht.Size = New System.Drawing.Size(52, 13)
+        lblGewicht.TabIndex = 61
+        lblGewicht.Text = "Gewicht"
+        lblGewicht.TextAlign = Drawing.ContentAlignment.MiddleCenter
+        ' 
+        ' lblArtikelChargen
+        ' 
+        lblArtikelChargen.AutoSize = True
+        lblArtikelChargen.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblArtikelChargen.Location = New System.Drawing.Point(222, 143)
+        lblArtikelChargen.Name = "lblArtikelChargen"
+        lblArtikelChargen.Size = New System.Drawing.Size(79, 13)
+        lblArtikelChargen.TabIndex = 60
+        lblArtikelChargen.Text = "Artikel-Chargen"
+        ' 
+        ' pArtikelChargen
+        ' 
+        pArtikelChargen.BackColor = Drawing.Color.Transparent
+        pArtikelChargen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        pArtikelChargen.Controls.Add(tChrgOptStk)
+        pArtikelChargen.Controls.Add(tChrgOptkg)
+        pArtikelChargen.Controls.Add(tChrgOptPrz)
+        pArtikelChargen.Controls.Add(tChrgMaxStk)
+        pArtikelChargen.Controls.Add(tChrgMaxkg)
+        pArtikelChargen.Controls.Add(tChrgMaxPrz)
+        pArtikelChargen.Controls.Add(tChrgMinStk)
+        pArtikelChargen.Controls.Add(tChrgMinkg)
+        pArtikelChargen.Controls.Add(tChrgMinPrz)
+        pArtikelChargen.Controls.Add(lblProStk)
+        pArtikelChargen.Controls.Add(tStkGewicht)
+        pArtikelChargen.Location = New System.Drawing.Point(215, 141)
+        pArtikelChargen.Name = "pArtikelChargen"
+        pArtikelChargen.Size = New System.Drawing.Size(176, 122)
+        pArtikelChargen.TabIndex = 59
+        ' 
+        ' tChrgOptStk
+        ' 
+        tChrgOptStk.Location = New System.Drawing.Point(116, 93)
+        tChrgOptStk.Name = "tChrgOptStk"
+        tChrgOptStk.Size = New System.Drawing.Size(54, 20)
+        tChrgOptStk.TabIndex = 45
+        tChrgOptStk.TabStop = False
+        tChrgOptStk.Text = "14000 Stk"
+        tChrgOptStk.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tChrgOptStk.WordWrap = False
+        ' 
+        ' tChrgOptkg
+        ' 
+        tChrgOptkg.Location = New System.Drawing.Point(3, 93)
+        tChrgOptkg.Name = "tChrgOptkg"
+        tChrgOptkg.Size = New System.Drawing.Size(67, 20)
+        tChrgOptkg.TabIndex = 43
+        tChrgOptkg.TabStop = False
+        tChrgOptkg.Text = "2000,000 kg"
+        tChrgOptkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tChrgOptkg.WordWrap = False
+        ' 
+        ' tChrgOptPrz
+        ' 
+        tChrgOptPrz.Location = New System.Drawing.Point(73, 93)
+        tChrgOptPrz.Name = "tChrgOptPrz"
+        tChrgOptPrz.Size = New System.Drawing.Size(40, 20)
+        tChrgOptPrz.TabIndex = 44
+        tChrgOptPrz.TabStop = False
+        tChrgOptPrz.Text = "999%"
+        tChrgOptPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tChrgOptPrz.WordWrap = False
+        ' 
+        ' tChrgMaxStk
+        ' 
+        tChrgMaxStk.Location = New System.Drawing.Point(116, 67)
+        tChrgMaxStk.Name = "tChrgMaxStk"
+        tChrgMaxStk.Size = New System.Drawing.Size(54, 20)
+        tChrgMaxStk.TabIndex = 42
+        tChrgMaxStk.TabStop = False
+        tChrgMaxStk.Text = "14000 Stk"
+        tChrgMaxStk.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tChrgMaxStk.WordWrap = False
+        ' 
+        ' tChrgMaxkg
+        ' 
+        tChrgMaxkg.Location = New System.Drawing.Point(3, 67)
+        tChrgMaxkg.Name = "tChrgMaxkg"
+        tChrgMaxkg.Size = New System.Drawing.Size(67, 20)
+        tChrgMaxkg.TabIndex = 40
+        tChrgMaxkg.TabStop = False
+        tChrgMaxkg.Text = "2000,000 kg"
+        tChrgMaxkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tChrgMaxkg.WordWrap = False
+        ' 
+        ' tChrgMaxPrz
+        ' 
+        tChrgMaxPrz.Location = New System.Drawing.Point(73, 67)
+        tChrgMaxPrz.Name = "tChrgMaxPrz"
+        tChrgMaxPrz.Size = New System.Drawing.Size(40, 20)
+        tChrgMaxPrz.TabIndex = 41
+        tChrgMaxPrz.TabStop = False
+        tChrgMaxPrz.Text = "999%"
+        tChrgMaxPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tChrgMaxPrz.WordWrap = False
+        ' 
+        ' tChrgMinStk
+        ' 
+        tChrgMinStk.Location = New System.Drawing.Point(116, 41)
+        tChrgMinStk.Name = "tChrgMinStk"
+        tChrgMinStk.Size = New System.Drawing.Size(54, 20)
+        tChrgMinStk.TabIndex = 39
+        tChrgMinStk.TabStop = False
+        tChrgMinStk.Text = "14000 Stk"
+        tChrgMinStk.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tChrgMinStk.WordWrap = False
+        ' 
+        ' tChrgMinkg
+        ' 
+        tChrgMinkg.Location = New System.Drawing.Point(3, 41)
+        tChrgMinkg.Name = "tChrgMinkg"
+        tChrgMinkg.Size = New System.Drawing.Size(67, 20)
+        tChrgMinkg.TabIndex = 36
+        tChrgMinkg.TabStop = False
+        tChrgMinkg.Text = "2000,000 kg"
+        tChrgMinkg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tChrgMinkg.WordWrap = False
+        ' 
+        ' tChrgMinPrz
+        ' 
+        tChrgMinPrz.Location = New System.Drawing.Point(73, 41)
+        tChrgMinPrz.Name = "tChrgMinPrz"
+        tChrgMinPrz.Size = New System.Drawing.Size(40, 20)
+        tChrgMinPrz.TabIndex = 38
+        tChrgMinPrz.TabStop = False
+        tChrgMinPrz.Text = "999%"
+        tChrgMinPrz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tChrgMinPrz.WordWrap = False
+        ' 
+        ' lblProStk
+        ' 
+        lblProStk.AutoSize = True
+        lblProStk.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblProStk.Location = New System.Drawing.Point(6, 17)
+        lblProStk.Name = "lblProStk"
+        lblProStk.Size = New System.Drawing.Size(84, 13)
+        lblProStk.TabIndex = 35
+        lblProStk.Text = "pro Stück (nass)"
+        ' 
+        ' tStkGewicht
+        ' 
+        tStkGewicht.Location = New System.Drawing.Point(90, 15)
+        tStkGewicht.Name = "tStkGewicht"
+        tStkGewicht.Size = New System.Drawing.Size(80, 20)
+        tStkGewicht.TabIndex = 34
+        tStkGewicht.TabStop = False
+        tStkGewicht.Text = "1567 gr "
+        tStkGewicht.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tStkGewicht.WordWrap = False
+        ' 
+        ' lblMin
+        ' 
+        lblMin.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblMin.Location = New System.Drawing.Point(161, 187)
+        lblMin.Name = "lblMin"
+        lblMin.Size = New System.Drawing.Size(52, 13)
+        lblMin.TabIndex = 58
+        lblMin.Text = "Minimal"
+        lblMin.TextAlign = Drawing.ContentAlignment.MiddleCenter
+        ' 
+        ' lblLinieArtikel
+        ' 
+        lblLinieArtikel.AutoSize = True
+        lblLinieArtikel.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblLinieArtikel.Location = New System.Drawing.Point(222, 91)
+        lblLinieArtikel.Name = "lblLinieArtikel"
+        lblLinieArtikel.Size = New System.Drawing.Size(131, 13)
+        lblLinieArtikel.TabIndex = 57
+        lblLinieArtikel.Text = "Liniengruppe Aufarbeitung"
+        ' 
+        ' lblLinienGruppe
+        ' 
+        lblLinienGruppe.AutoSize = True
+        lblLinienGruppe.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblLinienGruppe.Location = New System.Drawing.Point(7, 91)
+        lblLinienGruppe.Name = "lblLinienGruppe"
+        lblLinienGruppe.Size = New System.Drawing.Size(92, 13)
+        lblLinienGruppe.TabIndex = 55
+        lblLinienGruppe.Text = "Liniengruppe Teig"
+        ' 
+        ' BtnRzpShow
+        ' 
+        BtnRzpShow.Location = New System.Drawing.Point(198, 14)
+        BtnRzpShow.Name = "BtnRzpShow"
+        BtnRzpShow.Size = New System.Drawing.Size(85, 40)
+        BtnRzpShow.TabIndex = 2
+        BtnRzpShow.Text = "Öffnen"
+        BtnRzpShow.UseVisualStyleBackColor = True
+        ' 
+        ' BtnRzpt
+        ' 
+        BtnRzpt.Location = New System.Drawing.Point(107, 14)
+        BtnRzpt.Name = "BtnRzpt"
+        BtnRzpt.Size = New System.Drawing.Size(85, 40)
+        BtnRzpt.TabIndex = 1
+        BtnRzpt.TabStop = False
+        BtnRzpt.Text = "Auswählen"
+        BtnRzpt.UseVisualStyleBackColor = True
+        ' 
+        ' tRezeptName
+        ' 
+        tRezeptName.Location = New System.Drawing.Point(7, 68)
+        tRezeptName.Name = "tRezeptName"
+        tRezeptName.ReadOnly = True
+        tRezeptName.Size = New System.Drawing.Size(384, 20)
+        tRezeptName.TabIndex = 4
+        tRezeptName.TabStop = False
+        ' 
+        ' lblRzeptBezeichnung
+        ' 
+        lblRzeptBezeichnung.AutoSize = True
+        lblRzeptBezeichnung.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblRzeptBezeichnung.Location = New System.Drawing.Point(7, 52)
+        lblRzeptBezeichnung.Name = "lblRzeptBezeichnung"
+        lblRzeptBezeichnung.Size = New System.Drawing.Size(106, 13)
+        lblRzeptBezeichnung.TabIndex = 51
+        lblRzeptBezeichnung.Text = "Rezept-Bezeichnung"
+        ' 
+        ' tRezeptNr
+        ' 
+        tRezeptNr.Location = New System.Drawing.Point(7, 25)
+        tRezeptNr.Name = "tRezeptNr"
+        tRezeptNr.ReadOnly = True
+        tRezeptNr.Size = New System.Drawing.Size(72, 20)
+        tRezeptNr.TabIndex = 50
+        tRezeptNr.TabStop = False
+        ' 
+        ' lblRezeptNr
+        ' 
+        lblRezeptNr.AutoSize = True
+        lblRezeptNr.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblRezeptNr.Location = New System.Drawing.Point(7, 9)
+        lblRezeptNr.Name = "lblRezeptNr"
+        lblRezeptNr.Size = New System.Drawing.Size(58, 13)
+        lblRezeptNr.TabIndex = 49
+        lblRezeptNr.Text = "Rezept-Nr."
+        ' 
+        ' tBackverlust
+        ' 
+        tBackverlust.Location = New System.Drawing.Point(219, 279)
+        tBackverlust.Name = "tBackverlust"
+        tBackverlust.Size = New System.Drawing.Size(66, 20)
+        tBackverlust.TabIndex = 66
+        tBackverlust.TabStop = False
+        tBackverlust.Text = "99.999 %"
+        tBackverlust.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tBackverlust.WordWrap = False
+        ' 
+        ' lblBackverlust
+        ' 
+        lblBackverlust.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblBackverlust.Location = New System.Drawing.Point(153, 279)
+        lblBackverlust.Name = "lblBackverlust"
+        lblBackverlust.Size = New System.Drawing.Size(64, 19)
+        lblBackverlust.TabIndex = 67
+        lblBackverlust.Text = "Backverlust"
+        lblBackverlust.TextAlign = Drawing.ContentAlignment.MiddleLeft
+        ' 
+        ' lblProdVorlauf
+        ' 
+        lblProdVorlauf.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblProdVorlauf.Location = New System.Drawing.Point(5, 274)
+        lblProdVorlauf.Name = "lblProdVorlauf"
+        lblProdVorlauf.Size = New System.Drawing.Size(75, 27)
+        lblProdVorlauf.TabIndex = 68
+        lblProdVorlauf.Text = "Vorlauf Produktion"
+        lblProdVorlauf.TextAlign = Drawing.ContentAlignment.MiddleLeft
+        ' 
+        ' tProdVorlauf
+        ' 
+        tProdVorlauf.Location = New System.Drawing.Point(86, 279)
+        tProdVorlauf.Name = "tProdVorlauf"
+        tProdVorlauf.Size = New System.Drawing.Size(50, 20)
+        tProdVorlauf.TabIndex = 69
+        tProdVorlauf.TabStop = False
+        tProdVorlauf.Text = "999 h"
+        tProdVorlauf.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tProdVorlauf.WordWrap = False
+        ' 
+        ' BtnCloud
+        ' 
+        BtnCloud.Location = New System.Drawing.Point(313, 14)
+        BtnCloud.Name = "BtnCloud"
+        BtnCloud.Size = New System.Drawing.Size(78, 40)
+        BtnCloud.TabIndex = 3
+        BtnCloud.Text = "Cloud"
+        BtnCloud.UseVisualStyleBackColor = True
+        ' 
+        ' lblZuschnitt
+        ' 
+        lblZuschnitt.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        lblZuschnitt.Location = New System.Drawing.Point(153, 305)
+        lblZuschnitt.Name = "lblZuschnitt"
+        lblZuschnitt.Size = New System.Drawing.Size(64, 19)
+        lblZuschnitt.TabIndex = 71
+        lblZuschnitt.Text = "Zuschnitt"
+        lblZuschnitt.TextAlign = Drawing.ContentAlignment.MiddleLeft
+        ' 
+        ' tZuschnitt
+        ' 
+        tZuschnitt.Location = New System.Drawing.Point(219, 305)
+        tZuschnitt.Name = "tZuschnitt"
+        tZuschnitt.Size = New System.Drawing.Size(66, 20)
+        tZuschnitt.TabIndex = 70
+        tZuschnitt.TabStop = False
+        tZuschnitt.Text = "99.999 %"
+        tZuschnitt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tZuschnitt.WordWrap = False
+        ' 
+        ' tVkGewicht
+        ' 
+        tVkGewicht.Location = New System.Drawing.Point(86, 304)
+        tVkGewicht.Name = "tVkGewicht"
+        tVkGewicht.ReadOnly = True
+        tVkGewicht.Size = New System.Drawing.Size(50, 20)
+        tVkGewicht.TabIndex = 72
+        tVkGewicht.TabStop = False
+        tVkGewicht.Text = "240 gr"
+        tVkGewicht.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        tVkGewicht.WordWrap = False
+        ' 
+        ' Label1
+        ' 
+        Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Label1.Location = New System.Drawing.Point(5, 303)
+        Label1.Name = "Label1"
+        Label1.Size = New System.Drawing.Size(74, 27)
+        Label1.TabIndex = 73
+        Label1.Text = "Verkaufs- Gewicht"
+        Label1.TextAlign = Drawing.ContentAlignment.MiddleLeft
+        ' 
+        ' BtnCalcNassGewicht
+        ' 
+        BtnCalcNassGewicht.Location = New System.Drawing.Point(291, 283)
+        BtnCalcNassGewicht.Name = "BtnCalcNassGewicht"
+        BtnCalcNassGewicht.Size = New System.Drawing.Size(100, 40)
+        BtnCalcNassGewicht.TabIndex = 74
+        BtnCalcNassGewicht.Text = "Nass-Gewicht berechnen"
+        BtnCalcNassGewicht.UseVisualStyleBackColor = True
+        ' 
+        ' BtnUpdateNwt
+        ' 
+        BtnUpdateNwt.Location = New System.Drawing.Point(313, 38)
+        BtnUpdateNwt.Name = "BtnUpdateNwt"
+        BtnUpdateNwt.Size = New System.Drawing.Size(78, 40)
+        BtnUpdateNwt.TabIndex = 75
+        BtnUpdateNwt.Text = "Update Nährwerte"
+        BtnUpdateNwt.UseVisualStyleBackColor = True
+        ' 
+        ' cbArtikelLinienGruppe
+        ' 
+        cbArtikelLinienGruppe.FormattingEnabled = True
+        cbArtikelLinienGruppe.Location = New System.Drawing.Point(219, 107)
+        cbArtikelLinienGruppe.Name = "cbArtikelLinienGruppe"
+        cbArtikelLinienGruppe.Size = New System.Drawing.Size(172, 21)
+        cbArtikelLinienGruppe.TabIndex = 6
+        cbArtikelLinienGruppe.TabStop = False
+        ' 
+        ' cbLiniengruppe
+        ' 
+        cbLiniengruppe.FormattingEnabled = True
+        cbLiniengruppe.Location = New System.Drawing.Point(7, 107)
+        cbLiniengruppe.Name = "cbLiniengruppe"
+        cbLiniengruppe.Size = New System.Drawing.Size(176, 21)
+        cbLiniengruppe.TabIndex = 5
+        cbLiniengruppe.TabStop = False
+        cbLiniengruppe.Text = "LG"
+        ' 
+        ' wb_KompRzChargen
+        ' 
+        AutoScaleDimensions = New System.Drawing.SizeF(6F, 13F)
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Controls.Add(BtnUpdateNwt)
+        Controls.Add(BtnCalcNassGewicht)
+        Controls.Add(Label1)
+        Controls.Add(tVkGewicht)
+        Controls.Add(lblZuschnitt)
+        Controls.Add(tZuschnitt)
+        Controls.Add(BtnCloud)
+        Controls.Add(tProdVorlauf)
+        Controls.Add(lblProdVorlauf)
+        Controls.Add(lblBackverlust)
+        Controls.Add(tBackverlust)
+        Controls.Add(lblTeigChargen)
+        Controls.Add(pTeigChargen)
+        Controls.Add(lblOpt)
+        Controls.Add(lblMax)
+        Controls.Add(lblGewicht)
+        Controls.Add(lblArtikelChargen)
+        Controls.Add(pArtikelChargen)
+        Controls.Add(lblMin)
+        Controls.Add(cbArtikelLinienGruppe)
+        Controls.Add(cbLiniengruppe)
+        Controls.Add(BtnRzpShow)
+        Controls.Add(BtnRzpt)
+        Controls.Add(tRezeptName)
+        Controls.Add(lblRzeptBezeichnung)
+        Controls.Add(tRezeptNr)
+        Controls.Add(lblRezeptNr)
+        Controls.Add(lblLinienGruppe)
+        Controls.Add(lblLinieArtikel)
+        Name = "wb_KompRzChargen"
+        Size = New System.Drawing.Size(400, 336)
+        pTeigChargen.ResumeLayout(False)
+        pTeigChargen.PerformLayout()
+        pArtikelChargen.ResumeLayout(False)
+        pArtikelChargen.PerformLayout()
+        ResumeLayout(False)
+        PerformLayout()
 
     End Sub
 
-    Friend WithEvents lblTeigChargen As Windows.Forms.Label
-    Friend WithEvents pTeigChargen As Windows.Forms.Panel
-    Friend WithEvents tRezOptkg As Windows.Forms.TextBox
-    Friend WithEvents tRezOptPrz As Windows.Forms.TextBox
-    Friend WithEvents tRezMaxkg As Windows.Forms.TextBox
-    Friend WithEvents tRezMaxPrz As Windows.Forms.TextBox
-    Friend WithEvents tRezMinkg As Windows.Forms.TextBox
-    Friend WithEvents tRezMinPrz As Windows.Forms.TextBox
-    Friend WithEvents lblTeigGesamt As Windows.Forms.Label
-    Friend WithEvents tRezGesamt As Windows.Forms.TextBox
-    Friend WithEvents lblOpt As Windows.Forms.Label
-    Friend WithEvents lblMax As Windows.Forms.Label
-    Friend WithEvents lblGewicht As Windows.Forms.Label
-    Friend WithEvents lblArtikelChargen As Windows.Forms.Label
-    Friend WithEvents pArtikelChargen As Windows.Forms.Panel
-    Friend WithEvents tChrgOptStk As Windows.Forms.TextBox
-    Friend WithEvents tChrgOptkg As Windows.Forms.TextBox
-    Friend WithEvents tChrgOptPrz As Windows.Forms.TextBox
-    Friend WithEvents tChrgMaxStk As Windows.Forms.TextBox
-    Friend WithEvents tChrgMaxkg As Windows.Forms.TextBox
-    Friend WithEvents tChrgMaxPrz As Windows.Forms.TextBox
-    Friend WithEvents tChrgMinStk As Windows.Forms.TextBox
-    Friend WithEvents tChrgMinkg As Windows.Forms.TextBox
-    Friend WithEvents tChrgMinPrz As Windows.Forms.TextBox
-    Friend WithEvents lblProStk As Windows.Forms.Label
-    Friend WithEvents tStkGewicht As Windows.Forms.TextBox
-    Friend WithEvents lblMin As Windows.Forms.Label
-    Friend WithEvents lblLinieArtikel As Windows.Forms.Label
+    Friend WithEvents lblTeigChargen As System.Windows.Forms.Label
+    Friend WithEvents pTeigChargen As System.Windows.Forms.Panel
+    Friend WithEvents tRezOptkg As System.Windows.Forms.TextBox
+    Friend WithEvents tRezOptPrz As System.Windows.Forms.TextBox
+    Friend WithEvents tRezMaxkg As System.Windows.Forms.TextBox
+    Friend WithEvents tRezMaxPrz As System.Windows.Forms.TextBox
+    Friend WithEvents tRezMinkg As System.Windows.Forms.TextBox
+    Friend WithEvents tRezMinPrz As System.Windows.Forms.TextBox
+    Friend WithEvents lblTeigGesamt As System.Windows.Forms.Label
+    Friend WithEvents tRezGesamt As System.Windows.Forms.TextBox
+    Friend WithEvents lblOpt As System.Windows.Forms.Label
+    Friend WithEvents lblMax As System.Windows.Forms.Label
+    Friend WithEvents lblGewicht As System.Windows.Forms.Label
+    Friend WithEvents lblArtikelChargen As System.Windows.Forms.Label
+    Friend WithEvents pArtikelChargen As System.Windows.Forms.Panel
+    Friend WithEvents tChrgOptStk As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgOptkg As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgOptPrz As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgMaxStk As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgMaxkg As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgMaxPrz As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgMinStk As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgMinkg As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgMinPrz As System.Windows.Forms.TextBox
+    Friend WithEvents lblProStk As System.Windows.Forms.Label
+    Friend WithEvents tStkGewicht As System.Windows.Forms.TextBox
+    Friend WithEvents lblMin As System.Windows.Forms.Label
+    Friend WithEvents lblLinieArtikel As System.Windows.Forms.Label
     Friend WithEvents cbArtikelLinienGruppe As wb_ComboBox
-    Friend WithEvents lblLinienGruppe As Windows.Forms.Label
+    Friend WithEvents lblLinienGruppe As System.Windows.Forms.Label
     Friend WithEvents cbLiniengruppe As wb_ComboBox
-    Friend WithEvents BtnRzpShow As Windows.Forms.Button
-    Friend WithEvents BtnRzpt As Windows.Forms.Button
-    Friend WithEvents tRezeptName As Windows.Forms.TextBox
-    Friend WithEvents lblRzeptBezeichnung As Windows.Forms.Label
-    Friend WithEvents tRezeptNr As Windows.Forms.TextBox
-    Friend WithEvents lblRezeptNr As Windows.Forms.Label
-    Friend WithEvents tBackverlust As Windows.Forms.TextBox
-    Friend WithEvents lblBackverlust As Windows.Forms.Label
-    Friend WithEvents lblProdVorlauf As Windows.Forms.Label
-    Friend WithEvents tProdVorlauf As Windows.Forms.TextBox
-    Friend WithEvents BtnCloud As Windows.Forms.Button
-    Friend WithEvents lblZuschnitt As Windows.Forms.Label
-    Friend WithEvents tZuschnitt As Windows.Forms.TextBox
-    Friend WithEvents tVkGewicht As Windows.Forms.TextBox
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents BtnCalcNassGewicht As Windows.Forms.Button
-    Friend WithEvents BtnUpdateNwt As Windows.Forms.Button
+    Friend WithEvents BtnRzpShow As System.Windows.Forms.Button
+    Friend WithEvents BtnRzpt As System.Windows.Forms.Button
+    Friend WithEvents tRezeptName As System.Windows.Forms.TextBox
+    Friend WithEvents lblRzeptBezeichnung As System.Windows.Forms.Label
+    Friend WithEvents tRezeptNr As System.Windows.Forms.TextBox
+    Friend WithEvents lblRezeptNr As System.Windows.Forms.Label
+    Friend WithEvents tBackverlust As System.Windows.Forms.TextBox
+    Friend WithEvents lblBackverlust As System.Windows.Forms.Label
+    Friend WithEvents lblProdVorlauf As System.Windows.Forms.Label
+    Friend WithEvents tProdVorlauf As System.Windows.Forms.TextBox
+    Friend WithEvents BtnCloud As System.Windows.Forms.Button
+    Friend WithEvents lblZuschnitt As System.Windows.Forms.Label
+    Friend WithEvents tZuschnitt As System.Windows.Forms.TextBox
+    Friend WithEvents tVkGewicht As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents BtnCalcNassGewicht As System.Windows.Forms.Button
+    Friend WithEvents BtnUpdateNwt As System.Windows.Forms.Button
 End Class

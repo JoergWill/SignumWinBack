@@ -4,7 +4,7 @@ Imports WinBack
 
 Public Class wb_ArrayGridViewKomponParam301
     Inherits wb_ArrayGridView
-    Public arr() As wb_Global.Nwt
+    Public arr As wb_Global.Nwt()
 
     Public Sub New(ByVal x() As wb_Global.Nwt, Optional ShowTooltips As Boolean = True)
         'Grid Grundeinstellungen
@@ -15,6 +15,7 @@ Public Class wb_ArrayGridViewKomponParam301
         InitData(False)
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Public Overrides Sub FillGrid()
         ' Die Arraydaten werden in das GridView eingetragen
 
@@ -45,12 +46,16 @@ Public Class wb_ArrayGridViewKomponParam301
                     'Gruppen-Bezeichnung (Big4/Big8/Allergene...)
                     Header = arr(i).Header
                     MyBase.Columns.Add(CStr(ColCount) & "_Text", Header)
-                    MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                    If wb_KomponParam301_Global.IsErnaehrung(i) Then
+                        MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                    Else
+                        MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                    End If
                     'Editieren in dieser Spalte nicht möglich
                     MyBase.Columns(MyBase.ColumnCount - 1).ReadOnly = True
 
                     'Nährwerte/Allergene
-                    If wb_KomponParam301_Global.IsAllergen(i) Or wb_KomponParam301_Global.IsErnaehrung(i) Then
+                    If wb_KomponParam301_Global.IsAllergen(i) OrElse wb_KomponParam301_Global.IsErnaehrung(i) Then
                         'Allergene ohne Überschrift
                         MyBase.Columns.Add(CStr(ColCount) & "_Wert", "")
                         MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
@@ -58,12 +63,13 @@ Public Class wb_ArrayGridViewKomponParam301
                         'Überschrift pro 100g
                         MyBase.Columns.Add(CStr(ColCount) & "_Wert", "pro 100g")
                         MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                        'Mindest-Breite der Spalten wird durch Formatieren der Werte erreicht (PadLeft)
                     End If
                     'Editieren in dieser Spalte NICHT zulassen
                     MyBase.Columns(MyBase.ColumnCount - 1).ReadOnly = True
 
                     'Spalte Einheiten
-                    If wb_KomponParam301_Global.IsAllergen(i) Or wb_KomponParam301_Global.IsErnaehrung(i) Then
+                    If wb_KomponParam301_Global.IsAllergen(i) OrElse wb_KomponParam301_Global.IsErnaehrung(i) Then
                         'Bei Allergenen wird keine Einheit eingetragen - variable Spaltenbreite
                         MyBase.Columns.Add(CStr(ColCount) & "_X", "")
                         MyBase.Columns(MyBase.ColumnCount - 1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -116,13 +122,25 @@ Public Class wb_ArrayGridViewKomponParam301
                             Else
                                 'Nährwert und Einheit
                                 If wb_KomponParam301_Global.kt301Param(i).Gruppe = wb_Global.ktTyp301Gruppen.Gesamtkennzahlen Then
-                                    'Gesamtkennzahlen werden mit nur einer Kommastelle ausgegeben
-                                    .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 1)
+                                    'Gesamtkennzahlen werden mit nur einer Kommastelle ausgegeben - Leerzeichen links auffüllen(Column-Width)
+                                    .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 1).PadLeft(8)
+                                    'Rechtsbündig formatieren
+                                    .Cells(c * 3 - 2).Style.Alignment = DataGridViewContentAlignment.MiddleRight
                                 Else
                                     'alle anderen Werte auf 3 Nachkommastellen formatieren
                                     .Cells(c * 3 - 2).Value = wb_Functions.FormatStr(arr(i).Wert, 3)
+                                    'Rechtsbündig formatieren
+                                    .Cells(c * 3 - 2).Style.Alignment = DataGridViewContentAlignment.MiddleRight
                                 End If
+                                'Einheit 
                                 .Cells(c * 3 - 1).Value = arr(i).Einheit
+
+                            End If
+
+                            'Fehler interne Abhängigkeit (z.B. Umrechnung kcal-kJ)
+                            If arr(i).ErrIntern Then
+                                .Cells(c * 3 - 2).Style.ForeColor = Color.Red
+                                .Cells(c * 3 - 2).ToolTipText = "Angaben sind wiedersprüchlich "
                             End If
 
                             'Tooltip

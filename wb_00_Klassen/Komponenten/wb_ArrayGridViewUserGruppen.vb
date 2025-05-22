@@ -49,8 +49,8 @@ Public Class wb_ArrayGridViewUserGruppen
         _ShowTooltips = ShowTooltips
         'Grid initialisieren
         InitGrid()
-        'Scrollbar vertikal einblenden
-        Me.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        'Scrollbar vertikal und horizontal einblenden
+        Me.ScrollBars = System.Windows.Forms.ScrollBars.Both
         'Daten anzeigen 
         InitData()
     End Sub
@@ -153,7 +153,7 @@ Public Class wb_ArrayGridViewUserGruppen
         Dim Col As Integer = e.ColumnIndex
         Dim Row As Integer = e.RowIndex
 
-        If Row >= 0 And Col >= COLGrp Then
+        If Row >= 0 AndAlso Col >= COLGrp Then
             'Funktions-Type (402..405)
             Dim Tpe As Integer = Rows(Row).Cells(COLInp).Value
             'Value (0,1,2..)

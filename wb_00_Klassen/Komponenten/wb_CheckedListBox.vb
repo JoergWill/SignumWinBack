@@ -1,5 +1,5 @@
 ﻿Public Class wb_CheckedListBox
-    Inherits Windows.Forms.CheckedListBox
+    Inherits System.Windows.Forms.CheckedListBox
 
     Private _SelIndex As Integer = 0
     Private _WinBackIniSektion As String = Nothing
@@ -13,7 +13,7 @@
         Set(value As Integer)
             RemoveAllSelections()
             _SelIndex = value
-            If Items.Count > _SelIndex Then
+            If Items.Count > _SelIndex And SelIndex >= 0 Then
                 SetItemChecked(_SelIndex, True)
             End If
         End Set

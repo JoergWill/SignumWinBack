@@ -28,7 +28,7 @@
         'Tabelle darf editiert werden
         StatistikElementeGridView.ReadOnly = True
         'Tabelle nur ganze Zeile markieren
-        StatistikElementeGridView.SelectionMode = Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        StatistikElementeGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
 
         'Tabelle (Leer) anzeigen
         StatistikElementeGridView.GridLocation(tpListe)
@@ -67,7 +67,7 @@
     Public Sub InitAuswahlListen(StatistikType As wb_Global.StatistikType)
 
         'Combo-Box (Gruppe) ein/ausblenden
-        gbRohGruppe.Visible = (StatistikType = wb_Global.StatistikType.StatistikRohstoffeDetails) Or (StatistikType = wb_Global.StatistikType.StatistikRohstoffeVerbrauch)
+        gbRohGruppe.Visible = (StatistikType = wb_Global.StatistikType.StatistikRohstoffeDetails) OrElse (StatistikType = wb_Global.StatistikType.StatistikRohstoffeVerbrauch)
 
         'Filter Datum vom..bis aus winback.ini laden
         Dim IniFile As New wb_IniFile
@@ -346,7 +346,7 @@
 
     Private Sub DisableGridRohGruppe()
         'wenn noch Gruppen angewählt sind, Liste löschen
-        If (cbRohstoffGrp1.GetKeyFromSelection > 0) Or (cbRohstoffGrp2.GetKeyFromSelection > 0) Then
+        If (cbRohstoffGrp1.GetKeyFromSelection > 0) OrElse (cbRohstoffGrp2.GetKeyFromSelection > 0) Then
             _ElementeArray.Clear()
             StatistikElementeGridView.FillGrid(_ElementeArray)
         End If
