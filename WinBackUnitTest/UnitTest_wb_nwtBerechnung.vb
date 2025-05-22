@@ -7,14 +7,10 @@ Imports WinBack.wb_Sql_Selects
 
     <TestInitialize>
     Sub TestInitialize()
-        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
-        If My.Settings.TestMySQL Then
-            'Datenbank Verbindung Einstellungen setzen
-            '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
-            'Initialisierung Texte-Tabelle
-            wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
-        End If
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
+        'Backup der Test-Datenbank einspielen
+        UnitTest_Init.Restore_WinBackDaten()
     End Sub
 
     <TestMethod()> Public Sub TestRezeptOhneProduktionsStufen()
@@ -26,7 +22,7 @@ Imports WinBack.wb_Sql_Selects
 
             'nächsten Datensatz aus Tabelle Komponenten lesen
             'Artikel 102 Brötchen (KO_Nr=3493)
-            If winback.sqlSelect(setParams(sqlSelectKomp_KO_Nr, "3493")) Then
+            If winback.sqlSelect(setParams(sqlSelectKomp_KO_Nr, "3355")) Then
                 'Lesen KO-Nr
                 If winback.Read Then
                     'Komponenten-Objekt nimmt die aktuellen Daten auf
@@ -41,7 +37,7 @@ Imports WinBack.wb_Sql_Selects
                     'verknüpfte Rezeptnummer zum Artikel/Rohstoff
                     Dim _AktRZ_Nr As Integer = nwtArtikelDaten.RzNr
                     'Rezept mit allen Rezeptschritten lesen (NoMessage=True unterdrückt die Meldung "Rezept verweist auf sich selbst")
-                    Dim Rzpt As New wb_Rezept(_AktRZ_Nr, Nothing, 1, "", "", True)
+                    Dim Rzpt As New wb_Rezept(_AktRZ_Nr, Nothing, 0.0, 1, "", "", True)
 
                     'Änderungs-Log löschen
                     nwtArtikelDaten.ClearReport()
@@ -51,7 +47,7 @@ Imports WinBack.wb_Sql_Selects
                     Debug.Print("reCalcRezept (" & _AktRZ_Nr & ") " & Rzpt.RezeptNummer & " " & Rzpt.RezeptBezeichnung & " kt301(Kilokalorien) " & nwtArtikelDaten.ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien))
                     'Kilokalorien
                     Dim kcal As Double = nwtArtikelDaten.ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien)
-                    Assert.AreEqual(222, Convert.ToInt32(kcal))
+                    Assert.AreEqual(177, Convert.ToInt32(kcal))
 
                 End If
             End If
@@ -66,8 +62,8 @@ Imports WinBack.wb_Sql_Selects
             Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
 
             'nächsten Datensatz aus Tabelle Komponenten lesen
-            'Artikel 1202 Honigkuchen (KO_Nr=3499)
-            If winback.sqlSelect(setParams(sqlSelectKomp_KO_Nr, "3499")) Then
+            'Artikel 1202 Honigkuchen (KO_Nr=3362)
+            If winback.sqlSelect(setParams(sqlSelectKomp_KO_Nr, "3362")) Then
                 'Lesen KO-Nr
                 If winback.Read Then
                     'Komponenten-Objekt nimmt die aktuellen Daten auf
@@ -82,7 +78,7 @@ Imports WinBack.wb_Sql_Selects
                     'verknüpfte Rezeptnummer zum Artikel/Rohstoff
                     Dim _AktRZ_Nr As Integer = nwtArtikelDaten.RzNr
                     'Rezept mit allen Rezeptschritten lesen (NoMessage=True unterdrückt die Meldung "Rezept verweist auf sich selbst")
-                    Dim Rzpt As New wb_Rezept(_AktRZ_Nr, Nothing, 1, "", "", True)
+                    Dim Rzpt As New wb_Rezept(_AktRZ_Nr, Nothing, 0.0, 1, "", "", True)
 
                     'Änderungs-Log löschen
                     nwtArtikelDaten.ClearReport()
@@ -92,7 +88,7 @@ Imports WinBack.wb_Sql_Selects
                     Debug.Print("reCalcRezept (" & _AktRZ_Nr & ") " & Rzpt.RezeptNummer & " " & Rzpt.RezeptBezeichnung & " kt301(Kilokalorien) " & nwtArtikelDaten.ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien))
                     'Kilokalorien
                     Dim kcal As Double = nwtArtikelDaten.ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien)
-                    Assert.AreEqual(341, Convert.ToInt32(kcal))
+                    Assert.AreEqual(179, Convert.ToInt32(kcal))
 
                 End If
             End If

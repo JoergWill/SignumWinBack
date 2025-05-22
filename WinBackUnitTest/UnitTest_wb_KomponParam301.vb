@@ -3,15 +3,11 @@
 <TestClass()> Public Class UnitTest_wb_KomponParam301
     <TestInitialize>
     Sub TestInitialize()
-        'Datenbank Verbindung Einstellungen setzen
-        '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-        wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
-        'Initialisierung Texte-Tabelle
-        wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
     End Sub
 
     <TestMethod()> Public Sub TestAllergene()
-        Dim ChangeLog As New wb_ChangeLog
         Dim ktTyp301 As New wb_KomponParam301
 
         'TODO in anderen Test umlagern 
@@ -49,5 +45,43 @@
         Assert.AreEqual("kJ", wb_KomponParam301_Global.kt301Param(wb_Global.T301_KiloJoule).Einheit)
     End Sub
 
+    <TestMethod()>
+    Public Sub Test_CheckCalcNaehrwerteKonsistent()
+        Dim ktTyp301 As New wb_KomponParam301
+
+        'Test FEHLERHAFTE Angaben Kalorien/KJ
+        ktTyp301.Naehrwert(wb_Global.T301_KiloJoule) = 100
+        ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien) = 2000
+
+        'Fehler bei der Konsistenzprüfung kJ-kcal
+        Assert.IsTrue(ktTyp301.NwtTabelle(wb_Global.T301_KiloJoule).ErrIntern)
+        'Fehler bei der Konsistenzprüfung kcal-kJ
+        Assert.IsTrue(ktTyp301.NwtTabelle(wb_Global.T301_Kilokalorien).ErrIntern)
+
+        'Test RICHTIGE Angaben Kalorien/KJ (Umrechnung 1 kcal = 4,18684 KJ)
+        ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien) = 23.88
+        'Kein Fehler bei der Konsistenzprüfung kJ-kcal
+        Assert.IsFalse(ktTyp301.NwtTabelle(wb_Global.T301_KiloJoule).ErrIntern)
+        'Kein Fehler bei der Konsistenzprüfung kcal-kJ
+        Assert.IsFalse(ktTyp301.NwtTabelle(wb_Global.T301_Kilokalorien).ErrIntern)
+
+
+        'Test FEHLERHAFTE Angaben Natrium/Kochsalz
+        ktTyp301.Naehrwert(wb_Global.T301_Natrium) = 1000
+        ktTyp301.Naehrwert(wb_Global.T301_GesamtKochsalz) = 2000
+
+        'Fehler bei der Konsistenzprüfung Natrium-Kochsalz
+        Assert.IsTrue(ktTyp301.NwtTabelle(wb_Global.T301_Natrium).ErrIntern)
+        'Fehler bei der Konsistenzprüfung Kochsalz-Natrium
+        Assert.IsTrue(ktTyp301.NwtTabelle(wb_Global.T301_GesamtKochsalz).ErrIntern)
+
+        'Test RICHTIGE Angaben Natrium/Kochsalz
+        ktTyp301.Naehrwert(wb_Global.T301_GesamtKochsalz) = 2540
+
+        'Kein Fehler bei der Konsistenzprüfung Natrium-Kochsalz
+        Assert.IsFalse(ktTyp301.NwtTabelle(wb_Global.T301_Natrium).ErrIntern)
+        'Kein Fehler bei der Konsistenzprüfung Kochsalz-Natrium
+        Assert.IsFalse(ktTyp301.NwtTabelle(wb_Global.T301_GesamtKochsalz).ErrIntern)
+    End Sub
 
 End Class

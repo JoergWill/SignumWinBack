@@ -2,7 +2,17 @@
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports WinBack
 
+
 <TestClass()> Public Class UnitTest_wb_Produktion
+
+    ''' <summary>
+    ''' Initialisiert die globalen Einstellungen.
+    ''' </summary>
+    <TestInitialize>
+    Sub TestInitialize()
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
+    End Sub
 
     'Aufteilung in gleiche Chargen
     <TestMethod()> Public Sub Test_wb_Produktion_ChargenBerechnung_M01()
@@ -121,6 +131,16 @@ Imports WinBack
         Assert.AreEqual(1, TestResult.AnzahlOpt)
         Assert.AreEqual(100.0, TestResult.MengeOpt)
         Assert.AreEqual(0, TestResult.AnzahlRest)
+        'Restmenge kleiner als der erlaubte Rundungsfehler (10% der Optimalcharge)
+        Assert.IsTrue(TestResult.MengeRest > 0.0)
+        Assert.AreEqual(wb_Global.ChargenTeilerResult.OK, TestResult.Result)
+
+        'Soll 119kg aufgeteilt in 1 Optimal-Charge zu 100kg
+        TestResult = Produktion.CalcChargenMenge(119, 40, 100, 100, wb_Global.ModusChargenTeiler.OptimalUndRest, False)
+        Assert.AreEqual(1, TestResult.AnzahlOpt)
+        Assert.AreEqual(100.0, TestResult.MengeOpt)
+        Assert.AreEqual(0, TestResult.AnzahlRest)
+        'Restmenge größer als der erlaubte Rundungsfehler (10% der Optimalcharge)
         Assert.AreEqual(0.0, TestResult.MengeRest)
         Assert.AreEqual(wb_Global.ChargenTeilerResult.EM1, TestResult.Result)
 
@@ -236,13 +256,13 @@ Imports WinBack
         Assert.AreEqual(0.0, TestResult.MengeRest)
         Assert.AreEqual(wb_Global.ChargenTeilerResult.EM1, TestResult.Result)
 
-        'Soll 8kg aufgeteilt in 0 Optimal-Charge zund eine RestCharge zu 8kg (Flag RestKleinerMin gesetzt)
+        'Soll 8kg aufgeteilt in 0 Optimal-Charge und eine RestCharge zu 10kg (Flag RestKleinerMin gesetzt)
         TestResult = Produktion.CalcChargenMenge(8, 10, 100, 100, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
         Assert.AreEqual(0, TestResult.AnzahlOpt)
         Assert.AreEqual(0.0, TestResult.MengeOpt)
         Assert.AreEqual(1, TestResult.AnzahlRest)
-        Assert.AreEqual(8.0, TestResult.MengeRest)
-        Assert.AreEqual(wb_Global.ChargenTeilerResult.EM2, TestResult.Result)
+        Assert.AreEqual(10.0, TestResult.MengeRest)
+        Assert.AreEqual(wb_Global.ChargenTeilerResult.EM3, TestResult.Result)
 
     End Sub
 

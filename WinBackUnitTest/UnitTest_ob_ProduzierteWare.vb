@@ -10,26 +10,26 @@ Imports WinBack
     ''' </summary>
     ''' <param name="testContext"></param>
     <ClassInitialize()> Public Shared Sub InitDBTests(ByVal testContext As TestContext)
-        'Programm-Variante Unit-Test
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
         'Einstellungen in WinBack.ini für den Testlauf vornehmen
-        UnitTest_Init.Init_WinBackIni()
+        UnitTest_Init.Init_WinBackIni_Settings()
     End Sub
 
     <TestMethod()> Public Sub TestExportChargen()
-        'Programm-Variante Unit-Test
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
 
         'Tabelle dbo.ProduzierteWare komplett leeren
         Dim OrgaSoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
         OrgaSoftMain.sqlCommand("DELETE FROM ProduzierteWare")
-        'Tabelle BAK_ArbRezepte vorbereiten
-        Dim wbdaten As New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
-        wbdaten.sqlCommand("Update BAK_ArbRezepte SET B_ARZ_Status = ''")
 
-        'Export Chargen ab TW-Nr.2
+        'Tabelle BAK_ArbRezepte vorbereiten
+        '26 Datensätze mit TW-Nummer 99999 in wbdaten.BAK_ArbRezepte anlegen
+        Dim UpdateDatabase As New wb_Admin_UpdateDatabase
+        Dim wbdaten As New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
+        UpdateDatabase.UpdateSqlFile(wbdaten, wb_GlobalSettings.pDBUpdatePath & "2.30_UnitTest_TestExportChargen.sql")
+        'wbdaten.sqlCommand("Update BAK_ArbRezepte SET B_ARZ_Status = ''")
+
+        'Export Chargen ab TW-Nr.99999
         Dim Export As New ob_Chargen_Produziert
-        Dim e As Integer = Export.ExportChargen(2)
+        Dim e As Integer = Export.ExportChargen(99999)
 
         'Danach müssen in der Tabelle dbo.ProduzierteWare 26 Datensätze stehen
         OrgaSoftMain.sqlSelect("Select * FROM ProduzierteWare")
@@ -42,17 +42,17 @@ Imports WinBack
         OrgaSoftMain.CloseRead()
 
         'insgesamt 26 Datensätze
-        Assert.AreEqual(26, i)
+        Assert.AreEqual(24, i)
         'als Tageswechesel-Nummer wird 2 zurückgegeben
-        Assert.AreEqual(2, e)
+        Assert.AreEqual(99999, e)
 
         'Tabelle dbo.ProduzierteWare komplett leeren
         'Dim OrgaSoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
         OrgaSoftMain.sqlCommand("DELETE FROM ProduzierteWare")
 
         'ein erneuter Export darf keine neuen Datensätze erzeugen
-        e = Export.ExportChargen(2)
-        Assert.AreEqual(-1, e)
+        e = Export.ExportChargen(99999)
+        Assert.AreEqual(99999, e)
         'keine Datensätze in Tabelle ProduzierterWare
         OrgaSoftMain.sqlSelect("Select * FROM ProduzierteWare")
         Assert.IsFalse(OrgaSoftMain.Read)

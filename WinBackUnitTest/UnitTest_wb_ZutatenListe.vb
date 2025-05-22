@@ -4,11 +4,13 @@ Imports WinBack
 
 <TestClass()> Public Class UnitTest_wb_ZutatenListe
 
+    ''' <summary>
+    ''' Initialisiert die globalen Einstellungen.
+    ''' </summary>
     <TestInitialize>
     Sub TestInitialize()
-        'Datenbank Verbindung Einstellungen setzen
-        '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-        wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
     End Sub
 
     <TestMethod()> Public Sub Test_DelDoubletten()
@@ -36,7 +38,7 @@ Imports WinBack
         Zutaten.DebugPrint()
         Assert.AreEqual(3, Zutaten.Liste.Count)
 
-        Zutaten.Del_Doubletten()
+        Zutaten.Del_Doubletten(True)
         Debug.Print("==========================")
         Debug.Print("nach DelDoubletten")
         Zutaten.DebugPrint()
@@ -71,7 +73,7 @@ Imports WinBack
         Zutaten.DebugPrint()
         Assert.AreEqual(3, Zutaten.Liste.Count)
 
-        Zutaten.Del_Doubletten()
+        Zutaten.Del_Doubletten(True)
         Debug.Print("==========================")
         Debug.Print("nach DelDoubletten")
         Zutaten.DebugPrint()
@@ -79,7 +81,7 @@ Imports WinBack
         Assert.AreEqual(250.0, Zutaten.Liste(0).SollMenge)
     End Sub
 
-    <TestMethod()> Public Sub Test_Split()
+    <TestMethod()> Public Sub Test_Split_A()
         Dim Zutaten As New wb_ZutatenListe
         Zutaten.Clear()
 
@@ -102,6 +104,28 @@ Imports WinBack
         Assert.IsTrue(Zutaten.Liste(3).FettDruck)
     End Sub
 
+    ''' <summary>
+    ''' Test auf zusammengesetzte Backmittel mit einer Klammerung. Diese Zutaten sollen NICHT in einzelne Elemente aufgesplittet werden,
+    ''' sondern als EIN zusammenhängenden Element in der Liste bleiben.
+    ''' Fettdruck der einzelnen Elemente wird direkt durch Großschreibung realisiert.
+    ''' 
+    ''' Mail von Goeken, Hr.Mandris vom 11.08.2022
+    ''' </summary>
+    <TestMethod()> Public Sub Test_Split_B()
+        Dim Zutaten As New wb_ZutatenListe
+        Zutaten.Clear()
+
+        Dim L1 As New wb_ZutatenElement
+        L1.Zutaten = "Backmittel: ({Weizenkleber},Zucker,{Weizensauerteig getrocknet},Malzmehl,({Gerste,Weizen}), " &
+                     "{Sojalecithine},Verdickungsmittel Guarkernmehl,{Sojamehl},pflanzliches Öl:Raps)"
+        L1.SollMenge = 2
+        Zutaten.Liste.Add(L1)
+        Zutaten.Split_Ingredients()
+
+        Assert.AreEqual("Backmittel:(WEIZENKLEBER\Zucker\WEIZENSAUERTEIG GETROCKNET\Malzmehl\(GERSTE\WEIZEN)\ SOJALECITHINE\Verdickungsmittel Guarkernmehl\SOJAMEHL\pflanzliches Öl:Raps)", Zutaten.Liste(0).Zutaten)
+        Assert.IsFalse(Zutaten.Liste(0).FettDruck)
+    End Sub
+
     <TestMethod()> Public Sub Test_Split_ListeInListe()
         Dim Zutaten As New wb_ZutatenListe
         Zutaten.Clear()
@@ -115,14 +139,14 @@ Imports WinBack
         Zutaten.Split_Ingredients()
         Zutaten.DebugPrint()
 
-        Assert.AreEqual("Gerstenmalzextrakt getrocknet", Zutaten.Liste(0).Zutaten)
-        Assert.IsTrue(Zutaten.Liste(0).FettDruck)
-        Assert.AreEqual("Zucker", Zutaten.Liste(1).Zutaten)
+        Assert.AreEqual("Pflanzliches Fett:  Palm", Zutaten.Liste(0).Zutaten)
+        Assert.IsFalse(Zutaten.Liste(0).FettDruck)
+        Assert.AreEqual("Wasser", Zutaten.Liste(1).Zutaten)
         Assert.IsFalse(Zutaten.Liste(1).FettDruck)
-        Assert.AreEqual("Traubenzucker", Zutaten.Liste(2).Zutaten)
+        Assert.AreEqual("Speisesalz", Zutaten.Liste(3).Zutaten)
         Assert.IsFalse(Zutaten.Liste(2).FettDruck)
-        Assert.AreEqual("Gerstenmalzmehl", Zutaten.Liste(3).Zutaten)
-        Assert.IsTrue(Zutaten.Liste(3).FettDruck)
+        Assert.AreEqual("Aroma", Zutaten.Liste(5).Zutaten)
+        Assert.IsFalse(Zutaten.Liste(3).FettDruck)
     End Sub
 
 
@@ -146,7 +170,7 @@ Imports WinBack
         Assert.AreEqual("Reis", Zutaten.Liste(1).Zutaten)
         Assert.AreEqual(7, Zutaten.Liste.Count)
 
-        Zutaten.Del_Doubletten()
+        Zutaten.Del_Doubletten(True)
         Assert.AreEqual(4, Zutaten.Liste.Count)
         Assert.AreEqual("Rohmilch 3.5%", Zutaten.Liste(0).Zutaten)
         Assert.AreEqual("Reis", Zutaten.Liste(1).Zutaten)
@@ -188,9 +212,9 @@ Imports WinBack
         L3.SollMenge = 2
         Zutaten.Liste.Add(L3)
 
-        Zutaten.Del_Doubletten()
+        Zutaten.Del_Doubletten(True)
         Zutaten.Split_Ingredients()
-        Zutaten.Del_Doubletten()
+        Zutaten.Del_Doubletten(True)
         Zutaten.DebugPrint()
         Assert.AreEqual(16, Zutaten.Liste.Count)
 
@@ -296,7 +320,7 @@ Imports WinBack
         L3.SollMenge = 2
         Zutaten.Liste.Add(L3)
 
-        Zutaten.Opt()
+        Zutaten.Opt(True)
         Zutaten.DebugPrint()
         Assert.AreEqual(16, Zutaten.Liste.Count)
 

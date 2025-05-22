@@ -10,10 +10,8 @@ Imports WinBack
     ''' </summary>
     ''' <param name="testContext"></param>
     <ClassInitialize()> Public Shared Sub InitDBTests(ByVal testContext As TestContext)
-        'Programm-Variante Unit-Test
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
-        'Einstellungen in WinBack.ini für den Testlauf vornehmen (OrgaBackDemo)
-        UnitTest_Init.Init_WinBackIni(False)
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
     End Sub
 
     <TestMethod()> Public Sub Test_SollwertTeilungText()

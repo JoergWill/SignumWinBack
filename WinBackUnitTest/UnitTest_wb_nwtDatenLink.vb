@@ -1,9 +1,15 @@
 ﻿Imports System.Text
 Imports System.Xml
+Imports Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports WinBack
 
 <TestClass()> Public Class UnitTest_wb_nwtDatenLink
+
+    <ClassInitialize()> Public Shared Sub Test_DatenLinkInit(ByVal context As TestContext)
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
+    End Sub
 
     <TestMethod()> Public Sub Test_DatenLinkLookup()
         'Create new instance of nwtCloud
@@ -41,8 +47,9 @@ Imports WinBack
 
         'Ergebnis aus DatenLink XML auswerten
         Assert.AreEqual(nwtDaten.ktTyp301.TimeStamp, #03/09/2013 08:14:03#)
-        Assert.AreEqual(nwtDaten.Lieferant, "BÄKO-Zentrale Süddeutschland eG")
-        Assert.AreEqual(nwtDaten.Bezeichnung, "BÄKO BiO Weizenschrot mittel")
+        Assert.IsTrue(nwtDaten.Lieferant.Contains("BÄKO"))
+        'Die Komponenten-Bezeichnung wird nicht mehr überschrieben
+        'Assert.IsTrue(nwtDaten.Bezeichnung.Contains("Weizenschrot"))
 
         'Nährwert-Info Kalorien(KJoule)
         Assert.AreEqual(nwtDaten.ktTyp301.Naehrwert(wb_Global.T301_KiloJoule), 1293.0)
@@ -50,6 +57,30 @@ Imports WinBack
         'Allergene
         Assert.AreEqual(nwtDaten.ktTyp301.Allergen(wb_Global.T301_Gluten), wb_Global.AllergenInfo.C)
         Assert.AreEqual(nwtDaten.ktTyp301.Allergen(wb_Global.T301_Weizen), wb_Global.AllergenInfo.C)
+
+    End Sub
+
+    <TestMethod()> Public Sub Test_DatenLinkUpdate_JsonFormat()
+        Dim a As ArrayList
+        Dim dl As New wb_nwtCl_DatenLink(wb_GlobalSettings.Datenlink_PAT, wb_GlobalSettings.Datenlink_CAT, wb_GlobalSettings.Datenlink_Url)
+
+        'Lookup Product Name (OK)
+        Assert.IsTrue(dl.lookupProductName("DinkelMalz") > 0)
+        a = dl.getProductList()
+        Assert.IsTrue(a.Count > 0)
+
+        'Nährwert-Info aus der Cloud lesen (Datum der letzten Änderung)
+        'Dieser JSON-Datensatz hat ein spezielles Format (siehe Mail martin@niehaves.de vom 06.02.2024)
+        'Rohstoff Structure-C DL-AA1-53D
+        Assert.AreEqual(1, dl.lookupProductName("Structure C"))
+        a = dl.getProductList()
+        Assert.AreEqual(1, a.Count)
+
+        'Der Fehler tritt offensichtlich auf, wenn Datenlink nur einen gefundenen Rohstoff zurückliefert.
+        '(geändertes Datenformat)
+        Assert.AreEqual(1, dl.lookupProductName("RoggenDinkelMalz"))
+        a = dl.getProductList()
+        Assert.AreEqual(1, a.Count)
 
     End Sub
 

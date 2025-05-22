@@ -17,7 +17,7 @@ Imports WinBack
 
     <TestMethod()> Public Sub TestCreateEventLog()
         'Beim ersten Aufruf irgendeiner Routine wird Shared New() aufgerufen
-        Assert.AreEqual(False, wb_Admin_Shared.LoggerAktiv)
+        Assert.AreEqual(True, wb_Admin_Shared.LoggerAktiv)
     End Sub
 
     <TestMethod()> Public Sub TestTraceListenerText()
@@ -26,7 +26,7 @@ Imports WinBack
         'Aufruf mit leerem Fehlertext (Fehler bei Weber 15.07.2020)
         wb_Admin_Shared.GetTraceListenerText("01.01.2020", "TestUser", "")
 
-        Assert.AreEqual(False, wb_Admin_Shared.LoggerAktiv)
+        Assert.AreEqual(True, wb_Admin_Shared.LoggerAktiv)
     End Sub
 
 

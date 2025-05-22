@@ -5,15 +5,8 @@ Imports WinBack
 <TestClass()> Public Class UnitTest_wb_LieferungenDB
     <TestInitialize>
     Sub TestInitialize()
-        'Unittest
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
-
-        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
-        If My.Settings.TestMySQL Then
-            'Datenbank Verbindung Einstellungen setzen
-            '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
-        End If
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
     End Sub
 
     <TestMethod()> Public Sub TestAbbuchen_WennLieferungVorhanden()
@@ -33,7 +26,7 @@ Imports WinBack
             winback.sqlCommand("INSERT INTO Lieferungen VALUES ('KT102_TEST', 0, '2020-10-16 11:17:10', '240', 'WinBack_GmbH', '1', 'UnitTest-WinBack', 0, 'CHRG-0', 0, NULL, '0', 709760, ' ', 0, '2020-10-16 11:17:10')")
             winback.sqlCommand("INSERT INTO Lieferungen VALUES ('KT102_TEST', 1, '2020-10-16 11:17:10', '240', 'WinBack_GmbH', '1', 'UnitTest-WinBack', 0, 'CHRG-1', 0, NULL, '0', 709760, ' ', 0, '2020-10-16 11:17:10')")
 
-            'UnitTest Lieferungen.ProdukionVerbuchen 
+            'UnitTest Lieferungen.ProduktionVerbuchen 
             Dim Lieferungen As New wb_Lieferungen
             Dim ChrgNr As String
             'erste verbrauchte Charge 100kg von 240kg - Rest 140kg
@@ -75,6 +68,33 @@ Imports WinBack
             'verbrauchte Charge 100kg von 240kg - Rest 140
             ChrgNr = Lieferungen.ProduktionVerbuchen("KT102_TEST", "10,67888")
             Assert.AreEqual("CHRG-3", ChrgNr)
+
+
+            ' Test mit Komma-Werte für LF_Menge und LF_Verbrauch
+            ' Prüft die korrekte Funktion auch für die Dezimal-Zeichen (Wandlung VarChar nach Double mit Dezimal-Trenner Komma und Punkt!)
+
+            'Tabelle Lieferungen Einträge (vorsichtshalber) löschen
+            winback.sqlCommand("DELETE FROM Lieferungen WHERE LF_LG_Ort = 'KT102_TEST'")
+
+            'Tabelle Lieferungen neue Einträge erzeugen 
+            'LF_LG_Ort, LF_Nr, LF_Datum, LF_Menge, LF_Lieferant, LF_Gebucht, LF_Bemerkung
+            'LF_Lager, LF_BF_Charge, LF_Liniengruppe, LF_BF_Frist, LF_Verbrauch, LF_User_Nr, LF_Preis, LF_PreisEinheit 
+            winback.sqlCommand("INSERT INTO Lieferungen VALUES ('KT102_TEST', 0, '2020-10-16 11:17:10', '2,40', 'WinBack_GmbH', '1', 'UnitTest-WinBack', 0, 'CHRG-0', 0, NULL, '0', 709760, ' ', 0, '2020-10-16 11:17:10')")
+            winback.sqlCommand("INSERT INTO Lieferungen VALUES ('KT102_TEST', 1, '2020-10-16 11:17:10', '2,40', 'WinBack_GmbH', '1', 'UnitTest-WinBack', 0, 'CHRG-1', 0, NULL, '0', 709760, ' ', 0, '2020-10-16 11:17:10')")
+
+            'UnitTest Lieferungen.ProduktionVerbuchen 
+            Lieferungen = New wb_Lieferungen
+            'erste verbrauchte Charge 1,1kg von 2,40kg - Rest 1,30kg
+            ChrgNr = Lieferungen.ProduktionVerbuchen("KT102_TEST", "1,1")
+            Assert.AreEqual("CHRG-0", ChrgNr)
+
+            'zweite verbrauchte Charge 1,1kg von 2,40kg - Rest 0,20kg
+            ChrgNr = Lieferungen.ProduktionVerbuchen("KT102_TEST", "1,1")
+            Assert.AreEqual("CHRG-0", ChrgNr)
+
+            'dritte verbrauchte Charge 1,1kg von 2,40kg - Muss zwei Chargen-Nummern zurückgeben
+            ChrgNr = Lieferungen.ProduktionVerbuchen("KT102_TEST", "1,1")
+            Assert.AreEqual("CHRG-0, CHRG-1", ChrgNr)
 
             'Verbindung wieder schliessen
             winback.Close()

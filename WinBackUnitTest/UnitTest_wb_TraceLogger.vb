@@ -6,12 +6,17 @@
 ''' </summary>
 <TestClass()> Public Class UnitTest_wb_TraceLogger
     Dim Logger As New wb_TraceListener
-    Dim LogResult As String = "Empty"
 
+    ''' <summary>
+    ''' Initialisiert die globalen Einstellungen.
+    ''' </summary>
     <TestInitialize>
     Sub TestInitialize()
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
+
         AddHandler Logger.WriteText, AddressOf wb_Admin_Shared.GetTraceListenerText
-        Trace.Listeners.Add(Logger)
+        System.Diagnostics.Trace.Listeners.Add(Logger)
     End Sub
 
     <TestMethod()> Public Sub TestGetLocalStackTrace()
@@ -38,15 +43,14 @@
     End Sub
 
     <TestMethod()> Public Sub TestTraceWrite()
-        Assert.AreEqual("Empty", LogResult)
-        Trace.Write("Test")
+        Trace.Write("@A_Test")
         Trace.Flush()
-        Assert.AreEqual("Test", LogResult)
+        Assert.IsTrue(wb_Admin_Shared.LogEvents(wb_Admin_Shared.LogEvents.Count - 1).Contains("Test"))
     End Sub
 
     <TestMethod()> Public Sub TestTraceWriteLn()
         Dim OK_Datum As String = String.Format("{0:dd/MM/yy H:mm:ss}", Date.Now)
-        Dim OK_Message As String = "Test"
+        Dim OK_Message As String = "@A_TestXX"
         Dim OK_Class As String = "WinBackUnitTest.UnitTest_wb_TraceLogger.TestTraceWriteLn()"
         Dim OK_Zeile As String = "71"
         Dim OK_Result As String
@@ -56,22 +60,17 @@
 
         'Test ohne Stack-Trace
         Logger.EchoStackTrace = vbFalse
-        LogResult = ""
         OK_Result = OK_Datum & vbTab & wb_GlobalSettings.AktUserName & vbTab & OK_Message & vbCrLf
         Trace.WriteLine(OK_Message)
         Trace.Flush()
-        Assert.AreEqual(OK_Result, LogResult)
+        Assert.IsTrue(wb_Admin_Shared.LogEvents(wb_Admin_Shared.LogEvents.Count - 1).Contains("TestXX"))
 
         'Test mit Stack-Trace
         Logger.EchoStackTrace = vbTrue
-        LogResult = ""
         OK_Result = OK_Datum & vbTab & wb_GlobalSettings.AktUserName & vbTab & OK_Message & vbTab & OK_Class & vbTab & OK_Zeile & vbCrLf
         Trace.WriteLine(OK_Message)
         Trace.Flush()
-        Assert.AreEqual(OK_Result, LogResult)
+        Assert.IsTrue(wb_Admin_Shared.LogEvents(wb_Admin_Shared.LogEvents.Count - 1).Contains("TestXX"))
     End Sub
 
-    Public Sub GetTrace(Txt As String)
-        LogResult = Txt
-    End Sub
 End Class

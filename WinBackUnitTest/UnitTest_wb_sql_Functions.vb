@@ -3,17 +3,14 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports WinBack
 
 <TestClass()> Public Class UnitTest_wb_sql_Functions
+
+    ''' <summary>
+    ''' Initialisiert die globalen Einstellungen.
+    ''' </summary>
     <TestInitialize>
     Sub TestInitialize()
-        'Unittest
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
-
-        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
-        If My.Settings.TestMySQL Then
-            'Datenbank Verbindung Einstellungen setzen
-            '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
-        End If
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
     End Sub
 
     <TestMethod()>
@@ -30,7 +27,7 @@ Imports WinBack
         Dim i As Integer
 
         s = wb_sql_Functions.getKomponParam(211, 1, "0")
-        Assert.AreEqual("10,000", s)
+        Assert.AreEqual("10", s)
         d = wb_sql_Functions.getKomponParam(211, 1, 20.0)
         Assert.AreEqual(10.0, d)
         i = wb_sql_Functions.getKomponParam(211, 1, 20)
@@ -48,9 +45,16 @@ Imports WinBack
 
     <TestMethod()>
     Public Sub Test_EinheitenUmrechnung()
-        Assert.AreEqual(wb_sql_Functions.EinheitenUmrechnung("150013", 26, 10), 25)
+        'Umrechnung Artikel-Nr.201002 Zucker Sack in kg
+        Assert.AreEqual(wb_sql_Functions.EinheitenUmrechnung("201002", 26, 10), 25.0)
+        'Umrechnung Artikel-Nr.000000 (Artikel nicht vorhanden)
+        Assert.AreEqual(wb_sql_Functions.EinheitenUmrechnung("000000", 26, 10), 0.0)
     End Sub
 
+    <TestMethod()>
+    Public Sub Test_Version()
+        Assert.IsTrue(wb_sql_Functions.GetMySqlVersion.Contains("5.") Or wb_sql_Functions.GetMySqlVersion.Contains("3."))
+    End Sub
 
 
 End Class

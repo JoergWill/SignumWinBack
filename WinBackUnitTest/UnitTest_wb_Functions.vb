@@ -7,6 +7,12 @@ Imports WinBack.wb_Global
 
 <TestClass()> Public Class UnitTest_wb_Functions
 
+    <TestInitialize>
+    Sub TestInitialize()
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
+    End Sub
+
     <TestMethod()> Public Sub Test_KeyToString()
         Dim s As String = ""
 
@@ -130,7 +136,9 @@ Imports WinBack.wb_Global
         Assert.AreEqual("1235", FormatStr("1234,5678", 0, 4))
         Assert.AreEqual("1235", FormatStr("1234,5678", 0))
 
+        'ACHTUNG UMSTELLUNG AUF US-ENGLISCH
         Thread.CurrentThread.CurrentCulture = New CultureInfo("en-US")
+
         Assert.AreEqual("1234.5678", FormatStr("1234.5678", 4, 4))
         Assert.AreEqual("12345678.0", FormatStr("1234,5678", 1, 8))
         Assert.AreEqual("1234.5678", FormatStr("1234,5678", 4, 4, "de-DE"))
@@ -139,6 +147,9 @@ Imports WinBack.wb_Global
 
         Assert.AreEqual("-", FormatStr("", 0, 4))
         Assert.AreEqual("-", FormatStr("", 0, 4, "de-DE"))
+
+        'ACHTUNG UMSTELLUNG AUF DE-DEUTSCH
+        Thread.CurrentThread.CurrentCulture = New CultureInfo("de-DE")
     End Sub
 
     <TestMethod()> Public Sub Test_bz2CompressFile()
@@ -274,50 +285,63 @@ Imports WinBack.wb_Global
         Assert.AreEqual(#11/08/2017#, wb_Functions.ConvertUSDateStringToDate("20171108"))
     End Sub
 
+    <TestMethod()> Public Sub Test_UnixTimeToDate()
+        Assert.AreEqual(#05/06/2022 15:52:44#, wb_Functions.UnixToTime("1651845164"))
+        Assert.AreEqual("1651845164", wb_Functions.TimeToUnix(#05/06/2022 15:52:44#))
+    End Sub
+
+    ''' <summary>
+    ''' Dieser Test funktioniert momentan NUR mit einer MySQL-3.2-Datenbank
+    '''     Mit dem Windows-MySQL-Server(5.02) wird ein anderer String zurückgegeben !!!
+    '''     Vermutlich gibt es hier auch Probleme mit Umlauten 
+    ''' </summary>
     <TestMethod()> Public Sub Test_MySqlToUtf8()
 
-        'Test utf-8 nach MySql
-        Dim x As String = wb_Functions.UTF8toMySql("Статус")
-        Assert.AreEqual("ÁâÐâãá", x)
-        Dim s As String = wb_Functions.MySqlToUtf8(x)
-        Assert.AreEqual("Статус", s)
+        ''NUR Für WinBack Version 3.23
+        'If wb_GlobalSettings.WinBackMySqlServerVersion = "3.23.48-Max" Then
+        '    'Test utf-8 nach MySql
+        '    Dim x As String = wb_Functions.UTF8toMySql("Статус")
+        '    Assert.AreEqual("ÁâÐâãá", x)
+        '    Dim s As String = wb_Functions.MySqlToUtf8(x)
+        '    Assert.AreEqual("Статус", s)
 
-        'Datensatz aus MySQL lesen - Texte 1/24/6
-        wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
-        'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        '    'Datensatz aus MySQL lesen - Texte 1/24/6
+        '    wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
+        '    'Datenbank-Verbindung öffnen - MySQL
+        '    Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
 
-        'Daten aus Tabelle Texte lesen (Text: Status - статус)
-        If winback.sqlSelect("SELECT * FROM Texte WHERE T_Typ=1 AND T_TextIndex=24 AND T_Sprache=6") Then
-            If winback.Read Then
-                Dim sString As String = winback.sField("T_Text")
-                Assert.AreEqual("ÁâÐâãá", sString)
+        '    'Daten aus Tabelle Texte lesen (Text: Status - статус)
+        '    If winback.sqlSelect("SELECT * FROM Texte WHERE T_Typ=1 AND T_TextIndex=24 AND T_Sprache=6") Then
+        '        If winback.Read Then
+        '            Dim sString As String = winback.sField("T_Text")
+        '            Assert.AreEqual("ÁâÐâãá", sString)
 
-                Dim xString As String = wb_Functions.MySqlToUtf8(sString)
-                Assert.AreEqual("Статус", xString)
-            End If
-        End If
+        '            Dim xString As String = wb_Functions.MySqlToUtf8(sString)
+        '            Assert.AreEqual("Статус", xString)
+        '        End If
+        '    End If
 
-        winback.CloseRead()
+        '    winback.CloseRead()
+        'End If
     End Sub
 
     <TestMethod()> Public Sub Test_CompareVersion()
         'Vompare Version liefert True zurück, wenn die alte Version (Parameter 1) älter ist, als die neue Version (Parameter 2)
         'also ein Update möglich ist...
-        Assert.AreEqual(True, wb_Functions.CompareVersion("1.0.0", "2.0.0"))
-        Assert.AreEqual(True, wb_Functions.CompareVersion("1.1.0", "2.0.0"))
-        Assert.AreEqual(True, wb_Functions.CompareVersion("1.0.1", "2.0.0"))
-        Assert.AreEqual(True, wb_Functions.CompareVersion("1.0.xxx", "2.0.0"))
-        Assert.AreEqual(True, wb_Functions.CompareVersion("1.xxx.0", "2.0.0"))
-        Assert.AreEqual(False, wb_Functions.CompareVersion("102", "2.0.0"))
-        Assert.AreEqual(False, wb_Functions.CompareVersion("xxx.1.02", "2.0.0"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.VersionUpdate, wb_Functions.CompareVersion("1.0.0", "2.0.0"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.VersionUpdate, wb_Functions.CompareVersion("1.1.0", "2.0.0"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.VersionUpdate, wb_Functions.CompareVersion("1.0.1", "2.0.0"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.VersionUpdate, wb_Functions.CompareVersion("1.0.xxx", "2.0.0"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.VersionUpdate, wb_Functions.CompareVersion("1.xxx.0", "2.0.0"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.Err, wb_Functions.CompareVersion("102", "2.0.0"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.Err, wb_Functions.CompareVersion("xxx.1.02", "2.0.0"))
 
-        Assert.AreEqual(False, wb_Functions.CompareVersion("1.0.0", "1.0.0"))
-        Assert.AreEqual(False, wb_Functions.CompareVersion("1.0.1", "1.0.0"))
-        Assert.AreEqual(True, wb_Functions.CompareVersion("1.0.0", "1.0.1"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.NoUpdate, wb_Functions.CompareVersion("1.0.0", "1.0.0"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.NoUpdate, wb_Functions.CompareVersion("1.0.1", "1.0.0"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.MinorUpdate, wb_Functions.CompareVersion("1.0.0", "1.0.1"))
 
-        Assert.AreEqual(True, wb_Functions.CompareVersion("1.2.0", "1.2.1"))
-        Assert.AreEqual(True, wb_Functions.CompareVersion("1.1.0", "1.2.0"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.MinorUpdate, wb_Functions.CompareVersion("1.2.0", "1.2.1"))
+        Assert.AreEqual(wb_Global.CompareVersionResult.MinorUpdate, wb_Functions.CompareVersion("1.1.0", "1.2.0"))
     End Sub
 
     <TestMethod()> Public Sub Test_GetProcessList()
@@ -325,10 +349,15 @@ Imports WinBack.wb_Global
     End Sub
 
     <TestMethod()> Public Sub Test_RegKeyNameExists()
-        Assert.AreEqual(True, wb_Functions.RegKeyNameExists(Microsoft.Win32.RegistryHive.CurrentUser, "Software\Signum GmbH Darmstadt\OrgaSoft.NET", "CompaniesHeight"))
+        'Nicht ausführen wenn automatischer Test läuft 2022.06.02/JW
+        'Assert.AreEqual(True, wb_Functions.RegKeyNameExists(Microsoft.Win32.RegistryHive.CurrentUser, "Software\Signum GmbH Darmstadt\OrgaSoft.NET", "CompaniesHeight"))
     End Sub
 
     <TestMethod()> Public Sub Test_FormatTimeStr()
+        Assert.AreEqual("00:00:00", wb_Functions.FormatTimeStr("00:"))
+        Assert.AreEqual("01:00:00", wb_Functions.FormatTimeStr("01:"))
+        Assert.AreEqual("02:00:00", wb_Functions.FormatTimeStr("02"))
+
         Assert.AreEqual("00:00:00", wb_Functions.FormatTimeStr("00:00"))
         Assert.AreEqual("01:00:00", wb_Functions.FormatTimeStr("01:00"))
         Assert.AreEqual("10:00:00", wb_Functions.FormatTimeStr("10:00"))
@@ -347,4 +376,108 @@ Imports WinBack.wb_Global
         Assert.IsFalse(wb_Functions.TypeIstTeigTemperaturSollwert(204))
 
     End Sub
+
+    <TestMethod()> Public Sub Test_CheckOrgaBackArtikelGruppe()
+        Assert.IsTrue(wb_Functions.CheckOrgaBackArtikelGruppe("10", "10"))
+        Assert.IsTrue(wb_Functions.CheckOrgaBackArtikelGruppe("20", "20"))
+        Assert.IsFalse(wb_Functions.CheckOrgaBackArtikelGruppe("10", "20"))
+        Assert.IsFalse(wb_Functions.CheckOrgaBackArtikelGruppe("20", "10"))
+
+        Assert.IsTrue(wb_Functions.CheckOrgaBackArtikelGruppe("20", "2[0-9]|3[0-5]"))
+        Assert.IsFalse(wb_Functions.CheckOrgaBackArtikelGruppe("10", "2[0-9]|3[0-5]"))
+
+        Assert.IsTrue(wb_Functions.CheckOrgaBackArtikelGruppe("21", "2[0-9]|3[0-5]"))
+        Assert.IsTrue(wb_Functions.CheckOrgaBackArtikelGruppe("22", "2[0-9]|3[0-5]"))
+        Assert.IsTrue(wb_Functions.CheckOrgaBackArtikelGruppe("23", "2[0-9]|3[0-5]"))
+        Assert.IsTrue(wb_Functions.CheckOrgaBackArtikelGruppe("24", "2[0-9]|3[0-5]"))
+
+        Assert.IsFalse(wb_Functions.CheckOrgaBackArtikelGruppe("-1", "2[0-9]|3[0-5]"))
+        Assert.IsFalse(wb_Functions.CheckOrgaBackArtikelGruppe("A", "2[0-9]|3[0-5]"))
+        Assert.IsFalse(wb_Functions.CheckOrgaBackArtikelGruppe("", "2[0-9]|3[0-5]"))
+
+    End Sub
+
+    <TestMethod()> Public Sub Test_LevenshteinDistance()
+        Assert.IsTrue(wb_Functions.LevenshteinDistance("test", "TEST") = 0)
+        Assert.IsTrue(wb_Functions.LevenshteinDistance("testa", "TEST") = 1)
+        Assert.IsTrue(wb_Functions.LevenshteinDistance("testab", "TEST") = 2)
+    End Sub
+
+    <TestMethod()> Public Sub Test_FuzzyStringMatch()
+        Dim fsm As Integer
+        Dim s1 As String
+        Dim s2 As String
+
+        s1 = "Emulgator Sojalecithin"
+        s2 = "Emulgator: (Sojalezitin)"
+        fsm = wb_Functions.FuzzyStringMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+
+        s1 = "Emulgator Sojalecithin"
+        s2 = "Emulgator: (Weizenstärke)"
+        fsm = wb_Functions.FuzzyStringMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+
+        s1 = "Emulgator Sojalecithin"
+        s2 = "Soja-Milch"
+        fsm = wb_Functions.FuzzyStringMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+
+        s1 = "Weizenmehl"
+        s2 = "Weizen"
+        fsm = wb_Functions.FuzzyStringMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+
+        s1 = "Weizenmehl"
+        s2 = "Roggenmehl"
+        fsm = wb_Functions.FuzzyStringMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+    End Sub
+
+    <TestMethod()> Public Sub Test_SoundExString()
+        Dim s1 As String
+        Dim s2 As String
+        Dim fsm As Boolean
+
+        s1 = "Emulgator Sojalecithin"
+        s2 = "Emulgator: (Sojalezitin)"
+        fsm = wb_Functions.SoundExMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm.ToString)
+
+        s1 = "Emulgator Sojalecithin"
+        s2 = "Emulgator: (Weizenstärke)"
+        fsm = wb_Functions.SoundExMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+
+        s1 = "Emulgator Sojalecithin"
+        s2 = "Soja-Milch"
+        fsm = wb_Functions.SoundExMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+
+        s1 = "Weizenmehl"
+        s2 = "Weizen"
+        fsm = wb_Functions.SoundExMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+
+        s1 = "Weizenmehl"
+        s2 = "Roggenmehl"
+        fsm = wb_Functions.SoundExMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+
+        s1 = "Weizenmehl"
+        s2 = "Weicenmehl"
+        fsm = wb_Functions.SoundExMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+
+        s1 = "Weizenmehl"
+        s2 = "Wejzenmehl"
+        fsm = wb_Functions.SoundExMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+
+        s1 = "Weizenmehl"
+        s2 = "Wejzenmeehl"
+        fsm = wb_Functions.SoundExMatch(s1, s2)
+        Debug.Print("Fuzzy-String-Match Test-1 " & s1 & "/" & s2 & " = " & fsm)
+    End Sub
+
 End Class

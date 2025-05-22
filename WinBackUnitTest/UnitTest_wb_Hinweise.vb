@@ -6,15 +6,10 @@ Imports WinBack
 
     <TestInitialize>
     Sub TestInitialize()
-        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
-        If My.Settings.TestMySQL Then
-            'Datenbank Verbindung Einstellungen setzen
-            '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
-            'Programm-Variante Unit-Test
-            wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
-        End If
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
     End Sub
+
     <TestMethod()> Public Sub TestDatenTyp()
 
         'Verarbeitungs-Hinweise Rezept

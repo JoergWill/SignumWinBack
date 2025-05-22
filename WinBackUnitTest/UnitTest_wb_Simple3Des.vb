@@ -4,6 +4,15 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
 <TestClass()> Public Class UnitTest_wb_Simple3Des
 
+    ''' <summary>
+    ''' Initialisiert die globalen Einstellungen.
+    ''' </summary>
+    <TestInitialize>
+    Sub TestInitialize()
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
+    End Sub
+
     <TestMethod()> Public Sub TestEncryption()
 
         Dim plainText As String = "ThisIsPlainText"

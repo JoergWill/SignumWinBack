@@ -10,9 +10,8 @@ Imports WinBack.wb_Global.LogType
 
     <TestInitialize>
     Sub TestInitialize()
-        'Datenbank Verbindung Einstellungen setzen
-        '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-        wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
         'Initialisierung Texte-Tabelle
         wb_Language.LoadTexteTabelle(wb_Language.GetLanguageNr())
     End Sub
@@ -23,8 +22,8 @@ Imports WinBack.wb_Global.LogType
         ChangeLogClear()
         s = ""
         'einen Eintrag anfügen (String)
-        s += vbNewLine & "Bezeichnung [alt] " & "Test"
-        s += vbNewLine & "Bezeichnung [neu] " & "TestNeu" & vbNewLine
+        s += vbCrLf & "Bezeichnung [alt] " & "Test"
+        s += vbCrLf & "Bezeichnung [neu] " & "TestNeu" & vbCrLf
 
         ChangeLogAdd(Prm, Tx_Bezeichnung, "Test", "TestNeu")
         Assert.AreEqual(s, ChangeLogReport(True))
@@ -33,8 +32,8 @@ Imports WinBack.wb_Global.LogType
         ChangeLogClear()
         s = ""
         'einen Eintrag anfügen (Float)
-        s += vbNewLine & "Nährwerte [alt/neu]" & vbNewLine
-        s += "   0,000 kJ/  10,000 kJ Kilojoule" & vbNewLine
+        s += vbCrLf & "Nährwerte [alt/neu]" & vbCrLf
+        s += "   0,000 kJ/  10,000 kJ Kilojoule" & vbCrLf
 
         ChangeLogAdd(Nrw, T301_KiloJoule, 0.0F, 10.0F)
         Assert.AreEqual(s, ChangeLogReport(True))
@@ -43,8 +42,8 @@ Imports WinBack.wb_Global.LogType
         ChangeLogClear()
         s = ""
         'einen Eintrag anfügen (Allergen)
-        s += vbNewLine & "Allergene [alt/neu]" & vbNewLine
-        s += "C/T Eier" + vbNewLine
+        s += vbCrLf & "Allergene [alt/neu]" & vbCrLf
+        s += "C/T Eier" + vbCrLf
 
         ChangeLogAdd(Alg, T301_Eier, wb_Global.AllergenInfo.C, wb_Global.AllergenInfo.T)
         Assert.AreEqual(s, ChangeLogReport(True))

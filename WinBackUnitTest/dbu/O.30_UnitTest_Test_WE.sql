@@ -1,0 +1,3 @@
+USE [OrgaBackDemo_Main]
+DELETE FROM [dbo].[ArtikelLagerkarte] WHERE ArtikelNr = '201022'
+INSERT INTO [dbo].[ArtikelLagerkarte]([ArtikelNr],[Einheit],[Farbe],[Grösse],[Datum],[Mitarbeiter],[Filiale],[Menge],[BestandVorher],[LagerCode],[Preis],[KorrNr],[VorfallKürzel],[VorfallNr],[Seriennummer],[Modul],[ChargenNr],[DocumentId],[DocumentIdEingang],[Uhrzeit],[ZusatzInfo1],[ZusatzInfo2],[ZusatzInfo3]) VALUES('201022',1,0,NULL,'20220102','SYS',9991,10.00,0.00,'',1.10,'','IV',5000001,'','Vorfall verbuchen','',0,0,'00:00','','','')

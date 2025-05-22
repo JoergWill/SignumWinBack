@@ -6,25 +6,21 @@ Imports WinBack
 
     <TestInitialize>
     Sub TestInitialize()
-        'Test wird nur ausgeführt, wenn die Datenbank verfügbar ist
-        If My.Settings.TestMsSQL Then
-            'Datenbank Verbindung Einstellungen setzen
-            '(Muss in wb_Konfig gesetzt werden, weil My.Setting hier nicht funktioniert)
-            wb_GlobalSettings.WinBackDBType = wb_Sql.dbType.mySql
-        End If
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
     End Sub
 
     <TestMethod()> Public Sub Test_FilialeIstProduktion()
 
         'Test mit leerem Array
-        Assert.IsFalse(wb_Filiale.FilialeIstProduktion("9999"))
-        Assert.IsFalse(wb_Filiale.FilialeIstProduktion(""))
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
+        Assert.IsTrue(wb_Filiale.FilialeIstProduktion("9999"))
+        Assert.IsTrue(wb_Filiale.FilialeIstProduktion(""))
 
         'Test wenn Ms-Datenbank aktiv
-        If My.Settings.TestMsSQL Then
-            Assert.IsTrue(wb_Filiale.FilialeIstProduktion("1"))
-            Assert.IsTrue(wb_Filiale.FilialeIstProduktion("2"))
-        End If
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
+        Assert.IsFalse(wb_Filiale.FilialeIstProduktion("1"))
+        Assert.IsFalse(wb_Filiale.FilialeIstProduktion("2"))
 
         'Testdaten in Array-List laden
         wb_Filiale.AddFiliale("9999")
@@ -59,14 +55,14 @@ Imports WinBack
     <TestMethod()> Public Sub Test_SortimentIstProduktion()
 
         'Test mit leerem Array
-        Assert.IsFalse(wb_Filiale.SortimentIstProduktion("9"))
-        Assert.IsFalse(wb_Filiale.SortimentIstProduktion(""))
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
+        Assert.IsTrue(wb_Filiale.SortimentIstProduktion("9"))
+        Assert.IsTrue(wb_Filiale.SortimentIstProduktion(""))
 
         'Test wenn Ms-Datenbank aktiv
-        If My.Settings.TestMsSQL Then
-            Assert.IsTrue(wb_Filiale.SortimentIstProduktion("1"))
-            Assert.IsTrue(wb_Filiale.SortimentIstProduktion("2"))
-        End If
+        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack
+        Assert.IsTrue(wb_Filiale.SortimentIstProduktion("01"))
+        Assert.IsTrue(wb_Filiale.SortimentIstProduktion("02"))
     End Sub
 
 End Class

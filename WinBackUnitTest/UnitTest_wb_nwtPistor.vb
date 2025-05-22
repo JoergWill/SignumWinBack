@@ -7,6 +7,15 @@ Public Class UnitTest_wb_nwtPistor
 
     Private testContextInstance As TestContext
 
+    ''' <summary>
+    ''' Initialisiert die globalen Einstellungen.
+    ''' </summary>
+    <TestInitialize>
+    Sub TestInitialize()
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
+    End Sub
+
     '''<summary>
     '''Ruft den Textkontext mit Informationen über
     '''den aktuellen Testlauf sowie Funktionalität für diesen auf oder legt diese fest.
@@ -53,7 +62,7 @@ Public Class UnitTest_wb_nwtPistor
         'Datensätze einlesen 
         While nwtPistor.ReadNext()
             'Info-Text ausgeben
-            Debug.Print(nwtPistor.InfoText & vbNewLine)
+            Debug.Print(nwtPistor.InfoText & vbCrLf)
         End While
 
         'Speicher wieder freigaben

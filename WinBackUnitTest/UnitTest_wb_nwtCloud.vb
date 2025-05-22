@@ -5,10 +5,10 @@
     ''' <summary>
     ''' Initialisiert die globalen Einstellungen.
     ''' </summary>
-    ''' <param name="testContext"></param>
-    <ClassInitialize()> Public Shared Sub Init_CloudTests(ByVal testContext As TestContext)
-        'Programm-Variante Unit-Test
-        wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest
+    <TestInitialize>
+    Sub TestInitialize()
+        'Einstellungen in WinBack.ini für den Testlauf vornehmen
+        UnitTest_Init.Init_WinBackIni_Settings()
     End Sub
 
     <TestMethod()> Public Sub Test_CloudLookup()
@@ -45,7 +45,8 @@
         'Ergebnis aus Cloud(JSON) auswerten
         Assert.AreEqual(nwtDaten.ktTyp301.TimeStamp, #06/28/2018 09:27:45#)
         Assert.AreEqual(nwtDaten.Lieferant, "LINDEMANN")
-        Assert.AreEqual(nwtDaten.Bezeichnung, "Westfalia Kornkruste Kornfit")
+        'Die Komponenten-Bezeichnung wird nicht überschrieben !!
+        'Assert.AreEqual(nwtDaten.Bezeichnung, "Westfalia Kornkruste Kornfit")
         Debug.Print(nwtDaten.GetReport)
 
         'Komponenten-Nummer (intern) setzen
@@ -68,15 +69,12 @@
         Dim nwt As New wb_nwtCl_WinBack(wb_Credentials.WinBackCloud_Pass, wb_Credentials.WinBackCloud_Url)
 
         'Lookup Product Sheet-Liste
-        Assert.IsTrue(nwt.GetProductSheetList("33") > 0)
+        Assert.IsTrue(nwt.GetProductSheetCount("33") > 0)
         nwt.DebugResultSet(0)
 
         'Lookup Product Sheet
         Assert.IsTrue(nwt.GetProductSheet("33", "MM Dinkelmehl Type 1050.pdf") > 0)
         nwt.DebugResultSet(0)
-
-
-
     End Sub
 
 
