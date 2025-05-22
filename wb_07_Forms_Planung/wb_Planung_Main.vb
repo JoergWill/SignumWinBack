@@ -50,6 +50,7 @@ Public Class wb_Planung_Main
     End Property
 
     Public Overrides Sub SetDefaultLayout()
+        DockPanel.Theme = wb_GlobalSettings.Theme
         PlanungListe.Show(DockPanel, DockState.DockTop)
     End Sub
 

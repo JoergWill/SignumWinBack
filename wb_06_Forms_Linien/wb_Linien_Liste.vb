@@ -1,8 +1,10 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Resources
+Imports System.Windows.Forms
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Linien_Liste
     Inherits DockContent
+    Dim IList As ImageList
 
     Public ReadOnly Property countItems As Integer
         Get
@@ -10,11 +12,24 @@ Public Class wb_Linien_Liste
         End Get
     End Property
 
+    ''' <summary>
+    ''' Die Image-List für den List-View muss dynamisch erzuegt werden, da sonst das Programm in der
+    ''' englischen Windows-Version abstürzt.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub wb_Linien_Liste_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        AddHandler wb_Linien.eEdit_Leave, AddressOf LinienInfo
+        'Image-List erzeugen und das Bild aus der Resourcen-Datei laden.
+        IList = New ImageList
+        IList.Images.Add(PictureVNC.Image)
+        IList.ImageSize = PictureVNC.Size
+        VNCview.LargeImageList = IList
+        'Liste nach Änderung aktualisieren
+        AddHandler wb_Linien_Shared.eEdit_Leave, AddressOf LinienInfo
         LoadItems()
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S2340:""Do"" loops should not be used without a ""While"" or ""Until"" condition", Justification:="<Ausstehend>")>
     Public Sub LoadItems()
         ' Auslesen aus .ini-Datei
         Dim IniFile As New wb_IniFile
@@ -35,6 +50,7 @@ Public Class wb_Linien_Liste
         IniFile = Nothing
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Public Sub SaveItems()
         Dim IniFile As New wb_IniFile
         Dim i As Integer
@@ -72,7 +88,7 @@ Public Class wb_Linien_Liste
         'alle Einträge löschen
         VNCview.Clear()
 
-        Dim winback As New wb_Sql(wb_globalsettings.SqlConWinBack, wb_globalsettings.WinBackDBType)
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         If winback.sqlSelect("SELECT * FROM Linien") Then
             While winback.Read
                 IPLinie = (winback.iField("L_Nr") + 10).ToString
@@ -98,42 +114,29 @@ Public Class wb_Linien_Liste
 
     Private Sub VNCview_Click(sender As Object, e As EventArgs) Handles VNCview.Click
         If VNCviewIsSelected() Then
-            wb_Linien.aktAdresse = VNCview.SelectedItems.Item(0).Name
-            wb_Linien.aktBezeichnung = VNCview.SelectedItems.Item(0).Text
-            wb_Linien.Liste_Click(sender)
+            wb_Linien_Shared.aktAdresse = VNCview.SelectedItems.Item(0).Name
+            wb_Linien_Shared.aktBezeichnung = VNCview.SelectedItems.Item(0).Text
+            wb_Linien_Shared.Liste_Click(sender)
         End If
     End Sub
 
-    Public Sub LinienInfo()
+    Public Sub LinienInfo(sender As Object)
         If VNCviewIsSelected() Then
-            VNCview.SelectedItems.Item(0).Text = wb_Linien.aktBezeichnung
-            VNCview.SelectedItems.Item(0).Name = wb_Linien.aktAdresse
+            VNCview.SelectedItems.Item(0).Text = wb_Linien_Shared.aktBezeichnung
+            VNCview.SelectedItems.Item(0).Name = wb_Linien_Shared.aktAdresse
         End If
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1066:Collapsible ""if"" statements should be merged", Justification:="<Ausstehend>")>
     Private Sub VNCview_DoubleClick(sender As Object, e As EventArgs) Handles VNCview.DoubleClick
-        Dim cmdLinie, cmdParam As String
-        Dim p As New Process
-
         'VNC-Viewer starten
-        If wb_GlobalSettings.pAddInPath IsNot Nothing Then
-            cmdLinie = wb_GlobalSettings.pAddInPath & "vncviewer.exe"
-        Else
-            cmdLinie = wb_GlobalSettings.PProgrammPath & "vncviewer.exe"
-        End If
+
         If VNCviewIsSelected() Then
-            cmdParam = VNCview.SelectedItems.Item(0).Name() & " /password herbst"
-            Try
-                p.StartInfo.FileName = cmdLinie
-                p.StartInfo.Arguments = cmdParam
-                p.StartInfo.UseShellExecute = False
-                p.StartInfo.RedirectStandardOutput = False
-                p.StartInfo.CreateNoWindow = False
-                p.Start()
-            Catch ex As Exception
+            If Not wb_Functions.RunExternalProgramm("vncviewer.exe", VNCview.SelectedItems.Item(0).Name() & " /password herbst") Then
                 MsgBox("Fehler beim Starten des VNC-Viewers", MsgBoxStyle.Exclamation, "WinBack-Produktions-Linien")
-            End Try
+            End If
         End If
+
     End Sub
 
     Private Function VNCviewIsSelected() As Boolean
@@ -145,8 +148,9 @@ Public Class wb_Linien_Liste
     End Function
 
     Private Sub wb_Linien_Liste_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        LinienInfo()
+        LinienInfo(sender)
         SaveItems()
+        RemoveHandler wb_Linien_Shared.eEdit_Leave, AddressOf LinienInfo
     End Sub
 End Class
 

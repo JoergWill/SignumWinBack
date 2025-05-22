@@ -17,7 +17,7 @@ Public Class wb_Planung_ListeFehlerArtikel
         _ErrIndex = ErrIndex
 
         'Artikel lesen
-        If _Artikel.MySQLdbRead(0, ArtikelNr) Then
+        If _Artikel.xMySQLdbRead(0, ArtikelNr) Then
             DetailInfo(Nothing)
             'Lesen der Artikeldaten war erfolgreich
             _ReadOK = True
@@ -38,6 +38,7 @@ Public Class wb_Planung_ListeFehlerArtikel
     ''' Anzeige der Artikel-Details.
     ''' Wird aufgerufen durch Event eListe_Click(). Aktualisiert die Anzeigefelder (Nummer/Text/Kommentar...)
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
     Private Sub DetailInfo(sender)
         'Textfelder
         tArtikelNummer.Text = _Artikel.Nummer

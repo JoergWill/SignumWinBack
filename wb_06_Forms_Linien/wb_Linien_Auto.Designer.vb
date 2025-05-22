@@ -366,16 +366,16 @@ Partial Class wb_Linien_Auto
     Friend WithEvents ColIstwert As Infralution.Controls.VirtualTree.Column
     Friend WithEvents ColEinheitIstwert As Infralution.Controls.VirtualTree.Column
     Friend WithEvents CellEditor2 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents RichTextBox1 As Windows.Forms.RichTextBox
+    Friend WithEvents RichTextBox1 As System.Windows.Forms.RichTextBox
     Friend WithEvents CellEditor1 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents Label1 As Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents CellEditor3 As Infralution.Controls.VirtualTree.CellEditor
     Friend WithEvents UniversalEditBox1 As Infralution.Controls.UniversalEditBox
     Friend WithEvents CellEditor4 As Infralution.Controls.VirtualTree.CellEditor
-    Friend WithEvents TextBox1 As Windows.Forms.TextBox
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents ObjectRowBinding1 As Infralution.Controls.VirtualTree.ObjectRowBinding
-    Friend WithEvents BtnStart As Windows.Forms.Button
+    Friend WithEvents BtnStart As System.Windows.Forms.Button
     Friend WithEvents cbLinien As wb_ComboBox
-    Friend WithEvents lblLinie As Windows.Forms.Label
-    Friend WithEvents BtnAktualisieren As Windows.Forms.Button
+    Friend WithEvents lblLinie As System.Windows.Forms.Label
+    Friend WithEvents BtnAktualisieren As System.Windows.Forms.Button
 End Class

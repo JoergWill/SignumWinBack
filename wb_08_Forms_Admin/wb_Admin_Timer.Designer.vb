@@ -48,5 +48,5 @@ Partial Class wb_Admin_Timer
 
     End Sub
 
-    Friend WithEvents tbAktionsTimer As Windows.Forms.Panel
+    Friend WithEvents tbAktionsTimer As System.Windows.Forms.Panel
 End Class

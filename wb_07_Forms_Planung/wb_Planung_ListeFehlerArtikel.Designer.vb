@@ -356,24 +356,24 @@ Partial Class wb_Planung_ListeFehlerArtikel
     End Sub
 
     Friend WithEvents KompRzChargen As wb_KompRzChargen
-    Friend WithEvents tArtikelKommentar As Windows.Forms.TextBox
-    Friend WithEvents Label4 As Windows.Forms.Label
-    Friend WithEvents tArtikelNummer As Windows.Forms.TextBox
-    Friend WithEvents Label3 As Windows.Forms.Label
-    Friend WithEvents tArtikelName As Windows.Forms.TextBox
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents tbErrorText As Windows.Forms.TextBox
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents pnlCalcChargen As Windows.Forms.Panel
-    Friend WithEvents lblCalcChargen As Windows.Forms.Label
-    Friend WithEvents tRestGr As Windows.Forms.TextBox
-    Friend WithEvents tRestkg As Windows.Forms.TextBox
-    Friend WithEvents tRestStk As Windows.Forms.TextBox
-    Friend WithEvents tChrgGr As Windows.Forms.TextBox
-    Friend WithEvents tChrgkg As Windows.Forms.TextBox
-    Friend WithEvents tChrgStk As Windows.Forms.TextBox
-    Friend WithEvents Label5 As Windows.Forms.Label
-    Friend WithEvents tBstkg As Windows.Forms.TextBox
-    Friend WithEvents tBestStk As Windows.Forms.TextBox
-    Friend WithEvents Label7 As Windows.Forms.Label
+    Friend WithEvents tArtikelKommentar As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents tArtikelNummer As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents tArtikelName As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents tbErrorText As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents pnlCalcChargen As System.Windows.Forms.Panel
+    Friend WithEvents lblCalcChargen As System.Windows.Forms.Label
+    Friend WithEvents tRestGr As System.Windows.Forms.TextBox
+    Friend WithEvents tRestkg As System.Windows.Forms.TextBox
+    Friend WithEvents tRestStk As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgGr As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgkg As System.Windows.Forms.TextBox
+    Friend WithEvents tChrgStk As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents tBstkg As System.Windows.Forms.TextBox
+    Friend WithEvents tBestStk As System.Windows.Forms.TextBox
+    Friend WithEvents Label7 As System.Windows.Forms.Label
 End Class

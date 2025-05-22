@@ -1,5 +1,5 @@
 ﻿Imports System.Windows.Forms
-Imports combit.ListLabel22.DataProviders
+Imports combit.Reporting.DataProviders
 Imports WeifenLuo.WinFormsUI.Docking
 
 Public Class wb_Planung_Drucken
@@ -112,13 +112,13 @@ Public Class wb_Planung_Drucken
         For Each s As wb_Global.wb_LinienGruppe In DruckAuftragLinienGruppe.GridArray
             'nur ausgewählte Liniengruppen drucken
             If s.bDrucken Then
-                wb_Planung_Shared.FilterAndMark(TeigListe, True, wb_Global.NOFILTER, s.LinienGruppe, True)
+                wb_Planung_Shared.FilterAndMark(TeigListe, True, wb_Global.NOFILTER, s.LinienGruppe, wb_Global.NOFILTER, True)
             End If
         Next
         'Wenn nach dem Filtern Einträge vorhanden sind - Drucken
         If TeigListe.Count > 0 Then
             'Druck-Daten
-            Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
+            Dim pDialog As New wb_PrinterDialog(False, True) 'Drucker-Dialog
             pDialog.LL_KopfZeile_1 = "für " & wb_Planung_Shared.ProduktionsDatum.ToString("dddd") & ", den " & wb_Planung_Shared.ProduktionsDatum.ToString("dd.MM.yyyy")
             pDialog.LL.DataSource = New ObjectDataProvider(TeigListe)
 
@@ -137,17 +137,17 @@ Public Class wb_Planung_Drucken
         'Daten filtern (Aufbereitungs-Ort)
         Dim BackZettel As New ArrayList
         BackZettel.Clear()
-        'alle Einträge im Auswahl-Grid Aufareitung-Platz
+        'alle Einträge im Auswahl-Grid Aufarbeitung-Platz
         For Each s As wb_Global.wb_LinienGruppe In DruckAuftragAufarbeitung.GridArray
             'nur ausgewählte Aufarbeitungsplätze drucken
             If s.bDrucken Then
-                wb_Planung_Shared.FilterAndMark(BackZettel, True, s.LinienGruppe, wb_Global.NOFILTER, True, s.bKommentar, s.bSonderText)
+                wb_Planung_Shared.FilterAndMark(BackZettel, True, s.LinienGruppe, wb_Global.NOFILTER, wb_Global.NOFILTER, True, s.bKommentar, s.bSonderText, wb_GlobalSettings.AufarbeitungZielDrucken)
             End If
         Next
         'Wenn nach dem Filtern Einträge vorhanden sind - Drucken
         If BackZettel.Count > 0 Then
             'Druck-Daten
-            Dim pDialog As New wb_PrinterDialog(False) 'Drucker-Dialog
+            Dim pDialog As New wb_PrinterDialog(False, True) 'Drucker-Dialog
             pDialog.LL_KopfZeile_1 = "für " & wb_Planung_Shared.ProduktionsDatum.ToString("dddd") & ", den " & wb_Planung_Shared.ProduktionsDatum.ToString("dd.MM.yyyy")
             pDialog.LL.DataSource = New ObjectDataProvider(BackZettel)
 
@@ -203,12 +203,11 @@ Public Class wb_Planung_Drucken
         Dim s As String = "x"
         'Schleife über alle Liniengruppen
         For Each Liniengruppe As wb_Global.wb_LinienGruppe In GridArray
-            If (Liniengruppe.bDrucken And ItemAttr = 502) Or (Liniengruppe.bDrucken And ItemAttr = 503) Or (Liniengruppe.bKommentar And ItemAttr = 504) Or (Liniengruppe.bSonderText And ItemAttr = 505) Then
+            If (Liniengruppe.bDrucken AndAlso ItemAttr = 502) OrElse (Liniengruppe.bDrucken AndAlso ItemAttr = 503) OrElse (Liniengruppe.bKommentar AndAlso ItemAttr = 504) OrElse (Liniengruppe.bSonderText AndAlso ItemAttr = 505) Then
                 s &= Liniengruppe.LinienGruppe & "x"
             End If
         Next
         'Ergebnis-String
         Return s
     End Function
-
 End Class

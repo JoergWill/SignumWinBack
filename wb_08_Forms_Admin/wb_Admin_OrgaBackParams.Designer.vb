@@ -105,9 +105,9 @@ Partial Class wb_Admin_OrgaBackParams
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents pnlArtikelGruppen As Windows.Forms.Panel
-    Friend WithEvents lblSortimente As Windows.Forms.Label
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
-    Friend WithEvents pnlSortimente As Windows.Forms.Panel
+    Friend WithEvents pnlArtikelGruppen As System.Windows.Forms.Panel
+    Friend WithEvents lblSortimente As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlSortimente As System.Windows.Forms.Panel
 End Class

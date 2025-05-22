@@ -11,7 +11,7 @@ Public Class wb_Linien_Main
 
     'Default-Fenster
     Private LinienListe As New wb_Linien_Liste
-    Private LinienDetails As New wb_Linien_Details
+    Private LinienDetails As wb_Linien_Details
     Private LinienAuto As wb_Linien_Auto
 
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -51,8 +51,8 @@ Public Class wb_Linien_Main
     End Property
 
     Public Overrides Sub SetDefaultLayout()
+        DockPanel.Theme = wb_GlobalSettings.Theme
         LinienListe.Show(DockPanel, DockState.DockLeft)
-        LinienDetails.Show(DockPanel, DockState.DockTop)
     End Sub
 
     Public Shadows ReadOnly Property ContextTabs As GUI.ITab() Implements IExternalFormUserControl.ContextTabs
@@ -84,10 +84,16 @@ Public Class wb_Linien_Main
     Protected Overrides Function wbBuildDocContent(ByVal persistString As String) As WeifenLuo.WinFormsUI.Docking.DockContent
         Select Case persistString
             Case "WinBack.wb_Linien_Liste"
+                LinienListe.CloseButtonVisible = False
+                _DockPanelList.Add(LinienListe)
                 Return LinienListe
             Case "WinBack.wb_Linien_Details"
+                LinienListe.CloseButtonVisible = False
+                _DockPanelList.Add(LinienDetails)
                 Return LinienDetails
             Case "WinBack.wb_Linien_Auto"
+                LinienAuto.CloseButtonVisible = False
+                _DockPanelList.Add(LinienAuto)
                 Return LinienAuto
             Case Else
                 Return Nothing
@@ -97,11 +103,15 @@ Public Class wb_Linien_Main
     Private Sub BtnLinienNew()
         LinienListe.AddItems("", "Neuer Eintrag")
         LinienListe.SelectLastItem()
-        LinienDetails.DetailInfo()
+        LinienDetails.DetailInfo(Nothing)
         BtnLinien()
     End Sub
 
     Private Sub BtnLinien()
+        If IsNothingOrDisposed(LinienDetails) Then
+            LinienDetails = New wb_Linien_Details
+        End If
+        LinienDetails.Show(DockPanel)
         LinienDetails.DetailEdit()
     End Sub
 

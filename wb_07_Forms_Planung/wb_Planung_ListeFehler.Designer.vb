@@ -48,5 +48,5 @@ Partial Class wb_Planung_ListeFehler
 
     End Sub
 
-    Friend WithEvents pnlErrorList As Windows.Forms.Panel
+    Friend WithEvents pnlErrorList As System.Windows.Forms.Panel
 End Class

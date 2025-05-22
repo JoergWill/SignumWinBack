@@ -104,7 +104,7 @@ Public Class wb_Admin_Timer
     ''' </summary>
     Private Sub ShowAktionsTimer()
         'Daten im Grid anzeigen
-        AktionsTimerGrid.ScrollBars = Windows.Forms.ScrollBars.Vertical
+        AktionsTimerGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         AktionsTimerGrid.BackgroundColor = Me.BackColor
         AktionsTimerGrid.GridLocation(tbAktionsTimer)
         AktionsTimerGrid.PerformLayout()

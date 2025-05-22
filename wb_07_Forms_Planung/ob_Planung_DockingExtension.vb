@@ -62,11 +62,13 @@ Public Class ob_Planung_DockingExtension
     ''' Dieser wird erst erzeugt und gesetzt, wenn das Fenster auch angezeigt werden soll.
     ''' </remarks>
     Public Sub Initialize() Implements IExtension.Initialize
+        'in wb_Main registrieren
+        wb_Main_Shared.RegisterAddIn("ob_Planung_DockingExtension")
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
-#If AssemblyResolve Then
-        'Die eigenen dll-Files in sep. Verzeichnis verlagern
-        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-#End If
+        If wb_Global.AssemblyResolve Then
+            'Die eigenen dll-Files in sep. Verzeichnis verlagern
+            AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+        End If
 
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
@@ -113,7 +115,7 @@ Public Class ob_Planung_DockingExtension
             'fügt einen Tab im Artkel-Ribbon(rtabArtikel) hinzu
             Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabProduktionsplanung" Select oTab
             If oSystemTab IsNot Nothing AndAlso oSystemTab.Count > 0 Then
-                oSystemTab(0).GetGroups(0).AddButton("WinBackProduktionBtn", "WinBack Teigherstellung", "WinBack Chargen-Optimierung und Teig-Herstellung", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf Produktion)
+                oSystemTab(0).GetGroups(0).AddButton("WinBackProduktionBtn", "Teigherstellung", "Produktion Chargen-Optimierung und Teig-Herstellung", My.Resources.MainProduktionsPlanung_16x16, My.Resources.MainProduktionsPlanung_32x32, AddressOf Produktion)
             End If
         End If
     End Sub
@@ -130,7 +132,7 @@ Public Class ob_Planung_DockingExtension
         wb_GlobalSettings.ProdPlanReadOnOpen = True
 
         'WinBack-Produktions-Planung (Teig-Herstellung)
-        Dim xForm = _ViewProvider.OpenForm(New wb_Planung_Main(ServiceProvider), My.Resources.MainProduktionsPlanung_16x16)
+        Dim xForm As IForm = _ViewProvider.OpenForm(New wb_Planung_Main(ServiceProvider), My.Resources.MainProduktionsPlanung_16x16)
         'Fensterposition aus winback.ini
         wb_DockBarPanelShared.SetFormBoundaries(xForm, "Produktion")
     End Sub

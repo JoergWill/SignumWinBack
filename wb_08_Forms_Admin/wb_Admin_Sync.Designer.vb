@@ -232,23 +232,23 @@ Partial Class wb_Admin_Sync
 
     End Sub
 
-    Friend WithEvents btnSyncUserGruppen As Windows.Forms.Button
-    Friend WithEvents tbSyncResult As Windows.Forms.Panel
-    Friend WithEvents btnSyncUser As Windows.Forms.Button
-    Friend WithEvents btnSyncStart As Windows.Forms.Button
-    Friend WithEvents btnExportPrint As Windows.Forms.Button
-    Friend WithEvents lvSyncResult As Windows.Forms.ListView
-    Friend WithEvents clHeader0 As Windows.Forms.ColumnHeader
-    Friend WithEvents clHeader1 As Windows.Forms.ColumnHeader
-    Friend WithEvents clHeader2 As Windows.Forms.ColumnHeader
-    Friend WithEvents clHeader3 As Windows.Forms.ColumnHeader
-    Friend WithEvents clHeader4 As Windows.Forms.ColumnHeader
-    Friend WithEvents clHeader5 As Windows.Forms.ColumnHeader
-    Friend WithEvents btnSyncArtikel As Windows.Forms.Button
-    Friend WithEvents btnSyncRohstoffe As Windows.Forms.Button
-    Friend WithEvents btnTryToMatch As Windows.Forms.Button
-    Friend WithEvents clHeader6 As Windows.Forms.ColumnHeader
-    Friend WithEvents btnRemoveDBL As Windows.Forms.Button
-    Friend WithEvents btnRemoveNotUsed As Windows.Forms.Button
-    Friend WithEvents btnInitLieferungen As Windows.Forms.Button
+    Friend WithEvents btnSyncUserGruppen As System.Windows.Forms.Button
+    Friend WithEvents tbSyncResult As System.Windows.Forms.Panel
+    Friend WithEvents btnSyncUser As System.Windows.Forms.Button
+    Friend WithEvents btnSyncStart As System.Windows.Forms.Button
+    Friend WithEvents btnExportPrint As System.Windows.Forms.Button
+    Friend WithEvents lvSyncResult As System.Windows.Forms.ListView
+    Friend WithEvents clHeader0 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents clHeader1 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents clHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents clHeader3 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents clHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents clHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents btnSyncArtikel As System.Windows.Forms.Button
+    Friend WithEvents btnSyncRohstoffe As System.Windows.Forms.Button
+    Friend WithEvents btnTryToMatch As System.Windows.Forms.Button
+    Friend WithEvents clHeader6 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents btnRemoveDBL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveNotUsed As System.Windows.Forms.Button
+    Friend WithEvents btnInitLieferungen As System.Windows.Forms.Button
 End Class

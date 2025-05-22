@@ -23,59 +23,61 @@ Partial Class wb_Planung_Vorlage
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(wb_Planung_Vorlage))
-        Me.BtnLoadVorlage = New System.Windows.Forms.Button()
-        Me.BtnCancel = New System.Windows.Forms.Button()
-        Me.BtnEditVorlage = New System.Windows.Forms.Button()
-        Me.SuspendLayout()
-        '
-        'BtnLoadVorlage
-        '
-        Me.BtnLoadVorlage.Location = New System.Drawing.Point(12, 439)
-        Me.BtnLoadVorlage.Name = "BtnLoadVorlage"
-        Me.BtnLoadVorlage.Size = New System.Drawing.Size(104, 28)
-        Me.BtnLoadVorlage.TabIndex = 0
-        Me.BtnLoadVorlage.Text = "Laden"
-        Me.BtnLoadVorlage.UseVisualStyleBackColor = True
-        '
-        'BtnCancel
-        '
-        Me.BtnCancel.Location = New System.Drawing.Point(122, 439)
-        Me.BtnCancel.Name = "BtnCancel"
-        Me.BtnCancel.Size = New System.Drawing.Size(104, 28)
-        Me.BtnCancel.TabIndex = 1
-        Me.BtnCancel.Text = "Abbruch"
-        Me.BtnCancel.UseVisualStyleBackColor = True
-        '
-        'BtnEditVorlage
-        '
-        Me.BtnEditVorlage.Location = New System.Drawing.Point(232, 439)
-        Me.BtnEditVorlage.Name = "BtnEditVorlage"
-        Me.BtnEditVorlage.Size = New System.Drawing.Size(104, 28)
-        Me.BtnEditVorlage.TabIndex = 2
-        Me.BtnEditVorlage.Text = "Bearbeiten"
-        Me.BtnEditVorlage.UseVisualStyleBackColor = True
-        '
-        'wb_Planung_Vorlage
-        '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(350, 479)
-        Me.ControlBox = False
-        Me.Controls.Add(Me.BtnEditVorlage)
-        Me.Controls.Add(Me.BtnCancel)
-        Me.Controls.Add(Me.BtnLoadVorlage)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
-        Me.Name = "wb_Planung_Vorlage"
-        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
-        Me.Text = "Vorlage Produktionstag laden"
-        Me.ResumeLayout(False)
+        BtnLoadVorlage = New System.Windows.Forms.Button()
+        BtnCancel = New System.Windows.Forms.Button()
+        BtnEditVorlage = New System.Windows.Forms.Button()
+        SuspendLayout()
+        ' 
+        ' BtnLoadVorlage
+        ' 
+        BtnLoadVorlage.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left
+        BtnLoadVorlage.Location = New System.Drawing.Point(12, 499)
+        BtnLoadVorlage.Name = "BtnLoadVorlage"
+        BtnLoadVorlage.Size = New System.Drawing.Size(104, 28)
+        BtnLoadVorlage.TabIndex = 0
+        BtnLoadVorlage.Text = "Laden"
+        BtnLoadVorlage.UseVisualStyleBackColor = True
+        ' 
+        ' BtnCancel
+        ' 
+        BtnCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left
+        BtnCancel.Location = New System.Drawing.Point(122, 499)
+        BtnCancel.Name = "BtnCancel"
+        BtnCancel.Size = New System.Drawing.Size(104, 28)
+        BtnCancel.TabIndex = 1
+        BtnCancel.Text = "Abbruch"
+        BtnCancel.UseVisualStyleBackColor = True
+        ' 
+        ' BtnEditVorlage
+        ' 
+        BtnEditVorlage.Anchor = System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left
+        BtnEditVorlage.Location = New System.Drawing.Point(232, 499)
+        BtnEditVorlage.Name = "BtnEditVorlage"
+        BtnEditVorlage.Size = New System.Drawing.Size(104, 28)
+        BtnEditVorlage.TabIndex = 2
+        BtnEditVorlage.Text = "Bearbeiten"
+        BtnEditVorlage.UseVisualStyleBackColor = True
+        ' 
+        ' wb_Planung_Vorlage
+        ' 
+        AutoScaleDimensions = New System.Drawing.SizeF(6F, 13F)
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        ClientSize = New System.Drawing.Size(356, 539)
+        Controls.Add(BtnEditVorlage)
+        Controls.Add(BtnCancel)
+        Controls.Add(BtnLoadVorlage)
+        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Icon = CType(resources.GetObject("$this.Icon"), Drawing.Icon)
+        MaximizeBox = False
+        MinimizeBox = False
+        Name = "wb_Planung_Vorlage"
+        SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
+        Text = "Vorlage Produktionstag laden"
+        ResumeLayout(False)
 
     End Sub
 
-    Friend WithEvents BtnLoadVorlage As Windows.Forms.Button
-    Friend WithEvents BtnCancel As Windows.Forms.Button
-    Friend WithEvents BtnEditVorlage As Windows.Forms.Button
+    Friend WithEvents BtnLoadVorlage As System.Windows.Forms.Button
+    Friend WithEvents BtnCancel As System.Windows.Forms.Button
+    Friend WithEvents BtnEditVorlage As System.Windows.Forms.Button
 End Class

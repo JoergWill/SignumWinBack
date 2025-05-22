@@ -150,7 +150,7 @@
         _ArtikelLinienGruppen.Clear()
         'Check Tabelle Liniengruppe ist aktuell
         If (winback.FieldCount <= 11) And (winback.FieldCount > 5) Then
-            Trace.WriteLine("Tabelle WinBack.Liniengruppen muss erweitert werden! (Startzeit)")
+            Trace.WriteLine("@I_Tabelle WinBack.Liniengruppen muss erweitert werden! (Startzeit)")
             _TabelleLinienGruppenOK = False
         End If
 
@@ -183,7 +183,7 @@
                     'Kurzname wird aus Linien gebildet
                     L.KurzName = Linien
                     'Erweiterung Tabelle Liniengruppen ist notwendig !
-                    Trace.WriteLine("Tabelle WinBack.Liniengruppen muss erweitert werden! (Formular-Steuerung)")
+                    Trace.WriteLine("@I_Tabelle WinBack.Liniengruppen muss erweitert werden! (Formular-Steuerung)")
                     _TabelleLinienGruppenOK = False
                 End If
 
@@ -199,7 +199,7 @@
                     _RezeptLinienGruppen.Add(L.LinienGruppe, L.Bezeichnung)
                 End If
             Catch
-                Trace.WriteLine("Fehler beim Lesen der Tabelle WinBack.Liniengruppen ")
+                Trace.WriteLine("@E_Fehler beim Lesen der Tabelle WinBack.Liniengruppen ")
                 _TabelleLinienGruppenOK = False
             End Try
         End While
@@ -241,7 +241,7 @@
                 Else
                     'Erweiterung Tabelle Linien ist notwendig !
                     Linie.Filiale = DefaultProdFiliale
-                    Trace.WriteLine("Tabelle WinBack.Linien muss erweitert werden! (Filiale)")
+                    Trace.WriteLine("@E_Tabelle WinBack.Linien muss erweitert werden! (Filiale)")
                 End If
                 'zum Dictonary hinzufügen
                 _Linien.Add(Linie.Linie, Linie)
@@ -323,6 +323,8 @@
         If _LGruppen.ContainsKey(LinienGruppe) Then
             Return _LGruppen(LinienGruppe).KurzName
         Else
+            'TODO Test
+            Return "X" & LinienGruppe.ToString
             Return "-"
         End If
     End Function
@@ -334,11 +336,14 @@
     ''' <returns></returns>
     Friend Shared Function GetLinienGruppeFromLinie(Linie As Integer) As Integer
         For Each lg In _LGruppen
-            For Each l As Integer In lg.Value.Linien
-                If l = Linie Then
-                    Return lg.Value.LinienGruppe
-                End If
-            Next
+            Try
+                For Each l As String In lg.Value.Linien
+                    If wb_Functions.StrToInt(l) = Linie Then
+                        Return lg.Value.LinienGruppe
+                    End If
+                Next
+            Catch
+            End Try
         Next
         Return wb_Global.UNDEFINED
     End Function
@@ -519,16 +524,20 @@
                         winback.CloseRead()
                         If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDeleteLinienGruppe, Lg_Nr.ToString)) Then
                             _ErrorText = ""
+                            winback.Close()
                             Return True
                         End If
                     Else
                         'Liniengruppe wird noch verwendet
                         _ErrorText = "Liniengruppe " & Lg_Nr & " wird noch verwendet !"
+                        winback.Close()
                         Return False
                     End If
+                    winback.Close()
                     Return False
                 End If
             Else
+                winback.Close()
                 Return False
             End If
         Else

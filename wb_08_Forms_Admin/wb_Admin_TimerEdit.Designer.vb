@@ -223,19 +223,19 @@ Partial Class wb_Admin_TimerEdit
 
     End Sub
 
-    Friend WithEvents BtnRunNow As Windows.Forms.Button
-    Friend WithEvents cbAktIndex As Windows.Forms.CheckBox
-    Friend WithEvents nmAktIndex As Windows.Forms.NumericUpDown
-    Friend WithEvents lblIndex As Windows.Forms.Label
-    Friend WithEvents lblZyklus As Windows.Forms.Label
-    Friend WithEvents lblStartZeit As Windows.Forms.Label
-    Friend WithEvents cbEventAktiv As Windows.Forms.CheckBox
-    Friend WithEvents cbEventZyklus As Windows.Forms.ComboBox
-    Friend WithEvents nmEventZyklus As Windows.Forms.NumericUpDown
-    Friend WithEvents dtEventZyklus As Windows.Forms.DateTimePicker
-    Friend WithEvents dtEventTime As Windows.Forms.DateTimePicker
-    Friend WithEvents dtEventDate As Windows.Forms.DateTimePicker
-    Friend WithEvents BtnClose As Windows.Forms.Button
-    Friend WithEvents lblTimerName As Windows.Forms.Label
-    Friend WithEvents lblTimerHinweis As Windows.Forms.Label
+    Friend WithEvents BtnRunNow As System.Windows.Forms.Button
+    Friend WithEvents cbAktIndex As System.Windows.Forms.CheckBox
+    Friend WithEvents nmAktIndex As System.Windows.Forms.NumericUpDown
+    Friend WithEvents lblIndex As System.Windows.Forms.Label
+    Friend WithEvents lblZyklus As System.Windows.Forms.Label
+    Friend WithEvents lblStartZeit As System.Windows.Forms.Label
+    Friend WithEvents cbEventAktiv As System.Windows.Forms.CheckBox
+    Friend WithEvents cbEventZyklus As System.Windows.Forms.ComboBox
+    Friend WithEvents nmEventZyklus As System.Windows.Forms.NumericUpDown
+    Friend WithEvents dtEventZyklus As System.Windows.Forms.DateTimePicker
+    Friend WithEvents dtEventTime As System.Windows.Forms.DateTimePicker
+    Friend WithEvents dtEventDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents BtnClose As System.Windows.Forms.Button
+    Friend WithEvents lblTimerName As System.Windows.Forms.Label
+    Friend WithEvents lblTimerHinweis As System.Windows.Forms.Label
 End Class

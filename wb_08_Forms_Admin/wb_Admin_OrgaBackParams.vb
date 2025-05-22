@@ -5,7 +5,6 @@ Public Class wb_Admin_OrgaBackParams
     Inherits DockContent
     Dim FilialListe As wb_ArrayGridViewSortimente
     Dim ArtikelGruppenListe As wb_ArrayGridViewSortimente
-    Dim ArtikelGruppen As ArrayList
     Dim sColNames As New List(Of String)
 
     Private Sub wb_Admin_OrgaBackParams_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -19,7 +18,6 @@ Public Class wb_Admin_OrgaBackParams
         'Liste der Tabellen-Überschriften
         sColNames.Clear()
         sColNames.AddRange({"Sortiment", "Bezeichnung", "&Filiale"})
-
 
         'Daten im Grid anzeigen
         FilialListe = New wb_ArrayGridViewSortimente(wb_Filiale.aSortiment, sColNames)
@@ -47,18 +45,18 @@ Public Class wb_Admin_OrgaBackParams
         While OrgasoftMain.Read
             ArtikelGruppe.Srt = OrgasoftMain.sField("Artikelgruppe")
             ArtikelGruppe.SName = OrgasoftMain.sField("Bezeichnung")
-            'Abgleich mit WinBack-Konstanten (winback.ini)
-            Select Case ArtikelGruppe.Srt
-                Case wb_GlobalSettings.OsGrpBackwaren
-                    ArtikelGruppe.FName = "WinBack-Artikel"
-                Case wb_GlobalSettings.OsGrpRohstoffe
-                    ArtikelGruppe.FName = "WinBack-Rohstoff"
-                Case Else
-                    ArtikelGruppe.FName = ""
-            End Select
+
+            'Abgleich mit WinBack-Konstanten (winback.ini) - Diese können auch Reg-Expressions enthalten
+            If wb_Functions.CheckOrgaBackArtikelGruppe(ArtikelGruppe.Srt, wb_GlobalSettings.OsGrpBackwaren) Then
+                ArtikelGruppe.FName = "WinBack-Artikel"
+            ElseIf wb_Functions.CheckOrgaBackArtikelGruppe(ArtikelGruppe.Srt, wb_GlobalSettings.OsGrpRohstoffe) Then
+                ArtikelGruppe.FName = "WinBack-Rohstoff"
+            Else
+                ArtikelGruppe.FName = ""
+            End If
 
             'zum Array anfügen
-            ArtikelGruppen.Add(ArtikelGruppe)
+            Artikelgruppen.Add(ArtikelGruppe)
         End While
 
         'Daten im Grid anzeigen

@@ -15,6 +15,7 @@ Public Class wb_Admin_Main
     Public AdminUpdate As wb_Admin_UpdateDatabase
     Public AdminUpdateWinBack As wb_Admin_UpdateWinBack
     Public AdminDatensicherung As wb_Admin_Datensicherung
+    Public AdminXNumber As wb_Admin_XNumber
     Public AdminEditIni As wb_Admin_EditIni
     Public AdminTimer As wb_Admin_Timer
 
@@ -46,6 +47,7 @@ Public Class wb_Admin_Main
     End Property
 
     Public Overrides Sub SetDefaultLayout()
+        DockPanel.Theme = wb_GlobalSettings.Theme
         AdminLog.Show(DockPanel, DockState.DockBottom)
         AdminLog.CloseButtonVisible = False
     End Sub
@@ -64,6 +66,7 @@ Public Class wb_Admin_Main
                 ' ... und dieser Gruppe wird ein Button hinzugefügt
                 oGrpDATA.AddButton("btnSync", "Synchronisation Datenbanken WinBack-OrgaBack", "", My.Resources.MainSync_16x16, My.Resources.MainSync_32x32, AddressOf BtnAdminSyncForm)
                 oGrpDATA.AddButton("btnDatensicherung", "Sicherung/Rücksicherung Datenbanken WinBack", "", My.Resources.DatenSicherung_16x16, My.Resources.DatenSicherung_32x32, AddressOf BtnAdminDatensicherung)
+                oGrpDATA.AddButton("btnXNumber", "Ändern WinBack-Nummern", "Ändern der WinBack-Nummern für Artikel/Rohstoffe/Rezepte", My.Resources.AdminXNumber_32x32, My.Resources.AdminXNumber_32x32, AddressOf BtnAdminXNumber)
                 oGrpDATA.AddButton("btnCheckDatabase", "Datenbank und Konfiguration prüfen", "", My.Resources.MainStatistikRohstoffe_16x16, My.Resources.MainStatistikRohstoffe_32x32, AddressOf btnAdminCheck)
 
                 oGrpUPDT.AddButton("btnUpdate", "Update/Versionsinformation WinBack", "", My.Resources.UpdateDataBase_16x16, My.Resources.UpdateDataBase_32x32, AddressOf btnAdminUpdate)
@@ -100,7 +103,7 @@ Public Class wb_Admin_Main
                 _DockPanelList.Add(OrgaBackParams)
                 Return OrgaBackParams
 
-            Case "WinBack.wb_Admin_UpdateDatabase"
+            Case "WinBack.wb_Admin_CheckDatabase"
                 AdminCheck = New wb_Admin_CheckDatabase
                 _DockPanelList.Add(AdminCheck)
                 Return AdminCheck
@@ -109,6 +112,11 @@ Public Class wb_Admin_Main
                 AdminUpdate = New wb_Admin_UpdateDatabase
                 _DockPanelList.Add(AdminUpdate)
                 Return AdminUpdate
+
+            Case "WinBack.wb_Admin_XNumber"
+                AdminXNumber = New wb_Admin_XNumber
+                _DockPanelList.Add(AdminXNumber)
+                Return AdminXNumber
 
             Case "WinBack.wb_Admin_UpdateWinBack"
                 AdminUpdateWinBack = New wb_Admin_UpdateWinBack
@@ -160,6 +168,13 @@ Public Class wb_Admin_Main
             AdminDatensicherung = New wb_Admin_Datensicherung
         End If
         AdminDatensicherung.Show(DockPanel, DockState.DockTop)
+    End Sub
+
+    Private Sub BtnAdminXNumber()
+        If IsNothingOrDisposed(AdminXNumber) Then
+            AdminXNumber = New wb_Admin_XNumber
+        End If
+        AdminXNumber.Show(DockPanel, DockState.DockTop)
     End Sub
 
     Private Sub btnAdminCheck()

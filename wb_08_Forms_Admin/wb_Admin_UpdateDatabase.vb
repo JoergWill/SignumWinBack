@@ -16,6 +16,8 @@ Public Class wb_Admin_UpdateDatabase
         tbWBDatenDB.Text = wb_GlobalSettings.MySQLWbDaten
         'IP-Adresse WinBack-Server
         tbWinBackIP.Text = wb_GlobalSettings.MySQLServerIP
+        'Mandant nummer
+        tbMandant.Text = wb_GlobalSettings.MandantNr & "/" & wb_GlobalSettings.MandantName
 
         'Programmversion WinBack-Office hat keine OrgaBack-Anbindung
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
@@ -49,8 +51,13 @@ Public Class wb_Admin_UpdateDatabase
     End Sub
 
     Private Sub BtnUpdateWinBackDataBase_Click(sender As Object, e As EventArgs) Handles BtnUpdateWinBackDataBase.Click
-        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim Result As MsgBoxResult = MsgBoxResult.No
         Dim UpdProcErr As Boolean = False
+        Dim UpdFileErr As Boolean = False
+        'Updates für WinBack Datenbank
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        'Für OrgaBack/UnitTests werden evtl. auch OrgaBack-Updates bereitgestellt
+        Dim orgaback As wb_Sql = Nothing
 
         'Anzahl der UpdateFiles in Progress-Bar
         pbFiles.Maximum = DBUpdateFiles.Count
@@ -60,22 +67,15 @@ Public Class wb_Admin_UpdateDatabase
         Me.Cursor = Cursors.WaitCursor
         For Each Update As String In DBUpdateFiles
             pbFiles.PerformStep()
-            Dim UpdateSql() As String = System.IO.File.ReadAllLines(Update)
 
-            'Anzahl der UpdateDatensätze in ProgressBar
-            pbData.Maximum = UpdateSql.Count
-            pbData.Value = 0
-            pbData.Step = 1
-
-            'Fehler beim Update
-            Dim UpdFileErr As Boolean = False
-            'alle Update-Zeilen nacheinander ausführen
-            For Each sql As String In UpdateSql
-                pbData.PerformStep()
-                If winback.sqlCommand(UpdateSqlMandant(sql)) < 0 Then
-                    UpdFileErr = True
-                End If
-            Next
+            'UpdateFiles für OrgaBack beginnen mit O.30
+            If (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Or wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest) And Update.Contains("O.30") Then
+                'Update durchführen (Alle Zeilen des sql-Files)
+                UpdFileErr = UpdateMsSqlFile(orgaback, Update)
+            Else
+                'Update durchführen (Alle Zeilen des sql-Files)
+                UpdFileErr = UpdateSqlFile(winback, Update)
+            End If
 
             'Fehlermeldung ausgeben(Je Update-File)
             If UpdFileErr Then
@@ -97,15 +97,42 @@ Public Class wb_Admin_UpdateDatabase
 
         'Aktion beendet
         If Not UpdProcErr Then
-            MsgBox("Datenbank Update erfolgreich beendet", MsgBoxStyle.Information, "Update WinBack-Datenbank")
+            Result = MsgBox("Datenbank Update erfolgreich beendet" & vbCrLf & "OrgaBack neu starten ?", MsgBoxStyle.YesNo, "Update WinBack-Datenbank")
         Else
             MsgBox("Datenbank Update mit Fehlern beendet", MsgBoxStyle.Exclamation, "Update WinBack-Datenbank")
         End If
 
         'Button Update-Start ausblenden
         ShowHideUpdate(0)
+        winback.Close()
         Me.Cursor = Cursors.Default
+        'Fenster(Dialog) schliessen
+        Me.Close()
+        'Neustart wenn erforderlich
+        If Result = MsgBoxResult.Yes Then
+            wb_Functions.Restart()
+        End If
     End Sub
+
+    Public Function UpdateSqlFile(ByRef winback As wb_Sql, Update As String) As Boolean
+        Dim UpdateSql() As String = System.IO.File.ReadAllLines(Update)
+
+        'Anzahl der UpdateDatensätze in ProgressBar
+        pbData.Maximum = UpdateSql.Length
+        pbData.Value = 0
+        pbData.Step = 1
+
+        'Fehler beim Update
+        Dim UpdFileErr As Boolean = False
+        'alle Update-Zeilen nacheinander ausführen
+        For Each sql As String In UpdateSql
+            pbData.PerformStep()
+            If winback.sqlCommand(UpdateSqlMandant(sql)) < 0 Then
+                UpdFileErr = True
+            End If
+        Next
+        Return UpdFileErr
+    End Function
 
     ''' <summary>
     ''' Tausch im sql-Kommando die Datenbank-Bezeichnungen
@@ -115,6 +142,7 @@ Public Class wb_Admin_UpdateDatabase
     ''' </summary>
     ''' <param name="sql"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Performance", "CA1862:""StringComparison""-Methodenüberladungen verwenden, um Zeichenfolgenvergleiche ohne Beachtung der Groß-/Kleinschreibung durchzuführen", Justification:="<Ausstehend>")>
     Private Function UpdateSqlMandant(sql As String) As String
         If sql.Length > 3 Then
             If sql.Substring(0, 3).ToUpper = "USE" Then
@@ -123,6 +151,30 @@ Public Class wb_Admin_UpdateDatabase
             End If
         End If
         Return sql
+    End Function
+
+    Public Function UpdateMsSqlFile(ByRef orgaback As wb_Sql, Update As String) As Boolean
+        If orgaback Is Nothing Then
+            orgaback = New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        End If
+        'alle Datensätze aus dem Update-File
+        Dim UpdateSql() As String = System.IO.File.ReadAllLines(Update)
+
+        'Anzahl der UpdateDatensätze in ProgressBar
+        pbData.Maximum = UpdateSql.Length
+        pbData.Value = 0
+        pbData.Step = 1
+
+        'Fehler beim Update
+        Dim UpdFileErr As Boolean = False
+        'alle Update-Zeilen nacheinander ausführen
+        For Each sql As String In UpdateSql
+            pbData.PerformStep()
+            If orgaback.sqlCommand(sql) < 0 Then
+                UpdFileErr = True
+            End If
+        Next
+        Return UpdFileErr
     End Function
 
     Private Sub ShowHideUpdate(c As Integer)

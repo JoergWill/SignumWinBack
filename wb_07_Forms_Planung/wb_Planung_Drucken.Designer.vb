@@ -40,15 +40,15 @@ Partial Class wb_Planung_Drucken
         Me.pnlLinienGruppe.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlLinienGruppe.Location = New System.Drawing.Point(18, 8)
         Me.pnlLinienGruppe.Name = "pnlLinienGruppe"
-        Me.pnlLinienGruppe.Size = New System.Drawing.Size(205, 279)
+        Me.pnlLinienGruppe.Size = New System.Drawing.Size(204, 279)
         Me.pnlLinienGruppe.TabIndex = 68
         '
         'pnlAufarbeitung
         '
         Me.pnlAufarbeitung.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlAufarbeitung.Location = New System.Drawing.Point(243, 8)
+        Me.pnlAufarbeitung.Location = New System.Drawing.Point(242, 8)
         Me.pnlAufarbeitung.Name = "pnlAufarbeitung"
-        Me.pnlAufarbeitung.Size = New System.Drawing.Size(251, 279)
+        Me.pnlAufarbeitung.Size = New System.Drawing.Size(250, 279)
         Me.pnlAufarbeitung.TabIndex = 69
         '
         'TableLayoutPanel1
@@ -58,7 +58,7 @@ Partial Class wb_Planung_Drucken
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 14.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 21.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.BtnPrintTeigZettel, 1, 3)
         Me.TableLayoutPanel1.Controls.Add(Me.pnlLinienGruppe, 1, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.pnlAufarbeitung, 3, 1)
@@ -80,7 +80,7 @@ Partial Class wb_Planung_Drucken
         Me.BtnPrintTeigZettel.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.BtnPrintTeigZettel.Location = New System.Drawing.Point(18, 348)
         Me.BtnPrintTeigZettel.Name = "BtnPrintTeigZettel"
-        Me.BtnPrintTeigZettel.Size = New System.Drawing.Size(205, 40)
+        Me.BtnPrintTeigZettel.Size = New System.Drawing.Size(204, 40)
         Me.BtnPrintTeigZettel.TabIndex = 73
         Me.BtnPrintTeigZettel.Text = "Drucken Teigzettel"
         Me.BtnPrintTeigZettel.UseVisualStyleBackColor = True
@@ -89,9 +89,9 @@ Partial Class wb_Planung_Drucken
         '
         Me.BtnPrintAufarbeitung.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BtnPrintAufarbeitung.Location = New System.Drawing.Point(243, 348)
+        Me.BtnPrintAufarbeitung.Location = New System.Drawing.Point(242, 348)
         Me.BtnPrintAufarbeitung.Name = "BtnPrintAufarbeitung"
-        Me.BtnPrintAufarbeitung.Size = New System.Drawing.Size(251, 40)
+        Me.BtnPrintAufarbeitung.Size = New System.Drawing.Size(250, 40)
         Me.BtnPrintAufarbeitung.TabIndex = 74
         Me.BtnPrintAufarbeitung.Text = "Drucken Aufarbeitung"
         Me.BtnPrintAufarbeitung.UseVisualStyleBackColor = True
@@ -127,10 +127,10 @@ Partial Class wb_Planung_Drucken
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents pnlLinienGruppe As Windows.Forms.Panel
-    Friend WithEvents pnlAufarbeitung As Windows.Forms.Panel
-    Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
-    Friend WithEvents BtnPrintTeigZettel As Windows.Forms.Button
-    Friend WithEvents BtnPrintAufarbeitung As Windows.Forms.Button
-    Friend WithEvents lblLegende As Windows.Forms.Label
+    Friend WithEvents pnlLinienGruppe As System.Windows.Forms.Panel
+    Friend WithEvents pnlAufarbeitung As System.Windows.Forms.Panel
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents BtnPrintTeigZettel As System.Windows.Forms.Button
+    Friend WithEvents BtnPrintAufarbeitung As System.Windows.Forms.Button
+    Friend WithEvents lblLegende As System.Windows.Forms.Label
 End Class

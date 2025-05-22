@@ -51,6 +51,8 @@ Partial Class wb_Admin_UpdateDatabase
         Me.tbWinBackDB = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.tbWinBackIP = New System.Windows.Forms.TextBox()
+        Me.lblMandant = New System.Windows.Forms.Label()
+        Me.tbMandant = New System.Windows.Forms.TextBox()
         Me.PnlOrgaBack.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -159,7 +161,7 @@ Partial Class wb_Admin_UpdateDatabase
         Me.PnlOrgaBack.Controls.Add(Me.tbOrgaBack)
         Me.PnlOrgaBack.Controls.Add(Me.lblOrgaBackDataBase)
         Me.PnlOrgaBack.Controls.Add(Me.lblOrgaBack)
-        Me.PnlOrgaBack.Location = New System.Drawing.Point(1, 125)
+        Me.PnlOrgaBack.Location = New System.Drawing.Point(1, 149)
         Me.PnlOrgaBack.Name = "PnlOrgaBack"
         Me.PnlOrgaBack.Size = New System.Drawing.Size(468, 129)
         Me.PnlOrgaBack.TabIndex = 21
@@ -317,11 +319,32 @@ Partial Class wb_Admin_UpdateDatabase
         Me.tbWinBackIP.TabIndex = 36
         Me.tbWinBackIP.TabStop = False
         '
+        'lblMandant
+        '
+        Me.lblMandant.AutoSize = True
+        Me.lblMandant.Location = New System.Drawing.Point(12, 116)
+        Me.lblMandant.Name = "lblMandant"
+        Me.lblMandant.Size = New System.Drawing.Size(49, 13)
+        Me.lblMandant.TabIndex = 37
+        Me.lblMandant.Text = "Mandant"
+        '
+        'tbMandant
+        '
+        Me.tbMandant.BackColor = System.Drawing.SystemColors.Control
+        Me.tbMandant.ForeColor = System.Drawing.Color.DarkGray
+        Me.tbMandant.Location = New System.Drawing.Point(165, 113)
+        Me.tbMandant.Name = "tbMandant"
+        Me.tbMandant.Size = New System.Drawing.Size(252, 20)
+        Me.tbMandant.TabIndex = 38
+        Me.tbMandant.TabStop = False
+        '
         'wb_Admin_UpdateDatabase
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(471, 445)
+        Me.Controls.Add(Me.tbMandant)
+        Me.Controls.Add(Me.lblMandant)
         Me.Controls.Add(Me.tbWinBackIP)
         Me.Controls.Add(Me.tbWBDatenDB)
         Me.Controls.Add(Me.Label4)
@@ -346,30 +369,32 @@ Partial Class wb_Admin_UpdateDatabase
 
     End Sub
 
-    Friend WithEvents lblWinBackOffice As Windows.Forms.Label
-    Friend WithEvents lblWinBackDataBase As Windows.Forms.Label
-    Friend WithEvents tbWinBackOffice As Windows.Forms.TextBox
-    Friend WithEvents tbWinBackDatabase As Windows.Forms.TextBox
-    Friend WithEvents BtnUpdateWinBackDataBase As Windows.Forms.Button
-    Friend WithEvents lblUpdateFilesCount As Windows.Forms.Label
+    Friend WithEvents lblWinBackOffice As System.Windows.Forms.Label
+    Friend WithEvents lblWinBackDataBase As System.Windows.Forms.Label
+    Friend WithEvents tbWinBackOffice As System.Windows.Forms.TextBox
+    Friend WithEvents tbWinBackDatabase As System.Windows.Forms.TextBox
+    Friend WithEvents BtnUpdateWinBackDataBase As System.Windows.Forms.Button
+    Friend WithEvents lblUpdateFilesCount As System.Windows.Forms.Label
     Friend WithEvents pbData As MetroFramework.Controls.MetroProgressBar
     Friend WithEvents pbFiles As MetroFramework.Controls.MetroProgressBar
-    Friend WithEvents tbWinbackKundeName As Windows.Forms.TextBox
-    Friend WithEvents PnlOrgaBack As Windows.Forms.Panel
-    Friend WithEvents tbOrgaBackMainDB As Windows.Forms.TextBox
-    Friend WithEvents Label3 As Windows.Forms.Label
-    Friend WithEvents tbOrgaBackAdminDB As Windows.Forms.TextBox
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents tbOrgaBackDBServer As Windows.Forms.TextBox
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents tbMsSQLMain As Windows.Forms.TextBox
-    Friend WithEvents tbOrgaBackDataBase As Windows.Forms.TextBox
-    Friend WithEvents tbOrgaBack As Windows.Forms.TextBox
-    Friend WithEvents lblOrgaBackDataBase As Windows.Forms.Label
-    Friend WithEvents lblOrgaBack As Windows.Forms.Label
-    Friend WithEvents tbWBDatenDB As Windows.Forms.TextBox
-    Friend WithEvents Label4 As Windows.Forms.Label
-    Friend WithEvents tbWinBackDB As Windows.Forms.TextBox
-    Friend WithEvents Label5 As Windows.Forms.Label
-    Friend WithEvents tbWinBackIP As Windows.Forms.TextBox
+    Friend WithEvents tbWinbackKundeName As System.Windows.Forms.TextBox
+    Friend WithEvents PnlOrgaBack As System.Windows.Forms.Panel
+    Friend WithEvents tbOrgaBackMainDB As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents tbOrgaBackAdminDB As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents tbOrgaBackDBServer As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents tbMsSQLMain As System.Windows.Forms.TextBox
+    Friend WithEvents tbOrgaBackDataBase As System.Windows.Forms.TextBox
+    Friend WithEvents tbOrgaBack As System.Windows.Forms.TextBox
+    Friend WithEvents lblOrgaBackDataBase As System.Windows.Forms.Label
+    Friend WithEvents lblOrgaBack As System.Windows.Forms.Label
+    Friend WithEvents tbWBDatenDB As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents tbWinBackDB As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents tbWinBackIP As System.Windows.Forms.TextBox
+    Friend WithEvents lblMandant As System.Windows.Forms.Label
+    Friend WithEvents tbMandant As System.Windows.Forms.TextBox
 End Class

@@ -6,13 +6,39 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class wb_Admin_EditIni
     Inherits DockContent
 
+    Private _MasterIniFile As Boolean = False
+    Private _WinBackIniPath As String = ""
+
+    Public Property MasterIniFile As Boolean
+        Get
+            Return _MasterIniFile
+        End Get
+        Set(value As Boolean)
+            _MasterIniFile = value
+        End Set
+    End Property
+
     Private Sub wb_Admin_EditIni_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        tbIniFile.Text = File.ReadAllText(wb_GlobalSettings.PWinBackIniPath)
-        lblPathToWinBackIni.Text = wb_GlobalSettings.pWinBackIniPath
+        If _MasterIniFile Then
+            'Lesen der winback.in aus dem Programm-Verzeichnis (Master)
+            _WinBackIniPath = wb_GlobalSettings.pProgrammPath & "\WinBack.ini"
+            Me.Text = "Systemkonfiguration Master"
+        Else
+            'Lesen der winback.in aus dem User-Verzeichnis (Default)
+            _WinBackIniPath = wb_GlobalSettings.pWinBackIniPath
+        End If
+
+        'Daten aus winback.ini lesen 
+        tbIniFile.Text = File.ReadAllText(_WinBackIniPath, System.Text.Encoding.UTF8)
+        lblPathToWinBackIni.Text = _WinBackIniPath
+        'Mandant/Name/Version
+        lblMandant.Text = "Mandant " & wb_GlobalSettings.MandantNr & "/" & wb_GlobalSettings.MandantName & "/Version " & wb_GlobalSettings.WinBackVersion
+
+        'Keine Änderungen, die gesichert werden müssen
         btnSave.Enabled = False
     End Sub
 
-    Private Sub wb_Admin_EditIni_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Admin_EditIni_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         SaveToFile()
     End Sub
 
@@ -26,14 +52,13 @@ Public Class wb_Admin_EditIni
 
     Private Sub SaveToFile()
         If btnSave.Enabled Then
-            Dim s As String = wb_GlobalSettings.pWinBackIniPath
-            Dim f As String = s & "." & Date.Now.ToString("yyyyMMddHHmmss")
+            Dim f As String = _WinBackIniPath & "." & Date.Now.ToString("yyyyMMddHHmmss")
             Try
-                File.Move(s, f)
-                File.WriteAllText(s, tbIniFile.Text)
+                File.Move(_WinBackIniPath, f)
+                File.WriteAllText(_WinBackIniPath, tbIniFile.Text, System.Text.Encoding.UTF8)
             Catch e As Exception
                 MsgBox("WinBack.ini konnte nicht geschrieben werden !" & vbCr & e.Message, MsgBoxStyle.Critical, "Speichern Konfiguration")
-                File.Move(f, s)
+                File.Move(f, _WinBackIniPath)
             End Try
             btnSave.Enabled = False
 

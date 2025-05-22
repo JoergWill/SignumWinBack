@@ -77,10 +77,12 @@
     End Sub
 
     ''' <summary>
-    ''' Filtert die Produktions-Planungs-Schritte nach Aufarbeitung und Linengruppe
+    ''' Filtert die Produktions-Planungs-Schritte nach Aufarbeitung, Liniengruppe, Ofengruppe
+    ''' Wenn die Ofengruppe ungleich Null ist, werden auch Chargen mit Sollmenge 
     ''' </summary>
     ''' <param name="a"></param>
-    Public Shared Sub FilterAndMark(ByRef a As ArrayList, CheckAufloesen As Boolean, FilterAufarbeitung As Integer, FilterLinienGruppe As Integer, Optional AddToList As Boolean = False, Optional KundenBestellungTextDrucken As Boolean = True, Optional SonderTextDrucken As Boolean = False)
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Procedures should not have too many parameters", Justification:="<Ausstehend>")>
+    Public Shared Sub FilterAndMark(ByRef a As ArrayList, CheckAufloesen As Boolean, FilterAufarbeitung As Integer, FilterLinienGruppe As Integer, FilterOfenGruppe As Integer, Optional AddToList As Boolean = False, Optional KundenBestellungTextDrucken As Boolean = True, Optional SonderTextDrucken As Boolean = False, Optional AufarbeitungZielDrucken As Boolean = False)
         'ArrayList leeren
         If Not AddToList Then
             a.Clear()
@@ -89,7 +91,7 @@
         'Alle Produktions-Schritte durchlaufen
         For Each child In Produktion.RootProduktionsSchritt.ChildSteps
             'Filtern nach Aufarbeitungsplatz und Liniengruppe
-            If TryCast(child, wb_Produktionsschritt).Filter(FilterAufarbeitung, FilterLinienGruppe, CheckAufloesen, KundenBestellungTextDrucken, SonderTextDrucken) Then
+            If TryCast(child, wb_Produktionsschritt).Filter(FilterAufarbeitung, FilterLinienGruppe, FilterOfenGruppe, CheckAufloesen, KundenBestellungTextDrucken, SonderTextDrucken, AufarbeitungZielDrucken, False) Then
                 'Liste aufbauen
                 a.Add(child)
                 'Charge als produziert markieren

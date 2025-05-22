@@ -1,6 +1,4 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
-Imports System.Globalization
-Imports System.Threading
 Imports System.Windows.Forms
 
 Public Class wb_Linien_Auto
@@ -78,6 +76,7 @@ Public Class wb_Linien_Auto
 
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2589:Boolean expressions should not be gratuitous", Justification:="<Ausstehend>")>
     Private Sub StartProduktionWinBack()
         'Daten aus der Produktion werden direkt nach wbdaten geschrieben
         Dim Tageswechsel As Boolean = True

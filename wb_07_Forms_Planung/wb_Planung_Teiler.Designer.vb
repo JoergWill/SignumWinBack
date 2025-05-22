@@ -113,9 +113,9 @@ Partial Class wb_Planung_Teiler
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents FlowLayoutPanel1 As Windows.Forms.FlowLayoutPanel
-    Friend WithEvents grpChargenTeiler As Windows.Forms.GroupBox
+    Friend WithEvents FlowLayoutPanel1 As System.Windows.Forms.FlowLayoutPanel
+    Friend WithEvents grpChargenTeiler As System.Windows.Forms.GroupBox
     Friend WithEvents cbChargenTeiler As wb_CheckedListBox
-    Friend WithEvents gbTeigeOptimieren As Windows.Forms.GroupBox
+    Friend WithEvents gbTeigeOptimieren As System.Windows.Forms.GroupBox
     Friend WithEvents cbTeigOptimierung As wb_CheckedListBox
 End Class

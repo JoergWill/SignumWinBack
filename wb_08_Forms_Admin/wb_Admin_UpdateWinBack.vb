@@ -1,7 +1,12 @@
-﻿Public Class wb_Admin_UpdateWinBack
+﻿Imports System.Windows.Forms
 
-    Private _WinBackUpdateVersion As String = "0.0.0"
-    Private _SignumUpdateVersion As String = "0.0.0"
+Public Class wb_Admin_UpdateWinBack
+
+#Disable Warning SYSLIB0014
+    Private _WinBackUpdateVersion As String = "0.0.0.0"
+    Private _WinBackVersion As String = "0.0.0.0"
+    Private _SignumUpdateVersion As String = "0.0.0.0"
+    Private _SignumVersion As String = "0.0.0.0"
     Private _ErrorMessage As String = ""
 
     ''' <summary>
@@ -15,6 +20,16 @@
         Set(value As String)
             _WinBackUpdateVersion = value
             tbWinbackUpdate.Text = "V" & value
+        End Set
+    End Property
+
+    Public Property WinBackVersion As String
+        Get
+            Return _WinBackVersion
+        End Get
+        Set(value As String)
+            _WinBackVersion = value
+            tbWinBack.Text = "V" & value
         End Set
     End Property
 
@@ -32,6 +47,16 @@
         End Set
     End Property
 
+    Public Property SignumVersion As String
+        Get
+            Return _SignumVersion
+        End Get
+        Set(value As String)
+            _SignumVersion = value
+            tbOrgaBack.Text = "V" & value
+        End Set
+    End Property
+
     Public ReadOnly Property ErrorMessage As String
         Get
             Return _ErrorMessage
@@ -45,27 +70,24 @@
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-        'Update-Button ausblenden
-        'Button2.Enabled = False
-
         'Aktuelle Version
-        tbWinBack.Text = wb_GlobalSettings.WinBackVersion
+        WinBackVersion = wb_GlobalSettings.WinBackVersion
 
         'Windows-Version
         tbWindowsVersion.Text = wb_GlobalSettings.GetOSVersion
 
         'Windows-Version 32/64Bit
         If Environment.Is64BitOperatingSystem Then
-            tbOSBit.Text = "32Bit"
-        Else
             tbOSBit.Text = "64Bit"
+        Else
+            tbOSBit.Text = "32Bit"
         End If
 
         'WinBack-AddIn 32/64Bit
         If Environment.Is64BitProcess Then
-            tbWinBackBit.Text = "32Bit"
-        Else
             tbWinBackBit.Text = "64Bit"
+        Else
+            tbWinBackBit.Text = "32Bit"
         End If
 
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
@@ -73,7 +95,7 @@
             lblOrgaBack.Visible = True
             tbOrgaBackBit.Visible = True
             tbOrgaBackUpdate.Visible = True
-            tbOrgaBack.Text = wb_GlobalSettings.OrgaBackVersion
+            SignumVersion = wb_GlobalSettings.OrgaBackVersion
         Else
             tbOrgaBack.Visible = False
             lblOrgaBack.Visible = False
@@ -82,6 +104,15 @@
         End If
     End Sub
 
+    ''' <summary>
+    ''' Beim Anzeigen der Form wird automatisch geprüft, ob eine aktuellere Version im Internet verfügbar ist.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub wb_Admin_UpdateWinBack_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        'Update-Button aktivieren wenn Updates verfügbar
+        CheckUpdateBtn(True)
+    End Sub
 
     ''' <summary>
     ''' Prüft ob eine neuere Version im Internet zum Download verfügbar ist.
@@ -91,7 +122,7 @@
     '''     Ob diese Version installiert werden kann ist abhängig von der Version der Signum.OrgaSoft.Contracts.dll
     ''' </summary>
     ''' <returns></returns>
-    Public Function CheckUpdateVersion() As Boolean
+    Public Function CheckUpdateVersion() As wb_Global.CompareVersionResult
         Return wb_Functions.CompareVersion(wb_GlobalSettings.WinBackVersion, WinBackUpdateVersion)
     End Function
 
@@ -102,7 +133,7 @@
     ''' </summary>
     ''' <returns></returns>
     Public Function CheckOrgaBackVersion() As Boolean
-        Return wb_Functions.CompareVersion(wb_GlobalSettings.SignumContractsVersion, SignumUpdateVersion)
+        Return wb_Functions.CompareVersion(wb_GlobalSettings.SignumContractsVersion, SignumUpdateVersion) = wb_Global.CompareVersionResult.NoUpdate
     End Function
 
     ''' <summary>
@@ -118,7 +149,7 @@
 
     Public Function GetUpdateVersion() As Boolean
         Try
-            Dim url As String = wb_Global.WinBackUpdateHttp & wb_Global.WinBackUpdateVersionFile
+            Dim url As String = wb_Credentials.WinBackUpdateHttp & wb_Credentials.WinBackUpdateVersionFile
             Dim myRequest As System.Net.WebRequest = System.Net.WebRequest.Create(url) 'Request erstellen
             Dim myResponse As System.Net.WebResponse = myRequest.GetResponse() 'Respons speichern
             Dim myStream As System.IO.Stream = myResponse.GetResponseStream() 'Datenstream aus dem Respons extrahieren
@@ -131,17 +162,17 @@
                 'in String umwandeln
                 Dim RecString = System.Text.Encoding.ASCII.GetString(Bytes)
                 'String aufteilen in die einzelnen Zeilen
-                Dim Rec() As String = Split(RecString, vbCrLf)
+                Dim Rec() As String = Split(RecString, vbLf)
 
                 'genau 2 Zeilen im Receive-Buffer)
                 If Rec.Count = 2 Then
                     'Versions-Nummer WinBack-Office/AddIn/ServerTask
                     'Debug.Print(Rec(0))
-                    WinBackUpdateVersion = Mid(Rec(0), 2)
+                    WinBackUpdateVersion = Mid(Rec(0), 1)
 
                     'Voraussetzung für Update (Versions-Nummer Signum.OrgaSoft.Contracts)
                     'Debug.Print(Rec(1))
-                    SignumUpdateVersion = Mid(Rec(1), 9)
+                    SignumUpdateVersion = Mid(Rec(1), 1)
                 Else
                     _ErrorMessage = "Fehler beim Download der Versions-Information (Datei ungültig)"
                     Return False
@@ -160,55 +191,140 @@
 
     ''' <summary>
     ''' Download des WinBack-Setup-Files(WinBackSetup.msi) von www.winback.de in das Update Verzeichnis (..OrgaBack/AddIn/Update)
-    ''' Wenn der Download erfolgreich war, wird das Setup mit Parameter /update gestartet.
+    ''' Wenn der Download erfolgreich war, wird das Setup mit Parameter /i gestartet.
+    ''' 
+    ''' Upload der WinBackSetup-msi NUR über FTP-Programm. Ein direkter Upload über die Web-Oberfläche bei IONOS ist in der Größe 
+    ''' beschränkt.
+    ''' 
+    ''' Ein Minor-Update wird über WinBackUpdate.exe durchgeführt. Das Setup-File wird nur bei einem Major-Update benötigt.
     ''' </summary>
     ''' <returns></returns>
-    Public Function ExecuteUpdateVersion()
-        'Download WinBackSetup.msi 
+    Public Function ExecuteUpdateVersion(UpdateMode As wb_Global.CompareVersionResult) As Boolean
         Try
-            'Download File - no credentials - ShowUI - Timeout - Overwrite
-            My.Computer.Network.DownloadFile(wb_Global.WinBackUpdateHttp & wb_GlobalSettings.WinBackUpdateSetupExe,
-                                             wb_GlobalSettings.pWinBackUpdatePath & wb_GlobalSettings.WinBackUpdateSetupExe, "", "", True, 2000, True)
+            Select Case UpdateMode
+                Case wb_Global.CompareVersionResult.MinorUpdate
+
+                    'Parameter für WinBackUpdate.exe abhängig von der Proramm-Variante
+                    Dim UpdateParameter As String = ""
+                    Select Case wb_GlobalSettings.pVariante
+                        Case wb_Global.ProgVariante.OrgaBack
+                            UpdateParameter = " /U /O /N"
+                        Case wb_Global.ProgVariante.WinBack
+                            UpdateParameter = " /U /W /N"
+                        Case wb_Global.ProgVariante.WBServerTask
+                            UpdateParameter = " /U /B /N"
+                        Case wb_Global.ProgVariante.AnyWhere
+                            UpdateParameter = " /U /A /N"
+                    End Select
+
+                    'WinBackUpdate.exe ausführen - Parameter /U /xx /N (anschliessend Neustart OrgaBack/OrgaBack-Office/Background-Task/AnyWhere)
+                    Call Shell(wb_GlobalSettings.pWinBackUpdatePath & wb_GlobalSettings.WinBackUpgradeExe & UpdateParameter & Chr(34) & wb_GlobalSettings.MyOwnExeFileName & Chr(34), AppWinStyle.NormalFocus, False)
+
+                Case wb_Global.CompareVersionResult.VersionUpdate
+                    'Mauszeiger Wait
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
+                    Application.DoEvents()
+
+                    'Download winback.de/software/WinBackSetup.msi 
+                    'Download File - no credentials - ShowUI - Timeout - Overwrite
+                    My.Computer.Network.DownloadFile(wb_Credentials.WinBackUpdateHttp & wb_GlobalSettings.WinBackUpdateSetupExe,
+                                             wb_GlobalSettings.pWinBackUpdatePath & wb_GlobalSettings.WinBackUpdateSetupExe, "", "", False, 2000, True)
+                    'Mauszeiger Default
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
+                    'WinBackSetup.msi ausführen - Parameter /update
+                    Call Shell("msiexec /i " & wb_GlobalSettings.pWinBackUpdatePath & wb_GlobalSettings.WinBackUpdateSetupExe)
+            End Select
+
         Catch ex As Exception
-            MsgBox("Fehler beim Download " & vbCrLf & ex.Message)
+            MsgBox("Fehler beim Download/Update " & vbCrLf & ex.Message)
             Return False
         End Try
-
-        'WinBackSetup.msi ausführen - Parameter /update
-        Dim SetupStartInfo As New ProcessStartInfo
-        SetupStartInfo.FileName = wb_GlobalSettings.pWinBackUpdatePath & wb_GlobalSettings.WinBackUpdateSetupExe
-        'SetupStartInfo.Arguments = "-update"
-        Process.Start(SetupStartInfo)
 
         Return True
     End Function
 
-    Private Sub BtnCheckUpdate_Click(sender As Object, e As EventArgs) Handles BtnCheckUpdate.Click
-        'Update-Version prüfen
+    Public Function CheckUpdate(ShowMsg As Boolean, ShowForm As Boolean) As wb_Global.CompareVersionResult
+        'Ergebnis der Update-Prüfung
+        Dim Result As wb_Global.CompareVersionResult = wb_Global.CompareVersionResult.NoUpdate
+
+        'Versions-Nummern ermitteln
         If GetUpdateVersion() Then
-            'WinBack ist nicht aktuell
-            If CheckUpdateVersion() Then
-                If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
-                    MsgBox("Es ist eine neue Version von WinBack-Office verfügbar", MsgBoxStyle.Information, "Update-Check")
-                    BtnUpdate.Enabled = True
-                Else
-                    'OrgaBack muss aktuell oder neuer sein, sonst ist kein WinBack-Update möglich
-                    If Not CheckOrgaBackVersion() Then
-                        MsgBox("Es ist eine neue Version der WinBack-AddIn verfügbar", MsgBoxStyle.Information, "Update-Check")
-                        BtnUpdate.Enabled = True
-                    Else
-                        MsgBox("Es ist eine neue Version der WinBack-AddIn verfügbar" & vbCrLf &
-                               "Vor dem Update muss OrgaBack ebenfalls aktualisiert werden! ", MsgBoxStyle.Exclamation, "Update-Check")
-                    End If
-                End If
+            'nach der Update-Prüfung ist das Fenster nicht mehr sichtbar
+            If ShowForm Then
+                Me.Show()
+            End If
+            'Update-Version prüfen
+            Result = CheckUpdateVersion()
+
+            'Anzeige Ergebnis Update-Check
+            If ShowMsg Then
+
+                Select Case Result
+                    Case wb_Global.CompareVersionResult.MinorUpdate
+                        'WinBack ist nicht aktuell
+                        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
+                            MsgBox("Es ist ein Update von OrgaBack-Office verfügbar", MsgBoxStyle.Information, "Update-Check")
+                        ElseIf CheckOrgaBackVersion() Then
+                            'OrgaBack muss aktuell oder neuer sein, sonst ist kein WinBack-Update möglich
+                            MsgBox("Es ist ein Update des WinBack-AddIn verfügbar", MsgBoxStyle.Information, "Update-Check")
+                        End If
+
+                    Case wb_Global.CompareVersionResult.VersionUpdate
+                        'WinBack ist nicht aktuell (Major Update)
+                        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
+                            MsgBox("Es ist eine neue Version von OrgaBack-Office verfügbar", MsgBoxStyle.Information, "Update-Check")
+                        ElseIf CheckOrgaBackVersion() Then
+                            'OrgaBack muss aktuell oder neuer sein, sonst ist kein WinBack-Update möglich
+                            MsgBox("Es ist eine neue Version des WinBack-AddIn verfügbar", MsgBoxStyle.Information, "Update-Check")
+                        Else
+                            MsgBox("Es ist eine neue Version der WinBack-AddIn verfügbar" & vbCrLf &
+                                   "Vor dem Update muss OrgaBack ebenfalls aktualisiert werden! ", MsgBoxStyle.Exclamation, "Update-Check")
+                        End If
+
+                End Select
             End If
         Else
-            MsgBox(ErrorMessage, MsgBoxStyle.Critical, "Fehler bei Update-Prüfung")
+            If ShowMsg Then
+                MsgBox(ErrorMessage, MsgBoxStyle.Critical, "Fehler bei Update-Prüfung")
+            End If
         End If
+        Return Result
+    End Function
+
+    ''' <summary>
+    ''' Auf Update prüfen.
+    ''' Download der Versions-Info aus dem Internet
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BtnCheckUpdate_Click(sender As Object, e As EventArgs) Handles BtnCheckUpdate.Click
+        'Update-Button aktivieren wenn Updates verfügbar
+        CheckUpdateBtn(True)
+    End Sub
+
+    Private Sub CheckUpdateBtn(ShowMsg As Boolean)
+        Select Case CheckUpdate(ShowMsg, True)
+            Case wb_Global.CompareVersionResult.MinorUpdate
+                BtnUpdate.Text = "Upgrade"
+                BtnUpdate.Enabled = True
+                BtnUpdate.Tag = wb_Global.CompareVersionResult.MinorUpdate
+
+            Case wb_Global.CompareVersionResult.VersionUpdate
+                BtnUpdate.Text = "Update"
+                BtnUpdate.Enabled = True
+                BtnUpdate.Tag = wb_Global.CompareVersionResult.VersionUpdate
+            Case Else
+                BtnUpdate.Enabled = False
+        End Select
     End Sub
 
     Private Sub BtnUpdate_Click(sender As Object, e As EventArgs) Handles BtnUpdate.Click
-        ExecuteUpdateVersion()
+        'Windows-Installer starten (Update)
+        If ExecuteUpdateVersion(BtnUpdate.Tag) Then
+            'Programm beenden
+            wb_Functions.ExitProgram()
+        End If
     End Sub
 
+#Enable Warning SYSLIB0014
 End Class

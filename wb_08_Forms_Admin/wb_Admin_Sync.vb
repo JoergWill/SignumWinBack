@@ -80,6 +80,8 @@ Public Class wb_Admin_Sync
         'Daten/Synchronisation prüfen und Ergebnis berechnen
         wbUser.Case_10 = wb_Global.SyncState.OrgaBackMiss   'falls ein Eintrag in OrgaBack fehlt, wird der Konflikt nicht repariert !
         wbUser.CheckSync(osUser.Data)
+        'Benutzer ohne Personalnummer in WinBack markieren
+        wbUser.DBCheckData()
 
         'Ergebnis im Grid anzeigen
         DisplayResultGrid(wbUser.Data, sColNames)
@@ -252,6 +254,12 @@ Public Class wb_Admin_Sync
         Me.Cursor = Cursors.WaitCursor
 
         Select Case SyncType
+            Case wb_Global.SyncType.Benutzer
+                'Unbenutzte Einträge nur in WinBack möglich !
+                iResult = ExecuteDelNotUsed(wbUser)
+                'Ergebnis im Grid anzeigen
+                DisplayResultGrid(wbUser.Data, sColNames)
+                DisplayResultSummary(wbUser, osArtikel)
             Case wb_Global.SyncType.Rohstoffe
                 'Unbenutzte Einträge nur in WinBack möglich !
                 iResult = ExecuteDelNotUsed(wbRohstoffe)
@@ -297,18 +305,20 @@ Public Class wb_Admin_Sync
     ''' Lösche alle Artikel/Rohstoffe OHNE Rohstoff-Nummer (WinBackErr)
     ''' Lösche alle Artikel/Rohstoffe die in WinBack NICHT verwendet werden (WinBackNotUsed)
     ''' Lösche alle Artikel die KEINE Entsprechung in OrgBack haben
+    ''' Lösche alle Benutzer in WinBack, die keine Personal-Nummer haben
     ''' </summary>
     ''' <param name="wb"></param>
     ''' <returns></returns>
     Private Function ExecuteDelNotUsed(ByRef wb As wb_Sync) As Integer
-        ExecuteDelNotUsed = 0
+        Dim Result As Integer = 0
         For Each x As wb_SyncItem In wb.Data
-            If (x.SyncOK = wb_Global.SyncState.WinBackErr Or x.SyncOK = wb_Global.SyncState.WinBackNotUsed) Or
-               (x.SyncOK = wb_Global.SyncState.OrgaBackMiss And SyncType = wb_Global.SyncType.Artikel) Then
-                ExecuteDelNotUsed += 1
+            If (x.SyncOK = wb_Global.SyncState.WinBackErr OrElse x.SyncOK = wb_Global.SyncState.WinBackNotUsed) OrElse
+               (x.SyncOK = wb_Global.SyncState.OrgaBackMiss AndAlso SyncType = wb_Global.SyncType.Artikel) Then
+                Result += 1
                 x.SyncOK = wb_Global.SyncState.TryMatchDel
             End If
         Next
+        Return Result
     End Function
 
     Private Sub btnTryToMatch_Click(sender As Object, e As EventArgs) Handles btnTryToMatch.Click
@@ -487,7 +497,7 @@ Public Class wb_Admin_Sync
         btnSyncStart.Enabled = True
         btnTryToMatch.Enabled = True
         btnRemoveDBL.Enabled = True
-        btnRemoveNotUsed.Enabled = (SyncType = wb_Global.SyncType.Rohstoffe) Or (SyncType = wb_Global.SyncType.Artikel)
+        btnRemoveNotUsed.Enabled = (SyncType = wb_Global.SyncType.Rohstoffe) OrElse (SyncType = wb_Global.SyncType.Artikel) OrElse (SyncType = wb_Global.SyncType.Benutzer)
         lvSyncResult.Visible = True
         lvSyncResult.Enabled = True
     End Sub

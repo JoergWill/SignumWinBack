@@ -1,4 +1,6 @@
-﻿Public Class wb_Planung_Neu
+﻿Imports System.Windows.Forms
+
+Public Class wb_Planung_Neu
     Private RezeptAuswahl As wb_Rezept_AuswahlListe
     Private ArtikelAuswahl As wb_Artikel_AuswahlListe
     Private _RezNr As Integer = wb_Global.UNDEFINED
@@ -86,20 +88,36 @@
             End If
         End If
     End Sub
+
     ''' <summary>
-    ''' Auswahlfenster Artikel
+    ''' Auswahlfenster Artikel - sortiert nach Nummer
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub tArtikelNummer_DoubleClick(sender As Object, e As EventArgs) Handles tArtikelNummer.DoubleClick, tArtikelName.DoubleClick
-        'Auswahl-Dialog anzeigen
-        ArtikelAuswahl = New wb_Artikel_AuswahlListe()
-        'Daten zur Rezeptnummer auswerten
+    Private Sub tArtikelNummer_DoubleClick(sender As Object, e As EventArgs) Handles tArtikelNummer.DoubleClick
+        'Auswahl-Dialog anzeigen - sortiert nach Nummer
+        ArtikelAuswahl = New wb_Artikel_AuswahlListe(wb_Artikel_AuswahlListe.SortColumn.ArtikelNummer)
+        'Daten zum Artikel auswerten
         GetArtikelAuswahlDaten()
 
         tGesMengeStk.Focus()
         ArtikelAuswahl = Nothing
         tArtikelNummer.Modified = False
+    End Sub
+
+    ''' <summary>
+    ''' Auswahlfenster Artikel - sortiert nach Bezeichnung
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub tArtikelName_DoubleClick(sender As Object, e As EventArgs) Handles tArtikelName.DoubleClick
+        'Auswahl-Dialog anzeigen - sortiert nach Bezeichnung
+        ArtikelAuswahl = New wb_Artikel_AuswahlListe(wb_Artikel_AuswahlListe.SortColumn.ArtikelBezeichnung)
+        'Daten zum Artikel auswerten
+        GetArtikelAuswahlDaten()
+
+        tGesMengeStk.Focus()
+        ArtikelAuswahl = Nothing
     End Sub
 
     ''' <summary>
@@ -127,9 +145,9 @@
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub tRezeptNummer_DoubleClick(sender As Object, e As EventArgs) Handles tRezeptNummer.DoubleClick, tRezeptName.DoubleClick
+    Private Sub tRezeptNummer_DoubleClick(sender As Object, e As EventArgs) Handles tRezeptNummer.DoubleClick
         'Auswahl-Dialog anzeigen
-        RezeptAuswahl = New wb_Rezept_AuswahlListe()
+        RezeptAuswahl = New wb_Rezept_AuswahlListe(wb_Rezept_AuswahlListe.SortColumn.RezeptNummer)
         'alle Felder löschen
         ClearKomponenten()
         'Daten zur Rezeptnummer auswerten
@@ -138,6 +156,23 @@
         tGesMengeKg.Focus()
         RezeptAuswahl = Nothing
         tRezeptNummer.Modified = False
+    End Sub
+
+    ''' <summary>
+    ''' Auswahlfenster Rezeptur
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub tRezeptName_DoubleClick(sender As Object, e As EventArgs) Handles tRezeptName.DoubleClick
+        'Auswahl-Dialog anzeigen
+        RezeptAuswahl = New wb_Rezept_AuswahlListe(wb_Rezept_AuswahlListe.SortColumn.RezeptBezeichnung)
+        'alle Felder löschen
+        ClearKomponenten()
+        'Daten zur Rezeptnummer auswerten
+        GetRezeptAuswahlDaten()
+
+        tGesMengeKg.Focus()
+        RezeptAuswahl = Nothing
     End Sub
 
     ''' <summary>
@@ -174,7 +209,7 @@
             tRezeptName.Modified = False
             'alle Felder löschen
             ClearKomponenten()
-            'Rezept mit dieser Nummer suchen
+            'Rezept mit dieser Bezeichnung suchen
             RezeptAuswahl = New wb_Rezept_AuswahlListe("", tRezeptName.Text)
             'Daten zur Rezeptnummer auswerten
             GetRezeptAuswahlDaten()
@@ -189,7 +224,7 @@
     ''' wird das Auswahlfenster aufgerufen.
     ''' </summary>
     Private Function GetRezeptAuswahlDaten(Optional OpenDialog As Boolean = True) As Boolean
-        Dim diagResult As Windows.Forms.DialogResult = Windows.Forms.DialogResult.None
+        Dim diagResult As System.Windows.Forms.DialogResult = System.Windows.Forms.DialogResult.None
 
         'abhängig von der Anzahl der Ergebnis-Datensätze
         Select Case RezeptAuswahl.RowCount
@@ -201,7 +236,7 @@
                     diagResult = RezeptAuswahl.ShowDialog()
                 End If
             Case 1
-                diagResult = Windows.Forms.DialogResult.OK
+                diagResult = System.Windows.Forms.DialogResult.OK
             Case Else
                 'Auswahl-Dialog anzeigen
                 If OpenDialog Then
@@ -210,7 +245,7 @@
         End Select
 
         'Rezept gefunden und gültig
-        If diagResult = Windows.Forms.DialogResult.OK Then
+        If diagResult = System.Windows.Forms.DialogResult.OK Then
 
             'Rezeptnummer und Bezeichnung
             tRezeptNummer.Text = RezeptAuswahl.RezeptNummer
@@ -250,7 +285,7 @@
     ''' wird das Auswahlfenster aufgerufen.
     ''' </summary>
     Private Sub GetArtikelAuswahlDaten()
-        Dim diagResult As Windows.Forms.DialogResult
+        Dim diagResult As System.Windows.Forms.DialogResult
 
         'abhängig von der Anzahl der Ergebnis-Datensätze
         Select Case ArtikelAuswahl.RowCount
@@ -260,59 +295,65 @@
                 'Auswahl-Dialog anzeigen
                 diagResult = ArtikelAuswahl.ShowDialog()
             Case 1
-                diagResult = Windows.Forms.DialogResult.OK
+                diagResult = System.Windows.Forms.DialogResult.OK
             Case Else
                 'Auswahl-Dialog anzeigen
                 diagResult = ArtikelAuswahl.ShowDialog()
         End Select
 
-        If diagResult = Windows.Forms.DialogResult.OK Then
+        If diagResult = System.Windows.Forms.DialogResult.OK Then
 
-            'Artikelnummer und Bezeichnung
-            tArtikelNummer.Text = ArtikelAuswahl.ArtikelNummer
-            tArtikelName.Text = ArtikelAuswahl.ArtikelName
-            'Artikelnummer (Index)
-            _ArtNr = ArtikelAuswahl.ArtikelNr
+            'prüfen ob eine gültige Rezeptnummer vorhanden ist
+            If ArtikelAuswahl.RezNr > 0 Then
 
-            'ChargenTeiler Rezeptgewicht nicht erlaubt
-            If cbChargenTeiler.SelIndex = wb_Global.ModusChargenTeiler.RezeptGroesse Then
-                cbChargenTeiler.SelIndex = wb_Global.ModusChargenTeiler.OptimalUndRest
-                wb_GlobalSettings.ChargenTeiler = cbChargenTeiler.SelIndex
+                'Artikelnummer und Bezeichnung
+                tArtikelNummer.Text = ArtikelAuswahl.ArtikelNummer
+                tArtikelName.Text = ArtikelAuswahl.ArtikelName
+                'Artikelnummer (Index)
+                _ArtNr = ArtikelAuswahl.ArtikelNr
+
+                'ChargenTeiler Rezeptgewicht nicht erlaubt
+                If cbChargenTeiler.SelIndex = wb_Global.ModusChargenTeiler.RezeptGroesse Then
+                    cbChargenTeiler.SelIndex = wb_Global.ModusChargenTeiler.OptimalUndRest
+                    wb_GlobalSettings.ChargenTeiler = cbChargenTeiler.SelIndex
+                End If
+
+                'Rezeptnummer (Index)
+                _RezNr = ArtikelAuswahl.RezNr
+                'Rezept mit dieser Nummer suchen
+                RezeptAuswahl = New wb_Rezept_AuswahlListe(wb_Rezept_AuswahlListe.SortColumn.RezeptNummer, _RezNr)
+
+                'Daten zur Rezeptnummer auswerten
+                If GetRezeptAuswahlDaten() Then
+                    pTeigChargen.Enabled = False
+                End If
+
+                'Teigmenge
+                ArtikelAuswahl.Teiggewicht = RezeptAuswahl.RezeptChargeMin.TeigGewicht
+
+                'Chargengrößen in kg
+                tStkGewicht.Text = ArtikelAuswahl.ArtikelChargeMin.StkGewicht & " gr"
+                tChrgMinkg.Text = ArtikelAuswahl.ArtikelChargeMin.MengeInkg & " kg"
+                tChrgMaxkg.Text = ArtikelAuswahl.ArtikelChargeMax.MengeInkg & " kg"
+                tChrgOptkg.Text = ArtikelAuswahl.ArtikelChargeOpt.MengeInkg & " kg"
+
+                'Chargengrößen in %
+                tChrgMinPrz.Text = ArtikelAuswahl.ArtikelChargeMin.MengeInProzent & " %"
+                tChrgMaxPrz.Text = ArtikelAuswahl.ArtikelChargeMax.MengeInProzent & " %"
+                tChrgOptPrz.Text = ArtikelAuswahl.ArtikelChargeOpt.MengeInProzent & " %"
+
+                'Chargengrößen in Stk
+                tChrgMinStk.Text = ArtikelAuswahl.ArtikelChargeMin.MengeInStk
+                tChrgMaxStk.Text = ArtikelAuswahl.ArtikelChargeMax.MengeInStk
+                tChrgOptStk.Text = ArtikelAuswahl.ArtikelChargeOpt.MengeInStk
+
+
+                'Chargengrößen Artikel einblenden
+                pArtikelChargen.Enabled = True
+            Else
+                'Fehler - keine Rezeptur beim Artikel hinterlegt
+                MessageBox.Show("Dieser Artikel hat keine Rezeptur hinterlegt !", "Artikelauswahl", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
-
-            'Rezeptnummer (Index)
-            _RezNr = ArtikelAuswahl.RezNr
-            'Rezept mit dieser Nummer suchen
-            RezeptAuswahl = New wb_Rezept_AuswahlListe(_RezNr)
-
-            'Daten zur Rezeptnummer auswerten
-            If GetRezeptAuswahlDaten() Then
-                pTeigChargen.Enabled = False
-            End If
-
-            'Teigmenge
-            ArtikelAuswahl.Teiggewicht = RezeptAuswahl.RezeptChargeMin.TeigGewicht
-
-            'Chargengrößen in kg
-            tStkGewicht.Text = ArtikelAuswahl.ArtikelChargeMin.StkGewicht & " gr"
-            tChrgMinkg.Text = ArtikelAuswahl.ArtikelChargeMin.MengeInkg & " kg"
-            tChrgMaxkg.Text = ArtikelAuswahl.ArtikelChargeMax.MengeInkg & " kg"
-            tChrgOptkg.Text = ArtikelAuswahl.ArtikelChargeOpt.MengeInkg & " kg"
-
-            'Chargengrößen in %
-            tChrgMinPrz.Text = ArtikelAuswahl.ArtikelChargeMin.MengeInProzent & " %"
-            tChrgMaxPrz.Text = ArtikelAuswahl.ArtikelChargeMax.MengeInProzent & " %"
-            tChrgOptPrz.Text = ArtikelAuswahl.ArtikelChargeOpt.MengeInProzent & " %"
-
-            'Chargengrößen in Stk
-            tChrgMinStk.Text = ArtikelAuswahl.ArtikelChargeMin.MengeInStk
-            tChrgMaxStk.Text = ArtikelAuswahl.ArtikelChargeMax.MengeInStk
-            tChrgOptStk.Text = ArtikelAuswahl.ArtikelChargeOpt.MengeInStk
-
-
-            'Chargengrößen Artikel einblenden
-            pArtikelChargen.Enabled = True
-
         End If
     End Sub
 
@@ -505,9 +546,11 @@
 
     Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
         If pArtikelChargen.Enabled Then
-            ProduktionNeu.AddChargenZeile("", "", _ArtNr, _AnzGesStck, 0, 0, cbChargenTeiler.SelIndex, cbAufloesen.Checked, False)
+            'neue Charge Artikel
+            ProduktionNeu.AddChargenZeile("", "", _ArtNr, _AnzGesStck, 0.0, 0.0, 0.0, 0, 0, cbChargenTeiler.SelIndex, cbAufloesen.Checked, False)
         Else
-            ProduktionNeu.AddChargenZeile("", _RezNr, _TeigGesMenge, cbChargenTeiler.SelIndex, cbAufloesen.Checked)
+            'neue Charge Rezept
+            ProduktionNeu.AddChargenZeile("", _RezNr, _TeigGesMenge, 0.0, cbChargenTeiler.SelIndex, cbAufloesen.Checked)
         End If
     End Sub
 End Class
