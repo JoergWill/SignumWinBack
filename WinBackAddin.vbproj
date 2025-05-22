@@ -1,262 +1,79 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>
-    </ProductVersion>
-    <SchemaVersion>
-    </SchemaVersion>
-    <ProjectGuid>{AA45FD47-0A9E-40D7-A9A1-5EF03F1F3C67}</ProjectGuid>
+    <TargetFramework>net8.0-windows10.0.18362.0</TargetFramework>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <ApplicationDefaultFont>Microsoft Sans Serif, 8.25pt</ApplicationDefaultFont>
     <OutputType>Library</OutputType>
     <RootNamespace>WinBack</RootNamespace>
-    <AssemblyName>WinBackAddin</AssemblyName>
-    <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionExplicit>On</OptionExplicit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionCompare>Binary</OptionCompare>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionStrict>Off</OptionStrict>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionInfer>On</OptionInfer>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRules>
-    </CodeAnalysisRules>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
+    <DefineTrace>true</DefineTrace>
+    <GenerateResourceWarnOnBinaryFormatterUse>false</GenerateResourceWarnOnBinaryFormatterUse>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Release\</OutputPath>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <Optimize>true</Optimize>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRules>
-    </CodeAnalysisRules>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
-    <CodeAnalysisRuleSet>..\..\..\..\SharedBinaries\Basic Correctness and Design Guideline.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x64</PlatformTarget>
+    <DefineConstants>NoAssemblyResolve=false,DebugLog4Net=False,DebugLL=False</DefineConstants>
+    <DefineDebug>True</DefineDebug>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M1|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DocumentationFile>WinBackAddin.xml</DocumentationFile>
     <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M2|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M3|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M4|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M5|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>..\..\..\..\SharedBinaries\Basic Correctness and Design Guideline.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>AssemblyResolve=True</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M1|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>AssemblyResolve=True</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M2|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>AssemblyResolve=True</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M3|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M4|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M5|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>AssemblyResolve=True</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M6|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug-M6\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-M6|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>AssemblyResolve=True</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-M7|x86' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\DB_Goeken\</OutputPath>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-M7|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>AssemblyResolve=True</DefineConstants>
-    <DocumentationFile>WinBackAddin.xml</DocumentationFile>
-    <NoWarn>40054,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>NoAssemblyResolve=False, DebugLog4Net=False, DebugLL=False</DefineConstants>
+    <PlatformTarget>x64</PlatformTarget>
+    <DefineDebug>False</DefineDebug>
+    <DefineTrace>False</DefineTrace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="combit.ListLabel22, Version=22.2.6290.25045, Culture=neutral, PublicKeyToken=a7a30592cb4a94be, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>dll\Combit List&amp;Label V22\combit.ListLabel22.dll</HintPath>
+    <Compile Remove="EnhancedEdit\obj\**" />
+    <Compile Remove="Export\**" />
+    <Compile Remove="Import\**" />
+    <Compile Remove="ListLabel\**" />
+    <Compile Remove="packages\**" />
+    <Compile Remove="WinBackAnyWhere\obj\**" />
+    <Compile Remove="WinBackServerTask\obj\**" />
+    <Compile Remove="WinBackStart\obj\**" />
+    <Compile Remove="WinBackUITest\obj\**" />
+    <Compile Remove="WinBackUnitTest\obj\**" />
+    <EmbeddedResource Remove="EnhancedEdit\obj\**" />
+    <EmbeddedResource Remove="Export\**" />
+    <EmbeddedResource Remove="Import\**" />
+    <EmbeddedResource Remove="ListLabel\**" />
+    <EmbeddedResource Remove="packages\**" />
+    <EmbeddedResource Remove="WinBackAnyWhere\obj\**" />
+    <EmbeddedResource Remove="WinBackServerTask\obj\**" />
+    <EmbeddedResource Remove="WinBackStart\obj\**" />
+    <EmbeddedResource Remove="WinBackUITest\obj\**" />
+    <EmbeddedResource Remove="WinBackUnitTest\obj\**" />
+    <None Remove="EnhancedEdit\obj\**" />
+    <None Remove="Export\**" />
+    <None Remove="Import\**" />
+    <None Remove="ListLabel\**" />
+    <None Remove="packages\**" />
+    <None Remove="WinBackAnyWhere\obj\**" />
+    <None Remove="WinBackServerTask\obj\**" />
+    <None Remove="WinBackStart\obj\**" />
+    <None Remove="WinBackUITest\obj\**" />
+    <None Remove="WinBackUnitTest\obj\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="combit.ListLabel30">
+      <HintPath>dll\ListUndLabel V30\combit.ListLabel30.dll</HintPath>
     </Reference>
-    <Reference Include="DiffieHellman">
-      <HintPath>dll\SharpSSH\DiffieHellman.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentFTP, Version=32.4.7.0, Culture=neutral, PublicKeyToken=f4af092b1d8df44f, processorArchitecture=MSIL">
-      <HintPath>packages\FluentFTP.32.4.7\lib\net45\FluentFTP.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="FluentFTP">
+      <HintPath>dll\FluentFTP.51.1.0\FluentFTP.dll</HintPath>
     </Reference>
     <Reference Include="Ghostscript.NET">
       <HintPath>dll\GhostScript V1.2.1\Ghostscript.NET.dll</HintPath>
@@ -264,1247 +81,671 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>dll\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Common, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Infralution.Common">
       <HintPath>dll\Infralution VirtualTree V4.8.10\Infralution.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Controls, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Infralution.Controls">
       <HintPath>dll\Infralution VirtualTree V4.8.10\Infralution.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Infralution.Controls.VirtualTree, Version=4.8.10.0, Culture=neutral, PublicKeyToken=3e7e8e3744a5c13f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Infralution.Controls.Design">
+      <HintPath>dll\Infralution VirtualTree V4.8.10\Infralution.Controls.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Infralution.Controls.VirtualTree">
       <HintPath>dll\Infralution VirtualTree V4.8.10\Infralution.Controls.VirtualTree.dll</HintPath>
+    </Reference>
+    <Reference Include="Infralution.Controls.VirtualTree.Design">
+      <HintPath>dll\Infralution VirtualTree V4.8.10\Infralution.Controls.VirtualTree.Design.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>dll\Log4net V2.0.8\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MetroFramework">
       <HintPath>dll\MetroFramework 1.2.0.3\MetroFramework.dll</HintPath>
     </Reference>
-    <Reference Include="MetroFramework.Design">
-      <HintPath>dll\MetroFramework 1.2.0.3\MetroFramework.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data, Version=5.0.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MySql.Data">
       <HintPath>dll\MySql V1.0.10.1\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>dll\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PCSC, Version=5.0.0.0, Culture=neutral, PublicKeyToken=13b76e54a2ee80a7, processorArchitecture=MSIL">
-      <HintPath>packages\PCSC.5.0.0\lib\net472\PCSC.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="OrgaSoft.Contracts">
+      <HintPath>dll\OrgaSoft V4.1.0.3\OrgaSoft.Contracts.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="PCSC.Iso7816, Version=5.0.0.0, Culture=neutral, PublicKeyToken=13b76e54a2ee80a7, processorArchitecture=MSIL">
-      <HintPath>packages\PCSC.Iso7816.5.0.0\lib\net472\PCSC.Iso7816.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="PCSC">
+      <HintPath>dll\PCSC V7.0.0\PCSC.dll</HintPath>
+    </Reference>
+    <Reference Include="PCSC.Iso7816">
+      <HintPath>dll\PCSC.Iso7816 V7.0.0\PCSC.Iso7816.dll</HintPath>
     </Reference>
     <Reference Include="ProgressCircle">
       <HintPath>dll\ProgressCircle\ProgressCircle.dll</HintPath>
     </Reference>
-    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
-      <HintPath>packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Renci.SshNet">
+      <HintPath>packages\SSH.NET.2020.0.2\lib\wp8\Renci.SshNet.dll</HintPath>
     </Reference>
-    <Reference Include="Signum.OrgaSoft.Contracts">
-      <HintPath>dll\OrgaSoft V3.3.7737\Signum.OrgaSoft.Contracts.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Reference Include="System.Data.OleDb">
+      <HintPath>dll\MicroSoft System Data Ole\System.Data.OleDb.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Windows.Forms.Ribbon">
-      <HintPath>dll\OfficeRibbon 4.0\System.Windows.Forms.Ribbon.dll</HintPath>
+      <HintPath>dll\OfficeRibbon 4.6\System.Windows.Forms.Ribbon.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Forms.TreeListView">
-      <HintPath>dll\TreeListView\System.Windows.Forms.TreeListView.dll</HintPath>
+    <Reference Include="TwinCAT.Ads">
+      <HintPath>dll\TwinCat ADS V4.0.30319\TwinCAT.Ads.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core">
+    <Reference Include="WeifenLuo.WinFormsUI.Core.Docking">
+      <HintPath>dll\WeifenLuo Core Docking V3.0.4\WeifenLuo.WinFormsUI.Core.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Core.Docking.ThemeVS2015">
+      <HintPath>dll\WeifenLuo Core Docking V3.0.4\WeifenLuo.WinFormsUI.Core.Docking.ThemeVS2015.dll</HintPath>
+    </Reference>
+    <Reference Update="System.Core">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="UIAutomationClient" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <HintPath>packages\DockPanelSuite.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <HintPath>packages\DockPanelSuite.ThemeVS2015.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
-    <Import Include="System" />
-    <Import Include="System.Collections" />
-    <Import Include="System.Collections.Generic" />
     <Import Include="System.ComponentModel.Composition" />
     <Import Include="System.ComponentModel.Composition.Hosting" />
-    <Import Include="System.Data" />
-    <Import Include="System.Diagnostics" />
-    <Import Include="System.Linq" />
+    <Import Include="System.Runtime" />
     <Import Include="System.Web" />
-    <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="My Project\Resources.Designer.vb">
+    <Compile Update="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Kocher\wb_Kocher.vb" />
-    <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_Rezept.vb" />
-    <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_Global.vb" />
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewErrorList.Designer.vb">
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashAdmin.Designer.vb">
+      <DependentUpon>wb_DashAdmin.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashAdmin.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashChargen.Designer.vb">
+      <DependentUpon>wb_DashChargen.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashChargen.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashLinien.Designer.vb">
+      <DependentUpon>wb_DashLinien.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashLinien.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashKneter.Designer.vb">
+      <DependentUpon>wb_DashKneter.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashKneter.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashUser.Designer.vb">
+      <DependentUpon>wb_DashUser.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashUser.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashRohstoff.Designer.vb">
+      <DependentUpon>wb_DashRohstoff.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashRohstoff.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashRezept.Designer.vb">
+      <DependentUpon>wb_DashRezept.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashRezept.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashArtikel.Designer.vb">
+      <DependentUpon>wb_DashArtikel.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashArtikel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewErrorList.Designer.vb">
       <DependentUpon>wb_ArrayGridViewErrorList.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewErrorList.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewErrorList.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewBestand.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewBestand.Designer.vb">
       <DependentUpon>wb_ArrayGridViewBestand.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewBestand.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewBestand.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewSchnittstelleVorschau.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewWaagenParameter.Designer.vb">
+      <DependentUpon>wb_ArrayGridViewWaagenParameter.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewWaagenParameter.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewSiloParameter.Designer.vb">
+      <DependentUpon>wb_ArrayGridViewSiloParameter.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewSiloParameter.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.Designer.vb">
       <DependentUpon>wb_ArrayGridViewNwt.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewNwt.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewDruckAuftrag.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewDruckAuftrag.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSchnittstelleFelder.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewSchnittstelle.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSchnittstelle.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSortimente.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewSortimente.Designer.vb">
       <DependentUpon>wb_ArrayGridViewSortimente.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSortimente.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewSortimente.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewUserGruppen.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewUserGruppen.Designer.vb">
       <DependentUpon>wb_ArrayGridViewUserGruppen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewUserGruppen.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewUserGruppen.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_GridCalendarColumn.vb" />
-    <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.Designer.vb">
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashElement.Designer.vb">
+      <DependentUpon>wb_DashElement.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\DashBoard\wb_DashElement.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_KneterAnzeige_HD.Designer.vb">
+      <DependentUpon>wb_KneterAnzeige_HD.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_KneterAnzeige_HD.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_KompRzChargen.Designer.vb">
       <DependentUpon>wb_KompRzChargen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_KompRzChargen.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewStatistik.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewStatistik.Designer.vb">
       <DependentUpon>wb_ArrayGridViewStatistik.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewStatistik.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewStatistik.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ListeStatistik.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ListeStatistik.Designer.vb">
       <DependentUpon>wb_ListeStatistik.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ListeStatistik.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ListeStatistik.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_Silo.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ProgressBar.Designer.vb">
+      <DependentUpon>wb_ProgressBar.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ProgressBar.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_Silo.Designer.vb">
       <DependentUpon>wb_Silo.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_Silo.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_Silo.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_SiloBef.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_SiloBef.Designer.vb">
       <DependentUpon>wb_SiloBef.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_SiloBef.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_SiloBef.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_RezeptDrucken.vb" />
-    <Compile Include="wb_00_Klassen\wb_Schnittstelle.vb" />
-    <Compile Include="wb_00_Klassen\wb_SchnittstelleFeld.vb" />
-    <Compile Include="wb_00_Klassen\wb_SchnittstelleTabelle.vb" />
-    <Compile Include="wb_00_Klassen\Komponenten\wb_SiloSackware.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_KneterAnzeige_SD.Designer.vb">
+      <DependentUpon>wb_KneterAnzeige_SD.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_KneterAnzeige_SD.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Klassen\Komponenten\wb_SiloSackware.Designer.vb">
       <DependentUpon>wb_SiloSackware.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_SiloSackware.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_SiloSackware.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Main\wb_Main_ServerConnect.Designer.vb">
+    <Compile Update="wb_00_Main\wb_Main_About.Designer.vb">
+      <DependentUpon>wb_Main_About.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Nwt.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_06_Forms_Linien\wb_Linien_Kneter.Designer.vb">
+      <DependentUpon>wb_Linien_Kneter.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_TwinCatADS.Designer.vb">
+      <DependentUpon>wb_Admin_TwinCatADS.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_ThemeControl.Designer.vb">
+      <DependentUpon>wb_Admin_ThemeControl.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_XNumber.designer.vb">
+      <DependentUpon>wb_Admin_XNumber.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_SetupVorschau.Designer.vb">
+      <DependentUpon>wb_Schnittstelle_SetupVorschau.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_99_Dashboard\wb_Dashboard_Main.Designer.vb">
+      <DependentUpon>wb_Dashboard_Main.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_99_Dashboard\wb_Dashboard_Main.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_00_Main\wb_Main_ServerConnect.Designer.vb">
       <DependentUpon>wb_Main_ServerConnect.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Main\wb_Main_ServerConnect.vb">
-      <SubType>Form</SubType>
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_ChartVTS.Designer.vb">
+      <DependentUpon>wb_Chargen_ChartVTS.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Main\wb_Main_ServerTaskConnect.vb" />
-    <Compile Include="wb_04_Forms_Rohstoffe\ob_Rohstoffe_SiloInventur.vb" />
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloKorrektur.Designer.vb">
+    <Compile Update="wb_02_Forms_Artikel\ob_Artikel_Verarbeitungshinweise.Designer.vb">
+      <DependentUpon>ob_Artikel_Verarbeitungshinweise.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\ob_Artikel_Verarbeitungshinweise.vb" />
+    <Compile Update="wb_99_Dashboard\wb_Dashboard_Grid.Designer.vb">
+      <DependentUpon>wb_Dashboard_Grid.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_TextHinweise.Designer.vb">
+      <DependentUpon>wb_Artikel_TextHinweise.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Hinweise.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_Hinweise.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_TextHinweise.Designer.vb">
+      <DependentUpon>wb_Rohstoffe_TextHinweise.vb</DependentUpon>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloKorrektur.Designer.vb">
       <DependentUpon>wb_Rohstoffe_SiloKorrektur.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloKorrektur.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Drucken.Designer.vb">
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Drucken.Designer.vb">
       <DependentUpon>wb_Planung_Drucken.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Drucken.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_TimerEdit.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_TimerEdit.Designer.vb">
       <DependentUpon>wb_Admin_TimerEdit.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_TimerEdit.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_OrgaBack.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncAufarbeitung_WinBack.vb" />
-    <Compile Include="wb_00_Klassen\wb_Chargen.vb" />
-    <Compile Include="wb_00_Klassen\wb_ChargenSchritt.vb" />
-    <Compile Include="wb_00_Klassen\wb_ChargenTTS.vb" />
-    <Compile Include="wb_00_Klassen\wb_LagerKarte.vb" />
-    <Compile Include="wb_00_Klassen\wb_LagerOrt.vb" />
-    <Compile Include="wb_00_Klassen\Komponenten\wb_TimerGridView.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_TimerGridView.Designer.vb">
       <DependentUpon>wb_TimerGridView.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_TimerGridView.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_TimerGridView.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_VirtualTreeEditor.vb" />
-    <Compile Include="wb_00_Klassen\wb_AktRechte.vb" />
-    <Compile Include="wb_00_Klassen\wb_AktSysKonfig.vb" />
-    <Compile Include="wb_00_Klassen\wb_EditControl.Designer.vb">
+    <Compile Update="wb_00_Klassen\wb_EditControl.Designer.vb">
       <DependentUpon>wb_EditControl.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_EditControl.vb">
+    <Compile Update="wb_00_Klassen\wb_EditControl.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridView.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridView.Designer.vb">
       <DependentUpon>wb_ArrayGridView.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridView.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridView.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_CheckedListBox.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_CheckedListBox.Designer.vb">
       <DependentUpon>wb_CheckedListBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_CheckedListBox.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_CheckedListBox.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncRohstoffe_WinBack.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncArtikel_OrgaBack.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncArtikel_WinBack.vb" />
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSync.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewSync.Designer.vb">
       <DependentUpon>wb_ArrayGridViewSync.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewSync.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewSync.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncItem.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncRohstoffe_OrgaBack.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncUser_OrgaBack.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncUserGruppen_OrgaBack.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncUser_WinBack.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_SyncUserGruppen_WinBack.vb" />
-    <Compile Include="wb_00_Klassen\wb_BestellDatenSchritt.vb" />
-    <Compile Include="wb_00_Klassen\wb_ChangeLog.vb" />
-    <Compile Include="wb_00_Klassen\Komponenten\wb_DataGridViewVerwendung.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_DataGridViewVerwendung.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_Charge.vb" />
-    <Compile Include="wb_00_Klassen\wb_DockBarPanelShared.vb" />
-    <Compile Include="wb_00_Klassen\Sync\wb_Sync.vb" />
-    <Compile Include="wb_00_Klassen\wb_Einheiten_Global.vb" />
-    <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_Sync.vb" />
-    <Compile Include="wb_00_Klassen\Kocher\wb_Kocher_RezeptSchritt.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam200.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam200_Global.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam201.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam201_Global.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam202.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam202_Global.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam210.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam210_Global.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam220.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam220_Global.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam300.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam300_Global.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParamXXX.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam_Global.vb" />
-    <Compile Include="wb_00_Klassen\wb_LagerSilo.vb" />
-    <Compile Include="wb_00_Klassen\wb_Lieferungen.vb" />
-    <Compile Include="wb_00_Klassen\wb_MehlGruppe.vb" />
-    <Compile Include="wb_00_Klassen\wb_OrgaBackProcess.vb" />
-    <Compile Include="wb_00_Klassen\wb_OrgaBackProcessPosition.vb" />
-    <Compile Include="wb_00_Klassen\wb_OrgaBackProcess_WE.vb" />
-    <Compile Include="wb_00_Klassen\wb_ProduktionPlanungError.vb" />
-    <Compile Include="wb_00_Klassen\wb_Produktion_virtuell.vb" />
-    <Compile Include="wb_00_Klassen\wb_StatistikListe.vb" />
-    <Compile Include="wb_00_Klassen\wb_TimerEvent.vb" />
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.Designer.vb">
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.Designer.vb">
       <DependentUpon>wb_Chargen_ChartTTS.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.Designer.vb">
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_Details.Designer.vb">
       <DependentUpon>wb_Chargen_Details.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Details.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_Rezepte.Designer.vb">
+    <Compile Update="wb_01_Forms_Chargen\wb_Statistik_Rezepte.Designer.vb">
       <DependentUpon>wb_Statistik_Rezepte.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_Rezepte.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_RohDetails.Designer.vb">
+    <Compile Update="wb_01_Forms_Chargen\wb_Statistik_RohDetails.Designer.vb">
       <DependentUpon>wb_Statistik_RohDetails.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_RohDetails.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_RohVerbrauch.Designer.vb">
+    <Compile Update="wb_01_Forms_Chargen\wb_Statistik_RohVerbrauch.Designer.vb">
       <DependentUpon>wb_Statistik_RohVerbrauch.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_RohVerbrauch.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_AuswahlListe.Designer.vb">
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_AuswahlListe.Designer.vb">
       <DependentUpon>wb_Artikel_AuswahlListe.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_AuswahlListe.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Silo.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Silo.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Silo.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Silo.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Lieferungen.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Lieferungen.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Lieferungen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Lieferungen.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloParameter.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloParameter.Designer.vb">
       <DependentUpon>wb_Rohstoffe_SiloParameter.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloParameter.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Tauschen.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Tauschen.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Tauschen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Tauschen.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Passwort.Designer.vb">
+    <Compile Update="wb_05_Forms_User\wb_User_Passwort.Designer.vb">
       <DependentUpon>wb_User_Passwort.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Passwort.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_GruppenRechte.Designer.vb">
+    <Compile Update="wb_05_Forms_User\wb_User_GruppenRechte.Designer.vb">
       <DependentUpon>wb_User_GruppenRechte.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_GruppenRechte.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Rechte_Shared.vb" />
-    <Compile Include="wb_06_Forms_Linien\wb_Linien_Auto.Designer.vb">
+    <Compile Update="wb_06_Forms_Linien\wb_Linien_Auto.Designer.vb">
       <DependentUpon>wb_Linien_Auto.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_06_Forms_Linien\wb_Linien_Auto.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_06_Forms_Linien\wb_Linien_Global.vb" />
-    <Compile Include="wb_00_Klassen\wb_Mail.vb" />
-    <Compile Include="wb_00_Klassen\wb_MinMaxOptCharge.vb" />
-    <Compile Include="wb_00_Klassen\wb_AktUser.vb" />
-    <Compile Include="wb_00_Klassen\wb_nwtPistor.vb" />
-    <Compile Include="wb_00_Klassen\wb_nwtUpdateArtikel.vb" />
-    <Compile Include="wb_00_Klassen\wb_nwtCl.vb" />
-    <Compile Include="wb_00_Klassen\wb_ShowPDF.vb" />
-    <Compile Include="wb_00_Klassen\wb_Simple3Des.vb" />
-    <Compile Include="wb_00_Klassen\wb_SplitTTSLog.vb" />
-    <Compile Include="wb_00_Klassen\wb_Sql_FindServerIP.vb" />
-    <Compile Include="wb_00_Klassen\wb_VorProduktionsSchritt.vb" />
-    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Chargen.vb" />
-    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Konfiguration.vb" />
-    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Lagerorte.vb" />
-    <Compile Include="wb_00_Konstanten\sql\wb_sql_Selects_Lieferungen.vb" />
-    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_OrgaBack.vb" />
-    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Rezepte.vb" />
-    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_Komponenten.vb" />
-    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects_User.vb" />
-    <Compile Include="wb_00_Main\wb_Main_Setup.Designer.vb">
+    <Compile Update="wb_00_Main\wb_Main_Setup.Designer.vb">
       <DependentUpon>wb_Main_Setup.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Main\wb_Main_Setup.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_00_Main\wb_Finalizer_Shared.vb" />
-    <Compile Include="wb_00_Klassen\WinBack_DockMain.Designer.vb">
+    <Compile Update="wb_00_Klassen\WinBack_DockMain.Designer.vb">
       <DependentUpon>WinBack_DockMain.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\WinBack_DockMain.vb">
+    <Compile Update="wb_00_Klassen\WinBack_DockMain.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_DockBarPanelSaveAs.Designer.vb">
+    <Compile Update="wb_00_Klassen\wb_DockBarPanelSaveAs.Designer.vb">
       <DependentUpon>wb_DockBarPanelSaveAs.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_DockBarPanelSaveAs.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_00_Klassen\wb_KomponParam301.vb" />
-    <Compile Include="wb_00_Klassen\wb_Komponente.vb" />
-    <Compile Include="wb_00_Klassen\wb_KomponParam301_Global.vb" />
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewKomponParam301.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewKomponParam301.Designer.vb">
       <DependentUpon>wb_ArrayGridViewKomponParam301.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ArrayGridViewKomponParam301.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ArrayGridViewKomponParam301.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_nwtCl_WinBack.vb" />
-    <Compile Include="wb_00_Klassen\wb_nwtCl_DatenLink.vb" />
-    <Compile Include="wb_00_Klassen\wb_nwtUpdate.vb" />
-    <Compile Include="wb_00_Klassen\wb_Produktion.vb" />
-    <Compile Include="wb_00_Klassen\wb_Produktionsschritt.vb" />
-    <Compile Include="wb_00_Klassen\wb_Rezept.vb" />
-    <Compile Include="wb_00_Klassen\wb_Rezeptschritt.vb" />
-    <Compile Include="wb_00_Klassen\wb_DockBarPanelMain.Designer.vb">
+    <Compile Update="wb_00_Klassen\wb_DockBarPanelMain.Designer.vb">
       <DependentUpon>wb_DockBarPanelMain.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_DockBarPanelMain.vb">
+    <Compile Update="wb_00_Klassen\wb_DockBarPanelMain.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_Sql_BackupRestore.vb" />
-    <Compile Include="wb_00_Klassen\wb_Hinweise.vb" />
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ComboBox.Designer.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ComboBox.Designer.vb">
       <DependentUpon>wb_ComboBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_ComboBox.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_ComboBox.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_CreateSQLTables.vb" />
-    <Compile Include="wb_00_Klassen\wb_Filiale.vb" />
-    <Compile Include="wb_00_Klassen\wb_Language.vb" />
-    <Compile Include="wb_00_Klassen\Komponenten\wb_TabControl.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_TabControl.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_TcpIPConnection.vb" />
-    <Compile Include="wb_00_Klassen\wb_TraceListener.vb" />
-    <Compile Include="wb_00_Klassen\wb_ZutatenListe.vb" />
-    <Compile Include="wb_00_Klassen\wb_ZutatenListe_Global.vb" />
-    <Compile Include="wb_00_Konstanten\wb_Credentials.vb" />
-    <Compile Include="wb_00_Konstanten\wb_GlobalOrgaBack.vb" />
-    <Compile Include="wb_00_Konstanten\wb_GlobalSettings.vb" />
-    <Compile Include="wb_00_Main\wb_Main_Exception.Designer.vb">
+    <Compile Update="wb_00_Main\wb_Main_Exception.Designer.vb">
       <DependentUpon>wb_Main_Exception.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Main\wb_Main_Exception.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_00_Main\wb_Main_Progress.Designer.vb">
+    <Compile Update="wb_00_Main\wb_Main_Progress.Designer.vb">
       <DependentUpon>wb_Main_Progress.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Main\wb_Main_Progress.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_00_Main\wb_Main_Shared.vb" />
-    <Compile Include="wb_00_Main\wb_PrinterDialog.Designer.vb">
+    <Compile Update="wb_00_Main\wb_PrinterDialog.Designer.vb">
       <DependentUpon>wb_PrinterDialog.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Main\wb_PrinterDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_00_Main\wb_PrinterPreview.Designer.vb">
+    <Compile Update="wb_00_Main\wb_PrinterPreview.Designer.vb">
       <DependentUpon>wb_PrinterPreview.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_00_Main\wb_PrinterPreview.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_00_Main\wb_Printer_Shared.vb" />
-    <Compile Include="wb_01_Forms_Chargen\ob_Chargen_Produziert.vb" />
-    <Compile Include="wb_01_Forms_Chargen\ob_ProduzierteWare.vb" />
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Funktionen.Designer.vb">
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_Funktionen.Designer.vb">
       <DependentUpon>wb_Chargen_Funktionen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Funktionen.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Shared.vb" />
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_WasserTemp.Designer.vb">
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_WasserTemp.Designer.vb">
       <DependentUpon>wb_Chargen_WasserTemp.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_WasserTemp.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_Services.vb" />
-    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.Designer.vb">
+    <Compile Update="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.Designer.vb">
       <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.vb">
+    <Compile Update="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.Designer.vb">
+    <Compile Update="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.Designer.vb">
       <DependentUpon>ob_Artikel_ZuordnungRezept.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="wb_02_Forms_Artikel\ob_Artikel_DockingExtension.vb" />
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Details.Designer.vb">
+    <Compile Update="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.vb" />
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Details.Designer.vb">
       <DependentUpon>wb_Artikel_Details.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Details.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Hinweise.Designer.vb">
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Hinweise.Designer.vb">
       <DependentUpon>wb_Artikel_Hinweise.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Hinweise.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Parameter.Designer.vb">
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Parameter.Designer.vb">
       <DependentUpon>wb_Artikel_Parameter.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Parameter.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\IRezept_OrgaBack.vb" />
-    <Compile Include="wb_03_Forms_Rezepte\ob_Rezept_Ingredients.vb" />
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_AuswahlListe.Designer.vb">
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_AuswahlListe.Designer.vb">
       <DependentUpon>wb_Rezept_AuswahlListe.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_AuswahlListe.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.Designer.vb">
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.Designer.vb">
       <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Verwendung.Designer.vb">
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Verwendung.Designer.vb">
       <DependentUpon>wb_Rezept_Verwendung.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Verwendung.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\ob_ChargenBestand.vb" />
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Cloud.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Nwt.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_AuswahlListe.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_AuswahlListe.Designer.vb">
       <DependentUpon>wb_Rohstoffe_AuswahlListe.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_AuswahlListe.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Dokumente.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Dokumente.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Dokumente.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Dokumente.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_05_Forms_User\ob_User_DockingExtension.vb" />
-    <Compile Include="wb_05_Forms_User\wb_User.vb" />
-    <Compile Include="wb_05_Forms_User\wb_User_Gruppe.vb" />
-    <Compile Include="wb_00_Klassen\wb_Sql_Functions.vb" />
-    <Compile Include="wb_00_Konstanten\wb_Global.vb" />
-    <Compile Include="wb_00_Konstanten\sql\wb_Sql_Selects.vb" />
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Shared.vb" />
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Historie.Designer.vb">
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Historie.Designer.vb">
       <DependentUpon>wb_Rezept_Historie.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Historie.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Hinweise.Designer.vb">
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Hinweise.Designer.vb">
       <DependentUpon>wb_Rezept_Hinweise.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Hinweise.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Details.Designer.vb">
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Details.Designer.vb">
       <DependentUpon>wb_Rezept_Details.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Details.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.Designer.vb">
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Liste.Designer.vb">
       <DependentUpon>wb_Rezept_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Shared.vb" />
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Main.Designer.vb">
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Main.Designer.vb">
       <DependentUpon>wb_Rezept_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_03_Forms_Rezepte\wb_Rezept_Main.vb">
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Parameter.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Parameter.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Parameter.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Parameter.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Shared.vb" />
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.Designer.vb">
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.Designer.vb">
       <DependentUpon>wb_Rohstoffe_Verwendung.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Shared.vb" />
-    <Compile Include="wb_06_Forms_Linien\wb_Linien.vb" />
-    <Compile Include="wb_05_Forms_User\wb_User_Details.Designer.vb">
+    <Compile Update="wb_05_Forms_User\wb_User_Details.Designer.vb">
       <DependentUpon>wb_User_Details.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Details.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Liste.Designer.vb">
+    <Compile Update="wb_05_Forms_User\wb_User_Liste.Designer.vb">
       <DependentUpon>wb_User_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Liste.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Liste.Designer.vb">
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Liste.Designer.vb">
       <DependentUpon>wb_Artikel_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Liste.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Main.Designer.vb">
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Main.Designer.vb">
       <DependentUpon>wb_Artikel_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_02_Forms_Artikel\wb_Artikel_Main.vb">
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_06_Forms_Linien\wb_Linien_Details.Designer.vb">
+    <Compile Update="wb_06_Forms_Linien\wb_Linien_Details.Designer.vb">
       <DependentUpon>wb_Linien_Details.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_06_Forms_Linien\wb_Linien_Details.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_06_Forms_Linien\wb_Linien_Liste.Designer.vb">
+    <Compile Update="wb_06_Forms_Linien\wb_Linien_Liste.Designer.vb">
       <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_06_Forms_Linien\wb_Linien_Liste.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Main.Designer.vb">
+    <Compile Update="wb_05_Forms_User\wb_User_Main.Designer.vb">
       <DependentUpon>wb_User_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Main.vb">
+    <Compile Update="wb_05_Forms_User\wb_User_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\Komponenten\wb_DataGridView.vb">
+    <Compile Update="wb_00_Klassen\Komponenten\wb_DataGridView.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wb_00_Klassen\wb_Functions.vb" />
-    <Compile Include="wb_00_Klassen\wb_Sql.vb" />
-    <Compile Include="wb_00_Klassen\wb_IniFile.vb" />
-    <Compile Include="Settings.vb" />
-    <Compile Include="wb_06_Forms_Linien\wb_Linien_Main.Designer.vb">
+    <Compile Update="wb_06_Forms_Linien\wb_Linien_Main.Designer.vb">
       <DependentUpon>wb_Linien_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_06_Forms_Linien\wb_Linien_Main.vb">
+    <Compile Update="wb_06_Forms_Linien\wb_Linien_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Main.Designer.vb">
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_Main.Designer.vb">
       <DependentUpon>wb_Chargen_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Chargen_Main.vb">
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_00_Main\ob_Main_Menu.vb" />
-    <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="My Project\Application.Designer.vb">
+    <Compile Update="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="My Project\Settings.Designer.vb">
+    <Compile Update="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Rechte.Designer.vb">
+    <Compile Update="wb_05_Forms_User\wb_User_Rechte.Designer.vb">
       <DependentUpon>wb_User_Rechte.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_05_Forms_User\wb_User_Rechte.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_Chargen.Designer.vb">
+    <Compile Update="wb_01_Forms_Chargen\wb_Statistik_Chargen.Designer.vb">
       <DependentUpon>wb_Statistik_Chargen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_01_Forms_Chargen\wb_Statistik_Chargen.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_07_Forms_Planung\ob_Planung_DockingExtension.vb" />
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.Designer.vb">
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Liste.Designer.vb">
       <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Liste.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_ListeFehlerArtikel.Designer.vb">
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_ListeFehlerArtikel.Designer.vb">
       <DependentUpon>wb_Planung_ListeFehlerArtikel.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_ListeFehlerArtikel.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Main.Designer.vb">
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Main.Designer.vb">
       <DependentUpon>wb_Planung_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Main.vb">
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Neu.Designer.vb">
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Neu.Designer.vb">
       <DependentUpon>wb_Planung_Neu.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Neu.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_ListeFehler.Designer.vb">
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_ListeFehler.Designer.vb">
       <DependentUpon>wb_Planung_ListeFehler.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_ListeFehler.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Shared.vb" />
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Teiler.Designer.vb">
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Teiler.Designer.vb">
       <DependentUpon>wb_Planung_Teiler.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Teiler.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Vorlage.Designer.vb">
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Vorlage.Designer.vb">
       <DependentUpon>wb_Planung_Vorlage.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_07_Forms_Planung\wb_Planung_Vorlage.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\ob_Admin_OrgaBackSettings.vb" />
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Timer.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_Timer.Designer.vb">
       <DependentUpon>wb_Admin_Timer.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Timer.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_EditIni.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_EditIni.Designer.vb">
       <DependentUpon>wb_Admin_EditIni.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_EditIni.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_CheckDatabase.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_CheckDatabase.Designer.vb">
       <DependentUpon>wb_Admin_CheckDatabase.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_CheckDatabase.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Log.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_Log.Designer.vb">
       <DependentUpon>wb_Admin_Log.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Log.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Main.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_Main.Designer.vb">
       <DependentUpon>wb_Admin_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Main.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_Datensicherung.Designer.vb">
       <DependentUpon>wb_Admin_Datensicherung.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_OrgaBackParams.designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_OrgaBackParams.designer.vb">
       <DependentUpon>wb_Admin_OrgaBackParams.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_OrgaBackParams.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Shared.vb" />
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_UpdateDatabase.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_UpdateDatabase.Designer.vb">
       <DependentUpon>wb_Admin_UpdateDatabase.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_UpdateDatabase.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Sync.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_Sync.Designer.vb">
       <DependentUpon>wb_Admin_Sync.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_Sync.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_UpdateWinBack.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_UpdateWinBack.Designer.vb">
       <DependentUpon>wb_Admin_UpdateWinBack.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Admin_UpdateWinBack.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Service_Liste.Designer.vb">
+    <Compile Update="wb_08_Forms_Admin\wb_Service_Liste.Designer.vb">
       <DependentUpon>wb_Service_Liste.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_08_Forms_Admin\wb_Service_Liste.vb">
-      <SubType>Form</SubType>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_LogMysql.Designer.vb">
+      <DependentUpon>wb_Admin_LogMysql.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_Allergene.Designer.vb">
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_Allergene.Designer.vb">
       <DependentUpon>wb_StammDaten_Allergene.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_Allergene.vb">
-      <SubType>Form</SubType>
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_TextBausteine.Designer.vb">
+      <DependentUpon>wb_StammDaten_TextBausteine.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_TexteProduktionsStufe.Designer.vb">
-      <DependentUpon>wb_StammDaten_TexteProduktionsStufe.vb</DependentUpon>
-    </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_TexteProduktionsStufe.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_RezeptVarianten.Designer.vb">
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_RezeptVarianten.Designer.vb">
       <DependentUpon>wb_StammDaten_RezeptVarianten.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_RezeptVarianten.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_Rezeptgruppen.Designer.vb">
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_Rezeptgruppen.Designer.vb">
       <DependentUpon>wb_StammDaten_Rezeptgruppen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_Rezeptgruppen.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_Konfiguration.Designer.vb">
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_Konfiguration.Designer.vb">
       <DependentUpon>wb_StammDaten_Konfiguration.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_Konfiguration.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_ArtRohGruppen.Designer.vb">
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_ArtRohGruppen.Designer.vb">
       <DependentUpon>wb_StammDaten_ArtRohGruppen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_ArtRohGruppen.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_Main.Designer.vb">
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_Main.Designer.vb">
       <DependentUpon>wb_StammDaten_Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_Main.vb">
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_Main.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_LinienGruppen.Designer.vb">
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_LinienGruppen.Designer.vb">
       <DependentUpon>wb_StammDaten_LinienGruppen.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_09_StammDaten\wb_StammDaten_LinienGruppen.vb">
-      <SubType>Form</SubType>
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_Setup.Designer.vb">
+      <DependentUpon>wb_Schnittstelle_Setup.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_KonfigVorschau.Designer.vb">
-      <DependentUpon>wb_Schnittstelle_KonfigVorschau.vb</DependentUpon>
-    </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_KonfigVorschau.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Konfig.Designer.vb">
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_Konfig.Designer.vb">
       <DependentUpon>wb_Schnittstelle_Konfig.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Konfig.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Export.Designer.vb">
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_Export.Designer.vb">
       <DependentUpon>wb_Schnittstelle_Export.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Export.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Import.Designer.vb">
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_Import.Designer.vb">
       <DependentUpon>wb_Schnittstelle_Import.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Import.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Log.Designer.vb">
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_Log.Designer.vb">
       <DependentUpon>wb_Schnittstelle_Log.vb</DependentUpon>
     </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Log.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wb_10_SchnittStelle\wb_Schnittstelle_Shared.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\licenses.licx" />
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_KompRzChargen.resx">
-      <DependentUpon>wb_KompRzChargen.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_ListeStatistik.resx">
-      <DependentUpon>wb_ListeStatistik.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_Silo.resx">
-      <DependentUpon>wb_Silo.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_SiloBef.resx">
-      <DependentUpon>wb_SiloBef.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Klassen\Komponenten\wb_SiloSackware.resx">
-      <DependentUpon>wb_SiloSackware.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Main\wb_Main_ServerConnect.resx">
-      <DependentUpon>wb_Main_ServerConnect.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloKorrektur.resx">
-      <DependentUpon>wb_Rohstoffe_SiloKorrektur.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Drucken.resx">
-      <DependentUpon>wb_Planung_Drucken.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_TimerEdit.resx">
-      <DependentUpon>wb_Admin_TimerEdit.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Klassen\WinBack_DockMain.resx">
-      <DependentUpon>WinBack_DockMain.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Klassen\wb_DockBarPanelSaveAs.resx">
-      <DependentUpon>wb_DockBarPanelSaveAs.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Klassen\wb_DockBarPanelMain.resx">
-      <DependentUpon>wb_DockBarPanelMain.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Main\wb_Main_Exception.resx">
-      <DependentUpon>wb_Main_Exception.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Main\wb_Main_Progress.resx">
-      <DependentUpon>wb_Main_Progress.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Main\wb_Main_Setup.resx">
-      <DependentUpon>wb_Main_Setup.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Main\wb_PrinterDialog.resx">
-      <DependentUpon>wb_PrinterDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_00_Main\wb_PrinterPreview.resx">
-      <DependentUpon>wb_PrinterPreview.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.resx">
-      <DependentUpon>wb_Chargen_ChartTTS.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Details.resx">
-      <DependentUpon>wb_Chargen_Details.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Funktionen.resx">
-      <DependentUpon>wb_Chargen_Funktionen.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_WasserTemp.resx">
-      <DependentUpon>wb_Chargen_WasserTemp.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Statistik_Rezepte.resx">
-      <DependentUpon>wb_Statistik_Rezepte.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Statistik_RohDetails.resx">
-      <DependentUpon>wb_Statistik_RohDetails.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Statistik_RohVerbrauch.resx">
-      <DependentUpon>wb_Statistik_RohVerbrauch.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_VerwendungRezept.resx">
-      <DependentUpon>ob_Artikel_VerwendungRezept.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.resx">
-      <DependentUpon>ob_Artikel_ZuordnungRezept.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Details.resx">
-      <DependentUpon>wb_Artikel_Details.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Hinweise.resx">
-      <DependentUpon>wb_Artikel_Hinweise.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Liste.resx">
-      <DependentUpon>wb_Artikel_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_Main.resx">
-      <DependentUpon>wb_Artikel_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_02_Forms_Artikel\wb_Artikel_AuswahlListe.resx">
-      <DependentUpon>wb_Artikel_AuswahlListe.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_AuswahlListe.resx">
-      <DependentUpon>wb_Rezept_AuswahlListe.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Historie.resx">
-      <DependentUpon>wb_Rezept_Historie.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Hinweise.resx">
-      <DependentUpon>wb_Rezept_Hinweise.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Main.resx">
-      <DependentUpon>wb_Rezept_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.resx">
-      <DependentUpon>wb_Rezept_Rezeptur.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Verwendung.resx">
-      <DependentUpon>wb_Rezept_Verwendung.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.resx">
-      <DependentUpon>wb_Rohstoffe_Cloud.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.resx">
-      <DependentUpon>wb_Rohstoffe_Nwt.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Silo.resx">
-      <DependentUpon>wb_Rohstoffe_Silo.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_AuswahlListe.resx">
-      <DependentUpon>wb_Rohstoffe_AuswahlListe.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.resx">
-      <DependentUpon>wb_Rohstoffe_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.resx">
-      <DependentUpon>wb_Rohstoffe_Details.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Main.resx">
-      <DependentUpon>wb_Rohstoffe_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Parameter.resx">
-      <DependentUpon>wb_Rohstoffe_Parameter.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloParameter.resx">
-      <DependentUpon>wb_Rohstoffe_SiloParameter.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.resx">
-      <DependentUpon>wb_Rohstoffe_Verwendung.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Dokumente.resx">
-      <DependentUpon>wb_Rohstoffe_Dokumente.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Lieferungen.resx">
-      <DependentUpon>wb_Rohstoffe_Lieferungen.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Tauschen.resx">
-      <DependentUpon>wb_Rohstoffe_Tauschen.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Passwort.resx">
-      <DependentUpon>wb_User_Passwort.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_05_Forms_User\wb_User_GruppenRechte.resx">
-      <DependentUpon>wb_User_GruppenRechte.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Auto.resx">
-      <DependentUpon>wb_Linien_Auto.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Details.resx">
-      <DependentUpon>wb_Linien_Details.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Liste.resx">
-      <DependentUpon>wb_Linien_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_06_Forms_Linien\wb_Linien_Main.resx">
-      <DependentUpon>wb_Linien_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Chargen_Main.resx">
-      <DependentUpon>wb_Chargen_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Details.resx">
-      <DependentUpon>wb_Rezept_Details.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_03_Forms_Rezepte\wb_Rezept_Liste.resx">
-      <DependentUpon>wb_Rezept_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Details.resx">
-      <DependentUpon>wb_User_Details.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Liste.resx">
-      <DependentUpon>wb_User_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Main.resx">
-      <DependentUpon>wb_User_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_05_Forms_User\wb_User_Rechte.resx">
-      <DependentUpon>wb_User_Rechte.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_01_Forms_Chargen\wb_Statistik_Chargen.resx">
-      <DependentUpon>wb_Statistik_Chargen.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Liste.resx">
-      <DependentUpon>wb_Planung_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_ListeFehlerArtikel.resx">
-      <DependentUpon>wb_Planung_ListeFehlerArtikel.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Neu.resx">
-      <DependentUpon>wb_Planung_Neu.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_ListeFehler.resx">
-      <DependentUpon>wb_Planung_ListeFehler.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Teiler.resx">
-      <DependentUpon>wb_Planung_Teiler.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_07_Forms_Planung\wb_Planung_Vorlage.resx">
-      <DependentUpon>wb_Planung_Vorlage.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Timer.resx">
-      <DependentUpon>wb_Admin_Timer.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_EditIni.resx">
-      <DependentUpon>wb_Admin_EditIni.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_CheckDatabase.resx">
-      <DependentUpon>wb_Admin_CheckDatabase.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Log.resx">
-      <DependentUpon>wb_Admin_Log.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Main.resx">
-      <DependentUpon>wb_Admin_Main.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Datensicherung.resx">
-      <DependentUpon>wb_Admin_Datensicherung.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_OrgaBackParams.resx">
-      <DependentUpon>wb_Admin_OrgaBackParams.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_UpdateDatabase.resx">
-      <DependentUpon>wb_Admin_UpdateDatabase.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_Sync.resx">
-      <DependentUpon>wb_Admin_Sync.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Admin_UpdateWinBack.resx">
-      <DependentUpon>wb_Admin_UpdateWinBack.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_08_Forms_Admin\wb_Service_Liste.resx">
-      <DependentUpon>wb_Service_Liste.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_Allergene.resx">
-      <DependentUpon>wb_StammDaten_Allergene.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_TexteProduktionsStufe.resx">
-      <DependentUpon>wb_StammDaten_TexteProduktionsStufe.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_RezeptVarianten.resx">
-      <DependentUpon>wb_StammDaten_RezeptVarianten.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_Rezeptgruppen.resx">
-      <DependentUpon>wb_StammDaten_Rezeptgruppen.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_Konfiguration.resx">
-      <DependentUpon>wb_StammDaten_Konfiguration.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_ArtRohGruppen.resx">
-      <DependentUpon>wb_StammDaten_ArtRohGruppen.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_09_StammDaten\wb_StammDaten_LinienGruppen.resx">
-      <DependentUpon>wb_StammDaten_LinienGruppen.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_10_SchnittStelle\wb_Schnittstelle_KonfigVorschau.resx">
-      <DependentUpon>wb_Schnittstelle_KonfigVorschau.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_10_SchnittStelle\wb_Schnittstelle_Konfig.resx">
-      <DependentUpon>wb_Schnittstelle_Konfig.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_10_SchnittStelle\wb_Schnittstelle_Export.resx">
-      <DependentUpon>wb_Schnittstelle_Export.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_10_SchnittStelle\wb_Schnittstelle_Import.resx">
-      <DependentUpon>wb_Schnittstelle_Import.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wb_10_SchnittStelle\wb_Schnittstelle_Log.resx">
-      <DependentUpon>wb_Schnittstelle_Log.vb</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ListLabel\AdminSync\SyncReport_Artikel.lsp" />
-    <None Include="ListLabel\AdminSync\SyncReport_Artikel.lsv" />
-    <None Include="ListLabel\AdminSync\SyncReport_Artikel.~lst" />
-    <None Include="ListLabel\AdminSync\SyncReport_Mitarbeiter.lsp" />
-    <None Include="ListLabel\AdminSync\SyncReport_Mitarbeiter.lsv" />
-    <None Include="ListLabel\AdminSync\SyncReport_Mitarbeiter.~lst" />
-    <None Include="ListLabel\AdminSync\SyncReport_MitarbeiterGrupppen.lsp" />
-    <None Include="ListLabel\AdminSync\SyncReport_MitarbeiterGrupppen.lsv" />
-    <None Include="ListLabel\AdminSync\SyncReport_MitarbeiterGrupppen.~lst" />
-    <None Include="ListLabel\AdminSync\SyncReport_Rohstoffe.lsp" />
-    <None Include="ListLabel\AdminSync\SyncReport_Rohstoffe.lsv" />
-    <None Include="ListLabel\AdminSync\SyncReport_Rohstoffe.~lst" />
-    <None Include="ListLabel\Chargen\StatistikRezepte.lsp" />
-    <None Include="ListLabel\Chargen\StatistikRezepte.lsv" />
-    <None Include="ListLabel\Chargen\StatistikRezepte.~lst" />
-    <None Include="ListLabel\Rezepte\Rezeptur.lsp" />
-    <None Include="ListLabel\Rezepte\Rezeptur.lsv" />
-    <None Include="ListLabel\Rezepte\Rezeptur.~lst" />
-    <None Include="ListLabel\Rohstoffe\RohstoffListe.lsp" />
-    <None Include="ListLabel\Rohstoffe\RohstoffListe.lsv" />
-    <None Include="ListLabel\Rohstoffe\RohstoffListe.~lst" />
-    <None Include="Log\RollingFile.log4net" />
-    <None Include="Log\Udp.log4net" />
-    <None Include="WinBack.log4net">
+    <None Include="Perl\.vscode\launch.json" />
+    <None Update="My Project\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+    </None>
+    <None Update="WinBack.log4net">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="app.config" />
     <Content Include="DBKocher\2.30_KocherKomponenten.sql" />
     <Content Include="DBKocher\2.30_KocherKomponParams.sql" />
     <Content Include="DBKocher\2.30_KocherLinien_BC9000.sql" />
@@ -1521,240 +762,63 @@
     <Content Include="DBUpdate\2.30_HisRezepte.sql" />
     <Content Include="DBUpdate\2.30_Komponenten.sql" />
     <Content Include="DBUpdate\2.30_KomponParams.sql" />
+    <Content Include="DBUpdate\2.30_KomponTypen_105_106.sql" />
+    <Content Include="DBUpdate\2.30_KomponTypen_BioVerband.sql" />
     <Content Include="DBUpdate\2.30_KomponTypen.sql" />
+    <Content Include="DBUpdate\2.30_KomponTypen_KochSalz.sql" />
     <Content Include="DBUpdate\2.30_KomponTypen_TA.sql" />
+    <Content Include="DBUpdate\2.30_KomponTypen_TolProzent.sql" />
+    <Content Include="DBUpdate\2.30_Konfiguration.sql" />
     <Content Include="DBUpdate\2.30_Lagerorte.sql" />
+    <Content Include="DBUpdate\2.30_RechtMaterialBef.sql" />
     <Content Include="DBUpdate\2.30_Linien.sql" />
-    <None Include="Dokumentation\OrgaBack.docx" />
-    <None Include="My Project\Application.myapp">
+    <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
-    <None Include="My Project\DataSources\wb_Rezept.datasource" />
-    <None Include="My Project\DataSources\wb_Rohstoff.datasource" />
-    <None Include="My Project\DataSources\wb_Sync.datasource" />
-    <None Include="My Project\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <CustomToolNamespace>My</CustomToolNamespace>
-      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
-    </None>
-    <None Include="WinBack.ini" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MySql_Dump.bat">
+    <None Update="MySql_Dump.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="MySql_Restore.bat">
+    <None Update="MySql_Restore.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="OrgaBack.Start.bat" />
-    <None Include="packages.config" />
-    <None Include="Resources\DatenRuecksicherung_32x32.png" />
-    <None Include="Resources\DatenSicherung_32x32.png" />
-    <None Include="Resources\MainRezept_32x32.png" />
-    <None Include="Resources\MainStatistikRezepte_32x32.png" />
+    <None Update="WinBackUnitTest\My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MainChargen_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainChargen_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainUser_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainRezept_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainRohstoffe_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainRohstoffe_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainArtikel_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainArtikel_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainStammdaten_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainStammdaten_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainStatistikRezepte_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainStatistikChargen_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainStatistikChargen_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainStatistikRohstoffe_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainStatistikRohstoffe_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainLinien_45x34.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainProduktionsPlanung_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\LinienNeu_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\LinienAutoInstall_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\LinienBearbeiten_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\LinienLoeschen_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainLinien_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="DBUpdate\2.30_LinienGruppen_A.sql" />
     <Content Include="DBUpdate\2.30_LinienGruppen_B.sql" />
     <Content Include="DBUpdate\2.30_LinienGruppen_C.sql" />
+    <Content Include="DBUpdate\2.30_Log4Net.sql" />
     <Content Include="DBUpdate\2.30_MaterialEinbuchen.sql" />
     <Content Include="DBUpdate\2.30_Messreihen.sql" />
     <Content Include="DBUpdate\2.30_ProduktionsPlanung.sql" />
     <Content Include="DBUpdate\2.30_RezeptGruppenUserRechte.sql" />
     <Content Include="DBUpdate\2.30_TexteProdStufe.sql" />
+    <Content Include="DBUpdate\2.30_UserGruppenUserRechte.sql" />
+    <Content Include="DBUpdate\2.30_UserRecht31.sql" />
     <Content Include="DBUpdate\2.30_UserAlleRechte.sql" />
+    <Content Include="DBUpdate\2.30_UserRechteIAListe.sql" />
+    <Content Include="DBUpdate\2.30_UserRechteItemIDs.sql" />
     <Content Include="DBUtility\DEL_ArtikelRohstoffe.sql" />
     <Content Include="DBUtility\DEL_RezepteRezeptschritte.sql" />
     <Content Include="DBUtility\UPD_RohstoffNummer_R.sql" />
-    <Content Include="dll\GhostScript V1.2.1\gsdll32.dll">
+    <!--
+	  <Content Include="dll\GhostScript V1.2.1\gsdll32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ListLabel\AdminSync\SyncReport_Artikel.lst" />
-    <Content Include="ListLabel\AdminSync\SyncReport_Mitarbeiter.lst" />
-    <Content Include="ListLabel\AdminSync\SyncReport_MitarbeiterGrupppen.lst" />
-    <Content Include="ListLabel\AdminSync\SyncReport_Rohstoffe.lst" />
-    <Content Include="ListLabel\Chargen\StatistikRezepte.lst" />
-    <Content Include="ListLabel\Chargen\StatistikRohVerbrauch.lst" />
-    <Content Include="ListLabel\Produktion\Backzettel.lst" />
-    <Content Include="ListLabel\Produktion\Teigzettel.lst" />
-    <Content Include="ListLabel\Rezepte\Rezeptur.lst" />
-    <Content Include="ListLabel\Rohstoffe\RohstoffListe.lst" />
-    <Content Include="ListLabel\wbStandard.lst" />
-    <None Include="Resources\ArtikelDetails_32x32.png" />
-    <None Include="Resources\ArtikelParameter_32x32 .png" />
-    <None Include="Resources\ChargenDetails_32x32.png" />
-    <None Include="Resources\ChargenInfo_32x32.png" />
-    <None Include="Resources\ChargenListe_32x32.png" />
-    <None Include="Resources\ArtikelHinweise_32x32.png" />
-    <None Include="Resources\AdminTimer_32x32.png" />
-    <None Include="Resources\Admin_32x321.png" />
-    <None Include="Resources\AdminShd_32x32.png" />
-    <None Include="Resources\ArtikelLoeschen_32x32.png" />
-    <None Include="Resources\AdminLog_32x32.png" />
+      </Content>
+	-->
+    <None Include="Resources\database_102857.png" />
     <Content Include="Resources\DatenRueckSicherung_16x16.png" />
-    <None Include="Resources\IconSave_24x24.png" />
-    <None Include="Resources\IconCancel_24x24.png" />
-    <None Include="Resources\IconDelete_24x24.png" />
-    <None Include="Resources\IconSave_16x16.png" />
-    <None Include="Resources\IconSaveAs_24x24.png" />
-    <None Include="Resources\IconReload_24x24.png" />
-    <None Include="Resources\Excel_16x16.png" />
-    <None Include="Resources\Excel_32x32.png" />
-    <None Include="Resources\EditKonfig_16x16.png" />
-    <None Include="Resources\EditKonfig_32x32.png" />
-    <None Include="Resources\Exception.png" />
-    <None Include="Resources\IconDlgCancel_16x16.png" />
-    <None Include="Resources\IconDlgOk_16x16.png" />
-    <None Include="Resources\IconDlgRestart_16x16.png" />
-    <None Include="Resources\IconEMail_16x16.png" />
-    <None Include="Resources\IconDlgLog_16x16.png" />
     <Content Include="Resources\Leer_32x32.png" />
-    <None Include="Resources\StatusStripBackground.png" />
-    <None Include="Resources\SaveIcon_24x24.png" />
-    <None Include="Resources\RohstoffeDetails_32x32.png" />
-    <None Include="Resources\RohstoffeParameter_32x32.png" />
-    <None Include="Resources\RohstoffeVerwendung_32x32.png" />
-    <None Include="Resources\UpdateDataBase_16x16.png" />
-    <None Include="Resources\UpdateDataBase_32x32.png" />
-    <None Include="Resources\ListUndLabel_16x16.png" />
-    <None Include="Resources\ListUndLabel_32x32.png" />
-    <None Include="Resources\RezeptDetails_32x32.png" />
-    <None Include="Resources\RezeptDruckenListe_32x32.png" />
-    <None Include="Resources\RezeptHinweise_32x32.png" />
-    <None Include="Resources\RezeptHistorie_32x32.png" />
-    <None Include="Resources\RezeptListe_32x32.png" />
-    <None Include="Resources\RohstoffeCloud_32x32.png" />
-    <None Include="Resources\RohstoffeDatenLink_93x24.png" />
-    <None Include="Resources\RohstoffeMail_32x32.png" />
-    <None Include="Resources\RohstoffeNwt_32x32.png" />
-    <None Include="Resources\VirtTreeCollapse_16x16.png" />
-    <None Include="Resources\VirtTreeExpand_16x16.png" />
-    <None Include="Resources\OrgaBackSortiment_32x32.png" />
-    <None Include="Resources\UpdateWinBack_32x32.png" />
-    <None Include="Resources\Log4View_16x16.png" />
-    <None Include="Resources\RezeptNeu_32x32.png" />
-    <None Include="Resources\RezeptLoeschen_32x32.png" />
-    <None Include="Resources\RezeptVerwendung_32x32.png" />
-    <None Include="Resources\ProdClsdFold.ICO" />
-    <None Include="Resources\Status_00_16x16.ico" />
-    <None Include="Resources\Status_01_16x16.ico" />
-    <None Include="Resources\Status_02_16x16.ico" />
-    <None Include="Resources\Status_03_16x16.ico" />
-    <None Include="Resources\Status_04_16x16.ico" />
-    <None Include="Resources\Status_05_16x16.ico" />
-    <None Include="Resources\Status_06_16x16.ico" />
-    <None Include="Resources\Status_07_16x16.ico" />
-    <None Include="Resources\Status_08_16x16.ico" />
-    <None Include="Resources\TTS_ALG.png" />
-    <None Include="Resources\TTS_Rmf.png" />
-    <None Include="Resources\TTS_Tts.png" />
-    <None Include="Resources\TTS_Allgemein.png" />
-    <None Include="Resources\TTS_RaumMehl.png" />
-    <None Include="Resources\TTS_Sauerteig.png" />
-    <None Include="Resources\TTS_TeigTempSteuerung.png" />
-    <None Include="Resources\Rotate90L_32x32.png" />
-    <None Include="Resources\Rotate90R_32x32.png" />
-    <None Include="Resources\RohstoffeLieferung_32x32.png" />
-    <None Include="Resources\User_32x32.png" />
-    <None Include="Resources\UserDetails_32x32.png" />
-    <None Include="Resources\UserBerechtigungen_32x32.png" />
-    <None Include="Resources\LinienAuto_32x32.png" />
-    <None Include="Resources\RohstoffSilo_32x32.png" />
-    <None Include="Resources\RezeptGruppen_32x32.png" />
-    <None Include="Resources\RohstoffeDrucken_32x32.png" />
-    <None Include="Resources\RohstoffeLink_32x32.png" />
-    <None Include="Resources\ProdFehlerListe_32x32.png" />
-    <None Include="Resources\ProdExport_32x32.png" />
-    <None Include="Resources\ProdTeiler_32x32.png" />
-    <None Include="Resources\RezeptDrucken_32x32.png" />
     <None Include="Resources\Silo_Handkomp.png" />
     <Content Include="Resources\Zoom_32x32.png" />
-    <None Include="Resources\DatenSicherung_16x16.png" />
-    <None Include="Resources\Admin_32x32.png" />
-    <None Include="Resources\Admin_16x16.png" />
-    <None Include="Resources\MainSync_16x16.png" />
-    <None Include="Resources\MainSync_32x32.png" />
-    <None Include="Resources\MainProduktionsPlanung_32x32.png" />
-    <None Include="Resources\Leer_16x16.png" />
-    <None Include="Resources\KreuzRot.png" />
-    <None Include="Resources\HakenRot_16x16.png" />
-    <None Include="Resources\HakenGlb_16x16.png" />
-    <None Include="Resources\HakenGrn_16x16.png" />
-    <None Include="Resources\UserGruppen_32x32.png" />
-    <None Include="Resources\UserPasswd_32x32.png" />
-    <None Include="Resources\UserListe_32x32.png" />
-    <None Include="Resources\MainUser_32x32.png" />
-    <None Include="Resources\UserNeu_32x32.png" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -1763,59 +827,287 @@
     <Folder Include="wb_99_Sample\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="EnhancedEdit\EnhancedEdit.vbproj">
-      <Project>{B9549613-9C0C-4BC3-82A5-21D834813A25}</Project>
-      <Name>EnhancedEdit</Name>
-      <Private>True</Private>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </ProjectReference>
+    <ProjectReference Include="EnhancedEdit\EnhancedEdit.vbproj" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="Microsoft.Office.Core">
-      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>7</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SystemWebAdapters" Version="1.4.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+    <PackageReference Include="WinForms.DataVisualization" Version="1.10.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="EnhancedEdit\EnhEdit.Designer.vb" />
+    <Compile Remove="EnhancedEdit\EnhEdit.vb" />
+    <Compile Remove="EnhancedEdit\EnhEdit_Global.vb" />
+    <Compile Remove="EnhancedEdit\My Project\Application.Designer.vb" />
+    <Compile Remove="EnhancedEdit\My Project\AssemblyInfo.vb" />
+    <Compile Remove="EnhancedEdit\My Project\Resources.Designer.vb" />
+    <Compile Remove="EnhancedEdit\My Project\Settings.Designer.vb" />
+    <Compile Remove="wb_99_Sample\AdditionalSettings.vb" />
+    <Compile Remove="wb_99_Sample\AddressDockingExtension.vb" />
+    <Compile Remove="wb_99_Sample\AddressDockingUserControl.Designer.vb" />
+    <Compile Remove="wb_99_Sample\AddressDockingUserControl.vb" />
+    <Compile Remove="wb_99_Sample\AFB_EisernerBestand2KorrekturBestand.vb" />
+    <Compile Remove="wb_99_Sample\BookingWatcher.vb" />
+    <Compile Remove="wb_99_Sample\CustomForm.vb" />
+    <Compile Remove="wb_99_Sample\DataImportExtension.vb" />
+    <Compile Remove="wb_99_Sample\FileWatcher.vb" />
+    <Compile Remove="wb_99_Sample\GlobalSuppressions.vb" />
+    <Compile Remove="wb_99_Sample\MenuExtension.vb" />
+    <Compile Remove="wb_99_Sample\MitarbeiterBonusErweiterung.vb" />
+    <Compile Remove="wb_99_Sample\MitarbeiterExtension.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\AdditionalSettings.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\AddressDockingExtension\AddressDockingExtension.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\AddressDockingExtension\AddressDockingUserControl.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\AddressDockingExtension\AddressDockingUserControl.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\AFB_EisernerBestand2KorrekturBestand.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\BookingWatcher.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\CustomForm.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\DataImportExtension.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\FileWatcher.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\GlobalSuppressions.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\MenuExtension.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\MitarbeiterBonusErweiterung.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\MitarbeiterExtension.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\My Project\Application.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\My Project\AssemblyInfo.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\My Project\Resources.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\My Project\Settings.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\obj\Debug\.NETFramework,Version=v4.0.AssemblyAttributes.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\obj\Release\.NETFramework,Version=v4.0.AssemblyAttributes.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\obj\x86\Debug\.NETFramework,Version=v4.0.AssemblyAttributes.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\obj\x86\Release\.NETFramework,Version=v4.0.AssemblyAttributes.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\TestUserControl.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\TestUserControl.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\WelcomeAddIn.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\AdditionalSettings.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\AddressDockingExtension\AddressDockingExtension.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\AddressDockingExtension\AddressDockingUserControl.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\AddressDockingExtension\AddressDockingUserControl.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\AFB_EisernerBestand2KorrekturBestand.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\BookingWatcher.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\CustomForm.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\DataImportExtension.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\ExampleAddInSchedulerAction.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\FileWatcher.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\GlobalSuppressions.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\MenuExtension.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\MessageListControl.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\MessageListControl.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\MitarbeiterBonusErweiterung.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\MitarbeiterExtension.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\My Project\Application.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\My Project\AssemblyInfo.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\My Project\Resources.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\My Project\Settings.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\PartsListReorgService.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\ServiceReplacement.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\Subscription.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\TestUserControl.Designer.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\TestUserControl.vb" />
+    <Compile Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\WelcomeAddIn.vb" />
+    <Compile Remove="wb_99_Sample\TestUserControl.Designer.vb" />
+    <Compile Remove="wb_99_Sample\TestUserControl.vb" />
+    <Compile Remove="wb_99_Sample\UserControl1.Designer.vb" />
+    <Compile Remove="wb_99_Sample\UserControl1.vb" />
+    <Compile Remove="wb_99_Sample\WelcomeAddIn.vb" />
+    <Compile Remove="WinBackAnyWhere\My Project\AssemblyInfo.vb" />
+    <Compile Remove="WinBackAnyWhere\My Project\Resources.Designer.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_00_Klassen\WinBackCamCapture.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_00_Klassen\WinBackMsgBox.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_00_Main\Eingabe_Num.Designer.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_00_Main\Eingabe_Num.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_00_Main\Login_Main.Designer.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_00_Main\Login_Main.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_00_Main\MsgBox_Main.Designer.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_00_Main\MsgBox_Main.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_00_Main\WinBackAnyWhere.Designer.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_00_Main\WinBackAnyWhere.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_04_Rohstoffe\Lieferungen_Main.Designer.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_04_Rohstoffe\Lieferungen_Main.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_06_Linien\Kneter_Main.Designer.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_06_Linien\Kneter_Main.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_06_Linien\Linien_Main.Designer.vb" />
+    <Compile Remove="WinBackAnyWhere\wa_06_Linien\Linien_Main.vb" />
+    <Compile Remove="WinBackServerTask\ApplicationEvents.vb" />
+    <Compile Remove="WinBackServerTask\My Project\Application.Designer.vb" />
+    <Compile Remove="WinBackServerTask\My Project\AssemblyInfo.vb" />
+    <Compile Remove="WinBackServerTask\My Project\Resources.Designer.vb" />
+    <Compile Remove="WinBackServerTask\My Project\Settings.Designer.vb" />
+    <Compile Remove="WinBackServerTask\wb_Server.Designer.vb" />
+    <Compile Remove="WinBackServerTask\wb_Server.vb" />
+    <Compile Remove="WinBackServerTask\wb_ServerDetails.Designer.vb" />
+    <Compile Remove="WinBackServerTask\wb_ServerDetails.vb" />
+    <Compile Remove="WinBackServerTask\Wb_TimerEdit.Designer.vb" />
+    <Compile Remove="WinBackServerTask\wb_TimerEdit.vb" />
+    <Compile Remove="WinBackServerTask\wb_TimerEvent.vb" />
+    <Compile Remove="WinBackServerTask\wb_TimerGridView.Designer.vb" />
+    <Compile Remove="WinBackServerTask\wb_TimerGridView.vb" />
+    <Compile Remove="WinBackSetup_CA\ManagedSetupHelperDll\CustomAction.vb" />
+    <Compile Remove="WinBackSetup_CA\ManagedSetupHelperDll\My Project\AssemblyInfo.vb" />
+    <Compile Remove="WinBackSetup_CA\ManagedSetupHelperDll\obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.vb" />
+    <Compile Remove="WinBackSetup_CA\ManagedSetupHelperDll\obj\x64\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.vb" />
+    <Compile Remove="WinBackStart\My Project\Application.Designer.vb" />
+    <Compile Remove="WinBackStart\My Project\AssemblyInfo.vb" />
+    <Compile Remove="WinBackStart\My Project\Resources.Designer.vb" />
+    <Compile Remove="WinBackStart\My Project\Settings.Designer.vb" />
+    <Compile Remove="WinBackStart\Settings.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\ApplicationEvents.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\DockPanel_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\DockPanel_Main.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\IMainMenu.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\Login.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\Login.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\OrgaBackProduktion.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\OrgaBackProduktion.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\OrgaBackSplashScreen.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\OrgaBackSplashScreen.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\SetMySqlIP.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\SetMySqlIP.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\WinBack.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_00_Main\WinBack.vb" />
+    <Compile Remove="WinBackStart\wo_01_Chargen\Chargen_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_01_Chargen\Chargen_Main.vb" />
+    <Compile Remove="WinBackStart\wo_02_Artikel\Artikel_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_02_Artikel\Artikel_Main.vb" />
+    <Compile Remove="WinBackStart\wo_03_Rezepte\Rezepte_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_03_Rezepte\Rezepte_Main.vb" />
+    <Compile Remove="WinBackStart\wo_04_Rohstoffe\Rohstoffe_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_04_Rohstoffe\Rohstoffe_Main.vb" />
+    <Compile Remove="WinBackStart\wo_05_User\User_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_05_User\User_Main.vb" />
+    <Compile Remove="WinBackStart\wo_06_Linien\Linien_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_06_Linien\Linien_Main.vb" />
+    <Compile Remove="WinBackStart\wo_07_Planung\Planung_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_07_Planung\Planung_Main.vb" />
+    <Compile Remove="WinBackStart\wo_08_Admin\Admin_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_08_Admin\Admin_Main.vb" />
+    <Compile Remove="WinBackStart\wo_09_Stammdaten\StammDaten_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_09_Stammdaten\StammDaten_Main.vb" />
+    <Compile Remove="WinBackStart\wo_10_Schnittstelle\Schnittstelle_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_10_Schnittstelle\Schnittstelle_Main.vb" />
+    <Compile Remove="WinBackStart\wo_99_DashBoard\Dashboard_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_99_DashBoard\Dashboard_Main.vb" />
+    <Compile Remove="WinBackStart\wo_99_Test\Test_Main.Designer.vb" />
+    <Compile Remove="WinBackStart\wo_99_Test\Test_Main.vb" />
+    <Compile Remove="WinBackUITest\My Project\AssemblyInfo.vb" />
+    <Compile Remove="WinBackUITest\My Project\Settings.Designer.vb" />
+    <Compile Remove="WinBackUITest\UIMap.Designer.vb" />
+    <Compile Remove="WinBackUITest\UIMap.vb" />
+    <Compile Remove="WinBackUITest\UITest_WinBack.vb" />
+    <Compile Remove="WinBackUnitTest\My Project\Application.Designer.vb" />
+    <Compile Remove="WinBackUnitTest\My Project\AssemblyInfo.vb" />
+    <Compile Remove="WinBackUnitTest\My Project\Resources.Designer.vb" />
+    <Compile Remove="WinBackUnitTest\My Project\Settings.Designer.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_ca_Setup.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_Init.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_InitOK.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_ob_ProduzierteWare.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_ob_Rezept_Ingredients.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_AdminShared.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_BestellDatenSchritt.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_ChangeLog.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Charge.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_ChargenWasserTemp.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Filiale.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Functions.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Hinweise.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Kocher.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Komponenten.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_KomponParam301.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Konfig.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Lieferungen.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_LieferungenDB.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Linien_Liste.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Mail.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_MqqtClient.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_nwtBerechnung.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_nwtCloud.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_nwtDatenLink.vb" />
+    <Compile Remove="WinBackUnitTest\Unittest_wb_nwtOpenFoodFacts.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_nwtPistor.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Produktion.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Rezeptschritt.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_SetupCustomAction.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_Simple3Des.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_sql.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_sql_Functions.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_TimerEdit.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_TraceLogger.vb" />
+    <Compile Remove="WinBackUnitTest\UnitTest_wb_ZutatenListe.vb" />
+    <Compile Remove="WinBackUpdate\obj\DB_Fonk\.NETFramework,Version=v4.7.2.AssemblyAttributes.vb" />
+    <Compile Remove="WinBackUpdate\obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.vb" />
+    <Compile Remove="WinBackUpdate\obj\Release\.NETFramework,Version=v4.7.2.AssemblyAttributes.vb" />
+    <EmbeddedResource Remove="EnhancedEdit\EnhEdit.resx" />
+    <EmbeddedResource Remove="EnhancedEdit\My Project\Resources.resx" />
+    <EmbeddedResource Remove="My Project\Resources.ru.resx" />
+    <EmbeddedResource Remove="wb_01_Forms_Chargen\wb_Chargen_Funktionen.ru.resx" />
+    <EmbeddedResource Remove="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Tauschen.en.resx" />
+    <EmbeddedResource Remove="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Tauschen.ru.resx" />
+    <EmbeddedResource Remove="wb_05_Forms_User\wb_User_Passwort.en.resx" />
+    <EmbeddedResource Remove="wb_05_Forms_User\wb_User_Passwort.ru.resx" />
+    <EmbeddedResource Remove="wb_06_Forms_Linien\wb_Linien_Auto.en.resx" />
+    <EmbeddedResource Remove="wb_09_StammDaten\wb_StammDaten_LinienGruppen.en.resx" />
+    <EmbeddedResource Remove="wb_09_StammDaten\wb_StammDaten_LinienGruppen.ru.resx" />
+    <EmbeddedResource Remove="wb_99_Sample\AddressDockingUserControl.resx" />
+    <EmbeddedResource Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\AddressDockingExtension\AddressDockingUserControl.resx" />
+    <EmbeddedResource Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\My Project\Resources.resx" />
+    <EmbeddedResource Remove="wb_99_Sample\OrgaSoft\20160705_AddIn Sample\AddInSample\TestUserControl.resx" />
+    <EmbeddedResource Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\AddressDockingExtension\AddressDockingUserControl.resx" />
+    <EmbeddedResource Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\MessageListControl.resx" />
+    <EmbeddedResource Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\My Project\Resources.resx" />
+    <EmbeddedResource Remove="wb_99_Sample\OrgaSoft\20180409_AddIn Sample\TestUserControl.resx" />
+    <EmbeddedResource Remove="wb_99_Sample\UserControl1.resx" />
+    <EmbeddedResource Remove="WinBackAnyWhere\My Project\Resources.resx" />
+    <EmbeddedResource Remove="WinBackAnyWhere\wa_00_Main\Eingabe_Num.resx" />
+    <EmbeddedResource Remove="WinBackAnyWhere\wa_00_Main\Login_Main.resx" />
+    <EmbeddedResource Remove="WinBackAnyWhere\wa_00_Main\MsgBox_Main.resx" />
+    <EmbeddedResource Remove="WinBackAnyWhere\wa_00_Main\WinBackAnyWhere.resx" />
+    <EmbeddedResource Remove="WinBackAnyWhere\wa_04_Rohstoffe\Lieferungen_Main.resx" />
+    <EmbeddedResource Remove="WinBackAnyWhere\wa_06_Linien\Kneter_Main.resx" />
+    <EmbeddedResource Remove="WinBackAnyWhere\wa_06_Linien\Linien_Main.resx" />
+    <EmbeddedResource Remove="WinBackServerTask\My Project\Resources.resx" />
+    <EmbeddedResource Remove="WinBackServerTask\wb_Server.resx" />
+    <EmbeddedResource Remove="WinBackServerTask\wb_ServerDetails.resx" />
+    <EmbeddedResource Remove="WinBackServerTask\Wb_TimerEdit.resx" />
+    <EmbeddedResource Remove="WinBackStart\My Project\Resources.resx" />
+    <EmbeddedResource Remove="WinBackStart\wo_00_Main\DockPanel_Main.resx" />
+    <EmbeddedResource Remove="WinBackStart\wo_00_Main\Login.resx" />
+    <EmbeddedResource Remove="WinBackStart\wo_00_Main\WinBack.resx" />
+    <EmbeddedResource Remove="WinBackStart\wo_00_Main\SetMySqlIP.resx" />
+    <EmbeddedResource Remove="WinBackStart\wo_00_Main\WinBack.en-150.resx" />
+    <EmbeddedResource Remove="WinBackStart\wo_00_Main\WinBack.en-US.resx" />
+    <EmbeddedResource Remove="WinBackStart\wo_00_Main\WinBack.en.resx" />
+    <EmbeddedResource Remove="WinBackStart\wo_00_Main\WinBack.resx" />
+    <EmbeddedResource Remove="WinBackStart\wo_00_Main\WinBack.ru.resx" />
+    <EmbeddedResource Remove="WinBackStart\wo_99_Test\Test_Main.resx" />
+    <EmbeddedResource Remove="WinBackUnitTest\My Project\Resources.resx" />
+  </ItemGroup>
+  <ItemGroup>
     <COMReference Include="Microsoft.Office.Interop.Excel">
-      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>9</VersionMinor>
       <VersionMajor>1</VersionMajor>
-      <VersionMinor>8</VersionMinor>
+      <Guid>00020813-0000-0000-c000-000000000046</Guid>
       <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="VBIDE">
-      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>5</VersionMajor>
-      <VersionMinor>3</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).*" "C:\OrgaSoft\AddIns" /E /C /R /Y
-REM xcopy "$(TargetDir)$(TargetName).*" "$(SolutionDir)dll\WinBackAddIn" /E /C /R /Y
-xcopy "$(TargetDir)*.dll" "C:\OrgaSoft\AddIns\dll" /C /R /Y
-xcopy "$(TargetDir)EnhancedEdit.*" "C:\OrgaSoft\AddIns" /C /R /Y
-xcopy "$(TargetDir)*.bat" "C:\OrgaSoft\AddIns" /C /R /Y
-REM xcopy "$(TargetDir)*.log4net" "C:\OrgaSoft\AddIns" /E /C /R /Y
-
-
-</PostBuildEvent>
+    <AssemblyTitle>WinBackAddin</AssemblyTitle>
+    <Description>OrgaBack</Description>
+    <Company>WinBack GmbH</Company>
+    <Product>WinBackAddin</Product>
+    <Copyright>Copyright ©  2024</Copyright>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+    <FileVersion>4.0.1.0</FileVersion>
+    <NeutralLanguage>de-DE</NeutralLanguage>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="rd /s/q &quot;$(TargetDir)de&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)es&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)fr&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)it&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)ja&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)ko&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)pt-BR&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)ru&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)zh-Hans&quot;&#xD;&#xA;rd /s/q &quot;$(TargetDir)zh-Hant&quot;&#xD;&#xA;&#xD;&#xA;echo  &quot;-------------------------------------------------------&quot;&#xD;&#xA;xcopy &quot;$(TargetDir)$(TargetName).dll&quot; &quot;C:\OrgaSoft\AddIns4&quot; /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)$(TargetName).pdb&quot; &quot;C:\OrgaSoft\AddIns4&quot; /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)dll\WinBackAddIn&quot; /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)$(TargetName).pdb&quot; &quot;$(SolutionDir)dll\WinBackAddIn&quot; /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)*.dll&quot; &quot;C:\OrgaSoft\AddIns4\dll\&quot; /C /R /Y&#xD;&#xA;&#xD;&#xA;echo  &quot;-------------------------------------------------------&quot;&#xD;&#xA;xcopy &quot;C:\Dokumente\Projekte\WinBack_Signum\ListLabel30\Redist\ListUndLabel\*.dll&quot; &quot;C:\OrgaSoft\AddIns4\dll\&quot; /E /C /R /Y&#xD;&#xA;xcopy &quot;C:\Dokumente\Projekte\WinBack_Signum\ListLabel30\Redist\ListUndLabel\*.lng&quot; &quot;C:\OrgaSoft\AddIns4\dll\&quot; /E /C /R /Y&#xD;&#xA;xcopy &quot;C:\Dokumente\Projekte\WinBack_Signum\ListLabel30\Redist\*.dll&quot; &quot;C:\OrgaSoft\AddIns4\&quot; /C /R /Y&#xD;&#xA;xcopy &quot;C:\Dokumente\Projekte\WinBack_Signum\ListLabel30\lst\*.*&quot; &quot;C:\OrgaSoft\Listen\&quot; /E /C /R /Y&#xD;&#xA;echo  &quot;-------------------------------------------------------&quot;&#xD;&#xA;move  &quot;C:\OrgaSoft\AddIns4\dll\EnhancedEdit.*&quot; &quot;C:\OrgaSoft\AddIns4\&quot;&#xD;&#xA;move  &quot;C:\OrgaSoft\AddIns4\dll\Infralution.*&quot; &quot;C:\OrgaSoft\AddIns4\&quot;&#xD;&#xA;echo  &quot;-------------------------------------------------------&quot;&#xD;&#xA;xcopy &quot;$(TargetDir)WinBackAddIn.dll&quot; &quot;C:\Dokumente\Projekte\WinBack_Signum\dll\WinBackAddIn\&quot; /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)WinBackAddIn.pdb&quot; &quot;C:\Dokumente\Projekte\WinBack_Signum\dll\WinBackAddIn\&quot; /C /R /Y&#xD;&#xA;echo  &quot;-------------------------------------------------------&quot;&#xD;&#xA;xcopy &quot;$(TargetDir)*.bat&quot; &quot;C:\OrgaSoft\AddIns4\&quot; /C /R /Y&#xD;&#xA;xcopy &quot;$(TargetDir)*.log4net&quot; &quot;C:\OrgaSoft\AddIns4\&quot; /C /R /Y" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

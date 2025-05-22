@@ -1,0 +1,78 @@
+
+# The following script will work for any project that can be built from command line by msbuild
+# The script will build the project and run the tests
+# 
+# Die Variablen msbuild, nuget, vstest, opencover und reportgen müssen an den eigenen Pfad angepasst werden
+# Die Pfade sind für Visual Studio 2022 Community Edition
+#
+stages:
+  - build
+  - test
+  - deploy 
+ 
+variables:
+  msbuild:   'C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe'	
+  nuget:     'C:\Program Files (x86)\Microsoft Visual Studio\NuGet\nuget.exe'
+  vstest:    'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\TestPlatform\vstest.console.exe'
+
+  opencover: 'C:\Users\Will.WINBACK\.nuget\packages\opencover\4.7.1221\tools\opencover.console.exe'
+  reportgen: 'C:\Users\Will.WINBACK\.nuget\packages\reportgenerator\5.4.5\tools\net8.0\ReportGenerator.exe'
+  result:    TestResults
+  coverage:  TestResults\coverage
+
+  updatedir: 'C:\OrgaSoft\AddIns4\update'
+  updateprg: 'C:\OrgaSoft\AddIns4\update\WinBackUpdate.exe'
+
+  # This job will build the project
+  #
+build_job:
+  stage: build
+  script:
+  - 'echo building...'
+  - '& "$nuget" restore'
+  - '& "$msbuild" WinBackAddin.vbproj'
+  except:
+  - tags
+
+
+  # This job will run the tests and generate a coverage report
+  # The coverage report will be generated in the TestResults\coverage folder
+  # 
+  # see (https://stackoverflow.com/questions/62512661/how-to-generate-line-coverage-report-with-vstest-console-exe)
+  # Die Pakete OpenCover und ReportGenerator sind über NuGet in der Projektmappe installiert
+  # Vor dem Start der UnitTests werden die Verzeichnisse TestResults und TestResults\coverage erstellt
+  # DIe Test-Ergebnisse und Test-Coverage werden 1 Woche aufbewahrt
+  #
+test_job:
+  stage: test
+  script:
+  - 'echo testing...'
+  - '& "$nuget" restore'
+  - cd WinBackUnitTest
+  - '& "$msbuild" WinBackUnitTest.vbproj'
+  - md "$result"
+  - md "$coverage"
+  - '& "$opencover" -target:"$vstest" -targetargs:"bin\Debug\net8.0-windows10.0.18362.0\WinBackUnitTest.dll" -output:TestResults\coverage.xml'
+  - '& "$reportgen" -reports:TestResults\coverage.xml -targetdir:TestResults\coverage | Out-Null'
+  artifacts:
+    paths:
+      - WinBackUnitTest\TestResults\coverage\*    
+    expire_in: 1 week
+  
+  except:
+  - tags
+
+# This job will deploy the project
+# WinBackUpdate erzeugt das entsprechende zip-File und läd die Daten in die Cloud.
+# Die neusten Dateien werden in CI/CD beim Übersetzen schon in C:\OrgaBack\AddIns4 kopiert#
+# Die Versions-Nummern von OrgaBack müssen im Script angepasst werden
+#
+#       WinBackUpdate -C -O   WinBackAddin.zip
+#       WinBackUpdate -C -W   OrgaBackOffice.zip
+#
+deploy_job:
+  stage: deploy
+  script:
+  - 'echo deploying...'
+  - 'cd "$winbackupdate"'
+  - '& "$updateprg" /C /O /V4.1.0.0'

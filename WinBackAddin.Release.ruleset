@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarQube - SignumWinBack Sonar way" ToolsVersion="16.0">
+  <Include Path="..\..\..\..\sharedbinaries\basic correctness and design guideline.ruleset" Action="Default" />
+  <Include Path=".sonarlint\joerg_signumwinback_aye-e96yv9eqwcngyd1fvb.ruleset" Action="Default" />
+</RuleSet>

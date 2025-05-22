@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Update="wb_00_Klassen\wb_DockBarPanelSaveAs.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_00_Main\wb_Main_About.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_00_Main\wb_Main_Exception.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_00_Main\wb_Main_Progress.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_00_Main\wb_Main_ServerConnect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_00_Main\wb_Main_Setup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_00_Main\wb_PrinterDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_00_Main\wb_PrinterPreview.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_ChartTTS.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_ChartVTS.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_Funktionen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_01_Forms_Chargen\wb_Chargen_WasserTemp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_01_Forms_Chargen\wb_Statistik_Chargen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_01_Forms_Chargen\wb_Statistik_Rezepte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_01_Forms_Chargen\wb_Statistik_RohDetails.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_01_Forms_Chargen\wb_Statistik_RohVerbrauch.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\ob_Artikel_Verarbeitungshinweise.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\ob_Artikel_ZuordnungRezept.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_AuswahlListe.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Hinweise.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_Parameter.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_02_Forms_Artikel\wb_Artikel_TextHinweise.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_AuswahlListe.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Hinweise.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Historie.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Rezeptur.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_03_Forms_Rezepte\wb_Rezept_Verwendung.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_AuswahlListe.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Cloud.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Dokumente.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Hinweise.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Lieferungen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Nwt.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Parameter.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Silo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloKorrektur.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_SiloParameter.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Tauschen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_TextHinweise.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_04_Forms_Rohstoffe\wb_Rohstoffe_Verwendung.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_05_Forms_User\wb_User_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_05_Forms_User\wb_User_GruppenRechte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_05_Forms_User\wb_User_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_05_Forms_User\wb_User_Passwort.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_05_Forms_User\wb_User_Rechte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_06_Forms_Linien\wb_Linien_Auto.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_06_Forms_Linien\wb_Linien_Details.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_06_Forms_Linien\wb_Linien_Kneter.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_06_Forms_Linien\wb_Linien_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Drucken.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_ListeFehler.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_ListeFehlerArtikel.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Neu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Teiler.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_07_Forms_Planung\wb_Planung_Vorlage.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_CheckDatabase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_Datensicherung.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_EditIni.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_Log.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_LogMysql.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_OrgaBackParams.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_Sync.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_ThemeControl.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_Timer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_TimerEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_TwinCatADS.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_UpdateDatabase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_UpdateWinBack.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Admin_XNumber.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_08_Forms_Admin\wb_Service_Liste.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_Allergene.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_ArtRohGruppen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_Konfiguration.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_LinienGruppen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_Rezeptgruppen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_RezeptVarianten.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_09_StammDaten\wb_StammDaten_TextBausteine.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_Export.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_Import.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_Konfig.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_Log.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_Setup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_10_SchnittStelle\wb_Schnittstelle_SetupVorschau.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="wb_99_Dashboard\wb_Dashboard_Grid.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="WinBackStart\wo_00_Main\OrgaBackSplashScreen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
