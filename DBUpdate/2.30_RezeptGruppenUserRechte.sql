@@ -1,3 +1,4 @@
+USE winback;
 DELETE FROM ItemParameter WHERE IP_ItemTyp=230;
 
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (230, 1, 405, 99, 99, 2, 0, NULL, NULL);

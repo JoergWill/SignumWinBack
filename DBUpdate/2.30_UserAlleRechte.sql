@@ -1,3 +1,4 @@
+USE winback;
 DELETE FROM ItemParameter WHERE IP_Wert1int=99;
 
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (1, 0, 405, 99, 99, 2, 0, NULL, NULL);
@@ -23,6 +24,9 @@ INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wer
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (2, 24, 405, 99, 99, 2, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (2, 25, 405, 99, 99, 2, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (2, 26, 405, 99, 99, 2, 0, NULL, NULL);
+INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (2, 27, 405, 99, 99, 2, 0, NULL, NULL);
+INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (2, 28, 405, 99, 99, 2, 0, NULL, NULL);
+INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (2, 29, 405, 99, 99, 2, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (2, 30, 402, 99, 99, 1, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 0, 404, 99, 99, 2, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 1, 403, 99, 99, 1, 0, NULL, NULL);
@@ -33,6 +37,7 @@ INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wer
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 6, 402, 99, 99, 1, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 7, 402, 99, 99, 1, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 8, 404, 99, 99, 2, 0, NULL, NULL);
+INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 9, 402, 99, 99, 2, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 11, 405, 99, 99, 2, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 12, 405, 99, 99, 2, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 13, 405, 99, 99, 2, 0, NULL, NULL);
@@ -44,6 +49,7 @@ INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wer
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 19, 405, 99, 99, 2, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 20, 405, 99, 99, 2, 0, NULL, NULL);
 INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 21, 405, 99, 99, 2, 0, NULL, NULL);
+INSERT INTO ItemParameter (IP_ItemTyp, IP_ItemID, IP_ItemAttr, IP_Lfd_Nr, IP_Wert1int, IP_Wert2int, IP_Wert3int, IP_Wert4str, IP_Wert5str) VALUES (200, 22, 405, 99, 99, 2, 0, NULL, NULL);
 
 INSERT IGNORE INTO Texte (T_TextIndex, T_Typ, T_Sprache, T_Text, T_Flags) VALUES (1, 402, 0, 'nein', 100);
 INSERT IGNORE INTO Texte (T_TextIndex, T_Typ, T_Sprache, T_Text, T_Flags) VALUES (2, 402, 0, 'ja', 100);
