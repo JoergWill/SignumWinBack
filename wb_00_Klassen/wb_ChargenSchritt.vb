@@ -8,6 +8,7 @@ Public Class wb_ChargenSchritt
     Private _ChargenNummer As String
     Private _AuftragsNummer As String
     Private _Status As Integer = wb_Global.UNDEFINED
+    Private _Sauerteig As Boolean = False
 
     Private _ArtikelNummer As String
     Private _ArtikelBezeichnung As String
@@ -28,6 +29,7 @@ Public Class wb_ChargenSchritt
     Private _Linie As Integer = wb_Global.UNDEFINED
     Private _Schritt As Integer = wb_Global.UNDEFINED
     Private _SchrittIndex As Integer = wb_Global.UNDEFINED
+    Private _RunIndex As Integer = wb_Global.UNDEFINED
 
     Private _Type As wb_Global.KomponTypen
     Private _ChrgType As wb_Global.ChargenTypen
@@ -48,6 +50,8 @@ Public Class wb_ChargenSchritt
 
     Private _StartZeit As DateTime
     Private _EndeZeit As DateTime
+    Private _RezeptStartZeit As DateTime
+    Private _RezeptEndeZeit As DateTime
     Private _UserNummer As Integer
     Private _User As String
 
@@ -231,6 +235,15 @@ Public Class wb_ChargenSchritt
         End Set
     End Property
 
+    Public ReadOnly Property Sauerteig As Boolean
+        Get
+            If Linie < 0 Then
+                Return True
+            Else
+                Return False
+            End If
+        End Get
+    End Property
     Public Property Type As wb_Global.KomponTypen
         Get
             Return _Type
@@ -264,6 +277,15 @@ Public Class wb_ChargenSchritt
         End Get
         Set(value As Integer)
             _SchrittIndex = value
+        End Set
+    End Property
+
+    Public Property RunIndex As Integer
+        Get
+            Return _RunIndex
+        End Get
+        Set(value As Integer)
+            _RunIndex = value
         End Set
     End Property
 
@@ -328,7 +350,11 @@ Public Class wb_ChargenSchritt
 
     Public Property Istwert As String
         Get
-            Return _Istwert
+            If Sauerteig And (KomponentenType = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Or KomponentenType = wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE) Then
+                Return _Sollwert
+            Else
+                Return _Istwert
+            End If
         End Get
         Set(value As String)
             _Istwert = value
@@ -439,6 +465,28 @@ Public Class wb_ChargenSchritt
         End Set
     End Property
 
+    Public Property RezeptStartZeit As Date
+        Get
+            Return _RezeptStartZeit
+        End Get
+        Set(value As Date)
+            If value > wb_Global.wbNODATE Then
+                _RezeptStartZeit = value
+            End If
+        End Set
+    End Property
+
+    Public Property RezeptEndeZeit As Date
+        Get
+            Return _RezeptEndeZeit
+        End Get
+        Set(value As Date)
+            If value > wb_Global.wbNODATE Then
+                _RezeptEndeZeit = value
+            End If
+        End Set
+    End Property
+
     Public Property UserNummer As Integer
         Get
             Return _UserNummer
@@ -481,10 +529,15 @@ Public Class wb_ChargenSchritt
                 Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
                     Return _AuftragsNummer
                 Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
-                    Return _ChargenNummer
+                    'Sonderfall Sauerteig - von der Chargen-Nummer wird 1000 abgezogen - damit werden doppelte Nummern (Kollision mit Linie 1) vermieden
+                    If Sauerteig Then
+                        Return (wb_Functions.StrToInt(_ChargenNummer) - 1000).ToString("0000")
+                    Else
+                        Return _ChargenNummer
+                    End If
                 Case Else
-                    'Ausgabe der Chargen-Nummer bei Statistik Rohstoffe
-                    If ChrgType = wb_Global.ChargenTypen.CHRG_KOMPONENTE Then
+                        'Ausgabe der Chargen-Nummer bei Statistik Rohstoffe
+                        If ChrgType = wb_Global.ChargenTypen.CHRG_KOMPONENTE Then
                         Return _ChargenNummer
                     Else
                         Return ""
@@ -599,14 +652,20 @@ Public Class wb_ChargenSchritt
 
     Public ReadOnly Property VirtTreeLinie As String
         Get
-            Return Linie
+            If Linie > 0 Then
+                'Linie (B_ARZ_LiBeh_Nr + 100 ist gleich Linie)
+                Return Linie
+            Else
+                'Behälter (B_ARZ_LiBeh_Nr ist gleich Behälter-Nummer)
+                Return Linie + 100
+            End If
         End Get
     End Property
 
     Public ReadOnly Property VirtTreeSollwert As String
         Get
             If ChrgType = wb_Global.ChargenTypen.CHRG_KOMPSUMME Then
-                Return wb_Functions.FormatStr(Sollmenge_kg_gesamt, 3)
+                Return wb_Functions.FormatStr(Sollmenge_kg_gesamt.ToString, 3)
             Else
                 Select Case Type
                     Case wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
@@ -614,10 +673,11 @@ Public Class wb_ChargenSchritt
                     Case wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
                         Return _Sollmenge_Stk_gesamt
                     Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
-                        Return wb_Functions.FormatStr(_Sollmenge_kg, 3)
+                        Return wb_Functions.FormatStr(_Sollmenge_kg.ToString, 3)
                     Case Else
-                        If wb_Functions.TypeIstSollMenge(KomponentenType, 1) Then
-                            Return wb_Functions.FormatStr(_Sollwert, 3)
+                        If wb_Functions.TypeIstSollMenge(KomponentenType, 1) Or (KomponentenType = wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG) Then
+                            'Sollwert aus Datenbank immer im Format de-DE (Komma als Dezimaltrenner)
+                            Return wb_Functions.FormatStr(_Sollwert, 3, -1, "sql")
                         Else
                             If KomponentenType <> wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE Then
                                 Return _Sollwert
@@ -670,8 +730,8 @@ Public Class wb_ChargenSchritt
                     Case wb_Global.KomponTypen.KO_ZEILE_REZEPT
                         Return wb_Functions.FormatStr(Istmenge_kg.ToString, 3)
                     Case Else
-                        If wb_Functions.TypeIstSollMenge(KomponentenType, 1) Then
-                            Return wb_Functions.FormatStr(Istwert, 3)
+                        If wb_Functions.TypeIstSollMenge(KomponentenType, 1) Or (KomponentenType = wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG) Then
+                            Return wb_Functions.FormatStr(Istwert, 3, -1, "sql")
                         Else
                             Return _Istwert
                         End If
@@ -682,10 +742,11 @@ Public Class wb_ChargenSchritt
 
     Public ReadOnly Property VirtTreeZeit As String
         Get
-            If (Status = wb_Global.ChargenStatus.CS_UNBEARBEITET) Or (_StartZeit = wb_Global.wbNODATE) Then
+            If ((Status = wb_Global.ChargenStatus.CS_UNBEARBEITET) Or (_StartZeit = wb_Global.wbNODATE)) And Not Sauerteig Then
                 Return ""
             Else
-                If KomponentenType = wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG Then
+                If KomponentenType = wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG Or
+                   KomponentenType = wb_Global.KomponTypen.KO_TYPE_SAUER_DIGITAL Then
                     Return _EndeZeit.ToString("dd.MM.yyyy HH:mm:ss")
                 Else
                     Return _StartZeit.ToString("dd.MM.yyyy HH:mm:ss")

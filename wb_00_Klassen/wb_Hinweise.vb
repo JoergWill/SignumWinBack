@@ -56,6 +56,15 @@ Public Class wb_Hinweise
         End Set
     End Property
 
+    Public ReadOnly Property Memo(Idx As Integer) As String
+        Get
+            If Not ReadOK Then
+                Read(Idx)
+            End If
+            Return H2_Memo
+        End Get
+    End Property
+
     Public ReadOnly Property Aenderung_Datum As Date
         Get
             Return H2_Aenderung_Datum
@@ -84,10 +93,10 @@ Public Class wb_Hinweise
     ''' </summary>
     ''' <param name="DataTyp">Datentyp</param>
     ''' <param name="idx">Rohstoff/Artikel/Rezeptnummer</param>
-    Public Sub New(DataTyp As Hinweise, idx As Integer)
+    Public Sub New(DataTyp As Hinweise, idx As Integer, Optional idx2 As Integer = wb_Global.UNDEFINED)
         'H2_Typ und H2_Typ2 ermitteln
         If GetTyp(DataTyp, H2_Typ, H2_Typ2) Then
-            H2_ReadOK = Read(idx)
+            H2_ReadOK = Read(idx, idx2)
         End If
     End Sub
 
@@ -96,22 +105,31 @@ Public Class wb_Hinweise
     ''' </summary>
     ''' <param name="idx">Integer - Komponenten/Artikelnummer</param>
     ''' <returns></returns>
-    Public Function Read(idx As Integer) As Boolean
+    Public Function Read(idx As Integer, Optional idx2 As Integer = wb_Global.UNDEFINED) As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
 
         'Artikel/Komponenten/Rezeptnummer merken
         H2_Id1 = idx
+        H2_Id2 = idx2
 
         'Daten aus MySQL-Memo in String einlesen
         H2_ReadOK = False
-        winback.sqlSelect(setParams(sqlSelectH2, H2_Typ, H2_Typ2, idx))
+        If idx2 > wb_Global.UNDEFINED Then
+            winback.sqlSelect(setParams(sqlSelectH2X, H2_Typ, H2_Typ2, idx, idx2))
+        Else
+            winback.sqlSelect(setParams(sqlSelectH2, H2_Typ, H2_Typ2, idx))
+        End If
+
         If winback.Read Then
             H2_Aenderung_Nr = winback.sField("H2_Aenderung_Nr")
-            H2_Aenderung_Datum = winback.sField("H2_Aenderung_Datum")
             H2_UserNr = winback.iField("H2_Aenderung_User")
             H2_UserName = winback.sField("H2_Aenderung_Name")
             H2_Memo = winback.sField("H2_Memo")
             H2_Id1 = idx
+            Try
+                H2_Aenderung_Datum = winback.sField("H2_Aenderung_Datum")
+            Catch ex As Exception
+            End Try
             H2_ReadOK = True
         End If
         winback.Close()
@@ -202,6 +220,7 @@ Public Class wb_Hinweise
     '''         RezeptHinweise          2       0       RezepNr
     '''         ArtikelHinweise         3       0       ArtikelNr
     '''         UserInfo                4       0       UserNr
+    '''         Konfiguration           5       0       KonfigId
     '''         ZutatenListe            9       1       ArtikelNr
     '''         MehlZusammensetzung     9       2       ArtikelNr
     '''         GebCharakteristik      10       1       ArtikelNr
@@ -230,6 +249,10 @@ Public Class wb_Hinweise
 
             Case Hinweise.UserInfo               '4/0/UsrNr
                 Typ1 = 4
+                Typ2 = 0
+
+            Case Hinweise.Konfiguration          '5/0/KonfigEintragNr/KonfigGrp
+                Typ1 = 5
                 Typ2 = 0
 
             Case Hinweise.ZutatenListe           '9/1/ArtNr

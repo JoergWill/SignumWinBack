@@ -5,6 +5,7 @@ Public Class wb_LagerOrt
     Private _Mindestmenge As String = Nothing
     Private _Lagerort As String = Nothing
     Private _Kommentar As String = ""
+    Private _SiloNummer As String = ""
     Private _Aktiv As String = "A"
     Private Shared _ErrorText As String = ""
     Private Shared _TabelleLagerorteOK = False
@@ -35,7 +36,7 @@ Public Class wb_LagerOrt
             If _Lagerort = "" Or _Lagerort Is Nothing Then
                 _Bilanzmenge = "0"
             End If
-            Return wb_Functions.FormatStr(_Bilanzmenge, 3)
+            Return wb_Functions.FormatStr(_Bilanzmenge, 3, -1, "sql")
         End Get
         Set(value As String)
             _Bilanzmenge = value
@@ -46,7 +47,7 @@ Public Class wb_LagerOrt
 
     Public Property Mindestmenge As String
         Get
-            Return wb_Functions.FormatStr(_Mindestmenge, 3)
+            Return wb_Functions.FormatStr(_Mindestmenge, 3, -1, "sql")
         End Get
         Set(value As String)
             _Mindestmenge = value
@@ -99,6 +100,22 @@ Public Class wb_LagerOrt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Silonummer zum Lagerort. Wird momentan nicht geschrieben !
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property SiloNummer As String
+        Get
+            Return _SiloNummer
+        End Get
+        Set(value As String)
+            _SiloNummer = value
+            'Änderung SiloNummer MySql-Datenbank schreiben
+            'TODO muss noch in SQL-Anweisung eingebaut werden (Falls notwendig)
+            'MySQLdbUpdate()
+        End Set
+    End Property
+
     Public Sub New(Lagerort As String)
         'Initialisierung
         _Bilanzmenge = Nothing
@@ -116,10 +133,10 @@ Public Class wb_LagerOrt
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
-        'Suche nach dem ersten Datensatz mit dieser Komponenten-Type
+        'Suche nach dem ersten Datensatz mit diesem Lagerort
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLagerOrte, LagerOrt)
 
-        'ersten Datensatz aus Tabelle Komponenten lesen
+        'ersten Datensatz aus Tabelle Lagerorte lesen
         If winback.sqlSelect(sql) Then
             If winback.Read Then
                 MySQLdbRead(winback.MySqlRead)
@@ -199,6 +216,9 @@ Public Class wb_LagerOrt
                 'Kommentar
                 Case "LG_Kommentar"
                     _Kommentar = Value
+                'Silo-Nummer
+                Case "LG_Silo_Nr"
+                    _SiloNummer = Value
                 'Aktiv/Hand
                 Case "LG_aktiv"
                     _Aktiv = Value

@@ -87,27 +87,50 @@ Public Class wb_KomponParam
     ''' <returns></returns>
     Public Property Wert As String
         Get
-            If wb_KomponParam301_Global.IsAllergen(_ParamNr) Then
-                Return wb_Functions.AllergenToString(_Wert)
-            ElseIf wb_KomponParam301_Global.IsErnaehrung(_ParamNr) Then
-                Return wb_Functions.ErnaehrungToString(_Wert)
-            Else
-                Select Case eFormat
-                    Case 0, 1
+            Select Case _TypNr
+
+                'Allergene und Ernährung (Vegan,Halal...)
+                Case wb_Global.ktParam.kt301
+                    If wb_KomponParam301_Global.IsAllergen(_ParamNr) Then
+                        Return wb_Functions.AllergenToString(_Wert)
+                    ElseIf wb_KomponParam301_Global.IsErnaehrung(_ParamNr) Then
+                        Return wb_Functions.ErnaehrungToString(_Wert)
+                    Else
                         Return _Wert
-                    Case 2
-                        Return wb_Functions.FormatStr(_Wert, 0)
-                    Case 3
-                        Return wb_Functions.FormatStr(_Wert, 3)
-                    Case Else
+                    End If
+
+                'EU- und Bio-Verbände
+                Case wb_Global.ktParam.kt303
+                    If wb_KomponParam303_Global.IsEU(_ParamNr) Then
+                        Return wb_Functions.ErnaehrungToString(_Wert)
+                    Else
                         Return _Wert
-                End Select
-            End If
+                    End If
+
+                    'alle anderen Parameter
+                Case Else
+                    Select Case eFormat
+                        'String oder Undefiniert
+                        Case 0, 1
+                            Return _Wert
+                        'Integer
+                        Case 2
+                            Return wb_Functions.FormatStr(_Wert, 0, -1, "sql")
+                        'Real
+                        Case 3
+                            Return wb_Functions.FormatStr(_Wert, 3, -1, "sql")
+                        Case Else
+                            Return _Wert
+                    End Select
+            End Select
+
+
         End Get
         Set(value As String)
             _Wert = value
         End Set
     End Property
+
     ''' <summary>
     ''' Parameter-Wert abhängig von Komponenten-Type/Parameter-Type ausgeben
     ''' </summary>
@@ -127,7 +150,7 @@ Public Class wb_KomponParam
                                 Return _Wert
                             'Integer/Real
                             Case 2, 3
-                                Return wb_Functions.FormatStr(_Wert, 3)
+                                Return wb_Functions.FormatStr(_Wert, 3, -1, "sql")
                             Case Else
                                 Return _Wert
                         End Select
@@ -141,6 +164,23 @@ Public Class wb_KomponParam
                         Else
                             Return wb_Functions.FormatStr(_Wert, 3)
                         End If
+
+                    'EU/Bio
+                    Case ktParam.kt303
+                        Select Case eFormat
+                            'String/Time/Boolean
+                            Case 1, 4, 5
+                                Return _Wert
+                            'Integer/Real
+                            Case 2, 3
+                                Return wb_Functions.FormatStr(_Wert, 3, -1, "sql")
+                            'J/N
+                            Case 7
+                                Return wb_Functions.ErnaehrungToString(_Wert)
+                            Case Else
+                                Return _Wert
+                        End Select
+
 
                         'alle anderen Parameter
                     Case Else
@@ -158,6 +198,12 @@ Public Class wb_KomponParam
                     If wb_KomponParam301_Global.IsAllergen(_ParamNr) Then
                         _Wert = wb_Functions.StringtoAllergen(value)
                     ElseIf wb_KomponParam301_Global.IsErnaehrung(_ParamNr) Then
+                        _Wert = wb_Functions.StringtoErnaehrungsForm(value)
+                    Else
+                        _Wert = value
+                    End If
+                Case ktParam.kt303
+                    If wb_KomponParam303_Global.IsEU(_ParamNr) Then
                         _Wert = wb_Functions.StringtoErnaehrungsForm(value)
                     Else
                         _Wert = value
@@ -209,6 +255,7 @@ Public Class wb_KomponParam
         End Get
     End Property
 
+    <CodeAnalysis.SuppressMessage("Critical Bug", "S4275:Getters and setters should access the expected fields", Justification:="<Ausstehend>")>
     Public ReadOnly Property Used As Boolean
         Get
             Return wb_KomponParam_Global.ktXXXParam(_TypNr, _ParamNr).Used

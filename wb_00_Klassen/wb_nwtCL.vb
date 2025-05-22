@@ -4,6 +4,7 @@
     Public Enum wb_CloudType
         WinBackCloud
         DatenLink
+        OpenFoodFacts
         UNDEFINED
     End Enum
 

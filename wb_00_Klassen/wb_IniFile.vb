@@ -1,4 +1,4 @@
-﻿
+﻿Imports System.IO
 ''' <summary>
 ''' Lesen/Schreiben der ini-Datei. Der Datei-Name
 ''' wird bei der Initialisierung festgelegt.
@@ -15,17 +15,9 @@ Public Class wb_IniFile
     ''' <summary>
     ''' Instanziiert die WinBack.ini-Klasse.
     ''' Der Pfad wird automatisch festgelegt und bezieht sich auf das Programm-Verzeichnis. 
-    ''' Im Debug-Mode wird die WinBack.ini nach dem Übersetzen automatisch von 
-    '''     ..repos\Signum_WinBack in das \bin\debug\-Verzeichnis kopiert (Build-Ereignisse)
     ''' </summary>
     Sub New() 'kein Pfad notwendig...
-
-        Pfad = wb_GlobalSettings.PWinBackIniPath
-        'TODO WinBack.ini  in User-Verzeichnis kopieren
-        'Pfad = "C:\ProgramData\OrgaSoft\AddIn\WinBack.ini"
-        'Pfad = "C:\ProgramData\OrgaSoft\WinBack.ini"
-        'Pfad = "C:\Users\Will\Source\Repos\Signum_WinBack\WinBack.ini"
-        'Pfad = "C:\Users\Will.WinBack\Source\Repos\Signum_WinBack\WinBack.ini"
+        Pfad = wb_GlobalSettings.pWinBackIniPath
     End Sub
 
     ''' <summary>
@@ -88,7 +80,7 @@ Public Class wb_IniFile
             ByVal lpFileName As String) As Integer
 
     ''' <summary>
-    ''' Deklariert die dll-Funktion zum Schreiben der ini-Datei
+    ''' Prüft ob ein Pfad zur Ini-Datei angegeben ist.
     ''' </summary>
     ''' <param name="Sektion"></param>
     ''' <param name="Schlüssel"></param>
@@ -114,12 +106,15 @@ Public Class wb_IniFile
     ''' <param name="Sektion"></param>
     ''' <param name="Schlüssel"></param>
     ''' <returns>Boolean - Pfad/Datei vorhanden</returns>
-    Private Function TestIniPfadExists(Sektion As String, Schlüssel As String) As Boolean
+    Public Function TestIniPfadExists(Sektion As String, Schlüssel As String) As Boolean
         If IO.File.Exists(Pfad) = False Then
             If Not _SilentMode Then MsgBox("Die angegebene INI-Datei exstiert auf diesem Rechner nicht. Deshalb ist das " _
                         & "Auslesen des Wertes nicht möglich." & vbCrLf & vbCrLf & "INI-Datei: " & Pfad _
                         & vbCrLf & "Angeforderte Sektion: " & Sektion & vbCrLf & "Angeforderter Schlüssel: " _
                         & Schlüssel & vbCrLf & "Mode " & System.ComponentModel.LicenseManager.UsageMode.ToString & vbCrLf & "Stacktrace: " & Environment.StackTrace, MsgBoxStyle.Exclamation, "Pfad zur INI-Datei fehlt")
+            'Meldung nur einmal ausgeben
+            _SilentMode = True
+            'Fehler
             Return False
         Else
             Return True
@@ -144,6 +139,9 @@ Public Class wb_IniFile
                         & "Schreiben des Wertes nicht möglich." & vbCrLf & vbCrLf & "Fehlender Ordner: " & Ordner _
                         & vbCrLf & "Angeforderte Sektion: " & Sektion & vbCrLf & "Zu schreibender Schlüssel: " _
                         & Schlüssel, MsgBoxStyle.Exclamation, "Pfad zur INI-Datei existiet nicht")
+            'Meldung nur einmal ausgeben
+            _SilentMode = True
+            'Fehler
             Return False
         Else
             Return True
@@ -174,7 +172,7 @@ Public Class wb_IniFile
     Public Function ReadString(ByVal Sektion As String, ByVal Schlüssel As String, Optional ByVal Standardwert As String = "", Optional ByVal BufferSize As Integer = 1024) As String
         Try
             ' Testen, ob ein Pfad zur INI vorhanden ist und ob die Datei existiert
-            If Not TestIniPfadEmpty(Sektion, Schlüssel) Or Not TestIniPfadExists(Sektion, Schlüssel) Then
+            If Not TestIniPfadEmpty(Sektion, Schlüssel) OrElse Not TestIniPfadExists(Sektion, Schlüssel) Then
                 ReadString = Standardwert
                 _ReadResult = False
                 Exit Function
@@ -253,11 +251,12 @@ Public Class wb_IniFile
     ''' <param name="Sektion">String - Abschnitt in der ini-Datei</param>
     ''' <param name="Schlüssel">String - Schlüssel innerhalb des Abschnitts</param>
     ''' <param name="Wert">String - neuer Eintrag</param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Public Sub WriteString(ByVal Sektion As String, ByVal Schlüssel As String, ByVal Wert As String)
 
         Try
             ' Testen, ob ein Pfad zur INI vorhanden ist und ob das Verzeichnis existiert
-            If Not TestIniPfadEmpty(Sektion, Schlüssel) Or Not TestIniOrdnerExists(Sektion, Schlüssel) Then
+            If Not TestIniPfadEmpty(Sektion, Schlüssel) OrElse Not TestIniOrdnerExists(Sektion, Schlüssel) Then
                 _WriteResult = False
                 Exit Sub
             End If
@@ -273,10 +272,20 @@ Public Class wb_IniFile
             If WritePrivateProfileString(Sektion, Schlüssel, Wert, Pfad) > 0 Then
                 _WriteResult = True
             Else
-                If Not _SilentMode Then MsgBox("Fehler beim Speichern der Daten in der Konfiguration. Deshalb ist das " _
+                If Not _SilentMode Then
+                    Dim oInfo As New FileInfo(Pfad)
+                    If oInfo.Attributes And FileAttributes.ReadOnly Then
+                        MsgBox("Die Konfigurations-Datei " & Pfad & "ist schreibgeschützt " & vbCrLf _
+                        & "Das Schreiben des Wertes ist nicht möglich." & vbCrLf & vbCrLf _
+                        & vbCrLf & "Angeforderte Sektion: " & Sektion & vbCrLf & "Zu schreibender Schlüssel: " _
+                        & Schlüssel, MsgBoxStyle.Exclamation, "Fehler beim Speichern der Daten in der Konfiguration")
+                    Else
+                        MsgBox("Fehler beim Speichern der Daten in der Konfiguration. Deshalb ist das " _
                         & "Schreiben des Wertes nicht möglich." & vbCrLf & vbCrLf & "Verzeichnis: " & Pfad _
                         & vbCrLf & "Angeforderte Sektion: " & Sektion & vbCrLf & "Zu schreibender Schlüssel: " _
                         & Schlüssel, MsgBoxStyle.Exclamation, "Fehler beim Speichern der Daten in der Konfiguration")
+                    End If
+                End If
                 _WriteResult = False
             End If
 
@@ -306,4 +315,53 @@ Public Class wb_IniFile
     Public Sub WriteBool(ByVal Sektion As String, ByVal Schlüssel As String, ByVal Wert As Boolean)
         WriteString(Sektion, Schlüssel, If(Wert, "1", "0"))
     End Sub
+
+    ''' <summary>
+    ''' Zusammenführen von zwei winback.ini-Files aus verschiedenen Verzeichnissen.
+    ''' 
+    ''' Liest aus der fremden winback.ini (MergeFileName) alle Zeilen sequentiell aus und schreibt die Werte in die
+    ''' aktuelle winback.ini
+    ''' Die Datei MergeFileName wird sequentiell gelesen ausgewertet und in die winback.ini eingetragen.
+    ''' 
+    ''' ACHTUNG: In der gültigen winback.ini muss als erste Zeile ein Zeilenvorschub
+    '''          eingetragen sein, sonst wird beim Schreiben die Sektion [winback] doppelt
+    '''          angelegt !!
+    '''          
+    ''' </summary>
+    ''' <param name="MergeFileName"></param>
+    Public Sub MergeFile(MergeFileName As String)
+        'winback.ini als Text-Datei öffnen
+        Dim IniReader As New StreamReader(MergeFileName, System.Text.Encoding.ASCII)
+
+        'Rezeptdatei zeilenweise auslesen
+        Dim Line As String = ""
+        Dim Sektion As String = ""
+
+        'Schleife über alle Zeilen
+        Do
+            'zeilenweise auslesen
+            Line = IniReader.ReadLine
+            'Leere Zeilen mit <CRLF> auslassen
+            If Line <> "" Then
+
+                'Sektionen beginnen mit [
+                If Line.Contains("[") Then
+                    Sektion = Line.Trim("[").Trim("]")
+                End If
+
+                'Key und Wert sind durch = getrennt
+                Dim x() As String = Line.Split("=")
+
+                'Sektion, Key und Wert in die aktuelle winback.ini schreiben
+                If Sektion <> "" AndAlso x.Length > 1 Then
+                    WriteString(Sektion, x(0), x(1))
+                End If
+
+            End If
+        Loop Until IniReader.EndOfStream
+
+        'Datei wieder schliessen
+        IniReader.Close()
+    End Sub
+
 End Class

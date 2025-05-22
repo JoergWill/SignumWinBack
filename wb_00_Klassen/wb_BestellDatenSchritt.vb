@@ -12,6 +12,7 @@ Public Class wb_BestellDatenSchritt
     Private _ChargenTeiler As wb_Global.ModusChargenTeiler = wb_Global.ModusChargenTeiler.OptimalUndRest
     Private _AnzahlVorschlag As Integer
     Private _Bedarfmenge As Integer
+    Private _BestandFroster As Integer
     Private _BedarfFroster As Integer
     Private _FrosterEntnahme As Integer
     Private _FrosterEinlagerung As Integer
@@ -26,6 +27,8 @@ Public Class wb_BestellDatenSchritt
     Private _Losgroesse2 As Double
     Private _Losart2 As String
     Private _SollwertTeilungText As String = ""
+    Private _ArtikelNrReferenz As String = ""
+    Private _ReferenzArtikelText As String = ""
 
     Public Property TourNr As Integer
         Get
@@ -206,6 +209,33 @@ Public Class wb_BestellDatenSchritt
         End Set
     End Property
 
+    Public Property BestandFroster As Integer
+        Get
+            Return _BestandFroster
+        End Get
+        Set(value As Integer)
+            _BestandFroster = value
+        End Set
+    End Property
+
+    Public Property ArtikelNrReferenz As String
+        Get
+            Return _ArtikelNrReferenz
+        End Get
+        Set(value As String)
+            _ArtikelNrReferenz = value
+        End Set
+    End Property
+
+    Public Property ReferenzArtikelText As String
+        Get
+            Return _ReferenzArtikelText
+        End Get
+        Set(value As String)
+            _ReferenzArtikelText = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
     ''' Update pq_Prouktionsauftrag (30.08.2018/JE)
@@ -255,7 +285,7 @@ Public Class wb_BestellDatenSchritt
 
         'Feldname aus der Datenbank
         Try
-            'Debug.Print("StoredProcedure Produktionsplanung  " & Name & " / " & Value)
+            Debug.Print("StoredProcedure Produktionsplanung  " & Name & " / " & Value)
         Catch ex As Exception
         End Try
 
@@ -270,9 +300,9 @@ Public Class wb_BestellDatenSchritt
                 'Einheit
                 Case "Einheit"
                     _Einheit = wb_Functions.StrToInt(Value)
-               'Zusatztexte(alpha getrennt durch CRLF)
+               'Zusatztexte(alpha getrennt durch CRLF) Sonderzeichen wie &amp; werden nach & konvertiert
                 Case "Zusatztexte"
-                    _SonderText = Value
+                    _SonderText = wb_Functions.XRestoreSonderZeichen(Value)
                 'Soll-Produktionsmenge in Stück
                 Case "Produktionsmenge"
                     _Produktionsmenge = wb_Functions.StrToDouble(Value)
@@ -308,6 +338,9 @@ Public Class wb_BestellDatenSchritt
                 Case "AnzahlVorschlag"
                     _AnzahlVorschlag = wb_Functions.StrToInt(Value)
 
+                'Bestand Froster
+                Case "FrosterBestand"
+                    BestandFroster = wb_Functions.StrToInt(Value)
                 'Bedarf Froster (in Bedarf Menge enthalten)
                 Case "BedarfFroster"
                     BedarfFroster = wb_Functions.StrToInt(Value)
@@ -322,6 +355,13 @@ Public Class wb_BestellDatenSchritt
                 'Anzahl Froster Einlagerung
                 Case "MengeFrosterEingelagert"
                     _MengeFrosterEingelagert = wb_Functions.StrToInt(Value)
+
+                'Artikelnummer Referenz
+                Case "ArtikelNrReferenz"
+                    _ArtikelNrReferenz = Value
+                'Referenz Artikel Text 
+                Case "ReferenzArtikelText"
+                    _ReferenzArtikelText = Value
 
             End Select
         Catch ex As Exception

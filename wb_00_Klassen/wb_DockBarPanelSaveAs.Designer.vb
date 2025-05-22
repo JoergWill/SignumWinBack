@@ -156,14 +156,14 @@ Partial Class wb_DockBarPanelSaveAs
 
     End Sub
 
-    Friend WithEvents BtnSpeichern As Windows.Forms.Button
-    Friend WithEvents BtnAbbruch As Windows.Forms.Button
-    Friend WithEvents BtnExport As Windows.Forms.Button
-    Friend WithEvents clLayouts As Windows.Forms.CheckedListBox
-    Friend WithEvents lblBezeichnung As Windows.Forms.Label
-    Friend WithEvents lblSprache As Windows.Forms.Label
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents tbBezeichnung As Windows.Forms.TextBox
-    Friend WithEvents cbGlobal As Windows.Forms.CheckBox
-    Friend WithEvents tbSprachen As Windows.Forms.TextBox
+    Friend WithEvents BtnSpeichern As System.Windows.Forms.Button
+    Friend WithEvents BtnAbbruch As System.Windows.Forms.Button
+    Friend WithEvents BtnExport As System.Windows.Forms.Button
+    Friend WithEvents clLayouts As System.Windows.Forms.CheckedListBox
+    Friend WithEvents lblBezeichnung As System.Windows.Forms.Label
+    Friend WithEvents lblSprache As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents tbBezeichnung As System.Windows.Forms.TextBox
+    Friend WithEvents cbGlobal As System.Windows.Forms.CheckBox
+    Friend WithEvents tbSprachen As System.Windows.Forms.TextBox
 End Class

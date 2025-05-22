@@ -14,7 +14,7 @@
         'Dictionary Einheiten aus winback.Einheiten
         ReadWinBackEinheiten()
         'Dictionary LosArt aus dbo.LosArten
-        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Or wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest Then
             ReadOrgaBackLosArt()
         End If
     End Sub
@@ -48,6 +48,14 @@
         End If
     End Function
 
+    Shared Function GetEinheitFromNr(eNr As Integer) As String
+        If Einheiten.ContainsKey(eNr) Then
+            Return Einheiten(eNr).Einheit
+        Else
+            Return wb_Global.wbEinheitKilogramm
+        End If
+    End Function
+
     Shared Function getobEinheitFromText(eBez As String, Optional obDefault As Integer = wb_Global.obEinheitKilogramm) As Integer
         If eBez IsNot Nothing Then
             If EinhText.ContainsKey(eBez) Then
@@ -74,11 +82,16 @@
     Shared Function getEinheitFromKompType(KompType As wb_Global.KomponTypen) As Integer
         'TODO Einheiten aus Tabelle KomponParams lesen und zu WinBack.Komponenten-Type einheit zurückmelden
         'ACHTUNG Kneter-Komponenten !
-        If KompType = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
-            Return wb_Global.wbEinheitStk
-        Else
-            Return wb_Global.wbEinheitKilogramm
-        End If
+        Select Case KompType
+            Case wb_Global.KomponTypen.KO_TYPE_ARTIKEL, wb_Global.KomponTypen.KO_TYPE_STUECK
+                Return wb_Global.wbEinheitStk
+            Case wb_Global.KomponTypen.KO_TYPE_METER
+                Return wb_Global.wbEinheitMeter
+            Case wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER, wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE
+                Return wb_Global.wbEinheitLiter
+            Case Else
+                Return wb_Global.wbEinheitKilogramm
+        End Select
     End Function
 
     ''' <summary>
@@ -196,7 +209,7 @@
         'alle Parameter(Update) prüfen
         If Not _OBEinheiten Then
             _ErrorText = "Fehler in Tabelle winback.Einheiten. Spalte Einheiten.E_obNr fehlt !"
-            Trace.WriteLine(_ErrorText)
+            Trace.WriteLine("@E_" & _ErrorText)
             Return False
         Else
             _ErrorText = ""

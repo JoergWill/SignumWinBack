@@ -1,6 +1,6 @@
 ﻿Imports WinBack.wb_Global
 Imports WinBack.wb_Functions
-Imports System.Data.SqlClient
+Imports Microsoft.Data.SqlClient
 
 Public Class wb_LagerKarte
 
@@ -11,18 +11,22 @@ Public Class wb_LagerKarte
     Private _Datum As String
     Private _Uhrzeit As String
     Private _Menge As String
+    Private _Verbraucht As Double = 0
     Private _BestandVorher As String
     Private _ChargenNummer As String = ""
     Private _Mitarbeiter As String
     Private _Preis As String
 
-    Public ReadOnly Property Lfd As String
+    Public Property Lfd As String
         Get
-            Return _Lfd
+            Return _Lfd.ToString
         End Get
+        Set(value As String)
+            _Lfd = wb_Functions.StrToInt(value)
+        End Set
     End Property
 
-    Public ReadOnly Property Vorfall As String
+    Public Property Vorfall As String
         Get
             If _Vorfall = "" Then
                 Select Case _Modul
@@ -35,6 +39,9 @@ Public Class wb_LagerKarte
                 Return _Vorfall
             End If
         End Get
+        Set(value As String)
+            _Vorfall = value
+        End Set
     End Property
 
     Public ReadOnly Property Modul As String
@@ -65,10 +72,22 @@ Public Class wb_LagerKarte
         End Get
     End Property
 
-    Public ReadOnly Property Menge As Double
+    Public Property Menge As Double
         Get
             Return wb_Functions.StrToDouble(_Menge)
         End Get
+        Set(value As Double)
+            _Menge = value.ToString
+        End Set
+    End Property
+
+    Public Property Verbraucht As Double
+        Get
+            Return _Verbraucht
+        End Get
+        Set(value As Double)
+            _Verbraucht = value
+        End Set
     End Property
 
     Public ReadOnly Property BestandVorher As Double
@@ -98,9 +117,23 @@ Public Class wb_LagerKarte
         End Get
     End Property
 
+    ''' <summary>
+    ''' In der OrgaBack.Lagerkarte können für unbekannte oder leere Chargen-Nummern verschiedene Werte auftreten
+    '''     - Unbekannt
+    '''     - NULL
+    '''     - keine
+    '''     
+    '''  Diese Einträge werden alle in "KEINE" umgewandelt.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property ChargenNummer As String
         Get
-            Return _ChargenNummer
+            Select Case _ChargenNummer.ToLower
+                Case "unbekannt", "keine", "<keine>", ""
+                    Return wb_Global.FlagKeineChargenNummer
+                Case Else
+                    Return _ChargenNummer
+            End Select
         End Get
         Set(value As String)
             _ChargenNummer = value
@@ -138,26 +171,13 @@ Public Class wb_LagerKarte
         End Set
     End Property
 
-    ''' <summary>
-    ''' Berechnet den aktuellen Lager-Bestand aus Menge und BestandVorher. Der Wert wird im
-    ''' Datenfeld Menge abgespeichert.
-    ''' Die Vorfallart wird zu WB geändert !
-    ''' </summary>
-    Public Sub InitBestand()
-        If Vorfall <> "WB" Then
-            '_Menge = wb_Functions.FormatStr((Menge + BestandVorher).ToString, 2)
-            _Menge = 0
-            _Vorfall = "WB"
-        End If
-    End Sub
-
     Public Function msSQLdbRead(ByRef sqlReader As SqlDataReader) As Boolean
         'Parameter - Anzahl der Felder im DataSet
         For i = 0 To sqlReader.FieldCount - 1
             Try
                 MsSQLdbRead_Daten(sqlReader.GetName(i), sqlReader.GetValue(i))
             Catch ex As Exception
-                Debug.Print("Exception MySQLdbRead " & sqlReader.GetName(i))
+                'Debug.Print("Exception MsSQLdbRead " & sqlReader.GetName(i))
             End Try
         Next
         Return True
@@ -179,6 +199,9 @@ Public Class wb_LagerKarte
         'Debug.Print("Read OrgaBack ArtikelLaufkarte " & Name & "/" & Value)
         Try
             Select Case Name
+                'Dten aus dbo.ArtikelLagerkarte
+                'Daten aus dbo.ChargenBestand
+
                 'laufende Nummer
                 Case "Lfd"
                     _Lfd = CInt(Value)
@@ -188,11 +211,11 @@ Public Class wb_LagerKarte
                     _VorfallNr = Value
                 Case "Modul"
                     _Modul = Value
-                Case "Datum"
+                Case "Datum", "AnlageDatum"
                     _Datum = Value
                 Case "Uhrzeit"
                     _Uhrzeit = Value
-                Case "Menge"
+                Case "Menge", "Bestand"
                     _Menge = Value
                 Case "BestandVorher"
                     _BestandVorher = Value

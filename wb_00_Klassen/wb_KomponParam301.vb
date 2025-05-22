@@ -12,8 +12,14 @@ Public Class wb_KomponParam301
         Public _FehlerKompName As String
     End Structure
 
+    Private Structure ArtikelEinheiten
+        Public _InEinheit As Integer
+        Public _Umrechnungsfaktor As Double
+    End Structure
+
     'Array aller Nährwerte/Allergene
     Private NaehrwertInfo(maxTyp301) As Typ301
+    Private Umrechnung As New List(Of ArtikelEinheiten)
     Private _TimeStamp
     Private _IsCalculated As Boolean = False
     Private _NwtTabelle(wb_Global.maxTyp301) As Nwt
@@ -27,6 +33,24 @@ Public Class wb_KomponParam301
         _FaktorStkGewicht = 1
     End Sub
 
+    Public Sub Clear()
+        'TODO TEST
+        For i = 1 To wb_Global.maxTyp301
+            If IsAllergen(i) Then
+                'Änderungen loggen
+                NaehrwertInfo(i)._Allergen = StringtoAllergen("N")
+            ElseIf IsErnaehrung(i) Then
+                'Änderungen loggen
+                NaehrwertInfo(i)._ErnaehrungsForm = StringtoErnaehrungsForm("N")
+            ElseIf i <= wb_Global.maxTyp301 Then
+                'Änderungen loggen
+                NaehrwertInfo(i)._Naehrwert = 0.0
+            End If
+            FehlerKompName(i) = ""
+
+        Next
+    End Sub
+
     Public ReadOnly Property NwtTabelle As Array
         Get
             For i = 1 To wb_Global.maxTyp301
@@ -37,6 +61,7 @@ Public Class wb_KomponParam301
                 _NwtTabelle(i).Einheit = wb_KomponParam301_Global.kt301Param(i).Einheit
                 _NwtTabelle(i).Header = wb_Functions.kt301GruppeToString(wb_KomponParam301_Global.kt301Param(i).Gruppe)
                 _NwtTabelle(i).FehlerText = FehlerKompName(i)
+                _NwtTabelle(i).ErrIntern = CalcNaehrwerteKonsistent(i)
 
                 'Debug.Print("FEHLER :" & Rezept.KtTyp301.FehlerKompName(i))
                 'If NwtTabelle(i).Visible Then
@@ -46,6 +71,42 @@ Public Class wb_KomponParam301
             Return _NwtTabelle
         End Get
     End Property
+
+    ''' <summary>
+    ''' Prüft ob die Nährwerte-Tabelle in sich konsistent ist
+    ''' 
+    '''     Umrechnung  1,000 kcal       =   4,184 kJ
+    '''     Umrechnung  1,000 gr Natrium =   2,540 gr Salz
+    '''     
+    ''' Gibt True zurück, wenn die Umrechnung der Nährwertangabe auf den korrespondierenden Wert nicht innerhalb der Toleranz liegt
+    ''' False, wenn es keinen korrespondierenden Wert gibt oder die Umrechnung innerhalb der Toleranz liegt
+    ''' </summary>
+    ''' <param name="Index"></param>
+    ''' <returns></returns>
+    Private Function CalcNaehrwerteKonsistent(Index As Integer) As Boolean
+
+        Select Case Index
+            Case wb_Global.T301_Kilokalorien, wb_Global.T301_KiloJoule
+                Return CalcNaehrwerteUmrechnung(wb_Global.T301_Kilokalorien, wb_Global.T301_KiloJoule, 4.184, 1)
+            Case wb_Global.T301_Natrium, wb_Global.T301_GesamtKochsalz
+                Return CalcNaehrwerteUmrechnung(wb_Global.T301_Natrium, wb_Global.T301_GesamtKochsalz, 2.54, 1)
+        End Select
+
+        Return False
+    End Function
+    Private Function CalcNaehrwerteUmrechnung(i1 As Integer, i2 As Integer, Faktor As Double, Toleranz As Double) As Boolean
+        If Faktor <> 0 Then
+            Dim Wert1 As Double = wb_Functions.StrToDouble(Wert(i1))
+            Dim Wert2 As Double = wb_Functions.StrToDouble(Wert(i2))
+
+            Dim Diffx As Double = Math.Abs(Wert1 * Faktor - Wert2)
+            Dim Wertx As Double = Math.Max(Wert1, (Wert2 / Faktor))
+            Dim TolPz As Double = Wertx / 100 * Toleranz
+            Return (Diffx > TolPz)
+        Else
+            Return False
+        End If
+    End Function
 
     ''' <summary>
     ''' Gibt False zurück, wenn das Array leer bzw. noch nicht berechnet ist (Lesen aus DB erforderlich)
@@ -112,16 +173,13 @@ Public Class wb_KomponParam301
             'Druchläuft alle Indizes
             For i = 1 To maxTyp301
                 'Ist ein Allergen
-                If IsAllergen(i) Then
-                    'Ist enthalten
-                    If Allergen(i) = AllergenInfo.C Then
-                        'Liste nach Kommata getrennt
-                        If AllergenListe_C <> "" Then
-                            AllergenListe_C &= ","
-                        End If
-                        'Allergenbezeichnung hinzufügen
-                        AllergenListe_C &= wb_KomponParam301_Global.kt301Param(i).Bezeichnung
+                If IsAllergen(i) AndAlso Allergen(i) = AllergenInfo.C Then
+                    'Liste nach Kommata getrennt
+                    If AllergenListe_C <> "" Then
+                        AllergenListe_C &= ","
                     End If
+                    'Allergenbezeichnung hinzufügen
+                    AllergenListe_C &= wb_KomponParam301_Global.kt301Param(i).Bezeichnung
                 End If
             Next
         End Get
@@ -136,19 +194,16 @@ Public Class wb_KomponParam301
             AllergenListe_T = ""
             'Druchläuft alle Indizes
             For i = 1 To maxTyp301
-                'Ist ein Allergen
-                If IsAllergen(i) Then
-                    'Ist enthalten
-                    If Allergen(i) = AllergenInfo.T Then
-                        'Liste nach Kommata getrennt
-                        If AllergenListe_T <> "" Then
-                            AllergenListe_T &= ","
-                        Else
-                            AllergenListe_T = "Spuren von "
-                        End If
-                        'Allergenbezeichnung hinzufügen
-                        AllergenListe_T &= wb_KomponParam301_Global.kt301Param(i).KurzBezeichnung
+                'Ist ein Allergen und ist in Spuren enthalten
+                If IsAllergen(i) AndAlso Allergen(i) = AllergenInfo.T Then
+                    'Liste nach Kommata getrennt
+                    If AllergenListe_T <> "" Then
+                        AllergenListe_T &= ","
+                    Else
+                        AllergenListe_T = "Spuren von "
                     End If
+                    'Allergenbezeichnung hinzufügen
+                    AllergenListe_T &= wb_KomponParam301_Global.kt301Param(i).KurzBezeichnung
                 End If
             Next
         End Get
@@ -159,17 +214,14 @@ Public Class wb_KomponParam301
             AllergenKurzListe_C = ""
             'Druchläuft alle Indizes
             For i = 1 To maxTyp301
-                'Ist ein Allergen
-                If IsAllergen(i) Then
-                    'Ist enthalten
-                    If Allergen(i) = AllergenInfo.C Then
-                        'Liste nach Kommata getrennt
-                        If AllergenKurzListe_C <> "" Then
-                            AllergenKurzListe_C &= ","
-                        End If
-                        'Allergenbezeichnung hinzufügen
-                        AllergenKurzListe_C &= i.ToString
+                'Ist ein Allergen und ist enthalten
+                If IsAllergen(i) AndAlso Allergen(i) = AllergenInfo.C Then
+                    'Liste nach Kommata getrennt
+                    If AllergenKurzListe_C <> "" Then
+                        AllergenKurzListe_C &= ","
                     End If
+                    'Allergenbezeichnung hinzufügen
+                    AllergenKurzListe_C &= i.ToString
                 End If
             Next
         End Get
@@ -180,17 +232,14 @@ Public Class wb_KomponParam301
             AllergenKurzListe_T = ""
             'Druchläuft alle Indizes
             For i = 1 To maxTyp301
-                'Ist ein Allergen
-                If IsAllergen(i) Then
-                    'Ist enthalten
-                    If Allergen(i) = AllergenInfo.T Then
-                        'Liste nach Kommata getrennt
-                        If AllergenKurzListe_T <> "" Then
-                            AllergenKurzListe_T &= ","
-                        End If
-                        'Allergenbezeichnung hinzufügen
-                        AllergenKurzListe_T &= i.ToString
+                'Ist ein Allergen und ist in Spuren enthalten
+                If IsAllergen(i) AndAlso Allergen(i) = AllergenInfo.T Then
+                    'Liste nach Kommata getrennt
+                    If AllergenKurzListe_T <> "" Then
+                        AllergenKurzListe_T &= ","
                     End If
+                    'Allergenbezeichnung hinzufügen
+                    AllergenKurzListe_T &= i.ToString
                 End If
             Next
         End Get
@@ -198,14 +247,14 @@ Public Class wb_KomponParam301
 
     Public Property Naehrwert(index As Integer) As Double
         Get
-            If Not IsAllergen(index) And Not IsErnaehrung(index) Then
+            If Not IsAllergen(index) AndAlso Not IsErnaehrung(index) Then
                 Return NaehrwertInfo(index)._Naehrwert
             Else
                 Return 0.0
             End If
         End Get
         Set(value As Double)
-            If Not IsAllergen(index) And Not IsErnaehrung(index) Then
+            If Not IsAllergen(index) AndAlso Not IsErnaehrung(index) Then
                 NaehrwertInfo(index)._Naehrwert = value
                 _IsCalculated = True
             End If
@@ -219,7 +268,7 @@ Public Class wb_KomponParam301
             ElseIf IsErnaehrung(index) Then
                 Return NaehrwertInfo(index)._ErnaehrungsForm
             ElseIf index <= wb_Global.maxTyp301 Then
-                Return NaehrwertInfo(index)._Naehrwert
+                Return wb_Functions.FormatStr(NaehrwertInfo(index)._Naehrwert, 3)
             Else
                 Return ""
             End If
@@ -292,7 +341,12 @@ Public Class wb_KomponParam301
     ''' <returns></returns>
     Private Function CalculateOrgaBackNaehrwert(n As Double, idx As Integer) As String
         'Der Faktor berechnet sich aus dem Stückgewicht in kg(!) und dem Wert bezogen auf 100gr
-        Dim f As Double = wb_KomponParam301_Global.oFaktor(idx) * FaktorStkGewicht * 1000 / 100
+        Dim f As Double = wb_KomponParam301_Global.oFaktor(idx) * FaktorStkGewicht
+        Return wb_sql_Functions.MsDoubleToString(n * f)
+    End Function
+    Private Function CalculateOrgaBackNaehrwert(n As Double, idx As Integer, Faktor As Double) As String
+        'Der Faktor berechnet sich aus dem Stückgewicht in kg(!) und dem Wert bezogen auf 100gr
+        Dim f As Double = wb_KomponParam301_Global.oFaktor(idx) * Faktor
         Return wb_sql_Functions.MsDoubleToString(n * f)
     End Function
 
@@ -312,10 +366,10 @@ Public Class wb_KomponParam301
                 Try
                     Naehrwert(idx) = CDbl(value)
                 Catch ex As Exception
-                    Trace.WriteLine("Fehler bei DatenLink - Index = " & index & " Wert = " & value)
+                    Trace.WriteLine("@E_Fehler bei DatenLink - Index = " & index & " Wert = " & value)
                 End Try
             Else
-                Trace.WriteLine("Fehler bei DatenLink - Index " & index & " nicht definiert")
+                Trace.WriteLine("@E_Fehler bei DatenLink - Index " & index & " nicht definiert")
             End If
         End Set
     End Property
@@ -333,7 +387,40 @@ Public Class wb_KomponParam301
                         Allergen(idx) = AllergenInfo.ERR
                 End Select
             Else
-                Trace.WriteLine("Fehler bei DatenLink - Index " & index & " nicht definiert")
+                Trace.WriteLine("@E_Fehler bei DatenLink - Index " & index & " nicht definiert")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property ffNaehrWert(index As String) As String
+        Set(value As String)
+            Dim idx As Integer = OpenFoodFactsToIndex(index)
+            If idx > 0 Then
+                Try
+                    Naehrwert(idx) = CDbl(value.Replace(".", ","))
+                Catch ex As Exception
+                    Trace.WriteLine("@E_Fehler bei OpenFoodFacts - Index = " & index & " Wert = " & value)
+                End Try
+            Else
+                Trace.WriteLine("@E_Fehler bei DatenLink - Index " & index & " nicht definiert")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property ffAllergen(index As String) As String
+        Set(value As String)
+            Dim idx As Integer = OpenFoodFactsToIndex(index)
+            If idx > 0 Then
+                Select Case value
+                    Case "CONTAINED"
+                        Allergen(idx) = AllergenInfo.C
+                    Case "MAY_CONTAINED"
+                        Allergen(idx) = AllergenInfo.T
+                    Case Else
+                        Allergen(idx) = AllergenInfo.ERR
+                End Select
+            Else
+                Trace.WriteLine("@E_Fehler bei OpenFoodFacts - Index " & index & " nicht definiert")
             End If
         End Set
     End Property
@@ -348,7 +435,7 @@ Public Class wb_KomponParam301
                     PistorNaehrWert(idx) = value
                 End If
             Else
-                Trace.WriteLine("Fehler bei Pistor - Index " & index & " nicht definiert")
+                Trace.WriteLine("@E_Fehler bei Pistor - Index " & index & " nicht definiert")
             End If
         End Set
     End Property
@@ -430,7 +517,7 @@ Public Class wb_KomponParam301
     Private Function AddNwtErnaehrungsForm(Ernaehrung1 As ErnaehrungsForm, Ernaehrung2 As ErnaehrungsForm) As ErnaehrungsForm
 
         'Nur wenn beide Parameter 'Y' haben ist das Ergebnis 'Y'
-        If Ernaehrung1 = wb_Global.ErnaehrungsForm.Y And Ernaehrung2 = wb_Global.ErnaehrungsForm.Y Then
+        If Ernaehrung1 = wb_Global.ErnaehrungsForm.Y AndAlso Ernaehrung2 = wb_Global.ErnaehrungsForm.Y Then
             Return wb_Global.ErnaehrungsForm.Y
         Else
             Return wb_Global.ErnaehrungsForm.N
@@ -449,14 +536,16 @@ Public Class wb_KomponParam301
     ''' <returns></returns>
     Public Function MySQLdbUpdate(KoNr As Integer, ByRef winback As wb_Sql) As Boolean
         'Result OK
-        MySQLdbUpdate = True
+        Dim Result As Boolean = True
 
         'alle Datensätze im Array durchlaufen
         For i = 0 To maxTyp301
             If IsValidParameter(i) Then
-                MySQLdbUpdate = MySQLdbUpdate(KoNr, i, winback)
+                Result = Result AndAlso MySQLdbUpdate(KoNr, i, winback)
             End If
         Next
+        'Ergebnis zurückgeben
+        Return Result
     End Function
 
     ''' <summary>
@@ -487,7 +576,7 @@ Public Class wb_KomponParam301
     End Function
 
     ''' <summary>
-    ''' Update aller geänderten Komponenten-Parameter in Tabelle 
+    ''' Update ALLER geänderten Komponenten-Parameter in Tabelle 
     ''' 
     ''' [dbo].[ArtikelNaehrwerte]
     '''     [ArtikelNr]
@@ -503,62 +592,135 @@ Public Class wb_KomponParam301
     '''     [StuecklistenVariantenNr]
     '''     [AllergenNr]
     '''     [Kennzeichnung]
+    '''     
+    ''' IN WELCHE TABELLE WERDEN DIE WERTE GESCHRIEBEN (VEGAN, HALAL....) Mail vom 16.01.2020/22.10.2021
+    ''' Tabelle Allergene festgelegt JE/Mail vom 24.05.2022
+    '''     
+    ''' Es wird NUR die Variante 0 geschrieben. Alle anderen OrgaBack(!)-Varianten werden, bei Bedarf, von OrgaBack-Reorg-Rezepturen erzeugt und geschrieben.
+    ''' Das ist nur notwendig, wenn der Artikel eine OrgaBack-Rezeptur(Stückliste) erhält. Damit wird dann auch die Default-Variante gesetzt. Die Variante 0
+    ''' enthält im diesem Fall nur das Default-Rezept. Die Nährwerte werden von der Stückliste anhand der Standard-Variante in Variante 0 geschrieben!
+    ''' 
+    ''' Für reine Rohstoffe werden beim Reorg KEINE Werte in die anderen Varianten geschrieben.
+    '''       Eventuell muss dann doch in alle Varianten geschreiben werden...
+    '''       Vorerst wird eine Hinweismeldung ausgegeben (laut Info Ute Wamser machen Varianten bei Rohstoffen keinen Sinn)
+    ''' 
+    ''' Damit die Berechnung der Nährwerte auf der OrgaBack-Seite anhand der Varianten funktioniert, muss in dem Artikel/Halbfertig-Produkt der Stückliste
+    ''' die zum Artikel passende Einheit hinterlegt sein!
+    ''' 
+    ''' FÜR ALLE WINBACK-ARTIKEL UND HALBFERITG-PRODUKTE WERDEN DAHER DIE NÄHRWERTE IMMER IN MEHREN EINHEITEN (STK UND KG) IN DIE ORGABACK-DB GESCHRIEBEN
+    ''' (Problem Niehaves vom 30.03.2023)
+    ''' Die entsprechenden Einheiten müssen beim Artikel in OrgaBack vorhanden sein (Abfrage [dbo].Umrechnung zur ArtikelNr)
+    ''' 
+    ''' WinBack berechnet die Nährwerte bezogen auf 100g. In OrgaBack müssen die Nährwerte bezogen auf die Einheit in der Datenbank-Tabelle abgelegt werden.
+    ''' Die Umrechnung für die Ausgabe der /100g-Werte erfolgt in OrgaBack dann durch Berechnung anhand des Netto-Gewichtes.
+    ''' Die Funktion wird mit Parameter Artikelnummer und Unit aufgerufen. Unit hat entweder den Wert kg(11) oder Stk(0)
+    ''' 
     ''' </summary>
     ''' <returns></returns>
     Public Function MsSQLdbUpdate(KoAlNum As String, Unit As Integer, orgaback As wb_Sql) As Boolean
         'Update-Statement wird dynamisch erzeugt    
         Dim sql As String
         'Result OK
-        MsSQLdbUpdate = True
+        Dim Result As Boolean = True
+        'Umrechnungs-Faktor(Einheiten)
+        Dim x As ArtikelEinheiten
+        'Stücklisten-Varianten
+        Dim StkLstVar As List(Of Integer) = GetStkListenVarianten(KoAlNum, orgaback)
 
-        'zunächst werden alle vorhandenen Einträge zur Komponente in der Tabelle ArtikelNaehrwerte und ArtikelAllergene gelöscht
-        'TODO Was ist mit den Varianten für Allergene und Nährwerte
-        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteNwt, KoAlNum, Unit, 0))
-        orgaback.sqlCommand(sql)
-        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteAlg, KoAlNum, 0))
-        orgaback.sqlCommand(sql)
+        'Liste aller Einheiten zu dieser ArtikelNummer
+        sql = wb_sql_Selects.setParams(wb_sql_Selects.mssqlSelUmrechnung, KoAlNum, Unit)
+        Umrechnung.Clear()
 
-        'dann alle neuen Felder wieder eingesetzt
-        'alle Datensätze im Array durchlaufen (Nährwerte/Allergene beginnen bei Index 1)
-        For i = 1 To maxTyp301
-            If IsUsedParameter(i) And IsOrgaBackParameter(i) Then
+        'Default-Einheit
+        x = New ArtikelEinheiten With {._InEinheit = Unit}
+        If Unit = obEinheitStk Then
+            x._Umrechnungsfaktor = FaktorStkGewicht
+        Else
+            x._Umrechnungsfaktor = FaktorStkGewicht
+        End If
+        Umrechnung.Add(x)
 
-                'nur gültige Nährwerte/Allergene in DB schreiben (reduziert die Datenlast)
-                sql = ""
-                'Allergene haben in OrgaBack einen eigene Tabelle
-                If IsAllergen(i) Then
-                    If (NaehrwertInfo(i)._Allergen > wb_Global.AllergenInfo.N) Then
-                        'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
-                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, i, oWert(i), "0"))
-                        'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
-                    End If
-                ElseIf IsErnaehrung(i) Then
-                    If (NaehrwertInfo(i)._ErnaehrungsForm > wb_Global.ErnaehrungsForm.X) Then
-                        'TODO IN WELCHE TABELLE WERDEN DIE WERTE GESCHRIEBEN (VEGAN, HALAL....) Mail vom 16.01.2020
-                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, i, oWert(i), "0"))
-                        'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
-                    End If
+        'alle anderen Einheiten zu dieser Artikelnummer
+        If orgaback.sqlSelect(sql) Then
+            While orgaback.Read
+                x = New ArtikelEinheiten With {._InEinheit = orgaback.iField("InEinheit")}
+                If Unit = obEinheitStk Then
+                    x._Umrechnungsfaktor = wb_Functions.StrToDouble(orgaback.sField("Umrechnungsfaktor")) * FaktorStkGewicht
                 Else
-                    If (NaehrwertInfo(i)._Naehrwert > 0) Then
-                        'TODO J.Erhardt-StoredProcedure erstellen zum Updaten der Nährwertinfo
-                        sql = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertNwt, KoAlNum, i, oWert(i), Unit, "0"))
-                        'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
-                    End If
+                    x._Umrechnungsfaktor = wb_Functions.StrToDouble(orgaback.sField("Umrechnungsfaktor")) * FaktorStkGewicht
                 End If
+                Umrechnung.Add(x)
+            End While
+        End If
+        'Lesen beendet
+        orgaback.CloseRead()
 
-                'Update-Statement wird dynamisch erzeugt (nur wenn auch Daten vorhanden sind)
-                If sql <> "" Then
-                    If orgaback.sqlCommand(sql) < 0 Then
-                        MsSQLdbUpdate = False
-                    End If
-                End If
-            End If
+        'zunächst werden alle vorhandenen Einträge zur Komponente für alle Stücklistenvarianten in der Tabelle ArtikelNaehrwerte und ArtikelAllergene gelöscht.
+        For Each x In Umrechnung
+            sql = wb_sql_Selects.setParams(wb_sql_Selects.mssqlDeleteNwt, KoAlNum, x._InEinheit)
+            orgaback.sqlCommand(sql)
         Next
+
+        'Alle Nährwerte zu dieser Artikelnummer in allen Stücklistenvarianten löschen
+        sql = wb_sql_Selects.setParams(wb_sql_Selects.mssqlDeleteAlg, KoAlNum)
+        orgaback.sqlCommand(sql)
+
+        'dann alle neuen Felder für alle Stücklistenvarianten wieder schreiben
+        For Each s In StkLstVar
+            'alle Datensätze im Array durchlaufen (Nährwerte/Allergene beginnen bei Index 1)
+            For i = 1 To maxTyp301
+                If IsUsedParameter(i) AndAlso IsOrgaBackParameter(i) Then
+
+                    'Allergene haben in OrgaBack einen eigene Tabelle
+                    If IsAllergen(i) Then
+                        If (NaehrwertInfo(i)._Allergen > wb_Global.AllergenInfo.N) Then
+                            'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                            sql = wb_sql_Selects.setParams(wb_sql_Selects.mssqlInsertAlg, KoAlNum, i, oWert(i), s.ToString)
+                            Result = (orgaback.sqlCommand(sql) < 0)
+                        End If
+                    ElseIf IsErnaehrung(i) Then
+                        If (NaehrwertInfo(i)._ErnaehrungsForm > wb_Global.ErnaehrungsForm.X) Then
+                            'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                            sql = wb_sql_Selects.setParams(wb_sql_Selects.mssqlInsertErng, KoAlNum, i, oWert(i), s.ToString)
+                            Result = (orgaback.sqlCommand(sql) < 0)
+                        End If
+                    Else
+                        If (NaehrwertInfo(i)._Naehrwert > 0) Then
+                            'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+
+                            'Schreiben Nährwert in allen vorhandenen Einheiten (mit der entsprechenden Umrechnung)
+                            For Each x In Umrechnung
+                                sql = wb_sql_Selects.setParams(wb_sql_Selects.mssqlInsertNwt, KoAlNum, i, CalculateOrgaBackNaehrwert(NaehrwertInfo(i)._Naehrwert, i, x._Umrechnungsfaktor), x._InEinheit, s.ToString)
+                                Result = (orgaback.sqlCommand(sql) < 0)
+                            Next
+
+                            ''Umrechnen von kg in Stk oder umgekehrt
+                            'Select Case Unit
+                            '    Case wb_Global.obEinheitKilogramm
+                            '        sql_b = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertNwt, KoAlNum, i, oWert(i), wb_Global.obEinheitStk, "0")
+                            '    Case wb_Global.obEinheitStk
+                            '        sql_b = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertNwt, KoAlNum, i, oWert(i), wb_Global.obEinheitKilogramm, "0")
+                            'End Select
+                        End If
+                    End If
+
+                    ''Update-Statement wird dynamisch erzeugt (nur wenn auch Daten vorhanden sind)
+                    'If sql <> "" AndAlso orgaback.sqlCommand(sql) < 0 Then
+                    '    Result = False
+                    'End If
+
+                    'If sql_b <> "" AndAlso orgaback.sqlCommand(sql_b) < 0 Then
+                    '    Result = False
+                    'End If
+                End If
+            Next
+        Next
+        Return Result
     End Function
 
     ''' <summary>
     ''' Update EINES geänderte Komponenten-Parameter in Tabelle.
-    ''' Da REPLACE be msSQL nicht funktioniert wird zuerst versucht, per UPDATE den Datensatz zu aktualisieren. Wenn 
+    ''' Da REPLACE bei msSQL nicht funktioniert wird zuerst versucht, per UPDATE den Datensatz zu aktualisieren. Wenn 
     ''' das UPDATE nicht funktioniert (Datensatz nicht vorhanden) wird per INSERT der Datensatz neu angelegt
     ''' 
     ''' [dbo].[ArtikelNaehrwerte]
@@ -577,49 +739,68 @@ Public Class wb_KomponParam301
     '''     [Kennzeichnung]
     ''' </summary>
     ''' <returns></returns>
-    Public Function MsSQLdbUpdate(KoAlNum As String, ParamNr As Integer, Unit As Integer, orgaback As wb_Sql) As Boolean
+    Public Function MsSQLdbUpdate(KoAlNum As String, ParamNr As Integer, Unit As Integer, orgaback As wb_Sql, StkLstVar As List(Of Integer)) As Boolean
         'Update-Statement wird dynamisch erzeugt    
         Dim sql_Delete As String
         Dim sql_Insert As String
+        Dim Result As Boolean = True
 
         'Parameter-Nummer ist gültig
-        If IsValidParameter(ParamNr) And IsOrgaBackParameter(ParamNr) Then
+        If IsValidParameter(ParamNr) AndAlso IsOrgaBackParameter(ParamNr) Then
 
-            'Allergene haben in OrgaBack einen eigene Tabelle
-            If IsAllergen(ParamNr) Then
-                sql_Delete = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteParamAlg, KoAlNum, ParamNr, 0))
-                sql_Insert = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, ParamNr, oWert(ParamNr), 0))
-                'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
-            ElseIf IsErnaehrung(ParamNr) Then
-                'TODO WELCHE TABELLE IN ORGABACK
-                sql_Delete = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteParamAlg, KoAlNum, ParamNr, 0))
-                sql_Insert = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertAlg, KoAlNum, ParamNr, oWert(ParamNr), 0))
-                'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
-            Else
-                sql_Delete = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlDeleteParamNwt, KoAlNum, ParamNr, Unit, 0))
-                sql_Insert = (wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertNwt, KoAlNum, ParamNr, oWert(ParamNr), Unit, 0))
-                'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
-            End If
+            For Each s In StkLstVar
 
-            'Update-Statement wird versucht
-            Select Case orgaback.sqlCommand(sql_Delete)
-                Case < 0
-                    'Fehler bei Zugriff auf die Datenbank
-                    Return False
-                Case 0, 1
-                    'Delete war erfolgreich - Insert Datensatz versuchen
-                    If orgaback.sqlCommand(sql_Insert) < 0 Then
-                        'Insert fehlgeschlagen - Fehler
-                        Return False
-                    End If
-                Case Else
-                    'Unbekannter Fehler 
-                    Return False
-            End Select
+                'Allergene haben in OrgaBack einen eigene Tabelle
+                If IsAllergen(ParamNr) Then
+                    sql_Delete = (wb_sql_Selects.setParams(wb_sql_Selects.mssqlDeleteParamAlg, KoAlNum, ParamNr, s.ToString))
+                    sql_Insert = (wb_sql_Selects.setParams(wb_sql_Selects.mssqlInsertAlg, KoAlNum, ParamNr, oWert(ParamNr), s.ToString))
+                    'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                ElseIf IsErnaehrung(ParamNr) Then
+                    sql_Delete = (wb_sql_Selects.setParams(wb_sql_Selects.mssqlDeleteParamAlg, KoAlNum, ParamNr, s.ToString))
+                    sql_Insert = (wb_sql_Selects.setParams(wb_sql_Selects.mssqlInsertAlg, KoAlNum, ParamNr, oWert(ParamNr), s.ToString))
+                    'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                Else
+                    sql_Delete = (wb_sql_Selects.setParams(wb_sql_Selects.mssqlDeleteParamNwt, KoAlNum, ParamNr, Unit, s.ToString))
+                    sql_Insert = (wb_sql_Selects.setParams(wb_sql_Selects.mssqlInsertNwt, KoAlNum, ParamNr, oWert(ParamNr), Unit, s.ToString))
+                    'Debug.Print("Update OrgaBack Parameter " & i & " Wert " & Wert(i))
+                End If
+
+                'Update-Statement wird versucht
+                Select Case orgaback.sqlCommand(sql_Delete)
+                    Case < 0
+                        'Fehler bei Zugriff auf die Datenbank
+                        Result = False
+                    Case 0, 1
+                        'Delete war erfolgreich - Insert Datensatz versuchen
+                        If orgaback.sqlCommand(sql_Insert) < 0 Then
+                            'Insert fehlgeschlagen - Fehler
+                            Result = False
+                        End If
+                    Case Else
+                        'Unbekannter Fehler 
+                        Result = False
+                End Select
+            Next
         End If
+
         'Keine Änderung der Daten notwendig
-        Return True
+        Return Result
     End Function
 
+    Public Function GetStkListenVarianten(KoAlNum As String, orgaback As wb_Sql) As List(Of Integer)
+        ' Liste aller Stücklisten-Varianten zu diesem Artikel
+        Dim Result As New List(Of Integer)
+        Dim sql As String = wb_sql_Selects.setParams(wb_sql_Selects.mssqlSelStkListeVariante, KoAlNum)
+        If orgaback.sqlSelect(sql) Then
+            While orgaback.Read
+                Dim StkListeVariante As Integer = orgaback.iField("StuecklistenVariantenNr")
+                Result.Add(StkListeVariante)
+            End While
+        End If
+        'Lesen beendet
+        orgaback.CloseRead()
+        'Liste zurückgeben
+        Return Result
+    End Function
 
 End Class

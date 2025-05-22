@@ -1,4 +1,5 @@
 ﻿Imports MySql.Data.MySqlClient
+Imports Newtonsoft.Json.Linq
 Imports WinBack
 Imports WinBack.wb_Functions
 Imports WinBack.wb_Global
@@ -22,14 +23,17 @@ Public Class wb_Komponente
     Private KA_VerarbeitungshinweiseDPI As String
     Private KO_IdxCloud As String
     Private KA_Rz_Nr As Integer
+    Private KA_Rz_Nr_HasChanged As Boolean = False
     Private KA_Lagerort As String
     Private KA_Preis As String
     Private KA_Grp1 As Integer
     Private KA_Grp2 As Integer
+    Private KA_Grp_HasChanged As Boolean = False
     Private KA_Charge_Opt_kg As String
     Private KA_zaehlt_zu_RZ_Gesamtmenge As String
     Private KA_zaehlt_zu_NWT_Gesamtmenge As String
     Private KA_aktiv As Integer
+    Private KA_alternativ_RS As String
     Private KA_PreisEinheit As Integer
 
     Private KO_DeklBezeichnungExtern As New wb_Hinweise(Hinweise.DeklBezRohstoff)
@@ -42,12 +46,12 @@ Public Class wb_Komponente
     Private _RezeptName As String = Nothing
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
-    Private _MehlZusammensetzung As String = wb_Global.NOSTRING
     Private _ReadCalcPreis As Boolean = True
 
     Private _RootParameter As New wb_KomponParam(Nothing, 0, 0, "")
     Private _Parameter As wb_KomponParam
     Private _Lager As wb_LagerOrt
+    Private _CalcVerkaufsgewicht As Double = wb_Global.UNDEFINED
 
     Public ktTypXXX As New wb_KomponParamXXX
     Public ktTyp200 As New wb_KomponParam200
@@ -57,6 +61,7 @@ Public Class wb_Komponente
     Public ktTyp220 As New wb_KomponParam220
     Public ktTyp300 As New wb_KomponParam300
     Public ktTyp301 As New wb_KomponParam301
+    Public ktTyp303 As New wb_KomponParam303
 
     Public NwtUpdate As New wb_Hinweise(Hinweise.NaehrwertUpdate)
     Public ArtikelChargen As New wb_MinMaxOptCharge
@@ -118,6 +123,7 @@ Public Class wb_Komponente
         ktTyp220 = New wb_KomponParam220
         ktTyp300 = New wb_KomponParam300
         ktTyp301 = New wb_KomponParam301
+        ktTyp303 = New wb_KomponParam303
 
         ktTyp301.IsCalculated = False
     End Sub
@@ -157,9 +163,12 @@ Public Class wb_Komponente
                     KO_Type = KType
                     Return True
                 End If
-            Case KomponTypen.KO_TYPE_HANDKOMPONENTE
-                If Type = KomponTypen.KO_TYPE_ARTIKEL Then
-                    KO_Type = KomponTypen.KO_TYPE_HANDKOMPONENTE
+            Case KomponTypen.KO_TYPE_HANDKOMPONENTE, KomponTypen.KO_TYPE_METER, KomponTypen.KO_TYPE_STUECK
+                If Type = KomponTypen.KO_TYPE_ARTIKEL OrElse
+                    Type = KomponTypen.KO_TYPE_STUECK OrElse
+                    Type = KomponTypen.KO_TYPE_METER OrElse
+                    Type = KomponTypen.KO_TYPE_HANDKOMPONENTE Then
+                    KO_Type = KType
                     Return True
                 End If
             Case KomponTypen.KO_TYPE_UNDEFINED
@@ -228,10 +237,40 @@ Public Class wb_Komponente
         End Get
     End Property
 
-    Public Property Kurzname As String
+    ''' <summary>
+    ''' Bemerkungsfeld zum Rohstoff. Wird in der Produktion im Materialbild angezeigt
+    ''' Dient z.B. bei identischen Silo-Rohstoffen zur Unterscheidung der Silo's, da in OrgaBack nur eine Rohstoff-Nummer und 
+    ''' eine eindeutige Rohstoff-Bezeichnung zulässig ist.
+    ''' 
+    '''     Nummer  150002  Brötchenmehl 550    kann in mehreren Silos vorhanden sein!
+    '''     
+    ''' Die gleiche Nummer dient in WinBack zur Umschaltung zwischen den Silos.
+    ''' 
+    ''' Das Bemerkungsfeld kommt aus der Tabelle winback.Lagerorte.LG_Kommentar
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Bemerkung As String
+        Get
+            If _Lager Is Nothing Then
+                _Lager = New wb_LagerOrt(KA_Lagerort)
+            End If
+            Return _Lager.Kommentar
+        End Get
+        Set(value As String)
+            If _Lager IsNot Nothing Then
+                _Lager.Kommentar = value
+            End If
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' EAN-Code. Verwendet wird das Datenbank-Feld Kurzname.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property EANCode As String
         Set(value As String)
             'Änderungen loggen
-            KA_Kurzname = ChangeLogAdd(LogType.Prm, Parameter.Tx_Kommentar, KA_Kurzname, wb_Functions.XRemoveSonderZeichen(value))
+            KA_Kurzname = ChangeLogAdd(LogType.Prm, Parameter.Tx_EANCode, KA_Kurzname, wb_Functions.XRemoveSonderZeichen(value))
             'Flag setzen wenn sich die Daten geändert haben
             If ChangeLogChanged Then
                 _DataHasChanged = True
@@ -269,14 +308,14 @@ Public Class wb_Komponente
     Public Property VerarbeitungsHinweisePfad As String
         Get
             'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
-            If KA_Verarbeitungshinweise <> "" And KA_VerarbeitungshinweisePfad = "" Then
+            If KA_Verarbeitungshinweise <> "" AndAlso KA_VerarbeitungshinweisePfad = "" Then
                 KA_VerarbeitungshinweisePfad = wb_Functions.XRestoreSonderZeichen(wb_sql_Functions.getKomponParam(Nr, KomponParams.VerarbeitungsHinweisePfad))
             End If
             Return KA_VerarbeitungshinweisePfad
         End Get
         Set(value As String)
             'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
-            If value <> "" And KA_Verarbeitungshinweise <> "" Then
+            If value <> "" AndAlso KA_Verarbeitungshinweise <> "" Then
                 KA_VerarbeitungshinweisePfad = value
                 wb_sql_Functions.setKomponParam(Nr, KomponParams.VerarbeitungsHinweisePfad, wb_Functions.XRemoveSonderZeichen(KA_VerarbeitungshinweisePfad), "Pfad Verarbeitungshinweise")
             End If
@@ -290,14 +329,14 @@ Public Class wb_Komponente
     Public Property VerarbeitungsHinweise_DPI As String
         Get
             'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
-            If KA_Verarbeitungshinweise <> "" And KA_VerarbeitungshinweisePfad = "" Then
+            If KA_Verarbeitungshinweise <> "" AndAlso KA_VerarbeitungshinweisePfad = "" Then
                 KA_VerarbeitungshinweiseDPI = wb_sql_Functions.getKomponParam(Nr, KomponParams.VerarbeitungsHinweiseDPI)
             End If
             Return KA_VerarbeitungshinweiseDPI
         End Get
         Set(value As String)
             'nur gültig wenn auch eine Hinweis-Datei vorhanden ist.
-            If value <> "" And KA_Verarbeitungshinweise <> "" Then
+            If value <> "" AndAlso KA_Verarbeitungshinweise <> "" Then
                 KA_VerarbeitungshinweiseDPI = value
                 wb_sql_Functions.setKomponParam(Nr, KomponParams.VerarbeitungsHinweiseDPI, KA_VerarbeitungshinweiseDPI, "DPI Verarbeitungshinweise")
             End If
@@ -323,27 +362,28 @@ Public Class wb_Komponente
         Get
             'Wenn das Flag ReadCalcPreis gesetzt ist (Rechenzeit z.B. Prodplanung)
             'sonst wird der letzte gespeicherte Wert aus KA_Preis zurückgegeben
+
+            'in OrgaBack-Office darf der Preis nicht berechnet werden, da sonst eine Signum-dll fehlt
             If _ReadCalcPreis Then
                 If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
-                    KA_Preis = ob_Artikel_Services.GetArtikelPreis(Nummer, Type)
+                    KA_Preis = wb_KomponentePreis.GetArtikelPreis(Nummer, Type).ToString
                 Else
                     If RzNr > 0 Then
                         'TODO - Rechenzeit ?
-                        ' KA_Preis = CalculatePreis()
-
+                        KA_Preis = CalculatePreis(RzNr).ToString
                     End If
                 End If
             End If
 
             'Zahlenwerte aus der Datenbank immer inm Format de-DE
-            Return FormatStr(KA_Preis, 3, 4, "de-DE")
+            Return FormatStr(KA_Preis, 3, 4, "sql")
         End Get
     End Property
 
-    Public Function CalculatePreis() As Double
+    Private Function CalculatePreis(RzNr As Integer) As Double
         If RzNr > 0 Then
             'Teig-Rezeptur komplett einlesen
-            'TODO evtl zusammenlegen mit GetProduktionsDaten ?? (Rechenzeit gegen einfaches einlesen der Kopfdaten)
+            'TODO evtl zusammenlegen mit GetProduktionsDaten ?? (Rechenzeit gegen einfaches Einlesen der Kopfdaten)
             'Lösung: Kalkulation gezielt anstossen
             Dim Rezept As New wb_Rezept(RzNr, Nothing)
             Return Rezept.RootRezeptSchritt.Preis
@@ -354,6 +394,9 @@ Public Class wb_Komponente
 
     Public Property Gruppe1 As Integer
         Set(value As Integer)
+            If KA_Grp1 <> value Then
+                KA_Grp_HasChanged = True
+            End If
             KA_Grp1 = value
             _DataHasChanged = True
         End Set
@@ -364,6 +407,9 @@ Public Class wb_Komponente
 
     Public Property Gruppe2 As Integer
         Set(value As Integer)
+            If KA_Grp1 <> value Then
+                KA_Grp_HasChanged = True
+            End If
             KA_Grp2 = value
             _DataHasChanged = True
         End Set
@@ -425,14 +471,13 @@ Public Class wb_Komponente
             End If
         End Set
         Get
-            If KA_zaehlt_zu_NWT_Gesamtmenge = wb_Global.ZaehltZumNwtGewicht And ZaehltNichtZumRezeptGewicht Then
+            If (KA_zaehlt_zu_NWT_Gesamtmenge = wb_Global.ZaehltZumNwtGewicht) AndAlso ZaehltNichtZumRezeptGewicht Then
                 Return True
             Else
                 Return False
             End If
         End Get
     End Property
-
 
     Public Property Aktiv As Boolean
         Get
@@ -451,15 +496,24 @@ Public Class wb_Komponente
         End Set
     End Property
 
-    Public Property FreigabeProduktion
+    Public Property AlternativRohstoff As String
         Get
-            Return (KA_Art = 1)
+            Return KA_alternativ_RS
         End Get
-        Set(value)
-            If value Then
-                KA_Art = 1
+        Set(value As String)
+            KA_alternativ_RS = value
+        End Set
+    End Property
+
+    Public Property FreigabeProduktion As Boolean
+        Get
+            Return (KA_Art = "1")
+        End Get
+        Set
+            If Value Then
+                KA_Art = "1"
             Else
-                KA_Art = 0
+                KA_Art = "0"
             End If
         End Set
     End Property
@@ -537,14 +591,32 @@ Public Class wb_Komponente
             Case wb_Global.KomponTypen.KO_TYPE_ARTIKEL
                 'abhängig von der Komponenten-Type werden die einzelnen Parameter durchlaufen
                 AddParamNodes("Artikel", t)
+                'Parameter Produkinformation (nicht OrgaBack)
+                If wb_GlobalSettings.pVariante <> wb_Global.ProgVariante.OrgaBack Then
+                    AddParamNodes("", wb_Global.ktParam.kt200)
+                End If
                 'Parameter Verarbeitungshinweise
                 AddParamNodes("", wb_Global.ktParam.kt201)
                 'Parameter Kalkulation (nicht OrgaBack)
                 If wb_GlobalSettings.pVariante <> wb_Global.ProgVariante.OrgaBack Then
                     AddParamNodes("", wb_Global.ktParam.kt202)
                 End If
+                'Parameter Produktion
+                AddParamNodes("", wb_Global.ktParam.kt300)
+
+                'Parameter/Nährwerte neu berechnen (auf Basis der zugeordneten Rezeptur)
+                'Rezept mit allen Rezeptschritten lesen (NoMessage=True unterdrückt die Meldung "Rezept verweist auf sich selbst")
+                Dim Rzpt As New wb_Rezept(KA_Rz_Nr, Nothing, Backverlust, 1, "", "", True, False)
+                'Änderungs-Log löschen
+                ClearReport()
+
+                'Nährwert-Information berechnen
+                ktTyp301 = Rzpt.KtTyp301
                 'Parameter Nährwerte
                 AddParamNodes("", wb_Global.ktParam.kt301)
+
+                'Parameter EU und Bio-Verbände
+                AddParamNodes("EU/Bio", wb_Global.ktParam.kt303)
 
             Case KomponTypen.KO_TYPE_AUTOKOMPONENTE, KomponTypen.KO_TYPE_EISKOMPONENTE, KomponTypen.KO_TYPE_HANDKOMPONENTE, KomponTypen.KO_TYPE_WASSERKOMPONENTE
                 'abhängig von der Komponenten-Type werden die einzelnen Parameter durchlaufen
@@ -552,7 +624,10 @@ Public Class wb_Komponente
                 'Parameter Nährwerte (nur wenn kein Rezept verknüpft)
                 'TODO Nährwerte des unterlagerten Rezeptes anzeigen(muss vorher berechnet werden)
                 If RzNr <= 0 Then
+                    'Parameter Nährwerte
                     AddParamNodes("", wb_Global.ktParam.kt301)
+                    'Parameter EU und Bio-Verbände
+                    AddParamNodes("", wb_Global.ktParam.kt303)
                 End If
 
             Case KomponTypen.KO_TYPE_SAUER_MEHL, KomponTypen.KO_TYPE_SAUER_WASSER
@@ -593,8 +668,14 @@ Public Class wb_Komponente
                 Select Case t
                     Case < wb_Global.ktParam.kt200
                         _Parameter.Wert = ktTypXXX.Wert(p)
+                    Case = wb_Global.ktParam.kt201
+                        _Parameter.Wert = ktTyp201.Wert(p)
+                    Case = wb_Global.ktParam.kt300
+                        _Parameter.Wert = ktTyp300.Wert(p)
                     Case wb_Global.ktParam.kt301
                         _Parameter.Wert = ktTyp301.Wert(p)
+                    Case wb_Global.ktParam.kt303
+                        _Parameter.Wert = ktTyp303.Wert(p)
                 End Select
             End If
         Next
@@ -607,8 +688,11 @@ Public Class wb_Komponente
     ''' Die Parameter-Werte werden vorher von VirtualTree-Knoten in die KomponParam...-Daten übertragen
     ''' </summary>
     Public Sub SaveParameterArray()
+
         'Flag Allergen-Info wurde geändert
         Dim OrgaBackUpdateAllergene As Boolean = False
+        'Stücklisten-Varianten
+        Dim StkLstVar As List(Of Integer) = Nothing
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Datenbank-Verbindung öffnen - MsSQL
@@ -616,13 +700,15 @@ Public Class wb_Komponente
         If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
             'Datenbank-Verbindung öffnen - MsSQL
             OrgasoftMain = New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+            'Stücklisten-Varianten
+            StkLstVar = ktTyp301.GetStkListenVarianten(KO_Nr_AlNum, OrgasoftMain)
         End If
 
         'Ausgehend vom Root-Knoten werden alle Child-Knoten durchlaufen
         For Each p As wb_KomponParam In _RootParameter.ChildSteps
 
             'Parameter Produktion prüfen/reparieren (Fehler bei Niehaves nach Neuanlegen Rohstoff)
-            If (KO_Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE) And (p.TypNr < wb_Global.ktParam.kt200) And (p.ChildSteps.Count < 7) Then
+            If (KO_Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE) AndAlso (p.TypNr < wb_Global.ktParam.kt200) AndAlso (p.ChildSteps.Count < 7) Then
                 'Parameter in winback.KomponParams anlegen
                 ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_SollMenge, winback)
                 ktTypXXX.MySQLdbUpdate(KO_Nr, wb_Global.T102_SollProzent, winback)
@@ -640,10 +726,28 @@ Public Class wb_Komponente
 
                         'Allgemeine Parameter
                         Case < wb_Global.ktParam.kt200
-                            'Wert in kt301-Array übertragen
+                            'Wert in ktxxx-Array übertragen
                             ktTypXXX.Wert(x.ParamNr) = x.Wert
                             'Update einzelner Datensatz in winback-Datenbank
                             ktTypXXX.MySQLdbUpdate(Nr, x.ParamNr, winback)
+                            'Flag zurücksetzen
+                            x.Changed = False
+
+                        'Artikel Parameter
+                        Case wb_Global.ktParam.kt201
+                            'Wert in kt201-Array übertragen
+                            ktTyp201.Wert(x.ParamNr) = x.Wert
+                            'Update einzelner Datensatz in winback-Datenbank
+                            ktTyp201.MySQLdbUpdate(Nr, x.ParamNr, winback)
+                            'Flag zurücksetzen
+                            x.Changed = False
+
+                        'Parameter Produktion
+                        Case wb_Global.ktParam.kt300
+                            'Wert in kt300-Array übertragen
+                            ktTyp300.Wert(x.ParamNr) = x.Wert
+                            'Update einzelner Datensatz in winback-Datenbank
+                            ktTyp300.MySQLdbUpdate(Nr, x.ParamNr, winback)
                             'Flag zurücksetzen
                             x.Changed = False
 
@@ -655,7 +759,22 @@ Public Class wb_Komponente
                             ktTyp301.MySQLdbUpdate(Nr, x.ParamNr, winback)
                             'Update einzelner Parametersatz in OrgaBack
                             If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
-                                ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, x.ParamNr, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
+                                ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, x.ParamNr, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain, StkLstVar)
+                                'Flag setzen - Update AllergenListe in OrgaBack notwendig
+                                OrgaBackUpdateAllergene = True
+                            End If
+                            'Flag zurücksetzen
+                            x.Changed = False
+
+                        'EU und Bio-Verbände
+                        Case wb_Global.ktParam.kt303
+                            'Wert in kt303-Array übertragen
+                            ktTyp303.Wert(x.ParamNr) = x.Wert
+                            'Update einzelner Datensatz in winback-Datenbank
+                            ktTyp303.MySQLdbUpdate(Nr, x.ParamNr, winback)
+                            'Update einzelner Parametersatz in OrgaBack
+                            If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
+                                ktTyp303.MsSQLdbUpdate(KO_Nr_AlNum, x.ParamNr, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
                                 'Flag setzen - Update AllergenListe in OrgaBack notwendig
                                 OrgaBackUpdateAllergene = True
                             End If
@@ -664,7 +783,7 @@ Public Class wb_Komponente
 
                         Case Else
                             'Fehler - Parameter-Type nicht im Programm vorgesehen
-                            Debug.Print("SaveParameterArray UNDEF " & x.TypNr & "/" & x.Bezeichnung)
+                            'Debug.Print("SaveParameterArray UNDEF " & x.TypNr & "/" & x.Bezeichnung)
 
                     End Select
                 End If
@@ -678,14 +797,17 @@ Public Class wb_Komponente
         If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
             'wenn sich die Allergen-Info geändert hat - OrgaBack Allergen-Texte updaten
             If OrgaBackUpdateAllergene Then
+                'Zutatenliste in OrgaBack speichern
                 MsSqldbUpdate_Zutatenliste(OrgasoftMain)
+                'Update-Flag für alle Artikel setzen, deren Rezepte diesen Rohstoff enthalten
+                MySQLdbSetMarkerRzptListe(wb_Global.ArtikelMarker.nwtUpdate)
             End If
             'Datenbank-Verbindung wieder schliessen
             OrgasoftMain.Close()
         End If
     End Sub
 
-    Friend Sub LoadData(dataGridView As wb_DataGridView)
+    Public Sub LoadData(dataGridView As wb_DataGridView)
         'eventuell vorhandene Daten löschen
         Invalid()
         _DataHasChanged = False
@@ -698,14 +820,14 @@ Public Class wb_Komponente
         KO_Kommentar = dataGridView.Field("KO_Kommentar")
         KA_Preis = dataGridView.Field("KA_Preis")
         KO_IdxCloud = dataGridView.Field("KA_Matchcode")
-        KA_Rz_Nr = dataGridView.Field("KA_Rz_Nr")
+        KA_Rz_Nr = wb_Functions.StrToInt(dataGridView.Field("KA_Rz_Nr"))
         KA_Grp1 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp1"))
         KA_Grp2 = wb_Functions.StrToInt(dataGridView.Field("KA_Grp2"))
         KA_Charge_Opt_kg = dataGridView.Field("KA_Charge_Opt_kg")
         KA_zaehlt_zu_RZ_Gesamtmenge = dataGridView.Field("KA_zaehlt_zu_RZ_Gesamtmenge")
         KA_zaehlt_zu_NWT_Gesamtmenge = dataGridView.Field("KA_zaehlt_zu_NWT_Gesamtmenge")
-        KA_aktiv = dataGridView.Field("KA_aktiv")
-
+        KA_aktiv = wb_Functions.StrToInt(dataGridView.Field("KA_aktiv"))
+        KA_alternativ_RS = dataGridView.Field("KA_alternativ_RS")
     End Sub
 
     Friend Function SaveData(dataGridView As wb_DataGridView) As Boolean
@@ -723,6 +845,7 @@ Public Class wb_Komponente
             dataGridView.Field("KA_zaehlt_zu_RZ_Gesamtmenge") = KA_zaehlt_zu_RZ_Gesamtmenge
             dataGridView.Field("KA_zaehlt_zu_NWT_Gesamtmenge") = KA_zaehlt_zu_NWT_Gesamtmenge
             dataGridView.Field("KA_aktiv") = KA_aktiv
+            dataGridView.Field("KA_alternativ_RS") = KA_alternativ_RS
 
             _DataHasChanged = False
             Return True
@@ -736,11 +859,16 @@ Public Class wb_Komponente
             Return KA_Rz_Nr
         End Get
         Set(value As Integer)
+            'Flag RZ-Nummer wurde geändert
+            If value <> KA_Rz_Nr Then
+                KA_Rz_Nr_HasChanged = True
+            End If
             KA_Rz_Nr = value
-            'KA_Art setzen (Für Artikel immmer gleich Eins)
-            If (KA_Art = wb_Global.UNDEFINED) Or (KO_Type = KomponTypen.KO_TYPE_ARTIKEL) Then
-                'wenn eine Rezeptnummer definiert ist
-                If KA_Rz_Nr > 0 Then
+            'nur wenn KA_Art nicht definiert ist (Fehler bei Niehaves 21.02.2024)
+            '                                    (Fehler bei Niehaves 27.01.2025)
+            If (KA_Art = wb_Global.UNDEFINED) OrElse (KO_Type = KomponTypen.KO_TYPE_ARTIKEL) Then
+                'KA_Art setzen wenn eine Rezeptnummer definiert ist (Für Artikel immmer gleich Eins)
+                If (KA_Rz_Nr > 0) Then
                     KA_Art = "1"
                 Else
                     KA_Art = "0"
@@ -757,7 +885,9 @@ Public Class wb_Komponente
             Return _RezeptNummer
         End Get
         Set(value As String)
-
+            _RezeptNummer = value
+            'Änderung direkt in die Tabelle dbo.ArtikelHatMultiFeld schreiben
+            MFFWriteDB(wb_Global.MFF_RezeptNummer, _RezeptNummer)
         End Set
     End Property
 
@@ -769,7 +899,9 @@ Public Class wb_Komponente
             Return _RezeptName
         End Get
         Set(value As String)
-
+            _RezeptName = value
+            'Änderung direkt in die Tabelle dbo.ArtikelHatMultiFeld schreiben
+            MFFWriteDB(wb_Global.MFF_RezeptName, _RezeptName)
         End Set
     End Property
 
@@ -803,6 +935,13 @@ Public Class wb_Komponente
         End Get
         Set(value As Integer)
             _ArtikelLinienGruppe = value
+            'Änderung direkt in die Tabelle dbo.ArtikelHatMultiFeld schreiben
+            '2024-07-18/JW  Nur schreiben, wenn auch eine Artikel-Liniengruppe eingetragen ist!
+            '               Wenn ein Leerstring geschrieben wird, interpretiert OrgaBack das als
+            '               Aufarbeitung 0000
+            If sArtikeLinienGruppe <> "" Then
+                MFFWriteDB(wb_Global.MFF_ProduktionsLinie, sArtikeLinienGruppe)
+            End If
             'TODO wenn ein Rezept in Param6 angegeben ist, muss die Rezept-Liniengruppe angepasst werden
             ktTyp300.Liniengruppe = value
         End Set
@@ -829,6 +968,15 @@ Public Class wb_Komponente
             If iValue <> 0 Then
                 _ArtikelLinienGruppe = iValue
             End If
+        End Set
+    End Property
+
+    Public Property OfenGruppe As Integer
+        Get
+            Return ktTyp300.OfenGruppe
+        End Get
+        Set(value As Integer)
+            ktTyp300.OfenGruppe = value
         End Set
     End Property
 
@@ -894,7 +1042,6 @@ Public Class wb_Komponente
             TeigChargen.CopyFrom(Rezept.TeigChargen)
             ArtikelChargen.TeigGewicht = Rezept.RezeptGewicht
             Rezept.Dispose()
-            Rezept = Nothing
         Else
             'normale Komponente ohne Produktion
             _RezeptName = ""
@@ -903,7 +1050,9 @@ Public Class wb_Komponente
         End If
 
         'Artikel-Typ = 1 für Auto/Handkomponenten mit anhängender Rezeptur
-        'If KO_Type = KomponTypen.KO_TYPE_ARTIKEL Or RzNr > 0 Then
+        'TODO war auskommentiert - teilweise existieren Artikel mit KA_ART=0, diese werden nicht angezeigt!!
+        '2023-05-15 Wieder auskommentiert. Fehler bei Schaufler: KA_ART=1 wird angezeigt aber nicht gespeichert !
+        'If (KO_Type = KomponTypen.KO_TYPE_ARTIKEL) OrElse (RzNr > 0) Then
         '    KA_Art = 1
         'Else
         '    KA_Art = 0
@@ -922,7 +1071,6 @@ Public Class wb_Komponente
             Dim Rezept As New wb_Rezept(ktTyp300.RzNr)
             _ArtikelLinienGruppe = Rezept.LinienGruppe
             Rezept.Dispose()
-            Rezept = Nothing
         End If
     End Sub
 
@@ -936,7 +1084,11 @@ Public Class wb_Komponente
             'Rezeptkopfdaten sichern
             Rezept.MySQLdbWrite_Rezept(True)
             Rezept.Dispose()
-            Rezept = Nothing
+        End If
+
+        If KA_Rz_Nr_HasChanged OrElse KA_Grp_HasChanged Then
+            'Alle Artikel, deren Rezeptur diesen Rohstoff enthält, als geändert markieren
+            MySQLdbSetMarkerRzptListe(ArtikelMarker.nwtUpdate)
         End If
     End Sub
 
@@ -948,12 +1100,12 @@ Public Class wb_Komponente
     Public Sub SaveReport()
         Dim Ueberschrift As String
         If Type = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
-            Ueberschrift = "Änderungen für Artikel " & Nummer & " " & Bezeichnung & " " & vbNewLine
+            Ueberschrift = "Änderungen für Artikel " & Nummer & " " & Bezeichnung & " " & vbCrLf
         Else
-            Ueberschrift = "Änderungen für Rohstoff " & Nummer & " " & Bezeichnung & " " & vbNewLine
+            Ueberschrift = "Änderungen für Rohstoff " & Nummer & " " & Bezeichnung & " " & vbCrLf
         End If
 
-        Dim Strich = New String("="c, Len(Ueberschrift)) & vbNewLine
+        Dim Strich = New String("="c, Len(Ueberschrift)) & vbCrLf
         NwtUpdate.Memo = Ueberschrift & Strich & GetReport()
         NwtUpdate.Write()
     End Sub
@@ -964,7 +1116,7 @@ Public Class wb_Komponente
         End Get
     End Property
 
-    Public Property Deklaration As String
+    Public Property Deklaration(Optional DbWrite As Boolean = True) As String
         Get
             If wb_GlobalSettings.NwtInterneDeklaration Then
                 'Wenn die interne Deklarations-Bezeichnung leer ist
@@ -980,14 +1132,14 @@ Public Class wb_Komponente
         End Get
         Set(value As String)
             If wb_GlobalSettings.NwtInterneDeklaration Then
-                DeklBezeichungIntern = value
+                DeklBezeichungIntern(DbWrite) = value
             Else
-                DeklBezeichungExtern = value
+                DeklBezeichungExtern(DbWrite) = value
             End If
         End Set
     End Property
 
-    Public Property DeklBezeichungExtern As String
+    Public Property DeklBezeichungExtern(Optional DbWrite As Boolean = True) As String
         Get
             'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
             If Not KO_DeklBezeichnungExtern.ReadOK Then
@@ -997,16 +1149,22 @@ Public Class wb_Komponente
         End Get
         Set(value As String)
             KO_DeklBezeichnungExtern.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_DeklarationExtern, DeklBezeichungExtern, value)
-            'Datenänderung in Datenbank sichern
-            KO_DeklBezeichnungExtern.Write()
-            'Deklarations-Bezeichnung in OrgaBack DB schreiben
-            If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
-                MsSqldbUpdate_Zutatenliste()
+            'wenn Daten geändert worden sind - wird von ChangeLogAdd ausgewertet
+            If ChangeLogChanged AndAlso DbWrite Then
+                'Datenänderung in Datenbank sichern
+                KO_DeklBezeichnungExtern.Write()
+                'Deklarations-Bezeichnung in OrgaBack DB schreiben
+                If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
+                    MsSqldbUpdate_Zutatenliste()
+                End If
             End If
+
+            'Alle Artikel, deren Rezeptur diesen Rohstoff enthält, als geändert markieren
+            MySQLdbSetMarkerRzptListe(ArtikelMarker.nwtUpdate)
         End Set
     End Property
 
-    Public Property DeklBezeichungIntern As String
+    Public Property DeklBezeichungIntern(Optional DbWrite As Boolean = True) As String
         Get
             'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
             If Not KO_DeklBezeichnungIntern.ReadOK Then
@@ -1017,13 +1175,16 @@ Public Class wb_Komponente
         Set(value As String)
             KO_DeklBezeichnungIntern.Memo = ChangeLogAdd(LogType.Dkl, Parameter.Tx_DeklarationIntern, DeklBezeichungIntern, value)
             'wenn Daten geändert worden sind - wird von ChangeLogAdd ausgewertet
-            If ChangeLogChanged Then
+            If ChangeLogChanged AndAlso DbWrite Then
                 'Datenänderung in Datenbank sichern
                 KO_DeklBezeichnungIntern.Write()
                 'Deklarations-Bezeichnung in OrgaBack DB schreiben
                 If wb_GlobalSettings.pVariante = ProgVariante.OrgaBack Then
                     MsSqldbUpdate_Zutatenliste()
                 End If
+
+                'Alle Artikel, deren Rezeptur diesen Rohstoff enthält, als geändert markieren
+                MySQLdbSetMarkerRzptListe(ArtikelMarker.nwtUpdate)
             End If
         End Set
     End Property
@@ -1041,11 +1202,12 @@ Public Class wb_Komponente
     ''' </summary>
     ''' <returns></returns>
     Public Shared ReadOnly Property ProduktionsStufe As wb_Komponente
+        'TODO funktioniert das? Oder wird mit jedem Start eine neue Komponente angelegt ??
         Get
             If _ProduktionsStufe Is Nothing Then
                 _ProduktionsStufe = New wb_Komponente
-                If Not _ProduktionsStufe.MysqldbRead(wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) Then
-                    _ProduktionsStufe.KO_Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
+                If Not _ProduktionsStufe.MysqldbRead(KomponTypen.KO_TYPE_PRODUKTIONSSTUFE) Then
+                    _ProduktionsStufe.KO_Type = KomponTypen.KO_TYPE_PRODUKTIONSSTUFE
                     _ProduktionsStufe.Bezeichnung = "Produktions-Stufe"
                     _ProduktionsStufe.Nummer = "PST"
                     _ProduktionsStufe.Nr = wb_sql_Functions.getNewKomponNummer()
@@ -1056,10 +1218,12 @@ Public Class wb_Komponente
     End Property
 
     Public Shared ReadOnly Property Kessel As wb_Komponente
+        'TODO funktioniert das? Oder wird mit jedem Start eine neue Komponente angelegt ??
+        'TODO fehlt hier die Abfrag Nach NOTHING?
         Get
             _Kessel = New wb_Komponente
-            If Not _Kessel.MysqldbRead(wb_Global.KomponTypen.KO_TYPE_KESSEL) Then
-                _Kessel.KO_Type = wb_Global.KomponTypen.KO_TYPE_KESSEL
+            If Not _Kessel.MysqldbRead(KomponTypen.KO_TYPE_KESSEL) Then
+                _Kessel.KO_Type = KomponTypen.KO_TYPE_KESSEL
                 _Kessel.Bezeichnung = "Kessel"
                 _Kessel.Nummer = "KSL"
                 _Kessel.Nr = wb_sql_Functions.getNewKomponNummer()
@@ -1069,10 +1233,12 @@ Public Class wb_Komponente
     End Property
 
     Public Shared ReadOnly Property TextKomponente As wb_Komponente
+        'TODO funktioniert das? Oder wird mit jedem Start eine neue Komponente angelegt ??
+        'TODO fehlt hier die Abfrag Nach NOTHING?
         Get
             _TextKomponente = New wb_Komponente
-            If Not _TextKomponente.MysqldbRead(wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE) Then
-                _TextKomponente.KO_Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE
+            If Not _TextKomponente.MysqldbRead(KomponTypen.KO_TYPE_TEXTKOMPONENTE) Then
+                _TextKomponente.KO_Type = KomponTypen.KO_TYPE_TEXTKOMPONENTE
                 _TextKomponente.Bezeichnung = "Text"
                 _TextKomponente.Nummer = "TXT"
                 _TextKomponente.Nr = wb_sql_Functions.getNewKomponNummer()
@@ -1086,12 +1252,20 @@ Public Class wb_Komponente
     ''' Der Backverlust wird in der Datenbank im Feld (winback.Komponenten.KO_Temp_Korr) mit Faktor 100 als Integer gespeichern.
     ''' Muss bei der Nährwert-Berechnung mit berücksichtigt werden !
     ''' 
-    ''' Bei Artikeln (KO_Type=0) steht der Backverlust in KomponParams 300/1  !!
+    ''' Ist der Backverlust nicht angegeben, wird er berechnet aus Verkaufs- und Nassgewicht!
+    ''' ACHTUNG: Hier muss mit dem Wert aus KtTyp200.Verkaufsgewicht gerechnet werden - sonst stürzt das System mit Stack-Overflow ab!
+    ''' 
+    ''' Bei Artikeln (KO_Type=0) steht der Backverlust in RohParams 300/1  !!
+    ''' Bei Rohstoffen in der Tabelle Komponenten.KO_Temp_Korr
     ''' </summary>
     ''' <returns></returns>
     Public Property Backverlust As Double
         Get
             If Type = KomponTypen.KO_TYPE_ARTIKEL Then
+                'Backverlust berechnen, falls nicht angegeben
+                If ktTyp300.Backverlust = 0 AndAlso ktTyp200.Verkaufsgewicht > 0 Then
+                    Backverlust = 100 * (1 - ArtikelChargen.StkGewicht / (ktTyp200.Verkaufsgewicht * 1000))
+                End If
                 Return ktTyp300.Backverlust
             Else
                 Return KO_Backverlust / 100
@@ -1148,7 +1322,7 @@ Public Class wb_Komponente
 
     Public Property Bilanzmenge(Optional Reload As Boolean = False) As String
         Get
-            If _Lager Is Nothing Or Reload Then
+            If _Lager Is Nothing OrElse Reload Then
                 _Lager = New wb_LagerOrt(KA_Lagerort)
             End If
             Return _Lager.Bilanzmenge
@@ -1190,6 +1364,12 @@ Public Class wb_Komponente
         End Set
     End Property
 
+    Public ReadOnly Property SiloNummer As String
+        Get
+            Return _Lager.SiloNummer
+        End Get
+    End Property
+
     ''' <summary>
     ''' Verkaufsgewicht in kg(!) aus OrgBack dbo.HandelsArtikel.Gewicht
     ''' Wird benötigt zur Berechnung des Nassgewichts in WinBack aus 
@@ -1204,8 +1384,8 @@ Public Class wb_Komponente
             Else
                 'Verkaufsgewicht berechnet sich aus Nassgewicht und Backverlust
                 'TODO Zuschnitt berücksichtigen
-                If Backverlust > 0 And Backverlust <= 100 Then
-                    Return (ArtikelChargen.StkGewicht * (1 - (100 / Backverlust)) / 1000)
+                If Backverlust > 0 AndAlso Backverlust <= 100 Then
+                    Return (ArtikelChargen.StkGewicht * (1 - Backverlust / 100)) / 1000
                 Else
                     Return ArtikelChargen.StkGewicht / 1000
                 End If
@@ -1217,10 +1397,113 @@ Public Class wb_Komponente
         End Set
     End Property
 
+    ''' <summary>
+    ''' Verkaufsgewicht in kg(!) aus OrgBack dbo.HandelsArtikel.Gewicht 
+    ''' Wird benötigt zur Berechnung der Nährwerte vor der Übertragung
+    ''' in OrgaBack.
+    ''' Die Nährwerte in OrgaBack sind bezogen auf das Gewicht (abhängig von der Einheit) gespeichert und NICHT bezogen auf 100gr
+    ''' Deshalb muss vor dem Speichern der Daten das rechnerische Verkaufsgewicht aus der Datenbank ermittelt werden!
+    ''' Die Angaben in GetPropertyValue("NettoInhalt") sind nicht richtig
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property CalcVerkaufsGewicht As Double
+        Get
+            'Daten aus den Komponenten-Parametern
+            If _CalcVerkaufsgewicht > wb_Global.UNDEFINED Then
+                Return _CalcVerkaufsgewicht
+            Else
+                Return ktTyp200.Verkaufsgewicht
+            End If
+        End Get
+        Set(value As Double)
+            _CalcVerkaufsgewicht = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Wenn in der Tabelle [dbo].[StuecklistenVariante] ein Verkaufsgewicht für eine Einheit/Variante steht,
+    ''' dann wird der Default-Eintrag (Nettogewicht) mit diesem Wert überschrieben
+    '''
+    ''' Sonst funktioniert die Nährwert-Berechnung in OrgaBack (Übertragung aus WinBack) nicht!
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function GetCalcVerkaufsgewichtFromStkLstVariante(Unit As String) As Boolean
+        Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+        Dim sql As String
+        Dim Result As Boolean = False
+
+        'Suche nach Eintrag in der Tabelle dbo.HandelsArtikel
+        sql = wb_sql_Selects.setParams(wb_sql_Selects.mssqlHandelsArtikelGewicht, Nummer, Unit)
+        If orgaback.sqlSelect(sql) AndAlso orgaback.Read Then
+            Dim NettoInhalt As Integer = orgaback.iField("NettoInhalt")
+            'wenn ein gültiges Gewicht [in Gramm] eingetragen ist, wird das Verkaufsgewicht [kg] entsprechend korrigiert
+            If NettoInhalt > 0 Then
+                CalcVerkaufsGewicht = NettoInhalt / 1000
+                Result = True
+            End If
+        End If
+        orgaback.CloseRead()
+
+        'Suche nach Eintrag in der Tabelle dbo.StuecklistenVariante
+        sql = wb_sql_Selects.setParams(wb_sql_Selects.mssqlStkListeGewicht, Nummer, Unit)
+        If orgaback.sqlSelect(sql) AndAlso orgaback.Read Then
+            Dim Gewicht As Integer = orgaback.iField("Gewicht")
+            'wenn ein gültiges Gewicht [in Gramm] eingetragen ist, wird das Verkaufsgewicht [kg] entsprechend korrigiert
+            If Gewicht > 0 Then
+                CalcVerkaufsGewicht = Gewicht / 1000
+                Result = True
+            End If
+        End If
+
+        'Datenbank immer schliessen
+        orgaback.Close()
+        Return Result
+    End Function
+
     Public ReadOnly Property Lagerort As String
         Get
             Return KA_Lagerort
         End Get
+    End Property
+
+    ''' <summary>
+    ''' Pfad und Dateiname Artikel-Bild
+    ''' 
+    ''' OrgaBack    - Dateiname aus dbo.ArtikelBild
+    '''             - Pfad aus Settings
+    '''             
+    ''' WinBack     - Dateiname aus Winback.RohParams (200,2)
+    '''             - Pfad aus winback.ini
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Bild As String
+        Get
+            If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
+                'TODO Datei aus msSQL auslesen
+                Return "C:\Dokumente\Projekte\WinBackOffice\InfoTerminal\img\sonnenblumenbrot.jpg"
+            Else
+                'TODO Test
+                Return "C:\Dokumente\Projekte\WinBackOffice\InfoTerminal\img\sonnenblumenbrot.jpg"
+                Return wb_GlobalSettings.pPicturePath & DateinameBild
+            End If
+        End Get
+        Set(value As String)
+            'TODO Pfad-Information abschneiden - Bildinfo in DateinameBild speichern
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' WinBack-Filename Artikel-Bild.
+    ''' Der Pfad wird User-Global eingestellt und steht in der winback.ini
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property DateinameBild As String
+        Get
+            Return ktTyp200.DateinameBild
+        End Get
+        Set(value As String)
+            ktTyp200.DateinameBild = value
+        End Set
     End Property
 
     ''' <summary>
@@ -1236,9 +1519,9 @@ Public Class wb_Komponente
     '''     Stammdaten  (Tabelle Komponenten)
     '''     Teigchargen (Tabelle Rezeptur)
     ''' </summary>
-    Public Sub UpdateDB()
+    Public Sub UpdateDB(Optional UpdateAll As Boolean = True)
         'geänderten Datensatz(Stammdaten) in WinBack-DB schreiben
-        MySQLdbUpdate()
+        MySQLdbUpdate(UpdateAll)
         'schreibt auch die Artikel-Chargen-Daten
         ArtikelChargen.HasChanged = False
 
@@ -1271,15 +1554,15 @@ Public Class wb_Komponente
         Bilanzmenge = "0"
         sql = "LG_Bilanzmenge = '0'"
         'Tabelle Lagerorte
-        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLagerOrte, Lagerort, sql))
+        winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlUpdateLagerOrte, Lagerort, sql))
         'alle Datensätze in Tabelle Lieferungen löschen
-        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelLieferungen, Lagerort))
+        winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlDelLieferungen, Lagerort))
         'erster Eintrag in Tabelle Lieferungen (notwendig für WinBack-Produktion)
         sql = "'" & Lagerort & "', 0, '" & wb_sql_Functions.MySQLdatetime(Now) & "', " & "'0', '" & wb_GlobalSettings.AktUserName &
               "', '3', 'Null setzen', 0, NULL, NULL, NULL, 0, " & wb_GlobalSettings.AktUserNr & ", '0.000', 0"
 
         'INSERT ausführen
-        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertWE, sql))
+        winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlInsertWE, sql))
 
 
         'Datenbank-Verbindung wieder schliessen
@@ -1303,9 +1586,9 @@ Public Class wb_Komponente
 
         'Suche nach KO_Nr oder KO_AlNum
         If InterneKomponentenNummer > 0 Then
-            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_KO_Nr, InterneKomponentenNummer)
+            sql = wb_sql_Selects.setParams(wb_sql_Selects.sqlSelectKomp_KO_Nr, InterneKomponentenNummer)
         Else
-            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_AlNum, KomponentenNummer)
+            sql = wb_sql_Selects.setParams(wb_sql_Selects.sqlSelectKomp_AlNum, KomponentenNummer)
         End If
 
         'ersten Datensatz aus Tabelle Komponenten lesen
@@ -1315,7 +1598,7 @@ Public Class wb_Komponente
         Else
             If Not winback.Read Then
                 winback.Close()
-                Debug.Print("Datensatz nicht gefunden - Löschen freigegeben")
+                'Debug.Print("Datensatz nicht gefunden - Löschen freigegeben")
                 Return True
             Else
                 'Stammdaten - Anzahl der Felder im DataSet
@@ -1328,7 +1611,7 @@ Public Class wb_Komponente
         'Datenbank-Verbindung wieder schliessen
         winback.Close()
 
-        Debug.Print("Anfrage Löschen Komponente " & KO_Nr & "/" & KO_Nr_AlNum)
+        'Debug.Print("Anfrage Löschen Komponente " & KO_Nr & "/" & KO_Nr_AlNum)
 
         'Abhängig von der Komponenten-Type
         Select Case Type
@@ -1377,18 +1660,16 @@ Public Class wb_Komponente
     ''' <returns>Boolean - Löschen ist erlaubt</returns>
     Private Function MySQLIsUsedInProduction(InterneKomponentenNummer As Integer) As Boolean
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompInArbRzp, InterneKomponentenNummer)
+        Dim sql As String = wb_sql_Selects.setParams(wb_sql_Selects.sqlKompInArbRzp, InterneKomponentenNummer)
         Dim Count As Integer = -1
 
         'Suche nach KO_Nr
-        If winback.sqlSelect(sql) Then
-            If winback.Read Then
-                Count = winback.iField("Used")
-            End If
+        If winback.sqlSelect(sql) AndAlso winback.Read Then
+            Count = winback.iField("Used")
         End If
         'Datenbank wieder schliessen
         winback.Close()
-        Debug.Print("MySQLIsUsedInProduction " & Count.ToString)
+        'Debug.Print("MySQLIsUsedInProduction " & Count.ToString)
 
         'Löschen erlaubt, wenn die Anzahl der Datensätze gleich Null ist
         Return (Count <> 0)
@@ -1402,18 +1683,16 @@ Public Class wb_Komponente
     ''' <returns>Boolean - Löschen ist erlaubt</returns>
     Public Function MySQLIsUsedInRecipe(InterneKomponentenNummer) As Boolean
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompInRezept, InterneKomponentenNummer)
+        Dim sql As String = wb_sql_Selects.setParams(wb_sql_Selects.sqlKompInRezept, InterneKomponentenNummer)
         Dim Count As Integer = -1
 
         'Suche nach KO_Nr
-        If winback.sqlSelect(sql) Then
-            If winback.Read Then
-                Count = winback.iField("Used")
-            End If
+        If winback.sqlSelect(sql) AndAlso winback.Read Then
+            Count = winback.iField("Used")
         End If
         'Datenbank wieder schliessen
         winback.Close()
-        Debug.Print("MySQLIsUsedInRecipe " & Count.ToString)
+        'Debug.Print("MySQLIsUsedInRecipe " & Count.ToString)
 
         'Löschen erlaubt, wenn die Anzahl der Datensätze gleich Null ist
         Return (Count <> 0)
@@ -1424,13 +1703,11 @@ Public Class wb_Komponente
     ''' </summary>
     ''' <param name="Marker"></param>
     Public Sub MySQLdbSetMarker(Marker As wb_Global.ArtikelMarker)
-        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Interne Komponenten-Nummer muss definiert sein
         If KO_Nr > 0 Then
             'Update Komponente in winback.Komponenten
-            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarker, KO_Nr, Marker))
+            wb_Rohstoffe_Shared.MySQLdbSetMarker(Marker, KO_Nr)
         End If
-        winback.Close()
     End Sub
 
     ''' <summary>
@@ -1447,7 +1724,7 @@ Public Class wb_Komponente
         'Interne Komponenten-Nummer muss definiert sein
         If KO_Nr > 0 Then
             'Select über alle Rezeptschritte die KO_nr enthalten (Liste aller Rezepturen)
-            Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarkerRzListe, KO_Nr)
+            Dim sql As String = wb_sql_Selects.setParams(wb_sql_Selects.sqlKompSetMarkerRzListe, KO_Nr)
             Dim RezeptListe As New ArrayList
             If winback.sqlSelect(sql) Then
                 While winback.Read
@@ -1459,7 +1736,7 @@ Public Class wb_Komponente
 
             'alle Einträge in der Liste abarbeiten (Markieren Komponenten-Datensatz)
             For Each RzNr As Integer In RezeptListe
-                winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKompSetMarkerRzNr, RzNr, Marker))
+                winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlKompSetMarkerRzNr, RzNr, Marker))
             Next
 
         End If
@@ -1484,20 +1761,20 @@ Public Class wb_Komponente
         'Interne Komponenten-Nummer muss definiert sein
         If KO_Nr > 0 Then
             'Löschen Komponente in winback.Komponenten
-            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelKomponenten, KO_Nr))
+            winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlDelKomponenten, KO_Nr))
             'Löschen Komponente in winback.KomponParams
-            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelKomponParams, KO_Nr))
+            winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlDelKomponParams, KO_Nr))
             'Löschen Komponente in winback.Hinweise2
-            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelKompHinweise, KO_Nr))
+            winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlDelKompHinweise, KO_Nr))
             'Löschen Komponente in winbackRohParams
-            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRohParams, KO_Nr))
+            winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlDelRohParams, KO_Nr))
 
             'Der Lagerort muss definiert sein
             If KA_Lagerort <> "" Then
                 'Löschen winback.LagerOrte
-                winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelLagerOrte, KA_Lagerort))
-                'Löschen winback.KLieferungen
-                winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelLieferungen, KA_Lagerort))
+                winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlDelLagerOrte, KA_Lagerort))
+                'Löschen winback.Lieferungen
+                winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlDelLieferungen, KA_Lagerort))
             End If
 
         End If
@@ -1530,13 +1807,13 @@ Public Class wb_Komponente
         End If
 
         'Datensatz neu anlegen
-        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddNewKompon, KO_Nr, KO_Nr_AlNum, wb_Functions.KomponTypeToInt(KO_Type), "Neu angelegt " & Date.Now))
+        winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlAddNewKompon, KO_Nr, KO_Nr_AlNum, wb_Functions.KomponTypeToInt(KO_Type), "Neu angelegt " & Date.Now))
         'Rohstoff-Handkomponente - Lagerort neu anlegen
         If KType = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Then
 
             'Datensatz in winback.Lagerorte anlegen
-            KA_Lagerort = "KT102_" + KO_Nr.ToString
-            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertLagerOrte, KA_Lagerort))
+            KA_Lagerort = "KT102_" & KO_Nr.ToString
+            winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlInsertLagerOrte, KA_Lagerort))
 
             'Datensatz in winback.KomponParams anlegen
             ktTypXXX.Wert(T102_TolMinus) = "0,020"
@@ -1560,10 +1837,9 @@ Public Class wb_Komponente
     ''' Gibt True zurück, wenn der Datensatz gefunden wurde.
     ''' Wenn das Read-Kommando von der OrgaBack-Artikelverwaltung kommt wird die interne KoNr bei Automatik-Komponenten ignoriert (Silo-Zuordnung!)
     ''' damit Alternativ-Silos in WinBack verwaltet werden können.
-    ''' 
-    ''' TODO Was ist zu tun, wenn mehr als ein Datensatz gefunden wurde
+    ''' In diesem Fall wird die erste Automatik-Komponente gelesen (sortiert nach Lagerort)
     ''' </summary>
-    Public Function MySQLdbRead(InterneKomponentenNummer As Integer, Optional KomponentenNummer As String = "", Optional OrgaBackRead As Boolean = False) As Boolean
+    Public Function xMySQLdbRead(InterneKomponentenNummer As Integer, Optional KomponentenNummer As String = "", Optional OrgaBackRead As Boolean = False) As Boolean
         'Alle (eventuell noch) bestehenden Daten löschen
         Me.Invalid()
 
@@ -1573,9 +1849,9 @@ Public Class wb_Komponente
 
         'Suche nach KO_Nr oder KO_AlNum
         If InterneKomponentenNummer > 0 Then
-            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_KO_Nr, InterneKomponentenNummer)
+            sql = wb_sql_Selects.setParams(wb_sql_Selects.sqlSelectKomp_KO_Nr, InterneKomponentenNummer)
         Else
-            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_AlNum, KomponentenNummer)
+            sql = wb_sql_Selects.setParams(wb_sql_Selects.sqlSelectKomp_AlNum, KomponentenNummer)
         End If
 
         'ersten Datensatz aus Tabelle Komponenten lesen
@@ -1583,41 +1859,41 @@ Public Class wb_Komponente
             If winback.Read Then
                 MySQLdbRead(winback.MySqlRead)
 
-                'Sonderfall Automatik-Komponente - INTERNE KOMPONENTEN-NR IGNORIEREN
-                If OrgaBackRead And KO_Type = KomponTypen.KO_TYPE_AUTOKOMPONENTE And (InterneKomponentenNummer > 0) Then
-                    winback.Close()
-                    'Suche nach alphanumerischer Nummer
-                    Return MySQLdbRead(0, KomponentenNummer)
+                'Sonderfall Automatik-Komponente oder Artikelnummern nicht identisch - INTERNE KOMPONENTEN-NR IGNORIEREN
+                If OrgaBackRead Then
+                    If (InterneKomponentenNummer > 0) AndAlso ((KO_Type = KomponTypen.KO_TYPE_AUTOKOMPONENTE) OrElse (Nummer <> KomponentenNummer)) Then
+                        winback.Close()
+                        'Suche nach alphanumerischer Nummer
+                        Dim Result As Boolean = xMySQLdbRead(0, KomponentenNummer)
+                        Return Result
+                    End If
                 End If
 
                 'weitere Parameter einlesen - Tabelle KomponParams(Parameter Produktion)
                 winback.CloseRead()
-                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlKomponParamsXXX, Nr)
-                If winback.sqlSelect(sql) Then
-                        If winback.Read Then
-                            MySQLdbRead(winback.MySqlRead)
-                        End If
-                    End If
-                    winback.CloseRead()
+                sql = wb_sql_Selects.setParams(wb_sql_Selects.sqlKomponParamsXXX, Nr)
+                If winback.sqlSelect(sql) AndAlso winback.Read Then
+                    MySQLdbRead(winback.MySqlRead)
+                End If
+                winback.CloseRead()
 
-                    'weitere Parameter einlesen - Tabelle RohParams(erweiterte Parameter/Nährwerte)
-                    sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohParamsXXX, Nr)
-                    If winback.sqlSelect(sql) Then
-                        If winback.Read Then
-                            MySQLdbRead(winback.MySqlRead)
-                        End If
-                    End If
-                    winback.Close()
-                    Return True
+                'weitere Parameter einlesen - Tabelle RohParams(erweiterte Parameter/Nährwerte)
+                sql = wb_sql_Selects.setParams(wb_sql_Selects.sqlRohParamsXXX, Nr)
+                If winback.sqlSelect(sql) AndAlso winback.Read Then
+                    MySQLdbRead(winback.MySqlRead)
+                End If
+                winback.Close()
+                Return True
 
-                Else
-                    'Sonderfall - Es wurde eine interne Komponenten-Nummer angegeben die nicht gefunden wurde
-                    'Rohstoff/Artikel wurde gelöscht (in WinBack)
-                    If (InterneKomponentenNummer > 0) And (KomponentenNummer <> "") Then
+            Else
+                'Sonderfall - Es wurde eine interne Komponenten-Nummer angegeben die nicht gefunden wurde
+                'Rohstoff/Artikel wurde gelöscht (in WinBack)
+                If (InterneKomponentenNummer > 0) AndAlso (KomponentenNummer <> "") Then
                     'bestehende Verbindung schliessen
                     winback.Close()
                     'Suche nach alphanumerischer Nummer
-                    Return MySQLdbRead(0, KomponentenNummer)
+                    Dim Result As Boolean = xMySQLdbRead(0, KomponentenNummer)
+                    Return Result
                 End If
             End If
         End If
@@ -1630,15 +1906,13 @@ Public Class wb_Komponente
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String
         'Suche nach dem ersten Datensatz mit dieser Komponenten-Type
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSelectKomp_KO_Type, wb_Functions.KomponTypeToInt(KomponType))
+        sql = wb_sql_Selects.setParams(wb_sql_Selects.sqlSelectKomp_KO_Type, wb_Functions.KomponTypeToInt(KomponType))
 
         'ersten Datensatz aus Tabelle Komponenten lesen
-        If winback.sqlSelect(sql) Then
-            If winback.Read Then
-                MySQLdbRead(winback.MySqlRead)
-                winback.Close()
-                Return True
-            End If
+        If winback.sqlSelect(sql) AndAlso winback.Read Then
+            MySQLdbRead(winback.MySqlRead)
+            winback.Close()
+            Return True
         End If
         winback.Close()
         Return False
@@ -1675,10 +1949,6 @@ Public Class wb_Komponente
             For i = 0 To sqlReader.FieldCount - 2
                 Try
                     If sqlReader.GetDataTypeName(i) <> "TIMESTAMP" Then
-                        MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
-                    Else
-                        'Dim n As String = sqlReader.GetName(i)
-                        'Dim d As String = sqlReader.GetMySqlDateTime(i)
                         MySQLdbRead_Parameter(sqlReader.GetName(i), sqlReader.GetValue(i))
                     End If
                 Catch ex As Exception
@@ -1749,6 +2019,9 @@ Public Class wb_Komponente
                 'Flag Nährwert-Berechnung OK/fehlerhaft/update
                 Case "KA_PreisEinheit"
                     KA_PreisEinheit = Value
+                'alternativ Rohstoff
+                Case "KA_alternativ_RS"
+                    KA_alternativ_RS = Value
 
                 'Stückgewicht in Gramm
                 Case "KA_Stueckgewicht"
@@ -1766,7 +2039,7 @@ Public Class wb_Komponente
             End Select
 
             'Artikel - Chargengrößen in Stück
-            If Type = KomponTypen.KO_TYPE_ARTIKEL Then
+            If Type = KomponTypen.KO_TYPE_ARTIKEL OrElse Type = KomponTypen.KO_TYPE_METER OrElse Type = KomponTypen.KO_TYPE_STUECK Then
 
                 Select Case Name
                 'Minimal-Charge
@@ -1782,7 +2055,7 @@ Public Class wb_Komponente
             End If
 
             'Rohstoffe - Chargengrößen in kg (wenn mit Rezept verknüpft)
-            If Type = KomponTypen.KO_TYPE_HANDKOMPONENTE Or Type = KomponTypen.KO_TYPE_AUTOKOMPONENTE Then
+            If Type = KomponTypen.KO_TYPE_HANDKOMPONENTE OrElse Type = KomponTypen.KO_TYPE_AUTOKOMPONENTE OrElse Type = KomponTypen.KO_TYPE_METER OrElse Type = KomponTypen.KO_TYPE_STUECK Then
 
                 Select Case Name
                 'Minimal-Charge
@@ -1799,6 +2072,7 @@ Public Class wb_Komponente
             End If
 
         Catch ex As Exception
+            Trace.WriteLine("I@_Fehler beim Lesen der Stammdaten")
         End Try
         Return True
     End Function
@@ -1832,26 +2106,38 @@ Public Class wb_Komponente
             Case "RP_Typ_Nr"
                 ParamTyp = CInt(Value)
 
+
+                'TODO !!!!!
+                'REMEMBER Me - HIER STIMMT WAS GRUNDSÄTZLICH NICHT !!!
+                'KomponParams und ROHPARAMS UNTERSCHEIDEN
+
             'Parameter-Wert(RohParams)
             Case "RP_Wert"
                 Select Case ParamTyp
-                    Case 200
+                    Case Int(200)
                         'Produktinformationen
                         ktTyp200.Wert(ParamNr) = Value.ToString
-                    Case 201
+                    Case Int(201)
                         'Verarbeitungs-Hinweise
-                    Case 202
+                        ktTyp201.Wert(ParamNr) = Value.ToString
+                    Case Int(202)
                         'Kalkulation/Preise
-                    Case 210
+                        ktTyp202.Wert(ParamNr) = Value.ToString
+                    Case Int(210)
                         'Froster
-                    Case 220
+                        ktTyp210.Wert(ParamNr) = Value.ToString
+                    Case Int(220)
                         'Teig-Gare
-                    Case 300
+                        ktTyp220.Wert(ParamNr) = Value.ToString
+                    Case Int(300)
                         'Parameter Produktion
                         ktTyp300.Wert(ParamNr) = Value.ToString
-                    Case 301
+                    Case Int(301)
                         'Nährwert-Informationen
                         ktTyp301.Wert(ParamNr) = Value.ToString
+                    Case Int(303)
+                        'EU/Bio-Verband
+                        ktTyp303.Wert(ParamNr) = Value.ToString
                 End Select
 
             'Parameter-Wert(KomponParams)
@@ -1863,7 +2149,7 @@ Public Class wb_Komponente
                 'BREAK
             Case "RP_Timestamp"
                 Select Case ParamTyp
-                    Case 301
+                    Case Int(301)
                         'Nährwert-Informationen
                         ktTyp301.TimeStamp = CDate(Value.ToString)
                 End Select
@@ -1885,8 +2171,8 @@ Public Class wb_Komponente
         If UpdateAll Then
             sql = "KO_Nr_AlNum = '" & Nummer & "'," &
                   "KO_Type = '" & wb_Functions.KomponTypeToInt(Type) & "'," &
-                  "KO_Bezeichnung = '" & wb_Functions.Truncate(Bezeichnung, 60) & "'," &
-                  "KO_Kommentar = '" & wb_Functions.Truncate(Kommentar, 50, True) & "'," &
+                  "KO_Bezeichnung = '" & wb_Functions.Truncate(wb_Functions.XRemoveSonderZeichen(Bezeichnung), 60) & "'," &
+                  "KO_Kommentar = '" & wb_Functions.Truncate(wb_Functions.XRemoveSonderZeichen(Kommentar), 50, True) & "'," &
                   "KO_Temp_Korr = '" & KO_Backverlust & "'," &
                   "KA_Artikel_Typ = " & KO_Zuschnitt & "," &
                   "KA_Prod_Linie = " & KA_ProdVorlauf & "," &
@@ -1895,13 +2181,15 @@ Public Class wb_Komponente
                   "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
                   "KA_Art = '" & KA_Art & "'," &
                   "KA_PreisEinheit = " & KA_PreisEinheit.ToString & "," &
-                  "KA_Verarbeitungshinweise = '" & KA_Verarbeitungshinweise & "'"
+                  "KA_Verarbeitungshinweise = '" & wb_Functions.Truncate(wb_Functions.XRemoveSonderZeichen(KA_Verarbeitungshinweise), 100, True) & "'," &
+                  "KA_alternativ_RS = '" & KA_alternativ_RS & "'"
         Else
             sql = "KO_Temp_Korr = '" & KO_Backverlust & "'," &
                   "KA_Artikel_Typ = " & KO_Zuschnitt & "," &
                   "KA_Prod_Linie = " & KA_ProdVorlauf & "," &
                   "KA_Stueckgewicht = '" & ArtikelChargen.StkGewicht & "'," &
-                  "KA_Verarbeitungshinweise = '" & wb_Functions.Truncate(KA_Verarbeitungshinweise, 100, True) & "'"
+                  "KA_Verarbeitungshinweise = '" & wb_Functions.Truncate(wb_Functions.XRemoveSonderZeichen(KA_Verarbeitungshinweise), 100, True) & "'," &
+                  "KA_alternativ_RS = '" & KA_alternativ_RS & "'"
         End If
 
         'Rezeptnummer nur updaten wenn gültig
@@ -1909,9 +2197,65 @@ Public Class wb_Komponente
             sql = sql & "," & "KA_RZ_Nr = " & KA_Rz_Nr.ToString
         End If
 
+        'Die Zuordnung Rezept zu Artikel/Rohstoff wurde geändert
+        If KA_Rz_Nr_HasChanged Then
+
+            'Wenn die Zuordnung zum Rezept gelöscht wurde müssen auch alle Parameter zurückgesetzt werden
+            If KA_Rz_Nr = 0 Then
+                'alle Nährwerte löschen/auf Null setzen
+                ktTyp301.Clear()
+                ktTyp301.MySQLdbUpdate(Nr, winback)
+
+                'Deklarationsbezeichnungen löschen
+                DeklBezeichungExtern = ""
+                DeklBezeichungIntern = ""
+                Mehlzusammensetzung = ""
+            Else
+                'Rohstoff-Gruppe der Komponente auf Null setzen
+                Gruppe1 = 0
+                Gruppe2 = 0
+
+                'Parameter/Nährwerte neu berechnen (auf Basis der neu zugeordneten Rezeptur)
+                'Rezept mit allen Rezeptschritten lesen (NoMessage=True unterdrückt die Meldung "Rezept verweist auf sich selbst")
+                Dim Rzpt As New wb_Rezept(KA_Rz_Nr, Nothing, Backverlust, 1, "", "", True, False)
+
+                'Änderungs-Log löschen
+                ClearReport()
+                'Nährwert-Information berechnen
+                ktTyp301 = Rzpt.KtTyp301
+                Dim FlagAufloesen As Boolean = Deklaration.StartsWith(wb_Global.FlagAufloesen)
+
+                'Zutatenliste erzeugen
+                Deklaration(False) = wb_Functions.XRemoveSonderZeichen(Rzpt.ZutatenListe(wb_GlobalSettings.NwtENummerZutatenListe, wb_GlobalSettings.NwtCalcQuid, wb_GlobalSettings.NwtOptimizeZutatenListe, True), True)
+                'Mehlzusammensetzung berechnen
+                Mehlzusammensetzung = Rzpt.MehlZusammensetzung(wb_Global.TrennzMehlAnteil)
+                'Änderungen der Nährwerte in Komponente(Rohstoff) sichern
+                MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+            End If
+
+            'Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
+            'Gibt true zurück, wenn der Artikel in OrgaBack existiert
+            If MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
+                'Zutaten-und Allergenliste in OrgaBack updaten
+                MsSqldbUpdate_Zutatenliste()
+
+                'Flag Meldung Update Nährwerte anzeigen
+                If wb_GlobalSettings.ShowMsg_UpdateOrgaBackNWT Then
+                    'Die Daten sind in OrgaBack erst nach Laden des Artikels sichtbar
+                    If MsgBox("Die aktualisierten Nährwerte und Allergen" & vbCrLf & "sind erst nach erneutem Aufruf des Artikels in OrgaBack sichtbar" &
+                          vbCrLf & vbCrLf & "Diese Meldung beim nächsten Mal nicht mehr anzeigen?", MsgBoxStyle.YesNo, "WinBack-AddIn") = MsgBoxResult.Yes Then
+                        'Meldung beim nächsten Mal nicht mehr anzeigen
+                        wb_GlobalSettings.ShowMsg_UpdateOrgaBackNWT = False
+                    End If
+                End If
+
+            End If
+        End If
+
         'Artikel - Chargengrößen in Stk
-        If (Type = wb_Global.KomponTypen.KO_TYPE_ARTIKEL) Or
-           (FreigabeProduktion And (Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE)) Then
+        If (Type = wb_Global.KomponTypen.KO_TYPE_ARTIKEL) OrElse
+           (FreigabeProduktion AndAlso (Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE OrElse Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE)) OrElse
+           (FreigabeProduktion AndAlso (Type = wb_Global.KomponTypen.KO_TYPE_METER OrElse Type = wb_Global.KomponTypen.KO_TYPE_STUECK)) Then
             sql = sql & "," &
                         "KA_Charge_Min = '" & ArtikelChargen.MinCharge.MengeInStk & "'," &
                         "KA_Charge_Max = '" & ArtikelChargen.MaxCharge.MengeInStk & "'," &
@@ -1919,7 +2263,8 @@ Public Class wb_Komponente
         End If
 
         'Rohstoffe - Chargengrößen in kg
-        If Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Then
+        If Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE OrElse Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_METER OrElse Type = wb_Global.KomponTypen.KO_TYPE_STUECK Then
             sql = sql & "," &
                         "KA_Charge_Min_kg = '" & ArtikelChargen.MinCharge.MengeInkg & "'," &
                         "KA_Charge_Max_kg = '" & ArtikelChargen.MaxCharge.MengeInkg & "'," &
@@ -1927,9 +2272,7 @@ Public Class wb_Komponente
         End If
 
         'Update ausführen
-        'Debug.Print("Komponente.MysqldbUpdate " & sql)
-
-        If winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then
+        If winback.sqlCommand(wb_sql_Selects.setParams(wb_sql_Selects.sqlUpdateKomp_KO_Nr, Nr, sql)) Then
             _DataHasChanged = False
             winback.Close()
             Return True
@@ -1948,31 +2291,39 @@ Public Class wb_Komponente
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         'Result vorbelegen
-        MySQLdbUpdate_Parameter = True
+        Dim Result As Boolean = True
 
         'Update Parameter-200 (Parameter Verkauf)
-        If ktTyp = wb_Global.ktParam.kt200 Or ktTyp = wb_Global.ktParam.ktAlle Then
+        If ktTyp = wb_Global.ktParam.kt200 OrElse ktTyp = wb_Global.ktParam.ktAlle Then
             If Not ktTyp200.MySQLdbUpdate(Nr, winback) Then
-                MySQLdbUpdate_Parameter = False
+                Result = False
             End If
         End If
 
         'Update Parameter-300 (Parameter Produktion)
-        If ktTyp = wb_Global.ktParam.kt300 Or ktTyp = wb_Global.ktParam.ktAlle Then
+        If ktTyp = wb_Global.ktParam.kt300 OrElse ktTyp = wb_Global.ktParam.ktAlle Then
             If Not ktTyp300.MySQLdbUpdate(Nr, winback) Then
-                MySQLdbUpdate_Parameter = False
+                Result = False
             End If
         End If
 
         'Update Parameter-301 (Nährwerte)
-        If ktTyp = wb_Global.ktParam.kt301 Or ktTyp = wb_Global.ktParam.ktAlle Then
+        If ktTyp = wb_Global.ktParam.kt301 OrElse ktTyp = wb_Global.ktParam.ktAlle Then
             If Not ktTyp301.MySQLdbUpdate(Nr, winback) Then
-                MySQLdbUpdate_Parameter = False
+                Result = False
+            End If
+        End If
+
+        'Update Parameter-303 (EU/Bio-Verband)
+        If ktTyp = wb_Global.ktParam.kt303 OrElse ktTyp = wb_Global.ktParam.ktAlle Then
+            If Not ktTyp303.MySQLdbUpdate(Nr, winback) Then
+                Result = False
             End If
         End If
 
         'Datenbank-Verbindung wieder schliessen
         winback.Close()
+        Return Result
     End Function
 
     ''' <summary>
@@ -1980,7 +2331,7 @@ Public Class wb_Komponente
     ''' </summary>
     ''' <returns></returns>
     Public Function MySqldbUpdate_Zutatenliste() As Boolean
-        Return KO_DeklBezeichnungExtern.Write() And KO_DeklBezeichnungIntern.Write()
+        Return KO_DeklBezeichnungExtern.Write() AndAlso KO_DeklBezeichnungIntern.Write()
     End Function
 
     ''' <summary>
@@ -1997,14 +2348,15 @@ Public Class wb_Komponente
         'Datenbank-Verbindung öffnen - MsSQL
         Dim OrgasoftMain As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
         'Umrechnungs-Faktor Nährwerte (Netto-Gewicht Artikel)
-        ktTyp301.FaktorStkGewicht = Me.VerkaufsGewicht
+        ktTyp301.FaktorStkGewicht = Me.CalcVerkaufsGewicht * 10
 
         'Prüfen ob der Artikel in OrgaBack existiert
         OrgasoftMain.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSelArtikel, KO_Nr_AlNum))
         If Not OrgasoftMain.Read Then
             'Artikel nicht gefunden in OrgaSoft
-            Debug.Print("Artikel " & Nummer & " nicht in OrgaBack gefunden")
+            'Debug.Print("Artikel " & Nummer & " nicht in OrgaBack gefunden")
             ChangeLogAdd(LogType.Err, Nr, "", "Artikel/Komponente nicht in OrgaBack gefunden")
+            OrgasoftMain.Close()
             Return False
         Else
             'Standard-Einheit aus Artikelstamm OrgaBack
@@ -2013,13 +2365,23 @@ Public Class wb_Komponente
             If StdEinheit = wb_Einheiten_Global.GetobEinheitNr(Einheit) Then
                 'Lesen beendet
                 OrgasoftMain.CloseRead()
+
                 'Update Parameter-301 (Nährwerte)
-                If ktTyp = wb_Global.ktParam.kt301 Or ktTyp = wb_Global.ktParam.ktAlle Then
+                If ktTyp = wb_Global.ktParam.kt301 OrElse ktTyp = wb_Global.ktParam.ktAlle Then
                     ktTyp301.MsSQLdbUpdate(KO_Nr_AlNum, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
                     ChangeLogAdd(LogType.Msg, Nr, "", "Update der Nährwerte/Allergene in OrgaBack-DB - Nr " & KO_Nr_AlNum)
                 End If
+
+                'Update Parameter-303 (EU/Bio-Verband)
+                If ktTyp = wb_Global.ktParam.kt303 OrElse ktTyp = wb_Global.ktParam.ktAlle Then
+                    ktTyp303.MsSQLdbUpdate(KO_Nr_AlNum, wb_Einheiten_Global.GetobEinheitNr(Einheit), OrgasoftMain)
+                    ChangeLogAdd(LogType.Msg, Nr, "", "Update der Bio-Verband-Information in OrgaBack-DB - Nr " & KO_Nr_AlNum)
+                End If
+                'Lesen beendet
+                OrgasoftMain.CloseRead()
+
             Else
-                Debug.Print("Einheitenkonflikt Artikel beim Schreiben der Parameter in OrgaBack " & KO_Nr_AlNum & " " & KO_Bezeichnung)
+                'Debug.Print("Einheitenkonflikt Artikel beim Schreiben der Parameter in OrgaBack " & KO_Nr_AlNum & " " & KO_Bezeichnung)
                 ChangeLogAdd(LogType.Err, Nr, "", "Einheitenkonflikt Artikel beim Schreiben der Parameter in OrgaBack - Nr " & KO_Nr_AlNum)
                 Return False
             End If
@@ -2029,6 +2391,26 @@ Public Class wb_Komponente
         OrgasoftMain.Close()
         Return True
     End Function
+
+    ''' <summary>
+    ''' Schreibt den Wert aus Value in das Artikel-MFF in OrgaBack. Die Daten werden direkt in die Tabelle dbo.ArtikelHatMultiFeld geschrieben.
+    ''' Die Filial-Nummer ist immer 0
+    ''' </summary>
+    ''' <param name="MFF"></param>
+    ''' <param name="Value"></param>
+    Private Sub MFFWriteDB(MFF As Integer, Value As String)
+        'Schreiben MFF nur OrgaBack
+        If (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack) OrElse (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OBServerTask) Then
+            Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
+
+            'Falls der Befehl UPDATE fehlschlägt wird mit INSERT ein neuer Datensatz angelegt
+            If orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlUpdateArtikelMFF, Nummer, MFF.ToString, "0", Value)) <= 0 Then
+                'Datensatz mit INSERT schreiben
+                orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertArtikelMFF, Nummer, MFF.ToString, "0", Value), False, False)
+            End If
+            orgaback.Close()
+        End If
+    End Sub
 
     ''' <summary>
     ''' Schreibt die Deklarationstexte in die OrgaBack-Datenbank(Zugriff über KO_Nr_AlNum!)
@@ -2074,15 +2456,15 @@ Public Class wb_Komponente
     ''' <returns></returns>
     Public Function MsSqldbUpdate_Zutatenliste(OrgasoftMain As wb_Sql) As Boolean
         'Default Rückgabewert
-        MsSqldbUpdate_Zutatenliste = False
+        Dim Result As Boolean = False
         'Update-Statement wird dynamisch erzeugt    
         Dim sql As String
         'Zutaten- und Allergenlisten
-        Dim ZutatenListe As String = ""
-        Dim AllergenListeEnthalten As String = ""
-        Dim AllergenListeSpuren As String = ""
-        Dim AllergenKurzListeEnthalten As String = ""
-        Dim AllergenKurzListeSpuren As String = ""
+        Dim ZutatenListe As String
+        Dim AllergenListeEnthalten As String
+        Dim AllergenListeSpuren As String
+        Dim AllergenKurzListeEnthalten As String
+        Dim AllergenKurzListeSpuren As String
 
         'Daten aus dbo.ArtikelDeklarationstexte lesen (Artikelnummer/Variante 0/Ländercode/Sprachencode)
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlReadDeklaration, KO_Nr_AlNum, 0, wb_GlobalSettings.osLaendercode, wb_GlobalSettings.osSprachcode)
@@ -2126,18 +2508,30 @@ Public Class wb_Komponente
                   "[AllergenKurzDeklarationEnthalten] = '" & AllergenKurzListeEnthalten & "', " &
                   "[AllergenKurzDeklarationSpuren] = '" & AllergenKurzListeSpuren & "'"
             'Update durchführen
-            MsSqldbUpdate_Zutatenliste = OrgasoftMain.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateDeklaration, sql, KO_Nr_AlNum, 0, wb_GlobalSettings.osLaendercode, wb_GlobalSettings.osSprachcode))
+            Result = OrgasoftMain.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateDeklaration, sql, KO_Nr_AlNum, 0, wb_GlobalSettings.osLaendercode, wb_GlobalSettings.osSprachcode))
         Else
             'Verbindung Lesen schliessen
             OrgasoftMain.CloseRead()
-            'noch kein Datensatz vorhanden
-            sql = "'" & Deklaration & "', '" & ktTyp301.AllergenListe_C & "', '" & ktTyp301.AllergenListe_T & "', " &
+            'noch kein Datensatz vorhanden - Prüfen ob überhaupt ein Artikel mit dieser Nummer in OrgaBack existiert
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlSelArtikel, KO_Nr_AlNum)
+            OrgasoftMain.sqlSelect(sql)
+            'wenn schon ein Artikel-Datensatz vorhanden ist - Deklaration neu anlegen (INSERT INTO dbo.ArtikelDeklarationstexte...)
+            If OrgasoftMain.Read Then
+                'Verbindung Lesen schliessen
+                OrgasoftMain.CloseRead()
+
+                sql = "'" & Deklaration & "', '" & ktTyp301.AllergenListe_C & "', '" & ktTyp301.AllergenListe_T & "', " &
                   "'" & ktTyp301.AllergenKurzListe_C & "', '" & ktTyp301.AllergenKurzListe_T & "'"
-            'Insert durchführen
-            MsSqldbUpdate_Zutatenliste = OrgasoftMain.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertDeklaration, sql, KO_Nr_AlNum, 0, wb_GlobalSettings.osLaendercode, wb_GlobalSettings.osSprachcode))
-            'Meldungen im Log ausgeben
-            ChangeLogAdd(LogType.Msg, Nr, "", "Neu Anlegen der Zutaten und Allergenliste in OrgaBack-DB - Nr " & KO_Nr_AlNum)
+                'Insert durchführen
+                Result = OrgasoftMain.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertDeklaration, sql, KO_Nr_AlNum, 0, wb_GlobalSettings.osLaendercode, wb_GlobalSettings.osSprachcode))
+                'Meldungen im Log ausgeben
+                ChangeLogAdd(LogType.Msg, Nr, "", "Neu Anlegen der Zutaten und Allergenliste in OrgaBack-DB - Nr " & KO_Nr_AlNum)
+            End If
         End If
+
+        'Datenbankverbindung immer schliessen
+        OrgasoftMain.Close()
+        Return Result
     End Function
 
 End Class

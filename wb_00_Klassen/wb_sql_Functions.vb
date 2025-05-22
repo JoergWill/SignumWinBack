@@ -1,4 +1,6 @@
 ﻿Imports MySql.Data.MySqlClient
+Imports System.Data
+Imports Microsoft.Data.SqlClient
 Imports WinBack
 Imports WinBack.wb_Sql_Selects
 
@@ -71,6 +73,16 @@ Public Class wb_sql_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt date(time) in SQL-Time im Format HHMM um
+    ''' </summary>
+    ''' <param name="d">date</param>
+    ''' <returns>String - im MySQL-Time-Format</returns>
+    Public Shared Function MsSQLShortTime(d As Date) As String
+        Return d.ToString("HH:mm")
+    End Function
+
+
+    ''' <summary>
     ''' Umrechnung der OrgaBack-Einheiten bezogen auf die Artikel-Nummer.
     ''' Liefert den Umrechnungsfaktor von einer Einheit in die andere für eine spezielle Artikelnummer.
     ''' (z.B. Sack in kg)
@@ -82,39 +94,37 @@ Public Class wb_sql_Functions
     Public Shared Function EinheitenUmrechnung(ArtikelNr As String, VonEinheit As Integer, InEinheit As Integer) As Double
         'Datenbankverbindung öffnen MsSQL
         Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
-        Dim pl(2) As SqlClient.SqlParameter
-        Dim p As New SqlClient.SqlParameter
+        Dim pl(2) As Microsoft.Data.SqlClient.SqlParameter
 
         'Artikelnummer
-        pl(0) = New SqlClient.SqlParameter
+        pl(0) = New Microsoft.Data.SqlClient.SqlParameter
         pl(0).ParameterName = "ArtikelNr"
         pl(0).SqlDbType = SqlDbType.Text
         pl(0).Value = ArtikelNr
-        'pl.Add(p)
+
         'VonEinheit
-        pl(1) = New SqlClient.SqlParameter
+        pl(1) = New Microsoft.Data.SqlClient.SqlParameter
         pl(1).ParameterName = "VonEinheit"
         pl(1).SqlDbType = SqlDbType.Int
         pl(1).Value = VonEinheit
-        'pl.Add(p)
+
         'InEinheit
-        pl(2) = New SqlClient.SqlParameter
+        pl(2) = New Microsoft.Data.SqlClient.SqlParameter
         pl(2).ParameterName = "InEinheit"
         pl(2).SqlDbType = SqlDbType.Int
         pl(2).Value = InEinheit
-        'pl.Add(p)
-        'Stored Procedure ausführen
-        EinheitenUmrechnung = orgaback.sqlExecuteScalar("SELECT [dbo].[EinheitenUmrechnung](@ArtikelNr, @VonEinheit, @InEinheit) AS Faktor", pl)
 
-        ''alle Datensätze einlesen
-        'While orgaback.Read
-        '    'Alle Datensätze einlesen
-        '    For i = 0 To orgaback.msRead.FieldCount - 1
-        '        Debug.Print("OrgaBack StoredProcedure Read " & orgaback.msRead.GetName(i) & "/" & orgaback.msRead.GetValue(i))
-        '    Next
-        'End While
+        'Stored Procedure ausführen
+        Dim Result As Object = orgaback.sqlExecuteScalar("SELECT [dbo].[EinheitenUmrechnung](@ArtikelNr, @VonEinheit, @InEinheit) AS Faktor", pl)
         'Datenbankverbindung wieder schliessen
         orgaback.Close()
+
+        'Ergebnis prüfen (Artikel vorhanden)
+        If Result IsNot Nothing Then
+            Return wb_Functions.StrToDouble(Result.ToString)
+        Else
+            Return 1.0
+        End If
     End Function
 
 
@@ -156,22 +166,24 @@ Public Class wb_sql_Functions
     ''' </summary>
     ''' <param name="TableName"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Public Shared Function MySQLTableExist(TableName As String) As Boolean
-        MySQLTableExist = False
+        Dim Result As Boolean = False
 
         Dim Table As String
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
-        'Prüfen ob die Tabelle winback.ENummern existiert
+        'Prüfen ob die Tabelle existiert
         If winback.sqlSelect(wb_Sql_Selects.sqlCheckTables) Then
             While winback.Read
                 Table = winback.Item(0).ToString
                 If Table.ToLower() = TableName.ToLower() Then
-                    MySQLTableExist = True
+                    Result = True
                     Exit While
                 End If
             End While
         End If
         winback.Close()
+        Return Result
     End Function
 
     Public Shared Function ReaderItem(ByRef sqlReader As MySqlDataReader, FieldName As String) As String
@@ -191,19 +203,19 @@ Public Class wb_sql_Functions
     ''' <returns></returns>
     Public Shared Function getKomponParam(KomponentenNummer As Integer, ParameterNummer As Integer, Optional DefaultWert As String = "") As String
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        Dim Result As String = DefaultWert
 
         'Daten aus winback.KomponParams in String einlesen
         winback.sqlSelect(setParams(sqlKompParams, KomponentenNummer, ParameterNummer))
         If winback.Read Then
-            getKomponParam = winback.sField("KP_Wert")
-        Else
-            getKomponParam = DefaultWert
+            Result = winback.sField("KP_Wert")
         End If
         winback.Close()
+        Return Result
     End Function
 
     ''' <summary>
-    ''' Update Parameter-Wert in der Tabelle Kompon-Params.
+    ''' Update Parameter-Wert in der Tabelle KomponParams.
     ''' </summary>
     ''' <param name="KomponentenNummer"></param>
     ''' <param name="ParameterNummer"></param>
@@ -247,15 +259,15 @@ Public Class wb_sql_Functions
     Public Shared Function getNewKomponNummer() As Integer
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim Result As Integer = 1
 
         'Max-Wert KO-Nr aus Tabelle Komponenten ermitteln
         winback.sqlSelect(sqlMaxKompNummer)
         If winback.Read Then
-            getNewKomponNummer = winback.iField("MAX(KO_Nr)") + 1
-        Else
-            getNewKomponNummer = 1
+            Result = winback.iField("MAX(KO_Nr)") + 1
         End If
         winback.Close()
+        Return Result
     End Function
 
     ''' <summary>
@@ -265,15 +277,52 @@ Public Class wb_sql_Functions
     Public Shared Function getNewRezeptNummer() As Integer
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim Result As Integer = 1
 
         'Max-Wert KO-Nr aus Tabelle Komponenten ermitteln
         winback.sqlSelect(sqlMaxRzNummer)
         If winback.Read Then
-            getNewRezeptNummer = winback.iField("MAX(RZ_Nr)") + 1
-        Else
-            getNewRezeptNummer = 1
+            Result = winback.iField("MAX(RZ_Nr)") + 1
         End If
         winback.Close()
+        Return Result
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt die letzte Änderungs-Nummer zum Rezept aus der Tabelle Rezepte
+    ''' </summary>
+    ''' <param name="RzNr"></param>
+    ''' <returns></returns>
+    Public Shared Function getLastAenderungsIndex(RzNr As Integer) As Integer
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim Result As Integer = 0
+
+        'Max-Wert KO-Nr aus Tabelle Komponenten ermitteln
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlMaxRzAenderung, RzNr.ToString))
+        If winback.Read Then
+            Result = winback.iField("MAX(RZ_Aenderung_Nr)")
+        End If
+        winback.Close()
+        Return Result
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt die nächste freie interne Textbaustein-Nummer (IP_Lfd_Nr) aus der Tabelle ItemParameter
+    ''' </summary>
+    ''' <returns>Integer - nächste freie Textbaustein-Nummer</returns>
+    Public Shared Function getNewProdStufeTextNr(TextBausteinType) As Integer
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim Result As Integer = 1
+
+        'Max-Wert KO-Nr aus Tabelle Komponenten ermitteln
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlMaxTextBausteinNr, TextBausteinType))
+        If winback.Read Then
+            Result = winback.iField("MAX(IP_Lfd_Nr)") + 1
+        End If
+        winback.Close()
+        Return Result
     End Function
 
     ''' <summary>
@@ -307,24 +356,37 @@ Public Class wb_sql_Functions
         Return KO_Nr
     End Function
 
-
     Public Shared Function Lookup(Tabelle As String, Feldname As String, Bedingung As String) As String
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
         Dim sql As String = "SELECT " & Feldname & " FROM " & Tabelle & " WHERE " & Bedingung
-        Lookup = ""
+        Dim Result As String = ""
 
         'Select-Statement ausführen
         Try
             winback.sqlSelect(sql)
             If winback.Read Then
-                Lookup = winback.sField(Feldname)
+                Result = winback.sField(Feldname)
             End If
         Catch ex As Exception
         End Try
 
         winback.Close()
-        Return Lookup
+        Return Result
+    End Function
+
+    Public Shared Function GetMySqlVersion() As String
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim Result As String = ""
+
+        'Version ermitteln
+        winback.sqlSelect("SELECT VERSION()")
+        If winback.Read Then
+            Result = winback.sField("VERSION()")
+        End If
+        winback.Close()
+        Return Result
     End Function
 
 End Class

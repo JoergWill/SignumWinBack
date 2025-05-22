@@ -117,10 +117,10 @@ Public Class wb_ChangeLog
                     If wb_KomponParam301_Global.kt301Param(x.ParamNr).Used Or ReportAll Then
                         'in der ersten Zeile eine Überschrift drucken
                         If Not UeberschriftAllergene Then
-                            s += vbNewLine & "Allergene [alt/neu]" & vbNewLine
+                            s += vbCrLF & "Allergene [alt/neu]" & vbCrLF
                             UeberschriftAllergene = True
                         End If
-                        s += x.OldValue + "/" + x.NewValue + " " + wb_KomponParam301_Global.kt301Param(x.ParamNr).Bezeichnung + vbNewLine
+                        s += x.OldValue + "/" + x.NewValue + " " + wb_KomponParam301_Global.kt301Param(x.ParamNr).Bezeichnung + vbCrLF
                     End If
 
                 'Nährwerte
@@ -128,49 +128,49 @@ Public Class wb_ChangeLog
                     If wb_KomponParam301_Global.kt301Param(x.ParamNr).Used Or ReportAll Then
                         'in der ersten Zeile eine Überschrift drucken
                         If Not UeberschriftNaehrwert Then
-                            s += vbNewLine & "Nährwerte [alt/neu]" & vbNewLine
+                            s += vbCrLF & "Nährwerte [alt/neu]" & vbCrLF
                             UeberschriftNaehrwert = True
                         End If
                         s += x.OldValue + " " + wb_KomponParam301_Global.kt301Param(x.ParamNr).Einheit + "/"
                         s += x.NewValue + " " + wb_KomponParam301_Global.kt301Param(x.ParamNr).Einheit + " "
-                        s += wb_KomponParam301_Global.kt301Param(x.ParamNr).Bezeichnung + vbNewLine
+                        s += wb_KomponParam301_Global.kt301Param(x.ParamNr).Bezeichnung + vbCrLF
                     End If
 
                 'Deklarationsbezeichnung
                 Case wb_Global.LogType.Dkl
                     Select Case x.ParamNr
                         Case Parameter.Tx_DeklarationExtern
-                            s += vbNewLine & "Deklaration [alt]" & vbNewLine
-                            s += x.OldValue + vbNewLine
-                            s += vbNewLine & "Deklaration [neu]" & vbNewLine
-                            s += x.NewValue + vbNewLine
+                            s += vbCrLF & "Deklaration [alt]" & vbCrLF
+                            s += x.OldValue + vbCrLF
+                            s += vbCrLF & "Deklaration [neu]" & vbCrLF
+                            s += x.NewValue + vbCrLF
                         Case Parameter.Tx_Mehlzusammensetzung
-                            s += vbNewLine & "Mehl-Zusammensetzung [alt] " & x.OldValue
-                            s += vbNewLine & "Mehl-Zusammensetzung [neu] " & x.NewValue & vbNewLine
+                            s += vbCrLF & "Mehl-Zusammensetzung [alt] " & x.OldValue
+                            s += vbCrLF & "Mehl-Zusammensetzung [neu] " & x.NewValue & vbCrLF
                     End Select
 
                 'Parameter
                 Case wb_Global.LogType.Prm
                     Select Case x.ParamNr
                         Case Parameter.Tx_Bezeichnung
-                            s += vbNewLine & "Bezeichnung [alt] " & x.OldValue
-                            s += vbNewLine & "Bezeichnung [neu] " & x.NewValue & vbNewLine
+                            s += vbCrLF & "Bezeichnung [alt] " & x.OldValue
+                            s += vbCrLF & "Bezeichnung [neu] " & x.NewValue & vbCrLF
 
                         Case Parameter.Tx_Lieferant
-                            s += vbNewLine & "Lieferant [alt] " & x.OldValue
-                            s += vbNewLine & "Lieferant [neu] " & x.NewValue & vbNewLine
+                            s += vbCrLF & "Lieferant [alt] " & x.OldValue
+                            s += vbCrLF & "Lieferant [neu] " & x.NewValue & vbCrLF
                     End Select
 
                 'Fehler
                 Case wb_Global.LogType.Err
-                    s += vbNewLine & "Fehler " & x.NewValue
+                    s += vbCrLF & "Fehler " & x.NewValue
                 'Hinweis
                 Case wb_Global.LogType.Msg
-                    s += vbNewLine & "Hinweis " & x.NewValue
+                    s += vbCrLF & "Hinweis " & x.NewValue
 
                 Case Else
                     If ReportAll Then
-                        s += x.OldValue + "/" + x.NewValue + vbNewLine
+                        s += x.OldValue + "/" + x.NewValue + vbCrLF
                     End If
             End Select
         Next

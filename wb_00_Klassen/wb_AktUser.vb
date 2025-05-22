@@ -56,6 +56,13 @@ Public Class wb_AktUser
         End Set
     End Property
 
+    Public Shared Sub Logout()
+        UserNr = wb_Global.UNDEFINED
+        UserGruppe = wb_Global.UNDEFINED
+        UserName = ""
+        SuperUser = False
+    End Sub
+
     Public Shared Function Login(UserNr As Integer) As Boolean
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         'Neuen Benutzer aus WinBack-DB lesen
@@ -78,7 +85,13 @@ Public Class wb_AktUser
 
     End Function
 
+    ''' <summary>
+    ''' Gibt True zurück, wenn der Benutzer in der WinBack-Datenbank gefunden wird.
+    ''' </summary>
+    ''' <param name="UserName"></param>
+    ''' <returns></returns>
     Public Shared Function Login(UserName As String) As Boolean
+        Dim result As Boolean = False
         Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
         'Neuen Benutzer aus WinBack-DB lesen
         winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserName, UserName))
@@ -89,21 +102,20 @@ Public Class wb_AktUser
             UserGruppe = winback.iField("IP_ItemID")
             _UserLanguage = winback.sField("IP_Wert5str")
             _SuperUser = False
-            Login = True
+            result = True
         Else
             'Benutzer ist OrgaBack Benutzername
             _UserName = UserName
-            Login = False
         End If
 
         'User SYS ist Super-User
-        If (UserName.Contains("System") And UserName.Contains("Administrator")) Or UserName = "KurzSesam" Then
+        If (UserName.Contains("System") OrElse UserName.Contains("Administrator")) OrElse UserName = "KurzSesam" OrElse wb_GlobalSettings.OrgaBackEmployee = "SYS" Then
             SuperUser = True
         End If
 
         'Verbindung wieder schliessen
         winback.Close()
-        Return Login
+        Return result
     End Function
 
     Private Shared Sub UpdateUserLanguage(Lang As String)
@@ -112,6 +124,7 @@ Public Class wb_AktUser
             'Update Benutzer in Datenbank
             winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUserUpdateLang, _UserNr, Lang))
         Catch
+            Trace.WriteLine("@E_Fehler beim Schreiben der Benutzer-Daten")
         End Try
         'Verbindung wieder schliessen
         winback.Close()
@@ -160,11 +173,12 @@ Public Class wb_AktUser
     '''      
     ''' </summary>
     ''' <param name="m_Control"></param>
-    Public Shared Sub SetUserRechte(ByVal m_Control As Control)
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
+    Public Shared Sub SetUserRechte(m_Control As Control)
 
         'Schleife über alle Controls
         For Each ctrl As Control In m_Control.Controls
-            ctrl.Enabled = RechtOK(ctrl.Tag, _SuperUser) And wb_AktSysKonfig.SysKonfigOK(ctrl.Tag)
+            ctrl.Enabled = RechtOK(ctrl.Tag, _SuperUser) AndAlso wb_AktSysKonfig.SysKonfigOK(ctrl.Tag, _SuperUser)
 
             'Rekursiver Aufruf bei verschachtelten Controls
             If ctrl.Controls.Count > 0 Then
@@ -174,13 +188,17 @@ Public Class wb_AktUser
             'Sonderfunktion für Ribbon, RibbonTab, RibbonPanel und RibbonItem
             If ctrl.GetType().Equals(GetType(Ribbon)) Then
                 For Each rTab As RibbonTab In DirectCast(ctrl, Ribbon).Tabs
-                    rTab.Visible = RechtOK(rTab.Tag, _SuperUser) And wb_AktSysKonfig.SysKonfigOK(rTab.Tag)
-                    For Each rPnl As RibbonPanel In rTab.Panels
-                        rPnl.Enabled = RechtOK(rPnl.Tag, _SuperUser) And wb_AktSysKonfig.SysKonfigOK(rPnl.Tag)
-                        For Each rBtn As RibbonItem In rPnl.Items
-                            rBtn.Enabled = RechtOK(rBtn.Tag, _SuperUser) And wb_AktSysKonfig.SysKonfigOK(rBtn.Tag)
+                    Try
+                        rTab.Enabled = RechtOK(rTab.Tag, _SuperUser) AndAlso wb_AktSysKonfig.SysKonfigOK(rTab.Tag, _SuperUser)
+                        For Each rPnl As RibbonPanel In rTab.Panels
+                            rPnl.Enabled = RechtOK(rPnl.Tag, _SuperUser) AndAlso wb_AktSysKonfig.SysKonfigOK(rPnl.Tag, _SuperUser)
+                            For Each rBtn As RibbonItem In rPnl.Items
+                                rBtn.Enabled = RechtOK(rBtn.Tag, _SuperUser) AndAlso wb_AktSysKonfig.SysKonfigOK(rBtn.Tag, _SuperUser)
+                            Next
                         Next
-                    Next
+                    Catch ex As Exception
+                        Trace.WriteLine("@E_Fehler beim Ermitteln der Benutzer-Rechte")
+                    End Try
                 Next
             End If
         Next

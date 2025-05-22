@@ -37,12 +37,13 @@ Public Class wb_nwtUpdateArtikel
     ''' Nachdem Nährwerte und Zutatenliste berechnet sind
     ''' </summary>
     ''' <returns>True wenn der Datensatz aktualisiert wurde</returns>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Public Function UpdateNext(KompNr As Integer, Optional ByRef bUpdateOrgaBack As Boolean = False) As Boolean
         'Aktuelle Komponenten-Nummer setzen
         AktKO_Nr = KompNr
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-        UpdateNext = False
+        Dim Result As Boolean = False
 
         'Filter setzen (nur markierte Artikel oder alle)
         Dim Filter As String = wb_Global.ArtikelMarker.nwtUpdate
@@ -64,7 +65,7 @@ Public Class wb_nwtUpdateArtikel
                 _AktKO_Nr = nwtArtikelDaten.Nr
 
                 'Artikel-Daten komplett (inkusive Parameter) einlesen
-                nwtArtikelDaten.MySQLdbRead(_AktKO_Nr)
+                nwtArtikelDaten.xMySQLdbRead(_AktKO_Nr)
                 'verknüpfte Rezeptnummer zum Artikel/Rohstoff
                 _AktRZ_Nr = nwtArtikelDaten.RzNr
                 'Rezept mit allen Rezeptschritten lesen (NoMessage=True unterdrückt die Meldung "Rezept verweist auf sich selbst")
@@ -75,29 +76,39 @@ Public Class wb_nwtUpdateArtikel
 
                 'Nährwert-Information berechnen
                 nwtArtikelDaten.ktTyp301 = Rzpt.KtTyp301
-                Debug.Print("reCalcRezept (" & _AktRZ_Nr & ") " & Rzpt.RezeptNummer & " " & Rzpt.RezeptBezeichnung & " kt301(Kilokalorien) " & nwtArtikelDaten.ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien))
+                'Debug.Print("Kilokalorien " & Rzpt.KtTyp301.Naehrwert(wb_Global.T301_Kilokalorien))
+                'Debug.Print("reCalcRezept (" & _AktRZ_Nr & ") " & Rzpt.RezeptNummer & " " & Rzpt.RezeptBezeichnung & " kt301(Kilokalorien) " & nwtArtikelDaten.ktTyp301.Naehrwert(wb_Global.T301_Kilokalorien))
+
+                Dim FlagAufloesen As Boolean = nwtArtikelDaten.Deklaration.StartsWith(wb_Global.FlagAufloesen)
                 'Zutatenliste erzeugen
-                nwtArtikelDaten.Deklaration = wb_Functions.XRemoveSonderZeichen(Rzpt.ZutatenListe(True, True, True), True)
-                Debug.Print("Zutatenliste " & nwtArtikelDaten.Deklaration)
+                nwtArtikelDaten.Deklaration(False) = wb_Functions.XRemoveSonderZeichen(Rzpt.ZutatenListe(wb_GlobalSettings.NwtENummerZutatenListe, wb_GlobalSettings.NwtCalcQuid, wb_GlobalSettings.NwtOptimizeZutatenListe, True), True)
+                'Debug.Print("Zutatenliste " & nwtArtikelDaten.Deklaration)
                 'Mehlzusammensetzung berechnen
                 nwtArtikelDaten.Mehlzusammensetzung = Rzpt.MehlZusammensetzung(wb_Global.TrennzMehlAnteil)
 
                 'Änderungen der Nährwerte in Komponente(Rohstoff) sichern
-                Debug.Print("Update (Artikel)Nährwerte in WinBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
+                'Debug.Print("Update (Artikel)Nährwerte in WinBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
                 nwtArtikelDaten.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
+
                 'Änderungen der Zutatenliste in Komponente(Rohstoff) sichern
-                Debug.Print("Update (Artikel)Zutaten in WinBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
-                nwtArtikelDaten.MySqldbUpdate_Zutatenliste()
+                'Die Zutatenliste wird NICHT gespeichert, wenn in der Deklaration das Flag "Auflösen" steht!
+                If Not FlagAufloesen Then
+                    'Debug.Print("Update (Artikel)Zutaten in WinBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
+                    nwtArtikelDaten.MySqldbUpdate_Zutatenliste()
+                End If
+
                 'Markierung Artikel-Nährwerte müssen aktualisiert werden wieder entfernen
                 nwtArtikelDaten.MySQLdbSetMarker(wb_Global.ArtikelMarker.nwtOK)
 
                 'Änderungen der Komponenten-Parameter(Rohstoff) in OrgaBack-DB schreiben
-                'Gibt true zurück, wenn der Artikel in OrgaBack existiert
-                Debug.Print("Update (Artikel)Nährwerte in OrgaBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
-                If nwtArtikelDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
-                    'Zutaten-und Allergenliste in OrgaBack updaten
-                    Debug.Print("Update (Artikel)Zutaten in OrgaBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
-                    nwtArtikelDaten.MsSqldbUpdate_Zutatenliste()
+                If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Or wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OBServerTask Then
+                    'Gibt true zurück, wenn der Artikel in OrgaBack existiert
+                    'Debug.Print("Update (Artikel)Nährwerte in OrgaBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
+                    If nwtArtikelDaten.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
+                        'Zutaten-und Allergenliste in OrgaBack updaten
+                        'Debug.Print("Update (Artikel)Zutaten in OrgaBack " & nwtArtikelDaten.Nummer & " " & nwtArtikelDaten.Bezeichnung)
+                        nwtArtikelDaten.MsSqldbUpdate_Zutatenliste()
+                    End If
                 End If
 
                 'Liste aller Artikel, die dieses Rezept verwenden
@@ -110,7 +121,7 @@ Public Class wb_nwtUpdateArtikel
                             'Komponenten-Objekt
                             Dim nwtArtikel As New wb_Komponente
                             'Daten aus Winback-Db lesen
-                            nwtArtikel.MySQLdbRead(ArtikelNr)
+                            nwtArtikel.xMySQLdbRead(ArtikelNr)
 
                             'Nährwerte und Allergene aktualisieren
                             nwtArtikel.ktTyp301 = nwtArtikelDaten.ktTyp301
@@ -120,20 +131,20 @@ Public Class wb_nwtUpdateArtikel
                             nwtArtikel.Mehlzusammensetzung = nwtArtikelDaten.Mehlzusammensetzung
 
                             'Daten sichern in Mysql
-                            Debug.Print("Update (weitere Artikel)Nährwerte in WinBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
+                            'Debug.Print("Update (weitere Artikel)Nährwerte in WinBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
                             nwtArtikel.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt301)
                             'Änderungen der Zutatenliste in Komponente(Rohstoff) sichern
-                            Debug.Print("Update (weitere Artikel)Zutaten in WinBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
+                            'Debug.Print("Update (weitere Artikel)Zutaten in WinBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
                             nwtArtikel.MySqldbUpdate_Zutatenliste()
                             'Markierung Artikel-Nährwerte müssen aktualisiert werden wieder entfernen
                             nwtArtikel.MySQLdbSetMarker(wb_Global.ArtikelMarker.nwtOK)
 
                             'Daten sichern in MsSQL
                             'Gibt true zurück, wenn der Artikel in OrgaBack existiert
-                            Debug.Print("Update (weitere Artikel)Nährwerte in OrgaBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
+                            'Debug.Print("Update (weitere Artikel)Nährwerte in OrgaBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
                             If nwtArtikel.MsSQLdbUpdate_Parameter(wb_Global.ktParam.kt301) Then
                                 'Zutaten-und Allergenliste in OrgaBack updaten
-                                Debug.Print("Update (weitere Artikel)Zutaten in OrgaBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
+                                'Debug.Print("Update (weitere Artikel)Zutaten in OrgaBack " & nwtArtikel.Nummer & " " & nwtArtikel.Bezeichnung)
                                 nwtArtikel.MsSqldbUpdate_Zutatenliste()
                             End If
                         End If
@@ -150,7 +161,7 @@ Public Class wb_nwtUpdateArtikel
 
                 'Ausgabe-Text
                 _InfoText = "<" & nwtArtikelDaten.Nr.ToString("000000") & "> " & nwtArtikelDaten.Bezeichnung
-                UpdateNext = True
+                Result = True
             Else
                 'EOF() - ReStart bei KO_Nr = 0
                 AktKO_Nr = 0
@@ -161,14 +172,12 @@ Public Class wb_nwtUpdateArtikel
         End If
 
         winback.Close()
-        Return UpdateNext
+        Return Result
     End Function
 
     Protected Overridable Overloads Sub Dispose(ByVal disposing As Boolean)
-        If Not Me.disposed Then
-            If disposing Then
-                ' Insert Code to free managed resource
-            End If
+        If Not Me.disposed AndAlso disposing Then
+            ' Insert Code to free managed resource
         End If
         Me.disposed = True
     End Sub

@@ -76,13 +76,21 @@ Public Class wb_KomponParam300_Global
     ''' Prüft ob die Datenbank alle notwendigen Daten und Einträge enthält.
     ''' Die Datenbank muss Einträge für die Parameter Produktion(300) enthalten:
     ''' 
-    ''' Public Const T300_Backverlust = 1
-    ''' Public Const T300_ProdVorlauf = 2
-    ''' Public Const T300_Zuschnitt = 3
-    ''' Public Const T300_LinienGruppe = 5
-    ''' Public Const T300_RzNr = 6
-    ''' Public Const T300_RezeptNummer = 7
-    ''' Public Const T300_RezeptName = 8
+    ''' Public Const T300_Backverlust = 1           INT     0..100 [%]   
+    ''' Public Const T300_ProdVorlauf = 2           INT     0..999 [h]
+    ''' Public Const T300_Zuschnitt = 3             INT     0..100 [%]       
+    ''' Public Const T300_LinienGruppe = 5          INT     0..256
+    ''' Public Const T300_RzNr = 6                  INT     0..2147483647
+    ''' Public Const T300_RezeptNummer = 7          STRING  (8)  
+    ''' Public Const T300_RezeptName = 8            STRING  (20)
+    ''' Public Const T300_StkProBlech = 9           INT     0..999 [Stk]
+    ''' Public Const T300_StkProStikken = 10        INT     0..999 [Stk]
+    ''' Public Const T300_ZeitTeig = 11             TIME
+    ''' Public Const T300_ZeitAufarbeitung = 12     TIME
+    ''' Public Const T300_ZeitBacken = 13           TIME
+    ''' Public Const T300_ZeitAbkuehlen = 14        TIME
+    ''' Public Const T300_OfenGruppe = 15           INT     0..999
+    ''' 
     ''' </summary>
     ''' <returns></returns>
     Public Shared Function CheckDB() As Boolean
@@ -100,10 +108,17 @@ Public Class wb_KomponParam300_Global
             wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_RzNr), "Parameter(6) RzNr fehlt in Tabelle winback.KomponTypen")
             wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_RezeptNummer), "Parameter(7) RezeptNummer fehlt in Tabelle winback.KomponTypen")
             wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_RezeptName), "Parameter(8) RezeptName fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_StkProBlech), "Parameter(9) Stück pro Blech fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_StkProStikken), "Parameter(10) Stück pro Stikken fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_ZeitTeig), "Parameter(11) Arbeitszeit Teig fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_ZeitAufarbeitung), "Parameter(12) Arbeitszeit Aufarbeitung fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_ZeitBacken), "Parameter(13) Zeit Backen fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_ZeitAbkuehlen), "Parameter(14) Zeit Abkühlen fehlt in Tabelle winback.KomponTypen")
+            wb_Functions.AssertTrue(ktTyp300Params.ContainsKey(wb_Global.T300_Ofengruppe), "Parameter(15) Ofengruppe fehlt in Tabelle winback.KomponTypen")
         Catch ex As Exception
             Trace.WriteLine("Fehler in Komponenten-Parameter Typ 300 - Datensätze fehlen !")
             _ErrorText = ex.Message
-            Trace.WriteLine(_ErrorText)
+            Trace.WriteLine("@E_" & _ErrorText)
             Return False
         End Try
         Return True

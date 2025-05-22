@@ -1,7 +1,6 @@
 ﻿'Zutatenliste neu berechnen
 Imports System.Reflection
 Imports EnhEdit
-Imports Signum.OrgaSoft.Services
 Imports WinBack.wb_Global.KomponTypen
 Imports WinBack.wb_Sql_Selects
 
@@ -23,6 +22,7 @@ Public Class wb_Rezeptschritt
     Private _UnterGW As String
     Private _PreisProKg As Double = 0
     Private _RezeptNr As Integer = -1
+    Private _RezeptNummer As String
     Private _TA As Integer = wb_Global.TA_Undefined
     Private _RezGewicht As Double
     Private _BruttoRezGewicht As Double
@@ -32,6 +32,7 @@ Public Class wb_Rezeptschritt
     Private _ZaehltTrotzdemZumNwtGewicht As Boolean = False
     Private _LagerOrt As String
     Private _QUIDRelevant As Boolean = False
+    Private _ktTyp301DatenFehlerhaft As Boolean = False
     Private _ktTyp301 As New wb_KomponParam301
     Private _ZutatenListe As New wb_ZutatenElement
     Private _ZutatenListeExtern As New wb_Hinweise(wb_Global.Hinweise.DeklBezRohstoff)
@@ -88,7 +89,7 @@ Public Class wb_Rezeptschritt
         Dim _type As Type = Me.GetType()
         Dim properties() As PropertyInfo = _type.GetProperties()
         For Each _property As PropertyInfo In properties
-            If _property.CanWrite And _property.CanRead And _property.Name <> "ParentStep" Then
+            If _property.CanWrite AndAlso _property.CanRead AndAlso _property.Name <> "ParentStep" AndAlso _property.Name <> "fSollwert" Then
                 _property.SetValue(Me, _property.GetValue(rs, Nothing))
             End If
         Next
@@ -384,7 +385,9 @@ Public Class wb_Rezeptschritt
     End Property
 
     ''' <summary>
-    ''' Sollwert
+    ''' Sollwert als String.
+    ''' Enthält die Rezepturdaten exakt entsprechend der Datenbank-Einträge (Dezimaltrenner Komma für numerische Werte)
+    ''' Berechnungen müssen immer mit der entsprechend konvertierten Property fSollwert vorgenommen werden!
     ''' </summary>
     ''' <returns></returns>
     Public Property Sollwert As String
@@ -393,6 +396,20 @@ Public Class wb_Rezeptschritt
         End Get
         Set(value As String)
             _Sollwert = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Sollwert als Double.
+    ''' Enthält die Rezeptur-Sollwertdaten als Double-Wert. Ist eine Konvertierung nicht möglich wird 0.0F zurückgegeben!
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property fSollwert As Double
+        Get
+            Return wb_Functions.StrToDouble(_Sollwert)
+        End Get
+        Set(value As Double)
+            _Sollwert = wb_Functions.FormatStr(value.ToString, 3, -1, ("sql"))
         End Set
     End Property
 
@@ -418,7 +435,7 @@ Public Class wb_Rezeptschritt
                     Return _Sollwert
                 Case Else
                     'Anzeige Kommentar statt Rezeptbezeichnung
-                    If wb_GlobalSettings.KommentarStattBezeichnung And _Kommentar <> "" Then
+                    If wb_GlobalSettings.KommentarStattBezeichnung AndAlso _Kommentar <> "" Then
                         If _RezeptNr > 0 Then
                             Return _Kommentar & wb_Global.RezeptImRezept
                         Else
@@ -447,6 +464,8 @@ Public Class wb_Rezeptschritt
     ''' Sollwert. Anzeige im VitualTree (Rezeptur)
     ''' Bei Produktions-Stufen, Kessel und Text-Komponenten wird ein leeres Feld angezeigt,
     ''' bei Automatik, Hand, Eis, Wasser oder Verpackung/Stk wird der Sollwert formatiert mit 3 Nachkomma-Stellen angezeigt.
+    ''' 
+    ''' Hier wird das Ergebnis aus dem Editor (Enh_Edit) in die Datenstruktur eingetragen!
     ''' </summary>
     ''' <returns>String - Sollwert</returns>
     Public Property VirtTreeSollwert As String
@@ -456,18 +475,21 @@ Public Class wb_Rezeptschritt
                     Return ""
                 Case Else
                     If wb_Functions.TypeIstSollMenge(_Type, 1) Then
-                        Return wb_Functions.FormatStr(_Sollwert, 3)
-                    ElseIf wb_Functions.TypeIstSollMenge(_Type, 2) Then
-                        Return wb_Functions.FormatStr(_SollwertProzent, 3)
+                        'Sollwert aus Datenbank immer im Format de-DE (Komma als Dezimaltrenner)
+                        Return wb_Functions.FormatStr(_Sollwert, 3, -1, "sql")
+                        '    'TODO - wird nie True (Sinn?)
+                        'ElseIf wb_Functions.TypeIstSollMenge(_Type, 2) Then
+                        '    'Sollwert aus Datenbank immer im Format de-DE (Komma als Dezimaltrenner)
+                        '    Return wb_Functions.FormatStr(_SollwertProzent, 3, -1, "sql")
                     Else
                         Return _Sollwert
                     End If
             End Select
         End Get
         Set(value As String)
-            If wb_Functions.TypeIstSollMenge(_Type, 1) Or wb_Functions.TypeIstSollWert(_Type, 1) Then
-                _Sollwert = value
-            ElseIf wb_Functions.TypeIstSollMenge(_Type, 2) Or wb_Functions.TypeIstSollWert(_Type, 2) Then
+            If wb_Functions.TypeIstSollMenge(_Type, 1) OrElse wb_Functions.TypeIstSollWert(_Type, 1) Then
+                _Sollwert = wb_Functions.FormatSqlStr(value)
+            ElseIf wb_Functions.TypeIstSollMenge(_Type, 2) OrElse wb_Functions.TypeIstSollWert(_Type, 2) Then
                 _SollwertProzent = value
             End If
         End Set
@@ -481,7 +503,7 @@ Public Class wb_Rezeptschritt
     Public ReadOnly Property VirtTreePreis As String
         Get
             If _Preis > 0 Then
-                Return wb_Functions.FormatStr(_Preis, 2) + wb_GlobalSettings.osDefaultWaehrung
+                Return wb_Functions.FormatStr(_Preis, 2) & wb_GlobalSettings.osDefaultWaehrung
             Else
                 Return ""
             End If
@@ -518,7 +540,7 @@ Public Class wb_Rezeptschritt
         Get
             Select Case _Type
                 Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE, KO_TYPE_EISKOMPONENTE, KO_TYPE_WASSERKOMPONENTE
-                    If _ParamNr <= 1 And (_RezGewicht > 0) And Not ZaehltNichtZumRezeptGewicht Then
+                    If _ParamNr <= 1 AndAlso (_RezGewicht > 0) AndAlso Not ZaehltNichtZumRezeptGewicht Then
                         Dim Prozent As Double = (wb_Functions.StrToDouble(_Sollwert) / _RezGewicht) * 100
                         Return wb_Functions.FormatStr(Prozent, 2)
                     Else
@@ -602,18 +624,35 @@ Public Class wb_Rezeptschritt
     End Property
 
     ''' <summary>
+    ''' Alphanumerische Rezeptnummer (nur für Ausdruck der Rezept-Struktur)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property RezeptNummer As String
+        Get
+            Return _RezeptNummer
+        End Get
+        Set(value As String)
+            _RezeptNummer = value
+        End Set
+    End Property
+
+    ''' <summary>
     ''' Setzt die Werte für Einheit, Format und Sollwert bei Kneter-Komponenten.
     ''' Erzeugen von Kneter-Rezepten aus Komponenten(128)
+    ''' Wenn NeueKomponente auf True steht, wird ein DefaultSollwert von 00:10:00 eingetragen
     ''' </summary>
-    Public Sub SetType118()
+    Public Sub SetType118(NeueKomponente As Boolean)
         Select Case _Type
             Case wb_Global.KomponTypen.KO_TYPE_KNETER
                 Dim EinheitenIndex As String = wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.EinheitenIndex)
                 _Einheit = wb_Language.TextFilter(wb_sql_Functions.Lookup("Einheiten", "E_Einheit", "E_LfdNr = " & EinheitenIndex))
-                _Sollwert = wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.Sollwert)
                 _Format = wb_Functions.StrToFormat(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.Format))
                 _UnterGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.UntererGrenzwert))
                 _OberGW = wb_Functions.StrToDouble(wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.ObererGrenzwert))
+                'Sollwert nur bei neuen Komponenten überschreiben (Fehler bei Fonk 21-02-2022)
+                If NeueKomponente Then
+                    _Sollwert = wb_sql_Functions.getKomponParam(RohNr, wb_Global.KomponParams.Sollwert)
+                End If
 
             Case wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT
                 _Einheit = wb_Global.wbEinheitLeer
@@ -635,7 +674,7 @@ Public Class wb_Rezeptschritt
             If _TA = wb_Global.TA_Undefined Then
 
                 'Rezept im Rezept
-                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
+                If (RezeptNr > 0) AndAlso RezeptImRezept IsNot Nothing Then
                     'TA aus Rezept-im-Rezept
                     _TA = RezeptImRezept.RezeptTA
                 Else
@@ -698,7 +737,7 @@ Public Class wb_Rezeptschritt
     ''' <returns>Double - Sollwert</returns>
     Private ReadOnly Property _NwtGewicht As Double
         Get
-            If Not ZaehltNichtZumRezeptGewicht Or ZaehltTrotzdemZumNwtGewicht Then
+            If Not ZaehltNichtZumRezeptGewicht OrElse ZaehltTrotzdemZumNwtGewicht Then
                 Return wb_Functions.StrToDouble(_BruttoGewicht)
             Else
                 Return 0
@@ -715,8 +754,10 @@ Public Class wb_Rezeptschritt
         Get
             Dim Childgewicht As Double = 0
             For Each x As wb_Rezeptschritt In ChildSteps
+                'Debug.Print("RezeptGewicht Rezeptschritt " & x.SchrittNr & "/" & x.VirtTreeBezeichnung & "/" & x.Gewicht)
                 Childgewicht = Childgewicht + x.Gewicht
             Next
+            'Gewicht des Rezeptschrittes und Summe aller unterlagerten Rezeptschritte
             Return _Gewicht + Childgewicht
         End Get
     End Property
@@ -770,6 +811,7 @@ Public Class wb_Rezeptschritt
     ''' <summary>
     ''' Brutto-Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren.
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
     Public WriteOnly Property BruttoRezGewicht As Double
         Set(value As Double)
             For Each x As wb_Rezeptschritt In ChildSteps
@@ -782,6 +824,7 @@ Public Class wb_Rezeptschritt
     ''' <summary>
     ''' Nwt-Rezept-Gesamtgewicht an alle Rezeptschritte weiterpropagieren. Wird benötigt zur Berechnung der Nährwerte
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
     Public WriteOnly Property NwtRezGewicht As Double
         Set(value As Double)
             For Each x As wb_Rezeptschritt In ChildSteps
@@ -802,7 +845,7 @@ Public Class wb_Rezeptschritt
     Private ReadOnly Property _TA_Mehlmenge As Double
         Get
             'Rezept im Rezept
-            If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
+            If (RezeptNr > 0) AndAlso RezeptImRezept IsNot Nothing Then
                 'TA aus Rezept-im-Rezept
                 If RezeptImRezept.RezeptGewicht > 0 Then
                     _TA_Mehlmenge = (RezeptImRezept.RezeptGesamtMehlmenge * wb_Functions.StrToDouble(_Sollwert)) / RezeptImRezept.RezeptGewicht
@@ -848,7 +891,7 @@ Public Class wb_Rezeptschritt
     Private ReadOnly Property _TA_Wassermenge As Double
         Get
             'Rezept im Rezept
-            If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
+            If (RezeptNr > 0) AndAlso RezeptImRezept IsNot Nothing Then
                 'TA aus Rezept-im-Rezept
                 If RezeptImRezept.RezeptGewicht > 0 Then
                     _TA_Wassermenge = (RezeptImRezept.RezeptGesamtWassermenge * wb_Functions.StrToDouble(_Sollwert)) / RezeptImRezept.RezeptGewicht
@@ -873,7 +916,7 @@ Public Class wb_Rezeptschritt
                 '
                 'Hier wird (fälschlicherweise) als TA der Wasseranteil eingetragen
                 'also bei Flüssighefe mit 50% Wasser - TA 50
-                If (TA < 100) And (TA <> 0) And (TA > 0) Then
+                If (TA < 100) AndAlso (TA <> 0) AndAlso (TA > 0) Then
                     _TA_Wassermenge = wb_Functions.StrToDouble(_Sollwert) * (TA / 100)
                 End If
             End If
@@ -902,7 +945,7 @@ Public Class wb_Rezeptschritt
     Private ReadOnly Property _Preis As Double
         Get
             'Rezept im Rezept
-            If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
+            If (RezeptNr > 0) AndAlso RezeptImRezept IsNot Nothing Then
                 If (RezeptImRezept.RezeptGewicht > 0) Then
                     'Preis aus Rezept-im-Rezept
                     _PreisProKg = (RezeptImRezept.RezeptPreis) / RezeptImRezept.RezeptGewicht
@@ -958,6 +1001,8 @@ Public Class wb_Rezeptschritt
     '''     KA_zaehlt_zu_RZ_Gesamtmenge = NULL      False                        True
     '''     
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1871:Two branches in a conditional structure should not have exactly the same implementation", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
     Public WriteOnly Property KA_zaehlt_zu_RZ_Gesamtmenge As String
         Set(value As String)
             Select Case value
@@ -974,6 +1019,7 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
     Public WriteOnly Property KA_zaehlt_zu_NWT_Gesamtmenge As String
         Set(value As String)
             Select Case value
@@ -1015,13 +1061,17 @@ Public Class wb_Rezeptschritt
     ''' Alle untergeordneten Rezeptschritte im Baum werden berechnet und mit der aktuellen Zeile addiert.
     ''' </summary>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Public ReadOnly Property ktTyp301 As wb_KomponParam301
         Get
             'wenn noch keine Allergen-Info berechnet wurde
             If Not _ktTyp301.IsCalculated Then
 
+                'alle Werte löschen (sicherheitshalber)
+                _ktTyp301.Clear()
+
                 'Rezept im Rezept
-                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing And _NwtRezGewicht > 0 Then
+                If (RezeptNr > 0) AndAlso RezeptImRezept IsNot Nothing AndAlso _NwtRezGewicht > 0 Then
                     RezeptImRezept.KtTyp301.AddNwt(_ktTyp301, _Sollwert / _NwtRezGewicht)
                 Else
 
@@ -1039,7 +1089,7 @@ Public Class wb_Rezeptschritt
 
                     'Wenn der Parent-Rezeptschritt eine Produktions-Stufe oder ein Kessel ist, wird der Faktor
                     'gleich Eins gesetzt. (Die Gewichtung erfolgt über das Rezept-Gesamtgewicht
-                    If Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
+                    If Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE OrElse Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Then
                         Faktor = 1
                     End If
 
@@ -1057,19 +1107,35 @@ Public Class wb_Rezeptschritt
     End Property
 
     ''' <summary>
+    ''' Flag in den Nährwert-Angaben (kt301) sind ein/mehrere Parameter nicht gesetzt oder als fehlerhaft gekennzeichnet
+    ''' (Allergen-Info X oder N)
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property KtTyp301DatenFehlerhaft As Boolean
+        Get
+            Return _ktTyp301DatenFehlerhaft
+        End Get
+        Set(value As Boolean)
+            _ktTyp301DatenFehlerhaft = value
+        End Set
+    End Property
+
+    ''' <summary>
     ''' Gibt die Zutatenliste mit Bezeichnung und Mengen-Angabe aller unterlagerten Rezeptschritte zurück
     ''' 
     ''' Abhängig vom Flag NwtInterneDeklaration wird aus der internen oder externen Deklaration gelesen.
     ''' Ist das Feld interne Deklaration leer, wird immer die externe Deklaration verwendet.
     ''' </summary>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2352:Indexed properties with more than one parameter should not be used", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Public ReadOnly Property ZutatenListe(Optional Faktor As Double = 1, Optional ReCalc As Boolean = False) As wb_ZutatenElement
         Get
 
             'Lesen aus interner Deklaration der Rohstoffe
             If wb_GlobalSettings.NwtInterneDeklaration Then
                 'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
-                If Not _ZutatenListeIntern.ReadOK Or ReCalc Then
+                If Not _ZutatenListeIntern.ReadOK OrElse ReCalc Then
                     _ZutatenListeIntern.Read(Me.RohNr)
                 End If
                 'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
@@ -1077,9 +1143,9 @@ Public Class wb_Rezeptschritt
             End If
 
             'Lesen aus externer Deklaration oder wenn die interne Deklaration leer ist
-            If Not wb_GlobalSettings.NwtInterneDeklaration Or (_ZutatenListe.Zutaten = "") Then
+            If Not wb_GlobalSettings.NwtInterneDeklaration OrElse (_ZutatenListe.Zutaten = "") Then
                 'Wenn noch nicht gelesen wurde, dann erst aus DB einlesen
-                If Not _ZutatenListeExtern.ReadOK Or ReCalc Then
+                If Not _ZutatenListeExtern.ReadOK OrElse ReCalc Then
                     _ZutatenListeExtern.Read(Me.RohNr)
                 End If
                 'Die Zutaten zum Rohstoff sind im Memo-Feld abgelegt
@@ -1127,9 +1193,12 @@ Public Class wb_Rezeptschritt
             _ZutatenListe.Grp1 = RohstoffGruppe1
             _ZutatenListe.Grp2 = RohstoffGruppe2
 
-            'TODO Quid-Angaben aus Rezeptur auslesen und als Property anlegen
-            _ZutatenListe.Quid = False
+            'Quid-Angaben aus Rezeptur auslesen und als Property anlegen
+            _ZutatenListe.Quid = QUIDRelevant
             _ZutatenListe.QuidProzent = 0
+
+            'Querverweis Rohstoff in Zutatenliste eintragen
+            _ZutatenListe.Rohstoffe = Bezeichnung
 
             Return _ZutatenListe
         End Get
@@ -1137,12 +1206,23 @@ Public Class wb_Rezeptschritt
 
     Public Property Par1 As String
         Get
-            Return _Par1
+            'Bei Komponenten-Type 101 und 102 wird in RS_Par1=-1 das Flag QUID-Relevant gespeichert
+            If Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Then
+                If _QUIDRelevant Then
+                    Return wb_Global.RS_Par1_QUID
+                Else
+                    Return wb_Global.RS_Par1_NOQUID
+                End If
+            Else
+                Return _Par1
+            End If
         End Get
         Set(value As String)
             'Bei Komponenten-Type 101 und 102 wird in RS_Par1=-1 das Flag QUID-Relevant gespeichert
-            If value = wb_Global.RS_Par1_QUID And Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Then
+            If value = wb_Global.RS_Par1_QUID And (Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE) Then
                 _QUIDRelevant = True
+            Else
+                _QUIDRelevant = False
             End If
             'Wert speichern
             _Par1 = value
@@ -1177,7 +1257,7 @@ Public Class wb_Rezeptschritt
     End Property
 
     Public Sub SaveSollwert_org()
-        If _WertProd = "" And wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
+        If _WertProd = "" AndAlso wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
             _WertProd = Sollwert
         End If
     End Sub
@@ -1187,7 +1267,7 @@ Public Class wb_Rezeptschritt
             Return _QUIDRelevant
         End Get
         Set(value As Boolean)
-            If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) Then
+            If wb_Functions.TypeIstSollMenge(_Type, _ParamNr) AndAlso value Then
                 'Setze Bit in Rezeptschritte.RS_Par1)
                 _Par1 = wb_Global.RS_Par1_QUID
             End If
@@ -1240,6 +1320,32 @@ Public Class wb_Rezeptschritt
         End Set
     End Property
 
+    ''' <summary>
+    ''' Rohstoffgruppe(n) as String
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property RohstoffGruppe As String
+        Get
+            Dim Grp As String = ""
+
+            'Bezeichnung aus Rohstoff-Gruppe 1
+            If RohstoffGruppe1 > 0 AndAlso wb_Rohstoffe_Shared.RohGruppe.ContainsKey(RohstoffGruppe1) Then
+                Grp = wb_Rohstoffe_Shared.RohGruppe(RohstoffGruppe1)
+            End If
+
+            'Bezeichnung aus Rohstoff-Gruppe 2
+            If RohstoffGruppe2 > 0 AndAlso wb_Rohstoffe_Shared.RohGruppe.ContainsKey(RohstoffGruppe2) Then
+                If Grp <> "" Then
+                    Grp &= ", "
+                End If
+                Grp &= wb_Rohstoffe_Shared.RohGruppe(RohstoffGruppe2)
+            End If
+
+            'Zusammengesetzer String aus beiden Rohstoff-Gruppen
+            Return Grp
+        End Get
+    End Property
+
     Public Property LagerOrt As String
         Get
             Return _LagerOrt
@@ -1269,13 +1375,13 @@ Public Class wb_Rezeptschritt
                 'Fehler bei Niehaves (14-05-2020)
                 'TODO siehe: https://stackoverflow.com/questions/40419003/avoiding-overflowexception-when-converting-from-double-to-decimal
                 Try
-                    ri.Amount = Convert.ToDecimal(wb_Functions.StrToDouble(c.Sollwert) * Faktor)
+                    ri.Amount = Convert.ToDecimal(c.fSollwert * Faktor)
                 Catch
                     ri.Amount = 0
                 End Try
 
                 'Rezept im Rezept
-                If (c.RezeptNr > 0) And c.RezeptImRezept IsNot Nothing Then
+                If (c.RezeptNr > 0) AndAlso c.RezeptImRezept IsNot Nothing Then
                     'Rezeptschritte aus Rezept-Im-Rezept hängen am RootRezeptschritt (es wird immer Variante 1 gelesen)
                     ri.Ingredients = c.RezeptImRezept.RootRezeptSchritt.CalcIngredients(ri.Amount, c.RezeptImRezept.Variante)
                     ri.ProductionArticle = True
@@ -1319,6 +1425,7 @@ Public Class wb_Rezeptschritt
                 'Debug.Print("CalcZutaten - nach Step 1 (If TypeIstSollmenge)")
                 'DebugPrintZutatenListe(zListe)
             End If
+
             'Aufruf der Routine vom Root-Rezeptschritt aus
             'unterlagerte Rezeptschritte werden auch im Array angehängt
             For Each x As wb_Rezeptschritt In ChildSteps
@@ -1330,8 +1437,8 @@ Public Class wb_Rezeptschritt
             'Zutatenliste auflösen
             If z.Aufloesen Then
                 'Rezept im Rezept
-                If (RezeptNr > 0) And RezeptImRezept IsNot Nothing Then
-                    Dim f As Double = Sollwert / RezeptImRezept.RezeptGewicht
+                If (RezeptNr > 0) AndAlso RezeptImRezept IsNot Nothing Then
+                    Dim f As Double = fSollwert / RezeptImRezept.RezeptGewicht
                     RezeptImRezept.RootRezeptSchritt.CalcZutaten(zListe, ReCalc, f, z.GrpRezNr)
                     'Debug.Print("CalcZutaten - nach Step 3 (If RezeptImRezept)")
                     'DebugPrintZutatenListe(zListe)
@@ -1353,6 +1460,8 @@ Public Class wb_Rezeptschritt
         Next
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1066:Collapsible ""if"" statements should be merged", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Private Function ReadktTyp301() As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
@@ -1397,16 +1506,18 @@ Public Class wb_Rezeptschritt
                                 If ParamTyp = 301 Then
 
                                     If wb_KomponParam301_Global.IsAllergen(ParamNr) Then
-                                        'TODO if undefined set merker
+                                        'TODO Hier sollte global einstellbar die Kennung KEINE ANGABE ignoriert werden! (Niehaves)
                                         _ktTyp301.Allergen(ParamNr) = wb_Functions.StringtoAllergen(Value)
-                                        If (_ktTyp301.Allergen(ParamNr) = wb_Global.AllergenInfo.N) Or (_ktTyp301.Allergen(ParamNr) = wb_Global.AllergenInfo.ERR) Then
+                                        If ((_ktTyp301.Allergen(ParamNr) = wb_Global.AllergenInfo.N) AndAlso Not wb_GlobalSettings.NwtAllergeneNoDefinitionErr) OrElse
+                                            (_ktTyp301.Allergen(ParamNr) = wb_Global.AllergenInfo.ERR) Then
                                             _ktTyp301.FehlerKompName(ParamNr) = _Bezeichnung
+                                            _ktTyp301DatenFehlerhaft = True
                                         End If
                                     ElseIf wb_KomponParam301_Global.IsErnaehrung(ParamNr) Then
-                                        'TODO if undefined set merker
                                         _ktTyp301.ErnaehrungsForm(ParamNr) = wb_Functions.StringtoErnaehrungsForm(Value)
-                                        If (_ktTyp301.ErnaehrungsForm(ParamNr) = wb_Global.ErnaehrungsForm.X) Or (_ktTyp301.ErnaehrungsForm(ParamNr) = wb_Global.ErnaehrungsForm.ERR) Then
+                                        If (_ktTyp301.ErnaehrungsForm(ParamNr) = wb_Global.ErnaehrungsForm.X) OrElse (_ktTyp301.ErnaehrungsForm(ParamNr) = wb_Global.ErnaehrungsForm.ERR) Then
                                             _ktTyp301.FehlerKompName(ParamNr) = _Bezeichnung
+                                            _ktTyp301DatenFehlerhaft = True
                                         End If
                                     Else
                                         If (Value IsNot Nothing) And (Value <> "") Then
@@ -1417,8 +1528,9 @@ Public Class wb_Rezeptschritt
                                             End If
                                         Else
                                             _ktTyp301.FehlerKompName(ParamNr) = _Bezeichnung
+                                            _ktTyp301DatenFehlerhaft = True
                                         End If
-                                        'TODO if undefined set merker
+
                                     End If
                                 End If
                         End Select

@@ -10,6 +10,7 @@
     Private _TeigChargen As wb_Global.ChargenMengen
     Private _LinienGruppe As Integer
     Private _Aufloesen As Boolean
+    Private _SonderText As String
 
     Public Property ArtikelNr As Integer
         Get
@@ -89,6 +90,15 @@
         End Get
         Set(value As Boolean)
             _Aufloesen = value
+        End Set
+    End Property
+
+    Public Property SonderText As String
+        Get
+            Return _SonderText
+        End Get
+        Set(value As String)
+            _SonderText = value
         End Set
     End Property
 

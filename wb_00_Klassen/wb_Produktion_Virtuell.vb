@@ -72,22 +72,49 @@ Public Class wb_Produktion_virtuell
             For Each ArtikelZeile As wb_Produktionsschritt In RootProduktionsSchritt.ChildSteps
                 'Debug.Print("Produktion Artikel " & ArtikelZeile.ArtikelNummer & vbTab & ArtikelZeile.ArtikelBezeichnung)
 
-                For Each RezeptZeile As wb_Produktionsschritt In ArtikelZeile.ChildSteps
+                'Artikelzeilen ohne Rezeptur (Aufarbeitung)
+                If ArtikelZeile.ChildSteps.Count = 0 Then
                     'Fortlaufender Index BAK_ArbRezepte
                     LfdRzp += 1
-                    'Debug.Print("Produktion Rezept " & RezeptZeile.RezeptNummer & vbTab & RezeptZeile.RezeptBezeichnung)
+                    'Fortlaufender Index BAK_ArbRZSchritte
+                    LfdIdx += 1
 
-                    For Each KomponentenZeile As wb_Produktionsschritt In RezeptZeile.ChildSteps
-                        'Fortlaufender Index BAK_ArbRZSchritte
-                        LfdIdx += 1
-                        Debug.Print("Produktion Zeile " & KomponentenZeile.ArtikelNummer & vbTab & KomponentenZeile.ArtikelBezeichnung & vbTab & KomponentenZeile.Sollwert)
-                        'Rezept-Schritt wird (virtuell) bearbeitet und als fertig markiert
-                        VirtProduktionRezeptSchritt(KomponentenZeile, LinieNr, winback, wbDaten, TWNr, LfdIdx)
+                    'Soll/Ist-Produktions-Menge in kg
+                    ArtikelZeile.Sollwert = ArtikelZeile.Sollwert_kg
+                    ArtikelZeile.Istwert = ArtikelZeile.Sollwert
+                    'Einheit anpassen
+
+                    'Artikel-Zeile wird (virtuell) beabeitet und als fertig markiert (abgeleitet von der Artikelzeile, da eine Rezeptzeile nicht vorhanden ist)
+                    VirtProduktionRezept(ArtikelZeile, LinieNr, winback, wbDaten, TWNr, LfdRzp)
+                    'Komponenten-Zeile wird (virtuell) beabeitet und als fertig markiert (abgeleitet von der Artikelzeile, da eine Komponentenzeile nicht vorhanden ist)
+                    VirtProduktionRezeptSchritt(ArtikelZeile, LinieNr, winback, wbDaten, TWNr, LfdIdx)
+                Else
+                    For Each RezeptZeile As wb_Produktionsschritt In ArtikelZeile.ChildSteps
+                        'Fortlaufender Index BAK_ArbRezepte
+                        LfdRzp += 1
+                        'Debug.Print("Produktion Rezept " & RezeptZeile.RezeptNummer & vbTab & RezeptZeile.RezeptBezeichnung)
+
+                        For Each KomponentenZeile As wb_Produktionsschritt In RezeptZeile.ChildSteps
+                            'Fortlaufender Index BAK_ArbRZSchritte
+                            LfdIdx += 1
+                            Debug.Print("Produktion Zeile " & KomponentenZeile.ArtikelNummer & vbTab & KomponentenZeile.ArtikelBezeichnung & vbTab & KomponentenZeile.Sollwert)
+                            'Rezept-Schritt wird (virtuell) bearbeitet und als fertig markiert
+                            VirtProduktionRezeptSchritt(KomponentenZeile, LinieNr, winback, wbDaten, TWNr, LfdIdx)
+                        Next
+
+                        'Rezept-Zeile wird (virtuell) beabeitet und als fertig markiert
+                        VirtProduktionRezept(RezeptZeile, LinieNr, winback, wbDaten, TWNr, LfdRzp)
                     Next
+                End If
 
-                    'Rezept-Zeile wird (virtuell) beabeitet und als fertig markiert
-                    VirtProduktionRezept(RezeptZeile, LinieNr, winback, wbDaten, TWNr, LfdRzp)
-                Next
+                'Artikel/Halbfertig-Produkt als Zugang in WinBack-Lager einbuchen
+                Dim LagerOrt As String = VirtProduktionLager(ArtikelZeile, winback)
+                'wenn ein LagerOrt definiert ist(Artikel/Rezept gefunden)
+                If LagerOrt <> "" Then
+                    'Artikel/Halbfertig-Produkt als Zugang in WinBack-Lieferungen einbuchen (alle Rezeptschritte mit Chargen-Nummer)
+                    VirtProduktionLieferung(ArtikelZeile, LagerOrt, TWNr, winback)
+                End If
+
             Next
         End If
 
@@ -119,11 +146,11 @@ Public Class wb_Produktion_virtuell
                   "B_ARS_ParamNr = " & Zeile.ParamNr & ", B_ARS_Wert = '" & Zeile.Sollwert & "', B_ARS_Wert_org = '0', B_ARS_RS_Wert = '0', " &
                   "B_ARS_RS_Par1 = '', B_ARS_RS_Par2 = '', B_ARS_RS_Par3 = '', B_ARS_Istwert = '" & Zeile.Istwert & "', " &
                   "B_ARS_Gestartet = '" & wb_sql_Functions.MySQLdatetime(Now) & "', B_ARS_Beendet = '" & wb_sql_Functions.MySQLdatetime(Now) & "', " &
-                  "B_ARS_User_Nr = -1, B_ARS_User_Name = '', B_ARS_Status = " & Zeile.Status & ", " &
+                  "B_ARS_User_Nr = " & wb_GlobalSettings.AktUserNr & ", B_ARS_User_Name = '" & wb_GlobalSettings.AktUserName & "', B_ARS_Status = " & Zeile.Status & ", " &
                   "B_KO_Nr_AlNum = '" & Zeile.KO_Nummer & "', B_KO_Bezeichnung = '" & Zeile.KO_Bezeichnung & "', " &
-                  "B_KO_Temp_Korr = 0, B_KT_Rezept = 'R', B_KT_Bezeichnung = '', B_KT_KurzBez = '', B_KT_EinheitIndex = 0, " &
-                  "B_KT_Format = 0, B_KT_Laenge = 0, B_KT_UnterGW = 0, B_KT_OberGW = 0, B_ARS_Preis = '', B_ARS_PreisEinheit = 0, " &
-                  "B_E_Einheit = '" & Zeile.Einheit & "', B_ARS_BF_Charge = '" & Zeile.KO_Charge & "'"
+                  "B_KO_Temp_Korr = 0, B_KT_Rezept = 'R', B_KT_Bezeichnung = 'Sollmenge', B_KT_KurzBez = 'Menge', B_KT_EinheitIndex = 1, " &
+                  "B_KT_Format = 3, B_KT_Laenge = 3, B_KT_UnterGW = '0,000', B_KT_OberGW = '999,9', B_ARS_Preis = '', B_ARS_PreisEinheit = 0, " &
+                  "B_KT_Typ_Nr = " & wb_Functions.KomponTypeToInt(Zeile.Typ) & ", B_E_Einheit = '" & Zeile.Einheit & "', B_ARS_BF_Charge = '" & Zeile.KO_Charge & "'"
             'Insert-Kommando
             sql = wb_Sql_Selects.setParams(wb_Sql_Selects.InsertBAKArbRZSchritte, sql)
 
@@ -149,13 +176,13 @@ Public Class wb_Produktion_virtuell
 
         'wenn eine gültige Tageswechsel-Nummer übergeben wurde 
         If TWNr <> wb_Global.UNDEFINED Then
-            'Rezeptschritte gleich in wbdaten.BAK_ArbRezepte schreiben
+            'Rezeptschritte gleich in wbdaten.BAK_ArbRezepte schreiben. B_ARZ_Status darf nicht (NULL) sein
             sql = "B_ARZ_TW_Nr = " & TWNr & ", B_ARZ_TW_Idx = " & LfdIdx & ", B_ARZ_LiBeh_Nr = " & LinieNr + wb_Global.OffsetBackorte & ", " &
                   "B_ARZ_Index = " & Zeile.ARZ_Index & ", B_ARZ_Charge_Nr = " & Zeile.ChargenNummer & ", B_ARZ_Best_Nr = '" & Zeile.AuftragsNummer & "', " &
                   "B_ARZ_Nr = " & Zeile.RezeptNr & ", B_ARZ_RZ_Variante_Nr = " & Zeile.RezeptVar & ", B_ARZ_Bezeichnung = '" & Zeile.RezeptBezeichnung & "', " &
-                  "B_ARZ_Typ = 1, B_ARZ_Erststart = '" & wb_sql_Functions.MySQLdatetime(Now) & "', " &
-                  "B_ARZ_Art_Einheit = 1, B_ARZ_Sollmenge_kg = '" & Zeile.Sollwert_kg & "', B_ARZ_Sollmenge_stueck = " & Zeile.Sollmenge_Stk & ", " &
-                  "B_ARZ_Anstellgut_kg = '100', " &
+                  "B_ARZ_Typ = " & Zeile.Typ & ", B_ARZ_Erststart = '" & wb_sql_Functions.MySQLdatetime(Now) & "', " &
+                  "B_ARZ_Art_Einheit = 11, B_ARZ_Sollmenge_kg = '" & Zeile.Sollwert_kg & "', B_ARZ_Sollmenge_stueck = " & Zeile.Sollmenge_Stk & ", " &
+                  "B_ARZ_Anstellgut_kg = '100', B_ARZ_Status = 'V', " &
                   "B_ARZ_Zp_Gestartet = '" & wb_sql_Functions.MySQLdatetime(Now) & "', B_ARZ_Zp_Beendet = '" & wb_sql_Functions.MySQLdatetime(Now) & "', " &
                   "B_ARZ_KA_NrAlNum ='" & Zeile.ArtikelNummer & "', B_ARZ_Art_Index = " & Zeile.ArtikelIndex & ", B_ARZ_RZ_Typ = " & Zeile.RezeptVar & ", " &
                   "B_RZ_Nr_AlNum = '" & Zeile.RezeptNummer & "', B_RZ_Bezeichnung = '" & Zeile.RezeptBezeichnung & "', " &
@@ -224,15 +251,96 @@ Public Class wb_Produktion_virtuell
 
         End If
 
+        'Artikel-Zeilen (Aufarbeitung)
+        If Zeile.KO_Typ = wb_Global.KomponTypen.KO_TYPE_ARTIKEL Then
+            Zeile.Einheit = wb_Einheiten_Global.GetEinheitFromNr(wb_Global.wbEinheitKilogramm)
+            Zeile.Typ = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+            Zeile.KO_Bezeichnung = Zeile.ArtikelBezeichnung
+            Zeile.KO_Nummer = Zeile.ArtikelNummer
+            Zeile.Istwert = Zeile.Sollwert
+        End If
+
         'Zeile wurde bearbeitet (Hand/Quittiert)
         Zeile.Status = wb_Global.ChargenStatus.CS_WARNUNG
+    End Sub
+
+    ''' <summary>
+    ''' Aktualisiert die Tabelle winback.Lagerort
+    ''' Die Bilanzmenge wird entsprechend der (virtuell) produzierten Menge erhöht.
+    ''' </summary>
+    ''' <param name="ArtikelZeile"></param>
+    ''' <param name="winback"></param>
+    ''' <returns></returns>
+    Private Function VirtProduktionLager(ByRef ArtikelZeile As wb_Produktionsschritt, winback As wb_Sql) As String
+        'Lagerort und Bilanzmenge zu ArtikelNummer(alpha) und RezeptNr(Intern) ermitteln
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.SelectArtikelLagerOrt, ArtikelZeile.ArtikelNummer, ArtikelZeile.RezeptNr)
+        Dim LagerOrt As String = ""
+
+        'wenn es einen Artikel/Rohstoff mit Lagerort zu diesem Produktions-Schritt(Artikel-Zeile) gibt
+        If winback.sqlSelect(sql) Then
+            If winback.Read Then
+                'LagerOrt
+                LagerOrt = winback.sField("KA_Lagerort")
+                'BilanzMenge
+                Dim BilanzMenge As Double = wb_Functions.StrToDouble(winback.sField("LG_Bilanzmenge"))
+                'Verbindung wieder freigeben
+                winback.CloseRead()
+
+                'Bilanzmenge aktualisieren
+                BilanzMenge += ArtikelZeile.VirtTreeSumSollwerte
+                'und wieder in den winback.Lagerorte zurückschreiben
+                sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLagerort, wb_Global.UNDEFINED, wb_Functions.FormatStr(BilanzMenge, 3), LagerOrt)
+                winback.sqlCommand(sql)
+            End If
+        End If
+        Return LagerOrt
+    End Function
+
+    ''' <summary>
+    ''' Aktualisiert die Tabelle winback.Lieferungen.
+    ''' Pro Rezept-Zeile (Charge) wird eine neue Zeile mit Produktions-Menge und Chargen-Nummer erzeugt.
+    ''' </summary>
+    ''' <param name="ArtikelZeile"></param>
+    ''' <param name="LagerOrt"></param>
+    ''' <param name="TWNr"></param>
+    ''' <param name="winback"></param>
+    Private Sub VirtProduktionLieferung(ByRef ArtikelZeile As wb_Produktionsschritt, LagerOrt As String, TWNr As Integer, winback As wb_Sql)
+        'nächste Nummer in winback.Lieferungen zu diesem LagerOrt
+        Dim LfdNr As Integer = 1
+        'der INSERT-Befehl wird dynamisch erzeugt
+        Dim sql, sql_Insert As String        '
+
+        'letzten Eintrag aus winback.Lieferungen
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferLfd, LagerOrt))
+        'wenn Datensätze vorhanden sind
+        If winback.Read Then
+            'laufende Nummer plus Eins
+            LfdNr = winback.iField("LF_Nr") + 1
+        End If
+        winback.CloseRead()
+
+        'Schleife über alle Rezeptschritte
+        For Each RezeptZeile As wb_Produktionsschritt In ArtikelZeile.ChildSteps
+            'der INSERT-Befehl wird dynamisch erzeugt
+            sql_Insert = "'" & LagerOrt & "', " & LfdNr & ", '" & wb_sql_Functions.MySQLdatetime(Now) & "', " &
+                         "'" & RezeptZeile.VirtTreeIstwert & "', 'RzNr: " & RezeptZeile.RezeptNummer &
+                         "', '1', 'RzBez: " & RezeptZeile.RezeptBezeichnung & "', " & "0" & ", '" &
+                         TWNr.ToString & "-" & RezeptZeile.ChargenNummer & "'," & RezeptZeile.LinienGruppe &
+                         ", NULL, '0,0', " & wb_GlobalSettings.AktUserNr & ", '', " & "0"
+
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertWE, sql_Insert)
+            'INSERT ausführen
+            winback.sqlCommand(sql)
+            'nächste Lieferung
+            LfdNr += 1
+        Next
     End Sub
 
     ''' <summary>
     ''' Liest alle Datensätze aus winback.ArbRezepte und winback.ArbRZSchritte mit Tageswechselnummer = 0 sortiert nach Chargen-Nummer ein 
     ''' </summary>
     ''' <param name="LinieNr">Integer Tageswechsel-Nummer</param>
-    Public Function MySQLdbSelect_ArbRzSchritte(LinieNr As Integer, VarianteNr As Integer)
+    Public Function MySQLdbSelect_ArbRzSchritte(LinieNr As Integer, VarianteNr As Integer) As Boolean
         Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
         Dim ArtikelNummer As String = ""
         Dim ChargenNummer As String = ""
@@ -274,6 +382,7 @@ Public Class wb_Produktion_virtuell
                         Root = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
                         'Daten aus MySQL in Produktionsschritt kopieren
                         Root.CopyFrom(_SQLProduktionsSchritt)
+                        Root.Typ = wb_Global.KomponTypen.KO_ZEILE_ARTIKEL
 
                         'Artikelnummer merken
                         ArtikelNummer = _SQLProduktionsSchritt.ArtikelNummer
@@ -281,27 +390,34 @@ Public Class wb_Produktion_virtuell
 
                     'Rezeptzeile anfügen
                     If ChargenNummer <> _SQLProduktionsSchritt.ChargenNummer Then
-
                         'Gesamtstück(Artikelzeile) berechnen
                         GesamtStueck += _SQLProduktionsSchritt.Sollmenge_Stk
-                        'Neue Zeile  einfügen (RezeptZeile)
-                        _RezeptProduktionsSchritt = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
-                        'Daten aus MySQL in Produktionsschritt kopieren
-                        _SQLProduktionsSchritt.Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT
-                        _RezeptProduktionsSchritt.CopyFrom(_SQLProduktionsSchritt)
-
                         'ChargenNummer merken
                         ChargenNummer = _SQLProduktionsSchritt.ChargenNummer
+
+                        'Rezeptzeile anfügen - wenn eine Rezeptur vorhanden ist
+                        If _SQLProduktionsSchritt.KO_Nr > 0 Then
+                            'Neue Zeile  einfügen (RezeptZeile)
+                            _RezeptProduktionsSchritt = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
+                            'Daten aus MySQL in Produktionsschritt kopieren
+                            _SQLProduktionsSchritt.Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT
+                            _RezeptProduktionsSchritt.CopyFrom(_SQLProduktionsSchritt)
+                        End If
                     End If
 
-                    'Komponentenzeile anfügen
-                    'Neue Zeile  einfügen (RezeptZeile)
-                    _ProduktionsSchritt = New wb_Produktionsschritt(_RezeptProduktionsSchritt, _SQLProduktionsSchritt.KO_Bezeichnung)
-                    'Daten aus MySQL in Produktionsschritt kopieren
-                    _SQLProduktionsSchritt.Typ = wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE
-                    _ProduktionsSchritt.CopyFromRezeptschritt(_SQLProduktionsSchritt)
+                    'Komponentenzeile anfügen - wenn eine Rezeptur vorhanden ist
+                    If _SQLProduktionsSchritt.KO_Nr > 0 Then
+                        'Neue Zeile  einfügen (RezeptZeile)
+                        _ProduktionsSchritt = New wb_Produktionsschritt(_RezeptProduktionsSchritt, _SQLProduktionsSchritt.KO_Bezeichnung)
+                        'Daten aus MySQL in Produktionsschritt kopieren
+                        _SQLProduktionsSchritt.Typ = wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE
+                        _ProduktionsSchritt.CopyFromRezeptschritt(_SQLProduktionsSchritt)
+                    End If
 
                 Loop While winback.MySqlRead.Read
+
+                'Gesamtstückmenge in den (letzten) Root-Knoten eintragen
+                Root.Sollmenge_Stk = GesamtStueck
 
                 'alle Datensätze eingelesen
                 winback.Close()
@@ -323,6 +439,7 @@ Public Class wb_Produktion_virtuell
         If IsDBNull(Value) Then
             Value = ""
         End If
+        Dim iValue As Integer = wb_Functions.StrToInt(Value)
 
         'Debug
         'Debug.Print("ArbRezepte-ArbRZ_Schritte " & Name & " " & Value.ToString)
@@ -335,21 +452,21 @@ Public Class wb_Produktion_virtuell
                     _SQLProduktionsSchritt.ChargenNummer = Value
                 'Index
                 Case "ARZ_Index"
-                    _SQLProduktionsSchritt.ARZ_Index = Value
+                    _SQLProduktionsSchritt.ARZ_Index = iValue
                 'Index
                 Case "ARS_Index"
-                    _SQLProduktionsSchritt.ARS_Index = Value
+                    _SQLProduktionsSchritt.ARS_Index = iValue
                 Case "ARZ_Art_Index"
-                    _SQLProduktionsSchritt.ArtikelIndex = Value
+                    _SQLProduktionsSchritt.ArtikelIndex = iValue
                 'Schritt
                 Case "ARS_Schritt_Nr"
-                    _SQLProduktionsSchritt.Schritt = Value
+                    _SQLProduktionsSchritt.Schritt = iValue
                'ParamNr
                 Case "ARS_ParamNr"
-                    _SQLProduktionsSchritt.ParamNr = Value
+                    _SQLProduktionsSchritt.ParamNr = iValue
                 'Index (Run-Index)
                 Case "ARS_RunIdx"
-                    _SQLProduktionsSchritt.RunIndex = Value
+                    _SQLProduktionsSchritt.RunIndex = iValue
                 'Produktionsauftrags-Nummer
                 Case "ARZ_Best_Nr"
                     _SQLProduktionsSchritt.AuftragsNummer = Value
@@ -357,7 +474,7 @@ Public Class wb_Produktion_virtuell
                 Case "ARZ_Typ" 'TODO in genormten Typ umsetzen wb_global.wbArtikel...
                     _SQLProduktionsSchritt.Typ = Value
                 Case "ARS_KT_Typ_Nr" 'TODO in genormten Typ umsetzen wb_global.wbArtikel...
-                    _SQLProduktionsSchritt.KO_Typ = wb_Functions.IntToKomponType(Value)
+                    _SQLProduktionsSchritt.KO_Typ = wb_Functions.IntToKomponType(iValue)
                'Artikelnummer(alpha)
                 Case "ARZ_KA_NrAlNum"
                     _SQLProduktionsSchritt.ArtikelNummer = Value
@@ -372,7 +489,7 @@ Public Class wb_Produktion_virtuell
                     _SQLProduktionsSchritt.KO_Bezeichnung = Value
                'KomponentenNr(intern)
                 Case "ARS_Ko_Nr"
-                    _SQLProduktionsSchritt.KO_Nr = Value
+                    _SQLProduktionsSchritt.KO_Nr = iValue
                 'Lagerort
                 Case "KA_Lagerort"
                     _SQLProduktionsSchritt.LagerOrt = Value
@@ -384,13 +501,13 @@ Public Class wb_Produktion_virtuell
                     _SQLProduktionsSchritt.RezeptNummer = Value
                 'Rezeptnummer(intern)
                 Case "ARZ_Nr"
-                    _SQLProduktionsSchritt.RezeptNr = Value
+                    _SQLProduktionsSchritt.RezeptNr = iValue
                 'Rezeptvariante - wird auf 1 gesetzt falls keine Variante angeben ist
                 Case "ARZ_RZ_Variante_Nr"
-                    _SQLProduktionsSchritt.RezeptVar = Value
+                    _SQLProduktionsSchritt.RezeptVar = iValue
                 'Linie
                 Case "ARZ_LiBeh_Nr"
-                    _SQLProduktionsSchritt.LinienGruppe = wb_Functions.StrToInt(Value) - 100
+                    _SQLProduktionsSchritt.LinienGruppe = iValue - 100
                 'Sollwert
                 Case "ARZ_Sollmenge_kg"
                     _SQLProduktionsSchritt.Sollwert_kg = wb_Functions.StrToDouble(Value)

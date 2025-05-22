@@ -1,6 +1,7 @@
 ﻿Imports System.Security.Cryptography
 
 Public NotInheritable Class wb_Simple3Des
+#Disable Warning SYSLIB0021
     Private TripleDes As New TripleDESCryptoServiceProvider
 
     Sub New(ByVal key As String)
@@ -9,8 +10,8 @@ Public NotInheritable Class wb_Simple3Des
         TripleDes.IV = TruncateHash("", TripleDes.BlockSize \ 8)
     End Sub
 
-    Private Function TruncateHash(ByVal key As String, ByVal length As Integer) As Byte()
 
+    Private Function TruncateHash(ByVal key As String, ByVal length As Integer) As Byte()
         Dim sha1 As New SHA1CryptoServiceProvider
 
         ' Hash the key.
@@ -62,4 +63,5 @@ Public NotInheritable Class wb_Simple3Des
         End Try
 
     End Function
+#Enable Warning SYSLIB0021
 End Class

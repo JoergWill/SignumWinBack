@@ -5,7 +5,7 @@
     Public Sub New(ByVal container As System.ComponentModel.IContainer)
         MyClass.New()
 
-        'Erforderlich für die Unterstützung des Windows.Forms-Klassenkompositions-Designers
+        'Erforderlich für die Unterstützung des System.Windows.Forms-Klassenkompositions-Designers
         If (container IsNot Nothing) Then
             container.Add(Me)
         End If

@@ -131,10 +131,14 @@ Public Class wb_nwtUpdate
     ''' <param name="ID"></param>
     ''' <returns>Gibt das Datum der letzten Änderung in der Cloud zurück</returns>
     Public Function GetNaehrwerte(ID As String, nwtdaten As wb_Komponente) As Date
-        If wb_Functions.IsDatenLinkID(ID) Then
-            Return GetNaehrwerteDatenlink(ID, nwtdaten)
+        If Not ID = wb_Global.UNDEFINED.ToString Then
+            If wb_Functions.IsDatenLinkID(ID) Then
+                Return GetNaehrwerteDatenlink(ID, nwtdaten)
+            Else
+                Return GetNaehrwerteHetzner(ID, nwtdaten)
+            End If
         Else
-            Return GetNaehrwerteHetzner(ID, nwtdaten)
+            Return #11/22/1964 00:00:00#
         End If
     End Function
 

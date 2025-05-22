@@ -25,12 +25,17 @@ Partial Class wb_DockBarPanelMain
         Me.components = New System.ComponentModel.Container()
         Me.DockPanel = New WeifenLuo.WinFormsUI.Docking.DockPanel()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tslblName = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tslblIP = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tslblVersion = New System.Windows.Forms.ToolStripStatusLabel()
         Me.BtnSave = New System.Windows.Forms.Button()
         Me.BtnSaveAs = New System.Windows.Forms.Button()
         Me.BtnDelete = New System.Windows.Forms.Button()
         Me.ToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.cbLayouts = New System.Windows.Forms.ComboBox()
         Me.BtnReload = New System.Windows.Forms.Button()
+        Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'DockPanel
@@ -51,6 +56,7 @@ Partial Class wb_DockBarPanelMain
         '
         Me.StatusStrip1.BackgroundImage = Global.WinBack.My.Resources.Resources.StatusStripBackground
         Me.StatusStrip1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.tslblName, Me.tslblIP, Me.tslblVersion})
         Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 604)
         Me.StatusStrip1.MinimumSize = New System.Drawing.Size(0, 35)
@@ -58,6 +64,36 @@ Partial Class wb_DockBarPanelMain
         Me.StatusStrip1.Size = New System.Drawing.Size(1059, 35)
         Me.StatusStrip1.TabIndex = 5
         Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'ToolStripStatusLabel1
+        '
+        Me.ToolStripStatusLabel1.MergeAction = System.Windows.Forms.MergeAction.Insert
+        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+        Me.ToolStripStatusLabel1.Overflow = System.Windows.Forms.ToolStripItemOverflow.Always
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(149, 17)
+        Me.ToolStripStatusLabel1.Spring = True
+        Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
+        '
+        'tslblName
+        '
+        Me.tslblName.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tslblName.Name = "tslblName"
+        Me.tslblName.Size = New System.Drawing.Size(30, 30)
+        Me.tslblName.Text = "User"
+        '
+        'tslblIP
+        '
+        Me.tslblIP.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tslblIP.Name = "tslblIP"
+        Me.tslblIP.Size = New System.Drawing.Size(60, 30)
+        Me.tslblIP.Text = "(127.0.0.1)"
+        '
+        'tslblVersion
+        '
+        Me.tslblVersion.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tslblVersion.Name = "tslblVersion"
+        Me.tslblVersion.Size = New System.Drawing.Size(45, 30)
+        Me.tslblVersion.Text = "Version"
         '
         'BtnSave
         '
@@ -146,26 +182,32 @@ Partial Class wb_DockBarPanelMain
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.BtnReload)
-        Me.Controls.Add(Me.cbLayouts)
-        Me.Controls.Add(Me.BtnDelete)
-        Me.Controls.Add(Me.BtnSaveAs)
         Me.Controls.Add(Me.BtnSave)
+        Me.Controls.Add(Me.BtnSaveAs)
+        Me.Controls.Add(Me.BtnDelete)
+        Me.Controls.Add(Me.cbLayouts)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.DockPanel)
         Me.MinimumSize = New System.Drawing.Size(532, 178)
         Me.Name = "wb_DockBarPanelMain"
         Me.Size = New System.Drawing.Size(1059, 639)
+        Me.StatusStrip1.ResumeLayout(False)
+        Me.StatusStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents DockPanel As WeifenLuo.WinFormsUI.Docking.DockPanel
-    Friend WithEvents StatusStrip1 As Windows.Forms.StatusStrip
-    Friend WithEvents BtnSave As Windows.Forms.Button
-    Friend WithEvents BtnSaveAs As Windows.Forms.Button
-    Friend WithEvents BtnDelete As Windows.Forms.Button
-    Friend WithEvents ToolTip As Windows.Forms.ToolTip
-    Friend WithEvents cbLayouts As Windows.Forms.ComboBox
-    Friend WithEvents BtnReload As Windows.Forms.Button
+    Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
+    Friend WithEvents BtnSave As System.Windows.Forms.Button
+    Friend WithEvents BtnSaveAs As System.Windows.Forms.Button
+    Friend WithEvents BtnDelete As System.Windows.Forms.Button
+    Friend WithEvents ToolTip As System.Windows.Forms.ToolTip
+    Friend WithEvents cbLayouts As System.Windows.Forms.ComboBox
+    Friend WithEvents BtnReload As System.Windows.Forms.Button
+    Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents tslblName As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents tslblIP As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents tslblVersion As System.Windows.Forms.ToolStripStatusLabel
 End Class

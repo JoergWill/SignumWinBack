@@ -34,24 +34,36 @@ Public Class wb_KomponParam201
     ''' </summary>
     ''' <returns></returns>
     Public Function MySQLdbUpdate(KoNr As Integer, ByRef winback As wb_Sql) As Boolean
-        'Update-Statement wird dynamisch erzeugt    
-        Dim sql As String
         'Result OK
-        MySQLdbUpdate = True
+        Dim Result As Boolean = True
 
         'alle Datensätze im Array durchlaufen
         For i = 0 To maxTyp201
             If IsValidParameter(i) Then
-                'Update-Statement wird dynamisch erzeugt
-                'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
-                sql = KoNr & ", 201, " & i.ToString & ", '" & Wert(i) & "', '" & kt201Param(i).Bezeichnung & "'"
-                'Update ausführen
-                If Not winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, sql)) Then
-                    MySQLdbUpdate = False
-                End If
+                Result = Result AndAlso MySQLdbUpdate(KoNr, i, winback)
             End If
         Next
+        'Ergebnis zurückgeben
+        Return Result
     End Function
 
+    ''' <summary>
+    ''' Update eines Komponenten-Parameters mit ParamNr in Tabelle winback.RohParams
+    ''' </summary>
+    ''' <param name="KoNr"></param>
+    ''' <param name="ParamNr"></param>
+    ''' <param name="winback"></param>
+    ''' <returns></returns>
+    Public Function MySQLdbUpdate(KoNr As Integer, ParamNr As Integer, ByRef winback As wb_Sql) As Boolean
+        'Update-Statement wird dynamisch erzeugt    
+        Dim sql As String
+
+        'Update-Statement wird dynamisch erzeugt
+        'REPLACE INTO RohParams (RP_Ko_Nr, RP_Typ_Nr, RP_ParamNr, RP_Wert, RP_Kommentar) VALUES (...)
+        sql = KoNr & ", 201, " & ParamNr.ToString & ", '" & Wert(ParamNr) & "', '" & kt201Param(ParamNr).Bezeichnung & "'"
+
+        'Update ausführen
+        Return winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateRohParams, sql))
+    End Function
 
 End Class

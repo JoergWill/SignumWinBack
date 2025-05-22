@@ -10,12 +10,16 @@ Public Class wb_Produktionsschritt
     Private Shared _SortOrder As wb_Global.SortOrder
     Private _SortKriteriumBackPlan As String
     Private _SortKriteriumProdPlan As String
+    Private _SortKriteriumOfenListe As String
+    Private _SortKriteriumLagerBestand As String
+    Private _SortKriteriumLagerEntnahme As String
 
     Private _Optimiert As Boolean = False
     Private _Linie As Integer = wb_Global.UNDEFINED
     Private _LinienGruppe As Integer = wb_Global.UNDEFINED
     Private _ArtikelLinienGruppe As Integer = wb_Global.UNDEFINED
     Private _LinienGruppeZusatzText As String = ""
+    Private _Ofengruppe As Integer
     Private _Typ As String
     Private _Tour As String
     Private _ChargenNummer As String
@@ -27,7 +31,11 @@ Public Class wb_Produktionsschritt
     Private _AuftragsNummer As String
     Private _IstInProduktion As Boolean
     Private _MengeInProduktion As Double
+    Private _MengeImFroster As Integer
+    Private _MengeInDenFroster As Integer
+    Private _EntnahmeFroster As Integer
     Private _Status As Integer
+    Private _AufarbeitungZiel_Drucken As Boolean
 
     Private _ArtikelNummer As String
     Private _ArtikelBezeichnung As String
@@ -41,6 +49,8 @@ Public Class wb_Produktionsschritt
     Private _OptChargekg As Double
     Private _MinChargekg As Double
     Private _MaxChargekg As Double
+    Private _BackVerlust As Double
+    Private _Zuschnitt As Double
     Private _ProdVorlauf As Integer
     Private _Aufloesen As Boolean
     Private _FreigabeProduktion As Boolean
@@ -66,6 +76,9 @@ Public Class wb_Produktionsschritt
     Private _Bestellt_Text As String
     Private _Bestellt_Drucken As Boolean
     Private _BestelltSonderText_Drucken As Boolean
+    Private _ArtikelNrReferenz As String = ""
+    Private _ReferenzArtikelText As String = ""
+
 
     Private _KO_Typ As wb_Global.KomponTypen
     Private _KO_Nr As Integer
@@ -89,7 +102,7 @@ Public Class wb_Produktionsschritt
         Dim _type As Type = Me.GetType()
         Dim properties() As PropertyInfo = _type.GetProperties()
         For Each _property As PropertyInfo In properties
-            If _property.CanWrite And _property.CanRead Then
+            If _property.CanWrite AndAlso _property.CanRead Then
                 _property.SetValue(Me, _property.GetValue(rs, Nothing))
             End If
         Next
@@ -113,11 +126,13 @@ Public Class wb_Produktionsschritt
             OptChargekg = .ArtikelChargen.OptCharge.fMengeInkg
             MaxChargekg = .ArtikelChargen.MaxCharge.fMengeInkg
             MinChargekg = .ArtikelChargen.MinCharge.fMengeInkg
-
+            BackVerlust = .Backverlust
+            Zuschnitt = .Zuschnittverlust
             LagerBestand = wb_Functions.StrToDouble(.Bilanzmenge)
             LagerOrt = .Lagerort
             ProdVorlauf = .ProdVorlauf
             FreigabeProduktion = .FreigabeProduktion
+            Ofengruppe = .OfenGruppe
         End With
     End Sub
 
@@ -146,6 +161,10 @@ Public Class wb_Produktionsschritt
             RezeptNr = .RezeptNr
             'Freigabe Produktion
             FreigabeProduktion = .FreigabeProduktion
+            'Backverlust
+            BackVerlust = .Backverlust
+            'Zuschnitt
+            Zuschnitt = .Zuschnitt
 
             'Einheit
             If wb_Functions.TypeHatEinheit(Typ) Then
@@ -156,7 +175,7 @@ Public Class wb_Produktionsschritt
 
             'Sollwert auf Rezeptgröße umrechnen
             If wb_Functions.TypeIstSollMenge(.Type, .ParamNr) Then
-                Sollwert_kg = wb_Functions.StrToDouble(.Sollwert) * Faktor
+                Sollwert_kg = .fSollwert * Faktor
                 Sollwert = wb_Functions.FormatStr(Sollwert_kg.ToString, 3)
                 SollwertProzent = wb_Functions.FormatStr(.SollwertProzent, 3)
             Else
@@ -223,12 +242,27 @@ Public Class wb_Produktionsschritt
         _childSteps.Sort()
     End Sub
 
+    Public Sub SortOfenListe()
+        _SortOrder = wb_Global.SortOrder.OfenListe
+        _childSteps.Sort()
+    End Sub
+
+    Public Sub SortLagerBestandsliste()
+        _SortOrder = wb_Global.SortOrder.LagerBestand
+        _childSteps.Sort()
+    End Sub
+
+    Public Sub SortLagerEntnahmeliste()
+        _SortOrder = wb_Global.SortOrder.LagerEntnahmeListe
+        _childSteps.Sort()
+    End Sub
+
     ''' <summary>
     ''' Charge als produziert markieren.
     ''' Teigzettel/Backzettel gedruckt und/oder Produktionsliste übertragen
     ''' </summary>
     Public Sub ChargeWirdProduziert()
-        If Typ = KO_TYPE_ARTIKEL Or Typ = KO_ZEILE_ARTIKEL Then
+        If Typ = KO_TYPE_ARTIKEL OrElse Typ = KO_ZEILE_ARTIKEL Then
             IstInProduktion = True
         End If
     End Sub
@@ -257,6 +291,54 @@ Public Class wb_Produktionsschritt
         End Get
         Set(value As Double)
             _MengeInProduktion = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Anzahl Artikel im Froster(Lager).
+    ''' Der Wert wird von OrgaBack übernommen.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property MengeImFroster As Integer
+        Get
+            Return _MengeImFroster
+        End Get
+        Set(value As Integer)
+            _MengeImFroster = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Anzahl Artikel zur Einlagerung in den Froster.
+    ''' Der Wert wird von OrgaBack übernommen.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property MengeInDenFroster As Integer
+        Get
+            Return _MengeInDenFroster
+        End Get
+        Set(value As Integer)
+            _MengeInDenFroster = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Anzahl Artikel den GU/Ofen
+    ''' Wird berechnet aus der Sollmenge in Stück und der Menge, die in den Froster eingelagert werden soll.
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property MengeInDenOfen As Integer
+        Get
+            Return Sollmenge_Stk - MengeInDenFroster + _EntnahmeFroster
+        End Get
+    End Property
+
+    Public Property EntnahmeFroster As Integer
+        Get
+            Return _EntnahmeFroster
+        End Get
+        Set(value As Integer)
+            _EntnahmeFroster = value
         End Set
     End Property
 
@@ -373,6 +455,9 @@ Public Class wb_Produktionsschritt
                         Return ""
                     End If
 
+                Case KO_TYPE_LAGERLISTE_HAND, KO_TYPE_LAGERLISTE_AUTO
+                    Return wb_Linien_Global.GetKurzNameFromLinienGruppe(_LinienGruppe)
+
                 Case Else
                     Return ""
             End Select
@@ -439,6 +524,23 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public ReadOnly Property VirtTreeEinheit As String
+        Get
+            If Typ = KO_ZEILE_ARTIKEL Then
+                If Sollmenge_Stk <> 0 Then
+                    Return "Stk"
+                Else
+                    Return ""
+                End If
+
+            ElseIf Typ = KO_ZEILE_REZEPT Then
+                Return "kg"
+            Else
+                Return Einheit
+            End If
+        End Get
+    End Property
+
     ''' <summary>
     ''' Lager-Bestand. Anzeige im VirtualTree. Unterscheidung anhand der Type:
     '''     -   Artikel-Chargen-Zeile   Lagerbestand in Stück
@@ -450,9 +552,11 @@ Public Class wb_Produktionsschritt
     Public ReadOnly Property VirtTreeBestand As String
         Get
             If Typ = KO_ZEILE_ARTIKEL Then
-                'TODO Hier könnte der Froster-Bestand stehen ?? mit Kennzeichen FR? aus OrgaBack abfragen
-                'Return wb_Functions.FormatStr(_LagerBestand, 3)
-                Return ""
+                If MengeImFroster > 0 Then
+                    Return wb_Functions.FormatStr(_MengeImFroster, 0) & " Frst"
+                Else
+                    Return ""
+                End If
 
             ElseIf Typ = KO_ZEILE_REZEPT Then
                 Return ""
@@ -463,7 +567,7 @@ Public Class wb_Produktionsschritt
                         Return ""
                     Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE
                         'unrealistische und Werte kleiner/gleich Null ausblenden
-                        If LagerBestand > 0 And LagerBestand < wb_Global.MAXLAGERBESTAND Then
+                        If LagerBestand > 0 AndAlso LagerBestand < wb_Global.MAXLAGERBESTAND Then
                             Return wb_Functions.FormatStr(LagerBestand, 3)
                         Else
                             Return "-"
@@ -472,6 +576,32 @@ Public Class wb_Produktionsschritt
                         Return ""
                 End Select
             End If
+        End Get
+    End Property
+
+    Public ReadOnly Property VirtTreeEinheitBestand As String
+        Get
+            Select Case Typ
+                Case KO_ZEILE_ARTIKEL
+                    If MengeImFroster > 0 Then
+                        Return "Stk"
+                    Else
+                        Return ""
+                    End If
+                Case KO_ZEILE_REZEPT
+                    Return ""
+                Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
+                    Return ""
+                Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE
+                    'unrealistische und Werte kleiner/gleich Null ausblenden
+                    If LagerBestand > 0 AndAlso LagerBestand < wb_Global.MAXLAGERBESTAND Then
+                        Return Einheit
+                    Else
+                        Return ""
+                    End If
+                Case Else
+                    Return ""
+            End Select
         End Get
     End Property
 
@@ -557,40 +687,6 @@ Public Class wb_Produktionsschritt
                     VirtTreeSumSollwerte = VirtTreeSumSollwerte + c.Sollwert_kg
                 Next
             End If
-        End Get
-    End Property
-
-    Public ReadOnly Property VirtTreeEinheit As String
-        Get
-            If Typ = KO_ZEILE_ARTIKEL Then
-                If Sollmenge_Stk <> 0 Then
-                    Return "Stk"
-                Else
-                    Return ""
-                End If
-
-            ElseIf Typ = KO_ZEILE_REZEPT Then
-                Return "kg"
-            Else
-                Return Einheit
-            End If
-        End Get
-    End Property
-
-    Public ReadOnly Property VirtTreeEinheitBestand As String
-        Get
-            Select Case Typ
-                Case KO_ZEILE_ARTIKEL
-                    Return ""
-                Case KO_ZEILE_REZEPT
-                    Return ""
-                Case KO_TYPE_PRODUKTIONSSTUFE, KO_TYPE_KESSEL, KO_TYPE_TEXTKOMPONENTE
-                    Return ""
-                Case KO_TYPE_AUTOKOMPONENTE, KO_TYPE_HANDKOMPONENTE
-                    Return Einheit
-                Case Else
-                    Return ""
-            End Select
         End Get
     End Property
 
@@ -705,6 +801,24 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public Property BackVerlust As Double
+        Get
+            Return _BackVerlust
+        End Get
+        Set(value As Double)
+            _BackVerlust = value
+        End Set
+    End Property
+
+    Public Property Zuschnitt As Double
+        Get
+            Return _Zuschnitt
+        End Get
+        Set(value As Double)
+            _Zuschnitt = value
+        End Set
+    End Property
+
     Public Property Sollwert As String
         Get
             Return _Sollwert
@@ -807,7 +921,7 @@ Public Class wb_Produktionsschritt
         Dim SonderText() As String = Split(t, vbCrLf)
 
         'Flag KundenBestellung und Sondertexte drucken
-        If _BestelltSonderText_Drucken And Not _Bestellt_Drucken And (SonderText.Length >= 2) Then
+        If _BestelltSonderText_Drucken AndAlso Not _Bestellt_Drucken AndAlso (SonderText.Length >= 2) Then
             'Prüfen und Markieren wenn Sondertexte zu den Kunden/Filialbestellungen vorhanden sind
             For j = 1 To SonderText.Length Step 2
                 'Feld Bemerkungs-Text ist leer
@@ -856,7 +970,7 @@ Public Class wb_Produktionsschritt
             x = Split(s, " ", 2)
         End If
 
-        If x(0) <> "NoPrint" And x(1) <> "NoPrint" Then
+        If x(0) <> "NoPrint" AndAlso x(1) <> "NoPrint" Then
             If crlf Then
                 s1 = s1 & vbCrLf & x(0)
                 s2 = s2 & vbCrLf & x(1)
@@ -893,7 +1007,7 @@ Public Class wb_Produktionsschritt
                 Dim b As String = ""
                 For Each s As String In x
                     i = wb_Functions.StrToInt(s)
-                    b += i.ToString("#,#.") + " Stk" & vbCrLf
+                    b += i.ToString("#,#.") & " Stk" & vbCrLf
                 Next
                 Return b
             End If
@@ -909,7 +1023,7 @@ Public Class wb_Produktionsschritt
 
     Public Property Bestellt_Drucken As Boolean
         Get
-            Return _Bestellt_Drucken Or _BestelltSonderText_Drucken
+            Return _Bestellt_Drucken OrElse _BestelltSonderText_Drucken
         End Get
         Set(value As Boolean)
             _Bestellt_Drucken = value
@@ -932,22 +1046,45 @@ Public Class wb_Produktionsschritt
     End Property
 
     ''' <summary>
+    ''' Druckt auf der Aufarbeitungsliste auch die Angaben zu
+    '''     Anzahl in Froster
+    '''     Anzahl in Ofen
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property AufarbeitungZiel_Drucken As Boolean
+        Get
+            Return _AufarbeitungZiel_Drucken
+        End Get
+        Set(value As Boolean)
+            _AufarbeitungZiel_Drucken = value
+        End Set
+    End Property
+
+
+    ''' <summary>
     ''' Gibt True zurück, wenn die Zeile in der Produktionsplanung angezeigt werden soll.
     ''' Abhängig von Liniengruppe, Aufarbeitungsplatz und Filter-Einstellungen.
     ''' </summary>
     ''' <param name="_FilterAufarbeitung"></param>
     ''' <param name="_FilterLinienGruppe"></param>
     ''' <returns></returns>
-    Public Function Filter(_FilterAufarbeitung As Integer, _FilterLinienGruppe As Integer, CheckAufloesen As Boolean, KundenBestellungTextDrucken As Boolean, SonderTextDrucken As Boolean) As Boolean
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Procedures should not have too many parameters", Justification:="<Ausstehend>")>
+    Public Function Filter(_FilterAufarbeitung As Integer, _FilterLinienGruppe As Integer, _FilterOfenGruppe As Integer, CheckAufloesen As Boolean, KundenBestellungTextDrucken As Boolean, SonderTextDrucken As Boolean, AufarbeitungZielDrucken As Boolean, SuppressOptimiert As Boolean) As Boolean
         'Filter Aufarbeitungsplatz
-        If _FilterAufarbeitung > 0 And _ArtikelLinienGruppe > 0 And _FilterAufarbeitung <> _ArtikelLinienGruppe Then
+        If _FilterAufarbeitung > 0 AndAlso _ArtikelLinienGruppe > 0 AndAlso _FilterAufarbeitung <> _ArtikelLinienGruppe Then
             Return False
         End If
 
         'Filter Liniengruppe
-        If _FilterLinienGruppe > 0 And _LinienGruppe > 0 And _FilterLinienGruppe <> _LinienGruppe Then
+        If _FilterLinienGruppe > 0 AndAlso _LinienGruppe > 0 AndAlso _FilterLinienGruppe <> _LinienGruppe Then
             Return False
         End If
+
+        'Filter Anzeige der Optimierten Chargen (Zusammengefasste Teige werden nicht angezeigt)
+        If SuppressOptimiert AndAlso Optimiert Then
+            Return False
+        End If
+
 
         'Filter Aufloesen
         'If Not Aufloesen And CheckAufloesen Then
@@ -958,6 +1095,24 @@ Public Class wb_Produktionsschritt
         Bestellt_Drucken = KundenBestellungTextDrucken
         'Flag Sondertext zur Kundenbestellung drucken J/N
         BestelltSonderText_Drucken = SonderTextDrucken
+
+        'Flag MengeInFroster drucken Ja/Nein
+        AufarbeitungZiel_Drucken = AufarbeitungZielDrucken
+
+        'Die Liste enthält alle Datensätze aus der pq_ProduktionsAuftrag, auch die mit Produktionsmenge Null.
+        'Diese Zeilen sind relevant für Froster-Entnahme und Ofenliste
+        'In der Produktionsplanung werden diese Artikelzeilen nicht angezeigt (_FilterOfenGruppe = 0)
+        If _FilterOfenGruppe <= 0 AndAlso EntnahmeFroster > 0 AndAlso Sollmenge_Stk = 0 Then
+            Return False
+        End If
+
+        'Die Liste enthält alle Datensätze aus der pq_ProduktionsAuftrag, auch die mit Teiglingen(TeiglingsRef.ArtikelNrReferenz <>"")
+        'Diese Zeilen sind relevant für Froster-Entnahme und Ofenliste
+        'In der Produktionsplanung werden diese Artikelzeilen nicht angezeigt
+        'TODO HIER MUSS NOCH EIN FLAG rein um den Filter abzuschalten !!!
+        If _ArtikelNrReferenz <> "" Then
+            Return False
+        End If
 
         Return True
     End Function
@@ -1054,12 +1209,8 @@ Public Class wb_Produktionsschritt
     End Property
     Public ReadOnly Property IsVorProduktion As Boolean
         Get
-            If _Tour IsNot Nothing Then
-                If _Tour.Length > 0 Then
-                    If _Tour(0) = "V" Then
-                        Return True
-                    End If
-                End If
+            If _Tour IsNot Nothing AndAlso (_Tour.Length > 0) AndAlso (_Tour(0) = "V") Then
+                Return True
             End If
             Return False
         End Get
@@ -1089,17 +1240,23 @@ Public Class wb_Produktionsschritt
     Private Sub setSortKriterium()
         'Sortieren Backplan
         If RezeptNummer IsNot Nothing And ArtikelNummer IsNot Nothing And Tour IsNot Nothing Then
+            'TODO wäre nicht der Auftruf von SortString sinnvoller ?? (Abfrag NOTHING??)
             _SortKriteriumBackPlan = ArtikelLinienGruppe.ToString.PadLeft(3, "0"c) & RezeptNummer.PadLeft(10, "0"c) & ArtikelNummer.PadLeft(16, "0"c) & Tour.PadLeft(3, "0"c)
         Else
             _SortKriteriumBackPlan = Nothing
         End If
+
         'Sortieren Produktions-Liste (Teigzettel)
-        'If RezeptNummer IsNot Nothing And Tour IsNot Nothing And ArtikelNummer IsNot Nothing Then
-        '    _SortKriteriumProdPlan = Linie.ToString.PadLeft(3, "0"c) & RezeptNummer.PadLeft(10, "0"c) & TeigChargenTeilerResult & Tour.PadLeft(3, "0"c) & ArtikelNummer.PadLeft(16, "0"c)
-        'Else
-        '    _SortKriteriumProdPlan = Nothing
-        'End If
         _SortKriteriumProdPlan = SortString(Linie.ToString, 3) & SortString(RezeptNummer, 10) & TeigChargenTeilerResult & SortString(Tour, 3) & SortString(ArtikelNummer, 16)
+
+        'Sortieren Ofen-Liste
+        _SortKriteriumOfenListe = SortString(Tour, 3) & SortString(Ofengruppe, 3) & SortString(ArtikelNummer, 16)
+
+        'Sortieren Lager-Bestandsliste (Kontrolle)
+        _SortKriteriumLagerBestand = SortString(ArtikelNummer, 16)
+
+        'Sortieren Lager-Entnahme-Liste (Nach Liniengruppe und Artikelnummer)
+        _SortKriteriumLagerEntnahme = SortString(Typ, 3) & SortString(ArtikelNummer, 16) & SortString(LinienGruppe.ToString, 3)
     End Sub
 
     Private Function SortString(s As String, len As Integer) As String
@@ -1123,6 +1280,15 @@ Public Class wb_Produktionsschritt
 
                 Case wb_Global.SortOrder.ProdPlan
                     Return _SortKriteriumProdPlan
+
+                Case wb_Global.SortOrder.OfenListe
+                    Return _SortKriteriumOfenListe
+
+                Case wb_Global.SortOrder.LagerBestand
+                    Return _SortKriteriumLagerBestand
+
+                Case wb_Global.SortOrder.LagerEntnahmeListe
+                    Return _SortKriteriumLagerEntnahme
 
                 Case Else
                     Return ""
@@ -1270,6 +1436,12 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public ReadOnly Property TypAuto As Boolean
+        Get
+            Return (_Typ = wb_Global.KomponTypen.KO_TYPE_LAGERLISTE_AUTO)
+        End Get
+    End Property
+
     Public Property KO_Nr As Integer
         Get
             Return _KO_Nr
@@ -1405,4 +1577,30 @@ Public Class wb_Produktionsschritt
         End Set
     End Property
 
+    Public Property Ofengruppe As Integer
+        Get
+            Return _Ofengruppe
+        End Get
+        Set(value As Integer)
+            _Ofengruppe = value
+        End Set
+    End Property
+
+    Public Property ArtikelNrReferenz As String
+        Get
+            Return _ArtikelNrReferenz
+        End Get
+        Set(value As String)
+            _ArtikelNrReferenz = value
+        End Set
+    End Property
+
+    Public Property ReferenzArtikelText As String
+        Get
+            Return _ReferenzArtikelText
+        End Get
+        Set(value As String)
+            _ReferenzArtikelText = value
+        End Set
+    End Property
 End Class

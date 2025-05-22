@@ -108,7 +108,7 @@
         'Prüfen ob die Tabelle ENummern exisitert
         If eEListe.Count <= 0 Then
             _ErrorText = "Fehler in Tabelle winback.ENummern. Tabelle fehlt !"
-            Trace.WriteLine(_ErrorText)
+            Trace.WriteLine("@E_" & _ErrorText)
             Return False
         Else
             _ErrorText = ""

@@ -5,11 +5,11 @@ Imports System.Net
 ' can be installed from package manager console like this:
 ' install-package Newtonsoft.json
 Imports Newtonsoft.Json.Linq
-Imports WinBack
 
 Public Class wb_nwtCl_WinBack
     Inherits wb_nwtCL
 
+#Disable Warning SYSLIB0014
     Private _pass As String
     Private _url As String
     Private _errorCode As HttpStatusCode
@@ -99,7 +99,7 @@ Public Class wb_nwtCl_WinBack
     ''' <param name="getFileName"> String Dateiname wenn getResult = True</param>
     Private Function httpString(cmd As String, param As String, Optional getFile As Boolean = False, Optional getFileName As String = "") As Integer
         ' Internet-Connector
-        Dim request As WebRequest
+        Dim request As WebRequest = Nothing
         Try
             request = WebRequest.Create(_url & "/" & cmd & param)
             request.Method = "GET"
@@ -125,7 +125,11 @@ Public Class wb_nwtCl_WinBack
                     Dim downloader As New System.Net.WebClient
                     downloader.Headers.Clear()
                     downloader.Headers.Add("Authorization: Basic " & _pass)
-                    downloader.DownloadFile(_url & "/" & cmd & param, getFileName)
+                    downloader.DownloadFile(New Uri(_url & "/" & cmd & param), getFileName)
+                    'Verbindung wieder schliessen - sonst funktioniert der nächste Aufruf nicht mehr
+                    downloader.Dispose()
+                    request.Abort()
+                    request = Nothing
                     Return 1
                 Else
                     Dim dataStream As Stream = response.GetResponseStream()
@@ -138,22 +142,33 @@ Public Class wb_nwtCl_WinBack
                         'Get JSON-Data
                         Dim ser As JArray = JArray.Parse(responseFromServer)
                         data = ser.Children().ToList
+                        request = Nothing
                         Return data.Count
                     Else
                         'wenn nicht, wird ein Array daraus gemacht...
                         Dim ser As JArray = JArray.Parse("[" & responseFromServer & "]")
                         data = ser.Children().ToList
+                        request.Abort()
+                        request = Nothing
                         Return 1
                     End If
                 End If
             Else
+                request = Nothing
                 Return -1
             End If
+            request.Abort()
+            response = Nothing
         Catch e As Exception
             Trace.WriteLine("@E_WebRequest " & _url & "/" & cmd & param & " Exception " & e.ToString)
             _errorCode = HttpStatusCode.Unused
+            If request IsNot Nothing Then
+                request.Abort()
+            End If
             Return -9
         End Try
+        request = Nothing
+
     End Function
 
     ''' <summary>
@@ -248,8 +263,8 @@ Public Class wb_nwtCl_WinBack
         If Me.GetProductData(id) > 0 Then
             'Ergebnis ist ein verschachteltes JSON-Objekt
             Dim jsonData As JObject = JObject.Parse(Me.GetResult(0))
-            'Rohstoff-Bezeichnung
-            nwtDaten.Bezeichnung = GetJData(jsonData, "name")
+            'Rohstoff-Bezeichnung NICHT ÜBERNEHMEN
+            'nwtDaten.Bezeichnung = GetJData(jsonData, "name")
             'Rohstoff-Lieferant(Text)
             nwtDaten.Lieferant = GetJData(jsonData, "lieferant")
             'Rohstoff-Deklaration (aus der Cloud IMMER in die externe Deklaration schreiben)
@@ -283,7 +298,7 @@ Public Class wb_nwtCl_WinBack
     ''' <returns></returns>
     Public Overrides Function getProductList() As ArrayList
         Dim a As New ArrayList
-        Dim n As wb_Global.NwtCloud
+        Dim n As wb_Global.NwtCloud = Nothing
 
         'alle Ergebnisse aus der Liste
         For Each d As JToken In data
@@ -318,7 +333,7 @@ Public Class wb_nwtCl_WinBack
 
     ''' <summary>
     ''' liefert die Liste aller gefundenen Produkt-Datenblätter
-    ''' Aus dem Json-Array werdenDatei-Namen in die Liste geschrieben
+    ''' Aus dem Json-Array werden Datei-Namen in die Liste geschrieben
     ''' </summary>
     ''' <returns></returns>
     Public Function getProductSheetList() As ArrayList
@@ -352,6 +367,7 @@ Public Class wb_nwtCl_WinBack
             If Not IsNothing(JName("0")) Then
                 Return JName("0").ToString
             End If
+
         Catch
         End Try
         Return ""
@@ -371,4 +387,5 @@ Public Class wb_nwtCl_WinBack
         End If
     End Sub
 
+#Enable Warning SYSLIB0014
 End Class

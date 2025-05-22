@@ -1,32 +1,45 @@
 ﻿Imports System.Net.Sockets
-Imports WinBack
 
 Public Class wb_Sql_FindServerIP
 
     'Durchsucht alle 255 Adressen im Netzwerk 
     Private Shared x(255) As PingWaiter
     Private Shared _ResultScans As Integer
-    Private Shared _Servers As String
+    Private Shared _Servers As New List(Of String)
 
     Public Shared Function FindWinBackServer() As String
         'IP-Adresse WinBack-Server
-        FindWinBackServer = GetWinBackIP()
+        Dim Result As String = GetWinBackIP()
 
         'Fehler - Kein WinBack-Server gefunden 
         If ResultScans = 0 Then
-            MsgBox("Es konnte kein WinBack-Server im Netz gefunden werden ...")
+            MsgBox("Es konnte kein WinBack-Server im Netz gefunden werden...", MsgBoxStyle.Exclamation, "OrgaBack-Office")
         End If
 
         'Hinweis - Mehr als ein WinBack-Server gefunden 
         If ResultScans > 1 Then
             Try
                 'Fehlermeldung zusammensetzen
-                MsgBox("Es wurde mehr als ein WinBack-Server im Netzwerk gefunden ..." & vbCrLf & _Servers)
+                MsgBox("Es wurde mehr als ein WinBack-Server im Netzwerk gefunden...", MsgBoxStyle.Information, "OrgaBack-Office")
 
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
         End If
+        Return Result
+    End Function
+
+    Public Shared Function FindWinBackServer(IP As String) As Boolean
+        'IP-Adresse zum Prüfen
+        x(0) = New PingWaiter(IP)
+        'Warten bis fertig
+        x(0).TaskWait()
+        'Wenn unter dieser IP-Adresse ein WinBack-Server erreichbar ist, muss auch Port 5901 offen sein...
+        If Not x(0).mip.Port5901 Then
+            MsgBox("Unter der IP-Adresse " & IP & " konnte kein WinBack-Server gefunden werden", MsgBoxStyle.Exclamation, "OrgaBack-Office")
+            Return False
+        End If
+        Return True
     End Function
 
     ''' <summary>
@@ -35,30 +48,19 @@ Public Class wb_Sql_FindServerIP
     ''' <returns></returns>
     Public Shared Function GetWinBackIP() As String
         'Reset Counter(Shared)
-        ResultScans = 0
+        _ResultScans = 0
         'Default-Rückgabewert
-        GetWinBackIP = "127.0.0.1"
+        Dim Result As String = "127.0.0.1"
 
         'Lokale IP wird ermittelt
-        Dim locip As String = ""
-        For Each ip As System.Net.IPAddress In System.Net.Dns.GetHostAddresses(System.Net.Dns.GetHostName)
-            If ip.ToString.Contains(".") Then locip = ip.ToString
-        Next
-
-        'Die ersten drei Blöcke werden in 'ThreeBlocks' geschrieben
-        Dim ThreeBlocks As String = ""
-        Dim ind As Integer = 0
-        For Each IPBlock As String In locip.Split(".")
-            If ind = 3 Then Exit For
-            ThreeBlocks &= IPBlock
-            ThreeBlocks &= "."
-            ind += 1
-        Next
-
+        Dim ThreeBlocks As String = GetThreeBlocks()
         'Start Scanning all IP-Addresses in Range 0..254 (Hintergrund-Task)
         For i = 0 To 254
             x(i) = New PingWaiter(ThreeBlocks & i)
         Next
+
+        'Ergebnis-Array löschen
+        _Servers.Clear()
 
         'Wait for all Tasks get ready
         For i = 0 To 254
@@ -67,21 +69,45 @@ Public Class wb_Sql_FindServerIP
             'Check Port 3305 and Port 5901
             If x(i).mip.Port5901 Then
                 'IP-Adresse(n) auflisten 
-                _Servers &= vbCrLf & "   " & x(i).mip.IPAddresse
-                GetWinBackIP = x(i).mip.IPAddresse
+                _Servers.Add(x(i).mip.IPAddresse)
+                Result = x(i).mip.IPAddresse
             End If
         Next
 
-        'No Match
+        Return Result
     End Function
 
-    Public Shared Property ResultScans As Integer
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
+    Private Shared Function GetThreeBlocks() As String
+        'Lokale IP wird ermittelt
+        Dim locip As String = ""
+        For Each ip As System.Net.IPAddress In System.Net.Dns.GetHostAddresses(System.Net.Dns.GetHostName)
+            If ip.ToString.Contains(".") Then locip = ip.ToString
+        Next
+
+        'Die ersten drei Blöcke werden in 'ThreeBlocks' geschrieben
+        Dim Result As String = ""
+        Dim ind As Integer = 0
+        For Each IPBlock As String In locip.Split(".")
+            If ind = 3 Then Exit For
+            Result &= IPBlock
+            Result &= "."
+            ind += 1
+        Next
+
+        Return Result
+    End Function
+
+    Public Shared ReadOnly Property ResultScans As Integer
         Get
             Return _ResultScans
         End Get
-        Set(value As Integer)
-            _ResultScans = value
-        End Set
+    End Property
+
+    Public Shared ReadOnly Property Servers As List(Of String)
+        Get
+            Return _Servers
+        End Get
     End Property
 
     Public Shared Sub AddResultScan()
@@ -138,6 +164,7 @@ Public Class PingWaiter
                 End If
             End If
         Catch ex As Exception
+            Debug.Print("Keine Verbindung zu " & mip.IPAddresse)
         End Try
     End Sub
 
@@ -148,6 +175,7 @@ Public Class PingWaiter
             tcpClient.Close()
             Return True
         Catch ex As Exception
+            Debug.Print("Keine Verbindung zu " & mip.IPAddresse & ":" & Port)
         End Try
         Return False
     End Function

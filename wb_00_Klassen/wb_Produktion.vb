@@ -23,7 +23,6 @@ Public Class wb_Produktion
 
     Private _VorProduktion As New ArrayList
     Private _RootCheckProduktion As New wb_Produktionsschritt(Nothing, "")
-    '    Private _CheckProduktion As New Dictionary(Of Integer, wb_Produktionsschritt)
     Private _CheckProduktion As New Hashtable
 
     Public ReadOnly Property GetNewChargenNummer(Linie As Integer) As String
@@ -62,7 +61,7 @@ Public Class wb_Produktion
     End Property
 
     Public Function CheckLinie(Linie As Integer) As Boolean
-        If (Linie > 0) And (Linie < wb_Global.MaxLinien) Then
+        If (Linie > 0) AndAlso (Linie < wb_Global.MaxLinien) Then
             If _ChargenNummer Is Nothing Then
                 ReDim _ChargenNummer(Linie + 1)
             End If
@@ -91,48 +90,85 @@ Public Class wb_Produktion
         End Get
     End Property
 
+    Public ReadOnly Property ProduktionsPlanungError As wb_ProduktionPlanungError
+        Get
+            Return _ProduktionsPlanungError
+        End Get
+    End Property
+
     ''' <summary>
     ''' Prüft die Lagerbestände aller Rohstoffe gegen die Sollwerte der geplanten (echten)Produktion.
     ''' </summary>
     ''' <returns></returns>
-    Public Function CheckLager() As Boolean
+    Public Function CheckLager(NachLinienAufteilen As Boolean) As Boolean
         'Dictionary löschen
         _CheckProduktion.Clear()
         _RootCheckProduktion.ChildSteps.Clear()
-        'Rekursive Schleife über alle Produktions-Schritte 
-        CheckLager(_RootProduktionsSchritt)
+        'Rekursive Schleife über alle Produktions-Schritte (Verbrauch pro Artikelnummer)
+        CheckLager(_RootProduktionsSchritt, NachLinienAufteilen)
         Debug.Print("Dictionary completed")
         Return True
     End Function
 
-    Private Function CheckLager(Root As wb_Produktionsschritt) As Boolean
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
+    Private Function CheckLager(Root As wb_Produktionsschritt, NachLinienAufteilen As Boolean) As Boolean
+        Dim Liniengruppe As Integer
+        Dim Key As String
 
         'Schleife über alle Child-Steps
         For Each ps As wb_Produktionsschritt In Root.ChildSteps
             'wenn Child-Steps vorhanden sind - werden diese auch bearbeitet
             If ps.ChildSteps.Count > 0 Then
-                CheckLager(ps)
+                CheckLager(ps, NachLinienAufteilen)
             End If
 
             'Komponenten-Type
-            If ps.Typ = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or
-               ps.Typ = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or
-               ps.Typ = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Or
+            If ps.Typ = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE OrElse
+               ps.Typ = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE OrElse
+               ps.Typ = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL OrElse
                ps.Typ = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Then
 
+                'Key (Zusammenfassen nach Type, Artikelnummer oder Type, LinienGruppe und Artikelnummer)
+                If NachLinienAufteilen Then
+                    Liniengruppe = ps.ParentStep.LinienGruppe
+                Else
+                    Liniengruppe = wb_Global.UNDEFINED
+                End If
+
+                'Sortierschlüssel
+                Key = Liniengruppe.ToString("000") & ps.ArtikelNummer.PadLeft(10, "0")
+                Debug.Print("Key/Type " & Key & "/" & ps.Typ)
+
                 'prüfen ob die Komponenten-Nummer im HashTable schon vorhanden ist
-                If _CheckProduktion.ContainsKey(ps.ArtikelNr) Then
+                If _CheckProduktion.ContainsKey(Key) Then
                     'Komponente ist schon im HashTable vorhanden - Sollmengen addieren
-                    Dim pn As wb_Produktionsschritt = _CheckProduktion(ps.ArtikelNr)
+                    Dim pn As wb_Produktionsschritt = _CheckProduktion(Key)
                     pn.Sollwert_kg += ps.Sollwert_kg
-                    pn.Sollwert = pn.Sollwert_kg
-                    _CheckProduktion(ps.ArtikelNr) = pn
+
+                    pn.Sollwert = wb_Functions.FormatStr(pn.Sollwert_kg, 3)
+                    'Liniengruppe aus Parent-Schritt
+                    pn.LinienGruppe = Liniengruppe
+
+                    _CheckProduktion(Key) = pn
                 Else
                     'neuen Produktions-Schritt in HashTable einfügen
                     Dim pn As New wb_Produktionsschritt(_RootCheckProduktion, "")
                     pn.CopyFrom(ps)
-                    _CheckProduktion.Add(ps.ArtikelNr, pn)
+
+                    'Liniengruppe aus Parent-Schritt
+                    pn.LinienGruppe = Liniengruppe
+                    'Komponenten-Type verbiegen (Anzeige der Liniengruppen auf der Lagerliste)
+                    'If ps.RezeptNr = 0 Then
+                    Select Case ps.Typ
+                        Case wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE, wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE
+                            pn.Typ = wb_Global.KomponTypen.KO_TYPE_LAGERLISTE_HAND
+                        Case wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE, wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL
+                            pn.Typ = wb_Global.KomponTypen.KO_TYPE_LAGERLISTE_AUTO
+                    End Select
+                    'End If
+                    _CheckProduktion.Add(Key, pn)
                 End If
+
             End If
         Next
         Return True
@@ -159,9 +195,10 @@ Public Class wb_Produktion
 
         'Schleife über alle Vorproduktions-Chargen
         For Each v As wb_VorProduktionsSchritt In _VorProduktion
-            'Debug.Print("Vorproduktion " & v.ArtikelNr & "/" & v.RezeptNr & "/" & v.Sollwert_kg)
             'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
-            AddChargenZeile("", "", v.ArtikelNr, 0.0, v.Sollwert_kg, 0.0, wb_Global.ModusChargenTeiler.OptimalUndRest, True, True)
+            'MengeInProduktion und BestandFroster sind Null
+            AddChargenZeile("", "", v.ArtikelNr, 0.0, 0.0, v.Sollwert_kg, 0.0, 0, 0, wb_Global.ModusChargenTeiler.OptimalUndRest, True, True, "", wb_Global.UNDEFINED, v.SonderText)
+            'Debug.Print("Vorproduktion " & v.ArtikelNr & "/" & v.RezeptNr & "/" & v.Sollwert_kg)
         Next
 
         Return True
@@ -253,10 +290,29 @@ Public Class wb_Produktion
                 vp.LinienGruppe = p.LinienGruppe
                 vp.RezeptGroesse = 0
                 vp.RezeptVar = p.RezeptVar
-                vp.Sollwert_kg = p.Sollwert_kg
                 vp.ArtikelNr = p.ArtikelNr
                 vp.TeigChargen = p.TeigChargen
                 vp.Aufloesen = p.Aufloesen
+                vp.Sollwert_kg = p.Sollwert_kg
+                vp.SonderText = ""
+
+                'wenn ein Backverlust eingetragen ist
+                If p.BackVerlust > 0 Then
+                    'Backverlust und Zuschnitt in der Berechnung des Sollwertes mit berücksichtigen
+                    'Fonk Hr.Genten (13.12.2021)/JW
+                    vp.Sollwert_kg += (p.Sollwert_kg / 100 * p.BackVerlust)
+                    'Kommentar eintragen
+                    vp.SonderText += "Backverlust " & wb_Functions.FormatStr(p.BackVerlust, 1) & "% "
+                End If
+                'wenn ein Zuschnitt eingetragen ist
+                If p.Zuschnitt > 0 Then
+                    'Backverlust und Zuschnitt in der Berechnung des Sollwertes mit berücksichtigen
+                    'Fonk Hr.Genten (13.12.2021)/JW
+                    vp.Sollwert_kg += (p.Sollwert_kg / 100 * p.Zuschnitt)
+                    'Kommentar eintragen
+                    vp.SonderText += "Zuschnitt " & wb_Functions.FormatStr(p.Zuschnitt, 1) & "% "
+                End If
+
                 _VorProduktion.Add(vp)
             Else
                 'prüfen ob Rohstoff mit Rezept
@@ -272,6 +328,7 @@ Public Class wb_Produktion
     ''' Durchläuft alle als Vorproduktion markierten Schritte in der Liste und korrigiert die Mengen entsprechend der Liste
     ''' mit den neu berechneten Mengen
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Private Sub _VorProduktion_MengenKorrektur()
         'Die Vorproduktions-Schritte hängen als Child am Root-Knoten
         For Each p As wb_Produktionsschritt In RootProduktionsSchritt.ChildSteps
@@ -286,6 +343,9 @@ Public Class wb_Produktion
                         If p.Sollwert_kg = 0 Then
                             p.Sollwert_kg = p.StkGewicht * p.Sollmenge_Stk / 1000
                         End If
+                        'Sondertexte (Backverlust/Zuschnitt)
+                        p.Bestellt_SonderText = v.SonderText
+
                         'Test-Ausgabe
                         Debug.Print("Charge alt " & p.RezeptNr & "/" & p.Sollwert_kg & "/(" & p.ArtikelBezeichnung & ")")
                         Debug.Print("Charge neu " & v.RezeptNr & "/" & v.Sollwert_kg)
@@ -294,7 +354,7 @@ Public Class wb_Produktion
 
                         'Artikeldaten aus DB lesen
                         Dim Artikel As New wb_Komponente
-                        If Artikel.MySQLdbRead(p.ArtikelNr, p.ArtikelNummer) Then
+                        If Artikel.xMySQLdbRead(p.ArtikelNr, p.ArtikelNummer) Then
 
                             'Chargen berechnen - Aufteilung in Optimal- und Restchargen
                             p.TeigChargen = CalcChargenMenge(v.Sollwert_kg, Artikel.ArtikelChargen.MinCharge.fMengeInkg, Artikel.ArtikelChargen.MaxCharge.fMengeInkg, Artikel.ArtikelChargen.OptCharge.fMengeInkg, wb_Global.ModusChargenTeiler.OptimalUndRest, True)
@@ -321,10 +381,8 @@ Public Class wb_Produktion
     ''' Fasst alle (Rest-)Teige zu einem/mehreren Teigchargen zusammen (Optimierung der Produktions-Liste)
     ''' Die Produktions-Liste ist vorher schon nach TeigNr/Tour/Artikelnr sortiert.
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Friend Sub TeigeZusammenfassen(Modus As wb_Global.ModusTeigOptimierung)
-        'WARUM WIRD DIESE ROUTINE NICHT MEHR AUFGERUFEN ??
-        'TEIGLISTE MUSS ZUSAMMENGEFASST SEIN
-        'BACKZETTEL NICHT ?
         'Teigmenge Summe
         Dim TeigMenge As Double = 0
 
@@ -338,7 +396,7 @@ Public Class wb_Produktion
                 '(Erster)Teig der folgenden Artikelzeile
                 Dim p2 As wb_Produktionsschritt = RootProduktionsSchritt.ChildSteps(i)
 
-                If p1.ChildSteps.Count > 0 And p2.ChildSteps.Count > 0 Then
+                If p1.ChildSteps.Count > 0 AndAlso p2.ChildSteps.Count > 0 Then
                     Dim p1c0 As wb_Produktionsschritt = p1.ChildSteps(0)
                     Dim p2c0 As wb_Produktionsschritt = p2.ChildSteps(0)
 
@@ -360,7 +418,7 @@ Public Class wb_Produktion
                             'Debug.Print("Optimiere Produktion " & p2c0.Tour & "/" & p2c0.ArtikelNummer & "/" & p2c0.ArtikelBezeichnung & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & p2c0.Sollwert_kg)
                         End If
                         'Letzter Teig
-                        If i = ProdChildSteps And TeigMenge > 0 Then
+                        If i = ProdChildSteps AndAlso TeigMenge > 0 Then
                             'TODO Chargenteiler auch aus Rezeptur berücksichtigen
                             AddChargenZeile(TourInfo(p2c0.Tour, Modus), p2c0.RezeptNr, TeigMenge, wb_GlobalSettings.ChargenTeiler, p2c0.Aufloesen, p2c0.OptChargekg, p2c0.MinChargekg, p2c0.MaxChargekg)
                             'Debug.Print("AddCharge LAST " & p2c0.Tour & "/" & p2c0.RezeptNr & "/" & p2c0.RezeptNummer & "/" & p2c0.RezeptBezeichnung & "/" & TeigMenge)
@@ -397,7 +455,7 @@ Public Class wb_Produktion
 
     Private Function Zusammenfassen(p1c0 As wb_Produktionsschritt, p2c0 As wb_Produktionsschritt, Modus As wb_Global.ModusTeigOptimierung) As Boolean
         'Kopfzeilen werden nicht nochmals zusammengefasst
-        If p1c0.ArtikelNummer = "K" And p2c0.ArtikelNummer = "K" Then
+        If p1c0.ArtikelNummer = "K" AndAlso p2c0.ArtikelNummer = "K" Then
             Return False
         Else
             'Modus Teig-Optimierung
@@ -409,11 +467,11 @@ Public Class wb_Produktion
 
                 Case wb_Global.ModusTeigOptimierung.AlleTeige
                     'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
-                    Return (p1c0.RezeptNr = p2c0.RezeptNr) And (p1c0.Tour = p2c0.Tour)
+                    Return (p1c0.RezeptNr = p2c0.RezeptNr) AndAlso (p1c0.Tour = p2c0.Tour)
 
                 Case wb_Global.ModusTeigOptimierung.NurTeigeKleinerMinChargen
                     'optimiere alle Teige mit Restcharge kleiner Minimal-Charge
-                    Return (p1c0.RezeptNr = p2c0.RezeptNr And p1c0.Tour = p2c0.Tour And p1c0.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 And p2c0.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3)
+                    Return (p1c0.RezeptNr = p2c0.RezeptNr AndAlso p1c0.Tour = p2c0.Tour AndAlso p1c0.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3 AndAlso p2c0.TeigChargen.Result = wb_Global.ChargenTeilerResult.EM3)
 
                 Case Else
                     Return False
@@ -422,29 +480,27 @@ Public Class wb_Produktion
     End Function
 
     Private Function ZusammenfassenTeigSumme(p As wb_Produktionsschritt, Modus As wb_Global.ModusTeigOptimierung, ChargenNummer As String) As Double
-        'Default-Rückgabeert
-        ZusammenfassenTeigSumme = 0
+        'Default-Rückgabewert
+        Dim TeigSumme As Double = 0
+
         'Modus Teig-Optimierung
         Select Case Modus
-
             Case wb_Global.ModusTeigOptimierung.AlleTeige, wb_Global.ModusTeigOptimierung.AlleTeigeAlleTouren
                 'optimiere alle Teige mit gleicher Rezeptnummer und gleicher Tour
                 For Each c As wb_Produktionsschritt In p.ChildSteps
-                    ZusammenfassenTeigSumme = ZusammenfassenTeigSumme + c.Sollwert_kg
+                    TeigSumme = TeigSumme + c.Sollwert_kg
                     c.Optimiert = True
                     c.ChargenNummer = ChargenNummer
-                    'Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & ZusammenfassenTeigSumme)
+                    'Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & TeigSumme)
                 Next
                 p.Optimiert = True
-
             Case wb_Global.ModusTeigOptimierung.NurTeigeKleinerMinChargen
                 'optimiere alle Teige mit Restcharge kleiner Minimal-Charge
-                ZusammenfassenTeigSumme = p.Sollwert_kg
-                'Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & ZusammenfassenTeigSumme)
-
-            Case Else
-                Return False
+                TeigSumme = p.Sollwert_kg
+                'Debug.Print("Teigsumme " & p.Tour & "/" & p.RezeptNr & "/" & p.RezeptNummer & "/" & p.RezeptBezeichnung & "/" & TeigSumme)
         End Select
+
+        Return TeigSumme
     End Function
 
     ''' <summary>
@@ -456,6 +512,7 @@ Public Class wb_Produktion
     ''' <param name="TeigMenge"></param>
     ''' <param name="Modus"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Procedures should not have too many parameters", Justification:="<Ausstehend>")>
     Function AddChargenZeile(Tour As String, RzNr As Integer, TeigMenge As Double, Modus As wb_Global.ModusChargenTeiler, Aufloesen As Boolean,
                              Optional ArtikelOptCharge As Double = 0, Optional ArtikelMinCharge As Double = 0, Optional ArtikelMaxCharge As Double = 0) As Boolean
         Dim Artikel As New wb_Komponente
@@ -479,6 +536,8 @@ Public Class wb_Produktion
         Root.Sollwert_kg = TeigMenge
         Root.Tour = Tour
         Root.Typ = wb_Global.KomponTypen.KO_ZEILE_DUMMYARTIKEL
+        'Dummy-Zeile hat keinen Bestand im Froster !
+        Root.MengeImFroster = 0
 
         'Chargen-Größen aus Rezept oder Artikel
         If Rezept.TeigChargen.OptCharge.fMengeInkg = 0 Then
@@ -518,84 +577,121 @@ Public Class wb_Produktion
     ''' <param name="Nr">Integer - interne Artikelnummer</param>
     ''' <param name="Sollmenge_Stk">Double - Sollmenge in Stück</param>
     ''' <returns></returns>
-    Public Function AddChargenZeile(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, Sollmenge_kg As Double, MengeInProduktion As Double, Modus As wb_Global.ModusChargenTeiler,
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S107:Procedures should not have too many parameters", Justification:="<Ausstehend>")>
+    Public Function AddChargenZeile(Tour As String, Nummer As String, Nr As Integer, Sollmenge_Stk As Double, EntnahmeFroster As Double, Sollmenge_kg As Double, MengeInProduktion As Double, BestandFroster As Integer, BedarfFroster As Integer, Modus As wb_Global.ModusChargenTeiler,
                                      Aufloesen As Boolean, Optional Vorproduktion As Boolean = False, Optional AuftragsNummer As String = "", Optional Bestellmenge As Double = wb_Global.UNDEFINED,
-                                     Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "") As Boolean
+                                     Optional Bestellt_SonderText As String = "", Optional Sollwert_TeilungText As String = "",
+                                     Optional ArtikelNrReferenz As String = "", Optional ReferenzArtikelText As String = "") As Boolean
 
         Dim Artikel As New wb_Komponente
         Dim TeigMenge As Double
 
-        If Artikel.MySQLdbRead(Nr, Nummer) Then
-            'Artikelzeilen hängen immer am ersten (Dummy)Schritt
-            Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
-            'Artikel-Stückgewicht in kg
-            Dim StkGewicht As Double = Artikel.ArtikelChargen.StkGewicht / 1000
-            If StkGewicht = 0 Then
-                StkGewicht = 1
-            End If
+        If Artikel.xMySQLdbRead(Nr, Nummer) Then
+            'Prüfen ob eine gültige Rezeptnummer im Artikelstamm angegeben ist
+            If Artikel.RzNr > 0 Then
+                'Artikelzeilen hängen immer am ersten (Dummy)Schritt
+                Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
+                'Artikel-Stückgewicht in kg
+                Dim StkGewicht As Double = Artikel.ArtikelChargen.StkGewicht / 1000
+                If StkGewicht = 0 Then
+                    StkGewicht = 1
+                End If
 
-            'Neue Zeile  einfügen (ArtikelZeile)
-            Root = New wb_Produktionsschritt(Root, Artikel.Bezeichnung)
+                'Neue Zeile  einfügen (ArtikelZeile)
+                Root = New wb_Produktionsschritt(Root, Artikel.Bezeichnung)
 
-            'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
-            Root.CopyFromKomponenten(Artikel, wb_Global.KomponTypen.KO_ZEILE_ARTIKEL)
-            Root.Sollmenge_Stk = Sollmenge_Stk
-            Root.Aufloesen = Aufloesen
-            If Vorproduktion Then
-                Root.Tour = "V" & Root.iTour.ToString
+                'Daten aus dem Komponenten-Stamm in Produktionsschritt kopieren
+                Root.CopyFromKomponenten(Artikel, wb_Global.KomponTypen.KO_ZEILE_ARTIKEL)
+                Root.Sollmenge_Stk = Sollmenge_Stk
+                Root.Aufloesen = Aufloesen
+                If Vorproduktion Then
+                    Root.Tour = "V" & Root.iTour.ToString
+                Else
+                    Root.Tour = Tour
+                End If
+                Root.AuftragsNummer = AuftragsNummer
+                Root.Bestellt_Stk = CalcBestellMenge(Bestellmenge, Sollmenge_Stk)
+                Root.Bestellt_SonderText = Bestellt_SonderText
+                Root.Sollwert_TeilungText = Sollwert_TeilungText
+                Root.MengeImFroster = BestandFroster
+                Root.MengeInProduktion = MengeInProduktion
+                Root.MengeInDenFroster = BedarfFroster
+                Root.EntnahmeFroster = EntnahmeFroster
+                Root.ArtikelNrReferenz = ArtikelNrReferenz
+                Root.ReferenzArtikelText = ReferenzArtikelText
+
+                'Teig-Gesamtmenge berechnen
+                If Sollmenge_kg <= 0 Then
+                    TeigMenge = CalcTeigMenge(Sollmenge_Stk, StkGewicht)
+                Else
+                    TeigMenge = Sollmenge_kg
+                End If
+
+                'Stkzahl in der Artikelzeile berechnen
+                If Root.Sollmenge_Stk = 0 Then
+                    Root.Sollmenge_Stk = Sollmenge_kg / StkGewicht
+                End If
+
+                '2023-01-20/JW  -   Berechnung aufgrund der Rezept-Chargen-Größen, wenn angegeben
+                If Modus = wb_Global.ModusChargenTeiler.RezeptGroesse Then
+                    'Chargengrößen aus der Rezeptur
+                    Dim Rezept As New wb_Rezept(Artikel.RzNr)
+                    If Rezept.TeigChargen.OptCharge.fMengeInkg > 0 Then
+                        'Chargen berechnen - Aufteilung in Optimal- und Restchargen
+                        Root.TeigChargen = CalcChargenMenge(TeigMenge, Rezept.TeigChargen.MinCharge.fMengeInkg, Rezept.TeigChargen.MaxCharge.fMengeInkg, Rezept.TeigChargen.OptCharge.fMengeInkg, Modus, Vorproduktion)
+                    Else
+                        'Chargen berechnen - Aufteilung nach Rezeptgröße
+                        Root.TeigChargen = CalcChargenMenge(TeigMenge, Rezept.RezeptGewicht, Rezept.RezeptGewicht, Rezept.RezeptGewicht, Modus, Vorproduktion)
+                    End If
+                Else
+                    'Chargen berechnen - Aufteilung in Optimal- und Restchargen
+                    Root.TeigChargen = CalcChargenMenge(TeigMenge, Artikel.ArtikelChargen.MinCharge.fMengeInkg, Artikel.ArtikelChargen.MaxCharge.fMengeInkg, Artikel.ArtikelChargen.OptCharge.fMengeInkg, Modus, Vorproduktion)
+                End If
+
+                'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
+                For i = 1 To Root.TeigChargen.AnzahlOpt
+                    AddArtikelRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeOpt, Root.TeigChargen, Vorproduktion)
+                Next
+
+                'Rezept-Kopf-Zeilen anhängen (Rest-Chargen)
+                For i = 1 To Root.TeigChargen.AnzahlRest
+                    AddArtikelRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeRest, Root.TeigChargen, Vorproduktion)
+                Next
+
+                'Stückzahl korrigieren (ACHTUNG Entnahme Froster muss auch mit berechnet werden)
+                Root.Bestellt_Stk = Root.Sollmenge_Stk + Root.EntnahmeFroster
+                Root.Sollmenge_Stk = (Root.TeigChargen.AnzahlOpt * Root.TeigChargen.MengeOpt + Root.TeigChargen.AnzahlRest * Root.TeigChargen.MengeRest) / StkGewicht
+
+                'Aufteilung in Chargen ist ohne Fehler möglich
+                If Root.TeigChargen.Result = wb_Global.ChargenTeilerResult.OK Then
+                    Return True
+                ElseIf Modus = wb_Global.ModusChargenTeiler.RezeptGroesse AndAlso Root.TeigChargen.Result = wb_Global.ChargenTeilerResult.EP9 Then
+                    Return True
+                ElseIf (Root.EntnahmeFroster > 0 AndAlso Root.Sollmenge_Stk = 0) Then
+                    'Auftrag besteht nur aus Entnahme Froster - keine Produktion
+                    Return True
+                Else
+                    'Details für Ausgabe Fehlertext
+                    _ProduktionsPlanungError = New wb_ProduktionPlanungError
+                    _ProduktionsPlanungError.ArtikelNummer = Artikel.Nummer
+                    _ProduktionsPlanungError.Artikelbezeichnung = Artikel.Bezeichnung
+                    _ProduktionsPlanungError.Bestellt_Stk = Root.Bestellt_Stk
+                    'Fehler Chargen-Teiler
+                    _ProduktionsPlanungError.ErrorCode = Root.TeigChargen.Result
+                    'Berechnete Teig-Chargen (für Fehler-Liste)
+                    _ProduktionsPlanungError.TeigChargen = Root.TeigChargen
+                    'Fehlerhafte Zeilen trotzdem optimieren und ausdrucken
+                    'TODO - Ist das hier richtig ?? - Fehlerhafte Zeilen sollten nicht optimiert oder gedruckt werden ?? TEST notwendig !!
+                    Root.Optimiert = False
+                    Return False
+                End If
             Else
-                Root.Tour = Tour
-            End If
-            Root.AuftragsNummer = AuftragsNummer
-            Root.Bestellt_Stk = CalcBestellMenge(Bestellmenge, Sollmenge_Stk)
-            Root.Bestellt_SonderText = Bestellt_SonderText
-            Root.Sollwert_TeilungText = Sollwert_TeilungText
-
-            'Teig-Gesamtmenge berechnen
-            If Sollmenge_kg <= 0 Then
-                TeigMenge = CalcTeigMenge(Sollmenge_Stk, StkGewicht)
-            Else
-                TeigMenge = Sollmenge_kg
-            End If
-
-            'Stkzahl in der Artikelzeile berechnen
-            If Root.Sollmenge_Stk = 0 Then
-                Root.Sollmenge_Stk = Sollmenge_kg / StkGewicht
-            End If
-
-            'Chargen berechnen - Aufteilung in Optimal- und Restchargen
-            Root.TeigChargen = CalcChargenMenge(TeigMenge, Artikel.ArtikelChargen.MinCharge.fMengeInkg, Artikel.ArtikelChargen.MaxCharge.fMengeInkg, Artikel.ArtikelChargen.OptCharge.fMengeInkg, Modus, Vorproduktion)
-
-            'Rezept-Kopf-Zeilen anhängen (Optimal-Chargen)
-            For i = 1 To Root.TeigChargen.AnzahlOpt
-                AddArtikelRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeOpt, Root.TeigChargen, Vorproduktion)
-            Next
-
-            'Rezept-Kopf-Zeilen anhängen (Rest-Chargen)
-            For i = 1 To Root.TeigChargen.AnzahlRest
-                AddArtikelRezeptCharge(Root, Artikel, AuftragsNummer, Tour, Root.TeigChargen.MengeRest, Root.TeigChargen, Vorproduktion)
-            Next
-
-            'Stückzahl korrigieren
-            Root.Bestellt_Stk = Root.Sollmenge_Stk
-            Root.Sollmenge_Stk = (Root.TeigChargen.AnzahlOpt * Root.TeigChargen.MengeOpt + Root.TeigChargen.AnzahlRest * Root.TeigChargen.MengeRest) / StkGewicht
-
-            'Aufteilung in Chargen ist ohne Fehler möglich
-            If Root.TeigChargen.Result = wb_Global.ChargenTeilerResult.OK Then
-                Return True
-            Else
-                'Details für Ausgabe Fehlertext
+                'Keine gültige Rezeptnummer im Artikel-Stamm - Fehlermeldung ausgeben
                 _ProduktionsPlanungError = New wb_ProduktionPlanungError
-                _ProduktionsPlanungError.ArtikelNummer = Artikel.Nummer
-                _ProduktionsPlanungError.Artikelbezeichnung = Artikel.Bezeichnung
-                _ProduktionsPlanungError.Bestellt_Stk = Root.Bestellt_Stk
-                'Fehler Chargen-Teiler
-                _ProduktionsPlanungError.ErrorCode = Root.TeigChargen.Result
-                'Berechnete Teig-Chargen (für Fehler-Liste)
-                _ProduktionsPlanungError.TeigChargen = Root.TeigChargen
-                'Fehlerhafte Zeilen nicht optimieren und NICHT ausdrucken
-                'TODO Richtig ?
-                Root.Optimiert = True
+                'Fehler Artikel nicht gefunden
+                _ProduktionsPlanungError.ErrorCode = wb_Global.ChargenTeilerResult.REZ
+                _ProduktionsPlanungError.ArtikelNummer = Nummer
                 Return False
             End If
         Else
@@ -645,6 +741,7 @@ Public Class wb_Produktion
     ''' <param name="Menge"></param>
     ''' <param name="Parent"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Private Function AddRezeptSchritte(ByRef Rzpt As wb_Produktionsschritt, ByRef Menge As Double, Parent As Object, Vorproduktion As Boolean) As Integer
         'Rezeptur einlesen
         'TODO Muss hier ein Backverlust übertragen werden oder nicht ? PRÜFEN !!!
@@ -659,7 +756,7 @@ Public Class wb_Produktion
                 If rs.Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Then
                     Select Case rs.ParamNr
                         Case 1
-                            Anstellgut += rs.Sollwert
+                            Anstellgut += rs.fSollwert
                         Case 2
                             Anstellgut += rs.SollwertProzent * Rezeptur.RezeptGewicht / 100
                     End Select
@@ -669,7 +766,7 @@ Public Class wb_Produktion
 
         'Umrechnungsfaktor Rezeptmenge
         Dim Faktor As Double
-        If (Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig) And Rezeptur.AnstellGutReWork Then
+        If (Rzpt.LinienGruppe = wb_Global.LinienGruppeSauerteig) AndAlso Rezeptur.AnstellGutReWork Then
             Faktor = SaveDiv(Menge, Rezeptur.RezeptGewicht - Anstellgut)
         Else
             Faktor = SaveDiv(Menge, Rezeptur.RezeptGewicht)
@@ -696,7 +793,7 @@ Public Class wb_Produktion
             RzSchritt.Aufloesen = Rzpt.Aufloesen
 
             'Rezept-im-Rezept-Struktur auflösen - Nur wenn kein Teigling (2020-09-25)
-            If (RzSchritt.RezeptNr > 0) And RzSchritt.FreigabeProduktion And Rzpt.Aufloesen Then
+            If (RzSchritt.RezeptNr > 0) AndAlso RzSchritt.FreigabeProduktion AndAlso Rzpt.Aufloesen Then
                 If Vorproduktion Then
                     RzSchritt.ChargenNummer = "VP-OK"
                 Else
@@ -744,8 +841,8 @@ Public Class wb_Produktion
     ''' <param name="Backverlust"></param>
     ''' <returns></returns>
     Private Function CalcTeigMenge(SollStk As Integer, StkGewicht As Double, Optional Backverlust As Double = 0) As Double
-        CalcTeigMenge = SollStk * StkGewicht
-        Return CalcTeigMenge - ((CalcTeigMenge * Backverlust) / 100)
+        Dim Result As Double = SollStk * StkGewicht
+        Return Result - ((Result * Backverlust) / 100)
     End Function
 
     ''' <summary>
@@ -808,6 +905,7 @@ Public Class wb_Produktion
     ''' <param name="ChargeOpt"></param>
     ''' <param name="VorProduktion"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="<Ausstehend>")>
     Private Function CalcBatchM1(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
         'Es gibt keine Restchargen
         CalcBatchM1.MengeRest = 0
@@ -839,7 +937,7 @@ Public Class wb_Produktion
             Dim a2 As Double = Math.Abs(Sollwert - m2)
 
             'Wenn die Abweichung bei einer Charge weniger kleiner ist - Ergebnis korrigieren
-            If (a2 <= a1) And (CalcBatchM1.AnzahlOpt > 1) Then
+            If (a2 <= a1) AndAlso (CalcBatchM1.AnzahlOpt > 1) Then
                 CalcBatchM1.AnzahlOpt = CalcBatchM1.AnzahlOpt - 1
                 CalcBatchM1.MengeOpt = ChargeMax
                 CalcBatchM1.Result = wb_Global.ChargenTeilerResult.EP1
@@ -863,6 +961,7 @@ Public Class wb_Produktion
     ''' <param name="ChargeOpt"></param>
     ''' <param name="VorProduktion"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
     Private Function CalcBatch00(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
         'es gibt keine Restchargen
         CalcBatch00.MengeOpt = ChargeOpt
@@ -899,7 +998,7 @@ Public Class wb_Produktion
         End If
 
         'Vorproduktion (immer eine Charge anlegen)
-        If VorProduktion And ((CalcBatch00.AnzahlOpt = 0) Or CalcBatch00.Result = wb_Global.ChargenTeilerResult.EM1) Then
+        If VorProduktion AndAlso ((CalcBatch00.AnzahlOpt = 0) OrElse CalcBatch00.Result = wb_Global.ChargenTeilerResult.EM1) Then
             CalcBatch00.AnzahlOpt = CalcBatch00.AnzahlOpt + 1
             CalcBatch00.Result = wb_Global.ChargenTeilerResult.EM2
         End If
@@ -922,6 +1021,8 @@ Public Class wb_Produktion
     ''' <param name="ChargeOpt"></param>
     ''' <param name="VorProduktion"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Private Function CalcBatch01(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
         ' Variablen initialisieren
         CalcBatch01.MengeOpt = ChargeOpt
@@ -941,36 +1042,36 @@ Public Class wb_Produktion
         CalcBatch01.MengeRest = Sollwert - (CalcBatch01.AnzahlOpt * CalcBatch01.MengeOpt)
         CalcBatch01.AnzahlRest = 1
         'Rundungsfehler abfangen (10% der Min-Charge)
-        If (CalcBatch01.MengeRest < ChargeMin) And (ChargeMin - CalcBatch01.MengeRest < (ChargeMin / 10)) Then
+        If (CalcBatch01.MengeRest < ChargeMin) AndAlso (ChargeMin - CalcBatch01.MengeRest < (ChargeMin / 10)) Then
             CalcBatch01.MengeRest = ChargeMin
         End If
 
         ' Prüfen ob innerhalb der Chargengrenzen
         If (CalcBatch01.MengeRest < ChargeMin) Then
             ' Wenn keine Restmenge vorhanden - keinen Fehler ausgeben
-            If (CalcBatch01.MengeRest < ErlaubterRundungsfehler) And (CalcBatch01.AnzahlOpt > 0) Then
+            If (CalcBatch01.MengeRest < ErlaubterRundungsfehler) AndAlso (CalcBatch01.AnzahlOpt > 0) Then
                 CalcBatch01.AnzahlRest = 0
                 CalcBatch01.Result = wb_Global.ChargenTeilerResult.OK
             Else
                 'Vorproduktion 
                 If VorProduktion Then
-                        CalcBatch01.AnzahlRest = 1
-                        CalcBatch01.MengeRest = ChargeMin
-                        If CalcBatch01.AnzahlOpt = 0 Then
-                            CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM3
-                        Else
-                            CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM2
-                        End If
+                    CalcBatch01.AnzahlRest = 1
+                    CalcBatch01.MengeRest = ChargeMin
+                    If CalcBatch01.AnzahlOpt = 0 Then
+                        CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM3
                     Else
-                        ' Sollmenge kann nicht erreicht werden weil die
-                        ' Restcharge kleiner als die Min-Charge ist
-                        CalcBatch01.AnzahlRest = 0
+                        CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM2
+                    End If
+                Else
+                    ' Sollmenge kann nicht erreicht werden weil die
+                    ' Restcharge kleiner als die Min-Charge ist
+                    CalcBatch01.AnzahlRest = 0
                     CalcBatch01.MengeRest = 0
                     CalcBatch01.Result = wb_Global.ChargenTeilerResult.EM1
                 End If
             End If
             ' (@V3.0.5) Vorproduktion
-            If (CalcBatch01.AnzahlOpt = 0) And (CalcBatch01.AnzahlRest = 0) And VorProduktion Then
+            If (CalcBatch01.AnzahlOpt = 0) AndAlso (CalcBatch01.AnzahlRest = 0) AndAlso VorProduktion Then
                 CalcBatch01.AnzahlRest = 1
                 CalcBatch01.MengeRest = ChargeMin
                 CalcBatch01.MengeOpt = 0
@@ -990,6 +1091,8 @@ Public Class wb_Produktion
     ''' <param name="ChargeOpt"></param>
     ''' <param name="VorProduktion"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
     Private Function CalcBatch02(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
         ' Variablen initialisieren
         CalcBatch02.Result = wb_Global.ChargenTeilerResult.OK
@@ -1052,7 +1155,7 @@ Public Class wb_Produktion
         End If ' (CalcBatch02.MengeRest > 0)
 
         ' (@V3.0.5) Vorproduktion
-        If (CalcBatch02.AnzahlOpt = 0) And (CalcBatch02.AnzahlRest = 0) And VorProduktion Then
+        If (CalcBatch02.AnzahlOpt = 0) AndAlso (CalcBatch02.AnzahlRest = 0) AndAlso VorProduktion Then
             CalcBatch02.AnzahlRest = 1
             CalcBatch02.MengeRest = ChargeMin
             CalcBatch02.MengeOpt = 0
@@ -1071,6 +1174,7 @@ Public Class wb_Produktion
     ''' <param name="ChargeOpt"></param>
     ''' <param name="VorProduktion"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="<Ausstehend>")>
     Private Function CalcBatch09(Sollwert As Double, ChargeMin As Double, ChargeMax As Double, ChargeOpt As Double, VorProduktion As Boolean) As wb_Global.ChargenMengen
         ' es gibt keine Restchargen
         CalcBatch09.MengeRest = 0
@@ -1093,7 +1197,7 @@ Public Class wb_Produktion
         CalcBatch09.Result = wb_Global.ChargenTeilerResult.EP9
 
         ' (@V3.0.5) Vorproduktion
-        If (CalcBatch09.AnzahlOpt = 0) And VorProduktion Then
+        If (CalcBatch09.AnzahlOpt = 0) AndAlso VorProduktion Then
             CalcBatch09.AnzahlOpt = 1
             CalcBatch09.MengeOpt = Sollwert
         End If
@@ -1108,10 +1212,10 @@ Public Class wb_Produktion
     End Function
 
     Friend Function MsSQLdbProcedure_Produktionsauftrag(ProduktionsDatum As String, Filiale As String) As Boolean
-        Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
-        Dim ArtikelNummer As String = ""
-        Dim GesamtStueck As Integer = 0
-        MsSQLdbProcedure_Produktionsauftrag = False
+        'Dim Root As wb_Produktionsschritt = _RootProduktionsSchritt
+        'Dim ArtikelNummer As String = ""
+        'Dim GesamtStueck As Integer = 0
+        Dim Result As Boolean = False
 
         'Datenbankverbindung öffnen MsSQL
         Dim orgaback As New wb_Sql(wb_GlobalSettings.OrgaBackMainConString, wb_Sql.dbType.msSql)
@@ -1127,37 +1231,42 @@ Public Class wb_Produktion
         orgaback.sqlExecStoredProcedure("pq_Produktionsauftrag", p)
 
         'Produktionsdaten aufbauen
-        Dim BestellDaten As New wb_BestellDatenSchritt
         Dim DebugCounter As Integer = 0
         wb_Planung_Shared.ErrorList.Clear()
-        'Chargen-Teiler (Vorgabe aus Einstellungen/Planung-Teiler)
-        BestellDaten.ChargenTeiler = wb_GlobalSettings.ChargenTeiler
 
         'alle Datensätze einlesen
         While orgaback.Read
+            Dim BestellDaten As New wb_BestellDatenSchritt
+            'Chargen-Teiler (Vorgabe aus Einstellungen/Planung-Teiler)
+            BestellDaten.ChargenTeiler = wb_GlobalSettings.ChargenTeiler
+
             DebugCounter += 1
             'Progressbar einblenden (nur wenn noch nicht sichtbar)
             wb_Main_Shared.ShowProgressBar()
             'Alle Datensätze einlesen
             For i = 0 To orgaback.msRead.FieldCount - 1
                 'Debug.Print("OrgaBack StoredProcedure Read " & orgaback.msRead.GetName(i) & "/" & orgaback.msRead.GetValue(i))
-                MsSQLdbProcedure_Produktionsauftrag = True
+                Result = True
                 'Daten aus der view einlesen
                 BestellDaten.MsSQLdbRead_Fields(orgaback.msRead.GetName(i), orgaback.msRead.GetValue(i))
                 'Progressbar Anzeige refresh
-                Windows.Forms.Application.DoEvents()
+                System.Windows.Forms.Application.DoEvents()
             Next
 
             'Prüfen auf gültige Bestellmengen
-            If BestellDaten.Produktionsmenge > 0 Then
+            If (BestellDaten.Produktionsmenge > 0) OrElse (BestellDaten.FrosterEntnahme > 0) Then
                 'Produktions-Auftrag zu Liste hinzufügen (auch Restchargen < MinCharge einfügen [Vorproduktion=True])
-                If Not AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, 0.0, BestellDaten.MengeInProduktion, BestellDaten.ChargenTeiler, BestellDaten.Aufloesen, False, BestellDaten.AuftragsNummer, BestellDaten.BestellMenge, BestellDaten.SonderText, BestellDaten.SollwertTeilungText) Then
+                If Not AddChargenZeile(BestellDaten.TourNr, BestellDaten.ArtikelNummer, 0, BestellDaten.Produktionsmenge, BestellDaten.FrosterEntnahme, 0.0,
+                                       BestellDaten.MengeInProduktion, BestellDaten.BestandFroster, BestellDaten.BedarfFroster, BestellDaten.ChargenTeiler,
+                                       BestellDaten.Aufloesen, False, BestellDaten.AuftragsNummer, BestellDaten.BestellMenge, BestellDaten.SonderText,
+                                       BestellDaten.SollwertTeilungText, BestellDaten.ArtikelNrReferenz, BestellDaten.ReferenzArtikelText) Then
                     wb_Planung_Shared.ErrorList.Add(_ProduktionsPlanungError)
                 End If
             Else
                 'Bestellmenge ist kleiner/gleich Null
-                Trace.WriteLine("Bestellmenge ist kleiner/gleich Null")
+                Trace.WriteLine("@E_Bestellmenge ist kleiner/gleich Null")
             End If
+
         End While
         'Progressbar ausblenden
         wb_Main_Shared.HideProgressBar()
@@ -1175,6 +1284,7 @@ Public Class wb_Produktion
                 wb_Planung_Shared.Liste_Refresh(Nothing)
             End If
         End If
+        Return Result
     End Function
 
     ''' <summary>
@@ -1195,50 +1305,48 @@ Public Class wb_Produktion
         sql = wb_Sql_Selects.setParams(wb_Sql_Selects.bakArbRezepte, TwNr)
 
         'Datensätze aus Tabelle Rezeptschritte lesen
-        If winback.sqlSelect(sql) Then
-            If winback.Read Then
-                'Schleife über alle Datensätze
-                Do
-                    For i = 0 To winback.MySqlRead.FieldCount - 1
-                        'Felder mit Typ DateTime müssen speziell eingelesen werden
-                        If winback.MySqlRead.GetFieldType(i).Name = "DateTime" Then
-                            Value = winback.MySqlRead.GetMySqlDateTime(i)
-                        Else
-                            Value = winback.MySqlRead.GetValue(i)
-                        End If
-                        'Felder einlesen
-                        MySQLdbRead_Fields(winback.MySqlRead.GetName(i), Value)
-                    Next
-                    'Chargen mit gleicher Artikel/Rezeptnummer zusammenfassen
-                    If ArtikelNummer <> _SQLProduktionsSchritt.ArtikelNummer Then
-                        'Der Root-Knoten enthält die Summe aller Chargen in Stück
-                        Root.Sollmenge_Stk = GesamtStueck
-                        GesamtStueck = 0
-
-                        'Artikelzeilen hängen immer am ersten (Dummy)Schritt
-                        Root = _RootProduktionsSchritt
-                        'Neue Zeile  einfügen (ArtikelZeile)
-                        Root = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
-                        'Daten aus MySQL in Produktionsschritt kopieren
-                        Root.CopyFrom(_SQLProduktionsSchritt)
-
-                        'Artikelnummer merken
-                        ArtikelNummer = _SQLProduktionsSchritt.ArtikelNummer
+        If winback.sqlSelect(sql) AndAlso winback.Read Then
+            'Schleife über alle Datensätze
+            Do
+                For i = 0 To winback.MySqlRead.FieldCount - 1
+                    'Felder mit Typ DateTime müssen speziell eingelesen werden
+                    If winback.MySqlRead.GetFieldType(i).Name = "DateTime" Then
+                        Value = winback.MySqlRead.GetMySqlDateTime(i)
+                    Else
+                        Value = winback.MySqlRead.GetValue(i)
                     End If
+                    'Felder einlesen
+                    MySQLdbRead_Fields(winback.MySqlRead.GetName(i), Value)
+                Next
+                'Chargen mit gleicher Artikel/Rezeptnummer zusammenfassen
+                If ArtikelNummer <> _SQLProduktionsSchritt.ArtikelNummer Then
+                    'Der Root-Knoten enthält die Summe aller Chargen in Stück
+                    Root.Sollmenge_Stk = GesamtStueck
+                    GesamtStueck = 0
 
-                    'Rezeptzeile anfügen
-                    _SQLProduktionsSchritt.Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT
-                    GesamtStueck += _SQLProduktionsSchritt.Sollmenge_Stk
-                    _ProduktionsSchritt = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
+                    'Artikelzeilen hängen immer am ersten (Dummy)Schritt
+                    Root = _RootProduktionsSchritt
+                    'Neue Zeile  einfügen (ArtikelZeile)
+                    Root = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
                     'Daten aus MySQL in Produktionsschritt kopieren
-                    _ProduktionsSchritt.CopyFrom(_SQLProduktionsSchritt)
+                    Root.CopyFrom(_SQLProduktionsSchritt)
 
-                Loop While winback.MySqlRead.Read
+                    'Artikelnummer merken
+                    ArtikelNummer = _SQLProduktionsSchritt.ArtikelNummer
+                End If
 
-                'alle Datensätze eingelesen
-                winback.Close()
-                Return True
-            End If
+                'Rezeptzeile anfügen
+                _SQLProduktionsSchritt.Typ = wb_Global.KomponTypen.KO_ZEILE_REZEPT
+                GesamtStueck += _SQLProduktionsSchritt.Sollmenge_Stk
+                _ProduktionsSchritt = New wb_Produktionsschritt(Root, _SQLProduktionsSchritt.ArtikelBezeichnung)
+                'Daten aus MySQL in Produktionsschritt kopieren
+                _ProduktionsSchritt.CopyFrom(_SQLProduktionsSchritt)
+
+            Loop While winback.MySqlRead.Read
+
+            'alle Datensätze eingelesen
+            winback.Close()
+            Return True
         End If
         winback.Close()
         Return False
@@ -1294,11 +1402,10 @@ Public Class wb_Produktion
 
             End Select
         Catch ex As Exception
+            Debug.Print("Datenfeld " & Name & " wird nicht ausgewertet")
         End Try
         Return True
 
     End Function
-
-
 End Class
 

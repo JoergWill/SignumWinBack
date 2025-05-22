@@ -20,7 +20,7 @@ Public Class wb_Filiale
     ''' </summary>
     Shared Sub New()
         'Wird nur verwendet in Programm-Variante OrgaBack
-        If (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack) Or (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest) Then
+        If (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack) OrElse (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest) Then
             pFiliale = New ArrayList()
             pSortiment = New ArrayList()
             aSortiment = New ArrayList()
@@ -75,6 +75,7 @@ Public Class wb_Filiale
     ''' </summary>
     ''' <param name="FilialNr">Komma-separierter String enthält eine Filiale, die der Produktion zugeordnet ist</param>
     ''' <returns>True wenn eine der Filialen der Produktion zugeordnet</returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Public Shared ReadOnly Property FilialeIstProduktion(FilialNr As String) As Boolean
         Get
             If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
@@ -84,7 +85,7 @@ Public Class wb_Filiale
                 'alle Filialen aus FilialNr
                 For Each sf In sFiliale
                     'Filiale Gesamtunternehmen(0) liefert True !
-                    If sf = "0" And wb_GlobalSettings.GesamtUnterNehmenHatAuchProduktion Then
+                    If sf = "0" AndAlso wb_GlobalSettings.GesamtUnterNehmenHatAuchProduktion Then
                         Return True
                         Exit For
                     End If
@@ -109,6 +110,7 @@ Public Class wb_Filiale
     ''' </summary>
     ''' <param name="SortimentNr"></param>
     ''' <returns>True wenn die Sortiment-Nummer einer Produktions-Filiale zuegordnet ist.</returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Public Shared ReadOnly Property SortimentIstProduktion(SortimentNr As String) As Boolean
         Get
             Try
@@ -137,11 +139,10 @@ Public Class wb_Filiale
     End Property
 
     Public Shared Function IdxProduktionsFiliale(Key As String) As Integer
-        IdxProduktionsFiliale = 0
-        If Key IsNot Nothing Then
-            If hFiliale.ContainsKey(Key) Then
-                Return hFiliale.IndexOfKey(Key)
-            End If
+        Dim Result As Integer = 0
+        If Key IsNot Nothing AndAlso hFiliale.ContainsKey(Key) Then
+            Result = hFiliale.IndexOfKey(Key)
         End If
+        Return Result
     End Function
 End Class

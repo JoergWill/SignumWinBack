@@ -1,4 +1,4 @@
-﻿Imports System.Data.SqlClient
+﻿Imports Microsoft.Data.SqlClient
 Imports MySql.Data.MySqlClient
 Imports WinBack
 
@@ -96,7 +96,7 @@ Public Class wb_Sql
                         Return Nothing
                 End Select
             Catch ex As Exception
-                Trace.WriteLine("ITEM(Index) NOT FOUND " & Index)
+                Trace.WriteLine("@E_ITEM(Index) NOT FOUND " & Index)
                 Throw New System.Exception("ITEM(Index) NOT FOUND " & Index)
             End Try
         End Get
@@ -121,7 +121,7 @@ Public Class wb_Sql
                         Return ""
                 End Select
             Catch
-                Trace.WriteLine("STRING-FIELD NOT FOUND " & FieldName)
+                Trace.WriteLine("@E_STRING-FIELD NOT FOUND " & FieldName)
                 Throw New System.Exception("STRING-FIELD NOT FOUND " & FieldName)
             End Try
         End Get
@@ -163,7 +163,7 @@ Public Class wb_Sql
             'Verbindung über mySql
                     Case dbType.mySql
                         Dim s = MySqlRead(FieldName).ToString
-                        If s IsNot Nothing And s <> "" Then
+                        If s IsNot Nothing AndAlso s <> "" Then
                             Return Int(s)
                         Else
                             Return i
@@ -171,7 +171,7 @@ Public Class wb_Sql
             'Verbindung über msSql
                     Case dbType.msSql
                         Dim s = msRead(FieldName).ToString
-                        If s IsNot Nothing And s <> "" Then
+                        If s IsNot Nothing AndAlso s <> "" Then
                             Return Int(s)
                         Else
                             Return i
@@ -212,8 +212,13 @@ Public Class wb_Sql
 
             End Select
         Catch ex As Exception
-            MsgBox("Connection Error: " & ex.Message.ToString & vbNewLine & "ConnectionString: " & ConString)
-            'TODO bei Fehler sollte die Möglichkeit bestehen, die IP-Adresse oder die WinBack.ini auszuwählen
+            Dim Stack As New StackTrace
+            If (Not Stack.ToString.Contains("WinBackServerTask") OrElse Debugger.IsAttached) AndAlso Not (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest) Then
+                'TODO bei Fehler sollte die Möglichkeit bestehen, die IP-Adresse oder die WinBack.ini auszuwählen
+                MsgBox("Connection Error: " & ex.Message.ToString & vbCrLf & "ConnectionString: " & ConString)
+            Else
+                Trace.WriteLine("@E_Connection Error: " & ex.Message.ToString & vbCrLf & "ConnectionString: " & ConString)
+            End If
         End Try
     End Sub
 
@@ -240,10 +245,11 @@ Public Class wb_Sql
                     Return False
             End Select
         Catch ex As Exception
-            If Debugger.IsAttached Then
+            Dim Stack As New StackTrace
+            If (Not Stack.ToString.Contains("WinBackServerTask") OrElse Debugger.IsAttached) AndAlso Not (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest) Then
                 MsgBox("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
             Else
-                Trace.WriteLine("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
+                Trace.WriteLine("@E_Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
             End If
             Return False
         End Try
@@ -268,7 +274,7 @@ Public Class wb_Sql
                     msCommand = New SqlCommand(sql, msCon)
                     'Parameter (falls erforderlich)
                     If Params IsNot Nothing Then
-                        For i = 0 To Params.Count - 1
+                        For i = 0 To Params.Length - 1
                             msCommand.Parameters.Add(Params(i))
                         Next
                     End If
@@ -278,10 +284,11 @@ Public Class wb_Sql
                     Return False
             End Select
         Catch ex As Exception
-            If Debugger.IsAttached Then
+            Dim Stack As New StackTrace
+            If (Not Stack.ToString.Contains("WinBackServerTask") OrElse Debugger.IsAttached) AndAlso Not (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest) Then
                 MsgBox("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
             Else
-                Trace.WriteLine("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
+                Trace.WriteLine("@E_Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
             End If
             Return False
         End Try
@@ -293,28 +300,38 @@ Public Class wb_Sql
     ''' <param name="sql">SQL-Kommando</param>
     ''' <returns>Anzahl der Datensätze
     ''' -1 falls ein Fehler aufgetreten ist</returns>
-    Function sqlCommand(sql As String, Optional ShowException As Boolean = True, Optional WriteTraceExeption As Boolean = True) As Integer
+    Function sqlCommand(sql As String, Optional ShowException As Boolean = True, Optional WriteTraceExeption As Boolean = True, Optional Timeout As Integer = 0) As Integer
         If sql <> "" Then
             Try
                 Select Case conType
                     Case dbType.mySql
-                        'sql-Kommando ausführen
-                        MySqlCommand = New MySqlCommand(sql, MySqlCon)
-                        MySqlCommand.CommandText = sql
+                        'MySql-Kommando ausführen
+                        MySqlCommand = New MySqlCommand(sql, MySqlCon) With {.CommandText = sql}
+                        'Falls das Kommando länger dauert - Timeout definieren
+                        If Timeout > 0 Then
+                            MySqlCommand.CommandTimeout = Timeout
+                        End If
+                        'SQL-Kommando ausführen
                         Return MySqlCommand.ExecuteNonQuery()
                     Case dbType.msSql
-                        msCommand = New SqlCommand(sql, msCon)
-                        msCommand.CommandText = sql
+                        'MsSql-Kommando ausführen
+                        msCommand = New SqlCommand(sql, msCon) With {.CommandText = sql}
+                        'Falls das Kommando länger dauert - Timeout definieren
+                        If Timeout > 0 Then
+                            msCommand.CommandTimeout = Timeout
+                        End If
+                        'SQL-Kommando ausführen
                         Return msCommand.ExecuteNonQuery()
                     Case Else
                         Return -1
                 End Select
             Catch ex As Exception
-                If Debugger.IsAttached And ShowException Then
+                Dim Stack As New StackTrace
+                If (Not Stack.ToString.Contains("WinBackServerTask") OrElse Debugger.IsAttached) AndAlso Not (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest) AndAlso ShowException Then
                     MsgBox("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
                 Else
                     If WriteTraceExeption Then
-                        Trace.WriteLine("Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
+                        Trace.WriteLine("@E_Fehler " & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
                     End If
                 End If
                 Return -1
@@ -332,8 +349,7 @@ Public Class wb_Sql
                     Return False
                 Case dbType.msSql
                     'sql-Kommando ausführen
-                    msCommand = New SqlCommand(sql, msCon)
-                    msCommand.CommandType = CommandType.StoredProcedure
+                    msCommand = New SqlCommand(sql, msCon) With {.CommandType = Data.CommandType.StoredProcedure}
                     'Parameter for Stored-Procedure
                     For Each p As StoredProceduresParameter In Parameter
                         msCommand.Parameters.AddWithValue(p.Parameter, p.Value)
@@ -344,8 +360,14 @@ Public Class wb_Sql
                     Return False
             End Select
         Catch ex As Exception
-            MsgBox("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
-            Return False
+            Dim Stack As New StackTrace
+            If (Not Stack.ToString.Contains("WinBackServerTask") OrElse Debugger.IsAttached) AndAlso Not (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest) Then
+                MsgBox("Problem beim Laden der Daten aus DB: SQL= " & sql & Chr(10) & "Fehler-Meldung: " & ex.Message.ToString)
+                Return False
+            Else
+                Trace.WriteLine("@E_" & ex.Message.ToString & Chr(10) & "bei SQL-Kommando: " & sql)
+                Return False
+            End If
         End Try
     End Function
 
@@ -355,9 +377,19 @@ Public Class wb_Sql
     Sub CloseRead()
         Select Case conType
             Case dbType.mySql
-                MySqlRead.Close()
+                Try
+                    If MySqlRead IsNot Nothing Then
+                        MySqlRead.Close()
+                    End If
+                Catch
+                End Try
             Case dbType.msSql
-                msRead.Close()
+                Try
+                    If msRead IsNot Nothing Then
+                        msRead.Close()
+                    End If
+                Catch
+                End Try
         End Select
     End Sub
 

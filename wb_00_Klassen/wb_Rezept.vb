@@ -20,6 +20,7 @@ Public Class wb_Rezept
 
     Private _RezeptNummer As String
     Private _RezeptBezeichnung As String
+    Private _RezeptKurzName As String
     Private _RezeptKommentar As String
     Private _AenderungNummer As Integer
     Private _AenderungDatum As String
@@ -64,6 +65,7 @@ Public Class wb_Rezept
         _RezeptNummer = ""
         _RezeptBezeichnung = ""
         _RezeptKommentar = ""
+        _RezeptKurzName = ""
         _AenderungNummer = wb_Global.UNDEFINED
         _LinienGruppe = wb_Global.UNDEFINED
         _Varianten = Nothing
@@ -79,6 +81,12 @@ Public Class wb_Rezept
     Public ReadOnly Property RezeptNr As Integer
         Get
             Return _RezeptNr
+        End Get
+    End Property
+
+    Public ReadOnly Property Zutaten As wb_ZutatenListe
+        Get
+            Return _Zutaten
         End Get
     End Property
 
@@ -167,7 +175,7 @@ Public Class wb_Rezept
 
             'alle Rezept-Zeilen mit Sollwerten umrechnen
             If wb_Functions.TypeIstSollMenge(rs.Type, rs.ParamNr) Then
-                rs.Sollwert = rs.Sollwert * F
+                rs.fSollwert = rs.fSollwert * F
             Else
                 'Wenn die Rezept-Zeile keinen Sollwert hat, werden alle Child-Steps umgerechnent (Produktions-Stufe...)
                 If rs.ChildSteps.Count > 0 Then
@@ -221,7 +229,7 @@ Public Class wb_Rezept
             If wb_Functions.TypeIstSollMenge(rs.Type, rs.ParamNr) Then
                 'alle Rezept-Zeilen mit Wasser-Sollmenge
                 If wb_Functions.TypeIstWasserSollmenge(rs.Type, rs.ParamNr, rs.TA) Then
-                    WasserMengeFlach += rs.Sollwert
+                    WasserMengeFlach += rs.fSollwert
                 End If
             Else
                 'Wenn die Rezept-Zeile keinen Sollwert hat, werden alle Child-Steps umgerechnent (Produktions-Stufe...)
@@ -241,7 +249,7 @@ Public Class wb_Rezept
             If wb_Functions.TypeIstSollMenge(rs.Type, rs.ParamNr) Then
                 'alle Rezept-Zeilen mit Wasser-Sollmenge
                 If wb_Functions.TypeIstWasserSollmenge(rs.Type, rs.ParamNr, rs.TA) Then
-                    rs.Sollwert = rs.Sollwert * f
+                    rs.fSollwert = rs.fSollwert * f
                 End If
             Else
                 'Wenn die Rezept-Zeile keinen Sollwert hat, werden alle Child-Steps umgerechnent (Produktions-Stufe...)
@@ -376,6 +384,16 @@ Public Class wb_Rezept
         End Get
         Set(value As String)
             _RezeptNummer = wb_Functions.XRemoveSonderZeichen(value)
+            _DataHasChanged = True
+        End Set
+    End Property
+
+    Public Property RezeptKurzname As String
+        Get
+            Return _RezeptKurzName
+        End Get
+        Set(value As String)
+            _RezeptKurzName = wb_Functions.XRemoveSonderZeichen(value)
             _DataHasChanged = True
         End Set
     End Property
@@ -536,7 +554,7 @@ Public Class wb_Rezept
             If Not wb_Functions.TypeIstSollMenge(rs.Type, rs.ParamNr) Then
                 'prüfe ob die Rezept-Zeilen eine Teigtemperatur-Komponente enthält
                 If wb_Functions.TypeIstTeigTemperaturSollwert(rs.RohNr) Then
-                    TeigTemperatur = rs.Sollwert
+                    TeigTemperatur = rs.fSollwert
                 Else
                     'Wenn die Rezept-Zeile keinen Sollwert hat, werden alle Child-Steps umgerechnent (Produktions-Stufe...)
                     If rs.ChildSteps.Count > 0 Then
@@ -548,17 +566,17 @@ Public Class wb_Rezept
         Return TeigTemperatur
     End Function
 
-    Public ReadOnly Property ZutatenListe(ShowENummern As Boolean, Optimize As Boolean, ReCalc As Boolean) As String
+    Public ReadOnly Property ZutatenListe(ShowENummern As Boolean, ShowQuid As Boolean, Optimize As Boolean, ReCalc As Boolean) As String
         Get
             'Zutatenliste erstellen, wenn notwendig
             If CalcZutatenListe(ReCalc) Then
                 'Zutatenliste optimieren
-                If Optimize Then
-                    _Zutaten.Opt()
-                End If
+                _Zutaten.Opt(Optimize)
+                'QUID-Berechnung
+                _Zutaten.CalcQuid(NwtRezeptGewicht)
             End If
             'Druckfähige Zutatenliste 
-            Return _Zutaten.Print(ShowENummern)
+            Return _Zutaten.Print(ShowENummern, ShowQuid)
         End Get
     End Property
 
@@ -584,7 +602,7 @@ Public Class wb_Rezept
         End If
     End Function
 
-    Public Property c As Integer
+    Public Property KneterKennlinie As Integer
         Get
             Return _KneterKennLinie
         End Get
@@ -609,6 +627,36 @@ Public Class wb_Rezept
             _ReadCalcPreis = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Rezepte mit einer negativen Linengruppe sind als gelöscht vorgemerkt
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property Deleted As Boolean
+        Get
+            Return (LinienGruppe < 0)
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Setzt das Löschkennzeichen für diese Rezeptur.
+    ''' (Die Liniengruppe wird negativ)
+    ''' </summary>
+    Public Sub Delete()
+        If LinienGruppe > 0 Then
+            LinienGruppe = -LinienGruppe
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Rücksetzen des Löschkennzeichen für dieses Rezept
+    ''' (Die Liniengruppe wird positiv)
+    ''' </summary>
+    Public Sub Undelete()
+        If LinienGruppe < 0 Then
+            LinienGruppe = -LinienGruppe
+        End If
+    End Sub
 
     ''' <summary>
     ''' Erzeugt ein neues Rezeptur-Objekt.
@@ -655,7 +703,7 @@ Public Class wb_Rezept
         'wird benötigt zur Berechnung der Nährwerte
         _RootRezeptSchritt.BruttoRezGewicht = BruttoRezeptGewicht
         _RootRezeptSchritt.NwtRezGewicht = NwtRezeptGewicht
-        _RootRezeptSchritt.Sollwert = NwtRezeptGewicht
+        _RootRezeptSchritt.fSollwert = NwtRezeptGewicht
         'Root-Rezeptschritt kennzeichnen (war -1 !!!)
         _RootRezeptSchritt.SchrittNr = 0
         'Backverlust aus der übergeordneten Komponente 
@@ -743,6 +791,7 @@ Public Class wb_Rezept
 
         RezeptNummer = dataGridView.Field("RZ_Nr_AlNum")
         RezeptBezeichnung = dataGridView.Field("RZ_Bezeichnung")
+        RezeptKurzname = dataGridView.Field("RZ_Kurzname")
         RezeptKommentar = dataGridView.Field("RZ_Kommentar")
         LinienGruppe = dataGridView.iField("RZ_Liniengruppe")
         RezeptGruppe = dataGridView.iField("RZ_Gruppe")
@@ -846,7 +895,7 @@ Public Class wb_Rezept
 
     ''' <summary>
     ''' Die Nährwerte aller mit dieser Rezeptur verknüpften Artikel müssen neu berechnet und an OrgaBack geschrieben werden (Flag setzen)
-    ''' Rezept-im-Rezept Strukturen werden im Hintergrund-Task auf dem Servre aufgelöst: 
+    ''' Rezept-im-Rezept Strukturen werden im Hintergrund-Task auf dem Server aufgelöst: 
     '''     Komponenten die markiert worden sind ergeben eine Rezeptliste, deren zugehörige 
     '''     Artikel/Rohstoffe dann markiert werden.
     ''' </summary>
@@ -858,7 +907,6 @@ Public Class wb_Rezept
         'Verbindung wieder schliessen
         winback.Close()
     End Sub
-
 
     ''' <summary>
     ''' Rezeptkopf-Datensatz neu anlegen
@@ -993,9 +1041,9 @@ Public Class wb_Rezept
                     MySQLdbRead_Fields(winback.MySqlRead.GetName(i), winback.MySqlRead.GetValue(i))
                 Next
             End If
-                winback.Close()
-                Return True
-            End If
+            winback.Close()
+            Return True
+        End If
         winback.Close()
         Return False
     End Function
@@ -1053,9 +1101,11 @@ Public Class wb_Rezept
             For i = 0 To sqlReader.FieldCount - 1
                 MySQLdbRead_Fields(sqlReader.GetName(i), sqlReader.GetValue(i))
             Next
+            'wenn OrgaBack-Produktion.  MUSS neu gelöst werden. (unabhängig)
             'aktuellen Preis aus OrgaBack abfragen - Nicht bei Produktionsplanung !
+            'in OrgaBack-Office darf der Preis nicht berechnet werden, da sonst eine Signum-dll fehlt
             If (wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack) And _ReadCalcPreis Then
-                Preis = ob_Artikel_Services.GetArtikelPreis(_SQLRezeptSchritt.Nummer, _SQLRezeptSchritt.Type)
+                Preis = wb_KomponentePreis.GetArtikelPreis(_SQLRezeptSchritt.Nummer, _SQLRezeptSchritt.Type).ToString
                 If Preis > 0.0 Then
                     _SQLRezeptSchritt.PreisProKg = Preis
                 End If
@@ -1085,7 +1135,7 @@ Public Class wb_Rezept
                 'Sonderfall Kneterschritte
             ElseIf (_RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KNETER) Or (_RezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT) Then
                 'Eingabeformat und Grenzwerte stehen in winback.KomponParams
-                _RezeptSchritt.SetType118()
+                _RezeptSchritt.SetType118(False)
             End If
 
         Loop While sqlReader.Read
@@ -1192,7 +1242,7 @@ Public Class wb_Rezept
     End Function
 
     ''' <summary>
-    ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Obejkt-Eigenschaften
+    ''' Aufteilen des SQL-Resultset nach Spalten-Namen auf die Objekt-Eigenschaften
     ''' </summary>
     ''' <param name="Name">String - Spalten-Name aus Datenbank</param>
     ''' <param name="Value">Object - Wert aus Datenbank</param>
@@ -1202,8 +1252,6 @@ Public Class wb_Rezept
         If IsDBNull(Value) Then
             Value = ""
         End If
-
-        'Debug
         'Debug.Print("Feld/Value " & Name & "/" & Value.ToString)
 
         'Feldname aus der Datenbank
@@ -1260,7 +1308,13 @@ Public Class wb_Rezept
                     End If
                 'Sollwert Produktion (nur His_Rezepte)
                 Case "H_RS_Wert_Prod"
-                    _SQLRezeptSchritt.WertProd = Value
+                    'Sollwert-Änderung in His_Rezepte. In H_RS_Wert_Prod steht der geänderte Wert !! Der alte Wert steht in H_RS_Wert
+                    If (Value <> "") And Not ((_SQLRezeptSchritt.Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE) And (_SQLRezeptSchritt.ParamNr = 3)) Then
+                        _SQLRezeptSchritt.WertProd = _SQLRezeptSchritt.Sollwert
+                        _SQLRezeptSchritt.Sollwert = Value
+                    Else
+                        _SQLRezeptSchritt.WertProd = Value
+                    End If
                 'Par1
                 Case "RS_Par1", "H_RS_Par1"
                     _SQLRezeptSchritt.Par1 = Value
@@ -1318,6 +1372,9 @@ Public Class wb_Rezept
                 'Rezeptkopf - Rezept-Bezeichnung
                 Case "RZ_Bezeichnung", "H_RZ_Bezeichnung"
                     RezeptBezeichnung = wb_Functions.MySqlToUtf8(Value)
+                'Kurzname
+                Case "RZ_Kurzname", "H_RZ_Kurzname"
+                    RezeptKurzname = wb_Functions.MySqlToUtf8(Value)
                 'Rezeptkopf - Rezept-Kommentar
                 Case "RZ_Kommentar", "H_RZ_Kommentar"
                     RezeptKommentar = wb_Functions.MySqlToUtf8(Value)
@@ -1372,9 +1429,10 @@ Public Class wb_Rezept
 
     End Function
 
-    Public Function MySQLdbWrite_RzSchritt(RezeptNummer As Integer, Variante As Integer) As Boolean
+    Public Function MySQLdbWrite_RzSchritt(RezeptNummer As Integer, Variante As Integer, Optional Historical As Boolean = False) As Boolean
         'Datenbank-Verbindung öffnen - MySQL
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim wbdaten = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
         Dim sql As String
         Dim sqlFelder As String
         Dim sqlData As String
@@ -1382,21 +1440,16 @@ Public Class wb_Rezept
         'Rezeptschritte neu durchnumerieren (sicherheitshalber)
         RootRezeptSchritt.ReCalcRzSteps(0)
 
-        'alte Rezeptur in Historie speichern - Rezeptkopf und Rezeptschritte
-
-        'wenn schon ein Rezeptkopf in His_Rezepte vorhanden ist, wird er gelöscht
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRezKopfInHisRezepte, RezeptNummer, Variante, AenderungNummer)
-        winback.sqlCommand(sql)
-        'bestehenden Rezeptkopf in wb_daten.His_Rezepte kopieren
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlCopyRezKopfInHisRezepte, RezeptNummer, Variante)
-        winback.sqlCommand(sql)
-
-        'wenn schon Rezeptschritte in His_Rezeptschritte vorhanden sind werden diese gelöscht
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRezSchritteInHisRezepte, RezeptNummer, Variante, AenderungNummer)
-        winback.sqlCommand(sql)
-        'bestehende Rezeptschritte in wb_daten.His_Rezeptschritte kopieren
-        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlCopyRezSchritteInHisRezepte, RezeptNummer, Variante, AenderungNummer)
-        winback.sqlCommand(sql)
+        'Beim Wiederherstellen von historischen Rezepten wird keine Rezepthistorie geschrieben
+        If Not Historical Then
+            'alte Rezeptur in Historie speichern - Rezeptkopf
+            'wenn schon ein Rezeptkopf in His_Rezepte vorhanden ist, wird er gelöscht
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRezKopfInHisRezepte, RezeptNummer, Variante, AenderungNummer)
+            wbdaten.sqlCommand(sql)
+            'bestehenden Rezeptkopf in wb_daten.His_Rezepte kopieren
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlCopyRezKopfInHisRezepte, RezeptNummer, Variante, wb_GlobalSettings.MySQLWbDaten)
+            winback.sqlCommand(sql)
+        End If
 
         'vorhandene Rezeptur in Datenbank löschen
         winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRzptSchr, RezeptNummer, Variante))
@@ -1416,9 +1469,19 @@ Public Class wb_Rezept
             sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlAddRZSchritt, sqlFelder, sqlData)
             winback.sqlCommand(sql)
 
-            Debug.Print("Rezept Schreiben " & rz.SchrittNr & "-" & rz.RohNr & "/" & rz.Nummer & " " & rz.Bezeichnung & " " & rz.Sollwert)
+            'Debug.Print("Rezept Schreiben " & rz.SchrittNr & "-" & rz.RohNr & "/" & rz.Nummer & " " & rz.Bezeichnung & " " & rz.Sollwert)
         Next
+
+        'alte Rezeptur in Historie speichern - Rezeptschritte
+        'wenn schon Rezeptschritte in His_Rezeptschritte vorhanden sind werden diese gelöscht
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelRezSchritteInHisRezepte, RezeptNummer, Variante, AenderungNummer)
+        wbdaten.sqlCommand(sql)
+        'bestehende Rezeptschritte in wb_daten.His_Rezeptschritte kopieren
+        sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlCopyRezSchritteInHisRezepte, RezeptNummer, Variante, AenderungNummer, wb_GlobalSettings.MySQLWbDaten)
+        winback.sqlCommand(sql)
+
         winback.Close()
+        wbdaten.Close()
         Return True
     End Function
 
@@ -1435,6 +1498,7 @@ Public Class wb_Rezept
             'aktuellen Benutzer NUmmer/Name eintragen
             AenderungUserNr = wb_GlobalSettings.AktUserNr
             AenderungName = wb_GlobalSettings.AktUserName
+
             'Änderungs-Index wird um Eins erhöht
             AenderungNummer += 1
         End If
@@ -1453,6 +1517,36 @@ Public Class wb_Rezept
         winback.Close()
         Return True
     End Function
+
+    ''' <summary>
+    ''' Beim Löschen der Rezeptur wird diese nur in den "Papierkorb" verschoben. Dies wird über eine negative Liniengruppe erreicht:
+    '''     Aus Liniengruppe 1 wird -1, aus 2 wird -2 usw....
+    '''     Der Rezept-Index und alle Einträge in der Rezepthistore und Hinweis-Tabellen bleiben erhalten.
+    ''' 
+    ''' Beim endgültigen Löschen werden alle Spuren der Rezeptur aus der Datenbank gelöscht.
+    ''' </summary>
+    ''' <param name="Papierkorb"></param>
+    Public Sub MySQLdbDelete(Papierkorb As Boolean)
+        'Rezept wird nicht gelöscht - nur in den "Papierkorb" verschoben        
+        If Papierkorb Then
+            Me.Delete()
+            MySQLdbWrite_Rezept(True)
+        Else
+            'Rezept-Historie löschen
+            MySQLdbDelete_HisRezept()
+            MySQLdbDelete_HisRezeptSchritte()
+
+            'Rezept löschen
+            MySQLdbDelete_Rezept()
+            MySQLdbDelete_RezeptSchritte()
+        End If
+    End Sub
+
+    Public Sub MySQLdbUndelete()
+        'Rezept wird wieder aus dem "Papierkorb" herausgezogen
+        Me.Undelete()
+        MySQLdbWrite_Rezept(True)
+    End Sub
 
     Public Function MySQLdbDelete_Rezept()
         Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)

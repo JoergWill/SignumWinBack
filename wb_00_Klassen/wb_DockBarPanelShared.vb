@@ -6,7 +6,7 @@
     ''' </summary>
     ''' <param name="xForm"></param>
     ''' <param name="IniSektion"></param>
-    Public Shared Sub SetFormBoundaries(xForm As Windows.Forms.Form, IniSektion As String)
+    Public Shared Sub SetFormBoundaries(xForm As System.Windows.Forms.Form, IniSektion As String)
         If xForm IsNot Nothing Then
 
             Dim IniFile As New wb_IniFile

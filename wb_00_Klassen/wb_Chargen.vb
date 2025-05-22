@@ -69,7 +69,12 @@ Public Class wb_Chargen
             Case wb_Global.StatistikType.ChargenAuswertung
                 'Abfrage nach Tageswechsel-Nummer
                 Dim TwNr As Integer = wb_Chargen_Shared.Liste_TagesWechselNummer
-                sql = SqlStatistikChargen(TwNr, TwSort)
+                sql = SqlStatistikChargen(TwNr, TwNr, TwSort, "B_ARZ_LiBeh_Nr > 100")
+
+            Case wb_Global.StatistikType.ChargenAuswertungSauerteig
+                'Abfrage nach Tageswechsel-Nummer
+                Dim TwNr As Integer = wb_Chargen_Shared.Liste_TagesWechselNummer
+                sql = SqlStatistikChargen(TwNr, TwNr, TwSort, "B_ARZ_LiBeh_Nr < 100")
 
             Case wb_Global.StatistikType.StatistikRezepte
                 'Abfrage nach Rezeptnummern aus Liste
@@ -104,9 +109,13 @@ Public Class wb_Chargen
                             Try
                                 'Felder mit Typ DateTime müssen speziell eingelesen werden
                                 If winback.MySqlRead.GetFieldType(i).Name = "DateTime" Then
-                                    Value = winback.MySqlRead.GetMySqlDateTime(i)
+                                    If Not winback.MySqlRead.IsDBNull(i) Then
+                                        Value = winback.MySqlRead.GetMySqlDateTime(i)
+                                    Else
+                                        Value = ""
+                                    End If
                                 Else
-                                    Value = winback.MySqlRead.GetValue(i)
+                                        Value = winback.MySqlRead.GetValue(i)
                                 End If
                                 'Felder einlesen
                                 MySQLdbRead_Fields(winback.MySqlRead.GetName(i), Value)
@@ -189,6 +198,29 @@ Public Class wb_Chargen
                                 _ChargenSchritt.CopyFrom(_SQLChargenSchritt)
 
 
+                            Case wb_Global.StatistikType.ChargenAuswertungSauerteig
+                                'Zeile Rezeptkopf anfügen (bei Sauerteig sortiert nach RunIndex - ohne Artikelzeile)
+                                If (RezeptIdx >= _SQLChargenSchritt.RunIndex) Or (RezeptIdx = wb_Global.UNDEFINED) Then
+                                    _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_REZEPT
+                                    'Rezeptzeilen hängen immer am ersten (Dummy)Schritt
+                                    RezeptKopfZeile = New wb_ChargenSchritt(_RootChargenSchritt)
+                                    'Soll-Stückzahl in ArtikelKopfZeile
+                                    Sollmenge_Stk += _SQLChargenSchritt.Sollmenge_Stk
+                                    ArtikelKopfZeile.Sollmenge_Stk_gesamt = Sollmenge_Stk
+                                    'Daten aus MySQL in Produktionsschritt kopieren
+                                    RezeptKopfZeile.CopyFrom(_SQLChargenSchritt)
+                                    RezeptKopfZeile.Status = wb_Global.UNDEFINED
+
+                                    'Rezeptindex merken
+                                    RezeptIdx = _SQLChargenSchritt.RunIndex
+                                End If
+
+                                'Zeile Rezeptschritt anfügen
+                                _SQLChargenSchritt.Type = wb_Global.KomponTypen.KO_ZEILE_KOMPONENTE
+                                _ChargenSchritt = New wb_ChargenSchritt(RezeptKopfZeile)
+                                'Daten aus MySQL in Produktionsschritt kopieren
+                                _ChargenSchritt.CopyFrom(_SQLChargenSchritt)
+
                             Case Else
                                 'Chargen mit gleicher Artikel/Rezeptnummer zusammenfassen
                                 If RezeptNr <> _SQLChargenSchritt.RezeptNr Then
@@ -249,12 +281,14 @@ Public Class wb_Chargen
     ''' <summary>
     ''' SQL-Statement erstellen für Statistik Chargen
     ''' </summary>
-    ''' <param name="TwNr"></param>
+    ''' <param name="TwNr_Start"></param>
+    ''' <param name="TwNr_Ende"></param>
     ''' <param name="TwSort"></param>
+    ''' <param name="Filter_LiBehNr"></param>
     ''' <returns></returns>
-    Private Function SqlStatistikChargen(TwNr As Integer, TwSort As String) As String
-        'TODO ANFANG ENDE TW-NUMMER
-        Return wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChargenDetails, TwNr, TwSort)
+    Private Function SqlStatistikChargen(TwNr_Start As Integer, TwNr_Ende As Integer, TwSort As String, Filter_LiBehNr As String) As String
+        'TODO ANFANG ENDE TW-NUMMER - in der aufrufenden Routine 
+        Return wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChargenDetails, TwNr_Start, TwNr_Start, TwSort, Filter_LiBehNr)
     End Function
 
     ''' <summary>
@@ -617,6 +651,9 @@ Public Class wb_Chargen
                 'Rezeptschritt-Index
                 Case "B_ARS_Index"
                     _SQLChargenSchritt.SchrittIndex = wb_Functions.StrToInt(Value)
+                'Run-Index
+                Case "B_ARS_RunIdx"
+                    _SQLChargenSchritt.RunIndex = wb_Functions.StrToInt(Value)
 
                 'Sollwert
                 Case "B_ARZ_Sollmenge_kg"
@@ -644,11 +681,16 @@ Public Class wb_Chargen
                 Case "B_E_Einheit"
                     _SQLChargenSchritt.Einheit = Value
 
-                'Zeit
+                'Start/Ende-Zeit Komponente
                 Case "B_ARS_Gestartet"
                     _SQLChargenSchritt.StartZeit = wb_sql_Functions.MySQLDateTimeToDate(Value)
                 Case "B_ARS_Beendet"
                     _SQLChargenSchritt.EndeZeit = wb_sql_Functions.MySQLDateTimeToDate(Value)
+                'Start/Ende-Zeit Rezept(Sauerteig/WinBack)
+                Case "B_ARZ_Startzeit", "B_ARZ_Zp_Gestartet"
+                    _SQLChargenSchritt.RezeptStartZeit = wb_sql_Functions.MySQLDateTimeToDate(Value)
+                Case "B_ARZ_Endezeit", "B_ARZ_Zp_Beendet"
+                    _SQLChargenSchritt.RezeptEndeZeit = wb_sql_Functions.MySQLDateTimeToDate(Value)
 
                'User
                 Case "B_ARS_User_Name"

@@ -13,6 +13,8 @@ Imports Newtonsoft.Json.Linq
 Public Class wb_nwtCl_DatenLink
     Inherits wb_nwtCL
 
+#Disable Warning SYSLIB0014
+
     Private _pat As String
     Private _cat As String
     Private _url As String
@@ -182,7 +184,7 @@ Public Class wb_nwtCl_DatenLink
                             End If
 
                         'Daten als JSON
-                        Case "getDistributorData"
+                        Case "getDistributorData", "getComponentListEntries"
                             If (ser.SelectToken("status") = "SUCCESS") Then
                                 JSONdata.Clear()
                                 JSONdata.Add(responseFromServer)
@@ -233,6 +235,27 @@ Public Class wb_nwtCl_DatenLink
     End Function
 
     ''' <summary>
+    ''' Datenlink-Connector::getComponentListEntries(LIST_INGREDIENT)
+    ''' 
+    ''' Liest die Rohstoffbezeichnung zur angegebenen ID aus der Cloud
+    ''' Fragt die Bezeichnung über getComponentListEntries ab und gibt die Rohstoff-Bezeichnung als String zurück
+    ''' </summary>
+    ''' <param name="id"></param>
+    ''' <returns></returns>
+    Public Function GetIngredient(id As String, IngredientList As String) As String
+        ' Kommando getComponentListEntries
+        Dim nCmd = "getComponentListEntries"
+        Dim nPrm = "component_list=LIST_INGREDIENT&key=" + id
+        'Abfrage der Komponenten-ID war erfolgreich
+        If httpString(nCmd, nPrm, "company") > 0 Then
+            'Komponenten-Bezeichnung aus Json-String
+            Return GetDatenLinkIngredient(Me.GetResult(0), IngredientList)
+        Else
+            Return ""
+        End If
+    End Function
+
+    ''' <summary>
     ''' liefert die Liste aller gefundenen Produkte und Lieferanten nach Suchen in der Cloud.
     ''' Aus dem Json-Array werden Name und Lieferant in eine Liste geschrieben
     ''' 
@@ -257,27 +280,65 @@ Public Class wb_nwtCl_DatenLink
     '''	            "id": "39b977b4-ce2c-11e4-bbac-002421e58a5c"
     '''	        }
     '''     }
+    '''     
+    ''' Wenn bei der Abfrage der Rohstoffe aus Datenlink nur EIN Rohstoff gefunden wird, ist die Liste
+    ''' etwas anders aufgebaut und muss in einer anderen Form dekodiert werden.
     ''' </summary>
     ''' <returns></returns>
     Public Overrides Function getProductList() As ArrayList
         Dim a As New ArrayList
-        Dim n As wb_Global.NwtCloud
+        Dim n As wb_Global.NwtCloud = Nothing
         Dim t As JObject
+        Dim v As JProperty
 
-        'Schleife über alle Einträge 
-        For Each jt As JToken In JSONdata
-            t = jt("product_version_identifier")
-            'Datenlink-ID
-            n.id = t("datenlink_id")
-            'Rohstoff-Bezeichnung (aus Datenlink)
-            n.name = t("productname")
-            n.deklarationsname = ""
-            'Lieferant (aus Datenlink)
-            t = jt("company")
-            n.lieferant = t("name")
-            'Datensatz zur Liste hinzufügen
-            a.Add(n)
-        Next
+        Try
+            'Einträge gefunden...
+            If JSONdata.Count > 0 Then
+                If JSONdata(0).Values.Count = 1 Then
+                    'Sonderfall nur ein Eintrag in der Liste der Rohstoffe'
+                    'Schleife über alle JToken
+                    For Each jt As JToken In JSONdata
+                        If jt.Values.Count > 1 Then
+                            For Each v In jt.Values
+                                'Debug.Print(v.ToString)
+                                Select Case v.Name
+                                    Case "datenlink_id"
+                                        n.id = v.Value
+                                    Case "productname"
+                                        n.name = v.Value
+                                        n.deklarationsname = ""
+                                    Case "name"
+                                        n.lieferant = v.Value
+                                End Select
+                            Next
+                        End If
+                    Next
+                    'Datensatz zur Liste hinzufügen
+                    a.Add(n)
+                Else
+                    'mehrere Rohstoffe zum Suchbegriff gefunden
+                    'Schleife über alle Einträge 
+                    For Each jt As JToken In JSONdata
+                        If jt.Values.Count > 1 Then
+                            t = jt("product_version_identifier")
+                            'Datenlink-ID
+                            n.id = t("datenlink_id")
+                            'Rohstoff-Bezeichnung (aus Datenlink)
+                            n.name = t("productname")
+                            n.deklarationsname = ""
+                            'Lieferant (aus Datenlink)
+                            t = jt("company")
+                            n.lieferant = t("name")
+                            'Datensatz zur Liste hinzufügen
+                            a.Add(n)
+                        End If
+                    Next
+                End If
+            End If
+
+        Catch ex As Exception
+            Trace.Write("@E_Fehler beim JSON-Token Datenlink")
+        End Try
         Return a
     End Function
 
@@ -409,8 +470,8 @@ Public Class wb_nwtCl_DatenLink
                             For Each oTag As XmlNode In oItem.ChildNodes
                                 Select Case oTag.Name
                                     Case "TextValue"
-                                        'Komponenten-Bezeichnung
-                                        nwtDaten.Bezeichnung = oTag.InnerText
+                                        'Rohstoff-Bezeichnung NICHT ÜBERNEHMEN (OrgaBack)
+                                        'nwtDaten.Bezeichnung = oTag.InnerText
                                     Case "ProductNumber"
                                         'Bestellnummer beim Hersteller/Lieferant
                                         nwtDaten.BestellNummer = oTag.InnerText
@@ -433,19 +494,19 @@ Public Class wb_nwtCl_DatenLink
                                 Case "AllergenLabeling"
                                     'CONTAINED/MAY_CONTAINED                    
                                     For Each oTag As XmlNode In oItem.ChildNodes
-                                        Debug.Print(oTag.Attributes(1).InnerText)
+                                        'Debug.Print(oTag.Attributes(1).InnerText)
 
                                         For Each oDetail As XmlNode In oTag.ChildNodes
                                             'Allergene
                                             For Each oAttribute As XmlAttribute In oDetail.Attributes
-                                                Debug.Print(oAttribute.InnerText)
+                                                'Debug.Print(oAttribute.InnerText)
                                                 nwtDaten.ktTyp301.dlAllergen(oAttribute.InnerText) = oTag.Attributes(1).InnerText
                                             Next
                                             'Allergene Details
                                             If oDetail.HasChildNodes Then
                                                 For Each oDeailChild As XmlNode In oDetail.ChildNodes
                                                     For Each oAttribute As XmlAttribute In oDeailChild.Attributes
-                                                        Debug.Print(oAttribute.InnerText)
+                                                        'Debug.Print(oAttribute.InnerText)
                                                         nwtDaten.ktTyp301.dlAllergen(oAttribute.InnerText) = oTag.Attributes(1).InnerText
                                                     Next
                                                 Next
@@ -454,6 +515,20 @@ Public Class wb_nwtCl_DatenLink
                                         Next
                                     Next
                                 Case "IngredientLists"
+                                    'Rohstoff-Deklaration (aus der Cloud IMMER in die externe Deklaration schreiben)
+                                    nwtDaten.DeklBezeichungExtern = ""
+
+                                    For Each oTag As XmlNode In oItem.ChildNodes
+                                        For Each oDetail As XmlNode In oTag.ChildNodes
+                                            For Each oAttribute As XmlAttribute In oDetail.Attributes
+                                                'Debug.Print(oAttribute.InnerText)
+                                                nwtDaten.DeklBezeichungExtern = GetIngredient(oAttribute.InnerText, nwtDaten.DeklBezeichungExtern)
+                                            Next
+                                        Next
+                                    Next
+
+
+
                             End Select
                         Next
                 End Select
@@ -497,8 +572,39 @@ Public Class wb_nwtCl_DatenLink
     ''' <returns></returns>
     Private Function GetDatenLinkLieferant(JString As String) As String
         Dim jsonData As JObject = JObject.Parse(JString)
-        Dim JData As JToken = jsonData.GetValue("data")
-        Return JData("name").ToString
+        Dim jData As JToken = jsonData.GetValue("data")
+        Return jData("name").ToString
+    End Function
+
+    ''' <summary>
+    ''' Auswerten der Zutaten-Bezeichnung zur ID. 
+    ''' Die Zutaten(Liste) wird an eine bestehende Liste angefügt. (Komma-getrennt)
+    ''' 
+    ''' {
+    '''     "status":"SUCCESS",
+    '''     "data":
+    '''         [
+    '''             {
+    '''                 "key":"E5F9340"
+    '''                 "name":"Kakaobutter"
+    '''             }
+    '''         ]
+    ''' }
+    ''' </summary>
+    ''' <param name="JString"></param>
+    ''' <returns></returns>
+    Private Function GetDatenLinkIngredient(JString As String, Ingredients As String) As String
+        Dim jsonData As JObject = JObject.Parse(JString)
+        Dim jData As JArray = jsonData("data")
+
+        'Liste aller Zutaten (normalerweise nur eine Zutat pro Abfrage)
+        For Each jTag As JObject In jData
+            If Ingredients <> "" Then
+                Ingredients &= ", "
+            End If
+            Ingredients &= jTag("name").ToString
+        Next
+        Return Ingredients
     End Function
 
     ''' <summary>
@@ -540,5 +646,6 @@ Public Class wb_nwtCl_DatenLink
         End If
     End Sub
 
+#Enable Warning SYSLIB0014
 End Class
 

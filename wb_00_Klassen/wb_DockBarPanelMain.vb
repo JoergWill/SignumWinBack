@@ -87,6 +87,9 @@ Public Class wb_DockBarPanelMain
         _ServiceProvider = ServiceProvider
         _MenuService = TryCast(ServiceProvider.GetService(GetType(Common.IMenuService)), Common.IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
+
+        'Status-Bar
+        SetStatusBarInfo()
     End Sub
 
     Public Sub New()
@@ -224,6 +227,17 @@ Public Class wb_DockBarPanelMain
     End Sub
 
     ''' <summary>
+    ''' Aktualisiert die Texte in der Status-Zeile
+    ''' User/Mandant - IP-Adresse - Programm-Version
+    ''' </summary>
+    Private Sub SetStatusBarInfo()
+        tslblName.Text = wb_GlobalSettings.AktUserName & "/" & wb_GlobalSettings.MandantName
+        tslblIP.Text = "(" & wb_GlobalSettings.MySQLServerIP & ")"
+        tslblVersion.Text = "Version " & wb_GlobalSettings.WinBackVersion
+    End Sub
+
+
+    ''' <summary>
     ''' DockBar-Konfiguration sichern
     '''     Diese Einstellungen werden in wb_Main_Menu gelesen und verarbeitet
     ''' </summary>
@@ -255,6 +269,10 @@ Public Class wb_DockBarPanelMain
                 DockPanel.Theme = wb_GlobalSettings.Theme
                 'Laden der Konfiguration
                 DockPanel.LoadFromXml(DkPnlConfigFileName, AddressOf wbBuildDocContent)
+                'Sortieren der Panels nach Form.Tag (siehe Artikel)
+                'TODO Funktioniert noch nicht so, dass dann auch die letzte Form oben angezeigt wird)
+                '_DockPanelList.Sort(Function(A As DockContent, B As DockContent) (A.Tag < B.Tag))
+
                 'alle Unterfenster aus der Liste anzeigen und Dock-Panel-State festlegen
                 For Each x In _DockPanelList
                     'Wenn ein Fenster beim Speichern Im State Float war, wird es anschliessend nicht mehr angezeigt
@@ -317,7 +335,7 @@ Public Class wb_DockBarPanelMain
         cbLayouts.Items.Clear()
 
         'Globales Verzeichnis ..\Temp\00
-        ConfigFileNames = GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), FormName)
+        ConfigFileNames = wb_Functions.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), FormName)
         For Each x In ConfigFileNames
             'aktueller Layout-Filename
             If LayoutFilename = x Then
@@ -327,7 +345,7 @@ Public Class wb_DockBarPanelMain
         Next
 
         'Arbeitsplatz Verzeichnis ..\Temp\xx
-        ConfigFileNames = GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal), FormName)
+        ConfigFileNames = wb_Functions.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal), FormName)
         For Each x In ConfigFileNames
             'nur noch neue Einträge hinzufügen
             If cbLayouts.FindStringExact(x) = ListBox.NoMatches Then
@@ -378,7 +396,7 @@ Public Class wb_DockBarPanelMain
         _SaveAtClose = False
         'Meldung ausgeben
         MessageBox.Show("Layout " & LayoutFilename & " gesichert",
-                           "Layout sichern", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                           "Layout sichern", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information)
     End Sub
 
     ''' <summary>
@@ -398,6 +416,7 @@ Public Class wb_DockBarPanelMain
     ''' <param name="sender"></param>
     ''' <param name="FileName"></param>
     ''' <param name="DefaultPath"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
     Private Sub ESaveAs_Click(sender As Object, FileName As String, DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath)
         'aktuelles Layout unter dem neuen Namen abspeichern
         _LayoutFilename = FileName
@@ -416,7 +435,7 @@ Public Class wb_DockBarPanelMain
     Private Sub BtnDelete_Click(sender As Object, e As EventArgs) Handles BtnDelete.Click
         'Sicherheits-Abfrage
         If MessageBox.Show("Soll das Layout " & LayoutFilename & " wirklich gelöscht werden ",
-                           "Layout löschen", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                           "Layout löschen", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) = System.Windows.Forms.DialogResult.Yes Then
             'aus der Auswahl-Liste entfernen
             cbLayouts.Items.Remove(cbLayouts.SelectedItem)
             'Layout-File wird lokal gelöscht
@@ -432,7 +451,7 @@ Public Class wb_DockBarPanelMain
     End Sub
 
     ''' <summary>
-    ''' Erzeugt den File-Namen für die Konfig-Datei aus Layout-File-Name und Fom-Name.
+    ''' Erzeugt den File-Namen für die Konfig-Datei aus Layout-File-Name und Form-Name.
     ''' Ohne Angaben wird der lokale Pfad zurückgegeben (..\Temp\xx, wobei xx die Arbeitsplatz-Nummer ist).
     ''' Optional der Globale-Pfad (..\Temp\00)
     ''' </summary>
@@ -444,56 +463,4 @@ Public Class wb_DockBarPanelMain
         End Get
     End Property
 
-    ''' <summary>
-    ''' Extrahiert den Layout-Namen aus dem File-Namen der Config-Datei.
-    ''' Wenn der Layout-Name nicht zum Form-Namen passt, wird ein Leerstring zurückgegeben.
-    ''' </summary>
-    ''' <param name="FileName"></param>
-    ''' <param name="FormName"></param>
-    ''' <returns></returns>
-    Public Shared Function DkPnlConfigName(FileName As String, FormName As String) As String
-        'Extension entfernen
-        FileName = System.IO.Path.GetFileNameWithoutExtension(FileName)
-        'wb... entfernen
-        FileName = FileName.Replace("wb", "")
-
-        'Prüfen ob der Filename zu diesem Fenster gehört
-        If InStr(FileName, FormName) = 1 Then
-            'Form-Name entfernen
-            Return FileName.Replace(FormName, "")
-        Else
-            'File gehört nicht zur Form
-            Return ""
-        End If
-    End Function
-
-    ''' <summary>
-    ''' Erzeugt eine Liste aller zum Form-Namen passenden Konfigurations-Namen
-    ''' </summary>
-    ''' <param name="DirName"></param>
-    ''' <param name="FormName"></param>
-    ''' <returns></returns>
-    Public Shared Function GetDkPnlConfigNameList(DirName As String, FormName As String) As IList(Of String)
-        'Ordner-Name ohne Backslash am Ende
-        Dim oDir As New IO.DirectoryInfo(DirName.TrimEnd("\"))
-        'Ergebnis-Array
-        Dim FileNames As New List(Of String)
-        FileNames.Clear()
-
-        ' alle Dateien des Ordners
-        Dim oFiles As System.IO.FileInfo() = oDir.GetFiles("*.xml")
-        Dim oFile As System.IO.FileInfo
-        ' Layout-Name
-        Dim LayoutName As String = ""
-
-        ' Datei-Array durchlaufen und in ListBox übertragen
-        For Each oFile In oFiles
-            LayoutName = DkPnlConfigName(oFile.Name, FormName)
-            If LayoutName <> "" Then
-                FileNames.Add(LayoutName)
-            End If
-        Next
-
-        Return FileNames
-    End Function
 End Class

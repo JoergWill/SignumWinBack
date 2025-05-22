@@ -52,57 +52,66 @@
         End Set
     End Property
 
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of methods should not be too high", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Private Sub GetToken(z As String)
         'die ersten Zeichen bis "TTS:" eliminieren
         Dim s() As String = Split(LTrim(z), " ", 5)
         If s.Count = 5 Then
             'String für Log-Ausgabe zusammensetzen
             _LogString = s(1) & " " & s(2) & " " & s(4)
+            Dim m() As String = Split(s(4), ":", 3)
             'Chargen-Nummer
-            _ChargeNr = Mid(s(4), 4, 4)
-
-            '        Dim i As Integer = InStr(20, z, "TTS:", CompareMethod.Text)
-            '       If i > 0 Then
+            _ChargeNr = m(1)
             'Inhalt nach TTS:XXXX:
-            _Content = Mid(s(4), 14)
+            _Content = m(2)
 
             'Sonderzeichen eliminieren
             _Content = Replace(_Content, "--->", "")
             _Content = Replace(_Content, "-->", "")
             _Content = Replace(_Content, ">>>>", "")
+            _Content = Replace(_Content, "<<<<", "")
 
-            'Token suchen 
-            Dim t() As String
-            t = Split(_Content, "/")
-            If t.Count > 1 Then
-                _Token = Trim(t(0))
-            Else
-                t = Split(_Content, "=")
+            'Fehlermeldungen ausfiltern
+            If Not GetErrors(_Content) Then
+
+                'Array für Tokens
+                Dim t() As String
+                'Token suchen 
+                t = Split(_Content, "/")
                 If t.Count > 1 Then
                     _Token = Trim(t(0))
                 Else
-                    t = Split(_Content, ":")
+                    t = Split(_Content, "=")
                     If t.Count > 1 Then
                         _Token = Trim(t(0))
+                        If _Token = "" Then
+                            _Token = Trim(t(1))
+                        End If
                     Else
-                        'kein Token gefunden
-                        Exit Sub
+                        t = Split(_Content, ":")
+                        If t.Count > 1 Then
+                            _Token = Trim(t(0))
+                            _SubToken = Trim(t(1))
+                        Else
+                            'kein Token gefunden
+                            Exit Sub
+                        End If
                     End If
                 End If
-            End If
 
-            'SubToken suchen
-            t = Split(_Token, ".")
-            If t.Count > 1 Then
-                _Token = t(0)
-                _SubToken = Trim(t(1))
-            End If
+                'SubToken suchen
+                t = Split(_Token, ".")
+                If t.Count > 1 Then
+                    _Token = t(0)
+                    _SubToken = Trim(t(1))
+                End If
 
-            'Sonderzeichen aus Token eliminieren
-            _Token = Replace(_Token, "+", "")
-            _Token = Replace(_Token, "-", "")
-            _Token = Replace(_Token, Chr(34), "")
-            '        End If
+                'Sonderzeichen aus Token eliminieren
+                _Token = Replace(_Token, "+", "")
+                _Token = Replace(_Token, "-", "")
+                _Token = Replace(_Token, Chr(34), "")
+            End If
         End If
     End Sub
 
@@ -114,6 +123,11 @@
                 If v.Count > 1 Then
                     _ResultList.Add(Trim(v(1)))
                 End If
+            Case " "
+                v = Split(_Content, " ")
+                For Each s In v
+                    _ResultList.Add(Trim(s))
+                Next
             Case "="
                 v = Split(_Content, "=")
                 If v.Count > 1 Then
@@ -134,5 +148,63 @@
                 _ResultList.Add("")
         End Select
         Return _ResultList
+    End Function
+
+    Private Function GetErrors(LogZeile As String) As Boolean
+        'Ergebnis
+        Dim Result As Boolean = False
+        'Array für Tokens
+        Dim t() As String
+        'String zerlegen
+        LogZeile = Trim(_Content)
+
+        'exit_grund ausfiltern
+        If LogZeile.Contains("(exit_grund") Then
+            LogZeile = LogZeile.Substring(0, LogZeile.Length - "(exit_grund=x)".Length)
+            _Token = "exit_grund"
+
+            'Fehlermeldung extrahieren
+            t = Split(LogZeile, ":")
+            If t.Count > 1 Then
+                _SubToken = Trim(t(2)) & " !"
+            Else
+                _SubToken = Trim(t(0)) & " !"
+            End If
+
+            'Fehlermeldung in dieser Zeile im Log gefunden
+            Result = True
+        End If
+
+        'Wassermenge wurde geändert
+        If LogZeile.Contains("Wassermenge: Keine") Then
+            _Token = "Wassermenge"
+            'Fehlermeldung extrahieren
+            t = Split(LogZeile, ":")
+            If t.Count > 1 Then
+                _SubToken = Trim(t(1))
+            Else
+                _SubToken = LogZeile
+            End If
+
+            'Fehlermeldung in dieser Zeile im Log gefunden
+            Result = True
+        End If
+
+        'Wassertemperatur wurde geändert
+        If LogZeile.Contains("Wassertemp.: Keine") Then
+            _Token = "Wassertemp"
+            'Fehlermeldung extrahieren
+            t = Split(LogZeile, ":")
+            If t.Count > 1 Then
+                _SubToken = Trim(t(1))
+            Else
+                _SubToken = LogZeile
+            End If
+
+            'Fehlermeldung in dieser Zeile im Log gefunden
+            Result = True
+        End If
+
+        Return Result
     End Function
 End Class

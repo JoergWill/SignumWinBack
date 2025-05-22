@@ -210,7 +210,7 @@ Public Class wb_KomponParam_Global
         End Select
     End Sub
 
-    Private Shared Sub AddParameter(ByRef Typ As Integer, ByRef MaxParamNr As Integer, ParamNr As Integer, Bezeichnung As String, Einheit As String, eFormat As Integer, GwOben As String, GWUnten As String, Optional Used As Boolean = True)
+    Private Shared Sub AddParameter(ByRef Typ As Integer, ByRef MaxParamNr As Integer, ParamNr As Integer, Bezeichnung As String, Einheit As String, eFormat As Integer, GWUnten As String, GWOben As String, Optional Used As Boolean = True)
         'neuer Parameter
         Dim k As ktTypXXXParam
         k.Type = Typ
@@ -219,7 +219,7 @@ Public Class wb_KomponParam_Global
         k.Einheit = Einheit
         k.eFormat = eFormat
         k.Used = Used
-        k.eOG = GwOben
+        k.eOG = GWOben
         k.eUG = GWUnten
         'zur Liste hinzufügen
         ktTypXXXParams.Add(BuildKey(k.Type, k.ParamNr), k)
@@ -229,13 +229,13 @@ Public Class wb_KomponParam_Global
 
     ''' <summary>
     ''' Gibt die statischen Werte für den Parameter p zurück
-    ''' Aus der Datenbank KomponTypen (KT_Typ_Nr = 300, KT_ParamNr = p)
+    ''' Aus der Datenbank KomponTypen (KT_Typ_Nr = XXX, KT_ParamNr = p)
     '''  - Bezeichnung      Parameter-Bezeichnung (Produktions-Steuerung)
     '''  - Einheit          Einheit
     '''  - Used             Verwendet/Nicht verwendet (Kunden-Spezifisch)
     ''' </summary>
     ''' <param name="p">Interger Parameter-Nummer</param>
-    ''' <returns>ktTyp300Param</returns>
+    ''' <returns>ktTypXXXParam</returns>
     Public Shared Function ktXXXParam(t As Integer, p As Integer) As wb_Global.ktTypXXXParam
         If IsValidParameter(t, p) Then
             Return ktTypXXXParams(BuildKey(t, p))
@@ -263,7 +263,7 @@ Public Class wb_KomponParam_Global
         Return t.ToString("000") & p.ToString("000")
     End Function
 
-    Public Shared Function CheckDB() As Boolean
+    Public Shared Function CheckDB_A() As Boolean
         'FehlerText löschen
         _ErrorText = ""
         'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)
@@ -274,10 +274,45 @@ Public Class wb_KomponParam_Global
             wb_Functions.AssertTrue((wb_Functions.StrToDouble(ktXXXParam(101, 7).eUG) = -1), "KT101.Parameter(7) TA - Unterer Grenzwert ist nicht -1.0")
             wb_Functions.AssertTrue((wb_Functions.StrToDouble(ktXXXParam(102, 7).eUG) = -1), "KT102.Parameter(7) TA - Unterer Grenzwert ist nicht -1.0")
         Catch ex As Exception
-            Trace.WriteLine("Fehler in Komponenten-Parameter Typ 101/102 - Unterer Grenzwert TA falsch !")
+            Trace.WriteLine("@E_Fehler in Komponenten-Parameter Typ 101/102 - Unterer Grenzwert TA falsch !")
             _ErrorText = ex.Message
             Return False
         End Try
         Return True
+    End Function
+
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
+    Public Shared Function CheckDB_B() As Boolean
+        'Ergebnis vorbelegen
+        Dim Result As Boolean = True
+        'FehlerText löschen
+        _ErrorText = ""
+
+        'Datenbank-UpdateFile (Update WinBack.Datenbank kann das Problem lösen)
+        _UpdateDatabaseFile = "2.30_KomponParams.sql"
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+
+        'alle Parameter(Update) prüfen
+        Try
+            'Tabellen-Definition winback.KomponTypen
+            If winback.sqlSelect("DESCRIBE KomponParams") Then
+                'alle Datensätze
+                While winback.Read
+                    'das Feld KT_Wert muss eine Länge von 200 haben
+                    If winback.sField("Field") = "KP_Wert" Then
+                        wb_Functions.AssertTrue(winback.sField("Type").Contains("200"), "Fehler in KomponParams - Feldlänge KP_Wert")
+                        Exit While
+                    End If
+                End While
+            End If
+        Catch ex As Exception
+            Trace.WriteLine("@E_Fehler in KomponParams - Feldlänge KP_Wert")
+            _ErrorText = ex.Message
+            Result = False
+        End Try
+
+        winback.Close()
+        Return Result
     End Function
 End Class

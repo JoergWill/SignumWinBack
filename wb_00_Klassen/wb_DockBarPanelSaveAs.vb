@@ -15,14 +15,14 @@
         Dim ConfigFileNames As New List(Of String)
 
         'Globales Verzeichnis ..\Temp\00
-        ConfigFileNames = wb_DockBarPanelMain.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), _FormName)
+        ConfigFileNames = wb_Functions.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), _FormName)
         For Each x In ConfigFileNames
             clLayouts.Items.Add(x)
             clLayouts.SetItemChecked(clLayouts.Items.Count - 1, True)
         Next
 
         'Arbeitsplatz Verzeichnis ..\Temp\xx
-        ConfigFileNames = wb_DockBarPanelMain.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal), _FormName)
+        ConfigFileNames = wb_Functions.GetDkPnlConfigNameList(wb_GlobalSettings.DockPanelPath(wb_Global.OrgaBackDockPanelLayoutPath.UserLokal), _FormName)
         For Each x In ConfigFileNames
             clLayouts.Items.Add(x)
         Next
@@ -41,7 +41,7 @@
 
     Private Sub BtnSpeichern_Click(sender As Object, e As EventArgs) Handles BtnSpeichern.Click
         'wenn sich die Bezeichnung geändert hat, unter einem anderen Namen abspeichern
-        If tbBezeichnung.Text <> "" And tbBezeichnung.Text <> clLayouts.Text Then
+        If tbBezeichnung.Text <> "" AndAlso tbBezeichnung.Text <> clLayouts.Text Then
             If cbGlobal.Checked Then
                 RaiseEvent eSaveAs_Click(sender, tbBezeichnung.Text, wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal)
             Else
@@ -61,7 +61,7 @@
 
     End Sub
 
-    Private Sub tbBezeichnung_KeyUp(sender As Object, e As Windows.Forms.KeyEventArgs) Handles tbBezeichnung.KeyUp
+    Private Sub tbBezeichnung_KeyUp(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles tbBezeichnung.KeyUp
         cbGlobal.Enabled = True
     End Sub
 End Class

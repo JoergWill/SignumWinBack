@@ -50,42 +50,11 @@ Public Class wb_OrgaBackProcess_WE
     End Function
 
     Private Sub LieferungVerbuchen(s As wb_LagerSilo)
-        'Datenbank-Verbindung öffnen - MySQL
-        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
-        Dim sql As String
         'Lieferungen-Objekt nimmt die aktuellen Daten auf
         Dim Lieferungen As New wb_Lieferungen
 
-        'Wenn eine interne Komponenten-Nr angegeben ist
-        If s.KompNr > wb_Global.UNDEFINED Then
-            'Rohstoff ist eindeutig identifiziert (Silo-Verteilung)
-            sql = "KO_Nr = " & s.KompNr.ToString
-        Else
-            'Rohstoff identifiziert über Alpha-Nummer
-            sql = "KO_Nr_AlNum = '" & s.KompNummer & "'"
-        End If
-
-        'Datensatz aus Tabelle Komponenten/Lagerorte lesen
-        If winback.sqlSelect(setParams(sqlRohstoffLagerort, sql)) Then
-            'Lesen Lagerort/Rohstoffdaten zu dieser Komponente
-            If winback.Read Then
-                'alle Daten (Lagerort... einlesen)
-                Lieferungen.MySQLdbRead(winback.MySqlRead)
-                'Verbindung wieder freigeben
-                winback.CloseRead()
-                'aktuell bearbeitete Nummer
-                s.KompNr = Lieferungen.Nr
-                'Lagerort
-                s.LagerOrt = Lieferungen.LagerOrt
-                'Lieferung verbuchen (berechnet die Bilanzmenge neu)
-                Lieferungen.Verbuchen(winback, s)
-                'Bilanzmenge in winback-DB aktualisieren (lfd-Nummer wird nicht verwendet)
-                Lieferungen.UpdateLagerorte(winback)
-            End If
-        End If
-
-        'Datenbankverbindung schliessen
-        winback.Close()
+        'Datensatz aus Komponenten/Lagerorte lesen - Lieferung verbuchen - Bilanzmenge aktualisieren
+        Lieferungen.LieferungVerbuchen(s)
     End Sub
 
 End Class

@@ -113,6 +113,50 @@ Public Class wb_Lieferungen
     End Property
 
     ''' <summary>
+    ''' Liest den aktuellen Datensatz aus winback.Komponenten und winback.Lagerorte
+    ''' Die aktuelle Liefermenge aus wb_Lagersilo wird verbucht und in winback.Lieferungen eingetragen
+    ''' Abschliessend wird die neu berechnete Bilanzmenge in winback.Lagerorte aktualisiert
+    ''' </summary>
+    ''' <param name="s"></param>
+    Public Sub LieferungVerbuchen(s As wb_LagerSilo)
+        'Datenbank-Verbindung öffnen - MySQL
+        Dim winback = New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_Sql.dbType.mySql)
+        Dim sql As String
+
+        'Wenn eine interne Komponenten-Nr angegeben ist
+        If s.KompNr > wb_Global.UNDEFINED Then
+            'Rohstoff ist eindeutig identifiziert (Silo-Verteilung)
+            Sql = "KO_Nr = " & s.KompNr.ToString
+        Else
+            'Rohstoff identifiziert über Alpha-Nummer
+            Sql = "KO_Nr_AlNum = '" & s.KompNummer & "'"
+        End If
+
+        'Datensatz aus Tabelle Komponenten/Lagerorte lesen
+        If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlRohstoffLagerort, sql)) Then
+            'Lesen Lagerort/Rohstoffdaten zu dieser Komponente
+            If winback.Read Then
+                'alle Daten (Lagerort... einlesen)
+                MySQLdbRead(winback.MySqlRead)
+                'Verbindung wieder freigeben
+                winback.CloseRead()
+                'aktuell bearbeitete Nummer
+                s.KompNr = Nr
+                'Lagerort
+                s.LagerOrt = LagerOrt
+                'Lieferung verbuchen (berechnet die Bilanzmenge neu)
+                Verbuchen(winback, s)
+                'Bilanzmenge in winback-DB aktualisieren (lfd-Nummer wird nicht verwendet)
+                UpdateLagerorte(winback, LagerOrt)
+            End If
+        End If
+
+        'Datenbankverbindung schliessen
+        winback.Close()
+    End Sub
+
+
+    ''' <summary>
     ''' Abhängig vom Vorfallkürzel wird der aktuelle Datensatz aus dbo.ArtikelLagerkarte in winback.Lieferungen verbucht:
     ''' 
     '''     BR  -   Bruch/Schwund
@@ -124,7 +168,7 @@ Public Class wb_Lieferungen
     ''' <param name="winback"></param>
     Public Sub Verbuchen(winback As wb_Sql, LagerKarte As wb_LagerKarte, ByRef ErsteInventurbuchung As Boolean, WE As Boolean)
         'Vorgang in Log-File schreiben(INFO)
-        Trace.WriteLine("@I_" & LagerKarte.Vorfall & "-" & LagerKarte.Lfd & "-" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
+        Trace.WriteLine("@I_" & KO_Bezeichnung & "/" & LagerKarte.Vorfall & "/" & LagerKarte.Lfd & "/" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
 
         Select Case LagerKarte.Vorfall
             Case "WE"
@@ -155,7 +199,7 @@ Public Class wb_Lieferungen
                 End If
 
             Case Else
-                'nächste Inventurbuchung ist wieder die erste Inventurbuchugn im Block
+                'nächste Inventurbuchung ist wieder die erste Inventurbuchung im Block
                 ErsteInventurbuchung = True
         End Select
     End Sub
@@ -176,6 +220,10 @@ Public Class wb_Lieferungen
             Verbuchen_Tara(winback, Silo, RohChargenErfassung)
         End If
 
+        'Zugang verbuchen, wenn eine Anzahl Gebinde(Säcke) angegeben ist (KKA-Befüllung)
+        If Silo.BefGebinde >= 0 Then
+            Silo.BefMenge = Silo.BefGebinde * GebindeGroesse
+        End If
         'Zugang verbuchen, wenn eine Befüllmenge angegeben ist
         If Silo.BefMenge >= 0 Then
             Verbuchen_Zugang(winback, Silo, RohChargenErfassung)
@@ -190,7 +238,7 @@ Public Class wb_Lieferungen
     ''' <param name="LagerKarte"></param>
     Public Sub InitInventur(winback As wb_Sql, LagerKarte As wb_LagerKarte)
         'Vorgang in Log-File schreiben
-        Trace.WriteLine("IV-Erste Inventurbuchung-" & LagerKarte.Lfd & "-" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
+        Trace.WriteLine("@I_IV-Erste Inventurbuchung-" & KO_Bezeichnung & "/" & LagerKarte.Lfd & "/" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
 
         'alle Lieferungen auf Status erledigt setzen
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlSetStatusLieferung, LagerOrt)
@@ -204,21 +252,32 @@ Public Class wb_Lieferungen
 
     ''' <summary>
     ''' Löscht alle bisherigen Lieferungen zu diesem Rohstoff und trägt den aktuellen Bestand als ersten Lieferdatensatz ein.
+    ''' 
+    ''' ACHTUNG:    Wenn Halbprodukte in WinBack hergestellt werden und die interne Chargen-Nummer weiter verwendet
+    '''             werden soll, muss als erster Datensatz in der Tabelle Lieferungen eine abgeschlossene Zeile (Nullsetzen)
+    '''             stehen. Sonst werden von WinBack-Produktion fehlerhafte Chargen eingebucht !!
     ''' </summary>
     ''' <param name="winback"></param>
     ''' <param name="LagerKarte"></param>
     Public Sub InitBestand(winback As wb_Sql, LagerKarte As wb_LagerKarte)
-        'Vorgang in Log-File schreiben
-        Trace.WriteLine("IB-Erste Bestandsbuchung-" & LagerKarte.Lfd & "-" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
-
         'Bestand wird initialisiert
         Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlDelLieferungen, LagerOrt)
         winback.sqlCommand(sql)
         Bilanzmenge = 0
-        LagerKarte.InitBestand()
+        LagerKarte.Vorfall = "WB"
 
-        'Der letzte Eintrag aus dbo.ArtikelLagerkarte enthält auch den aktuellen Bestand
-        'Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
+        'Der letzte Eintrag aus dbo.ArtikelLagerkarte enthält auch den aktuellen Bestand. Verbucht werden nur Zugänge!
+        If LagerKarte.Menge > 0 Then
+            Verbuchen_Zugang(winback, LagerKarte, RohChargenErfassung)
+            'Vorgang in Log-File schreiben
+            Trace.WriteLine("@I_IB-Erste Bestandsbuchung-" & KO_Bezeichnung & "/" & LagerKarte.Lfd & "/" & Nummer & " Menge/Charge " & LagerKarte.Menge & "/" & LagerKarte.ChargenNummer)
+        Else
+            'erster Eintrag (Nullsetzen) in Tabelle Lieferungen (notwendig für WinBack-Produktion)
+            sql = "'" & LagerOrt & "', 0, '" & wb_sql_Functions.MySQLdatetime(Now) & "', " & "'0', '" & wb_GlobalSettings.AktUserName &
+              "', '3', 'Null setzen', 0, NULL, NULL, NULL, 0, " & wb_GlobalSettings.AktUserNr & ", '0.000', 0"
+            'INSERT ausführen
+            winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlInsertWE, sql))
+        End If
     End Sub
 
     ''' <summary>
@@ -249,7 +308,7 @@ Public Class wb_Lieferungen
         'Lieferung Datensatz anfügen
         InsertLieferung(winback, LagerKarte, LagerKarte.Menge)
         'Bilanzmenge neu berechnen
-        Bilanzmenge = Bilanzmenge + LagerKarte.Menge
+        Bilanzmenge += LagerKarte.Menge
     End Sub
 
     ''' <summary>
@@ -320,7 +379,7 @@ Public Class wb_Lieferungen
         InsertLieferung(winback, Silo, Silo.BefMenge, Silo.VerbrauchtMenge)
 
         'Bilanzmenge neu berechnen
-        Bilanzmenge = Bilanzmenge + Silo.BefMenge
+        Bilanzmenge += Silo.BefMenge
     End Sub
 
     ''' <summary>
@@ -344,33 +403,32 @@ Public Class wb_Lieferungen
         'zu verbuchende (Negativ)Menge
         Dim BchMenge As Double = LagerKarte.Menge
 
-        'Prüfen ob eine Chargen-Nummer vorhanden ist
-        If LagerKarte.ChargenNummer <> "" Then
-            'Durchsucht alle OFFENEN Einträge in Lieferungen mit dieser Chargen-Nummer
-            winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferCharge, LagerOrt, LagerKarte.ChargenNummer))
+        'Durchsucht ALLE OFFENEN Einträge in Lieferungen mit dieser Chargen-Nummer
+        winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferCharge, LagerOrt, LagerKarte.ChargenNummer))
 
-            'Liest alle Datensätze in absteigender Reihenfolge bis die gesamte Korrektur-Menge ausgebucht werden kann
-            While winback.Read And (BchMenge < 0)
-                lfdNr.Add(winback.iField("LF_Nr"))
-                lfdMenge = winback.sField("LF_Menge")
-                'die zu verbuchende (Negativ)Menge nach Korrekturbuchung in winback.Lieferungen
-                BchMenge = BchMenge + lfdMenge
-            End While
-            winback.CloseRead()
-        End If
+        'Liest alle Datensätze in absteigender Reihenfolge bis die gesamte Korrektur-Menge ausgebucht werden kann
+        While winback.Read And (BchMenge < 0)
+            lfdNr.Add(winback.iField("LF_Nr"))
+            lfdMenge = winback.sField("LF_Menge")
+            'die zu verbuchende (Negativ)Menge nach Korrekturbuchung in winback.Lieferungen
+            BchMenge = BchMenge + lfdMenge
+        End While
+        winback.CloseRead()
 
         'Die ArrayList enthält alle Liefernummern, die durch die Bestandskorrekturbuchung geändert werden müssen.
         If lfdNr.Count = 0 Then
             'die ArrayList ist leer - In die Tabelle Lieferungen wird ein Korrektursatz eingefügt
             InsertLieferung(winback, LagerKarte, LagerKarte.Menge)
+            'Die Bilanzmenge wird nicht korrigiert, da kein passender Liefer-Datensatz gefunden wurde
         Else
-            'die Liefermenge im letzten Datesatz wird angepasst, alle anderen Liefermengen werden auf Null gesetzt.
+            'die Liefermenge im letzten Datesatz wird angepasst, alle anderen Liefermengen werden auf Verbraucht gesetzt.
             For Each Nr As Integer In lfdNr
                 If Nr = lfdNr.Last Then
                     'wenn die Korrekturmenge größer als die Liefermenge ist
                     If BchMenge < 0 Then
                         'letzter Datensatz - Liefermenge wird auf Null gesetzt
                         UpdateLieferung(winback, Nr, 0, "WE-" & LagerKarte.Vorfall)
+                        'TODO Menge korrigieren ??? -BchMenge -Bilanzmenge
                         'dann wird noch zusätzlich ein Korrektursatz angefügt
                         InsertLieferung(winback, LagerKarte, BchMenge)
                     Else
@@ -382,10 +440,10 @@ Public Class wb_Lieferungen
                     UpdateLieferung(winback, Nr, 0, "WE-" & LagerKarte.Vorfall)
                 End If
             Next
+            'Bilanzmenge neu berechnen (Lagerkarte.Menge ist negativ)
+            Bilanzmenge += LagerKarte.Menge
         End If
 
-        'Bilanzmenge neu berechnen (Lagerkarte.Menge ist negativ)
-        Bilanzmenge = Bilanzmenge + LagerKarte.Menge
     End Sub
 
     ''' <summary>
@@ -404,9 +462,9 @@ Public Class wb_Lieferungen
         'suche einen passenden Datensatz in winback.Lieferungen 
         _ProduktionVerbuchen(winback, Lagerort, wb_Functions.StrToDouble(Istwert), ChrgNummer, "2")
 
-        'Bilanzmenge neu berechnen (Berechnung erfolgt innerhalb des Sql-Statements)
-        'Istwert Dezimalkomma in Punkt umwandeln
-        winback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpateBilanzmenge, Istwert.Replace(",", "."), Lagerort))
+        'Bilanzmenge neu berechnen und wieder schreiben
+        Dim Lager As New wb_LagerOrt(Lagerort)
+        Lager.Bilanzmenge -= Istwert
 
         'Datenbank-Verbindung wieder schliessen
         winback.Close()
@@ -439,10 +497,10 @@ Public Class wb_Lieferungen
         'FlagGebucht = 3 ändert die Sortierfolge in der Abfrage
         If FlagGebucht = "3" Then
             'Abfrage nach dem letzten passenden Eintrag in der Tabelle Lieferungen
-            sql = SetParams(wb_Sql_Selects.sqlLieferungenGebucht, Lagerort, FlagGebucht, "DESC")
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferungenGebucht_DESC, Lagerort, FlagGebucht, "DESC")
         Else
             'Abfrage nach dem ersten passenden Eintrag in der Tabelle Lieferungen
-            sql = SetParams(wb_Sql_Selects.sqlLieferungenGebucht, Lagerort, FlagGebucht, "ASC")
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferungenGebucht_ASC, Lagerort, FlagGebucht, "ASC")
         End If
 
         'Prüfen ob ein Datensatz vorhanden ist
@@ -571,7 +629,7 @@ Public Class wb_Lieferungen
     ''' <param name="winback"></param>
     ''' <param name="Silo"></param>
     ''' <param name="Chargenerfassung"></param>
-    Private Sub Verbuchen_Tara(winback As wb_Sql, Silo As wb_LagerSilo, Chargenerfassung As Boolean)
+    Public Sub Verbuchen_Tara(winback As wb_Sql, Silo As wb_LagerSilo, Chargenerfassung As Boolean)
         'Bilanzmenge auf Null setzen
         Bilanzmenge = 0
         'alle Lieferungen zu diesem Rohstoff als erledigt markieren
@@ -588,7 +646,7 @@ Public Class wb_Lieferungen
         Dim Datum As Date = Date.Parse(LagerKarte.Datum & " " & LagerKarte.Uhrzeit)
         'TODO prüfen ob die Konvertierung (Zeile oben) funktioniert !!!
         'Background-Task
-        InsertLieferung(winback, LagerKarte.Lfd, Datum, LagerKarte.Gebucht, LagerKarte.Vorfall, LagerKarte.VorfallNr, LagerKarte.ChargenNummer, LagerKarte.Preis, Menge, 0)
+        InsertLieferung(winback, LagerKarte.Lfd, LagerOrt, Datum, LagerKarte.Gebucht, LagerKarte.Vorfall, LagerKarte.VorfallNr, LagerKarte.ChargenNummer, LagerKarte.Preis, Menge, 0)
     End Sub
 
     ''' <summary>
@@ -600,10 +658,10 @@ Public Class wb_Lieferungen
         'Lieferung oder Null setzen 
         If Menge > 0 Then
             'INSERT in Tabelle Lieferungen - Daten aus dem Silo-Objekt (Lieferant ist gleich der Vorfall-Nummer aus OrgaBack)
-            InsertLieferung(winback, LfdNr, Now, "1", "WE", Silo.VorfallNr, Silo.ChargenNummer, Silo.Preis, Menge, Verbraucht)
+            InsertLieferung(winback, LfdNr, Silo.LagerOrt, Now, "1", "WE", Silo.VorfallNr, Silo.ChargenNummer, Silo.Preis, Menge, Verbraucht)
         Else
             'INSERT in Tabelle Lieferungen - Null setzen
-            InsertLieferung(winback, LfdNr, Now, "3", "Null setzen", "", "", "", 0.0, 0)
+            InsertLieferung(winback, LfdNr, Silo.LagerOrt, Now, "3", "Null setzen", "", "", "", 0.0, 0)
         End If
     End Sub
 
@@ -612,9 +670,9 @@ Public Class wb_Lieferungen
     ''' Die fortlaufende Nummer(Lfd) muss bekannt sein.
     ''' </summary>
     ''' <param name="winback"></param>
-    Private Sub InsertLieferung(winback As wb_Sql, Lfd As String, Datum As Date, Gebucht As String, Bemerkung As String, Lieferant As String, ChargenNummer As String, Preis As String, Menge As Double, Verbraucht As Double)
+    Private Sub InsertLieferung(winback As wb_Sql, Lfd As String, Lagerort As String, Datum As Date, Gebucht As String, Bemerkung As String, Lieferant As String, ChargenNummer As String, Preis As String, Menge As Double, Verbraucht As Double)
         'der INSERT-Befehl wird dynamisch erzeugt
-        Dim sql_insert As String = "'" & LG_Ort & "', " & Lfd & ", '" & wb_sql_Functions.MySQLdatetime(Datum) & "', " &
+        Dim sql_insert As String = "'" & Lagerort & "', " & Lfd & ", '" & wb_sql_Functions.MySQLdatetime(Datum) & "', " &
                                    "'" & wb_Functions.FormatStr(Menge, 2) & "', '" & Lieferant & "', '" & Gebucht & "', '" & Bemerkung & "', " &
                                    "0" & ", '" & ChargenNummer & "', NULL, NULL, '" & wb_Functions.FormatStr(Verbraucht, 2) & "', " & wb_GlobalSettings.AktUserNr & ", '" & Preis & "', " & "0"
 
@@ -624,14 +682,39 @@ Public Class wb_Lieferungen
     End Sub
 
     ''' <summary>
-    ''' Ändert einen Datensatz in der Tabelle winback.Lieferungen. Anpassung der Liefermenge
+    ''' Ändert einen Datensatz in der Tabelle winback.Lieferungen. Anpassung der Liefermenge.
+    ''' Das Feld LF_Verbrauch berechnet sich aus der Differenz zu LF_Menge
+    ''' 
+    '''     LF_Verbrauch = LF_Menge - lfMenge
+    '''     
+    ''' Wenn die Restmenge der Charge gleich 0,00 kg ist, wird die Lieferung als "erledigt" gebucht.
+    '''     
     ''' </summary>
     ''' <param name="winback"></param>
     ''' <param name="lfd"></param>
     ''' <param name="lfMenge"></param>
     Private Sub UpdateLieferung(winback As wb_Sql, lfd As Integer, lfMenge As Double, lfBemerkung As String)
-        'der UPDATE-Befehl wird dynamisch erzeugt
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLieferung, LG_Ort, lfd.ToString, wb_Functions.FormatStr(lfMenge, 2), lfBemerkung)
+        'sql-Anweisung
+        Dim sql As String
+        Dim LF_Menge As Double = 0.0
+        Dim LF_Verbrauch As Double = 0.0
+
+        If lfMenge > 0 Then
+            'Liefermenge alt
+            If winback.sqlSelect(wb_Sql_Selects.setParams(wb_Sql_Selects.sqlReadLieferMenge, LG_Ort, lfd.ToString)) Then
+                If winback.Read Then
+                    LF_Menge = wb_Functions.StrToDouble(winback.sField("LF_Menge"))
+                    LF_Verbrauch = LF_Menge - lfMenge
+                End If
+            End If
+            'wenn noch eine Menge x im Lager vorhanden ist wird die Charge als "Gebucht" markiert
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLieferungVerbraucht, LG_Ort, lfd.ToString, lfBemerkung)
+        Else
+            'das Lager für diese Lieferung(mit dieser Charge) ist aufgebraucht/leer. Die Charge wird als "Verbraucht" markiert
+            'die verbrauchte Menge wird gleich der Liefermenge gesetzt
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLieferung, LG_Ort, lfd.ToString, wb_Functions.FormatStr(LF_Verbrauch, 3), lfBemerkung)
+        End If
+
         'UPDATE ausführen
         winback.sqlCommand(sql)
     End Sub
@@ -644,42 +727,48 @@ Public Class wb_Lieferungen
     ''' <param name="lfgebucht"></param>
     Public Sub UpdateVerbrauch(winback As wb_Sql, Lagerort As String, lfd As Integer, lfVerbrauch As Double, lfgebucht As String)
         'der UPDATE-Befehl wird dynamisch erzeugt
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateVerbrauch, Lagerort, lfd.ToString, wb_Functions.FormatStr(lfVerbrauch, 2), lfgebucht)
+        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateVerbrauch, Lagerort, lfd.ToString, wb_Functions.FormatStr(lfVerbrauch, 3), lfgebucht)
         'UPDATE ausführen
         winback.sqlCommand(sql)
     End Sub
 
     ''' <summary>
-    ''' Setzt die laufende Nummer (Lagerorte.LG_LF_Nr) auf den letzten verarbeiteten Eintrag aus OrgaBack.
+    ''' Setzt die Bilanzmenge und die laufende Nummer (Lagerorte.LG_LF_Nr) auf den letzten verarbeiteten Eintrag aus OrgaBack.
     ''' Bei der nächsten Abfrage werden dann nur neue, nicht verarbeitete Einträge aus OrgaBack gelesen.
+    ''' Wenn die lfd-Nummer nicht angegeben ist, wird nur die Bilanzmenge aktualisiert. (Fehler bei Niehaves-Bilanzierung Silos)
     ''' </summary>
     ''' <param name="winback"></param>
-    Public Sub UpdateLagerorteLfd(winback As wb_Sql, lfd As Integer)
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLagerort, lfd, wb_Functions.FormatStr(Bilanzmenge, 2), LagerOrt)
+    Public Sub UpdateLagerorteLfd(winback As wb_Sql, LagerOrt As String, lfd As Integer)
+        Dim sql As String
+        If lfd <> wb_Global.UNDEFINED Then
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLagerortLfd, lfd, wb_Functions.FormatStr(Bilanzmenge, 3), LagerOrt)
+        Else
+            sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlUpdateLagerort, wb_Functions.FormatStr(Bilanzmenge, 3), LagerOrt)
+        End If
+
         'UPDATE ausführen
         winback.sqlCommand(sql)
     End Sub
 
-    Public Sub UpdateLagerorte(winback As wb_Sql)
-        UpdateLagerorteLfd(winback, wb_Global.UNDEFINED)
+    Public Sub UpdateLagerorte(winback As wb_Sql, LagerOrt As String)
+        UpdateLagerorteLfd(winback, LagerOrt, wb_Global.UNDEFINED)
     End Sub
 
     ''' <summary>
     ''' Erzeugt eine kommagetrennte Liste von Rohstoff-Chargennummern aus den Lieferungen bis die Menge x erreicht ist
     ''' oder keine offenen Lieferungen mehr vorhanden sind.
-    ''' Anschliessend wird die Bilanzmenge in der Tabelle winback.Lagerorte mit der Menge x aktualisiert
     ''' </summary>
     ''' <param name="Menge"></param>
     ''' <returns></returns>
-    Public Function GetChargenListe(winback As wb_Sql, Lagerort As String, Menge As Integer) As String
+    Public Function GetChargenListe(winback As wb_Sql, KompNummer As String, Menge As Integer) As String
         'Rohstoff-Chargen-Nummer
         Dim ChrgNummer As String = ""
         Dim Liefermenge As Integer = 0
         'Lagerort merken
-        LG_Ort = Lagerort
+        LG_Ort = LagerOrt
 
-        'alle Lieferungen zu diesem Lagerort
-        Dim sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferungenDesc, Lagerort)
+        'alle Lieferungen zu dieser Komponenten-Nummer (Silo und Handkomponenten)
+        Dim sql = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlLieferungenDesc, KompNummer)
 
         'Prüfen ob ein Datensatz vorhanden ist
         If winback.sqlSelect(sql) Then
@@ -701,7 +790,7 @@ Public Class wb_Lieferungen
                         Debug.Print("---------------------LF_BF_Charge " & LF_BF_Charge & "/" & ChrgNummer)
 
                         'Liste aller Chargen-Nummern als kommagetrennte Liste
-                        If LF_BF_Charge <> "" Then
+                        If LF_BF_Charge <> "" And Not ChrgNummer.Contains(LF_BF_Charge) Then
                             If ChrgNummer = "" Then
                                 ChrgNummer = LF_BF_Charge
                             Else
@@ -733,10 +822,6 @@ Public Class wb_Lieferungen
     ''' <returns>True wenn kein Fehler aufgetreten ist</returns>
     Public Function MySQLdbRead(ByRef sqlReader As MySql.Data.MySqlClient.MySqlDataReader) As Boolean
         'Schleife über alle Datensätze
-        'TODO prüfen ob das hier irgendeinen Sinn gemacht hat !!!
-        ' DO LOOP liest ALLE DATENSÄTZE AUF EINMAL
-        'Do
-        'Parameter - Anzahl der Felder im DataSet
         'FieldCount-2 unterdrückt das Feld TimeStamp
         For i = 0 To sqlReader.FieldCount - 2
                 Try
@@ -745,7 +830,6 @@ Public Class wb_Lieferungen
                     Debug.Print("Exception MySQLdbRead " & sqlReader.GetName(i))
                 End Try
             Next
-        'Loop While sqlReader.Read
         Return True
     End Function
 

@@ -10,7 +10,17 @@ Public Class wb_KomponParam200
 
     Public Sub New()
         Wert(T200_Verkaufsgewicht) = wb_Global.UNDEFINED
+        Wert(T200_Haltbarkeit) = wb_Global.UNDEFINED
+        Wert(T200_VerkaufsTage) = wb_Global.UNDEFINED
+        Wert(T200_Lagerung) = ""
         Wert(T200_Warengruppe) = wb_Global.UNDEFINED
+        Wert(T200_DateinameBild) = ""
+    End Sub
+
+    Public Sub Clear()
+        For i = 1 To wb_Global.maxTyp200
+            Wert(i) = ""
+        Next
     End Sub
 
     Public Property Wert(index As Integer) As String
@@ -35,6 +45,45 @@ Public Class wb_KomponParam200
         End Set
     End Property
 
+    Public Property Lagerung As String
+        Get
+            If Wert(T200_Lagerung) IsNot Nothing Then
+                Return Wert(T200_Lagerung)
+            Else
+                Return wb_Global.UNDEFINED
+            End If
+        End Get
+        Set(value As String)
+            Wert(T200_Lagerung) = value
+        End Set
+    End Property
+
+    Public Property VerkaufsTage As Integer
+        Get
+            If Wert(T200_VerkaufsTage) IsNot Nothing Then
+                Return wb_Functions.StrToInt(Wert(T200_VerkaufsTage))
+            Else
+                Return wb_Global.UNDEFINED
+            End If
+        End Get
+        Set(value As Integer)
+            Wert(T200_VerkaufsTage) = value.ToString
+        End Set
+    End Property
+
+    Public Property Haltbarkeit As Integer
+        Get
+            If Wert(T200_Haltbarkeit) IsNot Nothing Then
+                Return wb_Functions.StrToInt(Wert(T200_Haltbarkeit))
+            Else
+                Return wb_Global.UNDEFINED
+            End If
+        End Get
+        Set(value As Integer)
+            Wert(T200_Haltbarkeit) = value.ToString
+        End Set
+    End Property
+
     Public Property Verkaufsgewicht As Double
         Get
             If Wert(T200_Verkaufsgewicht) IsNot Nothing Then
@@ -45,6 +94,15 @@ Public Class wb_KomponParam200
         End Get
         Set(value As Double)
             Wert(T200_Verkaufsgewicht) = value.ToString
+        End Set
+    End Property
+
+    Public Property DateinameBild As String
+        Get
+            Return Wert(T200_DateinameBild)
+        End Get
+        Set(value As String)
+            Wert(T200_DateinameBild) = value
         End Set
     End Property
 

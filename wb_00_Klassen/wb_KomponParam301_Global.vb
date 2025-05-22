@@ -34,7 +34,7 @@ Public Class wb_KomponParam301_Global
             k.Feld = winback.sField("KT_Kommentar")
             k.Used = (winback.sField("KT_Rezept") = "X")
             k.oEinheit = ""
-            k.oUsed = False Or IsAllergen(k.ParamNr)
+            k.oUsed = False ' wird unten bei Nährwerten/Allergenen auf True gesetzt
             Try
                 ktTyp301Params.Add(k.ParamNr, k)
             Catch
@@ -58,8 +58,24 @@ Public Class wb_KomponParam301_Global
                     ktTyp301Params(i) = k
                 End If
             End While
-        End If
 
+            'Datenbank wieder schliessen
+            orgasoft.CloseRead()
+
+            'Allergene aus der Tabelle dbo.Allergene (Es werden nur die Allergene geschrieben, die auch in OrgaSoft vorhanden sind - Sonst Fehler bei INSERT)
+            orgasoft.sqlSelect(wb_Sql_Selects.mssqlSelAllergen)
+            While orgasoft.Read
+                i = orgasoft.iField("AllergenNr")
+                If ktTyp301Params.ContainsKey(i) Then
+                    k = ktTyp301Params(i)
+                    k.oUsed = True
+                    ktTyp301Params(i) = k
+                End If
+            End While
+
+            'Datenbank wieder schliessen
+            orgasoft.Close()
+        End If
     End Sub
 
     Public Shared ReadOnly Property ErrorText As String
@@ -98,6 +114,11 @@ Public Class wb_KomponParam301_Global
 
     End Function
 
+    ''' <summary>
+    ''' Index gehört zur Gruppe Allergene (Weizen, Dinkel, Nüsse, Soja...)
+    ''' </summary>
+    ''' <param name="index"></param>
+    ''' <returns></returns>
     Public Shared Function IsAllergen(index As Integer) As Boolean
         If index >= minTyp301Allergen And index <= maxTyp301Allergen Then
             Return True
@@ -106,6 +127,11 @@ Public Class wb_KomponParam301_Global
         End If
     End Function
 
+    ''' <summary>
+    ''' Index gehört zur Gruppe Ernährungsform (Vegan, Vegatarisch, Halall...)
+    ''' </summary>
+    ''' <param name="index"></param>
+    ''' <returns></returns>
     Public Shared Function IsErnaehrung(index As Integer) As Boolean
         If index >= minTyp301Ernaehrung And index <= maxTyp301Ernaehrung Then
             Return True
@@ -202,7 +228,7 @@ Public Class wb_KomponParam301_Global
         Catch ex As Exception
             Trace.WriteLine("Fehler in Komponenten-Parameter Typ 301 - Datensätze fehlen !")
             _ErrorText = ex.Message
-            Trace.WriteLine(_ErrorText)
+            Trace.WriteLine("@E_" & _ErrorText)
             Return False
         End Try
         Return True

@@ -79,6 +79,7 @@ Public Class WinBack_DockMain
                     System.IO.File.Copy(DkPnlConfigFileName(wb_Global.OrgaBackDockPanelLayoutPath.ProgrammGlobal), DkPnlConfigFileName)
                 End If
             Catch ex As Exception
+                Trace.WriteLine("@E_Fehler beim Laden der Default-Dock-Panel-Konfig")
             End Try
         End Set
     End Property
@@ -104,6 +105,7 @@ Public Class WinBack_DockMain
     ''' Läd die Dock-Panel-Konfiguration aus der Konfiguration-Datei (*.xml). Die Konfiguration wird 
     ''' über SaveToXml gesichert.
     ''' </summary>
+    <CodeAnalysis.SuppressMessage("Minor Bug", "S4158:Empty collections should not be accessed or iterated", Justification:="<Ausstehend>")>
     Private Sub LoadDockBarConfig()
         'Farb-Schema einstellen
         wbDockPanel.Theme = wb_GlobalSettings.Theme
@@ -236,6 +238,7 @@ Public Class WinBack_DockMain
     ''' <param name="sender"></param>
     ''' <param name="FileName"></param>
     ''' <param name="DefaultPath"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
     Private Sub ESaveAs_Click(sender As Object, FileName As String, DefaultPath As wb_Global.OrgaBackDockPanelLayoutPath)
         'aktuelles Layout unter dem neuen Namen abspeichern
         _LayoutFilename = FileName
@@ -254,7 +257,7 @@ Public Class WinBack_DockMain
     Private Sub BtnDelete_Click(sender As Object, e As EventArgs) Handles BtnDelete.Click
         'Sicherheits-Abfrage
         If MessageBox.Show("Soll das Layout " & LayoutFilename & " wirklich gelöscht werden ",
-                           "Layout löschen", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                           "Layout löschen", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = System.Windows.Forms.DialogResult.Yes Then
             'aus der Auswahl-Liste entfernen
             cbLayouts.Items.Remove(cbLayouts.SelectedItem)
             'Layout-File wird lokal gelöscht
@@ -316,7 +319,6 @@ Public Class WinBack_DockMain
         Dim oDir As New IO.DirectoryInfo(DirName.TrimEnd("\"))
         'Ergebnis-Array
         Dim FileNames As New List(Of String)
-        FileNames.Clear()
 
         ' alle Dateien des Ordners
         Dim oFiles As System.IO.FileInfo() = oDir.GetFiles("*.xml")
@@ -334,4 +336,10 @@ Public Class WinBack_DockMain
 
         Return FileNames
     End Function
+
+    Private Sub WinBack_DockMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        tsVersion.Text = "OrgaBack-Produktion " & wb_GlobalSettings.WinBackVersion
+        tsIpAdresse.Text = "WinBack " & wb_GlobalSettings.WinBackDBVersion & " (" & wb_GlobalSettings.MySQLServerIP & ")"
+        tsKundeName.Text = wb_GlobalSettings.MandantName
+    End Sub
 End Class

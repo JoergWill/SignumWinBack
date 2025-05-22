@@ -1,13 +1,21 @@
-﻿Imports combit.ListLabel22.DataProviders
+﻿Imports combit.Reporting.DataProviders
 
 Public Class wb_RezeptDrucken
 
     Private RezeptSteps As New List(Of wb_Rezeptschritt)
     Private RezeptListe As New List(Of wb_Rezept)
 
-    Friend Sub Print()
+    Public Sub Print(Artikel As wb_Komponente)
+        'Start mit der aktuellen Rezeptnummer (aus wb_ArtikelShared)
+        Print(Artikel.RzNr, "Rezepte", "ArtikelStruktur.lst", wb_Einheiten_Global.GetEinheitFromNr(wb_Global.wbEinheitKilogramm), Artikel.Nummer, Artikel.Bezeichnung)
+    End Sub
+
+    Public Sub Print()
         'Start mit der aktuellen Rezeptnummer (aus wb_RezeptShared)
-        Dim RzNr As Integer = wb_Rezept_Shared.Rezept.RezeptNr
+        Print(wb_Rezept_Shared.Rezept.RezeptNr, "Rezepte", "RezeptStruktur.lst", wb_Einheiten_Global.GetEinheitFromNr(wb_Global.wbEinheitKilogramm))
+    End Sub
+
+    Private Sub Print(RzNr As Integer, ListSubDirectory As String, ListFileName As String, Optional Parameter_1 As String = "", Optional KopfZeile_1 As String = "", Optional KopfZeile_2 As String = "")
         'zur Liste hinzufügen
         AddRezeptToList(RzNr)
         '(Flache) Liste aller Rezeptschritte
@@ -21,15 +29,17 @@ Public Class wb_RezeptDrucken
 
         'RootRezeptSchritt.Steps enthält alle Rezeptschritte als flache Liste 
         pDialog.LL.DataSource = New ObjectDataProvider(RezeptSteps)
+        'Kopfzeilen
+        pDialog.LL_KopfZeile_1 = KopfZeile_1
+        pDialog.LL_KopfZeile_2 = KopfZeile_2
         'Anzeige Einheit Rezept-Gesamtmenge im Gruppenfuß
-        pDialog.LL_Parameter_1 = "kg"
+        pDialog.LL_Parameter_1 = Parameter_1
 
         'List und Label-Verzeichnis für die Listen
-        pDialog.ListSubDirectory = "Rezepte"
-        pDialog.ListFileName = "RezepturStruktur.lst"
+        pDialog.ListSubDirectory = ListSubDirectory
+        pDialog.ListFileName = ListFileName
         pDialog.ShowDialog()
         pDialog = Nothing
-
     End Sub
 
     Private Sub AddRezeptToList(Nr As Integer)
@@ -59,7 +69,7 @@ Public Class wb_RezeptDrucken
             For Each ChildRzSchritt As wb_Rezeptschritt In Rzpt.RootRezeptSchritt.Steps
                 'Die Kopfdaten werden im Root-Rezept-Schritt eingetragen
                 ChildRzSchritt.Idx = Rzpt.RezeptNr
-                ChildRzSchritt.Par1 = Rzpt.RezeptNummer
+                ChildRzSchritt.RezeptNummer = Rzpt.RezeptNummer
                 ChildRzSchritt.Par2 = Rzpt.RezeptBezeichnung
                 ChildRzSchritt.Par3 = Rzpt.Variante
                 ChildRzSchritt.RezGewicht = Rzpt.RezeptGewicht

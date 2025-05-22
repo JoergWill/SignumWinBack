@@ -13,6 +13,7 @@ Public Class wb_LagerSilo
 
     Private _TaraWert As Integer
     Private _BefMenge As Integer
+    Private _BefGebinde As Integer
     Private _VerbrauchtMenge As Double
     Private _ChargenNummer As String
 
@@ -25,7 +26,7 @@ Public Class wb_LagerSilo
         End Select
     End Sub
 
-    Private Sub CopyFrom(s As wb_Silo)
+    Public Sub CopyFrom(s As wb_Silo)
         _KompNr = s.KompNr
         _KompNummer = s.KompNummer
         _KompBezeichnung = s.KompBezeichnung
@@ -38,7 +39,7 @@ Public Class wb_LagerSilo
         _Preis = s.Preis
     End Sub
 
-    Private Sub CopyFrom(s As wb_SiloSackware)
+    Public Sub CopyFrom(s As wb_SiloSackware)
         _KompNr = s.KompNr
         _KompNummer = s.KompNummer
         _KompBezeichnung = s.KompBezeichnung
@@ -120,6 +121,15 @@ Public Class wb_LagerSilo
         End Get
         Set(value As Integer)
             _BefMenge = value
+        End Set
+    End Property
+
+    Public Property BefGebinde As Integer
+        Get
+            Return _BefGebinde
+        End Get
+        Set(value As Integer)
+            _BefGebinde = value
         End Set
     End Property
 

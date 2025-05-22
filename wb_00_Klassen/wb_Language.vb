@@ -4,6 +4,11 @@ Public Class wb_Language
 
     Shared Language As String
     Public Shared TexteTabelle As New Hashtable
+    Private Shared SprachenTabelle As New Hashtable
+
+    Shared Sub New()
+        LoadSprachenTabelle()
+    End Sub
 
     Public Shared Sub SetLanguage(Lang As String)
         Dim IniFile As New wb_IniFile
@@ -72,6 +77,14 @@ Public Class wb_Language
         End Select
     End Function
 
+    Public Shared Function GetLanguageName(LangNr As Integer) As String
+        If SprachenTabelle.ContainsKey(LangNr) Then
+            Return SprachenTabelle(LangNr)
+        Else
+            Return ""
+        End If
+    End Function
+
     ''' <summary>
     ''' Hash-Table mit den Übersetzungen für die jeweilige Sprache vorladen. Die HashTable übersetzt
     ''' die Texte aus der WinBack-Datenbank die mit @[x,y] gekennzeichnet sind in die jeweilige Landes-Sprache
@@ -83,6 +96,17 @@ Public Class wb_Language
         TexteTabelle.Clear()
         While winback.Read
             TexteTabelle.Add("@[" & winback.sField("T_Typ") & "," & winback.sField("T_TextIndex") & "]", winback.sField("T_Text"))
+        End While
+        winback.Close()
+        winback = Nothing
+    End Sub
+
+    Private Shared Sub LoadSprachenTabelle()
+        Dim winback As New wb_Sql(wb_GlobalSettings.SqlConWinBack, wb_GlobalSettings.WinBackDBType)
+        winback.sqlSelect("SELECT * FROM Sprachen")
+        SprachenTabelle.Clear()
+        While winback.Read
+            SprachenTabelle.Add(winback.iField("SP_SpracheNr"), winback.sField("SP_SpracheStr"))
         End While
         winback.Close()
         winback = Nothing

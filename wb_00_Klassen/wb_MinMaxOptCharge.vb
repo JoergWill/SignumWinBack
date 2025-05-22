@@ -36,7 +36,7 @@ Public Class wb_MinMaxOptCharge
     End Property
 
     ''' <summary>
-    ''' Stückgewicht in Gramm
+    ''' Stückgewicht in Gramm - WinBack-Nassgewicht!
     ''' </summary>
     ''' <returns></returns>
     Public Property StkGewicht As String

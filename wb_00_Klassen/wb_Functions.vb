@@ -1,12 +1,16 @@
 ﻿Imports System.Globalization
+Imports System.IdentityModel.Tokens.Jwt
 Imports System.IO
 Imports System.Management
 Imports System.Net
 Imports System.Net.Sockets
+Imports System.Runtime.Intrinsics.X86
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports System.Text
+Imports System.Threading.Tasks
 Imports System.Windows.Forms
 Imports EnhEdit.EnhEdit_Global
+Imports ICSharpCode.SharpZipLib
 Imports ICSharpCode.SharpZipLib.BZip2
 Imports Microsoft.Win32
 
@@ -16,10 +20,116 @@ Imports Microsoft.Win32
 ''' </summary>
 
 Public Class wb_Functions
+#Disable Warning SYSLIB0014
 
-    Private Shared Encoding_iso8859_1 As Encoding = Encoding.GetEncoding("iso-8859-1")
-    Private Shared Encoding_iso8859_5 As Encoding = Encoding.GetEncoding("iso-8859-5")
-    Private Shared Encoding_iso8859_15 As Encoding = Encoding.GetEncoding("iso-8859-15")
+    Private Shared ReadOnly Encoding_iso8859_1 As Encoding = Encoding.GetEncoding("iso-8859-1")
+    'TODO RemeberMe iso-8859-5
+    Private Shared ReadOnly Encoding_iso8859_5 As Encoding = Encoding.GetEncoding("iso-8859-1")
+    'TODO RemeberMe iso-8859-15
+    Private Shared ReadOnly Encoding_iso8859_15 As Encoding = Encoding.GetEncoding("iso-8859-1")
+
+    Private Shared ReadOnly sqlFormatProvider As CultureInfo
+
+
+    Shared Sub New()
+        'Formateinstellungen für die Konvertierung von String-Dezimalwerten nach Float aus der sql-Datenbank
+        sqlFormatProvider = CultureInfo.CreateSpecificCulture("de-DE")
+        'Bei Sollwerten in der MySQL-Datenbank ist der Dezimaltrenner IMMER ein Komma, unabhängig von den
+        'Einstellungen in Windows.
+        sqlFormatProvider.NumberFormat.NumberDecimalSeparator = ","
+    End Sub
+
+
+    ''' <summary>
+    ''' Parameter bei Programm-Start auswerten.
+    ''' Der erste Parameter enthält immer den Programm-Namen und Pfad
+    ''' 
+    ''' Gültige Parameter
+    '''     -uXXX   Anmeldung mit User-Nummer(XXX)
+    '''     -w      Anmeldung als Master-User
+    '''     -m      Mandant
+    '''     -i      Pfad zur winback.ini
+    '''     -t      Vollbildanzeige Teigruhe/Kneter (nur AnyWhere)
+    '''     -h      IP-Adresse der WinBack-MySQL-Datenbank (temporär)
+    '''     
+    ''' (@1.8.6)Abarbeitungs-Reihenfolge der Prameter korrigiert.
+    '''         Pfad zur Ini-Datei setzen
+    '''         Mandant festlegen
+    '''         Master/User einloggen
+    '''         
+    ''' </summary>
+    Public Shared Sub ProcessParameter()
+        'Prozess-Parameter aus der Kommandozeile
+        Dim Parameter As String() = Environment.GetCommandLineArgs().ToArray
+
+        Dim User As String = Nothing
+        Dim UserNummer As Integer = wb_Global.UNDEFINED
+        Dim LoginMaster As Integer = wb_Global.UNDEFINED
+        Dim MandantNr As String = Nothing
+        Dim WinBackIni As String = Nothing
+
+        'wenn Parameter angegeben sind
+        If Parameter.Length > 1 Then
+            For i = 1 To Parameter.Length - 1
+                Select Case Strings.Left(Parameter(i), 2)
+
+                    'User Login
+                    Case "/U", "-u"
+                        User = Strings.Mid(Parameter(i), 3)
+                        UserNummer = wb_Functions.StrToInt(User)
+
+                    'User-Login(Master)
+                    Case "/W", "-w"
+                        LoginMaster = Int(wb_Credentials.WinBackMasterUser)
+
+                    'Mandant
+                    Case "/M", "-m"
+                        MandantNr = Strings.Mid(Parameter(i), 3)
+
+                    'Teigruhe/Kneter-Anzeige
+                    Case "/T", "-t"
+                        wb_GlobalSettings.TeigruheAnzeige = True
+                        wb_GlobalSettings.TeigruheVNC = wb_Functions.StrToInt(Strings.Mid(Parameter(i), 3))
+
+                    'Pfad zur winback.ini
+                    Case "/I", "-i"
+                        WinBackIni = Strings.Mid(Parameter(i), 3)
+
+                    'IP-Adresse temporär 
+                    Case "/H", "-h"
+                        wb_GlobalSettings.TempMySQLServerIP = Strings.Mid(Parameter(i), 3)
+
+                        'Falscher Parameter angegeben
+                    Case Else
+                        MsgBox("Unbekannter Start-Parameter: " & Parameter(i), MsgBoxStyle.Critical)
+
+                End Select
+            Next
+
+            'Parameter - Pfad zur Ini-Datei
+            If WinBackIni IsNot Nothing Then
+                wb_GlobalSettings.pWinBackIniPath = WinBackIni & "\WinBack.ini"
+            End If
+            'Parameter - Mandant
+            If MandantNr <> wb_Global.UNDEFINED.ToString Then
+                wb_GlobalSettings.MandantNr = wb_Functions.StrToInt(MandantNr)
+            End If
+            'Parameter - Login Master
+            If LoginMaster <> wb_Global.UNDEFINED Then
+                If Not wb_GlobalSettings.AktUserLogin(LoginMaster) Then
+                    MsgBox("Benutzer nicht gefunden. Bitte Parameter prüfen!", MsgBoxStyle.Critical)
+                Else
+                    wb_AktUser.SuperUser = True
+                End If
+            Else
+                'Parameter - Login User
+                If UserNummer <> wb_Global.UNDEFINED AndAlso Not wb_GlobalSettings.AktUserLogin(UserNummer) Then
+                    MsgBox("Programmstart mit unbekanntem Benutzer. Bitte Parameter prüfen!", MsgBoxStyle.Critical)
+                End If
+            End If
+
+        End If
+    End Sub
 
     ''' <summary>
     ''' Erzeugt einen String aus Key-Down-Ereignissen
@@ -34,11 +144,11 @@ Public Class wb_Functions
         Select Case Convert.ToUInt16(KeyCode)
                 'normale Buchstaben
             Case 32, 33, 35 To 43, 45, 47, 64 To 93, 97 To 122, 129 To 154, 192 To 223, 228, 246, 252
-                s = s + KeyCode.ToString
+                s += KeyCode.ToString
                 Return True
                 'Ziffern 0 bis 9
             Case 48 To 57
-                s = s + KeyCode.ToString
+                s += KeyCode.ToString
                 Return True
                 'Backspace (Gibt True zurück wenn ein Zeichen gelöscht wurde)
             Case 8
@@ -56,6 +166,37 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt einen String im Unix-Time-Format in Datum/Uhrzeit um
+    ''' </summary>
+    ''' <param name="strUnixTime"></param>
+    ''' <returns></returns>
+    Public Shared Function UnixToTime(ByVal strUnixTime As String, Optional Offset As Integer = 0) As Date
+        'Dim UnixEpoch As New DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+        Dim Result As Date = DateAdd(DateInterval.Second, Val(strUnixTime), wb_Global.wbUnixDATE)
+        'Sommerzeit
+        If Result.IsDaylightSavingTime = True Then
+            Result = DateAdd(DateInterval.Hour, 2, Result)
+        Else
+            Result = DateAdd(DateInterval.Hour, 1, Result)
+        End If
+        Return Result
+    End Function
+
+    ''' <summary>
+    ''' Wandelt ein Datum/Uhrzeit in Unix-Time-Format(String) um
+    ''' </summary>
+    ''' <param name="dteDate"></param>
+    ''' <returns></returns>
+    Public Shared Function TimeToUnix(ByVal dteDate As Date, Optional Offset As Integer = 0) As String
+        If dteDate.IsDaylightSavingTime Then
+            dteDate = DateAdd(DateInterval.Hour, -2, dteDate)
+        Else
+            dteDate = DateAdd(DateInterval.Hour, -1, dteDate)
+        End If
+        Return DateDiff(DateInterval.Second, wb_Global.wbUnixDATE, dteDate)
+    End Function
+
+    ''' <summary>
     ''' Wandelt einen String im WinBack-Cloud-Datumsformat (yyyymmddHHmmss) in DateTime um.
     ''' Wenn die Konvertierung feherhaft ist, wird der 22.11.1964 00:00:00 zurückgegeben.
     ''' </summary>
@@ -64,7 +205,7 @@ Public Class wb_Functions
     Public Shared Function ConvertJSONTimeStringToDateTime(JSONTimeString As String) As DateTime
         Try
             Dim dt As String = JSONTimeString.Substring(0, 4) & JSONTimeString.Substring(6, 2) & JSONTimeString.Substring(4, 2)
-            dt = dt & JSONTimeString.Substring(8, 6)
+            dt &= JSONTimeString.Substring(8, 6)
             Return DateTime.ParseExact(dt, "yyyyddMMHHmmss", Nothing)
         Catch ex As Exception
             Return #11/22/1964 00:00:00#
@@ -87,6 +228,16 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Wandelt einen String im Format (hh:mm:ss) in Sekunden um (Uint32)
+    ''' </summary>
+    ''' <param name="TimeString"></param>
+    ''' <returns></returns>
+    Public Shared Function ConvertTimeStringToSeconds(TimeString As String) As UInt32
+        Dim dt As DateTime = DateTime.ParseExact(TimeString, "hh:mm:ss", Nothing)
+        Return dt.Second + dt.Minute * 60 + dt.Hour * 3600
+    End Function
+
+    ''' <summary>
     ''' Gibt True zurück, wenn die übergebene ID eine Datenlink-ID ist,
     ''' sonst False
     ''' </summary>
@@ -100,9 +251,23 @@ Public Class wb_Functions
         End If
     End Function
 
+    ''' <summary>
+    ''' Gibt True zurück, wenn die übergebene ID eine OpenFoodFacts-ID ist,
+    ''' sonst False
+    ''' </summary>
+    ''' <param name="Id"></param>
+    ''' <returns></returns>
+    Public Shared Function IsOpenFoodFactsID(Id As String) As Boolean
+        If Strings.Left(Id, 3) = "EAN" Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
     Public Shared Function ConvertUSDateStringToDate(us As String) As Date
         Try
-            Return DateTime.ParseExact(us, "yyyyMMdd", Nothing)
+            Return Date.ParseExact(us, "yyyyMMdd", Nothing)
         Catch ex As Exception
             Return #11/22/1964 00:00:00#
         End Try
@@ -117,15 +282,17 @@ Public Class wb_Functions
     ''' <param name="d2"></param>
     ''' <returns></returns>
     Public Shared Function AddDateTime(d1 As DateTime, d2 As DateTime, Optional IgnoreDatum As Boolean = False) As DateTime
-        AddDateTime = d1
+        Dim Result As DateTime = d1
         Try
-            AddDateTime = d1.AddSeconds(d2.Second).AddMinutes(d2.Minute).AddHours(d2.Hour)
+            Result = d1.AddSeconds(d2.Second).AddMinutes(d2.Minute).AddHours(d2.Hour)
             'Wenn die Daten für das Datum gültig sind
-            If ((d2.Year <> 1) And (d2.Month <> 1) And (d2.Day <> 1) And Not IgnoreDatum) Then
-                AddDateTime = AddDateTime.AddDays(d2.Day).AddMonths(d2.Month).AddYears(d2.Year)
+            If ((d2.Year <> 1) AndAlso (d2.Month <> 1) AndAlso (d2.Day <> 1) AndAlso Not IgnoreDatum) Then
+                Result = AddDateTime.AddDays(d2.Day).AddMonths(d2.Month).AddYears(d2.Year)
             End If
         Catch ex As Exception
+            Trace.WriteLine("@E_Fehler bei AddDateTime ")
         End Try
+        Return Result
     End Function
 
     ''' <summary>
@@ -219,6 +386,24 @@ Public Class wb_Functions
                 Return "ERR"
         End Select
     End Function
+    ''' <summary>
+    ''' Wandelt die Ernährungsform-Information in einen Integer-Wert (OrgaBack) um.
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Public Shared Function ErnaehrungToInteger(s As String) As Integer
+        Select Case s
+            Case "J"
+                Return 1
+            Case "N"
+                Return 0
+            Case "X"
+                'TODO Prüfen !!! "-" ist nicht möglich - Konflikt OrgaBack-DB
+                Return 0
+            Case Else
+                Return 0
+        End Select
+    End Function
 
     Public Shared Function ModusChargenTeilerToString(c As wb_Global.ModusChargenTeiler) As String
         Select Case c
@@ -283,6 +468,7 @@ Public Class wb_Functions
     ''' </summary>
     ''' <param name="KO_Type"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1479:""Select Case"" statements should not have too many ""Case"" clauses", Justification:="<Ausstehend>")>
     Public Shared Function IntToKomponType(KO_Type As Integer) As wb_Global.KomponTypen
         Select Case KO_Type
             Case -1
@@ -427,7 +613,7 @@ Public Class wb_Functions
                 Return 31
 
             Case wb_Global.KomponTypen.KO_TYPE_UNDEFINED
-                Return -99
+                Return wb_Global.KomponTypeInt_Undefined
             Case Else
                 Return -99
         End Select
@@ -476,14 +662,14 @@ Public Class wb_Functions
     ''' <param name="Param"></param>
     ''' <returns>Boolean - True wenn der Typ einen Sollwert enthält, False wenn der Typ keinen Sollwert (Gewicht/Menge/Länge) enthält, der umgerechnet werden muss/kann</returns>
     Public Shared Function TypeIstSollMenge(Type As wb_Global.KomponTypen, Param As Integer) As Boolean
-        If Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE And Param = 1 Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER And Param = 1 Then
+        If Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE AndAlso Param = 1 OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER AndAlso Param = 1 Then
             Return True
         Else
             Return False
@@ -497,17 +683,32 @@ Public Class wb_Functions
     ''' <param name="Param"></param>
     ''' <returns></returns>
     Public Shared Function TypeIstSollWert(Type As wb_Global.KomponTypen, Param As Integer) As Boolean
-        If Type = wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG Or
-           Type = wb_Global.KomponTypen.KO_TYPE_KNETER Or
-           Type = wb_Global.KomponTypen.KO_TYPE_TEIGZETTEL Or
-           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE And Param = 3 Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER And Param = 3 Then
+        If Type = wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_KNETER OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_TEIGZETTEL OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_METER OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_STUECK OrElse
+           (Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE AndAlso Param = 3) OrElse
+           (Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER AndAlso Param = 3) Then
             Return True
         Else
             Return False
         End If
     End Function
 
+    ''' <summary>
+    ''' Ermittelt ob Type und Parameter-Nummer einen Sollwert in der Einheit Meter oder Stück enthalten. (Keinen Gewichtswert!)
+    ''' </summary>
+    ''' <param name="Type"></param>
+    ''' <returns></returns>
+    Public Shared Function TypeIstMeterStk(Type As wb_Global.KomponTypen) As Boolean
+        If Type = wb_Global.KomponTypen.KO_TYPE_METER OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_STUECK Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
     ''' <summary>
     ''' Ermittelt ob Rohstoffe/Artikel mit dieser Komponenten-Type Nährwert-Informationen haben können
@@ -515,13 +716,13 @@ Public Class wb_Functions
     ''' <param name="Type"></param>
     ''' <returns></returns>
     Public Shared Function TypeHatNwt(Type As wb_Global.KomponTypen) As Boolean
-        If Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE Or
+        If Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_AUTO_ZUGABE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_MEHL OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_ZUGABE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE OrElse
            Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER Then
             Return True
         Else
@@ -535,9 +736,9 @@ Public Class wb_Functions
     ''' <param name="Type"></param>
     ''' <returns></returns>
     Public Shared Function TypeIstText(Type As wb_Global.KomponTypen) As Boolean
-        If Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Or
-           Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or
+        If Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_KESSEL OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE OrElse
            Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
             Return True
         Else
@@ -551,9 +752,9 @@ Public Class wb_Functions
     ''' <param name="Type"></param>
     ''' <returns></returns>
     Public Shared Function TypeIstWasserSollmenge(Type As wb_Global.KomponTypen, Param As Integer, TA As Integer) As Boolean
-        If (Param = 1) And ((TA = wb_Global.TA_Wasser) Or
-            (Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE) Or
-            (Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE) Or
+        If (Param = 1) AndAlso ((TA = wb_Global.TA_Wasser) OrElse
+            (Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE) OrElse
+            (Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE) OrElse
             (Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER)) Then
             Return True
         Else
@@ -567,9 +768,9 @@ Public Class wb_Functions
     ''' <param name="Type"></param>
     ''' <returns></returns>
     Public Shared Function TypeHatEinheit(Type As wb_Global.KomponTypen) As Boolean
-        If Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE Or
-            Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or
-            Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Or
+        If Type = wb_Global.KomponTypen.KO_TYPE_TEXTKOMPONENTE OrElse
+            Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE OrElse
+            Type = wb_Global.KomponTypen.KO_TYPE_KESSEL OrElse
             Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
             Return False
         Else
@@ -602,11 +803,11 @@ Public Class wb_Functions
     ''' <param name="Type"></param>
     ''' <returns></returns>
     Public Shared Function TypeHasChildSteps(Type As wb_Global.KomponTypen) As Boolean
-        If Type = wb_Global.KomponTypen.KO_TYPE_KESSEL Or
-           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE Or
-           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER Or
-           Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE Or
+        If Type = wb_Global.KomponTypen.KO_TYPE_KESSEL OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_SAUER_WASSER OrElse
+           Type = wb_Global.KomponTypen.KO_TYPE_PRODUKTIONSSTUFE OrElse
            Type = wb_Global.KomponTypen.KO_TYPE_KNETERREZEPT Then
             Return True
         Else
@@ -641,7 +842,7 @@ Public Class wb_Functions
                 Return wb_Global.ktTyp301Gruppen.Schalenfrüchte
             Case "gesamtkennzahlen"
                 Return wb_Global.ktTyp301Gruppen.Gesamtkennzahlen
-            Case "ernährungsformen"
+            Case "ernährungsformen", "ernährung"
                 Return wb_Global.ktTyp301Gruppen.ErnaehrungsFormen
             Case Else
                 Return wb_Global.ktTyp301Gruppen.xxx
@@ -687,19 +888,60 @@ Public Class wb_Functions
     ''' Die Artikelgruppen in OrgaBack sind frei definiert. Die Zuordnung von Artikelgruppe zu Komponenten-Type wird in winback.ini festgelegt
     ''' (Stammdaten-Gruppen-Artikelgruppen)
     '''     [OrgaBack].[dbo].[Artikelgruppe]
+    '''     
+    ''' 2022-05-20/JW   Erweiterung der Artikel/Rohstoff-Gruppen.
+    '''                 Wenn in den Parametern(winback.ini oder OrgaBack-Festwerte) ein RegEx-Ausdruck eingetragen ist, wird auf einen Bereich
+    '''                 an OrgaBack-Artikelgruppen geprüft.
     ''' </summary>
     ''' <param name="obKType"></param>
     ''' <returns></returns>
-    Friend Shared Function obKtypeToKType(obKType As String) As wb_Global.KomponTypen
+    Friend Shared Function obKtypeToKType(obKType As String, obEinheit As String) As wb_Global.KomponTypen
 
-        If obKType = wb_GlobalSettings.OsGrpBackwaren Then
+        'Prüfen ob obkType ein WinBack-Artikel oder ein WinBack-Rohstoff ist
+        If CheckOrgaBackArtikelGruppe(obKType, wb_GlobalSettings.OsGrpBackwaren) Then
             Return wb_Global.KomponTypen.KO_TYPE_ARTIKEL
 
-        ElseIf obKType = wb_GlobalSettings.OsGrpRohstoffe Then
-            Return wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+        ElseIf CheckOrgaBackArtikelGruppe(obKType, wb_GlobalSettings.OsGrpRohstoffe) Then
+            Select Case wb_Functions.StrToInt(obEinheit)
+                Case wb_Global.obEinheitKilogramm
+                    Return wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+                Case wb_Global.obEinheitStk
+                    Return wb_Global.KomponTypen.KO_TYPE_STUECK
+                Case wb_Global.obEinheitMeter
+                    Return wb_Global.KomponTypen.KO_TYPE_METER
+                Case Else
+                    Return wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+            End Select
 
         Else
             Return wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Prüft ob die OrgaBack-Artikelgruppe mit dem übergebenen RegEx-Muster übereinstimmt.
+    ''' Ist das RegEx-Muster ein ganzzahliger Wert wird auf Übereinstimmung der Artikelgruppe geprüft.
+    ''' Ansonsten wird der RegEx-Wert ausgewertet und geprüft ob die Artikelgruppe innerhalb der erlaubten  
+    ''' Werte liegt.
+    ''' </summary>
+    ''' <param name="obKType"></param>
+    ''' <param name="OsGrp"></param>
+    ''' <returns></returns>
+    Public Shared Function CheckOrgaBackArtikelGruppe(obKType As String, OsGrp As String) As Boolean
+        If IsNumeric(OsGrp) Then
+            If obKType = OsGrp Then
+                Return True
+            Else
+                Return False
+            End If
+        Else
+            Dim GrpBereich As New RegularExpressions.Regex(OsGrp)
+            If GrpBereich.Match(obKType).Success Then
+                Return True
+            Else
+                Return False
+            End If
+
         End If
     End Function
 
@@ -709,6 +951,7 @@ Public Class wb_Functions
     ''' </summary>
     ''' <param name="name"></param>
     ''' <returns>index (Integer)</returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1479:""Select Case"" statements should not have too many ""Case"" clauses", Justification:="<Ausstehend>")>
     Public Shared Function DatenLinkToIndex(name As String) As Integer
         Select Case name
 
@@ -754,6 +997,112 @@ Public Class wb_Functions
             Case "SEAFOOD"
                 Return 144
             Case "PEANUTS"
+                Return 145
+            Case "SOY"
+                Return 146
+            Case "MILK"
+                Return 147
+            Case "EDIBLE_NUTS"
+                Return 148
+            Case "EDIBLE_NUTS_ALMONDS"
+                Return 180
+            Case "EDIBLE_NUTS_HAZELNUTS"
+                Return 181
+            Case "EDIBLE_NUTS_WALNUTS"
+                Return 182
+            Case "EDIBLE_NUTS_CASHEW"
+                Return 183
+            Case "EDIBLE_NUTS_PECANNUTS"
+                Return 184
+            Case "EDIBLE_NUTS_BRASIL_NUTS"
+                Return 185
+            Case "EDIBLE_NUTS_PISTACIOS"
+                Return 186
+            Case "EDIBLE_NUTS_MACADAMIA_NUTS"
+                Return 187
+            Case "CELERY"
+                Return 149
+            Case "MUSTARD"
+                Return 150
+            Case "SESAME"
+                Return 151
+            Case "SULFOR_DIOXIDE_SULFITE"
+                Return 152
+            Case "LUPINES"
+                Return 153
+            Case "MOLLUSCS"
+                Return 154
+
+            Case Else
+                Return -1
+        End Select
+    End Function
+
+    ''' <summary>
+    ''' Wandelt die OpenFoodFacts-Nährwert und Allergen-Bezeichnungen in 
+    ''' WinBack-Index-Nummern um
+    ''' </summary>
+    ''' <param name="name"></param>
+    ''' <returns>index (Integer)</returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1479:""Select Case"" statements should not have too many ""Case"" clauses", Justification:="<Ausstehend>")>
+    Public Shared Function OpenFoodFactsToIndex(name As String) As Integer
+        Dim s As String() = Split(name, ":")
+        name = s(s.Count - 1)
+
+        Select Case name.ToUpper
+
+            'Nährwerte
+            Case "ENERGY-KCAL"
+                Return 1
+            Case "ENERGY"
+                Return 2
+            Case "PROTEINS"
+                Return 3
+            Case "CARBOHYDRATES"
+                Return 4
+            Case "FAT"
+                Return 5
+            Case "SUGARS"
+                Return 11
+            Case "SATURATED-FAT"
+                Return 12
+            Case "FIBER"
+                Return 13
+            Case "SODIUM"
+                Return 14
+            Case "VITAMIN-A"
+                Return 21
+            Case "VITAMIN-c"
+                Return 30
+            Case "CALCIUM"
+                Return 102
+            Case "IRON"
+                Return 120
+            Case "SALT"
+                Return 202
+
+            'Allergene
+            Case "GLUTEN"
+                Return 141
+            Case "GLUTEN_WHEAT"
+                Return 170
+            Case "GLUTEN_RYE"
+                Return 171
+            Case "GLUTEN_BARLEY"
+                Return 172
+            Case "GLUTEN_SPELT"
+                Return 173
+            Case "GLUTEN_KAMUT"
+                Return 174
+            Case "GLUTEN_OAT"
+                Return 175
+            Case "CRUSTACEANS"
+                Return 142
+            Case "EGGS"
+                Return 143
+            Case "SEAFOOD"
+                Return 144
+            Case "peanuts"
                 Return 145
             Case "SOY"
                 Return 146
@@ -966,20 +1315,29 @@ Public Class wb_Functions
 
     ''' <summary>
     ''' Formatiert einen String mit der angegebenen Vorkomma und Nachkomma-Stelle
+    ''' Wenn als Culture "sql" angegeben wird, erfolgt die Umwandlung IMMER mit Dezimaltrenner Komma, unabhängig von
+    ''' der Windows-Ländereinstellung.
     ''' </summary>
     ''' <param name="value">Zahlenwert als String</param>
     ''' <param name="VorKomma">Anzahl der Vorkomma-Stellen</param>
     ''' <param name="NachKomma">Anzahl der Nachkomma-Stellen</param>
     ''' <param name="Culture">Ländereinstellung (Default de-DE)</param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Public Shared Function FormatStr(value As String, NachKomma As Integer, Optional VorKomma As Integer = -1, Optional ByVal Culture As String = Nothing) As String
         Dim wert As Double
         Try
-            If value IsNot "" And value IsNot Nothing And value IsNot "-" Then
+            If value IsNot Nothing AndAlso value <> "" AndAlso value <> "-" Then
                 ' Für Datenbank-Felder muss unabhängig von der Ländereinstellung die Umwandlung mit
                 ' der Einstellung de-DE erfolgen
                 If Culture IsNot Nothing Then
-                    wert = Convert.ToDouble(value, New System.Globalization.CultureInfo(Culture))
+                    'Sonderbehandlung für Werte aus der MySQL-Datenbank (Dezimaltrenner ist IMMER Komma)
+                    If Culture = "sql" Then
+                        wert = wb_Functions.StrToDouble(value)
+                    Else
+                        wert = Convert.ToDouble(value, New System.Globalization.CultureInfo(Culture))
+                    End If
                 Else
                     wert = Convert.ToDouble(value)
                 End If
@@ -1007,6 +1365,17 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Formatiert einen String vor dem Schreiben in die MySQL-Datenbank.
+    ''' Dezimaltrenner ist immer Komma, unabhängig von der Ländereinstellung
+    ''' </summary>
+    ''' <param name="value"></param>
+    ''' <returns></returns>
+    Public Shared Function FormatSqlStr(value As String) As String
+        'TODO einfach stumpf Dezimalpunkt durch Komma ersetzen
+        Return value.Replace(".", ",")
+    End Function
+
+    ''' <summary>
     ''' Formatiert einen String im Muster 00:00:00
     ''' </summary>
     ''' <param name="Value"></param>
@@ -1020,24 +1389,18 @@ Public Class wb_Functions
             ti(i) = StrToInt(ts(i))
         Next
 
-
-
         'Uhrzeit auf sinnvolle Werte begrenzen
 
         'Sekunden maximal 59
-        If (ts.Length > 2) Then
-            If (ti(2) > 59) Then
-                ti(2) = ti(2) - 60
-                ti(1) = ti(1) + 1
-            End If
+        If (ts.Length > 2) AndAlso (ti(2) > 59) Then
+            ti(2) = ti(2) - 60
+            ti(1) = ti(1) + 1
         End If
 
         'Minuten maximal 59
-        If (ts.Length > 1) Then
-            If (ti(1) > 59) Then
-                ti(1) = ti(1) - 60
-                ti(0) = ti(0) + 1
-            End If
+        If (ts.Length > 1) AndAlso (ti(1) > 59) Then
+            ti(1) = ti(1) - 60
+            ti(0) = ti(0) + 1
         End If
 
         'Stunden maximal 23h
@@ -1058,20 +1421,85 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' Gibt eine formatierte Zutatenliste zurück. Die Allegene enthaltenen Zutaten werden in GROSSBUCHTABEN
+    ''' angezeigt (statt Fettdruck)
+    ''' </summary>
+    ''' <param name="zl"></param>
+    ''' <returns></returns>
+    Public Shared Function FormatZutatenListe(zl As String) As String
+        Dim Allergen As Boolean = False
+        Dim Result As String = ""
+        Dim BlockSatz As Char() = {" ", ","}
+
+        For Each s As String In zl
+
+            Select Case s
+                Case "{"
+                    Allergen = True
+                Case "}"
+                    Allergen = False
+                Case "*"
+                    'Do nothing
+                Case "<"
+                    Result = Result.TrimEnd(BlockSatz) & vbCrLf
+                Case ">"
+                    'Do nothing
+
+                Case Else
+                    If Allergen Then
+                        Result &= s.ToUpper
+                    Else
+                        Result &= s
+                    End If
+            End Select
+        Next
+        Return Result
+    End Function
+
+
+    ''' <summary>
     ''' Entfernt alle Leerzeichen und Sonderzeichen aus einem String
     ''' Rezeptname -> Excel-TabSheetBezeichnung
     ''' </summary>
     ''' <param name="s"></param>
     ''' <returns></returns>
     Public Shared Function XRenameToExcelTabName(s As String) As String
-        s = s.Replace(" ", "")
-        s = s.Replace("\", "")
-        s = XRemoveSonderZeichen(s)
-        'Länge auf 30 Zeichen begrenzen
-        If Len(s) > 30 Then
-            s = s.Substring(0, 30)
+        If s IsNot Nothing Then
+            s = s.Replace(" ", "")
+            s = s.Replace("\", "")
+            s = XRemoveSonderZeichen(s)
+            'Länge auf 30 Zeichen begrenzen
+            If Len(s) > 30 Then
+                s = s.Substring(0, 30)
+            End If
         End If
         Return s
+    End Function
+
+    ''' <summary>
+    ''' Prüft ob der Excel-Worksheet-Name schon in der Worksheet-Liste existiert
+    ''' Ist der Name schon vorhanden, wird ein neuer Name zurückgegeben mit der
+    ''' Bezeichnung Name(x)
+    ''' </summary>
+    ''' <param name="SheetName"></param>
+    ''' <returns></returns>
+    Public Shared Function CheckExcelWorkSheetNameExists(SheetName As String, ByRef WorkSheets As Object) As String
+        'Anzahl der Worksheets mit identischem Namen
+        Dim RzDbl As Integer = 0
+
+        'Liste aller Worksheets
+        For Each xlw As Microsoft.Office.Interop.Excel.Worksheet In WorkSheets
+            If xlw.Name.Contains(SheetName) Then
+                RzDbl += 1
+            End If
+        Next
+
+        'Worksheet-Name wurde (mehrfach) gefunden
+        If RzDbl > 0 Then
+            Return SheetName & "(" & RzDbl.ToString & ")"
+        Else
+            Return SheetName
+        End If
     End Function
 
     ''' <summary>
@@ -1099,15 +1527,88 @@ Public Class wb_Functions
         End If
     End Function
 
-    Public Shared Function XRestoreSonderZeichen(s As String) As String
+    ''' <summary>
+    ''' Entfernt/Ersetzt alle Umlaute im String
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Public Shared Function XRemoveUmlaute(s As String) As String
         If s IsNot Nothing Then
-            s = s.Replace("&bcksl;", "\")
+            s = s.Replace("Ä", "Ae")
+            s = s.Replace("Ü", "Ue")
+            s = s.Replace("Ö", "Oe")
+
+            s = s.Replace("ä", "ae")
+            s = s.Replace("ü", "ue")
+            s = s.Replace("ö", "oe")
+
+            s = s.Replace("ß", "ss")
+        End If
+
+        Return s
+    End Function
+
+    ''' <summary>
+    ''' Ersetzt alle "störenden" Sonderzeichen aus einem String
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Public Shared Function XReplaceSonderZeichen_ImportExport(s As String) As String
+        If s IsNot Nothing Then
+            s = s.Replace("<CR>", "%x0D")
+            s = s.Replace("<LF>", "%x0A")
+            s = s.Replace(";", "%x3B")
+            s = s.Replace("%", "%%")
             Return s
         Else
             Return ""
         End If
     End Function
 
+    ''' <summary>
+    ''' Entfernt alle "störenden" Sonderzeichen aus einem String. (z.B. vor dem Export der Zutatenliste)
+    ''' Semikolon wird duch Komma ersetzt.
+    ''' </summary>
+    ''' <param name="s"></param>
+    ''' <returns></returns>
+    Public Shared Function XRemoveSonderZeichen_ImportExport(s As String) As String
+        If s IsNot Nothing Then
+            s = s.Replace("<CR>", "")
+            s = s.Replace("<LF>", "")
+            s = s.Replace(Chr(13), "")
+            s = s.Replace(Chr(10), "")
+            s = s.Replace(";", ",")
+            Return s
+        Else
+            Return ""
+        End If
+    End Function
+
+    Public Shared Function XRestoreSonderZeichen(s As String) As String
+        If s IsNot Nothing Then
+            s = s.Replace("&bcksl;", "\")
+            s = s.Replace("&amp;", "&")
+            Return s
+        Else
+            Return ""
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Prüft den Index auf Array-Grenzen und gibt den entsprechenden Wert als String zurück.
+    ''' Ist der Index ausserhalb der Array-Grenzen wird der Defaultwert zurücgegeben
+    ''' </summary>
+    ''' <param name="X"></param>
+    ''' <param name="Index"></param>
+    ''' <param name="DefaultStr"></param>
+    ''' <returns></returns>
+    Public Shared Function GetStringFromArray(X As String(), Index As Integer, Optional DefaultStr As String = "") As String
+        If Index >= 0 AndAlso Index < X.Length Then
+            Return X(Index)
+        Else
+            Return DefaultStr
+        End If
+    End Function
     ''' <summary>
     ''' Fügt einen String kommagetrennt an einen bestehenden Ausdruck an. 
     ''' Ist der bestehende Ausdruck leer wird nur der String zurückgegeben.
@@ -1152,6 +1653,214 @@ Public Class wb_Functions
         End If
     End Function
 
+    Public Shared Function SoundExMatch(s1 As String, s2 As String) As Boolean
+        Return (SoundEx(s1) = SoundEx(s2))
+    End Function
+
+    Public Shared Function SoundEx(s As String) As String
+        If s.Length = 0 Then Return ""
+
+        ' Originalstring in Großbuchstaben umwandeln
+        ' und ß nach SS umwandeln
+        s = s.ToUpper.Replace("ß", "SS")
+
+        s = s.Replace("AE", "A")
+        s = s.Replace("UE", "U")
+        s = s.Replace("OE", "O")
+
+        ' 1. Buchstabe
+        Dim sCode As String = s.Substring(0, 1)
+        Dim sNumber As String = ""
+
+        ' jedem weiteren Buchstaben wird nun ein 
+        ' numerischer Wert zugewiesen
+        For i As Integer = 1 To s.Length - 1
+            Select Case s.Substring(i, 1)
+                Case "B", "F", "P", "V"
+                    sNumber = "1"
+                Case "C", "G", "K", "Q", "S", "X", "Z"
+                    sNumber = "2"
+                Case "D", "T"
+                    sNumber = "3"
+                Case "L"
+                    sNumber = "4"
+                Case "M", "N"
+                    sNumber = "5"
+                Case "R"
+                    sNumber = "6"
+                Case "I", "J"
+                    sNumber = "7"
+                Case "A", "Ä", "E"
+                    sNumber = "8"
+                Case "O", "Ö"
+                    sNumber = "8"
+                Case "U", "Ü"
+                    sNumber = "9"
+
+                    ' Alle anderen Buchstaben, Satzzeichen und
+                    ' Zahlen werden ignoriert
+
+            End Select
+
+            ' numerischen Wert nur verwenden, wenn dieser 
+            ' anders ist, als der vorige Wert
+            If sCode.Length = 1 OrElse sCode.EndsWith(sNumber) = False Then
+                sCode &= sNumber
+            End If
+        Next
+
+        ' SoundEx-Code als Funktionsrückgabewert
+        Return sCode
+    End Function
+
+    ''' <summary>
+    ''' Fuzzy String-Vergleich.
+    ''' Vergleich zwei Strings, die aus mehreren Wörtern bestehen können auf ihre Übereinstimmung.
+    ''' 
+    ''' Die Parameter beeinflussen die Bewertung der verschiedene Algorithmen
+    ''' 
+    '''     pPhrase -   Bewertung des Levenshtein-Differenz
+    '''     pWord   -   Bewertung der Satz-Differenz (mehrere Wörter)
+    '''     pLength -   Veringert die Levenshtein-Diffenz um x% der Längendifferenz der beiden Strings
+    '''     pMin    -   Bewertung des Minimalwertes der Diffenzverfahren
+    '''     pMax    -   Bewertung des Maximalwertes der beiden Differenzverfahren
+    '''     
+    ''' Beide Strings werden jeweils über ValuePhrase(Satz) und ValueWord(Wort) verglichen.
+    ''' 
+    ''' (siehe https://qastack.com.de/programming/5859561/getting-the-closest-string-match)
+    ''' </summary>
+    ''' <param name="s1"></param>
+    ''' <param name="s2"></param>
+    ''' <returns></returns>
+    Public Shared Function FuzzyStringMatch(s1 As String, s2 As String, Optional pPhrase As Integer = 200, Optional pWords As Integer = 20, Optional pLength As Integer = -0, Optional pMin As Integer = 0, Optional pMax As Integer = 0) As Integer
+        'TODO noch prüfen und evtl. Funktion umstellen (unscharfe Suche in Dictionary)
+        Dim Result As Integer = 0
+
+        'ValuePhrase (Levenshtein-Distanz)
+        Dim vp As Integer = ValuePhrase(s1, s2)
+        'ValueWords (Summe der Levenshtein-Distanzen der einzelen Wörte im String)
+        Dim vw As Integer = ValueWords(s1, s2)
+        'ValueLength (Differenz der Satzlängen)
+        Dim vl As Integer = Math.Abs(Len(s1) - Len(s2))
+        'Summe aller Werte mit der entsprechenden Gewichtung
+        If pMin = 0 AndAlso pMax = 0 Then
+            Result = (vl * pLength + vp * pPhrase + vw * pWords) / 100
+        Else
+            Result = (vl * pLength * 100 + (Math.Min(vp * pPhrase, vw * pWords)) * pMin + (Math.Max(vp * pPhrase, vw * pWords)) * pMax) / 100
+        End If
+        Return Result
+    End Function
+
+    Private Shared Function ValuePhrase(s1 As String, s2 As String) As Integer
+        Return LevenshteinDistance(s1, s2)
+    End Function
+
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
+    Private Shared Function ValueWords(s1 As String, S2 As String) As Integer
+        Dim wordsS1, wordsS2 As String()
+        Dim Result As Integer = 0
+
+        wordsS1 = SplitMultiDelims(s1, " _-(")
+        wordsS2 = SplitMultiDelims(S2, " _-(")
+        Dim word1%, word2%, thisD#, wordbest#
+        Dim wordsTotal#
+        For word1 = LBound(wordsS1) To UBound(wordsS1)
+            wordbest = Len(S2)
+            For word2 = LBound(wordsS2) To UBound(wordsS2)
+                thisD = LevenshteinDistance(wordsS1(word1), wordsS2(word2))
+                If thisD < wordbest Then wordbest = thisD
+                If thisD = 0 Then Exit For
+            Next word2
+            wordsTotal += wordbest
+        Next word1
+        Result = wordsTotal
+
+        Return Result
+    End Function
+
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
+    Public Shared Function LevenshteinDistance(s1 As String, s2 As String) As Integer
+        Dim i, j, cost As Integer 'loop counters and cost of substitution for current letter
+        Dim cI, cD, cS As Integer 'cost of next Insertion, Deletion and Substitution
+
+        Dim L1 As Integer = Len(s1) 'Length of input strings
+        Dim L2 As Integer = Len(s2) 'Length of input strings
+        Dim D(L1, L2) 'Distance matrix
+
+        For i = 0 To L1 : D(i, 0) = i : Next i
+        For j = 0 To L2 : D(0, j) = j : Next j
+
+        For j = 1 To L2
+            For i = 1 To L1
+                cost = Math.Abs(StrComp(Mid$(s1, i, 1), Mid$(s2, j, 1), vbTextCompare))
+                cI = D(i - 1, j) + 1
+                cD = D(i, j - 1) + 1
+                cS = D(i - 1, j - 1) + cost
+                If cI <= cD Then 'Insertion or Substitution
+                    If cI <= cS Then D(i, j) = cI Else D(i, j) = cS
+                Else 'Deletion or Substitution
+                    If cD <= cS Then D(i, j) = cD Else D(i, j) = cS
+                End If
+            Next i
+        Next j
+        Return D(L1, L2)
+    End Function
+
+    ''' <summary>
+    ''' This function splits Text into an array of substrings, each substring
+    ''' delimited by any character in DelimChars. Only a single character
+    ''' may be a delimiter between two substrings, but DelimChars may
+    ''' contain any number of delimiter characters. It returns a single element
+    ''' array containing all of text if DelimChars is empty, or a 1 or greater
+    ''' element array if the Text is successfully split into substrings.
+    ''' If IgnoreConsecutiveDelimiters is true, empty array elements will not occur.
+    ''' If Limit greater than 0, the function will only split Text into 'Limit'
+    ''' array elements or less. The last element will contain the rest of Text.
+    ''' </summary>
+    ''' <param name="Text"></param>
+    ''' <param name="DelimChars"></param>
+    ''' <param name="IgnoreConsecutiveDelimiters"></param>
+    ''' <param name="Limit"></param>
+    ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
+    Private Shared Function SplitMultiDelims(ByRef Text As String, ByRef DelimChars As String, Optional ByVal IgnoreConsecutiveDelimiters As Boolean = False, Optional ByVal Limit As Long = -1) As String()
+        Dim ElemStart As Long, N As Long, Elements As Long
+        Dim lDelims As Long, lText As Long
+        Dim Arr() As String
+
+        lText = Len(Text)
+        lDelims = Len(DelimChars)
+        If lDelims = 0 OrElse lText = 0 OrElse Limit = 1 Then
+            ReDim Arr(0 To 0)
+            Arr(0) = Text
+            Return Arr
+        End If
+        ReDim Arr(0 To IIf(Limit = -1, lText - 1, Limit))
+
+        Elements = 0 : ElemStart = 1
+        For N = 1 To lText
+            If InStr(DelimChars, Mid(Text, N, 1)) Then
+                Arr(Elements) = Mid(Text, ElemStart, N - ElemStart)
+                If IgnoreConsecutiveDelimiters Then
+                    If Len(Arr(Elements)) > 0 Then Elements += 1
+                Else
+                    Elements += 1
+                End If
+                ElemStart = N + 1
+                If Elements + 1 = Limit Then Exit For
+            End If
+        Next N
+        'Get the last token terminated by the end of the string into the array
+        If ElemStart <= lText Then Arr(Elements) = Mid(Text, ElemStart)
+        'Since the end of string counts as the terminating delimiter, if the last character
+        'was also a delimiter, we treat the two as consecutive, and so ignore the last elemnent
+        If IgnoreConsecutiveDelimiters Then If Len(Arr(Elements)) = 0 Then Elements -= 1
+
+        ReDim Preserve Arr(0 To Elements) 'Chop off unused array elements
+        Return Arr
+    End Function
+
     ''' <summary>
     ''' Wandelt einen Double-Wert in einen String um. Dabei wird das Dezimal-Trennzeichen als Punkt dargestellt !!!!
     ''' </summary>
@@ -1165,22 +1874,23 @@ Public Class wb_Functions
     ''' <summary>
     ''' Wandelt einen String sicher in Float um. Das Zahlenformat kann US/DE sein. Punkte werden vor der Konvertierung in Koma umgewandelt.
     ''' 1000er - Trennzeichen sind nicht erlaubt.
+    ''' Die Umwandlung erfolgt unabhängig von der eingestellten Länderkennung!
     ''' Wenn die Umwandlung per TryParse fehlschlägt (Result=False) wird die einfache Umwandlung per val() versucht. Damit können auch Werte
     ''' umgewandelt werden, die Strings enthalten (z.B. 10kg)
     ''' </summary>
     ''' <param name="value"></param>
-    ''' <returns>Kovertierten String im Format Double</returns>
+    ''' <returns>Konvertierten String im Format Double</returns>
     Public Shared Function StrToDouble(value As String) As Double
-        If value IsNot Nothing Then
+        If value IsNot Nothing AndAlso value IsNot "" Then
             Dim d As Double
             Try
                 value = value.Replace(".", ",")
-                If Double.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d) Then
+                If Double.TryParse(value, NumberStyles.Number, sqlFormatProvider, d) Then
                     Return d
                 Else
                     'mögliche Strings oder Sonderzeichen entfernen
                     value = New System.Text.RegularExpressions.Regex("[a-zA-ZüöäÜÖÄß%°\\s\\n]").Replace(value, String.Empty)
-                    If Double.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d) Then
+                    If Double.TryParse(value, NumberStyles.Number, sqlFormatProvider, d) Then
                         Return d
                     Else
                         Return 0.0F
@@ -1204,7 +1914,7 @@ Public Class wb_Functions
         If value IsNot Nothing Then
             Try
                 value = value.Replace(".", ",")
-                If Integer.TryParse(value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), i) Then
+                If Integer.TryParse(value, NumberStyles.Number, sqlFormatProvider, i) Then
                     Return i
                 Else
                     Try
@@ -1230,7 +1940,7 @@ Public Class wb_Functions
         'TODO Laufzeit testen/optimieren
         Dim i As Integer
         Try
-            If Value IsNot Nothing And Not IsDBNull(Value) Then
+            If Value IsNot Nothing AndAlso Not IsDBNull(Value) Then
                 Integer.TryParse(Value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), i)
                 Return i
             Else
@@ -1250,9 +1960,9 @@ Public Class wb_Functions
         'TODO Laufzeit testen/optimieren
         Dim d As Double
         Try
-            If Value IsNot Nothing And Not IsDBNull(Value) Then
+            If Value IsNot Nothing AndAlso Not IsDBNull(Value) Then
                 Value = Value.Replace(".", ",")
-                Double.TryParse(Value, NumberStyles.Number, CultureInfo.CreateSpecificCulture("de-DE"), d)
+                Double.TryParse(Value, NumberStyles.Number, sqlFormatProvider, d)
                 Return d
             Else
                 Return 0.0F
@@ -1270,7 +1980,10 @@ Public Class wb_Functions
     ''' <returns></returns>
     Public Shared Function MySqlToUtf8(Value As String) As String
         'abhängig von der eingestellten Code-Page
-        Select Case wb_GlobalSettings.ConvertMySQL_CodePage
+        Dim CodePage As wb_Global.MySqlCodepage = wb_GlobalSettings.ConvertMySQL_CodePage
+
+        'abhängig von der eingestellten Code-Page
+        Select Case CodePage
             Case wb_Global.MySqlCodepage.iso8859_15
                 Return Value
             Case wb_Global.MySqlCodepage.iso8859_5
@@ -1292,8 +2005,15 @@ Public Class wb_Functions
     ''' <returns></returns>
     Public Shared Function UTF8toMySql(Value As String) As String
         'abhängig von der eingestellten Code-Page
-        'TODO für UnitTest muss die Sprache einstellbar sein !!
-        Select Case wb_GlobalSettings.ConvertMySQL_CodePage
+        Dim CodePage As wb_Global.MySqlCodepage
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.UnitTest Then
+            CodePage = wb_Global.MySqlCodepage.iso8859_5
+        Else
+            CodePage = wb_GlobalSettings.ConvertMySQL_CodePage
+        End If
+
+        'abhängig von der eingestellten Code-Page
+        Select Case CodePage
             Case wb_Global.MySqlCodepage.iso8859_15
                 Return Value
             Case wb_Global.MySqlCodepage.iso8859_5
@@ -1318,27 +2038,44 @@ Public Class wb_Functions
     ''' <param name="VersionIst"></param>
     ''' <param name="VersionNeu"></param>
     ''' <returns></returns>
-    Public Shared Function CompareVersion(VersionIst As String, VersionNeu As String) As Boolean
+    Public Shared Function CompareVersion(VersionIst As String, VersionNeu As String) As wb_Global.CompareVersionResult
         Try
             'Aufteilen in die einzelnen Versions-Nummern
-            Dim Vi() As String = Split(VersionIst, ".")
-            Dim Vn() As String = Split(VersionNeu, ".")
+            Dim Vi As String() = Split(VersionIst & ".0", ".")
+            Dim Vn As String() = Split(VersionNeu & ".0", ".")
+
+            'Beide Versions-Angaben müssen die gleiche Länge haben
+            If Vi.Length < 4 OrElse Vn.Length < 4 Then
+                Return wb_Global.CompareVersionResult.Err
+            End If
 
             'Vergleich Hauptversion
             If Convert.ToInt16(Vi(0)) < Convert.ToInt16(Vn(0)) Then
-                Return True
+                Return wb_Global.CompareVersionResult.VersionUpdate
+            ElseIf Convert.ToInt16(Vi(0)) > Convert.ToInt16(Vn(0)) Then
+                Return wb_Global.CompareVersionResult.NoUpdate
             End If
-            'Vergleich Nebenversion
+            'Vergleich Nebenversion (Hauptversion ist gleich)
             If Convert.ToInt16(Vi(1)) < Convert.ToInt16(Vn(1)) Then
-                Return True
+                Return wb_Global.CompareVersionResult.MinorUpdate
+            ElseIf Convert.ToInt16(Vi(1)) > Convert.ToInt16(Vn(1)) Then
+                Return wb_Global.CompareVersionResult.NoUpdate
             End If
-            'Vergleich Releaseversion
+            'Vergleich Releaseversion (Nebenversion ist gleich)
             If Convert.ToInt16(Vi(2)) < Convert.ToInt16(Vn(2)) Then
-                Return True
+                Return wb_Global.CompareVersionResult.MinorUpdate
+            ElseIf Convert.ToInt16(Vi(2)) > Convert.ToInt16(Vn(2)) Then
+                Return wb_Global.CompareVersionResult.NoUpdate
+            End If
+            'Vergleich Minor (Releaseversion ist gleich)
+            If Convert.ToInt16(Vi(3)) < Convert.ToInt16(Vn(3)) Then
+                Return wb_Global.CompareVersionResult.MinorUpdate
+            Else
+                Return wb_Global.CompareVersionResult.NoUpdate
             End If
         Catch
         End Try
-        Return False
+        Return wb_Global.CompareVersionResult.Err
     End Function
 
 
@@ -1354,7 +2091,28 @@ Public Class wb_Functions
         Return Math.Round(100 * SaveDiv(Prozentwert, Grundwert), Dezimalstellen)
     End Function
 
-    Public Shared Sub CloseAndDisposeSubForm(ByRef frm As Windows.Forms.Form)
+    Public Shared Sub TextBoxAbrunden(ByVal radius As Integer, ByVal xLabel As Label)
+        Const x As Integer = 1
+        Const y As Integer = 1
+        Dim width As Integer = xLabel.Width - 2
+        Dim height As Integer = xLabel.Height - 2
+
+        Dim gp As System.Drawing.Drawing2D.GraphicsPath = New System.Drawing.Drawing2D.GraphicsPath()
+        gp.AddLine(x + radius, y, x + width - radius, y)
+        gp.AddArc(x + width - radius, y, radius, radius, 270, 90)
+        gp.AddLine(x + width, y + radius, x + width, y + height - radius)
+        gp.AddArc(x + width - radius, y + height - radius, radius, radius, 0, 90)
+        gp.AddLine(x + width - radius, y + height, x + radius, y + height)
+        gp.AddArc(x, y + height - radius, radius, radius, 90, 90)
+        gp.AddLine(x, y + height - radius, x, y + radius)
+        gp.AddArc(x, y, radius, radius, 180, 90)
+        gp.CloseFigure()
+        xLabel.Region = New System.Drawing.Region(gp)
+        gp.Dispose()
+    End Sub
+
+
+    Public Shared Sub CloseAndDisposeSubForm(ByRef frm As System.Windows.Forms.Form)
         If frm IsNot Nothing Then
             frm.Close()
             frm = Nothing
@@ -1362,7 +2120,6 @@ Public Class wb_Functions
     End Sub
 
     Public Shared Function FTP_Upload_File(ByVal filetoupload As String, pathtoupload As String) As String
-        ', ByVal ftpuri As String, ByVal ftpusername As String, ByVal ftppassword As String) As Long
         Dim FtpURI As String = "ftp://" & wb_GlobalSettings.MySQLServerIP & pathtoupload
         Dim FtpUser As String = wb_GlobalSettings.MySQLUser
         Dim FtpPass As String = wb_GlobalSettings.MySQLPass
@@ -1392,11 +2149,48 @@ Public Class wb_Functions
     End Function
 
     ''' <summary>
+    ''' FTP-Download einer Datei vom WinBack-Server.
+    ''' Pfad und Dateiname müssen angegeben werden. Die Datei wird mit dem gleichen Namen im Zielpfad 
+    ''' auf der Windows-Maschine gespeichert.
+    ''' 
+    ''' Benutzername und Passwort sind identisch mit den Anmeldeinformationen der MySql-Datenbank.
+    ''' </summary>
+    ''' <param name="PathAndFileToDownloadFrom"></param> Pfad und Dateiname (Linux)
+    ''' <param name="PathToSaveFileTo"></param>          Pfad (Windows)
+    ''' <returns></returns>
+    Public Shared Function FTP_Download_File(ByVal PathAndFileToDownloadFrom As String, PathToSaveFileTo As String) As String
+        ', ByVal ftpuri As String, ByVal ftpusername As String, ByVal ftppassword As String) As Long
+        Dim FtpURI As String = "ftp://" & wb_GlobalSettings.MySQLServerIP & PathAndFileToDownloadFrom
+        Dim FtpUser As String = wb_GlobalSettings.MySQLUser
+        Dim FtpPass As String = wb_GlobalSettings.MySQLPass
+        Dim DestinationFileAndPath As String = PathToSaveFileTo & "\" & Path.GetFileName(PathAndFileToDownloadFrom)
+
+        ' Create a web request that will be used to talk with the server and set the request method to download a file by ftp.
+        Dim ftpRequest As FtpWebRequest = CType(WebRequest.Create(FtpURI), FtpWebRequest)
+
+        Try
+            ' Confirm the Network credentials based on the user name and password passed in.
+            ftpRequest.Credentials = New NetworkCredential(FtpUser, FtpPass)
+            'Download File
+            ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile
+            Using FtpStream As Stream = ftpRequest.GetResponse().GetResponseStream()
+                Using DownLoadStream As Stream = File.Create(DestinationFileAndPath)
+                    FtpStream.CopyTo(DownLoadStream)
+                End Using
+            End Using
+        Catch ex As Exception
+            Return ex.Message
+        End Try
+        Return Nothing
+    End Function
+
+    ''' <summary>
     ''' Löscht alle Dateien aus einem Verzeichnis, die älter als xDays sind
     ''' </summary>
     ''' <param name="Directory"></param>
     ''' <param name="FilePattern"></param>
     ''' <param name="xDays"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S108:Nested blocks of code should not be left empty", Justification:="<Ausstehend>")>
     Public Shared Sub DeleteOldFiles(Directory As String, FilePattern As String, xDays As Integer)
         Try
             Dim Dir As New DirectoryInfo(Directory)
@@ -1411,6 +2205,28 @@ Public Class wb_Functions
     End Sub
 
     ''' <summary>
+    ''' Prüft, ob ein Verzeichnis existiert. Wenn nicht, wird es erstellt.
+    ''' </summary>
+    ''' <param name="Path"></param>
+    ''' <param name="Create"></param>
+    ''' <returns></returns>
+    Public Shared Function FolderExists(Path As String, Optional Create As Boolean = False) As Boolean
+        Dim Dir As New DirectoryInfo(Path)
+        If Not Dir.Exists Then
+            If Create Then
+                Try
+                    Dir.Create()
+                Catch ex As Exception
+                    Return False
+                End Try
+            Else
+                Return False
+            End If
+        End If
+        Return True
+    End Function
+
+    ''' <summary>
     ''' Pdf-File mit der Windows-Default-Anwendung anzeigen. (pdf-Viewer)
     ''' </summary>
     ''' <param name="Filename"></param>
@@ -1423,7 +2239,6 @@ Public Class wb_Functions
         Catch ex As Exception
             MsgBox("Beim Anzeigen der pdf-Datei ist ein Fehler aufgetreten." & vbCrLf & vbCrLf & "Bitte prüfen, ob ein entsprechender pdf-Viewer installiert ist", MsgBoxStyle.Critical, "pdf-File anzeigen")
         End Try
-        pr = Nothing
     End Sub
 
     ''' <summary>
@@ -1434,8 +2249,8 @@ Public Class wb_Functions
     ''' <param name="Argument"></param>
     ''' <param name="WaitUntilReady"></param>
     Public Shared Function DoBatch(Directory As String, BatchFile As String, Argument As String, WaitUntilReady As Boolean) As Boolean
-        Dim cmd As String = Chr(34) + wb_GlobalSettings.pAddInPath + "\" + BatchFile + Chr(34)
-        Dim arg As String = Chr(34) + Directory + Chr(34) + " " + Chr(34) + Argument + Chr(34)
+        Dim cmd As String = Chr(34) & Directory & "\" & BatchFile & Chr(34)
+        Dim arg As String = Chr(34) & Directory & Chr(34) & " " & Chr(34) & Argument & Chr(34)
         'Batch-File ausführen
         Return ExeBatch(Directory, cmd, arg, WaitUntilReady)
     End Function
@@ -1449,8 +2264,8 @@ Public Class wb_Functions
     ''' <param name="Arg2"></param>
     ''' <param name="WaitUntilReady"></param>
     Public Shared Function DoBatch(Directory As String, BatchFile As String, Arg1 As String, Arg2 As String, WaitUntilReady As Boolean) As Boolean
-        Dim cmd As String = Chr(34) + wb_GlobalSettings.pAddInPath + "\" + BatchFile + Chr(34)
-        Dim arg As String = Chr(34) + Directory + Chr(34) + " " + Chr(34) + Arg1 + Chr(34) + " " + Chr(34) + Arg2 + Chr(34)
+        Dim cmd As String = Chr(34) & Directory & "\" & BatchFile & Chr(34)
+        Dim arg As String = Chr(34) & Directory & Chr(34) & " " & Chr(34) & Arg1 & Chr(34) & " " & Chr(34) & Arg2 & Chr(34)
         'Batch-File ausführen
         Return ExeBatch(Directory, cmd, arg, WaitUntilReady)
     End Function
@@ -1458,40 +2273,37 @@ Public Class wb_Functions
     Private Shared Function ExeBatch(Directory As String, cmd As String, arg As String, WaitUntilReady As Boolean) As Boolean
         Dim p As New Process()
         Try
-            p.StartInfo = New ProcessStartInfo(cmd, arg)
-            p.StartInfo.CreateNoWindow = True
-            p.StartInfo.UseShellExecute = False
-            p.StartInfo.RedirectStandardOutput = True
-            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
-            p.StartInfo.WorkingDirectory = Directory
+            p.StartInfo = New ProcessStartInfo(cmd, arg) With {
+                .CreateNoWindow = True,
+                .UseShellExecute = False,
+                .RedirectStandardOutput = True,
+                .WindowStyle = ProcessWindowStyle.Hidden,
+                .WorkingDirectory = Directory
+            }
             p.Start()
-            p.WaitForExit()
+            'warten bis Prozess beendet
+            If WaitUntilReady Then
+                p.WaitForExit()
+            End If
             Return (p.ExitCode = 0)
         Catch ex As Exception
-            MsgBox("Fehler beim Start von " & cmd & " " & arg, MsgBoxStyle.Critical, "Batch-File")
+            MsgBox("Fehler " & ex.Message & " beim Start von " & cmd & " " & arg, MsgBoxStyle.Critical, "Batch-File")
             Return False
         End Try
     End Function
 
-    '   Private Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
-    '   ShellExecute(0&, "open", wb_GlobalSettings.pProgrammPath & "Orgasoft.NET", "", "", 1)
-
     ''' <summary>
-    ''' Programm neustarten. Wenn das WinBack-AddIn unter OrgaSoft läuft, wird der OrgaSoft-Prozess gekillt und neu gestartet !
+    ''' Programm neustarten. Wenn das WinBack-AddIn unter OrgaSoft läuft, wird der WinBackUpdate mit Parameter /R gestartet
+    ''' Anschliessend wird das laufende Programm beendet. Über WinBackUpdate startet OrgaBack neu
     ''' </summary>
     Public Shared Sub Restart()
         'Programm-Variante OrgaBask startet Orgasoft-Instanz neu
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
-            'Programm-Verzeichnis Signum OrgaSoft
-            Dim SignumDirectory As String = System.AppDomain.CurrentDomain.BaseDirectory
-            'Dateiname Signum OrgaSoft
-            Dim SignumFileName As String = System.AppDomain.CurrentDomain.FriendlyName
-            'Prozess-Info
-            Dim StartInfo As New ProcessStartInfo()
-            StartInfo.FileName = SignumDirectory & SignumFileName
-            'Restart durchführen
-            Process.Start(StartInfo)
-            Process.GetCurrentProcess().Kill()
+
+            'WinBackUpdate.exe ausführen - Parameter /R /O /N (anschliessend Neustart OrgaBack)
+            Call Shell(wb_GlobalSettings.pWinBackUpdatePath & wb_GlobalSettings.WinBackUpgradeExe & " /R /O /N" & Chr(34) & wb_GlobalSettings.MyOwnExeFileName & Chr(34))
+            'laufendes Programm beenden
+            ExitProgram()
         Else
             'Restart (normal)
             Application.Restart()
@@ -1499,17 +2311,74 @@ Public Class wb_Functions
     End Sub
 
     ''' <summary>
-    ''' Beendet das laufende Programm. Wenn das WinBack-AddIn unter OrgaSoft läuft, wird der OrgaSoft-Prozess gekillt !
+    ''' Beendet das laufende Programm. Wenn das WinBack-AddIn unter OrgaSoft läuft, wird der OrgaSoft-Prozess geschlossen !
     ''' </summary>
     Public Shared Sub ExitProgram()
         'Programm-Variante OrgaBask startet Orgasoft-Instanz neu
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
-            Process.GetCurrentProcess().Kill()
+            If Not Process.GetCurrentProcess().CloseMainWindow Then
+                Process.GetCurrentProcess().Kill()
+            End If
         Else
             Application.Exit()
         End If
     End Sub
 
+    ''' <summary>
+    ''' Starte ein externes Programm aus dem Addin-Verzeichnis oder aus derm Programm-Verzeichnis
+    ''' </summary>
+    ''' <param name="cmdLinie"></param>
+    ''' <param name="cmdParam"></param>
+    ''' <returns></returns>
+    Public Shared Function RunExternalProgramm(cmdLinie As String, Optional cmdParam As String = "", Optional WindowStyle As ProcessWindowStyle = ProcessWindowStyle.Normal) As Boolean
+        Try
+            Dim p As New Process
+            p.StartInfo.FileName = GetCmdLine(cmdLinie)
+            p.StartInfo.Arguments = cmdParam
+            p.StartInfo.UseShellExecute = False
+            p.StartInfo.RedirectStandardOutput = False
+            p.StartInfo.CreateNoWindow = False
+            p.StartInfo.WindowStyle = WindowStyle
+            p.Start()
+        Catch ex As Exception
+            Return False
+        End Try
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Prüft, ob ein Programm im Programm-/AddIn-Verzeichnis exisitert bzw. installiert ist
+    ''' </summary>
+    ''' <param name="cmdLinie"></param>
+    ''' <returns></returns>
+    Public Shared Function CheckExternalProgram(cmdLinie As String) As Boolean
+        Return IO.File.Exists(GetCmdLine(cmdLinie))
+    End Function
+
+    ''' <summary>
+    ''' Bildet aus der Aufrufzeile (Programm-Name) den kompletten Aufruf-Pfad abhängig von der Programm-Variante
+    ''' </summary>
+    ''' <param name="cmdLine"></param>
+    ''' <returns></returns>
+    Private Shared Function GetCmdLine(cmdLine As String) As String
+        Dim Result As String = cmdLine
+
+        If Result.StartsWith("/") Then
+            Result = Result.Remove(0, 1)
+        Else
+            If wb_GlobalSettings.pAddInPath IsNot Nothing Then
+                Result = wb_GlobalSettings.pAddInPath & Result
+            Else
+                Result = wb_GlobalSettings.pProgrammPath & Result
+            End If
+        End If
+
+        Return Result
+    End Function
+
+    Public Shared Sub ShowHelp()
+        wb_Functions.RunExternalProgramm(wb_Global.WindowsHelp, wb_GlobalSettings.pProgrammPath & wb_Global.OrgaBackHtmlHelp, ProcessWindowStyle.Maximized)
+    End Sub
 
     ''' <summary>
     ''' Startet eine ssh-Sitzung und führt ein Kommando auf dem Linux-Rechner mit der angegebenen IP-Adresse aus
@@ -1583,18 +2452,21 @@ Public Class wb_Functions
     ''' </summary>
     ''' <param name="Filename">Dateiname</param>
     ''' <param name="arr">Array, das gespeichert werden soll</param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S108:Nested blocks of code should not be left empty", Justification:="<Ausstehend>")>
     Public Shared Function ArraySave(ByVal Filename As String, ByVal arr As Object) As Boolean
 
         Dim fs As FileStream = Nothing
+        Dim Serializer As System.Xml.Serialization.XmlSerializer
         Dim Success As Boolean = False
 
         Try
             ' Datei zum Schreiben öffnen
             fs = New FileStream(Filename, FileMode.Create, FileAccess.Write)
 
-            ' Array serialisieren und speichern
-            Dim formatter As New BinaryFormatter()
-            formatter.Serialize(fs, arr)
+            ' Übergebene Klasse in das XML-Format serialisieren
+            Serializer = New System.Xml.Serialization.XmlSerializer(arr.GetType)
+            ' Objekt abspeichern
+            Serializer.Serialize(fs, arr)
             Success = True
 
         Catch ex As Exception
@@ -1611,20 +2483,26 @@ Public Class wb_Functions
     ''' </summary>
     ''' <param name="Filename">Dateiname</param>
     ''' <param name="arr">Array, das die Daten enthalten soll.</param>
-    Public Shared Function ArrayRead(ByVal Filename As String, ByRef arr As Object) As Boolean
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S108:Nested blocks of code should not be left empty", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Major Vulnerability", "S5773:Types allowed to be deserialized should be restricted", Justification:="<Ausstehend>")>
+    Public Shared Function ArrayRead(Of T)(ByVal Filename As String, ByRef arr As T) As Boolean
 
         Dim Success As Boolean = False
 
         ' Prüfen, ob Datei existiert
         If IO.File.Exists(Filename) Then
             Dim fs As FileStream = Nothing
+            Dim Serializer As System.Xml.Serialization.XmlSerializer
+
             Try
                 ' Datei zum Lesen öffnen
                 fs = New FileStream(Filename, FileMode.Open, FileAccess.Read)
 
-                ' Daten deserialiseren und dem Array zuweisen
-                Dim formatter As New BinaryFormatter()
-                arr = formatter.Deserialize(fs)
+                ' Übergebene Klasse in das XML-Format serialisieren
+                Serializer = New System.Xml.Serialization.XmlSerializer(arr.GetType)
+
+                ' Objekt mit dem Inhalt der Datei befüllen
+                arr = CType(Serializer.Deserialize(fs), T)
                 Success = True
 
             Catch ex As Exception
@@ -1770,9 +2648,9 @@ Public Class wb_Functions
     ''' </summary>
     ''' <param name="Stack"></param>
     ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
     Public Shared Function GetLocalStackTrace(Stack As String, OnlyOneLinie As Boolean) As ArrayList
-        Dim subStack As String = ""
-        Dim i As Integer = 0
+        Dim i As Integer
         Dim j As Integer = 0
         Dim ResultStack As New ArrayList
 
@@ -1785,9 +2663,9 @@ Public Class wb_Functions
                 i = Len(Stack)
             End If
             'eine Zeile aus Stacktrace
-            subStack = Stack.Substring(j, i - j)
-            If subStack.Contains("WinBack") And Not subStack.Contains("TraceListener") And Not _
-               subStack.Contains("MyApplication.Main") And Not subStack.Contains("Lambda$") Then
+            Dim subStack As String = Stack.Substring(j, i - j)
+            If subStack.Contains("WinBack") AndAlso Not subStack.Contains("TraceListener") AndAlso Not _
+               subStack.Contains("MyApplication.Main") AndAlso Not subStack.Contains("Lambda$") Then
 
                 'beim ersten Auftreten des passenden Musters wird der String zerlegt und die Schleife verlassen
                 'TODO was passiert bei einem englischen VisualStudio?
@@ -1795,7 +2673,7 @@ Public Class wb_Functions
                 Dim x2 As Integer = subStack.IndexOf(" in ")
                 Dim x3 As Integer = subStack.IndexOf(":Zeile")
 
-                If (x1 > 0) And (x2 > 0) And (x3 > 0) And (x2 - x1) > 5 And (x3 - x2) > 4 Then
+                If (x1 > 0) AndAlso (x2 > 0) AndAlso (x3 > 0) AndAlso (x2 - x1) > 5 AndAlso (x3 - x2) > 4 Then
                     'Stack-Trace in Einzelteile zerlegen
                     Dim s1 As String = subStack.Substring(x1 + 5, x2 - x1 - 5)
                     Dim s2 As String = subStack.Substring(x2 + 4, x3 - x2 - 4)
@@ -1813,7 +2691,7 @@ Public Class wb_Functions
             End If
             'nächste Zeile
             j = i + 2
-        Loop Until (i < 0) Or (i = Len(Stack))
+        Loop Until (i < 0) OrElse (i = Len(Stack))
 
         ResultStack.Add("---")
         Return ResultStack
@@ -1845,7 +2723,7 @@ Public Class wb_Functions
         'Alle Prozesse durchlaufen
         For Each oProcess As Process In Process.GetProcesses
             ' Prozess-Infos ermitteln
-            Debug.Print("ID/ProzessName " & oProcess.Id.ToString & " " & oProcess.ProcessName)
+            'Debug.Print("ID/ProzessName " & oProcess.Id.ToString & " " & oProcess.ProcessName)
             If oProcess.ProcessName = ProcessName Then
                 Return True
             End If
@@ -1911,9 +2789,14 @@ Public Class wb_Functions
         Return False
     End Function
 
+    <CodeAnalysis.SuppressMessage("Minor Code Smell", "S6602:""Find"" method should be used instead of the ""FirstOrDefault"" extension", Justification:="<Ausstehend>")>
     Shared Function GetCurrentIpV4Address() As IPAddress
-        Dim addresses As IPAddress() = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName).AddressList
-        Return addresses.FirstOrDefault(Function(ip) ip.AddressFamily = AddressFamily.InterNetwork)
+        Dim Addresses As IPAddress() = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName).AddressList
+        Try
+            Return Addresses.FirstOrDefault(Function(ip) ip.AddressFamily = AddressFamily.InterNetwork)
+        Catch ex As Exception
+            Return IPAddress.Any
+        End Try
     End Function
 
     Shared Function GetCurrentIpV4AddressString() As String
@@ -1922,19 +2805,19 @@ Public Class wb_Functions
     End Function
 
     Shared Function AddPath(txtNewPath As String) As Boolean
-        Dim objEv As ManagementObjectSearcher = New ManagementObjectSearcher("SELECT * FROM Win32_Environment")
+        Dim objEv As New ManagementObjectSearcher("SELECT * FROM Win32_Environment")
         For Each objMgmt As ManagementObject In objEv.Get
 
-            Debug.Print("Mgmt-Name " & objMgmt("Name"))
-            Debug.Print("Mgmt-User " & objMgmt("UserName"))
+            'Debug.Print("Mgmt-Name " & objMgmt("Name"))
+            'Debug.Print("Mgmt-User " & objMgmt("UserName"))
 
             If objMgmt("Name") = "Path" And objMgmt("UserName") = "<SYSTEM>" Then
                 Dim strPath As String = objMgmt("VariableValue")
                 If strPath.ToLower.IndexOf("cvsnt") >= 0 Then
                     If objMgmt("VariableValue").ToString.Substring(objMgmt("VariableValue").ToString.Length - 1) = ";" Then
-                        objMgmt("VariableValue") = objMgmt("VariableValue") + Trim(txtNewPath) + ";"
+                        objMgmt("VariableValue") = objMgmt("VariableValue") & Trim(txtNewPath) & ";"
                     Else
-                        objMgmt("VariableValue") = objMgmt("VariableValue") + ";" + Trim(txtNewPath) + ";"
+                        objMgmt("VariableValue") = objMgmt("VariableValue") & ";" & Trim(txtNewPath) & ";"
                     End If
                 End If
                 'TODO verlangt Admin-Rechte !!
@@ -1945,4 +2828,59 @@ Public Class wb_Functions
         Next
         Return False
     End Function
+
+    ''' <summary>
+    ''' Extrahiert den Layout-Namen aus dem File-Namen der Config-Datei.
+    ''' Wenn der Layout-Name nicht zum Form-Namen passt, wird ein Leerstring zurückgegeben.
+    ''' </summary>
+    ''' <param name="FileName"></param>
+    ''' <param name="FormName"></param>
+    ''' <returns></returns>
+    Public Shared Function DkPnlConfigName(FileName As String, FormName As String) As String
+        'Extension entfernen
+        FileName = System.IO.Path.GetFileNameWithoutExtension(FileName)
+        'wb... entfernen
+        FileName = FileName.Replace("wb", "")
+
+        'Prüfen ob der Filename zu diesem Fenster gehört
+        If InStr(FileName, FormName) = 1 Then
+            'Form-Name entfernen
+            Return FileName.Replace(FormName, "")
+        Else
+            'File gehört nicht zur Form
+            Return ""
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Erzeugt eine Liste aller zum Form-Namen passenden Konfigurations-Namen
+    ''' </summary>
+    ''' <param name="DirName"></param>
+    ''' <param name="FormName"></param>
+    ''' <returns></returns>
+    Public Shared Function GetDkPnlConfigNameList(DirName As String, FormName As String) As IList(Of String)
+        'Ordner-Name ohne Backslash am Ende
+        Dim oDir As New IO.DirectoryInfo(DirName.TrimEnd("\"))
+        'Ergebnis-Array
+        Dim FileNames As New List(Of String)
+        FileNames.Clear()
+
+        ' alle Dateien des Ordners
+        Dim oFiles As System.IO.FileInfo() = oDir.GetFiles("*.xml")
+        Dim oFile As System.IO.FileInfo
+        ' Layout-Name
+        Dim LayoutName As String = ""
+
+        ' Datei-Array durchlaufen und in ListBox übertragen
+        For Each oFile In oFiles
+            LayoutName = DkPnlConfigName(oFile.Name, FormName)
+            If LayoutName <> "" Then
+                FileNames.Add(LayoutName)
+            End If
+        Next
+
+        Return FileNames
+    End Function
+
+#Enable Warning SYSLIB0014
 End Class

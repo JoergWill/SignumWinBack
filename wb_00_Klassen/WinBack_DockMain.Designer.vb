@@ -24,41 +24,53 @@ Partial Class WinBack_DockMain
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.StatusStrip = New System.Windows.Forms.StatusStrip()
+        Me.tsVersion = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tsIpAdresse = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tsKundeName = New System.Windows.Forms.ToolStripStatusLabel()
         Me.BtnSave = New System.Windows.Forms.Button()
         Me.BtnSaveAs = New System.Windows.Forms.Button()
         Me.BtnDelete = New System.Windows.Forms.Button()
         Me.ToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.cbLayouts = New System.Windows.Forms.ComboBox()
         Me.BtnReload = New System.Windows.Forms.Button()
+        Me.wbDockPanel = New WeifenLuo.WinFormsUI.Docking.DockPanel()
+        Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
-        'DockPanel
+        'StatusStrip
         '
-        Me.wbDockPanel = New WeifenLuo.WinFormsUI.Docking.DockPanel()
-        Me.wbDockPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.wbDockPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.wbDockPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.wbDockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow
-        Me.wbDockPanel.ForeColor = System.Drawing.Color.Black
-        Me.wbDockPanel.Location = New System.Drawing.Point(0, 0)
-        Me.wbDockPanel.Name = "DockPanel"
-        Me.wbDockPanel.Size = New System.Drawing.Size(1056, 601)
-        Me.wbDockPanel.TabIndex = 4
+        Me.StatusStrip.BackgroundImage = Global.WinBack.My.Resources.Resources.StatusStripBackground
+        Me.StatusStrip.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsVersion, Me.tsIpAdresse, Me.tsKundeName})
+        Me.StatusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
+        Me.StatusStrip.Location = New System.Drawing.Point(0, 604)
+        Me.StatusStrip.MinimumSize = New System.Drawing.Size(0, 35)
+        Me.StatusStrip.Name = "StatusStrip"
+        Me.StatusStrip.Size = New System.Drawing.Size(1059, 35)
+        Me.StatusStrip.TabIndex = 5
+        Me.StatusStrip.Text = "StatusStrip1"
         '
-        'StatusStrip1
+        'tsVersion
         '
-        Me.StatusStrip1.BackgroundImage = Global.WinBack.My.Resources.Resources.StatusStripBackground
-        Me.StatusStrip1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 604)
-        Me.StatusStrip1.MinimumSize = New System.Drawing.Size(0, 35)
-        Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1059, 35)
-        Me.StatusStrip1.TabIndex = 5
-        Me.StatusStrip1.Text = "StatusStrip1"
+        Me.tsVersion.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tsVersion.Name = "tsVersion"
+        Me.tsVersion.Size = New System.Drawing.Size(171, 30)
+        Me.tsVersion.Text = "OrgaBack-Produktion V1.2.0.0"
+        '
+        'tsIpAdresse
+        '
+        Me.tsIpAdresse.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tsIpAdresse.Name = "tsIpAdresse"
+        Me.tsIpAdresse.Size = New System.Drawing.Size(80, 30)
+        Me.tsIpAdresse.Text = "(172.16.17.5)"
+        '
+        'tsKundeName
+        '
+        Me.tsKundeName.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tsKundeName.Name = "tsKundeName"
+        Me.tsKundeName.Size = New System.Drawing.Size(66, 30)
+        Me.tsKundeName.Text = "TestKunde"
         '
         'BtnSave
         '
@@ -142,31 +154,50 @@ Partial Class WinBack_DockMain
         Me.ToolTip.SetToolTip(Me.BtnReload, "Layout laden")
         Me.BtnReload.UseVisualStyleBackColor = True
         '
-        'wb_DockBarPanelMain
+        'wbDockPanel
+        '
+        Me.wbDockPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.wbDockPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.wbDockPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.wbDockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow
+        Me.wbDockPanel.ForeColor = System.Drawing.Color.Black
+        Me.wbDockPanel.Location = New System.Drawing.Point(0, 0)
+        Me.wbDockPanel.Name = "wbDockPanel"
+        Me.wbDockPanel.Size = New System.Drawing.Size(1056, 601)
+        Me.wbDockPanel.TabIndex = 4
+        '
+        'WinBack_DockMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.BtnReload)
-        Me.Controls.Add(Me.cbLayouts)
         Me.Controls.Add(Me.BtnDelete)
         Me.Controls.Add(Me.BtnSaveAs)
         Me.Controls.Add(Me.BtnSave)
-        Me.Controls.Add(Me.StatusStrip1)
+        Me.Controls.Add(Me.BtnReload)
+        Me.Controls.Add(Me.cbLayouts)
+        Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.wbDockPanel)
         Me.MinimumSize = New System.Drawing.Size(532, 178)
-        Me.Name = "wb_DockBarPanelMain"
+        Me.Name = "WinBack_DockMain"
         Me.Size = New System.Drawing.Size(1059, 639)
+        Me.StatusStrip.ResumeLayout(False)
+        Me.StatusStrip.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents wbDockPanel As WeifenLuo.WinFormsUI.Docking.DockPanel
-    Friend WithEvents StatusStrip1 As Windows.Forms.StatusStrip
-    Friend WithEvents BtnSave As Windows.Forms.Button
-    Friend WithEvents BtnSaveAs As Windows.Forms.Button
-    Friend WithEvents BtnDelete As Windows.Forms.Button
-    Friend WithEvents ToolTip As Windows.Forms.ToolTip
-    Friend WithEvents cbLayouts As Windows.Forms.ComboBox
-    Friend WithEvents BtnReload As Windows.Forms.Button
+    Friend WithEvents StatusStrip As System.Windows.Forms.StatusStrip
+    Friend WithEvents BtnSave As System.Windows.Forms.Button
+    Friend WithEvents BtnSaveAs As System.Windows.Forms.Button
+    Friend WithEvents BtnDelete As System.Windows.Forms.Button
+    Friend WithEvents ToolTip As System.Windows.Forms.ToolTip
+    Friend WithEvents cbLayouts As System.Windows.Forms.ComboBox
+    Friend WithEvents BtnReload As System.Windows.Forms.Button
+    Friend WithEvents tsVersion As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents tsIpAdresse As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents tsKundeName As System.Windows.Forms.ToolStripStatusLabel
 End Class
