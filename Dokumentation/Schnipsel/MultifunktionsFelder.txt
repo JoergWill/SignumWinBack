@@ -1,0 +1,13 @@
+Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
+Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
+
+' die Multifunktionsfelder sind über das Property "MultiFunktionsFeld" zugänglich, welches eine ICollectionClass ist
+' via FindInInnerlist kann man mit Kriterien suchen, die ein Element in der Collection erfüllen muss
+' FeldNr ist ein Property eines MFF, natürlich ist es auch möglich, erstmal durch die Collection zu iterieren um zu schauen, was an MFF überhaupt enthalten ist
+iMFFIdx = DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("FeldNr=1")
+If iMFFIdx >= 0 Then
+    ' sollte ein MFF mit FeldNr=1 gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
+    ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
+    oMFF = DirectCast(_Extendee.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
+    ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr 1
+End If

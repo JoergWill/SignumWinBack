@@ -1,0 +1,619 @@
+Imports System.IO
+Imports System.Drawing.Imaging
+Imports MessagingToolkit.Barcode.QRCode.Decoder
+Imports MessagingToolkit.Barcode
+
+Public Class BarcodeForm
+    'Instantiate a BarcodeDecoder
+    Private ReadOnly barcodeDecoder As New BarcodeDecoder()
+    'Instantiate a BarcodeEncoder
+    Private ReadOnly barcodeEncoder As New BarcodeEncoder()
+    'The image file/barcode
+    Dim imageFile As Bitmap = Nothing
+
+#Region "Dictionaries"
+    'Different types of Text Encodings that barcodes can be encoded in
+    Private Shared ReadOnly CharacterSets As New Dictionary(Of String, String)() From {
+        {"Default ISO-8859-1", "ISO-8859-1"},
+        {"UTF-8", "UTF-8"},
+        {"SHIFT-JIS", "SHIFT-JIS"},
+        {"CP437", "CP437"},
+        {"ISO-8859-2", "ISO-8859-2"},
+        {"ISO-8859-3", "ISO-8859-3"},
+        {"ISO-8859-4", "ISO-8859-4"},
+        {"ISO-8859-5", "ISO-8859-5"},
+        {"ISO-8859-6", "ISO-8859-6"},
+        {"ISO-8859-7", "ISO-8859-7"},
+        {"ISO-8859-8", "ISO-8859-8"},
+        {"ISO-8859-9", "ISO-8859-9"},
+        {"ISO-8859-10", "ISO-8859-10"},
+        {"ISO-8859-11", "ISO-8859-11"},
+        {"ISO-8859-13", "ISO-8859-13"},
+        {"ISO-8859-14", "ISO-8859-14"},
+        {"ISO-8859-15", "ISO-8859-15"},
+        {"ISO-8859-16", "ISO-8859-16"}
+        }
+
+    'Error correction levels for QR Codes
+    Private Shared ReadOnly ErrorCorrectionLevels As New Dictionary(Of String, ErrorCorrectionLevel)() From {
+        {"Low", ErrorCorrectionLevel.L},
+        {"Medium Low", ErrorCorrectionLevel.M},
+        {"Medium High", ErrorCorrectionLevel.Q},
+        {"High", ErrorCorrectionLevel.H}
+        }
+
+    'Types of 1-Dimensional barcodes.
+    Private Shared ReadOnly OneDimensionalBarcodeFormats As New Dictionary(Of String, String)() From {
+        {"Bookland/ISBN", BarcodeFormat.Bookland},
+        {"Codabar", BarcodeFormat.Codabar},
+        {"Code-11", BarcodeFormat.Code11},
+        {"Code-128", BarcodeFormat.Code128},
+        {"Code-128A", BarcodeFormat.Code128A},
+        {"Code-128B", BarcodeFormat.Code128B},
+        {"Code-128C", BarcodeFormat.Code128C},
+        {"Code-39", BarcodeFormat.Code39},
+        {"Code-39 Extended", BarcodeFormat.Code39Extended},
+        {"Code-93", BarcodeFormat.Code93},
+        {"EAN-8", BarcodeFormat.EAN8},
+        {"EAN-13", BarcodeFormat.EAN13},
+        {"FIM", BarcodeFormat.FIM},
+        {"Industrial 2 of 5", BarcodeFormat.Industrial2of5},
+        {"Interleaved 2 of 5", BarcodeFormat.Interleaved2of5},
+        {"ITF-14", BarcodeFormat.ITF14},
+        {"LOGMARS", BarcodeFormat.LOGMARS},
+        {"MSI 2 Mod 10", BarcodeFormat.MSI2Mod10},
+        {"MSI Mod 10", BarcodeFormat.MSIMod10},
+        {"MSI Mod 11", BarcodeFormat.MSIMod11},
+        {"MSI Mod 11 Mod 10", BarcodeFormat.MSIMod11Mod10},
+        {"PostNet", BarcodeFormat.PostNet},
+        {"Standard 2 of 5", BarcodeFormat.Standard2of5},
+        {"Telepen", BarcodeFormat.Telepen},
+        {"UPC 2 Digit Ext.", BarcodeFormat.UPCSupplemental2Digit},
+        {"UPC 5 Digit Ext.", BarcodeFormat.UPCSupplemental5Digit},
+        {"UPC-A", BarcodeFormat.UPCA},
+        {"UPC-E", BarcodeFormat.UPCE}
+        }
+
+
+    'Alignment positions for the barcodes
+    Private Shared OneDBarcodeAlignmentPositions As New Dictionary(Of String, AlignmentPositions)() From {
+        {"Center", AlignmentPositions.Center},
+        {"Left", AlignmentPositions.Left},
+        {"Right", AlignmentPositions.Right}
+        }
+
+    'Label positions for barcodes
+    Private Shared OneDBarcodeLabelPositions As New Dictionary(Of String, LabelPositions)() From {
+        {"BottomCenter", LabelPositions.BottomCenter},
+        {"BottomLeft", LabelPositions.BottomLeft},
+        {"BottomRight", LabelPositions.BottomRight},
+        {"TopCenter", LabelPositions.TopCenter},
+        {"TopLeft", LabelPositions.TopLeft},
+        {"TopRight", LabelPositions.TopRight}
+        }
+#End Region
+
+#Region "Form OnLoad"
+    'Code that executes when the QRForm loads.
+    Private Sub QRCodeForm_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        'Assign the dictionary values from the dictionary 'CharacterSets' to 
+        'the 'Encoding' Combobox.
+        encodingTypeComboBox.Items.AddRange(CharacterSets.Keys.ToArray())
+        'By default, the first value in the dictionary
+        'is shown instead of a blank box.
+        encodingTypeComboBox.SelectedIndex = 0
+
+        'Assign the dictionary values from the dictionary 'ErrorCorrectionLevels' to 
+        'the 'Error Correction Levels' Combobox.
+        errorCorrectionLevelComboBox.Items.AddRange(ErrorCorrectionLevels.Keys.ToArray())
+        'By default, the first value in the dictionary
+        'is shown instead of a blank box.
+        errorCorrectionLevelComboBox.SelectedIndex = 0
+
+        'Add items from the OneDimensionalBarcodeFormats dictionary to the 'Barcode Format' combobox.
+        barcodeTypeComboBox.Items.AddRange(OneDimensionalBarcodeFormats.Keys.ToArray())
+        'Show the first value in the combobox.
+        barcodeTypeComboBox.SelectedIndex = 0
+
+        'Add items from the OneDAlignmentPositions dictionary to the 'Alignment' combobox.
+        alignmentComboBox.Items.AddRange(OneDBarcodeAlignmentPositions.Keys.ToArray())
+        'Show the first value in the combobox.
+        alignmentComboBox.SelectedIndex = 0
+
+        'Add items from the OneDBarcodeLabelPositions dictionary to the 'Label Position' combobox
+        labelPositionComboBox.Items.AddRange(OneDBarcodeLabelPositions.Keys.ToArray())
+        'Show the first value in the combobox
+        labelPositionComboBox.SelectedIndex = 0
+
+        ''''''Decode Related''''''
+
+        'Set the time measurement to Milliseconds (it's set at index 0)
+        timeMeasurementDomainBox.SelectedIndex = 0
+
+    End Sub
+#End Region
+
+#Region "Buttons"
+
+#Region "Encode Button (Encode Tab)"
+    'Encode Button
+    Private Sub encodeButton_Click(sender As System.Object, e As System.EventArgs) Handles encodeButton.Click
+
+        'If there is text entered in the 'Text To Encode' textbox (ie. Not null or empty).
+        If Not String.IsNullOrEmpty(textToEncodeTextBox.Text) Then
+
+            'The character set we use is the one we select in the 'Encoding' combo box
+            barcodeEncoder.CharacterSet = CharacterSets(encodingTypeComboBox.Text)
+
+            'The error correction we use is the one we select in the 'Error Correction' Combobox
+            barcodeEncoder.ErrorCorrectionLevel = ErrorCorrectionLevels(errorCorrectionLevelComboBox.Text)
+
+            'The foreground color we use is whatever color the 'Foreground Color' button has.
+            barcodeEncoder.ForeColor = foregroundColorButton.BackColor
+
+            'The background color we use is whatever color the 'Background Color' button has.
+            barcodeEncoder.BackColor = backgroundColorButton.BackColor
+
+            'The quiet zone width/height we use is whatever is specified in the 'Quiet Zone' Numeric box.
+            barcodeEncoder.QuietZone = CInt(quietZoneNumericUpDownBox.Value)
+
+            'The width for the barcode output is whatever number is specified in the 'Width' Numeric box.
+            barcodeEncoder.Width = CInt(widthNumericUpDownBox.Value)
+
+            'The height for the barcode output is whatever number is specified in the 'Height' Numeric box.
+            barcodeEncoder.Height = CInt(heightNumericUpDownBox.Value)
+
+            outputPictureBox.Image = barcodeEncoder.Encode(BarcodeFormat.QRCode, textToEncodeTextBox.Text)
+        Else
+            'If the string is in fact null or empty, display the following message box
+            MessageBox.Show("You must enter text to encode.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+    End Sub
+#End Region
+
+#Region "Encode Button (Datamatrices Tab)"
+    'Encode Button (Datamatrices Tab)
+    Private Sub datamatrixEncodeButton_Click(sender As System.Object, e As System.EventArgs) Handles datamatrixEncodeButton.Click
+
+        'If text is entered in the "Text To Encode" box.
+        If Not String.IsNullOrEmpty(datamatrixTextToEncodeTextBox.Text) Then
+
+            Try
+                'Encode the datamatrix with the color we selected for the Foreground
+                barcodeEncoder.ForeColor = datamatrixForegroundColorButton.BackColor
+                'Encode the datamatrix with the color we selected for the Background
+                barcodeEncoder.BackColor = datamatrixBackgroundColorButton.BackColor
+                'The module size value used is the one in the "Module Size" Numeric Box
+                barcodeEncoder.ModuleSize = datamatrixModuleSizeNumericBox.Value
+                'The margin size value used is the one in the "Margin Size" Numeric Box
+                barcodeEncoder.MarginSize = datamatrixMarginSizeNumericBox.Value
+                'Encode the text and display the datamatrix image in the picture box
+                datamatrixPictureBox.Image = barcodeEncoder.Encode(BarcodeFormat.DataMatrix, datamatrixTextToEncodeTextBox.Text)
+            Catch exception As Exception
+                'Display error message
+                MessageBox.Show(exception.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        Else
+            'If no text was entered to be encoded, display the message box 
+            MessageBox.Show("Please specify the data Matrix content", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+    End Sub
+#End Region
+
+#Region "Encode Button (One Dimensional Tab)"
+    'Encode Button (One Dimensional Tab)
+    Private Sub oneDimensionalEncodeButton_Click(sender As System.Object, e As System.EventArgs) Handles oneDimensionalEncodeButton.Click
+        'If the 'Text To Encode' text box is not empty
+        If Not String.IsNullOrEmpty(oneDimensionalDataToEncodeTextBox.Text) Then
+            Try
+                'The barcode format we encode is the one we select in the combobox
+                Dim barcodeFormat As BarcodeFormat = OneDimensionalBarcodeFormats(barcodeTypeComboBox.Text)
+                'Foreground color of the barcode is whatever color the foreground button is.
+                barcodeEncoder.ForeColor = oneDimensionalForegroundColorButton.BackColor
+                'Background color of the barcode is whatever color the background button is.
+                barcodeEncoder.BackColor = oneDimensionalBackgroundColorButton.BackColor
+                'The width of the generated barcode is whatever number is in the 'Width' numeric box
+                barcodeEncoder.Width = oneDimensionalWidthNumericBox.Value
+                'The height of the generated barcode is whatever number is in the 'Height' numeric box
+                barcodeEncoder.Height = oneDimensionalHeightNumericBox.Value
+                'Only include a label if the checkbox is checked to do so.
+                barcodeEncoder.IncludeLabel = generateLabelCheckBox.Checked
+                'Alignment used is the one chosen in the 'Alignment' combo box
+                barcodeEncoder.Alignment = OneDBarcodeAlignmentPositions(alignmentComboBox.Text)
+                'The Label position used is the one chosen in the 'Label Position' combo box
+                barcodeEncoder.LabelPosition = OneDBarcodeLabelPositions(labelPositionComboBox.Text)
+                'Encode and display the barcode in the picture box
+                oneDimensionalOutputPictureBox.Image = barcodeEncoder.Encode(barcodeFormat, oneDimensionalDataToEncodeTextBox.Text)
+
+            Catch exception As Exception
+                'If an exception occurs, display an error message
+                MessageBox.Show(exception.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+            'If not enough information is provided to encode the barcode.
+        Else
+            'Display an error message
+            MessageBox.Show("Please specify the barcode content", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+    End Sub
+#End Region
+
+#Region "Save Button (Encode Tab)"
+
+    'Save Button
+    Private Sub saveButton_Click(sender As System.Object, e As System.EventArgs) Handles saveButton.Click
+        'Save the Image
+        SaveImage(imageFile)
+    End Sub
+
+#End Region
+
+#Region "Save Button (Datamatrices Tab)"
+    'Save Button (Datamatrices Tab)
+    Private Sub datamatrixSaveButton_Click(sender As System.Object, e As System.EventArgs) Handles datamatrixSaveButton.Click
+        'The bitmap image we save is the image inside the picturebox
+        Dim dataMatrixImage As Bitmap = datamatrixPictureBox.Image
+        'Save the bitmap image
+        SaveImage(dataMatrixImage)
+    End Sub
+#End Region
+
+#Region "Save Button (One Dimensional Tab"
+    'Save Button (One Dimensional Tab)
+    Private Sub oneDimensionalSaveButton_Click(sender As System.Object, e As System.EventArgs) Handles oneDimensionalSaveButton.Click
+        Dim outputImage As Bitmap = oneDimensionalOutputPictureBox.Image
+        SaveImage(outputImage)
+    End Sub
+#End Region
+
+#Region "Foreground and Background Color Buttons (Encode Tab)"
+    Private Sub foregroundColorButton_Click(sender As System.Object, e As System.EventArgs) Handles foregroundColorButton.Click
+        colorDialog.AllowFullOpen = True
+        colorDialog.ShowHelp = True
+
+        'The color dialogue by default will start on the color the 
+        'button already has set to it.
+        colorDialog.Color = foregroundColorButton.BackColor
+
+        'If the color dialog is closed with the button 'OK'
+        If (colorDialog.ShowDialog() = DialogResult.OK) Then
+            'The color of the Foreground button is now the color selected in the colorDialog
+            foregroundColorButton.BackColor = colorDialog.Color
+        End If
+    End Sub
+
+    Private Sub backgroundColorButton_Click(sender As System.Object, e As System.EventArgs) Handles backgroundColorButton.Click
+        'Allow the ability to select custom colors.
+        colorDialog.AllowFullOpen = True
+
+        'The color dialogue by default will start on the color the 
+        'button already has set to it.
+        colorDialog.Color = backgroundColorButton.BackColor
+
+        'If the color dialog is closed with the button 'OK'
+        If (colorDialog.ShowDialog() = DialogResult.OK) Then
+            'The color of the Background button is now the color selected in the colorDialog
+            backgroundColorButton.BackColor = colorDialog.Color
+        End If
+    End Sub
+#End Region
+
+#Region "Foreground and Background Color Buttons (Datamatrices Tab)"
+    'Foreground Color Button (Datamatrices Tab)
+    Private Sub datamatrixForegroundColorButton_Click(sender As System.Object, e As System.EventArgs) Handles datamatrixForegroundColorButton.Click
+        'Allow user to choose custom colors.
+        colorDialog.AllowFullOpen = True
+        'The color in the colorDialog starts at the color of the foreground button
+        colorDialog.Color = datamatrixForegroundColorButton.BackColor
+
+        'If the color dialog is closed by hitting the OK button
+        If colorDialog.ShowDialog() = DialogResult.OK Then
+            'Set the button color to the one chosen in the color dialog
+            datamatrixForegroundColorButton.BackColor = colorDialog.Color
+        End If
+    End Sub
+
+    'Background Color Button (Datamatrices Page)
+    Private Sub datamatrixBackgroundColorButton_Click(sender As System.Object, e As System.EventArgs) Handles datamatrixBackgroundColorButton.Click
+        'Allow user to choose custom colors.
+        colorDialog.AllowFullOpen = True
+        'The color in the colorDialog starts at the color of the background button
+        colorDialog.Color = datamatrixBackgroundColorButton.BackColor
+
+        'If the color dialog is closed by hitting the OK button
+        If colorDialog.ShowDialog() = DialogResult.OK Then
+            'Set the button color to the one chosen in the color dialog
+            datamatrixBackgroundColorButton.BackColor = colorDialog.Color
+        End If
+    End Sub
+#End Region
+
+#Region "Foreground and Background Color Buttons (One Dimensional Tab)"
+    'Foreground Color Button (One Dimensional Tab)
+    Private Sub oneDimensionalForegroundColorButton_Click(sender As System.Object, e As System.EventArgs) Handles oneDimensionalForegroundColorButton.Click
+        'Allow the selecting of custom colors.
+        colorDialog.AllowFullOpen = True
+        'The color it sets to in the color dialog by default is the color of the button
+        colorDialog.Color = oneDimensionalForegroundColorButton.BackColor
+        'If the window closes by hitting OK
+        If colorDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            'The color of the button changes to the one selected in the color dialog
+            oneDimensionalForegroundColorButton.BackColor = colorDialog.Color
+        End If
+    End Sub
+
+    'Background Color Button (One Dimensional Tab)
+    Private Sub oneDimensionalBackgroundColorButton_Click(sender As System.Object, e As System.EventArgs) Handles oneDimensionalBackgroundColorButton.Click
+        'Allow the selecting of custom colors.
+        colorDialog.AllowFullOpen = True
+        'The color it sets to in the color dialog by default is the color of the button
+        colorDialog.Color = oneDimensionalBackgroundColorButton.BackColor
+        'If the window closes by hitting OK
+        If colorDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            'The color of the button changes to the one selected in the color dialog
+            oneDimensionalBackgroundColorButton.BackColor = colorDialog.Color
+        End If
+    End Sub
+#End Region
+
+#Region "Browse Button (Decode Tab)"
+    'The button '...'
+    Private Sub decodeBrowseFileButton_Click(sender As System.Object, e As System.EventArgs) Handles decodeBrowseFileButton.Click
+
+        'The dialogue for opening the image file.
+        Dim openFile As OpenFileDialog = New OpenFileDialog
+
+        'If the OK button in the file dialogue is clicked.
+        If openFile.ShowDialog = DialogResult.OK Then
+            'The image file is whatever we chose in the OpenFileDialog
+            imageFile = New Bitmap(openFile.FileName)
+            'Make the picture box display the opened image.
+            decodePictureBox.Image = imageFile
+            'The textbox beside the browse button displays the filename of the image
+            imageInputTextBox.Text = openFile.FileName
+            'Clear the Barcode Type textbox
+            barcodeTypeTextBox.Text = String.Empty
+            'Clear the decoded output textbox
+            decodedContentTextBox.Text = String.Empty
+
+            'Resize the image to fit in the picture box
+            ResizeImage(openFile.FileName, decodePictureBox)
+        End If
+    End Sub
+#End Region
+
+#Region "Decode Button (Decode Tab)"
+    'Decode Button
+    Private Sub decodeButton_Click(sender As System.Object, e As System.EventArgs) Handles decodeButton.Click
+        'Get the time before the decoding.
+        Dim dateTime As DateTime = Date.Now
+
+        'If there is an image loaded
+        If Not decodePictureBox.Image Is Nothing Then
+
+            'Decode the image/barcode
+            DecodeBarcode(imageFile)
+
+            'Get the amount of time it took to decode by doing a calculation that is essentially:
+            'Time now - Time before decoding = Time taken
+            Dim timeSpan As TimeSpan = Date.Now.Subtract(dateTime)
+
+            'If we choose to display the decode time in milliseconds
+            If timeMeasurementDomainBox.Text = "Milliseconds" Then
+                'The Decode Time label displays the time in milliseconds.
+                decodeTimeLabel.Text = "Decode Time: " + timeSpan.Milliseconds.ToString() + "ms"
+            End If
+
+            'If we choose to display the decode time in Seconds
+            If timeMeasurementDomainBox.Text = "Seconds" Then
+
+                'The Decode Time label displays the time in seconds.
+                decodeTimeLabel.Text = "Decode Time: " + timeSpan.Seconds.ToString() + "s"
+            End If
+
+            'If we choose to display the decode time in ticks
+            If timeMeasurementDomainBox.Text = "Ticks" Then
+                'The Decode Time label displays the time in ticks.
+                decodeTimeLabel.Text = "Decode Time: " + timeSpan.Ticks.ToString() + " ticks"
+            End If
+        End If
+    End Sub
+#End Region
+
+#End Region
+
+#Region "Decode Function"
+    'Decode Function
+    Private Sub DecodeBarcode(image As Bitmap)
+
+        'List which holds potential barcode formats the image could be.
+        Dim possibleFormats As New List(Of BarcodeFormat)(10) 'Holds Ten individual values in the list
+
+        'Dictionary which will hold all the submitted options to decode with.
+        Dim decodingOptions As New Dictionary(Of DecodeOptions, Object)()
+
+        'If the QR Code checkbox is checked, add it to the list.
+        If QRCodeCheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.QRCode)
+        End If
+
+        'If the DataMatrix checkbox is checked, add it to the list.
+        If datamatrixCheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.DataMatrix)
+        End If
+
+        'If the pdf417 checkbox is checked, add it to the list.
+        If pdf417CheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.PDF417)
+        End If
+
+        'If the Aztec checkbox is checked, add it to the list.
+        If aztecCheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.Aztec)
+        End If
+
+        'If the UPC-A checkbox is checked, add it to the list.
+        If UPCACheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.UPCA)
+        End If
+
+        'If the UPC-E checkbox is checked, add it to the list.
+        If UPCECheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.UPCE)
+        End If
+
+        'If the UCC-12 checkbox is checked, add it to the list.
+        If UCC12CheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.UCC12)
+        End If
+
+        'If the UCC-13 checkbox is checked, add it to the list.
+        If UCC13CheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.UCC13)
+        End If
+
+        'If the EAN-8 checkbox is checked, add it to the list.
+        If EAN8CheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.EAN8)
+        End If
+
+        'If the EAN-13 checkbox is checked, add it to the list.
+        If EAN13CheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.EAN13)
+        End If
+
+        'If the Code-39 checkbox is checked, add it to the list.
+        If Code39CheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.Code39)
+        End If
+
+        'If the Code-93 checkbox is checked, add it to the list.
+        If Code93CheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.Code93)
+        End If
+
+        'If the Code-128 checkbox is checked, add it to the list.
+        If Code128CheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.Code128)
+        End If
+
+        'If the 'Interleaved 2 Of 5' checkbox is checked, add it to the list.
+        If Interleaved2Of5CheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.Interleaved2of5)
+        End If
+
+        'If the RSS-14 checkbox is checked, add it to the list.
+        If RSS14CheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.RSS14)
+        End If
+
+        'If the 'RSS Expanded' checkbox is checked, add it to the list.
+        If RSSExpandedCheckBox.Checked Then
+            possibleFormats.Add(BarcodeFormat.RSSExpanded)
+        End If
+
+        Try
+            'The result is the decoding of the imagefile with the decoding options specified by the user.
+            Dim decodedResult As Result = barcodeDecoder.Decode(image, decodingOptions)
+
+            'If decodedResult is not null, then
+            If Not decodedResult Is Nothing Then
+                'Show the decoded results in the Decoded Data textbox
+                decodedContentTextBox.Text = decodedResult.Text
+                'Show the type of barcode the image that was decoded is.
+                barcodeTypeTextBox.Text = decodedResult.BarcodeFormat.ToString
+            End If
+            'If an error occurs from anything decoder related, catch it.
+        Catch barcodeException As BarcodeDecoderException
+            'Display an error message box
+            MessageBox.Show(barcodeException.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+#End Region
+
+#Region "Image Resizing Function"
+    'Resize Image To Fit the PictureBox and center it
+    Public Sub ResizeImage(ByVal ImagePath As String, ByVal picBox As PictureBox, Optional ByVal pSizeMode As PictureBoxSizeMode = PictureBoxSizeMode.CenterImage)
+        Try
+            picBox.Image = Nothing
+            picBox.SizeMode = pSizeMode
+            If File.Exists(ImagePath) Then
+                Dim imgOrg As Bitmap
+                Dim imgShow As Bitmap
+                Dim graphics As Graphics
+                Dim divideBy, divideByH, divideByW As Double
+                imgOrg = DirectCast(Bitmap.FromFile(ImagePath), Bitmap)
+
+                divideByW = imgOrg.Width / picBox.Width
+                divideByH = imgOrg.Height / picBox.Height
+                If divideByW > 1 Or divideByH > 1 Then
+                    If divideByW > divideByH Then
+                        divideBy = divideByW
+                    Else
+                        divideBy = divideByH
+                    End If
+
+                    imgShow = New Bitmap(CInt(CDbl(imgOrg.Width) / divideBy), CInt(CDbl(imgOrg.Height) / divideBy))
+                    imgShow.SetResolution(imgOrg.HorizontalResolution, imgOrg.VerticalResolution)
+                    graphics = graphics.FromImage(imgShow)
+                    graphics.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    graphics.DrawImage(imgOrg, New Rectangle(0, 0, CInt(CDbl(imgOrg.Width) / divideBy), CInt(CDbl(imgOrg.Height) / divideBy)), 0, 0, imgOrg.Width, imgOrg.Height, GraphicsUnit.Pixel)
+                    graphics.Dispose()
+                Else
+                    imgShow = New Bitmap(imgOrg.Width, imgOrg.Height)
+                    imgShow.SetResolution(imgOrg.HorizontalResolution, imgOrg.VerticalResolution)
+                    graphics = graphics.FromImage(imgShow)
+                    graphics.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    graphics.DrawImage(imgOrg, New Rectangle(0, 0, imgOrg.Width, imgOrg.Height), 0, 0, imgOrg.Width, imgOrg.Height, GraphicsUnit.Pixel)
+                    graphics.Dispose()
+                End If
+                imgOrg.Dispose()
+
+                picBox.Image = imgShow
+            Else
+                picBox.Image = Nothing
+            End If
+
+        Catch exception As Exception
+            MsgBox(exception.ToString)
+        End Try
+    End Sub
+#End Region
+
+#Region "Save Image Function"
+    'Save Image Function
+    Private Sub SaveImage(image As Bitmap)
+
+        'Filter the image types to save the image as
+        saveImageFile.Filter = "JPEG Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif|PNG Image|*.png|TIFF Image|*tif"
+        'The Title of the save dialog
+        saveImageFile.Title = "Save Barcode Image"
+        'Clear the filename text.
+        saveImageFile.FileName = String.Empty
+        'Show the Save Dialog
+        saveImageFile.ShowDialog()
+
+        'Make sure a name for the file is actually entered
+        If saveImageFile.FileName <> "" Then
+            'File stream to save the image
+            Dim saveFileStream As FileStream = saveImageFile.OpenFile()
+            'Save image type as selected format
+            Select Case saveImageFile.FilterIndex
+                Case 1
+                    outputPictureBox.Image.Save(saveFileStream, ImageFormat.Jpeg)
+                Case 2
+                    outputPictureBox.Image.Save(saveFileStream, ImageFormat.Bmp)
+                Case 3
+                    outputPictureBox.Image.Save(saveFileStream, ImageFormat.Gif)
+                Case 4
+                    outputPictureBox.Image.Save(saveFileStream, ImageFormat.Png)
+                Case 5
+                    outputPictureBox.Image.Save(saveFileStream, ImageFormat.Tiff)
+            End Select
+
+            'Close the filestream since the image is now saved.
+            saveFileStream.Close()
+        End If
+    End Sub
+#End Region
+
+End Class
