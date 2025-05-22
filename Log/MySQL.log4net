@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<configSections> 
+		<section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,Log4net"/> 
+	</configSections> 
+	<appSettings>
+		<add key="log4net.Internal.Debug" value="true"/>
+	</appSettings>
+
+	<system.diagnostics>
+		<trace autoflush="true">
+			<listeners>
+				<add 	name="textWriterTraceListener" 
+						type="System.Diagnostics.TextWriterTraceListener" 
+						initializeData="C:\temp\log4net.txt" />
+			</listeners>
+		</trace>
+	</system.diagnostics>
+	
+	<log4net>
+		<logger name="Log4NetWinBackAddIn">
+			<level value="ALL" />
+			<appender-ref ref="AdoNetAppender_MySql" />
+		</logger>
+
+		<appender name="AdoNetAppender_MySql" type="log4net.Appender.AdoNetAppender">
+			<bufferSize value="100"/>
+			<connectionType value="MySql.Data.MySqlClient.MySqlConnection, MySql.Data" />
+			<connectionString value="server=172.16.17.4;database=winback;UID=herbst;password=herbst;port=3306" />
+			<commandText value="INSERT INTO Log4Net(Level,Date,Zeile,Modul,Funktion,Message,User) VALUES (?level, ?date, ?zeile, ?modul, ?function, ?message, ?user)"/>
+
+        <!--<conversionPattern value="%date %level %property{Benutzer} [%property{Zeile} %property{Modul}.%property{Funktion}] %message%newline" />-->
+
+		
+			<parameter>
+				<parameterName value="?level"/> <dbType value="String"/> <size value="10"/> <layout type="log4net.Layout.PatternLayout"> <conversionPattern value="%level"/> </layout> 
+			</parameter>
+			<parameter>
+				<parameterName value="?date"/> <dbType value="DateTime"/> <layout type="log4net.Layout.RawTimeStampLayout"/> 
+			</parameter>
+			<parameter>
+				<parameterName value="?zeile"/> <dbType value="String"/> <size value="10"/> <layout type="log4net.Layout.PatternLayout"> <conversionPattern value="%property{Zeile}"/> </layout> 
+			</parameter>
+			<parameter>
+				<parameterName value="?modul"/> <dbType value="String"/> <size value="255"/> <layout type="log4net.Layout.PatternLayout"> <conversionPattern value="%property{Modul}"/> </layout> 
+			</parameter>
+			<parameter>
+				<parameterName value="?function"/> <dbType value="String"/> <size value="255"/> <layout type="log4net.Layout.PatternLayout"> <conversionPattern value="%property{Funktion}"/> </layout> 
+			</parameter>
+			<parameter>
+				<parameterName value="?message"/> <dbType value="String"/> <size value="255"/> <layout type="log4net.Layout.PatternLayout"> <conversionPattern value="%message"/> </layout> 
+			</parameter>
+			<parameter>
+				<parameterName value="?user"/> <dbType value="String"/> <size value="20"/> <layout type="log4net.Layout.PatternLayout"> <conversionPattern value="%property{Benutzer}"/> </layout> 
+			</parameter>
+		</appender> 
+	</log4net>
+</configuration>

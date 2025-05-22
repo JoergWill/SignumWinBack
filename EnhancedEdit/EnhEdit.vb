@@ -1,8 +1,10 @@
 ﻿Imports System.ComponentModel
 Imports System.Drawing
+Imports System.Globalization
 Imports System.Windows.Forms
+Imports System.Text
 Imports EnhEdit.EnhEdit_Global
-Imports WinBack
+Imports System.Reflection
 
 Public Class EnhEdit
 
@@ -17,12 +19,22 @@ Public Class EnhEdit
     Private _TextBoxSize As New Size
     Private _Handle As String
 
+    Private ReadOnly sqlFormatProvider As CultureInfo
+
     <System.Diagnostics.DebuggerNonUserCode()>
     Public Sub New()
         MyBase.New()
 
         'Dieser Aufruf ist für den Komponenten-Designer erforderlich.
         InitializeComponent()
+
+        'aus wb_functions
+        'Formateinstellungen für die Konvertierung von String-Dezimalwerten nach Float aus der sql-Datenbank
+        sqlFormatProvider = CultureInfo.CreateSpecificCulture("de-DE")
+        'Bei Sollwerten in der MySQL-Datenbank ist der Dezimaltrenner IMMER ein Komma, unabhängig von den
+        'Einstellungen in Windows.
+        sqlFormatProvider.NumberFormat.NumberDecimalSeparator = ","
+
         'Me.SetStyle(ControlStyles.SupportsTransparentBackColor Or ControlStyles.UserPaint, True)
         Me.BorderStyle = BorderStyle.None
         'Me.BackColor = Color.Transparent
@@ -79,7 +91,6 @@ Public Class EnhEdit
             Init = True
             Me.TextBox.Text = value
             Me.TextBox.SelectAll()
-            'Me.TextBox.
         End Set
     End Property
 
@@ -99,7 +110,7 @@ Public Class EnhEdit
         End Get
         Set(value As String)
             If value IsNot Nothing And value <> "" Then
-                _eUg = wb_Functions.StrToDouble(value)
+                _eUg = StrToDouble(value)
             Else
                 _eUg = 0
             End If
@@ -112,7 +123,7 @@ Public Class EnhEdit
         End Get
         Set(value As String)
             If value IsNot Nothing And value <> "" Then
-                _eOG = wb_Functions.StrToDouble(value)
+                _eOG = StrToDouble(value)
             Else
                 _eOG = 0
             End If
@@ -131,7 +142,8 @@ Public Class EnhEdit
                 Case wb_Format.fReal, wb_Format.fInteger
                     Try
                         If _eValue <> "" Then
-                            Return Convert.ToDouble(_eValue).ToString("F3")
+                            'Return Convert.ToDouble(_eValue).ToString("F3")
+                            Return FormatStr(_eValue, 3)
                         Else
                             Return 0.ToString("F3")
                         End If
@@ -139,9 +151,13 @@ Public Class EnhEdit
                         Return 0.ToString("F3")
                     End Try
 
-                'String/Zeit
-                Case wb_Format.fString, wb_Format.fTime
+                'String
+                Case wb_Format.fString
                     Return _eValue
+
+                'Zeit
+                Case wb_Format.fTime
+                    Return FormatTimeStr(_eValue)
 
                 'Allergen
                 Case wb_Format.fAllergen
@@ -183,7 +199,7 @@ Public Class EnhEdit
             'Me.TextBox.SelectAll()
         Else
             Me.Value = eValue
-            'Debug.Print("OnValueChanged " & Me.Value & "/" & Me.Handle.ToString & "/" & Me.eFormat)
+            'Debug.Print("OnValueChanged (eValue)" & Me.Value & "/" & Me.Handle.ToString & "/" & Me.eFormat)
         End If
         'MyBase.OnValueChanged()
     End Sub
@@ -245,13 +261,13 @@ Public Class EnhEdit
                     MsgBox("Eingabewert ist zu lang", MsgBoxStyle.Critical, "Fehler bei der Eingabe")
                 Else
                     'Eingabewert ist zu groß (Numerisch)
-                    MsgBox("Eingabewert ist zu groß", MsgBoxStyle.Critical, "Fehler bei der Eingabe")
+                    MsgBox("Der Eingabewert ist zu groß!" & vbCrLf & vbCrLf & "Zulässige Werte sind: " & vbCrLf & _eUg.ToString & " < Eingabe < " & _eOG, MsgBoxStyle.Critical, "Fehler bei der Eingabe")
                 End If
 
             Case wb_Result.ValueErrMin
                 If _eUg <= 0.0 Then
                     'Eingabewert ist zu klein (Numerisch) nur wenn die Untergrenze auf 0,00 eingstellt ist
-                    MsgBox("Eingabewert ist zu klein", MsgBoxStyle.Critical, "Fehler bei der Eingabe")
+                    MsgBox("Der Eingabewert ist zu klein!" & vbCrLf & vbCrLf & "Zulässige Werte sind: " & vbCrLf & _eUg.ToString & " < Eingabe < " & _eOG, MsgBoxStyle.Critical, "Fehler bei der Eingabe")
                 End If
 
             Case wb_Result.ValueErrFormat
@@ -262,6 +278,10 @@ Public Class EnhEdit
                     'Falsches Format
                     MsgBox("Eingabewert nicht zulässig", MsgBoxStyle.Critical, "Fehler bei der Eingabe")
                 End If
+
+            Case wb_Result.ValueErrException
+                'Exception bei der Eingabe-Prüfung
+                MsgBox("Unbekannter Fehler bei der Eingabe", MsgBoxStyle.Critical, "Fehler bei der Eingabe")
 
             Case wb_Result.KeyReturn
                 'Eingabewert übernehmen
@@ -283,12 +303,17 @@ Public Class EnhEdit
 
             Case wb_Format.fReal
                 'Formatieren auf 3-Nachkommastellen
-                TextBox.Text = wb_Functions.FormatStr(_eValue, 3)
+                TextBox.Text = FormatStr(_eValue, 3)
+                TextBox.Select(_eValue.Length, 0)
+
+            Case wb_Format.fInteger
+                'Formatieren auf 0-Nachkommastellen
+                TextBox.Text = FormatStr(_eValue, 0)
                 TextBox.Select(_eValue.Length, 0)
 
             Case wb_Format.fTime
                 'Formatieren TimeString
-                TextBox.Text = wb_Functions.FormatTimeStr(_eValue)
+                TextBox.Text = FormatTimeStr(_eValue)
                 TextBox.Select(_eValue.Length, 0)
 
             Case Else
@@ -318,5 +343,164 @@ Public Class EnhEdit
         End If
     End Sub
 
+    ''' <summary>
+    ''' Wandelt einen String sicher in Float um. Das Zahlenformat kann US/DE sein. Punkte werden vor der Konvertierung in Koma umgewandelt.
+    ''' 1000er - Trennzeichen sind nicht erlaubt.
+    ''' Die Umwandlung erfolgt unabhängig von der eingestellten Länderkennung!
+    ''' Wenn die Umwandlung per TryParse fehlschlägt (Result=False) wird die einfache Umwandlung per val() versucht. Damit können auch Werte
+    ''' umgewandelt werden, die Strings enthalten (z.B. 10kg)
+    ''' 
+    ''' Aus WinBackAddIn.wb_functions
+    ''' </summary>
+    ''' <param name="value"></param>
+    ''' <returns>Konvertierten String im Format Double</returns>
+    Public Function StrToDouble(value As String) As Double
+        If value IsNot Nothing AndAlso value IsNot "" Then
+            Dim d As Double
+            Try
+                value = value.Replace(".", ",")
+                If Double.TryParse(value, NumberStyles.Number, sqlFormatProvider, d) Then
+                    Return d
+                Else
+                    'mögliche Strings oder Sonderzeichen entfernen
+                    value = New System.Text.RegularExpressions.Regex("[a-zA-ZüöäÜÖÄß%°\\s\\n]").Replace(value, String.Empty)
+                    If Double.TryParse(value, NumberStyles.Number, sqlFormatProvider, d) Then
+                        Return d
+                    Else
+                        Return 0.0F
+                    End If
+                End If
+            Catch ex As Exception
+                Return 0.0F
+            End Try
+        Else
+            Return 0.0F
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Formatiert einen String mit der angegebenen Vorkomma und Nachkomma-Stelle
+    ''' Wenn als Culture "sql" angegeben wird, erfolgt die Umwandlung IMMER mit Dezimaltrenner Komma, unabhängig von
+    ''' der Windows-Ländereinstellung.
+    ''' 
+    ''' Aus WinBackAddIn.wb_functions
+    ''' </summary>
+    ''' <param name="value">Zahlenwert als String</param>
+    ''' <param name="VorKomma">Anzahl der Vorkomma-Stellen</param>
+    ''' <param name="NachKomma">Anzahl der Nachkomma-Stellen</param>
+    ''' <param name="Culture">Ländereinstellung (Default de-DE)</param>
+    ''' <returns></returns>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of functions should not be too high", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S3385:""Exit"" statements should not be used", Justification:="<Ausstehend>")>
+    Public Function FormatStr(value As String, NachKomma As Integer, Optional VorKomma As Integer = -1, Optional ByVal Culture As String = Nothing) As String
+        Dim wert As Double
+        Try
+            If value IsNot Nothing AndAlso value <> "" AndAlso value <> "-" Then
+                ' Für Datenbank-Felder muss unabhängig von der Ländereinstellung die Umwandlung mit
+                ' der Einstellung de-DE erfolgen
+                If Culture IsNot Nothing Then
+                    'Sonderbehandlung für Werte aus der MySQL-Datenbank (Dezimaltrenner ist IMMER Komma)
+                    If Culture = "sql" Then
+                        wert = StrToDouble(value)
+                    Else
+                        wert = Convert.ToDouble(value, New System.Globalization.CultureInfo(Culture))
+                    End If
+                Else
+                    wert = Convert.ToDouble(value)
+                End If
+            Else
+                Return "-"
+                Exit Function
+            End If
+
+            If NachKomma <> 0 Then
+                If VorKomma < 0 Then
+                    Return wert.ToString("F" & NachKomma.ToString)
+                Else
+                    Return Strings.Right(Space(VorKomma) & wert.ToString("F" & NachKomma.ToString), VorKomma + NachKomma + 1)
+                End If
+            Else
+                If VorKomma < 0 Then
+                    Return wert.ToString("F0")
+                Else
+                    Return Strings.Right(Space(VorKomma) & wert.ToString("F" & NachKomma.ToString), VorKomma)
+                End If
+            End If
+        Catch
+            Return "-"
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Formatiert einen String im Muster 00:00:00
+    ''' </summary>
+    ''' <param name="Value"></param>
+    ''' <returns></returns>
+    Public Function FormatTimeStr(Value As String) As String
+        Dim ts As String() = Value.Split(":")
+        Dim ti(3) As Integer
+
+        'alle Bestandteile in Integer wandeln (sicherheitshalber)
+        For i = 0 To ts.Length - 1
+            ti(i) = StrToInt(ts(i))
+        Next
+
+        'Uhrzeit auf sinnvolle Werte begrenzen
+
+        'Sekunden maximal 59
+        If (ts.Length > 2) AndAlso (ti(2) > 59) Then
+            ti(2) = ti(2) - 60
+            ti(1) = ti(1) + 1
+        End If
+
+        'Minuten maximal 59
+        If (ts.Length > 1) AndAlso (ti(1) > 59) Then
+            ti(1) = ti(1) - 60
+            ti(0) = ti(0) + 1
+        End If
+
+        'Stunden maximal 23h
+        If ti(0) > 23 Then
+            ti(0) = 23
+        End If
+
+        Select Case ts.Length
+            Case 0
+                Return "00:00:00"
+            Case 1
+                Return Strings.Right("00" & ti(0).ToString, 2) & ":00:00"
+            Case 2
+                Return Strings.Right("00" & ti(0).ToString, 2) & ":" & Strings.Right("00" & ti(1).ToString, 2) & ":00"
+            Case Else
+                Return Strings.Right("00" & ti(0).ToString, 2) & ":" & Strings.Right("00" & ti(1).ToString, 2) & ":" & Strings.Right("00" & ti(2).ToString, 2)
+        End Select
+    End Function
+
+    ''' <summary>
+    ''' Wandelt einen String sicher in Integer um. Wenn die Umwandlung fehlschlägt wird 0 zurückgegeben.
+    ''' </summary>
+    ''' <param name="value"></param>
+    ''' <returns>Konvertierten String im Format Integer</returns>
+    Public Function StrToInt(value As String) As Integer
+        Dim i As Integer
+        If value IsNot Nothing Then
+            Try
+                value = value.Replace(".", ",")
+                If Integer.TryParse(value, NumberStyles.Number, sqlFormatProvider, i) Then
+                    Return i
+                Else
+                    Try
+                        Return Int(Val(value))
+                    Catch
+                        Return 0
+                    End Try
+                End If
+            Catch ex As Exception
+                Return 0
+            End Try
+        Else
+            Return 0
+        End If
+    End Function
 End Class
 

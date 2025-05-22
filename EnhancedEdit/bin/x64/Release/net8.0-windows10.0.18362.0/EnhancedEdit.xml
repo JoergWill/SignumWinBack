@@ -1,0 +1,150 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EnhancedEdit
+</name>
+</assembly>
+<members>
+<member name="T:EnhEdit.My.Resources.Resources">
+<summary>
+  Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
+</summary>
+</member>
+<member name="P:EnhEdit.My.Resources.Resources.ResourceManager">
+<summary>
+  Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
+</summary>
+</member>
+<member name="P:EnhEdit.My.Resources.Resources.Culture">
+<summary>
+  Überschreibt die CurrentUICulture-Eigenschaft des aktuellen Threads für alle
+  Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
+</summary>
+</member>
+<member name="M:EnhEdit.EnhEdit.OnGotFocus(System.EventArgs)">
+ <summary>
+ EnhEdit (abgeleitet von UniversalEditBox) verwendet zur Anzeige eine unterlagerte Textbox.
+ Die Anordnung der Textbox wird bestimmt durch die Werte aus ClientSize.
+ 
+ Die passende Größe(Verschiebung) wird hier eingestellt.
+ </summary>
+ <param name="e"></param>
+</member>
+<member name="P:EnhEdit.EnhEdit.eValue">
+ <summary>
+ Gibt, abhängig vom Format den Wert formatiert zurück
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:EnhEdit.EnhEdit.OnValueChanged">
+ <summary>
+ Wird aufgerufen, wenn sich der Wert des Edit-Feldes (Value) ändert.
+ Beim ersten Aufruf der Edit-Routine.
+ </summary>
+</member>
+<member name="M:EnhEdit.EnhEdit.ProcessCmdKey(System.Windows.Forms.Message@,System.Windows.Forms.Keys)">
+ <summary>
+ Wird vor onKeyDown() aufgerufen. Im Gegensatz zu OnKeyDown() werden hier auch die Events von Return und Escape
+ verarbeitet.
+ Siehe auch: https://social.msdn.microsoft.com/Forums/windows/en-US/575ea120-036a-4e68-877a-f22a68de9689/detecting-esc-key-stroke-in-toolstriptextbox?forum=winforms
+ 
+ </summary>
+ <param name="msg"></param>
+ <param name="keyData"></param>
+ <returns></returns>
+</member>
+<member name="M:EnhEdit.EnhEdit.OnValidating(System.ComponentModel.CancelEventArgs)">
+ <summary>
+ Eingabe beendet. Ergebnis wird in Value übertragen.
+ </summary>
+ <param name="e"></param>
+</member>
+<member name="M:EnhEdit.EnhEdit.StrToDouble(System.String)">
+ <summary>
+ Wandelt einen String sicher in Float um. Das Zahlenformat kann US/DE sein. Punkte werden vor der Konvertierung in Koma umgewandelt.
+ 1000er - Trennzeichen sind nicht erlaubt.
+ Die Umwandlung erfolgt unabhängig von der eingestellten Länderkennung!
+ Wenn die Umwandlung per TryParse fehlschlägt (Result=False) wird die einfache Umwandlung per val() versucht. Damit können auch Werte
+ umgewandelt werden, die Strings enthalten (z.B. 10kg)
+ 
+ Aus WinBackAddIn.wb_functions
+ </summary>
+ <param name="value"></param>
+ <returns>Konvertierten String im Format Double</returns>
+</member>
+<member name="M:EnhEdit.EnhEdit.FormatStr(System.String,System.Int32,System.Int32,System.String)">
+ <summary>
+ Formatiert einen String mit der angegebenen Vorkomma und Nachkomma-Stelle
+ Wenn als Culture "sql" angegeben wird, erfolgt die Umwandlung IMMER mit Dezimaltrenner Komma, unabhängig von
+ der Windows-Ländereinstellung.
+ 
+ Aus WinBackAddIn.wb_functions
+ </summary>
+ <param name="value">Zahlenwert als String</param>
+ <param name="VorKomma">Anzahl der Vorkomma-Stellen</param>
+ <param name="NachKomma">Anzahl der Nachkomma-Stellen</param>
+ <param name="Culture">Ländereinstellung (Default de-DE)</param>
+ <returns></returns>
+</member>
+<member name="M:EnhEdit.EnhEdit.FormatTimeStr(System.String)">
+ <summary>
+ Formatiert einen String im Muster 00:00:00
+ </summary>
+ <param name="Value"></param>
+ <returns></returns>
+</member>
+<member name="M:EnhEdit.EnhEdit.StrToInt(System.String)">
+ <summary>
+ Wandelt einen String sicher in Integer um. Wenn die Umwandlung fehlschlägt wird 0 zurückgegeben.
+ </summary>
+ <param name="value"></param>
+ <returns>Konvertierten String im Format Integer</returns>
+</member>
+<member name="T:EnhEdit.EnhEdit_Global.wb_Format">
+ <summary>
+ Format-Information aus winback.Format
+ FM_Index	FM_Bezeichnung
+    1            String
+    2            Integer
+    3            Real
+    4            Time
+    5            Boolean
+ </summary>
+</member>
+<member name="M:EnhEdit.EnhEdit_Global.#cctor">
+ <summary>
+ Ermittelt beim Start der Routine (Shared) einmalig das Keyboard-Layout
+ Routine aus: http://www.vbforums.com/showthread.php?632922-vb2008-convert-Oem-keys-in-REAL-keyboard-value
+ 
+ </summary>
+</member>
+<member name="M:EnhEdit.EnhEdit_Global.GetKey(System.Windows.Forms.KeyEventArgs,System.String@,EnhEdit.EnhEdit_Global.wb_Format,System.Double,System.Double)">
+ <summary>
+ Auswertung der Key-Codes. Abhängig vom Format wird der entsprechende Wert in Value eingetragen
+ </summary>
+ <param name="e"></param>
+ <param name="Value"></param>
+ <param name="Format"></param>
+ <param name="ug"></param>
+ <param name="og"></param>
+ <returns></returns>
+</member>
+<member name="M:EnhEdit.EnhEdit_Global.GetAscci(System.Windows.Forms.KeyEventArgs)">
+ <summary>
+ Ermittelt den ASCII-Code zum Key-Code der Tastatur. Abhängig vom Layout der Tastatur.
+ </summary>
+ <param name="e"></param>
+ <returns></returns>
+</member>
+<member name="M:EnhEdit.EnhEdit_Global.GetDecimalSeparator(System.String)">
+ <summary>
+ Ermittelt das Dezimal-Trennzeichen.
+ Ist im übergebenen String ein Dezimal-Trennzeichen enthalten, wird dieses als Ergebnis zurückgegeben. Ansonsten per Default
+ das Dezimal-Trenn-Zeichen aus CultureInfo. (Funktioniert bei Fonk in Belgien nicht!)
+ </summary>
+ <param name="Value"></param>
+ <returns></returns>
+</member>
+</members>
+</doc>

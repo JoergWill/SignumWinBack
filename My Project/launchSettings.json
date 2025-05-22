@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "OrgaBack": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Signum\\OrgaSoft\\Orgasoft.NET.exe",
+      "commandLineArgs": "/U:SYS /P:admin1 /DOLOGOUT /NOVERSIONCHECK /M:05 ",
+      "workingDirectory": "C:\\OrgaSoft\\AddIns"
+    }
+  }
+}

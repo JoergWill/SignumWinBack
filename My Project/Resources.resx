@@ -118,223 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="HakenGlb_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\HakenGlb_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="HakenGrn_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\HakenGrn_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="HakenRot_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\HakenRot_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="KreuzRot" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\KreuzRot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LinienAutoInstall_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LinienAutoInstall_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LinienBearbeiten_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LinienBearbeiten_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LinienLoeschen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LinienLoeschen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LinienNeu_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LinienNeu_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainArtikel_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainArtikel_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainArtikel_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainArtikel_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainChargen_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainChargen_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainChargen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainChargen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainLinien_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainLinien_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainLinien_45x34" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainLinien_45x34.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainProduktionsPlanung_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainProduktionsPlanung_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainProduktionsPlanung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainProduktionsPlanung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainRezept_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainRezept_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainRezept_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainRezept_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainRohstoffe_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainRohstoffe_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainRohstoffe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainRohstoffe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="MainStammdaten_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MainStammdaten_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainStammdaten_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainStammdaten_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainStatistikChargen_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainStatistikChargen_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainStatistikChargen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainStatistikChargen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainStatistikRezepte_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainStatistikRezepte_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainStatistikRezepte_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainStatistikRezepte_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainStatistikRohstoffe_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainStatistikRohstoffe_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainStatistikRohstoffe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainStatistikRohstoffe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainUser_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainUser_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainUser_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainUser_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="UserGruppen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UserGruppen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="UserListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UserListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="UserNeu_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UserNeu_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="UserPasswd_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UserPasswd_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Zoom_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Zoom_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Admin_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Admin_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Admin_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Admin_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DatenSicherung_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DatenSicherung_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DatenSicherung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DatenSicherung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainSync_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainSync_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainSync_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainSync_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DatenRueckSicherung_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DatenRueckSicherung_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DatenRueckSicherung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DatenRueckSicherung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="StatusStripBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\StatusStripBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="IconCancel_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconCancel_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="IconDelete_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconDelete_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="IconSave_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconSave_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="IconSaveAs_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconSaveAs_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="IconReload_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconReload_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RohstoffeDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffeDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RohstoffeParameter_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffeParameter_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RohstoffeVerwendung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffeVerwendung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="UpdateDataBase_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UpdateDataBase_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="UpdateDataBase_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UpdateDataBase_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ListUndLabel_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ListUndLabel_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ListUndLabel_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ListUndLabel_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Excel_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Excel_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Excel_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Excel_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="EditKonfig_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EditKonfig_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="EditKonfig_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EditKonfig_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RezeptDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RezeptDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RezeptDruckenListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RezeptDruckenListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RezeptHinweise_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RezeptHinweise_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RezeptHistorie_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RezeptHistorie_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RezeptListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RezeptListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RohstoffeCloud_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffeCloud_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RohstoffeDatenLink_93x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffeDatenLink_93x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="tpCloudSuchenTxt" xml:space="preserve">
-    <value>Suchen über WinBack oder Datenlink verknüpft den Rohstoff mit dem entsprechenden Eintrag in der Cloud.
-
-Die Nährwertdaten und Allergen-Info werden automatisch importiert und anschliessend regelmäßig im Hintergrund aktualisiert. Für beide Dienste sind Anmeldeinformationen erforderlich
-
-Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant kann frei gelassen werden</value>
-  </data>
-  <data name="RohstoffeMail_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffeMail_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="tpCloudSuchenMail" xml:space="preserve">
-    <value>Keine passenden Rohstoffe gefunden.
-Bitte ändern Sie den Suchtext oder fordern Sie die Nährwerte bei WinBack per Mail an</value>
-  </data>
-  <data name="tpCloudMailSubject" xml:space="preserve">
-    <value>Anfrage der Nährwerte und Inhaltsstoffe für </value>
+  <data name="Rotate90R_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Rotate90R_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tpCloudMailText" xml:space="preserve">
     <value>Sehr geehrte Damen und Herren,
@@ -347,54 +138,285 @@ Lieferant: [1]
 
 Wir bitten UNBEDINGT um KOMPLETTE Angaben, wenn möglich mit Spezifikations-Datenblatt, dann sind die Daten schnell und korrekt in der Cloud...</value>
   </data>
-  <data name="tpCloudEinenRohstoffGefunden" xml:space="preserve">
-    <value>Genau einen Rohstoff in der Cloud gefunden !</value>
-  </data>
-  <data name="tpCloudRohstoffeGefunden" xml:space="preserve">
-    <value>[0] Rohstoffe in der Cloud gefunden. 
-Bitte wählen Sie den passenden Rohstoff aus der Liste aus.</value>
-  </data>
-  <data name="tpCloudKompType" xml:space="preserve">
-    <value>Spezielle Rohstoffe, wie z.B. Textkomponenten, Kneter, Teigruhe... haben keine Nährwerte</value>
-  </data>
-  <data name="tpCloudTitelCloud" xml:space="preserve">
-    <value>Nährwerte-Cloud</value>
-  </data>
-  <data name="tpCloudTitelRezept" xml:space="preserve">
-    <value>Rohstoff-Rezept</value>
-  </data>
-  <data name="RohstoffeNwt_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffeNwt_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainUser_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainUser_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="VirtTreeCollapse_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\VirtTreeCollapse_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="VirtTreeExpand_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\VirtTreeExpand_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainStatistikChargen_64x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainStatistikChargen_64x64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="OrgaBackSortiment_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\OrgaBackSortiment_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ArtikelHinweise_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelHinweise_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="UpdateWinBack_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UpdateWinBack_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="LinienAutoInstall_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LinienAutoInstall_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Exception" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Exception.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RohstoffeParameter_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeParameter_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconDlgCancel_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconDlgCancel_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RohstoffeLink_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeLink_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconDlgLog_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconDlgLog_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="UserGruppen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UserGruppen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconDlgOk_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconDlgOk_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="UserDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UserDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_02_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_02_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_06_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_06_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainRohstoffe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainRohstoffe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RezeptGruppen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RezeptGruppen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainRezept_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainRezept_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TTS_Allgemein" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TTS_Allgemein.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconDlgRestart_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDlgRestart_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="MainArtikel_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainArtikel_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RohstoffeMail_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeMail_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LinienBearbeiten_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LinienBearbeiten_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EditKonfig_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EditKonfig_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TTS_TeigTempSteuerung" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TTS_TeigTempSteuerung.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DatenRueckSicherung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DatenRueckSicherung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Excel_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Excel_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tpCloudTitelRezept" xml:space="preserve">
+    <value>Rohstoff-Rezept</value>
+  </data>
+  <data name="Log4View_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Log4View_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ChargenListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ChargenListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orgaback_logo_header_jpg_64x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orgaback-logo-header.jpg_64x64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tpCloudKompType" xml:space="preserve">
+    <value>Spezielle Rohstoffe, wie z.B. Textkomponenten, Kneter, Teigruhe... haben keine Nährwerte</value>
+  </data>
+  <data name="RohstoffeLieferung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeLieferung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainUser_64x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainUser_64x64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainStatistikRezepte_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainStatistikRezepte_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DatenRueckSicherung_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DatenRueckSicherung_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AdminTimer_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AdminTimer_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LinienLoeschen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LinienLoeschen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VirtTreeExpand_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VirtTreeExpand_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DatenSicherung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DatenSicherung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainRohstoffe_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainRohstoffe_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainArtikel_64x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainArtikel_64x64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PageMinus_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PageMinus_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tpCloudSuchenTxt" xml:space="preserve">
+    <value>Suchen über WinBack oder Datenlink verknüpft den Rohstoff mit dem entsprechenden Eintrag in der Cloud.
+
+Die Nährwertdaten und Allergen-Info werden automatisch importiert und anschliessend regelmäßig im Hintergrund aktualisiert. Für beide Dienste sind Anmeldeinformationen erforderlich
+
+Die Suche erfolgt nach Bezeichnung und Hersteller/Lieferant. Das Feld Lieferant kann frei gelassen werden</value>
+  </data>
+  <data name="MainLinien_64x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainLinien_64x64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ListUndLabel_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ListUndLabel_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HakenGlb_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HakenGlb_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainStatistikRohstoffe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainStatistikRohstoffe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PageRotateL_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PageRotateL_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconEMail_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconEMail_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RezeptDruckenListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RezeptDruckenListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainLinien_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainLinien_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EditKonfig_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EditKonfig_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainStatistikChargen_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainStatistikChargen_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sackware_45x43" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sackware 45x43.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ChargenInfo_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ChargenInfo_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PagePlus_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PagePlus_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tpCloudEinenRohstoffGefunden" xml:space="preserve">
+    <value>Genau einen Rohstoff in der Cloud gefunden !</value>
+  </data>
+  <data name="TTS_RaumMehl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TTS_RaumMehl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PageRotateR_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PageRotateR_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RohstoffSilo_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffSilo_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UserListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UserListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AdminXNumber_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AdminXNumber_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProdFehlerListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProdFehlerListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RohstoffeDatenLink_93x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeDatenLink_93x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProdTeiler_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProdTeiler_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Admin_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Admin_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tpCloudMailSubject" xml:space="preserve">
+    <value>Anfrage der Nährwerte und Inhaltsstoffe für </value>
+  </data>
+  <data name="ArtikelInfoDrucken_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelInfoDrucken_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_08_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_08_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_07_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_07_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RezeptDrucken_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RezeptDrucken_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UserBerechtigungen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UserBerechtigungen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HakenGrn_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HakenGrn_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainRezept_64x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainRezept_64x64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RohstoffeDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainChargen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainChargen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainArtikel_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainArtikel_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_00_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_00_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RezeptDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RezeptDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AdminLog_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AdminLog_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDelete_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDelete_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RohstoffeCloud_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeCloud_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RohstoffeOpenFoodFacts" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeOpenFoodFacts.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconSaveAs_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconSaveAs_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainDashBoard_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainDashBoard_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tpExceptionMailSubject" xml:space="preserve">
+    <value>Fehler-Bericht WinBackAddIn(OrgaBack)</value>
+  </data>
+  <data name="TTS_Sauerteig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TTS_Sauerteig.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UpdateDataBase_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UpdateDataBase_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Zoom_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Zoom_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tpCloudTitelCloud" xml:space="preserve">
+    <value>Nährwerte-Cloud</value>
+  </data>
+  <data name="HakenRot_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HakenRot_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RezeptVerwendung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RezeptVerwendung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Leer_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Leer_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDlgOk_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDlgOk_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tpExceptionMailText" xml:space="preserve">
     <value>In WinBack-AddIn ist eine Exception "[0]" aufgetreten.
@@ -405,139 +427,180 @@ Der Fehler ist unter folgenden Bedingungen aufgetreten:
 Stacktrace:
 [1]</value>
   </data>
-  <data name="tpExceptionMailSubject" xml:space="preserve">
-    <value>Fehler-Bericht WinBackAddIn(OrgaBack)</value>
+  <data name="MainStammdaten_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainStammdaten_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Log4View_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Log4View_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconReload_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconReload_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RezeptLoeschen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RezeptLoeschen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="DatenSicherung_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DatenSicherung_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RezeptNeu_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RezeptNeu_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="tpCloudSuchenMail" xml:space="preserve">
+    <value>Keine passenden Rohstoffe gefunden.
+Bitte ändern Sie den Suchtext oder fordern Sie die Nährwerte bei WinBack per Mail an</value>
   </data>
-  <data name="RezeptVerwendung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RezeptVerwendung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="LinienNeu_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LinienNeu_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ArtikelDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ArtikelDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="tpCloudRohstoffeGefunden" xml:space="preserve">
+    <value>[0] Rohstoffe in der Cloud gefunden. 
+Bitte wählen Sie den passenden Rohstoff aus der Liste aus.</value>
   </data>
-  <data name="ArtikelParameter_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ArtikelParameter_32x32 .png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainStatistikRohstoffe_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainStatistikRohstoffe_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ChargenDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ChargenDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainChargen_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainChargen_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ChargenInfo_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ChargenInfo_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ChargenListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ChargenListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Leer_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Leer_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Status_00_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Status_00_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Status_01_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Status_01_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Status_02_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Status_02_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Status_03_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Status_03_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Status_04_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Status_04_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Status_05_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Status_05_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Status_06_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Status_06_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Status_07_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Status_07_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Status_08_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Status_08_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TTS_Allgemein" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TTS_Allgemein.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TTS_RaumMehl" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TTS_RaumMehl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TTS_Sauerteig" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TTS_Sauerteig.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TTS_TeigTempSteuerung" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TTS_TeigTempSteuerung.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MySQL_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MySQL_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Rotate90L_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Rotate90L_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Rotate90R_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Rotate90R_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ArtikelHinweise_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ArtikelHinweise_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RohstoffeLieferung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffeLieferung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="UserBerechtigungen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UserBerechtigungen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="UserDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UserDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="User_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\User_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconDlgCancel_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDlgCancel_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LinienAuto_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LinienAuto_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RohstoffSilo_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffSilo_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainProduktionsPlanung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainProduktionsPlanung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RezeptGruppen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RezeptGruppen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RezeptNeu_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RezeptNeu_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RohstoffeDrucken_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffeDrucken_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Status_01_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_01_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RohstoffeLink_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RohstoffeLink_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainRohstoffe_64x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainRohstoffe_64x64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ProdFehlerListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProdFehlerListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="KreuzRot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\KreuzRot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDlgLog_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconDlgLog_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ListUndLabel_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ListUndLabel_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Excel_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Excel_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UpdateWinBack_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UpdateWinBack_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RezeptVerwendungDrucken_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RezeptVerwendungDrucken_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProdExport_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProdExport_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ProdTeiler_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProdTeiler_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainProduktionsPlanung_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainProduktionsPlanung_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AdminTimer_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\AdminTimer_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RohstoffeVerwendung_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeVerwendung_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AdminShd_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\AdminShd_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainLinien_45x34" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainLinien_45x34.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainRezept_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainRezept_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Import" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon Import.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Export" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon Export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_03_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_03_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UserPasswd_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UserPasswd_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="User_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\User_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconSave_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconSave_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArtikelParameter_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelParameter_32x32 .png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Admin_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Admin_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainStatistikRezepte_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainStatistikRezepte_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_05_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_05_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UserNeu_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UserNeu_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RohstoffeDrucken_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeDrucken_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RohstoffeNwt_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RohstoffeNwt_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainSync_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainSync_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RezeptLoeschen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RezeptLoeschen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainStatistikChargen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainStatistikChargen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Exception" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Exception.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ArtikelLoeschen_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArtikelLoeschen_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RezeptDrucken_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RezeptDrucken_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ArtikelDrucken_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArtikelDrucken_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AdminLog_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\AdminLog_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="StatusStripBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\StatusStripBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Sackware_45x43" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Sackware 45x43.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Info_About_OrgaBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Info_About_OrgaBack.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RezeptHinweise_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RezeptHinweise_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RezeptListe_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RezeptListe_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconCancel_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconCancel_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainUser_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainUser_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OrgaBackSortiment_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OrgaBackSortiment_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainSync_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainSync_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UpdateDataBase_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UpdateDataBase_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ChargenDetails_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ChargenDetails_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Status_04_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Status_04_16x16.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MainArtikelNwt_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainArtikelNwt_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

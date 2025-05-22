@@ -1,22 +1,25 @@
 #!/usr/bin/perl -w
 
 #
-# ------ Import Produktionsdaten, Version 3.3 --------
+# ------ Import Produktionsdaten, Version 3.4 --------
+#
+# Aenderung gegenueber Version 3.3:
+# Artikel-Liniengruppe wird bei der Berechnung der Linie mit beruecksichtigt
 #
 # Aenderung gegenueber Version 3.2:
 # Feld Produktionsblock (entspricht Artikel.ProduktionsLinie) neu eingefuegt
 #
 # Aenderung gegenueber Version 3.1:
-# Feld ARS_ARZ_Index neu hinzugef�gt in Tabelle ArbRZSchritte
+# Feld ARS_ARZ_Index neu hinzugefuegt in Tabelle ArbRZSchritte
 # ArbRZSchritte.ARS_ARZ_Index = ArbRezepte.ARZ_Index
 #
 # Aenderung gegenueber Version 3.0:
 #
-# Parameter 3 entf�llt (Liniennummer von WinBack)
+# Parameter 3 entfaellt (Liniennummer von WinBack)
 #
 # Aenderung gegenueber Version 2.4:
 #
-# Einlesen der Daten spezifisch f�r eine Produktions-Linie
+# Einlesen der Daten spezifisch fuer eine Produktions-Linie
 # Die Linien-Nummer wird von WinBack �bergeben
 #
 # Aenderung gegenueber Version 2.3:
@@ -37,23 +40,23 @@
 # Aenderung gegenueber Version 2.0:
 #
 # Fehler behoben beim Import/Umrechnen von Kneterzeilen
-# (H�ussler Memmingen)
+# (Haeussler Memmingen)
 #
 # Aenderung gegenueber Version 1.9:
 #
-# Import von Rezepten (Artikel='K') ge�ndert.
+# Import von Rezepten (Artikel='K') geaendert.
 # SQL-Anweisung korrigiert
-# Dateinamen ge�ndert (ohne Versions-Nummer)
+# Dateinamen geaendert (ohne Versions-Nummer)
 #
 # Aenderung gegenueber Version 1.8:
 #
-# sql-Statements ge�ndert: Feldvariablen f�r Artikel- und
+# sql-Statements geaendert: Feldvariablen f�r Artikel- und
 # Rezeptnummern mit Hochkomma eingetragen
 #
 # Aenderung gegenueber Version 1.7:
 # 
-# Auswertung der �bergebenen Parameter auch
-# wenn nur 1 Parameter �bergeben wird
+# Auswertung der uebergebenen Parameter auch
+# wenn nur 1 Parameter uebergeben wird
 #
 #
 # Aenderung gegenueber Version 1.6:
@@ -69,7 +72,7 @@
 # Modul prodimp.pl:
 #    Datenbank + IP-Adresse als Kommandozeilenargument
 # Modul prodimport-sub.pm
-#	 Import von Datens�tzen ohne Artikelnummer (nur Rezeptnummern)
+#	 Import von Datensaetzen ohne Artikelnummer (nur Rezeptnummern)
 #
 # Aenderung gegenueber Version 1.4:
 #
@@ -97,7 +100,7 @@ use strict;
 use DBI;
 
 require ( "prodimport-sub.pm" );
-my $version = "3.3";
+my $version = "3.4";
 
 print "\n";
 print "************* Produktionsdaten-Import, Version $version **************\n";
@@ -165,7 +168,7 @@ while ( ($line = <FILE1>) )
    my $anz;
    if ( $zeilen == 0 )
    {
-         # ----- Zeile 0: Feldtexte �bernehmen: -----
+         # ----- Zeile 0: Feldtexte uebernehmen: -----
       @feld_text = tokenize_zeile;
       $anz = get_anzahl_tokens ( @feld_text );
       print "Zeile $zeilen (Anzahl der Feldtexte): $anz Tokens\n";
@@ -173,7 +176,7 @@ while ( ($line = <FILE1>) )
    else
    {  if ( $zeilen == 1 )
       {
-            # ----- Zeile 1: Feldnamen �bernehmen: -----
+            # ----- Zeile 1: Feldnamen uebernehmen: -----
          @feld_name = tokenize_zeile;
          $anz = get_anzahl_tokens ( @feld_name );
          print "Zeile $zeilen (Anzahl der Feldnamen): $anz Tokens\n";
@@ -202,7 +205,7 @@ db_disconnect();
 close ( FILE1 );
 
 # REMEMBER ME - TESTVERSION
-unlink ( $ko_file );
+# unlink ( $ko_file );
 
 exit;
 
@@ -334,7 +337,7 @@ sub  werte_zeile_importieren
       $db_ret = Artikel_und_Rezept_laden ( $art_nr_alnum, $rz_variante_nr, $rz_nr_alnum );
       if ( $db_ret < 0 )   { goto  ende; }
 
-      $db_ret = Indizes_berechnen();
+      $db_ret = Indizes_berechnen( $art_linie_nr );	# (@V3.4) Artikel-Linien-Nummer zur Berechnung der Linie/Behaelter
       if ( $db_ret < 0 )   { goto  ende; }
 
       $db_ret = Rezeptmengen_fuer_Charge_umrechnen ( $sollmenge_charge );

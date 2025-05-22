@@ -1,6 +1,5 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
-Imports EnhEdit
 
 Public Class EnhEdit_Global
     Const KOMMA = 2
@@ -73,6 +72,8 @@ Public Class EnhEdit_Global
         fBoolean = 5
         fAllergen = 6
         fYesNo = 7
+        fPasswd = 8
+        fScanner = 9
     End Enum
 
     Public Enum wb_Result
@@ -80,6 +81,7 @@ Public Class EnhEdit_Global
         ValueErrMin
         ValueErrMax
         ValueErrFormat
+        ValueErrException
 
         KeyReturn
         KeyEscape
@@ -251,7 +253,8 @@ Public Class EnhEdit_Global
             Case wb_Format.fReal
                 Try
                     'Eingabe auf maximale Länge (3 Nachkommastellen) prüfen
-                    Dim DezimalZahl As String() = Value.Split(Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                    Dim DezimalTrennZeichen As String = GetDecimalSeparator(Value)
+                    Dim DezimalZahl As String() = Value.Split(DezimalTrennZeichen)
                     'Eingabewert enthält ein Dezimaltrennzeichen
                     If DezimalZahl.Length = KOMMA Then
                         'mehr als 3 Nachkomma-Stellen sind nicht erlaubt
@@ -274,7 +277,7 @@ Public Class EnhEdit_Global
                     End Select
                 Catch
                     Value = oValue
-                    Return wb_Result.ValueErrFormat
+                    Return wb_Result.ValueErrException
                 End Try
 
             Case wb_Format.fInteger
@@ -339,4 +342,27 @@ Public Class EnhEdit_Global
         Return wb_Result.Undefined
     End Function
 
+    ''' <summary>
+    ''' Ermittelt das Dezimal-Trennzeichen.
+    ''' Ist im übergebenen String ein Dezimal-Trennzeichen enthalten, wird dieses als Ergebnis zurückgegeben. Ansonsten per Default
+    ''' das Dezimal-Trenn-Zeichen aus CultureInfo. (Funktioniert bei Fonk in Belgien nicht!)
+    ''' </summary>
+    ''' <param name="Value"></param>
+    ''' <returns></returns>
+    Private Shared Function GetDecimalSeparator(Value As String) As String
+        'erster Versuch - Zeichen aus CultureInfo
+        If Value.Contains(Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator) Then
+            Return Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator
+        End If
+        'zweiter Versuch - Komma als Dezimal-Trennzeichen
+        If Value.Contains(",") Then
+            Return ","
+        End If
+        'dritter Versuch - Punkt als Dezimal-Trennzeichen
+        If Value.Contains(".") Then
+            Return "."
+        End If
+        'Default
+        Return Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator
+    End Function
 End Class

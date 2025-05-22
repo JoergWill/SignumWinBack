@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "G5SDNDvFmWc=",
+  "success": true,
+  "projectFilePath": "C:\\Dokumente\\Projekte\\WinBack_Signum\\EnhancedEdit\\EnhancedEdit.vbproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Will.WINBACK\\.nuget\\packages\\system.data.datasetextensions\\4.5.0\\system.data.datasetextensions.4.5.0.nupkg.sha512",
+    "C:\\Users\\Will.WINBACK\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.18362.57\\microsoft.windows.sdk.net.ref.10.0.18362.57.nupkg.sha512"
+  ],
+  "logs": []
+}

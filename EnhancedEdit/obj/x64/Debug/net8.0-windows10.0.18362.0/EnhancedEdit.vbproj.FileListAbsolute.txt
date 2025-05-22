@@ -1,0 +1,17 @@
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\bin\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.dll.config
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\bin\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.deps.json
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\bin\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.dll
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\bin\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.pdb
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\bin\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.xml
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.vbproj.AssemblyReference.cache
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\EnhEdit.EnhEdit.resources
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\EnhEdit.Resources.resources
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.vbproj.GenerateResource.cache
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.dll.licenses
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.GeneratedMSBuildEditorConfig.editorconfig
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.vbproj.CoreCompileInputs.cache
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.dll
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\refint\EnhancedEdit.dll
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.xml
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\EnhancedEdit.pdb
+C:\Dokumente\Projekte\WinBack_Signum\EnhancedEdit\obj\x64\Debug\net8.0-windows10.0.18362.0\ref\EnhancedEdit.dll

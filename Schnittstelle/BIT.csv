@@ -1,0 +1,10 @@
+﻿WinBack;V1.0;29.11.2023;JW;
+Tabelle;Export;Import;Reihenfolge;Kommentar
+T1001;E;I;2;Artikel/Rohstoffe
+T1002;E;;3;Nährwerte zum Artikel
+T1006;E;I;1;Rezepturkopf
+T1007;E;I;4;Rezeptschritte
+T1101;;I;5;Produktionsaufträge
+T4105;E;;;Chargenprotokoll Kopfdaten
+T4106;E;;;Chargenprotokoll Details
+T4107;;I;6;Lieferungen/Bestandskorrektur
