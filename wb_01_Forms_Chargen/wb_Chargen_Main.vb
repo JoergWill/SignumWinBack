@@ -15,6 +15,7 @@ Public Class wb_Chargen_Main
 
     Public ChargenWasserTemp As wb_ChargenWasserTemp
     Public ChargenChartTemp As wb_Chargen_ChartTTS
+    Public ChargenChartSauerteig As wb_Chargen_ChartVTS
 
     'alle anderen Fenster werden zur Laufzeit erzeugt
     Public Sub New(ServiceProvider As IOrgasoftServiceProvider)
@@ -49,6 +50,7 @@ Public Class wb_Chargen_Main
     End Property
 
     Public Overrides Sub SetDefaultLayout()
+        DockPanel.Theme = wb_GlobalSettings.Theme
         ChargenDetails.Show(DockPanel, DockState.DockRight)
     End Sub
 
@@ -178,47 +180,75 @@ Public Class wb_Chargen_Main
     ''' </summary>
     ''' <param name="Sender"></param>
     ''' <param name="ChargenZeile"></param>
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
     Private Sub Details_DblClick(Sender As Object, ChargenZeile As wb_ChargenSchritt)
         'Abhängig von der Komponente wird das entsprechende Fenster geöffnet
         Select Case ChargenZeile.KomponentenType
 
             Case wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE
-
-                'Anzeige TTS-Auswertung
-                If IsNothingOrDisposed(ChargenWasserTemp) Then
-                    ChargenWasserTemp = New wb_ChargenWasserTemp
-                End If
-                'ausgewählte Zeile aus Chargen-Details
-                ChargenWasserTemp.ChargenZeile = ChargenZeile
-                'Wenn eine gültige Zeile im log-File (0s1-s.dbg) gefunden wurde
-                If ChargenWasserTemp.Result Then
-                    'Fenster Chargen-Auswertung neben dem Fenster Chargen-Details anzeigen
-                    ChargenWasserTemp.Show(DockPanel, ChargenDetails.DockState)
-                Else
-                    If ChargenWasserTemp.ChargenNummer = "ERR" Then
-                        MsgBox("Fehler bei ssh-Verbindung zum WinBack-Server " & vbCrLf & "Es sind keine Daten im Log-File verfügbar", MsgBoxStyle.Critical, "Keine Daten vom WinBack-Server")
-                    Else
-
-                        MsgBox("Es sind keine Informationen (mehr) zu dieser Charge im Log-File vorhanden", MsgBoxStyle.Information, "Auswertung TTS")
-                    End If
-                End If
+                'Grafische Übersicht der Temperatur-Berechnung
+                ShowChargenTempBerechnung(ChargenZeile)
 
             Case wb_Global.KomponTypen.KO_TYPE_TEMPERATURERFASSUNG
-
-                'Anzeige Chargenfolge graphisch
-                If IsNothingOrDisposed(ChargenChartTemp) Then
-                    ChargenChartTemp = New wb_Chargen_ChartTTS
-                End If
-                'ausgewählte Zeile aus Chargen-Details
-                ChargenChartTemp.ChargenZeile = ChargenZeile
-                'Übersicht anzeigen
-                ChargenChartTemp.Show(DockPanel, ChargenDetails.DockState)
-
+                'Grafische Übersicht der Temperatur-Erfassung - zeitlich gestaffelt
+                ShowChargenTempErfassung(ChargenZeile)
 
             Case wb_Global.KomponTypen.KO_TYPE_KNETER
+                'Kneter-Komponente ist Teigtemperatur-Erfassung
+                If wb_Rohstoffe_Shared.TeigTempRohstoffe.ContainsKey(ChargenZeile.KomponentenNr) Then
+                    'Grafische Übersicht der Temperatur-Erfassung - zeitlich gestaffelt
+                    ShowChargenTempErfassung(ChargenZeile)
+                End If
+
+            Case Else
+                'Linien-Nummer ist kleiner Null (ARZ_LiBehNr-100) - Anzeige Temperaturverlauf Sauerteig-Rezept
+                If ChargenZeile.Linie < 0 Then
+                    'Grafische Übersicht der Sauerteig-Chargen
+                    ShowSauerteigChargen(ChargenZeile)
+                End If
+
         End Select
     End Sub
 
+    Private Sub ShowChargenTempBerechnung(ChargenZeile As wb_ChargenSchritt)
+        If IsNothingOrDisposed(ChargenWasserTemp) Then
+            ChargenWasserTemp = New wb_ChargenWasserTemp
+        End If
+        'ausgewählte Zeile aus Chargen-Details
+        ChargenWasserTemp.ChargenZeile = ChargenZeile
+        'Wenn eine gültige Zeile im log-File (0s1-s.dbg) gefunden wurde
+        If ChargenWasserTemp.Result Then
+            'Fenster Chargen-Auswertung neben dem Fenster Chargen-Details anzeigen
+            ChargenWasserTemp.Show(DockPanel, ChargenDetails.DockState)
+        Else
+            If ChargenWasserTemp.ChargenNummer = "ERR" Then
+                MsgBox("Fehler bei ssh-Verbindung zum WinBack-Server " & vbCrLf & "Es sind keine Daten im Log-File verfügbar", MsgBoxStyle.Critical, "Keine Daten vom WinBack-Server")
+            Else
+                MsgBox("Es sind keine Informationen (mehr) zu dieser Charge im Log-File vorhanden", MsgBoxStyle.Information, "Auswertung TTS")
+            End If
+        End If
+    End Sub
 
+    Private Sub ShowChargenTempErfassung(ChargenZeile As wb_ChargenSchritt)
+        'Anzeige Chargenfolge graphisch
+        If IsNothingOrDisposed(ChargenChartTemp) Then
+            ChargenChartTemp = New wb_Chargen_ChartTTS
+        End If
+        'ausgewählte Zeile aus Chargen-Details
+        ChargenChartTemp.ChargenZeile = ChargenZeile
+        'Übersicht anzeigen
+        ChargenChartTemp.Show(DockPanel, ChargenDetails.DockState)
+    End Sub
+
+    Private Sub ShowSauerteigChargen(ChargenZeile As wb_ChargenSchritt)
+        'Anzeige Temperaturverlauf graphisch
+        If IsNothingOrDisposed(ChargenChartSauerteig) Then
+            ChargenChartSauerteig = New wb_Chargen_ChartVTS
+        End If
+        'ausgewählte Zeile aus Chargen-Details
+        ChargenChartSauerteig.ChargenZeile = ChargenZeile
+        'Übersicht anzeigen
+        ChargenChartSauerteig.Show(DockPanel, ChargenDetails.DockState)
+    End Sub
 
 End Class

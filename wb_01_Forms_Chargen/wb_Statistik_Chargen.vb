@@ -60,9 +60,11 @@ Public Class wb_Statistik_Chargen
     ''' <param name="e"></param>
     Private Sub DataGridView_HasChanged(sender As Object, e As EventArgs) Handles DataGridView.HasChanged
         ListeBerechnet = False
+        'Button Grafik wird nur für Sauerteig-Chargen angezeigt
+        BtnChart.Enabled = (DataGridView.iField("TW_Seg_Nr") = 0)
     End Sub
 
-    Private Sub wb_Chargen_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Chargen_Liste_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Layout sichern
         DataGridView.SaveToDisk("StatistikChargenListe")
     End Sub
@@ -74,21 +76,22 @@ Public Class wb_Statistik_Chargen
     End Sub
 
     Private Sub dtFilterVon_ValueChanged(sender As Object, e As EventArgs) Handles dtFilterVon.ValueChanged
-        If (dtFilterVon.Value > wb_Global.wbNODATE) And (dtFilterBis.Value > wb_Global.wbNODATE) Then
+        If (dtFilterVon.Value > wb_Global.wbNODATE) AndAlso (dtFilterBis.Value > wb_Global.wbNODATE) Then
             cbFilter.Checked = True
             SetFilter(sender)
         End If
     End Sub
 
     Private Sub dtFilterBis_ValueChanged(sender As Object, e As EventArgs) Handles dtFilterBis.ValueChanged
-        If (dtFilterVon.Value > wb_Global.wbNODATE) And (dtFilterBis.Value > wb_Global.wbNODATE) Then
+        If (dtFilterVon.Value > wb_Global.wbNODATE) AndAlso (dtFilterBis.Value > wb_Global.wbNODATE) Then
             cbFilter.Checked = True
             SetFilter(sender)
         End If
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused procedure parameters should be removed", Justification:="<Ausstehend>")>
     Private Sub SetFilter(sender)
-        If cbFilter.Checked And (dtFilterVon.Value > wb_Global.wbNODATE) And (dtFilterBis.Value > wb_Global.wbNODATE) Then
+        If cbFilter.Checked AndAlso (dtFilterVon.Value > wb_Global.wbNODATE) And (dtFilterBis.Value > wb_Global.wbNODATE) Then
             DataGridView.Filter = "TW_Beginn >= #" + dtFilterVon.Value.ToString("yyyy-MM-dd") + "# AND TW_Beginn <= #" & dtFilterBis.Value.ToString("yyyy-MM-dd") + "#"
         End If
     End Sub
@@ -138,7 +141,7 @@ Public Class wb_Statistik_Chargen
         End If
     End Sub
 
-    Private Sub DataGridView_CellDoubleClick(sender As Object, e As Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
+    Private Sub DataGridView_CellDoubleClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
         BerechnungStatistik(sender)
         ListeBerechnet = True
     End Sub
@@ -146,6 +149,16 @@ Public Class wb_Statistik_Chargen
     Private Sub BtnBerechnen_Click(sender As Object, e As EventArgs) Handles BtnBerechnen.Click
         BerechnungStatistik(sender)
         ListeBerechnet = True
+    End Sub
+
+    Private Sub BtnChart_Click(sender As Object, e As EventArgs) Handles BtnChart.Click
+        'wenn die Statistik noch nicht berechnet wurde
+        If Not ListeBerechnet Then
+            'Berechnung starten
+            BerechnungStatistik(sender)
+        End If
+        'Grafik anzeigen
+        wb_Chargen_Shared.Liste_Print(sender, wb_Global.StatistikType.ChargenAuswertung)
     End Sub
 
     Private Sub BtnDrucken_Click(sender As Object, e As EventArgs) Handles BtnDrucken.Click
@@ -161,14 +174,26 @@ Public Class wb_Statistik_Chargen
     Private Sub BerechnungStatistik(sender As Object)
         'akutell ausgewählte Tageswechsel-Nummer
         Liste_TagesWechselNummer = DataGridView.iField("TW_Nr")
+        'Tageswechsel Segment-Nummer
+        Dim TagesWechselSegment As Integer = DataGridView.iField("TW_Seg_Nr")
 
         'Fenster-Titel Detail-Fenster
         Dim StrtDate As String = DataGridView.Field("TW_Beginn")
         Dim EndeDate As String = DataGridView.Field("TW_Ende")
-        wb_Chargen_Shared.SetFensterTitel(wb_Global.StatistikType.ChargenAuswertung, StrtDate, EndeDate)
 
-        'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
-        Liste_Click(sender, wb_Global.StatistikType.ChargenAuswertung)
+        'Chargen-Auswertung Sauerteig/Produktion
+        If TagesWechselSegment = 0 Then
+            'Fenstertitel
+            wb_Chargen_Shared.SetFensterTitel(wb_Global.StatistikType.ChargenAuswertungSauerteig, StrtDate, EndeDate)
+            'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
+            Liste_Click(sender, wb_Global.StatistikType.ChargenAuswertungSauerteig)
+        Else
+            'Fenstertitel
+            wb_Chargen_Shared.SetFensterTitel(wb_Global.StatistikType.ChargenAuswertung, StrtDate, EndeDate)
+            'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
+            Liste_Click(sender, wb_Global.StatistikType.ChargenAuswertung)
+        End If
+
         'Nach dem Update der Detailfenster wird der Focus wieder zurückgesetzt (Eingabe Suchmaske)
         DataGridView.Focus()
     End Sub

@@ -49,6 +49,14 @@ Public Class ob_ProduzierteWare
         End Get
     End Property
 
+    Public ReadOnly Property sProduktionsUhrzeit As String
+        Get
+            'TODO Hier die Uhrzeit Im Format HH:MM dekodieren aus Produktionsdatum
+            'Future-Use sobald die Datenbank in OrgaBack erweitert ist.
+            Return wb_sql_Functions.MsSQLShortTime(_ProduktionsDatum)
+        End Get
+    End Property
+
     Public Property SatzTyp As wb_Global.obSatzTyp
         Get
             Return _SatzTyp
@@ -245,9 +253,12 @@ Public Class ob_ProduzierteWare
         Next
 
         'wenn in der Produktion eine Rezeptur aufgerufen wurde, wird ein Dummy-Artikel angelegt
-        If ((SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel) And (Typ = wb_Global.wbSatzTyp.Rezept)) Then
-            ArtikelNr = wb_Global.ProduktionDummyArtikel
+        If ((SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel) AndAlso (Typ = wb_Global.wbSatzTyp.Rezept)) Then
+            ArtikelNr = wb_GlobalSettings.ProduktionDummyArtikel
             Einheit = wb_Global.wbEinheitStk
+            'ElseIf ((SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel) And ((Type = wb_Global.KomponTypen.KO_TYPE_HANDKOMPONENTE) Or (Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE))) Then
+            '    'wenn in der Produktion eine Halbfabrikat hergestellt wurde, muss die Einheit angepasst werden
+            '    Einheit = wb_Global.wbEinheitKilogramm
         End If
 
         Return True

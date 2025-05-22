@@ -32,7 +32,7 @@ Public Class wb_Statistik_Rezepte
         RezeptAuswahl.BtnClear.Enabled = False
         RezeptAuswahl.MultiSelect = True
 
-        If RezeptAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If RezeptAuswahl.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             For Each rle In RezeptAuswahl.RezeptListe
                 Dim RezListenElement As New wb_StatistikListenElement
                 RezListenElement = rle
@@ -98,7 +98,7 @@ Public Class wb_Statistik_Rezepte
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub wb_Statistik_Rezepte_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Statistik_Rezepte_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         ListeStatistik.SaveAuswahlListen(wb_Global.StatistikType.StatistikRezepte)
     End Sub
 

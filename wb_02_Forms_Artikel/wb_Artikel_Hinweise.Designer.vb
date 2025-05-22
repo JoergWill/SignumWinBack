@@ -253,21 +253,21 @@ Partial Class wb_Artikel_Hinweise
 
     End Sub
 
-    Friend WithEvents VorschauPDF As Windows.Forms.PictureBox
-    Friend WithEvents OpenPdfFile As Windows.Forms.OpenFileDialog
-    Friend WithEvents BtnRotateR As Windows.Forms.Button
-    Friend WithEvents BtnRotateL As Windows.Forms.Button
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
-    Friend WithEvents Panel2 As Windows.Forms.Panel
-    Friend WithEvents BtnTransferPdf As Windows.Forms.Button
-    Friend WithEvents lblArtikelHinweis As Windows.Forms.Label
-    Friend WithEvents BtnLoadPdf As Windows.Forms.Button
-    Friend WithEvents cbAufloesung As Windows.Forms.ComboBox
-    Friend WithEvents tHinweisName As Windows.Forms.TextBox
-    Friend WithEvents lblAufloesung As Windows.Forms.Label
-    Friend WithEvents Panel1 As Windows.Forms.Panel
-    Friend WithEvents BtnPagePlus As Windows.Forms.Button
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents BtnPageMinus As Windows.Forms.Button
+    Friend WithEvents VorschauPDF As System.Windows.Forms.PictureBox
+    Friend WithEvents OpenPdfFile As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents BtnRotateR As System.Windows.Forms.Button
+    Friend WithEvents BtnRotateL As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Friend WithEvents BtnTransferPdf As System.Windows.Forms.Button
+    Friend WithEvents lblArtikelHinweis As System.Windows.Forms.Label
+    Friend WithEvents BtnLoadPdf As System.Windows.Forms.Button
+    Friend WithEvents cbAufloesung As System.Windows.Forms.ComboBox
+    Friend WithEvents tHinweisName As System.Windows.Forms.TextBox
+    Friend WithEvents lblAufloesung As System.Windows.Forms.Label
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents BtnPagePlus As System.Windows.Forms.Button
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents BtnPageMinus As System.Windows.Forms.Button
 End Class

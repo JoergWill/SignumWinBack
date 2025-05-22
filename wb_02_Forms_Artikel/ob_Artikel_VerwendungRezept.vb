@@ -56,6 +56,7 @@ Public Class ob_Artikel_VerwendungRezept
     Public Event Close As EventHandler Implements IBasicFormUserControl.Close
 
     Public Sub FormClosed() Implements IBasicFormUserControl.FormClosed
+        'not used
     End Sub
 #End Region
 
@@ -68,7 +69,7 @@ Public Class ob_Artikel_VerwendungRezept
             Case "VALID"
 
             Case "wbFOUND"
-                Debug.Print("Artikel_VerwendungRezept: wbFOUND")
+                'Debug.Print("Artikel_VerwendungRezept: wbFOUND")
                 NrAkt = DirectCast(Parameter, wb_Komponente).Nr
                 NummerAkt = DirectCast(Parameter, wb_Komponente).Nummer
                 BezeichnungAkt = DirectCast(Parameter, wb_Komponente).Nummer
@@ -92,7 +93,6 @@ Public Class ob_Artikel_VerwendungRezept
     End Function
 
     Public Function Init() As Boolean Implements IBasicFormUserControl.Init
-        Trace.WriteLine("Init()")
         MyBase.Text = "Rohstoff Verwendung im Rezept"
         'Rohstoff-tauschen im Popup-Menu
         HisDataGridView.PopupItemAdd("Rohstoff in Rezepten ersetzen", "", Nothing, AddressOf RohstoffeTauschen, True)
@@ -110,8 +110,6 @@ Public Class ob_Artikel_VerwendungRezept
 
         ' Add any initialization after the InitializeComponent() call.
         _DockingExtension = DockingExtension
-
-        Trace.WriteLine("Sub New(Docking Extension)")
     End Sub
 
     Private Sub RohstoffeTauschen()
@@ -122,7 +120,7 @@ Public Class ob_Artikel_VerwendungRezept
         'RohstoffeTauschen.BezeichnungAkt = BezeichnungAkt
         'RohstoffeTauschen.NrAkt = NrAkt
         'wenn Rezepturen geändert worden sind, wird die Anzeige aktualisiert
-        If RohstoffeTauschen.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If RohstoffeTauschen.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             'Liste aktualisieren
             HisDataGridView.ClearVerwendung()
             HisDataGridView.LoadVerwendung(NrAkt)

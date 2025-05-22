@@ -14,8 +14,8 @@ Public Class ob_Artikel_DockingExtension
 
     Private _MenuService As IMenuService
     Private _ViewProvider As IViewProvider
-    Private _ContextTabs As List(Of GUI.ITab)
-    Private _SubForms As New Dictionary(Of String, IBasicFormUserControl)
+    Private ReadOnly _ContextTabs As List(Of GUI.ITab)
+    Private ReadOnly _SubForms As New Dictionary(Of String, IBasicFormUserControl)
     Private _Extendee As IFrameWorkClass
 
     Private bContextTabInitialized As Boolean = False
@@ -88,7 +88,7 @@ Public Class ob_Artikel_DockingExtension
     Private Sub Extendee_ExecuteCommand(Command As String, Parameter As Object)
         For Each oForm In _SubForms.Values
             If oForm IsNot Nothing AndAlso Not DirectCast(oForm, UserControl).IsDisposed Then
-                Debug.Print("Extendee_ExecuteCommand " & Command)
+                'Debug.Print("Extendee_ExecuteCommand " & Command)
                 oForm.ExecuteCommand(Command, Parameter)
             End If
         Next
@@ -96,7 +96,7 @@ Public Class ob_Artikel_DockingExtension
 
     Private Sub Extendee_Valid(sender As Object, e As EventArgs)
         Extendee_ExecuteCommand("VALID", Nothing)
-        Debug.Print("Article_DockingExtension Valid")
+        'Debug.Print("Article_DockingExtension Valid")
     End Sub
 
     ''' <summary>
@@ -107,7 +107,7 @@ Public Class ob_Artikel_DockingExtension
     Private Sub Extendee_Invalid(sender As Object, e As EventArgs)
         bAddNew = False
         Extendee_ExecuteCommand("INVALID", Nothing)
-        Debug.Print("Article_DockingExtension Invalid")
+        'Debug.Print("Article_DockingExtension Invalid")
         Komponente = New wb_Komponente
     End Sub
 
@@ -120,7 +120,7 @@ Public Class ob_Artikel_DockingExtension
         Komponente = New wb_Komponente
         bAddNew = True
         Extendee_ExecuteCommand("INVALID", Nothing)
-        Debug.Print("Article_DockingExtension AddNew")
+        'Debug.Print("Article_DockingExtension AddNew")
     End Sub
 
     ''' <summary>
@@ -129,12 +129,12 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_Found(sender As Object, e As EventArgs)
-        Debug.Print("Article_DockingExtension Found")
+        'Debug.Print("Article_DockingExtension Found")
         'Artikel-Informationen in Klasse Komponenten einlesen
         bSortimentIstProduktion = GetKomponentenDaten()
         'Sub-Fenster WinBack aktualisieren
         If bSortimentIstProduktion Then
-            Debug.Print("Article_DockingExtension Found - Sortiment ist Produktion")
+            'Debug.Print("Article_DockingExtension Found - Sortiment ist Produktion")
             Extendee_ExecuteCommand("wbFOUND", Komponente)
         Else
             Extendee_ExecuteCommand("wbNOPRODUCTION", Komponente)
@@ -156,7 +156,7 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_BeforeUpdate(sender As Object, e As EventArgs)
-        Debug.Print("Article_DockingExtension BeforeUpdate")
+        'Debug.Print("Article_DockingExtension BeforeUpdate")
         'Artikel-Informationen (erneut)in Klasse Komponenten einlesen. Wenn der Artikel/Rohstoff neu angelegt wurde müssen die Daten neu eingelesen werden
         If bAddNew Then
             bSortimentIstProduktion = GetKomponentenDaten()
@@ -187,7 +187,7 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_Updated(sender As Object, e As EventArgs)
-        Debug.Print("Article_DockingExtension Updated")
+        'Debug.Print("Article_DockingExtension Updated")
     End Sub
 
     ''' <summary>
@@ -196,7 +196,7 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_Committed(sender As Object, e As EventArgs)
-        Debug.Print("Article_DockingExtension Committed")
+        'Debug.Print("Article_DockingExtension Committed")
 
         If bSortimentIstProduktion Then
             'Daten aus Unterfenster sichern
@@ -217,7 +217,7 @@ Public Class ob_Artikel_DockingExtension
         Dim CanBeDeleted As Boolean = True
 
         'Hier kann das Löschen von Artikel/Komponenten-Daten verhindert werden  
-        Debug.Print("Article_DockingExtension BeforeDelete")
+        'Debug.Print("Article_DockingExtension BeforeDelete")
 
         'Sortiment-Kürzel aus Artikel.Sortiment
         If bSortimentIstProduktion Then
@@ -225,7 +225,7 @@ Public Class ob_Artikel_DockingExtension
             'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
             Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
             'Komponenten-Nummer aus OrgaBack ermitteln
-            Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))  'MFF280 - Index auf interne Komponenten-Nummer
+            Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))  'MFF201 - Index auf interne Komponenten-Nummer
             Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString        'Artikel/Komponenten-Nummer alphanumerisch
 
             'Prüfen ob der Artikel/Rohstoff noch verwendet wird
@@ -233,7 +233,7 @@ Public Class ob_Artikel_DockingExtension
             'Falls notwendig wird ein Fehlertext ausgegeben
             If Not CanBeDeleted Then
                 MsgBox(Komponente.LastErrorText)
-                Debug.Print("Article_DockingExtension " & Komponente.Nummer & " Can Not be deleted " & Komponente.LastErrorText)
+                'Debug.Print("Article_DockingExtension " & Komponente.Nummer & " Can Not be deleted " & Komponente.LastErrorText)
             End If
         End If
         '     .Cancel = True    Löschen nicht erlaubt
@@ -247,7 +247,7 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Extendee_Deleted(sender As Object, e As EventArgs)
-        Debug.Print("Article_DockingExtension Deleted")
+        'Debug.Print("Article_DockingExtension Deleted")
 
         'Sortiment-Kürzel aus Artikel.Sortiment
         If bSortimentIstProduktion Then
@@ -258,7 +258,7 @@ Public Class ob_Artikel_DockingExtension
 
     ''' <summary>
     ''' Das Objekt soll kopiert werden.
-    ''' Hier MUSS unbedingt das MFF201 (KO_Nr) gesöscht werden, da sonst der alte Verweis beim Kopieren bestehen bleibt.
+    ''' Hier MUSS unbedingt das MFF201 (KO_Nr) gelöscht werden, da sonst der alte Verweis beim Kopieren bestehen bleibt.
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -272,7 +272,7 @@ Public Class ob_Artikel_DockingExtension
         Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
         MFFValue(oFil, wb_Global.MFF_KO_Nr, True) = ""
 
-        Debug.Print("Article_DockingExtension BeforeCopy")
+        'Debug.Print("Article_DockingExtension BeforeCopy")
     End Sub
 
     ''' <summary>
@@ -283,14 +283,19 @@ Public Class ob_Artikel_DockingExtension
     ''' Dieser wird erst erzeugt und gesetzt, wenn das Fenster auch angezeigt werden soll.
     ''' </remarks>
     Public Sub Initialize() Implements IExtension.Initialize
+        'in wb_Main registrieren
+        wb_Main_Shared.RegisterAddIn("ob_Artikel_DockingExtension")
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
-        'TODO FONK
-        'AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+        If wb_Global.AssemblyResolve Then
+            'Die eigenen dll-Files in sep. Verzeichnis verlagern
+            AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+        End If
 
         _MenuService = TryCast(ServiceProvider.GetService(GetType(IMenuService)), IMenuService)
         _ViewProvider = TryCast(ServiceProvider.GetService(GetType(IViewProvider)), IViewProvider)
         _SubForms.Add("@ob_ArtikelDocking_ZuordnungRezept", Nothing)
         _SubForms.Add("@ob_ArtikelDocking_VerwendungRezept", Nothing)
+        _SubForms.Add("@ob_ArtikelDocking_Verarbeitungshinweise", Nothing)
 
         'Neuinitialisierung der AddIn-Buttons beim Benutzerwechsel
         Dim IEB As IEventBroker = TryCast(ServiceProvider.GetService(GetType(IEventBroker)), IEventBroker)
@@ -307,6 +312,8 @@ Public Class ob_Artikel_DockingExtension
     ''' Diese Routine wird immer aufgerufen, wenn ein DockingController vom passenden Typ erzeugt wird. 
     ''' Hier können Einträge in die bestehenden Context-Tabs hinzugefügt werden. 
     ''' Achtung: Das Hinzufügen darf nur beim ersten Mal passieren, die Context-Tabs werden gecached!
+    ''' 
+    ''' 2022-03-11 Text WinBack-Produktion geändert in Produktion
     ''' </summary>
     Public Sub InitializeContextTabs() Implements IDockingExtension.InitializeContextTabs
         If Not bContextTabInitialized Then
@@ -314,46 +321,60 @@ Public Class ob_Artikel_DockingExtension
             bContextTabInitialized = True
             'fügt einen Tab im Artkel-Ribbon(rtabArtikel) hinzu
             Dim oSystemTab = From oTab In Me.FormController.ContextualTabs Where oTab.Name = "rtabArtikel" Select oTab
-            If oSystemTab IsNot Nothing AndAlso oSystemTab.Count > 0 Then
-                oSystemTab(0).GetGroups(0).AddButton("WinBackProduktion", "WinBack-Produktion", "Artikel-Stammdaten relevant für die Produktion in WinBack", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf LoadDockingSubFormRezept)
+            If oSystemTab IsNot Nothing AndAlso oSystemTab.Any() Then
+                oSystemTab(0).GetGroups(0).AddButton("WinBackProduktion", "Produktion", "Artikel-Stammdaten relevant für die Produktion in WinBack", My.Resources.MainArtikel_16x16, My.Resources.MainArtikel_32x32, AddressOf LoadDockingSubFormRezept)
                 oSystemTab(0).GetGroups(0).AddButton("WinBackVerwendung", "Artikel Verwendung", "Verwendung des Artikels in Rezepturen", My.Resources.RohstoffeVerwendung_32x32, My.Resources.RohstoffeVerwendung_32x32, AddressOf LoadDockingSubFormVerwendung)
+                oSystemTab(0).GetGroups(0).AddButton("BtnArtikelHinweise", "Verarbeitungs-Hinweise", "Artikel Verarbeitungshinweise", My.Resources.ArtikelHinweise_32x32, My.Resources.ArtikelHinweise_32x32, AddressOf LoadDockingSubFormVerarbeitungsHinweise)
             End If
         End If
     End Sub
 
     Private Sub LoadDockingSubFormRezept(sender As Object, e As EventArgs)
-        Trace.WriteLine("LoadDockingSubFormRezept")
+        Trace.WriteLine("@I_LoadDockingSubFormRezept")
         If Me.FormController IsNot Nothing Then
             Me.FormController.ExecuteCommand("ob_ArtikelDocking_ZuordnungRezept", Nothing)
-            Trace.WriteLine("Me.FormController.ExecuteCommand")
+            Trace.WriteLine("@I_Me.FormController.ExecuteCommand")
 
             'Sub-Fenster WinBack aktualisieren, falls das Fenster geöffnet wird, nachdem der Artikel ausgewählt wurde
-            If bSortimentIstProduktion And Komponente IsNot Nothing Then
+            If bSortimentIstProduktion AndAlso Komponente IsNot Nothing Then
                 Extendee_ExecuteCommand("wbFOUND", Komponente)
             End If
         End If
     End Sub
 
     Private Sub LoadDockingSubFormVerwendung(sender As Object, e As EventArgs)
-        Trace.WriteLine("LoadDockingSubFormVerwendung")
+        Trace.WriteLine("@I_LoadDockingSubFormVerwendung")
         If Me.FormController IsNot Nothing Then
             Me.FormController.ExecuteCommand("ob_ArtikelDocking_VerwendungRezept", Nothing)
-            Trace.WriteLine("Me.FormController.ExecuteCommand")
+            Trace.WriteLine("@I_Me.FormController.ExecuteCommand")
 
             'Sub-Fenster WinBack aktualisieren, falls das Fenster geöffnet wird, nachdem der Rohstoff ausgewählt wurde
-            If bSortimentIstProduktion And Komponente IsNot Nothing Then
+            If bSortimentIstProduktion AndAlso Komponente IsNot Nothing Then
+                Extendee_ExecuteCommand("wbFOUND", Komponente)
+            End If
+        End If
+    End Sub
+
+    Private Sub LoadDockingSubFormVerarbeitungsHinweise(sender As Object, e As EventArgs)
+        Trace.WriteLine("@I_LoadDockingSubFormVerarbeitungsHinweise")
+        If Me.FormController IsNot Nothing Then
+            Me.FormController.ExecuteCommand("ob_ArtikelDocking_Verarbeitungshinweise", Nothing)
+            Trace.WriteLine("@I_Me.FormController.ExecuteCommand")
+
+            'Sub-Fenster WinBack aktualisieren, falls das Fenster geöffnet wird, nachdem der Rohstoff ausgewählt wurde
+            If bSortimentIstProduktion AndAlso Komponente IsNot Nothing Then
                 Extendee_ExecuteCommand("wbFOUND", Komponente)
             End If
         End If
     End Sub
 
     Private Sub SaveAtClose()
-        Debug.Print("SaveAtClose")
+        'Debug.Print("SaveAtClose")
         _Extendee.Changed = True
     End Sub
 
     Private Sub UpdateImmidiate()
-        Debug.Print("Update Komponentendaten (Rezeptnummer/Name)")
+        'Debug.Print("Update Komponentendaten (Rezeptnummer/Name)")
         'Änderungen Rezeptnummer/Rezeptname in Komponenten-Stammdaten schreiben
         Extendee_ExecuteCommand("wbUPDATE", Komponente)
     End Sub
@@ -364,9 +385,9 @@ Public Class ob_Artikel_DockingExtension
     ''' <param name="FormKey"></param>
     ''' <returns></returns>
     Public Function ProvideInstance(FormKey As String) As IBasicFormUserControl Implements IDockingExtension.ProvideInstance
-        Trace.WriteLine("ProvideInstance FormKey= " & FormKey)
+        'Trace.WriteLine("@I_ProvideInstance FormKey= " & FormKey)
         If _SubForms.ContainsKey(FormKey) Then
-            Trace.WriteLine("_SubForms.ContainsFormKey ")
+            Trace.WriteLine("@I__SubForms.ContainsFormKey ")
             Select Case FormKey
                 Case "@ob_ArtikelDocking_ZuordnungRezept"
                     Dim oForm = _SubForms(FormKey)
@@ -384,6 +405,16 @@ Public Class ob_Artikel_DockingExtension
                     If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
                         ' Adresse der Klasse, die die Arbeit macht !!
                         oForm = New ob_Artikel_VerwendungRezept(Me)
+                        _SubForms(FormKey) = oForm
+                    End If
+                    Return oForm
+
+                Case "@ob_ArtikelDocking_Verarbeitungshinweise"
+                    Dim oForm = _SubForms(FormKey)
+                    If oForm Is Nothing OrElse DirectCast(oForm, UserControl).IsDisposed Then
+                        ' Adresse der Klasse, die die Arbeit macht !!
+                        oForm = New ob_Artikel_Verarbeitungshinweise(Me)
+                        AddHandler DirectCast(oForm, ob_Artikel_Verarbeitungshinweise).DataInvalidated, AddressOf SaveAtClose
                         _SubForms(FormKey) = oForm
                     End If
                     Return oForm
@@ -426,7 +457,7 @@ Public Class ob_Artikel_DockingExtension
     '''     
     '''     KA_Matchcode    ID für Nährwerte            
     '''     Aufarbeitung(Backort)                           MFF200 (OrgaBack Readonly)
-    '''     KO_Nr           Index Rohstoff/Artikel          MFF201
+    '''     KO_Nr           Index Rohstoff/Artikel          MFF201 (WinBack schreibt)
     '''     KA_RZ_Nr        Rezeptnummer zum Artikel        MFF202 (WinBack schreibt)
     '''     RZ_Bezeichnung  Rezeptbezeichnung zum Artikel   MFF203 (WinBack schreibt)
     ''' 
@@ -453,54 +484,73 @@ Public Class ob_Artikel_DockingExtension
 
         'Sortiment-Kürzel aus Artikel.Sortiment
         Dim sSortiment As String = _Extendee.GetPropertyValue("Sortiment").ToString
-        Debug.Print("DockingExtension-GetKomponentenDaten sSortiment " & sSortiment)
+        'Debug.Print("DockingExtension-GetKomponentenDaten sSortiment " & sSortiment)
         If wb_Filiale.SortimentIstProduktion(sSortiment) Then
-            Debug.Print("DockingExtension-GetKomponentenDaten sSortiment - Sortiment " & sSortiment & " ist Produktion")
+            'Debug.Print("DockingExtension-GetKomponentenDaten sSortiment - Sortiment " & sSortiment & " ist Produktion")
 
-            'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
-            Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
-            'Handelsartikel mit Index(0) ist der Hauptartikel aus Artikel.Handelsartikel()
-            Dim oHdl = DirectCast(_Extendee.GetPropertyValue("HandelsArtikel"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+            Try 'Fehler abfangen, falls der Artikel in OrgaBack nicht richtig angelegt ist (Mail C.Bartels vom 09.03.2023)
 
-            'Komponenten-Nummer aus OrgaBack ermitteln
-            If Komponente Is Nothing Then Komponente = New wb_Komponente
-            Komponente.Nr = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))                                                                  'MFF201 - Index auf interne Komponenten-Nummer
-            Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
-            Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString                                                                        'Artikel/Komponenten-Nummer alphanumerisch
-            Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
-            'Komponente.sArtikeLinienGruppe = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)                                                             'MFF200 - Aufarbeitungs-Linie
-            Komponente.VerkaufsGewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("NettoInhalt").ToString) / 1000 'Verkaufsgewicht NETTO (aus OrgaBack in Gramm)
-            Debug.Print("_Extendee.Handelsartikel.NettoGewicht " & Komponente.VerkaufsGewicht)
+                'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
+                Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+                'Handelsartikel mit Index(0) ist der Hauptartikel aus Artikel.Handelsartikel()
+                Dim oHdl = DirectCast(_Extendee.GetPropertyValue("HandelsArtikel"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
 
-            'Komponenten-Type aus der Zuordnung zur Artikelgruppe
-            Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
-            Dim KType As wb_Global.KomponTypen = wb_Functions.obKtypeToKType(obKType)
+                'Komponenten-Nummer aus OrgaBack ermitteln
+                If Komponente Is Nothing Then Komponente = New wb_Komponente
+                'In einigen (Sonder/Fehler)-Fällen ist die MFF-KomponentenNr falsch!
+                Dim MFFKomponenteNr As Integer = wb_Functions.StrToInt(MFFValue(oFil, wb_Global.MFF_KO_Nr))                                                  'MFF201 - Index auf interne Komponenten-Nummer
+                Komponente.Nr = MFFKomponenteNr
+                'Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNr " & Komponente.Nr.ToString)
+                Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString                                                                         'Artikel/Komponenten-Nummer alphanumerisch
+                'Debug.Print("DockingExtension-GetKomponentenDaten KomponenteNummer " & Komponente.Nummer.ToString)
+                'Komponente.sArtikeLinienGruppe = MFFValue(oFil, wb_Global.MFF_ProduktionsLinie)                                                             'MFF200 - Aufarbeitungs-Linie
 
-            'Artikel/Komponente aus WinBack-Db einlesen
-            If Not Komponente.MySQLdbRead(Komponente.Nr, Komponente.Nummer, True) Then
-                Debug.Print("DockingExtension-GetKomponentenDaten Komponente in WinBack nicht vorhanden " & Komponente.Bezeichnung)
-                'Datensatz ist in Winback nicht vorhanden - Komponententype (Artikel/Handkomponente) ermitteln
-                Komponente.MySQLdbNew(KType)
+                'Komponenten-Type aus der Zuordnung zur Artikelgruppe
+                Dim obKType As String = _Extendee.GetPropertyValue("ArtikelGruppe").ToString
+                Dim obEinheit As String = Extendee.GetPropertyValue("StdEinheit").ToString
+                Dim KType As wb_Global.KomponTypen = wb_Functions.obKtypeToKType(obKType, obEinheit)
 
-                'Komponenten-Daten für neue Komponente in WinBack aus OrgaBack (Fehler bei Fonk!)
-                Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
-                Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)           'Artikel/Komponenten-Kommentar
-                Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString     'Artikel/Komponenten-Nummer alphanumerisch
+                'Artikel/Komponente aus WinBack-Db einlesen
+                If Not Komponente.xMySQLdbRead(Komponente.Nr, Komponente.Nummer, True) Then
+                    'Debug.Print("DockingExtension-GetKomponentenDaten Komponente In WinBack nicht vorhanden " & Komponente.Bezeichnung)
+                    'Datensatz ist in Winback nicht vorhanden - Komponententype (Artikel/Handkomponente) ermitteln
+                    Komponente.MySQLdbNew(KType)
+
+                    'Komponenten-Daten für neue Komponente in WinBack aus OrgaBack (Fehler bei Fonk!)
+                    Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
+                    Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)           'Artikel/Komponenten-Kommentar
+                    Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString     'Artikel/Komponenten-Nummer alphanumerisch
+                    Komponente.VerkaufsGewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("NettoInhalt").ToString) / 1000 'Verkaufsgewicht NETTO (aus OrgaBack in Gramm)
+                    'Komponenten-Daten sichern (sonst steht in der Datenbank "neu angelegt..")
+                    Komponente.MySQLdbUpdate()
+                End If
+
+                'Das Verkaufsgewicht wird in OrgaBack im Feld NettoInhalt abgelegt
                 Komponente.VerkaufsGewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("NettoInhalt").ToString) / 1000 'Verkaufsgewicht NETTO (aus OrgaBack in Gramm)
-                'Komponenten-Daten sichern (sonst steht in der Datenbank "neu angelegt..")
-                Komponente.MySQLdbUpdate()
-            End If
+                'bei der Rezept/Stücklisten-Variante kann ebenfalls ein Gewicht angegeben werden. Wenn hier ein Wert eingetragen ist
+                'hat dieser offenbar Vorrang vor dem Netto-Inhalt (aus Maße/Gewichte)
+                Komponente.GetCalcVerkaufsgewichtFromStkLstVariante(obEinheit)
+                'Debug.Print("_Extendee.Handelsartikel.NettoGewicht " & Komponente.VerkaufsGewicht)
 
-            'Falls notwendig wird die Komponenten-Type aktualisiert (Artikel/Rohstoff). OrgaBack ist das führende System
-            If Komponente.SetKType(KType) Then
-                Debug.Print("Komponenten-Type geändert")
-            End If
+                'Interne Komponenten-Nummer korrigieren -falls notwendig (Fehler bei Niehaves)
+                If MFFKomponenteNr <> Komponente.Nr Then
+                    MFFValue(oFil, wb_Global.MFF_KO_Nr) = Komponente.Nr
+                End If
 
-            Debug.Print("DockingExtension-GetKomponentenDaten Komponente in WinBack (jetzt) vorhanden " & Komponente.Bezeichnung)
-            Return True
+                'Falls notwendig wird die Komponenten-Type aktualisiert (Artikel/Rohstoff). OrgaBack ist das führende System
+                If Komponente.SetKType(KType) Then
+                    Debug.Print("Komponenten-Type geändert")
+                End If
+
+                'Debug.Print("DockingExtension-GetKomponentenDaten Komponente In WinBack (jetzt) vorhanden " & Komponente.Bezeichnung)
+                Return True
+            Catch ex As Exception
+                Trace.WriteLine("@E_DockingExtension-GetKomponentenDaten Komponente ist fehlerhaft" & _Extendee.GetPropertyValue("ArtikelNr").ToString)
+                Return False
+            End Try
         Else
             'Artikel/Rohstoff ist keiner Produktions-Filiale zugeordnet
-            Debug.Print("DockingExtension-GetKomponentenDaten Komponente keiner ProduktionsFiliale zugeordnet" & Komponente.Bezeichnung)
+            'Debug.Print("DockingExtension-GetKomponentenDaten Komponente keiner ProduktionsFiliale zugeordnet" & _Extendee.GetPropertyValue("ArtikelNr").ToString)
             Return False
         End If
     End Function
@@ -522,27 +572,32 @@ Public Class ob_Artikel_DockingExtension
     ''' <returns></returns>
     Private Property MFFValue(ofil As ICollectionSubClass, MFF As Integer, Optional CheckReadOnly As Boolean = False) As String
         Get
-            Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
-            Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
+            Dim iMFFIdx As Short                ' hier soll der Index eines Multifunktionsfelds hinein
+            Dim oMFF As ICollectionSubClass     ' hier wird das eigentliche MFF-Objekt gehalten
 
-            iMFFIdx = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("FeldNr=" & CStr(MFF))
-            If iMFFIdx >= 0 Then
-                ' sollte ein MFF mit FeldNr=X gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
-                ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
-                oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
-                If oMFF IsNot Nothing Then
-                    ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
-                    Return oMFF.PropertyValueCollection(wb_Global.MFF_Value).Value
+            'teilweise tritt eine Object not found-Exception auf
+            Try
+                iMFFIdx = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("FeldNr=" & CStr(MFF))
+                If iMFFIdx >= 0 Then
+                    ' sollte ein MFF mit FeldNr=X gefunden worden sein, so wurde dessen Index innerhalb der Collection zurückgeliefert
+                    ' mit diesem Index greift man auf das Element zu, die Elemente innerhalb einer ICollectionClass sind vom Typ ICollectionSubClass
+                    oMFF = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(iMFFIdx)
+                    If oMFF IsNot Nothing Then
+                        ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
+                        Return oMFF.PropertyValueCollection(wb_Global.MFF_Value).Value
+                    End If
+                Else
+                    Return ""
                 End If
-            Else
                 Return ""
-            End If
-            Return ""
+            Catch ex As Exception
+                Return ""
+            End Try
         End Get
 
         Set(Value As String)
-            Dim iMFFIdx As Short = Short.MinValue         ' hier soll der Index eines Multifunktionsfelds hinein
-            Dim oMFF As ICollectionSubClass = Nothing     ' hier wird das eigentliche MFF-Objekt gehalten
+            Dim iMFFIdx As Short                ' hier soll der Index eines Multifunktionsfelds hinein
+            Dim oMFF As ICollectionSubClass     ' hier wird das eigentliche MFF-Objekt gehalten
             iMFFIdx = DirectCast(ofil.GetPropertyValue("MultiFunktionsFeld"), ICollectionClass).FindInInnerList("FeldNr=" & CStr(MFF))
 
             'teilweise tritt eine 'Key not found-Exception auf'
@@ -555,15 +610,14 @@ Public Class ob_Artikel_DockingExtension
                         ' sofern oMFF nicht Nothing ist, hat hat man jetzt direkten Zugriff auf das MFF mit FeldNr x
                         oMFF.SetPropertyValue("Inhalt", Value)
                         'Prüfen on Schreiben in MFF erfolgreich war, ansonsten ist das MFF auf ReadOnly gesetzt
-                        If CheckReadOnly Then
-                            If oMFF.PropertyValueCollection(wb_Global.MFF_Value).Value <> Value Then
-                                'Schreiben war nicht erfolgreich - direktes Speichern in Datenbank erforderlich
-                                MFFWriteDB(oMFF, Value)
-                            End If
+                        If CheckReadOnly AndAlso oMFF.PropertyValueCollection(wb_Global.MFF_Value).Value <> Value Then
+                            'Schreiben war nicht erfolgreich - direktes Speichern in Datenbank erforderlich
+                            MFFWriteDB(oMFF, Value)
                         End If
                     End If
                 End If
             Catch
+                Trace.WriteLine("@E_Key not found")
             End Try
         End Set
     End Property
@@ -575,7 +629,7 @@ Public Class ob_Artikel_DockingExtension
         Dim FilialNr As String = oMFF.GetPropertyValue("FilialNr")
 
         'Falls das UPDATE fehlschlägt
-        If orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlUpdateArtikelMFF, ArtikelNr, FeldNr, FilialNr, Value)) < 0 Then
+        If orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlUpdateArtikelMFF, ArtikelNr, FeldNr, FilialNr, Value)) <= 0 Then
             'Datensatz mit INSERT schreiben
             orgaback.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertArtikelMFF, ArtikelNr, FeldNr, FilialNr, Value))
         End If
@@ -592,7 +646,7 @@ Public Class ob_Artikel_DockingExtension
         Komponente.Nummer = _Extendee.GetPropertyValue("ArtikelNr").ToString     'Artikel-Nummer (Ändern über Shift-F9)
         Komponente.Bezeichnung = _Extendee.GetPropertyValue("KurzText").ToString 'Artikel/Komponenten-Bezeichnung
         Komponente.Kommentar = MFFValue(oFil, wb_Global.MFF_Kommentar)           'Artikel/Komponenten-Kommentar
-        Komponente.SetKType(wb_Functions.obKtypeToKType(_Extendee.GetPropertyValue("ArtikelGruppe").ToString))  'KomponentenType
+        Komponente.SetKType(wb_Functions.obKtypeToKType(_Extendee.GetPropertyValue("ArtikelGruppe").ToString, _Extendee.GetPropertyValue("StdEinheit").ToString))  'KomponentenType
         Komponente.ktTyp200.Verkaufsgewicht = wb_Functions.StrToDouble(DirectCast(oHdl, ICollectionSubClass).GetPropertyValue("NettoInhalt").ToString) / 1000
 
         'Testausgabe
@@ -609,13 +663,20 @@ Public Class ob_Artikel_DockingExtension
         'Filiale mit Index(0) ist die Hauptfiliale aus Artikel.FilialFeld()
         Dim oFil = DirectCast(_Extendee.GetPropertyValue("FilialFelder"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
         'Handelsartikel mit Index(0) ist der Hauptartikel aus Artikel.Handelsartikel()
-        Dim oHdl = DirectCast(_Extendee.GetPropertyValue("HandelsArtikel"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
+        '(wird zur Zeit nicht benutzt)
+        'Dim oHdl = DirectCast(_Extendee.GetPropertyValue("HandelsArtikel"), ICollectionClass).InnerList.Cast(Of ICollectionSubClass).ElementAt(0)
 
         'Update aller in WinBack geänderten Daten
-        MFFValue(oFil, wb_Global.MFF_RezeptNummer) = Komponente.RezeptNummer
-        MFFValue(oFil, wb_Global.MFF_RezeptName) = Komponente.RezeptName
+        '2022-05-16/JW das MultiFunktionsFeld wird auch geschrieben, wenn es als ReadOnly in OrgaBack deklariert ist.
+        MFFValue(oFil, wb_Global.MFF_RezeptNummer, True) = Komponente.RezeptNummer
+        MFFValue(oFil, wb_Global.MFF_RezeptName, True) = Komponente.RezeptName
         MFFValue(oFil, wb_Global.MFF_MehlZusammensetzung, True) = Komponente.Mehlzusammensetzung
-        MFFValue(oFil, wb_Global.MFF_ProduktionsLinie) = Komponente.sArtikeLinienGruppe
+        '2024-07-18/JW  Nur schreiben, wenn auch eine Artikel-Liniengruppe eingetragen ist!
+        '               Wenn ein Leerstring geschrieben wird, interpretiert OrgaBack das als
+        '               Aufarbeitung 0000
+        If Komponente.sArtikeLinienGruppe <> "" Then
+            MFFValue(oFil, wb_Global.MFF_ProduktionsLinie, True) = Komponente.sArtikeLinienGruppe
+        End If
 
         'Für Automatik-Komponenten wird in OrgaBack KEINE interne Komponenten-Nummer gespeichert (freie Silo-Zuordnung)
         If Komponente.Type = wb_Global.KomponTypen.KO_TYPE_AUTOKOMPONENTE Then
@@ -626,33 +687,54 @@ Public Class ob_Artikel_DockingExtension
     End Sub
 
     ''' <summary>
-    ''' Prüft ob in OrgaBack die richtige Einheit zur Type verwendet wird
+    ''' Prüft ob in OrgaBack die richtige Einheit zur Type(Artikelgruppe) verwendet wird
     ''' Der FehlerText wird als Komponente.LastError zurückgegeben.
-    '''     
+    ''' 
+    ''' Erweiterung AddIn: Für Rohstoffe sind in WinBack kg/Stk oder Meter zuläassig
     ''' </summary>
     ''' <param name="obKType"></param>
     ''' <param name="obEinheit"></param>
     ''' <returns></returns>
     Private Function CheckEinheit(obKType As String, obEinheit As String) As Boolean
-        'prüft die Einheit abhängig von der Komponenten-Type
-        Select Case obKType
-            'Artikel
-            Case wb_GlobalSettings.OsGrpBackwaren
-                If wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitStk) Then
-                    Return True
-                Else
-                    MsgBox("Speichern nicht möglich." & vbCrLf & "Ein WinBack-Artikel kann nur in der Basis-Einheit 'Stk' angelegt werden !")
-                    Return False
-                End If
-            Case wb_GlobalSettings.OsGrpRohstoffe
-                If wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitKilogramm) Then
-                    Return True
-                Else
-                    MsgBox("Speichern nicht möglich." & vbCrLf & "Ein WinBack-Rohstoff kann nur in der Basis-Einheit 'kg' angelegt werden !")
-                    Return False
-                End If
-            Case Else
+        'prüft die Einheit abhängig von der Artikelgruppe in OrgaBack
+        If wb_Functions.CheckOrgaBackArtikelGruppe(obKType, wb_GlobalSettings.OsGrpBackwaren) Then
+            'WinBack-Artikel nur in der Einheit Stk!
+            If wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitStk) Then
                 Return True
-        End Select
+            Else
+                MsgBox("Speichern nicht möglich." & vbCrLf & "Ein WinBack-Artikel kann nur in der Basis-Einheit 'Stk' angelegt werden !")
+                Return False
+            End If
+        ElseIf wb_Functions.CheckOrgaBackArtikelGruppe(obKType, wb_GlobalSettings.OsGrpRohstoffe) Then
+            'WinBack-Rohstoff nur in den Einheiten kg/Stk/Meter
+            If wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitKilogramm) OrElse
+               wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitStk) OrElse
+               wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitMeter) Then
+
+                'Rohstoffe dürfen in Stk/Meter angelegt werden, können aber in der Produktion 
+                'auf "normalen" WinBack-Linien nicht verwogen werden - Warnmeldung ausgeben
+                If wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitStk) OrElse
+                   wb_Functions.StrToInt(obEinheit) = wb_Einheiten_Global.GetobEinheitNr(wb_Global.wbEinheitMeter) Then
+                    MsgBox("Rohstoffe können in den Einheiten Stk/Meter angelegt werden," & vbCr & "werden aber in Rezepturen in der WinBack-Linie(Produktion) nicht verarbeitet", MsgBoxStyle.Exclamation, "WinBack Artikel/Rohstoffe speichern")
+                End If
+
+                'prüfen ob der Rohstoff in WinBack schon mit einer anderen Einheit exisitiert.
+                If Komponente IsNot Nothing AndAlso wb_Functions.StrToInt(obEinheit) <> wb_Einheiten_Global.GetobEinheitNr(Komponente.Einheit) Then
+                    'prüfen ob der Rohstoff schon in Rezepturen verwendet wird
+                    If Komponente.MySQLIsUsedInRecipe(Komponente.Nr) Then
+                        MsgBox("Ändern der Standard-Einheit ist nicht mehr möglich!" & vbCr & "Der Rohstoff wird schon in Rezepturen verwendet", MsgBoxStyle.Critical, "WinBack Artikel speichern")
+                        Return False
+                    Else
+                        'Einheit in der Komponente anpassen(Gibt True zurück, wenn die Anpassung erlaubt ist)
+                        Return Komponente.SetKType(wb_Functions.obKtypeToKType(obKType, obEinheit))
+                    End If
+                Else
+                    Return True
+                End If
+            End If
+        End If
+
+        'Kein WinBack-Artikel/Rohstoff
+        Return True
     End Function
 End Class

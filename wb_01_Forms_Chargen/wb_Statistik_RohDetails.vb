@@ -21,7 +21,7 @@ Public Class wb_Statistik_RohDetails
         Dim RohstoffAuswahl As New wb_Rohstoffe_AuswahlListe
         RohstoffAuswahl.MultiSelect = True
 
-        If RohstoffAuswahl.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If RohstoffAuswahl.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             For Each rle In RohstoffAuswahl.RohstoffListe
                 Dim RohListenElement As New wb_StatistikListenElement
                 RohListenElement = rle
@@ -87,7 +87,7 @@ Public Class wb_Statistik_RohDetails
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub wb_Statistik_RohDetails_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Statistik_RohDetails_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         ListeStatistik.SaveAuswahlListen(wb_Global.StatistikType.StatistikRohstoffeDetails)
     End Sub
 

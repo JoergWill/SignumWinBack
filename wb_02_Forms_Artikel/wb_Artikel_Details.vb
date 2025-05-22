@@ -4,12 +4,10 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class wb_Artikel_Details
     Inherits DockContent
 
-    Private _DeklBezeichungExtern As String = Nothing
-
     Private Sub wb_Artikel_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Combo-Box(Rohstoff-Gruppe) mit Werten füllen
-        cbArtikelGrp1.Fill(ArtGruppe)
-        cbArtikelGrp2.Fill(ArtGruppe)
+        'Combo-Box(Rohstoff-Gruppe) mit Werten füllen (auch Auswahl Keine)
+        cbArtikelGrp1.Fill(ArtGruppe, False, True)
+        cbArtikelGrp2.Fill(ArtGruppe, False, True)
 
         'Feld Artikel-Preis ist in Variante OrgaBack nicht sichtbar
         If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.OrgaBack Then
@@ -22,6 +20,13 @@ Public Class wb_Artikel_Details
         Else
             'Default-Währung (€)
             ePreis.Text = wb_GlobalSettings.osDefaultWaehrung
+            tArtikelNummer.ReadOnly = False
+        End If
+
+        'Feld Type ist nur sichtbar für SuperUser
+        If wb_AktUser.SuperUser Then
+            tType.Visible = True
+            lblType.Visible = True
         End If
 
         'Event-Handler (Klick auf Artikel-Liste -> Anzeige der Detail-Info)
@@ -30,11 +35,13 @@ Public Class wb_Artikel_Details
         'Beim ersten Aufruf wird der aktuelle Artikel angezeigt. Sonst wird beim Öffnen des Detail-Info-Fensters
         'der Inhalt der Textfelder gelöscht !!
         If Artikel IsNot Nothing Then
-            DetailInfo(sender)
+            If Artikel.Nr > 0 Then
+                DetailInfo(sender)
+            End If
         End If
     End Sub
 
-    Private Sub wb_Artikel_Details_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Artikel_Details_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         RemoveHandler wb_Artikel_Shared.eListe_Click, AddressOf DetailInfo
     End Sub
 
@@ -48,6 +55,9 @@ Public Class wb_Artikel_Details
         tArtikelName.Text = Artikel.Bezeichnung
         tArtikelKommentar.Text = Artikel.Kommentar
         tbArtikelPreis.Text = Artikel.Preis
+        tType.Text = wb_Functions.KomponTypeToInt(Artikel.Type)
+        tZutatenliste.Text = Artikel.DeklBezeichungIntern
+        tMehlZusammensetzung.Text = Artikel.Mehlzusammensetzung
 
         'Auswahlfelder Artikel-Gruppen
         cbArtikelGrp1.SetTextFromKey(Artikel.Gruppe1)
@@ -63,17 +73,22 @@ Public Class wb_Artikel_Details
     ''' Die Daten in den Eingabe-Feldern (Nummer/Text/Kommentar) haben sich geändert)
     ''' Wird aufgerufen durch [Textfeld].Leave(). Aktualisiert die Datenfelder in wb_Artikel_Global und löst
     ''' dann den Event Edit_Leave() aus.
-    ''' </summary>
+    ''' 
+    ''' Sicherheitshalber wird vor dem Speichern abgefragt, ob das TextFeld tType nicht leer ist.
+    ''' (Problem beim Speichern wird ein leerer Datensatz geschrieben).
+    ''' </summary>    ''' 
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub DataHasChanged(sender As Object, e As EventArgs) Handles tArtikelName.Leave, tArtikelNummer.Leave, tArtikelKommentar.Leave, cbArtikelGrp1.Leave, cbArtikelGrp2.Leave
-        If Artikel.Type <> wb_Global.KomponTypen.KO_TYPE_UNDEFINED Then
+        'Sicherheitsabfrage vor Speichern
+        'TOD Version 3
+        If Artikel.Type <> wb_Global.KomponTypen.KO_TYPE_UNDEFINED AndAlso tType.Text <> "" AndAlso tType.Text <> wb_Global.KomponTypeInt_Undefined.ToString Then
             'Bezeichnungstexte
             Artikel.Bezeichnung = tArtikelName.Text
             Artikel.Kommentar = tArtikelKommentar.Text
             Artikel.Nummer = tArtikelNummer.Text
 
-            ''Artikel-Gruppe
+            'Artikel-Gruppe
             Artikel.Gruppe1 = cbArtikelGrp1.GetKeyFromSelection
             Artikel.Gruppe2 = cbArtikelGrp2.GetKeyFromSelection
 
@@ -87,11 +102,29 @@ Public Class wb_Artikel_Details
         End If
     End Sub
 
+    ''' <summary>
+    ''' Setzt den Eingabe-Focus auf ein Label-Element, damit der ausgewählte Text in der Combo-Box nicht
+    ''' mehr markiert ist. (Workarround Schönheits-OP)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub GrpDataChanged(sender As Object, e As EventArgs) Handles cbArtikelGrp1.SelectedIndexChanged, cbArtikelGrp2.SelectedIndexChanged
+        lblNummer.Select()
+    End Sub
+
     Private Sub DataInvalidated() Handles KompRzChargen.DataInvalidated
         'Daten wurden geändert - Datensatz speichern
         KompRzChargen.SaveData(Artikel)
         'Update nur Parameter (NICHT Artikelbezeichnung... diese werden nur in GridUpdate aktualisiert)
         Artikel.MySQLdbUpdate(False)
+
+        'Update Artikel-Verkaufsgewicht (Parameter Verkauf) - Nur OrgaBack-Office
+        If wb_GlobalSettings.pVariante = wb_Global.ProgVariante.WinBack Then
+            Artikel.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt200)
+        End If
+
+        'Update Artikel-Liniengruppe (Parameter Produktion)
+        Artikel.MySQLdbUpdate_Parameter(wb_Global.ktParam.kt300)
         Edit_Leave(Me)
     End Sub
 

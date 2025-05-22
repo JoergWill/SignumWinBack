@@ -1,5 +1,4 @@
 ﻿Imports WeifenLuo.WinFormsUI.Docking
-Imports WinBack
 
 Public Class wb_ChargenWasserTemp
     Inherits DockContent
@@ -12,6 +11,7 @@ Public Class wb_ChargenWasserTemp
         TabControl.HideTabs = True
     End Sub
 
+    <CodeAnalysis.SuppressMessage("Major Code Smell", "S2376:Write-only properties should not be used", Justification:="<Ausstehend>")>
     Public WriteOnly Property ChargenZeile As wb_ChargenSchritt
         Set(value As wb_ChargenSchritt)
             _ChargenZeile = value
@@ -68,25 +68,33 @@ Public Class wb_ChargenWasserTemp
     ''' </summary>
     Private Function GetTTSBerechnung()
         'Maus-Zeiger anpassen
-        Cursor = Windows.Forms.Cursors.WaitCursor
-        Windows.Forms.Application.DoEvents()
+        Cursor = System.Windows.Forms.Cursors.WaitCursor
+        System.Windows.Forms.Application.DoEvents()
+
+        'alle Fehlermeldungen (zunächst) ausblenden
+        ALG_Error.Visible = False
+        ALG_Error_tts.Visible = False
+        ALG_error_rmf.Visible = False
+        'alle ausgeblendeten Labels sichtbar machen
+        lbl_e_soll_neu.Visible = True
+        ALG_e_soll_neu.Visible = True
 
         'Erster Versuch die Chargen-Nummer der TTS-Zeile im 0s1-s.dbg-File zu ermitteln
         _ChargenNummer = GetTTSChargenNr(ChargenStartZeit)
         Select Case _ChargenNummer
             Case "ERR"
                 'Maus-Zeiger anpassen
-                Cursor = Windows.Forms.Cursors.Default
+                Cursor = System.Windows.Forms.Cursors.Default
                 Return False
             Case ""
                 'Timestamp nicht gefunden - nächster Versuch eine Sekunde später
                 _ChargenNummer = GetTTSChargenNr(ChargenStartZeit(1))
                 'Maus-Zeiger anpassen
-                Cursor = Windows.Forms.Cursors.Default
+                Cursor = System.Windows.Forms.Cursors.Default
                 Return GetTTSLines(_ChargenNummer)
             Case Else
                 'Maus-Zeiger anpassen
-                Cursor = Windows.Forms.Cursors.Default
+                Cursor = System.Windows.Forms.Cursors.Default
                 Return GetTTSLines(_ChargenNummer)
         End Select
     End Function
@@ -116,7 +124,7 @@ Public Class wb_ChargenWasserTemp
 
     Private Function GetTTSLines(ChargenNummer As String) As Boolean
         'Kommando-Zeile - TTS-Berechnung abfragen 
-        Dim Cmd As String = wb_Global.TTSLogCmd_0 & Chr(34) & ChargenStartDate & Chr(34) & wb_Global.TTSLogCmd_1 & _ChargenNummer
+        Dim Cmd As String = wb_Global.TTSLogCmd_0 & Chr(34) & ChargenStartDate & Chr(34) & wb_Global.TTSLogCmd_1 & ChargenNummer
         Dim Result = wb_Functions.ExecSSH(wb_Credentials.SSHUser, wb_Credentials.SSHPass, wb_GlobalSettings.MySQLServerIP, Cmd)
         Dim TTSLines() As String = Result.Split(vbLf)
 
@@ -130,8 +138,14 @@ Public Class wb_ChargenWasserTemp
                     'Log-File zeilenweise durchlaufen
                     For Each s As String In TTSLines
                         'zeilenweise in Ausgabe-Fenster Log-File schreiben
-                        tbLogFile.Text += DecodeTTSLog(s) + vbCrLf
+                        tbLogFile.Text &= DecodeTTSLog(s) & vbCrLf
+                        'Bei doppelt-belegten Chargen-Nummern wird die Auswertung beendet
+                        If EndeTTSLog(s) Then
+                            Exit For
+                        End If
                     Next
+                    'fehlende Werte berechnen
+                    CalcTTSLog()
                     Return True
                 Else
                     Return False
@@ -142,10 +156,25 @@ Public Class wb_ChargenWasserTemp
         End If
     End Function
 
+    Private Function EndeTTSLog(s As String) As Boolean
+        Static bEnde As Boolean
+        If s.Contains("rs_par1/rs_par2/rs_par3") And bEnde Then
+            Return True
+        End If
+        If s.Contains("Neue Korrekturwerte:") Then
+            'Chargen-Nummer gefunden - Ende der TTS-Berechnung
+            bEnde = True
+        Else
+            bEnde = False
+        End If
+        Return False
+    End Function
+
     ''' <summary>
     ''' Ermittelt anhand der Token/SubToken die einzelnen Werte aus der Zeile des WinBack-Log-Files
     ''' </summary>
     ''' <param name="s"></param>
+    <CodeAnalysis.SuppressMessage("Critical Code Smell", "S3776:Cognitive Complexity of methods should not be too high", Justification:="<Ausstehend>")>
     Private Function DecodeTTSLog(s As String)
         Dim t As New wb_SplitTTSLog(s)
         'Debug.Print("Token/SubToken " & t.Token & "/" & t.SubToken)
@@ -221,13 +250,23 @@ Public Class wb_ChargenWasserTemp
             Case "rmf_basis_wert"
                 If t.Values("=").Count = 1 Then
                     RMF_basis.Text = t.Values(":")(0)
-
-                    'Delta-RMF wird nicht ausgeben und muss berechnet werden !
-                    Dim dRMF_delta_temp As Double = wb_Functions.StrToDouble(RMF_delta_temp.Text)
-                    Dim dRMF_basis As Double = wb_Functions.StrToDouble(RMF_basis.Text)
-                    RMF_delta_rmf.Text = wb_Functions.FormatStr((dRMF_delta_temp - dRMF_basis).ToString, 1)
-                    ALG_delta_rmf.Text = RMF_delta_rmf.Text
                 End If
+
+            'RMF Basis-Werte (falls die RMF-Berechnung nicht komplett durchgeführt wird)
+            Case "RMF"
+                Debug.Print(t.Token & "" & t.SubToken)
+                If t.Values(" ").Count > 2 Then
+                    Select Case t.Values(" ")(2)
+                        Case "rmf_basis_wert"
+                            RMF_basis.Text = t.Values(" ")(4)
+                    End Select
+                End If
+            Case "delta_temp_rmf"
+                Debug.Print(t.Token & "" & t.SubToken)
+                If t.Values("=").Count = 1 Then
+                    RMF_delta_temp.Text = t.Values("=")(0)
+                End If
+
 
             'Berechnung Wasser-Temperatur
             Case "pKT103"
@@ -251,6 +290,23 @@ Public Class wb_ChargenWasserTemp
                         End If
                 End Select
 
+            'Ergebnis Berechnung Wasser (vor exit_grund)
+            Case "t_delta (vor Eis)"
+                If t.Values("=").Count = 2 Then
+                    ALG_t_delta.Text = t.Values("=")(1)
+                End If
+
+            Case "exit_grund"
+                ErrorLabel(ALG_Error, t.SubToken)
+                lbl_e_soll_neu.Visible = False
+                ALG_e_soll_neu.Visible = False
+
+            Case "Wassermenge"
+                ErrorLabel(ALG_Error, t.SubToken)
+
+            Case "Wassertemp"
+                ErrorLabel(ALG_Error, t.SubToken)
+
             'Berechnung Eis-Menge
             Case "KT104ob"
                 Select Case t.SubToken
@@ -272,16 +328,90 @@ Public Class wb_ChargenWasserTemp
                         End If
                 End Select
 
+            'Berechnung ohne Eis-Menge
+            Case "KT104ob_ohne"
+                Select Case t.SubToken
+                    Case "m_w_ars"
+                        If t.Values("=").Count = 1 Then
+                            EIS_m_w_soll_neu.Text = t.Values("=")(0)
+                        End If
+                    Case "t_w_ars"
+                        If t.Values("=").Count = 1 Then
+                            EIS_t_w_soll_neu.Text = t.Values("=")(0)
+                            ALG_t_neu_vor_eis.Text = EIS_t_w_soll_neu.Text
+                        End If
+                End Select
+
+            'Ergebnis Berechnung Solltemperatur neu
+            Case "t_soll_neu"
+                If t.Values("=").Count = 1 Then
+                    EIS_t_w_soll_neu.Text = t.Values("=")(0)
+                    ALG_t_neu_vor_eis.Text = EIS_t_w_soll_neu.Text
+                End If
+
+
         End Select
-
-
-        'Zusammenfassung Wasser/Eis-Berechnung
-        ALG_w_soll_neu.Text = EIS_m_w_soll_neu.Text & "L / " & EIS_t_w_soll_neu.Text & "°C"
-        ALG_e_soll_neu.Text = EIS_m_eis_soll_neu.Text & "kg"
 
         'formatierten String für Log-File-Ausgabe zurückgeben
         Return t.LogString
     End Function
+
+    ''' <summary>
+    ''' Berechnet die fehlenden Werte, die im log nicht gefunden werden konnten oder von WinBack nicht berechnet worden sind.
+    ''' Anhand von Meldungen im log werden auch entsprechende Fehler/Warnhinweise ausgegeben.
+    ''' </summary>
+    Private Sub CalcTTSLog()
+        'Delta-RMF wird nicht ausgeben und muss berechnet werden !
+        'Dim dRMF_delta_temp As Double = wb_Functions.StrToDouble(RMF_delta_temp.Text)
+        'Dim dRMF_basis As Double = wb_Functions.StrToDouble(RMF_basis.Text)
+        'RMF_delta_rmf.Text = wb_Functions.FormatStr((dRMF_delta_temp - dRMF_basis).ToString, 1)
+        RMF_delta_rmf.Text = CalcLabel(RMF_delta_temp, RMF_basis, "SUB")
+        ALG_delta_rmf.Text = RMF_delta_rmf.Text
+
+        'Fehler TTS_AUS_FLAG
+        If ALG_delta_tts.Text.Contains("TTS_AUS_FLAG") Then
+            ALG_delta_tts.Text = "0,0"
+            TTS_delta_tts.Text = "0,0"
+            ErrorLabel(ALG_Error_tts, "TTS ist aus/deaktiviert")
+        End If
+
+        'prüfen ob ALG_t_delta berechnet werden muss
+        If ALG_t_delta.Text = "t_delta" Then
+            '            ALG_t_delta.Text = wb_Functions.FormatStr(Val(ALG_delta_tts.Text) + Val(ALG_delta_rmf.Text), 1)
+            ALG_t_delta.Text = CalcLabel(ALG_delta_tts, ALG_delta_rmf, "ADD")
+        End If
+
+        'Zusammenfassung Wasser/Eis-Berechnung
+        ALG_w_soll_neu.Text = EIS_m_w_soll_neu.Text & " L / " & EIS_t_w_soll_neu.Text & " °C"
+        ALG_e_soll_neu.Text = EIS_m_eis_soll_neu.Text & " kg"
+
+    End Sub
+
+    Private Function CalcLabel(lbl1 As System.Windows.Forms.Label, lbl2 As System.Windows.Forms.Label, calc As String) As String
+        Dim Result As String = "0,0"
+        Try
+            'Label in Double wandeln
+            Dim dlbl1 As Double = wb_Functions.StrToDouble(lbl1.Text)
+            Dim dlbl2 As Double = wb_Functions.StrToDouble(lbl2.Text)
+
+            'Rechenoperation durchführen
+            Select Case calc.ToUpper
+                Case "ADD"
+                    Result = wb_Functions.FormatStr((dlbl1 + dlbl2).ToString, 1)
+                Case "SUB"
+                    Result = wb_Functions.FormatStr((dlbl1 - dlbl2).ToString, 1)
+            End Select
+        Catch ex As Exception
+            Result = "0,0"
+        End Try
+
+        Return Result
+    End Function
+
+    Private Sub ErrorLabel(lbl As System.Windows.Forms.Label, Text As String)
+        lbl.Text = Text
+        lbl.Visible = True
+    End Sub
 
     Private Sub BtnTTS_Click(sender As Object, e As EventArgs) Handles BtnTTS.Click
         TabControl.SelectTab(tp_TTS)

@@ -11,13 +11,21 @@ Public Class ob_Chargen_Produziert
 
     Private opw_Liste As New ArrayList  'OrgaBack produzierte Ware
     Private wpl_Liste As New ArrayList  'WinBack "leere" Chargen (nicht gestartet)
+    Private err_Liste As New ArrayList  'Liste aller Fehler/Chargen, die nicht verbucht werden konnten
     Private Const LIMIT = 5000
+
+    Public ReadOnly Property ErrorTrace As ArrayList
+        Get
+            Return err_Liste
+        End Get
+    End Property
 
     ''' <summary>
     ''' Alle Chargen vor dem Stichtag werden als ungültig deklariert und nicht an OrgaBack zurückgemeldet
     ''' (Hauptsächlich nicht produzierte Chargen)
     ''' </summary>
     Public Sub New()
+        'Debug.Print("ob_Chargen_Produziert.New")
     End Sub
 
     ''' <summary>
@@ -48,8 +56,10 @@ Public Class ob_Chargen_Produziert
         Dim opw_Zeile As New ob_ProduzierteWare(WinBackChargenNummer)
         Dim MaxLinienSegmente As Integer = wb_Linien_Global.MaxSegmente
 
-        'Liste löschen
+        'Liste(n) löschen
         opw_Liste.Clear()
+        err_Liste.Clear()
+        'Debug.Print("ob_Chargen_Produziert.ExportChargen TW-Nr " & TWNr.ToString)
 
         'Lesen Chargen-Kopfdaten (Anzahl der Datensätze begrenzt auf LIMIT)
         wbdaten = New wb_Sql(wb_GlobalSettings.SqlConWbDaten, wb_Sql.dbType.mySql)
@@ -102,16 +112,28 @@ Public Class ob_Chargen_Produziert
 
                     'Datensatz in dbo.Produzierte Ware schreiben
                     WriteOK = SqlWriteProdWare(OrgasoftMain, o)
-                    'Schreiben ist fehlgeschlagen (Artikel nicht vorhanden)
+                    'Schreiben ist fehlgeschlagen (Artikel nicht vorhanden oder Halbfertigprodukt)
                     If Not WriteOK And o.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
-                        'Dummy-Artikel-Nummer
-                        o.ArtikelNr = wb_Global.ProduktionDummyArtikel
-                        'nochmal mit Dummy-Artikel versuchen
+
+                        'Halbfertig-Produkt (Einheit kg)
+                        o.Einheit = wb_Global.wbEinheitKilogramm
                         WriteOK = SqlWriteProdWare(OrgasoftMain, o)
-                        ''Insert in dbo.Produzierte Ware war nicht erfolgreich - Fehler-Log
-                        'If Not WriteOK Then
-                        '    Trace.WriteLine("Fehler beim Schreiben in dbo.ProduzierteWare TW-Nr/Artikel/Charge " & o.TWNr & "/" & o.ArtikelNr & "/" & o.ChargenNummer)
-                        'End If
+                        'Schreiben ist fehlgeschlagen (Artikel nicht vorhanden)
+                        If Not WriteOK And o.SatzTyp = wb_Global.obSatzTyp.ProduzierterArtikel Then
+
+                            'Dummy-Artikel-Nummer
+                            o.ArtikelNr = wb_GlobalSettings.ProduktionDummyArtikel
+                            o.Einheit = wb_Global.wbEinheitStk
+                            'nochmal mit Dummy-Artikel versuchen
+                            WriteOK = SqlWriteProdWare(OrgasoftMain, o)
+
+                            'Insert in dbo.Produzierte Ware war nicht erfolgreich - Fehler-Log
+                            If Not WriteOK Then
+                                err_Liste.Add("@E_Fehler beim Schreiben in dbo.ProduzierteWare TW-Nr/Artikel/Charge " & o.TWNr & "/" & o.ArtikelNr & "/" & o.ChargenNummer)
+                            End If
+                            '    Trace.WriteLine("@E_Fehler beim Schreiben in dbo.ProduzierteWare TW-Nr/Artikel/Charge " & o.TWNr & "/" & o.ArtikelNr & "/" & o.ChargenNummer)
+                            'End If
+                        End If
                     End If
 
                     'Datensatz in wbdaten als exportiert markieren
@@ -135,6 +157,7 @@ Public Class ob_Chargen_Produziert
         'Datenbank-Verbindung sicherheitshalber nochmals schliessen
         wbdaten.Close()
         'Letzte gültige Tageswechsel-Nummer (darf aber nicht kleiner sein als der Aufrufparameter, sonst läuft die Routine rückwärts)
+        'Debug.Print("Ende ob_Chargen_Produziert.ExportChargen TageswechselNr/TW-Nr " & TageswechselNr.ToString & "/" & TWNr.ToString)
         Return Math.Max(TageswechselNr, TWNr)
     End Function
 
@@ -149,7 +172,8 @@ Public Class ob_Chargen_Produziert
 
         'nur Zeilen mit Sollwerten sind für die Verbrauchsdaten relevant
         '2018-07-10 Datensätze mit Produktions-Datum 00010101 werden ignoriert (nicht gestartete Chargen)
-        If wb_Functions.TypeIstSollMenge(opw.Type, opw.ParamNr) And opw.Gestartet Then
+        '2021-11-23 Datensätze mit Komponenten-Type Wasser werden ignoriert (Problem Einheit Liter/Kilogramm)
+        If wb_Functions.TypeIstSollMenge(opw.Type, opw.ParamNr) AndAlso opw.Gestartet AndAlso opw.Type <> wb_Global.KomponTypen.KO_TYPE_WASSERKOMPONENTE AndAlso opw.Type <> wb_Global.KomponTypen.KO_TYPE_EISKOMPONENTE Then
             'zur Liste hinzufügen
             opw_Liste.Add(opw)
             'Debug.WriteLine(" Add to List")
@@ -179,16 +203,22 @@ Public Class ob_Chargen_Produziert
     '''     Menge
     '''     ChargenNr
     '''     HaltbarkeitsDatum
+    '''     ProduktionsUhrzeit
     ''' </summary>
     ''' <param name="db"></param>
     ''' <param name="o"></param>
     ''' <returns></returns>
     Private Function SqlWriteProdWare(db As wb_Sql, o As ob_ProduzierteWare) As Boolean
         'Datensatz in dbo.Produzierte Ware schreiben
-        'Trace.Write("SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit " & o.SatzTyp & " " & o.ChargenNummer & " " & o.ArtikelNr & " " & o.Menge & " " & o.Unit)
+        'Trace.Write("@I_SatzTyp/ChargenNummer/ArtikelNr/Menge Einheit " & o.SatzTyp & " " & o.ChargenNummer & " " & o.ArtikelNr & " " & o.Menge & " " & o.Unit)
 
-        'Der SQL-INSERT-Befehl wird dynamisch erzeugt
-        Dim sql As String = o.sFilialNummer & ", '" & o.sProduktionsDatum & "', '" & o.sSatzTyp & "', '" & o.ArtikelNr & "', " & o.Unit & ", " &
+        'Der SQL-INSERT-Befehl wird dynamisch erzeugt 
+        'TODO Wenn in WinBack zur Anmeldung RFID-Chips verwendet werden, sollte auch der aktuelle User mit übertragen werden
+        'Dim sql As String = o.sFilialNummer & ", '" & o.sProduktionsDatum & "', '" & o.sSatzTyp & "', '" & o.ArtikelNr & "', " & o.Unit & ", " &
+        '                    o.Color & ", '" & o.Size & "', '" & o.sMenge & "', '" & o.ChargenNummer & "', '" & o.sHaltbarkeitsDatum & "'"
+
+        'Der SQL-INSERT-Befehl wird dynamisch erzeugt '(ab Version 1.10.0.0 wird auch die Uhrzeit mit übergeben)
+        Dim sql As String = o.sFilialNummer & ", '" & o.sProduktionsDatum & "', '" & o.sProduktionsUhrzeit & "', '" & o.sSatzTyp & "', '" & o.ArtikelNr & "', " & o.Unit & ", " &
                             o.Color & ", '" & o.Size & "', '" & o.sMenge & "', '" & o.ChargenNummer & "', '" & o.sHaltbarkeitsDatum & "'"
         'Insert ausführen - bei sql-Fehler wird keine Exception ausgelöst(Debug)
         If db.sqlCommand(wb_Sql_Selects.setParams(wb_Sql_Selects.mssqlInsertProduktionsDaten, sql), False, False) < 0 Then

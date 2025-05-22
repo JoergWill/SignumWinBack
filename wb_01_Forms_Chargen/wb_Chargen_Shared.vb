@@ -176,7 +176,7 @@ Public Class wb_Chargen_Shared
                 'Filter Uhrzeit übernehmen
                 _FensterTitel &= FilterVonBis()
 
-            Case wb_Global.StatistikType.ChargenAuswertung
+            Case wb_Global.StatistikType.ChargenAuswertung, wb_Global.StatistikType.ChargenAuswertungSauerteig
                 _FensterTitel = "Produktion "
                 _FensterTitel &= FilterVonBis(StrtDate, EndeDate)
 

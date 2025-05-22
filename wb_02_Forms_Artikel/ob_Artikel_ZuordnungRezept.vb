@@ -11,6 +11,7 @@ Public Class ob_Artikel_ZuordnungRezept
     Public Event DataUpdate()
     Public RohstoffCloud As wb_Rohstoffe_Cloud
     Private Nr As Integer = wb_Global.UNDEFINED
+    Private OrgaBackVerkaufsGewicht As Double
 
 #Region "Signum"
     Private _DockingExtension As IDockingExtension
@@ -126,8 +127,11 @@ Public Class ob_Artikel_ZuordnungRezept
                 KompRzChargen.DataValid = True
                 KompRzChargen.Visible = True
                 pnlNoProduction.Visible = False
+                'zur Berechnung der Nährwerte in OrgaBack (übertragen in dbo.Naehrwerte) wird das Verkaufsgewicht aus OrgaBack benötigt
+                OrgaBackVerkaufsGewicht = k.CalcVerkaufsGewicht
 
             Case "wbNOPRODUCTION"
+                'KEIN WinBack-Artikel/Rohstoff
                 KompRzChargen.Visible = False
                 pnlNoProduction.Visible = True
 
@@ -173,7 +177,7 @@ Public Class ob_Artikel_ZuordnungRezept
 
     ''' <summary>
     ''' Anzeige/Änderung der Cloud-Zuordnung (in OrgaBack)
-    ''' Die Komponenten-Daten werden in wb_Rohstoffe_Shared nochmals geladen, weil daS Fenster der Cloud-Zuordnung über wb_Rohstoffe_Shared arbeitet.
+    ''' Die Komponenten-Daten werden in wb_Rohstoffe_Shared nochmals geladen, weil das Fenster der Cloud-Zuordnung über wb_Rohstoffe_Shared arbeitet.
     ''' Das Fenster wird modal(!) angezeigt und speichert beim Schliessen die geänderten Zuordnungsdaten und Nährwertinformationen ab.
     ''' 
     ''' Werden hier Daten geändert, muss der Rohstoff in OrgaBack neu geladen werden um die Anzeige zu aktualisieren.
@@ -186,7 +190,9 @@ Public Class ob_Artikel_ZuordnungRezept
     ''' <param name="e"></param>
     Public Sub Cloud_Click(sender As Object, e As EventArgs) Handles KompRzChargen.Cloud_Click
         'Daten in Rohstoff(Shared) laden
-        wb_Rohstoffe_Shared.RohStoff.MySQLdbRead(Nr)
+        wb_Rohstoffe_Shared.RohStoff.xMySQLdbRead(Nr)
+        'OrgaBack-Verkaufsgewicht (wird benötigt zur Berechnung in dbo.Naehrwerte)
+        wb_Rohstoffe_Shared.RohStoff.CalcVerkaufsGewicht = OrgaBackVerkaufsGewicht
         'Fenster Cloud-Zuordnung modal anzeigen - verhindert den Event Edit_Leave beim Speichern der Daten - Sonst wird evtl. ein falscher Rohstoff geändert
         RohstoffCloud = New wb_Rohstoffe_Cloud(True)
         RohstoffCloud.ShowDialog()
@@ -208,8 +214,17 @@ Public Class ob_Artikel_ZuordnungRezept
         Dim nwtUpdateArtikel As New wb_nwtUpdateArtikel
         'Start bei Artikelnummer x - 1
         If nwtUpdateArtikel.UpdateNext(Nr - 1, True) Then
-            'Die Daten sind in OrgaBack erst nach Laden des Artikels sichtbar
-            MsgBox("Die aktualisierten Nährwerte und Allergen" & vbCrLf & "sind erst nach erneutem Aufruf des Artikels in OrgaBack sichtbar", MsgBoxStyle.OkOnly, "WinBack-AddIn")
+
+            'Flag Meldung Update Nährwerte anzeigen
+            If wb_GlobalSettings.ShowMsg_UpdateOrgaBackNWT Then
+                'Die Daten sind in OrgaBack erst nach Laden des Artikels sichtbar
+                If MsgBox("Die aktualisierten Nährwerte und Allergen" & vbCrLf & "sind erst nach erneutem Aufruf des Artikels in OrgaBack sichtbar" &
+                          vbCrLf & vbCrLf & "Diese Meldung beim nächsten Mal nicht mehr anzeigen?", MsgBoxStyle.YesNo, "WinBack-AddIn") = MsgBoxResult.Yes Then
+                    'Meldung beim nächsten Mal nicht mehr anzeigen
+                    wb_GlobalSettings.ShowMsg_UpdateOrgaBackNWT = False
+                End If
+            End If
+
             'Aktualisierung erforderlich
             RaiseEvent DataInvalidated()
         End If

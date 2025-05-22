@@ -134,10 +134,10 @@ Partial Class ob_Artikel_ZuordnungRezept
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents ToolTip As Windows.Forms.ToolTip
+    Friend WithEvents ToolTip As System.Windows.Forms.ToolTip
     Friend WithEvents KompRzChargen As wb_KompRzChargen
-    Friend WithEvents pnlNoProduction As Windows.Forms.Panel
-    Friend WithEvents lblProduktion As Windows.Forms.Label
+    Friend WithEvents pnlNoProduction As System.Windows.Forms.Panel
+    Friend WithEvents lblProduktion As System.Windows.Forms.Label
 
     'Friend WithEvents PropertyGrid As Signum.OrgaSoft.GUI.Controls.PropertyGrid
 End Class

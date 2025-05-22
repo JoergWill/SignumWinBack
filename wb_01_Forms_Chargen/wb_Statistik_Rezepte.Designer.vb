@@ -25,54 +25,53 @@ Partial Class wb_Statistik_Rezepte
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.BtnBerechnen = New System.Windows.Forms.Button()
-        Me.ListeStatistik = New WinBack.wb_ListeStatistik()
-        Me.BtnDrucken = New System.Windows.Forms.Button()
-        Me.SuspendLayout()
-        '
-        'BtnBerechnen
-        '
-        Me.BtnBerechnen.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.BtnBerechnen.Location = New System.Drawing.Point(339, 583)
-        Me.BtnBerechnen.Name = "BtnBerechnen"
-        Me.BtnBerechnen.Size = New System.Drawing.Size(212, 43)
-        Me.BtnBerechnen.TabIndex = 15
-        Me.BtnBerechnen.Text = "Berechnen"
-        Me.BtnBerechnen.UseVisualStyleBackColor = True
-        '
-        'ListeStatistik
-        '
-        Me.ListeStatistik.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ListeStatistik.ListeBerechnet = False
-        Me.ListeStatistik.Location = New System.Drawing.Point(0, 0)
-        Me.ListeStatistik.Name = "ListeStatistik"
-        Me.ListeStatistik.Size = New System.Drawing.Size(577, 678)
-        Me.ListeStatistik.TabIndex = 17
-        '
-        'BtnDrucken
-        '
-        Me.BtnDrucken.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.BtnDrucken.Location = New System.Drawing.Point(339, 534)
-        Me.BtnDrucken.Name = "BtnDrucken"
-        Me.BtnDrucken.Size = New System.Drawing.Size(212, 43)
-        Me.BtnDrucken.TabIndex = 18
-        Me.BtnDrucken.Text = "Drucken"
-        Me.BtnDrucken.UseVisualStyleBackColor = True
-        '
-        'wb_Statistik_Rezepte
-        '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(577, 678)
-        Me.Controls.Add(Me.BtnDrucken)
-        Me.Controls.Add(Me.BtnBerechnen)
-        Me.Controls.Add(Me.ListeStatistik)
-        Me.Name = "wb_Statistik_Rezepte"
-        Me.Text = "Statistik Rezepte"
-        Me.ResumeLayout(False)
+        BtnBerechnen = New System.Windows.Forms.Button()
+        ListeStatistik = New wb_ListeStatistik()
+        BtnDrucken = New System.Windows.Forms.Button()
+        SuspendLayout()
+        ' 
+        ' BtnBerechnen
+        ' 
+        BtnBerechnen.Location = New System.Drawing.Point(397, 575)
+        BtnBerechnen.Name = "BtnBerechnen"
+        BtnBerechnen.Size = New System.Drawing.Size(245, 43)
+        BtnBerechnen.TabIndex = 15
+        BtnBerechnen.Text = "Berechnen"
+        BtnBerechnen.UseVisualStyleBackColor = True
+        ' 
+        ' ListeStatistik
+        ' 
+        ListeStatistik.Dock = System.Windows.Forms.DockStyle.Fill
+        ListeStatistik.ListeBerechnet = False
+        ListeStatistik.Location = New System.Drawing.Point(0, 0)
+        ListeStatistik.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        ListeStatistik.Name = "ListeStatistik"
+        ListeStatistik.Size = New System.Drawing.Size(646, 678)
+        ListeStatistik.TabIndex = 17
+        ' 
+        ' BtnDrucken
+        ' 
+        BtnDrucken.Location = New System.Drawing.Point(397, 526)
+        BtnDrucken.Name = "BtnDrucken"
+        BtnDrucken.Size = New System.Drawing.Size(245, 43)
+        BtnDrucken.TabIndex = 18
+        BtnDrucken.Text = "Drucken"
+        BtnDrucken.UseVisualStyleBackColor = True
+        ' 
+        ' wb_Statistik_Rezepte
+        ' 
+        AutoScaleDimensions = New System.Drawing.SizeF(6F, 13F)
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        ClientSize = New System.Drawing.Size(646, 678)
+        Controls.Add(BtnDrucken)
+        Controls.Add(BtnBerechnen)
+        Controls.Add(ListeStatistik)
+        Name = "wb_Statistik_Rezepte"
+        Text = "Statistik Rezepte"
+        ResumeLayout(False)
 
     End Sub
-    Friend WithEvents BtnBerechnen As Windows.Forms.Button
+    Friend WithEvents BtnBerechnen As System.Windows.Forms.Button
     Friend WithEvents ListeStatistik As wb_ListeStatistik
-    Friend WithEvents BtnDrucken As Windows.Forms.Button
+    Friend WithEvents BtnDrucken As System.Windows.Forms.Button
 End Class

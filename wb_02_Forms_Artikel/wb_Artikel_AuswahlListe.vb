@@ -1,4 +1,6 @@
-﻿Public Class wb_Artikel_AuswahlListe
+﻿Imports System.Windows.Forms
+
+Public Class wb_Artikel_AuswahlListe
     Private _ArtikelNr As Integer = wb_Global.UNDEFINED
     Private _ArtikelNummer As String = ""
     Private _ArtikelName As String = ""
@@ -11,11 +13,18 @@
     Private _ArtikelListe As New ArrayList
     Private _MultiSelect As Boolean = False
 
-    Public Sub New()
+    Public Enum SortColumn
+        ArtikelNummer = 0
+        ArtikelBezeichnung = 2
+    End Enum
+
+    Public Sub New(SortierFeld As SortColumn)
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         InitDataGrid()
+        'Sortieren
+        SortierenNach = SortierFeld
     End Sub
 
     Public Sub New(ArtikelNummer As String, ArtikelName As String)
@@ -104,17 +113,24 @@
         End Get
     End Property
 
+    Public WriteOnly Property SortierenNach As Integer
+        Set(value As Integer)
+            'Focus auf Sortier-Feld - TODO funktioniert noch nicht (siehe JIRA)
+            DataGridView.SetSortColumn(value)
+        End Set
+    End Property
+
     Private Sub InitDataGrid(Optional ArtikelNummer As String = "", Optional ArtikelName As String = "")
         'Liste der Tabellen-Überschriften
         'die mit & gekennzeichnete Spalte wird bei Größenänderung automatisch angepasst
-        'Spalten ohne Bezeichnung werden ausgeblendet
-        Dim sColNames As New List(Of String) From {"", "Nummer", "&Name"}
+        'Spalten ohne Bezeichnung werden ausgeblendet - aus ungeklärten Gründen wird in NET8 die erste Spalte IMMER visible dargestellt !
+        Dim sColNames As New List(Of String) From {"Nummer", "", "&Name"}
         For Each sName In sColNames
             DataGridView.ColNames.Add(sName)
         Next
 
         'DataGrid füllen
-        DataGridView.LoadData(wb_Sql_Selects.sqlArtikelRohLst, "ArtikelListe")
+        DataGridView.LoadData(wb_sql_Selects.sqlArtikelRohLst, "ArtikelListe")
         DataGridView.MultiSelect = _MultiSelect
 
         'DataGrid filtern nach Artikel-Nummer (alpha)
@@ -131,24 +147,24 @@
         _ArtikelNr = 0
         _ArtikelNummer = ""
         _ArtikelName = ""
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
     Private Sub BtnCancel_Click(sender As Object, e As EventArgs) Handles BtnCancel.Click
         Me.Close()
-        Me.DialogResult = Windows.Forms.DialogResult.Abort
+        Me.DialogResult = System.Windows.Forms.DialogResult.Abort
     End Sub
 
     Private Sub DataGridView_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView.DoubleClick
         GetResult()
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
     Private Sub BtnOK_Click(sender As Object, e As EventArgs) Handles BtnOK.Click
         GetResult()
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
@@ -175,7 +191,7 @@
         _ArtikelChargeMax.MengeInStk = DataGridView.Field("KA_Charge_Max")
 
         'MultiSelect
-        For Each dl As Windows.Forms.DataGridViewRow In DataGridView.SelectedRows
+        For Each dl As System.Windows.Forms.DataGridViewRow In DataGridView.SelectedRows
             Dim ArtListenElement As New wb_StatistikListenElement
             ArtListenElement.Nr = dl.Cells("KO_Nr").Value
             ArtListenElement.Nummer = dl.Cells("KO_Nr_AlNum").Value
@@ -184,4 +200,5 @@
             _ArtikelListe.Add(ArtListenElement)
         Next
     End Sub
+
 End Class

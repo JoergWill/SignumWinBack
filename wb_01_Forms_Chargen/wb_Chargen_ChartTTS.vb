@@ -1,6 +1,12 @@
 ﻿Imports System.Windows.Forms
 Imports WeifenLuo.WinFormsUI.Docking
 
+''' <summary>
+''' Die "alten" Verweise auf System.Windows.Forms.DataVisualization wurden entfernt, weil diese (NET3.5) nicht mehr
+''' kompatibel zu .NET8 sind.
+''' Neu sind jetzt per NuGet hinzugefügt WinForms.DataVisualization
+''' https://learn.microsoft.com/en-us/answers/questions/1605420/hi-im-currently-working-on-project-that-using-wind
+''' </summary>
 Public Class wb_Chargen_ChartTTS
     Inherits DockContent
     Const MaxChart = 10
@@ -101,7 +107,7 @@ Public Class wb_Chargen_ChartTTS
             Case Else
                 sqltw = "B_ARZ_TW_Nr = " & TWNr.ToString
         End Select
-        Dim sql As String = wb_Sql_Selects.setParams(wb_Sql_Selects.sqlChargenTTS, sqltw, RzNr, RzVr)
+        Dim sql As String = wb_sql_Selects.setParams(wb_sql_Selects.sqlChargenTTS, sqltw, RzNr, RzVr)
 
         'Datensätze aus Tabelle Rezeptschritte lesen
         If winback.sqlSelect(sql) Then

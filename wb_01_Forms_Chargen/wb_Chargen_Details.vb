@@ -1,4 +1,4 @@
-﻿Imports combit.ListLabel22.DataProviders
+﻿Imports combit.Reporting.DataProviders
 Imports Infralution.Controls.VirtualTree
 Imports WeifenLuo.WinFormsUI.Docking
 Imports WinBack.wb_Chargen_Shared
@@ -23,9 +23,9 @@ Public Class wb_Chargen_Details
         'New Style setzen (Delta/Bold)
         _DeltaStyleBold.Font = New Drawing.Font(ChargenTree.Columns(0).CellStyle.Font, System.Drawing.FontStyle.Bold)
 
-        'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
+        'Event-Handler (Klick auf Chagen-Liste -> Anzeige der Detail-Info)
         AddHandler wb_Chargen_Shared.eListe_Click, AddressOf DetailInfo
-        'Event-Handler (Klick auf Rohstoff-Liste -> Anzeige der Detail-Info)
+        'Event-Handler (Klick auf Chargen-Liste -> Anzeige der Detail-Info)
         AddHandler wb_Chargen_Shared.eListe_Print, AddressOf DetailPrint
     End Sub
 
@@ -56,7 +56,7 @@ Public Class wb_Chargen_Details
             End If
 
             'Mauszeiger umschalten
-            Windows.Forms.Cursor.Current = Windows.Forms.Cursors.WaitCursor
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
             'Daten laden
             If ChargenProduziert.MySQLdbSelect_ChargenSchritte(_StatistikType) Then
 
@@ -68,15 +68,15 @@ Public Class wb_Chargen_Details
                 'Detail-Fenster in den Vordergrund bringen
                 Me.Activate()
                 'Mauszeiger umschalten
-                Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
             Else
                 'Mauszeiger umschalten
-                Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
                 MsgBox("Keine Daten für diesen Zeitraum vorhanden !", MsgBoxStyle.Exclamation, "WinBack")
             End If
         Catch ex As Exception
             'Mauszeiger umschalten
-            Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
             MsgBox("Keine Daten für diesen Zeitraum vorhanden !", MsgBoxStyle.Exclamation, "WinBack")
         End Try
     End Sub
@@ -96,7 +96,7 @@ Public Class wb_Chargen_Details
         'List und Label-Listen-Name abhängig vom Statistik-Typ
         Select Case StatistikType
 
-            Case wb_Global.StatistikType.ChargenAuswertung
+            Case wb_Global.StatistikType.ChargenAuswertung, wb_Global.StatistikType.ChargenAuswertungSauerteig
                 pDialog.ListFileName = "ChargenAuswertung.lst"
                 LLPrepareArray(StatistikDaten, REZEPTSCHRITT)
 
@@ -210,7 +210,7 @@ Public Class wb_Chargen_Details
         End If
     End Sub
 
-    Private Sub wb_Chargen_Details_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Chargen_Details_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         RemoveHandler wb_Chargen_Shared.eListe_Click, AddressOf DetailInfo
         RemoveHandler wb_Chargen_Shared.eListe_Print, AddressOf DetailPrint
     End Sub

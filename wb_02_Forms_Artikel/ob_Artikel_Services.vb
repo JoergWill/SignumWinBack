@@ -12,12 +12,14 @@ Public Class ob_Artikel_Services
     Public Property InfoContainer As IInfoContainer Implements IExtension.InfoContainer
 
     Public Sub Initialize() Implements IExtension.Initialize
+        'in wb_Main registrieren
+        wb_Main_Shared.RegisterAddIn("ob_Artikel_Services")
         'siehe Mail vom 13.Juli 2017 J.Erhardt - laden der dll schläg fehl 
         'AssemblyResolve wird definiert in WinBackAddIn.Erweiterte Kompilierungsoptionen
-#If AssemblyResolve Then
-        'Die eigenen dll-Files in sep. Verzeichnis verlagern
-        AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
-#End If
+        If wb_Global.AssemblyResolve Then
+            'Die eigenen dll-Files in sep. Verzeichnis verlagern
+            AddHandler System.AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyAssemblyResolve
+        End If
 
         oArticle = TryCast(ServiceProvider.GetService(GetType(IArticleService)), IArticleService)
     End Sub

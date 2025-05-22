@@ -76,5 +76,5 @@ Partial Class wb_Artikel_Liste
 
     End Sub
 
-    Friend WithEvents DataGridView As wb_DataGridView
+    Public WithEvents DataGridView As wb_DataGridView
 End Class

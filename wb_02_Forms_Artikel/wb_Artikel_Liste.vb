@@ -36,9 +36,9 @@ Public Class wb_Artikel_Liste
     End Sub
 
     'Anstelle der Rezept-Nummer (Idx) wird die Rezept-Bezeichnung ausgegeben
-    'die Texte kommen aus eine HashTable
+    'die Texte kommen aus einer HashTable
     Const RzpIdxColumn As Integer = 3
-    Private Sub DataGridView_CellFormatting(sender As Object, e As Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
+    Private Sub DataGridView_CellFormatting(sender As Object, e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView.CellFormatting
         Try
             If e.ColumnIndex = RzpIdxColumn Then
                 If CInt(e.Value) > 0 Then
@@ -56,7 +56,7 @@ Public Class wb_Artikel_Liste
         End Try
     End Sub
 
-    Private Sub DataGridView_CellDoubleClick(sender As Object, e As Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
+    Private Sub DataGridView_CellDoubleClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
         'Zeile im Grid
         Dim eRow As Integer = e.RowIndex
         'Kein Doppelclick auf die Überschriftenzeile
@@ -65,13 +65,13 @@ Public Class wb_Artikel_Liste
             Dim RezeptNr As Integer = wb_Functions.ValueToInt(DataGridView.Item(RzpIdxColumn, eRow).Value)
             'Wenn die Rezeptnummer gültig ist
             If RezeptNr > 0 Then
-                Me.Cursor = Windows.Forms.Cursors.WaitCursor
+                Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
                 'Beim Erzeugen des Fensters werden die Daten aus der Datenbank gelesen (immer Variante 1)
                 Dim Rezeptur As New wb_Rezept_Rezeptur(RezeptNr, 1)
                 'verhindert, dass das neue Fenster in den Hintergrund verdrängt wird
                 DataGridView.SuppressChangeEvent = True
                 Rezeptur.Show()
-                Me.Cursor = Windows.Forms.Cursors.Default
+                Me.Cursor = System.Windows.Forms.Cursors.Default
             End If
         End If
     End Sub
@@ -81,14 +81,15 @@ Public Class wb_Artikel_Liste
         'Daten laden aus winback.Komponenten in GridView
         Artikel.LoadData(DataGridView)
         'Detail-Daten aus winback.Komponenten laden in Objekt wb_Rostoffe_Shared.Rohstoff
-        Artikel.MySQLdbRead(Artikel.Nr)
+        Artikel.xMySQLdbRead(Artikel.Nr)
         'Event auslösen - Aktualisierung der Anzeige in den Detail-Fenstern
         Liste_Click(Nothing)
         'Nach dem Update der Detailfenster wird der Focus wieder zurückgesetzt (Eingabe Suchmaske)
-        DataGridView.Focus()
+        'Auskommentiert 19.04.2022/JW - Cursor springt bei Änderung der Chargengrößen (mehrfache Aktualisierung)
+        'DataGridView.Focus()
     End Sub
 
-    Private Sub wb_Artikel_Liste_FormClosing(sender As Object, e As Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub wb_Artikel_Liste_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         'Daten in Datenbank sichern
         DataGridView.UpdateDataBase()
         'Layout sichern
@@ -105,6 +106,8 @@ Public Class wb_Artikel_Liste
         If Artikel.SaveData(DataGridView) Then
             DataGridView.UpdateDataBase()
         End If
+        'Daten in Liste neu einlesen
+        DataGridView.RefreshData()
     End Sub
 
 End Class
